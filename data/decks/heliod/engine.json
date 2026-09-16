@@ -1,674 +1,726 @@
 {
-  "critic": {
-    "findings": [
-      {
-        "claim": "\"`Iron Maiden`, `Viseling` and `Ebony Owl Netsuke` appear in ZERO lines of those three kinds across all four log parts\" ... \"The 5 games where a punisher IS credited are not explained by that reading and are left open.\"",
-        "note": "MECHANICALLY CHECKABLE, and correcting it CLOSES the note's own open item rather than weakening anything. The ZERO is right for Iron Maiden (0) and Ebony Owl Netsuke (0) and WRONG for Viseling, which appears in TEN `Combat:` lines across the four parts. Five of those ten are owner-populating under the exact regexes notes[5] cites: `RX[\"attack\"]` (parse.py:57) requires a SEAT as defender and `RX[\"block\"]` (58) registers only the BLOCKERS, so of Viseling's ten Combat lines exactly five qualify -- `assigned Viseling (3) to attack Ai(2)-mm-giada-angels`, `assigned Scrawling Crawler (402), Hangarback Walker (371) and Viseling (306) to attack Ai(1)-mm-giada-angels`, `assigned Viseling (306) to block Rabbit Token (417)`, `assigned ... Viseling (205), ... to attack Ai(1)-mm-baylen-tokens`, `assigned Hangarback Walker (169), Viseling (104) and The Second Doctor (164) to attack Ai(4)-mm-baylen-tokens`. Those five lines occur in games 10, 46, 59, 65 and 95 (0-indexed over games[]) -- WHICH ARE EXACTLY THE FIVE GAMES notes[5] records as unexplained, and in four of them the record's credit equals Viseling's own log damage to the digit (11, 17, 6, 37). The two remaining Viseling Combat lines are in games 2 and 41 and are an attack on a PLANESWALKER (`to attack Elspeth, Storm Slayer (299)`, `to attack Serra the Benevolent (29)`) plus a `didn't block` line -- none of which match `attack`/`block`/set owner -- and in neither game is Viseling credited. Seven games, seven correct predictions. So the mechanism in item (4) is not merely \"consistent with\" the anomalies, it explains all five, and the note should say so. The defect is that a ZERO was asserted without the enumeration (agents-common §5); `grep -h Viseling part-*.log | grep -cE '^Combat:'` returns 10. A check that a claim of the form \"X appears in zero lines of kind K\" was actually grepped is not general, but a per-source `owner`-map-membership cross-tab against `noncombat_damage_dealt_to_players` is, and would be one pass over any run's logs.",
-        "status": "miscounted",
-        "where": "notes[5]"
-      },
-      {
-        "claim": "\"VERIFIED PENDING: `grep -c \\\"Scrawling Crawler\\\" goldfish_targets.json` returns 2, both outside the first group of this target.\"",
-        "note": "MECHANICALLY CHECKABLE and it is the one sentence in the proposal whose whole job is to be checkable. `grep -c \"Scrawling Crawler\" data/decks/heliod/goldfish_targets.json` returns **4**; `grep -c '\\\"Scrawling Crawler\\\"'` (with the JSON quotes, i.e. name entries only) returns **3**. Neither is 2. The three name occurrences are lines 18 (first any_of of \"Table draw engine online\"), 47 (the any_of of \"Psychosis Crawler or Scrawling Crawler drawn\") and 72 (the SECOND any_of of this target); the fourth match is inside the label on line 42. \"Both outside the first group of this target\" is also the wrong shape -- there are three name occurrences and all three are outside this target's first group. THE PROPOSAL ITSELF IS SOUND (see the `supported` finding below); this is a false receipt attached to a true claim, and it is the same class round 1 failed the model on -- notes[4]'s \"were verified against goldfish_targets.json before this one was written\". A receipt that has not been run is worse than no receipt.",
-        "status": "miscounted",
-        "where": "proposed_goldfish_edits[0].why"
-      },
-      {
-        "claim": "\"(3) The two disagree per game in 71 of 120.\"",
-        "note": "LOW SEVERITY and I concede the likely rebuttal in advance -- 71 is right under one definition and the note states the other. Against the TRACKED run record at HEAD, comparing `per_seat.heliod.noncombat_damage_dealt_to_players` game-by-game with the log total for the three cards item (2) names (Viseling 381 + Iron Maiden 381 + Ebony Owl Netsuke 240 = 1,002), the two differ in **70** of 120. They differ in **71** if Walking Ballista's 7 points -- the fourth heliod noncombat source aimed at an opposing seat -- are folded in, which is the reading the round-1 critique's phrase \"excluding lines aimed at an mm-heliod seat\" invites. Since item (2) defines the comparand as the three punishers and nothing else, the figure that belongs beside it is 70. One clause naming which set is being compared fixes it, and the fix is cheap because every other number in this note is exact.",
-        "status": "miscounted",
-        "where": "notes[5]"
-      },
-      {
-        "claim": "\"re-counting those three cards in the same logs gives 1,002 points to opposing seats against the seat field's 201 - a 5.0x parser gap whose mechanism is in notes[5]\"",
-        "note": "The ratio is arithmetically true of the two numbers named and misleading as a description of what it measures, and notes[5] already contains the honest version. The 201 is NOT the parser's credit for these three cards: by notes[5]'s own item (3), only **116 points in 5 games** of the record's 201 is punisher damage, so the punisher-specific undercount is **1,002 to 116, 8.6x** -- the parser drops 88.4% of it, not 80%. Worse in the other direction: **124 of the record's 201 (62%) is heliod damaging its OWN seat** -- Adarkar Wastes 82, Talisman of Progress 40, Hangarback Walker 1, Kami of the Crescent Moon 1, all pain damage counted as `damage_dealt_to_players`, which notes[5] states plainly and this sentence does not. So the two quantities being divided are not the same quantity: one is punisher output to opponents, the other is mostly self-damage. A reader of stages[4] alone concludes the parser credited a fifth of the punishers' work; it credited an eighth, and inflated the remainder with damage pointing backwards. The correction is one clause (\"of which the parser credits 116\") and it makes the stage's argument stronger, not weaker.",
-        "status": "over-claimed",
-        "where": "stages[4].what_it_does"
-      },
-      {
-        "claim": "\"the median is 0.0 on both counts, so stages[4]'s verdict stands\" / \"Both counts put the MEDIAN at 0.0, so the verdict holds either way\"",
-        "note": "NOT THE MODEL'S FAULT, AND THE ORCHESTRATOR MUST DECIDE IT. This is exact against the TRACKED record at HEAD, which is what the model was written against and what I judged it on. But the working tree at review time carries an UNCOMMITTED fix to `src/manamap/sim/parse.py` -- the by-name fallback owner map, whose own comment cites \"38,938 points of noncombat damage to players across the 33 stored runs, 88% of the total on heliod's own 120-game run\" -- together with 29 RE-PARSED sim records, this deck's among them (`git diff --stat HEAD -- data/decks/heliod/sim/`: 442 lines changed, rewritten on disk at 15:56, mid-review). Under the re-parsed record heliod's `noncombat_damage_dealt_to_players` reads sum **1,134**, mean **9.45**, MEDIAN **3.5**, nonzero in **86** of 120 -- against 201 / 1.675 / 0.0 / 38 at HEAD. The moment that lands, \"the median is 0.0 on both counts\" is FALSE for the seat field, and every figure in item (1) is stale. THE MODEL'S CONCLUSION SURVIVES: the punisher-only log median, which is the quantity the cut was actually justified on, is still 0.0 with 57 of 120 nonzero, and I re-derived it from the logs independently of any record. But the sentence carrying it will not, and the re-parsed field is still polluted by the same 131 points of own-seat pain damage, so it is not a clean punisher measure either. Everything else the model quotes from this run is unchanged by the re-parse -- 27 wins, 20 Approach, 68 resolved, 35 transformed, 74 eliminated, {damage: 53}, combat 4.11/0.5 and 36.08/24.0 all read identically in both versions -- so the exposure is confined to notes[5] item (1) and one sentence of stages[4]. Decide whether this model is regenerated against the re-parsed run before it is cache-recorded.",
-        "status": "contradicts-artifact",
-        "where": "notes[5], stages[4].what_it_does"
-      },
-      {
-        "claim": "\"the 85 no-flip games hold 23 wins (0.271), 18 by Approach; the 35 flip games hold 4 (0.114), 2 by Approach. So 23 of the 27 and 18 of the 20 arrived without the flip.\"",
-        "note": "ROUND 1'S LARGEST FINDING, ANSWERED EXACTLY. Re-derived the cross-tab from the tracked record's own `games[].per_seat.heliod.commander_transformed_turn` against `games[].winner` and `won_by`: 85 games with a null transform turn hold 23 wins, of which 18 read \"effect of 'Approach of the Second Sun'\" and 5 read \"all opponents have lost\"; 35 games with a transform turn hold 4 wins, 2 Approach and 2 attrition. 23/85 = 0.2706, 4/35 = 0.1143. Totals 27 and 20 reconcile. Every digit is right. AND THE REFUSAL IS EXPLICIT, NOT IMPLIED -- the artifact writes \"WHAT THAT CANNOT SAY is why. Flipping may be bad for you, or may only MARK the long games this deck survives into and then loses; nothing separates the two and this model claims neither.\" That is a stated refusal naming both alternatives, which is the strongest form available. The stage also correctly re-scopes the surviving claim to what the split does support -- \"It does say the wins do not WAIT on the flip\" -- rather than dropping the argument.",
-        "status": "supported",
-        "where": "stages[3].what_it_does"
-      },
-      {
-        "claim": "\"SIX cards in this stage carry no answer role, not five ... The arithmetic is 26 - 20, not 26 - 21: only 20 of the deck's 21 answer cards sit here, because Walking Ballista carries the deck's ONLY removal:damage and this model files it in output.\"",
-        "note": "Exact. Re-derived over data/card_roles.json using benchmark.json's own six classes: the protection stage's 26 cards hold exactly SIX with no answer role -- Leyline of Anticipation, Propaganda, Ghostly Prison, Archangel of Tithes, Angelic Wall, Drift of Phantasms -- and the deck holds exactly 21 answer entries (21 copies, no basics involved), of which exactly one, Walking Ballista, sits outside this stage. Walking Ballista is the deck's sole `removal:damage` holder, confirmed by sweep over all 85 entries. 26 - 20 = 6. benchmark.json's three headline figures are verbatim: answer_cards 21, answer_share 0.25, classes_covered 6 of classes_possible 15. The evidence entry also does the thing round 1 asked for and named the artifact disagreement in place rather than burying it.",
-        "status": "supported",
-        "where": "stages[5].evidence[1].note"
-      },
-      {
-        "claim": "\"30 carry flying on the body. Starnheim Aspirant ... and BISHOP OF WINGS ... has no flying either\" / \"30 of whose 32 creature cards carry flying ON THE BODY - not all 32\"",
-        "note": "Enumerated independently and exact. data/opponents/giada-angels/decklist.txt holds 75 entries, of which 32 have Creature in the type line (31 plus the commander Giada, Font of Hope). Stripping every `create ... .` clause from each oracle_text in cards.csv and then searching for the keyword leaves exactly two without it: Bishop of Wings (Human Cleric, flying only on the Spirit tokens it makes) and Starnheim Aspirant (Human Cleric, cost reduction only). 30 of 32. strategic_frame.json's text is verbatim as quoted -- \"31 of whose 32 creature cards carry flying (enumerated from data/opponents/giada-angels/decklist.txt against cards.csv; the lone exception is Starnheim Aspirant)\" -- so the disagreement between the two artifacts is real and correctly attributed. The re-scoping is the right move: the conclusion the fort layer rests on survives at 30 of 32, and the stage says so rather than dropping the argument.",
-        "status": "supported",
-        "where": "stages[5].evidence[2].note, stages[5].what_it_does"
-      },
-      {
-        "claim": "\"SIX gift pieces in the ignition stage feed the discount on your own turn, not four ... Two of the six are optional on the opponent's side - Kwain and The Second Doctor both say 'may'\"",
-        "note": "Exact, and it is a CLOSED set correctly closed. Swept all eleven ignition entries' oracle text in cards.json. Feeding the discount on your own turn: Temple Bell (\"{T}: Each player draws a card\"), Mikokoro, Kwain and Loran on activation, The Second Doctor (\"At the beginning of your end step, each player may draw a card\") and Forced Fruition (\"Whenever an opponent casts a spell, that player draws seven cards\") = six. The other five are the four each-player's-draw-step permanents, which contribute {0} on your turn, plus Enlightened Tutor, which draws nobody. The `may` split is right on the text: Kwain and The Second Doctor both read \"may\", the other four are mandatory. The three named outside the stage are right and correctly located -- Scrawling Crawler (output, \"at the beginning of your upkeep\"), Faerie Mastermind's \"{3}{U}: Each player draws a card\" (conversion), Skyscribing's forecast (fuel). \"model-coverage gives Heliod only the bodies channel\" is exact: `model-coverage heliod --json` gives the commander possible ['bodies'], active ['bodies'], dark_channels []. Correctly left as \"Claim, not fact\" with no verified_by.",
-        "status": "supported",
-        "where": "lines[0].note"
-      },
-      {
-        "claim": "the restored component label and the checker's exact sentence",
-        "note": "Both round-1 mis-citations corrected exactly. lines[4]: \"Table draw engine plus a draw-triggered drain, both drawn\" is byte-identical to goldfish_targets.json's label, the attribution of \"Engine + punisher assembled\" to strategic_frame.json is right, and the figures 0.328 / 0.196 match goldfish_metrics.json's assembled_rate and by_turn_6_rate for that target. \"ANY of ten gift pieces plus EITHER Crawler\" is exact -- the first need group holds ten names and the second holds two. lines[8]: the checker's sentence is verbatim from stacks/002's checker.audit.missing_steps -- \"The 'Last night's end step' phrase in game_history is scenario flavor per orchestrator instruction, not a rules claim.\" -- and the widening is gone. The downgrade now rests where it should: stack 002's `resolution.steps` holds EIGHT steps and the string \"Mystical Tutor\" occurs ZERO times across all eight; its four occurrences in the file are the title, scenario.graveyard, scenario.extras.game_history and checker.cards_verified, all premise. One trivial imprecision: the note says the tutor appears \"only in the scenario's graveyard and its game_history\", which omits the title and cards_verified -- both also premise, so the argument is unaffected.",
-        "status": "supported",
-        "where": "lines[4].note, lines[8].note"
-      },
-      {
-        "claim": "the withdrawal of the Medallion proposal and the new one that replaces it",
-        "note": "The withdrawal is fully verified and the replacement does NOT repeat round 1's error. `git show c879dcd^:...goldfish_targets.json | grep -c Medallion` = 2 and `git show c879dcd:...` = 0, and c879dcd's stat shows it touched engine.json and goldfish_targets.json in the same commit -- exactly as notes[4] states. On the current file `grep -c Medallion` = 0, the \"Heliod plus the mana to flip him\" any_of holds the six named members, and the live figures are assembled_rate 0.732 / by_turn_6 0.554 / mean_turn 4.852 against 7aa3d17's pre-edit 0.823 -- every one exact. The rules point survives correctly in map_disagreements[2] (neither Medallion has a mana ability, and a spell-cost reducer cannot pay any part of an activated ability), and stages[0]'s cross-reference now points there instead of at the void proposal. notes[4]'s three applied edits all check out: the win-condition any_of is three cards with no Walking Ballista, the punisher target's second group names both Crawlers, the flier-blocker label carries Kefnet's seven-card condition. THE NEW PROPOSAL IS TRUE OF THE CURRENT FILE: Scrawling Crawler is in the first any_of of \"Table draw engine online\" (eleven members) and is absent from the first any_of of \"Table draw engine plus a draw-triggered drain\" (ten members) while sitting in its second, and its oracle text is both halves of that label. One thing the proposal should state and does not: `_target_met` in goldfish.py evaluates each need group independently against the same hand, so after the edit a lone Scrawling Crawler would satisfy BOTH groups and assemble a target whose label says \"both drawn\". That is arguably correct and is certainly a decision the goldfish owner should be told they are making.",
-        "status": "supported",
-        "where": "notes[4], map_disagreements[2].why, stages[0].what_it_does, proposed_goldfish_edits[0]"
-      },
-      {
-        "claim": "keeping Approach as the SPOF and attaching the qualifier as an evidence entry",
-        "note": "The right call, made the right way, and every figure in it is exact. The field validates against the 99 so a hedge cannot go inline; putting the hedge in an evidence entry beside it is the only place it fits. Verified: 20 of heliod's 27 wins read won_by \"effect of 'Approach of the Second Sun'\" and 7 read \"all opponents have lost\"; deck_audit's `engine.single_points_of_failure` is `[]`; deck-facts' role histogram gives wincon:alt 1 (Approach) and wincon:drain 2 (Psychosis Crawler, Scrawling Crawler) and NO other wincon role in the 99, so the enumeration behind \"the only other win-flavoured roles\" is closed and correct; the two Crawlers' component reads 0.366 / 0.256 and the seat's noncombat median is 0.0, as stated. The closing instruction -- \"Read the field as 'the only card that WINS', not 'the only way the game ends'\" -- is the disambiguation a machine reader needs and the disagreement with deck_audit is named rather than hidden.",
-        "status": "supported",
-        "where": "stages[6].single_point_of_failure, stages[6].evidence[3]"
-      },
-      {
-        "claim": "the whole derived punisher ledger",
-        "note": "THE BEST-EVIDENCED PARAGRAPH IN THE ARTIFACT, and the engineer was right to defend rather than soften. Re-derived every figure from the logs and the tracked record. (1) `per_seat.heliod.noncombat_damage_dealt_to_players` sums to 201, mean 1.675, median 0.0, nonzero in 38 -- exact. (2) Splitting the four log parts on `Game Result: Game N ended` and summing `Damage: <card> (id) deals N non-combat damage to <seat>` excluding mm-heliod targets: Viseling 381 (382 gross, one point aimed at heliod's own seat), Iron Maiden 381, Ebony Owl Netsuke 240 = 1,002; mean 8.35, median 0.0, nonzero 57 of 120, max 49 -- all five exact. (4) the record equals the heliod-source non-punisher total in 95 of 120 games; that total is 131 across the run with 124 aimed at heliod's own seat, itemised Adarkar Wastes 82 / Talisman of Progress 40 / Hangarback Walker 1 / Kami of the Crescent Moon 1 -- exact, and the residual 7 is Walking Ballista. The 5 games credit 116 punisher points, 11.6% of 1,002 -- exact. The parse.py citations are exact AGAINST HEAD, which is the state the model was written against: line 524 at HEAD is `elif ev[\"noncombat\"] and src_seat in per:` with `src_seat = owner.get(src_id)` four lines above, and 244 / 263 / 269 are the three `g[\"owner\"][...] = ...` assignments under `RX[\"land\"]`, `RX[\"attack\"]` and `RX[\"block\"]`. ON THE HONESTY QUESTION: notes[5] does NOT overstate the punisher output. It derives a mean (8.35) five times the record's, then refuses to use it -- \"the median is 0.0 on both counts, so stages[4]'s verdict stands\" -- and it names the self-damage pollution outright, itemised, with the mechanism (\"pain damage counted as damage DEALT TO PLAYERS, since the target seat is in `per`\"). That is a paragraph arguing against its own headline. The only thing it leaves for the reader to compute is the headline share: Adarkar Wastes' 82 is 41% of the record's 201, and the own-seat total 124 is 62%. Stating those two percentages would cost one clause and is the difference between naming a component and naming a defect.",
-        "status": "supported",
-        "where": "notes[5] items (1), (2) and the parse.py citations in (4)"
-      },
-      {
-        "claim": "byte-identity of everything round 1 marked supported",
-        "note": "Verified programmatically rather than by eye: loaded the tracked engine.json at 569f8c0 and the current one and walked both trees key by key. Exactly sixteen leaves differ -- lines[0].note, lines[4].note, lines[8].note, map_disagreements[2].why, notes[4], notes gaining a sixth entry, proposed_goldfish_edits[0]'s three fields, stages[0/3/4/5].what_it_does, stages[5].evidence gaining a third entry with evidence[1].note rewritten, and stages[6].evidence gaining a fourth. NOTHING ELSE MOVED. So lines[9] and its verified_by 002, lines[10].note, all seven city evidence entries, the three closed-set enumerations in stages[1]/[2]/[4] and every quantitative figure round 1 re-derived are byte-identical and stand as supported. Length compliance holds with room, though not much: conversion 1793, output 1787, mana 1780, protection 1766, wincon 1690, ignition 1644, fuel 1545 -- all under the 1,800 cap, and conversion absorbed the whole cross-tab while shrinking by 4 characters. Four of seven remain within 35 characters of the cap, so the next revision still has no room in conversion, output or mana without cutting first; the corrections this round asks for are all one clause, which fits.",
-        "status": "supported",
-        "where": "stages[*], lines[*] -- the unscoped remainder"
-      }
-    ],
-    "iterations": 2,
-    "note": "Round 2. Nine of fourteen findings are `supported` — the critic re-derived every correction the engineer claimed and all but four figures are exact to the digit. Still FAIL, and the reason closes the artifact's own open item: `notes[5]` asserts the three punishers appear in ZERO Land/Attack/Block lines, and Viseling appears in TEN Combat lines, five of them owner-populating, in games 10/46/59/65/95 — exactly the five games the note itself recorded as unexplained. The anomaly and its cause were both in the document, unjoined.\n\nTWO THINGS A LATER READER MUST KNOW ABOUT THIS VERDICT. First, the review straddled a parser change: `parse.py`'s owner map was fixed and this deck's sim record re-derived WHILE the critic was reading it, taking heliod's noncombat median from 0.0 to 3.5. The critic noticed and said so. Its conclusions survive; several sentences carrying them now cite a superseded figure. Second, and larger: every Forge figure in this document describes the PRE-SKIES list. The run's own `seats[0].decklist_sha256` is decc32b0 (v1.0.0-era) against a current 214af30, and Viseling, Iron Maiden and Ebony Owl Netsuke — the whole punisher axis this round argued about — were CUT in the skies-v1 merge the day after the run. Not cache-recorded.",
-    "previous_rounds": [
-      {
-        "findings": [
-          {
-            "claim": "\"The multiplier this stage is named for was live in 35 games, not 68; in 85 of 120 it never appeared and the deck still took its 27 wins, 20 with Approach.\"",
-            "note": "MECHANICALLY CHECKABLE, and this is the number the whole conversion-stage argument turns on. Cross-tabbing the run record's own per-game fields — games[].per_seat.heliod.commander_transformed_turn against games[].winner and games[].won_by, in sim/giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84-s573917060-podExperimental-c600.json — gives: 85 games with NO transform hold 23 wins and 18 Approach wins; 35 games WITH transform hold 4 wins and 2 Approach wins. So it is 23 of the 27 and 18 of the 20, not all of them. REBUT BY STRENGTHENING, NOT WEAKENING: the corrected split makes the point harder, since the no-flip win rate is 23/85 = 0.271 against 4/35 = 0.114 with the flip, and the commander never RESOLVED at all in the games holding 17 of the 27 wins (games_resolved 68 hold only 10). Do not assert causation from that — long games are both the ones you flip in and the ones you lose — but the artifact currently claims a clean 27/85 that the record does not contain. A `commander_transformed_turn` x `winner` cross-tab is one pass over games[] and could be a permanent check on any line that prices a commander event against a win column.",
-            "status": "miscounted",
-            "where": "stages[3].what_it_does"
-          },
-          {
-            "claim": "\"Temple Bell, Mikokoro, Kwain and Loran are the four gift pieces that feed the discount on your own turn.\"",
-            "note": "A closed-set claim, presented as the correction that motivated re-pointing the line, and the set is larger than four. Swept every oracle_text in the 99 for text that makes an opponent draw. INSIDE the ignition stage the model missed two: The Second Doctor — \"How Civil of You — At the beginning of YOUR end step, each player may draw a card\" — and Forced Fruition — \"Whenever an opponent casts a spell, that player draws seven cards\", which fires whenever an opponent casts an instant during your turn, for {7}. That is six, not four. OUTSIDE the stage there are more: Scrawling Crawler \"At the beginning of YOUR upkeep, each player draws a card\" (free, automatic, every turn, and placed in `output`), Faerie Mastermind \"{3}{U}: Each player draws a card\" (in `conversion`), and Skyscribing's forecast \"{2}{U}, Reveal this card from your hand: Each player draws a card. (Activate only during your upkeep...)\" (in `fuel`). The artifact already contradicts itself here: stages[2].what_it_does says Braingeyser, Stroke of Genius and Mathemagics \"feed the same turn's discount only when aimed at an opponent\". The Second Doctor omission is the costly one — its window is your own end step, which is exactly the window open_questions[2] asks about for the second Approach under the flash grant. The NEGATIVE half of the note (Howling Mine, Font of Mythos, Kami, Dictate fire in each player's draw step and contribute {0} on your turn) is correct and should be kept verbatim.",
-            "status": "over-claimed",
-            "where": "lines[0].note"
-          },
-          {
-            "claim": "\"Drop Pearl Medallion and Sapphire Medallion from the any_of\" ... \"two of its eight members cannot contribute to the event the label is about\" ... \"a 0.823 assembled_rate for this target\"",
-            "note": "MECHANICALLY CHECKABLE. The proposal is void: goldfish_targets.json's \"Heliod plus the mana to flip him\" any_of holds SIX members — Arcane Signet, Azorius Signet, Decanter of Endless Water, Sol Ring, Talisman of Progress, Thought Vessel — and `grep -c Medallion goldfish_targets.json` returns 0. Git shows why: the Medallions were in that any_of through 7aa3d17 and were removed at c879dcd, the same commit that shipped this engine.json, so the proposal describes a file state that no longer exists. The rate is stale from the same moment — 0.823 is 7aa3d17's goldfish_metrics figure for that target; the current file reads assembled_rate 0.732, by_turn_6 0.554, mean_turn 4.852. This also falsifies notes[4], which states the proposals \"were verified against goldfish_targets.json before this one was written\". The RULES point inside the proposal is sound and worth keeping somewhere — a cost reduction on spells cannot pay any part of \"{3}{U/P}: Transform Heliod\", an activated ability — but it is now a fact about a fix already made, not a pending edit. A check that every card named in a proposed_goldfish_edits target actually appears in that target is cheap and general.",
-            "status": "contradicts-artifact",
-            "where": "proposed_goldfish_edits[0]"
-          },
-          {
-            "claim": "\"Pearl Medallion and Sapphire Medallion ... In this deck they do the rocks' job — shave the bill on a colour-heavy curve — which is also how goldfish_targets counts them.\"",
-            "note": "MECHANICALLY CHECKABLE. goldfish_targets.json does not count them at all: neither Medallion appears in any of the eleven targets' `need` groups (zero occurrences of the string \"Medallion\" in the file). Same root cause as the finding on proposed_goldfish_edits[0] — both sentences were written against the pre-c879dcd target list. The cross-reference in stages[0].what_it_does (\"and why they cannot pay any part of the commander's flip; see proposed_goldfish_edits\") points at the same void proposal and needs to go with it.",
-            "status": "contradicts-artifact",
-            "where": "map_disagreements[2].why"
-          },
-          {
-            "claim": "\"benchmark response: answer_cards 21, answer_share 0.25, 6 of 15 classes covered; the 5 remaining cards in this stage (the three taxers and two Wall-type blockers) carry no answer role at all\"",
-            "note": "MECHANICALLY CHECKABLE. Re-derived over card_roles.json using benchmark.json's own six classes (counterspell, protection:self, removal:bounce, removal:damage, removal:spot, removal:sweeper): SIX cards in the protection stage carry no answer role — Propaganda, Ghostly Prison, Archangel of Tithes, Angelic Wall, Drift of Phantasms, and LEYLINE OF ANTICIPATION, which the same stage's own prose lists under COMMANDER INSURANCE and which deck-facts puts in `roles.no_role`. The \"5\" is 26 minus 21, which silently assumes all 21 answer cards sit in this stage. They do not: Walking Ballista carries `removal:damage` and is the deck's only card in that class, and this model files it in `output`. So the arithmetic is 26 − 20 = 6. The gap is itself worth naming — benchmark counts Walking Ballista among the 21 answers while the engine model reads it as output, which is a real disagreement between two artifacts about one card and is not currently in map_disagreements. The three benchmark headline figures (21 / 0.25 / 6 of 15) are exact and should be kept.",
-            "status": "miscounted",
-            "where": "stages[5].evidence[1].note"
-          },
-          {
-            "claim": "\"`eliminated_by` attributes 39 of heliod's 53 ATTRIBUTED eliminations to giada-angels, whose every threat flies.\"",
-            "note": "The enumeration was not run and it has two exceptions. Enumerated data/opponents/giada-angels/decklist.txt against the corpus: 31 creature cards plus the commander Giada, Font of Hope = 32, of which THIRTY carry the flying keyword. The two that do not are Starnheim Aspirant (Creature — Human Cleric, \"Angel spells you cast cost {2} less to cast\") and BISHOP OF WINGS (Creature — Human Cleric), whose only occurrence of the word flying is on the Spirit tokens it makes when an Angel dies — the exact text-match trap CLAUDE.md warns about. strategic_frame.json makes the same claim as \"31 of whose 32 creature cards carry flying ... the lone exception is Starnheim Aspirant\" and misses Bishop of Wings too, so an unenumerated figure has now been copied forward and HARDENED into an unqualified superlative. THE CONCLUSION SURVIVES — 30 of 32, and both exceptions are two-power support bodies, so reading the 39 eliminations as coming from the air is well carried — but the phrase as written is false, and it is the stated justification for v1.2.0's fort layer and for the label on goldfish_targets' flier-blocker target (\"39 of 53 eliminations came from the air\"). Re-scope to what survived rather than dropping the argument.",
-            "status": "over-claimed",
-            "where": "stages[5].what_it_does"
-          },
-          {
-            "claim": "\"the checker's own audit says the game_history sentence 'is scenario flavor per orchestrator instruction, NOT A RULES CLAIM'\"",
-            "note": "The quote is real but its scope has been widened. Stack 002's checker audit reads: \"The 'Last night's end step' phrase in game_history is scenario flavor per orchestrator instruction, not a rules claim.\" The checker scoped that to one phrase — a timing detail — not to the whole game_history sentence and not to the Mystical Tutor premise. THE VERDICT IS CORRECT AND MUST STAND: Mystical Tutor appears only in scenario.graveyard and scenario.extras.game_history, no resolution step reasons about it, and stack 002 therefore does not prove fuel → wincon. Downgrading this line was the right call and this finding is about the quote, not the decision. Replace with the checker's exact sentence and rest the downgrade on the resolution steps, which carry it on their own.",
-            "status": "mis-cited",
-            "where": "lines[8].note"
-          },
-          {
-            "claim": "\"The declared 'Engine + punisher assembled' component prices the two-piece at 0.328 assembled, 0.196 by turn six\"",
-            "note": "No component with that label exists in goldfish_targets.json or goldfish_metrics.json. The live label is \"Table draw engine plus a draw-triggered drain, both drawn\". 'Engine + punisher assembled' is strategic_frame.json's name for it — and this artifact's own notes[1] declares the frame's figures VOID and says \"This artifact uses goldfish_metrics.json throughout, via engine-facts\". The FIGURES are right (0.328 / 0.196 are the live ones; the frame's own numbers for it are 0.334 / 0.204, which is the pair notes[1] correctly lists as differing). Second, smaller point: the component's first need-group is the ten-card gift, not Howling Mine alone, so it prices \"any gift piece plus either Crawler\", not this specific pair — say which. A check that a quoted component label matches a goldfish_targets label is mechanical.",
-            "status": "mis-cited",
-            "where": "lines[4].note"
-          },
-          {
-            "claim": "\"engine-critic re-derived the same logs and got several times that from those three cards alone, an open attribution question about the parser.\"",
-            "note": "The CLAIM IS TRUE — I re-derived it independently — but the citation form is unusable: it cites an agent by name, engine.json carries no `critic` key at all, and the only copy of that agent's output lives in gitignored .agent-out/, so no reader can check it. Cite the derivation instead of the byline. From the run's own logs (sim/logs/.../part-0*.log), counting `Resolve Stack: <card>` lines: Iron Maiden 26, Viseling 33, Ebony Owl Netsuke 22 = 81, which confirms the artifact's \"81 castings ... (26 + 33 + 22)\" EXACTLY. Summing `Damage: <card> (id) deals N non-combat damage to <seat>` over the same logs, excluding lines aimed at an mm-heliod seat: 1,002 points across 120 games, mean 8.35 a game, against the record's seat figure noncombat_damage_dealt_to_players.mean of 1.68 — a factor of 5.0. And the artifact's load-bearing hedge holds under re-derivation: per-game punisher damage has MEDIAN 0.0, with only 57 of 120 games showing any, so \"The median is unaffected either way\" is verified, not merely asserted. Splitting the log by `Game Result: Game N ended` boundaries is a mechanical check and would make this a figure rather than a memory.",
-            "status": "unverified-line",
-            "where": "stages[4].what_it_does"
-          },
-          {
-            "claim": "\"Approach of the Second Sun\", asserted in the field with no qualifier",
-            "note": "Low severity and the prose is honest, but the field is machine-read and the caveat that carries it lives only in what_it_does: the same stage says \"roughly a quarter of the wins did not need the card\", and I confirm 7 of heliod's 27 wins read won_by \"all opponents have lost\" (20 read the Approach effect — an exact match to the artifact's tally). deck_audit's own `engine.single_points_of_failure` is `[]`, since every declared component has two or more members; this model asserts one and does not note the disagreement. It is a defensible authored SPOF — the stage genuinely holds one card and there is no second finisher — but a consumer reading the field alone gets an unqualified claim about a deck that closes without it a quarter of the time.",
-            "status": "over-claimed",
-            "where": "stages[6].single_point_of_failure"
-          },
-          {
-            "claim": "length 1797 characters against the 1800 cap",
-            "note": "Not a content finding; a revision-feasibility one, raised because three of the findings above land in stages that have no room. Measured lengths: conversion 1797, mana 1784, output 1783, protection 1774, ignition 1644, wincon 1690, fuel 1545. Four of seven sit within 30 characters of the cap and conversion has THREE. The conversion correction (23/27 and 18/20 rather than 27 and 20) and the protection correction (six roleless cards, not five; the Bishop of Wings exception) cannot be written without cutting existing text first. Nothing here is muddled — the prose is dense but each paragraph does one job — so the cut should come from the figures that are restated elsewhere, not from the reasoning.",
-            "status": "over-claimed",
-            "where": "stages[3].what_it_does"
-          },
-          {
-            "claim": "protection → wincon via Swan Song + Approach of the Second Sun, verified_by 002",
-            "note": "THE ONLY VERIFIED LINE, and it carries its claim. Opened stacks/002-approach-second-sun-tutor-win.json: checker.verdict is pass; step 4's action is exactly \"you respond with Swan Song for {U}, targeting that instant\", and the checker's step-4 findings support it on 117.7 (the response resolves first), 701.6a (countering removes the opponent's instant) and 113.9 — which is also the source of the limit the note honestly states, that Swan Song cannot answer an activated or triggered ability. The checker's audit independently settles the mana the note relies on: \"{W}{W}{U}{5} covers {6}{W} with {U} left for Swan Song\". The from/to stages are right (Swan Song is in protection, Approach in wincon) and the stack is about the interaction between them, not merely a board that happens to contain both. Note stack 002's board names Ancient Tomb, which this list no longer runs; the artifact says so itself, and the ruling does not depend on it.",
-            "status": "supported",
-            "where": "lines[9]"
-          },
-          {
-            "claim": "the city membership counts in all seven stages",
-            "note": "Verified card-for-card against deck_map.json (level-0 regions, using `fallback` since every `label` is null). mana 17 Mana / 6 Ramp / 2 Bodies; ignition 9 Card Flow / Mikokoro in Mana / Enlightened Tutor in Bodies; fuel 6 Card Flow and the named 4 in Bodies; conversion 4 Card Flow / Heliod in Bodies / Smothering Tithe in Ramp; output 4 Bodies / both Crawlers in Card Flow; protection 11 Bodies / 7 Card Flow II / 6 Interaction / Kefnet in Card Flow / An Offer You Can't Refuse in Ramp; wincon 1 Card Flow. Every count and every named stray is exact, including the map_disagreements city lists and the observation that Mystical Tutor and Long-Term Plans sit in city-0-hood-1 \"Tutors\" inside Bodies. Structure is clean too: 85 of 85 entries placed, no duplicates, no card placed that is not in cards.json, and every line's via cards split correctly across its from and to stages.",
-            "status": "supported",
-            "where": "stages[*].evidence[kind=city]"
-          },
-          {
-            "claim": "the goldfish, Forge, mana_analysis, benchmark, bracket and deck-audit numbers",
-            "note": "Re-derived, all exact. goldfish_metrics.json: all eleven target rates as quoted (0.92/0.97/0.828/2.461; 0.787/0.581; 0.843/0.707; 0.790; 0.495/0.677/0.361; 0.680/0.526; 0.750; 0.487/0.355; 0.366/0.256; 0.328/0.196), mana crossing 7 between turn 8 (6.966) and turn 9 (7.612), land drops 0.729/0.603/0.540, interaction 0.626 castable against 0.927 in hand at turn six, and the two superlatives in stages[1] both hold (next-highest assembled_rate 0.843, next-lowest mean turn 2.819). Sim seat block: 68 resolved / 0.567 [0.477, 0.652], 35 transformed / 0.292 [0.218, 0.378], 0.69 casts, first flip median global turn 34, eliminated in 74 games with eliminated_how {damage: 53} so 21 unattributed, eliminated_by giada 39 / baylen 8 / abaddon 6, heliod credited with 7 kills (baylen 4, abaddon 2, giada 1), combat dealt 4.11/0.5, taken 36.08/24.0, noncombat 1.68/0.0, games_reaching_21 zero, placement 94 ranked 16/43/24/11 mean 2.319, 27 wins with won_by 20 Approach and 7 attrition, win_rate 0.252 CI95 [0.180, 0.342], seat sha decc32b080fe with the record's own launch-.dck note. The parser quote \"turn 24 of a four-handed game is round 6\" is verbatim from the record's limits. mana_analysis.json: 25 W / 26 U against source_targets 36, lands_only 0.610/0.639, lands_only_ungated 0.580/0.610, Skycloud Expanse the one gated source, and the \"yardstick, not a possibility, in a 33-land deck\" quote verbatim. benchmark.json 0.2532 with turn six worst; bracket_report floor 4 on 8 Game Changers with no two-card infinites. deck-audit: archetype control, sweepers 2 against 5–7, mana-base 33 against 37–39, colour-sources and interaction-breadth under, graveyard and land uncovered, and the audit's own \"oracle-text heuristic ... counterspells deliberately excluded\" floor caveat. notes[1]'s six frame-versus-live differences (0.935→0.920, 0.854→0.828, 2.319→2.461, 0.334→0.328, 0.204→0.196, 0.679→0.495) and the \"makes nobody draw\" quote are all exact, and notes[4]'s first three applied edits are all present in goldfish_targets.json. ONE THING TO FLAG THAT IS NOT THE MODEL'S FAULT: the run record disagrees with itself — summary says decided 108 / win_rate 0.25 while analysis and analysis.seats.heliod say 107 / 0.252. The model used the seat block, which is the right one, but nothing says so.",
-            "status": "supported",
-            "where": "stages[*] and lines[*] — every quantitative figure not named in another finding"
-          },
-          {
-            "claim": "the three closed-set enumerations: only two cards can find Approach; four cards lift the discard step; Enlightened Tutor reaches five of the ten gift pieces",
-            "note": "All three swept over the 85 entries and all three are right. \"Search your library\" appears on exactly five cards — Mystical Tutor (instant or sorcery), Long-Term Plans (any card), Enlightened Tutor (artifact or enchantment), Drift of Phantasms (transmute at mana value 3 against Approach's 7) and Flooded Strand (a Plains or Island) — so only the first two can reach a {6}{W} Sorcery, and Dig Through Time is a look, not a search. \"maximum hand size\" appears on exactly four — Reliquary Tower, Decanter of Endless Water and Thought Vessel read \"You\", The Second Doctor reads \"Players\" — so the asymmetry the output stage prices is real. Enlightened Tutor reaches exactly Howling Mine, Font of Mythos, Temple Bell (Artifacts), Dictate of Kruphix and Forced Fruition (Enchantments) among the ten; Kami, Mikokoro, Kwain, Loran and The Second Doctor are out on type. The X-spell partition is also correct: nine cards carry {X}, five draw (two symmetric — Prosperity, Skyscribing — and three targeted), four leave a permanent. lines[1] and lines[6] check out on the rules as well: Font of Mythos adds 6 opponent draws a cycle for 12 Sphinx cards and 9 draws for 18 in total (CR 121.2, each card is a separate draw event), and Alhammarret's Archive replaces both of Sphinx's draws when they happen outside your own draw step, for four (CR 614.5 stops re-application), so \"four cards, not two\" holds.",
-            "status": "supported",
-            "where": "stages[2].what_it_does, stages[4].what_it_does, stages[1].what_it_does"
-          },
-          {
-            "claim": "\"that decomposition is not on disk in this deck's artifacts and is repeated here as the version's stated rationale, not as a figure I re-derived\"",
-            "note": "Independently confirmed and it is the best-behaved sentence in the artifact. deck_versions.json v1.1.0 does say \"a 45% removal rate\" and \"the decomposition of 119 measured departures\" — quoted exactly — and searching every JSON under data/decks/heliod/ for the decomposition itself (mass/targeted split, exile share, the 173 denominator) returns nothing. diagnosis.json reaches the same conclusion independently: \"The commander-removal decomposition that justified v1.1.0 ... is NOT ON DISK in this deck's artifacts. engine.json says so explicitly and repeats it as the version's claim rather than as a measurement.\" Two artifacts agreeing that a figure is missing is the right shape for an unmeasurable claim. lines[5] is the same discipline done well — the X-cost interaction is left as a claim with open_questions[0] carrying it, rather than settled from memory.",
-            "status": "supported",
-            "where": "lines[10].note"
-          }
-        ],
-        "iterations": 1,
-        "note": "Round 1, and the first time this model has been criticised. The engineer was re-run on 2026-09-03 with an earlier critique's findings and the result was never put back in front of the critic, so a document that answered a critique carried no verdict saying it had. Five of sixteen findings are `supported`; the rest are corrections, and the largest of them STRENGTHENS the model rather than weakening it — the deck wins 23 of 85 games where Heliod never flips (0.271) against 4 of 35 where he does (0.114), re-derived independently from giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84 and matching the critic exactly. NOT cache-recorded: a fail model documents what could not be grounded.",
-        "previous_rounds": [],
-        "round": 1,
-        "verdict": "fail"
-      }
-    ],
-    "round": 2,
-    "verdict": "fail"
+ "slug": "heliod",
+ "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+ "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount that lives on their turns, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice; the second cast is 12 for 12 and everything else is the wait.",
+ "stages": [
+  {
+   "stage": "mana",
+   "label": "WHAT PAYS FOR {6}{W} TWICE",
+   "single_point_of_failure": null,
+   "cards": [
+    "Adarkar Wastes",
+    "Command Tower",
+    "Deserted Beach",
+    "Eiganjo, Seat of the Empire",
+    "Flooded Strand",
+    "Glacial Fortress",
+    "Hallowed Fountain",
+    "Irrigated Farmland",
+    "Island",
+    "Mana Confluence",
+    "Otawara, Soaring City",
+    "Plains",
+    "Prairie Stream",
+    "Reliquary Tower",
+    "Seachrome Coast",
+    "Skycloud Expanse",
+    "Temple of Enlightenment",
+    "Arcane Signet",
+    "Azorius Signet",
+    "Sol Ring",
+    "Talisman of Progress",
+    "Thought Vessel",
+    "Decanter of Endless Water",
+    "Mind Stone",
+    "Pearl Medallion",
+    "Sapphire Medallion"
+   ],
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-1",
+     "agreement": "cuts-across",
+     "note": "17 of 26 in THE GROUND; the seven rocks Arcane Signet, Azorius Signet, Sol Ring, Talisman of Progress, Thought Vessel, Decanter of Endless Water and Mind Stone in city-2 THE TAP ROOM (its THE ROCKERY hood, all seven); Pearl and Sapphire Medallion in city-0 THE HOME FRONT"
+    },
+    {
+     "kind": "role",
+     "id": "ramp:rock",
+     "note": "deck-facts roles: those seven carry ramp:rock (so does Smothering Tithe, placed in conversion); Pearl and Sapphire Medallion carry ramp:cost-reduction only, and neither has a mana ability. deck-audit's ramp axis counts 12 copies against a 10-12 band and reads AT - the branch's stated constraint for Mind Stone"
+    }
+   ],
+   "what_it_does": "32 of the deck's 33 land copies sit here in 17 entries (Mikokoro is placed in ignition), plus seven rocks and two cost-reducers. The bill this stage exists to pay is Approach's, twice: {6}{W} is seven mana on two separate turns. goldfish mean_available_mana_by_turn crosses 7 between turn 7 (6.412) and turn 8 (7.064), and that is with the commander's discount switched OFF: model-coverage gives Heliod only the `bodies` channel.\n\nMeasured on the CURRENT list (sha f1d4a650). benchmark missed_land_drop_rate 0.2568, worst turn six; land_drop_hit_rate 0.728 / 0.593 / 0.534 across turns four to six. mana_analysis.json gives 25 W and 26 U total sources against a Karsten 90%-on-curve figure of 36 each - \"a yardstick, not a possibility, in a 33-land deck\", in that file's own words. Lands-only on-curve 0.610 W / 0.639 U, and 0.580 / 0.610 with Skycloud Expanse set aside as the one gated source. deck-audit reads mana-base (33 against 37-39) and colour-sources UNDER for archetype control, and ramp AT: 12 copies in a 10-12 band, Mind Stone the twelfth.\n\nMIND STONE is here for \"{T}: Add {C}\", which pays the {3} of the flip exactly as Sol Ring and Thought Vessel do - yet the declared flip component counts those two and not it (proposed_goldfish_edits[2]). Its all-generic {2} is a free flash cast behind two opponent draws; \"{1}, {T}, Sacrifice: Draw a card\" is the exit once seven mana is on the table. Pearl and Sapphire Medallion reduce the cost of SPELLS rather than produce mana, which is why the map files them away from the rocks and why they cannot pay any part of the flip (map_disagreements[2]). In the v1.2.1 Forge run heliod played a mean 8.42 lands, and Adarkar Wastes was the deck's largest source of damage to ITSELF - 83 of the 128 points in stages[4]."
   },
-  "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
-  "lines": [
+  {
+   "stage": "ignition",
+   "label": "THE GIFT - THE TABLE STARTS DRAWING",
+   "single_point_of_failure": null,
+   "cards": [
+    "Howling Mine",
+    "Font of Mythos",
+    "Kami of the Crescent Moon",
+    "Dictate of Kruphix",
+    "Temple Bell",
+    "Mikokoro, Center of the Sea",
+    "Kwain, Itinerant Meddler",
+    "Loran of the Third Path",
+    "The Second Doctor",
+    "Horn of Greed",
+    "Enlightened Tutor"
+   ],
+   "evidence": [
     {
-      "from": "ignition",
-      "note": "THE TRAP WORTH NAMING. Mikokoro's \"{2}, {T}: Each player draws a card\" fires on YOUR turn, so three opponents drawing one apiece is {3} off the next spell you cast that turn under \"cost {1} less for each card your opponents have drawn THIS TURN\". Howling Mine, Font of Mythos, Kami of the Crescent Moon and Dictate of Kruphix cannot do this: they fire \"at the beginning of each player's draw step\", and an opponent's draw step falls on that opponent's own turn, so on your turn they contribute {0}. SIX gift pieces in the ignition stage feed the discount on your own turn, not four: Temple Bell, Mikokoro, Kwain and Loran on activation, THE SECOND DOCTOR at your own end step (\"At the beginning of your end step, each player MAY draw a card\"), and FORCED FRUITION whenever an opponent casts a spell during your turn, for seven. Two of the six are optional on the opponent's side - Kwain and The Second Doctor both say \"may\". Three more sit outside the stage: Scrawling Crawler at your upkeep (output), Faerie Mastermind's \"{3}{U}: Each player draws a card\" (conversion) and Skyscribing's forecast (fuel). Gated on the BACK face, which appeared in 0.292 of the n120 games, and not modelled by the goldfish - model-coverage gives Heliod only the bodies channel - so every mana figure in this artifact is a floor. Claim, not fact.",
-      "to": "conversion",
-      "verified_by": null,
-      "via": [
-        "Mikokoro, Center of the Sea",
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
-      ]
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "cuts-across",
+     "note": "6 of 11 in THE GIFT ECONOMY (Howling Mine, Font of Mythos, Kami, Dictate, The Second Doctor, Horn of Greed); Temple Bell, Kwain and Loran in city-2 THE TAP ROOM's THE HAND CRANK hood; Mikokoro in city-1 THE GROUND; Enlightened Tutor in city-0 THE HOME FRONT's THE SEARCH PARTY hood"
     },
     {
-      "from": "ignition",
-      "note": "Font of Mythos is \"at the beginning of each player's draw step, that player draws TWO ADDITIONAL cards\", so it ADDS six opponent draws a round cycle - twelve extra cards for you through Consecrated Sphinx, which draws two on every opponent draw. Counting each opponent's base draw, the cycle is nine opponent draws and eighteen cards. Both halves ran in the n120 run: 184 Font triggers and 326 Sphinx triggers, but they were cast in 26 and 25 games respectively and nothing in the record says how often they overlapped. Claim, not fact: no stack has resolved this pairing.",
-      "to": "conversion",
-      "verified_by": null,
-      "via": [
-        "Font of Mythos",
-        "Consecrated Sphinx"
-      ]
-    },
-    {
-      "from": "ignition",
-      "note": "Temple Bell's activation makes each player draw, so each opponent must pay {2} or hand you a Treasure. The mana route from the gift back to the {6}{W} bill. Smothering Tithe is the most-triggered card in the deck - 998 heliod-controlled trigger lines over the n120 run against 24 games in which it was cast, ahead of Scrawling Crawler's 924 and Dictate of Kruphix's 577 (enumerated over every heliod trigger source in the four log parts). Bell was activated 64 times. Claim, not fact: the run does not attribute a Tithe trigger to a Bell activation.",
-      "to": "conversion",
-      "verified_by": null,
-      "via": [
-        "Temple Bell",
-        "Smothering Tithe"
-      ]
-    },
-    {
-      "from": "ignition",
-      "note": "Psychosis Crawler triggers on YOUR draws, not your opponents' - Temple Bell is one of the gift pieces that draws you a card too, which is what connects them. Measured, and small: Psychosis Crawler's \"whenever you draw a card, each opponent loses 1 life\" resolved 14 times in 120 games, 42 life in total against Scrawling Crawler's 851. Claim, not fact.",
-      "to": "output",
-      "verified_by": null,
-      "via": [
-        "Temple Bell",
-        "Psychosis Crawler"
-      ]
-    },
-    {
-      "from": "ignition",
-      "note": "Scrawling Crawler triggers on OPPONENT draws, which is the other half of the pair and the half Howling Mine feeds. The declared component is \"Table draw engine plus a draw-triggered drain, both drawn\" - goldfish_targets' label, verbatim. It prices ANY of ten gift pieces plus EITHER Crawler, not this specific pair, at 0.328 assembled and 0.196 by turn six, the deck's least reliable declared pairing. THIS IS THE ROUTE THAT ACTUALLY FIRED: the drain resolved 851 times across the run for 851 life, and Howling Mine contributed 300 of the trigger lines feeding it. Claim, not fact - the logs do not attribute a drain to a specific gift piece.",
-      "to": "output",
-      "verified_by": null,
-      "via": [
-        "Howling Mine",
-        "Scrawling Crawler"
-      ]
-    },
-    {
-      "from": "conversion",
-      "note": "CLAIM, and an unsettled one: the back face reduces generic cost, so a discount should let you choose a larger X on Stroke of Genius, Braingeyser, Prosperity, Skyscribing or Mathemagics. Whether that is how the cost is computed is in open_questions for resolve-stack; nothing on disk settles it.",
-      "to": "fuel",
-      "verified_by": null,
-      "via": [
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-        "Stroke of Genius"
-      ]
-    },
-    {
-      "from": "fuel",
-      "note": "Sphinx's 'draw two cards' is two draw events, and the Archive replaces each draw after the first in a draw step - so an opponent's draw becomes four cards, not two. The Archive/Insight replacement effect fired 349 times over the n120 run, so the doubling half is live; the pairing is not separately counted. Claim: no stack has resolved it.",
-      "to": "conversion",
-      "verified_by": null,
-      "via": [
-        "Alhammarret's Archive",
-        "Consecrated Sphinx"
-      ]
-    },
-    {
-      "from": "mana",
-      "note": "{6}{W} twice is fourteen mana across two turns, and goldfish mean_available_mana crosses 7 only between turn 8 (6.966) and turn 9 (7.612). This is the arrow the deck's whole mana base exists to draw, and the n120 run puts a number on how often it lands: 27 of 120 games saw a first Approach cast and 12 saw a second. Claim, not fact.",
-      "to": "wincon",
-      "verified_by": null,
-      "via": [
-        "Sol Ring",
-        "Approach of the Second Sun"
-      ]
-    },
-    {
-      "from": "fuel",
-      "note": "DOWNGRADED, and the downgrade rests on the resolution steps, not on the checker's aside. The route is sound as oracle text - Mystical Tutor searches for \"an instant or sorcery card\" and Approach of the Second Sun is a Sorcery, both from cards.json - but stack 002 does not prove it: Mystical Tutor appears only in the scenario's title, graveyard, game_history and cards_verified, all PREMISE, and the string occurs ZERO times across the stack's eight resolution steps. The checker's audit disclaims a timing phrase only - \"The 'Last night's end step' phrase in game_history is scenario flavor per orchestrator instruction, not a rules claim\" - which is not a disclaimer of the tutor premise. What 002 proves is the destination, which is the wincon stage.",
-      "to": "wincon",
-      "verified_by": null,
-      "via": [
-        "Mystical Tutor",
-        "Approach of the Second Sun"
-      ]
-    },
-    {
-      "from": "protection",
-      "note": "Stack 002 step 4: Swan Song held with {U} up counters the opponent's counter and Approach still resolves. The stack states the limit itself - Swan Song answers an enchantment, instant or sorcery SPELL, and cannot answer an activated or triggered ability.",
-      "to": "wincon",
-      "verified_by": "002",
-      "via": [
-        "Swan Song",
-        "Approach of the Second Sun"
-      ]
-    },
-    {
-      "from": "protection",
-      "note": "The insurance package was added at v1.1.0 because the commander is fragile: the front face resolved in 68 of 120 games (0.567), 0.76 casts on the mean, and the BACK face - the one carrying the discount and the flash grant - appeared in only 35 (0.292). deck_versions v1.1.0's note prices the change against \"a 45% removal rate\" from 119 measured departures; that decomposition is not on disk in this deck's artifacts and is repeated as the version's stated rationale, not as a figure re-derived here. THE PACKAGE IS NOW IN THE MEASURED LIST AND STILL UNMEASURED IN PRACTICE: Teferi's Protection has no cast line anywhere in the n120 run's logs (one discard), and neither does Guardian of Faith. Lightning Greaves was cast in 29 games and activated 41 times, so one of the five did run.",
-      "to": "conversion",
-      "verified_by": null,
-      "via": [
-        "Teferi's Protection",
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
-      ]
+     "kind": "role",
+     "id": "draw:wheel",
+     "note": "deck-facts roles: Temple Bell, Faerie Mastermind, Prosperity, Skyscribing and Scrawling Crawler are the only draw:wheel cards; Horn of Greed carries draw:engine; and the taxonomy has no pattern at all for Howling Mine, Font of Mythos or Dictate of Kruphix - deck-facts lists 12 roleless entries. The gift is invisible to roles."
     }
-  ],
-  "map_disagreements": [
+   ],
+   "what_it_does": "The first thing that has to happen. NINE of the ten permanents here hand the WHOLE table cards - Howling Mine, Font of Mythos, Kami of the Crescent Moon, Dictate of Kruphix, Temple Bell, Mikokoro, Kwain and The Second Doctor say \"each player\", and Horn of Greed's \"Whenever a player plays a land, that player draws a card\" fires for whoever drops the land. Loran of the Third Path alone is \"you and TARGET OPPONENT each draw a card\". Nothing later fires until one of these resolves. Enlightened Tutor draws nobody; it finds five of the ten (Howling Mine, Font, Temple Bell, Horn, Dictate: artifact or enchantment) and cannot find Approach.\n\nWHERE THE DISCOUNT LIVES. Howling Mine, Font, Kami and Dictate fire in each player's DRAW STEP and Horn on each player's LAND DROP: on an opponent's turn they bank one to three draws before that opponent's main phase ends, and on yours they contribute {0}. Under the back face's flash that is where this deck casts. Only five pieces feed the discount on your own turn: Temple Bell, Mikokoro, Kwain and Loran on activation, The Second Doctor at your end step.\n\nFORGE RAN THE GIFT (v1.2.1 list). Heliod-controlled trigger lines: Dictate 577, Howling Mine 300, Font 184, Kami 125, The Second Doctor 84. Activations: Temple Bell 64, Kwain 46, Mikokoro 26. Loran: cast in 32 of 120 games, its draw ability in no activation line (open_questions[6]). Horn was not in that list.\n\nThe rate is the declared component's. \"Table draw engine online\" assembles in 0.921 of goldfish games (0.971 assisted), 0.822 by turn six, mean turn 2.499 - of the eleven declared targets the highest assembled_rate (next 0.839) and the lowest mean turn (next 2.854). Its eleven members are these ten plus Scrawling Crawler, minus Enlightened Tutor (repaired 2026-09-16 to name Horn)."
+  },
+  {
+   "stage": "fuel",
+   "label": "YOUR OWN CARD FLOW, AND THE ONLY ROUTE BACK",
+   "single_point_of_failure": null,
+   "cards": [
+    "Alhammarret's Archive",
+    "Teferi's Ageless Insight",
+    "Dig Through Time",
+    "Braingeyser",
+    "Stroke of Genius",
+    "Prosperity",
+    "Skyscribing",
+    "Mathemagics",
+    "Mystical Tutor",
+    "Long-Term Plans"
+   ],
+   "evidence": [
     {
-      "cities": [
-        "Bodies",
-        "Card Flow",
-        "Ramp"
-      ],
-      "component": "THE ASYMMETRY LAYER (conversion)",
-      "why": "The single most valuable disagreement in this deck. Six cards read the SAME input - an opponent drew a card, or cast a spell - and each states a different OUTPUT, so the map, which is built from card text, files them by what they produce. Smothering Tithe reads as ramp because it says Treasure. Heliod reads as a creature because his type line is one. Rhystic Study, Mystic Remora, Consecrated Sphinx and Faerie Mastermind read as draw. No card in the group says what the group is for, so this layer is invisible in card text and cannot be seen by a reader looking at the constellation. The run makes the case for grouping them: 2,322 trigger lines off one shared event."
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "cuts-across",
+     "note": "6 of 10 in THE GIFT ECONOMY (Alhammarret's Archive, Teferi's Ageless Insight, Stroke of Genius, Prosperity, Skyscribing, Mathemagics); the other 4 - Dig Through Time, Braingeyser, Mystical Tutor, Long-Term Plans - are in city-0 THE HOME FRONT"
     },
     {
-      "cities": [
-        "Bodies",
-        "Card Flow II",
-        "Interaction",
-        "Card Flow",
-        "Ramp"
-      ],
-      "component": "PROTECTION",
-      "why": "26 cards across five cities - the map splits them by HOW they answer (counter text, destroy text, a body, a Treasure rider on An Offer You Can't Refuse) while the deck uses all of them for one job: buy turns until you can cast a seven-drop twice. Kefnet the Mindful lands in Card Flow because his activated ability draws, which is the least important thing he does here."
-    },
-    {
-      "cities": [
-        "Mana",
-        "Ramp",
-        "Bodies"
-      ],
-      "component": "WHAT PAYS FOR {6}{W} TWICE (mana)",
-      "why": "Pearl Medallion and Sapphire Medallion are cost reduction, not production, so the map puts them with the white spells and the X-creatures rather than with the rocks. In this deck they do the rocks' job - shave the bill on a colour-heavy curve. goldfish_targets does NOT count them, in any of its eleven targets' need groups (`grep -c Medallion data/decks/heliod/goldfish_targets.json` returns 0): they were in \"Heliod plus the mana to flip him\" until c879dcd removed them, because a spell-cost reducer cannot pay any part of \"{3}{U/P}: Transform Heliod\", an activated ability, and neither card taps for mana. The any_of now holds six members and the live figures are 0.732 assembled, 0.554 by turn six, mean turn 4.852."
-    },
-    {
-      "cities": [
-        "Card Flow",
-        "Mana",
-        "Bodies"
-      ],
-      "component": "THE GIFT (ignition)",
-      "why": "Nine of eleven cluster cleanly, which is unusual. The two strays are structural rather than semantic: Mikokoro is a land and its text is mostly a mana ability, and Enlightened Tutor is a search, so it sits with the other tutors regardless of what it fetches in this 99."
-    },
-    {
-      "cities": [
-        "Card Flow"
-      ],
-      "component": "ONE CARD (wincon)",
-      "why": "No disagreement, but the address is worth naming: Approach sits in Card Flow with the draw engine - the map read it on 'gain 7 life' and 'seventh from the top' - while Mystical Tutor and Long-Term Plans, the only two cards that find it, sit in Bodies. The deck's win and its route to the win have different addresses."
+     "kind": "role",
+     "id": "tutor:unrestricted",
+     "note": "deck-facts roles: only Drift of Phantasms and Long-Term Plans carry tutor:unrestricted, and Drift cannot reach Approach at mana value 7"
     }
-  ],
-  "notes": [
-    "THE RUN IS NEW AND THE COMPARISON IS UNRESOLVED. Every Forge figure in this artifact comes from run `giada-angels-vs-baylen-tokens-vs-abaddon-n120-b0f44e4a-s968800842-podExperimental-c600`, 120 games on 2026-09-09 against the standard pod, heliod seat decklist_sha256 214af3084f80 = v1.2.1, the SLEEVED list. The three opponent seats are byte-identical to the v1.0.0 run (c322a589 / 1435ef91 / 5f137a44) and the AI profiles are the same, so the two runs differ in this deck's list and the seed. v1.0.0 scored 27/108 decided (0.250); v1.2.1 scores 20/100 decided (0.200). `stats.diff_proportions(27,108,20,100)` gives diff -0.0500, Newcombe ci95 [-0.1614, +0.0644], excludes_zero FALSE. `stats.mde_proportion(0.25, 108, 100)` gives a minimum detectable difference of 0.185 at achieved power 0.8152, and `stats.games_for_difference(0.25, d)` returns None (beyond 1000 per arm) at d=0.05, 329 at 0.10 and 152 at 0.15. THE FIFTEEN SWAPS BETWEEN THESE TWO LISTS PRODUCED A CHANGE THIS BENCH CANNOT MEASURE. Do not read the drop as a decline; do not read it as parity either. Against the fixed reference points the current list is indistinguishable from par (-0.050, [-0.155, +0.056]) and indistinguishable from this table's measured null of 0.180 (+0.017, [-0.083, +0.116]).",
-    "TWENTY-ONE OF 120 GAMES HAVE NO WINNER. `summary.truncated` is 20 and `summary.draws` is 1; a clock-out is a draw Forge prints winner lines for, and both kinds are excluded from the rate. The denominator behind win_rate 0.202 ci95 [0.135, 0.292] is the 99 games with a winner; `summary.win_rate` 0.200 uses 100 and counts the true draw. The v1.0.0 run truncated 12 of 120, so the current run lost 8 more games to the clock - consistent with its longer mean_round (20.9 against 19.8) and mean_global_turn (41.3 against 39.0), and one more reason the two rates are not cleanly comparable.",
-    "A PARSER FIX LANDED BEFORE THIS RUN AND EVERY OLD NONCOMBAT-DAMAGE FIGURE IS VOID. `sim/parse.py`'s owner map previously learned a permanent's controller from only three line kinds, so every damage-dealing artifact and enchantment was anonymous and 88% of all noncombat damage to players was dropped. All 30 stored run records were re-derived; the v1.0.0 record now reads mean 9.45 / median 3.5 where the previous engine model quoted mean 1.68 / median 0.0 from the same file. Nothing in this artifact carries a figure from the pre-fix reading. The remaining defect is stated in stages[4]: `noncombat_damage_dealt_to_players` is not split by whether the target is an opponent, and on the current run 128 of heliod's 148 points are heliod damaging its own seat.",
-    "WHAT THIS MODEL DROPS FROM THE PREVIOUS ONE. (1) The whole Viseling / Iron Maiden / Ebony Owl Netsuke ledger. Those three were cut at v1.1.0 (deck_versions.json: \"the three hand-size punishers and Tireless Tribe out\"), they are not in this 99, and the engine-critic's round-2 correction to it - Viseling appears in ten Combat lines, not zero - is moot for the same reason. (2) The flip cross-tab's apparent penalty (0.114 flip against 0.271 no-flip on the v1.0.0 run) did not replicate; see stages[3]. (3) Every noncombat-damage figure, for the reason in notes[2]. What is CARRIED: the six-inside-plus-three-outside gift enumeration with its `may` split (lines[0]), the 30-of-32 flying enumeration (stages[5].evidence[2]), the 26-20 roleless arithmetic (stages[5].evidence[1]), and the downgrade of Mystical Tutor -> Approach off stack 002 (lines[8]).",
-    "ARCHETYPE. deck_audit reads this deck as `control` and under that archetype four axes are UNDER: mana-base (33 land copies against 37-39), colour-sources, sweepers (2 against 5-7) and interaction-breadth (3 of 5 permanent classes answered; graveyard and land uncovered, and that detection is an oracle-text heuristic with counterspells excluded, so it is a floor). No axis is over.",
-    "strategic_frame.json carries the current decklist sha but its component assembly figures are VOID rather than superseded: it was written when Decanter of Endless Water sat in two draw groups it does not belong in, so its 0.935 / 0.854 / mean-turn-2.319 for the table engine, 0.334 for engine-plus-punisher and 0.679 for win-condition access count games the current file does not. This artifact uses goldfish_metrics.json throughout, via engine-facts, which reads 0.920 / 0.828 / 2.461, 0.328 and 0.495. A membership fix changes what the old figures MEANT, so they are not comparable.",
-    "THE CAST LEDGER, and its limit. Counting `Add To Stack: Ai(n)-mm-heliod cast <card>` across the run's four log parts gives 1,898 casts, which reconciles exactly with the record's own `casts` mean of 15.82 over 120 games - so the tally is complete as a count. SIX nonland entries have no cast line at all: Azorius Signet, Guardian of Faith, Long-Term Plans, Psychosis Crawler, Skyscribing and Teferi's Protection. FOUR of those have some other line (a discard, and for Guardian of Faith an ETB trigger, and for Psychosis Crawler 14 drain triggers) - so for at least two of them the absence of a cast line is a LOG-SHAPE fact, not proof the card was never played, and I could not reconcile how Psychosis Crawler triggered without appearing in any zone-change or cast line. Long-Term Plans is the clean case: the string does not occur anywhere in the four log parts. This is a harness observation, outside an engine model's write scope, and no `settled_by` in the vocabulary covers a parser - recorded here for the orchestrator.",
-    "Five stacks were retired to stacks/retired/ because they need cards this list no longer holds. Only 002 is cited here, and its board names Ancient Tomb, which the deck no longer runs; the ruling it establishes does not depend on that land."
-  ],
-  "open_questions": [
+   ],
+   "what_it_does": "What keeps the deck running once the table is drawing: eight cards that turn mana into cards for you, plus the two tutors that can actually find the win.\n\nAlhammarret's Archive and Teferi's Ageless Insight each read \"if you would draw a card except the first one you draw in each of YOUR draw steps, draw two cards instead\" - `your` is the load-bearing word in a deck whose gift fires in every player's draw step. Both are live in Forge (v1.2.1 run): that replacement effect fired 349 times, the Archive cast in 32 games, the Insight in 17. The declared component \"Heliod down with an asymmetric card engine\" (0.787 assembled, 0.583 by turn six) groups them with Rhystic Study and Consecrated Sphinx; they are split out here because they read YOUR draws, a different trigger and a different job. Of the five X-draw spells, TWO - Prosperity and Skyscribing - draw the whole table; Braingeyser, Stroke of Genius and Mathemagics each target one player and feed the same turn's discount only when aimed at an opponent. Dig Through Time delves, so its printed eight overstates what you pay.\n\nENUMERATED, because the role tag says otherwise: of the 99, only Mystical Tutor (instant or sorcery) and Long-Term Plans (any card, third from the top) can find Approach of the Second Sun. Enlightened Tutor is artifact-or-enchantment. Drift of Phantasms transmutes for mana value 3; Approach is 7. The declared \"Win condition access\" component is those two plus Approach itself and assembles 0.495 (0.671 with tutors), 0.358 by turn six. Forge found the route: Mystical Tutor was cast in 38 of 120 games. Long-Term Plans does not appear in the run's logs at all, in any line kind. New at v1.3.0: Mystical Tutor is one of the thirteen instants Isochron Scepter can imprint (lines[12], open_questions[7])."
+  },
+  {
+   "stage": "conversion",
+   "label": "THE ASYMMETRY LAYER - SIX CARDS, ONE TRIGGER",
+   "single_point_of_failure": null,
+   "cards": [
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+    "Consecrated Sphinx",
+    "Faerie Mastermind",
+    "Smothering Tithe",
+    "Rhystic Study",
+    "Mystic Remora"
+   ],
+   "evidence": [
     {
-      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker or Mikaeus, the Lunarch - and if so, is X chosen before or after the reduction applies?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "The declared component 'An X-spell finisher drawn (the mana sink the discount pays for)' assembles 0.790 and its whole justification is this interaction. Nothing on disk tests it, and the conversion -> fuel line in this artifact is a claim resting on it."
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "cuts-across",
+     "note": "4 of 6 in THE GIFT ECONOMY; Heliod in city-0 THE HOME FRONT, Smothering Tithe in city-2 THE TAP ROOM"
     },
     {
-      "question": "While Lightning Greaves is equipped to Heliod, can you still target him with Karametra's Blessing or Guardian of Faith's enters trigger, and is moving the Greaves off in response possible at instant speed?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "Greaves grants shroud, which stops your own targeting; equip is sorcery-speed. Greaves is the ONE insurance card the run actually used (29 games cast, 41 activations) while Guardian of Faith and Teferi's Protection have no cast line at all, so if two of the five slots are mutually exclusive with a third while equipped, the 0.680 assembly figure overstates what the pilot can do in a removal window."
-    },
-    {
-      "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod's flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod himself is the commander on the battlefield?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "12 of 120 games reached a second Approach cast and every one of them won. Anything that widens the window for that cast is the highest-leverage rules question this deck has. Stack 002 resolves only the sorcery-speed cast on your own turn; the end-step cast needs either Leyline of Anticipation or Heliod's BACK face, which appeared in 0.292 of games."
-    },
-    {
-      "question": "No declared target measures the deck's actual win: Approach in hand AND seven mana available on two separate turns. Can the harness express a mana condition, or must the gap be recorded rather than modelled?",
-      "settled_by": "goldfish",
-      "why_it_matters": "'Win condition access' is a three-card any_of (Approach, Mystical Tutor, Long-Term Plans) and assembles 0.495, 0.677 with tutors, 0.361 by turn six - it measures DRAWING one of three cards. Forge says the binding constraint is elsewhere: Approach was cast at all in 27 of 120 games but twice in only 12, and mean_available_mana crosses 7 only between turn 8 and turn 9."
-    },
-    {
-      "question": "How many tutor and protection slots is a single 'you win the game' card worth in a four-player pod, and how should the one-window cast be timed against three potential responders?",
-      "settled_by": "research-strategy",
-      "why_it_matters": "strategic_frame.json's own gaps list says the strategy doc has NO section on alternate win conditions - the query returns 0.407 and nothing on topic. This deck's entire plan therefore has no home in the corpus, and the wincon stage has one card where threat-density asks for three to five."
-    },
-    {
-      "question": "Can the goldfish measure the card side of this deck - Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind, Kefnet, Alhammarret's Archive, Teferi's Ageless Insight, Psychosis Crawler, Kwain and Loran are all in `draw_not_modelled` - so that a claim about whether mana or cards binds this deck has both arms measured?",
-      "settled_by": "goldfish",
-      "why_it_matters": "meta.card_advantage reports 13 cards that draw against 2 modelled. Forge now says the unmodelled half is where the deck lives: 2,322 conversion triggers and 851 drain resolutions over 120 games, none of it visible to the goldfish. Until that channel is modelled, the mana stage can only say mana is a MEASURED constraint, not that it is the binding one."
-    },
-    {
-      "question": "Should the gift and fort components be scored on a card being ON THE BATTLEFIELD, or on it having been USED? Loran of the Third Path was cast in 32 of 120 Forge games and its draw ability was activated zero times; Temple Bell was cast in 22 and activated 64 times.",
-      "settled_by": "goldfish",
-      "why_it_matters": "'Table draw engine online' assembles 0.92 and is the figure every other stage leans on, but it prices DRAWING one of eleven cards. Two of the eleven (Mikokoro, Temple Bell) and two more (Kwain, Loran) need an activation the deck must have spare mana for, and the repo's own Ashnod's Altar precedent is that a Forge AI may simply never use an outlet with no board payoff. If the assembled rate is really an upper bound, it is an upper bound on the deck's single most-cited number."
+     "kind": "role",
+     "id": "draw:engine",
+     "note": "deck-facts roles: Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind and Smothering Tithe all carry draw:engine, but so do Arcane Denial, Horn of Greed, Psychosis Crawler, Scrawling Crawler and The Second Doctor - the role does not separate a converter from a draw spell"
     }
-  ],
-  "proposed_goldfish_edits": [
+   ],
+   "what_it_does": "The engine proper. The gift is symmetric and therefore not card advantage; these six make it one-sided. Consecrated Sphinx draws two on every opponent draw; Faerie Mastermind one on each opponent's second; Smothering Tithe makes a Treasure unless they pay {2}; Rhystic Study and Mystic Remora bill casts, not draws.\n\nTHIS LAYER RAN, on the v1.2.1 list. Heliod-controlled trigger lines: Smothering Tithe 998, Mystic Remora 511, Rhystic Study 410, Consecrated Sphinx 326, Faerie Mastermind 77 - 2,322 from five cards.\n\nTHE COMMANDER IS TWO CARDS AND ONLY THE BACK ONE DOES THIS STAGE'S JOB. Heliod, the Warped Eclipse is \"You may cast spells as though they had flash\" and \"Spells you cast cost {1} less to cast for each card your opponents have drawn this turn\". Read together: the draw-step and land-drop gifts bank their cards on the OPPONENTS' turns, so the discount is largest exactly when flash lets you spend it - a generic-cost artifact (Scepter, Horn, Mind Stone) is a free cast at an opponent's end step behind two of their draws. The front face is a body; the flip is a sorcery-speed \"{3}{U/P}\". He RESOLVED in 68 of 120 games (0.567 [0.477, 0.652]) and TRANSFORMED in 35 (0.292 [0.218, 0.378]). The multiplier this stage is named for was live in 35 games, not 68.\n\nTHE FLIP CROSS-TAB DID NOT REPLICATE. On this run the 35 flip games hold 6 wins (0.171) and the 85 no-flip games hold 14 (0.165) - flat; the v1.0.0 run's 0.114 against 0.271 did not hold. What survives both: the wins do not WAIT on the flip - 10 of the 12 Approach wins are no-flip games, and the gift assembles at 0.921, mean turn 2.499. Multiplier, not ignition.\n\nNo `fodder` stage: nothing here is converted by being spent. The resource this engine eats is manufactured on the opponents' side of the table."
+  },
+  {
+   "stage": "output",
+   "label": "WHAT IT PRODUCES - AND THE METRIC THAT CANNOT SEE IT",
+   "single_point_of_failure": null,
+   "cards": [
+    "Psychosis Crawler",
+    "Scrawling Crawler",
+    "Secure the Wastes",
+    "Walking Ballista",
+    "Hangarback Walker"
+   ],
+   "evidence": [
     {
-      "change": "Add Scrawling Crawler to the FIRST any_of (the ten-card gift group). It is already in the first any_of of \"Table draw engine online\" and in the second any_of of this target, so the same file calls it a table draw engine in one target and not in the other.",
-      "target": "Table draw engine plus a draw-triggered drain, both drawn",
-      "why": "Scrawling Crawler is both halves of this label in one card: \"At the beginning of your upkeep, each player draws a card\" is the table draw engine, and \"Whenever an opponent draws a card, that player loses 1 life\" is the draw-triggered drain (oracle text, cards.json). As written the target cannot assemble on it alone - the first group lists Howling Mine, Font of Mythos, Kami of the Crescent Moon, Dictate of Kruphix, Temple Bell, Mikokoro, Kwain, Loran, The Second Doctor and Forced Fruition, and Scrawling Crawler is not among them - so a hand holding the one card that does the whole job scores as half of it. RECEIPT, RUN: `grep -c \"Scrawling Crawler\" data/decks/heliod/goldfish_targets.json` returns 4 and `grep -n` puts them at line 18 (first any_of of \"Table draw engine online\"), line 42 (inside this target's own label, not a member), line 47 (the Crawler any_of) and line 72 (this target's SECOND any_of); the first any_of of this target spans lines 56-67 and holds exactly ten names. This target is the deck's lowest at 0.328 assembled and 0.196 by turn six, and lines[4] rests on it - and Forge says this card carried the whole drain axis (851 of 865 resolutions), so the direction of the error matters before the figure is read as a weakness."
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "3 of 5 in THE HOME FRONT (Secure the Wastes, Walking Ballista, Hangarback Walker, all in its TOLLS AND X-SPELLS hood); both Crawlers in city-3 THE GIFT ECONOMY"
     },
     {
-      "change": "Split it, or add a second target that requires Approach of the Second Sun itself rather than any_of three cards - and if the harness can express it, gate on a second cast rather than on drawing the card.",
-      "target": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
-      "why": "The n120 run separates two things this target merges. Approach was cast at all in 27 of 120 Forge games; a SECOND cast happened in 12, and all 12 were wins. The declared target scores 0.495 assembled because it fires on Mystical Tutor or Long-Term Plans being DRAWN, neither of which is the win - Long-Term Plans does not appear anywhere in the run's logs. As written the deck's most-cited access figure is roughly double the rate at which the thing it stands for actually happened. I cannot tell whether goldfish.py's `_target_met` can express a repeat cast or a mana condition, which is why this is a proposal and open_questions[3] is a question."
+     "kind": "role",
+     "id": "wincon:drain",
+     "note": "deck-facts roles: Psychosis Crawler and Scrawling Crawler are the only two cards in the 99 carrying wincon:drain"
     }
-  ],
-  "slug": "heliod",
-  "stages": [
+   ],
+   "what_it_does": "THE DRAIN IS LIFE LOSS, NOT DAMAGE, AND THAT CHANGES THE VERDICT AN EARLIER MODEL WROTE. Psychosis Crawler is \"whenever you draw a card, each opponent loses 1 life\"; Scrawling Crawler is \"whenever an opponent draws a card, that player loses 1 life\". Neither is damage, so `noncombat_damage_dealt_to_players` cannot see either at any value - reading that field as this axis's verdict was that model's largest measurement error.\n\nCOUNTED FROM THE v1.2.1 RUN'S LOGS (re-derived for this revision). \"Whenever an opponent draws a card, that player loses 1 life\" resolved 851 times (giada-angels 378, baylen-tokens 237, abaddon 236) and \"whenever you draw a card, each opponent loses 1 life\" 14 times, three opponents each. That is 893 life over 120 games: mean 7.44, MEDIAN 0.0, nonzero in 47, max 104. Scrawling Crawler, cast in 46 games, is essentially the whole of it. Read the pair: off in most games, enormous in a few - a spread, not a clock.\n\nWHAT THE DAMAGE FIELD ACTUALLY HOLDS. heliod's `noncombat_damage_dealt_to_players` sums to 148 (mean 1.23, median 0.0, max 10, nonzero in 48). Splitting the logs by target seat: 128 of those points are heliod damaging its OWN seat - Adarkar Wastes 83, Talisman of Progress 43, 2 more - and only 20 reach an opponent, every one of them Walking Ballista. The metric is not split by whether the target is an opponent; quote it only with that clause attached.\n\nThe rest. Three X-cards leave a permanent behind: Secure the Wastes, Walking Ballista, Hangarback Walker; Ballista was cast in 52 games and activated 99 times, the most-activated card in the run. Combat: mean 3.28 dealt, MEDIAN 0.5; commander damage reached 21 in ZERO games. The declared two-card component assembles 0.36, 0.249 by turn six."
+  },
+  {
+   "stage": "protection",
+   "label": "THE 26 CARDS THAT BUY THE TURNS",
+   "single_point_of_failure": null,
+   "cards": [
+    "Counterspell",
+    "Swan Song",
+    "An Offer You Can't Refuse",
+    "Dovin's Veto",
+    "Arcane Denial",
+    "Archmage's Charm",
+    "Force of Negation",
+    "Fierce Guardianship",
+    "Path to Exile",
+    "Swords to Plowshares",
+    "Disenchant",
+    "Cathar Commando",
+    "Day of Judgment",
+    "Supreme Verdict",
+    "Cyclonic Rift",
+    "Guardian of Faith",
+    "Karametra's Blessing",
+    "Lightning Greaves",
+    "Teferi's Protection",
+    "Leyline of Anticipation",
+    "Propaganda",
+    "Ghostly Prison",
+    "Archangel of Tithes",
+    "Drift of Phantasms",
+    "Kefnet the Mindful",
+    "Isochron Scepter"
+   ],
+   "evidence": [
     {
-      "cards": [
-        "Adarkar Wastes",
-        "Command Tower",
-        "Deserted Beach",
-        "Eiganjo, Seat of the Empire",
-        "Flooded Strand",
-        "Glacial Fortress",
-        "Hallowed Fountain",
-        "Irrigated Farmland",
-        "Island",
-        "Mana Confluence",
-        "Otawara, Soaring City",
-        "Plains",
-        "Prairie Stream",
-        "Reliquary Tower",
-        "Seachrome Coast",
-        "Skycloud Expanse",
-        "Temple of Enlightenment",
-        "Arcane Signet",
-        "Azorius Signet",
-        "Sol Ring",
-        "Talisman of Progress",
-        "Thought Vessel",
-        "Decanter of Endless Water",
-        "Pearl Medallion",
-        "Sapphire Medallion"
-      ],
-      "evidence": [
-        {
-          "agreement": "cuts-across",
-          "id": "city-1",
-          "kind": "city",
-          "note": "17 of 25 in Mana; the six rocks Arcane Signet, Azorius Signet, Sol Ring, Talisman of Progress, Thought Vessel and Decanter of Endless Water in city-2 Ramp; Pearl and Sapphire Medallion in city-0 Bodies"
-        },
-        {
-          "id": "ramp:rock",
-          "kind": "role",
-          "note": "deck-facts roles: those six carry ramp:rock; Pearl and Sapphire Medallion carry ramp:cost-reduction only, and neither has a mana ability"
-        }
-      ],
-      "label": "WHAT PAYS FOR {6}{W} TWICE",
-      "single_point_of_failure": null,
-      "stage": "mana",
-      "what_it_does": "32 of the deck's 33 land copies sit here in 17 entries (Mikokoro is placed in ignition), plus eight rocks and cost-reducers. The bill this stage exists to pay is Approach's, twice: {6}{W} is seven mana on two separate turns. goldfish mean_available_mana_by_turn crosses 7 between turn 8 (6.966) and turn 9 (7.612), and that is with the commander's discount switched OFF - model-coverage gives Heliod only the `bodies` channel.\n\nMeasured on the CURRENT list. benchmark missed_land_drop_rate 0.2532, worst turn six; land_drop_hit_rate 0.729 / 0.603 / 0.540 across turns four to six. mana_analysis.json (sha 214af3084f80) gives 25 W and 26 U total sources against a Karsten 90%-on-curve figure of 36 each, and that file's own note calls the target \"a yardstick, not a possibility, in a 33-land deck\". Lands-only on-curve 0.610 W / 0.639 U, and 0.580 / 0.610 with Skycloud Expanse set aside as the one gated source. deck-audit reads mana-base and colour-sources UNDER for archetype control. In the n120 run heliod played a mean 8.42 lands (median 8.0); the record's piloting block gives lands_ratio 1.049, so our seat developed mana about as well as the pod did.\n\nSecond jobs. Pearl and Sapphire Medallion reduce the cost of white and blue SPELLS rather than produce mana, which is why the map files them away from the rocks and why they cannot pay any part of the commander's flip; see map_disagreements[2]. Reliquary Tower, Decanter of Endless Water and Thought Vessel each carry \"You have no maximum hand size\", the clause Kefnet and Psychosis Crawler both read. Adarkar Wastes is also this deck's largest source of damage to ITSELF - 83 of the 128 points in stages[4]."
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "10 in THE HOME FRONT, 7 in city-4 NOT TODAY, 6 in city-5 THE CLEANERS, Kefnet in city-3 THE GIFT ECONOMY, An Offer You Can't Refuse and Isochron Scepter in city-2 THE TAP ROOM - five cities for one job"
     },
     {
-      "cards": [
-        "Howling Mine",
-        "Font of Mythos",
-        "Kami of the Crescent Moon",
-        "Dictate of Kruphix",
-        "Temple Bell",
-        "Mikokoro, Center of the Sea",
-        "Kwain, Itinerant Meddler",
-        "Loran of the Third Path",
-        "The Second Doctor",
-        "Forced Fruition",
-        "Enlightened Tutor"
-      ],
-      "evidence": [
-        {
-          "agreement": "cuts-across",
-          "id": "city-3",
-          "kind": "city",
-          "note": "9 of 11 in Card Flow; Mikokoro in city-1 Mana, Enlightened Tutor in city-0 Bodies"
-        },
-        {
-          "id": "draw:wheel",
-          "kind": "role",
-          "note": "deck-facts roles: Temple Bell, Faerie Mastermind, Prosperity, Skyscribing and Scrawling Crawler are the only draw:wheel cards, and the taxonomy has no pattern at all for Howling Mine, Font of Mythos, Dictate of Kruphix or Forced Fruition - deck-facts notes 12 roleless entries. The gift is invisible to roles."
-        }
-      ],
-      "label": "THE GIFT - THE TABLE STARTS DRAWING",
-      "single_point_of_failure": null,
-      "stage": "ignition",
-      "what_it_does": "The first thing that has to happen, and the cheapest. EIGHT of the ten permanents here hand the WHOLE table cards - Howling Mine, Font of Mythos, Kami of the Crescent Moon, Dictate of Kruphix, Temple Bell, Mikokoro, Kwain and The Second Doctor all say \"each player\". Two do not: Loran of the Third Path is \"you and TARGET OPPONENT each draw a card\", and Forced Fruition draws seven to the opponent who cast a spell. The resource every later stage reads - a card an opponent drew this turn - does not exist until one of these resolves. Enlightened Tutor draws nobody; it is here because it finds five of the ten - Howling Mine, Font of Mythos, Temple Bell, Dictate of Kruphix, Forced Fruition, artifact or enchantment only - and cannot find Approach.\n\nTHE GIFT IS THE PART OF THIS ENGINE FORGE ACTUALLY RAN. All five triggered pieces, heliod-controlled trigger lines across the n120 run: Dictate of Kruphix 577, Forced Fruition 339, Howling Mine 300, Font of Mythos 184, Kami of the Crescent Moon 125, The Second Doctor 84. Activations: Temple Bell 64, Kwain 46, Mikokoro 26. ONE PIECE NEVER FIRED - Loran of the Third Path was cast in 32 of 120 games and its \"{T}: You and target opponent each draw a card\" appears in ZERO activated lines (open_questions[6]).\n\nThe rate belongs to the declared component, not to this stage. \"Table draw engine online\" assembles in 0.92 of goldfish games (0.97 with tutors), 0.828 by turn six, mean turn 2.461 - enumerated across all eleven declared targets, the highest assembled_rate (next 0.843) and the lowest mean turn (next 2.819). Its eleven members are these ten plus Scrawling Crawler, MINUS Enlightened Tutor. Mikokoro is counted here rather than in mana for its \"{2}, {T}: Each player draws a card\"."
+     "kind": "role",
+     "id": "counterspell",
+     "note": "benchmark response: answer_cards 21, answer_share 0.25, 6 of 15 classes covered. SIX cards in this stage carry no answer role - re-derived over engine-facts roles against benchmark's own six classes (counterspell, protection:self, removal:bounce, removal:damage, removal:spot, removal:sweeper): Leyline of Anticipation, Propaganda, Ghostly Prison, Archangel of Tithes, Drift of Phantasms and ISOCHRON SCEPTER (utility:activated, value:etb). The arithmetic is still 26 - 20, not 26 - 21: only 20 of the deck's 21 answer cards sit here, because Walking Ballista carries the deck's ONLY removal:damage and this model files it in output. benchmark and this model therefore disagree about one card, and the 6-of-15 class coverage is benchmark's, not this stage's."
     },
     {
-      "cards": [
-        "Alhammarret's Archive",
-        "Teferi's Ageless Insight",
-        "Dig Through Time",
-        "Braingeyser",
-        "Stroke of Genius",
-        "Prosperity",
-        "Skyscribing",
-        "Mathemagics",
-        "Mystical Tutor",
-        "Long-Term Plans"
-      ],
-      "evidence": [
-        {
-          "agreement": "cuts-across",
-          "id": "city-3",
-          "kind": "city",
-          "note": "6 of 10 in Card Flow (Alhammarret's Archive, Teferi's Ageless Insight, Stroke of Genius, Prosperity, Skyscribing, Mathemagics); the other 4 - Dig Through Time, Braingeyser, Mystical Tutor, Long-Term Plans - are in city-0 Bodies"
-        },
-        {
-          "id": "tutor:unrestricted",
-          "kind": "role",
-          "note": "deck-facts roles: only Drift of Phantasms and Long-Term Plans carry tutor:unrestricted, and Drift cannot reach Approach at mana value 7"
-        }
-      ],
-      "label": "YOUR OWN CARD FLOW, AND THE ONLY ROUTE BACK",
-      "single_point_of_failure": null,
-      "stage": "fuel",
-      "what_it_does": "What keeps the deck running once the table is drawing: eight cards that turn mana into cards for you, plus the two tutors that can actually find the win.\n\nAlhammarret's Archive and Teferi's Ageless Insight each read \"if you would draw a card except the first one you draw in each of YOUR draw steps, draw two cards instead\" - `your` is the load-bearing word in a deck whose gift fires in every player's draw step. Both are live in Forge: that replacement effect fired 349 times across the n120 run, with the Archive cast in 32 games and the Insight in 17. The declared component \"Heliod down with an asymmetric card engine\" (0.787 assembled, 0.581 by turn six) groups them with Rhystic Study and Consecrated Sphinx; they are split out here because they read YOUR draws, a different trigger and a different job. Of the five X-draw spells, TWO - Prosperity and Skyscribing - draw the whole table; Braingeyser, Stroke of Genius and Mathemagics each target one player and feed the same turn's discount only when aimed at an opponent. Dig Through Time delves, so its printed eight overstates what you pay.\n\nENUMERATED, because the role tag says otherwise: of the 99, only Mystical Tutor (instant or sorcery) and Long-Term Plans (any card, third from the top) can find Approach of the Second Sun. Enlightened Tutor is artifact-or-enchantment. Drift of Phantasms transmutes for mana value 3; Approach is 7. The declared \"Win condition access\" component is those two plus Approach itself and assembles 0.495 (0.677 with tutors), 0.361 by turn six. Forge found the route: Mystical Tutor was cast in 38 of 120 games. Long-Term Plans does not appear in the run's logs at all, in any line kind."
+     "kind": "role",
+     "id": "threat:body",
+     "note": "The 30-of-32 figure, enumerated rather than recalled. data/opponents/giada-angels/decklist.txt holds 31 creature entries plus the commander Giada, Font of Hope. Reading each one's oracle text from cards.csv: 30 carry flying on the body. Starnheim Aspirant (\"Angel spells you cast cost {2} less to cast\") has none, and BISHOP OF WINGS has no flying either - its only occurrence of the word is \"create a 1/1 white Spirit creature token with flying\", the text-match trap. strategic_frame.json states this as \"31 of whose 32 creature cards carry flying ... the lone exception is Starnheim Aspirant\" and misses Bishop of Wings too; the two artifacts disagree, and this is the enumerated one. The opponent seat is byte-identical across both n120 runs (decklist_sha256 c322a589)."
     },
     {
-      "cards": [
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-        "Consecrated Sphinx",
-        "Faerie Mastermind",
-        "Smothering Tithe",
-        "Rhystic Study",
-        "Mystic Remora"
-      ],
-      "evidence": [
-        {
-          "agreement": "cuts-across",
-          "id": "city-3",
-          "kind": "city",
-          "note": "4 of 6 in Card Flow; Heliod in city-0 Bodies, Smothering Tithe in city-2 Ramp"
-        },
-        {
-          "id": "draw:engine",
-          "kind": "role",
-          "note": "deck-facts roles: Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind and Smothering Tithe all carry draw:engine, but so do Arcane Denial, Psychosis Crawler, Scrawling Crawler and The Second Doctor - the role does not separate a converter from a draw spell"
-        }
-      ],
-      "label": "THE ASYMMETRY LAYER - SIX CARDS, ONE TRIGGER",
-      "single_point_of_failure": null,
-      "stage": "conversion",
-      "what_it_does": "The engine proper. The gift is symmetric and therefore not card advantage; these six make it one-sided, reading one event and paying it out in different currencies. Consecrated Sphinx draws two on every opponent draw; Faerie Mastermind one on each opponent's second; Smothering Tithe makes a Treasure unless they pay {2}; Rhystic Study and Mystic Remora bill casts, not draws.\n\nTHIS LAYER RAN. Heliod-controlled trigger lines over the n120 run: Smothering Tithe 998, Mystic Remora 511, Rhystic Study 410, Consecrated Sphinx 326, Faerie Mastermind 77 - 2,322 from five cards cast in 24 to 39 games each.\n\nTHE COMMANDER IS TWO CARDS AND ONLY THE BACK ONE DOES THIS STAGE'S JOB. Heliod, the Warped Eclipse is \"You may cast spells as though they had flash\" and \"Spells you cast cost {1} less to cast for each card your opponents have drawn this turn\". The front face is a {2}{W}{W} body whose ETB recurs an enchantment; the flip is a sorcery-speed \"{3}{U/P}\". He RESOLVED in 68 of 120 games (0.567 [0.477, 0.652]) and TRANSFORMED in 35 (0.292 [0.218, 0.378]), median first flip global turn 36. The multiplier this stage is named for was live in 35 games, not 68.\n\nTHE FLIP CROSS-TAB DID NOT REPLICATE. On this run the 35 flip games hold 6 wins (0.171) and the 85 no-flip games hold 14 (0.165) - flat. The previous model read 0.114 against 0.271 on the v1.0.0 run; that did not hold, and neither run could resolve a gap that size. What survives both: the wins do not WAIT on the flip - 10 of the 12 Approach wins are no-flip games, and the gift assembles at 0.92, mean player-turn 2.461. Multiplier, not ignition.\n\nNo `fodder` stage: nothing here is converted by being spent. The resource this engine eats is manufactured on the opponents' side of the table."
-    },
-    {
-      "cards": [
-        "Psychosis Crawler",
-        "Scrawling Crawler",
-        "Secure the Wastes",
-        "Walking Ballista",
-        "Hangarback Walker",
-        "Mikaeus, the Lunarch"
-      ],
-      "evidence": [
-        {
-          "agreement": "cuts-across",
-          "id": "city-0",
-          "kind": "city",
-          "note": "4 of 6 in Bodies; both Crawlers in city-3 Card Flow"
-        },
-        {
-          "id": "wincon:drain",
-          "kind": "role",
-          "note": "deck-facts roles: Psychosis Crawler and Scrawling Crawler are the only two cards in the 99 carrying wincon:drain"
-        }
-      ],
-      "label": "WHAT IT PRODUCES - AND THE METRIC THAT CANNOT SEE IT",
-      "single_point_of_failure": null,
-      "stage": "output",
-      "what_it_does": "THE DRAIN IS LIFE LOSS, NOT DAMAGE, AND THAT CHANGES THE VERDICT THE PREVIOUS MODEL WROTE. Psychosis Crawler is \"whenever you draw a card, each opponent loses 1 life\"; Scrawling Crawler is \"whenever an opponent draws a card, that player loses 1 life\". Neither is damage, so `noncombat_damage_dealt_to_players` cannot see either at any value - reading that field as this axis's verdict was the previous model's largest measurement error.\n\nCOUNTED FROM THE RUN'S LOGS. \"Whenever an opponent draws a card, that player loses 1 life\" resolved 851 times (giada-angels 378, baylen-tokens 237, abaddon 236) and \"whenever you draw a card, each opponent loses 1 life\" 14 times, three opponents each. That is 893 life over 120 games: mean 7.44, MEDIAN 0.0, nonzero in 47, max 104. Scrawling Crawler, cast in 46 games, is essentially the whole of it. Read the pair: off in most games, enormous in a few - a spread, not a clock.\n\nWHAT THE DAMAGE FIELD ACTUALLY HOLDS. heliod's `noncombat_damage_dealt_to_players` sums to 148 (mean 1.23, median 0.0, max 10, nonzero in 48). Splitting the logs by target seat: 128 of those points are heliod damaging its OWN seat - Adarkar Wastes 83, Talisman of Progress 43, 2 more - and only 20 reach an opponent, every one of them Walking Ballista. The metric is not split by whether the target is an opponent; quote it only with that clause attached.\n\nThe rest. Four X-cards leave a permanent behind: Secure the Wastes, Walking Ballista, Hangarback Walker, Mikaeus the Lunarch; Ballista was cast in 52 games and activated 99 times, the most-activated card in the deck. Combat: mean 3.28 dealt, MEDIAN 0.5; commander damage reached 21 in ZERO games. The declared two-card component assembles 0.366, 0.256 by turn six."
-    },
-    {
-      "cards": [
-        "Counterspell",
-        "Swan Song",
-        "An Offer You Can't Refuse",
-        "Dovin's Veto",
-        "Arcane Denial",
-        "Archmage's Charm",
-        "Force of Negation",
-        "Fierce Guardianship",
-        "Path to Exile",
-        "Swords to Plowshares",
-        "Disenchant",
-        "Cathar Commando",
-        "Day of Judgment",
-        "Supreme Verdict",
-        "Cyclonic Rift",
-        "Guardian of Faith",
-        "Karametra's Blessing",
-        "Lightning Greaves",
-        "Teferi's Protection",
-        "Leyline of Anticipation",
-        "Propaganda",
-        "Ghostly Prison",
-        "Archangel of Tithes",
-        "Angelic Wall",
-        "Drift of Phantasms",
-        "Kefnet the Mindful"
-      ],
-      "evidence": [
-        {
-          "agreement": "cuts-across",
-          "id": "city-0",
-          "kind": "city",
-          "note": "11 in Bodies, 7 in city-4 Card Flow II, 6 in city-5 Interaction, Kefnet in city-3 Card Flow, An Offer You Can't Refuse in city-2 Ramp - five cities for one job"
-        },
-        {
-          "id": "counterspell",
-          "kind": "role",
-          "note": "benchmark response: answer_cards 21, answer_share 0.25, 6 of 15 classes covered. SIX cards in this stage carry no answer role - re-derived over card_roles.json against benchmark's own six classes (counterspell, protection:self, removal:bounce, removal:damage, removal:spot, removal:sweeper): Propaganda, Ghostly Prison, Archangel of Tithes, Angelic Wall, Drift of Phantasms and LEYLINE OF ANTICIPATION, which deck-facts puts in roles.no_role. The arithmetic is 26 - 20, not 26 - 21: only 20 of the deck's 21 answer cards sit here, because Walking Ballista carries the deck's ONLY removal:damage and this model files it in output. benchmark and this model therefore disagree about one card, and the 6-of-15 class coverage is benchmark's, not this stage's."
-        },
-        {
-          "id": "threat:body",
-          "kind": "role",
-          "note": "The 30-of-32 figure, enumerated rather than recalled. data/opponents/giada-angels/decklist.txt holds 31 creature entries plus the commander Giada, Font of Hope. Reading each one's oracle text from cards.csv: 30 carry flying on the body. Starnheim Aspirant (\"Angel spells you cast cost {2} less to cast\") has none, and BISHOP OF WINGS has no flying either - its only occurrence of the word is \"create a 1/1 white Spirit creature token with flying\", the text-match trap. strategic_frame.json states this as \"31 of whose 32 creature cards carry flying ... the lone exception is Starnheim Aspirant\" and misses Bishop of Wings too; the two artifacts disagree, and this is the enumerated one. The opponent seat is byte-identical across both runs (decklist_sha256 c322a589)."
-        }
-      ],
-      "label": "THE 26 CARDS THAT BUY THE TURNS",
-      "single_point_of_failure": null,
-      "stage": "protection",
-      "what_it_does": "26 of 85 entries, the largest stage; its job is to survive to a seven-drop cast twice. Four layers, and this is the FIRST run measured on a list that holds them - v1.1.0's insurance and v1.2.0's skies post-date the v1.0.0 run.\n\nCOUNTERS (8, two free). \"Free or cheap interaction held\" assembles 0.843, 0.707 by turn six, but interaction_castable is 0.626 at turn six against 0.927 in hand: holding it and paying for it are different problems. Forge cast a mean 0.79 a game.\n\nREMOVAL (7), of which only Day of Judgment and Supreme Verdict are sweepers - two against a control target of 5-7, UNDER (notes[4]).\n\nTHE FORT (6): Propaganda, Ghostly Prison and Archangel of Tithes tax attackers - 0.487 assembled, 0.355 by turn six, the least reliable defensive component. Angelic Wall, Drift of Phantasms, Kefnet and Archangel are four of the six-card flier-blocker component (Sphinx and Faerie Mastermind sit in conversion), 0.750; Kefnet cannot block under seven cards in hand.\n\nINSURANCE (5), Leyline of Anticipation included because it duplicates the flash grant without him - 0.680 assembled, 0.526 by turn six. Two of the five are unmeasured in Forge: neither Guardian of Faith nor Teferi's Protection has a cast line anywhere in the logs (notes[6]); Lightning Greaves was cast in 29 games, activated 41 times.\n\nTHE AIR, RE-MEASURED. heliod was eliminated in 74 of 120 games and `eliminated_how` records only {damage: 61}, so 13 deaths have no attributed killer - unknown, not non-damage. Of the 61, `eliminated_by` gives giada-angels 43, abaddon 11, baylen-tokens 7 - the pre-fort run's picture (39 of 53) on a list that now blocks and taxes. Combat damage taken mean 37.92, median 30.5. The fort's premise holds (evidence[2]); this run does not show it changing who kills us."
-    },
-    {
-      "cards": [
-        "Approach of the Second Sun"
-      ],
-      "evidence": [
-        {
-          "agreement": "full",
-          "id": "002",
-          "kind": "stack",
-          "note": "checker.verdict pass; the win is checked mid-resolution and the only interaction window is on the stack. Its board names Ancient Tomb, which this list no longer runs - the ruling does not depend on it."
-        },
-        {
-          "agreement": "full",
-          "id": "city-3",
-          "kind": "city",
-          "note": "Approach sits in Card Flow with the draw engine, not with the tutors that find it"
-        },
-        {
-          "agreement": "full",
-          "id": "Approach of the Second Sun + Mystical Tutor",
-          "kind": "combo",
-          "note": "the single contained Commander Spellbook line, bracket 3, mana_value_needed 15, produces 'Win the game'; it is a candidate, and stack 002 is what makes this one a fact"
-        },
-        {
-          "id": "wincon:alt",
-          "kind": "role",
-          "note": "Approach carries the deck's only wincon:alt role (deck-facts histogram: wincon:alt 1). The single_point_of_failure field is AUTHORED and machine-read, so its qualifier belongs beside it: of heliod's 20 wins on the current list, 12 read won_by \"effect of 'Approach of the Second Sun'\" and 8 read \"all opponents have lost\", so the deck closes without this card in 8 of 20. deck_audit's own engine.single_points_of_failure is [], because every declared component holds two or more members; this model asserts one anyway because the wincon stage genuinely holds one card - the only other win-flavoured roles in the 99 are the two wincon:drain Crawlers, which stages[4] measures at a median of 0.0 life a game. Read the field as \"the only card that WINS\", not \"the only way the game ends\"."
-        }
-      ],
-      "label": "ONE CARD, AND IT IS 12 FOR 12",
-      "single_point_of_failure": "Approach of the Second Sun",
-      "stage": "wincon",
-      "what_it_does": "Approach of the Second Sun, cast twice from hand. The first cast gains 7 life and puts the card seventh from the top; the second wins outright.\n\nTHE BEST-EVIDENCED SENTENCE IN THIS MODEL. Counting `Add To Stack: ... cast Approach of the Second Sun` across the n120 run's logs: 39 casts in 27 of 120 games, and exactly 12 games reached a SECOND cast. Cross-tabbed against the record's `games[]`, those 12 are exactly the 12 marked won_by \"effect of 'Approach of the Second Sun'\" - twelve for twelve. The other 15 games got one cast and none won on it. The deck's whole difficulty sits between the first cast and the second, not in the card resolving.\n\nTHE COLUMN. 20 wins, 12 by Approach and 8 by \"all opponents have lost\": win rate 0.202, ci95 [0.135, 0.292] over the 99 games with a winner. Twenty games clocked out and one was a draw, so 21 of 120 have no winner and are excluded. Against par for a four-player pod the difference is -0.050, ci95 [-0.155, +0.056]; against this table's measured null of 0.180 it is +0.017, ci95 [-0.083, +0.116]. Both SPAN ZERO - indistinguishable from both. Mean finishing position 2.628 over 94 ranked games (11 firsts, 35 seconds, 26 thirds, 22 fourths).\n\nAND NOT THAT THE DECK GOT WORSE. v1.0.0 scored 27/108 (0.250), v1.2.1 scores 20/100 (0.200), and the Newcombe interval on the DIFFERENCE is [-0.1614, +0.0644], spanning zero. This pair of runs could only detect 0.185 at 80% power. Fifteen swaps produced a change this bench cannot measure - notes[0].\n\nThis is a ONE-finisher deck; the pilot's standing constraint against two-card infinites rules out the usual second route - deck-facts reads two_card_infinites 0 and bracket_report's list is empty. Stack 002 settles the skill and is quoted in evidence[0]."
+     "kind": "role",
+     "id": "utility:activated",
+     "note": "THE THIRTEEN IMPRINTS, enumerated from cards.json (type line contains Instant, cmc <= 2): An Offer You Can't Refuse, Arcane Denial, Counterspell, Cyclonic Rift, Disenchant, Dovin's Veto, Enlightened Tutor, Karametra's Blessing, Mystical Tutor, Path to Exile, Secure the Wastes, Swan Song, Swords to Plowshares. By stage: ten here (five counters, four removal, Karametra's Blessing), Enlightened Tutor in ignition, Mystical Tutor in fuel, Secure the Wastes in output. Isochron Scepter's own roles are utility:activated and value:etb - no answer class - which is why it is the sixth roleless card in evidence[1]. The count is thirteen in the branch's stated reason as well (branches/artifacts-v1/branch.json), and it survives re-enumeration."
     }
+   ],
+   "what_it_does": "26 of 85 entries, the largest stage; its job is to survive to a seven-drop cast twice. Five layers.\n\nCOUNTERS (8, two free). \"Free or cheap interaction held\" assembles 0.839, 0.705 by turn six, but interaction_castable is 0.61 at turn six against 0.929 in hand: holding it and paying for it are different problems.\n\nREMOVAL (7), of which only Day of Judgment and Supreme Verdict are sweepers - two against a control target of 5-7, UNDER (notes[4]).\n\nTHE FORT (5): Propaganda, Ghostly Prison and Archangel of Tithes tax attackers - 0.496 assembled, 0.357 by turn six, the least reliable defensive component. Drift, Kefnet and Archangel are three of the five-card flier-blocker component (the other two sit in conversion), 0.68, 0.529 by turn six; Kefnet cannot block under seven cards in hand.\n\nINSURANCE (5), Leyline of Anticipation included because it duplicates the flash grant without him - 0.683 assembled, 0.531 by turn six. Forge (v1.2.1 run): no cast line for Guardian of Faith or Teferi's Protection (notes[6]); Lightning Greaves cast in 29 games, activated 41 times.\n\nTHE SCEPTER (1), new at v1.3.0. Isochron Scepter imprints \"an instant card with mana value 2 or less\": thirteen in the 99, enumerated in evidence[3], ten of them in this stage. A counter or removal every turn for {2} without spending a card is protection made repeatable - hence here, not in mana with the other {2} artifacts. Its {2} cast is generic and discounted; its \"{2}, {T}\" is an activated ability the discount cannot touch. Not in the run's list, no Forge line.\n\nTHE AIR. heliod was eliminated in 74 of 120 games, 61 attributed to damage; of those, giada-angels 43, abaddon 11, baylen-tokens 7. Combat damage taken mean 37.92, median 30.5. The premise holds (evidence[2]); who kills us did not change."
+  },
+  {
+   "stage": "wincon",
+   "label": "ONE CARD, AND IT IS 12 FOR 12",
+   "single_point_of_failure": "Approach of the Second Sun",
+   "cards": [
+    "Approach of the Second Sun"
+   ],
+   "evidence": [
+    {
+     "kind": "stack",
+     "id": "002",
+     "agreement": "full",
+     "note": "checker.verdict pass; the win is checked mid-resolution and the only interaction window is on the stack. Its board names Ancient Tomb, which this list no longer runs - the ruling does not depend on it."
+    },
+    {
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "full",
+     "note": "Approach sits in THE GIFT ECONOMY's THE BILL COMES DUE hood with the drain, not with the tutors that find it (THE HOME FRONT's THE SEARCH PARTY)"
+    },
+    {
+     "kind": "combo",
+     "id": "Approach of the Second Sun + Mystical Tutor",
+     "agreement": "full",
+     "note": "the single contained Commander Spellbook line, bracket 3, mana_value_needed 15, produces 'Win the game'; it is a candidate, and stack 002 is what makes this one a fact"
+    },
+    {
+     "kind": "role",
+     "id": "wincon:alt",
+     "note": "Approach carries the deck's only wincon:alt role (deck-facts histogram: wincon:alt 1). The single_point_of_failure field is AUTHORED and machine-read, so its qualifier belongs beside it: of heliod's 20 wins on the v1.2.1 run, 12 read won_by \"effect of 'Approach of the Second Sun'\" and 8 read \"all opponents have lost\", so the deck closes without this card in 8 of 20. deck_audit's own engine.single_points_of_failure is [], because every declared component holds two or more members; this model asserts one anyway because the wincon stage genuinely holds one card - the only other win-flavoured roles in the 99 are the two wincon:drain Crawlers, which stages[4] measures at a median of 0.0 life a game. Read the field as \"the only card that WINS\", not \"the only way the game ends\"."
+    }
+   ],
+   "what_it_does": "Approach of the Second Sun, cast twice from hand. The first cast gains 7 life and puts the card seventh from the top; the second wins outright.\n\nTHE BEST-EVIDENCED SENTENCE IN THIS MODEL, re-derived for this revision from the v1.2.1 run (b0f44e4a, three cards behind this list; none of the three has a line in it). Counting `Add To Stack: ... cast Approach of the Second Sun` across the logs: 39 casts in 27 of 120 games, and exactly 12 games reached a SECOND cast. Cross-tabbed against the record's `games[]`, those 12 are exactly the 12 marked won_by \"effect of 'Approach of the Second Sun'\" - twelve for twelve. The other 15 games got one cast and none won on it. The deck's whole difficulty sits between the first cast and the second, not in the card resolving.\n\nTHE COLUMN. 20 wins, 12 by Approach and 8 by \"all opponents have lost\": win rate 0.202, ci95 [0.135, 0.292] over the 99 games with a winner; 20 clocked out and one was a draw. Against par for a four-player pod the difference is -0.050, ci95 [-0.155, +0.056]; against this table's measured null of 0.180 it is +0.017, ci95 [-0.083, +0.116]. Both SPAN ZERO. Mean finishing position 2.628 over 94 ranked games (11 firsts, 35 seconds, 26 thirds, 22 fourths).\n\nAND NOT THAT THE DECK GOT WORSE. v1.0.0 scored 27/108 (0.250), v1.2.1 20/100 (0.200), and the Newcombe interval on the DIFFERENCE is [-0.1614, +0.0644], spanning zero; this pair of runs could only detect 0.185 at 80% power (notes[0]). v1.3.0 has no Forge run yet.\n\nThis is a ONE-finisher deck; the pilot's standing constraint against two-card infinites rules out the usual second route - deck-facts reads two_card_infinites 0 and bracket_report's list is empty. Stack 002 settles the skill and is quoted in evidence[0]."
+  }
+ ],
+ "lines": [
+  {
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Mikokoro, Center of the Sea",
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+   ],
+   "verified_by": null,
+   "note": "THE TRAP WORTH NAMING. Mikokoro's \"{2}, {T}: Each player draws a card\" fires on YOUR turn, so three opponents drawing one apiece is {3} off the next spell you cast that turn under \"cost {1} less for each card your opponents have drawn THIS TURN\". Howling Mine, Font of Mythos, Kami of the Crescent Moon and Dictate of Kruphix cannot do this: they fire \"at the beginning of each player's draw step\", and an opponent's draw step falls on that opponent's own turn, so on your turn they contribute {0}; Horn of Greed is the same shape on the land drop. FIVE gift pieces in the ignition stage feed the discount on your own turn: Temple Bell, Mikokoro, Kwain and Loran on activation, and THE SECOND DOCTOR at your own end step (\"At the beginning of your end step, each player MAY draw a card\"). Two of the five are optional on the opponent's side - Kwain and The Second Doctor both say \"may\". Three more sit outside the stage: Scrawling Crawler at your upkeep (output), Faerie Mastermind's \"{3}{U}: Each player draws a card\" (conversion) and Skyscribing's forecast (fuel). Gated on the BACK face, which appeared in 0.292 of the v1.2.1 run's games, and not modelled by the goldfish - model-coverage gives Heliod only the bodies channel - so every mana figure in this artifact is a floor. Claim, not fact."
+  },
+  {
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Horn of Greed",
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+   ],
+   "verified_by": null,
+   "note": "THE OTHER DIRECTION, and the reason Horn of Greed is a gift piece rather than a draw spell. \"Whenever a player plays a land, that player draws a card\": on each opponent's turn their land drop draws THEM a card, which is {1} off whatever you flash in on that turn under the back face; on your own turn it draws you one. It is the only gift keyed to a land drop rather than a draw step or an activation, so it fires in the opponent's main phase - after Howling Mine's draw-step card has already been banked. Not in the v1.2.1 Forge run's list, so no Forge line; counted in both gift groups of the repaired goldfish declaration. Claim, not fact."
+  },
+  {
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Font of Mythos",
+    "Consecrated Sphinx"
+   ],
+   "verified_by": null,
+   "note": "Font of Mythos is \"at the beginning of each player's draw step, that player draws TWO ADDITIONAL cards\", so it ADDS six opponent draws a round cycle - twelve extra cards for you through Consecrated Sphinx, which draws two on every opponent draw. Counting each opponent's base draw, the cycle is nine opponent draws and eighteen cards. Both halves ran in the v1.2.1 run: 184 Font triggers and 326 Sphinx triggers, but they were cast in 26 and 25 games respectively and nothing in the record says how often they overlapped. Claim, not fact: no stack has resolved this pairing."
+  },
+  {
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Temple Bell",
+    "Smothering Tithe"
+   ],
+   "verified_by": null,
+   "note": "Temple Bell's activation makes each player draw, so each opponent must pay {2} or hand you a Treasure. The mana route from the gift back to the {6}{W} bill. Smothering Tithe is the most-triggered card in the v1.2.1 run - 998 heliod-controlled trigger lines against 24 games in which it was cast, ahead of Scrawling Crawler's 924 and Dictate of Kruphix's 577. Bell was activated 64 times. Claim, not fact: the run does not attribute a Tithe trigger to a Bell activation."
+  },
+  {
+   "from": "ignition",
+   "to": "output",
+   "via": [
+    "Temple Bell",
+    "Psychosis Crawler"
+   ],
+   "verified_by": null,
+   "note": "Psychosis Crawler triggers on YOUR draws, not your opponents' - Temple Bell is one of the gift pieces that draws you a card too, which is what connects them. Measured on the v1.2.1 run, and small: Psychosis Crawler's \"whenever you draw a card, each opponent loses 1 life\" resolved 14 times in 120 games, 42 life in total against Scrawling Crawler's 851. Claim, not fact."
+  },
+  {
+   "from": "ignition",
+   "to": "output",
+   "via": [
+    "Howling Mine",
+    "Scrawling Crawler"
+   ],
+   "verified_by": null,
+   "note": "Scrawling Crawler triggers on OPPONENT draws, which is the other half of the pair and the half Howling Mine feeds. The declared component is \"Table draw engine plus a draw-triggered drain, both drawn\" - goldfish_targets' label, verbatim. It prices ANY of ten gift pieces (Horn of Greed now among them) plus EITHER Crawler, not this specific pair, at 0.32 assembled and 0.189 by turn six, the deck's least reliable declared pairing. THIS IS THE ROUTE THAT ACTUALLY FIRED in the v1.2.1 run: the drain resolved 851 times for 851 life, and Howling Mine contributed 300 of the trigger lines feeding it. Claim, not fact - the logs do not attribute a drain to a specific gift piece."
+  },
+  {
+   "from": "conversion",
+   "to": "fuel",
+   "via": [
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+    "Stroke of Genius"
+   ],
+   "verified_by": null,
+   "note": "CLAIM, and an unsettled one: the back face reduces generic cost, so a discount should let you choose a larger X on Stroke of Genius, Braingeyser, Prosperity, Skyscribing or Mathemagics. Whether that is how the cost is computed is in open_questions for resolve-stack; nothing on disk settles it."
+  },
+  {
+   "from": "fuel",
+   "to": "conversion",
+   "via": [
+    "Alhammarret's Archive",
+    "Consecrated Sphinx"
+   ],
+   "verified_by": null,
+   "note": "Sphinx's 'draw two cards' is two draw events, and the Archive replaces each draw after the first in a draw step - so an opponent's draw becomes four cards, not two. The Archive/Insight replacement effect fired 349 times over the v1.2.1 run, so the doubling half is live; the pairing is not separately counted. Claim: no stack has resolved it."
+  },
+  {
+   "from": "mana",
+   "to": "wincon",
+   "via": [
+    "Sol Ring",
+    "Approach of the Second Sun"
+   ],
+   "verified_by": null,
+   "note": "{6}{W} twice is fourteen mana across two turns, and goldfish mean_available_mana crosses 7 only between turn 7 (6.412) and turn 8 (7.064) on the current list. This is the arrow the deck's whole mana base exists to draw, and the v1.2.1 run puts a number on how often it lands: 27 of 120 games saw a first Approach cast and 12 saw a second. Claim, not fact."
+  },
+  {
+   "from": "mana",
+   "to": "conversion",
+   "via": [
+    "Mind Stone",
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+   ],
+   "verified_by": null,
+   "note": "Mind Stone's \"{T}: Add {C}\" pays the {3} of \"{3}{U/P}: Transform Heliod\" the same way Sol Ring's and Thought Vessel's colourless does, and both of those are in the declared flip component while Mind Stone is not (proposed_goldfish_edits[2]). The rock's own {2} is generic, so under the back face it is a free cast on an opponent's turn - but it can only help the flip, an activated ability, by TAPPING for it; the discount never touches an activation. Not in the v1.2.1 run's list, no Forge line. Claim, not fact."
+  },
+  {
+   "from": "fuel",
+   "to": "wincon",
+   "via": [
+    "Mystical Tutor",
+    "Approach of the Second Sun"
+   ],
+   "verified_by": null,
+   "note": "DOWNGRADED, and the downgrade rests on the resolution steps, not on the checker's aside. The route is sound as oracle text - Mystical Tutor searches for \"an instant or sorcery card\" and Approach of the Second Sun is a Sorcery, both from cards.json - but stack 002 does not prove it: Mystical Tutor appears only in the scenario's title, graveyard, game_history and cards_verified, all PREMISE, and the string occurs ZERO times across the stack's eight resolution steps. The checker's audit disclaims a timing phrase only - \"The 'Last night's end step' phrase in game_history is scenario flavor per orchestrator instruction, not a rules claim\" - which is not a disclaimer of the tutor premise. What 002 proves is the destination, which is the wincon stage."
+  },
+  {
+   "from": "protection",
+   "to": "wincon",
+   "via": [
+    "Swan Song",
+    "Approach of the Second Sun"
+   ],
+   "verified_by": "002",
+   "note": "Stack 002 step 4: Swan Song held with {U} up counters the opponent's counter and Approach still resolves. The stack states the limit itself - Swan Song answers an enchantment, instant or sorcery SPELL, and cannot answer an activated or triggered ability."
+  },
+  {
+   "from": "protection",
+   "to": "fuel",
+   "via": [
+    "Isochron Scepter",
+    "Mystical Tutor"
+   ],
+   "verified_by": null,
+   "note": "THE NEW ROUTE BACK, unverified. Mystical Tutor is one of the thirteen instants at mana value 2 or less the Scepter can imprint (enumerated in stages[5]). If it is the imprint, \"{2}, {T}: You may copy the exiled card. If you do, you may cast the copy without paying its mana cost\" at an opponent's end step puts Approach on top for your next draw, every turn, without spending the Tutor - and after the first Approach has resolved to seventh from the top, that is the second cast's whole problem solved for {2}. Whether the copy's cast counts, and whether Approach drawn this way is still \"cast from your hand\" for its win clause, is open_questions[7] for resolve-stack. Not in the v1.2.1 run's list, no Forge line. Claim, not fact."
+  },
+  {
+   "from": "protection",
+   "to": "conversion",
+   "via": [
+    "Teferi's Protection",
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+   ],
+   "verified_by": null,
+   "note": "The insurance package was added at v1.1.0 because the commander is fragile: on the v1.2.1 run the front face resolved in 68 of 120 games (0.567), 0.76 casts on the mean, and the BACK face - the one carrying the discount and the flash grant - appeared in only 35 (0.292). deck_versions v1.1.0's note prices the change against \"a 45% removal rate\" from 119 measured departures; that decomposition is not on disk in this deck's artifacts and is repeated as the version's stated rationale, not as a figure re-derived here. THE PACKAGE IS IN THE MEASURED LIST AND STILL UNMEASURED IN PRACTICE: Teferi's Protection has no cast line anywhere in the run's logs (one discard), and neither does Guardian of Faith. Lightning Greaves was cast in 29 games and activated 41 times, so one of the five did run."
+  }
+ ],
+ "map_disagreements": [
+  {
+   "component": "THE ASYMMETRY LAYER (conversion)",
+   "cities": [
+    "THE HOME FRONT",
+    "THE GIFT ECONOMY",
+    "THE TAP ROOM"
+   ],
+   "why": "The single most valuable disagreement in this deck. Six cards read the SAME input - an opponent drew a card, or cast a spell - and each states a different OUTPUT, so the map, which is built from card text, files them by what they produce. Smothering Tithe reads as a tap-room card because it says Treasure. Heliod reads as your own board because his type line is a creature. Rhystic Study, Mystic Remora, Consecrated Sphinx and Faerie Mastermind read as the gift economy. No card in the group says what the group is for, so this layer is invisible in card text and cannot be seen by a reader looking at the constellation. The v1.2.1 run makes the case for grouping them: 2,322 trigger lines off one shared event."
+  },
+  {
+   "component": "PROTECTION",
+   "cities": [
+    "THE HOME FRONT",
+    "NOT TODAY",
+    "THE CLEANERS",
+    "THE GIFT ECONOMY",
+    "THE TAP ROOM"
+   ],
+   "why": "26 cards across five cities - the map splits them by HOW they answer (counter text, destroy text, a body, a Treasure rider on An Offer You Can't Refuse) while the deck uses all of them for one job: buy turns until you can cast a seven-drop twice. Kefnet the Mindful lands in THE GIFT ECONOMY because his activated ability draws, which is the least important thing he does here. New at v1.3.0: Isochron Scepter lands in THE TAP ROOM's THE HAND CRANK hood beside Temple Bell and Kwain - the map read \"{2}, {T}:\" as a handle to crank, which is true of the card's shape and says nothing about the thirteen instants it cranks out."
+  },
+  {
+   "component": "WHAT PAYS FOR {6}{W} TWICE (mana)",
+   "cities": [
+    "THE GROUND",
+    "THE TAP ROOM",
+    "THE HOME FRONT"
+   ],
+   "why": "Pearl Medallion and Sapphire Medallion are cost reduction, not production, so the map puts them in THE HOME FRONT's KEEP THE GOD UP hood with the insurance rather than with the rocks. In this deck they do the rocks' job - shave the bill on a colour-heavy curve. goldfish_targets does NOT count them, in any of its eleven targets' need groups (`grep -c Medallion data/decks/heliod/goldfish_targets.json` returns 0): they were in \"Heliod plus the mana to flip him\" until c879dcd removed them, because a spell-cost reducer cannot pay any part of \"{3}{U/P}: Transform Heliod\", an activated ability, and neither card taps for mana. The any_of holds six members and the live figures are 0.741 assembled, 0.561 by turn six, mean turn 4.87. Mind Stone, new at v1.3.0, sits in THE ROCKERY with the other six rocks and is the one rock the any_of omits (proposed_goldfish_edits[2])."
+  },
+  {
+   "component": "THE GIFT (ignition)",
+   "cities": [
+    "THE GIFT ECONOMY",
+    "THE TAP ROOM",
+    "THE GROUND",
+    "THE HOME FRONT"
+   ],
+   "why": "Six of eleven sit in THE GIFT ECONOMY: the four draw-step triggers, The Second Doctor and Horn of Greed. The map split the rest by MECHANISM rather than by what the draw is for - Temple Bell, Kwain and Loran are \"{T}:\" handles and sit in THE TAP ROOM's THE HAND CRANK hood with the rocks and the Treasure makers; Mikokoro is a land; Enlightened Tutor is a search and sits with the tutors regardless of what it fetches in this 99. The tap-room three are exactly the pieces that feed the discount on YOUR turn, so the map's split is the same split lines[0] draws, arrived at from text."
+  },
+  {
+   "component": "ONE CARD (wincon)",
+   "cities": [
+    "THE GIFT ECONOMY"
+   ],
+   "why": "No disagreement, but the address is worth naming: Approach sits in THE GIFT ECONOMY's THE BILL COMES DUE hood with the two Crawlers, Rhystic Study and Mystic Remora - the map read it on 'gain 7 life' and 'seventh from the top' - while Mystical Tutor and Long-Term Plans, the only two cards that find it, sit in THE HOME FRONT's THE SEARCH PARTY hood. The deck's win and its route to the win have different addresses."
+  }
+ ],
+ "unassigned": [],
+ "open_questions": [
+  {
+   "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista or Hangarback Walker - and if so, is X chosen before or after the reduction applies?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "The declared component 'An X-spell finisher drawn (the mana sink the discount pays for)' assembles 0.792 and its whole justification is this interaction. Nothing on disk tests it, and the conversion -> fuel line in this artifact is a claim resting on it."
+  },
+  {
+   "question": "While Lightning Greaves is equipped to Heliod, can you still target him with Karametra's Blessing or Guardian of Faith's enters trigger, and is moving the Greaves off in response possible at instant speed?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "Greaves grants shroud, which stops your own targeting; equip is sorcery-speed. Greaves is the ONE insurance card the v1.2.1 run actually used (29 games cast, 41 activations) while Guardian of Faith and Teferi's Protection have no cast line at all, so if two of the five slots are mutually exclusive with a third while equipped, the 0.683 assembly figure overstates what the pilot can do in a removal window."
+  },
+  {
+   "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod's flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod himself is the commander on the battlefield?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "12 of 120 games reached a second Approach cast and every one of them won. Anything that widens the window for that cast is the highest-leverage rules question this deck has. Stack 002 resolves only the sorcery-speed cast on your own turn; the end-step cast needs either Leyline of Anticipation or Heliod's BACK face, which appeared in 0.292 of games."
+  },
+  {
+   "question": "No declared target measures the deck's actual win: Approach in hand AND seven mana available on two separate turns. Can the harness express a mana condition, or must the gap be recorded rather than modelled?",
+   "settled_by": "goldfish",
+   "why_it_matters": "'Win condition access' is a three-card any_of (Approach, Mystical Tutor, Long-Term Plans) and assembles 0.495, 0.671 with tutors, 0.358 by turn six - it measures DRAWING one of three cards. Forge says the binding constraint is elsewhere: Approach was cast at all in 27 of 120 games but twice in only 12, and mean_available_mana crosses 7 only between turn 7 and turn 8 on the current list."
+  },
+  {
+   "question": "How many tutor and protection slots is a single 'you win the game' card worth in a four-player pod, and how should the one-window cast be timed against three potential responders?",
+   "settled_by": "research-strategy",
+   "why_it_matters": "strategic_frame.json's own gaps list says the strategy doc has NO section on alternate win conditions - the query returns 0.407 and nothing on topic. This deck's entire plan therefore has no home in the corpus, and the wincon stage has one card where threat-density asks for three to five."
+  },
+  {
+   "question": "Can the goldfish measure the card side of this deck - Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind, Psychosis Crawler, Kwain and Loran are all in `draw_not_modelled` - so that a claim about whether mana or cards binds this deck has both arms measured?",
+   "settled_by": "goldfish",
+   "why_it_matters": "meta.card_advantage now reports 14 cards that draw against 6 modelled, with eight named in draw_not_modelled (Irrigated Farmland among them). Forge says the unmodelled half is where the deck lives: 2,322 conversion triggers and 851 drain resolutions over 120 games of the v1.2.1 run, none of it visible to the goldfish. Until that channel is modelled, the mana stage can only say mana is a MEASURED constraint, not that it is the binding one."
+  },
+  {
+   "question": "Should the gift and fort components be scored on a card being ON THE BATTLEFIELD, or on it having been USED? Loran of the Third Path was cast in 32 of 120 Forge games and its draw ability was activated zero times; Temple Bell was cast in 22 and activated 64 times.",
+   "settled_by": "goldfish",
+   "why_it_matters": "'Table draw engine online' assembles 0.921 and is the figure every other stage leans on, but it prices DRAWING one of eleven cards. Two of the eleven (Mikokoro, Temple Bell) and two more (Kwain, Loran) need an activation the deck must have spare mana for, and the repo's own Ashnod's Altar precedent is that a Forge AI may simply never use an outlet with no board payoff. If the assembled rate is really an upper bound, it is an upper bound on the deck's single most-cited number."
+  },
+  {
+   "question": "With Mystical Tutor imprinted on Isochron Scepter, does the copy cast at an opponent's end step put Approach of the Second Sun on top of the library so that drawing and casting it next turn satisfies Approach's \"cast from your hand\" clause for the win - and does a copy of Secure the Wastes cast without paying its mana cost have X = 0?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "lines[12] is the one new line in this revision and it would turn the deck's thinnest declared component ('Win condition access', 0.495) into a repeatable route for {2} a turn. Two of the thirteen imprints (Secure the Wastes, and Enlightened Tutor for a different reason) may be worth nothing on the Scepter, and the pilot should know which before choosing what to exile."
+  }
+ ],
+ "proposed_goldfish_edits": [
+  {
+   "target": "Table draw engine plus a draw-triggered drain, both drawn",
+   "change": "Add Scrawling Crawler to the FIRST any_of (the ten-card gift group). It is already in the first any_of of \"Table draw engine online\" and in the second any_of of this target, so the same file calls it a table draw engine in one target and not in the other.",
+   "why": "Scrawling Crawler is both halves of this label in one card: \"At the beginning of your upkeep, each player draws a card\" is the table draw engine, and \"Whenever an opponent draws a card, that player loses 1 life\" is the draw-triggered drain (oracle text, cards.json). As written the target cannot assemble on it alone - the first group lists Howling Mine, Font of Mythos, Kami of the Crescent Moon, Dictate of Kruphix, Temple Bell, Mikokoro, Kwain, Loran, The Second Doctor and Horn of Greed, and Scrawling Crawler is not among them - so a hand holding the one card that does the whole job scores as half of it. RECEIPT, RE-RUN 2026-09-16 on the repaired file: `grep -c \"Scrawling Crawler\" data/decks/heliod/goldfish_targets.json` returns 4 and `grep -n` puts them at line 18 (first any_of of \"Table draw engine online\"), line 42 (inside the Crawler target's own label, not a member), line 47 (the Crawler any_of) and line 72 (this target's SECOND any_of); this target's first any_of spans lines 56-67 and holds exactly ten names. This target is the deck's lowest at 0.32 assembled and 0.189 by turn six, and lines[5] rests on it - and Forge says this card carried the whole drain axis (851 of 865 resolutions), so the direction of the error matters before the figure is read as a weakness. Note what the edit would decide: `_target_met` evaluates each need group independently against the same hand, so a lone Scrawling Crawler would then satisfy BOTH groups."
+  },
+  {
+   "target": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
+   "change": "Split it, or add a second target that requires Approach of the Second Sun itself rather than any_of three cards - and if the harness can express it, gate on a second cast rather than on drawing the card.",
+   "why": "The v1.2.1 run separates two things this target merges. Approach was cast at all in 27 of 120 Forge games; a SECOND cast happened in 12, and all 12 were wins. The declared target scores 0.495 assembled because it fires on Mystical Tutor or Long-Term Plans being DRAWN, neither of which is the win - Long-Term Plans does not appear anywhere in the run's logs. As written the deck's most-cited access figure is roughly double the rate at which the thing it stands for actually happened. Whether goldfish.py's `_target_met` can express a repeat cast or a mana condition is open_questions[3]."
+  },
+  {
+   "target": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
+   "change": "Add Mind Stone to the any_of, beside Sol Ring and Thought Vessel.",
+   "why": "The group's job is mana that can pay \"{3}{U/P}\", and Mind Stone's \"{T}: Add {C}\" pays the {3} exactly as the two colourless rocks already listed do (oracle text, cards.json; mana_analysis.json lists it among the seven producers). It is the one ramp:rock in the 99 the group omits - the other six members are the other six rocks - and it arrived at v1.3.0 after the group was last edited (c879dcd). The live figures for the six-member group are 0.741 assembled, 0.561 by turn six, mean turn 4.87; adding a seventh member can only raise them, so the current reading is a floor for the component as the deck actually plays."
+  },
+  {
+   "target": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
+   "change": "Re-label: the parenthetical figure is the v1.0.0 run's. The v1.2.1 run reads 43 of 61 attributed eliminations by giada-angels (`eliminated_by` 43, `eliminated_how` {damage: 61}). Membership is right after the 2026-09-16 repair (five in-deck cards).",
+   "why": "The label is quoted by the frame and by this model's protection stage as the fort's justification, and it carries a figure from a run two lists ago. The conclusion is unchanged - 43 of 61 is the same picture as 39 of 53 - but a label that states a measurement should state the current one, or say which run it is from."
+  }
+ ],
+ "notes": [
+  "THE RUN IS ONE LIST BEHIND AND THE COMPARISON IS UNRESOLVED. Every Forge figure in this artifact comes from run `giada-angels-vs-baylen-tokens-vs-abaddon-n120-b0f44e4a-s968800842-podExperimental-c600`, 120 games on 2026-09-09 against the standard pod, heliod seat decklist_sha256 214af3084f80 = v1.2.1. The current sleeved list is v1.3.0 (f1d4a650), which differs from the run's by three cards - Isochron Scepter, Horn of Greed and Mind Stone in for Mikaeus, the Lunarch, Forced Fruition and Angelic Wall - and none of the three new cards has a line in the run's logs. The three opponent seats are byte-identical to the v1.0.0 run (c322a589 / 1435ef91 / 5f137a44) and the AI profiles are the same, so the two runs differ in this deck's list and the seed. v1.0.0 scored 27/108 decided (0.250); v1.2.1 scores 20/100 decided (0.200). `stats.diff_proportions(27,108,20,100)` gives diff -0.0500, Newcombe ci95 [-0.1614, +0.0644], excludes_zero FALSE. `stats.mde_proportion(0.25, 108, 100)` gives a minimum detectable difference of 0.185 at achieved power 0.8152, and `stats.games_for_difference(0.25, d)` returns None (beyond 1000 per arm) at d=0.05, 329 at 0.10 and 152 at 0.15. THE FIFTEEN SWAPS BETWEEN THOSE TWO LISTS PRODUCED A CHANGE THIS BENCH CANNOT MEASURE. Do not read the drop as a decline; do not read it as parity either. Against the fixed reference points the v1.2.1 list is indistinguishable from par (-0.050, [-0.155, +0.056]) and indistinguishable from this table's measured null of 0.180 (+0.017, [-0.083, +0.116]).",
+  "TWENTY-ONE OF 120 GAMES HAVE NO WINNER. `summary.truncated` is 20 and `summary.draws` is 1; a clock-out is a draw Forge prints winner lines for, and both kinds are excluded from the rate. The denominator behind win_rate 0.202 ci95 [0.135, 0.292] is the 99 games with a winner; `summary.win_rate` 0.200 uses 100 and counts the true draw. The v1.0.0 run truncated 12 of 120, so the current run lost 8 more games to the clock - consistent with its longer mean_round (20.9 against 19.8) and mean_global_turn (41.3 against 39.0), and one more reason the two rates are not cleanly comparable.",
+  "A PARSER FIX LANDED BEFORE THIS RUN AND EVERY OLD NONCOMBAT-DAMAGE FIGURE IS VOID. `sim/parse.py`'s owner map previously learned a permanent's controller from only three line kinds, so every damage-dealing artifact and enchantment was anonymous and 88% of all noncombat damage to players was dropped. All 30 stored run records were re-derived; the v1.0.0 record now reads mean 9.45 / median 3.5 where the previous engine model quoted mean 1.68 / median 0.0 from the same file. Nothing in this artifact carries a figure from the pre-fix reading. The remaining defect is stated in stages[4]: `noncombat_damage_dealt_to_players` is not split by whether the target is an opponent, and on the current run 128 of heliod's 148 points are heliod damaging its own seat.",
+  "WHAT THIS MODEL DROPS FROM THE PREVIOUS ONE. (1) The whole Viseling / Iron Maiden / Ebony Owl Netsuke ledger. Those three were cut at v1.1.0 (deck_versions.json: \"the three hand-size punishers and Tireless Tribe out\"), they are not in this 99, and the engine-critic's round-2 correction to it - Viseling appears in ten Combat lines, not zero - is moot for the same reason. (2) The flip cross-tab's apparent penalty (0.114 flip against 0.271 no-flip on the v1.0.0 run) did not replicate; see stages[3]. (3) Every noncombat-damage figure, for the reason in notes[2]. What is CARRIED: the six-inside-plus-three-outside gift enumeration with its `may` split (lines[0]), the 30-of-32 flying enumeration (stages[5].evidence[2]), the 26-20 roleless arithmetic (stages[5].evidence[1]), and the downgrade of Mystical Tutor -> Approach off stack 002 (lines[8]).",
+  "ARCHETYPE. deck_audit reads this deck as `control` and under that archetype four axes are UNDER: mana-base (33 land copies against 37-39), colour-sources (25 W / 26 U against 36), sweepers (2 against 5-7) and interaction-breadth (3 of 5 permanent classes answered; graveyard and land uncovered, and that detection is an oracle-text heuristic with counterspells excluded, so it is a floor). Ramp reads AT, 12 copies in a 10-12 band, with Mind Stone the twelfth - the branch's own constraint for that swap. No axis is over.",
+  "strategic_frame.json carries a stale decklist sha and its component assembly figures are VOID rather than superseded: it was written when Decanter of Endless Water sat in two draw groups it does not belong in, so its 0.935 / 0.854 / mean-turn-2.319 for the table engine, 0.334 for engine-plus-punisher and 0.679 for win-condition access count games the current file does not. This artifact uses goldfish_metrics.json throughout, via engine-facts, which on the current list and the repaired declaration reads 0.921 / 0.822 / 2.499, 0.32 and 0.495. A membership fix changes what the old figures MEANT, so they are not comparable.",
+  "THE CAST LEDGER, and its limit - v1.2.1 run. Counting `Add To Stack: Ai(n)-mm-heliod cast <card>` across the run's four log parts gives 1,898 casts, which reconciles exactly with the record's own `casts` mean of 15.82 over 120 games - so the tally is complete as a count. SIX nonland entries of that list have no cast line at all: Azorius Signet, Guardian of Faith, Long-Term Plans, Psychosis Crawler, Skyscribing and Teferi's Protection. FOUR of those have some other line (a discard, and for Guardian of Faith an ETB trigger, and for Psychosis Crawler 14 drain triggers) - so for at least two of them the absence of a cast line is a LOG-SHAPE fact, not proof the card was never played, and how Psychosis Crawler triggered without appearing in any zone-change or cast line is unreconciled. Long-Term Plans is the clean case: the string does not occur anywhere in the four log parts (re-confirmed for this revision). This is a harness observation, outside an engine model's write scope, and no `settled_by` in the vocabulary covers a parser - recorded here for the orchestrator.",
+  "Five stacks were retired to stacks/retired/ because they need cards this list no longer holds. Only 002 is cited here, and its board names Ancient Tomb, which the deck no longer runs; the ruling it establishes does not depend on that land.",
+  "REVISION 2026-09-16 FOR v1.3.0 (branch artifacts-v1 merged; three swaps, all owned generic-cost artifacts the flipped Heliod casts for free). PLACEMENT, argued from what each card does to the others: Horn of Greed -> ignition, a symmetric each-player draw keyed to the land drop (one discount for you on each opponent's turn, a card for you on yours); Isochron Scepter -> protection, thirteen instants at mana value 2 or less to imprint, ten of them in that stage, the Scepter's {2} cast discounted and its {2},{T} activation not; Mind Stone -> mana, {C} that pays the flip's {3} and cashes in for a card. The cut cards are gone from every stage, line, disagreement and current-fact note; lines[0] and the ignition stage now count FIVE own-turn gift pieces, the X-cost set is eight, the flier set is five. FIGURES moved only where a regenerated artifact moved them: the table engine 0.920 / 0.828 / 2.461 -> 0.921 / 0.822 / 2.499 and both-drawn 0.328 / 0.196 -> 0.32 / 0.189 (the declaration was repaired the same day: the three cut names and Greater Auramancy, never in the 99, removed from every group, Horn of Greed added to both gift groups); the flier-blocker component 0.750 / 0.604 -> 0.68 / 0.529, the one figure the cuts moved by more than a few thousandths, because its sixth member left the 99; mana crossing 7 moved from turn 8-9 to turn 7-8; land drops 0.729/0.603/0.540 -> 0.728/0.593/0.534; flip 0.732/0.554/4.852 -> 0.741/0.561/4.87; every other target within 0.01. Every Forge figure is the v1.2.1 run's and is labelled so. Re-derived from that run's logs for this revision: 39 Approach casts in 27 games, 12 second casts and all 12 the Approach wins, 20 = 12 + 8, 851 drain and 14 Psychosis lines, Ballista 52 games / 99 activations, Greaves 29 games, no cast line for Teferi's Protection, Guardian of Faith or Long-Term Plans; the flip cross-tab (35 flip games / 6 wins, 85 / 14, 10 of 12 Approach wins no-flip) and the seat's 8.42 lands re-derived from the record. The per-card trigger-line tallies are carried from the previous revision's count on the same unchanged run. CRITIC ROUND 2 (fail) was judged on an earlier draft, and its five non-supported findings are settled as follows: the Viseling zero-lines miscount and the 71-of-120 miscount concern a punisher ledger this model no longer carries (those cards left at v1.1.0; notes[3]); the grep receipt is re-run and quoted with its line numbers in proposed_goldfish_edits[0]; the 5.0x parser-gap over-claim is replaced by stages[4]'s life-loss-not-damage reading with the own-seat split stated; the median-0.0 contradiction is moot because every noncombat figure here is from the re-parsed record (notes[2]). The critic block is carried unchanged; this revision has not been re-judged."
+ ],
+ "critic": {
+  "findings": [
+   {
+    "claim": "\"`Iron Maiden`, `Viseling` and `Ebony Owl Netsuke` appear in ZERO lines of those three kinds across all four log parts\" ... \"The 5 games where a punisher IS credited are not explained by that reading and are left open.\"",
+    "note": "MECHANICALLY CHECKABLE, and correcting it CLOSES the note's own open item rather than weakening anything. The ZERO is right for Iron Maiden (0) and Ebony Owl Netsuke (0) and WRONG for Viseling, which appears in TEN `Combat:` lines across the four parts. Five of those ten are owner-populating under the exact regexes notes[5] cites: `RX[\"attack\"]` (parse.py:57) requires a SEAT as defender and `RX[\"block\"]` (58) registers only the BLOCKERS, so of Viseling's ten Combat lines exactly five qualify -- `assigned Viseling (3) to attack Ai(2)-mm-giada-angels`, `assigned Scrawling Crawler (402), Hangarback Walker (371) and Viseling (306) to attack Ai(1)-mm-giada-angels`, `assigned Viseling (306) to block Rabbit Token (417)`, `assigned ... Viseling (205), ... to attack Ai(1)-mm-baylen-tokens`, `assigned Hangarback Walker (169), Viseling (104) and The Second Doctor (164) to attack Ai(4)-mm-baylen-tokens`. Those five lines occur in games 10, 46, 59, 65 and 95 (0-indexed over games[]) -- WHICH ARE EXACTLY THE FIVE GAMES notes[5] records as unexplained, and in four of them the record's credit equals Viseling's own log damage to the digit (11, 17, 6, 37). The two remaining Viseling Combat lines are in games 2 and 41 and are an attack on a PLANESWALKER (`to attack Elspeth, Storm Slayer (299)`, `to attack Serra the Benevolent (29)`) plus a `didn't block` line -- none of which match `attack`/`block`/set owner -- and in neither game is Viseling credited. Seven games, seven correct predictions. So the mechanism in item (4) is not merely \"consistent with\" the anomalies, it explains all five, and the note should say so. The defect is that a ZERO was asserted without the enumeration (agents-common §5); `grep -h Viseling part-*.log | grep -cE '^Combat:'` returns 10. A check that a claim of the form \"X appears in zero lines of kind K\" was actually grepped is not general, but a per-source `owner`-map-membership cross-tab against `noncombat_damage_dealt_to_players` is, and would be one pass over any run's logs.",
+    "status": "miscounted",
+    "where": "notes[5]"
+   },
+   {
+    "claim": "\"VERIFIED PENDING: `grep -c \\\"Scrawling Crawler\\\" goldfish_targets.json` returns 2, both outside the first group of this target.\"",
+    "note": "MECHANICALLY CHECKABLE and it is the one sentence in the proposal whose whole job is to be checkable. `grep -c \"Scrawling Crawler\" data/decks/heliod/goldfish_targets.json` returns **4**; `grep -c '\\\"Scrawling Crawler\\\"'` (with the JSON quotes, i.e. name entries only) returns **3**. Neither is 2. The three name occurrences are lines 18 (first any_of of \"Table draw engine online\"), 47 (the any_of of \"Psychosis Crawler or Scrawling Crawler drawn\") and 72 (the SECOND any_of of this target); the fourth match is inside the label on line 42. \"Both outside the first group of this target\" is also the wrong shape -- there are three name occurrences and all three are outside this target's first group. THE PROPOSAL ITSELF IS SOUND (see the `supported` finding below); this is a false receipt attached to a true claim, and it is the same class round 1 failed the model on -- notes[4]'s \"were verified against goldfish_targets.json before this one was written\". A receipt that has not been run is worse than no receipt.",
+    "status": "miscounted",
+    "where": "proposed_goldfish_edits[0].why"
+   },
+   {
+    "claim": "\"(3) The two disagree per game in 71 of 120.\"",
+    "note": "LOW SEVERITY and I concede the likely rebuttal in advance -- 71 is right under one definition and the note states the other. Against the TRACKED run record at HEAD, comparing `per_seat.heliod.noncombat_damage_dealt_to_players` game-by-game with the log total for the three cards item (2) names (Viseling 381 + Iron Maiden 381 + Ebony Owl Netsuke 240 = 1,002), the two differ in **70** of 120. They differ in **71** if Walking Ballista's 7 points -- the fourth heliod noncombat source aimed at an opposing seat -- are folded in, which is the reading the round-1 critique's phrase \"excluding lines aimed at an mm-heliod seat\" invites. Since item (2) defines the comparand as the three punishers and nothing else, the figure that belongs beside it is 70. One clause naming which set is being compared fixes it, and the fix is cheap because every other number in this note is exact.",
+    "status": "miscounted",
+    "where": "notes[5]"
+   },
+   {
+    "claim": "\"re-counting those three cards in the same logs gives 1,002 points to opposing seats against the seat field's 201 - a 5.0x parser gap whose mechanism is in notes[5]\"",
+    "note": "The ratio is arithmetically true of the two numbers named and misleading as a description of what it measures, and notes[5] already contains the honest version. The 201 is NOT the parser's credit for these three cards: by notes[5]'s own item (3), only **116 points in 5 games** of the record's 201 is punisher damage, so the punisher-specific undercount is **1,002 to 116, 8.6x** -- the parser drops 88.4% of it, not 80%. Worse in the other direction: **124 of the record's 201 (62%) is heliod damaging its OWN seat** -- Adarkar Wastes 82, Talisman of Progress 40, Hangarback Walker 1, Kami of the Crescent Moon 1, all pain damage counted as `damage_dealt_to_players`, which notes[5] states plainly and this sentence does not. So the two quantities being divided are not the same quantity: one is punisher output to opponents, the other is mostly self-damage. A reader of stages[4] alone concludes the parser credited a fifth of the punishers' work; it credited an eighth, and inflated the remainder with damage pointing backwards. The correction is one clause (\"of which the parser credits 116\") and it makes the stage's argument stronger, not weaker.",
+    "status": "over-claimed",
+    "where": "stages[4].what_it_does"
+   },
+   {
+    "claim": "\"the median is 0.0 on both counts, so stages[4]'s verdict stands\" / \"Both counts put the MEDIAN at 0.0, so the verdict holds either way\"",
+    "note": "NOT THE MODEL'S FAULT, AND THE ORCHESTRATOR MUST DECIDE IT. This is exact against the TRACKED record at HEAD, which is what the model was written against and what I judged it on. But the working tree at review time carries an UNCOMMITTED fix to `src/manamap/sim/parse.py` -- the by-name fallback owner map, whose own comment cites \"38,938 points of noncombat damage to players across the 33 stored runs, 88% of the total on heliod's own 120-game run\" -- together with 29 RE-PARSED sim records, this deck's among them (`git diff --stat HEAD -- data/decks/heliod/sim/`: 442 lines changed, rewritten on disk at 15:56, mid-review). Under the re-parsed record heliod's `noncombat_damage_dealt_to_players` reads sum **1,134**, mean **9.45**, MEDIAN **3.5**, nonzero in **86** of 120 -- against 201 / 1.675 / 0.0 / 38 at HEAD. The moment that lands, \"the median is 0.0 on both counts\" is FALSE for the seat field, and every figure in item (1) is stale. THE MODEL'S CONCLUSION SURVIVES: the punisher-only log median, which is the quantity the cut was actually justified on, is still 0.0 with 57 of 120 nonzero, and I re-derived it from the logs independently of any record. But the sentence carrying it will not, and the re-parsed field is still polluted by the same 131 points of own-seat pain damage, so it is not a clean punisher measure either. Everything else the model quotes from this run is unchanged by the re-parse -- 27 wins, 20 Approach, 68 resolved, 35 transformed, 74 eliminated, {damage: 53}, combat 4.11/0.5 and 36.08/24.0 all read identically in both versions -- so the exposure is confined to notes[5] item (1) and one sentence of stages[4]. Decide whether this model is regenerated against the re-parsed run before it is cache-recorded.",
+    "status": "contradicts-artifact",
+    "where": "notes[5], stages[4].what_it_does"
+   },
+   {
+    "claim": "\"the 85 no-flip games hold 23 wins (0.271), 18 by Approach; the 35 flip games hold 4 (0.114), 2 by Approach. So 23 of the 27 and 18 of the 20 arrived without the flip.\"",
+    "note": "ROUND 1'S LARGEST FINDING, ANSWERED EXACTLY. Re-derived the cross-tab from the tracked record's own `games[].per_seat.heliod.commander_transformed_turn` against `games[].winner` and `won_by`: 85 games with a null transform turn hold 23 wins, of which 18 read \"effect of 'Approach of the Second Sun'\" and 5 read \"all opponents have lost\"; 35 games with a transform turn hold 4 wins, 2 Approach and 2 attrition. 23/85 = 0.2706, 4/35 = 0.1143. Totals 27 and 20 reconcile. Every digit is right. AND THE REFUSAL IS EXPLICIT, NOT IMPLIED -- the artifact writes \"WHAT THAT CANNOT SAY is why. Flipping may be bad for you, or may only MARK the long games this deck survives into and then loses; nothing separates the two and this model claims neither.\" That is a stated refusal naming both alternatives, which is the strongest form available. The stage also correctly re-scopes the surviving claim to what the split does support -- \"It does say the wins do not WAIT on the flip\" -- rather than dropping the argument.",
+    "status": "supported",
+    "where": "stages[3].what_it_does"
+   },
+   {
+    "claim": "\"SIX cards in this stage carry no answer role, not five ... The arithmetic is 26 - 20, not 26 - 21: only 20 of the deck's 21 answer cards sit here, because Walking Ballista carries the deck's ONLY removal:damage and this model files it in output.\"",
+    "note": "Exact. Re-derived over data/card_roles.json using benchmark.json's own six classes: the protection stage's 26 cards hold exactly SIX with no answer role -- Leyline of Anticipation, Propaganda, Ghostly Prison, Archangel of Tithes, Angelic Wall, Drift of Phantasms -- and the deck holds exactly 21 answer entries (21 copies, no basics involved), of which exactly one, Walking Ballista, sits outside this stage. Walking Ballista is the deck's sole `removal:damage` holder, confirmed by sweep over all 85 entries. 26 - 20 = 6. benchmark.json's three headline figures are verbatim: answer_cards 21, answer_share 0.25, classes_covered 6 of classes_possible 15. The evidence entry also does the thing round 1 asked for and named the artifact disagreement in place rather than burying it.",
+    "status": "supported",
+    "where": "stages[5].evidence[1].note"
+   },
+   {
+    "claim": "\"30 carry flying on the body. Starnheim Aspirant ... and BISHOP OF WINGS ... has no flying either\" / \"30 of whose 32 creature cards carry flying ON THE BODY - not all 32\"",
+    "note": "Enumerated independently and exact. data/opponents/giada-angels/decklist.txt holds 75 entries, of which 32 have Creature in the type line (31 plus the commander Giada, Font of Hope). Stripping every `create ... .` clause from each oracle_text in cards.csv and then searching for the keyword leaves exactly two without it: Bishop of Wings (Human Cleric, flying only on the Spirit tokens it makes) and Starnheim Aspirant (Human Cleric, cost reduction only). 30 of 32. strategic_frame.json's text is verbatim as quoted -- \"31 of whose 32 creature cards carry flying (enumerated from data/opponents/giada-angels/decklist.txt against cards.csv; the lone exception is Starnheim Aspirant)\" -- so the disagreement between the two artifacts is real and correctly attributed. The re-scoping is the right move: the conclusion the fort layer rests on survives at 30 of 32, and the stage says so rather than dropping the argument.",
+    "status": "supported",
+    "where": "stages[5].evidence[2].note, stages[5].what_it_does"
+   },
+   {
+    "claim": "\"SIX gift pieces in the ignition stage feed the discount on your own turn, not four ... Two of the six are optional on the opponent's side - Kwain and The Second Doctor both say 'may'\"",
+    "note": "Exact, and it is a CLOSED set correctly closed. Swept all eleven ignition entries' oracle text in cards.json. Feeding the discount on your own turn: Temple Bell (\"{T}: Each player draws a card\"), Mikokoro, Kwain and Loran on activation, The Second Doctor (\"At the beginning of your end step, each player may draw a card\") and Forced Fruition (\"Whenever an opponent casts a spell, that player draws seven cards\") = six. The other five are the four each-player's-draw-step permanents, which contribute {0} on your turn, plus Enlightened Tutor, which draws nobody. The `may` split is right on the text: Kwain and The Second Doctor both read \"may\", the other four are mandatory. The three named outside the stage are right and correctly located -- Scrawling Crawler (output, \"at the beginning of your upkeep\"), Faerie Mastermind's \"{3}{U}: Each player draws a card\" (conversion), Skyscribing's forecast (fuel). \"model-coverage gives Heliod only the bodies channel\" is exact: `model-coverage heliod --json` gives the commander possible ['bodies'], active ['bodies'], dark_channels []. Correctly left as \"Claim, not fact\" with no verified_by.",
+    "status": "supported",
+    "where": "lines[0].note"
+   },
+   {
+    "claim": "the restored component label and the checker's exact sentence",
+    "note": "Both round-1 mis-citations corrected exactly. lines[4]: \"Table draw engine plus a draw-triggered drain, both drawn\" is byte-identical to goldfish_targets.json's label, the attribution of \"Engine + punisher assembled\" to strategic_frame.json is right, and the figures 0.328 / 0.196 match goldfish_metrics.json's assembled_rate and by_turn_6_rate for that target. \"ANY of ten gift pieces plus EITHER Crawler\" is exact -- the first need group holds ten names and the second holds two. lines[8]: the checker's sentence is verbatim from stacks/002's checker.audit.missing_steps -- \"The 'Last night's end step' phrase in game_history is scenario flavor per orchestrator instruction, not a rules claim.\" -- and the widening is gone. The downgrade now rests where it should: stack 002's `resolution.steps` holds EIGHT steps and the string \"Mystical Tutor\" occurs ZERO times across all eight; its four occurrences in the file are the title, scenario.graveyard, scenario.extras.game_history and checker.cards_verified, all premise. One trivial imprecision: the note says the tutor appears \"only in the scenario's graveyard and its game_history\", which omits the title and cards_verified -- both also premise, so the argument is unaffected.",
+    "status": "supported",
+    "where": "lines[4].note, lines[8].note"
+   },
+   {
+    "claim": "the withdrawal of the Medallion proposal and the new one that replaces it",
+    "note": "The withdrawal is fully verified and the replacement does NOT repeat round 1's error. `git show c879dcd^:...goldfish_targets.json | grep -c Medallion` = 2 and `git show c879dcd:...` = 0, and c879dcd's stat shows it touched engine.json and goldfish_targets.json in the same commit -- exactly as notes[4] states. On the current file `grep -c Medallion` = 0, the \"Heliod plus the mana to flip him\" any_of holds the six named members, and the live figures are assembled_rate 0.732 / by_turn_6 0.554 / mean_turn 4.852 against 7aa3d17's pre-edit 0.823 -- every one exact. The rules point survives correctly in map_disagreements[2] (neither Medallion has a mana ability, and a spell-cost reducer cannot pay any part of an activated ability), and stages[0]'s cross-reference now points there instead of at the void proposal. notes[4]'s three applied edits all check out: the win-condition any_of is three cards with no Walking Ballista, the punisher target's second group names both Crawlers, the flier-blocker label carries Kefnet's seven-card condition. THE NEW PROPOSAL IS TRUE OF THE CURRENT FILE: Scrawling Crawler is in the first any_of of \"Table draw engine online\" (eleven members) and is absent from the first any_of of \"Table draw engine plus a draw-triggered drain\" (ten members) while sitting in its second, and its oracle text is both halves of that label. One thing the proposal should state and does not: `_target_met` in goldfish.py evaluates each need group independently against the same hand, so after the edit a lone Scrawling Crawler would satisfy BOTH groups and assemble a target whose label says \"both drawn\". That is arguably correct and is certainly a decision the goldfish owner should be told they are making.",
+    "status": "supported",
+    "where": "notes[4], map_disagreements[2].why, stages[0].what_it_does, proposed_goldfish_edits[0]"
+   },
+   {
+    "claim": "keeping Approach as the SPOF and attaching the qualifier as an evidence entry",
+    "note": "The right call, made the right way, and every figure in it is exact. The field validates against the 99 so a hedge cannot go inline; putting the hedge in an evidence entry beside it is the only place it fits. Verified: 20 of heliod's 27 wins read won_by \"effect of 'Approach of the Second Sun'\" and 7 read \"all opponents have lost\"; deck_audit's `engine.single_points_of_failure` is `[]`; deck-facts' role histogram gives wincon:alt 1 (Approach) and wincon:drain 2 (Psychosis Crawler, Scrawling Crawler) and NO other wincon role in the 99, so the enumeration behind \"the only other win-flavoured roles\" is closed and correct; the two Crawlers' component reads 0.366 / 0.256 and the seat's noncombat median is 0.0, as stated. The closing instruction -- \"Read the field as 'the only card that WINS', not 'the only way the game ends'\" -- is the disambiguation a machine reader needs and the disagreement with deck_audit is named rather than hidden.",
+    "status": "supported",
+    "where": "stages[6].single_point_of_failure, stages[6].evidence[3]"
+   },
+   {
+    "claim": "the whole derived punisher ledger",
+    "note": "THE BEST-EVIDENCED PARAGRAPH IN THE ARTIFACT, and the engineer was right to defend rather than soften. Re-derived every figure from the logs and the tracked record. (1) `per_seat.heliod.noncombat_damage_dealt_to_players` sums to 201, mean 1.675, median 0.0, nonzero in 38 -- exact. (2) Splitting the four log parts on `Game Result: Game N ended` and summing `Damage: <card> (id) deals N non-combat damage to <seat>` excluding mm-heliod targets: Viseling 381 (382 gross, one point aimed at heliod's own seat), Iron Maiden 381, Ebony Owl Netsuke 240 = 1,002; mean 8.35, median 0.0, nonzero 57 of 120, max 49 -- all five exact. (4) the record equals the heliod-source non-punisher total in 95 of 120 games; that total is 131 across the run with 124 aimed at heliod's own seat, itemised Adarkar Wastes 82 / Talisman of Progress 40 / Hangarback Walker 1 / Kami of the Crescent Moon 1 -- exact, and the residual 7 is Walking Ballista. The 5 games credit 116 punisher points, 11.6% of 1,002 -- exact. The parse.py citations are exact AGAINST HEAD, which is the state the model was written against: line 524 at HEAD is `elif ev[\"noncombat\"] and src_seat in per:` with `src_seat = owner.get(src_id)` four lines above, and 244 / 263 / 269 are the three `g[\"owner\"][...] = ...` assignments under `RX[\"land\"]`, `RX[\"attack\"]` and `RX[\"block\"]`. ON THE HONESTY QUESTION: notes[5] does NOT overstate the punisher output. It derives a mean (8.35) five times the record's, then refuses to use it -- \"the median is 0.0 on both counts, so stages[4]'s verdict stands\" -- and it names the self-damage pollution outright, itemised, with the mechanism (\"pain damage counted as damage DEALT TO PLAYERS, since the target seat is in `per`\"). That is a paragraph arguing against its own headline. The only thing it leaves for the reader to compute is the headline share: Adarkar Wastes' 82 is 41% of the record's 201, and the own-seat total 124 is 62%. Stating those two percentages would cost one clause and is the difference between naming a component and naming a defect.",
+    "status": "supported",
+    "where": "notes[5] items (1), (2) and the parse.py citations in (4)"
+   },
+   {
+    "claim": "byte-identity of everything round 1 marked supported",
+    "note": "Verified programmatically rather than by eye: loaded the tracked engine.json at 569f8c0 and the current one and walked both trees key by key. Exactly sixteen leaves differ -- lines[0].note, lines[4].note, lines[8].note, map_disagreements[2].why, notes[4], notes gaining a sixth entry, proposed_goldfish_edits[0]'s three fields, stages[0/3/4/5].what_it_does, stages[5].evidence gaining a third entry with evidence[1].note rewritten, and stages[6].evidence gaining a fourth. NOTHING ELSE MOVED. So lines[9] and its verified_by 002, lines[10].note, all seven city evidence entries, the three closed-set enumerations in stages[1]/[2]/[4] and every quantitative figure round 1 re-derived are byte-identical and stand as supported. Length compliance holds with room, though not much: conversion 1793, output 1787, mana 1780, protection 1766, wincon 1690, ignition 1644, fuel 1545 -- all under the 1,800 cap, and conversion absorbed the whole cross-tab while shrinking by 4 characters. Four of seven remain within 35 characters of the cap, so the next revision still has no room in conversion, output or mana without cutting first; the corrections this round asks for are all one clause, which fits.",
+    "status": "supported",
+    "where": "stages[*], lines[*] -- the unscoped remainder"
+   }
   ],
-  "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice; the second cast is 12 for 12 and everything else is the wait.",
-  "unassigned": []
+  "iterations": 2,
+  "note": "Round 2. Nine of fourteen findings are `supported` — the critic re-derived every correction the engineer claimed and all but four figures are exact to the digit. Still FAIL, and the reason closes the artifact's own open item: `notes[5]` asserts the three punishers appear in ZERO Land/Attack/Block lines, and Viseling appears in TEN Combat lines, five of them owner-populating, in games 10/46/59/65/95 — exactly the five games the note itself recorded as unexplained. The anomaly and its cause were both in the document, unjoined.\n\nTWO THINGS A LATER READER MUST KNOW ABOUT THIS VERDICT. First, the review straddled a parser change: `parse.py`'s owner map was fixed and this deck's sim record re-derived WHILE the critic was reading it, taking heliod's noncombat median from 0.0 to 3.5. The critic noticed and said so. Its conclusions survive; several sentences carrying them now cite a superseded figure. Second, and larger: every Forge figure in this document describes the PRE-SKIES list. The run's own `seats[0].decklist_sha256` is decc32b0 (v1.0.0-era) against a current 214af30, and Viseling, Iron Maiden and Ebony Owl Netsuke — the whole punisher axis this round argued about — were CUT in the skies-v1 merge the day after the run. Not cache-recorded.",
+  "previous_rounds": [
+   {
+    "findings": [
+     {
+      "claim": "\"The multiplier this stage is named for was live in 35 games, not 68; in 85 of 120 it never appeared and the deck still took its 27 wins, 20 with Approach.\"",
+      "note": "MECHANICALLY CHECKABLE, and this is the number the whole conversion-stage argument turns on. Cross-tabbing the run record's own per-game fields — games[].per_seat.heliod.commander_transformed_turn against games[].winner and games[].won_by, in sim/giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84-s573917060-podExperimental-c600.json — gives: 85 games with NO transform hold 23 wins and 18 Approach wins; 35 games WITH transform hold 4 wins and 2 Approach wins. So it is 23 of the 27 and 18 of the 20, not all of them. REBUT BY STRENGTHENING, NOT WEAKENING: the corrected split makes the point harder, since the no-flip win rate is 23/85 = 0.271 against 4/35 = 0.114 with the flip, and the commander never RESOLVED at all in the games holding 17 of the 27 wins (games_resolved 68 hold only 10). Do not assert causation from that — long games are both the ones you flip in and the ones you lose — but the artifact currently claims a clean 27/85 that the record does not contain. A `commander_transformed_turn` x `winner` cross-tab is one pass over games[] and could be a permanent check on any line that prices a commander event against a win column.",
+      "status": "miscounted",
+      "where": "stages[3].what_it_does"
+     },
+     {
+      "claim": "\"Temple Bell, Mikokoro, Kwain and Loran are the four gift pieces that feed the discount on your own turn.\"",
+      "note": "A closed-set claim, presented as the correction that motivated re-pointing the line, and the set is larger than four. Swept every oracle_text in the 99 for text that makes an opponent draw. INSIDE the ignition stage the model missed two: The Second Doctor — \"How Civil of You — At the beginning of YOUR end step, each player may draw a card\" — and Forced Fruition — \"Whenever an opponent casts a spell, that player draws seven cards\", which fires whenever an opponent casts an instant during your turn, for {7}. That is six, not four. OUTSIDE the stage there are more: Scrawling Crawler \"At the beginning of YOUR upkeep, each player draws a card\" (free, automatic, every turn, and placed in `output`), Faerie Mastermind \"{3}{U}: Each player draws a card\" (in `conversion`), and Skyscribing's forecast \"{2}{U}, Reveal this card from your hand: Each player draws a card. (Activate only during your upkeep...)\" (in `fuel`). The artifact already contradicts itself here: stages[2].what_it_does says Braingeyser, Stroke of Genius and Mathemagics \"feed the same turn's discount only when aimed at an opponent\". The Second Doctor omission is the costly one — its window is your own end step, which is exactly the window open_questions[2] asks about for the second Approach under the flash grant. The NEGATIVE half of the note (Howling Mine, Font of Mythos, Kami, Dictate fire in each player's draw step and contribute {0} on your turn) is correct and should be kept verbatim.",
+      "status": "over-claimed",
+      "where": "lines[0].note"
+     },
+     {
+      "claim": "\"Drop Pearl Medallion and Sapphire Medallion from the any_of\" ... \"two of its eight members cannot contribute to the event the label is about\" ... \"a 0.823 assembled_rate for this target\"",
+      "note": "MECHANICALLY CHECKABLE. The proposal is void: goldfish_targets.json's \"Heliod plus the mana to flip him\" any_of holds SIX members — Arcane Signet, Azorius Signet, Decanter of Endless Water, Sol Ring, Talisman of Progress, Thought Vessel — and `grep -c Medallion goldfish_targets.json` returns 0. Git shows why: the Medallions were in that any_of through 7aa3d17 and were removed at c879dcd, the same commit that shipped this engine.json, so the proposal describes a file state that no longer exists. The rate is stale from the same moment — 0.823 is 7aa3d17's goldfish_metrics figure for that target; the current file reads assembled_rate 0.732, by_turn_6 0.554, mean_turn 4.852. This also falsifies notes[4], which states the proposals \"were verified against goldfish_targets.json before this one was written\". The RULES point inside the proposal is sound and worth keeping somewhere — a cost reduction on spells cannot pay any part of \"{3}{U/P}: Transform Heliod\", an activated ability — but it is now a fact about a fix already made, not a pending edit. A check that every card named in a proposed_goldfish_edits target actually appears in that target is cheap and general.",
+      "status": "contradicts-artifact",
+      "where": "proposed_goldfish_edits[0]"
+     },
+     {
+      "claim": "\"Pearl Medallion and Sapphire Medallion ... In this deck they do the rocks' job — shave the bill on a colour-heavy curve — which is also how goldfish_targets counts them.\"",
+      "note": "MECHANICALLY CHECKABLE. goldfish_targets.json does not count them at all: neither Medallion appears in any of the eleven targets' `need` groups (zero occurrences of the string \"Medallion\" in the file). Same root cause as the finding on proposed_goldfish_edits[0] — both sentences were written against the pre-c879dcd target list. The cross-reference in stages[0].what_it_does (\"and why they cannot pay any part of the commander's flip; see proposed_goldfish_edits\") points at the same void proposal and needs to go with it.",
+      "status": "contradicts-artifact",
+      "where": "map_disagreements[2].why"
+     },
+     {
+      "claim": "\"benchmark response: answer_cards 21, answer_share 0.25, 6 of 15 classes covered; the 5 remaining cards in this stage (the three taxers and two Wall-type blockers) carry no answer role at all\"",
+      "note": "MECHANICALLY CHECKABLE. Re-derived over card_roles.json using benchmark.json's own six classes (counterspell, protection:self, removal:bounce, removal:damage, removal:spot, removal:sweeper): SIX cards in the protection stage carry no answer role — Propaganda, Ghostly Prison, Archangel of Tithes, Angelic Wall, Drift of Phantasms, and LEYLINE OF ANTICIPATION, which the same stage's own prose lists under COMMANDER INSURANCE and which deck-facts puts in `roles.no_role`. The \"5\" is 26 minus 21, which silently assumes all 21 answer cards sit in this stage. They do not: Walking Ballista carries `removal:damage` and is the deck's only card in that class, and this model files it in `output`. So the arithmetic is 26 − 20 = 6. The gap is itself worth naming — benchmark counts Walking Ballista among the 21 answers while the engine model reads it as output, which is a real disagreement between two artifacts about one card and is not currently in map_disagreements. The three benchmark headline figures (21 / 0.25 / 6 of 15) are exact and should be kept.",
+      "status": "miscounted",
+      "where": "stages[5].evidence[1].note"
+     },
+     {
+      "claim": "\"`eliminated_by` attributes 39 of heliod's 53 ATTRIBUTED eliminations to giada-angels, whose every threat flies.\"",
+      "note": "The enumeration was not run and it has two exceptions. Enumerated data/opponents/giada-angels/decklist.txt against the corpus: 31 creature cards plus the commander Giada, Font of Hope = 32, of which THIRTY carry the flying keyword. The two that do not are Starnheim Aspirant (Creature — Human Cleric, \"Angel spells you cast cost {2} less to cast\") and BISHOP OF WINGS (Creature — Human Cleric), whose only occurrence of the word flying is on the Spirit tokens it makes when an Angel dies — the exact text-match trap CLAUDE.md warns about. strategic_frame.json makes the same claim as \"31 of whose 32 creature cards carry flying ... the lone exception is Starnheim Aspirant\" and misses Bishop of Wings too, so an unenumerated figure has now been copied forward and HARDENED into an unqualified superlative. THE CONCLUSION SURVIVES — 30 of 32, and both exceptions are two-power support bodies, so reading the 39 eliminations as coming from the air is well carried — but the phrase as written is false, and it is the stated justification for v1.2.0's fort layer and for the label on goldfish_targets' flier-blocker target (\"39 of 53 eliminations came from the air\"). Re-scope to what survived rather than dropping the argument.",
+      "status": "over-claimed",
+      "where": "stages[5].what_it_does"
+     },
+     {
+      "claim": "\"the checker's own audit says the game_history sentence 'is scenario flavor per orchestrator instruction, NOT A RULES CLAIM'\"",
+      "note": "The quote is real but its scope has been widened. Stack 002's checker audit reads: \"The 'Last night's end step' phrase in game_history is scenario flavor per orchestrator instruction, not a rules claim.\" The checker scoped that to one phrase — a timing detail — not to the whole game_history sentence and not to the Mystical Tutor premise. THE VERDICT IS CORRECT AND MUST STAND: Mystical Tutor appears only in scenario.graveyard and scenario.extras.game_history, no resolution step reasons about it, and stack 002 therefore does not prove fuel → wincon. Downgrading this line was the right call and this finding is about the quote, not the decision. Replace with the checker's exact sentence and rest the downgrade on the resolution steps, which carry it on their own.",
+      "status": "mis-cited",
+      "where": "lines[8].note"
+     },
+     {
+      "claim": "\"The declared 'Engine + punisher assembled' component prices the two-piece at 0.328 assembled, 0.196 by turn six\"",
+      "note": "No component with that label exists in goldfish_targets.json or goldfish_metrics.json. The live label is \"Table draw engine plus a draw-triggered drain, both drawn\". 'Engine + punisher assembled' is strategic_frame.json's name for it — and this artifact's own notes[1] declares the frame's figures VOID and says \"This artifact uses goldfish_metrics.json throughout, via engine-facts\". The FIGURES are right (0.328 / 0.196 are the live ones; the frame's own numbers for it are 0.334 / 0.204, which is the pair notes[1] correctly lists as differing). Second, smaller point: the component's first need-group is the ten-card gift, not Howling Mine alone, so it prices \"any gift piece plus either Crawler\", not this specific pair — say which. A check that a quoted component label matches a goldfish_targets label is mechanical.",
+      "status": "mis-cited",
+      "where": "lines[4].note"
+     },
+     {
+      "claim": "\"engine-critic re-derived the same logs and got several times that from those three cards alone, an open attribution question about the parser.\"",
+      "note": "The CLAIM IS TRUE — I re-derived it independently — but the citation form is unusable: it cites an agent by name, engine.json carries no `critic` key at all, and the only copy of that agent's output lives in gitignored .agent-out/, so no reader can check it. Cite the derivation instead of the byline. From the run's own logs (sim/logs/.../part-0*.log), counting `Resolve Stack: <card>` lines: Iron Maiden 26, Viseling 33, Ebony Owl Netsuke 22 = 81, which confirms the artifact's \"81 castings ... (26 + 33 + 22)\" EXACTLY. Summing `Damage: <card> (id) deals N non-combat damage to <seat>` over the same logs, excluding lines aimed at an mm-heliod seat: 1,002 points across 120 games, mean 8.35 a game, against the record's seat figure noncombat_damage_dealt_to_players.mean of 1.68 — a factor of 5.0. And the artifact's load-bearing hedge holds under re-derivation: per-game punisher damage has MEDIAN 0.0, with only 57 of 120 games showing any, so \"The median is unaffected either way\" is verified, not merely asserted. Splitting the log by `Game Result: Game N ended` boundaries is a mechanical check and would make this a figure rather than a memory.",
+      "status": "unverified-line",
+      "where": "stages[4].what_it_does"
+     },
+     {
+      "claim": "\"Approach of the Second Sun\", asserted in the field with no qualifier",
+      "note": "Low severity and the prose is honest, but the field is machine-read and the caveat that carries it lives only in what_it_does: the same stage says \"roughly a quarter of the wins did not need the card\", and I confirm 7 of heliod's 27 wins read won_by \"all opponents have lost\" (20 read the Approach effect — an exact match to the artifact's tally). deck_audit's own `engine.single_points_of_failure` is `[]`, since every declared component has two or more members; this model asserts one and does not note the disagreement. It is a defensible authored SPOF — the stage genuinely holds one card and there is no second finisher — but a consumer reading the field alone gets an unqualified claim about a deck that closes without it a quarter of the time.",
+      "status": "over-claimed",
+      "where": "stages[6].single_point_of_failure"
+     },
+     {
+      "claim": "length 1797 characters against the 1800 cap",
+      "note": "Not a content finding; a revision-feasibility one, raised because three of the findings above land in stages that have no room. Measured lengths: conversion 1797, mana 1784, output 1783, protection 1774, ignition 1644, wincon 1690, fuel 1545. Four of seven sit within 30 characters of the cap and conversion has THREE. The conversion correction (23/27 and 18/20 rather than 27 and 20) and the protection correction (six roleless cards, not five; the Bishop of Wings exception) cannot be written without cutting existing text first. Nothing here is muddled — the prose is dense but each paragraph does one job — so the cut should come from the figures that are restated elsewhere, not from the reasoning.",
+      "status": "over-claimed",
+      "where": "stages[3].what_it_does"
+     },
+     {
+      "claim": "protection → wincon via Swan Song + Approach of the Second Sun, verified_by 002",
+      "note": "THE ONLY VERIFIED LINE, and it carries its claim. Opened stacks/002-approach-second-sun-tutor-win.json: checker.verdict is pass; step 4's action is exactly \"you respond with Swan Song for {U}, targeting that instant\", and the checker's step-4 findings support it on 117.7 (the response resolves first), 701.6a (countering removes the opponent's instant) and 113.9 — which is also the source of the limit the note honestly states, that Swan Song cannot answer an activated or triggered ability. The checker's audit independently settles the mana the note relies on: \"{W}{W}{U}{5} covers {6}{W} with {U} left for Swan Song\". The from/to stages are right (Swan Song is in protection, Approach in wincon) and the stack is about the interaction between them, not merely a board that happens to contain both. Note stack 002's board names Ancient Tomb, which this list no longer runs; the artifact says so itself, and the ruling does not depend on it.",
+      "status": "supported",
+      "where": "lines[9]"
+     },
+     {
+      "claim": "the city membership counts in all seven stages",
+      "note": "Verified card-for-card against deck_map.json (level-0 regions, using `fallback` since every `label` is null). mana 17 Mana / 6 Ramp / 2 Bodies; ignition 9 Card Flow / Mikokoro in Mana / Enlightened Tutor in Bodies; fuel 6 Card Flow and the named 4 in Bodies; conversion 4 Card Flow / Heliod in Bodies / Smothering Tithe in Ramp; output 4 Bodies / both Crawlers in Card Flow; protection 11 Bodies / 7 Card Flow II / 6 Interaction / Kefnet in Card Flow / An Offer You Can't Refuse in Ramp; wincon 1 Card Flow. Every count and every named stray is exact, including the map_disagreements city lists and the observation that Mystical Tutor and Long-Term Plans sit in city-0-hood-1 \"Tutors\" inside Bodies. Structure is clean too: 85 of 85 entries placed, no duplicates, no card placed that is not in cards.json, and every line's via cards split correctly across its from and to stages.",
+      "status": "supported",
+      "where": "stages[*].evidence[kind=city]"
+     },
+     {
+      "claim": "the goldfish, Forge, mana_analysis, benchmark, bracket and deck-audit numbers",
+      "note": "Re-derived, all exact. goldfish_metrics.json: all eleven target rates as quoted (0.92/0.97/0.828/2.461; 0.787/0.581; 0.843/0.707; 0.790; 0.495/0.677/0.361; 0.680/0.526; 0.750; 0.487/0.355; 0.366/0.256; 0.328/0.196), mana crossing 7 between turn 8 (6.966) and turn 9 (7.612), land drops 0.729/0.603/0.540, interaction 0.626 castable against 0.927 in hand at turn six, and the two superlatives in stages[1] both hold (next-highest assembled_rate 0.843, next-lowest mean turn 2.819). Sim seat block: 68 resolved / 0.567 [0.477, 0.652], 35 transformed / 0.292 [0.218, 0.378], 0.69 casts, first flip median global turn 34, eliminated in 74 games with eliminated_how {damage: 53} so 21 unattributed, eliminated_by giada 39 / baylen 8 / abaddon 6, heliod credited with 7 kills (baylen 4, abaddon 2, giada 1), combat dealt 4.11/0.5, taken 36.08/24.0, noncombat 1.68/0.0, games_reaching_21 zero, placement 94 ranked 16/43/24/11 mean 2.319, 27 wins with won_by 20 Approach and 7 attrition, win_rate 0.252 CI95 [0.180, 0.342], seat sha decc32b080fe with the record's own launch-.dck note. The parser quote \"turn 24 of a four-handed game is round 6\" is verbatim from the record's limits. mana_analysis.json: 25 W / 26 U against source_targets 36, lands_only 0.610/0.639, lands_only_ungated 0.580/0.610, Skycloud Expanse the one gated source, and the \"yardstick, not a possibility, in a 33-land deck\" quote verbatim. benchmark.json 0.2532 with turn six worst; bracket_report floor 4 on 8 Game Changers with no two-card infinites. deck-audit: archetype control, sweepers 2 against 5–7, mana-base 33 against 37–39, colour-sources and interaction-breadth under, graveyard and land uncovered, and the audit's own \"oracle-text heuristic ... counterspells deliberately excluded\" floor caveat. notes[1]'s six frame-versus-live differences (0.935→0.920, 0.854→0.828, 2.319→2.461, 0.334→0.328, 0.204→0.196, 0.679→0.495) and the \"makes nobody draw\" quote are all exact, and notes[4]'s first three applied edits are all present in goldfish_targets.json. ONE THING TO FLAG THAT IS NOT THE MODEL'S FAULT: the run record disagrees with itself — summary says decided 108 / win_rate 0.25 while analysis and analysis.seats.heliod say 107 / 0.252. The model used the seat block, which is the right one, but nothing says so.",
+      "status": "supported",
+      "where": "stages[*] and lines[*] — every quantitative figure not named in another finding"
+     },
+     {
+      "claim": "the three closed-set enumerations: only two cards can find Approach; four cards lift the discard step; Enlightened Tutor reaches five of the ten gift pieces",
+      "note": "All three swept over the 85 entries and all three are right. \"Search your library\" appears on exactly five cards — Mystical Tutor (instant or sorcery), Long-Term Plans (any card), Enlightened Tutor (artifact or enchantment), Drift of Phantasms (transmute at mana value 3 against Approach's 7) and Flooded Strand (a Plains or Island) — so only the first two can reach a {6}{W} Sorcery, and Dig Through Time is a look, not a search. \"maximum hand size\" appears on exactly four — Reliquary Tower, Decanter of Endless Water and Thought Vessel read \"You\", The Second Doctor reads \"Players\" — so the asymmetry the output stage prices is real. Enlightened Tutor reaches exactly Howling Mine, Font of Mythos, Temple Bell (Artifacts), Dictate of Kruphix and Forced Fruition (Enchantments) among the ten; Kami, Mikokoro, Kwain, Loran and The Second Doctor are out on type. The X-spell partition is also correct: nine cards carry {X}, five draw (two symmetric — Prosperity, Skyscribing — and three targeted), four leave a permanent. lines[1] and lines[6] check out on the rules as well: Font of Mythos adds 6 opponent draws a cycle for 12 Sphinx cards and 9 draws for 18 in total (CR 121.2, each card is a separate draw event), and Alhammarret's Archive replaces both of Sphinx's draws when they happen outside your own draw step, for four (CR 614.5 stops re-application), so \"four cards, not two\" holds.",
+      "status": "supported",
+      "where": "stages[2].what_it_does, stages[4].what_it_does, stages[1].what_it_does"
+     },
+     {
+      "claim": "\"that decomposition is not on disk in this deck's artifacts and is repeated here as the version's stated rationale, not as a figure I re-derived\"",
+      "note": "Independently confirmed and it is the best-behaved sentence in the artifact. deck_versions.json v1.1.0 does say \"a 45% removal rate\" and \"the decomposition of 119 measured departures\" — quoted exactly — and searching every JSON under data/decks/heliod/ for the decomposition itself (mass/targeted split, exile share, the 173 denominator) returns nothing. diagnosis.json reaches the same conclusion independently: \"The commander-removal decomposition that justified v1.1.0 ... is NOT ON DISK in this deck's artifacts. engine.json says so explicitly and repeats it as the version's claim rather than as a measurement.\" Two artifacts agreeing that a figure is missing is the right shape for an unmeasurable claim. lines[5] is the same discipline done well — the X-cost interaction is left as a claim with open_questions[0] carrying it, rather than settled from memory.",
+      "status": "supported",
+      "where": "lines[10].note"
+     }
+    ],
+    "iterations": 1,
+    "note": "Round 1, and the first time this model has been criticised. The engineer was re-run on 2026-09-03 with an earlier critique's findings and the result was never put back in front of the critic, so a document that answered a critique carried no verdict saying it had. Five of sixteen findings are `supported`; the rest are corrections, and the largest of them STRENGTHENS the model rather than weakening it — the deck wins 23 of 85 games where Heliod never flips (0.271) against 4 of 35 where he does (0.114), re-derived independently from giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84 and matching the critic exactly. NOT cache-recorded: a fail model documents what could not be grounded.",
+    "previous_rounds": [],
+    "round": 1,
+    "verdict": "fail"
+   }
+  ],
+  "round": 2,
+  "verdict": "fail"
+ }
 }
