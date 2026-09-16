@@ -942,150 +942,102 @@
     "verdict": "fail",
     "findings": [
       {
-        "where": "verdict",
+        "where": "verdict, axes[0]",
         "status": "over-claimed",
         "severity": "high",
-        "note": "'Protection is the axis that binds' is stated as the verdict while gaps[1] concedes its evidence is one log game (001, on V5), the pilot's stated want, and '70 wrath casts'. Re-derived from the b0f44e4a logs (sim/logs/...b0f44e4a.../part-0*.log, 120 games parsed): heliod's own Day of Judgment / Supreme Verdict RESOLVED 56 times, Heliod was on the battlefield at 4 of those resolutions, and 5 of Heliod's 50 battlefield exits are attributable to his own wrath (Supreme Verdict 3, Day of Judgment 2). The 70 figure counts casts, not commander losses. The 0.741 -> 0.292 gap the verdict hangs the hub on decomposes, from the record's games[].per_seat.heliod, into 52 of 120 games where Heliod was never cast (commander_casts 0) and 33 of the 68 resolved games where the AI never activated the flip (44 activations total) -- neither is a protection failure -- and engine.json (critic pass, today) says the flip did not move the win rate: 6/35 flip games (0.171) against 14/85 no-flip (0.165), re-derived here from commander_transformed_turn. A hypothesis the pilot holds is worth testing; a verdict needs a measured mechanism, and the one the verdict names is contradicted by the record it cites."
+        "note": "THE NEW VERDICT'S LOAD-BEARING SENTENCE DOES NOT HOLD. 'It is the only gate that survives its confound' and axes[0]'s 'the figure that rules out game length as the explanation' both rest on lands per GLOBAL TURN (0.2279 vs 0.1976, Welch [-0.0489, -0.0117]). I reproduce that figure exactly -- and the denominator is the confound, not a control for it. global_turn keeps counting after heliod is eliminated, and elimination is precisely what differs between the arms: 9 of 27 Approach-cast games (0.33) against 65 of 93 no-Approach games (0.70); the global_turn-to-own-turn ratio is 4.10 in eliminated games against 3.68 in survived ones, so the arm with more eliminations is divided by a larger number for a mechanical reason. Two controls, both from the record's own fields: (a) on per_seat.turns -- the turns heliod actually took -- the rate is 0.8178 vs 0.7849, Welch +0.0329, ci95 [-0.0301, +0.0960], SPANS ZERO; (b) restricted to the 46 games heliod was not eliminated in, every arm of the comparison collapses -- lands 10.06 vs 9.11 ci95 [-0.615, +2.512], lands per global turn ci95 [-0.0044, +0.0435], lands per own turn ci95 [-0.0866, +0.0853], all spanning zero. The association is carried by the games heliod was eliminated in, which is the same 'these games are shorter' mechanism the doctor correctly used in gaps[1] to demote the commander split. THE PRESCRIPTION IS NOT REFUTED: 33 lands against a 37-39 band, 25 W and 26 U sources against 36, benchmark missed_land_drop_rate 0.2568 worst at turn six, and a finisher costing seven mana twice are deterministic and need no cross-tab. What must go is the claim that the Forge split establishes causation -- state it as an association and rest the axis on the audit."
       },
       {
-        "where": "verdict",
-        "status": "contradicts-artifact",
-        "severity": "medium",
-        "note": "'two of its five do not protect Heliod at all' -- deck-audit's five are Guardian of Faith, Karametra's Blessing, Kefnet the Mindful, Lightning Greaves, Teferi's Protection (axes[8].measured.cards). Only Kefnet protects nothing but himself. Greaves' shroud stops targeted removal, and in the 120-game logs targeted removal is the commonest thing that took Heliod off the battlefield: Stroke of Midnight 7, Generous Gift 8, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2 = 22 of 50 exits, against 16 to opposing wraths (Farewell 5, Wrath of God 4, Cleansing Nova 3, Hour of Reckoning 2, Austere Command 2) and 5 to the deck's own. Log 001's redirected Swords is exactly the event Greaves prevents. The same sentence then says Greaves 'does nothing against a wrath', which is true and is not 'not at all'."
+        "where": "verdict, gaps[0]",
+        "status": "miscounted",
+        "severity": "high",
+        "note": "The commander cross-tabs do not reproduce and one is directionally inverted. Claimed: resolving 19/67 = 0.284 against 18/52 = 0.346; flipping 9/35 against 28/84. Re-derived from record b0f44e4a games[].per_seat.heliod (winner == 'heliod' against commander_resolved_turn / commander_transformed_turn): resolving 13/68 = 0.191 against 7/52 = 0.135; flipping 6/35 = 0.171 against 14/85 = 0.165. The claimed figures carry 37 wins across 119 games when the seat won 20 of 99 decided, and the 84 in '28/84' should be 85. The resolving split is inverted: the record says resolving is associated with winning slightly MORE, not less. engine.json (critic verdict pass, today) already carries 6/35 against 14/85, so the diagnosis now contradicts a critic-passed artifact on the same table. THE CONCLUSION SURVIVES with the right numbers and should be re-stated with them: Newcombe on resolving 13/68 vs 7/52 gives diff -0.0566, ci95 [-0.1849, +0.0838]; on flipping 6/35 vs 14/85, diff -0.0067, ci95 [-0.1748, +0.1230]. Both span zero."
       },
       {
-        "where": "gaps[1]",
-        "status": "over-claimed",
+        "where": "axes[8]",
+        "status": "miscounted",
         "severity": "medium",
-        "note": "'The AI neither removes Heliod often' rests on interaction_received 0.17 (ci95 [0.10, 0.25]), a record field. The logs behind that record show Heliod put into graveyard/exile from the battlefield 50 times, in 37 of the 68 games in which he resolved (0.54). Forge measures the THREAT side of protection well; what it cannot show is the response side -- Guardian of Faith 0 casts, Teferi's Protection 0, Karametra's Blessing resolved on Heliod 2 of 9 casts, Greaves attached to Heliod 5 times. The gap should say that, because it changes which protection the evidence asks for: 22 targeted exits favour hexproof/shroud (Boots, Greaves), 21 wrath exits favour indestructible/phasing, and 10 exile exits (Farewell 5, Swords 3, Chaos Mutation 2) answer to neither Coat nor Maneuver."
-      },
-      {
-        "where": "cut_candidates[1]",
-        "status": "over-claimed",
-        "severity": "medium",
-        "note": "'The insurance card Forge used most (29 games cast, 41 activations ...)'. engine_casts.by_card counts events, not games (29 casts). Of the 41 Greaves activations the logs show 5 attaching to Heliod (4 'Attach to Heliod, the Radiant Dawn' + 1 Warped Eclipse); the rest went to Thopter tokens and other creatures. As commander insurance Forge used it five times in 120 games. The same figure is reused in add_candidates[0].evidence.forge as 'the Coat is a permanent Forge will equip the way it equipped Greaves 41 times' -- a forecast about the AI stated as evidence. Separately, Mithril Coat's oracle text (cards.csv) carries 'Equip {3}': after a command-zone recast the Coat re-arms for three, which the cited commander-insurance passage ('cheap to re-arm') makes material and the entry omits."
-      },
-      {
-        "where": "add_candidates[5]",
-        "status": "contradicts-artifact",
-        "severity": "medium",
-        "note": "'it satisfies Glacial Fortress and Prairie Stream on entry'. Prairie Stream (cards.csv): 'This land enters tapped unless you control two or more BASIC lands.' Tundra is Land -- Plains Island, not basic, and does not count. Glacial Fortress ('a Plains or an Island') and Flooded Strand ('a Plains or Island card') hold. Note the corpus does not know the pilot's collection: card-search --owned finds Swiftfoot Boots and none of the other ten adds; the charter says ownership is not a criterion, so this is a note, not a finding."
-      },
-      {
-        "where": "add_candidates[5]",
-        "status": "contradicts-artifact",
-        "severity": "medium",
-        "note": "The Mystic Gate drop: 'its coloured mode costs {W/U} on top of the tap, so mana-analysis would file it under sources.gated beside Skycloud Expanse'. Run today: manabase.gated_colour_source(Mystic Gate) returns False (Skycloud Expanse True; Tundra, Sea of Clouds, Adarkar Wastes, Mana Confluence False) and land_colors reads it as {U, W}; mana_analysis.sources.gated on the current list names one card, Skycloud Expanse. The tool the drop is attributed to would count Mystic Gate as an untapped W/U source. Whether a filter land is the right fifth colour source is a different argument, and it is not made."
-      },
-      {
-        "where": "axes[0]",
-        "status": "over-claimed",
-        "severity": "medium",
-        "note": "'Consistency reads 0.868 so this is not what loses games' and the verdict's 'lands and colours are real shortfalls that are not costing the games the evidence can see'. The evidence on disk does see it: record b0f44e4a, 52 of 120 games with commander_casts 0 averaged 7.60 lands against 9.04 in the 68 cast games (recomputed from games[].per_seat; the previous diagnosis carried the Welch diff 1.448, ci95 [0.552, 2.344], and the doctor read that artifact); benchmark.json missed_land_drop_rate 0.2568 with worst turn 6, and land_drop_hit_rate 0.728 / 0.593 / 0.534 across turns four to six (quoted in engine.json stages[0]). Consistency 0.868 is the turn-THREE drop; the finisher costs seven twice. The never-cast half of the 0.741 -> 0.292 gap is the mana-base axis's evidence and the diagnosis leaves it unread."
+        "note": "The rewritten exit table is wrong on the two wrath columns, and my round-1 table is confirmed. Claimed: 22 targeted / 12 opposing wraths / 2 own / 14 unattributed. Re-derived by attributing each of the 50 exits to the next `Resolve Stack:` line (Forge logs the destroyed permanents' Zone Changes IMMEDIATELY BEFORE the causing spell's resolution) and identifying the caster from the matching `Add To Stack: Ai(N)-mm-<slug> cast <card>`: 22 targeted (Generous Gift 8, Stroke of Midnight 7, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2), 16 opposing wraths (Farewell 5, Wrath of God 4, Cleansing Nova 3, Hour of Reckoning 2, Austere Command 2), 5 own wraths, 7 unattributed. Caster is not in doubt: data/opponents/*/decklist.txt shows giada-angels runs Wrath of God, Farewell, Cleansing Nova, Austere Command, Generous Gift, Stroke of Midnight and Swords; baylen-tokens Aura Mutation and Hour of Reckoning; abaddon Blasphemous Act and Chaos Mutation. By zone the totals cross-check: 40 Graveyard + 10 Exile = 50, and the 7 unattributed are all Graveyard, so 33 destroy + 10 exile = 43 attributed."
       },
       {
         "where": "axes[7]",
-        "status": "mis-cited",
+        "status": "miscounted",
         "severity": "medium",
-        "note": "The 'weakness' verdict at 2 sweepers is cited to strategy:deckbuilding.interaction-suite, quote 'wipes \"one or two max\" (Zupke caps at 3)'. Fetched whole, that section says two IS the ceiling, 'the drift is real: the Command Zone template cut wipes 5->3-4 as the format sped up ... so date any wipe count you inherit', and 'wipes out of favour as games speed up'. The 5-7 band is strategy:deckbuilding.archetype-selection's control override ('Bend those there, not here'); the section actually cited argues against the verdict it is attached to. deck-audit's target block carries the same fragment, which is the audit's defect, but the doctor is the reader: cite archetype-selection for the band and say the interaction-suite section disagrees. add_candidates[2] and [7] reuse the fragment to justify +1/+2 wipes."
+        "note": "'2 of Heliod's 50 battlefield exits (Day of Judgment 1, Supreme Verdict 1)' is 5 (Day of Judgment 2, Supreme Verdict 3). Only heliod runs either card in this pod, so attribution is certain the moment the spell is named. I printed all five with context: part-00 line 5016 (Day of Judgment, with giada's Flawless Maneuver resolving first to save their own board), part-01 line 21607 (Supreme Verdict), part-03 lines 13312 and 20680 (both Supreme Verdict, each with `Add To Stack: Ai(2)-mm-heliod cast Supreme Verdict` two lines above the exit block) and part-03 line 39042 (Day of Judgment). The doctor's gaps[0] honestly flags the disagreement with round 1 rather than burying it; this settles it at 5. THE CONCLUSION IS UNAFFECTED -- 5 of 50 exits against 56 own-wrath resolutions is still a small minority and still a piloting note. The same 2 propagates to cut_candidates[5].why and add_candidates[6].evidence.own_sweeper_exits_of_50."
       },
       {
-        "where": "cut_candidates[6]",
+        "where": "add_candidates[4]",
+        "status": "miscounted",
+        "severity": "medium",
+        "note": "'22 of 36 attributed' and evidence.targeted_exits_of_36_attributed. The attributed set is 43 (22 targeted + 16 opposing wraths + 5 own), not 36, so shroud/hexproof covers 22 of 43 (0.51), not 22 of 36 (0.61). The card argument is untouched and is the best-evidenced add in the document -- targeted removal is the single largest attributed cause of Heliod's exits either way, and log 001's redirected Swords is that event. Two qualifications the entry could carry: the Boots must be attached (Forge attached Greaves to Heliod 5 times in 120 games), and hexproof does not stop the 5 targeted EXILES (Swords 3, Chaos Mutation 2) from being cast at a legal target before it is equipped."
+      },
+      {
+        "where": "add_candidates[5]",
+        "status": "miscounted",
+        "severity": "medium",
+        "note": "'Indestructible answers 30 of the 36 attributed exits' is 33 of 43 -- every Graveyard-zone exit is a 'destroy' effect and there are 33 of them (22 targeted less the 5 targeted exiles = 17, plus 11 opposing destroy-wraths, plus the 5 own). The entry's own evidence block is internally inconsistent with its prose: exile_exits_not_covered is 6, while the prose names 'the 5 targeted exiles or Farewell's exile-all', which is 5 + 5 = 10. The record's zone split settles it: 10 exits to Exile (Farewell 5, Swords to Plowshares 3, Chaos Mutation 2), 40 to Graveyard. So Mithril Coat's indestructible covers 33 of 43 attributed and misses 10."
+      },
+      {
+        "where": "verdict",
+        "status": "over-claimed",
+        "severity": "medium",
+        "note": "'What gates that is MANA' -- where 'that' is reaching a SECOND Approach cast -- is contradicted by the doctor's own open_questions[0], which reports that lands do not separate the 12 two-cast games from the 15 one-cast games (9.58 against 9.67). I reproduce it: Welch ci95 [-2.054, +2.221] on lands and [-0.074, +0.154] on lands per own turn, both spanning zero, with global turn 41.17 against 43.20 and tutor casts 0.75 against 0.80. The mana evidence bears on casting Approach AT ALL (27 games of 120), not on converting one cast into two, and converting is the step that wins. open_questions[0] states this squarely and is the strongest question in the document; the verdict should inherit its caveat rather than assert the chain through a step the same artifact calls unexplained."
+      },
+      {
+        "where": "axes[9], lean_into[1]",
         "status": "over-claimed",
         "severity": "low",
-        "note": "cost_of_cutting prices Kefnet on the 40-game standard-v3 run ('cast in 14 of 40 games and activated 6 times'; by_card counts 14 casts, not games) and omits the 120-game record the diagnosis uses for every other figure: Kefnet the Mindful cast 39, activated 29 -- the most-cast creature in that run (Drift of Phantasms 35, Archangel of Tithes 28, Consecrated Sphinx 25). 'painful' is the right label; the price is understated by the larger run."
+        "note": "'12 of 12 with a second Approach cast won (Wilson [0.757, 1.000])' is exact -- I reproduce 12/12, 1/10, 7/77 over the 99 decided games and wilson_bounds(12,12) = [0.7575, 1.0] -- but it is close to definitional: Approach's oracle text wins the game on resolution when cast from hand with a prior cast, so the only way the ratio falls below 1.0 is a countered or fizzled second cast. Its actual informational content is that the pod never countered one: 39 casts and 39 resolutions across the 120 games, zero counters in the logs. Worth one clause, because as written a reader can take it for a discovered association rather than a card doing what it says against an AI that never answered it."
       },
       {
         "where": "cut_candidates[4]",
-        "status": "miscounted",
-        "severity": "low",
-        "note": "'at six mana it draws one opponent four cards where Prosperity at the same X draws three opponents four each'. Mathemagics at X=2 is {2}{2}{U}{U} = six mana for 2^2 = 4 cards. Prosperity at the SAME X (2) draws each player two for three mana; four each is X=4 at five mana. The conclusion (symmetric X-draw feeds the discount, single-target does not) survives; the sentence does not."
-      },
-      {
-        "where": "axes[4]",
         "status": "over-claimed",
         "severity": "low",
-        "note": "'the six rocks in the flip component are the ones that actually pay {3}{U/P}'. goldfish_targets.json declares six (Arcane Signet, Azorius Signet, Decanter, Sol Ring, Talisman, Thought Vessel); Mind Stone's '{T}: Add {C}' pays the {3} identically and engine.json's proposed_goldfish_edits flags its omission from that any_of. Six is the file's choice, not the deck's; the same slip is in engine.components[1].have."
+        "note": "The entry's difficulty is 'easy' and its cost_of_cutting opens 'PAINFUL relative to its reputation'. One of the two is wrong on its face. On the evidence assembled I read 'easy' as right -- it is a like-for-like swap into Swiftfoot Boots, hexproof strictly dominates shroud for a deck that wants to target its own commander, and the AI used the Greaves as commander insurance 5 times in 120 games -- so the prose word is the one to drop. Flagging it because `difficulty` is the field a reader sorts on and the two fields must not disagree."
       },
       {
-        "where": "axes[1]",
-        "status": "miscounted",
-        "severity": "low",
-        "note": "'Lands plus eight persistent rocks'. deck-audit's persistent_producers list is eight because Smothering Tithe carries ramp:rock (card_roles.json); mana_analysis.sources.producers lists seven rocks and no Tithe. The 41 is the audit's figure and holds; 'eight rocks' is wrong for one, and an enchantment that makes Treasure is not what the Burgess formula counts as a land."
-      },
-      {
-        "where": "axes[15]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "'none puts Approach in hand the turn it is found'. After Mystical Tutor to the top, Temple Bell ({T}), Mikokoro ({2},{T}), Kwain ({T}), Mind Stone ({1},{T}, sac) and Kefnet ({3}{U}) each draw at instant speed the same turn -- five cards in the 99. add_candidates[8] concedes '(or a gift trigger)'. The gap between find and cast is mana in the same window, not a draw step, and Solve the Equation's case should be priced against that."
-      },
-      {
-        "where": "cut_candidates[0]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "'the only one that is a land and so survives a Farewell or Austere Command on artifacts'. Enumerated (cards.json, 'no maximum hand size'): Decanter of Endless Water, Reliquary Tower, The Second Doctor, Thought Vessel. The Second Doctor is a creature and survives an artifacts-only mode as well; the Tower is the only one that survives a creatures-plus-artifacts Farewell. Superlative stated one member wider than the set."
-      },
-      {
-        "where": "cut_candidates[3]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "'the second-largest single contributor to the number Heliod's discount reads on an opponent's turn' -- no set enumerated and no largest named. Per opponent draw step Font of Mythos (+2) is the largest constant contributor among the eleven gift pieces (Howling Mine, Kami, Dictate +1 each; Bell, Mikokoro, Kwain, Loran, Horn are activations or land-gated; Crawler is your upkeep; Doctor your end step). If the largest meant is an X-draw, say so; the 0.574 / 0.537 opener figures are correct (hypergeometric 11 and 10 of 99 in 7)."
-      },
-      {
-        "where": "gaps[5]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "The Soul-Guide Lantern drop is grounded on validator arithmetic: interaction-breadth is a count of classes, so Farewell alone, Lantern alone and both together all read 4 (audit_mod._interaction_breadth run today on the 99 plus each). That says the axis cannot see a second graveyard answer, not that the deck does not want one. On lean_into[0]'s own argument (buy in the generic-artifact class the discount makes free) a {1} hate:graveyard artifact that also moves the interaction axis 14 -> 15 (Farewell moves it 0: removal:sweeper is not an interaction-axis role) fits the pilot's second want better than a {4}{W}{W} Game Changer sorcery. The gap says 'cheaper graveyard answer only if Farewell is not bought'; it should state the trade, not resolve it by the validator's cap."
-      },
-      {
-        "where": "axes[*].measured.value",
+        "where": "gaps[0] (the parse repair)",
         "status": "supported",
         "severity": "-",
-        "note": "All 16 values equal deck-audit run today (33, 41, 2, -11, 12, 16, 14, 2, 5, 3, 16, 3, 0.868, 2, 4, 4). goldfish_metrics.json and mana_analysis.json both carry decklist_sha256 f1d4a650...; audit freshness reads current for both. Every goldfish rate quoted (0.921/0.822/2.499, 0.741/0.561/4.87, 0.36, 0.32, 0.787/0.583, 0.839/0.705/3.022, 0.792, 0.495/0.358, 0.683/0.531, 0.68, 0.496/0.357) equals metrics.targets. Component sizes in engine.components match the audit's engine block."
+        "note": "VERIFIED INDEPENDENTLY AND IT IS THE STRONGEST THING IN THE REVISION. The heliod seat index does rotate: games 0-29 (part-00) Ai(1), 30-59 (part-01) Ai(4), 60-89 (part-02) Ai(3), 90-119 (part-03) Ai(2) -- exactly 30 games per position. A parser hardcoded to Ai(1) sees part-00 only, which holds 15 games with a commander resolve: the claimed '15 of 120' is exact. The corrected parse reproduces the record on every count I could test: 91 commander cast events (by_card cast 91), 44 flip activations (activated 44), 68 games with a resolve (games_resolved 68), 35 games with a transform (transformed.games 35) and 50 battlefield exits. I also verified record-to-log alignment before trusting any joined figure: 120 of 120 games match on `round`, and the only winner disagreements are the 20 truncated games, where the record deliberately records no winner and the log names a last seat standing -- the documented clock-out behaviour."
       },
       {
-        "where": "verdict, lean_into[1], axes[5], axes[6], axes[9], axes[10], engine.components[1], engine.components[7]",
+        "where": "verdict, axes[0], lean_into[0] (the figures themselves)",
         "status": "supported",
         "severity": "-",
-        "note": "Forge figures re-read from record b0f44e4a (seat sha 214af308 = v1.2.1) and 4b0e1964: 20/99 decided, 0.202 [0.135, 0.292]; pods standard null 0.181; placement 11/35/26/22 of 94, mean 2.628; eliminated 38.05 [36.12, 39.98], n 74, 61 by damage, giada 43; mean_global_turn 41.3; triggers 41.93 [34.38, 49.49] against giada 25.62 [20.77, 30.48]; interaction_cast 0.79 [0.58, 1.01]; interaction_received 0.17 [0.10, 0.25] and 0.10 [0.01, 0.19]; commander resolved 68 (0.567 [0.477, 0.652]), transformed 35 (0.292 [0.218, 0.378]), first flip 37.74; won_by Approach 12 / all-opponents-lost 8. Re-derived from the logs: Approach 39 casts in 27 games, 12 games with a second cast, all 12 won. by_card: Day of Judgment 37, Supreme Verdict 33, Guardian of Faith 0 (6 discards), Teferi's Protection 0, Karametra's Blessing 9, Leyline 21, Greaves 29/41, Psychosis Crawler 0 (and 0 on the 40), Kefnet 14/6 on the 40; the six never-cast names hold (Long-Term Plans has no by_card entry at all)."
+        "note": "Every statistic in the new verdict reproduces from the record and logs, sign conventions aside: 12/12, 1/10, 7/77 over 99 decided games; Wilson [0.757, 1.000]; Approach-cast games 9.63 lands against 8.06 (Welch 1.5651, ci95 [0.4551, 2.6752]); 0.2279 lands per global turn against 0.1976 (Welch 0.0303, ci95 [0.0117, 0.0489]); 10 of the 12 second-Approach games never flipped him and 5 never cast him. My objection above is to the inference drawn from the last pair, not to the arithmetic."
       },
       {
-        "where": "lean_into[0], axes[11], axes[13], cut_candidates[4].why, cut_candidates[1].cost_of_cutting",
+        "where": "gaps[1]",
         "status": "supported",
         "severity": "-",
-        "note": "Enumerated from cards.json: 20 nonland cards with a purely generic cost; four 'no maximum hand size' effects; graveyard mentioned only by Heliod's front face, Dig Through Time, Force of Negation; no card targets a land; Lightning Greaves the only Equipment; five X-draws of which Prosperity and Skyscribing are symmetric; curve 22 two-drops / 18 three-drops / 67 nonland entries / 1 at 8+; 12 roleless entries include Mathemagics."
+        "note": "The commander-split confound analysis is correct and honestly run, and it is the reason the round-1 verdict fell. Reproduced exactly: lands 9.04 against 7.60, global turn 43.06 against 38.98 (Welch -4.0781, ci95 [-6.8701, -1.286], excludes zero) and lands per global turn Welch 0.0134, ci95 [-0.0046, +0.0315], spanning zero. Applying that test to the doctor's own new pair is what produces my high finding; the test itself is the right one."
       },
       {
-        "where": "citations (12 of 13 sections)",
+        "where": "round-1 findings [1], [2], [5], [6], [7], [8]",
         "status": "supported",
         "severity": "-",
-        "note": "Fetched with lookup-strategy: ratios, mana-base, mana-base.color-sources, threat-density, archetype-selection, curve, power-level, redundancy-vs-tutors, cutting, multiplayer.commander-insurance, multiplayer.asymmetry, pivot-point -- every quote verbatim and used within its section's meaning. The ratios template is read as the audit's band and explicitly not as what loses games, which respects the section's own 'counts of functions, not cards ... too one size fits all'. Hypergeometric figures 0.574 (11), 0.537 (10), 0.199 (3), 0.137 (2), 31% (5), 7.1% (1) all recompute."
+        "note": "Clean withdrawals, not softenings. [1] the protection verdict is withdrawn in terms ('THIS DIAGNOSIS'S ROUND-1 VERDICT WAS WRONG') and gaps[0] states what it rested on. [2] axes[8] withdraws 'two of its five do not protect Heliod at all' explicitly and now reads protection 'adequate'. [5] add_candidates[0] withdraws the Prairie Stream claim by name and keeps only Glacial Fortress, which is correct on the oracle text. [6] the Mystic Gate reason is withdrawn to gaps[6] with the false ground named and a defensible replacement (its coloured mode needs a {W/U} first). [7] axes[0] is reversed to 'liability'. [8] the sweepers band is re-cited to strategy:deckbuilding.archetype-selection and the axis now names the tension with strategy:deckbuilding.interaction-suite in its own reading -- fetched both sections again; the quotes are verbatim and the characterisation is right."
       },
       {
-        "where": "add_candidates[*] (axis moves, legality, bracket)",
+        "where": "round-1 findings [3], [4], [9] through [16]",
         "status": "supported",
         "severity": "-",
-        "note": "All nine adds are Commander-legal and inside {W,U} (cards.csv). Recomputed with the audit's own counters: Time Wipe and Farewell each take sweepers 2 -> 3 (both removal:sweeper); Mithril Coat, Swiftfoot Boots, Flawless Maneuver each take protection 5 -> 6; Solve the Equation and Personal Tutor each take tutors 4 -> 5 (tutor:narrow); Farewell takes interaction-breadth 3 -> 4 via 'exile all graveyards'. Sea of Clouds is land:tapped in card_roles.json and is untapped with three opponents. bracket_delta 4 -> 4 on all nine is the validator's recompute; Farewell is a ninth Game Changer on a floor already forced by eight. Solve the Equation + Approach is correctly held at 'needs a stack scenario'."
+        "note": "[3] gaps[3] now separates the threat side from the response side and states the EVENTS-not-games rule. [4] Greaves: the 41-activation forecast is deleted from the Coat entry, the 5 attachments to Heliod are named, and Mithril Coat's equip {3} re-arm cost is stated -- and I withdraw my own round-1 sub-point that '29' was events read as games: Greaves was cast in 29 DISTINCT games, so 'cast it in 29 games' is true as written. [9] Kefnet repriced at 39 casts / 29 activations, the most-cast creature ahead of Drift of Phantasms 35, Archangel of Tithes 28 and Consecrated Sphinx 25 -- matches by_card. [10] the Mathemagics arithmetic is now right ({X}{X}{U}{U} at X=2 is six mana for four cards; Prosperity at X=2 is three mana for two cards each). [11] Mind Stone named as the seventh rock the flip group omits. [12] seven rocks, not eight, with Smothering Tithe named as the role-tag artefact. [13] tutors re-scoped to the five instant-speed draws (Temple Bell, Mikokoro, Kwain, Mind Stone, Kefnet). [14] the Reliquary Tower superlative correctly re-scoped to a both-modes Farewell or Austere Command. [15] Font of Mythos is now 'largest' with all eleven gift pieces enumerated and the +2/+1/activation/land-gated split correct. [16] Farewell is dropped for Soul-Guide Lantern with the trade stated rather than resolved by the validator's cap."
       },
       {
-        "where": "cut_candidates[*].orphans_stack, open_questions[0..2]",
+        "where": "axes[*].measured, add_candidates[*] axis moves and bracket_delta, cut_candidates[*].orphans_stack",
         "status": "supported",
         "severity": "-",
-        "note": "The deck's one passing stack (002, Approach off Mystical Tutor) names none of the seven cuts in its scenario, so orphans_stack [] is right for all seven. Greaves-vs-own-targeting, Time Wipe on a transformed commander, and the X-spell/discount ordering are held as resolve-stack questions rather than asserted; the Greaves swap is explicitly priced on the open answer."
+        "note": "Nothing I marked supported in round 1 was altered. All 16 measured values still equal deck-audit run today. Recomputed each add with the audit's own counters: Time Wipe sweepers 2->3; Swiftfoot Boots, Mithril Coat and Flawless Maneuver protection 5->6; Solve the Equation and Personal Tutor tutors 4->5; Soul-Guide Lantern interaction-breadth 3->4 AND interaction 14->15, exactly as add_candidates[7] claims and the point on which it beats Farewell (removal:sweeper moves interaction by 0); Tundra and Sea of Clouds move no role axis and close colour-sources, which is not role-computable and is argued from mana_analysis. All nine bracket_delta stay 4->4 and none of the nine is a Game Changer, so axes[14]'s new sentence is right where round 1's Farewell caveat was needed. Stack 002 names none of the seven cuts, so orphans_stack [] holds for all seven, and the list still carries one painful entry (Kefnet)."
       },
       {
-        "where": "gaps[0]",
+        "where": "open_questions[0], open_questions[4], gaps[2]",
         "status": "supported",
         "severity": "-",
-        "note": "The missing v1.3.0 Forge run is stated accurately: both records carry the v1.2.1 seat sha (214af308...), the three swapped-in cards have no by_card line, and the closed settled_by set (resolve-stack | research-strategy | goldfish) cannot route a simulate, so leaving it in gaps rather than open_questions is the correct shape."
-      },
-      {
-        "where": "engine.single_points_of_failure[1]",
-        "status": "supported",
-        "severity": "-",
-        "note": "Approach of the Second Sun is the deck's one declared finisher by design (bracket_report combo_content, engine.json wincon stage names it the only SPOF); the diagnosis prescribes ACCESS (tutors to hand) rather than calling the one-finisher shape a defect, which is the right reading of a component that is supposed to be one card."
+        "note": "open_questions[0] is new and is the right question: what separates the 12 two-cast games from the 15 one-cast games. Its figures reproduce exactly (lands 9.58 vs 9.67, global turn 41.17 vs 43.20, tutor casts 0.75 vs 0.80 counting Mystical Tutor, Long-Term Plans and Enlightened Tutor), and routing it to `goldfish` is correct since it asks for a re-declaration rather than a table. open_questions[4] carries the Mind Stone and win-access re-declarations into the goldfish file. gaps[2] still states the missing v1.3.0 Forge run accurately -- both records carry the v1.2.1 seat sha 214af308, none of the three swapped cards has a by_card line, and no settled_by value routes a simulate."
       }
     ],
-    "iterations": 1
+    "iterations": 2
   }
 }
