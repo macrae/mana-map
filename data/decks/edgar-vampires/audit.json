@@ -1,26 +1,8 @@
 {
   "archetype": {
-    "archetype": "aggro",
-    "citation": {
-      "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
-      "rule": "strategy:deckbuilding.archetype-selection"
-    },
-    "matched": "aggro",
-    "overrides": {
-      "creatures": [
-        26,
-        32
-      ],
-      "interaction": [
-        5,
-        6
-      ],
-      "mana-base": [
-        34,
-        36
-      ]
-    },
-    "source": "strategic_frame.json"
+    "archetype": null,
+    "overrides": {},
+    "source": "none — base targets apply"
   },
   "axes": [
     {
@@ -34,8 +16,8 @@
         "value": 36
       },
       "target": {
-        "high": 36,
-        "low": 34,
+        "high": 38,
+        "low": 36,
         "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
         "source": "strategy:deckbuilding.ratios"
       },
@@ -213,7 +195,7 @@
     },
     {
       "axis": "interaction",
-      "gap": -6,
+      "gap": 0,
       "measured": {
         "cards": [
           "Altar of Dementia",
@@ -221,7 +203,6 @@
           "Boros Charm",
           "Despark",
           "Elspeth, Storm Slayer",
-          "Immersturm Predator",
           "Liliana, Dreadhorde General",
           "Path to Exile",
           "Stroke of Midnight",
@@ -230,17 +211,17 @@
           "Winds of Abandon"
         ],
         "how": "copies carrying any of removal:spot, removal:damage, removal:edict, removal:fight, removal:debuff, removal:bounce, removal:tax, counterspell, hate:graveyard",
-        "interactive_suite_copies": 18,
+        "interactive_suite_copies": 17,
         "unit": "copies",
-        "value": 12
+        "value": 11
       },
       "target": {
-        "high": 6,
-        "low": 5,
+        "high": null,
+        "low": 8,
         "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\"",
         "source": "strategy:deckbuilding.interaction-suite"
       },
-      "verdict": "over"
+      "verdict": "at"
     },
     {
       "axis": "sweepers",
@@ -261,21 +242,20 @@
     },
     {
       "axis": "protection",
-      "gap": -1,
+      "gap": 0,
       "measured": {
         "cards": [
           "Akroma's Will",
           "Boros Charm",
           "Deflecting Swat",
           "Flawless Maneuver",
-          "Immersturm Predator",
           "Mondrak, Glory Dominus",
           "Teferi's Protection",
           "Yahenni, Undying Partisan"
         ],
         "how": "copies carrying any of protection:self, protection:granted, protection:fog, protection:redirect",
         "unit": "copies",
-        "value": 8
+        "value": 7
       },
       "target": {
         "high": 7,
@@ -283,7 +263,7 @@
         "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards",
         "source": "strategy:deckbuilding.threat-density"
       },
-      "verdict": "over"
+      "verdict": "at"
     },
     {
       "axis": "threat-density",
@@ -315,7 +295,7 @@
     },
     {
       "axis": "creatures",
-      "gap": -5,
+      "gap": 0,
       "measured": {
         "cards": [],
         "how": "front-face creature copies",
@@ -323,36 +303,36 @@
         "value": 37
       },
       "target": {
-        "high": 32,
-        "low": 26,
+        "high": null,
+        "low": null,
         "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
         "source": "strategy:deckbuilding.archetype-selection"
       },
-      "verdict": "over"
+      "verdict": "informational"
     },
     {
       "axis": "interaction-breadth",
-      "gap": 1,
+      "gap": 2,
       "measured": {
         "by_class": {
           "artifact": 3,
-          "creature": 12,
+          "creature": 11,
           "enchantment": 3,
-          "graveyard": 1,
+          "graveyard": 0,
           "land": 0
         },
         "cards": [
           "artifact",
           "creature",
-          "enchantment",
-          "graveyard"
+          "enchantment"
         ],
         "how": "oracle-text heuristic over interactive cards; counterspells deliberately excluded — a counter answers a permanent only on the way in",
         "uncovered": [
+          "graveyard",
           "land"
         ],
         "unit": "classes answered",
-        "value": 4
+        "value": 3
       },
       "target": {
         "high": null,
@@ -368,9 +348,9 @@
       "measured": {
         "cards": [],
         "how": "goldfish land_drop_hit_rate_by_turn['3']",
-        "keep_first_seven_rate": 0.8,
+        "keep_first_seven_rate": 0.811,
         "unit": "rate",
-        "value": 0.917
+        "value": 0.919
       },
       "target": {
         "high": null,
@@ -389,7 +369,7 @@
         "mana_value_8_plus": 0,
         "nonland_entries": 64,
         "three_drops": 19,
-        "two_drops": 15,
+        "two_drops": 14,
         "unit": "modal mana value",
         "value": 3
       },
@@ -458,13 +438,14 @@
     "entries": 96,
     "land_copies": 36,
     "lands": 32,
-    "legendary": 13,
+    "legendary": 14,
     "legendary_lands": 2,
-    "legendary_permanents": 13,
+    "legendary_permanents": 14,
     "nonland": 64,
-    "nonlegendary": 83
+    "nonlegendary": 82
   },
-  "decklist_sha256_prefix": "7ce22fd619b3",
+  "dead_searches": [],
+  "decklist_sha256_prefix": "7be137d0bfeb",
   "engine": {
     "available": true,
     "redundancy_citation": {
@@ -592,11 +573,11 @@
           "thinnest": true
         },
         "measured": {
-          "assembled_rate": 0.076,
-          "assembled_rate_assisted": 0.146,
-          "by_turn_6_rate": 0.03,
-          "by_turn_6_rate_assisted": 0.063,
-          "mean_turn": 6.693
+          "assembled_rate": 0.078,
+          "assembled_rate_assisted": 0.151,
+          "by_turn_6_rate": 0.034,
+          "by_turn_6_rate_assisted": 0.069,
+          "mean_turn": 6.385
         },
         "target": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half"
       },
@@ -628,11 +609,11 @@
           "thinnest": true
         },
         "measured": {
-          "assembled_rate": 0.042,
-          "assembled_rate_assisted": 0.096,
-          "by_turn_6_rate": 0.015,
+          "assembled_rate": 0.041,
+          "assembled_rate_assisted": 0.094,
+          "by_turn_6_rate": 0.016,
           "by_turn_6_rate_assisted": 0.04,
-          "mean_turn": 6.88
+          "mean_turn": 6.707
         },
         "target": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source"
       }
@@ -742,10 +723,10 @@
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
         "measured": {
           "assembled_rate": 0.372,
-          "assembled_rate_assisted": 0.481,
-          "by_turn_6_rate": 0.247,
-          "by_turn_6_rate_assisted": 0.336,
-          "mean_turn": 4.35
+          "assembled_rate_assisted": 0.482,
+          "by_turn_6_rate": 0.252,
+          "by_turn_6_rate_assisted": 0.343,
+          "mean_turn": 4.305
         },
         "thinnest_size": 2
       },
@@ -779,11 +760,11 @@
         ],
         "label": "A token multiplier or extra token-maker drawn",
         "measured": {
-          "assembled_rate": 0.673,
-          "assembled_rate_assisted": 0.731,
-          "by_turn_6_rate": 0.513,
-          "by_turn_6_rate_assisted": 0.575,
-          "mean_turn": 3.613
+          "assembled_rate": 0.679,
+          "assembled_rate_assisted": 0.739,
+          "by_turn_6_rate": 0.518,
+          "by_turn_6_rate_assisted": 0.579,
+          "mean_turn": 3.601
         },
         "thinnest_size": 5
       },
@@ -821,11 +802,11 @@
         ],
         "label": "A Vampire lord or anthem drawn (the combat plan)",
         "measured": {
-          "assembled_rate": 0.802,
-          "assembled_rate_assisted": 0.839,
-          "by_turn_6_rate": 0.652,
-          "by_turn_6_rate_assisted": 0.699,
-          "mean_turn": 3.139
+          "assembled_rate": 0.8,
+          "assembled_rate_assisted": 0.84,
+          "by_turn_6_rate": 0.649,
+          "by_turn_6_rate_assisted": 0.697,
+          "mean_turn": 3.167
         },
         "thinnest_size": 7
       },
@@ -1161,11 +1142,11 @@
         ],
         "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
         "measured": {
-          "assembled_rate": 0.076,
-          "assembled_rate_assisted": 0.146,
-          "by_turn_6_rate": 0.03,
-          "by_turn_6_rate_assisted": 0.063,
-          "mean_turn": 6.693
+          "assembled_rate": 0.078,
+          "assembled_rate_assisted": 0.151,
+          "by_turn_6_rate": 0.034,
+          "by_turn_6_rate_assisted": 0.069,
+          "mean_turn": 6.385
         },
         "thinnest_size": 1
       },
@@ -1201,11 +1182,11 @@
         ],
         "label": "Ramp or fixing drawn",
         "measured": {
-          "assembled_rate": 0.67,
-          "assembled_rate_assisted": 0.731,
-          "by_turn_6_rate": 0.514,
-          "by_turn_6_rate_assisted": 0.578,
-          "mean_turn": 3.54
+          "assembled_rate": 0.675,
+          "assembled_rate_assisted": 0.734,
+          "by_turn_6_rate": 0.516,
+          "by_turn_6_rate_assisted": 0.577,
+          "mean_turn": 3.581
         },
         "thinnest_size": 5
       },
@@ -1245,11 +1226,11 @@
         ],
         "label": "A draw engine drawn",
         "measured": {
-          "assembled_rate": 0.841,
-          "assembled_rate_assisted": 0.871,
+          "assembled_rate": 0.835,
+          "assembled_rate_assisted": 0.864,
           "by_turn_6_rate": 0.726,
-          "by_turn_6_rate_assisted": 0.764,
-          "mean_turn": 2.684
+          "by_turn_6_rate_assisted": 0.761,
+          "mean_turn": 2.621
         },
         "thinnest_size": 9
       },
@@ -1287,10 +1268,10 @@
         "label": "Protection held for the swarm",
         "measured": {
           "assembled_rate": 0.683,
-          "assembled_rate_assisted": 0.74,
-          "by_turn_6_rate": 0.525,
-          "by_turn_6_rate_assisted": 0.587,
-          "mean_turn": 3.551
+          "assembled_rate_assisted": 0.741,
+          "by_turn_6_rate": 0.516,
+          "by_turn_6_rate_assisted": 0.576,
+          "mean_turn": 3.633
         },
         "thinnest_size": 5
       },
@@ -1397,11 +1378,11 @@
         ],
         "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
         "measured": {
-          "assembled_rate": 0.482,
-          "assembled_rate_assisted": 0.572,
-          "by_turn_6_rate": 0.34,
-          "by_turn_6_rate_assisted": 0.422,
-          "mean_turn": 4.084
+          "assembled_rate": 0.493,
+          "assembled_rate_assisted": 0.585,
+          "by_turn_6_rate": 0.348,
+          "by_turn_6_rate_assisted": 0.428,
+          "mean_turn": 4.111
         },
         "thinnest_size": 3
       },
@@ -1570,11 +1551,11 @@
         ],
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
         "measured": {
-          "assembled_rate": 0.042,
-          "assembled_rate_assisted": 0.096,
-          "by_turn_6_rate": 0.015,
+          "assembled_rate": 0.041,
+          "assembled_rate_assisted": 0.094,
+          "by_turn_6_rate": 0.016,
           "by_turn_6_rate_assisted": 0.04,
-          "mean_turn": 6.88
+          "mean_turn": 6.707
         },
         "thinnest_size": 1
       },
@@ -1618,11 +1599,11 @@
         ],
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
         "measured": {
-          "assembled_rate": 0.951,
-          "assembled_rate_assisted": 0.96,
-          "by_turn_6_rate": 0.87,
-          "by_turn_6_rate_assisted": 0.886,
-          "mean_turn": 2.186
+          "assembled_rate": 0.95,
+          "assembled_rate_assisted": 0.959,
+          "by_turn_6_rate": 0.863,
+          "by_turn_6_rate_assisted": 0.881,
+          "mean_turn": 2.219
         },
         "thinnest_size": 13
       },
@@ -1634,7 +1615,6 @@
               "Altar of Dementia",
               "Ashnod's Altar",
               "Bloodflow Connoisseur",
-              "Immersturm Predator",
               "Viscera Seer",
               "Vish Kal, Blood Arbiter",
               "Yahenni, Undying Partisan"
@@ -1642,32 +1622,31 @@
             "modal_role": "sac-cost",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.498,
-              "opening_seven": 0.412
+              "by_turn_three": 0.444,
+              "opening_seven": 0.364
             },
             "shared_axes": [
-              "interaction",
-              "protection"
+              "interaction"
             ],
             "shared_roles": [
               "sac-cost",
               "sac-outlet",
               "threat:body"
             ],
-            "size": 7,
+            "size": 6,
             "thin": false,
             "thinnest": true
           }
         ],
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
         "measured": {
-          "assembled_rate": 0.776,
-          "assembled_rate_assisted": 0.817,
-          "by_turn_6_rate": 0.646,
-          "by_turn_6_rate_assisted": 0.693,
-          "mean_turn": 3.038
+          "assembled_rate": 0.723,
+          "assembled_rate_assisted": 0.774,
+          "by_turn_6_rate": 0.593,
+          "by_turn_6_rate_assisted": 0.645,
+          "mean_turn": 3.159
         },
-        "thinnest_size": 7
+        "thinnest_size": 6
       }
     ]
   },
@@ -1680,25 +1659,25 @@
       },
       "goldfish_metrics.json": {
         "current": true,
-        "decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b",
+        "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
         "present": true
       },
       "mana_analysis.json": {
         "current": true,
-        "decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b",
+        "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
         "present": true
       }
     },
-    "decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b",
+    "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
     "recon": {
       "as_of": "2026-08-03",
       "present": true
     }
   },
   "notes": [
+    "No archetype was established, so the BASE targets apply and no archetype override was used. strategy:deckbuilding.ratios is explicit that templates are counts of functions rather than cards and that the counts should come from the deck's actual failure modes — read every target below as a starting point, not a verdict.",
     "Under target: colour-sources, ramp, card-advantage, sweepers, interaction-breadth.",
-    "Over target: interaction, protection, creatures.",
-    "Permanent class(es) with no answer detected: land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
+    "Permanent class(es) with no answer detected: graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
     "2 declared target(s) rest on a component with one card. A named card is 7.1% of an opening seven; that is the ceiling on those lines, not a defect in the simulation.",
     "Each target is an AND of ORs and the schema cannot express the UNION of several independent kills — a deck with four kills has no single assembled_rate here, and averaging them would be inventing a number the simulation never measured.",
     "Under target, but the oracle text shows the function on card(s) the taxonomy did not classify that way — check these before calling the axis a weakness: card-advantage — Bloodtracker, Castle Locthwain, Champion of Dusk, Midgar, City of Mako // Reactor Raid, Minas Tirith, Preacher of the Schism …. They are NOT included in the count.",
