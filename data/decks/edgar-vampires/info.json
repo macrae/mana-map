@@ -14,10 +14,16 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 17,
+    "complete": 13,
     "of": 18,
-    "stale": [],
-    "invalid": [],
+    "stale": [
+      "frame",
+      "map",
+      "tutors"
+    ],
+    "invalid": [
+      "engine"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -36,8 +42,8 @@
       "name": "elenda-v1",
       "opened": "2026-09-12",
       "why": "Two death-payoff swaps the pilot called 2026-09-12: Elenda, the Dusk Rose for Gifted Aetherborn, Blade of the Bloodchief for Unbounded Potential. Both turn the nine sacrifice outlets into counters, and Elenda into lifelink tokens on death, doubled by Procession and Mondrak. Nothing dies in the goldfish and the Forge AI does not sacrifice in response, so the objective is a CONTROL at the champion's own kill-by-8 reading.",
-      "state": "PROPOSED · READY",
-      "state_why": "every card is sourced — `deck-branch edgar-vampires merge elenda-v1 --write`",
+      "state": "PROPOSED · OUTRUN",
+      "state_why": "proposed against V2 and the deck is now VNone — v1.1.1 may be taken; re-measure and propose again",
       "proposal": {
         "at": "2026-09-16",
         "as_version": "v1.1.1",
@@ -66,30 +72,17 @@
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [
-          {
-            "name": "Blade of the Bloodchief",
-            "where": [
-              "Vampire Cards"
-            ]
-          },
-          {
-            "name": "Elenda, the Dusk Rose",
-            "where": [
-              "Vampire Cards"
-            ]
-          }
-        ],
+        "box": [],
         "blocking": 0,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 2,
-      "out": 2,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 94,
-        "box": 2,
+        "in_deck": 96,
+        "box": 0,
         "elsewhere": 0,
         "buy": 0,
         "free": 0
@@ -156,15 +149,10 @@
         },
         {
           "name": "Blade of the Bloodchief",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Vampire Cards"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Blazemire Verge",
@@ -357,15 +345,10 @@
         },
         {
           "name": "Elenda, the Dusk Rose",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Vampire Cards"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Elspeth, Storm Slayer",
@@ -794,28 +777,39 @@
         "buy": [
           {
             "name": "Crippling Fear"
+          },
+          {
+            "name": "Immersturm Predator"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 1,
+        "box": [
+          {
+            "name": "Unbounded Potential",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 95,
-        "box": 0,
+        "in_deck": 93,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 2,
         "free": 0
       },
       "unsourced": [
-        "Crippling Fear"
+        "Crippling Fear",
+        "Immersturm Predator"
       ],
       "mergeable": false,
       "free": 0,
@@ -1116,10 +1110,10 @@
         },
         {
           "name": "Immersturm Predator",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -1403,10 +1397,15 @@
         },
         {
           "name": "Unbounded Potential",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Vampire Cutthroat",
@@ -1505,28 +1504,39 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Immersturm Predator"
+          },
+          {
             "name": "March of the Canonized"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 1,
+        "box": [
+          {
+            "name": "Unbounded Potential",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 95,
-        "box": 0,
+        "in_deck": 93,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 2,
         "free": 0
       },
       "unsourced": [
+        "Immersturm Predator",
         "March of the Canonized"
       ],
       "mergeable": false,
@@ -1821,10 +1831,10 @@
         },
         {
           "name": "Immersturm Predator",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -2115,10 +2125,15 @@
         },
         {
           "name": "Unbounded Potential",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Vampire Cutthroat",
@@ -2218,28 +2233,39 @@
         "buy": [
           {
             "name": "Blight Mound"
+          },
+          {
+            "name": "Immersturm Predator"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 1,
+        "box": [
+          {
+            "name": "Unbounded Potential",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 95,
-        "box": 0,
+        "in_deck": 93,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 2,
         "free": 0
       },
       "unsourced": [
-        "Blight Mound"
+        "Blight Mound",
+        "Immersturm Predator"
       ],
       "mergeable": false,
       "free": 0,
@@ -2540,10 +2566,10 @@
         },
         {
           "name": "Immersturm Predator",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -2827,10 +2853,15 @@
         },
         {
           "name": "Unbounded Potential",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Vampire Cutthroat",
@@ -2929,28 +2960,39 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Immersturm Predator"
+          },
+          {
             "name": "New Blood"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 1,
+        "box": [
+          {
+            "name": "Unbounded Potential",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 95,
-        "box": 0,
+        "in_deck": 93,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 2,
         "free": 0
       },
       "unsourced": [
+        "Immersturm Predator",
         "New Blood"
       ],
       "mergeable": false,
@@ -3245,10 +3287,10 @@
         },
         {
           "name": "Immersturm Predator",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -3539,10 +3581,15 @@
         },
         {
           "name": "Unbounded Potential",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Vampire Cutthroat",
@@ -3642,28 +3689,39 @@
         "buy": [
           {
             "name": "Dusk Legion Sergeant"
+          },
+          {
+            "name": "Immersturm Predator"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 1,
+        "box": [
+          {
+            "name": "Unbounded Potential",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 95,
-        "box": 0,
+        "in_deck": 93,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 2,
         "free": 0
       },
       "unsourced": [
-        "Dusk Legion Sergeant"
+        "Dusk Legion Sergeant",
+        "Immersturm Predator"
       ],
       "mergeable": false,
       "free": 0,
@@ -3971,10 +4029,10 @@
         },
         {
           "name": "Immersturm Predator",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Indulgent Aristocrat",
@@ -4251,10 +4309,15 @@
         },
         {
           "name": "Unbounded Potential",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Vampire Cutthroat",
@@ -4359,138 +4422,138 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6089,
+          "rate": 0.5589,
           "ci95": [
-            0.5993,
-            0.6184
+            0.5491,
+            0.5686
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2448,
+          "rate": 0.2455,
           "ci95": [
-            0.2365,
-            0.2533
+            0.2372,
+            0.254
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0705,
+          "rate": 0.0652,
           "ci95": [
-            0.0656,
-            0.0757
+            0.0605,
+            0.0702
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0468,
+          "rate": 0.0418,
           "ci95": [
-            0.0428,
-            0.0511
+            0.0381,
+            0.0459
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0325,
+          "rate": 0.03,
           "ci95": [
-            0.0292,
-            0.0362
+            0.0268,
+            0.0335
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0279,
+          "rate": 0.0209,
           "ci95": [
-            0.0248,
-            0.0313
+            0.0183,
+            0.0239
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0347,
+          "rate": 0.0295,
           "ci95": [
-            0.0313,
-            0.0385
+            0.0264,
+            0.033
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0392,
+          "rate": 0.0351,
           "ci95": [
-            0.0356,
-            0.0432
+            0.0317,
+            0.0389
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0368,
+          "rate": 0.0345,
           "ci95": [
-            0.0333,
-            0.0407
+            0.0311,
+            0.0383
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0304,
+          "rate": 0.0293,
           "ci95": [
-            0.0272,
-            0.0339
+            0.0262,
+            0.0328
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1032,
+        "rate": 0.0951,
         "ci95": [
-          0.0974,
-          0.1093
+          0.0895,
+          0.101
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 5636,
-        "hand_empty": 1007,
-        "mana_short": 4629
+        "stall_turns": 5318,
+        "hand_empty": 879,
+        "mana_short": 4439
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4041,
+        "rate": 0.3985,
         "ci95": [
-          0.3945,
-          0.4138
+          0.3889,
+          0.4081
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2827,
+      "missed_land_drop_rate": 0.2822,
       "mulliganed": {
-        "rate": 0.1954,
+        "rate": 0.1892,
         "ci95": [
-          0.1877,
-          0.2033
+          0.1816,
+          0.197
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 1.0,
-        "2": 2.156,
-        "3": 3.265,
-        "4": 4.19,
-        "5": 4.943,
-        "6": 5.601,
-        "7": 6.191,
-        "8": 6.806,
-        "9": 7.413,
-        "10": 8.047
+        "2": 2.144,
+        "3": 3.248,
+        "4": 4.181,
+        "5": 4.939,
+        "6": 5.59,
+        "7": 6.19,
+        "8": 6.793,
+        "9": 7.409,
+        "10": 8.049
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.1093
+      "mana_stdev_turn_five": 1.1139
     },
-    "decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b"
+    "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6"
   },
   "bracket": {
     "floor": 4,
@@ -4551,7 +4614,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.326,
+          "value": 6.318,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -4567,7 +4630,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A token multiplier or extra token-maker drawn": {
-          "value": 51,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A token multiplier or extra token-maker drawn' by turn six",
@@ -4591,7 +4654,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp or fixing drawn": {
-          "value": 51,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
@@ -4615,7 +4678,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight": {
-          "value": 34,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight' by turn six",
@@ -4631,7 +4694,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A castable Vampire drawn — the eminence trigger every kill proof opens on": {
-          "value": 87,
+          "value": 86,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A castable Vampire drawn — the eminence trigger every kill proof opens on' by turn six",
@@ -4639,7 +4702,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A free sacrifice outlet drawn (bloodline's new engine)": {
-          "value": 65,
+          "value": 59,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A free sacrifice outlet drawn (bloodline's new engine)\" by turn six",
@@ -4686,7 +4749,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 80,
+          "value": 81,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -4697,15 +4760,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.03,
-            "2": 2.137,
-            "3": 3.245,
-            "4": 4.181,
-            "5": 4.94,
+            "10": 8.027,
+            "2": 2.147,
+            "3": 3.257,
+            "4": 4.19,
+            "5": 4.943,
             "6": 5.591,
-            "7": 6.191,
-            "8": 6.793,
-            "9": 7.394
+            "7": 6.185,
+            "8": 6.787,
+            "9": 7.387
           },
           "tier": "data",
           "weight": "detail",
@@ -4716,15 +4779,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.554,
+            "10": 0.555,
             "2": 0.997,
-            "3": 0.917,
-            "4": 0.81,
-            "5": 0.698,
+            "3": 0.919,
+            "4": 0.809,
+            "5": 0.692,
             "6": 0.598,
-            "7": 0.549,
-            "8": 0.522,
-            "9": 0.531
+            "7": 0.54,
+            "8": 0.531,
+            "9": 0.53
           },
           "tier": "data",
           "weight": "detail",
@@ -4734,16 +4797,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.55,
-            "10": 15.769,
-            "2": 1.443,
-            "3": 2.853,
-            "4": 4.622,
-            "5": 6.181,
-            "6": 7.682,
-            "7": 9.558,
-            "8": 11.486,
-            "9": 13.536
+            "1": 0.56,
+            "10": 15.818,
+            "2": 1.448,
+            "3": 2.846,
+            "4": 4.639,
+            "5": 6.203,
+            "6": 7.694,
+            "7": 9.641,
+            "8": 11.57,
+            "9": 13.596
           },
           "tier": "data",
           "weight": "detail",
@@ -4753,14 +4816,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 346,
-            "1": 1539,
-            "2": 2805,
-            "3": 2948,
-            "4": 1668,
-            "5": 576,
-            "6": 111,
-            "7": 7
+            "0": 327,
+            "1": 1477,
+            "2": 2939,
+            "3": 2972,
+            "4": 1658,
+            "5": 538,
+            "6": 84,
+            "7": 5
           },
           "tier": "data",
           "weight": "detail",
@@ -4769,11 +4832,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 636,
-            "6": 410,
-            "7": 2826,
-            "8": 3952,
-            "9": 1882
+            "10": 623,
+            "5": 2,
+            "6": 422,
+            "7": 2809,
+            "8": 3807,
+            "9": 2059
           },
           "tier": "data",
           "weight": "detail",
@@ -4789,7 +4853,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.326,
+    "commander_mean_cast_turn": 6.318,
     "commander_cast_by_turn_6_pct": 60,
     "targets": [
       {
@@ -4798,7 +4862,7 @@
       },
       {
         "label": "A token multiplier or extra token-maker drawn",
-        "by_turn_6_pct": 51
+        "by_turn_6_pct": 52
       },
       {
         "label": "A Vampire lord or anthem drawn (the combat plan)",
@@ -4810,7 +4874,7 @@
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 51
+        "by_turn_6_pct": 52
       },
       {
         "label": "A draw engine drawn",
@@ -4822,7 +4886,7 @@
       },
       {
         "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
-        "by_turn_6_pct": 34
+        "by_turn_6_pct": 35
       },
       {
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
@@ -4830,26 +4894,27 @@
       },
       {
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-        "by_turn_6_pct": 87
+        "by_turn_6_pct": 86
       },
       {
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
-        "by_turn_6_pct": 65
+        "by_turn_6_pct": 59
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.949,
+      "mean_kill_turn": 7.964,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 72,
+      "kill_by_turn_8_pct": 70,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 3,
       "kill_turn_histogram": {
-        "10": 636,
-        "6": 410,
-        "7": 2826,
-        "8": 3952,
-        "9": 1882
+        "10": 623,
+        "5": 2,
+        "6": 422,
+        "7": 2809,
+        "8": 3807,
+        "9": 2059
       }
     }
   },
@@ -4880,7 +4945,6 @@
     ],
     "over": [
       "interaction",
-      "protection",
       "creatures"
     ],
     "stale": []
@@ -5001,7 +5065,7 @@
     "runs": 9,
     "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-cdaddf26-s341395706-podExperimental-c600",
     "at": "2026-09-11",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b",
     "games": 40,
     "wins": 8,
@@ -5055,12 +5119,15 @@
     }
   },
   "next": [
-    "`elenda-v1` is PROPOSED as v1.1.1 and every card is sourced — `manamap pilot deck-branch edgar-vampires merge elenda-v1 --write`",
-    "branch `fear-v1` needs 1 card(s) sourced — `manamap pilot deck-branch edgar-vampires source fear-v1`",
-    "branch `march-v1` needs 1 card(s) sourced — `manamap pilot deck-branch edgar-vampires source march-v1`",
-    "branch `mound-v1` needs 1 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mound-v1`",
-    "branch `newblood-v1` needs 1 card(s) sourced — `manamap pilot deck-branch edgar-vampires source newblood-v1`",
-    "branch `sergeant-v1` needs 1 card(s) sourced — `manamap pilot deck-branch edgar-vampires source sergeant-v1`",
+    "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "stale: frame, map, tutors — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "`elenda-v1` was proposed as v1.1.1 against V2 and the deck has moved on — v1.1.1 may be taken; re-measure and propose again",
+    "branch `fear-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source fear-v1`",
+    "branch `march-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source march-v1`",
+    "branch `mound-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mound-v1`",
+    "branch `newblood-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source newblood-v1`",
+    "branch `sergeant-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source sergeant-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "engine.json's critic verdict is None — `/analyze-engine edgar-vampires`",
     "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×5"

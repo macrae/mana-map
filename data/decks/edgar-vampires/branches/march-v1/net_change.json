@@ -251,7 +251,7 @@
    {
     "free": false,
     "name": "Immersturm Predator",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -503,8 +503,13 @@
    {
     "free": false,
     "name": "Unbounded Potential",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Mystery Booster 2"
+     }
+    ]
    },
    {
     "free": false,
@@ -580,22 +585,26 @@
    }
   ],
   "counts": {
-   "box": 0,
-   "buy": 1,
+   "box": 1,
+   "buy": 2,
    "elsewhere": 0,
    "free": 0,
-   "in_deck": 95
+   "in_deck": 93
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
-    "March of the Canonized"
+    "Immersturm Predator",
+    "March of the Canonized",
+    "Unbounded Potential"
    ],
    "base_names": 96,
    "base_size": 100,
    "names": 96,
    "out": [
-    "Akroma's Will"
+    "Akroma's Will",
+    "Blade of the Bloodchief",
+    "Elenda, the Dusk Rose"
    ],
    "size": 100
   },
@@ -605,6 +614,7 @@
   "proxy": false,
   "slug": "edgar-vampires",
   "unsourced": [
+   "Immersturm Predator",
    "March of the Canonized"
   ]
  },
@@ -626,14 +636,14 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 1,
-    "in_copies": 1,
+    "in": 3,
+    "in_copies": 3,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 1,
-    "out_copies": 1,
-    "spells_in": 1,
-    "spells_out": 1
+    "out": 3,
+    "out_copies": 3,
+    "spells_in": 3,
+    "spells_out": 3
    },
    "in": [
     {
@@ -645,10 +655,39 @@
      "state": "buy",
      "type_line": "Enchantment",
      "why": "X lifelink Vampire tokens on entry and a 4/3 each upkeep at devotion seven to white and black; protection reads 8 against 5-7 and Akroma's Will is the fourth protection instant"
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Unbounded Potential",
+     "pair": null,
+     "state": "box",
+     "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Immersturm Predator",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Vampire Dragon",
+     "why": null
     }
    ],
    "names": 96,
    "out": [
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Blade of the Bloodchief",
+     "pair": null,
+     "type_line": "Artifact \u2014 Equipment",
+     "why": null
+    },
     {
      "cmc": 4,
      "copies": 1,
@@ -657,12 +696,21 @@
      "pair": "March of the Canonized",
      "type_line": "Instant",
      "why": "X lifelink Vampire tokens on entry and a 4/3 each upkeep at devotion seven to white and black; protection reads 8 against 5-7 and Akroma's Will is the fourth protection instant"
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Elenda, the Dusk Rose",
+     "pair": null,
+     "type_line": "Legendary Creature \u2014 Vampire Knight",
+     "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 0,
-    "out": 0
+    "in": 2,
+    "out": 2
    }
   },
   "lands": [],
@@ -925,62 +973,71 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse; damage @T10 and board power @T6 improved.",
+  "because": "The objective is met and nothing measured here got worse; damage @T10, board power @T6, killed by T10 and hand can act by T3 improved.",
   "bill": {
-   "box": 0,
-   "buy": 1,
+   "box": 1,
+   "buy": 2,
    "elsewhere": 0,
    "free": 0,
-   "in_deck": 95
+   "in_deck": 93
   },
   "cost": {
-   "buy": 1,
+   "buy": 2,
    "buy_cards": [
+    "Immersturm Predator",
     "March of the Canonized"
    ],
    "counts": {
-    "box": 0,
-    "buy": 1,
+    "box": 1,
+    "buy": 2,
     "elsewhere": 0,
     "free": 0,
-    "in_deck": 95
+    "in_deck": 93
    },
    "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [],
-   "owned": 95,
-   "reads_as": "1 to buy; 95 of 96 already owned",
+   "owned": 94,
+   "reads_as": "2 to buy; 94 of 96 already owned",
    "total": 96
   },
   "fell": [],
   "no_call": [
    "killed by T6",
-   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
    "extra cards by T8",
-   "interaction affordable @T6",
-   "hand can act by T3"
+   "interaction affordable @T6"
   ],
   "notes": [],
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "20.07 -> 20.55, a change of +0.48 (+2%)",
+    "reads_as": "19.68 -> 20.55, a change of +0.87 (+4%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "11.50 -> 11.79, a change of +0.28 (+2%)",
+    "reads_as": "11.23 -> 11.79, a change of +0.56 (+5%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+   },
+   {
+    "measure": "killed by T10",
+    "reads_as": "96 games in 100 -> 98 in 100, a swing of 1 games per 100",
+    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "measure": "hand can act by T3",
+    "reads_as": "96 games in 100 -> 97 in 100, a swing of 1 games per 100",
+    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
    {
-    "detail": "the largest is hand can act by T3 at +0.007 against an MDE of 0.007. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at +0.006 against an MDE of 0.008. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "8 row(s) returned no call",
+    "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1001,7 +1058,9 @@
   ],
   "rose": [
    "damage @T10",
-   "board power @T6"
+   "board power @T6",
+   "killed by T10",
+   "hand can act by T3"
   ],
   "state": "merge"
  },
@@ -1011,11 +1070,11 @@
   {
    "better_is": "higher",
    "branch": 20.5515,
-   "champion": 20.0733,
-   "delta": 0.4782,
+   "champion": 19.6836,
+   "delta": 0.8679,
    "mde": 0.2758,
    "measure": "damage @T10",
-   "reads_as": "20.07 -> 20.55, a change of +0.48 (+2%)",
+   "reads_as": "19.68 -> 20.55, a change of +0.87 (+4%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "better",
@@ -1025,11 +1084,11 @@
   {
    "better_is": "higher",
    "branch": 11.7859,
-   "champion": 11.5012,
-   "delta": 0.2847,
+   "champion": 11.2267,
+   "delta": 0.5592,
    "mde": 0.1683,
    "measure": "board power @T6",
-   "reads_as": "11.50 -> 11.79, a change of +0.28 (+2%)",
+   "reads_as": "11.23 -> 11.79, a change of +0.56 (+5%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1039,11 +1098,11 @@
   {
    "better_is": "higher",
    "branch": 0.0452,
-   "champion": 0.0425,
-   "delta": 0.0027,
+   "champion": 0.0389,
+   "delta": 0.0063,
    "mde": 0.0082,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.008 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1053,25 +1112,25 @@
   {
    "better_is": "higher",
    "branch": 0.9763,
-   "champion": 0.971,
-   "delta": 0.0053,
-   "mde": 0.0066,
+   "champion": 0.9648,
+   "delta": 0.0115,
+   "mde": 0.0073,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.007 this run can resolve",
+   "reads_as": "96 games in 100 -> 98 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.1024,
-   "champion": 0.1032,
-   "delta": -0.0008,
-   "mde": 0.0121,
+   "champion": 0.0951,
+   "delta": 0.0073,
+   "mde": 0.012,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.012 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.012 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1081,11 +1140,11 @@
   {
    "better_is": "lower",
    "branch": 0.4031,
-   "champion": 0.4041,
-   "delta": -0.001,
+   "champion": 0.3985,
+   "delta": 0.0046,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1095,11 +1154,11 @@
   {
    "better_is": "lower",
    "branch": 0.1943,
-   "champion": 0.1954,
-   "delta": -0.0011,
+   "champion": 0.1892,
+   "delta": 0.0051,
    "mde": 0.0157,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1109,11 +1168,11 @@
   {
    "better_is": "higher",
    "branch": 1.1609,
-   "champion": 1.1476,
-   "delta": 0.0133,
+   "champion": 1.1409,
+   "delta": 0.02,
    "mde": 0.0763,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.076 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.020 is smaller than the 0.076 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1123,11 +1182,11 @@
   {
    "better_is": "higher",
    "branch": 0.2999,
-   "champion": 0.3052,
-   "delta": -0.0053,
+   "champion": 0.3102,
+   "delta": -0.0103,
    "mde": 0.0196,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1137,14 +1196,14 @@
   {
    "better_is": "higher",
    "branch": 0.9717,
-   "champion": 0.9649,
-   "delta": 0.0068,
-   "mde": 0.0073,
+   "champion": 0.9638,
+   "delta": 0.0079,
+   "mde": 0.0074,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.007 this run can resolve",
+   "reads_as": "96 games in 100 -> 97 in 100, a swing of 1 games per 100",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
   }
