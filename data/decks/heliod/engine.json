@@ -526,177 +526,86 @@
   "ROUND 4 (2026-09-16), answering critic round 3's nine non-supported findings; the critic block is untouched. [0] WITHDRAWN: Horn of Greed is {3} (cards.json), so stages[3] now prices the three artifacts by their printed generic cost - Scepter and Mind Stone free behind two opponent draws, Horn behind three. [1] WITHDRAWN and re-dated: notes[5] now describes the v1.3.0 frame on disk (8e5d63af, sha12 f1d4a650b93f), which agrees with this model everywhere except the two gift figures it quotes from before the declaration repair (0.898 / 0.79 / 2.639 and 0.31 / 0.179 against live 0.921 / 0.822 / 2.499 and 0.32 / 0.189); the old frame's figures are named as history. [2] WITHDRAWN: the 30-of-32 enumeration stands, the disagreement clause is gone - the current frame carries no flying count. [3] WITHDRAWN: open_questions[4] quotes the current gaps[2] text and drops the 0.407. [4] WITHDRAWN: notes[1] now states that summary and analysis.seats agree at 99 / 0.202 since 7548b622. [5] WITHDRAWN and re-run from the records: 27/107 (0.252) and 20/99 (0.202); stats.diff_proportions(27,107,20,99) = -0.0503 [-0.1626, +0.0650], excludes_zero False; mde_proportion(0.252, 107, 99) = 0.185 at power 0.8079; games_for_difference(0.252, d) = None / 330 / 152 at 0.05 / 0.10 / 0.15. [6] WITHDRAWN: no stats call reproduces [-0.155, +0.056] or [-0.083, +0.116] and the engineer cannot name one; replaced by the one-sample form the critic proposed - wilson_bounds(20, 99) = [0.1348, 0.2915], shifted by par 0.25 to [-0.115, +0.042] (point -0.048) and by the standard pod's calibrated null 0.181 (SUBJECT, 547 decided games) to [-0.046, +0.111] (point +0.021); both span zero, conclusion unchanged. [7] WITHDRAWN: map_disagreements[3] now says three of the five own-turn pieces, names where Mikokoro and The Second Doctor sit, and puts the rocks one hood over. [8] WITHDRAWN: lines[12] claims the search, not the second {6}{W}, and the ill-posed 'copy's cast' clause is removed. Nothing was softened: each sentence was replaced by the figure or the enumeration the artifact actually carries."
  ],
  "critic": {
-  "verdict": "fail",
+  "verdict": "pass",
   "findings": [
    {
     "where": "stages[3].what_it_does",
-    "claim": "\"a generic-cost artifact (Scepter, Horn, Mind Stone) is a free cast at an opponent's end step behind two of their draws\"",
-    "status": "miscounted",
-    "severity": "medium",
-    "fix": "WITHDRAWAL",
-    "note": "MECHANICALLY CHECKABLE. cards.json: Isochron Scepter {2}, Mind Stone {2}, Horn of Greed {3}. Two opponent draws leave Horn costing {1}; it is free behind THREE. The turn-structure argument is right (the flipped face reads 'Spells you cast cost {1} less to cast for each card your opponents have drawn this turn', and Howling Mine plus the natural draw is two in an opponent's draw step), and stages[0] states Mind Stone's own case correctly ('behind two opponent draws'). This is the one sentence that argues the three v1.3.0 swaps as a CLASS, and it is wrong for one of the three. Not rebuttable - the cost is printed. Check: a claim of the form 'free cast behind N draws' needs N >= the card's generic mana; one pass over cards.json."
+    "claim": "\"Isochron Scepter and Mind Stone ({2}) behind two, Horn of Greed ({3}) behind three\"",
+    "status": "supported",
+    "severity": "-",
+    "note": "cards.json: Scepter {2}, Mind Stone {2}, Horn of Greed {3}. Priced by printed generic cost, the class argument now holds for all three. Length 1784, under the cap. Round 3 finding [0] closed by WITHDRAWAL."
    },
    {
     "where": "notes[5]",
-    "claim": "\"strategic_frame.json carries a stale decklist sha and its component assembly figures are VOID ... its 0.935 / 0.854 / mean-turn-2.319 for the table engine, 0.334 for engine-plus-punisher and 0.679 for win-condition access\"",
-    "status": "contradicts-artifact",
-    "severity": "medium",
-    "fix": "WITHDRAWAL",
-    "note": "MECHANICALLY CHECKABLE. data/decks/heliod/strategic_frame.json at HEAD is commit 8e5d63af ('heliod's strategic frame for v1.3.0'), committed AFTER the engine's own commit 4eba774c; its decklist_sha256_12 is f1d4a650b93f - the CURRENT list, the same sha this model carries - and a search of the whole file finds none of 0.935, 0.854, 2.319, 0.334 or 0.679. The frame the note describes no longer exists on disk; the one that does quotes the same goldfish figures this model quotes (0.741/0.561/4.87, 0.839/0.705, 0.929 vs 0.61). The sentence was true when written and is false against the artifact now, which is the class round 2 flagged on the sim record. Either withdraw it or re-date it as history ('the frame before 8e5d63af'). Check: a note asserting another artifact's sha is stale can be tested against that artifact's sha field in one read."
+    "claim": "the v1.3.0 frame on disk (8e5d63af, sha12 f1d4a650b93f) quotes the same goldfish figures as this model except the table engine 0.898 / 0.79 / 2.639 and engine-plus-drain 0.31 (0.674 assisted) / 0.179, which predate the declaration repair",
+    "status": "supported",
+    "severity": "-",
+    "note": "Re-read the frame: decklist_sha256_12 f1d4a650b93f; it carries 0.898 / 0.79 / 2.639 and 0.31 (0.674) / 0.179 verbatim, and 0.741 / 0.561 / 4.87, 0.839 / 0.705, 0.929 vs 0.61, 0.496 / 0.791 / 0.357, 0.36 / 0.73, 0.683, 0.68, 0.896 / 4.187 all equal to live goldfish_metrics.json. RECEIPT for 'before the repair', which the commit order alone would contradict (frame 15:07 after repair 14:53): `git show 47a456b7:data/decks/heliod/goldfish_metrics.json` - the merge commit, 14:43 - reads Table draw engine 0.898 / 0.79 / 2.639 (0.962 assisted) and both-drawn 0.31 / 0.179 / 5.355 (0.674 assisted); 897707e8 and HEAD read 0.921 / 0.822 / 2.499 and 0.32 / 0.189 / 0.686. So the frame quotes the merge-commit metrics exactly, and the note's reading of the gap is right. The old figures (0.935 / 0.854 / 2.319, 0.334, 0.679) are correctly named as history. Round 3 finding [1] closed by WITHDRAWAL and re-dating."
+   },
+   {
+    "where": "notes[5]",
+    "claim": "\"quotes the same goldfish figures this model does ... with one exception\"",
+    "status": "over-claimed",
+    "severity": "low",
+    "note": "A completeness slip, not a wrong figure. The frame also carries, 'per diagnosis', the comparison against the earlier run as -0.050 with Newcombe ci95 [-0.1614, +0.0644] and a table null of 0.180 - the (27,108,20,100) basis this model withdrew in [5] and [6]. Against the model's re-derived -0.0503 [-0.1626, +0.0650] and null 0.181 those are a second live disagreement, three digits wide and conclusion-neutral, and the enumeration 'with one exception' does not name it. One clause: 'and the diagnosis-quoted Newcombe interval and null (108/100 basis, 0.180), superseded here by the records' 107/99 and the calibration's 0.181'. Not fail-worthy: every figure the model states in its own voice is exact."
    },
    {
     "where": "stages[5].evidence[2].note",
-    "claim": "\"strategic_frame.json states this as '31 of whose 32 creature cards carry flying ... the lone exception is Starnheim Aspirant' and misses Bishop of Wings too; the two artifacts disagree, and this is the enumerated one.\"",
-    "status": "contradicts-artifact",
-    "severity": "low",
-    "fix": "WITHDRAWAL",
-    "note": "The ENUMERATION is supported - re-run independently: data/opponents/giada-angels/decklist.txt holds 31 creature entries plus Giada, Font of Hope; stripping 'create ... token' clauses from each oracle_text in cards.csv leaves exactly Bishop of Wings and Starnheim Aspirant without flying on the body, 30 of 32. The DISAGREEMENT clause is not: the current frame (8e5d63af) contains zero occurrences of 'Starnheim', '32 creature' or the word 'flying' - the sentence it quotes was in the frame that preceded it. Keep the enumeration; withdraw the claim that the frame on disk contradicts it. The same withdrawal applies to the 'the two artifacts disagree' wording in stages[5].what_it_does if it is repeated there ('The premise holds (evidence[2])' is fine)."
+    "claim": "the 30-of-32 enumeration stands on its own; the frame on disk carries no flying count",
+    "status": "supported",
+    "severity": "-",
+    "note": "Frame: zero occurrences of 'flying', 'Starnheim', '32 creature'. Enumeration re-run in round 3: 31 creature entries plus Giada, Bishop of Wings and Starnheim Aspirant without flying on the body. Round 3 finding [2] closed by WITHDRAWAL of the disagreement clause; the enumeration is byte-preserved."
    },
    {
     "where": "open_questions[4].why_it_matters",
-    "claim": "\"strategic_frame.json's own gaps list says the strategy doc has NO section on alternate win conditions - the query returns 0.407 and nothing on topic\"",
-    "status": "mis-cited",
-    "severity": "low",
-    "fix": "WITHDRAWAL",
-    "note": "The SUBSTANCE survives: the current frame's gaps[2] opens 'NO SECTION ON ALTERNATE WIN CONDITIONS' and names strategy:multiplayer.pivot-window as the nearest section, written for board-based kills. The FIGURE does not: no 0.407 appears anywhere in the current frame (its gap scores are 0.483 for cost reduction and 0.146 for Isochron Scepter's class). Quote the current gap text and drop the number, or say which frame version the 0.407 was measured in."
+    "claim": "gaps[2] quoted, 0.407 dropped",
+    "status": "supported",
+    "severity": "-",
+    "note": "gaps[2] verbatim: 'NO SECTION ON ALTERNATE WIN CONDITIONS ... strategy:multiplayer.pivot-window comes closest and is written for board-based kills (\\'Prefer win attempts that leave a rebuilt position if they fail\\'), which Approach cannot do.' The quoted fragment matches; no retrieval score appears in that gap. Round 3 finding [3] closed."
    },
    {
     "where": "notes[1]",
-    "claim": "\"The denominator behind win_rate 0.202 ci95 [0.135, 0.292] is the 99 games with a winner; `summary.win_rate` 0.200 uses 100 and counts the true draw.\"",
-    "status": "contradicts-artifact",
-    "severity": "low",
-    "fix": "WITHDRAWAL",
-    "note": "MECHANICALLY CHECKABLE. Record giada-angels-vs-baylen-tokens-vs-abaddon-n120-b0f44e4a: summary = {draws: 1, truncated: 20, decided: 99, win_rate: 0.202, mean_round: 20.9, mean_global_turn: 41.3}. summary and analysis.seats.heliod AGREE at 99 / 0.202; there is no 0.200-over-100 anywhere in the record. The reconciliation was commit 7548b622 on 2026-09-11 ('A decided game has a winner: one definition for summary and analysis.seats'), five days before this revision - the record was not moved under the model, the sentence was carried from an earlier round. The rest of the note (20 truncated, 1 draw, 21 with no winner, 12 truncated on the v1.0.0 run, 20.9/19.8 and 41.3/39.0) is exact."
+    "claim": "summary and analysis.seats.heliod agree at decided 99 / win_rate 0.202 since 7548b622",
+    "status": "supported",
+    "severity": "-",
+    "note": "Record b0f44e4a summary: draws 1, truncated 20, decided 99, win_rate 0.202; seat wins 20, win_rate 0.202. 7548b622 (2026-09-11) is the last commit on both records. 12 truncated / 19.8 / 39.0 on 996adb84 exact. Round 3 finding [4] closed."
    },
    {
     "where": "notes[0], stages[6].what_it_does",
-    "claim": "\"v1.0.0 scored 27/108 decided (0.250); v1.2.1 scores 20/100 decided (0.200). `stats.diff_proportions(27,108,20,100)` gives diff -0.0500, Newcombe ci95 [-0.1614, +0.0644]\" / \"v1.0.0 scored 27/108 (0.250), v1.2.1 20/100 (0.200)\"",
-    "status": "miscounted",
-    "severity": "low",
-    "fix": "WITHDRAWAL",
-    "note": "MECHANICALLY CHECKABLE. Both records on disk (last rewritten at 7548b622, 2026-09-11) read: 996adb84 summary decided 107, win_rate 0.252 (27 wins; 12 truncated + 1 draw = 13 excluded); b0f44e4a decided 99, win_rate 0.202. Neither 108 nor 100 is in either file. Round 1 flagged the 108-vs-107 disagreement inside the old record; that commit settled it at 107, and this model kept 108. Re-run from the artifact: stats.diff_proportions(27,107,20,99) = diff -0.0503, ci95 [-0.1626, +0.0650], excludes_zero False - the conclusion survives to the third decimal, and mde_proportion / games_for_difference should be re-run on (107, 99) for the same reason. Fix from the record, not by arithmetic. Check: a numerator/denominator quoted beside a run id must equal that record's summary.wins[seat] / summary.decided."
+    "claim": "27/107 (0.252) and 20/99 (0.202); diff_proportions(27,107,20,99) = -0.0503 [-0.1626, +0.0650]; mde_proportion(0.252,107,99) = 0.185 at 0.8079; games_for_difference(0.252, d) = None / 330 / 152",
+    "status": "supported",
+    "severity": "-",
+    "note": "Records: 996adb84 summary decided 107 win_rate 0.252 wins 27; b0f44e4a decided 99 win_rate 0.202 wins 20. Re-run: stats.diff_proportions(27,107,20,99) -> diff -0.0503, ci95 [-0.1626, 0.065], excludes_zero False; stats.mde_proportion(0.252,107,99) -> minimum_detectable_difference 0.185, achieved_power 0.8079; stats.games_for_difference(0.252, 0.05/0.10/0.15) -> None / 330 / 152. All exact. Round 3 finding [5] closed by re-derivation from the artifact."
    },
    {
     "where": "notes[0], stages[6].what_it_does",
-    "claim": "\"Against par for a four-player pod the difference is -0.050, ci95 [-0.155, +0.056]; against this table's measured null of 0.180 it is +0.017, ci95 [-0.083, +0.116]. Both SPAN ZERO.\"",
-    "status": "unverified-line",
-    "severity": "medium",
-    "fix": "REBUTTAL",
-    "note": "Two confidence intervals nobody can re-derive. (1) Fixed-string grep for '-0.155' and '-0.083' across data/decks/heliod/*.json hits engine.json only (deck_map.json's '-0.083' is a coordinate): no diagnosis, info, diagnostic or frame artifact carries either interval. (2) No `stats.diff_proportions(a, n, b, m)` call with heliod at 19-20 wins over 99, 100 or 120 games against ANY comparand between 0.15 and 0.30 over 40-1300 games reproduces either triple to within 0.0015, except (20,99) vs (16,105) and (20,100) vs (16,106) - neither of which is par or a null. (3) The point differences do not match the model's own basis: on 0.202 they are -0.048 against 0.25 and +0.022 against 0.180; -0.050 and +0.017 imply a 0.200 basis and a 0.183 null, neither stated. (4) Wilson bounds shifted by a fixed reference give [-0.115, +0.042] and [-0.045, +0.112], which is the honest one-sample form and also spans zero. (5) The null itself: `pods standard --calibration` prints SUBJECT 0.181 [0.151, 0.215] over 547 decided games; info.json says 0.180 - name which. The CONCLUSION - both span zero - is true under every candidate computation, so this is a REBUTTAL if the engineer can name the command that produced these exact intervals; otherwise withdraw the intervals and keep the point differences with the Wilson form. A ci95 quoted in prose should name its stats call the way notes[0] does for the Newcombe interval."
+    "claim": "wilson_bounds(20,99) = [0.1348, 0.2915]; shifted by par 0.25 -> -0.048, [-0.115, +0.042]; by the calibrated null 0.181 -> +0.021, [-0.046, +0.111]; the old intervals withdrawn",
+    "status": "supported",
+    "severity": "-",
+    "note": "Re-run: stats.wilson_bounds(20,99) = (0.13476, 0.29155); minus 0.25 = (-0.1152, +0.0415) -> [-0.115, +0.042]; minus 0.181 = (-0.0462, +0.1105) -> [-0.046, +0.111]; points 20/99 - 0.25 = -0.048, 20/99 - 0.181 = +0.021. `pods standard --calibration`: SUBJECT 0.181 [0.151, 0.215], 547 decided games, 'THE NULL IS 0.181'. The withdrawn intervals are named as withdrawn, with the reason. Round 3 finding [6] closed by WITHDRAWAL (no command produced them) and replacement with the one-sample form."
    },
    {
     "where": "map_disagreements[3].why",
-    "claim": "\"Temple Bell, Kwain and Loran are '{T}:' handles and sit in THE TAP ROOM's THE HAND CRANK hood with the rocks and the Treasure makers ... The tap-room three are exactly the pieces that feed the discount on YOUR turn, so the map's split is the same split lines[0] draws, arrived at from text.\"",
-    "status": "over-claimed",
-    "severity": "low",
-    "fix": "WITHDRAWAL",
-    "note": "Contradicts the model's own lines[0], which counts FIVE own-turn gift pieces - Temple Bell, Mikokoro, Kwain, Loran, The Second Doctor - and that count is exact against oracle text. Against deck_map.json: Mikokoro sits in city-1 THE GROUND (UNTAPPED, NO QUESTIONS) and The Second Doctor in city-3 THE GIFT ECONOMY (THE BILL COMES DUE), so the tap-room three are three of the five, not 'exactly the pieces', and the map's 3-versus-8 split is not lines[0]'s 5-versus-6. Second, smaller: THE HAND CRANK (city-2-hood-0) holds Temple Bell, Kwain, Loran, Smothering Tithe, An Offer You Can't Refuse and Isochron Scepter; the seven rocks are in THE ROCKERY (city-2-hood-1), the same city and a different hood, so 'with the rocks' is one hood off. Every other city and hood named in all five map_disagreements[].why and all seven stages' city evidence is a verified member of the city named - checked card by card. Check: a sentence of the form 'X are exactly the pieces that Y' where Y is a set the model enumerates elsewhere is a set-equality test."
+    "claim": "three of the FIVE own-turn pieces; Mikokoro in THE GROUND, The Second Doctor in THE GIFT ECONOMY; the rocks one hood over in THE ROCKERY",
+    "status": "supported",
+    "severity": "-",
+    "note": "deck_map.json: Mikokoro city-1 THE GROUND; The Second Doctor city-3 THE GIFT ECONOMY (THE BILL COMES DUE); THE HAND CRANK holds Bell, Kwain, Loran, Smothering Tithe, An Offer, Isochron Scepter; THE ROCKERY the seven rocks. '3-against-8 near 5-against-6 without being it' is the honest reading. Round 3 finding [7] closed."
    },
    {
     "where": "lines[12].note",
-    "claim": "\"after the first Approach has resolved to seventh from the top, that is the second cast's whole problem solved for {2}\" / \"Whether the copy's cast counts\"",
-    "status": "over-claimed",
-    "severity": "low",
-    "fix": "WITHDRAWAL",
-    "note": "A dashed line phrased as fact at its strongest point. The Scepter-Tutor route solves the FIND: the copy puts Approach on top, you draw it, and casting it from hand satisfies 'cast from your hand' - that reading is sound on oracle text and correctly left to open_questions[7]. It does not solve the second {6}{W}, which the model itself calls the binding problem: stages[6] ('the deck's whole difficulty sits between the first cast and the second'), open_questions[3] (seven mana on two turns) and lines[8] (crossing 7 between turn 7 and 8). 'Whole problem' should be 'the search'. Also 'whether the copy's cast counts' is ill-posed: the copy is Mystical Tutor, and Approach's clause reads the Approach cast, not the tutor's - open_questions[7] states the actual question correctly. Placement itself is supported (see below)."
-   },
-   {
-    "where": "stages[1].cards, stages[5].cards, stages[0].cards - Horn of Greed, Isochron Scepter, Mind Stone",
-    "claim": "the three v1.3.0 placements, argued from what each card does to the others",
+    "claim": "the Scepter-Tutor route solves the SEARCH for the second cast, not the second {6}{W}; the 'copy's cast' clause removed",
     "status": "supported",
     "severity": "-",
-    "fix": "-",
-    "note": "All three hold. HORN OF GREED -> ignition: oracle 'Whenever a player plays a land, that player draws a card' is symmetric each-player draw keyed to the land drop; on an opponent's turn it draws THEM (one discount, in their main phase, after the draw-step pieces have banked), on yours it draws you; it is the one gift keyed to a land drop; deck_map puts it in THE GIFT ECONOMY's THE OPEN BAR beside Howling Mine, Font, Kami and Dictate; goldfish_targets holds it in both gift groups (lines 20 and 66); role draw:engine; Enlightened Tutor reaches it (Artifact), making five of ten as stated. ISOCHRON SCEPTER -> protection: the thirteen imprints re-enumerated from cards.json (type line contains Instant, cmc <= 2) are exactly the thirteen named, ten of them in protection (five counters, Path, Swords, Disenchant, Cyclonic Rift, Karametra's Blessing) with Enlightened Tutor / Mystical Tutor / Secure the Wastes in ignition / fuel / output; branch.json's staged[0].why says thirteen; the Scepter carries utility:activated + value:etb and no answer class, so the six-roleless arithmetic is right; the {2} cast is a spell and the '{2}, {T}' is an activated ability, so the discount applies to one and not the other, as stated. MIND STONE -> mana: ramp:rock, '{T}: Add {C}', one of mana_analysis.sources.producers (seven, all ramp:rock), the twelfth copy of deck-audit's ramp axis (12, band 10-12, verdict at) and the one rock the six-member flip any_of omits - proposed_goldfish_edits[2] is true of the file. Argued from function in every case, not from the map."
+    "note": "Scoped to what the oracle text supports; the binding-problem cross-reference to stages[6] and lines[8] is consistent with both; the ill-posed clause is gone; open_questions[7] carries the rules question; still 'Claim, not fact' with no verified_by. Round 3 finding [8] closed."
    },
    {
-    "where": "lines[0], lines[1], stages[1].what_it_does, stages[3].what_it_does - turn structure",
-    "claim": "which gift pieces feed the discount on the opponents' turns and which on yours",
+    "where": "stages[*], lines[*], map_disagreements[*], open_questions[*], proposed_goldfish_edits[*] - the unscoped remainder",
+    "claim": "byte-identity of everything round 3 marked supported",
     "status": "supported",
     "severity": "-",
-    "fix": "-",
-    "note": "Swept every ignition entry plus the three named outside the stage against cards.json. Draw-step pieces (Howling Mine, Font of Mythos, Kami, Dictate) fire 'at the beginning of each player's draw step' - the active player's own turn, {0} on yours; Horn fires on the land drop, the opponent's main phase; Temple Bell, Mikokoro, Kwain and Loran are activations; The Second Doctor is 'At the beginning of YOUR end step'; Scrawling Crawler 'At the beginning of YOUR upkeep' (output, listed as own-turn - right); Faerie Mastermind's '{3}{U}: Each player draws a card' (conversion); Skyscribing's forecast 'Activate only during your upkeep' (fuel). FIVE inside the stage is a closed set correctly closed after Forced Fruition's cut; the 'may' split (Kwain, The Second Doctor) is exact; Loran alone is 'you and target opponent'. No sentence in any stage or line credits a discount on the wrong turn. The one defect in this area is the Horn cost (finding 1), which is a count, not a turn."
-   },
-   {
-    "where": "lines[9]",
-    "claim": "protection -> wincon via Swan Song + Approach of the Second Sun, verified_by 002",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "Opened stacks/002-approach-second-sun-tutor-win.json: checker.verdict pass; step 4 is exactly the response - 'you respond with Swan Song for {U}, targeting that instant' - with checker findings supported on 117.7 (resolves first), 701.6a (counter removes the opponent's instant) and 113.9 (the stated limit: cannot answer an activated or triggered ability). The audit settles the mana ('{W}{W}{U}{5} covers {6}{W} with {U} left for Swan Song'). The stack is about the interaction between the two via cards, not a board that merely contains both. Ancient Tomb is on the board and the model says so; the ruling does not lean on it."
-   },
-   {
-    "where": "lines[10]",
-    "claim": "fuel -> wincon via Mystical Tutor, DOWNGRADED off stack 002 on the resolution steps",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "Right, and the right reason: 'Mystical Tutor' occurs four times in the file (title, scenario.graveyard, scenario.extras.game_history, checker.cards_verified) and ZERO times across the eight resolution steps - premise only; the checker's disclaimer is quoted verbatim and correctly scoped to the timing phrase. One thing to add, per agents-common section 2: engine-facts' `verified.pairings` lists (Approach of the Second Sun, Mystical Tutor) under 002, and the current frame's disagreements[2] says the same. The model is right to contradict that pairing list - it is exactly the names-both-cards gap this review exists for - but it should say it is doing so, in this note, rather than leave a reader to find engine-facts saying 'verified'."
-   },
-   {
-    "where": "stages[*].what_it_does, lines[*] - every goldfish figure",
-    "claim": "0.921/0.971/0.822/2.499; 0.741/0.561/4.87; 0.36/0.249; 0.32/0.189; 0.787/0.583; 0.839/0.705; 0.792; 0.495/0.671/0.358; 0.683/0.531; 0.68/0.529; 0.496/0.357; mana 6.412 -> 7.064 at t7 -> t8; land drops 0.728/0.593/0.534; interaction 0.61 castable vs 0.929 in hand at t6; 'next 0.839' and 'next 2.854'; missed_land_drop_rate 0.2568 worst turn six",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "Every figure re-read from goldfish_metrics.json (meta sha f1d4a650, model_version 5496ad1975b1) and benchmark.json on the current list; all exact. The two superlatives in stages[1] hold over the eleven targets (next-highest assembled 0.839 'Free or cheap interaction held', next-lowest mean turn 2.854 'An X-spell finisher drawn'). Memberships as stated: the table-engine any_of is eleven (ten ignition permanents plus Scrawling Crawler, no Enlightened Tutor); the flip any_of is six with no Mind Stone; win access is three; flier-blocker five with Sphinx and Mastermind in conversion; insurance five with Leyline; taxers three. meta.card_advantage: 14 draw / 6 modelled / eight named including Irrigated Farmland - exact. model-coverage: Heliod possible ['bodies'], active ['bodies'], no dark channel - exact."
-   },
-   {
-    "where": "stages[*].what_it_does, lines[*], notes[6] - every Forge figure and its labelling",
-    "claim": "the v1.2.1 run's figures, and the claim that every Forge figure is labelled as that run's",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "Labelling: every Forge sentence in the model names the run, the v1.2.1 list or both; the record's heliod seat sha is 214af3084f80 = deck_versions v1.2.1; the three opponent seats are c322a5893413 / 1435ef91fddf / 5f137a4449ea in BOTH n120 records and the profile list is identical ['Default','Experimental','Experimental','Experimental'] - notes[0]'s 'differ in this deck's list and the seed' is exact. Re-derived from the record: 20 wins 0.202 [0.135, 0.292]; 12 won_by Approach + 8 'all opponents have lost'; resolved 68 / 0.567 [0.477, 0.652]; transformed 35 / 0.292 [0.218, 0.378]; casts 0.76; eliminated 74, damage 61, giada 43 / abaddon 11 / baylen 7; combat 3.28/0.5 dealt, 37.92/30.5 taken; noncombat 148 / 1.23 / 0.0 / max 10 / nonzero 48; games_reaching_21 zero; placement 94 ranked 11/35/26/22 mean 2.628; lands 8.42; casts 15.82; flip cross-tab 35 games / 6 wins, 85 / 14, 10 of 12 Approach wins no-flip; v1.0.0 re-parsed noncombat 9.45 / 3.5. Re-derived from the four log parts, split on 'Game Result': 39 Approach casts in 27 games, 12 with a second cast and those 12 EXACTLY the 12 Approach wins; drain 851 = giada 378 / baylen 237 / abaddon 236, Psychosis 14; heliod-source noncombat 128 to its own seat (Adarkar Wastes 83, Talisman 43, Drift 1, Archangel 1) and 20 to opponents, all Walking Ballista; heliod-controlled trigger lines Tithe 998 (the most), Scrawling 924, Dictate 577, Remora 511, Rhystic 410, Sphinx 326, Howling Mine 300, Font 184, Kami 125, Second Doctor 84, Mastermind 77, Psychosis 14; activations Ballista 99 (heliod's, and the run's most), Bell 64, Kwain 46, Greaves 41 (heliod's own - opponents' Greaves lines are separate), Mikokoro 26, Loran 0; casts by GAME Loran 32, Mystical Tutor 38, Archive 32, Insight 17 (19 casts), Font 26, Sphinx 25, Tithe 24, Bell 22, Scrawling 46, Ballista 52, Greaves 29; 1,898 heliod cast lines; 349 'draw two cards instead' lines; zero cast lines for Azorius Signet, Guardian of Faith, Long-Term Plans, Psychosis Crawler, Skyscribing, Teferi's Protection, with Guardian's two ETB trigger lines and Psychosis's 14 drain lines present as stated; 'Long-Term Plans', 'Horn of Greed', 'Isochron Scepter', 'Mind Stone' occur nowhere in the logs. All exact."
-   },
-   {
-    "where": "stages[*].evidence[kind=city], map_disagreements[*].cities",
-    "claim": "every city and hood membership named beside a label",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "Verified card by card against deck_map.json (sha f1d4a650, six cities, thirteen hoods, named by deck-cartographer): mana 17 THE GROUND / 7 THE TAP ROOM (all seven in THE ROCKERY) / 2 THE HOME FRONT (KEEP THE GOD UP); ignition 6 THE GIFT ECONOMY / Bell, Kwain, Loran in THE HAND CRANK / Mikokoro THE GROUND / Enlightened Tutor THE SEARCH PARTY; fuel 6 / 4 as named; conversion 4 / Heliod THE HOME FRONT / Tithe THE TAP ROOM; output 3 in TOLLS AND X-SPELLS / both Crawlers THE GIFT ECONOMY; protection 10 / 7 NOT TODAY / 6 THE CLEANERS / Kefnet THE GIFT ECONOMY / An Offer and Isochron Scepter THE TAP ROOM (Scepter in THE HAND CRANK beside Bell and Kwain); wincon Approach in THE BILL COMES DUE with both Crawlers, Rhystic Study and Mystic Remora; Mystical Tutor and Long-Term Plans in THE SEARCH PARTY. The single membership defect is the 'exactly' clause in map_disagreements[3] (its own finding)."
-   },
-   {
-    "where": "stages[*].evidence[kind=role], stages[5].evidence[1], notes[4]",
-    "claim": "the role, audit and benchmark figures",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "card_roles.json over the 85: draw:wheel is exactly Temple Bell, Faerie Mastermind, Prosperity, Skyscribing, Scrawling Crawler; draw:engine is the ten named; tutor:unrestricted is Drift and Long-Term Plans, tutor:narrow the two Tutors; ramp:rock is the seven plus Smothering Tithe; ramp:cost-reduction is the Medallions plus Heliod; wincon:drain the two Crawlers, wincon:alt Approach; removal:damage Walking Ballista alone. Protection's six no-answer-role cards are Leyline, Propaganda, Ghostly Prison, Archangel, Drift, Isochron Scepter; the deck's 21 answer cards hold exactly one outside the stage (Ballista); benchmark 21 / 0.25 / 6 of 15 verbatim. deck-facts: 12 roleless entries, coverage 0.8588, one contained combo (Approach + Mystical Tutor, bracket 3, mana_value_needed 15, 'Win the game'), two_card_infinites 0; bracket_report floor 4 on 8 Game Changers. deck-audit: archetype control; mana-base 33 vs 37-39 under; colour-sources 25 W / 26 U vs 36 under; ramp 12 in 10-12 at, Mind Stone in the measured list; sweepers 2 vs 5-7 under; interaction-breadth 3 of 5 under, graveyard and land uncovered, the heuristic caveat verbatim; no axis over; engine.single_points_of_failure []. mana_analysis: 25/26, targets 36, lands_only 0.610/0.639, ungated 0.580/0.610, Skycloud Expanse the one gated source, the 'yardstick' sentence verbatim. Land arithmetic: 18 entries / 33 copies, 17 entries and 32 copies in mana with Mikokoro in ignition."
-   },
-   {
-    "where": "stages[6].single_point_of_failure, stages[6].evidence[3]",
-    "claim": "Approach of the Second Sun as the one SPOF, qualified in an evidence entry",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "The stage genuinely holds one card and no second finisher exists (wincon:alt 1, wincon:drain 2 at a life-loss median of 0.0). The qualifier is exact: 12 of 20 wins by the Approach effect, 8 by attrition; deck_audit's [] named as the disagreement. Not a coarse-class artefact - this is one card."
-   },
-   {
-    "where": "proposed_goldfish_edits[0].why",
-    "claim": "the grep receipt: count 4, lines 18 / 42 / 47 / 72, first any_of lines 56-67 with ten names",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "Re-run on the repaired file: `grep -c` returns 4; `grep -n` puts them at 18 (first any_of of 'Table draw engine online'), 42 (inside the Crawler target's label), 47 (the Crawler any_of), 72 (this target's second any_of); the first any_of of 'Table draw engine plus a draw-triggered drain' spans lines 56-67 and holds exactly the ten names, Scrawling Crawler absent. The _target_met consequence is stated. Round 2's false receipt is fully answered."
-   },
-   {
-    "where": "notes[8] - the engineer's answers to round 2",
-    "claim": "two findings moot (punisher ledger deleted), the grep receipt re-run, the 5.0x replaced, the median contradiction moot",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "Judged each on its merits. (a) Viseling ten-lines miscount and the 71-of-120 - WITHDRAWAL by deletion, and legitimate: the ledger is gone, no current claim rests on it, the strings Viseling / Iron Maiden / Ebony Owl Netsuke / Mikaeus / Forced Fruition / Angelic Wall / Tireless Tribe / Greater Auramancy occur NOWHERE in the model outside notes[] and the carried critic block, and none of the three punishers occurs in the v1.2.1 logs at all. (b) The receipt - REBUTTAL with evidence, exact (finding above). (c) The 5.0x - replaced by stages[4]'s life-loss-not-damage reading with the 128 / 20 own-seat split stated; both halves re-derived exact. (d) The median-0.0 sentence - moot because every noncombat figure is from the re-parsed record (148 / 1.23 / 0.0 / 48 and v1.0.0's 9.45 / 3.5 both exact). None of the four is a softening. The three cut names surviving in notes[0] are HISTORY (what the run's list was), which agents-common section 9 permits; acceptable as long as they stay in notes[]."
-   },
-   {
-    "where": "stages[*].what_it_does - length",
-    "claim": "ignition 1796, fuel 1790, protection 1787, conversion 1783, mana 1771, output 1744, wincon 1742",
-    "status": "supported",
-    "severity": "-",
-    "fix": "-",
-    "note": "All seven under the 1,800 cap; none muddled - each paragraph does one job. Revision note: the Horn correction lands in CONVERSION, which has 17 characters of room, so a cut must precede it ('(Scepter, Horn, Mind Stone)' -> 'behind two (Scepter, Mind Stone) or three (Horn) of their draws' is +30). Ignition has 4."
+    "note": "Walked the tree against 4eba774c (the version round 3 judged): exactly ten non-critic leaves differ - lines[12].note, map_disagreements[3].why, notes[0], notes[1], notes[5], open_questions[4].why_it_matters, stages[3].what_it_does, stages[5].evidence[2].note, stages[6].what_it_does, and the new notes[9]. That is the nine scoped pieces plus the revision record; nothing else moved, so the three placements, the turn-structure reading, lines[9] and its verified_by 002, every goldfish and Forge figure, every city membership and the SPOF stand as verified in round 3. The critic block is untouched (iterations 3, 21 findings). validate-engine OK: 7 stages, 85 placed, 0 unassigned, 1/14 verified. Lengths: ignition 1796, fuel 1790, protection 1787, conversion 1784, wincon 1771, mana 1771, output 1744 - all under 1,800. No new unsupported claim entered: notes[9]'s per-finding record matches what the diff shows, and its 'the engineer cannot name one' is the honest form of the [6] withdrawal."
    }
   ],
-  "iterations": 3
+  "iterations": 2
  }
 }

@@ -13,12 +13,9 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 15,
+    "complete": 17,
     "of": 18,
-    "stale": [
-      "frame",
-      "engine"
-    ],
+    "stale": [],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -3186,9 +3183,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice; the second cast is 12 for 12 and everything else is the wait.",
-    "critic": "fail",
-    "lines": 11,
+    "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount that lives on their turns, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice; the second cast is 12 for 12 and everything else is the wait.",
+    "critic": "pass",
+    "lines": 14,
     "verified_lines": 1
   },
   "diagnosis": {
@@ -3215,7 +3212,7 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker or Mikaeus, the Lunarch - and if so, is X chosen before or after the reduction applies?",
+      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista or Hangarback Walker - and if so, is X chosen before or after the reduction applies?",
       "settled_by": "resolve-stack"
     },
     {
@@ -3240,13 +3237,18 @@
     },
     {
       "from": "engine",
-      "question": "Can the goldfish measure the card side of this deck - Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind, Kefnet, Alhammarret's Archive, Teferi's Ageless Insight, Psychosis Crawler, Kwain and Loran are all in `draw_not_modelled` - so that a claim about whether mana or cards binds this deck has both arms measured?",
+      "question": "Can the goldfish measure the card side of this deck - Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind, Psychosis Crawler, Kwain and Loran are all in `draw_not_modelled` - so that a claim about whether mana or cards binds this deck has both arms measured?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
       "question": "Should the gift and fort components be scored on a card being ON THE BATTLEFIELD, or on it having been USED? Loran of the Third Path was cast in 32 of 120 Forge games and its draw ability was activated zero times; Temple Bell was cast in 22 and activated 64 times.",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "With Mystical Tutor imprinted on Isochron Scepter, does the copy cast at an opponent's end step put Approach of the Second Sun on top of the library so that drawing and casting it next turn satisfies Approach's \"cast from your hand\" clause for the win - and does a copy of Secure the Wastes cast without paying its mana cost have X = 0?",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
@@ -3338,14 +3340,12 @@
   },
   "experiments": null,
   "next": [
-    "stale: frame, engine — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `archangel-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source archangel-v1`",
     "branch `artifacts-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge artifacts-v1 --write`",
     "branch `blue-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source blue-v1`",
     "`splendor-v1` was proposed as v1.2.2 against V10 and the deck has moved on — v1.2.2 may be taken; re-measure and propose again",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
-    "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
-    "open questions routed: diagnose ×2, goldfish ×5, research-strategy ×3, resolve-stack ×6",
+    "open questions routed: diagnose ×2, goldfish ×5, research-strategy ×3, resolve-stack ×7",
     "11 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
