@@ -1,1046 +1,1148 @@
 {
- "slug": "edgar-vampires",
- "as_of_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
- "archetype": "Mardu Vampire aristocrats on an eminence chassis — a go-wide token engine converted through eight sacrifice outlets into counters, cards and drain, with a lords-and-payoffs combat plan beside it. The frame (strategic_frame.json, this sha) agrees and names the same tension this diagnosis reports: the pilot's direction says the lifegain infinite is out, and the 99 still holds Bloodthirsty Conqueror with Vito and with Sanguine Bond, checker-passed as table kills (stacks 004, 006). That is reported here as a decision for the pilot, not made for him.",
- "verdict": "It develops as well as any deck in the quiver and closes worse than its board deserves. A castable Vampire in 95.0% of goldfish games at mean turn 2.22, a turn-three land drop 91.9% of the time, a draw engine in 83.5%, and both games logged on the current shape (004, 005) reached a dominant board and lost at the close — to a tutored infinite and to Purphoros pings. The measured kill routes are two one-card components (7.8% and 4.1% assembled, mean turns 6.4 and 6.7), the plan's payoff drain is a two-card pair at 37.2%, and the sweeper count is zero by role in a deck whose best logged turn was an opponent's wipe with a drain online. Colour is the cheap fix (black four sources short with a triple-pip card in the 99); the drain-and-sweeper layer is what costs games, and the Purphoros answer the pilot asked white for is a class (exile) the deck holds two of, plus — pending a stack — the Conqueror his direction marked as out.",
- "axes": [
-  {
-   "axis": "mana-base",
-   "verdict": "adequate",
-   "measured": {
-    "value": 36
-   },
-   "reading": "36 land copies, the bottom of the 36–38 band, for a commander at mana value six; the goldfish keeps a seven 81.1% of the time and hits the turn-three drop 91.9%, so the count is not what is failing.",
-   "citations": [
+  "slug": "edgar-vampires",
+  "as_of_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+  "archetype": "Mardu Vampire aristocrats on an eminence chassis — a go-wide token engine converted through eight sacrifice outlets into counters, cards and drain, with a lords-and-payoffs combat plan beside it. The frame (strategic_frame.json, this sha) agrees and names the same tension this diagnosis reports: the pilot's direction says the lifegain infinite is out, and the 99 still holds Bloodthirsty Conqueror with Vito and with Sanguine Bond, checker-passed as table kills (stacks 004, 006). That is reported here as a decision for the pilot, not made for him.",
+  "verdict": "It develops as well as any deck in the quiver and closes worse than its board deserves. A castable Vampire in 95.0% of goldfish games at mean turn 2.22, a turn-three land drop 91.9% of the time, a draw engine in 83.5%, and both games logged on the current shape (004, 005) reached a dominant board and lost at the close — to a tutored infinite and to Purphoros pings. The measured kill routes are two one-card components (7.8% and 4.1% assembled, mean turns 6.4 and 6.7), the plan's payoff drain is a two-card pair at 37.2%, and the sweeper count is zero by role in a deck whose best logged turn was an opponent's wipe with a drain online. Colour is the cheap fix (black four sources short with a triple-pip card in the 99); the drain-and-sweeper layer is what costs games, and the Purphoros answer the pilot asked white for is a class (exile) the deck holds two of, plus — pending a stack — the Conqueror his direction marked as out.",
+  "axes": [
     {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    }
-   ]
-  },
-  {
-   "axis": "mana-sources",
-   "verdict": "strength",
-   "measured": {
-    "value": 43
-   },
-   "reading": "43 copies against a Burgess target of 40 (31 + 3 colours + 6): seven persistent producers on top of 36 lands. Log 003 opened on four mana turn one and log 005 never missed a drop; quantity of mana is solved.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
-    }
-   ]
-  },
-  {
-   "axis": "taplands",
-   "verdict": "strength",
-   "measured": {
-    "value": 3
-   },
-   "reading": "Three unconditional taplands (Midgar, Nomad Outpost, Savai Triome) in an aggressive list; the twelve conditional ones are shocks and check-style lands that are untapped when the deck is on curve.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
-    }
-   ]
-  },
-  {
-   "axis": "colour-sources",
-   "verdict": "weakness",
-   "measured": {
-    "value": -4
-   },
-   "reading": "Black is 32 sources against a Karsten target of 36 for a deck with 38 black cards, 54 black pips and one {1}{B}{B}{B} card (Bloodletter); red is 20 against 22 for six cards. mana_analysis puts black on curve at 0.785 on lands alone and 0.855 with rocks. Two lands add no colour without a cost (Ancient Tomb, Survivors' Encampment) and three make only R/W (Battlefield Forge, Spectator Seating, Sundown Pass) for a six-card splash. This is the cheapest axis to fix, and the log cannot see it because a pilot logs a missed drop, not a missed pip.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+      "axis": "mana-base",
+      "verdict": "adequate",
+      "measured": {
+        "value": 36
+      },
+      "reading": "36 land copies, the bottom of the 36–38 band, for a commander at mana value six; the goldfish keeps a seven 81.1% of the time and hits the turn-three drop 91.9%, so the count is not what is failing.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "Triple pip: 37 for {C}{C}{C}, 33 for 1{C}{C}{C}"
+      "axis": "mana-sources",
+      "verdict": "strength",
+      "measured": {
+        "value": 43
+      },
+      "reading": "43 copies against a Burgess target of 40 (31 + 3 colours + 6): seven persistent producers on top of 36 lands. Log 003 opened on four mana turn one and log 005 never missed a drop; quantity of mana is solved.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
+      "axis": "taplands",
+      "verdict": "strength",
+      "measured": {
+        "value": 3
+      },
+      "reading": "Three unconditional taplands (Midgar, Nomad Outpost, Savai Triome) in an aggressive list; the twelve conditional ones are shocks and check-style lands that are untapped when the deck is on curve.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
+        }
+      ]
+    },
+    {
+      "axis": "colour-sources",
+      "verdict": "weakness",
+      "measured": {
+        "value": -4
+      },
+      "reading": "Black is 32 sources against a Karsten target of 36 for a deck with 38 black cards, 54 black pips and one {1}{B}{B}{B} card (Bloodletter); red is 20 against 22 for six cards. mana_analysis puts black on curve at 0.785 on lands alone and 0.855 with rocks. Two lands add no colour without a cost (Ancient Tomb, Survivors' Encampment) and three make only R/W (Battlefield Forge, Spectator Seating, Sundown Pass) for a six-card splash. This is the cheapest axis to fix, and the log cannot see it because a pilot logs a missed drop, not a missed pip.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "Triple pip: 37 for {C}{C}{C}, 33 for 1{C}{C}{C}"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        }
+      ]
+    },
+    {
+      "axis": "ramp",
+      "verdict": "adequate",
+      "measured": {
+        "value": 8
+      },
+      "reading": "8 copies against 10–12, but the axis exists to keep the deck from stalling on mana and this deck does not: 43 sources, land drop 0.919 on turn three, ramp-or-fixing drawn in 67.5% of goldfish games, and no logged game names mana as the cause. Master of Dark Rites is counted here and its {B}{B}{B} pays for Vampire, Cleric and Demon spells only. Do not spend a swap here.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
+        }
+      ]
+    },
+    {
+      "axis": "card-advantage",
+      "verdict": "adequate",
+      "measured": {
+        "value": 7
+      },
+      "reading": "7 by role against 10, but the audit's probe names nine uncounted cards and reading them adds six real draw sources — Champion of Dusk (draw X on entry), Bloodtracker (a card per counter on leaving), Preacher of the Schism (draw on attack), Reactor Raid (sacrifice: draw two), Castle Locthwain and Minas Tirith (activated draw); Savai Triome, Silent Clearing and Voldaren Epicure only replace themselves. Thirteen draw sources clear the template. Logs 001–003 (v1.0.0) lost on 'ran out of steam'; log 004, the first on the v1.1.0 shape, reports the draw holding under an opponent's pinger. The axis is UNDER by taxonomy and not by oracle text.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
+        },
+        {
+          "rule": "strategy:card-advantage",
+          "quote": "engines that out-draw three players are the format's defining advantage"
+        }
+      ]
+    },
+    {
+      "axis": "interaction",
+      "verdict": "adequate",
+      "measured": {
+        "value": 11
+      },
+      "reading": "11 copies against 8, but the count answers the pilot's Purphoros question only after enumeration: of the eleven, exactly two exile a noncreature indestructible permanent — Anguished Unmaking (exile target nonland permanent) and Despark (exile target permanent with mana value 4 or greater; Purphoros is mana value 4). Stroke of Midnight destroys and is blank against a God; Path to Exile, Winds of Abandon, Elspeth's −3 and Vish Kal want a creature, which Purphoros only is at devotion five (when he is, Path and Winds also exile him); Boros Charm, Voldaren Epicure and Altar of Dementia do not touch a permanent; Liliana's −4 is an edict. The class the pilot asked for is 'exile', not 'white': both existing answers are already white-black.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Depth is a meta call: copy the answer your table beats you with."
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "catch-all removal earns its premium"
+        }
+      ]
+    },
+    {
+      "axis": "sweepers",
+      "verdict": "weakness",
+      "measured": {
+        "value": 0
+      },
+      "reading": "0 by role against 1–3. By oracle text three cards in the 99 remove more than one opposing creature in one action — Winds of Abandon's overload (exile each creature you don't control, {4}{W}{W}), Liliana's −4 (each player sacrifices two) and her −9 — so the honest count is one six-mana one-sided wipe. The deck WANTS a symmetric wipe it controls: log 002's 'signature play' was an opponent's wipe with Blood Artist and Bloodthirsty Conqueror online, eleven deaths, 11 life off every opponent, and v1.1.1 added two more death payoffs (Elenda, Blade). A sweeper in this list is the close, not the defence.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "assume the wrath — over a four-player game one is near-certain"
+        }
+      ]
+    },
+    {
+      "axis": "protection",
+      "verdict": "adequate",
+      "measured": {
+        "value": 7
+      },
+      "reading": "7 copies, the top of the 5–7 band, but read for the pilot's planeswalker question: Flawless Maneuver and Akroma's Will name creatures; Mondrak and Yahenni protect themselves. Elspeth is covered by Teferi's Protection (everything phases out) against anything, by Deflecting Swat against a targeted spell or ability, and by Boros Charm's indestructible mode only against a 'destroy' effect — whether indestructible keeps a walker alive through combat damage is filed for resolve-stack (expected: it does not). Against an attack the cover is blockers, which is the pilot's own lesson from 005. The cost: Teferi's is {2}{W} held, which log 002 named as the structural tension ('my mana was spent casting vampires'); Swat and Maneuver are free only with Edgar ON THE BATTLEFIELD (goldfish: cast by turn six in 60.3% of games), so the cheapest walker cover is Edgar before Elspeth — a sequencing rule rather than a swap.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+        },
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "protection slots and held mana cost you every game, removal only costs you some"
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+        }
+      ]
+    },
+    {
+      "axis": "threat-density",
+      "verdict": "weakness",
+      "measured": {
+        "value": 10
+      },
+      "reading": "10 wincon-tagged copies clear a floor of 3, but the tags are not finishers: Vampire Cutthroat is a 1/1 skulk, Boros Charm and Akroma's Will are modes, Blood Artist and Cruel Celebrant are one-point drains. The kills that close from a board are Sanctum Seeker under Bloodletter (stack 003; Bloodletter is a one-card leg at 4.1% assembled), the Conqueror loops (stacks 004/006; 7.8%; the pilot says these are out), an Akroma's Will alpha, and Elenda's death payout (no stack). Both games logged on the current shape (004, 005) reached a dominant board and lost at the close — to a tutored infinite and to Purphoros pings — and the Forge records on v1.1.0 put the seat's median first attack at global turn 12 and 13 against standard-v3 (n60, n40), 13 against giada/baylen/abaddon (n100) and 16 in the five-seat playgroup pod (n40). This is the axis that is costing games: value is not a win.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board"
+        },
+        {
+          "rule": "strategy:whos-the-beatdown.metagame-clock",
+          "quote": "engines are the default winning plan and aggro must instead compress the game before the table's late game arrives"
+        }
+      ]
+    },
+    {
+      "axis": "creatures",
+      "verdict": "adequate",
+      "measured": {
+        "value": 37
+      },
+      "reading": "37 creature copies, above the aggro band, in a deck whose commander pays a token per Vampire cast; thirteen of them cost two or less and are the eminence leg (drawn 95.0%, mean turn 2.22).",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "weakness",
+      "measured": {
+        "value": 3
+      },
+      "reading": "3 of 5 classes. Enumerated from cards.json rather than the heuristic: nothing in the 99 exiles a graveyard (Altar of Dementia mills, Nighthawk Scavenger and The Haunt of Hightower only read graveyards, Takenuma returns from ours) and nothing targets a land (Anguished Unmaking and Stroke of Midnight say nonland; Despark needs mana value 4). The gap is real but not what the log says beats this deck: one Jarad seat (003), no land-based loss. Fill graveyard cheaply if at all; leave land.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        }
+      ]
+    },
+    {
+      "axis": "consistency",
+      "verdict": "strength",
+      "measured": {
+        "value": 0.919
+      },
+      "reading": "Turn-three land drop 0.919 against a 0.74 target, keep-first-seven 0.811. Log 005: 'Never missed a land drop.'",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+        }
+      ]
+    },
+    {
+      "axis": "curve",
+      "verdict": "adequate",
+      "measured": {
+        "value": 3
+      },
+      "reading": "Modal mana value 3 (19 three-drops, 14 two-drops, 13 one-drops) with nothing at eight-plus; one card at seven (Vish Kal). The eminence leg sits at one and two; the payoffs at three to six.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+        }
+      ]
+    },
+    {
+      "axis": "power",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Bracket floor 4 (Optimized), forced by two two-card infinites at mana value 6 or less (Conqueror with Vito, Conqueror with Sanguine Bond), not by the three Game Changers (Ancient Tomb, Teferi's Protection, Vampiric Tutor), which alone force 3. Cutting Ancient Tomb does not move the floor; cutting the infinite would.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
+        }
+      ]
+    },
+    {
+      "axis": "tutors",
+      "verdict": "adequate",
+      "measured": {
+        "value": 1
+      },
+      "reading": "One unrestricted tutor. It is the whole difference between the unassisted and assisted rates on the two one-card kill legs (Conqueror 7.8% to 15.1%, Bloodletter 4.1% to 9.4%).",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "tutor only the irreplaceable"
+        },
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "axis": "ramp",
-   "verdict": "adequate",
-   "measured": {
-    "value": 8
-   },
-   "reading": "8 copies against 10–12, but the axis exists to keep the deck from stalling on mana and this deck does not: 43 sources, land drop 0.919 on turn three, ramp-or-fixing drawn in 67.5% of goldfish games, and no logged game names mana as the cause. Master of Dark Rites is counted here and its {B}{B}{B} pays for Vampire, Cleric and Demon spells only. Do not spend a swap here.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    },
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
-    }
-   ]
-  },
-  {
-   "axis": "card-advantage",
-   "verdict": "adequate",
-   "measured": {
-    "value": 7
-   },
-   "reading": "7 by role against 10, but the audit's probe names nine uncounted cards and reading them adds six real draw sources — Champion of Dusk (draw X on entry), Bloodtracker (a card per counter on leaving), Preacher of the Schism (draw on attack), Reactor Raid (sacrifice: draw two), Castle Locthwain and Minas Tirith (activated draw); Savai Triome, Silent Clearing and Voldaren Epicure only replace themselves. Thirteen draw sources clear the template. Logs 001–003 (v1.0.0) lost on 'ran out of steam'; log 004, the first on the v1.1.0 shape, reports the draw holding under an opponent's pinger. The axis is UNDER by taxonomy and not by oracle text.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    },
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "they are counts of *functions*, not cards, so a card doing two jobs fills two slots"
-    },
-    {
-     "rule": "strategy:card-advantage",
-     "quote": "engines that out-draw three players are the format's defining advantage"
-    }
-   ]
-  },
-  {
-   "axis": "interaction",
-   "verdict": "adequate",
-   "measured": {
-    "value": 11
-   },
-   "reading": "11 copies against 8, but the count answers the pilot's Purphoros question only after enumeration: of the eleven, exactly two exile a noncreature indestructible permanent — Anguished Unmaking (exile target nonland permanent) and Despark (exile target permanent with mana value 4 or greater; Purphoros is mana value 4). Stroke of Midnight destroys and is blank against a God; Path to Exile, Winds of Abandon, Elspeth's −3 and Vish Kal want a creature, which Purphoros only is at devotion five (when he is, Path and Winds also exile him); Boros Charm, Voldaren Epicure and Altar of Dementia do not touch a permanent; Liliana's −4 is an edict. The class the pilot asked for is 'exile', not 'white': both existing answers are already white-black.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
-    },
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Depth is a meta call: copy the answer your table beats you with."
-    },
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "catch-all removal earns its premium"
-    }
-   ]
-  },
-  {
-   "axis": "sweepers",
-   "verdict": "weakness",
-   "measured": {
-    "value": 0
-   },
-   "reading": "0 by role against 1–3. By oracle text three cards in the 99 remove more than one opposing creature in one action — Winds of Abandon's overload (exile each creature you don't control, {4}{W}{W}), Liliana's −4 (each player sacrifices two) and her −9 — so the honest count is one six-mana one-sided wipe. The deck WANTS a symmetric wipe it controls: log 002's 'signature play' was an opponent's wipe with Blood Artist and Bloodthirsty Conqueror online, eleven deaths, 11 life off every opponent, and v1.1.1 added two more death payoffs (Elenda, Blade). A sweeper in this list is the close, not the defence.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    },
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
-    },
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "assume the wrath — over a four-player game one is near-certain"
-    }
-   ]
-  },
-  {
-   "axis": "protection",
-   "verdict": "adequate",
-   "measured": {
-    "value": 7
-   },
-   "reading": "7 copies, the top of the 5–7 band, but read for the pilot's planeswalker question: Flawless Maneuver and Akroma's Will name creatures; Mondrak and Yahenni protect themselves. Elspeth is covered by Teferi's Protection (everything phases out) against anything, by Deflecting Swat against a targeted spell or ability, and by Boros Charm's indestructible mode only against a 'destroy' effect — whether indestructible keeps a walker alive through combat damage is filed for resolve-stack (expected: it does not). Against an attack the cover is blockers, which is the pilot's own lesson from 005. The cost: Teferi's is {2}{W} held, which log 002 named as the structural tension ('my mana was spent casting vampires'); Swat and Maneuver are free only with Edgar ON THE BATTLEFIELD (goldfish: cast by turn six in 60.3% of games), so the cheapest walker cover is Edgar before Elspeth — a sequencing rule rather than a swap.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
-    },
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "protection slots and held mana cost you every game, removal only costs you some"
-    },
-    {
-     "rule": "strategy:multiplayer.pivot-window",
-     "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
-    }
-   ]
-  },
-  {
-   "axis": "threat-density",
-   "verdict": "weakness",
-   "measured": {
-    "value": 10
-   },
-   "reading": "10 wincon-tagged copies clear a floor of 3, but the tags are not finishers: Vampire Cutthroat is a 1/1 skulk, Boros Charm and Akroma's Will are modes, Blood Artist and Cruel Celebrant are one-point drains. The kills that close from a board are Sanctum Seeker under Bloodletter (stack 003; Bloodletter is a one-card leg at 4.1% assembled), the Conqueror loops (stacks 004/006; 7.8%; the pilot says these are out), an Akroma's Will alpha, and Elenda's death payout (no stack). Both games logged on the current shape (004, 005) reached a dominant board and lost at the close — to a tutored infinite and to Purphoros pings — and the Forge records on v1.1.0 put the seat's median first attack at global turn 12 and 13 against standard-v3 (n60, n40), 13 against giada/baylen/abaddon (n100) and 16 in the five-seat playgroup pod (n40). This is the axis that is costing games: value is not a win.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Value is not a win."
-    },
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
-    },
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board"
-    },
-    {
-     "rule": "strategy:whos-the-beatdown.metagame-clock",
-     "quote": "engines are the default winning plan and aggro must instead compress the game before the table's late game arrives"
-    }
-   ]
-  },
-  {
-   "axis": "creatures",
-   "verdict": "adequate",
-   "measured": {
-    "value": 37
-   },
-   "reading": "37 creature copies, above the aggro band, in a deck whose commander pays a token per Vampire cast; thirteen of them cost two or less and are the eminence leg (drawn 95.0%, mean turn 2.22).",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.archetype-selection",
-     "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
-    }
-   ]
-  },
-  {
-   "axis": "interaction-breadth",
-   "verdict": "weakness",
-   "measured": {
-    "value": 3
-   },
-   "reading": "3 of 5 classes. Enumerated from cards.json rather than the heuristic: nothing in the 99 exiles a graveyard (Altar of Dementia mills, Nighthawk Scavenger and The Haunt of Hightower only read graveyards, Takenuma returns from ours) and nothing targets a land (Anguished Unmaking and Stroke of Midnight say nonland; Despark needs mana value 4). The gap is real but not what the log says beats this deck: one Jarad seat (003), no land-based loss. Fill graveyard cheaply if at all; leave land.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-    }
-   ]
-  },
-  {
-   "axis": "consistency",
-   "verdict": "strength",
-   "measured": {
-    "value": 0.919
-   },
-   "reading": "Turn-three land drop 0.919 against a 0.74 target, keep-first-seven 0.811. Log 005: 'Never missed a land drop.'",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
-    }
-   ]
-  },
-  {
-   "axis": "curve",
-   "verdict": "adequate",
-   "measured": {
-    "value": 3
-   },
-   "reading": "Modal mana value 3 (19 three-drops, 14 two-drops, 13 one-drops) with nothing at eight-plus; one card at seven (Vish Kal). The eminence leg sits at one and two; the payoffs at three to six.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
-    }
-   ]
-  },
-  {
-   "axis": "power",
-   "verdict": "adequate",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Bracket floor 4 (Optimized), forced by two two-card infinites at mana value 6 or less (Conqueror with Vito, Conqueror with Sanguine Bond), not by the three Game Changers (Ancient Tomb, Teferi's Protection, Vampiric Tutor), which alone force 3. Cutting Ancient Tomb does not move the floor; cutting the infinite would.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.power-level",
-     "quote": "Contents give a floor, never a verdict."
-    }
-   ]
-  },
-  {
-   "axis": "tutors",
-   "verdict": "adequate",
-   "measured": {
-    "value": 1
-   },
-   "reading": "One unrestricted tutor. It is the whole difference between the unassisted and assisted rates on the two one-card kill legs (Conqueror 7.8% to 15.1%, Bloodletter 4.1% to 9.4%).",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "tutor only the irreplaceable"
-    },
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
-    }
-   ]
-  }
- ],
- "engine": {
-  "declared": "Edgar mints a 1/1 Vampire from the command zone on every Vampire cast; three doublers multiply the mint; eight sacrifice outlets (six free) turn bodies into counters, cards and drain; the checker-passed kills are a Bloodletter-doubled Sanctum Seeker attack (003) and the Conqueror loops (004, 006), each resting on one card.",
-  "components": [
-   {
-    "role": "ignition",
-    "have": [
-     "Indulgent Aristocrat",
-     "Knight of the Ebon Legion",
-     "Master of Dark Rites",
-     "Vampire Cutthroat",
-     "Vampire of the Dire Moon",
-     "Voldaren Epicure",
-     "Blood Artist",
-     "Charismatic Conqueror",
-     "Cordial Vampire",
-     "Cruel Celebrant",
-     "Gifted Aetherborn",
-     "Legion Lieutenant",
-     "Vampire Socialite"
-    ],
-    "count": 13,
-    "thinnest": false,
-    "measured_rate": 0.95,
-    "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-    "by_turn_6_rate": 0.863,
-    "mean_turn": 2.219,
-    "reading": "Solved. Thirteen Vampires at mana value two or less, drawn in 95.0% of games at mean turn 2.22; the healthiest figure in the brief and the leg every kill proof opens on."
-   },
-   {
-    "role": "fodder",
-    "have": [
-     "Anointed Procession",
-     "Mondrak, Glory Dominus",
-     "Elspeth, Storm Slayer",
-     "Mavren Fein, Dusk Apostle",
-     "Charismatic Conqueror"
-    ],
-    "count": 5,
-    "thinnest": false,
-    "measured_rate": 0.679,
-    "label": "A token multiplier or extra token-maker drawn",
-    "by_turn_6_rate": 0.518,
-    "mean_turn": 3.601,
-    "reading": "Five multipliers or extra makers, 67.9%. Stack 010 has three doublers taking one mint to eight. Eight tokens is eight things to convert, not eight damage: the 400-game Forge run on v1.0.0 measured 1/1s not connecting."
-   },
-   {
-    "role": "mana",
-    "have": [
-     "Sol Ring",
-     "Arcane Signet",
-     "Talisman of Indulgence",
-     "Herald's Horn",
-     "Patchwork Banner"
-    ],
-    "count": 5,
-    "thinnest": false,
-    "measured_rate": 0.675,
-    "label": "Ramp or fixing drawn",
-    "by_turn_6_rate": 0.516,
-    "mean_turn": 3.581,
-    "reading": "Five declared, 67.5%, plus 36 lands. Quantity is fine; colour is not (see colour-sources)."
-   },
-   {
-    "role": "piece",
-    "have": [
-     "Bloodtracker",
-     "Caretaker's Talent",
-     "Champion of Dusk",
-     "Crossway Troublemakers",
-     "Liliana, Dreadhorde General",
-     "Night's Whisper",
-     "Preacher of the Schism",
-     "Skullclamp",
-     "Welcoming Vampire"
-    ],
-    "count": 9,
-    "thinnest": false,
-    "measured_rate": 0.835,
-    "label": "A draw engine drawn",
-    "by_turn_6_rate": 0.726,
-    "mean_turn": 2.621,
-    "reading": "Nine declared, 83.5% at mean turn 2.62, and the audit's probe adds six more the taxonomy cannot see. The 'ran out of steam' cause of logs 001–003 was addressed by v1.1.0 and log 004 says so."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Legion Lieutenant",
-     "Stromkirk Captain",
-     "Captivating Vampire",
-     "Sanctum Seeker",
-     "Vampire Socialite",
-     "Cordial Vampire",
-     "Drana, Liberator of Malakir"
-    ],
-    "count": 7,
-    "thinnest": false,
-    "measured_rate": 0.8,
-    "label": "A Vampire lord or anthem drawn (the combat plan)",
-    "by_turn_6_rate": 0.649,
-    "mean_turn": 3.167,
-    "reading": "Seven, 80.0%. The combat plan's size: this is what makes a converted body connect."
-   },
-   {
-    "role": "outlet",
-    "have": [
-     "Altar of Dementia",
-     "Ashnod's Altar",
-     "Bloodflow Connoisseur",
-     "Viscera Seer",
-     "Vish Kal, Blood Arbiter",
-     "Yahenni, Undying Partisan"
-    ],
-    "count": 6,
-    "thinnest": false,
-    "measured_rate": 0.723,
-    "label": "A free sacrifice outlet drawn (bloodline's new engine)",
-    "by_turn_6_rate": 0.593,
-    "mean_turn": 3.159,
-    "reading": "Six free outlets, 72.3% at mean turn 3.16 (Indulgent Aristocrat bills {2}; Master of Dark Rites is filed under mana). Eight outlets by role against two death drains is the imbalance the cut list addresses. Forge never activated Altar of Dementia or Viscera Seer in 100 games on v1.1.0, so every Forge rate on this layer is a floor."
-   },
-   {
-    "role": "protection",
-    "have": [
-     "Teferi's Protection",
-     "Flawless Maneuver",
-     "Boros Charm",
-     "Akroma's Will",
-     "Deflecting Swat"
-    ],
-    "count": 5,
-    "thinnest": false,
-    "measured_rate": 0.683,
-    "label": "Protection held for the swarm",
-    "by_turn_6_rate": 0.516,
-    "mean_turn": 3.633,
-    "reading": "Five, 68.3%. Two of the five (Teferi's Protection, Boros Charm) reach a noncreature permanent; two (Deflecting Swat, Flawless Maneuver) are free only with Edgar on the battlefield."
-   },
-   {
-    "role": "piece",
-    "have": [
-     "Despark",
-     "Anguished Unmaking",
-     "Stroke of Midnight"
-    ],
-    "count": 3,
-    "thinnest": false,
-    "measured_rate": 0.493,
-    "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
-    "by_turn_6_rate": 0.348,
-    "mean_turn": 4.111,
-    "reading": "Three, 49.3%. Against an indestructible God the effective size is two (Despark, Anguished Unmaking), because Stroke of Midnight destroys — the rate overstates the Purphoros answer."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Blood Artist",
-     "Cruel Celebrant"
-    ],
-    "count": 2,
-    "thinnest": false,
-    "measured_rate": 0.372,
-    "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-    "by_turn_6_rate": 0.252,
-    "mean_turn": 4.305,
-    "reading": "Two cards, 37.2% (25.2% by turn six), 13.7% of openers. This is the thinnest component of the PLAN — the one-card legs below are windfalls. Cruel Celebrant hits each opponent, Blood Artist one target player; nothing measures a drain and an outlet together."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Bloodthirsty Conqueror"
-    ],
-    "count": 1,
-    "thinnest": false,
-    "measured_rate": 0.078,
-    "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
-    "by_turn_6_rate": 0.034,
-    "mean_turn": 6.385,
-    "reading": "One card, 7.8% (15.1% with the tutor), mean turn 6.39. Checker-passed as a table kill with Vito or Sanguine Bond. The pilot's direction says this line is out; the 99 says it is in."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Bloodletter of Aclazotz"
-    ],
-    "count": 1,
-    "thinnest": true,
-    "measured_rate": 0.041,
-    "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
-    "by_turn_6_rate": 0.016,
-    "mean_turn": 6.707,
-    "reading": "One card, 4.1% (9.4% assisted), mean turn 6.71 — the thinnest measured component. Stack 003 kills one seat on attack declaration with seven attackers; the audit finds no closer by combo route and the frame calls it 'a windfall, not a plan'."
-   }
   ],
-  "single_points_of_failure": [
-   {
-    "component": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz",
-    "why": "One card at 7.1% of openers and 4.1% assembled; the only cost in the 99 with three identical coloured pips ({1}{B}{B}{B}) in the colour that is four sources short. The audit's combo route finds no closer; the honest closer is not a second Bloodletter but a third each-opponent drain so the undoubled line still adds up.",
-    "closers": [
-     "Bastion of Remembrance",
-     "Zulaport Cutthroat",
-     "Vindictive Vampire",
-     "The Meathook Massacre"
+  "engine": {
+    "declared": "Edgar mints a 1/1 Vampire from the command zone on every Vampire cast; three doublers multiply the mint; eight sacrifice outlets (six free) turn bodies into counters, cards and drain; the checker-passed kills are a Bloodletter-doubled Sanctum Seeker attack (003) and the Conqueror loops (004, 006), each resting on one card.",
+    "components": [
+      {
+        "role": "ignition",
+        "have": [
+          "Indulgent Aristocrat",
+          "Knight of the Ebon Legion",
+          "Master of Dark Rites",
+          "Vampire Cutthroat",
+          "Vampire of the Dire Moon",
+          "Voldaren Epicure",
+          "Blood Artist",
+          "Charismatic Conqueror",
+          "Cordial Vampire",
+          "Cruel Celebrant",
+          "Gifted Aetherborn",
+          "Legion Lieutenant",
+          "Vampire Socialite"
+        ],
+        "count": 13,
+        "thinnest": false,
+        "measured_rate": 0.95,
+        "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
+        "by_turn_6_rate": 0.863,
+        "mean_turn": 2.219,
+        "reading": "Solved. Thirteen Vampires at mana value two or less, drawn in 95.0% of games at mean turn 2.22; the healthiest figure in the brief and the leg every kill proof opens on."
+      },
+      {
+        "role": "fodder",
+        "have": [
+          "Anointed Procession",
+          "Mondrak, Glory Dominus",
+          "Elspeth, Storm Slayer",
+          "Mavren Fein, Dusk Apostle",
+          "Charismatic Conqueror"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "measured_rate": 0.679,
+        "label": "A token multiplier or extra token-maker drawn",
+        "by_turn_6_rate": 0.518,
+        "mean_turn": 3.601,
+        "reading": "Five multipliers or extra makers, 67.9%. Stack 010 has three doublers taking one mint to eight. Eight tokens is eight things to convert, not eight damage: the 400-game Forge run on v1.0.0 measured 1/1s not connecting."
+      },
+      {
+        "role": "mana",
+        "have": [
+          "Sol Ring",
+          "Arcane Signet",
+          "Talisman of Indulgence",
+          "Herald's Horn",
+          "Patchwork Banner"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "measured_rate": 0.675,
+        "label": "Ramp or fixing drawn",
+        "by_turn_6_rate": 0.516,
+        "mean_turn": 3.581,
+        "reading": "Five declared, 67.5%, plus 36 lands. Quantity is fine; colour is not (see colour-sources)."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Bloodtracker",
+          "Caretaker's Talent",
+          "Champion of Dusk",
+          "Crossway Troublemakers",
+          "Liliana, Dreadhorde General",
+          "Night's Whisper",
+          "Preacher of the Schism",
+          "Skullclamp",
+          "Welcoming Vampire"
+        ],
+        "count": 9,
+        "thinnest": false,
+        "measured_rate": 0.835,
+        "label": "A draw engine drawn",
+        "by_turn_6_rate": 0.726,
+        "mean_turn": 2.621,
+        "reading": "Nine declared, 83.5% at mean turn 2.62, and the audit's probe adds six more the taxonomy cannot see. The 'ran out of steam' cause of logs 001–003 was addressed by v1.1.0 and log 004 says so."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Legion Lieutenant",
+          "Stromkirk Captain",
+          "Captivating Vampire",
+          "Sanctum Seeker",
+          "Vampire Socialite",
+          "Cordial Vampire",
+          "Drana, Liberator of Malakir"
+        ],
+        "count": 7,
+        "thinnest": false,
+        "measured_rate": 0.8,
+        "label": "A Vampire lord or anthem drawn (the combat plan)",
+        "by_turn_6_rate": 0.649,
+        "mean_turn": 3.167,
+        "reading": "Seven, 80.0%. The combat plan's size: this is what makes a converted body connect."
+      },
+      {
+        "role": "outlet",
+        "have": [
+          "Altar of Dementia",
+          "Ashnod's Altar",
+          "Bloodflow Connoisseur",
+          "Viscera Seer",
+          "Vish Kal, Blood Arbiter",
+          "Yahenni, Undying Partisan"
+        ],
+        "count": 6,
+        "thinnest": false,
+        "measured_rate": 0.723,
+        "label": "A free sacrifice outlet drawn (bloodline's new engine)",
+        "by_turn_6_rate": 0.593,
+        "mean_turn": 3.159,
+        "reading": "Six free outlets, 72.3% at mean turn 3.16 (Indulgent Aristocrat bills {2}; Master of Dark Rites is filed under mana). Eight outlets by role against two death drains is the imbalance the cut list addresses. Forge never activated Altar of Dementia or Viscera Seer in 100 games on v1.1.0, so every Forge rate on this layer is a floor."
+      },
+      {
+        "role": "protection",
+        "have": [
+          "Teferi's Protection",
+          "Flawless Maneuver",
+          "Boros Charm",
+          "Akroma's Will",
+          "Deflecting Swat"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "measured_rate": 0.683,
+        "label": "Protection held for the swarm",
+        "by_turn_6_rate": 0.516,
+        "mean_turn": 3.633,
+        "reading": "Five, 68.3%. Two of the five (Teferi's Protection, Boros Charm) reach a noncreature permanent; two (Deflecting Swat, Flawless Maneuver) are free only with Edgar on the battlefield."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Despark",
+          "Anguished Unmaking",
+          "Stroke of Midnight"
+        ],
+        "count": 3,
+        "thinnest": false,
+        "measured_rate": 0.493,
+        "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
+        "by_turn_6_rate": 0.348,
+        "mean_turn": 4.111,
+        "reading": "Three, 49.3%. Against an indestructible God the effective size is two (Despark, Anguished Unmaking), because Stroke of Midnight destroys — the rate overstates the Purphoros answer."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Blood Artist",
+          "Cruel Celebrant"
+        ],
+        "count": 2,
+        "thinnest": false,
+        "measured_rate": 0.372,
+        "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+        "by_turn_6_rate": 0.252,
+        "mean_turn": 4.305,
+        "reading": "Two cards, 37.2% (25.2% by turn six), 13.7% of openers. This is the thinnest component of the PLAN — the one-card legs below are windfalls. Cruel Celebrant hits each opponent, Blood Artist one target player; nothing measures a drain and an outlet together."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Bloodthirsty Conqueror"
+        ],
+        "count": 1,
+        "thinnest": false,
+        "measured_rate": 0.078,
+        "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+        "by_turn_6_rate": 0.034,
+        "mean_turn": 6.385,
+        "reading": "One card, 7.8% (15.1% with the tutor), mean turn 6.39. Checker-passed as a table kill with Vito or Sanguine Bond. The pilot's direction says this line is out; the 99 says it is in."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Bloodletter of Aclazotz"
+        ],
+        "count": 1,
+        "thinnest": true,
+        "measured_rate": 0.041,
+        "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
+        "by_turn_6_rate": 0.016,
+        "mean_turn": 6.707,
+        "reading": "One card, 4.1% (9.4% assisted), mean turn 6.71 — the thinnest measured component. Stack 003 kills one seat on attack declaration with seven attackers; the audit finds no closer by combo route and the frame calls it 'a windfall, not a plan'."
+      }
     ],
-    "citations": [
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
-     },
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-     }
+    "single_points_of_failure": [
+      {
+        "component": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz",
+        "why": "One card at 7.1% of openers and 4.1% assembled; the only cost in the 99 with three identical coloured pips ({1}{B}{B}{B}) in the colour that is four sources short. The audit's combo route finds no closer; the honest closer is not a second Bloodletter but a third each-opponent drain so the undoubled line still adds up.",
+        "closers": [
+          "Bastion of Remembrance",
+          "Zulaport Cutthroat",
+          "Vindictive Vampire",
+          "The Meathook Massacre"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
+          },
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          }
+        ]
+      },
+      {
+        "component": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror",
+        "why": "One card, 7.8% assembled; both contained infinites share it, so the two 'lines' are one body with two second halves. The audit's closers by combo route (Exquisite Blood, Blood Tribute, Beacon of Immortality, Revival // Revenge, Shard of the Nightbringer, Enduring Angel, Volcano Hellion) are all 'needs a stack scenario' — and Exquisite Blood is the card the pilot deliberately removed. Reported, not prescribed: whether this component should be closed or cut is the pilot's decision.",
+        "closers": [],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
+          }
+        ]
+      },
+      {
+        "component": "A drain that fires when a creature DIES: Blood Artist + Cruel Celebrant",
+        "why": "Not a single card but the plan's thinnest pair — two cards for the payoff that eight outlets feed. Every death the deck manufactures pays counters (Cordial, Elenda, Blade) and cards (Crossway, Liliana, Skullclamp) reliably and drain only 37.2% of the time. In identity the class is deep and cheap.",
+        "closers": [
+          "Bastion of Remembrance",
+          "Zulaport Cutthroat",
+          "Vindictive Vampire",
+          "Elas il-Kor, Sadistic Pilgrim",
+          "The Meathook Massacre"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+          },
+          {
+            "rule": "strategy:multiplayer.asymmetry",
+            "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+          }
+        ]
+      }
     ]
-   },
-   {
-    "component": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror",
-    "why": "One card, 7.8% assembled; both contained infinites share it, so the two 'lines' are one body with two second halves. The audit's closers by combo route (Exquisite Blood, Blood Tribute, Beacon of Immortality, Revival // Revenge, Shard of the Nightbringer, Enduring Angel, Volcano Hellion) are all 'needs a stack scenario' — and Exquisite Blood is the card the pilot deliberately removed. Reported, not prescribed: whether this component should be closed or cut is the pilot's decision.",
-    "closers": [],
-    "citations": [
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
-     }
-    ]
-   },
-   {
-    "component": "A drain that fires when a creature DIES: Blood Artist + Cruel Celebrant",
-    "why": "Not a single card but the plan's thinnest pair — two cards for the payoff that eight outlets feed. Every death the deck manufactures pays counters (Cordial, Elenda, Blade) and cards (Crossway, Liliana, Skullclamp) reliably and drain only 37.2% of the time. In identity the class is deep and cheap.",
-    "closers": [
-     "Bastion of Remembrance",
-     "Zulaport Cutthroat",
-     "Vindictive Vampire",
-     "Elas il-Kor, Sadistic Pilgrim",
-     "The Meathook Massacre"
-    ],
-    "citations": [
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-     },
-     {
-      "rule": "strategy:multiplayer.asymmetry",
-      "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-     }
-    ]
-   }
-  ]
- },
- "lean_into": [
-  {
-   "what": "The wipe is this deck's best turn — build to cast it, not just to survive it.",
-   "why": "With a death drain online a sweeper bills every opponent per creature and refills the hand (Crossway, Liliana, Skullclamp) while eminence rebuilds from a zone no wipe touches; Elenda now dies INTO a board. Log 002 measured it on v1.0.0: eleven deaths, 11 off every opponent. The deck has zero sweepers by role and one by oracle text (Winds of Abandon overload, one-sided, six mana). Own the event instead of waiting for it.",
-   "evidence": {
-    "log_entries": [
-     "002"
-    ],
-    "axes": {
-     "sweepers": 0,
-     "death_drain_component": 0.372
-    },
-    "forge_v1_1_0_wipe_rate": "games_with_a_wipe_rate 0.267 ci95 [0.171, 0.39] (standard-v3 n60)"
-   },
-   "citations": [
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
-    },
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "assume the wrath — over a four-player game one is near-certain"
-    },
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-    }
-   ]
   },
-  {
-   "what": "Ignition, land drops and draw are solved; spend no swap on them.",
-   "why": "Castable Vampire 95.0% at mean turn 2.22, turn-three land drop 0.919, draw engine 83.5% plus six uncounted draw cards. Logs 004 and 005 both reached a dominant board. The v1.1.0 refactor did what it was for; the next swaps belong at the close.",
-   "evidence": {
-    "log_entries": [
-     "004",
-     "005"
+  "lean_into": [
+    {
+      "what": "The wipe is this deck's best turn — build to cast it, not just to survive it.",
+      "why": "With a death drain online a sweeper bills every opponent per creature and refills the hand (Crossway, Liliana, Skullclamp) while eminence rebuilds from a zone no wipe touches; Elenda now dies INTO a board. Log 002 measured it on v1.0.0: eleven deaths, 11 off every opponent. The deck has zero sweepers by role and one by oracle text (Winds of Abandon overload, one-sided, six mana). Own the event instead of waiting for it.",
+      "evidence": {
+        "log_entries": [
+          "002"
+        ],
+        "axes": {
+          "sweepers": 0,
+          "death_drain_component": 0.372
+        },
+        "forge_v1_1_0_wipe_rate": "games_with_a_wipe_rate 0.267 ci95 [0.171, 0.39] (standard-v3 n60)"
+      },
+      "citations": [
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "assume the wrath — over a four-player game one is near-certain"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+        }
+      ]
+    },
+    {
+      "what": "Ignition, land drops and draw are solved; spend no swap on them.",
+      "why": "Castable Vampire 95.0% at mean turn 2.22, turn-three land drop 0.919, draw engine 83.5% plus six uncounted draw cards. Logs 004 and 005 both reached a dominant board. The v1.1.0 refactor did what it was for; the next swaps belong at the close.",
+      "evidence": {
+        "log_entries": [
+          "004",
+          "005"
+        ],
+        "goldfish": {
+          "castable_vampire": 0.95,
+          "land_drop_t3": 0.919,
+          "draw_engine": 0.835
+        }
+      },
+      "citations": [
+        {
+          "rule": "strategy:card-advantage",
+          "quote": "engines that out-draw three players are the format's defining advantage"
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "what": "Edgar on the battlefield before Elspeth: the free protection is gated on him.",
+      "why": "Deflecting Swat and Flawless Maneuver cost nothing 'if you control a commander' — Edgar on the battlefield, not in the command zone. Goldfish has him cast by turn six in 60.3% of games (mean 6.32). With him down, a walker is covered by Swat at no mana and the attack loses nothing; without him, cover is {2}{W} held for Teferi's or blockers left home. Log 005's loss chain (Elspeth exposed, taken, pings finish) is the sequencing this rule prevents.",
+      "evidence": {
+        "log_entries": [
+          "005",
+          "002"
+        ],
+        "goldfish": {
+          "commander_cast_by_t6": 0.603,
+          "commander_mean_cast_turn": 6.318
+        }
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "protection slots and held mana cost you every game, removal only costs you some"
+        },
+        {
+          "rule": "strategy:multiplayer.pivot-window",
+          "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+        },
+        {
+          "rule": "strategy:resource-hedging",
+          "quote": "hedge from ahead, gamble from behind"
+        }
+      ]
+    },
+    {
+      "what": "Cruel Celebrant before Blood Artist, and hold the two exile spells for the permanent that ends the game.",
+      "why": "Celebrant drains each opponent, Artist one target player — three to one in a pod. Anguished Unmaking and Despark are the two of eleven interaction copies that remove a resolved Purphoros while he is not a creature; at devotion five Path to Exile and Winds of Abandon also exile him, so the count is two or four depending on Tom's board; spending one on a creature the table would have killed anyway is the leak. Against a tutored two-card infinite (log 004) the last profitable moment is the piece's resolution, at instant speed, which both are.",
+      "evidence": {
+        "log_entries": [
+          "004",
+          "005"
+        ],
+        "enumerated": "11 interaction copies read from cards.json; 2 exile a noncreature indestructible permanent"
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+        },
+        {
+          "rule": "strategy:threat-assessment.answer-economy",
+          "quote": "hold single-target removal until the threat is pointed at you"
+        },
+        {
+          "rule": "strategy:threat-assessment.answer-economy",
+          "quote": "against combo, or lethal already on board, the last profitable moment is now"
+        }
+      ]
+    }
+  ],
+  "cut_candidates": [
+    {
+      "card": "Survivors' Encampment",
+      "why": "A colourless land unless an untapped creature is tapped for it, in a deck four black sources short whose plan taps creatures to attack. mana-fit files it as fixing; on the attack turn it is a Wastes.",
+      "cost_of_cutting": "One conditional any-colour source; mana-sources stays at 43 when a land replaces it. Nothing else — it is in no stack and no declared component.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        }
+      ]
+    },
+    {
+      "card": "Stroke of Midnight",
+      "why": "The one interaction copy of eleven that DESTROYS a nonland permanent; against the indestructible God the pilot lost to (log 005) it is blank, and it hands its target's controller a 1/1. The deck's Purphoros suite is its two exile spells; a third exile is worth more than a fourth 'destroy'.",
+      "cost_of_cutting": "A three-mana instant that answers any nonland permanent regardless of colour or mana value — Vanishing Verse cannot touch a multicoloured permanent (Alex's Azorius commander) and Despark cannot touch mana value three or less. Interaction 11 to 10, still above 8; the goldfish 'answer to a noncreature permanent' component stays at 3 if Verse replaces it. Forge cast it 11/60 and 4/40 on v1.1.0.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Depth is a meta call: copy the answer your table beats you with."
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "catch-all removal earns its premium"
+        }
+      ]
+    },
+    {
+      "card": "Ancient Tomb",
+      "why": "Colourless in a deck with 38 black cards, 54 black pips and black four sources short; two damage per tap in a deck whose last loss is filed with cause 'raced' and whose Forge seat against a Purphoros model was eliminated by that seat 12 of 21 times seen (n40, v1.1.0, 2026-09-03). A Game Changer that buys nothing at the bracket: the floor is 4 on the two infinites with or without it.",
+      "cost_of_cutting": "The fastest opener in the 99 — log 005: 'Edgar off Ancient Tomb on turn five'; a turn-one Signet or Talisman; two colourless for Sol Ring-style starts. Goldfish commander mean cast turn 6.318 and 60.3% by turn six are measured WITH it, and nothing has measured the list without it (open question, goldfish). This is a real tempo loss recommended anyway because the pips are in the wrong colour every game and the damage is in the wrong direction against the predator the pilot named.",
+      "orphans_stack": [],
+      "difficulty": "painful",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        }
+      ]
+    },
+    {
+      "card": "Altar of Dementia",
+      "why": "A free outlet whose OUTPUT pays nothing in the 99: no recursion, no self-mill payoff, no opposing-graveyard payoff beyond The Haunt of Hightower's counters. Forge cast it 0 times in 100 games on v1.1.0 (discarded once in each run). Log 003's 'mill package' was never built — the debrief's own finding is that one card is not a package. Eight outlets against two death drains is the imbalance; this is the outlet with the least to say.",
+      "cost_of_cutting": "The free-outlet component drops 6 to 5 (36% to 31% of openers by the redundancy rule; the measured 72.3% will fall). The one outlet that mills an OPPONENT goes with it, unmeasured — the Elenda/Vish Kal Altar line in the frame's candidate lines dies before a stack prices it; the deck's other mill is Takenuma's channel, which self-mills three and returns a creature, and is the one recursion in the 99. A two-mana colourless outlet castable off any land.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:deckbuilding",
+          "quote": "a card that duplicates a job you have covered is worse than a mediocre card that covers a job you don't"
+        }
+      ]
+    },
+    {
+      "card": "Bloodflow Connoisseur",
+      "why": "A three-mana Vampire outlet whose only payoff is counters on itself; it neither drains, draws nor grows the team. Six free outlets feed two drains; this slot buys a third drain. Absent from engine_casts in both standard-v3 runs (100 games) — Forge never cast or activated it.",
+      "cost_of_cutting": "One free outlet (6 to 5 in the component) and one Vampire cast for eminence at mana value three (not in the two-or-less leg). Under 'a few big Vampires' it is a body that grows, slowly, off its own outlet.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:deckbuilding",
+          "quote": "a card that duplicates a job you have covered is worse than a mediocre card that covers a job you don't"
+        }
+      ]
+    },
+    {
+      "card": "The Haunt of Hightower",
+      "why": "engine.json: 'a six-mana body, not a plan'. Its growth keys on cards entering OPPONENTS' graveyards, which the deck feeds only incidentally: creatures it destroys (Stroke of Midnight, Elspeth's −3, Vish Kal), Liliana's −4 edict, combat trades, Altar of Dementia's mill (also on this list) and its own attack discard — nothing in the 99 is built to fill them. The 'few big Vampires' direction is served by Elenda, Blade and Cordial, which grow off the deck's own deaths.",
+      "cost_of_cutting": "A 4/4 flying lifelink Vampire finisher (Forge cast 10/60 and 5/40 on v1.1.0), a lifelinker for the Blade, a discard on attack, a Vampire cast for eminence at six. Painful to a pilot who values the big body; a reasonable pilot keeps it.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "board quality beats board quantity (Walser)"
+        },
+        {
+          "rule": "strategy:deckbuilding",
+          "quote": "a card that duplicates a job you have covered is worse than a mediocre card that covers a job you don't"
+        }
+      ]
+    },
+    {
+      "card": "Vish Kal, Blood Arbiter",
+      "why": "Seven mana, the top of the curve, in a deck whose kills arrive at mean turn 6.4–6.7 on the goldfish and whose Forge seat's median first attack is global turn 12–13. Forge cast it 0 times in 60 games (discarded once) and it is absent from the n40 record. A sacrifice outlet that stores power is the direction's card; at seven it arrives after the game the log describes is decided.",
+      "cost_of_cutting": "The biggest power funnel in the 99 (X counters per sacrificed power, then −1/−1 removal off the counters), a lifelink flier for the Blade, a free outlet (component 6 to 5), and the card the pilot's 'few big Vampires' direction most obviously names. Painful; recommended only if the pilot has accepted that the deck must close by turn eight rather than build to turn ten.",
+      "orphans_stack": [],
+      "difficulty": "painful",
+      "citations": [
+        {
+          "rule": "strategy:whos-the-beatdown.metagame-clock",
+          "quote": "engines are the default winning plan and aggro must instead compress the game before the table's late game arrives"
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board"
+        }
+      ]
+    }
+  ],
+  "add_candidates": [
+    {
+      "card": "The Meathook Massacre",
+      "closes": "sweepers",
+      "source": "pool",
+      "why": "Of the four sweeper-plus-drain cards card-search returns in identity — The Meathook Massacre, One Ring to Rule Them All (drains once, on chapter III), Final Act (one-shot; its 'drain' tag is 'each opponent loses all counters') and Ruinous Rampage (3 damage once) — Meathook is the one whose drain is REPEATABLE and triggered by our own deaths, which is why it ranks first: −X/−X kills through indestructible (the Purphoros board, not Purphoros), every creature of ours it kills pays Blood Artist, Cruel Celebrant, Cordial, Elenda, Blade, Crossway, Liliana and Skullclamp, and it stays on the battlefield draining afterwards — log 002's signature turn on demand. A legendary enchantment, so it survives its own wipe and Boros Charm / Teferi's reach it. {X}{B}{B} in the short colour is the price.",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "The Meathook Massacre",
+              "Bloodthirsty Conqueror",
+              "Vito, Thorn of the Dusk Rose"
+            ],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "note": "Meathook's 'you gain 1 life' on an opposing death is another lifegain event; with Conqueror and Vito or Sanguine Bond out it is another way stacks 004/006 start. Not a new line, a new trigger for the existing one.",
+        "forge": "standard-v3 n60 games_with_a_wipe_rate 0.267 ci95 [0.171, 0.39] — the table wipes in a quarter of games; this makes the deck the one casting it"
+      },
+      "natural_cut": "Altar of Dementia",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+        }
+      ]
+    },
+    {
+      "card": "Bastion of Remembrance",
+      "closes": "engine component 'A drain that fires when a creature DIES' — 2 cards to 3",
+      "source": "pool",
+      "why": "Each-opponent death drain at {2}{B} on an ENCHANTMENT, so it survives the wipe that fires it; the entry token is created, so Procession, Mondrak and Elspeth double it. Takes the plan's thinnest pair to a trio (13.7% of openers to roughly one in five). Not a Vampire — the trade for surviving the wipe.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "component_now": {
+          "cards": [
+            "Blood Artist",
+            "Cruel Celebrant"
+          ],
+          "assembled_rate": 0.372,
+          "opening_seven": 0.137
+        }
+      },
+      "natural_cut": "Bloodflow Connoisseur",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
+        }
+      ]
+    },
+    {
+      "card": "Vanishing Verse",
+      "closes": "engine component 'An answer to a noncreature permanent drawn' — exile answers 2 to 3",
+      "source": "log",
+      "why": "Log 005 asked for 'targeted disruption in white' for Purphoros. The class is exile, and both existing answers are already white-black; this is the cheapest third: {W}{B} instant, exile target monocolored permanent — every permanent in a mono-red deck, Purphoros included, and Oliver's mono-black Vito. Blank against a multicoloured permanent, which is why it replaces Stroke of Midnight rather than Despark or Anguished Unmaking.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "enumerated": "11 interaction copies; 2 exile a noncreature indestructible permanent; Stroke of Midnight destroys"
+      },
+      "natural_cut": "Stroke of Midnight",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Depth is a meta call: copy the answer your table beats you with."
+        },
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "catch-all removal earns its premium"
+        },
+        {
+          "rule": "strategy:threat-assessment.answer-economy",
+          "quote": "hold single-target removal until the threat is pointed at you"
+        }
+      ]
+    },
+    {
+      "card": "Dragonskull Summit",
+      "closes": "colour-sources",
+      "source": "pool",
+      "why": "Black 32 to 33 and red 20 to 21 for a land that enters untapped with any of the eight Swamp- or Mountain-typed copies in the 99 (Swamp x4, Blood Crypt, Godless Shrine, Savai Triome, Smoldering Marsh). mana-fit lists it as owned. Replaces the land that makes no colour without tapping an attacker.",
+      "evidence": {
+        "mana_analysis": {
+          "B": {
+            "have": 32,
+            "target": 36
+          },
+          "R": {
+            "have": 20,
+            "target": 22
+          }
+        }
+      },
+      "natural_cut": "Survivors' Encampment",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        }
+      ]
+    },
+    {
+      "card": "Vindictive Vampire",
+      "closes": "engine component 'A drain that fires when a creature DIES' — a Vampire body for the third drain",
+      "source": "pool",
+      "why": "'Whenever another creature you control dies, deals 1 damage to each opponent and you gain 1 life' — the Celebrant clause on a Vampire, so it fires eminence on cast, Master of Dark Rites' {B}{B}{B} pays for it, and Bloodletter doubles it (damage is loss). The alternative to Bastion for a pilot who wants the third drain to be a Vampire rather than to survive the wipe.",
+      "evidence": {
+        "combo_lines_opened": []
+      },
+      "natural_cut": "The Haunt of Hightower",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+        }
+      ]
+    },
+    {
+      "card": "Toxic Deluge",
+      "closes": "sweepers",
+      "source": "pool",
+      "why": "The alternative to Meathook at {2}{B}: pay X life, all creatures get −X/−X — kills through indestructible, scales to the board, and life is the resource this deck has most of (eight printed-lifelink bodies, three lifelink token makers, two lifegain converters). No drain attached, so it is the sweeper only; against a Purphoros race the life is the cost. Listed second because Meathook does both jobs in one slot.",
+      "evidence": {
+        "combo_lines_opened": []
+      },
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        },
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
+        }
+      ]
+    },
+    {
+      "card": "Zulaport Cutthroat",
+      "closes": "engine component 'A drain that fires when a creature DIES' — the two-mana version",
+      "source": "pool",
+      "why": "Blood Artist's clause pointed at each opponent for {1}{B}; the cheapest third drain and the one a turn-two hand casts beside a Vampire. Not a Vampire and not an enchantment — cheaper than either of the two above and less resilient than Bastion.",
+      "evidence": {
+        "combo_lines_opened": []
+      },
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
+        }
+      ]
+    },
+    {
+      "card": "Rakdos Charm",
+      "closes": "interaction-breadth",
+      "source": "pool",
+      "why": "Graveyard 0 to 1 for {B}{R} at instant speed, and the other two modes are live at this table: destroy an artifact, or 'each creature deals 1 damage to its controller' — against a goblin ETB board that is Tom's own creatures pointed at Tom. Red is the six-card splash, so this is the last add, not the first; the log names one Jarad seat (003) and the standard-v3 pod carries jarad-graveyard, which is the whole of the evidence for the class.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "log_entries": [
+          "003"
+        ]
+      },
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        }
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "Bloodthirsty Conqueror, Vito (or Sanguine Bond) and Cruel Celebrant on the battlefield; one creature dies. Is the loop (stacks 004/006) already running, and can the pilot decline it? Same question with any lifelink hit or a Meathook trigger as the seed.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The pilot's direction says the lifegain infinite is OUT; the 99 holds it checker-passed twice. If the loop can be declined it is a play decision every turn those pieces coexist; if it cannot, 'out' is a list decision — cut Sanguine Bond or Conqueror — and that decision is the pilot's, not this diagnosis's. The answer also prices the Meathook add, which adds a trigger to the same loop."
+    },
+    {
+      "question": "Tom's Purphoros triggers ('deals 2 damage to each opponent') with Bloodthirsty Conqueror on our battlefield: do Alex's and Oliver's life losses each fire Conqueror for us (net +2 per trigger), and with Vito or Sanguine Bond also out does each trigger drain Tom and start the loop?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "If it reads as expected, the 99 already contains the strongest anti-Purphoros card the pilot could buy, and it is the one his direction has marked as out. That changes the 'is a white swap needed' answer from 'a third exile' to 'sequence Conqueror against Tom'."
+    },
+    {
+      "question": "Boros Charm's 'permanents you control gain indestructible' with Elspeth, Storm Slayer attacked for lethal loyalty: does she survive? Which of the seven protection cards keep a planeswalker alive through (a) a destroy spell, (b) an exile spell, (c) combat damage?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The pilot asked whether the suite covers a walker. The doctor's oracle read is: Teferi's covers all three, Swat covers (a) and (b) when targeted, Boros Charm covers (a) only, and nothing but blockers covers (c). A stack settles it with rules citations before it becomes the pilot's habit."
+    },
+    {
+      "question": "Re-run the goldfish with Ancient Tomb replaced by a Swamp (and Survivors' Encampment by Dragonskull Summit): commander mean cast turn (now 6.318, 60.3% by turn six), kill-by-turn-8 (now 0.704) and mean available mana by turn.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The painful cut is priced as a tempo loss nobody has measured. The goldfish cannot rank same-colour lands, but Tomb-to-Swamp is a colourless-for-black change it CAN see in castability, and the pilot should not sleeve a painful cut on a guess."
+    },
+    {
+      "question": "Add the third death drain (Bastion of Remembrance, Zulaport Cutthroat or Vindictive Vampire) to the goldfish group 'A drain that fires when a creature DIES' and re-measure; and declare an outlet-AND-drain pair so the conversion layer has a rate at all.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The prescription is sized off a two-card component at 37.2% and the redundancy rule; the measured three-card figure is the number the skeptic should be shown. engine.json says nothing measures the pair, and sac_cap_hit_rate is 0.0 — the deck's central engine has no rate."
+    },
+    {
+      "question": "How does a mid-range aristocrats deck sequence against an each-opponent ETB-drain deck (Purphoros): attack it first, answer the enchantment, race on drain, or hold blockers? Is 'the natural predator for mid-range aggro' (log 005) a known matchup reading in the corpus?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "The pilot's ask rests on one game. The corpus has racing, wrath-math and answer-economy sections but no matchup reading for a trigger-race opponent; the sequencing rule the pilot writes down next should come from a source, not a memory of one loss."
+    },
+    {
+      "question": "With Elenda at power X fed to a free outlet under two doublers, how many lifelink tokens enter, and do Cordial Vampire and Blade trigger for their later deaths? (carried from strategic_frame candidate lines)",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "This is the hinge between the pilot's two lines and the one v1.1.1 was merged for; the goldfish reads Elenda as DARK and no stack prices her. Until it is priced, 'Elenda dies into a board' in lean_into is a reading, not a fact."
+    }
+  ],
+  "gaps": [
+    "No candidate_pool.json exists for this deck, so 'source: pool' here means card-search over cards.csv in Mardu identity excluding the 99; every add was checked for identity and legality by that command and none is priced by ownership except where mana-fit marked a land OWN.",
+    "deck_recon.json is dated 2026-08-03 and predates v1.1.0 and v1.1.1; five of the cards it recommends are now in the 99 (Charismatic Conqueror, Elspeth, Caretaker's Talent, Command Tower, Legion's Landing). No add above rests on it.",
+    "No Forge run exists on this sha (7be137d0…). Every Forge figure quoted — standard-v3 0.413 ci95 [0.283, 0.557] (n=46 decided of 60) and 0.296 ci95 [0.159, 0.485] (n=27 of 40); playgroup pod 0.105 ci95 [0.042, 0.241] (n=38 of 40) with purphoros-pingers winning 19 and eliminating our seat 12 of 21 times seen; median first attack global turn 12–13 — is from v1.1.0 records dated 2026-09-03 to 09-11, in which Elenda and the Blade do not exist. Forge is also a floor on this deck's conversion layer: Altar of Dementia cast 0, Viscera Seer and Bloodflow Connoisseur absent from engine_casts, Ashnod's Altar activated 0 across both standard-v3 runs.",
+    "The purphoros-pingers seat is a pod model of the archetype, not Tom's list, and the playgroup pod's null (0.105) is computed from that single run, so it says nothing about this deck relative to that table; it is cited only for WHO eliminated the seat and HOW (damage, 21 of 21 seen).",
+    "Blasphemous Act is the sweeper most lists would name here; card_roles.json files it as removal:damage and ramp:cost-reduction, so it cannot move the sweepers axis and is not listed. It belongs in the same conversation as Meathook and Deluge, with the same 'wipe with a drain online' argument.",
+    "Winds of Abandon's overload is a one-sided exile sweeper the taxonomy files as removal:spot; the sweepers axis is 0 by role and 1 by oracle text. Both readings are reported; the measured value carried is the audit's.",
+    "Nothing measures a sacrifice outlet and a death payoff TOGETHER (engine.json; goldfish sac_cap_hit_rate 0.0), and the goldfish does not model death-triggered drain at all ('the largest known gap here'). The conversion layer — the deck's declared engine — has no assembled rate, and every claim about it above is oracle text plus logs 002 and 004.",
+    "The interaction-breadth land class has no log evidence behind it and no add is proposed for it; Chaos Warp and Generous Gift are the in-identity catch-alls if the table ever makes it matter.",
+    "The 400-game Forge result (50/400 vs 31/400, combat damage 29.07 to 18.20) cited by engine.json and the frame is on v1.0.0 against a refactor and has not been re-run on any later list; it is quoted only for the mechanism (1/1s do not connect), not as a rate for this deck.",
+    "bracket_delta on every add is before 4 / after 4 because the floor is forced by the two contained two-card infinites, which no listed cut touches; if the pilot resolves the Conqueror decision by cutting Sanguine Bond or Conqueror, every delta must be recomputed with bracket-check.",
+    "Ancient Tomb's replacement is a fifth basic Swamp, and it cannot appear in add_candidates because the validator reads a basic the 99 already holds (Swamp ×4) as 'already in the maindeck'. The case, from mana_analysis on this sha: black is 32 sources against a Karsten target of 36 for 38 black cards and 54 black pips (Bloodletter is {1}{B}{B}{B}); black on curve is 0.785 on lands alone and 0.855 with rocks; a Swamp takes black to 33 (34 with Dragonskull Summit for Survivors' Encampment), enters untapped, deals no damage, and turns on Castle Locthwain, Dragonskull Summit, Blazemire Verge and Bleachbone Verge. Game Changers go 3 to 2 and the bracket floor stays 4 on the two infinites. The Ancient Tomb cut therefore has no paired add and is not applied by the validator's swap check; the goldfish open question above measures the tempo cost before anyone sleeves it."
+  ],
+  "skeptic": {
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "add_candidates[3]",
+        "status": "contradicts-artifact",
+        "severity": "medium",
+        "note": "Dragonskull Summit for Survivors' Encampment is priced as 'Black 32 to 33 and red 20 to 21', and gaps[-1] says a Swamp plus Summit takes black to 34. mana_analysis.json (this sha) lands.list files Survivors' Encampment as produces ['B','R','W'], classes ['fixing','untapped-dual','utility'] — it is already inside the B 28 / R 17 / W 21 land counts the audit's colour-sources axis reads. By the artifact's own arithmetic the swap is B 32→32, R 20→20, W 24→23, and Swamp-for-Tomb plus Summit-for-Encampment is 33, not 34. The +1/+1 only holds under the doctor's oracle reading (axes[3]: 'Two lands add no colour without a cost') that Encampment is not a source — which is a fair reading of '{T}, Tap an untapped creature you control', and one mana_analysis's own assumption ('a source counts only for mana it produces unconditionally') arguably violates. That disagreement between oracle text and the measured artifact is the finding to name (agents-common §2); the diagnosis resolves it silently in its own favour and prices the 'cheapest axis to fix' with a gain the audit will not show when re-run. mana-fit does not list Encampment among its cut candidates either, which is consistent with it being credited as fixing."
+      },
+      {
+        "where": "axes[9]",
+        "status": "over-claimed",
+        "severity": "medium",
+        "note": "threat-density is read as 'weakness' at a measured 10 against a floor of 3 on three legs, and two do not hold. (a) The one-card legs: deck-audit's own note says '2 declared target(s) rest on a component with one card… that is the ceiling on those lines, not a defect', and the 7.8% / 4.1% quoted as the one-card components' rates are the two-card LINE rates (Conqueror AND Vito-or-Bond; Bloodletter AND Sanctum Seeker per goldfish_targets 'need' groups) — the audit presents them the same way, but the verdict then reads a by-construction ceiling as a defect, which the charter names as over-claimed. (b) 'median first attack at global turn 12 and 13… 13… and 16': parse.py sets first_attack_turn = ev['turn'], the log's global turn counter (line 178/192/569). In a four-seat pod global turns 9–12 are round 3 and 13–16 round 4; in the five-seat pod 16 is round 4. The seat attacks on its third or fourth turn — early — and the figure is set beside goldfish own-turn means of 6.4–6.7 as though it were the same clock. (c) Logs 004 and 005 both have the deck reaching lethal ('closed the game before my lethal resolved'; 'pings finished the job before lethal landed') and losing to a tutored combo and a race — answer-economy and sequencing losses, which lean_into[3] itself says. The doctor's own enumeration of real closes (Bloodletter line, Conqueror loops, Akroma's Will alpha, Elenda) sits inside Zupke's 3–5. What the evidence reaches is 'adequate by count, fragile at the one-card legs, and the sweeper/drain layer is the measured gap' — which is what the prescriptions are actually sized off (sweepers 0, drain pair 0.372), so Meathook and a third drain survive this finding; the verdict sentence 'This is the axis that is costing games' does not. Alternatives tested: ramp 'adequate' is supported (land_drop t3 0.919, mean_available_mana t6 5.591, keep 0.811, no logged mana cause); colour-sources −4 is a real measured under, but its cheap fix is mis-priced (finding on add_candidates[3])."
+      },
+      {
+        "where": "cut_candidates[6]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "Vish Kal's why leans on 'whose Forge seat's median first attack is global turn 12–13' as a clock that makes seven mana late; global turn 12–13 is the seat's third or fourth turn (see axes[9]). The evidence that does support the cut is in the artifacts the doctor already cites: engine_casts cast 0 / discarded 1 in n60 and absent in n40, and goldfish mean_available_mana_by_turn 7: 6.185, 8: 6.787, 9: 7.387 — seven mana is a turn-nine mean in the deck's own turns. Restate on those; the difficulty 'painful' and the cost_of_cutting are fair."
+      },
+      {
+        "where": "lean_into[3]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "'the count is two or four depending on Tom's board' under-enumerates the devotion-five case. axes[6]'s count of two exile answers to a NONCREATURE Purphoros is correct (Anguished Unmaking; Despark, mv 4 — corpus oracle confirms {3}{R}). Once he is a creature, Path and Winds exile him AND Vish Kal's −1/−1-per-counter reduces toughness to 0, which is a state-based action (704.5f), not destruction, so indestructible does not apply; Liliana's −4 is a sacrifice, which indestructible also does not stop. Same omission in add_candidates[0]: Meathook at X≥5 removes a creature Purphoros too ('the Purphoros board, not Purphoros'). None of this changes the Vanishing Verse prescription, but the class the pilot needs is 'exile, toughness-reduction or sacrifice', and the deck holds more of it than 'two or four' says. (The doctor's expected answer on open_questions[2] is otherwise well-framed and correctly routed to resolve-stack.)"
+      },
+      {
+        "where": "engine.declared",
+        "status": "miscounted",
+        "severity": "low",
+        "note": "'eight sacrifice outlets (six free)': by oracle text seven of the eight cost no mana — Master of Dark Rites is '{T}, Sacrifice another creature: Add {B}{B}{B}', no mana in the cost — and strategic_frame.json on the same sha says 'seven of them cost no mana'. components[5].reading explains six as the goldfish group less Master (filed under mana), but `declared` states it as a fact about the 99 and disagrees with the frame; name the filing rather than restate the count. (engine.json's thesis says 'seven sacrifice outlets' — three artifacts, three counts; cards.json regex gives eight proper outlets plus High-Society Hunter's optional attack sacrifice and Reactor Raid's one-shot.)"
+      },
+      {
+        "where": "engine.components[0].reading, axes[10]",
+        "status": "miscounted",
+        "severity": "low",
+        "note": "'Thirteen Vampires at mana value two or less' / 'thirteen of them cost two or less and are the eminence leg': cards.json holds FOURTEEN Vampire creatures at cmc ≤ 2 — Viscera Seer ({B}, Vampire Wizard, the turn-one play in log 005) is not in the goldfish group, which was declared 2026-08-24 and repaired 2026-09-16 only by removing cut cards. The 95.0% / mean 2.22 is the declared thirteen's rate and is quoted correctly; the sentence states the count as the deck's. Say 'thirteen declared; cards.json has fourteen' and fold the missing card into open_questions[4]'s goldfish re-run."
+      },
+      {
+        "where": "add_candidates[4]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "'Bloodletter doubles it (damage is loss)': Bloodletter's clause is 'If an opponent would lose life DURING YOUR TURN' — a Vindictive Vampire trigger off an opponent's wipe (the log-002 scenario lean_into[0] is built on) is not doubled. Stack 007's whole result turns on that clause. Add the qualifier."
+      },
+      {
+        "where": "cut_candidates[2].cost_of_cutting",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "'The fastest opener in the 99' for Ancient Tomb: enumerated, Sol Ring is at least its equal (turn-one three mana with a land; log 003's four-mana turn one was two lands + Sol Ring + Talisman, no Tomb). Rhetorical, and the cut's substance (colourless in a 54-black-pip deck, 2 damage into a 'raced' loss, floor stays 4) is supported; drop the superlative or scope it."
+      },
+      {
+        "where": "axes[*].measured.value",
+        "status": "supported",
+        "severity": "none",
+        "note": "deck-audit re-run today: all 16 values match (36/43/3/-4/8/7/11/0/7/10/37/3/0.919/3/4/1); goldfish_metrics.json and mana_analysis.json current on 7be137d0; every axis target quote is the audit's verbatim. Readings checked against values: card-advantage 7 read as adequate via the audit's probe list (six real draw sources named, three self-replacers correctly excluded); interaction 11 enumerated card by card and matches the audit's list; sweepers 0 read against oracle text (Winds overload, Liliana −4/−9 — regex over the 99 finds no other mass effect); ramp 8 read adequate on measured goldfish figures; curve 13/14/19, one seven-drop, matches deck-facts; power drivers match bracket_report; only-triple-pip Bloodletter, the one recursion (Takenuma), no graveyard exile, no land targeting, 8 keyword-lifelink bodies and 3 lifelink token makers all enumerated and hold."
+      },
+      {
+        "where": "gaps[2], lean_into[0].evidence, cut_candidates[*] Forge figures",
+        "status": "supported",
+        "severity": "none",
+        "note": "Re-read from the records: standard-v3 n60 0.413 ci95 [0.283,0.557] decided 46/60, first attack median 12; n40 0.296 [0.159,0.485] 27/40, median 13; giada/baylen/abaddon n100 median 13; playgroup n40 0.105 [0.042,0.241] 38/40, purphoros-pingers 19 wins, eliminated our seat 12 of 21 (3+12+5+1), how = damage 21/21, median first attack 16. games_with_a_wipe_rate 0.267 [0.171,0.39] is analysis.wipe_recovery at table level (games 60, wipes 20); the seat-level block reads 0.6 [0.357,0.802] on 15 games — say 'table-level'. engine_casts by_card: Altar of Dementia cast 0 / discarded 1 in both standard-v3 runs; Viscera Seer and Bloodflow Connoisseur absent from both; Ashnod's Altar activated 0 in both; Stroke 11/60 and 4/40; Haunt 10/60 and 5/40; Vish Kal 0/60 discarded 1, absent n40. Every record's edgar seat is sha 7ce22fd6 = v1.1.0 and the diagnosis says so, with the AI-floor caveat on the sacrifice layer. Nit: the giada/baylen/abaddon n100 record is dated 2026-09-02, one day outside the '2026-09-03 to 09-11' range gaps[2] states."
+      },
+      {
+        "where": "citations (all 18 strategy sections)",
+        "status": "supported",
+        "severity": "none",
+        "note": "Every strategy:* id fetched with lookup-strategy; every quote is verbatim. deckbuilding.ratios is quoted together with its own 'counts of functions' caveat and is not used as a rule — ramp and card-advantage are both read adequate against under counts, which is what the section asks for. interaction-suite ('one or two max', 'cover the classes', 'Depth is a meta call'), wrath-math ('assume the wrath', 'buy resilience'), threat-density, asymmetry, answer-economy, redundancy-vs-tutors, commander-insurance, pivot-window, metagame-clock, power-level, curve, archetype-selection, card-advantage and resource-hedging are each used within the sense of the whole section. The lean_into[0] argument that the deck should CAST the wipe is the doctor's own inference beyond wrath-math's text; asymmetry's 'preferring asymmetric board wipes' is the closer citation and is already attached."
+      },
+      {
+        "where": "cut_candidates[*]",
+        "status": "supported",
+        "severity": "none",
+        "note": "None of the seven cuts appears in any of the 11 stack files (grep), so orphans_stack [] is correct for all. Two entries are painful (Tomb, Vish Kal) and the list does not dodge the job. Altar of Dementia's cost names the unmeasured Elenda/Vish Kal Altar line from the frame and the log-003 'one card is not a package' finding verbatim; Bloodflow's and Haunt's costs are real costs, not restatements of why; Haunt's 'a six-mana body, not a plan' is engine.json verbatim; Stroke as contested is right — it is the only unconditional catch-all in the eleven. Survivors' Encampment 'easy' is fair on the oracle text, but see add_candidates[3]: the artifact credits it as a source."
+      },
+      {
+        "where": "add_candidates[*]",
+        "status": "supported",
+        "severity": "none",
+        "note": "card-search --deck edgar-vampires returns all eight in BRW identity, Commander-legal, none a Game Changer, so bracket_delta 4→4 holds while the infinites stay. Oracle text read for each: Meathook drains on our deaths and gains on theirs (the 'new trigger for the existing loop' note is right and correctly 'needs a stack scenario'); Bastion's token is created so Procession/Mondrak/Elspeth apply, and 13.7%→19.9% is the hypergeometric for 2→3 of 99 in seven; Vanishing Verse monocolored only; Summit checks Swamp/Mountain and the deck holds eight typed copies (Swamp ×4, Blood Crypt, Godless Shrine, Savai Triome, Smoldering Marsh); Zulaport; Toxic Deluge; Rakdos Charm's 'Exile target player's graveyard' matches deck_audit's breadth regex so it does close interaction-breadth. The 'four sweeper-plus-drain cards' set (Meathook, One Ring, Final Act, Ruinous Rampage) reproduces under an oracle each-opponent regex over removal:sweeper in identity; by role the fourth is Gix's Command, not Rampage — state the query. Ranking Meathook first is justified by the oracle reading given."
+      },
+      {
+        "where": "engine.components[*], engine.single_points_of_failure[*]",
+        "status": "supported",
+        "severity": "none",
+        "note": "All eleven `have` lists byte-match goldfish_targets.json groups and all rates/mean turns match goldfish_metrics.json targets. SPOF[0] and SPOF[1] are the audit's own two single_points_of_failure with its closers verbatim (seven combo-route lines all 'needs a stack scenario'); SPOF[2] is correctly labelled a pair, not a single point. Stacks re-read: 004 and 006 final_state 'Deterministic table-kill, VERIFIED'; 003 eliminates the 14-life opponent on the seventh Sanctum trigger before blockers with seven attackers; 010 makes eight tokens under all six orders; 007 is PARTIALLY REFUTED (15-life opponent survives at 1) and Throne has left the 99 — the diagnosis cites 007 only as the source of Bloodletter's during-your-turn clause, which is what it proves."
+      },
+      {
+        "where": "verdict, archetype, open_questions[0], open_questions[1]",
+        "status": "supported",
+        "severity": "none",
+        "note": "The Conqueror question is stated accurately: both loops are checker-passed table kills (004, 006), both are the two two-card infinites deck-facts and bracket_report list, they alone force the floor to 4, and the diagnosis reports rather than cuts, routing 'can it be declined' to resolve-stack. Provenance caveat for the orchestrator: 'the pilot's direction says the lifegain infinite is out' rests on strategic_frame.json's 'quiver inventory, 2026-09-16', which I could not find outside the frame. The Purphoros question is stated accurately — the pilot asked for 'targeted disruption in white' (log 005 verbatim), the class is exile and the deck already holds two — subject to the devotion-five under-count in lean_into[3]."
+      },
+      {
+        "where": "log citations (001–005)",
+        "status": "supported",
+        "severity": "none",
+        "note": "Every quoted phrase found verbatim in log.jsonl or log_annotations.json: 002 'signature play', eleven deaths / 11 off every opponent, 'my mana was spent casting vampires'; 003 four mana on turn one, mill package = one card (Altar); 004 draw creatures fed by Sharpshooter, tutored two-card infinite; 005 'Never missed a land drop', 'Edgar off Ancient Tomb on turn five', 'natural predator for mid-range aggro', 'targeted disruption in white'. log_causes: wipe / wipe / stalled / combo / raced. Both 004 and 005 carry sha 7ce22fd6 = v1.1.0, two cards from the diagnosed list; 'the current shape' is a hedge the doctor should make explicit ('on v1.1.0, two swaps from this list')."
+      }
     ],
-    "goldfish": {
-     "castable_vampire": 0.95,
-     "land_drop_t3": 0.919,
-     "draw_engine": 0.835
-    }
-   },
-   "citations": [
-    {
-     "rule": "strategy:card-advantage",
-     "quote": "engines that out-draw three players are the format's defining advantage"
-    },
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Value is not a win."
-    }
-   ]
-  },
-  {
-   "what": "Edgar on the battlefield before Elspeth: the free protection is gated on him.",
-   "why": "Deflecting Swat and Flawless Maneuver cost nothing 'if you control a commander' — Edgar on the battlefield, not in the command zone. Goldfish has him cast by turn six in 60.3% of games (mean 6.32). With him down, a walker is covered by Swat at no mana and the attack loses nothing; without him, cover is {2}{W} held for Teferi's or blockers left home. Log 005's loss chain (Elspeth exposed, taken, pings finish) is the sequencing this rule prevents.",
-   "evidence": {
-    "log_entries": [
-     "005",
-     "002"
-    ],
-    "goldfish": {
-     "commander_cast_by_t6": 0.603,
-     "commander_mean_cast_turn": 6.318
-    }
-   },
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "protection slots and held mana cost you every game, removal only costs you some"
-    },
-    {
-     "rule": "strategy:multiplayer.pivot-window",
-     "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
-    },
-    {
-     "rule": "strategy:resource-hedging",
-     "quote": "hedge from ahead, gamble from behind"
-    }
-   ]
-  },
-  {
-   "what": "Cruel Celebrant before Blood Artist, and hold the two exile spells for the permanent that ends the game.",
-   "why": "Celebrant drains each opponent, Artist one target player — three to one in a pod. Anguished Unmaking and Despark are the two of eleven interaction copies that remove a resolved Purphoros while he is not a creature; at devotion five Path to Exile and Winds of Abandon also exile him, so the count is two or four depending on Tom's board; spending one on a creature the table would have killed anyway is the leak. Against a tutored two-card infinite (log 004) the last profitable moment is the piece's resolution, at instant speed, which both are.",
-   "evidence": {
-    "log_entries": [
-     "004",
-     "005"
-    ],
-    "enumerated": "11 interaction copies read from cards.json; 2 exile a noncreature indestructible permanent"
-   },
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-    },
-    {
-     "rule": "strategy:threat-assessment.answer-economy",
-     "quote": "hold single-target removal until the threat is pointed at you"
-    },
-    {
-     "rule": "strategy:threat-assessment.answer-economy",
-     "quote": "against combo, or lethal already on board, the last profitable moment is now"
-    }
-   ]
+    "iterations": 1
   }
- ],
- "cut_candidates": [
-  {
-   "card": "Survivors' Encampment",
-   "why": "A colourless land unless an untapped creature is tapped for it, in a deck four black sources short whose plan taps creatures to attack. mana-fit files it as fixing; on the attack turn it is a Wastes.",
-   "cost_of_cutting": "One conditional any-colour source; mana-sources stays at 43 when a land replaces it. Nothing else — it is in no stack and no declared component.",
-   "orphans_stack": [],
-   "difficulty": "easy",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    }
-   ]
-  },
-  {
-   "card": "Stroke of Midnight",
-   "why": "The one interaction copy of eleven that DESTROYS a nonland permanent; against the indestructible God the pilot lost to (log 005) it is blank, and it hands its target's controller a 1/1. The deck's Purphoros suite is its two exile spells; a third exile is worth more than a fourth 'destroy'.",
-   "cost_of_cutting": "A three-mana instant that answers any nonland permanent regardless of colour or mana value — Vanishing Verse cannot touch a multicoloured permanent (Alex's Azorius commander) and Despark cannot touch mana value three or less. Interaction 11 to 10, still above 8; the goldfish 'answer to a noncreature permanent' component stays at 3 if Verse replaces it. Forge cast it 11/60 and 4/40 on v1.1.0.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Depth is a meta call: copy the answer your table beats you with."
-    },
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "catch-all removal earns its premium"
-    }
-   ]
-  },
-  {
-   "card": "Ancient Tomb",
-   "why": "Colourless in a deck with 38 black cards, 54 black pips and black four sources short; two damage per tap in a deck whose last loss is filed with cause 'raced' and whose Forge seat against a Purphoros model was eliminated by that seat 12 of 21 times seen (n40, v1.1.0, 2026-09-03). A Game Changer that buys nothing at the bracket: the floor is 4 on the two infinites with or without it.",
-   "cost_of_cutting": "The fastest opener in the 99 — log 005: 'Edgar off Ancient Tomb on turn five'; a turn-one Signet or Talisman; two colourless for Sol Ring-style starts. Goldfish commander mean cast turn 6.318 and 60.3% by turn six are measured WITH it, and nothing has measured the list without it (open question, goldfish). This is a real tempo loss recommended anyway because the pips are in the wrong colour every game and the damage is in the wrong direction against the predator the pilot named.",
-   "orphans_stack": [],
-   "difficulty": "painful",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    },
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-    }
-   ]
-  },
-  {
-   "card": "Altar of Dementia",
-   "why": "A free outlet whose OUTPUT pays nothing in the 99: no recursion, no self-mill payoff, no opposing-graveyard payoff beyond The Haunt of Hightower's counters. Forge cast it 0 times in 100 games on v1.1.0 (discarded once in each run). Log 003's 'mill package' was never built — the debrief's own finding is that one card is not a package. Eight outlets against two death drains is the imbalance; this is the outlet with the least to say.",
-   "cost_of_cutting": "The free-outlet component drops 6 to 5 (36% to 31% of openers by the redundancy rule; the measured 72.3% will fall). The one outlet that mills an OPPONENT goes with it, unmeasured — the Elenda/Vish Kal Altar line in the frame's candidate lines dies before a stack prices it; the deck's other mill is Takenuma's channel, which self-mills three and returns a creature, and is the one recursion in the 99. A two-mana colourless outlet castable off any land.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:deckbuilding",
-     "quote": "a card that duplicates a job you have covered is worse than a mediocre card that covers a job you don't"
-    }
-   ]
-  },
-  {
-   "card": "Bloodflow Connoisseur",
-   "why": "A three-mana Vampire outlet whose only payoff is counters on itself; it neither drains, draws nor grows the team. Six free outlets feed two drains; this slot buys a third drain. Absent from engine_casts in both standard-v3 runs (100 games) — Forge never cast or activated it.",
-   "cost_of_cutting": "One free outlet (6 to 5 in the component) and one Vampire cast for eminence at mana value three (not in the two-or-less leg). Under 'a few big Vampires' it is a body that grows, slowly, off its own outlet.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:deckbuilding",
-     "quote": "a card that duplicates a job you have covered is worse than a mediocre card that covers a job you don't"
-    }
-   ]
-  },
-  {
-   "card": "The Haunt of Hightower",
-   "why": "engine.json: 'a six-mana body, not a plan'. Its growth keys on cards entering OPPONENTS' graveyards, which the deck feeds only incidentally: creatures it destroys (Stroke of Midnight, Elspeth's −3, Vish Kal), Liliana's −4 edict, combat trades, Altar of Dementia's mill (also on this list) and its own attack discard — nothing in the 99 is built to fill them. The 'few big Vampires' direction is served by Elenda, Blade and Cordial, which grow off the deck's own deaths.",
-   "cost_of_cutting": "A 4/4 flying lifelink Vampire finisher (Forge cast 10/60 and 5/40 on v1.1.0), a lifelinker for the Blade, a discard on attack, a Vampire cast for eminence at six. Painful to a pilot who values the big body; a reasonable pilot keeps it.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "board quality beats board quantity (Walser)"
-    },
-    {
-     "rule": "strategy:deckbuilding",
-     "quote": "a card that duplicates a job you have covered is worse than a mediocre card that covers a job you don't"
-    }
-   ]
-  },
-  {
-   "card": "Vish Kal, Blood Arbiter",
-   "why": "Seven mana, the top of the curve, in a deck whose kills arrive at mean turn 6.4–6.7 on the goldfish and whose Forge seat's median first attack is global turn 12–13. Forge cast it 0 times in 60 games (discarded once) and it is absent from the n40 record. A sacrifice outlet that stores power is the direction's card; at seven it arrives after the game the log describes is decided.",
-   "cost_of_cutting": "The biggest power funnel in the 99 (X counters per sacrificed power, then −1/−1 removal off the counters), a lifelink flier for the Blade, a free outlet (component 6 to 5), and the card the pilot's 'few big Vampires' direction most obviously names. Painful; recommended only if the pilot has accepted that the deck must close by turn eight rather than build to turn ten.",
-   "orphans_stack": [],
-   "difficulty": "painful",
-   "citations": [
-    {
-     "rule": "strategy:whos-the-beatdown.metagame-clock",
-     "quote": "engines are the default winning plan and aggro must instead compress the game before the table's late game arrives"
-    },
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "the ceiling build runs one spectacular finisher and loses when it's answered; the median runs three cheap ones and closes from any board"
-    }
-   ]
-  }
- ],
- "add_candidates": [
-  {
-   "card": "The Meathook Massacre",
-   "closes": "sweepers",
-   "source": "pool",
-   "why": "Of the four sweeper-plus-drain cards card-search returns in identity — The Meathook Massacre, One Ring to Rule Them All (drains once, on chapter III), Final Act (one-shot; its 'drain' tag is 'each opponent loses all counters') and Ruinous Rampage (3 damage once) — Meathook is the one whose drain is REPEATABLE and triggered by our own deaths, which is why it ranks first: −X/−X kills through indestructible (the Purphoros board, not Purphoros), every creature of ours it kills pays Blood Artist, Cruel Celebrant, Cordial, Elenda, Blade, Crossway, Liliana and Skullclamp, and it stays on the battlefield draining afterwards — log 002's signature turn on demand. A legendary enchantment, so it survives its own wipe and Boros Charm / Teferi's reach it. {X}{B}{B} in the short colour is the price.",
-   "evidence": {
-    "combo_lines_opened": [
-     {
-      "cards": [
-       "The Meathook Massacre",
-       "Bloodthirsty Conqueror",
-       "Vito, Thorn of the Dusk Rose"
-      ],
-      "status": "needs a stack scenario"
-     }
-    ],
-    "note": "Meathook's 'you gain 1 life' on an opposing death is another lifegain event; with Conqueror and Vito or Sanguine Bond out it is another way stacks 004/006 start. Not a new line, a new trigger for the existing one.",
-    "forge": "standard-v3 n60 games_with_a_wipe_rate 0.267 ci95 [0.171, 0.39] — the table wipes in a quarter of games; this makes the deck the one casting it"
-   },
-   "natural_cut": "Altar of Dementia",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    },
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
-    },
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-    }
-   ]
-  },
-  {
-   "card": "Bastion of Remembrance",
-   "closes": "engine component 'A drain that fires when a creature DIES' — 2 cards to 3",
-   "source": "pool",
-   "why": "Each-opponent death drain at {2}{B} on an ENCHANTMENT, so it survives the wipe that fires it; the entry token is created, so Procession, Mondrak and Elspeth double it. Takes the plan's thinnest pair to a trio (13.7% of openers to roughly one in five). Not a Vampire — the trade for surviving the wipe.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "component_now": {
-     "cards": [
-      "Blood Artist",
-      "Cruel Celebrant"
-     ],
-     "assembled_rate": 0.372,
-     "opening_seven": 0.137
-    }
-   },
-   "natural_cut": "Bloodflow Connoisseur",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-    },
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
-    }
-   ]
-  },
-  {
-   "card": "Vanishing Verse",
-   "closes": "engine component 'An answer to a noncreature permanent drawn' — exile answers 2 to 3",
-   "source": "log",
-   "why": "Log 005 asked for 'targeted disruption in white' for Purphoros. The class is exile, and both existing answers are already white-black; this is the cheapest third: {W}{B} instant, exile target monocolored permanent — every permanent in a mono-red deck, Purphoros included, and Oliver's mono-black Vito. Blank against a multicoloured permanent, which is why it replaces Stroke of Midnight rather than Despark or Anguished Unmaking.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "enumerated": "11 interaction copies; 2 exile a noncreature indestructible permanent; Stroke of Midnight destroys"
-   },
-   "natural_cut": "Stroke of Midnight",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Depth is a meta call: copy the answer your table beats you with."
-    },
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "catch-all removal earns its premium"
-    },
-    {
-     "rule": "strategy:threat-assessment.answer-economy",
-     "quote": "hold single-target removal until the threat is pointed at you"
-    }
-   ]
-  },
-  {
-   "card": "Dragonskull Summit",
-   "closes": "colour-sources",
-   "source": "pool",
-   "why": "Black 32 to 33 and red 20 to 21 for a land that enters untapped with any of the eight Swamp- or Mountain-typed copies in the 99 (Swamp x4, Blood Crypt, Godless Shrine, Savai Triome, Smoldering Marsh). mana-fit lists it as owned. Replaces the land that makes no colour without tapping an attacker.",
-   "evidence": {
-    "mana_analysis": {
-     "B": {
-      "have": 32,
-      "target": 36
-     },
-     "R": {
-      "have": 20,
-      "target": 22
-     }
-    }
-   },
-   "natural_cut": "Survivors' Encampment",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-    },
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    }
-   ]
-  },
-  {
-   "card": "Vindictive Vampire",
-   "closes": "engine component 'A drain that fires when a creature DIES' — a Vampire body for the third drain",
-   "source": "pool",
-   "why": "'Whenever another creature you control dies, deals 1 damage to each opponent and you gain 1 life' — the Celebrant clause on a Vampire, so it fires eminence on cast, Master of Dark Rites' {B}{B}{B} pays for it, and Bloodletter doubles it (damage is loss). The alternative to Bastion for a pilot who wants the third drain to be a Vampire rather than to survive the wipe.",
-   "evidence": {
-    "combo_lines_opened": []
-   },
-   "natural_cut": "The Haunt of Hightower",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-    }
-   ]
-  },
-  {
-   "card": "Toxic Deluge",
-   "closes": "sweepers",
-   "source": "pool",
-   "why": "The alternative to Meathook at {2}{B}: pay X life, all creatures get −X/−X — kills through indestructible, scales to the board, and life is the resource this deck has most of (eight printed-lifelink bodies, three lifelink token makers, two lifegain converters). No drain attached, so it is the sweeper only; against a Purphoros race the life is the cost. Listed second because Meathook does both jobs in one slot.",
-   "evidence": {
-    "combo_lines_opened": []
-   },
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    },
-    {
-     "rule": "strategy:resource-hedging.wrath-math",
-     "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
-    }
-   ]
-  },
-  {
-   "card": "Zulaport Cutthroat",
-   "closes": "engine component 'A drain that fires when a creature DIES' — the two-mana version",
-   "source": "pool",
-   "why": "Blood Artist's clause pointed at each opponent for {1}{B}; the cheapest third drain and the one a turn-two hand casts beside a Vampire. Not a Vampire and not an enchantment — cheaper than either of the two above and less resilient than Bastion.",
-   "evidence": {
-    "combo_lines_opened": []
-   },
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "wide alpha strikes, loops, commander-damage kills, and each-opponent drains are the payoffs that actually scale"
-    }
-   ]
-  },
-  {
-   "card": "Rakdos Charm",
-   "closes": "interaction-breadth",
-   "source": "pool",
-   "why": "Graveyard 0 to 1 for {B}{R} at instant speed, and the other two modes are live at this table: destroy an artifact, or 'each creature deals 1 damage to its controller' — against a goblin ETB board that is Tom's own creatures pointed at Tom. Red is the six-card splash, so this is the last add, not the first; the log names one Jarad seat (003) and the standard-v3 pod carries jarad-graveyard, which is the whole of the evidence for the class.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "log_entries": [
-     "003"
-    ]
-   },
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-    }
-   ]
-  }
- ],
- "open_questions": [
-  {
-   "question": "Bloodthirsty Conqueror, Vito (or Sanguine Bond) and Cruel Celebrant on the battlefield; one creature dies. Is the loop (stacks 004/006) already running, and can the pilot decline it? Same question with any lifelink hit or a Meathook trigger as the seed.",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "The pilot's direction says the lifegain infinite is OUT; the 99 holds it checker-passed twice. If the loop can be declined it is a play decision every turn those pieces coexist; if it cannot, 'out' is a list decision — cut Sanguine Bond or Conqueror — and that decision is the pilot's, not this diagnosis's. The answer also prices the Meathook add, which adds a trigger to the same loop."
-  },
-  {
-   "question": "Tom's Purphoros triggers ('deals 2 damage to each opponent') with Bloodthirsty Conqueror on our battlefield: do Alex's and Oliver's life losses each fire Conqueror for us (net +2 per trigger), and with Vito or Sanguine Bond also out does each trigger drain Tom and start the loop?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "If it reads as expected, the 99 already contains the strongest anti-Purphoros card the pilot could buy, and it is the one his direction has marked as out. That changes the 'is a white swap needed' answer from 'a third exile' to 'sequence Conqueror against Tom'."
-  },
-  {
-   "question": "Boros Charm's 'permanents you control gain indestructible' with Elspeth, Storm Slayer attacked for lethal loyalty: does she survive? Which of the seven protection cards keep a planeswalker alive through (a) a destroy spell, (b) an exile spell, (c) combat damage?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "The pilot asked whether the suite covers a walker. The doctor's oracle read is: Teferi's covers all three, Swat covers (a) and (b) when targeted, Boros Charm covers (a) only, and nothing but blockers covers (c). A stack settles it with rules citations before it becomes the pilot's habit."
-  },
-  {
-   "question": "Re-run the goldfish with Ancient Tomb replaced by a Swamp (and Survivors' Encampment by Dragonskull Summit): commander mean cast turn (now 6.318, 60.3% by turn six), kill-by-turn-8 (now 0.704) and mean available mana by turn.",
-   "settled_by": "goldfish",
-   "why_it_matters": "The painful cut is priced as a tempo loss nobody has measured. The goldfish cannot rank same-colour lands, but Tomb-to-Swamp is a colourless-for-black change it CAN see in castability, and the pilot should not sleeve a painful cut on a guess."
-  },
-  {
-   "question": "Add the third death drain (Bastion of Remembrance, Zulaport Cutthroat or Vindictive Vampire) to the goldfish group 'A drain that fires when a creature DIES' and re-measure; and declare an outlet-AND-drain pair so the conversion layer has a rate at all.",
-   "settled_by": "goldfish",
-   "why_it_matters": "The prescription is sized off a two-card component at 37.2% and the redundancy rule; the measured three-card figure is the number the skeptic should be shown. engine.json says nothing measures the pair, and sac_cap_hit_rate is 0.0 — the deck's central engine has no rate."
-  },
-  {
-   "question": "How does a mid-range aristocrats deck sequence against an each-opponent ETB-drain deck (Purphoros): attack it first, answer the enchantment, race on drain, or hold blockers? Is 'the natural predator for mid-range aggro' (log 005) a known matchup reading in the corpus?",
-   "settled_by": "research-strategy",
-   "why_it_matters": "The pilot's ask rests on one game. The corpus has racing, wrath-math and answer-economy sections but no matchup reading for a trigger-race opponent; the sequencing rule the pilot writes down next should come from a source, not a memory of one loss."
-  },
-  {
-   "question": "With Elenda at power X fed to a free outlet under two doublers, how many lifelink tokens enter, and do Cordial Vampire and Blade trigger for their later deaths? (carried from strategic_frame candidate lines)",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "This is the hinge between the pilot's two lines and the one v1.1.1 was merged for; the goldfish reads Elenda as DARK and no stack prices her. Until it is priced, 'Elenda dies into a board' in lean_into is a reading, not a fact."
-  }
- ],
- "gaps": [
-  "No candidate_pool.json exists for this deck, so 'source: pool' here means card-search over cards.csv in Mardu identity excluding the 99; every add was checked for identity and legality by that command and none is priced by ownership except where mana-fit marked a land OWN.",
-  "deck_recon.json is dated 2026-08-03 and predates v1.1.0 and v1.1.1; five of the cards it recommends are now in the 99 (Charismatic Conqueror, Elspeth, Caretaker's Talent, Command Tower, Legion's Landing). No add above rests on it.",
-  "No Forge run exists on this sha (7be137d0…). Every Forge figure quoted — standard-v3 0.413 ci95 [0.283, 0.557] (n=46 decided of 60) and 0.296 ci95 [0.159, 0.485] (n=27 of 40); playgroup pod 0.105 ci95 [0.042, 0.241] (n=38 of 40) with purphoros-pingers winning 19 and eliminating our seat 12 of 21 times seen; median first attack global turn 12–13 — is from v1.1.0 records dated 2026-09-03 to 09-11, in which Elenda and the Blade do not exist. Forge is also a floor on this deck's conversion layer: Altar of Dementia cast 0, Viscera Seer and Bloodflow Connoisseur absent from engine_casts, Ashnod's Altar activated 0 across both standard-v3 runs.",
-  "The purphoros-pingers seat is a pod model of the archetype, not Tom's list, and the playgroup pod's null (0.105) is computed from that single run, so it says nothing about this deck relative to that table; it is cited only for WHO eliminated the seat and HOW (damage, 21 of 21 seen).",
-  "Blasphemous Act is the sweeper most lists would name here; card_roles.json files it as removal:damage and ramp:cost-reduction, so it cannot move the sweepers axis and is not listed. It belongs in the same conversation as Meathook and Deluge, with the same 'wipe with a drain online' argument.",
-  "Winds of Abandon's overload is a one-sided exile sweeper the taxonomy files as removal:spot; the sweepers axis is 0 by role and 1 by oracle text. Both readings are reported; the measured value carried is the audit's.",
-  "Nothing measures a sacrifice outlet and a death payoff TOGETHER (engine.json; goldfish sac_cap_hit_rate 0.0), and the goldfish does not model death-triggered drain at all ('the largest known gap here'). The conversion layer — the deck's declared engine — has no assembled rate, and every claim about it above is oracle text plus logs 002 and 004.",
-  "The interaction-breadth land class has no log evidence behind it and no add is proposed for it; Chaos Warp and Generous Gift are the in-identity catch-alls if the table ever makes it matter.",
-  "The 400-game Forge result (50/400 vs 31/400, combat damage 29.07 to 18.20) cited by engine.json and the frame is on v1.0.0 against a refactor and has not been re-run on any later list; it is quoted only for the mechanism (1/1s do not connect), not as a rate for this deck.",
-  "bracket_delta on every add is before 4 / after 4 because the floor is forced by the two contained two-card infinites, which no listed cut touches; if the pilot resolves the Conqueror decision by cutting Sanguine Bond or Conqueror, every delta must be recomputed with bracket-check.",
-  "Ancient Tomb's replacement is a fifth basic Swamp, and it cannot appear in add_candidates because the validator reads a basic the 99 already holds (Swamp ×4) as 'already in the maindeck'. The case, from mana_analysis on this sha: black is 32 sources against a Karsten target of 36 for 38 black cards and 54 black pips (Bloodletter is {1}{B}{B}{B}); black on curve is 0.785 on lands alone and 0.855 with rocks; a Swamp takes black to 33 (34 with Dragonskull Summit for Survivors' Encampment), enters untapped, deals no damage, and turns on Castle Locthwain, Dragonskull Summit, Blazemire Verge and Bleachbone Verge. Game Changers go 3 to 2 and the bracket floor stays 4 on the two infinites. The Ancient Tomb cut therefore has no paired add and is not applied by the validator's swap check; the goldfish open question above measures the tempo cost before anyone sleeves it."
- ]
 }
