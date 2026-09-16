@@ -2,7 +2,7 @@
   "slug": "heliod",
   "as_of_decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
   "archetype": "Azorius flash control whose commander is a converter, not a threat: the table is gifted cards, Heliod, the Warped Eclipse turns those draws into a per-spell discount that lives on the opponents' turns, and the game is won by the second cast of Approach of the Second Sun. deck-audit reads `control` from strategic_frame.json and the slot budget agrees (interaction 14 of 12-15, protection 5 of 5-7, ramp 12 of 10-12, card-advantage 16 of >=10); the conversion is a one-finisher combo deck's, and every count below is read against that.",
-  "verdict": "The deck wins by casting Approach of the Second Sun twice and by almost nothing else: over the 99 decided games of run b0f44e4a, 12 of 12 games that reached a second cast won (Wilson [0.757, 1.000]) against 8 of 87 that did not (1 of 10 with a single cast, 7 of 77 with none). What gates that is MANA, and it is the only gate that survives its confound: games that cast Approach at all averaged 9.63 lands against 8.06 (Welch -1.565, ci95 [-2.675, -0.455]) AND developed them faster, 0.2279 lands per global turn against 0.1976 (Welch -0.0303, ci95 [-0.0489, -0.0117]) — both exclude zero. THE COMMANDER IS NOT THE GATE AND THIS DIAGNOSIS'S ROUND-1 VERDICT WAS WRONG. Neither resolving Heliod (19/67 = 0.284 against 18/52 = 0.346, diff +0.0626, ci95 [-0.1015, +0.2277]) nor flipping him (9/35 = 0.257 against 28/84 = 0.333, ci95 [-0.1112, +0.2331]) is associated with winning, and 10 of the 12 second-Approach games never flipped him while 5 never cast him at all. Mana-base is the axis that binds; win-condition access is second; protection is adequate and is bought below for the exit table, not as the thing that loses games.",
+  "verdict": "The deck wins by casting Approach of the Second Sun twice and by almost nothing else: over the 99 decided games of run b0f44e4a, 12 of 12 games that reached a second cast won against 8 of 87 that did not (1 of 10 on a single cast, 7 of 77 on none) — a ratio close to DEFINITIONAL, since Approach wins on resolution and across 39 casts the logs show no counterspell ever aimed at one. WHAT THE FORGE RECORD DOES NOT ESTABLISH IS WHY THE DECK GETS THERE, and both of this document's earlier attempts to say are withdrawn. The commander does not predict winning (resolving 13/68 = 0.191 against 7/52 = 0.135, Newcombe ci95 [-0.1849, +0.0838]; flipping 6/35 against 14/85, ci95 [-0.1748, +0.1230]), and neither does mana once the confound is controlled properly: the land gap between Approach-cast and no-Approach games disappears on the seat's OWN turns (0.8178 against 0.7849, ci95 [-0.0960, +0.0301]) and among the 46 games heliod was not eliminated in (lands ci95 [-2.5120, +0.6152]), because elimination differs 0.33 against 0.70 between those arms. Lands do not separate the 12 two-cast games from the 15 one-cast games at all. SO THE PRESCRIPTION RESTS ON THE DETERMINISTIC SHORTFALL AND NOT ON A CROSS-TAB: 33 lands against the control band of 37-39, 25 white and 26 blue sources against Karsten's 36, benchmark.json's missed-land-drop rate of 0.2568 worst at turn six, and a finisher costing seven mana twice. Mana-base binds on the audit's own figures; win-condition access is second and its final step is unexplained; protection is adequate and is bought below against a measured exit table.",
   "axes": [
     {
       "axis": "mana-base",
@@ -10,7 +10,7 @@
       "measured": {
         "value": 33
       },
-      "reading": "THE BINDING AXIS. Four under the control band for a deck whose finisher costs seven twice. In the 120-game record, games that cast Approach averaged 9.63 lands against 8.06 and — the figure that rules out game length as the explanation — developed 0.2279 lands per global turn against 0.1976 (Welch -0.0303, ci95 [-0.0489, -0.0117], excludes zero). benchmark.json reads missed_land_drop_rate 0.2568 with worst turn 6. Consistency 0.868 is the turn-THREE drop and says nothing about turn seven.",
+      "reading": "THE BINDING AXIS, on deterministic grounds. Four under the control band for a deck whose only win route costs seven mana twice, with benchmark.json's missed_land_drop_rate at 0.2568 worst at turn six. Games that cast Approach did hold more lands (9.63 against 8.06) and the association is REPORTED, NOT READ AS CAUSE: it does not survive on the seat's own turns (ci95 [-0.0960, +0.0301]) or among survivors (ci95 [-2.5120, +0.6152]), which is the same control that demoted the commander split. Consistency 0.868 is the turn-THREE drop and says nothing about turn seven.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -23,6 +23,10 @@
         {
           "rule": "strategy:deckbuilding.archetype-selection",
           "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
         }
       ]
     },
@@ -116,7 +120,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "Two against the control band of 5-7, which comes from strategy:deckbuilding.archetype-selection's override. The section the audit quotes for this axis, strategy:deckbuilding.interaction-suite, argues the other way — 'wipes \"one or two max\" (Zupke caps at 3)' and 'date any wipe count you inherit' — so this is a 'weakness' only against the archetype band, and the corpus does not speak with one voice on it. What the logs do show is that the deck's own two sweepers are nearly harmless to its own commander: 2 of Heliod's 50 battlefield exits (Day of Judgment 1, Supreme Verdict 1). Log 002's self-wrath is a real piloting error and a rare one at the table.",
+      "reading": "Two against the control band of 5-7, which comes from strategy:deckbuilding.archetype-selection's override. The section the audit quotes for this axis, strategy:deckbuilding.interaction-suite, argues the other way — 'wipes \"one or two max\" (Zupke caps at 3)' and 'date any wipe count you inherit' — so this is a 'weakness' only against the archetype band and the corpus does not speak with one voice. The deck's own two sweepers account for 5 of Heliod's 50 battlefield exits (Supreme Verdict 3, Day of Judgment 2; only this seat runs either card in the pod, so attribution is certain once the spell is named) against 56 own-wrath resolutions — a small minority, and log 002's self-wrath is a piloting note rather than a structural cost.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
@@ -138,15 +142,11 @@
       "measured": {
         "value": 5
       },
-      "reading": "AT by count, and the round-1 claim that 'two of its five do not protect Heliod at all' is WITHDRAWN: Lightning Greaves' shroud stops targeted removal, which is the largest thing that takes Heliod off the battlefield. re-derived by this doctor from the 120 stored logs of run b0f44e4a (seat index rotates 30 games per position; a parser that fixes it reads 15 of 120 games instead of 68), his 50 exits attribute as 22 targeted (Generous Gift 8, Stroke of Midnight 7, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2), 12 opposing wraths, 2 own wraths and 14 unattributed. Hexproof/shroud answers the 22; indestructible answers 30 of the 36 attributed (every 'destroy', targeted or mass) and not the 5 targeted exiles. Only Kefnet protects nothing but himself. The axis is adequate; the adds below buy coverage of a measured exit table, not a measured loss mechanism.",
+      "reading": "AT by count, and the round-1 claim that 'two of its five do not protect Heliod at all' is WITHDRAWN: Lightning Greaves' shroud stops targeted removal, the largest attributed cause of Heliod leaving the battlefield. Re-derived from the 120 stored logs by attributing each exit to the NEXT `Resolve Stack:` line (Forge logs the Zone Change immediately before the causing spell resolves), his 50 exits are 22 targeted (Generous Gift 8, Stroke of Midnight 7, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2), 16 opposing wraths (Farewell 5, Wrath of God 4, Cleansing Nova 3, Hour of Reckoning 2, Austere Command 2), 5 own wraths and 7 unattributed — 43 attributed, cross-checking against the zone split of 40 Graveyard and 10 Exile. Hexproof/shroud answers 22 of 43; indestructible answers the 33 destroys and misses all 10 exiles. Only Kefnet protects nothing but himself. The axis is adequate and the adds buy coverage of an exit table, not of a measured loss mechanism.",
       "citations": [
         {
           "rule": "strategy:multiplayer.commander-insurance",
           "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
-        },
-        {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
         }
       ]
     },
@@ -156,7 +156,7 @@
       "measured": {
         "value": 3
       },
-      "reading": "Three on paper; one converts, and it converts absolutely. Decided games: 12 of 12 with a second Approach cast won (Wilson [0.757, 1.000]), 1 of 10 with one cast, 7 of 77 with none. Psychosis Crawler was cast 0 times in 120 games and 0 in 40. This is the ceiling build the corpus names, and the pilot's constraint against two-card infinites is why it stays one finisher — so the prescription buys ACCESS, not a second finisher.",
+      "reading": "Three on paper; one converts. Decided games: 12 of 12 with a second Approach cast won (Wilson [0.757, 1.000]), 1 of 10 with one cast, 7 of 77 with none — though the 12/12 is close to definitional, since Approach wins on resolution and no counterspell in the logs was ever aimed at one of its 39 casts; its real content is that this pod never answered it. Psychosis Crawler was cast 0 times in 120 games and 0 in 40. This is the ceiling build the corpus names, and the pilot's constraint against two-card infinites is why the prescription buys ACCESS rather than a second finisher.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
@@ -293,7 +293,7 @@
         "count": 6,
         "thinnest": false,
         "measured_rate": 0.741,
-        "reading": "Heliod plus the mana to flip him: goldfish 0.741 by turn ten. Forge: resolved in 68 of 120 games, transformed in 35 (0.292). The round-1 reading called that gap 'the deck's real problem'; it is WITHDRAWN. The gap decomposes into 52 games where he was never cast and 33 of 68 where the AI never activated the flip, and neither resolving nor flipping him is associated with winning (both intervals span zero, above). The six named rocks omit Mind Stone, which pays the {3} identically."
+        "reading": "Heliod plus the mana to flip him: goldfish 0.741 by turn ten; Forge resolved him in 68 of 120 games and transformed in 35 (0.292). The round-1 reading called that gap 'the deck's real problem' and it is WITHDRAWN — neither resolving (13/68 against 7/52, ci95 [-0.1849, +0.0838]) nor flipping (6/35 against 14/85, ci95 [-0.1748, +0.1230]) is associated with winning, and the resolving split runs slightly the other way from what a hub story predicts. The six named rocks omit Mind Stone, which pays the {3} identically."
       },
       {
         "role": "payoff",
@@ -451,7 +451,7 @@
       },
       {
         "component": "The mana to cast a seven-drop twice",
-        "why": "Casting Approach at all is gated on mana development, at a rate that survives the game-length confound (0.2279 lands per global turn against 0.1976, ci95 [-0.0489, -0.0117]). 33 lands against a 37-39 band, with U and W both double-digit sources short of Karsten's 90% figure.",
+        "why": "Deterministic, not inferred: 33 lands against a 37-39 band, 25 white and 26 blue sources against Karsten's 36 with on-curve castability from lands alone at W 0.61 / U 0.639, and a missed-land-drop rate of 0.2568 worst at turn six — for a deck whose only win route costs {6}{W} twice. The Forge land association between Approach-cast and no-Approach games does not survive its controls and is not relied on here.",
         "closers": [
           "Tundra",
           "Sea of Clouds"
@@ -472,22 +472,29 @@
   "lean_into": [
     {
       "what": "Buy lands and win-condition access before anything else.",
-      "why": "The only measured gate on the deck's only measured win route is mana: Approach-cast games developed 0.2279 lands per global turn against 0.1976 (Welch -0.0303, ci95 [-0.0489, -0.0117]) and held 9.63 lands against 8.06 (ci95 [-2.675, -0.455]). The deck is at 33 lands against a 37-39 band with both colours double-digit sources short.",
+      "why": "The audit's deterministic figures carry this without a cross-tab: 33 lands against a 37-39 control band, U 26 and W 25 against a Karsten target of 36 each, on-curve castability from lands alone at W 0.61 and U 0.639, and benchmark.json's missed_land_drop_rate 0.2568 worst at turn six — against a finisher that must be cast twice at {6}{W}. The Forge land split (9.63 against 8.06) is consistent with this and is NOT evidence for it: it fails on own turns and among survivors.",
       "evidence": {
-        "lands_cast_vs_not": [
-          9.63,
-          8.06
-        ],
-        "lands_per_turn_ci95": [
-          -0.0489,
-          -0.0117
-        ],
         "lands": 33,
+        "target_band": [
+          37,
+          39
+        ],
         "sources": {
           "U": 26,
           "W": 25
         },
-        "target_per_colour": 36
+        "target_per_colour": 36,
+        "missed_land_drop_rate": 0.2568,
+        "forge_land_split_withdrawn": {
+          "lands_own_turn_ci95": [
+            -0.096,
+            0.0301
+          ],
+          "survivors_lands_ci95": [
+            -2.512,
+            0.6152
+          ]
+        }
       },
       "citations": [
         {
@@ -502,7 +509,7 @@
     },
     {
       "what": "Second place is bought; first place is the second Approach cast and nothing else.",
-      "why": "Decided games: 12 of 12 with a second cast won, 1 of 10 with one cast, 7 of 77 with none. Placement over 94 ranked games was 11 first, 35 second, 26 third, 22 fourth, mean 2.628, eliminated at mean global turn 38.05 in games averaging 41.3. The survival half is paid for; every slot bought below serves the mana or the finisher.",
+      "why": "Decided games: 12 of 12 with a second cast won, 1 of 10 with one cast, 7 of 77 with none. The 12/12 is near-definitional — Approach wins on resolution and the pod never countered one across 39 casts — so read it as 'nothing at this table answers the card', not as a discovered association. Placement over 94 ranked games was 11 first, 35 second, 26 third, 22 fourth, mean 2.628, eliminated at mean global turn 38.05 in games averaging 41.3: the survival half is paid for.",
       "evidence": {
         "decided_split": {
           "two_casts": [
@@ -518,6 +525,8 @@
             77
           ]
         },
+        "approach_casts": 39,
+        "counters_aimed_at_approach": 0,
         "placement": {
           "1": 11,
           "2": 35,
@@ -611,7 +620,7 @@
     {
       "card": "Lightning Greaves",
       "why": "Only as a like-for-like swap for Swiftfoot Boots. Shroud stops opponents targeting Heliod AND stops the deck's own Karametra's Blessing and Guardian of Faith from targeting him (an open stack question, not asserted); hexproof stops only the opponents. The exit table makes this the right class of card and the wrong printing.",
-      "cost_of_cutting": "PAINFUL relative to its reputation, and the round-1 entry overstated it in the other direction. Forge cast it in 29 games with 41 activations, but the logs show only 5 of those activations attaching to Heliod (4 to the front face, 1 to the back) — as commander insurance the AI used it five times in 120 games. It is still the deck's only Equipment and the only equip-{0} in the 99; Boots costs {1} to move.",
+      "cost_of_cutting": "Forge cast it in 29 distinct games with 41 activations, but the logs show only 5 of those activations attaching to Heliod (4 to the front face, 1 to the back) — as commander insurance the AI used it five times in 120 games. It is still the deck's only Equipment and the only equip-{0} in the 99; Swiftfoot Boots costs {1} to move, which is the whole price of the swap.",
       "orphans_stack": [],
       "difficulty": "easy",
       "citations": [
@@ -623,7 +632,7 @@
     },
     {
       "card": "Day of Judgment",
-      "why": "Only as a like-for-like swap for Time Wipe, and on a much weaker ground than round 1 claimed: the deck's own sweepers account for 2 of Heliod's 50 battlefield exits, so 'it kills our own commander' is a piloting note (log 002), not a measured cost. Time Wipe is preferred for bouncing a creature first, which is a real mode against an indestructible or enchanted threat.",
+      "why": "Only as a like-for-like swap for Time Wipe, and on a much weaker ground than round 1 claimed: the deck's own sweepers account for 5 of Heliod's 50 battlefield exits (Supreme Verdict 3, Day of Judgment 2), so 'it kills our own commander' is a piloting note (log 002), not a measured structural cost. Time Wipe is preferred for bouncing a creature first, a real mode against an indestructible or enchanted threat.",
       "cost_of_cutting": "The cheaper of the two wraths at {2}{W}{W} against Time Wipe's {2}{W}{W}{U} — one more pip in the colour the deck is 10 sources short of, on the axis this diagnosis calls binding. Day of Judgment is strictly better when Heliod is not on the battlefield, which is 52 of 120 games.",
       "orphans_stack": [],
       "difficulty": "contested",
@@ -778,11 +787,13 @@
       "card": "Swiftfoot Boots",
       "closes": "protection",
       "source": "pool",
-      "why": "Hexproof rather than shroud: opponents cannot target Heliod and the deck still can, so Karametra's Blessing and Guardian of Faith stay live on him. Targeted removal is the largest attributed cause of his 50 battlefield exits — 22 of 36 attributed (Generous Gift 8, Stroke of Midnight 7, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2) — and log 001's redirected Swords is exactly that event. {2} generic, so free on an opponent's turn under the flip.",
+      "why": "Hexproof rather than shroud: opponents cannot target Heliod and the deck still can, so Karametra's Blessing and Guardian of Faith stay live on him. Targeted removal is the single largest attributed cause of his 50 battlefield exits — 22 of 43 attributed (Generous Gift 8, Stroke of Midnight 7, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2) — and log 001's redirected Swords is exactly that event. {2} generic, so free on an opponent's turn under the flip. Two qualifications: it must be attached to do anything (Forge attached the Greaves to Heliod 5 times in 120 games), and hexproof does not help against a targeted spell cast before it is equipped.",
       "evidence": {
         "combo_lines_opened": [],
         "heliod_exits_total": 50,
-        "targeted_exits_of_36_attributed": 22
+        "attributed": 43,
+        "targeted_exits": 22,
+        "greaves_attachments_to_heliod": 5
       },
       "natural_cut": "Lightning Greaves",
       "bracket_delta": {
@@ -800,11 +811,12 @@
       "card": "Mithril Coat",
       "closes": "protection",
       "source": "pool",
-      "why": "{3} generic and FLASH, attaching itself on entry to a legendary creature: it lands in response to the removal rather than before it, which is the held-response half of the insurance the corpus asks for. Indestructible answers 30 of the 36 attributed exits — every 'destroy', targeted or mass — and not the 5 targeted exiles or Farewell's exile-all. Note the cost the round-1 entry omitted: after a command-zone recast the Coat re-arms for equip {3}, which is not cheap re-arming.",
+      "why": "{3} generic and FLASH, attaching itself on entry to a legendary creature: it lands in response to the removal rather than before it, which is the held-response half of the insurance the corpus asks for. Indestructible answers the 33 destroy exits of the 43 attributed and misses all 10 exiles (Farewell 5, Swords to Plowshares 3, Chaos Mutation 2). Note the cost the round-1 entry omitted: after a command-zone recast the Coat re-arms for equip {3}, which is not cheap re-arming.",
       "evidence": {
         "combo_lines_opened": [],
-        "destroy_exits_of_36_attributed": 30,
-        "exile_exits_not_covered": 6
+        "attributed": 43,
+        "destroy_exits_covered": 33,
+        "exile_exits_missed": 10
       },
       "natural_cut": "Kefnet the Mindful",
       "bracket_delta": {
@@ -829,7 +841,7 @@
       "why": "'Return a creature you control to its owner's hand, then destroy all creatures' — a wrath with a rebuy mode against an indestructible or enchanted threat, and it spares whichever creature matters. Sweepers 2 to 3 against the archetype band of 5-7. Ranked low because the section the audit cites for this axis argues two is already the ceiling, and because its extra blue pip taxes the binding axis.",
       "evidence": {
         "combo_lines_opened": [],
-        "own_sweeper_exits_of_50": 2
+        "own_sweeper_exits_of_50": 5
       },
       "natural_cut": "Day of Judgment",
       "bracket_delta": {
@@ -897,7 +909,7 @@
   ],
   "open_questions": [
     {
-      "question": "What separates the 12 games that cast Approach of the Second Sun twice from the 15 that cast it once? Lands (9.58 vs 9.67), global turn (41.17 vs 43.20) and tutor casts (0.75 vs 0.80) all span zero at n=12 against n=15, so the deck's entire win route has an unexplained final step.",
+      "question": "What separates the 12 games that cast Approach of the Second Sun twice from the 15 that cast it once? Lands (9.58 vs 9.67, ci95 [-2.054, +2.221]), lands per own turn (ci95 [-0.0744, +0.1539]), global turn (41.17 vs 43.20) and tutor casts (0.75 vs 0.80) all span zero at n=12 against n=15, so the step that actually wins the game is unexplained and the verdict says so rather than asserting a chain through it.",
       "settled_by": "goldfish",
       "why_it_matters": "12 of 12 decided games reaching a second cast won and 8 of 87 otherwise. Every add in this document that is not a land is sized off the assumption that ACCESS is the missing step; if the real gate is mana in one window, or the seven-card gap between the first cast and the shuffle, the tutors buy less than claimed."
     },
@@ -928,10 +940,11 @@
     }
   ],
   "gaps": [
-    "THE ROUND-1 VERDICT ('protection is the axis that binds') IS WITHDRAWN, NOT SOFTENED. It rested on a cast count, the pilot's stated want and one log game on a five-versions-old list. Re-derived here from the 120 stored logs of b0f44e4a: neither resolving the commander (19/67 = 0.284 against 18/52 = 0.346, diff +0.0626, ci95 [-0.1015, +0.2277]) nor flipping him (9/35 against 28/84, ci95 [-0.1112, +0.2331]) is associated with winning; 10 of the 12 games that cast Approach twice never flipped him and 5 never cast him; the deck's own sweepers account for 2 of his 50 exits (the skeptic's independent attribution says 5 — both are a small minority, and '70 wrath casts' measures nothing about commander losses either way). A parser note that cost this doctor an hour: the heliod seat index ROTATES across the four positions, 30 games each, so a hardcoded Ai(1) reads 15 of 120 games and every figure derived from it is wrong.",
-    "THE MANA STORY IS NARROWER THAN 'THE DECK IS SHORT LANDS'. The 7.60-against-9.04 land gap between never-cast and cast games is largely game length: those games are shorter (global turn 39.0 against 43.1, Welch +4.08, ci95 [+1.29, +6.87]) and the lands-per-global-turn RATE does not differ (Welch +0.0134, ci95 [-0.0046, +0.0315], spans zero). What survives the confound is the Approach comparison: games that cast Approach developed 0.2279 lands per global turn against 0.1976 (Welch -0.0303, ci95 [-0.0489, -0.0117], excludes zero) on 9.63 lands against 8.06 (ci95 [-2.675, -0.455]). The verdict rests on that pair and not on the commander split.",
+    "TWO VERDICTS HAVE NOW BEEN WITHDRAWN FROM THIS DOCUMENT, AND THE SECOND WITHDRAWAL IS THIS REVISION'S MAIN CONTENT. Round 1 said protection binds; that rested on a cast count, the pilot's want and one log game on a five-versions-old list. Round 2 replaced it with a causal mana claim resting on lands per GLOBAL turn (0.2279 against 0.1976, ci95 [-0.0489, -0.0117]) — and that denominator is the confound rather than a control for it, because global_turn keeps counting after this seat is eliminated and elimination differs 0.33 against 0.70 between the arms (the global-to-own-turn ratio is 4.10 in eliminated games against 3.68 in survived ones). On the seat's OWN turns the rate is 0.8178 against 0.7849, ci95 [-0.0960, +0.0301]; among the 46 games heliod survived, lands read 10.06 against 9.11, ci95 [-2.5120, +0.6152], and every other arm collapses too. That is the same test that correctly demoted the commander split in round 2, applied to round 2's own pair. The mana-base prescription stands on the audit's deterministic figures; the causal claim does not and is gone.",
+    "THE ROUND-2 COMMANDER CROSS-TABS WERE WRONG AND ARE CORRECTED HERE. They read 19/67 against 18/52 and 9/35 against 28/84, carrying 37 wins across 119 games when the seat won 20 of 99 decided. The cause was reading the winner from the LOG's 'has won' line, which names a last seat standing in the 20 clock-outs the record deliberately leaves without a winner. From records games[].winner: resolving 13/68 = 0.191 against 7/52 = 0.135, Newcombe diff -0.0566, ci95 [-0.1849, +0.0838]; flipping 6/35 = 0.171 against 14/85 = 0.165, diff -0.0067, ci95 [-0.1748, +0.1230]. Both span zero, so the conclusion holds, but the resolving split is directionally INVERTED from what was published — resolving the commander is associated with winning slightly more, not less — and engine.json (critic pass) already carried 6/35 against 14/85. Take the winner from the record, never from the log.",
     "NO FORGE RUN EXISTS ON v1.3.0. Every table figure here is from run b0f44e4a (v1.2.1, 120 games, standard pod, 2026-09-09) or 4b0e1964 (v1.2.1, 40 games, standard-v3); the current list differs by three cards (Isochron Scepter, Horn of Greed, Mind Stone in; Mikaeus, the Lunarch, Forced Fruition, Angelic Wall out) and none has a Forge line. A v1.3.0 run against standard-v3 at 120+ games is the next measurement and no settled_by value routes a simulate.",
-    "FORGE CANNOT MEASURE THE RESPONSE SIDE OF PROTECTION, which is why the protection axis is read as adequate rather than either vindicated or condemned. It measures the THREAT side well — 50 Heliod exits in 120 games, removed in 37 of the 68 games he resolved in — and the response side not at all: Guardian of Faith 0 casts (6 discards), Teferi's Protection 0 casts, Karametra's Blessing 9 casts of which the logs show 2 resolving on Heliod, Lightning Greaves 41 activations of which 5 attached to Heliod. Cast and activation counts in engine_casts.by_card are EVENTS, not games, and three figures in the round-1 document mis-stated them as games.",
+    "FORGE CANNOT MEASURE THE RESPONSE SIDE OF PROTECTION, which is why the axis reads adequate rather than vindicated or condemned. The threat side it measures well: 50 Heliod exits in 120 games, removed in 37 of the 68 games he resolved in, attributed 22 targeted / 16 opposing wraths / 5 own / 7 unattributed. The response side it does not measure at all: Guardian of Faith 0 casts (6 discards), Teferi's Protection 0 casts, Karametra's Blessing 9 casts of which 2 resolved on Heliod, Lightning Greaves 41 activations of which 5 attached to Heliod. Cast and activation counts in engine_casts.by_card are EVENTS, not games — three figures in the round-1 document mis-stated them as games — though 'cast in 29 games' for the Greaves is true as written, since those 29 casts fall in 29 distinct games.",
+    "THE EXIT TABLE CHANGED BETWEEN ROUND 2 AND ROUND 3 AND THIS IS THE SETTLED VERSION. Round 2 published 22 targeted / 12 opposing wraths / 2 own / 14 unattributed, from a window search spanning -14 to +9 lines around each Zone Change, which mis-attributes when two spells resolve close together. Attributing instead to the NEXT `Resolve Stack:` line — Forge logs the destroyed permanent's Zone Change immediately BEFORE the causing spell resolves — gives 22 / 16 / 5 / 7, i.e. 43 attributed, and it cross-checks against the record's zone split of 40 Graveyard and 10 Exile (the 10 exiles being Farewell 5, Swords to Plowshares 3, Chaos Mutation 2). The own-wrath count is 5 (Supreme Verdict 3, Day of Judgment 2); only this seat runs either card in the pod. Every 'of 36 attributed' figure in round 2 was therefore a denominator too small.",
     "THE DISCOUNT IS NOT MODELLED ANYWHERE. model-coverage lists Heliod's only channel as bodies; every goldfish mana figure is a floor and no artifact on disk has resolved a single discounted cast. The X-draw-into-Approach question is the highest-leverage unknown left, and it is the one line that would restore the commander to the centre of this deck's plan.",
     "NO candidate_pool.json AND NO deck_recon.json. Every add was found with card-search over cards.csv (identity WU, deck's 99 excluded) and checked Commander-legal; considering.json on disk is from the Aetherflux Reservoir era and names cards answering a kill the deck no longer runs. It was read and not used.",
     "MYSTIC GATE WAS DROPPED FOR A WRONG REASON IN ROUND 1 AND IS NOT RESTORED HERE. The stated ground — that mana-analysis would file it under sources.gated beside Skycloud Expanse — is false: manabase.gated_colour_source('Mystic Gate') returns False and land_colors reads it as {U, W}. The real reason to prefer Tundra and Sea of Clouds is that both make a coloured mana off the tap alone, while Mystic Gate's coloured mode needs a {W/U} from somewhere else first; whether a filter land is the right fifth source is a live question this document does not settle.",
