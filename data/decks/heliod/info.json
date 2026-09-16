@@ -13,11 +13,10 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 14,
+    "complete": 15,
     "of": 18,
     "stale": [
       "frame",
-      "map",
       "engine"
     ],
     "invalid": [],
@@ -693,8 +692,8 @@
       "name": "artifacts-v1",
       "opened": "2026-09-16",
       "why": "the artifact half of the 2026-09-16 audit: Heliod's discount makes a generic-cost artifact a free cast, and three owned ones fit the plan. Isochron Scepter (thirteen instants at two or less to imprint), Horn of Greed (a gift that pays on the opponents' turns, where the flash deck spends the discount), Mind Stone (a free rock on two and a card later). The goldfish reads none of the five cards involved — every profile is zero and the candidates sweep returned one reading for all three — so the objective is a CONTROL and the case is the argued one in each swap's why.",
-      "state": "PROPOSED · OUTRUN",
-      "state_why": "proposed against V10 and the deck is now VNone — v1.3.0 may be taken; re-measure and propose again",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-16 into the list after VNone",
       "proposal": {
         "at": "2026-09-16",
         "as_version": "v1.3.0",
@@ -1999,7 +1998,7 @@
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): Gleaming Splendor for Alhammarret's Archive. a Treasure whenever an opponent draws their second card in a turn, in a deck that makes every opponent draw every turn, plus a group-draw activation; the Archive's lifegain half is off-plan here The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
       "state": "PROPOSED · OUTRUN",
-      "state_why": "proposed against V10 and the deck is now VNone — v1.2.2 may be taken; re-measure and propose again",
+      "state_why": "proposed against V10 and the deck is now V11 — v1.2.2 may be taken; re-measure and propose again",
       "proposal": {
         "at": "2026-09-12",
         "as_version": "v1.2.2",
@@ -2834,12 +2833,12 @@
     "within_target": true
   },
   "paper": {
-    "version": 10,
-    "sha": "d220ac4ada98",
-    "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
-    "built_at": "2026-09-08",
-    "note": "SLEEVED at v1.2.1. The pilot confirmed every card is in paper 2026-09-08: the seven bought (Karametra's Blessing, Angelic Wall, Ghostly Prison, Drift of Phantasms, Kefnet the Mindful, Guardian of Faith, Archangel of Tithes), the two from the boxes (Leyline of Anticipation, Lightning Greaves), and the five basics swapped Island to Plains. Drift is computed against this list from here.",
-    "release": "v1.2.1"
+    "version": 11,
+    "sha": "47a456b7e69c",
+    "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+    "built_at": "2026-09-16",
+    "note": "sleeved 2026-09-16 as v1.3.0",
+    "release": "v1.3.0"
   },
   "record": {
     "games": 2,
@@ -2889,7 +2888,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine online (opponents are drawing)": {
-          "value": 79,
+          "value": 82,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
@@ -2913,7 +2912,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine plus a draw-triggered drain, both drawn": {
-          "value": 18,
+          "value": 19,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine plus a draw-triggered drain, both drawn' by turn six",
@@ -3123,7 +3122,7 @@
     "targets": [
       {
         "label": "Table draw engine online (opponents are drawing)",
-        "by_turn_6_pct": 79
+        "by_turn_6_pct": 82
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
@@ -3135,7 +3134,7 @@
       },
       {
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
-        "by_turn_6_pct": 18
+        "by_turn_6_pct": 19
       },
       {
         "label": "Heliod down with an asymmetric card engine",
@@ -3339,16 +3338,15 @@
   },
   "experiments": null,
   "next": [
-    "stale: frame, map, engine — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "stale: frame, engine — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `archangel-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source archangel-v1`",
-    "`artifacts-v1` was proposed as v1.3.0 against V10 and the deck has moved on — v1.3.0 may be taken; re-measure and propose again",
+    "branch `artifacts-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge artifacts-v1 --write`",
     "branch `blue-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source blue-v1`",
     "`splendor-v1` was proposed as v1.2.2 against V10 and the deck has moved on — v1.2.2 may be taken; re-measure and propose again",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
     "open questions routed: diagnose ×2, goldfish ×5, research-strategy ×3, resolve-stack ×6",
-    "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "11 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

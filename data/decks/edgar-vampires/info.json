@@ -14,11 +14,10 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 13,
+    "complete": 14,
     "of": 18,
     "stale": [
       "frame",
-      "map",
       "tutors"
     ],
     "invalid": [
@@ -42,8 +41,8 @@
       "name": "elenda-v1",
       "opened": "2026-09-12",
       "why": "Two death-payoff swaps the pilot called 2026-09-12: Elenda, the Dusk Rose for Gifted Aetherborn, Blade of the Bloodchief for Unbounded Potential. Both turn the nine sacrifice outlets into counters, and Elenda into lifelink tokens on death, doubled by Procession and Mondrak. Nothing dies in the goldfish and the Forge AI does not sacrifice in response, so the objective is a CONTROL at the champion's own kill-by-8 reading.",
-      "state": "PROPOSED · OUTRUN",
-      "state_why": "proposed against V2 and the deck is now VNone — v1.1.1 may be taken; re-measure and propose again",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-16 into the list after VNone",
       "proposal": {
         "at": "2026-09-16",
         "as_version": "v1.1.1",
@@ -4562,12 +4561,12 @@
     "within_target": true
   },
   "paper": {
-    "version": 2,
-    "sha": "8c7a677d2b74",
-    "decklist_sha256": "7ce22fd619b38a4f32416d45d9fe60346564d5707156f52360012071795e7c2b",
-    "built_at": "2026-09-01",
-    "note": "sleeved 2026-09-01",
-    "release": "v1.1.0"
+    "version": 3,
+    "sha": "96c65bb2ccd6",
+    "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+    "built_at": "2026-09-16",
+    "note": "sleeved 2026-09-16 as v1.1.1",
+    "release": "v1.1.1"
   },
   "record": {
     "games": 5,
@@ -5120,9 +5119,8 @@
   },
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
-    "stale: frame, map, tutors — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
-    "`elenda-v1` was proposed as v1.1.1 against V2 and the deck has moved on — v1.1.1 may be taken; re-measure and propose again",
+    "stale: frame, tutors — regenerate against the current list (`/publish-deck` sequences it)",
+    "branch `elenda-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch edgar-vampires merge elenda-v1 --write`",
     "branch `fear-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source fear-v1`",
     "branch `march-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source march-v1`",
     "branch `mound-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mound-v1`",
