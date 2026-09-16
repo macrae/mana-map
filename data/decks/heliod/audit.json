@@ -1,0 +1,1260 @@
+{
+  "archetype": {
+    "archetype": "control",
+    "citation": {
+      "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
+      "rule": "strategy:deckbuilding.archetype-selection"
+    },
+    "matched": "control",
+    "overrides": {
+      "interaction": [
+        12,
+        15
+      ],
+      "mana-base": [
+        37,
+        39
+      ],
+      "sweepers": [
+        5,
+        7
+      ]
+    },
+    "source": "strategic_frame.json"
+  },
+  "axes": [
+    {
+      "axis": "mana-base",
+      "gap": 4,
+      "measured": {
+        "cards": [],
+        "how": "land copies from deck-facts (copies, not entries)",
+        "land_entries": 18,
+        "unit": "copies",
+        "value": 33
+      },
+      "target": {
+        "high": 39,
+        "low": 37,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "mana-sources",
+      "gap": 0,
+      "measured": {
+        "burgess_target": 37,
+        "cards": [
+          "Arcane Signet",
+          "Azorius Signet",
+          "Decanter of Endless Water",
+          "Mind Stone",
+          "Smothering Tithe",
+          "Sol Ring",
+          "Talisman of Progress",
+          "Thought Vessel"
+        ],
+        "colour_identity": [
+          "U",
+          "W"
+        ],
+        "commander_mana_value": 4,
+        "how": "land copies plus persistent producers (ramp:rock, ramp:dork, ramp:land); target 31 + 2 colour(s) + commander mana value 4 = 37",
+        "note": "rituals and Treasure makers are one-shot and are not counted as sources",
+        "persistent_producers": 8,
+        "unit": "copies",
+        "value": 41
+      },
+      "target": {
+        "formula": "burgess",
+        "high": null,
+        "low": 37,
+        "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "taplands",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Irrigated Farmland",
+          "Temple of Enlightenment"
+        ],
+        "conditional_cards": [
+          "Deserted Beach",
+          "Glacial Fortress",
+          "Hallowed Fountain",
+          "Prairie Stream",
+          "Seachrome Coast"
+        ],
+        "conditional_or_shock": 5,
+        "how": "land copies that enter tapped with no condition and no pay-life escape",
+        "note": "mana_analysis.lands.enters_tapped is a substring superset and counts both groups together",
+        "unit": "copies",
+        "value": 2
+      },
+      "target": {
+        "high": 8,
+        "low": null,
+        "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "colour-sources",
+      "gap": 11,
+      "measured": {
+        "cards": [],
+        "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
+        "per_colour": {
+          "U": {
+            "have": 26,
+            "target": 36
+          },
+          "W": {
+            "have": 25,
+            "target": 36
+          }
+        },
+        "short": {
+          "U": 10,
+          "W": 11
+        },
+        "unit": "sources above target (worst colour)",
+        "value": -11
+      },
+      "target": {
+        "formula": "karsten",
+        "high": null,
+        "low": 0,
+        "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%",
+        "source": "strategy:deckbuilding.mana-base.color-sources"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "ramp",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "An Offer You Can't Refuse",
+          "Arcane Signet",
+          "Azorius Signet",
+          "Decanter of Endless Water",
+          "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
+          "Mind Stone",
+          "Pearl Medallion",
+          "Sapphire Medallion",
+          "Smothering Tithe",
+          "Sol Ring",
+          "Talisman of Progress",
+          "Thought Vessel"
+        ],
+        "how": "copies carrying any of ramp:rock, ramp:dork, ramp:ritual, ramp:land, ramp:cost-reduction, ramp:treasure",
+        "unit": "copies",
+        "value": 12
+      },
+      "target": {
+        "high": 12,
+        "low": 10,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "card-advantage",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Alhammarret's Archive",
+          "Arcane Denial",
+          "Archmage's Charm",
+          "Consecrated Sphinx",
+          "Faerie Mastermind",
+          "Horn of Greed",
+          "Mystic Remora",
+          "Prosperity",
+          "Psychosis Crawler",
+          "Rhystic Study",
+          "Scrawling Crawler",
+          "Skyscribing",
+          "Smothering Tithe",
+          "Teferi's Ageless Insight",
+          "Temple Bell",
+          "The Second Doctor"
+        ],
+        "how": "copies carrying any of draw:engine, draw:burst, draw:impulse, draw:wheel, draw:cantrip",
+        "possible_uncounted": [
+          "Braingeyser",
+          "Irrigated Farmland",
+          "Kefnet the Mindful",
+          "Kwain, Itinerant Meddler",
+          "Loran of the Third Path",
+          "Mathemagics",
+          "Mikokoro, Center of the Sea",
+          "Mind Stone",
+          "Stroke of Genius"
+        ],
+        "unit": "copies",
+        "value": 16
+      },
+      "target": {
+        "high": null,
+        "low": 10,
+        "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
+        "source": "strategy:deckbuilding.ratios"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "interaction",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "An Offer You Can't Refuse",
+          "Arcane Denial",
+          "Archmage's Charm",
+          "Cathar Commando",
+          "Counterspell",
+          "Cyclonic Rift",
+          "Disenchant",
+          "Dovin's Veto",
+          "Fierce Guardianship",
+          "Force of Negation",
+          "Path to Exile",
+          "Swan Song",
+          "Swords to Plowshares",
+          "Walking Ballista"
+        ],
+        "how": "copies carrying any of removal:spot, removal:damage, removal:edict, removal:fight, removal:debuff, removal:bounce, removal:tax, counterspell, hate:graveyard",
+        "interactive_suite_copies": 21,
+        "unit": "copies",
+        "value": 14
+      },
+      "target": {
+        "high": 15,
+        "low": 12,
+        "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\"",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "sweepers",
+      "gap": 3,
+      "measured": {
+        "cards": [
+          "Day of Judgment",
+          "Supreme Verdict"
+        ],
+        "how": "copies carrying any of removal:sweeper",
+        "unit": "copies",
+        "value": 2
+      },
+      "target": {
+        "high": 7,
+        "low": 5,
+        "quote": "wipes \"one or two max\" (Zupke caps at 3)",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "protection",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Guardian of Faith",
+          "Karametra's Blessing",
+          "Kefnet the Mindful",
+          "Lightning Greaves",
+          "Teferi's Protection"
+        ],
+        "how": "copies carrying any of protection:self, protection:granted, protection:fog, protection:redirect",
+        "unit": "copies",
+        "value": 5
+      },
+      "target": {
+        "high": 7,
+        "low": 5,
+        "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards",
+        "source": "strategy:deckbuilding.threat-density"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "threat-density",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Approach of the Second Sun",
+          "Psychosis Crawler",
+          "Scrawling Crawler"
+        ],
+        "how": "copies carrying any of wincon:alt, wincon:drain, wincon:combat",
+        "unit": "copies",
+        "value": 3
+      },
+      "target": {
+        "high": null,
+        "low": 3,
+        "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\"",
+        "source": "strategy:deckbuilding.threat-density"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "creatures",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "front-face creature copies",
+        "unit": "copies",
+        "value": 16
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
+        "source": "strategy:deckbuilding.archetype-selection"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "interaction-breadth",
+      "gap": 2,
+      "measured": {
+        "by_class": {
+          "artifact": 4,
+          "creature": 7,
+          "enchantment": 4,
+          "graveyard": 0,
+          "land": 0
+        },
+        "cards": [
+          "artifact",
+          "creature",
+          "enchantment"
+        ],
+        "how": "oracle-text heuristic over interactive cards; counterspells deliberately excluded — a counter answers a permanent only on the way in",
+        "uncovered": [
+          "graveyard",
+          "land"
+        ],
+        "unit": "classes answered",
+        "value": 3
+      },
+      "target": {
+        "high": null,
+        "low": 5,
+        "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any",
+        "source": "strategy:deckbuilding.interaction-suite"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "consistency",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "goldfish land_drop_hit_rate_by_turn['3']",
+        "keep_first_seven_rate": 0.737,
+        "unit": "rate",
+        "value": 0.868
+      },
+      "target": {
+        "high": null,
+        "low": 0.74,
+        "quote": "had 26% miss the turn-3 land drop with no mana source at all",
+        "source": "strategy:deckbuilding.mana-base"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "curve",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "deck-facts curve (nonland entries)",
+        "mana_value_8_plus": 1,
+        "nonland_entries": 67,
+        "three_drops": 18,
+        "two_drops": 22,
+        "unit": "modal mana value",
+        "value": 2
+      },
+      "target": {
+        "formula": "modal-two",
+        "high": null,
+        "low": null,
+        "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+",
+        "source": "strategy:deckbuilding.curve"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "power",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "drivers": [
+          "game_changers",
+          "combo_content"
+        ],
+        "floor_name": "Optimized",
+        "game_changers": [
+          "Consecrated Sphinx",
+          "Cyclonic Rift",
+          "Enlightened Tutor",
+          "Fierce Guardianship",
+          "Mystical Tutor",
+          "Rhystic Study",
+          "Smothering Tithe",
+          "Teferi's Protection"
+        ],
+        "how": "bracket_report.json",
+        "unit": "bracket floor",
+        "value": 4
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "Contents give a floor, never a verdict.",
+        "source": "strategy:deckbuilding.power-level"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "tutors",
+      "gap": 0,
+      "measured": {
+        "cards": [
+          "Drift of Phantasms",
+          "Enlightened Tutor",
+          "Long-Term Plans",
+          "Mystical Tutor"
+        ],
+        "how": "copies carrying tutor:unrestricted or tutor:narrow",
+        "unit": "copies",
+        "value": 4
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "aggro 26-32 creatures / 5-6 removal / 34-36 lands, control 12-15 removal / 5-7 wipes / 37-39 lands, combo 4-8 tutors and 4-6 protection, Voltron 12-16 equipment and auras",
+        "source": "strategy:deckbuilding.archetype-selection"
+      },
+      "verdict": "informational"
+    }
+  ],
+  "commander": [
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+  ],
+  "counts": {
+    "copies": 100,
+    "entries": 85,
+    "land_copies": 33,
+    "lands": 18,
+    "legendary": 11,
+    "legendary_lands": 3,
+    "legendary_permanents": 11,
+    "nonland": 67,
+    "nonlegendary": 74
+  },
+  "dead_searches": [],
+  "decklist_sha256_prefix": "f1d4a650b93f",
+  "engine": {
+    "available": true,
+    "redundancy_citation": {
+      "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
+      "rule": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    "single_points_of_failure": [],
+    "targets": [
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Howling Mine",
+              "Font of Mythos",
+              "Kami of the Crescent Moon",
+              "Dictate of Kruphix",
+              "Temple Bell",
+              "Mikokoro, Center of the Sea",
+              "Kwain, Itinerant Meddler",
+              "Loran of the Third Path",
+              "Scrawling Crawler",
+              "The Second Doctor",
+              "Horn of Greed"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.67,
+              "opening_seven": 0.574
+            },
+            "shared_axes": [
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "threat:body",
+              "utility:activated",
+              "draw:engine"
+            ],
+            "size": 11,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Table draw engine online (opponents are drawing)",
+        "measured": {
+          "assembled_rate": 0.921,
+          "assembled_rate_assisted": 0.971,
+          "by_turn_6_rate": 0.822,
+          "by_turn_6_rate_assisted": 0.906,
+          "mean_turn": 2.499
+        },
+        "thinnest_size": 11
+      },
+      {
+        "commander_gated": true,
+        "components": [
+          {
+            "cards": [
+              "Arcane Signet",
+              "Azorius Signet",
+              "Decanter of Endless Water",
+              "Sol Ring",
+              "Talisman of Progress",
+              "Thought Vessel"
+            ],
+            "modal_role": "ramp:rock",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.444,
+              "opening_seven": 0.364
+            },
+            "shared_axes": [
+              "ramp"
+            ],
+            "shared_roles": [
+              "ramp:rock",
+              "utility:activated"
+            ],
+            "size": 6,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
+        "measured": {
+          "assembled_rate": 0.741,
+          "assembled_rate_assisted": 0.886,
+          "by_turn_6_rate": 0.561,
+          "by_turn_6_rate_assisted": 0.703,
+          "mean_turn": 4.87
+        },
+        "thinnest_size": 6
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Psychosis Crawler",
+              "Scrawling Crawler"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [],
+              "by_combo_line_total": 0,
+              "by_role": [
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 40,
+                  "game_changer": false,
+                  "name": "Skullclamp",
+                  "signature": "draw:engine",
+                  "type_line": "Artifact — Equipment"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 76,
+                  "game_changer": false,
+                  "name": "Esper Sentinel",
+                  "signature": "draw:engine",
+                  "type_line": "Artifact Creature — Human Soldier"
+                },
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 257,
+                  "game_changer": false,
+                  "name": "Archmage Emeritus",
+                  "signature": "draw:engine",
+                  "type_line": "Creature — Human Wizard"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 343,
+                  "game_changer": false,
+                  "name": "Kindred Discovery",
+                  "signature": "draw:engine",
+                  "type_line": "Enchantment"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 370,
+                  "game_changer": false,
+                  "name": "Vanquisher's Banner",
+                  "signature": "draw:engine",
+                  "type_line": "Artifact"
+                },
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 423,
+                  "game_changer": false,
+                  "name": "Bident of Thassa",
+                  "signature": "draw:engine",
+                  "type_line": "Legendary Enchantment Artifact"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 425,
+                  "game_changer": false,
+                  "name": "Welcoming Vampire",
+                  "signature": "draw:engine",
+                  "type_line": "Creature — Vampire"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 453,
+                  "game_changer": false,
+                  "name": "Sram, Senior Edificer",
+                  "signature": "draw:engine",
+                  "type_line": "Legendary Creature — Dwarf Advisor"
+                }
+              ],
+              "by_role_total": 391,
+              "note": null,
+              "role_signature": "draw:engine",
+              "role_signature_kind": "role"
+            },
+            "modal_role": "draw:engine",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.174,
+              "opening_seven": 0.137
+            },
+            "shared_axes": [
+              "threat-density",
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "draw:engine",
+              "threat:body",
+              "wincon:drain"
+            ],
+            "size": 2,
+            "thin": true,
+            "thinnest": true
+          }
+        ],
+        "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
+        "measured": {
+          "assembled_rate": 0.36,
+          "assembled_rate_assisted": 0.73,
+          "by_turn_6_rate": 0.249,
+          "by_turn_6_rate_assisted": 0.557,
+          "mean_turn": 4.261
+        },
+        "thinnest_size": 2
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Howling Mine",
+              "Font of Mythos",
+              "Kami of the Crescent Moon",
+              "Dictate of Kruphix",
+              "Temple Bell",
+              "Mikokoro, Center of the Sea",
+              "Kwain, Itinerant Meddler",
+              "Loran of the Third Path",
+              "The Second Doctor",
+              "Horn of Greed"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.633,
+              "opening_seven": 0.537
+            },
+            "shared_axes": [
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "threat:body",
+              "utility:activated",
+              "draw:engine"
+            ],
+            "size": 10,
+            "thin": false,
+            "thinnest": false
+          },
+          {
+            "cards": [
+              "Psychosis Crawler",
+              "Scrawling Crawler"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [
+                {
+                  "cards": [
+                    "Mind Over Matter",
+                    "Temple Bell"
+                  ],
+                  "name": "Mind Over Matter",
+                  "popularity": 2123,
+                  "produces": [
+                    "Infinite looting",
+                    "Infinite self-discard triggers",
+                    "Infinite draw triggers",
+                    "Near-infinite card draw for each opponent",
+                    "Near-infinite draw triggers for each opponent"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Temple Bell",
+                    "Clock of Omens",
+                    "Smothering Tithe"
+                  ],
+                  "name": "Clock of Omens",
+                  "popularity": 195,
+                  "produces": [
+                    "Infinite card draw for all players",
+                    "Infinite draw triggers for all players",
+                    "Near-infinite tapped Treasure tokens"
+                  ],
+                  "status": "needs a stack scenario"
+                }
+              ],
+              "by_combo_line_total": 2,
+              "by_role": [
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 40,
+                  "game_changer": false,
+                  "name": "Skullclamp",
+                  "signature": "draw:engine",
+                  "type_line": "Artifact — Equipment"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 76,
+                  "game_changer": false,
+                  "name": "Esper Sentinel",
+                  "signature": "draw:engine",
+                  "type_line": "Artifact Creature — Human Soldier"
+                },
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 257,
+                  "game_changer": false,
+                  "name": "Archmage Emeritus",
+                  "signature": "draw:engine",
+                  "type_line": "Creature — Human Wizard"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 343,
+                  "game_changer": false,
+                  "name": "Kindred Discovery",
+                  "signature": "draw:engine",
+                  "type_line": "Enchantment"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 370,
+                  "game_changer": false,
+                  "name": "Vanquisher's Banner",
+                  "signature": "draw:engine",
+                  "type_line": "Artifact"
+                },
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 423,
+                  "game_changer": false,
+                  "name": "Bident of Thassa",
+                  "signature": "draw:engine",
+                  "type_line": "Legendary Enchantment Artifact"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 425,
+                  "game_changer": false,
+                  "name": "Welcoming Vampire",
+                  "signature": "draw:engine",
+                  "type_line": "Creature — Vampire"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 453,
+                  "game_changer": false,
+                  "name": "Sram, Senior Edificer",
+                  "signature": "draw:engine",
+                  "type_line": "Legendary Creature — Dwarf Advisor"
+                }
+              ],
+              "by_role_total": 391,
+              "note": null,
+              "role_signature": "draw:engine",
+              "role_signature_kind": "role"
+            },
+            "modal_role": "draw:engine",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.174,
+              "opening_seven": 0.137
+            },
+            "shared_axes": [
+              "threat-density",
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "draw:engine",
+              "threat:body",
+              "wincon:drain"
+            ],
+            "size": 2,
+            "thin": true,
+            "thinnest": true
+          }
+        ],
+        "label": "Table draw engine plus a draw-triggered drain, both drawn",
+        "measured": {
+          "assembled_rate": 0.32,
+          "assembled_rate_assisted": 0.686,
+          "by_turn_6_rate": 0.189,
+          "by_turn_6_rate_assisted": 0.465,
+          "mean_turn": 5.269
+        },
+        "thinnest_size": 2
+      },
+      {
+        "commander_gated": true,
+        "components": [
+          {
+            "cards": [
+              "Rhystic Study",
+              "Mystic Remora",
+              "Smothering Tithe",
+              "Consecrated Sphinx",
+              "Teferi's Ageless Insight",
+              "Alhammarret's Archive",
+              "Faerie Mastermind"
+            ],
+            "modal_role": "draw:engine",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.498,
+              "opening_seven": 0.412
+            },
+            "shared_axes": [
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "draw:engine",
+              "draw:burst",
+              "threat:body"
+            ],
+            "size": 7,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Heliod down with an asymmetric card engine",
+        "measured": {
+          "assembled_rate": 0.787,
+          "assembled_rate_assisted": 0.901,
+          "by_turn_6_rate": 0.583,
+          "by_turn_6_rate_assisted": 0.718,
+          "mean_turn": 5.224
+        },
+        "thinnest_size": 7
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Fierce Guardianship",
+              "Force of Negation",
+              "Swan Song",
+              "An Offer You Can't Refuse",
+              "Counterspell",
+              "Dovin's Veto",
+              "Arcane Denial",
+              "Archmage's Charm"
+            ],
+            "modal_role": "counterspell",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.547,
+              "opening_seven": 0.456
+            },
+            "shared_axes": [
+              "interaction",
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "counterspell"
+            ],
+            "size": 8,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Free or cheap interaction held",
+        "measured": {
+          "assembled_rate": 0.839,
+          "assembled_rate_assisted": 0.937,
+          "by_turn_6_rate": 0.705,
+          "by_turn_6_rate_assisted": 0.834,
+          "mean_turn": 3.022
+        },
+        "thinnest_size": 8
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Secure the Wastes",
+              "Walking Ballista",
+              "Hangarback Walker",
+              "Stroke of Genius",
+              "Braingeyser",
+              "Prosperity",
+              "Skyscribing",
+              "Mathemagics"
+            ],
+            "modal_role": "threat:tokens",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.547,
+              "opening_seven": 0.456
+            },
+            "shared_axes": [
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "threat:tokens",
+              "buff:counters",
+              "threat:body"
+            ],
+            "size": 8,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "An X-spell finisher drawn (the mana sink the discount pays for)",
+        "measured": {
+          "assembled_rate": 0.792,
+          "assembled_rate_assisted": 0.908,
+          "by_turn_6_rate": 0.671,
+          "by_turn_6_rate_assisted": 0.812,
+          "mean_turn": 2.854
+        },
+        "thinnest_size": 8
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Approach of the Second Sun",
+              "Mystical Tutor",
+              "Long-Term Plans"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [],
+              "by_combo_line_total": 0,
+              "by_role": [
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 38,
+                  "game_changer": false,
+                  "name": "Solemn Simulacrum",
+                  "signature": "tutors",
+                  "type_line": "Artifact Creature — Golem"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 123,
+                  "game_changer": false,
+                  "name": "Wayfarer's Bauble",
+                  "signature": "tutors",
+                  "type_line": "Artifact"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 238,
+                  "game_changer": false,
+                  "name": "Sword of the Animist",
+                  "signature": "tutors",
+                  "type_line": "Legendary Artifact — Equipment"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 378,
+                  "game_changer": false,
+                  "name": "Land Tax",
+                  "signature": "tutors",
+                  "type_line": "Enchantment"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 455,
+                  "game_changer": false,
+                  "name": "Expedition Map",
+                  "signature": "tutors",
+                  "type_line": "Artifact"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 477,
+                  "game_changer": false,
+                  "name": "Fabricate",
+                  "signature": "tutors",
+                  "type_line": "Sorcery"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 482,
+                  "game_changer": false,
+                  "name": "Burnished Hart",
+                  "signature": "tutors",
+                  "type_line": "Artifact Creature — Elk"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 634,
+                  "game_changer": false,
+                  "name": "Knight of the White Orchid",
+                  "signature": "tutors",
+                  "type_line": "Creature — Human Knight"
+                }
+              ],
+              "by_role_total": 250,
+              "note": null,
+              "role_signature": "tutors",
+              "role_signature_kind": "axis"
+            },
+            "modal_role": "wincon:alt",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.251,
+              "opening_seven": 0.199
+            },
+            "shared_axes": [
+              "tutors"
+            ],
+            "shared_roles": [],
+            "size": 3,
+            "thin": true,
+            "thinnest": true
+          }
+        ],
+        "label": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
+        "measured": {
+          "assembled_rate": 0.495,
+          "assembled_rate_assisted": 0.671,
+          "by_turn_6_rate": 0.358,
+          "by_turn_6_rate_assisted": 0.508,
+          "mean_turn": 4.022
+        },
+        "thinnest_size": 3
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Guardian of Faith",
+              "Karametra's Blessing",
+              "Lightning Greaves",
+              "Teferi's Protection",
+              "Leyline of Anticipation"
+            ],
+            "modal_role": "protection:self",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.386,
+              "opening_seven": 0.312
+            },
+            "shared_axes": [
+              "protection"
+            ],
+            "shared_roles": [
+              "protection:self"
+            ],
+            "size": 5,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "Heliod protected, or a flash grant that does not need him",
+        "measured": {
+          "assembled_rate": 0.683,
+          "assembled_rate_assisted": 0.869,
+          "by_turn_6_rate": 0.531,
+          "by_turn_6_rate_assisted": 0.731,
+          "mean_turn": 3.59
+        },
+        "thinnest_size": 5
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Kefnet the Mindful",
+              "Drift of Phantasms",
+              "Consecrated Sphinx",
+              "Faerie Mastermind",
+              "Archangel of Tithes"
+            ],
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.386,
+              "opening_seven": 0.312
+            },
+            "shared_axes": [
+              "card-advantage"
+            ],
+            "shared_roles": [
+              "threat:body",
+              "draw:engine"
+            ],
+            "size": 5,
+            "thin": false,
+            "thinnest": true
+          }
+        ],
+        "label": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
+        "measured": {
+          "assembled_rate": 0.68,
+          "assembled_rate_assisted": 0.838,
+          "by_turn_6_rate": 0.529,
+          "by_turn_6_rate_assisted": 0.691,
+          "mean_turn": 3.597
+        },
+        "thinnest_size": 5
+      },
+      {
+        "commander_gated": false,
+        "components": [
+          {
+            "cards": [
+              "Propaganda",
+              "Ghostly Prison",
+              "Archangel of Tithes"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [],
+              "by_combo_line_total": 0,
+              "by_role": [],
+              "by_role_total": 0,
+              "note": "No role and no axis is shared by two or more members, so this component has no signature and only the combo route ran. That is the normal case for a named combo half.",
+              "role_signature": null,
+              "role_signature_kind": null
+            },
+            "modal_role": "threat:body",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.251,
+              "opening_seven": 0.199
+            },
+            "shared_axes": [],
+            "shared_roles": [],
+            "size": 3,
+            "thin": true,
+            "thinnest": true
+          }
+        ],
+        "label": "A taxer down (attackers pay, flying or not)",
+        "measured": {
+          "assembled_rate": 0.496,
+          "assembled_rate_assisted": 0.791,
+          "by_turn_6_rate": 0.357,
+          "by_turn_6_rate_assisted": 0.623,
+          "mean_turn": 4.008
+        },
+        "thinnest_size": 3
+      }
+    ]
+  },
+  "freshness": {
+    "artifacts": {
+      "bracket_report.json": {
+        "current": null,
+        "decklist_sha256": null,
+        "present": true
+      },
+      "goldfish_metrics.json": {
+        "current": true,
+        "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+        "present": true
+      },
+      "mana_analysis.json": {
+        "current": true,
+        "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+        "present": true
+      }
+    },
+    "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+    "recon": {
+      "as_of": null,
+      "present": false
+    }
+  },
+  "notes": [
+    "Under target: mana-base, colour-sources, sweepers, interaction-breadth.",
+    "Permanent class(es) with no answer detected: graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
+    "Each target is an AND of ORs and the schema cannot express the UNION of several independent kills — a deck with four kills has no single assembled_rate here, and averaging them would be inventing a number the simulation never measured.",
+    "Roles come from card_roles.json, which classifies 85.9% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
+  ],
+  "roles": {
+    "coverage": 0.8588,
+    "no_role": [
+      "Braingeyser",
+      "Dictate of Kruphix",
+      "Dig Through Time",
+      "Font of Mythos",
+      "Ghostly Prison",
+      "Howling Mine",
+      "Leyline of Anticipation",
+      "Mathemagics",
+      "Propaganda",
+      "Reliquary Tower",
+      "Skycloud Expanse",
+      "Stroke of Genius"
+    ]
+  },
+  "slug": "heliod"
+}
