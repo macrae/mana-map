@@ -163,6 +163,66 @@ the largest single lever left.** No games have been logged.
 
 ## Open work
 
+### THE PUNCHLIST (2026-09-16) — the pilot's to-dos, consolidated
+
+Three sources, one list: the quiver inventory the pilot wrote on 2026-09-16 (six
+slots, five locked, the sixth open), the two debriefs from Alex's on 2026-09-15
+(Edgar 005, Gishath 002), and what this bench left open on 2026-09-15. Each item
+names the loop that settles it. **Piloting** items are the pilot's, not the bench's.
+
+**Piloting (both current-list games reached a winning board and lost on the close)**
+- [ ] Swing lethal when it is on the board — the split alpha on Gishath, the held swing on Edgar. `/author-decision` on both spots (`worth_a_spread` in both debriefs).
+- [ ] Once a planeswalker is online, keep blockers up and protect the engine before pushing tempo (Edgar 005).
+- [ ] In wipe-heavy games, holding creatures back through the waves is a line, not an accident (Gishath 002) → `/research-strategy` topic.
+
+**Shabraz / sharknado — the sixth slot's closest candidate**
+- [ ] Fill out the turn-one-to-four game plan: both commanders are six-drops, online turn five with a dork or rock, and the deck must not pass until then. The tuning question. → `deck-info`, then a branch aimed at an early-turn OUTPUT axis.
+- [ ] Order the 66 (`scratchpad/sharknado-manapool-buy.txt`, ~$200); proxy the 15 owned elsewhere; find the 19 already in `Shabraz Parts`.
+- [ ] Nine of those 19 are also listed in another box — say which are the same cardboard.
+- [ ] Three `/resolve-stack` questions left: the Blood crack (Brallin, Ivora, Shabraz halves), the partner keyword grants, the cycling question's Shabraz / Drake Haven half.
+- [ ] `goldfish`: is the deck under-built on Blood (Ivora the only source)? Related: Ceremonial Knife was cut on a goldfish that cannot see combat Blood — measure it in FORGE (`knife-v1`, `experiment` vs standard-v3) before treating the cut as settled.
+- [ ] `/research-strategy`: what the deck loses by giving three opponents a fresh seven every wheel (the symmetric-wheel question).
+- [ ] `land_colors` / `mana_analysis.json` defect: Gleaming Bastion and the three type-gated lands credited as unconditional blue sources; blue on-curve is an upper bound. Corpus sweep in the same commit. (PLAN #17's class.)
+- [ ] Forge cannot pilot this deck (holds and pitches the wheels); its one run is a floor. Check `engine_casts` under the Experimental profile once, then mark the Forge line unpilotable rather than stale.
+
+**Gishath (commander dependence high)**
+- [ ] Green pip / green-source audit: 22 of 36 sources for 55 pips, on-curve green 0.639 — the screw reads structural. `mana-analysis`, `mana-fit`, then a `landbase` branch.
+- [ ] Reconsider the enrage package — idling for lack of ping sources. `/diagnose-deck` (the doctor reads the log).
+- [ ] Add commander protection — repeated tax drains the deck (quiver inventory).
+- [ ] `/resolve-stack`: was the split alpha lethal on Oliver after Alex saves himself?
+- [ ] mana-v1 is PROPOSED as v1.1.0 and waiting on cardboard — fold the green audit into it or supersede it.
+
+**Edgar (commander dependence low; fastest deck)**
+- [ ] Targeted white disruption for Purphoros-style ETB decks — `/diagnose-deck`: what in the 99 answers one, and is a swap needed.
+- [ ] Does the protection suite cover a planeswalker, and at what cost to the attack — same diagnosis.
+- [ ] `/research-strategy`: how mid-range aggro sequences against a trigger-racing ETB deck.
+- [ ] `elenda-v1` (Elenda + Blade of the Bloodchief, both in the Vampire Cards box) is OPEN and MERGEABLE; five single-card patches from 09-11 undecided. `net-change`, then propose or close.
+- [ ] Direction stays two lines — go wide, and funnel tokens into a few big vampires; the lifegain/drain infinite stays OUT by decision.
+
+**Heliod (commander dependence high; the one tier-4 deck)**
+- [ ] Colour-distribution audit (`mana-analysis`).
+- [ ] More one-to-three-mana colourless artifacts — they become free casts under the flipped Heliod. `card-search --deck heliod --cmc 3 --identity` on artifacts, then a branch.
+- [ ] Add commander protection (quiver inventory).
+- [ ] `splendor-v1` is PROPOSED as v1.2.2 — waiting on cardboard.
+
+**Ur-Dragon (commander dependence low)**
+- [ ] Maybe revisit a small counterspell count later — the four or five cut were never cast. Low priority; the deck does not want to play that way.
+- [ ] Its engine and POH procedures still name Shivan Reef / Stormcarved Coast after the land swap: `/analyze-engine ur-dragon`, then a `poh-procedures` re-spawn. Three red tests live here.
+
+**Goblin Storm** — untweaked precon, second-fastest. No items.
+
+**The sixth slot — research**
+- [ ] Survey WUR commanders beyond Shabraz for what best augments the five (`commander-search`, `archetypes`).
+- [ ] A proper Golgari graveyard build — "Killa Bees": flying deathtouch swarm with recursion, Wu-Tang themed (a death-shaman commander as RZA, a legendary per Clan member); creatures as a graveyard resource. Criteria for any sixth: wins and hangs at the table, almost certainly blue, probably white, not another bodies-on-board deck.
+- [ ] Still-liked ideas from the failed candidates: flash, and flash-into-blink.
+
+**The bench itself**
+- [ ] The ~54 stacks MISSed by the rulings feed: leave lazy (default) or re-bless in one reasoned commit.
+- [ ] A mechanical rule against positional `open_questions[N]` references from a stack into the engine: three artifacts carry a stale one already.
+- [ ] `docs/agent-cost.md`: fill the resolve/check rows with the four sharknado stacks' measured spawns (59–77k resolver, 51–77k checker) against the radagast baseline.
+- [ ] CI has been red since 2026-09-11 on a heliod `sim-progress` probe that needs gitignored logs; the commit-protocol red on 89d68314 is being let age out.
+
+
 ### OPEN — the swap game (2026-09-12): three staged, four assessed, five Edgar patches undecided
 
 The pilot proposed cards one at a time and the bench answered additive / subtractive /
