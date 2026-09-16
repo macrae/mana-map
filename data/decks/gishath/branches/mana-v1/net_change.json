@@ -125,12 +125,6 @@
    },
    {
     "free": false,
-    "name": "Clifftop Retreat",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Command Tower",
     "state": "in_deck",
     "where": []
@@ -419,34 +413,6 @@
    },
    {
     "free": false,
-    "name": "Sacred Foundry",
-    "state": "elsewhere",
-    "where": [
-     {
-      "apart": false,
-      "kind": "deck",
-      "locked": false,
-      "slug": "sharknado",
-      "status": null
-     },
-     {
-      "apart": true,
-      "kind": "deck",
-      "locked": false,
-      "slug": "sisay",
-      "status": "retired"
-     },
-     {
-      "apart": false,
-      "kind": "deck",
-      "locked": true,
-      "slug": "ur-dragon",
-      "status": null
-     }
-    ]
-   },
-   {
-    "free": false,
     "name": "Savage Order",
     "state": "buy",
     "where": []
@@ -584,6 +550,21 @@
    },
    {
     "free": false,
+    "name": "Verdant Catacombs",
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Green"
+     },
+     {
+      "kind": "box",
+      "name": "Hapatra"
+     }
+    ]
+   },
+   {
+    "free": false,
     "name": "Wakening Sun's Avatar",
     "state": "in_deck",
     "where": []
@@ -640,11 +621,11 @@
    }
   ],
   "counts": {
-   "box": 0,
+   "box": 1,
    "buy": 7,
-   "elsewhere": 4,
+   "elsewhere": 3,
    "free": 3,
-   "in_deck": 78
+   "in_deck": 77
   },
   "counts_are": "distinct names",
   "diff": {
@@ -655,24 +636,25 @@
     "Chandra's Ignition",
     "Hunting Velociraptor",
     "Molten Echoes",
-    "Sacred Foundry",
     "Savage Order",
     "Savage Stomp",
     "Stomping Ground",
     "Temple Garden",
     "Up the Beanstalk",
+    "Verdant Catacombs",
     "Wooded Foothills",
     "World War Hulk"
    ],
    "base_names": 89,
    "base_size": 100,
-   "names": 92,
+   "names": 91,
    "out": [
     "Alpine Meadow",
     "Arctic Treeline",
     "Austere Command",
     "Beast Within",
     "Boros Signet",
+    "Clifftop Retreat",
     "Commercial District",
     "Enlarge",
     "Kodama's Reach",
@@ -684,7 +666,7 @@
   },
   "free": 3,
   "mergeable": false,
-  "owned_but_elsewhere": 4,
+  "owned_but_elsewhere": 3,
   "proxy": false,
   "slug": "gishath",
   "unsourced": [
@@ -693,7 +675,6 @@
    "Chandra's Ignition",
    "Hunting Velociraptor",
    "Molten Echoes",
-   "Sacred Foundry",
    "Savage Order",
    "Savage Stomp",
    "Stomping Ground",
@@ -708,6 +689,7 @@
     "Arctic Treeline",
     "Arid Mesa",
     "Bloodstained Mire",
+    "Clifftop Retreat",
     "Commercial District",
     "Forest",
     "Mountain",
@@ -715,27 +697,28 @@
     "Sacred Foundry",
     "Stomping Ground",
     "Temple Garden",
+    "Verdant Catacombs",
     "Wooded Foothills"
    ],
    "class": "land",
-   "headline": "6 land swap(s)",
+   "headline": "9 land swap(s)",
    "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
  "branch": "mana-v1",
  "changes": {
-  "count": 6,
+  "count": 9,
   "diff": {
    "base_names": 89,
    "base_size": 100,
    "changed": [
     {
      "cmc": 0,
-     "delta": -1,
+     "delta": 1,
      "from": 7,
      "kind": "land",
      "name": "Forest",
-     "to": 6
+     "to": 8
     },
     {
      "cmc": 0,
@@ -747,20 +730,20 @@
     },
     {
      "cmc": 0,
-     "delta": -1,
+     "delta": -2,
      "from": 3,
      "kind": "land",
      "name": "Plains",
-     "to": 2
+     "to": 1
     }
    ],
    "counts": {
     "in": 14,
-    "in_copies": 14,
+    "in_copies": 15,
     "lands_in": 6,
-    "lands_out": 3,
-    "out": 11,
-    "out_copies": 14,
+    "lands_out": 4,
+    "out": 12,
+    "out_copies": 15,
     "spells_in": 8,
     "spells_out": 8
    },
@@ -869,16 +852,6 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
-     "name": "Sacred Foundry",
-     "pair": "Alpine Meadow",
-     "state": "elsewhere",
-     "type_line": "Land \u2014 Mountain Plains",
-     "why": "an R/W snow tapland for the untapped R/W shock with the Mountain and Plains types Krosan Verge and the fetches search for; tempo only on the tool"
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
      "name": "Stomping Ground",
      "pair": "Commercial District",
      "state": "elsewhere",
@@ -899,6 +872,16 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
+     "name": "Verdant Catacombs",
+     "pair": "Clifftop Retreat",
+     "state": "box",
+     "type_line": "Land",
+     "why": "the green audit: Clifftop Retreat makes R/W only and enters tapped without a Mountain or Plains; Verdant Catacombs is owned, untapped, and finds Temple Garden, Stomping Ground or a Forest \u2014 green every time, and the tapped count drops"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
      "name": "Wooded Foothills",
      "pair": "Forest",
      "state": "elsewhere",
@@ -906,7 +889,7 @@
      "why": "one of seven Forests for a Mountain/Forest fetch; alone: W+1 R+1, on-curve W+2 R+3; six basics remain for Myriad Landscape and the battle lands"
     }
    ],
-   "names": 92,
+   "names": 91,
    "out": [
     {
      "cmc": 2,
@@ -1002,6 +985,15 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
+     "name": "Clifftop Retreat",
+     "pair": "Verdant Catacombs",
+     "type_line": "Land",
+     "why": "the green audit: Clifftop Retreat makes R/W only and enters tapped without a Mountain or Plains; Verdant Catacombs is owned, untapped, and finds Temple Garden, Stomping Ground or a Forest \u2014 green every time, and the tapped count drops"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
      "name": "Commercial District",
      "pair": "Stomping Ground",
      "type_line": "Land \u2014 Mountain Forest",
@@ -1050,13 +1042,31 @@
     "in": "Bloodstained Mire",
     "out": "Mountain",
     "why": "one of four Mountains for a Swamp/Mountain fetch that finds Sacred Foundry or Stomping Ground; alone: W+1 G+1, on-curve W+2 G+3"
+   },
+   {
+    "at": "2026-09-16",
+    "in": "Verdant Catacombs",
+    "out": "Clifftop Retreat",
+    "why": "the green audit: Clifftop Retreat makes R/W only and enters tapped without a Mountain or Plains; Verdant Catacombs is owned, untapped, and finds Temple Garden, Stomping Ground or a Forest \u2014 green every time, and the tapped count drops"
+   },
+   {
+    "at": "2026-09-16",
+    "in": "Forest",
+    "out": "Sacred Foundry",
+    "why": "the green audit (2026-09-16): G is 54.5% of pips on 38% of sources; Sacred Foundry makes no green, sits in no engine stage, and is an unsleeve blocker (ur-dragon) \u2014 a seventh Forest is owned and green"
+   },
+   {
+    "at": "2026-09-16",
+    "in": "Forest",
+    "out": "Plains",
+    "why": "the green audit: W is 22% of pips on 29% of sources and 0.849 on curve with slack; an eighth Forest moves a source from the colour with slack to the colour that binds"
    }
   ],
   "opened": "2026-09-11",
   "spells": [],
   "why": "Mana pass on the proposed v1.1.0 list (cart-v1), 2026-09-11: 35 lands with seven that always enter tapped, one fetch and no shocks, red 16 and green 11 sources short of Karsten targets on double-pip Dinosaurs, lands-only on-curve R 52% G 64%. Three taplands out for three shocks (tempo: always-tapped 7 -> 4; a dual is a dual to the source count) and three basics out for three fetches that reach every shock (colour: R 52 -> 58%, G 64 -> 69%, W 83 -> 87% on the mana tool). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.132 on cart-v1) is the one goldfish row a colour screw shows in."
  },
- "decklist_sha256": "3792ff550a0508848f8773e1b59b93cb3f47063ad7604af91288e2442e304698",
+ "decklist_sha256": "1eb4f6374c8f7ecff8514ef23957a50817cbda770af35fbb7c461804ba3dd88e",
  "definitions": {
   "derived": [
    {
@@ -1171,14 +1181,14 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 14,
+    "delta": 12,
     "gap": [
      -15,
-     -1
+     -3
     ],
     "have": [
      21,
-     21
+     19
     ],
     "target": [
      36,
@@ -1219,14 +1229,14 @@
    },
    {
     "colour": "R",
-    "delta": 1,
+    "delta": 0,
     "gap": [
      -15,
-     -14
+     -15
     ],
     "have": [
      21,
-     22
+     21
     ],
     "target": [
      36,
@@ -1235,14 +1245,14 @@
    },
    {
     "colour": "G",
-    "delta": 1,
+    "delta": 4,
     "gap": [
      -10,
-     -9
+     -6
     ],
     "have": [
      26,
-     27
+     30
     ],
     "target": [
      36,
@@ -1264,7 +1274,7 @@
     "recurring_per_tap_cycle": 1
    },
    {
-    "one_time_on_entry": 10,
+    "one_time_on_entry": 9,
     "recurring_per_tap_cycle": 1
    }
   ],
@@ -1276,11 +1286,11 @@
    ],
    "G": [
     0.742,
-    0.764
+    0.822
    ],
    "R": [
     0.61,
-    0.639
+    0.61
    ],
    "U": [
     null,
@@ -1288,7 +1298,7 @@
    ],
    "W": [
     0.61,
-    0.895
+    0.866
    ]
   }
  },
@@ -1299,18 +1309,18 @@
   "why": "Mana pass on the proposed v1.1.0 list (cart-v1), 2026-09-11: 35 lands with seven that always enter tapped, one fetch and no shocks, red 16 and green 11 sources short of Karsten targets on double-pip Dinosaurs, lands-only on-curve R 52% G 64%. Three taplands out for three shocks (tempo: always-tapped 7 -> 4; a dual is a dual to the source count) and three basics out for three fetches that reach every shock (colour: R 52 -> 58%, G 64 -> 69%, W 83 -> 87% on the mana tool). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.132 on cart-v1) is the one goldfish row a colour screw shows in."
  },
  "objective_grade": {
-  "reading": 0.1369,
-  "shortfall": 0.0269,
+  "reading": 0.1398,
+  "shortfall": 0.0298,
   "state": "not met"
  },
  "recommendation": {
-  "because": "The objective is not met. Damage @t10, board power @t6, killed by t6 and extra cards by t8 improved anyway, which is a different branch's case.",
+  "because": "The objective is not met. Damage @t10, board power @t6, killed by t6, missed drop by t5 and extra cards by t8 improved anyway, which is a different branch's case.",
   "bill": {
-   "box": 0,
+   "box": 1,
    "buy": 7,
-   "elsewhere": 4,
+   "elsewhere": 3,
    "free": 3,
-   "in_deck": 78
+   "in_deck": 77
   },
   "cost": {
    "buy": 7,
@@ -1324,11 +1334,11 @@
     "World War Hulk"
    ],
    "counts": {
-    "box": 0,
+    "box": 1,
     "buy": 7,
-    "elsewhere": 4,
+    "elsewhere": 3,
     "free": 3,
-    "in_deck": 78
+    "in_deck": 77
    },
    "free_to_raid": [
     {
@@ -1366,44 +1376,36 @@
     },
     {
      "decks": [
-      "sharknado",
-      "ur-dragon"
-     ],
-     "name": "Sacred Foundry"
-    },
-    {
-     "decks": [
       "ur-dragon"
      ],
      "name": "Stomping Ground"
     }
    ],
-   "owned": 85,
-   "reads_as": "7 to buy; 4 to pull out of a deck that is still together; 3 sitting in a retired or broken-down deck, which cost nothing; 85 of 92 already owned",
-   "total": 92
+   "owned": 84,
+   "reads_as": "7 to buy; 3 to pull out of a deck that is still together; 3 sitting in a retired or broken-down deck, which cost nothing; 84 of 91 already owned",
+   "total": 91
   },
   "fell": [
-   "stall, 2 in a row",
-   "hand can act by T3"
+   "stall, 2 in a row"
   ],
   "no_call": [
    "hoard @T10",
    "hoard @T6",
    "killed by T10",
-   "missed drop by T5",
    "mulliganed",
-   "interaction affordable @T6"
+   "interaction affordable @T6",
+   "hand can act by T3"
   ],
   "notes": [],
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "44.87 -> 49.06, a change of +4.19 (+9%)",
+    "reads_as": "44.87 -> 48.91, a change of +4.04 (+9%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "14.06 -> 14.90, a change of +0.84 (+6%)",
+    "reads_as": "14.06 -> 14.96, a change of +0.90 (+6%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
@@ -1412,8 +1414,13 @@
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
+    "measure": "missed drop by T5",
+    "reads_as": "48 games in 100 -> 45 in 100, a swing of 2 games per 100",
+    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
+   },
+   {
     "measure": "extra cards by T8",
-    "reads_as": "1.33 -> 1.86, a change of +0.53 (+40%)",
+    "reads_as": "1.33 -> 1.87, a change of +0.54 (+41%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
@@ -1425,13 +1432,7 @@
     "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
-    "detail": "83 games in 100 -> 82 in 100, a swing of 2 games per 100",
-    "kind": "paid",
-    "what": "hand can act by T3",
-    "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
-   },
-   {
-    "detail": "the largest is missed drop by T5 at -0.015 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hoard @T10 at +0.032 against an MDE of 0.045. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1442,6 +1443,7 @@
      "Arctic Treeline",
      "Arid Mesa",
      "Bloodstained Mire",
+     "Clifftop Retreat",
      "Commercial District",
      "Forest",
      "Mountain",
@@ -1449,11 +1451,12 @@
      "Sacred Foundry",
      "Stomping Ground",
      "Temple Garden",
+     "Verdant Catacombs",
      "Wooded Foothills"
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
-    "what": "6 land swap(s)",
+    "what": "9 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -1467,21 +1470,22 @@
    "damage @T10",
    "board power @T6",
    "killed by T6",
+   "missed drop by T5",
    "extra cards by T8"
   ],
   "state": "do not merge"
  },
  "slug": "gishath",
- "staged": 6,
+ "staged": 9,
  "table": [
   {
    "better_is": "higher",
-   "branch": 0.5312,
+   "branch": 0.5559,
    "champion": 0.5237,
-   "delta": 0.0075,
-   "mde": 0.0438,
+   "delta": 0.0322,
+   "mde": 0.0454,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.044 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.032 is smaller than the 0.045 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1490,12 +1494,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0492,
+   "branch": 0.0558,
    "champion": 0.0497,
-   "delta": -0.0005,
-   "mde": 0.0102,
+   "delta": 0.0061,
+   "mde": 0.0108,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.010 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.011 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1504,12 +1508,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 49.0567,
+   "branch": 48.9092,
    "champion": 44.87,
-   "delta": 4.1867,
-   "mde": 1.3492,
+   "delta": 4.0392,
+   "mde": 1.3494,
    "measure": "damage @T10",
-   "reads_as": "44.87 -> 49.06, a change of +4.19 (+9%)",
+   "reads_as": "44.87 -> 48.91, a change of +4.04 (+9%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "better",
@@ -1518,12 +1522,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 14.8994,
+   "branch": 14.9598,
    "champion": 14.0581,
-   "delta": 0.8413,
-   "mde": 0.5663,
+   "delta": 0.9017,
+   "mde": 0.5569,
    "measure": "board power @T6",
-   "reads_as": "14.06 -> 14.90, a change of +0.84 (+6%)",
+   "reads_as": "14.06 -> 14.96, a change of +0.90 (+6%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1532,9 +1536,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0816,
+   "branch": 0.0808,
    "champion": 0.0592,
-   "delta": 0.0224,
+   "delta": 0.0216,
    "mde": 0.0108,
    "measure": "killed by T6",
    "reads_as": "6 games in 100 -> 8 in 100, a swing of 2 games per 100",
@@ -1546,12 +1550,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9028,
+   "branch": 0.906,
    "champion": 0.9081,
-   "delta": -0.0053,
-   "mde": 0.0117,
+   "delta": -0.0021,
+   "mde": 0.0116,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.012 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.012 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1560,10 +1564,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.1369,
+   "branch": 0.1398,
    "champion": 0.1065,
-   "delta": 0.0304,
-   "mde": 0.0136,
+   "delta": 0.0333,
+   "mde": 0.0137,
    "measure": "stall, 2 in a row",
    "reads_as": "11 games in 100 -> 14 in 100, a swing of 3 games per 100",
    "scale": null,
@@ -1574,26 +1578,26 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4625,
+   "branch": 0.4545,
    "champion": 0.4779,
-   "delta": -0.0154,
+   "delta": -0.0234,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.015 is smaller than the 0.020 this run can resolve",
+   "reads_as": "48 games in 100 -> 45 in 100, a swing of 2 games per 100",
    "scale": null,
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
   },
   {
    "better_is": "lower",
-   "branch": 0.2284,
+   "branch": 0.2247,
    "champion": 0.2293,
-   "delta": -0.0009,
+   "delta": -0.0046,
    "mde": 0.0167,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1602,12 +1606,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.8603,
+   "branch": 1.8745,
    "champion": 1.3332,
-   "delta": 0.5271,
-   "mde": 0.1391,
+   "delta": 0.5413,
+   "mde": 0.1381,
    "measure": "extra cards by T8",
-   "reads_as": "1.33 -> 1.86, a change of +0.53 (+40%)",
+   "reads_as": "1.33 -> 1.87, a change of +0.54 (+41%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1616,12 +1620,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3939,
+   "branch": 0.4015,
    "champion": 0.3982,
-   "delta": -0.0043,
-   "mde": 0.0209,
+   "delta": 0.0033,
+   "mde": 0.021,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.021 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.021 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1630,15 +1634,15 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.817,
+   "branch": 0.8252,
    "champion": 0.8344,
-   "delta": -0.0174,
-   "mde": 0.0153,
+   "delta": -0.0092,
+   "mde": 0.015,
    "measure": "hand can act by T3",
-   "reads_as": "83 games in 100 -> 82 in 100, a swing of 2 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.015 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
   }
