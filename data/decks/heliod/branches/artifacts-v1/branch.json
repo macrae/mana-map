@@ -1,0 +1,67 @@
+{
+ "slug": "heliod",
+ "branch": "artifacts-v1",
+ "v": 3,
+ "opened": "2026-09-16",
+ "why": "the artifact half of the 2026-09-16 audit: Heliod's discount makes a generic-cost artifact a free cast, and three owned ones fit the plan. Isochron Scepter (thirteen instants at two or less to imprint), Horn of Greed (a gift that pays on the opponents' turns, where the flash deck spends the discount), Mind Stone (a free rock on two and a card later). The goldfish reads none of the five cards involved \u2014 every profile is zero and the candidates sweep returned one reading for all three \u2014 so the objective is a CONTROL and the case is the argued one in each swap's why.",
+ "objective": {
+  "axis": "damage_8",
+  "op": ">=",
+  "value": 0.0,
+  "why": "the artifact half of the 2026-09-16 audit: Heliod's discount makes a generic-cost artifact a free cast, and three owned ones fit the plan. Isochron Scepter (thirteen instants at two or less to imprint), Horn of Greed (a gift that pays on the opponents' turns, where the flash deck spends the discount), Mind Stone (a free rock on two and a card later). The goldfish reads none of the five cards involved \u2014 every profile is zero and the candidates sweep returned one reading for all three \u2014 so the objective is a CONTROL and the case is the argued one in each swap's why."
+ },
+ "commits": [
+  {
+   "at": "2026-09-16",
+   "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+   "message": "the artifact half of the colour audit: Isochron Scepter, Horn of Greed and Mind Stone in for Mikaeus, Forced Fruition and Angelic Wall \u2014 three free casts under the discount, all owned"
+  }
+ ],
+ "base_version": 10,
+ "staged": [
+  {
+   "at": "2026-09-16",
+   "out": "Mikaeus, the Lunarch",
+   "in": "Isochron Scepter",
+   "strength": null,
+   "why": "thirteen instants at two mana or less are imprint targets \u2014 Counterspell, Swan Song, Dovin's Veto, Arcane Denial, An Offer You Can't Refuse, Cyclonic Rift, Swords, Path, Disenchant, both Tutors, Karametra's Blessing, Secure the Wastes \u2014 so it is a counterspell every turn for {2} without spending a card; the Scepter is a free cast under the discount, its activation is not. Mikaeus is the doctor's cut: in none of the eleven engine components, no wincon role, an X-sink whose payoff is counters on walls"
+  },
+  {
+   "at": "2026-09-16",
+   "out": "Forced Fruition",
+   "in": "Horn of Greed",
+   "strength": null,
+   "why": "a swap inside the gift group, so its 0.92 assembly by T10 does not move. Horn draws each player a card on a land drop: one discount for you on each opponent's turn, where the flash deck casts, and a card for you on yours; three mana, generic, a free cast. Fruition is six mana and seven cards to an opponent per spell, and the doctor's finding stands: nothing in the 99 punishes a full hand any more"
+  },
+  {
+   "at": "2026-09-16",
+   "out": "Angelic Wall",
+   "in": "Mind Stone",
+   "strength": null,
+   "why": "ramp is 11 of a 10-12 band, so one more rock stays in band; Mind Stone is a free cast on turn two under the discount and a card when mana stops mattering, which here is early. Angelic Wall is the doctor's cut: the one blocker whose text is exhausted by blocking, and the taxers plus twelve counterspells are the defence"
+  }
+ ],
+ "proposal": {
+  "at": "2026-09-16",
+  "as_version": "v1.3.0",
+  "why": "three owned generic-cost artifacts that the flipped Heliod casts for free, for three cards the doctor had already named as cuts: Isochron Scepter for Mikaeus (thirteen imprint targets), Horn of Greed for Forced Fruition (a gift that pays on the opponents' turns, for one that hands them seven cards a spell), Mind Stone for Angelic Wall (ramp stays in band). A minor version: three swaps that change what the deck does, on a control objective because the goldfish reads none of the six cards",
+  "base_version": 10,
+  "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+  "accepted_on": {
+   "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+   "state": "merge",
+   "objective": {
+    "axis": "damage_8",
+    "op": ">=",
+    "value": 0.0,
+    "why": "the artifact half of the 2026-09-16 audit: Heliod's discount makes a generic-cost artifact a free cast, and three owned ones fit the plan. Isochron Scepter (thirteen instants at two or less to imprint), Horn of Greed (a gift that pays on the opponents' turns, where the flash deck spends the discount), Mind Stone (a free rock on two and a card later). The goldfish reads none of the five cards involved \u2014 every profile is zero and the candidates sweep returned one reading for all three \u2014 so the objective is a CONTROL and the case is the argued one in each swap's why."
+   },
+   "grade": "met",
+   "reading": 3.853,
+   "harness": {
+    "iterations": 10000,
+    "seed": 20260826
+   }
+  }
+ }
+}
