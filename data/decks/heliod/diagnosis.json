@@ -1,892 +1,1042 @@
 {
- "slug": "heliod",
- "as_of_decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
- "archetype": "Azorius flash control whose commander is a converter, not a threat: the table is gifted cards, Heliod, the Warped Eclipse turns those draws into a per-spell discount that lives on the opponents' turns, and the game is won by the second cast of Approach of the Second Sun. deck-audit reads `control` from strategic_frame.json and the slot budget agrees (interaction 14 of 12-15, protection 5 of 5-7, ramp 12 of 10-12, card-advantage 16 of >=10); the conversion is a one-finisher combo deck's, and every count below is read against that.",
- "verdict": "The deck survives and does not convert: on the v1.2.1 Forge run it placed second 35 times of 94 ranked games and first 11, won 20 of 99 decided (0.202, ci95 [0.135, 0.292]) against the table's null of 0.181, and every one of the 12 games that reached a second Approach cast won. What limits it is the hub: the back face that makes a seven-drop cast twice affordable existed in 35 of 120 games (0.292, ci95 [0.218, 0.378]) against a goldfish assembly of 0.741, and the five-card protection axis reads AT by count while two of its five do not protect Heliod at all and the only constant piece among them, Lightning Greaves, does nothing against a wrath — in a deck whose own two sweepers destroy him and were cast 70 times in 120 games; the three that do answer removal are single-use instants and a flash creature, and Forge cast two of the three zero times. Protection is the axis that binds; win-condition access (three cards, 0.495) is second; lands and colours are real shortfalls that are not costing the games the evidence can see.",
- "axes": [
-  {
-   "axis": "mana-base",
-   "verdict": "weakness",
-   "measured": {
-    "value": 33
-   },
-   "reading": "Four under the control band, and the deck runs four no-maximum-hand-size effects (Decanter of Endless Water, Reliquary Tower, The Second Doctor, Thought Vessel) of which one is a colourless land. Consistency reads 0.868 so this is not what loses games, but Reliquary Tower is the cheapest slot in the 99 to give back to a coloured source.",
-   "citations": [
+  "slug": "heliod",
+  "as_of_decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+  "archetype": "Azorius flash control whose commander is a converter, not a threat: the table is gifted cards, Heliod, the Warped Eclipse turns those draws into a per-spell discount that lives on the opponents' turns, and the game is won by the second cast of Approach of the Second Sun. deck-audit reads `control` from strategic_frame.json and the slot budget agrees (interaction 14 of 12-15, protection 5 of 5-7, ramp 12 of 10-12, card-advantage 16 of >=10); the conversion is a one-finisher combo deck's, and every count below is read against that.",
+  "verdict": "The deck survives and does not convert: on the v1.2.1 Forge run it placed second 35 times of 94 ranked games and first 11, won 20 of 99 decided (0.202, ci95 [0.135, 0.292]) against the table's null of 0.181, and every one of the 12 games that reached a second Approach cast won. What limits it is the hub: the back face that makes a seven-drop cast twice affordable existed in 35 of 120 games (0.292, ci95 [0.218, 0.378]) against a goldfish assembly of 0.741, and the five-card protection axis reads AT by count while two of its five do not protect Heliod at all and the only constant piece among them, Lightning Greaves, does nothing against a wrath — in a deck whose own two sweepers destroy him and were cast 70 times in 120 games; the three that do answer removal are single-use instants and a flash creature, and Forge cast two of the three zero times. Protection is the axis that binds; win-condition access (three cards, 0.495) is second; lands and colours are real shortfalls that are not costing the games the evidence can see.",
+  "axes": [
     {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+      "axis": "mana-base",
+      "verdict": "weakness",
+      "measured": {
+        "value": 33
+      },
+      "reading": "Four under the control band, and the deck runs four no-maximum-hand-size effects (Decanter of Endless Water, Reliquary Tower, The Second Doctor, Thought Vessel) of which one is a colourless land. Consistency reads 0.868 so this is not what loses games, but Reliquary Tower is the cheapest slot in the 99 to give back to a coloured source.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        },
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    }
-   ]
-  },
-  {
-   "axis": "mana-sources",
-   "verdict": "adequate",
-   "measured": {
-    "value": 41
-   },
-   "reading": "Lands plus eight persistent rocks meet the Burgess figure of 37 exactly the way the formula intends: the rocks pay the four lands the deck does not run.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
-    }
-   ]
-  },
-  {
-   "axis": "taplands",
-   "verdict": "strength",
-   "measured": {
-    "value": 2
-   },
-   "reading": "Two unconditional taplands (Irrigated Farmland, Temple of Enlightenment) and five conditional-or-shock; a slow flash deck has room for more, which is why the two land adds below are untapped duals rather than more basics.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
-    }
-   ]
-  },
-  {
-   "axis": "colour-sources",
-   "verdict": "weakness",
-   "measured": {
-    "value": -11
-   },
-   "reading": "U 26 and W 25 against a Karsten target of 36 each; mana-analysis puts on-curve castability from lands alone at W 0.61 and U 0.639. The commander is {2}{W}{W}, Archangel of Tithes {1}{W}{W}{W}, Archmage's Charm {U}{U}{U}: the pips are real. Every land add below produces both colours.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-    }
-   ]
-  },
-  {
-   "axis": "ramp",
-   "verdict": "adequate",
-   "measured": {
-    "value": 12
-   },
-   "reading": "At the top of the band. The audit counts Heliod himself and An Offer You Can't Refuse here (cost-reduction and Treasure roles); the six rocks in the flip component are the ones that actually pay {3}{U/P}.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    }
-   ]
-  },
-  {
-   "axis": "card-advantage",
-   "verdict": "strength",
-   "measured": {
-    "value": 16
-   },
-   "reading": "Six over the floor and the Forge run agrees the engine turns: heliod fired 41.93 triggers a game (ci95 [34.38, 49.49]). Card flow is not the problem and no add below buys more of it.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "Value is not a win."
-    }
-   ]
-  },
-  {
-   "axis": "interaction",
-   "verdict": "adequate",
-   "measured": {
-    "value": 14
-   },
-   "reading": "Inside Walser's band, with eight counterspells; Forge's interaction_cast was 0.79 a game (ci95 [0.58, 1.01]). The suite is wide enough; what it cannot do is protect the commander from a wrath, which is a different budget.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "Answers to answers are a separate budget"
-    }
-   ]
-  },
-  {
-   "axis": "sweepers",
-   "verdict": "weakness",
-   "measured": {
-    "value": 2
-   },
-   "reading": "Two against the control override of 5-7, and both — Day of Judgment and Supreme Verdict — read 'Destroy all creatures', which includes an enchantment creature commander. Forge cast them 37 and 33 times in 120 games; log 002 records the pilot killing his own Heliod with Supreme Verdict. The shortfall is real but the fix is a wrath that spares him, not a third copy of the same.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    }
-   ]
-  },
-  {
-   "axis": "protection",
-   "verdict": "weakness",
-   "measured": {
-    "value": 5
-   },
-   "reading": "AT by count and the count is wrong for this deck. Reading the five: Kefnet the Mindful's indestructible is his own; Lightning Greaves' shroud stops a wrath not at all and stops Karametra's Blessing and Guardian of Faith from targeting Heliod (a stack question below); Karametra's Blessing, Guardian of Faith and Teferi's Protection are the three that answer removal, and Forge cast Guardian and Teferi's Protection 0 times in 120 games, so the run that 'vindicated' the suite never tested it. Log 001 lost Heliod to a countered counter plus a redirected Swords; the pilot's stated want is protection.",
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+      "axis": "mana-sources",
+      "verdict": "adequate",
+      "measured": {
+        "value": 41
+      },
+      "reading": "Lands plus eight persistent rocks meet the Burgess figure of 37 exactly the way the formula intends: the rocks pay the four lands the deck does not run.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "lands = 31 + colours in the commander's identity + the commander's mana value, counting 0-mana rocks as lands"
+        }
+      ]
     },
     {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
-    }
-   ]
-  },
-  {
-   "axis": "threat-density",
-   "verdict": "weakness",
-   "measured": {
-    "value": 3
-   },
-   "reading": "Three on paper; one converts. 12 of the run's 20 wins were won_by \"effect of 'Approach of the Second Sun'\" and Psychosis Crawler was cast 0 times in 120 games and 0 in 40 on the standard-v3 run. This is the ceiling build the corpus warns about, and the pilot's constraint against two-card infinites is why it stays one finisher.",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "a four-player seat wins ~25% of games by default, so conversion is where decks differ"
+      "axis": "taplands",
+      "verdict": "strength",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Two unconditional taplands (Irrigated Farmland, Temple of Enlightenment) and five conditional-or-shock; a slow flash deck has room for more, which is why the two land adds below are untapped duals rather than more basics.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
+        }
+      ]
     },
     {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "the ceiling build runs one spectacular finisher and loses when it's answered"
-    }
-   ]
-  },
-  {
-   "axis": "creatures",
-   "verdict": "adequate",
-   "measured": {
-    "value": 16
-   },
-   "reading": "Informational. Sixteen bodies for a control list, and the Forge table killed it by damage 61 times in 74 eliminations — giada-angels 43 of them — so the bodies are blockers first.",
-   "citations": [
+      "axis": "colour-sources",
+      "verdict": "weakness",
+      "measured": {
+        "value": -11
+      },
+      "reading": "U 26 and W 25 against a Karsten target of 36 each; mana-analysis puts on-curve castability from lands alone at W 0.61 and U 0.639. The commander is {2}{W}{W}, Archangel of Tithes {1}{W}{W}{W}, Archmage's Charm {U}{U}{U}: the pips are real. Every land add below produces both colours.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.archetype-selection",
-     "quote": "control 12-15 removal / 5-7 wipes / 37-39 lands"
-    }
-   ]
-  },
-  {
-   "axis": "interaction-breadth",
-   "verdict": "weakness",
-   "measured": {
-    "value": 3
-   },
-   "reading": "Graveyard and land unanswered, and reading all 85 entries does not rescue it: only Dig Through Time, Force of Negation and Heliod's front face mention a graveyard, none as an answer, and no card in the 99 targets a land. The standard-v3 pod seats jarad-graveyard, which is why the graveyard half is bought below and the land half is not.",
-   "citations": [
+      "axis": "ramp",
+      "verdict": "adequate",
+      "measured": {
+        "value": 12
+      },
+      "reading": "At the top of the band. The audit counts Heliod himself and An Offer You Can't Refuse here (cost-reduction and Treasure roles); the six rocks in the flip component are the ones that actually pay {3}{U/P}.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-    }
-   ]
-  },
-  {
-   "axis": "consistency",
-   "verdict": "strength",
-   "measured": {
-    "value": 0.868
-   },
-   "reading": "Well over the 0.74 floor with 73.7% of opening sevens kept. The turn-3 drop is fine; the count and colour of the sources still are not, which is the two axes above.",
-   "citations": [
+      "axis": "card-advantage",
+      "verdict": "strength",
+      "measured": {
+        "value": 16
+      },
+      "reading": "Six over the floor and the Forge run agrees the engine turns: heliod fired 41.93 triggers a game (ci95 [34.38, 49.49]). Card flow is not the problem and no add below buys more of it.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
-    }
-   ]
-  },
-  {
-   "axis": "curve",
-   "verdict": "adequate",
-   "measured": {
-    "value": 2
-   },
-   "reading": "Modal two with 22 two-drops and 18 three-drops over 67 nonland entries and one card at 8+. A flash deck's curve; nothing to move.",
-   "citations": [
+      "axis": "interaction",
+      "verdict": "adequate",
+      "measured": {
+        "value": 14
+      },
+      "reading": "Inside Walser's band, with eight counterspells; Forge's interaction_cast was 0.79 a game (ci95 [0.58, 1.01]). The suite is wide enough; what it cannot do is protect the commander from a wrath, which is a different budget.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Answers to answers are a separate budget"
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.curve",
-     "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
-    }
-   ]
-  },
-  {
-   "axis": "power",
-   "verdict": "adequate",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Floor 4 on eight Game Changers and one bracket-3 line (Approach + Mystical Tutor, stack 002 passes). Every add below recomputes to floor 4 including Farewell, which is a ninth Game Changer on a floor already set by eight.",
-   "citations": [
+      "axis": "sweepers",
+      "verdict": "weakness",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Two against the control override of 5-7, and both — Day of Judgment and Supreme Verdict — read 'Destroy all creatures', which includes an enchantment creature commander. Forge cast them 37 and 33 times in 120 games; log 002 records the pilot killing his own Heliod with Supreme Verdict. The shortfall is real but the fix is a wrath that spares him, not a third copy of the same.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.power-level",
-     "quote": "Contents give a floor, never a verdict."
-    }
-   ]
-  },
-  {
-   "axis": "tutors",
-   "verdict": "adequate",
-   "measured": {
-    "value": 4
-   },
-   "reading": "Four, of which two can find a sorcery (Mystical Tutor to the top, Long-Term Plans third from the top) and Drift of Phantasms' transmute reaches mana value 3, which is Long-Term Plans; none puts Approach in hand the turn it is found. That gap is the second prescription.",
-   "citations": [
+      "axis": "protection",
+      "verdict": "weakness",
+      "measured": {
+        "value": 5
+      },
+      "reading": "AT by count and the count is wrong for this deck. Reading the five: Kefnet the Mindful's indestructible is his own; Lightning Greaves' shroud stops a wrath not at all and stops Karametra's Blessing and Guardian of Faith from targeting Heliod (a stack question below); Karametra's Blessing, Guardian of Faith and Teferi's Protection are the three that answer removal, and Forge cast Guardian and Teferi's Protection 0 times in 120 games, so the run that 'vindicated' the suite never tested it. Log 001 lost Heliod to a countered counter plus a redirected Swords; the pilot's stated want is protection.",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+        },
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
+        }
+      ]
+    },
     {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "tutor only the irreplaceable"
+      "axis": "threat-density",
+      "verdict": "weakness",
+      "measured": {
+        "value": 3
+      },
+      "reading": "Three on paper; one converts. 12 of the run's 20 wins were won_by \"effect of 'Approach of the Second Sun'\" and Psychosis Crawler was cast 0 times in 120 games and 0 in 40 on the standard-v3 run. This is the ceiling build the corpus warns about, and the pilot's constraint against two-card infinites is why it stays one finisher.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "a four-player seat wins ~25% of games by default, so conversion is where decks differ"
+        },
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "the ceiling build runs one spectacular finisher and loses when it's answered"
+        }
+      ]
+    },
+    {
+      "axis": "creatures",
+      "verdict": "adequate",
+      "measured": {
+        "value": 16
+      },
+      "reading": "Informational. Sixteen bodies for a control list, and the Forge table killed it by damage 61 times in 74 eliminations — giada-angels 43 of them — so the bodies are blockers first.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.archetype-selection",
+          "quote": "control 12-15 removal / 5-7 wipes / 37-39 lands"
+        }
+      ]
+    },
+    {
+      "axis": "interaction-breadth",
+      "verdict": "weakness",
+      "measured": {
+        "value": 3
+      },
+      "reading": "Graveyard and land unanswered, and reading all 85 entries does not rescue it: only Dig Through Time, Force of Negation and Heliod's front face mention a graveyard, none as an answer, and no card in the 99 targets a land. The standard-v3 pod seats jarad-graveyard, which is why the graveyard half is bought below and the land half is not.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
+        }
+      ]
+    },
+    {
+      "axis": "consistency",
+      "verdict": "strength",
+      "measured": {
+        "value": 0.868
+      },
+      "reading": "Well over the 0.74 floor with 73.7% of opening sevens kept. The turn-3 drop is fine; the count and colour of the sources still are not, which is the two axes above.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+        }
+      ]
+    },
+    {
+      "axis": "curve",
+      "verdict": "adequate",
+      "measured": {
+        "value": 2
+      },
+      "reading": "Modal two with 22 two-drops and 18 three-drops over 67 nonland entries and one card at 8+. A flash deck's curve; nothing to move.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.curve",
+          "quote": "puts the modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck and only ~1.5 cards at mana value 8+"
+        }
+      ]
+    },
+    {
+      "axis": "power",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Floor 4 on eight Game Changers and one bracket-3 line (Approach + Mystical Tutor, stack 002 passes). Every add below recomputes to floor 4 including Farewell, which is a ninth Game Changer on a floor already set by eight.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
+        }
+      ]
+    },
+    {
+      "axis": "tutors",
+      "verdict": "adequate",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Four, of which two can find a sorcery (Mystical Tutor to the top, Long-Term Plans third from the top) and Drift of Phantasms' transmute reaches mana value 3, which is Long-Term Plans; none puts Approach in hand the turn it is found. That gap is the second prescription.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "tutor only the irreplaceable"
+        }
+      ]
     }
-   ]
-  }
- ],
- "engine": {
-  "declared": "Gift the table cards, flip Heliod so their draws discount your spells on their turns, hold counters, and cast Approach of the Second Sun twice; goldfish_targets.json declares eleven groups, none of which measures the actual win (Approach in hand plus seven mana on two separate turns).",
-  "components": [
-   {
-    "role": "ignition",
-    "have": [
-     "Howling Mine",
-     "Font of Mythos",
-     "Kami of the Crescent Moon",
-     "Dictate of Kruphix",
-     "Temple Bell",
-     "Mikokoro, Center of the Sea",
-     "Kwain, Itinerant Meddler",
-     "Loran of the Third Path",
-     "Scrawling Crawler",
-     "The Second Doctor",
-     "Horn of Greed"
-    ],
-    "count": 11,
-    "thinnest": false,
-    "measured_rate": 0.921,
-    "reading": "The gift: 0.921 assembled, 0.822 by turn six, mean turn 2.499, 0.574 in an opener. Deepest group in the file and the one a slot comes out of most cheaply — the audit prices ten cards at 0.537."
-   },
-   {
-    "role": "mana",
-    "have": [
-     "Arcane Signet",
-     "Azorius Signet",
-     "Decanter of Endless Water",
-     "Sol Ring",
-     "Talisman of Progress",
-     "Thought Vessel"
-    ],
-    "count": 6,
-    "thinnest": false,
-    "measured_rate": 0.741,
-    "reading": "Heliod plus the mana to flip him: 0.741 by turn ten, 0.561 by turn six, mean turn 4.87 with no opponents. Forge: resolved in 68 of 120 games (0.567, ci95 [0.477, 0.652]), transformed in 35 (0.292, ci95 [0.218, 0.378]), first flip at mean global turn 37.74. The gap between 0.741 and 0.292 is the deck's real problem and it is not mana."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Psychosis Crawler",
-     "Scrawling Crawler"
-    ],
-    "count": 2,
-    "thinnest": true,
-    "measured_rate": 0.36,
-    "reading": "The declared thinnest group, 0.36 assembled and 0.137 in an opener, and the one whose thinness costs least: on the v1.2.1 standard run no elimination was attributed to our seat by life loss (per the previous diagnosis), and Psychosis Crawler has no cast line in 160 Forge games."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Howling Mine",
-     "Font of Mythos",
-     "Kami of the Crescent Moon",
-     "Dictate of Kruphix",
-     "Temple Bell",
-     "Mikokoro, Center of the Sea",
-     "Kwain, Itinerant Meddler",
-     "Loran of the Third Path",
-     "The Second Doctor",
-     "Horn of Greed",
-     "Psychosis Crawler",
-     "Scrawling Crawler"
-    ],
-    "count": 2,
-    "thinnest": true,
-    "measured_rate": 0.32,
-    "reading": "Gift plus drain, both drawn: 0.32, gated by the two-card drain half. Not prescribed against — the drain is not how this deck wins."
-   },
-   {
-    "role": "piece",
-    "have": [
-     "Rhystic Study",
-     "Mystic Remora",
-     "Smothering Tithe",
-     "Consecrated Sphinx",
-     "Teferi's Ageless Insight",
-     "Alhammarret's Archive",
-     "Faerie Mastermind"
-    ],
-    "count": 7,
-    "thinnest": false,
-    "measured_rate": 0.787,
-    "reading": "The asymmetry layer with Heliod down: 0.787, 0.583 by turn six. The right kind of card and enough of them."
-   },
-   {
-    "role": "protection",
-    "have": [
-     "Fierce Guardianship",
-     "Force of Negation",
-     "Swan Song",
-     "An Offer You Can't Refuse",
-     "Counterspell",
-     "Dovin's Veto",
-     "Arcane Denial",
-     "Archmage's Charm"
-    ],
-    "count": 8,
-    "thinnest": false,
-    "measured_rate": 0.839,
-    "reading": "Counters held: 0.839, 0.705 by turn six, mean turn 3.022. A counter answers a wrath on the way in and a Swords in a stack war only if it wins the war; log 001 is the game where it did not."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Secure the Wastes",
-     "Walking Ballista",
-     "Hangarback Walker",
-     "Stroke of Genius",
-     "Braingeyser",
-     "Prosperity",
-     "Skyscribing",
-     "Mathemagics"
-    ],
-    "count": 8,
-    "thinnest": false,
-    "measured_rate": 0.792,
-    "reading": "An X-spell drawn: 0.792. Whether X is chosen before or after Heliod's reduction applies is an open stack question, and so is the line that matters more — an X-draw aimed at opponents on their end step as the discount for Approach itself."
-   },
-   {
-    "role": "payoff",
-    "have": [
-     "Approach of the Second Sun",
-     "Mystical Tutor",
-     "Long-Term Plans"
-    ],
-    "count": 3,
-    "thinnest": false,
-    "measured_rate": 0.495,
-    "reading": "Win-condition access: 0.495 assembled, 0.358 by turn six, 0.199 in an opener. engine.json counts 39 Approach casts in 27 of 120 Forge games and exactly 12 second casts, all 12 wins. The distance from first cast to second is the game."
-   },
-   {
-    "role": "protection",
-    "have": [
-     "Guardian of Faith",
-     "Karametra's Blessing",
-     "Lightning Greaves",
-     "Teferi's Protection",
-     "Leyline of Anticipation"
-    ],
-    "count": 5,
-    "thinnest": false,
-    "measured_rate": 0.683,
-    "reading": "Heliod protected or a flash grant without him: 0.683, 0.531 by turn six. Leyline protects nothing and duplicates only the flash half of the converter; Greaves' shroud is one of the deck's own open rules questions; Forge never cast Guardian of Faith or Teferi's Protection, so the run cannot speak to this group."
-   },
-   {
-    "role": "piece",
-    "have": [
-     "Kefnet the Mindful",
-     "Drift of Phantasms",
-     "Consecrated Sphinx",
-     "Faerie Mastermind",
-     "Archangel of Tithes"
-    ],
-    "count": 5,
-    "thinnest": false,
-    "measured_rate": 0.68,
-    "reading": "A body that blocks a flier: 0.68, and 43 of 61 damage eliminations came from giada-angels. Kefnet blocks only at seven cards in hand; the other four block unconditionally."
-   },
-   {
-    "role": "piece",
-    "have": [
-     "Propaganda",
-     "Ghostly Prison",
-     "Archangel of Tithes"
-    ],
-    "count": 3,
-    "thinnest": false,
-    "measured_rate": 0.496,
-    "reading": "A taxer down: 0.496, 0.357 by turn six, 0.199 in an opener. Thin, and the least reliable defensive group; not prescribed against here because the Forge run could not detect the fort moving anything (eliminations 74 of 120 in both v1.0.0 and v1.2.1 runs)."
-   }
   ],
-  "single_points_of_failure": [
-   {
-    "component": "Heliod, the Warped Eclipse (the back face)",
-    "why": "Every commander_gated group and the entire discount thesis run through one permanent that reaches the battlefield in 0.292 of Forge games, that the deck's own two sweepers destroy, and that two of the five protection slots do not cover. Log 001 is the failure mode at a real table: a countered counter, then removal redirected onto him.",
-    "closers": [
-     "Mithril Coat",
-     "Swiftfoot Boots",
-     "Flawless Maneuver",
-     "Time Wipe"
+  "engine": {
+    "declared": "Gift the table cards, flip Heliod so their draws discount your spells on their turns, hold counters, and cast Approach of the Second Sun twice; goldfish_targets.json declares eleven groups, none of which measures the actual win (Approach in hand plus seven mana on two separate turns).",
+    "components": [
+      {
+        "role": "ignition",
+        "have": [
+          "Howling Mine",
+          "Font of Mythos",
+          "Kami of the Crescent Moon",
+          "Dictate of Kruphix",
+          "Temple Bell",
+          "Mikokoro, Center of the Sea",
+          "Kwain, Itinerant Meddler",
+          "Loran of the Third Path",
+          "Scrawling Crawler",
+          "The Second Doctor",
+          "Horn of Greed"
+        ],
+        "count": 11,
+        "thinnest": false,
+        "measured_rate": 0.921,
+        "reading": "The gift: 0.921 assembled, 0.822 by turn six, mean turn 2.499, 0.574 in an opener. Deepest group in the file and the one a slot comes out of most cheaply — the audit prices ten cards at 0.537."
+      },
+      {
+        "role": "mana",
+        "have": [
+          "Arcane Signet",
+          "Azorius Signet",
+          "Decanter of Endless Water",
+          "Sol Ring",
+          "Talisman of Progress",
+          "Thought Vessel"
+        ],
+        "count": 6,
+        "thinnest": false,
+        "measured_rate": 0.741,
+        "reading": "Heliod plus the mana to flip him: 0.741 by turn ten, 0.561 by turn six, mean turn 4.87 with no opponents. Forge: resolved in 68 of 120 games (0.567, ci95 [0.477, 0.652]), transformed in 35 (0.292, ci95 [0.218, 0.378]), first flip at mean global turn 37.74. The gap between 0.741 and 0.292 is the deck's real problem and it is not mana."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Psychosis Crawler",
+          "Scrawling Crawler"
+        ],
+        "count": 2,
+        "thinnest": true,
+        "measured_rate": 0.36,
+        "reading": "The declared thinnest group, 0.36 assembled and 0.137 in an opener, and the one whose thinness costs least: on the v1.2.1 standard run no elimination was attributed to our seat by life loss (per the previous diagnosis), and Psychosis Crawler has no cast line in 160 Forge games."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Howling Mine",
+          "Font of Mythos",
+          "Kami of the Crescent Moon",
+          "Dictate of Kruphix",
+          "Temple Bell",
+          "Mikokoro, Center of the Sea",
+          "Kwain, Itinerant Meddler",
+          "Loran of the Third Path",
+          "The Second Doctor",
+          "Horn of Greed",
+          "Psychosis Crawler",
+          "Scrawling Crawler"
+        ],
+        "count": 2,
+        "thinnest": true,
+        "measured_rate": 0.32,
+        "reading": "Gift plus drain, both drawn: 0.32, gated by the two-card drain half. Not prescribed against — the drain is not how this deck wins."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Rhystic Study",
+          "Mystic Remora",
+          "Smothering Tithe",
+          "Consecrated Sphinx",
+          "Teferi's Ageless Insight",
+          "Alhammarret's Archive",
+          "Faerie Mastermind"
+        ],
+        "count": 7,
+        "thinnest": false,
+        "measured_rate": 0.787,
+        "reading": "The asymmetry layer with Heliod down: 0.787, 0.583 by turn six. The right kind of card and enough of them."
+      },
+      {
+        "role": "protection",
+        "have": [
+          "Fierce Guardianship",
+          "Force of Negation",
+          "Swan Song",
+          "An Offer You Can't Refuse",
+          "Counterspell",
+          "Dovin's Veto",
+          "Arcane Denial",
+          "Archmage's Charm"
+        ],
+        "count": 8,
+        "thinnest": false,
+        "measured_rate": 0.839,
+        "reading": "Counters held: 0.839, 0.705 by turn six, mean turn 3.022. A counter answers a wrath on the way in and a Swords in a stack war only if it wins the war; log 001 is the game where it did not."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Secure the Wastes",
+          "Walking Ballista",
+          "Hangarback Walker",
+          "Stroke of Genius",
+          "Braingeyser",
+          "Prosperity",
+          "Skyscribing",
+          "Mathemagics"
+        ],
+        "count": 8,
+        "thinnest": false,
+        "measured_rate": 0.792,
+        "reading": "An X-spell drawn: 0.792. Whether X is chosen before or after Heliod's reduction applies is an open stack question, and so is the line that matters more — an X-draw aimed at opponents on their end step as the discount for Approach itself."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Approach of the Second Sun",
+          "Mystical Tutor",
+          "Long-Term Plans"
+        ],
+        "count": 3,
+        "thinnest": false,
+        "measured_rate": 0.495,
+        "reading": "Win-condition access: 0.495 assembled, 0.358 by turn six, 0.199 in an opener. engine.json counts 39 Approach casts in 27 of 120 Forge games and exactly 12 second casts, all 12 wins. The distance from first cast to second is the game."
+      },
+      {
+        "role": "protection",
+        "have": [
+          "Guardian of Faith",
+          "Karametra's Blessing",
+          "Lightning Greaves",
+          "Teferi's Protection",
+          "Leyline of Anticipation"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "measured_rate": 0.683,
+        "reading": "Heliod protected or a flash grant without him: 0.683, 0.531 by turn six. Leyline protects nothing and duplicates only the flash half of the converter; Greaves' shroud is one of the deck's own open rules questions; Forge never cast Guardian of Faith or Teferi's Protection, so the run cannot speak to this group."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Kefnet the Mindful",
+          "Drift of Phantasms",
+          "Consecrated Sphinx",
+          "Faerie Mastermind",
+          "Archangel of Tithes"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "measured_rate": 0.68,
+        "reading": "A body that blocks a flier: 0.68, and 43 of 61 damage eliminations came from giada-angels. Kefnet blocks only at seven cards in hand; the other four block unconditionally."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Propaganda",
+          "Ghostly Prison",
+          "Archangel of Tithes"
+        ],
+        "count": 3,
+        "thinnest": false,
+        "measured_rate": 0.496,
+        "reading": "A taxer down: 0.496, 0.357 by turn six, 0.199 in an opener. Thin, and the least reliable defensive group; not prescribed against here because the Forge run could not detect the fort moving anything (eliminations 74 of 120 in both v1.0.0 and v1.2.1 runs)."
+      }
     ],
-    "citations": [
-     {
-      "rule": "strategy:multiplayer.commander-insurance",
-      "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
-     },
-     {
-      "rule": "strategy:deckbuilding.archetype-selection",
-      "quote": "built around your commander is not reliant on it. A deck whose only payoff sits in the command zone hands three opponents one target"
-     }
+    "single_points_of_failure": [
+      {
+        "component": "Heliod, the Warped Eclipse (the back face)",
+        "why": "Every commander_gated group and the entire discount thesis run through one permanent that reaches the battlefield in 0.292 of Forge games, that the deck's own two sweepers destroy, and that two of the five protection slots do not cover. Log 001 is the failure mode at a real table: a countered counter, then removal redirected onto him.",
+        "closers": [
+          "Mithril Coat",
+          "Swiftfoot Boots",
+          "Flawless Maneuver",
+          "Time Wipe"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:multiplayer.commander-insurance",
+            "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+          },
+          {
+            "rule": "strategy:deckbuilding.archetype-selection",
+            "quote": "built around your commander is not reliant on it. A deck whose only payoff sits in the command zone hands three opponents one target"
+          }
+        ]
+      },
+      {
+        "component": "Approach of the Second Sun",
+        "why": "engine.json's wincon stage names it as the deck's only SPOF: one card, cast twice, and three cards find it. A named card is 7.1% of an opening seven; the three-card group is 0.199.",
+        "closers": [
+          "Solve the Equation",
+          "Personal Tutor"
+        ],
+        "citations": [
+          {
+            "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+            "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
+          },
+          {
+            "rule": "strategy:deckbuilding.threat-density",
+            "quote": "the ceiling build runs one spectacular finisher and loses when it's answered"
+          }
+        ]
+      }
     ]
-   },
-   {
-    "component": "Approach of the Second Sun",
-    "why": "engine.json's wincon stage names it as the deck's only SPOF: one card, cast twice, and three cards find it. A named card is 7.1% of an opening seven; the three-card group is 0.199.",
-    "closers": [
-     "Solve the Equation",
-     "Personal Tutor"
+  },
+  "lean_into": [
+    {
+      "what": "Buy protection in the artifact class, because that is the class the discount makes free.",
+      "why": "Twenty of the 99 have a purely generic mana cost (enumerated from cards.json) and all three v1.3.0 swaps were of that kind; the frame's mechanism is that a generic-cost spell discounts to zero on an opponent's turn. Mithril Coat ({3}, flash) and Swiftfoot Boots ({2}) are protection that costs the deck nothing to deploy in the window the removal arrives.",
+      "evidence": {
+        "generic_cost_cards": 20,
+        "v1_3_0_swaps": [
+          "Isochron Scepter",
+          "Horn of Greed",
+          "Mind Stone"
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
+        },
+        {
+          "rule": "strategy:pivot-point",
+          "quote": "hold the protection spell for the turn you commit, not after"
+        }
+      ]
+    },
+    {
+      "what": "Second place is bought; spend on first.",
+      "why": "Placement over 94 ranked games: 11 first, 35 second, 26 third, 22 fourth, mean position 2.628; eliminated at mean global turn 38.05 (ci95 [36.12, 39.98]) in games averaging 41.3. The survival half works. Every add below is commander insurance, a wrath that spares him, a fourth route to Approach, or a coloured land.",
+      "evidence": {
+        "placement": {
+          "1": 11,
+          "2": 35,
+          "3": 26,
+          "4": 22
+        },
+        "games_ranked": 94
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "a four-player seat wins ~25% of games by default, so conversion is where decks differ"
+        }
+      ]
+    },
+    {
+      "what": "Keep the asymmetry layer exactly as it is.",
+      "why": "Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Teferi's Ageless Insight, Alhammarret's Archive and Faerie Mastermind assemble 0.787 with Heliod down and take from all three seats; heliod's 41.93 triggers a game was the table's highest with no interval overlap.",
+      "evidence": {
+        "assembled_rate": 0.787,
+        "triggers_mean": 41.93,
+        "triggers_ci95": [
+          34.38,
+          49.49
+        ]
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
+        }
+      ]
+    }
+  ],
+  "cut_candidates": [
+    {
+      "card": "Reliquary Tower",
+      "why": "A colourless land in a deck 10 blue and 11 white sources short, whose only text is the fourth copy of an effect three other permanents already carry (Decanter of Endless Water, The Second Doctor, Thought Vessel — every card in the 99 with 'no maximum hand size').",
+      "cost_of_cutting": "One of the four no-maximum-hand-size effects, and the only one that is a land and so survives a Farewell or Austere Command on artifacts. Land count is unchanged only if a land replaces it.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        },
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
+    },
+    {
+      "card": "Lightning Greaves",
+      "why": "Shroud stops the deck's own Karametra's Blessing and Guardian of Faith from targeting Heliod (an open stack question, not asserted here), and does nothing against Day of Judgment, Supreme Verdict or a wrath from across the table. Only as a like-for-like swap for Swiftfoot Boots.",
+      "cost_of_cutting": "The insurance card Forge used most (29 games cast, 41 activations; Karametra's Blessing 9 casts, Leyline 21, Guardian of Faith and Teferi's Protection none) and the deck's only Equipment, at equip {0}; haste is irrelevant to a commander whose flip is a sorcery-speed ability. Boots costs {1} to move.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
+        }
+      ]
+    },
+    {
+      "card": "Day of Judgment",
+      "why": "'Destroy all creatures' kills the converter. Only as a like-for-like swap for Time Wipe, which bounces Heliod first; the deck should not go to one sweeper.",
+      "cost_of_cutting": "The cheaper of the deck's two wraths at {2}{W}{W} against Time Wipe's {2}{W}{W}{U} — one more pip in the colour the deck is 10 sources short of — and Day of Judgment can be cast when Heliod is not on the battlefield with no drawback at all.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        }
+      ]
+    },
+    {
+      "card": "Font of Mythos",
+      "why": "Reading all eleven gift pieces, it is the only one that gives every player two extra cards per draw step; it feeds the table six extra cards a round for {4} with no body, and the audit prices the gift group at 0.574 in an opener with eleven cards and 0.537 with ten.",
+      "cost_of_cutting": "It is the second-largest single contributor to the number Heliod's discount reads on an opponent's turn (that opponent's draw step plus two), and the gift group drops from 0.574 to 0.537 in an opener. The discount is not modelled anywhere, so this cost has no measured size.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
+    },
+    {
+      "card": "Mathemagics",
+      "why": "Of the five X-draws (Stroke of Genius, Braingeyser, Prosperity, Skyscribing, Mathemagics), the two symmetric ones make three opponents draw per X and the three single-target ones make one; Mathemagics is the single-target one whose cost pays X twice on top of {U}{U}, so at six mana it draws one opponent four cards where Prosperity at the same X draws three opponents four each. For the job an X-draw does here — opponents drawing on their turn so Approach is cheap — it is a single-target card at a double-X price. The taxonomy has no role for it.",
+      "cost_of_cutting": "The highest ceiling in the deck at large X, and the X-spell group goes 8 to 7 (0.792 was measured with it in). If the X-before-or-after-discount stack question resolves in the deck's favour the cut is worse.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
+    },
+    {
+      "card": "Braingeyser",
+      "why": "A sorcery-speed, single-target X-draw in a deck whose discount lives on the opponents' turns; Stroke of Genius is the same effect at instant speed and does not need Heliod's flash grant to be cast in the window.",
+      "cost_of_cutting": "The X-spell group goes 8 to 7 and the fuel stage loses one of its two big self-draws; under the flipped Heliod the sorcery/instant difference disappears, so the cut is only right while the flip rate stays near 0.292.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
+    },
+    {
+      "card": "Kefnet the Mindful",
+      "why": "Counted in two things he does not reliably do: the protection axis (his indestructible is his own, not Heliod's) and the flier-blocker group (he blocks only with seven cards in hand). Of the five protection-tagged cards he is the only one that protects nothing but himself.",
+      "cost_of_cutting": "PAINFUL. A flying indestructible body that survives the deck's own wraths, a {3}{U} draw sink that is on-theme in a deck with four no-maximum-hand-size effects, and a real card at the table: cast in 14 of 40 games and activated 6 times on the standard-v3 run. The flier-blocker group goes 5 to 4 and the protection axis drops under its floor unless a protection card replaces him.",
+      "orphans_stack": [],
+      "difficulty": "painful",
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+        },
+        {
+          "rule": "strategy:deckbuilding.cutting",
+          "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
+        }
+      ]
+    }
+  ],
+  "add_candidates": [
+    {
+      "card": "Mithril Coat",
+      "closes": "protection",
+      "source": "pool",
+      "why": "{3} generic, flash, 'When Mithril Coat enters, attach it to target legendary creature you control. Equipped creature has indestructible.' Cast on the opponent's turn it is discounted, it lands in response to a wrath or a Swords-into-Day-of-Judgment sequence, and indestructible survives both of the deck's own sweepers. It does not stop exile or bounce; say so at the table.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "forge": "Guardian of Faith and Teferi's Protection have no cast line in 120 games; the Coat is a permanent Forge will equip the way it equipped Greaves 41 times"
+      },
+      "natural_cut": "Kefnet the Mindful",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+        },
+        {
+          "rule": "strategy:pivot-point",
+          "quote": "hold the protection spell for the turn you commit, not after"
+        }
+      ]
+    },
+    {
+      "card": "Swiftfoot Boots",
+      "closes": "protection",
+      "source": "pool",
+      "why": "Hexproof rather than shroud: opponents cannot target Heliod and you still can, so Karametra's Blessing and Guardian of Faith stay live on him. {2} generic, so free on an opponent's turn under the flip. A straight upgrade on Greaves for this deck at the price of equip {1}.",
+      "evidence": {
+        "combo_lines_opened": []
+      },
+      "natural_cut": "Lightning Greaves",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
+        }
+      ]
+    },
+    {
+      "card": "Time Wipe",
+      "closes": "sweepers",
+      "source": "pool",
+      "why": "'Return a creature you control to its owner's hand, then destroy all creatures' — the wrath that saves the commander, in exactly this deck's colours. It answers log 002's sequencing error structurally and the sweepers axis moves 2 to 3 if it is added beside Day of Judgment rather than for it.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "forge": "Day of Judgment cast 37 and Supreme Verdict 33 times in 120 games; log 002: 'Supreme Verdict after Heliod was already out. I killed my own commander.'"
+      },
+      "natural_cut": "Day of Judgment",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "preferring asymmetric board wipes"
+        }
+      ]
+    },
+    {
+      "card": "Flawless Maneuver",
+      "closes": "protection",
+      "source": "pool",
+      "why": "Free with a commander on the battlefield, 'Creatures you control gain indestructible until end of turn' — the held response for the turn a wrath resolves, castable with every land tapped for Approach. Instant, so it is the pivot-turn protection the corpus asks for.",
+      "evidence": {
+        "combo_lines_opened": []
+      },
+      "natural_cut": "Mathemagics",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:pivot-point",
+          "quote": "hold the protection spell for the turn you commit, not after"
+        },
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+        }
+      ]
+    },
+    {
+      "card": "Solve the Equation",
+      "closes": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
+      "source": "pool",
+      "why": "{2}{U}: search for an instant or sorcery and put it into your HAND. Approach wins only if cast from hand, so a tutor to hand needs no draw step between finding and casting, unlike Mystical Tutor and Long-Term Plans. It is mana value 3, so Drift of Phantasms' transmute reaches it. The group goes 3 to 4; the redundancy table prices five at 31% of openers against the three-card group's 0.199.",
+      "evidence": {
+        "combo_lines_opened": [
+          {
+            "cards": [
+              "Solve the Equation",
+              "Approach of the Second Sun"
+            ],
+            "status": "needs a stack scenario"
+          }
+        ],
+        "component_size_before": 3,
+        "measured_rate_before": 0.495
+      },
+      "natural_cut": "Braingeyser",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        },
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "tutor only the irreplaceable"
+        }
+      ]
+    },
+    {
+      "card": "Tundra",
+      "closes": "colour-sources (U 26 and W 25 against 36 each)",
+      "source": "pool",
+      "why": "An untapped Plains Island: both short colours gain an unconditional source, Flooded Strand can fetch it, and it satisfies Glacial Fortress and Prairie Stream on entry. Lands 33 to 34 for a spell. Mystic Gate was the alternative and is not listed: its coloured mode costs {W/U} on top of the tap, so mana-analysis would file it under sources.gated beside Skycloud Expanse rather than as an on-curve source.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "sources_before": {
+          "U": 26,
+          "W": 25
+        },
+        "lands_before": 33
+      },
+      "natural_cut": "Font of Mythos",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base.color-sources",
+          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+        },
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        }
+      ]
+    },
+    {
+      "card": "Sea of Clouds",
+      "closes": "colour-sources (U 26 and W 25 against 36 each)",
+      "source": "pool",
+      "why": "'This land enters tapped unless you have two or more opponents' — always untapped in a four-player pod; card_roles.json files it land:tapped, which is the taxonomy reading the sentence rather than the format. Both short colours gain a source and the colourless Reliquary Tower leaves; land count is unchanged.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "sources_before": {
+          "U": 26,
+          "W": 25
+        }
+      },
+      "natural_cut": "Reliquary Tower",
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.mana-base",
+          "quote": "a utility land that can't produce the colour you need is not a source"
+        }
+      ]
+    },
+    {
+      "card": "Farewell",
+      "closes": "sweepers",
+      "source": "pool",
+      "why": "Modal: exile all artifacts, creatures, enchantments, graveyards, any subset. The deck can wipe creatures and graveyards while leaving its own artifact engine — or exile a jarad graveyard without touching a board, which is also what takes interaction-breadth 3 to 4. A Game Changer, but the floor is already 4 on eight of them and recomputes to 4. Sweepers 2 to 3 (4 with Time Wipe beside Day of Judgment).",
+      "evidence": {
+        "combo_lines_opened": []
+      },
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        },
+        {
+          "rule": "strategy:multiplayer.asymmetry",
+          "quote": "preferring asymmetric board wipes"
+        }
+      ]
+    },
+    {
+      "card": "Personal Tutor",
+      "closes": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
+      "source": "pool",
+      "why": "{U}, sorcery on top — a one-mana fifth card in the group that decides first place, not a Game Changer. Ranked below Solve the Equation because it needs a draw step (or a gift trigger) between finding and casting.",
+      "evidence": {
+        "combo_lines_opened": [],
+        "component_size_before": 3,
+        "measured_rate_before": 0.495
+      },
+      "bracket_delta": {
+        "before": 4,
+        "after": 4
+      },
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        }
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "With Heliod, the Warped Eclipse on the battlefield, cast Prosperity (or Skyscribing) for X on an opponent's end step, then Approach of the Second Sun from hand in the same window: what does the second Approach cost, given 'Spells you cast cost {1} less to cast for each card your opponents have drawn this turn', and does the 'cast from your hand' condition survive a flash cast?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "This is the pilot's own 'two or three, not seven' from log 002 and the reason the symmetric X-draws are kept while Mathemagics and Braingeyser are cut. If a five-mana Prosperity makes Approach cost {W}, the X-spell group is the kill's ignition and the mana-base gap stops mattering for the win; if not, the cut list should come from the X-spells instead."
+    },
+    {
+      "question": "While Lightning Greaves is attached to Heliod, can Karametra's Blessing or Guardian of Faith's enters trigger target him, and can the Greaves be moved off at instant speed?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The Greaves-for-Boots swap is priced on the answer being 'no'. If shroud does not bind the pilot's own spells the way this document reads it, Greaves' equip {0} keeps its slot."
+    },
+    {
+      "question": "Time Wipe with Heliod, the Warped Eclipse (transformed) on the battlefield: which face returns to hand, is the flip lost, and can the returned card be cast the same turn under Leyline of Anticipation?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "Time Wipe is bought as the wrath that saves the converter. If the recast lands as the front face the deck pays {2}{W}{W} plus {3}{U/P} to get the discount back, and that cost belongs beside the card."
+    },
+    {
+      "question": "Re-declare 'Win condition access' with Solve the Equation and Personal Tutor and re-measure; and add a group that measures Heliod-protected-from-a-wrath (Guardian of Faith, Karametra's Blessing, Teferi's Protection, Mithril Coat, Flawless Maneuver) separately from targeting protection.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The current protection group counts Leyline of Anticipation (protects nothing) and the audit's axis counts Kefnet (protects himself); neither number is the one this diagnosis prescribes against, and the 0.495 win-access figure is the one the deck page prints."
+    },
+    {
+      "question": "How many protection and tutor slots does a single 'you win the game' sorcery justify in a four-player pod, and what do strong Heliod, the Warped Eclipse lists actually close with?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "strategy.md has no section on alternate win conditions and no deck_recon.json exists; the prescription above sizes protection at +2 net and tutors at +2 by construction-count reasoning, not by a measured rate for this shape of deck."
+    },
+    {
+      "question": "Is the flier-blocker group still worth five slots once Kefnet leaves, or does Mithril Coat on Heliod (a 4/6 indestructible blocker) cover what he covered?",
+      "settled_by": "goldfish",
+      "why_it_matters": "The Kefnet cut is the painful entry and the flier group goes 5 to 4; the Coat makes the commander himself a blocker that survives combat, which no declared group measures."
+    }
+  ],
+  "gaps": [
+    "NO FORGE RUN EXISTS ON v1.3.0. Every table figure here is from run b0f44e4a (v1.2.1, 120 games, standard pod, 2026-09-09) or 4b0e1964 (v1.2.1, 40 games, standard-v3, 2026-09-10); the current list differs by three cards (Isochron Scepter, Horn of Greed, Mind Stone in; Mikaeus, the Lunarch, Forced Fruition, Angelic Wall out) and none of the three has a Forge line. A run on v1.3.0 against standard-v3 at 120+ games is the next measurement; it is not an agent question and no settled_by routes it.",
+    "FORGE CANNOT MEASURE THE PROTECTION SUITE. Guardian of Faith: 0 casts, 6 discards in 120 games; Teferi's Protection: 0 casts; interaction_received 0.17 a game (ci95 [0.10, 0.25]) and 0.10 (ci95 [0.01, 0.19]) on the two runs. The AI neither removes Heliod often nor casts the instants that would save him, so the 'protection is adequate' reading in the previous diagnosis was a floor, not a vindication. The evidence that protection binds is the log (entry 001, one game — an anecdote by the charter's rule), the pilot's stated want, and the deck's own 70 wrath casts in 120 games.",
+    "THE DISCOUNT IS NOT MODELLED. model-coverage lists Heliod's only channel as bodies; every goldfish mana figure is a floor and no artifact on disk has resolved a single discounted cast. The X-draw-into-Approach line in open_questions is the highest-leverage unknown in the deck.",
+    "NO candidate_pool.json AND NO deck_recon.json. Every add above was found with card-search over cards.csv (identity WU, deck's 99 excluded) and checked Commander-legal against the corpus; considering.json on disk is from the Aetherflux Reservoir era and names cards that answer a kill the deck no longer runs — it was read and not used.",
+    "SIX CARDS NEVER CAST IN 120 FORGE GAMES, carried from the previous diagnosis: Azorius Signet, Guardian of Faith, Long-Term Plans, Psychosis Crawler, Skyscribing, Teferi's Protection. Skyscribing and Psychosis Crawler are kept here rather than cut on that evidence, because a card the AI declines is not a card that does not help.",
+    "THE PILOT'S SECOND WANT — more one-to-three-mana colourless artifacts — is served by two of the nine adds (Mithril Coat {3}, Swiftfoot Boots {2}). Soul-Guide Lantern ({1}, hate:graveyard) was examined and dropped: with Farewell in the prescription the validator shows it moves interaction-breadth not at all (Farewell's 'exile all graveyards' already takes it 3 to 4), so it is the cheaper graveyard answer only if Farewell is not bought. A wider artifact sweep was not run because every add must close a named axis and a generic-cost artifact that closes none is a preference.",
+    "THE LAND HALF OF interaction-breadth IS LEFT OPEN. Field of Ruin, Ghost Quarter and Strip Mine are in the pool and would take lands 33 to 34 as well, but the breadth heuristic reads only role-tagged interactive cards and none of the three carries one, so an add that named the axis would fail the validator while doing the thing; and nothing in the two logged games or the two pod runs names a land as the threat."
+  ],
+  "skeptic": {
+    "verdict": "fail",
+    "findings": [
+      {
+        "where": "verdict",
+        "status": "over-claimed",
+        "severity": "high",
+        "note": "'Protection is the axis that binds' is stated as the verdict while gaps[1] concedes its evidence is one log game (001, on V5), the pilot's stated want, and '70 wrath casts'. Re-derived from the b0f44e4a logs (sim/logs/...b0f44e4a.../part-0*.log, 120 games parsed): heliod's own Day of Judgment / Supreme Verdict RESOLVED 56 times, Heliod was on the battlefield at 4 of those resolutions, and 5 of Heliod's 50 battlefield exits are attributable to his own wrath (Supreme Verdict 3, Day of Judgment 2). The 70 figure counts casts, not commander losses. The 0.741 -> 0.292 gap the verdict hangs the hub on decomposes, from the record's games[].per_seat.heliod, into 52 of 120 games where Heliod was never cast (commander_casts 0) and 33 of the 68 resolved games where the AI never activated the flip (44 activations total) -- neither is a protection failure -- and engine.json (critic pass, today) says the flip did not move the win rate: 6/35 flip games (0.171) against 14/85 no-flip (0.165), re-derived here from commander_transformed_turn. A hypothesis the pilot holds is worth testing; a verdict needs a measured mechanism, and the one the verdict names is contradicted by the record it cites."
+      },
+      {
+        "where": "verdict",
+        "status": "contradicts-artifact",
+        "severity": "medium",
+        "note": "'two of its five do not protect Heliod at all' -- deck-audit's five are Guardian of Faith, Karametra's Blessing, Kefnet the Mindful, Lightning Greaves, Teferi's Protection (axes[8].measured.cards). Only Kefnet protects nothing but himself. Greaves' shroud stops targeted removal, and in the 120-game logs targeted removal is the commonest thing that took Heliod off the battlefield: Stroke of Midnight 7, Generous Gift 8, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2 = 22 of 50 exits, against 16 to opposing wraths (Farewell 5, Wrath of God 4, Cleansing Nova 3, Hour of Reckoning 2, Austere Command 2) and 5 to the deck's own. Log 001's redirected Swords is exactly the event Greaves prevents. The same sentence then says Greaves 'does nothing against a wrath', which is true and is not 'not at all'."
+      },
+      {
+        "where": "gaps[1]",
+        "status": "over-claimed",
+        "severity": "medium",
+        "note": "'The AI neither removes Heliod often' rests on interaction_received 0.17 (ci95 [0.10, 0.25]), a record field. The logs behind that record show Heliod put into graveyard/exile from the battlefield 50 times, in 37 of the 68 games in which he resolved (0.54). Forge measures the THREAT side of protection well; what it cannot show is the response side -- Guardian of Faith 0 casts, Teferi's Protection 0, Karametra's Blessing resolved on Heliod 2 of 9 casts, Greaves attached to Heliod 5 times. The gap should say that, because it changes which protection the evidence asks for: 22 targeted exits favour hexproof/shroud (Boots, Greaves), 21 wrath exits favour indestructible/phasing, and 10 exile exits (Farewell 5, Swords 3, Chaos Mutation 2) answer to neither Coat nor Maneuver."
+      },
+      {
+        "where": "cut_candidates[1]",
+        "status": "over-claimed",
+        "severity": "medium",
+        "note": "'The insurance card Forge used most (29 games cast, 41 activations ...)'. engine_casts.by_card counts events, not games (29 casts). Of the 41 Greaves activations the logs show 5 attaching to Heliod (4 'Attach to Heliod, the Radiant Dawn' + 1 Warped Eclipse); the rest went to Thopter tokens and other creatures. As commander insurance Forge used it five times in 120 games. The same figure is reused in add_candidates[0].evidence.forge as 'the Coat is a permanent Forge will equip the way it equipped Greaves 41 times' -- a forecast about the AI stated as evidence. Separately, Mithril Coat's oracle text (cards.csv) carries 'Equip {3}': after a command-zone recast the Coat re-arms for three, which the cited commander-insurance passage ('cheap to re-arm') makes material and the entry omits."
+      },
+      {
+        "where": "add_candidates[5]",
+        "status": "contradicts-artifact",
+        "severity": "medium",
+        "note": "'it satisfies Glacial Fortress and Prairie Stream on entry'. Prairie Stream (cards.csv): 'This land enters tapped unless you control two or more BASIC lands.' Tundra is Land -- Plains Island, not basic, and does not count. Glacial Fortress ('a Plains or an Island') and Flooded Strand ('a Plains or Island card') hold. Note the corpus does not know the pilot's collection: card-search --owned finds Swiftfoot Boots and none of the other ten adds; the charter says ownership is not a criterion, so this is a note, not a finding."
+      },
+      {
+        "where": "add_candidates[5]",
+        "status": "contradicts-artifact",
+        "severity": "medium",
+        "note": "The Mystic Gate drop: 'its coloured mode costs {W/U} on top of the tap, so mana-analysis would file it under sources.gated beside Skycloud Expanse'. Run today: manabase.gated_colour_source(Mystic Gate) returns False (Skycloud Expanse True; Tundra, Sea of Clouds, Adarkar Wastes, Mana Confluence False) and land_colors reads it as {U, W}; mana_analysis.sources.gated on the current list names one card, Skycloud Expanse. The tool the drop is attributed to would count Mystic Gate as an untapped W/U source. Whether a filter land is the right fifth colour source is a different argument, and it is not made."
+      },
+      {
+        "where": "axes[0]",
+        "status": "over-claimed",
+        "severity": "medium",
+        "note": "'Consistency reads 0.868 so this is not what loses games' and the verdict's 'lands and colours are real shortfalls that are not costing the games the evidence can see'. The evidence on disk does see it: record b0f44e4a, 52 of 120 games with commander_casts 0 averaged 7.60 lands against 9.04 in the 68 cast games (recomputed from games[].per_seat; the previous diagnosis carried the Welch diff 1.448, ci95 [0.552, 2.344], and the doctor read that artifact); benchmark.json missed_land_drop_rate 0.2568 with worst turn 6, and land_drop_hit_rate 0.728 / 0.593 / 0.534 across turns four to six (quoted in engine.json stages[0]). Consistency 0.868 is the turn-THREE drop; the finisher costs seven twice. The never-cast half of the 0.741 -> 0.292 gap is the mana-base axis's evidence and the diagnosis leaves it unread."
+      },
+      {
+        "where": "axes[7]",
+        "status": "mis-cited",
+        "severity": "medium",
+        "note": "The 'weakness' verdict at 2 sweepers is cited to strategy:deckbuilding.interaction-suite, quote 'wipes \"one or two max\" (Zupke caps at 3)'. Fetched whole, that section says two IS the ceiling, 'the drift is real: the Command Zone template cut wipes 5->3-4 as the format sped up ... so date any wipe count you inherit', and 'wipes out of favour as games speed up'. The 5-7 band is strategy:deckbuilding.archetype-selection's control override ('Bend those there, not here'); the section actually cited argues against the verdict it is attached to. deck-audit's target block carries the same fragment, which is the audit's defect, but the doctor is the reader: cite archetype-selection for the band and say the interaction-suite section disagrees. add_candidates[2] and [7] reuse the fragment to justify +1/+2 wipes."
+      },
+      {
+        "where": "cut_candidates[6]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "cost_of_cutting prices Kefnet on the 40-game standard-v3 run ('cast in 14 of 40 games and activated 6 times'; by_card counts 14 casts, not games) and omits the 120-game record the diagnosis uses for every other figure: Kefnet the Mindful cast 39, activated 29 -- the most-cast creature in that run (Drift of Phantasms 35, Archangel of Tithes 28, Consecrated Sphinx 25). 'painful' is the right label; the price is understated by the larger run."
+      },
+      {
+        "where": "cut_candidates[4]",
+        "status": "miscounted",
+        "severity": "low",
+        "note": "'at six mana it draws one opponent four cards where Prosperity at the same X draws three opponents four each'. Mathemagics at X=2 is {2}{2}{U}{U} = six mana for 2^2 = 4 cards. Prosperity at the SAME X (2) draws each player two for three mana; four each is X=4 at five mana. The conclusion (symmetric X-draw feeds the discount, single-target does not) survives; the sentence does not."
+      },
+      {
+        "where": "axes[4]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "'the six rocks in the flip component are the ones that actually pay {3}{U/P}'. goldfish_targets.json declares six (Arcane Signet, Azorius Signet, Decanter, Sol Ring, Talisman, Thought Vessel); Mind Stone's '{T}: Add {C}' pays the {3} identically and engine.json's proposed_goldfish_edits flags its omission from that any_of. Six is the file's choice, not the deck's; the same slip is in engine.components[1].have."
+      },
+      {
+        "where": "axes[1]",
+        "status": "miscounted",
+        "severity": "low",
+        "note": "'Lands plus eight persistent rocks'. deck-audit's persistent_producers list is eight because Smothering Tithe carries ramp:rock (card_roles.json); mana_analysis.sources.producers lists seven rocks and no Tithe. The 41 is the audit's figure and holds; 'eight rocks' is wrong for one, and an enchantment that makes Treasure is not what the Burgess formula counts as a land."
+      },
+      {
+        "where": "axes[15]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "'none puts Approach in hand the turn it is found'. After Mystical Tutor to the top, Temple Bell ({T}), Mikokoro ({2},{T}), Kwain ({T}), Mind Stone ({1},{T}, sac) and Kefnet ({3}{U}) each draw at instant speed the same turn -- five cards in the 99. add_candidates[8] concedes '(or a gift trigger)'. The gap between find and cast is mana in the same window, not a draw step, and Solve the Equation's case should be priced against that."
+      },
+      {
+        "where": "cut_candidates[0]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "'the only one that is a land and so survives a Farewell or Austere Command on artifacts'. Enumerated (cards.json, 'no maximum hand size'): Decanter of Endless Water, Reliquary Tower, The Second Doctor, Thought Vessel. The Second Doctor is a creature and survives an artifacts-only mode as well; the Tower is the only one that survives a creatures-plus-artifacts Farewell. Superlative stated one member wider than the set."
+      },
+      {
+        "where": "cut_candidates[3]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "'the second-largest single contributor to the number Heliod's discount reads on an opponent's turn' -- no set enumerated and no largest named. Per opponent draw step Font of Mythos (+2) is the largest constant contributor among the eleven gift pieces (Howling Mine, Kami, Dictate +1 each; Bell, Mikokoro, Kwain, Loran, Horn are activations or land-gated; Crawler is your upkeep; Doctor your end step). If the largest meant is an X-draw, say so; the 0.574 / 0.537 opener figures are correct (hypergeometric 11 and 10 of 99 in 7)."
+      },
+      {
+        "where": "gaps[5]",
+        "status": "over-claimed",
+        "severity": "low",
+        "note": "The Soul-Guide Lantern drop is grounded on validator arithmetic: interaction-breadth is a count of classes, so Farewell alone, Lantern alone and both together all read 4 (audit_mod._interaction_breadth run today on the 99 plus each). That says the axis cannot see a second graveyard answer, not that the deck does not want one. On lean_into[0]'s own argument (buy in the generic-artifact class the discount makes free) a {1} hate:graveyard artifact that also moves the interaction axis 14 -> 15 (Farewell moves it 0: removal:sweeper is not an interaction-axis role) fits the pilot's second want better than a {4}{W}{W} Game Changer sorcery. The gap says 'cheaper graveyard answer only if Farewell is not bought'; it should state the trade, not resolve it by the validator's cap."
+      },
+      {
+        "where": "axes[*].measured.value",
+        "status": "supported",
+        "severity": "-",
+        "note": "All 16 values equal deck-audit run today (33, 41, 2, -11, 12, 16, 14, 2, 5, 3, 16, 3, 0.868, 2, 4, 4). goldfish_metrics.json and mana_analysis.json both carry decklist_sha256 f1d4a650...; audit freshness reads current for both. Every goldfish rate quoted (0.921/0.822/2.499, 0.741/0.561/4.87, 0.36, 0.32, 0.787/0.583, 0.839/0.705/3.022, 0.792, 0.495/0.358, 0.683/0.531, 0.68, 0.496/0.357) equals metrics.targets. Component sizes in engine.components match the audit's engine block."
+      },
+      {
+        "where": "verdict, lean_into[1], axes[5], axes[6], axes[9], axes[10], engine.components[1], engine.components[7]",
+        "status": "supported",
+        "severity": "-",
+        "note": "Forge figures re-read from record b0f44e4a (seat sha 214af308 = v1.2.1) and 4b0e1964: 20/99 decided, 0.202 [0.135, 0.292]; pods standard null 0.181; placement 11/35/26/22 of 94, mean 2.628; eliminated 38.05 [36.12, 39.98], n 74, 61 by damage, giada 43; mean_global_turn 41.3; triggers 41.93 [34.38, 49.49] against giada 25.62 [20.77, 30.48]; interaction_cast 0.79 [0.58, 1.01]; interaction_received 0.17 [0.10, 0.25] and 0.10 [0.01, 0.19]; commander resolved 68 (0.567 [0.477, 0.652]), transformed 35 (0.292 [0.218, 0.378]), first flip 37.74; won_by Approach 12 / all-opponents-lost 8. Re-derived from the logs: Approach 39 casts in 27 games, 12 games with a second cast, all 12 won. by_card: Day of Judgment 37, Supreme Verdict 33, Guardian of Faith 0 (6 discards), Teferi's Protection 0, Karametra's Blessing 9, Leyline 21, Greaves 29/41, Psychosis Crawler 0 (and 0 on the 40), Kefnet 14/6 on the 40; the six never-cast names hold (Long-Term Plans has no by_card entry at all)."
+      },
+      {
+        "where": "lean_into[0], axes[11], axes[13], cut_candidates[4].why, cut_candidates[1].cost_of_cutting",
+        "status": "supported",
+        "severity": "-",
+        "note": "Enumerated from cards.json: 20 nonland cards with a purely generic cost; four 'no maximum hand size' effects; graveyard mentioned only by Heliod's front face, Dig Through Time, Force of Negation; no card targets a land; Lightning Greaves the only Equipment; five X-draws of which Prosperity and Skyscribing are symmetric; curve 22 two-drops / 18 three-drops / 67 nonland entries / 1 at 8+; 12 roleless entries include Mathemagics."
+      },
+      {
+        "where": "citations (12 of 13 sections)",
+        "status": "supported",
+        "severity": "-",
+        "note": "Fetched with lookup-strategy: ratios, mana-base, mana-base.color-sources, threat-density, archetype-selection, curve, power-level, redundancy-vs-tutors, cutting, multiplayer.commander-insurance, multiplayer.asymmetry, pivot-point -- every quote verbatim and used within its section's meaning. The ratios template is read as the audit's band and explicitly not as what loses games, which respects the section's own 'counts of functions, not cards ... too one size fits all'. Hypergeometric figures 0.574 (11), 0.537 (10), 0.199 (3), 0.137 (2), 31% (5), 7.1% (1) all recompute."
+      },
+      {
+        "where": "add_candidates[*] (axis moves, legality, bracket)",
+        "status": "supported",
+        "severity": "-",
+        "note": "All nine adds are Commander-legal and inside {W,U} (cards.csv). Recomputed with the audit's own counters: Time Wipe and Farewell each take sweepers 2 -> 3 (both removal:sweeper); Mithril Coat, Swiftfoot Boots, Flawless Maneuver each take protection 5 -> 6; Solve the Equation and Personal Tutor each take tutors 4 -> 5 (tutor:narrow); Farewell takes interaction-breadth 3 -> 4 via 'exile all graveyards'. Sea of Clouds is land:tapped in card_roles.json and is untapped with three opponents. bracket_delta 4 -> 4 on all nine is the validator's recompute; Farewell is a ninth Game Changer on a floor already forced by eight. Solve the Equation + Approach is correctly held at 'needs a stack scenario'."
+      },
+      {
+        "where": "cut_candidates[*].orphans_stack, open_questions[0..2]",
+        "status": "supported",
+        "severity": "-",
+        "note": "The deck's one passing stack (002, Approach off Mystical Tutor) names none of the seven cuts in its scenario, so orphans_stack [] is right for all seven. Greaves-vs-own-targeting, Time Wipe on a transformed commander, and the X-spell/discount ordering are held as resolve-stack questions rather than asserted; the Greaves swap is explicitly priced on the open answer."
+      },
+      {
+        "where": "gaps[0]",
+        "status": "supported",
+        "severity": "-",
+        "note": "The missing v1.3.0 Forge run is stated accurately: both records carry the v1.2.1 seat sha (214af308...), the three swapped-in cards have no by_card line, and the closed settled_by set (resolve-stack | research-strategy | goldfish) cannot route a simulate, so leaving it in gaps rather than open_questions is the correct shape."
+      },
+      {
+        "where": "engine.single_points_of_failure[1]",
+        "status": "supported",
+        "severity": "-",
+        "note": "Approach of the Second Sun is the deck's one declared finisher by design (bracket_report combo_content, engine.json wincon stage names it the only SPOF); the diagnosis prescribes ACCESS (tutors to hand) rather than calling the one-finisher shape a defect, which is the right reading of a component that is supposed to be one card."
+      }
     ],
-    "citations": [
-     {
-      "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-      "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
-     },
-     {
-      "rule": "strategy:deckbuilding.threat-density",
-      "quote": "the ceiling build runs one spectacular finisher and loses when it's answered"
-     }
-    ]
-   }
-  ]
- },
- "lean_into": [
-  {
-   "what": "Buy protection in the artifact class, because that is the class the discount makes free.",
-   "why": "Twenty of the 99 have a purely generic mana cost (enumerated from cards.json) and all three v1.3.0 swaps were of that kind; the frame's mechanism is that a generic-cost spell discounts to zero on an opponent's turn. Mithril Coat ({3}, flash) and Swiftfoot Boots ({2}) are protection that costs the deck nothing to deploy in the window the removal arrives.",
-   "evidence": {
-    "generic_cost_cards": 20,
-    "v1_3_0_swaps": [
-     "Isochron Scepter",
-     "Horn of Greed",
-     "Mind Stone"
-    ]
-   },
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
-    },
-    {
-     "rule": "strategy:pivot-point",
-     "quote": "hold the protection spell for the turn you commit, not after"
-    }
-   ]
-  },
-  {
-   "what": "Second place is bought; spend on first.",
-   "why": "Placement over 94 ranked games: 11 first, 35 second, 26 third, 22 fourth, mean position 2.628; eliminated at mean global turn 38.05 (ci95 [36.12, 39.98]) in games averaging 41.3. The survival half works. Every add below is commander insurance, a wrath that spares him, a fourth route to Approach, or a coloured land.",
-   "evidence": {
-    "placement": {
-     "1": 11,
-     "2": 35,
-     "3": 26,
-     "4": 22
-    },
-    "games_ranked": 94
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.threat-density",
-     "quote": "a four-player seat wins ~25% of games by default, so conversion is where decks differ"
-    }
-   ]
-  },
-  {
-   "what": "Keep the asymmetry layer exactly as it is.",
-   "why": "Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Teferi's Ageless Insight, Alhammarret's Archive and Faerie Mastermind assemble 0.787 with Heliod down and take from all three seats; heliod's 41.93 triggers a game was the table's highest with no interval overlap.",
-   "evidence": {
-    "assembled_rate": 0.787,
-    "triggers_mean": 41.93,
-    "triggers_ci95": [
-     34.38,
-     49.49
-    ]
-   },
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
-    }
-   ]
+    "iterations": 1
   }
- ],
- "cut_candidates": [
-  {
-   "card": "Reliquary Tower",
-   "why": "A colourless land in a deck 10 blue and 11 white sources short, whose only text is the fourth copy of an effect three other permanents already carry (Decanter of Endless Water, The Second Doctor, Thought Vessel — every card in the 99 with 'no maximum hand size').",
-   "cost_of_cutting": "One of the four no-maximum-hand-size effects, and the only one that is a land and so survives a Farewell or Austere Command on artifacts. Land count is unchanged only if a land replaces it.",
-   "orphans_stack": [],
-   "difficulty": "easy",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    },
-    {
-     "rule": "strategy:deckbuilding.cutting",
-     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-    }
-   ]
-  },
-  {
-   "card": "Lightning Greaves",
-   "why": "Shroud stops the deck's own Karametra's Blessing and Guardian of Faith from targeting Heliod (an open stack question, not asserted here), and does nothing against Day of Judgment, Supreme Verdict or a wrath from across the table. Only as a like-for-like swap for Swiftfoot Boots.",
-   "cost_of_cutting": "The insurance card Forge used most (29 games cast, 41 activations; Karametra's Blessing 9 casts, Leyline 21, Guardian of Faith and Teferi's Protection none) and the deck's only Equipment, at equip {0}; haste is irrelevant to a commander whose flip is a sorcery-speed ability. Boots costs {1} to move.",
-   "orphans_stack": [],
-   "difficulty": "easy",
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
-    }
-   ]
-  },
-  {
-   "card": "Day of Judgment",
-   "why": "'Destroy all creatures' kills the converter. Only as a like-for-like swap for Time Wipe, which bounces Heliod first; the deck should not go to one sweeper.",
-   "cost_of_cutting": "The cheaper of the deck's two wraths at {2}{W}{W} against Time Wipe's {2}{W}{W}{U} — one more pip in the colour the deck is 10 sources short of — and Day of Judgment can be cast when Heliod is not on the battlefield with no drawback at all.",
-   "orphans_stack": [],
-   "difficulty": "easy",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    }
-   ]
-  },
-  {
-   "card": "Font of Mythos",
-   "why": "Reading all eleven gift pieces, it is the only one that gives every player two extra cards per draw step; it feeds the table six extra cards a round for {4} with no body, and the audit prices the gift group at 0.574 in an opener with eleven cards and 0.537 with ten.",
-   "cost_of_cutting": "It is the second-largest single contributor to the number Heliod's discount reads on an opponent's turn (that opponent's draw step plus two), and the gift group drops from 0.574 to 0.537 in an opener. The discount is not modelled anywhere, so this cost has no measured size.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:deckbuilding.cutting",
-     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-    }
-   ]
-  },
-  {
-   "card": "Mathemagics",
-   "why": "Of the five X-draws (Stroke of Genius, Braingeyser, Prosperity, Skyscribing, Mathemagics), the two symmetric ones make three opponents draw per X and the three single-target ones make one; Mathemagics is the single-target one whose cost pays X twice on top of {U}{U}, so at six mana it draws one opponent four cards where Prosperity at the same X draws three opponents four each. For the job an X-draw does here — opponents drawing on their turn so Approach is cheap — it is a single-target card at a double-X price. The taxonomy has no role for it.",
-   "cost_of_cutting": "The highest ceiling in the deck at large X, and the X-spell group goes 8 to 7 (0.792 was measured with it in). If the X-before-or-after-discount stack question resolves in the deck's favour the cut is worse.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.cutting",
-     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-    }
-   ]
-  },
-  {
-   "card": "Braingeyser",
-   "why": "A sorcery-speed, single-target X-draw in a deck whose discount lives on the opponents' turns; Stroke of Genius is the same effect at instant speed and does not need Heliod's flash grant to be cast in the window.",
-   "cost_of_cutting": "The X-spell group goes 8 to 7 and the fuel stage loses one of its two big self-draws; under the flipped Heliod the sorcery/instant difference disappears, so the cut is only right while the flip rate stays near 0.292.",
-   "orphans_stack": [],
-   "difficulty": "contested",
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.cutting",
-     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-    }
-   ]
-  },
-  {
-   "card": "Kefnet the Mindful",
-   "why": "Counted in two things he does not reliably do: the protection axis (his indestructible is his own, not Heliod's) and the flier-blocker group (he blocks only with seven cards in hand). Of the five protection-tagged cards he is the only one that protects nothing but himself.",
-   "cost_of_cutting": "PAINFUL. A flying indestructible body that survives the deck's own wraths, a {3}{U} draw sink that is on-theme in a deck with four no-maximum-hand-size effects, and a real card at the table: cast in 14 of 40 games and activated 6 times on the standard-v3 run. The flier-blocker group goes 5 to 4 and the protection axis drops under its floor unless a protection card replaces him.",
-   "orphans_stack": [],
-   "difficulty": "painful",
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
-    },
-    {
-     "rule": "strategy:deckbuilding.cutting",
-     "quote": "cut duplicated function before any uncovered class, and cut the ceiling card before the median one"
-    }
-   ]
-  }
- ],
- "add_candidates": [
-  {
-   "card": "Mithril Coat",
-   "closes": "protection",
-   "source": "pool",
-   "why": "{3} generic, flash, 'When Mithril Coat enters, attach it to target legendary creature you control. Equipped creature has indestructible.' Cast on the opponent's turn it is discounted, it lands in response to a wrath or a Swords-into-Day-of-Judgment sequence, and indestructible survives both of the deck's own sweepers. It does not stop exile or bounce; say so at the table.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "forge": "Guardian of Faith and Teferi's Protection have no cast line in 120 games; the Coat is a permanent Forge will equip the way it equipped Greaves 41 times"
-   },
-   "natural_cut": "Kefnet the Mindful",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
-    },
-    {
-     "rule": "strategy:pivot-point",
-     "quote": "hold the protection spell for the turn you commit, not after"
-    }
-   ]
-  },
-  {
-   "card": "Swiftfoot Boots",
-   "closes": "protection",
-   "source": "pool",
-   "why": "Hexproof rather than shroud: opponents cannot target Heliod and you still can, so Karametra's Blessing and Guardian of Faith stay live on him. {2} generic, so free on an opponent's turn under the flip. A straight upgrade on Greaves for this deck at the price of equip {1}.",
-   "evidence": {
-    "combo_lines_opened": []
-   },
-   "natural_cut": "Lightning Greaves",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths)"
-    }
-   ]
-  },
-  {
-   "card": "Time Wipe",
-   "closes": "sweepers",
-   "source": "pool",
-   "why": "'Return a creature you control to its owner's hand, then destroy all creatures' — the wrath that saves the commander, in exactly this deck's colours. It answers log 002's sequencing error structurally and the sweepers axis moves 2 to 3 if it is added beside Day of Judgment rather than for it.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "forge": "Day of Judgment cast 37 and Supreme Verdict 33 times in 120 games; log 002: 'Supreme Verdict after Heliod was already out. I killed my own commander.'"
-   },
-   "natural_cut": "Day of Judgment",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    },
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "preferring asymmetric board wipes"
-    }
-   ]
-  },
-  {
-   "card": "Flawless Maneuver",
-   "closes": "protection",
-   "source": "pool",
-   "why": "Free with a commander on the battlefield, 'Creatures you control gain indestructible until end of turn' — the held response for the turn a wrath resolves, castable with every land tapped for Approach. Instant, so it is the pivot-turn protection the corpus asks for.",
-   "evidence": {
-    "combo_lines_opened": []
-   },
-   "natural_cut": "Mathemagics",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:pivot-point",
-     "quote": "hold the protection spell for the turn you commit, not after"
-    },
-    {
-     "rule": "strategy:multiplayer.commander-insurance",
-     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
-    }
-   ]
-  },
-  {
-   "card": "Solve the Equation",
-   "closes": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
-   "source": "pool",
-   "why": "{2}{U}: search for an instant or sorcery and put it into your HAND. Approach wins only if cast from hand, so a tutor to hand needs no draw step between finding and casting, unlike Mystical Tutor and Long-Term Plans. It is mana value 3, so Drift of Phantasms' transmute reaches it. The group goes 3 to 4; the redundancy table prices five at 31% of openers against the three-card group's 0.199.",
-   "evidence": {
-    "combo_lines_opened": [
-     {
-      "cards": [
-       "Solve the Equation",
-       "Approach of the Second Sun"
-      ],
-      "status": "needs a stack scenario"
-     }
-    ],
-    "component_size_before": 3,
-    "measured_rate_before": 0.495
-   },
-   "natural_cut": "Braingeyser",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    },
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "tutor only the irreplaceable"
-    }
-   ]
-  },
-  {
-   "card": "Tundra",
-   "closes": "colour-sources (U 26 and W 25 against 36 each)",
-   "source": "pool",
-   "why": "An untapped Plains Island: both short colours gain an unconditional source, Flooded Strand can fetch it, and it satisfies Glacial Fortress and Prairie Stream on entry. Lands 33 to 34 for a spell. Mystic Gate was the alternative and is not listed: its coloured mode costs {W/U} on top of the tap, so mana-analysis would file it under sources.gated beside Skycloud Expanse rather than as an on-curve source.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "sources_before": {
-     "U": 26,
-     "W": 25
-    },
-    "lands_before": 33
-   },
-   "natural_cut": "Font of Mythos",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base.color-sources",
-     "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-    },
-    {
-     "rule": "strategy:deckbuilding.ratios",
-     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
-    }
-   ]
-  },
-  {
-   "card": "Sea of Clouds",
-   "closes": "colour-sources (U 26 and W 25 against 36 each)",
-   "source": "pool",
-   "why": "'This land enters tapped unless you have two or more opponents' — always untapped in a four-player pod; card_roles.json files it land:tapped, which is the taxonomy reading the sentence rather than the format. Both short colours gain a source and the colourless Reliquary Tower leaves; land count is unchanged.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "sources_before": {
-     "U": 26,
-     "W": 25
-    }
-   },
-   "natural_cut": "Reliquary Tower",
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.mana-base",
-     "quote": "a utility land that can't produce the colour you need is not a source"
-    }
-   ]
-  },
-  {
-   "card": "Farewell",
-   "closes": "sweepers",
-   "source": "pool",
-   "why": "Modal: exile all artifacts, creatures, enchantments, graveyards, any subset. The deck can wipe creatures and graveyards while leaving its own artifact engine — or exile a jarad graveyard without touching a board, which is also what takes interaction-breadth 3 to 4. A Game Changer, but the floor is already 4 on eight of them and recomputes to 4. Sweepers 2 to 3 (4 with Time Wipe beside Day of Judgment).",
-   "evidence": {
-    "combo_lines_opened": []
-   },
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.interaction-suite",
-     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
-    },
-    {
-     "rule": "strategy:multiplayer.asymmetry",
-     "quote": "preferring asymmetric board wipes"
-    }
-   ]
-  },
-  {
-   "card": "Personal Tutor",
-   "closes": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
-   "source": "pool",
-   "why": "{U}, sorcery on top — a one-mana fifth card in the group that decides first place, not a Game Changer. Ranked below Solve the Equation because it needs a draw step (or a gift trigger) between finding and casting.",
-   "evidence": {
-    "combo_lines_opened": [],
-    "component_size_before": 3,
-    "measured_rate_before": 0.495
-   },
-   "bracket_delta": {
-    "before": 4,
-    "after": 4
-   },
-   "citations": [
-    {
-     "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-     "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
-    }
-   ]
-  }
- ],
- "open_questions": [
-  {
-   "question": "With Heliod, the Warped Eclipse on the battlefield, cast Prosperity (or Skyscribing) for X on an opponent's end step, then Approach of the Second Sun from hand in the same window: what does the second Approach cost, given 'Spells you cast cost {1} less to cast for each card your opponents have drawn this turn', and does the 'cast from your hand' condition survive a flash cast?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "This is the pilot's own 'two or three, not seven' from log 002 and the reason the symmetric X-draws are kept while Mathemagics and Braingeyser are cut. If a five-mana Prosperity makes Approach cost {W}, the X-spell group is the kill's ignition and the mana-base gap stops mattering for the win; if not, the cut list should come from the X-spells instead."
-  },
-  {
-   "question": "While Lightning Greaves is attached to Heliod, can Karametra's Blessing or Guardian of Faith's enters trigger target him, and can the Greaves be moved off at instant speed?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "The Greaves-for-Boots swap is priced on the answer being 'no'. If shroud does not bind the pilot's own spells the way this document reads it, Greaves' equip {0} keeps its slot."
-  },
-  {
-   "question": "Time Wipe with Heliod, the Warped Eclipse (transformed) on the battlefield: which face returns to hand, is the flip lost, and can the returned card be cast the same turn under Leyline of Anticipation?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "Time Wipe is bought as the wrath that saves the converter. If the recast lands as the front face the deck pays {2}{W}{W} plus {3}{U/P} to get the discount back, and that cost belongs beside the card."
-  },
-  {
-   "question": "Re-declare 'Win condition access' with Solve the Equation and Personal Tutor and re-measure; and add a group that measures Heliod-protected-from-a-wrath (Guardian of Faith, Karametra's Blessing, Teferi's Protection, Mithril Coat, Flawless Maneuver) separately from targeting protection.",
-   "settled_by": "goldfish",
-   "why_it_matters": "The current protection group counts Leyline of Anticipation (protects nothing) and the audit's axis counts Kefnet (protects himself); neither number is the one this diagnosis prescribes against, and the 0.495 win-access figure is the one the deck page prints."
-  },
-  {
-   "question": "How many protection and tutor slots does a single 'you win the game' sorcery justify in a four-player pod, and what do strong Heliod, the Warped Eclipse lists actually close with?",
-   "settled_by": "research-strategy",
-   "why_it_matters": "strategy.md has no section on alternate win conditions and no deck_recon.json exists; the prescription above sizes protection at +2 net and tutors at +2 by construction-count reasoning, not by a measured rate for this shape of deck."
-  },
-  {
-   "question": "Is the flier-blocker group still worth five slots once Kefnet leaves, or does Mithril Coat on Heliod (a 4/6 indestructible blocker) cover what he covered?",
-   "settled_by": "goldfish",
-   "why_it_matters": "The Kefnet cut is the painful entry and the flier group goes 5 to 4; the Coat makes the commander himself a blocker that survives combat, which no declared group measures."
-  }
- ],
- "gaps": [
-  "NO FORGE RUN EXISTS ON v1.3.0. Every table figure here is from run b0f44e4a (v1.2.1, 120 games, standard pod, 2026-09-09) or 4b0e1964 (v1.2.1, 40 games, standard-v3, 2026-09-10); the current list differs by three cards (Isochron Scepter, Horn of Greed, Mind Stone in; Mikaeus, the Lunarch, Forced Fruition, Angelic Wall out) and none of the three has a Forge line. A run on v1.3.0 against standard-v3 at 120+ games is the next measurement; it is not an agent question and no settled_by routes it.",
-  "FORGE CANNOT MEASURE THE PROTECTION SUITE. Guardian of Faith: 0 casts, 6 discards in 120 games; Teferi's Protection: 0 casts; interaction_received 0.17 a game (ci95 [0.10, 0.25]) and 0.10 (ci95 [0.01, 0.19]) on the two runs. The AI neither removes Heliod often nor casts the instants that would save him, so the 'protection is adequate' reading in the previous diagnosis was a floor, not a vindication. The evidence that protection binds is the log (entry 001, one game — an anecdote by the charter's rule), the pilot's stated want, and the deck's own 70 wrath casts in 120 games.",
-  "THE DISCOUNT IS NOT MODELLED. model-coverage lists Heliod's only channel as bodies; every goldfish mana figure is a floor and no artifact on disk has resolved a single discounted cast. The X-draw-into-Approach line in open_questions is the highest-leverage unknown in the deck.",
-  "NO candidate_pool.json AND NO deck_recon.json. Every add above was found with card-search over cards.csv (identity WU, deck's 99 excluded) and checked Commander-legal against the corpus; considering.json on disk is from the Aetherflux Reservoir era and names cards that answer a kill the deck no longer runs — it was read and not used.",
-  "SIX CARDS NEVER CAST IN 120 FORGE GAMES, carried from the previous diagnosis: Azorius Signet, Guardian of Faith, Long-Term Plans, Psychosis Crawler, Skyscribing, Teferi's Protection. Skyscribing and Psychosis Crawler are kept here rather than cut on that evidence, because a card the AI declines is not a card that does not help.",
-  "THE PILOT'S SECOND WANT — more one-to-three-mana colourless artifacts — is served by two of the nine adds (Mithril Coat {3}, Swiftfoot Boots {2}). Soul-Guide Lantern ({1}, hate:graveyard) was examined and dropped: with Farewell in the prescription the validator shows it moves interaction-breadth not at all (Farewell's 'exile all graveyards' already takes it 3 to 4), so it is the cheaper graveyard answer only if Farewell is not bought. A wider artifact sweep was not run because every add must close a named axis and a generic-cost artifact that closes none is a preference.",
-  "THE LAND HALF OF interaction-breadth IS LEFT OPEN. Field of Ruin, Ghost Quarter and Strip Mine are in the pool and would take lands 33 to 34 as well, but the breadth heuristic reads only role-tagged interactive cards and none of the three carries one, so an add that named the axis would fail the validator while doing the thing; and nothing in the two logged games or the two pod runs names a land as the threat."
- ]
 }
