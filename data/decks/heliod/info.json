@@ -13,9 +13,13 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 16,
+    "complete": 14,
     "of": 18,
-    "stale": [],
+    "stale": [
+      "frame",
+      "map",
+      "engine"
+    ],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -39,28 +43,45 @@
       "state_why": "merged 2026-09-08 into the list after VNone",
       "proposal": null,
       "pull_list": {
-        "buy": [],
+        "buy": [
+          {
+            "name": "Angelic Wall"
+          },
+          {
+            "name": "Forced Fruition"
+          }
+        ],
         "unsleeve": [],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Mikaeus, the Lunarch",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [],
-        "blocking": 0,
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 9,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 85,
+        "in_deck": 82,
         "box": 0,
         "elsewhere": 0,
-        "buy": 0,
-        "free": 0
+        "buy": 2,
+        "free": 1
       },
-      "unsourced": [],
-      "mergeable": true,
-      "free": 0,
+      "unsourced": [
+        "Angelic Wall",
+        "Forced Fruition"
+      ],
+      "mergeable": false,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -85,10 +106,10 @@
         },
         {
           "name": "Angelic Wall",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Approach of the Second Sun",
@@ -281,10 +302,10 @@
         },
         {
           "name": "Forced Fruition",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ghostly Prison",
@@ -421,10 +442,18 @@
         },
         {
           "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Mikokoro, Center of the Sea",
@@ -664,8 +693,8 @@
       "name": "artifacts-v1",
       "opened": "2026-09-16",
       "why": "the artifact half of the 2026-09-16 audit: Heliod's discount makes a generic-cost artifact a free cast, and three owned ones fit the plan. Isochron Scepter (thirteen instants at two or less to imprint), Horn of Greed (a gift that pays on the opponents' turns, where the flash deck spends the discount), Mind Stone (a free rock on two and a card later). The goldfish reads none of the five cards involved — every profile is zero and the candidates sweep returned one reading for all three — so the objective is a CONTROL and the case is the argued one in each swap's why.",
-      "state": "PROPOSED · READY",
-      "state_why": "every card is sourced — `deck-branch heliod merge artifacts-v1 --write`",
+      "state": "PROPOSED · OUTRUN",
+      "state_why": "proposed against V10 and the deck is now VNone — v1.3.0 may be taken; re-measure and propose again",
       "proposal": {
         "at": "2026-09-16",
         "as_version": "v1.3.0",
@@ -694,36 +723,17 @@
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [
-          {
-            "name": "Horn of Greed",
-            "where": [
-              "Heliod Parts"
-            ]
-          },
-          {
-            "name": "Isochron Scepter",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Mind Stone",
-            "where": [
-              "Zur Parts"
-            ]
-          }
-        ],
+        "box": [],
         "blocking": 0,
         "procurement": null
       },
       "base_version": 10,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 82,
-        "box": 3,
+        "in_deck": 85,
+        "box": 0,
         "elsewhere": 0,
         "buy": 0,
         "free": 0
@@ -986,15 +996,10 @@
         },
         {
           "name": "Horn of Greed",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Heliod Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Howling Mine",
@@ -1019,15 +1024,10 @@
         },
         {
           "name": "Isochron Scepter",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Kami of the Crescent Moon",
@@ -1108,15 +1108,10 @@
         },
         {
           "name": "Mind Stone",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mystic Remora",
@@ -1353,28 +1348,45 @@
       "state_why": "no proposal — this is an experiment, not a decision",
       "proposal": null,
       "pull_list": {
-        "buy": [],
+        "buy": [
+          {
+            "name": "Angelic Wall"
+          },
+          {
+            "name": "Forced Fruition"
+          }
+        ],
         "unsleeve": [],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Mikaeus, the Lunarch",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [],
-        "blocking": 0,
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 10,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 85,
+        "in_deck": 82,
         "box": 0,
         "elsewhere": 0,
-        "buy": 0,
-        "free": 0
+        "buy": 2,
+        "free": 1
       },
-      "unsourced": [],
-      "mergeable": true,
-      "free": 0,
+      "unsourced": [
+        "Angelic Wall",
+        "Forced Fruition"
+      ],
+      "mergeable": false,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -1399,10 +1411,10 @@
         },
         {
           "name": "Angelic Wall",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Approach of the Second Sun",
@@ -1595,10 +1607,10 @@
         },
         {
           "name": "Forced Fruition",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ghostly Prison",
@@ -1735,10 +1747,18 @@
         },
         {
           "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Mikokoro, Center of the Sea",
@@ -1978,8 +1998,8 @@
       "name": "splendor-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): Gleaming Splendor for Alhammarret's Archive. a Treasure whenever an opponent draws their second card in a turn, in a deck that makes every opponent draw every turn, plus a group-draw activation; the Archive's lifegain half is off-plan here The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "2 card(s) still to find",
+      "state": "PROPOSED · OUTRUN",
+      "state_why": "proposed against V10 and the deck is now VNone — v1.2.2 may be taken; re-measure and propose again",
       "proposal": {
         "at": "2026-09-12",
         "as_version": "v1.2.2",
@@ -2006,6 +2026,12 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Angelic Wall"
+          },
+          {
+            "name": "Forced Fruition"
+          },
+          {
             "name": "Gleaming Splendor"
           },
           {
@@ -2014,28 +2040,37 @@
         ],
         "unsleeve": [],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Mikaeus, the Lunarch",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [],
-        "blocking": 2,
+        "blocking": 4,
         "procurement": null
       },
       "base_version": 10,
       "size": 100,
-      "add": 2,
-      "out": 2,
+      "add": 5,
+      "out": 5,
       "counts": {
-        "in_deck": 83,
+        "in_deck": 80,
         "box": 0,
         "elsewhere": 0,
-        "buy": 2,
-        "free": 0
+        "buy": 4,
+        "free": 1
       },
       "unsourced": [
+        "Angelic Wall",
+        "Forced Fruition",
         "Gleaming Splendor",
         "Greater Auramancy"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -2053,10 +2088,10 @@
         },
         {
           "name": "Angelic Wall",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Approach of the Second Sun",
@@ -2249,10 +2284,10 @@
         },
         {
           "name": "Forced Fruition",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ghostly Prison",
@@ -2396,10 +2431,18 @@
         },
         {
           "name": "Mikaeus, the Lunarch",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Mikokoro, Center of the Sea",
@@ -2651,50 +2694,50 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.4345,
+          "rate": 0.4509,
           "ci95": [
-            0.4248,
-            0.4442
+            0.4412,
+            0.4607
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0623,
+          "rate": 0.0519,
           "ci95": [
-            0.0577,
-            0.0672
+            0.0477,
+            0.0564
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0095,
+          "rate": 0.0072,
           "ci95": [
-            0.0078,
-            0.0116
+            0.0057,
+            0.0091
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0033,
+          "rate": 0.003,
           "ci95": [
-            0.0024,
-            0.0046
+            0.0021,
+            0.0043
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0028,
+          "rate": 0.0023,
           "ci95": [
-            0.0019,
-            0.004
+            0.0015,
+            0.0034
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0011,
+          "rate": 0.0014,
           "ci95": [
-            0.0006,
-            0.002
+            0.0008,
+            0.0023
           ],
           "n": 10000
         },
@@ -2707,82 +2750,82 @@
           "n": 10000
         },
         "8": {
-          "rate": 0.0006,
+          "rate": 0.0005,
           "ci95": [
-            0.0003,
-            0.0013
+            0.0002,
+            0.0012
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0003,
+          "rate": 0.0002,
           "ci95": [
             0.0001,
-            0.0009
+            0.0007
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0001,
+          "rate": 0.0002,
           "ci95": [
-            0.0,
-            0.0006
+            0.0001,
+            0.0007
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0096,
+        "rate": 0.0069,
         "ci95": [
-          0.0079,
-          0.0117
+          0.0055,
+          0.0087
         ],
         "n": 10000
       },
-      "fleet": "below the fleet median",
+      "fleet": "better than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 811,
-        "hand_empty": 14,
-        "mana_short": 797
+        "stall_turns": 678,
+        "hand_empty": 10,
+        "mana_short": 668
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.5202,
+        "rate": 0.5142,
         "ci95": [
-          0.5104,
-          0.53
+          0.5044,
+          0.524
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.327,
+      "missed_land_drop_rate": 0.3226,
       "mulliganed": {
-        "rate": 0.2619,
+        "rate": 0.2595,
         "ci95": [
-          0.2534,
-          0.2706
+          0.251,
+          0.2682
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.998,
-        "2": 2.14,
-        "3": 3.396,
-        "4": 4.273,
-        "5": 4.985,
-        "6": 5.657,
-        "7": 6.279,
-        "8": 6.896,
-        "9": 7.534,
-        "10": 8.167
+        "2": 2.133,
+        "3": 3.45,
+        "4": 4.33,
+        "5": 5.08,
+        "6": 5.782,
+        "7": 6.439,
+        "8": 7.098,
+        "9": 7.744,
+        "10": 8.404
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.3219
+      "mana_stdev_turn_five": 1.3445
     },
-    "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175"
+    "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61"
   },
   "bracket": {
     "floor": 4,
@@ -2820,7 +2863,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 89,
+          "value": 90,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -2838,7 +2881,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.222,
+          "value": 4.187,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2846,7 +2889,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine online (opponents are drawing)": {
-          "value": 82,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
@@ -2854,7 +2897,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})": {
-          "value": 55,
+          "value": 56,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})' by turn six",
@@ -2870,7 +2913,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine plus a draw-triggered drain, both drawn": {
-          "value": 19,
+          "value": 18,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine plus a draw-triggered drain, both drawn' by turn six",
@@ -2910,7 +2953,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod protected, or a flash grant that does not need him": {
-          "value": 52,
+          "value": 53,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod protected, or a flash grant that does not need him' by turn six",
@@ -2918,7 +2961,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)": {
-          "value": 60,
+          "value": 53,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)' by turn six",
@@ -2926,7 +2969,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A taxer down (attackers pay, flying or not)": {
-          "value": 35,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A taxer down (attackers pay, flying or not)' by turn six",
@@ -2973,7 +3016,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 73,
+          "value": 74,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -2983,16 +3026,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.997,
-            "10": 8.202,
-            "2": 2.139,
-            "3": 3.404,
-            "4": 4.28,
-            "5": 5.008,
-            "6": 5.669,
-            "7": 6.296,
-            "8": 6.934,
-            "9": 7.574
+            "1": 0.998,
+            "10": 8.386,
+            "2": 2.138,
+            "3": 3.449,
+            "4": 4.337,
+            "5": 5.089,
+            "6": 5.764,
+            "7": 6.412,
+            "8": 7.064,
+            "9": 7.729
           },
           "tier": "data",
           "weight": "detail",
@@ -3002,16 +3045,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.997,
-            "10": 0.504,
+            "1": 0.998,
+            "10": 0.507,
             "2": 0.993,
-            "3": 0.869,
-            "4": 0.729,
-            "5": 0.601,
+            "3": 0.868,
+            "4": 0.728,
+            "5": 0.593,
             "6": 0.534,
-            "7": 0.51,
-            "8": 0.509,
-            "9": 0.507
+            "7": 0.516,
+            "8": 0.506,
+            "9": 0.516
           },
           "tier": "data",
           "weight": "detail",
@@ -3021,16 +3064,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.251,
-            "10": 3.225,
-            "2": 0.476,
-            "3": 0.751,
-            "4": 1.035,
-            "5": 1.469,
-            "6": 1.875,
-            "7": 2.235,
-            "8": 2.573,
-            "9": 2.901
+            "1": 0.206,
+            "10": 2.84,
+            "2": 0.371,
+            "3": 0.603,
+            "4": 0.854,
+            "5": 1.261,
+            "6": 1.635,
+            "7": 1.963,
+            "8": 2.272,
+            "9": 2.56
           },
           "tier": "data",
           "weight": "detail",
@@ -3040,14 +3083,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 546,
-            "1": 2069,
-            "2": 3138,
-            "3": 2583,
-            "4": 1267,
-            "5": 347,
-            "6": 44,
-            "7": 6
+            "0": 559,
+            "1": 2020,
+            "2": 3193,
+            "3": 2557,
+            "4": 1275,
+            "5": 343,
+            "6": 52,
+            "7": 1
           },
           "tier": "data",
           "weight": "detail",
@@ -3056,10 +3099,10 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 753,
-            "7": 5,
-            "8": 87,
-            "9": 402
+            "10": 862,
+            "7": 8,
+            "8": 109,
+            "9": 368
           },
           "tier": "data",
           "weight": "detail",
@@ -3075,16 +3118,16 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.222,
-    "commander_cast_by_turn_6_pct": 89,
+    "commander_mean_cast_turn": 4.187,
+    "commander_cast_by_turn_6_pct": 90,
     "targets": [
       {
         "label": "Table draw engine online (opponents are drawing)",
-        "by_turn_6_pct": 82
+        "by_turn_6_pct": 79
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
-        "by_turn_6_pct": 55
+        "by_turn_6_pct": 56
       },
       {
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
@@ -3092,7 +3135,7 @@
       },
       {
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
-        "by_turn_6_pct": 19
+        "by_turn_6_pct": 18
       },
       {
         "label": "Heliod down with an asymmetric card engine",
@@ -3112,29 +3155,29 @@
       },
       {
         "label": "Heliod protected, or a flash grant that does not need him",
-        "by_turn_6_pct": 52
+        "by_turn_6_pct": 53
       },
       {
         "label": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
-        "by_turn_6_pct": 60
+        "by_turn_6_pct": 53
       },
       {
         "label": "A taxer down (attackers pay, flying or not)",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 36
       }
     ],
     "combat": {
-      "mean_kill_turn": 9.526,
+      "mean_kill_turn": 9.547,
       "median_kill_turn": 10,
       "kill_by_turn_6_pct": 0,
       "kill_by_turn_8_pct": 1,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 88,
+      "no_kill_by_max_turn_pct": 86,
       "kill_turn_histogram": {
-        "10": 753,
-        "7": 5,
-        "8": 87,
-        "9": 402
+        "10": 862,
+        "7": 8,
+        "8": 109,
+        "9": 368
       }
     }
   },
@@ -3152,7 +3195,7 @@
   "diagnosis": {
     "verdict": "Nothing about this deck's mana flow or card flow is what limits it; conversion is. On 120 fresh games against the standard pod on the sleeved list it took first 20 times of 99 decided (0.202, ci95 [0.135, 0.292]) against this table's null of 0.180, reached second place 35 times of 94 ranked games, and dealt 4.52 damage a game (ci95 [3.52, 5.51]) while taking 37.92 in combat alone. Twelve of those 20 wins were `effect of 'Approach of the Second Sun'`, and the group that finds Approach is three cards deep at 0.495 assembled. The difference from the previous 120-game run is NOT a decline and is not read as one here: -0.0500, Newcombe ci95 [-0.1614, +0.0644], on a pair whose minimum detectable difference is 0.185.",
     "skeptic": null,
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": "control",
@@ -3256,7 +3299,7 @@
     "runs": 4,
     "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-4b0e1964-s1259215204-podExperimental-c600",
     "at": "2026-09-10",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
     "games": 40,
     "wins": 10,
@@ -3296,10 +3339,13 @@
   },
   "experiments": null,
   "next": [
-    "branch `archangel-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge archangel-v1 --write`",
-    "`artifacts-v1` is PROPOSED as v1.3.0 and every card is sourced — `manamap pilot deck-branch heliod merge artifacts-v1 --write`",
-    "branch `blue-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge blue-v1 --write`",
-    "`splendor-v1` is PROPOSED as v1.2.2 and waiting on cardboard — 2 card(s) (2 to buy) — `manamap pilot deck-branch heliod show splendor-v1` has the pull list",
+    "stale: frame, map, engine — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "branch `archangel-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source archangel-v1`",
+    "`artifacts-v1` was proposed as v1.3.0 against V10 and the deck has moved on — v1.3.0 may be taken; re-measure and propose again",
+    "branch `blue-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source blue-v1`",
+    "`splendor-v1` was proposed as v1.2.2 against V10 and the deck has moved on — v1.2.2 may be taken; re-measure and propose again",
+    "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
     "open questions routed: diagnose ×2, goldfish ×5, research-strategy ×3, resolve-stack ×6",
     "10 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
