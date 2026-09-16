@@ -1,194 +1,241 @@
 {
-  "slug": "heliod",
-  "decklist_sha256_12": "214af3084f80",
-  "archetype": "Azorius draw-go control that gifts the whole table cards, taxes and drains them for taking them, forts against combat, and wins with the second cast of Approach of the Second Sun. The commander is the discount engine, not the threat: Heliod, the Warped Eclipse grants flash to every spell and cuts each by {1} for each card opponents drew this turn (oracle text, cards.json), and the eleven symmetrical-draw permanents exist to make that number large. There is no two-card combo — deck-facts finds one contained line (Approach of the Second Sun + Mystical Tutor, bracket 3, mana_value_needed 15, produces 'Win the game') and `two_card_infinites: 0`. The old Aetherflux Reservoir / Hullbreaker Horror kill is gone from cards.json, and the pilot holds a standing constraint against replacing it.",
-  "schools": [
-    "strategy:whos-the-beatdown",
-    "strategy:whos-the-beatdown.metagame-clock",
-    "strategy:pivot-point",
-    "strategy:multiplayer",
-    "strategy:multiplayer.asymmetry",
-    "strategy:multiplayer.politics",
-    "strategy:multiplayer.threat-deflection",
-    "strategy:multiplayer.pivot-window",
-    "strategy:multiplayer.pod-management",
-    "strategy:multiplayer.commander-insurance",
-    "strategy:card-advantage",
-    "strategy:card-advantage.virtual",
-    "strategy:threat-assessment.answer-economy",
-    "strategy:threat-assessment.resource-denial",
-    "strategy:resource-hedging.wrath-math",
-    "strategy:tempo.sequencing",
-    "strategy:combat-math.racing",
-    "strategy:mulligans.engine-hands",
-    "strategy:deckbuilding.interaction-suite",
-    "strategy:deckbuilding.threat-density",
-    "strategy:deckbuilding.redundancy-vs-tutors",
-    "strategy:deckbuilding.curve",
-    "strategy:deckbuilding.mana-base.color-sources",
-    "strategy:deckbuilding.power-level"
-  ],
-  "role_assignment": {
-    "default_role": "Control, and the kind that owns the long game outright rather than the kind stalling for a combo. strategy:whos-the-beatdown puts the question as Duke's inevitability test — whoever loses a game that goes long enough must be the beatdown — and strategy:whos-the-beatdown.metagame-clock names the source: 'superior late-game card quality, an engine that scales, an unanswerable finisher, or simply more answers than the opponent has threats.' This deck has the third and the fourth. Approach of the Second Sun's second cast from hand simply wins (oracle text; verified stack 002, checker.verdict == 'pass'), and it is unanswerable except on the stack. The measured shape agrees: over 120 Forge games on the standard bracket-3 pod, 20 of heliod's 27 wins read won_by \"effect of 'Approach of the Second Sun'\" and 7 read 'all opponents have lost' — the deck's own record of winning by outliving the table. Mean finishing position 2.319 over 94 ranked games (16 firsts, 43 seconds, 24 thirds, 11 fourths). You are never the beatdown by damage: combat damage dealt to players had mean 4.11 and MEDIAN 0.5, and commander damage reached 21 in zero of 120 games.",
-    "pivot_trigger": "The pivot is the second Approach, and strategy:multiplayer.pivot-window sets the bar for when to take it: the window opens when the attempt 'can't be profitably answered — protection up, table tapped out, interaction counted and accounted for.' Concretely: the first Approach has resolved (it went seventh from the top and you gained 7), you have drawn or tutored to it again, and you can pay {6}{W} — the goldfish's mean available mana crosses 7 between turn 8 (6.966) and turn 9 (7.612), earlier when Heliod's back face is down and the table is drawing, which the goldfish does not model. Before that moment, strategy:pivot-point's instruction is the whole plan: 'hold the protection spell for the turn you commit, not after.' The second cast is the only turn this deck should ever look like it is winning, and strategy:multiplayer.threat-deflection prices that: 'the deflection budget spends down as your engine shows; plan the pivot before it runs out.' Ghostly Prison, Propaganda and free cards for the table are the budget.",
-    "strategy_ref": "strategy:pivot-point",
-    "seat_relative_note": "strategy:whos-the-beatdown's Commander correction — role is seat-relative, 'assign per-threat, not per-game.' Against the pod's flier deck you are pure defence: giada-angels dealt 39 of the 74 eliminations heliod suffered, and 53 of them were eliminated_how 'damage'. Against the two grindier seats you are the one accruing, and your one-for-ones should stay in hand (strategy:multiplayer.asymmetry)."
+ "slug": "heliod",
+ "decklist_sha256_12": "f1d4a650b93f",
+ "version": "v1.3.0",
+ "archetype": "Azorius draw-go control: gift the whole table cards, convert the gift into a per-spell discount through the flipped Heliod, act only at instant speed behind a pillow fort and eight counterspells, and win with the second cast of Approach of the Second Sun. The commander is the converter, not the threat: Heliod, the Warped Eclipse reads 'You may cast spells as though they had flash. Spells you cast cost {1} less to cast for each card your opponents have drawn this turn' (oracle text, cards.json), so the discount is largest on the opponents' turns, which is exactly where a flash deck spends its mana. Twenty generic-cost artifacts (enumerated from cards.json) are the cards that discount all the way to free; the three cards that changed for v1.3.0 (Isochron Scepter, Horn of Greed, Mind Stone) are all three of that kind. deck-facts finds one contained combo line (Approach of the Second Sun + Mystical Tutor, bracket 3, mana_value_needed 15, produces 'Win the game') and two_card_infinites: 0. strategy:deckbuilding.archetype-selection's Walser distinction is the one the pilot named himself as commander dependence HIGH: 'built around your commander is not reliant on it. A deck whose only payoff sits in the command zone hands three opponents one target' - here the PAYOFF (Approach) does not sit in the command zone but the CONVERSION does.",
+ "schools": [
+  "strategy:whos-the-beatdown",
+  "strategy:whos-the-beatdown.metagame-clock",
+  "strategy:pivot-point",
+  "strategy:multiplayer",
+  "strategy:multiplayer.asymmetry",
+  "strategy:multiplayer.commander-insurance",
+  "strategy:multiplayer.pivot-window",
+  "strategy:multiplayer.pod-management",
+  "strategy:multiplayer.politics",
+  "strategy:multiplayer.threat-deflection",
+  "strategy:card-advantage",
+  "strategy:card-advantage.virtual",
+  "strategy:tempo",
+  "strategy:tempo.sequencing",
+  "strategy:information.range-tells",
+  "strategy:resource-hedging",
+  "strategy:resource-hedging.wrath-math",
+  "strategy:resource-hedging.playing-to-outs",
+  "strategy:threat-assessment",
+  "strategy:threat-assessment.answer-economy",
+  "strategy:threat-assessment.resource-denial",
+  "strategy:combat-math.racing",
+  "strategy:combat-math.probability",
+  "strategy:mulligans.engine-hands",
+  "strategy:critical-mass",
+  "strategy:deckbuilding.interaction-suite",
+  "strategy:deckbuilding.threat-density",
+  "strategy:deckbuilding.redundancy-vs-tutors",
+  "strategy:deckbuilding.curve",
+  "strategy:deckbuilding.mana-base",
+  "strategy:deckbuilding.mana-base.color-sources",
+  "strategy:deckbuilding.power-level",
+  "strategy:deckbuilding.archetype-selection"
+ ],
+ "role_assignment": {
+  "default_role": "Control that owns the long game outright. strategy:whos-the-beatdown gives Duke's test - 'who has inevitability? — whoever loses the long game must be the beatdown' - and strategy:whos-the-beatdown.metagame-clock names its sources: 'superior late-game card quality, an engine that scales, an unanswerable finisher, or simply more answers than the opponent has threats.' This deck holds the last two: Approach's second cast from hand wins on resolution (verified stack 002, checker.verdict == 'pass', which names the stack as the only interaction window), and 8 counterspells plus 21 interactive copies (deck-audit 'interaction' axis: 14 copies, verdict 'at' against 12-15). The measurement agrees with the assignment: on the 120-game Forge run on v1.2.1 (run b0f44e4a, 2026-09-09, pod 'standard'), heliod won 20 of 99 decided games (0.202, ci95 [0.135, 0.292] per diagnosis) and 12 of those 20 read won_by \"effect of 'Approach of the Second Sun'\", 8 read 'all opponents have lost'; on the 40-game standard-v3 run (4b0e1964, same sha) 10 wins, 5 by Approach and 5 by outliving the table. You are never the beatdown by damage: combat damage dealt to players on the 120-game run had mean 3.28 and MEDIAN 0.5, noncombat mean 1.23 and median 0.0. The metagame-clock section's Commander correction is the deck's premise - 'four-player games trend long, so inevitability compounds — engines are the default winning plan' - and the pilot's own operating description ('pass with everything untapped, do nothing in the main phase, act at instant speed') is strategy:multiplayer.pod-management's last sentence made into a build: 'Leaving instant-speed mana open forces three players, not one, to respect your possible interaction.'",
+  "pivot_trigger": "The pivot is the second Approach and nothing else. strategy:multiplayer.pivot-window sets the bar: 'The window opens when your win attempt either can't be profitably answered — protection up, table tapped out, interaction counted and accounted for — or doesn't need to resolve fully to leave you ahead.' Approach fails the second clause outright (a countered Approach goes to the graveyard, no life, no win check - stack 002 step 3, rule 701.6a), so only the first clause applies, and it has three concrete parts: the first Approach has resolved and sits seventh from the top; you have drawn or tutored it again (Mystical Tutor, Long-Term Plans, or the Scepter copying Mystical Tutor - the last is a candidate line, not a fact); and you can pay {6}{W} less the day's discount with a counter still up. Goldfish mean available mana crosses 7 at turn 8 (7.064; 6.412 at turn 7) with the discount OFF, so read that as the ceiling on how late it is. strategy:tempo.sequencing's Commander correction says where the cast goes: 'prefer committing at the end step before your own turn so the table's chances to respond are spent' - a sorcery cast in that window needs the flipped Heliod's flash grant on the battlefield, which is why commander dependence is HIGH. Before the window opens, strategy:pivot-point's instruction is the entire plan: 'hold the protection spell for the turn you commit, not after'. strategy:multiplayer.threat-deflection prices the wait: 'The deflection budget spends down as your engine shows; plan the pivot before it runs out'. Log 002 records the failure mode in the pilot's own words - he sat on Long-Term Plans overthinking a cost that 'with the treasure and the discount ... is two or three, not seven', and the combo seat took its window first; strategy:resource-hedging names it: 'playing *scared* is paying real equity to dodge specific cards'.",
+  "strategy_ref": "strategy:pivot-point",
+  "seat_relative_note": "strategy:whos-the-beatdown's Commander correction: 'role is seat-relative — you can be the beatdown against one opponent and the control against another in the same turn cycle; assign per-threat, not per-game'. On the 120-game run giada-angels caused 43 of heliod's 61 eliminations (8+11+11+13 across seat positions) and all 61 were eliminated_how 'damage' - against the flier seat you are pure defence and the fort is the whole game. Against the two grinding seats you are the one accruing, and strategy:multiplayer.asymmetry's Rice rule holds your one-for-ones in hand: 'hold removal until the threat is pointed at you, and let opponents spend their one-for-ones on each other.' Against a combo seat (log 002, cause 'combo') the assignment flips to strategy:threat-assessment.answer-economy's exception: 'held answers rot — against combo, or lethal already on board, the last profitable moment is now'."
+ },
+ "engines": [
+  {
+   "piece": "Approach of the Second Sun",
+   "engine": "THE win condition. First cast resolves, gains 7 and goes seventh from the top; the second cast from hand wins. Everything else in the 99 buys the turns to cast it twice.",
+   "evidence": "verified stack 002 (checker.verdict == 'pass'); combo_details via deck-facts: Approach + Mystical Tutor, bracket 3, mana_value_needed 15, produces ['Win the game']; Forge run b0f44e4a (n120, sha 214af3084f80 = v1.2.1): 12 of 20 heliod wins won_by \"effect of 'Approach of the Second Sun'\", Approach cast 39 times in 120 games; run 4b0e1964 (standard-v3, n40): 5 of 10 wins by Approach. goldfish 'Win condition access' (3 cards: Approach, Mystical Tutor, Long-Term Plans) assembles 0.495, 0.358 by turn six, mean turn 4.022",
+   "strategy_ref": "strategy:whos-the-beatdown.metagame-clock"
   },
-  "engines": [
-    {
-      "piece": "Approach of the Second Sun",
-      "engine": "THE win condition. First cast resolves, gains 7 life and goes seventh from the top; the second cast from hand wins outright. Everything else in the 99 buys the turns to cast it twice.",
-      "evidence": "verified stack 002 (checker.verdict == 'pass') resolves exactly when the win is checked and names the stack as the only interaction window; combo_details records Approach + Mystical Tutor, bracket 3, mana_value_needed 15, popularity 21070, produces ['Win the game']; sim run n120: 20 of heliod's 27 wins carry won_by \"effect of 'Approach of the Second Sun'\"",
-      "strategy_ref": "strategy:whos-the-beatdown.metagame-clock"
-    },
-    {
-      "piece": "Heliod, the Warped Eclipse (back face)",
-      "engine": "The discount and the flash grant. 'You may cast spells as though they had flash. Spells you cast cost {1} less to cast for each card your opponents have drawn this turn.' Every symmetric draw permanent is a cost reducer, and flash turns the whole deck into held-up mana.",
-      "evidence": "oracle text, cards.json; flip cost {3}{U/P} on top of {2}{W}{W} — goldfish target 'Heliod plus the mana to flip him' assembles 0.823 of games, 0.642 by turn six, mean turn 4.808; goldfish commander mean_cast_turn 4.221. `model-coverage heliod` lists Heliod's only channel as `bodies` — the discount is NOT modelled, so every goldfish mana figure here is measured with it OFF and is a floor",
-      "strategy_ref": "strategy:tempo.sequencing"
-    },
-    {
-      "piece": "Howling Mine, Font of Mythos, Temple Bell, Kami of the Crescent Moon, Dictate of Kruphix, Mikokoro, Kwain, Loran of the Third Path, The Second Doctor, Scrawling Crawler, Forced Fruition",
-      "engine": "The symmetric gift: eleven permanents that hand the whole table cards, plus Faerie Mastermind's {3}{U} activation. Enumerated from cards.json oracle text — note that Decanter of Endless Water, which the goldfish target file counts in this group, does NOT make anyone draw ('You have no maximum hand size. {T}: Add one mana of any color'). They are the fuel for Heliod's per-draw discount, the trigger source for every tax below, and the deck's political cover — strategy:multiplayer.politics' 'engineered dilemmas' in permanent form. The Second Doctor makes the gift literally buy peace: each opponent who draws 'can't attack you or permanents you control during their next turn'.",
-      "evidence": "oracle text, cards.json; goldfish target 'Table draw engine online' assembles 0.935 of games, 0.854 by turn six, mean turn 2.319 — the earliest and most reliable target in the file",
-      "strategy_ref": "strategy:multiplayer.politics"
-    },
-    {
-      "piece": "Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Teferi's Ageless Insight, Alhammarret's Archive",
-      "engine": "The asymmetry converter. The gift above is symmetric and therefore not card advantage; these seven make it one-sided. strategy:card-advantage's Commander correction is the reason the deck is built this way: 'engines that out-draw three players are the format's defining advantage.' Consecrated Sphinx draws two on EVERY opponent draw — with Howling Mine or Font of Mythos out it reads off the table's own upkeep.",
-      "evidence": "oracle text, cards.json; goldfish target 'Heliod down with an asymmetric card engine' assembles 0.787, 0.581 by turn six; goldfish mean_extra_cards_drawn_by_turn 3.586 at turn ten. Caveat from goldfish meta.card_advantage: 13 cards draw, only 2 are MODELLED, and Sphinx, Remora, Rhystic Study, Faerie Mastermind, Kefnet, Ageless Insight and Psychosis Crawler are all in `draw_not_modelled`",
-      "strategy_ref": "strategy:card-advantage"
-    },
-    {
-      "piece": "Psychosis Crawler, Scrawling Crawler",
-      "engine": "The each-opponent drain that scales with the gift: Psychosis Crawler is 'whenever you draw a card, each opponent loses 1 life' with power equal to your hand size; Scrawling Crawler is 'whenever an opponent draws a card, that player loses 1 life' plus an upkeep draw for everybody. strategy:multiplayer.asymmetry names exactly this shape — 'effects that tax or drain every opponent at once'.",
-      "evidence": "oracle text, cards.json; goldfish target 'Draw-trigger punisher drawn' 0.366 assembled (0.737 with tutors), and 'Engine + punisher assembled' only 0.334 (0.702 assisted), 0.204 by turn six — the deck's least reliable pairing. Sim n120: noncombat damage dealt to players mean 1.68, MEDIAN 0.0. Read the median: this is a value layer, not a clock",
-      "strategy_ref": "strategy:multiplayer.asymmetry"
-    },
-    {
-      "piece": "Propaganda, Ghostly Prison, Archangel of Tithes",
-      "engine": "The fort. Three taxers that blank attack plans from three seats at once for one card. strategy:card-advantage.virtual states the multiplier verbatim: 'one tax or pillow-fort effect can blank attack plans from three players at once, the cheapest way to \"answer\" ~120 life worth of aggression.' Archangel is the only one that taxes and blocks fliers in the same slot.",
-      "evidence": "oracle text, cards.json; goldfish target 'A taxer down' assembles 0.487 (0.791 with tutors), only 0.355 by turn six. Enumerated against the other three defensive targets (blockers 0.750, protection 0.680, held interaction 0.843) it is the least reliable thing keeping you alive; the two punisher targets assemble lower still (0.366 and 0.334) but those are value, not survival",
-      "strategy_ref": "strategy:card-advantage.virtual"
-    },
-    {
-      "piece": "Angelic Wall, Drift of Phantasms, Archangel of Tithes, Consecrated Sphinx, Faerie Mastermind, Kefnet the Mindful",
-      "engine": "Air defence. Enumerated from cards.json: these six are every creature in the 99 whose oracle text contains Flying; no card in the deck has Reach. Two are Defenders bought purely to block (Angelic Wall {1}{W}, Drift of Phantasms {2}{U}). Kefnet carries a live condition — he 'can't attack or block unless you have seven or more cards in hand', which Reliquary Tower, Decanter of Endless Water and The Second Doctor's no-maximum-hand-size clauses exist to keep true.",
-      "evidence": "cards.json oracle enumeration (6 of 18 creatures fly, 0 have reach); sim n120: of heliod's 74 eliminations, giada-angels caused 39 and 53 were eliminated_how 'damage'; heliod's combat_damage_taken mean 36.08, median 24.0. goldfish target 'A body that can block a FLIER' assembles 0.750, 0.604 by turn six",
-      "strategy_ref": "strategy:card-advantage.virtual"
-    },
-    {
-      "piece": "Lightning Greaves, Guardian of Faith, Karametra's Blessing, Teferi's Protection, Leyline of Anticipation",
-      "engine": "Commander insurance, and Cullen's taxonomy as quoted in strategy:multiplayer.commander-insurance maps onto it cleanly: constant protection (Lightning Greaves — haste and shroud, equip {0}), single-use instants (Guardian of Faith phases out other creatures you control; Karametra's Blessing gives an ENCHANTMENT CREATURE hexproof and indestructible, which Heliod is on both faces; Teferi's Protection phases your whole board), and a route that does not need him at all (Leyline of Anticipation duplicates the flash grant).",
-      "evidence": "oracle text, cards.json; sim n120 commander_access: casts mean 0.69 (max 3), games_resolved 68 of 120, resolved_rate 0.567, first resolution at global turn 34.5 on the mean. goldfish target 'Heliod protected, or a flash grant that does not need him' assembles 0.680, 0.526 by turn six",
-      "strategy_ref": "strategy:multiplayer.commander-insurance"
-    },
-    {
-      "piece": "Counterspell, Swan Song, An Offer You Can't Refuse, Dovin's Veto, Arcane Denial, Archmage's Charm, Force of Negation, Fierce Guardianship",
-      "engine": "The counter wall — 8 of the 21 answer cards, two of them free. strategy:deckbuilding.interaction-suite's note that 'counterspells do both jobs' is why the answers-to-answers budget is not a separate eight slots here: the same cards protect the Approach turn and stop the table's win.",
-      "evidence": "card_roles histogram via deck-facts: counterspell 8, removal:spot 4, protection:self 5, removal:sweeper 2, removal:bounce 1, removal:damage 1 = 21; benchmark.json response: answer_cards 21, answer_share 0.25, classes_covered 6 of 15. goldfish 'Free or cheap interaction held' assembles 0.843, 0.707 by turn six, but interaction_castable is only 0.626 at turn six against 0.927 in hand",
-      "strategy_ref": "strategy:deckbuilding.interaction-suite"
-    },
-    {
-      "piece": "Day of Judgment, Supreme Verdict, Cyclonic Rift",
-      "engine": "The reset. Two wraths plus an overloaded Rift, which is the deck's answer to a board it cannot block. strategy:resource-hedging.wrath-math's Commander correction cuts the other way here — you are the player casting it, and the section's advice 'let another player's board be the reason it gets cast' is the political cover the fort buys you.",
-      "evidence": "oracle text, cards.json; deck-facts roles: removal:sweeper 2. Rebuild route: Heliod's front-face ETB returns 'target enchantment card that isn't a God from your graveyard to your hand' and cards.json holds 9 non-God enchantments (Dictate of Kruphix, Forced Fruition, Ghostly Prison, Leyline of Anticipation, Mystic Remora, Propaganda, Rhystic Study, Smothering Tithe, Teferi's Ageless Insight). Note: all three sweepers are `invisible` in `model-coverage heliod` — the goldfish has no opponent, so it cannot price them at all",
-      "strategy_ref": "strategy:resource-hedging.wrath-math"
-    },
-    {
-      "piece": "Stroke of Genius, Braingeyser, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker",
-      "engine": "The X-spell sinks the discount pays for. Heliod's back face reduces generic cost, so an {X} spell's fixed part shrinks and X grows — and Prosperity, Skyscribing and Mathemagics feed the discount for the SAME turn by drawing the whole table. Four X-cost cards turn spare mana into a body — Secure the Wastes, Mikaeus the Lunarch, Hangarback Walker and Walking Ballista (enumerated from cards.json: nine cards carry {X} in their mana cost, and those four are the ones that leave a permanent behind).",
-      "evidence": "oracle text, cards.json; goldfish target 'An X-spell finisher drawn' assembles 0.790, 0.673 by turn six. deck-facts curve: only 6 cards sit above mana value 4 (2 at five, 2 at six, 1 at seven, 1 at eight), so the X-spells ARE the top end",
-      "strategy_ref": "strategy:deckbuilding.threat-density"
-    },
-    {
-      "piece": "Mystical Tutor, Enlightened Tutor, Long-Term Plans, Drift of Phantasms (transmute)",
-      "engine": "Four routes back to the second Approach and to the fort. Mystical Tutor puts it on top; Long-Term Plans puts any card third from the top at instant speed; Enlightened Tutor finds an artifact or enchantment. Drift of Phantasms is the one the role taxonomy nearly misses: transmute {1}{U}{U} finds any mana-value-3 card, and cards.json holds 16 others at that cost — including Rhystic Study, Propaganda, Ghostly Prison, Teferi's Protection, Fierce Guardianship and Force of Negation.",
-      "evidence": "oracle text and a mana-value enumeration over cards.json (17 nonland cards at MV 3, Drift included); `model-coverage heliod` lists `tutor` among Drift's active channels; goldfish 'Win condition access' 0.679 unassisted against 0.745 assisted — tutors add only 6.6 points because Approach is one card and three of the four tutors are already counted in the group",
-      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
-    }
-  ],
-  "candidate_missing_lines": [
-    {
-      "title": "The second Approach cast at an opponent's end step under Heliod's flash grant",
-      "cards": [
-        "Heliod, the Warped Eclipse",
-        "Approach of the Second Sun",
-        "Fierce Guardianship"
-      ],
-      "why_plausible": "Heliod's back face reads 'You may cast spells as though they had flash', so Approach — a sorcery — can be cast in the window strategy:tempo.sequencing recommends ('committing at the end step before your own turn so the table's chances to respond are spent'). Verified stack 002 resolves the win check but its board has no flash grant and no held counter, so the sequencing question it settles is the sorcery-speed one. Whether the free-counter backup (Fierce Guardianship's alternative cost needs a commander on the battlefield) is live in that same window depends on Heliod still being there, which sim n120 says he is in only 0.567 of games.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Karametra's Blessing saving Heliod: does the enchantment-creature rider apply on both faces, and what does it fail to stop?",
-      "cards": [
-        "Karametra's Blessing",
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
-      ],
-      "why_plausible": "cards.json gives both faces the type line 'Legendary Enchantment Creature — God', so Karametra's Blessing's conditional rider ('If it's an enchanted creature or enchantment creature, it also gains hexproof and indestructible') appears to apply — but the frame must not assert it. The load-bearing negative is what indestructible does not cover: exile and bounce still remove him, and 'destroy all creatures' from Day of Judgment is answered while Supreme Verdict's is too. A scenario should also settle the Lightning Greaves conflict below.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Lightning Greaves' shroud versus your own protection spells",
-      "cards": [
-        "Lightning Greaves",
-        "Karametra's Blessing",
-        "Guardian of Faith",
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
-      ],
-      "why_plausible": "Greaves grants shroud, which stops YOUR targeting too — Karametra's Blessing targets a creature and Guardian of Faith's ETB targets 'other target creatures you control'. Equip {0} means the Greaves can move off in response, but only at sorcery speed. Two of the four protection slots may therefore be mutually exclusive with the third while equipped, which would change how the goldfish's 0.680 'Heliod protected' target should be read.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Guardian of Faith phasing the board out of a wrath, and what happens to a transformed Heliod",
-      "cards": [
-        "Guardian of Faith",
-        "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
-        "Supreme Verdict"
-      ],
-      "why_plausible": "Guardian of Faith has Flash and an ETB that phases out 'any number of other target creatures you control', which is a one-card fog against a sweeper — the resilience strategy:resource-hedging.wrath-math prefers over restraint. Two unsettled points: whether a phased-out Heliod returns on his TRANSFORMED face, and whether the Guardian itself (not 'other') survives. Nothing in stacks/ covers phasing.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Heliod's discount and an {X} spell: how much does the table's draw step actually cut?",
-      "cards": [
-        "Heliod, the Warped Eclipse",
-        "Howling Mine",
-        "Font of Mythos",
-        "Stroke of Genius"
-      ],
-      "why_plausible": "The discount is '{1} less for each card your opponents have drawn THIS TURN', so it is largest on your own turn only if opponents drew during it — Font of Mythos and Howling Mine fire on each player's draw step, not yours. That suggests the discount is at its maximum on an OPPONENT'S turn, which is exactly when the flash grant lets you cast. A scenario should count the reduction precisely and confirm it floors at the coloured pips. `model-coverage` shows the goldfish does not model this channel at all, so no artifact currently answers it.",
-      "status": "needs a stack scenario"
-    },
-    {
-      "title": "Drift of Phantasms transmute as a fort tutor",
-      "cards": [
-        "Drift of Phantasms",
-        "Ghostly Prison",
-        "Propaganda",
-        "Rhystic Study"
-      ],
-      "why_plausible": "Transmute {1}{U}{U} discards Drift to search for a card with the same mana value (3). Enumerated from cards.json, 16 other nonland cards in this 99 cost 3, including Propaganda, Ghostly Prison and Rhystic Study (Archangel of Tithes is mana value 4 and out of range). That would make the lowest-assembling defensive target ('A taxer down', 0.487) materially more reliable — but transmute is sorcery-speed only and costs the blocker, and the goldfish's tutor model counts it as filling one any_of group without pricing that tradeoff.",
-      "status": "needs a stack scenario"
-    }
-  ],
-  "matchup_frames": {
-    "vs_the_standard_pod": "MEASURED, and it is the best evidence this deck has. Sim run giada-angels-vs-baylen-tokens-vs-abaddon-n120 (Forge 2.0.14, 120 games, 4 seeded jobs, 600s clock, three bracket-3 opponents): heliod 27 wins, win_rate 0.252, CI95 [0.180, 0.342]; 12 games truncated and 1 drawn, so 108 decided. An even share of the decided games across four seats is 108/120/4 = 0.225, which sits inside that interval — the run does NOT separate this deck from an even split, and the point estimate is what ranks it. On the same pod: ur-dragon 0.305 [0.222, 0.404] (n=100), heliod 0.252 (n=120), edgar-vampires 0.144 [0.088, 0.228] (n=100), zur-enchantress best-of-four 0.118 (n=60), goblin-storm 0.031 (n=100). Second by point estimate; the marginal intervals overlap and no interval on a DIFFERENCE has been computed, so that ordering is not a separation. STALENESS: the run's heliod seat carries decklist_sha256 decc32b080fe — V6/v1.0.0, which the record's own note says held 14 Islands to 3 Plains. The current list is 214af3084f80. Every Forge figure in this frame therefore describes the deck one version ago; the goldfish, benchmark, diagnostic and mana figures all match the current sha.",
-    "vs_aggro": "This is the matchup that kills you and it has a name: giada-angels caused 39 of heliod's 74 eliminations, and 53 of them were eliminated_how 'damage'. combat_damage_taken mean 36.08, median 24.0 against combat damage dealt of mean 4.11, median 0.5. strategy:combat-math.racing's Commander correction is the ruling: 'you cannot race three life totals' — so you do not race, you tax and you block. Two layers, and neither is reliable yet. The tax layer (Propaganda, Ghostly Prison, Archangel of Tithes) assembles in 0.487 of goldfish games and 0.355 by turn six — the lowest of the four defensive targets. The block layer is six fliers and zero reach, enumerated from cards.json, at 0.750 assembled and 0.604 by turn six — and one of the six (Kefnet) cannot block below seven cards in hand. strategy:card-advantage.virtual is why the tax layer is worth more per slot than the blockers: a taxer blanks three attack plans, a Wall blanks one attacker.",
-    "vs_sweeper_control": "You are on the right side of strategy:resource-hedging.wrath-math and should behave that way: 'against a control deck, holding back often IS the loss, because buying time is exactly their plan' — but that is advice to the deck being wrathed, and here the mirror correction is that your board is not your plan. deck-facts counts 18 threat:body cards, yet sim n120 gives creatures_lost a mean of 1.33 with median 0.0 and first_attack_turn a mean of 21.12 across only 60 of 120 games: this deck barely commits and barely attacks. A rival wrath costs you the fort, not the win. Rebuild through Heliod's front-face ETB, which returns any of the 9 non-God enchantments in the list from the graveyard. The real risk against another control deck is the counter war on the Approach turn — strategy:multiplayer.pivot-window's standard applies to you: 'assume every held answer appears the moment you present lethal, and count the table's open mana before committing.' Verified stack 002 makes the constraint exact: the stack is the ONLY window.",
-    "vs_stax": "Your worst structural matchup, and strategy:threat-assessment.resource-denial says why in one sentence: 'Decks built on many cheap spells per turn are hit hardest: taxes attack the velocity math directly.' This deck's curve is 12 one-drops and 21 two-drops (deck-facts) and its plan is several cheap permanents per turn plus held-up counters. It also forces the role: 'you rarely own the long game under an assembling lock, so you are the beatdown, racing the lock's completion.' That is the one board state where the inevitability read above INVERTS. Two live outs, both castable under most taxes: Disenchant, Loran of the Third Path and Cathar Commando answer artifact and enchantment lock pieces, and Cyclonic Rift overloaded resets a lock built out of permanents. Name the piece that beats YOU — the one that stops Approach or stops your draw — not the scariest one (strategy:threat-assessment.answer-economy).",
-    "vs_combo": "You are the table's answer-holder, and strategy:threat-assessment.answer-economy names the countervailing risk plainly: 'held answers rot — against combo, or lethal already on board, the last profitable moment is now.' Eight counterspells is the right suite for this and the free ones (Force of Negation, Fierce Guardianship) are what let you hold up nothing and still say no — though Fierce Guardianship's alternative cost needs your commander on the battlefield, and sim n120 says he is there in 0.567 of games. The measured worry is not the count but the mana: goldfish interaction_in_hand is 0.927 at turn six while interaction_castable is 0.626 — you are HOLDING answers you cannot pay for a quarter of the time, and that figure is a floor because the model spends everything every turn. The gift engine is also a liability here: Forced Fruition hands a combo deck seven cards per spell, and Howling Mine and Font of Mythos accelerate their assembly as much as your discount."
+  {
+   "piece": "Heliod, the Warped Eclipse (back face)",
+   "engine": "The converter: flash for every spell and {1} off per card opponents drew this turn. The discount lives on the opponents' turns (their draw step already counts one), which is where a flash deck casts; a generic-cost artifact discounts to free, an activated ability (the Scepter's {2}) is not a spell and is not discounted (oracle text). This is the HIGH commander dependence the pilot named: the gift is symmetric until this face is on the battlefield.",
+   "evidence": "oracle text, cards.json; flip {3}{U/P} on top of {2}{W}{W}, sorcery speed; goldfish commander mean_cast_turn 4.187, cast_by_turn_6 0.896; goldfish target 'Heliod plus the mana to flip him' 0.741 assembled, 0.561 by turn six, mean turn 4.87 (commander_gated). Forge b0f44e4a engine_casts: Heliod cast 91 times and 'activated' (transformed) 44 times in 120 games - the back face existed in at most 44 games. The discount is NOT modelled: model-coverage lists Heliod's only channel as bodies, so every goldfish mana figure here is a floor",
+   "strategy_ref": "strategy:tempo"
   },
-  "distribution_notes": "100 copies in 85 entries: 67 nonland, 33 lands in 18 entries (deck-facts). CURVE, against strategy:deckbuilding.curve's EDHREC baseline of 15.7 two-drops and 15.4 three-drops in the average deck — 2 zero-drops, 12 ones, 21 twos, 17 threes, 9 fours, 2 fives, 2 sixes, 1 seven, 1 eight. This deck is well above the format at two and three and nearly empty above four; the nine four-drops match the section's observation that builders run more cards at their commander's mana value. The six cards above mana value four, enumerated from cards.json, are Alhammarret's Archive and Psychosis Crawler at five, Consecrated Sphinx and Forced Fruition at six, Approach at seven and Dig Through Time at eight — and Dig delves, so its printed cmc overstates what you pay. The section's discipline — 'you're probably only going to be able to cast ONE big-mana spell per game' — is why Approach at {6}{W} is the expensive card the deck is built to pay for, and why the rest of the top end is X-spells that scale. MANA. 33 lands is below strategy:deckbuilding.mana-base.color-sources' assumption (Karsten's 99-card column assumes 40), and it shows: mana_analysis gives 25 W sources and 26 U against its own source_targets of 36 each, and on-curve probability lands-only of 0.610 W / 0.639 U, 0.718 / 0.742 with rocks, 0.580 / 0.610 once Skycloud Expanse is excluded as gated. Karsten's 'consistently' means about 90%. Read against his table the shortfall is concrete: the commander is 2{W}{W} (26 sources wanted, 25 held) and Archangel of Tithes is 1{W}{W}{W} (33 wanted). 7 lands enter tapped, 2 of them always — inside his cap of about four taplands. goldfish land_drop_hit_rate falls 0.729 / 0.603 / 0.540 across turns four to six and benchmark's missed_land_drop_rate is 0.2532 with turn six the worst; diagnostic puts missed_land_drop_by_five at 0.5194 and reports the deck ABOVE the fleet median on mana. Stalling is nonetheless rare after turn one (two-turns-in-a-row 0.0091, below the fleet median), and 786 of 792 stall turns were mana_short rather than hand_empty — hand-empty accounts for 6 of the 792, so the constraint is lands and not cards. KEEPS. goldfish opening_hand: 0.734 of first sevens are kept, mean_mulligans 0.333, and 0.981 of kept hands can act by turn three. strategy:mulligans.engine-hands' Commander correction is the right reading of that 0.734 — 'the customary free first mulligan makes the first ship near-free — use it ruthlessly — and 100-card singleton means you mulligan to enabler *classes*, not named cards'. The classes here are a land pair, a cheap draw-for-the-table permanent, and one answer; the deck has 11 permanent routes to the first, so keeping for a NAMED card is never correct except for Approach itself. ROLES (deck-facts, coverage 0.8588; 12 cards have no pattern, which is absence of a pattern and not absence of the function): draw:engine 9, draw:burst 5, draw:wheel 5, threat:body 18, counterspell 8, removal:spot 4, removal:sweeper 2, removal:bounce 1, removal:damage 1, protection:self 5, ramp:rock 7, ramp:cost-reduction 3, tutor:unrestricted 2, tutor:narrow 2, wincon:alt 1, wincon:drain 2. Against strategy:deckbuilding.interaction-suite's counts — Walser's 8-10 removal inside a 15-20 card interactive suite, wipes 'one or two max' — the 21-card suite is at the top of the range and the 2 wraths are correct, but breadth is 6 of 15 classes (benchmark.json), and the section puts breadth before depth: 'cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any.' There is no graveyard answer in the 99. THREAT DENSITY. strategy:deckbuilding.threat-density asks for 3-5 finishers and this deck has ONE: Approach. The 18 threat:body cards are blockers and mana sinks, not finishers — sim n120's first_attack_turn mean of 21.12 over 60 of 120 games says the bodies do not convert. That is the ceiling-versus-median tradeoff the section names, taken to its limit: 'the ceiling build runs one spectacular finisher and loses when it's answered.' The 7 attrition wins in the sim run are the deck closing without it. MODEL COVERAGE. 78 seen, 0 dark, 7 invisible (Cyclonic Rift, Day of Judgment, Dig Through Time, Disenchant, Path to Exile, Supreme Verdict, Swords to Plowshares) — the goldfish has no opponent, so the entire removal suite is unpriced there, and Heliod's cost discount is unmodelled. diagnostic.json's engine section is unavailable because no goldfish target is marked `required: true`, so this deck has no measured engine lift.",
-  "overall_assessment": "This deck does not build a board to win with; it builds a board to not die behind, and it wins with a card that says 'you win the game'. The world-view is strategy:whos-the-beatdown.metagame-clock's — 'four-player games trend long, so inevitability compounds' — and the deck owns the long game on two of the four sources that section lists: an unanswerable finisher and more answers than the table has threats. The mechanism is a deliberate inversion. Eleven permanents hand the whole table cards, which reads as generosity and is priced as one (strategy:multiplayer.politics, and strategy:multiplayer.threat-deflection's 'engines that read as defensive'). Then Heliod, the Warped Eclipse charges you {1} less per card they drew and lets you cast at instant speed; Rhystic Study, Mystic Remora, Smothering Tithe and Consecrated Sphinx make the symmetric gift asymmetric; Psychosis Crawler and Scrawling Crawler bill them for taking it; and Propaganda, Ghostly Prison and Archangel of Tithes make attacking you the worst-value attack at the table. The pilot's own summary is the same claim in plainer words: 'we don't win through combat; we control, we survive, we enchant and tutor. we cast second sun twice, and our board state is designed to keep us alive.' The measurement agrees with the theory more cleanly than usual. Over 120 Forge games against three bracket-3 opponents the deck won 27 (0.252, CI95 [0.180, 0.342]) with a mean finishing position of 2.319 over 94 ranked games, and 20 of those 27 wins were the Approach effect while 7 were the last seat standing — the deck is doing on the table exactly what it says on paper. It got there dealing a MEDIAN of 0.5 combat damage and reaching 21 commander damage in zero games. What the same run says about the limits is why fourteen cards changed: the deck was eliminated in 74 of 120 games, 53 of those to damage, 39 of them by one opponent 31 of whose 32 creature cards carry flying (enumerated from data/opponents/giada-angels/decklist.txt against cards.csv; the lone exception is Starnheim Aspirant) — and the current 99 answers that with five new defensive slots and a commander-protection package, because Heliod resolved in only 0.567 of games and averaged 0.69 casts. Two honest holes remain. The first is that this is a ONE-finisher deck where strategy:deckbuilding.threat-density asks for three to five, and the fallback is not a second combo — the pilot has ruled that out — but attrition, which the sim shows works about a quarter as often as Approach. The second is that the fort the whole plan rests on is the least reliable of the four defensive targets: 'A taxer down' assembles in 0.487 of goldfish games and only 0.355 by turn six, while the gift engine that helps everyone is online in 0.935 by mean turn 2.319. Until those two rates converge the deck is, for several turns each game, handing three opponents cards from behind a door that is not yet locked. And there is a posture risk the doc names directly. strategy:resource-hedging opens on it: 'playing not to lose' prioritizes delaying defeat over maximizing win probability, and it is mathematically wrong — the distinction being that playing SAFE is correct from ahead while playing SCARED pays real equity to dodge specific cards. A deck whose median combat damage is 0.5 and whose mean finishing position is 2.319 is a deck that is very good at coming second. The section's rule of thumb is the correction to hold in mind at the table: hedge from ahead, gamble from behind — and the gamble here is casting the second Approach into a table that might have the counter, rather than waiting for a turn that never gets safer.",
-  "gaps": [
-    "NO SECTION ON ALTERNATE WIN CONDITIONS. A card that reads 'you win the game' is a different object from a threat: it cannot be blocked, raced or removed once resolving, and the entire skill is the one window on the stack. Querying 'you win the game alternate wincon protecting the win spell' returns strategy:resource-hedging at 0.407 and nothing on topic. This deck's whole plan has no home in the doc. Wanted: how to time a win-the-game spell across three responders, how many tutors and protection slots one is worth, and the two-cast structure (Approach, Thassa's Oracle, Coalition Victory, Test of Endurance) as a class.",
-    "NO SECTION ON PILLOW-FORT / DETERRENCE ECONOMICS. strategy:card-advantage.virtual has one clause about tax effects blanking three attack plans and that is the whole of it; the query 'pillow fort deterrence tax attackers Propaganda Ghostly Prison' tops out at 0.241. Wanted: how many taxers a fort needs before it is a deterrent rather than a speed bump, how {2}-per-attacker prices against a token deck versus a Voltron deck, and why an untaxable route (fliers, trample, direct damage) breaks the whole layer at once.",
-    "NO SECTION ON SYMMETRICAL RESOURCE GIFTS (group hug as a means, not an end). Feeding the table to power your own discount, taxes and drains is a real archetype and this deck IS one; the doc treats card advantage only as asymmetry. Wanted: when the gift is net-positive, what conversion rate makes it so, and the failure mode where the cards you handed out kill you (here: Forced Fruition against a combo seat).",
-    "NO SECTION ON EVASION AXES AND BLOCKER COVERAGE. The doc has strategy:combat-math but nothing on how to cover flying, menace, trample and unblockable in the 99 — the query returns 0.175 at best. This deck just spent five slots on the flying axis alone off a measured elimination count, and had no framework to size that decision against.",
-    "NO SECTION ON THE DRAW-GO POSTURE. strategy:tempo.sequencing covers ordering within a turn and strategy:multiplayer.pod-management notes that open mana 'forces three players, not one, to respect your possible interaction', but nothing addresses how much mana to leave up across a four-player turn cycle, or when to break the posture and develop. The goldfish measures the gap (interaction in hand 0.927 versus castable 0.626 at turn six) and the doc cannot advise on it.",
-    "bracket_report.json IS STALE and should be regenerated before any power-level claim is made from it. Enumerated against the current cards.json: of its 10 listed Game Changers, 8 remain (Consecrated Sphinx, Cyclonic Rift, Enlightened Tutor, Fierce Guardianship, Mystical Tutor, Rhystic Study, Smothering Tithe, Teferi's Protection) and 2 are gone (Ancient Tomb, Drannith Magistrate). Its `two_card_infinites` entry, Hullbreaker Horror + Sol Ring, is also gone — Hullbreaker Horror is not in the 99 — and deck-facts now reports 0 two-card infinites, so the two drivers that forced its floor of 4 are one card fewer and one line fewer respectively. strategy:deckbuilding.power-level is clear that contents give a floor and never a verdict, but the floor should at least be computed from the current 99.",
-    "The 120-game Forge run predates the current decklist (seat sha decc32b080fe against the current 214af3084f80, a difference the run's own note describes as 14 Islands to 3 Plains). Every claim in this frame that rests on Forge describes v1.0.0. A re-run on 214af3084f80 is what would tell us whether the five defensive additions changed the 39-of-74 elimination share, and it is the single highest-value measurement this deck is missing.",
-    "goldfish_targets.json HAS A MEMBERSHIP DEFECT that inflates two figures. The any_of group for 'Table draw engine online (opponents are drawing)' and the one for 'Engine + punisher assembled' both list Decanter of Endless Water, whose oracle text in cards.json and in the corpus is 'You have no maximum hand size. {T}: Add one mana of any color' — it makes nobody draw. It is correctly a member of the 'mana to flip him' group. Until it is removed from the two draw groups, the 0.935 / 0.854 / mean-turn-2.319 assembly figures count games where the only 'engine' drawn was a mana rock, and the same overcount flows into 'Engine + punisher' 0.334. This frame cites those numbers because they are the tracked measurement and flags them here rather than silently adjusting them — the authored file is not mine to edit."
-  ]
+  {
+   "piece": "Howling Mine, Font of Mythos, Temple Bell, Kami of the Crescent Moon, Dictate of Kruphix, Mikokoro, Kwain, Loran of the Third Path, The Second Doctor, Scrawling Crawler, Horn of Greed",
+   "engine": "The symmetric gift, eleven permanents (engine-facts group 'Table draw engine online'). Horn of Greed replaced Forced Fruition inside this group: 'Whenever a player plays a land, that player draws a card' fires on each opponent's land drop, on their turn, one more discount where the deck casts, and a card for you on yours (branch.json why). strategy:multiplayer.politics' 'engineered dilemmas' in permanent form, and The Second Doctor makes the gift buy peace outright.",
+   "evidence": "oracle text, cards.json; goldfish target 0.898 assembled, 0.79 by turn six, mean turn 2.639 - the earliest and most reliable group in the file; branch.json artifacts-v1: a swap inside the group, so assembly does not move",
+   "strategy_ref": "strategy:multiplayer.politics"
+  },
+  {
+   "piece": "Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Teferi's Ageless Insight, Alhammarret's Archive",
+   "engine": "The asymmetry converter. strategy:card-advantage's Commander correction: 'with three opponents, one-for-one trades are net losses to the table, and engines that out-draw three players are the format's defining advantage'. Consecrated Sphinx draws two per opponent draw, so with Mine or Font out it reads off the table's own upkeep.",
+   "evidence": "oracle text, cards.json; goldfish 'Heliod down with an asymmetric card engine' 0.787 assembled, 0.583 by turn six (commander_gated); mean_extra_cards_drawn 1.152 at turn six, 3.559 at ten. goldfish meta.card_advantage: 14 cards draw, 6 modelled; Sphinx, Remora, Rhystic Study, Faerie Mastermind, Kwain, Loran and Psychosis Crawler are in draw_not_modelled, so the extra-cards figure is a floor",
+   "strategy_ref": "strategy:card-advantage"
+  },
+  {
+   "piece": "Psychosis Crawler, Scrawling Crawler",
+   "engine": "The each-opponent drain that scales with the gift; strategy:multiplayer.asymmetry's 'effects that tax or drain every opponent at once'. A value layer, not a clock.",
+   "evidence": "oracle text, cards.json; goldfish 'Crawler drawn' 0.36 assembled (0.73 assisted), 'Engine plus drain both drawn' 0.31 (0.674 assisted), 0.179 by turn six - the least reliable pairing in the file. Forge b0f44e4a: noncombat damage to players mean 1.23, median 0.0; Psychosis Crawler cast 0 times in 120 games (a Forge floor, per CLAUDE.md's held-and-never-cast rule)",
+   "strategy_ref": "strategy:multiplayer.asymmetry"
+  },
+  {
+   "piece": "Propaganda, Ghostly Prison, Archangel of Tithes",
+   "engine": "The fort. strategy:card-advantage.virtual: 'one tax or pillow-fort effect can blank attack plans from three players at once, the cheapest way to \"answer\" ~120 life worth of aggression'. Archangel of Tithes is the one slot that taxes and blocks a flier.",
+   "evidence": "oracle text, cards.json; goldfish 'A taxer down' 0.496 assembled (0.791 assisted), 0.357 by turn six - the least reliable of the four defensive groups (held interaction 0.839, protection 0.683, flier-blocker 0.68). Forge b0f44e4a: combat_damage_taken mean 37.92, median 31; all 61 eliminations were 'damage'",
+   "strategy_ref": "strategy:card-advantage.virtual"
+  },
+  {
+   "piece": "Drift of Phantasms, Archangel of Tithes, Consecrated Sphinx, Faerie Mastermind, Kefnet the Mindful",
+   "engine": "Air defence, now five bodies after Angelic Wall left for Mind Stone (branch.json: 'the one blocker whose text is exhausted by blocking'). Kefnet 'can't attack or block unless you have seven or more cards in hand'.",
+   "evidence": "engine-facts group 'A body that can block a FLIER': 5 cards, 0.68 assembled, 0.529 by turn six, mean turn 3.597; Forge b0f44e4a: giada-angels caused 43 of 61 eliminations",
+   "strategy_ref": "strategy:card-advantage.virtual"
+  },
+  {
+   "piece": "Lightning Greaves, Guardian of Faith, Karametra's Blessing, Teferi's Protection, Leyline of Anticipation",
+   "engine": "Commander insurance, in Cullen's taxonomy as quoted by strategy:multiplayer.commander-insurance: 'constant protection (boots-style equipment and enchantments — always on, cheap to re-arm, useless against wraths), single-use instants (cost held mana all game but protect at the decisive moment and can cover the board)', plus Leyline as the route that does not need him. The section's decision test is the pilot's question verbatim: 'how critical is the commander to the plan, and what removal this table actually runs' - log 001 answers the second (a counter war and a redirected Swords took Heliod and 'the engine was offline from there').",
+   "evidence": "oracle text, cards.json; goldfish 'Heliod protected, or a flash grant that does not need him' 0.683 assembled, 0.531 by turn six. Forge b0f44e4a engine_casts: Guardian of Faith 0 casts and Teferi's Protection 0 casts in 120 games, Karametra's Blessing 9 - the AI does not hold protection, so Forge's read on this package is a floor",
+   "strategy_ref": "strategy:multiplayer.commander-insurance"
+  },
+  {
+   "piece": "Counterspell, Swan Song, An Offer You Can't Refuse, Dovin's Veto, Arcane Denial, Archmage's Charm, Force of Negation, Fierce Guardianship",
+   "engine": "The counter wall: EIGHT, enumerated twice - deck-facts role 'counterspell' = 8 and an oracle-text search for 'counter target' over cards.json = the same 8. strategy:deckbuilding.interaction-suite: 'counterspells do both jobs' - the same cards protect the Approach turn and stop the table's win, so answers-to-answers is not a separate budget here.",
+   "evidence": "deck-facts roles; deck-audit interaction axis 14 copies 'at' (12-15), interactive_suite_copies 21; goldfish 'Free or cheap interaction held' 0.839 assembled, 0.705 by turn six; interaction_in_hand 0.929 at turn six against interaction_castable 0.61 - the draw-go tax the doc cannot yet price (see gaps)",
+   "strategy_ref": "strategy:deckbuilding.interaction-suite"
+  },
+  {
+   "piece": "Day of Judgment, Supreme Verdict, Cyclonic Rift",
+   "engine": "The reset. strategy:resource-hedging.wrath-math's Commander correction read from the caster's side: 'when possible let another player's board be the reason it gets cast'. Rebuild runs through Heliod's front-face ETB, which returns a non-God enchantment from the graveyard.",
+   "evidence": "oracle text, cards.json; deck-audit sweepers axis: 2 copies, verdict 'under' against 5-7 (control override) while the same section quotes wipes 'one or two max' (Zupke caps at 3) - the audit's control template and the section's own cap disagree, and the frame reports both. Log 002: Supreme Verdict cast with Heliod out - 'I killed my own commander. Wipe first, then resolve Heliod.'",
+   "strategy_ref": "strategy:resource-hedging.wrath-math"
+  },
+  {
+   "piece": "Stroke of Genius, Braingeyser, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista, Hangarback Walker",
+   "engine": "The X sinks the discount pays for; Prosperity, Skyscribing and Mathemagics feed the discount the same turn. Mikaeus left this group for the Scepter (branch.json: 'an X-sink whose payoff is counters on walls').",
+   "evidence": "oracle text, cards.json; goldfish 'An X-spell finisher drawn' 0.792 assembled, 0.671 by turn six. Forge b0f44e4a: Skyscribing 0 casts in 120 games. deck-facts curve: 5 cards above mana value four",
+   "strategy_ref": "strategy:deckbuilding.threat-density"
+  },
+  {
+   "piece": "Mystical Tutor, Enlightened Tutor, Long-Term Plans, Drift of Phantasms (transmute)",
+   "engine": "Four routes to the second Approach and to the fort. strategy:deckbuilding.redundancy-vs-tutors: 'k tutors plus the card act like k+1 copies of *every* card' - and 'tutor only the irreplaceable', which Approach is.",
+   "evidence": "oracle text, cards.json; goldfish 'Win condition access' 0.495 unassisted, 0.671 assisted",
+   "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+  },
+  {
+   "piece": "Isochron Scepter",
+   "engine": "NEW in v1.3.0, in for Mikaeus. Thirteen instants at mana value two or less are imprint targets - enumerated from cards.json: An Offer You Can't Refuse, Arcane Denial, Counterspell, Cyclonic Rift, Disenchant, Dovin's Veto, Enlightened Tutor, Karametra's Blessing, Mystical Tutor, Path to Exile, Secure the Wastes, Swan Song, Swords to Plowshares. The Scepter is a {2} generic artifact and a free cast under the discount; its '{2}, {T}' is an ability and pays full price every time (oracle text). Two of the thirteen look weak on their own text - Cyclonic Rift's overload is a second alternative cost, Secure the Wastes' X is zero on a free copy - and both are filed below as lines needing a stack scenario, not asserted.",
+   "evidence": "oracle text, cards.json; branch.json artifacts-v1 staged[0].why; combo_details by_card: 299 records name the Scepter and deck-facts still finds exactly one contained line in the 99, so the Scepter adds NO combo line to this deck; synergy_graph has no in-deck partner for it. The goldfish reads none of the three new cards (branch objective was a CONTROL), so no measured figure exists for the Scepter",
+   "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+  },
+  {
+   "piece": "Sol Ring, Arcane Signet, Azorius Signet, Talisman of Progress, Mind Stone, Thought Vessel, Isochron Scepter, Howling Mine, Lightning Greaves, Pearl Medallion, Sapphire Medallion, Temple Bell, Horn of Greed, Decanter of Endless Water, Scrawling Crawler, Font of Mythos, Alhammarret's Archive, Psychosis Crawler, Hangarback Walker, Walking Ballista",
+   "engine": "The free-cast tier: twenty artifacts whose printed cost is entirely generic (enumerated from cards.json mana costs). Under the flipped Heliod each discounts to zero once opponents have drawn as many cards this turn as its cost, which on an opponent's turn starts at one from their draw step. Mind Stone (NEW, for Angelic Wall) is the plainest case: {2}, a rock on two and 'a card when mana stops mattering' (branch.json). strategy:tempo's marker for the posture: 'if you regularly end turns with unspent mana and no plan for it, your curve or your sequencing is wrong' - the free-cast tier is the plan for that mana.",
+   "evidence": "oracle text, cards.json; deck-facts roles ramp:rock 8, ramp:cost-reduction 3, ramp:ritual 1, ramp:treasure 2; branch.json: 'ramp is 11 of a 10-12 band, so one more rock stays in band'. NOT modelled: the goldfish has no channel for the discount, so the claim that a {2} artifact is free on an opponent's turn is oracle-derived and filed as a candidate line below",
+   "strategy_ref": "strategy:tempo"
+  }
+ ],
+ "candidate_missing_lines": [
+  {
+   "title": "How big the discount is on an opponent's turn: draw step + Howling Mine + Horn of Greed land drop + Font of Mythos",
+   "cards": [
+    "Heliod, the Warped Eclipse",
+    "Howling Mine",
+    "Horn of Greed",
+    "Font of Mythos",
+    "Mind Stone"
+   ],
+   "why_plausible": "The back face counts 'each card your opponents have drawn this turn' (oracle text). On an opponent's turn their draw step is one, Howling Mine's upkeep trigger is a second, a land drop under Horn of Greed a third, Font of Mythos two more - so a {2} artifact such as Mind Stone or the Scepter should be free from the second draw. This is the mechanism every v1.3.0 swap was argued on (branch.json) and nothing in stacks/ has resolved a single discounted cast; the goldfish cannot model it at all.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "The second Approach at an opponent's end step under Heliod's flash grant, with Fierce Guardianship held",
+   "cards": [
+    "Heliod, the Warped Eclipse",
+    "Approach of the Second Sun",
+    "Fierce Guardianship"
+   ],
+   "why_plausible": "Heliod's back face grants flash to spells, so a sorcery can be cast in strategy:tempo.sequencing's recommended window ('the end step before your own turn'). Stack 002 resolves the win check at sorcery speed with no flash grant on the board. Whether Fierce Guardianship's free mode is live in that window depends on Heliod still being on the battlefield - Forge b0f44e4a transformed him in 44 of 120 games.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Isochron Scepter imprinting Mystical Tutor: a repeatable route to the second Approach",
+   "cards": [
+    "Isochron Scepter",
+    "Mystical Tutor",
+    "Approach of the Second Sun"
+   ],
+   "why_plausible": "Stack 002 verifies Mystical Tutor putting Approach on top for the second cast. A Scepter copy of Mystical Tutor at each opponent's end step would repeat that for {2} without spending a card, which would make the three-card 'Win condition access' group (0.495 assembled) effectively wider. Unsettled: whether a copy 'cast without paying its mana cost' from the Scepter behaves as stack 002's cast does, and what the shuffle does to an Approach already seventh from the top.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Isochron Scepter's two weak imprints: Cyclonic Rift cannot be overloaded from the Scepter, Secure the Wastes copies with X = 0",
+   "cards": [
+    "Isochron Scepter",
+    "Cyclonic Rift",
+    "Secure the Wastes"
+   ],
+   "why_plausible": "Both are on the branch's list of thirteen imprint targets. Overload is an alternative cost and the Scepter's 'cast the copy without paying its mana cost' is another; a copy of Secure the Wastes cast for free has no X paid. If both readings hold, the live imprint set is eleven, not thirteen, and the pilot should never imprint either. A rules question for the resolve-stack loop, not a strategy claim.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Wiping with Heliod on the battlefield: which of the five protection pieces survive Supreme Verdict and Day of Judgment",
+   "cards": [
+    "Supreme Verdict",
+    "Day of Judgment",
+    "Karametra's Blessing",
+    "Teferi's Protection",
+    "Guardian of Faith",
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+   ],
+   "why_plausible": "Log 002's first sequencing error was exactly this ('Supreme Verdict after Heliod was already out. I killed my own commander'). Karametra's Blessing's indestructible rider should survive a destroy effect, Teferi's Protection phases the board, Guardian of Faith phases 'other' creatures; Lightning Greaves' shroud does nothing against a wipe (strategy:multiplayer.commander-insurance: constant protection is 'useless against wraths'). Which face a phased-out transformed Heliod returns on is unsettled.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Lightning Greaves' shroud versus your own Karametra's Blessing and Guardian of Faith",
+   "cards": [
+    "Lightning Greaves",
+    "Karametra's Blessing",
+    "Guardian of Faith",
+    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse"
+   ],
+   "why_plausible": "Shroud stops your own targeting; Blessing targets a creature and Guardian's ETB targets 'other target creatures you control'. Equip {0} moves the Greaves only at sorcery speed. If the conflict holds, two of the five protection slots are dead while the Greaves are on, and the 0.683 'Heliod protected' figure overstates the package.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Heliod's discount on an {X} spell: does the reduction shrink the fixed part only, and how large can X get on a Mine-and-Font turn",
+   "cards": [
+    "Heliod, the Warped Eclipse",
+    "Howling Mine",
+    "Font of Mythos",
+    "Stroke of Genius",
+    "Prosperity"
+   ],
+   "why_plausible": "Cost reduction applies to the total cost after X is chosen; with three opponents drawing under Mine and Font the reduction on one of their turns could exceed the fixed cost of Stroke of Genius or Prosperity and the remainder should pay for X. Prosperity also draws the table, so it feeds the same turn's discount. The goldfish 'X-spell finisher drawn' figure (0.792) says nothing about the cast.",
+   "status": "needs a stack scenario"
+  }
+ ],
+ "matchup_frames": {
+  "vs_the_standard_pod": "MEASURED, on v1.2.1 not v1.3.0. Run b0f44e4a (Forge, 120 games, 4 seeded jobs, 600s clock, pod 'standard': giada-angels / baylen-tokens / abaddon, all bracket 3), seat sha 214af3084f80: heliod 20 wins of 99 decided (20 truncated, 1 drawn), win_rate 0.202, ci95 [0.135, 0.292] per diagnosis, against the table's null of 0.180; the diagnosis reads the -0.050 against the earlier 120-game run as 'NOT a decline' (Newcombe ci95 [-0.1614, +0.0644], MDD 0.185). Run 4b0e1964 (standard-v3: sythis-enchantress / jarad-graveyard / abaddon, 40 games, same sha): 10 wins of 35 decided, win_rate 0.286 - forty games cannot separate that from anything (CLAUDE.md: MDE 42 points at 20 games/arm). STALENESS: both runs describe the list three cards ago; the diagnosis's own phrase 'on the sleeved list' was true when written and is not now. deck-info marks diagnosis.stale = true. Nothing Forge-measured exists for Isochron Scepter, Horn of Greed or Mind Stone, and the goldfish reads none of them (branch objective was a CONTROL, damage_8 >= 0.0).",
+  "vs_aggro": "The matchup that kills you, and it flies: giada-angels caused 43 of heliod's 61 eliminations on b0f44e4a and all 61 were 'damage'; combat_damage_taken mean 37.92, median 31, against combat damage dealt mean 3.28, median 0.5. strategy:combat-math.racing's Commander correction rules out the race: 'you cannot race three life totals — races there are two-player subgames run while the rest of the table develops'. So you do not race; you tax and you block, and strategy:card-advantage.virtual says which is worth more per slot: 'one tax or pillow-fort effect can blank attack plans from three players at once'. The tax layer (Propaganda, Ghostly Prison, Archangel of Tithes) assembles 0.496, 0.357 by turn six - the least reliable of the four defensive groups; the block layer is five fliers and zero reach at 0.68 / 0.529, one of which (Kefnet) cannot block below seven cards in hand, and it lost a body (Angelic Wall) to Mind Stone in v1.3.0 on the argument that 'the taxers plus twelve counterspells are the defence' (branch.json) - a count this frame cannot reproduce (eight, see disagreements). strategy:resource-hedging.wrath-math's caster-side reading is the fallback: two wraths and a Rift, cast when 'another player's board be the reason it gets cast'.",
+  "vs_sweeper_control": "Your board is not your plan, so a rival wrath costs you the fort, not the win: creatures_lost and first-attack figures on the Forge runs show a deck that barely commits (combat dealt median 0.5). The danger is the counter war on the Approach turn, and strategy:multiplayer.pivot-window's standard is written for you: 'assume every held answer appears the moment you present lethal, and count the table's open mana before committing.' Stack 002 makes the constraint exact - the stack is the only window and a countered Approach yields nothing. strategy:information.range-tells is the read on the other blue seat: 'Held lands plus instant-speed pace means interaction until proven otherwise' and 'what they did NOT do with mana available is the strongest signal'. Log 001 is the recorded loss to this: 'I countered a spell, Alex countered my counter; I cast Swords to Plowshares, Alex redirected it onto Heliod', cause 'removal'. The Scepter imprinting Swan Song or Dovin's Veto is the v1.3.0 answer to a counter war (a counter every turn for {2}) - unmeasured, and the activation is undiscounted.",
+  "vs_stax": "Structurally the worst matchup, and strategy:threat-assessment.resource-denial says why: 'Decks built on many cheap spells per turn are hit hardest: taxes attack the velocity math directly, so recount your hand under the tax — a two-spell turn becoming a one-spell turn halves the engine.' This deck's curve is 22 twos and 18 threes (deck-facts), and its whole edge is casting at a discount; a Sphere effect is the discount in reverse and a Rule of Law / no-flash piece blanks the back face. The section forces the role: 'you rarely own the long game under an assembling lock, so you are the beatdown, racing the lock's completion' - for a deck whose only clock is a seven-mana sorcery cast twice. Outs by class (strategy:combat-math.probability: 'play around *classes* of effects (a wrath by turn six, some counterspell behind blue mana) rather than named cards'): Disenchant, Cathar Commando, Loran of the Third Path, Cyclonic Rift, Force of Negation and Dovin's Veto on the way in; deck-audit breadth covers artifact (4) and enchantment (4) but graveyard and land are uncovered (3 of 5 classes, verdict 'under'), and strategy:deckbuilding.interaction-suite warns 'a counter answers a lock piece only on the way in, so some answers must be castable under the tax'.",
+  "vs_combo": "Log 002 is the recorded loss (cause 'combo'): 'Oliver assembled his one-card Cranko line while the table beat on me.' strategy:threat-assessment.answer-economy carries the correction to this deck's usual restraint: 'The countervailing risk: held answers rot — against combo, or lethal already on board, the last profitable moment is now'. Eight counterspells (two free) are the right tool and strategy:deckbuilding.interaction-suite's 'counterspells do both jobs' is why the same eight cannot all be held for the Approach turn; strategy:threat-assessment's Commander correction re-ranks the table for you: 'draw engines, ramp bursts, combo proximity, and board *quality* outrank board quantity; re-rank every turn instead of fixing on one player'. The gift is the risk here - Forced Fruition was cut for handing a combo seat seven cards a spell (branch.json), and Horn of Greed still draws that seat one card per land. strategy:multiplayer.pod-management's pacing rule is the frame: 'engines want the game slow until the pivot window' - the combo seat wants it fast, and the table's tempo is the thing to fight over, not its life totals."
+ },
+ "distribution_notes": "100 copies in 85 entries: 67 nonland, 33 lands in 18 entries (deck-facts). CURVE 0/1/2/3/4/5/6/7/8 = 2/11/22/18/9/2/1/1/1 against strategy:deckbuilding.curve's EDHREC shape ('modal mana value at 2, with 15.7 two-drops and 15.4 three-drops in the average deck'): heavy at two and three, nine at the commander's four ('builders run *more* cards at their commander's mana value than the global curve'), five above four. The section's clock discipline is the Approach argument verbatim: 'you're probably only going to be able to cast ONE big-mana spell per game'. MANA: 33 lands against strategy:deckbuilding.mana-base's Burgess starting point 'lands = 31 + colours in the commander's identity + the commander's mana value' = 37, and deck-audit's control override 37-39 (verdict 'under'); land sources W 21 / U 22 against deck-facts source_targets of 36 each, and strategy:deckbuilding.mana-base.color-sources wants '26 for 2{C}{C}' for the commander and '33 for 1{C}{C}{C}' for Archangel of Tithes. 7 lands enter tapped (Karsten 'caps pure taplands at about four'). goldfish land_drop_hit_rate 0.728 / 0.593 / 0.534 at turns four to six; diagnostic missed_land_drop_by_five 0.5142, mulliganed 0.2595, mean mana 5.764 at six and 7.064 at eight, read as ABOVE the fleet median; stall after turn two is rare (0.0072 at three). KEEPS: keep_first_seven 0.737, mean_mulligans 0.328, keep_can_act_by_t3 0.981 - strategy:mulligans.engine-hands' correction applies: 'you mulligan to enabler *classes*, not named cards', and the classes here are a land pair, one gift permanent (11 routes) and one held answer (8). ROLES (deck-facts, coverage 0.8588, 12 cards unpatterned): draw:engine 10, draw:burst 4, draw:wheel 5, counterspell 8, removal:spot 4, removal:sweeper 2, removal:bounce 1, removal:damage 1, protection:self 5, ramp:rock 8, ramp:cost-reduction 3, ramp:treasure 2, tutor:unrestricted 2, tutor:narrow 2, threat:body 16, wincon:alt 1, wincon:drain 2. AUDIT: interaction 14 copies 'at' (12-15); sweepers 2 'under' (5-7 control override; the section itself says 'one or two max'); interaction-breadth 3 of 5 classes 'under', graveyard and land uncovered. DRAW-GO GAP, measured: interaction_in_hand 0.929 at turn six against interaction_castable 0.61 - a third of the time the answer is in hand and the mana is not, with the discount OFF. COMMANDER: cast_by_turn_6 0.896, mean 4.187; the flip is a second {3}{U/P} sorcery-speed payment the goldfish prices at 0.561 by turn six.",
+ "overall_assessment": "This deck builds a board to not die behind, and wins with a card that says you win. The world-view is strategy:whos-the-beatdown.metagame-clock's - 'four-player games trend long, so inevitability compounds' - and the deck owns the long game on two of that section's four sources, an unanswerable finisher and more answers than the table has threats. The mechanism is an inversion the doc only half-covers: eleven permanents hand the whole table cards, which reads as generosity (strategy:multiplayer.politics, strategy:multiplayer.threat-deflection's 'engines that read as defensive'); the flipped Heliod then bills each of those draws back as {1} off your spells and lets you cast them at instant speed, so the deck does nothing on its own turn and everything on theirs (strategy:multiplayer.pod-management: 'Leaving instant-speed mana open forces three players, not one, to respect your possible interaction'). v1.3.0 leans harder into that: all three new cards are generic-cost artifacts that discount to free, and the Scepter turns one of thirteen cheap instants into a per-turn ability the discount does not touch. The measurement says the theory is right about HOW the deck wins and wrong about how OFTEN: on 120 Forge games (v1.2.1) it took first 20 times against a null of 0.180, 12 by Approach and 8 by outliving the table, dealing a median 0.5 combat damage; the diagnosis's verdict stands - 'Nothing about this deck's mana flow or card flow is what limits it; conversion is' - and the conversion has one hub. Forge transformed Heliod in 44 of 120 games; the goldfish puts the flip at 0.561 by turn six; log 001 lost him to a counter war and a redirected Swords, log 002 to the pilot's own Supreme Verdict. strategy:deckbuilding.archetype-selection's line is the whole finding: 'built around your commander is not reliant on it. A deck whose only payoff sits in the command zone hands three opponents one target; buy it back with redundant copies' or 'protection' The payoff is Approach; the CONVERSION is Heliod, and the five-card insurance package is the buy-back, with Leyline of Anticipation the only redundant copy of the flash half and nothing at all duplicating the discount half. Two honest holes. First, strategy:deckbuilding.threat-density asks for 'at least 3 finishers' and this is a one-finisher deck by the pilot's standing choice, whose fallback is attrition - which on the same run won 8 games to Approach's 12. Second, the fort is the least reliable of the four defensive groups (0.496 assembled, 0.357 by turn six) while the gift is the most reliable (0.898, mean turn 2.639): for several turns a game the deck is handing three opponents cards from behind a door that is not yet locked, and all 61 of its eliminations were damage. The posture risk is the one strategy:resource-hedging opens on - '\"playing not to lose\" prioritizes delaying defeat over maximizing win probability, and it is mathematically wrong' - and log 002 shows the pilot paying it ('I was overthinking the mana cost ... I waited, got desperate, and the window closed'). The section's rule is the correction: 'hedge from ahead, gamble from behind', and the pivot window 'still demands full commitment the turn it opens'.",
+ "disagreements": [
+  "branch.json (artifacts-v1, staged[2].why) says 'the taxers plus twelve counterspells are the defence'; the pilot's quiver inventory says 'eight or nine'; deck-facts' counterspell role and an oracle-text enumeration over cards.json both give EIGHT (Counterspell, Swan Song, An Offer You Can't Refuse, Dovin's Veto, Arcane Denial, Archmage's Charm, Force of Negation, Fierce Guardianship). The frame uses eight.",
+  "deck-info's diagnosis verdict says the 120-game run was 'on the sleeved list'; its seat sha is 214af3084f80 (v1.2.1) and the sleeved list is f1d4a650b93f (v1.3.0). deck-info already flags diagnosis.stale = true; every Forge figure in this frame is v1.2.1's.",
+  "engine-facts lists Approach + Mystical Tutor both under verified.by_stack 002 and under candidate_lines 'needs a stack scenario'. Stack 002 verifies the SEQUENCE (tutor to top, second cast, Swan Song on the counter); the Commander Spellbook RECORD is what remains an unverified index hit. Not a contradiction, but a reader will see one.",
+  "deck-audit's sweepers axis applies the control template (5-7) and returns 'under' at 2, while the section it cites, strategy:deckbuilding.interaction-suite, says wipes 'one or two max' (Zupke caps at 3). The frame reports both and takes no side."
+ ],
+ "gaps": [
+  "NO SECTION ON COST REDUCTION AS A RESOURCE. The query 'artifact ramp mana rocks cost reduction free casts' tops out at strategy:deckbuilding.mana-base (0.483), which is about land counts. This deck's entire v1.3.0 argument - a per-spell discount that lives on opponents' turns, generic-cost cards as free casts, activated abilities excluded - has no home. Wanted: how to value a conditional discount against a rock, why a discount favours cheap generic costs over coloured pips, and the difference between reducing a spell and paying an ability.",
+  "NO SECTION ON REPEATABLE-EFFECT ARTIFACTS (Isochron Scepter and its class). The query 'Isochron Scepter imprint repeatable counterspell value' returns nothing above 0.146. Wanted: what a repeatable {2} counter or tutor is worth per turn cycle against three responders, which imprints are live, and the tell it hands the table.",
+  "NO SECTION ON ALTERNATE WIN CONDITIONS. A 'you win the game' card is not a threat: it cannot be blocked, raced or removed once resolving, and the entire skill is one window on the stack. strategy:multiplayer.pivot-window comes closest and is written for board-based kills ('Prefer win attempts that leave a rebuilt position if they fail'), which Approach cannot do. Wanted: the two-cast structure (Approach, Thassa's Oracle, Test of Endurance) as a class, how many tutors and protection slots one is worth, and timing across three responders.",
+  "NO SECTION ON SYMMETRICAL RESOURCE GIFTS. The query 'group hug symmetric card draw feeding opponents Howling Mine' peaks at strategy:card-advantage.virtual (0.331), which is about blanking cards. Wanted: when the gift is net-positive, the conversion rate that makes it so, and the failure mode where the cards you handed out kill you (log 002, a combo seat).",
+  "NO SECTION ON PILLOW-FORT / DETERRENCE ECONOMICS. One clause in strategy:card-advantage.virtual is the whole of it; 'pillow fort tax attackers Propaganda Ghostly Prison deterrence' tops out at 0.278. Wanted: how many taxers make a deterrent rather than a speed bump, {2}-per-attacker against tokens versus Voltron, and why an untaxable route breaks the layer.",
+  "NO SECTION ON THE DRAW-GO POSTURE. The measured gap is interaction in hand 0.929 versus castable 0.61 at turn six; strategy:multiplayer.pod-management has one sentence on open mana and strategy:tempo one marker on unspent mana. Wanted: how much mana to leave up across a four-player turn cycle and when to break posture and develop.",
+  "NO SECTION ON EVASION AXES AND BLOCKER COVERAGE. The deck spent five slots on fliers off a measured 43-of-61 elimination count from one seat and had no framework to size that against; 'aggro go-wide fliers racing three opponents' returns strategy:multiplayer.asymmetry (0.547), which does not cover blockers.",
+  "COMMANDER DEPENDENCE HAS A TAXONOMY BUT NO SIZING. strategy:multiplayer.commander-insurance gives Cullen's three kinds and a decision test; strategy:deckbuilding.threat-density gives Zupke's '5-7 protection slots'. Nothing says how many slots a HIGH-dependence commander with no redundant copy of its ability needs, which is the pilot's stated tuning question. Route: research-strategy.",
+  "NO FORGE RUN ON v1.3.0 (f1d4a650b93f). Both usable runs are on v1.2.1; the goldfish reads none of the three new cards (branch objective was a control). The Scepter, Horn and Mind Stone are argued, not measured. Route: simulate against standard-v3, and read engine_casts for the Scepter's activation count before trusting any rate (CLAUDE.md: the Forge AI does not activate for a benefit it cannot price - Ashnod's Altar was 0 for 59).",
+  "FORGE FLOOR ON THE PROTECTION PACKAGE: Guardian of Faith 0 casts, Teferi's Protection 0 casts, Psychosis Crawler 0 casts in 120 games (engine_casts, run b0f44e4a). Any Forge figure on commander survival or the drain layer is a floor.",
+  "GOLDFISH TARGET FILE: diagnostic.engine reports 'no target in goldfish_targets.json is marked required: true', so the engine lift cannot be computed. Whether to mark 'Heliod plus the mana to flip him' required is a pilot decision (CLAUDE.md: an authored `required` flag drove sign-flipping results on ur-dragon). Route: goldfish."
+ ]
 }
