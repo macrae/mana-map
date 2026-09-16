@@ -257,6 +257,31 @@ def test_staging_writes_through_the_check_in_refusals(probe):
 
 
 @requires_deck
+def test_a_basic_already_in_the_list_is_one_more_copy_not_a_duplicate(probe):
+    """The out side has decremented a basic's quantity since the tool shipped;
+    the in side refused "Forest" on a list holding six of them, so a land pass
+    that wanted a seventh could not be staged (gishath/mana-v1, 2026-09-16).
+    Re-introduce the refusal and this fails on the SystemExit."""
+    before = deck_branch._parsed(SLUG, probe)
+    basic = next((e for e in before
+                  if e["name"].lower() in ("mountain", "forest", "plains", "island", "swamp")), None)
+    if basic is None:
+        pytest.skip(f"{SLUG} runs no basics")
+    out = next(e["name"] for e in before
+               if not e.get("is_commander") and e["name"] != basic["name"])
+    qty = int(basic.get("quantity") or 1)
+    got = deck_branch.stage(SLUG, probe, out, basic["name"])
+    assert got["in"] == basic["name"]
+    after = deck_branch._parsed(SLUG, probe)
+    rows = [e for e in after if e["name"] == basic["name"]]
+    assert len(rows) == 1, "one entry with a quantity, never a second line"
+    assert int(rows[0].get("quantity") or 1) == qty + 1
+    assert (sum(int(e.get("quantity") or 1) for e in after)
+            == sum(int(e.get("quantity") or 1) for e in before)), "one for one"
+    assert out not in {e["name"] for e in after}
+
+
+@requires_deck
 def test_the_commander_is_not_swappable(probe):
     """Changing it is a different deck, not a swap — the identity, the whole
     candidate pool and every declared component move with it."""

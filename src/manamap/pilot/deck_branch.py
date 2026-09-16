@@ -663,7 +663,15 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
         raise SystemExit(
             f"{out_e['name']} is the COMMANDER. Changing it is a different deck, "
             f"not a swap — open a new branch from a new list.")
-    if _resolve_in_list(entries, in_name) is not None:
+    in_e = _resolve_in_list(entries, in_name)
+    # A basic already in the list is not a duplicate; it is one more copy. The
+    # out side has known this since the branch tool shipped (decrement, never
+    # delete); the in side refused "Forest" on a list holding six of them, so a
+    # land pass that wanted a seventh could not be staged (gishath/mana-v1,
+    # 2026-09-16). Same predicate as the manifest's furniture list.
+    from manamap.pilot.deck_manifest import _BASIC_LANDS
+    in_is_basic = in_e is not None and in_e["name"].lower() in _BASIC_LANDS
+    if in_e is not None and not in_is_basic:
         raise SystemExit(f"{in_name!r} is already in {slug}/{branch}.")
 
     staged_entries = []
@@ -676,8 +684,12 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
             if left > 0:
                 staged_entries.append(dict(e, quantity=left))
             continue
+        if e is in_e:
+            staged_entries.append(dict(e, quantity=int(e.get("quantity") or 1) + 1))
+            continue
         staged_entries.append(e)
-    staged_entries.append({"name": in_name, "quantity": 1})
+    if in_e is None:
+        staged_entries.append({"name": in_name, "quantity": 1})
 
     text = check_in.render_decklist(staged_entries)
     checked = check_in.analyze(slug, text)
