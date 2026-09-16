@@ -248,6 +248,12 @@
    },
    {
     "free": false,
+    "name": "Gifted Aetherborn",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Godless Shrine",
     "state": "in_deck",
     "where": []
@@ -267,12 +273,6 @@
    {
     "free": false,
     "name": "High-Society Hunter",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Immersturm Predator",
     "state": "in_deck",
     "where": []
    },
@@ -606,7 +606,7 @@
    "base_size": 100,
    "names": 96,
    "out": [
-    "Gifted Aetherborn",
+    "Immersturm Predator",
     "Unbounded Potential"
    ],
    "size": 100
@@ -618,7 +618,24 @@
   "slug": "edgar-vampires",
   "unsourced": []
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Immersturm Predator"
+   ],
+   "class": "hate",
+   "headline": "1 card(s) carrying a hate effect",
+   "why": "there is no opponent to hate out"
+  },
+  {
+   "cards": [
+    "Immersturm Predator"
+   ],
+   "class": "protection",
+   "headline": "1 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  }
+ ],
  "branch": "elenda-v1",
  "changes": {
   "count": 2,
@@ -652,10 +669,10 @@
      "copies": 1,
      "kind": "spell",
      "name": "Elenda, the Dusk Rose",
-     "pair": "Gifted Aetherborn",
+     "pair": "Immersturm Predator",
      "state": "box",
      "type_line": "Legendary Creature \u2014 Vampire Knight",
-     "why": "a Vampire that eminence mints on, grows on every death from nine outlets and any wipe, and dies into that many lifelink Vampire tokens that feed Vito and Sanguine Bond; Aetherborn is the one Vampire that neither mints, draws, drains nor sacrifices"
+     "why": "the pilot's call 2026-09-16: Gifted Aetherborn stays \u2014 a turn-two 2/3 deathtouch lifelink Vampire is the curve this deck wins on. Immersturm Predator is the four-drop that does least here: it grows off graveyard hate rather than off the deck's own deaths, and neither mints, drains nor draws. Elenda at the same four mana grows on every death from six outlets and dies into lifelink Vampires under two doublers; same curve slot"
     }
    ],
    "names": 96,
@@ -664,19 +681,19 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Gifted Aetherborn",
-     "pair": "Elenda, the Dusk Rose",
-     "type_line": "Creature \u2014 Aetherborn Vampire",
-     "why": "a Vampire that eminence mints on, grows on every death from nine outlets and any wipe, and dies into that many lifelink Vampire tokens that feed Vito and Sanguine Bond; Aetherborn is the one Vampire that neither mints, draws, drains nor sacrifices"
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
      "name": "Unbounded Potential",
      "pair": "Blade of the Bloodchief",
      "type_line": "Instant",
      "why": "two counters per death on a Vampire, best carried by a lifelinker (Nighthawk Scavenger, Elenda) so each death adds two to the next Sanguine Bond drain; two mana total; replaces the one-shot counters trick in the same role"
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Immersturm Predator",
+     "pair": "Elenda, the Dusk Rose",
+     "type_line": "Creature \u2014 Vampire Dragon",
+     "why": "the pilot's call 2026-09-16: Gifted Aetherborn stays \u2014 a turn-two 2/3 deathtouch lifelink Vampire is the curve this deck wins on. Immersturm Predator is the four-drop that does least here: it grows off graveyard hate rather than off the deck's own deaths, and neither mints, drains nor draws. Elenda at the same four mana grows on every death from six outlets and dies into lifelink Vampires under two doublers; same curve slot"
     }
    ],
    "size": 100,
@@ -690,20 +707,20 @@
   "spells": [
    {
     "at": "2026-09-12",
-    "in": "Elenda, the Dusk Rose",
-    "out": "Gifted Aetherborn",
-    "why": "a Vampire that eminence mints on, grows on every death from nine outlets and any wipe, and dies into that many lifelink Vampire tokens that feed Vito and Sanguine Bond; Aetherborn is the one Vampire that neither mints, draws, drains nor sacrifices"
-   },
-   {
-    "at": "2026-09-12",
     "in": "Blade of the Bloodchief",
     "out": "Unbounded Potential",
     "why": "two counters per death on a Vampire, best carried by a lifelinker (Nighthawk Scavenger, Elenda) so each death adds two to the next Sanguine Bond drain; two mana total; replaces the one-shot counters trick in the same role"
+   },
+   {
+    "at": "2026-09-16",
+    "in": "Elenda, the Dusk Rose",
+    "out": "Immersturm Predator",
+    "why": "the pilot's call 2026-09-16: Gifted Aetherborn stays \u2014 a turn-two 2/3 deathtouch lifelink Vampire is the curve this deck wins on. Immersturm Predator is the four-drop that does least here: it grows off graveyard hate rather than off the deck's own deaths, and neither mints, drains nor draws. Elenda at the same four mana grows on every death from six outlets and dies into lifelink Vampires under two doublers; same curve slot"
    }
   ],
   "why": "Two death-payoff swaps the pilot called 2026-09-12: Elenda, the Dusk Rose for Gifted Aetherborn, Blade of the Bloodchief for Unbounded Potential. Both turn the nine sacrifice outlets into counters, and Elenda into lifelink tokens on death, doubled by Procession and Mondrak. Nothing dies in the goldfish and the Forge AI does not sacrifice in response, so the objective is a CONTROL at the champion's own kill-by-8 reading."
  },
- "decklist_sha256": "570264ba70377e428fe8ad6672a36b9ba80d5666e030ef351e7a329b798c1029",
+ "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
  "definitions": {
   "derived": [
    {
@@ -946,13 +963,12 @@
   "why": "Two death-payoff swaps the pilot called 2026-09-12: Elenda, the Dusk Rose for Gifted Aetherborn, Blade of the Bloodchief for Unbounded Potential. Both turn the nine sacrifice outlets into counters, and Elenda into lifelink tokens on death, doubled by Procession and Mondrak. Nothing dies in the goldfish and the Forge AI does not sacrifice in response, so the objective is a CONTROL at the champion's own kill-by-8 reading."
  },
  "objective_grade": {
-  "reading": 0.6957,
-  "shortfall": 0.0043,
-  "state": "not resolvable",
-  "why": "missed by 0.0043, which is under the 0.0182 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "reading": 0.701,
+  "shortfall": null,
+  "state": "met"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0043, which is under the 0.0182 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "You buy nothing and pay damage @T10 and board power @T6.",
   "bill": {
    "box": 2,
    "buy": 0,
@@ -979,11 +995,11 @@
   },
   "fell": [
    "damage @T10",
-   "board power @T6",
-   "killed by T10"
+   "board power @T6"
   ],
   "no_call": [
    "killed by T6",
+   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
@@ -995,28 +1011,40 @@
   "reward": [],
   "risk": [
    {
-    "detail": "20.07 -> 19.70, a change of -0.37 (-2%)",
+    "detail": "20.07 -> 19.68, a change of -0.39 (-2%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "11.50 -> 11.17, a change of -0.33 (-3%)",
+    "detail": "11.50 -> 11.23, a change of -0.27 (-2%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "97 games in 100 -> 96 in 100, a swing of 1 games per 100",
-    "kind": "paid",
-    "what": "killed by T10",
-    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+    "detail": "the largest is killed by T10 at -0.006 against an MDE of 0.007. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "kind": "unresolved",
+    "what": "8 row(s) returned no call",
+    "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "the largest is killed by T6 at -0.006 against an MDE of 0.008. This run rules out a difference bigger than that and says nothing about a smaller one.",
-    "kind": "unresolved",
-    "what": "7 row(s) returned no call",
-    "why_it_matters": "an unresolved row is an open question, not a settled zero"
+    "cards": [
+     "Immersturm Predator"
+    ],
+    "detail": "there is no opponent to hate out",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a hate effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Immersturm Predator"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "no Forge run on the branch \u2014 `manamap pilot simulate edgar-vampires@elenda-v1 --vs <pod>` puts it at a table and writes where this reads",
@@ -1026,19 +1054,19 @@
    }
   ],
   "rose": [],
-  "state": "inconclusive"
+  "state": "a trade"
  },
  "slug": "edgar-vampires",
  "staged": 2,
  "table": [
   {
    "better_is": "higher",
-   "branch": 19.7028,
+   "branch": 19.6836,
    "champion": 20.0733,
-   "delta": -0.3705,
+   "delta": -0.3897,
    "mde": 0.2743,
    "measure": "damage @T10",
-   "reads_as": "20.07 -> 19.70, a change of -0.37 (-2%)",
+   "reads_as": "20.07 -> 19.68, a change of -0.39 (-2%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -1047,12 +1075,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 11.1682,
+   "branch": 11.2267,
    "champion": 11.5012,
-   "delta": -0.333,
+   "delta": -0.2745,
    "mde": 0.1659,
    "measure": "board power @T6",
-   "reads_as": "11.50 -> 11.17, a change of -0.33 (-3%)",
+   "reads_as": "11.50 -> 11.23, a change of -0.27 (-2%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1061,12 +1089,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0367,
+   "branch": 0.0389,
    "champion": 0.0425,
-   "delta": -0.0058,
+   "delta": -0.0036,
    "mde": 0.008,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.008 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1075,26 +1103,26 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9631,
+   "branch": 0.9648,
    "champion": 0.971,
-   "delta": -0.0079,
-   "mde": 0.0075,
+   "delta": -0.0062,
+   "mde": 0.0073,
    "measure": "killed by T10",
-   "reads_as": "97 games in 100 -> 96 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.007 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
-   "branch": 0.0986,
+   "branch": 0.0951,
    "champion": 0.1032,
-   "delta": -0.0046,
+   "delta": -0.0081,
    "mde": 0.0121,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.012 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.012 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1103,12 +1131,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3986,
+   "branch": 0.3985,
    "champion": 0.4041,
-   "delta": -0.0055,
+   "delta": -0.0056,
    "mde": 0.0194,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1117,12 +1145,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.1908,
+   "branch": 0.1892,
    "champion": 0.1954,
-   "delta": -0.0046,
+   "delta": -0.0062,
    "mde": 0.0157,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1131,12 +1159,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.1399,
+   "branch": 1.1409,
    "champion": 1.1476,
-   "delta": -0.0077,
-   "mde": 0.0748,
+   "delta": -0.0067,
+   "mde": 0.0746,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.075 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.075 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1145,12 +1173,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3006,
+   "branch": 0.3102,
    "champion": 0.3052,
-   "delta": -0.0046,
-   "mde": 0.0194,
+   "delta": 0.005,
+   "mde": 0.0196,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1159,12 +1187,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9595,
+   "branch": 0.9638,
    "champion": 0.9649,
-   "delta": -0.0054,
-   "mde": 0.0078,
+   "delta": -0.0011,
+   "mde": 0.0074,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.007 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
