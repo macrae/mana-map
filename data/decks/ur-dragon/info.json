@@ -14,15 +14,16 @@
     "G"
   ],
   "size": 100,
-  "lands": 36,
+  "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 18,
     "stale": [
       "frame",
       "map",
       "tutors",
-      "prose"
+      "prose",
+      "benchmark"
     ],
     "invalid": [
       "engine"
@@ -45,8 +46,8 @@
       "name": "final-v1",
       "opened": "2026-09-11",
       "why": "mana-v1 with one correction (2026-09-11): Asceticism takes Worldly Tutor's slot and Gadrak stays. Ablation on the champion: Asceticism-for-Gadrak was the only swap in the stack that moved the kill rate (kill-by-T8 -0.030), and the goldfish overstates Gadrak (it attacks with him ignoring the four-artifact clause; his Treasure is unmodelled), while Asceticism-for-Worldly-Tutor reads +0.001 on kill-by-T8 and keeps the Dragon curve at mean MV 5.38 with two three-drops. The pilot's rule: a Dragon earns its slot; a single-job spell is the cut. Control on the clock as before; the log is the instrument for the answers.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "9 card(s) still to find",
+      "state": "PROPOSED · OUTRUN",
+      "state_why": "proposed against V4 and the deck is now V5 — v1.3.0 may be taken; re-measure and propose again",
       "proposal": {
         "at": "2026-09-11",
         "as_version": "v1.3.0",
@@ -80,10 +81,16 @@
             "name": "Asceticism"
           },
           {
+            "name": "Fabled Passage"
+          },
+          {
             "name": "Marang River Regent // Coil and Catch"
           },
           {
             "name": "Mithril Coat"
+          },
+          {
+            "name": "Prismatic Vista"
           },
           {
             "name": "Steel Hellkite"
@@ -100,9 +107,10 @@
         ],
         "unsleeve": [
           {
-            "name": "Bloodstained Mire",
+            "name": "Forbidden Orchard",
             "where": [
-              "edgar-vampires"
+              "gishath",
+              "meren-recursion"
             ]
           },
           {
@@ -110,16 +118,16 @@
             "where": [
               "edgar-vampires"
             ]
+          },
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "meren-recursion"
+            ]
           }
         ],
         "proxy": [],
         "free": [
-          {
-            "name": "Arid Mesa",
-            "where": [
-              "sisay"
-            ]
-          },
           {
             "name": "Misty Rainforest",
             "where": [
@@ -128,12 +136,6 @@
           },
           {
             "name": "Polluted Delta",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Scalding Tarn",
             "where": [
               "sisay"
             ]
@@ -148,7 +150,7 @@
             ]
           }
         ],
-        "blocking": 9,
+        "blocking": 12,
         "procurement": {
           "at": "2026-09-11",
           "note": "seven to buy; two fetches sleeved in Edgar, four listed under the sisay pile"
@@ -156,28 +158,31 @@
       },
       "base_version": 4,
       "size": 100,
-      "add": 14,
-      "out": 14,
+      "add": 15,
+      "out": 15,
       "counts": {
-        "in_deck": 84,
+        "in_deck": 83,
         "box": 1,
-        "elsewhere": 2,
-        "buy": 7,
-        "free": 4
+        "elsewhere": 3,
+        "buy": 9,
+        "free": 2
       },
       "unsourced": [
         "Asceticism",
-        "Bloodstained Mire",
+        "Fabled Passage",
+        "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
         "Mithril Coat",
+        "Prismatic Vista",
         "Steel Hellkite",
         "Stubborn Denial",
+        "Tarnished Citadel",
         "Transcendent Dragon",
         "Whirlwing Stormbrood // Dynamic Soar"
       ],
       "mergeable": false,
-      "free": 4,
+      "free": 2,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -195,18 +200,10 @@
         },
         {
           "name": "Arid Mesa",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Asceticism",
@@ -245,18 +242,10 @@
         },
         {
           "name": "Bloodstained Mire",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bloom Tender",
@@ -407,10 +396,10 @@
         },
         {
           "name": "Fabled Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faeburrow Elder",
@@ -442,6 +431,862 @@
         },
         {
           "name": "Forbidden Orchard",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Forest",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gadrak, the Crown-Scourge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ganax, Astral Hunter",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Garruk's Uprising",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gemstone Mine",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Generous Gift",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Glorybringer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goldspan Dragon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Herald's Horn",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Heroic Intervention",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ignoble Hierarch",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Island",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Lathliss, Dragon Queen",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Lightning Greaves",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Maelstrom of the Spirit Dragon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mana Confluence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Marang River Regent // Coil and Catch",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Marsh Flats",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Miirym, Sentinel Wyrm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Misty Rainforest",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
+        },
+        {
+          "name": "Mithril Coat",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Mountain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nature's Lore",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Old Gnawbone",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Overgrown Tomb",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Panharmonicon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Path of Ancestry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plains",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Polluted Delta",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
+        },
+        {
+          "name": "Prismatic Vista",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Reflecting Pool",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Roiling Dragonstorm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sacred Foundry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sarkhan's Triumph",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Scalding Tarn",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Scourge of Valkas",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Scourge of the Throne",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skyshroud Claim",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smaug the Magnificent",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smoldering Marsh",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sneak Attack",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sol Ring",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Solphim, Mayhem Dominus",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spire of Industry",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Steam Vents",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Steel Hellkite",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Stomping Ground",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Stubborn Denial",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Swords to Plowshares",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tarnished Citadel",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Teferi's Protection",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Temur Ascendancy",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Terror of the Peaks",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "The Ur-Dragon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Thrakkus the Butcher",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Thunderbreak Regent",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Transcendent Dragon",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Twinflame Tyrant",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Unclaimed Territory",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Urza's Incubator",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Verdant Catacombs",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            },
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Whirlwing Stormbrood // Dynamic Soar",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        }
+      ],
+      "has_cards": true
+    },
+    {
+      "name": "final-v2",
+      "opened": "2026-09-17",
+      "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves — Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
+      "pull_list": {
+        "buy": [
+          {
+            "name": "Asceticism"
+          },
+          {
+            "name": "Marang River Regent // Coil and Catch"
+          },
+          {
+            "name": "Mithril Coat"
+          },
+          {
+            "name": "Steel Hellkite"
+          },
+          {
+            "name": "Stubborn Denial"
+          },
+          {
+            "name": "Transcendent Dragon"
+          },
+          {
+            "name": "Whirlwing Stormbrood // Dynamic Soar"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Marsh Flats",
+            "where": [
+              "edgar-vampires"
+            ]
+          }
+        ],
+        "proxy": [],
+        "free": [
+          {
+            "name": "Misty Rainforest",
+            "where": [
+              "sisay"
+            ]
+          },
+          {
+            "name": "Polluted Delta",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
+        "box": [
+          {
+            "name": "Verdant Catacombs",
+            "where": [
+              "Green",
+              "Hapatra"
+            ]
+          }
+        ],
+        "blocking": 8,
+        "procurement": null
+      },
+      "base_version": 5,
+      "size": 100,
+      "add": 11,
+      "out": 11,
+      "counts": {
+        "in_deck": 86,
+        "box": 1,
+        "elsewhere": 1,
+        "buy": 7,
+        "free": 2
+      },
+      "unsourced": [
+        "Asceticism",
+        "Marang River Regent // Coil and Catch",
+        "Marsh Flats",
+        "Mithril Coat",
+        "Steel Hellkite",
+        "Stubborn Denial",
+        "Transcendent Dragon",
+        "Whirlwing Stormbrood // Dynamic Soar"
+      ],
+      "mergeable": false,
+      "free": 2,
+      "cards": [
+        {
+          "name": "Ancient Gold Dragon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arcane Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arid Mesa",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Asceticism",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Atarka, World Render",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Atsushi, the Blazing Sky",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Birds of Paradise",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blood Crypt",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloodstained Mire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloom Tender",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Boros Charm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Breaching Dragonstorm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Breeding Pool",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Canopy Vista",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cavern of Souls",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Chaos Warp",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Chromatic Lantern",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "City of Brass",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Command Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Crux of Fate",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Deflecting Swat",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Delighted Halfling",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Desolation of Smaug",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dragon Tempest",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dragon's Hoard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dragonlord's Servant",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dragonspeaker Shaman",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Drakuseth, Maw of Flames",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Enlightened Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Exotic Orchard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Faeburrow Elder",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Farseek",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Firespitter Whelp",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Flawless Maneuver",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -682,13 +1527,6 @@
           "is_new": true
         },
         {
-          "name": "Prismatic Vista",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Reflecting Pool",
           "state": "in_deck",
           "where": [],
@@ -718,18 +1556,10 @@
         },
         {
           "name": "Scalding Tarn",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Scourge of Valkas",
@@ -830,7 +1660,7 @@
           "is_new": false
         },
         {
-          "name": "Tarnished Citadel",
+          "name": "Talisman of Dominance",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -886,6 +1716,13 @@
           "is_new": true
         },
         {
+          "name": "Turbulent Springs",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Twinflame Tyrant",
           "state": "in_deck",
           "where": [],
@@ -928,6 +1765,13 @@
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Wooded Foothills",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         }
       ],
       "has_cards": true
@@ -945,34 +1789,58 @@
             "name": "Dragonlord Kolaghan"
           },
           {
+            "name": "Fabled Passage"
+          },
+          {
+            "name": "Prismatic Vista"
+          },
+          {
             "name": "Rhythm of the Wild"
           },
           {
             "name": "Rising of the Day"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Forbidden Orchard",
+            "where": [
+              "gishath",
+              "meren-recursion"
+            ]
+          },
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "meren-recursion"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 3,
+        "blocking": 7,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 8,
+      "out": 8,
       "counts": {
-        "in_deck": 93,
+        "in_deck": 89,
         "box": 0,
-        "elsewhere": 0,
-        "buy": 3,
+        "elsewhere": 2,
+        "buy": 5,
         "free": 0
       },
       "unsourced": [
         "Dragonlord Kolaghan",
+        "Fabled Passage",
+        "Forbidden Orchard",
+        "Prismatic Vista",
         "Rhythm of the Wild",
-        "Rising of the Day"
+        "Rising of the Day",
+        "Tarnished Citadel"
       ],
       "mergeable": false,
       "free": 0,
@@ -1196,10 +2064,10 @@
         },
         {
           "name": "Fabled Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Farseek",
@@ -1224,10 +2092,46 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -1406,10 +2310,10 @@
         },
         {
           "name": "Prismatic Vista",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reflecting Pool",
@@ -1567,10 +2471,25 @@
         },
         {
           "name": "Tarnished Citadel",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Teferi's Protection",
@@ -1665,10 +2584,16 @@
             "name": "Asceticism"
           },
           {
+            "name": "Fabled Passage"
+          },
+          {
             "name": "Marang River Regent // Coil and Catch"
           },
           {
             "name": "Mithril Coat"
+          },
+          {
+            "name": "Prismatic Vista"
           },
           {
             "name": "Steel Hellkite"
@@ -1685,9 +2610,10 @@
         ],
         "unsleeve": [
           {
-            "name": "Bloodstained Mire",
+            "name": "Forbidden Orchard",
             "where": [
-              "edgar-vampires"
+              "gishath",
+              "meren-recursion"
             ]
           },
           {
@@ -1695,16 +2621,16 @@
             "where": [
               "edgar-vampires"
             ]
+          },
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "meren-recursion"
+            ]
           }
         ],
         "proxy": [],
         "free": [
-          {
-            "name": "Arid Mesa",
-            "where": [
-              "sisay"
-            ]
-          },
           {
             "name": "Misty Rainforest",
             "where": [
@@ -1713,12 +2639,6 @@
           },
           {
             "name": "Polluted Delta",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Scalding Tarn",
             "where": [
               "sisay"
             ]
@@ -1733,33 +2653,36 @@
             ]
           }
         ],
-        "blocking": 9,
+        "blocking": 12,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 14,
-      "out": 14,
+      "add": 15,
+      "out": 15,
       "counts": {
-        "in_deck": 84,
+        "in_deck": 83,
         "box": 1,
-        "elsewhere": 2,
-        "buy": 7,
-        "free": 4
+        "elsewhere": 3,
+        "buy": 9,
+        "free": 2
       },
       "unsourced": [
         "Asceticism",
-        "Bloodstained Mire",
+        "Fabled Passage",
+        "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
         "Mithril Coat",
+        "Prismatic Vista",
         "Steel Hellkite",
         "Stubborn Denial",
+        "Tarnished Citadel",
         "Transcendent Dragon",
         "Whirlwing Stormbrood // Dynamic Soar"
       ],
       "mergeable": false,
-      "free": 4,
+      "free": 2,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -1777,18 +2700,10 @@
         },
         {
           "name": "Arid Mesa",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Asceticism",
@@ -1827,18 +2742,10 @@
         },
         {
           "name": "Bloodstained Mire",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bloom Tender",
@@ -1989,10 +2896,10 @@
         },
         {
           "name": "Fabled Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faeburrow Elder",
@@ -2024,10 +2931,46 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -2258,10 +3201,10 @@
         },
         {
           "name": "Prismatic Vista",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reflecting Pool",
@@ -2293,18 +3236,10 @@
         },
         {
           "name": "Scalding Tarn",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Scourge of Valkas",
@@ -2406,10 +3341,25 @@
         },
         {
           "name": "Tarnished Citadel",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Teferi's Protection",
@@ -2524,6 +3474,12 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Fabled Passage"
+          },
+          {
+            "name": "Prismatic Vista"
+          },
+          {
             "name": "Stubborn Denial"
           },
           {
@@ -2533,26 +3489,44 @@
             "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Forbidden Orchard",
+            "where": [
+              "gishath",
+              "meren-recursion"
+            ]
+          },
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "meren-recursion"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 3,
+        "blocking": 7,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 8,
+      "out": 8,
       "counts": {
-        "in_deck": 93,
+        "in_deck": 89,
         "box": 0,
-        "elsewhere": 0,
-        "buy": 3,
+        "elsewhere": 2,
+        "buy": 5,
         "free": 0
       },
       "unsourced": [
+        "Fabled Passage",
+        "Forbidden Orchard",
+        "Prismatic Vista",
         "Stubborn Denial",
+        "Tarnished Citadel",
         "Transcendent Dragon",
         "Whirlwing Stormbrood // Dynamic Soar"
       ],
@@ -2771,10 +3745,10 @@
         },
         {
           "name": "Fabled Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faeburrow Elder",
@@ -2806,10 +3780,46 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -2981,10 +3991,10 @@
         },
         {
           "name": "Prismatic Vista",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Radiant Destiny",
@@ -3135,10 +4145,25 @@
         },
         {
           "name": "Tarnished Citadel",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Teferi's Protection",
@@ -3247,7 +4272,13 @@
             "name": "Asceticism"
           },
           {
+            "name": "Fabled Passage"
+          },
+          {
             "name": "Mithril Coat"
+          },
+          {
+            "name": "Prismatic Vista"
           },
           {
             "name": "Stubborn Denial"
@@ -3259,7 +4290,21 @@
             "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Forbidden Orchard",
+            "where": [
+              "gishath",
+              "meren-recursion"
+            ]
+          },
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "meren-recursion"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
@@ -3271,24 +4316,28 @@
             ]
           }
         ],
-        "blocking": 5,
+        "blocking": 9,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 6,
-      "out": 6,
+      "add": 11,
+      "out": 11,
       "counts": {
-        "in_deck": 91,
+        "in_deck": 87,
         "box": 1,
-        "elsewhere": 0,
-        "buy": 5,
+        "elsewhere": 2,
+        "buy": 7,
         "free": 0
       },
       "unsourced": [
         "Asceticism",
+        "Fabled Passage",
+        "Forbidden Orchard",
         "Mithril Coat",
+        "Prismatic Vista",
         "Stubborn Denial",
+        "Tarnished Citadel",
         "Transcendent Dragon",
         "Whirlwing Stormbrood // Dynamic Soar"
       ],
@@ -3514,10 +4563,10 @@
         },
         {
           "name": "Fabled Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faeburrow Elder",
@@ -3549,10 +4598,46 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -3724,10 +4809,10 @@
         },
         {
           "name": "Prismatic Vista",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Radiant Destiny",
@@ -3871,10 +4956,25 @@
         },
         {
           "name": "Tarnished Citadel",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Teferi's Protection",
@@ -3999,10 +5099,16 @@
             "name": "Asceticism"
           },
           {
+            "name": "Fabled Passage"
+          },
+          {
             "name": "Marang River Regent // Coil and Catch"
           },
           {
             "name": "Mithril Coat"
+          },
+          {
+            "name": "Prismatic Vista"
           },
           {
             "name": "Steel Hellkite"
@@ -4017,7 +5123,21 @@
             "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Forbidden Orchard",
+            "where": [
+              "gishath",
+              "meren-recursion"
+            ]
+          },
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "meren-recursion"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
@@ -4029,26 +5149,30 @@
             ]
           }
         ],
-        "blocking": 7,
+        "blocking": 11,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 8,
-      "out": 8,
+      "add": 13,
+      "out": 13,
       "counts": {
-        "in_deck": 89,
+        "in_deck": 85,
         "box": 1,
-        "elsewhere": 0,
-        "buy": 7,
+        "elsewhere": 2,
+        "buy": 9,
         "free": 0
       },
       "unsourced": [
         "Asceticism",
+        "Fabled Passage",
+        "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
         "Mithril Coat",
+        "Prismatic Vista",
         "Steel Hellkite",
         "Stubborn Denial",
+        "Tarnished Citadel",
         "Transcendent Dragon",
         "Whirlwing Stormbrood // Dynamic Soar"
       ],
@@ -4274,10 +5398,10 @@
         },
         {
           "name": "Fabled Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faeburrow Elder",
@@ -4309,10 +5433,46 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -4491,10 +5651,10 @@
         },
         {
           "name": "Prismatic Vista",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reflecting Pool",
@@ -4631,10 +5791,25 @@
         },
         {
           "name": "Tarnished Citadel",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Teferi's Protection",
@@ -5119,7 +6294,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 33,
+          "value": 34,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -5137,7 +6312,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.939,
+          "value": 6.876,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -5153,7 +6328,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp or fixing drawn": {
-          "value": 82,
+          "value": 83,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
@@ -5185,7 +6360,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Protection held for the big turn": {
-          "value": 57,
+          "value": 56,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Protection held for the big turn' by turn six",
@@ -5266,7 +6441,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 79,
+          "value": 77,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -5276,16 +6451,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 1.0,
-            "10": 9.206,
-            "2": 2.236,
-            "3": 3.583,
-            "4": 4.864,
-            "5": 5.919,
-            "6": 6.726,
-            "7": 7.421,
-            "8": 8.041,
-            "9": 8.629
+            "1": 0.998,
+            "10": 9.223,
+            "2": 2.237,
+            "3": 3.65,
+            "4": 4.944,
+            "5": 5.994,
+            "6": 6.786,
+            "7": 7.459,
+            "8": 8.076,
+            "9": 8.667
           },
           "tier": "data",
           "weight": "detail",
@@ -5295,16 +6470,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 1.0,
-            "10": 0.372,
-            "2": 0.997,
-            "3": 0.901,
-            "4": 0.769,
-            "5": 0.646,
-            "6": 0.548,
-            "7": 0.475,
-            "8": 0.415,
-            "9": 0.386
+            "1": 0.998,
+            "10": 0.361,
+            "2": 0.995,
+            "3": 0.896,
+            "4": 0.757,
+            "5": 0.623,
+            "6": 0.52,
+            "7": 0.446,
+            "8": 0.399,
+            "9": 0.375
           },
           "tier": "data",
           "weight": "detail",
@@ -5315,15 +6490,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.0,
-            "10": 6.262,
-            "2": 0.173,
-            "3": 0.587,
-            "4": 1.319,
-            "5": 2.255,
-            "6": 3.162,
-            "7": 3.994,
-            "8": 4.793,
-            "9": 5.539
+            "10": 6.216,
+            "2": 0.16,
+            "3": 0.576,
+            "4": 1.311,
+            "5": 2.243,
+            "6": 3.135,
+            "7": 3.969,
+            "8": 4.753,
+            "9": 5.493
           },
           "tier": "data",
           "weight": "detail",
@@ -5333,14 +6508,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 345,
-            "1": 1649,
-            "2": 2973,
-            "3": 2924,
-            "4": 1562,
-            "5": 457,
-            "6": 87,
-            "7": 3
+            "0": 451,
+            "1": 1766,
+            "2": 3042,
+            "3": 2799,
+            "4": 1413,
+            "5": 452,
+            "6": 71,
+            "7": 6
           },
           "tier": "data",
           "weight": "detail",
@@ -5349,13 +6524,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 491,
-            "4": 16,
-            "5": 575,
-            "6": 2287,
-            "7": 3144,
-            "8": 1993,
-            "9": 1025
+            "10": 500,
+            "4": 18,
+            "5": 569,
+            "6": 2300,
+            "7": 3077,
+            "8": 2103,
+            "9": 960
           },
           "tier": "data",
           "weight": "detail",
@@ -5371,8 +6546,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.939,
-    "commander_cast_by_turn_6_pct": 33,
+    "commander_mean_cast_turn": 6.876,
+    "commander_cast_by_turn_6_pct": 34,
     "targets": [
       {
         "label": "Cost reducer drawn (the deck's real curve fixer)",
@@ -5380,7 +6555,7 @@
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 82
+        "by_turn_6_pct": 83
       },
       {
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
@@ -5396,7 +6571,7 @@
       },
       {
         "label": "Protection held for the big turn",
-        "by_turn_6_pct": 57
+        "by_turn_6_pct": 56
       },
       {
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
@@ -5419,17 +6594,17 @@
       "mean_kill_turn": 7.213,
       "median_kill_turn": 7,
       "kill_by_turn_6_pct": 29,
-      "kill_by_turn_8_pct": 80,
+      "kill_by_turn_8_pct": 81,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 5,
       "kill_turn_histogram": {
-        "10": 491,
-        "4": 16,
-        "5": 575,
-        "6": 2287,
-        "7": 3144,
-        "8": 1993,
-        "9": 1025
+        "10": 500,
+        "4": 18,
+        "5": 569,
+        "6": 2300,
+        "7": 3077,
+        "8": 2103,
+        "9": 960
       }
     }
   },
@@ -5477,6 +6652,7 @@
   "audit": {
     "archetype": null,
     "under": [
+      "mana-base",
       "colour-sources",
       "card-advantage",
       "interaction-breadth"
@@ -5659,7 +6835,7 @@
     "runs": 4,
     "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-9def0ac6-s649688774-podExperimental-c600",
     "at": "2026-09-10",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2",
     "games": 40,
     "wins": 12,
@@ -5697,17 +6873,18 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
-    "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "`final-v1` is PROPOSED as v1.3.0 and waiting on cardboard — 9 card(s) (7 to buy, 2 to unsleeve) — `manamap pilot deck-branch ur-dragon show final-v1` has the pull list",
-    "branch `haste-v1` needs 3 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
-    "branch `mana-v1` needs 9 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
-    "branch `responses-v1` needs 3 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v1`",
-    "branch `responses-v2` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v2`",
-    "branch `responses-v3` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v3`",
+    "stale: frame, map, tutors, prose, benchmark — regenerate against the current list (`/publish-deck` sequences it)",
+    "`final-v1` was proposed as v1.3.0 against V4 and the deck has moved on — v1.3.0 may be taken; re-measure and propose again",
+    "branch `final-v2` needs 8 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v2`",
+    "branch `haste-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
+    "branch `mana-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
+    "branch `responses-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v1`",
+    "branch `responses-v2` needs 9 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v2`",
+    "branch `responses-v3` needs 11 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v3`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×5, goldfish ×10, research-strategy ×6, resolve-stack ×10",
-    "4 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "5 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
