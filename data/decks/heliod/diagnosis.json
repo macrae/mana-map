@@ -952,105 +952,75 @@
     "SIX CARDS NEVER CAST IN 120 FORGE GAMES: Azorius Signet, Guardian of Faith, Long-Term Plans, Psychosis Crawler, Skyscribing and Teferi's Protection. None is cut on that evidence — a card the AI declines is not a card that does not help."
   ],
   "skeptic": {
-    "verdict": "fail",
+    "verdict": "pass",
     "findings": [
       {
-        "where": "verdict, axes[0]",
-        "status": "over-claimed",
-        "severity": "high",
-        "note": "THE NEW VERDICT'S LOAD-BEARING SENTENCE DOES NOT HOLD. 'It is the only gate that survives its confound' and axes[0]'s 'the figure that rules out game length as the explanation' both rest on lands per GLOBAL TURN (0.2279 vs 0.1976, Welch [-0.0489, -0.0117]). I reproduce that figure exactly -- and the denominator is the confound, not a control for it. global_turn keeps counting after heliod is eliminated, and elimination is precisely what differs between the arms: 9 of 27 Approach-cast games (0.33) against 65 of 93 no-Approach games (0.70); the global_turn-to-own-turn ratio is 4.10 in eliminated games against 3.68 in survived ones, so the arm with more eliminations is divided by a larger number for a mechanical reason. Two controls, both from the record's own fields: (a) on per_seat.turns -- the turns heliod actually took -- the rate is 0.8178 vs 0.7849, Welch +0.0329, ci95 [-0.0301, +0.0960], SPANS ZERO; (b) restricted to the 46 games heliod was not eliminated in, every arm of the comparison collapses -- lands 10.06 vs 9.11 ci95 [-0.615, +2.512], lands per global turn ci95 [-0.0044, +0.0435], lands per own turn ci95 [-0.0866, +0.0853], all spanning zero. The association is carried by the games heliod was eliminated in, which is the same 'these games are shorter' mechanism the doctor correctly used in gaps[1] to demote the commander split. THE PRESCRIPTION IS NOT REFUTED: 33 lands against a 37-39 band, 25 W and 26 U sources against 36, benchmark missed_land_drop_rate 0.2568 worst at turn six, and a finisher costing seven mana twice are deterministic and need no cross-tab. What must go is the claim that the Forge split establishes causation -- state it as an association and rest the axis on the audit."
+        "where": "verdict, axes[0], gaps[0], lean_into[0]",
+        "status": "supported",
+        "severity": "-",
+        "note": "ROUND-2 FINDING [0] IS WITHDRAWN, NOT SOFTENED, AND THE WITHDRAWAL IS CORRECT. The verdict now says the Forge record does not establish why the deck gets to a second Approach cast, and rests mana-base on the audit's deterministic figures alone: 33 lands against the 37-39 control band, 25 W and 26 U against Karsten's 36, benchmark.json missed_land_drop_rate 0.2568 worst at turn six, and a finisher costing {6}{W} twice. My controls are reproduced exactly and in the right direction: lands per own turn ci95 [-0.0960, +0.0301] and survivors-only lands ci95 [-2.5120, +0.6152] (both my intervals with the doctor's cast-minus-none sign convention), elimination 0.33 against 0.70, global-to-own-turn ratio 4.10 against 3.68. lean_into[0] now carries the split under the key `forge_land_split_withdrawn` and says in terms that it is 'consistent with this and is NOT evidence for it'. The prescription is unchanged and is now carried by evidence that supports it."
       },
       {
-        "where": "verdict, gaps[0]",
-        "status": "miscounted",
-        "severity": "high",
-        "note": "The commander cross-tabs do not reproduce and one is directionally inverted. Claimed: resolving 19/67 = 0.284 against 18/52 = 0.346; flipping 9/35 against 28/84. Re-derived from record b0f44e4a games[].per_seat.heliod (winner == 'heliod' against commander_resolved_turn / commander_transformed_turn): resolving 13/68 = 0.191 against 7/52 = 0.135; flipping 6/35 = 0.171 against 14/85 = 0.165. The claimed figures carry 37 wins across 119 games when the seat won 20 of 99 decided, and the 84 in '28/84' should be 85. The resolving split is inverted: the record says resolving is associated with winning slightly MORE, not less. engine.json (critic verdict pass, today) already carries 6/35 against 14/85, so the diagnosis now contradicts a critic-passed artifact on the same table. THE CONCLUSION SURVIVES with the right numbers and should be re-stated with them: Newcombe on resolving 13/68 vs 7/52 gives diff -0.0566, ci95 [-0.1849, +0.0838]; on flipping 6/35 vs 14/85, diff -0.0067, ci95 [-0.1748, +0.1230]. Both span zero."
+        "where": "gaps[1], verdict",
+        "status": "supported",
+        "severity": "-",
+        "note": "THE CORRECTED CROSS-TABS ARE RIGHT AND THE STATED ROOT CAUSE REPRODUCES EXACTLY. From records games[].winner over all 120: resolving 13/68 = 0.191 against 7/52 = 0.135, Newcombe diff -0.0566, ci95 [-0.1849, +0.0838]; flipping 6/35 = 0.171 against 14/85 = 0.165, diff -0.0067, ci95 [-0.1748, +0.1230]. Both match engine.json's critic-passed table. I then tested the diagnosed cause rather than taking it: reading the winner from the log's 'Ai(N)-mm-heliod has won' line gives 37 wins instead of 20, because it names a last seat standing in 17 of the 20 clock-outs, and computing the cross-tabs that way with the single true draw dropped returns 19/67 against 18/52 and 9/35 against 28/84 — the published round-2 figures, digit for digit, denominators included. The lesson 'take the winner from the record, never from the log' is the right one and is now written into the artifact. (My round-2 note that the 84 should be 85 is explained by the same dropped draw, and gaps[1] says so.)"
       },
       {
-        "where": "axes[8]",
-        "status": "miscounted",
-        "severity": "medium",
-        "note": "The rewritten exit table is wrong on the two wrath columns, and my round-1 table is confirmed. Claimed: 22 targeted / 12 opposing wraths / 2 own / 14 unattributed. Re-derived by attributing each of the 50 exits to the next `Resolve Stack:` line (Forge logs the destroyed permanents' Zone Changes IMMEDIATELY BEFORE the causing spell's resolution) and identifying the caster from the matching `Add To Stack: Ai(N)-mm-<slug> cast <card>`: 22 targeted (Generous Gift 8, Stroke of Midnight 7, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2), 16 opposing wraths (Farewell 5, Wrath of God 4, Cleansing Nova 3, Hour of Reckoning 2, Austere Command 2), 5 own wraths, 7 unattributed. Caster is not in doubt: data/opponents/*/decklist.txt shows giada-angels runs Wrath of God, Farewell, Cleansing Nova, Austere Command, Generous Gift, Stroke of Midnight and Swords; baylen-tokens Aura Mutation and Hour of Reckoning; abaddon Blasphemous Act and Chaos Mutation. By zone the totals cross-check: 40 Graveyard + 10 Exile = 50, and the 7 unattributed are all Graveyard, so 33 destroy + 10 exile = 43 attributed."
+        "where": "axes[8], gaps[4]",
+        "status": "supported",
+        "severity": "-",
+        "note": "The exit table is corrected to my derivation and the method is now stated: 22 targeted (Generous Gift 8, Stroke of Midnight 7, Swords to Plowshares 3, Aura Mutation 2, Chaos Mutation 2), 16 opposing wraths (Farewell 5, Wrath of God 4, Cleansing Nova 3, Hour of Reckoning 2, Austere Command 2), 5 own, 7 unattributed — 43 attributed, cross-checked against the record's 40 Graveyard and 10 Exile. gaps[4] names the round-2 window search as the defect and keeps the superseded 22/12/2/14 as labelled history, which is the right way to carry it. Hexproof/shroud answers 22 of 43 and indestructible the 33 destroys, both as I re-derived them."
       },
       {
-        "where": "axes[7]",
-        "status": "miscounted",
-        "severity": "medium",
-        "note": "'2 of Heliod's 50 battlefield exits (Day of Judgment 1, Supreme Verdict 1)' is 5 (Day of Judgment 2, Supreme Verdict 3). Only heliod runs either card in this pod, so attribution is certain the moment the spell is named. I printed all five with context: part-00 line 5016 (Day of Judgment, with giada's Flawless Maneuver resolving first to save their own board), part-01 line 21607 (Supreme Verdict), part-03 lines 13312 and 20680 (both Supreme Verdict, each with `Add To Stack: Ai(2)-mm-heliod cast Supreme Verdict` two lines above the exit block) and part-03 line 39042 (Day of Judgment). The doctor's gaps[0] honestly flags the disagreement with round 1 rather than burying it; this settles it at 5. THE CONCLUSION IS UNAFFECTED -- 5 of 50 exits against 56 own-wrath resolutions is still a small minority and still a piloting note. The same 2 propagates to cut_candidates[5].why and add_candidates[6].evidence.own_sweeper_exits_of_50."
+        "where": "axes[7], cut_candidates[5], add_candidates[6]",
+        "status": "supported",
+        "severity": "-",
+        "note": "The own-wrath count is corrected to 5 (Supreme Verdict 3, Day of Judgment 2) in all three places I named: the sweepers axis, the Day of Judgment cut's `why`, and Time Wipe's evidence key own_sweeper_exits_of_50. axes[7] adds the reason attribution is certain — only this seat runs either card in the pod, which I verified against data/opponents/*/decklist.txt — and prices it against the 56 own-wrath resolutions I measured. The conclusion is unchanged and correctly scoped: a small minority, and log 002's self-wrath is a piloting note."
       },
       {
-        "where": "add_candidates[4]",
-        "status": "miscounted",
-        "severity": "medium",
-        "note": "'22 of 36 attributed' and evidence.targeted_exits_of_36_attributed. The attributed set is 43 (22 targeted + 16 opposing wraths + 5 own), not 36, so shroud/hexproof covers 22 of 43 (0.51), not 22 of 36 (0.61). The card argument is untouched and is the best-evidenced add in the document -- targeted removal is the single largest attributed cause of Heliod's exits either way, and log 001's redirected Swords is that event. Two qualifications the entry could carry: the Boots must be attached (Forge attached Greaves to Heliod 5 times in 120 games), and hexproof does not stop the 5 targeted EXILES (Swords 3, Chaos Mutation 2) from being cast at a legal target before it is equipped."
+        "where": "add_candidates[4], add_candidates[5]",
+        "status": "supported",
+        "severity": "-",
+        "note": "Denominators corrected to 43 throughout and both qualifications added to the Boots entry (it must be attached — Forge attached the Greaves to Heliod 5 times in 120 games — and hexproof does not answer a targeted spell cast before it is equipped). The Coat entry now reads 'the 33 destroy exits of the 43 attributed and misses all 10 exiles (Farewell 5, Swords to Plowshares 3, Chaos Mutation 2)', which is exactly the zone split, and the internally inconsistent exile_exits_not_covered key is gone from the evidence block, replaced by exile_exits_missed 10. The only surviving occurrence of the retracted key in the file is inside the quoted round-2 skeptic block."
       },
       {
-        "where": "add_candidates[5]",
-        "status": "miscounted",
-        "severity": "medium",
-        "note": "'Indestructible answers 30 of the 36 attributed exits' is 33 of 43 -- every Graveyard-zone exit is a 'destroy' effect and there are 33 of them (22 targeted less the 5 targeted exiles = 17, plus 11 opposing destroy-wraths, plus the 5 own). The entry's own evidence block is internally inconsistent with its prose: exile_exits_not_covered is 6, while the prose names 'the 5 targeted exiles or Farewell's exile-all', which is 5 + 5 = 10. The record's zone split settles it: 10 exits to Exile (Farewell 5, Swords to Plowshares 3, Chaos Mutation 2), 40 to Graveyard. So Mithril Coat's indestructible covers 33 of 43 attributed and misses 10."
-      },
-      {
-        "where": "verdict",
-        "status": "over-claimed",
-        "severity": "medium",
-        "note": "'What gates that is MANA' -- where 'that' is reaching a SECOND Approach cast -- is contradicted by the doctor's own open_questions[0], which reports that lands do not separate the 12 two-cast games from the 15 one-cast games (9.58 against 9.67). I reproduce it: Welch ci95 [-2.054, +2.221] on lands and [-0.074, +0.154] on lands per own turn, both spanning zero, with global turn 41.17 against 43.20 and tutor casts 0.75 against 0.80. The mana evidence bears on casting Approach AT ALL (27 games of 120), not on converting one cast into two, and converting is the step that wins. open_questions[0] states this squarely and is the strongest question in the document; the verdict should inherit its caveat rather than assert the chain through a step the same artifact calls unexplained."
+        "where": "verdict, open_questions[0]",
+        "status": "supported",
+        "severity": "-",
+        "note": "ROUND-2 FINDING [6] IS WITHDRAWN. The verdict no longer claims mana gates the second cast; it says 'lands do not separate the 12 two-cast games from the 15 one-cast games at all' and hands the step to open_questions[0], which now carries its own intervals. Reproduced: lands 9.58 against 9.67 ci95 [-2.054, +2.221], lands per own turn ci95 [-0.0744, +0.1539], global turn 41.17 against 43.20, tutor casts 0.75 against 0.80 (Mystical Tutor, Long-Term Plans and Enlightened Tutor). why_it_matters states the consequence honestly — every non-land add is sized off the assumption that ACCESS is the missing step, and that assumption is the open question."
       },
       {
         "where": "axes[9], lean_into[1]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "'12 of 12 with a second Approach cast won (Wilson [0.757, 1.000])' is exact -- I reproduce 12/12, 1/10, 7/77 over the 99 decided games and wilson_bounds(12,12) = [0.7575, 1.0] -- but it is close to definitional: Approach's oracle text wins the game on resolution when cast from hand with a prior cast, so the only way the ratio falls below 1.0 is a countered or fizzled second cast. Its actual informational content is that the pod never countered one: 39 casts and 39 resolutions across the 120 games, zero counters in the logs. Worth one clause, because as written a reader can take it for a discovered association rather than a card doing what it says against an AI that never answered it."
+        "status": "supported",
+        "severity": "-",
+        "note": "The 12/12 now carries its near-definitional clause in all three places it appears. Verified: 39 Approach casts and 39 resolutions across the 120 games, with no counterspell aimed at any of them in the logs, so evidence.counters_aimed_at_approach 0 is measured rather than assumed, and 'read it as nothing at this table answers the card' is the correct reading. The decided split 12/12, 1/10, 7/77 and Wilson [0.757, 1.000] reproduce exactly."
       },
       {
         "where": "cut_candidates[4]",
-        "status": "over-claimed",
-        "severity": "low",
-        "note": "The entry's difficulty is 'easy' and its cost_of_cutting opens 'PAINFUL relative to its reputation'. One of the two is wrong on its face. On the evidence assembled I read 'easy' as right -- it is a like-for-like swap into Swiftfoot Boots, hexproof strictly dominates shroud for a deck that wants to target its own commander, and the AI used the Greaves as commander insurance 5 times in 120 games -- so the prose word is the one to drop. Flagging it because `difficulty` is the field a reader sorts on and the two fields must not disagree."
-      },
-      {
-        "where": "gaps[0] (the parse repair)",
         "status": "supported",
         "severity": "-",
-        "note": "VERIFIED INDEPENDENTLY AND IT IS THE STRONGEST THING IN THE REVISION. The heliod seat index does rotate: games 0-29 (part-00) Ai(1), 30-59 (part-01) Ai(4), 60-89 (part-02) Ai(3), 90-119 (part-03) Ai(2) -- exactly 30 games per position. A parser hardcoded to Ai(1) sees part-00 only, which holds 15 games with a commander resolve: the claimed '15 of 120' is exact. The corrected parse reproduces the record on every count I could test: 91 commander cast events (by_card cast 91), 44 flip activations (activated 44), 68 games with a resolve (games_resolved 68), 35 games with a transform (transformed.games 35) and 50 battlefield exits. I also verified record-to-log alignment before trusting any joined figure: 120 of 120 games match on `round`, and the only winner disagreements are the 20 truncated games, where the record deliberately records no winner and the log names a last seat standing -- the documented clock-out behaviour."
+        "note": "The difficulty/prose contradiction is resolved to 'easy' and the 'PAINFUL relative to its reputation' phrase is gone. The entry now reads 'cast it in 29 distinct games with 41 activations' — which I verified is true as written, Greaves being cast once in each of 29 games — with the 5 attachments to Heliod named, and prices the swap at Swiftfoot Boots' equip {1}. gaps[3] states the EVENTS-not-games rule and records the 29-games exception rather than over-applying it."
       },
       {
-        "where": "verdict, axes[0], lean_into[0] (the figures themselves)",
+        "where": "axes[*].measured, add_candidates[*], cut_candidates[*].orphans_stack",
         "status": "supported",
         "severity": "-",
-        "note": "Every statistic in the new verdict reproduces from the record and logs, sign conventions aside: 12/12, 1/10, 7/77 over 99 decided games; Wilson [0.757, 1.000]; Approach-cast games 9.63 lands against 8.06 (Welch 1.5651, ci95 [0.4551, 2.6752]); 0.2279 lands per global turn against 0.1976 (Welch 0.0303, ci95 [0.0117, 0.0489]); 10 of the 12 second-Approach games never flipped him and 5 never cast him. My objection above is to the inference drawn from the last pair, not to the arithmetic."
+        "note": "NOTHING I MARKED SUPPORTED WAS ALTERED. Re-ran deck-audit today: all 16 measured values still match, the audit's decklist sha equals the diagnosis's, and goldfish_metrics.json and mana_analysis.json both read current. Recomputed every add with the audit's own counters: Time Wipe sweepers 2->3; Swiftfoot Boots, Mithril Coat, Flawless Maneuver protection 5->6; Solve the Equation and Personal Tutor tutors 4->5; Soul-Guide Lantern interaction-breadth 3->4 and interaction 14->15; Tundra and Sea of Clouds move no role axis and close colour-sources from mana_analysis. All nine bracket_delta recompute 4->4. All seven orphans_stack are empty and passing stack 002 names none of the seven cuts. The cut list still carries one painful entry (Kefnet) and every settled_by is in the closed set."
       },
       {
-        "where": "gaps[1]",
+        "where": "gaps[2], gaps[3], gaps[5]-[9], engine, lean_into[2]",
         "status": "supported",
         "severity": "-",
-        "note": "The commander-split confound analysis is correct and honestly run, and it is the reason the round-1 verdict fell. Reproduced exactly: lands 9.04 against 7.60, global turn 43.06 against 38.98 (Welch -4.0781, ci95 [-6.8701, -1.286], excludes zero) and lands per global turn Welch 0.0134, ci95 [-0.0046, +0.0315], spanning zero. Applying that test to the doctor's own new pair is what produces my high finding; the test itself is the right one."
+        "note": "Unchanged and still correct. gaps[2] states the missing v1.3.0 Forge run accurately — both records carry the v1.2.1 seat sha 214af308, none of the three swapped cards has a by_card line, and no settled_by routes a simulate. gaps[3]'s response-side figures re-verify (Guardian of Faith 0 casts / 6 discards, Teferi's Protection 0, Karametra's Blessing 9 casts of which 2 resolved on Heliod, Greaves 41 activations of which 5 on Heliod, 50 exits in 120 games, removed in 37 of the 68 games he resolved in). lean_into[2]'s asymmetry figures hold (0.787; triggers 41.93 [34.38, 49.49] against giada-angels 25.62 [20.77, 30.48]). axes[10] and the engine's flier group read the elimination table correctly: eliminated_by sums to 61, which is exactly eliminated_how.damage, so 'giada-angels 43 of them' is right."
       },
       {
-        "where": "round-1 findings [1], [2], [5], [6], [7], [8]",
+        "where": "gaps[0] (the parse repair, re-verified)",
         "status": "supported",
         "severity": "-",
-        "note": "Clean withdrawals, not softenings. [1] the protection verdict is withdrawn in terms ('THIS DIAGNOSIS'S ROUND-1 VERDICT WAS WRONG') and gaps[0] states what it rested on. [2] axes[8] withdraws 'two of its five do not protect Heliod at all' explicitly and now reads protection 'adequate'. [5] add_candidates[0] withdraws the Prairie Stream claim by name and keeps only Glacial Fortress, which is correct on the oracle text. [6] the Mystic Gate reason is withdrawn to gaps[6] with the false ground named and a defensible replacement (its coloured mode needs a {W/U} first). [7] axes[0] is reversed to 'liability'. [8] the sweepers band is re-cited to strategy:deckbuilding.archetype-selection and the axis now names the tension with strategy:deckbuilding.interaction-suite in its own reading -- fetched both sections again; the quotes are verbatim and the characterisation is right."
-      },
-      {
-        "where": "round-1 findings [3], [4], [9] through [16]",
-        "status": "supported",
-        "severity": "-",
-        "note": "[3] gaps[3] now separates the threat side from the response side and states the EVENTS-not-games rule. [4] Greaves: the 41-activation forecast is deleted from the Coat entry, the 5 attachments to Heliod are named, and Mithril Coat's equip {3} re-arm cost is stated -- and I withdraw my own round-1 sub-point that '29' was events read as games: Greaves was cast in 29 DISTINCT games, so 'cast it in 29 games' is true as written. [9] Kefnet repriced at 39 casts / 29 activations, the most-cast creature ahead of Drift of Phantasms 35, Archangel of Tithes 28 and Consecrated Sphinx 25 -- matches by_card. [10] the Mathemagics arithmetic is now right ({X}{X}{U}{U} at X=2 is six mana for four cards; Prosperity at X=2 is three mana for two cards each). [11] Mind Stone named as the seventh rock the flip group omits. [12] seven rocks, not eight, with Smothering Tithe named as the role-tag artefact. [13] tutors re-scoped to the five instant-speed draws (Temple Bell, Mikokoro, Kwain, Mind Stone, Kefnet). [14] the Reliquary Tower superlative correctly re-scoped to a both-modes Farewell or Austere Command. [15] Font of Mythos is now 'largest' with all eleven gift pieces enumerated and the +2/+1/activation/land-gated split correct. [16] Farewell is dropped for Soul-Guide Lantern with the trade stated rather than resolved by the validator's cap."
-      },
-      {
-        "where": "axes[*].measured, add_candidates[*] axis moves and bracket_delta, cut_candidates[*].orphans_stack",
-        "status": "supported",
-        "severity": "-",
-        "note": "Nothing I marked supported in round 1 was altered. All 16 measured values still equal deck-audit run today. Recomputed each add with the audit's own counters: Time Wipe sweepers 2->3; Swiftfoot Boots, Mithril Coat and Flawless Maneuver protection 5->6; Solve the Equation and Personal Tutor tutors 4->5; Soul-Guide Lantern interaction-breadth 3->4 AND interaction 14->15, exactly as add_candidates[7] claims and the point on which it beats Farewell (removal:sweeper moves interaction by 0); Tundra and Sea of Clouds move no role axis and close colour-sources, which is not role-computable and is argued from mana_analysis. All nine bracket_delta stay 4->4 and none of the nine is a Game Changer, so axes[14]'s new sentence is right where round 1's Farewell caveat was needed. Stack 002 names none of the seven cuts, so orphans_stack [] holds for all seven, and the list still carries one painful entry (Kefnet)."
-      },
-      {
-        "where": "open_questions[0], open_questions[4], gaps[2]",
-        "status": "supported",
-        "severity": "-",
-        "note": "open_questions[0] is new and is the right question: what separates the 12 two-cast games from the 15 one-cast games. Its figures reproduce exactly (lands 9.58 vs 9.67, global turn 41.17 vs 43.20, tutor casts 0.75 vs 0.80 counting Mystical Tutor, Long-Term Plans and Enlightened Tutor), and routing it to `goldfish` is correct since it asks for a re-declaration rather than a table. open_questions[4] carries the Mind Stone and win-access re-declarations into the goldfish file. gaps[2] still states the missing v1.3.0 Forge run accurately -- both records carry the v1.2.1 seat sha 214af308, none of the three swapped cards has a by_card line, and no settled_by value routes a simulate."
+        "note": "Re-verified in this round because everything else rests on it. The heliod seat index rotates one position per 30-game part file (Ai(1), Ai(4), Ai(3), Ai(2)); a parser hardcoded to Ai(1) sees part-00 only, which holds exactly 15 games with a commander resolve, as claimed. The corrected parse reproduces the record on every testable count: 91 cast events, 44 flip activations, 68 games with a resolve, 35 with a transform, 50 battlefield exits, 40 Graveyard and 10 Exile. Record-to-log alignment holds at 120 of 120 on `round`, with winner disagreements confined to the 20 clock-outs — which is the very artefact that produced the round-2 error and is now documented in gaps[1]."
       }
     ],
-    "iterations": 2
+    "iterations": 3
   }
 }
