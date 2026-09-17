@@ -77,6 +77,38 @@ def test_quorum_is_two_stacks():
     assert vgt.WIN_LINE_QUORUM == 2
 
 
+def test_a_mana_only_land_is_furniture_like_a_basic():
+    """A SCENARIO THAT WRITES DOWN ITS MANA IS NOT A DECLARATION WITH A HOLE.
+
+    The rule catches an ENGINE PIECE that carries verified lines and is never
+    measured. Sharknado's four stacks each list a realistic mana base, so four
+    duals appeared in four passing stacks apiece and the check fired on correct
+    data — the same class as the commander and the basic already skipped.
+
+    THE ESCAPE READS THE TEXT, NOT THE TYPE LINE, and this is what keeps it
+    honest: Mikokoro is heliod's ignition stage and Rogue's Passage is
+    gishath's, so a land whose text does something other than make mana is
+    still held to the rule. Re-introduce the bug by widening the predicate to
+    every Land and the second half of this test fails.
+    """
+    plain = {"name": "Command Tower", "type_line": "Land",
+             "oracle_text": "{T}: Add one mana of any color in your commander's color identity."}
+    tapped = {"name": "Jetmir's Garden", "type_line": "Land",
+              "oracle_text": "This land enters tapped.\n{T}: Add {R}, {G}, or {W}."}
+    utility = {"name": "Mikokoro, Center of the Sea", "type_line": "Legendary Land",
+               "oracle_text": "{T}: Add {C}.\n{2}, {T}: Each player draws a card."}
+    fetch = {"name": "Rogue's Passage", "type_line": "Land",
+             "oracle_text": "{T}: Add {C}.\n{4}, {T}: Target creature can't be blocked this turn."}
+    spell = {"name": "Sol Ring", "type_line": "Artifact",
+             "oracle_text": "{T}: Add {C}{C}."}
+
+    assert vgt._is_mana_only_land(plain)
+    assert vgt._is_mana_only_land(tapped)
+    assert not vgt._is_mana_only_land(utility), "a draw ability is not furniture"
+    assert not vgt._is_mana_only_land(fetch), "an evasion ability is not furniture"
+    assert not vgt._is_mana_only_land(spell), "only LANDS take this escape"
+
+
 @requires_deck
 def test_heliod_primary_win_line_is_declared():
     """The regression this module exists for, and the deck it was written on has

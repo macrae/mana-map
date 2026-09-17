@@ -11,6 +11,8 @@ import json
 import pathlib
 from types import SimpleNamespace
 
+import re
+
 import pytest
 
 from manamap.sim import forge, pods
@@ -54,10 +56,21 @@ def test_a_pod_expands_to_the_same_run_id_as_the_flags_it_replaces():
                               None, pod_profiles, 600)
     assert by_flag == by_pod
 
-    # And it is the id of a record that already exists on disk.
-    tracked = (ROOT / "data" / "decks" / "edgar-vampires" / "sim" /
-               f"{by_flag}.json")
-    assert tracked.exists(), by_flag
+    # And it is the SHAPE of a record that exists on disk.
+    #
+    # NOT THE EXACT FILENAME. A run id embeds the decklist sha, so anchoring to
+    # one couples this test to a live deck's current 99 — and the day the pilot
+    # sleeved edgar's v1.1.1 swap the id moved from `42dc6d00` to `fc608ed7`
+    # and the assert failed, with the pod feature working perfectly. That is
+    # issue #18's shape again: a unit test that depends on an experimental
+    # deck. What this test is FOR is the ordered slugs, the games, the seed,
+    # the pod tag and the clock, which is everything in the id except the sha —
+    # so the anchor holds those and lets the sha float.
+    sim = ROOT / "data" / "decks" / "edgar-vampires" / "sim"
+    pattern = re.sub(r"-n(\d+)-[0-9a-f]{6,}-s", r"-n\1-*-s", by_flag) + ".json"
+    assert pattern != by_flag + ".json", "the sha component must be found, or this is a substring test"
+    found = sorted(sim.glob(pattern))
+    assert found, f"no record matches {pattern}"
 
 
 def test_the_standard_pod_is_the_three_decks_the_docs_name():

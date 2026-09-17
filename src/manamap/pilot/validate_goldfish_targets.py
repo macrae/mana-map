@@ -282,6 +282,39 @@ def _validate_membership(doc, main_names, commander_names, slug=None, branch=Non
     return errors
 
 
+_MANA_ONLY_LINE = re.compile(
+    r"^(?:\(?\{T\}: Add\b.*|.*\bAdd \{.*|This land enters tapped\.?|"
+    r".*enters tapped unless.*|.*enters tapped\.?)$", re.I)
+
+
+def _is_mana_only_land(card):
+    """A land whose every line is a mana ability or an enters-tapped clause.
+
+    THE SAME ESCAPE AS A BASIC, FOR THE SAME REASON. This check exists to catch
+    an ENGINE PIECE that carries verified lines and is never measured; a
+    Command Tower carries nothing. Sharknado's four stacks each list a
+    realistic mana base, so four duals appeared in four passing stacks apiece
+    and the rule fired on correct data — a scenario that writes down the mana
+    it has is not a declaration that omits an engine.
+
+    A LAND IS NOT AUTOMATICALLY FURNITURE, which is why this reads the text
+    rather than the type line: Mikokoro is heliod's ignition stage, Kessig Wolf
+    Run and Rogue's Passage are gishath's, and all three keep their line here
+    because their text does something other than make mana. Measured over the
+    fleet before it shipped: four names newly skipped, all sharknado's duals,
+    and no deck's utility land among them.
+    """
+    if "Land" not in str(card.get("type_line", "")):
+        return False
+    text = (card.get("oracle_text") or "").strip()
+    if not text:
+        return True                        # a basic's blank text, or a plain dual
+    for line in (l.strip() for l in text.split("\n") if l.strip()):
+        if not _MANA_ONLY_LINE.match(line):
+            return False
+    return True
+
+
 def _validate_win_line_coverage(doc, slug, main_names, commander_names, base,
                                 branch=None):
     """A card carrying two or more passing stacks belongs to some component."""
@@ -291,7 +324,8 @@ def _validate_win_line_coverage(doc, slug, main_names, commander_names, base,
     try:
         deck_doc = load_deck_cards(slug, branch)
         basics = {c["name"] for c in deck_doc.get("cards", [])
-                  if "Basic Land" in str(c.get("type_line", ""))}
+                  if "Basic Land" in str(c.get("type_line", ""))
+                  or _is_mana_only_land(c)}
     except Exception:                      # pragma: no cover — fresh clone
         pass
 
