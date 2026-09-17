@@ -40,6 +40,16 @@ SESSION = requests.Session()
 SESSION.headers["User-Agent"] = USER_AGENT
 
 
+# The premium-finish markers a pasted list can end with. `*E*` is Moxfield's
+# ETCHED foil, and it was unhandled until 2026-09-17: the marker stayed glued to
+# the name, so `3 Arixmethes, Slumbering Isle (MUL) 97 *E*` in a collection box
+# produced a card name that resolved against nothing — not the corpus, not
+# Scryfall — and the failure surfaced three steps later as a build that could
+# not resolve a decklist. Both markers mean the same thing to this repo, which
+# asks only whether the pilot's copy is a premium finish. Counted across every
+# list the repo holds when the gap was found: *F* 37, *CMDR* 5, *E* 2.
+_FOIL_MARKERS = ("*F*", "*E*")
+
 # Moxfield-style printing annotation: "Card Name (SET) COLLECTOR [*F*]"
 _PRINTING_RE = re.compile(r"\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$")
 
@@ -77,7 +87,7 @@ def parse_decklist(text):
     to `$`. Reorder these and every foil line silently loses its printing.
 
     Supports: `1 Card Name`, `1x Card Name`, bare `Card Name` (quantity 1),
-    Moxfield `(SET) COLLECTOR` printing suffixes and `*F*` foil markers,
+    Moxfield `(SET) COLLECTOR` printing suffixes and `*F*`/`*E*` foil markers,
     `Commander:`/`Commanders:` and `Sideboard:` section headers, a trailing
     `*CMDR*` marker, `#` and `//` comment lines, blank lines.
     """
@@ -122,9 +132,11 @@ def parse_decklist(text):
             is_commander = True
             line = line[: line.upper().rfind("*CMDR*")].strip()
         foil = False
-        if line.upper().endswith("*F*"):
-            foil = True
-            line = line[: line.upper().rfind("*F*")].strip()
+        for marker in _FOIL_MARKERS:
+            if line.upper().endswith(marker):
+                foil = True
+                line = line[: line.upper().rfind(marker)].strip()
+                break
 
         quantity = 1
         parts = line.split(None, 1)

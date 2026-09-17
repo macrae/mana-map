@@ -99,6 +99,30 @@ def test_parse_decklist_formats():
     assert entries[3]["name"] == "Empty the Warrens"
 
 
+def test_an_etched_foil_marker_is_stripped_like_a_foil_one():
+    """AN UNSTRIPPED MARKER CORRUPTS THE NAME, WHICH IS THE REAL DAMAGE.
+
+    Moxfield writes `*E*` for etched foil. It was unhandled, so a real line in
+    the pilot's own collection — `3 Arixmethes, Slumbering Isle (MUL) 97 *E*` —
+    parsed to a card name with the marker still attached, resolving against
+    nothing and surfacing three steps later as a build that could not resolve
+    its decklist. Re-introduce the bug by dropping "*E*" from `_FOIL_MARKERS`
+    and the name assertion below fails.
+    """
+    entries = parse_decklist("3 Arixmethes, Slumbering Isle (MUL) 97 *E*\n"
+                             "1 Eternal Witness (5DN) 100 *F*\n"
+                             "1 Meren of Clan Nel Toth *CMDR*\n")
+    by_name = {e["name"]: e for e in entries}
+    assert "Arixmethes, Slumbering Isle" in by_name, by_name
+    etched = by_name["Arixmethes, Slumbering Isle"]
+    assert etched["quantity"] == 3
+    assert etched["foil"] is True, "etched is a premium finish, like foil"
+    assert etched.get("set") == "mul" and etched.get("collector_number") == "97", \
+        "the printing must survive the marker strip — the order is load-bearing"
+    assert by_name["Eternal Witness"]["foil"] is True
+    assert by_name["Meren of Clan Nel Toth"]["is_commander"] is True
+
+
 def test_parse_decklist_cmdr_marker():
     entries = parse_decklist("1 Krenko, Mob Boss *CMDR*\n1 Mountain\n")
     assert entries[0]["is_commander"] is True
