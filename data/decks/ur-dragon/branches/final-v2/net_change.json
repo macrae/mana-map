@@ -82,9 +82,14 @@
    },
    {
     "free": false,
-    "name": "Canopy Vista",
-    "state": "in_deck",
-    "where": []
+    "name": "Cascade Bluffs",
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Shabraz Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -256,6 +261,17 @@
    },
    {
     "free": false,
+    "name": "Hallowed Fountain",
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Shabraz Parts"
+     }
+    ]
+   },
+   {
+    "free": false,
     "name": "Herald's Horn",
     "state": "in_deck",
     "where": []
@@ -271,6 +287,17 @@
     "name": "Ignoble Hierarch",
     "state": "in_deck",
     "where": []
+   },
+   {
+    "free": false,
+    "name": "Irrigated Farmland",
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Shabraz Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -388,12 +415,6 @@
    {
     "free": false,
     "name": "Path of Ancestry",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Plains",
     "state": "in_deck",
     "where": []
    },
@@ -626,16 +647,19 @@
    }
   ],
   "counts": {
-   "box": 1,
+   "box": 4,
    "buy": 7,
    "elsewhere": 1,
    "free": 2,
-   "in_deck": 86
+   "in_deck": 84
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Asceticism",
+    "Cascade Bluffs",
+    "Hallowed Fountain",
+    "Irrigated Farmland",
     "Marang River Regent // Coil and Catch",
     "Marsh Flats",
     "Misty Rainforest",
@@ -647,15 +671,17 @@
     "Verdant Catacombs",
     "Whirlwing Stormbrood // Dynamic Soar"
    ],
-   "add_copies": 11,
+   "add_copies": 14,
    "base_names": 97,
    "base_size": 100,
-   "names": 97,
+   "names": 98,
    "out": [
     "Battlefield Forge",
+    "Canopy Vista",
     "Cinder Glade",
     "Dragonskull Summit",
     "Hellkite Courser",
+    "Plains",
     "Radiant Destiny",
     "Return of the Wildspeaker",
     "Rishkar's Expertise",
@@ -664,8 +690,14 @@
     "Utvara Hellkite",
     "Worldly Tutor"
    ],
-   "out_copies": 11,
-   "quantity": [],
+   "out_copies": 14,
+   "quantity": [
+    {
+     "from": 2,
+     "name": "Forest",
+     "to": 1
+    }
+   ],
    "size": 100
   },
   "free": 2,
@@ -722,33 +754,48 @@
   {
    "cards": [
     "Battlefield Forge",
+    "Canopy Vista",
+    "Cascade Bluffs",
     "Cinder Glade",
     "Dragonskull Summit",
+    "Forest",
+    "Hallowed Fountain",
+    "Irrigated Farmland",
     "Marsh Flats",
     "Misty Rainforest",
+    "Plains",
     "Polluted Delta",
     "Sunbaked Canyon",
     "Verdant Catacombs"
    ],
    "class": "land",
-   "headline": "4 land swap(s)",
+   "headline": "7 land swap(s)",
    "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
  "branch": "final-v2",
  "changes": {
-  "count": 11,
+  "count": 14,
   "diff": {
    "base_names": 97,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 2,
+     "kind": "land",
+     "name": "Forest",
+     "to": 1
+    }
+   ],
    "counts": {
-    "in": 11,
-    "in_copies": 11,
-    "lands_in": 4,
-    "lands_out": 4,
-    "out": 11,
-    "out_copies": 11,
+    "in": 14,
+    "in_copies": 14,
+    "lands_in": 7,
+    "lands_out": 6,
+    "out": 13,
+    "out_copies": 14,
     "spells_in": 7,
     "spells_out": 7
    },
@@ -827,6 +874,36 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
+     "name": "Cascade Bluffs",
+     "pair": "Plains",
+     "state": "box",
+     "type_line": "Land",
+     "why": "The last Plains makes only a colour at target. Cascade Bluffs filters into UU or RR, which is exactly the two costs this branch adds \u2014 Marang River Regent and Transcendent Dragon are both {4}{U}{U}. Owned. It needs another land first, which is the cost."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Hallowed Fountain",
+     "pair": "Forest",
+     "state": "box",
+     "type_line": "Land \u2014 Plains Island",
+     "why": "Green reads +4 OVER its Karsten target while blue is short by 13, and mana-fit names Forest as a cut candidate for making only colours already at target. Hallowed Fountain is ISLAND-TYPED, so all three blue fetches in the branch can find it \u2014 the deck had only three blue-typed lands total for them to fetch. Owned."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Irrigated Farmland",
+     "pair": "Canopy Vista",
+     "state": "box",
+     "type_line": "Land \u2014 Plains Island",
+     "why": "mana-fit names Canopy Vista a cut candidate: GW, and both colours now read at or over target while blue is short 11. Irrigated Farmland is the second ISLAND-TYPED land the blue fetches can find, and it cycles when it is the wrong half. Owned. It enters tapped, which is the cost."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
      "name": "Marsh Flats",
      "pair": "Battlefield Forge",
      "state": "elsewhere",
@@ -864,7 +941,7 @@
      "why": "The mana pass: the last of the four fetches final-v1 wanted that is not already sleeved."
     }
    ],
-   "names": 97,
+   "names": 98,
    "out": [
     {
      "cmc": 1,
@@ -942,6 +1019,15 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
+     "name": "Canopy Vista",
+     "pair": "Irrigated Farmland",
+     "type_line": "Land \u2014 Forest Plains",
+     "why": "mana-fit names Canopy Vista a cut candidate: GW, and both colours now read at or over target while blue is short 11. Irrigated Farmland is the second ISLAND-TYPED land the blue fetches can find, and it cycles when it is the wrong half. Owned. It enters tapped, which is the cost."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
      "name": "Cinder Glade",
      "pair": "Misty Rainforest",
      "type_line": "Land \u2014 Mountain Forest",
@@ -955,6 +1041,15 @@
      "pair": "Polluted Delta",
      "type_line": "Land",
      "why": "The mana pass: a conditional-untapped dual for a fetch."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Plains",
+     "pair": "Cascade Bluffs",
+     "type_line": "Basic Land \u2014 Plains",
+     "why": "The last Plains makes only a colour at target. Cascade Bluffs filters into UU or RR, which is exactly the two costs this branch adds \u2014 Marang River Regent and Transcendent Dragon are both {4}{U}{U}. Owned. It needs another land first, which is the cost."
     },
     {
      "cmc": 0,
@@ -996,6 +1091,24 @@
     "in": "Verdant Catacombs",
     "out": "Sunbaked Canyon",
     "why": "The mana pass: the last of the four fetches final-v1 wanted that is not already sleeved."
+   },
+   {
+    "at": "2026-09-17",
+    "in": "Hallowed Fountain",
+    "out": "Forest",
+    "why": "Green reads +4 OVER its Karsten target while blue is short by 13, and mana-fit names Forest as a cut candidate for making only colours already at target. Hallowed Fountain is ISLAND-TYPED, so all three blue fetches in the branch can find it \u2014 the deck had only three blue-typed lands total for them to fetch. Owned."
+   },
+   {
+    "at": "2026-09-17",
+    "in": "Irrigated Farmland",
+    "out": "Canopy Vista",
+    "why": "mana-fit names Canopy Vista a cut candidate: GW, and both colours now read at or over target while blue is short 11. Irrigated Farmland is the second ISLAND-TYPED land the blue fetches can find, and it cycles when it is the wrong half. Owned. It enters tapped, which is the cost."
+   },
+   {
+    "at": "2026-09-17",
+    "in": "Cascade Bluffs",
+    "out": "Plains",
+    "why": "The last Plains makes only a colour at target. Cascade Bluffs filters into UU or RR, which is exactly the two costs this branch adds \u2014 Marang River Regent and Transcendent Dragon are both {4}{U}{U}. Owned. It needs another land first, which is the cost."
    }
   ],
   "opened": "2026-09-17",
@@ -1045,7 +1158,7 @@
   ],
   "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
  },
- "decklist_sha256": "87d618383c499576b859f87220c0264bd835485ed86216c076b076b24857fa7c",
+ "decklist_sha256": "632e90d96e5a3cdeb99ff6955b9b611f6a5412061b7432b9657047003237b160",
  "definitions": {
   "derived": [
    {
@@ -1176,14 +1289,14 @@
    },
    {
     "colour": "U",
-    "delta": -11,
+    "delta": -7,
     "gap": [
      -2,
-     -13
+     -9
     ],
     "have": [
      20,
-     23
+     27
     ],
     "target": [
      22,
@@ -1208,14 +1321,14 @@
    },
    {
     "colour": "R",
-    "delta": 0,
+    "delta": 1,
     "gap": [
      -7,
-     -7
+     -6
     ],
     "have": [
      29,
-     29
+     30
     ],
     "target": [
      36,
@@ -1224,14 +1337,14 @@
    },
    {
     "colour": "G",
-    "delta": 3,
+    "delta": 1,
     "gap": [
      1,
-     4
+     2
     ],
     "have": [
      23,
-     26
+     24
     ],
     "target": [
      22,
@@ -1241,7 +1354,7 @@
   ],
   "enters_tapped_always": [
    1,
-   1
+   2
   ],
   "lands": [
    35,
@@ -1253,7 +1366,7 @@
     "recurring_per_tap_cycle": 5
    },
    {
-    "one_time_on_entry": 20,
+    "one_time_on_entry": 22,
     "recurring_per_tap_cycle": 3
    }
   ],
@@ -1265,15 +1378,15 @@
    ],
    "G": [
     0.918,
-    0.944
+    0.927
    ],
    "R": [
     0.804,
-    0.804
+    0.822
    ],
    "U": [
     0.881,
-    0.667
+    0.764
    ],
    "W": [
     0.881,
@@ -1288,18 +1401,18 @@
   "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
  },
  "objective_grade": {
-  "reading": 0.5778,
-  "shortfall": 0.0222,
+  "reading": 0.5716,
+  "shortfall": 0.0284,
   "state": "not met"
  },
  "recommendation": {
   "because": "The objective is not met. Board power @t6, killed by t6 and killed by t10 improved anyway, which is a different branch's case.",
   "bill": {
-   "box": 1,
+   "box": 4,
    "buy": 7,
    "elsewhere": 1,
    "free": 2,
-   "in_deck": 86
+   "in_deck": 84
   },
   "cost": {
    "buy": 7,
@@ -1313,11 +1426,11 @@
     "Whirlwing Stormbrood // Dynamic Soar"
    ],
    "counts": {
-    "box": 1,
+    "box": 4,
     "buy": 7,
     "elsewhere": 1,
     "free": 2,
-    "in_deck": 86
+    "in_deck": 84
    },
    "free_to_raid": [
     {
@@ -1342,9 +1455,9 @@
      "name": "Marsh Flats"
     }
    ],
-   "owned": 90,
-   "reads_as": "7 to buy; 1 to pull out of a deck that is still together; 2 sitting in a retired or broken-down deck, which cost nothing; 90 of 97 already owned",
-   "total": 97
+   "owned": 91,
+   "reads_as": "7 to buy; 1 to pull out of a deck that is still together; 2 sitting in a retired or broken-down deck, which cost nothing; 91 of 98 already owned",
+   "total": 98
   },
   "fell": [
    "damage @T10"
@@ -1362,12 +1475,12 @@
   "reward": [
    {
     "measure": "board power @T6",
-    "reads_as": "14.67 -> 15.11, a change of +0.44 (+3%)",
+    "reads_as": "14.67 -> 15.22, a change of +0.55 (+4%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "killed by T6",
-    "reads_as": "27 games in 100 -> 31 in 100, a swing of 3 games per 100",
+    "reads_as": "27 games in 100 -> 30 in 100, a swing of 3 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
@@ -1378,13 +1491,13 @@
   ],
   "risk": [
    {
-    "detail": "71.82 -> 68.29, a change of -3.53 (-5%)",
+    "detail": "71.82 -> 68.32, a change of -3.49 (-5%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "the largest is interaction affordable @T6 at +0.018 against an MDE of 0.022. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is mulliganed at -0.009 against an MDE of 0.017. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1430,21 +1543,27 @@
    {
     "cards": [
      "Battlefield Forge",
+     "Canopy Vista",
+     "Cascade Bluffs",
      "Cinder Glade",
      "Dragonskull Summit",
+     "Forest",
+     "Hallowed Fountain",
+     "Irrigated Farmland",
      "Marsh Flats",
      "Misty Rainforest",
+     "Plains",
      "Polluted Delta",
      "Sunbaked Canyon",
      "Verdant Catacombs"
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
-    "what": "4 land swap(s)",
+    "what": "7 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "U gap -2 -> -13",
+    "detail": "U gap -2 -> -9",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1464,16 +1583,16 @@
   "state": "do not merge"
  },
  "slug": "ur-dragon",
- "staged": 11,
+ "staged": 14,
  "table": [
   {
    "better_is": "higher",
-   "branch": 1.9817,
+   "branch": 1.9608,
    "champion": 1.948,
-   "delta": 0.0337,
-   "mde": 0.137,
+   "delta": 0.0128,
+   "mde": 0.138,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.034 is smaller than the 0.137 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.138 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1482,12 +1601,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.426,
+   "branch": 0.4259,
    "champion": 0.4122,
-   "delta": 0.0138,
-   "mde": 0.0414,
+   "delta": 0.0137,
+   "mde": 0.0416,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.041 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.042 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1496,12 +1615,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 68.2879,
+   "branch": 68.321,
    "champion": 71.8154,
-   "delta": -3.5275,
+   "delta": -3.4944,
    "mde": 2.9477,
    "measure": "damage @T10",
-   "reads_as": "71.82 -> 68.29, a change of -3.53 (-5%)",
+   "reads_as": "71.82 -> 68.32, a change of -3.49 (-5%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -1510,12 +1629,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 15.1064,
+   "branch": 15.2173,
    "champion": 14.6677,
-   "delta": 0.4387,
+   "delta": 0.5496,
    "mde": 0.405,
    "measure": "board power @T6",
-   "reads_as": "14.67 -> 15.11, a change of +0.44 (+3%)",
+   "reads_as": "14.67 -> 15.22, a change of +0.55 (+4%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1524,12 +1643,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3052,
+   "branch": 0.3042,
    "champion": 0.2744,
-   "delta": 0.0308,
+   "delta": 0.0298,
    "mde": 0.0182,
    "measure": "killed by T6",
-   "reads_as": "27 games in 100 -> 31 in 100, a swing of 3 games per 100",
+   "reads_as": "27 games in 100 -> 30 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1538,9 +1657,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9626,
+   "branch": 0.9648,
    "champion": 0.9512,
-   "delta": 0.0114,
+   "delta": 0.0136,
    "mde": 0.0085,
    "measure": "killed by T10",
    "reads_as": "95 games in 100 -> 96 in 100, a swing of 1 games per 100",
@@ -1552,12 +1671,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0767,
+   "branch": 0.0762,
    "champion": 0.0781,
-   "delta": -0.0014,
+   "delta": -0.0019,
    "mde": 0.0106,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.011 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.011 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1566,12 +1685,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4781,
+   "branch": 0.4757,
    "champion": 0.4802,
-   "delta": -0.0021,
+   "delta": -0.0045,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1580,12 +1699,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.2225,
+   "branch": 0.2183,
    "champion": 0.2274,
-   "delta": -0.0049,
+   "delta": -0.0091,
    "mde": 0.0166,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1594,12 +1713,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5778,
+   "branch": 0.5716,
    "champion": 0.5598,
-   "delta": 0.018,
+   "delta": 0.0118,
    "mde": 0.0219,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.022 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.022 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1608,12 +1727,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8881,
+   "branch": 0.8846,
    "champion": 0.884,
-   "delta": 0.0041,
+   "delta": 0.0006,
    "mde": 0.0127,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.013 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

@@ -1020,6 +1020,24 @@
         ],
         "box": [
           {
+            "name": "Cascade Bluffs",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Verdant Catacombs",
             "where": [
               "Green",
@@ -1032,11 +1050,11 @@
       },
       "base_version": 5,
       "size": 100,
-      "add": 11,
-      "out": 11,
+      "add": 14,
+      "out": 14,
       "counts": {
-        "in_deck": 86,
-        "box": 1,
+        "in_deck": 84,
+        "box": 4,
         "elsewhere": 1,
         "buy": 7,
         "free": 2
@@ -1146,11 +1164,16 @@
           "is_new": false
         },
         {
-          "name": "Canopy Vista",
-          "state": "in_deck",
-          "where": [],
+          "name": "Cascade Bluffs",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Cavern of Souls",
@@ -1349,6 +1372,18 @@
           "is_new": false
         },
         {
+          "name": "Hallowed Fountain",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Herald's Horn",
           "state": "in_deck",
           "where": [],
@@ -1368,6 +1403,18 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Irrigated Farmland",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Island",
@@ -1499,13 +1546,6 @@
         },
         {
           "name": "Path of Ancestry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Plains",
           "state": "in_deck",
           "where": [],
           "free": false,
