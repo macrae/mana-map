@@ -220,9 +220,56 @@ validator's furniture escape; the pods test's sha-coupled anchor).
 **Goblin Storm** — untweaked precon, second-fastest. No items.
 
 **The sixth slot — research**
-- [ ] Survey WUR commanders beyond Shabraz for what best augments the five (`commander-search`, `archetypes`).
-- [ ] A proper Golgari graveyard build — "Killa Bees": flying deathtouch swarm with recursion, Wu-Tang themed (a death-shaman commander as RZA, a legendary per Clan member); creatures as a graveyard resource. Criteria for any sixth: wins and hangs at the table, almost certainly blue, probably white, not another bodies-on-board deck.
+
+**KILLED 2026-09-17: Boros ({R}{W}) soldier typal.** Researched across the
+official sources, EDHREC/Archidekt deck data and the community, then dropped by
+the pilot on his own criteria — *"the correct way is through a more combo,
+tier-4 consistently threatening deck rather than a creature typal that is
+redundant to my existing decks."* Do not re-open it without new information.
+What the research established, kept because it is expensive to rebuild:
+
+- The archetype is **one commander**: 453 of ~810 Boros soldier decks are
+  Commander Mustard, the only gold Boros legend that cares its creatures are
+  Soldiers. Ten cards in the corpus say "Soldiers you control" at Boros
+  identity; four are legendary creatures and three of those are mono-white.
+- **Soldier typal is a mono-white archetype Boros visits.** Mono-white holds
+  1,528 of 3,812 soldier decks against Boros's 807; 77.6% of the 742
+  Boros-legal Soldiers are mono-white cards. Red adds 11 token-makers and 7
+  support cards — you go Boros for Impact Tremors, Shared Animosity and Boros
+  Charm, not for bodies.
+- **Four commonly-named candidates are not soldier decks by card text**:
+  Adeline makes Human tokens and is a Knight; Winota is Human/non-Human (12
+  soldier decks of 14,126, a stax/cEDH deck); Jor Kadeen is metalcraft
+  equipment (0); Neyali is a type-agnostic token payoff (0). **Harbin is
+  Azorius and cannot be a Boros commander.**
+- **CR 508.4 is a trap here**: a creature put onto the battlefield attacking
+  never "attacked", so tokens from Myrel, Winota or Adeline cannot satisfy
+  Harbin's five-Soldier declaration count. Reads as working, silently does not.
+- **Winota came off the Game Changers list 21 Oct 2025.** Any pre-October-2025
+  analysis calling her a Game Changer is stale.
+- The archetype pays **no Game Changers tax** and is **cheap** — its
+  highest-synergy card, Assemble the Legion, is $0.32 at 71% inclusion.
+- The one argument worth keeping for any future white go-wide build: the best
+  primer in the corpus treats soldier typal as **a combo deck whose combo piece
+  is an amplifier anthem** (Cathars' Crusade, Coat of Arms, Goldnight
+  Commander), not an aggro deck that plays lords.
+
+**The criteria, as they now stand** (quiver inventory 2026-09-16, refined
+2026-09-17): enjoyable to play; wins and hangs at the table against the other
+five; almost certainly blue, probably white, likes a dash of red; **combo-
+leaning and consistently threatening rather than incremental**; target bracket
+4; **not another creature-on-board deck** — and if creature-based, the type must
+not depend on keeping bodies on the battlefield.
+
+- [ ] Survey commanders against those criteria — blue/white combo, bracket 4.
+      `commander-search` and `archetypes` are the free deterministic first pass.
+- [ ] A proper Golgari graveyard build — "Killa Bees": flying deathtouch swarm
+      with recursion, Wu-Tang themed (a death-shaman commander as RZA, a
+      legendary per Clan member); creatures as a graveyard resource. NOTE: this
+      is black-green and a creature deck, so it fails the refined criteria on
+      two counts — keep it as a separate want, not as the sixth slot.
 - [ ] Still-liked ideas from the failed candidates: flash, and flash-into-blink.
+      Both survive the refined criteria and neither has been surveyed.
 
 **The bench itself**
 - [ ] The ~54 stacks MISSed by the rulings feed: leave lazy (default) or re-bless in one reasoned commit.
