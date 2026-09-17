@@ -1,24 +1,39 @@
 {
   "slug": "ur-dragon",
-  "decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2",
+  "decklist_sha256": "51b908a6a59a3c4de977dfeed8c7607df5b7bd36735ae83eb95821565a69dd79",
   "lands": {
-    "total": 36,
+    "total": 35,
     "entries": 32,
     "life": {
-      "recurring_per_tap_cycle": 8,
-      "one_time_on_entry": 13
+      "recurring_per_tap_cycle": 5,
+      "one_time_on_entry": 16
     },
     "enters_tapped": 12,
     "enters_tapped_always": 1,
     "classes": {
-      "basic": 8,
-      "fetch": 2,
-      "fixing": 13,
+      "basic": 7,
+      "fetch": 4,
+      "fixing": 11,
       "tapped": 12,
-      "untapped-dual": 13,
-      "utility": 10
+      "untapped-dual": 11,
+      "utility": 11
     },
     "list": [
+      {
+        "name": "Arid Mesa",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
+      },
       {
         "name": "Battlefield Forge",
         "copies": 1,
@@ -40,6 +55,21 @@
         "produces": [
           "B",
           "R"
+        ]
+      },
+      {
+        "name": "Bloodstained Mire",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
         ]
       },
       {
@@ -142,35 +172,6 @@
         ]
       },
       {
-        "name": "Fabled Passage",
-        "copies": 1,
-        "classes": [
-          "fetch",
-          "utility"
-        ],
-        "produces": [
-          "G",
-          "R",
-          "U",
-          "W"
-        ]
-      },
-      {
-        "name": "Forbidden Orchard",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G",
-          "R",
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Forest",
         "copies": 2,
         "classes": [
@@ -234,7 +235,7 @@
       },
       {
         "name": "Mountain",
-        "copies": 4,
+        "copies": 3,
         "classes": [
           "basic"
         ],
@@ -279,20 +280,6 @@
         ]
       },
       {
-        "name": "Prismatic Vista",
-        "copies": 1,
-        "classes": [
-          "fetch",
-          "utility"
-        ],
-        "produces": [
-          "G",
-          "R",
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Reflecting Pool",
         "copies": 1,
         "classes": [
@@ -308,6 +295,21 @@
         ],
         "produces": [
           "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Scalding Tarn",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
           "W"
         ]
       },
@@ -373,22 +375,6 @@
         ]
       },
       {
-        "name": "Tarnished Citadel",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "B",
-          "G",
-          "R",
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Turbulent Springs",
         "copies": 1,
         "classes": [
@@ -407,6 +393,21 @@
           "untapped-dual"
         ],
         "produces": []
+      },
+      {
+        "name": "Wooded Foothills",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G",
+          "R",
+          "U",
+          "W"
+        ]
       }
     ]
   },
@@ -414,22 +415,22 @@
     "lands": {
       "W": 16,
       "U": 15,
-      "B": 13,
-      "R": 25,
+      "B": 15,
+      "R": 24,
       "G": 18
     },
     "nonland": {
       "W": 4,
-      "U": 4,
-      "B": 5,
+      "U": 5,
+      "B": 6,
       "R": 5,
       "G": 5
     },
     "total": {
       "W": 20,
-      "U": 19,
-      "B": 18,
-      "R": 30,
+      "U": 20,
+      "B": 21,
+      "R": 29,
       "G": 23
     },
     "gated": {
@@ -531,6 +532,15 @@
         "kind": "ramp:rock",
         "cmc": 1.0,
         "produces": []
+      },
+      {
+        "name": "Talisman of Dominance",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "B",
+          "U"
+        ]
       }
     ]
   },
@@ -574,23 +584,23 @@
   "shares": {
     "B": {
       "pip_share": 0.033,
-      "source_share": 0.149
+      "source_share": 0.17
     },
     "G": {
       "pip_share": 0.231,
-      "source_share": 0.207
+      "source_share": 0.205
     },
     "R": {
       "pip_share": 0.571,
-      "source_share": 0.287
+      "source_share": 0.273
     },
     "U": {
       "pip_share": 0.044,
-      "source_share": 0.172
+      "source_share": 0.17
     },
     "W": {
       "pip_share": 0.121,
-      "source_share": 0.184
+      "source_share": 0.182
     }
   },
   "source_targets": {
@@ -604,22 +614,22 @@
     "lands_only": {
       "W": 0.81,
       "U": 0.787,
-      "B": 0.441,
-      "R": 0.718,
+      "B": 0.524,
+      "R": 0.694,
       "G": 0.849
     },
     "with_rocks_and_dorks": {
       "W": 0.881,
-      "U": 0.866,
-      "B": 0.636,
-      "R": 0.822,
+      "U": 0.881,
+      "B": 0.729,
+      "R": 0.804,
       "G": 0.918
     },
     "lands_only_ungated": {
       "W": 0.81,
       "U": 0.787,
-      "B": 0.441,
-      "R": 0.718,
+      "B": 0.524,
+      "R": 0.694,
       "G": 0.849
     }
   },
@@ -627,32 +637,32 @@
     "ramp:cost-reduction": 5,
     "ramp:dork": 6,
     "ramp:land": 2,
-    "ramp:rock": 5
+    "ramp:rock": 6
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 1.0,
-      "10": 0.372,
-      "2": 0.997,
-      "3": 0.901,
-      "4": 0.769,
-      "5": 0.646,
-      "6": 0.548,
-      "7": 0.475,
-      "8": 0.415,
-      "9": 0.386
+      "1": 0.998,
+      "10": 0.361,
+      "2": 0.995,
+      "3": 0.896,
+      "4": 0.757,
+      "5": 0.623,
+      "6": 0.52,
+      "7": 0.446,
+      "8": 0.399,
+      "9": 0.375
     },
     "mean_available_mana_by_turn": {
-      "1": 1.0,
-      "10": 9.206,
-      "2": 2.236,
-      "3": 3.583,
-      "4": 4.864,
-      "5": 5.919,
-      "6": 6.726,
-      "7": 7.421,
-      "8": 8.041,
-      "9": 8.629
+      "1": 0.998,
+      "10": 9.223,
+      "2": 2.237,
+      "3": 3.65,
+      "4": 4.944,
+      "5": 5.994,
+      "6": 6.786,
+      "7": 7.459,
+      "8": 8.076,
+      "9": 8.667
     }
   },
   "assumptions": [
@@ -662,10 +672,11 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 13 land sources against the 30 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 18.",
-    "G: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
-    "R: 25 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 30.",
-    "U: 15 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 19.",
-    "W: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20."
+    "B: 15 land sources against the 30 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 21.",
+    "G: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 23.",
+    "R: 24 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 29.",
+    "U: 15 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 20.",
+    "W: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 20.",
+    "12 of 35 lands enter tapped (34%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
