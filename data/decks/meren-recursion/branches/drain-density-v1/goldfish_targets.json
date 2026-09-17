@@ -1,0 +1,211 @@
+{
+  "_note": "AUTHORED 2026-09-17, replacing the machine scaffold. The scaffold filed seven COMBO LINE ASSEMBLED groups and five role axes; both are wrong for this deck. The combo groups declared as the engine exactly the 3-and-4-card lines this build was constructed to avoid relying on, and the role axes put Boggart Mischief under both 'AN ANSWER' and 'A FINISHER'. Every group below is a functional set read off this 99's own oracle text. Names are the cards.json ' // ' form. Two groups the scaffold suggested are deliberately absent: 'two table-wide drains' cannot be expressed, because a drawn-by-turn model has no way to ask for two members of one set and the group's rate would bound itself; the doubling arithmetic lives in `note` instead.",
+  "note": "THE MACHINE. Meren is a fodder pump, not a win condition: each end step she returns a creature from the yard, to the BATTLEFIELD when its mana value is at or under her experience count and to HAND otherwise, so the trigger never whiffs and the ceiling climbs on its own. The deck converts that recursion into damage through DEATH DRAINS, and the whole declaration turns on a distinction the card names hide.\n\nTWO KINDS OF DRAIN, AND THEY ARE NOT THE SAME CARD. Zulaport Cutthroat, The Meathook Massacre and Grave Venerations each read 'EACH OPPONENT loses 1' - 3 life off the table per death. Blood Artist and Sephiroth read 'target player/opponent loses 1' - 1 life off the table per death. Against 120 pod life that is the difference between 40 deaths and 120. Blood Artist is the iconic card of the archetype and the worst one here for killing a table; it is declared in its own group for exactly that reason.\n\nTHE ARITHMETIC, from the oracle text. One table-wide drainer: 40 of your creatures must die to close the pod. Two: 20. Three: 13. Starscape Cleric is the multiplier the archetype does not usually name - 'whenever you gain life, each opponent loses 1', and every table-wide drainer in this deck gains you life on the same trigger, so Cleric plus Zulaport is 2 per opponent per death (20 deaths for the table) and Cleric converts Blood Artist's single-target trigger into a table-wide one. That is the declared win line: stacked table-wide drain fed by Meren returning fodder every end step, closing on a count of deaths rather than on a loop.",
+  "_combo_note": "SEVEN 3-and-4-card combo lines are contained in this 99 and NONE is declared as a target. `must_exclude` holds 12 computed names that break every reachable TWO-card infinite, and the lines that remain need four specific cards. A target group naming one would declare as the engine a line the build exists to not depend on, and would measure assembly of a hand nobody mulligans for.",
+  "_flags_note": "model_deaths is deliberately ABSENT. It requires `own_per_turn`, `opponent_per_turn` and a `source` naming the run the rate was measured from, and this deck has never been simulated - an authored death rate driving a damage figure is the failure `engine_online` was deleted for. Until a Forge run exists, every death-triggered drain reports under `drain_unmodelled`, which is the honest place for it. model_drain, model_sacrifice and model_combat are on together: the deck has five free unlimited outlets and a real creature curve, and model_sacrifice without model_combat warns for good reason. model_treasures is also off: Tireless Provisioner is the only Treasure source in the 99 whose trigger this model reads, and turning the flag on to model one card restates every figure in the deck. `model-coverage` names it as DARK, which is the honest place for it.",
+  "model_draw": true,
+  "model_combat": true,
+  "model_sacrifice": true,
+  "model_drain": true,
+  "_required_note": "`required` marks what the deck cannot function without. TWO groups carry it: a free sacrifice outlet, because every payoff here is paid in deaths and nothing else in the 99 produces one on demand; and a table-wide death drain, because the single-target drains cannot close a pod inside any realistic number of deaths.",
+  "targets": [
+    {
+      "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
+      "need": [
+        {
+          "any_of": [
+            "Ashnod's Altar",
+            "Carrion Feeder",
+            "Phyrexian Altar",
+            "Viscera Seer",
+            "Woe Strider"
+          ]
+        }
+      ],
+      "required": true
+    },
+    {
+      "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
+      "need": [
+        {
+          "any_of": [
+            "Bastion of Remembrance",
+            "Cauldron of Essence",
+            "Grave Venerations",
+            "The Meathook Massacre",
+            "Zulaport Cutthroat"
+          ]
+        }
+      ],
+      "required": true,
+      "route": true
+    },
+    {
+      "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
+      "need": [
+        {
+          "any_of": [
+            "Blood Artist",
+            "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss",
+      "need": [
+        {
+          "any_of": [
+            "Starscape Cleric"
+          ]
+        },
+        {
+          "any_of": [
+            "Bastion of Remembrance",
+            "Blood Artist",
+            "Boggart Mischief",
+            "Cauldron of Essence",
+            "Grave Venerations",
+            "Zulaport Cutthroat"
+          ]
+        }
+      ],
+      "route": true
+    },
+    {
+      "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
+      "need": [
+        {
+          "any_of": [
+            "Boggart Mischief",
+            "Grist, the Hunger Tide",
+            "Izoni, Thousand-Eyed",
+            "Pawn of Ulamog",
+            "Reassembling Skeleton",
+            "Ribtruss Roaster",
+            "Sedgemoor Witch",
+            "Titania, Protector of Argoth",
+            "Woe Strider"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
+      "need": [
+        {
+          "any_of": [
+            "Ashnod's Altar",
+            "Carrion Feeder",
+            "Phyrexian Altar",
+            "Viscera Seer",
+            "Woe Strider"
+          ]
+        },
+        {
+          "any_of": [
+            "Bastion of Remembrance",
+            "Cauldron of Essence",
+            "Grave Venerations",
+            "The Meathook Massacre",
+            "Zulaport Cutthroat"
+          ]
+        },
+        {
+          "any_of": [
+            "Boggart Mischief",
+            "Grist, the Hunger Tide",
+            "Izoni, Thousand-Eyed",
+            "Pawn of Ulamog",
+            "Reassembling Skeleton",
+            "Ribtruss Roaster",
+            "Sedgemoor Witch",
+            "Titania, Protector of Argoth"
+          ]
+        }
+      ],
+      "route": true
+    },
+    {
+      "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
+      "need": [
+        {
+          "any_of": [
+            "Animate Dead",
+            "Cauldron of Essence",
+            "Deadbridge Chant",
+            "Diabolic Servitude",
+            "Dread Return",
+            "Graveshifter",
+            "Phyrexian Reclamation",
+            "Postmortem Professor",
+            "Supernatural Stamina"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
+      "need": [
+        {
+          "any_of": [
+            "Buried Alive",
+            "Diabolic Intent",
+            "Eldritch Evolution",
+            "Fauna Shaman",
+            "Survival of the Fittest",
+            "Vampiric Tutor"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "RAMP drawn — an accelerant of any kind",
+      "need": [
+        {
+          "any_of": [
+            "Arcane Signet",
+            "Ashnod's Altar",
+            "Chrome Mox",
+            "Deathrite Shaman",
+            "Phyrexian Altar",
+            "Pitiless Plunderer",
+            "Sol Ring",
+            "Tireless Provisioner"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "REMOVAL drawn — a spell or ability that answers a permanent",
+      "need": [
+        {
+          "any_of": [
+            "Assassin's Trophy",
+            "Beast Within",
+            "Deadly Rollick",
+            "Feed the Swarm",
+            "Glissa Sunslayer",
+            "Grist, the Hunger Tide",
+            "Liliana, Death Wielder",
+            "Professor Dellian Fel",
+            "Requiting Hex",
+            "The Meathook Massacre",
+            "Trystan's Command"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
+      "need": [
+        {
+          "any_of": [
+            "Grave Pact"
+          ]
+        }
+      ]
+    }
+  ],
+  "_branch_note": "BRANCH-LOCAL declaration. Identical to the deck's except that the two added cards are named in the groups they belong to: a card the declaration does not name is a card the assembly rate cannot see, which is the defect this branch exists to fix. THE ASSEMBLY RATES OF THE TWO ARMS ARE THEREFORE NOT COMPARABLE and must not be quoted against each other — that is the measure-from-an-authored-file failure `engine_online` was deleted for. Compare the OUTPUT metrics in net_change.json, which the model derives from oracle text and not from this file."
+}
