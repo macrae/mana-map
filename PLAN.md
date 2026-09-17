@@ -186,28 +186,36 @@ names the loop that settles it. **Piloting** items are the pilot's, not the benc
 - [ ] Forge cannot pilot this deck (holds and pitches the wheels); its one run is a floor. Check `engine_casts` under the Experimental profile once, then mark the Forge line unpilotable rather than stale.
 
 **Gishath (commander dependence high)**
-- [ ] Green pip / green-source audit: 22 of 36 sources for 55 pips, on-curve green 0.639 — the screw reads structural. `mana-analysis`, `mana-fit`, then a `landbase` branch.
+- [x] Green pip / green-source audit (2026-09-16) — DONE: three lands that make no green out (Sacred Foundry, Clifftop Retreat, a Plains) for Verdant Catacombs and two Forests, all owned; green on curve 0.694 → 0.764 on lands, 0.822 with rocks; tapped lands 12 → 10. Staged on `mana-v1`, re-proposed as v1.1.0.
 - [ ] Reconsider the enrage package — idling for lack of ping sources. `/diagnose-deck` (the doctor reads the log).
 - [ ] Add commander protection — repeated tax drains the deck (quiver inventory).
 - [ ] `/resolve-stack`: was the split alpha lethal on Oliver after Alex saves himself?
-- [ ] mana-v1 is PROPOSED as v1.1.0 and waiting on cardboard — fold the green audit into it or supersede it.
+- [ ] mana-v1 is PROPOSED as v1.1.0, the green audit folded in, waiting on ten cards (7 to buy, 3 to unsleeve from Edgar and Ur-Dragon).
 
 **Edgar (commander dependence low; fastest deck)**
-- [ ] Targeted white disruption for Purphoros-style ETB decks — `/diagnose-deck`: what in the 99 answers one, and is a swap needed.
-- [ ] Does the protection suite cover a planeswalker, and at what cost to the attack — same diagnosis.
+- [x] Targeted white disruption for Purphoros-style ETB decks (2026-09-16) — DONE in the v1.1.1 diagnosis: two exile answers to a noncreature Purphoros (Anguished Unmaking, Despark); at devotion five Path and Winds also exile him, Vish Kal's −X/−X and Liliana's −4 get through indestructible, Stroke and Elspeth −3 still fail. Vanishing Verse is the ranked add.
+- [x] Does the protection suite cover a planeswalker (2026-09-16) — answered in the same diagnosis; the axis reads AT 7 copies.
 - [ ] `/research-strategy`: how mid-range aggro sequences against a trigger-racing ETB deck.
-- [ ] `elenda-v1` (Elenda + Blade of the Bloodchief, both in the Vampire Cards box) is OPEN and MERGEABLE; five single-card patches from 09-11 undecided. `net-change`, then propose or close.
+- [x] `elenda-v1` MERGED and sleeved as v1.1.1 (2026-09-16) — Elenda for Immersturm Predator (the pilot kept Gifted Aetherborn on the curve), Blade of the Bloodchief for Unbounded Potential.
+- [ ] Five single-card patches from 09-11 still undecided (fear, march, mound, newblood, sergeant — one card to buy each).
 - [ ] Direction stays two lines — go wide, and funnel tokens into a few big vampires; the lifegain/drain infinite stays OUT by decision.
 
 **Heliod (commander dependence high; the one tier-4 deck)**
-- [ ] Colour-distribution audit (`mana-analysis`).
-- [ ] More one-to-three-mana colourless artifacts — they become free casts under the flipped Heliod. `card-search --deck heliod --cmc 3 --identity` on artifacts, then a branch.
-- [ ] Add commander protection (quiver inventory).
+- [x] Colour-distribution audit (2026-09-16) — DONE: 25 W / 26 U sources against pips 38/62, but white's demand is concentrated (Archangel at WWW) and blue's is broad (13 double-pip cards). The one shift, a Plains for an Island, is staged and measured on `blue-v1` and left OPEN — a symmetric trade, the pilot's call.
+- [x] More one-to-three-mana colourless artifacts (2026-09-16) — DONE: Isochron Scepter, Horn of Greed and Mind Stone in for Mikaeus, Forced Fruition and Angelic Wall; MERGED and sleeved as v1.3.0. Eighteen more owned generic-cost artifacts remain outside the 99 if another pass is wanted.
+- [ ] Add commander protection — the v1.3.0 diagnosis re-ranks this: Heliod's 50 exits are targeted 22 / opposing wraths 16 / own sweepers 5 / unattributed 7, so shroud (Greaves, Mithril Coat) covers the largest class and indestructible misses all 10 exiles. Mithril Coat and Swiftfoot Boots lead the ranked adds.
 - [ ] `splendor-v1` is PROPOSED as v1.2.2 — waiting on cardboard.
 
 **Ur-Dragon (commander dependence low)**
 - [ ] Maybe revisit a small counterspell count later — the four or five cut were never cast. Low priority; the deck does not want to play that way.
-- [ ] Its engine and POH procedures still name Shivan Reef / Stormcarved Coast after the land swap: `/analyze-engine ur-dragon`, then a `poh-procedures` re-spawn. Three red tests live here.
+- [ ] DRIFT, not a stale artifact: the pilot reports (2026-09-16) that what is sleeved and what is checked in disagree, and will scan and re-upload the list. `check-in` it first; only then is `/analyze-engine` + a `poh-procedures` re-spawn worth spending. Two red tests live here until that lands.
+
+**Published 2026-09-16** — Edgar v1.1.1 and Heliod v1.3.0 both ran the full
+chain after their merges: engine re-attacked to a critic pass, strategic frame,
+named map, captain's-log read, pilot notes, tutor guide, diagnosis through the
+skeptic, authored procedures, handbook. Both at 17/18 stages, nothing stale.
+Two gates that fired on correct data were fixed with them (the target
+validator's furniture escape; the pods test's sha-coupled anchor).
 
 **Goblin Storm** — untweaked precon, second-fastest. No items.
 
@@ -219,7 +227,7 @@ names the loop that settles it. **Piloting** items are the pilot's, not the benc
 **The bench itself**
 - [ ] The ~54 stacks MISSed by the rulings feed: leave lazy (default) or re-bless in one reasoned commit.
 - [ ] A mechanical rule against positional `open_questions[N]` references from a stack into the engine: three artifacts carry a stale one already.
-- [ ] `docs/agent-cost.md`: fill the resolve/check rows with the four sharknado stacks' measured spawns (59–77k resolver, 51–77k checker) against the radagast baseline.
+- [ ] `docs/agent-cost.md`: fill the resolve/check rows with the four sharknado stacks' measured spawns (59–77k resolver, 51–77k checker) against the radagast baseline, and add the 2026-09-16 publish run's figures — the engine, diagnosis and procedures loops on two decks in one session.
 - [ ] CI has been red since 2026-09-11 on a heliod `sim-progress` probe that needs gitignored logs; the commit-protocol red on 89d68314 is being let age out.
 
 
