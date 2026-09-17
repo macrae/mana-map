@@ -1,7 +1,7 @@
 {
  "slug": "ur-dragon",
  "branch": "final-v2",
- "v": 2,
+ "v": 3,
  "opened": "2026-09-17",
  "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all.",
  "objective": {
@@ -127,5 +127,29 @@
    "strength": null,
    "why": "The last Plains makes only a colour at target. Cascade Bluffs filters into UU or RR, which is exactly the two costs this branch adds \u2014 Marang River Regent and Transcendent Dragon are both {4}{U}{U}. Owned. It needs another land first, which is the cost."
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-09-17",
+  "as_version": "v1.3.0",
+  "why": "The piloting fix from prescription 0241fb6a70f1, rebased onto the list scanned 2026-09-17. Seven spell swaps put the brakes in \u2014 Stubborn Denial, Mithril Coat, Asceticism and three blue Dragons already bought \u2014 and seven land swaps make them castable: four fetchlands plus Hallowed Fountain, Irrigated Farmland and Cascade Bluffs from the Shabraz Parts box.",
+  "base_version": 5,
+  "decklist_sha256": "632e90d96e5a3cdeb99ff6955b9b611f6a5412061b7432b9657047003237b160",
+  "accepted_on": {
+   "decklist_sha256": "632e90d96e5a3cdeb99ff6955b9b611f6a5412061b7432b9657047003237b160",
+   "state": "do not merge",
+   "objective": {
+    "axis": "interaction_6",
+    "op": ">=",
+    "value": 0.6,
+    "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
+   },
+   "grade": "not met",
+   "reading": 0.5716,
+   "harness": {
+    "iterations": 10000,
+    "seed": 20260826
+   }
+  },
+  "forced_reason": "The objective was the wrong instrument and the branch is proposed knowing it failed. interaction_6 came back 0.572 against a 0.60 line, a gap of 0.028 against an MDE of 0.022 \u2014 a real miss, but of a goldfish proxy that counts whether interaction is AFFORDABLE at turn six, not whether the deck has any. The two things this branch is actually for are invisible to that harness: PROTECTION AND RESPONSES, which the goldfish cannot exercise because it has no opponents, and COLOUR ACCESS, which it cannot rank at all because it plays the first land in hand and credits its colours the same turn. The evidence that does bear on it is deterministic and positive \u2014 mana-fit takes blue from 13 short to 9 and every land cut is its own cut candidate \u2014 and the pilot's log, five games at 1W 4L, is what asked for the change. The goldfish table is also not against it: board power at t6 +0.55, killed by t6 27 to 30 per 100, killed by t10 95 to 96, with damage at t10 down 5% as the priced cost of trading two big red Dragons for two cheaper blue ones. Forge against standard-v3 is the instrument that can settle this, and it has not been run on the new list."
+ }
 }
