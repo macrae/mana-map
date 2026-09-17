@@ -271,6 +271,39 @@ not depend on keeping bodies on the battlefield.
 - [ ] Still-liked ideas from the failed candidates: flash, and flash-into-blink.
       Both survive the refined criteria and neither has been surveyed.
 
+**meren-recursion — two rules findings worth a stack artifact** (queued
+2026-09-17, both verified verbatim against `card-rulings` and the local CR):
+
+- [ ] **Grafdigger's Cage inverts Meren's resilience as her experience grows.**
+      Her ability is an if/otherwise, not a choice: official ruling 2015-11-04
+      reads *"You can't choose to put the creature card into your hand if its
+      mana value is less than or equal to the number of experience counters you
+      have as the ability resolves."* So once the count reaches a card's mana
+      value the battlefield mode is MANDATORY — and under a Cage that
+      instruction is impossible, ignored per CR 101.3, with the "otherwise"
+      clause unreachable because its condition was not met. **You get nothing,
+      and you get nothing precisely because the engine is developed.** No primer
+      in the research names this. `/resolve-stack` settles it.
+- [ ] **Rest in Peace is categorically worse than Leyline of the Void here, and
+      players rank them the other way.** RIP ruling 2018-03-16: *"abilities that
+      trigger whenever a creature dies won't trigger because cards AND TOKENS
+      are never put into a player's graveyard"* — experience accrual and every
+      death drain stop dead. Leyline ruling 2024-09-20: *"Tokens can still die
+      while Leyline of the Void is on the battlefield."* A token-producing build
+      keeps banking experience and keeps draining under Leyline. Worth a stack
+      artifact and a line in the handbook's emergency procedures.
+- [ ] **The answer suite is thin against exactly those two cards.** Measured
+      against EDHREC's bracket-4 Meren profile, the 99 holds 5 of the 18-card
+      reference suite: Assassin's Trophy, Boseiju, Beast Within, Feed the Swarm,
+      Deadly Rollick. That is 3 instant-speed answers that can hit an artifact
+      (Cage) and 4 that can hit an enchantment (RIP), against a measured B4
+      norm of 4-6 plus 1-2 pre-deployable. **Haywire Mite is the specific gap**
+      — 57.9% of bracket-4 Meren lists, one mana, and Meren returns it every end
+      step, which makes it a perpetual answer engine rather than a single shot.
+      Kaya's Ghostform is the other: it triggers on *dies OR is put into exile*,
+      so it is the one recursion effect that works through all four major hate
+      pieces.
+
 **The bench itself**
 - [ ] The ~54 stacks MISSed by the rulings feed: leave lazy (default) or re-bless in one reasoned commit.
 - [ ] A mechanical rule against positional `open_questions[N]` references from a stack into the engine: three artifacts carry a stale one already.
