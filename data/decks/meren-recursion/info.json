@@ -7,13 +7,11 @@
   "stage": "bench",
   "gates": {
     "to": "sleeved",
-    "met": 1,
+    "met": 3,
     "of": 6,
     "blocking": [
       "full sim batch",
       "mulligan + tutor guidance",
-      "handbook",
-      "dossier",
       "ownership reconciled"
     ]
   },
@@ -24,7 +22,7 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 8,
+    "complete": 9,
     "of": 18,
     "stale": [],
     "invalid": [],
@@ -38,8 +36,7 @@
       "prose",
       "log",
       "issue",
-      "sim",
-      "dossier"
+      "sim"
     ],
     "todo": [
       {
@@ -86,11 +83,6 @@
         "stage": "sim",
         "what": "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
         "how": "manamap pilot simulate meren-recursion --pod standard-v3 --games 100"
-      },
-      {
-        "stage": "dossier",
-        "what": "the composed view the deck page fetches — `deck-info --write`",
-        "how": "manamap pilot deck-info meren-recursion --write"
       },
       {
         "stage": "sim",
@@ -927,7 +919,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.11,
+          "value": 4.108,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -975,7 +967,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build": {
-          "value": 10,
+          "value": 11,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build' by turn six",
@@ -1073,15 +1065,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.606,
+            "10": 7.626,
             "2": 2.233,
             "3": 3.249,
             "4": 4.07,
-            "5": 4.764,
-            "6": 5.398,
-            "7": 5.972,
-            "8": 6.523,
-            "9": 7.069
+            "5": 4.765,
+            "6": 5.405,
+            "7": 5.985,
+            "8": 6.541,
+            "9": 7.088
           },
           "tier": "data",
           "weight": "detail",
@@ -1092,15 +1084,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.486,
+            "10": 0.487,
             "2": 0.997,
             "3": 0.902,
             "4": 0.775,
-            "5": 0.663,
-            "6": 0.573,
-            "7": 0.528,
-            "8": 0.503,
-            "9": 0.497
+            "5": 0.664,
+            "6": 0.578,
+            "7": 0.532,
+            "8": 0.508,
+            "9": 0.499
           },
           "tier": "data",
           "weight": "detail",
@@ -1111,15 +1103,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.348,
-            "10": 7.396,
-            "2": 0.887,
-            "3": 1.5,
-            "4": 1.93,
-            "5": 2.928,
-            "6": 3.955,
-            "7": 4.901,
-            "8": 5.787,
-            "9": 6.609
+            "10": 7.485,
+            "2": 0.895,
+            "3": 1.612,
+            "4": 2.062,
+            "5": 3.081,
+            "6": 4.1,
+            "7": 5.03,
+            "8": 5.908,
+            "9": 6.711
           },
           "tier": "data",
           "weight": "detail",
@@ -1145,11 +1137,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2350,
-            "6": 16,
-            "7": 372,
-            "8": 1942,
-            "9": 3143
+            "10": 2210,
+            "6": 18,
+            "7": 436,
+            "8": 2197,
+            "9": 3245
           },
           "tier": "data",
           "weight": "detail",
@@ -1165,7 +1157,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.11,
+    "commander_mean_cast_turn": 4.108,
     "commander_cast_by_turn_6_pct": 92,
     "targets": [
       {
@@ -1190,7 +1182,7 @@
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
-        "by_turn_6_pct": 10
+        "by_turn_6_pct": 11
       },
       {
         "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
@@ -1214,18 +1206,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.951,
+      "mean_kill_turn": 8.887,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 0,
-      "kill_by_turn_8_pct": 23,
+      "kill_by_turn_8_pct": 26,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 22,
+      "no_kill_by_max_turn_pct": 19,
       "kill_turn_histogram": {
-        "10": 2350,
-        "6": 16,
-        "7": 372,
-        "8": 1942,
-        "9": 3143
+        "10": 2210,
+        "6": 18,
+        "7": 436,
+        "8": 2197,
+        "9": 3245
       }
     }
   },

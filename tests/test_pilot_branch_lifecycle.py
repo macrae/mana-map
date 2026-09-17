@@ -14,6 +14,7 @@ import pytest
 from conftest import requires_deck
 from manamap import config
 from manamap.pilot import candidates, deck_branch
+from manamap.pilot.common import decks_root
 
 SLUG = "ur-dragon"
 
@@ -890,3 +891,64 @@ def test_log_shows_the_staged_swaps_unstage_points_at():
         for swap in got["staged"]:
             assert swap.get("out") and swap.get("in"), (
                 f"{slug}/{branch}: a staged swap names only one side")
+
+
+@requires_deck
+def test_a_basic_land_cut_is_counted_even_though_its_name_survives(probe):
+    """`diff` compared NAME PRESENCE, so a card whose count merely moved was in
+    neither `add` nor `out`. ur-dragon/final-v1 cut a Forest (2 -> 1) and a
+    Mountain (4 -> 3) beside twelve named cuts and published "+14 -12" on two
+    100-card lists — a headline that cannot be true.
+
+    Re-introduce the bug by computing the summary from `len(d["add"])` and
+    `len(d["out"])` and this fails on `out_copies`, which no longer sees the
+    basic. Drive the production function; never re-derive the rule here.
+    """
+    before = deck_branch._parsed(SLUG, probe)
+    basic = next((e for e in before
+                  if e["name"].lower() in ("mountain", "forest", "plains", "island", "swamp")
+                  and int(e.get("quantity") or 1) > 1), None)
+    if basic is None:
+        pytest.skip(f"{SLUG} runs no basic with a second copy")
+    qty = int(basic.get("quantity") or 1)
+    deck_branch.stage(SLUG, probe, basic["name"], ABSENT)
+
+    d = deck_branch.diff(SLUG, probe)
+
+    # THE NAME SURVIVES, which is the whole trap.
+    assert basic["name"] not in d["out"], (
+        "a basic with copies left is not a name that left the list")
+    assert d["add"] == [ABSENT]
+
+    rows = [q for q in d["quantity"] if q["name"] == basic["name"]]
+    assert len(rows) == 1, f"the copy change must be reported: {d['quantity']}"
+    assert rows[0]["from"] == qty and rows[0]["to"] == qty - 1
+
+    # THE ARITHMETIC THE BUG BROKE: equal-size lists balance.
+    assert d["size"] == d["base_size"]
+    assert d["out_copies"] == d["add_copies"] == 1, (
+        f"one copy out, one in — got {d['out_copies']} out / {d['add_copies']} in")
+    # and the name-shaped lists are NOT the copy counts
+    assert len(d["out"]) == 0 and d["out_copies"] == 1
+
+
+@requires_deck
+def test_every_branch_in_the_repo_balances_copies():
+    """The fleet invariant, asserted over real committed branches rather than a
+    fixture: whatever a branch does, two lists of the same size move the same
+    number of copies. This is the check that would have caught final-v1 on the
+    day it was proposed.
+    """
+    checked = 0
+    for slug in sorted(p.name for p in decks_root().iterdir() if p.is_dir()):
+        for branch in deck_branch.names(slug):
+            d = deck_branch.diff(slug, branch)
+            if d["size"] != d["base_size"]:
+                continue          # a branch mid-edit is allowed to be uneven
+            assert d["out_copies"] == d["add_copies"], (
+                f"{slug}/{branch}: {d['base_size']} -> {d['size']} cards but "
+                f"{d['out_copies']} copies out against {d['add_copies']} in")
+            assert d["out_copies"] >= len(d["out"]), (
+                f"{slug}/{branch}: copies can never be fewer than names")
+            checked += 1
+    assert checked >= 10, f"only {checked} branches checked — the loop found nothing"

@@ -183,8 +183,32 @@ def diff(slug, branch):
     # COPIES and NAMES are different numbers and the repo has been bitten by
     # conflating them: `size` is what the shuffler sees (36 basics are 36 cards),
     # `names` is what you have to source (36 Forests are one line on a buy list).
-    return {"add": sorted(n for n in cand if n not in now),
-            "out": sorted(n for n in now if n not in cand),
+    #
+    # AND THE COMPARISON ITSELF MUST COUNT COPIES, which for a long time it did
+    # not. `add`/`out` test NAME PRESENCE, so a name whose count merely MOVES is
+    # in neither list: ur-dragon/final-v1 cut a Forest (2 -> 1) and a Mountain
+    # (4 -> 3) alongside its twelve named cuts and published "+14 -12" on two
+    # 100-card lists, which cannot be true and is the first thing a reader
+    # notices. The named lists stay name-shaped — that is what a buy list and a
+    # per-card row want — and the copy arithmetic moves into its own keys.
+    #
+    # `quantity` is the third kind of change, and it is the one with no name to
+    # print on either side: same card, different count. It is reported rather
+    # than folded into `add`/`out`, because a name in both lists at once would
+    # break every consumer that pairs them.
+    add = sorted(n for n in cand if n not in now)
+    out = sorted(n for n in now if n not in cand)
+    quantity = [{"name": n, "from": now[n], "to": cand[n]}
+                for n in sorted(set(now) & set(cand)) if now[n] != cand[n]]
+    return {"add": add, "out": out, "quantity": quantity,
+            # THE COUNTS THAT BALANCE. On two lists of equal size these are
+            # equal, and a test asserts exactly that.
+            "add_copies": (sum(cand[n] for n in add)
+                           + sum(q["to"] - q["from"] for q in quantity
+                                 if q["to"] > q["from"])),
+            "out_copies": (sum(now[n] for n in out)
+                           + sum(q["from"] - q["to"] for q in quantity
+                                 if q["from"] > q["to"])),
             "size": sum(cand.values()), "base_size": sum(now.values()),
             "names": len(cand), "base_names": len(now)}
 
@@ -348,8 +372,11 @@ def one(slug, branch):
             "proposal": m.get("proposal"),
             "pull_list": pull_list(slug, branch, doc=m, src=s),
             "base_version": m.get("base_version"),
-            "size": s["diff"]["size"], "add": len(s["diff"]["add"]),
-            "out": len(s["diff"]["out"]), "counts": s["counts"],
+            # COPIES, not names — `+14 -12` on two 100-card lists was this
+            # number reading `len(add)` while two basic-land cuts had no name
+            # to appear under.
+            "size": s["diff"]["size"], "add": s["diff"]["add_copies"],
+            "out": s["diff"]["out_copies"], "counts": s["counts"],
             "unsourced": s["unsourced"], "mergeable": s["mergeable"],
             "free": s["free"],
             # PER-CARD PROVENANCE, so a roster can mark a card without asking a
@@ -1629,6 +1656,12 @@ def _dispatch(args):
         print(f"\n  IN ({len(d['add'])}):")
         for n in d["add"]:
             print(f"    + {n}")
+        if d["quantity"]:
+            print(f"\n  COPIES ({len(d['quantity'])}) — same card, different count:")
+            for q in d["quantity"]:
+                print(f"    {'-' if q['to'] < q['from'] else '+'} {q['name']}"
+                      f"  {q['from']} -> {q['to']}")
+        print(f"\n  {d['out_copies']} copies out, {d['add_copies']} in")
         return
     if action == "source":
         s = source(slug, branch, proxy=getattr(args, "proxy", False))
