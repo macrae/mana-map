@@ -1,0 +1,58 @@
+{
+ "slug": "ur-dragon",
+ "branch": "protection-v1",
+ "v": 2,
+ "opened": "2026-09-18",
+ "why": "final-v2 split. The Forge run (177 games, standard-v3) separated the seven spell swaps cleanly: Mithril Coat cast 40 and activated 35, Steel Hellkite 36 and 53, both colourless and both the standout performers of the whole 99. The two cards dropped here are Marang River Regent and Whirlwing Stormbrood, which are VALUE DRAGONS RATHER THAN PROTECTION and which Forge cannot load at all \u2014 it logged 'an unsupported card was requested' 14 times each, so the run measured a 98-card deck and those two can never be simulated. This branch is the protection half alone, on an unchanged manabase.",
+ "objective": {
+  "axis": "interaction_6",
+  "op": ">=",
+  "value": 0.6,
+  "why": "final-v2 split. The Forge run (177 games, standard-v3) separated the seven spell swaps cleanly: Mithril Coat cast 40 and activated 35, Steel Hellkite 36 and 53, both colourless and both the standout performers of the whole 99. The two cards dropped here are Marang River Regent and Whirlwing Stormbrood, which are VALUE DRAGONS RATHER THAN PROTECTION and which Forge cannot load at all \u2014 it logged 'an unsupported card was requested' 14 times each, so the run measured a 98-card deck and those two can never be simulated. This branch is the protection half alone, on an unchanged manabase."
+ },
+ "commits": [
+  {
+   "at": "2026-09-18",
+   "decklist_sha256": "f29420ca320639dc775d45f13fa71909d50128ea1e84730ea800cd38c2c04e43",
+   "message": "The protection half of final-v2: five swaps, manabase untouched"
+  }
+ ],
+ "base_version": 5,
+ "staged": [
+  {
+   "at": "2026-09-18",
+   "out": "Rishkar's Expertise",
+   "in": "Mithril Coat",
+   "strength": null,
+   "why": "THE run's best performer: cast 40 and activated 35 over 177 games against a ~29.6 natural-draw expectation. Flash, indestructible, auto-attaches to a legendary on entry, and colourless so the manabase never gates it. Out goes six mana to draw off a creature that has to survive first."
+  },
+  {
+   "at": "2026-09-18",
+   "out": "Return of the Wildspeaker",
+   "in": "Steel Hellkite",
+   "strength": null,
+   "why": "Second best: cast 36, activated 53 \u2014 a repeatable one-sided answer to every nonland permanent at a chosen mana value, and colourless. Return grants NO trample and is stopped by one chump block; its real job was the draw mode."
+  },
+  {
+   "at": "2026-09-18",
+   "out": "Sarkhan, Fireblood",
+   "in": "Stubborn Denial",
+   "strength": null,
+   "why": "A one-mana hard counter in a deck where almost every creature has power 4 or greater, so ferocious is live from the first Dragon. Cast 16 against Swords to Plowshares at 35 \u2014 half the rate of a same-shape white card, which is the blue shortfall showing, and the reason this branch does not also add double-blue cards."
+  },
+  {
+   "at": "2026-09-18",
+   "out": "Worldly Tutor",
+   "in": "Asceticism",
+   "strength": null,
+   "why": "Board-wide hexproof plus regenerate: the only MASS protection in the package, and green reads at or over its Karsten target so it is castable. Cast 11 and discarded 4, the weakest of the five, kept because nothing else in the 99 protects the whole board."
+  },
+  {
+   "at": "2026-09-18",
+   "out": "Utvara Hellkite",
+   "in": "Transcendent Dragon",
+   "strength": null,
+   "why": "Flash, flying, and on entry it counters a spell AND lets you cast it free. Interaction on a Dragon body, so Cavern of Souls, Path of Ancestry, Urza's Incubator and Dragonspeaker Shaman all reduce or fix it \u2014 which no other blue card here benefits from. Cast 14; the one double-blue card worth the risk. Out goes eight mana for a token engine that must connect first."
+  }
+ ]
+}
