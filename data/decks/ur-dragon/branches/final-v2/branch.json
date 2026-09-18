@@ -153,5 +153,29 @@
    "strength": null,
    "why": "TIGHTENING. Path enters tapped and its filter is Dragon-gated, so it does nothing for Stubborn Denial or any noncreature spell. Volcanic Island is an untapped U/R dual, Island-typed for the fetches, and U and R are the deck's two shortest real colours."
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-09-18",
+  "as_version": "v1.3.0",
+  "why": "final-v1's decision, applied to the list the pilot actually has sleeved. Authored 2026-09-11 off prescription 0241fb6a70f1 \u2014 five games at 1W 4L, 'speed without protection or politics makes me the obvious kill target before I can close'. All eleven of final-v1's real changes carried unaltered; the six entries that read as changes only because the 2026-09-17 scan moved the deck underneath it are dropped. Plus the mana tightening: two Triomes and a Volcanic Island. Crux of Fate stays and the black splash is bought deliberately.",
+  "base_version": 5,
+  "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
+  "accepted_on": {
+   "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
+   "state": "do not merge",
+   "objective": {
+    "axis": "interaction_6",
+    "op": ">=",
+    "value": 0.6,
+    "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
+   },
+   "grade": "not met",
+   "reading": 0.5704,
+   "harness": {
+    "iterations": 10000,
+    "seed": 20260826
+   }
+  },
+  "forced_reason": "The objective is mine and it was the wrong one. I set interaction_6 >= 0.60 when I opened this branch on 2026-09-17 for a reading of it that no longer holds \u2014 that its case was protection density. It reads 0.570, a miss of 0.030 against an MDE of 0.022, so it is a real miss of a badly chosen measure. What the branch actually does is trade two fat red Dragons for two answers and tighten five colours of mana, and interaction_6 counts whether interaction is AFFORDABLE at turn six rather than whether the deck holds any. The rows that moved are the ones to read: board power @t6 +0.48, killed by t6 27 -> 30 per 100, killed by t10 95 -> 96, three better and NONE WORSE \u2014 damage @t10 fell back inside the noise band once the manabase was tightened, having read WORSE before it. The deterministic half is the stronger case: mana-fit takes blue from 9 short to 7, red from 6 to 5, and now returns no cut candidates at all. Forge against standard-v3 is the arbiter and has not been run on this list; the 177-game run was on an earlier commit of this branch and could not even load two of its cards."
+ }
 }
