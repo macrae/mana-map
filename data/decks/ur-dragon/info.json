@@ -939,32 +939,9 @@
       "name": "final-v2",
       "opened": "2026-09-17",
       "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves — Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "8 card(s) still to find",
-      "proposal": {
-        "at": "2026-09-17",
-        "as_version": "v1.3.0",
-        "why": "The piloting fix from prescription 0241fb6a70f1, rebased onto the list scanned 2026-09-17. Seven spell swaps put the brakes in — Stubborn Denial, Mithril Coat, Asceticism and three blue Dragons already bought — and seven land swaps make them castable: four fetchlands plus Hallowed Fountain, Irrigated Farmland and Cascade Bluffs from the Shabraz Parts box.",
-        "base_version": 5,
-        "decklist_sha256": "632e90d96e5a3cdeb99ff6955b9b611f6a5412061b7432b9657047003237b160",
-        "accepted_on": {
-          "decklist_sha256": "632e90d96e5a3cdeb99ff6955b9b611f6a5412061b7432b9657047003237b160",
-          "state": "do not merge",
-          "objective": {
-            "axis": "interaction_6",
-            "op": ">=",
-            "value": 0.6,
-            "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves — Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
-          },
-          "grade": "not met",
-          "reading": 0.5716,
-          "harness": {
-            "iterations": 10000,
-            "seed": 20260826
-          }
-        },
-        "forced_reason": "The objective was the wrong instrument and the branch is proposed knowing it failed. interaction_6 came back 0.572 against a 0.60 line, a gap of 0.028 against an MDE of 0.022 — a real miss, but of a goldfish proxy that counts whether interaction is AFFORDABLE at turn six, not whether the deck has any. The two things this branch is actually for are invisible to that harness: PROTECTION AND RESPONSES, which the goldfish cannot exercise because it has no opponents, and COLOUR ACCESS, which it cannot rank at all because it plays the first land in hand and credits its colours the same turn. The evidence that does bear on it is deterministic and positive — mana-fit takes blue from 13 short to 9 and every land cut is its own cut candidate — and the pilot's log, five games at 1W 4L, is what asked for the change. The goldfish table is also not against it: board power at t6 +0.55, killed by t6 27 to 30 per 100, killed by t10 95 to 96, with damage at t10 down 5% as the priced cost of trading two big red Dragons for two cheaper blue ones. Forge against standard-v3 is the instrument that can settle this, and it has not been run on the new list."
-      },
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
       "pull_list": {
         "buy": [
           {
@@ -3502,9 +3479,31 @@
       "name": "protection-v1",
       "opened": "2026-09-18",
       "why": "final-v2 split. The Forge run (177 games, standard-v3) separated the seven spell swaps cleanly: Mithril Coat cast 40 and activated 35, Steel Hellkite 36 and 53, both colourless and both the standout performers of the whole 99. The two cards dropped here are Marang River Regent and Whirlwing Stormbrood, which are VALUE DRAGONS RATHER THAN PROTECTION and which Forge cannot load at all — it logged 'an unsupported card was requested' 14 times each, so the run measured a 98-card deck and those two can never be simulated. This branch is the protection half alone, on an unchanged manabase.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
+      "state": "PROPOSED · BLOCKED",
+      "state_why": "5 card(s) still to find",
+      "proposal": {
+        "at": "2026-09-18",
+        "as_version": "v1.3.0",
+        "why": "The piloting fix from prescription 0241fb6a70f1, narrowed to what the evidence supports. Five games at 1W 4L and the pilot's own verdict — speed without protection, 'I now have zero responses'. Five swaps put the brakes in: Mithril Coat and Steel Hellkite, the two best-performing cards in a 177-game Forge run at standard-v3, plus Stubborn Denial, Asceticism and Transcendent Dragon. The two blue value Dragons from final-v2 are dropped: Forge cannot load either, and they were what pushed blue from a splash to a main colour. On this list blue stays at the champion's own level, 2 sources short, so the manabase is untouched and nothing is needed from a box.",
+        "base_version": 5,
+        "decklist_sha256": "f29420ca320639dc775d45f13fa71909d50128ea1e84730ea800cd38c2c04e43",
+        "accepted_on": {
+          "decklist_sha256": "f29420ca320639dc775d45f13fa71909d50128ea1e84730ea800cd38c2c04e43",
+          "state": "inconclusive",
+          "objective": {
+            "axis": "interaction_6",
+            "op": ">=",
+            "value": 0.6,
+            "why": "final-v2 split. The Forge run (177 games, standard-v3) separated the seven spell swaps cleanly: Mithril Coat cast 40 and activated 35, Steel Hellkite 36 and 53, both colourless and both the standout performers of the whole 99. The two cards dropped here are Marang River Regent and Whirlwing Stormbrood, which are VALUE DRAGONS RATHER THAN PROTECTION and which Forge cannot load at all — it logged 'an unsupported card was requested' 14 times each, so the run measured a 98-card deck and those two can never be simulated. This branch is the protection half alone, on an unchanged manabase."
+          },
+          "grade": "not resolvable",
+          "reading": 0.5838,
+          "harness": {
+            "iterations": 10000,
+            "seed": 20260826
+          }
+        }
+      },
       "pull_list": {
         "buy": [
           {
@@ -7644,10 +7643,10 @@
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose, benchmark — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `final-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
-    "`final-v2` is PROPOSED as v1.3.0 and waiting on cardboard — 8 card(s) (7 to buy, 1 to unsleeve) — `manamap pilot deck-branch ur-dragon show final-v2` has the pull list",
+    "branch `final-v2` needs 8 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v2`",
     "branch `haste-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
     "branch `mana-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
-    "branch `protection-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source protection-v1`",
+    "`protection-v1` is PROPOSED as v1.3.0 and waiting on cardboard — 5 card(s) (5 to buy) — `manamap pilot deck-branch ur-dragon show protection-v1` has the pull list",
     "branch `responses-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v1`",
     "branch `responses-v2` needs 9 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v2`",
     "branch `responses-v3` needs 11 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v3`",
