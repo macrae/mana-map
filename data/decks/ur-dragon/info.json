@@ -970,6 +970,9 @@
             "name": "Asceticism"
           },
           {
+            "name": "Ketria Triome"
+          },
+          {
             "name": "Marang River Regent // Coil and Catch"
           },
           {
@@ -985,6 +988,9 @@
             "name": "Transcendent Dragon"
           },
           {
+            "name": "Volcanic Island"
+          },
+          {
             "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
@@ -993,6 +999,12 @@
             "name": "Marsh Flats",
             "where": [
               "edgar-vampires"
+            ]
+          },
+          {
+            "name": "Raugrin Triome",
+            "where": [
+              "sharknado"
             ]
           }
         ],
@@ -1038,28 +1050,31 @@
             ]
           }
         ],
-        "blocking": 8,
+        "blocking": 11,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 14,
-      "out": 14,
+      "add": 17,
+      "out": 17,
       "counts": {
-        "in_deck": 84,
+        "in_deck": 81,
         "box": 4,
-        "elsewhere": 1,
-        "buy": 7,
+        "elsewhere": 2,
+        "buy": 9,
         "free": 2
       },
       "unsourced": [
         "Asceticism",
+        "Ketria Triome",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
         "Mithril Coat",
+        "Raugrin Triome",
         "Steel Hellkite",
         "Stubborn Denial",
         "Transcendent Dragon",
+        "Volcanic Island",
         "Whirlwing Stormbrood // Dynamic Soar"
       ],
       "mergeable": false,
@@ -1309,13 +1324,6 @@
           "is_new": false
         },
         {
-          "name": "Forest",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Gadrak, the Crown-Scourge",
           "state": "in_deck",
           "where": [],
@@ -1415,6 +1423,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Ketria Triome",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Lathliss, Dragon Queen",
@@ -1538,13 +1553,6 @@
           "is_new": false
         },
         {
-          "name": "Path of Ancestry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Polluted Delta",
           "state": "elsewhere",
           "where": [
@@ -1557,6 +1565,21 @@
             }
           ],
           "free": true,
+          "is_new": true
+        },
+        {
+          "name": "Raugrin Triome",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
           "is_new": true
         },
         {
@@ -1617,13 +1640,6 @@
         },
         {
           "name": "Smaug the Magnificent",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Smoldering Marsh",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1789,6 +1805,13 @@
               "name": "Hapatra"
             }
           ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Volcanic Island",
+          "state": "buy",
+          "where": [],
           "free": false,
           "is_new": true
         },
@@ -7643,7 +7666,7 @@
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose, benchmark — regenerate against the current list (`/publish-deck` sequences it)",
     "`final-v1` is PROPOSED as v1.3.0 and waiting on cardboard — 12 card(s) (9 to buy, 3 to unsleeve) — `manamap pilot deck-branch ur-dragon show final-v1` has the pull list",
-    "branch `final-v2` needs 8 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v2`",
+    "branch `final-v2` needs 11 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v2`",
     "branch `haste-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
     "branch `mana-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
     "branch `protection-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source protection-v1`",
