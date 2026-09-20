@@ -1,0 +1,44 @@
+{
+ "slug": "gishath",
+ "branch": "lands-v1",
+ "v": 2,
+ "opened": "2026-09-20",
+ "why": "A patch on V5: three lands no fetch can find, for three that every fetch can. Bloodstained Mire fetches Swamp or Mountain and Gishath plays no black, so half of it is dead and it had the fewest targets of any fetch in the deck. Rootbound Crag and Sunpetal Grove are checklands carrying NO basic type, so they are unfetchable, and they enter tapped unless you already control the very lands they cannot help you find. Savannah, Taiga and Sacred Foundry each carry two basic types, so every fetch in the list gains three new targets.",
+ "objective": {
+  "axis": "stall",
+  "op": "<=",
+  "value": 0.11,
+  "why": "A patch on V5: three lands no fetch can find, for three that every fetch can. Bloodstained Mire fetches Swamp or Mountain and Gishath plays no black, so half of it is dead and it had the fewest targets of any fetch in the deck. Rootbound Crag and Sunpetal Grove are checklands carrying NO basic type, so they are unfetchable, and they enter tapped unless you already control the very lands they cannot help you find. Savannah, Taiga and Sacred Foundry each carry two basic types, so every fetch in the list gains three new targets."
+ },
+ "commits": [
+  {
+   "at": "2026-09-20",
+   "decklist_sha256": "eaf9d5edb3d961f8461250a0711dfcc335f79faf94b10f7cd1d1bcd8f4d94cc6",
+   "message": "Three unfetchable lands for three fetchable duals"
+  }
+ ],
+ "base_version": 5,
+ "staged": [
+  {
+   "at": "2026-09-20",
+   "out": "Bloodstained Mire",
+   "in": "Savannah",
+   "strength": null,
+   "why": "The fewest targets of any fetch in the deck, and half the card is dead: it fetches Swamp or Mountain and Gishath plays no black. Savannah is a Forest Plains true dual \u2014 untapped, no life, no condition \u2014 carrying two basic types, so it becomes a target for every other fetch."
+  },
+  {
+   "at": "2026-09-20",
+   "out": "Rootbound Crag",
+   "in": "Taiga",
+   "strength": null,
+   "why": "A checkland carries no basic type, so no fetch can find it, and it enters tapped unless you already control a Mountain or Forest \u2014 it needs the very lands it cannot help you find. Taiga is the unconditional version: Mountain Forest, always untapped, and fetchable."
+  },
+  {
+   "at": "2026-09-20",
+   "out": "Sunpetal Grove",
+   "in": "Sacred Foundry",
+   "strength": null,
+   "why": "Same defect: unfetchable and conditional. NOTE \u2014 the 2026-09-16 green audit deliberately CUT Sacred Foundry because it makes no green while green was the binding colour. That has changed: after the merge green reads 27 sources on curve 76% while RED is the worst colour at 19 sources and 55%. Sacred Foundry is Mountain Plains, so it is a red source the fetches can reach. If the pilot prefers the green-audit reasoning, this is the swap to drop."
+  }
+ ]
+}
