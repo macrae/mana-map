@@ -14,10 +14,18 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 16,
+    "complete": 10,
     "of": 18,
-    "stale": [],
-    "invalid": [],
+    "stale": [
+      "frame",
+      "map",
+      "prose"
+    ],
+    "invalid": [
+      "targets",
+      "engine",
+      "tutors"
+    ],
     "verified": true,
     "missing": [
       "brief",
@@ -48,39 +56,26 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Alpine Meadow"
+          },
+          {
+            "name": "Arctic Treeline"
+          },
+          {
             "name": "Chandra's Ignition"
           },
           {
-            "name": "Hunting Velociraptor"
+            "name": "Clifftop Retreat"
           },
           {
-            "name": "Molten Echoes"
-          },
-          {
-            "name": "Savage Order"
-          },
-          {
-            "name": "Savage Stomp"
-          },
-          {
-            "name": "Up the Beanstalk"
-          },
-          {
-            "name": "World War Hulk"
+            "name": "Commercial District"
           }
         ],
-        "unsleeve": [
-          {
-            "name": "Bloom Tender",
-            "where": [
-              "ur-dragon"
-            ]
-          }
-        ],
+        "unsleeve": [],
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 8,
+        "blocking": 5,
         "procurement": null
       },
       "base_version": 4,
@@ -88,21 +83,18 @@
       "add": 8,
       "out": 8,
       "counts": {
-        "in_deck": 81,
+        "in_deck": 84,
         "box": 0,
-        "elsewhere": 1,
-        "buy": 7,
+        "elsewhere": 0,
+        "buy": 5,
         "free": 0
       },
       "unsourced": [
-        "Bloom Tender",
+        "Alpine Meadow",
+        "Arctic Treeline",
         "Chandra's Ignition",
-        "Hunting Velociraptor",
-        "Molten Echoes",
-        "Savage Order",
-        "Savage Stomp",
-        "Up the Beanstalk",
-        "World War Hulk"
+        "Clifftop Retreat",
+        "Commercial District"
       ],
       "mergeable": false,
       "free": 0,
@@ -116,10 +108,10 @@
         },
         {
           "name": "Alpine Meadow",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -130,10 +122,10 @@
         },
         {
           "name": "Arctic Treeline",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Belbe's Portal",
@@ -151,25 +143,10 @@
         },
         {
           "name": "Bloom Tender",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bonehoard Dracosaur",
@@ -229,10 +206,10 @@
         },
         {
           "name": "Clifftop Retreat",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Command Tower",
@@ -243,10 +220,10 @@
         },
         {
           "name": "Commercial District",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Congregation at Dawn",
@@ -383,10 +360,10 @@
         },
         {
           "name": "Hunting Velociraptor",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Itzquinth, Firstborn of Gishath",
@@ -439,10 +416,10 @@
         },
         {
           "name": "Molten Echoes",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Monster Manual // Zoological Study",
@@ -579,17 +556,17 @@
         },
         {
           "name": "Savage Order",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Savage Stomp",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Secluded Courtyard",
@@ -677,10 +654,10 @@
         },
         {
           "name": "Up the Beanstalk",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Urza's Incubator",
@@ -719,10 +696,10 @@
         },
         {
           "name": "World War Hulk",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Worldly Tutor",
@@ -752,8 +729,8 @@
       "name": "mana-v1",
       "opened": "2026-09-11",
       "why": "Mana pass on the proposed v1.1.0 list (cart-v1), 2026-09-11: 35 lands with seven that always enter tapped, one fetch and no shocks, red 16 and green 11 sources short of Karsten targets on double-pip Dinosaurs, lands-only on-curve R 52% G 64%. Three taplands out for three shocks (tempo: always-tapped 7 -> 4; a dual is a dual to the source count) and three basics out for three fetches that reach every shock (colour: R 52 -> 58%, G 64 -> 69%, W 83 -> 87% on the mana tool). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.132 on cart-v1) is the one goldfish row a colour screw shows in.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "10 card(s) still to find",
+      "state": "PROPOSED · OUTRUN",
+      "state_why": "proposed against V4 and the deck is now VNone — v1.1.0 may be taken; re-measure and propose again",
       "proposal": {
         "at": "2026-09-16",
         "as_version": "v1.1.0",
@@ -809,107 +786,28 @@
         "forced_reason": "a land pass is graded on the deterministic mana half, not the goldfish, which plays the first land in hand and cannot rank two lands (CLAUDE.md): G on curve 0.742 -> 0.822 with rocks and dorks, W 0.61 -> 0.866, always-tapped 7 -> 4, one unsleeve blocker fewer; same ground the 2026-09-11 proposal was accepted on"
       },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Chandra's Ignition"
-          },
-          {
-            "name": "Hunting Velociraptor"
-          },
-          {
-            "name": "Molten Echoes"
-          },
-          {
-            "name": "Savage Order"
-          },
-          {
-            "name": "Savage Stomp"
-          },
-          {
-            "name": "Up the Beanstalk"
-          },
-          {
-            "name": "World War Hulk"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Bloodstained Mire",
-            "where": [
-              "edgar-vampires"
-            ]
-          },
-          {
-            "name": "Bloom Tender",
-            "where": [
-              "ur-dragon"
-            ]
-          },
-          {
-            "name": "Stomping Ground",
-            "where": [
-              "ur-dragon"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Arid Mesa",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Temple Garden",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Wooded Foothills",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Verdant Catacombs",
-            "where": [
-              "Green",
-              "Hapatra"
-            ]
-          }
-        ],
-        "blocking": 10,
+        "free": [],
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 15,
-      "out": 15,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 77,
-        "box": 1,
-        "elsewhere": 3,
-        "buy": 7,
-        "free": 3
+        "in_deck": 91,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
       },
-      "unsourced": [
-        "Bloodstained Mire",
-        "Bloom Tender",
-        "Chandra's Ignition",
-        "Hunting Velociraptor",
-        "Molten Echoes",
-        "Savage Order",
-        "Savage Stomp",
-        "Stomping Ground",
-        "Up the Beanstalk",
-        "World War Hulk"
-      ],
-      "mergeable": false,
-      "free": 3,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -927,18 +825,10 @@
         },
         {
           "name": "Arid Mesa",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Belbe's Portal",
@@ -956,40 +846,17 @@
         },
         {
           "name": "Bloodstained Mire",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bloom Tender",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bonehoard Dracosaur",
@@ -1025,13 +892,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Chandra's Ignition",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Cinder Glade",
@@ -1189,10 +1049,10 @@
         },
         {
           "name": "Hunting Velociraptor",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Itzquinth, Firstborn of Gishath",
@@ -1245,10 +1105,10 @@
         },
         {
           "name": "Molten Echoes",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Monster Manual // Zoological Study",
@@ -1328,6 +1188,13 @@
           "is_new": false
         },
         {
+          "name": "Purphoros, God of the Forge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Quartzwood Crasher",
           "state": "in_deck",
           "where": [],
@@ -1385,17 +1252,17 @@
         },
         {
           "name": "Savage Order",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Savage Stomp",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Secluded Courtyard",
@@ -1427,25 +1294,10 @@
         },
         {
           "name": "Stomping Ground",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sunfrill Imitator",
@@ -1477,18 +1329,10 @@
         },
         {
           "name": "Temple Garden",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Trapjaw Tyrant",
@@ -1520,10 +1364,10 @@
         },
         {
           "name": "Up the Beanstalk",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Urza's Incubator",
@@ -1541,19 +1385,10 @@
         },
         {
           "name": "Verdant Catacombs",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Wakening Sun's Avatar",
@@ -1578,25 +1413,17 @@
         },
         {
           "name": "Wooded Foothills",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "World War Hulk",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Worldly Tutor",
@@ -1638,66 +1465,66 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.678,
+          "rate": 0.6902,
           "ci95": [
-            0.6688,
-            0.6871
+            0.6811,
+            0.6992
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.3643,
+          "rate": 0.3925,
           "ci95": [
-            0.3549,
-            0.3738
+            0.383,
+            0.4021
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.1002,
+          "rate": 0.1321,
           "ci95": [
-            0.0945,
-            0.1062
+            0.1256,
+            0.1389
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0626,
+          "rate": 0.0663,
           "ci95": [
-            0.058,
-            0.0675
+            0.0616,
+            0.0713
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0267,
+          "rate": 0.031,
           "ci95": [
-            0.0237,
-            0.03
+            0.0278,
+            0.0346
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0169,
+          "rate": 0.0201,
           "ci95": [
-            0.0146,
-            0.0196
+            0.0175,
+            0.023
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0123,
+          "rate": 0.0148,
           "ci95": [
-            0.0103,
-            0.0147
+            0.0126,
+            0.0174
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0087,
+          "rate": 0.0091,
           "ci95": [
-            0.0071,
-            0.0107
+            0.0074,
+            0.0112
           ],
           "n": 10000
         },
@@ -1710,66 +1537,66 @@
           "n": 10000
         },
         "10": {
-          "rate": 0.0051,
+          "rate": 0.0048,
           "ci95": [
-            0.0039,
-            0.0067
+            0.0036,
+            0.0064
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1065,
+        "rate": 0.1403,
         "ci95": [
-          0.1006,
-          0.1127
+          0.1336,
+          0.1472
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 6035,
-        "hand_empty": 94,
-        "mana_short": 5941
+        "stall_turns": 6774,
+        "hand_empty": 122,
+        "mana_short": 6652
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4779,
+        "rate": 0.4602,
         "ci95": [
-          0.4681,
-          0.4877
+          0.4504,
+          0.47
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.3064,
+      "missed_land_drop_rate": 0.2911,
       "mulliganed": {
-        "rate": 0.2293,
+        "rate": 0.2236,
         "ci95": [
-          0.2212,
-          0.2376
+          0.2155,
+          0.2319
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.137,
-        "3": 3.366,
-        "4": 4.291,
-        "5": 5.083,
-        "6": 5.944,
-        "7": 6.691,
-        "8": 7.505,
-        "9": 8.355,
-        "10": 9.303
+        "2": 2.147,
+        "3": 3.386,
+        "4": 4.341,
+        "5": 5.147,
+        "6": 6.049,
+        "7": 6.832,
+        "8": 7.689,
+        "9": 8.606,
+        "10": 9.663
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.5333
+      "mana_stdev_turn_five": 1.7352
     },
-    "decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92"
+    "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
   },
   "bracket": {
     "floor": 3,
@@ -1807,7 +1634,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 26,
+          "value": 27,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1825,7 +1652,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 7.362,
+          "value": 7.278,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1833,7 +1660,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp or fixing drawn": {
-          "value": 86,
+          "value": 74,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
@@ -1841,7 +1668,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Cost reducer or cheat-into-play drawn": {
-          "value": 64,
+          "value": 65,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Cost reducer or cheat-into-play drawn' by turn six",
@@ -1849,7 +1676,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Dinosaur payoff drawn (per-dino trigger engine)": {
-          "value": 60,
+          "value": 62,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Dinosaur payoff drawn (per-dino trigger engine)' by turn six",
@@ -1857,7 +1684,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:The Gishath connection kit (haste or evasion for the 7/6)": {
-          "value": 60,
+          "value": 61,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'The Gishath connection kit (haste or evasion for the 7/6)' by turn six",
@@ -1865,7 +1692,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Enrage engine drawn": {
-          "value": 28,
+          "value": 29,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Enrage engine drawn' by turn six",
@@ -1873,7 +1700,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Protection held for the board": {
-          "value": 51,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Protection held for the board' by turn six",
@@ -1930,7 +1757,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 78,
+          "value": 77,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -1940,16 +1767,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 9.352,
-            "2": 2.143,
-            "3": 3.371,
-            "4": 4.294,
-            "5": 5.095,
-            "6": 5.96,
-            "7": 6.724,
-            "8": 7.527,
-            "9": 8.397
+            "1": 0.999,
+            "10": 9.627,
+            "2": 2.139,
+            "3": 3.368,
+            "4": 4.321,
+            "5": 5.131,
+            "6": 6.043,
+            "7": 6.822,
+            "8": 7.666,
+            "9": 8.591
           },
           "tier": "data",
           "weight": "detail",
@@ -1959,16 +1786,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 0.56,
-            "2": 0.995,
-            "3": 0.894,
-            "4": 0.752,
-            "5": 0.624,
-            "6": 0.555,
-            "7": 0.516,
-            "8": 0.517,
-            "9": 0.536
+            "1": 0.999,
+            "10": 0.596,
+            "2": 0.996,
+            "3": 0.901,
+            "4": 0.767,
+            "5": 0.648,
+            "6": 0.575,
+            "7": 0.531,
+            "8": 0.533,
+            "9": 0.564
           },
           "tier": "data",
           "weight": "detail",
@@ -1979,15 +1806,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.0,
-            "10": 9.803,
-            "2": 0.108,
-            "3": 0.619,
-            "4": 1.292,
-            "5": 2.017,
-            "6": 2.825,
-            "7": 4.049,
-            "8": 5.575,
-            "9": 7.543
+            "10": 11.008,
+            "2": 0.121,
+            "3": 0.62,
+            "4": 1.359,
+            "5": 2.204,
+            "6": 3.179,
+            "7": 4.54,
+            "8": 6.229,
+            "9": 8.422
           },
           "tier": "data",
           "weight": "detail",
@@ -1997,14 +1824,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 398,
-            "1": 1721,
-            "2": 3055,
-            "3": 2888,
-            "4": 1436,
-            "5": 422,
-            "6": 77,
-            "7": 3
+            "0": 446,
+            "1": 1765,
+            "2": 3038,
+            "3": 2770,
+            "4": 1456,
+            "5": 454,
+            "6": 63,
+            "7": 8
           },
           "tier": "data",
           "weight": "detail",
@@ -2013,12 +1840,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 935,
-            "5": 37,
-            "6": 547,
-            "7": 2348,
-            "8": 3233,
-            "9": 1954
+            "10": 911,
+            "4": 5,
+            "5": 182,
+            "6": 624,
+            "7": 2220,
+            "8": 3059,
+            "9": 2095
           },
           "tier": "data",
           "weight": "detail",
@@ -2034,32 +1862,32 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 7.362,
-    "commander_cast_by_turn_6_pct": 26,
+    "commander_mean_cast_turn": 7.278,
+    "commander_cast_by_turn_6_pct": 27,
     "targets": [
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 86
+        "by_turn_6_pct": 74
       },
       {
         "label": "Cost reducer or cheat-into-play drawn",
-        "by_turn_6_pct": 64
+        "by_turn_6_pct": 65
       },
       {
         "label": "Dinosaur payoff drawn (per-dino trigger engine)",
-        "by_turn_6_pct": 60
+        "by_turn_6_pct": 62
       },
       {
         "label": "The Gishath connection kit (haste or evasion for the 7/6)",
-        "by_turn_6_pct": 60
+        "by_turn_6_pct": 61
       },
       {
         "label": "Enrage engine drawn",
-        "by_turn_6_pct": 28
+        "by_turn_6_pct": 29
       },
       {
         "label": "Protection held for the board",
-        "by_turn_6_pct": 51
+        "by_turn_6_pct": 52
       },
       {
         "label": "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur",
@@ -2067,19 +1895,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.03,
+      "mean_kill_turn": 7.987,
       "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 6,
-      "kill_by_turn_8_pct": 62,
+      "kill_by_turn_6_pct": 8,
+      "kill_by_turn_8_pct": 61,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 10,
+      "no_kill_by_max_turn_pct": 9,
       "kill_turn_histogram": {
-        "10": 935,
-        "5": 37,
-        "6": 547,
-        "7": 2348,
-        "8": 3233,
-        "9": 1954
+        "10": 911,
+        "4": 5,
+        "5": 182,
+        "6": 624,
+        "7": 2220,
+        "8": 3059,
+        "9": 2095
       }
     }
   },
@@ -2097,7 +1926,7 @@
   "diagnosis": {
     "verdict": "It functions and it converts once it connects: turn-3 land drop 0.894, ramp assembled 0.964, the modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, kill by turn 8 is 0.617 against nothing, and Forge v1.0.0 at standard-v3 reads 15 of 36 decided, 0.417 [0.271, 0.578], on a table whose null is 0.317. What limits it is WHEN: Gishath is cast by turn 6 in 25.5% of goldfish games (median 7, never by turn 10 in 23.0%), Forge first resolves him at mean global turn 31.47 (round 8); paired game by game in the v1.0.0 record, the 16 games in which he resolved and the seat was still eliminated show a median gap of 5.5 global turns from his resolution to the elimination (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he ever resolved. Before he lands the deck's own output is 13.8 mean / 7.5 median cumulative combat damage by round 8. The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers at 7.1% of an opener each — dragged by colour (W 0.481 / R 0.515 on curve from lands alone) and by three non-discounting eight-plus drops competing for one cast. The six check-in swaps did not measurably move the Forge rate: +0.0738 on 12/35 to 15/36, Newcombe interval [-0.1465, 0.2839] (stats.diff_proportions), against a minimum detectable difference of 0.32 at the decided 36 and 35 (stats.mde_proportion).",
     "skeptic": "pass",
-    "stale": false
+    "stale": true
   },
   "audit": {
     "archetype": null,
@@ -2108,7 +1937,8 @@
       "interaction-breadth"
     ],
     "over": [
-      "ramp"
+      "ramp",
+      "protection"
     ],
     "stale": []
   },
@@ -2208,7 +2038,7 @@
     "runs": 3,
     "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-7a29734e-s49536846-podExperimental-c600",
     "at": "2026-09-11",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92",
     "games": 40,
     "wins": 15,
@@ -2245,8 +2075,12 @@
   },
   "experiments": null,
   "next": [
-    "branch `cart-v1` needs 8 card(s) sourced — `manamap pilot deck-branch gishath source cart-v1`",
-    "`mana-v1` is PROPOSED as v1.1.0 and waiting on cardboard — 10 card(s) (7 to buy, 3 to unsleeve) — `manamap pilot deck-branch gishath show mana-v1` has the pull list",
+    "3 artifact(s) fail their own gate (targets, engine, tutors) — `deck-status gishath` names them; fix before anything else reads them",
+    "stale: frame, map, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "branch `cart-v1` needs 5 card(s) sourced — `manamap pilot deck-branch gishath source cart-v1`",
+    "`mana-v1` was proposed as v1.1.0 against V4 and the deck has moved on — v1.1.0 may be taken; re-measure and propose again",
+    "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "engine.json's critic verdict is None — `/analyze-engine gishath`",
     "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×2, resolve-stack ×10",
     "4 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"

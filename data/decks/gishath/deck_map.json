@@ -1,31 +1,20 @@
 {
   "slug": "gishath",
-  "decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92",
+  "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
   "meta": {
     "space": "embeddings_ability.npy",
     "space_digest": "4773335227f46499",
     "projection": "classical MDS + SMACOF, canonically oriented",
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
-    "cards": 89,
+    "cards": 91,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
-    "named_by": "deck-cartographer",
-    "cartographer_notes": [
-      "Read against the 2026-09-11 map (decklist_sha256 b394917f, 89 cards, 7 cities). The previous deck-cartographer.json (2026-08-13, V3 layout, sha 0480aaf7) had been merged onto today's ids before this run and put THE PIVOT TURN on the tutor cluster, BUYING TURNS on the protection instants, THE SEARCH PARTY on the rocks and THE SIDE DOOR on the cost reducers. Where a cluster is genuinely the same as V3's (city-0, city-1 and its three hoods, MAKING ROOM, BUYING TURNS, THE SEARCH PARTY, THE SIDE DOOR) the old name is kept so engine.json's evidence notes, which cite labels by name, stay readable; engine.json's city ids are still V3's and need a re-run.",
-      "city-6 is three Dinosaur cost reducers and Blasphemous Act, which the space filed here on its own 'costs {1} less' clause. Functionally the Act is the one-sided wipe paired with Temple Altisaur (city-0-hood-1), which engine.json reads as the deck's board-clear; the name THE DISCOUNTS covers its cost clause honestly, but do not describe city-6 as the wipe. It is the deck's odd placement, not a card that does not belong.",
-      "city-0-hood-0 is eleven Dinosaurs including the commander, and every one triggers on entry or on attack; four of them (Gishath, Etali, Ghalta and Mavren, Quartzwood Crasher) trigger on the swing rather than on arrival, which is why V3's PAYS ON ARRIVAL was retired for this hood.",
-      "city-0-hood-3 is four draw engines. Runic Armasaur is the odd member: it draws off an opponent's activations, not off big bodies or Dinosaur combat damage like the other three. It belongs to the job (refill), not to the trigger.",
-      "The enrage remnant is split across borders: Trapjaw Tyrant is in MAKING ROOM on its exile text, Wrathful Raptors and Temple Altisaur are in SCALES WITH THE BOARD. Prose about the remnant must name it across two cities.",
-      "city-1-hood-1: Kessig Wolf Run and Rogue's Passage are the two non-fixing members, which is why the hood is named for both jobs. Secluded Courtyard and Unclaimed Territory in the same hood make creature-restricted mana; per deck-facts, Unclaimed Territory cannot pay Belbe's Portal, Monster Manual, Rogue's Passage or Kessig Wolf Run, and Secluded Courtyard pays only Dinosaur abilities.",
-      "city-4 holds four protection instants and Carnage Tyrant, a hexproof uncounterable body that insures itself; the split reads clean.",
-      "city-2, city-3, city-4, city-5 and city-6 each have a single neighbourhood with exactly their parent's membership. Those hoods are left unnamed on purpose: a hood that repeats its city is not narrower than it, and the deterministic fallback is the honest label."
-    ]
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
   },
   "cards": [
     {
       "name": "Gishath, Sun's Avatar",
-      "x": -0.08842,
-      "y": 0.32884,
+      "x": 0.17085,
+      "y": 0.27679,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -36,10 +25,10 @@
     },
     {
       "name": "Akroma's Will",
-      "x": -0.76022,
-      "y": -0.22772,
-      "city": 4,
-      "hood": 0,
+      "x": 0.8318,
+      "y": 0.04001,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "protection:granted",
         "protection:self",
@@ -49,21 +38,9 @@
       "commander": false
     },
     {
-      "name": "Alpine Meadow",
-      "x": 0.59684,
-      "y": -0.21306,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Arcane Signet",
-      "x": 0.15352,
-      "y": -0.65026,
+      "x": -0.07749,
+      "y": 0.74538,
       "city": 5,
       "hood": 0,
       "roles": [
@@ -74,48 +51,24 @@
       "commander": false
     },
     {
-      "name": "Arctic Treeline",
-      "x": 0.59753,
-      "y": -0.18674,
-      "city": 1,
+      "name": "Arid Mesa",
+      "x": -0.75619,
+      "y": -0.38532,
+      "city": 4,
       "hood": 0,
       "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Austere Command",
-      "x": -0.59356,
-      "y": -0.7097,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "removal:sweeper"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Beast Within",
-      "x": -0.46767,
-      "y": -0.64168,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "removal:spot",
-        "threat:tokens"
+        "land:fetch",
+        "land:utility"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Belbe's Portal",
-      "x": -0.13621,
-      "y": -0.41668,
-      "city": 0,
-      "hood": 2,
+      "x": 0.13354,
+      "y": 0.45939,
+      "city": 5,
+      "hood": 0,
       "roles": [
         "payoff:typal",
         "utility:activated"
@@ -125,9 +78,9 @@
     },
     {
       "name": "Blasphemous Act",
-      "x": -0.8098,
-      "y": 0.01618,
-      "city": 6,
+      "x": 0.82961,
+      "y": -0.24042,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:cost-reduction",
@@ -137,9 +90,36 @@
       "commander": false
     },
     {
+      "name": "Bloodstained Mire",
+      "x": -0.75617,
+      "y": -0.38136,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "land:fetch",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Bloom Tender",
+      "x": -0.26948,
+      "y": 0.61593,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "ramp:dork",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Bonehoard Dracosaur",
-      "x": -0.36238,
-      "y": 0.73894,
+      "x": 0.19037,
+      "y": 0.86013,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -153,10 +133,10 @@
     },
     {
       "name": "Boros Charm",
-      "x": -0.69474,
-      "y": -0.13012,
-      "city": 4,
-      "hood": 0,
+      "x": 0.76741,
+      "y": -0.00586,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "protection:self",
         "removal:damage",
@@ -166,24 +146,11 @@
       "commander": false
     },
     {
-      "name": "Boros Signet",
-      "x": 0.15475,
-      "y": -0.70629,
-      "city": 5,
-      "hood": 0,
-      "roles": [
-        "ramp:rock",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Bronzebeak Foragers",
-      "x": -0.30022,
-      "y": 0.38215,
+      "x": 0.30836,
+      "y": -0.40411,
       "city": 0,
-      "hood": 0,
+      "hood": 3,
       "roles": [
         "threat:body",
         "value:etb"
@@ -193,10 +160,10 @@
     },
     {
       "name": "Canopy Vista",
-      "x": 0.62509,
-      "y": -0.17471,
+      "x": -0.63727,
+      "y": 0.21156,
       "city": 1,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "land:tapped"
       ],
@@ -205,10 +172,10 @@
     },
     {
       "name": "Carnage Tyrant",
-      "x": -0.53502,
-      "y": -0.1475,
-      "city": 4,
-      "hood": 0,
+      "x": 0.58036,
+      "y": 0.06576,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "protection:self",
         "threat:body"
@@ -218,10 +185,10 @@
     },
     {
       "name": "Cinder Glade",
-      "x": 0.63413,
-      "y": -0.18367,
+      "x": -0.65075,
+      "y": 0.22081,
       "city": 1,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "land:tapped"
       ],
@@ -230,10 +197,10 @@
     },
     {
       "name": "City of Brass",
-      "x": 0.63831,
-      "y": -0.01703,
+      "x": -0.64875,
+      "y": 0.04649,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
@@ -243,23 +210,11 @@
       "commander": false
     },
     {
-      "name": "Clifftop Retreat",
-      "x": 0.64529,
-      "y": -0.20875,
+      "name": "Command Tower",
+      "x": -0.67045,
+      "y": 0.07542,
       "city": 1,
       "hood": 0,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Command Tower",
-      "x": 0.66598,
-      "y": -0.01236,
-      "city": 1,
-      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -268,22 +223,10 @@
       "commander": false
     },
     {
-      "name": "Commercial District",
-      "x": 0.65084,
-      "y": -0.14288,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Congregation at Dawn",
-      "x": -0.08979,
-      "y": 0.4927,
-      "city": 2,
+      "x": 0.04317,
+      "y": -0.546,
+      "city": 3,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -293,10 +236,10 @@
     },
     {
       "name": "Curious Altisaur",
-      "x": -0.61256,
-      "y": 0.41014,
+      "x": 0.59506,
+      "y": 0.43276,
       "city": 0,
-      "hood": 3,
+      "hood": 2,
       "roles": [
         "draw:engine",
         "threat:body"
@@ -306,8 +249,8 @@
     },
     {
       "name": "Descendants' Path",
-      "x": 0.01031,
-      "y": -0.0738,
+      "x": -0.00552,
+      "y": 0.10095,
       "city": 0,
       "hood": 1,
       "roles": [],
@@ -316,10 +259,10 @@
     },
     {
       "name": "Earthshaker Dreadmaw",
-      "x": -0.44437,
-      "y": 0.40888,
+      "x": 0.47004,
+      "y": -0.38955,
       "city": 0,
-      "hood": 0,
+      "hood": 3,
       "roles": [
         "threat:body",
         "value:etb"
@@ -329,8 +272,8 @@
     },
     {
       "name": "Eerie Interlude",
-      "x": -0.0666,
-      "y": -0.15676,
+      "x": 0.06087,
+      "y": 0.08607,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -340,20 +283,10 @@
       "commander": false
     },
     {
-      "name": "Enlarge",
-      "x": -0.01176,
-      "y": -0.14122,
-      "city": 0,
-      "hood": 1,
-      "roles": [],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Enlightened Tutor",
-      "x": -0.00828,
-      "y": 0.66107,
-      "city": 2,
+      "x": -0.07408,
+      "y": -0.68209,
+      "city": 3,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -363,8 +296,8 @@
     },
     {
       "name": "Etali, Primal Storm",
-      "x": -0.48766,
-      "y": 0.13031,
+      "x": 0.29464,
+      "y": 0.45795,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -376,10 +309,10 @@
     },
     {
       "name": "Exotic Orchard",
-      "x": 0.68159,
-      "y": -0.00945,
+      "x": -0.68758,
+      "y": 0.06448,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -389,10 +322,10 @@
     },
     {
       "name": "Flawless Maneuver",
-      "x": -0.5413,
-      "y": -0.20068,
-      "city": 4,
-      "hood": 0,
+      "x": 0.60567,
+      "y": 0.1024,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "protection:granted",
         "protection:self"
@@ -402,10 +335,10 @@
     },
     {
       "name": "Forbidden Orchard",
-      "x": 0.7008,
-      "y": 0.06282,
+      "x": -0.71571,
+      "y": -0.00036,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -415,10 +348,10 @@
     },
     {
       "name": "Forest",
-      "x": 0.5302,
-      "y": -0.23092,
+      "x": -0.54728,
+      "y": 0.27029,
       "city": 1,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:basic"
       ],
@@ -427,10 +360,10 @@
     },
     {
       "name": "Garruk's Uprising",
-      "x": -0.56229,
-      "y": 0.30622,
+      "x": 0.57442,
+      "y": -0.18153,
       "city": 0,
-      "hood": 3,
+      "hood": 2,
       "roles": [
         "draw:engine",
         "value:etb"
@@ -440,8 +373,8 @@
     },
     {
       "name": "Ghalta and Mavren",
-      "x": -0.16704,
-      "y": 0.15223,
+      "x": 0.2349,
+      "y": -0.0544,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -453,8 +386,8 @@
     },
     {
       "name": "Ghalta, Primal Hunger",
-      "x": -0.10671,
-      "y": 0.02121,
+      "x": 0.09729,
+      "y": -0.09267,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -465,10 +398,10 @@
     },
     {
       "name": "Heroic Intervention",
-      "x": -0.59045,
-      "y": -0.1905,
-      "city": 4,
-      "hood": 0,
+      "x": 0.65718,
+      "y": 0.07605,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "protection:self"
       ],
@@ -477,9 +410,9 @@
     },
     {
       "name": "Huatli, Poet of Unity // Roar of the Fifth People",
-      "x": 0.04104,
-      "y": 0.59325,
-      "city": 2,
+      "x": -0.07004,
+      "y": -0.58208,
+      "city": 3,
       "hood": 0,
       "roles": [
         "ramp:dork",
@@ -496,10 +429,10 @@
     },
     {
       "name": "Hulking Raptor",
-      "x": 0.2414,
-      "y": 0.48912,
-      "city": 0,
-      "hood": 2,
+      "x": -0.07597,
+      "y": 0.50069,
+      "city": 5,
+      "hood": 0,
       "roles": [
         "protection:self",
         "ramp:dork",
@@ -510,8 +443,8 @@
     },
     {
       "name": "Hunter's Insight",
-      "x": -0.09403,
-      "y": -0.03874,
+      "x": 0.08315,
+      "y": -0.02815,
       "city": 0,
       "hood": 1,
       "roles": [],
@@ -519,11 +452,23 @@
       "commander": false
     },
     {
-      "name": "Itzquinth, Firstborn of Gishath",
-      "x": -0.32319,
-      "y": 0.27503,
+      "name": "Hunting Velociraptor",
+      "x": 0.01416,
+      "y": -0.10364,
       "city": 0,
-      "hood": 0,
+      "hood": 1,
+      "roles": [
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Itzquinth, Firstborn of Gishath",
+      "x": 0.33297,
+      "y": -0.30872,
+      "city": 0,
+      "hood": 3,
       "roles": [
         "threat:body",
         "value:etb"
@@ -533,10 +478,10 @@
     },
     {
       "name": "Jetmir's Garden",
-      "x": 0.64802,
-      "y": 0.08272,
+      "x": -0.66843,
+      "y": -0.0565,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:tapped",
         "land:utility"
@@ -546,10 +491,10 @@
     },
     {
       "name": "Kessig Wolf Run",
-      "x": 0.64521,
-      "y": 0.01296,
+      "x": -0.6621,
+      "y": 0.00823,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:utility"
       ],
@@ -558,8 +503,8 @@
     },
     {
       "name": "Kinjalli's Sunwing",
-      "x": 0.05595,
-      "y": 0.14759,
+      "x": -0.04718,
+      "y": -0.19332,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -570,9 +515,9 @@
     },
     {
       "name": "Knight of the Stampede",
-      "x": -0.95603,
-      "y": 0.06928,
-      "city": 6,
+      "x": 0.94631,
+      "y": -0.32145,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:cost-reduction",
@@ -582,24 +527,11 @@
       "commander": false
     },
     {
-      "name": "Kodama's Reach",
-      "x": 0.03783,
-      "y": 0.74495,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "ramp:land",
-        "tutor:narrow"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Krosan Verge",
-      "x": 0.69309,
-      "y": 0.26448,
-      "city": 1,
-      "hood": 2,
+      "x": -0.70931,
+      "y": -0.25179,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "land:fetch",
         "land:tapped",
@@ -610,8 +542,8 @@
     },
     {
       "name": "Mirari's Wake",
-      "x": 0.04077,
-      "y": -0.57512,
+      "x": 0.09382,
+      "y": 0.64272,
       "city": 5,
       "hood": 0,
       "roles": [
@@ -622,11 +554,23 @@
       "commander": false
     },
     {
-      "name": "Monster Manual // Zoological Study",
-      "x": -0.09644,
-      "y": -0.64256,
+      "name": "Molten Echoes",
+      "x": 0.12678,
+      "y": -0.16379,
       "city": 0,
-      "hood": 2,
+      "hood": 1,
+      "roles": [
+        "payoff:typal"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Monster Manual // Zoological Study",
+      "x": 0.16491,
+      "y": 0.72426,
+      "city": 5,
+      "hood": 0,
       "roles": [
         "utility:activated"
       ],
@@ -635,10 +579,10 @@
     },
     {
       "name": "Mountain",
-      "x": 0.48076,
-      "y": -0.28053,
+      "x": -0.49273,
+      "y": 0.33293,
       "city": 1,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:basic"
       ],
@@ -647,10 +591,10 @@
     },
     {
       "name": "Myriad Landscape",
-      "x": 0.69865,
-      "y": 0.24198,
-      "city": 1,
-      "hood": 2,
+      "x": -0.70999,
+      "y": -0.23307,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "land:tapped",
         "land:utility"
@@ -660,9 +604,9 @@
     },
     {
       "name": "Nature's Lore",
-      "x": 0.04686,
-      "y": 0.74973,
-      "city": 2,
+      "x": -0.1241,
+      "y": -0.75308,
+      "city": 3,
       "hood": 0,
       "roles": [
         "ramp:land",
@@ -673,9 +617,9 @@
     },
     {
       "name": "Otepec Huntmaster",
-      "x": -0.93174,
-      "y": 0.01634,
-      "city": 6,
+      "x": 0.96277,
+      "y": -0.18595,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:cost-reduction",
@@ -687,8 +631,8 @@
     },
     {
       "name": "Overwhelming Stampede",
-      "x": -0.16469,
-      "y": -0.1899,
+      "x": 0.22229,
+      "y": 0.08439,
       "city": 0,
       "hood": 1,
       "roles": [],
@@ -697,8 +641,8 @@
     },
     {
       "name": "Pantlaza, Sun-Favored",
-      "x": 0.0877,
-      "y": 0.00497,
+      "x": -0.05073,
+      "y": 0.05321,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -709,10 +653,10 @@
     },
     {
       "name": "Path of Ancestry",
-      "x": 0.65675,
-      "y": 0.06475,
+      "x": -0.66045,
+      "y": -0.02196,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:tapped"
@@ -722,9 +666,9 @@
     },
     {
       "name": "Path to Exile",
-      "x": -0.2976,
-      "y": -0.41552,
-      "city": 3,
+      "x": 0.36756,
+      "y": 0.3895,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -734,10 +678,10 @@
     },
     {
       "name": "Plains",
-      "x": 0.51237,
-      "y": -0.25532,
+      "x": -0.52774,
+      "y": 0.29092,
       "city": 1,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:basic"
       ],
@@ -746,8 +690,8 @@
     },
     {
       "name": "Pugnacious Hammerskull",
-      "x": 0.04798,
-      "y": 0.09793,
+      "x": -0.05394,
+      "y": -0.10961,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -757,9 +701,25 @@
       "commander": false
     },
     {
+      "name": "Purphoros, God of the Forge",
+      "x": 0.64157,
+      "y": 0.02474,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "buff:pump",
+        "protection:self",
+        "removal:damage",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Quartzwood Crasher",
-      "x": -0.17409,
-      "y": 0.19244,
+      "x": 0.13311,
+      "y": -0.32651,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -771,10 +731,10 @@
     },
     {
       "name": "Regal Behemoth",
-      "x": -0.34284,
-      "y": 0.35545,
+      "x": 0.3613,
+      "y": -0.38565,
       "city": 0,
-      "hood": 0,
+      "hood": 3,
       "roles": [
         "threat:body",
         "value:etb"
@@ -784,8 +744,8 @@
     },
     {
       "name": "Regal Imperiosaur",
-      "x": 0.03356,
-      "y": -0.21802,
+      "x": -0.06479,
+      "y": -0.25059,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -797,8 +757,8 @@
     },
     {
       "name": "Regisaur Alpha",
-      "x": -0.31107,
-      "y": 0.4696,
+      "x": 0.28385,
+      "y": -0.51286,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -811,8 +771,8 @@
     },
     {
       "name": "Rishkar's Expertise",
-      "x": -0.24695,
-      "y": -0.06407,
+      "x": 0.27294,
+      "y": 0.04961,
       "city": 0,
       "hood": 1,
       "roles": [],
@@ -821,10 +781,10 @@
     },
     {
       "name": "Rogue's Passage",
-      "x": 0.62697,
-      "y": 0.03735,
+      "x": -0.63948,
+      "y": 0.02326,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:utility"
       ],
@@ -833,10 +793,10 @@
     },
     {
       "name": "Rootbound Crag",
-      "x": 0.64143,
-      "y": -0.20229,
+      "x": -0.66069,
+      "y": 0.23718,
       "city": 1,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "land:tapped"
       ],
@@ -845,10 +805,10 @@
     },
     {
       "name": "Runic Armasaur",
-      "x": -0.62327,
-      "y": 0.43702,
+      "x": 0.59558,
+      "y": 0.48803,
       "city": 0,
-      "hood": 3,
+      "hood": 2,
       "roles": [
         "threat:body"
       ],
@@ -856,11 +816,38 @@
       "commander": false
     },
     {
+      "name": "Savage Order",
+      "x": 0.21051,
+      "y": -0.66919,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "protection:self",
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Savage Stomp",
+      "x": 0.68216,
+      "y": -0.47992,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "ramp:cost-reduction",
+        "removal:fight"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Secluded Courtyard",
-      "x": 0.73044,
-      "y": -0.02126,
+      "x": -0.72914,
+      "y": 0.08905,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -870,10 +857,10 @@
     },
     {
       "name": "Selvala, Heart of the Wilds",
-      "x": 0.25649,
-      "y": 0.42536,
-      "city": 0,
-      "hood": 2,
+      "x": -0.128,
+      "y": 0.55492,
+      "city": 5,
+      "hood": 0,
       "roles": [
         "draw:engine",
         "threat:body",
@@ -885,9 +872,9 @@
     },
     {
       "name": "Skyshroud Claim",
-      "x": 0.01157,
-      "y": 0.73229,
-      "city": 2,
+      "x": -0.08802,
+      "y": -0.74418,
+      "city": 3,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -897,8 +884,8 @@
     },
     {
       "name": "Sol Ring",
-      "x": 0.15321,
-      "y": -0.71103,
+      "x": -0.08312,
+      "y": 0.80414,
       "city": 5,
       "hood": 0,
       "roles": [
@@ -909,9 +896,21 @@
       "commander": false
     },
     {
+      "name": "Stomping Ground",
+      "x": -0.66448,
+      "y": 0.21031,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Sunfrill Imitator",
-      "x": 0.03515,
-      "y": 0.08863,
+      "x": -0.04056,
+      "y": -0.09013,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -922,10 +921,10 @@
     },
     {
       "name": "Sunpetal Grove",
-      "x": 0.63029,
-      "y": -0.1885,
+      "x": -0.64596,
+      "y": 0.22161,
       "city": 1,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "land:tapped"
       ],
@@ -934,9 +933,9 @@
     },
     {
       "name": "Swords to Plowshares",
-      "x": -0.34269,
-      "y": -0.56,
-      "city": 3,
+      "x": 0.43821,
+      "y": 0.59249,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -945,22 +944,9 @@
       "commander": false
     },
     {
-      "name": "Talisman of Unity",
-      "x": 0.0872,
-      "y": -0.6477,
-      "city": 5,
-      "hood": 0,
-      "roles": [
-        "ramp:rock",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Temple Altisaur",
-      "x": 0.07862,
-      "y": -0.07878,
+      "x": -0.07934,
+      "y": -0.00054,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -970,51 +956,34 @@
       "commander": false
     },
     {
-      "name": "Thrashing Brontodon",
-      "x": -0.37337,
-      "y": -0.59878,
-      "city": 3,
-      "hood": 0,
+      "name": "Temple Garden",
+      "x": -0.6439,
+      "y": 0.18419,
+      "city": 1,
+      "hood": 1,
       "roles": [
-        "removal:spot",
-        "threat:body",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Topiary Stomper",
-      "x": -0.01378,
-      "y": 0.78456,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "ramp:land",
-        "threat:body",
-        "tutor:narrow",
-        "value:etb"
+        "land:tapped"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Trapjaw Tyrant",
-      "x": -0.37532,
-      "y": -0.49574,
-      "city": 3,
+      "x": 0.47215,
+      "y": 0.52798,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:spot",
         "threat:body"
       ],
-      "verified": true,
+      "verified": false,
       "commander": false
     },
     {
       "name": "Triumphant Chomp",
-      "x": 0.03075,
-      "y": 0.00353,
+      "x": -0.03131,
+      "y": -0.04586,
       "city": 0,
       "hood": 1,
       "roles": [],
@@ -1023,10 +992,10 @@
     },
     {
       "name": "Trumpeting Carnosaur",
-      "x": -0.40231,
-      "y": 0.24883,
+      "x": 0.40194,
+      "y": -0.31747,
       "city": 0,
-      "hood": 0,
+      "hood": 3,
       "roles": [
         "removal:damage",
         "threat:body",
@@ -1037,10 +1006,10 @@
     },
     {
       "name": "Unclaimed Territory",
-      "x": 0.72959,
-      "y": -0.00302,
+      "x": -0.72868,
+      "y": 0.07675,
       "city": 1,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -1049,10 +1018,23 @@
       "commander": false
     },
     {
+      "name": "Up the Beanstalk",
+      "x": 0.47271,
+      "y": -0.20239,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "draw:engine",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Urza's Incubator",
-      "x": -1.0,
-      "y": -0.04702,
-      "city": 6,
+      "x": 1.0,
+      "y": -0.27843,
+      "city": 2,
       "hood": 0,
       "roles": [
         "payoff:typal",
@@ -1063,10 +1045,10 @@
     },
     {
       "name": "Vaultborn Tyrant",
-      "x": -0.33752,
-      "y": 0.15697,
+      "x": 0.30645,
+      "y": 0.29876,
       "city": 0,
-      "hood": 3,
+      "hood": 2,
       "roles": [
         "threat:body"
       ],
@@ -1074,10 +1056,23 @@
       "commander": false
     },
     {
+      "name": "Verdant Catacombs",
+      "x": -0.76376,
+      "y": -0.36402,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "land:fetch",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Wakening Sun's Avatar",
-      "x": -0.58687,
-      "y": -0.50955,
-      "city": 3,
+      "x": 0.77889,
+      "y": 0.3938,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:sweeper",
@@ -1089,8 +1084,8 @@
     },
     {
       "name": "Wayward Swordtooth",
-      "x": -0.01879,
-      "y": -0.02112,
+      "x": 0.01259,
+      "y": 0.05721,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -1101,10 +1096,10 @@
     },
     {
       "name": "Windswept Heath",
-      "x": 0.7472,
-      "y": 0.38946,
-      "city": 1,
-      "hood": 2,
+      "x": -0.76246,
+      "y": -0.36782,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "land:fetch",
         "land:utility"
@@ -1113,10 +1108,35 @@
       "commander": false
     },
     {
+      "name": "Wooded Foothills",
+      "x": -0.75536,
+      "y": -0.38156,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "land:fetch",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "World War Hulk",
+      "x": 0.38727,
+      "y": -0.56394,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "buff:counters"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Worldly Tutor",
-      "x": -0.05331,
-      "y": 0.62658,
-      "city": 2,
+      "x": -0.02526,
+      "y": -0.66173,
+      "city": 3,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -1126,8 +1146,8 @@
     },
     {
       "name": "Wrathful Raptors",
-      "x": 0.00483,
-      "y": 0.01746,
+      "x": -0.00408,
+      "y": -0.06067,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -1138,9 +1158,9 @@
     },
     {
       "name": "Zacama, Primal Calamity",
-      "x": -0.51397,
-      "y": -0.39527,
-      "city": 3,
+      "x": 0.67632,
+      "y": 0.31071,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:damage",
@@ -1156,30 +1176,28 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": "WHAT THE MANA BUYS",
+      "label": null,
       "fallback": "Bodies",
-      "cx": -0.15996,
-      "cy": 0.12135,
-      "count": 35,
+      "cx": 0.1949,
+      "cy": -0.0453,
+      "count": 34,
       "cards": [
-        "Belbe's Portal",
         "Bonehoard Dracosaur",
         "Bronzebeak Foragers",
         "Curious Altisaur",
         "Descendants' Path",
         "Earthshaker Dreadmaw",
         "Eerie Interlude",
-        "Enlarge",
         "Etali, Primal Storm",
         "Garruk's Uprising",
         "Ghalta and Mavren",
         "Ghalta, Primal Hunger",
         "Gishath, Sun's Avatar",
-        "Hulking Raptor",
         "Hunter's Insight",
+        "Hunting Velociraptor",
         "Itzquinth, Firstborn of Gishath",
         "Kinjalli's Sunwing",
-        "Monster Manual // Zoological Study",
+        "Molten Echoes",
         "Overwhelming Stampede",
         "Pantlaza, Sun-Favored",
         "Pugnacious Hammerskull",
@@ -1189,59 +1207,54 @@
         "Regisaur Alpha",
         "Rishkar's Expertise",
         "Runic Armasaur",
-        "Selvala, Heart of the Wilds",
         "Sunfrill Imitator",
         "Temple Altisaur",
         "Triumphant Chomp",
         "Trumpeting Carnosaur",
+        "Up the Beanstalk",
         "Vaultborn Tyrant",
         "Wayward Swordtooth",
+        "World War Hulk",
         "Wrathful Raptors"
       ],
-      "verified_count": 5,
-      "gloss": "The deck's mass and five of its seven verified cards: twenty-four Dinosaurs and the eleven cards that pay off having them."
+      "verified_count": 5
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": "MORE THAN A BODY",
-      "fallback": "Value",
-      "cx": -0.30942,
-      "cy": 0.33479,
-      "count": 11,
+      "label": null,
+      "fallback": "Card Flow",
+      "cx": 0.21795,
+      "cy": 0.11685,
+      "count": 6,
       "cards": [
         "Bonehoard Dracosaur",
-        "Bronzebeak Foragers",
-        "Earthshaker Dreadmaw",
         "Etali, Primal Storm",
         "Ghalta and Mavren",
         "Gishath, Sun's Avatar",
-        "Itzquinth, Firstborn of Gishath",
         "Quartzwood Crasher",
-        "Regal Behemoth",
-        "Regisaur Alpha",
-        "Trumpeting Carnosaur"
+        "Regisaur Alpha"
       ],
-      "verified_count": 1,
-      "gloss": "Every Dinosaur here earns on entry or on the swing: tokens, cards, Treasure, the monarch, a discover, a ping."
+      "verified_count": 1
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": "SCALES WITH THE BOARD",
+      "label": null,
       "fallback": "Bodies",
-      "cx": -0.02029,
-      "cy": -0.03757,
-      "count": 16,
+      "cx": 0.04999,
+      "cy": -0.07064,
+      "count": 18,
       "cards": [
         "Descendants' Path",
         "Eerie Interlude",
-        "Enlarge",
         "Ghalta, Primal Hunger",
         "Hunter's Insight",
+        "Hunting Velociraptor",
         "Kinjalli's Sunwing",
+        "Molten Echoes",
         "Overwhelming Stampede",
         "Pantlaza, Sun-Favored",
         "Pugnacious Hammerskull",
@@ -1251,117 +1264,86 @@
         "Temple Altisaur",
         "Triumphant Chomp",
         "Wayward Swordtooth",
+        "World War Hulk",
         "Wrathful Raptors"
       ],
-      "verified_count": 3,
-      "gloss": "Nothing here works alone: lords, the enrage remnant and the greatest-power spells all read the board you already have."
+      "verified_count": 3
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": "THE SIDE DOOR",
-      "fallback": "Card Flow",
-      "cx": 0.06631,
-      "cy": -0.03619,
-      "count": 4,
+      "label": null,
+      "fallback": "Value",
+      "cx": 0.50884,
+      "cy": 0.16713,
+      "count": 5,
       "cards": [
-        "Belbe's Portal",
-        "Hulking Raptor",
-        "Monster Manual // Zoological Study",
-        "Selvala, Heart of the Wilds"
+        "Curious Altisaur",
+        "Garruk's Uprising",
+        "Runic Armasaur",
+        "Up the Beanstalk",
+        "Vaultborn Tyrant"
       ],
-      "verified_count": 0,
-      "gloss": "Two put a creature onto the table without casting it; two make the mana a board of Dinosaurs produces."
+      "verified_count": 1
     },
     {
       "id": "city-0-hood-3",
       "level": 1,
       "parent": "city-0",
-      "label": "THE REFILL",
-      "fallback": "Bodies II",
-      "cx": -0.53391,
-      "cy": 0.32759,
-      "count": 4,
+      "label": null,
+      "fallback": "Interaction",
+      "cx": 0.37492,
+      "cy": -0.3611,
+      "count": 5,
       "cards": [
-        "Curious Altisaur",
-        "Garruk's Uprising",
-        "Runic Armasaur",
-        "Vaultborn Tyrant"
+        "Bronzebeak Foragers",
+        "Earthshaker Dreadmaw",
+        "Itzquinth, Firstborn of Gishath",
+        "Regal Behemoth",
+        "Trumpeting Carnosaur"
       ],
-      "verified_count": 1,
-      "gloss": "Card draw keyed to power four or more and to Dinosaur combat damage, so the herd restocks the hand that made it."
+      "verified_count": 0
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": "THE LONG RUNWAY",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.64197,
-      "cy": -0.04891,
-      "count": 24,
+      "cx": -0.6464,
+      "cy": 0.13077,
+      "count": 19,
       "cards": [
-        "Alpine Meadow",
-        "Arctic Treeline",
         "Canopy Vista",
         "Cinder Glade",
         "City of Brass",
-        "Clifftop Retreat",
         "Command Tower",
-        "Commercial District",
         "Exotic Orchard",
         "Forbidden Orchard",
         "Forest",
         "Jetmir's Garden",
         "Kessig Wolf Run",
-        "Krosan Verge",
         "Mountain",
-        "Myriad Landscape",
         "Path of Ancestry",
         "Plains",
         "Rogue's Passage",
         "Rootbound Crag",
         "Secluded Courtyard",
+        "Stomping Ground",
         "Sunpetal Grove",
-        "Unclaimed Territory",
-        "Windswept Heath"
+        "Temple Garden",
+        "Unclaimed Territory"
       ],
-      "verified_count": 0,
-      "gloss": "Twenty-four lands, thirty-five copies, twelve entering tapped: three colours to find and eight mana to climb before the headline play."
+      "verified_count": 0
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": "BASICS AND PAIRS",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.59498,
-      "cy": -0.20612,
-      "count": 11,
-      "cards": [
-        "Alpine Meadow",
-        "Arctic Treeline",
-        "Canopy Vista",
-        "Cinder Glade",
-        "Clifftop Retreat",
-        "Commercial District",
-        "Forest",
-        "Mountain",
-        "Plains",
-        "Rootbound Crag",
-        "Sunpetal Grove"
-      ],
-      "verified_count": 0,
-      "gloss": "Three basics and eight two-colour duals, most of which enter tapped unless a basic type is already down."
-    },
-    {
-      "id": "city-1-hood-1",
-      "level": 1,
-      "parent": "city-1",
-      "label": "FIXING AND FINISHING",
-      "fallback": "Mana II",
-      "cx": 0.67237,
-      "cy": 0.01975,
+      "cx": -0.68108,
+      "cy": 0.03049,
       "count": 10,
       "cards": [
         "City of Brass",
@@ -1375,163 +1357,200 @@
         "Secluded Courtyard",
         "Unclaimed Territory"
       ],
-      "verified_count": 0,
-      "gloss": "Eight lands that tap for any colour, two of them only for Dinosaurs, plus the two that push one attacker through."
+      "verified_count": 0
+    },
+    {
+      "id": "city-1-hood-1",
+      "level": 1,
+      "parent": "city-1",
+      "label": null,
+      "fallback": "Mana III",
+      "cx": -0.65051,
+      "cy": 0.21428,
+      "count": 6,
+      "cards": [
+        "Canopy Vista",
+        "Cinder Glade",
+        "Rootbound Crag",
+        "Stomping Ground",
+        "Sunpetal Grove",
+        "Temple Garden"
+      ],
+      "verified_count": 0
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
-      "label": "LANDS THAT FIND LANDS",
-      "fallback": "Mana III",
-      "cx": 0.71298,
-      "cy": 0.29864,
+      "label": null,
+      "fallback": "Mana IIII",
+      "cx": -0.52259,
+      "cy": 0.29805,
       "count": 3,
       "cards": [
-        "Krosan Verge",
-        "Myriad Landscape",
-        "Windswept Heath"
+        "Forest",
+        "Mountain",
+        "Plains"
       ],
-      "verified_count": 0,
-      "gloss": "Three that sacrifice to search: thin the library ahead of the reveal and fix the colours on the way."
+      "verified_count": 0
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": "THE SEARCH PARTY",
-      "fallback": "Tutors",
-      "cx": -0.00348,
-      "cy": 0.67314,
-      "count": 8,
+      "label": null,
+      "fallback": "Insurance",
+      "cx": 0.77317,
+      "cy": -0.10937,
+      "count": 11,
       "cards": [
-        "Congregation at Dawn",
-        "Enlightened Tutor",
-        "Huatli, Poet of Unity // Roar of the Fifth People",
-        "Kodama's Reach",
-        "Nature's Lore",
-        "Skyshroud Claim",
-        "Topiary Stomper",
-        "Worldly Tutor"
+        "Akroma's Will",
+        "Blasphemous Act",
+        "Boros Charm",
+        "Carnage Tyrant",
+        "Flawless Maneuver",
+        "Heroic Intervention",
+        "Knight of the Stampede",
+        "Otepec Huntmaster",
+        "Purphoros, God of the Forge",
+        "Savage Stomp",
+        "Urza's Incubator"
       ],
-      "verified_count": 0,
-      "gloss": "Every card here searches the library: five for lands, three to put the creature or enchantment you need on top."
+      "verified_count": 1
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
       "label": null,
-      "fallback": "Tutors",
-      "cx": -0.00348,
-      "cy": 0.67314,
-      "count": 8,
+      "fallback": "Payoffs",
+      "cx": 0.88417,
+      "cy": -0.30123,
+      "count": 5,
       "cards": [
-        "Congregation at Dawn",
-        "Enlightened Tutor",
-        "Huatli, Poet of Unity // Roar of the Fifth People",
-        "Kodama's Reach",
-        "Nature's Lore",
-        "Skyshroud Claim",
-        "Topiary Stomper",
-        "Worldly Tutor"
+        "Blasphemous Act",
+        "Knight of the Stampede",
+        "Otepec Huntmaster",
+        "Savage Stomp",
+        "Urza's Incubator"
+      ],
+      "verified_count": 1
+    },
+    {
+      "id": "city-2-hood-1",
+      "level": 1,
+      "parent": "city-2",
+      "label": null,
+      "fallback": "Insurance",
+      "cx": 0.68067,
+      "cy": 0.05052,
+      "count": 6,
+      "cards": [
+        "Akroma's Will",
+        "Boros Charm",
+        "Carnage Tyrant",
+        "Flawless Maneuver",
+        "Heroic Intervention",
+        "Purphoros, God of the Forge"
       ],
       "verified_count": 0
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": "MAKING ROOM",
-      "fallback": "Interaction",
-      "cx": -0.44388,
-      "cy": -0.54078,
-      "count": 8,
+      "label": null,
+      "fallback": "Tutors",
+      "cx": -0.01826,
+      "cy": -0.66262,
+      "count": 7,
       "cards": [
-        "Austere Command",
-        "Beast Within",
-        "Path to Exile",
-        "Swords to Plowshares",
-        "Thrashing Brontodon",
-        "Trapjaw Tyrant",
-        "Wakening Sun's Avatar",
-        "Zacama, Primal Calamity"
+        "Congregation at Dawn",
+        "Enlightened Tutor",
+        "Huatli, Poet of Unity // Roar of the Fifth People",
+        "Nature's Lore",
+        "Savage Order",
+        "Skyshroud Claim",
+        "Worldly Tutor"
       ],
-      "verified_count": 1,
-      "gloss": "Two exile spells, Beast Within, two sweepers that can spare the herd, and four Dinosaurs that carry their own removal."
+      "verified_count": 0
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
       "label": null,
-      "fallback": "Interaction",
-      "cx": -0.44388,
-      "cy": -0.54078,
-      "count": 8,
+      "fallback": "Tutors",
+      "cx": -0.01826,
+      "cy": -0.66262,
+      "count": 7,
       "cards": [
-        "Austere Command",
-        "Beast Within",
-        "Path to Exile",
-        "Swords to Plowshares",
-        "Thrashing Brontodon",
-        "Trapjaw Tyrant",
-        "Wakening Sun's Avatar",
-        "Zacama, Primal Calamity"
+        "Congregation at Dawn",
+        "Enlightened Tutor",
+        "Huatli, Poet of Unity // Roar of the Fifth People",
+        "Nature's Lore",
+        "Savage Order",
+        "Skyshroud Claim",
+        "Worldly Tutor"
       ],
-      "verified_count": 1
+      "verified_count": 0
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": "WRATH INSURANCE",
-      "fallback": "Insurance",
-      "cx": -0.62435,
-      "cy": -0.1793,
-      "count": 5,
+      "label": null,
+      "fallback": "Mana II",
+      "cx": -0.74475,
+      "cy": -0.33785,
+      "count": 7,
       "cards": [
-        "Akroma's Will",
-        "Boros Charm",
-        "Carnage Tyrant",
-        "Flawless Maneuver",
-        "Heroic Intervention"
+        "Arid Mesa",
+        "Bloodstained Mire",
+        "Krosan Verge",
+        "Myriad Landscape",
+        "Verdant Catacombs",
+        "Windswept Heath",
+        "Wooded Foothills"
       ],
-      "verified_count": 0,
-      "gloss": "Held up for the sweeper that answers the herd; two of them double as double-strike finishers once the table is clear."
+      "verified_count": 0
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
       "label": null,
-      "fallback": "Insurance",
-      "cx": -0.62435,
-      "cy": -0.1793,
-      "count": 5,
+      "fallback": "Mana II",
+      "cx": -0.74475,
+      "cy": -0.33785,
+      "count": 7,
       "cards": [
-        "Akroma's Will",
-        "Boros Charm",
-        "Carnage Tyrant",
-        "Flawless Maneuver",
-        "Heroic Intervention"
+        "Arid Mesa",
+        "Bloodstained Mire",
+        "Krosan Verge",
+        "Myriad Landscape",
+        "Verdant Catacombs",
+        "Windswept Heath",
+        "Wooded Foothills"
       ],
       "verified_count": 0
     },
     {
       "id": "city-5",
       "level": 0,
-      "label": "BUYING TURNS",
+      "label": null,
       "fallback": "Ramp",
-      "cx": 0.11789,
-      "cy": -0.65808,
-      "count": 5,
+      "cx": -0.03022,
+      "cy": 0.63093,
+      "count": 8,
       "cards": [
         "Arcane Signet",
-        "Boros Signet",
+        "Belbe's Portal",
+        "Bloom Tender",
+        "Hulking Raptor",
         "Mirari's Wake",
-        "Sol Ring",
-        "Talisman of Unity"
+        "Monster Manual // Zoological Study",
+        "Selvala, Heart of the Wilds",
+        "Sol Ring"
       ],
-      "verified_count": 0,
-      "gloss": "Four rocks and a doubler: mana that is not a land drop, so the eight-mana cast comes a turn or two early."
+      "verified_count": 0
     },
     {
       "id": "city-5-hood-0",
@@ -1539,667 +1558,671 @@
       "parent": "city-5",
       "label": null,
       "fallback": "Ramp",
-      "cx": 0.11789,
-      "cy": -0.65808,
-      "count": 5,
+      "cx": -0.03022,
+      "cy": 0.63093,
+      "count": 8,
       "cards": [
         "Arcane Signet",
-        "Boros Signet",
+        "Belbe's Portal",
+        "Bloom Tender",
+        "Hulking Raptor",
         "Mirari's Wake",
-        "Sol Ring",
-        "Talisman of Unity"
+        "Monster Manual // Zoological Study",
+        "Selvala, Heart of the Wilds",
+        "Sol Ring"
       ],
       "verified_count": 0
     },
     {
       "id": "city-6",
       "level": 0,
-      "label": "THE DISCOUNTS",
-      "fallback": "Payoffs",
-      "cx": -0.92439,
-      "cy": 0.01369,
-      "count": 4,
+      "label": null,
+      "fallback": "Interaction",
+      "cx": 0.54663,
+      "cy": 0.4429,
+      "count": 5,
       "cards": [
-        "Blasphemous Act",
-        "Knight of the Stampede",
-        "Otepec Huntmaster",
-        "Urza's Incubator"
+        "Path to Exile",
+        "Swords to Plowshares",
+        "Trapjaw Tyrant",
+        "Wakening Sun's Avatar",
+        "Zacama, Primal Calamity"
       ],
-      "verified_count": 1,
-      "gloss": "Three make every Dinosaur cheaper, command zone included; the fourth discounts itself off a full table and then clears it."
+      "verified_count": 0
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
       "label": null,
-      "fallback": "Payoffs",
-      "cx": -0.92439,
-      "cy": 0.01369,
-      "count": 4,
+      "fallback": "Interaction II",
+      "cx": 0.54663,
+      "cy": 0.4429,
+      "count": 5,
       "cards": [
-        "Blasphemous Act",
-        "Knight of the Stampede",
-        "Otepec Huntmaster",
-        "Urza's Incubator"
+        "Path to Exile",
+        "Swords to Plowshares",
+        "Trapjaw Tyrant",
+        "Wakening Sun's Avatar",
+        "Zacama, Primal Calamity"
       ],
-      "verified_count": 1
+      "verified_count": 0
     }
   ],
   "edges": [
     {
       "a": 0,
-      "b": 33,
+      "b": 28,
       "d": 0.1382
     },
     {
       "a": 0,
-      "b": 53,
+      "b": 49,
       "d": 0.1636
     },
     {
       "a": 1,
-      "b": 29,
+      "b": 24,
       "d": 0.0783
     },
     {
       "a": 1,
-      "b": 14,
+      "b": 12,
       "d": 0.0866
     },
     {
       "a": 2,
-      "b": 4,
-      "d": 0.0042
-    },
-    {
-      "a": 2,
-      "b": 17,
-      "d": 0.0099
-    },
-    {
-      "a": 3,
-      "b": 69,
+      "b": 68,
       "d": 0.0246
     },
     {
+      "a": 2,
+      "b": 41,
+      "d": 0.085
+    },
+    {
       "a": 3,
-      "b": 11,
-      "d": 0.033
+      "b": 86,
+      "d": 0.0007
+    },
+    {
+      "a": 3,
+      "b": 6,
+      "d": 0.0009
     },
     {
       "a": 4,
-      "b": 15,
-      "d": 0.0091
-    },
-    {
-      "a": 5,
-      "b": 83,
-      "d": 0.0685
-    },
-    {
-      "a": 5,
-      "b": 75,
-      "d": 0.1571
-    },
-    {
-      "a": 6,
-      "b": 72,
-      "d": 0.087
-    },
-    {
-      "a": 6,
-      "b": 75,
-      "d": 0.0955
-    },
-    {
-      "a": 7,
-      "b": 47,
+      "b": 43,
       "d": 0.167
     },
     {
-      "a": 7,
-      "b": 53,
-      "d": 0.1897
+      "a": 4,
+      "b": 42,
+      "d": 0.1682
     },
     {
-      "a": 8,
-      "b": 51,
+      "a": 5,
+      "b": 47,
       "d": 0.0778
     },
     {
-      "a": 8,
-      "b": 43,
-      "d": 0.0831
-    },
-    {
-      "a": 9,
-      "b": 27,
-      "d": 0.2039
-    },
-    {
-      "a": 9,
-      "b": 82,
-      "d": 0.2271
-    },
-    {
-      "a": 10,
-      "b": 35,
-      "d": 0.0863
-    },
-    {
-      "a": 10,
-      "b": 14,
-      "d": 0.1024
-    },
-    {
-      "a": 11,
-      "b": 69,
-      "d": 0.0108
-    },
-    {
-      "a": 12,
+      "a": 5,
       "b": 39,
       "d": 0.0831
     },
     {
-      "a": 12,
-      "b": 59,
+      "a": 6,
+      "b": 82,
+      "d": 0.0011
+    },
+    {
+      "a": 7,
+      "b": 66,
+      "d": 0.0471
+    },
+    {
+      "a": 7,
+      "b": 32,
+      "d": 0.1323
+    },
+    {
+      "a": 8,
+      "b": 22,
+      "d": 0.2039
+    },
+    {
+      "a": 8,
+      "b": 81,
+      "d": 0.2271
+    },
+    {
+      "a": 9,
+      "b": 30,
+      "d": 0.0863
+    },
+    {
+      "a": 9,
+      "b": 12,
+      "d": 0.1024
+    },
+    {
+      "a": 10,
+      "b": 35,
+      "d": 0.0831
+    },
+    {
+      "a": 10,
+      "b": 56,
       "d": 0.0851
     },
     {
-      "a": 13,
-      "b": 15,
+      "a": 11,
+      "b": 13,
       "d": 0.0054
     },
     {
-      "a": 13,
+      "a": 11,
       "b": 71,
       "d": 0.0065
     },
     {
-      "a": 14,
-      "b": 35,
+      "a": 12,
+      "b": 30,
       "d": 0.0503
     },
     {
-      "a": 14,
-      "b": 29,
+      "a": 12,
+      "b": 24,
       "d": 0.0551
     },
     {
-      "a": 15,
-      "b": 64,
+      "a": 13,
+      "b": 61,
       "d": 0.0059
     },
     {
-      "a": 16,
-      "b": 18,
+      "a": 14,
+      "b": 15,
       "d": 0.03
     },
     {
-      "a": 16,
-      "b": 28,
+      "a": 14,
+      "b": 23,
       "d": 0.0321
     },
     {
-      "a": 17,
-      "b": 64,
-      "d": 0.0023
-    },
-    {
-      "a": 17,
-      "b": 71,
-      "d": 0.0041
-    },
-    {
-      "a": 18,
-      "b": 28,
+      "a": 15,
+      "b": 23,
       "d": 0.0056
     },
     {
-      "a": 15,
-      "b": 19,
-      "d": 0.0193
-    },
-    {
-      "a": 13,
-      "b": 19,
-      "d": 0.0222
-    },
-    {
-      "a": 20,
-      "b": 86,
+      "a": 16,
+      "b": 88,
       "d": 0.0263
     },
     {
-      "a": 20,
-      "b": 26,
+      "a": 16,
+      "b": 21,
       "d": 0.0391
     },
     {
-      "a": 21,
-      "b": 65,
+      "a": 17,
+      "b": 62,
       "d": 0.0521
     },
     {
-      "a": 21,
-      "b": 32,
+      "a": 17,
+      "b": 27,
       "d": 0.099
     },
     {
-      "a": 22,
-      "b": 53,
+      "a": 18,
+      "b": 49,
       "d": 0.0967
     },
     {
-      "a": 22,
-      "b": 84,
-      "d": 0.1196
+      "a": 18,
+      "b": 34,
+      "d": 0.0969
     },
     {
-      "a": 23,
-      "b": 59,
+      "a": 19,
+      "b": 56,
       "d": 0.0626
     },
     {
-      "a": 23,
-      "b": 32,
-      "d": 0.0918
+      "a": 19,
+      "b": 79,
+      "d": 0.0704
     },
     {
-      "a": 22,
-      "b": 24,
+      "a": 18,
+      "b": 20,
       "d": 0.1275
     },
     {
-      "a": 24,
-      "b": 78,
+      "a": 20,
+      "b": 76,
       "d": 0.1325
     },
     {
-      "a": 25,
-      "b": 87,
-      "d": 0.077
-    },
-    {
-      "a": 25,
-      "b": 52,
-      "d": 0.0942
-    },
-    {
-      "a": 26,
-      "b": 86,
+      "a": 21,
+      "b": 88,
       "d": 0.0116
     },
     {
-      "a": 27,
-      "b": 34,
+      "a": 22,
+      "b": 29,
       "d": 0.1549
     },
     {
       "a": 0,
-      "b": 27,
+      "b": 22,
       "d": 0.1712
     },
     {
-      "a": 28,
-      "b": 30,
+      "a": 23,
+      "b": 25,
       "d": 0.0278
     },
     {
-      "a": 29,
-      "b": 35,
+      "a": 24,
+      "b": 30,
       "d": 0.035
     },
     {
-      "a": 18,
-      "b": 30,
+      "a": 15,
+      "b": 25,
       "d": 0.0324
     },
     {
-      "a": 31,
-      "b": 56,
+      "a": 26,
+      "b": 52,
       "d": 0.0114
     },
     {
-      "a": 31,
-      "b": 48,
+      "a": 26,
+      "b": 44,
       "d": 0.0188
     },
     {
-      "a": 32,
-      "b": 65,
+      "a": 27,
+      "b": 79,
+      "d": 0.0689
+    },
+    {
+      "a": 27,
+      "b": 62,
       "d": 0.0817
     },
     {
-      "a": 33,
-      "b": 58,
+      "a": 28,
+      "b": 55,
       "d": 0.0843
     },
     {
-      "a": 33,
-      "b": 82,
+      "a": 28,
+      "b": 81,
       "d": 0.1243
     },
     {
-      "a": 34,
-      "b": 87,
+      "a": 29,
+      "b": 89,
       "d": 0.0593
     },
     {
-      "a": 34,
-      "b": 78,
-      "d": 0.1006
+      "a": 29,
+      "b": 34,
+      "d": 0.0662
     },
     {
-      "a": 36,
-      "b": 76,
-      "d": 0.09
+      "a": 31,
+      "b": 46,
+      "d": 0.1018
     },
     {
-      "a": 36,
-      "b": 44,
-      "d": 0.0994
-    },
-    {
-      "a": 37,
+      "a": 31,
       "b": 67,
+      "d": 0.1027
+    },
+    {
+      "a": 32,
+      "b": 66,
       "d": 0.1214
     },
     {
-      "a": 35,
-      "b": 37,
-      "d": 0.1785
-    },
-    {
-      "a": 38,
-      "b": 87,
+      "a": 33,
+      "b": 89,
       "d": 0.0992
     },
     {
-      "a": 38,
-      "b": 74,
+      "a": 33,
+      "b": 73,
       "d": 0.0996
     },
     {
-      "a": 39,
-      "b": 79,
+      "a": 34,
+      "b": 89,
+      "d": 0.0655
+    },
+    {
+      "a": 35,
+      "b": 77,
       "d": 0.0592
     },
     {
-      "a": 40,
-      "b": 54,
+      "a": 36,
+      "b": 50,
       "d": 0.0399
+    },
+    {
+      "a": 36,
+      "b": 40,
+      "d": 0.0434
+    },
+    {
+      "a": 37,
+      "b": 60,
+      "d": 0.0438
+    },
+    {
+      "a": 23,
+      "b": 37,
+      "d": 0.0522
+    },
+    {
+      "a": 38,
+      "b": 53,
+      "d": 0.1023
+    },
+    {
+      "a": 34,
+      "b": 38,
+      "d": 0.1099
+    },
+    {
+      "a": 39,
+      "b": 47,
+      "d": 0.0277
+    },
+    {
+      "a": 39,
+      "b": 80,
+      "d": 0.0694
     },
     {
       "a": 40,
       "b": 45,
-      "d": 0.0434
-    },
-    {
-      "a": 41,
-      "b": 63,
-      "d": 0.0438
-    },
-    {
-      "a": 28,
-      "b": 41,
-      "d": 0.0522
-    },
-    {
-      "a": 42,
-      "b": 57,
-      "d": 0.1023
-    },
-    {
-      "a": 42,
-      "b": 84,
-      "d": 0.1186
-    },
-    {
-      "a": 43,
-      "b": 51,
-      "d": 0.0277
-    },
-    {
-      "a": 43,
-      "b": 81,
-      "d": 0.0694
-    },
-    {
-      "a": 44,
-      "b": 68,
-      "d": 0.0125
-    },
-    {
-      "a": 44,
-      "b": 50,
-      "d": 0.0155
-    },
-    {
-      "a": 45,
-      "b": 49,
       "d": 0.0055
     },
     {
-      "a": 45,
+      "a": 40,
       "b": 85,
       "d": 0.0264
     },
     {
-      "a": 46,
-      "b": 69,
+      "a": 41,
+      "b": 68,
       "d": 0.0792
     },
     {
-      "a": 11,
-      "b": 46,
-      "d": 0.082
+      "a": 18,
+      "b": 42,
+      "d": 0.1091
     },
     {
-      "a": 3,
-      "b": 47,
+      "a": 42,
+      "b": 55,
+      "d": 0.1187
+    },
+    {
+      "a": 2,
+      "b": 43,
       "d": 0.1588
     },
     {
-      "a": 11,
-      "b": 47,
-      "d": 0.1664
+      "a": 43,
+      "b": 68,
+      "d": 0.1667
     },
     {
-      "a": 48,
-      "b": 56,
+      "a": 44,
+      "b": 52,
       "d": 0.0169
     },
     {
-      "a": 49,
-      "b": 85,
-      "d": 0.0319
+      "a": 45,
+      "b": 82,
+      "d": 0.0317
     },
     {
-      "a": 50,
-      "b": 68,
+      "a": 46,
+      "b": 67,
       "d": 0.0074
     },
     {
-      "a": 52,
-      "b": 62,
+      "a": 21,
+      "b": 46,
+      "d": 0.0531
+    },
+    {
+      "a": 48,
+      "b": 59,
       "d": 0.1033
     },
     {
-      "a": 53,
-      "b": 87,
-      "d": 0.109
+      "a": 48,
+      "b": 57,
+      "d": 0.1172
     },
     {
-      "a": 16,
-      "b": 54,
+      "a": 34,
+      "b": 49,
+      "d": 0.1021
+    },
+    {
+      "a": 14,
+      "b": 50,
       "d": 0.0347
     },
     {
-      "a": 55,
+      "a": 51,
       "b": 72,
       "d": 0.0493
     },
     {
-      "a": 55,
+      "a": 51,
       "b": 75,
-      "d": 0.0718
+      "d": 0.0809
     },
     {
-      "a": 57,
+      "a": 53,
       "b": 70,
       "d": 0.0544
     },
     {
-      "a": 57,
-      "b": 87,
+      "a": 53,
+      "b": 89,
       "d": 0.079
     },
     {
-      "a": 58,
-      "b": 61,
+      "a": 24,
+      "b": 54,
+      "d": 0.0631
+    },
+    {
+      "a": 30,
+      "b": 54,
+      "d": 0.0647
+    },
+    {
+      "a": 55,
+      "b": 58,
       "d": 0.0845
     },
     {
-      "a": 52,
-      "b": 60,
-      "d": 0.1172
+      "a": 57,
+      "b": 84,
+      "d": 0.1295
     },
     {
-      "a": 25,
-      "b": 60,
-      "d": 0.1245
-    },
-    {
-      "a": 59,
-      "b": 61,
+      "a": 56,
+      "b": 58,
       "d": 0.1183
     },
     {
-      "a": 62,
+      "a": 59,
       "b": 84,
       "d": 0.0971
     },
     {
-      "a": 18,
-      "b": 63,
+      "a": 15,
+      "b": 60,
       "d": 0.0427
     },
     {
-      "a": 64,
+      "a": 61,
       "b": 71,
       "d": 0.003
     },
     {
-      "a": 66,
-      "b": 80,
+      "a": 16,
+      "b": 63,
+      "d": 0.0788
+    },
+    {
+      "a": 21,
+      "b": 63,
+      "d": 0.0875
+    },
+    {
+      "a": 39,
+      "b": 64,
+      "d": 0.1576
+    },
+    {
+      "a": 47,
+      "b": 64,
+      "d": 0.1766
+    },
+    {
+      "a": 65,
+      "b": 78,
       "d": 0.0009
     },
     {
-      "a": 28,
-      "b": 66,
+      "a": 23,
+      "b": 65,
       "d": 0.0541
     },
     {
-      "a": 36,
+      "a": 21,
       "b": 67,
-      "d": 0.1762
+      "d": 0.0672
+    },
+    {
+      "a": 69,
+      "b": 74,
+      "d": 0.0054
+    },
+    {
+      "a": 13,
+      "b": 69,
+      "d": 0.0102
     },
     {
       "a": 70,
-      "b": 78,
+      "b": 76,
       "d": 0.0936
     },
     {
       "a": 72,
-      "b": 77,
+      "b": 75,
       "d": 0.0817
     },
     {
-      "a": 11,
-      "b": 73,
-      "d": 0.0378
-    },
-    {
-      "a": 3,
-      "b": 73,
-      "d": 0.0402
-    },
-    {
-      "a": 74,
-      "b": 78,
+      "a": 73,
+      "b": 76,
       "d": 0.079
     },
     {
-      "a": 74,
-      "b": 87,
+      "a": 73,
+      "b": 89,
       "d": 0.0849
     },
     {
-      "a": 75,
-      "b": 77,
-      "d": 0.0761
+      "a": 11,
+      "b": 74,
+      "d": 0.0106
     },
     {
-      "a": 44,
-      "b": 76,
-      "d": 0.0476
-    },
-    {
-      "a": 50,
-      "b": 76,
-      "d": 0.0626
-    },
-    {
-      "a": 55,
-      "b": 77,
-      "d": 0.0809
-    },
-    {
-      "a": 78,
-      "b": 87,
+      "a": 76,
+      "b": 89,
       "d": 0.0594
     },
     {
-      "a": 59,
-      "b": 79,
+      "a": 56,
+      "b": 77,
       "d": 0.1023
     },
     {
-      "a": 28,
-      "b": 80,
+      "a": 23,
+      "b": 78,
       "d": 0.0554
     },
     {
-      "a": 51,
-      "b": 81,
+      "a": 47,
+      "b": 80,
       "d": 0.097
     },
     {
-      "a": 32,
-      "b": 82,
+      "a": 27,
+      "b": 81,
       "d": 0.124
     },
     {
-      "a": 77,
+      "a": 82,
+      "b": 85,
+      "d": 0.001
+    },
+    {
+      "a": 75,
       "b": 83,
       "d": 0.0983
     },
     {
-      "a": 57,
-      "b": 84,
-      "d": 0.103
-    },
-    {
       "a": 83,
-      "b": 88,
+      "b": 90,
       "d": 0.1
     },
     {
-      "a": 77,
-      "b": 88,
+      "a": 34,
+      "b": 84,
+      "d": 0.1004
+    },
+    {
+      "a": 3,
+      "b": 85,
+      "d": 0.001
+    },
+    {
+      "a": 85,
+      "b": 86,
+      "d": 0.001
+    },
+    {
+      "a": 48,
+      "b": 87,
+      "d": 0.1804
+    },
+    {
+      "a": 84,
+      "b": 87,
+      "d": 0.2121
+    },
+    {
+      "a": 75,
+      "b": 90,
       "d": 0.109
     }
   ]

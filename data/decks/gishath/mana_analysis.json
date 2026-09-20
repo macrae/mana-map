@@ -1,46 +1,47 @@
 {
   "slug": "gishath",
-  "decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92",
+  "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
   "lands": {
     "total": 35,
-    "entries": 24,
+    "entries": 26,
     "life": {
       "recurring_per_tap_cycle": 1,
-      "one_time_on_entry": 1
+      "one_time_on_entry": 9
     },
-    "enters_tapped": 12,
-    "enters_tapped_always": 7,
+    "enters_tapped": 10,
+    "enters_tapped_always": 4,
     "classes": {
-      "basic": 14,
-      "fetch": 2,
+      "basic": 12,
+      "fetch": 6,
       "fixing": 7,
-      "snow": 2,
-      "tapped": 12,
+      "tapped": 10,
       "untapped-dual": 6,
-      "utility": 7
+      "utility": 11
     },
     "list": [
       {
-        "name": "Alpine Meadow",
+        "name": "Arid Mesa",
         "copies": 1,
         "classes": [
-          "snow",
-          "tapped"
+          "fetch",
+          "utility"
         ],
         "produces": [
+          "G",
           "R",
           "W"
         ]
       },
       {
-        "name": "Arctic Treeline",
+        "name": "Bloodstained Mire",
         "copies": 1,
         "classes": [
-          "snow",
-          "tapped"
+          "fetch",
+          "utility"
         ],
         "produces": [
           "G",
+          "R",
           "W"
         ]
       },
@@ -81,17 +82,6 @@
         ]
       },
       {
-        "name": "Clifftop Retreat",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "W"
-        ]
-      },
-      {
         "name": "Command Tower",
         "copies": 1,
         "classes": [
@@ -102,17 +92,6 @@
           "G",
           "R",
           "W"
-        ]
-      },
-      {
-        "name": "Commercial District",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "G",
-          "R"
         ]
       },
       {
@@ -143,7 +122,7 @@
       },
       {
         "name": "Forest",
-        "copies": 7,
+        "copies": 8,
         "classes": [
           "basic"
         ],
@@ -188,7 +167,7 @@
       },
       {
         "name": "Mountain",
-        "copies": 4,
+        "copies": 3,
         "classes": [
           "basic"
         ],
@@ -224,7 +203,7 @@
       },
       {
         "name": "Plains",
-        "copies": 3,
+        "copies": 1,
         "classes": [
           "basic"
         ],
@@ -261,7 +240,29 @@
         "produces": []
       },
       {
+        "name": "Stomping Ground",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "G",
+          "R"
+        ]
+      },
+      {
         "name": "Sunpetal Grove",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "G",
+          "W"
+        ]
+      },
+      {
+        "name": "Temple Garden",
         "copies": 1,
         "classes": [
           "tapped"
@@ -281,7 +282,33 @@
         "produces": []
       },
       {
+        "name": "Verdant Catacombs",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "G",
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Windswept Heath",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "G",
+          "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Wooded Foothills",
         "copies": 1,
         "classes": [
           "fetch",
@@ -300,22 +327,22 @@
       "W": 17,
       "U": 0,
       "B": 0,
-      "R": 18,
-      "G": 22
+      "R": 19,
+      "G": 27
     },
     "nonland": {
-      "W": 4,
+      "W": 2,
       "U": 0,
       "B": 0,
-      "R": 3,
-      "G": 4
+      "R": 2,
+      "G": 3
     },
     "total": {
-      "W": 21,
+      "W": 19,
       "U": 0,
       "B": 0,
       "R": 21,
-      "G": 26
+      "G": 30
     },
     "gated": {
       "count": 0,
@@ -334,13 +361,10 @@
         ]
       },
       {
-        "name": "Boros Signet",
-        "kind": "ramp:rock",
+        "name": "Bloom Tender",
+        "kind": "ramp:dork",
         "cmc": 2.0,
-        "produces": [
-          "R",
-          "W"
-        ]
+        "produces": []
       },
       {
         "name": "Huatli, Poet of Unity // Roar of the Fifth People",
@@ -371,107 +395,98 @@
         "kind": "ramp:rock",
         "cmc": 1.0,
         "produces": []
-      },
-      {
-        "name": "Talisman of Unity",
-        "kind": "ramp:rock",
-        "cmc": 2.0,
-        "produces": [
-          "G",
-          "W"
-        ]
       }
     ]
   },
   "pips": {
     "G": {
-      "total_pips": 55.0,
+      "total_pips": 54.0,
       "max_pips": 2,
       "cards": 39,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "R": {
-      "total_pips": 18.0,
+      "total_pips": 22.0,
       "max_pips": 2,
-      "cards": 14,
+      "cards": 17,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "W": {
-      "total_pips": 24.0,
+      "total_pips": 22.0,
       "max_pips": 3,
-      "cards": 19,
+      "cards": 18,
       "earliest_turn": 1,
-      "effective_pips": 2
+      "effective_pips": 1
     }
   },
   "shares": {
     "G": {
-      "pip_share": 0.567,
-      "source_share": 0.386
+      "pip_share": 0.551,
+      "source_share": 0.429
     },
     "R": {
-      "pip_share": 0.186,
-      "source_share": 0.316
+      "pip_share": 0.224,
+      "source_share": 0.302
     },
     "W": {
-      "pip_share": 0.247,
-      "source_share": 0.298
+      "pip_share": 0.224,
+      "source_share": 0.27
     }
   },
   "source_targets": {
     "G": 36,
     "R": 36,
-    "W": 36
+    "W": 22
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.481,
-      "R": 0.515,
-      "G": 0.639
+      "W": 0.831,
+      "R": 0.548,
+      "G": 0.764
     },
     "with_rocks_and_dorks": {
-      "W": 0.61,
+      "W": 0.866,
       "R": 0.61,
-      "G": 0.742
+      "G": 0.822
     },
     "lands_only_ungated": {
-      "W": 0.481,
-      "R": 0.515,
-      "G": 0.639
+      "W": 0.831,
+      "R": 0.548,
+      "G": 0.764
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 4,
-    "ramp:dork": 2,
-    "ramp:land": 4,
-    "ramp:rock": 5
+    "ramp:cost-reduction": 5,
+    "ramp:dork": 3,
+    "ramp:land": 2,
+    "ramp:rock": 3
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.998,
-      "10": 0.56,
-      "2": 0.995,
-      "3": 0.894,
-      "4": 0.752,
-      "5": 0.624,
-      "6": 0.555,
-      "7": 0.516,
-      "8": 0.517,
-      "9": 0.536
+      "1": 0.999,
+      "10": 0.596,
+      "2": 0.996,
+      "3": 0.901,
+      "4": 0.767,
+      "5": 0.648,
+      "6": 0.575,
+      "7": 0.531,
+      "8": 0.533,
+      "9": 0.564
     },
     "mean_available_mana_by_turn": {
-      "1": 0.998,
-      "10": 9.352,
-      "2": 2.143,
-      "3": 3.371,
-      "4": 4.294,
-      "5": 5.095,
-      "6": 5.96,
-      "7": 6.724,
-      "8": 7.527,
-      "9": 8.397
+      "1": 0.999,
+      "10": 9.627,
+      "2": 2.139,
+      "3": 3.368,
+      "4": 4.321,
+      "5": 5.131,
+      "6": 6.043,
+      "7": 6.822,
+      "8": 7.666,
+      "9": 8.591
     }
   },
   "assumptions": [
@@ -481,9 +496,8 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "G: 22 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 26.",
-    "R: 18 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 21.",
-    "W: 17 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 21.",
-    "12 of 35 lands enter tapped (34%) — over the one-in-three budget the deck builder allows itself."
+    "G: 27 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 30.",
+    "R: 19 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 21.",
+    "W: 17 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 19."
   ]
 }

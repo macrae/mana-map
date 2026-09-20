@@ -11,7 +11,7 @@
    {
     "free": false,
     "name": "Alpine Meadow",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -23,7 +23,7 @@
    {
     "free": false,
     "name": "Arctic Treeline",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -41,23 +41,8 @@
    {
     "free": false,
     "name": "Bloom Tender",
-    "state": "elsewhere",
-    "where": [
-     {
-      "apart": true,
-      "kind": "deck",
-      "locked": false,
-      "slug": "sisay",
-      "status": "retired"
-     },
-     {
-      "apart": false,
-      "kind": "deck",
-      "locked": true,
-      "slug": "ur-dragon",
-      "status": null
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -110,7 +95,7 @@
    {
     "free": false,
     "name": "Clifftop Retreat",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -122,7 +107,7 @@
    {
     "free": false,
     "name": "Commercial District",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -242,7 +227,7 @@
    {
     "free": false,
     "name": "Hunting Velociraptor",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -290,7 +275,7 @@
    {
     "free": false,
     "name": "Molten Echoes",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -410,13 +395,13 @@
    {
     "free": false,
     "name": "Savage Order",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
     "name": "Savage Stomp",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -494,7 +479,7 @@
    {
     "free": false,
     "name": "Up the Beanstalk",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -530,7 +515,7 @@
    {
     "free": false,
     "name": "World War Hulk",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -554,55 +539,64 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 7,
-   "elsewhere": 1,
+   "buy": 5,
+   "elsewhere": 0,
    "free": 0,
-   "in_deck": 81
+   "in_deck": 84
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
-    "Bloom Tender",
+    "Alpine Meadow",
+    "Arctic Treeline",
     "Chandra's Ignition",
-    "Hunting Velociraptor",
-    "Molten Echoes",
-    "Savage Order",
-    "Savage Stomp",
-    "Up the Beanstalk",
-    "World War Hulk"
+    "Clifftop Retreat",
+    "Commercial District"
    ],
    "add_copies": 8,
-   "base_names": 89,
+   "base_names": 91,
    "base_size": 100,
    "names": 89,
    "out": [
-    "Austere Command",
-    "Beast Within",
-    "Boros Signet",
-    "Enlarge",
-    "Kodama's Reach",
-    "Talisman of Unity",
-    "Thrashing Brontodon",
-    "Topiary Stomper"
+    "Arid Mesa",
+    "Bloodstained Mire",
+    "Purphoros, God of the Forge",
+    "Stomping Ground",
+    "Temple Garden",
+    "Verdant Catacombs",
+    "Wooded Foothills"
    ],
    "out_copies": 8,
-   "quantity": [],
+   "quantity": [
+    {
+     "from": 8,
+     "name": "Forest",
+     "to": 7
+    },
+    {
+     "from": 3,
+     "name": "Mountain",
+     "to": 4
+    },
+    {
+     "from": 1,
+     "name": "Plains",
+     "to": 3
+    }
+   ],
    "size": 100
   },
   "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 1,
+  "owned_but_elsewhere": 0,
   "proxy": false,
   "slug": "gishath",
   "unsourced": [
-   "Bloom Tender",
+   "Alpine Meadow",
+   "Arctic Treeline",
    "Chandra's Ignition",
-   "Hunting Velociraptor",
-   "Molten Echoes",
-   "Savage Order",
-   "Savage Stomp",
-   "Up the Beanstalk",
-   "World War Hulk"
+   "Clifftop Retreat",
+   "Commercial District"
   ]
  },
  "blind_spots": [
@@ -630,80 +624,45 @@
  "changes": {
   "count": 8,
   "diff": {
-   "base_names": 89,
+   "base_names": 91,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 8,
+     "kind": "land",
+     "name": "Forest",
+     "to": 7
+    },
+    {
+     "cmc": 0,
+     "delta": 1,
+     "from": 3,
+     "kind": "land",
+     "name": "Mountain",
+     "to": 4
+    },
+    {
+     "cmc": 0,
+     "delta": 2,
+     "from": 1,
+     "kind": "land",
+     "name": "Plains",
+     "to": 3
+    }
+   ],
    "counts": {
-    "in": 8,
+    "in": 5,
     "in_copies": 8,
-    "lands_in": 0,
-    "lands_out": 0,
-    "out": 8,
+    "lands_in": 4,
+    "lands_out": 6,
+    "out": 7,
     "out_copies": 8,
-    "spells_in": 8,
-    "spells_out": 8
+    "spells_in": 1,
+    "spells_out": 1
    },
    "in": [
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Bloom Tender",
-     "pair": "Boros Signet",
-     "state": "elsewhere",
-     "type_line": "Creature \u2014 Elf Druid",
-     "why": "a two-colour rock for a dork that makes all three; measured +3.1 turn-8 damage alone on the cart sweep"
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Up the Beanstalk",
-     "pair": "Talisman of Unity",
-     "state": "buy",
-     "type_line": "Enchantment",
-     "why": "a pinging two-colour rock for a two-mana draw engine that triggers on every five-plus-mana spell; card advantage is 5 against a target of 10"
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Hunting Velociraptor",
-     "pair": "Kodama's Reach",
-     "state": "buy",
-     "type_line": "Creature \u2014 Dinosaur",
-     "why": "three-mana land ramp for a three-mana Dinosaur that makes every Dinosaur spell cost {2}{R} after a Dinosaur connects; Gishath has haste and the list has 21 Dinosaurs"
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Savage Stomp",
-     "pair": "Thrashing Brontodon",
-     "state": "buy",
-     "type_line": "Sorcery",
-     "why": "three-mana removal on a body for one-mana fight with a counter on a Dinosaur"
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Molten Echoes",
-     "pair": "Beast Within",
-     "state": "buy",
-     "type_line": "Enchantment",
-     "why": "three-mana removal that gifts a 3/3 for a copy of every nontoken Dinosaur entering, including the four a game the reveal puts onto the battlefield"
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Savage Order",
-     "pair": "Topiary Stomper",
-     "state": "buy",
-     "type_line": "Sorcery",
-     "why": "a three-mana ramp body for a four-mana Dinosaur tutor straight onto the battlefield with indestructible; the sacrifice is a body the reveal gave for free"
-    },
     {
      "cmc": 5,
      "copies": 1,
@@ -715,95 +674,116 @@
      "why": "a six-mana symmetrical sweeper for a five-mana one-sided one: a 7-power Gishath deals seven to every other creature and each opponent"
     },
     {
-     "cmc": 5,
+     "cmc": 0,
      "copies": 1,
-     "kind": "spell",
-     "name": "World War Hulk",
-     "pair": "Enlarge",
+     "kind": "land",
+     "name": "Alpine Meadow",
+     "pair": null,
      "state": "buy",
-     "type_line": "Enchantment \u2014 Saga",
-     "why": "one turn of +7/+7 trample for a saga that does three: a free red or green creature the turn it lands, three counters on Gishath (a ten-card reveal), then double power (a twenty-card reveal); Gishath already tramples"
+     "type_line": "Snow Land \u2014 Mountain Plains",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Arctic Treeline",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Snow Land \u2014 Forest Plains",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Clifftop Retreat",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Commercial District",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Land \u2014 Mountain Forest",
+     "why": null
     }
    ],
    "names": 89,
    "out": [
     {
-     "cmc": 2,
+     "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Boros Signet",
-     "pair": "Bloom Tender",
-     "type_line": "Artifact",
-     "why": "a two-colour rock for a dork that makes all three; measured +3.1 turn-8 damage alone on the cart sweep"
+     "name": "Purphoros, God of the Forge",
+     "pair": null,
+     "type_line": "Legendary Enchantment Creature \u2014 God",
+     "why": null
     },
     {
-     "cmc": 2,
+     "cmc": 0,
      "copies": 1,
-     "kind": "spell",
-     "name": "Talisman of Unity",
-     "pair": "Up the Beanstalk",
-     "type_line": "Artifact",
-     "why": "a pinging two-colour rock for a two-mana draw engine that triggers on every five-plus-mana spell; card advantage is 5 against a target of 10"
+     "kind": "land",
+     "name": "Arid Mesa",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
     },
     {
-     "cmc": 3,
+     "cmc": 0,
      "copies": 1,
-     "kind": "spell",
-     "name": "Beast Within",
-     "pair": "Molten Echoes",
-     "type_line": "Instant",
-     "why": "three-mana removal that gifts a 3/3 for a copy of every nontoken Dinosaur entering, including the four a game the reveal puts onto the battlefield"
+     "kind": "land",
+     "name": "Bloodstained Mire",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
     },
     {
-     "cmc": 3,
+     "cmc": 0,
      "copies": 1,
-     "kind": "spell",
-     "name": "Kodama's Reach",
-     "pair": "Hunting Velociraptor",
-     "type_line": "Sorcery \u2014 Arcane",
-     "why": "three-mana land ramp for a three-mana Dinosaur that makes every Dinosaur spell cost {2}{R} after a Dinosaur connects; Gishath has haste and the list has 21 Dinosaurs"
+     "kind": "land",
+     "name": "Stomping Ground",
+     "pair": null,
+     "type_line": "Land \u2014 Mountain Forest",
+     "why": null
     },
     {
-     "cmc": 3,
+     "cmc": 0,
      "copies": 1,
-     "kind": "spell",
-     "name": "Thrashing Brontodon",
-     "pair": "Savage Stomp",
-     "type_line": "Creature \u2014 Dinosaur",
-     "why": "three-mana removal on a body for one-mana fight with a counter on a Dinosaur"
+     "kind": "land",
+     "name": "Temple Garden",
+     "pair": null,
+     "type_line": "Land \u2014 Forest Plains",
+     "why": null
     },
     {
-     "cmc": 3,
+     "cmc": 0,
      "copies": 1,
-     "kind": "spell",
-     "name": "Topiary Stomper",
-     "pair": "Savage Order",
-     "type_line": "Creature \u2014 Plant Dinosaur",
-     "why": "a three-mana ramp body for a four-mana Dinosaur tutor straight onto the battlefield with indestructible; the sacrifice is a body the reveal gave for free"
+     "kind": "land",
+     "name": "Verdant Catacombs",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
     },
     {
-     "cmc": 5,
+     "cmc": 0,
      "copies": 1,
-     "kind": "spell",
-     "name": "Enlarge",
-     "pair": "World War Hulk",
-     "type_line": "Sorcery",
-     "why": "one turn of +7/+7 trample for a saga that does three: a free red or green creature the turn it lands, three counters on Gishath (a ten-card reveal), then double power (a twenty-card reveal); Gishath already tramples"
-    },
-    {
-     "cmc": 6,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Austere Command",
-     "pair": "Chandra's Ignition",
-     "type_line": "Sorcery",
-     "why": "a six-mana symmetrical sweeper for a five-mana one-sided one: a 7-power Gishath deals seven to every other creature and each opponent"
+     "kind": "land",
+     "name": "Wooded Foothills",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 0,
-    "out": 0
+    "in": 4,
+    "out": 7
    }
   },
   "lands": [],
@@ -1022,17 +1002,17 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 12,
+    "delta": 0,
     "gap": [
-     -15,
+     -3,
      -3
     ],
     "have": [
-     21,
+     19,
      19
     ],
     "target": [
-     36,
+     22,
      22
     ]
    },
@@ -1086,13 +1066,13 @@
    },
    {
     "colour": "G",
-    "delta": -1,
+    "delta": -5,
     "gap": [
-     -10,
+     -6,
      -11
     ],
     "have": [
-     26,
+     30,
      25
     ],
     "target": [
@@ -1102,7 +1082,7 @@
    }
   ],
   "enters_tapped_always": [
-   7,
+   4,
    7
   ],
   "lands": [
@@ -1111,7 +1091,7 @@
   ],
   "life": [
    {
-    "one_time_on_entry": 1,
+    "one_time_on_entry": 9,
     "recurring_per_tap_cycle": 1
    },
    {
@@ -1126,7 +1106,7 @@
     null
    ],
    "G": [
-    0.742,
+    0.822,
     0.718
    ],
    "R": [
@@ -1138,7 +1118,7 @@
     null
    ],
    "W": [
-    0.61,
+    0.866,
     0.866
    ]
   }
@@ -1159,101 +1139,65 @@
   "because": "The miss is smaller than this run can see. missed by 0.0042, which is under the 0.0194 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
    "box": 0,
-   "buy": 7,
-   "elsewhere": 1,
+   "buy": 5,
+   "elsewhere": 0,
    "free": 0,
-   "in_deck": 81
+   "in_deck": 84
   },
   "cost": {
-   "buy": 7,
+   "buy": 5,
    "buy_cards": [
+    "Alpine Meadow",
+    "Arctic Treeline",
     "Chandra's Ignition",
-    "Hunting Velociraptor",
-    "Molten Echoes",
-    "Savage Order",
-    "Savage Stomp",
-    "Up the Beanstalk",
-    "World War Hulk"
+    "Clifftop Retreat",
+    "Commercial District"
    ],
    "counts": {
     "box": 0,
-    "buy": 7,
-    "elsewhere": 1,
+    "buy": 5,
+    "elsewhere": 0,
     "free": 0,
-    "in_deck": 81
+    "in_deck": 84
    },
    "free_to_raid": [],
    "mergeable": false,
-   "must_unsleeve": [
-    {
-     "decks": [
-      "ur-dragon"
-     ],
-     "name": "Bloom Tender"
-    }
-   ],
-   "owned": 82,
-   "reads_as": "7 to buy; 1 to pull out of a deck that is still together; 82 of 89 already owned",
+   "must_unsleeve": [],
+   "owned": 84,
+   "reads_as": "5 to buy; 84 of 89 already owned",
    "total": 89
   },
   "fell": [
-   "killed by T10",
-   "stall, 2 in a row"
+   "damage @T10"
   ],
   "no_call": [
    "hoard @T10",
    "hoard @T6",
+   "board power @T6",
+   "killed by T6",
+   "killed by T10",
+   "stall, 2 in a row",
+   "missed drop by T5",
    "mulliganed",
+   "extra cards by T8",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
   "notes": [
    "Forge, against a real pod: -0.019 win rate, CI [-0.198, +0.174] \u2014 this run cannot separate the two lists."
   ],
-  "reward": [
-   {
-    "measure": "damage @T10",
-    "reads_as": "44.87 -> 48.84, a change of +3.97 (+9%)",
-    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
-    "measure": "board power @T6",
-    "reads_as": "14.06 -> 14.82, a change of +0.77 (+5%)",
-    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   },
-   {
-    "measure": "killed by T6",
-    "reads_as": "6 games in 100 -> 8 in 100, a swing of 2 games per 100",
-    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
-   },
-   {
-    "measure": "missed drop by T5",
-    "reads_as": "48 games in 100 -> 46 in 100, a swing of 2 games per 100",
-    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
-   },
-   {
-    "measure": "extra cards by T8",
-    "reads_as": "1.33 -> 1.84, a change of +0.51 (+38%)",
-    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
-   }
-  ],
+  "reward": [],
   "risk": [
    {
-    "detail": "91 games in 100 -> 90 in 100, a swing of 1 games per 100",
+    "detail": "50.63 -> 48.84, a change of -1.79 (-4%)",
     "kind": "paid",
-    "what": "killed by T10",
-    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+    "what": "damage @T10",
+    "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "11 games in 100 -> 13 in 100, a swing of 3 games per 100",
-    "kind": "paid",
-    "what": "stall, 2 in a row",
-    "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
-   },
-   {
-    "detail": "the largest is hand can act by T3 at -0.009 against an MDE of 0.015. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T10 at -0.010 against an MDE of 0.012. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "5 row(s) returned no call",
+    "what": "11 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1278,7 +1222,7 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "R gap -15 -> -16, G gap -10 -> -11",
+    "detail": "R gap -15 -> -16, G gap -6 -> -11",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1290,13 +1234,7 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [
-   "damage @T10",
-   "board power @T6",
-   "killed by T6",
-   "missed drop by T5",
-   "extra cards by T8"
-  ],
+  "rose": [],
   "state": "inconclusive"
  },
  "slug": "gishath",
@@ -1305,11 +1243,11 @@
   {
    "better_is": "higher",
    "branch": 0.5412,
-   "champion": 0.5237,
-   "delta": 0.0175,
-   "mde": 0.0441,
+   "champion": 0.5341,
+   "delta": 0.0071,
+   "mde": 0.0443,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.044 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.044 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1319,9 +1257,9 @@
   {
    "better_is": "higher",
    "branch": 0.0516,
-   "champion": 0.0497,
-   "delta": 0.0019,
-   "mde": 0.0105,
+   "champion": 0.0537,
+   "delta": -0.0021,
+   "mde": 0.0106,
    "measure": "hoard @T6",
    "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.011 this run can resolve",
    "scale": null,
@@ -1333,95 +1271,95 @@
   {
    "better_is": "higher",
    "branch": 48.8364,
-   "champion": 44.87,
-   "delta": 3.9664,
-   "mde": 1.3631,
+   "champion": 50.6274,
+   "delta": -1.791,
+   "mde": 1.4135,
    "measure": "damage @T10",
-   "reads_as": "44.87 -> 48.84, a change of +3.97 (+9%)",
+   "reads_as": "50.63 -> 48.84, a change of -1.79 (-4%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
   },
   {
    "better_is": "higher",
    "branch": 14.8238,
-   "champion": 14.0581,
-   "delta": 0.7657,
-   "mde": 0.5668,
+   "champion": 15.2213,
+   "delta": -0.3975,
+   "mde": 0.5759,
    "measure": "board power @T6",
-   "reads_as": "14.06 -> 14.82, a change of +0.77 (+5%)",
+   "reads_as": "no call \u2014 the gap of 0.398 is smaller than the 0.576 this run can resolve",
    "scale": null,
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
   },
   {
    "better_is": "higher",
    "branch": 0.0808,
-   "champion": 0.0592,
-   "delta": 0.0216,
-   "mde": 0.0108,
+   "champion": 0.0849,
+   "delta": -0.0041,
+   "mde": 0.011,
    "measure": "killed by T6",
-   "reads_as": "6 games in 100 -> 8 in 100, a swing of 2 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.011 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
   },
   {
    "better_is": "higher",
    "branch": 0.8955,
-   "champion": 0.9081,
-   "delta": -0.0126,
+   "champion": 0.9053,
+   "delta": -0.0098,
    "mde": 0.0121,
    "measure": "killed by T10",
-   "reads_as": "91 games in 100 -> 90 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.012 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.1324,
-   "champion": 0.1065,
-   "delta": 0.0259,
-   "mde": 0.0134,
+   "champion": 0.1403,
+   "delta": -0.0079,
+   "mde": 0.0138,
    "measure": "stall, 2 in a row",
-   "reads_as": "11 games in 100 -> 13 in 100, a swing of 3 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.014 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
   },
   {
    "better_is": "lower",
    "branch": 0.456,
-   "champion": 0.4779,
-   "delta": -0.0219,
-   "mde": 0.0198,
+   "champion": 0.4602,
+   "delta": -0.0042,
+   "mde": 0.0197,
    "measure": "missed drop by T5",
-   "reads_as": "48 games in 100 -> 46 in 100, a swing of 2 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
   },
   {
    "better_is": "lower",
    "branch": 0.2313,
-   "champion": 0.2293,
-   "delta": 0.002,
+   "champion": 0.2236,
+   "delta": 0.0077,
    "mde": 0.0167,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1431,25 +1369,25 @@
   {
    "better_is": "higher",
    "branch": 1.8449,
-   "champion": 1.3332,
-   "delta": 0.5117,
-   "mde": 0.1347,
+   "champion": 1.8714,
+   "delta": -0.0265,
+   "mde": 0.142,
    "measure": "extra cards by T8",
-   "reads_as": "1.33 -> 1.84, a change of +0.51 (+38%)",
+   "reads_as": "no call \u2014 the gap of 0.026 is smaller than the 0.142 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
   },
   {
    "better_is": "higher",
    "branch": 0.393,
-   "champion": 0.3982,
-   "delta": -0.0052,
+   "champion": 0.3874,
+   "delta": 0.0056,
    "mde": 0.0209,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.021 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.021 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1459,11 +1397,11 @@
   {
    "better_is": "higher",
    "branch": 0.8259,
-   "champion": 0.8344,
-   "delta": -0.0085,
+   "champion": 0.8302,
+   "delta": -0.0043,
    "mde": 0.015,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.015 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.015 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
