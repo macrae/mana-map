@@ -191,7 +191,7 @@
    {
     "free": false,
     "name": "Fabled Passage",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -221,8 +221,44 @@
    {
     "free": false,
     "name": "Forbidden Orchard",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "gishath",
+      "status": null
+     },
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "meren-recursion",
+      "status": null
+     },
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "sisay",
+      "status": "retired"
+     },
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "zur-enchantress",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -377,7 +413,7 @@
    {
     "free": false,
     "name": "Prismatic Vista",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -497,8 +533,23 @@
    {
     "free": false,
     "name": "Tarnished Citadel",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "hapatra",
+      "status": "broken-down"
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "meren-recursion",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
@@ -596,57 +647,75 @@
   ],
   "counts": {
    "box": 1,
-   "buy": 7,
-   "elsewhere": 0,
+   "buy": 9,
+   "elsewhere": 2,
    "free": 0,
-   "in_deck": 89
+   "in_deck": 85
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Asceticism",
+    "Fabled Passage",
+    "Forbidden Orchard",
     "Marang River Regent // Coil and Catch",
     "Mithril Coat",
+    "Prismatic Vista",
     "Steel Hellkite",
     "Stubborn Denial",
+    "Tarnished Citadel",
     "Transcendent Dragon",
     "Verdant Catacombs",
     "Whirlwing Stormbrood // Dynamic Soar"
    ],
-   "add_copies": 8,
-   "base_names": 96,
+   "add_copies": 13,
+   "base_names": 97,
    "base_size": 100,
    "names": 97,
    "out": [
+    "Arid Mesa",
+    "Bloodstained Mire",
     "Gadrak, the Crown-Scourge",
     "Hellkite Courser",
     "Radiant Destiny",
     "Return of the Wildspeaker",
     "Rishkar's Expertise",
     "Sarkhan, Fireblood",
-    "Utvara Hellkite"
+    "Scalding Tarn",
+    "Talisman of Dominance",
+    "Utvara Hellkite",
+    "Wooded Foothills"
    ],
-   "out_copies": 8,
+   "out_copies": 13,
    "quantity": [
     {
      "from": 2,
      "name": "Forest",
      "to": 1
+    },
+    {
+     "from": 3,
+     "name": "Mountain",
+     "to": 4
     }
    ],
    "size": 100
   },
   "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 0,
+  "owned_but_elsewhere": 2,
   "proxy": false,
   "slug": "ur-dragon",
   "unsourced": [
    "Asceticism",
+   "Fabled Passage",
+   "Forbidden Orchard",
    "Marang River Regent // Coil and Catch",
    "Mithril Coat",
+   "Prismatic Vista",
    "Steel Hellkite",
    "Stubborn Denial",
+   "Tarnished Citadel",
    "Transcendent Dragon",
    "Whirlwing Stormbrood // Dynamic Soar"
   ]
@@ -673,7 +742,7 @@
  "changes": {
   "count": 2,
   "diff": {
-   "base_names": 96,
+   "base_names": 97,
    "base_size": 100,
    "changed": [
     {
@@ -683,17 +752,25 @@
      "kind": "land",
      "name": "Forest",
      "to": 1
+    },
+    {
+     "cmc": 0,
+     "delta": 1,
+     "from": 3,
+     "kind": "land",
+     "name": "Mountain",
+     "to": 4
     }
    ],
    "counts": {
-    "in": 8,
-    "in_copies": 8,
-    "lands_in": 1,
-    "lands_out": 0,
-    "out": 7,
-    "out_copies": 8,
+    "in": 12,
+    "in_copies": 13,
+    "lands_in": 5,
+    "lands_out": 4,
+    "out": 12,
+    "out_copies": 13,
     "spells_in": 7,
-    "spells_out": 7
+    "spells_out": 8
    },
    "in": [
     {
@@ -770,6 +847,46 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
+     "name": "Fabled Passage",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Forbidden Orchard",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Prismatic Vista",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Tarnished Citadel",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
      "name": "Verdant Catacombs",
      "pair": null,
      "state": "box",
@@ -779,6 +896,15 @@
    ],
    "names": 97,
    "out": [
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Talisman of Dominance",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
     {
      "cmc": 3,
      "copies": 1,
@@ -841,12 +967,48 @@
      "pair": null,
      "type_line": "Creature \u2014 Dragon",
      "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Arid Mesa",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Bloodstained Mire",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Scalding Tarn",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Wooded Foothills",
+     "pair": null,
+     "type_line": "Land",
+     "why": null
     }
    ],
    "size": 100,
    "unexplained": {
-    "in": 6,
-    "out": 5
+    "in": 10,
+    "out": 10
    }
   },
   "lands": [],
@@ -998,13 +1160,13 @@
    },
    {
     "colour": "U",
-    "delta": -13,
+    "delta": -14,
     "gap": [
-     -3,
+     -2,
      -16
     ],
     "have": [
-     19,
+     20,
      20
     ],
     "target": [
@@ -1014,13 +1176,13 @@
    },
    {
     "colour": "B",
-    "delta": 1,
+    "delta": -2,
     "gap": [
-     -12,
+     -9,
      -11
     ],
     "have": [
-     18,
+     21,
      19
     ],
     "target": [
@@ -1030,13 +1192,13 @@
    },
    {
     "colour": "R",
-    "delta": 1,
+    "delta": 2,
     "gap": [
-     -6,
+     -7,
      -5
     ],
     "have": [
-     30,
+     29,
      31
     ],
     "target": [
@@ -1066,13 +1228,13 @@
    1
   ],
   "lands": [
-   36,
+   35,
    36
   ],
   "life": [
    {
-    "one_time_on_entry": 13,
-    "recurring_per_tap_cycle": 8
+    "one_time_on_entry": 16,
+    "recurring_per_tap_cycle": 5
    },
    {
     "one_time_on_entry": 14,
@@ -1082,7 +1244,7 @@
   "note": "Deterministic, not sampled \u2014 Karsten's tables against the pip distribution each list actually has. No interval, because there is no sampling error to carry.",
   "on_curve": {
    "B": [
-    0.636,
+    0.729,
     0.669
    ],
    "G": [
@@ -1090,11 +1252,11 @@
     0.918
    ],
    "R": [
-    0.822,
+    0.804,
     0.839
    ],
    "U": [
-    0.866,
+    0.881,
     0.58
    ],
    "W": [
@@ -1115,20 +1277,22 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy nothing and pay damage @T10.",
+  "because": "You buy mulliganed and pay damage @T10.",
   "bill": {
    "box": 1,
-   "buy": 7,
-   "elsewhere": 0,
+   "buy": 9,
+   "elsewhere": 2,
    "free": 0,
-   "in_deck": 89
+   "in_deck": 85
   },
   "cost": {
-   "buy": 7,
+   "buy": 9,
    "buy_cards": [
     "Asceticism",
+    "Fabled Passage",
     "Marang River Regent // Coil and Catch",
     "Mithril Coat",
+    "Prismatic Vista",
     "Steel Hellkite",
     "Stubborn Denial",
     "Transcendent Dragon",
@@ -1136,16 +1300,30 @@
    ],
    "counts": {
     "box": 1,
-    "buy": 7,
-    "elsewhere": 0,
+    "buy": 9,
+    "elsewhere": 2,
     "free": 0,
-    "in_deck": 89
+    "in_deck": 85
    },
    "free_to_raid": [],
    "mergeable": false,
-   "must_unsleeve": [],
-   "owned": 90,
-   "reads_as": "7 to buy; 90 of 97 already owned",
+   "must_unsleeve": [
+    {
+     "decks": [
+      "gishath",
+      "meren-recursion"
+     ],
+     "name": "Forbidden Orchard"
+    },
+    {
+     "decks": [
+      "meren-recursion"
+     ],
+     "name": "Tarnished Citadel"
+    }
+   ],
+   "owned": 88,
+   "reads_as": "9 to buy; 2 to pull out of a deck that is still together; 88 of 97 already owned",
    "total": 97
   },
   "fell": [
@@ -1159,23 +1337,28 @@
    "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
-   "mulliganed",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
   "notes": [],
-  "reward": [],
+  "reward": [
+   {
+    "measure": "mulliganed",
+    "reads_as": "23 games in 100 -> 21 in 100, a swing of 2 games per 100",
+    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
+   }
+  ],
   "risk": [
    {
-    "detail": "72.81 -> 67.51, a change of -5.30 (-7%)",
+    "detail": "71.82 -> 67.51, a change of -4.31 (-6%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "the largest is board power @T6 at -0.357 against an MDE of 0.405. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at -0.020 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "10 row(s) returned no call",
+    "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1197,7 +1380,7 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "U gap -3 -> -16",
+    "detail": "U gap -2 -> -16, B gap -9 -> -11",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -1209,7 +1392,9 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [],
+  "rose": [
+   "mulliganed"
+  ],
   "state": "a trade"
  },
  "slug": "ur-dragon",
@@ -1218,11 +1403,11 @@
   {
    "better_is": "higher",
    "branch": 1.9642,
-   "champion": 2.056,
-   "delta": -0.0918,
-   "mde": 0.1403,
+   "champion": 1.948,
+   "delta": 0.0162,
+   "mde": 0.1369,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.092 is smaller than the 0.140 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.016 is smaller than the 0.137 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1232,11 +1417,11 @@
   {
    "better_is": "higher",
    "branch": 0.4304,
-   "champion": 0.4417,
-   "delta": -0.0113,
-   "mde": 0.0423,
+   "champion": 0.4122,
+   "delta": 0.0182,
+   "mde": 0.0414,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.042 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.041 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1246,11 +1431,11 @@
   {
    "better_is": "higher",
    "branch": 67.5061,
-   "champion": 72.8064,
-   "delta": -5.3003,
-   "mde": 2.8143,
+   "champion": 71.8154,
+   "delta": -4.3093,
+   "mde": 2.9477,
    "measure": "damage @T10",
-   "reads_as": "72.81 -> 67.51, a change of -5.30 (-7%)",
+   "reads_as": "71.82 -> 67.51, a change of -4.31 (-6%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -1260,11 +1445,11 @@
   {
    "better_is": "higher",
    "branch": 14.3319,
-   "champion": 14.6892,
-   "delta": -0.3573,
-   "mde": 0.4052,
+   "champion": 14.6677,
+   "delta": -0.3358,
+   "mde": 0.405,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.357 is smaller than the 0.405 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.336 is smaller than the 0.405 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1274,11 +1459,11 @@
   {
    "better_is": "higher",
    "branch": 0.2718,
-   "champion": 0.285,
-   "delta": -0.0132,
-   "mde": 0.0179,
+   "champion": 0.2744,
+   "delta": -0.0026,
+   "mde": 0.0177,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.018 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.018 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1288,11 +1473,11 @@
   {
    "better_is": "higher",
    "branch": 0.9547,
-   "champion": 0.9539,
-   "delta": 0.0008,
-   "mde": 0.0083,
+   "champion": 0.9512,
+   "delta": 0.0035,
+   "mde": 0.0085,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.009 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1302,11 +1487,11 @@
   {
    "better_is": "lower",
    "branch": 0.0778,
-   "champion": 0.0816,
-   "delta": -0.0038,
-   "mde": 0.0108,
+   "champion": 0.0781,
+   "delta": -0.0003,
+   "mde": 0.0106,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.011 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.011 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1316,11 +1501,11 @@
   {
    "better_is": "lower",
    "branch": 0.4604,
-   "champion": 0.4543,
-   "delta": 0.0061,
-   "mde": 0.0197,
+   "champion": 0.4802,
+   "delta": -0.0198,
+   "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.020 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1330,25 +1515,25 @@
   {
    "better_is": "lower",
    "branch": 0.2052,
-   "champion": 0.2133,
-   "delta": -0.0081,
-   "mde": 0.0162,
+   "champion": 0.2274,
+   "delta": -0.0222,
+   "mde": 0.0166,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.016 this run can resolve",
+   "reads_as": "23 games in 100 -> 21 in 100, a swing of 2 games per 100",
    "scale": null,
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
   },
   {
    "better_is": "higher",
    "branch": 0.5686,
-   "champion": 0.5706,
-   "delta": -0.002,
-   "mde": 0.0218,
+   "champion": 0.5598,
+   "delta": 0.0088,
+   "mde": 0.0219,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.022 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.022 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1358,11 +1543,11 @@
   {
    "better_is": "higher",
    "branch": 0.8871,
-   "champion": 0.8777,
-   "delta": 0.0094,
-   "mde": 0.013,
+   "champion": 0.884,
+   "delta": 0.0031,
+   "mde": 0.0127,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.013 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
