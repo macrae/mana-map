@@ -1,32 +1,32 @@
 {
   "slug": "heliod",
-  "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+  "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
   "emergency": [
     {
       "condition": "wipe",
-      "condition_text": "A sweeper is on the stack, or an opponent has four mana open on their own main phase, and Heliod is on the battlefield.",
+      "condition_text": "A sweeper is on the stack, or an opponent holds four untapped mana in their own main phase, and Heliod is on the battlefield.",
       "indications": [
         "Heliod is on the battlefield and Supreme Verdict or Day of Judgment is in your own hand.",
-        "An opponent is at four or more untapped mana in their precombat main phase and has cast nothing.",
-        "The sweeper exiles rather than destroys. An exiling sweeper takes the enchantments and artifacts with it, and indestructible answers neither.",
-        "Sixteen of Heliod's 43 attributed departures were opposing wraths; five more were your own.",
+        "An opponent has four or more untapped mana in their precombat main phase and has cast nothing.",
+        "Greater Auramancy is on the battlefield, so Heliod has shroud and neither Karametra's Blessing nor Guardian of Faith can be aimed at him.",
+        "The sweeper exiles rather than destroys. Ten of Heliod's fifty battlefield exits across 120 Forge games went to exile, which indestructible does not answer.",
         "Your board is Heliod plus one blocker and the rest of your permanents are enchantments and artifacts."
       ],
       "immediate": [
-        "Count what the wrath takes. If it takes Drift of Phantasms and a token, pass and let it resolve.",
-        "Check whether Lightning Greaves is equipped to Heliod. Shroud stops Karametra's Blessing and Guardian of Faith as well, and equip is sorcery speed, so you cannot move it with the wrath on the stack.",
-        "Cast Teferi's Protection for {2}{W} when the sweeper exiles or takes more than creatures. All permanents you control phase out and your life total cannot change until your next turn.",
-        "Cast Guardian of Faith for {1}{W}{W} when the sweeper only destroys creatures. It has flash and phases out any number of other target creatures you control.",
-        "Cast Karametra's Blessing for {W} on Heliod when he is the only permanent you need back. He is an enchantment creature on both faces, so he gains hexproof and indestructible until end of turn."
+        "Count what the wrath takes. If it takes Drift of Phantasms and nothing else, pass and let it resolve.",
+        "Cast Teferi's Protection for {2}{W} when the sweeper exiles, or when it takes more than creatures. It does not target, so Greater Auramancy does not stop it, and every permanent you control phases out.",
+        "Destroy your own Greater Auramancy when Teferi's Protection is not in hand. Disenchant costs {1}{W}; Cathar Commando flashes in for {1}{W} and sacrifices for {1}. Auramancy grants shroud to other enchantments and not to itself, so both can target it.",
+        "Cast Karametra's Blessing for {W} on Heliod once Auramancy is off the battlefield. He is an enchantment creature on both faces, so he gains hexproof and indestructible until end of turn.",
+        "Cast Guardian of Faith for {1}{W}{W} instead when the sweeper only destroys and you need two creatures back. It has flash and phases out other target creatures you control."
       ],
       "subsequent": [
-        "Rebuild the enchantments and artifacts first. Rhystic Study, Smothering Tithe, Howling Mine and Propaganda are untouched by a creature wrath.",
-        "Cast your own Supreme Verdict before you recast Heliod, never after.",
-        "Recast Heliod for {2}{W}{W} plus the commander tax and return one of the eight non-God enchantments from your graveyard with the enters trigger.",
-        "Keep casting at instant speed while he is away: Leyline of Anticipation grants the same flash and reads no commander.",
-        "Rebuild to two permanents, not five, while a second sweeper is unaccounted for."
+        "Rebuild the enchantments before the creatures. Rhystic Study, Smothering Tithe, Gleaming Splendor, Howling Mine and Propaganda all survive a creature wrath.",
+        "Cast your own Supreme Verdict before you recast Heliod, never after. Log 002 is the game where that order was reversed.",
+        "Recast Greater Auramancy for {1}{W} ahead of Heliod when the table's removal is targeted, and hold it in hand while a second sweeper is unaccounted for and Karametra's Blessing is your answer.",
+        "Recast Heliod for {2}{W}{W} plus the commander tax and return one of the ten non-God enchantments from your graveyard with the enters trigger.",
+        "Rebuild to two permanents, not five, and keep casting at instant speed off Leyline of Anticipation while Heliod is away."
       ],
-      "notes": "Indestructible stops \"destroy\" and nothing else. Heliod left the battlefield 50 times in the 120-game run, 40 to the graveyard and 10 to exile, and indestructible answers the 33 attributed destroys and none of the 10 exiles. Against a sweeper that exiles, the answer is phasing rather than the Blessing.",
+      "notes": "Greater Auramancy is the exception that bites on this page. It grants shroud to other enchantments you control, Heliod is an enchantment creature on both faces, and shroud stops your own targeting as well as theirs — so the deck's two answers to a wrath on the commander, Karametra's Blessing and Guardian of Faith, are both illegal targets while Auramancy is out. The way back is that Auramancy does not grant itself shroud: Disenchant, Cathar Commando and Loran of the Third Path can each destroy your own. There are no Auras in the 99, so Auramancy's second line does nothing here.",
       "grounded_in": [
         "log:002"
       ]
@@ -35,27 +35,26 @@
       "condition": "removal",
       "condition_text": "Heliod is the target, or the spell you just cast is being answered.",
       "indications": [
-        "A removal spell is on the stack and Heliod is the target. Targeted removal is 22 of Heliod's 43 attributed exits in the 120-game run, against 16 opposing wraths and 5 of your own.",
+        "A removal spell is on the stack with Heliod as its target. Targeted removal is 22 of his 43 attributed exits across 120 Forge games, against 16 opposing wraths and 5 of your own.",
+        "Greater Auramancy is not on the battlefield and Heliod has been out a full turn.",
         "The stack is two objects deep and both of them are yours to lose.",
         "One opponent has held two or more untapped mana across a full turn cycle and cast nothing.",
-        "Rhystic Study or Smothering Tithe is the target and Heliod is not.",
-        "Heliod has been on the battlefield a full turn and Lightning Greaves is not on him."
+        "Rhystic Study, Smothering Tithe or Gleaming Splendor is the target and Heliod is not."
       ],
       "immediate": [
         "Say the untapped mana at every seat out loud before you respond.",
-        "Counter it with Fierce Guardianship for no mana while you control a commander. It counters target noncreature spell, which is every instant and sorcery aimed at Heliod — including the Swords to Plowshares Alex redirected onto him in log 001.",
-        "Cast Karametra's Blessing for {W} on Heliod if the counter is not in hand. He is an enchantment creature, so he gains hexproof and indestructible until end of turn.",
-        "Cast Guardian of Faith for {1}{W}{W} instead when the removal exiles. Phasing answers an exile; the Blessing's indestructible half does not.",
+        "Counter it with Fierce Guardianship for no mana while you control a commander. It counters target noncreature spell, which covers every instant and sorcery aimed at Heliod — including the Swords to Plowshares Alex redirected onto him in log 001.",
+        "Cast Karametra's Blessing for {W} on Heliod when the counter is not in hand and Greater Auramancy is not on the battlefield.",
+        "Cast Guardian of Faith for {1}{W}{W} instead when the removal exiles. Phasing answers an exile; the Blessing's indestructible does not.",
         "Let Heliod go when you hold none of those, and keep the counter for a spell that wins the game or kills you."
       ],
       "subsequent": [
+        "Cast Greater Auramancy for {1}{W} at the first window. Ten of the eleven enchantments in the 99 gain shroud, Heliod included, and a spell cannot be redirected onto a shrouded permanent.",
         "Stop countering after the second exchange in a war you did not start.",
-        "Equip Lightning Greaves to Heliod on your next main phase. Equip costs {0}.",
-        "Move the Greaves off before you cast Karametra's Blessing or Guardian of Faith on him.",
-        "Recast Heliod for {2}{W}{W} plus the tax and take an enchantment back out of the graveyard with the enters trigger.",
-        "Cast the rest of the turn without him. Leyline of Anticipation grants the flash; nothing replaces the discount."
+        "Recast Heliod for {2}{W}{W} plus the tax and take an enchantment out of the graveyard with the enters trigger.",
+        "Cast the rest of the turn without him. Leyline of Anticipation grants the flash; nothing in the 99 replaces the discount."
       ],
-      "notes": "Shroud cuts both ways. While Lightning Greaves is on Heliod you cannot target him with Karametra's Blessing or Guardian of Faith's trigger either, and equip is sorcery speed, so that choice is made on your main phase and not with a spell on the stack. Whether the Greaves can be moved off in response is open question 1 in the engine model and is not settled.",
+      "notes": "V12 traded the deck's only Equipment for Greater Auramancy and the protection is differently shaped rather than simply larger. Auramancy covers ten enchantments and the commander at once and needs no equip step, but it has to be on the battlefield before the removal is cast, it does not protect itself, and it takes Karametra's Blessing and Guardian of Faith off Heliod while it is out. Forge has never exercised the response half: across 120 games on the v1.2.1 list, Teferi's Protection was cast 0 times, Guardian of Faith 0 times with 6 discards, and Karametra's Blessing 9 times with 2 resolving on Heliod. The 99 now holds no Equipment and no haste at all, so Kwain, Itinerant Meddler and Loran of the Third Path each wait a turn before they can tap.",
       "grounded_in": [
         "log:001"
       ]
@@ -66,79 +65,80 @@
       "indications": [
         "One seat tutors and the card it found does not go to the battlefield.",
         "The table is attacking you and leaving the seat with the engine alone.",
-        "You hold a counter and cannot pay for it. Interaction sits in hand 0.929 of the time at turn six and is castable 0.61.",
-        "The line runs through a graveyard or a land. deck-audit reads interaction-breadth UNDER: artifact 4, creature 7, enchantment 4, graveyard 0, land 0.",
-        "A seat casts a one-card permanent and the other two seats stop attacking it."
+        "You hold a counter and cannot pay for it. Interaction sits in hand 0.929 of the time at turn six and is castable 0.627.",
+        "The line runs through a graveyard or a land.",
+        "A seat casts one permanent and the other two seats stop attacking it."
       ],
       "immediate": [
-        "Stop saving mana for your own turn. Untap and hold {U}{U} through the combo seat's entire turn.",
-        "Counter the first piece rather than the payoff. Swan Song costs {U} and counters an enchantment, instant or sorcery; An Offer You Can't Refuse costs {U} and counters a noncreature spell.",
+        "Stop saving mana for your own turn. Untap and hold {U}{U} through the combo seat's whole turn.",
+        "Counter the first piece, not the payoff. Swan Song costs {U} and counters an enchantment, instant or sorcery; An Offer You Can't Refuse costs {U} and counters a noncreature spell.",
         "Use Fierce Guardianship for no mana when the piece is a noncreature spell and Heliod is on the battlefield.",
         "Overload Cyclonic Rift for {6}{U} when the pieces are already on the battlefield and return every nonland permanent you do not control.",
         "Name the seat and the card to both other players when you cannot stop it yourself."
       ],
       "subsequent": [
-        "Destroy the resolved artifact or enchantment with Disenchant, Cathar Commando or Loran of the Third Path. Those three destroy one; Cyclonic Rift and Otawara, Soaring City bounce one instead.",
-        "Concede the pieces you cannot reach and race instead. You answer artifacts, creatures and enchantments; you answer nothing in a graveyard and nothing on a land.",
+        "Destroy the resolved artifact or enchantment. Disenchant, Cathar Commando and Loran of the Third Path destroy one each; Cyclonic Rift and Otawara, Soaring City bounce one instead.",
+        "Concede the pieces you cannot reach and race. Artifacts, creatures and enchantments are the classes this deck answers.",
         "Go back to holding one counter a turn cycle once the piece is answered.",
-        "Cast the first Approach at the next window rather than adding another gift piece."
+        "Cast the first Approach of the Second Sun at the next window instead of adding a fourth gift piece."
       ],
-      "notes": "A counter you win is not a game you win. In log 001 the pilot countered at the right moments, lost the exchange that mattered and lost the game; in log 002 an opponent assembled a one-card line while the table beat on him. Against a one- or two-card combo seat the plan is to be faster, and faster for this deck means the second Approach.",
+      "notes": "A counter you win is not a game you win. In log 001 the pilot countered at the right moments, lost the one exchange that mattered and lost the game; in log 002 Oliver assembled a one-card Cranko line while the table beat on the pilot. Against a one- or two-card combo seat the plan is to be first, and the stage that ends the game here holds a single card.",
       "grounded_in": [
-        "log:002",
-        "log:001"
+        "log:001",
+        "log:002"
       ]
     },
     {
       "condition": "mana-drought",
-      "condition_text": "You have missed a land drop and the cast you need is {6}{W} twice.",
+      "condition_text": "You have missed a land drop and the cast you need is {6}{W} on two separate turns.",
       "indications": [
-        "Turn six arrives and you are on five lands. The goldfish hits its land drop 0.728 at turn four, 0.593 at turn five and 0.534 at turn six.",
-        "benchmark.json puts missed_land_drop_rate at 0.2568 with its worst turn at six.",
-        "Mean available mana crosses seven between turn seven (6.412) and turn eight (7.064), with the commander's discount switched off.",
-        "A colour is missing rather than a land: 25 white sources and 26 blue against a Karsten target of 36 each.",
-        "Interaction is in hand and is not castable. Those two rates are 0.929 and 0.61 at turn six."
+        "Turn six arrives and you are on five lands. The goldfish hits its land drop 0.875 at turn three, 0.727 at turn four and 0.536 at turn six.",
+        "benchmark.json puts the missed-land-drop rate at 0.254 with its worst turn at six.",
+        "Mean available mana crosses seven between turn seven (6.411) and turn eight (7.062), with the commander's discount switched off in the model.",
+        "A colour is missing rather than a land: 24 white and 27 blue sources against a Karsten target of 36 each, and 20 white to 23 blue among the lands.",
+        "Interaction is in hand and is not castable. Those two rates are 0.929 and 0.627 at turn six."
       ],
       "immediate": [
         "Play the untapped land. Irrigated Farmland and Temple of Enlightenment enter tapped; hold them for a turn you are not casting.",
         "Crack Flooded Strand for the colour you are short of, not for the land you would rather own.",
         "Cast a rock ahead of a gift piece. Sol Ring, Arcane Signet, Azorius Signet, Talisman of Progress, Thought Vessel, Mind Stone and Decanter of Endless Water are the seven.",
-        "Resolve Smothering Tithe. Every opponent draw is a Treasure unless that seat pays {2}, and the gift is what makes them draw.",
+        "Resolve Smothering Tithe for {3}{W}. Every opponent draw is a Treasure unless that seat pays {2}, and Treasure is the only mana in this deck that banks across turns.",
         "Stop holding a counter you cannot cast and spend the mana on the gift."
       ],
       "subsequent": [
+        "Cast Gleaming Splendor for {1}{W} behind a draw-step gift. One Treasure per opponent per turn cycle costs you nothing after the {1}{W}.",
         "Pay the Phyrexian half of the flip with two life when blue is short. The flip is {3}{U/P}.",
         "Sacrifice Mind Stone for {1} and a card once seven mana is on the table and the colourless is spare.",
         "Tap Mikokoro, Center of the Sea for {C} rather than paying its {2} to draw, until the land drops are landing again.",
         "Count to seven twice before you cast the first Approach. The bill is {6}{W} on two separate turns."
       ],
-      "notes": "No logged game is filed under mana-drought. This page rests on benchmark.json (missed_land_drop_rate 0.2568, worst turn six), goldfish_metrics.json (land drop hit rate 0.728 / 0.593 / 0.534 at turns four to six, mean available mana 6.412 at turn seven) and mana_analysis.json (25 white and 26 blue sources against 36). deck-audit reads mana-base and colour-sources UNDER, and the diagnosis rests its whole prescription on that shortfall rather than on a cross-tab.",
+      "notes": "No logged game is filed under mana-drought; both losses are filed elsewhere, so this page is not grounded in a game. It rests on benchmark.json, goldfish_metrics.json and mana_analysis.json, all three of them measured on this list. Add the pilot's own correction from log 002 before you decide you cannot afford the cast: \"with the treasure and the discount it is two or three, not seven.\" Count the Treasure on the table and the cards your opponents have drawn this turn, then read the price.",
       "grounded_in": []
     },
     {
       "condition": "stalled",
       "condition_text": "The table is drawing, you are alive, and Approach of the Second Sun is not in hand.",
       "indications": [
-        "Turn eight or later and Approach has not been cast once.",
+        "Turn eight or later and Approach of the Second Sun has not been cast once.",
         "Long-Term Plans or Mystical Tutor has been in your hand for two turns.",
-        "The gift is online and nothing has converted it: no Rhystic Study, no Smothering Tithe, no Consecrated Sphinx.",
-        "Win-condition access assembles 0.495 and 0.358 by turn six; the table draw engine assembles 0.921 at a mean turn of 2.499.",
+        "The gift is online and nothing converts it: no Rhystic Study, no Smothering Tithe, no Gleaming Splendor, no Consecrated Sphinx.",
+        "Win-condition access assembles 0.494 and 0.364 by turn six, while the table draw engine assembles 0.921 at a mean turn of 2.434.",
         "You are holding cards you are not spending while two opponents build boards you cannot block."
       ],
       "immediate": [
         "Cast Long-Term Plans for {2}{U} the turn you draw it and put Approach of the Second Sun third from the top.",
         "Cast Mystical Tutor for {U} at the end step before your turn when Long-Term Plans is not in hand, and put Approach on top.",
-        "Transmute Drift of Phantasms for {1}{U}{U} and fetch Long-Term Plans. Transmute finds mana value three; Approach is seven and is out of reach.",
+        "Transmute Drift of Phantasms for {1}{U}{U} and fetch Long-Term Plans. Transmute finds mana value three, and Enlightened Tutor finds artifacts and enchantments, so neither reaches a seven-mana sorcery.",
         "Cast the first Approach the turn you can pay {6}{W}. It gains 7 life and goes seventh from the top.",
         "Count your draws per turn cycle from that moment. Seven of them returns the card without a second tutor."
       ],
       "subsequent": [
-        "Convert the gift before you add to it. Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Teferi's Ageless Insight and Alhammarret's Archive are the seven that make a symmetric draw one-sided.",
+        "Convert the gift before you add to it. Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Gleaming Splendor and Teferi's Ageless Insight are the seven that make a symmetric draw one-sided.",
         "Stop deploying gift pieces once two are on the battlefield.",
         "Cast Prosperity or Skyscribing only with a converter already down.",
         "Flip Heliod for {3}{U/P} so the second cast can happen on an opponent's turn."
       ],
-      "notes": "In log 002 the pilot held Long-Term Plans because he read Approach as a seven-drop, waited, and the window closed. The Forge record says the same thing from the other side: 27 of 120 games cast Approach once, 12 reached a second cast, and those 12 are exactly the 12 games won on the card. Across 39 casts no opponent ever countered one.",
+      "notes": "In log 002 the pilot held Long-Term Plans because he read Approach as a seven-drop, waited, and the window closed. The Forge record on the v1.2.1 list says the same thing from the other side: 39 Approach casts across 120 games, 12 games reached a second cast, and the record attributes 12 of its 20 wins to the effect of the card. No opponent countered an Approach across all 39 casts. The deck's record at the table is 0 wins and 2 losses over two logged games, and the goldfish reaches turn ten without a kill in 0.865 of 10,000 games — which is why this page's procedure is a tutor and not a board.",
       "grounded_in": [
         "log:002"
       ]
@@ -162,11 +162,12 @@
       ],
       "subsequent": [
         "Hold Smothering Tithe until you control a blocker, or until a wrath has already happened.",
-        "Let the taxers do the deterring. Propaganda, Ghostly Prison and Archangel of Tithes charge per attacker and show no card from your hand.",
+        "Lead with Gleaming Splendor instead when both are castable. It costs {1}{W} against the Tithe's {3}{W}, it takes nothing from anybody, and it makes Treasure off cards the table was drawing already.",
+        "Let the taxers deter. Propaganda, Ghostly Prison and Archangel of Tithes charge per attacker and show no card from your hand.",
         "Name the seat you want to stop attacking you when you tap Loran of the Third Path, and give them the card.",
         "Point the table at the combo seat every turn until somebody attacks it."
       ],
-      "notes": "The gift reads as generosity for exactly as long as nothing you control looks like a clock. Nine of the ten permanents in the ignition stage hand the whole table cards, and over the 120-game run this seat's combat damage to players had a mean of 3.28 and a median of 0.5, with commander damage reaching 21 in zero games. The table's read that you are harmless is correct until the second Approach.",
+      "notes": "The gift reads as generosity for exactly as long as nothing you control looks like a clock. Nine of the ten gift permanents hand the whole table cards, and across 120 Forge games this seat's combat damage to players had a mean of 3.28 and a median of 0.5, while the most commander damage it ever dealt in one game was 8 and it was never lethal. The table's read that you are harmless is correct until the second Approach. In log 002 the Tithe landed on an empty board and made the pilot the target on the spot.",
       "grounded_in": [
         "log:002"
       ]
@@ -178,61 +179,64 @@
         "One opponent's board is fliers and your blockers are on the ground.",
         "You are below 25 life on turn eight.",
         "Kefnet the Mindful is on the battlefield and your hand is under seven cards, so he cannot block.",
-        "Across the 120-game run this seat took a mean of 37.92 combat damage with a median of 30.5.",
-        "heliod was eliminated in 74 of 120 games, 61 of them to damage: giada-angels 43, abaddon 11, baylen-tokens 7."
+        "Across 120 Forge games this seat took a mean of 37.92 combat damage with a median of 30.5.",
+        "heliod was eliminated in 74 of those 120 games, 61 of them to damage: giada-angels 43, abaddon 11, baylen-tokens 7."
       ],
       "immediate": [
         "Count the damage on the board against your life total and decide whether you have one more turn or two.",
         "Cast the sweeper when the threat is creatures. Supreme Verdict costs {1}{W}{W}{U} and cannot be countered; Day of Judgment costs {2}{W}{W} and can.",
-        "Deploy Propaganda or Ghostly Prison when the sweeper is not in hand. Each charges that seat {2} for each creature attacking you.",
+        "Deploy Propaganda for {2}{U} or Ghostly Prison for {2}{W} when the sweeper is not in hand. Each charges that seat {2} for each creature attacking you.",
         "Cast Secure the Wastes for {X}{W} at the end step before the attack. It is an instant and every token blocks once.",
         "Channel Eiganjo, Seat of the Empire for {2}{W} and deal 4 damage to an attacking creature. The cost drops {1} for each legendary creature you control."
       ],
       "subsequent": [
-        "Rebuild the fort rather than a board. Propaganda, Ghostly Prison and Archangel of Tithes assemble 0.496, and 0.357 by turn six, so deploy the first one you draw.",
+        "Rebuild the fort rather than a board. Propaganda, Ghostly Prison and Archangel of Tithes assemble 0.509, and 0.370 by turn six, so deploy the first one you draw.",
         "Block with Drift of Phantasms and Archangel of Tithes. Both fly; Kefnet blocks only while you hold seven cards.",
         "Buy the turn with The Second Doctor's end-step trigger rather than with a card out of hand.",
         "Cast the first Approach for the 7 life when life is the resource you are short of."
       ],
-      "notes": "No logged game is filed under raced. This page rests on the 120-game Forge run against the standard pod (record b0f44e4a, the v1.2.1 list, three cards behind this one), where the angel seat caused 43 of the 61 damage eliminations and 30 of its 32 creatures carry flying on the body. The two sweepers are two against a control band of five to seven, which deck-audit reads UNDER.",
+      "notes": "No logged game is filed under raced, so this page is not grounded in a game. It rests on the 120-game Forge run against giada-angels, baylen-tokens and abaddon (record b0f44e4a), whose heliod seat is the v1.2.1 list — two versions back, and none of V12's three cards was in it. Read those figures as the shape of the loss and not as a rate for this list.",
       "grounded_in": []
     }
   ],
   "normal": {
     "preflight": {
       "keep": [
-        "Two to four lands, with a white source and a blue source among them.",
-        "One gift piece or converter castable by turn three: Howling Mine, Kami of the Crescent Moon, Mystic Remora, Temple Bell, Dictate of Kruphix, Rhystic Study or Horn of Greed.",
+        "Two to four lands with a white source and a blue source among them.",
+        "One gift piece castable by turn three: Howling Mine at {2}, Kami of the Crescent Moon at {U}{U}, Dictate of Kruphix at {1}{U}{U}, Temple Bell at {3}, Kwain, Itinerant Meddler at {W}{U} or Horn of Greed at {3}.",
         "Something to cast before turn four that is not Approach of the Second Sun.",
         "No more than two cards costing five or more."
       ],
       "ship": [
         "One land, whatever else is in it.",
         "Six or more lands with no gift piece and no converter.",
-        "A hand of counters with no gift piece. Interaction is in hand 0.929 of the time by turn six and castable 0.61.",
+        "A hand of counters with no gift piece.",
         "Two lands that both enter tapped.",
-        "A hand whose cheapest spell is Heliod."
+        "A hand whose cheapest spell is Heliod.",
+        "A hand whose white spells are Gleaming Splendor and Greater Auramancy. Both cost {1}{W} and both do nothing on an empty board."
       ],
-      "note": "Keep for the gift and the mana, not for Heliod. There is no pressure to rush the commander out in this build, and the goldfish casts him at a mean turn of 4.187 and 0.896 of the time by turn six without a hand being kept for him. Leyline of Anticipation in the opener goes on the battlefield before the game starts and does not count against the second criterion — it grants the flash half of the commander and nothing else."
+      "note": "Keep for the gift and the mana, not for Heliod. There is no pressure to rush the commander out in this build — the pilot's own line in log 002 — and the goldfish casts him at a median turn of 4 and 0.886 of the time by turn six without a hand being kept for him. Leyline of Anticipation in the opener starts on the battlefield and does not count against the second keep criterion: it grants the flash half of the back face and nothing else."
     },
     "startup": {
       "steps": [
-        "Play a land every turn. The deck hits its turn-three drop 0.868 of the time and its turn-six drop 0.534.",
-        "Cast the gift piece ahead of the rock on turn two or three. Howling Mine, Kami of the Crescent Moon and Mystic Remora all cost two or less.",
-        "Cast Mystic Remora on turn one or two when you have {U}. Pay the cumulative upkeep while it is drawing more than one card a cycle and let it go when it is not.",
-        "Cast Enlightened Tutor for {W} on turn one or two. It finds Howling Mine, Font of Mythos, Temple Bell, Horn of Greed or Dictate of Kruphix, and the reveal tells the table nothing this early.",
+        "Play a land every turn. The deck hits its turn-three drop 0.875 of the time and its turn-six drop 0.536.",
+        "Cast Mystic Remora on turn one or two when you have {U}. Pay the cumulative upkeep while it draws more than one card a cycle and let it go when it does not.",
+        "Cast the gift piece ahead of the rock on turn two or three. Howling Mine at {2}, Kami of the Crescent Moon at {U}{U} and Dictate of Kruphix at {1}{U}{U} need nothing else on the battlefield.",
+        "Hold Gleaming Splendor until a draw-step gift is down, then cast it for {1}{W}. Its trigger reads an opponent's SECOND card each turn and a natural draw step is one card, so on a bare board it makes nothing. Howling Mine, Font of Mythos, Kami of the Crescent Moon and Dictate of Kruphix each give every opponent a second card on that opponent's own turn; behind any one of them Splendor is one Treasure per opponent per turn cycle.",
+        "Cast Enlightened Tutor for {W} on turn one or two and fetch the gift rather than the converter. It finds Howling Mine, Font of Mythos, Temple Bell, Horn of Greed or Dictate of Kruphix, and the reveal tells the table nothing this early.",
         "Hold Smothering Tithe until you control a blocker or until a wrath has already happened.",
         "Pass with mana open rather than casting Heliod on turn four to be casting something."
       ]
     },
     "assembly": {
       "steps": [
-        "Gift first. One of the eleven ignition pieces resolves at a mean turn of 2.499 and the group assembles 0.921; nothing later in the deck fires until one is on the battlefield.",
-        "Converter second. Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Teferi's Ageless Insight and Alhammarret's Archive turn a symmetric draw into a one-sided one, and the group assembles 0.787.",
-        "Heliod third, and only behind a counter or a blocker. He costs {2}{W}{W} and 22 of his 43 attributed exits were to targeted removal.",
-        "Flip him fourth for {3}{U/P}, paying the Phyrexian half with two life when blue is short. The flip is sorcery speed and it is the last sorcery-speed decision you make.",
-        "Fort fifth. Deploy the first of Propaganda, Ghostly Prison or Archangel of Tithes you draw; the group assembles 0.496 and 0.357 by turn six.",
-        "Tutor last, and cast the tutor the turn you can see {6}{W} on the next one. Long-Term Plans puts Approach third from the top; Mystical Tutor puts it on top."
+        "Gift first. One of the eleven pieces resolves at a mean turn of 2.434 and the group assembles 0.921. Nothing later in the deck fires until one of them is on the battlefield.",
+        "Converter second. Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Gleaming Splendor and Teferi's Ageless Insight turn a symmetric draw one-sided. Gleaming Splendor and Faerie Mastermind read the opponent's second card, so they go behind a draw-step gift and not in front of one.",
+        "Greater Auramancy third, for {1}{W}, and ahead of Heliod. It gives shroud to the other ten enchantments you control and Heliod is one of them, but it has to be on the battlefield before the removal is cast. The price is that Karametra's Blessing and Guardian of Faith can no longer target him; keep Disenchant or Cathar Commando as the way to undo it.",
+        "Heliod fourth, and only behind a counter or behind Auramancy. He costs {2}{W}{W} and 22 of his 43 attributed exits across 120 games were targeted removal.",
+        "Flip him fifth for {3}{U/P}, paying the Phyrexian half with two life when blue is short. The flip is sorcery speed and it is the last sorcery-speed decision you make.",
+        "Fort sixth. Deploy the first of Propaganda, Ghostly Prison or Archangel of Tithes you draw; the group assembles 0.509 and 0.370 by turn six.",
+        "Tutor last, and cast the tutor the turn you can see {6}{W} on the next one. Long-Term Plans puts Approach of the Second Sun third from the top; Mystical Tutor puts it on top."
       ]
     },
     "cruise": {
@@ -240,8 +244,9 @@
         "Untap with mana open. With the back face on the battlefield you may cast every spell in the deck as though it had flash.",
         "Activate Temple Bell, Mikokoro, Center of the Sea, Kwain, Itinerant Meddler or Loran of the Third Path on your own turn before you cast anything. Those four and The Second Doctor's end step are the five pieces that feed the discount on your own turn.",
         "Count the cards each opponent draws in their draw step. That count is the discount on the next spell you cast during that turn.",
+        "Spend Gleaming Splendor's {2}{W} on an opponent's turn and after their draw step, targeting yourself and that opponent. You draw, and their card is their second of the turn. On your own turn it is their first and the second-card triggers stay off. The activation is an ability, so the back face never discounts it.",
         "Cast the generic-cost artifacts at an opponent's end step. Isochron Scepter and Mind Stone cost {2} and are free behind two opponent draws; Horn of Greed costs {3} and is free behind three.",
-        "Cast Isochron Scepter only with an instant of mana value two or less in hand — the imprint happens as it enters — then activate it for {2} each turn. Thirteen instants in the 99 qualify, and the {2} activation is an ability the discount does not touch.",
+        "Cast Isochron Scepter only with an instant of mana value two or less in hand — the imprint happens as it enters — then activate it for {2} each turn.",
         "Ask for Rhystic Study's {1} and Mystic Remora's {4} every single time.",
         "Take The Second Doctor's trigger at your end step and hand out the cards.",
         "Pass with {U}{U} rather than casting a gift piece you do not need."
@@ -249,21 +254,22 @@
     },
     "closing": {
       "steps": [
-        "Cast the first Approach of the Second Sun for {6}{W}. It gains you 7 life and puts the card seventh from the top of your library.",
+        "Cast the first Approach of the Second Sun for {6}{W} on the turn you can pay it. It gains you 7 life and puts the card seventh from the top of your library.",
         "Count the draws you take per turn cycle from that moment. Seven returns the card to hand without a tutor.",
         "Cast Mystical Tutor for {U} or Long-Term Plans for {2}{U} when seven draws is more than two turns away.",
-        "Hold the second cast for an opponent's end step with Heliod flipped. Their draws that turn pay the generic six and the cast costs {W}.",
-        "Count the untapped blue at every other seat before you cast it. That stack is the only window they get, and a countered Approach goes to your graveyard rather than back into your library.",
-        "Hold one answer for the answer. Dovin's Veto cannot be countered and Fierce Guardianship is free while Heliod is on the battlefield.",
+        "Hold the second cast for the turn your opponents have drawn the most, and take it at an end step with Heliod flipped. Each card they have drawn that turn takes {1} off the {6}.",
+        "Count the untapped blue at every other seat before you cast it. That stack is the window they get, and a countered Approach goes to your graveyard instead of back into your library.",
+        "Hold one answer for the answer. Dovin's Veto cannot be countered, Fierce Guardianship is free while Heliod is on the battlefield, and Swan Song counters an instant or sorcery for {U}.",
         "Cast it anyway when you will not be alive on your next turn."
       ]
     }
   },
   "handling": {
     "optics": [
-      "Nine of the ten permanents in the ignition stage hand the whole table cards, and nothing you control looks like a clock: combat damage to players over 120 games had a mean of 3.28 and a median of 0.5, and commander damage reached 21 in zero of them.",
-      "Deploy Smothering Tithe behind a blocker or after a wrath, never onto an empty board. It made the pilot the table's target the moment it landed.",
-      "Offer the draw before anybody asks for it. The Second Doctor's end-step trigger buys a turn of peace outright.",
+      "Nine of the ten gift permanents hand the whole table cards and nothing you control looks like a clock: across 120 Forge games this seat's combat damage to players had a mean of 3.28 and a median of 0.5, and the most commander damage it dealt in any one game was 8.",
+      "Lead with Gleaming Splendor over Smothering Tithe when both are castable. Splendor costs {1}{W}, charges nobody anything and banks Treasure off cards the table was drawing already; the Tithe costs {3}{W} and takes {2} from every opponent for every card.",
+      "Deploy Smothering Tithe behind a blocker or after a wrath, never onto an empty board. It made the pilot the table's target the moment it landed in log 002.",
+      "Cast Greater Auramancy on a turn you also cast something. An enchantment that protects enchantments, played alone, tells the table you expect to be attacked.",
       "Cast Enlightened Tutor on turn one or two. The reveal says nothing then and says the whole plan on turn seven.",
       "Flip Heliod on a turn you also cast something. A flipped commander with no follow-up announces that the discount exists."
     ],
@@ -271,24 +277,26 @@
       "Say the 7 life on the first Approach and move on. Do not name the card.",
       "Ask for Rhystic Study's {1} every time. That question is how three seats learn to respect your open mana without you showing a card.",
       "Cast Mystical Tutor at an end step rather than on your own main phase. The card lands on top either way.",
+      "Say \"shroud\" as soon as somebody targets one of your enchantments with Greater Auramancy out, and let them take the spell back before it resolves.",
       "Do not show a held counter to deter an attack. Propaganda and Ghostly Prison do that job for one card and charge {2} per attacker.",
       "Say the discount out loud when you take it, and say the number of cards it came from. The arithmetic is checkable and arguing it later costs more."
     ],
     "alliances": [
-      "Point at the seat with the fliers and keep pointing. That seat caused 43 of the 61 damage eliminations this deck suffered across 120 games.",
-      "Let another player's board be the reason a wrath gets cast. Your own permanents are enchantments, artifacts and lands.",
+      "Point at the seat with the fliers and keep pointing. That seat caused 43 of the 61 damage eliminations this deck suffered across 120 Forge games.",
+      "Let another player's board be the reason a wrath gets cast. Your engine is enchantments and artifacts and a creature wrath leaves most of it standing.",
       "Name the seat you want to stop attacking you when you tap Loran of the Third Path, and give them the card.",
       "Do not counter a spell aimed at somebody else unless it wins the game or kills you.",
       "Counter the combo seat's first piece rather than the aggro seat's third creature."
     ],
     "targets": [
       "Kill the flier that connected, not the largest creature. Swords to Plowshares and Path to Exile cost {W} each.",
-      "Answer the permanent that stops your draw before the one that is largest.",
-      "Destroy a resolved artifact or enchantment with Disenchant, Cathar Commando or Loran of the Third Path; those three destroy one. Cyclonic Rift and Otawara, Soaring City bounce one instead.",
+      "Answer the permanent that stops your draw before the one that is biggest.",
+      "Destroy your own Greater Auramancy with Disenchant or Cathar Commando when you need Karametra's Blessing on Heliod. Auramancy grants shroud to other enchantments and not to itself, and while it is out Otawara, Soaring City cannot bounce your own enchantments either.",
+      "Destroy a resolved artifact or enchantment with Disenchant, Cathar Commando or Loran of the Third Path; those three destroy one each. Cyclonic Rift and Otawara, Soaring City bounce one instead.",
       "Save the overloaded Cyclonic Rift at {6}{U} for a board you cannot block or a lock built out of permanents.",
       "Aim Braingeyser and Stroke of Genius at yourself. Cast Prosperity or Skyscribing only with a converter already on the battlefield.",
       "Leave the seat that has not attacked you alone."
     ]
   },
-  "decklist_sha256_prefix": "f1d4a650b93f"
+  "decklist_sha256_prefix": "f7e21dc6a8bb"
 }

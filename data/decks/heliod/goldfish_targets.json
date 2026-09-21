@@ -80,13 +80,13 @@
       "need": [
         {
           "any_of": [
-            "Rhystic Study",
-            "Mystic Remora",
-            "Smothering Tithe",
             "Consecrated Sphinx",
-            "Teferi's Ageless Insight",
-            "Alhammarret's Archive",
-            "Faerie Mastermind"
+            "Faerie Mastermind",
+            "Gleaming Splendor",
+            "Mystic Remora",
+            "Rhystic Study",
+            "Smothering Tithe",
+            "Teferi's Ageless Insight"
           ]
         }
       ]
@@ -142,11 +142,11 @@
       "need": [
         {
           "any_of": [
+            "Greater Auramancy",
             "Guardian of Faith",
             "Karametra's Blessing",
-            "Lightning Greaves",
-            "Teferi's Protection",
-            "Leyline of Anticipation"
+            "Leyline of Anticipation",
+            "Teferi's Protection"
           ]
         }
       ]
@@ -178,5 +178,6 @@
       ]
     }
   ],
-  "_note": " REPAIRED 2026-09-16 after the v-merge: cut cards removed from every group (Angelic Wall, Forced Fruition, Greater Auramancy, Mikaeus, the Lunarch); Forced Fruition -> Horn of Greed."
+  "_note": " REPAIRED 2026-09-16 after the v-merge: cut cards removed from every group (Angelic Wall, Forced Fruition, Greater Auramancy, Mikaeus, the Lunarch); Forced Fruition -> Horn of Greed.",
+  "_v140_note": "REVISED 2026-09-21 for v1.4.0. Two groups named cards the merge cut — Alhammarret's Archive in the card-engine group and Lightning Greaves in the protection group — so the 0.733 and 0.597 rates were counting cards that are not in the 99, which silently DEFLATES them. Their replacements are declared in their place: Gleaming Splendor and Greater Auramancy. NOTE ON AURAMANCY: it grants SHROUD, not hexproof, so it protects Heliod from opponents AND from the pilot's own Karametra's Blessing and Guardian of Faith. It is counted as protection because that is what it is, but the handbook's wipe page carries the exception."
 }
