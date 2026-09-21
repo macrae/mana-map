@@ -7,13 +7,13 @@
   "axes": [
     {
       "axis": "mana-base",
-      "gap": 0,
+      "gap": 1,
       "measured": {
         "cards": [],
         "how": "land copies from deck-facts (copies, not entries)",
         "land_entries": 32,
         "unit": "copies",
-        "value": 36
+        "value": 35
       },
       "target": {
         "high": 38,
@@ -21,7 +21,7 @@
         "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
         "source": "strategy:deckbuilding.ratios"
       },
-      "verdict": "at"
+      "verdict": "under"
     },
     {
       "axis": "mana-sources",
@@ -42,7 +42,8 @@
           "Goldspan Dragon",
           "Ignoble Hierarch",
           "Nature's Lore",
-          "Sol Ring"
+          "Sol Ring",
+          "Talisman of Dominance"
         ],
         "colour_identity": [
           "B",
@@ -54,7 +55,7 @@
         "commander_mana_value": 9,
         "how": "land copies plus persistent producers (ramp:rock, ramp:dork, ramp:land); target 31 + 5 colour(s) + commander mana value 9 = 45",
         "note": "rituals and Treasure makers are one-shot and are not counted as sources",
-        "persistent_producers": 14,
+        "persistent_producers": 15,
         "unit": "copies",
         "value": 50
       },
@@ -85,7 +86,7 @@
           "Smoldering Marsh",
           "Steam Vents",
           "Stomping Ground",
-          "Stormcarved Coast"
+          "Turbulent Springs"
         ],
         "conditional_or_shock": 11,
         "how": "land copies that enter tapped with no condition and no pay-life escape",
@@ -103,17 +104,17 @@
     },
     {
       "axis": "colour-sources",
-      "gap": 12,
+      "gap": 9,
       "measured": {
         "cards": [],
         "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
         "per_colour": {
           "B": {
-            "have": 18,
+            "have": 21,
             "target": 30
           },
           "G": {
-            "have": 23,
+            "have": 22,
             "target": 22
           },
           "R": {
@@ -125,18 +126,18 @@
             "target": 22
           },
           "W": {
-            "have": 19,
+            "have": 20,
             "target": 22
           }
         },
         "short": {
-          "B": 12,
+          "B": 9,
           "R": 6,
           "U": 2,
-          "W": 3
+          "W": 2
         },
         "unit": "sources above target (worst colour)",
-        "value": -12
+        "value": -9
       },
       "target": {
         "formula": "karsten",
@@ -149,7 +150,7 @@
     },
     {
       "axis": "ramp",
-      "gap": -10,
+      "gap": -11,
       "measured": {
         "cards": [
           "Arcane Signet",
@@ -172,16 +173,16 @@
           "Old Gnawbone",
           "Smaug the Magnificent",
           "Sol Ring",
+          "Talisman of Dominance",
           "The Ur-Dragon",
           "Urza's Incubator"
         ],
         "how": "copies carrying any of ramp:rock, ramp:dork, ramp:ritual, ramp:land, ramp:cost-reduction, ramp:treasure",
         "possible_uncounted": [
-          "Desolation of Smaug",
-          "Sarkhan, Fireblood"
+          "Desolation of Smaug"
         ],
         "unit": "copies",
-        "value": 22
+        "value": 23
       },
       "target": {
         "high": 12,
@@ -204,9 +205,7 @@
         "how": "copies carrying any of draw:engine, draw:burst, draw:impulse, draw:wheel, draw:cantrip",
         "possible_uncounted": [
           "Dragon's Hoard",
-          "Return of the Wildspeaker",
-          "Rishkar's Expertise",
-          "Sarkhan, Fireblood"
+          "Sunbaked Canyon"
         ],
         "unit": "copies",
         "value": 4
@@ -232,12 +231,14 @@
           "Generous Gift",
           "Glorybringer",
           "Scourge of Valkas",
-          "Swords to Plowshares"
+          "Stubborn Denial",
+          "Swords to Plowshares",
+          "Transcendent Dragon"
         ],
         "how": "copies carrying any of removal:spot, removal:damage, removal:edict, removal:fight, removal:debuff, removal:bounce, removal:tax, counterspell, hate:graveyard",
-        "interactive_suite_copies": 17,
+        "interactive_suite_copies": 22,
         "unit": "copies",
-        "value": 9
+        "value": 11
       },
       "target": {
         "high": null,
@@ -252,11 +253,12 @@
       "gap": 0,
       "measured": {
         "cards": [
-          "Crux of Fate"
+          "Crux of Fate",
+          "Steel Hellkite"
         ],
         "how": "copies carrying any of removal:sweeper",
         "unit": "copies",
-        "value": 1
+        "value": 2
       },
       "target": {
         "high": 3,
@@ -268,21 +270,23 @@
     },
     {
       "axis": "protection",
-      "gap": -1,
+      "gap": -3,
       "measured": {
         "cards": [
+          "Asceticism",
           "Boros Charm",
           "Deflecting Swat",
           "Flawless Maneuver",
           "Heroic Intervention",
           "Lightning Greaves",
           "Miirym, Sentinel Wyrm",
+          "Mithril Coat",
           "Solphim, Mayhem Dominus",
           "Teferi's Protection"
         ],
         "how": "copies carrying any of protection:self, protection:granted, protection:fog, protection:redirect",
         "unit": "copies",
-        "value": 8
+        "value": 10
       },
       "target": {
         "high": 7,
@@ -321,7 +325,7 @@
         "cards": [],
         "how": "front-face creature copies",
         "unit": "copies",
-        "value": 30
+        "value": 32
       },
       "target": {
         "high": null,
@@ -336,9 +340,9 @@
       "gap": 1,
       "measured": {
         "by_class": {
-          "artifact": 1,
-          "creature": 5,
-          "enchantment": 1,
+          "artifact": 2,
+          "creature": 6,
+          "enchantment": 2,
           "graveyard": 0,
           "land": 1
         },
@@ -369,9 +373,9 @@
       "measured": {
         "cards": [],
         "how": "goldfish land_drop_hit_rate_by_turn['3']",
-        "keep_first_seven_rate": 0.794,
+        "keep_first_seven_rate": 0.773,
         "unit": "rate",
-        "value": 0.906
+        "value": 0.891
       },
       "target": {
         "high": null,
@@ -387,10 +391,10 @@
       "measured": {
         "cards": [],
         "how": "deck-facts curve (nonland entries)",
-        "mana_value_8_plus": 2,
-        "nonland_entries": 64,
-        "three_drops": 18,
-        "two_drops": 10,
+        "mana_value_8_plus": 1,
+        "nonland_entries": 65,
+        "three_drops": 17,
+        "two_drops": 11,
         "unit": "modal mana value",
         "value": 3
       },
@@ -415,8 +419,7 @@
         "floor_name": "Upgraded",
         "game_changers": [
           "Enlightened Tutor",
-          "Teferi's Protection",
-          "Worldly Tutor"
+          "Teferi's Protection"
         ],
         "how": "bracket_report.json",
         "unit": "bracket floor",
@@ -438,12 +441,11 @@
           "Enlightened Tutor",
           "Nature's Lore",
           "Sarkhan's Triumph",
-          "Skyshroud Claim",
-          "Worldly Tutor"
+          "Skyshroud Claim"
         ],
         "how": "copies carrying tutor:unrestricted or tutor:narrow",
         "unit": "copies",
-        "value": 5
+        "value": 4
       },
       "target": {
         "high": null,
@@ -459,23 +461,61 @@
   ],
   "counts": {
     "copies": 100,
-    "entries": 96,
-    "land_copies": 36,
+    "entries": 97,
+    "land_copies": 35,
     "lands": 32,
     "legendary": 13,
     "legendary_lands": 0,
     "legendary_permanents": 13,
-    "nonland": 64,
-    "nonlegendary": 83
+    "nonland": 65,
+    "nonlegendary": 84
   },
-  "decklist_sha256_prefix": "5611a822851c",
+  "dead_searches": [],
+  "decklist_sha256_prefix": "99419d5b9145",
   "engine": {
     "available": true,
     "redundancy_citation": {
       "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%",
       "rule": "strategy:deckbuilding.redundancy-vs-tutors"
     },
-    "single_points_of_failure": [],
+    "single_points_of_failure": [
+      {
+        "component": {
+          "cards": [
+            "Desolation of Smaug"
+          ],
+          "closers": {
+            "available": true,
+            "by_combo_line": [],
+            "by_combo_line_total": 0,
+            "by_role": [],
+            "by_role_total": 0,
+            "note": "No role and no axis is shared by two or more members, so this component has no signature and only the combo route ran. That is the normal case for a named combo half.",
+            "role_signature": null,
+            "role_signature_kind": null
+          },
+          "modal_role": "removal:damage",
+          "not_in_deck": [],
+          "odds": {
+            "by_turn_three": 0.091,
+            "opening_seven": 0.071
+          },
+          "shared_axes": [],
+          "shared_roles": [],
+          "size": 1,
+          "thin": true,
+          "thinnest": true
+        },
+        "measured": {
+          "assembled_rate": 0.17,
+          "assembled_rate_assisted": 0.419,
+          "by_turn_6_rate": 0.125,
+          "by_turn_6_rate_assisted": 0.322,
+          "mean_turn": 3.875
+        },
+        "target": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)"
+      }
+    ],
     "targets": [
       {
         "commander_gated": false,
@@ -509,10 +549,10 @@
         "label": "Cost reducer drawn (the deck's real curve fixer)",
         "measured": {
           "assembled_rate": 0.521,
-          "assembled_rate_assisted": 0.714,
-          "by_turn_6_rate": 0.422,
-          "by_turn_6_rate_assisted": 0.599,
-          "mean_turn": 3.264
+          "assembled_rate_assisted": 0.67,
+          "by_turn_6_rate": 0.421,
+          "by_turn_6_rate_assisted": 0.558,
+          "mean_turn": 3.26
         },
         "thinnest_size": 4
       },
@@ -556,11 +596,11 @@
         ],
         "label": "Ramp or fixing drawn",
         "measured": {
-          "assembled_rate": 0.904,
-          "assembled_rate_assisted": 0.947,
-          "by_turn_6_rate": 0.824,
-          "by_turn_6_rate_assisted": 0.883,
-          "mean_turn": 2.213
+          "assembled_rate": 0.906,
+          "assembled_rate_assisted": 0.938,
+          "by_turn_6_rate": 0.826,
+          "by_turn_6_rate_assisted": 0.871,
+          "mean_turn": 2.223
         },
         "thinnest_size": 12
       },
@@ -599,11 +639,11 @@
         ],
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
         "measured": {
-          "assembled_rate": 0.733,
-          "assembled_rate_assisted": 0.851,
-          "by_turn_6_rate": 0.621,
-          "by_turn_6_rate_assisted": 0.747,
-          "mean_turn": 2.846
+          "assembled_rate": 0.739,
+          "assembled_rate_assisted": 0.828,
+          "by_turn_6_rate": 0.628,
+          "by_turn_6_rate_assisted": 0.72,
+          "mean_turn": 2.847
         },
         "thinnest_size": 7
       },
@@ -672,11 +712,11 @@
         ],
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
         "measured": {
-          "assembled_rate": 0.463,
-          "assembled_rate_assisted": 0.667,
-          "by_turn_6_rate": 0.336,
-          "by_turn_6_rate_assisted": 0.514,
-          "mean_turn": 4.195
+          "assembled_rate": 0.462,
+          "assembled_rate_assisted": 0.621,
+          "by_turn_6_rate": 0.337,
+          "by_turn_6_rate_assisted": 0.472,
+          "mean_turn": 4.162
         },
         "thinnest_size": 4
       },
@@ -718,37 +758,41 @@
               "Lathliss, Dragon Queen",
               "Smaug the Magnificent",
               "Solphim, Mayhem Dominus",
+              "Steel Hellkite",
               "Thrakkus the Butcher",
               "Thunderbreak Regent",
-              "Twinflame Tyrant"
+              "Transcendent Dragon",
+              "Twinflame Tyrant",
+              "Whirlwing Stormbrood // Dynamic Soar"
             ],
             "modal_role": "threat:body",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.547,
-              "opening_seven": 0.456
+              "by_turn_three": 0.67,
+              "opening_seven": 0.574
             },
             "shared_axes": [
+              "interaction",
               "ramp",
               "threat-density"
             ],
             "shared_roles": [
               "threat:body",
               "ramp:treasure",
-              "wincon:combat"
+              "buff:pump"
             ],
-            "size": 8,
+            "size": 11,
             "thin": false,
             "thinnest": false
           }
         ],
         "label": "Payoff + a castable dragon by mid-game",
         "measured": {
-          "assembled_rate": 0.571,
-          "assembled_rate_assisted": 0.738,
-          "by_turn_6_rate": 0.413,
-          "by_turn_6_rate_assisted": 0.567,
-          "mean_turn": 4.216
+          "assembled_rate": 0.642,
+          "assembled_rate_assisted": 0.755,
+          "by_turn_6_rate": 0.479,
+          "by_turn_6_rate_assisted": 0.592,
+          "mean_turn": 3.986
         },
         "thinnest_size": 7
       },
@@ -757,47 +801,52 @@
         "components": [
           {
             "cards": [
+              "Asceticism",
               "Boros Charm",
               "Deflecting Swat",
               "Flawless Maneuver",
               "Heroic Intervention",
               "Lightning Greaves",
+              "Mithril Coat",
+              "Stubborn Denial",
               "Teferi's Protection"
             ],
             "modal_role": "protection:self",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.444,
-              "opening_seven": 0.364
+              "by_turn_three": 0.592,
+              "opening_seven": 0.498
             },
             "shared_axes": [
-              "protection"
+              "protection",
+              "interaction"
             ],
             "shared_roles": [
-              "protection:self"
+              "protection:self",
+              "protection:granted",
+              "buff:attached"
             ],
-            "size": 6,
+            "size": 9,
             "thin": false,
             "thinnest": true
           }
         ],
-        "label": "Protection held for the big turn",
+        "label": "Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)",
         "measured": {
-          "assembled_rate": 0.673,
-          "assembled_rate_assisted": 0.817,
-          "by_turn_6_rate": 0.565,
-          "by_turn_6_rate_assisted": 0.707,
-          "mean_turn": 2.959
+          "assembled_rate": 0.811,
+          "assembled_rate_assisted": 0.87,
+          "by_turn_6_rate": 0.713,
+          "by_turn_6_rate_assisted": 0.786,
+          "mean_turn": 2.58
         },
-        "thinnest_size": 6
+        "thinnest_size": 9
       },
       {
         "commander_gated": false,
         "components": [
           {
             "cards": [
-              "Desolation of Smaug",
-              "Sarkhan, Fireblood"
+              "Desolation of Smaug"
             ],
             "closers": {
               "available": true,
@@ -812,25 +861,25 @@
             "modal_role": "removal:damage",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.174,
-              "opening_seven": 0.137
+              "by_turn_three": 0.091,
+              "opening_seven": 0.071
             },
             "shared_axes": [],
             "shared_roles": [],
-            "size": 2,
+            "size": 1,
             "thin": true,
             "thinnest": true
           }
         ],
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
         "measured": {
-          "assembled_rate": 0.302,
-          "assembled_rate_assisted": 0.587,
-          "by_turn_6_rate": 0.234,
-          "by_turn_6_rate_assisted": 0.469,
-          "mean_turn": 3.607
+          "assembled_rate": 0.17,
+          "assembled_rate_assisted": 0.419,
+          "by_turn_6_rate": 0.125,
+          "by_turn_6_rate_assisted": 0.322,
+          "mean_turn": 3.875
         },
-        "thinnest_size": 2
+        "thinnest_size": 1
       },
       {
         "commander_gated": false,
@@ -865,11 +914,11 @@
         ],
         "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
         "measured": {
-          "assembled_rate": 0.676,
-          "assembled_rate_assisted": 0.811,
-          "by_turn_6_rate": 0.56,
-          "by_turn_6_rate_assisted": 0.7,
-          "mean_turn": 3.068
+          "assembled_rate": 0.688,
+          "assembled_rate_assisted": 0.784,
+          "by_turn_6_rate": 0.572,
+          "by_turn_6_rate_assisted": 0.672,
+          "mean_turn": 3.037
         },
         "thinnest_size": 6
       },
@@ -899,25 +948,6 @@
                     "Infinite death triggers",
                     "Infinite damage",
                     "Infinite creature tokens"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Ganax, Astral Hunter",
-                    "Aggravated Assault",
-                    "Utvara Hellkite"
-                  ],
-                  "name": "Aggravated Assault",
-                  "popularity": 4405,
-                  "produces": [
-                    "Infinite colored mana",
-                    "Infinite combat phases",
-                    "Infinite creature tokens",
-                    "Infinite ETB",
-                    "Infinite mana creatures you control can produce",
-                    "Infinite Treasure tokens",
-                    "Infinite untap of creatures you control"
                   ],
                   "status": "needs a stack scenario"
                 },
@@ -974,7 +1004,7 @@
                   "status": "needs a stack scenario"
                 }
               ],
-              "by_combo_line_total": 5,
+              "by_combo_line_total": 4,
               "by_role": [
                 {
                   "cmc": 9.0,
@@ -1068,33 +1098,215 @@
             "cards": [
               "Ancient Gold Dragon",
               "Lathliss, Dragon Queen",
-              "Miirym, Sentinel Wyrm",
-              "Sarkhan, Fireblood",
-              "Utvara Hellkite"
+              "Miirym, Sentinel Wyrm"
             ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [
+                {
+                  "cards": [
+                    "Orthion, Hero of Lavabrink",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Orthion, Hero of Lavabrink",
+                  "popularity": 13279,
+                  "produces": [
+                    "Near-infinite damage"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Miirym, Sentinel Wyrm",
+                    "Bladewing the Risen",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Bladewing the Risen",
+                  "popularity": 13026,
+                  "produces": [
+                    "Infinite LTB",
+                    "Infinite ETB",
+                    "Infinite death triggers",
+                    "Infinite damage",
+                    "Infinite creature tokens"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Rionya, Fire Dancer",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Rionya, Fire Dancer",
+                  "popularity": 6091,
+                  "produces": [
+                    "Near-infinite damage"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Terror of the Peaks",
+                    "Rite of Replication"
+                  ],
+                  "name": "Rite of Replication",
+                  "popularity": 3910,
+                  "produces": [
+                    "Near-infinite damage"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Devastating Onslaught",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Devastating Onslaught",
+                  "popularity": 3754,
+                  "produces": [
+                    "Near-infinite damage"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Vrondiss, Rage of Ancients",
+                    "Scourge of Valkas"
+                  ],
+                  "name": "Vrondiss, Rage of Ancients",
+                  "popularity": 2714,
+                  "produces": [
+                    "Infinite death triggers",
+                    "Infinite ETB",
+                    "Infinite LTB",
+                    "Infinite sacrifice triggers"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Polyraptor",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Polyraptor",
+                  "popularity": 1658,
+                  "produces": [
+                    "Infinite death triggers",
+                    "Infinite ETB",
+                    "Infinite LTB"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Solphim, Mayhem Dominus",
+                    "Malignus",
+                    "Terror of the Peaks"
+                  ],
+                  "name": "Malignus",
+                  "popularity": 797,
+                  "produces": [
+                    "Near-infinite damage",
+                    "Target opponent loses the game"
+                  ],
+                  "status": "needs a stack scenario"
+                }
+              ],
+              "by_combo_line_total": 16,
+              "by_role": [
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 38,
+                  "game_changer": false,
+                  "name": "Solemn Simulacrum",
+                  "signature": "threat:body",
+                  "type_line": "Artifact Creature — Golem"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 58,
+                  "game_changer": false,
+                  "name": "Llanowar Elves",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Elf Druid"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 76,
+                  "game_changer": false,
+                  "name": "Esper Sentinel",
+                  "signature": "threat:body",
+                  "type_line": "Artifact Creature — Human Soldier"
+                },
+                {
+                  "cmc": 1.0,
+                  "edhrec_rank": 106,
+                  "game_changer": false,
+                  "name": "Elvish Mystic",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Elf Druid"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 110,
+                  "game_changer": false,
+                  "name": "Sakura-Tribe Elder",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Snake Shaman"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 113,
+                  "game_changer": false,
+                  "name": "Eternal Witness",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Human Shaman"
+                },
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 132,
+                  "game_changer": false,
+                  "name": "Roaming Throne",
+                  "signature": "threat:body",
+                  "type_line": "Artifact Creature — Golem"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 138,
+                  "game_changer": false,
+                  "name": "Blood Artist",
+                  "signature": "threat:body",
+                  "type_line": "Creature — Vampire"
+                }
+              ],
+              "by_role_total": 17568,
+              "note": null,
+              "role_signature": "threat:body",
+              "role_signature_kind": "role"
+            },
             "modal_role": "threat:body",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.386,
-              "opening_seven": 0.312
+              "by_turn_three": 0.251,
+              "opening_seven": 0.199
             },
             "shared_axes": [],
             "shared_roles": [
               "threat:body",
               "threat:tokens"
             ],
-            "size": 5,
-            "thin": false,
+            "size": 3,
+            "thin": true,
             "thinnest": false
           }
         ],
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
         "measured": {
-          "assembled_rate": 0.235,
-          "assembled_rate_assisted": 0.472,
-          "by_turn_6_rate": 0.15,
-          "by_turn_6_rate_assisted": 0.316,
-          "mean_turn": 4.977
+          "assembled_rate": 0.179,
+          "assembled_rate_assisted": 0.335,
+          "by_turn_6_rate": 0.109,
+          "by_turn_6_rate_assisted": 0.212,
+          "mean_turn": 5.25
         },
         "thinnest_size": 3
       },
@@ -1119,25 +1331,6 @@
                   "produces": [
                     "Each opponent loses the game",
                     "Near-infinite damage to all players"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Ganax, Astral Hunter",
-                    "Aggravated Assault",
-                    "Utvara Hellkite"
-                  ],
-                  "name": "Aggravated Assault",
-                  "popularity": 4405,
-                  "produces": [
-                    "Infinite colored mana",
-                    "Infinite combat phases",
-                    "Infinite creature tokens",
-                    "Infinite ETB",
-                    "Infinite mana creatures you control can produce",
-                    "Infinite Treasure tokens",
-                    "Infinite untap of creatures you control"
                   ],
                   "status": "needs a stack scenario"
                 },
@@ -1227,9 +1420,21 @@
                     "Infinite storm count"
                   ],
                   "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Goldspan Dragon",
+                    "Shimmering Wings"
+                  ],
+                  "name": "Shimmering Wings",
+                  "popularity": 67,
+                  "produces": [
+                    "Infinite storm count"
+                  ],
+                  "status": "needs a stack scenario"
                 }
               ],
-              "by_combo_line_total": 10,
+              "by_combo_line_total": 9,
               "by_role": [
                 {
                   "cmc": 4.0,
@@ -1296,7 +1501,7 @@
                   "type_line": "Creature — Vampire"
                 }
               ],
-              "by_role_total": 17570,
+              "by_role_total": 17568,
               "note": null,
               "role_signature": "threat:body",
               "role_signature_kind": "role"
@@ -1323,17 +1528,21 @@
               "Lathliss, Dragon Queen",
               "Smaug the Magnificent",
               "Solphim, Mayhem Dominus",
+              "Steel Hellkite",
               "Thunderbreak Regent",
-              "Twinflame Tyrant"
+              "Transcendent Dragon",
+              "Twinflame Tyrant",
+              "Whirlwing Stormbrood // Dynamic Soar"
             ],
             "modal_role": "threat:body",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.547,
-              "opening_seven": 0.456
+              "by_turn_three": 0.67,
+              "opening_seven": 0.574
             },
             "shared_axes": [
               "ramp",
+              "interaction",
               "threat-density"
             ],
             "shared_roles": [
@@ -1341,18 +1550,18 @@
               "ramp:treasure",
               "ramp:dork"
             ],
-            "size": 8,
+            "size": 11,
             "thin": false,
             "thinnest": false
           }
         ],
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
         "measured": {
-          "assembled_rate": 0.243,
-          "assembled_rate_assisted": 0.501,
-          "by_turn_6_rate": 0.157,
-          "by_turn_6_rate_assisted": 0.345,
-          "mean_turn": 4.866
+          "assembled_rate": 0.274,
+          "assembled_rate_assisted": 0.471,
+          "by_turn_6_rate": 0.186,
+          "by_turn_6_rate_assisted": 0.336,
+          "mean_turn": 4.545
         },
         "thinnest_size": 2
       }
@@ -1367,16 +1576,16 @@
       },
       "goldfish_metrics.json": {
         "current": true,
-        "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+        "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
         "present": true
       },
       "mana_analysis.json": {
         "current": true,
-        "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+        "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
         "present": true
       }
     },
-    "decklist_sha256": "5611a822851cc903e46983616e923ed4e5d58d664125e2c0e9d8c1912ebe7645",
+    "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
     "recon": {
       "as_of": null,
       "present": false
@@ -1384,18 +1593,18 @@
   },
   "notes": [
     "No archetype was established, so the BASE targets apply and no archetype override was used. strategy:deckbuilding.ratios is explicit that templates are counts of functions rather than cards and that the counts should come from the deck's actual failure modes — read every target below as a starting point, not a verdict.",
-    "Under target: colour-sources, card-advantage, interaction-breadth.",
+    "Under target: mana-base, colour-sources, card-advantage, interaction-breadth.",
     "Over target: ramp, protection.",
     "Permanent class(es) with no answer detected: graveyard. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
+    "1 declared target(s) rest on a component with one card. A named card is 7.1% of an opening seven; that is the ceiling on those lines, not a defect in the simulation.",
     "Each target is an AND of ORs and the schema cannot express the UNION of several independent kills — a deck with four kills has no single assembled_rate here, and averaging them would be inventing a number the simulation never measured.",
-    "Under target, but the oracle text shows the function on card(s) the taxonomy did not classify that way — check these before calling the axis a weakness: card-advantage — Dragon's Hoard, Return of the Wildspeaker, Rishkar's Expertise, Sarkhan, Fireblood. They are NOT included in the count.",
-    "Roles come from card_roles.json, which classifies 96.9% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
+    "Under target, but the oracle text shows the function on card(s) the taxonomy did not classify that way — check these before calling the axis a weakness: card-advantage — Dragon's Hoard, Sunbaked Canyon. They are NOT included in the count.",
+    "Roles come from card_roles.json, which classifies 97.9% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
   ],
   "roles": {
-    "coverage": 0.9688,
+    "coverage": 0.9794,
     "no_role": [
       "Chaos Warp",
-      "Rishkar's Expertise",
       "Sneak Attack"
     ]
   },
