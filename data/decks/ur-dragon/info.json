@@ -16,11 +16,10 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 13,
     "of": 18,
     "stale": [
       "frame",
-      "map",
       "tutors",
       "prose"
     ],
@@ -914,8 +913,8 @@
       "name": "final-v2",
       "opened": "2026-09-20",
       "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax — a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps.",
-      "state": "PROPOSED · OUTRUN",
-      "state_why": "proposed against V5 and the deck is now VNone — v1.3.0 may be taken; re-measure and propose again",
+      "state": "MERGED",
+      "state_why": "merged 2026-09-20 into the list after VNone",
       "proposal": {
         "at": "2026-09-20",
         "as_version": "v1.3.0",
@@ -6717,12 +6716,12 @@
     "within_target": true
   },
   "paper": {
-    "version": 4,
-    "sha": "f7bc720f9ecc",
-    "decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2",
-    "built_at": "2026-09-11",
-    "note": "SLEEVED at v1.2.1 (V4). The pilot stated 2026-09-11 that ur-dragon is an existing sleeved deck with final-v1 pending paper cards; the v1.2.1 note already records the sleeves reconciled 2026-09-08. Locked so the bench racks it as SLEEVED rather than as a build plan.",
-    "release": "v1.2.1"
+    "version": 6,
+    "sha": "9011c637301e",
+    "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+    "built_at": "2026-09-20",
+    "note": "V6 sleeved 2026-09-20 — the protection package (Stubborn Denial, Mithril Coat, Asceticism, Steel Hellkite, Transcendent Dragon, Whirlwing Stormbrood), Hellkite Courser kept, a Forest to a Mountain",
+    "release": "v1.3.0"
   },
   "record": {
     "games": 6,
@@ -7305,10 +7304,9 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
-    "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `final-v1` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
-    "`final-v2` was proposed as v1.3.0 against V5 and the deck has moved on — v1.3.0 may be taken; re-measure and propose again",
+    "branch `final-v2` is fully sourced (+0 -0) — `manamap pilot deck-branch ur-dragon merge final-v2 --write`",
     "branch `haste-v1` needs 10 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
     "branch `mana-v1` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
     "branch `protection-v1` needs 1 card(s) sourced — `manamap pilot deck-branch ur-dragon source protection-v1`",
@@ -7318,7 +7316,7 @@
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×5, goldfish ×10, research-strategy ×6, resolve-stack ×10",
-    "5 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "6 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
