@@ -16,11 +16,10 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 13,
+    "complete": 14,
     "of": 18,
     "stale": [
       "frame",
-      "tutors",
       "prose"
     ],
     "invalid": [
@@ -6815,11 +6814,11 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Protection held for the big turn": {
-          "value": 56,
+        "target:Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)": {
+          "value": 71,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'Protection held for the big turn' by turn six",
+          "definition": "share of games assembling 'Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -7026,8 +7025,8 @@
         "by_turn_6_pct": 40
       },
       {
-        "label": "Protection held for the big turn",
-        "by_turn_6_pct": 56
+        "label": "Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)",
+        "by_turn_6_pct": 71
       },
       {
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
@@ -7304,7 +7303,7 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
-    "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `final-v1` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
     "branch `final-v2` is fully sourced (+0 -0) — `manamap pilot deck-branch ur-dragon merge final-v2 --write`",
     "branch `haste-v1` needs 10 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
