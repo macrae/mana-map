@@ -505,16 +505,24 @@ def test_a_card_the_deck_does_not_carry_still_links_but_gets_no_preview():
     """TWO BEHAVIOURS, DELIBERATELY INDEPENDENT — and a missing artifact renders
     as an absence, never as an empty shell.
 
-    ur-dragon's engine.json names Shivan Reef and Stormcarved Coast, which its
-    decklist no longer runs, so there is no image. An ungated rule would pin an
-    empty bordered box to the corner of the screen, indistinguishable from a
+    A card the deck does not carry has no image, and an ungated rule would pin
+    an empty bordered box to the corner of the screen, indistinguishable from a
     broken image. The atlas link still works: the corpus knows the card even
     though this deck does not run it. Drop the `if url` arm of `poh.card_ref`
     and this fails.
+
+    THIS TEST USED TO READ THE CONDITION OFF A RENDERED PAGE, relying on
+    ur-dragon's engine.json naming Shivan Reef and Stormcarved Coast — two lands
+    a paper rescan had dropped. On 2026-09-21 that model was rebuilt against the
+    current 99 and the stale names went with it, so the fixture vanished and the
+    test failed for the best possible reason: the staleness it depended on had
+    been fixed. A test that needs a deck artifact to be WRONG is a test that
+    breaks when someone puts it right, so it now CONSTRUCTS the condition and
+    drives `poh.card_ref` directly. The rendered page is still checked, but only
+    where it actually carries such a link.
     """
     html = _rendered()
     bare = re.findall(r'<a class="cardref" href="([^"]+)"[^>]*>([^<]+)</a>', html)
-    assert bare, "expected at least one card with no image to prove the gate"
     for href, name in bare:
         assert "viz/index.html?cards=" in href, name
         assert f'class="cardref pop"' not in href

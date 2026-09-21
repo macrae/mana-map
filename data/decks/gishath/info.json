@@ -20,9 +20,7 @@
       "frame",
       "prose"
     ],
-    "invalid": [
-      "diagnostic.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief",
@@ -2182,7 +2180,10 @@
       "required": [
         "Ramp or fixing drawn"
       ],
-      "routes": [],
+      "routes": [
+        "The Gishath connection kit (haste or evasion for the 7/6)",
+        "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur"
+      ],
       "online_by_turn": {
         "1": {
           "rate": 0.5197,
@@ -2265,7 +2266,88 @@
           "n": 10000
         }
       },
-      "any_route_by_turn": null,
+      "any_route_by_turn": {
+        "1": {
+          "rate": 0.4007,
+          "ci95": [
+            0.3911,
+            0.4103
+          ],
+          "n": 10000
+        },
+        "2": {
+          "rate": 0.4995,
+          "ci95": [
+            0.4897,
+            0.5093
+          ],
+          "n": 10000
+        },
+        "3": {
+          "rate": 0.5585,
+          "ci95": [
+            0.5487,
+            0.5682
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.6284,
+          "ci95": [
+            0.6189,
+            0.6378
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.6922,
+          "ci95": [
+            0.6831,
+            0.7012
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.7528,
+          "ci95": [
+            0.7442,
+            0.7612
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.8087,
+          "ci95": [
+            0.8009,
+            0.8163
+          ],
+          "n": 10000
+        },
+        "8": {
+          "rate": 0.851,
+          "ci95": [
+            0.8439,
+            0.8578
+          ],
+          "n": 10000
+        },
+        "9": {
+          "rate": 0.8892,
+          "ci95": [
+            0.8829,
+            0.8952
+          ],
+          "n": 10000
+        },
+        "10": {
+          "rate": 0.9239,
+          "ci95": [
+            0.9185,
+            0.9289
+          ],
+          "n": 10000
+        }
+      },
       "bottleneck": {
         "label": "Ramp or fixing drawn",
         "by_turn_three": {
@@ -2917,7 +2999,6 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (diagnostic.json) — `deck-status gishath` names them; fix before anything else reads them",
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `cart-v1` needs 5 card(s) sourced — `manamap pilot deck-branch gishath source cart-v1`",
     "branch `lands-v1` needs 3 card(s) sourced — `manamap pilot deck-branch gishath source lands-v1`",
