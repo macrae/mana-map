@@ -76,12 +76,6 @@
    },
    {
     "free": false,
-    "name": "Breeding Pool",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Cascade Bluffs",
     "state": "box",
     "where": [
@@ -255,14 +249,9 @@
    },
    {
     "free": false,
-    "name": "Hallowed Fountain",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Shabraz Parts"
-     }
-    ]
+    "name": "Hellkite Courser",
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -281,17 +270,6 @@
     "name": "Ignoble Hierarch",
     "state": "in_deck",
     "where": []
-   },
-   {
-    "free": false,
-    "name": "Irrigated Farmland",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Shabraz Parts"
-     }
-    ]
    },
    {
     "free": false,
@@ -327,12 +305,6 @@
     "free": false,
     "name": "Mana Confluence",
     "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
-    "name": "Marang River Regent // Coil and Catch",
-    "state": "buy",
     "where": []
    },
    {
@@ -410,6 +382,12 @@
     "free": false,
     "name": "Panharmonicon",
     "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Plateau",
+    "state": "buy",
     "where": []
    },
    {
@@ -550,6 +528,12 @@
    },
    {
     "free": false,
+    "name": "Taiga",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Talisman of Dominance",
     "state": "in_deck",
     "where": []
@@ -655,8 +639,8 @@
    }
   ],
   "counts": {
-   "box": 4,
-   "buy": 9,
+   "box": 2,
+   "buy": 10,
    "elsewhere": 2,
    "free": 2,
    "in_deck": 81
@@ -666,17 +650,16 @@
    "add": [
     "Asceticism",
     "Cascade Bluffs",
-    "Hallowed Fountain",
-    "Irrigated Farmland",
     "Ketria Triome",
-    "Marang River Regent // Coil and Catch",
     "Marsh Flats",
     "Misty Rainforest",
     "Mithril Coat",
+    "Plateau",
     "Polluted Delta",
     "Raugrin Triome",
     "Steel Hellkite",
     "Stubborn Denial",
+    "Taiga",
     "Transcendent Dragon",
     "Verdant Catacombs",
     "Volcanic Island",
@@ -685,14 +668,14 @@
    "add_copies": 17,
    "base_names": 97,
    "base_size": 100,
-   "names": 98,
+   "names": 97,
    "out": [
     "Battlefield Forge",
+    "Breeding Pool",
     "Canopy Vista",
     "Cinder Glade",
     "Dragonskull Summit",
     "Forest",
-    "Hellkite Courser",
     "Path of Ancestry",
     "Plains",
     "Radiant Destiny",
@@ -705,7 +688,13 @@
     "Worldly Tutor"
    ],
    "out_copies": 17,
-   "quantity": [],
+   "quantity": [
+    {
+     "from": 3,
+     "name": "Mountain",
+     "to": 4
+    }
+   ],
    "size": 100
   },
   "free": 2,
@@ -716,12 +705,13 @@
   "unsourced": [
    "Asceticism",
    "Ketria Triome",
-   "Marang River Regent // Coil and Catch",
    "Marsh Flats",
    "Mithril Coat",
+   "Plateau",
    "Raugrin Triome",
    "Steel Hellkite",
    "Stubborn Denial",
+   "Taiga",
    "Transcendent Dragon",
    "Volcanic Island",
    "Whirlwing Stormbrood // Dynamic Soar"
@@ -736,14 +726,6 @@
    "class": "counterspell",
    "headline": "2 card(s) carrying a counterspell effect",
    "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
-  },
-  {
-   "cards": [
-    "Marang River Regent // Coil and Catch"
-   ],
-   "class": "draw",
-   "headline": "1 card(s) carrying a draw effect",
-   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
   },
   {
    "cards": [
@@ -765,6 +747,7 @@
   {
    "cards": [
     "Battlefield Forge",
+    "Breeding Pool",
     "Canopy Vista",
     "Cascade Bluffs",
     "Cinder Glade",
@@ -775,36 +758,48 @@
     "Ketria Triome",
     "Marsh Flats",
     "Misty Rainforest",
+    "Mountain",
     "Path of Ancestry",
     "Plains",
+    "Plateau",
     "Polluted Delta",
     "Raugrin Triome",
     "Smoldering Marsh",
     "Sunbaked Canyon",
+    "Taiga",
     "Verdant Catacombs",
     "Volcanic Island"
    ],
    "class": "land",
-   "headline": "10 land swap(s)",
+   "headline": "13 land swap(s)",
    "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
  "branch": "final-v2",
  "changes": {
-  "count": 17,
+  "count": 19,
   "diff": {
    "base_names": 97,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": 1,
+     "from": 3,
+     "kind": "land",
+     "name": "Mountain",
+     "to": 4
+    }
+   ],
    "counts": {
-    "in": 17,
+    "in": 16,
     "in_copies": 17,
     "lands_in": 10,
-    "lands_out": 9,
+    "lands_out": 10,
     "out": 16,
     "out_copies": 17,
-    "spells_in": 7,
-    "spells_out": 7
+    "spells_in": 6,
+    "spells_out": 6
    },
    "in": [
     {
@@ -851,16 +846,6 @@
      "cmc": 6,
      "copies": 1,
      "kind": "spell",
-     "name": "Marang River Regent // Coil and Catch",
-     "pair": "Hellkite Courser",
-     "state": "buy",
-     "type_line": "Creature \u2014 Dragon // Instant \u2014 Omen",
-     "why": "The mana pass: blue read 16 sources against a Karsten target. A UU Dragon that also bounces, against a red six-drop whose haste grant needs another Dragon already out."
-    },
-    {
-     "cmc": 6,
-     "copies": 1,
-     "kind": "spell",
      "name": "Steel Hellkite",
      "pair": "Return of the Wildspeaker",
      "state": "buy",
@@ -886,26 +871,6 @@
      "state": "box",
      "type_line": "Land",
      "why": "The last Plains makes only a colour at target. Cascade Bluffs filters into UU or RR, which is exactly the two costs this branch adds \u2014 Marang River Regent and Transcendent Dragon are both {4}{U}{U}. Owned. It needs another land first, which is the cost."
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Hallowed Fountain",
-     "pair": "Forest",
-     "state": "box",
-     "type_line": "Land \u2014 Plains Island",
-     "why": "Green reads +4 OVER its Karsten target while blue is short by 13, and mana-fit names Forest as a cut candidate for making only colours already at target. Hallowed Fountain is ISLAND-TYPED, so all three blue fetches in the branch can find it \u2014 the deck had only three blue-typed lands total for them to fetch. Owned."
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
-     "name": "Irrigated Farmland",
-     "pair": "Canopy Vista",
-     "state": "box",
-     "type_line": "Land \u2014 Plains Island",
-     "why": "mana-fit names Canopy Vista a cut candidate: GW, and both colours now read at or over target while blue is short 11. Irrigated Farmland is the second ISLAND-TYPED land the blue fetches can find, and it cycles when it is the wrong half. Owned. It enters tapped, which is the cost."
     },
     {
      "cmc": 0,
@@ -941,6 +906,16 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
+     "name": "Plateau",
+     "pair": "Hallowed Fountain",
+     "state": "buy",
+     "type_line": "Land \u2014 Mountain Plains",
+     "why": "Same re-balance. Hallowed Fountain is the other pure W/U land, and blue is over target while red is short. Plateau is a Mountain Plains true dual \u2014 untapped, no life paid, two basic types \u2014 so it replaces the white source being cut AND adds the red one the deck needs."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
      "name": "Polluted Delta",
      "pair": "Dragonskull Summit",
      "state": "elsewhere",
@@ -956,6 +931,16 @@
      "state": "elsewhere",
      "type_line": "Land \u2014 Island Mountain Plains",
      "why": "TIGHTENING. Smoldering Marsh is a slow B/R dual, and black is TWO CARDS in the 99 \u2014 the commander's single pip and Crux of Fate. Raugrin (Island Mountain Plains) makes U, R and W, all three of which are short, and its three basic types make it a fetch target for the whole manabase."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Taiga",
+     "pair": "Irrigated Farmland",
+     "state": "buy",
+     "type_line": "Land \u2014 Mountain Forest",
+     "why": "RE-BALANCE after keeping Hellkite Courser. Dropping Marang River Regent removed the second {4}{U}{U} card, which collapsed blue's Karsten target from 36 sources to 22 \u2014 blue now reads +7 OVER target on 29 sources, while RED, at 54.5% of the deck's pips, is 5 short. Irrigated Farmland is the weakest land in the branch on two counts: it makes only W and U, the colours that no longer need help, and it was the worst performer in the 177-game Forge run at 8 discards against 5 activations because it enters tapped. Taiga is a Mountain Forest true dual, always untapped, two basic types so every relevant fetch finds it, and it is red."
     },
     {
      "cmc": 0,
@@ -978,7 +963,7 @@
      "why": "TIGHTENING. Path enters tapped and its filter is Dragon-gated, so it does nothing for Stubborn Denial or any noncreature spell. Volcanic Island is an untapped U/R dual, Island-typed for the fetches, and U and R are the deck's two shortest real colours."
     }
    ],
-   "names": 98,
+   "names": 97,
    "out": [
     {
      "cmc": 1,
@@ -1020,15 +1005,6 @@
      "cmc": 6,
      "copies": 1,
      "kind": "spell",
-     "name": "Hellkite Courser",
-     "pair": "Marang River Regent // Coil and Catch",
-     "type_line": "Creature \u2014 Dragon",
-     "why": "The mana pass: blue read 16 sources against a Karsten target. A UU Dragon that also bounces, against a red six-drop whose haste grant needs another Dragon already out."
-    },
-    {
-     "cmc": 6,
-     "copies": 1,
-     "kind": "spell",
      "name": "Rishkar's Expertise",
      "pair": "Mithril Coat",
      "type_line": "Sorcery",
@@ -1051,6 +1027,15 @@
      "pair": "Marsh Flats",
      "type_line": "Land",
      "why": "The mana pass: a painland for a fetch."
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Breeding Pool",
+     "pair": "Mountain",
+     "type_line": "Land \u2014 Forest Island",
+     "why": "The last re-balance. mana-fit names Breeding Pool a cut candidate: it makes G and U, and with Marang gone blue sits +5 OVER target while green is +2. RED is the only real colour still short at -3, on 54.5% of the deck's pips. A Mountain is a red source that is always untapped, never dead, and is itself a fetch target for four of the eight fetches. Breeding Pool's Forest Island types are a fetch target too, but for the two colours that no longer need one."
     },
     {
      "cmc": 0,
@@ -1191,6 +1176,24 @@
     "in": "Volcanic Island",
     "out": "Path of Ancestry",
     "why": "TIGHTENING. Path enters tapped and its filter is Dragon-gated, so it does nothing for Stubborn Denial or any noncreature spell. Volcanic Island is an untapped U/R dual, Island-typed for the fetches, and U and R are the deck's two shortest real colours."
+   },
+   {
+    "at": "2026-09-20",
+    "in": "Taiga",
+    "out": "Irrigated Farmland",
+    "why": "RE-BALANCE after keeping Hellkite Courser. Dropping Marang River Regent removed the second {4}{U}{U} card, which collapsed blue's Karsten target from 36 sources to 22 \u2014 blue now reads +7 OVER target on 29 sources, while RED, at 54.5% of the deck's pips, is 5 short. Irrigated Farmland is the weakest land in the branch on two counts: it makes only W and U, the colours that no longer need help, and it was the worst performer in the 177-game Forge run at 8 discards against 5 activations because it enters tapped. Taiga is a Mountain Forest true dual, always untapped, two basic types so every relevant fetch finds it, and it is red."
+   },
+   {
+    "at": "2026-09-20",
+    "in": "Plateau",
+    "out": "Hallowed Fountain",
+    "why": "Same re-balance. Hallowed Fountain is the other pure W/U land, and blue is over target while red is short. Plateau is a Mountain Plains true dual \u2014 untapped, no life paid, two basic types \u2014 so it replaces the white source being cut AND adds the red one the deck needs."
+   },
+   {
+    "at": "2026-09-20",
+    "in": "Mountain",
+    "out": "Breeding Pool",
+    "why": "The last re-balance. mana-fit names Breeding Pool a cut candidate: it makes G and U, and with Marang gone blue sits +5 OVER target while green is +2. RED is the only real colour still short at -3, on 54.5% of the deck's pips. A Mountain is a red source that is always untapped, never dead, and is itself a fetch target for four of the eight fetches. Breeding Pool's Forest Island types are a fetch target too, but for the two colours that no longer need one."
    }
   ],
   "opened": "2026-09-17",
@@ -1200,12 +1203,6 @@
     "in": "Asceticism",
     "out": "Worldly Tutor",
     "why": "final-v1's one authored swap: a single-job tutor for a protection enchantment; Sarkhan's Triumph stays as the instant-speed Dragon tutor."
-   },
-   {
-    "at": "2026-09-17",
-    "in": "Marang River Regent // Coil and Catch",
-    "out": "Hellkite Courser",
-    "why": "The mana pass: blue read 16 sources against a Karsten target. A UU Dragon that also bounces, against a red six-drop whose haste grant needs another Dragon already out."
    },
    {
     "at": "2026-09-17",
@@ -1240,7 +1237,7 @@
   ],
   "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
  },
- "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
+ "decklist_sha256": "58f621b509bc2fd5505103c1425e150815531c5210458898c870daa886efe5d9",
  "definitions": {
   "derived": [
    {
@@ -1367,10 +1364,10 @@
   "delta": -0.0846,
   "engine_casts": {
    "branch": {
-    "covered": true,
+    "covered": false,
     "never_cast": [
      "Deflecting Swat",
-     "Marang River Regent // Coil and Catch",
+     "Hellkite Courser",
      "Teferi's Protection",
      "Whirlwing Stormbrood // Dynamic Soar"
     ]
@@ -1413,14 +1410,14 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 1,
+    "delta": 0,
     "gap": [
      -2,
-     -1
+     -2
     ],
     "have": [
      20,
-     21
+     20
     ],
     "target": [
      22,
@@ -1429,18 +1426,18 @@
    },
    {
     "colour": "U",
-    "delta": -5,
+    "delta": 6,
     "gap": [
      -2,
-     -7
+     4
     ],
     "have": [
      20,
-     29
+     26
     ],
     "target": [
      22,
-     36
+     22
     ]
    },
    {
@@ -1461,14 +1458,14 @@
    },
    {
     "colour": "R",
-    "delta": 2,
+    "delta": 5,
     "gap": [
      -7,
-     -5
+     -2
     ],
     "have": [
      29,
-     31
+     34
     ],
     "target": [
      36,
@@ -1494,7 +1491,7 @@
   ],
   "enters_tapped_always": [
    1,
-   3
+   2
   ],
   "lands": [
    35,
@@ -1506,7 +1503,7 @@
     "recurring_per_tap_cycle": 5
    },
    {
-    "one_time_on_entry": 22,
+    "one_time_on_entry": 18,
     "recurring_per_tap_cycle": 3
    }
   ],
@@ -1522,15 +1519,15 @@
    ],
    "R": [
     0.804,
-    0.839
+    0.882
    ],
    "U": [
     0.881,
-    0.804
+    0.944
    ],
    "W": [
     0.881,
-    0.895
+    0.881
    ]
   }
  },
@@ -1541,35 +1538,36 @@
   "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
  },
  "objective_grade": {
-  "reading": 0.5704,
-  "shortfall": 0.0296,
+  "reading": 0.5681,
+  "shortfall": 0.0319,
   "state": "not met"
  },
  "recommendation": {
   "because": "The objective is not met. Board power @t6, killed by t6 and killed by t10 improved anyway, which is a different branch's case.",
   "bill": {
-   "box": 4,
-   "buy": 9,
+   "box": 2,
+   "buy": 10,
    "elsewhere": 2,
    "free": 2,
    "in_deck": 81
   },
   "cost": {
-   "buy": 9,
+   "buy": 10,
    "buy_cards": [
     "Asceticism",
     "Ketria Triome",
-    "Marang River Regent // Coil and Catch",
     "Mithril Coat",
+    "Plateau",
     "Steel Hellkite",
     "Stubborn Denial",
+    "Taiga",
     "Transcendent Dragon",
     "Volcanic Island",
     "Whirlwing Stormbrood // Dynamic Soar"
    ],
    "counts": {
-    "box": 4,
-    "buy": 9,
+    "box": 2,
+    "buy": 10,
     "elsewhere": 2,
     "free": 2,
     "in_deck": 81
@@ -1603,9 +1601,9 @@
      "name": "Raugrin Triome"
     }
    ],
-   "owned": 89,
-   "reads_as": "9 to buy; 2 to pull out of a deck that is still together; 2 sitting in a retired or broken-down deck, which cost nothing; 89 of 98 already owned",
-   "total": 98
+   "owned": 87,
+   "reads_as": "10 to buy; 2 to pull out of a deck that is still together; 2 sitting in a retired or broken-down deck, which cost nothing; 87 of 97 already owned",
+   "total": 97
   },
   "fell": [],
   "no_call": [
@@ -1624,23 +1622,23 @@
   "reward": [
    {
     "measure": "board power @T6",
-    "reads_as": "14.67 -> 15.15, a change of +0.48 (+3%)",
+    "reads_as": "14.67 -> 15.36, a change of +0.69 (+5%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "killed by T6",
-    "reads_as": "27 games in 100 -> 30 in 100, a swing of 3 games per 100",
+    "reads_as": "27 games in 100 -> 31 in 100, a swing of 4 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
     "measure": "killed by T10",
-    "reads_as": "95 games in 100 -> 96 in 100, a swing of 1 games per 100",
+    "reads_as": "95 games in 100 -> 97 in 100, a swing of 2 games per 100",
     "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    }
   ],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at -2.589 against an MDE of 2.948. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at -2.757 against an MDE of 2.948. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "8 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1653,15 +1651,6 @@
     "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
     "kind": "unmeasured",
     "what": "2 card(s) carrying a counterspell effect",
-    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
-   },
-   {
-    "cards": [
-     "Marang River Regent // Coil and Catch"
-    ],
-    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
-    "kind": "unmeasured",
-    "what": "1 card(s) carrying a draw effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -1686,6 +1675,7 @@
    {
     "cards": [
      "Battlefield Forge",
+     "Breeding Pool",
      "Canopy Vista",
      "Cascade Bluffs",
      "Cinder Glade",
@@ -1696,25 +1686,22 @@
      "Ketria Triome",
      "Marsh Flats",
      "Misty Rainforest",
+     "Mountain",
      "Path of Ancestry",
      "Plains",
+     "Plateau",
      "Polluted Delta",
      "Raugrin Triome",
      "Smoldering Marsh",
      "Sunbaked Canyon",
+     "Taiga",
      "Verdant Catacombs",
      "Volcanic Island"
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
-    "what": "10 land swap(s)",
+    "what": "13 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
-   },
-   {
-    "detail": "U gap -2 -> -7",
-    "kind": "paid",
-    "what": "colour sources went backwards",
-    "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
     "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
@@ -1731,16 +1718,16 @@
   "state": "do not merge"
  },
  "slug": "ur-dragon",
- "staged": 17,
+ "staged": 19,
  "table": [
   {
    "better_is": "higher",
-   "branch": 1.9768,
+   "branch": 1.9964,
    "champion": 1.948,
-   "delta": 0.0288,
-   "mde": 0.1382,
+   "delta": 0.0484,
+   "mde": 0.1409,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.029 is smaller than the 0.138 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.048 is smaller than the 0.141 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1749,12 +1736,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4399,
+   "branch": 0.4344,
    "champion": 0.4122,
-   "delta": 0.0277,
-   "mde": 0.0424,
+   "delta": 0.0222,
+   "mde": 0.0415,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.028 is smaller than the 0.042 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.022 is smaller than the 0.042 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1763,12 +1750,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 69.2263,
+   "branch": 69.0587,
    "champion": 71.8154,
-   "delta": -2.5891,
+   "delta": -2.7567,
    "mde": 2.9477,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 2.589 is smaller than the 2.948 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 2.757 is smaller than the 2.948 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -1777,12 +1764,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 15.1493,
+   "branch": 15.3618,
    "champion": 14.6677,
-   "delta": 0.4816,
+   "delta": 0.6941,
    "mde": 0.405,
    "measure": "board power @T6",
-   "reads_as": "14.67 -> 15.15, a change of +0.48 (+3%)",
+   "reads_as": "14.67 -> 15.36, a change of +0.69 (+5%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1791,12 +1778,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2996,
+   "branch": 0.3115,
    "champion": 0.2744,
-   "delta": 0.0252,
-   "mde": 0.0181,
+   "delta": 0.0371,
+   "mde": 0.0183,
    "measure": "killed by T6",
-   "reads_as": "27 games in 100 -> 30 in 100, a swing of 3 games per 100",
+   "reads_as": "27 games in 100 -> 31 in 100, a swing of 4 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1805,12 +1792,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9645,
+   "branch": 0.9675,
    "champion": 0.9512,
-   "delta": 0.0133,
+   "delta": 0.0163,
    "mde": 0.0085,
    "measure": "killed by T10",
-   "reads_as": "95 games in 100 -> 96 in 100, a swing of 1 games per 100",
+   "reads_as": "95 games in 100 -> 97 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1819,12 +1806,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0729,
+   "branch": 0.079,
    "champion": 0.0781,
-   "delta": -0.0052,
-   "mde": 0.0106,
+   "delta": 0.0009,
+   "mde": 0.0107,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.011 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.011 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1833,9 +1820,9 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.4777,
+   "branch": 0.477,
    "champion": 0.4802,
-   "delta": -0.0025,
+   "delta": -0.0032,
    "mde": 0.0198,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.020 this run can resolve",
@@ -1847,12 +1834,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.2229,
+   "branch": 0.2276,
    "champion": 0.2274,
-   "delta": -0.0045,
+   "delta": 0.0002,
    "mde": 0.0166,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1861,12 +1848,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5704,
+   "branch": 0.5681,
    "champion": 0.5598,
-   "delta": 0.0106,
+   "delta": 0.0083,
    "mde": 0.0219,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.022 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.022 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1875,12 +1862,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.8817,
+   "branch": 0.8853,
    "champion": 0.884,
-   "delta": -0.0023,
-   "mde": 0.0128,
+   "delta": 0.0013,
+   "mde": 0.0127,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.013 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",

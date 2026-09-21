@@ -939,8 +939,8 @@
       "name": "final-v2",
       "opened": "2026-09-17",
       "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves — Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "11 card(s) still to find",
+      "state": "PROPOSED · STALE",
+      "state_why": "the list has changed since it was proposed — re-run `net-change` and propose again, or `unstage` back to what was accepted",
       "proposal": {
         "at": "2026-09-18",
         "as_version": "v1.3.0",
@@ -974,16 +974,19 @@
             "name": "Ketria Triome"
           },
           {
-            "name": "Marang River Regent // Coil and Catch"
+            "name": "Mithril Coat"
           },
           {
-            "name": "Mithril Coat"
+            "name": "Plateau"
           },
           {
             "name": "Steel Hellkite"
           },
           {
             "name": "Stubborn Denial"
+          },
+          {
+            "name": "Taiga"
           },
           {
             "name": "Transcendent Dragon"
@@ -1032,18 +1035,6 @@
             ]
           },
           {
-            "name": "Hallowed Fountain",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Irrigated Farmland",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
             "name": "Verdant Catacombs",
             "where": [
               "Green",
@@ -1051,7 +1042,7 @@
             ]
           }
         ],
-        "blocking": 11,
+        "blocking": 12,
         "procurement": null
       },
       "base_version": 5,
@@ -1060,20 +1051,21 @@
       "out": 17,
       "counts": {
         "in_deck": 81,
-        "box": 4,
+        "box": 2,
         "elsewhere": 2,
-        "buy": 9,
+        "buy": 10,
         "free": 2
       },
       "unsourced": [
         "Asceticism",
         "Ketria Triome",
-        "Marang River Regent // Coil and Catch",
         "Marsh Flats",
         "Mithril Coat",
+        "Plateau",
         "Raugrin Triome",
         "Steel Hellkite",
         "Stubborn Denial",
+        "Taiga",
         "Transcendent Dragon",
         "Volcanic Island",
         "Whirlwing Stormbrood // Dynamic Soar"
@@ -1160,13 +1152,6 @@
         },
         {
           "name": "Breaching Dragonstorm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Breeding Pool",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1374,16 +1359,11 @@
           "is_new": false
         },
         {
-          "name": "Hallowed Fountain",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "name": "Hellkite Courser",
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Herald's Horn",
@@ -1405,18 +1385,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Island",
@@ -1459,13 +1427,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Marang River Regent // Coil and Catch",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Marsh Flats",
@@ -1552,6 +1513,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Plateau",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Polluted Delta",
@@ -1708,6 +1676,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Taiga",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Talisman of Dominance",
@@ -7667,7 +7642,7 @@
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose, benchmark — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `final-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
-    "`final-v2` is PROPOSED as v1.3.0 and waiting on cardboard — 11 card(s) (9 to buy, 2 to unsleeve) — `manamap pilot deck-branch ur-dragon show final-v2` has the pull list",
+    "`final-v2` was proposed as v1.3.0 and the list has changed since — re-run `net-change` and propose again, or `deck-branch ur-dragon withdraw final-v2`",
     "branch `haste-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
     "branch `mana-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
     "branch `protection-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source protection-v1`",
