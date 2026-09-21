@@ -16,14 +16,13 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 18,
     "stale": [
       "frame",
       "map",
       "tutors",
-      "prose",
-      "benchmark"
+      "prose"
     ],
     "invalid": [
       "engine"
@@ -52,31 +51,13 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Asceticism"
-          },
-          {
             "name": "Fabled Passage"
           },
           {
             "name": "Marang River Regent // Coil and Catch"
           },
           {
-            "name": "Mithril Coat"
-          },
-          {
             "name": "Prismatic Vista"
-          },
-          {
-            "name": "Steel Hellkite"
-          },
-          {
-            "name": "Stubborn Denial"
-          },
-          {
-            "name": "Transcendent Dragon"
-          },
-          {
-            "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
         "unsleeve": [
@@ -124,33 +105,27 @@
             ]
           }
         ],
-        "blocking": 12,
+        "blocking": 6,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 15,
-      "out": 15,
+      "add": 9,
+      "out": 9,
       "counts": {
-        "in_deck": 83,
+        "in_deck": 89,
         "box": 1,
         "elsewhere": 3,
-        "buy": 9,
+        "buy": 3,
         "free": 2
       },
       "unsourced": [
-        "Asceticism",
         "Fabled Passage",
         "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
-        "Mithril Coat",
         "Prismatic Vista",
-        "Steel Hellkite",
-        "Stubborn Denial",
-        "Tarnished Citadel",
-        "Transcendent Dragon",
-        "Whirlwing Stormbrood // Dynamic Soar"
+        "Tarnished Citadel"
       ],
       "mergeable": false,
       "free": 2,
@@ -178,10 +153,10 @@
         },
         {
           "name": "Asceticism",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Atarka, World Render",
@@ -608,10 +583,10 @@
         },
         {
           "name": "Mithril Coat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -791,10 +766,10 @@
         },
         {
           "name": "Steel Hellkite",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Stomping Ground",
@@ -805,10 +780,10 @@
         },
         {
           "name": "Stubborn Denial",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Swords to Plowshares",
@@ -883,10 +858,10 @@
         },
         {
           "name": "Transcendent Dragon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Twinflame Tyrant",
@@ -927,10 +902,10 @@
         },
         {
           "name": "Whirlwing Stormbrood // Dynamic Soar",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true
@@ -939,57 +914,54 @@
       "name": "final-v2",
       "opened": "2026-09-20",
       "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax — a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "Asceticism"
+      "state": "PROPOSED · OUTRUN",
+      "state_why": "proposed against V5 and the deck is now VNone — v1.3.0 may be taken; re-measure and propose again",
+      "proposal": {
+        "at": "2026-09-20",
+        "as_version": "v1.3.0",
+        "why": "Six of final-v1's seven spell swaps, authored 2026-09-11 off prescription 0241fb6a70f1 — five games at 1W 4L and the pilot's verdict that speed without protection made him the obvious kill target with zero responses. Hellkite Courser is KEPT and Marang River Regent dropped: the Courser is itself a 6/5 Dragon that puts The Ur-Dragon onto the battlefield with haste and no commander tax. Plus one land, a Forest for a Mountain, against the deck's standing red shortfall.",
+        "base_version": 5,
+        "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+        "accepted_on": {
+          "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+          "state": "do not merge",
+          "objective": {
+            "axis": "kill_by_8",
+            "op": ">=",
+            "value": 0.85,
+            "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax — a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps."
           },
-          {
-            "name": "Mithril Coat"
-          },
-          {
-            "name": "Steel Hellkite"
-          },
-          {
-            "name": "Stubborn Denial"
-          },
-          {
-            "name": "Transcendent Dragon"
-          },
-          {
-            "name": "Whirlwing Stormbrood // Dynamic Soar"
+          "grade": "not met",
+          "reading": 0.8252,
+          "harness": {
+            "iterations": 10000,
+            "seed": 20260826
           }
-        ],
+        },
+        "forced_reason": "The pilot has sleeved it and directed the merge. The objective I set (kill_by_8 >= 0.85) is not met and it was a poor choice on my part: this branch trades two fat threats for two answers, so a CLOCK measure is the wrong endpoint for it. The honest reading is the one the goldfish gives — killed by t10 95 -> 96 per 100 better, damage @t10 -4.07 worse as the priced cost, everything else inside the noise — plus the deterministic fact that the six spell swaps demand nothing of the manabase at all."
+      },
+      "pull_list": {
+        "buy": [],
         "unsleeve": [],
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 6,
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 7,
-      "out": 7,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 91,
+        "in_deck": 97,
         "box": 0,
         "elsewhere": 0,
-        "buy": 6,
+        "buy": 0,
         "free": 0
       },
-      "unsourced": [
-        "Asceticism",
-        "Mithril Coat",
-        "Steel Hellkite",
-        "Stubborn Denial",
-        "Transcendent Dragon",
-        "Whirlwing Stormbrood // Dynamic Soar"
-      ],
-      "mergeable": false,
+      "unsourced": [],
+      "mergeable": true,
       "free": 0,
       "cards": [
         {
@@ -1015,10 +987,10 @@
         },
         {
           "name": "Asceticism",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Atarka, World Render",
@@ -1379,10 +1351,10 @@
         },
         {
           "name": "Mithril Coat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -1540,10 +1512,10 @@
         },
         {
           "name": "Steel Hellkite",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Stomping Ground",
@@ -1554,10 +1526,10 @@
         },
         {
           "name": "Stubborn Denial",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sunbaked Canyon",
@@ -1624,10 +1596,10 @@
         },
         {
           "name": "Transcendent Dragon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Turbulent Springs",
@@ -1659,10 +1631,10 @@
         },
         {
           "name": "Whirlwing Stormbrood // Dynamic Soar",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Wooded Foothills",
@@ -1697,6 +1669,12 @@
           },
           {
             "name": "Rising of the Day"
+          },
+          {
+            "name": "Sarkhan, Fireblood"
+          },
+          {
+            "name": "Utvara Hellkite"
           }
         ],
         "unsleeve": [
@@ -1708,6 +1686,12 @@
             ]
           },
           {
+            "name": "Rishkar's Expertise",
+            "where": [
+              "gishath"
+            ]
+          },
+          {
             "name": "Tarnished Citadel",
             "where": [
               "meren-recursion"
@@ -1716,19 +1700,32 @@
         ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 7,
+        "box": [
+          {
+            "name": "Return of the Wildspeaker",
+            "where": [
+              "Green"
+            ]
+          },
+          {
+            "name": "Worldly Tutor",
+            "where": [
+              "Hapatra"
+            ]
+          }
+        ],
+        "blocking": 10,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 8,
-      "out": 8,
+      "add": 13,
+      "out": 13,
       "counts": {
-        "in_deck": 89,
-        "box": 0,
-        "elsewhere": 2,
-        "buy": 5,
+        "in_deck": 84,
+        "box": 2,
+        "elsewhere": 3,
+        "buy": 7,
         "free": 0
       },
       "unsourced": [
@@ -1737,8 +1734,11 @@
         "Forbidden Orchard",
         "Prismatic Vista",
         "Rhythm of the Wild",
+        "Rishkar's Expertise",
         "Rising of the Day",
-        "Tarnished Citadel"
+        "Sarkhan, Fireblood",
+        "Tarnished Citadel",
+        "Utvara Hellkite"
       ],
       "mergeable": false,
       "free": 0,
@@ -2222,10 +2222,15 @@
         },
         {
           "name": "Return of the Wildspeaker",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rhythm of the Wild",
@@ -2236,10 +2241,18 @@
         },
         {
           "name": "Rishkar's Expertise",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rising of the Day",
@@ -2271,10 +2284,10 @@
         },
         {
           "name": "Sarkhan, Fireblood",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Scourge of Valkas",
@@ -2454,17 +2467,22 @@
         },
         {
           "name": "Utvara Hellkite",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Worldly Tutor",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -2479,31 +2497,13 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Asceticism"
-          },
-          {
             "name": "Fabled Passage"
           },
           {
             "name": "Marang River Regent // Coil and Catch"
           },
           {
-            "name": "Mithril Coat"
-          },
-          {
             "name": "Prismatic Vista"
-          },
-          {
-            "name": "Steel Hellkite"
-          },
-          {
-            "name": "Stubborn Denial"
-          },
-          {
-            "name": "Transcendent Dragon"
-          },
-          {
-            "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
         "unsleeve": [
@@ -2549,35 +2549,35 @@
               "Green",
               "Hapatra"
             ]
+          },
+          {
+            "name": "Worldly Tutor",
+            "where": [
+              "Hapatra"
+            ]
           }
         ],
-        "blocking": 12,
+        "blocking": 6,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 15,
-      "out": 15,
+      "add": 10,
+      "out": 10,
       "counts": {
-        "in_deck": 83,
-        "box": 1,
+        "in_deck": 88,
+        "box": 2,
         "elsewhere": 3,
-        "buy": 9,
+        "buy": 3,
         "free": 2
       },
       "unsourced": [
-        "Asceticism",
         "Fabled Passage",
         "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
-        "Mithril Coat",
         "Prismatic Vista",
-        "Steel Hellkite",
-        "Stubborn Denial",
-        "Tarnished Citadel",
-        "Transcendent Dragon",
-        "Whirlwing Stormbrood // Dynamic Soar"
+        "Tarnished Citadel"
       ],
       "mergeable": false,
       "free": 2,
@@ -2605,10 +2605,10 @@
         },
         {
           "name": "Asceticism",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Atarka, World Render",
@@ -3028,10 +3028,10 @@
         },
         {
           "name": "Mithril Coat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -3211,10 +3211,10 @@
         },
         {
           "name": "Steel Hellkite",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Stomping Ground",
@@ -3225,10 +3225,10 @@
         },
         {
           "name": "Stubborn Denial",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Swords to Plowshares",
@@ -3303,10 +3303,10 @@
         },
         {
           "name": "Transcendent Dragon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Twinflame Tyrant",
@@ -3347,17 +3347,22 @@
         },
         {
           "name": "Whirlwing Stormbrood // Dynamic Soar",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Worldly Tutor",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Worldly Tutor",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -3372,45 +3377,29 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Asceticism"
-          },
-          {
-            "name": "Mithril Coat"
-          },
-          {
-            "name": "Steel Hellkite"
-          },
-          {
-            "name": "Stubborn Denial"
-          },
-          {
-            "name": "Transcendent Dragon"
+            "name": "Radiant Destiny"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 5,
+        "blocking": 1,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 5,
-      "out": 5,
+      "add": 2,
+      "out": 2,
       "counts": {
-        "in_deck": 92,
+        "in_deck": 96,
         "box": 0,
         "elsewhere": 0,
-        "buy": 5,
+        "buy": 1,
         "free": 0
       },
       "unsourced": [
-        "Asceticism",
-        "Mithril Coat",
-        "Steel Hellkite",
-        "Stubborn Denial",
-        "Transcendent Dragon"
+        "Radiant Destiny"
       ],
       "mergeable": false,
       "free": 0,
@@ -3438,10 +3427,10 @@
         },
         {
           "name": "Asceticism",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Atarka, World Render",
@@ -3802,10 +3791,10 @@
         },
         {
           "name": "Mithril Coat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -3858,10 +3847,10 @@
         },
         {
           "name": "Radiant Destiny",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reflecting Pool",
@@ -3970,10 +3959,10 @@
         },
         {
           "name": "Steel Hellkite",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Stomping Ground",
@@ -3984,10 +3973,10 @@
         },
         {
           "name": "Stubborn Denial",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sunbaked Canyon",
@@ -4054,10 +4043,10 @@
         },
         {
           "name": "Transcendent Dragon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Turbulent Springs",
@@ -4113,13 +4102,10 @@
             "name": "Prismatic Vista"
           },
           {
-            "name": "Stubborn Denial"
+            "name": "Radiant Destiny"
           },
           {
-            "name": "Transcendent Dragon"
-          },
-          {
-            "name": "Whirlwing Stormbrood // Dynamic Soar"
+            "name": "Sarkhan, Fireblood"
           }
         ],
         "unsleeve": [
@@ -4139,29 +4125,41 @@
         ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 7,
+        "box": [
+          {
+            "name": "Return of the Wildspeaker",
+            "where": [
+              "Green"
+            ]
+          },
+          {
+            "name": "Worldly Tutor",
+            "where": [
+              "Hapatra"
+            ]
+          }
+        ],
+        "blocking": 6,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 8,
-      "out": 8,
+      "add": 9,
+      "out": 9,
       "counts": {
-        "in_deck": 89,
-        "box": 0,
+        "in_deck": 88,
+        "box": 2,
         "elsewhere": 2,
-        "buy": 5,
+        "buy": 4,
         "free": 0
       },
       "unsourced": [
         "Fabled Passage",
         "Forbidden Orchard",
         "Prismatic Vista",
-        "Stubborn Denial",
-        "Tarnished Citadel",
-        "Transcendent Dragon",
-        "Whirlwing Stormbrood // Dynamic Soar"
+        "Radiant Destiny",
+        "Sarkhan, Fireblood",
+        "Tarnished Citadel"
       ],
       "mergeable": false,
       "free": 0,
@@ -4631,10 +4629,10 @@
         },
         {
           "name": "Radiant Destiny",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reflecting Pool",
@@ -4645,10 +4643,15 @@
         },
         {
           "name": "Return of the Wildspeaker",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Roiling Dragonstorm",
@@ -4673,10 +4676,10 @@
         },
         {
           "name": "Sarkhan, Fireblood",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Scourge of Valkas",
@@ -4757,10 +4760,10 @@
         },
         {
           "name": "Stubborn Denial",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sunbaked Canyon",
@@ -4842,10 +4845,10 @@
         },
         {
           "name": "Transcendent Dragon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Turbulent Springs",
@@ -4877,17 +4880,22 @@
         },
         {
           "name": "Whirlwing Stormbrood // Dynamic Soar",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Worldly Tutor",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Worldly Tutor",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -4902,25 +4910,13 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Asceticism"
-          },
-          {
             "name": "Fabled Passage"
-          },
-          {
-            "name": "Mithril Coat"
           },
           {
             "name": "Prismatic Vista"
           },
           {
-            "name": "Stubborn Denial"
-          },
-          {
-            "name": "Transcendent Dragon"
-          },
-          {
-            "name": "Whirlwing Stormbrood // Dynamic Soar"
+            "name": "Radiant Destiny"
           }
         ],
         "unsleeve": [
@@ -4942,37 +4938,45 @@
         "free": [],
         "box": [
           {
+            "name": "Return of the Wildspeaker",
+            "where": [
+              "Green"
+            ]
+          },
+          {
             "name": "Verdant Catacombs",
             "where": [
               "Green",
               "Hapatra"
             ]
+          },
+          {
+            "name": "Worldly Tutor",
+            "where": [
+              "Hapatra"
+            ]
           }
         ],
-        "blocking": 9,
+        "blocking": 5,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 11,
-      "out": 11,
+      "add": 8,
+      "out": 8,
       "counts": {
-        "in_deck": 87,
-        "box": 1,
+        "in_deck": 89,
+        "box": 3,
         "elsewhere": 2,
-        "buy": 7,
+        "buy": 3,
         "free": 0
       },
       "unsourced": [
-        "Asceticism",
         "Fabled Passage",
         "Forbidden Orchard",
-        "Mithril Coat",
         "Prismatic Vista",
-        "Stubborn Denial",
-        "Tarnished Citadel",
-        "Transcendent Dragon",
-        "Whirlwing Stormbrood // Dynamic Soar"
+        "Radiant Destiny",
+        "Tarnished Citadel"
       ],
       "mergeable": false,
       "free": 0,
@@ -4993,10 +4997,10 @@
         },
         {
           "name": "Asceticism",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Atarka, World Render",
@@ -5386,10 +5390,10 @@
         },
         {
           "name": "Mithril Coat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -5449,10 +5453,10 @@
         },
         {
           "name": "Radiant Destiny",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reflecting Pool",
@@ -5463,10 +5467,15 @@
         },
         {
           "name": "Return of the Wildspeaker",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Roiling Dragonstorm",
@@ -5568,10 +5577,10 @@
         },
         {
           "name": "Stubborn Denial",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sunbaked Canyon",
@@ -5653,10 +5662,10 @@
         },
         {
           "name": "Transcendent Dragon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Turbulent Springs",
@@ -5704,17 +5713,22 @@
         },
         {
           "name": "Whirlwing Stormbrood // Dynamic Soar",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Worldly Tutor",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Worldly Tutor",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -5729,31 +5743,13 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Asceticism"
-          },
-          {
             "name": "Fabled Passage"
           },
           {
             "name": "Marang River Regent // Coil and Catch"
           },
           {
-            "name": "Mithril Coat"
-          },
-          {
             "name": "Prismatic Vista"
-          },
-          {
-            "name": "Steel Hellkite"
-          },
-          {
-            "name": "Stubborn Denial"
-          },
-          {
-            "name": "Transcendent Dragon"
-          },
-          {
-            "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
         "unsleeve": [
@@ -5780,34 +5776,34 @@
               "Green",
               "Hapatra"
             ]
+          },
+          {
+            "name": "Worldly Tutor",
+            "where": [
+              "Hapatra"
+            ]
           }
         ],
-        "blocking": 11,
+        "blocking": 5,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 13,
-      "out": 13,
+      "add": 7,
+      "out": 7,
       "counts": {
-        "in_deck": 85,
-        "box": 1,
+        "in_deck": 90,
+        "box": 2,
         "elsewhere": 2,
-        "buy": 9,
+        "buy": 3,
         "free": 0
       },
       "unsourced": [
-        "Asceticism",
         "Fabled Passage",
         "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
-        "Mithril Coat",
         "Prismatic Vista",
-        "Steel Hellkite",
-        "Stubborn Denial",
-        "Tarnished Citadel",
-        "Transcendent Dragon",
-        "Whirlwing Stormbrood // Dynamic Soar"
+        "Tarnished Citadel"
       ],
       "mergeable": false,
       "free": 0,
@@ -5828,10 +5824,10 @@
         },
         {
           "name": "Asceticism",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Atarka, World Render",
@@ -6228,10 +6224,10 @@
         },
         {
           "name": "Mithril Coat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -6389,10 +6385,10 @@
         },
         {
           "name": "Steel Hellkite",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Stomping Ground",
@@ -6403,10 +6399,10 @@
         },
         {
           "name": "Stubborn Denial",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sunbaked Canyon",
@@ -6488,10 +6484,10 @@
         },
         {
           "name": "Transcendent Dragon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Turbulent Springs",
@@ -6539,17 +6535,22 @@
         },
         {
           "name": "Whirlwing Stormbrood // Dynamic Soar",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Worldly Tutor",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Worldly Tutor",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -6563,328 +6564,151 @@
       "max_turn": 10
     },
     "engine": {
-      "available": true,
-      "required": [
-        "Ramp or fixing drawn",
-        "Dragon payoff drawn (per-dragon trigger engine)",
-        "Payoff + a castable dragon by mid-game"
-      ],
-      "routes": [
-        "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-        "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with"
-      ],
-      "online_by_turn": {
-        "1": {
-          "rate": 0.0762,
-          "ci95": [
-            0.0712,
-            0.0816
-          ],
-          "n": 10000
-        },
-        "2": {
-          "rate": 0.1468,
-          "ci95": [
-            0.14,
-            0.1539
-          ],
-          "n": 10000
-        },
-        "3": {
-          "rate": 0.245,
-          "ci95": [
-            0.2367,
-            0.2535
-          ],
-          "n": 10000
-        },
-        "4": {
-          "rate": 0.3301,
-          "ci95": [
-            0.3209,
-            0.3394
-          ],
-          "n": 10000
-        },
-        "5": {
-          "rate": 0.4002,
-          "ci95": [
-            0.3906,
-            0.4098
-          ],
-          "n": 10000
-        },
-        "6": {
-          "rate": 0.4607,
-          "ci95": [
-            0.4509,
-            0.4705
-          ],
-          "n": 10000
-        },
-        "7": {
-          "rate": 0.5144,
-          "ci95": [
-            0.5046,
-            0.5242
-          ],
-          "n": 10000
-        },
-        "8": {
-          "rate": 0.5609,
-          "ci95": [
-            0.5512,
-            0.5706
-          ],
-          "n": 10000
-        },
-        "9": {
-          "rate": 0.6097,
-          "ci95": [
-            0.6001,
-            0.6192
-          ],
-          "n": 10000
-        },
-        "10": {
-          "rate": 0.6534,
-          "ci95": [
-            0.644,
-            0.6627
-          ],
-          "n": 10000
-        }
+      "available": false,
+      "why": "the declaration does not describe this list — 1 load-bearing target(s) name cards it does not run (e.g. 'THE ENTRY KILL (UNVERIFIED — no passing stack): ' wants Sarkhan, Fireblood, Utvara Hellkite). A branch inherits the deck's declaration, which is right for a swap and wrong for a rebuild: write the branch its own `goldfish_targets.json`.",
+      "declaration_mismatch": {
+        "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once": [
+          "Sarkhan, Fireblood",
+          "Utvara Hellkite"
+        ]
       },
-      "any_route_by_turn": {
-        "1": {
-          "rate": 0.1161,
-          "ci95": [
-            0.11,
-            0.1225
-          ],
-          "n": 10000
-        },
-        "2": {
-          "rate": 0.1861,
-          "ci95": [
-            0.1786,
-            0.1938
-          ],
-          "n": 10000
-        },
-        "3": {
-          "rate": 0.282,
-          "ci95": [
-            0.2733,
-            0.2909
-          ],
-          "n": 10000
-        },
-        "4": {
-          "rate": 0.3612,
-          "ci95": [
-            0.3518,
-            0.3707
-          ],
-          "n": 10000
-        },
-        "5": {
-          "rate": 0.428,
-          "ci95": [
-            0.4183,
-            0.4377
-          ],
-          "n": 10000
-        },
-        "6": {
-          "rate": 0.4805,
-          "ci95": [
-            0.4707,
-            0.4903
-          ],
-          "n": 10000
-        },
-        "7": {
-          "rate": 0.5299,
-          "ci95": [
-            0.5201,
-            0.5397
-          ],
-          "n": 10000
-        },
-        "8": {
-          "rate": 0.575,
-          "ci95": [
-            0.5653,
-            0.5847
-          ],
-          "n": 10000
-        },
-        "9": {
-          "rate": 0.6162,
-          "ci95": [
-            0.6066,
-            0.6257
-          ],
-          "n": 10000
-        },
-        "10": {
-          "rate": 0.6545,
-          "ci95": [
-            0.6451,
-            0.6638
-          ],
-          "n": 10000
-        }
-      },
-      "bottleneck": {
-        "label": "Payoff + a castable dragon by mid-game",
-        "by_turn_three": {
-          "rate": 0.3502,
-          "ci95": [
-            0.3409,
-            0.3596
-          ],
-          "n": 10000
-        }
-      },
-      "basis": "counted over per-iteration assembly, so the correlations between components that share cards are preserved"
+      "declared_targets": 10
     },
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6546,
+          "rate": 0.6263,
           "ci95": [
-            0.6452,
-            0.6639
+            0.6168,
+            0.6357
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.291,
+          "rate": 0.2443,
           "ci95": [
-            0.2822,
-            0.3
+            0.236,
+            0.2528
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0715,
+          "rate": 0.0672,
           "ci95": [
-            0.0666,
-            0.0767
+            0.0625,
+            0.0723
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0363,
+          "rate": 0.0306,
           "ci95": [
-            0.0328,
-            0.0401
+            0.0274,
+            0.0342
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0225,
+          "rate": 0.0206,
           "ci95": [
-            0.0198,
-            0.0256
+            0.018,
+            0.0236
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0185,
+          "rate": 0.0176,
           "ci95": [
-            0.016,
-            0.0213
+            0.0152,
+            0.0204
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0168,
+          "rate": 0.0162,
           "ci95": [
-            0.0145,
-            0.0195
+            0.0139,
+            0.0189
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0144,
+          "rate": 0.0149,
           "ci95": [
-            0.0122,
-            0.0169
+            0.0127,
+            0.0175
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0121,
+          "rate": 0.0122,
           "ci95": [
-            0.0101,
-            0.0144
+            0.0102,
+            0.0145
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.009,
+          "rate": 0.0085,
           "ci95": [
-            0.0073,
-            0.011
+            0.0069,
+            0.0105
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0816,
+        "rate": 0.0793,
         "ci95": [
-          0.0764,
-          0.0871
+          0.0742,
+          0.0848
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 4921,
-        "hand_empty": 456,
-        "mana_short": 4465
+        "stall_turns": 4321,
+        "hand_empty": 520,
+        "mana_short": 3801
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4543,
+        "rate": 0.4655,
         "ci95": [
-          0.4446,
-          0.4641
+          0.4557,
+          0.4753
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.3517,
+      "missed_land_drop_rate": 0.3603,
       "mulliganed": {
-        "rate": 0.2133,
+        "rate": 0.2178,
         "ci95": [
-          0.2054,
-          0.2214
+          0.2098,
+          0.226
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
-        "1": 0.999,
-        "2": 2.249,
-        "3": 3.582,
-        "4": 4.856,
-        "5": 5.92,
-        "6": 6.727,
-        "7": 7.418,
-        "8": 8.039,
-        "9": 8.626,
-        "10": 9.188
+        "1": 0.998,
+        "2": 2.233,
+        "3": 3.618,
+        "4": 4.913,
+        "5": 5.965,
+        "6": 6.765,
+        "7": 7.449,
+        "8": 8.071,
+        "9": 8.67,
+        "10": 9.245
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 2.179
+      "mana_stdev_turn_five": 2.1989
     },
-    "decklist_sha256": "7095f2d8d637b35302679123a6a47ebc7b5db94055822cb609e2680057b2bcd2"
+    "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170"
   },
   "bracket": {
     "floor": 3,
@@ -6927,7 +6751,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 34,
+          "value": 33,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -6945,7 +6769,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.876,
+          "value": 6.881,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -6969,7 +6793,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Dragon payoff drawn (per-dragon trigger engine)": {
-          "value": 62,
+          "value": 63,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Dragon payoff drawn (per-dragon trigger engine)' by turn six",
@@ -6985,7 +6809,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Payoff + a castable dragon by mid-game": {
-          "value": 41,
+          "value": 40,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Payoff + a castable dragon by mid-game' by turn six",
@@ -7001,7 +6825,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)": {
-          "value": 23,
+          "value": 12,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)' by turn six",
@@ -7009,7 +6833,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A Treasure source drawn — six in the 99, of which the model can SPEND only two": {
-          "value": 56,
+          "value": 57,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A Treasure source drawn — six in the 99, of which the model can SPEND only two' by turn six",
@@ -7017,7 +6841,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once": {
-          "value": 15,
+          "value": 11,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once' by turn six",
@@ -7025,7 +6849,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with": {
-          "value": 15,
+          "value": 16,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with' by turn six",
@@ -7084,16 +6908,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 9.223,
-            "2": 2.237,
-            "3": 3.65,
-            "4": 4.944,
-            "5": 5.994,
-            "6": 6.786,
-            "7": 7.459,
-            "8": 8.076,
-            "9": 8.667
+            "1": 0.999,
+            "10": 9.2,
+            "2": 2.229,
+            "3": 3.614,
+            "4": 4.911,
+            "5": 5.948,
+            "6": 6.746,
+            "7": 7.443,
+            "8": 8.062,
+            "9": 8.637
           },
           "tier": "data",
           "weight": "detail",
@@ -7103,16 +6927,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 0.361,
+            "1": 0.999,
+            "10": 0.356,
             "2": 0.995,
-            "3": 0.896,
-            "4": 0.757,
-            "5": 0.623,
+            "3": 0.891,
+            "4": 0.756,
+            "5": 0.615,
             "6": 0.52,
-            "7": 0.446,
-            "8": 0.399,
-            "9": 0.375
+            "7": 0.448,
+            "8": 0.401,
+            "9": 0.36
           },
           "tier": "data",
           "weight": "detail",
@@ -7123,15 +6947,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.0,
-            "10": 6.216,
-            "2": 0.16,
-            "3": 0.576,
-            "4": 1.311,
-            "5": 2.243,
-            "6": 3.135,
-            "7": 3.969,
-            "8": 4.753,
-            "9": 5.493
+            "10": 5.453,
+            "2": 0.157,
+            "3": 0.489,
+            "4": 1.138,
+            "5": 1.996,
+            "6": 2.834,
+            "7": 3.595,
+            "8": 4.281,
+            "9": 4.887
           },
           "tier": "data",
           "weight": "detail",
@@ -7141,14 +6965,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 451,
-            "1": 1766,
-            "2": 3042,
+            "0": 427,
+            "1": 1784,
+            "2": 3034,
             "3": 2799,
-            "4": 1413,
-            "5": 452,
-            "6": 71,
-            "7": 6
+            "4": 1453,
+            "5": 442,
+            "6": 58,
+            "7": 3
           },
           "tier": "data",
           "weight": "detail",
@@ -7157,13 +6981,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 500,
-            "4": 18,
-            "5": 569,
-            "6": 2300,
-            "7": 3077,
-            "8": 2103,
-            "9": 960
+            "10": 401,
+            "4": 16,
+            "5": 542,
+            "6": 2409,
+            "7": 3241,
+            "8": 2042,
+            "9": 946
           },
           "tier": "data",
           "weight": "detail",
@@ -7179,8 +7003,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.876,
-    "commander_cast_by_turn_6_pct": 34,
+    "commander_mean_cast_turn": 6.881,
+    "commander_cast_by_turn_6_pct": 33,
     "targets": [
       {
         "label": "Cost reducer drawn (the deck's real curve fixer)",
@@ -7192,7 +7016,7 @@
       },
       {
         "label": "Dragon payoff drawn (per-dragon trigger engine)",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 63
       },
       {
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
@@ -7200,7 +7024,7 @@
       },
       {
         "label": "Payoff + a castable dragon by mid-game",
-        "by_turn_6_pct": 41
+        "by_turn_6_pct": 40
       },
       {
         "label": "Protection held for the big turn",
@@ -7208,67 +7032,42 @@
       },
       {
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
-        "by_turn_6_pct": 23
+        "by_turn_6_pct": 12
       },
       {
         "label": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
-        "by_turn_6_pct": 56
+        "by_turn_6_pct": 57
       },
       {
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-        "by_turn_6_pct": 15
+        "by_turn_6_pct": 11
       },
       {
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
-        "by_turn_6_pct": 15
+        "by_turn_6_pct": 16
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.213,
+      "mean_kill_turn": 7.166,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 29,
-      "kill_by_turn_8_pct": 81,
+      "kill_by_turn_6_pct": 30,
+      "kill_by_turn_8_pct": 82,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 5,
+      "no_kill_by_max_turn_pct": 4,
       "kill_turn_histogram": {
-        "10": 500,
-        "4": 18,
-        "5": 569,
-        "6": 2300,
-        "7": 3077,
-        "8": 2103,
-        "9": 960
+        "10": 401,
+        "4": 16,
+        "5": 542,
+        "6": 2409,
+        "7": 3241,
+        "8": 2042,
+        "9": 946
       }
     }
   },
   "engine_health": {
-    "word": "HEALTHY",
-    "rate": 0.4002,
-    "ci95": [
-      0.3906,
-      0.4098
-    ],
-    "n": 10000,
-    "turn": 5,
-    "bands": [
-      [
-        0.6,
-        "EXCEPTIONAL"
-      ],
-      [
-        0.4,
-        "HEALTHY"
-      ],
-      [
-        0.2,
-        "BRITTLE"
-      ],
-      [
-        0.0,
-        "WEAK"
-      ]
-    ],
-    "why": "the engine is online by turn 5 in 40% of 10,000 seeded games",
+    "word": null,
+    "why": "the declaration does not describe this list — 1 load-bearing target(s) name cards it does not run (e.g. 'THE ENTRY KILL (UNVERIFIED — no passing stack): ' wants Sarkhan, Fireblood, Utvara Hellkite). A branch inherits the deck's declaration, which is right for a swap and wrong for a rebuild: write the branch its own `goldfish_targets.json`.",
     "basis": "diagnostic.json"
   },
   "engine": {
@@ -7506,15 +7305,16 @@
   "experiments": null,
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
-    "stale: frame, map, tutors, prose, benchmark — regenerate against the current list (`/publish-deck` sequences it)",
-    "branch `final-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
-    "branch `final-v2` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v2`",
-    "branch `haste-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
-    "branch `mana-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
-    "branch `protection-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source protection-v1`",
-    "branch `responses-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v1`",
-    "branch `responses-v2` needs 9 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v2`",
-    "branch `responses-v3` needs 11 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v3`",
+    "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "branch `final-v1` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
+    "`final-v2` was proposed as v1.3.0 against V5 and the deck has moved on — v1.3.0 may be taken; re-measure and propose again",
+    "branch `haste-v1` needs 10 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
+    "branch `mana-v1` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
+    "branch `protection-v1` needs 1 card(s) sourced — `manamap pilot deck-branch ur-dragon source protection-v1`",
+    "branch `responses-v1` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v1`",
+    "branch `responses-v2` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v2`",
+    "branch `responses-v3` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v3`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×5, goldfish ×10, research-strategy ×6, resolve-stack ×10",

@@ -1,7 +1,7 @@
 {
  "slug": "ur-dragon",
  "branch": "final-v2",
- "v": 2,
+ "v": 3,
  "opened": "2026-09-20",
  "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax \u2014 a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps.",
  "objective": {
@@ -68,5 +68,35 @@
    "strength": null,
    "why": "The deck's STANDING red shortfall, not something these swaps caused: red is 54.5% of the pips on 29 sources against a Karsten target of 36, and it reads the same on the sleeved list. Green is the only colour at or over target, and mana-fit names this Forest its one cut candidate. A Mountain is free, always untapped, never dead, and a fetch target for four of the eight fetches."
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-09-20",
+  "as_version": "v1.3.0",
+  "why": "Six of final-v1's seven spell swaps, authored 2026-09-11 off prescription 0241fb6a70f1 \u2014 five games at 1W 4L and the pilot's verdict that speed without protection made him the obvious kill target with zero responses. Hellkite Courser is KEPT and Marang River Regent dropped: the Courser is itself a 6/5 Dragon that puts The Ur-Dragon onto the battlefield with haste and no commander tax. Plus one land, a Forest for a Mountain, against the deck's standing red shortfall.",
+  "base_version": 5,
+  "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+  "accepted_on": {
+   "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+   "state": "do not merge",
+   "objective": {
+    "axis": "kill_by_8",
+    "op": ">=",
+    "value": 0.85,
+    "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax \u2014 a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps."
+   },
+   "grade": "not met",
+   "reading": 0.8252,
+   "harness": {
+    "iterations": 10000,
+    "seed": 20260826
+   }
+  },
+  "forced_reason": "The pilot has sleeved it and directed the merge. The objective I set (kill_by_8 >= 0.85) is not met and it was a poor choice on my part: this branch trades two fat threats for two answers, so a CLOCK measure is the wrong endpoint for it. The honest reading is the one the goldfish gives \u2014 killed by t10 95 -> 96 per 100 better, damage @t10 -4.07 worse as the priced cost, everything else inside the noise \u2014 plus the deterministic fact that the six spell swaps demand nothing of the manabase at all."
+ },
+ "merged": {
+  "at": "2026-09-20",
+  "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+  "into_version_before": null,
+  "forced_reason": "The pilot has sleeved the cards and directed the merge."
+ }
 }

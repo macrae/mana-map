@@ -17,7 +17,7 @@
    {
     "free": false,
     "name": "Asceticism",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -359,7 +359,7 @@
    {
     "free": false,
     "name": "Mithril Coat",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -413,7 +413,7 @@
    {
     "free": false,
     "name": "Radiant Destiny",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -425,8 +425,13 @@
    {
     "free": false,
     "name": "Return of the Wildspeaker",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Green"
+     }
+    ]
    },
    {
     "free": false,
@@ -515,7 +520,7 @@
    {
     "free": false,
     "name": "Stubborn Denial",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -590,7 +595,7 @@
    {
     "free": false,
     "name": "Transcendent Dragon",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -635,38 +640,41 @@
    {
     "free": false,
     "name": "Whirlwing Stormbrood // Dynamic Soar",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
     "name": "Worldly Tutor",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Hapatra"
+     }
+    ]
    }
   ],
   "counts": {
-   "box": 1,
-   "buy": 7,
+   "box": 3,
+   "buy": 3,
    "elsewhere": 2,
    "free": 0,
-   "in_deck": 87
+   "in_deck": 89
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
-    "Asceticism",
     "Fabled Passage",
     "Forbidden Orchard",
-    "Mithril Coat",
     "Prismatic Vista",
-    "Stubborn Denial",
+    "Radiant Destiny",
+    "Return of the Wildspeaker",
     "Tarnished Citadel",
-    "Transcendent Dragon",
     "Verdant Catacombs",
-    "Whirlwing Stormbrood // Dynamic Soar"
+    "Worldly Tutor"
    ],
-   "add_copies": 11,
+   "add_copies": 8,
    "base_names": 97,
    "base_size": 100,
    "names": 97,
@@ -675,26 +683,13 @@
     "Bloodstained Mire",
     "Gadrak, the Crown-Scourge",
     "Hellkite Courser",
-    "Rishkar's Expertise",
-    "Sarkhan, Fireblood",
     "Scalding Tarn",
+    "Steel Hellkite",
     "Talisman of Dominance",
-    "Utvara Hellkite",
     "Wooded Foothills"
    ],
-   "out_copies": 11,
-   "quantity": [
-    {
-     "from": 2,
-     "name": "Forest",
-     "to": 1
-    },
-    {
-     "from": 3,
-     "name": "Mountain",
-     "to": 4
-    }
-   ],
+   "out_copies": 8,
+   "quantity": [],
    "size": 100
   },
   "free": 0,
@@ -703,15 +698,11 @@
   "proxy": false,
   "slug": "ur-dragon",
   "unsourced": [
-   "Asceticism",
    "Fabled Passage",
    "Forbidden Orchard",
-   "Mithril Coat",
    "Prismatic Vista",
-   "Stubborn Denial",
-   "Tarnished Citadel",
-   "Transcendent Dragon",
-   "Whirlwing Stormbrood // Dynamic Soar"
+   "Radiant Destiny",
+   "Tarnished Citadel"
   ]
  },
  "blind_spots": [
@@ -749,84 +740,47 @@
   "diff": {
    "base_names": 97,
    "base_size": 100,
-   "changed": [
-    {
-     "cmc": 0,
-     "delta": -1,
-     "from": 2,
-     "kind": "land",
-     "name": "Forest",
-     "to": 1
-    },
-    {
-     "cmc": 0,
-     "delta": 1,
-     "from": 3,
-     "kind": "land",
-     "name": "Mountain",
-     "to": 4
-    }
-   ],
+   "changed": [],
    "counts": {
-    "in": 10,
-    "in_copies": 11,
+    "in": 8,
+    "in_copies": 8,
     "lands_in": 5,
     "lands_out": 4,
-    "out": 10,
-    "out_copies": 11,
-    "spells_in": 5,
-    "spells_out": 6
+    "out": 8,
+    "out_copies": 8,
+    "spells_in": 3,
+    "spells_out": 4
    },
    "in": [
     {
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Stubborn Denial",
-     "pair": "Rishkar's Expertise",
-     "state": "buy",
+     "name": "Worldly Tutor",
+     "pair": null,
+     "state": "box",
      "type_line": "Instant",
-     "why": "one blue mana held open, Ferocious on for 18 of 22 Dragons; Expertise is the slowest non-Dragon spell and a telegraph"
+     "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Mithril Coat",
-     "pair": "Sarkhan, Fireblood",
-     "state": "buy",
-     "type_line": "Legendary Artifact \u2014 Equipment",
-     "why": "instant-speed protection that stays, for the commander that draws the table's removal (3 of 5 games); Sarkhan is Dragon-only mana on a walker that dies to the same attention"
-    },
-    {
-     "cmc": 5,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Asceticism",
-     "pair": "Gadrak, the Crown-Scourge",
+     "name": "Radiant Destiny",
+     "pair": null,
      "state": "buy",
      "type_line": "Enchantment",
-     "why": "board-wide hexproof and regeneration against the removal pattern the log records, fight included; costs a Dragon slot and five mana at sorcery speed"
+     "why": null
     },
     {
      "cmc": 5,
      "copies": 1,
      "kind": "spell",
-     "name": "Whirlwing Stormbrood // Dynamic Soar",
-     "pair": "Hellkite Courser",
-     "state": "buy",
-     "type_line": "Creature \u2014 Dragon // Sorcery \u2014 Omen",
-     "why": "flash for every Dragon: the anti-telegraph mechanism the log names in four of five games; Courser cast 0 of 40 Forge games"
-    },
-    {
-     "cmc": 6,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Transcendent Dragon",
-     "pair": "Utvara Hellkite",
-     "state": "buy",
-     "type_line": "Creature \u2014 Dragon",
-     "why": "the only Dragon in the identity whose ETB counters; at instant speed under Stormbrood"
+     "name": "Return of the Wildspeaker",
+     "pair": null,
+     "state": "box",
+     "type_line": "Instant",
+     "why": null
     },
     {
      "cmc": 0,
@@ -900,15 +854,6 @@
      "why": "board-wide hexproof and regeneration against the removal pattern the log records, fight included; costs a Dragon slot and five mana at sorcery speed"
     },
     {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Sarkhan, Fireblood",
-     "pair": "Mithril Coat",
-     "type_line": "Legendary Planeswalker \u2014 Sarkhan",
-     "why": "instant-speed protection that stays, for the commander that draws the table's removal (3 of 5 games); Sarkhan is Dragon-only mana on a walker that dies to the same attention"
-    },
-    {
      "cmc": 6,
      "copies": 1,
      "kind": "spell",
@@ -921,19 +866,10 @@
      "cmc": 6,
      "copies": 1,
      "kind": "spell",
-     "name": "Rishkar's Expertise",
-     "pair": "Stubborn Denial",
-     "type_line": "Sorcery",
-     "why": "one blue mana held open, Ferocious on for 18 of 22 Dragons; Expertise is the slowest non-Dragon spell and a telegraph"
-    },
-    {
-     "cmc": 8,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Utvara Hellkite",
-     "pair": "Transcendent Dragon",
-     "type_line": "Creature \u2014 Dragon",
-     "why": "the only Dragon in the identity whose ETB counters; at instant speed under Stormbrood"
+     "name": "Steel Hellkite",
+     "pair": null,
+     "type_line": "Artifact Creature \u2014 Dragon",
+     "why": null
     },
     {
      "cmc": 0,
@@ -974,8 +910,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 4,
-    "out": 5
+    "in": 7,
+    "out": 6
    }
   },
   "lands": [
@@ -1184,13 +1120,13 @@
    },
    {
     "colour": "R",
-    "delta": 2,
+    "delta": 1,
     "gap": [
-     -7,
+     -6,
      -5
     ],
     "have": [
-     29,
+     30,
      31
     ],
     "target": [
@@ -1200,13 +1136,13 @@
    },
    {
     "colour": "G",
-    "delta": 0,
+    "delta": 1,
     "gap": [
-     1,
+     0,
      1
     ],
     "have": [
-     23,
+     22,
      23
     ],
     "target": [
@@ -1240,11 +1176,11 @@
     0.669
    ],
    "G": [
-    0.918,
+    0.907,
     0.918
    ],
    "R": [
-    0.804,
+    0.822,
     0.839
    ],
    "U": [
@@ -1272,29 +1208,25 @@
  "recommendation": {
   "because": "The miss is smaller than this run can see. missed by 0.0044, which is under the 0.0165 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
-   "box": 1,
-   "buy": 7,
+   "box": 3,
+   "buy": 3,
    "elsewhere": 2,
    "free": 0,
-   "in_deck": 87
+   "in_deck": 89
   },
   "cost": {
-   "buy": 7,
+   "buy": 3,
    "buy_cards": [
-    "Asceticism",
     "Fabled Passage",
-    "Mithril Coat",
     "Prismatic Vista",
-    "Stubborn Denial",
-    "Transcendent Dragon",
-    "Whirlwing Stormbrood // Dynamic Soar"
+    "Radiant Destiny"
    ],
    "counts": {
-    "box": 1,
-    "buy": 7,
+    "box": 3,
+    "buy": 3,
     "elsewhere": 2,
     "free": 0,
-    "in_deck": 87
+    "in_deck": 89
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1313,19 +1245,22 @@
      "name": "Tarnished Citadel"
     }
    ],
-   "owned": 90,
-   "reads_as": "7 to buy; 2 to pull out of a deck that is still together; 90 of 97 already owned",
+   "owned": 94,
+   "reads_as": "3 to buy; 2 to pull out of a deck that is still together; 94 of 97 already owned",
    "total": 97
   },
   "fell": [
    "damage @T10",
-   "board power @T6"
+   "board power @T6",
+   "killed by T6",
+   "killed by T10"
   ],
   "no_call": [
    "hoard @T10",
    "hoard @T6",
-   "killed by T6",
-   "killed by T10",
+   "missed drop by T5",
+   "mulliganed",
+   "interaction affordable @T6",
    "hand can act by T3"
   ],
   "notes": [],
@@ -1334,40 +1269,37 @@
     "measure": "stall, 2 in a row",
     "reads_as": "8 games in 100 -> 7 in 100, a swing of 1 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
-   },
-   {
-    "measure": "missed drop by T5",
-    "reads_as": "48 games in 100 -> 45 in 100, a swing of 3 games per 100",
-    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
-   },
-   {
-    "measure": "mulliganed",
-    "reads_as": "23 games in 100 -> 20 in 100, a swing of 2 games per 100",
-    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
-   },
-   {
-    "measure": "interaction affordable @T6",
-    "reads_as": "56 games in 100 -> 60 in 100, a swing of 4 games per 100",
-    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
   "risk": [
    {
-    "detail": "71.82 -> 64.30, a change of -7.52 (-10%)",
+    "detail": "67.74 -> 64.30, a change of -3.44 (-5%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "14.67 -> 13.73, a change of -0.94 (-6%)",
+    "detail": "14.96 -> 13.73, a change of -1.23 (-8%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "the largest is killed by T10 at -0.008 against an MDE of 0.009. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "29 games in 100 -> 27 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "killed by T6",
+    "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+   },
+   {
+    "detail": "96 games in 100 -> 94 in 100, a swing of 2 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "the largest is interaction affordable @T6 at +0.018 against an MDE of 0.021. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "5 row(s) returned no call",
+    "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1414,10 +1346,7 @@
    }
   ],
   "rose": [
-   "stall, 2 in a row",
-   "missed drop by T5",
-   "mulliganed",
-   "interaction affordable @T6"
+   "stall, 2 in a row"
   ],
   "state": "inconclusive"
  },
@@ -1427,11 +1356,11 @@
   {
    "better_is": "higher",
    "branch": 2.0133,
-   "champion": 1.948,
-   "delta": 0.0653,
+   "champion": 1.954,
+   "delta": 0.0593,
    "mde": 0.1375,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.065 is smaller than the 0.138 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.059 is smaller than the 0.138 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1441,11 +1370,11 @@
   {
    "better_is": "higher",
    "branch": 0.4463,
-   "champion": 0.4122,
-   "delta": 0.0341,
+   "champion": 0.434,
+   "delta": 0.0123,
    "mde": 0.0423,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.034 is smaller than the 0.042 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.042 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1455,11 +1384,11 @@
   {
    "better_is": "higher",
    "branch": 64.2976,
-   "champion": 71.8154,
-   "delta": -7.5178,
-   "mde": 2.9477,
+   "champion": 67.7412,
+   "delta": -3.4436,
+   "mde": 2.5935,
    "measure": "damage @T10",
-   "reads_as": "71.82 -> 64.30, a change of -7.52 (-10%)",
+   "reads_as": "67.74 -> 64.30, a change of -3.44 (-5%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -1469,11 +1398,11 @@
   {
    "better_is": "higher",
    "branch": 13.7267,
-   "champion": 14.6677,
-   "delta": -0.941,
-   "mde": 0.405,
+   "champion": 14.9582,
+   "delta": -1.2315,
+   "mde": 0.3715,
    "measure": "board power @T6",
-   "reads_as": "14.67 -> 13.73, a change of -0.94 (-6%)",
+   "reads_as": "14.96 -> 13.73, a change of -1.23 (-8%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1483,37 +1412,37 @@
   {
    "better_is": "higher",
    "branch": 0.2664,
-   "champion": 0.2744,
-   "delta": -0.008,
-   "mde": 0.0177,
+   "champion": 0.2922,
+   "delta": -0.0258,
+   "mde": 0.018,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.018 this run can resolve",
+   "reads_as": "29 games in 100 -> 27 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
   },
   {
    "better_is": "higher",
    "branch": 0.9433,
-   "champion": 0.9512,
-   "delta": -0.0079,
+   "champion": 0.9641,
+   "delta": -0.0208,
    "mde": 0.0092,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.009 this run can resolve",
+   "reads_as": "96 games in 100 -> 94 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.067,
-   "champion": 0.0781,
-   "delta": -0.0111,
-   "mde": 0.0106,
+   "champion": 0.0793,
+   "delta": -0.0123,
+   "mde": 0.0107,
    "measure": "stall, 2 in a row",
    "reads_as": "8 games in 100 -> 7 in 100, a swing of 1 games per 100",
    "scale": null,
@@ -1525,50 +1454,50 @@
   {
    "better_is": "lower",
    "branch": 0.4516,
-   "champion": 0.4802,
-   "delta": -0.0286,
+   "champion": 0.4655,
+   "delta": -0.0139,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "48 games in 100 -> 45 in 100, a swing of 3 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
   },
   {
    "better_is": "lower",
    "branch": 0.2038,
-   "champion": 0.2274,
-   "delta": -0.0236,
-   "mde": 0.0166,
+   "champion": 0.2178,
+   "delta": -0.014,
+   "mde": 0.0164,
    "measure": "mulliganed",
-   "reads_as": "23 games in 100 -> 20 in 100, a swing of 2 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
   },
   {
    "better_is": "higher",
    "branch": 0.5961,
-   "champion": 0.5598,
-   "delta": 0.0363,
-   "mde": 0.0219,
+   "champion": 0.5778,
+   "delta": 0.0183,
+   "mde": 0.0208,
    "measure": "interaction affordable @T6",
-   "reads_as": "56 games in 100 -> 60 in 100, a swing of 4 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.021 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
   {
    "better_is": "higher",
    "branch": 0.8857,
-   "champion": 0.884,
-   "delta": 0.0017,
+   "champion": 0.8836,
+   "delta": 0.0021,
    "mde": 0.0127,
    "measure": "hand can act by T3",
    "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.013 this run can resolve",
