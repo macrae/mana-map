@@ -55,7 +55,7 @@
    {
     "free": false,
     "name": "Astral Drift",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -867,16 +867,17 @@
   ],
   "counts": {
    "box": 4,
-   "buy": 24,
+   "buy": 25,
    "elsewhere": 14,
    "free": 0,
-   "in_deck": 58
+   "in_deck": 57
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Arcane Denial",
     "Ash Barrens",
+    "Astral Drift",
     "Battlefield Forge",
     "Blasphemous Act",
     "Boros Charm",
@@ -918,7 +919,7 @@
     "Wheel of Misfortune",
     "Whirlwind of Thought"
    ],
-   "add_copies": 42,
+   "add_copies": 43,
    "base_names": 100,
    "base_size": 100,
    "names": 100,
@@ -950,6 +951,7 @@
     "Opal Palace",
     "Queen Kayla bin-Kroog",
     "Riverpyre Verge",
+    "Shelter",
     "Silent Hallcreeper",
     "Skycloud Expanse",
     "Sorcerer Class",
@@ -966,7 +968,7 @@
     "Whirlpool Warrior",
     "Winds of Change"
    ],
-   "out_copies": 42,
+   "out_copies": 43,
    "quantity": [],
    "size": 100
   },
@@ -977,6 +979,7 @@
   "slug": "sharknado",
   "unsourced": [
    "Arcane Denial",
+   "Astral Drift",
    "Battlefield Forge",
    "Blasphemous Act",
    "Boros Charm",
@@ -1025,14 +1028,14 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 42,
-    "in_copies": 42,
+    "in": 43,
+    "in_copies": 43,
     "lands_in": 17,
     "lands_out": 18,
-    "out": 42,
-    "out_copies": 42,
-    "spells_in": 25,
-    "spells_out": 24
+    "out": 43,
+    "out_copies": 43,
+    "spells_in": 26,
+    "spells_out": 25
    },
    "in": [
     {
@@ -1193,6 +1196,16 @@
      "pair": null,
      "state": "buy",
      "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Astral Drift",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment",
      "why": null
     },
     {
@@ -1552,6 +1565,15 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
+     "name": "Shelter",
+     "pair": null,
+     "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
      "name": "Silent Hallcreeper",
      "pair": null,
      "type_line": "Enchantment Creature \u2014 Horror",
@@ -1839,8 +1861,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 42,
-    "out": 42
+    "in": 43,
+    "out": 43
    }
   },
   "lands": [],
@@ -2154,17 +2176,18 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy killed by T6, stall, 2 in a row, interaction affordable @T6 and hand can act by T3 and pay damage @T10, board power @T6, killed by T10, missed drop by T5, mulliganed and extra cards by T8.",
+  "because": "You buy killed by T6, stall, 2 in a row and interaction affordable @T6 and pay damage @T10, board power @T6, missed drop by T5, mulliganed and extra cards by T8.",
   "bill": {
    "box": 4,
-   "buy": 24,
+   "buy": 25,
    "elsewhere": 14,
    "free": 0,
-   "in_deck": 58
+   "in_deck": 57
   },
   "cost": {
-   "buy": 24,
+   "buy": 25,
    "buy_cards": [
+    "Astral Drift",
     "Captain Howler, Sea Scourge",
     "Cathartic Reunion",
     "Clifftop Retreat",
@@ -2192,10 +2215,10 @@
    ],
    "counts": {
     "box": 4,
-    "buy": 24,
+    "buy": 25,
     "elsewhere": 14,
     "free": 0,
-    "in_deck": 58
+    "in_deck": 57
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -2296,65 +2319,56 @@
      "name": "Teferi's Protection"
     }
    ],
-   "owned": 76,
-   "reads_as": "24 to buy; 14 to pull out of a deck that is still together; 76 of 100 already owned",
+   "owned": 75,
+   "reads_as": "25 to buy; 14 to pull out of a deck that is still together; 75 of 100 already owned",
    "total": 100
   },
   "fell": [
    "damage @T10",
    "board power @T6",
-   "killed by T10",
    "missed drop by T5",
    "mulliganed",
    "extra cards by T8"
   ],
-  "no_call": [],
+  "no_call": [
+   "killed by T10",
+   "hand can act by T3"
+  ],
   "notes": [
    "Forge, against a real pod: +0.023 win rate, CI [-0.077, +0.138] \u2014 this run cannot separate the two lists."
   ],
   "reward": [
    {
     "measure": "killed by T6",
-    "reads_as": "22 games in 100 -> 25 in 100, a swing of 3 games per 100",
+    "reads_as": "21 games in 100 -> 25 in 100, a swing of 4 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "15 games in 100 -> 6 in 100, a swing of 9 games per 100",
+    "reads_as": "16 games in 100 -> 6 in 100, a swing of 10 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
     "measure": "interaction affordable @T6",
     "reads_as": "13 games in 100 -> 40 in 100, a swing of 27 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
-   },
-   {
-    "measure": "hand can act by T3",
-    "reads_as": "95 games in 100 -> 96 in 100, a swing of 1 games per 100",
-    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
    {
-    "detail": "61.26 -> 49.44, a change of -11.82 (-19%)",
+    "detail": "60.40 -> 49.44, a change of -10.96 (-18%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "9.92 -> 9.48, a change of -0.44 (-4%)",
+    "detail": "9.85 -> 9.48, a change of -0.37 (-4%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "99 games in 100 -> 98 in 100, a swing of 1 games per 100",
-    "kind": "paid",
-    "what": "killed by T10",
-    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
-   },
-   {
-    "detail": "39 games in 100 -> 45 in 100, a swing of 6 games per 100",
+    "detail": "38 games in 100 -> 45 in 100, a swing of 7 games per 100",
     "kind": "paid",
     "what": "missed drop by T5",
     "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
@@ -2366,10 +2380,16 @@
     "why_it_matters": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
    },
    {
-    "detail": "12.13 -> 9.37, a change of -2.75 (-23%)",
+    "detail": "12.10 -> 9.37, a change of -2.73 (-23%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   {
+    "detail": "the largest is hand can act by T3 at +0.006 against an MDE of 0.009. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "kind": "unresolved",
+    "what": "2 row(s) returned no call",
+    "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
     "detail": "W gap +5 -> +1, U gap -2 -> -10, R gap +2 -> +1",
@@ -2387,8 +2407,7 @@
   "rose": [
    "killed by T6",
    "stall, 2 in a row",
-   "interaction affordable @T6",
-   "hand can act by T3"
+   "interaction affordable @T6"
   ],
   "state": "a trade"
  },
@@ -2398,11 +2417,11 @@
   {
    "better_is": "higher",
    "branch": 49.4364,
-   "champion": 61.2607,
-   "delta": -11.8243,
-   "mde": 1.5311,
+   "champion": 60.4001,
+   "delta": -10.9637,
+   "mde": 1.4951,
    "measure": "damage @T10",
-   "reads_as": "61.26 -> 49.44, a change of -11.82 (-19%)",
+   "reads_as": "60.40 -> 49.44, a change of -10.96 (-18%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -2412,11 +2431,11 @@
   {
    "better_is": "higher",
    "branch": 9.4804,
-   "champion": 9.918,
-   "delta": -0.4376,
+   "champion": 9.846,
+   "delta": -0.3656,
    "mde": 0.1543,
    "measure": "board power @T6",
-   "reads_as": "9.92 -> 9.48, a change of -0.44 (-4%)",
+   "reads_as": "9.85 -> 9.48, a change of -0.37 (-4%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -2426,11 +2445,11 @@
   {
    "better_is": "higher",
    "branch": 0.249,
-   "champion": 0.2185,
-   "delta": 0.0305,
+   "champion": 0.2078,
+   "delta": 0.0412,
    "mde": 0.0171,
    "measure": "killed by T6",
-   "reads_as": "22 games in 100 -> 25 in 100, a swing of 3 games per 100",
+   "reads_as": "21 games in 100 -> 25 in 100, a swing of 4 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -2440,25 +2459,25 @@
   {
    "better_is": "higher",
    "branch": 0.9794,
-   "champion": 0.9852,
-   "delta": -0.0058,
+   "champion": 0.9825,
+   "delta": -0.0031,
    "mde": 0.0056,
    "measure": "killed by T10",
-   "reads_as": "99 games in 100 -> 98 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.006 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
   {
    "better_is": "lower",
    "branch": 0.0603,
-   "champion": 0.1521,
-   "delta": -0.0918,
-   "mde": 0.0142,
+   "champion": 0.1578,
+   "delta": -0.0975,
+   "mde": 0.0144,
    "measure": "stall, 2 in a row",
-   "reads_as": "15 games in 100 -> 6 in 100, a swing of 9 games per 100",
+   "reads_as": "16 games in 100 -> 6 in 100, a swing of 10 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -2468,11 +2487,11 @@
   {
    "better_is": "lower",
    "branch": 0.4515,
-   "champion": 0.391,
-   "delta": 0.0605,
+   "champion": 0.3784,
+   "delta": 0.0731,
    "mde": 0.0197,
    "measure": "missed drop by T5",
-   "reads_as": "39 games in 100 -> 45 in 100, a swing of 6 games per 100",
+   "reads_as": "38 games in 100 -> 45 in 100, a swing of 7 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
@@ -2482,8 +2501,8 @@
   {
    "better_is": "lower",
    "branch": 0.2179,
-   "champion": 0.1929,
-   "delta": 0.025,
+   "champion": 0.1934,
+   "delta": 0.0245,
    "mde": 0.0164,
    "measure": "mulliganed",
    "reads_as": "19 games in 100 -> 22 in 100, a swing of 2 games per 100",
@@ -2496,11 +2515,11 @@
   {
    "better_is": "higher",
    "branch": 9.3707,
-   "champion": 12.1252,
-   "delta": -2.7545,
-   "mde": 0.396,
+   "champion": 12.1049,
+   "delta": -2.7342,
+   "mde": 0.3834,
    "measure": "extra cards by T8",
-   "reads_as": "12.13 -> 9.37, a change of -2.75 (-23%)",
+   "reads_as": "12.10 -> 9.37, a change of -2.73 (-23%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -2510,8 +2529,8 @@
   {
    "better_is": "higher",
    "branch": 0.4019,
-   "champion": 0.1317,
-   "delta": 0.2702,
+   "champion": 0.1282,
+   "delta": 0.2737,
    "mde": 0.0213,
    "measure": "interaction affordable @T6",
    "reads_as": "13 games in 100 -> 40 in 100, a swing of 27 games per 100",
@@ -2524,14 +2543,14 @@
   {
    "better_is": "higher",
    "branch": 0.9575,
-   "champion": 0.9481,
-   "delta": 0.0094,
-   "mde": 0.0088,
+   "champion": 0.9513,
+   "delta": 0.0062,
+   "mde": 0.0085,
    "measure": "hand can act by T3",
-   "reads_as": "95 games in 100 -> 96 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.009 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
   }

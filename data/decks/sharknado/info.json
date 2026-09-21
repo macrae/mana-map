@@ -15,12 +15,16 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 11,
     "of": 18,
     "stale": [
-      "tutors"
+      "map",
+      "tutors",
+      "prose"
     ],
-    "invalid": [],
+    "invalid": [
+      "engine"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -136,6 +140,9 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Astral Drift"
+          },
+          {
             "name": "Clifftop Retreat"
           },
           {
@@ -154,21 +161,22 @@
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 3,
+        "blocking": 4,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 4,
+      "out": 4,
       "counts": {
-        "in_deck": 97,
+        "in_deck": 96,
         "box": 0,
         "elsewhere": 1,
-        "buy": 2,
+        "buy": 3,
         "free": 0
       },
       "unsourced": [
+        "Astral Drift",
         "Battlefield Forge",
         "Clifftop Retreat",
         "Inspiring Vantage"
@@ -213,10 +221,10 @@
         },
         {
           "name": "Astral Drift",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Battlefield Forge",
@@ -904,6 +912,9 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Astral Drift"
+          },
+          {
             "name": "Ceremonial Knife"
           },
           {
@@ -940,21 +951,22 @@
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 9,
+        "blocking": 10,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 9,
-      "out": 9,
+      "add": 10,
+      "out": 10,
       "counts": {
-        "in_deck": 91,
+        "in_deck": 90,
         "box": 0,
         "elsewhere": 1,
-        "buy": 8,
+        "buy": 9,
         "free": 0
       },
       "unsourced": [
+        "Astral Drift",
         "Battlefield Forge",
         "Ceremonial Knife",
         "Clifftop Retreat",
@@ -998,10 +1010,10 @@
         },
         {
           "name": "Astral Drift",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Battlefield Forge",
@@ -1696,6 +1708,9 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Astral Drift"
+          },
+          {
             "name": "Captain Howler, Sea Scourge"
           },
           {
@@ -1894,22 +1909,23 @@
             ]
           }
         ],
-        "blocking": 38,
+        "blocking": 39,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 42,
-      "out": 42,
+      "add": 43,
+      "out": 43,
       "counts": {
-        "in_deck": 58,
+        "in_deck": 57,
         "box": 4,
         "elsewhere": 14,
-        "buy": 24,
+        "buy": 25,
         "free": 0
       },
       "unsourced": [
         "Arcane Denial",
+        "Astral Drift",
         "Battlefield Forge",
         "Blasphemous Act",
         "Boros Charm",
@@ -2008,10 +2024,10 @@
         },
         {
           "name": "Astral Drift",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Battlefield Forge",
@@ -2920,8 +2936,8 @@
       "name": "shelter-v1",
       "opened": "2026-09-21",
       "why": "Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive a turn or be equipped first, so the deck has no instant-speed protection at all. Shelter is {1}{W} at instant speed and draws a card, which Shabraz pays for with a counter and a life. Astral Drift is gated on CYCLING rather than discarding, which is not what Brallin taxes, and it is a blink effect with almost nothing in the 99 worth blinking; the declaration names it in no target group. White for white, and white sits five sources OVER target, so the manabase does not move. All 17 wheels stay — an earlier version of this branch cut two of them for Mask of Memory and measured an 8% card-advantage loss for it.",
-      "state": "PROPOSED · READY",
-      "state_why": "every card is sourced — `deck-branch sharknado merge shelter-v1 --write`",
+      "state": "PROPOSED · OUTRUN",
+      "state_why": "proposed against V3 and the deck is now VNone — v1.0.1 may be taken; re-measure and propose again",
       "proposal": {
         "at": "2026-09-21",
         "as_version": "v1.0.1",
@@ -2951,24 +2967,17 @@
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [
-          {
-            "name": "Shelter",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          }
-        ],
+        "box": [],
         "blocking": 0,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 99,
-        "box": 1,
+        "in_deck": 100,
+        "box": 0,
         "elsewhere": 0,
         "buy": 0,
         "free": 0
@@ -3490,15 +3499,10 @@
         },
         {
           "name": "Shelter",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Shivan Reef",
@@ -3695,6 +3699,9 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Astral Drift"
+          },
+          {
             "name": "Ceremonial Knife"
           },
           {
@@ -3746,21 +3753,22 @@
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 13,
+        "blocking": 14,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 13,
-      "out": 13,
+      "add": 14,
+      "out": 14,
       "counts": {
-        "in_deck": 87,
+        "in_deck": 86,
         "box": 0,
         "elsewhere": 2,
-        "buy": 11,
+        "buy": 12,
         "free": 0
       },
       "unsourced": [
+        "Astral Drift",
         "Battlefield Forge",
         "Ceremonial Knife",
         "Clifftop Retreat",
@@ -3815,10 +3823,10 @@
         },
         {
           "name": "Astral Drift",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Battlefield Forge",
@@ -4523,164 +4531,164 @@
       ],
       "online_by_turn": {
         "1": {
-          "rate": 0.7852,
+          "rate": 0.7791,
           "ci95": [
-            0.777,
-            0.7931
+            0.7709,
+            0.7871
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.8317,
+          "rate": 0.8301,
           "ci95": [
-            0.8242,
-            0.8389
+            0.8226,
+            0.8373
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.8739,
+          "rate": 0.8679,
           "ci95": [
-            0.8672,
-            0.8803
+            0.8611,
+            0.8744
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.9032,
+          "rate": 0.8986,
           "ci95": [
-            0.8972,
-            0.9088
+            0.8925,
+            0.9044
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.925,
+          "rate": 0.9235,
           "ci95": [
-            0.9197,
-            0.93
+            0.9181,
+            0.9285
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.9465,
+          "rate": 0.9429,
           "ci95": [
-            0.9419,
-            0.9507
+            0.9382,
+            0.9473
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.9624,
+          "rate": 0.9629,
           "ci95": [
-            0.9585,
-            0.966
+            0.959,
+            0.9664
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9736,
+          "rate": 0.9737,
           "ci95": [
-            0.9703,
-            0.9766
+            0.9704,
+            0.9767
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9832,
+          "rate": 0.9836,
           "ci95": [
-            0.9805,
-            0.9855
+            0.9809,
+            0.9859
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9889,
+          "rate": 0.9906,
           "ci95": [
-            0.9867,
-            0.9908
+            0.9885,
+            0.9923
           ],
           "n": 10000
         }
       },
       "any_route_by_turn": {
         "1": {
-          "rate": 0.342,
+          "rate": 0.3265,
           "ci95": [
-            0.3328,
-            0.3514
+            0.3174,
+            0.3358
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.4177,
+          "rate": 0.4122,
           "ci95": [
-            0.4081,
-            0.4274
+            0.4026,
+            0.4219
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.5033,
+          "rate": 0.4946,
           "ci95": [
-            0.4935,
-            0.5131
+            0.4848,
+            0.5044
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.5744,
+          "rate": 0.5686,
           "ci95": [
-            0.5647,
-            0.5841
+            0.5589,
+            0.5783
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.6549,
+          "rate": 0.6473,
           "ci95": [
-            0.6455,
-            0.6642
+            0.6379,
+            0.6566
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.7714,
+          "rate": 0.7622,
           "ci95": [
-            0.7631,
-            0.7795
+            0.7538,
+            0.7704
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8476,
+          "rate": 0.844,
           "ci95": [
-            0.8404,
-            0.8545
+            0.8368,
+            0.851
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9012,
+          "rate": 0.8978,
           "ci95": [
-            0.8952,
-            0.9069
+            0.8917,
+            0.9036
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9348,
+          "rate": 0.9353,
           "ci95": [
-            0.9298,
-            0.9395
+            0.9303,
+            0.94
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.957,
+          "rate": 0.9608,
           "ci95": [
-            0.9528,
-            0.9608
+            0.9568,
+            0.9644
           ],
           "n": 10000
         }
@@ -4688,10 +4696,10 @@
       "bottleneck": {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
         "by_turn_three": {
-          "rate": 0.8739,
+          "rate": 0.8679,
           "ci95": [
-            0.8672,
-            0.8803
+            0.8611,
+            0.8744
           ],
           "n": 10000
         }
@@ -4701,138 +4709,138 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6493,
+          "rate": 0.6388,
           "ci95": [
-            0.6399,
-            0.6586
+            0.6293,
+            0.6482
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2546,
+          "rate": 0.2337,
           "ci95": [
-            0.2462,
-            0.2632
+            0.2255,
+            0.2421
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0722,
+          "rate": 0.073,
           "ci95": [
-            0.0673,
-            0.0774
+            0.0681,
+            0.0783
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0176,
+          "rate": 0.0196,
           "ci95": [
-            0.0152,
-            0.0204
+            0.0171,
+            0.0225
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0177,
+          "rate": 0.0179,
           "ci95": [
-            0.0153,
-            0.0205
+            0.0155,
+            0.0207
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0267,
+          "rate": 0.0278,
           "ci95": [
-            0.0237,
-            0.03
+            0.0248,
+            0.0312
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0563,
+          "rate": 0.0583,
           "ci95": [
-            0.052,
-            0.061
+            0.0539,
+            0.0631
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0836,
+          "rate": 0.0896,
           "ci95": [
-            0.0783,
-            0.0892
+            0.0842,
+            0.0954
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.1141,
+          "rate": 0.1176,
           "ci95": [
-            0.108,
-            0.1205
+            0.1114,
+            0.1241
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1554,
+          "rate": 0.1562,
           "ci95": [
-            0.1484,
-            0.1626
+            0.1492,
+            0.1634
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1521,
+        "rate": 0.1578,
         "ci95": [
-          0.1452,
-          0.1593
+          0.1508,
+          0.1651
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 7982,
-        "hand_empty": 1394,
-        "mana_short": 6588
+        "stall_turns": 7937,
+        "hand_empty": 1278,
+        "mana_short": 6659
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.391,
+        "rate": 0.3784,
         "ci95": [
-          0.3815,
-          0.4006
+          0.3689,
+          0.388
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1471,
+      "missed_land_drop_rate": 0.1446,
       "mulliganed": {
-        "rate": 0.1929,
+        "rate": 0.1934,
         "ci95": [
-          0.1853,
-          0.2008
+          0.1858,
+          0.2013
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.157,
-        "3": 3.179,
-        "4": 4.037,
-        "5": 4.79,
-        "6": 5.537,
-        "7": 6.409,
-        "8": 7.381,
-        "9": 8.38,
-        "10": 9.405
+        "2": 2.159,
+        "3": 3.186,
+        "4": 4.054,
+        "5": 4.812,
+        "6": 5.564,
+        "7": 6.445,
+        "8": 7.416,
+        "9": 8.412,
+        "10": 9.439
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.0067
+      "mana_stdev_turn_five": 1.0125
     },
-    "decklist_sha256": "9361be6b5109d713dfc952b7fc7db34321e10d4ef5ce5e6ac3606e0da6033060"
+    "decklist_sha256": "2ca70e243f922c24d0c9b99145b6e50a62882f1f9ccf399d8c07ce519cadcbcf"
   },
   "bracket": {
     "floor": 3,
@@ -4882,7 +4890,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.34,
+          "value": 5.324,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -4890,7 +4898,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A WHEEL drawn — the ignition; nothing else in the deck starts itself": {
-          "value": 95,
+          "value": 94,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A WHEEL drawn — the ignition; nothing else in the deck starts itself' by turn six",
@@ -4906,7 +4914,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)": {
-          "value": 35,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)\" by turn six",
@@ -4914,7 +4922,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A per-draw DAMAGE source drawn (taxes the refill half)": {
-          "value": 46,
+          "value": 47,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A per-draw DAMAGE source drawn (taxes the refill half)' by turn six",
@@ -4938,7 +4946,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source": {
-          "value": 53,
+          "value": 54,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source' by turn six",
@@ -5042,15 +5050,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 9.392,
-            "2": 2.145,
-            "3": 3.166,
-            "4": 4.02,
-            "5": 4.772,
-            "6": 5.524,
-            "7": 6.402,
-            "8": 7.37,
-            "9": 8.377
+            "10": 9.41,
+            "2": 2.142,
+            "3": 3.168,
+            "4": 4.032,
+            "5": 4.783,
+            "6": 5.525,
+            "7": 6.413,
+            "8": 7.38,
+            "9": 8.387
           },
           "tier": "data",
           "weight": "detail",
@@ -5061,15 +5069,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.86,
+            "10": 0.868,
             "2": 0.997,
-            "3": 0.912,
-            "4": 0.817,
-            "5": 0.732,
-            "6": 0.719,
-            "7": 0.794,
-            "8": 0.839,
-            "9": 0.862
+            "3": 0.917,
+            "4": 0.823,
+            "5": 0.734,
+            "6": 0.715,
+            "7": 0.8,
+            "8": 0.837,
+            "9": 0.865
           },
           "tier": "data",
           "weight": "detail",
@@ -5079,16 +5087,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.175,
-            "10": 7.602,
-            "2": 0.519,
-            "3": 1.12,
-            "4": 1.325,
-            "5": 1.652,
-            "6": 2.437,
-            "7": 3.476,
-            "8": 4.678,
-            "9": 6.068
+            "1": 0.172,
+            "10": 7.52,
+            "2": 0.486,
+            "3": 1.088,
+            "4": 1.291,
+            "5": 1.613,
+            "6": 2.406,
+            "7": 3.431,
+            "8": 4.609,
+            "9": 5.976
           },
           "tier": "data",
           "weight": "detail",
@@ -5098,13 +5106,13 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 309,
-            "1": 1458,
-            "2": 2940,
-            "3": 2857,
-            "4": 1757,
-            "5": 567,
-            "6": 106,
+            "0": 308,
+            "1": 1522,
+            "2": 2768,
+            "3": 2900,
+            "4": 1829,
+            "5": 564,
+            "6": 103,
             "7": 6
           },
           "tier": "data",
@@ -5114,12 +5122,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 217,
-            "5": 251,
-            "6": 1835,
-            "7": 4260,
-            "8": 2562,
-            "9": 700
+            "10": 212,
+            "5": 246,
+            "6": 1809,
+            "7": 4243,
+            "8": 2584,
+            "9": 742
           },
           "tier": "data",
           "weight": "detail",
@@ -5135,12 +5143,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.34,
+    "commander_mean_cast_turn": 5.324,
     "commander_cast_by_turn_6_pct": 84,
     "targets": [
       {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-        "by_turn_6_pct": 95
+        "by_turn_6_pct": 94
       },
       {
         "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
@@ -5148,11 +5156,11 @@
       },
       {
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 36
       },
       {
         "label": "A per-draw DAMAGE source drawn (taxes the refill half)",
-        "by_turn_6_pct": 46
+        "by_turn_6_pct": 47
       },
       {
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
@@ -5164,7 +5172,7 @@
       },
       {
         "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
-        "by_turn_6_pct": 53
+        "by_turn_6_pct": 54
       },
       {
         "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
@@ -5188,28 +5196,28 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.232,
+      "mean_kill_turn": 7.244,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 21,
+      "kill_by_turn_6_pct": 20,
       "kill_by_turn_8_pct": 89,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 217,
-        "5": 251,
-        "6": 1835,
-        "7": 4260,
-        "8": 2562,
-        "9": 700
+        "10": 212,
+        "5": 246,
+        "6": 1809,
+        "7": 4243,
+        "8": 2584,
+        "9": 742
       }
     }
   },
   "engine_health": {
     "word": "EXCEPTIONAL",
-    "rate": 0.925,
+    "rate": 0.9235,
     "ci95": [
-      0.9197,
-      0.93
+      0.9181,
+      0.9285
     ],
     "n": 10000,
     "turn": 5,
@@ -5246,6 +5254,7 @@
     "under": [
       "colour-sources",
       "ramp",
+      "interaction",
       "sweepers",
       "protection",
       "interaction-breadth"
@@ -5340,13 +5349,15 @@
   },
   "experiments": null,
   "next": [
-    "stale: tutors — regenerate against the current list (`/publish-deck` sequences it)",
+    "1 artifact(s) fail their own gate (engine) — `deck-status sharknado` names them; fix before anything else reads them",
+    "stale: map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1` needs 3 card(s) sourced — `manamap pilot deck-branch sharknado source budget-v1`",
-    "branch `ivora-v1` needs 9 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
-    "branch `recon-v1` needs 38 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
-    "`shelter-v1` is PROPOSED as v1.0.1 and every card is sourced — `manamap pilot deck-branch sharknado merge shelter-v1 --write`",
-    "branch `tax-v1` needs 13 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
+    "branch `budget-v1` needs 4 card(s) sourced — `manamap pilot deck-branch sharknado source budget-v1`",
+    "branch `ivora-v1` needs 10 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
+    "branch `recon-v1` needs 39 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
+    "`shelter-v1` was proposed as v1.0.1 against V3 and the deck has moved on — v1.0.1 may be taken; re-measure and propose again",
+    "branch `tax-v1` needs 14 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
     "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×3",
     "3 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],

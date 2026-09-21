@@ -35,7 +35,7 @@
    {
     "free": false,
     "name": "Astral Drift",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -620,28 +620,30 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 2,
+   "buy": 3,
    "elsewhere": 1,
    "free": 0,
-   "in_deck": 97
+   "in_deck": 96
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
+    "Astral Drift",
     "Battlefield Forge",
     "Clifftop Retreat",
     "Inspiring Vantage"
    ],
-   "add_copies": 3,
+   "add_copies": 4,
    "base_names": 100,
    "base_size": 100,
    "names": 100,
    "out": [
     "Ferrous Lake",
     "Fiery Islet",
-    "Riverpyre Verge"
+    "Riverpyre Verge",
+    "Shelter"
    ],
-   "out_copies": 3,
+   "out_copies": 4,
    "quantity": [],
    "size": 100
   },
@@ -651,6 +653,7 @@
   "proxy": false,
   "slug": "sharknado",
   "unsourced": [
+   "Astral Drift",
    "Battlefield Forge",
    "Clifftop Retreat",
    "Inspiring Vantage"
@@ -705,16 +708,26 @@
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 3,
-    "in_copies": 3,
+    "in": 4,
+    "in_copies": 4,
     "lands_in": 3,
     "lands_out": 3,
-    "out": 3,
-    "out_copies": 3,
-    "spells_in": 0,
-    "spells_out": 0
+    "out": 4,
+    "out_copies": 4,
+    "spells_in": 1,
+    "spells_out": 1
    },
    "in": [
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Astral Drift",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment",
+     "why": null
+    },
     {
      "cmc": 0,
      "copies": 1,
@@ -749,6 +762,15 @@
    "names": 100,
    "out": [
     {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Shelter",
+     "pair": null,
+     "type_line": "Instant",
+     "why": null
+    },
+    {
      "cmc": 0,
      "copies": 1,
      "kind": "land",
@@ -778,8 +800,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 3,
-    "out": 3
+    "in": 4,
+    "out": 4
    }
   },
   "lands": [
@@ -1076,23 +1098,24 @@
   "because": "The objective is met and nothing measured here got worse.",
   "bill": {
    "box": 0,
-   "buy": 2,
+   "buy": 3,
    "elsewhere": 1,
    "free": 0,
-   "in_deck": 97
+   "in_deck": 96
   },
   "cost": {
-   "buy": 2,
+   "buy": 3,
    "buy_cards": [
+    "Astral Drift",
     "Clifftop Retreat",
     "Inspiring Vantage"
    ],
    "counts": {
     "box": 0,
-    "buy": 2,
+    "buy": 3,
     "elsewhere": 1,
     "free": 0,
-    "in_deck": 97
+    "in_deck": 96
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1105,8 +1128,8 @@
      "name": "Battlefield Forge"
     }
    ],
-   "owned": 98,
-   "reads_as": "2 to buy; 1 to pull out of a deck that is still together; 98 of 100 already owned",
+   "owned": 97,
+   "reads_as": "3 to buy; 1 to pull out of a deck that is still together; 97 of 100 already owned",
    "total": 100
   },
   "fell": [],
@@ -1128,7 +1151,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is killed by T6 at -0.002 against an MDE of 0.016. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at +0.013 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1198,11 +1221,11 @@
   {
    "better_is": "higher",
    "branch": 61.174,
-   "champion": 61.2607,
-   "delta": -0.0867,
-   "mde": 1.5311,
+   "champion": 60.4001,
+   "delta": 0.7739,
+   "mde": 1.5279,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.087 is smaller than the 1.531 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.774 is smaller than the 1.528 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -1212,11 +1235,11 @@
   {
    "better_is": "higher",
    "branch": 9.9039,
-   "champion": 9.918,
-   "delta": -0.0141,
-   "mde": 0.1463,
+   "champion": 9.846,
+   "delta": 0.0579,
+   "mde": 0.1461,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.014 is smaller than the 0.146 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.058 is smaller than the 0.146 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1226,11 +1249,11 @@
   {
    "better_is": "higher",
    "branch": 0.2169,
-   "champion": 0.2185,
-   "delta": -0.0016,
-   "mde": 0.0164,
+   "champion": 0.2078,
+   "delta": 0.0091,
+   "mde": 0.0163,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.016 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1240,11 +1263,11 @@
   {
    "better_is": "higher",
    "branch": 0.985,
-   "champion": 0.9852,
-   "delta": -0.0002,
-   "mde": 0.0048,
+   "champion": 0.9825,
+   "delta": 0.0025,
+   "mde": 0.0052,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.005 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.005 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1254,11 +1277,11 @@
   {
    "better_is": "lower",
    "branch": 0.1515,
-   "champion": 0.1521,
-   "delta": -0.0006,
-   "mde": 0.0142,
+   "champion": 0.1578,
+   "delta": -0.0063,
+   "mde": 0.0144,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.014 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.014 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1268,11 +1291,11 @@
   {
    "better_is": "lower",
    "branch": 0.3918,
-   "champion": 0.391,
-   "delta": 0.0008,
+   "champion": 0.3784,
+   "delta": 0.0134,
    "mde": 0.0193,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.013 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1282,11 +1305,11 @@
   {
    "better_is": "lower",
    "branch": 0.1929,
-   "champion": 0.1929,
-   "delta": 0.0,
+   "champion": 0.1934,
+   "delta": -0.0005,
    "mde": 0.0156,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1296,11 +1319,11 @@
   {
    "better_is": "higher",
    "branch": 12.109,
-   "champion": 12.1252,
-   "delta": -0.0162,
-   "mde": 0.396,
+   "champion": 12.1049,
+   "delta": 0.0041,
+   "mde": 0.3959,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.016 is smaller than the 0.396 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.396 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1310,11 +1333,11 @@
   {
    "better_is": "higher",
    "branch": 0.1315,
-   "champion": 0.1317,
-   "delta": -0.0002,
+   "champion": 0.1282,
+   "delta": 0.0033,
    "mde": 0.0183,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.018 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.018 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1324,11 +1347,11 @@
   {
    "better_is": "higher",
    "branch": 0.9481,
-   "champion": 0.9481,
-   "delta": 0.0,
+   "champion": 0.9513,
+   "delta": -0.0032,
    "mde": 0.0088,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.009 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.009 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
