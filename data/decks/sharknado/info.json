@@ -15,15 +15,12 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 12,
+    "complete": 14,
     "of": 18,
     "stale": [
-      "tutors",
-      "prose"
+      "tutors"
     ],
-    "invalid": [
-      "engine"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -5243,8 +5240,8 @@
   },
   "engine": {
     "thesis": "Two commanders stand at opposite ends of one door — Brallin bills the table for every card that LEAVES your hand and Shabraz pays you for every card that ARRIVES — so the deck is a hand-refill machine whose output is entirely a function of who else is standing at those two doors when a wheel resolves.",
-    "critic": "pass",
-    "lines": 15,
+    "critic": null,
+    "lines": 17,
     "verified_lines": 3
   },
   "diagnosis": null,
@@ -5296,6 +5293,16 @@
       "from": "engine",
       "question": "mana_analysis.json credits Gleaming Bastion, Floodfarm Verge, Nimbus Maze and Riverpyre Verge as unconditional blue sources and lists none of them in sources.gated, although each one's blue mode is gated on a basic land or a Plains/Island/Mountain on the battlefield and the 99 holds zero basics and seven typed lands. Is the U figure (32 land sources, on-curve 0.785 ungated) an upper bound by four sources, and should land_colors(card, pool=...) read these pool-dependent gates the way it already reads a fetchland?",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Does Shelter's protection from a colour actually keep the +1/+1 counters on Brallin and Shabraz? Protection does not remove counters, but a stack scenario should walk one concrete sequence: opponent casts Swords to Plowshares on Brallin holding seven counters, Shelter responds naming white, Swords is countered on resolution for having an illegal target, and the draw resolves as a Shabraz trigger. Also settle whether protection from a colour lets Brallin through a blocker of that colour in the same turn it is cast.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Is deck-audit's interaction-breadth reading of 0 classes a real hole or a role-gate artifact for THIS deck? Enumerated (notes[2]): Commit // Memory answers any nonland permanent and is invisible to the axis because its only role is draw:burst; Irencrag Pyromancer and Niv-Mizzet pass the role gate but say 'any target' rather than 'target creature'; Echo of Eons, Time Reversal and Memory shuffle every graveyard away. Land is the one class with genuinely nothing. The question for the corpus is whether a 5-of-5 breadth target is the right yardstick for a deck whose plan does not contest the board at all — strategy:deckbuilding.interaction-suite is the source the axis quotes.",
+      "settled_by": "research-strategy"
     }
   ],
   "simulation": {
@@ -5348,15 +5355,15 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status sharknado` names them; fix before anything else reads them",
-    "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "stale: tutors — regenerate against the current list (`/publish-deck` sequences it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1` needs 4 card(s) sourced — `manamap pilot deck-branch sharknado source budget-v1`",
     "branch `ivora-v1` needs 10 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
     "branch `recon-v1` needs 39 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `shelter-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch sharknado merge shelter-v1 --write`",
     "branch `tax-v1` needs 14 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
-    "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×3",
+    "engine.json's critic verdict is None — `/analyze-engine sharknado`",
+    "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×4",
     "4 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
