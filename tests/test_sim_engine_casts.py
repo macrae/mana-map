@@ -108,6 +108,25 @@ def test_the_validator_accepts_an_absent_block_and_rejects_a_malformed_one():
 #: `KNOWN_FLAGGED` in test_sim_pilot_quality: the record is evidence about the
 #: harness and a floor on the deck, and its win rate is not read as a result.
 KNOWN_UNCAST = {
+    # A RECORD IS JUDGED AGAINST TODAY'S DECLARATION, NOT THE ONE IT RAN UNDER.
+    # These two flag for a reason that is not the AI's: the deck changed after
+    # the run, and the cards now named in `goldfish_targets.json` were not in
+    # the 99 when the games were played. The record is honest, the declaration
+    # is honest, and the join between them is what is stale.
+    #
+    # 2026-09-02, ur-dragon at ~standard, 100 games: Steel Hellkite,
+    # Transcendent Dragon and Whirlwing Stormbrood read as never cast. All
+    # three ARRIVED in v1.3.0 on 2026-09-20 and were added to the castable-
+    # dragon target legs the same day. The seat could not cast cards the deck
+    # did not contain.
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n100-45f502ef-s1173684975-podExperimental-c600.json",
+    # Same shape, gishath at standard-v3, 40 games: World War Hulk arrived in
+    # v1.1.0 on 2026-09-20, after this run.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-0ed9ed6f-s249163119-podExperimental-c600.json",
+    # Same shape again, ur-dragon at standard-v2, 60 games (2026-09-06): the
+    # same three v1.3.0 arrivals. Every ur-dragon record predating 2026-09-20
+    # flags this way, which is the tell that it is the JOIN and not the AI.
+    "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-acc77874-s898753652-podExperimental-c600.json",
     # 2026-09-10, sharknado@recon-v1 at standard-v3: Wheel of Fortune cast once,
     # Windfall / Magus / Jace's Archivist / Faithless Looting never, in 60
     # games. Forge's AI will not discard its own hand. Kept as the record that

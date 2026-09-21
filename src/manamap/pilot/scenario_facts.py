@@ -199,6 +199,17 @@ def opponents_of(scenario):
     # this on decisions rather than only on stacks.
     extras = scenario.get("extras")
     lives = (extras.get("life_totals") or {}) if isinstance(extras, dict) else {}
+    # ...AND `life_totals` INSIDE IT IS FREE-FORM TOO. The guard above was added
+    # when `extras` turned out to be a string on decision scenarios, and it
+    # stopped one level too early: an author who writes
+    # `"life_totals": "pilot 40, each opponent 40"` — prose, which reads
+    # perfectly well to a human and to an agent — left `lives` as a str, and the
+    # `lives.get(key)` below threw. Found by the stack-resolver on ur-dragon 008,
+    # which had to work around it in-process to answer at all. Prose here is not
+    # an error; it is simply not a mapping, so there are no per-seat lives to
+    # read and the seats fall back to what `board` carries.
+    if not isinstance(lives, dict):
+        lives = {}
 
     out = []
     listed = board.get("opponents")

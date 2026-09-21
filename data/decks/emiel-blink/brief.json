@@ -1,0 +1,24 @@
+{
+  "slug": "emiel-blink",
+  "commander": "Emiel the Blessed",
+  "bracket": 4,
+  "theme": "blink",
+  "must_include": [
+    "Sun Titan",
+    "Eternal Witness",
+    "Seedborn Muse",
+    "Wall of Omens",
+    "Restoration Angel",
+    "Panharmonicon",
+    "Karmic Guide"
+  ],
+  "must_exclude": [
+    "Abdel Adrian, Gorion's Ward",
+    "Basking Broodscale",
+    "Dionus, Elvish Archdruid",
+    "Felidar Guardian",
+    "Scurry Oak",
+    "Village Bell-Ringer"
+  ],
+  "playstyle": "A Selesnya blink engine whose motor is printed on the commander rather than hidden in the 99. Emiel costs {3} to activate and blinks any other creature, so every entry trigger in the deck is a repeatable ability rather than a one-shot, and her second ability turns each arrival into a +1/+1 counter for one hybrid mana. Build the 99 as a toolbox of entry triggers worth re-firing: removal on a body, draw on a body, ramp on a body, and protection that answers the removal the commander will attract. NO TWO-CARD INFINITE COMBOS. The pilot dislikes them and will not play them, and this commander is unusually dense in them — 445 combo partners in the corpus, and the archetype's signature line is Emiel plus any creature whose entry makes three or more mana, which loops forever. EXCLUSIONS ARE THE MECHANISM, NOT THE PROSE: the builder reads must_exclude and not this sentence, so the exclusion list will be computed from a combo audit of the first build and applied on the second pass, exactly as it was for meren-recursion. Power must come from stacked entry triggers and a mana sink that scales, never from a loop. Bracket 4: lethal, consistent and fast, threatening the table by turn six. THE KNOWN FRAGILITY, stated so the build answers it: the engine is the commander, so she will be removed on sight, and the deck needs protection and a way to keep going without her — this is the same single-point-of-failure the pilot diagnosed in ur-dragon. COMPUTED 2026-09-20, and the method was corrected mid-build. The first pass set-covered data/combo_graph.json partners, which is CO-MEMBERSHIP IN ANY COMBO — every card in a four-card line is listed as a partner of every other — so it reported 65 pairs and demanded 29 exclusions, a third of the nonlands, including three of the eight must_include cards. Counting TRUE two-card combos from combo_details.json instead gives EIGHT, and six exclusions break all of them. The six are the counter and blink loops: Basking Broodscale, Scurry Oak, Felidar Guardian, Dionus, Abdel Adrian and Village Bell-Ringer. meren-recursion was re-checked with the correct measure and is genuinely clean at zero."
+}

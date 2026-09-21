@@ -315,3 +315,33 @@ def test_the_stack_view_carries_the_named_cards_official_rulings():
         assert "Gifted Aetherborn" in section["cards"], "the stack object's annotation is stripped"
         checked += 1
     assert checked >= 1
+
+
+def test_prose_life_totals_do_not_crash_the_seat_reader():
+    """`extras.life_totals` is free-form and an author may write PROSE there.
+
+    The guard above `lives` was added when `extras` itself turned out to be a
+    string on decision scenarios, and it stopped one level too early: a
+    scenario writing `"life_totals": "pilot 40, each opponent 40"` left `lives`
+    as a str and the `lives.get(key)` below threw AttributeError. Found on
+    ur-dragon stack 008, where it broke the resolver's own brief.
+
+    Re-introduce the bug by deleting the `isinstance(lives, dict)` guard and
+    this fails on AttributeError. Drives the production function.
+    """
+    from manamap.pilot import scenario_facts
+    scenario = {
+        "board": {"you": ["Sol Ring"],
+                  "opponents": [{"life": 40, "board": ["no creatures"]}]},
+        "hand": [],
+        "extras": {"life_totals": "pilot 40, each opponent 40"},
+    }
+    seats = scenario_facts.opponents_of(scenario)
+    assert seats, "a scenario with one listed opponent must yield one seat"
+    assert seats[0]["life"] == 40, "the life on the seat entry is still read"
+
+    # and the mapping form keeps working, so the guard did not widen into a drop
+    mapped = dict(scenario, extras={"life_totals": {"opponent_1": 31}})
+    mapped["board"] = {"you": [], "opponent_1": ["a 2/2"]}
+    got = scenario_facts.opponents_of(mapped)
+    assert any(s["life"] == 31 for s in got), f"mapping form regressed: {got}"
