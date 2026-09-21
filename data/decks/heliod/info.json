@@ -1994,31 +1994,9 @@
       "name": "splendor-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): Gleaming Splendor for Alhammarret's Archive. a Treasure whenever an opponent draws their second card in a turn, in a deck that makes every opponent draw every turn, plus a group-draw activation; the Archive's lifegain half is off-plan here The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "PROPOSED · OUTRUN",
-      "state_why": "proposed against V10 and the deck is now V11 — v1.2.2 may be taken; re-measure and propose again",
-      "proposal": {
-        "at": "2026-09-12",
-        "as_version": "v1.2.2",
-        "why": "Pilot's call 2026-09-11: Gleaming Splendor for Alhammarret's Archive. The instrument cannot see it — Forge at 40 games (MDE 0.34, delta -0.028, CI [-0.23, +0.19]) and a goldfish that does not read the second-draw Treasure trigger — so the decision is on theory: a Treasure per opponent per turn in a deck that makes every opponent draw every turn, and it stacks with Smothering Tithe. The Archive's lifegain half was off-plan. Pilot's call 2026-09-12: Greater Auramancy for Lightning Greaves. Heliod is an enchantment creature, so the shroud covers him as Greaves did, and it also covers Tithe, Rhystic Study, Remora, Splendor and the pillowfort; the haste was unused. Game 001 was lost to a Swords redirected onto Heliod. Blind to wipes and counter wars, and Karametra's Blessing can no longer target Heliod once it resolves. Nothing on the bench measures protection. Two to buy.",
-        "base_version": 10,
-        "decklist_sha256": "034afa608b87e9efc1dedf9d1acdfb98170acfa9b82c746d34b0fb28c8c7479b",
-        "accepted_on": {
-          "decklist_sha256": "034afa608b87e9efc1dedf9d1acdfb98170acfa9b82c746d34b0fb28c8c7479b",
-          "state": "merge",
-          "objective": {
-            "axis": "extra_cards_8",
-            "op": ">=",
-            "value": 2.22,
-            "why": "Single-card patch measured for a yay/nay (2026-09-11): Gleaming Splendor for Alhammarret's Archive. a Treasure whenever an opponent draws their second card in a turn, in a deck that makes every opponent draw every turn, plus a group-draw activation; the Archive's lifegain half is off-plan here The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it."
-          },
-          "grade": "met",
-          "reading": 2.2958,
-          "harness": {
-            "iterations": 10000,
-            "seed": 20260826
-          }
-        }
-      },
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
       "pull_list": {
         "buy": [
           {
@@ -2678,9 +2656,31 @@
       "name": "splendor-v2",
       "opened": "2026-09-20",
       "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "proposal": null,
+      "state": "PROPOSED · BLOCKED",
+      "state_why": "2 card(s) still to find",
+      "proposal": {
+        "at": "2026-09-20",
+        "as_version": "v1.4.0",
+        "why": "The real content of splendor-v1 and blue-v1, rebased onto the sleeved V11 so neither reverts the artifact package merged as v1.3.0. Gleaming Splendor for Alhammarret's Archive: three mana cheaper, and it turns the deck's own symmetry into mana — Heliod makes every player draw, so the second-card trigger fires on three seats a turn and each one is a Treasure. Greater Auramancy for Lightning Greaves: hexproof for every enchantment protects the engine rather than one body, and the commander is an enchantment creature. One Plains to one Island for the 2026-09-16 colour audit, where blue is 61% of the deck's pips. Kefnet the Mindful needs no slot; it is already in the 99 and already declared as a flier blocker.",
+        "base_version": 11,
+        "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+        "accepted_on": {
+          "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+          "state": "inconclusive",
+          "objective": {
+            "axis": "interaction_6",
+            "op": ">=",
+            "value": 0.68,
+            "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
+          },
+          "grade": "not resolvable",
+          "reading": 0.6766,
+          "harness": {
+            "iterations": 10000,
+            "seed": 20260826
+          }
+        }
+      },
       "pull_list": {
         "buy": [
           {
@@ -3987,8 +3987,8 @@
     "branch `archangel-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source archangel-v1`",
     "branch `artifacts-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge artifacts-v1 --write`",
     "branch `blue-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source blue-v1`",
-    "`splendor-v1` was proposed as v1.2.2 against V10 and the deck has moved on — v1.2.2 may be taken; re-measure and propose again",
-    "branch `splendor-v2` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source splendor-v2`",
+    "branch `splendor-v1` needs 4 card(s) sourced — `manamap pilot deck-branch heliod source splendor-v1`",
+    "`splendor-v2` is PROPOSED as v1.4.0 and waiting on cardboard — 2 card(s) (2 to buy) — `manamap pilot deck-branch heliod show splendor-v2` has the pull list",
     "open questions routed: diagnose ×2, goldfish ×5, research-strategy ×3, resolve-stack ×8",
     "11 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
