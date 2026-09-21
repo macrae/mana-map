@@ -12,22 +12,16 @@
     "Phyrexian Reclamation"
   ],
   "must_exclude": [
-    "Blasting Station",
-    "Blowfly Infestation",
     "Chain of Smog",
-    "Coretapper",
     "Exquisite Blood",
-    "Flourishing Defenses",
     "Gravecrawler",
     "Ivy Lane Denizen",
-    "Magistrate's Scepter",
     "Mikaeus, the Unhallowed",
-    "Springheart Nantuko",
-    "Viridian Longbow"
+    "Springheart Nantuko"
   ],
   "theme": "reanimator",
   "pool_files": [
     "data/decks/meren-recursion/pool-golgari-shelf.txt"
   ],
-  "playstyle": "A Golgari attrition engine that threatens the table by turn six and never stops coming back. Meren's experience counters are the ratchet: every creature death raises the ceiling on what returns free at end step, and the counters survive her removal. Sacrifice outlets turn every body into value twice, once on the way out and once on the way back. NO TWO-CARD INFINITE COMBOS \u2014 the pilot dislikes them and will not play them. Power comes from a snowballing resource engine and recurring threats, not from a kill line. Bracket 4: lethal, consistent and fast, with the board threatening by turn six. EXCLUSIONS ARE THE MECHANISM, NOT THE PROSE: the builder reads must_exclude and not this sentence. Gravecrawler is excluded because it carried all six infinite lines the first build contained, and it is redundant with the commander besides \u2014 Meren already returns creatures. Coretapper and Magistrate's Scepter are excluded as Meren's only in-colour infinite-turns line. Re-run bracket-check after any rebuild: a new pool card can reopen a loop. THE EXCLUSION SET IS COMPUTED, NOT GUESSED: 36 two-card infinites were reachable in this pool, and 12 exclusions break every one of them. The set was solved as a cover, preferring to cut combo pieces over the cards the tracked-game data measures as carrying the deck \u2014 Spore Frog, Plaguecrafter, Eternal Witness, Victimize, Grave Pact and the sacrifice outlets all survive. Re-run bracket-check after any rebuild: a different pool card can reopen a loop."
+  "playstyle": "A Golgari attrition engine that threatens the table by turn six and never stops coming back. Meren's experience counters are the ratchet: every creature death raises the ceiling on what returns free at end step, and the counters survive her removal. Sacrifice outlets turn every body into value twice, once on the way out and once on the way back. NO TWO-CARD INFINITE COMBOS — the pilot dislikes them and will not play them. Power comes from a snowballing resource engine and recurring threats, not from a kill line. Bracket 4: lethal, consistent and fast, with the board threatening by turn six. EXCLUSIONS ARE THE MECHANISM, NOT THE PROSE: the builder reads must_exclude and not this sentence. Gravecrawler is excluded because it carried all six infinite lines the first build contained, and it is redundant with the commander besides — Meren already returns creatures. Coretapper and Magistrate's Scepter are excluded as Meren's only in-colour infinite-turns line. Re-run bracket-check after any rebuild: a new pool card can reopen a loop. THE EXCLUSION SET IS COMPUTED, NOT GUESSED: 36 two-card infinites were reachable in this pool, and 12 exclusions break every one of them. The set was solved as a cover, preferring to cut combo pieces over the cards the tracked-game data measures as carrying the deck — Spore Frog, Plaguecrafter, Eternal Witness, Victimize, Grave Pact and the sacrifice outlets all survive. Re-run bracket-check after any rebuild: a different pool card can reopen a loop. RE-AUDITED 2026-09-21. The exclusion list was computed from combo_graph.json's `partners`, which is CO-MEMBERSHIP IN ANY COMBO rather than two-card combos — a four-card line makes every card a partner of every other. Re-tested against combo_details.json, card by card: only SIX of the twelve exclusions prevent a true two-card infinite. Chain of Smog (Sedgemoor Witch), Exquisite Blood (Starscape Cleric), Gravecrawler (Phyrexian Altar), Ivy Lane Denizen (5 lines), Mikaeus (5 lines) and Springheart Nantuko (Tireless Provisioner) stay out. Blasting Station, Blowfly Infestation, Coretapper, Flourishing Defenses, Magistrate's Scepter and Viridian Longbow are FREED — none of them makes a two-card infinite in this shell, and the pilot's rule is two-card infinites specifically, not combos. Longer lines are wanted, not tolerated."
 }
