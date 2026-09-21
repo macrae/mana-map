@@ -327,7 +327,10 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
     exactly that number: anything else means the delta is coming from somewhere
     other than the cards this commit taught the model to see.
 
-    RE-BASELINED THREE TIMES ON 2026-09-14 — 10.317, 12.020, 14.320, now 14.625
+    RE-BASELINED FOUR TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14, and
+    now 15.482 on 2026-09-21. The fourth was the deck again: v1.0.1 swapped
+    Astral Drift for Shelter, and Shelter draws. The activated-wheel COUNT is
+    unchanged at four; only the floor the blinded run recovers moved.
     — and each move is the point rather than a nuisance. The THIRD was the deck
     again: Queen Kayla bin-Kroog came in as a FOURTH activated wheel ({4}, {T}:
     discard your hand, draw that many), so the count in this test moves from
@@ -370,7 +373,7 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
             card["oracle_text"] = "Flying"      # the bug, re-introduced
             checked += 1
     assert checked == 4, f"sharknado should hold four activated wheels, not {checked}"
-    assert t10(blind) == 14.625, "the pre-change figure is not being recovered"
+    assert t10(blind) == 15.482, "the pre-change figure is not being recovered"
     assert with_wheels > 22, (
         f"the activated wheels are worth ~8.4 cards by turn ten; got {with_wheels}")
 

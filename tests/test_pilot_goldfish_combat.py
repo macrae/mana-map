@@ -243,8 +243,16 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     # zur-enchantress did, by being retired rather than by changing its mind
     # about a flag. It opted in on the day it was built and that is still true;
     # it is simply no longer walked here.
+    # meren-recursion added 2026-09-17 with its first declaration: `model_combat`
+    # because the deck has a real creature curve and five free sacrifice outlets,
+    # and `model_drain` because the whole win condition is death-triggered. The
+    # drain flag is declared HONESTLY rather than usefully — nothing dies in a
+    # goldfish, so it moves kill-by-t8 from 0.265 to 0.270 and no configuration
+    # of this harness can price the deck's actual kill. `model_deaths` is
+    # deliberately absent: it requires a `source` naming the run its rate came
+    # from, and this deck has never been simulated.
     assert sorted(opted) == ["edgar-vampires", "gishath", "heliod",
-                             "sharknado", "ur-dragon"], (
+                             "meren-recursion", "sharknado", "ur-dragon"], (
         f"the opted-in set changed to {sorted(opted)}. Every one was "
         "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
         "edgar-vampires with the drain refactor, which needed `model_combat` "

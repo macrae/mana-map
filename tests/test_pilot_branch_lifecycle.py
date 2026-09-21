@@ -910,7 +910,14 @@ def test_a_basic_land_cut_is_counted_even_though_its_name_survives(probe):
                   and int(e.get("quantity") or 1) > 1), None)
     if basic is None:
         pytest.skip(f"{SLUG} runs no basic with a second copy")
-    qty = int(basic.get("quantity") or 1)
+    # COUNT COPIES ACROSS EVERY ENTRY, NOT ONE ENTRY'S QUANTITY. ur-dragon
+    # splits its Mountains over two printings ("2 Mountain (AKH) 264" and
+    # "2 Mountain (TLA) 285"); `diff` aggregates by NAME and sees 4, while one
+    # entry reports 2. Reading the entry made this test assert 4 == 2 — the
+    # exact copies-versus-entries confusion it was written to catch, in the
+    # test itself.
+    qty = sum(int(e.get("quantity") or 1) for e in before
+              if e["name"] == basic["name"])
     deck_branch.stage(SLUG, probe, basic["name"], ABSENT)
 
     d = deck_branch.diff(SLUG, probe)

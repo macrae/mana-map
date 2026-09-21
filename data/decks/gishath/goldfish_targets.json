@@ -64,7 +64,8 @@
             "Knight of the Stampede"
           ]
         }
-      ]
+      ],
+      "route": "the connection"
     },
     {
       "label": "Enrage engine drawn",
@@ -104,7 +105,8 @@
             "Temple Altisaur"
           ]
         }
-      ]
+      ],
+      "route": "one-sided wipe"
     }
   ],
   "model_combat": true,
@@ -115,5 +117,6 @@
     "type": "Dinosaur",
     "connects_per_attack": 0.7,
     "source": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-432faa65 (V3, 40 games): Gishath assigned to attack 60 times, the reveal trigger resolved 42 times = 0.70 per attack, read 2026-09-11 from the logs' `Combat: … assigned … to attack` and `Resolve Stack: Whenever Gishath` lines"
-  }
+  },
+  "_route_note": "Routes marked 2026-09-21. `required` alone left `engine.any_route_by_turn` present with no rate cell, which fails validate-diagnostic — the figure needs at least one ROUTE to count as a union. The two marked are the deck's real alternative kills: the one-sided wipe (stack 004, Blasphemous Act plus Temple Altisaur) and the connection kit that gets the 7/6 through so the reveal fires at all."
 }
