@@ -1,0 +1,39 @@
+{
+ "slug": "sharknado",
+ "branch": "shelter-v1",
+ "v": 3,
+ "opened": "2026-09-21",
+ "why": "Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive a turn or be equipped first, so the deck has no instant-speed protection at all. Shelter is {1}{W} at instant speed and draws a card, which Shabraz pays for with a counter and a life. Astral Drift is gated on CYCLING rather than discarding, which is not what Brallin taxes, and it is a blink effect with almost nothing in the 99 worth blinking; the declaration names it in no target group. White for white, and white sits five sources OVER target, so the manabase does not move. All 17 wheels stay \u2014 an earlier version of this branch cut two of them for Mask of Memory and measured an 8% card-advantage loss for it.",
+ "objective": {
+  "axis": "damage_8",
+  "op": ">=",
+  "value": 36.5,
+  "why": "Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive a turn or be equipped first, so the deck has no instant-speed protection at all. Shelter is {1}{W} at instant speed and draws a card, which Shabraz pays for with a counter and a life. Astral Drift is gated on CYCLING rather than discarding, which is not what Brallin taxes, and it is a blink effect with almost nothing in the 99 worth blinking; the declaration names it in no target group. White for white, and white sits five sources OVER target, so the manabase does not move. All 17 wheels stay \u2014 an earlier version of this branch cut two of them for Mask of Memory and measured an 8% card-advantage loss for it."
+ },
+ "commits": [],
+ "base_version": 3,
+ "proposal": {
+  "at": "2026-09-21",
+  "as_version": "v1.0.1",
+  "why": "Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. The deck has no instant-speed protection and protection reads 3 against a 5-7 target. Shelter answers targeted removal on a commander at instant speed AND draws, which Shabraz pays for. Astral Drift is gated on cycling rather than discarding, so Brallin never sees it, and it is a blink effect with nothing worth blinking. White for white, on a colour five sources over target.",
+  "base_version": 3,
+  "decklist_sha256": "2ca70e243f922c24d0c9b99145b6e50a62882f1f9ccf399d8c07ce519cadcbcf",
+  "accepted_on": {
+   "decklist_sha256": "2ca70e243f922c24d0c9b99145b6e50a62882f1f9ccf399d8c07ce519cadcbcf",
+   "state": "do not merge",
+   "objective": {
+    "axis": "damage_8",
+    "op": ">=",
+    "value": 36.5,
+    "why": "Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive a turn or be equipped first, so the deck has no instant-speed protection at all. Shelter is {1}{W} at instant speed and draws a card, which Shabraz pays for with a counter and a life. Astral Drift is gated on CYCLING rather than discarding, which is not what Brallin taxes, and it is a blink effect with almost nothing in the 99 worth blinking; the declaration names it in no target group. White for white, and white sits five sources OVER target, so the manabase does not move. All 17 wheels stay \u2014 an earlier version of this branch cut two of them for Mask of Memory and measured an 8% card-advantage loss for it."
+   },
+   "grade": "not met",
+   "reading": 33.0859,
+   "harness": {
+    "iterations": 10000,
+    "seed": 20260826
+   }
+  },
+  "forced_reason": "The objective I set (damage_8 >= 36.5) was the wrong instrument and this is not a failure to measure. The net change says so in its own words: all ten measures came back inside the minimum detectable difference, which is an answer about the change's SIZE rather than a verdict on it. Shelter is INSTANT-SPEED PROTECTION and a goldfish has nothing to protect against \u2014 it has no opponents, no removal and no interaction, so the half of the card that earns the slot is structurally invisible. The half it CAN see, the card draw, is counted and costs nothing: extra cards by turn 8 moved 12.125 to 12.105 against a 0.396 detection floor. The case is the audit, which is deterministic: protection reads 3 copies against a 5-7 target and all three are permanents that must survive a turn or be equipped, so the deck has NO instant-speed protection. An earlier version of this branch cut two wheels for Mask of Memory and measured a real 8% card-advantage loss; this one is wheel-neutral at 17 of 17 and every row is noise."
+ }
+}
