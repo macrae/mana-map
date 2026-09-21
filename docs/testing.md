@@ -102,7 +102,7 @@ and three are real goldfish fidelity bugs.
 
 | | |
 |---|---:|
-| `make test` — warm cache | **207 s** (2,851 collected; 2,845 pass/served, 3 xfailed) |
+| `make test` — warm cache | **245 s** (3,708 collected; 3,216 passed, 489 skipped, 3 xfailed, 2026-09-21) |
 | `make test-browser` (`-n 4`) | **400 s** (223 passed, 2026-09-08) |
 
 Six are red and stay red until an agent runs: five stale `diagnosis.json` (their
@@ -147,14 +147,14 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-09-14: **3,847 tests** across 178 files — 3,589 in the `make test`
+As of 2026-09-21: **3,970 tests** across 180 files — 3,708 in the `make test`
 selection, 257 browser, 1 `forge` (a real Forge game, opt-in), 4 `fleet` and 3
-`serial_only`. Six are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
+`serial_only`. Three are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
 Why the count cannot be checked mechanically: **about a thousand of those cases do not
-exist in the source** — there are 2,868 top-level `def test_` functions and 3,847 collected cases, the difference
+exist in the source** — there are 2,909 top-level `def test_` functions and 3,970 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
@@ -647,3 +647,41 @@ MANAMAP_DATA_DIR=/nonexistent .venv/bin/python -m pytest   # data tests skip cle
 - Unit tests build inline DataFrames/dicts — keep it that way (no fixture files)
 - `test_synergy.py` patches `manamap.analysis.synergy.load_combo_partners` to stub combo I/O
 - Integration count assertions enforce the index-alignment invariant — if you change the card count (new Scryfall data), re-run the full pipeline before expecting green
+
+## A test that needs an artifact to be WRONG breaks when somebody fixes it
+
+Three tests failed on 2026-09-21 for the same reason, and none of them had a
+bug: the condition each one fed on had been repaired.
+
+- **The handbook's preview gate** read its fixture off a rendered page, relying
+  on `ur-dragon/engine.json` naming Shivan Reef and Stormcarved Coast — two
+  lands a paper rescan had dropped. Rebuilding that model removed the stale
+  names and the fixture vanished.
+- **The gate-naming check** scanned every `info.json` for an em-dash, guarded by
+  `assert checked >= 5` so it could not pass by iterating zero times. When the
+  last stale and invalid artifacts across all seven decks were cleared, the
+  guard fired on an empty fleet.
+- **The uncast-engine check** flagged three kept Forge records at once, because
+  each predated the version that added the cards now in the declaration.
+
+The first two are the same shape: a test whose fixture is somebody else's
+staleness. **Construct the condition and drive the production function
+directly**, then keep the fleet scan as an invariant that holds at zero. Both
+were rewritten that way and both are proved by re-introducing the real bug.
+
+The rule generalises the one above it: `assert checked >= N` stops a loop
+passing vacuously, and it is right to have — but N must be a number the test
+itself guarantees, not one the repo's current state happens to supply.
+
+## A regression test can carry the exact bug it was written for
+
+`test_a_basic_land_cut_is_counted_even_though_its_name_survives` exists because
+`deck_branch.diff` compared NAME PRESENCE and missed a basic going from four
+copies to three. The test read `qty` from **one decklist entry** while `diff`
+aggregates by name — ur-dragon splits its Mountains across two printings
+(`2 Mountain (AKH) 264` and `2 Mountain (TLA) 285`), so the entry said 2 and the
+diff said 4, and the test asserted `4 == 2`.
+
+Copies versus entries, inside the test that exists to catch copies versus
+entries. **When a test asserts on a count, derive it the same way production
+does** — here, by summing every entry with that name.

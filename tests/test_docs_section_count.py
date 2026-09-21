@@ -11,6 +11,7 @@ import re
 from pathlib import Path
 
 from manamap.pilot.page_spec import SECTION_IDS
+from manamap.pilot.poh_spec import SECTIONS as POH_SECTIONS
 # One pruned walk shared with `test_docs_counts.py`, instead of a full-tree glob
 # per reference. `tests/repo_tree.py` records what that cost.
 from repo_tree import exists_anywhere
@@ -64,8 +65,18 @@ def test_no_surface_states_a_wrong_section_count():
     back to a single truth the moment `build_manual.py` is deleted — if you are
     reading this after that, take the set apart."
 
-    `page_spec.SECTIONS` is the dossier's, and it is the only one now."""
-    truth = {len(SECTION_IDS)}
+    `page_spec.SECTIONS` is the dossier's — and on 2026-09-21 it stopped being
+    the only one. The Pilot's Operating Handbook carries its own registry,
+    `poh_spec.SECTIONS`, at TEN against the dossier's nine, and a true sentence
+    in `poh.py` about the handbook's ten sections failed this gate against the
+    dossier's count. Two surfaces, two registries, two legitimate numbers; the
+    truth set holds both rather than the gate forcing one.
+
+    THE COST OF THE NARROWER FORM was a sentence nobody could write: the
+    handbook's renderer gap (sections 8 and 9 have no renderer) could not be
+    documented at the place it lives without tripping a check meant for a
+    different page."""
+    truth = {len(SECTION_IDS), len(POH_SECTIONS)}
     wrong = []
     for path in SURFACES:
         if "history" in path.parts:

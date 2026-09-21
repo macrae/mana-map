@@ -2253,3 +2253,94 @@ all three arms returned byte-identical numbers, because the Blood count pattern
 took number-words only to "four" and no digits, so "create 3", "create 5" and
 "create 1 Blood token" all failed to match and fell into the same bucket. **Three
 identical arms is the shape of a sensitivity that measured nothing.**
+
+## A ROLE-GATED CHECK CANNOT SEE A CARD DOING A SECOND JOB (2026-09-21)
+
+`deck-audit`'s `interaction-breadth` reads sharknado at **ZERO of five classes
+answered** — a deck that cannot answer a single class of permanent. The engine
+model enumerated the answers the check cannot see and the true figure is **four
+of five**; only LAND is genuinely unanswered.
+
+    Commit // Memory        any nonland permanent — creature, artifact, enchantment
+    Irencrag Pyromancer     "any target" damage
+    Niv-Mizzet, Parun       "any target" damage
+    Talon Gates of Madara   phase out
+    Echo of Eons / Time Reversal / Memory   a graveyard
+
+`_interaction_breadth` is **role-gated**: it reads `card_roles` and Commit //
+Memory's only role is `draw:burst`. The card removes any nonland permanent and
+the check never looks at its oracle text. This is the **third recorded instance
+of the same failure** — a card doing two jobs is scored on its loudest one, and
+the analysis follows the count rather than the card.
+
+And it is wrong in BOTH directions on the same deck: the interaction COUNT
+reads 7, but Brallin, Glint-Horn Buccaneer and Magmakin Artillerist can never
+point at a permanent, so the real suite is **five**. Under-counting breadth
+while over-counting copies.
+
+**Before calling an axis a weakness, enumerate the cards.** `deck-audit` prints
+probe notes under exactly this kind of reading and they are there to be read.
+
+## A TUTOR-ASSISTED FIGURE IS TYPE-BLIND (2026-09-21)
+
+`goldfish_library._target_met` lets any cast tutor fill any missing `any_of`
+group **without asking whether it could legally find a member**. On gishath the
+assisted "THE ONE-SIDED APOCALYPSE" row reads 39.0% by crediting a wish for
+Blasphemous Act, and "Protection held for the board" reads 87.5% by crediting
+five instants no tutor in the deck can reach.
+
+The unassisted figures are sound; the assisted ones are an upper bound that no
+deck achieves. `gishath/tutor_guide.json` names the two rows to read unassisted.
+**Prefer the unassisted figure whenever a target's members are not all tutorable
+by the same card.**
+
+## `combo_graph.partners` IS CO-MEMBERSHIP, NOT A TWO-CARD COMBO (2026-09-21)
+
+`process_combos.build_combo_graph` adds **every card in a combo as a partner of
+every other**, so a four-card line contributes six "pairs". Set-covering
+`partners` to break a pilot's "no two-card infinites" rule therefore answers a
+question nobody asked.
+
+Measured on emiel-blink: `partners` reported **65 pairs and demanded 29
+exclusions**, a third of the nonland cards, including three of the eight
+`must_include` entries. Counting TRUE two-card combos out of
+`combo_details.json` — `len(c["cards"]) == 2` and both inside the 99 — gives
+**EIGHT**, and **six exclusions break all of them**.
+
+The tell was a reported pair of `Ashnod's Altar + Command Tower`, which is
+obviously not an infinite. **Use `combo_details.json` and filter on card count;
+`partners` is a retrieval index, not a combo classifier.**
+
+meren-recursion was re-checked with the correct measure and is genuinely clean
+at zero, so its twelve exclusions reached the right answer by the wrong route —
+six of them were unnecessary and freeing them changed the built list not at all.
+
+## A RUN RECORD IS JUDGED AGAINST TODAY'S DECLARATION (2026-09-21)
+
+`test_no_kept_record_has_an_uncast_engine_by_accident` compares a kept Forge
+record's `engine_casts` against the CURRENT `goldfish_targets.json`. When a deck
+gains a card, every record that predates it flags as "the AI never cast part of
+the engine" — the AI could not cast a card the deck did not contain.
+
+Three records flagged this way on one day. The tell is that they flag
+*together*, and all predate the version that added the cards. The honest fix is
+`KNOWN_UNCAST` with the reason stated; the record is honest, the declaration is
+honest, and it is the JOIN between them that is stale.
+
+## FORGE CANNOT LOAD A RECENT CARD, AND SAYS SO ONLY IN THE LOG (2026-09-21)
+
+A 177-game run on ur-dragon reported Marang River Regent and Whirlwing
+Stormbrood at **cast 0**, and that was read as a finding about the deck. The
+logs said otherwise, 28 times:
+
+    An unsupported card was requested: "Marang River Regent // Coil and Catch"
+    An unsupported card was requested: "Whirlwing Stormbrood // Dynamic Soar"
+
+Forge's card database did not have them. **The run simulated a 98-card deck**,
+and the two missing cards were two of the seven the branch was proposing to buy.
+A zero cast count is indistinguishable from a card the engine never held.
+
+The tell was available before the logs: the deck contained exactly TWO
+double-faced cards and they were exactly the two zero-cast ones. **Grep the logs
+for `unsupported card` before reading any per-card cast figure**, and treat a
+zero on a recent card as unproven rather than measured.

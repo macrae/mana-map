@@ -671,6 +671,21 @@ def _latest_sim(d):
 
 # ── assembly ─────────────────────────────────────────────────────────────
 
+#: THE SPEC DECLARES TEN SECTIONS AND THIS MAP HOLDS SEVEN. `render()` skips any
+#: section with no renderer registered, so `matchups` (8) and `appendices` (9)
+#: have never appeared in a rendered handbook — on any deck, since the book
+#: shipped on 2026-09-02. `validate-poh` reports them as "section(s) not
+#: rendered: 8, 9" and that NOTE has been printing on every deck ever since.
+#:
+#: It is a renderer gap, not a data gap, and the distinction cost an hour on
+#: 2026-09-21: the missing pages were read as missing PROSE and a set of agent
+#: passes was nearly spent refreshing copy that would have rendered nowhere.
+#: The proof is edgar-vampires — zero stale artifacts, a full `matchups` key in
+#: `manual_prose.json`, eleven passing stacks, and a handbook that still stops
+#: at section 7.
+#:
+#: Registering either one is the whole fix; the data both need is already
+#: tracked (`manual_prose.matchups`, and the passing stacks for appendices).
 RENDERERS = {
     "general": render_general,
     "limitations": render_limitations,
