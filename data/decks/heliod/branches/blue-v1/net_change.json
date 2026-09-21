@@ -11,7 +11,7 @@
    {
     "free": false,
     "name": "Alhammarret's Archive",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -281,8 +281,17 @@
    {
     "free": false,
     "name": "Lightning Greaves",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Mystery Booster 2"
+     },
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -522,41 +531,34 @@
    }
   ],
   "counts": {
-   "box": 0,
-   "buy": 2,
+   "box": 1,
+   "buy": 3,
    "elsewhere": 0,
    "free": 1,
-   "in_deck": 82
+   "in_deck": 80
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
+    "Alhammarret's Archive",
     "Angelic Wall",
     "Forced Fruition",
+    "Lightning Greaves",
     "Mikaeus, the Lunarch"
    ],
-   "add_copies": 4,
+   "add_copies": 5,
    "base_names": 85,
    "base_size": 100,
    "names": 85,
    "out": [
+    "Gleaming Splendor",
+    "Greater Auramancy",
     "Horn of Greed",
     "Isochron Scepter",
     "Mind Stone"
    ],
-   "out_copies": 4,
-   "quantity": [
-    {
-     "from": 9,
-     "name": "Island",
-     "to": 10
-    },
-    {
-     "from": 8,
-     "name": "Plains",
-     "to": 7
-    }
-   ],
+   "out_copies": 5,
+   "quantity": [],
    "size": 100
   },
   "free": 1,
@@ -565,6 +567,7 @@
   "proxy": false,
   "slug": "heliod",
   "unsourced": [
+   "Alhammarret's Archive",
    "Angelic Wall",
    "Forced Fruition"
   ]
@@ -586,33 +589,16 @@
   "diff": {
    "base_names": 85,
    "base_size": 100,
-   "changed": [
-    {
-     "cmc": 0,
-     "delta": 1,
-     "from": 9,
-     "kind": "land",
-     "name": "Island",
-     "to": 10
-    },
-    {
-     "cmc": 0,
-     "delta": -1,
-     "from": 8,
-     "kind": "land",
-     "name": "Plains",
-     "to": 7
-    }
-   ],
+   "changed": [],
    "counts": {
-    "in": 3,
-    "in_copies": 4,
+    "in": 5,
+    "in_copies": 5,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 3,
-    "out_copies": 4,
-    "spells_in": 3,
-    "spells_out": 3
+    "out": 5,
+    "out_copies": 5,
+    "spells_in": 5,
+    "spells_out": 5
    },
    "in": [
     {
@@ -636,6 +622,26 @@
      "why": null
     },
     {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Lightning Greaves",
+     "pair": null,
+     "state": "box",
+     "type_line": "Artifact \u2014 Equipment",
+     "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Alhammarret's Archive",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Legendary Artifact",
+     "why": null
+    },
+    {
      "cmc": 6,
      "copies": 1,
      "kind": "spell",
@@ -648,6 +654,24 @@
    ],
    "names": 85,
    "out": [
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gleaming Splendor",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Greater Auramancy",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
     {
      "cmc": 2,
      "copies": 1,
@@ -678,8 +702,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 3,
-    "out": 3
+    "in": 5,
+    "out": 5
    }
   },
   "lands": [
@@ -809,13 +833,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": -1,
+    "delta": 0,
     "gap": [
-     -11,
+     -12,
      -12
     ],
     "have": [
-     25,
+     24,
      24
     ],
     "target": [
@@ -825,13 +849,13 @@
    },
    {
     "colour": "U",
-    "delta": 1,
+    "delta": 0,
     "gap": [
-     -10,
+     -9,
      -9
     ],
     "have": [
-     26,
+     27,
      27
     ],
     "target": [
@@ -921,11 +945,11 @@
     null
    ],
    "U": [
-    0.742,
+    0.764,
     0.764
    ],
    "W": [
-    0.718,
+    0.694,
     0.694
    ]
   }
@@ -944,24 +968,25 @@
  "recommendation": {
   "because": "You buy nothing and pay board power @T6.",
   "bill": {
-   "box": 0,
-   "buy": 2,
+   "box": 1,
+   "buy": 3,
    "elsewhere": 0,
    "free": 1,
-   "in_deck": 82
+   "in_deck": 80
   },
   "cost": {
-   "buy": 2,
+   "buy": 3,
    "buy_cards": [
+    "Alhammarret's Archive",
     "Angelic Wall",
     "Forced Fruition"
    ],
    "counts": {
-    "box": 0,
-    "buy": 2,
+    "box": 1,
+    "buy": 3,
     "elsewhere": 0,
     "free": 1,
-    "in_deck": 82
+    "in_deck": 80
    },
    "free_to_raid": [
     {
@@ -973,8 +998,8 @@
    ],
    "mergeable": false,
    "must_unsleeve": [],
-   "owned": 83,
-   "reads_as": "2 to buy; 1 sitting in a retired or broken-down deck, which cost nothing; 83 of 85 already owned",
+   "owned": 82,
+   "reads_as": "3 to buy; 1 sitting in a retired or broken-down deck, which cost nothing; 82 of 85 already owned",
    "total": 85
   },
   "fell": [
@@ -995,13 +1020,13 @@
   "reward": [],
   "risk": [
    {
-    "detail": "3.16 -> 3.05, a change of -0.11 (-4%)",
+    "detail": "3.15 -> 3.05, a change of -0.10 (-3%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "the largest is stall, 2 in a row at +0.003 against an MDE of 0.004. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is interaction affordable @T6 at -0.017 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1015,12 +1040,6 @@
     "kind": "unmeasured",
     "what": "1 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
-   },
-   {
-    "detail": "W gap -11 -> -12",
-    "kind": "paid",
-    "what": "colour sources went backwards",
-    "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
     "detail": "no Forge run on the branch \u2014 `manamap pilot simulate heliod@blue-v1 --vs <pod>` puts it at a table and writes where this reads",
@@ -1038,11 +1057,11 @@
   {
    "better_is": "higher",
    "branch": 5.0139,
-   "champion": 5.0937,
-   "delta": -0.0798,
-   "mde": 0.1347,
+   "champion": 5.1116,
+   "delta": -0.0977,
+   "mde": 0.1355,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.080 is smaller than the 0.135 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.098 is smaller than the 0.136 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -1052,11 +1071,11 @@
   {
    "better_is": "higher",
    "branch": 3.0463,
-   "champion": 3.1581,
-   "delta": -0.1118,
-   "mde": 0.105,
+   "champion": 3.1497,
+   "delta": -0.1034,
+   "mde": 0.1029,
    "measure": "board power @T6",
-   "reads_as": "3.16 -> 3.05, a change of -0.11 (-4%)",
+   "reads_as": "3.15 -> 3.05, a change of -0.10 (-3%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1080,11 +1099,11 @@
   {
    "better_is": "higher",
    "branch": 0.1214,
-   "champion": 0.1327,
-   "delta": -0.0113,
-   "mde": 0.0134,
+   "champion": 0.1267,
+   "delta": -0.0053,
+   "mde": 0.0132,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.013 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1094,8 +1113,8 @@
   {
    "better_is": "lower",
    "branch": 0.0103,
-   "champion": 0.0069,
-   "delta": 0.0034,
+   "champion": 0.007,
+   "delta": 0.0033,
    "mde": 0.004,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.004 this run can resolve",
@@ -1108,11 +1127,11 @@
   {
    "better_is": "lower",
    "branch": 0.5142,
-   "champion": 0.5142,
-   "delta": 0.0,
+   "champion": 0.5125,
+   "delta": 0.0017,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1122,11 +1141,11 @@
   {
    "better_is": "lower",
    "branch": 0.2621,
-   "champion": 0.2595,
-   "delta": 0.0026,
+   "champion": 0.26,
+   "delta": 0.0021,
    "mde": 0.0174,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.017 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1136,11 +1155,11 @@
   {
    "better_is": "higher",
    "branch": 2.2575,
-   "champion": 2.334,
-   "delta": -0.0765,
-   "mde": 0.1198,
+   "champion": 2.3514,
+   "delta": -0.0939,
+   "mde": 0.1208,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.076 is smaller than the 0.120 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.094 is smaller than the 0.121 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1150,11 +1169,11 @@
   {
    "better_is": "higher",
    "branch": 0.6592,
-   "champion": 0.6533,
-   "delta": 0.0059,
-   "mde": 0.0196,
+   "champion": 0.6766,
+   "delta": -0.0174,
+   "mde": 0.0195,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.017 is smaller than the 0.019 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
@@ -1164,9 +1183,9 @@
   {
    "better_is": "higher",
    "branch": 0.9852,
-   "champion": 0.9847,
-   "delta": 0.0005,
-   "mde": 0.0049,
+   "champion": 0.9838,
+   "delta": 0.0014,
+   "mde": 0.005,
    "measure": "hand can act by T3",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.005 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",

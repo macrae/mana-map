@@ -11,7 +11,7 @@
    {
     "free": false,
     "name": "Alhammarret's Archive",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -281,8 +281,17 @@
    {
     "free": false,
     "name": "Lightning Greaves",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Mystery Booster 2"
+     },
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -522,30 +531,45 @@
    }
   ],
   "counts": {
-   "box": 0,
-   "buy": 2,
+   "box": 1,
+   "buy": 3,
    "elsewhere": 0,
    "free": 1,
-   "in_deck": 82
+   "in_deck": 80
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
+    "Alhammarret's Archive",
     "Angelic Wall",
     "Forced Fruition",
+    "Lightning Greaves",
     "Mikaeus, the Lunarch"
    ],
-   "add_copies": 3,
+   "add_copies": 6,
    "base_names": 85,
    "base_size": 100,
    "names": 85,
    "out": [
+    "Gleaming Splendor",
+    "Greater Auramancy",
     "Horn of Greed",
     "Isochron Scepter",
     "Mind Stone"
    ],
-   "out_copies": 3,
-   "quantity": [],
+   "out_copies": 6,
+   "quantity": [
+    {
+     "from": 10,
+     "name": "Island",
+     "to": 9
+    },
+    {
+     "from": 7,
+     "name": "Plains",
+     "to": 8
+    }
+   ],
    "size": 100
   },
   "free": 1,
@@ -554,6 +578,7 @@
   "proxy": false,
   "slug": "heliod",
   "unsourced": [
+   "Alhammarret's Archive",
    "Angelic Wall",
    "Forced Fruition"
   ]
@@ -565,16 +590,33 @@
   "diff": {
    "base_names": 85,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 10,
+     "kind": "land",
+     "name": "Island",
+     "to": 9
+    },
+    {
+     "cmc": 0,
+     "delta": 1,
+     "from": 7,
+     "kind": "land",
+     "name": "Plains",
+     "to": 8
+    }
+   ],
    "counts": {
-    "in": 3,
-    "in_copies": 3,
+    "in": 5,
+    "in_copies": 6,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 3,
-    "out_copies": 3,
-    "spells_in": 3,
-    "spells_out": 3
+    "out": 5,
+    "out_copies": 6,
+    "spells_in": 5,
+    "spells_out": 5
    },
    "in": [
     {
@@ -598,6 +640,26 @@
      "why": null
     },
     {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Lightning Greaves",
+     "pair": null,
+     "state": "box",
+     "type_line": "Artifact \u2014 Equipment",
+     "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Alhammarret's Archive",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Legendary Artifact",
+     "why": null
+    },
+    {
      "cmc": 6,
      "copies": 1,
      "kind": "spell",
@@ -610,6 +672,24 @@
    ],
    "names": 85,
    "out": [
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gleaming Splendor",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Greater Auramancy",
+     "pair": null,
+     "type_line": "Enchantment",
+     "why": null
+    },
     {
      "cmc": 2,
      "copies": 1,
@@ -640,8 +720,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 3,
-    "out": 3
+    "in": 5,
+    "out": 5
    }
   },
   "lands": [],
@@ -764,13 +844,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 0,
+    "delta": 1,
     "gap": [
-     -11,
+     -12,
      -11
     ],
     "have": [
-     25,
+     24,
      25
     ],
     "target": [
@@ -780,13 +860,13 @@
    },
    {
     "colour": "U",
-    "delta": 0,
+    "delta": -1,
     "gap": [
-     -10,
+     -9,
      -10
     ],
     "have": [
-     26,
+     27,
      26
     ],
     "target": [
@@ -876,11 +956,11 @@
     null
    ],
    "U": [
-    0.742,
+    0.764,
     0.742
    ],
    "W": [
-    0.718,
+    0.694,
     0.718
    ]
   }
@@ -897,26 +977,27 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse.",
+  "because": "You buy nothing and pay interaction affordable @T6.",
   "bill": {
-   "box": 0,
-   "buy": 2,
+   "box": 1,
+   "buy": 3,
    "elsewhere": 0,
    "free": 1,
-   "in_deck": 82
+   "in_deck": 80
   },
   "cost": {
-   "buy": 2,
+   "buy": 3,
    "buy_cards": [
+    "Alhammarret's Archive",
     "Angelic Wall",
     "Forced Fruition"
    ],
    "counts": {
-    "box": 0,
-    "buy": 2,
+    "box": 1,
+    "buy": 3,
     "elsewhere": 0,
     "free": 1,
-    "in_deck": 82
+    "in_deck": 80
    },
    "free_to_raid": [
     {
@@ -928,11 +1009,13 @@
    ],
    "mergeable": false,
    "must_unsleeve": [],
-   "owned": 83,
-   "reads_as": "2 to buy; 1 sitting in a retired or broken-down deck, which cost nothing; 83 of 85 already owned",
+   "owned": 82,
+   "reads_as": "3 to buy; 1 sitting in a retired or broken-down deck, which cost nothing; 82 of 85 already owned",
    "total": 85
   },
-  "fell": [],
+  "fell": [
+   "interaction affordable @T6"
+  ],
   "no_call": [
    "damage @T10",
    "board power @T6",
@@ -942,19 +1025,28 @@
    "missed drop by T5",
    "mulliganed",
    "extra cards by T8",
-   "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "notes": [
-   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
-  ],
+  "notes": [],
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is extra cards by T8 at -0.098 against an MDE of 0.120. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "68 games in 100 -> 65 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "interaction affordable @T6",
+    "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   },
+   {
+    "detail": "the largest is extra cards by T8 at -0.115 against an MDE of 0.121. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "10 row(s) returned no call",
+    "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "detail": "U gap -9 -> -10",
+    "kind": "paid",
+    "what": "colour sources went backwards",
+    "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
    },
    {
     "detail": "no Forge run on the branch \u2014 `manamap pilot simulate heliod@archangel-v1 --vs <pod>` puts it at a table and writes where this reads",
@@ -964,7 +1056,7 @@
    }
   ],
   "rose": [],
-  "state": "merge"
+  "state": "a trade"
  },
  "slug": "heliod",
  "staged": 0,
@@ -972,11 +1064,11 @@
   {
    "better_is": "higher",
    "branch": 5.0422,
-   "champion": 5.0937,
-   "delta": -0.0515,
-   "mde": 0.1347,
+   "champion": 5.1116,
+   "delta": -0.0694,
+   "mde": 0.1355,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.051 is smaller than the 0.135 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.069 is smaller than the 0.136 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -986,11 +1078,11 @@
   {
    "better_is": "higher",
    "branch": 3.0793,
-   "champion": 3.1581,
-   "delta": -0.0788,
-   "mde": 0.105,
+   "champion": 3.1497,
+   "delta": -0.0704,
+   "mde": 0.1029,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.079 is smaller than the 0.105 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.070 is smaller than the 0.103 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1014,11 +1106,11 @@
   {
    "better_is": "higher",
    "branch": 0.1282,
-   "champion": 0.1327,
-   "delta": -0.0045,
-   "mde": 0.0134,
+   "champion": 0.1267,
+   "delta": 0.0015,
+   "mde": 0.0132,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.013 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1028,8 +1120,8 @@
   {
    "better_is": "lower",
    "branch": 0.0096,
-   "champion": 0.0069,
-   "delta": 0.0027,
+   "champion": 0.007,
+   "delta": 0.0026,
    "mde": 0.0039,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.004 this run can resolve",
@@ -1042,11 +1134,11 @@
   {
    "better_is": "lower",
    "branch": 0.5202,
-   "champion": 0.5142,
-   "delta": 0.006,
+   "champion": 0.5125,
+   "delta": 0.0077,
    "mde": 0.0198,
    "measure": "missed drop by T5",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.020 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1056,8 +1148,8 @@
   {
    "better_is": "lower",
    "branch": 0.2619,
-   "champion": 0.2595,
-   "delta": 0.0024,
+   "champion": 0.26,
+   "delta": 0.0019,
    "mde": 0.0174,
    "measure": "mulliganed",
    "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.017 this run can resolve",
@@ -1070,11 +1162,11 @@
   {
    "better_is": "higher",
    "branch": 2.2364,
-   "champion": 2.334,
-   "delta": -0.0976,
-   "mde": 0.1198,
+   "champion": 2.3514,
+   "delta": -0.115,
+   "mde": 0.1208,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.098 is smaller than the 0.120 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.115 is smaller than the 0.121 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1084,25 +1176,25 @@
   {
    "better_is": "higher",
    "branch": 0.6495,
-   "champion": 0.6533,
-   "delta": -0.0038,
+   "champion": 0.6766,
+   "delta": -0.0271,
    "mde": 0.0196,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.020 this run can resolve",
+   "reads_as": "68 games in 100 -> 65 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
   {
    "better_is": "higher",
    "branch": 0.9831,
-   "champion": 0.9847,
-   "delta": -0.0016,
+   "champion": 0.9838,
+   "delta": -0.0007,
    "mde": 0.0051,
    "measure": "hand can act by T3",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.005 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.005 this run can resolve",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
