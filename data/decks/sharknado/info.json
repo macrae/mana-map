@@ -15,15 +15,15 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 13,
+    "complete": 14,
     "of": 18,
-    "stale": [],
+    "stale": [
+      "tutors"
+    ],
     "invalid": [],
     "verified": true,
     "missing": [
       "frame",
-      "tutors",
-      "prose",
       "log",
       "issue"
     ],
@@ -32,16 +32,6 @@
         "stage": "frame",
         "what": "the strategist's read — `research-strategy` consult",
         "how": "/research-strategy — MODE consult, on sharknado"
-      },
-      {
-        "stage": "tutors",
-        "what": "the tutor guide — `tutor-guide`",
-        "how": "/write-manual — the tutor guide is one of pilot-notes' artifacts"
-      },
-      {
-        "stage": "prose",
-        "what": "the pilot's notes — `write-manual`",
-        "how": "/write-manual sharknado"
       },
       {
         "stage": "log",
@@ -4581,6 +4571,7 @@
   },
   "experiments": null,
   "next": [
+    "stale: tutors — regenerate against the current list (`/publish-deck` sequences it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1` needs 3 card(s) sourced — `manamap pilot deck-branch sharknado source budget-v1`",
     "branch `ivora-v1` needs 9 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
