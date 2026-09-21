@@ -13,11 +13,10 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 14,
+    "complete": 15,
     "of": 18,
     "stale": [
       "frame",
-      "engine",
       "prose"
     ],
     "invalid": [],
@@ -3873,9 +3872,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Heliod manufactures a resource nobody at the table prices - cards in your opponents' hands - converts it into a cost discount that lives on their turns, one-sided draw, Treasure and life loss, and spends the turns that buys casting Approach of the Second Sun twice; the second cast is 12 for 12 and everything else is the wait.",
-    "critic": "pass",
-    "lines": 14,
+    "thesis": "Heliod manufactures a resource nobody at the table prices -- cards in opponents' hands -- and five permanents convert it into Treasure, cards, a cost discount and life loss; but the only card in the 99 that converts any of that into a win is one seven-mana sorcery cast twice, which is why a goldfish with no blockers still reaches turn ten without a kill in 86.5% of games.",
+    "critic": null,
+    "lines": 10,
     "verified_lines": 1
   },
   "diagnosis": {
@@ -3904,43 +3903,43 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista or Hangarback Walker - and if so, is X chosen before or after the reduction applies?",
+      "question": "While Greater Auramancy is on the battlefield, Heliod has shroud from \"other enchantments you control have shroud\". Can Karametra's Blessing or Guardian of Faith's enters-trigger still be aimed at him, and if not, what is left to save him from Day of Judgment, Supreme Verdict or an opponent's wrath?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "While Lightning Greaves is equipped to Heliod, can you still target him with Karametra's Blessing or Guardian of Faith's enters trigger, and is moving the Greaves off in response possible at instant speed?",
+      "question": "Does Gleaming Splendor's trigger fire once per opponent per turn (three times a turn with three opponents), and if you activate its own \"{2}{W}: Two target players each draw a card\" targeting an opponent who has already drawn once this turn, does that card count as their second and trigger it?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod's flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod himself is the commander on the battlefield?",
+      "question": "Does Heliod, the Warped Eclipse's cost reduction let you choose a larger X on Braingeyser, Stroke of Genius, Prosperity, Skyscribing, Mathemagics, Secure the Wastes, Walking Ballista or Hangarback Walker -- and is X chosen before or after the reduction applies?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "No declared target measures the deck's actual win: Approach in hand AND seven mana available on two separate turns. Can the harness express a mana condition, or must the gap be recorded rather than modelled?",
+      "question": "Can the second Approach of the Second Sun be cast at an opponent's end step under Heliod's back-face flash grant or Leyline of Anticipation, and is Fierce Guardianship's alternative cost live in that window when Heliod himself is the commander on the battlefield?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "The goldfish has no opponents, so a Treasure gated on an opponent drawing cannot be modelled even with model_treasures switched on. Is that right, and if so, what is the honest instrument for pricing Gleaming Splendor and Smothering Tithe -- a Forge run, or nothing?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "How many tutor and protection slots is a single 'you win the game' card worth in a four-player pod, and how should the one-window cast be timed against three potential responders?",
+      "question": "No declared target measures the deck's actual win: Approach of the Second Sun in hand AND seven mana available on two separate turns. Can the harness express a mana condition or a repeat cast, or must the gap be recorded?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Stack 002's scenario board lists Ancient Tomb, which is not in the current 99 (or in any list since v1.0.0). Does the resolution still hold on the V12 mana base, where {6}{W} has to come from 33 lands with no fast mana beyond Sol Ring?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "In a four-player pod, how many tutor and protection slots is a single 'you win the game' card worth -- and given a 0-2 logged record and a goldfish that never kills in 86.5% of games, should this deck hold a second, board-based route to a win at all?",
       "settled_by": "research-strategy"
-    },
-    {
-      "from": "engine",
-      "question": "Can the goldfish measure the card side of this deck - Rhystic Study, Mystic Remora, Consecrated Sphinx, Faerie Mastermind, Psychosis Crawler, Kwain and Loran are all in `draw_not_modelled` - so that a claim about whether mana or cards binds this deck has both arms measured?",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "Should the gift and fort components be scored on a card being ON THE BATTLEFIELD, or on it having been USED? Loran of the Third Path was cast in 32 of 120 Forge games and its draw ability was activated zero times; Temple Bell was cast in 22 and activated 64 times.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "With Mystical Tutor imprinted on Isochron Scepter, does the copy cast at an opponent's end step put Approach of the Second Sun on top of the library so that drawing and casting it next turn satisfies Approach's \"cast from your hand\" clause for the win - and does a copy of Secure the Wastes cast without paying its mana cost have X = 0?",
-      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
@@ -4037,14 +4036,15 @@
   },
   "experiments": null,
   "next": [
-    "stale: frame, engine, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `archangel-v1` needs 3 card(s) sourced — `manamap pilot deck-branch heliod source archangel-v1`",
     "branch `artifacts-v1` needs 1 card(s) sourced — `manamap pilot deck-branch heliod source artifacts-v1`",
     "branch `blue-v1` needs 3 card(s) sourced — `manamap pilot deck-branch heliod source blue-v1`",
     "branch `splendor-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source splendor-v1`",
     "branch `splendor-v2` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge splendor-v2 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
-    "open questions routed: diagnose ×2, goldfish ×5, research-strategy ×3, resolve-stack ×8",
+    "engine.json's critic verdict is None — `/analyze-engine heliod`",
+    "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
     "12 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

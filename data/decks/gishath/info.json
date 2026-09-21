@@ -14,15 +14,13 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 11,
+    "complete": 13,
     "of": 18,
     "stale": [
       "frame",
       "prose"
     ],
     "invalid": [
-      "targets",
-      "engine",
       "tutors"
     ],
     "verified": true,
@@ -2629,9 +2627,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "An eight-mana commander with haste and trample printed on him is the whole engine: reach eight mana (three, if Otepec Huntmaster, Urza's Incubator and Knight of the Stampede are all down), connect once, and the reveal free-rolls Dinosaurs off the top into a layer of per-Dinosaur-entry payoffs that pay the reveal back in cards and a discover — the enrage web that used to be a second engine is now a two-card residue whose damage comes from Blasphemous Act, Zacama's activation, Itzquinth's entry or a blocker, and the deck lives or dies on whether Gishath connects.",
+    "thesis": "The currency of this deck is a Dinosaur ENTERING the battlefield, not a creature attacking: Gishath's combat-damage reveal manufactures entries in batches (goldfish, 10,000 games: the reveal fired in 7,300 games, 2.016 times a game, for 4.08 free bodies), and V5 rebuilt the layer that cashes them — Purphoros turns every entry into 2 damage at each seat and Molten Echoes turns every nontoken Dinosaur entry into a second one, so a deck that used to need its 7/6 to keep connecting now has a payoff layer that pays without a combat step.",
     "critic": null,
-    "lines": 11,
+    "lines": 15,
     "verified_lines": 3
   },
   "diagnosis": {
@@ -2661,27 +2659,27 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Sunfrill Imitator attacks alongside Gishath and its attack trigger resolves, making it a copy of Gishath except for its name: does the copy have the combat-damage reveal trigger this combat, is it a 7/6 with vigilance, trample and haste, and does the legend rule ever apply given the names differ?",
+      "question": "Does Sunfrill Imitator, attacking beside Gishath and copying him, give a second combat-damage reveal — and does the legend rule leave both on the battlefield, given the copy's name stays Sunfrill Imitator?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Eerie Interlude cast in response to a sweeper with Pantlaza, Garruk's Uprising, Vaultborn Tyrant, Earthshaker Dreadmaw and four other Dinosaurs: all return at the next end step as one event — how many Uprising and Vaultborn draws, how many Dreadmaw draws, and exactly one Pantlaza discover at which X?",
+      "question": "With Hunting Velociraptor on the battlefield and a Dinosaur having dealt combat damage to a player this turn, may Gishath be cast FROM THE COMMAND ZONE for his prowl cost of {2}{R} plus the commander tax?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "What board actually kills a 40-life opponent, and from how far? No checker-passed stack resolves a lethal swing; the closest measurement is stack 004's 16 redirected damage taking one opponent from 26 to 10.",
+      "question": "On a board with Gishath connecting for 7, Purphoros and Molten Echoes both out, what is the exact damage to each opponent and the exact order of the entry triggers — specifically whether each Echoes copy's own entry re-triggers Purphoros, and whether Pantlaza's once-a-turn discover can be pointed at a copy rather than the original.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Re-resolve the enrage residue on a board this 99 can produce: Blasphemous Act through Temple Altisaur with Trapjaw Tyrant AND Wrathful Raptors on the table. Stack 004's board carries Ripjaw Raptor and stack 005's carries Forerunner, Ranging Raptors, Ripjaw and Polyraptor — none in the deck — and stacks 002 and 003 name zero current cards.",
-      "settled_by": "resolve-stack"
+      "question": "Does the goldfish's reveal channel feed the ETB layer — do Purphoros' fixed damage and Molten Echoes' copy fire off the bodies the declared commander reveal puts onto the battlefield, or only off cards cast from hand?",
+      "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "How much of the conversion stage's draw does the model see? Vaultborn Tyrant and Curious Altisaur are named in draw_not_modelled, Rishkar's Expertise and Hunter's Insight are X-based, and the reveal's 4.096 free bodies a game is the arrival count those draws key off.",
+      "question": "Is Wakening Sun's Avatar still worth a slot now that the deck's entries mostly arrive off the reveal and off Molten Echoes, both of which turn its ETB off ('if you cast it from your hand')?",
       "settled_by": "goldfish"
     },
     {
@@ -2786,14 +2784,14 @@
   },
   "experiments": null,
   "next": [
-    "3 artifact(s) fail their own gate (targets, engine, tutors) — `deck-status gishath` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (tutors) — `deck-status gishath` names them; fix before anything else reads them",
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `cart-v1` needs 5 card(s) sourced — `manamap pilot deck-branch gishath source cart-v1`",
     "branch `lands-v1` needs 3 card(s) sourced — `manamap pilot deck-branch gishath source lands-v1`",
     "branch `mana-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch gishath merge mana-v1 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "engine.json's critic verdict is None — `/analyze-engine gishath`",
-    "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×2, resolve-stack ×10",
+    "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
     "5 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

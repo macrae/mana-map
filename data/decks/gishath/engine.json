@@ -1,43 +1,43 @@
 {
   "slug": "gishath",
-  "thesis": "An eight-mana commander with haste and trample printed on him is the whole engine: reach eight mana (three, if Otepec Huntmaster, Urza's Incubator and Knight of the Stampede are all down), connect once, and the reveal free-rolls Dinosaurs off the top into a layer of per-Dinosaur-entry payoffs that pay the reveal back in cards and a discover — the enrage web that used to be a second engine is now a two-card residue whose damage comes from Blasphemous Act, Zacama's activation, Itzquinth's entry or a blocker, and the deck lives or dies on whether Gishath connects.",
+  "thesis": "The currency of this deck is a Dinosaur ENTERING the battlefield, not a creature attacking: Gishath's combat-damage reveal manufactures entries in batches (goldfish, 10,000 games: the reveal fired in 7,300 games, 2.016 times a game, for 4.08 free bodies), and V5 rebuilt the layer that cashes them \u2014 Purphoros turns every entry into 2 damage at each seat and Molten Echoes turns every nontoken Dinosaur entry into a second one, so a deck that used to need its 7/6 to keep connecting now has a payoff layer that pays without a combat step.",
+  "decklist_sha256_prefix": "80701018c37d677b",
   "stages": [
     {
       "stage": "mana",
       "label": "THE EIGHT-MANA CLIMB",
-      "what_it_does": "Pays for a {5}{R}{G}{W} commander and a curve whose fat end is 11 five-drops and 14 cards at six or more counting the commander (deck-facts curve: 6:7, 7:2, 8:2, 9:2, 12:1; 13 without Gishath). 35 land copies across 24 entries, 12 of which enter tapped; land sources by colour are G 22 / R 18 / W 17 against a source target of 36 each (deck-facts mana), so Gishath's three pips are the binding constraint, not his generic five. Four rocks, three land-ramp sorceries, and six permanents that make outsized mana or lands on a board: Mirari's Wake and Regal Behemoth double a tapped land, Selvala taps for the greatest power on your board, Hulking Raptor adds {G}{G} every first main, Topiary Stomper searches a basic onto the battlefield tapped when it enters, and Wayward Swordtooth adds a land drop. The goldfish reads mean available mana 5.96 on turn 6 and 7.527 on turn 8 (goldfish_metrics), and the 'Ramp or fixing drawn' target (thirteen cards, Knight of the Stampede now among them) assembles in 96.4% of games, 86.4% by turn 6, mean turn 2.335. Two lands carry restricted mana: Unclaimed Territory pays creature spells of the chosen type only — it pays Gishath and cannot pay Rogue's Passage or Kessig Wolf Run — while Secluded Courtyard's clause says 'or activate an ability' and does (deck-facts notes). Forge V3 (40 games): Sol Ring cast 10, Skyshroud Claim 9, Talisman 8, Mirari's Wake 7, Selvala 7, Wayward Swordtooth 10, Boros Signet 0 for 2 discards (sim engine_casts).",
+      "what_it_does": "Pays for a commander whose mana value is 8 and whose modal card in the 99 costs 3 (deck-audit: curve modal mana value 3). 35 land copies across 24 entries here, plus Sol Ring, Arcane Signet, two land sorceries, Mirari's Wake and five creatures that make or fix mana. deck-audit reads mana-base 35 copies against a 36-38 target and mana-sources 42 against a floor of 42 \u2014 the base is one land light and exactly on the source floor. V5's land pass shows up in the tapland count: 4 copies enter tapped unconditionally (deck-audit taplands 4, target <= 8; mana_analysis enters_tapped 10, always 4). Colour, not quantity, is the strain, and V5 moved it the wrong way: mana_analysis reads W 19 / R 21 / G 30 sources and on-curve probability with rocks and dorks W 0.866, R 0.610, G 0.822 \u2014 red is the worst colour, and the two cards V5 added to the conversion layer are Purphoros at {3}{R} and Molten Echoes at {2}{R}{R}. Regal Behemoth and Wayward Swordtooth are filed here rather than among the Dinosaurs because what they do for this engine is mana and a land drop; Bloom Tender's Vivid mana scales with the colours already on board, which in this deck arrive late. Measured: 'Ramp or fixing drawn' assembles in 91.0% of games, 74.3% by turn 6, mean turn 3.106, over a nine-card group that is 49.8% of opening sevens.",
       "cards": [
-        "Alpine Meadow",
-        "Arctic Treeline",
         "Canopy Vista",
         "Cinder Glade",
         "City of Brass",
-        "Clifftop Retreat",
         "Command Tower",
-        "Commercial District",
         "Exotic Orchard",
         "Forbidden Orchard",
         "Forest",
         "Jetmir's Garden",
-        "Krosan Verge",
         "Mountain",
-        "Myriad Landscape",
         "Path of Ancestry",
         "Plains",
         "Rootbound Crag",
         "Secluded Courtyard",
+        "Stomping Ground",
         "Sunpetal Grove",
+        "Temple Garden",
         "Unclaimed Territory",
+        "Arid Mesa",
+        "Bloodstained Mire",
+        "Krosan Verge",
+        "Myriad Landscape",
+        "Verdant Catacombs",
         "Windswept Heath",
+        "Wooded Foothills",
         "Sol Ring",
         "Arcane Signet",
-        "Boros Signet",
-        "Talisman of Unity",
-        "Kodama's Reach",
         "Nature's Lore",
         "Skyshroud Claim",
         "Mirari's Wake",
-        "Topiary Stomper",
+        "Bloom Tender",
         "Hulking Raptor",
         "Selvala, Heart of the Wilds",
         "Regal Behemoth",
@@ -48,38 +48,29 @@
         {
           "kind": "city",
           "id": "city-1",
-          "agreement": "partial",
-          "note": "THE LONG RUNWAY holds 22 of the 24 land entries placed here; Kessig Wolf Run and Rogue's Passage are in the same city but do a different job"
+          "agreement": "partial"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across"
         },
         {
           "kind": "city",
           "id": "city-5",
-          "agreement": "full",
-          "note": "BUYING TURNS: the four rocks and Mirari's Wake, all five placed here"
-        },
-        {
-          "kind": "city",
-          "id": "city-2",
-          "agreement": "cuts-across",
-          "note": "THE SEARCH PARTY holds the three land-ramp sorceries and Topiary Stomper beside the creature tutors and Huatli, which are fuel"
-        },
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "Hulking Raptor and Selvala sit in WHAT THE MANA BUYS hood-2 THE SIDE DOOR with the cheat-into-play artifacts; Regal Behemoth is in hood-0 and Wayward Swordtooth in hood-1 — engine-facts scatter has 'Ramp or fixing drawn' across four cities"
+          "agreement": "cuts-across"
         },
         {
           "kind": "role",
           "id": "ramp:rock",
-          "note": "deck-facts histogram: ramp:rock 5, ramp:land 4, ramp:dork 2 — the roles agree on what the cards are FOR, not that they are one stage"
+          "agreement": "partial"
         }
       ]
     },
     {
       "stage": "ignition",
       "label": "THE FIRST CONNECTION",
-      "what_it_does": "Gishath has to resolve and deal combat damage to a player. Nothing else in the deck does its thing until that happens, and he needs no help to attack: 'Vigilance, trample, haste' is his own text. What the kit does is make the cast earlier and the hit bigger. Three cost reducers touch a command-zone cast — Otepec Huntmaster ({1} less), Urza's Incubator ({2}) and Knight of the Stampede ({2}) — and they pay generic only, so all three together leave exactly {R}{G}{W}. Rogue's Passage makes him unblockable for {4}; Kessig Wolf Run adds +X/+0; Enlarge is +7/+7 and trample with 'must be blocked this turn if able', so fourteen is the unblocked ceiling and the reveal against a blocker is what tramples over; Kinjalli's Sunwing taps a flashed-in blocker; Sunfrill Imitator attacking beside him may become a second 7/6 with the reveal trigger (unverified — open question). Priced from the brief: commander mean cast turn 7.362, median 7, cast by turn 6 in 25.5% of games, never by turn 10 in 2,299 of 10,000; the modelled reveal fired in 7,255 games, 1.953 times a game, for 4.096 free Dinosaurs, at a connect rate of 0.70 per attack that is Forge's, not the model's (goldfish_metrics commander_reveal; the source is the V3 record: 60 attacks, 42 triggers). Forge V3 cast Gishath 49 times in 40 games, activated Rogue's Passage 10 times and Kessig 3, cast Otepec 11 and Incubator 3 (sim engine_casts). The 'Cost reducer or cheat-into-play drawn' target reads 81.0% assembled, 64.1% by turn 6, mean turn 3.334 for seven cards — but four of the seven cannot touch a command-zone cast (see proposed_goldfish_edits).",
+      "what_it_does": "The thing everything else waits on: Gishath resolves, attacks, and connects once. He prints his own vigilance, trample and haste, so the kit's job is not to let him attack \u2014 it is to make the hit land and to make the reveal WIDE, because the number of cards revealed is his power. Rogue's Passage ({4}: unblockable) and Kessig Wolf Run (+X/+0) are lands and survive a wrath; Kinjalli's Sunwing makes opponents' creatures enter tapped, which strips the flashed-in blocker; Sunfrill Imitator may copy him while attacking, and because the copy's name stays Sunfrill Imitator the legend rule does not apply \u2014 that is a second reveal trigger and it is UNVERIFIED. Three cost reducers shrink the cast itself, a command-zone cast being a cast: Otepec {1} less, Urza's Incubator {2} less on the chosen type, Knight of the Stampede {2} less. All three are generic-only, so the floor is {R}{G}{W}. A fourth door exists and is not here: Hunting Velociraptor (fuel) gives Dinosaur spells prowl {2}{R}, which by its oracle text should apply to Gishath from the command zone \u2014 but only AFTER a Dinosaur has connected, so it is a re-cast discount, not a first-cast one, and it is unverified. Measured: the commander's mean cast turn is 7.278, median 7, and only 26.7% of games cast him by turn 6 \u2014 this is the pinch in the deck. 'Cost reducer or cheat-into-play drawn' assembles 83.0%, 65.4% by turn 6; 'The Gishath connection kit' 81.1%, 61.2% by turn 6. The connect rate itself is FORGE'S, not the model's: 0.70 per attack, and the goldfish has no blockers.",
       "cards": [
         "Gishath, Sun's Avatar",
         "Otepec Huntmaster",
@@ -87,7 +78,6 @@
         "Knight of the Stampede",
         "Rogue's Passage",
         "Kessig Wolf Run",
-        "Enlarge",
         "Kinjalli's Sunwing",
         "Sunfrill Imitator"
       ],
@@ -96,76 +86,67 @@
         {
           "kind": "stack",
           "id": "001",
-          "note": "the trigger resolving on a real board: reveal seven, put every Dinosaur creature card among them onto the battlefield as one event, the rest to the bottom in random order"
+          "note": "one 7-damage connection resolved by the checker: four simultaneous entries, three Uprising draws, one Pantlaza discover at X=6"
         },
         {
           "kind": "city",
           "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "Gishath sits in WHAT THE MANA BUYS hood-0 MORE THAN A BODY with Etali and Bonehoard, the other play-off-the-top cards; Enlarge, Kinjalli's Sunwing and Sunfrill Imitator are in hood-1 SCALES WITH THE BOARD; his reducers are in THE DISCOUNTS (city-6) and his evasion lands in THE LONG RUNWAY (city-1)"
+          "agreement": "cuts-across"
         },
         {
           "kind": "city",
-          "id": "city-6",
-          "agreement": "partial",
-          "note": "THE DISCOUNTS holds Otepec Huntmaster, Urza's Incubator and Knight of the Stampede — three of its four; the fourth is Blasphemous Act, filed on its own 'costs {1} less' clause, which the cartographer's note says not to read as the wipe"
-        },
-        {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "cuts-across",
-          "note": "Rogue's Passage and Kessig Wolf Run are in THE LONG RUNWAY hood-1 FIXING AND FINISHING, among the lands they are"
-        },
-        {
-          "kind": "role",
-          "id": "ramp:cost-reduction",
-          "note": "deck-facts: 4 cards carry it, but Blasphemous Act's is its own cost; three reduce Dinosaur spells"
+          "id": "city-2",
+          "agreement": "cuts-across"
         }
       ]
     },
     {
       "stage": "fuel",
       "label": "WHAT THE TOP OF THE LIBRARY HOLDS",
-      "what_it_does": "The reveal converts only Dinosaur creature cards, so fuel is density plus arrangement plus the doors that skip the cast. Density: 30 of the deck's 34 creature entries are Dinosaurs by type line (cards.json); the four that are not — Huatli, Knight of the Stampede, Otepec Huntmaster, Selvala — bottom when revealed. Arrangement: Congregation at Dawn puts three creatures on top in your order, Worldly Tutor one, Enlightened Tutor an artifact or enchantment (Garruk's Uprising, Descendants' Path, Urza's Incubator, Belbe's Portal are all legal finds). Doors: Descendants' Path casts a Dinosaur free off the top every upkeep you control one, Belbe's Portal and Monster Manual put one from hand onto the battlefield for {3} or {1}{G}, Huatli's Saga makes two 3/3 Dinosaurs, tutors a third, then grants double strike; Etali and Bonehoard Dracosaur are free spells off other tops. Hand refill: Hunter's Insight and Rishkar's Expertise draw off power, Runic Armasaur off opponents' activations. Goldfish extra cards drawn by turn 8: 1.353 (turn 10: 3.147), with 2 of 8 draw cards modelled and Hunter's Insight, Runic Armasaur, Selvala, Vaultborn and Curious Altisaur named unmodelled (goldfish_metrics card_advantage). Forge V3 is a FLOOR here: Rishkar's Expertise and Hunter's Insight are absent from the engine_casts block — never cast, never discarded, in 40 games — while Monster Manual was cast 7 and activated 7, Belbe's Portal cast 3 / activated 2, Descendants' Path cast 6, Bonehoard 15, Etali 2, Congregation 5, Worldly Tutor 6, Enlightened Tutor 5. The V3 record cannot speak to Runic Armasaur, which was not on the list.",
+      "what_it_does": "The reveal converts only what is on top, so this layer buys arrangement and extra entries rather than named cards. Congregation at Dawn stacks three creatures at instant speed, Worldly Tutor one; Enlightened Tutor finds Molten Echoes, Urza's Incubator, Mirari's Wake or Descendants' Path. The free-entry doors skip the cast entirely: Descendants' Path each upkeep, Belbe's Portal, Monster Manual, Huatli's Saga, Savage Order (which searches a Dinosaur straight onto the battlefield and is the only card in the 99 that sacrifices a CREATURE \u2014 six fetches and two Sagas sacrifice themselves and nothing else does, which is why this deck has no `fodder` stage at all). World War Hulk's chapter I is a free red or green creature spell, and its later chapters feed the ignition stage instead. Hunting Velociraptor is the new one worth reading carefully: prowl {2}{R} on every Dinosaur spell you cast AFTER a Dinosaur has connected, which is a cost reducer that only exists once the engine has already fired. Up the Beanstalk draws on every spell of mana value 5 or greater. The audit is blunt about the layer: card-advantage reads 6 copies against a floor of 10, with Earthshaker Dreadmaw, Rishkar's Expertise, Runic Armasaur and Vaultborn Tyrant named as doing the job uncounted, and the goldfish models 3 of 9 draw cards (draw_not_modelled: Curious Altisaur, Hunter's Insight, Jetmir's Garden, Runic Armasaur, Selvala and Vaultborn Tyrant), so every draw figure here is a floor.",
       "cards": [
         "Congregation at Dawn",
         "Worldly Tutor",
         "Enlightened Tutor",
+        "Savage Order",
         "Descendants' Path",
         "Belbe's Portal",
         "Monster Manual // Zoological Study",
         "Huatli, Poet of Unity // Roar of the Fifth People",
         "Bonehoard Dracosaur",
         "Etali, Primal Storm",
+        "Trumpeting Carnosaur",
+        "Up the Beanstalk",
         "Hunter's Insight",
         "Rishkar's Expertise",
-        "Runic Armasaur"
+        "Runic Armasaur",
+        "Hunting Velociraptor",
+        "World War Hulk"
       ],
       "single_point_of_failure": null,
       "evidence": [
         {
           "kind": "city",
-          "id": "city-2",
-          "agreement": "cuts-across",
-          "note": "THE SEARCH PARTY holds the three tutors and Huatli beside the land ramp — four of its eight"
+          "id": "city-3",
+          "agreement": "cuts-across"
         },
         {
           "kind": "city",
           "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "eight of twelve are in WHAT THE MANA BUYS: Belbe's Portal and Monster Manual in hood-2 THE SIDE DOOR beside two mana creatures; Descendants' Path, Hunter's Insight and Rishkar's Expertise in hood-1; Etali and Bonehoard in hood-0; Runic Armasaur in hood-3 THE REFILL, the cartographer's own odd member since it draws off opponents' activations"
+          "agreement": "cuts-across"
         },
         {
           "kind": "role",
-          "id": "tutor:narrow",
-          "note": "deck-facts: 8 cards; three of them are land fetches placed under mana"
+          "id": "draw:engine",
+          "agreement": "partial",
+          "note": "A role is a property, not an interaction, and this one scatters: of the four cards carrying draw:engine, only Up the Beanstalk is in this stage \u2014 Curious Altisaur and Garruk's Uprising are conversion and Selvala is mana. deck-facts also reports that card_roles.json has no pattern at all for Hunter's Insight, Rishkar's Expertise or Descendants' Path, so the count on this stage is a floor."
         }
       ]
     },
     {
       "stage": "conversion",
-      "label": "A CARD PER DINOSAUR",
-      "what_it_does": "What turns a Dinosaur entering, or connecting, into something other than a body. Per entry: Pantlaza discovers X = that creature's toughness, once a turn; Garruk's Uprising and Vaultborn Tyrant draw for each entering creature with power 4 or more (Vaultborn also gains 3); Earthshaker Dreadmaw draws one per other Dinosaur when it lands. Per connection: Curious Altisaur draws when any Dinosaur deals combat damage to a player, Quartzwood Crasher makes an X/X where X is the trample damage dealt. Stack 001 is the fact tier: four Dinosaurs off one seven-card reveal enter as ONE event, so Uprising triggers three times (the 3/4 misses), Pantlaza triggers four times and discovers exactly once, and the pilot orders the Regisaur token trigger to the bottom so the token cannot re-trigger Pantlaza. Three of the stack's seven stipulated reveal cards (Ripjaw Raptor, Cultivate, Ravenous Sailback) are not in the current 99 — Sailback never was — and of the four Dinosaurs it put onto the battlefield, Regisaur Alpha and Carnage Tyrant remain; the rules facts do not depend on which Dinosaurs are revealed. The enrage residue: Trapjaw Tyrant exiles an opponent's creature whenever it is dealt damage, Wrathful Raptors redirects any damage a Dinosaur of yours takes at a non-Dinosaur — stack 004 resolves four redirects for 16 off one Blasphemous Act. Priced: 'Dinosaur payoff drawn' 84.9% assembled, 60.4% by turn 6, mean turn 3.985 for six cards (Vaultborn and Dreadmaw not in the group); 'Enrage engine drawn' 56.7%, 28.1% by turn 6, mean turn 5.705, size 2, thin. Forge V3: Garruk's Uprising cast 7, Pantlaza 6, Curious Altisaur 6, Quartzwood 6, Vaultborn 5, Wrathful 7, Trapjaw 5 (sim engine_casts).",
+      "label": "WHAT AN ENTRY IS WORTH",
+      "what_it_does": "The engine proper, and the half V5 rebuilt. Every card here reads an ENTRY and pays something: Pantlaza discovers X = the entering creature's toughness, once a turn; Garruk's Uprising and Vaultborn Tyrant draw on each power-4-or-greater entry; Earthshaker Dreadmaw draws for each other Dinosaur as it arrives; Regisaur Alpha adds a 3/3; Curious Altisaur and Quartzwood Crasher price the swing instead. The two new ones change what the stage produces. Purphoros converts an entry into DAMAGE \u2014 2 to each opponent for every other creature that enters, your side untouched \u2014 and it reads tokens too, so Regisaur Alpha's 3/3 and Ghalta and Mavren's attack tokens pay as well as the reveal's bodies. Molten Echoes converts an entry into a second entry: name Dinosaur, and every NONTOKEN Dinosaur you control that enters makes a hasty copy exiled at the next end step. I enumerated the copy's value from cards.json rather than assuming it: 10 Dinosaurs in the deck carry an entry trigger, 8 of them fire on the token copy, and Zacama and Wakening Sun's Avatar do not, both being gated on 'if you cast it'. Separately, 7 of the 29 Dinosaur cards are legendary, so their copy dies to the legend rule at once \u2014 the trigger still resolves, the body does not stay. Trapjaw Tyrant and Wrathful Raptors convert DAMAGE dealt to your own Dinosaurs instead, which is why the protection stage feeds them. Measured: 'Dinosaur payoff drawn' 85.6%, 61.5% by turn 6 \u2014 over a six-card group that names neither Purphoros nor Molten Echoes.",
       "cards": [
         "Pantlaza, Sun-Favored",
         "Garruk's Uprising",
@@ -173,6 +154,9 @@
         "Earthshaker Dreadmaw",
         "Curious Altisaur",
         "Quartzwood Crasher",
+        "Regisaur Alpha",
+        "Molten Echoes",
+        "Purphoros, God of the Forge",
         "Trapjaw Tyrant",
         "Wrathful Raptors"
       ],
@@ -181,76 +165,64 @@
         {
           "kind": "stack",
           "id": "001",
-          "note": "three Uprising draws and one discover at X=6 off four simultaneous entries; the once-per-turn rider restricts triggering (603.2h), which is why the token ordering matters"
+          "note": "Pantlaza and Garruk's Uprising both resolved off one wave of simultaneous entries, with the Regisaur token ordered last so it cannot re-trigger the once-a-turn discover"
         },
         {
           "kind": "stack",
           "id": "004",
-          "note": "Wrathful Raptors triggers once per damaged Dinosaur with 'that much' fixed by the event: 13 (Altisaur, by last known information) + 1 + 1 + 1"
+          "note": "Wrathful Raptors converting damage dealt to your own Dinosaurs into damage at a player"
         },
         {
           "kind": "city",
           "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "seven of eight are in WHAT THE MANA BUYS across hoods 0, 1 and 3 — Earthshaker Dreadmaw in hood-0, Pantlaza and Wrathful Raptors in hood-1, Uprising, Vaultborn and Curious Altisaur in hood-3 THE REFILL"
+          "agreement": "cuts-across"
         },
         {
-          "kind": "city",
-          "id": "city-3",
-          "agreement": "cuts-across",
-          "note": "Trapjaw Tyrant is in MAKING ROOM on its exile text, the one converter filed among the removal. Its enrage exile off a 1-damage ping was resolved in stack 005, which is withheld (presentable: false) because that board — Forerunner, Ranging Raptors, Ripjaw, Polyraptor — has left the deck; the mechanism here rests on oracle text, not on a citable stack"
+          "kind": "role",
+          "id": "value:etb",
+          "agreement": "partial",
+          "note": "The Molten Echoes enumeration, read card by card from cards.json rather than from the role tag. Ten Dinosaurs in the deck carry an entry trigger: Bronzebeak Foragers, Earthshaker Dreadmaw, Itzquinth, Pantlaza, Regal Behemoth, Regisaur Alpha, Trumpeting Carnosaur, Vaultborn Tyrant, Wakening Sun's Avatar and Zacama. Eight fire on a token copy; Wakening Sun's Avatar and Zacama do not, both being gated on 'if you cast it'. Three of the eight are legendary (Itzquinth, Pantlaza, Zacama), so the copy's trigger resolves and the body dies to the legend rule. The value:etb role itself misses Pantlaza and Vaultborn Tyrant, both of which have one."
         }
       ]
     },
     {
       "stage": "output",
-      "label": "WHAT THE BODIES DO ON ARRIVAL",
-      "what_it_does": "Removal and targeted actions, two-thirds of it riding on Dinosaurs the reveal can put down for free. Read the cast-gates before counting on a revealed body: Wakening Sun's Avatar destroys all non-Dinosaurs only 'if you cast it from your hand', and Zacama untaps your lands only 'if you cast it' — off the reveal both are bodies with activated or no text, though Zacama's {2}{R} 3-damage and {2}{G} artifact/enchantment modes still work, and Forge V3 activated Zacama 32 times against one cast. Bronzebeak Foragers' exile-per-opponent, Trumpeting Carnosaur's discover 5 and Itzquinth's pay-{2} hit — a Dinosaur you control deals its power to another target creature, one way, any creature, your own Trapjaw or Wrathful included — are plain ETBs and fire off the reveal. Blasphemous Act is the one-sided sweeper: {R} off nine creatures, 13 to everything, one-sided only through Temple Altisaur (stack 004). deck-audit's single point of failure is scoped to that pair, 'THE ONE-SIDED APOCALYPSE: Blasphemous Act + Temple Altisaur' — the Act alone is 7.1% of an opening seven; the pair reads 8.1% assembled, 1.8% by turn 6, mean turn 7.708 (29.9% tutor-assisted). The stage loses nothing else it does without the Act, and the enrage residue has other ways to be dealt damage: Zacama's activation, Itzquinth, Carnosaur's discard mode, Triumphant Chomp and a blocker. Chomp scales with your biggest Dinosaur's power. Path, Swords, Beast Within and Austere Command clear the lane before the connection. Forge V3: Swords 11, Path 10, Triumphant Chomp 8, Itzquinth 7, Blasphemous Act 6, Austere Command 4, Bronzebeak 4, Brontodon 4, Wakening 2, Beast Within 1; Trumpeting Carnosaur cast once, discarded 6, activated 5 — the AI used the discard mode (sim engine_casts).",
+      "label": "WHAT THE BOARD POINTS AT",
+      "what_it_does": "Removal, the one sweeper, and the damage that gets aimed at your own side on purpose. deck-audit reads interaction 9 copies against a floor of 8, sweepers 1 against 1-3, and interaction-breadth 3 classes against 5, naming graveyard and land as classes with no answer detected \u2014 the check is an oracle heuristic and a floor, but Beast Within left in V5 and with it the land answer. Blasphemous Act is the deck's single point of failure by deck-audit's own reckoning and the input to the one asymmetric sweep. Savage Stomp is the V5 addition that matters structurally: it costs {G} pointed at your own Dinosaur, puts a +1/+1 counter on it, and the fight marks damage on YOUR creature \u2014 which is an enrage trigger and, under Temple Altisaur, exactly 1 damage taken. I enumerated every card in the 99 that can mark damage on your own Dinosaur without spending an answer on yourself: Blasphemous Act, Savage Stomp, Itzquinth (its damage may be aimed at another creature you control), Triumphant Chomp, Trumpeting Carnosaur's discard mode and Zacama's {2}{R}. The previous model said Blasphemous Act was the only one; that claim is now false. Wakening Sun's Avatar destroys all non-Dinosaurs but only if you CAST it from hand, so it is dead off the reveal and dead off Molten Echoes \u2014 the same clause that stops Zacama untapping your lands.",
       "cards": [
         "Blasphemous Act",
-        "Austere Command",
         "Wakening Sun's Avatar",
+        "Zacama, Primal Calamity",
         "Path to Exile",
         "Swords to Plowshares",
-        "Beast Within",
-        "Thrashing Brontodon",
+        "Savage Stomp",
         "Triumphant Chomp",
-        "Trumpeting Carnosaur",
-        "Zacama, Primal Calamity",
         "Bronzebeak Foragers",
         "Itzquinth, Firstborn of Gishath"
       ],
-      "single_point_of_failure": null,
+      "single_point_of_failure": "Blasphemous Act",
       "evidence": [
         {
           "kind": "stack",
           "id": "004",
-          "note": "the Act cast for {R}; state-based actions destroy every lethally damaged creature BEFORE the redirect triggers are put on the stack, so the only legal targets left are players"
-        },
-        {
-          "kind": "city",
-          "id": "city-3",
-          "agreement": "partial",
-          "note": "MAKING ROOM holds seven of these; Trapjaw Tyrant, its eighth, converts rather than removes"
+          "note": "Blasphemous Act cast for {R} off nine creatures; state-based actions clear the opponents' creatures before the redirects choose targets"
         },
         {
           "kind": "city",
           "id": "city-6",
-          "agreement": "cuts-across",
-          "note": "Blasphemous Act is filed in THE DISCOUNTS with the three cost reducers, on its own 'costs {1} less' clause — the cartographer's note calls it the deck's odd placement and says not to describe city-6 as the wipe"
+          "agreement": "cuts-across"
         },
         {
           "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "Triumphant Chomp is in WHAT THE MANA BUYS hood-1; Trumpeting Carnosaur, Bronzebeak Foragers and Itzquinth in hood-0"
+          "id": "city-2",
+          "agreement": "cuts-across"
         }
       ]
     },
     {
       "stage": "protection",
       "label": "KEEPING THE BOARD THROUGH THE ANSWER",
-      "what_it_does": "Five instants and one Dinosaur. Heroic Intervention (hexproof and indestructible), Flawless Maneuver (indestructible, free if you control your commander), Akroma's Will (the same plus evasion on the other mode), Boros Charm (indestructible — or double strike on one creature, which on Gishath is a second reveal) and Eerie Interlude, which exiles your creatures in response and returns them at the next end step, re-firing every ETB in the conversion and output stages at once (unverified — open question). Temple Altisaur is a prevention shield, not insurance: 'prevent all but 1' of any damage to ANOTHER Dinosaur you control, which is what turns Blasphemous Act one-sided; stack 004 confirms Altisaur is not 'another Dinosaur' to itself, eats the full 13 and dies, and its death still redirects 13 through Wrathful Raptors by last known information. Priced: 'Protection held for the board' 70.0% assembled, 51.1% by turn 6, mean turn 3.846; interaction castable with mana left over 35.1% on turn 6, a floor since the model casts everything it can (goldfish_metrics). Forge V3: Boros Charm cast 9, Flawless Maneuver 7, Akroma's Will 5, Eerie Interlude 5, Heroic Intervention 4, Temple Altisaur 4 (sim engine_casts).",
+      "what_it_does": "Insurance on a plan that is entirely one creature. Read them rather than count them: Heroic Intervention's hexproof and Akroma's Will's protection from each colour cover targeted exile and bounce; Boros Charm's indestructible covers a wrath but not an exile; Flawless Maneuver is the only one castable for nothing on the turn you tap out for eight; Eerie Interlude is the only one that dodges a non-targeted mass exile, and with the V5 conversion layer down it is no longer only a dodge \u2014 the end-step return is a simultaneous entry of your whole board, which is Purphoros damage at every seat and a Molten Echoes copy of every nontoken Dinosaur. Temple Altisaur is prevention rather than a body: 'if a source would deal damage to another Dinosaur you control, prevent all but 1', which is what makes Blasphemous Act one-sided and what turns Savage Stomp's fight into a 1-damage enrage trigger. It is not 'another Dinosaur' to itself, so the Act kills it, and stack 004 resolves that exact sequence. Measured: 'Protection held for the board' assembles 71.7%, 52.2% by turn 6, over a five-card group that is 31.2% of opening sevens; deck-audit reads protection 8 copies against a 5-7 target and calls it OVER.",
       "cards": [
         "Temple Altisaur",
         "Akroma's Will",
@@ -264,53 +236,39 @@
         {
           "kind": "stack",
           "id": "004",
-          "note": "prevention applies as the damage is dealt (615.1): 13 becomes 1 for each other Dinosaur, and 1 is still 'dealt damage' for the triggers"
+          "note": "Temple Altisaur prevents all but 1 to every other Dinosaur and takes 13 itself"
         },
         {
           "kind": "city",
-          "id": "city-4",
-          "agreement": "partial",
-          "note": "WRATH INSURANCE holds four of the five instants; its fifth member is Carnage Tyrant, a hexproof body that insures itself and is placed under wincon here"
-        },
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "Temple Altisaur and Eerie Interlude cluster in WHAT THE MANA BUYS hood-1 SCALES WITH THE BOARD — Altisaur on its Dinosaur text, Interlude on its return-to-battlefield text"
+          "id": "city-2",
+          "agreement": "cuts-across"
         }
       ]
     },
     {
       "stage": "wincon",
-      "label": "THE TRAMPLE SWING",
-      "what_it_does": "Combat, with trample stacked from every direction. Overwhelming Stampede gives the board +X/+X and trample where X is your greatest power — Gishath alone makes X at least 7; Ghalta, Primal Hunger costs {G}{G} off any board the reveal built and swings for 12; Ghalta and Mavren makes an X/X trampler tapped and attacking every swing, X the greatest power among the other attackers; Regal Imperiosaur is +1/+1 to every other Dinosaur; Regisaur Alpha gives the arriving board haste, so a Dinosaur that enters precombat (Descendants' Path at upkeep, a Portal or Manual activation in main one) attacks the same turn — stack 001 shows the reveal's own bodies cannot, since they land after attackers were declared. Carnage Tyrant and Pugnacious Hammerskull are the bodies with nothing to do but hit: 7/6 hexproof uncounterable, and a 6/6 for three that stuns itself only when it is your lone Dinosaur. Priced with model_combat on, one opponent, no blockers: kill by turn 6 5.8%, turn 7 29.3%, turn 8 61.7%, turn 10 90.5%, mean kill turn 8.03, median 8, no kill by turn 10 in 9.5%; mean board power 31.555 on turn 8 and 55.571 on turn 10 (goldfish_metrics combat). Forge V3 against sythis / jarad / abaddon: 12 wins of 35 decided, 0.343 (sim summary). No checker-passed stack resolves a lethal swing; the closest is stack 004's 16 redirected damage, explicitly not lethal. Forge V3: Ghalta cast 10, Carnage Tyrant 9, Overwhelming Stampede 8, Hammerskull 8, Imperiosaur 7, Ghalta and Mavren 6, Regisaur Alpha 1 (sim engine_casts).",
+      "label": "THE TRAMPLE SWING, AND THE OTHER ONE",
+      "what_it_does": "The games this deck wins, it wins by attacking with more power than three seats can block: goldfish mean board power reaches 34.415 at turn 8, kill-by-turn-8 is 0.609 and the mean kill turn is 7.987 in a model with no blockers, which makes those a ceiling on speed and a floor on nothing. Overwhelming Stampede is the finisher and also an ignition card in disguise \u2014 +X/+X where X is the greatest power among your creatures makes Gishath's reveal that many cards wider. Ghalta and Mavren is the other half: its attack trigger makes tokens, and a token entering is a Purphoros trigger, so the swing now pays before blockers are declared. Ghalta, Primal Hunger costs {X} less for the total power you control, so ten power on board makes a {G}{G} 12/12; Regal Imperiosaur is an anthem for other Dinosaurs; Carnage Tyrant is the body that answers counterspells and targeted removal by itself; Pugnacious Hammerskull is a 6/6 for three that stuns itself only while it is your only Dinosaur, which in this deck is an early problem and never a late one. The second kill route is the one V5 installed and it does not live in this stage: Purphoros needs no combat step at all, and every entry the reveal, the tokens and Molten Echoes produce is damage at all three seats.",
       "cards": [
         "Overwhelming Stampede",
         "Ghalta and Mavren",
         "Ghalta, Primal Hunger",
         "Regal Imperiosaur",
-        "Carnage Tyrant",
         "Pugnacious Hammerskull",
-        "Regisaur Alpha"
+        "Carnage Tyrant"
       ],
       "single_point_of_failure": null,
       "evidence": [
         {
-          "kind": "stack",
-          "id": "001",
-          "note": "haste from Regisaur Alpha reaches every other Dinosaur the moment they share the battlefield (603.6b), and still buys no attack this combat"
-        },
-        {
           "kind": "city",
           "id": "city-0",
-          "agreement": "partial",
-          "note": "six of seven are in WHAT THE MANA BUYS across hoods 0 and 1"
+          "agreement": "partial"
         },
         {
-          "kind": "city",
-          "id": "city-4",
-          "agreement": "cuts-across",
-          "note": "Carnage Tyrant is in WRATH INSURANCE on its hexproof / can't-be-countered text, beside the protection instants"
+          "kind": "role",
+          "id": "threat:body",
+          "agreement": "partial",
+          "note": "The taxonomy's wincon:combat role belongs to Akroma's Will, Boros Charm and Huatli in this deck \u2014 none of them here \u2014 and it has NO entry at all for Overwhelming Stampede, which is the stage's finisher. Five of the 99 carry no role (deck-facts)."
         }
       ]
     }
@@ -326,7 +284,18 @@
       ],
       "verified_by": null,
       "carries": "mana",
-      "note": "the direct attack on a 7.362 mean cast turn (median 7, 25.5% by turn 6 — goldfish_metrics commander); no stack has resolved the cast itself, so this arrow is a claim"
+      "note": "the direct attack on a mean cast turn of 7.278 (median 7, 26.7% by turn 6 \u2014 goldfish commander). No stack has resolved the cast, so this arrow is a claim"
+    },
+    {
+      "from": "mana",
+      "to": "ignition",
+      "via": [
+        "Mirari's Wake",
+        "Gishath, Sun's Avatar"
+      ],
+      "verified_by": null,
+      "carries": "power",
+      "note": "the reveal's width IS his power, so Wake's +1/+1 is one more card revealed per connect. Oracle-derivable, not resolved by a stack"
     },
     {
       "from": "ignition",
@@ -338,51 +307,40 @@
       ],
       "verified_by": "001",
       "carries": "bodies",
-      "note": "one 7-damage connection: four Dinosaurs enter as one event, three Uprising draws, one Pantlaza discover at X=6, and the Regisaur token ordered last so it cannot re-trigger Pantlaza. Three of the stipulated reveal's seven cards (Ripjaw Raptor, Cultivate, Ravenous Sailback) are not in the current 99 — Sailback never was; the board and the rules facts are the current 99's"
+      "note": "one 7-damage connection: four Dinosaurs enter as one event, three Uprising draws, one Pantlaza discover at X=6, Regisaur's token ordered last so it cannot re-trigger the once-a-turn discover. The stipulated reveal names cards no longer in the 99; the rules facts survive, the board does not"
     },
     {
       "from": "ignition",
       "to": "conversion",
       "via": [
         "Gishath, Sun's Avatar",
-        "Curious Altisaur"
-      ],
-      "verified_by": null,
-      "carries": "cards",
-      "note": "the same connection draws a card off Curious Altisaur; not on stack 001's board"
-    },
-    {
-      "from": "output",
-      "to": "conversion",
-      "via": [
-        "Blasphemous Act",
-        "Wrathful Raptors"
-      ],
-      "verified_by": "004",
-      "carries": "damage",
-      "note": "13 to Altisaur, 1 to each other Dinosaur after prevention; four redirects totalling 16 at one player after state-based actions have cleared every non-Dinosaur creature. The stack's Ripjaw draw has left the deck with Ripjaw"
-    },
-    {
-      "from": "output",
-      "to": "conversion",
-      "via": [
-        "Blasphemous Act",
-        "Trapjaw Tyrant"
+        "Purphoros, God of the Forge"
       ],
       "verified_by": null,
       "carries": "damage",
-      "note": "Trapjaw's exile off the 1 the Act leaves through Altisaur; Trapjaw is not on stack 004's board and stack 005's board is no longer this deck's"
+      "note": "every body the reveal puts in is 'another creature you control enters' \u2014 2 to each opponent, your side untouched. Unverified in situ; the goldfish's one-opponent table counts 'each opponent' ONCE, so its damage figure understates a three-seat table"
     },
     {
-      "from": "protection",
-      "to": "output",
+      "from": "ignition",
+      "to": "conversion",
       "via": [
-        "Temple Altisaur",
-        "Blasphemous Act"
+        "Gishath, Sun's Avatar",
+        "Molten Echoes"
       ],
-      "verified_by": "004",
-      "carries": "prevention",
-      "note": "the shield that makes the Act one-sided; Altisaur itself is not 'another Dinosaur', takes 13 and dies, and still redirects 13 by last known information"
+      "verified_by": null,
+      "carries": "bodies",
+      "note": "a revealed Dinosaur is a nontoken creature entering, so each one makes a hasty copy exiled at the next end step. Entering in the combat damage step, the copies cannot attack that turn: their value is the ETB, not the body. Unverified"
+    },
+    {
+      "from": "conversion",
+      "to": "ignition",
+      "via": [
+        "Purphoros, God of the Forge",
+        "Gishath, Sun's Avatar"
+      ],
+      "verified_by": null,
+      "carries": "power",
+      "note": "{2}{R}: creatures you control get +1/+0 \u2014 each activation before damage is one more card revealed. Unverified; the goldfish reads anthems into the reveal width but not this activation"
     },
     {
       "from": "fuel",
@@ -393,7 +351,7 @@
       ],
       "verified_by": null,
       "carries": "cards",
-      "note": "three Dinosaurs on top at instant speed the turn before the swing is a stacked reveal; no stack has resolved it"
+      "note": "three creatures stacked on top at instant speed the turn before the swing is a chosen reveal rather than a random one; no stack has resolved it"
     },
     {
       "from": "fuel",
@@ -404,18 +362,73 @@
       ],
       "verified_by": null,
       "carries": "bodies",
-      "note": "an upkeep free cast is a Dinosaur entering, so Pantlaza's once-a-turn discover fires before combat; unverified"
+      "note": "an upkeep free cast is a Dinosaur entering, so the once-a-turn discover fires before combat and is spent by the time the reveal lands. Unverified, and it is a REAL cost of stacking both"
     },
     {
-      "from": "ignition",
-      "to": "wincon",
+      "from": "fuel",
+      "to": "conversion",
       "via": [
-        "Gishath, Sun's Avatar",
-        "Regisaur Alpha"
+        "Hunting Velociraptor",
+        "Purphoros, God of the Forge"
       ],
       "verified_by": null,
-      "carries": "haste",
-      "note": "stack 001 resolves Regisaur Alpha arriving off the reveal, but its scenario names Alpha only inside the stipulated reveal, which the validator does not read — so this arrow stays a claim"
+      "carries": "mana",
+      "note": "prowl {2}{R} turns post-connect Dinosaur spells into cheap entries, and each entry is a Purphoros trigger. Unverified; note the red pip against R 0.610 on-curve"
+    },
+    {
+      "from": "output",
+      "to": "conversion",
+      "via": [
+        "Blasphemous Act",
+        "Wrathful Raptors"
+      ],
+      "verified_by": "004",
+      "carries": "damage",
+      "note": "13 to Temple Altisaur, 1 to each other Dinosaur after prevention; the redirects can only be aimed at players because state-based actions have already cleared every non-Dinosaur creature"
+    },
+    {
+      "from": "output",
+      "to": "conversion",
+      "via": [
+        "Savage Stomp",
+        "Trapjaw Tyrant"
+      ],
+      "verified_by": null,
+      "carries": "damage",
+      "note": "the fight marks damage on your own Dinosaur for {G}, which under Temple Altisaur is exactly 1 \u2014 a repeatable enrage trigger V5 added. Not on stack 004's board; unverified"
+    },
+    {
+      "from": "protection",
+      "to": "output",
+      "via": [
+        "Temple Altisaur",
+        "Blasphemous Act"
+      ],
+      "verified_by": "004",
+      "carries": "prevention",
+      "note": "the shield that makes the Act one-sided; Altisaur is not 'another Dinosaur' to itself, takes 13 and dies, and still redirects by last known information"
+    },
+    {
+      "from": "protection",
+      "to": "conversion",
+      "via": [
+        "Eerie Interlude",
+        "Purphoros, God of the Forge"
+      ],
+      "verified_by": null,
+      "carries": "bodies",
+      "note": "the end-step return is a simultaneous entry of the whole board: a Purphoros trigger per creature and a Molten Echoes copy per nontoken Dinosaur. How much damage that is on a given board is an open question"
+    },
+    {
+      "from": "wincon",
+      "to": "conversion",
+      "via": [
+        "Ghalta and Mavren",
+        "Purphoros, God of the Forge"
+      ],
+      "verified_by": null,
+      "carries": "bodies",
+      "note": "the attack trigger's tokens ENTER, so Purphoros pays before blockers are declared; Molten Echoes does not copy them ('nontoken'). Unverified"
     },
     {
       "from": "wincon",
@@ -426,114 +439,101 @@
       ],
       "verified_by": null,
       "carries": "power",
-      "note": "+X/+X on Gishath is a bigger reveal as much as a kill: oracle-derivable only — X is the greatest power among creatures you control and Gishath is 7/6, so X is at least 7 — and no stack has resolved it, so this arrow is a claim"
-    },
-    {
-      "from": "protection",
-      "to": "conversion",
-      "via": [
-        "Eerie Interlude",
-        "Pantlaza, Sun-Favored"
-      ],
-      "verified_by": null,
-      "carries": "bodies",
-      "note": "the end-step return is a simultaneous entry of the whole board; how many draws and exactly one discover it yields is an open question"
+      "note": "+X/+X where X is the greatest power among your creatures is a wider reveal as much as a kill \u2014 Gishath is 7/6, so X is at least 7. Oracle-derivable only; no stack has resolved it"
     }
   ],
   "map_disagreements": [
     {
-      "component": "THE EIGHT-MANA CLIMB (mana)",
+      "component": "WHAT AN ENTRY IS WORTH (conversion)",
       "cities": [
-        "THE LONG RUNWAY",
-        "BUYING TURNS",
-        "THE SEARCH PARTY",
-        "WHAT THE MANA BUYS"
+        "Insurance",
+        "Bodies",
+        "Interaction"
       ],
-      "why": "engine-facts' scatter table puts 'Ramp or fixing drawn' across four cities: the rocks cluster on 'add mana', the land sorceries and Topiary Stomper on 'search your library', while the four mana creatures read as what they are on the battlefield — Regal Behemoth and Wayward Swordtooth as Dinosaurs, Hulking Raptor and Selvala beside Belbe's Portal and Monster Manual in THE SIDE DOOR. A creature that makes mana is filed as a creature; the job is invisible in the text."
+      "why": "Purphoros is filed in Insurance with the protection spells and the cost reducers, because four of its five lines are 'indestructible', 'devotion', 'isn't a creature' and a +1/+0 pump; the single clause that earns its slot \u2014 2 damage to each opponent per entry \u2014 is outvoted by its own card text. Molten Echoes lands in Bodies with the creatures, which is right for the wrong reason: it makes bodies, but its job is multiplying TRIGGERS. Trapjaw Tyrant sits in Interaction and Wrathful Raptors in Bodies although they are the same enrage converter. No clustering over oracle text can see that all eleven of these cards read the same event."
     },
     {
       "component": "THE FIRST CONNECTION (ignition)",
       "cities": [
-        "WHAT THE MANA BUYS",
-        "THE DISCOUNTS",
-        "THE LONG RUNWAY"
+        "Bodies",
+        "Insurance",
+        "Mana"
       ],
-      "why": "Gishath clusters with Etali and Bonehoard on 'play from the top' text, Enlarge, Kinjalli's Sunwing and Sunfrill Imitator on board-scaling text, his three cost reducers with Blasphemous Act on 'costs less', and his evasion with the lands. Nothing in card text says 'these make one attack happen'; the connection is a board event, which is exactly what a clustering over oracle text cannot see."
+      "why": "engine-facts' scatter puts 'Cost reducer or cheat-into-play drawn' across 4 cities and 'The Gishath connection kit' across 3. Gishath clusters with the Dinosaurs, his three cost reducers with Blasphemous Act on 'costs {N} less', and his evasion with the lands. Nothing in any card's text says 'these make one attack happen'; the connection is a board event, which is exactly what a text clustering cannot represent."
     },
     {
-      "component": "A CARD PER DINOSAUR (conversion)",
+      "component": "THE EIGHT-MANA CLIMB (mana)",
       "cities": [
-        "WHAT THE MANA BUYS",
-        "MAKING ROOM"
+        "Mana",
+        "Mana II",
+        "Ramp",
+        "Tutors",
+        "Bodies"
       ],
-      "why": "Trapjaw Tyrant clusters on its exile text among the removal, while Wrathful Raptors clusters with the Dinosaur mass; the two remaining enrage converters share a trigger condition and no city. The residue is invisible on the map because it is small and its members read as other things."
+      "why": "Five cities for one job. Mana and Mana II split on a text feature with no functional content \u2014 fetches say 'search your library', everything else says 'add' \u2014 while Nature's Lore and Skyshroud Claim are filed with the TUTORS for the same phrase, and Regal Behemoth and Wayward Swordtooth read as Dinosaurs because that is what their type line says. A creature that makes mana is filed as a creature."
     },
     {
       "component": "KEEPING THE BOARD THROUGH THE ANSWER (protection)",
       "cities": [
-        "WRATH INSURANCE",
-        "WHAT THE MANA BUYS"
+        "Insurance",
+        "Bodies"
       ],
-      "why": "Temple Altisaur is a prevention effect that reads as a Dinosaur, and Eerie Interlude a blink that reads as recursion; both land in city-0 hood-1 while the four instants that do the same job sit in city-4 with Carnage Tyrant, a body that insures itself and belongs to the wincon here."
-    },
-    {
-      "component": "THE ONE-SIDED APOCALYPSE (output into conversion)",
-      "cities": [
-        "THE DISCOUNTS",
-        "WHAT THE MANA BUYS"
-      ],
-      "why": "The deck's one verified pairing outside the reveal has two addresses: Blasphemous Act is filed with Otepec, Incubator and Knight on its 'costs {1} less' clause, and Temple Altisaur, the card that makes it one-sided, is in city-0 hood-1 with Wrathful Raptors. The cartographer's own note says not to describe city-6 as the wipe; stack 004 is the only place the pair is visible together."
+      "why": "Temple Altisaur is the prevention effect stack 004 turns on, and the map files it among the Dinosaurs, because it is a 4/5 whose ability is written as a replacement effect rather than as a protection keyword. Eerie Interlude is in Bodies too, on 'return those cards to the battlefield'. The four instants that say 'gain hexproof / indestructible / protection' are in Insurance; the two that do the same job without the vocabulary are not."
     }
   ],
   "unassigned": [],
   "open_questions": [
     {
-      "question": "Sunfrill Imitator attacks alongside Gishath and its attack trigger resolves, making it a copy of Gishath except for its name: does the copy have the combat-damage reveal trigger this combat, is it a 7/6 with vigilance, trample and haste, and does the legend rule ever apply given the names differ?",
+      "question": "Does Sunfrill Imitator, attacking beside Gishath and copying him, give a second combat-damage reveal \u2014 and does the legend rule leave both on the battlefield, given the copy's name stays Sunfrill Imitator?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "if it holds, the deck's ignition stage has a second copy of its single point of failure for {2}{G}, and the 'connection kit' target is measuring the wrong thing"
+      "why_it_matters": "It would be the only way in the 99 to double the reveal in one combat, and the whole deck is throughput per connect. If it works, the Imitator stops being a 3/3 filler card and becomes ignition; if the legend rule bites, it is a trap."
     },
     {
-      "question": "Eerie Interlude cast in response to a sweeper with Pantlaza, Garruk's Uprising, Vaultborn Tyrant, Earthshaker Dreadmaw and four other Dinosaurs: all return at the next end step as one event — how many Uprising and Vaultborn draws, how many Dreadmaw draws, and exactly one Pantlaza discover at which X?",
+      "question": "With Hunting Velociraptor on the battlefield and a Dinosaur having dealt combat damage to a player this turn, may Gishath be cast FROM THE COMMAND ZONE for his prowl cost of {2}{R} plus the commander tax?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "the line is drawn dashed from protection into conversion; a pass would make Interlude the deck's best re-trigger and not just its insurance"
+      "why_it_matters": "The binding constraint on this deck is the commander's cast turn \u2014 mean 7.278, 26.7% of games by turn 6 \u2014 and the second and third casts carry the tax on top. If prowl is a legal alternative cost from the command zone, a three-mana Gishath re-cast after a removal spell is the largest single change V5 made to the deck's floor, and it is currently modelled nowhere: the goldfish reads Velociraptor on the bodies and combat channels only."
     },
     {
-      "question": "What board actually kills a 40-life opponent, and from how far? No checker-passed stack resolves a lethal swing; the closest measurement is stack 004's 16 redirected damage taking one opponent from 26 to 10.",
+      "question": "On a board with Gishath connecting for 7, Purphoros and Molten Echoes both out, what is the exact damage to each opponent and the exact order of the entry triggers \u2014 specifically whether each Echoes copy's own entry re-triggers Purphoros, and whether Pantlaza's once-a-turn discover can be pointed at a copy rather than the original.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "every arrow into wincon is dashed, and the goldfish's kill-by-turn-8 of 0.617 is against one opponent with no blockers"
+      "why_it_matters": "This is the V5 thesis in one board state. The whole claim that the deck now kills without combat rests on the count of Purphoros triggers per connect, and nothing has resolved it."
     },
     {
-      "question": "Re-resolve the enrage residue on a board this 99 can produce: Blasphemous Act through Temple Altisaur with Trapjaw Tyrant AND Wrathful Raptors on the table. Stack 004's board carries Ripjaw Raptor and stack 005's carries Forerunner, Ranging Raptors, Ripjaw and Polyraptor — none in the deck — and stacks 002 and 003 name zero current cards.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "the per-card verified index still credits Trapjaw Tyrant to a board the deck cannot reach; a scenario the current list produces is what the page should cite"
-    },
-    {
-      "question": "How much of the conversion stage's draw does the model see? Vaultborn Tyrant and Curious Altisaur are named in draw_not_modelled, Rishkar's Expertise and Hunter's Insight are X-based, and the reveal's 4.096 free bodies a game is the arrival count those draws key off.",
+      "question": "Does the goldfish's reveal channel feed the ETB layer \u2014 do Purphoros' fixed damage and Molten Echoes' copy fire off the bodies the declared commander reveal puts onto the battlefield, or only off cards cast from hand?",
       "settled_by": "goldfish",
-      "why_it_matters": "extra cards drawn by turn 8 reads 1.353; if the per-entry draws are dark, the stage that pays the reveal back is being measured as almost nothing"
+      "why_it_matters": "model-coverage reports Purphoros and Molten Echoes as `seen` on the bodies/combat channels, but `seen` means a channel is switched on, not that the reveal's entries route through it. If they do not, every damage figure for V5 is measuring the pre-V5 deck."
+    },
+    {
+      "question": "Is Wakening Sun's Avatar still worth a slot now that the deck's entries mostly arrive off the reveal and off Molten Echoes, both of which turn its ETB off ('if you cast it from your hand')?",
+      "settled_by": "goldfish",
+      "why_it_matters": "It is the deck's second sweeper on paper and a 7/7 vanilla in the engine's own lines, at {5}{W}{W}{W} against W 0.866 on-curve for a single pip \u2014 triple white is a different question."
     }
   ],
   "proposed_goldfish_edits": [
     {
-      "target": "Cost reducer or cheat-into-play drawn",
-      "change": "Split: 'Command-zone discount drawn' (Otepec Huntmaster, Urza's Incubator, Knight of the Stampede) and 'Dinosaur cheated into play' (Descendants' Path, Belbe's Portal, Monster Manual // Zoological Study, Huatli, Poet of Unity // Roar of the Fifth People).",
-      "why": "only the three reducers can make a command-zone cast cheaper; the other four put a Dinosaur onto the battlefield from hand or library and cannot touch Gishath. As declared the seven-card group reads 81.0% assembled, 64.1% by turn 6 (goldfish_metrics) for a question it half-answers."
+      "target": "Dinosaur payoff drawn (per-dino trigger engine)",
+      "change": "Add Purphoros, God of the Forge, Molten Echoes, Vaultborn Tyrant and Earthshaker Dreadmaw to the any_of group, and move Descendants' Path out of it into the cost-reducer/cheat group where it already appears.",
+      "why": "The group is the deck's per-entry payoff layer and it currently names six cards, none of which is either card V5 added to that layer. deck-audit already names Vaultborn Tyrant and Earthshaker Dreadmaw as doing an uncounted job on the card-advantage axis. Descendants' Path is a free-cast DOOR, not a payoff, and counting it in both places is what lets the payoff figure read high."
     },
     {
       "target": "The Gishath connection kit (haste or evasion for the 7/6)",
-      "change": "Rescope to size-and-evasion on the attack: Rogue's Passage, Kessig Wolf Run, Enlarge, Overwhelming Stampede. Move Otepec Huntmaster and Regisaur Alpha to a separate 'haste for the arriving board' group if wanted. Consider a 'second reveal' group: Boros Charm (double strike), Huatli's Saga chapter IV, Sunfrill Imitator (pending the stack).",
-      "why": "Gishath's own oracle line is 'Vigilance, trample, haste'; a haste grant does nothing for the 7/6 the label names. Enlarge is the deck's largest single reveal multiplier and is in no target."
+      "change": "Drop Regisaur Alpha, Otepec Huntmaster and Knight of the Stampede; keep Rogue's Passage, Kessig Wolf Run and Overwhelming Stampede, and add Kinjalli's Sunwing and Mirari's Wake.",
+      "why": "Gishath prints his own haste, so the two haste grants in the group cannot help him connect and Knight of the Stampede grants nothing at all toward it \u2014 three of the six members measure something the commander already has. What the group should measure is evasion and REVEAL WIDTH, since the number of cards revealed is his power; Mirari's Wake and Overwhelming Stampede both raise it."
     },
     {
-      "target": "Dinosaur payoff drawn (per-dino trigger engine)",
-      "change": "Add Vaultborn Tyrant and Earthshaker Dreadmaw.",
-      "why": "both are per-Dinosaur-entry triggers of exactly the kind the label describes; Dreadmaw is new to the list and Vaultborn has been in it since V3. Regisaur Alpha, which is in the group, is a haste grant plus one token."
+      "target": "Cost reducer or cheat-into-play drawn",
+      "change": "Split into two targets: 'Command-zone discount drawn' (Otepec Huntmaster, Urza's Incubator, Knight of the Stampede, and Hunting Velociraptor if the prowl question resolves yes) and 'Cheat-into-play door drawn' (Descendants' Path, Belbe's Portal, Monster Manual // Zoological Study, Huatli, Poet of Unity // Roar of the Fifth People, Savage Order, World War Hulk).",
+      "why": "Only the first three can reduce a command-zone cast, and the commander's cast turn is the deck's binding constraint (mean 7.278, 26.7% by turn 6). A seven-card group in which four members cannot touch the pinch reads 83.0% assembled and tells the pilot nothing about whether the discount is there. This edit was proposed against the V4 list and is still unapplied."
+    },
+    {
+      "target": "required",
+      "change": "Mark `required: true` on 'Ramp or fixing drawn' and on no other target.",
+      "why": "Among the DRAWN components this is the only one the deck cannot function without: everything else is a payoff that matters only after Gishath resolves and connects, and Gishath himself is in the command zone, so the true single point of failure cannot be a goldfish target at all. Two cautions the pilot should weigh before applying it: the group assembles in 91.0% of games, so the split is close to degenerate, and CLAUDE.md records that engine-lift figures computed from authored `required` flags were deleted on 2026-08-28 because three defensible declarations of one deck gave contradictory signs."
     },
     {
       "target": "Enrage engine drawn",
-      "change": "Either pair the converters with a damage source as a two-group target — any of 'Blasphemous Act', 'Zacama, Primal Calamity', 'Itzquinth, Firstborn of Gishath', 'Trumpeting Carnosaur', 'Triumphant Chomp' AND any of 'Trapjaw Tyrant', 'Wrathful Raptors' — or retire it.",
-      "why": "it now measures two converters at 56.7% assembled with no damage source declared. Enumerated from cards.json, the deck marks damage on its own Dinosaurs five ways plus a blocker: Blasphemous Act (the only one-sided sweeper), Zacama's {2}{R} activation (Forge V3 activated it 32 times), Itzquinth's ETB, Trumpeting Carnosaur's discard mode and Triumphant Chomp, each of the last four aimed at your own Trapjaw or Wrathful at a removal spell's price. As labelled it describes an engine the V4 list no longer runs."
+      "change": "Either add the damage SOURCES (Savage Stomp, Itzquinth, Firstborn of Gishath, Triumphant Chomp, Zacama, Primal Calamity) as a second any_of clause, or retire the target.",
+      "why": "As declared it names only the two converters, Trapjaw Tyrant and Wrathful Raptors, which convert nothing on their own \u2014 they need damage marked on your own Dinosaurs. V5 added a cheap repeatable source (Savage Stomp, {G} at a Dinosaur), which is the first time the residue has had an enabler that is not a board wipe. The target currently measures half a mechanism and reads 58.4%."
     }
-  ],
-  "decklist_sha256_prefix": "b394917f7b1b"
+  ]
 }

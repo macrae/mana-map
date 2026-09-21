@@ -1,0 +1,47 @@
+{
+  "id": "008",
+  "slug": "ur-dragon",
+  "deck": "The Ur-Dragon",
+  "title": "Hellkite Courser brings the commander — how many Dragons actually attack",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Dragon Tempest — an enchantment, on the battlefield since last turn",
+        "Ganax, Astral Hunter (5/3 flying Dragon) — attacked last turn, untapped, no summoning sickness"
+      ],
+      "opponents": [
+        { "life": 40, "board": ["no creatures", "five untapped lands"] },
+        { "life": 40, "board": ["one 2/2 ground creature, untapped", "six untapped lands"] },
+        { "life": 40, "board": ["no creatures", "four untapped lands"] }
+      ]
+    },
+    "hand": ["Sol Ring", "Atarka, World Render"],
+    "mana_available": "{0} — all seven lands were tapped to cast Hellkite Courser",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Hellkite Courser (6/5 flying Dragon creature spell)",
+        "note": "cast this turn for {4}{R}{R}; it has RESOLVED and is on the battlefield. Its enter trigger and Dragon Tempest's enter trigger are both on the stack below."
+      },
+      {
+        "pos": 1,
+        "object": "Dragon Tempest's triggered ability — 'Whenever a creature you control with flying enters, it gains haste until end of turn', triggered by Hellkite Courser"
+      },
+      {
+        "pos": 2,
+        "object": "Hellkite Courser's triggered ability — 'When this creature enters, you may put a commander you own from the command zone onto the battlefield. It gains haste. Return it to the command zone at the beginning of the next end step.'"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "The Ur-Dragon is in the COMMAND ZONE and has never been cast this game, so its commander tax is currently {0}. It costs {4}{W}{U}{B}{R}{G} and the pilot has no mana left.",
+      "assumptions": [
+        "It is the pilot's precombat main phase.",
+        "No player has responded to anything; all three opponents have untapped lands but the pilot is playing as though they may.",
+        "Dragon Tempest's second ability (damage when a Dragon enters) is deliberately out of scope for this question."
+      ],
+      "life_totals": "pilot 40, each opponent 40"
+    },
+    "question": "Resolve both triggers. On this turn, exactly which of the pilot's Dragons are legal attackers, how many cards does The Ur-Dragon's attack trigger draw, how many permanent cards may be put onto the battlefield from hand, and does putting The Ur-Dragon onto the battlefield this way change what it will cost to cast from the command zone later?"
+  }
+}
