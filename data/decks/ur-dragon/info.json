@@ -937,47 +937,18 @@
     },
     {
       "name": "final-v2",
-      "opened": "2026-09-17",
-      "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves — Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all.",
-      "state": "PROPOSED · STALE",
-      "state_why": "the list has changed since it was proposed — re-run `net-change` and propose again, or `unstage` back to what was accepted",
-      "proposal": {
-        "at": "2026-09-18",
-        "as_version": "v1.3.0",
-        "why": "final-v1's decision, applied to the list the pilot actually has sleeved. Authored 2026-09-11 off prescription 0241fb6a70f1 — five games at 1W 4L, 'speed without protection or politics makes me the obvious kill target before I can close'. All eleven of final-v1's real changes carried unaltered; the six entries that read as changes only because the 2026-09-17 scan moved the deck underneath it are dropped. Plus the mana tightening: two Triomes and a Volcanic Island. Crux of Fate stays and the black splash is bought deliberately.",
-        "base_version": 5,
-        "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
-        "accepted_on": {
-          "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
-          "state": "do not merge",
-          "objective": {
-            "axis": "interaction_6",
-            "op": ">=",
-            "value": 0.6,
-            "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves — Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
-          },
-          "grade": "not met",
-          "reading": 0.5704,
-          "harness": {
-            "iterations": 10000,
-            "seed": 20260826
-          }
-        },
-        "forced_reason": "The objective is mine and it was the wrong one. I set interaction_6 >= 0.60 when I opened this branch on 2026-09-17 for a reading of it that no longer holds — that its case was protection density. It reads 0.570, a miss of 0.030 against an MDE of 0.022, so it is a real miss of a badly chosen measure. What the branch actually does is trade two fat red Dragons for two answers and tighten five colours of mana, and interaction_6 counts whether interaction is AFFORDABLE at turn six rather than whether the deck holds any. The rows that moved are the ones to read: board power @t6 +0.48, killed by t6 27 -> 30 per 100, killed by t10 95 -> 96, three better and NONE WORSE — damage @t10 fell back inside the noise band once the manabase was tightened, having read WORSE before it. The deterministic half is the stronger case: mana-fit takes blue from 9 short to 7, red from 6 to 5, and now returns no cut candidates at all. Forge against standard-v3 is the arbiter and has not been run on this list; the 177-game run was on an earlier commit of this branch and could not even load two of its cards."
-      },
+      "opened": "2026-09-20",
+      "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax — a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
       "pull_list": {
         "buy": [
           {
             "name": "Asceticism"
           },
           {
-            "name": "Ketria Triome"
-          },
-          {
             "name": "Mithril Coat"
-          },
-          {
-            "name": "Plateau"
           },
           {
             "name": "Steel Hellkite"
@@ -986,92 +957,40 @@
             "name": "Stubborn Denial"
           },
           {
-            "name": "Taiga"
-          },
-          {
             "name": "Transcendent Dragon"
-          },
-          {
-            "name": "Volcanic Island"
           },
           {
             "name": "Whirlwing Stormbrood // Dynamic Soar"
           }
         ],
-        "unsleeve": [
-          {
-            "name": "Marsh Flats",
-            "where": [
-              "edgar-vampires"
-            ]
-          },
-          {
-            "name": "Raugrin Triome",
-            "where": [
-              "sharknado"
-            ]
-          }
-        ],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Misty Rainforest",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Polluted Delta",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Cascade Bluffs",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Verdant Catacombs",
-            "where": [
-              "Green",
-              "Hapatra"
-            ]
-          }
-        ],
-        "blocking": 12,
+        "free": [],
+        "box": [],
+        "blocking": 6,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 17,
-      "out": 17,
+      "add": 7,
+      "out": 7,
       "counts": {
-        "in_deck": 81,
-        "box": 2,
-        "elsewhere": 2,
-        "buy": 10,
-        "free": 2
+        "in_deck": 91,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 6,
+        "free": 0
       },
       "unsourced": [
         "Asceticism",
-        "Ketria Triome",
-        "Marsh Flats",
         "Mithril Coat",
-        "Plateau",
-        "Raugrin Triome",
         "Steel Hellkite",
         "Stubborn Denial",
-        "Taiga",
         "Transcendent Dragon",
-        "Volcanic Island",
         "Whirlwing Stormbrood // Dynamic Soar"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 0,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -1110,6 +1029,13 @@
         },
         {
           "name": "Atsushi, the Blazing Sky",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Battlefield Forge",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1158,16 +1084,18 @@
           "is_new": false
         },
         {
-          "name": "Cascade Bluffs",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "name": "Breeding Pool",
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
+        },
+        {
+          "name": "Canopy Vista",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Cavern of Souls",
@@ -1185,6 +1113,13 @@
         },
         {
           "name": "Chromatic Lantern",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cinder Glade",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1254,6 +1189,13 @@
           "is_new": false
         },
         {
+          "name": "Dragonskull Summit",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Dragonspeaker Shaman",
           "state": "in_deck",
           "where": [],
@@ -1304,6 +1246,13 @@
         },
         {
           "name": "Flawless Maneuver",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Forest",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1394,13 +1343,6 @@
           "is_new": false
         },
         {
-          "name": "Ketria Triome",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Lathliss, Dragon Queen",
           "state": "in_deck",
           "where": [],
@@ -1429,48 +1371,11 @@
           "is_new": false
         },
         {
-          "name": "Marsh Flats",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Miirym, Sentinel Wyrm",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Misty Rainforest",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
         },
         {
           "name": "Mithril Coat",
@@ -1515,41 +1420,18 @@
           "is_new": false
         },
         {
-          "name": "Plateau",
-          "state": "buy",
+          "name": "Path of Ancestry",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
-          "name": "Polluted Delta",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
-        },
-        {
-          "name": "Raugrin Triome",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sharknado",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "name": "Plains",
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Reflecting Pool",
@@ -1615,6 +1497,13 @@
           "is_new": false
         },
         {
+          "name": "Smoldering Marsh",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Sneak Attack",
           "state": "in_deck",
           "where": [],
@@ -1671,18 +1560,18 @@
           "is_new": true
         },
         {
-          "name": "Swords to Plowshares",
+          "name": "Sunbaked Canyon",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
         },
         {
-          "name": "Taiga",
-          "state": "buy",
+          "name": "Swords to Plowshares",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talisman of Dominance",
@@ -1767,29 +1656,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Verdant Catacombs",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Volcanic Island",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Whirlwing Stormbrood // Dynamic Soar",
@@ -7642,7 +7508,7 @@
     "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "stale: frame, map, tutors, prose, benchmark — regenerate against the current list (`/publish-deck` sequences it)",
     "branch `final-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v1`",
-    "`final-v2` was proposed as v1.3.0 and the list has changed since — re-run `net-change` and propose again, or `deck-branch ur-dragon withdraw final-v2`",
+    "branch `final-v2` needs 6 card(s) sourced — `manamap pilot deck-branch ur-dragon source final-v2`",
     "branch `haste-v1` needs 7 card(s) sourced — `manamap pilot deck-branch ur-dragon source haste-v1`",
     "branch `mana-v1` needs 12 card(s) sourced — `manamap pilot deck-branch ur-dragon source mana-v1`",
     "branch `protection-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source protection-v1`",

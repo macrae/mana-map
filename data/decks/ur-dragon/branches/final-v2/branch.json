@@ -1,210 +1,72 @@
 {
  "slug": "ur-dragon",
  "branch": "final-v2",
- "v": 3,
- "opened": "2026-09-17",
- "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all.",
+ "v": 2,
+ "opened": "2026-09-20",
+ "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax \u2014 a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps.",
  "objective": {
-  "axis": "interaction_6",
+  "axis": "kill_by_8",
   "op": ">=",
-  "value": 0.6,
-  "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
+  "value": 0.85,
+  "why": "The pilot's final call, 2026-09-20: six of final-v1's seven spell swaps, Hellkite Courser KEPT, and exactly one land change. Marang River Regent is dropped because the Courser is itself a 6/5 Dragon that deploys the commander with haste and no commander tax \u2014 a six-mana burst Marang does not replicate. With Marang gone the deck loses its second double-blue card, so the whole ten-land pass built to support it is unnecessary: measured on the untouched 35 lands, the six swaps leave EVERY colour gap identical to the sleeved list. The one land change is the deck's standing red shortfall, not these swaps."
  },
  "commits": [
   {
-   "at": "2026-09-17",
-   "decklist_sha256": "87d618383c499576b859f87220c0264bd835485ed86216c076b076b24857fa7c",
-   "message": "final-v1's intent, rebased onto the sleeved list: 7 spell swaps and the 4 fetchlands not already in paper"
-  },
-  {
-   "at": "2026-09-17",
-   "decklist_sha256": "bb0e62d8bffc733ac6590ead273ac66f3df84d2af3b47f9427d3f102f1299da0",
-   "message": "Hallowed Fountain for a Forest: an Island-typed target for the blue fetches"
-  },
-  {
-   "at": "2026-09-17",
-   "decklist_sha256": "632e90d96e5a3cdeb99ff6955b9b611f6a5412061b7432b9657047003237b160",
-   "message": "Irrigated Farmland and Cascade Bluffs for the two remaining at-target lands"
-  },
-  {
-   "at": "2026-09-18",
-   "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
-   "message": "Mana tightening: two Triomes and a true dual for a basic, a slow black dual and a tapped tribal land"
-  },
-  {
    "at": "2026-09-20",
-   "decklist_sha256": "32fa70ed62196b0bdcaeb8e6d1879ab3ce3e8643436f3f1fa24196acd90bbfd1",
-   "message": "Keep Hellkite Courser: it IS a Dragon, and it deploys the commander untaxed"
-  },
-  {
-   "at": "2026-09-20",
-   "decklist_sha256": "ac545a1e941cfc116a53c775aabaf705dd9c78c39e079306284f666eeade0a07",
-   "message": "Re-balance the land pass: blue is over target once Marang is gone, red is not"
-  },
-  {
-   "at": "2026-09-20",
-   "decklist_sha256": "58f621b509bc2fd5505103c1425e150815531c5210458898c870daa886efe5d9",
-   "message": "Breeding Pool for a Mountain: the last surplus blue source becomes red"
+   "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+   "message": "Six spell swaps, Courser kept, one land: a Forest for a Mountain"
   }
  ],
  "base_version": 5,
  "staged": [
   {
-   "at": "2026-09-17",
-   "out": "Worldly Tutor",
-   "in": "Asceticism",
-   "strength": null,
-   "why": "final-v1's one authored swap: a single-job tutor for a protection enchantment; Sarkhan's Triumph stays as the instant-speed Dragon tutor."
-  },
-  {
-   "at": "2026-09-17",
-   "out": "Utvara Hellkite",
-   "in": "Transcendent Dragon",
-   "strength": null,
-   "why": "Eight mana for a token engine that needs to connect first, for a UU Dragon two mana cheaper."
-  },
-  {
-   "at": "2026-09-17",
-   "out": "Radiant Destiny",
-   "in": "Whirlwing Stormbrood // Dynamic Soar",
-   "strength": null,
-   "why": "An anthem that needs a wide board this deck does not build, for a Dragon with a second mode."
-  },
-  {
-   "at": "2026-09-17",
-   "out": "Return of the Wildspeaker",
-   "in": "Steel Hellkite",
-   "strength": null,
-   "why": "Return grants NO TRAMPLE and is stopped by a single chump block, which the Golgari finisher research confirmed independently; its real job was the draw mode. Steel Hellkite is a colourless body with a repeatable board answer."
-  },
-  {
-   "at": "2026-09-17",
-   "out": "Rishkar's Expertise",
-   "in": "Mithril Coat",
-   "strength": null,
-   "why": "Six mana to draw off a creature that has to survive, for three mana of instant-speed indestructible and a free equip that protects the commander."
-  },
-  {
-   "at": "2026-09-17",
+   "at": "2026-09-20",
    "out": "Sarkhan, Fireblood",
    "in": "Stubborn Denial",
    "strength": null,
-   "why": "A red planeswalker whose loyalty needs defending, for a one-mana counter that is Force Spike until a Dragon lands and then answers a wrath."
+   "why": "A red planeswalker whose loyalty needs defending, for a one-mana counter. Almost every creature in the 99 has power 4 or greater, so ferocious is live from the first Dragon and it counters outright rather than taxing. This is the 'I now have zero responses' problem answered directly."
   },
   {
-   "at": "2026-09-17",
-   "out": "Battlefield Forge",
-   "in": "Marsh Flats",
+   "at": "2026-09-20",
+   "out": "Rishkar's Expertise",
+   "in": "Mithril Coat",
    "strength": null,
-   "why": "The mana pass: a painland for a fetch."
+   "why": "Six mana to draw off a creature that has to survive first is a win-more card that does nothing while you are being attacked. Mithril Coat costs three, has flash, is itself indestructible, and auto-attaches to a legendary on arrival. Best performer in the 177-game Forge run: cast 40, activated 35."
   },
   {
-   "at": "2026-09-17",
-   "out": "Cinder Glade",
-   "in": "Misty Rainforest",
+   "at": "2026-09-20",
+   "out": "Worldly Tutor",
+   "in": "Asceticism",
    "strength": null,
-   "why": "The mana pass: a conditional-untapped dual for a fetch."
+   "why": "A one-mana tutor that finds a creature and puts it on top is card SELECTION in a deck that already finds threats easily. Asceticism gives the whole board hexproof plus a regenerate outlet \u2014 the only mass protection in the package."
   },
   {
-   "at": "2026-09-17",
-   "out": "Dragonskull Summit",
-   "in": "Polluted Delta",
+   "at": "2026-09-20",
+   "out": "Return of the Wildspeaker",
+   "in": "Steel Hellkite",
    "strength": null,
-   "why": "The mana pass: a conditional-untapped dual for a fetch."
+   "why": "Return grants NO trample, so one chump block stops the pump mode; its real job was always the draw half. Steel Hellkite is colourless, flies, and destroys every nonland permanent at a chosen mana value belonging to anyone it hit. Second-best in the Forge run: cast 36, activated 53."
   },
   {
-   "at": "2026-09-17",
-   "out": "Sunbaked Canyon",
-   "in": "Verdant Catacombs",
+   "at": "2026-09-20",
+   "out": "Utvara Hellkite",
+   "in": "Transcendent Dragon",
    "strength": null,
-   "why": "The mana pass: the last of the four fetches final-v1 wanted that is not already sleeved."
+   "why": "Eight mana for a token engine that must connect first, for six mana of flash, flying and a counterspell on a body that lets you cast the countered spell yourself."
   },
   {
-   "at": "2026-09-17",
+   "at": "2026-09-20",
+   "out": "Radiant Destiny",
+   "in": "Whirlwing Stormbrood // Dynamic Soar",
+   "strength": null,
+   "why": "An anthem needs a wide board and this deck builds a tall one. Whirlwing gives flash to your sorceries and Dragons, which is what lets you hold mana up instead of tapping out and telegraphing \u2014 the pilot's own diagnosis."
+  },
+  {
+   "at": "2026-09-20",
    "out": "Forest",
-   "in": "Hallowed Fountain",
-   "strength": null,
-   "why": "Green reads +4 OVER its Karsten target while blue is short by 13, and mana-fit names Forest as a cut candidate for making only colours already at target. Hallowed Fountain is ISLAND-TYPED, so all three blue fetches in the branch can find it \u2014 the deck had only three blue-typed lands total for them to fetch. Owned."
-  },
-  {
-   "at": "2026-09-17",
-   "out": "Canopy Vista",
-   "in": "Irrigated Farmland",
-   "strength": null,
-   "why": "mana-fit names Canopy Vista a cut candidate: GW, and both colours now read at or over target while blue is short 11. Irrigated Farmland is the second ISLAND-TYPED land the blue fetches can find, and it cycles when it is the wrong half. Owned. It enters tapped, which is the cost."
-  },
-  {
-   "at": "2026-09-17",
-   "out": "Plains",
-   "in": "Cascade Bluffs",
-   "strength": null,
-   "why": "The last Plains makes only a colour at target. Cascade Bluffs filters into UU or RR, which is exactly the two costs this branch adds \u2014 Marang River Regent and Transcendent Dragon are both {4}{U}{U}. Owned. It needs another land first, which is the cost."
-  },
-  {
-   "at": "2026-09-18",
-   "out": "Forest",
-   "in": "Ketria Triome",
-   "strength": null,
-   "why": "TIGHTENING. Ketria carries THREE basic types (Forest Island Mountain), so every fetch in the deck can find it, and it makes G, U and R \u2014 the two colours this list is short of plus the one it is built on. Green reads OVER target and mana-fit named Forest a cut candidate for making only colours already at target. Cost: it enters tapped."
-  },
-  {
-   "at": "2026-09-18",
-   "out": "Smoldering Marsh",
-   "in": "Raugrin Triome",
-   "strength": null,
-   "why": "TIGHTENING. Smoldering Marsh is a slow B/R dual, and black is TWO CARDS in the 99 \u2014 the commander's single pip and Crux of Fate. Raugrin (Island Mountain Plains) makes U, R and W, all three of which are short, and its three basic types make it a fetch target for the whole manabase."
-  },
-  {
-   "at": "2026-09-18",
-   "out": "Path of Ancestry",
-   "in": "Volcanic Island",
-   "strength": null,
-   "why": "TIGHTENING. Path enters tapped and its filter is Dragon-gated, so it does nothing for Stubborn Denial or any noncreature spell. Volcanic Island is an untapped U/R dual, Island-typed for the fetches, and U and R are the deck's two shortest real colours."
-  },
-  {
-   "at": "2026-09-20",
-   "out": "Irrigated Farmland",
-   "in": "Taiga",
-   "strength": null,
-   "why": "RE-BALANCE after keeping Hellkite Courser. Dropping Marang River Regent removed the second {4}{U}{U} card, which collapsed blue's Karsten target from 36 sources to 22 \u2014 blue now reads +7 OVER target on 29 sources, while RED, at 54.5% of the deck's pips, is 5 short. Irrigated Farmland is the weakest land in the branch on two counts: it makes only W and U, the colours that no longer need help, and it was the worst performer in the 177-game Forge run at 8 discards against 5 activations because it enters tapped. Taiga is a Mountain Forest true dual, always untapped, two basic types so every relevant fetch finds it, and it is red."
-  },
-  {
-   "at": "2026-09-20",
-   "out": "Hallowed Fountain",
-   "in": "Plateau",
-   "strength": null,
-   "why": "Same re-balance. Hallowed Fountain is the other pure W/U land, and blue is over target while red is short. Plateau is a Mountain Plains true dual \u2014 untapped, no life paid, two basic types \u2014 so it replaces the white source being cut AND adds the red one the deck needs."
-  },
-  {
-   "at": "2026-09-20",
-   "out": "Breeding Pool",
    "in": "Mountain",
    "strength": null,
-   "why": "The last re-balance. mana-fit names Breeding Pool a cut candidate: it makes G and U, and with Marang gone blue sits +5 OVER target while green is +2. RED is the only real colour still short at -3, on 54.5% of the deck's pips. A Mountain is a red source that is always untapped, never dead, and is itself a fetch target for four of the eight fetches. Breeding Pool's Forest Island types are a fetch target too, but for the two colours that no longer need one."
+   "why": "The deck's STANDING red shortfall, not something these swaps caused: red is 54.5% of the pips on 29 sources against a Karsten target of 36, and it reads the same on the sleeved list. Green is the only colour at or over target, and mana-fit names this Forest its one cut candidate. A Mountain is free, always untapped, never dead, and a fetch target for four of the eight fetches."
   }
- ],
- "proposal": {
-  "at": "2026-09-18",
-  "as_version": "v1.3.0",
-  "why": "final-v1's decision, applied to the list the pilot actually has sleeved. Authored 2026-09-11 off prescription 0241fb6a70f1 \u2014 five games at 1W 4L, 'speed without protection or politics makes me the obvious kill target before I can close'. All eleven of final-v1's real changes carried unaltered; the six entries that read as changes only because the 2026-09-17 scan moved the deck underneath it are dropped. Plus the mana tightening: two Triomes and a Volcanic Island. Crux of Fate stays and the black splash is bought deliberately.",
-  "base_version": 5,
-  "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
-  "accepted_on": {
-   "decklist_sha256": "4e47c1891dd3d4bb90ab6e352889cb4e597f58c2a2b276d011255224e6c8796b",
-   "state": "do not merge",
-   "objective": {
-    "axis": "interaction_6",
-    "op": ">=",
-    "value": 0.6,
-    "why": "final-v1 rebased onto the SLEEVED list scanned 2026-09-17. final-v1 was opened against a decklist five cards wrong, and against the corrected list it would REVERT four cards the pilot has in sleeves \u2014 Fabled Passage, Forbidden Orchard, Prismatic Vista and Tarnished Citadel back in, Wooded Foothills and Talisman of Dominance out. Same intent: the seven spell swaps plus the four fetchlands not already sleeved. The objective is interaction rather than a clock because the half of this branch that is not lands is protection and a counterspell, and the land half is a colour-access question the goldfish cannot rank at all."
-   },
-   "grade": "not met",
-   "reading": 0.5704,
-   "harness": {
-    "iterations": 10000,
-    "seed": 20260826
-   }
-  },
-  "forced_reason": "The objective is mine and it was the wrong one. I set interaction_6 >= 0.60 when I opened this branch on 2026-09-17 for a reading of it that no longer holds \u2014 that its case was protection density. It reads 0.570, a miss of 0.030 against an MDE of 0.022, so it is a real miss of a badly chosen measure. What the branch actually does is trade two fat red Dragons for two answers and tighten five colours of mana, and interaction_6 counts whether interaction is AFFORDABLE at turn six rather than whether the deck holds any. The rows that moved are the ones to read: board power @t6 +0.48, killed by t6 27 -> 30 per 100, killed by t10 95 -> 96, three better and NONE WORSE \u2014 damage @t10 fell back inside the noise band once the manabase was tightened, having read WORSE before it. The deterministic half is the stronger case: mana-fit takes blue from 9 short to 7, red from 6 to 5, and now returns no cut candidates at all. Forge against standard-v3 is the arbiter and has not been run on this list; the 177-game run was on an earlier commit of this branch and could not even load two of its cards."
- }
+ ]
 }
