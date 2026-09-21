@@ -8,15 +8,36 @@
     "board": {
       "you": [
         "Dragon Tempest — an enchantment, on the battlefield since last turn",
-        "Ganax, Astral Hunter (5/3 flying Dragon) — attacked last turn, untapped, no summoning sickness"
+        "Ganax, Astral Hunter (3/4 flying Dragon) — attacked last turn, untapped, no summoning sickness"
       ],
       "opponents": [
-        { "life": 40, "board": ["no creatures", "five untapped lands"] },
-        { "life": 40, "board": ["one 2/2 ground creature, untapped", "six untapped lands"] },
-        { "life": 40, "board": ["no creatures", "four untapped lands"] }
+        {
+          "life": 40,
+          "board": [
+            "no creatures",
+            "five untapped lands"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "one 2/2 ground creature, untapped",
+            "six untapped lands"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "no creatures",
+            "four untapped lands"
+          ]
+        }
       ]
     },
-    "hand": ["Sol Ring", "Atarka, World Render"],
+    "hand": [
+      "Sol Ring",
+      "Atarka, World Render"
+    ],
     "mana_available": "{0} — all seven lands were tapped to cast Hellkite Courser",
     "stack": [
       {
@@ -38,10 +59,450 @@
       "assumptions": [
         "It is the pilot's precombat main phase.",
         "No player has responded to anything; all three opponents have untapped lands but the pilot is playing as though they may.",
-        "Dragon Tempest's second ability (damage when a Dragon enters) is deliberately out of scope for this question."
+        "Dragon Tempest's second ability (damage when a Dragon enters) is deliberately out of scope for this question.",
+        "Ganax's own trigger — 'Whenever Ganax or another Dragon you control enters, create a Treasure token' — fires twice in this scenario (Hellkite Courser and The Ur-Dragon). It is deliberately out of scope for the question, which is about attackers, draws and commander tax."
       ],
-      "life_totals": "pilot 40, each opponent 40"
+      "life_totals": "pilot 40, each opponent 40",
+      "authoring_corrections": "2026-09-20: Ganax was first written as 5/3; cards.json says 3/4. Corrected. The resolver flagged it and confirmed the answer does not depend on it — no step turns on Ganax's power or toughness."
     },
     "question": "Resolve both triggers. On this turn, exactly which of the pilot's Dragons are legal attackers, how many cards does The Ur-Dragon's attack trigger draw, how many permanent cards may be put onto the battlefield from hand, and does putting The Ur-Dragon onto the battlefield this way change what it will cost to cast from the command zone later?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Fix the board before anything resolves. Hellkite Courser's spell (pos 0) has already resolved, so the Courser is a 6/5 flying Dragon on the battlefield, untapped, alongside Ganax, Astral Hunter and Dragon Tempest. The Ur-Dragon is in the command zone, never cast this game.",
+        "effect": "Two creature bodies are on the battlefield entering the resolution (Ganax + Hellkite Courser), not one: `scenario-facts` reports only Ganax under your_board.creature_bodies because the scenario's board.you block omits the Courser, which the stack's pos-0 note places on the battlefield. The Courser entered untapped, so tapping is not what stops it attacking - summoning sickness is.",
+        "citations": [
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Enumerate every ability the Courser's entry triggered, not just the two the scenario lists. The Courser entering matched: (a) its own enters trigger, (b) Dragon Tempest's first ability (a creature you control with flying entered), (c) Dragon Tempest's second ability (a Dragon you control entered - declared out of scope by the scenario), and (d) Ganax, Astral Hunter's 'Whenever Ganax or another Dragon you control enters, create a Treasure token.'",
+        "effect": "FINDING: Ganax's Treasure trigger is missing from the scenario's stack block. It is a real fourth trigger on this board and it resolves into one Treasure token. It changes none of the four answers, but it is a free mana the written scenario does not account for. Dragon Tempest's own official ruling confirms both of its abilities trigger off one flying Dragon.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Order the simultaneous triggers. All of them are controlled by the pilot, so the pilot chooses the order in which they go on the stack; the last one placed is on top and resolves first.",
+        "effect": "FINDING - a disagreement in the inputs: the scenario file puts Dragon Tempest's trigger at pos 1 and the Courser's at pos 2, which under the pos-0-is-the-bottom convention makes the COURSER's trigger the top of the stack, while the spawning brief states Dragon Tempest's trigger is above the Courser's. The disagreement is recorded rather than resolved, because the outcome is order-independent: whichever resolves first, the Courser ends up with haste from Dragon Tempest and The Ur-Dragon ends up with haste from the Courser's own effect. Steps 4-6 resolve the file's order.",
+        "citations": [
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          },
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Resolve Hellkite Courser's enters trigger (top of the stack as the file writes it). The pilot takes the optional 'may': The Ur-Dragon is put from the command zone onto the battlefield. 'It gains haste' - 'it' is the commander just put onto the battlefield, the object the effect itself named.",
+        "effect": "The Ur-Dragon is on the battlefield as a 10/10 flying Legendary Creature - Dragon Avatar, untapped, with haste. The same resolution creates a delayed triggered ability that will return it to the command zone at the beginning of the next end step - this turn's end step, i.e. after combat.",
+        "citations": [
+          {
+            "rule": "608.2k",
+            "quote": "If an ability’s effect refers to a specific untargeted object that has been previously referred to by that ability’s cost or trigger condition, it still affects that object even if the object has changed characteristics."
+          },
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          },
+          {
+            "rule": "603.7",
+            "quote": "An effect may create a delayed triggered ability that can do something at a later time."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "The Ur-Dragon entering is itself an enters event, checked against every permanent on the battlefield. It has flying and it is a Dragon, so it triggers Dragon Tempest a second time (haste), Dragon Tempest's damage ability a second time (out of scope), and Ganax a second time (a second Treasure token). These go on the stack above the still-unresolved first Dragon Tempest trigger.",
+        "effect": "The Ur-Dragon receives a second, redundant instance of haste. It does not need it - the Courser's own effect already granted haste in step 4 - and this is the precise point the pilot's mental model blurs: Dragon Tempest is what gives the COURSER haste, while the commander's haste comes from the Courser's text.",
+        "citations": [
+          {
+            "rule": "603.6a",
+            "quote": "Each time an event puts one or more permanents onto the battlefield, all permanents on the battlefield (including the newcomers) are checked for any enters-the-battlefield triggers that match the event."
+          },
+          {
+            "rule": "702.10d",
+            "quote": "Multiple instances of haste on the same creature are redundant."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Resolve Dragon Tempest's first trigger, the one the Courser's entry caused. Its effect reads 'it gains haste until end of turn'; 'it' is the creature with flying that entered and triggered it - Hellkite Courser, and only Hellkite Courser.",
+        "effect": "Hellkite Courser has haste until end of turn. This trigger is NOT a mass grant: it gives haste to one creature, the one that entered. Ganax needs nothing from it and The Ur-Dragon did not get its haste from this trigger.",
+        "citations": [
+          {
+            "rule": "608.2k",
+            "quote": "If an ability’s effect refers to a specific untargeted object that has been previously referred to by that ability’s cost or trigger condition, it still affects that object even if the object has changed characteristics."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The stack empties. State-based actions are checked each time a player would receive priority and none apply - no creature has lethal damage, no legend rule conflict (one Ur-Dragon, one Ganax), no player at 0 life. The active player receives priority after each resolution, so every opponent with untapped lands has a response window between each of these triggers before attackers are declared.",
+        "effect": "Board before combat: Ganax (3/4 flier per the deck's own cards.json - the scenario's board text says '5/3', a second input disagreement worth correcting in the scenario file), Hellkite Courser 6/5 with haste, The Ur-Dragon 10/10 with haste, Dragon Tempest, two Treasure tokens. Hand: Sol Ring, Atarka, World Render. Mana pool empty.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event"
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "QUESTION 1 - declare attackers. The active player chooses attackers from creatures they control that are untapped and either have haste or have been controlled since the turn began. Ganax qualifies on continuous control (it attacked last turn and is untapped). Hellkite Courser entered this turn and qualifies only on the haste granted in step 6. The Ur-Dragon entered this turn and qualifies only on the haste granted in step 4.",
+        "effect": "EXACTLY THREE Dragons are legal attackers: Ganax, Astral Hunter; Hellkite Courser; The Ur-Dragon. Atarka, World Render is in hand and is not a permanent, so it cannot be declared - and nothing this turn can make it one in time (step 10). The pilot's belief that the line lets him 'attack with both Dragons' is the wrong count in the safe direction: taking the commander off the Courser trigger makes it three attackers, not two. The enumerated set of the pilot's creatures is exactly {Ganax, Hellkite Courser, The Ur-Dragon} - there is no fourth body on this board.",
+        "citations": [
+          {
+            "rule": "508.1a",
+            "quote": "The active player chooses which creatures that they control, if any, will attack."
+          },
+          {
+            "rule": "508.1a",
+            "quote": "The chosen creatures must be untapped, they can’t also be battles, and each one must either have haste or have been controlled by the active player continuously since the turn began."
+          },
+          {
+            "rule": "702.10b",
+            "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "QUESTION 2 - The Ur-Dragon's attack trigger. 'Whenever one or more Dragons you control attack, draw that many cards, then you may put a permanent card from your hand onto the battlefield.' All three attackers are Dragons (The Ur-Dragon is a Dragon Avatar, so it counts itself). The ability triggers on the declaration and goes on the stack before the active player gets priority in the declare attackers step.",
+        "effect": "THREE CARDS. 'That many' is the number of Dragons that were declared as attackers - the set the trigger condition named - so it is fixed at three even if one of them leaves the battlefield before the trigger resolves. WotC's official ruling on The Ur-Dragon agrees: 'You draw one card for each Dragon you controlled that attacked, even if some of them left the battlefield before The Ur-Dragon’s triggered ability resolves.'",
+        "citations": [
+          {
+            "rule": "508.3a",
+            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+          },
+          {
+            "rule": "508.2b",
+            "quote": "Any abilities that triggered on attackers being declared or that triggered during the process described in rules 508.1 are put onto the stack before the active player gets priority"
+          },
+          {
+            "rule": "608.2k",
+            "quote": "If an ability’s effect refers to a specific untargeted object that has been previously referred to by that ability’s cost or trigger condition, it still affects that object even if the object has changed characteristics."
+          },
+          {
+            "rule": "121.1",
+            "quote": "A player draws a card by putting the top card of their library into their hand."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "QUESTION 3 - how many permanent cards may be put onto the battlefield from hand. The same trigger continues 'then you may put A permanent card from your hand onto the battlefield' - singular, once per resolution, regardless of how many Dragons attacked.",
+        "effect": "EXACTLY ONE, and it is optional. Both cards in hand are permanent cards and are therefore legal choices: Sol Ring (artifact) and Atarka, World Render (creature). WotC's ruling agrees: 'You may only put one permanent card from your hand onto the battlefield, no matter how many Dragons you attacked with.' Putting Atarka in does NOT add a fourth attacker or a double-strike grant: attackers were already declared, so Atarka is never declared as an attacker and its own 'Whenever a Dragon you control attacks' ability cannot trigger on a declaration that has already happened. Sol Ring is the live choice if the pilot wants mana; Atarka is a body for next turn.",
+        "citations": [
+          {
+            "rule": "110.4a",
+            "quote": "it means an artifact, battle, creature, enchantment, land, or planeswalker card"
+          },
+          {
+            "rule": "508.3a",
+            "quote": "An ability that reads “Whenever [a creature] attacks, . . .” triggers if that creature is declared as an attacker."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "508.1a",
+            "quote": "The active player chooses which creatures that they control, if any, will attack."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "QUESTION 4 - the later cost to cast The Ur-Dragon from the command zone. The commander tax counts the times its owner has CAST it from the command zone. Hellkite Courser put it onto the battlefield; it was never moved to the stack and no cost was paid, so it was never cast.",
+        "effect": "NO CHANGE. When The Ur-Dragon returns to the command zone at the beginning of this turn's end step (the delayed trigger from step 4) and the pilot later casts it, it still costs {4}{W}{U}{B}{R}{G} with no additional {2}. Neither the put-onto-the-battlefield nor the return is a cast. WotC's ruling on Hellkite Courser agrees: 'Putting your commander onto the battlefield this way isn’t the same as casting that commander. The \"commander tax\" won’t increase.' Eminence does not discount it either - it reduces 'other Dragon spells', never The Ur-Dragon itself.",
+        "citations": [
+          {
+            "rule": "903.8",
+            "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+          },
+          {
+            "rule": "601.2a",
+            "quote": "To propose the casting of a spell, a player first moves that card (or that copy of a card) from where it is to the stack."
+          },
+          {
+            "rule": "glossary:cast",
+            "quote": "To take a card from where it is (usually the hand), put it on the stack, and pay its costs"
+          },
+          {
+            "rule": "603.7",
+            "quote": "An effect may create a delayed triggered ability that can do something at a later time."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Three Dragons attack, not two: Ganax, Astral Hunter (continuous control since before the turn), Hellkite Courser (haste from Dragon Tempest's first trigger, which grants haste ONLY to the flier that entered) and The Ur-Dragon (haste from Hellkite Courser's own effect, plus a second redundant instance from Dragon Tempest when the 10/10 flier enters). The Ur-Dragon's attack trigger draws THREE cards - one per attacking Dragon, fixed at declaration - and then allows EXACTLY ONE permanent card from hand onto the battlefield (Sol Ring or Atarka, World Render; whichever is chosen enters after attackers are declared, so it cannot attack and its own attack-trigger cannot fire). Putting the commander onto the battlefield is not casting it, so the commander tax does not increase: a later cast from the command zone still costs {4}{W}{U}{B}{R}{G}. The delayed trigger returns The Ur-Dragon to the command zone at this turn's end step, after combat. Two inputs are wrong or incomplete: the scenario omits Ganax's Treasure trigger (it fires twice here, for two Treasures) and lists Ganax as 5/3 where the deck's cards.json has 3/4; and the stack's pos ordering contradicts the brief's, though the answer is order-independent.",
+      "you": {
+        "battlefield": "Ganax, Astral Hunter (3/4 flier, attacking), Hellkite Courser (6/5 flier with haste, attacking), The Ur-Dragon (10/10 flier with haste, attacking), Dragon Tempest, 2 Treasure tokens (from Ganax's two triggers, which the scenario's stack block omits), plus at most one permanent put in from hand by the attack trigger",
+        "hand": "3 cards drawn, minus the one permanent card optionally put onto the battlefield; Sol Ring and Atarka, World Render were the starting two",
+        "life": "40, unchanged",
+        "command_zone": "The Ur-Dragon returns here at the beginning of this turn's end step; next cast still {4}{W}{U}{B}{R}{G}, tax unchanged at {0} additional",
+        "attack_power_available": "3 + 6 + 10 = 19 across three fliers, before Dragon Tempest's out-of-scope damage triggers"
+      },
+      "opponents": [
+        {
+          "player": "opponent 1",
+          "life": 40,
+          "status": "no creatures, five untapped lands - cannot block a flier"
+        },
+        {
+          "player": "opponent 2",
+          "life": 40,
+          "status": "one 2/2 ground creature - cannot block any of the three fliers"
+        },
+        {
+          "player": "opponent 3",
+          "life": 40,
+          "status": "no creatures, four untapped lands - cannot block a flier"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Dragon Tempest's second ability (X damage per Dragon entering) was declared out of scope by the scenario, but it triggers twice here (Courser, then The Ur-Dragon) and the official Dragon Tempest ruling says X is counted on resolution. That is a separate damage-arithmetic question and is DECLINED here to keep this resolution in one domain.",
+          "settled_by": "resolve-stack"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "fail",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "Full text: permanents enter untapped unless a spell or ability says otherwise. Establishes the Courser and later the Ur-Dragon enter untapped."
+      },
+      {
+        "step": 1,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Full rule is the summoning-sickness rule and its second sentence is exactly the attack restriction claimed. Correctly identifies sickness, not tapping, as what would stop the Courser."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "General trigger rule; supports the claim that all matching abilities trigger automatically."
+      },
+      {
+        "step": 2,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "Full text: 'all permanents on the battlefield (including the newcomers) are checked'. Establishes Ganax's Treasure trigger and both Dragon Tempest abilities fire off the Courser's entry. Oracle text in cards.json confirms Ganax reads 'Whenever Ganax or another Dragon you control enters, create a Treasure token', so the step's FINDING that the scenario's stack block omits it is correct."
+      },
+      {
+        "step": 3,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Quote is the first-part clause of the two-part process; the pilot controls all four triggers and chooses their order."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Supports LIFO ordering. Order-independence of the outcome verified: either sequence ends with haste on the Courser from Dragon Tempest and haste on the commander from the Courser."
+      },
+      {
+        "step": 4,
+        "rule": "608.2k",
+        "status": "unsupported",
+        "note": "THE LOAD-BEARING CITATION, AND IT POINTS THE WRONG WAY. 608.2k in full: 'If an ability's effect refers to a specific untargeted object that has been PREVIOUSLY REFERRED TO BY THAT ABILITY'S COST OR TRIGGER CONDITION, it still affects that object even if the object has changed characteristics.' Hellkite Courser's trigger condition is 'When this creature enters' - the object it refers to is HELLKITE COURSER, not the commander. The commander is introduced by the EFFECT ('you may put a commander you own from the command zone onto the battlefield'), not by the trigger condition, so 608.2k does not reach it; applied literally the rule would send 'It gains haste' back to the Courser, which is the exact misreading this artifact exists to prevent. The CONCLUSION is right - 'It gains haste. Return it to the command zone' is one pronoun chain whose antecedent is the commander, corroborated by the official Hellkite Courser ruling (2020-11-10): 'You'll return the commander to the command zone only if it's still on the battlefield as the delayed triggered ability resolves. If it's in another zone, it will stay where it is.' But the ruling is an input, not a citation, and no cited CR rule establishes the grant. Cite the effect's own sentence structure and drop 608.2k, or the artifact's most important claim rests on a rule that argues against it."
+      },
+      {
+        "step": 4,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "The Ur-Dragon is put onto the battlefield untapped; nothing in the Courser's text says otherwise."
+      },
+      {
+        "step": 4,
+        "rule": "603.7",
+        "status": "supported",
+        "note": "'Return it to the command zone at the beginning of the next end step' is a delayed triggered ability created on resolution, exactly as 603.7 describes."
+      },
+      {
+        "step": 5,
+        "rule": "603.6a",
+        "status": "supported",
+        "note": "The Ur-Dragon's entry is a second enters event checked against every permanent; it has flying and is a Dragon (type line 'Legendary Creature - Dragon Avatar'), so Dragon Tempest and Ganax each trigger again."
+      },
+      {
+        "step": 5,
+        "rule": "702.10d",
+        "status": "supported",
+        "note": "Verbatim and exactly on point: the second haste instance is redundant."
+      },
+      {
+        "step": 6,
+        "rule": "608.2k",
+        "status": "supported",
+        "note": "HERE the rule genuinely applies, in contrast to step 4. Dragon Tempest's trigger condition is 'Whenever a creature you control with flying enters' and its effect's 'it' is that same untargeted object, so 608.2k establishes the grant lands on that one creature - Hellkite Courser - and is not a mass grant. cards.json oracle text confirms the wording. This is the step Claim 1 actually stands on, and it stands."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Correctly states SBAs are checked whenever a player would receive priority; none apply on this board (no lethal damage, no duplicate legends, no player at 0)."
+      },
+      {
+        "step": 7,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Establishes the active player receives priority after each resolution. The further claim that each OPPONENT gets a response window follows from 117.4 (all players pass in succession), which is not cited; the inference is sound but under-cited."
+      },
+      {
+        "step": 8,
+        "rule": "508.1a",
+        "status": "supported",
+        "note": "Both quotes are verbatim from one rule and together establish the chooser and the untapped/haste-or-continuous-control test. Enumerated the pilot's creatures from the board plus the pos-0 note: {Ganax, Hellkite Courser, The Ur-Dragon} is the complete set, so the step's superlative ('no fourth body') holds."
+      },
+      {
+        "step": 8,
+        "rule": "702.10b",
+        "status": "supported",
+        "note": "Haste lets a creature attack without continuous control; carries the Courser and the Ur-Dragon."
+      },
+      {
+        "step": 8,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "The restriction haste is being read against. THREE legal attackers is the correct answer."
+      },
+      {
+        "step": 9,
+        "rule": "508.3a",
+        "status": "supported",
+        "note": "'Whenever one or more Dragons you control attack' triggers on declaration; the Ur-Dragon is a Dragon Avatar and counts itself. Three attacking Dragons."
+      },
+      {
+        "step": 9,
+        "rule": "508.2b",
+        "status": "supported",
+        "note": "Verbatim; the trigger goes on the stack before the active player gets priority in the declare attackers step."
+      },
+      {
+        "step": 9,
+        "rule": "608.2k",
+        "status": "misquoted",
+        "note": "Accurate text used to imply something the rule does not say. The claim is that the count is 'fixed at three EVEN IF ONE OF THEM LEAVES THE BATTLEFIELD before the trigger resolves'. 608.2k's operative clause is 'even if the object has CHANGED CHARACTERISTICS', and its own Wall of Tears example is a permanent that stops being a creature while remaining on the battlefield. A ZONE CHANGE is a different question, governed by last-known-information machinery, not by 608.2k. The answer THREE is correct and matches the official Ur-Dragon ruling (2017-08-25): 'You draw one card for each Dragon you controlled that attacked, even if some of them left the battlefield before The Ur-Dragon's triggered ability resolves.' But a ruling is an input, not a citation, so as cited the persistence-across-zone-change claim is unestablished. Narrow the claim to the declaration-fixed count (508.1a/508.2b already cited) or cite the right rule."
+      },
+      {
+        "step": 9,
+        "rule": "121.1",
+        "status": "supported",
+        "note": "Definition of drawing a card."
+      },
+      {
+        "step": 10,
+        "rule": "110.4a",
+        "status": "supported",
+        "note": "Verbatim definition of 'permanent card'. Verified against cards.json: Sol Ring is an Artifact and Atarka, World Render is a Legendary Creature, so both are legal choices as the step says. EXACTLY ONE is correct and matches the official ruling (2017-08-25), though the artifact quotes it truncated - the ruling ends '...no matter how many Dragons you attacked with OR HOW MANY PLAYERS THEY ATTACKED' and the artifact drops the final clause without an ellipsis."
+      },
+      {
+        "step": 10,
+        "rule": "508.3a",
+        "status": "unsupported",
+        "note": "Read in full, this rule does not establish the claim it is cited for, and read carelessly it argues against it. The claim is that a permanent put onto the battlefield by the trigger 'cannot trigger on a declaration that has already happened'. Atarka's ability is 'Whenever A DRAGON YOU CONTROL attacks, it gains double strike' - not 'whenever Atarka attacks' - and the three Dragons WERE declared as attackers, so 508.3a's first sentence ('triggers if that creature is declared as an attacker') is satisfied for the creatures named. 508.3a's only exclusionary sentence covers a creature 'put onto the battlefield ATTACKING', which is not this case: Atarka enters after declaration, not attacking. The real reason is that the ability did not exist on the battlefield when the declaration event occurred (603.10; see the missing-step finding), and the official Ur-Dragon ruling (2017-08-25) states the outcome: 'The Ur-Dragon's triggered ability resolves after all attackers have been chosen. You can't attack with some Dragons, put a creature card with haste onto the battlefield, and then attack with that creature. Similarly, any “whenever a creature attacks” abilities of the permanent card you put onto the battlefield won't trigger.' The conclusion is right; this citation does not prove it."
+      },
+      {
+        "step": 10,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Supports the framing that a trigger requires a matching event, which is the shape of the argument even though 603.10 is the rule that closes it."
+      },
+      {
+        "step": 10,
+        "rule": "508.1a",
+        "status": "supported",
+        "note": "Attackers were already chosen, so the entering permanent is never declared - the 'cannot attack' half of the claim."
+      },
+      {
+        "step": 11,
+        "rule": "903.8",
+        "status": "supported",
+        "note": "Full rule: the additional {2} is per previous time the player 'has CAST it from the command zone'. Directly establishes NO CHANGE, since no cast occurred."
+      },
+      {
+        "step": 11,
+        "rule": "601.2a",
+        "status": "supported",
+        "note": "Casting begins by moving the card to the stack; the Ur-Dragon never went to the stack."
+      },
+      {
+        "step": 11,
+        "rule": "glossary:cast",
+        "status": "supported",
+        "note": "Glossary definition corroborates. Consistent with the Hellkite Courser ruling (2020-11-10): 'Putting your commander onto the battlefield this way isn't the same as casting that commander. The “commander tax” won't increase.' Eminence claim also verified against cards.json: it reduces 'other Dragon spells you cast', never The Ur-Dragon itself."
+      },
+      {
+        "step": 11,
+        "rule": "603.7",
+        "status": "supported",
+        "note": "The return-to-command-zone delayed trigger, consistent with the second Courser ruling (2020-11-10)."
+      },
+      {
+        "step": null,
+        "rule": "702.9b",
+        "status": "unsupported",
+        "note": "MISSING STEP - evasion is never established anywhere in the resolution, yet final_state rules on it for all three seats ('cannot block a flier', 'cannot block any of the three fliers'). 702.9b - 'A creature with flying can't be blocked except by creatures with flying and/or reach' - is cited nowhere in 30 citations. Worse, the scenario says only 'one 2/2 ground creature': 'ground' is not a game term and the scenario never states it lacks REACH. The no-blocks conclusion is an uncited rules claim resting on an unstated assumption."
+      },
+      {
+        "step": null,
+        "rule": "508.1b",
+        "status": "unsupported",
+        "note": "MISSING STEP - attacker assignment. 508.1b requires the active player to announce which player each chosen creature is attacking when multiple opponents are attackable. The resolution declares three attackers and never assigns them, then final_state prints 'attack_power_available: 3 + 6 + 10 = 19 across three fliers' beside three seats at 40 life. 19 is a POD-WIDE power total, not damage to any one seat; a seat only takes 19 if all three are assigned to it, and this is the per-seat/pod conflation the scenario-facts contract exists to prevent. State the split."
+      },
+      {
+        "step": null,
+        "rule": "603.10",
+        "status": "unsupported",
+        "note": "MISSING STEP - the rule that actually settles step 10's Atarka claim. 603.10: 'Normally, objects that exist immediately after an event are checked to see if the event matched any trigger conditions.' Atarka was in hand when attackers were declared, so its ability did not exist on the battlefield at the event and cannot trigger (with 113.6, abilities of a permanent function only on the battlefield). This rule area is absent from the artifact and is what makes the right answer right."
+      },
+      {
+        "step": null,
+        "rule": "508.1f",
+        "status": "unsupported",
+        "note": "MISSING STEP - the turn-based action that taps the attackers. 508.1f: 'The active player taps the chosen creatures.' The resolution enumerates only 508.1a from the declare-attackers sequence and final_state lists all three Dragons as 'attacking' without noting they are tapped. Changes none of the four answers, but a pilot reading final_state could believe an attacking Dragon is still available to tap."
+      }
+    ],
+    "iterations": 1
   }
 }

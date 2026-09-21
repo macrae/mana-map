@@ -5,16 +5,8 @@
     "Brallin, Skyshark Rider"
   ],
   "lifecycle": null,
-  "stage": "bench",
-  "gates": {
-    "to": "sleeved",
-    "met": 4,
-    "of": 6,
-    "blocking": [
-      "mulligan + tutor guidance",
-      "ownership reconciled"
-    ]
-  },
+  "stage": "sleeved",
+  "gates": null,
   "colour_identity": [
     "W",
     "U",
@@ -4089,7 +4081,14 @@
     "target": null,
     "within_target": null
   },
-  "paper": null,
+  "paper": {
+    "version": 3,
+    "sha": "056de954efc5",
+    "decklist_sha256": "9361be6b5109d713dfc952b7fc7db34321e10d4ef5ce5e6ac3606e0da6033060",
+    "built_at": "2026-09-21",
+    "note": "V3 sleeved 2026-09-21 as the sixth deck in the carrying case, chosen over meren-recursion and emiel-blink",
+    "release": "v1.0.0"
+  },
   "record": {
     "games": 0,
     "win": 0,
@@ -4582,7 +4581,6 @@
   },
   "experiments": null,
   "next": [
-    "not marked as built in paper — if it is sleeved, `deck-version sharknado paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1` needs 3 card(s) sourced — `manamap pilot deck-branch sharknado source budget-v1`",
     "branch `ivora-v1` needs 9 card(s) sourced — `manamap pilot deck-branch sharknado source ivora-v1`",
