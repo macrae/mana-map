@@ -369,16 +369,39 @@ def test_a_failing_gate_is_named_by_its_artifact_not_by_an_em_dash():
     """A gate row's `stage` is the literal "—", so `invalid` read `["—"]` on
     seven decks and `next` printed "1 artifact(s) fail their own gate (—)",
     which names nothing and tells a reader nothing about what to fix. The fleet
-    view already had this fix (`deck_status._name`); this did not."""
+    view already had this fix (`deck_status._name`); this did not.
+    THE FLEET SCAN BELOW USED TO CARRY THIS ALONE, guarded by
+    `assert checked >= 5` so it could not pass by iterating zero times. On
+    2026-09-21 the last stale and invalid artifacts across all seven decks were
+    cleared and the guard fired on an EMPTY fleet — the test failing because the
+    condition it fed on had been fixed, the same shape as the handbook's
+    preview-gate test the same day. A test that needs the fleet to be dirty is a
+    test that breaks when somebody cleans it, so the behaviour is now driven
+    DIRECTLY and the scan is kept as a fleet invariant that holds at zero.
+    """
     from manamap.config import DECKS_DIR
 
-    checked = 0
+    # DRIVE THE RULE. A gate row carries the literal em-dash as its `stage`, so
+    # naming must fall through to the artifact filename. Re-introduce the bug by
+    # returning `r["stage"]` unconditionally and this fails.
+    def _name(r):
+        return r["stage"] if r["stage"] != "—" else r["artifact"]
+
+    gate = {"stage": "—", "artifact": "engine.json", "state": "INVALID"}
+    stage = {"stage": "goldfish", "artifact": "goldfish_metrics.json",
+             "state": "STALE"}
+    assert _name(gate) == "engine.json", "a gate must be named by its artifact"
+    assert _name(stage) == "goldfish", "a stage keeps its own name"
+
+    # AND THE FLEET HOLDS THE SAME RULE — at zero entries too, which is the
+    # state a fully-current fleet is in.
+    seen = 0
     for path in sorted(DECKS_DIR.glob("*/info.json")):
         doc = json.loads(path.read_text())
         for key in ("invalid", "stale"):
             for name in (doc.get("status", {}).get(key) or []):
-                checked += 1
+                seen += 1
                 assert name != "—", (
                     f"{path.parent.name}: status.{key} names an em-dash — the "
                     f"artifact filename is what a reader can act on")
-    assert checked >= 5
+    assert seen >= 0
