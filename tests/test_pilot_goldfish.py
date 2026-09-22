@@ -709,15 +709,58 @@ def test_a_permanent_worth_only_its_type_is_still_castable():
         "the set must be built from BOTH scaling sources, or a Shrine that only "
         "the anthem counts would still be uncastable")
 
-    shrine = goldfish.classify({
+    shrine_card = {
         "name": "Sanctum of Tranquil Light",
         "type_line": "Legendary Enchantment — Shrine", "mana_cost": "{W}",
         "cmc": 1.0,
         "oracle_text": "{5}{W}: Tap target creature. This ability costs {1} less "
-                       "to activate for each Shrine you control."})
-    # It feeds nothing on its own — that is exactly why it needed the rule.
+                       "to activate for each Shrine you control."}
+    shrine = goldfish.classify(shrine_card)
+    # It feeds nothing on its own — that is exactly why it needed the rule, and
+    # why `never_cast` (which sees one card, not the deck) still says so.
     from manamap.pilot import model_coverage
-    assert model_coverage.channels_for(shrine) == set() or True
+    assert model_coverage.channels_for(shrine) == set()
+    assert model_coverage.never_cast(shrine, {"model_drain": True}), (
+        "the card-local predicate cannot see a deck-derived rule; if it ever "
+        "does, this test is measuring the wrong thing")
+
+    # THE CLAIM, DRIVEN. Same library both ways, same seeds; the ONLY difference
+    # is whether the bare permanent carries the type the payoff counts. Delete
+    # the `scaled_types` branch from the casting predicate and the two arms come
+    # out equal, because the only Shrines on the battlefield would be the payoff
+    # copies — which are cast for their own drain.
+    payoff = {
+        "name": "Sanctum of Stone Fangs",
+        "type_line": "Legendary Enchantment — Shrine", "mana_cost": "{1}{B}",
+        "cmc": 2.0,
+        "oracle_text": "At the beginning of your end step, each opponent loses "
+                       "X life, where X is the number of Shrines you control."}
+    swamp = {"name": "Swamp", "type_line": "Basic Land — Swamp",
+             "mana_cost": "", "cmc": 0.0, "oracle_text": "({T}: Add {B}.)"}
+    assert goldfish.classify(payoff)["drain"]["scales_with"] == "Shrine", (
+        "the payoff must parse as scaling with a TYPE, or neither arm has a "
+        "deck-derived rule to exercise")
+
+    def drain_at_ten(bare_type_line):
+        import random
+
+        bare = dict(shrine_card, type_line=bare_type_line)
+        lib = ([goldfish.classify(payoff) for _ in range(6)]
+               + [goldfish.classify(bare) for _ in range(24)]
+               + [goldfish.classify(swamp) for _ in range(30)])
+        return sum(
+            goldfish.simulate_once(
+                random.Random(seed), [dict(c) for c in lib], 1.0, [], 10,
+                model_drain=True, model_colors=False,
+                commander_pips=[frozenset("B")])["drain_by_turn"][-1]
+            for seed in range(40)) / 40
+
+    counted = drain_at_ten("Legendary Enchantment — Shrine")
+    uncounted = drain_at_ten("Legendary Enchantment — Rune")
+    assert counted > uncounted * 2, (
+        f"a permanent whose only worth is its type drained {counted:.2f} by turn "
+        f"ten against {uncounted:.2f} for the same card with the type changed — "
+        f"too close: nothing is casting it for the count")
 
 
 def test_a_one_shot_etb_is_not_a_per_turn_drain():

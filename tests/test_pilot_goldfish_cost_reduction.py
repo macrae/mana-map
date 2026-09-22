@@ -281,24 +281,67 @@ def test_the_widening_caught_two_cards_and_not_a_family():
 
 
 @requires_data
-@requires_deck
 def test_a_scaling_dork_is_priced_from_the_board_and_never_overstated():
     """SNAPSHOT AT CAST, conservative end. It counts the colours on the board
     the turn it resolves and never grows, so an Elder cast on two colours and
     living to see five is UNDERSTATED — recoverable. Overstating is how a mana
-    base comes out looking fine and cannot cast its spells."""
+    base comes out looking fine and cannot cast its spells.
+
+    DRIVEN, because the previous version restated `max(1, min(len(colors), 5))`
+    from the turn loop and then asserted `1 <= made <= 5`, which is true for
+    every input of a clamp to [1, 5]. It could not have gone red for any change
+    to the model at all.
+
+    Measured instead as the Elder's CONTRIBUTION: the same library with the
+    Elder swapped for a vanilla of identical cost, across boards of one to five
+    distinct colours. Replacing `made` with a constant flattens all five arms
+    and fails it; that is the regression this guards.
+
+    What it does NOT reach is the `max(1, …)` floor, and the attempt is worth
+    recording: dropping the floor was tried here and stayed green, because the
+    Elder cannot be cast onto an empty board, so `colors` is never empty by the
+    time this branch runs. The floor is defensive against a caller that does not
+    exist yet — the branch that DID need it read an unconditionally-empty
+    `sources` list, which is now impossible by construction (#35, 2026-09-13).
+    """
+    import random
+
     from manamap.pilot import card_pool
-    o = card_pool.corpus_oracle()
-    card = goldfish.classify(
-        {"name": "Faeburrow Elder", "oracle_text": o.get("Faeburrow Elder", ""),
-         "cmc": 3, "type_line": "Creature — Treefolk Druid", "mana_cost": "{1}{G}{W}"})
-    # Never more than the five colours of Magic, never less than one.
-    for n_colors in range(0, 7):
-        sources = [frozenset({c}) for c in "WUBRG"[:min(n_colors, 5)]]
-        colors = frozenset().union(*sources) if sources else frozenset()
-        made = max(1, min(len(colors), 5))
-        assert 1 <= made <= 5
-        assert made <= max(1, min(n_colors, 5))
+    from manamap.pilot.goldfish import classify, simulate_once
+
+    oracle = card_pool.corpus_oracle()
+    assert oracle.get("Faeburrow Elder"), "the sweep's own card must be in the corpus"
+    elder = {"name": "Faeburrow Elder", "oracle_text": oracle["Faeburrow Elder"],
+             "cmc": 3.0, "type_line": "Creature — Treefolk Druid",
+             "mana_cost": "{1}{G}{W}", "power": "0", "toughness": "0"}
+    # Same cost, same body, no scaling clause: everything but the ability.
+    vanilla = dict(elder, name="Vanilla", oracle_text="",
+                   type_line="Creature — Treefolk")
+    basics = [("Plains", "W"), ("Island", "U"), ("Swamp", "B"),
+              ("Mountain", "R"), ("Forest", "G")]
+
+    def mana_at_ten(creature, n_colors):
+        lands = [{"name": nm, "type_line": f"Basic Land — {nm}", "mana_cost": "",
+                  "cmc": 0.0, "oracle_text": f"({{T}}: Add {{{sym}}}.)"}
+                 for nm, sym in basics[:n_colors]]
+        lib = ([classify(creature) for _ in range(20)]
+               + [classify(lands[i % n_colors]) for i in range(50)])
+        return sum(
+            simulate_once(random.Random(seed), [dict(c) for c in lib], 3.0, [], 10,
+                          model_colors=False)["mana_by_turn"][-1]
+            for seed in range(80)) / 80
+
+    contribution = [mana_at_ten(elder, k) - mana_at_ten(vanilla, k)
+                    for k in range(1, 6)]
+    assert contribution[0] > 0, (
+        f"an Elder on a MONO-colour board contributed {contribution[0]} — a "
+        f"colour-scaling producer that makes nothing at all is worse than one "
+        f"that is not modelled")
+    for k in range(1, 5):
+        assert contribution[k] > contribution[k - 1], (
+            f"contribution did not rise from {k} to {k + 1} distinct colours: "
+            f"{contribution} — the board's colours are not being counted")
+    assert len(contribution) == 5
 
 
 # ── a changeling is every creature type, in every zone ───────────────────

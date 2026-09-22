@@ -105,16 +105,50 @@ def test_header_is_wellformed(table):
     assert table["lo"] < table["hi"], "similarity range must be non-degenerate"
 
 
-def test_uint16_blocks_are_two_aligned():
+def test_uint16_blocks_are_two_aligned(monkeypatch):
     """A misaligned `Uint16Array` view throws in JS at page load, far from the cause.
 
-    Header is 64 bytes and every uint16 block is contiguous after it, so this holds
-    for any k. Interleaving the uint8 block between them would pass today only
-    because K_SIMILAR is even.
+    Driven through the real packer, and the block offsets are FOUND IN THE BYTES
+    rather than recomputed from the constants — a test that re-derives the layout
+    would agree with any layout the writer chose.
+
+    Every k is forced ODD here, which is the only setting that can tell the
+    current layout (all uint16 blocks contiguous after the 64-byte header) apart
+    from the tempting one (each uint8 block beside the uint16 block it
+    annotates). At the production K_SIMILAR of 12 both layouts align, so this
+    test would have been green through the whole bug.
     """
-    assert NEIGHBOURS_HEADER_BYTES % 2 == 0
-    for k in (NEIGHBOURS_K_SIMILAR, NEIGHBOURS_K_SYNERGY, NEIGHBOURS_K_OBSOLETE):
-        assert (NEIGHBOURS_HEADER_BYTES + 34322 * k * 2) % 2 == 0
+    from manamap.export import viz_index as vi
+
+    n, ks, ky, ko = 3, 5, 3, 1
+    monkeypatch.setattr(vi, "NEIGHBOURS_K_SIMILAR", ks)
+    monkeypatch.setattr(vi, "NEIGHBOURS_K_SYNERGY", ky)
+    monkeypatch.setattr(vi, "NEIGHBOURS_K_OBSOLETE", ko)
+
+    # Each block gets its own byte pattern so its start can be located.
+    blob = vi.pack(
+        n, b"\xee" * 32,
+        np.full((n, ks), 0x0101, dtype="<u2"), np.full((n, ks), 0x11, dtype=np.uint8),
+        np.full((n, ky), 0x0202, dtype="<u2"), np.full((n, ky), 0x22, dtype=np.uint8),
+        np.full((n, ko), 0x0303, dtype="<u2"), np.full((n, 3), 0x33, dtype=np.uint8),
+        0.0, 1.0)
+
+    assert NEIGHBOURS_HEADER_BYTES % 2 == 0, "the header itself must be 2-aligned"
+    checked = 0
+    for name, k, fill in (("similar", ks, 0x01), ("synergy", ky, 0x02),
+                          ("obsolete", ko, 0x03)):
+        block = bytes([fill]) * (n * k * 2)
+        off = blob.find(block, NEIGHBOURS_HEADER_BYTES)
+        assert off != -1, f"the {name} uint16 block is not in the file at all"
+        assert off % 2 == 0, (
+            f"the {name} uint16 block starts at byte {off}, which is odd — a "
+            f"Uint16Array view on it throws in the browser at page load, and "
+            f"the production K_SIMILAR of {NEIGHBOURS_K_SIMILAR} would hide it")
+        checked += 1
+    assert checked == 3
+
+    # The reference reader must still agree about where all of it is.
+    assert decode(blob)["sim_idx"].tolist() == [[0x0101] * ks] * n
 
 
 def test_row_ids_fit_the_sentinel(table):

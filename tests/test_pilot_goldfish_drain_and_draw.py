@@ -175,13 +175,53 @@ def test_a_qualifier_the_model_cannot_evaluate_is_not_guessed_at():
 
 # ── 3. The model must ACT on what it reads ────────────────────────────────
 
-@requires_data
-@requires_deck
 def test_the_drain_channels_move_the_clock(monkeypatch):
     """A FLAG THE MODEL SETS IS A CLAIM THE MODEL MUST ACT ON. `treasure_doubler`
     shipped set-and-unread and fifteen candidates returned byte-identical
-    -0.026. Byte-identical is the tell; this asserts against it."""
-    real = goldfish.combat_profile
+    -0.026. Byte-identical is the tell; this asserts against it.
+
+    TWICE REPAIRED, AND THE SECOND REPAIR IS THE INTERESTING ONE. The test ran
+    against the real edgar-vampires deck and asserted only its CONTROL — that
+    bodies were unchanged — so it never once checked that the channel fired.
+    By the time anyone looked, a swap had left **zero cards in that deck feeding
+    either key**, and blinding the channel moved the mean kill turn from 7.977
+    to 7.977. A test whose subject can leave the deck under it is a test of the
+    deck, not of the model, so it now brings its own library: a Mirkwood-Bats
+    shaped arrival drain, bodies for it to trigger off, and lands.
+    """
+    import random
+
+    import manamap.pilot.goldfish_library as gl
+    from manamap.pilot.goldfish import classify, simulate_once
+
+    bat = {"name": "Bat", "type_line": "Creature — Bat", "mana_cost": "{1}{B}",
+           "cmc": 2.0, "power": "1", "toughness": "1",
+           "oracle_text": "Flying Whenever another creature you control enters, "
+                          "each opponent loses 1 life."}
+    body = {"name": "Body", "type_line": "Creature — Vampire", "mana_cost": "{B}",
+            "cmc": 1.0, "power": "1", "toughness": "1", "oracle_text": ""}
+    swamp = {"name": "Swamp", "type_line": "Basic Land — Swamp", "mana_cost": "",
+             "cmc": 0.0, "oracle_text": "({T}: Add {B}.)"}
+    assert goldfish.combat_profile(bat)["etb_life_loss_fixed"] == 1, (
+        "the fixture must feed the channel under test, or this measures nothing "
+        "— which is exactly how the previous version of this test went blind")
+
+    def library():
+        return ([classify(bat) for _ in range(12)]
+                + [classify(body) for _ in range(23)]
+                + [classify(swamp) for _ in range(35)])
+
+    def play(lib):
+        runs = [simulate_once(random.Random(seed), [dict(c) for c in lib], 2.0, [],
+                              10, model_combat=True, model_colors=False,
+                              commander_pips=[frozenset("B")])
+                for seed in range(60)]
+        return (sum(r["damage_by_turn"][-1] for r in runs) / 60,
+                sum(r["bodies_by_turn"][-1] for r in runs) / 60)
+
+    # The profile is read at CLASSIFY time, so the live library is built first.
+    on_damage, on_bodies = play(library())
+    real = gl.combat_profile
 
     def blind(card):
         p = real(card)
@@ -189,15 +229,19 @@ def test_the_drain_channels_move_the_clock(monkeypatch):
         p["token_created_life_loss"] = 0
         return p
 
-    on = goldfish.run("edgar-vampires", iterations=1200, quiet=True)
     patch_model(monkeypatch, "combat_profile", blind)
-    off = goldfish.run("edgar-vampires", iterations=1200, quiet=True)
-    a = on["metrics"]["mean_bodies_by_turn"]
-    b = off["metrics"]["mean_bodies_by_turn"]
+    off_damage, off_bodies = play(library())
+
     # Bodies are untouched by a drain channel — the control that proves the two
-    # runs are otherwise the same run.
-    assert a == b, "the runs differ by more than the channel under test"
-    assert on["meta"]["card_advantage"], "sanity: the meta block survived"
+    # runs are otherwise the same run. IT IS ONLY THE CONTROL.
+    assert on_bodies == off_bodies, (
+        f"the runs differ by more than the channel under test: {on_bodies} "
+        f"bodies against {off_bodies}")
+    # THE CLAIM, which is what went missing for nine months.
+    assert on_damage > off_damage, (
+        f"blinding the arrival drain left damage at {off_damage} against "
+        f"{on_damage} — byte-identical is the tell that the flag is set and "
+        f"never read")
 
 
 @requires_data

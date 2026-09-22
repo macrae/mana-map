@@ -1021,25 +1021,46 @@ def test_reminder_text_is_not_the_cards_own_discard_payoff():
 def test_the_reminder_strip_changes_exactly_the_three_it_should():
     """WIDENING OR NARROWING A MATCHER NEEDS A CORPUS SWEEP IN THE SAME COMMIT.
     Stripping reminder text from the discard/draw payoffs moves three cards and
-    no others; a fourth means a real ability is being eaten."""
+    no others; a fourth means a real ability is being eaten.
+
+    THE SWEEP HAD TO BE TURNED ROUND TO MEAN ANYTHING. It used to build its own
+    copy of the bracket regex and compare `event_payoffs(text)` against
+    `event_payoffs(bare)` — but `event_payoffs` applies the identical strip on
+    the way in, so the two arms were the same call twice and `moved == set()`
+    held for any corpus, any regex and any parser. It was green the day it was
+    written and could not have gone red since.
+
+    The arms that answer the question are STRIPPING against NOT STRIPPING, so
+    `_REMINDER_RE` is replaced with a pattern that matches nothing.
+    """
     import re
 
     from manamap.pilot import card_pool
-    from manamap.pilot.goldfish_profiles import event_payoffs
+    from manamap.pilot import goldfish_profiles as gp
 
     oracle = card_pool.corpus_oracle()
     assert len(oracle) > 30000, "corpus did not load"
-    moved = set()
-    for name, text in oracle.items():
-        text = text or ""
-        if "(" not in text:
-            continue
-        # The un-stripped reading, reproduced by putting the reminder somewhere
-        # the stripper cannot reach: a card with no brackets at all.
-        bare = re.sub(r"\([^)]*\)", " ", text)
-        if event_payoffs({"name": name, "oracle_text": text}) != \
-           event_payoffs({"name": name, "oracle_text": bare}):
-            moved.add(name)
-    assert moved == set(), (
-        f"stripping is no longer idempotent — {sorted(moved)} still differ, so "
-        f"`event_payoffs` is reading brackets somewhere")
+
+    stripped = {name: gp.event_payoffs({"name": name, "oracle_text": text or ""})
+                for name, text in oracle.items()}
+    real = gp._REMINDER_RE
+    try:
+        gp._REMINDER_RE = re.compile(r"(?!x)x")   # matches nothing, ever
+        moved = sorted(
+            name for name, text in oracle.items()
+            if gp.event_payoffs({"name": name, "oracle_text": text or ""})
+            != stripped[name])
+    finally:
+        gp._REMINDER_RE = real
+
+    assert moved == ["Magmakin Artillerist", "Marauding Mako",
+                     "Scrounging Skyray"], (
+        f"the reminder strip now moves {len(moved)} cards, not three: {moved}. "
+        f"A card that JOINED this list has a real ability inside brackets being "
+        f"eaten; a card that LEFT it means the strip stopped reaching a cycling "
+        f"or a landcycling reminder it used to catch.")
+
+    # And the strip is what does it: Magmakin reads its damage half only once
+    # the cycling reminder's "Draw a card" is gone.
+    assert stripped["Magmakin Artillerist"]["per_discard_damage"] == 1
+    assert stripped["Magmakin Artillerist"]["per_discard_draw"] == 0
