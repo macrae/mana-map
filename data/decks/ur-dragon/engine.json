@@ -1,12 +1,12 @@
 {
   "slug": "ur-dragon",
   "decklist_sha256_prefix": "99419d5b9145",
-  "thesis": "An eminence-discounted Dragon deck whose engine is the ARRIVAL, not the attack: cost reduction lands two Dragons in one turn, Miirym and Lathliss turn each arrival into several, and Terror of the Peaks, Dragon Tempest and Scourge of Valkas price every arrival in damage — and V6 wraps that turn in flash so it can be taken on somebody else's.",
+  "thesis": "An eminence-discounted Dragon deck whose engine is the ARRIVAL, not the attack: cost reduction lands two Dragons in one turn, Miirym and Lathliss turn each arrival into several, and Terror of the Peaks, Dragon Tempest and Scourge of Valkas price every arrival in damage — and V6 bought a response suite four of whose six additions are castable at instant speed as printed, so the mana held for them is not dead; that the CASCADE itself can be taken on somebody else's turn needs Whirlwing Stormbrood on the battlefield and nothing verifies it.",
   "stages": [
     {
       "stage": "mana",
       "label": "THE FIVE-COLOUR TOLL, PAID TWICE",
-      "what_it_does": "Everything downstream is gated on a nine-mana commander and a curve of six-drops in five colours, and the deck pays that toll twice over: 32 land entries / 35 copies, then 23 ramp copies against strategy:deckbuilding.ratios' 10-12, which deck-audit calls OVER. That is a build choice rather than a defect — eminence discounts GENERIC mana and five colours need fixing — but deck-audit still reads mana-base UNDER at 35 copies against 36-38, and colour-sources UNDER by nine on the worst colour, which mana-analysis names as black: 21 sources with rocks and dorks against a yardstick of 30, on-curve 0.729 where every other colour is 0.822 or better.\n\nThe ramp itself works. 'Ramp or fixing drawn' assembles in 0.906 of 10,000 goldfish runs at mean turn 2.223, and mean available mana is 5.948 at turn five. Land drops are where it frays: 0.756 at turn four, 0.615 at turn five, and 12 of 35 lands enter tapped (34%).\n\nFive sources here are RESTRICTED, and deck-facts names them: Cavern of Souls, Delighted Halfling, Desolation of Smaug, Maelstrom of the Spirit Dragon and Unclaimed Territory pay for SPELLS only. That is the right shape for this deck and the wrong shape for the colour maths — they accelerate toward a Dragon without ever paying a coloured activation. Desolation of Smaug sits in this stage rather than in output because its four Dragon-only mana is why it is in the 99; deck-audit prices it as the deck's one single point of failure, a one-card component at 0.170 assembled.\n\nThe 2026-09-17 rescan put four true fetches in and V6 moved one Forest to one Mountain, which is the pip load talking: 31 cards want {R} for 48 red pips, against 17 cards and 19 green.",
+      "what_it_does": "A nine-mana commander and a curve of six-drops in five colours, and the deck pays that toll twice: 32 land entries / 35 copies, then 23 ramp copies against strategy:deckbuilding.ratios' 10-12, which deck-audit calls OVER. A build choice, not a defect — eminence discounts GENERIC mana — but mana-base still reads UNDER at 35 against 36-38, and colour-sources UNDER by nine on black: 21 sources with rocks and dorks against a yardstick of 30, on-curve 0.729 where every other colour is 0.822 or better.\n\nThe ramp works: 'Ramp or fixing drawn' assembles in 0.906 of 10,000 runs at mean turn 2.223, mean available mana 5.948 at turn five. Land drops are where it frays, 0.756 at turn four and 0.615 at turn five — and TAPLANDS ARE NOT WHY. mana_analysis.lands.enters_tapped reads 12 but counts two groups together, as that file says; deck-audit's taplands axis measures 1 against a ceiling of 8, verdict AT — 'land copies that enter tapped with no condition and no pay-life escape' — and names it: Path of Ancestry. The other eleven are shocks and check-lands filed conditional_or_shock, each of which can be chosen to enter untapped. The goldfish cannot arbitrate either way: its own assumption reads LANDS ENTER UNTAPPED, ALWAYS.\n\nFive sources are RESTRICTED, per deck-facts — Cavern of Souls, Delighted Halfling, Desolation of Smaug, Maelstrom of the Spirit Dragon, Unclaimed Territory pay for SPELLS only and cannot pay a coloured activation. Desolation sits here, not output: its four Dragon-only mana is why it is in the 99, and deck-audit prices it as the deck's one single point of failure, a one-card component at 0.170 assembled.\n\nThe pip load explains the fetches and V6's Forest-to-Mountain: 31 cards want {R} for 48 red pips, against 17 cards and 19 green.",
       "cards": [
         "Arid Mesa",
         "Battlefield Forge",
@@ -161,7 +161,7 @@
           "kind": "city",
           "id": "city-2",
           "agreement": "cuts-across",
-          "note": "Breaching Dragonstorm, Roiling Dragonstorm, Garruk's Uprising and Temur Ascendancy file with the Dragons — the map hears the Dragon-typal trigger and the haste grant, not the cantrip and the two draws that are the reason they are in the 99"
+          "note": "Breaching Dragonstorm, Roiling Dragonstorm, Garruk's Uprising and Temur Ascendancy file with the Dragons — but not all for the same reason, and the round-1 note was wrong about one of them. The two Dragonstorms each read 'When a Dragon you control enters, return this enchantment to its owner's hand', and Temur Ascendancy grants haste; Garruk's Uprising has NEITHER a Dragon-typal trigger nor a haste grant — its text is an enters-draw, trample, and a draw on any power-4 creature entering, which is why map_disagreements enumerates it among the nine city-2 cards that mention Dragons nowhere. All four are here for the cantrip and the two draws, which is the half the map does not hear."
         },
         {
           "kind": "city",
@@ -179,7 +179,7 @@
     {
       "stage": "conversion",
       "label": "ONE ARRIVAL BECOMES SEVERAL, AND EVERY POINT BECOMES TWO",
-      "what_it_does": "The engine proper, in two tiers that multiply different things.\n\nMORE ARRIVALS. Miirym copies every other nontoken Dragon that enters; Lathliss makes a 5/5 for each; Ancient Gold Dragon rolls a d20 on combat damage and makes that many hasty Faerie Dragons; Panharmonicon makes every entry trigger of a permanent you control fire twice; and Sneak Attack and Hellkite Courser buy arrivals the mana never paid for — {R} for anything in hand, and a body that puts the commander in with haste and returns it to the command zone with no tax. The token-versus-nontoken line is the brake the rules already had, and both 001 and 002 had to settle it: token copies do not re-trigger Miirym or Lathliss, so the cascade terminates.\n\nMORE DAMAGE PER POINT. Twinflame Tyrant doubles all damage a source you control deals to an opponent or their permanents, Solphim doubles NONCOMBAT damage only, Thrakkus doubles each Dragon's power when it attacks, and Atarka grants an attacking Dragon double strike. Read against the output stage, Twinflame and Solphim both multiply Terror of the Peaks and Dragon Tempest triggers — the shortest route this list has from a board to a table kill — and NONE of the four is verified: combo_details holds no fully-contained record for any of them, and they appear in no passing stack.\n\nsingle_point_of_failure is null and that is a judgement, not an omission. Stack 007 is the counterfactual and it is brutal about ONE board: cutting Panharmonicon takes stack 002 from 64 damage in twelve instances to 20 in four, 'its LETHALITY, not just its margin', a 68.75% loss. But deck-audit's single_points_of_failure names only Desolation of Smaug, Panharmonicon sits in no goldfish component, and three of these multiplier routes work without each other.",
+      "what_it_does": "The engine proper, in two tiers that multiply different things.\n\nMORE ARRIVALS. Miirym copies every other nontoken Dragon that enters; Lathliss makes a 5/5 for each; Ancient Gold Dragon rolls a d20 on combat damage and makes that many hasty Faerie Dragons; Panharmonicon fires a permanent's triggered ability an additional time when an ARTIFACT OR CREATURE entering caused it — not an enchantment or a land; and Sneak Attack and Hellkite Courser buy arrivals the mana never paid for — {R} for a CREATURE CARD in hand — the scope stack 005 turns on, and a body that puts the commander in with haste and returns it to the command zone with no tax. The token-versus-nontoken line is the brake the rules already had, and both 001 and 002 had to settle it: token copies do not re-trigger Miirym or Lathliss, so the cascade terminates.\n\nMORE DAMAGE PER POINT. Twinflame Tyrant doubles all damage a source you control deals to an opponent or their permanents, Solphim doubles NONCOMBAT damage only, Thrakkus doubles each Dragon's power when it attacks, and Atarka grants an attacking Dragon double strike. Read against the output stage, Twinflame and Solphim both multiply Terror of the Peaks and Dragon Tempest triggers — the shortest route this list has from a board to a table kill — and NONE of the four is verified — no fully-contained combo record, no passing stack.\n\nsingle_point_of_failure is null by judgement. Stack 007 is brutal about ONE board — cutting Panharmonicon takes 002 from 64 damage in twelve instances to 20 in four, 'its LETHALITY, not just its margin', a 68.75% loss — but deck-audit names only Desolation of Smaug, Panharmonicon sits in no goldfish component, and three multiplier routes work without each other.",
       "cards": [
         "Miirym, Sentinel Wyrm",
         "Lathliss, Dragon Queen",
@@ -231,7 +231,7 @@
     {
       "stage": "output",
       "label": "WHAT AN ARRIVAL IS WORTH",
-      "what_it_does": "What the deck points at a table, and it is priced per ARRIVAL rather than per attack. Terror of the Peaks deals the entering creature's power to any target; Dragon Tempest and Scourge of Valkas deal X where X counts your Dragons and X is recomputed at each trigger's resolution.\n\nStack 002 measures one Lathliss cast into a four-permanent board at 64 damage in twelve separately-targeted instances — 36 from Terror across six triggers, 28 from Tempest at X = 4,4,5,5,5,5 under optimal ordering — which kills a 32-life seat. Stack 007 step 8 then settles the harder question: every one of those twelve instances reads 'any target', a player is a legal choice for all of them, and aimed at one seat the running total reaches 42 by the eighth instance, so that board CAN kill a player at 40. Stack 001 is the same machine larger: fifteen tokens enter as one event, every Tempest trigger sees X = 17, and 255 damage is available.\n\nFirespitter Whelp is the odd member of the payoff tier and the only one of its four that needs no body to enter: 1 to each opponent whenever you cast a noncreature OR Dragon spell.\n\nThe rest is interaction, which deck-audit reads as 11 copies against a floor of 8 but only FOUR classes answered against a floor of five, with graveyard detected as unanswered. Enumerated: Swords to Plowshares and Generous Gift are unconditional single-target answers, Chaos Warp reaches any permanent at instant speed, Crux of Fate is the sweeper, Glorybringer exerts for 4 to a non-Dragon creature, and Steel Hellkite — new in V6 — destroys every nonland permanent of a chosen mana value controlled by a player it dealt combat damage to, once each turn.",
+      "what_it_does": "What the deck points at a table, and it is priced per ARRIVAL rather than per attack. Terror of the Peaks deals the entering creature's power to any target; Dragon Tempest and Scourge of Valkas deal X where X counts your Dragons and X is recomputed at each trigger's resolution.\n\nStack 002 measures one Lathliss cast into a four-permanent board at 64 damage in twelve separately-targeted instances — 36 from Terror across six triggers, 28 from Tempest at X = 4,4,5,5,5,5 under optimal ordering — which kills a 32-life seat. Stack 007 step 9 then settles the harder question: every one of those twelve instances reads 'any target', a player is a legal choice for all of them, and aimed at one seat the running total reaches 42 by the eighth instance, so that board CAN kill a player at 40. Stack 001 is the same machine larger: fifteen tokens enter as one event, every Tempest trigger sees X = 17, and 255 damage is available.\n\nFirespitter Whelp is the odd member of the payoff tier and the only one of its four that needs no body to enter: 1 to each opponent whenever you cast a noncreature OR Dragon spell.\n\nThe rest is interaction, which deck-audit reads as 11 copies against a floor of 8 but only FOUR classes answered against a floor of five, with graveyard detected as unanswered. Enumerated: Swords to Plowshares and Generous Gift are unconditional single-target answers, Chaos Warp reaches any permanent at instant speed, Crux of Fate is the UNCONDITIONAL sweeper and one of two on deck-audit's sweepers axis, Glorybringer exerts for 4 to a non-Dragon creature, and Steel Hellkite — new in V6 — destroys every nonland permanent of a chosen mana value controlled by a player it dealt combat damage to, once each turn.",
       "cards": [
         "Dragon Tempest",
         "Terror of the Peaks",
@@ -259,7 +259,7 @@
         {
           "kind": "stack",
           "id": "007",
-          "note": "step 8 answers (c): stack 002's twelve 'any target' instances reach 42 aimed at a single seat, so a 40-life player is killable off that board"
+          "note": "step 9 answers (c): stack 002's twelve 'any target' instances reach 42 aimed at a single seat, so a 40-life player is killable off that board"
         },
         {
           "kind": "city",
@@ -316,7 +316,7 @@
     {
       "stage": "wincon",
       "label": "PROVEN ON A BOARD, THIN AS A ROUTE",
-      "what_it_does": "Two cards, and the thinness is the finding rather than a hole in the model: this deck does not close with a finisher, it closes with the cascade, and every card that does that work is already earning its slot in conversion or output. What is left is the two whose only job is to end the game. Drakuseth, Maw of Flames deals 4 + 3 + 3 to any targets whenever it ATTACKS — an attack trigger, not a cast trigger, so it fires the turn Sneak Attack cheats it in and all 17 damage stands after the mandatory end-step sacrifice (stack 005). Scourge of the Throne untaps all attacking creatures and adds a combat phase the first time it attacks the player with the most life, which is the one card here that doubles an already-lethal board rather than building one.\n\nWhat is checker-passed: stack 001's board kills BOTH opponents; stack 002's kills the 32-life seat with 64 damage and, per 007 step 8, can reach 42 at a single seat and so kill a player at 40; stack 005 lands 17 from an empty board for {R}. What is NOT checker-passed is any line that gets from an ordinary turn six to one of those boards — every stack starts from a board already assembled.\n\nAgainst the goldfish's one 40-life opponent that never blocks, median kill turn is 7, mean 7.166, with 0.297 by turn six, 0.621 by turn seven and 0.04 of runs never killing by turn ten; mean board power is 14.877 at turn six and 19.887 at turn seven. Read that as an unopposed clock on ONE seat, not a win rate — and read it against the prescription that named being killed first as the problem, because a deck this fast in a goldfish is a deck a table sees coming.",
+      "what_it_does": "Two cards, and the thinness is the finding rather than a hole in the model: this deck does not close with a finisher, it closes with the cascade, and every card that does that work is already earning its slot in conversion or output. What is left is the two whose only job is to end the game. Drakuseth, Maw of Flames deals 4 + 3 + 3 to any targets whenever it ATTACKS — an attack trigger, not a cast trigger, so it fires the turn Sneak Attack cheats it in and all 17 damage stands after the mandatory end-step sacrifice (stack 005). Scourge of the Throne untaps all attacking creatures and adds a combat phase the first time it attacks the player with the most life, which is the one card here that doubles an already-lethal board rather than building one.\n\nWhat is checker-passed: stack 001's board kills BOTH opponents; stack 002's kills the 32-life seat with 64 damage and, per 007 step 9, can reach 42 at a single seat and so kill a player at 40; stack 005 lands 17 for {R} off Sneak Attack, four lands and a Drakuseth in hand. What is NOT checker-passed is any line that gets from an ordinary turn six to one of those boards — every stack starts from a board already assembled.\n\nAgainst the goldfish's one 40-life opponent that never blocks, median kill turn is 7, mean 7.166, with 0.297 by turn six, 0.621 by turn seven and 0.04 of runs never killing by turn ten; mean board power is 14.877 at turn six and 19.887 at turn seven. Read that as an unopposed clock on ONE seat, not a win rate — and read it against the prescription that named being killed first as the problem, because a deck this fast in a goldfish is a deck a table sees coming.",
       "cards": [
         "Drakuseth, Maw of Flames",
         "Scourge of the Throne"
@@ -386,12 +386,12 @@
       "from": "conversion",
       "to": "output",
       "via": [
-        "Lathliss, Dragon Queen",
+        "Miirym, Sentinel Wyrm",
         "Dragon Tempest"
       ],
       "carries": "bodies",
       "verified_by": "007",
-      "note": "The floor version, and worth an arrow of its own because it is what the deck actually draws: no Panharmonicon, Miirym triggers once, one copy enters, and the cascade totals 20 damage in four instances. 007 rules that 20 does not kill the 32-life seat that 002's 64 does. The same two cards, a 68.75% swing on one artifact."
+      "note": "THE UN-DOUBLED FLOOR, and the round-1 version of this arrow was over-claimed twice over — it ran via Lathliss and credited the pair all 20 damage. Stack 007 step 5 rules that ORIGINAL Lathliss requires a NONTOKEN Dragon, so she makes NO 5/5 on this board and feeds no bodies to anything; the one body is Token A, created by Miirym's single trigger (step 4). Correcting the attribution, and more tightly than the critic asked: of 007's four instances Terror of the Peaks takes 12 (6+6) and Dragon Tempest 8 (4+4), and of that 8 exactly 4 is Token A's entry — Miirym's body, priced by Tempest at X=4 (step 6). So this named pair carries 4 of the 20, not 10 and not 20; the split by CAUSE is 10 to Lathliss's own entry and 10 to Token A, but half of each 10 belongs to Terror, which is in neither via. The arrow is worth keeping because it is the Panharmonicon-free version of lines[1] on the identical board: one Miirym trigger instead of two, and 007 rules the 20 does not kill the 32-life seat that 002's 64 does."
     },
     {
       "from": "conversion",
@@ -496,9 +496,9 @@
       "why_it_matters": "This is the single claim V6 was built on: five of six additions are instant-speed and Whirlwing is the card that makes the DECK instant-speed, so the pilot stops choosing between developing and holding up a response. It is the `protection -> conversion` arrow in this model, it carries verified_by: null, and no passing stack touches it. If it holds, the protection stage stops being a tax on the pivot turn and becomes free; if it does not, V6 added four responses the deck still cannot afford to hold."
     },
     {
-      "question": "Hellkite Courser and The Ur-Dragon: walk the full turn. Courser enters, its ETB puts the commander from the command zone onto the battlefield with haste, both attack — does The Ur-Dragon's own attack trigger ('draw that many cards, then you may put a permanent card from your hand onto the battlefield') fire, and does the return to the command zone at the beginning of the next end step leave commander tax at zero for a later hard cast?",
+      "question": "Repair stack 008's one failing citation and re-run the checker. Step 4 cites CR 608.2k for Hellkite Courser's 'It gains haste' reaching the commander; the checker calls that citation unsupported because 608.2k covers an object 'previously referred to by that ability's COST OR TRIGGER CONDITION', and the Courser's trigger condition refers to the Courser, not to the commander the EFFECT introduces. What CR text establishes that the pronoun chain 'It gains haste. Return it to the command zone' resolves to the commander — or does the artifact stand on the effect's own sentence structure with 608.2k dropped?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "Stack 005 REFUTES Sneak Attack as a commander-cheat and names Hellkite Courser, in its own resolution prose, as 'the card that actually does what the frame claimed' — and then never resolves it. V6 deliberately kept Courser rather than cutting it. The goldfish says why it matters: the commander is on the battlefield by turn six in 0.333 of runs, mean cast turn 6.881, and never arrives at all in 2,277 of 10,000. Courser may be this deck's real commander route and nothing in the evidence base measures it."
+      "why_it_matters": "CORRECTED: round 1 said stack 005 'names Hellkite Courser and then never resolves it'. That is false. stacks/008-courser-brings-the-commander.json resolves the whole turn in eleven steps and answers every part — THREE legal attackers (Ganax, Courser, The Ur-Dragon), THREE cards drawn, EXACTLY ONE permanent from hand, and commander tax UNCHANGED at {0} additional because putting is not casting. Its verdict is `fail` on ONE citation, so it is correctly not evidence and appears in no `verified_by` here — but the work outstanding is a citation repair, not a new scenario, and that is the difference between a cheap fix and a re-spend. The stake is unchanged: the commander is on the battlefield by turn six in 0.333 of runs, mean cast turn 6.881, and never arrives at all in 2,277 of 10,000, so Courser may be this deck's real commander route."
     },
     {
       "question": "Do Twinflame Tyrant and Solphim, Mayhem Dominus both apply to the same damage event — a Dragon Tempest or Terror of the Peaks trigger aimed at an opponent — for four times the printed damage, and if so who chooses the order the two replacement effects apply in (CR 616.1)? Resolve on a board with one doubler, then both, and state the multiplier exactly.",
@@ -506,9 +506,9 @@
       "why_it_matters": "Carried forward unanswered from the v1.0.2 model and still the largest unmeasured quantity here. Neither card appears in a passing stack, in a fully-contained combo line, or in a goldfish leg that treats it as a multiplier. If both apply, stack 002's board reads 256 rather than 64 and 007's ceiling — that 64 cannot kill both seats, since 64 < 72 — stops being a ceiling."
     },
     {
-      "question": "Re-run the goldfish with the V6 protection additions declared (Asceticism, Mithril Coat, Stubborn Denial, Transcendent Dragon added to 'Protection held for the big turn') and with the two cut cards removed from the ENTRY KILL and Dragon-restricted-mana legs. What do 'Protection held for the big turn' and interaction_castable_by_turn read then, against the current 0.665 / 0.557 and 0.311 / 0.415 / 0.510?",
+      "question": "Add Transcendent Dragon to the declared 'Protection or a RESPONSE held for the big turn' leg (taking it from nine cards to ten) and re-run. What do that target and interaction_castable_by_turn read then, against the CURRENT 0.811 assembled / 0.713 by turn six and 0.311 / 0.415 / 0.510?",
       "settled_by": "goldfish",
-      "why_it_matters": "The declared protection group names SIX cards and every one of them predates V6, so the 0.665 the audit prints is a rate for the suite the pilot already judged insufficient — it cannot see the four cards bought to fix it. goldfish_metrics' own meta.interaction_suite_counted already lists all four, so the model can read them and only the declaration is behind. Until this is re-run, no figure in this deck's record prices the change that was made today."
+      "why_it_matters": "WITHDRAWN AND RESCOPED. Round 1 called this 'the single edit without which nothing in the record measures what changed today', described a six-card leg and quoted 0.665 / 0.557. All three were wrong at the time of writing: goldfish_targets.json declares NINE cards on that leg, labelled 'v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial', and deck-audit and goldfish_metrics both print 0.811 / 0.713 over a size-9 component. Three of the four cards round 1 proposed adding were already there and the re-run it asked for had already happened. What survives is one card: Transcendent Dragon is in goldfish_metrics meta.interaction_suite_counted but not in the declared leg, and it is a flash counterspell that is also a body the conversion tier triggers on. Whirlwing Stormbrood is the other undeclared response, but it belongs in the SECOND target proposed below rather than this one, because it protects nothing itself."
     },
     {
       "question": "Can this deck actually hold {4}{U}{U} up for Transcendent Dragon on the turn it wants to pivot? Blue is 20 total sources against a 22 yardstick with on-curve 0.881, but the card is six mana and the cascade turn is the same turn.",
@@ -518,230 +518,153 @@
   ],
   "proposed_goldfish_edits": [
     {
-      "target": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
-      "change": "Remove 'Sarkhan, Fireblood' from the single any_of leg, leaving ['Desolation of Smaug'] — or delete the target and fold Desolation of Smaug into a note, since a one-card target is a hypergeometric statement about one card.",
-      "why": "Sarkhan, Fireblood was cut in V6 (2026-09-20). deck-audit already prices the component as size 1 and lists the name under not_in_deck, so the 0.170 rate is correct — but the declaration still reads as a two-card group, and a reader comparing 0.170 against a two-card leg will conclude the deck is unlucky rather than that it has one card."
-    },
-    {
       "target": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-      "change": "Remove 'Sarkhan, Fireblood' and 'Utvara Hellkite' from need[1]. Both were cut (Sarkhan in V6, Utvara Hellkite in V6), leaving Ancient Gold Dragon, Lathliss and Miirym.",
-      "why": "Two of the five names in that leg cannot be drawn. The measured 0.179 / 0.109 is arithmetically correct — a card not in the deck is simply never drawn — but the declaration overstates the leg by 40% of its names, and this is the target the deck's primary kill is measured through."
+      "change": "ADD Sneak Attack and Hellkite Courser to need[1], taking it from three names (Ancient Gold Dragon, Lathliss, Miirym) to five.",
+      "why": "Re-stated against the CURRENT declaration rather than the one round 1 read: the two cut cards it proposed removing, Sarkhan, Fireblood and Utvara Hellkite, are already gone — need[1] is exactly ['Ancient Gold Dragon', 'Lathliss, Dragon Queen', 'Miirym, Sentinel Wyrm'] and deck-audit reports the component at size 3 with not_in_deck empty, so that half of the round-1 pair is withdrawn. This half stands. Both cards literally put a Dragon onto the battlefield outside its mana cost — Sneak Attack any CREATURE CARD in hand for {R}, Courser the commander from the command zone — which is this leg's stated job, and stack 005 is a passing stack of Sneak Attack doing it. It moves the measured 0.179 / 0.109 UP, so it should be applied on its own and read on its own."
     },
     {
-      "target": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
-      "change": "Consider ADDING Sneak Attack and Hellkite Courser to need[1] after the two cuts above, as a separate decision from the correction.",
-      "why": "Both literally put a Dragon onto the battlefield outside the mana cost — Sneak Attack any creature in hand for {R}, Courser the commander from the command zone — which is the leg's stated job, and stack 005 proves Sneak Attack doing it. Proposed as a SEPARATE edit because it moves the rate UP and the correction above moves it down, and a human should not be handed one number that conceals two changes."
+      "target": "Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)",
+      "change": "Add a SECOND, separate target — 'A response castable at instant speed' — over Boros Charm, Deflecting Swat, Flawless Maneuver, Heroic Intervention, Mithril Coat, Stubborn Denial, Teferi's Protection, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar. Leave the existing nine-card leg alone apart from the Transcendent Dragon addition proposed below.",
+      "why": "'Protection held for the big turn' and 'can I respond on somebody else's turn' are different questions, and V6 was bought to answer the second. Checked card for card against cards.json: the seven named that are already in the declared leg are five Instants (Boros Charm, Deflecting Swat, Flawless Maneuver, Heroic Intervention, Teferi's Protection), Stubborn Denial (Instant) and Mithril Coat (Flash); Transcendent Dragon and Whirlwing Stormbrood both print Flash and are in the stage but not the leg. The two the declared leg holds that do NOT belong in the new one are Asceticism (a plain Enchantment) and Lightning Greaves (an Equipment) — always-on, and real protection, which is why the first target keeps them. Splitting them is what makes the next measurement readable."
     },
     {
-      "target": "Protection held for the big turn",
-      "change": "Add Asceticism, Mithril Coat, Stubborn Denial and Transcendent Dragon to the six-card any_of leg, making it ten.",
-      "why": "Every one of the six currently named predates V6, and none of V6's five additions to the protection stage is present — so the 0.665 assembled / 0.557 by turn six that deck-audit prints is a rate for the suite the pilot judged insufficient after five games. goldfish_metrics meta.interaction_suite_counted already names all four, so the model reads them and only the declaration is stale. This is the single edit without which nothing in the record measures what changed today."
-    },
-    {
-      "target": "Protection held for the big turn",
-      "change": "Consider a SECOND, separate target — 'A response castable at instant speed' — over Boros Charm, Deflecting Swat, Flawless Maneuver, Heroic Intervention, Mithril Coat, Stubborn Denial, Teferi's Protection, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar.",
-      "why": "'Protection held for the big turn' and 'can I respond on somebody else's turn' are different questions and V6 was bought to answer the second. Lightning Greaves and Asceticism are always-on and belong in the first but not the second; Whirlwing Stormbrood belongs in the second and protects nothing. Splitting them is what makes the next measurement readable."
-    },
-    {
-      "target": "Payoff + a castable dragon by mid-game",
-      "change": "Add Steel Hellkite, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar to need[1], the castable-Dragon leg.",
-      "why": "All three are Dragons that arrived in V6 and all three are exactly what that leg asks for — a body the payoff tier can trigger on, at five or six mana. Steel Hellkite is {6} colourless and so is castable in the widest range of hands of any Dragon in the 99. The leg currently names eight cards and none of them is newer than v1.0.2."
+      "target": "Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)",
+      "change": "Add Transcendent Dragon to the nine-card any_of leg, making it ten. Do NOT add Asceticism, Mithril Coat or Stubborn Denial — they are already declared.",
+      "why": "This is all that is left of the round-1 edit, which proposed four additions to a leg it described as holding six. The leg holds nine and three of the four were already in it. Transcendent Dragon is the residue: goldfish_metrics meta.interaction_suite_counted names it, the model can therefore read it, and it is a {4}{U}{U} flash counterspell that is also a Dragon body the conversion tier fires on. Expect the current 0.811 / 0.713 to move only slightly — a tenth name on an already-nine-card leg — which is itself the reason to apply it as its own edit rather than folding it into a bigger one."
     },
     {
       "target": "A Treasure source drawn — six in the 99, of which the model can SPEND only two",
       "change": "Relabel to name three, not two: '… of which the model can SPEND three'. Leave the six-card leg unchanged.",
-      "why": "Carried forward unapplied from the v1.0.2 model and still true: goldfish_metrics meta.treasure_sources_not_modelled names exactly three — Atsushi, Gadrak, Ganax — leaving three of six modelled. The 'two' dates from v1.0.0, when the unmodelled list was five. A label that misstates its own model is how a reader turns a floor into a ceiling."
+      "why": "Re-verified against the live files rather than carried forward: the label still reads 'only two', and goldfish_metrics meta.treasure_sources_not_modelled is exactly ['Atsushi, the Blazing Sky', 'Gadrak, the Crown-Scourge', 'Ganax, Astral Hunter'] — three of six unmodelled, so three modelled. The 'two' dates from v1.0.0, when the unmodelled list was five. A label that misstates its own model is how a reader turns a floor into a ceiling, and this stage's hoard figures (0.438 at turn six, 1.982 at turn ten) are read through it."
     },
     {
       "target": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
-      "change": "Move Twinflame Tyrant from need[1] (the castable-Dragon leg) to need[0] (the multiplier leg), making the legs 3 and 7 rather than 2 and 8. Do not add it to both.",
-      "why": "Carried forward unapplied. Twinflame Tyrant reads 'If a source you control would deal damage to an opponent or a permanent an opponent controls, it deals double that damage instead' — a Dragon-damage multiplier by the same test that admitted Atarka (double strike) and Thrakkus (double power), and unconditional where those two need an attack. It is currently counted as a BODY. Moving rather than adding matters: a card in both legs of an AND can satisfy the whole target by itself."
+      "change": "Move Twinflame Tyrant from need[1] (the castable-Dragon leg) to need[0] (the multiplier leg), making the legs 3 and 10. Do not add it to both.",
+      "why": "ARITHMETIC CORRECTED: round 1 said '3 and 7 rather than 2 and 8', which was true when it was written and is not now — commit 9d2c1db7 added Steel Hellkite, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar to need[1], and deck-audit now reports the two components at size 2 and size 11, both with not_in_deck empty. The move itself is unapplied and still right: Twinflame Tyrant reads 'If a source you control would deal damage to an opponent or a permanent an opponent controls, it deals double that damage instead' — a Dragon-damage multiplier by the same test that admitted Atarka (double strike) and Thrakkus (double power), and unconditional where those two need an attack. It is currently counted as a BODY. Moving rather than adding matters: a card in both legs of an AND can satisfy the whole target by itself."
+    },
+    {
+      "target": "WITHDRAWN — four round-1 edits that were already applied before they were written",
+      "change": "No action. Recording the withdrawal so the next reader does not re-propose them: (1) 'Remove Sarkhan, Fireblood from Dragon-restricted mana' — need[0] is already exactly ['Desolation of Smaug'] and deck-audit's spof component carries size 1 with not_in_deck EMPTY, so both halves of the round-1 why were false. (2) 'Remove Sarkhan, Fireblood and Utvara Hellkite from THE ENTRY KILL need[1]' — the leg is already the three surviving names. (3) 'Add Asceticism, Mithril Coat, Stubborn Denial and Transcendent Dragon to the protection leg' — three of the four are declared; only Transcendent Dragon survives, proposed separately above. (4) 'Add Steel Hellkite, Transcendent Dragon and Whirlwing Stormbrood to Payoff + a castable dragon need[1]' — applied in 9d2c1db7; the leg holds eleven names including all three and deck-audit reports comps of 7 and 11.",
+      "why": "Commits 6b003ab9 (2026-09-20 22:08) and 9d2c1db7 repaired the declaration; the round-1 model was written minutes later against the superseded values, and its 0.665 / 0.557 for the protection leg is the pre-repair figure where the live one is 0.811 / 0.713. Nothing in the decklist changed, so no freshness gate could see it. Every rate in this round has been re-read from data/decks/ur-dragon/goldfish_metrics.json and the deck-audit view generated for this run."
     }
   ],
   "critic": {
     "verdict": "fail",
     "findings": [
       {
-        "where": "proposed_goldfish_edits[3]",
-        "claim": "'Add Asceticism, Mithril Coat, Stubborn Denial and Transcendent Dragon to the six-card any_of leg, making it ten' / 'Every one of the six currently named predates V6, and none of V6's five additions to the protection stage is present' / 'the 0.665 assembled / 0.557 by turn six that deck-audit prints'",
-        "status": "miscounted",
-        "note": "THE MODEL'S OWN 'single edit without which nothing in the record measures what changed today', and it was already made before the model was written. goldfish_targets.json declares NINE cards, not six: [Asceticism, Boros Charm, Deflecting Swat, Flawless Maneuver, Heroic Intervention, Lightning Greaves, Mithril Coat, Stubborn Denial, Teferi's Protection], under the label 'Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)'. Three of the four cards this edit proposes adding are present. deck-audit engine.targets and goldfish_metrics.metrics.targets both print assembled 0.811 / by_turn_6 0.713 over a size-9 component — not 0.665 / 0.557, which is 15 points low. Traced: 0.665/0.557 was the value at commit 9011c637 (the V6 check-in sha named in deck_versions.paper.sha), superseded by commit 6b003ab9 ('the goldfish declaration repaired') at 2026-09-20 22:08:53 — five minutes before engine.json's mtime of 22:13. MECHANICALLY CHECKABLE: a rate quoted in engine.json that matches no target in the current goldfish_metrics.json is a gate validate_engine could run on every deck."
-      },
-      {
-        "where": "open_questions[3]",
-        "claim": "'The declared protection group names SIX cards and every one of them predates V6' / 'it cannot see the four cards bought to fix it' / 'Until this is re-run, no figure in this deck's record prices the change that was made today.'",
-        "status": "contradicts-artifact",
-        "note": "Same stale read as proposed_goldfish_edits[3], escalated into a dispatched question. The declaration names nine and three of them ARE V6 additions; the goldfish was re-run against them and the record already prices the change at 0.811 / 0.713. Dispatching this to `goldfish` spends a run to reproduce a number that exists. Transcendent Dragon is the one legitimate residue — it is in meta.interaction_suite_counted but not in the declared leg — so the question survives only if rescoped to that single card."
-      },
-      {
-        "where": "proposed_goldfish_edits[0]",
-        "claim": "'Remove Sarkhan, Fireblood from the single any_of leg, leaving [Desolation of Smaug]' / 'the declaration still reads as a two-card group' / 'deck-audit already prices the component as size 1 and lists the name under not_in_deck'",
-        "status": "contradicts-artifact",
-        "note": "goldfish_targets.json 'Dragon-restricted mana drawn' need[0] is already exactly ['Desolation of Smaug'] — one name, not two. deck-audit's engine.single_points_of_failure[0].component carries size 1 and not_in_deck: [] — the list is EMPTY, so the second half of the why is false as well. Repaired in 6b003ab9, before this model was written. The measured 0.170 the model quotes is correct."
-      },
-      {
-        "where": "proposed_goldfish_edits[1]",
-        "claim": "'Remove Sarkhan, Fireblood and Utvara Hellkite from need[1]. Both were cut... leaving Ancient Gold Dragon, Lathliss and Miirym' / 'Two of the five names in that leg cannot be drawn'",
-        "status": "contradicts-artifact",
-        "note": "THE ENTRY KILL need[1] is already ['Ancient Gold Dragon', 'Lathliss, Dragon Queen', 'Miirym, Sentinel Wyrm'] — three names, and neither cut card appears. deck-audit shows both components at size 3 with not_in_deck: []. Repaired in 6b003ab9. proposed_goldfish_edits[2], which proposes ADDING Sneak Attack and Hellkite Courser to the same leg, is still open and correct — it survives this finding."
-      },
-      {
-        "where": "proposed_goldfish_edits[7]",
-        "claim": "'Move Twinflame Tyrant from need[1] (the castable-Dragon leg) to need[0] (the multiplier leg), making the legs 3 and 7 rather than 2 and 8.'",
-        "status": "miscounted",
-        "note": "THE COMBAT KILL need[1] now holds ELEVEN names, not eight — Steel Hellkite, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar were added in commit 9d2c1db7, after this model was written. deck-audit reports comps=[(2, []), (11, [])]. The move itself is still correct and still unapplied; the arithmetic is 3 and 10. Fairest reading: right when written, stale now — but it is the number a revision would carry forward."
-      },
-      {
-        "where": "proposed_goldfish_edits[5]",
-        "claim": "'Add Steel Hellkite, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar to need[1], the castable-Dragon leg' / 'The leg currently names eight cards and none of them is newer than v1.0.2.'",
-        "status": "contradicts-artifact",
-        "note": "Already applied in commit 9d2c1db7: 'Payoff + a castable dragon by mid-game' need[1] holds eleven names including all three, and deck-audit reports comps=[(7, []), (11, [])]. Same class as [7] — correct at authoring, superseded now. Delete rather than re-propose."
+        "where": "thesis",
+        "claim": "'V6 bought a response suite four of whose six additions are castable at instant speed as printed, so the mana held for them is not dead; that the CASCADE itself can be taken on somebody else's turn needs Whirlwing Stormbrood on the battlefield and nothing verifies it.'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [8] RESOLVED, and resolved by splitting rather than by deleting — the half that oracle text carries is kept as fact and the half nothing measures is marked. Re-verified card for card in cards.json: Stubborn Denial is an Instant; Mithril Coat, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar each print Flash; Asceticism is a plain Enchantment and Steel Hellkite an Artifact Creature with no flash. FOUR of six. The surviving claim is now consistent with lines[7] (verified_by null) and with open_questions[0]'s existence."
       },
       {
         "where": "stages[0].what_it_does",
-        "claim": "'Land drops are where it frays: 0.756 at turn four, 0.615 at turn five, and 12 of 35 lands enter tapped (34%).'",
-        "status": "miscounted",
-        "note": "This deck has ONE unconditional tapland. mana_analysis.lands carries both enters_tapped: 12 AND enters_tapped_always: 1; deck-audit's `taplands` axis measures value 1 against a ceiling of 8, verdict AT, how = 'land copies that enter tapped with no condition and no pay-life escape', cards = [Path of Ancestry] — and it files the other eleven under conditional_or_shock (Blood Crypt, Breeding Pool, Canopy Vista, Cinder Glade, Dragonskull Summit, Overgrown Tomb, Sacred Foundry, Smoldering Marsh, Steam Vents, Stomping Ground, Turbulent Springs), every one of which the pilot can choose to enter untapped. Presenting 12 / 34% as a land-drop defect reports a verdict the audit does not hold. Compounding it: the two land-drop rates beside it come from a model whose own assumption reads 'LANDS ENTER UNTAPPED, ALWAYS', so the goldfish figures cannot be evidence about taplands in either direction. MECHANICALLY CHECKABLE: enters_tapped quoted without enters_tapped_always beside it."
-      },
-      {
-        "where": "lines[3]",
-        "claim": "from conversion to output, via ['Lathliss, Dragon Queen', 'Dragon Tempest'], carries 'bodies', verified_by 007 — 'no Panharmonicon, Miirym triggers once, one copy enters, and the cascade totals 20 damage in four instances'",
-        "status": "over-claimed",
-        "note": "The arrow carries 'bodies' and Lathliss makes none on this board. Stack 007 step 5 rules it explicitly: 'original Lathliss requires a NONTOKEN Dragon, so no 5/5 is made either' — her body-making ability fires ZERO times, and the one token is Miirym's (step 4: 'Miirym's single trigger resolves... You create Token A'). Of 007's four instances, exactly two are Lathliss's own entry (Terror 6 + Tempest 4 = 10); the other two are Token A's entry (6 + 4 = 10), caused by Miirym, which is not in this line's via. So the 20 this arrow claims is 10 from the named pair. The model already knows how to do this: lines[1] attributes 24 of 36 to Miirym's copies and hands the other 12 back to wave-1. Either re-via to ['Miirym, Sentinel Wyrm', 'Dragon Tempest'] or carry the 10/10 split in the note. The stack NAMES both cards and passes the mechanical gate; it does not establish that Lathliss feeds bodies to Tempest."
-      },
-      {
-        "where": "thesis",
-        "claim": "'and V6 wraps that turn in flash so it can be taken on somebody else's.'",
-        "status": "over-claimed",
-        "note": "Stated as fact in the first thing a reader sees, and the model's own lines[7] says of exactly this claim 'V6's whole thesis as a single arrow, and nothing verifies it', verified_by: null; open_questions[0] then asks whether the cascade resolves at instant speed at all. Half of it is sound from oracle text and should be kept: four of the six V6 additions are castable at instant speed as printed (Stubborn Denial is an instant; Mithril Coat, Transcendent Dragon and Whirlwing Stormbrood print Flash), so the RESPONSES can be held up. What is unverified is the clause 'so it can be taken on somebody else's [turn]' — the cascade itself on an opponent's turn, which needs Whirlwing Stormbrood on the battlefield and which nothing measures. Scope the thesis to the responses, or mark the second clause as the claim it is."
+        "claim": "'mana_analysis.lands.enters_tapped reads 12 but counts two groups together... deck-audit's taplands axis measures 1 against a ceiling of 8, verdict AT... and names it: Path of Ancestry... The goldfish cannot arbitrate either way: its own assumption reads LANDS ENTER UNTAPPED, ALWAYS.'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [6] RESOLVED. Re-derived: deck-audit axes.taplands measured.value 1, target.high 8, verdict 'at', how 'land copies that enter tapped with no condition and no pay-life escape', cards ['Path of Ancestry'], conditional_or_shock 11 with the eleven names listed, and the axis's own note 'mana_analysis.lands.enters_tapped is a substring superset and counts both groups together'. goldfish_metrics.meta.model_assumptions carries 'LANDS ENTER UNTAPPED, ALWAYS' verbatim. Both figures are now on the page with the verdict attached, and the model says which instrument cannot answer. This is the strongest of the twelve repairs."
       },
       {
         "where": "stages[3].what_it_does",
-        "claim": "'Panharmonicon makes every entry trigger of a permanent you control fire twice'",
-        "status": "over-claimed",
-        "note": "cards.json oracle: 'If an ARTIFACT OR CREATURE entering causes a triggered ability of a permanent you control to trigger, that ability triggers an additional time.' An enchantment or land entering does not double — 'every entry trigger' is wider than the card. The model's own lines[2] scopes it correctly ('because each is caused by a creature entering'), and stack 002 step 3 is careful about it too ('Panharmonicon does not care whether the ability reads Dragon, creature, or nontoken Dragon, only what caused it to trigger'). The stage prose is looser than the line it is supposed to summarise."
+        "claim": "'Panharmonicon fires a permanent's triggered ability an additional time when an ARTIFACT OR CREATURE entering caused it — not an enchantment or a land' / 'Sneak Attack and Hellkite Courser buy arrivals the mana never paid for — {R} for a CREATURE CARD in hand — the scope stack 005 turns on'",
+        "status": "supported",
+        "note": "ROUND-1 FINDINGS [9] AND [14] RESOLVED, both against cards.json oracle text: Panharmonicon reads 'If an artifact or creature entering causes a triggered ability of a permanent you control to trigger, that ability triggers an additional time'; Sneak Attack reads '{R}: You may put a creature card from your hand onto the battlefield'. The stage prose now matches lines[2]'s scoping and stack 002 step 3, and it names why the Sneak Attack scope matters (005's part (b) refutation) instead of just narrowing the word."
       },
       {
         "where": "stages[4].evidence[2]",
-        "claim": "'stack 007 step 8 answers (c): stack 002's twelve any target instances reach 42 aimed at a single seat, so a 40-life player is killable off that board'",
-        "status": "mis-cited",
-        "note": "Wrong step, three times over — the same pointer appears in stages[4].what_it_does ('Stack 007 step 8 then settles the harder question') and stages[6].what_it_does ('per 007 step 8, can reach 42 at a single seat'). Stack 007 has nine steps. Step 8 is headed 'State-based actions are checked between each resolution and after the last — ANSWERING (b)' and concludes 'NO — this is not lethal to the 32-life seat'. The any-target / 6,12,16,20,26,32,37,42 / kills-a-40-life-seat answer is STEP 9, 'Answering (c)', citing 115.4, glossary:any-target, 601.2c, 704.5a, 704.3. The claim is true and checker-passed; only the pointer is wrong. Note that stages[1]'s 'Stack 007 step 8 rules it, citing 601.2f' IS correct — 601.2f is cited in step 8 and the quoted sentence 'a cost reduction is not optional and the printed {4}{R}{R} is not payable as written' is verbatim there."
-      },
-      {
-        "where": "open_questions[1]",
-        "claim": "'Stack 005 ... names Hellkite Courser ... as the card that actually does what the frame claimed — and then never resolves it' / 'Courser may be this deck's real commander route and nothing in the evidence base measures it.'",
-        "status": "contradicts-artifact",
-        "note": "The quotation is exact (stack 005's part-(a)/(b) conclusion). But stacks/008-courser-brings-the-commander.json already resolves this question in eleven steps and answers all four parts the open question asks: THREE legal attackers (Ganax, Courser, The Ur-Dragon), THREE cards drawn, EXACTLY ONE permanent from hand, and commander tax UNCHANGED at {0} additional because putting is not casting. Its checker verdict is `fail` on ONE citation — step 4's 608.2k, which the checker says 'points the wrong way' while agreeing 'the CONCLUSION is right'. So a failing stack is correctly not evidence, but 'never resolves it' is false and the work outstanding is repairing one citation, not authoring a new stack. Naming 008 here is the difference between a cheap fix and a re-spend."
-      },
-      {
-        "where": "stages[2].evidence[1]",
-        "claim": "'Breaching Dragonstorm, Roiling Dragonstorm, Garruk's Uprising and Temur Ascendancy file with the Dragons — the map hears the Dragon-typal trigger and the haste grant'",
-        "status": "contradicts-artifact",
-        "note": "Garruk's Uprising has neither. Its full oracle is 'When this enchantment enters, if you control a creature with power 4 or greater, draw a card / Creatures you control have TRAMPLE / Whenever a creature you control with power 4 or greater enters, draw a card' — no Dragon-typal trigger, no haste. The model's own map_disagreements[1] enumerates Garruk's Uprising among the 'NINE of the 29 [that] mention Dragons nowhere', which I verified card for card against city-2's membership and cards.json oracle text: the nine are exactly right. Two entries in one artifact disagree about the same card."
+        "claim": "'step 9 answers (c): stack 002's twelve any target instances reach 42 aimed at a single seat' — and the same pointer corrected in stages[4].what_it_does and stages[6].what_it_does",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [10] RESOLVED in all three places. Re-counted stack 007: nine steps; step 8 is the state-based-action step answering (b) and cites 704.3 / 704.5a / 704.5j / 601.2f / 601.2h; step 9 is 'Answering (c)' and cites 115.4 / glossary:any-target / 601.2c / 704.5a / 704.3 and carries the 6,12,16,20,26,32,37,42 running total. Equally important, the revision did NOT over-correct: the three live references to '007 step 8 ... citing 601.2f' in stages[1] and lines[5] are untouched and remain correct, since 601.2f IS cited in step 8. The only remaining 'step 8' strings in the file are inside the embedded round-1 critic block, where they belong."
       },
       {
         "where": "stages[4].what_it_does",
-        "claim": "'Crux of Fate is the sweeper'",
+        "claim": "'Crux of Fate is the UNCONDITIONAL sweeper and one of two on deck-audit's sweepers axis'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [13] RESOLVED, and resolved by enumeration rather than by hedging. deck-audit axes.sweepers measured.value 2, cards ['Crux of Fate', 'Steel Hellkite'], verdict 'at'. The re-scoped claim is the true one: Crux destroys all Dragon or all non-Dragon creatures with no gate, Steel Hellkite's {X} is gated on 'whose controller was dealt combat damage by this creature this turn'."
+      },
+      {
+        "where": "stages[2].evidence[1]",
+        "claim": "'Garruk's Uprising has NEITHER a Dragon-typal trigger nor a haste grant — its text is an enters-draw, trample, and a draw on any power-4 creature entering'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [12] RESOLVED, and the revision states plainly that the round-1 note was wrong about one of the four rather than rewording around it. Verified in cards.json: Breaching Dragonstorm and Roiling Dragonstorm both read 'When a Dragon you control enters, return this enchantment to its owner's hand'; Temur Ascendancy reads 'Creatures you control have haste'; Garruk's Uprising reads enters-draw / trample / 'Whenever a creature you control with power 4 or greater enters' and contains the word Dragon nowhere. The note is now consistent with map_disagreements[1]'s nine-card enumeration. (One residue filed separately below.)"
+      },
+      {
+        "where": "proposed_goldfish_edits[5]",
+        "claim": "'WITHDRAWN — four round-1 edits that were already applied before they were written', recording all four by name",
+        "status": "supported",
+        "note": "ROUND-1 FINDINGS [0], [2], [3] AND [5] RESOLVED, by withdrawal plus a permanent record so nobody re-proposes them. Re-derived from data/decks/ur-dragon/goldfish_targets.json in the working tree: 'Dragon-restricted mana drawn' need[0] == ['Desolation of Smaug'] (one name); THE ENTRY KILL need[1] == ['Ancient Gold Dragon', 'Lathliss, Dragon Queen', 'Miirym, Sentinel Wyrm']; the protection leg holds nine names under the label 'v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial'; 'Payoff + a castable dragon by mid-game' need[1] holds eleven names including Steel Hellkite, Transcendent Dragon and Whirlwing Stormbrood // Dynamic Soar. deck-audit engine.targets components: (1,[]), (3,[])+(3,[]), (9,[]), (7,[])+(11,[]) — every not_in_deck empty. Commit attribution checks too: 6b003ab9 'the goldfish declaration repaired' (2026-09-20 22:08:53) and 9d2c1db7 both touch data/decks/ur-dragon/goldfish_targets.json."
+      },
+      {
+        "where": "proposed_goldfish_edits[4]",
+        "claim": "'Move Twinflame Tyrant from need[1] to need[0], making the legs 3 and 10'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [4] RESOLVED and the arithmetic is right. THE COMBAT KILL need[0] holds two names (Atarka, World Render; Thrakkus the Butcher) and need[1] eleven; deck-audit reports the two components as (2, []) and (11, []). Moving one name gives 3 and 10. The revision also says out loud that round 1's '3 and 7' was true when written and stale by the time it was read, which is the correct form of a rebuttal-with-correction."
+      },
+      {
+        "where": "open_questions[3]",
+        "claim": "'Add Transcendent Dragon to the declared \"Protection or a RESPONSE held for the big turn\" leg (taking it from nine cards to ten) and re-run... against the CURRENT 0.811 assembled / 0.713 by turn six'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [1] RESOLVED. The rate is now the live one: goldfish_metrics.metrics.targets and deck-audit engine.targets both carry assembled_rate 0.811 / by_turn_6_rate 0.713 for the size-9 protection component. Transcendent Dragon is genuinely the residue — it is in goldfish_metrics.meta.interaction_suite_counted (22 names) and absent from the declared leg. Whirlwing Stormbrood is correctly routed to the second proposed target instead, on the stated ground that it protects nothing itself. A goldfish spawn dispatched on this question now buys a number that does not exist rather than reproducing one that does."
+      },
+      {
+        "where": "lines[3].via",
+        "claim": "via re-aimed from ['Lathliss, Dragon Queen', 'Dragon Tempest'] to ['Miirym, Sentinel Wyrm', 'Dragon Tempest']",
+        "status": "supported",
+        "note": "ROUND-1 FINDING [7] RESOLVED AS TO THE ARROW. Stack 007 step 4: 'Miirym's single trigger resolves... You create Token A'. Step 5: 'original Lathliss requires a NONTOKEN Dragon, so no 5/5 is made either', and step 2 rules that Lathliss's own ability does not see her own entry — so Lathliss makes zero bodies anywhere on this board and the arrow that carried 'bodies' through her was an arrow about neither card's actual behaviour. The line now names the card that makes the body, and validate-engine still passes (7 stages, 97 cards placed, 0 unassigned, 5/8 lines verified) with Miirym in the conversion stage's cards and Dragon Tempest in output's. Dropping Lathliss's arrow into output is accurate rather than a weakening: she makes no token on 002's board either, for the same nontoken clause. Two figures in the replacement NOTE are filed separately below."
+      },
+      {
+        "where": "(whole artifact)",
+        "claim": "partial-revision integrity: only the pieces round 1 named were touched",
+        "status": "supported",
+        "note": "Diffed the working tree against HEAD field by field: exactly twelve values changed — thesis, four what_it_does (mana, conversion, output, wincon), two evidence notes (stages[2] city-2, stages[4] stack-007), lines[3].via and lines[3].note, open_questions[1] and [3], and the proposed_goldfish_edits list. Everything round 1 marked `supported` is byte-identical: lines[0], [1], [2], [4], [5], [6], [7]; all six map_disagreements entries; stages[1] and stages[5] what_it_does; absent_stages[0]; and single_point_of_failure null on all seven stages. Nothing was quietly softened to make an objection stop parsing, and `manamap pilot validate-engine ur-dragon` still returns OK."
+      },
+      {
+        "where": "open_questions[1]",
+        "claim": "'Repair stack 008's one failing citation and re-run the checker' / 'Its verdict is `fail` on ONE citation' / 'the work outstanding is a citation repair, not a new scenario, and that is the difference between a cheap fix and a re-spend'",
         "status": "contradicts-artifact",
-        "note": "A definite article the artifact's own sentence refutes eleven words later. deck-audit's `sweepers` axis measures value 2 — cards: [Crux of Fate, Steel Hellkite] — and the model then describes Steel Hellkite destroying 'every nonland permanent of a chosen mana value controlled by a player it dealt combat damage to'. Enumerate before the superlative: 'the unconditional sweeper' is the true form, since Steel Hellkite's is gated on connecting."
+        "note": "NEW, AND IT ORIGINATES IN MY OWN ROUND-1 TEXT — round-1 finding [11] asserted 'fail on ONE citation' and the revision adopted it in good faith. It is wrong. stacks/008-courser-brings-the-commander.json's checker block carries 33 findings: 26 `supported`, 6 `unsupported`, 1 `misquoted`. SEVEN are non-supported, not one. Enumerated: step 4's 608.2k `unsupported` (the one the question names); step 9's 608.2k `misquoted` ('accurate text used to imply something the rule does not say' — the three-attacker count surviving a creature leaving); step 10's 508.3a `unsupported` ('read carelessly it argues against it'); and FOUR flagged MISSING STEPS — 702.9b, evasion never established anywhere in the resolution although final_state rules on blocking for all three seats; 508.1b, attacker assignment never made although final_state prints 'attack_power_available: 3 + 6 + 10 = 19'; 603.10, the rule the checker says actually settles step 10's Atarka claim; 508.1f, the turn-based action that taps the attackers. Repairing step 4 alone leaves six findings standing and the stack still reads `fail`, so 'a cheap fix, not a re-spend' is not grounded and a resolve-stack spawn dispatched on this question is under-scoped by six defects, two of which require WRITING STEPS rather than swapping a rule number. Re-scope the question to all seven, or state which six are being deferred and why. MECHANICALLY CHECKABLE: an engine open_question that characterises a stack's checker verdict can be checked against that stack's count of non-`supported` findings — validate_engine already parses stacks/*.json for verified_by."
       },
       {
-        "where": "stages[3].what_it_does",
-        "claim": "'Sneak Attack and Hellkite Courser buy arrivals the mana never paid for — {R} for anything in hand'",
-        "status": "over-claimed",
-        "note": "Sneak Attack reads '{R}: You may put a CREATURE CARD from your hand onto the battlefield' — not anything. The scope is not a pedantic point on this deck: stack 005's whole part (b) is a refutation that turns on what Sneak Attack's text reaches, and the model's own proposed_goldfish_edits[2] states it correctly ('Sneak Attack any creature in hand for {R}'). One word."
+        "where": "lines[3].note",
+        "claim": "'of that 8 exactly 4 is Token A's entry — Miirym's body, priced by Tempest at X=4 (step 6). So this named pair carries 4 of the 20, not 10 and not 20'",
+        "status": "miscounted",
+        "note": "NEW — the sharpening overshot by one, and stack 007 states the missing increment itself. Step 3: 'put Miirym's trigger on the stack LAST so it resolves FIRST... every Tempest trigger that resolves after Miirym's token has entered counts 4 Dragons instead of 3.' Step 7: 'Dragon Tempest: X counted now = 4 Dragons (Miirym, Terror, Lathliss, Token A), so Lathliss deals 4... had the wave-1 Tempest trigger resolved before Miirym's, X would have been 3 and the total 19.' So under the ordering that produces the 20, ONE of the wave-1 Tempest instance's 4 points is also Token A — Miirym's body — being counted. Dragon Tempest damage caused by the body Miirym made is 4 + 1 = 5 of the 20, and 5 is the number the stack supports for this pair. Either say 5, or say 4 AND state that the X increment on Lathliss's own instance is deliberately excluded; 'exactly 4' with neither is a figure the cited stack does not carry. This is refutable and I want it refuted if the engineer has a reason to book the increment elsewhere — but the current note gives none."
       },
       {
-        "where": "lines[0]",
-        "claim": "Ancient Gold Dragon -> Dragon Tempest, verified_by 001: fifteen tokens as one event, X = 17 (2 pre-existing + 15), 255 available, the 30-life seat dies to the second",
-        "status": "supported",
-        "note": "Every figure is in stack 001 and the arrow is a feed, not a coincidence: the tokens ARE what Tempest triggers on and what it counts. Step 7 says 'X = 17 for each trigger — note this is 2 pre-existing Dragons, not 3', step 10 '15 triggers x 17 = 255', step 11 'after the second resolves they are at -4'. Dragon Tempest correctly excluded as an Enchantment. The Commander Spellbook claim also checks: deck-facts combos.contained = 1, and the one line is [Dragon Tempest, Ancient Gold Dragon], bracket 3, produces 'Near-infinite damage' — so 'the deck's one fully-contained line' is an enumerated superlative, not a remembered one."
+        "where": "lines[3].note",
+        "claim": "'the split by CAUSE is 10 to Lathliss's own entry and 10 to Token A, but half of each 10 belongs to Terror, which is in neither via'",
+        "status": "miscounted",
+        "note": "NEW, and it is the arithmetic in the sentence whose whole job is to correct an attribution. Each 10 is NOT split in half. Stack 007 step 6 (Token A's entry): 'Terror of the Peaks... so 6 damage to the announced target. Dragon Tempest... Token A deals 4 damage.' Step 7 (Lathliss's own entry): 'Terror 6 + 6 = 12, Tempest 4 + 4 = 8.' Terror takes 6 of each 10 and Dragon Tempest 4 — 60/40, not half. The error compounds with the finding above: taken literally, 'half of each 10 belongs to Terror' leaves 5 for Dragon Tempest and so contradicts the 'exactly 4' it is offered to justify. The correct sentence is one clause: of each 10, Terror of the Peaks takes 6 and Dragon Tempest 4, and Terror is in neither via."
       },
       {
-        "where": "lines[1]",
-        "claim": "Miirym -> Terror of the Peaks, verified_by 002: Terror 36 across six instances of 6, of which 24 attributable to Miirym's two copies and 12 to wave-1 on Lathliss's own entry",
-        "status": "supported",
-        "note": "The best line in the model, because it is the only one that does the attribution arithmetic instead of claiming the whole total. Stack 002 steps 7, 9 and 10: Token A's Terror x2 = 12, Token B's Terror x2 = 12 (24 from Miirym), wave-1 Terror x2 = 12. final_state.damage_instances confirms six 6s. 'which Miirym did not cause' is exactly the sentence a critic hopes to find."
-      },
-      {
-        "where": "lines[2]",
-        "claim": "Panharmonicon -> Dragon Tempest, verified_by 002: Tempest's six instances read 4,4,5,5,5,5 for 28; 007 measures the counterfactual at 20",
-        "status": "supported",
-        "note": "Verbatim against stack 002 final_state.damage_instances [6,6,4,4,6,6,5,5,6,6,5,5] and step 11's 'Tempest: 4+4+5+5+5+5 = 28', and against 007's 20 in four. 68.75% = (64-20)/64 checks. The Panharmonicon scoping is correct HERE ('because each is caused by a creature entering') even though stages[3] states it too widely."
-      },
-      {
-        "where": "lines[4]",
-        "claim": "Sneak Attack -> Drakuseth, verified_by 005: {R}, haste, attack trigger fires the same turn for 4+3+3, connects for 7, all 17 stands after the mandatory end-step sacrifice",
-        "status": "supported",
-        "note": "Stack 005 steps 1-9 carry every element, including that the sacrifice has no 'may' (step 8) and that dealt damage is a one-shot effect that the sacrifice does not undo (step 9). The line also correctly reports the stack's own REFUTATION against itself — that this arrow can never point at the commander — which is the rarer discipline. One imprecision not worth its own finding: stages[6] calls it '17 from an empty board', where 005's board.you is Sneak Attack plus four lands and the hand holds Drakuseth."
-      },
-      {
-        "where": "lines[5]",
-        "claim": "ignition -> conversion via [The Ur-Dragon, Lathliss], verified_by null: 'A CLAIM, and the null is load-bearing'",
-        "status": "supported",
-        "note": "The model could have claimed this one and did not, and the reason it gives is exactly right. Stack 007's scenario note reads 'the scenario pays full price so the cascade, not the discount, is what is being measured', and no Ur-Dragon appears on any 007 or 002 board — so eminence is verified as a RULE (007 step 8, 601.2f) and unverified as this deck's route into the cascade. Dashed, and the note never slips into the present indicative."
-      },
-      {
-        "where": "lines[6]",
-        "claim": "conversion -> fuel via [Miirym, Ganax], verified_by null: Ganax has no nontoken clause so Miirym's token copies 'SHOULD each pay a Treasure'",
-        "status": "supported",
-        "note": "Oracle confirmed: 'Whenever Ganax or another Dragon you control enters, create a Treasure token' — no nontoken restriction, unlike Miirym's and Lathliss's own triggers. The note is conditional throughout and states what is missing ('neither board contained Ganax'), which is true of 001, 002, 005 and 007. Honest dashed line."
-      },
-      {
-        "where": "lines[7]",
-        "claim": "protection -> conversion via [Whirlwing Stormbrood // Dynamic Soar, Lathliss], verified_by null: 'V6's whole thesis as a single arrow, and nothing verifies it'",
-        "status": "supported",
-        "note": "The oracle quotation is exact and Lathliss is a Dragon spell, so the grant reaches her; the note stays in the conditional ('If it holds') and names the prescription it would answer. The line is clean — it is the THESIS that states the same claim as fact, which is filed separately."
-      },
-      {
-        "where": "stages[5].what_it_does",
-        "claim": "'FOUR of the six are castable at instant speed as printed — Stubborn Denial is an instant; Mithril Coat, Transcendent Dragon and Whirlwing Stormbrood have flash; Asceticism and Steel Hellkite do not' / interaction_castable_by_turn 0.311 / 0.415 / 0.510 'and the model's own note calls that a FLOOR'",
-        "status": "supported",
-        "note": "Checked card by card against cards.json: Stubborn Denial is an Instant; Mithril Coat, Transcendent Dragon and Whirlwing Stormbrood each print Flash; Asceticism is a plain Enchantment and Steel Hellkite an Artifact Creature with no flash. The three rates are verbatim from goldfish_metrics.metrics.interaction_castable_by_turn, and the FLOOR note exists in meta.model_assumptions ('HELD-UP INTERACTION is reported as two series and both are FLOORS'). 12 legendary creatures for Mithril Coat also checks (cards.json has exactly 12, one of which is the commander). Prose is sound; the stale protection rate lives in open_questions and proposed_goldfish_edits, not here."
-      },
-      {
-        "where": "map_disagreements",
-        "claim": "all six entries, including 'THE CITY NAMES ARE DETERMINISTIC FALLBACKS' and the city-2 'Bodies' breakdown",
-        "status": "supported",
-        "note": "Recomputed every membership claim against deck_map.json and the stage assignments, and all of them land exactly. Region sizes 15/11/29/17/5/5/15 match city-0..city-6. city-0 = protection 7 + ignition 5 + conversion 3 = 15; city-2 = output 10, conversion 7, protection 5, fuel 4, wincon 2, mana 1 = 29 (29/97 = 30%); city-3 is 17 lands of 17; city-6 is 15 lands of 15; city-4 = fuel 2 + mana 3; city-5 = mana 4 + fuel 1. The nine city-2 cards that mention Dragons nowhere are exactly the nine named. Every region in deck_map.json does carry label: null with a `fallback`. Each entry names which artifact is wrong about what rather than hedging — this section is the model's strongest."
+        "where": "open_questions[0]",
+        "claim": "'five of six additions are instant-speed and Whirlwing is the card that makes the DECK instant-speed'",
+        "status": "contradicts-artifact",
+        "note": "PRE-EXISTING, MISSED BY ROUND 1, AND NOW A SELF-CONTRADICTION THE REVISION CREATED BY FIXING THE THESIS. The revised thesis says 'four of whose six additions are castable at instant speed as printed'; stages[5].what_it_does says 'FOUR of the six are castable at instant speed as printed — Stubborn Denial is an instant; Mithril Coat, Transcendent Dragon and Whirlwing Stormbrood have flash; Asceticism and Steel Hellkite do not'. open_questions[0] says five. cards.json settles it: of V6's six additions (Asceticism, Mithril Coat, Stubborn Denial, Transcendent Dragon, Whirlwing Stormbrood // Dynamic Soar, Steel Hellkite), Stubborn Denial is an Instant and three print Flash — FOUR. Asceticism is 'Enchantment' with no flash; Steel Hellkite is 'Artifact Creature — Dragon' with no flash. One number, stated three times, disagreeing once. This is exactly the shape of round-1 finding [12] (two entries in one artifact disagreeing about one card) and it should be fixed in the same pass."
       },
       {
         "where": "stages[0].what_it_does",
-        "claim": "32 land entries / 35 copies; 23 ramp copies vs 10-12 (OVER); mana-base UNDER at 35 vs 36-38; black 21 sources vs 30 with on-curve 0.729 against 0.822+ elsewhere; the five RESTRICTED sources; 31 cards want {R} for 48 red pips against 17 cards and 19 green",
-        "status": "supported",
-        "note": "Every figure re-derived. deck-audit mana-base measured.land_entries 32 / value 35; ramp value 23 verdict over; colour-sources per_colour B have 21 target 30, short 9. mana_analysis.on_curve_probability.with_rocks_and_dorks = B 0.729, R 0.822, W 0.881, U 0.881, G 0.907 — so '0.822 or better' is the correct floor for the other four. pips R total 48 / cards 31, G 19 / 17. deck-facts names the five restricted sources as exactly Cavern of Souls, Delighted Halfling, Desolation of Smaug, Maelstrom of the Spirit Dragon, Unclaimed Territory. Blue 20 vs 22 at 0.881 in open_questions[4] also checks."
+        "claim": "'The other eleven are shocks and check-lands filed conditional_or_shock, each of which can be chosen to enter untapped.'",
+        "status": "over-claimed",
+        "note": "NEW, and again inherited from my own round-1 wording ('every one of which the pilot can choose to enter untapped') — it was wrong there and it is wrong here. Enumerated from cards.json, all eleven: SIX are shocks with a real choice ('As this land enters, you may pay 2 life. If you don't, it enters tapped') — Blood Crypt, Breeding Pool, Overgrown Tomb, Sacred Foundry, Steam Vents, Stomping Ground. FIVE are not a choice at all. Dragonskull Summit: 'enters tapped unless you control a Swamp or a Mountain'. Canopy Vista, Cinder Glade and Smoldering Marsh: 'enters tapped unless you control two or more basic lands'. Turbulent Springs: 'enters tapped unless YOUR OPPONENTS control eight or more lands' — a condition that is false precisely on turns four and five, the turns the sentence is arguing about, and one the pilot cannot influence in any direction. 'Shocks and check-lands' also mislabels four battle lands and one opponent-gated land. deck-audit's field is named `conditional_or_shock` and claims no choice; the prose adds one. The headline correction (value 1, verdict AT, Path of Ancestry) is untouched by this and stands — but the sentence is doing argumentative work ('TAPLANDS ARE NOT WHY') on a universal that five of eleven cards refute."
       },
       {
-        "where": "stages[1].what_it_does",
-        "claim": "cost reducer 0.521 / 0.421 assembled, mean turn 3.26, 0.670 / 0.558 assisted; reducer+ramp 0.462 / 0.337; commander on the battlefield by t6 in 0.333, mean cast 6.881, median 7, never arrives in 2,277 of 10,000",
-        "status": "supported",
-        "note": "All verbatim from goldfish_metrics: targets 'Cost reducer drawn' 0.521/0.67/0.421/0.558/3.26, 'Reducer + ramp assembled' 0.462/0.337, metrics.commander cast_by_turn_6_rate 0.333, mean_cast_turn 6.881, median_cast_turn 7, cast_turn_histogram.not_by_max_turn 2277. Also checked and sound: 'Ramp or fixing drawn' 0.906 at mean turn 2.223, mean_available_mana 5.948 at t5, land drops 0.756/0.615, Treasure source 0.688/0.572 with hoard 0.438 at t6 and 1.982 at t10, THE ENTRY KILL 0.179/0.109, Desolation 0.170, and every wincon figure (median 7, mean 7.166, 0.297/0.621, 0.04 never by t10, board power 14.877/19.887). meta.treasure_sources_not_modelled is exactly [Atsushi, Gadrak, Ganax] as the fuel stage says."
+        "where": "stages[2].evidence[1]",
+        "claim": "'All four are here for the cantrip and the two draws, which is the half the map does not hear.'",
+        "status": "miscounted",
+        "note": "NEW, in the sentence that replaced the one round-1 finding [12] corrected. Four cards are accounted for by three jobs, and the singular 'the cantrip' contradicts this stage's own label — 'TREASURE, TWO CANTRIPS THAT COME BACK' — and its own what_it_does, 'Breaching and Roiling Dragonstorm are cantrips that RETURN TO HAND'. On the merits the label is the looser one: Breaching Dragonstorm draws nothing. Its text is 'exile cards from the top of your library until you exile a nonland card. You may cast it without paying its mana cost if that spell's mana value is 8 or less. If you don't, put that card into your hand' — impulse access, not a cantrip — and deck-audit's card-advantage axis counts exactly four copies, Atsushi, Garruk's Uprising, Roiling Dragonstorm and Temur Ascendancy, with Breaching Dragonstorm NOT among them. One draw (Roiling), two power-4 draw triggers (Garruk's Uprising, Temur Ascendancy) and one impulse (Breaching) is the true enumeration."
       },
       {
-        "where": "stages[3].cards",
-        "claim": "Hellkite Courser — 'a body that puts the commander in with haste and returns it to the command zone with no tax'",
-        "status": "supported",
-        "note": "Checked against the card because a wrong reading of it was flagged as likely. cards.json: 'When this creature enters, you may put a commander you own from the command zone onto the battlefield. It gains haste. Return it to the command zone at the beginning of the next end step.' It is an ETB, not an attack trigger; the haste is the Courser's own grant; and the no-tax claim is confirmed by stack 008 step 11 ('it was never cast... it still costs {4}{W}{U}{B}{R}{G} with no additional {2}'). NOWHERE does this model describe the Courser as needing another Dragon on the battlefield — it is itself a 6/5 flying Dragon and the model never says otherwise. open_questions[1] describes the trigger correctly as an ETB."
-      },
-      {
-        "where": "stages[*].single_point_of_failure",
-        "claim": "null on all seven stages",
-        "status": "supported",
-        "note": "Not an omission, and I checked it against the temptation to price one per stage. deck-audit names exactly ONE spof component — Desolation of Smaug, size 1, thinnest true, 0.170 assembled — and the model reports it in prose while declining to file it as a stage spof, correctly: a 44-card mana stage does not fail on a Dragon-restricted sorcery, and the component reads size 1 only because a cut card left a two-card leg. stages[3] argues its null explicitly against stack 007's Panharmonicon counterfactual (20 of 64) and lands on the right side — three multiplier routes work without each other. This is the class of deck where over-pricing spofs would have been easy."
-      },
-      {
-        "where": "absent_stages[0]",
-        "claim": "fodder absent, 'RE-VERIFIED against the current 97 entries rather than carried forward'",
-        "status": "supported",
-        "note": "The regex scan is enumerated rather than asserted: eleven 'sacrific' hits, each named and each dismissed with a reason (four fetches, Gemstone Mine, Sunbaked Canyon and Maelstrom sacrifice THEMSELVES; Gadrak/Ganax/Goldspan print only the Treasure token's own reminder; Sneak Attack's end-step sacrifice is the price of its effect). The scope is stated ('permanents as an engine cost, not resources in general') and the standing oddity — Gadrak, a fodder payoff in a deck with no fodder — is named rather than buried. This is how an absent stage should be argued."
-      },
-      {
-        "where": "stages[5].what_it_does",
-        "claim": "length, not content — 1,784 characters against the 1,800 cap",
-        "status": "supported",
-        "note": "FOR THE ORCHESTRATOR, not a defect. Five of seven what_it_does are within ~150 characters of the cap: protection 1784 (16 spare), conversion 1766 (34), fuel 1754, mana 1678, output 1664. Three of those five are stages a revision must change — mana (the tapland figure), conversion (Panharmonicon's scope, Sneak Attack's scope, the step-8 pointer) and output (the step-8 pointer, 'the sweeper'). The revision will have to cut before it can add, and none of the corrections above is longer than the text it replaces if it is written tightly. Worth saying up front so the next round does not discover it at the validator."
+        "where": "stages[*].what_it_does",
+        "claim": "the revision's report that all seven what_it_does 'now sit at 1650–1796 against the 1,800 cap'",
+        "status": "miscounted",
+        "note": "NEW, and low-stakes: every stage IS under the cap and `manamap pilot validate-engine ur-dragon` returns OK, so nothing is at risk. But the range is wrong at both ends. Measured with len() on the live file, the same way validate_engine.MAX_WHAT_IT_DOES (1800) is applied at validate_engine.py:213: mana 1766, ignition 1589, fuel 1754, conversion 1731, output 1723, protection 1784, wincon 1650. The range is 1589–1784. No stage reaches 1796, and ignition sits 61 characters below the claimed floor. Against HEAD the four that changed are mana 1678→1766 (+88), conversion 1766→1731 (−35), output 1664→1723 (+59), wincon 1617→1650 (+33); ignition, fuel and protection are byte-identical. The real headroom for the next round is 16 characters on protection and 34 on mana, and protection is where open_questions[0]'s 'five' has to become 'four'."
       }
     ],
-    "iterations": 1
+    "iterations": 2,
+    "previous": {
+      "verdict": "fail",
+      "findings": 30,
+      "iterations": 1
+    }
   }
 }

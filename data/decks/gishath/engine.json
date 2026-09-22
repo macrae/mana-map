@@ -1,12 +1,12 @@
 {
   "slug": "gishath",
-  "thesis": "The currency of this deck is a Dinosaur ENTERING the battlefield, not a creature attacking: Gishath's combat-damage reveal manufactures entries in batches (goldfish, 10,000 games: the reveal fired in 7,300 games, 2.016 times a game, for 4.08 free bodies), and V5 rebuilt the layer that cashes them — Purphoros turns every entry into 2 damage at each seat and Molten Echoes turns every nontoken Dinosaur entry into a second one, so a deck that used to need its 7/6 to keep connecting now has a payoff layer that pays without a combat step.",
+  "thesis": "The currency of this deck is a Dinosaur ENTERING the battlefield, not a creature attacking: Gishath's combat-damage reveal manufactures entries in batches (goldfish, 10,000 games: it fired at all in 7,300 of them, and AVERAGED OVER ALL 10,000 it fired 2.016 times for 4.08 free bodies — `commander_reveal.mean_fired` and `mean_bodies` divide by iterations, not by the games that fired, so both means are diluted by the 2,700 games with no reveal), and V5 rebuilt the layer that cashes them — Purphoros turns every entry into 2 damage at each seat and Molten Echoes turns every nontoken Dinosaur entry into a second one, so a deck that used to need its 7/6 to keep connecting now has a payoff layer that pays without a combat step.",
   "decklist_sha256_prefix": "80701018c37d677b",
   "stages": [
     {
       "stage": "mana",
       "label": "THE EIGHT-MANA CLIMB",
-      "what_it_does": "Pays for a commander whose mana value is 8 and whose modal card in the 99 costs 3 (deck-audit: curve modal mana value 3). 35 land copies across 24 entries here, plus Sol Ring, Arcane Signet, two land sorceries, Mirari's Wake and five creatures that make or fix mana. deck-audit reads mana-base 35 copies against a 36-38 target and mana-sources 42 against a floor of 42 — the base is one land light and exactly on the source floor. V5's land pass shows up in the tapland count: 4 copies enter tapped unconditionally (deck-audit taplands 4, target <= 8; mana_analysis enters_tapped 10, always 4). Colour, not quantity, is the strain, and V5 moved it the wrong way: mana_analysis reads W 19 / R 21 / G 30 sources and on-curve probability with rocks and dorks W 0.866, R 0.610, G 0.822 — red is the worst colour, and the two cards V5 added to the conversion layer are Purphoros at {3}{R} and Molten Echoes at {2}{R}{R}. Regal Behemoth and Wayward Swordtooth are filed here rather than among the Dinosaurs because what they do for this engine is mana and a land drop; Bloom Tender's Vivid mana scales with the colours already on board, which in this deck arrive late. Measured: 'Ramp or fixing drawn' assembles in 91.0% of games, 74.3% by turn 6, mean turn 3.106, over a nine-card group that is 49.8% of opening sevens.",
+      "what_it_does": "Pays for a commander whose mana value is 8 and whose modal card in the 99 costs 3 (deck-audit: curve modal mana value 3). 33 land copies across the 24 land entries here (the deck-wide 35 across 26 also counts Rogue's Passage and Kessig Wolf Run, which are filed in `ignition`), plus Sol Ring, Arcane Signet, two land sorceries, Mirari's Wake and five creatures that make or fix mana. deck-audit reads mana-base 35 copies against a 36-38 target and mana-sources 42 against a floor of 42 — the base is one land light and exactly on the source floor. V5's land pass shows up in the tapland count: 4 copies enter tapped unconditionally (deck-audit taplands 4, target <= 8; mana_analysis enters_tapped 10, always 4). Colour, not quantity, is the strain, and V5 moved it the wrong way: mana_analysis reads W 19 / R 21 / G 30 sources and on-curve probability with rocks and dorks W 0.866, R 0.610, G 0.822 — red is the worst colour, and the two cards V5 added to the conversion layer are Purphoros at {3}{R} and Molten Echoes at {2}{R}{R}. Regal Behemoth and Wayward Swordtooth are filed here rather than among the Dinosaurs because what they do for this engine is mana and a land drop; Bloom Tender's Vivid mana scales with the colours already on board, which in this deck arrive late. Measured: 'Ramp or fixing drawn' assembles in 91.0% of games, 74.3% by turn 6, mean turn 3.106, over a nine-card group that is 49.8% of opening sevens.",
       "cards": [
         "Canopy Vista",
         "Cinder Glade",
@@ -103,7 +103,7 @@
     {
       "stage": "fuel",
       "label": "WHAT THE TOP OF THE LIBRARY HOLDS",
-      "what_it_does": "The reveal converts only what is on top, so this layer buys arrangement and extra entries rather than named cards. Congregation at Dawn stacks three creatures at instant speed, Worldly Tutor one; Enlightened Tutor finds Molten Echoes, Urza's Incubator, Mirari's Wake or Descendants' Path. The free-entry doors skip the cast entirely: Descendants' Path each upkeep, Belbe's Portal, Monster Manual, Huatli's Saga, Savage Order (which searches a Dinosaur straight onto the battlefield and is the only card in the 99 that sacrifices a CREATURE — six fetches and two Sagas sacrifice themselves and nothing else does, which is why this deck has no `fodder` stage at all). World War Hulk's chapter I is a free red or green creature spell, and its later chapters feed the ignition stage instead. Hunting Velociraptor is the new one worth reading carefully: prowl {2}{R} on every Dinosaur spell you cast AFTER a Dinosaur has connected, which is a cost reducer that only exists once the engine has already fired. Up the Beanstalk draws on every spell of mana value 5 or greater. The audit is blunt about the layer: card-advantage reads 6 copies against a floor of 10, with Earthshaker Dreadmaw, Rishkar's Expertise, Runic Armasaur and Vaultborn Tyrant named as doing the job uncounted, and the goldfish models 3 of 9 draw cards (draw_not_modelled: Curious Altisaur, Hunter's Insight, Jetmir's Garden, Runic Armasaur, Selvala and Vaultborn Tyrant), so every draw figure here is a floor.",
+      "what_it_does": "The reveal converts only what is on top, so this layer buys arrangement and extra entries rather than named cards. Congregation at Dawn stacks three creatures at instant speed, Worldly Tutor one; Enlightened Tutor finds Molten Echoes, Urza's Incubator, Mirari's Wake or Descendants' Path. The free-entry doors skip the cast entirely: Descendants' Path each upkeep, Belbe's Portal, Monster Manual, Huatli's Saga, Savage Order, at the price it is sold on: an additional cost of sacrificing a creature with power 4 or greater on top of {2}{G}{G}, which makes it the one door that cannot open on an empty board (goldfish model_assumptions[25] states the same constraint as policy). It is still the only card in the 99 that sacrifices a permanent other than itself: SEVEN lands sacrifice themselves, not six — mana_analysis classes six as `fetch` and files Myriad Landscape under tapped/utility, while the deck's own map holds all seven in city-4 — and two Sagas do, and nothing else does — hence no `fodder` stage. World War Hulk's chapter I is a free red or green creature spell, and its later chapters feed the ignition stage instead. Hunting Velociraptor's prowl {2}{R} is a cost reducer that only exists once the engine has already fired — read in full in `ignition`. Up the Beanstalk draws on every spell of mana value 5 or greater. The audit is blunt about the layer: card-advantage reads 6 copies against a floor of 10, with FIVE named as doing the job uncounted (possible_uncounted: Earthshaker Dreadmaw, Jetmir's Garden, Rishkar's Expertise, Runic Armasaur, Vaultborn Tyrant), and the goldfish models 3 of 9 draw cards (draw_not_modelled: Curious Altisaur, Hunter's Insight, Jetmir's Garden, Runic Armasaur, Selvala and Vaultborn Tyrant), so every draw figure here is a floor.",
       "cards": [
         "Congregation at Dawn",
         "Worldly Tutor",
@@ -181,14 +181,14 @@
           "kind": "role",
           "id": "value:etb",
           "agreement": "partial",
-          "note": "The Molten Echoes enumeration, read card by card from cards.json rather than from the role tag. Ten Dinosaurs in the deck carry an entry trigger: Bronzebeak Foragers, Earthshaker Dreadmaw, Itzquinth, Pantlaza, Regal Behemoth, Regisaur Alpha, Trumpeting Carnosaur, Vaultborn Tyrant, Wakening Sun's Avatar and Zacama. Eight fire on a token copy; Wakening Sun's Avatar and Zacama do not, both being gated on 'if you cast it'. Three of the eight are legendary (Itzquinth, Pantlaza, Zacama), so the copy's trigger resolves and the body dies to the legend rule. The value:etb role itself misses Pantlaza and Vaultborn Tyrant, both of which have one."
+          "note": "The Molten Echoes enumeration, read card by card from cards.json rather than from the role tag. Ten Dinosaurs in the deck carry an entry trigger: Bronzebeak Foragers, Earthshaker Dreadmaw, Itzquinth, Pantlaza, Regal Behemoth, Regisaur Alpha, Trumpeting Carnosaur, Vaultborn Tyrant, Wakening Sun's Avatar and Zacama. Eight fire on a token copy; Wakening Sun's Avatar and Zacama do not, both being gated on 'if you cast it'. TWO of the eight are legendary, Itzquinth and Pantlaza — Zacama is legendary but is one of the two excluded a sentence earlier, and Regal Behemoth's type line is plain 'Creature — Dinosaur'. For those two the copy's trigger resolves and the body dies to the legend rule. The value:etb role itself misses Pantlaza and Vaultborn Tyrant, both of which have one."
         }
       ]
     },
     {
       "stage": "output",
       "label": "WHAT THE BOARD POINTS AT",
-      "what_it_does": "Removal, the one sweeper, and the damage that gets aimed at your own side on purpose. deck-audit reads interaction 9 copies against a floor of 8, sweepers 1 against 1-3, and interaction-breadth 3 classes against 5, naming graveyard and land as classes with no answer detected — the check is an oracle heuristic and a floor, but Beast Within left in V5 and with it the land answer. Blasphemous Act is the deck's single point of failure by deck-audit's own reckoning and the input to the one asymmetric sweep. Savage Stomp is the V5 addition that matters structurally: it costs {G} pointed at your own Dinosaur, puts a +1/+1 counter on it, and the fight marks damage on YOUR creature — which is an enrage trigger and, under Temple Altisaur, exactly 1 damage taken. I enumerated every card in the 99 that can mark damage on your own Dinosaur without spending an answer on yourself: Blasphemous Act, Savage Stomp, Itzquinth (its damage may be aimed at another creature you control), Triumphant Chomp, Trumpeting Carnosaur's discard mode and Zacama's {2}{R}. The previous model said Blasphemous Act was the only one; that claim is now false. Wakening Sun's Avatar destroys all non-Dinosaurs but only if you CAST it from hand, so it is dead off the reveal and dead off Molten Echoes — the same clause that stops Zacama untapping your lands.",
+      "what_it_does": "Removal, the one sweeper, and the damage that gets aimed at your own side on purpose. deck-audit reads interaction 9 copies against a floor of 8, sweepers 1 against 1-3, and interaction-breadth 3 classes against 5, naming graveyard and land as classes with no answer detected. THE AUDIT'S ONE SWEEPER IS WAKENING SUN'S AVATAR, not Blasphemous Act: the taxonomy files the Act under removal:damage and ramp:cost-reduction and never under removal:sweeper, so where I count two board wipes it counts one, and the one it misses is the only one this deck can fire off the reveal — the check is an oracle heuristic and a floor, but Beast Within left in V5 and with it the land answer. Blasphemous Act is the deck's single point of failure by deck-audit's own reckoning and the input to the one asymmetric sweep. Savage Stomp is the V5 addition that matters structurally: it costs {G} pointed at your own Dinosaur, puts a +1/+1 counter on it, and the fight marks damage on YOUR creature — which is an enrage trigger and, under Temple Altisaur, exactly 1 damage taken. I enumerated every card in the 99 that can mark damage on your own Dinosaur without spending an answer on yourself: Blasphemous Act, Savage Stomp, Itzquinth (its damage may be aimed at another creature you control), Triumphant Chomp, Trumpeting Carnosaur's discard mode and Zacama's {2}{R}. The previous model said Blasphemous Act was the only one; that claim is now false. Wakening Sun's Avatar destroys all non-Dinosaurs but only if you CAST it from hand, so it is dead off the reveal and dead off Molten Echoes — the same clause that stops Zacama untapping your lands.",
       "cards": [
         "Blasphemous Act",
         "Wakening Sun's Avatar",
@@ -222,7 +222,7 @@
     {
       "stage": "protection",
       "label": "KEEPING THE BOARD THROUGH THE ANSWER",
-      "what_it_does": "Insurance on a plan that is entirely one creature. Read them rather than count them: Heroic Intervention's hexproof and Akroma's Will's protection from each colour cover targeted exile and bounce; Boros Charm's indestructible covers a wrath but not an exile; Flawless Maneuver is the only one castable for nothing on the turn you tap out for eight; Eerie Interlude is the only one that dodges a non-targeted mass exile, and with the V5 conversion layer down it is no longer only a dodge — the end-step return is a simultaneous entry of your whole board, which is Purphoros damage at every seat and a Molten Echoes copy of every nontoken Dinosaur. Temple Altisaur is prevention rather than a body: 'if a source would deal damage to another Dinosaur you control, prevent all but 1', which is what makes Blasphemous Act one-sided and what turns Savage Stomp's fight into a 1-damage enrage trigger. It is not 'another Dinosaur' to itself, so the Act kills it, and stack 004 resolves that exact sequence. Measured: 'Protection held for the board' assembles 71.7%, 52.2% by turn 6, over a five-card group that is 31.2% of opening sevens; deck-audit reads protection 8 copies against a 5-7 target and calls it OVER.",
+      "what_it_does": "Insurance on a plan that is entirely one creature. Read them rather than count them: Heroic Intervention's hexproof and Akroma's Will's protection from each colour cover targeted exile and bounce; Boros Charm's indestructible covers a wrath but not an exile; Flawless Maneuver is the only one castable for nothing on the turn you tap out for eight; Eerie Interlude is the only one that dodges a non-targeted mass exile, and with the V5 conversion layer down it is no longer only a dodge — the end-step return is a simultaneous entry of the NONTOKEN creatures it exiled — it returns 'those cards', so Regisaur Alpha's 3/3, Ghalta and Mavren's tokens and every Molten Echoes copy cease to exist in exile — which is Purphoros damage at every seat and a fresh Echoes copy of every nontoken Dinosaur. Temple Altisaur is prevention rather than a body: 'if a source would deal damage to another Dinosaur you control, prevent all but 1', which is what makes Blasphemous Act one-sided and what turns Savage Stomp's fight into a 1-damage enrage trigger. It is not 'another Dinosaur' to itself, so the Act kills it, and stack 004 resolves that exact sequence. Measured: 'Protection held for the board' assembles 71.7%, 52.2% by turn 6, over a five-card group that is 31.2% of opening sevens; deck-audit reads protection 8 copies against a 5-7 target and calls it OVER, and that 8 is NOT these six — it counts Carnage Tyrant, Hulking Raptor, Purphoros and Savage Order, which sit in wincon, mana, conversion and fuel, and counts neither Temple Altisaur nor Eerie Interlude, the two this stage leans on hardest.",
       "cards": [
         "Temple Altisaur",
         "Akroma's Will",
@@ -362,7 +362,7 @@
       ],
       "verified_by": null,
       "carries": "bodies",
-      "note": "an upkeep free cast is a Dinosaur entering, so the once-a-turn discover fires before combat and is spent by the time the reveal lands. Unverified, and it is a REAL cost of stacking both"
+      "note": "an upkeep free cast is a Dinosaur entering, so the once-a-turn discover CAN fire before combat. It is the pilot's choice, not a forced cost: 'you may discover X', the choice is made on resolution (CR 603.5) and the once-each-turn clause bites only if the action was taken (CR 603.2h) — both cited in stack 001 step 6, on this deck's own passing stack. Decline at upkeep and the reveal still gets it. Descendants' Path also only makes an entry when the revealed top card is a creature sharing a type, so the real cost of stacking both is a delta between two X values, not a lost discover. Unverified on this board"
     },
     {
       "from": "fuel",
@@ -395,7 +395,7 @@
       ],
       "verified_by": null,
       "carries": "damage",
-      "note": "the fight marks damage on your own Dinosaur for {G}, which under Temple Altisaur is exactly 1 — a repeatable enrage trigger V5 added. Not on stack 004's board; unverified"
+      "note": "Savage Stomp is a Sorcery, one copy — a ONE-SHOT enabler, not a repeatable source. {2}{G} less {2} for targeting a Dinosaur you control is {G}, and the damage it marks on your own Dinosaur is the opposing creature's power rather than a number you choose; under Temple Altisaur it is 1 whatever that power is. It also needs a creature you DON'T control as its second target, so on an empty opposing board there is no legal cast. Not on stack 004's board; unverified"
     },
     {
       "from": "protection",
@@ -417,7 +417,7 @@
       ],
       "verified_by": null,
       "carries": "bodies",
-      "note": "the end-step return is a simultaneous entry of the whole board: a Purphoros trigger per creature and a Molten Echoes copy per nontoken Dinosaur. How much damage that is on a given board is an open question"
+      "note": "the end-step return is a simultaneous entry of the NONTOKEN creatures exiled: Eerie Interlude returns 'those cards', so every token — including each Molten Echoes copy, which is this line's own reason for caring — ceases to exist in exile and never comes back. What does return is a Purphoros trigger per creature and a fresh Echoes copy per nontoken Dinosaur. How much damage that is on a given board is an open question"
     },
     {
       "from": "wincon",
@@ -499,9 +499,9 @@
       "why_it_matters": "This is the V5 thesis in one board state. The whole claim that the deck now kills without combat rests on the count of Purphoros triggers per connect, and nothing has resolved it."
     },
     {
-      "question": "Does the goldfish's reveal channel feed the ETB layer — do Purphoros' fixed damage and Molten Echoes' copy fire off the bodies the declared commander reveal puts onto the battlefield, or only off cards cast from hand?",
+      "question": "With Molten Echoes out, does the goldfish price a LEGENDARY Dinosaur's copy at all? Molten Echoes' profile carries `etb_copy_keeps_legendary: true`, and goldfish_turn.py:613 then `continue`s past the legendary enterer entirely — so neither the copy's body nor its entry triggers are counted. By the rules the copy enters, its ETB triggers go on the stack, and only then does the legend rule bin it.",
       "settled_by": "goldfish",
-      "why_it_matters": "model-coverage reports Purphoros and Molten Echoes as `seen` on the bodies/combat channels, but `seen` means a channel is switched on, not that the reveal's entries route through it. If they do not, every damage figure for V5 is measuring the pre-V5 deck."
+      "why_it_matters": "7 of the deck's 29 Dinosaurs are legendary and two of them (Itzquinth, Pantlaza) are among the eight whose entry trigger fires on a token copy, while Purphoros pays 2 per entry no matter what entered. Every one of those entries is priced at zero today, so V5's damage figures are a floor by an unmeasured amount. WITHDRAWN and replaced: the round-1 version of this question asked whether the reveal's bodies reach the ETB layer at all, and goldfish_metrics meta.model_assumptions[24] already answers it — they enter 'through the one door (ETB payoffs, engines, reductions all register)' — with combat_profile pricing Purphoros at etb_damage_fixed 2 and Molten Echoes at etb_copy true, etb_type_gate 'chosen', etb_nontoken_only true. That premise was false and the doubt it cast on every V5 damage figure is withdrawn."
     },
     {
       "question": "Is Wakening Sun's Avatar still worth a slot now that the deck's entries mostly arrive off the reveal and off Molten Echoes, both of which turn its ETB off ('if you cast it from your hand')?",
@@ -526,164 +526,140 @@
       "why": "Only the first three can reduce a command-zone cast, and the commander's cast turn is the deck's binding constraint (mean 7.278, 26.7% by turn 6). A seven-card group in which four members cannot touch the pinch reads 83.0% assembled and tells the pilot nothing about whether the discount is there. This edit was proposed against the V4 list and is still unapplied."
     },
     {
-      "target": "required",
-      "change": "Mark `required: true` on 'Ramp or fixing drawn' and on no other target.",
-      "why": "Among the DRAWN components this is the only one the deck cannot function without: everything else is a payoff that matters only after Gishath resolves and connects, and Gishath himself is in the command zone, so the true single point of failure cannot be a goldfish target at all. Two cautions the pilot should weigh before applying it: the group assembles in 91.0% of games, so the split is close to degenerate, and CLAUDE.md records that engine-lift figures computed from authored `required` flags were deleted on 2026-08-28 because three defensible declarations of one deck gave contradictory signs."
-    },
-    {
       "target": "Enrage engine drawn",
       "change": "Either add the damage SOURCES (Savage Stomp, Itzquinth, Firstborn of Gishath, Triumphant Chomp, Zacama, Primal Calamity) as a second any_of clause, or retire the target.",
-      "why": "As declared it names only the two converters, Trapjaw Tyrant and Wrathful Raptors, which convert nothing on their own — they need damage marked on your own Dinosaurs. V5 added a cheap repeatable source (Savage Stomp, {G} at a Dinosaur), which is the first time the residue has had an enabler that is not a board wipe. The target currently measures half a mechanism and reads 58.4%."
+      "why": "As declared it names only the two converters, Trapjaw Tyrant and Wrathful Raptors, which convert nothing on their own — they need damage marked on your own Dinosaurs. V5 added a cheap source (Savage Stomp, {G} at a Dinosaur), which is the first time the residue has had an enabler that is not a board wipe — a Sorcery and a ONE-SHOT, and one that needs a creature an opponent controls to fight. The target currently measures half a mechanism and reads 58.4%."
     }
   ],
   "critic": {
-    "verdict": "fail",
+    "verdict": "pass",
     "findings": [
       {
         "where": "thesis",
-        "claim": "goldfish, 10,000 games: the reveal fired in 7,300 games, 2.016 times a game, for 4.08 free bodies",
-        "status": "miscounted",
-        "note": "The three figures have two different denominators and the sentence gives them one. goldfish.py:729-731 computes mean_fired and mean_bodies as sum(...)/n where n is `iterations` (10,000), while games_it_fired is a count of games. So 2.016 and 4.08 are means over ALL 10,000 games, not over the 7,300 in which the reveal fired. Read as the sentence reads them ('fired in 7,300 games, 2.016 times a game'), they UNDERSTATE the deck's own thesis: conditional on firing it is 2.016*10000/7300 = 2.76 fires and 4.08*10000/7300 = 5.59 bodies per game. The fix is one clause -- 'averaged over all 10,000 games' -- or switch to the conditional figures and say which they are. Mechanically checkable: a figure quoted from commander_reveal.mean_* in the same clause as games_it_fired is mixing denominators."
+        "claim": "it fired at all in 7,300 of them, and AVERAGED OVER ALL 10,000 it fired 2.016 times for 4.08 free bodies — `commander_reveal.mean_fired` and `mean_bodies` divide by iterations, not by the games that fired",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 1 RESOLVED, and resolved in the right direction. Verified in source rather than by reading the fix: goldfish.py:729-731 computes both means as sum(...)/n, and n is bound at goldfish.py:700 to `iterations`, which goldfish_metrics.meta.iterations gives as 10000. games_it_fired is 7300, mean_fired 2.016, mean_bodies 4.08 — all three quoted exactly. The sentence now names ONE denominator, names it correctly, and states the dilution explicitly, so a reader who wants the conditional figures can compute them (2.76 fires, 5.59 bodies per firing game) instead of being handed them unlabelled. It does not understate in the other direction: nothing in the clause claims the deck only ever gets 2.016 reveals when it gets one."
       },
       {
         "where": "stages[0].what_it_does",
-        "claim": "35 land copies across 24 entries here",
-        "status": "miscounted",
-        "note": "Neither half of that pair is this stage's. The mana stage's card list holds 24 land entries totalling 33 copies -- Kessig Wolf Run and Rogue's Passage are the other two land entries and they are filed in `ignition`. The 35/26 pair is the DECK-WIDE figure: deck-audit axes.mana-base measured.value 35 and measured.land_entries 26, mana_analysis.lands.total 35 and .entries 26. The word 'here' scopes it to the stage, so as written it reads 35 across 24. Either '33 copies across the 24 entries here' or drop 'here'. Mechanically checkable: sum cards.json quantity over the land entries a stage names."
+        "claim": "33 land copies across the 24 land entries here (the deck-wide 35 across 26 also counts Rogue's Passage and Kessig Wolf Run, which are filed in `ignition`)",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 2 RESOLVED. Re-derived from cards.json with common.expand_copies semantics: the 99 holds 26 land entries / 35 copies; the mana stage's card list holds 24 land entries / 33 copies; the two lands outside it are exactly Kessig Wolf Run and Rogue's Passage, each quantity 1, and both appear in stages[1].cards. Both halves of both pairs now match their own scope, and the parenthesis reconciles the stage figure with the deck-audit / mana_analysis figure instead of silently disagreeing with it."
       },
       {
         "where": "stages[2].what_it_does",
-        "claim": "six fetches and two Sagas sacrifice themselves and nothing else does",
-        "status": "miscounted",
-        "note": "SEVEN lands in the 99 sacrifice themselves, not six: Arid Mesa, Bloodstained Mire, Verdant Catacombs, Windswept Heath, Wooded Foothills, Krosan Verge and Myriad Landscape (grep cards.json oracle_text for 'Sacrifice this land'). The six is mana_analysis.lands.classes.fetch, which classes Myriad Landscape as ['tapped','utility'] and not as a fetch -- the audit's class read literally, which is the failure mode this charter names. The deck's own map disagrees with the count the same paragraph rests on: deck_map city-4 ('Mana II') is exactly those SEVEN cards, and map_disagreements[2] describes that city correctly. The CONCLUSION survives -- Savage Order is genuinely the only card in the 99 that sacrifices another permanent, so 'no fodder stage' holds -- only the count is wrong."
+        "claim": "SEVEN lands sacrifice themselves, not six — mana_analysis classes six as `fetch` and files Myriad Landscape under tapped/utility, while the deck's own map holds all seven in city-4",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 3 RESOLVED, and it now says what the artifact is wrong about, which is what the charter asks of a disagreement. Verified three ways: a regex over cards.json oracle text returns exactly Arid Mesa, Bloodstained Mire, Krosan Verge, Myriad Landscape, Verdant Catacombs, Windswept Heath, Wooded Foothills; mana_analysis.lands.classes.fetch is 6 and mana_analysis.lands.list gives Myriad Landscape classes ['tapped','utility']; deck_map city-4 is those seven names and nothing else. The conclusion it carries also still holds — a full 'sacrific' sweep of the 99 returns only Savage Order (an additional cost), the seven lands and the two Sagas' rules-sacrifice, so 'no fodder stage' is sound."
       },
       {
         "where": "stages[3].evidence[3].note",
-        "claim": "Three of the eight are legendary (Itzquinth, Pantlaza, Zacama)",
-        "status": "miscounted",
-        "note": "Zacama is not one of the eight. The same note establishes the eight as the ten entry-trigger Dinosaurs MINUS Wakening Sun's Avatar and Zacama ('Eight fire on a token copy; Wakening Sun's Avatar and Zacama do not'), then counts Zacama inside them two sentences later. Verified against cards.json type lines: of the eight -- Bronzebeak Foragers, Earthshaker Dreadmaw, Itzquinth, Pantlaza, Regal Behemoth, Regisaur Alpha, Trumpeting Carnosaur, Vaultborn Tyrant -- exactly TWO are legendary, Itzquinth and Pantlaza. Regal Behemoth is 'Creature - Dinosaur', not legendary. Everything else in this note is exact. Mechanically checkable: a named subset's legendary count against the type lines of the cards it names."
+        "claim": "TWO of the eight are legendary, Itzquinth and Pantlaza — Zacama is legendary but is one of the two excluded a sentence earlier, and Regal Behemoth's type line is plain 'Creature — Dinosaur'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 4 RESOLVED, corrected to the right value and the correction explained rather than patched. Type lines from cards.json: of the eight, only Itzquinth, Firstborn of Gishath and Pantlaza, Sun-Favored carry 'Legendary'; Regal Behemoth is 'Creature — Dinosaur'. The surrounding enumeration is unchanged and still checks out: 29 Dinosaur cards, 7 legendary, 10 with an entry trigger, 8 of those not gated on 'if you cast it'."
       },
       {
         "where": "lines[10].note",
-        "claim": "the fight marks damage on your own Dinosaur for {G} ... a repeatable enrage trigger V5 added",
-        "status": "over-claimed",
-        "note": "Savage Stomp is 'Sorcery', quantity 1 in cards.json. It is a one-shot, not a repeatable source, and the same word appears again in proposed_goldfish_edits[4].why ('a cheap repeatable source'). It also carries a board condition the note omits: 'Put a +1/+1 counter on target creature you control. Then that creature fights target creature you DON'T control.' With no opposing creature there is no legal cast, and the damage marked on your Dinosaur is the opponent's creature's power rather than a quantity you choose. The {G} price is right -- {2}{G} less {2} for targeting a Dinosaur you control. Rewrite as a one-shot enabler that needs a target on the other side of the table."
+        "claim": "Savage Stomp is a Sorcery, one copy — a ONE-SHOT enabler, not a repeatable source ... It also needs a creature you DON'T control as its second target, so on an empty opposing board there is no legal cast",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 5 RESOLVED, and resolved in both places. cards.json: 'Savage Stomp', {2}{G}, Sorcery, quantity 1, 'This spell costs {2} less to cast if it targets a Dinosaur you control. Put a +1/+1 counter on target creature you control. Then that creature fights target creature you don't control.' Every clause of the revised note matches: {G} net cost, the marked damage is the opposing creature's power rather than a chosen number, 1 under Temple Altisaur, and no legal cast without an opposing creature. proposed_goldfish_edits[3].why — the second home of the word 'repeatable' I flagged — now reads 'a Sorcery and a ONE-SHOT, and one that needs a creature an opponent controls to fight'."
       },
       {
         "where": "lines[7].note",
-        "claim": "the once-a-turn discover fires before combat and is spent by the time the reveal lands ... it is a REAL cost of stacking both",
-        "status": "over-claimed",
-        "note": "Stated as a forced cost; it is the pilot's choice, and this deck's own passing stack says so. Pantlaza reads 'you MAY discover X', and stack 001 step 6 resolves exactly this point under CR 603.5 ('These abilities go on the stack when they trigger, regardless of whether their controller intends to exercise the ability's option or not. The choice is made when the ability resolves') and CR 603.2h ('This ability triggers only if its source's controller has not yet taken the indicated action that turn'). Decline the upkeep discover and the action was not taken, so the combat-damage triggers still trigger. Second, Descendants' Path only produces an entry when the revealed top card is a creature sharing a type; the note treats the upkeep cast as unconditional. The real cost is a DELTA between two X values, not a lost discover."
+        "claim": "the choice is made on resolution (CR 603.5) and the once-each-turn clause bites only if the action was taken (CR 603.2h) — both cited in stack 001 step 6",
+        "status": "mis-cited",
+        "note": "ROUND-1 FINDING 6 RESOLVED IN SUBSTANCE; the location half of the citation is wrong. The rules are right and so is the reading: Pantlaza's oracle text is 'you MAY discover X ... Do this only once each turn'; lookup-rule 603.5 is exactly 'These abilities go on the stack when they trigger, regardless of whether their controller intends to exercise the ability's option ... The choice is made when the ability resolves'; lookup-rule 603.2h is exactly 'A triggered ability may have an instruction followed by \"Do this only once each turn.\" This ability triggers only if its source's controller has not yet taken the indicated action that turn.' But stack 001 cites 603.5 in step 6 and 603.2h in steps 4, 8 and 9 — not in step 6. Step 4 is the one that makes the point in the stack's own words ('Its \"Do this only once each turn\" rider restricts triggering, not just resolution — but you have not discovered yet this turn'). One-clause fix: 'cited in stack 001, steps 4-8'. I flag this against myself: 'stack 001 step 6' is my round-1 wording and the revision carried it over verbatim. Mechanically checkable: a note naming a stack step and a rule id, against that step's citations."
       },
       {
         "where": "lines[12].note",
-        "claim": "the end-step return is a simultaneous entry of the whole board",
-        "status": "over-claimed",
-        "note": "Eerie Interlude returns 'those CARDS'. Every token this deck makes -- Regisaur Alpha's 3/3, Ghalta and Mavren's attack tokens, and every Molten Echoes copy, which is this line's own reason for caring -- ceases to exist in exile and never returns. On the board this line is written for, with Purphoros and Molten Echoes out after a reveal, a meaningful fraction of 'the whole board' is tokens. Same wording in stages[5].what_it_does. Scope it to nontoken creatures and the claim is sound."
+        "claim": "the end-step return is a simultaneous entry of the NONTOKEN creatures exiled ... every token — including each Molten Echoes copy — ceases to exist in exile and never comes back",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 7 RESOLVED. Eerie Interlude: 'Exile any number of target creatures you control. Return those CARDS to the battlefield under their owner's control at the beginning of the next end step.' Tokens are exiled and cease to exist; 'those cards' cannot return them. The revised note also keeps the line's value rather than shrinking it to nothing — a Purphoros trigger per returning creature and a fresh Echoes copy per returning nontoken Dinosaur — and correctly leaves the magnitude open. If anything it now UNDER-counts: each fresh Echoes copy is itself a creature entering and so is another Purphoros trigger, which the note does not claim."
       },
       {
         "where": "stages[2].what_it_does",
-        "claim": "The free-entry doors skip the cast entirely: ... Savage Order (which searches a Dinosaur straight onto the battlefield ...)",
-        "status": "over-claimed",
-        "note": "Savage Order's full cost is omitted where it is being sold as a door: 'As an additional cost to cast this spell, sacrifice a creature with power 4 or greater', on top of {2}{G}{G}. A door that needs a 4-power body already on the battlefield is not comparable to Belbe's Portal or Descendants' Path, and it is the one door that cannot open on an empty board. The goldfish states the same constraint as a policy in goldfish_metrics.json meta.model_assumptions[25]: 'A tutor that puts a creature ONTO THE BATTLEFIELD (Savage Order) sacrifices the smallest 4-power nontoken body'. The stage does mention the sacrifice a clause later, but as a superlative about fodder rather than as this card's price."
+        "claim": "Savage Order, at the price it is sold on: an additional cost of sacrificing a creature with power 4 or greater on top of {2}{G}{G}, which makes it the one door that cannot open on an empty board (goldfish model_assumptions[25] states the same constraint as policy)",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 8 RESOLVED. cards.json gives Savage Order {2}{G}{G} with 'As an additional cost to cast this spell, sacrifice a creature with power 4 or greater'; goldfish_metrics.meta.model_assumptions[25] reads 'A tutor that puts a creature ONTO THE BATTLEFIELD (Savage Order) sacrifices the smallest 4-power nontoken body and fetches the highest-power creature of the named type the library holds -- a policy, stated.' The cost is now attached to the card where it is being sold as a door, not a clause later as a fact about fodder."
       },
       {
         "where": "open_questions[3]",
-        "claim": "Does the goldfish's reveal channel feed the ETB layer - do Purphoros' fixed damage and Molten Echoes' copy fire off the bodies the declared commander reveal puts onto the battlefield, or only off cards cast from hand?",
-        "status": "contradicts-artifact",
-        "note": "Already answered, in the artifact this model quotes a dozen figures from. goldfish_metrics.json meta.model_assumptions[24]: 'when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters THROUGH THE ONE DOOR (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires)'. Assumption [25] names the card: 'Molten Echoes copies the chosen type'. I confirmed both are priced rather than merely 'seen': goldfish.combat_profile gives Purphoros etb_damage_fixed=2 and Molten Echoes etb_copy=True, etb_type_gate='chosen', etb_nontoken_only=True. The premise 'If they do not, every damage figure for V5 is measuring the pre-V5 deck' is therefore false and should not stand as a doubt about the instrument. The model-coverage observation in why_it_matters is itself correct; it simply is not the last word available."
+        "claim": "WITHDRAWN and replaced: the round-1 version of this question asked whether the reveal's bodies reach the ETB layer at all, and goldfish_metrics meta.model_assumptions[24] already answers it",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 9 RESOLVED by explicit withdrawal, which is the strongest of the three ways a finding can be answered, and the withdrawal is recorded IN the artifact rather than argued in a summary. model_assumptions[24] is quoted correctly: the reveal's creatures enter 'through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires)'. One placement caution for the orchestrator, not a defect: the withdrawal paragraph lives inside the why_it_matters of the DIFFERENT, live question that replaced it, so any renderer that prints open_questions will print a paragraph about a retracted question underneath a current one."
       },
       {
-        "where": "proposed_goldfish_edits[3]",
-        "claim": "Mark `required: true` on 'Ramp or fixing drawn' and on no other target.",
-        "status": "contradicts-artifact",
-        "note": "That is already the tracked state. goldfish_targets.json targets[0] ('Ramp or fixing drawn') carries \"required\": true and no other target carries the key at all -- precisely the edit proposed. Proposing an applied change as an outstanding one misreports where the deck stands and costs a round. Either delete it or restate it as a caution about the flag that is already set; the 91.0% degeneracy point and the 2026-08-28 deletion are both worth keeping in that form."
+        "where": "proposed_goldfish_edits",
+        "claim": "the `required: true` edit has been withdrawn; the list is now four edits, ending with 'Enrage engine drawn'",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 10 RESOLVED by deletion; a structural diff against the tracked round-1 file shows proposed_goldfish_edits[3] (target 'required') removed and the enrage edit shifted from [4] to [3], with every other key byte-identical. Re-confirmed the state that made the proposal wrong: goldfish_targets.json targets[0] 'Ramp or fixing drawn' carries required: true (plus a _required_note) and no other target carries the key. What the deletion costs: the CLAUDE.md record that engine-lift figures computed from authored `required` flags were deleted on 2026-08-28 no longer appears anywhere in the model. The 91.0% assembly figure survives in stages[0]. I would not spend a round restoring it."
       },
       {
         "where": "stages[4].what_it_does",
-        "claim": "deck-audit reads interaction 9 copies against a floor of 8, sweepers 1 against 1-3",
-        "status": "contradicts-artifact",
-        "note": "The number is quoted correctly and the model's own reading of the deck is not reconciled with it. deck-audit's ONE counted sweeper is Wakening Sun's Avatar (axes.sweepers.measured.cards == [\"Wakening Sun's Avatar\"]); Blasphemous Act is classed under interaction (removal:damage) and ramp (ramp:cost-reduction), never removal:sweeper. This model treats Blasphemous Act as a sweeper throughout and open_questions[4] calls Wakening Sun's Avatar 'the deck's SECOND sweeper on paper' -- the model counts two while quoting the audit's one, with no sentence saying the audit undercounts. By the charter's own rule for map_disagreements, a disagreement that does not name what the artifact is wrong about is a hedge. One clause fixes it: the taxonomy does not see Blasphemous Act as a sweeper."
+        "claim": "THE AUDIT'S ONE SWEEPER IS WAKENING SUN'S AVATAR, not Blasphemous Act: the taxonomy files the Act under removal:damage and ramp:cost-reduction and never under removal:sweeper, so where I count two board wipes it counts one",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 11 RESOLVED. deck-audit axes.sweepers.measured.cards is [\"Wakening Sun's Avatar\"], value 1; Blasphemous Act appears in axes.interaction.measured.cards and engine.single_points_of_failure[0] with modal_role 'ramp:cost-reduction'. The model now states the disagreement and names what the artifact is wrong about, which is what turns a hedge into a finding. See the next entry for the clause the same sentence gained."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "the one it misses is the only one this deck can fire off the reveal — the check is an oracle heuristic and a floor, but Beast Within left in V5 and with it the land answer",
+        "status": "over-claimed",
+        "note": "NEW, introduced by the revision. Two problems in one trailing clause. (1) 'the one it misses' is Blasphemous Act, a Sorcery: nothing fires it off the reveal, which puts creature CARDS onto the battlefield and casts nothing. The defensible claim is narrower and is the one the stage wants — it is the only wipe that still works on a board the reveal built, because Wakening Sun's Avatar's wipe is gated on 'if you cast it from your hand' (the model says so correctly two sentences later), and because the Act's cost falls with the board the reveal makes. (2) 'the check is an oracle heuristic and a floor, but Beast Within left in V5 and with it the land answer' was, in the round-1 text, attached to the interaction-BREADTH figure it explains (graveyard and land uncovered). Relocated onto the sweeper sentence, 'the check' now reads as the sweeper classification and Beast Within becomes a non sequitur — it was never a sweeper. Both halves are one-clause fixes and neither changes a number."
       },
       {
         "where": "stages[2].what_it_does",
-        "claim": "card-advantage reads 6 copies against a floor of 10, with Earthshaker Dreadmaw, Rishkar's Expertise, Runic Armasaur and Vaultborn Tyrant named as doing the job uncounted",
-        "status": "mis-cited",
-        "note": "deck-audit names FIVE in axes.card-advantage.measured.possible_uncounted: Earthshaker Dreadmaw, Jetmir's Garden, Rishkar's Expertise, Runic Armasaur, Vaultborn Tyrant. Jetmir's Garden is dropped without a word, while the very next clause quotes the goldfish's draw_not_modelled list -- which does include Jetmir's Garden -- in full and correctly. If the triome's cycling is being excluded on judgement, say so; 'named as' attributes the list to the audit. The 6 and the floor of 10 are both exact."
+        "claim": "The free-entry doors skip the cast entirely: Descendants' Path each upkeep, Belbe's Portal, Monster Manual, Huatli's Saga, Savage Order",
+        "status": "over-claimed",
+        "note": "PRE-EXISTING — byte-identical in the round-1 file, and my round-1 review missed it, so this is not a regression. Descendants' Path reads 'you may CAST it without paying its mana cost': it skips the mana cost, not the cast. So does World War Hulk chapter I, which the same paragraph correctly calls a free 'creature spell'. Belbe's Portal ('put a creature card ... onto the battlefield'), Monster Manual (same), Roar of the Fifth People (chapter I makes two 3/3 TOKENS, which are entries but not a card put into play, and chapter III searches to HAND — it belongs on this list only in the token sense) and Savage Order ('put it onto the battlefield') are the genuine non-casts. The distinction is load-bearing in this deck and the model relies on it elsewhere: Zacama's untap and Wakening Sun's Avatar's wipe split on exactly that word, and stages[4] correctly reasons that both are dead off the reveal and off a Molten Echoes copy. Note also that this block is now 1781 of the 1800-character cap (it grew from 1508), so a revision has 19 characters of headroom and its central sentence already interleaves three claims — the Savage Order price, the seven-lands correction and the fodder conclusion — inside one set of dashes. Mechanically checkable: a door claimed to 'skip the cast' whose oracle text contains 'cast it without paying its mana cost'."
+      },
+      {
+        "where": "open_questions[3].question",
+        "claim": "goldfish_turn.py:613 then `continue`s past the legendary enterer entirely — so neither the copy's body nor its entry triggers are counted",
+        "status": "over-claimed",
+        "note": "NEW, and the orchestrator asked for scope and for the word 'floor'. THE CODE: lines 613-614 are `if is_legendary and eng[\"etb_copy_keeps_legendary\"]: continue`, sitting INSIDE `for eng in etb_engines:` inside `creature_entered` (goldfish_turn.py:523). The `continue` advances to the next ETB engine; it skips only `spawned.append(...)`, i.e. the COPY. The legendary enterer itself is not skipped at all — it was appended to `battlefield` at the top of the function, its draw engines fired, and Purphoros' own engine entry (combat_profile etb_damage_fixed 2) is a separate iteration that has already added its damage. So 'continues past the legendary enterer entirely' is one word too wide; the consequence clause that follows it is exactly right, and naming the COPY fixes it. SCOPE: correct and confirmed — `_free_creature_enters` (the declared-reveal door, goldfish_turn.py:704) calls creature_entered with is_legendary='Legendary' in tl at line 738, so revealed legendary Dinosaurs do reach the skip; combat_profile('Molten Echoes') returns etb_copy True, etb_type_gate 'chosen', etb_copy_keeps_legendary True. 'FLOOR' IS THE HONEST WORD, and it is honest for the reason the question does not state: pricing the copy correctly can only ADD (2 Purphoros damage per copy entry, plus Itzquinth's and Pantlaza's own triggers — the two legendaries among the eight), while the correct fix leaves NO lasting body, because the copy dies to the legend rule. So there is no offsetting overstatement to find, and the question is right to scope the floor to V5's DAMAGE figures rather than to board power. Restating it as 'skips the legendary enterer's COPY' is the whole fix."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "I enumerated every card in the 99 that can mark damage on your own Dinosaur without spending an answer on yourself: Blasphemous Act, Savage Stomp, Itzquinth (its damage may be aimed at another creature you control), Triumphant Chomp, Trumpeting Carnosaur's discard mode and Zacama's {2}{R}",
+        "status": "supported",
+        "note": "PRE-EXISTING and unflagged in round 1; I enumerated it this round because it is the superlative class the common charter names. A regex sweep of all 91 entries for 'deals N damage / deals damage / fight' returns exactly nine cards, and the six named are the six that can put damage on a creature you control: Blasphemous Act (each creature), Savage Stomp (fight), Itzquinth ('target Dinosaur you control deals damage equal to its power to ANOTHER target creature' — unrestricted, so it may be yours), Triumphant Chomp ('damage to target creature', unrestricted), Trumpeting Carnosaur ({2}{R}, discard: 3 damage to target creature) and Zacama ({2}{R}: 3 damage to target creature). The three excluded are right to be excluded: Boros Charm's mode hits a player or planeswalker only, Purphoros hits each opponent, City of Brass hits you and not a creature. The enumeration is exhaustive and the parenthetical about Itzquinth is exact."
       },
       {
         "where": "stages[5].what_it_does",
-        "claim": "deck-audit reads protection 8 copies against a 5-7 target and calls it OVER",
-        "status": "mis-cited",
-        "note": "The quote is exact and it is about a different set of cards than the stage it closes. deck-audit's eight are Akroma's Will, Boros Charm, Carnage Tyrant, Flawless Maneuver, Heroic Intervention, Hulking Raptor, Purphoros and Savage Order. This stage's six are Temple Altisaur, Akroma's Will, Heroic Intervention, Flawless Maneuver, Boros Charm and Eerie Interlude. Four of the audit's eight live in other stages (wincon, mana, conversion, fuel), and the stage's two most load-bearing members -- Temple Altisaur, the prevention effect stack 004 turns on, and Eerie Interlude -- are not in the audit's count at all. Placed as the stage's closing measurement, a reader takes the 8 as these six. The preceding sentence, 'a five-card group that is 31.2% of opening sevens', IS correctly scoped to the goldfish target, which has exactly five members."
+        "claim": "that 8 is NOT these six — it counts Carnage Tyrant, Hulking Raptor, Purphoros and Savage Order, which sit in wincon, mana, conversion and fuel, and counts neither Temple Altisaur nor Eerie Interlude",
+        "status": "supported",
+        "note": "ROUND-1 FINDING 13 RESOLVED, and resolved by reconciling rather than by dropping the figure. deck-audit axes.protection.measured.cards is exactly Akroma's Will, Boros Charm, Carnage Tyrant, Flawless Maneuver, Heroic Intervention, Hulking Raptor, Purphoros, Savage Order (value 8, target 5-7, verdict over). The four named as living elsewhere do: Carnage Tyrant in stages[6].cards, Hulking Raptor in stages[0], Purphoros in stages[3], Savage Order in stages[2]. Temple Altisaur and Eerie Interlude are absent from the audit's eight. One prose nit that is not worth a round: in the Eerie Interlude sentence the trailing 'which is Purphoros damage at every seat and a fresh Echoes copy of every nontoken Dinosaur' now hangs off 'cease to exist in exile', so its antecedent is the tokens that do NOT come back rather than the cards that do. lines[12] states the same thing cleanly."
       },
       {
-        "where": "lines[2].verified_by",
-        "claim": "stack 001 supports ignition -> conversion via Gishath, Pantlaza, Garruk's Uprising",
+        "where": "stages[2].what_it_does",
+        "claim": "card-advantage reads 6 copies against a floor of 10, with FIVE named as doing the job uncounted (possible_uncounted: Earthshaker Dreadmaw, Jetmir's Garden, Rishkar's Expertise, Runic Armasaur, Vaultborn Tyrant)",
         "status": "supported",
-        "note": "Read the scenario, all nine resolution steps and final_state. The stack establishes the flow the arrow claims, and every number in the note is the stack's own: four Dinosaur cards put in as one event (step 1, CR 603.6a), THREE Uprising draws because Ravenous Sailback is a 3/4 (step 3, CR 603.2c), ONE Pantlaza discover at X=6 off Carnage Tyrant's toughness (steps 4-6, CR 603.2h and 603.5), and Regisaur Alpha's token trigger deliberately ordered to the bottom so the token cannot re-trigger the once-a-turn discover (step 5, CR 405.2 and 603.3b). checker.verdict is 'pass'. The note's staleness caveat is correct and I checked it: Ripjaw Raptor and Ravenous Sailback are not among the current 91 entries; Regisaur Alpha, Carnage Tyrant and Path to Exile are."
+        "note": "ROUND-1 FINDING 12 RESOLVED. deck-audit axes.card-advantage.measured.possible_uncounted is exactly those five, value 6, target low 10. Jetmir's Garden is no longer dropped from a list attributed to the audit, and the goldfish's draw_not_modelled list quoted in the next clause is still verbatim."
       },
       {
-        "where": "lines[9].verified_by",
-        "claim": "stack 004 supports output -> conversion via Blasphemous Act, Wrathful Raptors",
+        "where": "lines[2].verified_by, lines[9].verified_by, lines[11].verified_by",
+        "claim": "the three solid lines, unchanged by the revision",
         "status": "supported",
-        "note": "The stack establishes the flow and both of the note's hard claims. Step 2: Altisaur is not 'another Dinosaur you control' relative to itself, so it takes the unprevented 13 while the other three take 1 each. Step 5: state-based actions destroy all six lethally-damaged creatures BEFORE the triggers are put on the stack (CR 704.3), so when the four Wrathful Raptors triggers choose targets there is no non-Dinosaur creature, planeswalker or battle left and players are the only legal targets -- exactly what the note says. 'Cast for {R} off nine creatures' checks out against the board: four yours, four 2/2 tokens, one 6/6."
+        "note": "Re-checked that the revision did not touch them: a structural diff against the tracked round-1 file shows /lines/2, /lines/9 and /lines/11 byte-identical in every key. Round 1's reading stands — stack 001 (checker.verdict pass) establishes ignition -> conversion through the simultaneous-entry event, the three Uprising draws and the single X=6 discover, and stack 004 establishes output -> conversion and protection -> output through Temple Altisaur's prevention, the state-based-action timing and the last-known-information redirect. No arrow in this model cites a stack that merely NAMES its cards."
       },
       {
-        "where": "lines[11].verified_by",
-        "claim": "stack 004 supports protection -> output via Temple Altisaur, Blasphemous Act",
+        "where": "engine.json",
+        "claim": "the revision is scoped to the thirteen flagged locations and changed nothing else",
         "status": "supported",
-        "note": "Including the subtle part. 'Altisaur ... still redirects by last known information' has the right antecedent: Wrathful Raptors reads 'IT deals that much damage', where 'it' is the damaged Dinosaur, so the dead Altisaur is the source of the 13 (step 6). That the prevention applies as the damage happens rather than being locked in ahead is step 1's CR 615.1 citation. This is the opposite of the radagast failure: the cited stack is load-bearing for the arrow rather than merely coincident with its cards."
-      },
-      {
-        "where": "map_disagreements",
-        "claim": "four components disagree with the cluster map, each naming which artifact is wrong about what",
-        "status": "supported",
-        "note": "I checked every membership claim card by card against deck_map.json region membership (level-0: city-0 Bodies, city-1 Mana, city-2 Insurance, city-3 Tutors, city-4 Mana II, city-5 Ramp, city-6 Interaction). All four hold exactly. Conversion spans Bodies/Insurance/Interaction with Purphoros in Insurance beside the four protection instants, all three cost reducers and Blasphemous Act; Molten Echoes in Bodies; Trapjaw Tyrant in Interaction and Wrathful Raptors in Bodies. Ignition spans Bodies/Insurance/Mana with the evasion lands in Mana. Mana spans five cities with Nature's Lore and Skyshroud Claim in Tutors and Regal Behemoth and Wayward Swordtooth in Bodies. Protection splits Insurance 4 / Bodies 2 with Temple Altisaur and Eerie Interlude in Bodies. The sharpest claim is also true: city-4 'Mana II' is exactly the seven lands that say 'search your library', split from city-1 on a text feature with no functional content. The scatter figures quoted from engine-facts, 4 cities and 3 cities, match its output."
-      },
-      {
-        "where": "stages",
-        "claim": "every goldfish, mana_analysis, deck-audit and card_roles figure quoted across the seven what_it_does blocks",
-        "status": "supported",
-        "note": "Re-derived rather than re-read. Exact against goldfish_metrics.json: 0.267 by t6, mean cast 7.278 and median 7; target rates 0.910/0.743/3.106, 0.830/0.654, 0.856/0.615, 0.811/0.612, 0.717/0.522 and 0.584; mean board power 34.415 at t8, kill_by_turn_rate['8'] 0.609, mean_kill_turn 7.987; connects_per_attack 0.70 with its Forge source named; card_advantage modelled 3 of 9 with draw_not_modelled quoted verbatim. Exact against mana_analysis.json: W 19 / R 21 / G 30 total sources, with_rocks_and_dorks W 0.866 / R 0.610 / G 0.822, enters_tapped 10 and enters_tapped_always 4. Exact against deck-audit: curve modal 3, mana-sources 42 against the burgess floor of 42, taplands 4 against <=8, interaction 9 against 8, interaction-breadth 3 classes with graveyard and land uncovered. Exact against deck-facts roles: draw:engine 4, wincon:combat 3 (Akroma's Will, Boros Charm, Huatli), no_role 5 including Overwhelming Stampede. The two opening-seven figures are copied from nowhere and both reproduce hypergeometrically: 9 cards in 99 gives 0.498, 5 gives 0.312, matching deck-audit's engine odds.opening_seven of 0.498 for the nine-card ramp component."
-      },
-      {
-        "where": "stages[3].what_it_does",
-        "claim": "10 Dinosaurs in the deck carry an entry trigger, 8 of them fire on the token copy; 7 of the 29 Dinosaur cards are legendary",
-        "status": "supported",
-        "note": "Enumerated from cards.json rather than from the role tag, as the note claims, and it holds. 29 cards carry Dinosaur in the type line; exactly 7 are legendary (Gishath, Etali, Ghalta and Mavren, Ghalta Primal Hunger, Itzquinth, Pantlaza, Zacama). Exactly 10 Dinosaurs carry an enters trigger and they are the ten named. Wakening Sun's Avatar ('if you cast it from your hand') and Zacama ('if you cast it') are the only two gated on a cast, so 8 fire on a Molten Echoes copy. Only the legendary sub-count inside this enumeration is wrong -- see stages[3].evidence[3].note."
-      },
-      {
-        "where": "stages[1].single_point_of_failure, stages[4].single_point_of_failure",
-        "claim": "Gishath is ignition's single point of failure; Blasphemous Act is output's",
-        "status": "supported",
-        "note": "Both are genuinely one card rather than a class read too literally, and the other five stages correctly carry null instead of manufacturing an SPOF each. Blasphemous Act matches deck-audit engine.single_points_of_failure exactly: one entry, component size 1, thin and thinnest, assembled_rate 0.091. Gishath is not from the audit and could not be -- a commander is not a goldfish target -- but he is the only card in the ignition stage that produces a reveal; the other seven are discounts, evasion and one unverified copy effect. The model states the command-zone caveat itself in proposed_goldfish_edits[3].why."
-      },
-      {
-        "where": "lines",
-        "claim": "the twelve lines without a verified_by",
-        "status": "supported",
-        "note": "I read all fifteen, checked every via card's oracle text and its stage membership, and none of the twelve dashed ones is a claim that should not have been made. They divide into oracle-derivable (Mirari's Wake and Overwhelming Stampede widening the reveal, because the reveal's width is the damage dealt; Purphoros' {2}{R} anthem; Ghalta and Mavren's attack tokens entering before blockers are declared) and genuinely open (the Molten Echoes copy count, prowl from the command zone). Two are unusually careful. lines[4] notes the Echoes copies enter during the combat damage step and therefore cannot attack, so 'their value is the ETB, not the body'. lines[3] states that the goldfish counts 'each opponent' once -- I confirmed against goldfish.py:519 and combat_profile's etb_damage_fixed=2 that Purphoros IS priced, at one seat, so that figure really is a three-seat floor rather than an absent one. Two of the twelve are flagged above for their note's phrasing, not for existing."
-      },
-      {
-        "where": "stages[*].evidence",
-        "claim": "stacks 002, 003 and 005 are cited nowhere in the model",
-        "status": "supported",
-        "note": "Correct restraint, recorded so a revision does not helpfully add them. All three pass the checker, but 002 and 003 rest on Marauding Raptor and Polyraptor, and 003 and 005 on Forerunner of the Empire, Ranging Raptors and Ripjaw Raptor -- none among the current 91 entries. 005 in particular would look like a citation for the enrage lines, since it resolves Trapjaw Tyrant's exile off 1 marked damage, while the card that deals the ping has left the deck. That is the exact shape of the radagast mis-citation this review exists to catch."
+        "note": "Verified mechanically rather than by reading: a flattened key-by-key diff against `git show HEAD:data/decks/gishath/engine.json` reports changes at exactly /thesis, /stages/0/what_it_does, /stages/2/what_it_does, /stages/3/evidence/3/note, /stages/4/what_it_does, /stages/5/what_it_does, /lines/7/note, /lines/10/note, /lines/12/note, /open_questions/3/{question,why_it_matters} and /proposed_goldfish_edits/3/* with /proposed_goldfish_edits/4 removed — the thirteen round-1 non-`supported` findings and nothing else. Every stage card list, every line's from/to/via/verified_by, all four map_disagreements and the eleven claims I marked `supported` in round 1 are carried byte-identical. `manamap pilot validate-engine gishath` still passes: 7 stages, 91 cards placed, 0 unassigned, 3/15 lines verified. Nothing was weakened to make an objection stop parsing: the only prose that got SHORTER is stages[2]'s Hunting Velociraptor sentence, which now cross-references stages[1], where the prowl claim is stated in full and still flagged unverified."
       },
       {
         "where": "stages[*].what_it_does",
-        "claim": "the 1,800-character cap",
+        "claim": "the 1,800-character cap after the revision",
         "status": "supported",
-        "note": "None is near it and none is muddled. Measured: mana 1314, ignition 1544, fuel 1475, conversion 1516, output 1334, protection 1208, wincon 1262. The revision this review asks for can be made without any block having to lose an argument to make room."
-      },
-      {
-        "where": "decklist_sha256_prefix",
-        "claim": "80701018c37d677b",
-        "status": "supported",
-        "note": "Matches the V5 list and every artifact I checked it against: goldfish_metrics.meta.decklist_sha256, mana_analysis.decklist_sha256 and versions.json version 5 (tag v1.1.0, sleeved 2026-09-20) all carry 80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643. The V5 attributions in the prose are also right against versions.json: Purphoros, Molten Echoes, Savage Stomp, Hunting Velociraptor, Savage Order, World War Hulk, Up the Beanstalk and Bloom Tender are all in version 5's `in` list, and Beast Within is in its `out` list, which is what the output stage says cost the deck its answer to a land."
+        "note": "Measured: mana 1431, ignition 1544, fuel 1781, conversion 1516, output 1631, protection 1598, wincon 1262. All seven are under, but fuel is at 99.0% and output and protection both grew by ~300 characters to carry their corrections. If any of the three over-claims above is fixed in a further round, stages[2] has 19 characters to do it in — the block needs a sentence split, not another clause."
       }
     ],
-    "iterations": 1
+    "iterations": 2,
+    "previous": {
+      "verdict": "fail",
+      "findings": 24,
+      "iterations": 1
+    }
   }
 }
