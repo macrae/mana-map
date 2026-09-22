@@ -7,7 +7,23 @@ green, never because the test was changed to suit the artifact.
 Last verified against **`make test-fresh`**: **2026-09-21**, **3,695 passing /
 0 failing** / 8 skipped / 3 xfailed, 617 s.
 
-## THE SUITE IS GREEN. The gaps on this page are the ones no test fails on.
+## THE SUITE IS GREEN. `corpus-gates` is red ON PURPOSE (§9c).
+
+**CI, as of 2026-09-22.** The `tests` workflow has two jobs and they mean
+different things:
+
+| job | state | |
+|---|---|---|
+| `test` (every push) | **GREEN** | must stay green — this is the signal |
+| `corpus-gates` (weekly) | **RED, expected** | the corpus is 266 cards ahead of the tracked artifacts; refresh after FRA on 2026-10-02 (§9c) |
+
+The `test` job went green on 2026-09-22 for the first time since **2026-08-25**,
+and the byte-diff determinism gate ran for the first time in that whole period —
+it had been short-circuited by the failing `Test` step, exactly as its own
+comment predicted. It caught the suite writing into `data/decks/` on every run
+(`docs/testing.md`).
+
+## The gaps on this page are the ones no test fails on.
 
 That is a change of kind, not of degree, and it is why this page was almost
 entirely wrong when it was audited on 2026-09-21. **Every red it listed had been
@@ -595,6 +611,64 @@ pilot may aim a branch at. `candidates.OBJECTIVE_AXES` currently offers 18, and
 O3 above argues for ADDING one (drain) — which should be weighed against this.
 
 Run it with `pytest -m fleet`.
+
+## 9c. `corpus-gates` is RED ON PURPOSE until Reality Fracture — expected, not ignored
+
+*Decided 2026-09-22. Revisit after FRA releases 2026-10-02.*
+
+The weekly `corpus-gates` job downloads a FRESH Scryfall corpus and runs the
+gates a per-push job cannot reach. It is failing, and **all four failures are
+one fact**: the corpus has moved and the tracked artifacts have not.
+
+```
+TestCardCountConsistency.test_projection_count      assert 34890 == 35156
+TestCardCountConsistency.test_embeddings_bin_size   assert 17863680 == 17999872
+…is_unit_norm_and_the_right_length[cardbert]        expected 35156 x 128 x 4
+…is_unit_norm_and_the_right_length[function]        expected 35156 x 128 x 4
+```
+
+Every tracked matrix is at **34,890** — `projection_2d.json`, `embeddings.bin`,
+`embeddings_ability.bin`, `embeddings_cardbert.bin`, all 17,863,680 bytes —
+against a live Scryfall at **35,156**. Exactly 266 cards behind, and the other
+3,239 tests in that job pass.
+
+**This is the gate working.** It is not a bug in the artifacts, the pipeline or
+the tests: it is the index-alignment invariant (`projection[i] == cards.csv[i]
+== embeddings[i]`) correctly reporting that the corpus has drifted from what was
+trained on.
+
+### Why it is not being fixed today
+
+**Reality Fracture releases 2026-10-02**, ten days out, and the standing rule is
+*refresh after a set release, never during a Forge run*. A refresh now means a
+retrain — the ability model is ~1h on MPS — and it would be superseded almost
+immediately by FRA. So the honest move is to refresh once, after FRA, and take
+the alignment forward in one step. `.claude/skills/refresh-corpus/SKILL.md` is
+the runbook.
+
+### THE RISK THIS ENTRY EXISTS TO MANAGE
+
+A deliberate red is one bad habit away from an ignored red, and **this repo has
+just spent four weeks proving it.** The `tests` workflow failed on every push
+from 2026-08-25 to 2026-09-22 — 143 failures against 21 successes over its life
+— and in that time the byte-diff determinism gate never ran once, because the
+`Test` step short-circuited it. When it finally ran it caught the suite writing
+into `data/decks/` on every run (see `docs/testing.md`). Nobody decided to
+ignore CI; it just stopped meaning anything, one push at a time.
+
+So this red is **scoped, dated and owned**, and it has a closing condition:
+
+- **Scope.** ONLY `corpus-gates`, and only these four card-count assertions. The
+  per-push `test` job is green and must stay green — that is the signal.
+- **Close it by:** `manamap run --from download` after 2026-10-02, then commit
+  the refreshed artifacts. The four assertions go green on their own; nothing
+  needs editing.
+- **If a FIFTH failure appears in this job, that is a real finding** and does not
+  belong under this entry.
+
+Do not raise the thresholds, do not mark the tests xfail, and do not add
+`corpus-gates` to a list of jobs that are allowed to be red. The count check is
+the only thing standing between a retrain and a silently misaligned index.
 
 ## 10. Branch hygiene
 

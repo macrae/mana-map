@@ -5,6 +5,15 @@ description: Pull a fresh Scryfall dump and regenerate the whole corpus — the 
 
 # Refresh the corpus (the full-pipeline runbook)
 
+> **A CI JOB IS WAITING ON THIS REFRESH.** `corpus-gates` runs weekly against a
+> FRESH Scryfall pull and is RED until it happens: every tracked matrix is at
+> 34,890 cards against a live 35,156, so the four card-count assertions fail on
+> the index-alignment invariant. That red is deliberate and dated —
+> `docs/known-issues.md` §9c — and running this runbook after **Reality
+> Fracture (2026-10-02)** is what closes it. Nothing needs editing; the
+> assertions go green when the artifacts do.
+
+
 A fresh Scryfall dump changes the card count, and index alignment
 (`projection[i] == cards.csv[i] == embeddings[i]`) makes a partial regeneration
 incoherent — so a refresh is always the FULL `manamap run`, retrain included
