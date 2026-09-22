@@ -836,6 +836,25 @@ figure-neutral — `any_of` drives the measurement, and re-running the goldfish
 with the label altered returns byte-identical figures. `regen` then carried the
 correction into all three derived artifacts.
 
+### The misread has a TEMPLATE, and was applied twice
+
+Not a one-off slip. The same splice was performed on a second run, and
+`tutor_guide.json` reports the result as a correction to the first:
+
+```
+run 996adb84   eliminated_by[giada-angels] 39   eliminated_how {damage: 53}   -> "39 of 53 ... from the air"
+run b0f44e4a   eliminated_by[giada-angels] 43   eliminated_how {damage: 61}   -> "43 of 61"
+```
+
+The recipe is `eliminated_by[<the seat that killed us most>]` over
+`sum(eliminated_how.values())`, reported as an evasion rate. Whoever wrote the
+second one was CORRECTING the first for staleness and reproduced the error
+exactly, because the shape looked like a figure.
+
+**The `eliminated_how` field is not broken and does work** — a third run on this
+deck reads `{damage: 8, "life loss": 5}`, so it distinguishes causes properly.
+It has simply never once said "flying", on any deck, in any run.
+
 ### The class, measured
 
 A declaration label is prose that DERIVED ARTIFACTS COPY AND AUTHORED ONES
@@ -871,6 +890,34 @@ formality.
 - **A figure in a LABEL is a figure, and carries the same obligation as one in a
   report** — it must name where it was measured. This one said "the Forge
   record" and pointed at two fields that do not say what it claimed.
+
+### Merged decision records: APPENDED TO, never rewritten
+
+`archangel-v1` and `splendor-v2` are MERGED branches whose objectives cite the
+false premise. A merged `branch.json` is a frozen decision — which list, which
+report, which grade, accepted on a stated date — so rewriting the reasoning
+would falsify the record of what was decided and why. That is a different act
+from correcting a live claim.
+
+Both now carry a `premise_corrections` entry beside the untouched decision: the
+claim, the correction, the evidence, and whether the decision stands. A
+programmatic check confirmed nothing but the new key moved, and
+`validate-branch` passes on both.
+
+The decisions do stand, and for reasons worth recording:
+
+- **archangel-v1** — the card is sleeved and the case never rested on the
+  premise. The objective's own text says the tax *"works whether or not the
+  attacker flies"*, which is why it was argued as a third Propaganda beside
+  Ghostly Prison. The seat fact that survives — giada-angels is what kills this
+  deck — still points at the same card.
+- **splendor-v2** — the premise supports a card that costs the branch NOTHING
+  (Kefnet is already in the 99), so nothing was bought or cut on it. The
+  objective is interaction affordability and is untouched.
+
+`objective_history` was the wrong key for this and the validator says so: it
+records a CHANGE of objective and errors on an entry naming the same axis.
+Nothing changed here, which is the point.
 
 ### Still open on heliod
 

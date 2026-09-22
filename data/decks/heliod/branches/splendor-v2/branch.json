@@ -1,73 +1,83 @@
 {
- "slug": "heliod",
- "branch": "splendor-v2",
- "v": 3,
- "opened": "2026-09-20",
- "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made \u2014 it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot \u2014 it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten.",
- "objective": {
-  "axis": "interaction_6",
-  "op": ">=",
-  "value": 0.68,
-  "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made \u2014 it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot \u2014 it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
- },
- "commits": [
-  {
-   "at": "2026-09-20",
-   "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
-   "message": "splendor-v1 and blue-v1, rebased onto V11: three swaps, nothing reverted"
-  }
- ],
- "base_version": 11,
- "staged": [
-  {
-   "at": "2026-09-20",
-   "out": "Alhammarret's Archive",
-   "in": "Gleaming Splendor",
-   "strength": null,
-   "why": "splendor-v1's original one-card patch. The Archive is {5} and doubles your own draw; Gleaming Splendor is {1}{W} and taxes the table's. Heliod's whole engine is making EVERY player draw, so 'whenever an opponent draws their SECOND card each turn' fires on three seats every turn the engine runs, and each trigger is a Treasure. Four mana cheaper, and it turns the deck's own symmetry into mana."
-  },
-  {
-   "at": "2026-09-20",
-   "out": "Lightning Greaves",
-   "in": "Greater Auramancy",
-   "strength": null,
-   "why": "splendor-v1's second swap. Greaves protects one creature from targeting; Greater Auramancy gives hexproof to EVERY enchantment you control and shroud to other creatures. This 99 is enchantment-dense and the commander is an enchantment creature \u2014 it protects the engine rather than a single body."
-  },
-  {
-   "at": "2026-09-20",
-   "out": "Plains",
-   "in": "Island",
-   "strength": null,
-   "why": "The 2026-09-16 colour audit, and the whole of what blue-v1 actually changed. Blue is 62.9% of the deck's pips on 26 sources against a Karsten target of 36; white is 37.1% of pips on 25. Moving one basic from the colour with the lighter load to the one that binds."
-  }
- ],
- "proposal": {
-  "at": "2026-09-20",
-  "as_version": "v1.4.0",
-  "why": "The real content of splendor-v1 and blue-v1, rebased onto the sleeved V11 so neither reverts the artifact package merged as v1.3.0. Gleaming Splendor for Alhammarret's Archive: three mana cheaper, and it turns the deck's own symmetry into mana \u2014 Heliod makes every player draw, so the second-card trigger fires on three seats a turn and each one is a Treasure. Greater Auramancy for Lightning Greaves: hexproof for every enchantment protects the engine rather than one body, and the commander is an enchantment creature. One Plains to one Island for the 2026-09-16 colour audit, where blue is 61% of the deck's pips. Kefnet the Mindful needs no slot; it is already in the 99 and already declared as a flier blocker.",
-  "base_version": 11,
-  "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
-  "accepted_on": {
-   "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
-   "state": "inconclusive",
-   "objective": {
+  "slug": "heliod",
+  "branch": "splendor-v2",
+  "v": 3,
+  "opened": "2026-09-20",
+  "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten.",
+  "objective": {
     "axis": "interaction_6",
     "op": ">=",
     "value": 0.68,
-    "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made \u2014 it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot \u2014 it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
-   },
-   "grade": "not resolvable",
-   "reading": 0.6766,
-   "harness": {
-    "iterations": 10000,
-    "seed": 20260826
-   }
-  }
- },
- "merged": {
-  "at": "2026-09-20",
-  "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
-  "into_version_before": null,
-  "forced_reason": "The pilot has made the swaps in paper and directed the merge."
- }
+    "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
+  },
+  "commits": [
+    {
+      "at": "2026-09-20",
+      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+      "message": "splendor-v1 and blue-v1, rebased onto V11: three swaps, nothing reverted"
+    }
+  ],
+  "base_version": 11,
+  "staged": [
+    {
+      "at": "2026-09-20",
+      "out": "Alhammarret's Archive",
+      "in": "Gleaming Splendor",
+      "strength": null,
+      "why": "splendor-v1's original one-card patch. The Archive is {5} and doubles your own draw; Gleaming Splendor is {1}{W} and taxes the table's. Heliod's whole engine is making EVERY player draw, so 'whenever an opponent draws their SECOND card each turn' fires on three seats every turn the engine runs, and each trigger is a Treasure. Four mana cheaper, and it turns the deck's own symmetry into mana."
+    },
+    {
+      "at": "2026-09-20",
+      "out": "Lightning Greaves",
+      "in": "Greater Auramancy",
+      "strength": null,
+      "why": "splendor-v1's second swap. Greaves protects one creature from targeting; Greater Auramancy gives hexproof to EVERY enchantment you control and shroud to other creatures. This 99 is enchantment-dense and the commander is an enchantment creature — it protects the engine rather than a single body."
+    },
+    {
+      "at": "2026-09-20",
+      "out": "Plains",
+      "in": "Island",
+      "strength": null,
+      "why": "The 2026-09-16 colour audit, and the whole of what blue-v1 actually changed. Blue is 62.9% of the deck's pips on 26 sources against a Karsten target of 36; white is 37.1% of pips on 25. Moving one basic from the colour with the lighter load to the one that binds."
+    }
+  ],
+  "proposal": {
+    "at": "2026-09-20",
+    "as_version": "v1.4.0",
+    "why": "The real content of splendor-v1 and blue-v1, rebased onto the sleeved V11 so neither reverts the artifact package merged as v1.3.0. Gleaming Splendor for Alhammarret's Archive: three mana cheaper, and it turns the deck's own symmetry into mana — Heliod makes every player draw, so the second-card trigger fires on three seats a turn and each one is a Treasure. Greater Auramancy for Lightning Greaves: hexproof for every enchantment protects the engine rather than one body, and the commander is an enchantment creature. One Plains to one Island for the 2026-09-16 colour audit, where blue is 61% of the deck's pips. Kefnet the Mindful needs no slot; it is already in the 99 and already declared as a flier blocker.",
+    "base_version": 11,
+    "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+    "accepted_on": {
+      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+      "state": "inconclusive",
+      "objective": {
+        "axis": "interaction_6",
+        "op": ">=",
+        "value": 0.68,
+        "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
+      },
+      "grade": "not resolvable",
+      "reading": 0.6766,
+      "harness": {
+        "iterations": 10000,
+        "seed": 20260826
+      }
+    }
+  },
+  "merged": {
+    "at": "2026-09-20",
+    "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+    "into_version_before": null,
+    "forced_reason": "The pilot has made the swaps in paper and directed the merge."
+  },
+  "premise_corrections": [
+    {
+      "at": "2026-09-22",
+      "claim": "Kefnet the Mindful … declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air",
+      "correction": "The 39/53 figure is a SEAT attribution, not an evasion one. It says which opponent killed this deck, not that the damage flew.",
+      "evidence": "The run record holds two separate fields: `eliminated_by {giada-angels: 39, abaddon: 6, baylen-tokens: 8}` (WHO killed this seat) and `eliminated_how {damage: 53}` (HOW). 39 and 53 were read out of different fields and joined into a claim about evasion. No seat's `eliminated_how` holds anything but `damage`, and the string `flying` appears zero times across all four of this deck's sim records. The true statement is that the giada-angels seat took 39 of heliod's 53 damage eliminations in run 996adb84 — a fact about WHICH OPPONENT kills this deck, not about how. Found by the engine-critic 2026-09-22 and confirmed independently against the record; the declaration label was corrected at its root the same day (see goldfish_targets.json `_label_corrections`).",
+      "decision_stands": "YES, AND THIS RECORD IS NOT ALTERED. The premise is a supporting clause for a card that costs the branch NOTHING — Kefnet is already in the 99 and takes no slot — so nothing was bought or cut on the strength of it. The objective is interaction affordability and is untouched by the correction.",
+      "note": "APPENDED, NOT REWRITTEN. A merged branch record is a frozen decision — which list, which report, which grade, accepted on a stated date. Rewriting the reasoning would falsify the record of what was decided and why. The correction rides beside it so a reader who meets the old sentence can resolve it."
+    }
+  ]
 }
