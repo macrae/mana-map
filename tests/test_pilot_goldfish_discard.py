@@ -332,10 +332,18 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
     exactly that number: anything else means the delta is coming from somewhere
     other than the cards this commit taught the model to see.
 
-    RE-BASELINED FOUR TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14, and
-    now 15.482 on 2026-09-21. The fourth was the deck again: v1.0.1 swapped
-    Astral Drift for Shelter, and Shelter draws. The activated-wheel COUNT is
-    unchanged at four; only the floor the blinded run recovers moved.
+    RE-BASELINED FIVE TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14,
+    15.482 on 2026-09-21, and now 15.517 on 2026-09-22. The fifth was the deck
+    yet again, and for a reason outside the draw model entirely: Gleaming
+    Bastion came out for a basic Island. The Bastion's W/U mode is gated on
+    controlling a basic land and the 99 held none, so it made {C} from the turn
+    after it entered — `land_colors` counted it as an untapped dual anyway, and
+    the goldfish built the land's colours from that same call. Swapping it for
+    an Island that always makes {U} moves how often the model can cast what it
+    drew, so the floor moves with it. The fourth was the deck as well: v1.0.1
+    swapped Astral Drift for Shelter, and Shelter draws. The activated-wheel
+    COUNT is unchanged at four across both; only the floor the blinded run
+    recovers moved.
     — and each move is the point rather than a nuisance. The THIRD was the deck
     again: Queen Kayla bin-Kroog came in as a FOURTH activated wheel ({4}, {T}:
     discard your hand, draw that many), so the count in this test moves from
@@ -378,9 +386,9 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
             card["oracle_text"] = "Flying"      # the bug, re-introduced
             checked += 1
     assert checked == 4, f"sharknado should hold four activated wheels, not {checked}"
-    assert t10(blind) == 15.482, "the pre-change figure is not being recovered"
+    assert t10(blind) == 15.517, "the pre-change figure is not being recovered"
     assert with_wheels > 22, (
-        f"the activated wheels are worth ~8.4 cards by turn ten; got {with_wheels}")
+        f"the activated wheels are worth ~7.9 cards by turn ten; got {with_wheels}")
 
 
 @requires_data

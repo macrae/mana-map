@@ -357,6 +357,68 @@ def gated_colour_source(card):
     return bool(_GATED_MANA_RE.search(text)) and not _FREE_COLOUR_TAP_RE.search(text)
 
 
+#: A COLOURED MODE GATED ON CONTROLLING A BASIC LAND. The gate attaches to the
+#: ACTIVATION of one mode, never to the card: Gleaming Bastion reads
+#: "{T}: Add {C}. {T}: Add {W} or {U}. Activate only if this land entered this
+#: turn or if you control a basic land." — the colourless mode is always live,
+#: the coloured one is not. In a deck with zero basics the coloured mode is
+#: dead from the turn after it enters, so counting it as an untapped W/U dual
+#: overstates the base by a source in each colour.
+#:
+#: Corpus sweep 2026-09-22, all 1,274 lands, 10 matches on "control a basic
+#: land", splitting cleanly in two — which is why this is scoped to the
+#: SENTENCE and not tested against the whole oracle text:
+#:
+#:   GATED COLOUR (5), what this catches: Gleaming Bastion, Gathering Place,
+#:       Dark Fortress, Hidden Lair, Training Compound — one cycle, identical
+#:       wording, the `Activate only if` clause sitting after a coloured `Add`.
+#:   GATED TAPPED-NESS ONLY (5), which must NOT be caught: Agna Qel'a,
+#:       Abandoned Air Temple, Realm of Koh, Ba Sing Se, Fire Nation Palace —
+#:       "This land enters tapped unless you control a basic land", whose
+#:       coloured tap is unconditional. A whole-text match would strip the
+#:       colour off all five and report a mono-blue deck's Agna Qel'a as
+#:       producing nothing.
+#:
+#: The "entered this turn" escape is real and is deliberately not credited: the
+#: colour is available for one turn out of the game. That is the documented
+#: safe direction — understating a source is recoverable, overstating one
+#: produces a deck that cannot cast its spells.
+_BASIC_GATE_RE = re.compile(
+    r"activate only if[^.\n]*?control a basic land", re.I)
+_SENTENCE_SPLIT_RE = re.compile(r"(?<=\.)\s+")
+
+
+def basic_gated_colours(card):
+    """Colours this land makes ONLY while you control a basic land.
+
+    Returns the empty set for every land whose coloured tap is unconditional,
+    including the five that gate only whether they enter tapped. `land_colors`
+    subtracts this when — and only when — it is given a pool with no basic in
+    it, so a caller with no deck in hand is unaffected.
+    """
+    type_line = str(card.get("type_line", "") or "")
+    if "Land" not in type_line:
+        return set()
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    sentences = _SENTENCE_SPLIT_RE.split(text)
+    gated = set()
+    for i, sentence in enumerate(sentences):
+        lowered = sentence.lower()
+        clauses = re.findall(r"add[^.\n]*", lowered)
+        if not clauses:
+            continue
+        # The gate is its own sentence, following the mode it restricts.
+        window = sentence + " " + (sentences[i + 1] if i + 1 < len(sentences) else "")
+        if not _BASIC_GATE_RE.search(window):
+            continue
+        for clause in clauses:
+            if "any color" in clause and RESTRICTED_MANA not in clause:
+                gated.update(WUBRG)
+            for symbol in re.findall(r"\{([wubrg])\}", clause):
+                gated.add(symbol.upper())
+    return gated
+
+
 def land_colors(card, pool=None):
     """Which colours a land can produce *for general purposes*.
 
@@ -431,7 +493,15 @@ def land_colors(card, pool=None):
     # `land_colors(t)` — no pool — which both terminates the recursion Urza's
     # Cave would otherwise open (it fetches `a land card`, and that can be
     # another fetch) and keeps a fetch from claiming a colour two hops away.
+    # A BASIC-GATED COLOURED MODE IS A PROPERTY OF THE DECK, NOT OF THE CARD —
+    # the same shape as the fetch layer below, and answerable only with a pool.
+    # Without one this is byte-identical, which is what keeps a caller that has
+    # no deck (the land selector, `gated_colour_source`, a fetch target priced
+    # one level deep) reproducible.
     if pool is not None:
+        if not any("Basic" in front_face(str(other.get("type_line", "") or ""))
+                   for other in pool):
+            produced -= basic_gated_colours(card)
         for target in fetch_targets(card, pool):
             produced |= land_colors(target)
     return produced

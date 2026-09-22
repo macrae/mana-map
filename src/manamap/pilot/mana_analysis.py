@@ -49,9 +49,15 @@ _LAND_RES = {name: re.compile(pattern, re.IGNORECASE)
 _TWO_COLOURS_RE = re.compile(r"add (?:\{[wubrg]\}|one mana).{0,40}?or", re.IGNORECASE)
 
 
-def land_classes(card):
+def land_classes(card, pool=None):
     """Every class a land belongs to (a land can be several — a snow tapped
-    dual is all three). Mirrors analysis/card_roles.py's taxonomy."""
+    dual is all three). Mirrors analysis/card_roles.py's taxonomy.
+
+    `pool` is the deck's lands, and changes exactly one answer: a land whose
+    coloured mode is gated on controlling a basic land is not an untapped dual
+    in a deck with no basics. Byte-identical without it — see
+    `manabase.basic_gated_colours` for the corpus sweep behind the gate.
+    """
     classes = set()
     type_line = str(card.get("type_line", "") or "")
     text = str(card.get("oracle_text", "") or "")
@@ -69,6 +75,17 @@ def land_classes(card):
         classes.add("untapped-dual")
     if len(land_colors(card)) >= 2 and "tapped" not in classes and "basic" not in classes:
         classes.add("untapped-dual")
+    # THE ONLY THING A POOL CHANGES HERE. Re-deriving the whole dual test from
+    # `land_colors(card, pool=…)` instead was tried and the corpus sweep threw
+    # it out: 67 lands moved, not 5 — the pool turns on the FETCH layer (ten
+    # fetches became untapped duals) and `len(colours) >= 2` dropped every
+    # restricted-mana land the text test exists to catch (Cavern of Souls,
+    # Unclaimed Territory, Ancient Ziggurat). A land is not an untapped dual
+    # when the deck holds no basic and the second colour was the gated one.
+    if pool is not None and manabase.basic_gated_colours(card):
+        if not any("Basic" in front_face(str(other.get("type_line", "") or ""))
+                   for other in pool):
+            classes.discard("untapped-dual")
     return classes
 
 
@@ -171,7 +188,7 @@ def analyze(slug, branch=None):
     ungated_sources = {c: 0 for c in WUBRG}
     tapped = always_tapped = 0
     for card in lands:
-        for cls in land_classes(card):
+        for cls in land_classes(card, pool=lands):
             class_counts[cls] = class_counts.get(cls, 0) + 1
         if enters_tapped(card):
             tapped += 1
@@ -185,7 +202,7 @@ def analyze(slug, branch=None):
     # wants "Island x11", not eleven identical rows.
     land_rows = [{"name": card["name"],
                   "copies": int(card.get("quantity") or 1),
-                  "classes": sorted(land_classes(card)),
+                  "classes": sorted(land_classes(card, pool=lands)),
                   "produces": sorted(land_colors(card, pool=lands)
                                      & (identity or set(WUBRG)))}
                  for card in land_entries]

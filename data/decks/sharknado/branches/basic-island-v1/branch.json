@@ -1,0 +1,35 @@
+{
+ "slug": "sharknado",
+ "branch": "basic-island-v1",
+ "v": 2,
+ "opened": "2026-09-22",
+ "why": "Gleaming Bastion's W/U mode is gated on controlling a basic land; the deck runs zero basics, so it makes coloured mana only on the turn it enters and is a colourless land thereafter. Test a basic Island in its place. EVIDENCE IS mana-analysis, not the goldfish, which cannot rank two lands that make the same colours.",
+ "objective": {
+  "axis": "land_drop",
+  "op": ">=",
+  "value": 0.8,
+  "why": "Gleaming Bastion's W/U mode is gated on controlling a basic land; the deck runs zero basics, so it makes coloured mana only on the turn it enters and is a colourless land thereafter. Test a basic Island in its place. EVIDENCE IS mana-analysis, not the goldfish, which cannot rank two lands that make the same colours."
+ },
+ "commits": [
+  {
+   "at": "2026-09-22",
+   "decklist_sha256": "7d623c5f9cf439d7b482b54cbd1aae3c403268ba5c0ac9dcec1e14e73dbf5e3d",
+   "message": "Gleaming Bastion -> basic Island: the Bastion's W/U mode is gated on a basic land the deck cannot supply."
+  }
+ ],
+ "base_version": 4,
+ "staged": [
+  {
+   "at": "2026-09-22",
+   "out": "Gleaming Bastion",
+   "in": "Island",
+   "strength": null,
+   "why": "Bastion's coloured mode requires a basic land the deck never controls; a basic Island makes U unconditionally every turn and switches on the Island-gated lands."
+  }
+ ],
+ "merged": {
+  "at": "2026-09-22",
+  "decklist_sha256": "7d623c5f9cf439d7b482b54cbd1aae3c403268ba5c0ac9dcec1e14e73dbf5e3d",
+  "into_version_before": null
+ }
+}

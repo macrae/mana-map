@@ -936,10 +936,10 @@
     "Floodfarm Verge",
     "Gemstone Caverns",
     "Generous Plunderer",
-    "Gleaming Bastion",
     "Glittering Massif",
     "Gossip's Talent",
     "Hengegate Pathway // Mistgate Pathway",
+    "Island",
     "Ivora, Insatiable Heir",
     "Jaxis, the Troublemaker",
     "Khorvath's Fury",
@@ -1754,15 +1754,6 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
-     "name": "Gleaming Bastion",
-     "pair": null,
-     "type_line": "Land",
-     "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
      "name": "Glittering Massif",
      "pair": null,
      "type_line": "Land \u2014 Mountain Plains",
@@ -1775,6 +1766,15 @@
      "name": "Hengegate Pathway // Mistgate Pathway",
      "pair": null,
      "type_line": "Land // Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Island",
+     "pair": null,
+     "type_line": "Basic Land \u2014 Island",
      "why": null
     },
     {
@@ -2043,13 +2043,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": -4,
+    "delta": -3,
     "gap": [
-     5,
+     4,
      1
     ],
     "have": [
-     27,
+     26,
      23
     ],
     "target": [
@@ -2159,7 +2159,7 @@
     0.742
    ],
    "W": [
-    0.951,
+    0.944,
     0.918
    ]
   }
@@ -2345,24 +2345,24 @@
    },
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "16 games in 100 -> 6 in 100, a swing of 10 games per 100",
+    "reads_as": "15 games in 100 -> 6 in 100, a swing of 9 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "13 games in 100 -> 40 in 100, a swing of 27 games per 100",
+    "reads_as": "13 games in 100 -> 40 in 100, a swing of 28 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
   "risk": [
    {
-    "detail": "60.40 -> 49.44, a change of -10.96 (-18%)",
+    "detail": "60.55 -> 49.44, a change of -11.11 (-18%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "9.85 -> 9.48, a change of -0.37 (-4%)",
+    "detail": "9.83 -> 9.48, a change of -0.35 (-4%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
@@ -2392,7 +2392,7 @@
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
-    "detail": "W gap +5 -> +1, U gap -2 -> -10, R gap +2 -> +1",
+    "detail": "W gap +4 -> +1, U gap -2 -> -10, R gap +2 -> +1",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -2417,11 +2417,11 @@
   {
    "better_is": "higher",
    "branch": 49.4364,
-   "champion": 60.4001,
-   "delta": -10.9637,
-   "mde": 1.4951,
+   "champion": 60.5466,
+   "delta": -11.1102,
+   "mde": 1.5083,
    "measure": "damage @T10",
-   "reads_as": "60.40 -> 49.44, a change of -10.96 (-18%)",
+   "reads_as": "60.55 -> 49.44, a change of -11.11 (-18%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -2431,11 +2431,11 @@
   {
    "better_is": "higher",
    "branch": 9.4804,
-   "champion": 9.846,
-   "delta": -0.3656,
+   "champion": 9.8341,
+   "delta": -0.3537,
    "mde": 0.1543,
    "measure": "board power @T6",
-   "reads_as": "9.85 -> 9.48, a change of -0.37 (-4%)",
+   "reads_as": "9.83 -> 9.48, a change of -0.35 (-4%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -2445,8 +2445,8 @@
   {
    "better_is": "higher",
    "branch": 0.249,
-   "champion": 0.2078,
-   "delta": 0.0412,
+   "champion": 0.2097,
+   "delta": 0.0393,
    "mde": 0.0171,
    "measure": "killed by T6",
    "reads_as": "21 games in 100 -> 25 in 100, a swing of 4 games per 100",
@@ -2459,11 +2459,11 @@
   {
    "better_is": "higher",
    "branch": 0.9794,
-   "champion": 0.9825,
-   "delta": -0.0031,
+   "champion": 0.9833,
+   "delta": -0.0039,
    "mde": 0.0056,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.006 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.006 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -2473,11 +2473,11 @@
   {
    "better_is": "lower",
    "branch": 0.0603,
-   "champion": 0.1578,
-   "delta": -0.0975,
-   "mde": 0.0144,
+   "champion": 0.1468,
+   "delta": -0.0865,
+   "mde": 0.014,
    "measure": "stall, 2 in a row",
-   "reads_as": "16 games in 100 -> 6 in 100, a swing of 10 games per 100",
+   "reads_as": "15 games in 100 -> 6 in 100, a swing of 9 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -2487,8 +2487,8 @@
   {
    "better_is": "lower",
    "branch": 0.4515,
-   "champion": 0.3784,
-   "delta": 0.0731,
+   "champion": 0.381,
+   "delta": 0.0705,
    "mde": 0.0197,
    "measure": "missed drop by T5",
    "reads_as": "38 games in 100 -> 45 in 100, a swing of 7 games per 100",
@@ -2501,8 +2501,8 @@
   {
    "better_is": "lower",
    "branch": 0.2179,
-   "champion": 0.1934,
-   "delta": 0.0245,
+   "champion": 0.1941,
+   "delta": 0.0238,
    "mde": 0.0164,
    "measure": "mulliganed",
    "reads_as": "19 games in 100 -> 22 in 100, a swing of 2 games per 100",
@@ -2515,9 +2515,9 @@
   {
    "better_is": "higher",
    "branch": 9.3707,
-   "champion": 12.1049,
-   "delta": -2.7342,
-   "mde": 0.3834,
+   "champion": 12.097,
+   "delta": -2.7263,
+   "mde": 0.379,
    "measure": "extra cards by T8",
    "reads_as": "12.10 -> 9.37, a change of -2.73 (-23%)",
    "scale": "against the 8 cards every deck draws for free by then",
@@ -2529,11 +2529,11 @@
   {
    "better_is": "higher",
    "branch": 0.4019,
-   "champion": 0.1282,
-   "delta": 0.2737,
+   "champion": 0.126,
+   "delta": 0.2759,
    "mde": 0.0213,
    "measure": "interaction affordable @T6",
-   "reads_as": "13 games in 100 -> 40 in 100, a swing of 27 games per 100",
+   "reads_as": "13 games in 100 -> 40 in 100, a swing of 28 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",
@@ -2543,8 +2543,8 @@
   {
    "better_is": "higher",
    "branch": 0.9575,
-   "champion": 0.9513,
-   "delta": 0.0062,
+   "champion": 0.9515,
+   "delta": 0.006,
    "mde": 0.0085,
    "measure": "hand can act by T3",
    "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.009 this run can resolve",

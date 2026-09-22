@@ -452,3 +452,130 @@ def test_no_corpus_fetch_produces_a_colour_without_a_pool():
             | {c for c in "WUBRG" if "{%s}" % c in (card["oracle_text"] or "")}, name
     assert lands >= 1000, f"only {lands} lands swept"
     assert fetches >= 30, f"only {fetches} fetches found"
+
+
+# ── a coloured mode gated on controlling a basic land ──
+#
+# Gleaming Bastion and its four cycle-mates read "{T}: Add {C}. {T}: Add {W} or
+# {U}. Activate only if this land entered this turn or if you control a basic
+# land." In a deck with no basics the coloured mode is dead from the turn after
+# it enters, so counting it as an untapped W/U dual overstates the base by a
+# source in each colour. Measured on sharknado, which runs zero basics: W read
+# 27 against a true 26 and U read 34 against 33.
+
+
+_BASTION = _land(
+    "Gleaming Bastion",
+    "{T}: Add {C}.\n{T}: Add {W} or {U}. Activate only if this land entered "
+    "this turn or if you control a basic land.",
+)
+#: The OTHER half of the corpus match, and the reason the gate is scoped to the
+#: sentence. Its coloured tap is unconditional; only the tapped-ness is gated.
+_AGNA = _land(
+    "Agna Qel'a",
+    "This land enters tapped unless you control a basic land.\n{T}: Add {U}.\n"
+    "{2}{U}, {T}: Draw a card, then discard a card.",
+)
+
+
+def test_basic_gated_colours_catches_the_gated_mode_only():
+    from manamap.pilot.manabase import basic_gated_colours
+    assert basic_gated_colours(_BASTION) == {"W", "U"}
+    # Gated tapped-ness is not gated colour. A whole-text match would strip
+    # blue off Agna Qel'a and report a mono-blue deck's land as making nothing.
+    assert basic_gated_colours(_AGNA) == set()
+    assert basic_gated_colours(_basic("U", "Island")) == set()
+
+
+def test_land_colors_is_unchanged_without_a_pool():
+    """No deck in hand, no answer to a question about the deck — byte-identical.
+
+    This is what keeps `gated_colour_source`, the land selector and a fetch
+    target priced one level deep reproducible.
+    """
+    assert land_colors(_BASTION) == {"W", "U"}
+    assert land_colors(_AGNA) == {"U"}
+
+
+def test_land_colors_drops_the_gated_mode_in_a_deck_with_no_basics():
+    nonbasic = [_BASTION, _land("Command Tower", "{T}: Add one mana of any color.")]
+    assert land_colors(_BASTION, pool=nonbasic) == set()
+    # One basic anywhere in the deck switches the mode back on.
+    with_basic = nonbasic + [_basic("U", "Island")]
+    assert land_colors(_BASTION, pool=with_basic) == {"W", "U"}
+    # A basic of ANY type counts — the gate says "a basic land", not a type.
+    with_forest = nonbasic + [_basic("G", "Forest")]
+    assert land_colors(_BASTION, pool=with_forest) == {"W", "U"}
+
+
+def test_agna_qela_keeps_its_colour_in_a_deck_with_no_basics():
+    """The enters-tapped-unless half of the corpus match keeps its colour.
+
+    What saves Agna is the `activate only if` ANCHOR, not the sentence window —
+    its text says "enters tapped unless you control a basic land" and never
+    "activate only if". Re-introducing a whole-text window does NOT fail this
+    test, which is why the case below exists as well.
+    """
+    nonbasic = [_AGNA, _land("Reliquary Tower", "{T}: Add {C}.")]
+    assert land_colors(_AGNA, pool=nonbasic) == {"U"}
+
+
+def test_a_gate_on_a_DIFFERENT_ability_does_not_touch_the_mana():
+    """The sentence window, tested on the thing it exists for.
+
+    A land whose coloured tap is unconditional and whose SEPARATE activated
+    ability is basic-gated must keep its colour. Matching "activate only if …
+    control a basic land" against the whole oracle text strips it — and no
+    corpus card has this shape today, so nothing else in this file would
+    notice the window being removed.
+    """
+    from manamap.pilot.manabase import basic_gated_colours
+    split = _land(
+        "Testing Grounds",
+        "{T}: Add {U}.\n{2}, {T}: Draw a card. Activate only if you control "
+        "a basic land.",
+    )
+    assert basic_gated_colours(split) == set()
+    assert land_colors(split, pool=[split]) == {"U"}
+
+
+def test_land_classes_stops_calling_it_an_untapped_dual_without_basics():
+    from manamap.pilot.mana_analysis import land_classes
+    assert "untapped-dual" in land_classes(_BASTION)
+    nonbasic = [_BASTION, _land("Command Tower", "{T}: Add one mana of any color.")]
+    assert "untapped-dual" not in land_classes(_BASTION, pool=nonbasic)
+    assert "untapped-dual" in land_classes(_BASTION, pool=nonbasic + [_basic("U", "Island")])
+
+
+@requires_data
+def test_the_basic_gate_fires_on_exactly_the_cycle_across_the_corpus():
+    """The sweep, asserted. Ten corpus lands mention controlling a basic land
+    and they split five/five; a change that moves either count is a change to
+    what the gate means and must be read card by card before it lands."""
+    import pytest
+    from manamap.pilot.manabase import basic_gated_colours
+    try:
+        from manamap.pilot import card_pool
+        pool = card_pool.load_pool()
+        oracle = card_pool.corpus_oracle()
+    except Exception:  # pragma: no cover - corpus absent
+        pytest.skip("corpus not built")
+    lands = mentions = gated = 0
+    gated_names = []
+    for name, info in pool.items():
+        if "Land" not in (info.get("type_line") or ""):
+            continue
+        card = dict(info, name=name, oracle_text=oracle.get(name, ""))
+        lands += 1
+        if "control a basic land" not in (card["oracle_text"] or "").lower():
+            continue
+        mentions += 1
+        if basic_gated_colours(card):
+            gated += 1
+            gated_names.append(name)
+    assert lands >= 1000, f"only {lands} lands swept"
+    assert mentions == 10, f"{mentions} lands mention controlling a basic land, expected 10"
+    assert sorted(gated_names) == sorted([
+        "Dark Fortress", "Gathering Place", "Gleaming Bastion",
+        "Hidden Lair", "Training Compound",
+    ]), gated_names
