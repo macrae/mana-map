@@ -217,7 +217,23 @@ def test_a_cache_hit_always_says_so():
 @requires_deck
 def test_a_volatile_turn_is_never_stored(tmp_path, monkeypatch):
     """`sim-progress` is true only when asked. Storing it would report a
-    finished run as still going."""
+    finished run as still going.
+
+    SKIPS WHERE THERE ARE NO SIM LOGS, which is everywhere but the machine the
+    run was made on — `data/decks/*/sim/logs/` is gitignored. The assertion
+    below is that the turn is uncacheable BECAUSE the command is volatile, and
+    the docstring already records why that distinction matters: the test once
+    passed while `sim-progress` was not in the allow-list at all, so the turn
+    was uncacheable because the command was REFUSED. In CI the command is
+    refused again, for a different reason, and the test went red rather than
+    quiet — which is better, but it is still not measuring what it exists for.
+    """
+    from manamap.config import DECKS_DIR
+
+    if not any((DECKS_DIR / "heliod" / d).is_dir()
+               for d in ("sim/logs", "experiments/logs")):
+        pytest.skip("no sim logs on this machine — `sim-progress` cannot run, "
+                    "so the turn would be uncacheable for the wrong reason")
     monkeypatch.setattr(cache, "SVEN_CACHE_DIR", tmp_path / "answers")
     turn = _turn(
         [_use("t1", "run_command", command="sim-progress", args=["heliod"]),
@@ -289,6 +305,9 @@ def test_the_sdk_conversion_yields_the_events_the_loop_expects():
     `text_stream` while tool calls arrive on the final message, and getting that
     split wrong yields an answer with no tools or tools with no answer.
     """
+    # `anthropic` is an OPT-IN extra the core install deliberately does
+    # not pull, so this must SKIP rather than fail: the SDK conversion is the one place a vendor object becomes an internal one, so it needs the vendor.
+    pytest.importorskip("anthropic")
     import types
 
     class Block:
@@ -333,6 +352,9 @@ def test_the_sdk_conversion_yields_the_events_the_loop_expects():
 
 def test_a_missing_key_says_what_to_do_about_it():
     """A setup problem should read as one, not as a stack trace."""
+    # `anthropic` is an OPT-IN extra the core install deliberately does
+    # not pull, so this must SKIP rather than fail: without the SDK the constructor refuses for a DIFFERENT reason — 'Sven needs the Anthropic SDK' — and the key check is never reached.
+    pytest.importorskip("anthropic")
     import os
 
     from manamap.sven import llm as _llm

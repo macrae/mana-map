@@ -243,9 +243,13 @@ def main(args):
     if getattr(args, "run", None):
         dirs = [d for d in dirs if args.run in d.name]
     if not dirs:
+        # `', '.join`, NOT `'/'.join`. These are two ABSOLUTE paths and joining
+        # them with a slash produced one corrupt string —
+        # `…/sim/logs//home/runner/…/experiments/logs` — in the one message a
+        # reader gets when there is nothing to show them.
         raise SystemExit(f"{slug}: no simulation logs under "
-                         f"{'/'.join(str(r) for r in roots)} — logs are gitignored "
-                         f"and only exist where the run was made")
+                         f"{' or '.join(str(r) for r in roots)} — logs are "
+                         f"gitignored and only exist where the run was made")
     # Newest first; a running job is almost always the one you meant.
     dirs.sort(key=lambda d: d.stat().st_mtime, reverse=True)
     if not getattr(args, "all", False):

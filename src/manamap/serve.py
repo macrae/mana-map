@@ -1080,7 +1080,17 @@ def _cli(argv=None):
         with _STDOUT_LOCK, contextlib.redirect_stdout(buf):
             run_pilot_step(ns)
     except SystemExit as exit_:
-        code = int(exit_.code or 0)
+        # `SystemExit.code` IS A STRING WHENEVER THE PILOT LAYER REFUSES, which
+        # is most of the time: `raise SystemExit("slug: no simulation logs …")`
+        # is how a command explains itself. `int()` on that raises ValueError
+        # and the caller saw `invalid literal for int() with base 10: 'heliod:
+        # no simulation logs under …'` — the refusal swallowed and replaced by
+        # a crash about parsing it.
+        if isinstance(exit_.code, int):
+            code = exit_.code
+        elif exit_.code:
+            code, message = 1, str(exit_.code)
+            buf.write(message if message.endswith("\n") else message + "\n")
     return {"stdout": buf.getvalue(), "exit": code}
 
 
