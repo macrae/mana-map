@@ -92,6 +92,7 @@ def test_pendragon_is_deliberately_absent():
     assert "pendragon" not in formats.FORMATS
 
 
+@requires_data
 def test_validate_deck_enforces_the_spec_it_is_given():
     """A second format must work by passing a parameter, not by editing rules."""
     doc = {"cards": [
@@ -113,6 +114,7 @@ def test_validate_deck_enforces_the_spec_it_is_given():
     assert any("expected exactly 100" in e for e in errors)
 
 
+@requires_data
 def test_basics_are_exempt_from_singleton_only_when_the_spec_says_so():
     doc = {"cards": [{"name": "Forest", "quantity": 30,
                       "type_line": "Basic Land — Forest", "color_identity": ["G"]}]}

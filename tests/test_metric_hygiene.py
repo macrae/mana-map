@@ -11,7 +11,7 @@ import json
 
 import pytest
 
-from conftest import ROOT, requires_deck
+from conftest import ROOT, requires_data, requires_deck
 from manamap.pilot import calibrate, candidates
 
 MAX_AXIS_CORRELATION = 0.90
@@ -25,6 +25,7 @@ def _spearmanless_corr(a, b):
     return num / den if den else 0.0
 
 
+@requires_data
 @requires_deck
 @pytest.mark.fleet
 def test_no_two_axes_measure_the_same_thing():

@@ -8,7 +8,7 @@ the Vol. 008 session and was refused by the agent rather than written down.
 
 import pytest
 
-from conftest import requires_deck, requires_rulings
+from conftest import requires_data, requires_deck, requires_rulings
 from manamap.pilot import scenario_facts as sf
 
 
@@ -295,6 +295,7 @@ def test_the_whole_deck_view_omits_rulings_and_the_stack_view_carries_them(monke
     assert sum("download-rulings" in n for n in one["notes"]) == 1
 
 
+@requires_data
 @requires_rulings
 @requires_deck
 def test_the_stack_view_carries_the_named_cards_official_rulings():

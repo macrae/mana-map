@@ -34,6 +34,9 @@ from manamap.config import (
 # ── Skip if pipeline hasn't been run ──
 
 
+from conftest import requires_data
+
+
 def requires_file(path):
     return pytest.mark.skipif(
         not Path(path).exists(),
@@ -130,8 +133,14 @@ class TestCardCountConsistency:
 
 
 @requires_file(MECHANICAL_TAGS_PATH)
+@requires_data
 class TestMechanicalTagQuality:
-    """Mechanical tags should cover >= 70% of non-land cards."""
+    """Mechanical tags should cover >= 70% of non-land cards.
+
+    MARKED ON THE CLASS, because the autouse fixture reads `cards.csv` — so
+    without the corpus these came back as collection ERRORS from inside the
+    fixture rather than as skips, which is the one thing a gate must not do.
+    """
 
     @pytest.fixture(autouse=True)
     def load_data(self):
@@ -276,6 +285,7 @@ def test_game_changers_are_commander_legal():
     assert (flagged["legal_commander"] == "legal").all()
 
 
+@requires_data
 @requires_file(MECHANICAL_TAGS_PATH)
 def test_csv_has_mechanical_tags_column():
     """Check mechanical_tags column exists (requires re-running extract.py)."""

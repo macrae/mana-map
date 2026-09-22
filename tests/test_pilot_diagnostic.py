@@ -10,7 +10,7 @@ import pytest
 
 from manamap.pilot import candidates, diagnostic
 from manamap.config import DECKS_DIR
-from conftest import A_BRANCH, ROOT, requires_branch
+from conftest import A_BRANCH, ROOT, requires_branch, requires_data
 
 SLUG = "ur-dragon"
 FAST = 400
@@ -143,6 +143,7 @@ def test_the_mde_switches_method_rather_than_overflowing():
     assert big < 0.05, f"10k games should see well under 5 points, got {big}"
 
 
+@requires_data
 @needs_deck
 def test_a_candidate_sweep_marks_what_it_cannot_detect():
     """A ranking of deltas smaller than the MDE is a ranking of noise."""
@@ -156,6 +157,7 @@ def test_a_candidate_sweep_marks_what_it_cannot_detect():
             assert "in_declaration" in r
 
 
+@requires_data
 @needs_deck
 def test_the_sweep_never_cuts_a_card_the_declaration_names():
     """The first version took the most expensive card outright — Utvara Hellkite
@@ -170,6 +172,7 @@ def test_the_sweep_never_cuts_a_card_the_declaration_names():
     assert not (cuts & declared), f"the sweep cut a declared card: {cuts & declared}"
 
 
+@requires_data
 @needs_deck
 def test_a_truncated_pool_says_so():
     """A silently truncated list reads as 'these are all of them'."""

@@ -17,6 +17,9 @@ from manamap.pilot.manabase import (
 )
 
 
+from conftest import requires_data
+
+
 def _spell(name, mana_cost, cmc, type_line="Instant"):
     return {"name": name, "mana_cost": mana_cost, "cmc": cmc, "type_line": type_line}
 
@@ -411,6 +414,7 @@ def test_searches_that_are_not_at_will_battlefield_fetches_are_excluded():
     assert land_colors(death, pool=[_CRYPT]) == {"W"}, "keeps its own {W}, gains nothing"
 
 
+@requires_data
 def test_no_corpus_fetch_produces_a_colour_without_a_pool():
     """THE BYTE-IDENTICAL GUARANTEE, over the real corpus.
 

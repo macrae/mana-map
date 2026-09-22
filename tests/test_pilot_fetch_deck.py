@@ -9,7 +9,7 @@ from manamap.pilot import fetch_deck
 from manamap.pilot.fetch_deck import parse_decklist, resolve_entries, shape_card
 from manamap.pilot.validate_deck import validate
 
-from conftest import requires_deck
+from conftest import requires_data, requires_deck
 
 REQUIRED_FIELDS = {
     "name", "quantity", "is_commander", "mana_cost", "cmc",
@@ -240,6 +240,7 @@ def test_misspelled_card_fails_loudly(monkeypatch, tmp_path):
 # ── validate_deck unit checks ──
 
 
+@requires_data
 def test_validate_deck_catches_violations():
     doc = {"cards": [
         {"name": "A", "quantity": 2, "is_commander": True, "type_line": "Creature",
@@ -258,6 +259,7 @@ def test_validate_deck_catches_violations():
 # ── check 2: real deck (data-gated until decklist pasted) ──
 
 
+@requires_data
 @requires_deck
 def test_real_deck_is_100_with_commander():
     from manamap.pilot.common import load_deck_cards

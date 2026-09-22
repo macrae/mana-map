@@ -1619,7 +1619,11 @@ def team_haste_grant(text):
             return "flying"
         if word == "Nontoken":
             return "nontoken"
-        if word in _corpus_creature_types():
+        # `or ()` — the accessor returns None with no corpus BY DESIGN (see its
+        # docstring), and `x in None` raises. Two of its four call sites guarded
+        # and two did not, which is 99 of CI's 242 failures: every corpus-free
+        # environment crashed here instead of falling back.
+        if word in (_corpus_creature_types() or ()):
             return word
         if word not in ("Other", "Creature", "All"):
             return None       # "Legendary creatures you control": a class this model has no key for
@@ -2385,7 +2389,7 @@ def combat_profile(card):
     if etb:
         win = text[etb.start():etb.start() + 220]
         subj = _ETB_SUBJECT_RE.search(text)
-        if subj and subj.group(1) in _corpus_creature_types():
+        if subj and subj.group(1) in (_corpus_creature_types() or ()):
             profile["etb_type_gate"] = subj.group(1)
         if _ETB_DMG_POWER_RE.search(win):
             profile["etb_damage_self_power"] = True

@@ -166,6 +166,7 @@ def test_bracket_report_matches_a_fresh_run(target, tmp_path, unchanged):
         f"{f' --target {bracket_target}' if bracket_target else ''}` and commit it.")
 
 
+@requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("goldfish_metrics.json"), ids=_id)
 def test_goldfish_metrics_match_a_fresh_run(target, tmp_path, unchanged):
@@ -227,6 +228,7 @@ def test_the_net_change_gate_says_so_when_it_has_nothing_to_gate():
         "something wrote one where it does not belong")
 
 
+@requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("net_change.json"), ids=_id)
 def test_net_change_matches_a_fresh_run(target, tmp_path, unchanged):
@@ -249,6 +251,7 @@ def test_net_change_matches_a_fresh_run(target, tmp_path, unchanged):
         f"net-change {slug} --branch {branch} --write` and commit it.")
 
 
+@requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("diagnostic.json"), ids=_id)
 def test_diagnostic_matches_a_fresh_run(target, tmp_path, unchanged):
@@ -322,6 +325,7 @@ def test_info_json_never_carries_a_version_block(target):
     assert "_note" in doc and "one commit behind" in doc["_note"]
 
 
+@requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("benchmark.json"), ids=_id)
 def test_benchmark_matches_a_fresh_run(target, unchanged):

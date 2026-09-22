@@ -176,6 +176,7 @@ def test_board_power_is_not_body_count():
         metrics["mean_bodies_by_turn"]["10"]
 
 
+@requires_data
 @requires_deck
 def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     """The gate. Nine decks, none opted in, none may move.
@@ -619,6 +620,7 @@ def test_the_commander_is_on_the_battlefield_and_swings(monkeypatch):
      "life: Add {C}. If that mana is spent on a creature spell, it gains haste.",
      "Legendary Land", None),
 ])
+@requires_data
 def test_the_four_grant_shapes_and_what_is_not_one(name, text, type_line, expect):
     got = goldfish.combat_profile(_card(name, text, type_line=type_line))
     assert got["team_haste"] == expect, (name, got["team_haste"])
@@ -697,6 +699,7 @@ def _haste_run(grant_text, iterations=200):
     return goldfish.aggregate(results, [], 10, False, True)["combat"]
 
 
+@requires_data
 def test_a_granted_creature_swings_the_turn_it_lands():
     """Driven through the simulator with the enabler's text as the only
     difference: the same enchantment that says nothing leaves every 4/4 waiting

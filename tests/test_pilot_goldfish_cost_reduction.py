@@ -233,6 +233,7 @@ def test_a_deck_with_no_reducer_is_byte_identical():
 
 # ── a dork whose output is the board ─────────────────────────────────────
 
+@requires_data
 def test_a_scaling_dork_is_seen_at_all():
     """`_TAP_ADD_RE` wants `{T}: Add <symbols>`. Bloom Tender and Faeburrow
     Elder say "for each color among permanents you control, add one mana of

@@ -202,6 +202,7 @@ def test_a_land_mana_bonus_doubles_land_mana_next_turn():
 # ── 4. The second batch: typed entry triggers, casts that fire things, a
 #      spell that hits for power, a tutor onto the battlefield ─────────────
 
+@requires_data
 def test_a_typed_entry_trigger_names_its_type_and_a_generic_one_does_not():
     tempest = goldfish.combat_profile(_card("Dragon Tempest",
         "Whenever a creature you control with flying enters, it gains haste until "
@@ -292,6 +293,7 @@ def _sim(cards, model_draw=False, iterations=200, seed=9):
     return goldfish.aggregate(rs, [], 10, False, True, model_draw)
 
 
+@requires_data
 def test_a_typed_trigger_does_not_fire_on_the_wrong_type():
     tempest = dict(_card("Tempest", "Whenever a Dragon you control enters, it deals 3 "
                          "damage to any target.", cmc=2, type_line="Enchantment",

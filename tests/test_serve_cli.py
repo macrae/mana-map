@@ -31,6 +31,9 @@ import pytest
 
 from manamap import serve
 
+from conftest import requires_data
+
+@requires_data
 def test_cli_runs_a_read_only_command_and_returns_its_stdout():
     """The point of the endpoint: a warm process answers what a cold one
     re-derives. Measured on this machine, `query-rules` 6.93s cold against

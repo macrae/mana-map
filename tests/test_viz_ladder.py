@@ -19,7 +19,7 @@ import pytest
 from manamap.config import DECKS_DIR
 from manamap.pilot import promote
 
-from conftest import requires_deck
+from conftest import requires_data, requires_deck
 
 
 def _decks_with_info():
@@ -39,6 +39,7 @@ def test_every_dossier_agrees_with_the_ladder_about_its_rung():
     assert checked >= 5, f"only {checked} dossiers checked"
 
 
+@requires_data
 @requires_deck
 def test_the_gate_count_matches_what_promote_would_print():
     """A deck two requirements from the table must read the same on both

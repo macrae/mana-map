@@ -94,10 +94,17 @@ def test_the_test_does_not_know_about_a_gate_the_status_command_lacks():
     assert "build_plan.json" in VALIDATED
     assert set(GATED) == set(VALIDATED)
 
-# Both read the corpus through `card_pool`, the only reader of the gitignored
-# `cards.csv` — `validate_build` for the declared pool, `validate_recon` to prove
-# every named card is real, legal and in identity.
-NEEDS_CORPUS = {"build_plan.json", "deck_recon.json"}
+# Every one of these reads the corpus through `card_pool`, the only reader of the
+# gitignored `cards.csv`: `validate_build` for the declared pool, `validate_recon`
+# to prove every named card is real, legal and in identity, and `validate_deck` /
+# `validate_brief` to resolve names and colour identity at all.
+#
+# `cards.json` AND `brief.json` WERE MISSING and it cost CI 39 of its 242
+# failures. `card_pool.load_pool()` returns None with no corpus BY DESIGN, so the
+# validators did not skip — they raised `AttributeError: 'NoneType' object has no
+# attribute 'get'`, which is a FAILURE, not a skip. A gate that cannot run must
+# say so; crashing is the one thing it must not do.
+NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "cards.json", "brief.json"}
 
 
 #: Validators that can be pointed at a branch. The rest take a slug only, so a

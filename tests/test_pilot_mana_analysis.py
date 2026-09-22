@@ -1,6 +1,6 @@
 """mana-analysis's deterministic core: classes, sources, producer kinds."""
 
-from conftest import requires_deck
+from conftest import requires_data, requires_deck
 
 from manamap.pilot.mana_analysis import land_classes, nonland_producer_kind
 from manamap.pilot.manabase import land_colors
@@ -212,6 +212,7 @@ def test_the_two_life_figures_are_never_the_same_number():
     assert life_cost(forge) == {"recurring": 1, "one_time": 0}
 
 
+@requires_data
 def test_no_corpus_land_is_both_recurring_and_one_time():
     """The sweep's structural claim, over the real corpus: 52 recurring, 38
     one-time, zero overlap."""

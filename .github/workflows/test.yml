@@ -77,6 +77,21 @@ jobs:
         # the only cost is a cached model download.
         run: manamap pilot build-strategy-db
 
+      - name: Build the rules DB
+        # SAME ARGUMENT AS THE STRATEGY DB ABOVE, and it was missed. `data/rules/`
+        # is gitignored, so on a fresh checkout `requires_rules` skipped and every
+        # test that shells out to `validate-stack` FAILED instead — the command
+        # exits non-zero with "rules_index.json not found", which is not a skip.
+        # That is the citation contract, the thing this project calls its
+        # load-bearing promise, not running in CI and taking a dozen tests down
+        # with it rather than skipping quietly.
+        #
+        # Cheap: the CR text is a single download and the built index is 7.9 MB,
+        # over the same MiniLM the step above already cached.
+        run: |
+          manamap pilot download-rules
+          manamap pilot build-rules-db
+
       - name: Test
         # `make test`, NOT a bare pytest — CI must exercise the entry point
         # CONTRIBUTING tells people to use, or the Makefile is the one thing
@@ -143,6 +158,10 @@ jobs:
           key: hf-${{ runner.os }}-minilm
       - name: Build the strategy DB
         run: manamap pilot build-strategy-db
+      - name: Build the rules DB
+        run: |
+          manamap pilot download-rules
+          manamap pilot build-rules-db
       - name: Download and extract the corpus
         # Steps 1-2 only. The bulk file is large; `extract` writes cards.csv.
         run: |

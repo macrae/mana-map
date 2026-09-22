@@ -15,7 +15,7 @@ from manamap.pilot.goldfish import (
     simulate_once,
 )
 
-from conftest import simulator_source, requires_deck
+from conftest import requires_data, requires_deck, simulator_source
 
 
 def card(name, type_line="Creature — Goblin", cmc=2, oracle="", quantity=1,
@@ -190,6 +190,7 @@ def test_first_seven_histogram_keeps_the_unkeepable_hands():
 # ── data-gated: real metrics artifact ──
 
 
+@requires_data
 @requires_deck
 def test_real_metrics_artifact_consistency():
     import json

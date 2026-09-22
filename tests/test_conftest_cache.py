@@ -8,7 +8,7 @@ mistake can make a board green — so its seams get tests like anything else.
 
 import pytest
 
-from conftest import _TREE_MEMO, _cache_of, _digest
+from conftest import _TREE_MEMO, _cache_of, _digest, requires_data
 
 
 class _NoCacheConfig:
@@ -250,6 +250,7 @@ def later():
     assert "manamap.sim.forge" in found, "a function-level plain import was missed"
 
 
+@requires_data
 def test_touching_a_dependency_moves_the_key_and_touching_a_stranger_does_not():
     """CONTROL 2 — the bug, re-introduced, in BOTH directions.
 

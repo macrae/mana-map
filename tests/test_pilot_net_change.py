@@ -10,7 +10,7 @@ import json
 
 import pytest
 
-from conftest import A_BRANCH, requires_branch, requires_deck
+from conftest import A_BRANCH, requires_branch, requires_data, requires_deck
 from manamap.pilot import deck_branch, net_change, validate_net_change
 
 SLUG, BRANCH = "ur-dragon", A_BRANCH
@@ -499,6 +499,7 @@ def test_the_cost_block_no_longer_decides_what_apart_means():
 # THE CHANGE and the blind spots, against the real branch
 # --------------------------------------------------------------------------
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_the_report_names_the_swaps_rather_than_counting_them():
@@ -513,6 +514,7 @@ def test_the_report_names_the_swaps_rather_than_counting_them():
     assert checked >= 1
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_a_land_swap_is_filed_apart_from_a_spell_swap():
@@ -534,6 +536,7 @@ def test_a_land_swap_is_filed_apart_from_a_spell_swap():
     assert checked >= 2
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_a_land_swap_always_declares_that_the_model_cannot_rank_lands():
@@ -600,6 +603,7 @@ def test_no_written_report_still_carries_the_deleted_block():
 # card_diff — the merge-request view of a branch
 # --------------------------------------------------------------------------
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_the_diff_is_derived_from_the_LISTS_and_not_from_the_staged_swaps():
@@ -625,6 +629,7 @@ def test_the_diff_is_derived_from_the_LISTS_and_not_from_the_staged_swaps():
         assert keys == sorted(keys), "stable, and ordered the way it is read"
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_the_diff_counts_NAMES_and_says_so_beside_the_deck_size():
@@ -641,6 +646,7 @@ def test_the_diff_counts_NAMES_and_says_so_beside_the_deck_size():
         assert isinstance(d[k], int) and d[k] > 0, k
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_every_row_carries_what_the_renderer_needs():
@@ -658,6 +664,7 @@ def test_every_row_carries_what_the_renderer_needs():
     assert all("state" in r for r in d["in"])
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_the_diff_and_the_bill_cannot_disagree_about_what_must_be_bought():
@@ -672,6 +679,7 @@ def test_the_diff_and_the_bill_cannot_disagree_about_what_must_be_bought():
     assert checked >= 10
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_a_staged_swap_pairs_BOTH_ways_and_the_reason_is_recoverable():
@@ -697,6 +705,7 @@ def test_a_staged_swap_pairs_BOTH_ways_and_the_reason_is_recoverable():
     assert checked >= 1
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_how_much_of_the_branch_nobody_argued_for_is_COUNTED():
@@ -719,6 +728,7 @@ def test_the_written_report_carries_the_diff():
     assert d["out"] and d["in"] and d["counts"]["out"] >= 1
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_the_two_sides_of_the_diff_BALANCE_in_copies():
@@ -743,6 +753,7 @@ def test_the_two_sides_of_the_diff_BALANCE_in_copies():
         assert c["out_copies"] == c["in_copies"]
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_a_copy_count_that_moved_is_reported_as_a_change():
@@ -766,6 +777,7 @@ def test_a_copy_count_that_moved_is_reported_as_a_change():
         -r["delta"] for r in d["changed"] if r["delta"] < 0) == d["counts"]["out_copies"]
 
 
+@requires_data
 @requires_branch
 @requires_deck
 def test_every_row_carries_its_own_copy_count():
@@ -779,6 +791,7 @@ def test_every_row_carries_its_own_copy_count():
     assert checked >= 10
 
 
+@requires_data
 def test_card_diff_survives_a_cut_DFC(monkeypatch):
     """`card_diff` reads `deck_branch.diff` for WHICH cards moved and its own
     tables for HOW MANY copies. Those two must speak one vocabulary.

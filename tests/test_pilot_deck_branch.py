@@ -13,7 +13,7 @@ import json
 
 import pytest
 
-from conftest import A_BRANCH, requires_branch, requires_deck
+from conftest import A_BRANCH, requires_branch, requires_data, requires_deck
 
 from manamap.pilot import deck_branch
 from manamap.config import DECKS_DIR
@@ -41,6 +41,7 @@ needs_branch = pytest.mark.skipif(not _has_branch(),
                                   reason=f"no {SLUG}/{BRANCH} branch on this machine")
 
 
+@requires_data
 @needs_branch
 def test_a_branch_run_never_touches_the_decks_own_artifacts():
     """THE CONTROL. Run every branch-aware command THROUGH ITS CLI ENTRY POINT,

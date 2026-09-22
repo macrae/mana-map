@@ -816,6 +816,7 @@ def test_a_card_that_plainly_makes_blood_is_never_scored_as_having_none():
                   "you do, put a +1/+1 counter on this creature.") == (0, None)
 
 
+@requires_data
 def test_the_blood_corpus_sweep_is_locked():
     """WIDENING A PATTERN NEEDS A CORPUS SWEEP IN THE SAME COMMIT. 44 cards in
     the corpus mention a Blood token on 2026-09-14; every one was read by hand
@@ -900,6 +901,7 @@ def test_the_bought_draw_list_does_not_shadow_the_recurring_one():
 # ── The draw doubler ──────────────────────────────────────────────────────
 
 
+@requires_data
 def test_a_draw_doubler_is_read_and_the_draw_step_is_the_exception():
     """"If you would draw a card EXCEPT THE FIRST ONE YOU DRAW IN EACH OF YOUR
     DRAW STEPS, draw two cards instead." The exception is the whole card, and

@@ -16,6 +16,8 @@ import pytest
 from manamap import config
 from manamap import serve
 
+from conftest import requires_data
+
 
 def test_commands_are_an_allow_list_not_a_string_to_run():
     """The API takes a NAME and a dict, looks the name up, and calls a Python
@@ -113,6 +115,7 @@ def test_the_formats_endpoint_reports_all_five():
 # ── Drafts: work you can put down ──────────────────────────────────────────
 
 
+@requires_data
 def test_saving_a_draft_is_idempotent_and_preserves_what_it_does_not_mention(tmp_path,
                                                                              monkeypatch):
     """The page saves on every change, so a save must not be a replace.
@@ -136,6 +139,7 @@ def test_saving_a_draft_is_idempotent_and_preserves_what_it_does_not_mention(tmp
         "the library the pilot spent ten minutes gathering was dropped")
 
 
+@requires_data
 def test_a_required_field_is_checked_on_the_MERGED_brief(tmp_path, monkeypatch):
     """Requiring a commander on every save refused `{"slug", "bracket"}` — an
     update that was never going to send a field it already had on disk."""
@@ -156,6 +160,7 @@ def test_a_sixty_card_format_needs_no_commander(tmp_path, monkeypatch):
     assert out["draft"] is True
 
 
+@requires_data
 def test_a_draft_writes_a_brief_and_nothing_else(tmp_path, monkeypatch):
     """No 99, no `cards.json`, and no `paper` block — a draft claims nothing."""
     import manamap.config as config
@@ -199,6 +204,7 @@ def test_the_formats_endpoint_reports_buildability():
 # ── Four defects from one report: "I am trying to build a zur deck" ────────
 
 
+@requires_data
 def test_a_commander_is_matched_the_way_a_human_types_it():
     """The report was "zur, the enchanter" — lowercase, with a comma.
 
@@ -215,6 +221,7 @@ def test_a_commander_is_matched_the_way_a_human_types_it():
     assert serve._resolve_commander("Zur the Enchanter")[0] == "Zur the Enchanter"
 
 
+@requires_data
 def test_a_miss_suggests_commanders_rather_than_anything_that_starts_the_same():
     """"not in cards.csv" is accurate and useless; the corpus knows what you
     probably meant.
@@ -232,6 +239,7 @@ def test_a_miss_suggests_commanders_rather_than_anything_that_starts_the_same():
     assert "Zuran Orb" not in near[:3], f"an artifact outranked a commander: {near}"
 
 
+@requires_data
 def test_saving_stores_the_corpus_name_not_what_was_typed(tmp_path, monkeypatch):
     """Resolved at SAVE, so every later step — build, validate, the manual —
     agrees about which card this is."""
@@ -245,6 +253,7 @@ def test_saving_stores_the_corpus_name_not_what_was_typed(tmp_path, monkeypatch)
     assert on_disk["commander"] == "Zur the Enchanter"
 
 
+@requires_data
 def test_an_unresolvable_commander_is_refused_with_suggestions(tmp_path, monkeypatch):
     import manamap.config as config
 
@@ -294,6 +303,7 @@ def test_a_missing_brief_does_not_speak_in_CLI(tmp_path, monkeypatch):
     assert "commander" in msg, f"it did not say what to do: {msg!r}"
 
 
+@requires_data
 def test_the_commander_picker_ranks_the_one_you_meant_first():
     """A text box that refuses was the wrong control. The picker has no invalid
     state to report — you type, real commanders appear, you choose one.
@@ -313,6 +323,7 @@ def test_the_picker_stays_quiet_until_there_is_something_to_match():
     assert serve.call("commanders", {"q": ""})["commanders"] == []
 
 
+@requires_data
 def test_the_picker_only_offers_things_that_can_be_commanders():
     """Suggesting Zuran Orb to someone filling a commander field is a prefix
     match and no help."""
@@ -426,6 +437,7 @@ def test_a_measurement_states_its_dependency_rather_than_failing_inside_it(
     assert "goldfish_targets.json" in str(exc.value)
 
 
+@requires_data
 def test_measuring_refreshes_the_dossier_it_will_be_read_from(tmp_path, monkeypatch):
     """The refresh is not a convenience.
 

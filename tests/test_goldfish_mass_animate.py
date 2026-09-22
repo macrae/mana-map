@@ -15,7 +15,7 @@ import re
 
 import pytest
 
-from conftest import simulator_source
+from conftest import requires_data, simulator_source
 
 from manamap.pilot import card_pool, goldfish
 
@@ -28,10 +28,12 @@ def _profile(name):
          "mana_cost": "{2}{W}{W}", "cmc": 4})
 
 
+@requires_data
 def test_the_conditional_form_carries_its_threshold():
     assert _profile("Starfield of Nyx")["mass_animate_threshold"] == 5
 
 
+@requires_data
 def test_the_unconditional_form_is_read_at_all():
     """The bug: this returned 0, the same value as a card with no such ability.
 
@@ -41,6 +43,7 @@ def test_the_unconditional_form_is_read_at_all():
     assert _profile("Opalescence")["mass_animate_threshold"] == 1
 
 
+@requires_data
 def test_unconditional_reads_as_always_on_and_never_as_absent():
     """1 rather than 0, because the consumer gates on truthiness first and then
     on `ench >= threshold`. A 0 would be silently skipped by both."""
@@ -49,12 +52,14 @@ def test_unconditional_reads_as_always_on_and_never_as_absent():
     assert got <= 1, "an unconditional effect must not impose a real threshold"
 
 
+@requires_data
 def test_a_flat_power_animator_is_deliberately_not_matched():
     """Bello makes a 4/4, not a body whose power is its mana value. Matching it
     here would price a different effect as this one."""
     assert _profile("Bello, Bard of the Brambles")["mass_animate_threshold"] == 0
 
 
+@requires_data
 def test_the_sweep_still_returns_exactly_these_two():
     """The comment above the pattern claims two cards in the corpus. If a set
     prints a third, this fails and the pattern gets re-read rather than
@@ -74,6 +79,7 @@ def test_the_sweep_still_returns_exactly_these_two():
     ("Mesa Enchantress", 0),
     ("Sol Ring", 0),
 ])
+@requires_data
 def test_the_field_is_set_only_by_the_two_cards_that_earn_it(name, expected):
     assert _profile(name)["mass_animate_threshold"] == expected
 

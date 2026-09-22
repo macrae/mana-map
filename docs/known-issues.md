@@ -1,81 +1,62 @@
 # Known issues — the inventory
 
-**The board of what is red and why.** `make test` does not pass on `main`, and it
-has not for some days. That is a deliberate state for most of what is on this
-page and an unowned one for the rest — the distinction is the point of the file.
+**The board of what is red and why.** Each row says what it is measuring, why it
+fails, and **who or what unblocks it**. A row leaves this page when the test is
+green, never because the test was changed to suit the artifact.
 
-A red test here is not a bug report to be triaged later. Each row says what it
-is measuring, why it fails, and **who or what unblocks it**. A row leaves this
-page when the test is green, never because the test was changed to suit the
-artifact.
+Last verified against **`make test-fresh`**: **2026-09-21**, **3,695 passing /
+0 failing** / 8 skipped / 3 xfailed, 617 s.
 
-Last verified against **`make test-fresh`**: **2026-09-13**, **3 failing /
-3,506 passing** / 9 skipped / 3 xfailed, 459 s.
+## THE SUITE IS GREEN. The gaps on this page are the ones no test fails on.
 
-**THREE REDS, ONE ROOT CAUSE, AND IT NEEDS A HUMAN.** ur-dragon's engine model
-and handbook procedures name Shivan Reef and Stormcarved Coast, cards the deck
-no longer runs after the 09-08 land swap. Nothing automatic fixes this: it needs
-the pilot's paper list (`check-in`), then `/analyze-engine` and the POH
-procedures re-run.
+That is a change of kind, not of degree, and it is why this page was almost
+entirely wrong when it was audited on 2026-09-21. **Every red it listed had been
+fixed and it still said "`make test` does not pass on `main`."** A page that
+inventories failures has no signal when there are none, and it drifts fastest
+exactly when the board is clean, because nothing forces anybody to open it.
 
-| test | what it measures |
+So the sections below are now in two groups, and the second is the real content:
+
+- **What FAILS** — currently nothing in `make test`. Four archived decks fail
+  their own validator (§5) and `deck-status --all` exits non-zero on them.
+- **What no test can see** — staleness nothing stamps (§6), engine models
+  nobody criticised (§7), open questions nobody dispatched (§8), sleeved decks
+  no simulation describes (§13), and the debt list.
+
+**VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two still disagree, and
+this audit re-confirmed it with a fresh instance: warm, `make test` reported
+3,216 passing and served 481 from the regenerate-and-compare cache; uncached, the
+same commit failed on **five heliod branch `goldfish_metrics.json`** that the
+cache had served as passing. The cause is the one filed as **#49** — the cache
+keys a branch's case on the branch's own inputs, and a branch has **no
+`goldfish_targets.json` of its own** (see `docs/gotchas-bench.md`), so editing
+the DECK's declaration stales every branch under it while looking like a no-op.
+Until #49 is fixed, a warm run cannot establish this page.
+
+### Cleared since the last sweep
+
+| was | what actually closed it |
 |---|---|
-| `tracked_artifacts_validate[ur-dragon/engine.json]` | every card the engine model names is in the 99 |
-| `agent_stamps::no_agent_artifact_names_a_card_the_deck_does_not_run` | the same claim, swept across every sleeved deck |
-| `poh::a_procedure_page_names_only_cards_the_deck_runs` | the procedures name only cards in the 99 |
-
-Cleared 2026-09-13: `model_colors` (#35 — the flag added a penalty and unlocked
-a bonus at once) and the sacrifice runaway guard (#34 — it guarded board width
-and called it a loop, while a second defect hid the first).
-
-**VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two disagree on this
-board, because the regenerate-and-compare cache keys a deck's freshness case on
-its own directory and a paper lock on ANOTHER deck flips a `locked` flag inside
-its branch sourcing. Narrowed and widened in Phase 2, but #49 is not closed: the
-data half is conservative rather than correct.
-
----|---|---|
-| ur-dragon's agent artifacts describe a list nobody checked in | 3 | `check-in`, then `/analyze-engine` and the POH procedures |
-| `model_colors` conflates a constraint with a bonus (#35) | 1 | split the flag; the mechanism is on the issue |
-| the sacrifice cap fires 1-in-1500 on edgar (#34) | 1 | find the seeded game and read the board |
-
-Cleared 2026-09-12: heliod's `goldfish_targets.json` (#47 — the validator now
-knows that a card in an OPEN branch is not a stranded name), the two artifacts
-the paper lock left behind, and the composition test that was asserting a
-content verdict.
-
-**VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two disagree on this
-board, because the regenerate-and-compare cache keys a deck's freshness case on
-its own directory and a paper lock on ANOTHER deck flips a `locked` flag inside
-its branch sourcing. Narrowed and widened in Phase 2, but #49 is not closed:
-the data half is conservative rather than correct.
-
----|---|---|
-| ur-dragon's agent artifacts describe a list nobody checked in | 3 | `check-in`, then `/analyze-engine` and the POH procedures |
-| heliod's champion targets declare a branch-only card (#47) | 1 | a branch-scoped overlay, Phase 3 |
-| `model_colors` conflates a constraint with a bonus (#35) | 1 | split the flag; the mechanism is in the issue |
-| the sacrifice cap fires 1-in-1500 on edgar (#34) | 1 | find the seeded game and read the board |
-
-Nine is where the day started and where it ended, by a different route. Four of
-the morning's nine were fixed (`viz_ladder`'s guard was tied to fleet shape,
-`serve_cli` named a port it never set, the piloting gate fired on n=40 noise,
-and a branch write left the champion's dossier stale); five more appeared when
-the suite was finally run UNCACHED, and were stale artifacts rather than broken
-code. Regenerating them is what closed the gap.
-
-**VERIFY WITH `test-fresh`, NEVER WITH `make test`.** The two disagree on this
-board. Run warm an hour apart on the same commit, `make test` reported 13 and
-`make test-fresh` 14, in both directions — because the regenerate-and-compare
-cache keys a deck's freshness case on ITS OWN directory plus the source tree,
-and a paper lock on one deck flips a `locked` flag inside every other deck's
-branch sourcing. Four `net_change.json` files and one dossier were served a
-passing result for inputs that had moved, which is the one thing
-`conftest._digest`'s docstring says this cache must never do. Filed as **#49**;
-until it is fixed, a warm run cannot establish this page.
+| ur-dragon's three artifacts describing a list nobody checked in (§1) | the pilot checked the paper list in; V6 is sleeved as v1.3.0 and `validate-engine ur-dragon` is OK |
+| the arrival channel depending on `model_combat` (§3b) | re-derived 2026-09-10 — the remaining gap is the cast-token channel and is legitimate; the threshold moved 0.7 → 0.4 |
+| two artifacts held by retired agents (§11) | the magazine renderer was deleted 2026-09-13, so nothing gates them; `STALE_XFAIL` is now empty and `ISSUE_XFAIL` does not exist |
+| `model_colors` conflating a constraint with a bonus (#35) | fixed 2026-09-13 — see §3c, which is kept for the mechanism |
+| the sacrifice runaway guard firing on edgar (#34) | fixed 2026-09-13 — see §3a |
 
 ---
 
-## 1. ur-dragon: THREE artifacts describe a deck that is not on disk — BLOCKED, deliberately
+## 1. ur-dragon: THREE artifacts describe a deck that is not on disk — **RESOLVED 2026-09-20**
+
+*The pilot checked the paper list in. V6 is sleeved as v1.3.0
+(`decklist_sha256` `99419d5b91…`, built 2026-09-20), the artifact chain was
+rebuilt against it, and `validate-engine ur-dragon` now reports
+`OK — 7 stage(s), 97 card(s) placed, 0 unassigned, 5/8 line(s) verified`. All
+three tests below are green. Kept for the rule it demonstrates, which held:
+**the engineer pass sitting unmerged in `.agent-out/` was deliberately not
+applied** until a human confirmed the list, and that is why nothing was
+published under a guess.*
+
+*Below is the state as it stood.*
 
 *Corrected 2026-09-12. This grouped FIVE tests and was wrong about two of them.
 `versions_json_matches_a_fresh_run` and `poh::a_rebuild_is_byte_identical` had
@@ -114,22 +95,49 @@ A `deck-engineer` pass is already sitting unmerged in `.agent-out/` and is
 nobody has confirmed would put a fresh byline under an unverified deck, which is
 this repo's oldest rule.
 
-Fixing these five before the check-in means writing artifacts that describe a
-guess. Leave them red.
+Fixing these before the check-in would have meant writing artifacts that
+describe a guess. (The correction note above says the grouping "fixes three",
+and this sentence said "these five" — the two never agreed, which is its own
+small lesson about editing a page in layers.)
 
 ---
 
-## 2. heliod: the engine model has never been criticised — needs one agent run
+## 2. Four sleeved decks have no criticised engine model
 
-| test | measuring |
-|---|---|
-| `test_pilot_deck_info::test_a_real_deck_composes_every_panel` | a sleeved deck's dossier has an engine panel with a critic verdict |
+*Retitled and re-measured 2026-09-21. It named one deck and reported a `fail`
+verdict; **heliod's critic block is now GONE**, not failing — `engine.json` was
+rebuilt for v1.4.0 and the critic never re-ran over it. Losing a `fail` is not
+an improvement: a saved `fail` documents what could not be grounded, and absence
+documents nothing.*
 
-**Cause, as of 2026-09-08:** the critic has now RUN, and returned **`fail`** —
-16 findings, 5 of them `supported`. The panel stays unverified because the
-verdict is `fail`, not because it is missing, which is the test working
-correctly. Round 2 (engineer answers the findings, critic re-judges) is the
-thing that turns it green; the loop allows three rounds and this was one.
+**The live state**, from `(engine.json).critic.verdict` across the six sleeved
+decks:
+
+| deck | critic | findings |
+|---|---|---:|
+| edgar-vampires | `pass` | 18 |
+| goblin-storm | `pass` | 9 |
+| **gishath** | **absent** | 0 |
+| **heliod** | **absent** | 0 |
+| **sharknado** | **absent** | 0 |
+| **ur-dragon** | **absent** | 0 |
+
+Four of six, and three of those four are the decks whose models were rebuilt
+this month — gishath v1.1.0, heliod v1.4.0, ur-dragon v1.3.0, plus sharknado
+which was modelled and never criticised at all. **Rebuilding an engine model
+drops its critic block, and nothing re-runs the critic.** That is the mechanism
+worth naming: the `/analyze-engine` loop ends at the critic, so a regeneration
+that stops after `validate-engine` passes leaves the model uncriticised and the
+board looks the same as one that was never modelled.
+
+**The test that watches this is weaker than its docstring claims.**
+`test_every_sleeved_deck_has_a_criticised_engine` says it is
+`xfail(strict=True)` and so "goes red the moment the fleet is clean and somebody
+has to delete this". **There is no marker.** It calls `pytest.xfail()`
+imperatively inside `if uncriticised:` — so a clean fleet makes it pass silently
+and nobody is ever told. Its guard, `assert len(uncriticised) < 5`, is at **4**:
+one more deck and it fails with the message "no sleeved deck has a passing
+engine critic — has the key moved?", which would be wrong.
 
 Nothing here is cache-recorded. A `fail` model is kept because it documents what
 could not be grounded, and recording it would say the opposite.
@@ -172,13 +180,9 @@ goldfish edit argues for dropping two Medallions that were already removed at
 is a pre-edit rate against a live 0.732; a roleless-card count reads five where
 six is right; and "whose every threat flies" is 30 of 32.
 
-**edgar-vampires and ur-dragon are in the same state** and are not asserted by
-any test, which is its own gap: three of nine decks have an uncriticised engine
-model and one test notices.
-
-**What unblocks it.** An `engine-critic` run on heliod (the `/analyze-engine`
-loop, after `validate-engine` passes), then the same for edgar-vampires.
-ur-dragon waits on §1.
+**What unblocks it.** An `engine-critic` run on each of gishath, heliod,
+sharknado and ur-dragon — the `/analyze-engine` loop, after `validate-engine`
+passes, which it does on all four. edgar-vampires and goblin-storm are done.
 
 *A note on the test.* It names heliod. Four tests were repointed this month for
 naming a deck and inheriting its decisions, and this one is a candidate — but
@@ -242,7 +246,18 @@ The sacrifice figure was understating by half because the busiest turn was both
 truncated and unrecorded. The test is fleet-scoped now rather than named on the
 one deck that happened to trip it.
 
-### 3b. The arrival channel depends on a flag it should not
+### 3b. The arrival channel depends on a flag it should not — **RESOLVED 2026-09-10**
+
+*Resolved three days BEFORE this page's previous "last verified" date, and the
+page still carried it as open and unowned. The gap that remains is legitimate
+and was re-derived rather than fixed: the cast-token channel (`9d2efd9`) rides
+on `model_combat`, and on edgar that is eminence — a body on every other Vampire
+cast, each a real arrival that fires the arrival draws. So combat-on reads 2.671
+against 1.325 draw-only and the difference IS the tokens. The threshold moved
+0.7 → 0.4 with that reasoning recorded in the test. The original defect — every
+call to `creature_entered` sitting inside `if model_combat:` — is fixed.*
+
+*Below is the state as it stood.*
 
 ```
 test_..._the_arrival_channel_does_not_secretly_require_the_combat_model
@@ -417,64 +432,81 @@ as a failed experiment, so its row describes a deck that is now a pile — the
 same status as radagast and sisay below. `sharknado` and `ingris-infect`, the
 two decks on the bench, were never in this sweep.*
 
-## 5. Fleet artifact state
+## 5. Fleet artifact state — four archived decks fail their own validator
 
-| deck | OK | STALE | FAIL | gated | unstamped |
-|---|---:|---:|---:|---:|---:|
-| edgar-vampires | 14 | 0 | 0 | 7 | 2 |
-| gishath | 14 | 0 | 0 | 5 | 3 |
-| goblin-storm | 14 | 0 | 0 | 6 | 4 |
-| heliod | 13 | 0 | **1** | 5 | 2 |
-| radagast | 14 | 0 | **1** | 4 | 4 |
-| sisay | 13 | 0 | **1** | 2 | 4 |
-| ur-dragon | 9 | **4** | **1** | 6 | 0 |
-| zur-enchantress | 8 | 0 | 0 | 3 | 0 |
+*Re-measured 2026-09-21. The old table listed 8 of what are now 14 decks, showed
+ur-dragon at 4 STALE when the fleet is at ZERO, and named two FAILs when there
+are four. Its stated CAUSE was also wrong — see below.*
 
-Two FAILs are listed here — **radagast and sisay both fail `diagnosis.json` on
-the same axis**, `axes[3] (colour-sources)`, where the diagnosis's
-`measured.value` disagrees with what `deck-audit` computes (9 against audit for
-radagast, **−15** for sisay). A negative colour-source count is not a plausible
-measurement, so this is one bug in one place rather than two decks drifting.
+`deck-status --all`: **14 decks, 0 stale, 4 failing their own gate, 1 queued
+change.** The four are the same artifact on the same axis:
 
-**CORRECTED 2026-09-08: neither deck is live.** `radagast` is BROKEN DOWN FOR
-PARTS and `sisay` is RETIRED, both since August. The first version of this table
-called them live, because the sweep that built it read
-`deck_versions.json`'s lifecycle block as `.get("state")` when the key is
-`status` — so the `.get(..., "living")` default answered for every deck in the
-fleet and the column meant nothing.
+| deck | lifecycle | `diagnosis.json` axes[3] (colour-sources) |
+|---|---|---|
+| hapatra | `broken-down` | says 15, audit computes 11 |
+| radagast | `broken-down` | says 9, audit computes 8 |
+| sisay | `retired` | says −15, audit computes −8 |
+| yawgmoth-swarm | `broken-down` | says 2, audit computes 1 |
 
-That changes what the row is worth. A wrong figure in an archived deck's
-diagnosis is a published error, so it stays on this page — but it is a deck that
-no longer physically exists, and the rule about not manufacturing artifacts for
-a pile of cards applies to fixing it as much as to regenerating it. Priority:
-below everything else here.
+**THE OLD DIAGNOSIS OF THE CAUSE WAS WRONG, and it is worth saying how.** This
+page argued: *"A negative colour-source count is not a plausible measurement, so
+this is one bug in one place rather than two decks drifting."* But negative is
+the axis's own unit. `deck-audit` reports
+`"unit": "sources above target (worst colour)"`, so sisay's −8 means **eight
+sources SHORT on its worst colour** (B: 28 have against 36 target) — a perfectly
+plausible measurement of a deck that is short on black.
 
-## 6. Staleness is undecidable on 19 artifacts
+What is actually wrong is simpler and less interesting: **each diagnosis carries
+a figure from an older audit**, and `validate-diagnosis` re-derives the axis and
+compares. Four stale numbers in four archived artifacts, not one bug.
 
-`unstamped — staleness cannot be checked` appears **19 times across six decks**.
+That reading was reached by looking at a number and finding it implausible
+rather than by reading the unit printed beside it — the same shape as a mean
+read as a rate, which `docs/gotchas-bench.md` already records twice.
+
+**All four decks are archived** (three `broken-down`, one `retired`). The rule
+about not manufacturing artifacts for a pile of cards applies to fixing these as
+much as to regenerating them: a wrong figure in an archived deck's diagnosis is
+a published error and stays on this page, but it is below everything else here.
+
+## 6. Staleness is undecidable on 26 artifacts
+
+*Re-counted 2026-09-21: 19 across six decks has become **26 across ten**, which
+is the direction this goes on its own — every new deck and every agent artifact
+adds to it.*
+
+`unstamped — staleness cannot be checked` appears **26 times across ten decks**:
+goblin-storm, radagast, sisay, hapatra and yawgmoth-swarm at 4 each, gishath 2,
+and edgar-vampires, heliod, sharknado and ur-dragon at 1.
 An agent-authored artifact that carries no decklist sha cannot be told from a
-current one, so the gate reports OK and means "no opinion". ur-dragon and
-zur-enchantress are the only decks at zero, because they are the two whose
-artifacts were most recently rebuilt.
+current one, so the gate reports OK and means "no opinion". The decks nearest zero are the ones most recently rebuilt; the archived ones
+are worst, because nothing has regenerated them since stamping shipped.
 
 This is the quiet version of the staleness problem the `meta.model_version`
 stamp was introduced to solve for computed figures. The authored side never got
 it. Until it does, "OK" on those rows is not evidence.
 
-## 7. Two engine models have never been criticised
+## 7. Engine models nobody criticised — **MERGED INTO §2**
 
-`critic` is null on **edgar-vampires** and **ur-dragon** (heliod's is now `fail`
-— see §2). No test notices, because only heliod is named by one. Three of eight
-live decks were in this state this morning and exactly one test could see it.
+*This said `critic` is null on edgar-vampires and ur-dragon with heliod at
+`fail`. Every part of that has moved: edgar now PASSES, heliod's block is GONE
+rather than failing, and the real set is four decks. §2 carries the live table,
+the mechanism (a rebuilt model drops its critic block and nothing re-runs it),
+and the defect in the test that watches it.*
 
-## 8. Fifty open questions, and no queue
+## 8. Sixty open questions, and no queue
 
-The engine models carry **50 `open_questions`** — 37 on live decks — routed
-`resolve-stack` 30, `goldfish` 11, `research-strategy` 9. `analyze-engine`
+*Re-counted 2026-09-21: fifty has become **sixty**, which is the whole point of
+the section — nothing dispatches them, so they only ever go up.*
+
+The engine models carry **60 `open_questions`**, routed `resolve-stack` 37,
+`goldfish` 13, `research-strategy` 10. By deck: hapatra 9, heliod 8, sharknado
+8, radagast 7, and 5 each on edgar-vampires, gishath, goblin-storm and
+ur-dragon, 4 each on sisay and yawgmoth-swarm. `analyze-engine`
 step 7 says the orchestrator dispatches these, because subagents cannot spawn
 subagents. Nothing tracks which have been dispatched. They accumulate.
 
-The `resolve-stack` thirty are the cheapest real evidence available: the fleet's
+The `resolve-stack` thirty-seven are the cheapest real evidence available: the fleet's
 verified-line counts are as thin as 1-of-11 (heliod), and each of those thirty
 is a scenario waiting to be written.
 
@@ -497,11 +529,78 @@ silently stops being read.
 What is still open is the other half of **#39** — Edgar's direction change is
 recorded in the log and has not been built.
 
+## 9a. A model change stales the bench, `regen` will not touch it, and a test fails on it
+
+*Found 2026-09-21 by changing the goldfish and running the suite.*
+
+Three behaviours that each make sense alone and disagree with each other:
+
+| | |
+|---|---|
+| `regen` (fleet pass) | covers **sleeved decks only** — 33 goldfish targets across the six with a paper lock |
+| `regen --slug <bench deck>` | works fine, finds the targets, regenerates them |
+| `test_goldfish_metrics_match_a_fresh_run` | covers **every non-archived deck**, bench included |
+
+So a model-version bump stales `emiel-blink` and `meren-recursion`, the fleet
+regen deliberately skips them, and the suite goes red on two decks the
+documented workflow says not to rebuild automatically.
+
+**The rule the fleet pass follows is right** (CLAUDE.md: *"Building it
+automatically would manufacture artifacts for a list that will be different
+tomorrow"*) — but it does not fit this case. These artifacts **already exist**;
+regenerating one is not manufacturing it, and the test's own premise is that a
+tracked artifact must match a fresh run. The archived decks are handled
+correctly and consistently: `regen` skips them AND the freshness test skips them.
+Bench decks are the gap — skipped by one and not the other.
+
+Two honest fixes, and it is a policy call rather than a bug:
+
+1. **Fleet regen covers an artifact that already exists**, wherever it lives,
+   and keeps `BOOTSTRAP` (creating a missing one) restricted to sleeved decks.
+   That is already the distinction `regen.is_pinned` was written to draw.
+2. **The freshness test skips bench decks** the way it skips archived ones,
+   accepting that a bench deck's figures may be stale.
+
+(1) is the better answer — a stale tracked artifact is a published error whether
+or not the deck is sleeved. Until it is decided, **regenerate bench decks by hand
+after any model change**: `regen --slug emiel-blink --slug meren-recursion`.
+
+## 9b. The axis-independence gate is failing, and it is not in the default suite
+
+*Found 2026-09-21 by running the suite with the `fleet` marker included.*
+
+`test_metric_hygiene.test_no_two_axes_measure_the_same_thing` is the check
+CLAUDE.md describes — *"Adding a metric requires re-running the independence
+check. Three magnitude axes shipped that were one axis at r = 0.92–0.98."* It
+is over the line again on two pairs, against a `MAX_AXIS_CORRELATION` of 0.90:
+
+```
+damage_8 ~ hoard_10:  r=+0.91
+hoard_10 ~ hoard_6:   r=+0.96
+```
+
+**Nothing has been reporting this.** `pyproject.toml` sets
+`addopts = "-m 'not browser and not forge and not fleet'"`, so the gate is
+excluded from `make test` AND from CI, by design and for time — the test's own
+docstring says *"this is a gate you must ask for"*. Nobody has asked.
+
+`hoard_6 ~ hoard_10` at 0.96 is the easy one to read: the same measure at two
+turns is one measure, and a branch aimed at both gets two confirmations of one
+fact. `damage_8 ~ hoard_10` at 0.91 is the interesting one and is the shape the
+original finding had.
+
+**This is a judgement about the metrics catalog, not a test fix.** Raising the
+threshold would defeat the check; deleting an axis is a decision about what a
+pilot may aim a branch at. `candidates.OBJECTIVE_AXES` currently offers 18, and
+O3 above argues for ADDING one (drain) — which should be weighed against this.
+
+Run it with `pytest -m fleet`.
+
 ## 10. Branch hygiene
 
-Twenty-five branch directories exist. **Eight are MERGED and still on disk** —
-seven on zur-enchantress, one on heliod (`archangel-v1`, merged into v1.2.1).
-Seventeen are open experiments on zur-enchantress alone.
+**Thirty-nine** branch directories exist (twenty-five when this was written).
+**Eight are MERGED and still on disk**, unchanged — seven on zur-enchantress,
+one on heliod (`archangel-v1`, merged into v1.2.1).
 
 Every merged branch records its target as **`into_version_before: null`**, which
 is why `branch_state` prints "merged … into the list after **VNone**" for all
@@ -509,7 +608,16 @@ eight. `base_version` is written correctly (9 on archangel-v1); the merge record
 simply never fills the field it prints. Cosmetic today, wrong in an artifact
 that exists to say what a change was measured against.
 
-## 11. Two artifacts are held by retired agents
+## 11. Two artifacts are held by retired agents — **RESOLVED 2026-09-13**
+
+*`STALE_XFAIL` is now EMPTY and `ISSUE_XFAIL` does not exist. The magazine
+renderer and its validators were deleted on 2026-09-13, so `considering.json`
+and `issue.json` are no longer gated by anything and an xfail has nothing to
+attach to. The permanent-xfail question this section posed — "a decision
+deferred rather than made" — was answered by deleting the renderer, which is
+the decision.*
+
+*Below is the state as it stood.*
 
 `STALE_XFAIL` and `ISSUE_XFAIL` in `tests/test_pilot_tracked_artifacts_validate.py`
 carry three entries between them, all strict:
@@ -535,21 +643,58 @@ Six bugs recorded during the PRD exploration were checked again today and five
 are gone: `experiment`'s `KeyError: 'ci95_a'` on the final print; `experiment`
 running a different pod profile from `simulate` (it reads `STANDARD_POD_PROFILE`
 now); `_run_arm` having no timeout (it passes `per_job_cap`); the `manuals/p/`
-three-writer collision (`build_page` has no default output any more, so `poh`
-owns it); and `mulligan` being parsed then discarded (`mulligans_taken` and
+three-writer collision (`build_page` was DELETED with the magazine renderer on
+2026-09-13, so `poh` owns the path outright — this said "has no default output
+any more", which was the state for eleven days); and `mulligan` being parsed then discarded (`mulligans_taken` and
 `mulligan_kept` are both aggregated, with the London-mulligan derivation
 recorded).
 
 **One is still live:** `experiment` does not rotate seats. Both arms sit at
-`Ai(1)` (`experiment.py:416-417`), while `forge.py` rotates per job for
+`Ai(1)` (`src/manamap/sim/experiment.py:416-417` — re-verified 2026-09-21), while `forge.py` rotates per job for
 `simulate` and is careful to rotate the AI profiles alongside the decks. So an
 A/B carries whatever seat-1 bias the table has, and the two commands are still
 not measuring under the same conditions — a narrower version of the pod-profile
 bug that was fixed.
 
-## 13. Every Forge figure for heliod describes a deck that was replaced — **RESOLVED**
+## 13. Every Forge figure describes a deck that was replaced — **REOPENED, AND IT IS FLEET-WIDE**
 
-*Runs against v1.2.1 exist; §4's own update quotes one. Kept for the lesson.*
+**Marked RESOLVED on 2026-09-12 for heliod, and the condition came straight
+back — on five of the six sleeved decks.** That is the finding: this is not a
+heliod problem that was fixed, it is what happens to every deck every time it is
+sleeved at a new version, and nothing notices.
+
+Measured 2026-09-21, each deck's `cards.json` sha against
+`seats[0].decklist_sha256` on every run under `sim/`:
+
+| deck | sleeved | runs | runs describing the sleeved list |
+|---|---|---:|---:|
+| goblin-storm | V1 | 4 | **4** |
+| edgar-vampires | v1.1.1 | 9 | **0** |
+| gishath | v1.1.0 | 3 | **0** |
+| heliod | v1.4.0 | 4 | **0** |
+| sharknado | v1.0.1 | 1 | **0** |
+| ur-dragon | v1.3.0 | 4 | **0** |
+
+Twenty-one Forge runs on the fleet, and **only goblin-storm's four describe the
+list in its sleeves** — because goblin-storm is the one deck that has not
+changed since V1. Every figure quoted for the other five is a true statement
+about a list nobody is holding.
+
+**Nothing here is wrong and nothing warns.** Each record names the list it
+played (`seats[0].decklist_sha256`), which is exactly the honesty this bench is
+built on; what is missing is a READER that joins the two. `deck-status` reports
+stale ARTIFACTS and has no notion of a stale RUN, so a dossier prints a win rate
+beside a version it does not belong to and says nothing.
+
+**This is cheap to close and has been open twice.** The join is one comparison —
+`sim_record.seats[0].decklist_sha256` against `cards.json`'s — and it has the
+same shape as the freshness stamp every computed artifact already carries. Until
+it exists, the rule from the first time round stands and is now fleet-wide: **a
+Forge figure quoted for any deck but goblin-storm needs the version said out
+loud beside it.**
+
+*Below is the original heliod-only section, kept for the lesson and for how it
+was found.*
 
 The 120-game standard-pod run is dated 2026-09-07. `skies-v1` and
 `archangel-v1` both merged on **2026-09-08**. The run's own record says which
@@ -593,7 +738,7 @@ looking for them, which is the usual way.
 | D1a | **A backfilled entry can claim a list it was never played on — and gishath proves it** | `deck_notes.append_entry`; `data/decks/gishath/log.jsonl` entry 001 | The game was played 2026-08-28 and logged on 09-01, so `--at` set the date and stamped the CURRENT sha. That sha **matches `decklist.txt` exactly today**, and the note says the game was won by drawing **Enlarge — which has never appeared in any committed version of the list.** So the entry asserts it was played on a deck it demonstrably was not. Found by the `debrief` agent, not by any check. **CONFIRMED BY THE PILOT 2026-09-09: the paper deck has Enlarge and he won with it.** So the tracked 99 differs from the sleeved deck by at least one card in each direction — the repo list is 100 cards WITHOUT Enlarge, so something in it is not in paper either. Every artifact under `gishath/` is computed against a list he does not play. Needs `check-in`, exactly like ur-dragon |
 | D2 | **`supplementals` is silently dropped by the merge** | `merge_captains_log._sections` whitelists `SECTION_KEYS`, which never contained it | The validator and the renderer both handle the key; the merge cannot deliver it. Latent — no deck has a second game by one deck on one night yet |
 | ~~D3~~ | ~~`stations_for_deck` is built, tested, and consumed by nothing~~ **DELETED 2026-09-09** with the register that needed it | `captains_log.py:254`, `STATION_ROLES`, `UNSTATIONED_ROLES` | Its docstring promises "the validator holds it to this roster" and no code calls it. The equivalent guard IS implemented for `validate_debrief`. Dead weight or an unfinished check — decide which |
-| D4 | **Two POH sections are registered with no renderer** | `poh_spec.SECTIONS` §8 `matchups`, §9 `appendices`; `poh.RENDERERS` covers seven of nine | They never render. §9's promise already reads "revision log", which is the natural home for a game-history appendix |
+| D4 | **Two POH sections are registered with no renderer** | `poh_spec.SECTIONS` declares **TEN** (§0–§9); `poh.RENDERERS` holds **seven**, and §0 front-matter renders through the page shell, so **eight of ten** appear | §8 `matchups` and §9 `appendices` have never rendered on any deck since the book shipped 2026-09-02, and `validate-poh` has printed `NOTE section(s) not rendered: 8, 9` on every deck ever since. "Seven of nine" was wrong in both numbers. **It is a RENDERER gap, not a data gap** — edgar has a full `matchups` key in `manual_prose.json` and eleven passing stacks, and still stops at §7; that distinction cost an hour on 2026-09-21 when the missing pages were read as missing prose and agent passes were nearly spent refreshing copy that would render nowhere |
 | D5 | **`compose` computes the log-to-version join and discards it** | `deck_info.compose` calls `deck_versions.report(slug)` and keeps only `current_version` and a count | Per-version records exist inside that call. `info.record` is a flat all-time roll-up, so the dossier cannot say "3–1 on the current list" without recomputing |
 | D6 | **Game-derived prose renders with no version predicate** | `deck-view.js logPanel`, and `build_page.render_debrief` in the frozen renderer | Every night renders regardless of which list it was played on, while versions, diagnoses, sims and experiments all carry staleness. The join (`versionOfSha`) is right there and unused |
 | D7 | **`agent_cache._SHA_MEMO` never evicts** | `agent_cache.py:64` — keyed `(path, mtime, size)`, `if key not in _SHA_MEMO` | Fine in a CLI process that exits in seconds; an unbounded leak in `manamap serve`, which Sven now keeps alive for days. Every other memo in the repo replaces on signature change |
@@ -857,32 +1002,53 @@ monotonically from 0.250 at n=20 to 0.134 at n=67, so stopping early would have
 flattered the deck by seven points. That is optional stopping, and it is the
 failure mode `sim-progress` was written to refuse.
 
-## O1 — You are paying for games that produce no decision
+## O1 — You are paying for games that produce no decision (and the clock experiment has already run)
 
 Regenerating every dossier surfaced the clock-out rate, which nothing had ever
-put in one place:
+put in one place. **A clock-out has no winner and is excluded from the rate,
+correctly. It is not excluded from the wall clock.**
 
-| deck | decided | played |
+That matters wherever a sample size is quoted: the power arithmetic says ~329
+games per arm to resolve a 0.10 difference, and at a 10% clock-out rate that is
+~366 games to PLAY. Any estimate that multiplies decided games by the per-game
+clock is short by that fraction.
+
+### The comparison this section said nobody had run
+
+*Added 2026-09-21.* This closed with *"raising `-c` might convert clock-outs into
+decisions, or might just make each one cost longer. Nobody has run that
+comparison, and it is cheap."* **It has been run** — not deliberately, but
+`SIM_GAME_CLOCK_SECONDS` moved 300 → 600 and the fleet now holds runs at both,
+so the answer is sitting in the tracked records and costs nothing to read:
+
+| clock | clock-outs | games | rate |
+|---|---:|---:|---:|
+| `-c300` | 118 | 889 | **13.3%** |
+| `-c600` | 119 | 1,232 | **9.7%** |
+
+Per deck, where both exist:
+
+| deck | `-c300` | `-c600` |
 |---|---:|---:|
-| goblin-storm | 88 | 100 |
-| zur-enchantress | 51 | 60 |
-| heliod | 100 | 120 |
-| gishath | 18 | 20 |
-| ur-dragon | 60 | 60 |
+| ur-dragon | 14% | **5%** |
+| goblin-storm | 10% | **7%** |
+| edgar-vampires | 15% | **11%** |
+| heliod | 15% | 13% |
+| gishath | 10% | 10% |
 
-**A clock-out has no winner and is excluded from the rate, correctly.** But it
-is not excluded from the wall clock: heliod's last run cost 361 minutes and
-bought 100 games of evidence, not 120.
+**Doubling the clock roughly halves the clock-out rate on the decks where it
+moves at all, and never raises it.** Read it as evidence, not as the
+experiment: these are not seed-matched arms, the `-c300` and `-c600` runs are
+against different pods and different list versions, and gishath's 20 games at
+300 cannot say anything. What it does settle is the direction — the "or might
+just make each one cost longer" branch is not what the data looks like — and it
+says the controlled version is worth running rather than speculated about.
 
-That matters wherever a sample size is quoted. The power arithmetic says ~329
-games per arm to resolve a 0.10 difference; at goblin-storm's rate that is ~374
-games to PLAY, and at heliod's ~395. Any estimate of "how long would this take"
-that multiplies decided games by the per-game clock is short by 15-20%.
-
-Worth measuring before it is worth fixing: raising `-c` might convert clock-outs
-into decisions, or might just make each one cost longer. Nobody has run that
-comparison, and it is cheap — one run at the current clock against one at double,
-same seed, same pod.
+**The lesson is the one this page keeps relearning.** A question filed as "cheap,
+and nobody has run it" sat open for twelve days while the answer accumulated in
+`sim/` as a side effect of an unrelated config change. Nothing joins a filed
+question to the data that would close it; §8's sixty undispatched open questions
+are the same gap at a different scale.
 
 ## What is NOT on this page
 
@@ -892,8 +1058,15 @@ same seed, same pod.
   (2026-09-08). Their artifacts sit at a model version four changes old, and
   that is correct — regenerating a deck that no longer physically exists
   manufactures figures about a pile of cards. `regen` skips them by design.
-- **radagast and sisay** are live but unpinned, and `regen --slug` reports "no
-  tracked artifacts matched" for both: their `goldfish_metrics.json` is tracked
-  but no stage claims them, so a model change leaves them silently stale. No
-  test fails on it today. It is the same shape as the gap `regen.BOOTSTRAP` was
-  written for, one rung down — worth closing before it costs something.
+- **radagast and sisay are NOT live** — radagast is `broken-down` and sisay is
+  `retired`, which §5 of this same page had already corrected on 2026-09-08
+  while this bullet went on saying otherwise. One file contradicting itself
+  thirteen days apart is the clearest argument there is for re-deriving a fleet
+  table rather than editing it.
+
+  The half that IS still true: `regen --slug` reports "nothing to regenerate —
+  no tracked artifacts matched" for both. Their `goldfish_metrics.json` is
+  tracked but no stage claims them, so a model change leaves them silently
+  stale. No test fails on it. Same shape as the gap `regen.BOOTSTRAP` was
+  written for, one rung down — but on two archived decks, so it is worth
+  closing for the NEXT deck that lands in this state rather than for these.

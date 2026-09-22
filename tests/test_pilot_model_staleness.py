@@ -11,7 +11,7 @@ import json
 
 import pytest
 
-from conftest import requires_deck
+from conftest import requires_data, requires_deck
 from manamap.pilot import goldfish, model_staleness
 from manamap.config import DECKS_DIR
 
@@ -71,6 +71,7 @@ def test_every_tracked_goldfish_carries_the_stamp():
     assert stamped >= 8, f"only {stamped} artifacts checked"
 
 
+@requires_data
 @requires_deck
 def test_the_fleet_is_stamped_with_the_model_that_is_running():
     """If this fails the fleet needs regenerating — which is the whole point of
@@ -102,6 +103,7 @@ def test_the_fleet_is_stamped_with_the_model_that_is_running():
         f"Re-run `manamap pilot goldfish <slug>` for each.")
 
 
+@requires_data
 @requires_deck
 def test_prose_written_against_an_older_model_is_REPORTED_not_failed():
     """The three states, and only one of them is evidence.

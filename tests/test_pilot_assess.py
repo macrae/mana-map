@@ -9,7 +9,7 @@ every model here.
 
 import pytest
 
-from conftest import A_BRANCH, requires_branch
+from conftest import A_BRANCH, requires_branch, requires_data
 
 from manamap.pilot import assess as A
 from manamap.config import DECKS_DIR
@@ -21,6 +21,7 @@ SLUG, BRANCH = "ur-dragon", A_BRANCH
 # 2026-08-27 issue). Every one of these used to name treasure-v2's cards.
 
 
+@requires_data
 def test_a_tribe_is_matched_against_real_creature_types():
     """`"Treasures you control"` is not a tribe.
 
@@ -49,6 +50,7 @@ def test_gating_is_read_from_the_card():
     assert A.gate_of("Draw two cards.") == A.ONESHOT
 
 
+@requires_data
 def test_it_names_what_no_model_here_can_see_and_then_estimates_it_anyway():
     """A card that taxes what opponents do is worth exactly zero in a solitaire
     goldfish, and the verdict must keep saying so — implying the recommendation
@@ -65,6 +67,7 @@ def test_it_names_what_no_model_here_can_see_and_then_estimates_it_anyway():
         assert str(row["pod_rate"]["per_round"]) in row["verdict"]
 
 
+@requires_data
 def test_a_card_already_in_the_list_says_so_and_shows_no_price():
     """The sourcing tag answers 'what would I buy to build this list', which is
     meaningless beside a card already in it — and it printed `[buy]` under
@@ -74,12 +77,14 @@ def test_a_card_already_in_the_list_says_so_and_shows_no_price():
     assert row["in_list"] and row["verdict"] == "already in the list"
 
 
+@requires_data
 def test_a_double_faced_card_resolves_from_either_face():
     """The library holds `A // B`; a pasted list may hold either face."""
     got = A.assess(SLUG, ["Decadent Dragon"])
     assert "not in the corpus" not in got["cards"][0].get("verdict", "")
 
 
+@requires_data
 def test_an_off_identity_card_is_refused_before_anything_else():
     """THIS TEST HAD NEVER ASSERTED ANYTHING.
 
@@ -103,6 +108,7 @@ def test_an_off_identity_card_is_refused_before_anything_else():
     assert A.assess(mono, ["Llanowar Elves"])["cards"][0]["legal"] is True
 
 
+@requires_data
 def test_an_unknown_name_is_reported_not_dropped():
     got = A.assess(SLUG, ["Nonesuch Cardname Here"], branch=None)
     assert "not in the corpus" in got["cards"][0]["verdict"]
@@ -138,6 +144,7 @@ def test_the_tribe_is_named_in_english():
     assert A._plural("Dragon") == "Dragons"
 
 
+@requires_data
 def test_it_names_the_cards_no_channel_of_the_model_can_see():
     """STEP 6 OF THE ORDER, WHICH ONLY COVERED OPPONENT-GATED CARDS BEFORE.
 

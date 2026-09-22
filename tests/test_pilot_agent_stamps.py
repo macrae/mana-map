@@ -37,7 +37,7 @@ from manamap import config
 from manamap.config import AGENT_ROUTINES, DECKS_DIR
 from manamap.pilot import install_agent
 from manamap.pilot.deck_status import STAGES
-from conftest import requires_deck
+from conftest import requires_deck, requires_rules
 
 #: Artifacts whose staleness `deck_status` claims to check.
 STAMP_CHECKED = {name: sha for _k, name, sha, _r, _w, _h in STAGES if sha}
@@ -164,6 +164,7 @@ def test_no_agent_artifact_names_a_card_the_deck_does_not_run():
 
 # ── the ✓ tier, which rots without any citation becoming wrong ──────────
 
+@requires_rules
 def test_a_finished_stack_is_checked_against_the_deck_it_claims_to_be_from(tmp_path):
     """A CHECK THAT EXISTS AND IS UNREACHABLE IS NOT A CHECK.
 
@@ -254,6 +255,7 @@ def test_a_finished_stack_is_checked_against_the_deck_it_claims_to_be_from(tmp_p
         f"from --scenario-only again.\nstdout: {out.stdout}\nstderr: {out.stderr}")
 
 
+@requires_rules
 def test_the_stale_stack_warning_never_fails_the_gate():
     """A FINISHED ARTIFACT IS FINISHED WORK.
 
@@ -278,6 +280,7 @@ def test_the_stale_stack_warning_never_fails_the_gate():
     assert "FAIL" not in out.stdout
 
 
+@requires_rules
 def test_withholding_a_stack_is_the_answer_to_the_warning_not_a_second_one():
     """A DECISION ALREADY TAKEN MUST NOT KEEP WARNING.
 

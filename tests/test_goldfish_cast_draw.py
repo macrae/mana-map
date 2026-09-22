@@ -15,7 +15,7 @@ an enchantment.
 
 import pytest
 
-from conftest import simulator_source
+from conftest import requires_data, simulator_source
 
 from manamap.pilot import card_pool, goldfish
 
@@ -30,6 +30,7 @@ def _profile(name, type_line="Creature", text=None):
 
 # ── the channel exists at all ─────────────────────────────────────────────
 
+@requires_data
 def test_the_enchantress_is_read():
     """The bug: this was `unmodelled` with cast_draw 0. Re-introduce it by
     deleting the `_CAST_DRAW_RE` branch in `draw_profile` and this fails."""
@@ -58,6 +59,7 @@ def test_it_was_never_the_optional_wording():
     ("Kor Spiritdancer", "Aura"),
     ("Riddlesmith", "Artifact"),
 ])
+@requires_data
 def test_the_modelled_gates_carry_the_right_type(name, gate):
     assert _profile(name)["cast_draw_gate"] == gate
 
@@ -68,6 +70,7 @@ def test_the_modelled_gates_carry_the_right_type(name, gate):
     "Gilt-Leaf Archdruid",            # "Druid" — a creature type, not a card type
     "Sire of the Storm",              # "Spirit or Arcane"
 ])
+@requires_data
 def test_a_gate_this_model_cannot_evaluate_is_refused_not_guessed(name):
     """Refusing is the whole discipline: an unmodelled card is an absent figure,
     a wrongly-gated one is a wrong figure that looks the same as a right one."""
@@ -76,6 +79,7 @@ def test_a_gate_this_model_cannot_evaluate_is_refused_not_guessed(name):
     assert got["cast_draw_gate"] is None
 
 
+@requires_data
 def test_an_enchantress_does_not_draw_off_a_creature():
     """The gate is checked against the CAST card's type line at the fire site.
     Asserting the contract the simulation relies on."""
@@ -84,6 +88,7 @@ def test_an_enchantress_does_not_draw_off_a_creature():
     assert gate in "Legendary Enchantment — Shrine"
 
 
+@requires_data
 def test_beast_whisperer_does_not_draw_off_an_enchantment():
     gate = _profile("Beast Whisperer")["cast_draw_gate"]
     assert gate not in "Enchantment — Aura"
@@ -114,6 +119,7 @@ def test_the_engine_fires_and_registers_at_both_doors():
     assert src.count('or card["draw"]["cast_draw"]') == 2
 
 
+@requires_data
 def test_the_sweep_still_covers_what_the_comment_claims():
     """The comment says 23 of 68 modelled. If a set prints more, this fails and
     the gate list gets re-read rather than silently under-matching."""

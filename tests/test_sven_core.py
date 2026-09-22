@@ -23,7 +23,7 @@ import pytest
 
 from manamap.sven import cache, core, stream, tools
 
-from conftest import requires_deck
+from conftest import requires_data, requires_deck
 
 
 # ── the tool surface is derived, not declared ─────────────────────────────
@@ -247,6 +247,7 @@ def test_an_unknown_frame_kind_is_refused_at_the_encoder():
 
 # ── what the first four real turns taught ─────────────────────────────────
 
+@requires_data
 def test_every_advertised_tool_can_actually_be_called():
     """SVEN'S FIRST WRONG ANSWER WAS THIS BUG. Three lists disagreed: the tool
     block advertised four capabilities, the session's dispatcher knew six, and

@@ -14,7 +14,7 @@ are different events.
 
 import pytest
 
-from conftest import simulator_source
+from conftest import requires_data, simulator_source
 
 from manamap.pilot import card_pool, goldfish
 
@@ -25,6 +25,7 @@ def _prof(name):
     return goldfish.cast_token_profile({"name": name, "oracle_text": text})
 
 
+@requires_data
 def test_a_card_type_gate_is_read():
     """The bug. Re-introduce it by dropping `_CAST_TOKEN_TYPE_GATES` and this
     returns gate_kind 'subtype', which matches no type line."""
@@ -34,6 +35,7 @@ def test_a_card_type_gate_is_read():
     assert got["power"] == 4 and got["bodies"] == 1
 
 
+@requires_data
 def test_the_commanders_subtype_gate_still_works():
     """Edgar Markov's eminence is the original caller and must not regress."""
     got = _prof("Edgar Markov")
@@ -41,6 +43,7 @@ def test_the_commanders_subtype_gate_still_works():
     assert got["subtype"] == "Vampire"
 
 
+@requires_data
 def test_a_token_this_model_cannot_size_is_floored_and_flagged():
     """Hallowed Haunting's token is 'equal to the number of SPIRITS you control'
     — self-referential, since the only Spirits are the ones it already made.
@@ -52,6 +55,7 @@ def test_a_token_this_model_cannot_size_is_floored_and_flagged():
     assert got["scales"] is True, "and the understatement must be flagged"
 
 
+@requires_data
 def test_a_card_with_no_such_trigger_returns_none():
     assert _prof("Archon of Sun's Grace") is None    # constellation, not cast
 
@@ -89,6 +93,7 @@ def test_a_type_gate_is_matched_against_the_type_line_not_the_subtypes():
     assert '_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"' in src
 
 
+@requires_data
 def test_the_sweep_still_finds_the_two_enchantment_gated_cards():
     """If a set prints a third, this fails and the family gets re-read."""
     oracle = card_pool.corpus_oracle()

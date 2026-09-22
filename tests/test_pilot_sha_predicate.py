@@ -22,7 +22,7 @@ import pytest
 from manamap import config
 from manamap.pilot import common
 
-from conftest import requires_deck
+from conftest import requires_data, requires_deck
 
 
 def _deck(tmp_path, text, monkeypatch):
@@ -142,6 +142,7 @@ def test_count_copies_and_expand_copies_answer_the_same_question():
     assert common.count_copies(cards) == len(common.expand_copies(cards)) == 13
 
 
+@requires_data
 def test_an_entry_without_a_quantity_counts_as_one():
     """THE DEFAULT WAS THE WHOLE DEFECT.
 
