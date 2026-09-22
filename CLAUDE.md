@@ -17,9 +17,9 @@ and agents that turn a question into a priced, checked answer.
 atlas (`viz/index.html`), the **deck page** (`viz/deck.html?deck=<slug>`), the branch
 workbench (`viz/branch.html`), **Curate** (`viz/library.html`) and the embedding-space
 appendix (`viz/spaces.html`) — all rendering committed artifacts, with sim figures that carry their intervals. The magazine
-that used to be the product is a **frozen legacy renderer**; the Pilot's Operating
-Handbook (`src/manamap/pilot/poh.py`) replaced it on 2026-09-02 and renders the same
-`manuals/p/<slug>.html`. Runs locally on a Mac. The **pipeline and the pilot commands make zero LLM
+that used to be the product was **DELETED on 2026-09-13**; the Pilot's Operating
+Handbook (`src/manamap/pilot/poh.py`) replaced it on 2026-09-02 and renders
+`manuals/p/<slug>.html`. Its record is `docs/gotchas-magazine-legacy.md` and git. Runs locally on a Mac. The **pipeline and the pilot commands make zero LLM
 calls**; two deliberate, opt-in exceptions do — `serve.py`'s `ask` bridge, which
 shells out to `claude -p` as a polled job, and `mm ask` (Sven Botstrom), whose
 SDK is an optional extra the core install does not pull.

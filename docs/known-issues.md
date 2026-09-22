@@ -118,29 +118,56 @@ small lesson about editing a page in layers.)
 
 ---
 
-## 2. Four sleeved decks have a FAILING engine critic (was: none at all)
+## 2. Six sleeved decks, six criticised engine models — two pass, two still failing
 
-*Updated 2026-09-22. All four were criticised; all four returned `fail`. The
-verdicts are SAVED and not cache-recorded, which is the contract: a `fail`
-documents what could not be grounded, and recording it would say the opposite.*
+*Two rounds run 2026-09-22. This section opened the day saying four sleeved
+decks had NO critic at all.*
 
-| deck | verdict | findings | supported | the rest |
-|---|---|---:|---:|---|
-| ur-dragon | `fail` | 30 | 15 | 7 contradicts-artifact, 4 over-claimed, 3 miscounted, 1 mis-cited |
-| gishath | `fail` | 24 | 11 | 4 miscounted, 4 over-claimed, 3 contradicts-artifact, 2 mis-cited |
-| heliod | `fail` | 23 | 7 | 5 over-claimed, 3 contradicts-artifact, 3 mis-cited, 3 unjustified, 2 miscounted |
-| sharknado | `fail` | 19 | 9 | 4 miscounted, 2 contradicts-artifact, 1 each mis-cited / unjustified / over-claimed / unverified-line |
+| deck | round 1 | round 2 | recorded |
+|---|---|---|---|
+| edgar-vampires | — | `pass` 18 (iter 2, 2026-09-16) | yes |
+| goblin-storm | — | `pass` 9 | yes |
+| gishath | `fail` 24 | **`pass` 20** | yes |
+| sharknado | `fail` 19 | **`pass` 16** | yes |
+| ur-dragon | `fail` 30 | `fail` 18 | no |
+| heliod | `fail` 23 | `fail` 19 | no |
 
-**Four for four is a finding about the LOOP, not about four unlucky decks.**
-Every one of these models was written, passed `validate-engine`, and shipped
-without a critic — three because a rebuild for a new sleeved version dropped the
-critic block, one (sharknado) because it was never criticised at all. The gate
-they passed checks form; the claims were never attacked. `validate-engine`'s own
+The two passes are cache-recorded; the two fails are SAVED and not recorded,
+which is the contract — a `fail` documents what could not be grounded, and
+recording it would say the opposite. The handbooks render the verdict in
+`6.0 Assessment`, so the page states the state.
+
+**Four for four failing round 1 was a finding about the LOOP, not about four
+unlucky decks.** Every one of those models was written, passed
+`validate-engine`, and shipped without a critic — three because a rebuild for a
+new sleeved version dropped the critic block, sharknado because it was never
+criticised at all. The gate they passed checks FORM. `validate-engine`'s own
 docstring says it cannot check that a cited stack SUPPORTS its line, and that is
-where several of these findings live.
+where most of the 96 findings lived.
 
-The single most valuable thing the run produced is §9d — a staleness class
-nothing in the repo can currently detect.
+**Round 2 is the part worth reading.** No engineer rebutted a finding as wrong —
+sharknado's phrasing was "arguing would have been costume" — but the loop
+corrected itself twice in the other direction:
+
+- ur-dragon's critic found that TWO of its own round-1 findings were errors the
+  engineer had adopted in good faith (stack 008 has seven non-supported checker
+  findings, not one; only 6 of 11 taplands are shocks).
+- heliod's critic WITHDREW a finding because the engineer rebutted it correctly.
+
+And sharknado's re-aimed `lines[7]` survived the same counterfactual that killed
+it in round 1: remove the via card from stack 002's board and see if the
+quantity moves. For `output` it did not — that is what broke it. For `ignition`
+it does.
+
+**What is left on the two fails is different in kind.** Several surviving
+findings are CROSS-ARTIFACT CONTRADICTIONS rather than unsupported claims — a
+model that is now right while a neighbouring artifact still carries the
+superseded sentence. A third engineer pass cannot fix an artifact it does not
+own. See §9e, which is where that work went.
+
+**What unblocks the two fails.** A round-3 revision each, then a third critique
+(the loop allows three). Both are now failing on much smaller ground than they
+started: 30 → 18 and 23 → 19, with every round-1 finding answered.
 
 **What unblocks it.** An engineer revision per deck answering the findings, then
 a second critic round (the loop allows three). Tell the engineer to REBUT rather

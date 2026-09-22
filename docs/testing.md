@@ -102,7 +102,7 @@ and three are real goldfish fidelity bugs.
 
 | | |
 |---|---:|
-| `make test` — warm cache | **245 s** (3,710 collected; 3,216 passed, 489 skipped, 3 xfailed, 2026-09-21) |
+| `make test` — warm cache | **245 s** (3,706 collected, 2026-09-22) |
 | `make test-fresh` — nothing cached | **617 s** (3,695 passed, 8 skipped, 3 xfailed, 2026-09-21) |
 | `make test-browser` (`-n 4`) | **400 s** (223 passed, 2026-09-08) |
 
@@ -148,7 +148,7 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-09-21: **3,968 tests** across 177 files — 3,710 in the `make test`
+As of 2026-09-22: **3,968 tests** across 177 files — 3,706 in the `make test`
 selection, 257 browser, 1 `forge` (a real Forge game, opt-in), 4 `fleet` and 3
 `serial_only`. Three are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
@@ -846,3 +846,37 @@ so returned nothing at first, because it extracted node ids with
 `pytest --co -q`, which in this repo prints per-file counts rather than ids —
 so the loop ran **zero times** and reported success. The `assert checked >= N`
 rule exists for exactly that, and a shell loop is not exempt from it.
+
+
+## A corpus-free run is a different suite, and CI is the one that runs it
+
+**2026-09-22.** 80 tests across 27 files read the corpus and did not say so. CI
+has none — `data/cards.csv` is gitignored and comes from a 600 MB Scryfall
+download — and `card_pool.load_pool()` / `load_frame()` return **None** in that
+state BY DESIGN, so those tests did not skip. They raised
+`AttributeError: 'NoneType' object has no attribute 'get'` and
+`TypeError: argument of type 'NoneType' is not iterable`, and were 159 of CI's
+242 failures.
+
+**A gate that cannot run must SAY SO. Crashing is the one thing it must not do**,
+because a crash is indistinguishable from a real defect and buries every genuine
+failure beside it in the noise.
+
+Three things fixed it, and only the first is interesting:
+
+1. `@requires_data` on the 80. Each was identified by **hiding the corpus in the
+   real tree and running the suite** — not by reading the code and guessing. An
+   earlier attempt pointed `MANAMAP_DATA_DIR` at a directory of symlinks, which
+   broke the git walk `deck_versions` depends on and over-reported by 100. The
+   faithful reproduction is: move `cards.csv`, the `.npy` files and `docs_index`
+   aside, run, restore under a `trap`.
+2. `cards.json` and `brief.json` added to `NEEDS_CORPUS` in
+   `test_pilot_tracked_artifacts_validate.py` — a set that already existed with
+   exactly the right skip. Those two were simply missing, worth 39 failures.
+3. CI now builds the rules DB. The workflow built the strategy DB under a
+   comment calling the citation contract "the load-bearing promise of this whole
+   project", and never built the rules DB that `validate-stack` needs.
+
+**Keep the reproduction.** A test that needs an artifact CI does not have is
+invisible locally forever — the artifact is always there on the machine that
+wrote it. The only way to find this class is to take the artifact away.
