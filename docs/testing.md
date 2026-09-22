@@ -786,3 +786,63 @@ Both now construct their condition: a stale deck in a `tmp_path` data dir with
 everything but `decks/` symlinked from the real one, and a `spearman_cell` call
 with a coefficient pointing the wrong way. The real-data run is kept as a second,
 skippable case underneath.
+
+
+## The suite was mutating the repository, and `git status` said otherwise
+
+**2026-09-22.** Two tests in `test_pilot_deck_branch.py` wrote into
+`data/decks/ur-dragon/branches/mana-v1/` on every run and never put it back.
+Not a stray debug write — a deliberate one. Both drive `main()` rather than
+`analyze()`, and the docstring says why: *"analyze RETURNS a document and main
+WRITES it, so a test that calls the analysis layer cannot see the only bug this
+exists to catch."* The bugs live on the write path, so the tests must write.
+
+What was missing is that neither restored the branch directory afterwards. And
+`_tree()` — the helper both use to prove the DECK's directory is untouched —
+**excludes `branches/` by design**, so the assertions never looked at what the
+tests had just rewritten.
+
+### It was invisible because the output was byte-identical
+
+This is the part worth keeping. With a corpus present, regenerating that
+artifact produces exactly the bytes that are already committed. So the write
+happened every time and `git status` came back clean **by coincidence** — not
+because nothing was written, but because what was written matched.
+
+Three conditions had to line up before anyone could see it:
+
+1. **No corpus.** CI has none (`cards.csv` is gitignored, 600 MB), so the
+   goldfish reads different figures and the bytes differ.
+2. **The byte-diff gate running at all.** `make manuals && git diff
+   --exit-code -- manuals/ data/decks/` had not run since **2026-08-25**,
+   because the `Test` step failed first and short-circuited it. Its own comment
+   in `.github/workflows/test.yml` predicted this: *"It went unseen because the
+   Test step fails first and short-circuits the gate."*
+3. **Somebody fixing the tests.** The gate only ran once the 242 corpus
+   failures were fixed — and caught this within the hour.
+
+**A gate that cannot fail is indistinguishable from a gate that passes**, and
+this one was dark for four weeks. The first thing it did on waking was catch the
+suite writing to the tree it is meant to be checking.
+
+### The fix is a fixture, not `tmp_path`
+
+`tmp_path` would defeat both tests: a copy does not exercise the real
+`deck_dir(slug, branch)` write path, which is the entire subject. So
+`branch_artifacts_restored` snapshots the branch directory, yields, and restores
+it in a `finally` — the write path stays real and the repository stays clean.
+
+**If a test must write to a tracked path to prove what it proves, it owns
+putting it back.** The check is one line: `git status --short -- data/` after a
+run, and the corpus-free reproduction is what makes a coincidental match stop
+hiding it.
+
+### And a note on finding it
+
+The first bisect blamed the wrong test — the one whose NAME matched the
+symptom (`..._never_touches_the_decks_own_artifacts`), which without a corpus
+skips. The real writer was its sibling. The per-test bisect that would have said
+so returned nothing at first, because it extracted node ids with
+`pytest --co -q`, which in this repo prints per-file counts rather than ids —
+so the loop ran **zero times** and reported success. The `assert checked >= N`
+rule exists for exactly that, and a shell loop is not exempt from it.

@@ -41,9 +41,49 @@ needs_branch = pytest.mark.skipif(not _has_branch(),
                                   reason=f"no {SLUG}/{BRANCH} branch on this machine")
 
 
+@pytest.fixture
+def branch_artifacts_restored():
+    """Snapshot `branches/<BRANCH>/` and put it back afterwards.
+
+    THESE TESTS WRITE INTO THE TRACKED REPOSITORY, and that is deliberate —
+    both drive `main()` rather than `analyze()` because "analyze RETURNS a
+    document and main WRITES it", and the bugs they exist to catch live on the
+    WRITE path. What was not deliberate is that neither put the branch
+    directory back. `_tree()` excludes `branches/` by design, so the assertions
+    never looked at what the tests themselves had just rewritten.
+
+    So the suite mutated `data/decks/` on every run, everywhere, for as long as
+    these tests have existed — and stayed invisible, because with a corpus
+    present the regenerated artifact is byte-identical to the committed one and
+    `git status` came back clean BY COINCIDENCE.
+
+    CI has no corpus. The goldfish reads different figures there, the bytes
+    differ, and it surfaced the first time the byte-diff determinism gate ran
+    after the `Test` step stopped failing — 2026-09-22, the gate having been
+    short-circuited since 2026-08-25. Its own comment in `.github/workflows/`
+    predicted exactly this: "It went unseen because the Test step fails first".
+
+    `tmp_path` is NOT the fix. A copy would not exercise the real
+    `deck_dir(slug, branch)` write path, which is the entire subject.
+    """
+    root = deck_dir(SLUG, branch=BRANCH)
+    saved = {p: p.read_bytes() for p in sorted(root.rglob("*")) if p.is_file()}
+    assert saved, "the branch directory is empty — the fixture is wrong, not the code"
+    try:
+        yield root
+    finally:
+        for path, blob in saved.items():
+            if not path.exists() or path.read_bytes() != blob:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(blob)
+        for path in sorted(root.rglob("*")):
+            if path.is_file() and path not in saved:
+                path.unlink()
+
+
 @requires_data
 @needs_branch
-def test_a_branch_run_never_touches_the_decks_own_artifacts():
+def test_a_branch_run_never_touches_the_decks_own_artifacts(branch_artifacts_restored):
     """THE CONTROL. Run every branch-aware command THROUGH ITS CLI ENTRY POINT,
     then prove the deck's own directory is byte-identical.
 
@@ -84,7 +124,7 @@ def test_a_branch_run_never_touches_the_decks_own_artifacts():
 
 
 @needs_branch
-def test_a_branch_run_measured_the_branch_and_not_the_deck():
+def test_a_branch_run_measured_the_branch_and_not_the_deck(branch_artifacts_restored):
     """THE OTHER HALF OF THE CONTROL, AND IT WAS MISSING FOR AS LONG AS
     BRANCHES HAVE EXISTED.
 
