@@ -550,8 +550,13 @@ deck's table presence even where the AI cannot convert it.
 **AI profiles** (`--profile`, also on `simulate`): Forge ships Default / Cautious /
 Reckless / Experimental. Measured on radagast's seat vs a Default edgar, 6 seeded games
 each: Default 3/6, Experimental 2/6, Reckless 2/6 — the aggro profiles make a hold-up
-deck worse, so Default stays the default and the AI caveat stands. Also learned: a game
-that hits the `-c` clock still declares a winner.
+deck worse, so Default stays the default **for our seat**; the pod's three seats have
+been Experimental since 2026-08-30 (`forge.STANDARD_POD_PROFILE`, and `--vs-profile`
+defaults to it), and the AI caveat stands. Also learned: **Forge's raw log** declares a
+winner even for a game that hits the `-c` clock. **The harness does not.** A clock-out is
+recorded `truncated: true` with NO winner and is excluded from the rate — it used to be
+awarded to the last seat, which our deck can never be. Every record carries
+`summary.truncated` / `summary.decided`; see the clock section above.
 
 ## Every figure carries its median, not just its mean
 
@@ -611,8 +616,15 @@ data/decks/<slug>/sim/scenarios/*.json               gitignored: lifted boards a
 ~/.mana-map/forge/                                  the engine, outside the repo
 ```
 
-A run id is `<opponents>-<N>-<short sha of all decklists>`. Re-running the same configuration
-after a swap is a new run; the old one stays — it is history, like a prescription.
+A run id is
+`<opponents>-n<N>-<short sha of all decklists>-s<seed>[-me<profile>]-pod<profile>-c<clock>`,
+built by `forge.run_id_for` — a real one on disk:
+`giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84-s573917060-podExperimental-c600.json`
+(`me<profile>` is omitted when our seat is Default, which it normally is).
+**The seed, both AI profiles and the clock are in the id on purpose**: each one changes
+what the games ARE, so two runs that differ in any of them must not collide. Re-running the
+same configuration after a swap is a new run; the old one stays — it is history, like a
+prescription.
 
 ## Phases
 

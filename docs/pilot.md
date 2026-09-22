@@ -73,14 +73,15 @@ manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pen
 manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped
 manamap pilot deck-notes <slug> list [--since D] | show <id>
-manamap pilot model-coverage <slug> [--branch B] [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
+manamap pilot model-coverage <slug> [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
 manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD THE FLEET after a model change, in dependency order, parallel across targets
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
 manamap pilot query-docs "<question>" [--k N] [--full] [--json]   # semantic search over THIS REPO'S DOCS —
                                         #   the "why did we do it this way" corpus. `build-docs-db` first
-manamap pilot lookup-doc <chunk-id>     # exact fetch, e.g. docs/vision.md#the-evidence-contract
+manamap pilot lookup-doc <chunk-id>     # exact fetch, e.g.
+                                        #   docs/vision.md#the-evidence-contract-the-part-that-never-moves
 manamap pilot query-code "<question>" [--k N]    # same over src/; weaker than docs (see below)
 manamap pilot build-docs-db             # (re)index docs/ — gitignored, regenerable, ~30s
 manamap pilot build-code-db             # same over src/; a stale code index answers about code that is gone
@@ -293,7 +294,6 @@ manamap pilot impact <slug> [--json]           # card/figure/target/zone stalene
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
 manamap pilot check-in <slug> --from F  # a PAPER list → decklist.txt: diff, refuse, apply
 manamap pilot targeting <slug>          # who the pod attacks, measured from sim logs
-manamap pilot build-page <slug>         # the compact deck page (the Pilot's Manual)
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
@@ -302,15 +302,18 @@ manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT 
                                         #   contained combo lines and role axes, marked
                                         #   "scaffolded": true until a person rewrites it
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
-manamap pilot pods [<name>] [--calibration] [--json]   # THE NAMED TABLES. `simulate <slug> --pod standard`
+manamap pilot pods [<name>] [--calibration] [--json]   # THE NAMED TABLES. `simulate <slug> --pod standard-v3`
                                         #   expands to the same --vs flags and the SAME RUN ID,
                                         #   and carries each seat's archetype, bracket and AI
                                         #   profile. `vito-era` is kept so a pre-2026-09-02
                                         #   record stays reproducible rather than only readable
                                         #   `--calibration` pools every tracked run that faced a
-                                        #   table and says what the NULL is: `standard` gives one
-                                        #   seat 0.572 and another 0.052, and the subject chair
-                                        #   0.159 — not the 0.25 a four-player rate reads against
+                                        #   table and says what the NULL is. standard-v3 (THE
+                                        #   DEFAULT, 8 runs / 350 decided games): sythis 0.406,
+                                        #   SUBJECT 0.257, abaddon 0.231, jarad 0.106 — the null
+                                        #   is 0.257, not the 0.25 a four-player rate reads
+                                        #   against. `standard` is worse still: giada 0.539
+                                        #   DOMINATES and the subject chair is 0.181
 manamap pilot metrics [--group G] [--status S] [--verbose] [--problems]
                                         #   THE CATALOG (PRD §14): one definition per figure,
                                         #   which ENGINE answers it, and what is UNAVAILABLE
@@ -330,15 +333,9 @@ manamap pilot validate-goldfish-targets <slug>  # the DECLARATION itself: cards 
                                         #   and any card in 2+ passing stacks with no component
 manamap pilot mana-analysis <slug>      # the mana audit, deterministic — run AFTER goldfish (embeds its figures)
 manamap pilot scenario-facts <slug> [--stack NNN]  # the deterministic brief for ONE scenario
-manamap pilot validate-considering <slug>   # LEGACY gate on the frozen considering.json
 manamap pilot validate-tutor-guide <slug>   # every fetch target is in this deck
 manamap pilot diagnosis-report <slug>   # render diagnosis.json as readable markdown
-manamap pilot artist-credits <slug> --json  # standout artists + art themes (legacy page)
-manamap pilot short-list-art <slug>     # LEGACY: card art for a frozen considering.json
-manamap pilot build-manual <slug>       # → manuals/<slug>.html (LEGACY magazine renderer, until manual-v5)
-manamap pilot build-index               # → manuals/index.html + data/decks/index.json (the deck manifest the viz reads)
-manamap pilot issue-length <slug> [--rendered]  # LEGACY: words + screens per section of the rendered page
-manamap pilot validate-issue <slug>     # LEGACY gate: issue.json + the frozen issue_plan.json
+manamap pilot build-index               # → data/decks/index.json (the deck manifest the viz reads)
 manamap pilot cache-status <slug>       # have an agent routine's inputs changed?
 manamap pilot cache-record <slug> --routine R   # record what produced an artifact
 manamap pilot cache-clear <slug>        # drop cache records
@@ -489,13 +486,19 @@ ANY input moves and it stamps nothing. It **omits the version block** by constru
 (`deck_info.fetchable`), because versions come from a git walk and the commit that
 changes `decklist.txt` gets its sha after anything written in the same commit — a
 committed version number is one commit behind forever, and a wrong version is worse
-than an absent one when the captain's log stamps games against it. The page reads a
-deploy-time `versions.json` instead, which CI can build because `deck_versions` needs
-only git while `deck_audit` needs the gitignored corpus.
+than an absent one when the captain's log stamps games against it. The page reads
+`versions.json` instead — **a tracked artifact**, regenerated by `make manuals`
+(`Makefile:102`) and covered by CI's byte-diff gate. It can be built where `info.json`
+cannot because `deck_versions` needs only git, while `deck_audit` needs the gitignored
+corpus. (A deploy-time build was the original design and was never written; see the
+paragraph at the end of this section.)
 
 **A deck that no longer exists says so, and is not told to go and play itself.** The
-`status` field on `issue.json` (`broken-down` / `retired` / `superseded`, absent = live)
-is the deck's authored *existence*, distinct from the stage lifecycle above. It renders
+`lifecycle` key in **`deck_versions.json`** (`broken-down` / `retired` / `superseded`,
+absent = live) is the deck's authored *existence*, distinct from the stage lifecycle
+above. ONE HOME, NO FALLBACK: `common.deck_lifecycle()` is the only reader,
+`deck-state` the only writer, and a leftover `issue.json` status is REPORTED rather than
+honoured. It renders
 as a banner under the header, and for the two statuses that mean there is no cardboard
 to shuffle — `broken-down`, `retired` — the suggestions that end in "play it", "simulate"
 or "run an experiment" are **withheld and said to be withheld**, because a silently
@@ -721,13 +724,16 @@ so the commit is what `deck-version` numbers and what the captain's log stamps g
 against. Check a deck in without committing and tonight's games attach to no version at
 all. Then `deck-version <slug> paper` marks it as sleeved.
 
-### build-page — the Pilot's Manual
+### build-page — the compact deck page (SUPERSEDED, then DELETED)
 
-`manamap pilot build-page <slug>` renders the compact deck page from
-`pilot/page_spec.py:SECTIONS` — the plan, the roster, the mulligan, the lines, the table
-read, the debrief, the numbers, the proof. It is the replacement for the magazine
-(`docs/history/manual-v5-spec.md`), built alongside the frozen the magazine renderer (deleted 2026-09-13) rather than over
-it, and it writes to the same `manuals/<slug>.html` path.
+**The live renderer is `build-poh`** (`pilot/poh.py`, the Pilot's Operating Handbook,
+since 2026-09-02), and it owns `manuals/p/<slug>.html`. `build-page` was the compact page
+that replaced the magazine (`docs/history/manual-v5-spec.md`); the handbook replaced it in
+turn, and the subcommand went with the magazine renderer on 2026-09-13 (`443cf6b7`).
+
+The section is kept because **what it measured is the argument for the page that exists
+now**, and none of it is recorded anywhere else. `pilot/page_spec.py` survives: its
+`DOSSIER_SECTIONS` is what `viz/deck.html` renders, and a test locks the JS to it.
 
 **Measured, not estimated.** Radagast 71.3 screens → **15.5**; yawgmoth-swarm 88.4 →
 **21.9**; edgar 16.1; goblin-storm 12.8. Visible words on radagast fall 34,653 → ~5,900,
@@ -738,8 +744,8 @@ Two measurements changed the design mid-build, and both are worth knowing:
 - **A page whose stylesheet is missing measures three times its real height.** The first
   render came in at 83.4 screens — *worse than the magazine* — because it was written to a
   scratch directory where the relatively-linked `magazine.css` 404s, so every hover-preview
-  image rendered inline at full size. `build-page --out` now copies both sheets beside the
-  page. Nothing about the renderer was wrong.
+  image rendered inline at full size. `build-page --out` was taught to copy both sheets
+  beside the page, and `build-poh` inherited the rule. Nothing about the renderer was wrong.
 - **THE LINES folds the board WITH the theatre.** With the board open the section was 8.2
   screens against the spec's ~4, while every other section matched or beat its estimate —
   so ~4 was only ever reachable with the board folded. The argument stays open (question,
@@ -1264,9 +1270,12 @@ Five commands measure a deck and nothing joined them. `deck-facts` reports compo
 `mana-analysis` castability, `goldfish` speed, `bracket-check` power
 what is better out there. Ask "is my card draw enough" and nothing answered.
 
-`deck-audit` is the join, and it is **computed on demand, never committed** — it embeds
-goldfish and bracket figures, so a tracked copy would be a second source of truth that
-goes stale the moment the decklist moves. Two blocks:
+`deck-audit` is the join. It prints on demand and **`--write` commits `audit.json`** —
+which the handbook needs, because `poh.py` reads the artifact rather than computing at
+render time, and a deck without one renders its Limitations section empty. The artifact
+embeds goldfish and bracket figures, so it is a second source of truth by construction:
+it stamps `decklist_sha256` and `deck-status` flags it STALE the moment the decklist
+moves. Flags: `--write`, `--branch <name>`, `--json`. Two blocks:
 
 **Sixteen axes**, each `{measured, target, verdict, gap}`. The point is not the arithmetic
 — every figure already existed somewhere — but that each target carries the **verbatim
@@ -1424,7 +1433,8 @@ totals.
 
 ## Decision scenarios (`decisions/NNN-<kebab>.json`, tier ★)
 
-`kind: "decision"` artifacts: archetypal board + table state, a decision question, 2–4 branches each with `choice`, `line`, `signals`, `coalition_risk`, `coaching`, optional `citations` (same verbatim-quote contract), and a `recommendation` matching a branch. Mechanically form-checked by `validate-stack`; substantively reviewed by humans — the tracked JSON is the red-line surface. Authored via the `pilot-coach` agent (`author-decision` skill).
+`kind: "decision"` artifacts: archetypal board + table state, a decision question, 2–4 branches each with `choice`, `line`, `signals`, `coalition_risk`, `coaching`, optional `citations` (same verbatim-quote contract), and a `recommendation` matching a branch. Mechanically form-checked by `validate-stack`; substantively reviewed by humans — the tracked JSON is the red-line surface. Authored via the `pilot-notes` agent (`author-decision` skill) — `pilot-coach` was
+retired on 2026-08-19 and its charter folded into `pilot-notes`.
 
 ## The tutor guide (`tutor_guide.json`, tier ★)
 
@@ -1448,9 +1458,11 @@ and a stated-assumptions block. (The legacy `mana_base` prose key that narrated 
 `quantity: N`, and counting entries once published "18 lands" for a 33-land deck and
 understated every colour's sources fleet-wide. `common.expand_copies()` is the shared
 primitive; `lands.total` is copies and `lands.entries` is distinct cards, both reported so
-they can never be confused again. Three guards: a unit fixture (11 Islands = 11 blue
-sources), a staleness test recomputing every tracked artifact, and a legacy `validate-issue` lint
-rejecting reader-facing copy that quotes the entry count as a land count.
+they can never be confused again. Two guards: a unit fixture (11 Islands = 11 blue
+sources) and a staleness test recomputing every tracked artifact. A third — a
+`validate-issue` lint rejecting reader-facing copy that quoted the entry count as a land
+count — went with the magazine renderer on 2026-09-13, so no gate reads the PROSE for this
+any more.
 
 **The trap this exists to catch.** Sazacap's Brew is tagged `buff:pump` because its text
 contains "+2/+0", and Vol. 001 shipped advice to test it in the Witch's Mark slot. Both are wrong: the Brew's first target is a *player*, so
@@ -1478,9 +1490,11 @@ someone else's regeneration as a cache hit, and `git log` answers "which inputs
 produced this prose?"). `record()` refuses artifacts that are missing, lack their
 routine's keys, or have no checker block — a failed run can't poison the cache.
 
-Routines (10 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
+Routines (12 static): `candidate-pool`, `deck-build`, `deck-diagnosis`, `deck-recon`,
 `deck-engine`, `deck-map-names`, `debrief` (N/A until something is logged),
-`strategic-frame`, `pilot-notes` (five keys of `manual_prose.json`), `tutor-guide`
+`captains-log` (N/A until something is logged), `poh-procedures` (the handbook's authored
+sections 3, 4 and 7), `strategic-frame`, `pilot-notes` (five keys of `manual_prose.json`),
+`tutor-guide`
 (the tutor guide — `N/A` for a deck with no library-search tutors, via the applicability
 gate in agent_cache), plus `prescription:<id>` (one question to the doctor; `prompt:self` digests only the authored question) and `stack:<NNN>` and `decision:<NNN>` discovered
 from disk. Declared in `config.AGENT_ROUTINES`.
@@ -1517,7 +1531,7 @@ inline costs ~35k tokens of orchestrator context for nothing, and the agent's to
 unchanged either way.
 ## Tests
 
-`tests/test_pilot_*.py` — 42 files, the largest group in the suite. **The inventory lives
+`tests/test_pilot_*.py` — the largest group in the suite. **The inventory lives
 in `docs/testing.md`** (what each file covers) and so do the counts, which that file
 declares itself the only home for.
 
@@ -1529,19 +1543,27 @@ A number restated in two places is a number that will disagree with itself.
 Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
 `requires_roles` markers from `tests/conftest.py`.
 
-## LEGACY — the magazine renderer (frozen; replaced by `poh.py` on 2026-09-02)
+## LEGACY — the magazine renderer (DELETED 2026-09-13; replaced by `poh.py` on 2026-09-02)
 
 Until 2026-08-19 each deck was published as an **issue** of a magazine, *Pilot's Manual*.
-The renderer (the magazine renderer (deleted 2026-09-13), `issue_spec.py`, `design.py`, `validate_issue.py`) still
-runs and still renders the nine decks from the artifacts it reads — its constitution,
-`STYLEv3.md`, was deleted on 2026-08-25 and lives in git (`git show 23e8cec:STYLEv3.md`), and those artifacts — `issue_plan.json`, the panel keys and `card_roles` /
-`mana_base` / `upgrades` in `manual_prose.json`, `considering.json` + its art sidecar —
-are **frozen**: no agent regenerates them (`magazine-editor`, `pilot-panel`,
-`manual-writer`, `pilot-coach` and `short-list-analyst` are retired), the cache has no
-routine for them, and the compact deck page in `docs/history/manual-v5-spec.md` replaces the whole
-layer. Everything below is kept because it is an accurate account of that code and of the
-lessons it cost to learn — the length measurements, the theatre, the voice lint — not
-because any of it is the product.
+
+**None of the code described below exists.** `build_manual.py`, `issue_spec.py`,
+`design.py`, `validate_issue.py` and eight more modules, with the subcommands
+`build-manual`, `build-page`, `validate-issue`, `issue-length`, `short-list-art`,
+`artist-credits` and `validate-considering`, were deleted on 2026-09-13 (`443cf6b7`) —
+eleven modules, nine pages, nine test files, 14,064 lines — eleven days after the Pilot's
+Operating Handbook (`poh.py`) took over `manuals/p/<slug>.html`. Its constitution
+`STYLEv3.md` went on 2026-08-25 and lives in git (`git show 23e8cec:STYLEv3.md`); the
+agents that fed it (`magazine-editor`, `pilot-panel`, `manual-writer`, `pilot-coach`,
+`short-list-analyst`) are retired; the artifacts it read (`issue_plan.json`, the panel
+keys and `card_roles` / `mana_base` / `upgrades` in `manual_prose.json`,
+`considering.json` + its art sidecar) are frozen where they sit in already-published
+decks and no agent regenerates them.
+
+Everything below is kept because it is an accurate account of that code and of the lessons
+it cost to learn — the length measurements, the theatre, the voice lint — not because any
+of it is the product. **Read it in the past tense.** The operational record is
+`docs/gotchas-magazine-legacy.md`.
 
 ### The magazine layer (STYLEv3)
 

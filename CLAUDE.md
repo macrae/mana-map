@@ -89,7 +89,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #                    Owns manuals/p/<slug>.html
                       #   deck_manifest.py writes data/decks/index.json, the
                       #                    manifest the whole frontend fetches;
-                      #                    six modules import its `line_cards`.
+                      #                    three modules import its `line_cards`.
                       #                    Was `build_index.py`, whose other half
                       #                    rendered the magazine rack
                       #   THE MAGAZINE RENDERER IS DELETED (2026-09-13): eleven
@@ -137,11 +137,15 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   diagnosis_report.py   the diagnosis, rendered readable
                       #   validate_diagnosis.py / validate_goldfish_targets.py
 tests/                # pytest suite; counts in docs/testing.md. Markers in
-                      # conftest.py: requires_data/rules/deck/strategy/roles;
+                      # conftest.py: requires_data/rules/deck/strategy/roles/
+                      # rulings/branch;
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
-  opponents/          # THE POD: opponent seats for `simulate --vs`, from EDHREC's
-                      #   average deck (`fetch-opponent`) or authored; tracked
+  pods/               # THE NAMED TABLES `--pod <name>` resolves against (pods.py);
+                      #   seven tracked JSON files, each a set of seats and its
+                      #   calibration. standard-v3 is the default
+  opponents/          # THE SEATS a pod is built from, for `simulate --vs`, from
+                      #   EDHREC's average deck (`fetch-opponent`) or authored; tracked
   collection/         # a PHYSICAL card collection (COLLECTION_DIR); the only
                       #   ownership question left, and it is about cardboard.
                       #   MANAMAP_COLLECTION_DIR overrides it
@@ -257,8 +261,10 @@ manamap pilot simulate <slug> --pod standard-v3 --games N
                               # seated, then CALIBRATED with five of them (185
                               # decided games): sythis 1.45x, subject null 0.292,
                               # jarad a 0.48x floor. `standard` (giada 2.15x) and
-                              # `vito` (13 two-card infinites, 0.447) are kept so
+                              # `vito-era` (13 two-card infinites, 0.447) are kept so
                               # old records resolve; naming either is deliberate.
+                              # The table is `vito-era`; `vito` alone is an
+                              # opponent SEAT under data/opponents/, not a pod.
                               # A POD'S NULL IS A PROPERTY OF THE TABLE WITH THE
                               # SUBJECT IN IT: sythis reads 0.25 against heliod
                               # and 0.66 against zur. Read `pods <name> --calibration`.
@@ -280,13 +286,15 @@ manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]
                               # REBUILD THE FLEET after a model change, in dependency
                               # order (goldfish -> mana-analysis -> net-change ->
                               # diagnose -> benchmark -> deck-info), parallel across
-                              # TARGETS. 72 targets in 109s at --jobs 8; the goldfish
-                              # stage alone 83.6s -> 23.7s. BIT-IDENTICAL: games inside
+                              # TARGETS. MEASURED 2026-09-04 at 72 targets: 109s at
+                              # --jobs 8, the goldfish stage alone 83.6s -> 23.7s. The
+                              # fleet is 93 targets now, so that is a ratio, not a
+                              # runtime. BIT-IDENTICAL: games inside
                               # one run are never split, only decks are.
                               # A MISSING artifact is CREATED, not skipped -- but only
                               # on a SLEEVED deck (`regen.BOOTSTRAP` + `is_pinned`).
 manamap pilot deck-info <slug> --write                  # write info.json for the deck page
-manamap pilot build-page <slug> && manamap pilot build-index   # the Pilot's Manual + the manifest
+manamap pilot build-poh <slug> && manamap pilot build-index    # the Pilot's Manual + the manifest
 # agents (Claude Code skills): /publish-deck /debrief /prescribe /resolve-stack /analyze-engine /diagnose-deck
 
 make test                     # THE INNER LOOP — non-browser, -n auto, cached.
@@ -299,9 +307,9 @@ make test-browser             # the playwright suite, ~4 min
 .venv/bin/pytest -n0 -k NAME  # one test, no worker startup
 .venv/bin/pytest -m ""        # literally everything, ~10 min
 
-# .mcp.json registers an MCP SERVER (`manamap.mcp_server`) exposing six read-only
-# tools to Claude Code: deck_state, fleet, search_docs, search_code, stat_test,
-# run_readonly. Structured data from the warm daemon instead of parsed prose —
+# .mcp.json registers an MCP SERVER (`manamap.mcp_server`) exposing seven read-only
+# tools to Claude Code: deck_state, fleet, search_docs, search_code, stats,
+# run_command, command_help. Structured data from the warm daemon instead of parsed prose —
 # `deck-status heliod` is 2.9s cold, 0.003s warm, byte-identical. No SDK: MCP is
 # JSON-RPC over stdio and the subset a tool server needs is ~150 lines, the same
 # reasoning that keeps scipy out of sim/stats.py. It CANNOT write; the gate is
@@ -326,7 +334,6 @@ python -m http.server 8000    # or plain static, FROM REPO ROOT (no Build agents
 # http://localhost:8000/viz/branch.html?deck=ur-dragon&branch=eminence-v3
 #                                                   a candidate 99 and its net change
 # http://localhost:8000/manuals/p/heliod.html       its Pilot's Manual (printable, no JS)
-# http://localhost:8000/manuals/index.html          legacy magazine rack (frozen, unlinked)
 ```
 
 ## Gotchas

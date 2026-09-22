@@ -25,7 +25,7 @@ compact deck page replaces it. The card atlas in `viz/` is unchanged and live; t
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
 Scale (derived; `tests/test_docs_counts.py` polices these): 102 pilot subcommands,
-28 top-level subcommands, 17 agents, 21 skills, 10 static cache routines
+28 top-level subcommands, 17 agents, 21 skills, 12 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
 
@@ -57,20 +57,24 @@ this writing (derived from the stack, bracket, engine, sim and log artifacts):
 
 | deck | stacks ✓/total | sim runs | logged | record | branches | status |
 |---|---|---|---|---|---|---|
-| `edgar-vampires` | 11/11 | 9 | **4** | 0W 4L | 6 | ◆ **SLEEVED V2**; direction changed 08-28 |
-| `ur-dragon` | 7/7 | 4 | **6** | 2W 4L | 6 | ◆ **SLEEVED V4** (v1.2.1); `final-v1` PROPOSED as v1.3.0 |
-| `heliod` | 1/1 | 4 | **2** | 0W 2L | 2 | ◆ **SLEEVED V10** (v1.2.1); `splendor-v1` PROPOSED as v1.2.2 |
-| `gishath` | 5/5 | 3 | **1** | 1W 0L | 2 | ◆ **SLEEVED V4** (v1.0.0); `mana-v1` PROPOSED as v1.1.0 |
+| `ur-dragon` | 7/8 | 4 | **6** | 2W 4L | 8 | ◆ **SLEEVED V6** (v1.3.0, 09-20) — the protection package. Stack 008 `fail`, re-run pending |
+| `heliod` | 1/1 | 4 | **2** | 0W 2L | 5 | ◆ **SLEEVED V12** (v1.4.0, 09-20) — Gleaming Splendor, Greater Auramancy, the tenth Island |
+| `gishath` | 5/5 | 3 | **2** | 1W 1L | 3 | ◆ **SLEEVED V5** (v1.1.0, 09-20) — the cart, the green audit, Purphoros |
+| `edgar-vampires` | 11/11 | 9 | **5** | 0W 5L | 6 | ◆ **SLEEVED V3** (v1.1.1, 09-16); direction changed 08-28 |
+| `sharknado` | 4/4 | 1 | 0 | — | 5 | ◆ **SLEEVED V3** (v1.0.1, 09-21) — the sixth deck in the case |
 | `goblin-storm` | 5/5 | 4 | **2** | 0W 2L | 0 | ◆ **SLEEVED V1**; 0.031 at standard-v3 |
-| `sharknado` | 0/0 | 0 | 0 | — | 1 | on the bench; proposals withdrawn 09-11 |
-| `ingris-infect` | 0/0 | 0 | 0 | — | 3 | on the bench; the commander is legal 2026-10-02 |
+| `meren-recursion` | 0/0 | 0 | 0 | — | 1 | on the bench; built combo-free, lost the sixth slot to sharknado |
+| `emiel-blink` | 0/0 | 0 | 0 | — | 0 | on the bench; built combo-free, lost the sixth slot to sharknado |
+| `ingris-infect` | 0/0 | 0 | 0 | — | 3 | `broken-down`; the commander is legal 2026-10-02 |
 | `zur-enchantress` | 0/0 | 2 | 0 | — | 8 | **`broken-down` 2026-09-10** — a failed experiment, called by the pilot |
 | `yawgmoth-swarm` | 14/14 | 1 | 0 | — | 0 | `broken-down` |
 | `hapatra` | 1/1 | 1 | 0 | — | 0 | `broken-down` (cards live in yawgmoth) |
 | `radagast` | 8/8 | 3 | 0 | — | 0 | `broken-down` (2026-08-21) |
 | `sisay` | 1/3 | 1 | 0 | — | 0 | `retired` — **not the pilot's deck** |
 
-*Derived from the artifacts 2026-09-12. `deck-info <slug>` for the live picture.*
+*Derived from the artifacts 2026-09-21. Six decks are sleeved; `deck-info <slug>` for the
+live picture, `deck-status --all` for the fleet. This table has been stale twice; it is a
+DERIVED view and re-deriving it is cheaper than reading it wrong.*
 
 **Deleted 2026-09-01 — `kianne`, `kinnan`, `blar`.** All three were deterministic
 whole-format baselines: never sleeved, never played, never published, and
@@ -86,9 +90,10 @@ deck does not unmake it. `kinnan`'s build plan is now `tests/fixtures/`, owned b
 two regression tests that assert it rather than borrowed from a live deck.
 Recoverable: `git show <the deletion commit>~1:data/decks/kianne/decklist.txt`.
 
-**32 Forge runs exist across nine decks** — edgar (9), heliod (4), goblin-storm (4),
-ur-dragon (4), gishath (3), radagast (3), zur (2), hapatra (1), sisay (1), yawgmoth (1).
-The two bench decks have not been simulated at all.
+**33 Forge runs exist across eleven decks** — edgar (9), heliod (4), goblin-storm (4),
+ur-dragon (4), gishath (3), radagast (3), zur (2), hapatra (1), sharknado (1), sisay (1),
+yawgmoth (1). The two bench decks — `meren-recursion` and `emiel-blink` — have not been
+simulated at all.
 
 **Five decks have a real table logged — fifteen games, 3W 12L.** ur-dragon (6),
 edgar (4), goblin-storm (2), heliod (2), gishath (1). **Every one is debriefed**; the

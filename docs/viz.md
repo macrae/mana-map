@@ -15,8 +15,11 @@ directory and, between the families, nothing else:
 - **`library.html` — Curate.** The library across every pile at a size you can read, with
   sort, colour/type/role filters, multi-select and bulk move/remove. See its own section
   below.
+- **`spaces.html` — the embedding-space appendix.** The only page that is a document
+  rather than a tool: what each space is for and how they differ. See its own section
+  below.
 
-The last four share `css/tokens.css` (ported from the magazine renderer's palette, the legacy page's
+The last five share `css/tokens.css` (ported from the magazine renderer's palette, the legacy page's
 stylesheet) plus Google Fonts, load no `mana-map.js`, and export no globals except test
 hooks. **They compute nothing**: every figure is composed by the Python and read out of a
 committed artifact, which is what lets them work on a static host.
@@ -117,7 +120,7 @@ drawer, which `Shell.mount` injects on this page too.
 
 ## `spaces.html` — the embedding-space reference
 
-The fifth page, and the only one that is a document rather than a tool. It
+The sixth page, and the only one that is a document rather than a tool. It
 answers three questions the atlas raises and never explains: **where each
 embedding space comes from**, **what its metrics mean**, and **which one to ask**.
 
@@ -154,25 +157,31 @@ python -m http.server 8000
 | File | Role |
 |------|------|
 | `viz/index.html` | Map shell: toolbar, plot div, detail panel, deck panel, script tags |
-| `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~520 lines) |
-| `viz/js/mana-map.js` | Explore mode (~3,200 lines). IIFE; exposes shared state as `window.MM` |
-| `viz/js/drill.js` | Drill mode (~430 lines). IIFE; exposes `window.Drill`; depends on `MM` |
-| `viz/js/stage.js` | Shared canvas primitives (~260 lines). Surface, camera, labels, typed edges |
-| `viz/js/session.js` | Focus, **library**, commander (~560 lines). One answer each; force registers as its graph provider |
-| `viz/js/force.js` | The graph engine (~1,430 lines). Canvas + d3-force; exposes `window.Force` |
-| `viz/js/discovery.js` | Discover — the front door (~1,180 lines). Landing card, relations, library, import, seeding from named cards, `brief()` |
-| `viz/js/render/canvas.js` | The map renderer (~1,150 lines). The ONLY renderer; owns the aura + ambient drift |
-| `viz/js/decklist.js` | Moxfield paste parser (~90 lines). Fixture-locked to the Python parser |
-| `viz/js/build.js` | Build (~1,780 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
+| `viz/css/mana-map.css` | Map + panel styles, flat hex, no custom properties (~820 lines) |
+| `viz/js/mana-map.js` | Explore mode (~3,354 lines). IIFE; exposes shared state as `window.MM` |
+| `viz/js/drill.js` | Drill mode (~431 lines). IIFE; exposes `window.Drill`; depends on `MM` |
+| `viz/js/stage.js` | Shared canvas primitives (~285 lines). Surface, camera, labels, typed edges |
+| `viz/js/session.js` | Focus, **library**, commander (~605 lines). One answer each; force registers as its graph provider |
+| `viz/js/force.js` | The graph engine (~1,534 lines). Canvas + d3-force; exposes `window.Force` |
+| `viz/js/discovery.js` | Discover — the front door (~1,201 lines). Landing card, relations, library, import, seeding from named cards, `brief()` |
+| `viz/js/render/canvas.js` | The map renderer (~1,147 lines). The ONLY renderer; owns the aura + ambient drift |
+| `viz/js/decklist.js` | Moxfield paste parser (~114 lines). Fixture-locked to the Python parser |
+| `viz/js/build.js` | Build (~1,818 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
 | `viz/css/tokens.css` | The design tokens (ported from the magazine renderer before it was deleted) in a dark register (1,230 lines). Shared by `deck.html`, `workbench.html`, `branch.html` AND `spaces.html` |
-| `viz/js/deck-view.js` | The dossier (~1,580 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
+| `viz/js/deck-view.js` | The dossier (~2,243 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
 | `viz/workbench.html` | **The landing page**: racks + fleet table over every deck's `info.json` |
-| `viz/js/workbench.js` | The landing page (~520 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
+| `viz/js/workbench.js` | The landing page (~807 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
 | `viz/branch.html` | Branch shell: the objective mount and the panel grid |
-| `viz/js/branch-view.js` | The branch workbench (~590 lines). IIFE; exposes `window.Branch` for the browser suite |
-| `viz/js/shell.js` | The library drawer (~660 lines), mounted on every page; `Shell.cardImageUrl` is the name-only art helper |
-| `viz/js/api.js` | The local-server probe (~105 lines). `Api.ready` is false on a static host and every verb degrades to a named command |
+| `viz/js/branch-view.js` | The branch workbench (~856 lines). IIFE; exposes `window.Branch` for the browser suite |
+| `viz/js/shell.js` | The library drawer (~905 lines), mounted on every page; `Shell.cardImageUrl` is the name-only art helper |
+| `viz/js/api.js` | The local-server probe (~126 lines). `Api.ready` is false on a static host and every verb degrades to a named command |
+| `viz/library.html` | **Curate** shell: pile rail, grid, pinned pane |
+| `viz/js/library-view.js` | Curate (774 lines). IIFE; multi-select, bulk move/remove, the sorts and filters over `viz_index.json` |
+| `viz/css/library.css` | Curate's own styles (185 lines), on top of `tokens.css` |
+| `viz/spaces.html` | The embedding-space appendix shell |
+| `viz/js/spaces-view.js` | The appendix (174 lines) — a document, not a tool |
+| `viz/css/spaces.css` | The appendix's styles (63 lines) |
 
 **Script order matters on the map page**: `stage.js` and `session.js` load first, then `mana-map.js` before `build.js` (which reads `MM.*` at load time). mana-map degrades gracefully if either is absent — every call is guarded. `deck.html`, `workbench.html` and `branch.html` share `shell.js`, `session.js` and
 `api.js` with each other and no code at all with the map.
@@ -342,7 +351,7 @@ on the world map and **45.2 × 49.9** once re-mapped.
 
 | Trigger | Path |
 |---|---|
-| Box/lasso select over 8 cards | `plotly_selected` → `Drill.offer(...)` → a button in the bar |
+| Box/lasso select over 8 cards | `mapCanvas.on('select')` (was `plotly_selected`) → `Drill.offer(...)` → a button in the bar |
 | Region label click | raw click hit-tested against annotation anchors → `Drill.enterRegion(id)` → `regions_*.json` `membership` |
 | Current filters | the `Drill ⤓` toolbar button → `Drill.enterFiltered()` |
 
@@ -698,8 +707,8 @@ gold bar. The legend rows are controls: clicking one spotlights that group, comp
 focused region through a single `spotlightFor(g)` predicate — a group focus is one scalar
 per trace and never touches the 34K per-point array.
 
-The default overlay is **supertype**, with a frequency-aware palette: Creature is 55.5% of
-the corpus (19,050 of 34,890), Planeswalker 1.0%, Battle 39 cards, so saturation runs
+The default overlay is **supertype**, with a frequency-aware palette: Creature is 55.1% of
+the corpus (19,240 of 34,890), Planeswalker 1.0% (338), Battle 39 cards, so saturation runs
 *inverse* to frequency. The previous palette gave Creature `#22C55E` — the exact green
 `COLOR_PALETTE` uses for G — on more than half the points, so the supertype map read as a
 broken colour-identity map.
@@ -1097,9 +1106,14 @@ move silently never happened. That is the fourth rAF-throttling bug in this file
 (`schedule()`, `ResizeObserver`, CSS transitions, and now transitions); a camera that
 arrives without easing beats one that never arrives.
 
-## Render cost — the rules that keep it snappy
+## Render cost, THE PLOTLY ERA — the rules that keep it snappy
 
-The map draws 34,890 WebGL points. Four rules, each of which was violated and measured:
+**Plotly is gone; the renderer is `js/render/canvas.js`.** Everything below was measured
+against the Plotly scattergl map and is kept because the four rules outlived it — the
+numbers are the argument for each rule, not a description of today's frame. Read it in the
+past tense; the canvas section is the live one.
+
+The map drew 34,890 WebGL points. Four rules, each of which was violated and measured:
 
 **Never build what nothing displays.** Every trace sets `hoverinfo: 'none'` and nothing
 reads `trace.text`, but all of them were building hover strings anyway — ~34,000 `escHtml`
@@ -1135,13 +1149,11 @@ Measured, same page, median of 7:
 | Plotly calls per render | react + add + delete | **react** |
 | Plotly calls per arrow press | delete + add | **restyle** |
 
-**What is still slow, and is not ours.** A shift-drag fires `plotly_selecting` on every
-mousemove, and Plotly hit-tests all 34,890 scattergl points each time — **measured ~138 ms
-per event** with only the seven base traces loaded. That is the dominant cost of box-select
-and it is inside Plotly. Any large highlight trace left on the plot adds to it, which is
-why the browse selection is one trace rather than one per colour. Build's map view renders in the
-low hundreds of ms because it draws 16 separate role traces; that is the price of the
-legend doubling as the role budget, and it is a mode switch, not a per-frame cost.
+**What was slow and was not ours — and is now fixed by not being Plotly.** A shift-drag
+fired `plotly_selecting` on every mousemove and Plotly hit-tested all 34,890 scattergl
+points each time, **measured ~138 ms per event**. That was the dominant cost of box-select
+and it was inside Plotly. The canvas renderer box-selects on a quadtree instead:
+**4.5 ms against 138 ms** (`mana-map.js:2912`). Nothing here is a live cost.
 
 ## Data cache-busting
 
@@ -1156,7 +1168,15 @@ was right and the bytes were old.
 
 ## Cache busting
 
-Manual `?v=N` query strings, per page: `index.html` on all **eleven** JS files and `mana-map.css`; `deck.html` on `deck-view.js` and `tokens.css`. **Bump the version on the page you touched** before pushing — Pages/browser caches are aggressive. On `index.html` all eleven script busts must move together; a test asserts it, because a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`.
+Manual `?v=N` query strings, on **every script and stylesheet tag of the page you
+touched** — not just two pages. `index.html` carries **eleven** script busts plus
+`mana-map.css`; `deck.html`, `branch.html`, `workbench.html`, `library.html` and
+`spaces.html` carry **four** each plus their stylesheets. Every bust in the repo currently
+moves together at `?v=223`. **Bump before pushing** — Pages/browser caches are aggressive.
+On `index.html` all eleven script busts must move together and a test asserts it, because
+a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`. The trap the
+two-page framing created: `shell.js` is shared by five pages, so bumping only `deck.html`
+ships it stale on four.
 
 For contrast, the handbook's stylesheet is **content-addressed** (`?v=<sha8>` from the CSS text), so a stylesheet change there obligates rebuilding every handbook page but can never go stale. That is the pattern to copy if `viz/` ever outgrows manual bumps.
 
@@ -1164,17 +1184,28 @@ For contrast, the handbook's stylesheet is **content-addressed** (`?v=<sha8>` fr
 
 **Two registries, one per page** — the map's and the dossier's, deliberately disjoint:
 
-- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all seventeen card-map entries. `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; `build.js` and `discovery.js` consume `MM.DATA.*`. Add new card-map files there, never as inline literals.
+- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all fifteen card-map entries. `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; `build.js` and `discovery.js` consume `MM.DATA.*`. Add new card-map files there, never as inline literals.
 - **Dossier** (`deck-view.js`): `BASE = '../data/decks/'` plus a `FILES` map of per-deck artifact names. It fetches `data/decks/index.json` first — the manifest written by `manamap pilot build-index`, carrying the deck list and each deck's **passing** stack filenames, because a browser can list neither the deck directory nor `stacks/`. Never hardcode a deck list; add a deck and re-run `build-index`.
 
 ## window.MM API surface
 
-Every member has a live caller (build.js, generated onclick handlers, or index.html) — exports without callers were trimmed 2026-07; don't re-add one without a consumer.
+**The `window.MM = {...}` block at the foot of `mana-map.js` is the list.** A
+hand-maintained copy here was wrong in both directions for months — it named `findSimilar`
+and `findSynergies`, which are not exported at all (they survive only as a comment
+recording the broken originals), and it omitted roughly twenty members that are, including
+`openCard`, `relate`, `keep`, `GROUPINGS`, `SPACES`, `setSpace` and `DATA_VERSION`. Read
+the block; do not read a transcription of it.
 
-Getters: `allData`, `currentMap`, `obsolescence`.
-Helpers: `escHtml`, `buildHoverTextMinimal`, `renderManaSymbols`, `closeDetail`, `removeFromSelection`, `bringToTop`, `selectByName`, `findSimilar`, `findSynergies`, `render`, `setStatus`, `setMode`.
-Constants: `MAP_CONFIGS`, `DATA`, `EMBED_DIM`.
-Async data loaders: `getEmbeddings()`, `getSynergyGraph()` — the deck builder awaits these instead of downloading its own copies of the two largest payloads (~17 MB + ~27 MB); both resolve to the shared cached instance.
+What is worth stating and cannot be read off the block:
+
+- **Exports are meant to have a live caller** (build.js, a generated onclick handler, or
+  `index.html`); callerless ones were trimmed in 2026-07. That is an intention, not an
+  invariant — **`MM.getSynergyGraph()` has no caller anywhere in `viz/js/`**, which leaves
+  the 27.8 MB `synergy_graph.json` registered in `MM.DATA` and never fetched: exactly the
+  position `docs/gotchas-viz.md` calls a trap, because a registered-but-unfetched entry
+  looks live to every reader.
+- **`getEmbeddings()` resolves to the shared cached instance**, so a consumer awaits it
+  rather than downloading its own copy of a ~17 MB payload.
 
 ## The workbench (`workbench.html`) — the landing page
 
@@ -1186,12 +1217,16 @@ Two views over the same payload, toggled and carried in the URL
 (`?view=table&sort=played`, written with `history.replaceState` so a sorted view is
 linkable and the back button is not filled with noise):
 
-- **Racks** group by lifecycle — LOCKED (built in paper, playable tonight), ON THE
-  BENCH (lists and build plans, nothing sleeved), and the dead.
+- **Racks**, in render order: a **drafts** rail, then *Waiting on cardboard* (decided,
+  measured and accepted, but not sleeveable yet — a deck appears here AND in its own
+  rack), *Sleeved* (built in paper, playable tonight), *On the bench* (lists, build plans
+  and decks under research), *Brewing* (fresh builds optimised for throughput, not
+  rigour) and *Archive* (broken down, superseded, retired, or put down — kept readable).
 - **The fleet table** is one row per deck across record, stages, evidence, table and
-  open work, sorted four ways: *recently played*, *needs game logs*, *needs analysis*,
-  *optimisations identified*. Every sort maps to a predicate `deck_info._next` already
-  computes — the page adds no judgement of its own.
+  open work, sorted **five** ways (`workbench.SORTS`): *recently played*, *needs game
+  logs*, *needs analysis*, *waiting on cardboard*, *optimisations identified*. Every sort
+  maps to a predicate `deck_info._next` already computes — the page adds no judgement of
+  its own.
 
 **`info.next[0]` is the last column and gets its OWN full-width row.** As a cell it
 broke the table: every other column is `nowrap`, so their widths summed past 100% and
@@ -1313,7 +1348,7 @@ engine line into a little square sitting on top of the text.
 **Nothing is recomputed in the browser and nothing is hardcoded.** The manual renders these
 same artifacts as ◆ reproducible evidence, so a second implementation that drifted would
 quietly break the tier contract. A missing artifact means an absent panel, not an error —
-only `hapatra` and `yawgmoth-swarm` have a `build_plan.json`, so six of eight dossiers show no builder
+seven of fourteen decks have a `build_plan.json`, so half the dossiers show no builder
 panel. `tests/test_pilot_deck_manifest.py` asserts the manifest matches the artifacts and
 that every stack it lists is checker-passed.
 
@@ -1348,9 +1383,17 @@ atlas position. The panel says so in its own body copy, for the same reason dril
 
 ## Explore mode highlights
 
-- Two maps (Color+Type / Abilities), projections + embeddings cached for instant switching
+- **Three maps** (`#mapSelect`, `MAP_CONFIGS`): Color+Type, Abilities, CardBERT —
+  projections + embeddings cached for instant switching. **A separate `#spaceSelect`**
+  picks the SIMILARITY space, which is a different question from which map is drawn
 - Color by primary color / supertype / rarity; supertype filter toggles
-- 4-tier search (exact → starts-with → includes → oracle text, capped 200)
+- **Search UNIONS across name / type / keyword / oracle text** (`computeQuery`), with an
+  exact name match winning alone because typing a whole card name is unambiguous. There is
+  **no tier cascade and no cap** — the cascade was removed after it was measured: "treasure"
+  returned ONE card, because a card is named exactly *Treasure* and the exact tier fired
+  first, while 390 carry the keyword and 413 mention it in oracle text. The status line
+  names the two fields that contributed most; the counts overlap, so they are reported
+  rather than summed
 - Multi-select up to 8 (Shift+click / Shift+drag box select); keyboard nav (arrows, 1–8, Delete, Escape, `/`)
 
 ### Navigating with the arrows
@@ -1373,12 +1416,12 @@ own blue ring on the map, because otherwise nothing says whose neighbourhood you
 furthest-from-centroid ("least typical first"); a neighbourhood is nearest-first from its
 anchor, and shows the cosine as you step.
 
-**Similarity is not the displayed map.** `loadEmbeddings` reads `SIMILARITY_EMBEDDINGS`,
+**Similarity is not the displayed map.** `loadEmbeddings` reads `similarityEmbeddings()`,
 never `MAP_CONFIGS[currentMap].embeddings`. Reading the displayed map makes "similar" mean
 "same colour and type" on the default map — a space measured at 3.05 of its 128 effective
 dimensions and 0.090 recall@10
 against known functional equivalents, which is why *Doubling Season* returned arbitrary green
-enchantments. Find Similar, the walk and drill now all read `SIMILARITY_EMBEDDINGS` (the
+enchantments. Find Similar, the walk and drill now all read `similarityEmbeddings()` (the
 function space) whichever projection is on screen. The projection is a picture; similarity is
 a question. Switching maps no longer drops the loaded array either — the old per-map keying
 re-fetched 17 MB and gave the same card different answers depending on the view.
@@ -1401,7 +1444,7 @@ now handled first and gated on their own terms.
 
 A floating image in `#plot`, 180 ms delay, flipping side near the edges.
 
-**`plotly_hover` fires even though every trace sets `hoverinfo: 'none'`** — verified in a
+**`mapCanvas.on('hover')` (was `plotly_hover`) fires even though every trace sets `hoverinfo: 'none'`** — verified in a
 browser before building on it: `'none'` suppresses the *label*, `'skip'` suppresses the
 *event*. So the popup needs no `text` arrays and reintroduces none of the per-point work
 that made Plotly's own hover cost 37 ms a render; it reads `MM.allData[i]` on demand.
@@ -1450,7 +1493,7 @@ Over `MAX_SELECTED` (8) cards, the panel switches to **arrows only** and holds t
 selection with no cap. Only the card you are looking at is ever fetched, so the cost is one
 Scryfall request per arrow press rather than one per card in the box.
 
-It replaced a real bug. `plotly_selected` returns points **grouped by trace** — colour
+It replaced a real bug. `mapCanvas.on('select')` (was `plotly_selected`) returns points **grouped by trace** — colour
 groups in palette order (`G, R, Colorless, U, B, W, Multicolor`), then `cards.csv` row
 order within each — and the handler took the first 8. Box a mixed cluster and you got eight
 green cards in Scryfall dump order: not a sample of your selection, an artifact of how the
@@ -1488,14 +1531,14 @@ scrolled into view as it appears.
 - Region labels as real DOM buttons with a zoom-dependent L0/L1 CSS crossfade; optional density contours ("Topo")
 - Pinch zoom on mobile comes from `d3.zoom` (the hand-rolled version existed only because `scattergl` has none)
 
-## Deck builder highlights
+## Deck builder highlights — DELETED
 
-- 8 formats; commander support (100-card singleton, autocomplete with 200ms debounce)
-- 6-factor recommendation scoring: 35% embedding similarity (`Math.max(0, dot)`), 20% combo (proportional `min(count/3,1)`), 20% synergy (`min(matches/SYNERGY_CAP,1)`), 10% EDHREC, 5% curve fit, 10% keyword Jaccard
-- Precomputes `deckNames`/`deckKw` Sets once per generate
-- Mana base generator: greedy set cover (colors covered ×10 + basic-subtype bonus + EDHREC ×3 − ETB-tapped penalty); Command Tower auto-add
-- Obsolescence warnings (amber) in recommendations + deck list via `MM.obsolescence`
-- LocalStorage persistence (`manamap-deck` key); text export, commander first
+The in-browser deck builder is gone. The six-factor recommendation scorer, the greedy
+set-cover mana-base generator and the `manamap-deck` localStorage persistence were
+removed; `build.js:18-27` is the post-mortem, and `grep -rn "manamap-deck" viz/` now hits
+only those comments. **Build mode is a LENS over a deck or pool loaded from the bench**
+(`window.Build`), not a place to score and assemble one — building is
+`manamap pilot build`, where the scorer can cite a strategy section and a bracket gate.
 
 ## Future options (deliberately not done)
 

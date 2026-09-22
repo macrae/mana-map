@@ -367,15 +367,16 @@ produced it, and the four fixture failures, are in `docs/gotchas-analysis.md`.
 
 ## Region clustering (`src/manamap/analysis/cluster_regions.py`)
 
-HDBSCAN names geographic-style regions on both 2D maps at two zoom levels:
-- **L0 mega-regions**: `min_cluster_size=800`, `min_samples=50` → ~10–15 regions (zoomed out)
-- **L1 sub-regions**: `min_cluster_size=100`, `min_samples=15` → ~40–120 regions (zoomed in)
+HDBSCAN names geographic-style regions on both 2D maps at **three** zoom levels:
+- **L0 mega-regions**: `min_cluster_size=800`, `min_samples=50` → 20 on the default map, 13 on abilities
+- **L1 sub-regions**: `min_cluster_size=100`, `min_samples=15` → 108 default, 54 abilities
+- **L2 neighbourhoods**: `REGION_L2_MIN_CLUSTER_SIZE=25`, `REGION_L2_MIN_SAMPLES=5`, only inside an L1 region of at least `REGION_L2_MIN_PARENT_SIZE=120` → 234 default, 142 abilities
 
 Naming — Color+Type map: dominant color (>= 40%) + type (>= 30%), guild names for 2-color pairs (>= 50%), fallback to top tag. Abilities map: TF-IDF-like scoring (cluster tag freq / global freq), top 1–2 overrepresented tags, minimum presence threshold `REGION_MIN_TAG_PRESENCE=0.10`. Label dedup: tag suffixes (max 2 for L0, 3 for L1), then spatial direction (N/S/E/W).
 
-**L0 and L1 are two independent flat clusterings, not a tree.** L1 is a separate HDBSCAN run over the same 2D coordinates, not a subdivision of L0, and `parent` is assigned by nearest L0 centroid with **no containment test** — an L1 region can be parented to an L0 region it does not overlap. Any UI that presents them as a hierarchy is claiming more than the data supports.
+**L0 and L1 are two independent flat clusterings, not a tree — but L2 IS nested.** L1 is a separate HDBSCAN run over the same 2D coordinates, not a subdivision of L0, and `parent` is assigned by nearest L0 centroid with **no containment test** — an L1 region can be parented to an L0 region it does not overlap. Any UI that presents L0→L1 as a hierarchy is claiming more than the data supports. **L2 is different**: neighbourhoods are clustered WITHIN each qualifying L1 region, so an L2 region's parent contains it by construction. The two relationships are not interchangeable and a consumer that treats them alike will be wrong about one of them.
 
-**Membership is stored, and noise is a real answer.** `regions_*.json` carries `membership.l0` / `membership.l1`: positional arrays over `cards.csv` row order, `-1` for noise. 29% of cards on the default map are L0 noise and belong to no region at all — they stay `-1` rather than being snapped to a nearest centroid they were never clustered into. Regions also record `w`/`h` beside `span`, because `span = max(w, h)` alone cannot distinguish a filament from a blob.
+**Membership is stored, and noise is a real answer.** `regions_*.json` carries `membership.l0` / `membership.l1` / `membership.l2`: positional arrays over `cards.csv` row order, `-1` for noise. (A top-level `nearest` key rides alongside.) 29% of cards on the default map are L0 noise and belong to no region at all — they stay `-1` rather than being snapped to a nearest centroid they were never clustered into. Regions also record `w`/`h` beside `span`, because `span = max(w, h)` alone cannot distinguish a filament from a blob.
 
 **Index-alignment invariant**: `projection[i]` corresponds exactly to `cards.csv[i]` (maintained through embed → reduce), and `membership.l0[i]` describes the same card. Tags are looked up by direct index, never by name (duplicate card names exist).
 
@@ -713,7 +714,7 @@ than "was it supplied".
 galaxies, solar systems, planets and satellites — which is a third scale on top
 of the two `cluster_regions` already runs (HDBSCAN L0 at 800, L1 at 100). The
 coordinates are a one-line change; **the cost is entirely the frontend**, since
-`viz/render/canvas.js` is 2D through hit-testing, labels and the force graph. A
+`viz/js/render/canvas.js` is 2D through hit-testing, labels and the force graph. A
 rotatable 3D→2D camera is the cheap path and gives most of the exploration feel.
 
 #### RUNNING — the `VIEW_WEIGHT` ablation, and what comes after

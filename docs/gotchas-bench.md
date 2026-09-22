@@ -13,7 +13,9 @@ Extracted verbatim from `CLAUDE.md` — every measurement here was in that file 
 - **A PAGE LEFT OPEN CAN WRITE TO THE REPO.** The draft autosave is debounced 600ms and fires on every field change, so a tab still sitting on `?draft=<slug>` re-created a deck directory that had just been deleted — and the manifest test caught it as "the tracked manifest does not match disk". A real consequence of the local bridge existing: the browser is now a writer, not only a reader. Close the tab before cleaning up, and treat an unexpected `data/decks/<slug>/` as a hint that something is still open.
 - **The frontend never calls an LLM, and deployed == local.** Decided 2026-08-01 after costing the alternative. The viz is exploration plus *artifact* reads: it renders what the pipeline and the agents already committed, and hands work back out through `Discovery.brief()`. It does not spawn agents, and there is no local-only bridge — because a local bridge means the deployed site and your machine run different code, and only one of them is the one you test. The handoff stays a brief you paste into Claude Code.
   - Why it is not merely a limitation: the *deterministic* layer is already 102 pilot subcommands with JSON output and zero LLM calls (Sven routes to them; he does not replace them) (`deck-facts` 1.5s, `bracket-check`, `manabase`, `goldfish`, `query-rules`/`query-strategy` as pure local RAG). Almost everything that feels like "ask the system a question" is answerable without an agent at all. What genuinely needs one is artifact-shaped and expensive — cheapest routine was `coach-prose` at 54.5k tokens (now part of `pilot-notes`), `candidate-pool` is 235k, and `docs/agent-cost.md` notes ad-hoc consults "produce no artifact, so there is nothing to key against". Those are jobs, not chat turns.
-- **Swap history is DERIVED from git, never hand-kept.** Three places recorded it before `deck-history` and none could be trusted: comment blocks in `decklist.txt` (prose, and the deck moves out from under them), `HISTORY.md` on half the decks (append-only and append-forgotten), and `considering.json`, which is replaced wholesale on every regeneration — so an applied ten leaves no trace of having existed. `decklist.txt` is tracked, so every change to the 99 IS a commit; diffing the parsed list across `git log` cannot drift and needs no maintenance, the same argument `build-index` makes for the deck manifest. What it cannot know is *why* a card moved — the commit subject is reported verbatim as `reason`, which is an argument for good commit subjects rather than for a second file that would disagree. **Ownership in the pending block is derived when `acquisition` is absent**: one regeneration dropped that field and every pending swap then read as "buy". An absent field is not evidence a card is unowned — `share/*.txt` is checked first. This is the ONLY ownership question left in the repo, and it is about a physical collection, not a deck.
+- **Swap history is DERIVED from git, never hand-kept.** Three places recorded it before `deck-history` and none could be trusted: comment blocks in `decklist.txt` (prose, and the deck moves out from under them), `HISTORY.md` on half the decks (append-only and append-forgotten), and `considering.json`, which is replaced wholesale on every regeneration — so an applied ten leaves no trace of having existed. `decklist.txt` is tracked, so every change to the 99 IS a commit; diffing the parsed list across `git log` cannot drift and needs no maintenance, the same argument `build-index` makes for the deck manifest. What it cannot know is *why* a card moved — the commit subject is reported verbatim as `reason`, which is an argument for good commit subjects rather than for a second file that would disagree. **Ownership in the pending block is derived when `acquisition` is absent**: one regeneration dropped that field and every pending swap then read as "buy". An absent field is not evidence a card is unowned — the boxes are checked first.
+Ownership is `COLLECTION_DIR` = `data/collection/`, read ONLY through `pilot/collection.py`;
+a hardcoded top-level `share/` was the original bug and that directory does not exist. This is the ONLY ownership question left in the repo, and it is about a physical collection, not a deck.
 - **`deck-audit` is the join nothing else performs, and its targets are CITED.** Four commands measure a deck (`deck-facts` composition, `mana-analysis` castability, `goldfish` speed, `bracket-check` power) and nothing joined them, so "is my card draw enough" had no answer. `deck-audit` emits 16 axes each carrying the **verbatim `strategy.md` quote** that sets its target — a test fails if any quote drifts out of the doc, because a target nobody can quote is not a target. That is the defect `DECK_ROLE_BUDGET` was built with: one flat budget for every deck, its own comment calling it "PROVISIONAL", `upgrade_facts` printing its shortfalls as "Context, not evidence". Three things a fleet survey caught: **Burgess's formula budgets sources, not lands** (applied to the land count it asks a 5-colour deck with a 9-mana commander for 45 lands, so `mana-base` takes the conventional 36–38 and `mana-sources` takes Burgess); **aggro's "26-32" is a creature count**, and overriding `threat-density` with it told edgar it was thirteen finishers short; and **an axis count is a floor** — oracle probes name cards showing the function that the taxonomy filed elsewhere, because `card_roles.json` calls Yawgmoth `removal:debuff` and his ability draws a card. Computed on demand, **never committed** — it embeds goldfish and bracket figures.
 - **`goldfish_targets.json` was already a machine-readable engine declaration and nothing read it as one.** Its `any_of` groups ARE the engine's components and a group's SIZE is that component's redundancy — priced through `hypergeometric_at_least`, which reproduces `strategy:deckbuilding.redundancy-vs-tutors`'s cited 31%/41%/54% (asserted by test), and set beside the rate the simulation measured. The thinnest group is where the deck fails first, and "what would activate the engine" becomes "which pool cards would join it". **The role route needs a SHARED role, not a modal one**: run off one card's roles, a component holding only Blowfly Infestation returns Massacre Wurm and Dismember — the roles describe the card, not the group's job. Two members sharing an *axis* (Sol Ring `ramp:rock` + Dark Ritual `ramp:ritual`) is the coarser fallback. **`manamap pilot validate-goldfish-targets <slug>` checks the declaration itself**, because a fleet survey found it wrong on six of eight decks — a component every member of which a passing stack refutes, a group declaring two cards where the deck holds four, and *twice* a **primary win line with no target at all**, so the simulator never measured how the deck actually wins (heliod's Hullbreaker Horror, ur-dragon's Aggravated Assault). Two checks only: declared cards must still be in the 99, and a card in ≥2 checker-passed stacks belonging to no component is reported — commanders and basic lands excluded, or four commanders false-positive.
 - **A goldfish component must name the leg every proof OPENS on, and a payoff group must be split by trigger EVENT.** Edgar's headline number was wrong twice in one direction and it took `validate-goldfish-targets`' cheapest complaint to find either. **THE GO-WIDE KILL by turn six: 0.382 → 0.327 → 0.285.** (1) Every checker-passed proof of that kill opens by CASTING a cheap Vampire to fire eminence and no group named that leg — the validator had been saying so ("Gifted Aetherborn in 3 passing stacks and no component") and it reads as bookkeeping. The leg is 13 cards and is **not free**: 13 of 99 is 84.8% by turn six, so the model had been assuming a card it should have been drawing. (2) The payoff leg was wrong in BOTH directions: it counted Blood Artist and Cruel Celebrant, which fire when a creature **dies** and cannot fire on the entry event the kill runs on, and omitted **Mirkwood Bats**, which keys on token **creation** rather than on "enters" — which is exactly why the declaration AND an oracle sweep for `enters` both walked past it. Split the group by trigger event rather than relabelling it, and **keep the excluded half as its own component** unless you have shown the deck cannot reach it: `engine-critic` refuted the claim that the death drains were stranded (Skullclamp kills a 1/1 token for `{1}`; Indulgent Aristocrat's outlet has no tap symbol and no timing restriction), so they are a second line, not dead weight. Three independent agents found the same defect from three directions, which is the argument for asking more than one.
@@ -361,10 +363,14 @@ It also re-explains two earlier results that were read as deck failures:
    rests on one. A trigger is safer than an activation for the same effect —
    `Lightless Evangel` grows on any sacrifice with no button, where
    `Bloodflow Connoisseur` needs the AI to choose.
-2. `simulate --profile` already exposes Forge's AI personalities (Default,
+2. ~~`simulate --profile` already exposes Forge's AI personalities (Default,
    Cautious, Reckless, Experimental) and every run in this repo has used
    Default for every seat. Whether another profile activates more is UNTESTED
-   and is the cheapest experiment available.
+   and is the cheapest experiment available.~~ **SUPERSEDED — the experiment was
+   run; see AMENDED below.** `forge.STANDARD_POD_PROFILE = "Experimental"` and
+   `--vs-profile` defaults to it, so the pod's three seats are Experimental and
+   ours is Default. Heliod's record carries
+   `profiles: ['Default', 'Experimental', 'Experimental', 'Experimental']`.
 3. Forge's AI profiles are property files in the engine install. Tuning them is
    possible and would need its own harness change plus a fresh baseline on
    every deck, because it changes what "the pod" means.
@@ -533,7 +539,11 @@ Drive the production function, then prove the test by putting the bug back.
 
 ## Forge's `-c` clock ends a game's ACCOUNTING, not its AI thread
 
-**2026-08-31.** `SIM_GAME_CLOCK_SECONDS = 300` is passed to Forge as `-c`. It
+**2026-08-31, and the constant has since moved.** `SIM_GAME_CLOCK_SECONDS` is passed
+to Forge as `-c`; it was **300** when this was measured and is **600** now. `300`
+survives as `SIM_CLOCK_ID_BASELINE`, frozen so the run ids written under the old clock
+still resolve — every tracked record on disk now ends `-c600`. The mechanism below is
+unchanged by the value. It
 fires a `FutureTask` timeout, Forge writes `Game Result: Game 1 ended in 300122
 ms` and reports **a winner** — and the AI thread carries on running. Nothing
 bounded the subprocess, so a job could run until somebody noticed.
@@ -579,13 +589,17 @@ the tracked set. A killed job's finished games are kept and parsed normally;
 
 ### Also measured, not yet changed
 
-`jobs` defaults to `os.cpu_count() - 1` = **7** on this machine, which has **4
-performance cores** and 4 efficiency cores; a job that lands on an E-core sets
-the wall for everyone. `split_games` is a static even split with no work
-stealing, and the straggler tail is **+4061s / +6734s / +1304s** on the three
-biggest runs — 12% to 50% of the wall spent with idle cores waiting on one job.
-Both are left alone deliberately: `run_id` does not encode `jobs`, so changing
-the default would change the SAMPLE a given run id produces.
+**FIXED — this is what `forge.default_jobs()` exists for.** `jobs` used to default to
+`os.cpu_count() - 1` = **7** on this machine, which has **4 performance cores** and 4
+efficiency cores; a job that lands on an E-core sets the wall for everyone, and 5–18% of
+games came back `truncated`. `default_jobs()` now returns `max(1, (os.cpu_count() or 2)
+// 2)` = **4**, the performance-core count.
+
+Still measured and still left alone: `split_games` is a static even split with no work
+stealing, and the straggler tail was **+4061s / +6734s / +1304s** on the three biggest
+runs — 12% to 50% of the wall spent with idle cores waiting on one job. Work stealing
+would change the SAMPLE a given run id produces, because `run_id` does not encode how the
+games were split.
 
 ---
 
@@ -2344,3 +2358,33 @@ The tell was available before the logs: the deck contained exactly TWO
 double-faced cards and they were exactly the two zero-cast ones. **Grep the logs
 for `unsupported card` before reading any per-card cast figure**, and treat a
 zero on a recent card as unproven rather than measured.
+
+
+## A BRANCH HAS NO DECLARATION OF ITS OWN, so editing the deck's stales every branch
+
+**2026-09-21.** Five heliod branch artifacts were stale and nothing had touched a branch.
+`git log` on each `branches/*/decklist.txt` points at the commit that created it, weeks
+earlier; the culprit was `a38371a3` — *"heliod: procedures rewritten for v1.4.0, and its
+declaration repaired"* — which edited **`data/decks/heliod/goldfish_targets.json`** and
+re-ran `goldfish heliod`.
+
+**A branch directory holds `branch.json`, `cards.json`, `decklist.txt`,
+`goldfish_metrics.json`, `net_change.json` and `sim/`. It does NOT hold
+`goldfish_targets.json`** — there is one declaration per deck and every branch is measured
+against it, which is the whole point: two candidate 99s are only comparable if the same
+questions are asked of both. The consequence is that **a declaration edit is a fleet-wide
+event for that deck**, and it looks like a no-op because no list moved.
+
+Exactly two of eleven targets had been reworded — *"Heliod down with an asymmetric card
+engine"* and *"Heliod protected, or a flash grant that does not need him"* — and the other
+nine came back byte-identical in all five branches, which is what made it legible at all.
+
+**`regen --slug <slug>` already covers this**; the branches are in its target list
+(`regen.targets()` walks `branches/*` for any artifact that already exists there).
+Running `goldfish <slug>` by hand after a declaration edit does not, and that is the whole
+bug. **After editing `goldfish_targets.json`, run `regen --slug <slug>`, never the bare
+command** — the same rule the model-change gotcha states, one scope smaller.
+
+`tests/test_pilot_artifact_freshness.py` is what caught it, and only on `make test-fresh`:
+the regenerate-and-compare cache had served all five as passing, because the cache keys on
+the simulator and the branch's own inputs and the deck's declaration is neither.

@@ -102,7 +102,8 @@ and three are real goldfish fidelity bugs.
 
 | | |
 |---|---:|
-| `make test` — warm cache | **245 s** (3,708 collected; 3,216 passed, 489 skipped, 3 xfailed, 2026-09-21) |
+| `make test` — warm cache | **245 s** (3,713 collected; 3,216 passed, 489 skipped, 3 xfailed, 2026-09-21) |
+| `make test-fresh` — nothing cached | **571 s** (3,698 passed, 8 skipped, 3 xfailed, 2026-09-21) |
 | `make test-browser` (`-n 4`) | **400 s** (223 passed, 2026-09-08) |
 
 Six are red and stay red until an agent runs: five stale `diagnosis.json` (their
@@ -147,14 +148,14 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-09-21: **3,970 tests** across 180 files — 3,708 in the `make test`
+As of 2026-09-21: **3,971 tests** across 177 files — 3,713 in the `make test`
 selection, 257 browser, 1 `forge` (a real Forge game, opt-in), 4 `fleet` and 3
 `serial_only`. Three are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
 Why the count cannot be checked mechanically: **about a thousand of those cases do not
-exist in the source** — there are 2,909 top-level `def test_` functions and 3,970 collected cases, the difference
+exist in the source** — there are 3,078 top-level `def test_` functions and 3,971 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a

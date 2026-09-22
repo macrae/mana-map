@@ -443,7 +443,8 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--games", type=int, default=None,
                              help="number of games (default SIM_DEFAULT_GAMES)")
             cmd.add_argument("--jobs", type=int, default=None,
-                             help="JVMs to run in parallel (default: CPUs - 1)")
+                             help="JVMs to run in parallel (default: performance cores, "
+                                  "i.e. forge.default_jobs())")
             cmd.add_argument("--clock", type=int, default=None,
                              help="seconds before Forge calls a game a draw (default SIM_GAME_CLOCK_SECONDS)")
             cmd.add_argument("--pod", default=None, metavar="NAME",

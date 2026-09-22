@@ -10,9 +10,9 @@ that is the failure this runbook exists to stop: a capability added in one
 development cycle is reachable only by somebody who remembers it exists, so a deck
 built the following month silently inherits the old pipeline. The vision this serves
 is `docs/vision.md`: a lab bench for one pilot's paper decks — version it, measure it,
-prove its lines, play it, log it, ask it questions. The page it renders today is the
-**legacy magazine renderer**, frozen until the compact deck page
-(`docs/history/manual-v5-spec.md`) replaces it; nothing in this runbook depends on which.
+prove its lines, play it, log it, ask it questions. The page it renders is the **Pilot's
+Operating Handbook** (`build-poh`, live since 2026-09-02); the magazine renderer it
+replaced was deleted on 2026-09-13.
 
 ## Start here, always
 
@@ -81,11 +81,11 @@ keys (`how_it_wins`, `mulligan`, `combo_lines`, `threat_assessment`, `matchups`)
 merged by key ownership via `merge-prose` so the frozen legacy keys on a published
 deck survive untouched.
 
-**9 — Render the page** (legacy). Author `issue.json` (identity: deck name,
-commander, status) → `build-poh` → `build-index`. This is the magazine renderer,
-kept frozen until manual-v5; without an `issue_plan.json` it renders with defaults,
-which is what a new deck gets. `validate-poh` gates the legacy plans on the
-already-published decks.
+**9 — Render the page.** `build-poh` → `build-index`, then `validate-poh`. This is
+the **Pilot's Operating Handbook**, the live renderer since 2026-09-02, and it owns
+`manuals/p/<slug>.html`. Sections 0, 1, 2, 5 and 6 regenerate from tracked artifacts;
+sections 3, 4 and 7 are authored with an agent's first draft (`/poh-procedures`). The
+magazine renderer this phase used to describe was deleted on 2026-09-13.
 
 **10 — Simulate it.** `fetch-opponent "<commander>" --as <slug>` for each seat at
 your table (`data/opponents/`; once, then reuse), then `simulate <slug> --vs a --vs b
@@ -145,7 +145,6 @@ manamap pilot validate-debrief <slug>         # the log's annotations, held to t
 manamap pilot validate-prescription <slug>    # every question the doctor answered
 manamap pilot validate-branch <slug> --branch N  # the objective is falsifiable; a
                                               #   proposal freezes what it accepted
-manamap pilot validate-considering <slug>     # LEGACY: frozen Short Lists on published decks
 `manamap pilot validate-poh <slug>`
 .venv/bin/python -m pytest -m "not browser and not forge" -n auto
 ```

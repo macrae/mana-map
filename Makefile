@@ -87,8 +87,10 @@ test-all: test-fresh test-browser  ## Everything, uncached. What CI would run if
 check: test  ## Alias for `make test` — what to run before opening a PR
 
 serve:  ## Serve the map, the deck pages and the handbooks (PORT=8000 by default)
-	@echo "  map      http://localhost:$(PORT)/viz/index.html"
-	@echo "  issues   http://localhost:$(PORT)/manuals/index.html"
+	@echo "  bench     http://localhost:$(PORT)/viz/workbench.html   <- start here"
+	@echo "  atlas     http://localhost:$(PORT)/viz/index.html"
+	@echo "  a deck    http://localhost:$(PORT)/viz/deck.html?deck=heliod"
+	@echo "  handbook  http://localhost:$(PORT)/manuals/p/heliod.html"
 	python3 -m http.server $(PORT)
 
 manuals:  ## Re-render every handbook + the version lists (deterministic; should be a no-op)

@@ -102,20 +102,20 @@ the same code.
 
 **Three things this is honest about.** Forge's AI pilots every seat *including yours*, and
 rates itself "poor to ok in control, pretty bad for combo" — a sentence quoted verbatim in
-every run record, which makes a control deck's win rate a lower bound on the pilot. **Two
-decks have a real game logged** (Edgar and Ur-Dragon, both losses, both debriefed) — which
-is two, not a sample: the log, debrief and prescription surfaces are built and tested, and
-barely used. And **most decks are not marked as built in paper**: whether a deck exists as
+every run record, which makes a control deck's win rate a lower bound on the pilot. **Five
+decks carry a captain's log — 17 games, every entry debriefed** (Ur-Dragon 6 at 2W-4L,
+Edgar 5, Gishath 2, Goblin Storm 2, Heliod 2) — which is seventeen, not a sample: the log,
+debrief and prescription surfaces are built and tested, and barely used. And **most decks are not marked as built in paper**: whether a deck exists as
 cardboard is an assertion only the pilot can make, so an unlocked deck says it is unlocked
 rather than being assumed playable.
 
-**The Pilot's Manual** (`manuals/p/<slug>.html`, from `manamap pilot build-page`) — each
-deck's self-contained printable page: the game plan, the mulligan, the verified lines
-argued, the engine, the numbers with their intervals. **No `<script>` anywhere**, so it
-rebuilds byte-identically and is trustworthy offline and in print — which is exactly why
-live map embeds go on the dossier instead. The *legacy magazine* (nine frozen issues;
-[the rack](https://macrae.github.io/mana-map/manuals/index.html)) still renders from
-`build-manual` and is no longer linked from any live surface.
+**The Pilot's Operating Handbook** (`manuals/p/<slug>.html`, from `manamap pilot
+build-poh`) — each deck's self-contained printable page: the game plan, the mulligan, the
+verified lines argued, the engine, the numbers with their intervals, and the emergency and
+normal procedures a person writes. **No `<script>` anywhere**, so it rebuilds
+byte-identically and is trustworthy offline and in print — which is exactly why live map
+embeds go on the dossier instead. The *legacy magazine* it replaced was deleted on
+2026-09-13; what it measured is kept in `docs/gotchas-magazine-legacy.md`.
 
 ---
 
@@ -272,8 +272,7 @@ where a deck stands and what to do next; start with both.
 | `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
 | `/resolve-stack` | A verified line: resolver → validator → adversarial checker | no |
 | `/write-manual` | The pilot's notes: game plan, mulligan, line intros, threats, matchups | no |
-| `manamap pilot build-page <slug>` + `build-index` | The Pilot's Manual (`manuals/p/`, deterministic, no `<script>`) | **yes** |
-| `manamap pilot build-manual <slug>` | The legacy magazine issue (frozen renderer) | **yes** |
+| `manamap pilot build-poh <slug>` + `build-index` | The Pilot's Operating Handbook (`manuals/p/`, deterministic, no `<script>`) | **yes** |
 
 Then the loop the bench exists for — all CLI except the two agents:
 
@@ -591,9 +590,9 @@ Two standing rules around this harness:
 | A deck lifecycle phase | `STAGES` in `pilot/deck_status.py`, or the next person will not find it |
 | A pod seat | `manamap pilot fetch-opponent "<commander>"`, or a `decklist.txt` under `data/opponents/<slug>/` |
 | A figure the sim reports | `game_facts` + `aggregate` in `sim/parse.py`, then re-derive every run with `--analyze` — the record is compared against the logs, so an added key must be backfilled |
-| A panel on the deck page | a `*Panel(d)` function in `viz/js/deck-view.js` returning `''` when its artifact is absent, plus the artifact's filename in `build_index.gather_entries` if a browser cannot list it |
+| A panel on the deck page | a `*Panel(d)` function in `viz/js/deck-view.js` returning `''` when its artifact is absent, plus the artifact's filename in `deck_manifest.gather_entries` if a browser cannot list it |
 | A field the deck page reads | `deck_info.compose`, then `deck-info <slug> --write` for every deck — `info.json` is committed and staleness-gated |
-| A section of the (legacy) deck page | **don't** — the magazine renderer (`issue_spec.DEPARTMENTS`, the handbook renderer) is frozen; the compact page is `docs/history/manual-v5-spec.md` |
+| A section of the handbook | `poh_spec.SECTIONS` **and** `poh.RENDERERS` — the spec declares ten sections and the map holds seven, so a section added to one alone never renders |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |
 | A deckbuilding role | `ROLE_PATTERNS` in `config.py`, then re-run `manamap card-roles` |
@@ -693,8 +692,7 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
 GitHub Pages serves the repo directly. There is no root index; the entry points are
 **`/viz/workbench.html` (the landing page — start here)**, `/viz/index.html` (the card
 atlas), `/viz/deck.html?deck=<slug>` (one deck's dossier) and `/manuals/p/<slug>.html`
-(its Pilot's Manual). `/manuals/index.html` is the legacy magazine rack, still rendered
-and no longer linked from any live surface. Pushing to `main` deploys.
+(its Pilot's Operating Handbook). Pushing to `main` deploys.
 
 One artifact the deployed site cannot carry yet: **the version list**. `deck-version`
 derives it by walking git, and the commit that changes `decklist.txt` receives its sha

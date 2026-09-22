@@ -332,3 +332,76 @@ def test_the_docs_index_is_complete_and_its_sizes_are_real():
     assert checked >= 15, f"only {checked} index rows had a size to check"
     assert not wrong, ("stale sizes in docs/README.md — the column is LINES, "
                        "one unit:\n  " + "\n  ".join(wrong))
+
+
+def test_no_doc_tells_you_to_run_a_subcommand_that_does_not_exist():
+    """A COMMAND LINE IN A DOC IS AN INSTRUCTION, and a wrong one fails at the shell.
+
+    Seven subcommands went with the magazine renderer on 2026-09-13 and their
+    call sites did not. `CLAUDE.md:289` told every session to run
+    `manamap pilot build-page <slug>` — the page-render step of the lifecycle —
+    for eight days; `docs/pilot.md` listed five more in a block that reads as a
+    command reference, and the `/publish-deck` runbook's gate list named
+    `validate-considering`.
+
+    The truth is `registry.PILOT_STEPS`, which is what argparse is built from, so
+    this cannot drift from the CLI.
+
+    EXEMPTIONS ARE NAMED, NOT PATTERNED. A historical record SHOULD say
+    `build-manual` — that is what the page is for — so each exempt file is listed
+    with the reason, and a new one has to be argued for rather than absorbed by a
+    glob. `docs/history/` is exempt wholesale for the same reason the deleted-module
+    check exempts it.
+    """
+    from manamap.pilot.registry import PILOT_STEPS
+
+    live = {step[0] for step in PILOT_STEPS}
+    assert "goldfish" in live and "deck-info" in live, (
+        "PILOT_STEPS is not the shape this test assumes; if the registry changed, "
+        "fix the extraction rather than the expectation")
+
+    # file -> why it may name a command that no longer exists
+    exempt = {
+        "docs/gotchas-magazine-legacy.md":
+            "the operational record of the deleted renderer; naming its commands is the point",
+        "docs/audit-2026-09-12.md":
+            "a dated read-only audit — it describes the tree as it stood",
+        "docs/paydown-plan.md":
+            "the plan that scheduled the deletions; the task rows name what they removed",
+        "data/decks/goblin-storm/README.md":
+            "a per-deck record of how that deck's page was built at the time",
+    }
+    # docs/pilot.md keeps a LEGACY section that is explicitly past-tense.
+    legacy_from = {}
+    pilot_md = ROOT / "docs" / "pilot.md"
+    for i, line in enumerate(pilot_md.read_text(encoding="utf-8").splitlines(), 1):
+        if line.startswith("## LEGACY — the magazine renderer"):
+            legacy_from["docs/pilot.md"] = i
+            break
+    assert "docs/pilot.md" in legacy_from, (
+        "docs/pilot.md's LEGACY heading moved or was reworded — this test exempts "
+        "everything below it and can no longer find where that starts")
+
+    pattern = re.compile(r"manamap pilot ([a-z][a-z0-9-]+)")
+    offenders, checked = [], 0
+    for path in sorted(ROOT.glob("**/*.md")) + [ROOT / "Makefile"]:
+        rel = str(path.relative_to(ROOT))
+        if not path.exists() or ".venv" in rel or "node_modules" in rel:
+            continue
+        if "history" in path.parts or rel in exempt:
+            continue
+        checked += 1
+        start = legacy_from.get(rel)
+        for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            if start and i >= start:
+                break
+            for match in pattern.finditer(line):
+                if match.group(1) not in live:
+                    offenders.append(f"{rel}:{i} — `manamap pilot {match.group(1)}`")
+
+    assert checked >= 20, f"only {checked} files were scanned"
+    assert not offenders, (
+        "a doc names a pilot subcommand that does not exist; run it and it errors:\n  "
+        + "\n  ".join(offenders)
+        + "\n\nIf the mention is deliberately historical, add the FILE to `exempt` "
+          "above with a reason — do not widen the pattern.")

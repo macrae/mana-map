@@ -1,14 +1,19 @@
 ---
 name: write-manual
-description: Write a deck's pilot notes (the five prose keys, via pilot-notes) and render its deck page — evidence gathering, prose, and the deterministic HTML build (legacy magazine renderer until manual-v5). Use when the user wants the notes or the page (re)generated for a deck that has cards.json and verified stack scenarios.
+description: Write a deck's pilot notes (the five prose keys, via pilot-notes) and render its Pilot's Operating Handbook — evidence gathering, prose, and the deterministic HTML build. Use when the user wants the notes or the page (re)generated for a deck that has cards.json and verified stack scenarios.
 ---
 
-# Write the pilot notes and render the deck page
+# Write the pilot notes and render the handbook
 
-Pipeline for `data/decks/<slug>/` → `manuals/<slug>.html`. The HTML step is the **legacy
-magazine renderer** (frozen; replaced by the compact deck page in `docs/history/manual-v5-spec.md`)
-— it still renders from the same artifacts, byte-identically. Evidence tiers: ✓
-rules-verified, ◆ data-derived, ★ coaching (see `docs/pilot.md`, `docs/vision.md`).
+Pipeline for `data/decks/<slug>/` → `manuals/p/<slug>.html`. The HTML step is
+**`build-poh`, the Pilot's Operating Handbook** — the live renderer since 2026-09-02; the
+magazine renderer it replaced was deleted 2026-09-13. It renders from the tracked
+artifacts, byte-identically. Evidence tiers: ✓ rules-verified, ◆ data-derived, ★ coaching
+(see `docs/pilot.md`, `docs/vision.md`).
+
+**This skill writes only the prose half.** Sections 3, 4 and 7 of the handbook — the
+emergency procedures, the normal procedures and the rules of engagement — belong to
+`/poh-procedures`, a different agent and a different routine.
 
 0. **Cache gate** (do this first — the agents below cost ~200k tokens together):
    `.venv/bin/manamap pilot cache-status <slug>` prints one line per routine and exits
@@ -50,8 +55,8 @@ rules-verified, ◆ data-derived, ★ coaching (see `docs/pilot.md`, `docs/visio
    surface "needs a stack scenario" flags to the user. Decision spreads and the tutor
    guide are the same agent under their own routines — `decision:<NNN>` (the
    author-decision skill) and `tutor-guide`.
-6. **Build** (legacy renderer): `.venv/bin/`manamap pilot build-poh <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; missing prose renders [TODO]. This is the magazine renderer kept frozen until manual-v5; do not extend it.
-7. **Review**: open `manuals/<slug>.html` (legacy output); the decisions, the notes and the strategic frame are the review surface (tracked JSON, red-linable).
+6. **Build**: `.venv/bin/manamap pilot build-poh <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; a section with no prose degrades to ABSENT, never to `[TODO]`.
+7. **Review**: open `manuals/p/<slug>.html`; the decisions, the notes and the strategic frame are the review surface (tracked JSON, red-linable).
 
 `manual_prose.json` is tracked and human-editable — tune the wording directly and rebuild without re-running agents. The cache reports a hand edit as `EDITED` and still says "don't spawn"; run `cache-record` to bless it.
 

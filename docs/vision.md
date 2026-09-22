@@ -51,7 +51,7 @@ replayability and the control is N. An A/A is refused with the reason.
 
 | you want to… | the bench gives you | tier |
 |---|---|---|
-| test one change against another | `experiment` — two arms, one table, the delta and the overlap sentence | ◆ seeded |
+| test one change against another | `experiment` — two arms, one table, the delta, with an interval on the DIFFERENCE of every figure | ◆ seeded |
 | measure a deck against a **table** | `simulate <slug> --vs <pod>` — N seeded Forge games: win rate with its interval, who kills you and how, the kill curve, **commander damage per defender**, token pay-off | ◆ seeded |
 | measure it against nobody | `goldfish` — Monte Carlo resource development; Treasure and combat opt-in | ◆ seeded |
 | build a legal 99 from a brief | `build-deck` — role budget crossed with a cited curve target, combo lines completed, bracket-gated | ◆ |
@@ -90,7 +90,8 @@ calls nothing, and your machine runs the same code.
 ## The frontend
 
 Six pages over one data layer: the card atlas, the workbench landing page, the deck
-page, the branch workbench and the embedding-space appendix.
+page, the branch workbench, **Curate** (`viz/library.html`) and the embedding-space
+appendix.
 
 **The card atlas** (`viz/index.html`) — 34,890 oracle cards embedded by two small neural
 nets. It opens on **one card**; click a relation and its neighbours join a graph you grow.
@@ -120,14 +121,13 @@ owns each figure.
 **workbench landing page** and the **Pilot's Operating Handbook**
 (`build-poh` → `manuals/p/`).
 
-**Legacy, frozen** — the magazine renderer (`build_manual`, `issue_spec`, `design`,
-`validate_issue`, STYLEv3) and the artifacts only it reads, plus `build_page`. Both were
-superseded by the **Pilot's Operating Handbook** (`poh.py`) on 2026-09-02, which renders
-the same `manuals/p/<slug>.html`. `build_page` shared that path and clobbered the handbook
-from two callers, so it has no default output any more: `--out` or nothing. The magazine
-still renders nine pages, nothing regenerates its inputs, and no live surface links to it.
-Marked LEGACY and left accurate rather than rewritten; its deletion is Phase 5 of
-`docs/paydown-plan.md`, where the dependency map is one edge.
+**Deleted, not frozen** — the magazine renderer is gone. The **Pilot's Operating
+Handbook** (`poh.py`) superseded it on 2026-09-02, rendering the same
+`manuals/p/<slug>.html`; the renderer itself was deleted on 2026-09-13 (commit
+`443cf6b7`) — eleven modules, seven subcommands, nine pages and nine test files, 14,064
+lines. `build_manual`, `issue_spec`, `design`, `validate_issue` and `build_page` do not
+exist, `manuals/index.html` does not exist, and STYLEv3.md went on 2026-08-25. What it
+measured is kept in `docs/gotchas-magazine-legacy.md`; the code is in git.
 
 **Honest about three things.**
 
@@ -137,14 +137,14 @@ A control deck's win rate is a **lower bound on the pilot**; a combo deck's is n
 measurement at all. What a run is genuinely good at: the clock the table sets, who kills
 you and how, and whether the kill the goldfish measured actually lands.
 
-*Fifteen games. Not two hundred.* Five decks now carry a captain's log and every entry
+*Seventeen games. Not two hundred.* Five decks now carry a captain's log and every entry
 has been debriefed, and two of them fed a prescription — enough to have proved the loop
 works end to end, and nowhere near enough to conclude anything about any one deck. The gap
 no amount of implementation closes is still open; it is just narrower than it was.
 
 *Most decks are not marked as built in paper.* Whether a deck exists as cardboard is an
-assertion only the pilot can make, and seven of twelve have not been asserted either
-way — though four of those seven are broken down for parts and one is retired.
+assertion only the pilot can make, and eight of fourteen have not been asserted either
+way — though five of those eight are broken down for parts and one is retired.
 An unlocked deck now SAYS it is unlocked rather than being quietly assumed playable —
 the third state, after LOCKED and dead.
 

@@ -72,7 +72,7 @@ paid for and each constrains a task below.
 | P1-07 | 1 | `docs/README.md`: index, sizes, descriptions | S | DONE | |
 | P1-08 | 1 | Archive six superseded docs to `docs/history/` | S | DONE | |
 | P1-09 | 1 | `CLAUDE.md` corrections | M | DONE | |
-| P1-10 | 1 | The other live docs: vision, simulation, pilot, pipeline, viz, data-artifacts | M | DONE | |
+| P1-10 | 1 | The other live docs: vision, simulation, pilot, pipeline, viz, data-artifacts | M | DONE (2nd pass 2026-09-21) | Marked DONE once and was not: a 2026-09-21 audit found 60 stale claims across these six, including every item this task's own detail lists. Swept again — see that commit. The lesson is the file's own rule: a docs task has no mechanical gate, so DONE means *somebody re-read it*, and re-reading has to happen after the code stops moving. |
 | P1-11 | 1 | Prune `PLAN.md` to open work | M | DONE | |
 | P1-12 | 1 | `testing.md`: one runtime figure, real counts, every marker | S | DONE | |
 | P1-13 | 1 | New drift gates, each measured first | M | DONE | |
@@ -100,7 +100,7 @@ paid for and each constrains a task below.
 | P5-05 | 5 | Delete the renderer, its subcommands, its output, its tests | L | DONE | |
 | P5-06 | 5 | Collapse the two-registry section-count truth | S | DONE | |
 | P5-07 | 5 | Retire the magazine xfails and tracked artifacts | M | DONE | |
-| P5-08 | 5 | Docs sweep after the delete | S | DONE | |
+| P5-08 | 5 | Docs sweep after the delete | S | DONE (2nd pass 2026-09-21) | The 2026-09-13 delete commit swept most docs and missed `docs/vision.md` entirely — the page that declares itself the tie-breaker — plus the `/publish-deck` runbook, `README.md`, `docs/README.md` and seven dead subcommand references. Completed 2026-09-21. |
 | P6-01 | 6 | Snapshot the fleet and the agent cache | S | DONE | |
 | P6-02 | 6 | `goldfish.py` becomes a package, imports unchanged | L | DONE | |
 | P6-03 | 6 | `model_version` hashes the package | S | DONE | |
