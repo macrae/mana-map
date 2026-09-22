@@ -107,26 +107,26 @@
     },
     {
       "axis": "colour-sources",
-      "gap": 11,
+      "gap": 12,
       "measured": {
         "cards": [],
         "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
         "per_colour": {
           "U": {
-            "have": 26,
+            "have": 27,
             "target": 36
           },
           "W": {
-            "have": 25,
+            "have": 24,
             "target": 36
           }
         },
         "short": {
-          "U": 10,
-          "W": 11
+          "U": 9,
+          "W": 12
         },
         "unit": "sources above target (worst colour)",
-        "value": -11
+        "value": -12
       },
       "target": {
         "formula": "karsten",
@@ -139,13 +139,14 @@
     },
     {
       "axis": "ramp",
-      "gap": 0,
+      "gap": -1,
       "measured": {
         "cards": [
           "An Offer You Can't Refuse",
           "Arcane Signet",
           "Azorius Signet",
           "Decanter of Endless Water",
+          "Gleaming Splendor",
           "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
           "Mind Stone",
           "Pearl Medallion",
@@ -157,7 +158,7 @@
         ],
         "how": "copies carrying any of ramp:rock, ramp:dork, ramp:ritual, ramp:land, ramp:cost-reduction, ramp:treasure",
         "unit": "copies",
-        "value": 12
+        "value": 13
       },
       "target": {
         "high": 12,
@@ -165,14 +166,13 @@
         "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes",
         "source": "strategy:deckbuilding.ratios"
       },
-      "verdict": "at"
+      "verdict": "over"
     },
     {
       "axis": "card-advantage",
       "gap": 0,
       "measured": {
         "cards": [
-          "Alhammarret's Archive",
           "Arcane Denial",
           "Archmage's Charm",
           "Consecrated Sphinx",
@@ -192,6 +192,7 @@
         "how": "copies carrying any of draw:engine, draw:burst, draw:impulse, draw:wheel, draw:cantrip",
         "possible_uncounted": [
           "Braingeyser",
+          "Gleaming Splendor",
           "Irrigated Farmland",
           "Kefnet the Mindful",
           "Kwain, Itinerant Meddler",
@@ -202,7 +203,7 @@
           "Stroke of Genius"
         ],
         "unit": "copies",
-        "value": 16
+        "value": 15
       },
       "target": {
         "high": null,
@@ -270,10 +271,10 @@
       "gap": 0,
       "measured": {
         "cards": [
+          "Greater Auramancy",
           "Guardian of Faith",
           "Karametra's Blessing",
           "Kefnet the Mindful",
-          "Lightning Greaves",
           "Teferi's Protection"
         ],
         "how": "copies carrying any of protection:self, protection:granted, protection:fog, protection:redirect",
@@ -366,7 +367,7 @@
         "how": "goldfish land_drop_hit_rate_by_turn['3']",
         "keep_first_seven_rate": 0.737,
         "unit": "rate",
-        "value": 0.868
+        "value": 0.875
       },
       "target": {
         "high": null,
@@ -385,7 +386,7 @@
         "mana_value_8_plus": 1,
         "nonland_entries": 67,
         "three_drops": 18,
-        "two_drops": 22,
+        "two_drops": 23,
         "unit": "modal mana value",
         "value": 2
       },
@@ -461,14 +462,14 @@
     "entries": 85,
     "land_copies": 33,
     "lands": 18,
-    "legendary": 11,
+    "legendary": 10,
     "legendary_lands": 3,
-    "legendary_permanents": 11,
+    "legendary_permanents": 10,
     "nonland": 67,
-    "nonlegendary": 74
+    "nonlegendary": 75
   },
   "dead_searches": [],
-  "decklist_sha256_prefix": "f1d4a650b93f",
+  "decklist_sha256_prefix": "f7e21dc6a8bb",
   "engine": {
     "available": true,
     "redundancy_citation": {
@@ -516,10 +517,10 @@
         "label": "Table draw engine online (opponents are drawing)",
         "measured": {
           "assembled_rate": 0.921,
-          "assembled_rate_assisted": 0.971,
-          "by_turn_6_rate": 0.822,
-          "by_turn_6_rate_assisted": 0.906,
-          "mean_turn": 2.499
+          "assembled_rate_assisted": 0.969,
+          "by_turn_6_rate": 0.828,
+          "by_turn_6_rate_assisted": 0.909,
+          "mean_turn": 2.434
         },
         "thinnest_size": 11
       },
@@ -555,11 +556,11 @@
         ],
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
         "measured": {
-          "assembled_rate": 0.741,
-          "assembled_rate_assisted": 0.886,
-          "by_turn_6_rate": 0.561,
-          "by_turn_6_rate_assisted": 0.703,
-          "mean_turn": 4.87
+          "assembled_rate": 0.728,
+          "assembled_rate_assisted": 0.877,
+          "by_turn_6_rate": 0.554,
+          "by_turn_6_rate_assisted": 0.698,
+          "mean_turn": 4.868
         },
         "thinnest_size": 6
       },
@@ -653,8 +654,8 @@
               "opening_seven": 0.137
             },
             "shared_axes": [
-              "threat-density",
-              "card-advantage"
+              "card-advantage",
+              "threat-density"
             ],
             "shared_roles": [
               "draw:engine",
@@ -668,11 +669,11 @@
         ],
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
         "measured": {
-          "assembled_rate": 0.36,
-          "assembled_rate_assisted": 0.73,
-          "by_turn_6_rate": 0.249,
-          "by_turn_6_rate_assisted": 0.557,
-          "mean_turn": 4.261
+          "assembled_rate": 0.361,
+          "assembled_rate_assisted": 0.734,
+          "by_turn_6_rate": 0.251,
+          "by_turn_6_rate_assisted": 0.563,
+          "mean_turn": 4.276
         },
         "thinnest_size": 2
       },
@@ -829,8 +830,8 @@
               "opening_seven": 0.137
             },
             "shared_axes": [
-              "threat-density",
-              "card-advantage"
+              "card-advantage",
+              "threat-density"
             ],
             "shared_roles": [
               "draw:engine",
@@ -844,11 +845,11 @@
         ],
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
         "measured": {
-          "assembled_rate": 0.32,
-          "assembled_rate_assisted": 0.686,
+          "assembled_rate": 0.321,
+          "assembled_rate_assisted": 0.688,
           "by_turn_6_rate": 0.189,
-          "by_turn_6_rate_assisted": 0.465,
-          "mean_turn": 5.269
+          "by_turn_6_rate_assisted": 0.474,
+          "mean_turn": 5.286
         },
         "thinnest_size": 2
       },
@@ -857,13 +858,13 @@
         "components": [
           {
             "cards": [
-              "Rhystic Study",
-              "Mystic Remora",
-              "Smothering Tithe",
               "Consecrated Sphinx",
-              "Teferi's Ageless Insight",
-              "Alhammarret's Archive",
-              "Faerie Mastermind"
+              "Faerie Mastermind",
+              "Gleaming Splendor",
+              "Mystic Remora",
+              "Rhystic Study",
+              "Smothering Tithe",
+              "Teferi's Ageless Insight"
             ],
             "modal_role": "draw:engine",
             "not_in_deck": [],
@@ -872,7 +873,8 @@
               "opening_seven": 0.412
             },
             "shared_axes": [
-              "card-advantage"
+              "card-advantage",
+              "ramp"
             ],
             "shared_roles": [
               "draw:engine",
@@ -886,11 +888,11 @@
         ],
         "label": "Heliod down with an asymmetric card engine",
         "measured": {
-          "assembled_rate": 0.787,
+          "assembled_rate": 0.785,
           "assembled_rate_assisted": 0.901,
-          "by_turn_6_rate": 0.583,
-          "by_turn_6_rate_assisted": 0.718,
-          "mean_turn": 5.224
+          "by_turn_6_rate": 0.571,
+          "by_turn_6_rate_assisted": 0.71,
+          "mean_turn": 5.288
         },
         "thinnest_size": 7
       },
@@ -928,11 +930,11 @@
         ],
         "label": "Free or cheap interaction held",
         "measured": {
-          "assembled_rate": 0.839,
-          "assembled_rate_assisted": 0.937,
-          "by_turn_6_rate": 0.705,
-          "by_turn_6_rate_assisted": 0.834,
-          "mean_turn": 3.022
+          "assembled_rate": 0.836,
+          "assembled_rate_assisted": 0.933,
+          "by_turn_6_rate": 0.704,
+          "by_turn_6_rate_assisted": 0.837,
+          "mean_turn": 3.002
         },
         "thinnest_size": 8
       },
@@ -971,11 +973,11 @@
         ],
         "label": "An X-spell finisher drawn (the mana sink the discount pays for)",
         "measured": {
-          "assembled_rate": 0.792,
-          "assembled_rate_assisted": 0.908,
+          "assembled_rate": 0.793,
+          "assembled_rate_assisted": 0.906,
           "by_turn_6_rate": 0.671,
-          "by_turn_6_rate_assisted": 0.812,
-          "mean_turn": 2.854
+          "by_turn_6_rate_assisted": 0.813,
+          "mean_turn": 2.844
         },
         "thinnest_size": 8
       },
@@ -1080,11 +1082,11 @@
         ],
         "label": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
         "measured": {
-          "assembled_rate": 0.495,
-          "assembled_rate_assisted": 0.671,
-          "by_turn_6_rate": 0.358,
-          "by_turn_6_rate_assisted": 0.508,
-          "mean_turn": 4.022
+          "assembled_rate": 0.494,
+          "assembled_rate_assisted": 0.675,
+          "by_turn_6_rate": 0.364,
+          "by_turn_6_rate_assisted": 0.514,
+          "mean_turn": 3.994
         },
         "thinnest_size": 3
       },
@@ -1093,11 +1095,11 @@
         "components": [
           {
             "cards": [
+              "Greater Auramancy",
               "Guardian of Faith",
               "Karametra's Blessing",
-              "Lightning Greaves",
-              "Teferi's Protection",
-              "Leyline of Anticipation"
+              "Leyline of Anticipation",
+              "Teferi's Protection"
             ],
             "modal_role": "protection:self",
             "not_in_deck": [],
@@ -1118,11 +1120,11 @@
         ],
         "label": "Heliod protected, or a flash grant that does not need him",
         "measured": {
-          "assembled_rate": 0.683,
-          "assembled_rate_assisted": 0.869,
-          "by_turn_6_rate": 0.531,
-          "by_turn_6_rate_assisted": 0.731,
-          "mean_turn": 3.59
+          "assembled_rate": 0.679,
+          "assembled_rate_assisted": 0.868,
+          "by_turn_6_rate": 0.529,
+          "by_turn_6_rate_assisted": 0.728,
+          "mean_turn": 3.578
         },
         "thinnest_size": 5
       },
@@ -1155,13 +1157,13 @@
             "thinnest": true
           }
         ],
-        "label": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
+        "label": "A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)",
         "measured": {
-          "assembled_rate": 0.68,
-          "assembled_rate_assisted": 0.838,
-          "by_turn_6_rate": 0.529,
-          "by_turn_6_rate_assisted": 0.691,
-          "mean_turn": 3.597
+          "assembled_rate": 0.683,
+          "assembled_rate_assisted": 0.835,
+          "by_turn_6_rate": 0.534,
+          "by_turn_6_rate_assisted": 0.692,
+          "mean_turn": 3.556
         },
         "thinnest_size": 5
       },
@@ -1199,11 +1201,11 @@
         ],
         "label": "A taxer down (attackers pay, flying or not)",
         "measured": {
-          "assembled_rate": 0.496,
-          "assembled_rate_assisted": 0.791,
-          "by_turn_6_rate": 0.357,
-          "by_turn_6_rate_assisted": 0.623,
-          "mean_turn": 4.008
+          "assembled_rate": 0.509,
+          "assembled_rate_assisted": 0.793,
+          "by_turn_6_rate": 0.37,
+          "by_turn_6_rate_assisted": 0.637,
+          "mean_turn": 4.017
         },
         "thinnest_size": 3
       }
@@ -1218,16 +1220,16 @@
       },
       "goldfish_metrics.json": {
         "current": true,
-        "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+        "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
         "present": true
       },
       "mana_analysis.json": {
         "current": true,
-        "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+        "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
         "present": true
       }
     },
-    "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
+    "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
     "recon": {
       "as_of": null,
       "present": false
@@ -1235,6 +1237,7 @@
   },
   "notes": [
     "Under target: mana-base, colour-sources, sweepers, interaction-breadth.",
+    "Over target: ramp.",
     "Permanent class(es) with no answer detected: graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
     "Each target is an AND of ORs and the schema cannot express the UNION of several independent kills — a deck with four kills has no single assembled_rate here, and averaging them would be inventing a number the simulation never measured.",
     "Roles come from card_roles.json, which classifies 85.9% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."

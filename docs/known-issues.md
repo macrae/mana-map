@@ -701,52 +701,184 @@ Do not raise the thresholds, do not mark the tests xfail, and do not add
 `corpus-gates` to a list of jobs that are allowed to be red. The count check is
 the only thing standing between a retrain and a silently misaligned index.
 
-## 9d. A DECLARATION edit stales an engine model's figures, and no gate can see it
+## 9d. The cache SAW every one of these and nobody was listening
 
-*Found 2026-09-22 by the `engine-critic` run on heliod.*
-
-`engine.json` quotes component rates out of `goldfish_metrics.json`. Those rates
-move when **`goldfish_targets.json`** changes — a target gaining a card changes
-its assembled rate without a single card moving in the 99.
-
-On heliod, two of them are wrong in the tracked file:
-
-| quoted in `engine.json` | `goldfish_metrics.json` now reads |
-|---|---|
-| `stages[3]` 0.733 / 0.520 | **0.785 / 0.571** |
-| `proposed_goldfish_edits[1]` 0.597 / 0.449 | **0.679 / 0.529** |
+*Filed 2026-09-22, and **corrected the same day**. The first version of this
+entry said "no gate can see it" and proposed adding `goldfish_targets.json` to
+the `deck-engine` cache inputs. **Both halves were wrong.** It is already an
+input — `config.py`'s `deck-engine` block lists `deck:goldfish_targets.json`,
+not optional — and the cache reports the edit correctly. Proved by experiment on
+a deck sitting at HIT:*
 
 ```
-goldfish_targets.json   2026-09-21 15:27  a38371a3  "…its declaration repaired"
-engine.json             2026-09-20 22:12  9df071f5  "engine models rebuilt…"
+$ # append " (probe)" to one target label, then:
+$ manamap pilot cache-status gishath --routine deck-engine
+MISS   deck-engine      deck-engineer+engine-critic engine.json
+       inputs changed
+       ~ data/decks/gishath/goldfish_targets.json modified
 ```
 
-**AND NOTHING CAN DETECT IT.** Every staleness gate in this repo keys on
-`decklist_sha256`, and the decklist did not move — both files carry `f7e21dc6`.
-The agent cache keys the `deck-engine` routine on `cards:semantic`, which is
-also unmoved. So the model quotes superseded figures under a current sha, which
-is the exact shape `meta.model_version` was introduced to stop for COMPUTED
-artifacts and which the authored side still has no answer to (§6).
+*I wrote a diagnosis from a symptom without testing the mechanism, which is the
+failure this whole page exists to catch. The symptom was real; the cause was
+not.*
 
-It is the same root as §9a: **a declaration edit has a blast radius nothing
-models.** There it stales every branch under the deck; here it stales the prose
-that quotes the deck's own rates. Commit `a38371a3` caused both.
+### What is actually wrong
 
-Two ways to close it, and they are not exclusive:
+heliod's `engine.json` quoted two rates its own artifact no longer held —
+0.733/0.520 against a live 0.785/0.571 — for a day. The declaration was repaired
+on 2026-09-21 (`a38371a3`), fifteen hours after the model was written.
 
-1. **Add `goldfish_targets.json` to the `deck-engine` cache inputs.** A
-   declaration edit then MISSes the routine and the model is re-spawned, which
-   is correct — the model's figures really did change. Cheap, and it uses
-   machinery that already exists.
-2. **Make the quoted rate mechanically checkable.** The critic found these by
-   matching a quoted pair to a target label and re-reading the metrics. A
-   validator could do the same, and unlike most proposed checks it would fire on
-   genuinely wrong data rather than on correct data — the bar
-   `docs/gotchas-evidence.md` sets.
+**And `cache-status` said MISS the entire time.** So did gishath's, sharknado's
+and ur-dragon's, every one of them, for as long as anyone cares to look back.
+The four were re-criticised on 2026-09-22 only because somebody read §2 and
+decided to, not because anything escalated.
 
-(1) is the smaller change and catches the whole class. Until either lands, treat
-a rate quoted in an engine model as needing a look at
-`goldfish_metrics.json` beside it.
+**A MISS IS ADVISORY, AND A STALE AGENT ARTIFACT LOOKS EXACTLY LIKE A FRESH
+ONE.** That is the whole gap, and it is a reader problem rather than a detection
+problem:
+
+- A COMPUTED artifact stamps `meta.decklist_sha256` and `meta.model_version`,
+  and `test_pilot_artifact_freshness.py` regenerates it and compares. Stale is
+  a test failure.
+- An AGENT artifact stamps nothing a reader sees. `engine.json` carries no
+  freshness field at all. `deck-status` reports the cache's opinion only if you
+  run it and read the routine rows; the deck page, the handbook and
+  `engine-facts` all render the prose with no mark on it.
+
+So the honest statement of the class is: **the bench detects agent-artifact
+staleness and reports it in a place nobody is obliged to look**, exactly as CI
+detected four weeks of failures and reported them in a place nobody was reading
+(see this page's header).
+
+### The fix I proposed is DEAD, and the measurement is the finding
+
+The obvious move is "make the MISS a gate — if the cache says stale and the
+artifact is tracked, fail". **Measured across the whole fleet before proposing
+it, per this repo's oldest rule about validators, and it is not viable:**
+
+```
+        MISS  195
+        N/A    43
+        HIT    10
+```
+
+A gate on MISS fires **195 times** — one per deck-and-routine pair, out of the
+12 static routines crossed with 14 decks. Every deck misses `deck-recon`,
+`strategic-frame`, `pilot-notes`, `poh-procedures` and `deck-diagnosis`;
+radagast alone misses eighteen. Most of it is legitimate and inert — charter
+consolidations, decks that are broken down, prompt edits — and
+`docs/agent-cost.md` already records the board as deliberately red fleet-wide
+since 2026-08-19, clearing only as each routine next really spawns.
+
+**So the signal is saturated, and that is the actual defect.** heliod's engine
+model quoting superseded rates was a real staleness sitting inside 195 other
+MISSes, indistinguishable from all of them. The cache was not silent; it was
+shouting the same word about everything.
+
+That also kills the softer version — surfacing the MISS on the handbook page —
+because nearly every page would carry the warning, which is how a warning stops
+being read. See this page's header for the four weeks of CI that proves it.
+
+### What would actually help
+
+- **Separate "an input this artifact QUOTES moved" from "a charter changed".**
+  The cache already knows which input moved — it prints `~ <path> modified`. A
+  MISS caused by `goldfish_targets.json` or `cards.json` is a content change the
+  prose may now contradict; a MISS caused by `.claude/agents/*.md` is a process
+  change that says nothing about whether the prose is still true. Only the first
+  kind is worth a reader's attention, and it is a small fraction of 195.
+- **Leave the cache alone.** It is correct, it is precise about causes, and the
+  problem is entirely in how its output is aggregated and read.
+
+### The one thing that genuinely has no detection
+
+A figure quoted in one artifact that contradicts a NEIGHBOUR is not a staleness
+problem and no sha can catch it. heliod's `strategic_frame.json` still carries
+two sentences the engine model withdrew; sharknado's `notes[8]` contradicts its
+own declaration's label, quoted inside the same file. Both were found by a
+critic reading across artifacts, which is the only thing that does find them.
+See §9e.
+
+## 9e. A claim copied between artifacts, where only a reader can tell it is wrong
+
+*Found 2026-09-22 by the engine critics. One instance FIXED at its root; the
+class has no detection and probably cannot have one.*
+
+### The instance, because it shows the shape
+
+heliod's declaration carried this target label:
+
+> *A body that can block a FLIER (39 of 53 eliminations came from the air;
+> Kefnet needs seven cards in hand to block)*
+
+**It was never a flying attribution.** The run record holds two separate fields:
+
+```
+eliminated_by  {giada-angels: 39, abaddon: 6, baylen-tokens: 8}   <- WHO
+eliminated_how {damage: 53}                                        <- HOW
+```
+
+39 and 53 were read out of different fields and joined into a claim about
+evasion. No seat's `eliminated_how` holds anything but `damage`, and the string
+`flying` appears **zero times across all four of this deck's sim records**.
+
+It had reached SEVEN artifacts, and the propagation path is worth knowing:
+`goldfish_metrics.json`, `audit.json` and `info.json` copy the target label
+VERBATIM, so one wrong label becomes four wrong artifacts the moment anything
+regenerates. `strategic_frame.json` and `tutor_guide.json` then quote the label
+in their own prose, and `engine.json` quoted it too.
+
+**Fixed at the root.** The label now reads *"A body that can block the SEAT THAT
+KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run
+996adb84…)"*, with the correction and its evidence recorded in
+`_label_corrections` inside the declaration. Verified first that a label edit is
+figure-neutral — `any_of` drives the measurement, and re-running the goldfish
+with the label altered returns byte-identical figures. `regen` then carried the
+correction into all three derived artifacts.
+
+### The class, measured
+
+A declaration label is prose that DERIVED ARTIFACTS COPY AND AUTHORED ONES
+QUOTE. Swept across the fleet: **16 labels on 6 decks** carry a parenthetical
+claim that also appears in an artifact no regeneration will fix —
+`engine.json`, `strategic_frame.json`, `diagnosis.json`, `manual_prose.json`,
+`poh_procedures.json`, `tutor_guide.json`, `log_annotations.json`.
+
+Most are references rather than figures ("stack 004", "the turn-5-Ur-Dragon
+hand") and are fine. The dangerous ones are numeric claims about a measurement,
+because those read as evidence.
+
+### Why no gate can catch this
+
+Every staleness mechanism in the bench answers *"has an input changed?"* This
+class is *"was the sentence ever true?"* — and the label, the derived copies and
+the quoting prose all agreed with each other perfectly. Nothing was stale.
+Everything was consistent. It was consistently wrong, from the first writing.
+
+**The only thing that found it was a critic reading one artifact against
+another**, which is exactly what `validate_engine.py`'s docstring says the
+mechanical gate cannot do, and why the engineer ⇄ critic loop is not a
+formality.
+
+### What to do instead
+
+- **Fix at the ROOT.** A label is the upstream copy; correcting the prose that
+  quotes it while leaving the label alone guarantees the claim comes back on the
+  next regeneration.
+- **Record the correction where the claim lived.** `_label_corrections` in the
+  declaration, naming what was wrong and the evidence. The next reader to meet
+  the old sentence in an un-regenerated artifact can then resolve it.
+- **A figure in a LABEL is a figure, and carries the same obligation as one in a
+  report** — it must name where it was measured. This one said "the Forge
+  record" and pointed at two fields that do not say what it claimed.
+
+### Still open on heliod
+
+`strategic_frame.json` carries the flier claim twice as live prose and "all
+twelve won" twice — both withdrawn from the engine model on evidence. It is
+agent-authored, so hand-patching it would put a fresh claim under an old byline;
+it needs a `strategy-researcher` MODE consult re-spawn. `engine-facts` surfaces
+that prose to the deck page, so until then the page still renders both.
 
 ## 10. Branch hygiene
 

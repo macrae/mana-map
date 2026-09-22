@@ -16,7 +16,7 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 17,
+    "complete": 16,
     "of": 18,
     "stale": [],
     "invalid": [],
@@ -7314,8 +7314,8 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "An eminence-discounted Dragon deck whose engine is the ARRIVAL, not the attack: cost reduction lands two Dragons in one turn, Miirym and Lathliss turn each arrival into several, and Terror of the Peaks, Dragon Tempest and Scourge of Valkas price every arrival in damage — and V6 wraps that turn in flash so it can be taken on somebody else's.",
-    "critic": null,
+    "thesis": "An eminence-discounted Dragon deck whose engine is the ARRIVAL, not the attack: cost reduction lands two Dragons in one turn, Miirym and Lathliss turn each arrival into several, and Terror of the Peaks, Dragon Tempest and Scourge of Valkas price every arrival in damage — and V6 bought a response suite four of whose six additions are castable at instant speed as printed, so the mana held for them is not dead; that the CASCADE itself can be taken on somebody else's turn needs Whirlwing Stormbrood on the battlefield and nothing verifies it.",
+    "critic": "fail",
     "lines": 8,
     "verified_lines": 5
   },
@@ -7357,7 +7357,7 @@
     },
     {
       "from": "engine",
-      "question": "Hellkite Courser and The Ur-Dragon: walk the full turn. Courser enters, its ETB puts the commander from the command zone onto the battlefield with haste, both attack — does The Ur-Dragon's own attack trigger ('draw that many cards, then you may put a permanent card from your hand onto the battlefield') fire, and does the return to the command zone at the beginning of the next end step leave commander tax at zero for a later hard cast?",
+      "question": "Repair stack 008's one failing citation and re-run the checker. Step 4 cites CR 608.2k for Hellkite Courser's 'It gains haste' reaching the commander; the checker calls that citation unsupported because 608.2k covers an object 'previously referred to by that ability's COST OR TRIGGER CONDITION', and the Courser's trigger condition refers to the Courser, not to the commander the EFFECT introduces. What CR text establishes that the pronoun chain 'It gains haste. Return it to the command zone' resolves to the commander — or does the artifact stand on the effect's own sentence structure with 608.2k dropped?",
       "settled_by": "resolve-stack"
     },
     {
@@ -7367,7 +7367,7 @@
     },
     {
       "from": "engine",
-      "question": "Re-run the goldfish with the V6 protection additions declared (Asceticism, Mithril Coat, Stubborn Denial, Transcendent Dragon added to 'Protection held for the big turn') and with the two cut cards removed from the ENTRY KILL and Dragon-restricted-mana legs. What do 'Protection held for the big turn' and interaction_castable_by_turn read then, against the current 0.665 / 0.557 and 0.311 / 0.415 / 0.510?",
+      "question": "Add Transcendent Dragon to the declared 'Protection or a RESPONSE held for the big turn' leg (taking it from nine cards to ten) and re-run. What do that target and interaction_castable_by_turn read then, against the CURRENT 0.811 assembled / 0.713 by turn six and 0.311 / 0.415 / 0.510?",
       "settled_by": "goldfish"
     },
     {
@@ -7546,7 +7546,7 @@
     "branch `responses-v2` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v2`",
     "branch `responses-v3` needs 5 card(s) sourced — `manamap pilot deck-branch ur-dragon source responses-v3`",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
-    "engine.json's critic verdict is None — `/analyze-engine ur-dragon`",
+    "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×5, goldfish ×10, research-strategy ×6, resolve-stack ×8",
     "6 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],

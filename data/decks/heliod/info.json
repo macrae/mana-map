@@ -13,7 +13,7 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 17,
+    "complete": 16,
     "of": 18,
     "stale": [],
     "invalid": [],
@@ -3642,11 +3642,11 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)": {
+        "target:A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)": {
           "value": 53,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)' by turn six",
+          "definition": "share of games assembling \"A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)\" by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -3840,7 +3840,7 @@
         "by_turn_6_pct": 53
       },
       {
-        "label": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
+        "label": "A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)",
         "by_turn_6_pct": 53
       },
       {
@@ -3869,8 +3869,8 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Heliod manufactures a resource nobody at the table prices -- cards in opponents' hands -- and five permanents convert it into Treasure, cards, a cost discount and life loss; but the only card in the 99 that converts any of that into a win is one seven-mana sorcery cast twice, which is why a goldfish with no blockers still reaches turn ten without a kill in 86.5% of games.",
-    "critic": null,
+    "thesis": "Heliod manufactures a resource nobody at the table prices -- cards in opponents' hands -- and SIX permanents read it -- five trigger on an opponent drawing (Consecrated Sphinx and Faerie Mastermind for cards, Gleaming Splendor and Smothering Tithe for Treasure, Scrawling Crawler for life loss) and Heliod's back face reads the same count as a static cost discount; but the only card in the 99 that converts any of that into a win is one seven-mana sorcery cast twice, which is why a goldfish with no blockers still reaches turn ten without a kill in 86.5% of games.",
+    "critic": "fail",
     "lines": 10,
     "verified_lines": 1
   },
@@ -4039,7 +4039,7 @@
     "branch `splendor-v1` needs 2 card(s) sourced — `manamap pilot deck-branch heliod source splendor-v1`",
     "branch `splendor-v2` is fully sourced (+0 -0) — `manamap pilot deck-branch heliod merge splendor-v2 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
-    "engine.json's critic verdict is None — `/analyze-engine heliod`",
+    "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
     "12 versions and no experiment — `experiment heliod --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],

@@ -2839,8 +2839,8 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "The currency of this deck is a Dinosaur ENTERING the battlefield, not a creature attacking: Gishath's combat-damage reveal manufactures entries in batches (goldfish, 10,000 games: the reveal fired in 7,300 games, 2.016 times a game, for 4.08 free bodies), and V5 rebuilt the layer that cashes them — Purphoros turns every entry into 2 damage at each seat and Molten Echoes turns every nontoken Dinosaur entry into a second one, so a deck that used to need its 7/6 to keep connecting now has a payoff layer that pays without a combat step.",
-    "critic": null,
+    "thesis": "The currency of this deck is a Dinosaur ENTERING the battlefield, not a creature attacking: Gishath's combat-damage reveal manufactures entries in batches (goldfish, 10,000 games: it fired at all in 7,300 of them, and AVERAGED OVER ALL 10,000 it fired 2.016 times for 4.08 free bodies — `commander_reveal.mean_fired` and `mean_bodies` divide by iterations, not by the games that fired, so both means are diluted by the 2,700 games with no reveal), and V5 rebuilt the layer that cashes them — Purphoros turns every entry into 2 damage at each seat and Molten Echoes turns every nontoken Dinosaur entry into a second one, so a deck that used to need its 7/6 to keep connecting now has a payoff layer that pays without a combat step.",
+    "critic": "pass",
     "lines": 15,
     "verified_lines": 3
   },
@@ -2886,7 +2886,7 @@
     },
     {
       "from": "engine",
-      "question": "Does the goldfish's reveal channel feed the ETB layer — do Purphoros' fixed damage and Molten Echoes' copy fire off the bodies the declared commander reveal puts onto the battlefield, or only off cards cast from hand?",
+      "question": "With Molten Echoes out, does the goldfish price a LEGENDARY Dinosaur's copy at all? Molten Echoes' profile carries `etb_copy_keeps_legendary: true`, and goldfish_turn.py:613 then `continue`s past the legendary enterer entirely — so neither the copy's body nor its entry triggers are counted. By the rules the copy enters, its ETB triggers go on the stack, and only then does the legend rule bin it.",
       "settled_by": "goldfish"
     },
     {
@@ -3000,7 +3000,6 @@
     "branch `lands-v1` needs 3 card(s) sourced — `manamap pilot deck-branch gishath source lands-v1`",
     "branch `mana-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch gishath merge mana-v1 --write`",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
-    "engine.json's critic verdict is None — `/analyze-engine gishath`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
     "5 versions and no experiment — `experiment gishath --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],

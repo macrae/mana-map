@@ -152,7 +152,7 @@
       ]
     },
     {
-      "label": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
+      "label": "A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)",
       "need": [
         {
           "any_of": [
@@ -179,5 +179,13 @@
     }
   ],
   "_note": " REPAIRED 2026-09-16 after the v-merge: cut cards removed from every group (Angelic Wall, Forced Fruition, Greater Auramancy, Mikaeus, the Lunarch); Forced Fruition -> Horn of Greed.",
-  "_v140_note": "REVISED 2026-09-21 for v1.4.0. Two groups named cards the merge cut — Alhammarret's Archive in the card-engine group and Lightning Greaves in the protection group — so the 0.733 and 0.597 rates were counting cards that are not in the 99, which silently DEFLATES them. Their replacements are declared in their place: Gleaming Splendor and Greater Auramancy. NOTE ON AURAMANCY: it grants SHROUD, not hexproof, so it protects Heliod from opponents AND from the pilot's own Karametra's Blessing and Guardian of Faith. It is counted as protection because that is what it is, but the handbook's wipe page carries the exception."
+  "_v140_note": "REVISED 2026-09-21 for v1.4.0. Two groups named cards the merge cut — Alhammarret's Archive in the card-engine group and Lightning Greaves in the protection group — so the 0.733 and 0.597 rates were counting cards that are not in the 99, which silently DEFLATES them. Their replacements are declared in their place: Gleaming Splendor and Greater Auramancy. NOTE ON AURAMANCY: it grants SHROUD, not hexproof, so it protects Heliod from opponents AND from the pilot's own Karametra's Blessing and Guardian of Faith. It is counted as protection because that is what it is, but the handbook's wipe page carries the exception.",
+  "_label_corrections": [
+    {
+      "at": "2026-09-22",
+      "was": "A body that can block a FLIER (39 of 53 eliminations came from the air; Kefnet needs seven cards in hand to block)",
+      "why": "NEVER A FLYING ATTRIBUTION. The run record holds two separate fields: `eliminated_by {giada-angels: 39, abaddon: 6, baylen-tokens: 8}` — WHO — and `eliminated_how {damage: 53}` — HOW. 39 and 53 were read out of different fields and joined into a claim about evasion. No seat's `eliminated_how` contains anything but `damage`, and the string `flying` appears ZERO times across all four of this deck's sim records. Found by the engine-critic on 2026-09-22 and confirmed independently against the record.",
+      "measurement_unchanged": "The label is prose; `any_of` drives the measurement. Verified: re-running the goldfish with this label altered returns byte-identical figures."
+    }
+  ]
 }
