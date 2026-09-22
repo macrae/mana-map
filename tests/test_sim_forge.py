@@ -210,10 +210,14 @@ def test_the_job_cap_kills_the_pathological_runs_and_nothing_else():
         games, wall = doc.get("games_requested"), doc.get("wall_seconds")
         if not (games and wall):
             continue
-        cap = (int(doc.get("clock_seconds") or 300)
-               * max(forge.split_games(int(games), int(doc.get("jobs") or 7)))
-               * forge.TIMEOUT_SLACK)
-        cap = int(cap) + forge.TIMEOUT_FLOOR
+        # THE PRODUCTION FUNCTION, not a copy of it. This block used to rebuild
+        # the arithmetic and invent two defaults the runner does not have —
+        # `clock or 300` (the constant is 600) and `jobs or 7` (the value
+        # `default_jobs()` was changed away from) — so the verdict below rested
+        # on test-local numbers that had already drifted.
+        clock = doc.get("clock_seconds") or config.SIM_GAME_CLOCK_SECONDS
+        jobs = doc.get("jobs") or forge.default_jobs()
+        cap = forge.per_job_cap(int(clock), forge.split_games(int(games), int(jobs)))
         name = f"{os.path.basename(os.path.dirname(os.path.dirname(path)))} n={games}"
         (killed if wall > cap else survived).append(name)
 

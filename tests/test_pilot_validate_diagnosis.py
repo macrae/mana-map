@@ -273,8 +273,29 @@ def test_skeptic_status_vocabulary_is_closed():
 
 
 def test_absent_skeptic_block_is_allowed():
-    """A diagnosis exists before the skeptic reads it; the loop merges it later."""
-    assert _errors(_doc()) == []
+    """A diagnosis exists before the skeptic reads it; the loop merges it later.
+
+    This used to be `assert _errors(_doc()) == []` — and `_doc()` never sets
+    `skeptic`, so it was character-for-character `test_a_minimal_diagnosis_passes`
+    two hundred lines up and could not tell ABSENT from PRESENT-AND-VALID. The
+    pair below can: `_validate_skeptic` short-circuits on `None`, so the only
+    way to know the short-circuit is what passes the first doc is to show that a
+    doc carrying a real block is judged rather than waved through.
+    """
+    assert _errors(_doc()) == [], "an un-reviewed diagnosis must be valid"
+    assert "skeptic" not in _doc(), (
+        "_doc() grew a skeptic block — this test no longer covers the absent case")
+
+    reviewed = _doc(skeptic={"verdict": "pass", "findings": [
+        {"status": "supported", "where": "verdict"}]})
+    assert _errors(reviewed) == [], "a clean review must also be valid"
+
+    # And the block is really being READ, not ignored the way absence is.
+    refuted = _doc(skeptic={"verdict": "pass", "findings": [
+        {"status": "over-claimed", "where": "verdict"}]})
+    assert any("not all supported" in e for e in _errors(refuted)), (
+        "a `pass` verdict over an unsupported finding must be rejected; if this "
+        "goes green the short-circuit is swallowing present blocks too")
 
 
 # ── Citations ────────────────────────────────────────────────────────────

@@ -102,8 +102,8 @@ and three are real goldfish fidelity bugs.
 
 | | |
 |---|---:|
-| `make test` — warm cache | **245 s** (3,713 collected; 3,216 passed, 489 skipped, 3 xfailed, 2026-09-21) |
-| `make test-fresh` — nothing cached | **571 s** (3,698 passed, 8 skipped, 3 xfailed, 2026-09-21) |
+| `make test` — warm cache | **245 s** (3,710 collected; 3,216 passed, 489 skipped, 3 xfailed, 2026-09-21) |
+| `make test-fresh` — nothing cached | **617 s** (3,695 passed, 8 skipped, 3 xfailed, 2026-09-21) |
 | `make test-browser` (`-n 4`) | **400 s** (223 passed, 2026-09-08) |
 
 Six are red and stay red until an agent runs: five stale `diagnosis.json` (their
@@ -148,14 +148,14 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-09-21: **3,971 tests** across 177 files — 3,713 in the `make test`
+As of 2026-09-21: **3,968 tests** across 177 files — 3,710 in the `make test`
 selection, 257 browser, 1 `forge` (a real Forge game, opt-in), 4 `fleet` and 3
 `serial_only`. Three are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
 broken test.
 
 Why the count cannot be checked mechanically: **about a thousand of those cases do not
-exist in the source** — there are 3,078 top-level `def test_` functions and 3,971 collected cases, the difference
+exist in the source** — there are 3,075 top-level `def test_` functions and 3,968 collected cases, the difference
 being parametrization over lists computed at collection time. The only way to count them is
 to run pytest, and running pytest from inside pytest recurses. (That subtraction is the
 cheap way to re-derive the figure: `grep -rhcE "^(async )?def test_" tests/*.py` against a
@@ -686,3 +686,103 @@ diff said 4, and the test asserted `4 == 2`.
 Copies versus entries, inside the test that exists to catch copies versus
 entries. **When a test asserts on a count, derive it the same way production
 does** — here, by summing every entry with that name.
+
+## An adversarial audit of the suite, 2026-09-21 — 29 findings
+
+The suite was read against its own four rules. It came out well — `assert
+checked >= N` is followed almost universally, controls are named and explained
+in docstrings, the corpus-sweep-with-its-pattern idiom is used correctly in a
+dozen places — and the failures concentrated in two places worth naming, because
+neither is visible from a green board.
+
+### Five tests were green and could not go red
+
+Not weak: **unfailable**. Each is fixed and each fix is proved by re-introducing
+the bug it guards.
+
+| the test | why it could not fail |
+|---|---|
+| the reminder-strip corpus sweep | built its comparison arm with its own copy of `_REMINDER_RE`, which `event_payoffs` already applies — both arms were the same call, so `moved == set()` held for any corpus, regex or parser |
+| the scaling-dork snapshot | restated `max(1, min(len(colors), 5))` from the turn loop, then asserted `1 <= made <= 5` — true for every input of a clamp to [1, 5] |
+| the Shrine castability rule | ended on `assert channels_for(shrine) == set() or True` |
+| the drain channel | asserted only its CONTROL (bodies unchanged) and never that the channel fired |
+| the uint16 alignment check | `(HEADER + 34322 * k * 2) % 2 == 0` — an even header plus anything doubled is even, for every `k` |
+
+**Four of the five are the same shape**: the test restates the rule instead of
+calling it, so it compares production to a copy of itself. The fix is always
+the same — extract the production function and drive it (`forge.per_job_cap`,
+`calibrate.spearman_cell`) or import the one that exists
+(`validate_stack._normalize_ws`).
+
+### A test that cannot fail hides a live defect for as long as it takes to read it
+
+`test_the_drain_channels_move_the_clock` ran against the real edgar-vampires
+deck. By the time anyone read it, **a swap had left zero cards in that deck
+feeding either key under test** — blinding the channel moved the mean kill turn
+from 7.977 to 7.977. It had been measuring nothing, and its only assertion was
+the control, so nothing said so.
+
+**A test whose subject can leave the deck under it is a test of the deck.** It
+now brings its own library.
+
+### Six tests required a deck to stay half-finished
+
+The other cluster, and the more insidious one: a test green **because a deck is
+wrong**, so fixing the deck reddens the suite and the cheapest way back to green
+is to leave the work undone.
+
+- a stack on a SLEEVED deck had to keep naming a card the 99 dropped
+- ≥ 4 of that deck's passing stacks had to stay stranded
+- a queued land swap had to stay unapplied — the fixture was a change the repo
+  intends to make
+- one deck had to keep having no `engine.json`, while `deck-status` told us to
+  run `/analyze-engine` on it
+- a recon had to stay out of step with its 99
+- exactly two named decks had to be the ones declaring a combat route
+
+Each is now either **constructed** (build the wrong state in `tmp_path`) or
+**derived** (compute the expectation from the artifacts rather than pinning a
+roster). The pattern for the last one is worth copying: read the expectation off
+the JSON by a second, deliberately NARROWER reading of the same rule, so a deck
+matching only production's wider path shows up as a difference that has to be
+named rather than absorbed.
+
+### A hardcoded corpus count needs a note saying which of two things moved it
+
+Five full-corpus locks carried an exact figure with no re-baseline note. Such a
+figure moves for two reasons and the failure message cannot tell them apart: a
+**pattern** changed (the reason the lock exists) or a **set** was released. A
+reader who does not know that re-baselines it without looking, which is the
+whole failure the lock was written to prevent.
+
+Each now says so. One was **bounded instead of pinned**: creatures with keyword
+haste was `== 705`, which breaks on every hasty creature Wizards prints, while
+the bug it guards — reading the word rather than the keyword — gave **1,250**.
+`660 <= own <= 780` catches the bug and survives the corpus.
+
+### Four tests were duplicates, and two of them lied in their names
+
+`test_viscera_seer_like` was byte-identical to `test_sacrifice` and its docstring
+promised a scry assertion it never made — there is no `scry` tag, which is the
+fact worth recording. `test_absent_skeptic_block_is_allowed` was
+`assert _errors(_doc()) == []` and `_doc()` never sets a skeptic block, so it
+could not tell ABSENT from PRESENT-AND-VALID. `test_preserves_wubrg_order` used a
+fixture already in WUBRG order. A duplicated pair even **shared a name across two
+files**, making `pytest -k` ambiguous on it.
+
+**A name that no longer describes what a test asserts is a finding, not a
+nitpick** — it is what the next reader trusts instead of reading the body.
+
+### A skip is not a pass, and a skip nobody sees is not a signal
+
+Two checks were skipping in practice. One scanned the fleet for a deck in a bad
+state and skipped when there was none — so the day the fleet is clean, which is
+the goal, its coverage evaporates silently. The other ran `calibrate()` for real
+and skipped: `MIN_DECKS` is 10, the fleet has 9 eligible seats, and the loop
+asserting the sign ⇄ reading contract — the point of the whole table — **had
+never once executed**.
+
+Both now construct their condition: a stale deck in a `tmp_path` data dir with
+everything but `decks/` symlinked from the real one, and a `spearman_cell` call
+with a coefficient pointing the wrong way. The real-data run is kept as a second,
+skippable case underneath.

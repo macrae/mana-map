@@ -336,9 +336,37 @@ def test_it_fires_on_exactly_the_fleet_it_was_measured_against():
     root = _pl.Path(__file__).resolve().parent.parent
     files = sorted(glob.glob(str(root / "data/decks/*/goldfish_targets.json")))
     assert len(files) >= 8, "the guard iterated almost nothing"
-    fired = {_pl.Path(f).parent.name for f in files
-             if _combat_route_notes(json.loads(_pl.Path(f).read_text(encoding="utf-8")))}
-    assert fired == {"ur-dragon", "zur-enchantress"}, fired
+
+    # DERIVED FROM THE DECLARATIONS, NOT A ROSTER. This used to pin
+    # `fired == {"ur-dragon", "zur-enchantress"}`, so a deck legitimately
+    # declaring a combat route — which the note exists to welcome — reddened a
+    # green suite, and so did a deck legitimately dropping one.
+    #
+    # The expectation is read straight off the JSON by a second, independent
+    # reading of the same rule: a target with a `route` that is `board`/`combat`
+    # is a combat route. That is deliberately NARROWER than production, which
+    # also greps the LABEL — so a deck firing on the prose path shows up as a
+    # difference and has to be named below rather than absorbed silently.
+    fired, by_route = set(), set()
+    for f in files:
+        doc = json.loads(_pl.Path(f).read_text(encoding="utf-8"))
+        slug = _pl.Path(f).parent.name
+        if _combat_route_notes(doc):
+            fired.add(slug)
+        if any((t.get("route") in {"board", "combat"}) for t in doc.get("targets", [])):
+            by_route.add(slug)
+
+    assert fired >= by_route, (
+        f"a deck declares a board/combat route and the note did NOT fire on it: "
+        f"{sorted(by_route - fired)} — the structured field is being ignored, "
+        f"which is the rename bug this note was rewritten for")
+    label_only = sorted(fired - by_route)
+    assert label_only == [], (
+        f"{label_only} fire on the LABEL prose alone, with no board/combat "
+        f"route declared. That is production's second path and it is allowed — "
+        f"but it is how a widened regex fires on a correct deck, so read each "
+        f"one and add it here deliberately rather than deleting this assertion.")
+    assert fired, "the note fires on no deck at all — it is measuring nothing"
 
 
 def test_the_note_survives_a_rename_of_the_kill():

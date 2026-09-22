@@ -164,7 +164,7 @@ def test_no_agent_artifact_names_a_card_the_deck_does_not_run():
 
 # ── the ✓ tier, which rots without any citation becoming wrong ──────────
 
-def test_a_finished_stack_is_checked_against_the_deck_it_claims_to_be_from():
+def test_a_finished_stack_is_checked_against_the_deck_it_claims_to_be_from(tmp_path):
     """A CHECK THAT EXISTS AND IS UNREACHABLE IS NOT A CHECK.
 
     `validate_stack.unknown_cards` was written carefully, works, and was called
@@ -184,19 +184,23 @@ def test_a_finished_stack_is_checked_against_the_deck_it_claims_to_be_from():
     this is how the deck wins.
     """
     import json
+    import os
     import subprocess
     import sys
 
-    from manamap.config import DECKS_DIR
     from manamap.pilot import validate_stack
 
-    # The unit: the function still finds it.
-    edgar = DECKS_DIR / "edgar-vampires" / "stacks"
-    target = edgar / "001-exquisite-vito-drain-loop.json"
-    if not target.exists():
-        pytest.skip("edgar's stack 001 is not on disk")
-    _errs, warns = validate_stack.unknown_cards(json.loads(target.read_text()),
-                                                "edgar-vampires")
+    # THE UNIT, on a scenario this test builds. It used to assert that edgar's
+    # committed stack 001 still names Exquisite Blood — a card the SLEEVED deck
+    # dropped — so re-adding the card, or re-resolving the stack, reddened a
+    # green suite. A test must not need a live deck to stay wrong.
+    scenario = {"id": "001", "slug": "edgar-vampires", "deck": "Edgar",
+                "title": "t", "scenario": {
+                    "board": {"you": ["Exquisite Blood"],
+                              "opponents": [{"life": 40, "board": []}]},
+                    "hand": [], "mana_available": "{0}", "stack": [],
+                    "question": "?"}}
+    _errs, warns = validate_stack.unknown_cards(scenario, "edgar-vampires")
     assert any("Exquisite Blood" in w for w in warns), (
         "unknown_cards no longer detects a card the deck does not run")
 
@@ -205,34 +209,49 @@ def test_a_finished_stack_is_checked_against_the_deck_it_claims_to_be_from():
     # this fails while the assertion above still passes — which is exactly how
     # the bug survived.
     #
-    # Asserted against a deck whose stale stack is UNMARKED. edgar's six were
-    # the ones that found this bug and every one is now withheld with a note, so
-    # edgar is correctly silent — pointing this at edgar would make the test
-    # pass or fail on a curation decision rather than on whether the check runs.
-    stale_deck = None
-    for deck in sorted(DECKS_DIR.iterdir()):
-        if not (deck / "stacks").is_dir():
-            continue
-        for f in (deck / "stacks").glob("*.json"):
-            doc = json.loads(f.read_text())
-            if (doc.get("checker") or {}).get("verdict") != "pass":
-                continue
-            if doc.get("presentable") is False:
-                continue
-            if validate_stack.unknown_cards(doc, deck.name)[1]:
-                stale_deck = deck.name
-                break
-        if stale_deck:
-            break
-    if not stale_deck:
-        pytest.skip("no deck currently has an unmarked stale stack to prove it on")
+    # BUILT, NOT FOUND. This used to scan the fleet for a deck with an UNMARKED
+    # stale stack and `pytest.skip` when there was none — so the day the fleet
+    # is clean, which is the goal, the check loses its coverage with no signal.
+    # A stale deck in a tmp data dir proves the same thing forever.
+    from manamap import config as _config
+
+    # Everything but `decks/` is symlinked from the real data dir: the command
+    # loads the rules index and the corpus, and neither has anything to do with
+    # what is being proved here.
+    data = tmp_path / "data"
+    data.mkdir()
+    for child in _config.DATA_DIR.iterdir():
+        if child.name != "decks":
+            (data / child.name).symlink_to(child)
+    deck = data / "decks" / "staleish"
+    (deck / "stacks").mkdir(parents=True)
+    (deck / "cards.json").write_text(json.dumps({"cards": [
+        {"name": "Sol Ring", "quantity": 1, "type_line": "Artifact",
+         "oracle_text": "", "cmc": 1.0}]}), encoding="utf-8")
+    # A REAL checker-passed artifact, re-slugged onto a deck that runs none of
+    # its cards. Hand-rolling one would have to satisfy the citation contract,
+    # which is a different test's job.
+    template = json.loads(
+        (_config.DECKS_DIR / "edgar-vampires" / "stacks"
+         / "001-exquisite-vito-drain-loop.json").read_text(encoding="utf-8"))
+    template["slug"] = "staleish"
+    template["deck"] = "Staleish"
+    template.pop("presentable", None)
+    template.pop("presentable_note", None)
+    assert (template.get("checker") or {}).get("verdict") == "pass", (
+        "the template stack must be checker-passed, or the warning under test "
+        "is not the one that fires on a PASSED line")
+    (deck / "stacks" / "001-stale.json").write_text(
+        json.dumps(template), encoding="utf-8")
+
+    env = dict(os.environ, MANAMAP_DATA_DIR=str(data))
     out = subprocess.run(
-        [sys.executable, "-m", "manamap.cli", "pilot", "validate-stack",
-         stale_deck],
-        capture_output=True, text=True, check=False)
+        [sys.executable, "-m", "manamap.cli", "pilot", "validate-stack", "staleish"],
+        capture_output=True, text=True, check=False, env=env)
     assert "does not run" in out.stdout, (
-        f"validate-stack ran clean on {stale_deck}, which has an unmarked stale "
-        f"stack — the check is reachable only from --scenario-only again")
+        "validate-stack ran clean on a deck whose checker-PASSED, unwithheld "
+        "stack names a card the 99 does not run — the check is reachable only "
+        f"from --scenario-only again.\nstdout: {out.stdout}\nstderr: {out.stderr}")
 
 
 def test_the_stale_stack_warning_never_fails_the_gate():
@@ -292,7 +311,15 @@ def test_withholding_a_stack_is_the_answer_to_the_warning_not_a_second_one():
             assert (doc.get("checker") or {}).get("verdict") == "pass", (
                 f"{f.name} is withheld but did not pass — withholding is for "
                 f"lines whose RULES finding stands and whose board has moved")
-    assert len(withheld) >= 4, withheld
+    # NO FLOOR. This asserted `>= 4`, which required at least four of edgar's
+    # checker-passed stacks to stay withheld BECAUSE their boards name cards the
+    # deck dropped — so re-resolving them or retiring them, the two honest
+    # things to do, reddened the suite. The per-stack invariants above are the
+    # real content and they hold for however many there are; if there are none,
+    # there is nothing to prove here and that is a good state, not a failure.
+    if not withheld:
+        pytest.skip("no stack is currently withheld — nothing to prove the "
+                    "note-and-verdict invariant on")
 
     out = subprocess.run(
         [sys.executable, "-m", "manamap.cli", "pilot", "validate-stack",

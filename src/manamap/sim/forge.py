@@ -386,6 +386,24 @@ def default_seed(slug, opponents):
 TIMEOUT_SLACK = 1.5
 TIMEOUT_FLOOR = 120
 
+
+def per_job_cap(clock, parts):
+    """Seconds a single JVM may run before it is killed.
+
+    `clock` is Forge's `-c` in seconds; `parts` is `split_games`'s list, so
+    `max(parts)` is the most games any one job carries.
+
+    EXTRACTED so the test can call it rather than restate it. It was inlined at
+    the one call site and `tests/test_sim_forge.py` rebuilt the arithmetic to
+    judge the tracked runs — inventing defaults production does not have
+    (`clock or 300` when `SIM_GAME_CLOCK_SECONDS` is 600, `jobs or 7` when
+    `default_jobs()` returns the performance-core count and 7 is the value
+    production moved AWAY from). The whole "kills the two four-hour runs and
+    spares the healthy n=400" verdict rested on test-local arithmetic that had
+    already drifted from the runner.
+    """
+    return int(clock * max(parts) * TIMEOUT_SLACK) + TIMEOUT_FLOOR
+
 DEFAULT_PROFILE = "Default"
 
 #: THE POD'S STANDARD PILOT, changed from Default on 2026-08-30 after measuring
@@ -816,7 +834,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # and 95% of that time is claimed by no game at all. This caps a job at what
     # its own clock says it could possibly need, with generous headroom, and
     # records the truncation rather than hiding it.
-    per_job_cap = int(clock * max(parts) * TIMEOUT_SLACK) + TIMEOUT_FLOOR
+    cap = per_job_cap(clock, parts)
 
     def one(i_cmd):
         i, cmd = i_cmd
@@ -825,12 +843,12 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
             try:
                 proc = subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT,
                                       cwd=str(jar.parent), text=True,
-                                      timeout=per_job_cap)
+                                      timeout=cap)
                 return log, proc.returncode, False
             except subprocess.TimeoutExpired:
                 # The games it DID finish are already in the log and are parsed
                 # normally; what is lost is the tail of this job.
-                f.write(f"\n[manamap] job killed after {per_job_cap}s "
+                f.write(f"\n[manamap] job killed after {cap}s "
                         f"(clock {clock}s x {max(parts)} games x {TIMEOUT_SLACK} "
                         f"+ {TIMEOUT_FLOOR}s)\n")
                 return log, None, True
@@ -842,7 +860,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     wall = round(time.time() - t0, 1)
     if timed_out:
         print(f"  WARNING {len(timed_out)} of {len(cmds)} job(s) hit the "
-              f"{per_job_cap}s cap and were killed; their unfinished games are "
+              f"{cap}s cap and were killed; their unfinished games are "
               f"absent from this run. `truncated_jobs` records which.")
 
     # ONE LABEL MAP PER JOB, because the seats rotate. `Ai(2)` is a different

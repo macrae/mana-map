@@ -4,6 +4,7 @@ import random
 
 import pytest
 
+from manamap import config
 from manamap.pilot.goldfish import (
     aggregate,
     body_count,
@@ -135,9 +136,16 @@ def test_aggregate_shapes():
 
 
 def _window_share(histogram):
-    """Share of hands inside the keep window (2-5 lands)."""
+    """Share of hands inside the keep window, READ FROM CONFIG.
+
+    The bounds were hardcoded as `2 <= int(k) <= 5`, which is exactly
+    `GOLDFISH_MULLIGAN_MIN_LANDS` / `MAX_LANDS`. Moving either constant left
+    both production outputs mutually consistent and this helper measuring the
+    old window — a test that re-derives the rule, one indirection along.
+    """
+    lo, hi = config.GOLDFISH_MULLIGAN_MIN_LANDS, config.GOLDFISH_MULLIGAN_MAX_LANDS
     total = sum(histogram.values())
-    return sum(v for k, v in histogram.items() if 2 <= int(k) <= 5) / total
+    return sum(v for k, v in histogram.items() if lo <= int(k) <= hi) / total
 
 
 def test_both_opening_histograms_are_reported():

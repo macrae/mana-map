@@ -145,25 +145,56 @@ def test_duplicate_ids_are_rejected():
 
 @pytest.mark.skipif(not (DECKS_DIR / "yawgmoth-swarm" / "pending.json").exists(),
                     reason="requires the tracked decks")
-def test_yawgmoths_queued_land_swap_is_open_and_valid():
+def test_yawgmoths_queued_land_swap_summarises_against_the_deck():
+    """THE DERIVED RULE, not the current state.
+
+    This used to assert `open == 1 and applied == 0` and that City of Brass is
+    still on the way out — which required yawgmoth's mono-black land swap to
+    stay UNAPPLIED. The fixture was a change the repo intends to make, so doing
+    the work reddened the test, and the only way to keep it green was to leave
+    the deck half-finished.
+
+    What is actually worth holding: closure is DERIVED from the deck rather
+    than flagged, so every entry lands in exactly one state and the three
+    counts account for all of them. That holds whether the swap is applied or
+    not, and it is the property `summarise` exists to provide.
+    """
     doc = json.loads((DECKS_DIR / "yawgmoth-swarm" / "pending.json").read_text())
     deck = json.loads((DECKS_DIR / "yawgmoth-swarm" / "cards.json").read_text())
     assert vp.validate(doc, deck) == []
+
     summary = vp.summarise("yawgmoth-swarm")
-    assert summary["open"] == 1 and summary["applied"] == 0
-    entry = summary["entries"][0]
-    assert entry["state"] == vp.OPEN
-    assert "City of Brass" in entry["out"]
+    entries = summary["entries"]
+    assert entries, "the tracked queue is empty — nothing to summarise"
+    assert summary["open"] + summary["partial"] + summary["applied"] == len(entries), (
+        f"the counts do not account for every entry: {summary['open']} open + "
+        f"{summary['partial']} partial + {summary['applied']} applied against "
+        f"{len(entries)} entries — an entry fell into no state, or into two")
+    for entry in entries:
+        assert entry["state"] in (vp.OPEN, vp.PARTIAL, vp.APPLIED), entry
+        assert entry["out"] or entry["in"], (
+            f"{entry.get('id')} moves no card in either direction")
 
 
 @pytest.mark.skipif(not DECKS_DIR.exists(), reason="requires the tracked decks")
 def test_every_tracked_pending_file_validates():
-    """A queue that fails its own validator is worse than no queue."""
+    """A queue that fails its own validator is worse than no queue.
+
+    EXACTLY ONE `pending.json` exists on disk, so without the counter below this
+    test is one `git rm` from passing vacuously — the failure mode the
+    `assert checked >= N` rule exists for, and the one loop in the suite that
+    lacked it.
+    """
+    checked = 0
     for path in sorted(DECKS_DIR.glob("*/pending.json")):
         slug = path.parent.name
         doc = json.loads(path.read_text())
         deck = json.loads((path.parent / "cards.json").read_text())
         assert vp.validate(doc, deck) == [], f"{slug}: {vp.validate(doc, deck)}"
+        checked += 1
+    assert checked >= 1, (
+        "no tracked pending.json was validated — the last one was removed and "
+        "this test went green by iterating zero times")
 
 
 # ── deck-status reports VALIDITY, not just bookkeeping ────────────────────

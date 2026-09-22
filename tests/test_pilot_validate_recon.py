@@ -111,11 +111,29 @@ def test_a_card_since_added_to_the_99_is_a_WARN_and_never_an_error():
     """The charter says a recon may not name a card already in the 99 — and enforcing
     that as an error would fail 4 of 5 tracked recons on 37 card-instances. Recon is
     DATED and the decklist moves under it; a card correctly outside the 99 in August
-    is inside it in September without the artifact changing a byte."""
+    is inside it in September without the artifact changing a byte.
+
+    THE WARN IS PROVEN ON A DOC THIS TEST BUILDS. It used to require radagast's
+    tracked recon to stay out of step with its 99 — so bringing the two into
+    line, which is the whole point of reading a recon, would have reddened the
+    suite. The tracked sweep below is still run for the ERROR half (no recon may
+    fail validation); only the WARN path is constructed.
+    """
     doc = json.loads((validate_recon.deck_dir("radagast") / "deck_recon.json").read_text())
-    assert validate_recon.validate(doc, "radagast") == []
-    assert validate_recon.in_the_99(doc, "radagast"), \
-        "radagast's recon does name cards since added — the WARN path must be live"
+    assert validate_recon.validate(doc, "radagast") == [], (
+        "a tracked recon must never fail validation, in sync or not")
+
+    # A card that IS in the 99, named by a FINDING on a recon this test builds.
+    # `_named_cards` reads `findings[].cards` and nothing else, so that is where
+    # the card has to go for either half of the contract to see it.
+    in_deck = sorted(validate_recon.deck_names("radagast"))[0]
+    constructed = json.loads(json.dumps(doc))
+    constructed["findings"] = [dict(constructed["findings"][0], cards=[in_deck])]
+    assert validate_recon.validate(constructed, "radagast") == [], (
+        "naming a card already in the 99 must not be an ERROR — enforcing that "
+        "failed 4 of 5 tracked recons on 37 card-instances")
+    assert in_deck in validate_recon.in_the_99(constructed, "radagast"), (
+        "...and it must still be REPORTED, or the staleness is invisible")
 
 
 def test_ownership_is_falsified_against_the_boxes(tmp_path, monkeypatch):

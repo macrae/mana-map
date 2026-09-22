@@ -97,6 +97,14 @@ def test_the_four_sweeps_are_locked():
         b += bool("Land" not in card["type_line"] and goldfish._LAND_MANA_BONUS_RE.search(text))
     # 3 "greatest power among creatures you control" + 4 "the power of target
     # creature you control" (Soul's Majesty) -- the same channel, the biggest body.
+    #
+    # CORPUS LOCK, NOT A RULE. It moves for two reasons and the failure message
+    # cannot tell them apart: a PATTERN changed (the reason the lock exists —
+    # read the newly matched and newly dropped cards before believing the new
+    # number), or a SET was released (`run --from download` re-baselines it, and
+    # the figure is updated in the same commit as the refresh). Corpus at 34,890
+    # rows (2026-08-12); if the count moved and the corpus did not, it is the
+    # first kind. Same for `test_the_second_batch_sweeps_are_locked` below.
     assert (g, p, s, b) == (7, 10, 1, 4), (g, p, s, b)
 
 
@@ -262,6 +270,9 @@ def test_the_second_batch_sweeps_are_locked():
         c["mv"] += bool(d["cast_draw_gate_mv"])
         c["pay"] += bool(d["cast_draw_cost"])
         c["tutor_bf"] += p["tutor_to_battlefield"] is not None
+    # `gate=144` counts every ETB type-gated card in the corpus and is the most
+    # SET-SENSITIVE figure in the suite: a tribal set moves it by a dozen without
+    # any parser changing. See the note on this test.
     assert c == dict(gate=144, chosen=1, spell_dmg=1, cast_dmg=1, mv=3, pay=1, tutor_bf=3), c
 
 

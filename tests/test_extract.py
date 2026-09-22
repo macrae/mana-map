@@ -394,10 +394,23 @@ class TestGetColors:
         assert get_colors(card) == ["W"]
 
     def test_preserves_wubrg_order(self):
-        """Colors should always be in WUBRG order regardless of input."""
-        card = _fire_ice()
-        # Even though card has ["R", "U"], output should be U then R? No — WUBRG order is W, U, B, R, G
-        assert get_colors(card) == ["U", "R"]
+        """Colours come out in WUBRG order whatever order they went in.
+
+        This used to be `_fire_ice()` again — the same fixture and the same
+        `== ["U", "R"]` as `test_split_uses_top_level_colors` four methods
+        above, with an inline comment arguing with itself. Fire // Ice is
+        already WUBRG-ordered on the way out of the union, so it could not tell
+        a sorted implementation from an unsorted one.
+
+        A five-colour card listed backwards can, and so can a face union, whose
+        input is a `set` and therefore has no order at all to preserve.
+        """
+        backwards = {"colors": ["G", "R", "B", "U", "W"], "card_faces": []}
+        assert get_colors(backwards) == ["W", "U", "B", "R", "G"]
+
+        from_faces = {"colors": None, "card_faces": [{"colors": ["G"]},
+                                                     {"colors": ["W", "B"]}]}
+        assert get_colors(from_faces) == ["W", "B", "G"]
 
     def test_no_faces_no_toplevel(self):
         """Card with no colors anywhere returns empty."""

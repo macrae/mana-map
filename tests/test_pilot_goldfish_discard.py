@@ -152,6 +152,11 @@ def test_the_two_draw_shapes_are_locked_to_the_corpus():
                 scry += 1
             if goldfish._UPKEEP_REVEAL_RE.search(t):
                 reveal += 1
+    # CORPUS LOCK, NOT A RULE. The only sweep in this file that carried no note,
+    # while its five siblings each explain their own re-baselines. Two causes:
+    # a pattern change (the reason it exists — read the delta card by card) or a
+    # set release (`run --from download` moves it, and the figure is updated in
+    # the same commit). Corpus at 34,890 rows (2026-08-12).
     assert (scry, reveal) == (34, 3), (scry, reveal)
 
 
@@ -1003,11 +1008,28 @@ def test_reminder_text_is_not_the_cards_own_discard_payoff():
     assert got["per_discard_damage"] == 1, "the damage half is the whole card"
     assert got["per_discard_draw"] == 0, "that draw belongs to the cycling reminder"
 
-    # AND THE STRIP IS WHAT DOES IT, both ways round. With the reminder left in,
-    # the card reads as a draw it does not have and none of the damage it does.
+    # AND THE STRIP IS WHAT DOES IT, both ways round. The second arm here was a
+    # `dict(got)` re-asserting the two values asserted above, with an unused
+    # `import re` beside it — the leftover of an arm nobody wrote. Suppressing
+    # `_REMINDER_RE` is what actually produces the unstripped reading: the card
+    # then reads as a draw it does not have and none of the damage it does.
     import re as _re
-    unstripped = dict(got)
-    assert unstripped["per_discard_damage"] == 1 and unstripped["per_discard_draw"] == 0
+
+    from manamap.pilot import goldfish_profiles as _gp
+
+    real = _gp._REMINDER_RE
+    try:
+        _gp._REMINDER_RE = _re.compile(r"(?!x)x")        # matches nothing
+        unstripped = event_payoffs({"name": "Magmakin Artillerist",
+                                    "oracle_text": MAGMAKIN})
+    finally:
+        _gp._REMINDER_RE = real
+    assert unstripped["per_discard_draw"] == 1, (
+        "with the cycling reminder left in, the card must read as having a "
+        "per-discard draw it does not have — otherwise the strip is not what "
+        "is doing the work here")
+    assert unstripped["per_discard_damage"] == 0, (
+        "and it loses the damage that IS its whole text")
 
     # The control: a real per-discard draw still reads. Glint-Horn Buccaneer's
     # "{1}{R}, Discard a card: Draw a card" is its OWN ability, not a reminder.

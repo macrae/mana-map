@@ -278,12 +278,38 @@ def test_forge_gives_the_first_mulligan_free_and_the_record_says_so():
     mulligans is flattered by a card here, and neither figure is derivable from
     the other under real rules.
 
-    The relation is asserted as OBSERVED BEHAVIOUR, not as a rule: if a Forge
-    upgrade implements London, this test fails and the limit needs rewriting,
-    which is the correct outcome rather than a silent re-basing.
+    WHAT THIS TEST CAN AND CANNOT PROVE. It used to assert
+    `kept == 7 - max(0, taken - 1)` over four pairs typed by the same hand as the
+    closed form — true by arithmetic, reading no log, so the docstring's promise
+    that "a Forge upgrade implementing London fails this test" could never happen.
+
+    The relation is a fact about FORGE, and the 130 logs it was measured on are
+    gitignored (`data/decks/*/sim/logs/`), so no portable test can re-measure it.
+    What IS testable is that the parser reads each shape correctly and that the
+    fidelity gap travels with the record — so that is what is asserted, and the
+    measurement above stays what it is: a dated observation, not a derivation.
     """
+    def forge_log(taken, kept):
+        lines = [f"Mulligan: Ai(1)-mine has mulliganed down to {7 - i} cards."
+                 for i in range(taken)]
+        lines += [f"Mulligan: Ai(1)-mine has kept a hand of {kept} cards",
+                  "Mulligan: Ai(2)-rival has kept a hand of 7 cards",
+                  "Turn: Turn 1 (Ai(1)-mine)",
+                  "Life: Life: Ai(1)-mine 40 > 0",
+                  "Game Outcome: Ai(2)-rival has won because all opponents have lost",
+                  "Game Result: Game 1 ended in 1000 ms."]
+        return "\n".join(lines) + "\n"
+
+    checked = 0
     for taken, kept in ((0, 7), (1, 7), (2, 6), (3, 5)):
-        assert kept == 7 - max(0, taken - 1), (taken, kept)
+        seat = parse.game_facts(
+            parse.parse_games(forge_log(taken, kept))[0])["per_seat"]["Ai(1)-mine"]
+        assert (seat["mulligans_taken"], seat["mulligan_kept"]) == (taken, kept), (
+            f"the parser read {seat['mulligans_taken']}/{seat['mulligan_kept']} "
+            f"from a log stating {taken}/{kept} — the COUNT and the SIZE are "
+            f"separate lines and neither is derivable from the other")
+        checked += 1
+    assert checked == 4
 
     facts = [parse.game_facts(g) for g in parse.parse_games(MULLIGAN_LOG)]
     agg = parse.aggregate(facts, "Ai(1)-mine",

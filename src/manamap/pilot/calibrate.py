@@ -153,6 +153,34 @@ def _spearman(xs, ys):
     return num / den if den else 0.0
 
 
+def spearman_cell(name, rho, critical, n):
+    """One measure's row: the coefficient, whether it points the declared way,
+    whether it clears significance, and the sentence a reader acts on.
+
+    EXTRACTED so the sign ⇄ reading contract is drivable. It was inline in
+    `calibrate()`, and the only test of it ran the real thing and then SKIPPED:
+    `MIN_DECKS` is 10 and the fleet has 9 eligible seats, so the loop asserting
+    `sign_agrees is False` iff the reading says "WRONG SIGN" had never once
+    executed. That contract is the point of the whole table — in a bare list of
+    coefficients a confound and a finding look identical — and it does not need
+    real data to check.
+    """
+    agrees = (rho >= 0) == (EXPECTED[name] > 0)
+    return {
+        "rho": rho,
+        "expected_direction": "higher is better" if EXPECTED[name] > 0
+                              else "lower is better",
+        "sign_agrees": agrees,
+        "significant": abs(rho) >= critical,
+        "reading": (
+            "tracks the outcome" if agrees and abs(rho) >= critical
+            else "points the right way but does not clear significance at "
+                 f"n={n}" if agrees
+            else "WRONG SIGN — this is evidence of a confound, not of the "
+                 "model working"),
+    }
+
+
 def calibrate(iterations=3000):
     from manamap.pilot import goldfish
     record, pod, dropped = forge_record()
@@ -197,25 +225,12 @@ def calibrate(iterations=3000):
     doc["verdict"] = "measured"
     n = len(rows)
     doc["critical_rho"] = critical_rho(n)
-    out = {}
-    for name in MEASURES:
-        rho = round(_spearman([r["win_rate"] for r in rows],
-                              [r[name] for r in rows]), 3)
-        agrees = (rho >= 0) == (EXPECTED[name] > 0)
-        out[name] = {
-            "rho": rho,
-            "expected_direction": "higher is better" if EXPECTED[name] > 0
-                                  else "lower is better",
-            "sign_agrees": agrees,
-            "significant": abs(rho) >= doc["critical_rho"],
-            "reading": (
-                "tracks the outcome" if agrees and abs(rho) >= doc["critical_rho"]
-                else "points the right way but does not clear significance at "
-                     f"n={n}" if agrees
-                else "WRONG SIGN — this is evidence of a confound, not of the "
-                     "model working"),
-        }
-    doc["spearman"] = out
+    doc["spearman"] = {
+        name: spearman_cell(name,
+                            round(_spearman([r["win_rate"] for r in rows],
+                                            [r[name] for r in rows]), 3),
+                            doc["critical_rho"], n)
+        for name in MEASURES}
     # A win rate at n=20 has a 95% interval about +/-0.18 wide against a fleet
     # spanning 0.00-0.30, and two seats carry 100+ games while nine carry ~20.
     # A rank correlation weights them equally; saying so is cheaper than

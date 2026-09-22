@@ -154,13 +154,30 @@ def test_an_unproven_arrow_is_drawn_dashed():
 def test_a_missing_artifact_renders_as_a_stated_absence():
     """ABSENT IS NOT ZERO AND IT IS NOT SILENCE.
 
-    zur-enchantress has no engine.json, so sections 1 and 6 cannot exist for it.
-    They must say so and name the command — a section that silently disappears
-    is indistinguishable from one nobody wrote.
+    A deck with no `engine.json` cannot render sections 1 and 6. They must say
+    so and name the command — a section that silently disappears is
+    indistinguishable from one nobody wrote.
+
+    THE DECK IS FOUND, NOT NAMED. This used to hardcode zur-enchantress, which
+    required that deck to keep having no engine model: running `/analyze-engine`
+    on it — the thing `deck-status` has been telling us to do — would have
+    reddened the suite. Any deck in the same state proves the same thing, and
+    if the fleet is complete there is nothing here to prove.
     """
-    html = _rendered("zur-enchantress")
-    assert "not available" in html
-    assert "/analyze-engine" in html or "analyze-engine" in html
+    from manamap.config import DECKS_DIR
+
+    candidates = [d.name for d in sorted(DECKS_DIR.iterdir())
+                  if d.is_dir() and (d / "cards.json").exists()
+                  and not (d / "engine.json").exists()]
+    if not candidates:
+        pytest.skip("every deck has an engine model — no absence left to render")
+    slug = candidates[0]
+    html = _rendered(slug)
+    assert "not available" in html, (
+        f"{slug} has no engine.json and its handbook does not say so")
+    assert "analyze-engine" in html, (
+        f"{slug}'s handbook states the absence without naming the command that "
+        f"fixes it — absent must be actionable, not just honest")
 
 
 @requires_deck

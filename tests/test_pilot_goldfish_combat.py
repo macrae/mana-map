@@ -662,8 +662,18 @@ def test_the_team_haste_sweep_is_locked():
         "Skeleton": 1, "Horse": 1, "Minotaur": 1, "Demon": 1,
     }, dict(by)
     assert sum(by.values()) == 49
-    # Creatures with keyword haste; the old `\bhaste\b` read gave 1,250.
-    assert own == 705
+    # Creatures with KEYWORD haste. BOUNDED, not pinned, and the bound is set by
+    # the bug: the old `\bhaste\b` read matched prose and gave 1,250, so any
+    # regression to reading the word rather than the keyword lands far outside
+    # this window. An exact 705 breaks on every new hasty creature Wizards
+    # prints — a red test whose message names a pattern that did not change,
+    # which is worse than no test because the next person re-baselines it
+    # without looking. 705 at the 2026-08-12 corpus (34,890 rows).
+    assert 660 <= own <= 780, (
+        f"{own} creatures read as having keyword haste. Outside the window: "
+        f"either `_HASTE_RE` is matching prose again (the old read gave 1,250) "
+        f"or the corpus has grown enough to move the window, in which case "
+        f"re-measure and widen it in the same commit as the refresh.")
 
 
 def _haste_deck(grant_text):

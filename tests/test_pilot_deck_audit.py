@@ -7,7 +7,6 @@ the validator will reject at the far end of a spawn. Failing here is cheap;
 failing there costs an agent round.
 """
 
-import re
 
 import pytest
 
@@ -20,13 +19,19 @@ from manamap.config import (
 from manamap.pilot import deck_audit
 from manamap.pilot.common import load_strategy_db
 from manamap.pilot.manabase import DECK_SIZE_AFTER_COMMANDER, hypergeometric_at_least
+from manamap.pilot.validate_stack import _normalize_ws
 
 from conftest import requires_deck, requires_roles, requires_strategy
 
 
-def _ws(text):
-    """The same whitespace normalization validate_stack.validate_citations uses."""
-    return re.sub(r"\s+", " ", text).strip()
+#: THE PRODUCTION NORMALIZER, imported rather than restated. The local copy
+#: claimed to be "the same whitespace normalization validate_citations uses" and
+#: was not: production ALSO strips `strategy.md`'s 43 inline `(strategy:…)`
+#: cross-references, added precisely because a quotable sentence containing one
+#: was otherwise impossible to write. So the two citation tests below were
+#: STRICTER than the validator they mirror, and would fire on a quote the
+#: validator accepts — a validator firing on correct data, inside a test.
+_ws = _normalize_ws
 
 
 def _card(name, oracle="", type_line="Creature — Human", quantity=1, **kw):

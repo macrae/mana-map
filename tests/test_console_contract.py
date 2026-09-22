@@ -33,12 +33,21 @@ from manamap import console
 # ── the split ─────────────────────────────────────────────────────────────
 
 def test_a_bar_writes_nothing_to_stdout(capsys):
-    """The whole contract in one assertion."""
+    """The whole contract, and the control that makes it mean anything.
+
+    `assert out == ""` alone is satisfied by a `console.task` that does nothing
+    at all — which is the shape of the bug, not the fix. `test_console.py:34`
+    already carries the stderr half and says why: *"nothing reached stderr
+    either — the test is not exercising the layer."* This one shipped without it.
+    """
     with console.task("working", total=3, unit="things") as bar:
         for _ in range(3):
             bar.advance(1, state="a step")
-    captured = capsys.readouterr()
-    assert captured.out == "", f"a progress bar reached stdout: {captured.out!r}"
+    out, err = capsys.readouterr()
+    assert out == "", f"a progress bar reached stdout: {out!r}"
+    assert "working" in err and "a step" in err, (
+        f"nothing reached stderr either — a no-op `console.task` passes the "
+        f"stdout assertion, so this test is not exercising the layer. err={err!r}")
 
 
 def test_json_output_stays_parseable_with_a_bar_running():
@@ -65,22 +74,15 @@ def test_json_output_stays_parseable_with_a_bar_running():
 
 
 # ── never fake a percentage ───────────────────────────────────────────────
-
-def test_work_of_unknown_size_has_no_percentage():
-    """A creeping bar on work nobody has counted is a lie with a progress
-    indicator on it. Structural: no total, no percent."""
-    with console.task("thinking") as bar:
-        bar.state("still going")
-        assert bar.percent is None
-        assert bar.total is None
-
-
-def test_work_of_known_size_reports_a_real_fraction():
-    with console.task("working", total=4, unit="steps") as bar:
-        bar.advance(1)
-        assert bar.percent == pytest.approx(0.25)
-        bar.advance(3)
-        assert bar.percent == pytest.approx(1.0)
+#
+# DELETED as duplicates, 2026-09-21. `test_work_of_unknown_size_has_no_percentage`
+# and `test_work_of_known_size_reports_a_real_fraction` made the same production
+# calls with the same assertions as `test_console.py`'s
+# `test_work_of_unknown_size_has_no_percentage` and
+# `test_a_known_total_gives_a_real_fraction`, which are strictly stronger (they
+# assert `percent == 0.0` at the start and re-check after `advance`). The first
+# pair even SHARED A NAME across the two files, which made `pytest -k` ambiguous
+# on it. The honesty rule is tested there.
 
 
 # ── one vocabulary ────────────────────────────────────────────────────────

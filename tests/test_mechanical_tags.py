@@ -289,11 +289,12 @@ def test_multiple_tags():
     assert "draw" in tags
 
 
-def test_viscera_seer_like():
-    """Sac outlet + scry."""
-    text = "Sacrifice a creature: Scry 1."
-    tags = tag_oracle_text(text)
-    assert "sacrifice" in tags
+# `test_viscera_seer_like` lived here and was byte-identical to `test_sacrifice`
+# above — same text, same single assertion. Its docstring said "Sac outlet +
+# scry" and it never asserted the scry half, because THERE IS NO `scry` TAG:
+# `MECHANICAL_TAGS` is a 33-entry RETRIEVAL vocabulary ("what is this card
+# like"), and scry is a rider that changes nothing about what a card is for.
+# Deleted 2026-09-21; the sacrifice half is tested above.
 
 
 # ── encode_tags_multihot ──

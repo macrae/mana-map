@@ -99,13 +99,42 @@ def test_a_correlation_with_the_wrong_sign_is_a_confound_not_a_result():
     """
     assert calibrate.EXPECTED["cmdr_turn"] < 0, "casting sooner is better"
     assert calibrate.EXPECTED["kill_by_8"] > 0
+
+    # DRIVEN ON THE CELL, because the real run SKIPS here and always has:
+    # `MIN_DECKS` is 10 and this checkout has 9 eligible seats, so the loop
+    # below used to be inside `if verdict != "measured": skip` and had never
+    # executed. The sign ⇄ reading contract is the point of the whole table and
+    # needs no Forge data to check.
+    checked = 0
+    for name, sign in (("cmdr_turn", -1), ("kill_by_8", +1)):
+        right_way = sign * 0.80
+        wrong_way = -right_way
+        good = calibrate.spearman_cell(name, right_way, 0.618, 11)
+        bad = calibrate.spearman_cell(name, wrong_way, 0.618, 11)
+        assert good["sign_agrees"] and "WRONG SIGN" not in good["reading"], (name, good)
+        assert not bad["sign_agrees"] and "WRONG SIGN" in bad["reading"], (name, bad)
+        # The historical case: +0.760 on cmdr_turn, the first run's STRONGEST
+        # number, must read as a confound and not as a finding.
+        assert good["significant"] and bad["significant"], (
+            "both clear 0.618 — the strength of a wrong-signed coefficient is "
+            "exactly what makes it dangerous, so it must not be filtered out "
+            "by significance")
+        checked += 2
+    assert checked == 4
+
+    # Right sign, too weak: neither a finding nor a confound, and it must say so.
+    weak = calibrate.spearman_cell("kill_by_8", 0.300, 0.618, 11)
+    assert weak["sign_agrees"] and not weak["significant"]
+    assert "does not clear significance" in weak["reading"]
+
+    # And the real run, when there is enough data for one.
     got = calibrate.calibrate(iterations=200)
     if got["verdict"] != "measured":
-        pytest.skip("not enough Forge data on this checkout")
+        pytest.skip(f"not enough Forge data on this checkout: "
+                    f"{got.get('what_it_would_take', got['verdict'])}")
     for name, cell in got["spearman"].items():
         assert set(cell) >= {"rho", "sign_agrees", "significant", "reading"}
-        wrong = not cell["sign_agrees"]
-        assert wrong == ("WRONG SIGN" in cell["reading"]), (name, cell)
+        assert (not cell["sign_agrees"]) == ("WRONG SIGN" in cell["reading"]), (name, cell)
 
 
 def test_significance_is_reported_against_the_sample_size():

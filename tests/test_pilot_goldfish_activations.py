@@ -56,7 +56,13 @@ def test_the_attack_window_stops_at_the_next_ability():
 @requires_data
 def test_the_corpus_sweep_is_locked():
     """1,994 corpus cards keep a cast/ETB token credit after the bound; 399
-    lost one. A change to either parser moves this on purpose."""
+    lost one.
+
+    A change to either parser moves this on purpose — but so does a SET
+    RELEASE, which the original note did not say, so the failure message points
+    at code that did not change. Corpus at 34,890 rows (2026-08-12); if the
+    count moved and the corpus did not, a parser did.
+    """
     credited = 0
     with open(OUTPUT_CSV_PATH, encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
