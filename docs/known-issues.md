@@ -118,7 +118,38 @@ small lesson about editing a page in layers.)
 
 ---
 
-## 2. Four sleeved decks have no criticised engine model
+## 2. Four sleeved decks have a FAILING engine critic (was: none at all)
+
+*Updated 2026-09-22. All four were criticised; all four returned `fail`. The
+verdicts are SAVED and not cache-recorded, which is the contract: a `fail`
+documents what could not be grounded, and recording it would say the opposite.*
+
+| deck | verdict | findings | supported | the rest |
+|---|---|---:|---:|---|
+| ur-dragon | `fail` | 30 | 15 | 7 contradicts-artifact, 4 over-claimed, 3 miscounted, 1 mis-cited |
+| gishath | `fail` | 24 | 11 | 4 miscounted, 4 over-claimed, 3 contradicts-artifact, 2 mis-cited |
+| heliod | `fail` | 23 | 7 | 5 over-claimed, 3 contradicts-artifact, 3 mis-cited, 3 unjustified, 2 miscounted |
+| sharknado | `fail` | 19 | 9 | 4 miscounted, 2 contradicts-artifact, 1 each mis-cited / unjustified / over-claimed / unverified-line |
+
+**Four for four is a finding about the LOOP, not about four unlucky decks.**
+Every one of these models was written, passed `validate-engine`, and shipped
+without a critic — three because a rebuild for a new sleeved version dropped the
+critic block, one (sharknado) because it was never criticised at all. The gate
+they passed checks form; the claims were never attacked. `validate-engine`'s own
+docstring says it cannot check that a cited stack SUPPORTS its line, and that is
+where several of these findings live.
+
+The single most valuable thing the run produced is §9d — a staleness class
+nothing in the repo can currently detect.
+
+**What unblocks it.** An engineer revision per deck answering the findings, then
+a second critic round (the loop allows three). Tell the engineer to REBUT rather
+than weaken: a model that defends a claim with evidence, or withdraws it
+outright, is worth more than one softened until nobody objects.
+
+*Below is the state as it stood before the critics ran.*
+
+## 2a. Four sleeved decks had no criticised engine model
 
 *Retitled and re-measured 2026-09-21. It named one deck and reported a `fail`
 verdict; **heliod's critic block is now GONE**, not failing — `engine.json` was
@@ -669,6 +700,53 @@ So this red is **scoped, dated and owned**, and it has a closing condition:
 Do not raise the thresholds, do not mark the tests xfail, and do not add
 `corpus-gates` to a list of jobs that are allowed to be red. The count check is
 the only thing standing between a retrain and a silently misaligned index.
+
+## 9d. A DECLARATION edit stales an engine model's figures, and no gate can see it
+
+*Found 2026-09-22 by the `engine-critic` run on heliod.*
+
+`engine.json` quotes component rates out of `goldfish_metrics.json`. Those rates
+move when **`goldfish_targets.json`** changes — a target gaining a card changes
+its assembled rate without a single card moving in the 99.
+
+On heliod, two of them are wrong in the tracked file:
+
+| quoted in `engine.json` | `goldfish_metrics.json` now reads |
+|---|---|
+| `stages[3]` 0.733 / 0.520 | **0.785 / 0.571** |
+| `proposed_goldfish_edits[1]` 0.597 / 0.449 | **0.679 / 0.529** |
+
+```
+goldfish_targets.json   2026-09-21 15:27  a38371a3  "…its declaration repaired"
+engine.json             2026-09-20 22:12  9df071f5  "engine models rebuilt…"
+```
+
+**AND NOTHING CAN DETECT IT.** Every staleness gate in this repo keys on
+`decklist_sha256`, and the decklist did not move — both files carry `f7e21dc6`.
+The agent cache keys the `deck-engine` routine on `cards:semantic`, which is
+also unmoved. So the model quotes superseded figures under a current sha, which
+is the exact shape `meta.model_version` was introduced to stop for COMPUTED
+artifacts and which the authored side still has no answer to (§6).
+
+It is the same root as §9a: **a declaration edit has a blast radius nothing
+models.** There it stales every branch under the deck; here it stales the prose
+that quotes the deck's own rates. Commit `a38371a3` caused both.
+
+Two ways to close it, and they are not exclusive:
+
+1. **Add `goldfish_targets.json` to the `deck-engine` cache inputs.** A
+   declaration edit then MISSes the routine and the model is re-spawned, which
+   is correct — the model's figures really did change. Cheap, and it uses
+   machinery that already exists.
+2. **Make the quoted rate mechanically checkable.** The critic found these by
+   matching a quoted pair to a target label and re-reading the metrics. A
+   validator could do the same, and unlike most proposed checks it would fire on
+   genuinely wrong data rather than on correct data — the bar
+   `docs/gotchas-evidence.md` sets.
+
+(1) is the smaller change and catches the whole class. Until either lands, treat
+a rate quoted in an engine model as needing a look at
+`goldfish_metrics.json` beside it.
 
 ## 10. Branch hygiene
 
