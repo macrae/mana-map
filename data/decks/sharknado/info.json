@@ -21,9 +21,7 @@
       "tutors",
       "prose"
     ],
-    "invalid": [
-      "engine"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -5995,7 +5993,7 @@
   },
   "engine": {
     "thesis": "Two commanders stand at opposite ends of one door — Brallin bills the table for every card that LEAVES your hand and Shabraz pays you for every card that ARRIVES — so the deck is a hand-refill machine whose output is entirely a function of who else is standing at those two doors when a wheel resolves.",
-    "critic": "pass",
+    "critic": "fail",
     "lines": 17,
     "verified_lines": 3
   },
@@ -6046,7 +6044,7 @@
     },
     {
       "from": "engine",
-      "question": "mana_analysis.json credits Gleaming Bastion, Floodfarm Verge, Nimbus Maze and Riverpyre Verge as unconditional blue sources and lists none of them in sources.gated, although each one's blue mode is gated on a basic land or a Plains/Island/Mountain on the battlefield and the 99 holds zero basics and seven typed lands. Is the U figure (32 land sources, on-curve 0.785 ungated) an upper bound by four sources, and should land_colors(card, pool=...) read these pool-dependent gates the way it already reads a fetchland?",
+      "question": "mana_analysis.json credits Floodfarm Verge, Nimbus Maze and Riverpyre Verge as unconditional blue sources and lists none of the three in sources.gated, although each one's blue mode carries 'Activate only if you control' a Plains or an Island (Floodfarm), a Plains (Nimbus Maze) or an Island or a Mountain (Riverpyre). The fourth land this question used to name is settled and out of scope: `manabase.basic_gated_colours` now reads a coloured mode gated on controlling a BASIC land and subtracts it when the deck holds none, and Gleaming Bastion is no longer in the 99 either way. Is the U figure (32 land sources, on-curve 0.785 ungated) still an upper bound by three, and should land_colors(card, pool=...) read a TYPE-ON-THE-BATTLEFIELD gate the way it now reads a basic-land gate?",
       "settled_by": "goldfish"
     },
     {
@@ -6110,7 +6108,6 @@
   },
   "experiments": null,
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "branch `basic-island-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch sharknado merge basic-island-v1 --write`",
@@ -6119,6 +6116,7 @@
     "branch `recon-v1` needs 39 card(s) sourced — `manamap pilot deck-branch sharknado source recon-v1`",
     "branch `shelter-v1` needs 1 card(s) sourced — `manamap pilot deck-branch sharknado source shelter-v1`",
     "branch `tax-v1` needs 15 card(s) sourced — `manamap pilot deck-branch sharknado source tax-v1`",
+    "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×4",
     "5 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
