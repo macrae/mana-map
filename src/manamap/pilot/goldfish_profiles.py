@@ -136,8 +136,27 @@ _DRAW_GREATEST_POWER_RE = re.compile(
 _ETB_DRAW_PER_TYPE_RE = re.compile(
     r"when (?:this creature|this artifact|this enchantment|[A-Z][\w' ,-]{2,30}) "
     r"enters, draw a card for each (?:other )?([A-Z][a-z]+) you control", re.I)
+#: `\.\s+`, NOT `\.\s` — AND THE PLUS IS LOAD-BEARING. `_REMINDER_RE` replaces
+#: a parenthetical with a SPACE, so a card whose reminder text sits between the
+#: period and the draw clause arrives here as ".  Draw a card" with two spaces,
+#: and a single-`\s` anchor cannot match it. OPT and CONSIDER were in that set:
+#: two of the most-played cantrips in the game, read by this model as drawing
+#: NOTHING, on every deck in the fleet.
+#:
+#: Corpus sweep 2026-09-25, all 7,754 instants and sorceries: 37 newly matched,
+#: ZERO newly dropped — it is strictly widening, and a pure whitespace defect
+#: rather than a change of meaning. The tail read card by card is all true
+#: positives: Opt, Consider, Crash Through, Quicken, Crimson Wisps, Aphotic
+#: Wisps, Nighthaze — the cantrip-with-a-rider family, where the rider carries
+#: the reminder.
+#:
+#: NOT WIDENED TO "if you do, draw N" (21 further cards, Witch's Mark and Fire
+#: Prophecy among them). That clause is a draw you BUY with a discard or a
+#: bottomed card, and crediting the draw without pricing the cost overstates:
+#: Witch's Mark would read +2 when it is net +1. It needs the paired discard
+#: read in the same commit, which is a modelling change, not a regex fix.
 _SPELL_DRAW_RE = re.compile(
-    r"(?:^|\.\s|^\s*)(?:you )?draw (a|one|two|three) cards?", re.I)
+    r"(?:^|\.\s+|^\s*)(?:you )?draw (a|one|two|three) cards?", re.I)
 #: "Scry 2, then draw two cards" (Read the Bones) -- the draw is the second
 #: clause of its sentence and the sentence-anchored pattern above never saw
 #: it. Corpus sweep 2026-09-10: 34 instants and sorceries, ONE of which was
@@ -1148,6 +1167,88 @@ _X_DRAW_ALT_COST_RE = re.compile(
     r"rather than pay this spell's mana cost", re.I)
 
 
+#: A SPELL A COMMANDER-COPY ABILITY CAN MULTIPLY. Zada, Hedron Grinder is the
+#: only card in the corpus with the ability ("whenever you cast an instant or
+#: sorcery spell that targets only Zada, copy that spell for each other creature
+#: you control that the spell could target"), so the ability is DECLARED per
+#: deck — but which spells FEED it is mechanical and belongs here.
+#:
+#: THE GATE IS "ONLY", and it is what makes this narrow. The spell must target a
+#: single creature and nothing else: one more target of any kind and the ability
+#: never triggers. So this rejects every plural shape, everything that divides
+#: damage, and everything carrying a second target of another type.
+#:
+#: IT ALSO REJECTS A SPELL AIMED AT SOMEONE ELSE'S BOARD. "Target creature an
+#: opponent controls" cannot name your own commander, so it cannot trigger the
+#: ability however cheap it is — and a removal spell that CAN name her
+#: ("destroy target creature") is excluded for a different reason: copied across
+#: your own board it destroys it. Only spells whose effect is one you want on
+#: every body you control are fodder.
+_COPY_FODDER_PLURAL_RE = re.compile(
+    r"each creature|target creatures|two target|three target|"
+    r"any number of target|divided|up to (?:two|three|four|five|X) target|"
+    r"target player|target opponent|any target|target permanent|"
+    r"creature an opponent controls|creature you don't control|"
+    r"creature an opponent|target attacking|target blocking", re.I)
+#: The effect has to be one you want on THIRTY bodies, not one body. A pump, an
+#: evasion grant, haste, an untap, a counter — and the draw, which is the whole
+#: reason the archetype exists. "Destroy", "exile" and "sacrifice" are the
+#: opposite of fodder and are absent on purpose.
+_COPY_FODDER_EFFECT_RE = re.compile(
+    r"gains? (?:haste|trample|flying|first strike|double strike|hexproof|"
+    r"indestructible|menace|deathtouch|lifelink|vigilance|protection)|"
+    r"gets \+\d+/\+\d+|gets \+X/\+X|can't block|untap target creature|"
+    r"put a \+1/\+1 counter|becomes? (?:red|a copy)|draw (?:a|one|two) cards?",
+    re.I)
+
+
+#: THE ABILITY, so a declaration cannot lie about it. One card in the corpus:
+#: Zada, Hedron Grinder. Agrus Kos, Eternal Soldier is the near-miss and is
+#: deliberately NOT matched — it copies for each other creature "that's a
+#: Warrior or a Soldier", a typed subset this model does not track, and reading
+#: it as an untyped board copy would overstate every Agrus deck.
+#: THE NEGATIVE LOOKAHEAD IS THE WHOLE DIFFERENCE. Both cards read "...copy
+#: that spell for each other creature you control"; Agrus Kos then narrows it
+#: with "that's a Warrior or a Soldier" and Zada does not. Without the lookahead
+#: this matched both, and the first version of it did — the test for Agrus is
+#: what said so.
+_COMMANDER_COPY_RE = re.compile(
+    r"whenever you cast an instant or sorcery spell that targets only "
+    r"[A-Z][\w' ,-]{2,30}?, copy that spell for each other creature you control"
+    r"(?! that's )", re.I)
+
+
+def commander_copies_spells(card):
+    """Does this card copy a single-target spell across your own board?
+
+    Gates `model_commander_copy`: the flag is a per-deck opt-in, but the model
+    reads the commander's text to confirm the ability is really there rather
+    than trusting the declaration. A deck that sets the flag on a commander
+    without it gets a DeclarationError, not a silent multiplier.
+    """
+    return bool(_COMMANDER_COPY_RE.search(
+        _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))))
+
+
+def copy_fodder(card):
+    """Can a Zada-style ability copy this spell, and is copying it good?
+
+    Returns True only for an instant or sorcery that targets ONE creature,
+    carries no second target, and whose effect is something you want on every
+    creature you control. `draw_profile`'s `spell_draw` is what the copy
+    multiplies; this predicate decides whether the multiplication happens.
+    """
+    type_line = str(card.get("type_line", "") or "")
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return False
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    if not re.search(r"target creature", text, re.I):
+        return False
+    if _COPY_FODDER_PLURAL_RE.search(text):
+        return False
+    return bool(_COPY_FODDER_EFFECT_RE.search(text))
+
+
 def draw_profile(card):
     """How many cards this card draws, and through which channel.
 
@@ -1329,7 +1430,17 @@ def draw_profile(card):
     if rec and not _DRAW_CONDITIONAL_RE.search(rec.group(0)):
         out["recurring_draw"] = _DRAW_WORDS[rec.group(1).lower()]
     if ("Instant" in type_line or "Sorcery" in type_line) and not out["etb_draw"]:
-        sp = _SPELL_DRAW_RE.search(text) or _SCRY_THEN_DRAW_RE.search(text)
+        # REMINDER TEXT SITS BETWEEN THE PERIOD AND THE DRAW CLAUSE, and this
+        # match is sentence-anchored, so the parenthetical has to go first or
+        # the anchor lands on ".)" and fails. Crimson Wisps arrives here as
+        # "…until end of turn. (It can attack and {T} this turn.)\nDraw a card."
+        # Stripping is exact rather than heuristic: parentheses in oracle text
+        # are always reminder text, the same reasoning `manabase.land_colors`
+        # records for the Treasure-maker family. Local to this one match on
+        # purpose — every other pattern in this function reads raw `text`, and
+        # changing that globally is a different commit with its own sweep.
+        _sentences = _REMINDER_RE.sub(" ", text)
+        sp = _SPELL_DRAW_RE.search(_sentences) or _SCRY_THEN_DRAW_RE.search(text)
         if sp and not _DRAW_ADDITIONAL_COST_RE.search(text):
             out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
             td = _DRAW_THEN_DISCARD_RE.search(text)

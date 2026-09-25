@@ -65,7 +65,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_animate=None,
                   commander_cast_token=None, interaction_names=frozenset(),
                   attack_tutor=None, model_discard=False, partner=None,
-                  commander_event=None, commander_reveal=None):
+                  commander_event=None, commander_reveal=None,
+                  commander_copy=False):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -1296,6 +1297,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     opponent_draws_this_turn += _n
                     continue
                 draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
+                # THE COMMANDER COPIES IT FOR EACH OTHER CREATURE YOU CONTROL.
+                # Zada, Hedron Grinder's whole deck: a {R} cantrip targeting
+                # only her draws ONE card, and with six other bodies out it
+                # draws SEVEN. `battlefield` includes the commander herself, so
+                # the copy count is len(battlefield) - 1 and a lone commander
+                # multiplies by nothing, which is correct.
+                #
+                # WHAT THIS DOES NOT MODEL, named rather than left implied:
+                # the model has no removal, so once cast she stays, and the real
+                # card is a 3-mana 3/3 that dies to everything. Every figure
+                # this channel moves is therefore a CEILING on the games where
+                # she survives, not a forecast. `model_combat` carries the pump
+                # and evasion halves of the same copies; this arm is the draw.
+                if (commander_copy and commander_turn is not None
+                        and card["copy_fodder"]
+                        and card["draw"]["spell_draw"]):
+                    others = max(len(battlefield) - 1, 0)
+                    if others:
+                        draw_n(card["draw"]["spell_draw"] * others)
                 if card["draw"]["spell_draw_greatest_power"]:
                     # Resolved against the board at cast; the anthem rides on
                     # every body the way it does at the attack step.

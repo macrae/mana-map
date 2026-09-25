@@ -33,6 +33,7 @@ from manamap.pilot.common import (
     deck_dir, deck_file, front_field, load_deck_cards)
 
 from manamap.pilot.goldfish_profiles import (
+    copy_fodder,
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
     TOKEN_DOUBLER_RE,
@@ -215,6 +216,9 @@ def classify(card, pool=None):
         # `pool` resolves a fetchland against what it can actually go and get.
         # A non-land is unaffected: `fetch_profile` gates on the type line.
         "colors": frozenset(manabase.land_colors(card, pool=pool)),
+        # WHETHER A ZADA-STYLE ABILITY CAN MULTIPLY THIS SPELL. Read here so the
+        # casting loop can see it; the ability itself is declared per deck.
+        "copy_fodder": copy_fodder(card),
         # THE PIPS MUST COME FROM THE DOOR THE COST CAME FROM. `front_field`
         # always answers with the left half, which is the wrong half on the six
         # Rooms whose back door is cheaper.

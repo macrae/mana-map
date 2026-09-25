@@ -83,6 +83,13 @@ NOT_A_CHANNEL = {
     # from 0.153 to 0.327 on an unchanged 99.
     "model_commander_animate": "a per-deck commander declaration, not a channel",
     "model_commander_combat_reveal": "a per-deck commander declaration, not a channel",
+    # ZADA, HEDRON GRINDER, and she is the only card in the corpus with the
+    # ability. What the copies multiply is the spell's DRAW, so the cards that
+    # FEED this are already covered by `draw` and a fodder spell whose draw is
+    # unreadable is dark there — which is the honest place for it. The flag
+    # itself multiplies an existing channel rather than opening a new one.
+    "model_commander_copy": "a per-deck commander declaration that multiplies "
+                            "the draw channel, not a channel of its own",
 }
 
 

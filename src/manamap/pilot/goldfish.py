@@ -50,6 +50,7 @@ from manamap.pilot.common import (
 # rename would make a 5,800-line move unreviewable.
 from manamap.pilot.goldfish_profiles import (  # noqa: F401
     CHOSEN_TYPE,
+    commander_copies_spells,
     ETB_CHAIN_LIMIT,
     GOLDFISH_ITERATIONS,
     GOLDFISH_MAX_MULLIGANS,
@@ -1192,6 +1193,34 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         commander_animate = {"cost": int(commander_animate["cost"]),
                              "scope": str(commander_animate["scope"]),
                              "exclude": str(commander_animate.get("exclude", "Aura"))}
+    # THE COMMANDER COPIES A SPELL ACROSS YOUR OWN BOARD. Zada, Hedron Grinder
+    # is the only card in the corpus with the ability, so it is declared per
+    # deck like `model_commander_animate` — but unlike the attack tutor and the
+    # combat reveal, IT REQUIRES NO AUTHORED RATE, and that is the point. The
+    # copy count is the number of other creatures you control, which this model
+    # already measures; there is no fires-per-turn to write down and therefore
+    # no authored number driving the headline.
+    #
+    # THE FLAG IS CHECKED AGAINST THE COMMANDER'S OWN TEXT. A deck that sets it
+    # on a commander without the ability gets an error rather than a silent
+    # multiplier on every cantrip it casts.
+    commander_copy = bool(targets_doc.get("model_commander_copy"))
+    if commander_copy:
+        if not commanders:
+            raise DeclarationError(
+                "model_commander_copy is set but the deck has no commander.")
+        if not any(commander_copies_spells(c) for c in commanders):
+            raise DeclarationError(
+                f"model_commander_copy is set but "
+                f"{commanders[0].get('name')!r} has no ability that copies a "
+                f"single-target spell for each other creature you control. One "
+                f"card in the corpus has it (Zada, Hedron Grinder); Agrus Kos, "
+                f"Eternal Soldier copies only for Warriors and Soldiers, a "
+                f"typed subset this model does not track.")
+        if not model_draw and not quiet:
+            print("  WARNING model_commander_copy is set without model_draw: "
+                  "what the copies multiply is the spell's DRAW, so nothing "
+                  "will be counted.")
     creature_types = _corpus_creature_types()
     chosen_type = chosen_type_for(doc["cards"])
     command_zone_reduction = []
@@ -1341,6 +1370,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_sacrifice=model_sacrifice,
                               model_drain=model_drain,
                               model_deaths=model_deaths,
+                              commander_copy=commander_copy,
                               interaction_names=interaction_names,
                               model_colors=model_colors,
                               commander_pips=commander_pips,
