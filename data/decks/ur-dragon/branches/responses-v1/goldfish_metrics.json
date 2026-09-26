@@ -71,7 +71,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "d4944886ae40",
+    "model_version": "abda85d82c0c",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
@@ -87,50 +87,50 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.951,
+        "10": 0.95,
         "2": 0.0,
         "3": 0.0,
         "4": 0.002,
-        "5": 0.055,
-        "6": 0.27,
-        "7": 0.586,
-        "8": 0.794,
-        "9": 0.897
+        "5": 0.054,
+        "6": 0.264,
+        "7": 0.579,
+        "8": 0.789,
+        "9": 0.895
       },
       "kill_turn_histogram": {
-        "10": 538,
-        "4": 18,
-        "5": 534,
-        "6": 2151,
-        "7": 3158,
-        "8": 2075,
-        "9": 1031
+        "10": 558,
+        "4": 17,
+        "5": 527,
+        "6": 2091,
+        "7": 3157,
+        "8": 2094,
+        "9": 1060
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 29.444,
+        "10": 29.111,
         "2": 0.469,
-        "3": 1.657,
-        "4": 4.769,
-        "5": 9.219,
-        "6": 13.99,
-        "7": 18.644,
-        "8": 22.726,
-        "9": 26.343
+        "3": 1.652,
+        "4": 4.684,
+        "5": 8.96,
+        "6": 13.619,
+        "7": 18.268,
+        "8": 22.379,
+        "9": 26.003
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 65.061,
+        "10": 64.451,
         "2": 0.017,
-        "3": 0.829,
-        "4": 3.201,
-        "5": 9.096,
-        "6": 18.154,
-        "7": 29.36,
-        "8": 41.228,
-        "9": 53.372
+        "3": 0.856,
+        "4": 3.274,
+        "5": 9.107,
+        "6": 17.812,
+        "7": 28.757,
+        "8": 40.666,
+        "9": 52.856
       },
-      "mean_kill_turn": 7.261,
+      "mean_kill_turn": 7.283,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -147,44 +147,44 @@
       "no_kill_by_max_turn_rate": 0.05
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.324,
+      "cast_by_turn_6_rate": 0.321,
       "cast_turn_histogram": {
-        "10": 798,
+        "10": 802,
         "3": 114,
         "4": 777,
-        "5": 1065,
-        "6": 1285,
-        "7": 1414,
-        "8": 1286,
-        "9": 995,
-        "not_by_max_turn": 2266
+        "5": 1053,
+        "6": 1267,
+        "7": 1417,
+        "8": 1283,
+        "9": 1010,
+        "not_by_max_turn": 2277
       },
-      "mean_cast_turn": 6.931,
+      "mean_cast_turn": 6.942,
       "median_cast_turn": 7
     },
     "interaction_castable_by_turn": {
       "1": 0.116,
-      "10": 0.777,
+      "10": 0.772,
       "2": 0.224,
       "3": 0.244,
-      "4": 0.316,
-      "5": 0.413,
-      "6": 0.511,
-      "7": 0.583,
-      "8": 0.655,
-      "9": 0.72
+      "4": 0.311,
+      "5": 0.401,
+      "6": 0.5,
+      "7": 0.571,
+      "8": 0.647,
+      "9": 0.715
     },
     "interaction_in_hand_by_turn": {
       "1": 0.814,
       "10": 0.884,
       "2": 0.827,
       "3": 0.847,
-      "4": 0.855,
-      "5": 0.848,
-      "6": 0.842,
-      "7": 0.846,
-      "8": 0.855,
-      "9": 0.869
+      "4": 0.857,
+      "5": 0.852,
+      "6": 0.847,
+      "7": 0.849,
+      "8": 0.856,
+      "9": 0.87
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
@@ -207,21 +207,21 @@
       "4": 4.87,
       "5": 5.914,
       "6": 6.717,
-      "7": 7.403,
+      "7": 7.402,
       "8": 8.028,
       "9": 8.614
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 5.717,
+      "10": 5.55,
       "2": 0.182,
-      "3": 0.602,
-      "4": 1.334,
-      "5": 2.25,
-      "6": 3.116,
-      "7": 3.885,
-      "8": 4.546,
-      "9": 5.168
+      "3": 0.597,
+      "4": 1.29,
+      "5": 2.146,
+      "6": 2.979,
+      "7": 3.738,
+      "8": 4.398,
+      "9": 5.009
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -250,12 +250,12 @@
     "targets": [
       {
         "assembled_rate": 0.527,
-        "assembled_rate_assisted": 0.718,
+        "assembled_rate_assisted": 0.717,
         "by_turn_6_rate": 0.423,
         "by_turn_6_rate_assisted": 0.601,
         "label": "Cost reducer drawn (the deck's real curve fixer)",
         "mean_turn": 3.296,
-        "mean_turn_assisted": 3.402
+        "mean_turn_assisted": 3.401
       },
       {
         "assembled_rate": 0.9,
@@ -282,7 +282,7 @@
         "by_turn_6_rate_assisted": 0.511,
         "label": "Reducer + ramp assembled (the turn-5-Ur-Dragon hand)",
         "mean_turn": 4.262,
-        "mean_turn_assisted": 4.231
+        "mean_turn_assisted": 4.23
       },
       {
         "assembled_rate": 0.621,
@@ -300,7 +300,7 @@
         "by_turn_6_rate_assisted": 0.745,
         "label": "Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial)",
         "mean_turn": 2.869,
-        "mean_turn_assisted": 2.862
+        "mean_turn_assisted": 2.863
       },
       {
         "assembled_rate": 0.159,
@@ -309,7 +309,7 @@
         "by_turn_6_rate_assisted": 0.391,
         "label": "Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon)",
         "mean_turn": 3.719,
-        "mean_turn_assisted": 4.368
+        "mean_turn_assisted": 4.367
       },
       {
         "assembled_rate": 0.68,
@@ -327,7 +327,7 @@
         "by_turn_6_rate_assisted": 0.251,
         "label": "THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once",
         "mean_turn": 5.261,
-        "mean_turn_assisted": 5.353
+        "mean_turn_assisted": 5.351
       },
       {
         "assembled_rate": 0.262,
@@ -346,23 +346,23 @@
         "2": 0.0,
         "3": 0.002,
         "4": 0.033,
-        "5": 0.071,
-        "6": 0.099,
+        "5": 0.07,
+        "6": 0.098,
         "7": 0.114,
         "8": 0.128,
         "9": 0.14
       },
       "mean_treasures_in_hoard_by_turn": {
         "1": 0.0,
-        "10": 2.029,
+        "10": 1.996,
         "2": 0.0,
         "3": 0.005,
         "4": 0.08,
-        "5": 0.247,
-        "6": 0.435,
-        "7": 0.684,
-        "8": 1.02,
-        "9": 1.466
+        "5": 0.242,
+        "6": 0.424,
+        "7": 0.669,
+        "8": 1.0,
+        "9": 1.443
       }
     }
   }

@@ -218,6 +218,24 @@ def test_all_committed_stacks_validate_and_pass():
         with open(path) as f:
             doc = json.load(f)
         assert validate_scenario(doc, rules) == [], f"{path.name} violates the contract"
+        # THE INVARIANT IS "NOTHING UNVERIFIED GETS PUBLISHED", not "no failing
+        # artifact exists". A `fail` is SAVED on purpose — it documents an open
+        # question and the loop's own instructions say so — and sisay 001/003 and
+        # ur-dragon 008 are committed fails today. This test was hardcoded to
+        # goblin-storm when that deck happened to be 5 for 5, so it read as the
+        # stronger claim by accident.
+        #
+        # What must hold is that `build-index` keeps it out of the manifest the
+        # frontend fetches, which is what makes it unpublishable.
+        if doc["checker"]["verdict"] != "pass":
+            manifest = json.load(open(DECKS_DIR / "index.json"))
+            decks = manifest["decks"] if isinstance(manifest, dict) else manifest
+            row = next(d for d in (decks if isinstance(decks, list) else decks.values())
+                       if d.get("slug") == "goblin-storm")
+            assert path.name not in (row.get("stack_files") or []), (
+                f"{path.name} is checker-{doc['checker']['verdict']} and IS in the "
+                f"manifest — an unverified line would render as a ✓ on the deck page")
+            continue
         assert doc["checker"]["verdict"] == "pass", f"{path.name} is not checker-verified"
 
 

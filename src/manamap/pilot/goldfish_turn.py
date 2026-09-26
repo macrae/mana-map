@@ -86,6 +86,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     first_seven_lands = sum(1 for c in hand if c["is_land"])
 
     attack_tutor_fired = 0
+    # THE SPELL COUNT. There was none before this, which is why STORM —
+    # a mechanic defined entirely by the count — was unreadable, and why
+    # per-cast damage and magecraft had nothing to fire on.
+    spells_cast_total = 0
+    per_cast_engines = []      # Guttersnipe: damage on a CAST, never a copy
+    magecraft_engines = []     # Storm-Kiln Artist: fires on cast OR COPY
     cast_damage_engines = []       # Sarkhan's Unsealing: damage on a big creature cast
     reveal_fired = 0               # the declared combat-damage reveal (Gishath)
     reveal_bodies = 0
@@ -411,6 +417,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     tutor_ready_turns = []
 
     for turn in range(1, max_turn + 1):
+        # A PUMP LASTS ONE TURN. `team_anthem` is permanent and a pump must
+        # never join it: a one-turn grant read as a permanent one is this
+        # file's documented trap (a saga back face read as a damage doubler,
+        # and cutting it measured as a LOSS). Both reset here, every turn.
+        spells_cast_this_turn = 0   # STORM reads this: copies = the count BEFORE it
+        turn_pump = 0        # applies to EVERY attacker this turn
+        flat_pump = 0        # a single-target pump with no copy ability
         enchantments_entered = 0
         # Rooms whose SECOND door opened this turn. Separate from
         # `enchantments_entered` because only Eerie reads it — see _EERIE_RE.
@@ -522,6 +535,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         treasure_online_by_turn.append(bool(treasure_engines))
 
         def creature_entered(power, arrived, haste=False, mult=1, depth=0,
+                             toughness=1,
                              is_token=False, is_legendary=False, type_line="",
                              infect=False, toxic=0, flying=False):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
@@ -541,7 +555,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # the entry rather than in a parallel list, because the sacrifice
             # site below rebuilds `battlefield` and a parallel list would not
             # follow it — `creature_types` already does not.
-            battlefield.append((power, arrived, haste, mult, is_token, (infect, toxic)))
+            # THE SEVENTH FIELD IS TOUGHNESS, and it rides IN the entry for the
+            # same reason the poison pair does: the sacrifice site rebuilds
+            # `battlefield`, and a parallel list would not follow it —
+            # `creature_types` already does not and that drift is a known
+            # defect. Every unpack below takes `*_` so the eighth field, when
+            # it comes, breaks nothing.
+            battlefield.append((power, arrived, haste, mult, is_token,
+                                (infect, toxic), toughness))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -661,7 +682,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                  2 if cprof["double_strike"] else 1,
                                  is_legendary=True, type_line=cprof["type_line"],
                                  flying=cprof["flying"],
-                                 infect=cprof["infect"], toxic=cprof["toxic"])
+                                 infect=cprof["infect"], toxic=cprof["toxic"],
+                                 toughness=cprof["toughness"])
                 if cprof["team_damage_multiplier"] > 1:
                     team_damage_multiplier *= cprof["team_damage_multiplier"]
                 if any((cprof["attack_mana"], cprof["attack_damage"],
@@ -702,6 +724,49 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if power >= _eng["cast_damage_power_min"]:
                         etb_damage += _eng["cast_damage"]
 
+        def _magecraft(events):
+            """Fire magecraft `events` times. CAST OR COPY — that wording is the
+            whole reason this is separate from `per_cast_engines`: with Zada out
+            and six other bodies, one {R} cantrip is SEVEN magecraft triggers,
+            and Storm-Kiln Artist turns each into a Treasure."""
+            nonlocal treasures
+            if events <= 0 or not model_treasures:
+                return
+            for _eng in magecraft_engines:
+                treasures += _eng["magecraft_treasure"] * events
+
+        def _note_cast(card):
+            """EVERY cast goes through here: the card leaves hand, the spell
+            count moves, and the cast-triggered payoffs fire.
+
+            There are twelve cast sites in this function and storm's whole value
+            is the count, so a site that removes a card from hand without coming
+            through here silently undercounts it. A structural test greps this
+            source for `hand.remove` and fails if the call is not this helper —
+            that is the only thing that keeps it correct as the file grows.
+            """
+            nonlocal spells_cast_this_turn, spells_cast_total, etb_damage
+            hand.remove(card)
+            spells_cast_this_turn += 1
+            spells_cast_total += 1
+            tl = card.get("type_line") or ""
+            is_spell = "Instant" in tl or "Sorcery" in tl
+            is_creature = "Creature" in tl
+            # PER-CAST DAMAGE FIRES ON A CAST AND NEVER ON A COPY. "Whenever you
+            # cast" is not "cast or copy": Guttersnipe, Firebrand Archer and
+            # Kessig Flamebreather all say cast, so Zada's copies do not feed
+            # them. That is a rules fact, not a modelling shortcut.
+            if model_combat:
+                for _eng in per_cast_engines:
+                    gate = _eng["per_cast_damage_gate"]
+                    if gate == "an instant or sorcery" and not is_spell:
+                        continue
+                    if gate == "a noncreature" and is_creature:
+                        continue
+                    etb_damage += _eng["per_cast_damage"]
+            if is_spell:
+                _magecraft(1)
+
         def _free_creature_enters(card):
             """A CREATURE PUT ONTO THE BATTLEFIELD WITHOUT BEING CAST (the
             declared reveal). The same door and the same registrations as a
@@ -738,7 +803,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      2 if combat["double_strike"] else 1,
                                      is_legendary="Legendary" in tl, type_line=tl,
                                      infect=combat["infect"], toxic=combat["toxic"],
-                                     flying=combat["flying"])
+                                     flying=combat["flying"],
+                                     toughness=combat["toughness"])
             if combat["token_bodies"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
@@ -934,7 +1000,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                            key=lambda c: c["cmc"]):
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 reductions.append(card["reduces"])
-                hand.remove(card)
+                _note_cast(card)
 
         # AN ETB PAYOFF THAT IS NOT A BODY falls through every other loop —
         # Dragon Tempest is an enchantment with `bodies` 0 and `produces` 0, so
@@ -978,7 +1044,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         etb_damage += max((p + team_anthem for p, *_ in battlefield), default=0)
                     if card["combat"]["team_damage_multiplier"] > 1:
                         team_damage_multiplier *= card["combat"]["team_damage_multiplier"]
-                    hand.remove(card)
+                    _note_cast(card)
 
         # Cast rocks cheapest-first; they produce starting next turn.
         for card in sorted((c for c in hand if c["produces"] > 0 or c["land_mana_bonus"]),
@@ -1017,7 +1083,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # A rock adds as many sources as it makes mana — tracked always,
                 # for the same reason the land above is.
                 sources.extend([colors] * made)
-                hand.remove(card)
+                _note_cast(card)
 
         # Cast tutors before bodies: a tutor is a setup spell, and it competes
         # for the same mana. Previously tutors had bodies=0 and produces=0, so
@@ -1030,7 +1096,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # the named type enters from the library. Held until a
                 # nontoken body of power 4+ is on the board, and until the
                 # library holds one to fetch.
-                _fodder = [i for i, (p, _a, _h, _m, _tok, _pz) in enumerate(battlefield)
+                _fodder = [i for i, (p, _a, _h, _m, _tok, *_) in enumerate(battlefield)
                            if not _tok and p >= 4]
                 if card["tutor_needs_body"] and not _fodder:
                     continue
@@ -1042,7 +1108,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     continue
                 if not spend(card["tutor_cmc"], card["pips"]):
                     continue
-                hand.remove(card)
+                _note_cast(card)
                 if card["tutor_needs_body"]:
                     _i = min(_fodder, key=lambda i: battlefield[i][0])
                     battlefield.pop(_i); creature_types.pop(_i); creature_flying.pop(_i)
@@ -1052,7 +1118,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 continue
             if not spend(card["tutor_cmc"], card["pips"]):
                 continue
-            hand.remove(card)
+            _note_cast(card)
             tutor_ready_turns.append(turn + card["tutor_delay"])
 
         # A permanent that grants an ADDITIONAL COMBAT PHASE is neither a rock,
@@ -1067,7 +1133,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      or c["combat"]["extra_combat_free"])),
                                key=lambda c: c["cmc"]):
                 if spend(card["cmc"], card["pips"]):
-                    hand.remove(card)
+                    _note_cast(card)
                     if card["combat"]["extra_combat_cost"] is not None:
                         extra_combat_costs.append(card["combat"]["extra_combat_cost"])
                     else:
@@ -1090,7 +1156,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                key=lambda c: c["cmc"]):
                 if not spend(card["cmc"], card["pips"]):
                     continue
-                hand.remove(card)
+                _note_cast(card)
                 if card["treasure_doubler"]:
                     treasure_multiplier *= 2
                 if card["treasure_bonus"]:
@@ -1182,7 +1248,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # its own battlefield row.
                 if not (_wp["activated_wheel_sacs_self"] and _we["is_creature"]):
                     continue
-                _own = [i for i, (_p, _a, _h, _m, _tok, _pz) in enumerate(battlefield)
+                _own = [i for i, (_p, _a, _h, _m, _tok, *_) in enumerate(battlefield)
                         if _p == _we["power"] and not _tok]
                 if _own:
                     _i = _own[0]
@@ -1282,7 +1348,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     continue          # draws nothing with no creature; held
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
-                hand.remove(card)
+                _note_cast(card)
                 if card["draw"]["wheel_draws"]:
                     held = len(hand)
                     discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
@@ -1326,6 +1392,103 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         or card["draw"]["cast_draw"]):
                     draw_engines.append(card["draw"])
                 _register_wheel(card)
+
+        # STORM. A copy for each spell cast BEFORE it this turn — so the spell
+        # count IS the card, and until this commit there was no count to read.
+        # Cast LAST in the main phase, because every earlier cast raises the
+        # copy count and a storm spell cast first copies nothing.
+        #
+        # THE PAYOFF SHAPES a red deck actually has: a copy that deals damage
+        # (Grapeshot) and a copy that makes bodies (Empty the Warrens). A storm
+        # spell whose effect is neither still COUNTS as a cast and its copies do
+        # nothing — understating, the documented safe direction.
+        #
+        # MAGECRAFT FIRES ON EVERY COPY, which is why the count matters twice:
+        # Storm-Kiln Artist turns a five-copy Grapeshot into five more Treasures.
+        for card in sorted((c for c in hand if c["spell_count"]["storm"]),
+                           key=lambda c: -reduced_cost(c, reductions, chosen_type)):
+            if card not in hand:
+                continue
+            sc = card["spell_count"]
+            if not (sc["storm_damage"] or sc["storm_token_bodies"]):
+                continue          # nothing this model can price; left in hand
+            if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                continue
+            copies = spells_cast_this_turn      # the count BEFORE this cast
+            _note_cast(card)                    # ...which this then increments
+            total = 1 + copies
+            if model_combat and sc["storm_damage"]:
+                etb_damage += sc["storm_damage"] * total
+            if sc["storm_token_bodies"]:
+                each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
+                for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
+                    battlefield.append((each, turn, False, 1, True, (0, 0), 1))
+                    creature_types.append("Creature — Goblin")
+                    creature_flying.append(False)
+                    bodies_cum += 1
+            _magecraft(copies)                  # the cast itself fired already
+
+        # A PUMP SPELL IS NOT A BODY, A DRAW, A TUTOR OR A ROCK — so it fell
+        # through every loop above, which is why Haze of Rage and every other
+        # pump in the corpus contributed nothing to any damage figure. THE
+        # CASTING PREDICATE SHIPS IN THE SAME COMMIT AS THE CHANNEL; this file
+        # has documented six cards read perfectly and never played.
+        #
+        # Cast LAST in the main phase and only with attackers already out: a
+        # pump on an empty board does nothing, and a pilot holds it until the
+        # swing. Most expensive first, because the biggest pump is the one you
+        # want when the mana is there.
+        if model_combat and battlefield:
+            for card in sorted((c for c in hand if not c["is_land"]
+                                and (c["combat"]["spell_pump_single"]
+                                     or c["combat"]["spell_pump_team"]
+                                     or c["combat"]["spell_counters"])),
+                               key=lambda c: -reduced_cost(c, reductions, chosen_type)):
+                if card not in hand:
+                    continue
+                if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    continue
+                _note_cast(card)
+                team = card["combat"]["spell_pump_team"]
+                single = card["combat"]["spell_pump_single"]
+                # THE TREASURES THE SPELL MAKES, credited on exactly the same
+                # multiplication as the pump. Reckless Ransacking is {1}{R} for
+                # +3/+2 AND a Treasure; copied across eight creatures that is
+                # eight Treasures, which is what pays for the follow-up. Gated on
+                # `model_treasures` like every other token of its kind.
+                if model_treasures and card["combat"]["spell_treasure"]:
+                    _tre = card["combat"]["spell_treasure"]
+                    _mult = 1
+                    if (commander_copy and commander_turn is not None
+                            and card["copy_fodder"] and len(battlefield) > 1):
+                        _mult = len(battlefield)      # the original plus one per other
+                    treasures += _tre * _mult
+                # PERMANENT +1/+1 COUNTERS, applied to the board itself rather
+                # than to `turn_pump`, because they do not expire. Copied by a
+                # Zada-style ability every creature gets its own counter — which
+                # is why the smaller permanent number beats the bigger temporary
+                # one over ten turns.
+                if card["combat"]["spell_counters"]:
+                    _n = card["combat"]["spell_counters"]
+                    if (commander_copy and commander_turn is not None
+                            and card["copy_fodder"] and len(battlefield) > 1):
+                        for _i, _c in enumerate(battlefield):
+                            battlefield[_i] = (_c[0] + _n,) + _c[1:]
+                    elif battlefield:
+                        battlefield[0] = (battlefield[0][0] + _n,) + battlefield[0][1:]
+                if team:
+                    turn_pump += team
+                elif single:
+                    # COPIED, IT IS A TEAM PUMP FOR THE TURN. Zada targets only
+                    # herself, the copies target every other creature, so every
+                    # body gets +N — which is how a go-wide cantrip deck kills.
+                    # Uncopied it pumps exactly one creature, and that is a flat
+                    # addition to the swing rather than a board-wide bonus.
+                    if (commander_copy and commander_turn is not None
+                            and card["copy_fodder"] and len(battlefield) > 1):
+                        turn_pump += single
+                    else:
+                        flat_pump += single
 
         # A PERMANENT THAT ONLY DRAINS WAS NEVER CAST AT ALL.
         #
@@ -1420,7 +1583,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if not spend(reduced_cost(card, reductions, chosen_type),
                              card["pips"]):
                     continue
-                hand.remove(card)
+                _note_cast(card)
                 battlefield_pips.append(card["pips"])
                 battlefield_types.append(card.get("type_line") or "")
                 # THREE PARALLEL LISTS AND THIS LOOP FED TWO OF THEM. Every
@@ -1531,6 +1694,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             etb_gained += prof_["gain_per_type"]
                     if d_["per_type"]:
                         per_type_watchers.append(d_)
+                # THE SPELL-COUNT ENGINES, registered where every other engine is.
+                # A card read perfectly and never registered is this file's
+                # documented failure; both registries are populated here.
+                sc_ = card["spell_count"]
+                if sc_["per_cast_damage"]:
+                    per_cast_engines.append(sc_)
+                if sc_["magecraft_treasure"]:
+                    magecraft_engines.append(sc_)
                 cb_ = card["combat"]
                 if model_combat and cb_["team_haste"]:
                     haste_grants.append(cb_["team_haste"])
@@ -1552,7 +1723,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                            key=lambda c: reduced_cost(c, reductions, chosen_type)):
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
-                hand.remove(card)
+                _note_cast(card)
                 # A BODY THAT ALSO DRAWS is the shape the pilot's Edgar refactor
                 # is built on: "a vampire that draws is better than a sorcery
                 # that draws — same effect, plus a body, plus an eminence
@@ -1755,6 +1926,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             etb_gained += prof_["gain_per_type"]
                     if d_["per_type"]:
                         per_type_watchers.append(d_)
+                # THE SPELL-COUNT ENGINES, registered where every other engine is.
+                # A card read perfectly and never registered is this file's
+                # documented failure; both registries are populated here.
+                sc_ = card["spell_count"]
+                if sc_["per_cast_damage"]:
+                    per_cast_engines.append(sc_)
+                if sc_["magecraft_treasure"]:
+                    magecraft_engines.append(sc_)
                 cb_ = card["combat"]
                 if model_combat and cb_["team_haste"]:
                     haste_grants.append(cb_["team_haste"])
@@ -1815,7 +1994,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _cost = _best["cmc"] + _bx * _best["draw"]["x_draw_multiplier"]
                 if not spend(_cost, _best["pips"]):
                     break
-                hand.remove(_best)
+                _note_cast(_best)
                 draw_n(max(0, _bx - _best["draw"]["x_draw_discard"]))
 
         # ── BLOOD, AND THE DRAWS YOU BUY ────────────────────────────────
@@ -1856,7 +2035,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # the sacrifice channel already learned to avoid.
                 if not (_dp["activated_draw_sacs_self"] and _de["is_creature"]):
                     continue
-                _own = [i for i, (_p, _a, _h, _m, _tok, _pz) in enumerate(battlefield)
+                _own = [i for i, (_p, _a, _h, _m, _tok, *_) in enumerate(battlefield)
                         if _p == _de["power"] and not _tok]
                 if _own:
                     _i = _own[0]
@@ -1959,8 +2138,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             or (g_ not in ("all", "nontoken", "flying") and g_ in tl_)):
                         return True
                 return False
-            attackers = [((p + team_anthem) * mult, pz)
-                         for (p, arrived, haste, mult, _tok, pz), tl_, fl_
+            attackers = [((p + team_anthem + turn_pump) * mult, pz)
+                         for (p, arrived, haste, mult, _tok, pz, *_), tl_, fl_
                          in zip(battlefield, creature_types, creature_flying)
                          if haste or arrived < turn
                          or (haste_grants and _granted(tl_, fl_, _tok))]
@@ -1970,6 +2149,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # no blockers is every attack. Double strike rides in `mult` for
             # both, as printed.
             swing = sum(d for d, pz in attackers if not pz[0])
+            # An uncopied single-target pump landed on ONE attacker.
+            if flat_pump and any(not pz[0] for _d, pz in attackers):
+                swing += flat_pump
             if counter_power and attackers and commander_turn is not None and turn > commander_turn:
                 swing += counter_power
             swing_poison = (sum(d for d, pz in attackers if pz[0])
@@ -2370,7 +2552,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # garbage. The type line now rides WITH the creature.
             granted = 0
             if lifelink_granted_types:
-                for tl_, (pw_, _a, _h, _m, _tok, _pz) in zip(creature_types, battlefield):
+                for tl_, (pw_, *_) in zip(creature_types, battlefield):
                     if any(ty_ in tl_ for ty_ in lifelink_granted_types):
                         granted += pw_
             effective_lifelink = max(lifelink_power, granted)

@@ -391,7 +391,15 @@ def lift(slug, run_id, game_index, turn, step_text=None, to_stack=False):
     doc = build_scenario(slug, rec, game_index, turn, step_text, game, label)
     phase, step = doc["scenario"]["phase"], doc["scenario"]["step"]
     if to_stack:
-        stacks = deck_dir(slug) / "stacks"
+        # A BRANCH'S RUN LIVES BESIDE ITS OWN LIST; ITS STACKS DO NOT.
+        # `_out_dir` above already resolves "slug@branch" to the branch's sim/
+        # directory, but `deck_dir` takes a plain slug — so lifting a board out
+        # of a branch run died with "No deck directory for 'goblin-storm@zada-v1'"
+        # after the run had already been found and parsed. Stacks are DECK-level
+        # artifacts (the deck page and `build-index` both read
+        # data/decks/<slug>/stacks/), so a scenario lifted from a branch belongs
+        # with the deck, named by the game and turn it came from.
+        stacks = deck_dir(slug.split("@", 1)[0]) / "stacks"
         stacks.mkdir(exist_ok=True)
         nums = [int(p.name[:3]) for p in stacks.glob("[0-9][0-9][0-9]-*.json")]
         nnn = f"{max(nums, default=0) + 1:03d}"
@@ -411,7 +419,8 @@ def main(args):
                     to_stack=getattr(args, "stack", False))
     sc = doc["scenario"]
     print(f"{args.slug}: lifted game {args.game} of {args.run} at turn {args.turn} "
-          f"{sc['step'] or sc['phase']} → {out.relative_to(deck_dir(args.slug))}")
+          f"{sc['step'] or sc['phase']} → "
+          f"{out.relative_to(deck_dir(args.slug.split('@', 1)[0]))}")
     for s in sc["seats"]:
         cz = s["commander"] or {}
         print(f"  {s['seat']:<7} {s['deck']:<18} life {s['life']:<3} board {len(s['board']):<3} "

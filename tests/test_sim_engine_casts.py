@@ -180,6 +180,21 @@ KNOWN_UNCAST = {
     # this is the same true positive measured again. The run's 0.278 is read
     # as heliod's because the declared engine was otherwise played.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-4b0e1964-s1259215204-podExperimental-c600.json",
+    # 2026-09-25, goblin-storm@zada-v1 on standard-v3, BOTH profiles. Faithless
+    # Looting, Past in Flames, Witch's Mark (and Goblin Bombardment on the Default
+    # run) read as never cast. A TRUE POSITIVE and a DIFFERENT reason from the two
+    # above: the declaration is current and the cards are in the 99 — the AI drew
+    # them and passed. Faithless Looting was DISCARDED 3 times, which is the log's
+    # own statement that it was held and thrown away.
+    #
+    # Both records are kept because the run's value is not its rate. Zada's
+    # trigger fired 21 times in 60 games against 100 casts of her, so the win
+    # rate measures a Zada deck played without Zada's ability. The four uncast
+    # cards are a footnote next to that. → docs/gotchas-bench.md
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c9abd341"
+    "-s1383481153-podExperimental-c600.json",
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c9abd341"
+    "-s1383481153-meExperimental-podExperimental-c600.json",
 }
 
 

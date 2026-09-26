@@ -77,7 +77,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "d4944886ae40",
+    "model_version": "abda85d82c0c",
     "seed": 42
   },
   "metrics": {
@@ -85,47 +85,47 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.135,
+        "10": 0.137,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
         "6": 0.0,
         "7": 0.001,
-        "8": 0.012,
+        "8": 0.011,
         "9": 0.049
       },
       "kill_turn_histogram": {
-        "10": 862,
-        "7": 8,
-        "8": 109,
-        "9": 368
+        "10": 877,
+        "7": 7,
+        "8": 105,
+        "9": 379
       },
       "mean_board_power_by_turn": {
         "1": 0.069,
-        "10": 5.664,
-        "2": 0.341,
-        "3": 0.874,
-        "4": 1.41,
-        "5": 2.335,
-        "6": 3.149,
-        "7": 3.856,
-        "8": 4.497,
-        "9": 5.084
+        "10": 5.658,
+        "2": 0.338,
+        "3": 0.865,
+        "4": 1.391,
+        "5": 2.316,
+        "6": 3.137,
+        "7": 3.846,
+        "8": 4.488,
+        "9": 5.077
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 5.084,
-        "2": 0.069,
-        "3": 0.341,
-        "4": 0.874,
-        "5": 1.41,
-        "6": 2.335,
-        "7": 3.149,
-        "8": 3.856,
-        "9": 4.497
+        "10": 5.112,
+        "2": 0.08,
+        "3": 0.369,
+        "4": 0.912,
+        "5": 1.476,
+        "6": 2.358,
+        "7": 3.174,
+        "8": 3.879,
+        "9": 4.523
       },
-      "mean_kill_turn": 9.547,
+      "mean_kill_turn": 9.554,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -139,48 +139,48 @@
         "9": 0.0
       },
       "median_kill_turn": 10,
-      "no_kill_by_max_turn_rate": 0.865
+      "no_kill_by_max_turn_rate": 0.863
     },
     "commander": {
       "cast_by_turn_6_rate": 0.896,
       "cast_turn_histogram": {
-        "10": 115,
+        "10": 117,
         "2": 287,
         "3": 2871,
-        "4": 4462,
-        "5": 845,
-        "6": 500,
-        "7": 355,
+        "4": 4461,
+        "5": 846,
+        "6": 496,
+        "7": 357,
         "8": 252,
         "9": 134,
         "not_by_max_turn": 179
       },
-      "mean_cast_turn": 4.187,
+      "mean_cast_turn": 4.188,
       "median_cast_turn": 4
     },
     "interaction_castable_by_turn": {
       "1": 0.28,
-      "10": 0.853,
-      "2": 0.283,
-      "3": 0.319,
-      "4": 0.307,
-      "5": 0.516,
-      "6": 0.61,
-      "7": 0.687,
-      "8": 0.76,
-      "9": 0.816
+      "10": 0.841,
+      "2": 0.28,
+      "3": 0.303,
+      "4": 0.286,
+      "5": 0.485,
+      "6": 0.585,
+      "7": 0.666,
+      "8": 0.744,
+      "9": 0.803
     },
     "interaction_in_hand_by_turn": {
       "1": 0.822,
-      "10": 0.98,
+      "10": 0.974,
       "2": 0.846,
-      "3": 0.872,
-      "4": 0.889,
-      "5": 0.908,
-      "6": 0.929,
-      "7": 0.948,
-      "8": 0.961,
-      "9": 0.972
+      "3": 0.865,
+      "4": 0.879,
+      "5": 0.893,
+      "6": 0.916,
+      "7": 0.936,
+      "8": 0.951,
+      "9": 0.964
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
@@ -188,48 +188,48 @@
       "10": 0.507,
       "2": 0.993,
       "3": 0.868,
-      "4": 0.728,
+      "4": 0.727,
       "5": 0.593,
-      "6": 0.534,
-      "7": 0.516,
-      "8": 0.506,
-      "9": 0.516
+      "6": 0.533,
+      "7": 0.515,
+      "8": 0.505,
+      "9": 0.515
     },
     "mean_available_mana_by_turn": {
       "1": 0.998,
-      "10": 8.386,
+      "10": 8.382,
       "2": 2.138,
       "3": 3.449,
       "4": 4.337,
-      "5": 5.089,
-      "6": 5.764,
-      "7": 6.412,
-      "8": 7.064,
-      "9": 7.729
+      "5": 5.088,
+      "6": 5.763,
+      "7": 6.408,
+      "8": 7.059,
+      "9": 7.723
     },
     "mean_bodies_by_turn": {
       "1": 0.206,
-      "10": 2.84,
-      "2": 0.371,
-      "3": 0.603,
-      "4": 0.854,
-      "5": 1.261,
-      "6": 1.635,
-      "7": 1.963,
-      "8": 2.272,
-      "9": 2.56
+      "10": 2.838,
+      "2": 0.37,
+      "3": 0.6,
+      "4": 0.848,
+      "5": 1.254,
+      "6": 1.629,
+      "7": 1.958,
+      "8": 2.267,
+      "9": 2.557
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 3.559,
+      "10": 3.54,
       "2": 0.049,
-      "3": 0.124,
-      "4": 0.256,
-      "5": 0.615,
-      "6": 1.152,
-      "7": 1.747,
-      "8": 2.346,
-      "9": 2.937
+      "3": 0.123,
+      "4": 0.254,
+      "5": 0.605,
+      "6": 1.141,
+      "7": 1.734,
+      "8": 2.336,
+      "9": 2.922
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -257,22 +257,22 @@
     },
     "targets": [
       {
-        "assembled_rate": 0.921,
+        "assembled_rate": 0.92,
         "assembled_rate_assisted": 0.971,
         "by_turn_6_rate": 0.822,
         "by_turn_6_rate_assisted": 0.906,
         "label": "Table draw engine online (opponents are drawing)",
-        "mean_turn": 2.499,
+        "mean_turn": 2.498,
         "mean_turn_assisted": 2.296
       },
       {
-        "assembled_rate": 0.741,
+        "assembled_rate": 0.74,
         "assembled_rate_assisted": 0.886,
-        "by_turn_6_rate": 0.561,
-        "by_turn_6_rate_assisted": 0.703,
+        "by_turn_6_rate": 0.56,
+        "by_turn_6_rate_assisted": 0.702,
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
-        "mean_turn": 4.87,
-        "mean_turn_assisted": 4.782
+        "mean_turn": 4.869,
+        "mean_turn_assisted": 4.784
       },
       {
         "assembled_rate": 0.36,
@@ -280,8 +280,8 @@
         "by_turn_6_rate": 0.249,
         "by_turn_6_rate_assisted": 0.557,
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
-        "mean_turn": 4.261,
-        "mean_turn_assisted": 4.271
+        "mean_turn": 4.262,
+        "mean_turn_assisted": 4.273
       },
       {
         "assembled_rate": 0.32,
@@ -289,8 +289,8 @@
         "by_turn_6_rate": 0.189,
         "by_turn_6_rate_assisted": 0.465,
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
-        "mean_turn": 5.269,
-        "mean_turn_assisted": 5.065
+        "mean_turn": 5.271,
+        "mean_turn_assisted": 5.067
       },
       {
         "assembled_rate": 0.731,
@@ -298,8 +298,8 @@
         "by_turn_6_rate": 0.526,
         "by_turn_6_rate_assisted": 0.683,
         "label": "Heliod down with an asymmetric card engine",
-        "mean_turn": 5.335,
-        "mean_turn_assisted": 5.08
+        "mean_turn": 5.337,
+        "mean_turn_assisted": 5.083
       },
       {
         "assembled_rate": 0.839,
@@ -308,7 +308,7 @@
         "by_turn_6_rate_assisted": 0.834,
         "label": "Free or cheap interaction held",
         "mean_turn": 3.022,
-        "mean_turn_assisted": 2.812
+        "mean_turn_assisted": 2.815
       },
       {
         "assembled_rate": 0.792,
@@ -317,16 +317,16 @@
         "by_turn_6_rate_assisted": 0.812,
         "label": "An X-spell finisher drawn (the mana sink the discount pays for)",
         "mean_turn": 2.854,
-        "mean_turn_assisted": 2.73
+        "mean_turn_assisted": 2.729
       },
       {
-        "assembled_rate": 0.495,
+        "assembled_rate": 0.494,
         "assembled_rate_assisted": 0.671,
         "by_turn_6_rate": 0.358,
         "by_turn_6_rate_assisted": 0.508,
         "label": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
-        "mean_turn": 4.022,
-        "mean_turn_assisted": 4.076
+        "mean_turn": 4.018,
+        "mean_turn_assisted": 4.073
       },
       {
         "assembled_rate": 0.599,
@@ -338,22 +338,22 @@
         "mean_turn_assisted": 3.644
       },
       {
-        "assembled_rate": 0.68,
-        "assembled_rate_assisted": 0.838,
-        "by_turn_6_rate": 0.529,
+        "assembled_rate": 0.679,
+        "assembled_rate_assisted": 0.837,
+        "by_turn_6_rate": 0.528,
         "by_turn_6_rate_assisted": 0.691,
         "label": "A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)",
-        "mean_turn": 3.597,
-        "mean_turn_assisted": 3.461
+        "mean_turn": 3.593,
+        "mean_turn_assisted": 3.46
       },
       {
-        "assembled_rate": 0.496,
+        "assembled_rate": 0.495,
         "assembled_rate_assisted": 0.791,
         "by_turn_6_rate": 0.357,
         "by_turn_6_rate_assisted": 0.623,
         "label": "A taxer down (attackers pay, flying or not)",
-        "mean_turn": 4.008,
-        "mean_turn_assisted": 3.953
+        "mean_turn": 4.003,
+        "mean_turn_assisted": 3.956
       }
     ]
   }

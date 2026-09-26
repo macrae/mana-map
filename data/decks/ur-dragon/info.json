@@ -6649,10 +6649,10 @@
           "n": 10000
         },
         "5": {
-          "rate": 0.4093,
+          "rate": 0.4094,
           "ci95": [
-            0.3997,
-            0.419
+            0.3998,
+            0.4191
           ],
           "n": 10000
         },
@@ -6731,10 +6731,10 @@
           "n": 10000
         },
         "5": {
-          "rate": 0.3685,
+          "rate": 0.3686,
           "ci95": [
-            0.3591,
-            0.378
+            0.3592,
+            0.3781
           ],
           "n": 10000
         },
@@ -6811,18 +6811,18 @@
           "n": 10000
         },
         "3": {
-          "rate": 0.0672,
+          "rate": 0.0669,
           "ci95": [
-            0.0625,
-            0.0723
+            0.0622,
+            0.072
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0306,
+          "rate": 0.0305,
           "ci95": [
-            0.0274,
-            0.0342
+            0.0273,
+            0.0341
           ],
           "n": 10000
         },
@@ -6859,10 +6859,10 @@
           "n": 10000
         },
         "9": {
-          "rate": 0.0122,
+          "rate": 0.0121,
           "ci95": [
-            0.0102,
-            0.0145
+            0.0101,
+            0.0144
           ],
           "n": 10000
         },
@@ -6876,19 +6876,19 @@
         }
       },
       "two_in_a_row": {
-        "rate": 0.0793,
+        "rate": 0.079,
         "ci95": [
-          0.0742,
-          0.0848
+          0.0739,
+          0.0845
         ],
         "n": 10000
       },
-      "fleet": "worse than any tracked deck",
+      "fleet": "above the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 4321,
-        "hand_empty": 520,
-        "mana_short": 3801
+        "stall_turns": 4316,
+        "hand_empty": 519,
+        "mana_short": 3797
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
@@ -6987,7 +6987,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.881,
+          "value": 6.884,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -7165,15 +7165,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.0,
-            "10": 5.453,
+            "10": 5.317,
             "2": 0.157,
-            "3": 0.489,
-            "4": 1.138,
-            "5": 1.996,
-            "6": 2.834,
-            "7": 3.595,
-            "8": 4.281,
-            "9": 4.887
+            "3": 0.485,
+            "4": 1.111,
+            "5": 1.941,
+            "6": 2.76,
+            "7": 3.504,
+            "8": 4.175,
+            "9": 4.766
           },
           "tier": "data",
           "weight": "detail",
@@ -7199,13 +7199,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 401,
+            "10": 403,
             "4": 16,
-            "5": 542,
-            "6": 2409,
-            "7": 3241,
-            "8": 2042,
-            "9": 946
+            "5": 541,
+            "6": 2403,
+            "7": 3237,
+            "8": 2047,
+            "9": 952
           },
           "tier": "data",
           "weight": "detail",
@@ -7221,7 +7221,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.881,
+    "commander_mean_cast_turn": 6.884,
     "commander_cast_by_turn_6_pct": 33,
     "targets": [
       {
@@ -7266,29 +7266,29 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.166,
+      "mean_kill_turn": 7.169,
       "median_kill_turn": 7,
       "kill_by_turn_6_pct": 30,
       "kill_by_turn_8_pct": 82,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 4,
       "kill_turn_histogram": {
-        "10": 401,
+        "10": 403,
         "4": 16,
-        "5": 542,
-        "6": 2409,
-        "7": 3241,
-        "8": 2042,
-        "9": 946
+        "5": 541,
+        "6": 2403,
+        "7": 3237,
+        "8": 2047,
+        "9": 952
       }
     }
   },
   "engine_health": {
     "word": "HEALTHY",
-    "rate": 0.4093,
+    "rate": 0.4094,
     "ci95": [
-      0.3997,
-      0.419
+      0.3998,
+      0.4191
     ],
     "n": 10000,
     "turn": 5,

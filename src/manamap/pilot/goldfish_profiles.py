@@ -1184,9 +1184,38 @@ _X_DRAW_ALT_COST_RE = re.compile(
 #: ("destroy target creature") is excluded for a different reason: copied across
 #: your own board it destroys it. Only spells whose effect is one you want on
 #: every body you control are fodder.
+#: A CHOOSABLE TARGET COUNT IS STILL "TARGETS ONLY", and rejecting it was wrong.
+#: Zada triggers on a spell that "targets only Zada" — so a spell reading "up to
+#: two target creatures each get +1/+0" cast on Zada ALONE targets only Zada and
+#: copies for the whole board. Strive cards are the cleanest case: "costs {2}{R}
+#: more for each target beyond the first" means one target is the base price.
+#:
+#: Corpus sweep 2026-09-25: 313 instants and sorceries have a choosable creature
+#: target count, 302 once "divided as you choose" is excluded, 44 of those in
+#: mono-red — Coordinated Assault, Rouse the Mob, Twinflame and Nahiri's
+#: Stoneblades among them. Every one was being rejected.
+#:
+#: "DIVIDED AS YOU CHOOSE" STAYS REJECTED, and for a different reason than the
+#: rest: the split is fixed as you cast, so each copy applies the same split to
+#: another creature. On a board of 1/1 tokens that is your own sweeper.
+#: CHOOSABLE versus MANDATORY, and the difference decides fodder.
+#:   "up to two target creatures"  -> you may pick ONE: targets only Zada. FODDER.
+#:   "two target creatures"        -> you MUST pick two: never only Zada. NOT.
+#: Stripping the choosable forms first leaves only the mandatory ones, which is
+#: exact rather than a pile of fixed-width lookbehinds. The first version of this
+#: widening dropped the mandatory case with the choosable one and a test caught
+#: it: "Target creatures you control get +1/+1" read as fodder.
+_CHOOSABLE_TARGETS_RE = re.compile(
+    r"(?:up to|one or more|any number of)\s+(?:one|two|three|four|five|X|\d+)?"
+    r"\s*(?:other\s+)?target creatures?", re.I)
+_MANDATORY_PLURAL_RE = re.compile(
+    r"(?:two|three|four|five|X|\d+)\s+target creatures|target creatures", re.I)
 _COPY_FODDER_PLURAL_RE = re.compile(
-    r"each creature|target creatures|two target|three target|"
-    r"any number of target|divided|up to (?:two|three|four|five|X) target|"
+    r"each creature|divided as you choose|"
+    # A SECOND, SEPARATE target — not a choosable count of the same one.
+    # Monstrous Step reads "target creature gets +7/+7 … Up to one other
+    # target creature gets +1/+1": two independent targets, so never "only".
+    r"other target|another target|second target|"
     r"target player|target opponent|any target|target permanent|"
     r"creature an opponent controls|creature you don't control|"
     r"creature an opponent|target attacking|target blocking", re.I)
@@ -1197,7 +1226,7 @@ _COPY_FODDER_PLURAL_RE = re.compile(
 _COPY_FODDER_EFFECT_RE = re.compile(
     r"gains? (?:haste|trample|flying|first strike|double strike|hexproof|"
     r"indestructible|menace|deathtouch|lifelink|vigilance|protection)|"
-    r"gets \+\d+/\+\d+|gets \+X/\+X|can't block|untap target creature|"
+    r"gets? \+\d+/\+\d+|each get \+\d+/\+\d+|gets? \+X/\+X|can't block|untap target creature|"
     r"put a \+1/\+1 counter|becomes? (?:red|a copy)|draw (?:a|one|two) cards?",
     re.I)
 
@@ -1245,6 +1274,9 @@ def copy_fodder(card):
     if not re.search(r"target creature", text, re.I):
         return False
     if _COPY_FODDER_PLURAL_RE.search(text):
+        return False
+    # A MANDATORY plural target count can never be "only Zada".
+    if _MANDATORY_PLURAL_RE.search(_CHOOSABLE_TARGETS_RE.sub(" ", text)):
         return False
     return bool(_COPY_FODDER_EFFECT_RE.search(text))
 
@@ -2400,6 +2432,194 @@ def drain_profile(card):
     return out
 
 
+#: A PUMP FROM A SPELL, and the POWER half is the only half that matters here:
+#: this model has no blockers, so toughness changes nothing. Read as a
+#: ONE-TURN effect and applied as one — `team_anthem` is permanent and a pump
+#: must never join it. That distinction is the documented trap: a saga back
+#: face lasting one turn read as a permanent damage doubler and cutting it
+#: measured as a LOSS.
+#:
+#: Corpus sweep 2026-09-25, all 7,754 instants and sorceries:
+#:   408  single-target "target creature gets +N/+N"
+#:   133  team-wide    "creatures you control get +N/+N"
+#:    46  X-based      "+X/+0" or "+X/+X" — NOT read, because X is a count this
+#:                     function has no board to resolve (the same reason
+#:                     `land_colors` refuses a fetch without a pool, and the
+#:                     same safe direction: understate).
+#: The single-target bonus clusters at +2/+2 (96), +1/+1 (57) and +1/+0 (51);
+#: the tail is Might of Oaks and Enlarge at +7/+7, read card by card and all
+#: true positives.
+#:
+#: WHY SINGLE-TARGET IS THE INTERESTING ONE. Alone it pumps one creature. Copied
+#: by a Zada-style ability it pumps EVERY creature you control, which is how a
+#: go-wide deck built on cantrips actually kills — and it was invisible: 44
+#: fields on this profile and not one read a pump, so Haze of Rage and Goblin
+#: Bushwhacker, both sleeved in goblin-storm since it was built, contributed
+#: nothing to any damage figure.
+_SPELL_PUMP_SINGLE_RE = re.compile(
+    r"target creature (?:you control )?gets \+(\d+)/\+\d+", re.I)
+_SPELL_PUMP_TEAM_RE = re.compile(
+    r"creatures you control get \+(\d+)/\+\d+", re.I)
+
+
+#: A TREASURE THE SPELL ITSELF MAKES, and the reason this needed its own reader:
+#: `treasure_profile` already returns (1, "unmodelled") for Reckless Ransacking —
+#: it SEES the token and the turn loop has no event to create it on, because every
+#: other treasure trigger in this model hangs off a permanent entering, dying or
+#: attacking. A Treasure made by an instant resolving matched none of them.
+#:
+#: WHY IT MATTERS MORE THAN THE COUNT SUGGESTS. Copied by a Zada-style ability the
+#: token is created by EVERY copy: one {1}{R} spell on a board of eight creatures
+#: is +24 power AND EIGHT TREASURES. That is the difference between a pump and a
+#: pump that pays for the follow-up, and the pilot's own playgroup named it before
+#: the model could see it.
+#:
+#: Corpus sweep 2026-09-25, all 7,754 instants and sorceries: 48 create a Treasure
+#: on resolution, 7 of those are copy fodder, 5 in mono-red — Ancestors' Aid
+#: (already sleeved in goblin-storm), Reckless Ransacking, Sudden Breakthrough,
+#: Furnace Reins and Involuntary Employment.
+_SPELL_TREASURE_RE = re.compile(
+    r"create (a|one|two|three) treasure tokens?", re.I)
+
+
+#: +1/+1 COUNTERS FROM A SPELL, and they are PERMANENT — which is the whole point
+#: and the reason this is not `spell_pump`. Brute Force gives +3/+3 that evaporates
+#: at end of turn; Kick in the Door gives +1/+1 that STAYS, and copied across eight
+#: creatures that is eight permanent counters on a board that then compounds for
+#: the rest of the game. In a deck that gets ten turns, the smaller permanent
+#: number beats the larger temporary one.
+#:
+#: `team_counters_etb` already reads a PERMANENT that hands out counters as it
+#: enters. This is the SPELL form, single-target, which nothing read: Kick in the
+#: Door's profile was `{}` apart from the fodder flag.
+#:
+#: Corpus sweep 2026-09-25, all 7,754 instants and sorceries: 132 put +1/+1
+#: counters on one target creature, 66 of those are copy fodder, 3 in mono-red —
+#: Kick in the Door {R}, Explosive Entry {1}{R}, Flame On! {4}{R}.
+#:
+#: X IS NOT READ, the same refusal as the X-based pump: X is a count this function
+#: has no board to resolve. Understating is the documented safe direction.
+_SPELL_COUNTERS_RE = re.compile(
+    r"put (a|one|two|three) \+1/\+1 counters? on (?:up to one )?target creature", re.I)
+
+
+def spell_counters(card):
+    """How many PERMANENT +1/+1 counters this spell puts on one target creature."""
+    type_line = str(card.get("type_line", "") or "")
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return 0
+    m = _SPELL_COUNTERS_RE.search(
+        _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or "")))
+    return {"a": 1, "one": 1, "two": 2, "three": 3}[m.group(1).lower()] if m else 0
+
+
+def spell_treasure(card):
+    """How many Treasures this instant or sorcery creates when it RESOLVES.
+
+    Zero for a permanent: a Treasure made on an ETB, a death or an attack is a
+    different trigger and the turn loop already reads those.
+    """
+    type_line = str(card.get("type_line", "") or "")
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return 0
+    m = _SPELL_TREASURE_RE.search(
+        _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or "")))
+    return {"a": 1, "one": 1, "two": 2, "three": 3}[m.group(1).lower()] if m else 0
+
+
+def spell_pump(card):
+    """(single_target_power, team_power) a spell grants for ONE turn.
+
+    Both are power only. `single` is multipliable by a commander-copy ability;
+    `team` already hits the whole board and must not be multiplied again.
+    """
+    type_line = str(card.get("type_line", "") or "")
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return (0, 0)
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    team = _SPELL_PUMP_TEAM_RE.search(text)
+    if team:
+        # A team pump is not also a single-target pump, even when the wording
+        # mentions a target elsewhere in the card.
+        return (0, int(team.group(1)))
+    single = _SPELL_PUMP_SINGLE_RE.search(text)
+    return (int(single.group(1)) if single else 0, 0)
+
+
+#: THE SPELL COUNT, AND THE THREE CHANNELS THAT RIDE ON IT.
+#:
+#: None of these could exist before the model counted spells, and it did not:
+#: there was no spells-cast-this-turn variable anywhere in the simulator. So
+#: STORM — a mechanic defined entirely by that count — was unreadable, and
+#: goblin-storm's two actual payoffs (Grapeshot, Empty the Warrens) scored as a
+#: 1-damage ping and two 1/1s however many spells preceded them.
+#:
+#: Corpus sweeps 2026-09-25, all 34,890 cards:
+#:   storm                40  (the reminder text is the tell; "has storm" too)
+#:   per-cast damage       37  to EACH opponent — 28 at 1 damage, 9 at 2
+#:   magecraft             32  "whenever you cast OR COPY an instant or sorcery"
+#:
+#: MAGECRAFT FIRES ON COPIES AND THAT IS THE WHOLE POINT HERE. Storm-Kiln Artist
+#: is already sleeved in goblin-storm: with Zada out and six other bodies, one
+#: {R} cantrip is SEVEN magecraft triggers and seven Treasures. Per-cast damage
+#: does NOT fire on copies — "whenever you cast" is not "cast or copy", and
+#: Guttersnipe, Firebrand Archer and Kessig Flamebreather all say cast. That is
+#: a rules fact and the two flags are separate because of it.
+_STORM_RE = re.compile(r"\bstorm\b\s*\(|has storm", re.I)
+_PER_CAST_DAMAGE_RE = re.compile(
+    r"whenever you cast (an instant or sorcery|a noncreature|a spell)[^.]{0,60}?"
+    r"deals (\d+) damage to each opponent", re.I)
+_MAGECRAFT_TREASURE_RE = re.compile(
+    r"magecraft\s*[\u2014-]\s*whenever you cast or copy an instant or sorcery "
+    r"spell[^.]{0,40}?create a treasure", re.I)
+_MAGECRAFT_ANY_RE = re.compile(
+    r"magecraft\s*[\u2014-]\s*whenever you cast or copy an instant or sorcery", re.I)
+
+#: What a storm COPY does, for the two shapes a red deck has: a copy that deals
+#: damage and a copy that makes bodies. A storm spell whose effect is neither
+#: still COUNTS as a cast and its copies do nothing — understating, which is the
+#: documented safe direction.
+_STORM_DAMAGE_RE = re.compile(r"deals (\d+) damage to any target", re.I)
+_STORM_TOKENS_RE = re.compile(
+    r"create (\w+) (\d+)/(\d+) [^.]{0,40}?creature tokens?", re.I)
+
+
+def spell_count_profile(card):
+    """The spell-count channels: storm, per-cast damage, magecraft.
+
+    `storm_damage` / `storm_token_bodies` are what ONE copy does. `per_cast_*`
+    fires on a cast only; `magecraft` fires on a cast OR a copy.
+    """
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    raw = str(card.get("oracle_text", "") or "")
+    type_line = str(card.get("type_line", "") or "")
+    out = {"storm": False, "storm_damage": 0, "storm_token_bodies": 0,
+           "storm_token_power": 0, "per_cast_damage": 0,
+           "per_cast_damage_gate": None, "magecraft_treasure": 0,
+           "magecraft": False}
+    if _STORM_RE.search(raw) and ("Instant" in type_line or "Sorcery" in type_line):
+        out["storm"] = True
+        d = _STORM_DAMAGE_RE.search(text)
+        if d:
+            out["storm_damage"] = int(d.group(1))
+        t = _STORM_TOKENS_RE.search(text)
+        if t:
+            n = {"a": 1, "one": 1, "two": 2, "three": 3, "four": 4,
+                 "five": 5, "six": 6, "seven": 7}.get(t.group(1).lower())
+            if n:
+                out["storm_token_bodies"] = n
+                out["storm_token_power"] = int(t.group(2)) * n
+    m = _PER_CAST_DAMAGE_RE.search(text)
+    if m:
+        out["per_cast_damage_gate"] = m.group(1).lower()
+        out["per_cast_damage"] = int(m.group(2))
+    if _MAGECRAFT_ANY_RE.search(text):
+        out["magecraft"] = True
+        if _MAGECRAFT_TREASURE_RE.search(text):
+            out["magecraft_treasure"] = 1
+    return out
+
+
 def combat_profile(card):
     """What this card does once there is a combat step.
 
@@ -2414,6 +2634,12 @@ def combat_profile(card):
     profile = {
         "is_creature": is_creature,
         "power": _stat(card.get("power")) if is_creature else 0,
+        # TOUGHNESS, which this model did without until a line needed to know
+        # what DIES. Every damage source here pointed at an opponent, so
+        # `spell_pump` reads power only and said so in its own comment. A
+        # spell that damages YOUR OWN creature (Rile) is the first thing that
+        # cannot be priced without it.
+        "toughness": _stat(card.get("toughness")) if is_creature else 0,
         "haste": bool(_HASTE_RE.search(text)),
         # Read for the flying-gated grant (Dragon Tempest) only.
         "flying": is_creature and bool(_FLYING_KW_RE.search(text)),
@@ -2446,6 +2672,13 @@ def combat_profile(card):
         "extra_combat_cost": None,
         # x2 per source, multiplied together across everything in play.
         "team_damage_multiplier": 1,
+        # A ONE-TURN PUMP FROM A SPELL. Power only; see `spell_pump`.
+        # `single` is what a commander-copy ability multiplies across the
+        # board; `team` already hits everything and must not be doubled.
+        "spell_treasure": 0,
+        "spell_counters": 0,
+        "spell_pump_single": 0,
+        "spell_pump_team": 0,
         "double_strike": False,
         # POISON, see the regexes above. `infect` turns this creature's damage
         # into counters; `toxic` adds N counters per connect; the ping is a
@@ -2688,6 +2921,12 @@ def combat_profile(card):
         profile["team_counters_scale_type"] = m.group(1)
         word = m.group(2).lower()
         profile["team_counters_per_type"] = {"a": 1, "one": 1, "two": 2}.get(word, 1)
+
+    # THE ONE-TURN PUMP. Set here so `classify` carries it and the turn loop can
+    # read it; `spell_pump` holds the patterns and the corpus sweep.
+    profile["spell_pump_single"], profile["spell_pump_team"] = spell_pump(card)
+    profile["spell_treasure"] = spell_treasure(card)
+    profile["spell_counters"] = spell_counters(card)
 
     return profile
 

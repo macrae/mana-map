@@ -1202,7 +1202,7 @@
   "why": "mana-v1 with one correction (2026-09-11): Asceticism takes Worldly Tutor's slot and Gadrak stays. Ablation on the champion: Asceticism-for-Gadrak was the only swap in the stack that moved the kill rate (kill-by-T8 -0.030), and the goldfish overstates Gadrak (it attacks with him ignoring the four-artifact clause; his Treasure is unmodelled), while Asceticism-for-Worldly-Tutor reads +0.001 on kill-by-T8 and keeps the Dragon curve at mean MV 5.38 with two three-drops. The pilot's rule: a Dragon earns its slot; a single-job spell is the cut. Control on the clock as before; the log is the instrument for the answers."
  },
  "objective_grade": {
-  "reading": 0.8326,
+  "reading": 0.8318,
   "shortfall": null,
   "state": "met"
  },
@@ -1286,7 +1286,7 @@
   "reward": [
    {
     "measure": "board power @T6",
-    "reads_as": "14.96 -> 15.55, a change of +0.59 (+4%)",
+    "reads_as": "14.87 -> 15.46, a change of +0.59 (+4%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
@@ -1297,7 +1297,7 @@
   ],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at +1.583 against an MDE of 2.615. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +1.526 against an MDE of 2.604. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1326,12 +1326,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 1.9839,
-   "champion": 1.954,
-   "delta": 0.0299,
-   "mde": 0.1393,
+   "branch": 1.9809,
+   "champion": 1.952,
+   "delta": 0.0289,
+   "mde": 0.1392,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.030 is smaller than the 0.139 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.029 is smaller than the 0.139 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1340,12 +1340,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4545,
-   "champion": 0.434,
-   "delta": 0.0205,
-   "mde": 0.0433,
+   "branch": 0.4506,
+   "champion": 0.4309,
+   "delta": 0.0197,
+   "mde": 0.0431,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.021 is smaller than the 0.043 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.020 is smaller than the 0.043 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1354,12 +1354,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 69.3238,
-   "champion": 67.7412,
-   "delta": 1.5826,
-   "mde": 2.6155,
+   "branch": 68.9617,
+   "champion": 67.4354,
+   "delta": 1.5263,
+   "mde": 2.6043,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 1.583 is smaller than the 2.615 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 1.526 is smaller than the 2.604 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -1368,12 +1368,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 15.5513,
-   "champion": 14.9582,
-   "delta": 0.5931,
-   "mde": 0.3859,
+   "branch": 15.4632,
+   "champion": 14.8731,
+   "delta": 0.5901,
+   "mde": 0.3846,
    "measure": "board power @T6",
-   "reads_as": "14.96 -> 15.55, a change of +0.59 (+4%)",
+   "reads_as": "14.87 -> 15.46, a change of +0.59 (+4%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1382,9 +1382,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.323,
-   "champion": 0.2922,
-   "delta": 0.0308,
+   "branch": 0.3216,
+   "champion": 0.292,
+   "delta": 0.0296,
    "mde": 0.0185,
    "measure": "killed by T6",
    "reads_as": "29 games in 100 -> 32 in 100, a swing of 3 games per 100",
@@ -1396,10 +1396,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9664,
-   "champion": 0.9641,
-   "delta": 0.0023,
-   "mde": 0.0074,
+   "branch": 0.9661,
+   "champion": 0.9645,
+   "delta": 0.0016,
+   "mde": 0.0073,
    "measure": "killed by T10",
    "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.007 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1411,8 +1411,8 @@
   {
    "better_is": "lower",
    "branch": 0.0818,
-   "champion": 0.0793,
-   "delta": 0.0025,
+   "champion": 0.079,
+   "delta": 0.0028,
    "mde": 0.0109,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.011 this run can resolve",
@@ -1452,9 +1452,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5798,
-   "champion": 0.5778,
-   "delta": 0.002,
+   "branch": 0.5788,
+   "champion": 0.5773,
+   "delta": 0.0015,
    "mde": 0.0208,
    "measure": "interaction affordable @T6",
    "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.021 this run can resolve",

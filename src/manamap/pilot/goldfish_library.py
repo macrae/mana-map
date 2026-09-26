@@ -34,6 +34,7 @@ from manamap.pilot.common import (
 
 from manamap.pilot.goldfish_profiles import (
     copy_fodder,
+    spell_count_profile,
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
     TOKEN_DOUBLER_RE,
@@ -219,6 +220,8 @@ def classify(card, pool=None):
         # WHETHER A ZADA-STYLE ABILITY CAN MULTIPLY THIS SPELL. Read here so the
         # casting loop can see it; the ability itself is declared per deck.
         "copy_fodder": copy_fodder(card),
+        # THE SPELL-COUNT CHANNELS: storm, per-cast damage, magecraft.
+        "spell_count": spell_count_profile(card),
         # THE PIPS MUST COME FROM THE DOOR THE COST CAME FROM. `front_field`
         # always answers with the left half, which is the wrong half on the six
         # Rooms whose back door is cheaper.

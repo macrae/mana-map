@@ -2388,3 +2388,71 @@ command** — the same rule the model-change gotcha states, one scope smaller.
 `tests/test_pilot_artifact_freshness.py` is what caught it, and only on `make test-fresh`:
 the regenerate-and-compare cache had served all five as passing, because the cache keys on
 the simulator and the branch's own inputs and the deck's declaration is neither.
+
+## The AI will not target its own commander to switch on a copy ability (2026-09-25)
+
+The sibling of the sacrifice rule above, found on goblin-storm, and the sharper
+case because here the AI plays the deck *well* and is blind to exactly one thing.
+
+Zada, Hedron Grinder reads "whenever you cast an instant or sorcery spell that
+targets only Zada, copy that spell for each other creature you control that the
+spell could target." The whole deck is that sentence. Measured over 60 games
+against `standard-v3`, with our seat on `Experimental`:
+
+```
+Zada cast                    100 times
+Zada's trigger fired          21 times        0.35 per game
+spells cast per game       ~11.9
+```
+
+**The trigger is implemented correctly and the AI almost never sets it up.**
+When it does fire the log is unambiguous and the line is devastating — one red
+mana for +3/+3 on eight creatures:
+
+```
+cast Brute Force targeting [Zada, Hedron Grinder (403)]
+  triggered Zada, Hedron Grinder
+  Resolve: "copy the spell for each other creature you control…"
+cast Brute Force targeting [Goblin Token (1708)]     (… seven copies in all)
+```
+
+THE MECHANISM IS THE SAME AS THE ALTAR'S. Forge's evaluator prices `Brute Force`
+on Zada as +3/+3 on one creature — identical to `Brute Force` on any other
+creature. Nothing in the target-selection heuristic can see that this target
+multiplies the spell across the board, so it picks whatever it normally likes
+(the biggest body, an unblocked attacker) and Zada is a 3/3 among Goblins. It is
+not declining a good play; it cannot see that the play differs.
+
+WHAT THIS DOES TO A RESULT. It is worse than a floor. A floor is the same deck
+played timidly; this is **a different deck** — a Zada list played without Zada's
+ability. Three runs are affected and all three are void as deck measurements:
+
+```
+champion                 0.031  (1/40)
+branch zada-v1 Default   0.040  (2/60)
+branch zada-v1 Exper.    0.065  (3/60)
+diff branch vs champion  -0.008  ci95 [-0.091, +0.098]
+```
+
+The baseline is invalid by the same mechanism, so the A/B is not rescued by
+comparing them: neither arm ran the engine. `--profile Experimental` does not
+help, because willingness to activate abilities is not the problem — the
+observations were nearly unchanged (`tokens_observed` 1.98 → 1.95,
+`token_attackers` 1.70 → 1.67) while only the win count moved by one game.
+
+HOW TO GET EVIDENCE ANYWAY, and it is the right answer rather than a consolation:
+the 21 fires are 21 real boards. `sim-scenario --stack` lifts one and
+`/resolve-stack` proves the line by CITATION, which is the ✓ tier — strictly
+better than a rate. Stack 007 is that artifact.
+
+THE PREFLIGHT. Before spending hours on a deck whose engine needs a deliberate,
+unusual play, grep the logs for the commander's own trigger:
+
+```bash
+grep -rc "triggered <Commander Name>" data/decks/<slug>/sim/logs/<run>/*.log
+```
+
+A count near zero means the run is not measuring the deck. This is cheaper than
+`engine_casts`, which reports CASTS and said the plan was played 134-160% of
+expected natural draws here — true, and beside the point: every card was cast,
+just never at Zada.

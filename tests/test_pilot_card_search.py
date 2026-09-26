@@ -223,3 +223,65 @@ def test_owned_and_unowned_partition_the_same_search():
         assert r["owned"] is True
     # Absent the filter the field is None, not False — "not asked" is not "no".
     assert all(r["owned"] is None for r in card_search.search(**q)[0])
+
+
+# ── the goldfish channels a card feeds ──
+#
+# THIS EXISTS BECAUSE OF A MEASURED FAILURE. Mining goblin-storm for cards that
+# would convert card advantage into damage returned Guttersnipe, Firebrand Archer
+# and Kessig Flamebreather; all three were staged, and all three read as VANILLA
+# BODIES, because the model had no spell count and "whenever you cast" fired on
+# nothing. The branch measured WORSE and the decline was an artifact of the
+# instrument, not a verdict on the cards.
+
+
+def test_channels_for_names_what_the_model_can_price():
+    from manamap.pilot.card_search import channels_for
+    fodder = channels_for({"name": "Expedite", "type_line": "Instant",
+                           "oracle_text": "Target creature gains haste until end "
+                                          "of turn. Draw a card."})
+    assert "fodder" in fodder and "draw" in fodder
+    storm = channels_for({"name": "Grapeshot", "type_line": "Instant",
+                          "oracle_text": "Grapeshot deals 1 damage to any target. "
+                                         "Storm (When you cast this spell, copy it "
+                                         "for each spell cast before it this turn.)"})
+    assert "storm" in storm
+    pump = channels_for({"name": "Brute Force", "type_line": "Instant",
+                         "oracle_text": "Target creature gets +3/+3 until end of turn."})
+    assert "pump" in pump and "fodder" in pump
+    # THE IMPORTANT CASE: a card the model reads as a body and a mana cost.
+    # An empty list is the answer to "why did this measure as nothing".
+    assert channels_for({"name": "Purphoros, God of the Forge",
+                         "type_line": "Legendary Enchantment Creature — God",
+                         "oracle_text": "Indestructible. Whenever another creature "
+                                        "you control enters, Purphoros deals 2 damage "
+                                        "to each opponent."}) == []
+
+
+def test_per_cast_damage_and_magecraft_are_distinct_channels():
+    """The rules distinction, surfaced in the search. "Whenever you cast" does not
+    fire on a copy; "cast OR COPY" does — so a Zada deck should be able to tell
+    them apart before it buys either."""
+    from manamap.pilot.card_search import channels_for
+    g = channels_for({"name": "Guttersnipe", "type_line": "Creature — Goblin Shaman",
+                      "oracle_text": "Whenever you cast an instant or sorcery spell, "
+                                     "this creature deals 2 damage to each opponent."})
+    assert g == ["per-cast-damage"]
+    s = channels_for({"name": "Storm-Kiln Artist", "type_line": "Creature — Dwarf Shaman",
+                      "oracle_text": "Magecraft — Whenever you cast or copy an instant "
+                                     "or sorcery spell, create a Treasure token."})
+    assert s == ["magecraft"]
+
+
+@requires_data
+def test_the_channel_filter_and_the_unmodelled_filter_are_complements():
+    from manamap.pilot.card_search import search
+    fodder, _ = search(identity=set("R"), channels=["fodder"], limit=40)
+    assert len(fodder) >= 20, f"only {len(fodder)} mono-red fodder cards"
+    assert all("fodder" in r["channels"] for r in fodder)
+    blind, _ = search(identity=set("R"), unmodelled=True, limit=40)
+    assert blind, "no unmodelled cards at all — the filter is inverted"
+    assert all(r["channels"] == [] for r in blind)
+    # And every row carries the annotation whether or not it was filtered on.
+    plain, _ = search(identity=set("R"), cmc_max=1, limit=10)
+    assert all("channels" in r for r in plain)

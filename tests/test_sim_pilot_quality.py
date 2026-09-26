@@ -150,6 +150,18 @@ KNOWN_FLAGGED = {
     # positive at the same n.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-cdaddf26"
     "-s341395706-podExperimental-c600.json",
+    # 2026-09-25, goblin-storm@zada-v1 on standard-v3, our seat on Default.
+    # Land drops and spells cast both 84% of the pod's rate. A TRUE POSITIVE and
+    # kept deliberately, because the observations are the entire value of the run:
+    # ZADA'S TRIGGER FIRED 21 TIMES IN 60 GAMES against 100 casts of her — the AI
+    # will not target its own commander to switch on a copy ability, because its
+    # evaluator prices Brute Force on Zada identically to Brute Force on anything
+    # else. So the win rate (0.040) is not a floor on this deck, it is a
+    # measurement of a DIFFERENT deck, and the record says so. The Experimental
+    # companion run moved tokens_observed 1.98 -> 1.95, which is why the profile
+    # is not the explanation. → docs/gotchas-bench.md
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c9abd341"
+    "-s1383481153-podExperimental-c600.json",
 }
 
 

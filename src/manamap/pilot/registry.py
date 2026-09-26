@@ -921,6 +921,20 @@ def add_pilot_parser(subparsers):
                              help="type-line regex, repeatable (any)")
             cmd.add_argument("--role", action="append", default=[], metavar="ROLE",
                              help="card_roles.json role, repeatable (any)")
+            # WHAT THE GOLDFISH CAN PRICE. A search that cannot answer this
+            # hands you a card the model reads as a vanilla body, which measures
+            # as nothing and looks exactly like a card that does not help.
+            cmd.add_argument("--channel", action="append", default=[], metavar="CHANNEL",
+                             help="goldfish channel the card feeds, repeatable (any): "
+                                  "fodder / pump / draw / storm / per-cast-damage / "
+                                  "magecraft")
+            grp = cmd.add_mutually_exclusive_group()
+            grp.add_argument("--modelled", action="store_false", dest="unmodelled",
+                             default=None,
+                             help="only cards the goldfish can price at all")
+            grp.add_argument("--unmodelled", action="store_true", dest="unmodelled",
+                             default=None,
+                             help="only cards it CANNOT — the blind spots")
             cmd.add_argument("--cmc-max", type=float, default=None, dest="cmc_max")
             cmd.add_argument("--cmc-min", type=float, default=None, dest="cmc_min")
             cmd.add_argument("--no-game-changers", action="store_true", dest="no_game_changers",

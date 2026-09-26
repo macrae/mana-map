@@ -1,0 +1,202 @@
+{
+ "slug": "goblin-storm",
+ "branch": "zada-v1",
+ "v": 2,
+ "opened": "2026-09-25",
+ "why": "Lean into Zada: the deck is built on copying a single-target spell across the board and runs only FOUR drawing fodder cantrips out of the 16 that exist in mono-red. This pass takes fodder from 4 to 10, protection from 2 to 4 (Zada is a 3-mana 3/3 the whole deck depends on), and adds the two storm cards that actually convert. Slots come from the ramp surplus (15 vs target 10-12) and the 4-5 drop Goblin bodies, not from the token makers.",
+ "objective": {
+  "axis": "extra_cards_8",
+  "op": ">=",
+  "value": 3.0,
+  "why": "Lean into Zada: the deck is built on copying a single-target spell across the board and runs only FOUR drawing fodder cantrips out of the 16 that exist in mono-red. This pass takes fodder from 4 to 10, protection from 2 to 4 (Zada is a 3-mana 3/3 the whole deck depends on), and adds the two storm cards that actually convert. Slots come from the ramp surplus (15 vs target 10-12) and the 4-5 drop Goblin bodies, not from the token makers."
+ },
+ "commits": [
+  {
+   "at": "2026-09-25",
+   "decklist_sha256": "178f014b6dfdc638041c0dcf624b78e401bf4648f8eefecc048e3eca42e5ed4a",
+   "message": "Fodder 4 -> 10, protection 2 -> 4, two real storm cards; slots from the ramp surplus and the 5-drops."
+  },
+  {
+   "at": "2026-09-25",
+   "decklist_sha256": "16ef224996a8fbf868ab37b79872dd43315d66b6643cd1cadc14ff3a6d1c5f82",
+   "message": "Pass 2: CONVERSION. Pass 1 tripled card draw and did not move the kill rate, so this adds per-cast damage, a board-wide pump with buyback, and ward protection."
+  },
+  {
+   "at": "2026-09-25",
+   "decklist_sha256": "e65fe97ec08c43179c8c920da4eed8af4fedcf851d38282088e295ca58a67c73",
+   "message": "Pass 3: the STORM axis. The ritual leg of the storm target, which pass 1 damaged by cutting Glimpse the Impossible and Spreading Insurrection."
+  },
+  {
+   "at": "2026-09-25",
+   "decklist_sha256": "2e66269f98c2279165fe800fafcfa2b75dbd07c01664922db737b34111627787",
+   "message": "Restore Spreading Insurrection: cutting it stranded a name in the storm target's payoff leg, which the tracked-artifact validator caught. Galvanic Relay comes out with it as the paired half of that swap."
+  },
+  {
+   "at": "2026-09-25",
+   "decklist_sha256": "57725742d1bcf7c5ca784c97f1451625212727ec4a9a8fa7688edf2345e3e930",
+   "message": "Pass 4: pump count 1 -> 3, spell-for-spell. Bodies are the copy count and the branch was already behind the champion until turn 9, so no creature comes out for this."
+  },
+  {
+   "at": "2026-09-25",
+   "decklist_sha256": "67cb38b587aa3408adf639da94eb8c0b5743efdef3b5895205e25330b7d08cb7",
+   "message": "Pass 5 (Alex's read): swap two draw-only cantrips for buff-AND-Treasure fodder. Copied across the board each one is +N power AND a Treasure per creature \u2014 the 1/1s become threats and pay for the next spell."
+  }
+ ],
+ "base_version": 1,
+ "staged": [
+  {
+   "at": "2026-09-25",
+   "out": "Ruby Medallion",
+   "in": "Ancestral Anger",
+   "strength": null,
+   "why": "Medallion reduces GENERIC cost and a {R} cantrip has none \u2014 it is dead in a deck of one-mana fodder. Ancestral Anger is fodder that draws."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Moggcatcher",
+   "in": "Impolite Entrance",
+   "strength": null,
+   "why": "A 4-mana tutor that must survive and tap. Fodder that draws costs one."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Goblin Trashmaster",
+   "in": "Might of the Meek",
+   "strength": null,
+   "why": "Narrow artifact removal on a 4-drop body. Fodder that draws."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Daring Discovery",
+   "in": "Rile",
+   "strength": null,
+   "why": "Five mana. Rile is the line you spotted: 1 damage to each of your own creatures, copied, and Pashalik Mons turns every Goblin death into damage at any target."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Glimpse the Impossible",
+   "in": "Accelerate",
+   "strength": null,
+   "why": "Random exile-and-play, not fodder, three mana. Accelerate is fodder that draws."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Great Train Heist",
+   "in": "Stun",
+   "strength": null,
+   "why": "Spree modes the model cannot price and not fodder. Stun is fodder that draws."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Quest for the Goblin Lord",
+   "in": "Ground Rift",
+   "strength": null,
+   "why": "A quest that needs four creatures before it does anything. Ground Rift is fodder AND has storm \u2014 copied twice over."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Goblin Dark-Dwellers",
+   "in": "Champion's Helm",
+   "strength": null,
+   "why": "Five-mana body. The Helm gives Zada hexproof \u2014 which stops OPPONENTS targeting her and leaves your own cantrips legal. Shroud would switch her off."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Throne of Eldraine",
+   "in": "Mithril Coat",
+   "strength": null,
+   "why": "Five-mana draw engine in a deck that wants to spend turn five killing. Mithril Coat has FLASH and auto-attaches to a legend: protection you hold up."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Goblin Lackey",
+   "in": "Seething Anger",
+   "strength": null,
+   "why": "Lackey must connect before it does anything. Seething Anger is {R} fodder: +3/+0 copied across the whole board, with buyback {3} to do it again."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Conspicuous Snoop",
+   "in": "Firebrand Archer",
+   "strength": null,
+   "why": "Snoop is card selection the deck no longer needs at 10 cantrips. The Archer turns every noncreature spell into 1 damage to EACH opponent \u2014 the conversion the branch measured as missing."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Goblin Matron",
+   "in": "Kessig Flamebreather",
+   "strength": null,
+   "why": "A 3-mana tutor for a Goblin in a deck that now wants to cast spells. Second per-cast damage body."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Grenzo, Havoc Raiser",
+   "in": "Guttersnipe",
+   "strength": null,
+   "why": "Grenzo needs combat damage first. Guttersnipe is 2 damage to each opponent per instant or sorcery \u2014 the biggest per-cast number in mono-red."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Gempalm Incinerator",
+   "in": "Lavaspur Boots",
+   "strength": null,
+   "why": "Cycling removal for one Goblin. The Boots are {1}, equip {1}, and give WARD {1} \u2014 strictly better than hexproof for Zada, because your own cantrips still target her freely and opponents have to pay."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Vandalblast",
+   "in": "Pyretic Ritual",
+   "strength": null,
+   "why": "Narrow artifact removal. The storm target assembles in 17.8% of games and the RITUAL leg is what is missing \u2014 Pyretic Ritual is {1}{R} for {R}{R}{R}, a net +1 and a storm count."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Rundvelt Hordemaster",
+   "in": "Desperate Ritual",
+   "strength": null,
+   "why": "Impulse draw on a body, redundant now the deck draws 8 extra cards by T10. Desperate Ritual is the same net +1 ritual and splices onto Arcane."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Idol of Oblivion",
+   "in": "Rite of Flame",
+   "strength": null,
+   "why": "A draw engine that needs tokens, in a deck that no longer needs help drawing. Rite of Flame is {R} for {R}{R} \u2014 the cheapest ritual in mono-red and it grows with each copy in any graveyard."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Ground Rift",
+   "in": "Brute Force",
+   "strength": null,
+   "why": "Ground Rift is fodder that neither draws nor pumps \u2014 'can't block' is the weakest slot in the branch. Brute Force is {R} for +3/+3, and copied across seven bodies that is +21 power."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Seething Anger",
+   "in": "Titan's Strength",
+   "strength": null,
+   "why": "Buyback {3} almost never gets paid in a deck spending its mana on cantrips. Titan's Strength is the same {R} for +3/+1 AND scries."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Rite of Flame",
+   "in": "Monstrous Rage",
+   "strength": null,
+   "why": "A ritual for a pump, chosen over cutting a creature because Zada's copy count IS the body count. Monstrous Rage pumps +2/+0 AND leaves a permanent Monster Role (+1/+1 and trample) on the body."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Accelerate",
+   "in": "Reckless Ransacking",
+   "strength": null,
+   "why": "Accelerate was HELD AND NEVER CAST in 60 Forge games \u2014 the AI drew it and passed. Reckless Ransacking is the same {1}{R} and does two jobs: +3/+2 across the board AND a Treasure per copy, which is the mana for the follow-up."
+  },
+  {
+   "at": "2026-09-25",
+   "out": "Stun",
+   "in": "Sudden Breakthrough",
+   "strength": null,
+   "why": "'Can't block' is the weakest rider in the branch. Sudden Breakthrough is +2/+0, first strike, and a Treasure per copy at the same {1}{R}."
+  }
+ ]
+}

@@ -49,6 +49,63 @@ UNRANKED = 10 ** 9
 MAX_RESULTS = 50
 
 
+#: THE GOLDFISH CHANNELS A CARD FEEDS, as a searchable filter.
+#:
+#: THIS EXISTS BECAUSE OF A MEASURED FAILURE. Mining goblin-storm for cards that
+#: would convert its card advantage into damage returned Guttersnipe, Firebrand
+#: Archer and Kessig Flamebreather; all three were staged, and all three read as
+#: VANILLA BODIES — the model had no spell count, so "whenever you cast" fired on
+#: nothing. The branch measured WORSE and the decline was an artifact of the
+#: instrument, not a verdict on the cards. A search that cannot say "the model
+#: cannot price this" hands you that trap every time.
+#:
+#: Each entry is (label, predicate) over a card dict. `channels_for` annotates
+#: every result; `--channel` filters on them.
+def _channel_table():
+    from manamap.pilot import goldfish_profiles as gp
+
+    def _fodder(c):
+        return gp.copy_fodder(c)
+
+    def _pump(c):
+        return gp.spell_pump(c) != (0, 0)
+
+    def _draw(c):
+        d = gp.draw_profile(c)
+        return bool(d["spell_draw"] or d["etb_draw"] or d["recurring_draw"]
+                    or d["arrival_draw"] or d["cast_draw"])
+
+    def _storm(c):
+        return gp.spell_count_profile(c)["storm"]
+
+    def _percast(c):
+        return bool(gp.spell_count_profile(c)["per_cast_damage"])
+
+    def _magecraft(c):
+        return gp.spell_count_profile(c)["magecraft"]
+
+    return {
+        "fodder": ("copied by a Zada-style ability (targets ONE creature)", _fodder),
+        "pump": ("a one-turn pump from a spell", _pump),
+        "draw": ("draws cards through a channel the model reads", _draw),
+        "storm": ("has storm — copies scale with the spell count", _storm),
+        "per-cast-damage": ("damage to each opponent per CAST (never a copy)", _percast),
+        "magecraft": ("fires on cast OR COPY — Zada multiplies it", _magecraft),
+    }
+
+
+CHANNELS = None          # built lazily; importing profiles is not free
+
+
+def channels_for(card):
+    """Every goldfish channel this card feeds. Empty means the model reads it as
+    a body and a mana cost and nothing else."""
+    global CHANNELS
+    if CHANNELS is None:
+        CHANNELS = _channel_table()
+    return sorted(k for k, (_desc, pred) in CHANNELS.items() if pred(card))
+
+
 def parse_identity_arg(value):
     """`--identity` as a set of single-letter colours, from either spelling.
 
@@ -100,7 +157,7 @@ def deck_names(slug):
 
 def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_max=None,
            cmc_min=None, exclude=(), limit=MAX_RESULTS, allow_game_changers=True,
-           require_all=False, owned=None):
+           require_all=False, owned=None, channels=None, unmodelled=None):
     """Filter the corpus. Returns (rows, meta) — rows already ranked and capped.
 
     `oracle` is a list of regexes: a card matches when ANY of them hits, or ALL
@@ -168,6 +225,17 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
         is_owned = bool(expand_faces(name) & have) if owned is not None else None
         if owned is not None and is_owned is not owned:
             continue
+        # WHAT THE MODEL CAN PRICE. Annotated on every row, never only filtered:
+        # an empty list is the answer to "why did this measure as nothing".
+        card_for_profile = {"name": name, "type_line": rec["type_line"],
+                            "oracle_text": text}
+        chans = channels_for(card_for_profile)
+        if channels and not (set(channels) & set(chans)):
+            continue
+        if unmodelled is True and chans:
+            continue
+        if unmodelled is False and not chans:
+            continue
         rows.append({
             "name": name,
             "mana_cost": rec["mana_cost"],
@@ -179,6 +247,7 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
             "roles": sorted(card_roles),
             "owned": is_owned,
             "matched": hits,
+            "channels": chans,
             "oracle_text": text,
         })
 
@@ -218,6 +287,8 @@ def analyze(args):
         names=getattr(args, "name", None) or [],
         types=getattr(args, "type", None) or [],
         roles=getattr(args, "role", None) or [],
+        channels=list(getattr(args, "channel", None) or []) or None,
+        unmodelled=getattr(args, "unmodelled", None),
         cmc_max=getattr(args, "cmc_max", None),
         cmc_min=getattr(args, "cmc_min", None),
         exclude=exclude,
@@ -262,6 +333,10 @@ def format_report(doc):
         out.append(f"    {r['type_line']}  ·  edhrec "
                    f"{rank if rank is not None else 'unranked'}"
                    + (f"  ·  roles {', '.join(r['roles'])}" if r["roles"] else ""))
+        # THE LINE THAT WOULD HAVE SAVED A WHOLE BRANCH. "model: —" means the
+        # goldfish reads this as a body and a mana cost: measure it and it will
+        # come back as nothing, which is not the same as not helping.
+        out.append(f"    model: {', '.join(r['channels']) if r.get('channels') else '—'}")
         text = " | ".join(str(r["oracle_text"]).splitlines())
         out.append(f"    {text[:240]}")
         out.append("")
