@@ -2529,6 +2529,27 @@ _SPELL_POWER_TO_EACH_RE = re.compile(
 _SPELL_EXTRA_COMBAT_RE = re.compile(r"there is an additional combat phase", re.I)
 
 
+#: AN UNTAP ON ONE CREATURE, WHICH A COPY ABILITY TURNS INTO AN UNTAP-ALL. This
+#: is the card that makes an additional combat phase worth anything: Seize the
+#: Day queues the phases and an untapper spends them. Every mono-red instance is
+#: an Act of Treason variant — "gain control of target creature until end of
+#: turn. Untap that creature." — and on your OWN creature the control half does
+#: nothing while the untap half unlocks another attack.
+#:
+#: Corpus sweep 2026-09-26: 16 mono-red copy-fodder spells untap their target,
+#: from Claim the Firstborn at {R} through Act of Treason and Mark of Mutiny.
+_SPELL_UNTAP_RE = re.compile(r"untap (?:target creature|that creature|it)\b", re.I)
+
+
+def spell_untap(card):
+    """Does this spell untap the creature it targets?"""
+    type_line = str(card.get("type_line", "") or "")
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return False
+    return bool(_SPELL_UNTAP_RE.search(
+        _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))))
+
+
 def spell_combat_effects(card):
     """The four board-wide combat effects a single-target spell can grant.
 
@@ -2728,6 +2749,7 @@ def combat_profile(card):
         "spell_power_multiplier": 1,
         "spell_power_to_each_opponent": False,
         "spell_extra_combat": 0,
+        "spell_untap": False,
         "spell_pump_single": 0,
         "spell_pump_team": 0,
         "double_strike": False,
@@ -2983,6 +3005,7 @@ def combat_profile(card):
     profile["spell_power_multiplier"] = _sce["power_multiplier"]
     profile["spell_power_to_each_opponent"] = _sce["power_to_each_opponent"]
     profile["spell_extra_combat"] = _sce["extra_combat"]
+    profile["spell_untap"] = spell_untap(card)
 
     return profile
 

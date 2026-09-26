@@ -999,8 +999,8 @@
   "why": "final-v2 split. The Forge run (177 games, standard-v3) separated the seven spell swaps cleanly: Mithril Coat cast 40 and activated 35, Steel Hellkite 36 and 53, both colourless and both the standout performers of the whole 99. The two cards dropped here are Marang River Regent and Whirlwing Stormbrood, which are VALUE DRAGONS RATHER THAN PROTECTION and which Forge cannot load at all \u2014 it logged 'an unsupported card was requested' 14 times each, so the run measured a 98-card deck and those two can never be simulated. This branch is the protection half alone, on an unchanged manabase."
  },
  "objective_grade": {
-  "reading": 0.5639,
-  "shortfall": 0.0361,
+  "reading": 0.5638,
+  "shortfall": 0.0362,
   "state": "not met"
  },
  "recommendation": {
@@ -1031,14 +1031,15 @@
    "reads_as": "1 to buy; 96 of 97 already owned",
    "total": 97
   },
-  "fell": [],
+  "fell": [
+   "killed by T10"
+  ],
   "no_call": [
    "hoard @T10",
    "hoard @T6",
    "damage @T10",
    "board power @T6",
    "killed by T6",
-   "killed by T10",
    "missed drop by T5",
    "mulliganed",
    "interaction affordable @T6",
@@ -1054,9 +1055,15 @@
   ],
   "risk": [
    {
-    "detail": "the largest is killed by T10 at -0.008 against an MDE of 0.008. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "the largest is hoard @T10 at +0.069 against an MDE of 0.129. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "10 row(s) returned no call",
+    "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1111,12 +1118,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 2.0135,
-   "champion": 1.938,
-   "delta": 0.0755,
-   "mde": 0.1385,
+   "branch": 1.873,
+   "champion": 1.8043,
+   "delta": 0.0687,
+   "mde": 0.1287,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.075 is smaller than the 0.139 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.069 is smaller than the 0.129 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1125,10 +1132,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4439,
-   "champion": 0.4253,
-   "delta": 0.0186,
-   "mde": 0.0424,
+   "branch": 0.4382,
+   "champion": 0.4187,
+   "delta": 0.0195,
+   "mde": 0.0418,
    "measure": "hoard @T6",
    "reads_as": "no call \u2014 the gap of 0.019 is smaller than the 0.042 this run can resolve",
    "scale": null,
@@ -1139,12 +1146,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 67.6361,
-   "champion": 67.0207,
-   "delta": 0.6154,
-   "mde": 2.6586,
+   "branch": 58.4046,
+   "champion": 57.7387,
+   "delta": 0.6659,
+   "mde": 2.1247,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.615 is smaller than the 2.659 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.666 is smaller than the 2.125 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -1153,12 +1160,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 14.5916,
-   "champion": 14.6835,
-   "delta": -0.0919,
-   "mde": 0.3825,
+   "branch": 14.5794,
+   "champion": 14.6772,
+   "delta": -0.0978,
+   "mde": 0.3823,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.092 is smaller than the 0.383 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.098 is smaller than the 0.382 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1167,12 +1174,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2862,
-   "champion": 0.283,
-   "delta": 0.0032,
-   "mde": 0.0179,
+   "branch": 0.2631,
+   "champion": 0.2585,
+   "delta": 0.0046,
+   "mde": 0.0174,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.018 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.017 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1181,15 +1188,15 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9544,
-   "champion": 0.9626,
-   "delta": -0.0082,
-   "mde": 0.0083,
+   "branch": 0.9522,
+   "champion": 0.961,
+   "delta": -0.0088,
+   "mde": 0.0085,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.008 this run can resolve",
+   "reads_as": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
   },
@@ -1237,9 +1244,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5639,
-   "champion": 0.558,
-   "delta": 0.0059,
+   "branch": 0.5638,
+   "champion": 0.5578,
+   "delta": 0.006,
    "mde": 0.021,
    "measure": "interaction affordable @T6",
    "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.021 this run can resolve",

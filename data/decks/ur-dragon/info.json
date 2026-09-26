@@ -6819,10 +6819,10 @@
           "n": 10000
         },
         "4": {
-          "rate": 0.0323,
+          "rate": 0.0322,
           "ci95": [
-            0.029,
-            0.0359
+            0.0289,
+            0.0358
           ],
           "n": 10000
         },
@@ -6835,26 +6835,26 @@
           "n": 10000
         },
         "6": {
-          "rate": 0.02,
+          "rate": 0.0201,
           "ci95": [
-            0.0174,
-            0.0229
+            0.0175,
+            0.023
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0185,
+          "rate": 0.0184,
           "ci95": [
-            0.016,
-            0.0213
+            0.0159,
+            0.0212
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0175,
+          "rate": 0.0174,
           "ci95": [
-            0.0151,
-            0.0203
+            0.015,
+            0.0202
           ],
           "n": 10000
         },
@@ -6886,8 +6886,8 @@
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 4472,
-        "hand_empty": 600,
+        "stall_turns": 4470,
+        "hand_empty": 598,
         "mana_short": 3872
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
@@ -6918,8 +6918,8 @@
         "5": 5.965,
         "6": 6.765,
         "7": 7.448,
-        "8": 8.072,
-        "9": 8.671,
+        "8": 8.071,
+        "9": 8.672,
         "10": 9.244
       },
       "fleet": "above the fleet median",
@@ -6987,7 +6987,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.889,
+          "value": 6.892,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -7133,8 +7133,8 @@
             "4": 4.911,
             "5": 5.948,
             "6": 6.746,
-            "7": 7.444,
-            "8": 8.062,
+            "7": 7.445,
+            "8": 8.061,
             "9": 8.638
           },
           "tier": "data",
@@ -7165,13 +7165,13 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.0,
-            "10": 5.305,
+            "10": 5.304,
             "2": 0.157,
             "3": 0.482,
             "4": 1.097,
             "5": 1.909,
-            "6": 2.727,
-            "7": 3.474,
+            "6": 2.728,
+            "7": 3.473,
             "8": 4.152,
             "9": 4.75
           },
@@ -7199,13 +7199,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 414,
-            "4": 16,
-            "5": 522,
-            "6": 2333,
-            "7": 3230,
-            "8": 2089,
-            "9": 989
+            "10": 441,
+            "4": 12,
+            "5": 457,
+            "6": 2179,
+            "7": 3222,
+            "8": 2178,
+            "9": 1083
           },
           "tier": "data",
           "weight": "detail",
@@ -7221,7 +7221,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.889,
+    "commander_mean_cast_turn": 6.892,
     "commander_cast_by_turn_6_pct": 33,
     "targets": [
       {
@@ -7266,20 +7266,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.196,
+      "mean_kill_turn": 7.265,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 29,
-      "kill_by_turn_8_pct": 82,
+      "kill_by_turn_6_pct": 26,
+      "kill_by_turn_8_pct": 80,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 4,
       "kill_turn_histogram": {
-        "10": 414,
-        "4": 16,
-        "5": 522,
-        "6": 2333,
-        "7": 3230,
-        "8": 2089,
-        "9": 989
+        "10": 441,
+        "4": 12,
+        "5": 457,
+        "6": 2179,
+        "7": 3222,
+        "8": 2178,
+        "9": 1083
       }
     }
   },

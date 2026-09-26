@@ -49,13 +49,13 @@
             "name": "Champion's Helm"
           },
           {
-            "name": "Desperate Ritual"
-          },
-          {
             "name": "Firebrand Archer"
           },
           {
             "name": "Guttersnipe"
+          },
+          {
+            "name": "Hanweir Garrison"
           },
           {
             "name": "Impolite Entrance"
@@ -67,7 +67,7 @@
             "name": "Lavaspur Boots"
           },
           {
-            "name": "Might of the Meek"
+            "name": "Legion Warboss"
           },
           {
             "name": "Pyretic Ritual"
@@ -76,7 +76,7 @@
             "name": "Reckless Ransacking"
           },
           {
-            "name": "Rile"
+            "name": "Squee, Dubious Monarch"
           },
           {
             "name": "Sudden Breakthrough"
@@ -91,15 +91,15 @@
           }
         ],
         "proxy": [],
-        "free": [
+        "free": [],
+        "box": [
           {
-            "name": "Seize the Day",
+            "name": "Rite of Flame",
             "where": [
-              "ingris-infect"
+              "Mystery Booster 2"
             ]
           }
         ],
-        "box": [],
         "blocking": 15,
         "procurement": null
       },
@@ -109,30 +109,30 @@
       "out": 16,
       "counts": {
         "in_deck": 63,
-        "box": 0,
+        "box": 1,
         "elsewhere": 1,
         "buy": 14,
-        "free": 1
+        "free": 0
       },
       "unsourced": [
         "Ancestral Anger",
         "Assault Strobe",
         "Champion's Helm",
-        "Desperate Ritual",
         "Firebrand Archer",
         "Guttersnipe",
+        "Hanweir Garrison",
         "Impolite Entrance",
         "Kessig Flamebreather",
         "Lavaspur Boots",
-        "Might of the Meek",
+        "Legion Warboss",
         "Mithril Coat",
         "Pyretic Ritual",
         "Reckless Ransacking",
-        "Rile",
+        "Squee, Dubious Monarch",
         "Sudden Breakthrough"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 0,
       "cards": [
         {
           "name": "Ancestors' Aid",
@@ -231,13 +231,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Desperate Ritual",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Dragon Fodder",
@@ -380,6 +373,13 @@
           "is_new": true
         },
         {
+          "name": "Hanweir Garrison",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Haze of Rage",
           "state": "in_deck",
           "where": [],
@@ -457,18 +457,18 @@
           "is_new": true
         },
         {
+          "name": "Legion Warboss",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Mana Geyser",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Might of the Meek",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Mithril Coat",
@@ -549,9 +549,14 @@
           "is_new": false
         },
         {
-          "name": "Rile",
-          "state": "buy",
-          "where": [],
+          "name": "Rite of Flame",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -575,21 +580,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Seize the Day",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "ingris-infect",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
         },
         {
           "name": "Shinka, the Bloodsoaked Keep",
@@ -653,6 +643,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Squee, Dubious Monarch",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Storm-Kiln Artist",

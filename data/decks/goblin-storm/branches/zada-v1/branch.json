@@ -45,6 +45,16 @@
    "at": "2026-09-25",
    "decklist_sha256": "492fbd8331ce8541bc8a050a2beafca3f9fec2dd3f5c7735407a7621af436457",
    "message": "Pass 6: the tier the model could not see. Flat pumps out for an extra combat, a second extra combat and board-wide double strike \u2014 all measured, and Great Train Heist is a pass-1 cut I got wrong."
+  },
+  {
+   "at": "2026-09-26",
+   "decklist_sha256": "cd59fcec1f3b12aa40a557d5e3126de8a76ac9213748c254f972d0557674cc7c",
+   "message": "Desperate Ritual out for Rite of Flame: the splice was dead (one Arcane card in the deck, and it cannot splice onto itself)."
+  },
+  {
+   "at": "2026-09-26",
+   "decklist_sha256": "e01b366ccbd615d4abd1bfe80ba5e610cece5a25260908183013a383e39ba047",
+   "message": "Pass 7: BODIES. The branch was behind the champion on creature count at every turn to 9, and bodies ARE Zada's copy count \u2014 every fodder spell copies once per creature. Three body factories in, and Rile out for actively killing them."
   }
  ],
  "base_version": 1,
@@ -223,6 +233,34 @@
    "in": "Assault Strobe",
    "strength": null,
    "why": "A Monster Role against DOUBLE STRIKE on the whole board for {R} \u2014 measured +0.62, and it is the cheapest doubler of combat damage in mono-red."
+  },
+  {
+   "at": "2026-09-26",
+   "out": "Desperate Ritual",
+   "in": "Rite of Flame",
+   "strength": null,
+   "why": "The splice clause is DEAD: Desperate Ritual is the only Arcane card in the 99 and a card cannot splice onto itself, so it is a strictly worse Pyretic Ritual at the same cost. I added it citing the splice, which is true of the card and false of the deck. Rite of Flame is {R} for {R}{R} \u2014 the same net +1 mana one turn earlier, which is what matters when the ritual's job is to squeeze one more cantrip into the Zada turn."
+  },
+  {
+   "at": "2026-09-26",
+   "out": "Seize the Day",
+   "in": "Hanweir Garrison",
+   "strength": null,
+   "why": "With a TAPPED STATE modelled, Seize the Day's extra combat phases are empty and the card no longer pays \u2014 my +4.05 for it was free damage from a board that had already attacked. Hanweir Garrison makes TWO bodies every attack and they enter tapped AND attacking, so they deal damage immediately. Measured +9.91 damage @10 and +0.6 bodies at turn 6 \u2014 the largest single-card gain of the whole refactor."
+  },
+  {
+   "at": "2026-09-26",
+   "out": "Might of the Meek",
+   "in": "Squee, Dubious Monarch",
+   "strength": null,
+   "why": "Might of the Meek was cast ONCE in 60 Forge games. Squee is a hasty body that makes a Goblin every attack and recurs from the graveyard \u2014 bodies are Zada's copy count, so a recurring one compounds."
+  },
+  {
+   "at": "2026-09-26",
+   "out": "Rile",
+   "in": "Legion Warboss",
+   "strength": null,
+   "why": "Rile is anti-synergy with the thing that matters: copied, it deals 1 damage to EVERY creature you control and kills your own 1/1 board \u2014 which IS the copy count. It was also held and never cast in 60 Forge games. Legion Warboss makes a Goblin every combat instead of removing them."
   }
  ]
 }

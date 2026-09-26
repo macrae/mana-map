@@ -421,6 +421,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # never join it: a one-turn grant read as a permanent one is this
         # file's documented trap (a saga back face read as a damage doubler,
         # and cutting it measured as a LOSS). Both reset here, every turn.
+        # THE UNTAP STEP, which this model did without because nothing ever
+        # tapped. It is the first thing that happens on your turn (CR 502.1).
+        for _i in range(len(battlefield)):
+            _e = battlefield[_i]
+            if _e[7]:
+                battlefield[_i] = _e[:7] + (False,)
         spells_cast_this_turn = 0   # STORM reads this: copies = the count BEFORE it
         turn_pump = 0        # applies to EVERY attacker this turn
         turn_double_strike = False   # a spell granted it; ONE turn
@@ -564,8 +570,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # `creature_types` already does not and that drift is a known
             # defect. Every unpack below takes `*_` so the eighth field, when
             # it comes, breaks nothing.
+            # THE EIGHTH FIELD IS TAPPED, and until it existed every combat
+            # phase swung the FULL board — so an extra combat was free damage
+            # and `Seize the Day` looked like eight attacks when it is one.
             battlefield.append((power, arrived, haste, mult, is_token,
-                                (infect, toxic), toughness))
+                                (infect, toxic), toughness, False))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -1425,7 +1434,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if sc["storm_token_bodies"]:
                 each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
                 for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
-                    battlefield.append((each, turn, False, 1, True, (0, 0), 1))
+                    battlefield.append((each, turn, False, 1, True, (0, 0), 1, False))
                     creature_types.append("Creature — Goblin")
                     creature_flying.append(False)
                     bodies_cum += 1
@@ -1449,7 +1458,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      or c["combat"]["spell_double_strike"]
                                      or c["combat"]["spell_power_multiplier"] > 1
                                      or c["combat"]["spell_power_to_each_opponent"]
-                                     or c["combat"]["spell_extra_combat"])),
+                                     or c["combat"]["spell_extra_combat"])
+                                # AN UNTAPPER IS HELD, NOT CAST ON CURVE. Cast in
+                                # the precombat main it untaps creatures that are
+                                # already untapped and does nothing — which is the
+                                # same mistake a bad pilot makes with Seize the
+                                # Day. `_try_untap` spends it BETWEEN combats,
+                                # which is the only window where it buys an
+                                # attack. A card that only untaps is therefore
+                                # never cast in the main phase at all.
+                                and not (c["combat"]["spell_untap"]
+                                         and not c["combat"]["spell_extra_combat"])),
                                key=lambda c: -reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:
                     continue
@@ -1506,6 +1525,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _base = sum(_c[0] + team_anthem for _c in battlefield)
                     spell_each_opponent += _base if _copied else (
                         battlefield[0][0] + team_anthem if battlefield else 0)
+                # THE UNTAP, and copied it is an UNTAP-ALL — which is the whole
+                # reason an additional combat phase is worth casting. Seize the
+                # Day queues the phases; this spends them.
+                if _cbt["spell_untap"]:
+                    if _copied:
+                        for _i in range(len(battlefield)):
+                            _e = battlefield[_i]
+                            if _e[7]:
+                                battlefield[_i] = _e[:7] + (False,)
+                    elif battlefield and battlefield[0][7]:
+                        battlefield[0] = battlefield[0][:7] + (False,)
                 if _cbt["spell_extra_combat"]:
                     # NOT MULTIPLIED BY THE COPY COUNT, and the first version was.
                     # This model has NO TAPPED STATE: attackers are chosen by
@@ -2180,12 +2210,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             or (g_ not in ("all", "nontoken", "flying") and g_ in tl_)):
                         return True
                 return False
-            attackers = [(((p + team_anthem + turn_pump) * turn_power_mult)
-                          * (mult if mult > 1 else (2 if turn_double_strike else 1)), pz)
-                         for (p, arrived, haste, mult, _tok, pz, *_), tl_, fl_
-                         in zip(battlefield, creature_types, creature_flying)
-                         if haste or arrived < turn
-                         or (haste_grants and _granted(tl_, fl_, _tok))]
+            # A TAPPED CREATURE CANNOT ATTACK (CR 508.1a), and the indices are
+            # kept so the ones that DO attack can be tapped afterwards. Before
+            # this the same board swung in every combat phase, which made an
+            # additional combat free damage.
+            _able = [i for i, ((p, arrived, haste, mult, _tok, pz, _t, tapped), tl_, fl_)
+                     in enumerate(zip(battlefield, creature_types, creature_flying))
+                     if not tapped and (haste or arrived < turn
+                                        or (haste_grants and _granted(tl_, fl_, _tok)))]
+            attackers = [(((battlefield[i][0] + team_anthem + turn_pump) * turn_power_mult)
+                          * (battlefield[i][3] if battlefield[i][3] > 1
+                             else (2 if turn_double_strike else 1)), battlefield[i][5])
+                         for i in _able]
             # TWO CLOCKS FROM ONE SWING. An infect attacker's damage is poison
             # (702.90b) and never touches the life total; a toxic attacker
             # deals its damage AND adds N counters on connecting, which with
@@ -2202,6 +2238,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 spell_each_opponent = 0
             if counter_power and attackers and commander_turn is not None and turn > commander_turn:
                 swing += counter_power
+            # ATTACKING TAPS (CR 508.1f). Vigilance is not modelled and is named
+            # as a gap rather than assumed: no deck in the fleet grants it today.
+            for _i in _able:
+                _e = battlefield[_i]
+                battlefield[_i] = _e[:7] + (True,)
             swing_poison = (sum(d for d, pz in attackers if pz[0])
                             + sum(pz[1] for _d, pz in attackers))
             # The per-attacker ping is dealt BY the attacker, so an infect
@@ -2222,14 +2263,66 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if phases > 20:
                     break
 
+            # EACH PHASE RE-SELECTS ITS ATTACKERS, and this is the half that
+            # made the tapped state matter. The swing used to be computed once
+            # and multiplied by `phases`, so an additional combat was free
+            # damage from a board that had already attacked — Seize the Day read
+            # as eight attacks when it is one.
+            #
+            # BETWEEN PHASES, AN UNTAPPER IS CAST IF ONE IS IN HAND. That is the
+            # pilot's own line and the only way an extra phase is worth anything:
+            # attack, then in the second main phase untap everything and attack
+            # again. Copied by the commander it untaps the whole board.
+            def _recount():
+                _ab = [i for i, ((p_, arr_, hs_, ml_, tok_, pz_, _t_, tp_), tl_, fl_)
+                       in enumerate(zip(battlefield, creature_types, creature_flying))
+                       if not tp_ and (hs_ or arr_ < turn
+                                       or (haste_grants and _granted(tl_, fl_, tok_)))]
+                _at = [(((battlefield[i][0] + team_anthem + turn_pump) * turn_power_mult)
+                        * (battlefield[i][3] if battlefield[i][3] > 1
+                           else (2 if turn_double_strike else 1)), battlefield[i][5])
+                       for i in _ab]
+                return _ab, _at
+
+            def _try_untap():
+                """Cast an untapper from hand between combats, cheapest first."""
+                for c in sorted((x for x in hand
+                                 if x["combat"]["spell_untap"]
+                                 and not x["is_land"]),
+                                key=lambda x: reduced_cost(x, reductions, chosen_type)):
+                    if not spend(reduced_cost(c, reductions, chosen_type), c["pips"]):
+                        continue
+                    _note_cast(c)
+                    _all = (commander_copy and commander_turn is not None
+                            and c["copy_fodder"] and len(battlefield) > 1)
+                    for _i in range(len(battlefield)):
+                        _e = battlefield[_i]
+                        if _e[7] and (_all or _i == 0):
+                            battlefield[_i] = _e[:7] + (False,)
+                    return True
+                return False
+
             dealt = 0
             poisoned = 0
-            for _ in range(phases):
+            for _phase in range(phases):
+                if _phase:
+                    _try_untap()
+                    _able, attackers = _recount()
                 if not attackers:
                     break
                 bonus = treasures if any(
                     e["damage_scales_with_treasure"] for e in combat_engines) else 0
+                if _phase:
+                    swing = sum(d for d, pz in attackers if not pz[0])
+                    swing_poison = (sum(d for d, pz in attackers if pz[0])
+                                    + sum(pz[1] for _d, pz in attackers))
+                    ping_life = ping * sum(1 for _d, pz in attackers if not pz[0])
+                    ping_poison = ping * sum(1 for _d, pz in attackers if pz[0])
                 dealt += swing + bonus + ping_life
+                # and THIS phase's attackers tap
+                for _i in _able:
+                    _e = battlefield[_i]
+                    battlefield[_i] = _e[:7] + (True,)
                 poisoned += swing_poison + ping_poison
                 for engine in combat_engines:
                     pool += engine["attack_mana"]

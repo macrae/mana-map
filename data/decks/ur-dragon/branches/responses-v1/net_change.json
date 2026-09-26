@@ -1181,13 +1181,12 @@
   "why": "Prescription 0241fb6a70f1 adds 2, 3, 5: flash for every Dragon, a one-mana counter, and the one Dragon whose ETB counters. The goldfish cannot see any of it (no opponents), so its objective is a CONTROL \u2014 the three swaps may not cost more than about two points of unopposed clock (0.802 today). The gate is Forge at standard-v3: MDE 0.195 at 100 games a side against the 0.353 baseline."
  },
  "objective_grade": {
-  "reading": 0.7782,
-  "shortfall": 0.0018,
-  "state": "not resolvable",
-  "why": "missed by 0.0018, which is under the 0.0165 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "reading": 0.7618,
+  "shortfall": 0.0182,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0018, which is under the 0.0165 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The objective is not met.",
   "bill": {
    "box": 2,
    "buy": 4,
@@ -1251,7 +1250,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "67.02 -> 63.94, a change of -3.08 (-5%)",
+    "detail": "57.74 -> 55.07, a change of -2.67 (-5%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -1263,13 +1262,13 @@
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "28 games in 100 -> 26 in 100, a swing of 2 games per 100",
+    "detail": "26 games in 100 -> 24 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
+    "detail": "96 games in 100 -> 94 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
@@ -1304,19 +1303,19 @@
    }
   ],
   "rose": [],
-  "state": "inconclusive"
+  "state": "do not merge"
  },
  "slug": "ur-dragon",
  "staged": 3,
  "table": [
   {
    "better_is": "higher",
-   "branch": 1.9849,
-   "champion": 1.938,
-   "delta": 0.0469,
-   "mde": 0.1384,
+   "branch": 1.8404,
+   "champion": 1.8043,
+   "delta": 0.0361,
+   "mde": 0.1268,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.047 is smaller than the 0.138 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.036 is smaller than the 0.127 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1325,12 +1324,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4208,
-   "champion": 0.4253,
-   "delta": -0.0045,
-   "mde": 0.0417,
+   "branch": 0.4145,
+   "champion": 0.4187,
+   "delta": -0.0042,
+   "mde": 0.041,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.042 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.041 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1339,12 +1338,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 63.9432,
-   "champion": 67.0207,
-   "delta": -3.0775,
-   "mde": 2.7411,
+   "branch": 55.0734,
+   "champion": 57.7387,
+   "delta": -2.6653,
+   "mde": 2.0849,
    "measure": "damage @T10",
-   "reads_as": "67.02 -> 63.94, a change of -3.08 (-5%)",
+   "reads_as": "57.74 -> 55.07, a change of -2.67 (-5%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -1353,10 +1352,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 13.3721,
-   "champion": 14.6835,
-   "delta": -1.3114,
-   "mde": 0.3702,
+   "branch": 13.365,
+   "champion": 14.6772,
+   "delta": -1.3122,
+   "mde": 0.3699,
    "measure": "board power @T6",
    "reads_as": "14.68 -> 13.37, a change of -1.31 (-9%)",
    "scale": null,
@@ -1367,12 +1366,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.258,
-   "champion": 0.283,
-   "delta": -0.025,
-   "mde": 0.0178,
+   "branch": 0.237,
+   "champion": 0.2585,
+   "delta": -0.0215,
+   "mde": 0.0173,
    "measure": "killed by T6",
-   "reads_as": "28 games in 100 -> 26 in 100, a swing of 2 games per 100",
+   "reads_as": "26 games in 100 -> 24 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1381,12 +1380,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9478,
-   "champion": 0.9626,
-   "delta": -0.0148,
-   "mde": 0.0088,
+   "branch": 0.9449,
+   "champion": 0.961,
+   "delta": -0.0161,
+   "mde": 0.009,
    "measure": "killed by T10",
-   "reads_as": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
+   "reads_as": "96 games in 100 -> 94 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1437,9 +1436,9 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5596,
-   "champion": 0.558,
-   "delta": 0.0016,
+   "branch": 0.5599,
+   "champion": 0.5578,
+   "delta": 0.0021,
    "mde": 0.0216,
    "measure": "interaction affordable @T6",
    "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.022 this run can resolve",
