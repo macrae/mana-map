@@ -628,10 +628,35 @@
    "Wound Reflection"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Muddle the Mixture"
+   ],
+   "class": "counterspell",
+   "headline": "1 card(s) carrying a counterspell effect",
+   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Virtue of Persistence // Locthwain Scorn"
+   ],
+   "class": "recursion",
+   "headline": "1 card(s) carrying a recursion effect",
+   "why": "nothing dies in a goldfish, so recursion has no target"
+  },
+  {
+   "cards": [
+    "Virtue of Persistence // Locthwain Scorn"
+   ],
+   "class": "removal",
+   "headline": "1 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  }
+ ],
  "branch": "drain-v5",
  "changes": {
-  "count": 0,
+  "count": 20,
   "diff": {
    "base_names": 91,
    "base_size": 100,
@@ -849,7 +874,129 @@
   },
   "lands": [],
   "opened": "2026-09-09",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": "Blind Obedience",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Court of Ambition",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Lunar Convocation",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Mesa Enchantress",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Sanguine Bond",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Sigil of the Empty Throne",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Starfield Mystic",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "True Conviction",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Virtue of Persistence // Locthwain Scorn",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wound Reflection",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ajani's Chosen",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Gremlin Tamer",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Honden of Cleansing Fire",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Hypnotic Siren",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Muddle the Mixture",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Northern Air Temple",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Sanctum of Stone Fangs",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Southern Air Temple",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "The Spirit Oasis",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Transcendent Envoy",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "THE META ANSWERED EVERY COST drain-v2 PAID, AND THE ANSWERS ARE ALREADY IN A BOX. Moxfield is Cloudflare-blocked to every route tried, so this is EDHREC's aggregate over ~6,703 Zur, Eternal Schemer decks rather than a handful of individual lists -- which is the better sample for a benchmark anyway. Read as a ranking, not as a verdict: EDHREC truncates each section at its top 50, so a card absent from it is UNRANKED and not unplayed.\n\nTHE SINGLE MOST-INCLUDED CARD THIS DECK LACKED IS MESA ENCHANTRESS AT 72.6%, synergy +0.64, and it is the direct answer to the one real cost drain-v2 paid: extra cards by turn eight fell 2.43 -> 1.53. 'Whenever you cast an enchantment spell, you may draw a card' in a list of 44 enchantments is the fix the meta already found, and it is the only enchantress in this colour identity.\n\nSTARFIELD MYSTIC (61.8%, syn +0.55) ANSWERS THE CURVE TAX. drain-v2 bought its result by taking average mana value 2.667 -> 2.905, and drain-v3 tried to pay that back with cheaper cards and measured WORSE on every axis. 'Enchantment spells you cast cost {1} less' pays it back without cutting anything, and it is redundancy on Inquisitive Glimmer, which the deck already runs and which the same measurement says is not enough on its own.\n\nSIGIL OF THE EMPTY THRONE (48.2%, syn +0.43) REPLACES A WORSE VERSION OF ITSELF. Ajani's Chosen makes a 2/2 Cat when an enchantment ENTERS; the Sigil makes a 4/4 white Angel WITH FLYING when an enchantment is CAST. Twice the body, evasive, in a deck with 44 triggers. This also respects the lesson drain-v3 and drain-v4 both taught the hard way -- cutting a token-maker costs card draw, because this deck's draw runs through Enduring Curiosity on combat damage -- by replacing the bodies rather than deleting them.\n\nEVERY ADD IS IN A BOX AND EVERY CUT IS ON THE BUY LIST, so this branch makes the deck cheaper as well as better. Transcendent Envoy discounts AURA spells in a list that runs four Auras.\n\nTWO CARDS THE META RATES HIGHLY ARE DELIBERATELY HELD BACK, because this harness cannot see either and including them would corrupt the reading. EXTINGUISH ALL HOPE (55.0%, and already in a box) destroys all NONENCHANTMENT creatures -- a one-sided board wipe for a deck whose entire board is enchantment creatures -- and the goldfish models no opponents and no removal, so it is worth exactly zero here. SOARING LIGHTBRINGER (63.9%, syn +0.60) grants flying to other enchantment creatures and makes attacking 1/1 Glimmer ENCHANTMENT tokens that take the commander's grant, and evasion is likewise invisible to a model with no blockers. Both belong in a Forge run, not in this measurement."
  },
  "decklist_sha256": "9d071892599daf0704a39adfe1120c4cdfbadd35082fd4bd839e17f1584fd234",
@@ -1196,6 +1343,33 @@
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Muddle the Mixture"
+    ],
+    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a counterspell effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Virtue of Persistence // Locthwain Scorn"
+    ],
+    "detail": "nothing dies in a goldfish, so recursion has no target",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a recursion effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Virtue of Persistence // Locthwain Scorn"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "W gap +0 -> -14",

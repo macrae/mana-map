@@ -584,17 +584,16 @@
     "Goblin Trashmaster",
     "Guttersnipe",
     "Kessig Flamebreather",
-    "Rile",
     "Vandalblast"
    ],
    "class": "removal",
-   "headline": "7 card(s) carrying a removal effect",
+   "headline": "6 card(s) carrying a removal effect",
    "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
   }
  ],
  "branch": "zada-v1",
  "changes": {
-  "count": 29,
+  "count": 22,
   "diff": {
    "base_names": 79,
    "base_size": 100,
@@ -935,39 +934,9 @@
    },
    {
     "at": "2026-09-25",
-    "in": "Impolite Entrance",
-    "out": "Moggcatcher",
-    "why": "A 4-mana tutor that must survive and tap. Fodder that draws costs one."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Might of the Meek",
-    "out": "Goblin Trashmaster",
-    "why": "Narrow artifact removal on a 4-drop body. Fodder that draws."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Rile",
-    "out": "Daring Discovery",
-    "why": "Five mana. Rile is the line you spotted: 1 damage to each of your own creatures, copied, and Pashalik Mons turns every Goblin death into damage at any target."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Accelerate",
-    "out": "Glimpse the Impossible",
-    "why": "Random exile-and-play, not fodder, three mana. Accelerate is fodder that draws."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Stun",
-    "out": "Great Train Heist",
-    "why": "Spree modes the model cannot price and not fodder. Stun is fodder that draws."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Ground Rift",
-    "out": "Quest for the Goblin Lord",
-    "why": "A quest that needs four creatures before it does anything. Ground Rift is fodder AND has storm \u2014 copied twice over."
+    "in": "Assault Strobe",
+    "out": null,
+    "why": "A Monster Role against DOUBLE STRIKE on the whole board for {R} \u2014 measured +0.62, and it is the cheapest doubler of combat damage in mono-red."
    },
    {
     "at": "2026-09-25",
@@ -977,21 +946,27 @@
    },
    {
     "at": "2026-09-25",
-    "in": "Mithril Coat",
-    "out": "Throne of Eldraine",
-    "why": "Five-mana draw engine in a deck that wants to spend turn five killing. Mithril Coat has FLASH and auto-attaches to a legend: protection you hold up."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Seething Anger",
-    "out": "Goblin Lackey",
-    "why": "Lackey must connect before it does anything. Seething Anger is {R} fodder: +3/+0 copied across the whole board, with buyback {3} to do it again."
-   },
-   {
-    "at": "2026-09-25",
     "in": "Firebrand Archer",
     "out": "Conspicuous Snoop",
     "why": "Snoop is card selection the deck no longer needs at 10 cantrips. The Archer turns every noncreature spell into 1 damage to EACH opponent \u2014 the conversion the branch measured as missing."
+   },
+   {
+    "at": "2026-09-25",
+    "in": "Guttersnipe",
+    "out": "Grenzo, Havoc Raiser",
+    "why": "Grenzo needs combat damage first. Guttersnipe is 2 damage to each opponent per instant or sorcery \u2014 the biggest per-cast number in mono-red."
+   },
+   {
+    "at": "2026-09-26",
+    "in": "Hanweir Garrison",
+    "out": null,
+    "why": "With a TAPPED STATE modelled, Seize the Day's extra combat phases are empty and the card no longer pays \u2014 my +4.05 for it was free damage from a board that had already attacked. Hanweir Garrison makes TWO bodies every attack and they enter tapped AND attacking, so they deal damage immediately. Measured +9.91 damage @10 and +0.6 bodies at turn 6 \u2014 the largest single-card gain of the whole refactor."
+   },
+   {
+    "at": "2026-09-25",
+    "in": "Impolite Entrance",
+    "out": "Moggcatcher",
+    "why": "A 4-mana tutor that must survive and tap. Fodder that draws costs one."
    },
    {
     "at": "2026-09-25",
@@ -1001,15 +976,21 @@
    },
    {
     "at": "2026-09-25",
-    "in": "Guttersnipe",
-    "out": "Grenzo, Havoc Raiser",
-    "why": "Grenzo needs combat damage first. Guttersnipe is 2 damage to each opponent per instant or sorcery \u2014 the biggest per-cast number in mono-red."
-   },
-   {
-    "at": "2026-09-25",
     "in": "Lavaspur Boots",
     "out": "Gempalm Incinerator",
     "why": "Cycling removal for one Goblin. The Boots are {1}, equip {1}, and give WARD {1} \u2014 strictly better than hexproof for Zada, because your own cantrips still target her freely and opponents have to pay."
+   },
+   {
+    "at": "2026-09-26",
+    "in": "Legion Warboss",
+    "out": null,
+    "why": "Rile is anti-synergy with the thing that matters: copied, it deals 1 damage to EVERY creature you control and kills your own 1/1 board \u2014 which IS the copy count. It was also held and never cast in 60 Forge games. Legion Warboss makes a Goblin every combat instead of removing them."
+   },
+   {
+    "at": "2026-09-25",
+    "in": "Mithril Coat",
+    "out": "Throne of Eldraine",
+    "why": "Five-mana draw engine in a deck that wants to spend turn five killing. Mithril Coat has FLASH and auto-attaches to a legend: protection you hold up."
    },
    {
     "at": "2026-09-25",
@@ -1019,9 +1000,9 @@
    },
    {
     "at": "2026-09-25",
-    "in": "Desperate Ritual",
-    "out": "Rundvelt Hordemaster",
-    "why": "Impulse draw on a body, redundant now the deck draws 8 extra cards by T10. Desperate Ritual is the same net +1 ritual and splices onto Arcane."
+    "in": "Reckless Ransacking",
+    "out": null,
+    "why": "Accelerate was HELD AND NEVER CAST in 60 Forge games \u2014 the AI drew it and passed. Reckless Ransacking is the same {1}{R} and does two jobs: +3/+2 across the board AND a Treasure per copy, which is the mana for the follow-up."
    },
    {
     "at": "2026-09-25",
@@ -1030,78 +1011,55 @@
     "why": "A draw engine that needs tokens, in a deck that no longer needs help drawing. Rite of Flame is {R} for {R}{R} \u2014 the cheapest ritual in mono-red and it grows with each copy in any graveyard."
    },
    {
-    "at": "2026-09-25",
-    "in": "Brute Force",
-    "out": "Ground Rift",
-    "why": "Ground Rift is fodder that neither draws nor pumps \u2014 'can't block' is the weakest slot in the branch. Brute Force is {R} for +3/+3, and copied across seven bodies that is +21 power."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Titan's Strength",
-    "out": "Seething Anger",
-    "why": "Buyback {3} almost never gets paid in a deck spending its mana on cantrips. Titan's Strength is the same {R} for +3/+1 AND scries."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Monstrous Rage",
-    "out": "Rite of Flame",
-    "why": "A ritual for a pump, chosen over cutting a creature because Zada's copy count IS the body count. Monstrous Rage pumps +2/+0 AND leaves a permanent Monster Role (+1/+1 and trample) on the body."
-   },
-   {
-    "at": "2026-09-25",
-    "in": "Reckless Ransacking",
-    "out": "Accelerate",
-    "why": "Accelerate was HELD AND NEVER CAST in 60 Forge games \u2014 the AI drew it and passed. Reckless Ransacking is the same {1}{R} and does two jobs: +3/+2 across the board AND a Treasure per copy, which is the mana for the follow-up."
+    "at": "2026-09-26",
+    "in": "Squee, Dubious Monarch",
+    "out": null,
+    "why": "Might of the Meek was cast ONCE in 60 Forge games. Squee is a hasty body that makes a Goblin every attack and recurs from the graveyard \u2014 bodies are Zada's copy count, so a recurring one compounds."
    },
    {
     "at": "2026-09-25",
     "in": "Sudden Breakthrough",
-    "out": "Stun",
+    "out": null,
     "why": "'Can't block' is the weakest rider in the branch. Sudden Breakthrough is +2/+0, first strike, and a Treasure per copy at the same {1}{R}."
    },
    {
     "at": "2026-09-25",
-    "in": "Great Train Heist",
-    "out": "Brute Force",
-    "why": "Reversing my own pass-1 cut. I removed Great Train Heist as 'Spree modes the model cannot price' \u2014 the right answer to that was to teach the model, not to cut the card. With the extra-combat channel built it measures +4.24 damage @10, the biggest single gain of anything tested, for {1}."
+    "in": null,
+    "out": "Daring Discovery",
+    "why": "Five mana. Rile is the line you spotted: 1 damage to each of your own creatures, copied, and Pashalik Mons turns every Goblin death into damage at any target."
    },
    {
     "at": "2026-09-25",
-    "in": "Seize the Day",
-    "out": "Titan's Strength",
-    "why": "+3/+1 and a scry against an ADDITIONAL COMBAT PHASE. Measured +4.05 damage @10. Untaps the creature too, and has flashback."
+    "in": null,
+    "out": "Glimpse the Impossible",
+    "why": "Random exile-and-play, not fodder, three mana. Accelerate is fodder that draws."
    },
    {
     "at": "2026-09-25",
-    "in": "Assault Strobe",
-    "out": "Monstrous Rage",
-    "why": "A Monster Role against DOUBLE STRIKE on the whole board for {R} \u2014 measured +0.62, and it is the cheapest doubler of combat damage in mono-red."
+    "in": null,
+    "out": "Goblin Lackey",
+    "why": "Lackey must connect before it does anything. Seething Anger is {R} fodder: +3/+0 copied across the whole board, with buyback {3} to do it again."
    },
    {
-    "at": "2026-09-26",
-    "in": "Rite of Flame",
-    "out": "Desperate Ritual",
-    "why": "The splice clause is DEAD: Desperate Ritual is the only Arcane card in the 99 and a card cannot splice onto itself, so it is a strictly worse Pyretic Ritual at the same cost. I added it citing the splice, which is true of the card and false of the deck. Rite of Flame is {R} for {R}{R} \u2014 the same net +1 mana one turn earlier, which is what matters when the ritual's job is to squeeze one more cantrip into the Zada turn."
+    "at": "2026-09-25",
+    "in": null,
+    "out": "Goblin Trashmaster",
+    "why": "Narrow artifact removal on a 4-drop body. Fodder that draws."
    },
    {
-    "at": "2026-09-26",
-    "in": "Hanweir Garrison",
-    "out": "Seize the Day",
-    "why": "With a TAPPED STATE modelled, Seize the Day's extra combat phases are empty and the card no longer pays \u2014 my +4.05 for it was free damage from a board that had already attacked. Hanweir Garrison makes TWO bodies every attack and they enter tapped AND attacking, so they deal damage immediately. Measured +9.91 damage @10 and +0.6 bodies at turn 6 \u2014 the largest single-card gain of the whole refactor."
+    "at": "2026-09-25",
+    "in": null,
+    "out": "Quest for the Goblin Lord",
+    "why": "A quest that needs four creatures before it does anything. Ground Rift is fodder AND has storm \u2014 copied twice over."
    },
    {
-    "at": "2026-09-26",
-    "in": "Squee, Dubious Monarch",
-    "out": "Might of the Meek",
-    "why": "Might of the Meek was cast ONCE in 60 Forge games. Squee is a hasty body that makes a Goblin every attack and recurs from the graveyard \u2014 bodies are Zada's copy count, so a recurring one compounds."
-   },
-   {
-    "at": "2026-09-26",
-    "in": "Legion Warboss",
-    "out": "Rile",
-    "why": "Rile is anti-synergy with the thing that matters: copied, it deals 1 damage to EVERY creature you control and kills your own 1/1 board \u2014 which IS the copy count. It was also held and never cast in 60 Forge games. Legion Warboss makes a Goblin every combat instead of removing them."
+    "at": "2026-09-25",
+    "in": null,
+    "out": "Rundvelt Hordemaster",
+    "why": "Impulse draw on a body, redundant now the deck draws 8 extra cards by T10. Desperate Ritual is the same net +1 ritual and splices onto Arcane."
    }
   ],
+  "staged_count": 29,
   "why": "Lean into Zada: the deck is built on copying a single-target spell across the board and runs only FOUR drawing fodder cantrips out of the 16 that exist in mono-red. This pass takes fodder from 4 to 10, protection from 2 to 4 (Zada is a 3-mana 3/3 the whole deck depends on), and adds the two storm cards that actually convert. Slots come from the ramp surplus (15 vs target 10-12) and the 4-5 drop Goblin bodies, not from the token makers."
  },
  "decklist_sha256": "e01b366ccbd615d4abd1bfe80ba5e610cece5a25260908183013a383e39ba047",
@@ -1517,12 +1475,11 @@
      "Goblin Trashmaster",
      "Guttersnipe",
      "Kessig Flamebreather",
-     "Rile",
      "Vandalblast"
     ],
     "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
-    "what": "7 card(s) carrying a removal effect",
+    "what": "6 card(s) carrying a removal effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {

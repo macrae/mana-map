@@ -617,10 +617,35 @@
    "Wound Reflection"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Muddle the Mixture"
+   ],
+   "class": "counterspell",
+   "headline": "1 card(s) carrying a counterspell effect",
+   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Virtue of Persistence // Locthwain Scorn"
+   ],
+   "class": "recursion",
+   "headline": "1 card(s) carrying a recursion effect",
+   "why": "nothing dies in a goldfish, so recursion has no target"
+  },
+  {
+   "cards": [
+    "Virtue of Persistence // Locthwain Scorn"
+   ],
+   "class": "removal",
+   "headline": "1 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  }
+ ],
  "branch": "drain-v4",
  "changes": {
-  "count": 0,
+  "count": 18,
   "diff": {
    "base_names": 91,
    "base_size": 100,
@@ -819,7 +844,117 @@
   },
   "lands": [],
   "opened": "2026-09-09",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": "Blind Obedience",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Court of Ambition",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Lunar Convocation",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Mesa Enchantress",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Opalescence",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Sanguine Bond",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "True Conviction",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Virtue of Persistence // Locthwain Scorn",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wound Reflection",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ajani's Chosen",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Gremlin Tamer",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Honden of Cleansing Fire",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Hypnotic Siren",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Muddle the Mixture",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Northern Air Temple",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Sanctum of Stone Fangs",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Southern Air Temple",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "The Spirit Oasis",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "OPALESCENCE, AND THE MODEL GAP THAT HID IT. The goldfish read mass animation from one pattern -- 'as long as you control five or more enchantments' -- and its comment asserted Starfield of Nyx was the only card in the corpus that did this. A sweep of all 34,890 oracle cards for the broad shape returns TWO. Opalescence says 'each other non-Aura enchantment is a creature ... base power and base toughness each equal to its mana value' with NO CONDITION AT ALL, and it returned mass_animate_threshold=0 -- the sentinel for a card that does not mass-animate. The strictly stronger of the two was worth exactly nothing to the model, and the casting predicate gates on the same field, so nothing would ever have cast it either. Fixed in this branch's commit with the sweep recorded and a test that fails when the branch is removed.\n\nWHY IT IS THE UNLOCK RATHER THAN A GOOD CARD. This deck runs 44 enchantments. Opalescence stands ALL of them up at once, permanently, for no mana and no activation -- which matters because simulate recorded a MEDIAN OF 0 activations across 60 games, so anything resting on the commander's {1}{W} is not a plan the pilot's own table has ever seen executed. Every body it makes is an ENCHANTMENT CREATURE, so every one takes deathtouch, lifelink and hexproof from the commander, and with True Conviction already in this line every one has double strike. A 6/6 double-striking deathtouch lifelink body gains 12 life a swing, and 12 life is 12 DRAIN with Sanguine Bond, Vito or Enduring Tenacity on the board.\n\nIT ALSO INVERTS THE CURVE PROBLEM. drain-v2 bought its result with a curve -- average mana value 2.667 -> 2.905 -- and drain-v3 tried to pay that back with cheap cards and measured WORSE on every axis. Under Opalescence an expensive enchantment is not a liability, it is a LARGER BODY: Wound Reflection stops being a six-drop that does nothing alone and becomes a 6/6.\n\nMESA ENCHANTRESS FIXES THE ONE COST drain-v2 ACTUALLY PAID. Extra cards by turn eight fell 2.43 -> 1.53. 'Whenever you cast an enchantment spell, you may draw a card' in a deck of 44 enchantments is the direct answer, and it is the ONLY enchantress in this colour identity -- Argothian, Verduran, Satyr and Sythis are all green and Enchantress's Presence is green. It is already in a box.\n\nTHE TWO CUTS ARE THE TOKEN-MAKERS WHOSE TOKENS TAKE NO GRANT. Gremlin Tamer makes 1/1 Gremlins and Ajani's Chosen makes 2/2 Cats; neither token is an enchantment, so neither gets deathtouch, lifelink or hexproof, and both cards are on the buy list. Cathars' Crusade is deliberately NOT cut -- drain-v3 cut it on the theory that counters do nothing for a lifegain plan and measured worse everywhere, because it was pumping the board, the board was dealing combat damage, and that damage was drawing cards off Enduring Curiosity.\n\nRISK, STATED. Opalescence animates every other non-Aura enchantment INCLUDING OPPONENTS', and it turns the pilot's own permanents into creatures that a board wipe kills. The goldfish has no opponents and no removal, so it can see NEITHER cost. Hexproof from the commander answers targeted removal and answers nothing else. This is a FORGE question the moment the goldfish says yes.\n\nSTILL NO TWO-CARD INFINITE and neither add is a Game Changer."
  },
  "decklist_sha256": "916d8e7c41bcb387c65e051b6d43313ae0eac2529f4c8d3b3c360f27fa23d72b",
@@ -1167,6 +1302,33 @@
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Muddle the Mixture"
+    ],
+    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a counterspell effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Virtue of Persistence // Locthwain Scorn"
+    ],
+    "detail": "nothing dies in a goldfish, so recursion has no target",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a recursion effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Virtue of Persistence // Locthwain Scorn"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "W gap +0 -> -14",

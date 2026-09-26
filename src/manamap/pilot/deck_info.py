@@ -726,6 +726,51 @@ def _next(info):
     for b in (info.get("branches") or []):
         prop = b.get("proposal") or {}
         as_v = prop.get("as_version")
+        # A MERGED BRANCH HAS NOTHING LEFT TO DO, and saying so was a real
+        # defect: merged means its swaps are already in the list, so it has zero
+        # unsourced cards, so `mergeable` is True, so this loop told the pilot to
+        # MERGE A BRANCH THAT WAS ALREADY MERGED. ur-dragon@final-v2 shipped that
+        # line — "is fully sourced (+0 -0) — deck-branch merge final-v2" — where
+        # the +0 -0 is precisely BECAUSE it is merged.
+        if b.get("merged") or str(b.get("state") or "").upper().startswith("MERGED"):
+            continue
+        # AN EXPERIMENT YOU SLEEVED PAST IS A RECORD, NOT A NEXT ACTION.
+        #
+        # `branch_state` already calls an unproposed branch "OPEN — no proposal,
+        # this is an experiment, not a decision", and this loop ignored that and
+        # printed a shopping list for every one: ur-dragon's NEXT carried SEVEN
+        # and zur-enchantress's EIGHT, on decks the pilot considers finished.
+        #
+        # THE SIGNAL IS THE PAPER LOCK, NOT RECENCY. Suppressing every unproposed
+        # branch behind the lock was the first version and it was too blunt — it
+        # hid goblin-storm@zada-v1, the one branch under active work, because a
+        # branch is not proposed until the pilot decides to BUY it and that comes
+        # after the measuring. Recency alone decays: today's live branch is next
+        # week's stale one.
+        #
+        # If you have SLEEVED THE DECK SINCE you last touched the branch, you
+        # moved on from it — that is a decision the pilot already made with their
+        # hands. Measured across the fleet: exactly two branches survive this,
+        # zada-v1 (live) and sharknado@basic-island-v1 (merged, skipped above).
+        # A deck with no paper lock is not sleeved and its branches ARE the work.
+        _paper = info.get("paper") or {}
+        _built = str(_paper.get("built_at") or "")
+        # THE INFO ENTRY CARRIES NO `staged` LIST — the first version read
+        # `b.get("staged")`, got an empty default every time, and suppressed
+        # EVERY branch including the live one. The timestamps live on the
+        # branch's own meta.
+        _meta = deck_branch.meta(slug, b["name"]) or {}
+        _last = max((r.get("at") or "" for r in (_meta.get("staged") or [])), default="")
+        # A CLOSED DECK HAS NO NEXT ACTION AT ALL, branches included. A deck
+        # that is broken down, retired or archived has no paper lock either, so
+        # the sleeved-past test above cannot fire on it — zur-enchantress said
+        # "the play/measure loop is closed for this deck" and then listed eight
+        # branches to go shopping for.
+        if closed and not (b.get("proposal") or {}).get("as_version"):
+            continue
+        if (_built and not (b.get("proposal") or {}).get("as_version")
+                and not (_last and _last[:10] > _built[:10])):
+            continue
         if b.get("unreadable"):
             nxt.append(f"branch `{b['name']}` will not parse — fix "
                        f"data/decks/{slug}/branches/{b['name']}/decklist.txt")

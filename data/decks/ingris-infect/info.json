@@ -17,8 +17,8 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 6,
-    "of": 15,
+    "complete": 8,
+    "of": 18,
     "stale": [],
     "invalid": [],
     "verified": true,
@@ -31,7 +31,8 @@
       "tutors",
       "prose",
       "log",
-      "issue"
+      "issue",
+      "sim"
     ],
     "todo": [
       {
@@ -78,6 +79,11 @@
         "stage": "issue",
         "what": "authored identity: name, commander, status (volume/price are legacy fields)",
         "how": "AUTHORED: data/decks/ingris-infect/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
+      },
+      {
+        "stage": "sim",
+        "what": "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
+        "how": "manamap pilot simulate ingris-infect --pod standard-v3 --games 100"
       }
     ]
   },
@@ -128,13 +134,14 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 5,
-      "out": 5,
+      "add": 6,
+      "out": 6,
       "counts": {
         "in_deck": 87,
         "box": 3,
         "elsewhere": 0,
-        "buy": 2
+        "buy": 2,
+        "free": 0
       },
       "unsourced": [
         "Dark Confidant",
@@ -841,13 +848,14 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 2,
-      "out": 2,
+      "add": 3,
+      "out": 3,
       "counts": {
         "in_deck": 90,
         "box": 2,
         "elsewhere": 0,
-        "buy": 0
+        "buy": 0,
+        "free": 0
       },
       "unsourced": [],
       "mergeable": true,
@@ -1530,9 +1538,6 @@
             "name": "Feign Death"
           },
           {
-            "name": "Mithril Coat"
-          },
-          {
             "name": "Read the Bones"
           }
         ],
@@ -1541,6 +1546,12 @@
             "name": "Deflecting Swat",
             "where": [
               "edgar-vampires",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Mithril Coat",
+            "where": [
               "ur-dragon"
             ]
           }
@@ -1573,13 +1584,14 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 8,
-      "out": 8,
+      "add": 9,
+      "out": 9,
       "counts": {
         "in_deck": 84,
         "box": 3,
-        "elsewhere": 1,
-        "buy": 4
+        "elsewhere": 2,
+        "buy": 3,
+        "free": 0
       },
       "unsourced": [
         "Dark Confidant",
@@ -1970,8 +1982,16 @@
         },
         {
           "name": "Mithril Coat",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -2573,9 +2593,7 @@
   "experiments": null,
   "next": [
     "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
-    "branch `draw-v1` needs 2 card(s) sourced — `manamap pilot deck-branch ingris-infect source draw-v1`",
-    "branch `lands-v1` is fully sourced (+2 -2) — `manamap pilot deck-branch ingris-infect merge lands-v1 --write`",
-    "branch `prot-v1` needs 5 card(s) sourced — `manamap pilot deck-branch ingris-infect source prot-v1`"
+    "nothing else outstanding — this deck's record is complete as it stands"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

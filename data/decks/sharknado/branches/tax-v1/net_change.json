@@ -700,10 +700,66 @@
    "Wheel of Misfortune"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Astral Drift"
+   ],
+   "class": "draw",
+   "headline": "1 card(s) carrying a draw effect",
+   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
+  },
+  {
+   "cards": [
+    "Shelter"
+   ],
+   "class": "protection",
+   "headline": "1 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  },
+  {
+   "cards": [
+    "Queen Kayla bin-Kroog"
+   ],
+   "class": "recursion",
+   "headline": "1 card(s) carrying a recursion effect",
+   "why": "nothing dies in a goldfish, so recursion has no target"
+  },
+  {
+   "cards": [
+    "Astral Drift",
+    "Elesh Norn // The Argent Etchings",
+    "Magmakin Artillerist"
+   ],
+   "class": "removal",
+   "headline": "3 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Battlefield Forge",
+    "Clifftop Retreat",
+    "Ferrous Lake",
+    "Fiery Islet",
+    "Gleaming Bastion",
+    "Glittering Massif",
+    "Inspiring Vantage",
+    "Irrigated Farmland",
+    "Island",
+    "Plateau",
+    "Riverpyre Verge",
+    "Thundering Falls",
+    "Tundra",
+    "Volcanic Island"
+   ],
+   "class": "land",
+   "headline": "14 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "tax-v1",
  "changes": {
-  "count": 0,
+  "count": 30,
   "diff": {
    "base_names": 100,
    "base_size": 100,
@@ -1014,9 +1070,192 @@
     "out": 15
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Battlefield Forge",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Clifftop Retreat",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Gleaming Bastion",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Inspiring Vantage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Plateau",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Tundra",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Volcanic Island",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ferrous Lake",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Fiery Islet",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Glittering Massif",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Irrigated Farmland",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Island",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Riverpyre Verge",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Thundering Falls",
+    "why": null
+   }
+  ],
   "opened": "2026-09-14",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": "Astral Drift",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Ceremonial Knife",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Elesh Norn // The Argent Etchings",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Goblin Engineer",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Razorkin Needlehead",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Scrawling Crawler",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wheel of Fortune",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wheel of Misfortune",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ivora, Insatiable Heir",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Magmakin Artillerist",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Marketback Walker",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Queen Kayla bin-Kroog",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Shelter",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Stromkirk Noble",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Teferi's Ageless Insight",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Waterbender Ascension",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "THE TAX ON THE OTHER HALF OF A WHEEL. Both commanders charge for a wheel's own half \u2014 Brallin a counter and a ping per DISCARD, Shabraz a counter per DRAW \u2014 and nothing in the 99 charged for the half that refills the OPPONENTS. The model could not see that half either until 2026-09-14, when event_payoffs learned the opponent-draw trigger and the wheel started refilling the opponent seat. IN: Razorkin Needlehead (1 damage to them per draw), Scrawling Crawler (1 life per draw, and it makes them draw), Anje's Ravager (a repeatable DISCARD wheel on a body, attacking every combat). OUT: the three cards engine.json places in no stage \u2014 Marketback Walker pays only when it dies, Stromkirk Noble grows only on its own combat damage, Waterbender Ascension needs a fourth quest counter before it draws anything and card-value measured it at +0.000. Priced at 4,000 games seed 5 against a 9.87 ping baseline with 0.12 seed noise: Razorkin +2.46 ping, Scrawling Crawler +1.97, Anje's Ravager +1.84 ping AND +1.81 cards AND +4.30 combat damage. Brass's Tunnel-Grinder was searched, priced at -0.25 and DELIBERATELY EXCLUDED \u2014 its enter-and-discard is unparsed, so the model cannot see it and a number from it would be about its mana value. EVERY PING FIGURE IS AGAINST ONE SEAT: the model has a single 40-life opponent, so a four-player table pays roughly three times this and these are floors. Objective pinned to the champion's own damage@8 of 30.1335 [29.81, 30.45] read from diagnostic.json at the harness net-change grades on (10,000 games, seed 20260826), immediately before opening."
  },
  "decklist_sha256": "28b099012acbdbec52a94de897b78599f314d5d10c31f6388f56ef11640a4bbd",
@@ -1373,6 +1612,66 @@
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Astral Drift"
+    ],
+    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a draw effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Shelter"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Queen Kayla bin-Kroog"
+    ],
+    "detail": "nothing dies in a goldfish, so recursion has no target",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a recursion effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Astral Drift",
+     "Elesh Norn // The Argent Etchings",
+     "Magmakin Artillerist"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "3 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Battlefield Forge",
+     "Clifftop Retreat",
+     "Ferrous Lake",
+     "Fiery Islet",
+     "Gleaming Bastion",
+     "Glittering Massif",
+     "Inspiring Vantage",
+     "Irrigated Farmland",
+     "Island",
+     "Plateau",
+     "Riverpyre Verge",
+     "Thundering Falls",
+     "Tundra",
+     "Volcanic Island"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "14 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "W gap +4 -> -7, U gap -2 -> -6, R gap +2 -> -12",

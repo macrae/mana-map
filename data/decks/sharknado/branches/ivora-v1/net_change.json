@@ -680,10 +680,66 @@
    "Wheel of Misfortune"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Anje's Ravager",
+    "Astral Drift"
+   ],
+   "class": "draw",
+   "headline": "2 card(s) carrying a draw effect",
+   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
+  },
+  {
+   "cards": [
+    "Shelter"
+   ],
+   "class": "protection",
+   "headline": "1 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  },
+  {
+   "cards": [
+    "Queen Kayla bin-Kroog"
+   ],
+   "class": "recursion",
+   "headline": "1 card(s) carrying a recursion effect",
+   "why": "nothing dies in a goldfish, so recursion has no target"
+  },
+  {
+   "cards": [
+    "Astral Drift",
+    "Magmakin Artillerist"
+   ],
+   "class": "removal",
+   "headline": "2 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Battlefield Forge",
+    "Clifftop Retreat",
+    "Ferrous Lake",
+    "Fiery Islet",
+    "Gleaming Bastion",
+    "Glittering Massif",
+    "Inspiring Vantage",
+    "Irrigated Farmland",
+    "Island",
+    "Plateau",
+    "Riverpyre Verge",
+    "Thundering Falls",
+    "Tundra",
+    "Volcanic Island"
+   ],
+   "class": "land",
+   "headline": "14 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "ivora-v1",
  "changes": {
-  "count": 2,
+  "count": 22,
   "diff": {
    "base_names": 100,
    "base_size": 100,
@@ -918,22 +974,144 @@
     "out": 11
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Battlefield Forge",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Clifftop Retreat",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Gleaming Bastion",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Inspiring Vantage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Plateau",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Tundra",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Volcanic Island",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ferrous Lake",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Fiery Islet",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Glittering Massif",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Irrigated Farmland",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Island",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Riverpyre Verge",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Thundering Falls",
+    "why": null
+   }
+  ],
   "opened": "2026-09-14",
   "spells": [
    {
-    "at": "2026-09-14",
-    "in": "Ivora, Insatiable Heir",
-    "out": "Goblin Engineer",
-    "why": "The tutor cannot reach the engine; Ivora IS one. She makes a Blood on arrival and carries 'whenever you discard a card, put a +1/+1 counter on Ivora' \u2014 a second Brallin on the half of a wheel this deck is built to charge for. Measured alone: +0.741 damage@8 against an MDE of 0.564, the only candidate of thirteen to clear it. A decomposition run isolated why: her Blood alone is worth -0.026 (nothing) and her counter trigger alone +0.305, but the two together +0.817 \u2014 the token feeds the trigger."
+    "at": null,
+    "in": "Astral Drift",
+    "out": null,
+    "why": null
    },
    {
-    "at": "2026-09-14",
-    "in": "Teferi's Ageless Insight",
-    "out": "Elesh Norn",
-    "why": "Elesh Norn triggers on neither half of a wheel and its Saga back face WRATHS both commanders (chapter III spares artifacts, lands and Phyrexians; Shabraz is a Shark Bird and Brallin a Human Shaman). Teferi's Ageless Insight doubles every draw after the draw step, which is every card a wheel produces and every card Shabraz charges for. Measured alone: +2.95 extra cards and +3.80 commander counters by turn ten. Chosen over Bard, King of Dale, which has the IDENTICAL doubling text at {4}{W}{U} against {2}{U}{U} and measured +0.11 cards \u2014 the two mana is the whole card."
+    "at": null,
+    "in": "Ceremonial Knife",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wheel of Fortune",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wheel of Misfortune",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Anje's Ravager",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Magmakin Artillerist",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Queen Kayla bin-Kroog",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Shelter",
+    "why": null
    }
   ],
+  "staged_count": 2,
   "why": "Two cards the model could not see until 2026-09-14, replacing two it could see doing nothing. Goblin Engineer is the deck's only tutor and cannot reach the engine: no wheel is an artifact, and the one artifact that closes a game (Psychosis Crawler, MV 5) sits above its MV-3 reanimation cap. Forge cast it 19 times in 120 games and activated it TWICE. Elesh Norn // The Argent Etchings measured as worth 2.2 damage a game through a PHANTOM \u2014 the model read chapter II of its Saga back face, 'creatures you control gain double strike until end of turn', as a permanent doubler on all damage, off a face reachable only by paying {2}{W} and sacrificing three other creatures. That defect is fixed in the same session; 22 corpus cards lost a doubler they never had and sharknado's own damage@8 fell 31.45 to 29.47. In their place: Ivora, who is her own discard payoff, and Teferi's Ageless Insight, which doubles every draw a wheel produces."
  },
  "decklist_sha256": "bbfc76be8058231b09f607bdd1526cbd5a6bb554b1b9f77a674ce4d3643f8246",
@@ -1273,6 +1451,66 @@
     "kind": "unresolved",
     "what": "6 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Anje's Ravager",
+     "Astral Drift"
+    ],
+    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a draw effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Shelter"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Queen Kayla bin-Kroog"
+    ],
+    "detail": "nothing dies in a goldfish, so recursion has no target",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a recursion effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Astral Drift",
+     "Magmakin Artillerist"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Battlefield Forge",
+     "Clifftop Retreat",
+     "Ferrous Lake",
+     "Fiery Islet",
+     "Gleaming Bastion",
+     "Glittering Massif",
+     "Inspiring Vantage",
+     "Irrigated Farmland",
+     "Island",
+     "Plateau",
+     "Riverpyre Verge",
+     "Thundering Falls",
+     "Tundra",
+     "Volcanic Island"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "14 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "U gap -2 -> -6",

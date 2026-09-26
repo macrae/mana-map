@@ -570,16 +570,17 @@
  "blind_spots": [
   {
    "cards": [
-    "Forced Fruition"
+    "Greater Auramancy",
+    "Lightning Greaves"
    ],
-   "class": "draw",
-   "headline": "1 card(s) carrying a draw effect",
-   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
+   "class": "protection",
+   "headline": "2 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
   }
  ],
  "branch": "artifacts-v1",
  "changes": {
-  "count": 3,
+  "count": 4,
   "diff": {
    "base_names": 85,
    "base_size": 100,
@@ -664,24 +665,31 @@
   "opened": "2026-09-16",
   "spells": [
    {
-    "at": "2026-09-16",
-    "in": "Isochron Scepter",
-    "out": "Mikaeus, the Lunarch",
-    "why": "thirteen instants at two mana or less are imprint targets \u2014 Counterspell, Swan Song, Dovin's Veto, Arcane Denial, An Offer You Can't Refuse, Cyclonic Rift, Swords, Path, Disenchant, both Tutors, Karametra's Blessing, Secure the Wastes \u2014 so it is a counterspell every turn for {2} without spending a card; the Scepter is a free cast under the discount, its activation is not. Mikaeus is the doctor's cut: in none of the eleven engine components, no wincon role, an X-sink whose payoff is counters on walls"
+    "at": null,
+    "in": "Alhammarret's Archive",
+    "out": null,
+    "why": null
    },
    {
-    "at": "2026-09-16",
-    "in": "Horn of Greed",
-    "out": "Forced Fruition",
-    "why": "a swap inside the gift group, so its 0.92 assembly by T10 does not move. Horn draws each player a card on a land drop: one discount for you on each opponent's turn, where the flash deck casts, and a card for you on yours; three mana, generic, a free cast. Fruition is six mana and seven cards to an opponent per spell, and the doctor's finding stands: nothing in the 99 punishes a full hand any more"
+    "at": null,
+    "in": "Lightning Greaves",
+    "out": null,
+    "why": null
    },
    {
-    "at": "2026-09-16",
-    "in": "Mind Stone",
-    "out": "Angelic Wall",
-    "why": "ramp is 11 of a 10-12 band, so one more rock stays in band; Mind Stone is a free cast on turn two under the discount and a card when mana stops mattering, which here is early. Angelic Wall is the doctor's cut: the one blocker whose text is exhausted by blocking, and the taxers plus twelve counterspells are the defence"
+    "at": null,
+    "in": null,
+    "out": "Gleaming Splendor",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Greater Auramancy",
+    "why": null
    }
   ],
+  "staged_count": 3,
   "why": "the artifact half of the 2026-09-16 audit: Heliod's discount makes a generic-cost artifact a free cast, and three owned ones fit the plan. Isochron Scepter (thirteen instants at two or less to imprint), Horn of Greed (a gift that pays on the opponents' turns, where the flash deck spends the discount), Mind Stone (a free rock on two and a card later). The goldfish reads none of the five cards involved \u2014 every profile is zero and the candidates sweep returned one reading for all three \u2014 so the objective is a CONTROL and the case is the argued one in each swap's why."
  },
  "decklist_sha256": "f1d4a650b93f72edef1822f8f47c66bf0fb7d8cd5ce870647cb6b425aea98e61",
@@ -990,11 +998,12 @@
    },
    {
     "cards": [
-     "Forced Fruition"
+     "Greater Auramancy",
+     "Lightning Greaves"
     ],
-    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
     "kind": "unmeasured",
-    "what": "1 card(s) carrying a draw effect",
+    "what": "2 card(s) carrying a protection effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {

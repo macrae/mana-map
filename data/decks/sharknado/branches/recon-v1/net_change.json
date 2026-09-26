@@ -1019,10 +1019,112 @@
    "Whirlwind of Thought"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Arcane Denial",
+    "Counterspell",
+    "Decree of Silence",
+    "Dovin's Veto"
+   ],
+   "class": "counterspell",
+   "headline": "4 card(s) carrying a counterspell effect",
+   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Anje's Ravager",
+    "Artist's Talent",
+    "Astral Drift",
+    "Captain Howler, Sea Scourge",
+    "Cathartic Reunion",
+    "Ghostly Pilferer",
+    "Thrill of Possibility",
+    "Vanguard Suppressor",
+    "Whirlwind of Thought"
+   ],
+   "class": "draw",
+   "headline": "9 card(s) carrying a draw effect",
+   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
+  },
+  {
+   "cards": [
+    "Boros Charm",
+    "Captain Howler, Sea Scourge",
+    "Shelter",
+    "Teferi's Protection"
+   ],
+   "class": "protection",
+   "headline": "4 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  },
+  {
+   "cards": [
+    "Queen Kayla bin-Kroog"
+   ],
+   "class": "recursion",
+   "headline": "1 card(s) carrying a recursion effect",
+   "why": "nothing dies in a goldfish, so recursion has no target"
+  },
+  {
+   "cards": [
+    "Astral Drift",
+    "Blasphemous Act",
+    "Boros Charm",
+    "Cyclonic Rift",
+    "Path to Exile",
+    "Swords to Plowshares"
+   ],
+   "class": "removal",
+   "headline": "6 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Ash Barrens",
+    "Battlefield Forge",
+    "Calciform Pools",
+    "City of Brass",
+    "Clifftop Retreat",
+    "Desolate Lighthouse",
+    "Drifting Meadow",
+    "Ferrous Lake",
+    "Fiery Islet",
+    "Floodfarm Verge",
+    "Forgotten Cave",
+    "Gemstone Caverns",
+    "Glittering Massif",
+    "Hengegate Pathway // Mistgate Pathway",
+    "Inspiring Vantage",
+    "Island",
+    "Lonely Sandbar",
+    "Mana Confluence",
+    "Nimbus Maze",
+    "Ojer Axonil, Deepest Might // Temple of Power",
+    "Opal Palace",
+    "Plateau",
+    "Prairie Stream",
+    "Remote Isle",
+    "Riverpyre Verge",
+    "Secluded Steppe",
+    "Skycloud Expanse",
+    "Smoldering Crater",
+    "Spire of Industry",
+    "Talon Gates of Madara",
+    "Thundering Falls",
+    "Training Center",
+    "Treasure Map // Treasure Cove",
+    "Tundra",
+    "Volcanic Island"
+   ],
+   "class": "land",
+   "headline": "35 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "recon-v1",
  "changes": {
-  "count": 0,
+  "count": 86,
   "diff": {
    "base_names": 100,
    "base_size": 100,
@@ -1865,9 +1967,528 @@
     "out": 43
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Ash Barrens",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Battlefield Forge",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Clifftop Retreat",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Desolate Lighthouse",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Drifting Meadow",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Forgotten Cave",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Inspiring Vantage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Lonely Sandbar",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Ojer Axonil, Deepest Might // Temple of Power",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Plateau",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Prairie Stream",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Remote Isle",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Secluded Steppe",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Smoldering Crater",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Training Center",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Tundra",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Volcanic Island",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Calciform Pools",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "City of Brass",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ferrous Lake",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Fiery Islet",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Floodfarm Verge",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Gemstone Caverns",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Glittering Massif",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Hengegate Pathway // Mistgate Pathway",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Island",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Mana Confluence",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Nimbus Maze",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Opal Palace",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Riverpyre Verge",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Skycloud Expanse",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Spire of Industry",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talon Gates of Madara",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Thundering Falls",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Treasure Map // Treasure Cove",
+    "why": null
+   }
+  ],
   "opened": "2026-09-10",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": "Arcane Denial",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Astral Drift",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Blasphemous Act",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Boros Charm",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Brainstorm",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Captain Howler, Sea Scourge",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Cathartic Reunion",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Chaos Warp",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Counterspell",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Cyclonic Rift",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Dovin's Veto",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Frantic Search",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Ghostly Pilferer",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Izzet Signet",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Marauding Mako",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Path to Exile",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Surly Badgersaur",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Swords to Plowshares",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Talisman of Creativity",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Talisman of Progress",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Teferi's Protection",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Thought Vessel",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Thrill of Possibility",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wheel of Fortune",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Wheel of Misfortune",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Whirlwind of Thought",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Anje's Ravager",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Artist's Talent",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Burning Inquiry",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Currency Converter",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Decree of Silence",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Generous Plunderer",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Gossip's Talent",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ivora, Insatiable Heir",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Jaxis, the Troublemaker",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Khorvath's Fury",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Marketback Walker",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Mindless Automaton",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Molten Psyche",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Queen Kayla bin-Kroog",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Shelter",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Silent Hallcreeper",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Sorcerer Class",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Sticky Fingers",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Stromkirk Noble",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Teferi's Puzzle Box",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Time Reversal",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Vanguard Suppressor",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Waterbender Ascension",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Whirlpool Warrior",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Winds of Change",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "THE RECON APPLIED, WITH NO TWO-CARD INFINITES by the pilot's call (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The Curiosity-class enchantments the pair is usually built around are deliberately OUT: with Niv-Mizzet Parun and Glint-Horn Buccaneer they are two-card loops. In their place the combo-free recon cards: Whirlwind of Thought, Magmakin Artillerist, Surly Badgersaur, beside Ojer Axonil as the amplifier. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel and three two-mana rocks. Its twelve coverage-chosen lands out for the cycling-land package; 35 lands. Bracket 4 by Game Changer count only. THE GOLDFISH READS THE SHARK HALF: Brallin's discard trigger has no channel and a wheel's 'draws that many' is not 'draw N', so the draw axis is a proxy. Forge at standard-v3 is the verdict."
  },
  "decklist_sha256": "bc16ddc7067e62d84a800edbde465b64665a21620762f455e68d97c6d7c954dc",
@@ -2390,6 +3011,113 @@
     "kind": "unresolved",
     "what": "2 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Arcane Denial",
+     "Counterspell",
+     "Decree of Silence",
+     "Dovin's Veto"
+    ],
+    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "4 card(s) carrying a counterspell effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Anje's Ravager",
+     "Artist's Talent",
+     "Astral Drift",
+     "Captain Howler, Sea Scourge",
+     "Cathartic Reunion",
+     "Ghostly Pilferer",
+     "Thrill of Possibility",
+     "Vanguard Suppressor",
+     "Whirlwind of Thought"
+    ],
+    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
+    "kind": "unmeasured",
+    "what": "9 card(s) carrying a draw effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Boros Charm",
+     "Captain Howler, Sea Scourge",
+     "Shelter",
+     "Teferi's Protection"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "4 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Queen Kayla bin-Kroog"
+    ],
+    "detail": "nothing dies in a goldfish, so recursion has no target",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a recursion effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Astral Drift",
+     "Blasphemous Act",
+     "Boros Charm",
+     "Cyclonic Rift",
+     "Path to Exile",
+     "Swords to Plowshares"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "6 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Ash Barrens",
+     "Battlefield Forge",
+     "Calciform Pools",
+     "City of Brass",
+     "Clifftop Retreat",
+     "Desolate Lighthouse",
+     "Drifting Meadow",
+     "Ferrous Lake",
+     "Fiery Islet",
+     "Floodfarm Verge",
+     "Forgotten Cave",
+     "Gemstone Caverns",
+     "Glittering Massif",
+     "Hengegate Pathway // Mistgate Pathway",
+     "Inspiring Vantage",
+     "Island",
+     "Lonely Sandbar",
+     "Mana Confluence",
+     "Nimbus Maze",
+     "Ojer Axonil, Deepest Might // Temple of Power",
+     "Opal Palace",
+     "Plateau",
+     "Prairie Stream",
+     "Remote Isle",
+     "Riverpyre Verge",
+     "Secluded Steppe",
+     "Skycloud Expanse",
+     "Smoldering Crater",
+     "Spire of Industry",
+     "Talon Gates of Madara",
+     "Thundering Falls",
+     "Training Center",
+     "Treasure Map // Treasure Cove",
+     "Tundra",
+     "Volcanic Island"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "35 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "W gap +4 -> +1, U gap -2 -> -10, R gap +2 -> +1",

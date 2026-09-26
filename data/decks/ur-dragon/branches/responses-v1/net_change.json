@@ -708,17 +708,40 @@
  "blind_spots": [
   {
    "cards": [
-    "Stubborn Denial",
-    "Transcendent Dragon"
+    "Asceticism",
+    "Mithril Coat"
    ],
-   "class": "counterspell",
-   "headline": "2 card(s) carrying a counterspell effect",
-   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+   "class": "protection",
+   "headline": "2 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  },
+  {
+   "cards": [
+    "Steel Hellkite"
+   ],
+   "class": "removal",
+   "headline": "1 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Arid Mesa",
+    "Bloodstained Mire",
+    "Fabled Passage",
+    "Forbidden Orchard",
+    "Prismatic Vista",
+    "Scalding Tarn",
+    "Tarnished Citadel",
+    "Wooded Foothills"
+   ],
+   "class": "land",
+   "headline": "8 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
  "branch": "responses-v1",
  "changes": {
-  "count": 3,
+  "count": 17,
   "diff": {
    "base_names": 97,
    "base_size": 100,
@@ -914,28 +937,114 @@
     "out": 8
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Fabled Passage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Forbidden Orchard",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Prismatic Vista",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Tarnished Citadel",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Arid Mesa",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Bloodstained Mire",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Scalding Tarn",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Wooded Foothills",
+    "why": null
+   }
+  ],
   "opened": "2026-09-11",
   "spells": [
    {
+    "at": null,
+    "in": "Radiant Destiny",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Return of the Wildspeaker",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Sarkhan, Fireblood",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Worldly Tutor",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Asceticism",
+    "why": null
+   },
+   {
     "at": "2026-09-11",
-    "in": "Whirlwing Stormbrood // Dynamic Soar",
+    "in": null,
     "out": "Hellkite Courser",
     "why": "add 2: flash for every Dragon, the anti-telegraph mechanism the log names three times; Courser was cast 0 times in 40 Forge games"
    },
    {
-    "at": "2026-09-11",
-    "in": "Stubborn Denial",
-    "out": "Rishkar's Expertise",
-    "why": "add 3: one blue mana held open, Ferocious on for 18 of 22 Dragons; Expertise is the slowest non-Dragon spell in the list"
+    "at": null,
+    "in": null,
+    "out": "Mithril Coat",
+    "why": null
    },
    {
-    "at": "2026-09-11",
-    "in": "Transcendent Dragon",
-    "out": "Utvara Hellkite",
-    "why": "add 5: the only Dragon in the identity whose ETB counters a spell; Utvara was cast 8 of 40 Forge games"
+    "at": null,
+    "in": null,
+    "out": "Steel Hellkite",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talisman of Dominance",
+    "why": null
    }
   ],
+  "staged_count": 3,
   "why": "Prescription 0241fb6a70f1 adds 2, 3, 5: flash for every Dragon, a one-mana counter, and the one Dragon whose ETB counters. The goldfish cannot see any of it (no opponents), so its objective is a CONTROL \u2014 the three swaps may not cost more than about two points of unopposed clock (0.802 today). The gate is Forge at standard-v3: MDE 0.195 at 100 games a side against the 0.353 baseline."
  },
  "decklist_sha256": "bdaf3e00c6d49a085d9a692ea9c90e1140c0824033c61889f3fa6218cd16fd85",
@@ -1281,12 +1390,37 @@
    },
    {
     "cards": [
-     "Stubborn Denial",
-     "Transcendent Dragon"
+     "Asceticism",
+     "Mithril Coat"
     ],
-    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
     "kind": "unmeasured",
-    "what": "2 card(s) carrying a counterspell effect",
+    "what": "2 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Steel Hellkite"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Arid Mesa",
+     "Bloodstained Mire",
+     "Fabled Passage",
+     "Forbidden Orchard",
+     "Prismatic Vista",
+     "Scalding Tarn",
+     "Tarnished Citadel",
+     "Wooded Foothills"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "8 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {

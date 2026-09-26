@@ -507,11 +507,19 @@ def test_the_report_names_the_swaps_rather_than_counting_them():
     ch = net_change.changes(SLUG, BRANCH)
     assert ch["count"] == len(ch["spells"]) + len(ch["lands"])
     assert ch["count"] >= 1
-    checked = 0
+    # A ROW NEED NOT BE A PAIR, and asserting that it was is what let the
+    # staging-log bug live: `changes()` used to read every swap ever staged, so
+    # every row was paired by construction — including pairs where the added
+    # card had since been staged back out. It now reports the NET diff, where a
+    # card whose partner was superseded keeps its own reason and loses only the
+    # arrow. What must hold is that every row names at least one side.
+    checked = paired = 0
     for row in ch["spells"] + ch["lands"]:
-        assert row["out"] and row["in"]
+        assert row["out"] or row["in"], "a row that names neither side"
+        paired += bool(row["out"] and row["in"])
         checked += 1
     assert checked >= 1
+    assert paired >= 1, "no row is a pair at all — the `why` provenance is lost"
 
 
 @requires_data
@@ -1043,3 +1051,39 @@ def test_the_only_cumulative_series_says_so_in_its_name():
     assert "mean_cumulative_damage_by_turn" not in src, (
         "a cumulative combat row now exists — `METRICS` must be updated to say "
         "which of the two `damage @T10` reads")
+
+
+def test_changes_reports_the_NET_diff_not_the_staging_log():
+    """A SUPERSEDED SWAP IS NOT A CHANGE, and reading `staged` published nine.
+
+    goblin-storm/zada-v1 staged 29 swaps and its net change is 16: nine cards
+    were staged in and later staged back out. `changes()` read the staging log,
+    so it published all nine as ADDS — cards the branch does not run — and three
+    names appeared on BOTH sides at once. The page's own header said "16 out and
+    16 in" from `deck_branch.diff` while the list below it showed 29 pairs, so
+    anyone shopping from it would have bought the wrong cards.
+
+    ONE PREDICATE, ONE HOME: `deck_branch.diff` already answers this, counts
+    copies rather than names, and is what the header prints.
+    """
+    import pytest
+    from manamap.pilot import deck_branch
+    from manamap.pilot.net_change import changes
+    try:
+        d = deck_branch.diff("goblin-storm", "zada-v1")
+        c = changes("goblin-storm", "zada-v1")
+    except Exception:  # pragma: no cover - branch absent
+        pytest.skip("goblin-storm@zada-v1 not present")
+
+    rows = (c["spells"] or []) + (c["lands"] or [])
+    got_in = sorted(r["in"] for r in rows if r["in"])
+    got_out = sorted(r["out"] for r in rows if r["out"])
+    assert got_in == sorted(d["add"]), (
+        "the adds do not match the net diff — a superseded swap is being "
+        "published as a change")
+    assert got_out == sorted(d["out"]), "the cuts do not match the net diff"
+    # No name may appear on both sides: that is the tell the staging log leaves.
+    assert not (set(got_in) & set(got_out)), (
+        f"names on both sides: {sorted(set(got_in) & set(got_out))}")
+    # And the staged count is kept, because the difference is the finding.
+    assert c["staged_count"] >= c["count"]

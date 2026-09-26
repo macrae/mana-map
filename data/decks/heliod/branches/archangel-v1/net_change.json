@@ -583,10 +583,20 @@
    "Forced Fruition"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Greater Auramancy",
+    "Lightning Greaves"
+   ],
+   "class": "protection",
+   "headline": "2 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  }
+ ],
  "branch": "archangel-v1",
  "changes": {
-  "count": 0,
+  "count": 10,
   "diff": {
    "base_names": 85,
    "base_size": 100,
@@ -726,7 +736,69 @@
   },
   "lands": [],
   "opened": "2026-09-08",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": "Alhammarret's Archive",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Angelic Wall",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Forced Fruition",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Lightning Greaves",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Mikaeus, the Lunarch",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Gleaming Splendor",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Greater Auramancy",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Horn of Greed",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Isochron Scepter",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Mind Stone",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "ONE CARD, ONE SWAP, AND THE PIP LOAD IS UNCHANGED. Archangel of Tithes is {1}{W}{W}{W} and White Sun's Zenith is {X}{W}{W}{W} \u2014 the same three white pips, so this tests the CARD and not the mana, which is why it was held out of skies-v1 rather than folded in. Archangel is the only card the flier sweep returned that does both jobs on one body: a 3/5 FLYING blocker against the seat that took 39 of 53 eliminations with nothing but evasive threats, and a taxer whose 'creatures can't attack you unless their controller pays {1}' works whether or not the attacker flies, making it a third Propaganda beside Ghostly Prison. It is the exact card giada-angels beats us with. What it replaces is the deck's most white-intensive card and the one skies-v1's own logic argues against: X 2/2 CATS, on the ground, in a deck that dies to the air, as a one-shot at four-plus mana competing directly with casting Approach of the Second Sun. Secure the Wastes stays as the cheap X mana sink at {X}{W}. THE GOLDFISH CANNOT SEE THE POINT OF THIS CARD \u2014 no opponents, nothing attacks it, so flying and taxing are invisible and a 3/5 registers as three power. The objective is a RISK check: swapping a scaling X-spell token maker for one fixed body must not cost the board. THE FIRST LINE SET HERE WAS 2.85 AND THE ANCHOR REFUSED IT \u2014 the champion reads 2.9506 and this run resolves 0.1012, so a 0.1006 tolerance was inside the noise and could only have come back as whichever side it landed on. 2.80 is outside it. Reset before any measurement was taken, which is the only time a threshold may move."
  },
  "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
@@ -1041,6 +1113,16 @@
     "kind": "unresolved",
     "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Greater Auramancy",
+     "Lightning Greaves"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "U gap -9 -> -10",

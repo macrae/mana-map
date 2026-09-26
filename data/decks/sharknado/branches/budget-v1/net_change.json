@@ -665,25 +665,23 @@
  "blind_spots": [
   {
    "cards": [
-    "Anje's Ravager",
-    "Wheel of Fortune",
-    "Wheel of Misfortune"
+    "Astral Drift"
    ],
    "class": "draw",
-   "headline": "3 card(s) carrying a draw effect",
+   "headline": "1 card(s) carrying a draw effect",
    "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
   },
   {
    "cards": [
-    "Queen Kayla bin-Kroog"
+    "Shelter"
    ],
-   "class": "recursion",
-   "headline": "1 card(s) carrying a recursion effect",
-   "why": "nothing dies in a goldfish, so recursion has no target"
+   "class": "protection",
+   "headline": "1 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
   },
   {
    "cards": [
-    "Magmakin Artillerist"
+    "Astral Drift"
    ],
    "class": "removal",
    "headline": "1 card(s) carrying a removal effect",
@@ -691,21 +689,23 @@
   },
   {
    "cards": [
-    "Glittering Massif",
-    "Irrigated Farmland",
-    "Plateau",
-    "Thundering Falls",
-    "Tundra",
-    "Volcanic Island"
+    "Battlefield Forge",
+    "Clifftop Retreat",
+    "Ferrous Lake",
+    "Fiery Islet",
+    "Gleaming Bastion",
+    "Inspiring Vantage",
+    "Island",
+    "Riverpyre Verge"
    ],
    "class": "land",
-   "headline": "3 land swap(s)",
+   "headline": "8 land swap(s)",
    "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
  "branch": "budget-v1",
  "changes": {
-  "count": 6,
+  "count": 10,
   "diff": {
    "base_names": 100,
    "base_size": 100,
@@ -828,45 +828,70 @@
   },
   "lands": [
    {
-    "at": "2026-09-14",
-    "in": "Thundering Falls",
-    "out": "Volcanic Island",
-    "why": "$725.35 for the only dual that genuinely hurts to lose \u2014 U/R is six deep and both colours are load-bearing. Thundering Falls keeps the ISLAND MOUNTAIN types, which is the point: only 7 of 36 lands carry a basic type and five other lands (Clifftop Retreat, Glacial Fortress, Sulfur Falls, Floodfarm Verge, Nimbus Maze) are conditional on controlling one. An untyped replacement would quietly make three of those enter tapped and stop two making coloured mana. Cost: it enters tapped, and surveil 1 is the consolation."
+    "at": null,
+    "in": "Battlefield Forge",
+    "out": null,
+    "why": null
    },
    {
-    "at": "2026-09-14",
-    "in": "Irrigated Farmland",
-    "out": "Tundra",
-    "why": "$475.00 for the twelfth source of a SPLASH. Only three cards in the 100 carry a W pip \u2014 Shabraz, Astral Drift, Smothering Tithe \u2014 and mana_analysis already reads W at 0.962 on-curve against U's 0.804. Irrigated Farmland keeps PLAINS ISLAND, and its CYCLING {2} is a discard and a draw in one activation, which is a Brallin trigger plus a Shabraz trigger the original never gave."
+    "at": null,
+    "in": "Clifftop Retreat",
+    "out": null,
+    "why": null
    },
    {
-    "at": "2026-09-14",
-    "in": "Glittering Massif",
-    "out": "Plateau",
-    "why": "$304.00 for the seventh source of the same splash. Glittering Massif keeps MOUNTAIN PLAINS and cycles for {2} \u2014 again a discard and a draw the dual could not provide. Trap avoided: Prairie Stream and its cycle read 'unless you control two or more BASIC lands' and this deck runs zero basics, so they would always enter tapped."
+    "at": null,
+    "in": "Gleaming Bastion",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Inspiring Vantage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ferrous Lake",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Fiery Islet",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Island",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Riverpyre Verge",
+    "why": null
    }
   ],
   "opened": "2026-09-14",
   "spells": [
    {
-    "at": "2026-09-14",
-    "in": "Magmakin Artillerist",
-    "out": "Wheel of Fortune",
-    "why": "$318.00, and engine.json measures ignition at 94.7% by turn six across 17 cards \u2014 it is explicitly NOT the bottleneck. The one declared single point of failure is 'a second per-discard DAMAGE source', assembled in 39.5% of games, and Magmakin is exactly that for three mana, the same cost as Glint-Horn. MEASURED AT -0.134 TO -0.556 ON damage_8 AND TAKEN ANYWAY: that figure is a membership claim, not an output one, and the value of a second damage source is insurance against Glint-Horn eating a removal spell \u2014 which a goldfish with no removal cannot price. Recorded as a judgement call, not as a measured gain."
+    "at": null,
+    "in": "Astral Drift",
+    "out": null,
+    "why": null
    },
    {
-    "at": "2026-09-14",
-    "in": "Queen Kayla bin-Kroog",
-    "out": "Wheel of Misfortune",
-    "why": "The only wheel the model does not read as a wheel, and correctly: only the player who bids LOWEST discards and redraws, so it may never wheel you. Queen Kayla is asymmetric, discards, and is REPEATABLE \u2014 {4}, {T}, every turn, the only repeatable self-only wheel in the identity. Measured +1.102 on damage_8 against an MDE of 0.695, the best of thirteen candidates."
-   },
-   {
-    "at": "2026-09-14",
-    "in": "Anje's Ravager",
-    "out": "Ceremonial Knife",
-    "why": "THE BIGGEST SINGLE-CARD RESULT MEASURED ON THIS DECK: +1.739 on damage_8 against an MDE of 0.695, two and a half times the threshold, and it clears that bar in 13 of the 15 slots swept. {2}{R}, attacks each combat IF ABLE, and whenever it attacks: discard your hand, then draw three. Asymmetric, repeatable, and it fires itself every turn without costing a card or a mana \u2014 the pilot's own principle (asymmetric beats symmetric unless a discount or a rider earns it) turned out to be the best-paying rule of the session. Ceremonial Knife is the slot because it is the worst: an Equipment whose Blood comes only from COMBAT DAMAGE, which this model explicitly refuses to credit, and the engine critic flagged it as miscast in the conversion stage for exactly that. THE TAXES DO NOT PAY, which is what settles the symmetric question: Razorkin Needlehead reads -0.258 and Scrawling Crawler -0.144, both noise, so the upside that would justify eleven symmetric wheels does not materialise."
+    "at": null,
+    "in": null,
+    "out": "Shelter",
+    "why": null
    }
   ],
+  "staged_count": 6,
   "why": "THE CART CAME BACK AT $2,464.64 AND FOUR CARDS WERE 77% OF IT: Volcanic Island $725.35, Tundra $475.00, Wheel of Fortune $318.00, Plateau $304.00 \u2014 $1,822.35, all Revised-era and moderately played. The pilot's line is under $1,000. Cutting the three original DUALS alone takes the subtotal from $2,354.94 to $850.59, about $897 all-in, and clears the line WITHOUT TOUCHING A SPELL: Wheel of Fortune stays. They are replaced by lands making the same colours from the Verge and slow-land cycles, which cost cents. THE EVIDENCE HERE IS THE DETERMINISTIC MANA BLOCK, not the objective below: the goldfish plays the first land in hand and credits its colours the same turn, so it cannot rank two lands that make the same colours, and mana-analysis is the whole of the evidence for a land swap. The objective is a NO-REGRESSION line set OUTSIDE the run's resolution so it can actually come back met or not met \u2014 the first two attempts were set inside the MDE and the tool refused them, correctly."
  },
  "decklist_sha256": "fc170165382bc0d0aa7ccecc2402dea22ebbcf4a2bfcd425acb63fe15d53ff87",
@@ -1181,27 +1206,25 @@
    },
    {
     "cards": [
-     "Anje's Ravager",
-     "Wheel of Fortune",
-     "Wheel of Misfortune"
+     "Astral Drift"
     ],
     "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
     "kind": "unmeasured",
-    "what": "3 card(s) carrying a draw effect",
+    "what": "1 card(s) carrying a draw effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [
-     "Queen Kayla bin-Kroog"
+     "Shelter"
     ],
-    "detail": "nothing dies in a goldfish, so recursion has no target",
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
     "kind": "unmeasured",
-    "what": "1 card(s) carrying a recursion effect",
+    "what": "1 card(s) carrying a protection effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [
-     "Magmakin Artillerist"
+     "Astral Drift"
     ],
     "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
@@ -1210,16 +1233,18 @@
    },
    {
     "cards": [
-     "Glittering Massif",
-     "Irrigated Farmland",
-     "Plateau",
-     "Thundering Falls",
-     "Tundra",
-     "Volcanic Island"
+     "Battlefield Forge",
+     "Clifftop Retreat",
+     "Ferrous Lake",
+     "Fiery Islet",
+     "Gleaming Bastion",
+     "Inspiring Vantage",
+     "Island",
+     "Riverpyre Verge"
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
-    "what": "3 land swap(s)",
+    "what": "8 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {

@@ -747,10 +747,40 @@
    "Tarnished Citadel"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Marang River Regent // Coil and Catch"
+   ],
+   "class": "draw",
+   "headline": "1 card(s) carrying a draw effect",
+   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
+  },
+  {
+   "cards": [
+    "Battlefield Forge",
+    "Cinder Glade",
+    "Dragonskull Summit",
+    "Fabled Passage",
+    "Forbidden Orchard",
+    "Marsh Flats",
+    "Misty Rainforest",
+    "Polluted Delta",
+    "Prismatic Vista",
+    "Sunbaked Canyon",
+    "Tarnished Citadel",
+    "Turbulent Springs",
+    "Verdant Catacombs",
+    "Wooded Foothills"
+   ],
+   "class": "land",
+   "headline": "14 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "final-v1",
  "changes": {
-  "count": 1,
+  "count": 17,
   "diff": {
    "base_names": 97,
    "base_size": 100,
@@ -947,16 +977,114 @@
     "out": 8
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Fabled Passage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Forbidden Orchard",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Marsh Flats",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Misty Rainforest",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Polluted Delta",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Prismatic Vista",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Tarnished Citadel",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Verdant Catacombs",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Battlefield Forge",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Cinder Glade",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Dragonskull Summit",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Sunbaked Canyon",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Turbulent Springs",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Wooded Foothills",
+    "why": null
+   }
+  ],
   "opened": "2026-09-11",
   "spells": [
    {
-    "at": "2026-09-11",
-    "in": "Gadrak, the Crown-Scourge",
-    "out": "Worldly Tutor",
-    "why": "reverses the Gadrak cut: Asceticism now takes the single-job tutor's slot (Sarkhan's Triumph stays as the instant-speed Dragon tutor); Gadrak is the cheapest Dragon body and the three-slot was down to one"
+    "at": null,
+    "in": "Marang River Regent // Coil and Catch",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Hellkite Courser",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talisman of Dominance",
+    "why": null
    }
   ],
+  "staged_count": 1,
   "why": "mana-v1 with one correction (2026-09-11): Asceticism takes Worldly Tutor's slot and Gadrak stays. Ablation on the champion: Asceticism-for-Gadrak was the only swap in the stack that moved the kill rate (kill-by-T8 -0.030), and the goldfish overstates Gadrak (it attacks with him ignoring the four-artifact clause; his Treasure is unmodelled), while Asceticism-for-Worldly-Tutor reads +0.001 on kill-by-T8 and keeps the Dragon curve at mean MV 5.38 with two three-drops. The pilot's rule: a Dragon earns its slot; a single-job spell is the cut. Control on the clock as before; the log is the instrument for the answers."
  },
  "decklist_sha256": "1d095e809d8137067077a46359e6200da2d9c59340dd055216e27227418fc10c",
@@ -1301,6 +1429,37 @@
     "kind": "unresolved",
     "what": "9 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Marang River Regent // Coil and Catch"
+    ],
+    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a draw effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Battlefield Forge",
+     "Cinder Glade",
+     "Dragonskull Summit",
+     "Fabled Passage",
+     "Forbidden Orchard",
+     "Marsh Flats",
+     "Misty Rainforest",
+     "Polluted Delta",
+     "Prismatic Vista",
+     "Sunbaked Canyon",
+     "Tarnished Citadel",
+     "Turbulent Springs",
+     "Verdant Catacombs",
+     "Wooded Foothills"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "14 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "U gap -2 -> -12",

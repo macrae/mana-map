@@ -640,10 +640,28 @@
    "Winds of Abandon"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Muddle the Mixture"
+   ],
+   "class": "counterspell",
+   "headline": "1 card(s) carrying a counterspell effect",
+   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Aetherize",
+    "Winds of Abandon"
+   ],
+   "class": "removal",
+   "headline": "2 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  }
+ ],
  "branch": "fort-v1",
  "changes": {
-  "count": 0,
+  "count": 20,
   "diff": {
    "base_names": 91,
    "base_size": 100,
@@ -861,7 +879,129 @@
   },
   "lands": [],
   "opened": "2026-09-10",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": "Aetherize",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Authority of the Consuls",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Blind Obedience",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Ghostly Prison",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Hallowed Haunting",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Mesa Enchantress",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Sanguine Bond",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Sigil of the Empty Throne",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Suture Priest",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Winds of Abandon",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ajani's Chosen",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Cathars' Crusade",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Gremlin Tamer",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Honden of Cleansing Fire",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Hypnotic Siren",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Muddle the Mixture",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Northern Air Temple",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Sanctum of Stone Fangs",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Southern Air Temple",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "The Spirit Oasis",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "PRESCRIPTION 8d44aef626d9, applied whole. At standard-v3 the working list won 4 of 47 while the fleet sits at 0.28-0.41; the 59 logs say sythis-enchantress kills zur by combat (Sigil angels 293 dmg, aura'd Sythis 243, indestructible Heliod 236, Hallowed Haunting spirits 140) behind Privileged Position in 21 of 59 games, which blanks seven targeted answers. Ten swaps: two untargeted answers (Winds of Abandon overloaded, Aetherize), the two cast-trigger clocks that killed zur from the other seat (Sigil, Hallowed Haunting), drain that ignores a fort (Sanguine Bond, Blind Obedience, Suture Priest, Authority of the Consuls), a three-mana fort (Ghostly Prison) and cast-draw (Mesa Enchantress); out go the five Shrines and Spirit Oasis (X=1 by drain-v1's arithmetic), Muddle, Cathars' Crusade, Ajani's Chosen, Hypnotic Siren, Gremlin Tamer. The goldfish objective is a proxy: five of the ten adds are invisible to it by construction, and the verdict is Forge at standard-v3 against the working list's 0.085."
  },
  "decklist_sha256": "b4147a1977eacd7fb7ed920440b50d49c1872428096264ba0ae4c1c23151c425",
@@ -1213,6 +1353,25 @@
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Muddle the Mixture"
+    ],
+    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a counterspell effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Aetherize",
+     "Winds of Abandon"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "the branch sat at ['standard-v3'] and the champion at ['standard', 'standard-v2'] \u2014 no table in common, and a rate from another table is not this branch's control. Run `manamap pilot simulate zur-enchantress --pod standard-v3`",

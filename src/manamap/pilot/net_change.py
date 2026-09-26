@@ -457,14 +457,75 @@ def changes(slug, branch):
     def is_land(name):
         return "Land" in ((pool.get(name) or {}).get("type_line") or "")
 
-    lands, spells = [], []
+    # THE NET DIFF, NOT THE STAGING LOG — and reading the log was a real defect.
+    #
+    # `staged` is every swap ever staged on this branch, superseded ones
+    # included. goblin-storm/zada-v1 staged 29 and its NET change is 16: nine
+    # cards were staged in and later staged back out, and this function
+    # published all nine as ADDS. Three names appeared on BOTH sides at once.
+    # The page's own header said "16 out and 16 in" from `deck_branch.diff`
+    # while the list below it showed 29 pairs — a reader following it would
+    # have bought cards the branch does not run.
+    #
+    # ONE PREDICATE, ONE HOME: `deck_branch.diff` already answers "what actually
+    # changed", counts copies rather than names, and is what the header prints.
+    # This reads it instead of keeping a second, wronger answer.
+    #
+    # The `why` is still the staged one — written when the swap was made, before
+    # any figure in this report existed, so it cannot have been fitted to them.
+    # A card whose PARTNER was superseded keeps its own reason and loses only the
+    # arrow, because the pairing is the part that stopped being true.
+    # A MERGED BRANCH IS A RECORD, NOT A SHOPPING LIST. Its swaps are already in
+    # the deck, so the diff against the current list is empty BY DEFINITION —
+    # and reporting nothing would erase what the branch did. Three merged
+    # branches (gishath@mana-v1, ur-dragon@final-v2, heliod@splendor-v2) would
+    # have gone blank on the first version of this fix. For those the staging
+    # log IS the change; for an open branch it is a superset of it.
+    merged = bool((meta or {}).get("merged"))
+    d = deck_branch.diff(slug, branch)
+    if merged and not (d.get("add") or d.get("out")):
+        staged = meta.get("staged") or []
+        lands, spells = [], []
+        for row in staged:
+            entry = {"out": row.get("out"), "in": row.get("in"),
+                     "why": row.get("why"), "at": row.get("at")}
+            (lands if is_land(entry["in"]) or is_land(entry["out"])
+             else spells).append(entry)
+        return {"spells": spells, "lands": lands,
+                "count": len(lands) + len(spells),
+                "staged_count": len(staged), "merged": True,
+                "opened": meta.get("opened"), "why": meta.get("why")}
+    net_in = list(d.get("add") or [])
+    net_out = list(d.get("out") or [])
+    why_in, why_out = {}, {}
     for row in meta.get("staged") or []:
-        entry = {"out": row.get("out"), "in": row.get("in"),
+        if row.get("in"):
+            why_in.setdefault(row["in"], row)
+        if row.get("out"):
+            why_out.setdefault(row["out"], row)
+
+    lands, spells, paired_out = [], [], set()
+    for name in net_in:
+        row = why_in.get(name) or {}
+        partner = row.get("out")
+        if partner not in net_out:          # the pair was superseded
+            partner = None
+        else:
+            paired_out.add(partner)
+        entry = {"out": partner, "in": name,
                  "why": row.get("why"), "at": row.get("at")}
-        (lands if is_land(entry["in"]) or is_land(entry["out"])
+        (lands if is_land(name) or (partner and is_land(partner))
          else spells).append(entry)
+    for name in net_out:
+        if name in paired_out:
+            continue
+        row = why_out.get(name) or {}
+        entry = {"out": name, "in": None,
+                 "why": row.get("why"), "at": row.get("at")}
+        (lands if is_land(name) else spells).append(entry)
     return {"spells": spells, "lands": lands,
             "count": len(lands) + len(spells),
+            "staged_count": len(meta.get("staged") or []),
             "opened": meta.get("opened"), "why": meta.get("why")}
 
 
@@ -569,8 +630,10 @@ def blind_spots(slug, branch, change_doc):
                    "cannot rank two lands that make the same colours. The "
                    "deterministic mana block is the whole of the evidence for "
                    "a land swap",
-            "cards": sorted({e["in"] for e in change_doc["lands"]}
-                            | {e["out"] for e in change_doc["lands"]}),
+            # EITHER SIDE MAY BE ABSENT since `changes()` reports the net diff:
+            # a card whose partner was superseded is a row with one side only.
+            "cards": sorted({e["in"] for e in change_doc["lands"] if e["in"]}
+                            | {e["out"] for e in change_doc["lands"] if e["out"]}),
         })
     return out
 

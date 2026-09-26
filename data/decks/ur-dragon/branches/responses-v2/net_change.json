@@ -715,35 +715,32 @@
  "blind_spots": [
   {
    "cards": [
-    "Stubborn Denial",
-    "Transcendent Dragon"
+    "Steel Hellkite"
    ],
-   "class": "counterspell",
-   "headline": "2 card(s) carrying a counterspell effect",
-   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+   "class": "removal",
+   "headline": "1 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
   },
   {
    "cards": [
-    "Asceticism",
-    "Mithril Coat"
-   ],
-   "class": "protection",
-   "headline": "2 card(s) carrying a protection effect",
-   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
-  },
-  {
-   "cards": [
-    "Forest",
-    "Verdant Catacombs"
+    "Arid Mesa",
+    "Bloodstained Mire",
+    "Fabled Passage",
+    "Forbidden Orchard",
+    "Prismatic Vista",
+    "Scalding Tarn",
+    "Tarnished Citadel",
+    "Verdant Catacombs",
+    "Wooded Foothills"
    ],
    "class": "land",
-   "headline": "1 land swap(s)",
+   "headline": "9 land swap(s)",
    "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
  "branch": "responses-v2",
  "changes": {
-  "count": 6,
+  "count": 16,
   "diff": {
    "base_names": 97,
    "base_size": 100,
@@ -923,45 +920,106 @@
   },
   "lands": [
    {
+    "at": null,
+    "in": "Fabled Passage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Forbidden Orchard",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Prismatic Vista",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Tarnished Citadel",
+    "out": null,
+    "why": null
+   },
+   {
     "at": "2026-09-11",
     "in": "Verdant Catacombs",
-    "out": "Forest",
+    "out": null,
     "why": "mana-fit: a basic Forest covers only a colour already at target; a black-producing fetch the pilot owns closes one of the 12 missing black sources"
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Arid Mesa",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Bloodstained Mire",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Scalding Tarn",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Wooded Foothills",
+    "why": null
    }
   ],
   "opened": "2026-09-11",
   "spells": [
    {
+    "at": null,
+    "in": "Radiant Destiny",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Return of the Wildspeaker",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Worldly Tutor",
+    "out": null,
+    "why": null
+   },
+   {
     "at": "2026-09-11",
-    "in": "Whirlwing Stormbrood // Dynamic Soar",
+    "in": null,
+    "out": "Gadrak, the Crown-Scourge",
+    "why": "board-wide hexproof and regeneration against the removal pattern the log records, fight included; costs a Dragon slot and five mana at sorcery speed"
+   },
+   {
+    "at": "2026-09-11",
+    "in": null,
     "out": "Hellkite Courser",
     "why": "flash for every Dragon: the anti-telegraph mechanism the log names in four of five games; Courser cast 0 of 40 Forge games"
    },
    {
-    "at": "2026-09-11",
-    "in": "Stubborn Denial",
-    "out": "Rishkar's Expertise",
-    "why": "one blue mana held open, Ferocious on for 18 of 22 Dragons; Expertise is the slowest non-Dragon spell and a telegraph"
+    "at": null,
+    "in": null,
+    "out": "Steel Hellkite",
+    "why": null
    },
    {
-    "at": "2026-09-11",
-    "in": "Transcendent Dragon",
-    "out": "Utvara Hellkite",
-    "why": "the only Dragon in the identity whose ETB counters; at instant speed under Stormbrood"
-   },
-   {
-    "at": "2026-09-11",
-    "in": "Mithril Coat",
-    "out": "Sarkhan, Fireblood",
-    "why": "instant-speed protection that stays, for the commander that draws the table's removal (3 of 5 games); Sarkhan is Dragon-only mana on a walker that dies to the same attention"
-   },
-   {
-    "at": "2026-09-11",
-    "in": "Asceticism",
-    "out": "Gadrak, the Crown-Scourge",
-    "why": "board-wide hexproof and regeneration against the removal pattern the log records, fight included; costs a Dragon slot and five mana at sorcery speed"
+    "at": null,
+    "in": null,
+    "out": "Talisman of Dominance",
+    "why": null
    }
   ],
+  "staged_count": 6,
   "why": "The pilot's pick from prescription 0241fb6a70f1 (2026-09-11): the three responses-v1 swaps plus Mithril Coat and Asceticism, and a basic Forest out for Verdant Catacombs because two of four logged losses are mana and black is 12 sources short. The goldfish cannot see counters or protection, so its objective is a CONTROL on the clock (0.802 today); the captain's log is the instrument that settles this branch."
  },
  "decklist_sha256": "fb8e06db9235c233d44e882840c910dc2a596b152db7c5256d833454668862c3",
@@ -1306,32 +1364,28 @@
    },
    {
     "cards": [
-     "Stubborn Denial",
-     "Transcendent Dragon"
+     "Steel Hellkite"
     ],
-    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
-    "what": "2 card(s) carrying a counterspell effect",
+    "what": "1 card(s) carrying a removal effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [
-     "Asceticism",
-     "Mithril Coat"
-    ],
-    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
-    "kind": "unmeasured",
-    "what": "2 card(s) carrying a protection effect",
-    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
-   },
-   {
-    "cards": [
-     "Forest",
-     "Verdant Catacombs"
+     "Arid Mesa",
+     "Bloodstained Mire",
+     "Fabled Passage",
+     "Forbidden Orchard",
+     "Prismatic Vista",
+     "Scalding Tarn",
+     "Tarnished Citadel",
+     "Verdant Catacombs",
+     "Wooded Foothills"
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
-    "what": "1 land swap(s)",
+    "what": "9 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {

@@ -725,10 +725,52 @@
    "Utvara Hellkite"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Stubborn Denial",
+    "Transcendent Dragon"
+   ],
+   "class": "counterspell",
+   "headline": "2 card(s) carrying a counterspell effect",
+   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Asceticism",
+    "Mithril Coat"
+   ],
+   "class": "protection",
+   "headline": "2 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  },
+  {
+   "cards": [
+    "Steel Hellkite"
+   ],
+   "class": "removal",
+   "headline": "1 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Arid Mesa",
+    "Bloodstained Mire",
+    "Fabled Passage",
+    "Forbidden Orchard",
+    "Prismatic Vista",
+    "Scalding Tarn",
+    "Tarnished Citadel",
+    "Wooded Foothills"
+   ],
+   "class": "land",
+   "headline": "8 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "haste-v1",
  "changes": {
-  "count": 3,
+  "count": 23,
   "diff": {
    "base_names": 97,
    "base_size": 100,
@@ -1000,15 +1042,58 @@
     "out": 11
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Fabled Passage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Forbidden Orchard",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Prismatic Vista",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Tarnished Citadel",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Arid Mesa",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Bloodstained Mire",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Scalding Tarn",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Wooded Foothills",
+    "why": null
+   }
+  ],
   "opened": "2026-09-11",
   "spells": [
-   {
-    "at": "2026-09-11",
-    "in": "Rhythm of the Wild",
-    "out": "Radiant Destiny",
-    "why": "add 1: riot on every nontoken Dragon for {1}{R}{G}; Destiny's anthem costs Terror of the Peaks a point per entry and nothing else"
-   },
    {
     "at": "2026-09-11",
     "in": "Dragonlord Kolaghan",
@@ -1016,12 +1101,91 @@
     "why": "add 4: the cheaper haste-granting Dragon (Karrthus is a mana more); costs a black pip against 18 sources of 30 \u2014 mana-fit is the check"
    },
    {
+    "at": null,
+    "in": "Return of the Wildspeaker",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": "2026-09-11",
+    "in": "Rhythm of the Wild",
+    "out": null,
+    "why": "add 1: riot on every nontoken Dragon for {1}{R}{G}; Destiny's anthem costs Terror of the Peaks a point per entry and nothing else"
+   },
+   {
+    "at": null,
+    "in": "Rishkar's Expertise",
+    "out": null,
+    "why": null
+   },
+   {
     "at": "2026-09-11",
     "in": "Rising of the Day",
     "out": "Faeburrow Elder",
     "why": "add 7: Fervor's text plus +1/+0 on legends; the hardest cut in the prescription, the deck's biggest dork, mana-sources 50 -> 49"
+   },
+   {
+    "at": null,
+    "in": "Sarkhan, Fireblood",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Utvara Hellkite",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Worldly Tutor",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Asceticism",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Mithril Coat",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Steel Hellkite",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Stubborn Denial",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talisman of Dominance",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Transcendent Dragon",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Whirlwing Stormbrood // Dynamic Soar",
+    "why": null
    }
   ],
+  "staged_count": 3,
   "why": "Prescription 0241fb6a70f1 adds 1, 4, 7: a third and fourth board-wide haste grant so a Dragon swings the turn it lands. The goldfish sized a third grant at under a point of kill-by-T8 (0.802 today), so 0.81 is the bar this instrument can falsify; the anti-telegraph claim is Forge's to settle at standard-v3."
  },
  "decklist_sha256": "25c31c4c49658b9ee3ec5998c7e2c9c065e6179a838d92c33aa2f05de02f50f6",
@@ -1385,6 +1549,51 @@
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Stubborn Denial",
+     "Transcendent Dragon"
+    ],
+    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a counterspell effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Asceticism",
+     "Mithril Coat"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Steel Hellkite"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Arid Mesa",
+     "Bloodstained Mire",
+     "Fabled Passage",
+     "Forbidden Orchard",
+     "Prismatic Vista",
+     "Scalding Tarn",
+     "Tarnished Citadel",
+     "Wooded Foothills"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "8 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "U gap -2 -> -3, B gap -9 -> -12",

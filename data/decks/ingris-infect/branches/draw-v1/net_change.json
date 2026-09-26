@@ -626,10 +626,36 @@
    "Read the Bones"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Skullclamp"
+   ],
+   "class": "draw",
+   "headline": "1 card(s) carrying a draw effect",
+   "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
+  },
+  {
+   "cards": [
+    "Staff of Compleation"
+   ],
+   "class": "removal",
+   "headline": "1 card(s) carrying a removal effect",
+   "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Evolving Wilds",
+    "Verdant Catacombs"
+   ],
+   "class": "land",
+   "headline": "2 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "draw-v1",
  "changes": {
-  "count": 0,
+  "count": 10,
   "diff": {
    "base_names": 92,
    "base_size": 100,
@@ -767,9 +793,72 @@
     "out": 5
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Evolving Wilds",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Verdant Catacombs",
+    "out": null,
+    "why": null
+   }
+  ],
   "opened": "2026-09-10",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": "Dark Confidant",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Read the Bones",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Skullclamp",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Combat Celebrant",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Fellwar Stone",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Ogre Menial",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Staff of Compleation",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talisman of Indulgence",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "CARD ADVANTAGE, ON TOP OF lands-v1 (this list carries its two fetches and the Swamp). deck-audit reads five draw copies against a target of ten. Skullclamp in: fifteen of the deck's infect bodies have one toughness, so every equip draws two, and it is the one activation docs/gotchas-bench.md shows Forge's AI actually uses (1.25 activations per cast, against 0.00 for Ashnod's Altar) -- the goldfish cannot read it and the record will. Read the Bones and Dark Confidant in as draw the goldfish CAN read. Out: Combat Celebrant and Staff of Compleation, the two cards the 55-card leave-one-out sweep ranked least needed among the non-interaction, both of whose real value is in an activation or an extra combat the model does not price; and Ogre Menial, a four-mana 3/3 the sweep found worth 0.001 of kill_by_8. Objective on the draw axis the goldfish sees; Skullclamp's share is Forge's to measure."
  },
  "decklist_sha256": "21d4a72836c3cb1d58da8811c20fc25a87c721277df4fd178a621e4e61132814",
@@ -1015,12 +1104,12 @@
   "why": "CARD ADVANTAGE, ON TOP OF lands-v1 (this list carries its two fetches and the Swamp). deck-audit reads five draw copies against a target of ten. Skullclamp in: fifteen of the deck's infect bodies have one toughness, so every equip draws two, and it is the one activation docs/gotchas-bench.md shows Forge's AI actually uses (1.25 activations per cast, against 0.00 for Ashnod's Altar) -- the goldfish cannot read it and the record will. Read the Bones and Dark Confidant in as draw the goldfish CAN read. Out: Combat Celebrant and Staff of Compleation, the two cards the 55-card leave-one-out sweep ranked least needed among the non-interaction, both of whose real value is in an activation or an extra combat the model does not price; and Ogre Menial, a four-mana 3/3 the sweep found worth 0.001 of kill_by_8. Objective on the draw axis the goldfish sees; Skullclamp's share is Forge's to measure."
  },
  "objective_grade": {
-  "reading": 2.0399,
+  "reading": 2.0294,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse; killed by T6, stall, 2 in a row, missed drop by T5, mulliganed, extra cards by T8 and hand can act by T3 improved.",
+  "because": "You buy killed by T6, stall, 2 in a row, missed drop by T5, mulliganed, extra cards by T8 and hand can act by T3 and pay damage @T10.",
   "bill": {
    "box": 3,
    "buy": 2,
@@ -1048,9 +1137,10 @@
    "reads_as": "2 to buy; 90 of 92 already owned",
    "total": 92
   },
-  "fell": [],
+  "fell": [
+   "damage @T10"
+  ],
   "no_call": [
-   "damage @T10",
    "board power @T6",
    "killed by T10",
    "interaction affordable @T6"
@@ -1059,12 +1149,12 @@
   "reward": [
    {
     "measure": "killed by T6",
-    "reads_as": "22 games in 100 -> 25 in 100, a swing of 3 games per 100",
+    "reads_as": "17 games in 100 -> 20 in 100, a swing of 2 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "1 games in 100 -> 1 in 100, a swing of 1 games per 100",
+    "reads_as": "2 games in 100 -> 1 in 100, a swing of 1 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
@@ -1079,7 +1169,7 @@
    },
    {
     "measure": "extra cards by T8",
-    "reads_as": "1.04 -> 2.04, a change of +1.00 (+96%)",
+    "reads_as": "1.04 -> 2.03, a change of +0.99 (+95%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
@@ -1090,10 +1180,44 @@
   ],
   "risk": [
    {
-    "detail": "the largest is interaction affordable @T6 at +0.012 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "5.16 -> 5.00, a change of -0.15 (-3%)",
+    "kind": "paid",
+    "what": "damage @T10",
+    "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
+   {
+    "detail": "the largest is interaction affordable @T6 at +0.008 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "4 row(s) returned no call",
+    "what": "3 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Skullclamp"
+    ],
+    "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a draw effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Staff of Compleation"
+    ],
+    "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Evolving Wilds",
+     "Verdant Catacombs"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "2 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "R gap +7 -> +5",
@@ -1116,33 +1240,33 @@
    "extra cards by T8",
    "hand can act by T3"
   ],
-  "state": "merge"
+  "state": "a trade"
  },
  "slug": "ingris-infect",
  "staged": 0,
  "table": [
   {
    "better_is": "higher",
-   "branch": 7.5242,
-   "champion": 7.4797,
-   "delta": 0.0445,
-   "mde": 0.2959,
+   "branch": 5.0016,
+   "champion": 5.1553,
+   "delta": -0.1537,
+   "mde": 0.1323,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.044 is smaller than the 0.296 this run can resolve",
+   "reads_as": "5.16 -> 5.00, a change of -0.15 (-3%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
   },
   {
    "better_is": "higher",
-   "branch": 5.5382,
-   "champion": 5.4896,
-   "delta": 0.0486,
-   "mde": 0.103,
+   "branch": 5.2202,
+   "champion": 5.2084,
+   "delta": 0.0118,
+   "mde": 0.1032,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.049 is smaller than the 0.103 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.103 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1151,12 +1275,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2482,
-   "champion": 0.2198,
-   "delta": 0.0284,
-   "mde": 0.0171,
+   "branch": 0.1965,
+   "champion": 0.173,
+   "delta": 0.0235,
+   "mde": 0.0157,
    "measure": "killed by T6",
-   "reads_as": "22 games in 100 -> 25 in 100, a swing of 3 games per 100",
+   "reads_as": "17 games in 100 -> 20 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1165,12 +1289,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9565,
-   "champion": 0.957,
-   "delta": -0.0005,
-   "mde": 0.0081,
+   "branch": 0.9397,
+   "champion": 0.9395,
+   "delta": 0.0002,
+   "mde": 0.0094,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.009 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1179,12 +1303,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0086,
-   "champion": 0.0147,
-   "delta": -0.0061,
-   "mde": 0.0048,
+   "branch": 0.0115,
+   "champion": 0.0192,
+   "delta": -0.0077,
+   "mde": 0.0054,
    "measure": "stall, 2 in a row",
-   "reads_as": "1 games in 100 -> 1 in 100, a swing of 1 games per 100",
+   "reads_as": "2 games in 100 -> 1 in 100, a swing of 1 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -1221,12 +1345,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.0399,
+   "branch": 2.0294,
    "champion": 1.0385,
-   "delta": 1.0014,
-   "mde": 0.0974,
+   "delta": 0.9909,
+   "mde": 0.0969,
    "measure": "extra cards by T8",
-   "reads_as": "1.04 -> 2.04, a change of +1.00 (+96%)",
+   "reads_as": "1.04 -> 2.03, a change of +0.99 (+95%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
@@ -1235,12 +1359,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6806,
-   "champion": 0.6686,
-   "delta": 0.012,
-   "mde": 0.0193,
+   "branch": 0.6446,
+   "champion": 0.6366,
+   "delta": 0.008,
+   "mde": 0.0198,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

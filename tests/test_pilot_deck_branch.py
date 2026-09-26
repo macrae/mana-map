@@ -279,8 +279,30 @@ def test_the_branch_reaches_info_json_and_the_next_line():
     assert set(b["counts"]) == {"in_deck", "box", "elsewhere", "free", "buy"}
     assert b["state"] in deck_branch.BRANCH_STATES
     joined = " ".join(info["next"])
-    assert BRANCH in joined, f"`next` never mentions the branch: {info['next']}"
+    # A BRANCH REACHES `next` ONLY WHILE IT IS LIVE, and this assertion used to
+    # be unconditional. An experiment the pilot has SLEEVED PAST is a record:
+    # ur-dragon's next carried seven such branches and zur-enchantress's eight,
+    # on decks their owner considers finished, so "source 10 cards" was being
+    # offered as the next action on a deck nobody is refactoring.
+    #
+    # The live test moved to a branch that IS live rather than being dropped,
+    # because "a branch nobody can see is a branch nobody acts on" is still the
+    # thing worth protecting.
+    _paper = (info.get("paper") or {}).get("built_at") or ""
+    _m = deck_branch.meta(SLUG, BRANCH) or {}
+    _last = max((r.get("at") or "" for r in (_m.get("staged") or [])), default="")
+    _live = (not _paper) or (_last and _last[:10] > _paper[:10]) \
+        or bool((b.get("proposal") or {}).get("as_version"))
+    if _live:
+        assert BRANCH in joined, f"`next` never mentions the branch: {info['next']}"
+    else:
+        assert BRANCH not in joined, (
+            f"{SLUG}@{BRANCH} was last staged {_last[:10]} and the deck was "
+            f"sleeved {_paper[:10]} — an experiment sleeved past is a record, "
+            f"not a next action")
 
+    if not _live:
+        return
     # WHAT THE LINE SAYS FOLLOWS FROM THE STATE, and every state owes a line —
     # a branch that reached `next` with nothing to say about it would render as
     # a bare name.
@@ -547,3 +569,57 @@ def test_merge_reports_what_a_rebuild_cannot_fix():
     # It must REPORT, never repair — prose is not hand-patched to green a gate.
     assert "write" not in src.lower().replace("written", ""), (
         "the post-merge validator appears to write something")
+
+
+@requires_data
+@requires_deck
+def test_a_live_branch_still_reaches_the_next_line():
+    """THE OTHER HALF OF THE SPLIT, on a branch that IS live.
+
+    Suppressing sleeved-past experiments is only correct if a branch under
+    actual work still surfaces. goblin-storm@zada-v1 was staged after that deck
+    was last sleeved, so it is the live case — and the first version of the
+    suppression rule hid it too, by reading a `staged` key the info entry does
+    not carry and defaulting to empty for every branch.
+    """
+    import pytest
+    from manamap.pilot import deck_info
+    try:
+        info = deck_info.compose("goblin-storm")
+    except Exception:  # pragma: no cover - deck absent
+        pytest.skip("goblin-storm not built")
+    names = {b["name"] for b in (info.get("branches") or [])}
+    if "zada-v1" not in names:
+        pytest.skip("goblin-storm@zada-v1 not present")
+    assert "zada-v1" in " ".join(info["next"]), (
+        "the live branch vanished from `next` — the suppression rule is too "
+        f"broad: {info['next']}")
+
+
+@requires_data
+@requires_deck
+def test_a_closed_deck_offers_no_branch_action_at_all():
+    """A deck that is broken down, retired or archived has no next action.
+
+    Such a deck has no paper lock either, so the sleeved-past test cannot fire
+    on it — zur-enchantress printed "the play/measure loop is closed for this
+    deck" and then listed eight branches to go shopping for.
+    """
+    import pytest
+    from manamap.pilot import deck_info
+    from manamap.pilot.common import UNPLAYABLE_STATUSES
+    checked = 0
+    for slug in ("zur-enchantress", "hapatra", "goblin-storm"):
+        try:
+            info = deck_info.compose(slug)
+        except Exception:  # pragma: no cover
+            continue
+        if (info.get("lifecycle") or {}).get("status") not in UNPLAYABLE_STATUSES:
+            continue
+        checked += 1
+        for b in (info.get("branches") or []):
+            if (b.get("proposal") or {}).get("as_version"):
+                continue
+            assert b["name"] not in " ".join(info["next"]), (
+                f"{slug} is closed and still offers `{b['name']}` as a next action")
+    assert checked >= 1, "no closed deck was exercised"

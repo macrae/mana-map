@@ -612,10 +612,20 @@
   "slug": "ingris-infect",
   "unsourced": []
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Evolving Wilds",
+    "Verdant Catacombs"
+   ],
+   "class": "land",
+   "headline": "2 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "lands-v1",
  "changes": {
-  "count": 0,
+  "count": 4,
   "diff": {
    "base_names": 92,
    "base_size": 100,
@@ -696,9 +706,36 @@
     "out": 2
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Evolving Wilds",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Verdant Catacombs",
+    "out": null,
+    "why": null
+   }
+  ],
   "opened": "2026-09-10",
-  "spells": [],
+  "spells": [
+   {
+    "at": null,
+    "in": null,
+    "out": "Fellwar Stone",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talisman of Indulgence",
+    "why": null
+   }
+  ],
+  "staged_count": 0,
   "why": "THE MANA BASE, FIRST. deck-audit reads 33 lands against a 36-38 target and mana-fit reads black short by one source and red over by seven, on a deck whose commander costs {B}{R}{R} and whose 21 infect bodies are almost all black. Two rocks out (Fellwar Stone, Talisman of Indulgence), two OWNED black-fetching lands in (Verdant Catacombs, Evolving Wilds): 35 lands, four rocks, the black gap closed, red trimmed by two. The cuts are the two cards a 55-card leave-one-out sweep (6,000 iterations each) could price with the least of its blindness: the sweep ranked Phyrexian Arena, Deadly Dispute and Demonic Tutor as the least needed, which is the goldfish saying it cannot see what card advantage or a tutor does against an unopposed 40 -- those stay. Objective: fewer missed land drops by turn five, with kill_by_8 held (0.80) as the control."
  },
  "decklist_sha256": "f4d45cc30ef8a06669afaf4247ec6dea34a1360cba863f418193f4136da2fdcd",
@@ -988,7 +1025,7 @@
   "reward": [
    {
     "measure": "killed by T6",
-    "reads_as": "22 games in 100 -> 26 in 100, a swing of 4 games per 100",
+    "reads_as": "17 games in 100 -> 21 in 100, a swing of 4 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
@@ -1004,10 +1041,20 @@
   ],
   "risk": [
    {
-    "detail": "the largest is interaction affordable @T6 at +0.019 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is interaction affordable @T6 at +0.016 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Evolving Wilds",
+     "Verdant Catacombs"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "2 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "R gap +7 -> +6",
@@ -1034,12 +1081,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 7.3971,
-   "champion": 7.4797,
-   "delta": -0.0826,
-   "mde": 0.2873,
+   "branch": 5.1177,
+   "champion": 5.1553,
+   "delta": -0.0376,
+   "mde": 0.1325,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.083 is smaller than the 0.287 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.038 is smaller than the 0.133 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -1048,12 +1095,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 5.5796,
-   "champion": 5.4896,
-   "delta": 0.09,
-   "mde": 0.103,
+   "branch": 5.2867,
+   "champion": 5.2084,
+   "delta": 0.0783,
+   "mde": 0.1032,
    "measure": "board power @T6",
-   "reads_as": "no call \u2014 the gap of 0.090 is smaller than the 0.103 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.078 is smaller than the 0.103 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1062,12 +1109,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2553,
-   "champion": 0.2198,
-   "delta": 0.0355,
-   "mde": 0.0173,
+   "branch": 0.208,
+   "champion": 0.173,
+   "delta": 0.035,
+   "mde": 0.0161,
    "measure": "killed by T6",
-   "reads_as": "22 games in 100 -> 26 in 100, a swing of 4 games per 100",
+   "reads_as": "17 games in 100 -> 21 in 100, a swing of 4 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
@@ -1076,12 +1123,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9591,
-   "champion": 0.957,
-   "delta": 0.0021,
-   "mde": 0.008,
+   "branch": 0.9418,
+   "champion": 0.9395,
+   "delta": 0.0023,
+   "mde": 0.0094,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.009 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1090,12 +1137,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0121,
-   "champion": 0.0147,
-   "delta": -0.0026,
-   "mde": 0.0048,
+   "branch": 0.0157,
+   "champion": 0.0192,
+   "delta": -0.0035,
+   "mde": 0.0054,
    "measure": "stall, 2 in a row",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.005 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.005 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1146,12 +1193,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6878,
-   "champion": 0.6686,
-   "delta": 0.0192,
-   "mde": 0.0193,
+   "branch": 0.653,
+   "champion": 0.6366,
+   "delta": 0.0164,
+   "mde": 0.0198,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.019 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.016 is smaller than the 0.020 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

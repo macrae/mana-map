@@ -624,6 +624,22 @@
  "blind_spots": [
   {
    "cards": [
+    "Immersturm Predator"
+   ],
+   "class": "hate",
+   "headline": "1 card(s) carrying a hate effect",
+   "why": "there is no opponent to hate out"
+  },
+  {
+   "cards": [
+    "Immersturm Predator"
+   ],
+   "class": "protection",
+   "headline": "1 card(s) carrying a protection effect",
+   "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
+  },
+  {
+   "cards": [
     "Anguished Unmaking"
    ],
    "class": "removal",
@@ -633,7 +649,7 @@
  ],
  "branch": "mound-v1",
  "changes": {
-  "count": 1,
+  "count": 5,
   "diff": {
    "base_names": 96,
    "base_size": 100,
@@ -724,8 +740,33 @@
     "in": "Blight Mound",
     "out": "Anguished Unmaking",
     "why": "a Pest per nontoken creature death in a deck whose engine dies on purpose; the Pests are not Vampires, so this tests whether an off-type death payoff earns a slot"
+   },
+   {
+    "at": null,
+    "in": "Immersturm Predator",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Unbounded Potential",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Blade of the Bloodchief",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Elenda, the Dusk Rose",
+    "why": null
    }
   ],
+  "staged_count": 1,
   "why": "Single-card patch measured for a yay/nay (2026-09-11): Blight Mound for Anguished Unmaking. a Pest per nontoken creature death in a deck whose engine dies on purpose; the Pests are not Vampires, so this tests whether an off-type death payoff earns a slot The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it."
  },
  "decklist_sha256": "fb3507a68183b71705961362a22229c9b833a3f09eb6643e030f96882f6fb41f",
@@ -1109,6 +1150,24 @@
     "kind": "unresolved",
     "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Immersturm Predator"
+    ],
+    "detail": "there is no opponent to hate out",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a hate effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Immersturm Predator"
+    ],
+    "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a protection effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [

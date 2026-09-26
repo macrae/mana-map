@@ -635,10 +635,20 @@
    "Gleaming Bastion"
   ]
  },
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "cards": [
+    "Gleaming Bastion",
+    "Island"
+   ],
+   "class": "land",
+   "headline": "2 land swap(s)",
+   "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
+  }
+ ],
  "branch": "shelter-v1",
  "changes": {
-  "count": 0,
+  "count": 2,
   "diff": {
    "base_names": 100,
    "base_size": 100,
@@ -683,9 +693,23 @@
     "out": 1
    }
   },
-  "lands": [],
+  "lands": [
+   {
+    "at": null,
+    "in": "Gleaming Bastion",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Island",
+    "why": null
+   }
+  ],
   "opened": "2026-09-21",
   "spells": [],
+  "staged_count": 0,
   "why": "Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive a turn or be equipped first, so the deck has no instant-speed protection at all. Shelter is {1}{W} at instant speed and draws a card, which Shabraz pays for with a counter and a life. Astral Drift is gated on CYCLING rather than discarding, which is not what Brallin taxes, and it is a blink effect with almost nothing in the 99 worth blinking; the declaration names it in no target group. White for white, and white sits five sources OVER target, so the manabase does not move. All 17 wheels stay \u2014 an earlier version of this branch cut two of them for Mask of Memory and measured an 8% card-advantage loss for it."
  },
  "decklist_sha256": "2ca70e243f922c24d0c9b99145b6e50a62882f1f9ccf399d8c07ce519cadcbcf",
@@ -986,6 +1010,16 @@
     "kind": "unresolved",
     "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
+   },
+   {
+    "cards": [
+     "Gleaming Bastion",
+     "Island"
+    ],
+    "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
+    "kind": "unmeasured",
+    "what": "2 land swap(s)",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "detail": "U gap -2 -> -3",
