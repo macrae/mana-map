@@ -242,7 +242,7 @@ The canonical difference: `MECHANICAL_TAGS` has one `ramp` tag matching everythi
 Two rules keep it honest:
 
 - **Lands never carry spell roles.** A land is evaluated only for land quality (fetch / tapped / untapped-dual / utility / basic / mdfc).
-- **Coverage is published, not assumed.** The `meta` block reports `coverage` (89.5% of Commander-legal cards) *and* `specific_coverage` (73.2%, excluding cards carrying only the `threat:body` fallback), because labelling every creature a body and stopping would tell a slot filler nothing. `ROLE_COVERAGE_TARGET` / `ROLE_SPECIFIC_COVERAGE_TARGET` are regression floors asserted by the test suite. 100% is explicitly not the goal — the stragglers are genuinely miscellaneous one-off effects (Silence, Teferi Time Raveler, Chaos Warp), and looser regexes would buy coverage with false positives, which is worse than an honest null.
+- **Coverage is published, not assumed.** The `meta` block reports `coverage` (89.6% of Commander-legal cards) *and* `specific_coverage` (73.2%, excluding cards carrying only the `threat:body` fallback), because labelling every creature a body and stopping would tell a slot filler nothing. `ROLE_COVERAGE_TARGET` / `ROLE_SPECIFIC_COVERAGE_TARGET` are regression floors asserted by the test suite. 100% is explicitly not the goal — the stragglers are genuinely miscellaneous one-off effects (Silence, Teferi Time Raveler, Chaos Warp), and looser regexes would buy coverage with false positives, which is worse than an honest null.
 
 `ROLE_PATTERNS` is a **separate dict from `MECHANICAL_TAGS` on purpose**: roles are not model-facing, so editing them costs only `manamap card-roles` (step 13) rather than a retrain.
 

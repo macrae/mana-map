@@ -40,6 +40,9 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   stats.py: Newcombe/Welch/permutation/bootstrap + EXACT power
                       #   (no scipy); threat.py: who the pod attacks (opponent modelling)
                       #   JVMs; parse.py: logs → events → facts → aggregates + CIs;
+                      #   engine_casts.py: did the AI CAST the engine, or hold it —
+                      #   a rate on a deck it never cast is a FLOOR, and this says so;
+                      #   pilot_quality.py / pod_behaviour.py / power.py / failure.py;
                       #   validate_sim.py re-proves a record against its logs;
                       #   bridge.py lifts a board into a game_state v2 scenario;
                       #   opponents.py fetches a pod seat from EDHREC.
@@ -47,7 +50,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   (docs/simulation.md — the engine lives OUTSIDE the repo)
   analysis/           # synergy, power_creep, cluster_regions, card_roles,
                       #   eval_embeddings (step 15, the quality gate), common
-  pilot/              # the bench: BUILD / PROVE+MEASURE / PAGE (legacy) / DIAGNOSE / LOG+ASK —
+  pilot/              # the bench: BUILD / PROVE+MEASURE / PAGE / DIAGNOSE / LOG+ASK —
                       # one evidence contract across all of it
                       # ---- shared ----
                       #   card_pool.py     THE ONLY reader of cards.csv; one parse,
@@ -55,7 +58,14 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   collection.py    THE ONLY reader of COLLECTION_DIR; "do I own
                       #                    this" = a BOX, never deck membership
                       #   card_search.py   deterministic corpus mining: identity, oracle/
-                      #                    name regex, role, cmc, --owned/--unowned
+                      #                    name regex, role, cmc, --owned/--unowned,
+                      #                    and --channel / --modelled / --unmodelled,
+                      #                    which answer "can the model even see this"
+                      #   model_coverage.py WHAT THE MODEL CANNOT SEE: seen / DARK (feeds
+                      #                    a channel that is OFF) / invisible, plus
+                      #                    never_cast and silent_losses — the predicate
+                      #                    behind "a card the model cannot read looks
+                      #                    exactly like a card that does not help"
                       #   common.py        paths, memos, DFC faces, citation ids,
                       #                    resolve_out_path, the validator CLI tail
                       #   registry.py      subcommand table + argparse wiring
@@ -76,8 +86,14 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   build_strategy_db / query_strategy
                       #   validate_strategic_frame.py  frame form + line flags
                       #   validate_stack.py   the citation contract
-                      #   goldfish.py      seeded Monte Carlo (resource development;
-                      #                    Treasure + one-opponent combat opt-in)
+                      #   goldfish.py      seeded Monte Carlo, split across goldfish_
+                      #                    {profiles,library,turn}.py. EVERY channel is
+                      #                    opt-in per deck — draw, combat, Treasure,
+                      #                    sacrifice/deaths/drain, discard, the SPELL
+                      #                    COUNT (storm, magecraft, per-cast damage) and
+                      #                    four commander abilities. CREATURES tap when
+                      #                    they attack; LANDS still never do.
+                      #                    docs/simulation.md has the channel table
                       #   mana_analysis.py colour sources / castability — deterministic
                       #   game_state.py    the game_state v2 vocabulary + form check
                       #   merge_prose.py   pilot-notes' five keys in; frozen legacy keys untouched
@@ -288,14 +304,33 @@ manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]
                               # diagnose -> benchmark -> deck-info), parallel across
                               # TARGETS. MEASURED 2026-09-04 at 72 targets: 109s at
                               # --jobs 8, the goldfish stage alone 83.6s -> 23.7s. The
-                              # fleet is 93 targets now, so that is a ratio, not a
+                              # fleet is 96 targets now, so that is a ratio, not a
                               # runtime. BIT-IDENTICAL: games inside
                               # one run are never split, only decks are.
                               # A MISSING artifact is CREATED, not skipped -- but only
                               # on a SLEEVED deck (`regen.BOOTSTRAP` + `is_pinned`).
+                              # AFTER A MODEL CHANGE, REGEN IS NECESSARY AND NOT
+                              # SUFFICIENT. Its goldfish stage targets 33 artifacts,
+                              # every one a SLEEVED deck or its branch -- but
+                              # `test_the_fleet_is_stamped_with_the_model_that_is_running`
+                              # checks every deck that is not RETIRED. Measured
+                              # 2026-09-26: 8 live decks hold a tracked
+                              # goldfish_metrics.json and 2 of them (emiel-blink,
+                              # meren-recursion) are not regen targets, so the suite
+                              # goes red until each is run BY HAND:
+                              #   manamap pilot goldfish <slug> [--branch <name>]
+                              #   manamap pilot deck-info <slug> --write   <- AND THIS
+                              # info.json is COMPOSED from the goldfish, so running only
+                              # the first line trades three red cases for two. That
+                              # dependency order is the thing regen exists to know.
+                              # That is the bench/sleeved split working as designed on
+                              # one side and the gate not knowing about it on the other.
 manamap pilot deck-info <slug> --write                  # write info.json for the deck page
-manamap pilot build-poh <slug> && manamap pilot build-index    # the Pilot's Manual + the manifest
-# agents (Claude Code skills): /publish-deck /debrief /prescribe /resolve-stack /analyze-engine /diagnose-deck
+manamap pilot build-poh <slug> && manamap pilot build-index    # the HANDBOOK + the manifest
+# agents (Claude Code skills): /publish-deck sequences the lifecycle; then
+# /build-deck /analyze-engine /resolve-stack /write-manual /poh-procedures
+# /debrief /captains-log /prescribe /diagnose-deck /research-strategy /refresh-corpus.
+# 21 skills in .claude/skills/, 17 charters in .claude/agents/
 
 make test                     # THE INNER LOOP — non-browser, -n auto, cached.
 make test-fresh               # same with nothing cached; trust this one.
@@ -303,9 +338,10 @@ make test-fresh               # same with nothing cached; trust this one.
                               # line said ~22s/~29s for weeks while the real
                               # figure was 772s — a number nobody re-measured
                               # after the suite tripled.
-make test-browser             # the playwright suite, ~4 min
+make test-browser             # the playwright suite
 .venv/bin/pytest -n0 -k NAME  # one test, no worker startup
-.venv/bin/pytest -m ""        # literally everything, ~10 min
+.venv/bin/pytest -m forge     # ONE real Forge game; needs ~/.mana-map/forge
+.venv/bin/pytest -m ""        # literally everything, browser included
 
 # .mcp.json registers an MCP SERVER (`manamap.mcp_server`) exposing seven read-only
 # tools to Claude Code: deck_state, fleet, search_docs, search_code, stats,
@@ -333,7 +369,7 @@ python -m http.server 8000    # or plain static, FROM REPO ROOT (no Build agents
 # http://localhost:8000/viz/deck.html?deck=heliod   a deck's dossier
 # http://localhost:8000/viz/branch.html?deck=ur-dragon&branch=eminence-v3
 #                                                   a candidate 99 and its net change
-# http://localhost:8000/manuals/p/heliod.html       its Pilot's Manual (printable, no JS)
+# http://localhost:8000/manuals/p/heliod.html       its Pilot's Operating Handbook (printable, no JS)
 ```
 
 ## Gotchas
@@ -385,11 +421,11 @@ wrong first attempt, the number — is in the page named beside it.
   load-bearing split is one word: **`a Mountain card` finds a shockland, `a basic Mountain
   card` cannot** — 16 true fetches against 20 Panorama-shaped ones that read almost
   identically. → `docs/gotchas-bench.md`
-- **The goldfish CANNOT rank two lands that make the same colours.** It plays the first land in hand and credits its colours the same turn — there is no tapped state and no choice of which land to play. A twelve-land `candidates` sweep returned exactly two distinct readings, with always-tapped Grand Coliseum tying never-tapped Forbidden Orchard. `mana-analysis` and `mana-fit` are deterministic for exactly this reason and are the whole of the evidence for a land swap. → `docs/gotchas-bench.md`
+- **The goldfish CANNOT rank two lands that make the same colours.** It plays the first land in hand and credits its colours the same turn — LANDS have no tapped state and there is no choice of which land to play. (CREATURES do tap when they attack, added 2026-09-26; that is a different question and does not help a land swap.) A twelve-land `candidates` sweep returned exactly two distinct readings, with always-tapped Grand Coliseum tying never-tapped Forbidden Orchard. `mana-analysis` and `mana-fit` are deterministic for exactly this reason and are the whole of the evidence for a land swap. → `docs/gotchas-bench.md`
 - **A flag the model sets is a claim the model must ACT ON.** `treasure_doubler` shipped set-and-unread; fifteen candidates returned byte-identical −0.026. `tests/test_metric_hygiene.py` checks this now.
 - **A ONE-TURN GRANT IS NOT A PERMANENT DOUBLER, and a channel placed where it cannot fire is not a channel.** `team_damage_multiplier` matched "creatures you control gain double strike" anywhere in an oracle, so Elesh Norn // The Argent Etchings doubled all of sharknado's damage off a SAGA BACK FACE chapter lasting one turn, behind a three-creature sacrifice — cutting it measured **−2.2 damage** and read as a reason to keep it. **75 corpus cards read as permanent doublers, 53 after the fix: 22 were phantom**, and sharknado's damage@8 fell 31.45 → 29.47. The rule is ONE-SHOT versus RE-APPLIED, not temporary versus permanent: Atarka's identical clause fires every combat and is real, which an existing test caught when the first fix dropped it. Separately, the Blood crack was placed on leftover mana and a goldfish spends its pool casting — **49 of 300 games ended with Blood uncracked**, a confident zero from a channel that never ran. → `docs/gotchas-bench.md`
 - **A CARD THE MODEL CANNOT READ LOOKS EXACTLY LIKE A CARD THAT DOES NOT HELP.** Four in a row measured "no effect" from a sweep that had never priced them — 400 of 405 sacrifice-gated draws read as zero, and Blood, artifact-sacrifice payoffs and draw DOUBLERS had no channel at all. Before trusting a null on a swap, check `draw_profile`'s `unmodelled` and `model-coverage`. When a card's value is contingent on something the model omits, measure the CEILING with the omission reversed and LABEL it: Jaws came back floor −0.43, ceiling +0.09, which settles the card instead of leaving a standing doubt about the instrument. → `docs/gotchas-bench.md`
-- **A model change makes every derived artifact stale.** `meta.model_version` (a sha over `goldfish.py`) makes that decidable; the three prose validators REPORT it and never fail on it. Regenerate the fleet after any model change. The 39 figures already stale predate stamping and report as unknown, not stale. → `docs/gotchas-bench.md`
+- **A model change makes every derived artifact stale.** `meta.model_version` (a sha over `goldfish.py`, `goldfish_profiles.py`, `goldfish_library.py` and `goldfish_turn.py` — `_MODEL_FILES`, so splitting the module did not blind the stamp) makes that decidable; the three prose validators REPORT it and never fail on it. Regenerate the fleet after any model change. The 39 figures already stale predate stamping and report as unknown, not stale. → `docs/gotchas-bench.md`
 - **Adding a metric requires re-running the independence check.** Three magnitude axes shipped that were one axis at r = 0.92–0.98. → `tests/test_metric_hygiene.py`
 - **THE COMMANDER'S OWN TEXT IS NOT MODELLED UNTIL SOMEBODY MODELS IT.** zur-enchantress was rebuilt around Zur, Eternal Schemer and the goldfish read NEITHER of his abilities — the static grant of deathtouch/lifelink/hexproof to every enchantment creature, nor the `{1}{W}` that animates an enchantment into a body whose power is its mana value. Modelling them took kill-by-t8 from 0.153 to 0.327 on an unchanged 99. A commander ability that only one card in the corpus has is DECLARED per deck (`model_commander_animate`, `model_commander_attack_tutor`); one a handful share is parsed after a sweep. → `docs/gotchas-bench.md`
 - **A CARD CAN BE READ CORRECTLY AND NEVER PLAYED.** Every casting loop in the goldfish selects on a CHANNEL — draws, ramps, makes Treasure, has a body — and a card matching none of them sits in hand for ten turns while its profile says exactly what it would have done. Found FIVE times in one session and only caught as a class on the fourth: the Shrines measured as exactly nothing, a SLEEVED deck ran its sacrifice engine on 2 of its 4 outlets, and four of six attack enablers were uncastable, which made the model unable to start its own engine. `model_coverage.never_cast` / `silent_losses` are the predicate and a fleet test asserts no deck computes an effect it never applies. **Teach the casting predicate in the SAME commit as the ability.** → `docs/gotchas-bench.md`
@@ -422,18 +458,18 @@ about to touch.
 
 | page | read before touching | size |
 |---|---|---|
-| `docs/gotchas-viz.md` | anything under `viz/` | 57 KB |
-| `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` | 230 KB |
+| `docs/gotchas-viz.md` | anything under `viz/` | 63 KB |
+| `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` | 241 KB |
 | `docs/gotchas-analysis.md` | `src/manamap/analysis/` — synergy, power creep, roles, regions | 8 KB |
-| `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` | 50 KB |
-| `docs/gotchas-magazine-legacy.md` | the frozen renderer (it is not extended) | 17 KB |
+| `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` | 51 KB |
+| `docs/gotchas-magazine-legacy.md` | the DELETED renderer (it is not extended) | 18 KB |
 
 
 ### SLEEVED IS BUILT AUTOMATICALLY; ON THE BENCH IS TRIGGERED BY HAND
 
 A deck with a **paper lock** is one the pilot plays, so the whole chain is kept
 complete for it without being asked — measurements, then simulation, then the
-agent artifacts, then the Pilot's Manual, then the dossier, **in that order**,
+agent artifacts, then the Pilot's Operating Handbook, then the dossier, **in that order**,
 because each stage's output is the next one's input. That is what pinning MEANS.
 
 A deck **on the bench** is malleable: it changes daily, nobody has claimed it
@@ -460,7 +496,7 @@ engine-health word were absent on decks that are played.
 
 - **`docs/vision.md`** — START HERE: what the workbench is, the hypothesis loop, the evidence contract, what is live / legacy / honest, the vocabulary
 - **`docs/prd.md`** — WHAT IS BEING BUILT (Sept 2026): three environments, five epics, the metrics catalog, and the four blocking decisions resolved in its **Intake notes**. `vision.md` says what the bench IS; this says where it is going. `docs/prd-2026-08.md` is the superseded one that ~27 `PRD-v1 §N` citations resolve against
-- **`docs/simulation.md`** — the centre: Forge's spike and verdict, the seeded harness, the parser, the pod, the bridge, commander damage, the distribution, S0–S5
+- **`docs/simulation.md`** — BOTH ENGINES. Forge: the spike and verdict, the seeded harness, the parser, the pod, the bridge, commander damage, the distribution, S0–S5. And **the goldfish channel by channel** — which flag switches on what, what a copied spell does per effect, storm/magecraft/per-cast damage, why creatures tap and lands do not, the named gaps. READ THE CHANNEL TABLE before trusting a goldfish figure
 - `PLAN.md` — current state and what's next (read second when resuming work)
 - **`/publish-deck`** — the deck lifecycle end to end, every phase in dependency order with its gate; `manamap pilot deck-info <slug>` is the workbench view and the thing to run first on any deck
 - `docs/pilot.md` — the bench's commands and artifacts: evidence contract, citation contract, rules + strategy DBs, log/debrief/prescribe/versions, game_state v2, the resolve loop, the build loop (the magazine layer is a LEGACY section at the end)
@@ -472,5 +508,9 @@ engine-health word were absent on decks that are played.
 - `docs/data-artifacts.md` — every `data/` file: producer, size, git status, consumers
 - `docs/viz.md` — frontend structure, `window.MM` API, DATA map, the deck dossier, Pages deployment
 - `docs/testing.md` — test layout, skip markers, conventions; the ONLY place test counts are stated
-- ~~`STYLEv3.md`~~ — the magazine's constitution, **deleted 2026-08-25**. The renderer it governs is still frozen in `src/`, and its `STYLEv3 §N` comments now resolve through git: `git show 23e8cec:STYLEv3.md`
-- `docs/history/` — the magazine-era PLAN, the deck-builder v2 and frontend v2 design records, the founder/editor feedback records
+- ~~`STYLEv3.md`~~ — the magazine's constitution, **deleted 2026-08-25**. The renderer it governed was **deleted too, 2026-09-13** (`443cf6b7`), so both halves now read out of git: `git show 23e8cec:STYLEv3.md`
+- `docs/known-issues.md` — THE INVENTORY OF WHAT NO TEST FAILS ON. The suite is green, so this is the list of things that are wrong and that nothing will tell you about
+- `docs/paydown-plan.md` — the six-phase paydown and its tracker; every task has an id, a gate, a proof and a status
+- `docs/agent-inventory.md` — every agent and skill with its path, what it owns, and which skill spawns it. Read before touching a charter
+- `docs/README.md` — indexes and sorts all of the above, current reference above history, with line counts a test asserts
+- `docs/history/` — the deck-builder v2 and frontend v2 design records and the three Ur-Dragon memos (none applied). The magazine-era PLAN and the founder/editor feedback records were **deleted 2026-08-25**

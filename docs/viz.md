@@ -61,7 +61,7 @@ untouched and this is the other half.
 - **Sort and filter, over `viz_index.json` — fetched AFTER the first render.** The first
   cut of the page declined to load the index at all, on the grounds that it is 3.5 MB. That
   is the file on disk; `discovery.js` had already measured what crosses the wire and says so
-  at the top of the file — **0.56 MB gzipped**, which is why the atlas boots on it. Sorting
+  at the top of the file — **0.57 MB gzipped**, which is why the atlas boots on it. Sorting
   190 cards by mana value and filtering them by colour, type and role is most of what
   curating IS, and none of it is answerable from a name and a pile.
 
@@ -465,7 +465,7 @@ otherwise reuses the physics, drag-and-fling, hover popup and card detail. A sec
 simulation for the landing would have been the duplicate-k-NN mistake this codebase has
 already had to undo twice.
 
-**Boot: 1.83 MB, against 18.4 MB to reach a first branch before.**
+**Boot: 1.91 MB, against 18.4 MB to reach a first branch before.**
 
 | artifact | gzipped | needed for |
 |---|---|---|
@@ -693,7 +693,7 @@ unrelated palettes and two legends that could never agree.
   shuffle between renders and match nothing else. Every surface that reports these groups
   sorts by it.
 - **`ensure()` is for data outside the boot payload.** `role` lazy-loads `card_roles.json`
-  (0.39 MB gz) when the grouping is *selected* — never inside the 1.83 MB discovery boot.
+  (0.40 MB gz) when the grouping is *selected* — never inside the 1.91 MB discovery boot.
 - **Build reads the registry through functions, not constants.** `familyColour()` /
   `familyPriority()` defer the `MM.*` read to first use; reading it at module scope would
   make `build.js` depend on script order in `index.html`, and touching `MM.*` before

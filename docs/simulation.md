@@ -368,6 +368,87 @@ That is "token generation pay-off" and "deeper interaction" in one sentence: **a
 distribution over many games with real rules and real opponents, plus the ability to
 pull one board out and ask the resolver about it.**
 
+## What the goldfish models, channel by channel (2026-09-26)
+
+Every channel below is **OFF unless its flag is set** in the deck's
+`goldfish_targets.json`, and the default figures on a deck that declares nothing are
+mana, bodies and land drops. `model-coverage <slug>` names, per card, which channel it
+feeds and whether that channel is on — **a card the model cannot read looks exactly like
+a card that does not help**, and that confusion has cost this project a whole branch.
+
+| flag | what it switches on |
+|---|---|
+| `model_draw` | a card's own ETB draw, a spell's draw, a recurring draw, an arrival draw, the draw you buy, draw doublers. `meta.card_advantage.draw_not_modelled` names what is still unread, and is **absent** rather than empty when nothing is |
+| `model_combat` | attacks, board power, the damage clock, tokens as attackers |
+| `model_treasures` | Treasure creation and spending |
+| `model_sacrifice` / `model_deaths` / `model_drain` | outlets, deaths and the damage they convert into |
+| `model_discard` | wheels, loots, and the discard half of a draw you pay for |
+| `model_colors` | on by default; a colourless mana model is simply wrong |
+| `model_commander_animate`, `model_commander_attack_tutor`, `model_commander_combat_reveal`, `model_commander_copy` | commander abilities only one corpus card has, declared per deck |
+
+**The copy channel is the one that needs no authored rate**, and that is why it can be
+trusted more than its neighbours. `model_commander_attack_tutor` reported 5.70 fires a
+game against Forge's 1.22 and cost half a day's measured gains when corrected. The copy
+count IS the number of other creatures you control, which the model already measures —
+there is no number to write down, so none can be wrong. The flag is checked against the
+commander's own text, so a deck cannot declare it on a commander without the ability.
+
+### What a copied spell does
+
+A single-target spell copied across the board is read per effect, each ONE TURN unless
+noted. `copy_fodder` decides what qualifies: the spell must target one creature and
+nothing else, and its effect must be one you want on every body you control.
+
+| effect | read as | notes |
+|---|---|---|
+| its draw | multiplied by the board | the archetype's whole engine |
+| a pump | power only | this model has no blockers, so toughness changes no damage |
+| a **+1/+1 counter** | PERMANENT | measured as a *wash* against a bigger temporary pump on a board of 1/1s |
+| a Treasure | one per copy | the mana for the follow-up |
+| double strike | doubles the board's combat damage | |
+| doubled power | scales with the board | LOSES to `+3/+3` below average power 3 |
+| damage each creature deals to each opponent | one seat's worth | Chandra's Ignition |
+| an additional combat phase | **not** multiplied by the copy count | there is no way to know which creatures untapped; see below |
+| an untap | untaps the whole board | held for BETWEEN combats, never cast on curve |
+
+### Storm, magecraft and per-cast damage
+
+The spell count is tracked — before 2026-09-26 there was no spells-cast-this-turn
+variable at all, so **storm was unreadable** and Grapeshot scored as a 1-damage ping
+however many spells preceded it. Every cast routes through one helper, guarded by a
+structural test that fails if any of the twelve cast sites bypasses it.
+
+**Magecraft fires on a cast OR A COPY; per-cast damage fires on a cast only.** That is a
+rules fact and the two flags are separate because of it: with a copy commander out, one
+cantrip is eight magecraft triggers and ONE Guttersnipe trigger. Collapsing them would
+hand every such deck a burn kill it does not have.
+
+### Creatures tap; lands do not
+
+Creatures tap when they attack (CR 508.1f) and untap at the start of your turn, and each
+combat phase re-selects its attackers. Before this the swing was computed once and
+multiplied by the phase count, so **an additional combat was free damage from a board
+that had already attacked** — ur-dragon's damage at turn ten fell 68.798 → 59.499 when it
+was corrected, and it was the only deck in the fleet claiming an extra combat.
+
+An extra combat is therefore worth nothing on its own. Something must untap the team,
+which is why an untapper is HELD for between combats rather than cast in the main phase —
+cast early it untaps creatures that are already untapped, the same mistake a pilot makes
+with Seize the Day.
+
+**LANDS still enter untapped, always.** That assumption is unchanged, is about lands, and
+is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a land swap.
+
+### Named gaps
+
+- **Vigilance is not modelled.** No deck in the fleet grants it; a deck that did would
+  make every extra-combat card live again.
+- **X-based pumps and X-based counters are not read** — X is a count this reader has no
+  board to resolve, the same refusal `land_colors` makes for a fetchland without a pool.
+- **Rituals are not modelled** (conservative): a spell that adds mana produces 0 here.
+- **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
+  your own board and cashes the deaths; that channel is not built.
+
 ## The spike: wrap Forge, or build our own?
 
 "Full and complete interaction" is a rules engine, and Magic's rules are not a weekend.

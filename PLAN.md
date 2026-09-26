@@ -4,11 +4,65 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-09-22**. Everything below is committed and pushed to `main` except
+Last updated **2026-09-26**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
 
-## Where things stand, 2026-09-22
+## Where things stand, 2026-09-26
+
+**Sharknado is the sixth sleeved deck**, locked at **v1.0.2** after the pilot confirmed both
+swaps in cardboard: Astral Drift → Shelter, and Gleaming Bastion → a basic Island. The lock
+had been two changes behind — it still pointed at V3/v1.0.0 from 2026-09-21 while the working
+list had moved twice, so `regen.is_pinned()` was driving the whole automatic chain against a
+list that was not in the case. **Check the lock, not the decklist, when a sleeved deck's
+figures look wrong.**
+
+That Island swap also found an instrument bug worth more than the swap. `land_colors` read
+"as long as you control a basic land" as unconditional, so **Gleaming Bastion counted as a
+blue source in a deck with no basics at all**. The corpus sweep is the load-bearing half: of
+1,274 lands, ten mention controlling a basic, and they split **five whose coloured mode is
+gated** (Gleaming Bastion, Gathering Place, Dark Fortress, Hidden Lair, Training Compound)
+against **five where it only affects tapped-ness**. `basic_gated_colours()` subtracts only
+when the deck's own pool has no basic — a fetchland-shaped rule, same as `land_colors(card,
+pool=…)`.
+
+**The goldfish grew eleven channels, and they are the reason Goblin Storm is back on the
+bench.** Before this it could not read a storm count, a copied spell, a +1/+1 counter, a
+Treasure off an instant, double strike, an extra combat, an untap, or a creature that had
+already attacked. The three that changed conclusions:
+
+- **Creatures now tap when they attack**, and each combat phase re-selects its attackers.
+  An extra combat had been free damage from a board that had already swung — ur-dragon's
+  damage at turn ten fell **68.798 → 59.499** on an unchanged 99, and Seize the Day went from
+  a +4.05 headline I reported to a card that pays nothing without an untapper.
+- **The spell count exists**, so storm, magecraft and per-cast damage are readable at all.
+  Magecraft fires on a cast **or a copy**; per-cast damage fires on a cast only — one cantrip
+  under a copy commander is eight magecraft triggers and one Guttersnipe trigger, and
+  collapsing them would hand the deck a burn kill it does not have.
+- **`copy_fodder` decides what a copy commander can actually multiply**, and its first version
+  had an effect whitelist written from imagination rather than from the corpus. That is how
+  the obvious cards got missed: I was searching by what the model could already measure
+  instead of by what cards do. 848 cards qualify now.
+
+**`goblin-storm@zada-v1` is OPEN at 22 swaps and INCONCLUSIVE, deliberately.** The goldfish
+puts the miss at 0.1888 against an MDE of 0.2051 — evidence of nothing, not evidence of
+failure — and Forge reads +0.021 with a CI of [−0.109, +0.090]. **Forge cannot evaluate this
+deck at all**, which is the more important finding: over 60 games Zada was cast 100 times and
+her trigger fired **21**, because the AI's evaluator prices `Brute Force` on Zada identically
+to `Brute Force` on anything else. So the three win rates measured for this deck (0.031,
+0.040, 0.065) are not floors — they describe a *different deck*, and the A/B is not rescued by
+comparing them. The route to evidence here is `sim-scenario --stack` on one of the 21 real
+boards, proven by citation.
+
+Two smaller things closed: the branch page's swap list was rendering the **staging log**
+rather than the branch's actual diff, and `deck-info`'s derived `next` was shopping for
+experiments on decks that are sleeved and finished. Both fixed; `net_change.changes()` now
+builds from `deck_branch.diff`.
+
+**What moves the project next is still games at a table, logged.** Six decks are sleeved,
+five carry a captain's log, and all 17 logged games predate the last three weeks of work.
+
+## Where things stood, 2026-09-22
 
 **CI is green for the first time since 2026-08-25** — the `tests` workflow had
 failed on every push for four weeks, and the byte-diff determinism gate had not

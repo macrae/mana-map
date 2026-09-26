@@ -114,7 +114,7 @@ NEIGHBOURS_MAGIC = b"MMNB"
 # file stays a single self-describing fetch.
 NEIGHBOURS_FORMAT_VERSION = 2
 NEIGHBOURS_HEADER_BYTES = 64
-NEIGHBOURS_NONE = 0xFFFF  # slot sentinel; safe because 34,322 < 65,535
+NEIGHBOURS_NONE = 0xFFFF  # slot sentinel; safe because 34,890 < 65,535
 # Reason slots are uint8, so this is the "no reason" sentinel. 24 rules today, and
 # the guard in build_tables fails loudly rather than wrapping if that ever passes 255.
 NEIGHBOURS_NO_REASON = 0xFF

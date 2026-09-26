@@ -257,7 +257,9 @@
         "draw": 0
       },
       "log_ids": [],
-      "tags": []
+      "tags": [
+        "v1.0.2"
+      ]
     }
   ],
   "tags": {
@@ -281,32 +283,26 @@
       "decklist_sha256": "2ca70e243f922c24d0c9b99145b6e50a62882f1f9ccf399d8c07ce519cadcbcf",
       "at": "2026-09-21",
       "note": ""
+    },
+    "v1.0.2": {
+      "version": 5,
+      "sha": "40d4dbab5d5f",
+      "decklist_sha256": "7d623c5f9cf439d7b482b54cbd1aae3c403268ba5c0ac9dcec1e14e73dbf5e3d",
+      "at": "2026-09-26",
+      "note": "Astral Drift -> Shelter and Gleaming Bastion -> a basic Island, both made in cardboard. The Island is the deck's first basic: Gleaming Bastion's W/U mode is gated on controlling one, so at zero basics it made {C} from the turn after it entered."
     }
   },
   "paper": {
-    "version": 3,
-    "release": "v1.0.0",
-    "built_at": "2026-09-21",
-    "note": "V3 sleeved 2026-09-21 as the sixth deck in the carrying case, chosen over meren-recursion and emiel-blink",
+    "version": 5,
+    "release": "v1.0.2",
+    "built_at": "2026-09-26",
+    "note": "Both swaps confirmed made in cardboard by the pilot: Astral Drift -> Shelter and Gleaming Bastion -> a basic Island. The lock was two changes behind — it still pointed at V3/v1.0.0 from 2026-09-21 while the working list had moved twice, so regen.is_pinned() was driving the whole chain against a list that was not in the case.",
     "locked": true,
-    "in_sync": false,
-    "versions_behind": 2,
-    "drift": {
-      "pull": [
-        "Astral Drift",
-        "Gleaming Bastion"
-      ],
-      "add": [
-        "Island",
-        "Shelter"
-      ],
-      "pull_copies": 2,
-      "add_copies": 2
-    }
+    "in_sync": true,
+    "versions_behind": 0,
+    "drift": null
   },
   "baseline": null,
   "unmatched_log_entries": [],
-  "notes": [
-    "the sleeved list is V3; the repo is at V5 — pull 2, add 2 to bring the cardboard level"
-  ]
+  "notes": []
 }

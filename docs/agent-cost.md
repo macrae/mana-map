@@ -56,6 +56,8 @@ per-artifact `stack:<NNN>`, `decision:<NNN>` and `prescription:<id>`.
 | `deck-recon` | deck-doctor (MODE recon) | 60,000–90,000 (est.) | age, not inputs — see below |
 | `debrief` | debrief | **est. 15,000–30,000** per batch of un-debriefed entries (unmeasured — nothing logged yet) | a new `log.jsonl` entry (N/A until one exists) |
 | `pilot-notes` | pilot-notes | unmeasured; its two predecessors cost 54,515 + 47,188 for the same keys (2026-07-25) | frame change, new stack, engine change |
+| `poh-procedures` | poh-procedures | **UNMEASURED** — no spawn has been instrumented. Expect the neighbourhood of `pilot-notes`: it reads `engine.json`, the measured figures and the games that were lost, and writes three authored sections | a decklist edit (a procedure naming a card the deck no longer runs fails at the table), or a new `--cause` in the log |
+| `captains-log` | captains-log | **UNMEASURED**. Designed as the cheapest routine in the set alongside `debrief` — it reads the log and writes prose, computes nothing, and names nothing the pilot did not | a new `log.jsonl` entry. Note it is the ONE artifact that does not go stale on a decklist edit, which is why `cards:semantic` is deliberately absent from its inputs |
 | `tutor-guide` | pilot-notes | 60,000–90,000 (7 spawns, 2026-07) | a tutor enters or leaves the 99 |
 | `deck-map-names` | deck-cartographer | ~60,000–93,000 (9 spawns, 2026-08) — optional, no longer a lifecycle stage | `deck-map` re-run |
 | `candidate-pool` | deck-analyst | **235,579** / 130,161 | new brief, role or combo-data refresh |

@@ -56,7 +56,7 @@ What that buys, per file edited:
 |---|---|---|---|
 | `pilot/goldfish.py`, `pilot/common.py`, `config.py` | re-run | re-run | re-run |
 | `sim/forge.py` | re-run | — | — |
-| `pilot/build_manual.py` | — | re-run | — |
+| `pilot/poh.py` | — | re-run | — |
 | `sven/`, `training/`, `export/`, `cli.py`, the eval harnesses | — | — | — |
 
 Before, every one of those re-ran all 279 cases.
@@ -88,15 +88,59 @@ what matters rather than the number — a suite that is permanently red only sta
 readable if the red is a known set rather than a vibe, and `docs/known-issues.md`
 is that set.
 
+### The board is GREEN now, and the counts below are history
+
+**Everything from here down is a dated record of a red board, not the current
+state.** The suite has been green since 2026-09-22 (242 failures to 0), which is
+also the first time CI passed since 2026-08-25. `docs/known-issues.md` changed
+job with it: it is no longer the red board, it is the inventory of what is wrong
+that **no test fails on**. Three different failure counts appear below — thirteen,
+eleven, six — each true on its own date and none of them true today. They are kept
+because each one names *which* cases and why, and that is the part worth having.
+
+**A green board has one recurring red, and it is not a bug.** Anything that changes
+a model file makes every derived artifact in the fleet stale by construction —
+`meta.model_version` is a sha over the four goldfish modules — so a goldfish edit
+turns the freshness cases red until `manamap pilot regen` runs. That is the stamp
+working. Regenerate, then re-run; never reach for the cache.
+
+**And `regen` alone will not green it.** Its goldfish stage targets 33 artifacts,
+every one a **sleeved** deck or a branch of one, because that is the bench/sleeved
+split doing its job — a deck nobody has claimed in cardboard is rebuilt when the
+pilot asks. But `test_the_fleet_is_stamped_with_the_model_that_is_running` checks
+every deck that is not **retired**, which is a different set. Measured 2026-09-26:
+eight live decks hold a tracked `goldfish_metrics.json` and **two of them —
+`emiel-blink` and `meren-recursion` — are not regen targets**, so after a model
+change they stay stale and three cases stay red (their two freshness rows, plus
+`test_every_tracked_deck_is_byte_identical_with_the_flag_absent`, which reads the
+same artifacts) until each is run by hand:
+
+```bash
+manamap pilot goldfish emiel-blink            && manamap pilot deck-info emiel-blink --write
+manamap pilot goldfish meren-recursion        && manamap pilot deck-info meren-recursion --write
+manamap pilot goldfish meren-recursion --branch drain-density-v1
+```
+
+**Run the downstream half too, or you trade three red cases for two.** `info.json` is
+composed from the goldfish among everything else, so regenerating one stales the other
+and the second run comes back red on `test_info_json_matches_a_fresh_run` instead. That
+dependency order is exactly what `regen` exists to know — which is the argument for
+teaching it these two decks rather than keeping this list.
+
+The seventeen artifacts that stay stale at three older shas are the broken-down and
+retired decks, and the fleet-stamp test skips them on purpose: nothing shuffles those
+lists, so regenerating them would mean measuring a deck nobody will play.
+
 **This is the only page that states a runtime.** `CLAUDE.md` carried ~22s/~29s
 for weeks — off by more than an order of magnitude — because the figure was
 written when the suite was a third of this size and nobody re-measured it. It
-now points here instead of quoting a number.
+now points here instead of quoting a number, and so do `README.md` and
+`CONTRIBUTING.md`, which each carried their own wrong pair (~2.5 min and ~20 s).
 
-The eleven failures are inventoried in `docs/known-issues.md`, and nine of them
-are load-bearing rather than rot: five are ur-dragon artifacts deliberately
-frozen until a paper check-in, one is heliod's engine critic returning `fail`,
-and three are real goldfish fidelity bugs.
+*As of 2026-09-12:* the eleven failures were inventoried in
+`docs/known-issues.md`, and nine of them were load-bearing rather than rot: five
+ur-dragon artifacts deliberately frozen until a paper check-in, one heliod engine
+critic returning `fail`, and three real goldfish fidelity bugs.
 
 ### Measured 2026-08-31, idle 8-core machine
 
@@ -106,11 +150,12 @@ and three are real goldfish fidelity bugs.
 | `make test-fresh` — nothing cached | **617 s** (3,695 passed, 8 skipped, 3 xfailed, 2026-09-21) |
 | `make test-browser` (`-n 4`) | **400 s** (223 passed, 2026-09-08) |
 
-Six are red and stay red until an agent runs: five stale `diagnosis.json` (their
-audit figures moved — heliod's colour-sources axis reads −18 against the audit's
-−17) plus `test_a_real_deck_composes_every_panel`, which fails *because* heliod's
-diagnosis does. They want `/diagnose-deck`; hand-patching the prose to green the
-board is the thing not to do.
+*As of that run,* six were red and stayed red until an agent ran: five stale
+`diagnosis.json` (their audit figures moved — heliod's colour-sources axis read
+−18 against the audit's −17) plus `test_a_real_deck_composes_every_panel`, which
+failed *because* heliod's diagnosis did. They wanted `/diagnose-deck`;
+hand-patching the prose to green the board is the thing not to do, and that rule
+has not expired even though these six have.
 
 The input layer for the tabular model added 60 tests on 2026-08-31 —
 `test_card_fields.py`, `test_span_encoder.py` and `test_card_source.py`, 25 probes

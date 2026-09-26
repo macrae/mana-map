@@ -32,14 +32,17 @@ anyone else is supported.
   "how fast does it go off?"        goldfish                      mean t4.19, 89% by t6
   "what do strong lists run?"       deck-recon, /prescribe        ranked, cited, skeptic-checked
   "what would fix this axis?"       deck-audit + card-search      candidates that move the number
-  "is this change worth buying?"    net-change, then propose      a trade, priced, and a pull list
+  "is this change worth buying?"    net-change, then propose      a trade, priced, with a bill
 ```
 
 **`experiment` is the flagship.** Two versions of a deck, the same table, the same N, the
-same seeds, one artifact carrying both arms, the delta, and the sentence people skip —
-whether the intervals overlap. Same seeds are **not** paired games (a changed list changes
-every shuffle), so seeds buy per-arm replayability and the control is N. An A/A is refused
-with the reason.
+same seeds, one artifact carrying both arms, and — the part that decides everything — an
+interval on **the difference** of every figure: Newcombe for proportions, Welch plus a
+permutation p for means, a bootstrap on the median for the skewed ones, with a `power` block
+giving the minimum detectable difference at that N. It used to report whether the two arms'
+*marginal* intervals overlapped, which implies nothing at all; that key is **removed, not
+deprecated**. Same seeds are **not** paired games (a changed list changes every shuffle), so
+seeds buy per-arm replayability and the control is N. An A/A is refused with the reason.
 
 ## Six pages over one data layer
 
@@ -48,7 +51,7 @@ racks by whether it is sleeved, **waiting on cardboard**, on the bench or histor
 one fleet table across record, stages, evidence, table and open work — sortable by
 *recently played*, *needs game logs*, *needs analysis*, *optimisations identified* and
 *waiting on cardboard*. Each deck carries a derived **next**, and three named links: its
-Pilot's Manual, its dossier, and where it sits on the map.
+Pilot's Operating Handbook, its dossier, and where it sits on the map.
 
 **The card atlas** — every Magic oracle card (~34,900) embedded by two small neural nets.
 It opens on **one card**: hover it, click a relation, and its neighbours join a
@@ -56,7 +59,7 @@ force-directed graph you grow by clicking. Load one of your own decks and it lig
 its commander ringed. The 34,890-point atlas is one click away, and drifts slowly at
 altitude, settling as you zoom in to read. Three relations, each precomputed so a click is
 instant: **similar** (embedding neighbours), **synergy** (rule-based complements, each edge
-labelled with its rule), **outclassed by** (strictly-better replacements). Boot costs 1.8 MB.
+labelled with its rule), **outclassed by** (strictly-better replacements). Boot costs 1.9 MB.
 
 **The deck page** (`viz/deck.html?deck=<slug>`) — the workbench surface: what to do next,
 where the deck stands, every list it has been, what limits it, the engine, **the
@@ -71,14 +74,30 @@ every measured row with its definition and a plain-language reading, reward / ri
 and the bill. A branch is a deck that does not exist, so it gets its own page rather than
 growing into the dossier.
 
+**Curate** (`viz/library.html`) — the library across piles, at a size you can read. The
+atlas's drawer keeps one card; this cuts forty. A pile rail, a grid with multi-select and
+bulk move/remove, a pinned pane, and sort plus colour/type/role filters over the same card
+index the atlas boots on — fetched *after* the first render, so a failed fetch degrades to
+the piles, the name box and the three factless sorts rather than to a blank page. A card
+the index cannot resolve gets its own chip and sorts **last**, never as 0.
+
+**The embedding-space appendix** (`viz/spaces.html`) — what each embedding space is for and
+how they differ, because "similar" means two different things in this repo and the wrong one
+returns arbitrary same-colour cards. Linked from the shared nav on every page.
+
 ## The commands behind it
 
 - `simulate <slug> --vs <pod> --games N` — N seeded Forge games: win rate with its interval,
   who kills you and how, the kill curve, **commander damage per defender**, token pay-off.
 - `experiment <slug> --a <ref> --b <ref> --vs <pod>` — the controlled A/B.
-- `goldfish` — seeded Monte Carlo resource development; Treasure and combat opt-in.
-- `build-deck` — a legal 99 from a brief: role budget crossed with a **cited curve target**,
-  combo lines completed, bracket-gated. No agents required.
+- `goldfish` — seeded Monte Carlo resource development, 10,000 games in seconds. Every channel
+  it models is **opt-in per deck**, so what it can see is a thing you declare and can check.
+- `build <slug> --commander "<name>"` — **the one command**: a brief becomes a legal,
+  bracket-gated, *measured* 99 on the bench in six stages, about ten seconds, no agents.
+  Omit `--commander` and it proposes three and halts. The dev batch is the **goldfish**, not
+  Forge — a twelve-minute Forge batch is ~20 games, whose minimum detectable difference is 42
+  points; `simulate` against a pod is the staging gate. (`build-deck` is the underlying
+  scoring step and is still callable on its own.)
 - `deck-audit` — 16 axes, each carrying the verbatim `strategy.md` quote that sets its target.
 - `card-search` — deterministic mining over the corpus: identity, oracle/name regex, role,
   cmc, and `--owned` against your physical boxes.
@@ -87,11 +106,23 @@ growing into the dossier.
   deck with `net-change`, then **`propose`** it as the next version and wait for the
   cardboard. The decision is frozen; the blocker is recomputed from your boxes on every
   read, so a proposal un-blocks itself when a card lands in one.
-- `deck-version` — every list the deck has been, from git, joined to the games played on it.
-- `deck-notes add` → `/debrief` → `/prescribe` — the table, structured, then answered.
+- `deck-version` — every list the deck has been, from git, joined to the games played on it;
+  `deck-version <slug> paper <ref>` is how you say *this one is sleeved*.
+- `check-in` — a paper list you typed up becomes `decklist.txt`: it diffs, and **refuses a
+  silently-wrong list** rather than guessing which side is right.
+- `model-coverage` — what the model cannot see, before the games: seen / **dark** (feeds a
+  channel that is off) / invisible.
+- `deck-state` / `deck-delete` — archive, retire, supersede, revive; and the one destructive
+  verb, which refuses a deck that was ever sleeved, played or published.
+- `regen` — rebuild the fleet in dependency order after a model change, parallel across decks
+  but never splitting the games inside one run, so it stays bit-identical.
+- `deck-notes add` → `/debrief` → `/captains-log` → `/prescribe` — the table, structured,
+  read, then answered.
 - `/resolve-stack` — a board (authored, or **lifted from a simulated game**) resolved with
   Comprehensive Rules citations and adversarially checked. The ✓ tier.
-- `analyze-engine` — the deck's machine as eight stages, solid where a stack proves a line.
+- `/analyze-engine` — the deck's machine as eight stages, solid where a stack proves a line.
+- `/write-manual` + `/poh-procedures` → `build-poh` — the notes a person writes, then the
+  handbook.
 
 Under it all is a **three-tier evidence contract** that never moves: ✓ rules-verified, ◆
 data-derived (seeded where randomness is involved), ★ coaching — labelled judgment, never
@@ -100,14 +131,23 @@ does not travel** — enforced in code, not by convention. Every agent returns J
 validator checks; the Python makes zero LLM calls; the deployed site and your machine run
 the same code.
 
-**Three things this is honest about.** Forge's AI pilots every seat *including yours*, and
+**Four things this is honest about.** Forge's AI pilots every seat *including yours*, and
 rates itself "poor to ok in control, pretty bad for combo" — a sentence quoted verbatim in
 every run record, which makes a control deck's win rate a lower bound on the pilot. **Five
 decks carry a captain's log — 17 games, every entry debriefed** (Ur-Dragon 6 at 2W-4L,
 Edgar 5, Gishath 2, Goblin Storm 2, Heliod 2) — which is seventeen, not a sample: the log,
-debrief and prescription surfaces are built and tested, and barely used. And **most decks are not marked as built in paper**: whether a deck exists as
-cardboard is an assertion only the pilot can make, so an unlocked deck says it is unlocked
-rather than being assumed playable.
+debrief and prescription surfaces are built and tested, and barely used. **Six of fourteen
+decks are marked as built in paper** (Edgar, Gishath, Goblin Storm, Heliod, Sharknado,
+Ur-Dragon); whether a deck exists as cardboard is an assertion only the pilot can make, so
+an unlocked deck says it is unlocked rather than being assumed playable — and that one
+authored flag is what decides whether the whole chain runs for it automatically.
+
+And **the goldfish only models what a deck declares.** Every channel — draw, combat,
+Treasure, sacrifice, the copy commander, the spell count — is off until that deck's
+`goldfish_targets.json` switches it on, so a card feeding an off channel measures as exactly
+nothing and looks identical to a card that does not help. `model-coverage <slug>` is the
+preflight that names those cards, and it exists because that confusion has cost this project
+a whole branch.
 
 **The Pilot's Operating Handbook** (`manuals/p/<slug>.html`, from `manamap pilot
 build-poh`) — each deck's self-contained printable page: the game plan, the mulligan, the
@@ -141,10 +181,10 @@ Three things to know:
 
 - **Serve from the repo root.** The page fetches `../data/*`, so `viz/` and `data/` must
   stay top-level siblings. Opening `viz/index.html` as a `file://` URL fails on CORS.
-- The clone carries **149 MB of tracked data** (and `git clone` transfers rather more
-  than that), but **discovery boots on 1.8 MB** — a slim
+- The clone carries **250 MB of tracked data** (and `git clone` transfers rather more
+  than that — the history is ~254 MB), but **discovery boots on 1.9 MB gzipped** — a slim
   card index plus a precomputed neighbour table. The heavy artifacts load only if you ask
-  for what needs them: the 2.9 MB projection when you open the atlas, the 16.8 MB embedding
+  for what needs them: the 3.0 MB projection when you open the atlas, the 17.9 MB embedding
   matrix never on the discovery path at all. That the *clone* is large is deliberate — see
   [Landmines](#landmines). (Two of the tracked files,
   `combo_details.json` and `card_roles.json`, are for the deck builder and the agents; the
@@ -172,10 +212,15 @@ This half is more involved, and honest about why: **the agent phases need
 [Claude Code](https://claude.com/claude-code).** The Python in this repo makes *zero* LLM
 calls — it is deterministic infrastructure (fetching, simulating, validating, rendering)
 that AI agents drive from the outside, and most of the bench (`deck-info`, `deck-version`,
-`deck-notes`, `goldfish`, `simulate`, every validator) is pure CLI. The agent routines —
-the doctor, the resolver and checker, the engineer and critic, the notes writer, the
-debrief — are what cost tokens; an invocation cache is what makes iterating on them
-affordable. `docs/agent-cost.md` has the breakdown.
+`deck-notes`, `goldfish`, `simulate`, `model-coverage`, `regen`, every validator) is pure CLI.
+The agent routines are what cost tokens — the doctor and its skeptic, the resolver and its
+checker, the engineer and its critic, the strategy researcher, the notes writer, the handbook's
+procedures author, the debrief, the captain's log and the cartographer — and an invocation
+cache is what makes iterating on them affordable. Seventeen agent charters live in
+`.claude/agents/`, twenty-one skills in `.claude/skills/`. `docs/agent-cost.md` has the
+breakdown; **two deliberate opt-in exceptions** are the only LLM calls reachable from Python
+itself: `serve.py`'s `ask` bridge, which shells out to `claude -p` as a polled job, and
+`mm ask`, whose SDK is an optional extra the core install does not pull.
 
 ### 1. Environment
 
@@ -240,8 +285,9 @@ Nothing scaffolds these. `data/decks/goblin-storm/` is the worked reference.
 | File | Why it's manual |
 |---|---|
 | `decklist.txt` | It's your deck — **unless you let the builder write it**, see below |
-| `issue.json` | The deck page's authored identity (name, commander, status). **The legacy build hard-exits without it** — a *generated* date would break byte-identical rebuilds |
-| `goldfish_targets.json` | Which key-piece sets are worth simulating is a judgment call — though `/build-deck` derives it from the plan's declared engines |
+| `goldfish_targets.json` | Which key-piece sets are worth simulating is a judgment call — and which channels the model may switch on for this deck. `/build-deck` derives a first version from the plan's declared engines; no agent ever edits it afterwards |
+| `deck_versions.json` | Authored, and the home of two claims only you can make: `paper` (this exact list is **sleeved**, which is what puts the deck on the automatic chain) and `lifecycle` (archived / retired / superseded). Written through `deck-version paper` and `deck-state`, never by hand |
+| `issue.json` | **Optional now.** It carried the magazine's authored identity; with that renderer deleted, only the display name is still read, and most decks have none |
 
 ### 4b. Or don't write a decklist at all
 
@@ -271,7 +317,10 @@ where a deck stands and what to do next; start with both.
 | `manamap pilot deck-map <slug>` | The constellation: local layout + clusters | **yes** |
 | `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
 | `/resolve-stack` | A verified line: resolver → validator → adversarial checker | no |
+| `manamap pilot deck-audit <slug>` | 16 cited axes plus engine activation | **yes** |
+| `manamap pilot model-coverage <slug>` | What the model cannot see, before the games: seen / dark / invisible | **yes** |
 | `/write-manual` | The pilot's notes: game plan, mulligan, line intros, threats, matchups | no |
+| `/poh-procedures` | The half a person writes: emergency and normal procedures, rules of engagement | no |
 | `manamap pilot build-poh <slug>` + `build-index` | The Pilot's Operating Handbook (`manuals/p/`, deterministic, no `<script>`) | **yes** |
 
 Then the loop the bench exists for — all CLI except the two agents:
@@ -282,8 +331,11 @@ Then the loop the bench exists for — all CLI except the two agents:
 | `manamap pilot deck-branch <slug> propose <name> --as v1.0.2` | accept it, and wait for the cardboard | **yes** |
 | `manamap pilot deck-version <slug> [tag …]` | commit the list; every version numbered from git | **yes** |
 | `manamap pilot fetch-opponent "<commander>"` / `simulate <slug> --vs <pod> --games N` | your table, in Forge, seeded | **yes** |
-| `manamap pilot deck-notes <slug> add "…" --result win\|loss` | the captain's log | **yes** |
+| `manamap pilot check-in <slug> --from <file>` | a paper list becomes `decklist.txt`; refuses a silently-wrong one | **yes** |
+| `manamap pilot deck-version <slug> paper <ref>` | **this list is sleeved** — the one claim that puts the deck on the automatic chain | **yes** |
+| `manamap pilot deck-notes <slug> add "…" --result win\|loss --cause <code>` | the captain's log; `--cause` is a closed vocabulary so the dossier can count how games end | **yes** |
 | `/debrief <slug>` | the note, structured and routed | no |
+| `/captains-log <slug>` | each night plain, and **the read** — what the games have taught | no |
 | `/prescribe <slug> "<question>"` | the doctor's answer, priced and skeptic-checked | no |
 | `manamap pilot sim-scenario <slug> <run> --game G --turn T --stack` → `/resolve-stack` | a simulated board, proven | mixed |
 
@@ -298,7 +350,8 @@ stage is independently runnable and testable.
 
 ```
 Card map    download → extract → preprocess → train ×2 → embed → reduce
-                     → combos → export → synergy → power-creep → regions → card-roles → viz
+                     → combos → export → synergy → power-creep → regions → card-roles
+                     → viz-index → eval-embeddings   (the quality gate, step 15)
 
 Build       brief.json → build-deck → bracket-check → architect ⇄ critic → decklist
 
@@ -309,17 +362,42 @@ Experiment  decklist → fetch-deck → goldfish ─┐
 Change      decklist → deck-branch new → stage → net-change → propose → merge → a version
                                                         └ blocked on cardboard, derived
 
+Fleet       a model change → regen (dependency order, parallel across decks)
+            goldfish → mana-analysis → net-change → diagnose → benchmark → deck-info
+
 Surface     artifacts → deck-info --write → info.json ─┐
             build-index → index.json ──────────────────┴→ viz/deck.html
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (102 pilot subcommands). All constants live in
-`src/manamap/config.py`; both CLIs are registry-driven with lazy imports.
+`manamap pilot <cmd>` drives the rest (**102 pilot subcommands** against 28 top-level ones).
+All constants live in `src/manamap/config.py`; both CLIs are registry-driven with lazy
+imports.
 
-## Simulation — the centre of the bench
+### The warm worker, and the read-only MCP server
 
-*Code: `src/manamap/sim/{forge,parse,experiment,bridge,opponents,validate_sim}.py`.
+`manamap serve` does three jobs, and only the first is obvious. It serves `viz/` and a local
+`/api` the deployed site does not have — and it is also a **warm worker**: with it running,
+every read-only `manamap pilot <cmd>` routes through `/api/cli` and skips the cold import,
+byte-identically. Measured: `query-rules` 6.93s → 0.16s, `deck-facts` 1.44s → 0.14s,
+`deck-audit` 2.26s → 0.59s. It **fails open** — no server, or any error at all, and the
+command runs locally exactly as before. `MANAMAP_NO_DAEMON=1` opts out.
+
+One gotcha that costs ten confusing minutes every time: **the server holds the old modules
+until you restart it.** After editing Python, restart `serve` or set `MANAMAP_NO_DAEMON=1`,
+or you will measure the code you just replaced.
+
+`.mcp.json` registers `manamap.mcp_server`, which hands Claude Code seven **read-only** tools
+over the same warm process — `deck_state`, `fleet`, `search_docs`, `search_code`, `stats`,
+`run_command`, `command_help` — so an agent gets structured data instead of parsing prose
+(`deck-status heliod` is 2.9s cold, 0.003s warm, byte-identical). There is no MCP SDK
+dependency: the protocol is JSON-RPC over stdio and the subset a tool server needs is ~150
+lines, the same reasoning that keeps scipy out of `sim/stats.py`. **It cannot write**, and the
+gate is `serve._cli` imported rather than restated, so the two surfaces cannot drift apart.
+
+## Forge — the rules engine, and the centre of the bench
+
+*Code: `src/manamap/sim/{forge,parse,experiment,bridge,opponents,validate_sim,engine_casts}.py`.
 Design, the spike and the verdict: `docs/simulation.md`.*
 
 **Forge was chosen by measurement, not preference.** Three things were checked before
@@ -362,11 +440,70 @@ run for real: radagast stack 008 is a board lifted from a simulated game, resolv
 checker-passed in three iterations, and the checker caught two triggers the author missed
 that the log confirms.
 
-**The AI caveat is not a footnote.** Every seat is a Forge AI including yours, and Forge's
-own rating — "poor to ok in control, pretty bad for combo" — is quoted verbatim in every
-run record's `assumptions`. Measured: no AI profile flies a hold-up deck better than
-Default (Default 3/6, Experimental 2/6, Reckless 2/6 over seeded games), so Default stays
-the default.
+**The AI caveat is not a footnote, and it is not one caveat.** Every seat is a Forge AI
+including yours, and Forge's own rating — "poor to ok in control, pretty bad for combo" — is
+quoted verbatim in every run record's `assumptions`. Measured: no AI profile flies a hold-up
+deck better than Default (Default 3/6, Experimental 2/6, Reckless 2/6 over seeded games), so
+Default stays the default. Three sharper consequences, each of which has cost a real
+conclusion:
+
+- **A result on a deck whose engine the AI never cast is a floor, and the record says so.**
+  One seat cast Wheel of Fortune once and Windfall never in 60 games while *discarding*
+  Windfall three times — the log's own statement that the card was held and passed over.
+  `record["engine_casts"]` carries per-card cast / activated / discarded for your seat, and
+  `simulate` prints "held and never cast" at its tail. Check it before reading any rate.
+- **The AI will not sacrifice for a benefit its evaluator cannot price**, so a Forge result
+  on a sacrifice deck is a floor. `Ashnod's Altar` is free and was **0 for 59 castings**;
+  `Indulgent Aristocrat` costs {2}, puts a visible counter on the board, and activates 0.41
+  per cast. Cost is not the discriminator — a visible board payoff is. Prefer a trigger over
+  an activation.
+- **Sometimes it is not a floor but a different deck.** Zada, Hedron Grinder copies a
+  single-target spell across your board; over 60 games she was cast 100 times and her trigger
+  fired **21**, because the evaluator prices `Brute Force` on Zada exactly as it prices it on
+  anything else. Every card was cast, just never at her. So that deck's three measured win
+  rates are void rather than conservative, and the A/B is not rescued by comparing them. The
+  preflight is one grep for the commander's trigger in the logs; the route to evidence is
+  `sim-scenario --stack` on one of the 21 real boards, proven by citation.
+
+## The goldfish — the other engine
+
+*Code: `src/manamap/pilot/goldfish*.py`. The channel-by-channel reference:
+`docs/simulation.md`.*
+
+Forge plays real games slowly; the goldfish plays 10,000 seeded hands of **resource
+development against nobody**, in seconds. It answers questions about a curve — how fast does
+the mana arrive, when is the engine assembled, what does the board look like on turn eight —
+and it is wrong to ask it anything about a table.
+
+**Everything it models is opt-in per deck**, declared in that deck's
+`goldfish_targets.json`. Draw, combat, Treasure, sacrifice and deaths, discard, the spell
+count and storm, magecraft, and four commander abilities that only one corpus card each
+possesses are all separate flags. This is not configurability for its own sake: a channel
+that is on for every deck is a channel that has to be right for every deck, and the
+alternative — a card silently measuring as zero because nothing reads it — is the single most
+expensive failure mode this repo has. Hence two rules, both enforced by tests:
+
+- **A flag the model sets is a claim the model must act on.** `treasure_doubler` once shipped
+  set-and-never-read; fifteen candidate cards came back byte-identical.
+- **Teach the casting predicate in the same commit as the ability.** Every casting loop selects
+  on a channel, so a card matching none of them sits in hand for ten turns while its profile
+  says precisely what it would have done. Found five times in one session, and only recognised
+  as a class on the fourth.
+
+**Three limits worth stating up front**, because they decide which engine to ask. It has **no
+blockers**, so its verdict on board *quality* is not evidence — a go-wide refactor it
+preferred on damage, kill rate and card advantage lost 31/400 to 50/400 in Forge, because 1/1
+tokens do not connect. **Lands enter untapped, always**, so it cannot rank two lands that make
+the same colours; `mana-analysis` and `mana-fit` are deterministic for exactly that reason and
+are the whole of the evidence for a land swap. And `meta.model_version` is a sha over the
+model's own source, so **a model change makes every derived figure in the fleet stale** and
+says so rather than quietly reporting the old number.
+
+## The embedding models
+
+*A technical overview. Code: `src/manamap/training/{model,train,train_ability}.py`,
+`src/manamap/ingest/{extract,preprocess}.py`, `src/manamap/analysis/eval_embeddings.py`.
+Every constant named below lives in `config.py`.*
 
 Two lightweight fusion MLPs (~180K params each) produce the 128-dim embeddings; the text
 encoder stays frozen. They answer different questions and are not interchangeable. The
@@ -379,12 +516,6 @@ the displayed map, the colour/type space was using 3.9 of its 128 dimensions and
 Season*'s nearest neighbours came back as arbitrary green enchantments. `manamap
 eval-embeddings` (step 15) scores every space against a hand-authored golden set so a claim
 like that is a number rather than an opinion.
-
-## The embedding models
-
-*A technical overview. Code: `src/manamap/training/{model,train,train_ability}.py`,
-`src/manamap/ingest/{extract,preprocess}.py`, `src/manamap/analysis/eval_embeddings.py`.
-Every constant named below lives in `config.py`.*
 
 ### The problem
 
@@ -498,8 +629,10 @@ was around epoch 3, so nothing pressured the model to preserve structure *within
 With no labels, the positive-selection rule is effectively the loss function. Three tiers,
 per anchor:
 
-1. **Rarest specific role first.** A 53-role taxonomy (`ROLE_PATTERNS`) covers 72.6% of
-   cards at 1.62 specific roles each. Roles are sorted by group size ascending — two cards
+1. **Rarest specific role first.** A 53-role taxonomy (`ROLE_PATTERNS`) gives a *specific*
+   role to 73.2% of the 31,830 commander-legal cards, at 1.62 specific roles each
+   (`card_roles.json`'s `meta.specific_coverage`; total coverage including the
+   `threat:body` fallback is 89.6%). Roles are sorted by group size ascending — two cards
    sharing `doubler:tokens` (11 cards) say far more about each other than two sharing
    `value:etb` (5,580), so the positive is spent on the anchor's most specific claim.
 2. **≥2 shared mechanical tags** (the old rule, now a fallback). It covered only 46.9% of
@@ -527,8 +660,9 @@ rows is small.
 
 Serving is the constrained part, because the browser must branch **synchronously** mid-gesture
 and cannot download a 16.8 MB float matrix. `neighbours.bin` precomputes, per card, 12
-similar + 10 synergy + 5 obsoleted-by row ids: `uint16` ids, similarities quantised to
-`uint8` — **2.4 MB gzipped for the whole discovery boot, against 18.4 MB before.**
+similar + 10 synergy + 5 obsoleted-by row ids (`NEIGHBOURS_K_*` in `config.py`): `uint16`
+ids, similarities quantised to `uint8` — **1.9 MB gzipped for the whole discovery boot,
+against 18.4 MB before.**
 
 The quantised value is used for edge length only, and **ordering is array order.** Re-sorting
 client-side by the lossy value changes the top-10 for roughly two thirds of cards, because
@@ -594,6 +728,8 @@ Two standing rules around this harness:
 | A field the deck page reads | `deck_info.compose`, then `deck-info <slug> --write` for every deck — `info.json` is committed and staleness-gated |
 | A section of the handbook | `poh_spec.SECTIONS` **and** `poh.RENDERERS` — the spec declares ten sections and the map holds seven, so a section added to one alone never renders |
 | A data file the viz reads | The `DATA` map in `viz/js/mana-map.js`, plus a `.gitignore` negation |
+| A goldfish channel | a reader in `goldfish_profiles.py`, **the casting predicate in `goldfish_turn.py` in the same commit**, a flag the deck declares, an entry in `model_coverage`, and a corpus sweep in the commit message. Skip any one and the channel measures as zero on every deck |
+| A metric the branch report prints | `net_change.METRICS` — a test asserts it matches `ROWS` in both directions, because a figure whose definition a reader has to look up gets guessed at |
 | A synergy rule, tag, or threshold | `config.py`, nowhere else |
 | A deckbuilding role | `ROLE_PATTERNS` in `config.py`, then re-run `manamap card-roles` |
 | A bracket rule | `BRACKETS` / `COMBO_BRACKET_TAGS` / `MASS_LAND_DENIAL` in `config.py` |
@@ -620,41 +756,55 @@ a verbatim substring. A *separate adversarial agent* then fetches each full rule
 whether it actually supports the claim. Only `pass` renders. Failed artifacts are kept —
 they document open questions.
 
-**Determinism.** Agents return JSON and never write HTML. That keeps the renderer a pure
-function of committed artifacts, byte-identical on rebuild and enforced by tests — and it
-is *why* the deck page's date is authored, why goldfish and Forge runs are seeded, and why
-image URLs get their cache-busters stripped.
+**Determinism.** Agents return JSON and never write HTML. That keeps every renderer a pure
+function of committed artifacts, byte-identical on rebuild — and asserted from *outside* the
+code that asserts it: CI runs `make manuals` and then `git diff --exit-code`, because
+otherwise the Makefile is the one thing nothing checks (and it was, until `make manuals` broke
+on CI's first run). It is also *why* goldfish and Forge runs are seeded, why a dated artifact
+carries an authored date rather than a generated one, and why image URLs get their
+cache-busters stripped.
 
 ## Testing
 
 ```bash
-make test          # the inner loop: non-browser, parallel, cached   ~2.5 min
-make test-fresh    # same, nothing served from the cache             ~2.3 min
-make test-browser  # the playwright suite                            ~7 min
+make test          # the inner loop: non-browser, non-forge, parallel, cached
+make test-fresh    # same, nothing served from the cache
+make test-browser  # the playwright suite
+pytest -m forge    # one real Forge game; needs ~/.mana-map/forge
+pytest -m ""       # literally everything, browser included
 ```
 
-A bare `pytest` is `make test`. Four test files recompute an artifact and compare it to
-the tracked copy — 90,000 seeded goldfish simulations among them — so those are cached on
-a hash of their inputs *and* of the code that produces them, recorded only on a pass, and
-kept in gitignored `.pytest_cache/` where they cannot reach another machine or CI. The run
-prints how many it skipped. `make test-fresh` is the one to trust before a PR.
+**Runtimes are stated in `docs/testing.md` and nowhere else, this file included.** They
+belong on one page because they drift: this README carried *~2.5 min* for the cached suite
+for weeks against `docs/testing.md`'s measured ~5 min, and `CLAUDE.md` carried a third,
+differently wrong pair at the same time — it said ~22s/~29s while the real figure was 772s.
+One page that gets re-measured beats three that get copied.
+
+A bare `pytest` is `make test`. Six test files recompute an artifact and compare it to the
+tracked copy — **36 goldfish targets at 10,000 seeded games each**, decks and branches
+together, among them — so those are cached on a hash of their inputs *and* of the code that
+produces them, recorded only on a pass, and kept in gitignored `.pytest_cache/` where they
+cannot reach another machine or CI. The run prints how many it skipped. `make test-fresh`
+is the one to trust before a PR.
 
 A fresh clone skips the cases that gate on gitignored artifacts built locally, and each
 one says which command would enable it — so a clone runs green and faster than a developed
 checkout. Current counts and the measured timings live in `docs/testing.md`.
 
-Counts and the per-file inventory live in `docs/testing.md` — they move on almost every
-commit, so restating them here would be one more thing to drift. Five skip markers in `tests/conftest.py` gate on the last
-artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit tests
-build inline fixtures — no fixture files. Paths always come from `manamap.config`, so the
-suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
+Counts and the per-file inventory live in `docs/testing.md` for the same reason the
+runtimes do — they move on almost every commit. **Seven skip markers** in
+`tests/conftest.py` (`requires_data`, `requires_rules`, `requires_deck`,
+`requires_strategy`, `requires_roles`, `requires_rulings`, `requires_branch`) gate on the
+last artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit
+tests build inline fixtures — no fixture files. Paths always come from `manamap.config`, so
+the suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
 
 ## Landmines
 
 - **`python -m manamap.pipeline` starts the full 40–60 minute run** with no arguments and
   no confirmation, overwriting trained models. Use the `manamap` CLI.
 - **Never put `data/` on Git LFS.** GitHub Pages serves LFS pointer files, not content —
-  it would silently break every fetch on the deployed site. The 149 MB of tracked data
+  it would silently break every fetch on the deployed site. The 250 MB of tracked data
   is deliberate.
 - **Index alignment**: `projection[i]` ≡ `cards.csv[i]` ≡ `embeddings[i]`, positionally
   (card names duplicate). Never partially regenerate after a card-count change.
@@ -686,40 +836,75 @@ suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
 - **`VALIDATED` and `STAGES` are different lists.** An artifact with a gate but no
   lifecycle stage still has to be reported, or `deck-status` says green while the gate is
   red — which it did, fleet-wide, for three artifacts.
+- **`manamap serve` holds the old modules.** Restart it after editing Python, or set
+  `MANAMAP_NO_DAEMON=1`, or you will carefully measure the code you just replaced.
+- **A branched write needs a branched read.** Three instances now, the third committed inside
+  the commit that fixed the class: a measurement ran on the champion's list and was filed
+  under the branch. Every branch measurement records the branch's own `decklist_sha256`.
+- **Absent means absent, never zero.** A figure nobody measured is a missing key with a stated
+  reason. `0.0` is a measurement and a reader cannot tell it from one.
+- **A validator that fires on correct data is worse than no validator**, and the only way to
+  know is to measure the proposed check against the whole fleet *first*. Six have been
+  prototyped and rejected on that ground; one fired on 27% of correct authored data.
+- **Widening a matcher needs a corpus sweep in the same commit** — newly matched, newly
+  dropped, and the extreme tail read card by card. Skipped once, it billed Jeweled Lotus three
+  mana every turn forever.
 
 ## Deployment
 
 GitHub Pages serves the repo directly. There is no root index; the entry points are
 **`/viz/workbench.html` (the landing page — start here)**, `/viz/index.html` (the card
-atlas), `/viz/deck.html?deck=<slug>` (one deck's dossier) and `/manuals/p/<slug>.html`
-(its Pilot's Operating Handbook). Pushing to `main` deploys.
+atlas), `/viz/deck.html?deck=<slug>` (one deck's dossier),
+`/viz/branch.html?deck=<slug>&branch=<name>` (one candidate 99), `/viz/library.html`
+(Curate), `/viz/spaces.html` (the embedding-space appendix) and `/manuals/p/<slug>.html`
+(a deck's Pilot's Operating Handbook). Pushing to `main` deploys.
 
-One artifact the deployed site cannot carry yet: **the version list**. `deck-version`
-derives it by walking git, and the commit that changes `decklist.txt` receives its sha
-*after* anything written in the same commit — so a committed copy is one version behind
-forever. It needs a deploy-time step (a Pages workflow checking out with `fetch-depth: 0`),
-and until that exists the deck page's version panel simply does not render, which is what
-every panel there does when its artifact is absent.
+**The version list is committed and does render.** `deck-version` derives it by walking git,
+and the commit that changes `decklist.txt` receives its sha *after* anything written in the
+same commit — so `versions.json` is written on the *following* commit rather than the same
+one, and the newest row can lag by one until then. That is a lag, not the structural blocker
+this section used to describe: the panel renders from the tracked file like every other panel,
+and a panel whose artifact is genuinely absent still renders nothing rather than an error.
 
 ## Where to read next
+
+`docs/README.md` indexes and sorts all of it — current reference above, historical design
+records below, which saves reading 12,000 lines of the latter by accident.
 
 | Doc | Covers |
 |---|---|
 | `docs/vision.md` | **Start here.** Who this is for, what the bench does, what is live / legacy / next |
+| `docs/prd.md` | **What is being built**: three environments, five epics, the metrics catalog, and four resolved decisions. `vision.md` says what the bench *is*; this says where it is going |
 | `CLAUDE.md` | Orientation, environment, gotchas — the densest single page |
 | `PLAN.md` | Current state and what's next |
 | `/publish-deck` | The deck lifecycle: every phase in order, with its gate |
-| `docs/simulation.md` | The Forge engine: the spike, the harness, the parser, the pod, the bridge |
-| `docs/history/manual-v5-spec.md` | The compact deck page that replaces the magazine (spec) |
-| `docs/history/agent-audit-2026-08-19.md` | The agent audit behind the pivot |
-| ~~`STYLEv3.md`~~ | The legacy magazine's constitution, **deleted 2026-08-25** with the rest of the magazine era. `git show 23e8cec:STYLEv3.md` |
+| `docs/simulation.md` | Both engines: Forge's spike and harness, the parser, the pod, the bridge — and the goldfish channel-by-channel |
+| `docs/pilot.md` | Evidence contract, the bench's commands and artifacts, rules and strategy DBs |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
 | `docs/pipeline.md` | All 15 steps: inputs, outputs, runtimes, when to re-run |
 | `docs/data-artifacts.md` | Every `data/` file: producer, size, git status, consumers |
 | `docs/viz.md` | Frontend structure, the `window.MM` API, Pages layout |
-| `docs/testing.md` | Test layout, skip markers, conventions |
-| `docs/pilot.md` | Evidence contract, the bench's commands and artifacts, rules and strategy DBs |
+| `docs/testing.md` | Test layout, skip markers, conventions — **and the only stated runtimes** |
 | `docs/agent-cost.md` | Where LLM spend lives, per-routine costs, the cache |
+
+**The gotcha pages are the expensive part.** `CLAUDE.md` loads into every session; these do
+not, and they hold every measurement this project has paid for, verbatim. Read the one that
+covers what you are about to touch.
+
+| Page | Read before touching |
+|---|---|
+| `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` — much the largest |
+| `docs/gotchas-viz.md` | anything under `viz/` |
+| `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` |
+| `docs/gotchas-analysis.md` | `src/manamap/analysis/` — synergy, power creep, roles, regions |
+| `docs/gotchas-magazine-legacy.md` | the deleted magazine renderer, kept because it was measured |
+
+Historical design records, for provenance only — none of it describes live code:
+`docs/history/manual-v5-spec.md` (the compact deck page that replaced the magazine),
+`docs/history/agent-audit-2026-08-19.md` (the audit behind the pivot), and
+`docs/prd-2026-08.md` (the superseded PRD that ~27 `PRD-v1 §N` citations resolve against).
+`STYLEv3.md`, the magazine's constitution, was **deleted 2026-08-25**; its `STYLEv3 §N`
+comments resolve through `git show 23e8cec:STYLEv3.md`.
 
 ## Non-goals
 

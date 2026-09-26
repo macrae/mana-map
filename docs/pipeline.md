@@ -8,7 +8,7 @@ Fifteen numbered steps (sixteen registry entries — `train`/`train-ability` are
 | 2 | `extract` | `ingest/extract.py` | Parses JSON → flat CSV (35 cols) with derived columns (supertype, primary_color, mechanical_tags, embedding_text) and Scryfall's `game_changer` flag | `data/cards.csv` |
 | 3 | `preprocess` | `ingest/preprocess.py` | Sentence embeddings (all-MiniLM-L6-v2, frozen), categorical encoding, keyword + tag multi-hot | `data/text_embeddings.npy`, `data/card_features.npz`, `data/color_vectors.npy`, `data/mechanical_tags.npy` |
 | 4a | `train` | `training/train.py` | Triplet training — positives by (supertype, primary_color) | `data/model.pt` |
-| 4b | `train-ability` | `training/train_ability.py` | Triplet training — positives by tag overlap (>= 2 shared) | `data/model_ability.pt` |
+| 4b | `train-ability` | `training/train_ability.py` | **Symmetric in-batch InfoNCE** (τ = 0.05, batch 256) — positives mined by *rarest specific role first*, with ≥2 shared mechanical tags as the fallback and random as the last tier. The previous `TripletMarginLoss` over tag overlap was replaced because a margin loss stops producing gradient once satisfied | `data/model_ability.pt` |
 | 5 | `embed` | `training/embed.py` | Runs all cards through both models, builds metadata CSV | `data/embeddings.npy`, `data/embeddings_ability.npy`, `data/card_metadata.csv` |
 | 6 | `reduce` | `export/reduce.py` | PaCMAP 128D → 2D, both projections | `data/projection_2d.json`, `data/projection_2d_ability.json` |
 | 7 | `download-combos` | `ingest/download_combos.py` | Paginates Commander Spellbook API (~2.5 min, internet) | `data/combos_raw.json.gz` |
@@ -30,13 +30,15 @@ Steps 1 and 7 need internet. Every module also keeps a main-guard, so `python -m
 - **Changed `SYNERGY_RULES` / obsolescence thresholds / region params**: only steps 10–12 — `manamap synergy && manamap power-creep && manamap cluster-regions`. Fast (no retraining), but it invalidates the agent-cache routines that hash those graphs — `candidate-pool`, `deck-build` and `deck-diagnosis`. (`writer-prose`, `the-ten` and `issue-plan` were named here until 2026-09-12 and are magazine-era routines that no longer exist; `AGENT_ROUTINES` has 12.) Verified prose is usually still correct after a graph refresh, so re-bless (`cache-rebless`, never `cache-record`) rather than re-spawn; make it a stated decision.
 - **Changed `ROLE_PATTERNS`**: only step 13 — `manamap card-roles` (~10 s, no retraining). Roles are deliberately *not* model-facing, so unlike `MECHANICAL_TAGS` they never force a retrain. Note this invalidates the three agent-cache routines that hash `card_roles.json` — `candidate-pool`, `deck-build` and `deck-diagnosis`.
 - **Changed the embedding text, features, or training objective**: `manamap run --from preprocess` — *not* from `download`. Two reasons, and the agent cache is not one of them: card digests are computed over each deck's `cards.json`, not over `data/cards.csv`, so regenerating the corpus does not touch them. The reasons are (a) a new Scryfall dump changes the card *count*, which invalidates the index-alignment invariant for every downstream artifact at once, and (b) it confounds the before/after quality comparison — you can no longer tell an embedding improvement from a corpus change. The real cache cost of a retrain comes later in the run: regenerating `synergy_graph.json` and `obsolescence_index.json` MISSes the three routines listed above, which is the *previous* bullet's problem, and the same advice applies (re-bless rather than re-spawn when the prose is still correct).
-- **Changed viz only**: nothing to re-run; bump the cache-bust `?v=` on the page you touched — `viz/index.html` (map) or `viz/deck.html` (dossier). the handbook stylesheet (the legacy deck page's stylesheet) is content-addressed instead, so a change there means rebuilding every page.
+- **Changed viz only**: nothing to re-run; bump the cache-bust `?v=` on the page you touched — `viz/index.html` (map, whose nine busts move together) or `viz/deck.html` (dossier). The handbook's stylesheet (`manuals/page.css`) is content-addressed instead, so a change there means rebuilding every handbook: `make manuals`.
 
 ## Approximate runtimes (Apple Silicon, MPS)
 
 - Steps 1–2: ~1 min (download size ~200MB)
 - Step 3: ~5–10 min (sentence embeddings for ~34K cards)
-- Steps 4a/4b: a few minutes each (early stopping: Color+Type ~7 epochs, ability ~16)
+- Step 4a (layout): a few minutes — the task is nearly trivial and it early-stops around 7 epochs.
+  **Step 4b (function) legitimately takes ~1 h on MPS**: 34,890 cards, slow validation
+  convergence, ~16 epochs. That is not a hang.
 - Step 5: ~1 min · Step 6: ~5 min (PaCMAP) · Steps 7–8: ~3 min
 - Step 9: seconds · Step 10 (synergy): ~30 s · Step 11 (power-creep): ~5.5 min · Step 12 (regions): ~10 s · Step 13 (card-roles): ~10 s · Step 14 (viz-index): ~30 s · Step 15 (eval-embeddings): ~40 s
 

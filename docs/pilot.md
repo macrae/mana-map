@@ -234,8 +234,8 @@ manamap pilot mana-fit <slug> [--branch N] [--owned]
                                         #   THIS AND `mana-analysis` ARE THE WHOLE OF THE
                                         #   EVIDENCE FOR A LAND SWAP: the goldfish plays the
                                         #   first land in hand and credits its colours the
-                                        #   same turn, so it has no tapped state and cannot
-                                        #   rank two lands that make the same colours — a
+                                        #   same turn, so LANDS have no tapped state and it
+                                        #   cannot rank two that make the same colours — a
                                         #   twelve-land `candidates` sweep returned two
                                         #   distinct readings, with an always-tapped land
                                         #   tying one that never enters tapped
@@ -879,7 +879,31 @@ and the measured limits are in **`docs/simulation.md`**; the v2 schema is below.
 
 ## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
 
-### The Treasure model (opt-in per deck)
+### Every channel is opt-in per deck
+
+**`docs/simulation.md` holds the channel-by-channel reference** — which flag switches on what,
+what a copied spell does per effect, storm and magecraft and per-cast damage, why creatures
+tap and lands do not, and the named gaps. Read it before trusting a figure; this section holds
+the reasoning behind the shape.
+
+A deck's `goldfish_targets.json` declares what the model may read: draw, combat, Treasure,
+sacrifice and deaths and drain, discard, the spell count, and four commander abilities that one
+corpus card each possesses. Everything else is off, and **a card feeding an off channel
+measures as exactly nothing while looking identical to a card that does not help** — the
+single most expensive confusion in this repo's history, and the reason `model-coverage` exists
+as a preflight rather than a report.
+
+Opt-in is the architecture, not a migration state. It used to be framed as one — the Treasure
+note below still says "remove the flag once every deck has been re-baselined" — and that was
+wrong twice over: a channel on for every deck has to be *right* for every deck, and a model
+that changes every deck's numbers at once cannot be landed on one deck first. Two standing
+rules follow, both with tests behind them: **a flag the model sets is a claim the model must
+act on** (`treasure_doubler` shipped set-and-never-read and fifteen candidates came back
+byte-identical), and **teach the casting predicate in the same commit as the ability** (every
+casting loop selects on a channel, so a card matching none of them sits in hand for ten turns
+while its profile says precisely what it would have done).
+
+### The Treasure model (opt-in per deck) — the first one, and the pattern for the rest
 
 A Treasure is **not** a mana rock and modelling it as one is the trap: a rock
 produces every turn forever, a Treasure produces once and is gone. `simulate_once`
@@ -887,11 +911,13 @@ keeps a **stockpile** spent only when lands and rocks fall short, which is both 
 it is played and what makes a hoard-counting payoff measurable.
 
 **Only triggers a goldfish can see are modelled** — upkeep, landfall, cast, Saga
-chapters (recurring) and enters-the-battlefield (once). This simulation has no
-combat and no opponents, so `whenever this creature deals combat damage` and
-`whenever an opponent draws` produce **nothing**. That is a finding, not a
-shortcoming: measured across the nine decks, **16 of 19 Treasure sources are
-combat- or opponent-gated**, and a naive `create a Treasure token` match would have
+chapters (recurring) and enters-the-battlefield (once). When this was written the
+simulation had no combat at all, so `whenever this creature deals combat damage`
+and `whenever an opponent draws` produced **nothing**; combat is a declared channel
+now, but the Treasure reader has not been revisited against it, so those sources
+still report zero and are still named. That is a finding, not a
+shortcoming: measured across the nine decks then in the fleet, **16 of 19 Treasure
+sources are combat- or opponent-gated**, and a naive `create a Treasure token` match would have
 handed eight decks free mana they never get — turning a deliberately conservative
 model optimistic. Unmodelled sources are NAMED in
 `meta.treasure_sources_not_modelled`, so a hoard of zero is legible rather than
@@ -907,9 +933,11 @@ including agent-authored prose and an `engine.json` carrying a critic verdict.
 With the flag off the treasure keys and the two extra `model_assumptions` lines are
 **absent rather than zeroed**, so a non-opted deck's artifact is byte-identical to
 before the model existed. `goldfish` prints a WARNING naming the sources it is
-ignoring, so a deck cannot sit un-opted by accident. Remove the flag once every
-deck has been re-baselined — a permanently optional model is one nobody committed
-to.
+ignoring, so a deck cannot sit un-opted by accident. (The original note here said to
+remove the flag once every deck had been re-baselined, on the grounds that a
+permanently optional model is one nobody committed to. **That was superseded**: ten
+more channels followed the same pattern and per-deck declaration is now the contract
+— see the section head above.)
 
 What it reports when on: `treasure.mean_treasures_in_hoard_by_turn` and
 `treasure.engine_online_rate_by_turn`. The second is the consistency figure, and it
@@ -918,7 +946,16 @@ turn six**.
 
 
 
-`pilot/goldfish.py`: seeded Monte Carlo (seed 42, 10K iterations) simulating **resource development, not full games** — model assumptions are embedded in the artifact and rendered in the manual. Metrics: opening-hand/mulligan stats, land-drop and mana curves, commander-cast turn distribution, per-deck target-set assembly (`goldfish_targets.json`, `any_of` groups, drawn-by-turn semantics), bodies-by-turn (labeled crude). Deterministic: the data-gated test regenerates and compares byte-for-byte.
+`pilot/goldfish.py`, with the model split across `goldfish_profiles.py` (what a card says),
+`goldfish_library.py` and `goldfish_turn.py` (what a turn does): seeded Monte Carlo (seed 42,
+10K iterations) simulating **resource development, not full games** — the 24 model assumptions
+are embedded in the artifact and rendered in every handbook. Metrics: opening-hand/mulligan
+stats, land-drop and mana curves, commander-cast turn distribution, per-deck target-set
+assembly (`goldfish_targets.json`, `any_of` groups, drawn-by-turn semantics), bodies-by-turn
+(labeled crude), plus whatever the declared channels add. `meta.model_version` is a sha over
+all four model files, so a change to any of them makes every derived figure in the fleet
+report as stale rather than quietly reporting the old number. Deterministic: the data-gated
+test regenerates and compares byte-for-byte.
 
 ## Goldfish: two opening-hand distributions
 

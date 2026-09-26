@@ -53,7 +53,7 @@ replayability and the control is N. An A/A is refused with the reason.
 |---|---|---|
 | test one change against another | `experiment` — two arms, one table, the delta, with an interval on the DIFFERENCE of every figure | ◆ seeded |
 | measure a deck against a **table** | `simulate <slug> --vs <pod>` — N seeded Forge games: win rate with its interval, who kills you and how, the kill curve, **commander damage per defender**, token pay-off | ◆ seeded |
-| measure it against nobody | `goldfish` — Monte Carlo resource development; Treasure and combat opt-in | ◆ seeded |
+| measure it against nobody | `goldfish` — Monte Carlo resource development, 10,000 seeded games. **Every channel is opt-in per deck** (draw, combat, Treasure, sacrifice, discard, the spell count, four commander abilities), so what it can see is declared and checkable with `model-coverage` | ◆ seeded |
 | build a legal 99 from a brief | `build-deck` — role budget crossed with a cited curve target, combo lines completed, bracket-gated | ◆ |
 | find the cards that would fix an axis | `card-search` + `deck-audit` — 16 cited axes, then deterministic mining over the corpus, filtered by what you own | ◆ |
 | know what the field actually plays | `deck-recon` — dated web reconnaissance, every card verified in-identity and legal | ★ dated |
@@ -97,7 +97,7 @@ appendix.
 nets. It opens on **one card**; click a relation and its neighbours join a graph you grow.
 Three relations, each precomputed so a click is instant: **similar** (embedding
 neighbours), **synergy** (rule-based complements), **outclassed by** (strictly-better
-replacements). Boot costs 1.8 MB.
+replacements). Boot costs 1.9 MB.
 
 **The workbench** (`viz/workbench.html`) — the landing page, and the only screen that
 answers *which deck should I spend tonight on*. Racks group by whether a deck is sleeved;
@@ -142,11 +142,12 @@ has been debriefed, and two of them fed a prescription — enough to have proved
 works end to end, and nowhere near enough to conclude anything about any one deck. The gap
 no amount of implementation closes is still open; it is just narrower than it was.
 
-*Most decks are not marked as built in paper.* Whether a deck exists as cardboard is an
-assertion only the pilot can make, and eight of fourteen have not been asserted either
-way — though five of those eight are broken down for parts and one is retired.
-An unlocked deck now SAYS it is unlocked rather than being quietly assumed playable —
-the third state, after LOCKED and dead.
+*Eight of fourteen decks are not marked as built in paper.* Whether a deck exists as
+cardboard is an assertion only the pilot can make, and six have been asserted — Edgar,
+Gishath, Goblin Storm, Heliod, Sharknado, Ur-Dragon. Of the other eight, five are broken
+down for parts and one is retired. An unlocked deck SAYS it is unlocked rather than being
+quietly assumed playable — the third state, after LOCKED and dead — and that one authored
+flag is also what decides whether the automatic chain runs for a deck at all.
 
 ## Vocabulary
 
