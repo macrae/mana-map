@@ -2171,7 +2171,7 @@
   "why": "THE RECON APPLIED, WITH NO TWO-CARD INFINITES by the pilot's call (deck_recon.json, 2026-09-10, EDHREC's 3,924 pair decks). The Curiosity-class enchantments the pair is usually built around are deliberately OUT: with Niv-Mizzet Parun and Glint-Horn Buccaneer they are two-card loops. In their place the combo-free recon cards: Whirlwind of Thought, Magmakin Artillerist, Surly Badgersaur, beside Ojer Axonil as the amplifier. Interaction 4 -> 12 (Swords, Path, Counterspell, Veto, Arcane Denial, Blasphemous Act, Chaos Warp, Rift, Boros Charm, Teferi's Protection). Seven surplus wheels and the Puzzle Box out for the loot suite (Frantic Search, Thrill, Cathartic Reunion, Brainstorm); eight wheels stay. The builder's 17 off-map picks out for the discard payoffs (Captain Howler, Marauding Mako, Ghostly Pilferer), Teferi's Ageless Insight, Thought Vessel and three two-mana rocks. Its twelve coverage-chosen lands out for the cycling-land package; 35 lands. Bracket 4 by Game Changer count only. THE GOLDFISH READS THE SHARK HALF: Brallin's discard trigger has no channel and a wheel's 'draws that many' is not 'draw N', so the draw axis is a proxy. Forge at standard-v3 is the verdict."
  },
  "objective_grade": {
-  "reading": 9.3707,
+  "reading": 9.2498,
   "shortfall": null,
   "state": "met"
  },
@@ -2345,24 +2345,24 @@
    },
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "15 games in 100 -> 6 in 100, a swing of 9 games per 100",
+    "reads_as": "15 games in 100 -> 7 in 100, a swing of 8 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "13 games in 100 -> 40 in 100, a swing of 28 games per 100",
+    "reads_as": "13 games in 100 -> 38 in 100, a swing of 26 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    }
   ],
   "risk": [
    {
-    "detail": "60.55 -> 49.44, a change of -11.11 (-18%)",
+    "detail": "60.55 -> 48.61, a change of -11.94 (-20%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "9.83 -> 9.48, a change of -0.35 (-4%)",
+    "detail": "9.83 -> 9.38, a change of -0.45 (-5%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
@@ -2380,13 +2380,13 @@
     "why_it_matters": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
    },
    {
-    "detail": "12.10 -> 9.37, a change of -2.73 (-23%)",
+    "detail": "12.10 -> 9.25, a change of -2.85 (-24%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "the largest is hand can act by T3 at +0.006 against an MDE of 0.009. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T10 at -0.004 against an MDE of 0.006. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "2 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -2416,12 +2416,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 49.4364,
+   "branch": 48.6076,
    "champion": 60.5466,
-   "delta": -11.1102,
+   "delta": -11.939,
    "mde": 1.5083,
    "measure": "damage @T10",
-   "reads_as": "60.55 -> 49.44, a change of -11.11 (-18%)",
+   "reads_as": "60.55 -> 48.61, a change of -11.94 (-20%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -2430,12 +2430,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 9.4804,
+   "branch": 9.3844,
    "champion": 9.8341,
-   "delta": -0.3537,
-   "mde": 0.1543,
+   "delta": -0.4497,
+   "mde": 0.1533,
    "measure": "board power @T6",
-   "reads_as": "9.83 -> 9.48, a change of -0.35 (-4%)",
+   "reads_as": "9.83 -> 9.38, a change of -0.45 (-5%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -2444,10 +2444,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.249,
+   "branch": 0.2453,
    "champion": 0.2097,
-   "delta": 0.0393,
-   "mde": 0.0171,
+   "delta": 0.0356,
+   "mde": 0.017,
    "measure": "killed by T6",
    "reads_as": "21 games in 100 -> 25 in 100, a swing of 4 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -2458,10 +2458,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9794,
+   "branch": 0.9789,
    "champion": 0.9833,
-   "delta": -0.0039,
-   "mde": 0.0056,
+   "delta": -0.0044,
+   "mde": 0.0057,
    "measure": "killed by T10",
    "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.006 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -2472,12 +2472,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0603,
+   "branch": 0.0661,
    "champion": 0.1468,
-   "delta": -0.0865,
+   "delta": -0.0807,
    "mde": 0.014,
    "measure": "stall, 2 in a row",
-   "reads_as": "15 games in 100 -> 6 in 100, a swing of 9 games per 100",
+   "reads_as": "15 games in 100 -> 7 in 100, a swing of 8 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -2514,12 +2514,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 9.3707,
+   "branch": 9.2498,
    "champion": 12.097,
-   "delta": -2.7263,
+   "delta": -2.8472,
    "mde": 0.379,
    "measure": "extra cards by T8",
-   "reads_as": "12.10 -> 9.37, a change of -2.73 (-23%)",
+   "reads_as": "12.10 -> 9.25, a change of -2.85 (-24%)",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
@@ -2528,12 +2528,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4019,
+   "branch": 0.3815,
    "champion": 0.126,
-   "delta": 0.2759,
-   "mde": 0.0213,
+   "delta": 0.2555,
+   "mde": 0.0214,
    "measure": "interaction affordable @T6",
-   "reads_as": "13 games in 100 -> 40 in 100, a swing of 28 games per 100",
+   "reads_as": "13 games in 100 -> 38 in 100, a swing of 26 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",

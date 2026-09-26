@@ -910,12 +910,13 @@
   "why": "Two death-payoff swaps the pilot called 2026-09-12: Elenda, the Dusk Rose for Gifted Aetherborn, Blade of the Bloodchief for Unbounded Potential. Both turn the nine sacrifice outlets into counters, and Elenda into lifelink tokens on death, doubled by Procession and Mondrak. Nothing dies in the goldfish and the Forge AI does not sacrifice in response, so the objective is a CONTROL at the champion's own kill-by-8 reading."
  },
  "objective_grade": {
-  "reading": 0.701,
-  "shortfall": null,
-  "state": "met"
+  "reading": 0.6887,
+  "shortfall": 0.0113,
+  "state": "not resolvable",
+  "why": "missed by 0.0113, which is under the 0.0183 this run could detect \u2014 evidence of nothing, not evidence of failure"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse.",
+  "because": "The miss is smaller than this run can see. missed by 0.0113, which is under the 0.0183 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
    "box": 0,
    "buy": 0,
@@ -959,7 +960,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.267. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.265. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -990,19 +991,19 @@
    }
   ],
   "rose": [],
-  "state": "merge"
+  "state": "inconclusive"
  },
  "slug": "edgar-vampires",
  "staged": 2,
  "table": [
   {
    "better_is": "higher",
-   "branch": 19.6836,
-   "champion": 19.6836,
+   "branch": 19.548,
+   "champion": 19.548,
    "delta": 0.0,
-   "mde": 0.2671,
+   "mde": 0.2645,
    "measure": "damage @T10",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.267 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.265 this run can resolve",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
@@ -1011,10 +1012,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 11.2267,
-   "champion": 11.2267,
+   "branch": 11.0937,
+   "champion": 11.0937,
    "delta": 0.0,
-   "mde": 0.1643,
+   "mde": 0.1641,
    "measure": "board power @T6",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.164 this run can resolve",
    "scale": null,
@@ -1025,12 +1026,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0389,
-   "champion": 0.0389,
+   "branch": 0.0372,
+   "champion": 0.0372,
    "delta": 0.0,
-   "mde": 0.0077,
+   "mde": 0.0075,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.007 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1039,10 +1040,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9648,
-   "champion": 0.9648,
+   "branch": 0.9631,
+   "champion": 0.9631,
    "delta": 0.0,
-   "mde": 0.0073,
+   "mde": 0.0075,
    "measure": "killed by T10",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.007 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1053,10 +1054,10 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0951,
-   "champion": 0.0951,
+   "branch": 0.1055,
+   "champion": 0.1055,
    "delta": 0.0,
-   "mde": 0.0116,
+   "mde": 0.0122,
    "measure": "stall, 2 in a row",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.012 this run can resolve",
    "scale": null,
@@ -1067,8 +1068,8 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3985,
-   "champion": 0.3985,
+   "branch": 0.3989,
+   "champion": 0.3989,
    "delta": 0.0,
    "mde": 0.0194,
    "measure": "missed drop by T5",
@@ -1095,12 +1096,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.1409,
-   "champion": 1.1409,
+   "branch": 1.1178,
+   "champion": 1.1178,
    "delta": 0.0,
-   "mde": 0.0746,
+   "mde": 0.0734,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.075 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.073 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1109,12 +1110,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3102,
-   "champion": 0.3102,
+   "branch": 0.2883,
+   "champion": 0.2883,
    "delta": 0.0,
-   "mde": 0.0196,
+   "mde": 0.0194,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",

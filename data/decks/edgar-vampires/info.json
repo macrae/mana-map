@@ -4424,105 +4424,105 @@
           "n": 10000
         },
         "2": {
-          "rate": 0.2455,
+          "rate": 0.2474,
           "ci95": [
-            0.2372,
-            0.254
+            0.239,
+            0.256
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0652,
+          "rate": 0.0672,
           "ci95": [
-            0.0605,
-            0.0702
+            0.0625,
+            0.0723
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0418,
+          "rate": 0.0454,
           "ci95": [
-            0.0381,
-            0.0459
+            0.0415,
+            0.0497
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.03,
+          "rate": 0.034,
           "ci95": [
-            0.0268,
-            0.0335
+            0.0306,
+            0.0377
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0209,
+          "rate": 0.0249,
           "ci95": [
-            0.0183,
-            0.0239
+            0.022,
+            0.0281
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0295,
+          "rate": 0.0348,
           "ci95": [
-            0.0264,
-            0.033
+            0.0314,
+            0.0386
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0351,
+          "rate": 0.0425,
           "ci95": [
-            0.0317,
-            0.0389
+            0.0387,
+            0.0466
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0345,
+          "rate": 0.0426,
           "ci95": [
-            0.0311,
-            0.0383
+            0.0388,
+            0.0467
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0293,
+          "rate": 0.0374,
           "ci95": [
-            0.0262,
-            0.0328
+            0.0339,
+            0.0413
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0951,
+        "rate": 0.1055,
         "ci95": [
-          0.0895,
-          0.101
+          0.0996,
+          0.1117
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 5318,
-        "hand_empty": 879,
-        "mana_short": 4439
+        "stall_turns": 5762,
+        "hand_empty": 1102,
+        "mana_short": 4660
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.3985,
+        "rate": 0.3989,
         "ci95": [
-          0.3889,
-          0.4081
+          0.3893,
+          0.4085
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2822,
+      "missed_land_drop_rate": 0.2833,
       "mulliganed": {
         "rate": 0.1892,
         "ci95": [
@@ -4536,16 +4536,16 @@
         "2": 2.144,
         "3": 3.248,
         "4": 4.181,
-        "5": 4.939,
-        "6": 5.59,
-        "7": 6.19,
-        "8": 6.793,
-        "9": 7.409,
-        "10": 8.049
+        "5": 4.938,
+        "6": 5.588,
+        "7": 6.186,
+        "8": 6.786,
+        "9": 7.4,
+        "10": 8.036
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.1139
+      "mana_stdev_turn_five": 1.1141
     },
     "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6"
   },
@@ -4656,7 +4656,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A draw engine drawn": {
-          "value": 73,
+          "value": 72,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A draw engine drawn' by turn six",
@@ -4754,15 +4754,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.027,
+            "10": 8.018,
             "2": 2.147,
             "3": 3.257,
             "4": 4.19,
-            "5": 4.943,
-            "6": 5.591,
-            "7": 6.185,
-            "8": 6.787,
-            "9": 7.387
+            "5": 4.942,
+            "6": 5.59,
+            "7": 6.182,
+            "8": 6.782,
+            "9": 7.379
           },
           "tier": "data",
           "weight": "detail",
@@ -4773,15 +4773,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.555,
+            "10": 0.554,
             "2": 0.997,
             "3": 0.919,
             "4": 0.809,
-            "5": 0.692,
+            "5": 0.691,
             "6": 0.598,
-            "7": 0.54,
-            "8": 0.531,
-            "9": 0.53
+            "7": 0.538,
+            "8": 0.529,
+            "9": 0.528
           },
           "tier": "data",
           "weight": "detail",
@@ -4792,15 +4792,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.56,
-            "10": 15.818,
-            "2": 1.448,
-            "3": 2.846,
-            "4": 4.639,
-            "5": 6.203,
-            "6": 7.694,
-            "7": 9.641,
-            "8": 11.57,
-            "9": 13.596
+            "10": 15.72,
+            "2": 1.438,
+            "3": 2.806,
+            "4": 4.563,
+            "5": 6.119,
+            "6": 7.6,
+            "7": 9.55,
+            "8": 11.486,
+            "9": 13.507
           },
           "tier": "data",
           "weight": "detail",
@@ -4826,12 +4826,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 623,
+            "10": 654,
             "5": 2,
-            "6": 422,
-            "7": 2809,
-            "8": 3807,
-            "9": 2059
+            "6": 402,
+            "7": 2722,
+            "8": 3794,
+            "9": 2129
           },
           "tier": "data",
           "weight": "detail",
@@ -4872,7 +4872,7 @@
       },
       {
         "label": "A draw engine drawn",
-        "by_turn_6_pct": 73
+        "by_turn_6_pct": 72
       },
       {
         "label": "Protection held for the swarm",
@@ -4896,19 +4896,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.964,
+      "mean_kill_turn": 7.99,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 70,
+      "kill_by_turn_8_pct": 69,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 3,
       "kill_turn_histogram": {
-        "10": 623,
+        "10": 654,
         "5": 2,
-        "6": 422,
-        "7": 2809,
-        "8": 3807,
-        "9": 2059
+        "6": 402,
+        "7": 2722,
+        "8": 3794,
+        "9": 2129
       }
     }
   },

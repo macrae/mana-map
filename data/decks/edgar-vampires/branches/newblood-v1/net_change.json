@@ -984,7 +984,7 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy damage @T10 and board power @T6 and pay stall, 2 in a row and interaction affordable @T6.",
+  "because": "The objective is met and nothing measured here got worse; damage @T10 and board power @T6 improved.",
   "bill": {
    "box": 1,
    "buy": 2,
@@ -1012,48 +1012,35 @@
    "reads_as": "2 to buy; 94 of 96 already owned",
    "total": 96
   },
-  "fell": [
-   "stall, 2 in a row",
-   "interaction affordable @T6"
-  ],
+  "fell": [],
   "no_call": [
    "killed by T6",
    "killed by T10",
+   "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
    "extra cards by T8",
+   "interaction affordable @T6",
    "hand can act by T3"
   ],
   "notes": [],
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "19.68 -> 20.06, a change of +0.38 (+2%)",
+    "reads_as": "19.55 -> 20.06, a change of +0.51 (+3%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "11.23 -> 11.41, a change of +0.19 (+2%)",
+    "reads_as": "11.09 -> 11.41, a change of +0.32 (+3%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    }
   ],
   "risk": [
    {
-    "detail": "10 games in 100 -> 11 in 100, a swing of 1 games per 100",
-    "kind": "paid",
-    "what": "stall, 2 in a row",
-    "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
-   },
-   {
-    "detail": "31 games in 100 -> 29 in 100, a swing of 2 games per 100",
-    "kind": "paid",
-    "what": "interaction affordable @T6",
-    "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
-   },
-   {
-    "detail": "the largest is killed by T10 at +0.004 against an MDE of 0.007. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T10 at +0.005 against an MDE of 0.007. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "6 row(s) returned no call",
+    "what": "8 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1085,7 +1072,7 @@
    "damage @T10",
    "board power @T6"
   ],
-  "state": "a trade"
+  "state": "merge"
  },
  "slug": "edgar-vampires",
  "staged": 1,
@@ -1093,11 +1080,11 @@
   {
    "better_is": "higher",
    "branch": 20.0588,
-   "champion": 19.6836,
-   "delta": 0.3752,
+   "champion": 19.548,
+   "delta": 0.5108,
    "mde": 0.2718,
    "measure": "damage @T10",
-   "reads_as": "19.68 -> 20.06, a change of +0.38 (+2%)",
+   "reads_as": "19.55 -> 20.06, a change of +0.51 (+3%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "better",
@@ -1107,11 +1094,11 @@
   {
    "better_is": "higher",
    "branch": 11.412,
-   "champion": 11.2267,
-   "delta": 0.1853,
+   "champion": 11.0937,
+   "delta": 0.3183,
    "mde": 0.1661,
    "measure": "board power @T6",
-   "reads_as": "11.23 -> 11.41, a change of +0.19 (+2%)",
+   "reads_as": "11.09 -> 11.41, a change of +0.32 (+3%)",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
@@ -1121,11 +1108,11 @@
   {
    "better_is": "higher",
    "branch": 0.0396,
-   "champion": 0.0389,
-   "delta": 0.0007,
+   "champion": 0.0372,
+   "delta": 0.0024,
    "mde": 0.0077,
    "measure": "killed by T6",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.008 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1135,11 +1122,11 @@
   {
    "better_is": "higher",
    "branch": 0.9686,
-   "champion": 0.9648,
-   "delta": 0.0038,
-   "mde": 0.0073,
+   "champion": 0.9631,
+   "delta": 0.0055,
+   "mde": 0.0075,
    "measure": "killed by T10",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.007 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.007 this run can resolve",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
@@ -1149,22 +1136,22 @@
   {
    "better_is": "lower",
    "branch": 0.1098,
-   "champion": 0.0951,
-   "delta": 0.0147,
+   "champion": 0.1055,
+   "delta": 0.0043,
    "mde": 0.0124,
    "measure": "stall, 2 in a row",
-   "reads_as": "10 games in 100 -> 11 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.012 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
   },
   {
    "better_is": "lower",
    "branch": 0.4048,
-   "champion": 0.3985,
-   "delta": 0.0063,
+   "champion": 0.3989,
+   "delta": 0.0059,
    "mde": 0.0194,
    "measure": "missed drop by T5",
    "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.019 this run can resolve",
@@ -1191,11 +1178,11 @@
   {
    "better_is": "higher",
    "branch": 1.1441,
-   "champion": 1.1409,
-   "delta": 0.0032,
+   "champion": 1.1178,
+   "delta": 0.0263,
    "mde": 0.0749,
    "measure": "extra cards by T8",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.075 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.026 is smaller than the 0.075 this run can resolve",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
@@ -1205,14 +1192,14 @@
   {
    "better_is": "higher",
    "branch": 0.289,
-   "champion": 0.3102,
-   "delta": -0.0212,
-   "mde": 0.0196,
+   "champion": 0.2883,
+   "delta": 0.0007,
+   "mde": 0.0194,
    "measure": "interaction affordable @T6",
-   "reads_as": "31 games in 100 -> 29 in 100, a swing of 2 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.019 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },

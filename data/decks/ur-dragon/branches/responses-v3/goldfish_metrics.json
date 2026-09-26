@@ -74,7 +74,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "abda85d82c0c",
+    "model_version": "a920de031631",
     "restricted_mana_counted_as_free": [
       "Delighted Halfling (1)"
     ],
@@ -89,50 +89,50 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.952,
+        "10": 0.951,
         "2": 0.0,
         "3": 0.0,
         "4": 0.002,
-        "5": 0.051,
-        "6": 0.269,
-        "7": 0.582,
-        "8": 0.793,
-        "9": 0.901
+        "5": 0.048,
+        "6": 0.262,
+        "7": 0.571,
+        "8": 0.787,
+        "9": 0.897
       },
       "kill_turn_histogram": {
-        "10": 515,
-        "4": 20,
-        "5": 488,
-        "6": 2183,
-        "7": 3129,
-        "8": 2107,
-        "9": 1081
+        "10": 540,
+        "4": 19,
+        "5": 464,
+        "6": 2132,
+        "7": 3090,
+        "8": 2164,
+        "9": 1103
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 30.086,
+        "10": 30.003,
         "2": 0.217,
-        "3": 1.371,
-        "4": 4.627,
-        "5": 9.178,
-        "6": 14.213,
-        "7": 18.95,
-        "8": 23.137,
-        "9": 26.834
+        "3": 1.361,
+        "4": 4.567,
+        "5": 9.021,
+        "6": 14.04,
+        "7": 18.781,
+        "8": 23.006,
+        "9": 26.728
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 66.375,
+        "10": 66.017,
         "2": 0.013,
-        "3": 0.627,
-        "4": 3.013,
-        "5": 9.175,
-        "6": 18.318,
-        "7": 29.735,
-        "8": 41.419,
-        "9": 53.97
+        "3": 0.626,
+        "4": 2.97,
+        "5": 8.979,
+        "6": 17.977,
+        "7": 29.315,
+        "8": 40.985,
+        "9": 53.519
       },
-      "mean_kill_turn": 7.272,
+      "mean_kill_turn": 7.302,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -146,47 +146,47 @@
         "9": 0.0
       },
       "median_kill_turn": 7,
-      "no_kill_by_max_turn_rate": 0.048
+      "no_kill_by_max_turn_rate": 0.049
     },
     "commander": {
       "cast_by_turn_6_rate": 0.329,
       "cast_turn_histogram": {
-        "10": 782,
+        "10": 798,
         "3": 117,
         "4": 816,
-        "5": 969,
-        "6": 1391,
-        "7": 1367,
-        "8": 1266,
-        "9": 1032,
-        "not_by_max_turn": 2260
+        "5": 959,
+        "6": 1395,
+        "7": 1352,
+        "8": 1273,
+        "9": 1023,
+        "not_by_max_turn": 2267
       },
-      "mean_cast_turn": 6.926,
+      "mean_cast_turn": 6.933,
       "median_cast_turn": 7
     },
     "interaction_castable_by_turn": {
       "1": 0.115,
-      "10": 0.81,
+      "10": 0.785,
       "2": 0.241,
-      "3": 0.265,
-      "4": 0.315,
-      "5": 0.415,
-      "6": 0.511,
-      "7": 0.606,
-      "8": 0.687,
-      "9": 0.75
+      "3": 0.262,
+      "4": 0.304,
+      "5": 0.397,
+      "6": 0.48,
+      "7": 0.577,
+      "8": 0.659,
+      "9": 0.725
     },
     "interaction_in_hand_by_turn": {
       "1": 0.864,
-      "10": 0.927,
+      "10": 0.908,
       "2": 0.875,
-      "3": 0.894,
-      "4": 0.901,
-      "5": 0.894,
-      "6": 0.892,
-      "7": 0.897,
-      "8": 0.904,
-      "9": 0.916
+      "3": 0.893,
+      "4": 0.896,
+      "5": 0.882,
+      "6": 0.875,
+      "7": 0.877,
+      "8": 0.884,
+      "9": 0.896
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
@@ -209,21 +209,21 @@
       "4": 4.882,
       "5": 5.899,
       "6": 6.731,
-      "7": 7.407,
-      "8": 8.027,
-      "9": 8.618
+      "7": 7.406,
+      "8": 8.028,
+      "9": 8.619
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 5.067,
+      "10": 5.053,
       "2": 0.122,
-      "3": 0.428,
-      "4": 1.04,
-      "5": 1.856,
-      "6": 2.65,
-      "7": 3.365,
-      "8": 3.98,
-      "9": 4.541
+      "3": 0.426,
+      "4": 1.026,
+      "5": 1.823,
+      "6": 2.615,
+      "7": 3.334,
+      "8": 3.956,
+      "9": 4.525
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -267,7 +267,7 @@
         "by_turn_6_rate_assisted": 0.877,
         "label": "Ramp or fixing drawn",
         "mean_turn": 2.257,
-        "mean_turn_assisted": 2.144
+        "mean_turn_assisted": 2.143
       },
       {
         "assembled_rate": 0.729,
@@ -348,8 +348,8 @@
         "10": 0.15,
         "2": 0.0,
         "3": 0.002,
-        "4": 0.036,
-        "5": 0.071,
+        "4": 0.035,
+        "5": 0.07,
         "6": 0.097,
         "7": 0.112,
         "8": 0.125,
@@ -357,15 +357,15 @@
       },
       "mean_treasures_in_hoard_by_turn": {
         "1": 0.0,
-        "10": 1.966,
+        "10": 1.95,
         "2": 0.0,
         "3": 0.004,
-        "4": 0.086,
-        "5": 0.25,
-        "6": 0.443,
-        "7": 0.66,
-        "8": 0.989,
-        "9": 1.427
+        "4": 0.085,
+        "5": 0.245,
+        "6": 0.435,
+        "7": 0.645,
+        "8": 0.975,
+        "9": 1.41
       }
     }
   }

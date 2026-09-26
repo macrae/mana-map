@@ -423,6 +423,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # and cutting it measured as a LOSS). Both reset here, every turn.
         spells_cast_this_turn = 0   # STORM reads this: copies = the count BEFORE it
         turn_pump = 0        # applies to EVERY attacker this turn
+        turn_double_strike = False   # a spell granted it; ONE turn
+        turn_power_mult = 1          # a spell doubled power; ONE turn
+        spell_each_opponent = 0      # Chandra's Ignition, resolved at the swing
         flat_pump = 0        # a single-target pump with no copy ability
         enchantments_entered = 0
         # Rooms whose SECOND door opened this turn. Separate from
@@ -1442,7 +1445,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for card in sorted((c for c in hand if not c["is_land"]
                                 and (c["combat"]["spell_pump_single"]
                                      or c["combat"]["spell_pump_team"]
-                                     or c["combat"]["spell_counters"])),
+                                     or c["combat"]["spell_counters"]
+                                     or c["combat"]["spell_double_strike"]
+                                     or c["combat"]["spell_power_multiplier"] > 1
+                                     or c["combat"]["spell_power_to_each_opponent"]
+                                     or c["combat"]["spell_extra_combat"])),
                                key=lambda c: -reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:
                     continue
@@ -1476,6 +1483,41 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             battlefield[_i] = (_c[0] + _n,) + _c[1:]
                     elif battlefield:
                         battlefield[0] = (battlefield[0][0] + _n,) + battlefield[0][1:]
+                # THE FOUR THAT ACTUALLY KILL. Each is ONE TURN and each is
+                # multiplied by the copy ability — which for double strike and
+                # power doubling means the whole BOARD, not one creature.
+                _cbt = card["combat"]
+                _copied = (commander_copy and commander_turn is not None
+                           and card["copy_fodder"] and len(battlefield) > 1)
+                if _cbt["spell_double_strike"] and (_copied or battlefield):
+                    # Board-wide only when copied; on one creature it is already
+                    # inside that creature's own `mult`, which this model applies
+                    # per-attacker — so the uncopied case is deliberately not
+                    # credited rather than credited to everybody.
+                    if _copied:
+                        turn_double_strike = True
+                if _cbt["spell_power_multiplier"] > 1 and _copied:
+                    turn_power_mult = max(turn_power_mult,
+                                          _cbt["spell_power_multiplier"])
+                if _cbt["spell_power_to_each_opponent"]:
+                    # Every creature deals its own power to each opponent. This
+                    # model tracks ONE seat, so one seat's worth is the sum of the
+                    # board's power — once if uncopied, once per creature if not.
+                    _base = sum(_c[0] + team_anthem for _c in battlefield)
+                    spell_each_opponent += _base if _copied else (
+                        battlefield[0][0] + team_anthem if battlefield else 0)
+                if _cbt["spell_extra_combat"]:
+                    # NOT MULTIPLIED BY THE COPY COUNT, and the first version was.
+                    # This model has NO TAPPED STATE: attackers are chosen by
+                    # `haste or arrived < turn`, so every combat phase swings the
+                    # FULL board. Seize the Day untaps ONE creature per copy, so
+                    # eight copies are eight extra combats of one attacker each —
+                    # crediting eight full-board swings read 74.01 damage @10
+                    # against a baseline of 21.36, a 3.5x that is the model's
+                    # missing untap rule and not the card. One extra combat is the
+                    # same generous-but-bounded convention `extra_combat_free`
+                    # already uses for Aggravated Assault.
+                    extra_combat_free += _cbt["spell_extra_combat"]
                 if team:
                     turn_pump += team
                 elif single:
@@ -2138,7 +2180,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             or (g_ not in ("all", "nontoken", "flying") and g_ in tl_)):
                         return True
                 return False
-            attackers = [((p + team_anthem + turn_pump) * mult, pz)
+            attackers = [(((p + team_anthem + turn_pump) * turn_power_mult)
+                          * (mult if mult > 1 else (2 if turn_double_strike else 1)), pz)
                          for (p, arrived, haste, mult, _tok, pz, *_), tl_, fl_
                          in zip(battlefield, creature_types, creature_flying)
                          if haste or arrived < turn
@@ -2152,6 +2195,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # An uncopied single-target pump landed on ONE attacker.
             if flat_pump and any(not pz[0] for _d, pz in attackers):
                 swing += flat_pump
+            # Chandra's Ignition is NOT combat damage — it is dealt on resolution,
+            # so it does not need an attacker and is not doubled by double strike.
+            if spell_each_opponent:
+                swing += spell_each_opponent
+                spell_each_opponent = 0
             if counter_power and attackers and commander_turn is not None and turn > commander_turn:
                 swing += counter_power
             swing_poison = (sum(d for d, pz in attackers if pz[0])

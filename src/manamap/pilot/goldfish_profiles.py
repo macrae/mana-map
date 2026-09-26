@@ -2503,6 +2503,53 @@ _SPELL_COUNTERS_RE = re.compile(
     r"put (a|one|two|three) \+1/\+1 counters? on (?:up to one )?target creature", re.I)
 
 
+#: THE FOUR EFFECTS THAT ACTUALLY KILL SOMEBODY, and every one of them read as
+#: NOTHING until this commit. Five channels were built for this deck before these,
+#: and they price draw, Treasure, counters, flat pump and per-cast damage — the
+#: five WEAKEST tiers. Ranked by EDHREC inclusion, the cards those channels could
+#: see sit around rank 4,000; the cards below sit at 480 to 1,635. The instrument
+#: was defining the search, so the search returned what the instrument could see.
+#:
+#: Corpus sweeps 2026-09-25 over all 7,754 instants and sorceries:
+#:   double strike granted to one creature      14   (9 mono-red)
+#:   power DOUBLED on one creature               7   (2)
+#:   one creature deals its power to EACH        4   (2)
+#:   an additional combat phase                 11   (6)
+#:
+#: WHY THEY MATTER MORE THAN A PUMP. Copied across eight creatures: double strike
+#: doubles the whole board's combat damage; doubling beats +3/+3 the moment average
+#: power exceeds 3; Chandra's Ignition has every creature deal its power to every
+#: opponent at once; and an extra combat multiplies all of it again.
+_SPELL_DOUBLE_STRIKE_RE = re.compile(
+    r"target creature (?:you control )?gains? (?:trample and )?double strike", re.I)
+_SPELL_POWER_DOUBLE_RE = re.compile(
+    r"double (?:target creature's|the power of target creature)", re.I)
+_SPELL_POWER_TO_EACH_RE = re.compile(
+    r"target creature you control deals damage equal to its power to each", re.I)
+_SPELL_EXTRA_COMBAT_RE = re.compile(r"there is an additional combat phase", re.I)
+
+
+def spell_combat_effects(card):
+    """The four board-wide combat effects a single-target spell can grant.
+
+    All four are ONE TURN and all four are multiplied by a copy ability, which is
+    the whole reason they are worth reading on this deck.
+    """
+    type_line = str(card.get("type_line", "") or "")
+    out = {"double_strike": False, "power_multiplier": 1,
+           "power_to_each_opponent": False, "extra_combat": 0}
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return out
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    out["double_strike"] = bool(_SPELL_DOUBLE_STRIKE_RE.search(text))
+    if _SPELL_POWER_DOUBLE_RE.search(text):
+        out["power_multiplier"] = 2
+    out["power_to_each_opponent"] = bool(_SPELL_POWER_TO_EACH_RE.search(text))
+    if _SPELL_EXTRA_COMBAT_RE.search(text):
+        out["extra_combat"] = 1
+    return out
+
+
 def spell_counters(card):
     """How many PERMANENT +1/+1 counters this spell puts on one target creature."""
     type_line = str(card.get("type_line", "") or "")
@@ -2677,6 +2724,10 @@ def combat_profile(card):
         # board; `team` already hits everything and must not be doubled.
         "spell_treasure": 0,
         "spell_counters": 0,
+        "spell_double_strike": False,
+        "spell_power_multiplier": 1,
+        "spell_power_to_each_opponent": False,
+        "spell_extra_combat": 0,
         "spell_pump_single": 0,
         "spell_pump_team": 0,
         "double_strike": False,
@@ -2927,6 +2978,11 @@ def combat_profile(card):
     profile["spell_pump_single"], profile["spell_pump_team"] = spell_pump(card)
     profile["spell_treasure"] = spell_treasure(card)
     profile["spell_counters"] = spell_counters(card)
+    _sce = spell_combat_effects(card)
+    profile["spell_double_strike"] = _sce["double_strike"]
+    profile["spell_power_multiplier"] = _sce["power_multiplier"]
+    profile["spell_power_to_each_opponent"] = _sce["power_to_each_opponent"]
+    profile["spell_extra_combat"] = _sce["extra_combat"]
 
     return profile
 

@@ -22,6 +22,12 @@
    },
    {
     "free": false,
+    "name": "Assault Strobe",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Battle Hymn",
     "state": "in_deck",
     "where": []
@@ -49,17 +55,6 @@
     "name": "Broadside Bombardiers",
     "state": "in_deck",
     "where": []
-   },
-   {
-    "free": false,
-    "name": "Brute Force",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Mystery Booster 2"
-     }
-    ]
    },
    {
     "free": false,
@@ -207,6 +202,12 @@
    },
    {
     "free": false,
+    "name": "Great Train Heist",
+    "state": "in_deck",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Guttersnipe",
     "state": "buy",
     "where": []
@@ -311,12 +312,6 @@
    },
    {
     "free": false,
-    "name": "Monstrous Rage",
-    "state": "buy",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Mountain",
     "state": "in_deck",
     "where": []
@@ -386,6 +381,20 @@
     "name": "Seething Song",
     "state": "in_deck",
     "where": []
+   },
+   {
+    "free": true,
+    "name": "Seize the Day",
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "ingris-infect",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -461,12 +470,6 @@
    },
    {
     "free": false,
-    "name": "Titan's Strength",
-    "state": "buy",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "War Room",
     "state": "in_deck",
     "where": []
@@ -491,17 +494,17 @@
    }
   ],
   "counts": {
-   "box": 1,
-   "buy": 15,
+   "box": 0,
+   "buy": 14,
    "elsewhere": 1,
-   "free": 0,
-   "in_deck": 62
+   "free": 1,
+   "in_deck": 63
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Ancestral Anger",
-    "Brute Force",
+    "Assault Strobe",
     "Champion's Helm",
     "Desperate Ritual",
     "Firebrand Archer",
@@ -511,14 +514,13 @@
     "Lavaspur Boots",
     "Might of the Meek",
     "Mithril Coat",
-    "Monstrous Rage",
     "Pyretic Ritual",
     "Reckless Ransacking",
     "Rile",
-    "Sudden Breakthrough",
-    "Titan's Strength"
+    "Seize the Day",
+    "Sudden Breakthrough"
    ],
-   "add_copies": 17,
+   "add_copies": 16,
    "base_names": 79,
    "base_size": 100,
    "names": 79,
@@ -531,7 +533,6 @@
     "Goblin Lackey",
     "Goblin Matron",
     "Goblin Trashmaster",
-    "Great Train Heist",
     "Grenzo, Havoc Raiser",
     "Idol of Oblivion",
     "Moggcatcher",
@@ -541,17 +542,18 @@
     "Throne of Eldraine",
     "Vandalblast"
    ],
-   "out_copies": 17,
+   "out_copies": 16,
    "quantity": [],
    "size": 100
   },
-  "free": 0,
+  "free": 1,
   "mergeable": false,
   "owned_but_elsewhere": 1,
   "proxy": false,
   "slug": "goblin-storm",
   "unsourced": [
    "Ancestral Anger",
+   "Assault Strobe",
    "Champion's Helm",
    "Desperate Ritual",
    "Firebrand Archer",
@@ -561,12 +563,10 @@
    "Lavaspur Boots",
    "Might of the Meek",
    "Mithril Coat",
-   "Monstrous Rage",
    "Pyretic Ritual",
    "Reckless Ransacking",
    "Rile",
-   "Sudden Breakthrough",
-   "Titan's Strength"
+   "Sudden Breakthrough"
   ]
  },
  "blind_spots": [
@@ -597,20 +597,20 @@
  ],
  "branch": "zada-v1",
  "changes": {
-  "count": 22,
+  "count": 25,
   "diff": {
    "base_names": 79,
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 17,
-    "in_copies": 17,
+    "in": 16,
+    "in_copies": 16,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 17,
-    "out_copies": 17,
-    "spells_in": 17,
-    "spells_out": 17
+    "out": 16,
+    "out_copies": 16,
+    "spells_in": 16,
+    "spells_out": 16
    },
    "in": [
     {
@@ -627,11 +627,11 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Brute Force",
-     "pair": "Ground Rift",
-     "state": "box",
-     "type_line": "Instant",
-     "why": "Ground Rift is fodder that neither draws nor pumps \u2014 'can't block' is the weakest slot in the branch. Brute Force is {R} for +3/+3, and copied across seven bodies that is +21 power."
+     "name": "Assault Strobe",
+     "pair": "Monstrous Rage",
+     "state": "buy",
+     "type_line": "Sorcery",
+     "why": "A Monster Role against DOUBLE STRIKE on the whole board for {R} \u2014 measured +0.62, and it is the cheapest doubler of combat damage in mono-red."
     },
     {
      "cmc": 1,
@@ -667,31 +667,11 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Monstrous Rage",
-     "pair": "Rite of Flame",
-     "state": "buy",
-     "type_line": "Instant",
-     "why": "A ritual for a pump, chosen over cutting a creature because Zada's copy count IS the body count. Monstrous Rage pumps +2/+0 AND leaves a permanent Monster Role (+1/+1 and trample) on the body."
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
      "name": "Rile",
      "pair": "Daring Discovery",
      "state": "buy",
      "type_line": "Sorcery",
      "why": "Five mana. Rile is the line you spotted: 1 damage to each of your own creatures, copied, and Pashalik Mons turns every Goblin death into damage at any target."
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Titan's Strength",
-     "pair": "Seething Anger",
-     "state": "buy",
-     "type_line": "Instant",
-     "why": "Buyback {3} almost never gets paid in a deck spending its mana on cantrips. Titan's Strength is the same {R} for +3/+1 AND scries."
     },
     {
      "cmc": 2,
@@ -782,6 +762,16 @@
      "state": "elsewhere",
      "type_line": "Legendary Artifact \u2014 Equipment",
      "why": "Five-mana draw engine in a deck that wants to spend turn five killing. Mithril Coat has FLASH and auto-attaches to a legend: protection you hold up."
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Seize the Day",
+     "pair": "Titan's Strength",
+     "state": "elsewhere",
+     "type_line": "Sorcery",
+     "why": "+3/+1 and a scry against an ADDITIONAL COMBAT PHASE. Measured +4.05 damage @10. Untaps the creature too, and has flashback."
     }
    ],
    "names": 79,
@@ -794,15 +784,6 @@
      "pair": "Seething Anger",
      "type_line": "Creature \u2014 Goblin",
      "why": "Lackey must connect before it does anything. Seething Anger is {R} fodder: +3/+0 copied across the whole board, with buyback {3} to do it again."
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Great Train Heist",
-     "pair": "Stun",
-     "type_line": "Instant",
-     "why": "Spree modes the model cannot price and not fodder. Stun is fodder that draws."
     },
     {
      "cmc": 1,
@@ -1080,11 +1061,29 @@
     "in": "Sudden Breakthrough",
     "out": "Stun",
     "why": "'Can't block' is the weakest rider in the branch. Sudden Breakthrough is +2/+0, first strike, and a Treasure per copy at the same {1}{R}."
+   },
+   {
+    "at": "2026-09-25",
+    "in": "Great Train Heist",
+    "out": "Brute Force",
+    "why": "Reversing my own pass-1 cut. I removed Great Train Heist as 'Spree modes the model cannot price' \u2014 the right answer to that was to teach the model, not to cut the card. With the extra-combat channel built it measures +4.24 damage @10, the biggest single gain of anything tested, for {1}."
+   },
+   {
+    "at": "2026-09-25",
+    "in": "Seize the Day",
+    "out": "Titan's Strength",
+    "why": "+3/+1 and a scry against an ADDITIONAL COMBAT PHASE. Measured +4.05 damage @10. Untaps the creature too, and has flashback."
+   },
+   {
+    "at": "2026-09-25",
+    "in": "Assault Strobe",
+    "out": "Monstrous Rage",
+    "why": "A Monster Role against DOUBLE STRIKE on the whole board for {R} \u2014 measured +0.62, and it is the cheapest doubler of combat damage in mono-red."
    }
   ],
   "why": "Lean into Zada: the deck is built on copying a single-target spell across the board and runs only FOUR drawing fodder cantrips out of the 16 that exist in mono-red. This pass takes fodder from 4 to 10, protection from 2 to 4 (Zada is a 3-mana 3/3 the whole deck depends on), and adds the two storm cards that actually convert. Slots come from the ramp surplus (15 vs target 10-12) and the 4-5 drop Goblin bodies, not from the token makers."
  },
- "decklist_sha256": "67cb38b587aa3408adf639da94eb8c0b5743efdef3b5895205e25330b7d08cb7",
+ "decklist_sha256": "492fbd8331ce8541bc8a050a2beafca3f9fec2dd3f5c7735407a7621af436457",
  "definitions": {
   "derived": [
    {
@@ -1215,11 +1214,12 @@
     "never_cast": [
      "Faithless Looting",
      "Past in Flames",
+     "Assault Strobe",
      "Goblin Bombardment",
+     "Great Train Heist",
      "Reckless Ransacking",
      "Rile",
-     "Sudden Breakthrough",
-     "Witch's Mark"
+     "Seize the Day"
     ]
    },
    "champion": {
@@ -1384,23 +1384,24 @@
   "why": "Lean into Zada: the deck is built on copying a single-target spell across the board and runs only FOUR drawing fodder cantrips out of the 16 that exist in mono-red. This pass takes fodder from 4 to 10, protection from 2 to 4 (Zada is a 3-mana 3/3 the whole deck depends on), and adds the two storm cards that actually convert. Slots come from the ramp surplus (15 vs target 10-12) and the 4-5 drop Goblin bodies, not from the token makers."
  },
  "objective_grade": {
-  "reading": 3.1529,
+  "reading": 3.2012,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy missed drop by T5 and hand can act by T3 and pay stall, 2 in a row.",
+  "because": "You buy missed drop by T5 and hand can act by T3 and pay stall, 2 in a row and interaction affordable @T6.",
   "bill": {
-   "box": 1,
-   "buy": 15,
+   "box": 0,
+   "buy": 14,
    "elsewhere": 1,
-   "free": 0,
-   "in_deck": 62
+   "free": 1,
+   "in_deck": 63
   },
   "cost": {
-   "buy": 15,
+   "buy": 14,
    "buy_cards": [
     "Ancestral Anger",
+    "Assault Strobe",
     "Champion's Helm",
     "Desperate Ritual",
     "Firebrand Archer",
@@ -1409,21 +1410,26 @@
     "Kessig Flamebreather",
     "Lavaspur Boots",
     "Might of the Meek",
-    "Monstrous Rage",
     "Pyretic Ritual",
     "Reckless Ransacking",
     "Rile",
-    "Sudden Breakthrough",
-    "Titan's Strength"
+    "Sudden Breakthrough"
    ],
    "counts": {
-    "box": 1,
-    "buy": 15,
+    "box": 0,
+    "buy": 14,
     "elsewhere": 1,
-    "free": 0,
-    "in_deck": 62
+    "free": 1,
+    "in_deck": 63
    },
-   "free_to_raid": [],
+   "free_to_raid": [
+    {
+     "decks": [
+      "ingris-infect"
+     ],
+     "name": "Seize the Day"
+    }
+   ],
    "mergeable": false,
    "must_unsleeve": [
     {
@@ -1433,16 +1439,16 @@
      "name": "Mithril Coat"
     }
    ],
-   "owned": 64,
-   "reads_as": "15 to buy; 1 to pull out of a deck that is still together; 64 of 79 already owned",
+   "owned": 65,
+   "reads_as": "14 to buy; 1 to pull out of a deck that is still together; 1 sitting in a retired or broken-down deck, which cost nothing; 65 of 79 already owned",
    "total": 79
   },
   "fell": [
-   "stall, 2 in a row"
+   "stall, 2 in a row",
+   "interaction affordable @T6"
   ],
   "no_call": [
-   "mulliganed",
-   "interaction affordable @T6"
+   "mulliganed"
   ],
   "notes": [
    "Forge, against a real pod: +0.021 win rate, CI [-0.109, +0.090] \u2014 this run cannot separate the two lists."
@@ -1450,7 +1456,7 @@
   "reward": [
    {
     "measure": "missed drop by T5",
-    "reads_as": "45 games in 100 -> 34 in 100, a swing of 10 games per 100",
+    "reads_as": "45 games in 100 -> 35 in 100, a swing of 10 games per 100",
     "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
    },
    {
@@ -1461,15 +1467,21 @@
   ],
   "risk": [
    {
-    "detail": "4 games in 100 -> 5 in 100, a swing of 1 games per 100",
+    "detail": "4 games in 100 -> 6 in 100, a swing of 1 games per 100",
     "kind": "paid",
     "what": "stall, 2 in a row",
     "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
-    "detail": "the largest is interaction affordable @T6 at -0.010 against an MDE of 0.024. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "46 games in 100 -> 43 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "interaction affordable @T6",
+    "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   },
+   {
+    "detail": "the largest is mulliganed at +0.003 against an MDE of 0.016. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "2 row(s) returned no call",
+    "what": "1 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1512,16 +1524,16 @@
   "state": "a trade"
  },
  "slug": "goblin-storm",
- "staged": 22,
+ "staged": 25,
  "table": [
   {
    "better_is": "lower",
-   "branch": 0.052,
+   "branch": 0.0551,
    "champion": 0.0404,
-   "delta": 0.0116,
-   "mde": 0.0088,
+   "delta": 0.0147,
+   "mde": 0.009,
    "measure": "stall, 2 in a row",
-   "reads_as": "4 games in 100 -> 5 in 100, a swing of 1 games per 100",
+   "reads_as": "4 games in 100 -> 6 in 100, a swing of 1 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
@@ -1530,12 +1542,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3429,
+   "branch": 0.3474,
    "champion": 0.4469,
-   "delta": -0.104,
+   "delta": -0.0995,
    "mde": 0.0197,
    "measure": "missed drop by T5",
-   "reads_as": "45 games in 100 -> 34 in 100, a swing of 10 games per 100",
+   "reads_as": "45 games in 100 -> 35 in 100, a swing of 10 games per 100",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
@@ -1544,12 +1556,12 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.2095,
+   "branch": 0.2123,
    "champion": 0.2093,
-   "delta": 0.0002,
-   "mde": 0.0161,
+   "delta": 0.003,
+   "mde": 0.0162,
    "measure": "mulliganed",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.016 this run can resolve",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
@@ -1558,23 +1570,23 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4477,
+   "branch": 0.4269,
    "champion": 0.4573,
-   "delta": -0.0096,
+   "delta": -0.0304,
    "mde": 0.0236,
    "measure": "interaction affordable @T6",
-   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.024 this run can resolve",
+   "reads_as": "46 games in 100 -> 43 in 100, a swing of 3 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },
   {
    "better_is": "higher",
-   "branch": 0.9919,
+   "branch": 0.9897,
    "champion": 0.9826,
-   "delta": 0.0093,
+   "delta": 0.0071,
    "mde": 0.0052,
    "measure": "hand can act by T3",
    "reads_as": "98 games in 100 -> 99 in 100, a swing of 1 games per 100",

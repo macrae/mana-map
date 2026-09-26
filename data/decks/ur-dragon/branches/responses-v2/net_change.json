@@ -1207,13 +1207,13 @@
   "why": "The pilot's pick from prescription 0241fb6a70f1 (2026-09-11): the three responses-v1 swaps plus Mithril Coat and Asceticism, and a basic Forest out for Verdant Catacombs because two of four logged losses are mana and black is 12 sources short. The goldfish cannot see counters or protection, so its objective is a CONTROL on the clock (0.802 today); the captain's log is the instrument that settles this branch."
  },
  "objective_grade": {
-  "reading": 0.7734,
-  "shortfall": 0.0066,
+  "reading": 0.7679,
+  "shortfall": 0.0121,
   "state": "not resolvable",
-  "why": "missed by 0.0066, which is under the 0.0166 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "why": "missed by 0.0121, which is under the 0.0167 this run could detect \u2014 evidence of nothing, not evidence of failure"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0066, which is under the 0.0166 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The miss is smaller than this run can see. missed by 0.0121, which is under the 0.0167 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
    "box": 3,
    "buy": 3,
@@ -1266,34 +1266,29 @@
   "no_call": [
    "hoard @T10",
    "hoard @T6",
+   "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
   "notes": [],
-  "reward": [
-   {
-    "measure": "stall, 2 in a row",
-    "reads_as": "8 games in 100 -> 7 in 100, a swing of 1 games per 100",
-    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
-   }
-  ],
+  "reward": [],
   "risk": [
    {
-    "detail": "67.44 -> 63.86, a change of -3.58 (-5%)",
+    "detail": "67.02 -> 63.69, a change of -3.33 (-5%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "14.87 -> 13.41, a change of -1.47 (-10%)",
+    "detail": "14.68 -> 13.24, a change of -1.44 (-10%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "29 games in 100 -> 26 in 100, a swing of 3 games per 100",
+    "detail": "28 games in 100 -> 25 in 100, a swing of 3 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
@@ -1305,9 +1300,9 @@
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "the largest is mulliganed at -0.014 against an MDE of 0.016. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is stall, 2 in a row at -0.010 against an MDE of 0.011. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "6 row(s) returned no call",
+    "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1353,9 +1348,7 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
-  "rose": [
-   "stall, 2 in a row"
-  ],
+  "rose": [],
   "state": "inconclusive"
  },
  "slug": "ur-dragon",
@@ -1363,12 +1356,12 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 1.979,
-   "champion": 1.952,
+   "branch": 1.965,
+   "champion": 1.938,
    "delta": 0.027,
-   "mde": 0.1367,
+   "mde": 0.1362,
    "measure": "hoard @T10",
-   "reads_as": "no call \u2014 the gap of 0.027 is smaller than the 0.137 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.027 is smaller than the 0.136 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1377,12 +1370,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4378,
-   "champion": 0.4309,
-   "delta": 0.0069,
-   "mde": 0.0419,
+   "branch": 0.4336,
+   "champion": 0.4253,
+   "delta": 0.0083,
+   "mde": 0.0417,
    "measure": "hoard @T6",
-   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.042 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.042 this run can resolve",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
@@ -1391,12 +1384,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 63.8595,
-   "champion": 67.4354,
-   "delta": -3.5759,
-   "mde": 2.5899,
+   "branch": 63.6919,
+   "champion": 67.0207,
+   "delta": -3.3288,
+   "mde": 2.5907,
    "measure": "damage @T10",
-   "reads_as": "67.44 -> 63.86, a change of -3.58 (-5%)",
+   "reads_as": "67.02 -> 63.69, a change of -3.33 (-5%)",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
@@ -1405,12 +1398,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 13.4064,
-   "champion": 14.8731,
-   "delta": -1.4667,
-   "mde": 0.3708,
+   "branch": 13.2415,
+   "champion": 14.6835,
+   "delta": -1.442,
+   "mde": 0.3702,
    "measure": "board power @T6",
-   "reads_as": "14.87 -> 13.41, a change of -1.47 (-10%)",
+   "reads_as": "14.68 -> 13.24, a change of -1.44 (-10%)",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
@@ -1419,12 +1412,12 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2612,
-   "champion": 0.292,
-   "delta": -0.0308,
-   "mde": 0.018,
+   "branch": 0.2538,
+   "champion": 0.283,
+   "delta": -0.0292,
+   "mde": 0.0178,
    "measure": "killed by T6",
-   "reads_as": "29 games in 100 -> 26 in 100, a swing of 3 games per 100",
+   "reads_as": "28 games in 100 -> 25 in 100, a swing of 3 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
@@ -1433,10 +1426,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9428,
-   "champion": 0.9645,
-   "delta": -0.0217,
-   "mde": 0.0092,
+   "branch": 0.9417,
+   "champion": 0.9626,
+   "delta": -0.0209,
+   "mde": 0.0093,
    "measure": "killed by T10",
    "reads_as": "96 games in 100 -> 94 in 100, a swing of 2 games per 100",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1447,15 +1440,15 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0682,
-   "champion": 0.079,
-   "delta": -0.0108,
-   "mde": 0.0107,
+   "branch": 0.0724,
+   "champion": 0.0824,
+   "delta": -0.01,
+   "mde": 0.0109,
    "measure": "stall, 2 in a row",
-   "reads_as": "8 games in 100 -> 7 in 100, a swing of 1 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.011 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
   },
@@ -1489,10 +1482,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.578,
-   "champion": 0.5773,
+   "branch": 0.5587,
+   "champion": 0.558,
    "delta": 0.0007,
-   "mde": 0.0208,
+   "mde": 0.021,
    "measure": "interaction affordable @T6",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.021 this run can resolve",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",

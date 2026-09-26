@@ -43,6 +43,9 @@
             "name": "Ancestral Anger"
           },
           {
+            "name": "Assault Strobe"
+          },
+          {
             "name": "Champion's Helm"
           },
           {
@@ -67,9 +70,6 @@
             "name": "Might of the Meek"
           },
           {
-            "name": "Monstrous Rage"
-          },
-          {
             "name": "Pyretic Ritual"
           },
           {
@@ -80,9 +80,6 @@
           },
           {
             "name": "Sudden Breakthrough"
-          },
-          {
-            "name": "Titan's Strength"
           }
         ],
         "unsleeve": [
@@ -94,31 +91,32 @@
           }
         ],
         "proxy": [],
-        "free": [],
-        "box": [
+        "free": [
           {
-            "name": "Brute Force",
+            "name": "Seize the Day",
             "where": [
-              "Mystery Booster 2"
+              "ingris-infect"
             ]
           }
         ],
-        "blocking": 16,
+        "box": [],
+        "blocking": 15,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 17,
-      "out": 17,
+      "add": 16,
+      "out": 16,
       "counts": {
-        "in_deck": 62,
-        "box": 1,
+        "in_deck": 63,
+        "box": 0,
         "elsewhere": 1,
-        "buy": 15,
-        "free": 0
+        "buy": 14,
+        "free": 1
       },
       "unsourced": [
         "Ancestral Anger",
+        "Assault Strobe",
         "Champion's Helm",
         "Desperate Ritual",
         "Firebrand Archer",
@@ -128,15 +126,13 @@
         "Lavaspur Boots",
         "Might of the Meek",
         "Mithril Coat",
-        "Monstrous Rage",
         "Pyretic Ritual",
         "Reckless Ransacking",
         "Rile",
-        "Sudden Breakthrough",
-        "Titan's Strength"
+        "Sudden Breakthrough"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Ancestors' Aid",
@@ -158,6 +154,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Assault Strobe",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Battle Hymn",
@@ -193,18 +196,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Brute Force",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Castle Embereth",
@@ -375,6 +366,13 @@
           "is_new": false
         },
         {
+          "name": "Great Train Heist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Guttersnipe",
           "state": "buy",
           "where": [],
@@ -495,13 +493,6 @@
           "is_new": false
         },
         {
-          "name": "Monstrous Rage",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Mountain",
           "state": "in_deck",
           "where": [],
@@ -586,6 +577,21 @@
           "is_new": false
         },
         {
+          "name": "Seize the Day",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ingris-infect",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
+        },
+        {
           "name": "Shinka, the Bloodsoaked Keep",
           "state": "in_deck",
           "where": [],
@@ -668,13 +674,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Titan's Strength",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "War Room",
@@ -1215,7 +1214,7 @@
   },
   "experiments": null,
   "next": [
-    "branch `zada-v1` needs 16 card(s) sourced — `manamap pilot deck-branch goblin-storm source zada-v1`",
+    "branch `zada-v1` needs 15 card(s) sourced — `manamap pilot deck-branch goblin-storm source zada-v1`",
     "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×2, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

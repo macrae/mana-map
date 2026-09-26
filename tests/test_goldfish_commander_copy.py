@@ -496,3 +496,128 @@ def test_storm_copies_count_the_spells_cast_BEFORE_it():
     seg = src.split("copies = spells_cast_this_turn", 1)[1][:200]
     assert "_note_cast(card)" in seg, (
         "the spell count must be read before the cast increments it")
+
+
+# ── the four effects that actually kill ──
+#
+# Five channels were built for this deck before these, and they price draw,
+# Treasure, counters, flat pump and per-cast damage — the five WEAKEST tiers.
+# By EDHREC inclusion the cards those channels could see sit around rank 4,000;
+# the cards below sit at 480 to 1,635. The instrument was defining the search.
+
+
+def test_spell_combat_effects_reads_all_four():
+    from manamap.pilot.goldfish_profiles import spell_combat_effects as f
+    ds = f(_spell("Temur Battle Rage", "Target creature gains double strike until "
+                                       "end of turn."))
+    assert ds["double_strike"] and ds["power_multiplier"] == 1
+    dbl = f(_spell("Unleash Fury", "Double the power of target creature.", "Sorcery"))
+    assert dbl["power_multiplier"] == 2 and not dbl["double_strike"]
+    ign = f(_spell("Chandra's Ignition",
+                   "Target creature you control deals damage equal to its power to "
+                   "each other creature and each opponent.", "Sorcery"))
+    assert ign["power_to_each_opponent"]
+    std = f(_spell("Seize the Day", "Untap target creature. After this main phase, "
+                                    "there is an additional combat phase.", "Sorcery"))
+    assert std["extra_combat"] == 1
+    # A permanent granting double strike is a different channel (`mult`).
+    assert not f({"name": "Lord", "type_line": "Creature",
+                  "oracle_text": "Other creatures you control have double strike."
+                  })["double_strike"]
+
+
+def test_an_extra_combat_is_NOT_multiplied_by_the_copy_count():
+    """THE RUNAWAY I SHIPPED AND CAUGHT, asserted so it cannot come back.
+
+    This model has NO TAPPED STATE — attackers are chosen by `haste or arrived <
+    turn`, so every combat phase swings the FULL board. Seize the Day untaps ONE
+    creature per copy, so eight copies are eight extra combats of one attacker
+    each. Crediting eight full-board swings read damage@10 of 74.01 against a
+    21.36 baseline: a 3.5x that was the model's missing untap rule, not the card.
+    """
+    import inspect
+    from manamap.pilot import goldfish_turn
+    src = inspect.getsource(goldfish_turn.simulate_once)
+    # Read the ASSIGNMENT, not the prose: the comment above it mentions
+    # `extra_combat_free` too, and an earlier version of this test matched that.
+    assign = [ln.strip() for ln in src.splitlines()
+              if "extra_combat_free +=" in ln and not ln.strip().startswith("#")]
+    assert assign, "nothing assigns extra_combat_free any more"
+    spell_assign = [a for a in assign if "_cbt" in a]
+    assert spell_assign == ['extra_combat_free += _cbt["spell_extra_combat"]'], (
+        f"the spell extra-combat assignment changed: {spell_assign}. Without a "
+        f"tapped state, multiplying it by the board overstates by roughly the "
+        f"board size — it read 74.01 damage@10 against a 21.36 baseline.")
+
+
+@requires_data
+@requires_deck
+def test_each_of_the_four_combat_channels_actually_fires():
+    """One channel at a time, proven by substituting a card that feeds only it."""
+    import pandas as pd
+    from manamap import config
+    from manamap.pilot import goldfish
+    from manamap.pilot.common import load_deck_cards
+    try:
+        doc = load_deck_cards("goblin-storm", "zada-v1")
+        targets = json.load(open("data/decks/goblin-storm/goldfish_targets.json"))
+        df = pd.read_csv(config.OUTPUT_CSV_PATH, low_memory=False)
+    except Exception:  # pragma: no cover
+        pytest.skip("goblin-storm@zada-v1 or the corpus is absent")
+    tt = dict(targets, model_draw=True, model_combat=True,
+              model_commander_copy=True, model_treasures=True)
+
+    def damage(d):
+        m = goldfish.run("goblin-storm", doc=copy.deepcopy(d), _targets_doc=tt,
+                         iterations=3000, seed=11, quiet=True, _band=False)["metrics"]
+        return m["combat"]["mean_damage_by_turn"]["10"]
+
+    base = damage(doc)
+    # THE ANCHOR MUST BE A CARD THE BRANCH ACTUALLY HOLDS. An earlier version
+    # substituted onto "Brute Force", which pass 6 removed — so every card was
+    # skipped and `checked` stayed 0. `assert checked >= N` is the only reason
+    # that surfaced as a failure instead of a silent pass, which is this repo's
+    # documented rule about loops over possibly-empty collections.
+    #
+    # `Wild Ride` is chosen because it is a {R} flat pump (+3/+0) and the
+    # comparison below is "beats a flat pump". It is resolved from the branch
+    # rather than hardcoded-and-hoped.
+    anchor = "Wild Ride"
+    assert any(c["name"] == anchor for c in doc["cards"]), (
+        f"{anchor} is no longer in the branch — pick a flat-pump anchor that is, "
+        f"or this test silently measures nothing")
+    checked = 0
+    # Each of these must MOVE the figure when it replaces a flat pump. Direction
+    # is asserted per card, not assumed: doubling is WORSE on a board of 1/1s and
+    # the test says so rather than pretending every tier-A card is an upgrade.
+    for name in ("Assault Strobe", "Seize the Day", "Unleash Fury"):
+        row = df[df["name"] == name]
+        if not len(row):
+            continue
+        row = row.iloc[0]
+        d2 = copy.deepcopy(doc)
+        swapped = 0
+        for card in d2["cards"]:
+            if card["name"] == anchor:
+                card["name"] = name
+                card["oracle_text"] = str(row["oracle_text"])
+                card["cmc"] = float(row["cmc"] or 0)
+                card["mana_cost"] = str(row["mana_cost"])
+                swapped += 1
+        if swapped != 1:
+            continue
+        got = damage(d2)
+        # WHAT THIS TEST ASSERTS IS THAT THE CHANNEL FIRES, which is its name.
+        # It does NOT assert a direction, and an earlier version did: it required
+        # double strike to beat a flat pump, which is true against Brute Force
+        # (+3/+3, measured +0.62) and FALSE against Wild Ride (+3/+0 AND haste,
+        # measured -0.51) — haste matters here because a creature attacks the
+        # turn it arrives. Whether a tier-A effect wins depends on which card it
+        # replaces, so that is a per-comparison FINDING and not an invariant.
+        #
+        # Measured 2026-09-25 against Wild Ride as the anchor, damage@10 from a
+        # 27.59 baseline: Seize the Day +4.1, Assault Strobe -0.5,
+        # Unleash Fury -1.1 (doubling loses on a board of 1/1 tokens).
+        assert got != base, f"{name} changed nothing — its channel is not firing"
+        checked += 1
+    assert checked >= 3, f"only {checked} channels exercised"
