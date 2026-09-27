@@ -91,13 +91,15 @@ def is_retired(slug):
 #: nothing that needs a branch — creating one of those would be the tool
 #: inventing a claim rather than recomputing one.
 #:
-#: AND ONLY ON A SLEEVED DECK. A deck that is pinned in paper is one the pilot
-#: plays, and its measurements are built automatically and kept complete — that
-#: is what pinning MEANS. A deck on the bench is malleable: it changes daily,
-#: nobody has said it exists in cardboard, and its stages are triggered by hand
-#: when the pilot wants them. Bootstrapping there would manufacture artifacts
-#: for a list that will be different tomorrow, and would put a freshness gate on
-#: work in progress.
+#: AND ONLY ON A SLEEVED DECK — for CREATION, which is the half this constant
+#: governs. A deck pinned in paper is one the pilot plays, so a missing
+#: measurement is a gap to fill. A deck on the bench is malleable: it changes
+#: daily, nobody has said it exists in cardboard, and MINTING a new artifact
+#: there would be the tool deciding that a list which will be different tomorrow
+#: deserves a tracked figure. That judgement is the pilot's.
+#:
+#: REFRESHING AN ARTIFACT THAT ALREADY EXISTS IS A DIFFERENT QUESTION, and
+#: conflating the two cost three red cases on 2026-09-26. See `targets()`.
 BOOTSTRAP = {"diagnostic.json": "goldfish_metrics.json"}
 
 
@@ -116,24 +118,35 @@ def is_pinned(slug):
 def targets(artifact, slug=None):
     """`(slug, branch)` for every place this artifact is tracked, branches too.
 
-    SLEEVED DECKS ONLY, unless a slug is NAMED. This is the bench's rule and it
-    is structural rather than a convention somebody has to remember:
+    EVERY LIVE DECK IS REFRESHED; ONLY A SLEEVED ONE IS BOOTSTRAPPED. Those are
+    two questions and this function used to answer them with one gate:
 
-        a deck that is SLEEVED is played, so its measurements are kept current
-        automatically — that is what pinning means;
+        REFRESH — the artifact ALREADY EXISTS. It is tracked, committed, and a
+        freshness test already recomputes it and compares byte for byte. Leaving
+        it stale is not restraint, it is a red board nobody asked for. Sleeved or
+        on the bench, if the file is there it gets rebuilt.
 
-        a deck ON THE BENCH is malleable. It changes daily, nobody has claimed
-        it exists in cardboard, and rebuilding its figures on a sweep measures a
-        list that will be different tomorrow;
+        BOOTSTRAP — the artifact is MISSING. Creating one is a judgement that
+        this list deserves a tracked figure, and on a malleable bench deck that
+        judgement is the pilot's. Still sleeved-only, via `BOOTSTRAP`.
 
-        a deck in the ARCHIVE is history. Its artifacts are frozen as published.
+        ARCHIVE — a retired or broken-down deck is history either way. Its
+        artifacts are frozen as published and `is_retired` skips it first.
 
-    Naming a slug is the manual trigger — `regen --slug heliod` does exactly what
-    it says on any deck, sleeved or not. A bare `regen` is the automatic pass and
-    touches only what is in sleeves.
+    WHY THIS CHANGED, 2026-09-26. The old rule read "a bare `regen` touches only
+    what is in sleeves", justified by not wanting "a freshness gate on work in
+    progress". THE GATE WAS ALREADY THERE: `test_pilot_artifact_freshness`
+    recomputes `goldfish_metrics.json`, `mana_analysis.json` and `info.json` for
+    all EIGHT live decks, `emiel-blink` and `meren-recursion` among them, and
+    `test_the_fleet_is_stamped_with_the_model_that_is_running` checks every deck
+    that is not retired. So the split bought none of the protection it described
+    and cost real staleness: a prose edit to `MODEL_ASSUMPTIONS` moved
+    `meta.model_version`, `regen` rebuilt 33 of 36 artifacts, and the suite went
+    red on the two bench decks it had skipped — then red again one stage down on
+    their `info.json`, which is composed from the goldfish. The fix for a stale
+    tracked artifact cannot be a hand-run list in a doc.
 
-    A `BOOTSTRAP` artifact is also returned where it is MISSING but its
-    precondition is present, so the stage creates it rather than skipping it.
+    Naming a slug still scopes to THAT DECK ONLY, which is what `--slug` is for.
     """
     if not config.DECKS_DIR.is_dir():
         return []
@@ -142,13 +155,11 @@ def targets(artifact, slug=None):
     for deck in sorted(config.DECKS_DIR.iterdir()):
         if not deck.is_dir() or is_retired(deck.name):
             continue
-        # NAMED = manual, and it means THIS DECK ONLY. Unnamed = the automatic
-        # sweep, which sees sleeved decks only.
-        if slug is not None:
-            if deck.name != slug:
-                continue
-        elif not is_pinned(deck.name):
+        # NAMED = this deck only. Unnamed = every live deck, because an artifact
+        # that exists is an artifact something already gates.
+        if slug is not None and deck.name != slug:
             continue
+        # CREATION is still the pinned-only half — see BOOTSTRAP's comment.
         bootstrappable = needs and (deck / needs).exists() and is_pinned(deck.name)
         if (deck / artifact).exists() or bootstrappable:
             out.append((deck.name, None))

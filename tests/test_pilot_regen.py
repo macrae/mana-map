@@ -176,10 +176,18 @@ def test_only_a_sleeved_deck_is_built_automatically():
     deck to prove the exclusion against" — an unsatisfiable check reading as a
     broken invariant.
 
-    Dropping the skip makes it both satisfiable and STRONGER: regen must leave a
-    bench deck alone whether or not the artifact is already there, because the
-    thing being asserted is that it does not run stages nobody asked for. The
-    artifact's presence was never the point.
+    Dropping the skip made it satisfiable, and the wording that came with it —
+    "regen must leave a bench deck alone whether or not the artifact is already
+    there" — was SUPERSEDED on 2026-09-26. It is now exactly the opposite where
+    the artifact exists: a tracked file with a freshness test on it is refreshed
+    on every live deck (see
+    `test_the_sweep_refreshes_every_live_deck_that_already_has_the_artifact`).
+
+    What this test still guards is the CREATION half, and it is guarded here by
+    construction: no bench deck holds a `diagnostic.json`, and `bootstrappable`
+    requires `is_pinned`, so neither route can put one there. If a pilot asks for
+    one by hand the deck joins the refresh set, which is correct — the pilot
+    decided the list deserved a tracked figure, and this tool does not.
     """
     from manamap.config import DECKS_DIR
     from manamap.pilot import regen
@@ -212,38 +220,85 @@ def test_a_branch_is_never_bootstrapped():
             f"{slug}@{branch} is planned for an artifact it does not have")
 
 
-def test_the_automatic_sweep_touches_sleeved_decks_only():
-    """THE BENCH'S RULE, made structural instead of remembered.
+def test_the_sweep_refreshes_every_live_deck_that_already_has_the_artifact():
+    """WHATEVER IS GATED MUST BE SWEPT. The rule this replaced said the opposite.
 
-    A SLEEVED deck is played, so its figures are kept current automatically —
-    that is what pinning means. A deck ON THE BENCH is malleable: it changes
-    daily, nobody has claimed it exists in cardboard, and rebuilding its numbers
-    on a sweep measures a list that will be different tomorrow. An ARCHIVED
-    deck's artifacts are frozen as published.
+    Until 2026-09-26 a bare `regen` touched sleeved decks only, on the stated
+    grounds that rebuilding a bench deck's numbers "measures a list that will be
+    different tomorrow" and would put "a freshness gate on work in progress".
 
-    A bare `regen` swept every live deck, so three bench decks were being
-    rebuilt on every pass without anyone asking.
+    THE GATE WAS ALREADY THERE, and that is what settles it. `_slugs()` in
+    `test_pilot_artifact_freshness` recomputes `goldfish_metrics.json`,
+    `mana_analysis.json` and `info.json` for every live deck holding one —
+    `emiel-blink` and `meren-recursion` included — and
+    `test_the_fleet_is_stamped_with_the_model_that_is_running` checks every deck
+    that is not retired. So the exclusion bought none of the protection its
+    docstring described and cost real staleness: a prose edit to
+    `MODEL_ASSUMPTIONS` moved `meta.model_version`, `regen` rebuilt 33 of 36
+    goldfish artifacts, and the suite went red on the two bench decks it had
+    skipped — then red a second time one stage down, on the `info.json` composed
+    from those same goldfish figures.
+
+    A tracked artifact with a freshness test on it cannot have "run it by hand"
+    as its maintenance story.
+
+    THE OTHER HALF IS UNCHANGED and lives in the two tests above: a MISSING
+    artifact is still only created on a sleeved deck. Refresh and bootstrap are
+    different questions, and answering them with one gate is what broke.
+    """
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import regen
+
+    for artifact in ("goldfish_metrics.json", "mana_analysis.json", "info.json"):
+        swept = {s for s, b in regen.targets(artifact) if b is None}
+        assert swept, f"the sweep found nothing at all for {artifact}"
+
+        live_with_artifact, bench_checked = set(), 0
+        for deck in sorted(DECKS_DIR.iterdir()):
+            if not deck.is_dir() or regen.is_retired(deck.name):
+                continue
+            if not (deck / artifact).exists():
+                continue
+            live_with_artifact.add(deck.name)
+            if not regen.is_pinned(deck.name):
+                bench_checked += 1
+                assert deck.name in swept, (
+                    f"{deck.name} is on the bench, already has {artifact}, and "
+                    f"the sweep skipped it — so a model change leaves it stale "
+                    f"and the freshness gate red with no command to fix it")
+
+        assert swept == live_with_artifact, (
+            f"the sweep for {artifact} does not match the set of live decks "
+            f"holding one: swept-only={sorted(swept - live_with_artifact)}, "
+            f"gated-only={sorted(live_with_artifact - swept)}")
+        assert bench_checked >= 1, (
+            f"no BENCH deck holds {artifact}, so this proves nothing — the "
+            f"regression it guards needs one on disk")
+
+
+def test_a_retired_deck_is_still_never_swept_even_holding_the_artifact():
+    """Widening the sweep to every LIVE deck must not widen it to a dead one.
+
+    `is_retired` runs before every other check, and the seventeen artifacts in
+    the fleet stamped at three older model versions are exactly these decks:
+    broken-down and retired lists whose figures are frozen as published.
+    Regenerating one would mean measuring a deck nobody will shuffle again.
     """
     from manamap.config import DECKS_DIR
     from manamap.pilot import regen
 
     swept = {s for s, _b in regen.targets("goldfish_metrics.json")}
-    assert swept, "the automatic sweep found nothing at all"
-    for slug in swept:
-        assert regen.is_pinned(slug), (
-            f"{slug} is not sleeved and the automatic sweep would rebuild it")
-
-    bench = 0
+    checked = 0
     for deck in sorted(DECKS_DIR.iterdir()):
-        if not deck.is_dir() or regen.is_retired(deck.name):
-            continue
-        if regen.is_pinned(deck.name):
+        if not deck.is_dir() or not regen.is_retired(deck.name):
             continue
         if not (deck / "goldfish_metrics.json").exists():
             continue
-        bench += 1
-        assert deck.name not in swept, f"{deck.name} is on the bench and was swept"
-    assert bench >= 1, "no bench deck on disk to prove the exclusion against"
+        checked += 1
+        assert deck.name not in swept, (
+            f"{deck.name} is retired or broken down and the sweep would "
+            f"re-measure a list nobody will shuffle")
+    assert checked >= 1, "no retired deck with the artifact to prove this against"
 
 
 def test_naming_a_deck_is_the_manual_trigger_and_works_on_any_deck():

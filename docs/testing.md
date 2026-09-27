@@ -104,32 +104,35 @@ a model file makes every derived artifact in the fleet stale by construction —
 turns the freshness cases red until `manamap pilot regen` runs. That is the stamp
 working. Regenerate, then re-run; never reach for the cache.
 
-**And `regen` alone will not green it.** Its goldfish stage targets 33 artifacts,
-every one a **sleeved** deck or a branch of one, because that is the bench/sleeved
-split doing its job — a deck nobody has claimed in cardboard is rebuilt when the
-pilot asks. But `test_the_fleet_is_stamped_with_the_model_that_is_running` checks
-every deck that is not **retired**, which is a different set. Measured 2026-09-26:
-eight live decks hold a tracked `goldfish_metrics.json` and **two of them —
-`emiel-blink` and `meren-recursion` — are not regen targets**, so after a model
-change they stay stale and three cases stay red (their two freshness rows, plus
-`test_every_tracked_deck_is_byte_identical_with_the_flag_absent`, which reads the
-same artifacts) until each is run by hand:
+**`regen` alone did not use to green it, and now it does.** This section carried a
+three-command hand-run for two hours on 2026-09-26, and the hand-run was the bug.
+`regen`'s sweep was scoped to **sleeved** decks, while
+`test_the_fleet_is_stamped_with_the_model_that_is_running` checks every deck that is
+not **retired** — a different set. Eight live decks hold a tracked
+`goldfish_metrics.json`; two of them, `emiel-blink` and `meren-recursion`, were not
+targets. So a model change left them stale, and the only thing that said so was a
+freshness failure whose message happened to name the fix.
+
+The exclusion was justified by not wanting "a freshness gate on work in progress".
+**The gate was already there** — `_slugs()` below recomputes all three of those
+artifacts for every live deck holding one — so the split bought nothing and cost
+staleness. `regen.targets()` now separates the two questions: an artifact that
+**already exists** is refreshed on every live deck, and an artifact that is
+**missing** is still only created on a sleeved one (`BOOTSTRAP`), because minting a
+tracked figure for a list that changes daily is the pilot's call. **A tracked
+artifact with a freshness test on it cannot have "run it by hand" as its
+maintenance story.**
+
+So after a model change the whole recipe is:
 
 ```bash
-manamap pilot goldfish emiel-blink            && manamap pilot deck-info emiel-blink --write
-manamap pilot goldfish meren-recursion        && manamap pilot deck-info meren-recursion --write
-manamap pilot goldfish meren-recursion --branch drain-density-v1
+manamap pilot regen --jobs 8 && make manuals
 ```
 
-**Run the downstream half too, or you trade three red cases for two.** `info.json` is
-composed from the goldfish among everything else, so regenerating one stales the other
-and the second run comes back red on `test_info_json_matches_a_fresh_run` instead. That
-dependency order is exactly what `regen` exists to know — which is the argument for
-teaching it these two decks rather than keeping this list.
-
 The seventeen artifacts that stay stale at three older shas are the broken-down and
-retired decks, and the fleet-stamp test skips them on purpose: nothing shuffles those
-lists, so regenerating them would mean measuring a deck nobody will play.
+retired decks, and both the fleet-stamp test and `regen` skip them on purpose:
+nothing shuffles those lists, so regenerating them would mean measuring a deck
+nobody will play.
 
 **This is the only page that states a runtime.** `CLAUDE.md` carried ~22s/~29s
 for weeks — off by more than an order of magnitude — because the figure was

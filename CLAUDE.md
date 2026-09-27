@@ -309,22 +309,18 @@ manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]
                               # one run are never split, only decks are.
                               # A MISSING artifact is CREATED, not skipped -- but only
                               # on a SLEEVED deck (`regen.BOOTSTRAP` + `is_pinned`).
-                              # AFTER A MODEL CHANGE, REGEN IS NECESSARY AND NOT
-                              # SUFFICIENT. Its goldfish stage targets 33 artifacts,
-                              # every one a SLEEVED deck or its branch -- but
-                              # `test_the_fleet_is_stamped_with_the_model_that_is_running`
-                              # checks every deck that is not RETIRED. Measured
-                              # 2026-09-26: 8 live decks hold a tracked
-                              # goldfish_metrics.json and 2 of them (emiel-blink,
-                              # meren-recursion) are not regen targets, so the suite
-                              # goes red until each is run BY HAND:
-                              #   manamap pilot goldfish <slug> [--branch <name>]
-                              #   manamap pilot deck-info <slug> --write   <- AND THIS
-                              # info.json is COMPOSED from the goldfish, so running only
-                              # the first line trades three red cases for two. That
-                              # dependency order is the thing regen exists to know.
-                              # That is the bench/sleeved split working as designed on
-                              # one side and the gate not knowing about it on the other.
+                              # REFRESH IS EVERY LIVE DECK; BOOTSTRAP IS SLEEVED ONLY.
+                              # Two questions, and one gate used to answer both: the
+                              # sweep was sleeved-only while the freshness tests check
+                              # every deck that is not RETIRED, so a model change left
+                              # emiel-blink and meren-recursion stale and the board red
+                              # (2026-09-26). An artifact that EXISTS is tracked and
+                              # already gated, so it is rebuilt wherever it lives; an
+                              # artifact that is MISSING is still only created on a
+                              # SLEEVED deck, because minting a tracked figure for a
+                              # list that changes daily is the pilot's call.
+                              # `manamap pilot regen --jobs 8 && make manuals` is now
+                              # the WHOLE recipe after a model change.
 manamap pilot deck-info <slug> --write                  # write info.json for the deck page
 manamap pilot build-poh <slug> && manamap pilot build-index    # the HANDBOOK + the manifest
 # agents (Claude Code skills): /publish-deck sequences the lifecycle; then
