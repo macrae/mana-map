@@ -1458,6 +1458,26 @@ def _print_changes(doc):
                     print(_wrap(r["why"], indent="          "))
 
 
+def _pod_null(pod):
+    """The table's subject null, or None when it has none.
+
+    ABSENT MEANS ABSENT: a table nothing has been measured against has no null,
+    and a default here would be an invented figure standing exactly where a
+    measured one belongs. Every failure mode — no pod name, no calibration file,
+    an untracked table, a zero rate that would make a ratio meaningless — returns
+    None and the caller prints nothing.
+    """
+    if not pod:
+        return None
+    try:
+        from manamap.sim import pods
+        row = (pods.calibration(pod) or {}).get("subject_null") or {}
+        rate = row.get("rate")
+    except Exception:
+        return None
+    return rate if isinstance(rate, (int, float)) and rate > 0 else None
+
+
 def _print_real_table(doc):
     """The Forge section, apart from `_print` for the same reason as
     `_print_changes`: a test can then state the one shape that matters —
@@ -1493,6 +1513,28 @@ def _print_real_table(doc):
                 for k, v in other.items()))
         print(f"    delta {f['delta']:+.3f}  CI [{f['ci95'][0]:+.3f}, "
               f"{f['ci95'][1]:+.3f}]  MDE {f['mde']}")
+        # AN MDE MEANS NOTHING WITHOUT THE NULL IT IS SCALED AGAINST, and this
+        # block printed the delta, the interval and the MDE while the null lived
+        # in a different command (`pods <name> --calibration`).
+        #
+        # The cost, first-person, 2026-09-28: copy-burst-v1 reads 0.014 against
+        # standard-v3 and the MDE at ~75 games is 0.115, so the detectable rate is
+        # 0.129. Scaled against the BASELINE that is "a ninefold improvement" and
+        # sounds unreachable, which is how I read it and concluded the run could
+        # not answer its own question. Scaled against the NULL — 0.233, what our
+        # decks actually score in seat 0 here — 0.129 is 55% of par: still a
+        # losing deck, and an ordinary thing for a fixed engine to reach. The run
+        # was well powered and I had argued myself out of it on a ratio.
+        #
+        # So the null is printed here, beside the figure it scales, which is the
+        # same rule as every other number in this report.
+        null = _pod_null(f.get("pod"))
+        if null is not None:
+            print(f"    the table's null is {null:.3f} (what our decks score in "
+                  f"seat 0 at {f.get('pod')}) — champion "
+                  f"{f['champion']['rate'] / null:.0%} of it, branch "
+                  f"{f['branch']['rate'] / null:.0%}, and the MDE is "
+                  f"{f['mde'] / null:.0%} of it")
         if f["mde"] and abs(f["delta"]) < f["mde"]:
             print(_wrap(f"UNDERPOWERED — this run could only resolve a "
                         f"difference of {f['mde']}; it rules out a large "

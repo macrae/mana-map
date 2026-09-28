@@ -1440,3 +1440,48 @@ def test_no_decision_has_a_backfilled_model_version():
             checked += 1
     assert checked >= 9, (
         f"expected at least the 9 known decided branches, inspected {checked}")
+
+
+def test_pod_null_is_absent_not_defaulted():
+    """ABSENT MEANS ABSENT. A table nothing has been measured against has no null,
+    and a default would put an invented figure exactly where a measured one goes —
+    then get divided into every rate beside it.
+    """
+    from manamap.pilot.net_change import _pod_null
+
+    assert _pod_null(None) is None
+    assert _pod_null("") is None
+    assert _pod_null("a-table-that-does-not-exist") is None
+
+
+def test_pod_null_reads_the_measured_calibration():
+    """Drive the production lookup against the real calibration rather than
+    restating 0.233, so a recalibration moves the test with the data.
+    """
+    from manamap.sim import pods
+    from manamap.pilot.net_change import _pod_null
+
+    expected = pods.calibration("standard-v3")["subject_null"]["rate"]
+    assert _pod_null("standard-v3") == expected
+    assert 0 < expected < 1
+
+
+def test_the_forge_block_prints_the_null_beside_the_mde():
+    """AN MDE MEANS NOTHING WITHOUT THE NULL IT IS SCALED AGAINST.
+
+    This block printed delta, interval and MDE while the null lived in a different
+    command, and on 2026-09-28 I read an MDE of 0.115 against a BASELINE of 0.014,
+    called the detectable rate 'a ninefold improvement', and concluded a run could
+    not answer its own question. Against the null of 0.233 that rate is 55% of par
+    — an ordinary thing for a fixed engine to reach, and the run was well powered.
+
+    Asserts the WIRING: that the printer reaches for the null at all. A future edit
+    that drops the line would leave every other test here passing.
+    """
+    import inspect
+
+    from manamap.pilot import net_change
+
+    src = inspect.getsource(net_change._print_real_table)
+    assert "_pod_null(" in src, "the Forge block must look the null up"
+    assert "the table's null" in src, "and print it beside the MDE it scales"
