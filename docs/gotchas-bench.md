@@ -2456,3 +2456,442 @@ A count near zero means the run is not measuring the deck. This is cheaper than
 `engine_casts`, which reports CASTS and said the plan was played 134-160% of
 expected natural draws here — true, and beside the point: every card was cast,
 just never at Zada.
+
+## A BRANCH AND ITS CHAMPION MUST BE MEASURED BY THE SAME SIMULATOR (2026-09-26)
+
+goblin-storm's `zada-v1` had run for a day as "the refactor that did not convert".
+It had tripled the fodder count, added per-cast damage, three body factories and
+the storm rituals, and the report said: two rows better, two worse, one noise, and
+an objective it missed. The pilot remembered a measurement showing +40% damage and
+could not find it in the report.
+
+It was in `393228a7`'s own commit message — *"MEASURED, champion vs branch zada-v1,
+10,000 games, seed 11, **all channels live**: damage @10 15.512 -> 21.735"*. That
+run forced the channels on for both arms. **Only the branch's declaration was
+committed.** `data/decks/goblin-storm/goldfish_targets.json` still declared nothing
+at all, untouched since the goldfish shipped in July, so the deck built on *"whenever
+you cast an instant or sorcery that targets only Zada, copy it for each other
+creature you control"* was measured with Zada's ability, combat and card draw all
+switched off.
+
+**What that does to a report is not a smaller number, it is a different table.**
+`_cell` returns None when a block is absent and the row loop `continue`s, so:
+
+    output block, champion arm   available: false — "this deck opts into neither
+                                 model_treasures nor model_combat, so there is no
+                                 hoard and no clock to read"
+    rows dropped                 7 of 12 — damage @T10, killed by T6, killed by
+                                 T10, board power @T6, hoard @T6, hoard @T10,
+                                 extra cards by T8
+    rows surviving               5, all opening-hand consistency
+
+And the two surviving rows that MOVED were the two the asymmetry flattered:
+
+    missed drop by T5            -0.083 "better"  ->  -0.011 noise (MDE 0.019)
+    interaction affordable @T6   -0.037 "worse"   ->  +0.095 better
+
+The first is a land-finding row and only the branch was allowed to draw extra
+cards. The second charged the branch for mana spent on cantrips the champion was
+not permitted to cast. **One of the two reported gains was an artifact and one of
+the two reported costs was backwards, in the same direction: the asymmetry paid
+the branch on consistency and billed it on tempo.**
+
+Declared identically on both arms — every channel the deck's cards feed, so the
+choice is not a knob — the deck's DARK count went 7 -> 0 and the branch won ten of
+twelve rows and lost none: damage @T10 **16.013 -> 27.726 (+73%)**, hoard @T10
++222%, killed by T6 1 -> 5 per 100, board power @T6 +14%.
+
+**THE RULE, and it is narrower than "one declaration per deck".** `common.deck_file`
+prefers a branch's copy of an authored file over the deck's, and its docstring
+asserted that nobody writes a second `goldfish_targets.json`. Two branches do.
+One of them is legitimate: meren-recursion/drain-density-v1 adds Bastion of
+Remembrance and Cauldron of Essence to four `any_of` groups, because **a target
+names CARDS and the branch has those cards** — that asks the same question of a
+different list, which is the entire point of a branch. What a branch may never
+change is a `model_*` flag. That is the instrument, not the question, and two lists
+measured under two instruments are not an A/B whatever their intervals say.
+`test_a_branch_never_declares_a_model_channel_its_deck_does_not` is the gate, and
+it reproduces this exact state when the channels are stripped back off the deck.
+
+The preflight is one command, and it was available the whole time:
+`model-coverage <slug>` prints the DARK count per channel. It is champion-only,
+which is why a branch-side asymmetry survived it.
+
+## A FORGE RECORD DESCRIBES THE LIST IT PLAYED, NOT THE LIST ON DISK (2026-09-26)
+
+Found in the same session, on the same branch. `net_change.forge` reported 120
+games as zada-v1's rate. Both records carried
+`seats[].decklist_sha256 = 57725742` — the branch's FOURTH commit — against
+`e01b366c` on disk, its seventh. Eight cards had come in and nine gone out
+since, including Hanweir Garrison, the largest single gain the branch claimed
+(+9.91 damage @10). The stamp is written into every record beside the seat and
+**nothing had ever read it.**
+
+Swept across the fleet: **29 of 41 branches, 10,120 games.** Mostly champion
+arms, because a merged branch rewrites the champion's `decklist.txt` and every
+run made before the merge then describes the pre-merge deck.
+
+**IT FLAGS, IT DOES NOT SUPPRESS, and the sweep is what decided that.**
+`decklist_sha256` is over the file's bytes. edgar-vampires' list changed
+`Gifted Aetherborn (AER) 61` to `Gifted Aetherborn` in the same commit as two
+real swaps — so a cosmetic edit trips the gate identically to a card swap, and
+the only remedy for a false positive is a multi-hour Forge batch. A gate that
+silences 10,120 measured games to prevent a misreading destroys more than it
+saves. So the rate stays, `forge.list_mismatch` names the played sha, the game
+count and the sha on disk, and both the CLI and `branch-view.js` print it ABOVE
+the number — underneath, it reads as a footnote to a figure the eye has already
+taken. Runs are still preferred when a current-list run exists; the fallback is
+only for an arm that has nothing else.
+
+**`engine_casts` IS strict, because it makes a claim about particular cards.**
+It named Hanweir Garrison, Legion Warboss, Assault Strobe, Reckless Ransacking
+and Great Train Heist as *"held and never cast"* — the log's own statement that
+the AI drew a card and passed it over, and the strongest reading this report
+offers. **None of the five was in the list those games were played with.** All
+five were added afterwards. "Held and never cast" and "not in the deck" are
+different facts and it could not tell them apart, because it read the newest
+record against the current list. It now reads only current-list records, and
+names the run and sha it read so the claim can be checked against the games.
+
+This is the sibling of *"A RUN RECORD IS JUDGED AGAINST TODAY'S DECLARATION
+(2026-09-21)"* above, which found the same join stale from the declaration side.
+Same defect, second surface: **the record, the declaration and the list are three
+things, and every figure has to name which ones it joined.**
+
+## The pilot loop found six reconstruction defects in one session (2026-09-28)
+
+The pilot asked for an LLM to fly the deck, because Forge's AI cannot fly Zada and
+patching goldfish channels one card at a time does not scale. `docs/simulation.md`
+had already drawn that line — *"play a seat — 500 games is not an agent's job"* —
+and offered the alternative in the same table: **turn a surfaced board into a v2
+scenario and hand it to the resolve loop.** That loop existed and was unused,
+because nothing pointed it at a board worth the spend.
+
+Two boards were lifted from one 100-game run and handed to
+`stack-resolver` ⇄ `rules-checker`. **The scenarios were not the return on the
+exercise. The bugs the checkers found in `bridge.py` were**, and every one of them
+had been silently corrupting every lifted board since the bridge shipped.
+
+### 1. A creature with a characteristic-defining power never reached the board
+
+`_CREATURE` demanded `\d+`, and Forge prints `Lord of Extinction - Creature * / *`
+verbatim. The pattern did not match, `text == name` did not match, and the cast
+**stayed in `pending_casts` forever** — so the creature was absent and the lift
+described a battlefield it was not on.
+
+Stack 008 said seat-2 held "Ripples of Undeath and three tapped lands". The log
+had **Splinterfright** there too. The kill that artifact proved survived only
+because Splinterfright happened to be tapped, an argument the artifact could not
+make because it could not see the creature. ONE untapped blocker turns that kill
+into a survival, so **this gap points one way: it flatters every lethal claim.**
+
+Sweep, one run: 62 `* / *`, 17 `* / *+N`, 28 `* / * (X=N)` — ~107 resolutions over
+six creatures (Boneyard Wurm, Lord of Extinction, Mortivore, Old Stickfingers,
+Souls of the Lost, Splinterfright), **all of them opponents'**. The P/T is now kept
+as the literal `*/*`: the log carries no value, and "a real creature whose size I
+cannot give you" is what a resolver must reason about. A fabricated number would be
+worse than the absence it replaced.
+
+### 2. Every Aura was discarded as an instant
+
+An Aura enters attached and resolves as `Rancor (203) -  Attach to Sythis (12)`,
+which matches `_SPELL` — so the branch meaning *"an instant or sorcery resolved"*
+threw it away. **Every Aura was missing from every lift.**
+
+Found on stack 009: seat-4's Sphere of Safety taxes attackers `{X}` where X counts
+its controller's enchantments, and an Aura the lift had dropped made the real tax
+`{3}` against the `{2}` the artifact reasoned from. Sweep, same run: Rancor 38,
+Whip Silk 26, All That Glitters 25, Overgrowth 24, Ancestral Mask 23, Strength of
+the Harvest 17. Equipment is deliberately unaffected — it enters as a bare name
+when cast, so it is no longer pending when it later attaches.
+
+### 3. A token existed only from the moment it ACTED
+
+`_bind` registered a token the first time it attacked, blocked or dealt damage, so
+a token that was made and left standing was absent — and the artifact said so in an
+annotation, *"tokens that only sat are not listed"*, as though that were a footnote
+rather than the whole board.
+
+**MEASURED over 804 of our precombat mains: the lift listed 187 tokens where 1843
+were alive. It saw 10%.** On a Goblin token deck that is not a gap, it is the deck.
+A conclusion was published from it and was wrong by ~18x:
+
+    other bodies beside the commander     as lifted     with tokens
+    >= 3 others                             17.3%          67.1%
+    >= 6 others                              2.0%          36.5%
+    >= 8 others                              0.0%          24.9%
+
+"The board your line needs happens 2% of the time" became "about a fifth of
+commander-out turns". Tokens now register at CREATION, unbound until one acts, and
+binding an id **consumes** the placeholder rather than adding a second copy.
+
+### 4. The number words stopped at "seven"
+
+`_WORDS` had no `eight`, and Krenko, Mob Boss prints *"creates eight 1/1 red Goblin
+creature tokens"* — a doubler takes it to sixteen or thirty. **The largest boards
+were therefore the ones most wrongly reported.** Sweep: a 1114, two 120, X 39,
+three 17, eight 5, six 3, four 3, eighteen 2, twelve 1, thirty 1, sixteen 1,
+fourteen 1. `X` stays absent on purpose and is reported as unreadable, never
+guessed — and the count group is `\w+` rather than a list of the words it knows,
+because listing them made `create X …` match NOTHING and vanish in silence.
+
+### 5. A token death was charged to a seat on a guess
+
+`owner` is learned only from lines that name a controller outright, so a token that
+never acted never entered it: **705 of 857 token deaths (82%) had no owner.** They
+were being applied to whichever seat happened to hold a matching token — which can
+delete AN OPPONENT'S BLOCKER, the direction that flatters a kill.
+
+Three layers now, most reliable first, following the discipline `parse.py` already
+uses for its name fallback — consulted only where `owner` is silent, and a tie left
+unattributed rather than guessed:
+
+1. `owner` said so. A fact.
+2. Exactly one seat currently HOLDS an unlisted one of that name.
+3. Exactly one seat ever MAKES that token name.
+4. Otherwise removed from NOBODY, with a note that the board may overstate a token.
+
+The layers were first ordered 3-before-2 and that was needlessly conservative: seat
+A makes two that both die, seat B makes one and holds it — both "make" them, so the
+maker layer calls a tie the holder layer can settle. A genuine tie now survives in
+24% of games, and it errs toward overstating a token rather than deleting a blocker.
+
+### 6. The graveyard is battlefield deaths only — NOT fixed, documented
+
+`parse.py` emits zone events only for `Battlefield -> Graveyard` and
+`Battlefield -> Exile`, so **a card milled or discarded into the graveyard never
+becomes an event at all.** On jarad-graveyard, a mill deck, the real graveyard is
+large and the lift's is nearly empty — which taken literally makes Splinterfright
+`0/0` and already dead.
+
+Found by the resolver on stack 010, which flagged it and declined to resolve it.
+Fixing it properly means teaching `parse.py` to emit mill and discard events, which
+feeds the whole analysis layer. Until then the bridge STATES the limit:
+`graveyard_is_a_floor: true` with a reason, plus a board-level note whenever a `*/*`
+creature is present saying its size is unknown and cannot be computed from the
+artifact. On 010 the answer does not depend on it, which is why the proof holds.
+
+### The fleet audit, and the one artifact that matters
+
+Six lifted scenarios exist. goblin-storm/008 and 009 are superseded by 010 and 011,
+which were lifted after the fixes. goblin-storm/007 predates them and is a `fail`.
+
+**radagast/008 predates them and is a `pass` — the only lifted scenario in the repo
+with a passing checker verdict. IT IS ALSO ON A DECK THAT IS BROKEN DOWN FOR PARTS
+(since 2026-08-21), so it is out of scope: an archived deck's artifacts stay as
+published and are not re-verified. Scoped to LIVE decks the exposure is zero.** Re-lifting its board from
+the same run (edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8, game 1, turn 33; life
+totals 12/43/16/13 match exactly) gives OUR seat **11 creatures against the 7 it was
+resolved with**, and seat-2 **5 against 2**. Seven creatures missing from a board
+carrying a ✓. It has not been re-resolved and will not be — the deck is apart. The figures are
+kept only to size what the defect would have cost on a live deck.
+
+### What this says about the instrument, not the deck
+
+Every one of the six was found by pointing an adversarial rules-checker at a real
+board and making it argue. None would have been found by a test, because each was a
+pattern that silently matched nothing — and a filter that matches nothing reads
+exactly like a fact about the deck. That is the same shape as the goldfish's
+"a card the model cannot read looks exactly like a card that does not help", one
+layer down, in the reconstruction rather than the model.
+
+## Two goldfish channels, and the sweep that found the cards (2026-09-27)
+
+The pilot asked why Molten Duplication and Heat Shimmer were not in a branch built
+around "lean into Zada". They were in no sweep's shortlist because they were in no
+CHANNEL: `model-coverage` read them as invisible and `candidates` ranked them at
+exactly zero, which is indistinguishable from a card that does not help. **Seven
+passes of candidate sweeps built a deck around a commander whose best card the
+instrument could not see.**
+
+### `spell_token_copy` — a spell that token-copies one target creature
+
+38 instants and sorceries in the corpus; 4 castable on a mono-red identity — Molten
+Duplication `{1}{R}`, Electroduplicate `{2}{R}` (flashback `{2}{R}{R}`), Heat
+Shimmer `{2}{R}`, Kindle the Inner Flame `{3}{R}`. Excluded: activated abilities
+(Kiki-Jiki, Mirrorpool, The Fire Crystal — not cast spells, so no commander-copy
+trigger sees them), graveyard copies (Feldon), and mass copies (Kindred Charge — not
+a single target, so a Zada-style ability never copies it).
+
+Under Zada each copy targets a different creature, so a board of N gets N token
+copies of ITSELF, all with haste. The effect goes through `creature_entered`, the ONE
+DOOR, so Impact Tremors and every arrival payoff fire per token without that site
+knowing they exist. The copies are TEMPORARY and removed after combat, or a board
+doubling would become permanent on every cast.
+
+**`copy_fodder` had to be widened too, and that is the half that was invisible.** It
+required the literal `target creature`, and Molten Duplication reads "target artifact
+or creature you control" — so the single best card for a Zada deck in mono-red was
+structurally excluded from being copied at all. Sweep: 855 -> 872 matches, nothing
+dropped; all 17 gained read card by card, and the three "gain control" hits (Hijack,
+Sibling Rivalry, Systems Override) are kept deliberately because what the model
+credits is the *"untap it, it gains haste"* clause after the no-op control change.
+
+### `death_damage` — a death trigger whose payoff is damage
+
+`death_drain` read only "each opponent loses N life" / "target player loses N life",
+the Blood Artist idiom. A death trigger that DEALS DAMAGE had no field, so on a
+Goblin deck whose whole conversion is bodies dying, **Pashalik Mons and Boggart
+Shenanigans contributed nothing to any figure.**
+
+THREE IDIOM GAPS, none found by guessing — all 45 damage clauses following a death
+trigger were enumerated first, because three attempts at the pattern each found too
+little. `deals` alone misses *"have this enchantment DEAL"*. "each opponent|any
+target" alone misses *"target player or planeswalker"*, which is five cards. And the
+TRIGGER missed two forms: a card that names ITSELF where others say "this creature"
+(Pashalik Mons), and *"is put into a graveyard from the battlefield"* — which is what
+**CR 700.4 says "dies" means**, so a trigger's AGE decided whether the model could
+read it.
+
+Sweep: 81 -> 87 death engines, nothing lost. The first pass read 91 and **four of
+those ten gains were wrong** — Wicked Visitor, Urza's Miter, Ashiok's Reaper and
+Femeref Enchantress trigger on an ENCHANTMENT or ARTIFACT reaching the graveyard, not
+a creature. Reading the longhand admits every permanent type, so a
+`_subject_is_a_creature` guard sits beside the pattern rather than inside it: the
+subject slot holds anything from "nontoken creature" to a bare "Goblin", and a
+lookahead tight enough to reject "enchantment" rejected those too.
+
+`death_damage` stays a SEPARATE FIELD from `death_drain`. Identical to a goldfish with
+one opponent at 40 life; not identical at a table, where life loss ignores damage
+prevention and hits through a Platinum Angel. Folded together they could not be
+unfolded later without re-reading every card.
+
+### The rate is measured, and the measurement is the whole design
+
+`model_deaths` requires a `source`, so goblin-storm's was read off the Forge run that
+had just finished: **own 0.3529 and opponent 0.7894 creature deaths per own turn**,
+from 253 and 566 deaths over 717 own turns across 75 games. The flag refuses to be
+set without that string, which is why it can be trusted at all — an authored death
+rate driving a damage figure is the deleted engine lift.
+
+### What the channels then measured, and the three errors on the way
+
+Measured on zada-v1 + the four cards, 10,000 to 40,000 games per arm:
+
+    one card at a time, damage@8      +0.78  ->  -0.18 as N grew   NOISE
+    one card at a time, damage@10     +2.57 "REAL" -> +0.77        NOISE
+    all four, cuts chosen by the harness   +1.54 damage, kill@T10 -0.041
+    all four, paid with NON-BODY cards     +4.64 damage, kill flat  REAL
+
+Three errors, each mine, each instructive:
+
+1. **Singleton instead of redundancy.** One copy in a 99 fires in 16% of games, so
+   the MEAN buries a burst. Four copies is a different deck. An effect whose value is
+   conditional on assembly must be measured as a package.
+2. **The wrong turn.** `candidates` offers `damage_8` and the line pays at ten,
+   because it needs a wide board to copy and at turn eight there is not one. Aiming
+   the branch at `damage_8` would have failed it for paying off late. `damage_10` is
+   now an OBJECTIVE axis — and only an objective axis: the hygiene gate correctly
+   refused it in `AXES`, where three combat magnitudes already correlate at
+   r = 0.92-0.98.
+3. **The harness chose the cut and it sold the engine.** The default cut is the most
+   expensive non-declared card, which here meant **Krenko, Mob Boss** and
+   **Siege-Gang Commander** — the deck's two best body factories. Buying "copy your
+   whole board" by selling the board measured +1.5 damage for 4 fewer kills per 100.
+   That is the documented Edgar failure in miniature, and the fix was four non-body
+   cuts.
+
+And the model change moved the baseline it was measured against: with `model_deaths`
+live the champion's own damage@10 fell **27.7 -> 21.0**, because the deck now loses
+creatures. The one reading that had cleared its MDE did not survive making the model
+more accurate — it was an artifact of a simulation in which nothing ever died.
+
+### Forge cast the cards 84 times and could not use them
+
+On copy-burst-v1, 100 games at standard-v3: the AI cast Molten Duplication 17 times,
+Heat Shimmer 25, Electroduplicate 27, Kindle the Inner Flame 15 — **84 casts — while
+Zada triggered 39 times in total.** Most of those casts did not target her, so each
+made ONE token instead of N. The run reads 1 win in 73 decided against the champion's
+7 in 94, and it trips both gates (`OUR SEAT WAS HANDLED WORSE THAN THE POD`, and
+`THE AI NEVER CAST PART OF THE ENGINE: Haze of Rage`).
+
+**That is not evidence the cards are bad. It is the documented Zada ceiling, now
+quantified per card.** A deck whose payoff requires targeting your own commander
+cannot be measured by an AI that will not do it, and 84 wasted casts is the number
+that says so.
+
+## The policy layer, and the first rule it killed (2026-09-28)
+
+The pilot's instruction was blunt: Forge cannot fly the deck and patching goldfish
+channels one card at a time does not scale, so **make our own AI**.
+
+The useful observation is that the goldfish ALREADY has one. Its piloting decisions
+were written in Python, one per channel, by whoever added that channel:
+
+    "Cast LAST in the main phase and only with attackers already out"
+    "Most expensive pump first"
+    "AN UNTAPPER IS HELD, NOT CAST ON CURVE"
+
+Every line is from a pilot's manual — hardcoded, generic, and per-channel. Meanwhile
+the Pilot's Operating Handbook carries the pilot's OWN version in prose under
+*normal procedures*, and the two had never been connected: a policy the pilot wrote
+could not move a figure, and a policy the model followed could not be read.
+
+`pilot_policy.py` + a per-deck `pilot_policy.json` is the join. Properties, each
+deliberate:
+
+- **ABSENT MEANS ABSENT.** No policy file, identical figures — VERIFIED across four
+  decks, every figure byte-identical with only the `model_version` stamp moving,
+  which is correct for a source change. Same opt-in contract as every `model_*` flag.
+- **A branch inherits the deck's policy**, through `deck_file`, exactly as it
+  inherits `goldfish_targets.json`. A branch with its own policy is the "two models,
+  not two lists" defect that cost a day on 2026-09-27.
+- **`why` is MANDATORY**, because a piloting rule is a CLAIM about how the deck is
+  flown and one with no reason cannot be argued with.
+- **One verb, one channel, one counter.** The vocabulary grows one PROVEN verb at a
+  time so it cannot outrun the evidence.
+
+### WHY NOT AN AGENT PLAYING THE GAMES — checked, not assumed
+
+Forge's sim mode has **no external-seat hook**: `-a` sets AI profiles and stops
+there (`docs/AI.md`, and the flag list carries nothing else). Nothing on this bench
+can legally advance a game state either — the goldfish is stochastic and
+`validate_stack` adjudicates one frozen board. An LLM deciding 10,000 games is
+neither seeded nor affordable, so its figures leave the ◆ tier entirely. A DECLARED
+policy keeps seeded reproducibility AND makes every rule a measurable A/B; agents
+author and attack rules rather than execute them.
+
+(Forge's card scripts DO expose `AILogic$`, `AIPreference$` and `AITgts$` — 367, 34
+and 16 uses in the first 4,000 files — and `AITgts$` narrows what the AI may target
+while leaving legal targets alone (`apprentice_necromancer.txt`:
+`ValidTgts$ Creature.YouOwn | AITgts$ Card.cmcGE5`). An override on our own copies of
+the pump and copy spells would make Forge target Zada. Declared, that is a real
+lever; undeclared it silently stops measuring Forge. An earlier grep here returned
+ZERO AI hooks and was reported as fact before being rechecked — the tokens are
+there.)
+
+### THE FIRST RULE WAS PROVEN AND STILL WRONG
+
+Stack 011 established, with CR citations and an adversarial pass, that Zada copies
+NOTHING when she is the only creature (707.10d) and that **no single card fixes it**,
+because the trigger resolves before the spell that caused it (603.3 scoped by
+603.3b) — the minimum is two cards, a body then the spell. So a token-copy spell
+into a thin board is two mana for one token, and the obvious policy is to hold it.
+
+MEASURED on copy-burst-v1, 20,000 games per arm, same seed:
+
+    policy          kill@T6    delta            kill@T10   delta
+    no policy        0.0384        —              0.7761       —
+    hold until 1     0.0377   -0.0007 noise       0.7680  -0.0081 noise
+    hold until 3     0.0340   -0.0044 noise       0.7507  -0.0254 REAL
+    hold until 5     0.0286   -0.0098 REAL        0.7434  -0.0327 REAL
+    hold until 7     0.0266   -0.0118 REAL        0.7417  -0.0344 REAL
+    kill@T6 MDE 0.0054 · kill@T10 MDE 0.0117
+
+**Monotonically harmful.** Holding the card costs more tempo than the wasted copy
+costs mana. The rule was withdrawn the same hour it was written, and goblin-storm
+carries no policy file.
+
+**A TRUE RULES FACT DOES NOT IMPLY A GOOD POLICY.** That is the whole reason this
+layer stores a rule as DATA with a `why` and measures it, instead of a channel author
+encoding a plausible heuristic in Python where nobody ever prices it.
+
+### AND THE SWEEP THAT JUDGED IT WAS ITSELF MISREAD FIRST
+
+The sweep printed one MDE — the DAMAGE mean's, **3.1782**, wide because the damage
+distribution is — and used it to label all five arms `noise`. The kill figures are
+RATES with MDEs of 0.0054 and 0.0117, and they were printed BARE. Reading them
+against the damage yardstick said "the policy does nothing"; reading each rate
+against its own said "it costs 2.5 kills per 100 and the interval excludes zero".
+Every rate carries its interval, and a comparison carries the interval on the
+DIFFERENCE — broken here in the very table used to judge new work.

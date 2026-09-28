@@ -1428,3 +1428,95 @@ are the same gap at a different scale.
   stale. No test fails on it. Same shape as the gap `regen.BOOTSTRAP` was
   written for, one rung down — but on two archived decks, so it is worth
   closing for the NEXT deck that lands in this state rather than for these.
+
+## 14. Every lifted board predating 2026-09-28 was reconstructed by buggy code — **NO LIVE DECK IS EXPOSED**
+
+**NOTHING FAILS ON THIS, and after scoping it to live decks there is nothing to
+fix.** Recorded because the reasoning is worth keeping and because the missing gate
+is real.
+
+`bridge.py` was omitting permanents in seven ways; six are fixed
+(`docs/gotchas-bench.md` → *The pilot loop found six reconstruction defects*, plus
+the seventh: permanents that enter without being cast). Every scenario lifted
+before 2026-09-28 was reconstructed by that code.
+
+**Scoped to the fleet's lifecycle, the exposure is ZERO.** Six lifted scenarios
+exist:
+
+| deck | lifecycle | scenario | checker |
+|---|---|---|---|
+| goblin-storm | live | 007 | `fail` — publishes nothing |
+| goblin-storm | live | 008, 009 | superseded by 010, 011 |
+| goblin-storm | live | 010, 011 | `fail`, lifted AFTER the fixes |
+| radagast | **broken-down** | 008 | `pass` — **excluded** |
+
+`build-index` publishes only PASSING stacks, so the only lifted artifact carrying a
+✓ is radagast's — and radagast has been **broken down for parts since 2026-08-21**.
+Its play/measure loop is closed and its artifacts stay as published. **An archived
+deck is out of scope for this and for any re-verification.**
+
+For the record of what the bug WOULD have cost had the deck been live: re-lifting
+radagast/008's board from its own run
+(`edgar-vampires-vs-yawgmoth-swarm-vs-heliod-n8-dfd75e54`, game 1, turn 33,
+identified by matching life totals 12 / 43 / 16 / 13) gives our seat **11 creatures
+against the 7 its ✓ was resolved with**, and seat-2 **5 against 2**. Seven creatures
+missing from a board carrying a verified line. Not being fixed; the deck is apart.
+
+**THE GATE THIS STILL WANTS, and it is the real lesson.** `validate-stack` checks
+the citation contract — every step cited, every rule real, every quote verbatim —
+and passed all seven defective boards. **Nothing checks whether the board a
+scenario describes is the board the game had.** A `sim-scenario` artifact records
+its run, game, turn and step, so comparing it against a fresh lift of the same cut
+is mechanical — the same freshness test every other tracked artifact already has.
+It would have caught all seven defects on the day each was written, and it is the
+one thing that would stop an eighth.
+
+## 15. The graveyard in a lifted board is battlefield deaths only (2026-09-28)
+
+`parse.py` emits zone events for `Battlefield -> Graveyard` and
+`Battlefield -> Exile` and nothing else, so **a card MILLED or DISCARDED into the
+graveyard never becomes an event.** On a graveyard deck the real graveyard is large
+and the lift's is nearly empty.
+
+It is load-bearing, not cosmetic: a characteristic-defining power counts cards
+there. Splinterfright is `*/*` where `*` is the creature cards in its controller's
+graveyard, so the lift's list makes it `0/0` and already dead by state-based
+action. A checker reading stack 010 found this and declined to resolve it; a later
+pass measured the creature at **5/5** from the damage lines, so the log DOES carry
+the value — just not where the bridge looks.
+
+**Documented rather than fixed.** The bridge now sets `graveyard_is_a_floor: true`
+with a reason and adds a board-level note whenever a `*/*` creature is present,
+saying its size is unknown and must not be computed from the artifact. That keeps a
+resolver from a wrong inference but does not give it the right number.
+
+**Who unblocks it:** teach `parse.py` to emit mill and discard zone events. It
+feeds the whole analysis layer, so it needs its own sweep and its own gate — which
+is why it was not done in the same session that found it.
+
+## 16. `test_the_fact_cache_returns_the_same_bytes_and_says_it_cached` flakes under `-n auto` (2026-09-28)
+
+**Intermittent, pre-existing, and the cache is not the thing that is wrong.**
+
+    assert first["cached"] is False and second["cached"] is True
+    E   assert (False is False and False is True)
+
+`FactCache` is keyed on a SIGNATURE OF THE DIRECTORY the answer depended on
+(`sven/cache.py`: "Coarse on purpose … directory signatures are boring and cannot
+lie"), so ANY write inside `data/decks/<slug>/` evicts it. Under `-n auto` another
+worker writes into `data/decks/` between this test's two calls — the suite doing
+that is already recorded, it is what the byte-diff determinism gate caught on CI's
+first green run — the signature moves, and the second call correctly MISSES.
+
+Observed once in a full `make test` on 2026-09-28. In the same session it passed a
+full run an hour earlier, passes in isolation, and passes under `-n auto` when its
+own file is run alone. Nothing in that session touched `sven/`.
+
+**So the cache is right and the test's assumption is wrong**: it assumes a stable
+signature across two calls while sharing a mutable tree with other workers.
+
+**Who unblocks it:** either isolate the test (point `SVEN_CACHE_DIR` and the deck
+root at a tmp copy, so no other worker can move the signature) or assert the
+CONTRACT rather than the outcome — same bytes both times, and `cached` true only
+when the signature did not move. Do NOT relax it to `cached in (True, False)`;
+that deletes the only thing it checks.
