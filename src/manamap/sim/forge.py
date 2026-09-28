@@ -44,6 +44,7 @@ tokens, blocks and life is S2, and reads the same logs.
 
 import hashlib
 import json
+import pathlib
 import os
 import re
 import subprocess
@@ -556,6 +557,44 @@ def split_games(games, jobs):
     return [base + (1 if i < extra else 0) for i in range(jobs)]
 
 
+def card_overrides():
+    """What card scripts this install has been given, as a fingerprint.
+
+    A CARD-SCRIPT OVERRIDE CHANGES WHAT A RUN MEASURES. Forge's AI aims a
+    single-target spell with a generic heuristic, and `AITgts$` narrows what the AI
+    may choose while leaving `ValidTgts$` — what is LEGAL — untouched. On a deck
+    whose engine is "target your own commander" that one clause is the difference
+    between the deck and a pile: measured over 100 games on copy-burst-v1, the AI
+    cast the four token-copy spells 84 times while Zada's ability triggered 39
+    times in total.
+
+    So the override is allowed and is DECLARED. Without this fingerprint a run made
+    with `data/forge_overrides/` loaded would be byte-indistinguishable from one
+    made without it, and the two are not comparable — the same defect as a Forge
+    record that does not say which decklist it played, found and fixed on
+    2026-09-28 one layer up.
+
+    Returns `None` when the directory is absent, so every existing record and every
+    plain run is unchanged.
+    """
+    root = pathlib.Path("data/forge_overrides/cards")
+    if not root.is_dir():
+        return None
+    files = sorted(p for p in root.rglob("*.txt"))
+    if not files:
+        return None
+    h = hashlib.sha256()
+    for f in files:
+        h.update(f.relative_to(root).as_posix().encode())
+        h.update(f.read_bytes())
+    return {"sha": h.hexdigest()[:12], "n": len(files),
+            "cards": sorted(f.stem for f in files),
+            "why": ("AITgts$ narrows what the AI may TARGET; ValidTgts$ is "
+                    "untouched, so nothing legal changed. A rate from this run is "
+                    "Forge's AI flying the deck without misaiming the spells Zada "
+                    "copies — it is NOT comparable with a run made without these.")}
+
+
 def command(seat_names, games, clock, jar=None, seed=None, profiles=None):
     """The exact argv one JVM runs. A pure function so a test can read it.
 
@@ -930,6 +969,9 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         "games_requested": int(games), "games_completed": len(outcomes),
         "jobs": len(cmds), "games_per_job": parts, "seed_base": seed_base, "seeds": seeds,
         "profiles": profiles,
+        # THE INSTRUMENT INCLUDES ITS OVERRIDES. Absent -> None, so every record
+        # made before this exists is unchanged.
+        "card_overrides": card_overrides(),
         "clock_seconds": clock,
         "wall_seconds": wall, "nonzero_exit_jobs": sum(1 for _, rc in results if rc),
         # THE DENOMINATOR IS DECIDED GAMES, and `truncated` is beside it so the

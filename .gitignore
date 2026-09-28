@@ -48,6 +48,12 @@ __pycache__/
 # clone has a worked example; override with MANAMAP_COLLECTION_DIR to use yours
 # rather than inheriting someone else's boxes.
 !data/collection/
+# Forge card-script overrides: the AI-targeting hints `simulate` patches into the
+# engine's cardsfolder. An INPUT to every run made under them, and `forge.card_overrides()`
+# stamps their sha into the run record — so if they are not tracked, that sha names bytes
+# nobody can recover and the record cannot be reproduced. `data/*` caught them, which is
+# how the first cut of this shipped a fingerprint pointing at nothing.
+!data/forge_overrides/
 # The similarity golden set is hand-authored, not generated — losing it means losing
 # the only measurement that can tell a good embedding from a collapsed one.
 !data/eval/
