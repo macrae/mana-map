@@ -108,14 +108,63 @@ def test_cast_permanents_enter_on_resolve_leave_by_id_and_morph_unmorphs(game):
     assert "Cruel Celebrant" not in {p["name"] for p in seats["Ai(2)-edgar-vampires"]["perms"].values()}
 
 
-def test_a_token_exists_from_its_first_use_and_the_commander_exit_reads_as_command(game):
+def test_a_token_exists_from_its_CREATION_and_the_commander_exit_reads_as_command(game):
+    """THIS TEST ASSERTED THE BUG. It read "a token exists from its first USE" and
+    required `tokens == {}` on turn 14 because the Vampire Token "has not acted
+    yet" — while two of them had been on the battlefield since turn 5.
+
+    MEASURED across one 100-game run, 804 of our precombat mains: the lift listed
+    187 tokens where 1843 were alive. It saw 10%. On a token deck the board it
+    described was not a simplification, it was a different board — ">= 6 other
+    bodies beside the commander" read 2.0% of turns where the true figure is
+    36.5%, and a conclusion was drawn from the wrong one.
+
+    The contract now: a token exists when it is CREATED, unbound until it acts,
+    and binding an id must CONSUME the placeholder rather than add a second copy.
+    """
     seats, _, _ = _state(game, 14, "declare blockers")
-    assert seats["Ai(2)-edgar-vampires"]["tokens"] == {}, "the Vampire Token has not acted yet"
+    toks = seats["Ai(2)-edgar-vampires"]["tokens"]
+    assert len(toks) == 2 and {t["name"] for t in toks.values()} == {"Vampire Token"}, \
+        f"two Vampire Tokens were made by turn 14 and must be on the board: {toks}"
+    assert all(t["id"] is None for t in toks.values()), \
+        "neither has acted yet, so neither has an id"
+    # Turns 5 AND 7 — two separate eminence triggers, not one resolution making
+    # two. I asserted both on turn 5 and the fixture corrected me.
+    assert {t["first_seen_turn"] for t in toks.values()} == {5, 7}, \
+        "the turn recorded must be when each was created, not when it acted"
+
+    # It blocks on turn 14, which gives ONE of them its id — and the count must
+    # not move. A second entry here is the double-count this consumes.
     seats, notes, _ = _state(game, 15, "precombat main")
-    assert "205" in seats["Ai(2)-edgar-vampires"]["tokens"], "it blocked on turn 14"
+    after = seats["Ai(2)-edgar-vampires"]["tokens"]
+    assert "205" in after, "it blocked on turn 14 and should now be bound by id"
+    assert len(after) == 2, (
+        f"binding an id added a token instead of consuming the placeholder: {after}")
+    assert sum(1 for t in after.values() if t["id"] is None) == 1, \
+        "exactly one of the two should still be unbound"
+
     seats, _, _ = _state(game, 14, "declare blockers")
     assert seats["Ai(1)-radagast"]["commander_zone"] == "battlefield" and \
         seats["Ai(1)-radagast"]["commander_casts"] == 1
+
+
+def test_a_token_that_never_acted_still_dies(game):
+    """Registering tokens at creation leaks every chump blocker unless an unbound
+    token can also LEAVE. Its zone change carries an id that was never bound, so
+    the by-id removal misses it and one placeholder of the same name must go."""
+    log = HEADER + (
+        "Turn: Turn 1 (Ai(1)-us)\n"
+        "Phase: Ai(1)-us' Main phase, precombat\n"
+        "Resolve Stack: Ai(1)-us creates two 1/1 red Goblin creature tokens\n"
+        "Phase: Ai(1)-us' End step\n"
+        "Turn: Turn 2 (Ai(2)-them)\n"
+        "Phase: Ai(2)-them' Main phase, precombat\n"
+        "Zone Change: Goblin Token (901) was put into Graveyard from Battlefield.\n"
+        "Phase: Ai(2)-them' End step\n")
+    seats, _, _, _, _ = bridge.reconstruct(_one_game(log), 2, "ending", "end", {})
+    toks = seats["Ai(1)-us"]["tokens"]
+    assert len(toks) == 1, (
+        f"a token that died without ever acting is still on the board: {toks}")
 
 
 def test_hand_is_an_estimate_and_a_cut_past_the_end_says_so(game):
@@ -156,3 +205,144 @@ def test_lift_writes_a_v2_scenario_that_needs_only_a_question(tmp_path, monkeypa
     assert validate_stack.validate_preflight(doc)[0] == []
     out2, doc2 = bridge.lift("radagast", "run-x", 1, 14, "declare blockers", to_stack=True)
     assert out2.parent.name == "stacks" and out2.name.startswith("001-sim-g1-t14-") and doc2["id"] == "001"
+
+
+# ── two reconstruction gaps a rules-checker found on a real board (2026-09-28) ──
+#
+# Both were found by the adversarial checker in the `/resolve-stack` loop reading
+# a board this bridge had lifted, and both make a lifted battlefield INCOMPLETE —
+# which on the defender's side silently flatters any lethal claim.
+
+def _one_game(text):
+    return parse.parse_games(text)[0]
+
+
+# THE HEADER IS COPIED FROM THE REAL FIXTURE'S OWN SHAPE, not invented. A
+# hand-written preamble parsed to zero games and the tests died on
+# `parse_games(...)[0]` with an IndexError — which says nothing about the bug
+# under test.
+HEADER = ("Simulation mode\n"
+          "Ai(1)-us vs Ai(2)-them - one game of Commander\n"
+          "Mulligan: Ai(1)-us has kept a hand of 7 cards\n"
+          "Mulligan: Ai(2)-them has kept a hand of 7 cards\n")
+
+
+def test_a_characteristic_defining_power_is_a_creature_not_a_dropped_cast():
+    """`Lord of Extinction - Creature * / *`.
+
+    `_CREATURE` demanded `\\d+`, so the `*` form matched nothing, `text == name`
+    matched nothing either, and the cast stayed in `pending_casts` FOREVER — the
+    creature never reached the board and the lift described a battlefield it was
+    not on. Stack 008 claimed seat-2 held "Ripples of Undeath and three tapped
+    lands"; the log had Splinterfright there too, and the kill the artifact
+    proved survived only because it happened to be tapped. ONE untapped blocker
+    turns that kill into a survival.
+
+    SWEEP, one 100-game run: ~107 such resolutions over six distinct creatures,
+    every one an opponent's. The P/T is kept as the literal `*/*` because the log
+    does not carry the value — "a real creature whose size I cannot give you" is
+    what a resolver must reason about, and a fabricated number would be worse
+    than the absence it replaces.
+    """
+    log = HEADER + (
+        "Turn: Turn 1 (Ai(1)-us)\n"
+        "Phase: Ai(1)-us' Untap step\n"
+        "Phase: Ai(1)-us' Main phase, precombat\n"
+        "Add To Stack: Ai(2)-them cast Lord of Extinction\n"
+        "Resolve Stack: Lord of Extinction - Creature * / *\n"
+        "Add To Stack: Ai(2)-them cast Grizzly Bears\n"
+        "Resolve Stack: Grizzly Bears - Creature 2 / 2\n"
+        "Phase: Ai(1)-us' End step\n")
+    seats, _, _, _, _ = bridge.reconstruct(_one_game(log), 1, "ending", "end", {})
+    them = seats["Ai(2)-them"]["perms"]
+    got = {p["name"]: p["pt"] for p in them.values()}
+    assert got == {"Lord of Extinction": "*/*", "Grizzly Bears": "2/2"}, (
+        f"a characteristic-defining P/T was dropped from the board: {got}")
+    assert not seats["Ai(2)-them"]["pending_casts"], (
+        "the cast is still pending, which is the mechanism: it never resolves "
+        "into a permanent and is invisible to every consumer")
+
+
+def test_an_aura_enters_the_battlefield_instead_of_reading_as_a_spell():
+    """`Rancor (203) -  Attach to Sythis (12)` matches `_SPELL`, so the branch
+    meaning "an instant or sorcery resolved" DISCARDED it, and every Aura was
+    absent from every lift.
+
+    Found on stack 009 the same day: seat-4's Sphere of Safety taxes attackers
+    {X} where X counts its controller's enchantments, and an Aura the lift had
+    dropped made the real tax {3} against the {2} the artifact reasoned from.
+
+    Equipment is deliberately unaffected — it enters as a bare name when cast and
+    its later equip ability is not a cast, so it is no longer pending when it
+    attaches. The test pins both halves.
+    """
+    log = HEADER + (
+        "Turn: Turn 1 (Ai(1)-us)\n"
+        "Phase: Ai(1)-us' Untap step\n"
+        "Phase: Ai(1)-us' Main phase, precombat\n"
+        "Add To Stack: Ai(2)-them cast Rancor targeting [Bear (12)]\n"
+        "Resolve Stack: Rancor (203) -  Attach to Bear (12)\n"
+        "Add To Stack: Ai(2)-them cast Lightning Bolt targeting [Ai(1)-us]\n"
+        "Resolve Stack: Lightning Bolt (204) - Deals 3 damage to any target\n"
+        "Phase: Ai(1)-us' End step\n")
+    seats, _, _, _, _ = bridge.reconstruct(_one_game(log), 1, "ending", "end", {})
+    them = seats["Ai(2)-them"]["perms"]
+    names = {p["name"] for p in them.values()}
+    assert "Rancor" in names, "the Aura is missing from the battlefield"
+    assert "Lightning Bolt" not in names, (
+        "an instant became a permanent — the Attach check is matching too widely")
+    rancor = next(p for p in them.values() if p["name"] == "Rancor")
+    assert rancor["attached_to"] == "Bear", (
+        "the Aura is on the board but does not say what it is attached to, which "
+        "is the part a rules question needs")
+
+
+def test_an_unattributable_token_death_is_removed_from_NOBODY(game):
+    """WHO OWNED THE TOKEN THAT DIED. `owner` is learned from lines that name a
+    controller outright, so a token that never attacked, blocked or dealt damage
+    never entered it — and its death line carries an id but no seat.
+
+    MEASURED over 86 games: 705 of 857 token deaths (82%) had no `owner` entry.
+    They were being applied to whichever seat happened to hold a matching
+    unlisted token, which can delete an OPPONENT'S blocker — the direction that
+    flatters a kill. The name layer ("only one seat ever makes a Goblin Token")
+    resolves nearly all of them; a genuine tie remains in 24% of games.
+
+    A TIE REMOVES FROM NOBODY and says so, which overstates a token rather than
+    deleting a blocker, and the note tells the resolver which way to read it.
+    This is `parse.py`'s own rule for its name fallback: consulted only where
+    `owner` is silent, and ambiguity left unattributed rather than guessed.
+    """
+    log = HEADER + (
+        "Turn: Turn 1 (Ai(1)-us)\n"
+        "Phase: Ai(1)-us' Main phase, precombat\n"
+        "Resolve Stack: Ai(1)-us creates a 1/1 red Goblin creature token\n"
+        "Phase: Ai(1)-us' End step\n"
+        "Turn: Turn 2 (Ai(2)-them)\n"
+        "Phase: Ai(2)-them' Main phase, precombat\n"
+        "Resolve Stack: Ai(2)-them creates a 1/1 red Goblin creature token\n"
+        # Neither token ever acts, so `owner` never learns either id.
+        "Zone Change: Goblin Token (901) was put into Graveyard from Battlefield.\n"
+        "Phase: Ai(2)-them' End step\n")
+    seats, notes, _, _, _ = bridge.reconstruct(_one_game(log), 2, "ending", "end", {})
+    both = {s: len(seats[s]["tokens"]) for s in seats}
+    assert both == {"Ai(1)-us": 1, "Ai(2)-them": 1}, (
+        f"an unattributable death was charged to a seat on a guess: {both}")
+    assert any("removed from NOBODY" in n for n in notes), (
+        "the board overstates a token and the artifact does not say so")
+
+    # And when only ONE seat makes that token name, the inference IS available
+    # and must be used — otherwise every chump blocker leaks.
+    log_one = HEADER + (
+        "Turn: Turn 1 (Ai(1)-us)\n"
+        "Phase: Ai(1)-us' Main phase, precombat\n"
+        "Resolve Stack: Ai(1)-us creates two 1/1 red Goblin creature tokens\n"
+        "Phase: Ai(1)-us' End step\n"
+        "Turn: Turn 2 (Ai(2)-them)\n"
+        "Phase: Ai(2)-them' Main phase, precombat\n"
+        "Zone Change: Goblin Token (901) was put into Graveyard from Battlefield.\n"
+        "Phase: Ai(2)-them' End step\n")
+    seats, _, _, _, _ = bridge.reconstruct(_one_game(log_one), 2, "ending", "end", {})
+    assert len(seats["Ai(1)-us"]["tokens"]) == 1, (
+        "only one seat makes a Goblin Token, so the death is attributable and "
+        "must be applied")
