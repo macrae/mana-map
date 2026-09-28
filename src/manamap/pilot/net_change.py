@@ -990,7 +990,7 @@ def _death_limit(slug, branch):
 
 def build(slug, branch, iterations=None, seed=None):
     from manamap import console
-    from manamap.pilot import candidates, diagnostic
+    from manamap.pilot import candidates, diagnostic, goldfish
 
     _refuse_a_stale_measurement(slug, branch)
     it = iterations or diagnostic.HARNESS["iterations"]
@@ -1052,7 +1052,23 @@ def build(slug, branch, iterations=None, seed=None):
 
     doc = {
         "slug": slug, "branch": branch,
-        "harness": {"iterations": it, "seed": sd},
+        # A SEED WITHOUT A MODEL VERSION REPRODUCES NOTHING. `harness` recorded
+        # the two reproducibility inputs the goldfish takes — game count and seed
+        # — and left out the third, which is the model those games were played
+        # under. Same seed, different model, different figures: goblin-storm's
+        # damage @T10 read 27.73 and then 21.02 across one commit that touched no
+        # decklist, because the model learned to see creatures dying.
+        #
+        # It matters here rather than in `goldfish_metrics.json` (which has
+        # stamped it since the model_version work) because THIS is the report a
+        # decision is taken on, and `deck_branch.propose` copies `harness` whole
+        # into `accepted_on` — the only record of what the evidence said at the
+        # moment the pilot said yes. Nine branches carry a decision taken before
+        # the token-copy and death-damage channels existed, and `regen` has since
+        # rewritten every figure beside them, so the artifact cannot say the
+        # evidence was replaced underneath the decision. This is what lets it.
+        "harness": {"iterations": it, "seed": sd,
+                    "model_version": goldfish.model_version()},
         "decklist_sha256": (b.get("decklist_sha256")),
         "objective": objective,
         "objective_grade": grade,

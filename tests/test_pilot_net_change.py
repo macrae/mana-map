@@ -1359,3 +1359,84 @@ def test_a_branch_never_declares_a_model_channel_its_deck_does_not():
     assert checked >= 1, (
         "no branch on this checkout carries its own declaration, so this test "
         "proved nothing")
+
+
+def test_harness_stamps_the_model_a_report_was_measured_under():
+    """A SEED WITHOUT A MODEL VERSION REPRODUCES NOTHING.
+
+    `harness` carried `iterations` and `seed` — the goldfish's two reproducibility
+    inputs — and omitted the third. Same seed, different model, different figures:
+    goblin-storm's damage @T10 read 27.73 and then 21.02 across one commit that
+    touched no decklist.
+
+    It is checked HERE rather than only on `goldfish_metrics.json` because
+    `deck_branch.propose` copies `harness` whole into `accepted_on`, which is the
+    only record of what the evidence said when the pilot said yes. Drive the
+    production builder, not a re-derivation of it.
+    """
+    from manamap.pilot import goldfish, net_change
+
+    doc = net_change.build("heliod", "archangel-v1")
+    h = doc["harness"]
+    assert h["model_version"] == goldfish.model_version(), (
+        "harness must stamp the model the figures were measured under")
+    assert h["iterations"] and h["seed"] is not None, (
+        "the existing reproducibility inputs must survive")
+
+
+def test_accepted_on_inherits_the_model_stamp_from_harness():
+    """The stamp is only worth adding if it reaches the decision record.
+
+    `propose` writes `accepted_on.harness = nc["harness"]`, so this asserts the
+    WIRING rather than re-stating the shape: if a future edit builds
+    `accepted_on` field by field instead of copying the block, the stamp would
+    silently stop reaching the one place it exists for and every other test here
+    would still pass.
+    """
+    import inspect
+
+    from manamap.pilot import deck_branch
+
+    src = inspect.getsource(deck_branch.propose)
+    assert '"harness": nc.get("harness")' in src, (
+        "propose must copy the whole harness block into accepted_on, or the "
+        "model_version stamp never reaches the decision record")
+
+
+def test_no_decision_has_a_backfilled_model_version():
+    """ABSENT MEANS ABSENT. The nine decisions taken before the stamp existed
+    cannot know which model they were measured under, and inventing one would be
+    a fabricated measurement — the exact failure the stamp exists to prevent.
+
+    They must read as unknown, never as today's model, which is what they would
+    read as if anybody 'helpfully' backfilled them from the live artifact.
+    """
+    import glob
+    import json
+
+    from manamap.pilot import goldfish
+
+    live = goldfish.model_version()
+    checked = 0
+    for p in sorted(glob.glob("data/decks/*/branches/*/branch.json")):
+        doc = json.load(open(p))
+        for key in ("proposal", "merged"):
+            block = doc.get(key)
+            if not isinstance(block, dict):
+                continue
+            acc = block.get("accepted_on") or {}
+            h = acc.get("harness") or {}
+            if "model_version" not in h:
+                checked += 1
+                continue
+            # A stamp IS allowed — a decision taken from here on carries one.
+            # What is never allowed is a stamp that matches today's model on a
+            # decision dated before the stamp shipped (2026-09-28).
+            if h["model_version"] == live and block.get("at", "") < "2026-09-28":
+                raise AssertionError(
+                    f"{p} :: {key} is dated {block.get('at')} — before the stamp "
+                    f"existed — and carries today's model_version. That is a "
+                    f"backfilled measurement, not a record.")
+            checked += 1
+    assert checked >= 9, (
+        f"expected at least the 9 known decided branches, inspected {checked}")
