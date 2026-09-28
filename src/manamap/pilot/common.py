@@ -722,12 +722,22 @@ def deck_file(slug, name, branch=None):
     """An artifact path, preferring a branch's own copy over the deck's.
 
     READS FALL BACK; WRITES DO NOT. A branch has its own measurements — that is
-    the point — but it does not have its own AUTHORED files: nobody writes a
-    second `goldfish_targets.json` to try a candidate list, and a branch that
-    silently measured against no engine declaration would report a different
-    deck rather than a different list. So a read prefers the branch and falls
-    back to the deck, while every write goes to `deck_dir(slug, branch)` and can
-    never touch the tracked artifact.
+    the point — and a read prefers the branch and falls back to the deck, while
+    every write goes to `deck_dir(slug, branch)` and can never touch the tracked
+    artifact.
+
+    THIS DOCSTRING USED TO SAY "nobody writes a second `goldfish_targets.json`",
+    AND TWO BRANCHES DID. The preference above then measured them against a
+    different declaration than their champion, which is the outcome the sentence
+    claimed could not happen. What a branch's own declaration may legitimately
+    change is WHICH CARDS satisfy a target — meren-recursion/drain-density-v1
+    adds its own new drains to four `any_of` groups, because a target names cards
+    and the branch has those cards. What it may NEVER change is a `model_*`
+    channel: that is the simulator, not the question, and goblin-storm/zada-v1
+    declared three its champion did not for weeks — so `net_change` dropped seven
+    of twelve rows for want of a champion `output` block and the two that
+    survived were the two the asymmetry flattered.
+    `test_a_branch_never_declares_a_model_channel_its_deck_does_not` is the gate.
     """
     if branch is not None:
         candidate = deck_dir(slug, branch) / name

@@ -491,8 +491,12 @@ def changes(slug, branch):
                      "why": row.get("why"), "at": row.get("at")}
             (lands if is_land(entry["in"]) or is_land(entry["out"])
              else spells).append(entry)
+        rows = lands + spells
         return {"spells": spells, "lands": lands,
-                "count": len(lands) + len(spells),
+                "count": len(rows),
+                "counts": {"in": sum(1 for r in rows if r["in"]),
+                           "out": sum(1 for r in rows if r["out"]),
+                           "rows": len(rows)},
                 "staged_count": len(staged), "merged": True,
                 "opened": meta.get("opened"), "why": meta.get("why")}
     net_in = list(d.get("add") or [])
@@ -523,8 +527,16 @@ def changes(slug, branch):
         entry = {"out": name, "in": None,
                  "why": row.get("why"), "at": row.get("at")}
         (lands if is_land(name) else spells).append(entry)
+    # THE HEADER IS NOT THE ROW COUNT. A row need not be a pair, so
+    # `len(rows)` overstates what is coming in and understates nothing — it
+    # read "22 swap(s)" on a branch bringing in 16 cards, six of the rows
+    # being cuts whose partner had been superseded. `in` and `out` are the
+    # figures a spending decision rests on; `rows` and `staged` are how the
+    # list got here, and all four are now printed with their own names.
     return {"spells": spells, "lands": lands,
             "count": len(lands) + len(spells),
+            "counts": {"in": len(net_in), "out": len(net_out),
+                       "rows": len(lands) + len(spells)},
             "staged_count": len(meta.get("staged") or []),
             "opened": meta.get("opened"), "why": meta.get("why")}
 
@@ -662,6 +674,24 @@ def deck_file_or_none(slug, branch):
     return deck_file(slug, "goldfish_targets.json", branch)
 
 
+def _seat_sha(doc, want):
+    """The list THIS run actually played for `want`, or None on a record that
+    predates the stamp.
+
+    `doc["seats"]` is the run's own manifest and carries the sha; `analysis.seats`
+    carries the outcomes and is keyed differently — `goblin-storm-zada-v1` there
+    against `goblin-storm@zada-v1` and `mm-goblin-storm-zada-v1` in the manifest.
+    `want` is the analysis key, so both manifest spellings are normalised to it
+    rather than a caller being asked to know which one a record used.
+    """
+    for seat in (doc.get("seats") or []):
+        names = {(seat.get("forge_name") or "").removeprefix("mm-"),
+                 (seat.get("slug") or "").replace("@", "-")}
+        if want in names - {""}:
+            return seat.get("decklist_sha256")
+    return None
+
+
 def forge(slug, branch):
     """The real table, if it has been played. POOLED WITHIN ONE POD ONLY, over
     DECIDED games only.
@@ -676,7 +706,21 @@ def forge(slug, branch):
     a champion rate from another table is not this branch's control. The pod is
     named in the block so a reader can see which table decided it.
     """
-    def rows_for(pattern, want):
+    def rows_for(pattern, want, live_sha, dropped, strict=True):
+        """A RUN DESCRIBES THE LIST IT PLAYED, NOT THE LIST ON DISK.
+
+        MEASURED, on goblin-storm/zada-v1: both branch records carried
+        `seats[].decklist_sha256 = 57725742` — the branch's fourth commit — while
+        the list on disk was `e01b366c`, its seventh. Eight cards had come in and
+        nine had gone out since, including the largest single gain the branch
+        claimed. The block reported those 120 games as the branch's rate and
+        nothing said otherwise, because nothing read the sha the record puts
+        right there beside the seat.
+
+        A record made before the stamp existed carries None and is KEPT — it is
+        older evidence, not wrong evidence, and dropping it would silently empty
+        the block on every historical run.
+        """
         by_pod = {}
         for path in sorted(glob.glob(pattern)):
             if "logs" in path:
@@ -688,6 +732,13 @@ def forge(slug, branch):
             seat = (a.get("seats") or {}).get(want) or {}
             if seat.get("wins") is None:
                 continue
+            ran = _seat_sha(doc, want)
+            if ran and live_sha and ran != live_sha:
+                dropped.append({"run": doc.get("run_id") or path.split("/")[-1],
+                                "pod": pod, "played": ran[:12],
+                                "games": a.get("games") or 0})
+                if strict:
+                    continue
             row = by_pod.setdefault(pod, {"wins": 0, "decided": 0, "games": 0,
                                           "runs": 0, "by_route": {}})
             row["wins"] += seat["wins"]
@@ -702,9 +753,41 @@ def forge(slug, branch):
                     row["by_route"][k] = row["by_route"].get(k, 0) + 1
         return by_pod
 
-    champ = rows_for(f"data/decks/{slug}/sim/*.json", slug)
-    br = rows_for(f"data/decks/{slug}/branches/{branch}/sim/*.json",
-                  deck_branch_seat(slug, branch))
+    from manamap.pilot.common import decklist_sha256
+    # FLAG, DO NOT SUPPRESS — and the reason is the ONE COSMETIC EDIT in the
+    # sweep. `decklist_sha256` is over the file's bytes, so dropping the set code
+    # from `Gifted Aetherborn (AER) 61` changes it while the deck is identical:
+    # edgar-vampires' list did that in the same commit as two real swaps. A gate
+    # that silences a run on a whitespace change, whose only remedy is a
+    # multi-hour Forge batch, destroys evidence to prevent a misreading — so the
+    # rate stays and the mismatch is stated beside it. `engine_casts` IS strict,
+    # because "held and never cast" names particular cards and is simply false
+    # about a list that did not contain them.
+    def live_sha(b):
+        # No deck directory (a synthetic slug, a deck not yet checked in) means
+        # nothing to compare against, so the gate is simply off for that arm.
+        try:
+            return decklist_sha256(slug, b)
+        except FileNotFoundError:
+            return None
+
+    cham_sha = live_sha(None)
+    br_sha = live_sha(branch)
+    br_seat = deck_branch_seat(slug, branch)
+    cham_glob = f"data/decks/{slug}/sim/*.json"
+    br_glob = f"data/decks/{slug}/branches/{branch}/sim/*.json"
+    superseded = {"champion": [], "branch": []}
+    champ = rows_for(cham_glob, slug, cham_sha, superseded["champion"])
+    br = rows_for(br_glob, br_seat, br_sha, superseded["branch"])
+    # An arm with nothing left after the gate falls back to every run it has,
+    # and the block says so rather than going blank.
+    mismatch = {}
+    if not champ and superseded["champion"]:
+        champ = rows_for(cham_glob, slug, cham_sha, [], strict=False)
+        mismatch["champion"] = superseded["champion"]
+    if not br and superseded["branch"]:
+        br = rows_for(br_glob, br_seat, br_sha, [], strict=False)
+        mismatch["branch"] = superseded["branch"]
     if not (champ and br):
         # A BRANCH CAN BE PUT AT A REAL TABLE, and the seat grammar is how.
         # `simulate` takes no `--branch` FLAG, which is what made this look
@@ -714,6 +797,7 @@ def forge(slug, branch):
         # exactly the path this function reads.
         where = f"{slug}@{branch}" if (branch and champ) else slug
         return {"available": False,
+                "superseded": {k: v for k, v in superseded.items() if v},
                 "why": (f"no Forge run on {'the branch' if champ else 'the deck'}"
                         f" — `manamap pilot simulate {where} --vs <pod>` puts "
                         f"it at a table and writes where this reads")}
@@ -721,6 +805,7 @@ def forge(slug, branch):
               and br[pod]["decided"]]
     if not common:
         return {"available": False,
+                "superseded": {k: v for k, v in superseded.items() if v},
                 "why": (f"the branch sat at {sorted(br)} and the champion at "
                         f"{sorted(champ)} — no table in common, and a rate from "
                         f"another table is not this branch's control. Run "
@@ -733,6 +818,24 @@ def forge(slug, branch):
     m = stats.mde_proportion(a_w / a_n, a_n, b_n) or {}
     return {"available": True,
             "pod": pod,
+            # WHAT THIS BLOCK LEFT OUT AND WHY. A run excluded in silence is
+            # indistinguishable from a run that was never made.
+            "superseded": {k: v for k, v in superseded.items() if v},
+            # AND WHERE IT HAD NOTHING ELSE TO USE. An arm listed here is being
+            # reported from runs made on a DIFFERENT list — the figure describes
+            # that list, not this one.
+            "list_mismatch": {
+                arm: {"played": sorted({r["played"] for r in rows}),
+                      "games": sum(r["games"] for r in rows),
+                      "on_disk": (br_sha if arm == "branch" else cham_sha)[:12],
+                      "reads_as": (
+                          f"every Forge run on the {arm} was made with a "
+                          f"different list, so this rate describes that list. "
+                          f"A card swap and a cosmetic edit to decklist.txt both "
+                          f"land here. Re-run: `manamap pilot simulate "
+                          f"{slug + '@' + branch if arm == 'branch' else slug} "
+                          f"--pod <name> --games N`")}
+                for arm, rows in mismatch.items()} or None,
             "basis": ("wins over DECIDED games (clock-outs have no winner and are "
                       "excluded), each arm pooled across every run of it at this "
                       "one table"),
@@ -757,23 +860,46 @@ def forge(slug, branch):
 
 
 def _engine_casts_caveat(slug, branch):
-    """The never-cast list on the latest record of each arm, or None."""
+    """The never-cast list on the latest CURRENT-LIST record of each arm, or None.
+
+    "HELD AND NEVER CAST" AND "NOT IN THE DECK" ARE DIFFERENT FACTS, and this
+    read the latest record against the list on disk, so it could not tell them
+    apart. On goblin-storm/zada-v1 it named Hanweir Garrison, Legion Warboss,
+    Assault Strobe, Reckless Ransacking and Great Train Heist as held and passed
+    over. None of the five was in the list those games were played with: they
+    were added afterwards. The strongest claim this function makes — that the AI
+    saw the deck's engine and declined it — was being made about cards the AI had
+    never been dealt.
+    """
+    from manamap.pilot.common import decklist_sha256
     from manamap.sim import engine_casts as ec
     out = {}
     for arm, pattern, b in (("champion", f"data/decks/{slug}/sim/*.json", None),
                             ("branch", f"data/decks/{slug}/branches/{branch}/sim/*.json", branch)):
+        want = deck_branch_seat(slug, b) if b else slug
+        live = decklist_sha256(slug, b)
         paths = [p for p in sorted(glob.glob(pattern)) if "logs" not in p]
-        if not paths:
+        # A record with no stamp predates it and is still readable; one stamped
+        # with another list is not.
+        current = [p for p in paths
+                   if (_seat_sha(json.load(open(p)), want) or live) == live]
+        if not current:
             out[arm] = None
             continue
-        rec = json.load(open(paths[-1]))
+        rec = json.load(open(current[-1]))
         try:
             names = ec.nonland_names(load_deck_cards(slug, b))
         except Exception:
             names = None
         q = ec.from_record(rec, names, ec.engine_set(slug, b))
-        out[arm] = None if not q else {"covered": q["covered"],
-                                       "never_cast": [r["card"] for r in q["never_cast"]][:8]}
+        # THE CLAIM NAMES THE RUN IT IS MADE ABOUT. "Held and never cast" is the
+        # strongest reading this report offers, and until it said which games it
+        # came from there was no way to check it against them.
+        out[arm] = None if not q else {
+            "covered": q["covered"],
+            "never_cast": [r["card"] for r in q["never_cast"]][:8],
+            "run": rec.get("run_id"),
+            "played": (_seat_sha(rec, want) or live)}
     return out
 
 
@@ -824,6 +950,42 @@ def _refuse_a_stale_measurement(slug, branch):
         f"  manamap pilot fetch-deck {where}\n"
         f"  manamap pilot goldfish {where}\n"
         f"  manamap pilot net-change {where} --write")
+
+
+def _death_limit(slug, branch):
+    """The death limitation, or the rate that replaced it.
+
+    THIS SENTENCE WENT STALE THE DAY THE CHANNEL SHIPPED. It read "Death-
+    triggered DRAIN is not modelled at all — nothing dies in this simulation",
+    and on 2026-09-27 that stopped being true: `model_deaths` carries a per-turn
+    rate and `death_damage` reads the "deals N damage" idiom `death_drain` never
+    did. A report that states a limitation the model no longer has is worse than
+    one that states none — the reader discounts a figure that is now sound.
+    #
+    So the sentence is DERIVED from the deck's own declaration rather than
+    asserted. A deck that has not declared a death rate gets the warning it has
+    earned; one that has gets the rate and its source, which is the thing a
+    reader actually needs in order to judge the figure.
+    """
+    from manamap.pilot.common import deck_file, load_json
+
+    decl = load_json(deck_file(slug, "goldfish_targets.json", branch)) or {}
+    deaths = decl.get("model_deaths") or None
+    if not (deaths and decl.get("model_drain")):
+        return ["Death-triggered drain and damage are NOT modelled on this deck: "
+                "it declares no `model_deaths` rate, so nothing dies in this "
+                "simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons "
+                "and Bastion of Remembrance contribute nothing to any damage or "
+                "kill row. A branch built on them is understated by however much "
+                "that line is worth, and `simulate` against a real pod is the "
+                "only place it can be measured."]
+    return [f"Deaths ARE modelled here, at a MEASURED rate: "
+            f"{deaths['own_per_turn']} of our creatures and "
+            f"{deaths['opponent_per_turn']} of theirs per own turn, read off "
+            f"{deaths['source']}. Both the life-loss idiom (`death_drain`) and "
+            f"the damage idiom (`death_damage`) are counted. The rate is an "
+            f"AVERAGE, so it cannot represent a turn where eight bodies die at "
+            f"once — a sacrifice burst is still understated."]
 
 
 def build(slug, branch, iterations=None, seed=None):
@@ -914,13 +1076,7 @@ def build(slug, branch, iterations=None, seed=None):
             "Activated, X-based, sacrifice-gated and death-triggered draw are "
             "unmodelled and named per deck in `goldfish_metrics.json`; on a "
             "sacrifice-based list that is most of it.",
-            "Death-triggered DRAIN is not modelled at all — nothing dies in "
-            "this simulation. Blood Artist, Zulaport Cutthroat and Bastion of "
-            "Remembrance contribute nothing to any damage or kill row here. A "
-            "branch built on them is understated by however much that line is "
-            "worth, and `simulate` against a real pod is the only place it can "
-            "be measured.",
-        ],
+        ] + _death_limit(slug, branch),
     }
     # Derived from the finished document, so it can never disagree with the rows
     # it summarises — the same reason `deck_info` composes and computes nothing.
@@ -1233,6 +1389,101 @@ def _wrap(text, width=74, indent="        "):
                                    subsequent_indent=indent))
 
 
+def _print_changes(doc):
+    """The change section, apart from `_print` so a test can state the row mix
+    that exposed the header bug without standing up a whole report."""
+    ch = doc.get("changes") or {}
+    if ch.get("count"):
+        c = ch.get("counts") or {}
+        n_in, n_out = c.get("in"), c.get("out")
+        if n_in is None:                       # a report written before counts
+            head = f"{ch['count']} row(s)"
+        else:
+            head = f"{n_in} in, {n_out} out"
+            aside = [f"{n} {w}" for n, w in
+                     ((c.get("rows"), "rows"), (ch.get("staged_count"), "staged"))
+                     if n and n != n_in]
+            if aside:
+                head += "  (" + ", ".join(aside) + ")"
+        print(f"\n  THE CHANGE   {head}"
+              + (f", branch opened {ch['opened']}" if ch.get("opened") else ""))
+        cuts = []
+        for title, rows in (("spells", ch.get("spells") or []),
+                            ("lands", ch.get("lands") or [])):
+            # A ROW WITH NOTHING COMING IN IS A CUT, NOT A SWAP, and printed
+            # among the swaps as `- Card + None` it reads as one.
+            swaps = [r for r in rows if r["in"]]
+            cuts += [r for r in rows if not r["in"]]
+            if not swaps:
+                continue
+            print(f"\n    {title.upper()}  ({len(swaps)} in)")
+            for r in swaps:
+                print(f"      - {str(r['out'] or '')[:30]:32} + {str(r['in'])[:30]}"
+                      if r["out"] else f"      {'':34} + {str(r['in'])[:30]}")
+                if r.get("why"):
+                    print(_wrap(r["why"], indent="          "))
+        if cuts:
+            print(f"\n    CUT, NOTHING IN ITS SLOT  ({len(cuts)})")
+            # WHY A ROW HAS NO PARTNER DEPENDS ON HOW THE BRANCH WAS BUILT, and
+            # asserting the staging reason on a branch with no staging log is
+            # simply false. A branch opened with `new --from <list>` has never
+            # staged a swap, so EVERY row is unpaired and there is no superseded
+            # partner to point at — the pairing is unknown, not lost.
+            print(_wrap("Their partner was staged back out later, so the slot "
+                        "is paid for elsewhere in this list."
+                        if ch.get("staged_count") else
+                        "This branch was opened from a whole list rather than "
+                        "staged swap by swap, so no row has a recorded partner "
+                        "— the 20 cards above and the 20 below are the same "
+                        "change, unpaired.", indent="      "))
+            for r in cuts:
+                print(f"      - {str(r['out'])[:30]}")
+                if r.get("why"):
+                    print(_wrap(r["why"], indent="          "))
+
+
+def _print_real_table(doc):
+    """The Forge section, apart from `_print` for the same reason as
+    `_print_changes`: a test can then state the one shape that matters —
+    an arm whose only runs were made on a list the deck no longer is."""
+    f = doc["forge"]
+    print("\n  THE REAL TABLE")
+    # THE MISMATCH GOES FIRST, ABOVE THE RATE IT IS ABOUT. Printed underneath,
+    # it reads as a footnote to a number the eye has already taken.
+    for arm, m in (f.get("list_mismatch") or {}).items():
+        print(f"    !! {arm.upper()} MEASURED ON A DIFFERENT LIST — "
+              f"{m['games']} game(s) on {_and(m['played'])}, "
+              f"{m['on_disk']} on disk")
+        print(_wrap(m["reads_as"], indent="       "))
+    for arm, rows in (f.get("superseded") or {}).items():
+        if (f.get("list_mismatch") or {}).get(arm):
+            continue          # already stated, in stronger terms, just above
+        print(f"    not counted ({arm}, superseded list): "
+              f"{sum(r['games'] for r in rows)} game(s) on "
+              f"{_and(sorted({r['played'] for r in rows}))}")
+    if not f.get("available"):
+        print(f"    {f['why']}")
+    else:
+        print(f"    at {f.get('pod', '?')} — {f.get('basis', '')}")
+        print(f"    champion {f['champion']['wins']}/{f['champion']['games']} "
+              f"({f['champion']['rate']:.3f})   "
+              f"branch {f['branch']['wins']}/{f['branch']['games']} "
+              f"({f['branch']['rate']:.3f})")
+        other = {k: v for k, v in (f.get("other_tables") or {}).items()
+                 if v.get("champion_runs") or v.get("branch_runs")}
+        if other:
+            print("    not pooled (another table): " + ", ".join(
+                f"{k} ({v['champion_runs']} champion / {v['branch_runs']} branch run(s))"
+                for k, v in other.items()))
+        print(f"    delta {f['delta']:+.3f}  CI [{f['ci95'][0]:+.3f}, "
+              f"{f['ci95'][1]:+.3f}]  MDE {f['mde']}")
+        if f["mde"] and abs(f["delta"]) < f["mde"]:
+            print(_wrap(f"UNDERPOWERED — this run could only resolve a "
+                        f"difference of {f['mde']}; it rules out a large "
+                        f"effect and cannot say which list is better.",
+                        indent="    "))
+
+
 def _print(doc):
     h = doc["harness"]
     print(f"\nNET CHANGE — {doc['slug']} vs branch {doc['branch']}"
@@ -1248,19 +1499,7 @@ def _print(doc):
             print(_wrap(n, indent="      "))
 
     # ---------------------------------------------------------- the change
-    ch = doc.get("changes") or {}
-    if ch.get("count"):
-        print(f"\n  THE CHANGE   {ch['count']} swap(s)"
-              + (f", branch opened {ch['opened']}" if ch.get("opened") else ""))
-        for title, rows in (("spells", ch.get("spells") or []),
-                            ("lands", ch.get("lands") or [])):
-            if not rows:
-                continue
-            print(f"\n    {title.upper()}  ({len(rows)})")
-            for r in rows:
-                print(f"      - {str(r['out'])[:30]:32} + {str(r['in'])[:30]}")
-                if r.get("why"):
-                    print(_wrap(r["why"], indent="          "))
+    _print_changes(doc)
 
     # ---------------------------------------------------------- objective
     o, g = doc.get("objective"), doc.get("objective_grade")
@@ -1341,29 +1580,7 @@ def _print(doc):
                         "identically to one that does not.", indent="      "))
 
     # ---------------------------------------------------------- real table
-    f = doc["forge"]
-    print("\n  THE REAL TABLE")
-    if not f.get("available"):
-        print(f"    {f['why']}")
-    else:
-        print(f"    at {f.get('pod', '?')} — {f.get('basis', '')}")
-        print(f"    champion {f['champion']['wins']}/{f['champion']['games']} "
-              f"({f['champion']['rate']:.3f})   "
-              f"branch {f['branch']['wins']}/{f['branch']['games']} "
-              f"({f['branch']['rate']:.3f})")
-        other = {k: v for k, v in (f.get("other_tables") or {}).items()
-                 if v.get("champion_runs") or v.get("branch_runs")}
-        if other:
-            print("    not pooled (another table): " + ", ".join(
-                f"{k} ({v['champion_runs']} champion / {v['branch_runs']} branch run(s))"
-                for k, v in other.items()))
-        print(f"    delta {f['delta']:+.3f}  CI [{f['ci95'][0]:+.3f}, "
-              f"{f['ci95'][1]:+.3f}]  MDE {f['mde']}")
-        if f["mde"] and abs(f["delta"]) < f["mde"]:
-            print(_wrap(f"UNDERPOWERED — this run could only resolve a "
-                        f"difference of {f['mde']}; it rules out a large "
-                        f"effect and cannot say which list is better.",
-                        indent="    "))
+    _print_real_table(doc)
 
     # ---------------------------------------------------------- the ledger
     print("\n  THE REWARD")

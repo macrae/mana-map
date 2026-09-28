@@ -191,6 +191,23 @@
     return out + '</section>';
   }
 
+  /* THE MISMATCH RENDERS ABOVE THE RATE, for the reason the CLI prints it
+   * there: underneath, it reads as a footnote to a number already taken in.
+   * An arm listed here has no Forge run on the list this page is about, so its
+   * figure describes a DIFFERENT ninety-nine. */
+  function mismatchNote(f) {
+    var m = f.list_mismatch, out = '';
+    if (!m) return '';
+    Object.keys(m).forEach(function (arm) {
+      var r = m[arm];
+      out += '<p class="warn">' + esc(arm.toUpperCase()) +
+        ' MEASURED ON A DIFFERENT LIST — ' + r.games + ' game(s) on ' +
+        esc((r.played || []).join(', ')) + ', ' + esc(r.on_disk) +
+        ' on disk. ' + esc(r.reads_as) + '</p>';
+    });
+    return out;
+  }
+
   function forgePanel(nc) {
     if (!nc || !nc.forge) return '';
     var f = nc.forge;
@@ -206,6 +223,7 @@
     }
     var under = f.mde != null && Math.abs(f.delta) < f.mde;
     return '<section class="panel"><h2>The real table</h2>' +
+      mismatchNote(f) +
       (f.pod ? '<p class="ev">at <b>' + esc(f.pod) + '</b> — ' + esc(f.basis || '') +
         '</p>' : '') +
       '<div class="forge"><div><div class="who">The deck</div><div class="big">' +

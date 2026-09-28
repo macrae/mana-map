@@ -153,7 +153,22 @@ MAGNITUDE_AXES = tuple(AXIS_NEEDS)
 #: list. Stating it as a goal is a different act — the pilot says "draw more
 #: cards" and means it — so it lives in OBJECTIVE_AXES alone until a second deck
 #: opts in and the check can actually be run.
+#: AND `damage_10`, added 2026-09-27, AIMABLE BUT NOT RANKABLE for the reason
+#: this block already gives. It went into `AXES` first and the hygiene gate
+#: refused it — correctly: three combat magnitudes correlate at r = 0.92-0.98 and
+#: a third one to SORT on is one fact wearing three names. Stating it as a goal
+#: is the other act.
+#:
+#: `net_change.ROWS` has printed "damage @T10" since it shipped, so the report
+#: always showed this series and a branch simply could not be AIMED at it. It
+#: earns its own entry beside `damage_8` because a BURST pays LATE and the two
+#: disagree about exactly that card: four copy effects on goblin-storm measured
+#: FLAT at turn eight (+0.767 against an MDE of 0.858 over 40,000 games) and
+#: +4.642 at turn ten, REAL at 3.7x its MDE. The line needs a wide board to copy
+#: and at turn eight there is not one yet, so aiming that branch at `damage_8`
+#: would have failed it for paying off on the wrong turn.
 OBJECTIVE_AXES = dict(AXES, **{
+    "damage_10": ("output", "damage_by_turn", "10"),
     "extra_cards_8": ("steam", "extra_cards_by_turn", "8"),
     "kill_by_6": ("output", "kill_by_turn", "6"),
     "kill_by_8": ("output", "kill_by_turn", "8"),

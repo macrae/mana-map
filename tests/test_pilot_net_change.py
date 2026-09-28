@@ -1087,3 +1087,275 @@ def test_changes_reports_the_NET_diff_not_the_staging_log():
         f"names on both sides: {sorted(set(got_in) & set(got_out))}")
     # And the staged count is kept, because the difference is the finding.
     assert c["staged_count"] >= c["count"]
+
+
+@requires_branch
+@requires_deck
+def test_the_header_counts_what_is_coming_in_and_not_how_many_rows_it_took():
+    """MEASURED, on goblin-storm/zada-v1: the header read "22 swap(s)" on a
+    branch bringing in 16 cards. Six of the 22 rows were cuts whose partner had
+    been staged back out later in the branch, so they had nothing in their slot
+    and printed as `- Card + None`; the staging log behind them was 29 entries
+    long. Three numbers for one question, and the pilot asked where the missing
+    cards had gone.
+
+    A row is not a swap, so the row count may not wear the word. `in` and `out`
+    are the figures a spending decision rests on and come from the NET diff.
+    """
+    ch = net_change.changes(SLUG, BRANCH)
+    rows = ch["spells"] + ch["lands"]
+    c = ch["counts"]
+    assert c["rows"] == len(rows) == ch["count"]
+    assert c["in"] == sum(1 for r in rows if r["in"]), (
+        "the header's `in` is not the number of cards coming in")
+    assert c["out"] == sum(1 for r in rows if r["out"])
+    # And it is the diff's own answer, not a second one counted here.
+    if not ch.get("merged"):
+        d = deck_branch.diff(SLUG, BRANCH)
+        assert c["in"] == len(d.get("add") or [])
+        assert c["out"] == len(d.get("out") or [])
+
+
+def test_no_printed_row_offers_a_card_named_none():
+    """`- Goblin Lackey + None` reads as a swap for a card called None. A row
+    with nothing coming in is a CUT and is printed under its own heading.
+
+    SYNTHETIC ON PURPOSE. Written against a real branch first, this passed with
+    the bug reintroduced: every written report on this checkout predates
+    `counts`, so the assertions guarded by it never ran. The mix that exposes
+    the defect — one pair, one add whose partner was superseded, one cut whose
+    partner was — has to be stated rather than hoped for.
+    """
+    import io
+    import contextlib
+    doc = {
+        "slug": SLUG, "branch": BRANCH, "table": [], "definitions": {},
+        "harness": {"iterations": 10000, "seed": 20260826},
+        "changes": {
+            "count": 3,
+            "counts": {"in": 2, "out": 2, "rows": 3},
+            "staged_count": 7,
+            "opened": "2026-09-25",
+            "spells": [
+                {"out": "Ruby Medallion", "in": "Ancestral Anger",
+                 "why": "a paired swap"},
+                {"out": None, "in": "Hanweir Garrison",
+                 "why": "its partner was staged back out"},
+                {"out": "Goblin Lackey", "in": None,
+                 "why": "nothing came in for this slot"},
+            ],
+            "lands": [],
+        },
+    }
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        net_change._print_changes(doc)
+    out = buf.getvalue()
+    assert "+ None" not in out and "- None" not in out, (
+        "a row printed a side that does not exist as if it were a card")
+    assert "2 in, 2 out" in out, "the header does not name what is coming in"
+    assert "swap(s)" not in out, "a row count is still labelled as swaps"
+    assert "3 rows" in out and "7 staged" in out, (
+        "the row count and the staging log are the provenance and belong in "
+        "the header too — dropping them is how one number became three")
+    assert "CUT, NOTHING IN ITS SLOT  (1)" in out
+    assert out.index("Hanweir Garrison") < out.index("CUT, NOTHING"), (
+        "an add with no partner belongs with the adds, not among the cuts")
+
+
+def test_a_seat_sha_resolves_whichever_spelling_the_record_used():
+    """`analysis.seats` keys a branch `goblin-storm-zada-v1`; the run manifest
+    spells the same seat `goblin-storm@zada-v1` and `mm-goblin-storm-zada-v1`.
+    A matcher that knows only one of them silently finds no seat, and a missing
+    sha reads as "this record predates the stamp" — which passes the gate."""
+    doc = {"seats": [
+        {"slug": "goblin-storm@zada-v1", "forge_name": "mm-goblin-storm-zada-v1",
+         "decklist_sha256": "aaaa"},
+        {"slug": "sythis-enchantress", "forge_name": "mm-sythis-enchantress",
+         "decklist_sha256": "bbbb"}]}
+    assert net_change._seat_sha(doc, "goblin-storm-zada-v1") == "aaaa"
+    assert net_change._seat_sha(doc, "sythis-enchantress") == "bbbb"
+    assert net_change._seat_sha(doc, "not-at-this-table") is None
+    # A record from before the stamp existed carries no sha and must read None
+    # rather than raising — it is older evidence, not wrong evidence.
+    assert net_change._seat_sha({"seats": [{"slug": "goblin-storm"}]},
+                                "goblin-storm") is None
+    assert net_change._seat_sha({}, "goblin-storm") is None
+
+
+def _branches():
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import deck_branch
+    for slug in sorted(d.name for d in DECKS_DIR.iterdir() if d.is_dir()):
+        for branch in deck_branch.names(slug):
+            yield slug, branch
+
+
+@requires_deck
+def test_every_forge_record_is_either_counted_or_named_as_superseded():
+    """MEASURED, on goblin-storm/zada-v1: 120 games were reported as the branch's
+    rate, played on its FOURTH commit while the list on disk was its seventh —
+    eight cards in and nine out since, including the largest gain it claimed.
+    The record stamps `seats[].decklist_sha256`; nothing read it.
+
+    A COMPLETE ACCOUNTING, because the one-sided version could not see the bug.
+    Asserting only that an EXCLUDED run really was superseded passes trivially
+    when nothing is ever excluded — which is the defect. So every record on disk
+    must be accounted for: counted because it played this list (or carries no
+    stamp), or named in `superseded` because it did not.
+    """
+    import glob
+    import json as _json
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import common
+    checked = 0
+    for slug, branch in _branches():
+        f = net_change.forge(slug, branch)
+        for arm, b in (("champion", None), ("branch", branch)):
+            live = common.decklist_sha256(slug, b)
+            root = DECKS_DIR / slug / (f"branches/{b}" if b else "")
+            named = {r["run"] for r in (f.get("superseded") or {}).get(arm) or []}
+            for path in sorted(glob.glob(str(root / "sim" / "*.json"))):
+                doc = _json.load(open(path))
+                want = net_change.deck_branch_seat(slug, b) if b else slug
+                ran = net_change._seat_sha(doc, want)
+                if not ran or ran == live:
+                    continue
+                run = doc.get("run_id") or path.split("/")[-1]
+                assert run in named, (
+                    f"{slug}/{branch} {arm}: run {run} played "
+                    f"{ran[:12]} against {live[:12]} on disk and is neither "
+                    f"counted out nor named as superseded")
+                checked += 1
+    assert checked >= 1, (
+        "no record on this checkout was made on a superseded list, so this "
+        "test proved nothing — it needs one to stay honest")
+
+
+@requires_deck
+def test_a_never_cast_claim_names_a_run_that_played_the_current_list():
+    """"Held and never cast" and "not in the deck" are different facts.
+
+    On goblin-storm/zada-v1 this named Hanweir Garrison, Legion Warboss, Assault
+    Strobe, Reckless Ransacking and Great Train Heist as held and passed over.
+    None of the five was in the list those games were played with — all five were
+    added afterwards. The report's strongest claim was being made about cards the
+    AI had never been dealt.
+
+    Called DIRECTLY rather than through `forge()`, which returns early when an
+    arm has no current run and would hide a regression here behind that.
+    """
+    from manamap.pilot import common
+    checked = 0
+    for slug, branch in _branches():
+        got = net_change._engine_casts_caveat(slug, branch)
+        for arm, b in (("champion", None), ("branch", branch)):
+            ec = (got or {}).get(arm)
+            if not ec:
+                continue
+            live = common.decklist_sha256(slug, b)
+            assert ec["played"] == live, (
+                f"{slug}/{branch} {arm}: engine_casts read run {ec['run']}, "
+                f"played on {ec['played'][:12]} against {live[:12]} on disk — "
+                f"a card absent from that list reads as held and never cast")
+            checked += 1
+    assert checked >= 1, "no arm on this checkout carries an engine_casts reading"
+
+
+def test_a_rate_measured_on_another_list_says_so_before_it_says_the_rate():
+    """A pilot reads the number and stops. The mismatch has to be ABOVE it.
+
+    This is the report's own rule — every figure carries its definition where it
+    is printed — applied to the one case where the definition is "this is not
+    the deck you are looking at".
+    """
+    import io
+    import contextlib
+    doc = {"forge": {
+        "available": True, "pod": "standard-v3", "basis": "wins over DECIDED games",
+        "champion": {"wins": 1, "games": 32, "rate": 0.0312, "won_by": {}},
+        "branch": {"wins": 5, "games": 96, "rate": 0.0521, "won_by": {}},
+        "delta": 0.0208, "ci95": [-0.1088, 0.0899], "mde": 0.19,
+        "caveat": "Forge's AI is a weak pilot",
+        "list_mismatch": {"branch": {
+            "played": ["57725742d1bc"], "games": 120, "on_disk": "e01b366ccbd6",
+            "reads_as": "every Forge run on the branch was made with a "
+                        "different list, so this rate describes that list."}}}}
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        net_change._print_real_table(doc)
+    out = buf.getvalue()
+    assert "BRANCH MEASURED ON A DIFFERENT LIST" in out
+    assert "57725742d1bc" in out and "e01b366ccbd6" in out
+    assert out.index("DIFFERENT LIST") < out.index("5/96"), (
+        "the rate is printed before the warning that it is for another list")
+
+
+def test_the_branch_page_warns_on_a_mismatch_too():
+    """The CLI and the page read the same artifact, and the page is where a
+    spending decision is actually made. `branch-view.js` rendered the rate with
+    no way to say which list it came from."""
+    import pathlib
+    js = pathlib.Path("viz/js/branch-view.js").read_text()
+    assert "list_mismatch" in js, (
+        "branch-view.js renders the Forge rate without reading list_mismatch")
+    # THE CALL SITE, NOT THE DEFINITION. `js.index("mismatchNote(f)")` finds
+    # `function mismatchNote(f) {` and passed with the call deleted.
+    assert "mismatchNote(f) +" in js, (
+        "mismatchNote is defined but never rendered into the panel")
+    assert js.index("mismatchNote(f) +") < js.index("f.champion.wins"), (
+        "the page prints the rate above the warning about it")
+    # AND THE CACHE-BUST MOVED. A JS change behind a stale ?v= is a change
+    # nobody sees (CLAUDE.md).
+    html = pathlib.Path("viz/branch.html").read_text()
+    import re
+    vs = {int(m) for m in re.findall(r"\?v=(\d+)", html)}
+    assert len(vs) == 1, f"branch.html mixes cache-bust versions: {sorted(vs)}"
+    assert max(vs) >= 224, "branch.html's ?v= was not bumped for this change"
+
+
+@requires_deck
+def test_a_branch_never_declares_a_model_channel_its_deck_does_not():
+    """TWO LISTS UNDER TWO SIMULATORS ARE NOT AN A/B.
+
+    MEASURED, on goblin-storm/zada-v1. The branch's own `goldfish_targets.json`
+    declared `model_draw`, `model_combat` and `model_commander_copy`; the deck's
+    declared NONE of them. So for weeks the report compared a branch whose
+    commander ability, combat and card draw were modelled against a champion
+    where they were not — and `net_change`'s table silently dropped seven of its
+    twelve rows, because the champion arm could produce no `output` block at all.
+    The two rows that survived and moved were the two the asymmetry flattered:
+    `missed drop by T5` (only the branch could draw) and `interaction affordable
+    @T6` (only the branch was spending mana on modelled cantrips). Declaring the
+    same channels on both reversed the second and sent the first to noise.
+
+    A BRANCH MAY DIFFER IN WHICH CARDS SATISFY A TARGET — meren-recursion's
+    drain-density-v1 legitimately adds Bastion of Remembrance and Cauldron of
+    Essence to four `any_of` groups, because a target names cards and the branch
+    HAS those cards. That asks the same question of a different list, which is
+    the point. A `model_*` flag is not a question, it is the instrument.
+    """
+    import json as _json
+    from manamap.config import DECKS_DIR
+    from manamap.pilot import deck_branch
+    checked = 0
+    for slug in sorted(d.name for d in DECKS_DIR.iterdir() if d.is_dir()):
+        deck_decl = DECKS_DIR / slug / "goldfish_targets.json"
+        if not deck_decl.exists():
+            continue
+        want = {k: v for k, v in _json.loads(deck_decl.read_text()).items()
+                if k.startswith("model_")}
+        for branch in deck_branch.names(slug):
+            own = DECKS_DIR / slug / "branches" / branch / "goldfish_targets.json"
+            if not own.exists():
+                continue          # it inherits the deck's, which is the norm
+            got = {k: v for k, v in _json.loads(own.read_text()).items()
+                   if k.startswith("model_")}
+            assert got == want, (
+                f"{slug}@{branch} declares {sorted(got)} and its deck declares "
+                f"{sorted(want)} — the arms would be measured under different "
+                f"models, so no row of the comparison means anything")
+            checked += 1
+    assert checked >= 1, (
+        "no branch on this checkout carries its own declaration, so this test "
+        "proved nothing")
