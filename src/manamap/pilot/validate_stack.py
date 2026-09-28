@@ -269,15 +269,78 @@ def scope_warnings(doc):
     citations = sum(len(s.get("citations", [])) for s in steps)
     if len(steps) > RESOLVE_SCOPE_BUDGET["max_steps"]:
         warnings.append(
-            f"{len(steps)} steps (budget {RESOLVE_SCOPE_BUDGET['max_steps']})"
+            f"over scope budget: {len(steps)} steps "
+            f"(budget {RESOLVE_SCOPE_BUDGET['max_steps']})"
         )
     if citations > RESOLVE_SCOPE_BUDGET["max_citations"]:
         warnings.append(
-            f"{citations} citations (budget {RESOLVE_SCOPE_BUDGET['max_citations']}) — "
+            f"over scope budget: {citations} citations "
+            f"(budget {RESOLVE_SCOPE_BUDGET['max_citations']}) — "
             f"every artifact at <=32 citations passed in 1-2 rounds; every one at >=59 "
             f"needed 4 rounds or failed"
         )
+    warnings.extend(stale_cross_references(doc))
     return warnings
+
+
+#: A step reference, deliberately NOT a general "step <number>" match.
+#:
+#: `(?!\.\d)` is the whole check. A resolution routinely writes a step reference
+#: and a CR citation in one breath — "(step 1, 107.4a)" is real, committed text —
+#: and a pattern that takes the number after a comma reads `107` as a step. The
+#: first cut of this check did exactly that: swept over 66 resolutions and 327
+#: references it returned two hits, and ONE OF THEM WAS ITS OWN FALSE POSITIVE.
+#: That is the measurement that decided the shape, and it is the reason six
+#: earlier proposed validators were rejected — a check that fires on correct data
+#: is worse than no check, because it teaches its reader to skip the output.
+#:
+#: It rejects a dot followed by a DIGIT, not any dot: the first attempt used
+#: `(?!\d*\.)` and silently missed every reference that ends a sentence, since
+#: `steps 3 and 9.` puts a period right where a rule number's decimal would be.
+#:
+#: `(?!\d)` is the second guard and it is not redundant. Without it the engine
+#: BACKTRACKS into the rule number: `703.4h` fails the decimal lookahead at
+#: `703`, retries at `70`, finds `3` rather than a dot, and reports a
+#: cross-reference to step 70. Both guards were added because a test failed,
+#: not because they were foreseen.
+_STEP_REF = re.compile(r"[Ss]teps?\s+(\d+)(?!\d)(?!\.\d)"
+    r"(?:\s*(?:and|through|-|–)\s*(\d+)(?!\d)(?!\.\d))?")
+
+
+def stale_cross_references(doc):
+    """A reference to a step that does not exist, as an ADVISORY.
+
+    A resolution cross-references its own steps by number, and an inserted or
+    merged step renumbers every one of them. This shipped twice in one session:
+    iteration 2 of goblin-storm/012 left "steps 4-5" pointing at what had become
+    5 and 6 after a step was added at position 1, and iteration 3 left a `gaps`
+    entry pointing at "Step 13" in a twelve-step artifact.
+
+    Both were caught by a human reading, and one of my own audits missed the
+    second because it grepped case-sensitively for `step 13` while the text said
+    `Step 13`. That is what makes this mechanical rather than a review habit.
+
+    ADVISORY, not an error, for two reasons. It cannot distinguish a genuinely
+    stale pointer from prose that means something else by "step", and — the
+    deciding one — a resolution is allowed only three iterations, so a cosmetic
+    pointer must not be able to condemn an artifact whose rules and arithmetic
+    the checker has confirmed. `012` ships `pass` with this warning against it.
+    """
+    res = doc.get("resolution") or {}
+    steps = res.get("steps") or []
+    if not steps:
+        return []
+    n = len(steps)
+    seen = {}
+    for m in _STEP_REF.finditer(json.dumps(res)):
+        for g in m.groups():
+            if g and not 1 <= int(g) <= n:
+                seen.setdefault(int(g), m.group(0))
+    if not seen:
+        return []
+    return [f"cross-reference to step {t} in a {n}-step resolution "
+            f"(as {ref!r}) — a renumbering left it behind"
+            for t, ref in sorted(seen.items())]
 
 
 def validate_scenario(doc, rules, strategy_sections=None):
@@ -474,8 +537,14 @@ def main(args):
                 _, stale = unknown_cards(doc, args.slug)
                 for w in stale:
                     print(f"  ! {w}")
+            # THE LABEL TRAVELS WITH THE WARNING. This printed "over scope
+            # budget: " in front of whatever it was handed, which was fine while
+            # the function returned only size warnings and became a lie the hour
+            # `stale_cross_references` was added to it — a dangling step
+            # reference is not a budget problem, and a reader who is told it is
+            # looks in the wrong place.
             for w in scope_warnings(doc):
-                print(f"  ! over scope budget: {w}")
+                print(f"  ! {w}")
     # Deliberately NOT `common.report_errors`, though every other validator uses
     # it: this command validates N artifacts per invocation and reports each by
     # name. `report_errors` exits on the first error list it is handed, so

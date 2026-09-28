@@ -386,3 +386,92 @@ def test_a_dfc_front_face_counts_as_the_card_the_deck_runs():
     errors, warnings = vs.unknown_cards(doc, "sisay")
     assert errors == [] and warnings == [], (
         f"the front face of a card the deck runs must be silent: {errors} {warnings}")
+
+
+def _res(steps, extra=None):
+    """A resolution shaped just enough for the cross-reference check."""
+    doc = {"resolution": {"steps": [{"action": f"s{i}"} for i in range(steps)]}}
+    if extra:
+        doc["resolution"]["final_state"] = {"gaps": [extra]}
+    return doc
+
+
+def test_stale_cross_reference_is_caught():
+    """Drive the production function. A renumbering leaves a pointer behind, and
+    this shipped twice in one session on goblin-storm/012 — once as "steps 4-5"
+    after a step was inserted at position 1, once as "Step 13" in a 12-step file.
+    """
+    from manamap.pilot.validate_stack import stale_cross_references
+
+    w = stale_cross_references(_res(12, "Step 13 resolves the worst case."))
+    assert len(w) == 1 and "step 13" in w[0] and "12-step" in w[0], w
+    # CASE MATTERS AND IS WHY THIS IS MECHANICAL. My own audit of 012 grepped
+    # case-sensitively for `step 13` while the text said `Step 13`, and reported
+    # zero occurrences of a reference that was there.
+    assert stale_cross_references(_res(12, "step 13 resolves it.")), "lowercase too"
+    assert stale_cross_references(_res(4, "See steps 3 and 9.")), "the second group too"
+
+
+def test_a_cr_rule_number_after_a_comma_is_not_a_step_reference():
+    """THE FALSE POSITIVE THAT DECIDED THE CHECK'S SHAPE.
+
+    A resolution writes a step reference and a CR citation in one parenthetical —
+    "(step 1, 107.4a)" is real committed text in goblin-storm/011 — and the first
+    cut of this check read `107` as a step and flagged a correct artifact. Over 66
+    resolutions and 327 references it returned two hits and one was its own false
+    positive.
+
+    A validator that fires on correct data is worse than no validator, so this is
+    the test that must not regress. Re-introducing the bug is removing the
+    `(?!\\d*\\.)` lookahead from `_STEP_REF`.
+    """
+    from manamap.pilot.validate_stack import stale_cross_references
+
+    real = ("at most four red pips, with Reliquary Tower's {C} usable only "
+            "against generic (step 1, 107.4a) -- and the cheapest shape is")
+    assert stale_cross_references(_res(12, real)) == [], (
+        "a CR rule number after a comma is a citation, not a step reference")
+    # The same shape with a hyphen and with a bare trailing rule id.
+    assert stale_cross_references(_res(12, "(step 2, 510.1a)")) == []
+    assert stale_cross_references(_res(12, "per step 1 and 703.4h")) == []
+
+
+def test_the_check_does_not_fire_across_the_committed_fleet():
+    """MEASURED AGAINST EVERY TRACKED RESOLUTION BEFORE SHIPPING, which is this
+    repo's bar for a new check. Exactly one of 66 is flagged and it is a real
+    stale pointer; anything more means the pattern has become too eager.
+    """
+    import glob
+    import json
+
+    from manamap.pilot.validate_stack import stale_cross_references
+
+    flagged, checked = [], 0
+    for p in sorted(glob.glob("data/decks/*/stacks/*.json")):
+        doc = json.load(open(p))
+        if not (doc.get("resolution") or {}).get("steps"):
+            continue
+        checked += 1
+        if stale_cross_references(doc):
+            flagged.append(p)
+    assert checked >= 60, f"expected the tracked corpus, swept {checked}"
+    assert len(flagged) <= 1, (
+        f"the check fires on {len(flagged)} resolutions: {flagged}. Confirm each "
+        f"is a TRUE stale pointer before loosening this bound — a check that "
+        f"fires on correct data teaches its reader to skip the output.")
+
+
+def test_stale_cross_reference_is_advisory_never_an_error():
+    """A resolution gets three iterations and no more, so a cosmetic pointer must
+    not be able to condemn an artifact whose rules and arithmetic a checker has
+    confirmed. goblin-storm/012 ships `pass` with this warning against it.
+    """
+    from manamap.pilot.validate_stack import scope_warnings, validate_scenario
+    from manamap.pilot.common import load_rules_db
+
+    doc = json.load(open(
+        DECKS_DIR / "goblin-storm" / "stacks" / "012-sim-g61-t27-precombat-main.json"))
+    rules, _, _ = load_rules_db()
+    assert validate_scenario(doc, rules) == [], "must not become an error"
+    assert any("cross-reference" in w for w in scope_warnings(doc)), (
+        "but it must reach the reader as a warning")
