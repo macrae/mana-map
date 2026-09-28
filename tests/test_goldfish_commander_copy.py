@@ -196,10 +196,76 @@ def test_the_copies_multiply_the_draw_and_the_flag_is_what_does_it():
 
     off, on = cards_at_ten(False), cards_at_ten(True)
     assert on > off, f"the copy channel drew nothing: {off} -> {on}"
-    # The deck holds four drawing fodder spells; the lift is not a rounding
-    # artefact. Re-introducing the bug (ignoring `copy_fodder`, or dropping the
-    # `commander_turn is not None` guard) moves this in a way the assert sees.
-    assert on >= off * 1.5, f"lift too small to be the channel: {off} -> {on}"
+    # THE RATIO THAT USED TO BE HERE WAS INVERTED RELATIVE TO ITS OWN PURPOSE.
+    # It read `on >= off * 1.5` and claimed that re-introducing either bug "moves
+    # this in a way the assert sees". MEASURED on 2026-09-28, both claims false:
+    #
+    #     correct                    off 2.176  on 3.116  +0.940   1.43x
+    #     copy_fodder ignored        off 2.176  on 3.782  +1.606   1.74x
+    #     commander_turn dropped     off 2.176  on 3.151  +0.975   1.45x
+    #
+    # Ignoring `copy_fodder` OVER-counts, so a lower bound cannot catch it — the
+    # bug PASSES a 1.5x gate and the correct value fails it. And the
+    # commander-guard bug moves the ratio by 0.02x, which no threshold can see.
+    # The 1.5x was only ever satisfied because nothing died in this model; when
+    # `model_deaths` shipped for this deck the copy count shrank with the board
+    # and the correct figure fell under its own gate.
+    #
+    # Each bug now has a test that actually catches it, and this one asserts only
+    # what it can support: the lift is real and larger than the run's own noise.
+    #   over-copying  -> `test_only_fodder_is_copied_and_nothing_else_is` (VERIFIED
+    #                    to fail when the guard is dropped)
+    #   firing early  -> `test_the_copy_does_not_fire_before_the_commander_is_out`
+    #                    (added in the same edit, because NOTHING caught it)
+    assert on - off > 0.25, (
+        f"the lift is inside the noise of a 2,000-game run: {off} -> {on}")
+
+
+@requires_data
+@requires_deck
+def test_the_copy_does_not_fire_before_the_commander_is_out():
+    """NOTHING CAUGHT THIS. Dropping the `commander_turn is not None` guard lets
+    every fodder cantrip be multiplied from turn one, before Zada has been cast —
+    and MEASURED it moves the fleet lift by 0.02x (1.43 -> 1.45), which no
+    threshold can distinguish, while `test_only_fodder_is_copied...` does not look
+    at timing at all.
+
+    So the board is made to say it: a commander that costs twenty mana is never
+    cast in ten turns, so `commander_turn` stays None and the channel must add
+    EXACTLY nothing. With the guard dropped it adds the copies anyway.
+    """
+    from manamap.pilot import goldfish
+
+    deck = {"cards": [
+        # Uncastable on purpose: {20} will not be paid inside ten turns.
+        {"name": "Zada, Hedron Grinder", "type_line": "Legendary Creature — Goblin Ally",
+         "cmc": 20, "mana_cost": "{20}", "oracle_text":
+             "Whenever you cast an instant or sorcery spell that targets only "
+             "Zada, Hedron Grinder, copy that spell for each other creature you "
+             "control that the spell could target. Each copy targets a different "
+             "one of those creatures.",
+         "quantity": 1, "is_commander": True, "power": "3", "toughness": "3"},
+        {"name": "Mountain", "type_line": "Basic Land — Mountain", "cmc": 0,
+         "oracle_text": "", "quantity": 36, "power": None, "toughness": None},
+        # Bodies for the copies to land on, and fodder to copy.
+        {"name": "Beater", "type_line": "Creature — Goblin", "cmc": 1,
+         "oracle_text": "", "quantity": 30, "power": "2", "toughness": "2",
+         "is_commander": False},
+        {"name": "Expedite", "type_line": "Instant", "cmc": 1, "is_commander": False,
+         "oracle_text": "Target creature gains haste until end of turn. Draw a card.",
+         "quantity": 33, "power": None, "toughness": None},
+    ]}
+    targets = {"targets": [], "model_draw": True}
+
+    def cards_at_ten(copy_on):
+        tt = dict(targets, model_commander_copy=copy_on)
+        m = goldfish.run("goblin-storm", doc=copy.deepcopy(deck), _targets_doc=tt,
+                         iterations=400, seed=11, quiet=True, _band=False)["metrics"]
+        return m["mean_extra_cards_drawn_by_turn"]["10"]
+
+    on, off = cards_at_ten(True), cards_at_ten(False)
+    assert on == off, (
+        f"the commander was never cast, so nothing may be copied: {off} -> {on}")
 
 
 @requires_data

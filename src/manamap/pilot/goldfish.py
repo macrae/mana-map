@@ -1163,6 +1163,15 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     model_drain = declared_drain
     model_discard = declared_discard if model_discard is None else bool(model_discard)
     model_deaths = declared_deaths
+    # THE PILOT'S POLICY. Absent, `_hold_until` is empty and every figure is
+    # byte-identical to one taken before this existed — the same opt-in contract
+    # every `model_*` channel keeps.
+    from manamap.pilot import pilot_policy as _pp
+    _policy = _pp.load(slug, branch)
+    _hold_until = _pp.hold_thresholds(_policy)
+    if _policy and not quiet:
+        for _ln in _pp.render(_policy):
+            print("  POLICY " + _ln if not _ln.startswith("    ") else "  " + _ln)
     if model_deaths and not model_drain and not quiet:
         print("  WARNING model_deaths is set without model_drain: death triggers "
               "feed the drain channel, so nothing will be counted.")
@@ -1401,6 +1410,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_drain=model_drain,
                               model_deaths=model_deaths,
                               commander_copy=commander_copy,
+                              hold_until=_hold_until,
                               interaction_names=interaction_names,
                               model_colors=model_colors,
                               commander_pips=commander_pips,

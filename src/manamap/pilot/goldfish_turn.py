@@ -66,7 +66,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_cast_token=None, interaction_names=frozenset(),
                   attack_tutor=None, model_discard=False, partner=None,
                   commander_event=None, commander_reveal=None,
-                  commander_copy=False):
+                  commander_copy=False, hold_until=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -426,7 +426,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         for _i in range(len(battlefield)):
             _e = battlefield[_i]
             if _e[7]:
-                battlefield[_i] = _e[:7] + (False,)
+                battlefield[_i] = _e[:7] + (False,) + _e[8:]
         spells_cast_this_turn = 0   # STORM reads this: copies = the count BEFORE it
         turn_pump = 0        # applies to EVERY attacker this turn
         turn_double_strike = False   # a spell granted it; ONE turn
@@ -438,7 +438,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # `enchantments_entered` because only Eerie reads it — see _EERIE_RE.
         rooms_unlocked = 0
         creatures_entered_this_turn = 0
-        deaths_drained = 0      # damage from OUR creatures dying, this turn
+        deaths_drained = 0      # LIFE LOSS from OUR creatures dying, this turn
+        deaths_damaged = 0      # DAMAGE from OUR creatures dying, this turn
         deaths_gained = 0       # life from THEIRS dying, this turn
         etb_drained = 0         # one-shot and per-type drain, this turn
         etb_gained = 0
@@ -546,7 +547,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         def creature_entered(power, arrived, haste=False, mult=1, depth=0,
                              toughness=1,
                              is_token=False, is_legendary=False, type_line="",
-                             infect=False, toxic=0, flying=False):
+                             infect=False, toxic=0, flying=False,
+                             temporary=False):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -573,8 +575,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # THE EIGHTH FIELD IS TAPPED, and until it existed every combat
             # phase swung the FULL board — so an extra combat was free damage
             # and `Seize the Day` looked like eight attacks when it is one.
+            # THE NINTH FIELD IS TEMPORARY — a token that exists for one turn.
+            # Molten Duplication says "sacrifice it at the beginning of the next
+            # end step" and Heat Shimmer "exile this token", so the copy attacks
+            # once and is gone.
+            #
+            # IT RIDES IN THE TUPLE, NOT IN A PARALLEL LIST, and the count is why.
+            # A parallel list must be maintained at EIGHT sites — three rebuilds,
+            # four pops and a second append that bypasses this door — and missing
+            # any one is the silent drift this file already documents for
+            # `creature_types`. The tuple travels with the entry, so a pop cannot
+            # desynchronise it. The cost is the six sites that rewrite an entry
+            # as `_e[:7] + (tapped,)`: each now re-appends `_e[8:]`, or it would
+            # truncate this field instead.
             battlefield.append((power, arrived, haste, mult, is_token,
-                                (infect, toxic), toughness, False))
+                                (infect, toxic), toughness, False, temporary))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -1434,7 +1449,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if sc["storm_token_bodies"]:
                 each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
                 for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
-                    battlefield.append((each, turn, False, 1, True, (0, 0), 1, False))
+                    # NINE FIELDS, like the one door above — this append
+                    # bypasses `creature_entered` and would otherwise build a
+                    # short entry that every `e[8]` read would raise on.
+                    battlefield.append((each, turn, False, 1, True, (0, 0), 1,
+                                        False, False))
                     creature_types.append("Creature — Goblin")
                     creature_flying.append(False)
                     bodies_cum += 1
@@ -1458,7 +1477,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      or c["combat"]["spell_double_strike"]
                                      or c["combat"]["spell_power_multiplier"] > 1
                                      or c["combat"]["spell_power_to_each_opponent"]
-                                     or c["combat"]["spell_extra_combat"])
+                                     or c["combat"]["spell_extra_combat"]
+                                     # THE CASTING PREDICATE SHIPS IN THE SAME
+                                     # COMMIT AS THE CHANNEL, which is the rule
+                                     # the comment above states and the reason
+                                     # six cards were read perfectly and never
+                                     # played. A token-copy spell belongs in
+                                     # exactly this loop: it wants attackers
+                                     # already out and it wants to be cast
+                                     # before the swing, because the copies have
+                                     # haste and attack the turn they arrive.
+                                     or c["combat"]["spell_token_copy"])
                                 # AN UNTAPPER IS HELD, NOT CAST ON CURVE. Cast in
                                 # the precombat main it untaps creatures that are
                                 # already untapped and does nothing — which is the
@@ -1489,6 +1518,68 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             and card["copy_fodder"] and len(battlefield) > 1):
                         _mult = len(battlefield)      # the original plus one per other
                     treasures += _tre * _mult
+                # A TOKEN COPY OF A TARGET CREATURE — the highest-ceiling card
+                # a Zada-style commander can be handed, and the reason this
+                # channel exists. Uncopied it is one extra body for one turn;
+                # copied, each copy targets a DIFFERENT creature, so a board of
+                # N gets N token copies of ITSELF, every one with haste, and
+                # every arrival payoff in the deck fires once per token.
+                #
+                # IT GOES THROUGH `creature_entered`, THE ONE DOOR, so Impact
+                # Tremors, Terror of the Peaks and the arrival-draw engines all
+                # fire without this site knowing they exist. That is the whole
+                # value of the door: goblin-storm runs Impact Tremors, and eight
+                # tokens entering is eight damage nobody had to wire up here.
+                #
+                # THE COPIES ARE TEMPORARY. Both real cards end with "sacrifice
+                # it at the beginning of the next end step" or "exile this
+                # token", so they are marked and removed after combat — see the
+                # cleanup below `damage_by_turn`. Leaving them would double the
+                # board permanently every cast, which is not the card.
+                #
+                # WHAT THIS DELIBERATELY DOES NOT CLAIM, so the figure is a
+                # FLOOR rather than a forecast: the tokens die at end of turn,
+                # and goblin-storm runs Boggart Shenanigans and Pashalik Mons,
+                # which turn each of those deaths into damage. That is a real
+                # second half of the line and it is NOT credited here — wiring
+                # deaths through this site needs the death channel and its own
+                # sweep. Stated, not silently omitted.
+                # THE PILOT'S POLICY, CONSULTED. Stack 011 proved with CR
+                # citations that Zada copies NOTHING with no other creature out,
+                # and that no single card fixes it — the trigger resolves before
+                # the spell that caused it (603.3/603.3b) — so a token-copy spell
+                # into a thin board is two mana for one token. A deck may declare
+                # a threshold to hold it; with no policy this is `0` and the
+                # behaviour is exactly what it was before the module existed.
+                _hold_copy = ((hold_until or {}).get("spell_token_copy") or {}
+                              ).get("other_creatures", 0)
+                if (card["combat"]["spell_token_copy"] and battlefield
+                        and len(battlefield) - 1 >= _hold_copy):
+                    _n_tok = card["combat"]["spell_token_copy"]
+                    # Copied: one token per creature in play (the original
+                    # targets the commander, each copy a different other
+                    # creature). Uncopied: one token, of the biggest body.
+                    if (commander_copy and commander_turn is not None
+                            and card["copy_fodder"] and len(battlefield) > 1):
+                        _sources = list(range(len(battlefield)))
+                    else:
+                        _sources = [max(range(len(battlefield)),
+                                        key=lambda i: battlefield[i][0])]
+                    # SNAPSHOT FIRST. `creature_entered` appends, and copying a
+                    # token that this same spell just made would compound a
+                    # board doubling into a loop — the bug the Miirym brake in
+                    # this file exists to stop.
+                    _snap = [(battlefield[i], creature_types[i],
+                              creature_flying[i]) for i in _sources]
+                    for _ in range(_n_tok):
+                        for _e, _ty, _fl in _snap:
+                            creature_entered(
+                                _e[0], turn, True, _e[3],
+                                toughness=_e[6], is_token=True,
+                                type_line=_ty,
+                                infect=_e[5][0], toxic=_e[5][1], flying=_fl,
+                                temporary=True)
+                            bodies_cum += 1
                 # PERMANENT +1/+1 COUNTERS, applied to the board itself rather
                 # than to `turn_pump`, because they do not expire. Copied by a
                 # Zada-style ability every creature gets its own counter — which
@@ -1533,9 +1624,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         for _i in range(len(battlefield)):
                             _e = battlefield[_i]
                             if _e[7]:
-                                battlefield[_i] = _e[:7] + (False,)
+                                battlefield[_i] = _e[:7] + (False,) + _e[8:]
                     elif battlefield and battlefield[0][7]:
-                        battlefield[0] = battlefield[0][:7] + (False,)
+                        battlefield[0] = battlefield[0][:7] + (False,) + battlefield[0][8:]
                 if _cbt["spell_extra_combat"]:
                     # NOT MULTIPLIED BY THE COPY COUNT, and the first version was.
                     # This model has NO TAPPED STATE: attackers are chosen by
@@ -1606,8 +1697,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # perfectly and never puts it on the table. The Meathook Massacre
             # went straight back into the never-cast bucket the moment its death
             # triggers started working.
-            if model_deaths and (c["death"]["death_drain"]
-                                 or c["death"]["gain_on_opponent_death"]):
+            # ...AND `death_damage` MADE IT THE FOURTH TIME, on 2026-09-28, in
+            # this very branch. The channel was added so Pashalik Mons and
+            # Boggart Shenanigans would stop reading as blanks, and Boggart
+            # Shenanigans — an enchantment with no body and no drain clause —
+            # then matched no casting loop: the model priced its damage and never
+            # put it on the table. `test_no_deck_computes_an_effect_it_never_gets
+            # _to_apply` named it within the hour. Use `is_death_engine`, which is
+            # the one predicate that knows every death payoff, instead of listing
+            # the fields here and forgetting the next one.
+            if model_deaths and is_death_engine(c["death"]):
                 return True
             # AN ATTACK ENABLER IS A PERMANENT TOO — the FOURTH time this gap
             # has bitten, and the worst of them, because it was a DEADLOCK. Four
@@ -1728,7 +1827,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if card["sac_outlet"] == "free":
                         free_sac_outlet = True
                 if model_deaths:
-                    if card["death"]["death_drain"]:
+                    # DAMAGE AND LIFE LOSS BOTH BELONG HERE. `death_damage` is
+                    # the "deals N damage to any target" idiom that
+                    # `death_drain` does not read; a card can carry either or
+                    # both, so the list is joined on `or`.
+                    if (card["death"]["death_drain"]
+                            or card["death"]["death_damage"]):
                         death_drains.append(card["death"])
                     if card["death"]["gain_on_opponent_death"]:
                         opponent_death_gains.append(card["death"])
@@ -1960,7 +2064,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if card["sac_outlet"] == "free":
                         free_sac_outlet = True
                 if model_deaths:
-                    if card["death"]["death_drain"]:
+                    # DAMAGE AND LIFE LOSS BOTH BELONG HERE. `death_damage` is
+                    # the "deals N damage to any target" idiom that
+                    # `death_drain` does not read; a card can carry either or
+                    # both, so the list is joined on `or`.
+                    if (card["death"]["death_drain"]
+                            or card["death"]["death_damage"]):
                         death_drains.append(card["death"])
                     if card["death"]["gain_on_opponent_death"]:
                         opponent_death_gains.append(card["death"])
@@ -2214,7 +2323,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # kept so the ones that DO attack can be tapped afterwards. Before
             # this the same board swung in every combat phase, which made an
             # additional combat free damage.
-            _able = [i for i, ((p, arrived, haste, mult, _tok, pz, _t, tapped), tl_, fl_)
+            # `*_` ON THE ENTRY, not a fixed arity. The docstring at the one
+            # door says every unpack takes it; these two combat unpacks did not,
+            # so the ninth field raised `too many values to unpack (expected 8)`
+            # here rather than anywhere near the field that was added.
+            _able = [i for i, ((p, arrived, haste, mult, _tok, pz, _t, tapped, *_), tl_, fl_)
                      in enumerate(zip(battlefield, creature_types, creature_flying))
                      if not tapped and (haste or arrived < turn
                                         or (haste_grants and _granted(tl_, fl_, _tok)))]
@@ -2242,7 +2355,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # as a gap rather than assumed: no deck in the fleet grants it today.
             for _i in _able:
                 _e = battlefield[_i]
-                battlefield[_i] = _e[:7] + (True,)
+                battlefield[_i] = _e[:7] + (True,) + _e[8:]
             swing_poison = (sum(d for d, pz in attackers if pz[0])
                             + sum(pz[1] for _d, pz in attackers))
             # The per-attacker ping is dealt BY the attacker, so an infect
@@ -2274,7 +2387,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # attack, then in the second main phase untap everything and attack
             # again. Copied by the commander it untaps the whole board.
             def _recount():
-                _ab = [i for i, ((p_, arr_, hs_, ml_, tok_, pz_, _t_, tp_), tl_, fl_)
+                _ab = [i for i, ((p_, arr_, hs_, ml_, tok_, pz_, _t_, tp_, *_), tl_, fl_)
                        in enumerate(zip(battlefield, creature_types, creature_flying))
                        if not tp_ and (hs_ or arr_ < turn
                                        or (haste_grants and _granted(tl_, fl_, tok_)))]
@@ -2298,7 +2411,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     for _i in range(len(battlefield)):
                         _e = battlefield[_i]
                         if _e[7] and (_all or _i == 0):
-                            battlefield[_i] = _e[:7] + (False,)
+                            battlefield[_i] = _e[:7] + (False,) + _e[8:]
                     return True
                 return False
 
@@ -2322,7 +2435,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # and THIS phase's attackers tap
                 for _i in _able:
                     _e = battlefield[_i]
-                    battlefield[_i] = _e[:7] + (True,)
+                    battlefield[_i] = _e[:7] + (True,) + _e[8:]
                 poisoned += swing_poison + ping_poison
                 for engine in combat_engines:
                     pool += engine["attack_mana"]
@@ -2438,6 +2551,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             poisoned *= team_damage_multiplier
             opponent_poison += poisoned
             poison_by_turn.append(poisoned)
+            # THE ONE-TURN TOKEN COPIES LEAVE, at the end step, after they have
+            # attacked and after their arrival payoffs have been counted. Placed
+            # HERE on purpose: above `board_power_by_turn` below, so a board
+            # doubling that lasts one turn never shows up as a permanent board.
+            # Reported as a FLOOR in both directions — the tokens are gone from
+            # the board series, and the deaths they cause are not credited.
+            if any(e[8] for e in battlefield):
+                _keep = [i for i, e in enumerate(battlefield) if not e[8]]
+                # THESE ARE DEATHS, AND THE DECK IS PAID FOR THEM. Molten
+                # Duplication's copies are sacrificed at the beginning of the
+                # next end step, so on a board of eight that is eight Goblins
+                # dying at once — which is the SECOND HALF of the line, and the
+                # reason goblin-storm runs Pashalik Mons and Boggart Shenanigans
+                # at all. Until `death_damage` existed neither was read, so this
+                # was a real effect the model had no field for.
+                #
+                # AN EVENT, NOT THE RATE. `model_deaths` carries a per-turn
+                # average read off a Forge run; these deaths are caused by the
+                # card's own text and are counted as they happen. Gated on the
+                # same flag, because a deck that has not declared a death rate
+                # has no death payoffs in `death_drains` to fire.
+                _n_died = len(battlefield) - len(_keep)
+                for prof in death_drains:
+                    deaths_drained += prof["death_drain"] * _n_died
+                    deaths_damaged += prof["death_damage"] * _n_died
+                battlefield[:] = [battlefield[i] for i in _keep]
+                creature_types[:] = [creature_types[i] for i in _keep]
+                creature_flying[:] = [creature_flying[i] for i in _keep]
             # BOARD POWER IS ACTUAL POWER. A double-striker is not a bigger
             # creature, so the multiplier belongs to the damage series and
             # never to this one.
@@ -2626,6 +2767,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 bodies_cum = max(0, bodies_cum - 1)
                 for prof in death_drains:
                     deaths_drained += prof["death_drain"]
+                    # A goldfish has one opponent at 40 life, so damage and life
+                    # loss reduce the same number — but they are counted from
+                    # separate fields because they are NOT the same at a table:
+                    # life loss ignores damage prevention and hits through a
+                    # Platinum Angel. Folding them into one number could not be
+                    # unfolded later without re-reading every card.
+                    deaths_damaged += prof["death_damage"]
             for _ in range(n_opp):
                 for prof in opponent_death_gains:
                     deaths_gained += prof["gain_on_opponent_death"]
@@ -2702,7 +2850,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if linked > 0:
                     gain_total += linked; gain_events += 1
 
-            drained = deaths_drained + etb_drained
+            drained = deaths_drained + deaths_damaged + etb_drained
             for d in drain_permanents:
                 drained += d["drain_recurring"] * _x_for(d)
                 drained += d["drain_per_enchantment"] * (

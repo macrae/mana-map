@@ -252,7 +252,26 @@ def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
     # of this harness can price the deck's actual kill. `model_deaths` is
     # deliberately absent: it requires a `source` naming the run its rate came
     # from, and this deck has never been simulated.
-    assert sorted(opted) == ["edgar-vampires", "gishath", "heliod",
+    # goblin-storm added 2026-09-27/28, and it is the largest re-baseline on this
+    # list. It had declared NOTHING since the goldfish shipped in July — so the
+    # deck built on "whenever you cast an instant or sorcery that targets only
+    # Zada, copy it for each other creature you control" was measured with that
+    # ability, combat and card draw all switched OFF, while its own BRANCH had
+    # declared three of them. Every comparison between the two was therefore two
+    # models rather than two lists, and `net_change` silently dropped seven of its
+    # twelve rows because the champion arm could produce no `output` block at all.
+    #
+    # It now declares all eight channels its cards feed — draw, combat, the
+    # commander copy, Treasure, sacrifice, discard, drain, and `model_deaths` with
+    # a rate MEASURED off a named Forge run (own 0.3529 / opponent 0.7894 per own
+    # turn, from 253 and 566 deaths over 717 own turns). DARK went 7 -> 0.
+    #
+    # THE RE-BASELINE IS LARGE AND IN BOTH DIRECTIONS, which is why it is spelled
+    # out: damage@10 FELL 27.7 -> 21.0 once deaths were modelled, because the deck
+    # now loses creatures; and the same change compressed the commander-copy draw
+    # lift from 1.71x to 1.43x, which broke a threshold calibrated on a model
+    # where nothing ever died (see `test_the_copies_multiply_the_draw...`).
+    assert sorted(opted) == ["edgar-vampires", "gishath", "goblin-storm", "heliod",
                              "meren-recursion", "sharknado", "ur-dragon"], (
         f"the opted-in set changed to {sorted(opted)}. Every one was "
         "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
@@ -832,3 +851,333 @@ def test_the_permanent_multiplier_sweep_is_locked():
     for phantom in ("Cleaver Riot", "Savage Beating", "Double Trouble",
                     "God-Eternal Rhonas", "Elesh Norn // The Argent Etchings"):
         assert phantom not in hits, f"{phantom} fires once and is scored as forever"
+
+
+# ── A SPELL THAT TOKEN-COPIES A TARGET CREATURE ──────────────────────────────
+#
+# Molten Duplication, Heat Shimmer, Electroduplicate. Added 2026-09-26 after the
+# pilot asked why neither of the first two was in a branch built around "lean
+# into Zada". They were in no sweep's shortlist because they were in no CHANNEL:
+# `model-coverage` read them as invisible and `candidates` ranked them at zero,
+# which is indistinguishable from a card that does not help.
+
+ZADA_TEXT = ("Whenever you cast an instant or sorcery spell that targets only "
+             "Zada, copy that spell for each other creature you control that "
+             "the spell could target. Each copy targets a different one of "
+             "those creatures.")
+DUPLICATION_TEXT = ("Create a token that's a copy of target artifact or "
+                    "creature you control, except it's an artifact in addition "
+                    "to its other types. It gains haste until end of turn. "
+                    "Sacrifice it at the beginning of the next end step.")
+
+
+def _copy_deck(n_beaters=24, with_spell=True):
+    """Zada, some bodies, and one token-copy spell. Cheap so it all lands."""
+    cards = [
+        dict(_card("Zada", ZADA_TEXT, cmc=3, power="3", toughness="3",
+                   type_line="Legendary Creature — Goblin Ally"),
+             is_commander=True),
+        # LANDS, or nothing is ever cast and every damage figure is 0.0 — which
+        # is exactly how this fixture failed first time round, and it reads
+        # identically to a channel that does not fire.
+        {"name": "Mountain", "type_line": "Basic Land — Mountain", "cmc": 0,
+         "oracle_text": "", "quantity": 34, "power": None, "toughness": None},
+        dict(_card("Beater", "", cmc=1, power="2", toughness="2",
+                   type_line="Creature — Goblin"), quantity=n_beaters),
+    ]
+    if with_spell:
+        cards.append(dict(_card("Molten Duplication", DUPLICATION_TEXT, cmc=2,
+                                type_line="Sorcery", power=None,
+                                toughness=None), quantity=6))
+    return {"cards": cards}
+
+
+def _copy_run(with_spell, commander_copy=True, iterations=200):
+    library, commanders = goldfish.build_library(_copy_deck(with_spell=with_spell))
+    rng = random.Random(11)
+    results = [goldfish.simulate_once(rng, library, 3, [], 10,
+                                      model_combat=True,
+                                      commander_copy=commander_copy)
+               for _ in range(iterations)]
+    return goldfish.aggregate(results, [], 10, False, True)
+
+
+def test_the_profile_reads_a_token_copy_spell_and_not_an_activated_one():
+    """An ACTIVATED copy ability is not a cast spell: no commander-copy trigger
+    sees it and none of this model's spell channels fire. Kiki-Jiki is the card
+    that must stay out."""
+    dup = _card("Molten Duplication", DUPLICATION_TEXT, cmc=2,
+                type_line="Sorcery", power=None, toughness=None)
+    kiki = _card("Kiki-Jiki", "Haste {T}: Create a token that's a copy of "
+                 "target nonlegendary creature you control, except it has "
+                 "haste. Sacrifice it at the beginning of the next end step.",
+                 type_line="Legendary Creature — Goblin Shaman")
+    feldon = _card("Feldon", "{2}{R}, {T}: Create a token that's a copy of "
+                   "target creature card in your graveyard, except it's an "
+                   "artifact in addition to its other types.",
+                   type_line="Legendary Creature — Human Artificer")
+    assert goldfish.classify(dup)["combat"]["spell_token_copy"] == 1
+    assert goldfish.classify(kiki)["combat"]["spell_token_copy"] == 0
+    assert goldfish.classify(feldon)["combat"]["spell_token_copy"] == 0
+
+    # AND THE COMMANDER MUST BE ABLE TO COPY IT, which is a SECOND predicate:
+    # `copy_fodder` gates whether the multiplication happens at all, and a
+    # whitelist that omits the token-copy effect leaves this channel switched on
+    # and unreachable.
+    #
+    # HEAT SHIMMER IS THE CARD THAT PROVES IT, not Molten Duplication. Three of
+    # the four mono-red cards say the token "HAS haste"; Molten Duplication says
+    # it "GAINS haste until end of turn", which the whitelist already matched for
+    # other reasons. Asserting on Duplication alone passed with the token-copy
+    # clause deleted from the whitelist — it was the only one that did.
+    shimmer = _card("Heat Shimmer", "Create a token that's a copy of target "
+                    "creature, except it has haste and \"At the beginning of "
+                    "the end step, exile this token.\"",
+                    cmc=3, type_line="Sorcery", power=None, toughness=None)
+    assert "gains haste" not in shimmer["oracle_text"], (
+        "this assertion is only meaningful on a card the rest of the whitelist "
+        "does not already match")
+    from manamap.pilot import goldfish_profiles
+    assert goldfish_profiles.copy_fodder(shimmer), (
+        "a Zada-style ability cannot copy a token-copy spell, so the channel is "
+        "set and never multiplied")
+
+
+def test_a_token_copy_spell_moves_damage_and_is_actually_cast():
+    """THE CHANNEL AND ITS CASTING PREDICATE, in one assertion.
+
+    This file documents six cards read perfectly and never played: every casting
+    loop selects on a channel, and a card matching none of them sits in hand for
+    ten turns while its profile says exactly what it would have done. So the
+    test that proves the effect must be a test that the spell gets CAST.
+    """
+    with_it = _copy_run(with_spell=True)["combat"]["mean_damage_by_turn"]["10"]
+    without = _copy_run(with_spell=False)["combat"]["mean_damage_by_turn"]["10"]
+    assert with_it > without, (
+        f"damage @10 {with_it} with the spell against {without} without it — "
+        f"the channel fires or the card is never cast, and this cannot tell "
+        f"which, which is the point of asserting it here")
+
+
+def test_the_copies_last_one_turn_and_do_not_swell_the_board_forever():
+    """Both real cards end "sacrifice it at the beginning of the next end step"
+    or "exile this token". Left on the battlefield they would double the board
+    permanently on every cast, which is not the card — and board power is the
+    series that would say so."""
+    with_it = _copy_run(with_spell=True)["combat"]["mean_board_power_by_turn"]
+    without = _copy_run(with_spell=False)["combat"]["mean_board_power_by_turn"]
+    # The spell costs a card and a slot and adds no PERMANENT power, so the
+    # board series may not run away. A doubling that survived the end step
+    # would show here as a large, compounding gap.
+    assert with_it["10"] <= without["10"] * 1.35, (
+        f"board power @10 {with_it['10']} against {without['10']} — a one-turn "
+        f"token copy is being kept on the battlefield")
+
+
+def test_the_commander_ability_is_what_multiplies_it():
+    """Uncopied it is one extra body for a turn; copied it is one per creature.
+    With the flag off the same list must measure strictly less."""
+    on = _copy_run(with_spell=True, commander_copy=True)
+    off = _copy_run(with_spell=True, commander_copy=False)
+    assert on["combat"]["mean_damage_by_turn"]["10"] > \
+        off["combat"]["mean_damage_by_turn"]["10"], (
+            "the commander-copy flag does not change a token-copy spell, so "
+            "either `copy_fodder` rejects it or the multiplication never fires")
+
+
+def test_every_battlefield_entry_carries_the_same_number_of_fields():
+    """A STRUCTURAL GATE ON THE TUPLE, because a short entry is invisible until
+    something reads the missing field.
+
+    The entry has grown from four fields to nine — poison, toughness, tapped,
+    then temporary — and each time the risk is the same: a site that builds or
+    rewrites an entry without the new field. Adding `temporary` found THREE such
+    sites that the file's own "every unpack takes `*_`" claim had missed: a
+    second `battlefield.append` that bypasses the one door entirely, and two
+    combat unpacks with a fixed arity of 8, which raised
+    `too many values to unpack` three hundred lines from the change.
+
+    This greps the source rather than running a game, because the defect is a
+    site that a given simulation may never reach.
+    """
+    import re
+    from conftest import simulator_source
+    src = simulator_source() if callable(simulator_source) else None
+    if src is None:
+        import pathlib
+        src = pathlib.Path(
+            "src/manamap/pilot/goldfish_turn.py").read_text(encoding="utf-8")
+    elif not isinstance(src, str):
+        src = str(src)
+
+    # Every literal appended to the battlefield must have the same arity as the
+    # one door's own entry.
+    #
+    # THE PARENS ARE BALANCED, NOT REGEXED. The first version anchored on
+    # `))\n`, which a trailing comment defeats: the match ran past the append it
+    # was reading and counted 14 fields in an 8-field entry. It still failed on
+    # the planted bug — for the wrong reason, and it would have MISSED a short
+    # append written with a comment after it.
+    arities = []
+    needle = "battlefield.append(("
+    at = src.find(needle)
+    while at != -1:
+        depth, fields, i = 1, 1, at + len(needle)
+        while i < len(src) and depth:
+            ch = src[i]
+            if ch in "([":
+                depth += 1
+            elif ch in ")]":
+                depth -= 1
+            elif ch == "," and depth == 1:
+                fields += 1
+            i += 1
+        arities.append(fields)
+        at = src.find(needle, i)
+    assert len(arities) >= 2, (
+        "no battlefield append found — this test is grepping the wrong source")
+    assert len(set(arities)) == 1, (
+        f"battlefield entries are built with differing field counts {arities} — "
+        f"a short entry raises only where the missing field is read, which can "
+        f"be hundreds of lines from the site that built it")
+
+    # And no rewrite may drop the tail: `_e[:7] + (tapped,)` truncates every
+    # field after the eighth.
+    bad = re.findall(r"\[:7\] \+ \((?:True|False),\)(?! \+)", src)
+    assert not bad, (
+        f"{len(bad)} site(s) rewrite an entry as `[:7] + (tapped,)` without "
+        f"re-appending the tail, which silently drops every field past the "
+        f"eighth")
+
+
+# ── DEATH-TRIGGERED DAMAGE ───────────────────────────────────────────────────
+#
+# `death_drain` read only "each opponent loses N life" — the Blood Artist idiom.
+# A death trigger that DEALS DAMAGE had no field at all, so on a Goblin deck
+# whose entire conversion is bodies dying, Pashalik Mons and Boggart Shenanigans
+# contributed nothing to any figure. 20 cards in the corpus, 7 in mono-red.
+
+MONS_TEXT = ("Whenever Pashalik Mons or another Goblin you control dies, "
+             "Pashalik Mons deals 1 damage to any target.")
+SHENANIGANS_TEXT = ("Whenever another Goblin you control is put into a graveyard "
+                    "from the battlefield, you may have this enchantment deal 1 "
+                    "damage to target player or planeswalker.")
+
+
+def test_death_damage_reads_the_idioms_the_drain_pattern_never_did():
+    """THREE IDIOM GAPS, each found by a card and not by guessing.
+
+    `deals` alone misses "have this enchantment DEAL". "each opponent|any target"
+    alone misses "target player or planeswalker", which is five cards. And the
+    TRIGGER itself missed two forms: a card that names ITSELF where others say
+    "this creature" (Pashalik Mons), and "is put into a graveyard from the
+    battlefield", which is what CR 700.4 says "dies" means — so a trigger's AGE
+    decided whether the model could read it.
+    """
+    mons = _card("Pashalik Mons", MONS_TEXT,
+                 type_line="Legendary Creature — Goblin Artificer")
+    shen = _card("Boggart Shenanigans", SHENANIGANS_TEXT, type_line="Enchantment",
+                 power=None, toughness=None)
+    assert goldfish.classify(mons)["death"]["death_damage"] == 1
+    assert goldfish.classify(shen)["death"]["death_damage"] == 1
+    # Life loss stays in its own field: identical to a goldfish with one opponent
+    # at 40 life, NOT identical at a table, where life loss ignores damage
+    # prevention and hits through a Platinum Angel.
+    artist = _card("Blood Artist", "Whenever Blood Artist or another creature "
+                   "dies, target player loses 1 life and you gain 1 life.")
+    prof = goldfish.classify(artist)["death"]
+    assert prof["death_drain"] == 1 and prof["death_damage"] == 0
+
+
+def test_a_death_trigger_on_a_non_creature_is_not_a_creature_dying():
+    """THE COST OF READING "is put into a graveyard from the battlefield": it
+    admits the permanents that are not creatures. The sweep found four cards
+    firing on a creature death that trigger on an ENCHANTMENT or an ARTIFACT —
+    four of the ten the widening first appeared to gain."""
+    reaper = _card("Ashiok's Reaper", "Whenever an enchantment you control is "
+                   "put into a graveyard from the battlefield, draw a card.",
+                   type_line="Creature — Zombie")
+    miter = _card("Urza's Miter", "Whenever an artifact you control is put into "
+                  "a graveyard from the battlefield, draw a card.",
+                  type_line="Artifact", power=None, toughness=None)
+    for card in (reaper, miter):
+        prof = goldfish.classify(card)["death"]
+        assert not goldfish_is_death_engine(prof), (
+            f"{card['name']} triggers on a non-creature and is being read as a "
+            f"creature-death payoff, which overstates every deck running it")
+    # And a subject that names BOTH still counts — "another creature or artifact
+    # you control" is a creature death as well.
+    agent = _card("Marionette Apprentice", "Whenever another creature or "
+                  "artifact you control is put into a graveyard from the "
+                  "battlefield, each opponent loses 1 life.")
+    assert goldfish.classify(agent)["death"]["death_drain"] == 1
+
+
+def goldfish_is_death_engine(prof):
+    from manamap.pilot.goldfish_profiles import is_death_engine
+    return is_death_engine(prof)
+
+
+DEATHS = {"own_per_turn": 1.0, "opponent_per_turn": 0.0, "source": "a test"}
+
+
+def _death_deck(with_payoff):
+    """THE TWO ARMS DIFFER BY ORACLE TEXT AND BY NOTHING ELSE.
+
+    The first version APPENDED six copies of the payoff, so the with-payoff arm
+    had six more creatures and dealt more damage from bodies alone — the channel
+    could have been dead and the test would still have passed. It did: deleting
+    the line that applies `death_damage` left this green. A control that cannot
+    see the class it exists for is the defect `docs/testing.md` records.
+
+    So six Beaters BECOME the payoff, same cost, same power, same toughness,
+    same type line. Only the text changes.
+    """
+    payoff_text = MONS_TEXT if with_payoff else ""
+    return {"cards": [
+        dict(_card("Cmd", "", cmc=3, power="3", toughness="3",
+                   type_line="Legendary Creature — Goblin"), is_commander=True),
+        {"name": "Mountain", "type_line": "Basic Land — Mountain", "cmc": 0,
+         "oracle_text": "", "quantity": 34, "power": None, "toughness": None},
+        dict(_card("Beater", "", cmc=1, power="2", toughness="2",
+                   type_line="Creature — Goblin"), quantity=18),
+        dict(_card("Pashalik Mons", payoff_text, cmc=1, power="2",
+                   toughness="2", type_line="Creature — Goblin"), quantity=6),
+    ]}
+
+
+def _death_run(with_payoff, iterations=300):
+    """The RAW results, not `aggregate`.
+
+    Death damage lands in `drain_by_turn`, which is a different series from
+    `damage_by_turn` — and `aggregate()` called directly never builds a drain
+    block at all, because the block is assembled in `goldfish.run` under
+    `model_drain`. The first version of this test read both of those and saw
+    nothing, which looked exactly like a channel that does not fire.
+    """
+    library, _ = goldfish.build_library(_death_deck(with_payoff))
+    rng = random.Random(13)
+    return [goldfish.simulate_once(rng, library, 3, [], 10,
+                                   model_combat=True, model_drain=True,
+                                   model_deaths=DEATHS)
+            for _ in range(iterations)]
+
+
+def test_a_death_damage_payoff_actually_reaches_the_opponent():
+    """THE FIELD IS NOT THE CHANNEL. A flag the model sets and never acts on is
+    the defect `test_metric_hygiene` exists for — `treasure_doubler` shipped
+    set-and-unread and fifteen candidates returned byte-identical readings.
+    """
+    def drain_per_game(rows):
+        return sum(sum(r.get("drain_by_turn") or []) for r in rows) / len(rows)
+
+    with_it = drain_per_game(_death_run(True))
+    without = drain_per_game(_death_run(False))
+    # The two decks differ by ORACLE TEXT ONLY, so every point of this is the
+    # death trigger. Without the payoff nothing in the list drains at all.
+    assert without == 0, (
+        f"the control drains {without} with no death payoff in the list — the "
+        f"arms differ by something other than the trigger")
+    assert with_it > 1.0, (
+        f"a death-damage payoff drained {with_it} per game against a control of "
+        f"{without} — the field is read and never applied")

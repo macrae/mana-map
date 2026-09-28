@@ -49,15 +49,21 @@ def test_every_channel_names_a_real_flag_or_is_always_on():
     assert checked >= 4
 
 
-def test_dark_is_per_channel_not_per_card():
+def test_dark_is_per_channel_not_per_card(monkeypatch):
     """THE BUG THIS SHIPPED WITH FOR ONE ITERATION. Nearly every creature feeds
-    `bodies`, which is always on, so "seen if anything is active" reported
-    gishath — a deck that opts into NOTHING — as 0 dark. A card is dark when
-    ANYTHING about it is unread, whatever else is read.
+    `bodies`, which is always on, so "seen if anything is active" reported a
+    deck that opts into NOTHING as 0 dark. A card is dark when ANYTHING about it
+    is unread, whatever else is read.
+
+    THE DECLARATION IS PATCHED, NOT HUNTED. This named gishath until 2026-09-11
+    and goblin-storm until 2026-09-26, and each time the named deck had its
+    channels correctly declared this test broke — which made declaring a deck
+    properly a change that turns the board red. `declares_nothing` gives the
+    blind declaration without needing a blind deck.
     """
-    # gishath declared combat, treasure, draw and its reveal on 2026-09-11 and
-    # is all-seen now; goblin-storm opts into nothing and is the fixture.
-    report = _report("goblin-storm")
+    from conftest import declares_nothing
+    declares_nothing(monkeypatch, mc)
+    report = _report(SLUG)
     assert report["counts"]["dark"] > 0, "a deck with no flags cannot be all-seen"
     dark = [r for r in report["cards"] if r["state"] == "dark"]
     # …and the proof it is per-channel: at least one dark card also has an

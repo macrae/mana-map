@@ -875,9 +875,46 @@ _COSTED_SAC_OUTLET_RE = re.compile(
 #: "Whenever [this creature or] another creature you control dies". The self-only
 #: form ("When THIS creature dies") is deliberately not read: this model only
 #: sacrifices tokens, and a token is never the card carrying the trigger.
+#:
+#: TWO IDIOMS THIS MISSED, and both were on the deck that exposed the whole gap:
+#:
+#: 1. A CARD THAT NAMES ITSELF. Pashalik Mons reads "Whenever Pashalik Mons or
+#:    another Goblin you control dies" — the oracle text uses the card's own name
+#:    where other cards say "this creature", so the alternation could not reach
+#:    "or another". `[A-Z][\w' ,-]{2,30}? or another` is that form.
+#:
+#: 2. "IS PUT INTO A GRAVEYARD FROM THE BATTLEFIELD" IS WHAT "DIES" MEANS
+#:    (CR 700.4). Boggart Shenanigans spells it out longhand, and so do the older
+#:    cards generally — the short word was introduced later. Reading only "dies"
+#:    made a death trigger's age decide whether the model could see it.
 _DEATH_TRIGGER_RE = re.compile(
-    r"whenever (?:this creature or another|another|a|one or more)"
-    r"[\w' ]{0,26}?(?:you control )?dies", re.IGNORECASE)
+    r"whenever (?:this creature or another|[A-Z][\w' ,-]{2,30}? or another"
+    r"|another|a|one or more)"
+    r"[\w' ]{0,26}?(?:you control )?"
+    r"(?:dies|is put into a graveyard from the battlefield)", re.IGNORECASE)
+#: A SUBJECT THAT IS NOT A CREATURE. Widening the trigger to read "is put into a
+#: graveyard from the battlefield" (CR 700.4's own words for "dies") also admits
+#: the permanents that are not creatures, and the corpus sweep is what said so:
+#: four cards fired on a creature death that trigger on an ENCHANTMENT or an
+#: ARTIFACT reaching the graveyard — Wicked Visitor, Urza's Miter, Ashiok's Reaper
+#: and Femeref Enchantress, four of the ten this widening first appeared to gain.
+#:
+#: A GUARD BESIDE THE PATTERN RATHER THAN A LOOKAHEAD INSIDE IT. The subject slot
+#: holds anything from "nontoken creature" to "colorless creature" to a bare
+#: creature type ("Goblin"), so a negative lookahead tight enough to reject
+#: "enchantment" kept rejecting those too. "creature" anywhere in the subject wins
+#: — "another creature or artifact you control" is a creature death as well.
+_NON_CREATURE_SUBJECT_RE = re.compile(
+    r"\b(?:land|artifact|enchantment|permanent|planeswalker|token)s?\b", re.I)
+
+
+def _subject_is_a_creature(matched):
+    """Does this death trigger fire on a CREATURE dying?"""
+    if re.search(r"creature", matched, re.I):
+        return True
+    return not _NON_CREATURE_SUBJECT_RE.search(matched)
+
+
 _DEATH_DRAIN_RE = re.compile(
     r"each opponent loses (\d+) life|target player loses (\d+) life",
     re.IGNORECASE)
@@ -1085,6 +1122,39 @@ _OPPONENT_DEATH_GAIN_RE = re.compile(
     r"whenever a creature an opponent controls dies, you gain (\d+) life", re.I)
 
 
+#: DEATH-TRIGGERED DAMAGE TO A PLAYER, the half `_DEATH_DRAIN_RE` does not read.
+#:
+#: `death_drain` matches only "each opponent loses N life" / "target player loses
+#: N life" — the Blood Artist idiom. A death trigger that DEALS DAMAGE instead
+#: had no channel at all, so Pashalik Mons and Boggart Shenanigans contributed
+#: nothing to any figure on a Goblin deck whose whole conversion is bodies dying.
+#:
+#: THE IDIOM DISTRIBUTION, enumerated rather than guessed. Three attempts at this
+#: pattern found nothing or too little — `deals` alone misses "have this
+#: enchantment DEAL", and "each opponent|any target" alone misses "target player
+#: or planeswalker", which is five cards. So every damage clause following a
+#: death trigger in the corpus was counted first (45 clauses):
+#:
+#:     9  deals N damage to any target                 Omnath, Locus of Rage
+#:     5  ... to each opponent                         Syr Konrad, the Grim
+#:     5  ... to target player or planeswalker         Spiteful Prankster
+#:     3  ... to that player                           Pain Distributor
+#:     3  ... to each opponent and you gain            Vindictive Vampire
+#:     1  ... to target opponent                       The Great Goblin
+#:     3  ... to target creature                       EXCLUDED — not a player
+#:     2  ... to each creature                         EXCLUDED — not a player
+#:     2  ... to that creature's controller            EXCLUDED — when OUR
+#:     1  ... to that land's controller                creature dies that is US
+#:
+#: The five player-facing idioms are matched and the five creature-facing or
+#: self-facing ones are not, because this model has one opponent at 40 life and
+#: no creatures to shoot. `deals?` covers the "have this enchantment deal" voice.
+_DEATH_DAMAGE_RE = re.compile(
+    r"deals? (\d+) damage to "
+    r"(?:any target|each opponent|target player or planeswalker|that player"
+    r"|target opponent)", re.I)
+
+
 def death_profile(card):
     """What fires when ANOTHER creature you control dies.
 
@@ -1094,6 +1164,7 @@ def death_profile(card):
     """
     text = card.get("oracle_text", "") or ""
     out = {"death_drain": 0, "death_draw": 0, "death_treasure": 0,
+           "death_damage": 0,
            "gain_on_opponent_death": 0, "unreadable": None}
     # THE OTHER HALF OF THE MEATHOOK. "Whenever a creature an OPPONENT controls
     # dies, you gain 1 life" is a separate trigger from the one above, and in a
@@ -1106,17 +1177,29 @@ def death_profile(card):
     m = _DEATH_TRIGGER_RE.search(text)
     if not m:
         return out
+    # An enchantment or artifact hitting the graveyard is not a creature dying,
+    # and this model's death events are all creatures. See the sweep above.
+    if not _subject_is_a_creature(m.group(0)):
+        return out
     clause = text[m.start():m.start() + 170]
     drain = _DEATH_DRAIN_RE.search(clause)
     if drain:
         out["death_drain"] = int(drain.group(1) or drain.group(2))
+    # DAMAGE, NOT LIFE LOSS. Kept as its own field rather than folded into
+    # `death_drain`: they are the same number to a goldfish with one opponent at
+    # 40 life, but they are NOT the same to a table — life loss ignores damage
+    # prevention and hits through a Platinum Angel, and a figure that conflated
+    # them could not be corrected later without re-reading every card.
+    hit = _DEATH_DAMAGE_RE.search(clause)
+    if hit:
+        out["death_damage"] = int(hit.group(1))
     draw = _DEATH_DRAW_RE.search(clause)
     if draw:
         out["death_draw"] = _DRAW_WORDS[draw.group(1).lower()]
     if _DEATH_TREASURE_RE.search(clause):
         out["death_treasure"] = 1
     if not any((out["death_drain"], out["death_draw"], out["death_treasure"],
-                out["gain_on_opponent_death"])):
+                out["death_damage"], out["gain_on_opponent_death"])):
         out["unreadable"] = card.get("name")
     return out
 
@@ -1124,7 +1207,7 @@ def death_profile(card):
 def is_death_engine(prof):
     """One predicate, one home — the same lesson `is_etb_engine` records."""
     return bool(prof["death_drain"] or prof["death_draw"] or prof["death_treasure"]
-                or prof["gain_on_opponent_death"])
+                or prof["death_damage"] or prof["gain_on_opponent_death"])
 
 
 #: X-SPELL DRAW — the class this model reads as NOTHING, on decks built out of it.
@@ -1227,7 +1310,13 @@ _COPY_FODDER_EFFECT_RE = re.compile(
     r"gains? (?:haste|trample|flying|first strike|double strike|hexproof|"
     r"indestructible|menace|deathtouch|lifelink|vigilance|protection)|"
     r"gets? \+\d+/\+\d+|each get \+\d+/\+\d+|gets? \+X/\+X|can't block|untap target creature|"
-    r"put a \+1/\+1 counter|becomes? (?:red|a copy)|draw (?:a|one|two) cards?",
+    r"put a \+1/\+1 counter|becomes? (?:red|a copy)|draw (?:a|one|two) cards?|"
+    # A TOKEN COPY. Without this the effect is modelled and never multiplied:
+    # `copy_fodder` is the predicate that decides whether the commander's
+    # ability fires at all, so a whitelist that omits the effect leaves the
+    # channel switched on and unreachable — a flag the model sets and never acts
+    # on, which `test_metric_hygiene` exists to catch.
+    r"create a token that.s a copy of target",
     re.I)
 
 
@@ -1271,7 +1360,36 @@ def copy_fodder(card):
     if "Instant" not in type_line and "Sorcery" not in type_line:
         return False
     text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
-    if not re.search(r"target creature", text, re.I):
+    # "TARGET ARTIFACT OR CREATURE" IS STILL ONE TARGET, and requiring the
+    # literal "target creature" missed it. Molten Duplication — "create a token
+    # that's a copy of target artifact or creature you control" — is the single
+    # best card for a Zada-style commander in mono-red and read as uncopyable
+    # for as long as this predicate existed, because its target clause names the
+    # artifact first. You choose Zada; the spell then targets only Zada.
+    #
+    # CORPUS SWEEP for the widening, 2026-09-26 (34,890 cards): 855 -> 872
+    # matches, NOTHING DROPPED. The effect whitelist is what keeps it tight —
+    # "destroy target artifact or creature" names one target too and matches no
+    # effect, so removal stays out. The 17 gained, read card by card:
+    #   2 token-copy spells   Molten Duplication, Stolen Identity — the point.
+    #   1 X-token copy        Devastating Onslaught, matched on its haste grant
+    #                         rather than the copy, which this model does not
+    #                         price; the haste is real and the copies are not
+    #                         counted, so it understates.
+    #   6 protection grants   Apostle's Blessing, Loran's Escape, Shields Up!,
+    #                         Reroute Systems, Bofur // Concerted Care and
+    #                         Three Steps Ahead's Spree mode.
+    #   3 "gain control"      Hijack, Sibling Rivalry, Systems Override. Copied
+    #                         onto your OWN creature the control change is a
+    #                         no-op, and what the model credits is the clause
+    #                         after it — "untap it, it gains haste" — which is
+    #                         exactly right for a creature that entered this
+    #                         turn. Deliberately kept for that reason.
+    #   5 type/stat changes   I Am Iron Man, Majestic Metamorphosis, Mind
+    #                         Transfer Protocol, Lorehold Charm, Mental
+    #                         Modulation, each matched on a whitelisted clause
+    #                         (flying, a draw) rather than the type change.
+    if not re.search(r"target (?:artifact or )?creature", text, re.I):
         return False
     if _COPY_FODDER_PLURAL_RE.search(text):
         return False
@@ -2571,6 +2689,53 @@ def spell_combat_effects(card):
     return out
 
 
+#: A SPELL THAT TOKEN-COPIES ONE TARGET CREATURE — Molten Duplication, Heat
+#: Shimmer, Electroduplicate. On its own it is one extra body for a turn. Under
+#: a Zada-style ability it is the highest-ceiling card in the deck: each copy
+#: targets a different creature, so a board of N gets N token copies of ITSELF,
+#: all with haste, and every arrival payoff fires once per token.
+#:
+#: THE APOSTROPHE IS A WILDCARD on purpose. Scryfall's oracle text uses a curly
+#: right single quote, and an ASCII `'` in this pattern matches nothing — my
+#: first two sweeps for this category returned a confident `0 of 34,890` for
+#: exactly that reason.
+#:
+#: WHAT IS DELIBERATELY EXCLUDED, each with the card that forced it:
+#:   - `of each creature`      Kindred Charge. Not a single target, so a
+#:                             Zada-style ability never copies it, and it is a
+#:                             different (larger) effect this does not model.
+#:   - `card in your graveyard` Feldon of the Third Path. A graveyard copy is a
+#:                             recursion effect, not a board doubler.
+#:   - anything not an Instant or Sorcery, which drops Kiki-Jiki, The Fire
+#:     Crystal and Mirrorpool: an ACTIVATED ability is not a cast spell, so no
+#:     commander-copy trigger sees it and this model's spell channels never fire.
+_SPELL_TOKEN_COPY_RE = re.compile(
+    r"create(?:s)? a token that.s a copy of target (?:artifact or )?creature"
+    r"(?! card in your graveyard)", re.I)
+
+
+def spell_token_copy(card):
+    """Does this spell create a token copy of ONE target creature?
+
+    Returns the number of tokens per resolution (1 for every card in the corpus
+    that matches; the count is returned rather than a bool so a future card that
+    makes two does not need a second channel).
+
+    CORPUS SWEEP, 2026-09-26 (34,890 cards): 38 instants and sorceries match,
+    of which 4 are castable on a mono-red identity — Molten Duplication {1}{R},
+    Electroduplicate {2}{R} (flashback {2}{R}{R}), Heat Shimmer {2}{R} and
+    Kindle the Inner Flame {3}{R}. NONE of the 38 had any channel before this,
+    so every one of them measured as a dead card, which is why seven passes of
+    `candidates` sweeps on a Zada deck never promoted one: the instrument
+    ranked the deck's best card at zero.
+    """
+    type_line = str(card.get("type_line", "") or "")
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return 0
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    return 1 if _SPELL_TOKEN_COPY_RE.search(text) else 0
+
+
 def spell_counters(card):
     """How many PERMANENT +1/+1 counters this spell puts on one target creature."""
     type_line = str(card.get("type_line", "") or "")
@@ -2745,6 +2910,9 @@ def combat_profile(card):
         # board; `team` already hits everything and must not be doubled.
         "spell_treasure": 0,
         "spell_counters": 0,
+        # A TOKEN COPY OF ONE TARGET CREATURE, for one turn. See
+        # `spell_token_copy` for the sweep and what it excludes.
+        "spell_token_copy": 0,
         "spell_double_strike": False,
         "spell_power_multiplier": 1,
         "spell_power_to_each_opponent": False,
@@ -3000,6 +3168,7 @@ def combat_profile(card):
     profile["spell_pump_single"], profile["spell_pump_team"] = spell_pump(card)
     profile["spell_treasure"] = spell_treasure(card)
     profile["spell_counters"] = spell_counters(card)
+    profile["spell_token_copy"] = spell_token_copy(card)
     _sce = spell_combat_effects(card)
     profile["spell_double_strike"] = _sce["double_strike"]
     profile["spell_power_multiplier"] = _sce["power_multiplier"]

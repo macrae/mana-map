@@ -38,6 +38,7 @@ correctly invisible. A large DARK count is the thing that invalidates a run.
 import json
 
 from manamap.pilot.common import deck_file, expand_copies, load_deck_cards
+from manamap.pilot.goldfish_profiles import is_death_engine
 
 
 #: channel -> the `goldfish_targets.json` flag that switches it on. None means
@@ -154,7 +155,15 @@ def channels_for(profile):
             "infect", "toxic", "attack_ping_per_attacker",
             # Team haste (2026-09-11), listed with the channel.
             "team_haste", "attack_token_scales",
-            "spell_damage_greatest_power", "cast_damage")):
+            "spell_damage_greatest_power", "cast_damage",
+            # THE FOURTH DRIFT OF THIS MIRROR, and the most expensive so far.
+            # A spell that token-copies a target creature read as INVISIBLE, so
+            # `model-coverage` could not warn that the four such cards in mono-
+            # red were unpriced — and a `candidates` sweep ranked the best card
+            # a Zada deck can run at exactly zero, indistinguishable from a card
+            # that does not help. Seven passes of that sweep built a branch
+            # around "lean into Zada" without one of them.
+            "spell_token_copy")):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
@@ -198,7 +207,10 @@ def channels_for(profile):
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled"):
         found.add("discard")
     if profile["sac_outlet"] or _nonzero(profile.get("death"), (
-            "death_drain", "death_draw", "death_treasure")):
+            # `death_damage` listed WITH the field, not after somebody hits the
+            # gap the expensive way. Pashalik Mons and Boggart Shenanigans read
+            # as invisible while the deck's whole conversion was bodies dying.
+            "death_drain", "death_draw", "death_treasure", "death_damage")):
         found.add("sacrifice")
     # Named keys, not the truthiness of the dict — `drain` carries an
     # "unmodelled" sentinel like `draw` does, and reading the dict as a whole
@@ -308,8 +320,13 @@ def never_cast(profile, flags):
     # as goldfish's own casting predicate — the fleet test caught the drift
     # within the hour, which is the whole reason it exists. A mirror that is
     # only checked by hand is a mirror that is wrong.
-    if flags.get("model_deaths") and _nonzero(profile.get("death"), (
-            "death_drain", "gain_on_opponent_death")):
+    # THE MIRROR DRIFTED A THIRD TIME, on 2026-09-28, when `death_damage` shipped:
+    # this listed the fields by name and the new one was not among them, so
+    # Boggart Shenanigans read as never-cast on a deck that had switched the
+    # channel ON. ONE PREDICATE, ONE HOME — both sides now ask
+    # `is_death_engine`, which is the only thing that knows every death payoff,
+    # so adding the next field cannot desynchronise them.
+    if flags.get("model_deaths") and is_death_engine(profile.get("death") or {}):
         return False
     # An attack enabler is only meaningful where a commander attack trigger is
     # declared; there it is the card that lets the engine start at all.
