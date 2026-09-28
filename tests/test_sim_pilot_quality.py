@@ -130,6 +130,33 @@ KNOWN_FLAGGED = {
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836"
     "-s14467126-podExperimental-c600.json",
     #
+    # 2026-09-26/28, goblin-storm at standard-v3 again, now at n=100 — the SAME
+    # deck and the SAME table as the 40-game entry above, which is the control
+    # that makes these true positives rather than noise:
+    #
+    #   run                        our lands/turn   sythis   jarad   score
+    #   n40  ef47e836 (above)          0.319         —        —      0.776
+    #   n100 ef47e836 champion         0.346        0.485    0.382   0.831
+    #   n100 af01a068 copy-burst-v1    0.316        0.458    0.340   0.829
+    #
+    # Our seat lays two-thirds of sythis's land drops per turn across every run,
+    # and goblin-storm runs 36 lands — the same as every seat at that table — so
+    # there is no construction confound. At n=40 this could be argued as noise;
+    # at n=100, twice, with a 40-game precedent, it is Forge's own caveat about
+    # combo decks measured. Both records are kept because they are the only
+    # current-list readings at this table, and both say in their own verdict text
+    # that the rate is a FLOOR and not a result.
+    #
+    # THE SIBLING THAT DOES NOT FLAG IS THE USEFUL PART: zada-v1's 100-game run
+    # (`cb6398af`) reads our lands 0.339 against sythis 0.468 and jarad 0.358 and
+    # comes in just inside the threshold. So the gate is sitting exactly on this
+    # deck's behaviour at this table, and a goblin-storm run here should be
+    # ASSUMED to be near it rather than treated as a surprise.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836"
+    "-s14467126-podExperimental-c600.json",
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068"
+    "-s936119400-podExperimental-c600.json",
+    #
     # 2026-09-12, edgar-vampires against standard-v3, 40 games. Lands 0.826,
     # casts 0.705. UNLIKE the two entries above, this one is NOISE AT n=40 and
     # the evidence is a same-pod control: the 60-game run at the SAME

@@ -384,6 +384,55 @@ def patch_model(monkeypatch, name, value):
     return landed
 
 
+def declares_nothing(monkeypatch, *modules):
+    """Make the declaration read as EMPTY, without needing a deck that is blind.
+
+    THE FIXTURE WAS "whichever deck currently declares nothing", AND IT KEEPS
+    GETTING CONSUMED. `test_absent_is_absent...` names four earlier instances in
+    its own comment: heliod until 2026-09-07, gishath until 2026-09-11, then
+    goblin-storm until 2026-09-26, each one breaking the moment somebody
+    correctly declared that deck's channels. Two of those tests only survived
+    because a guard failed loudly; the rest would have passed on a dead premise.
+
+    Worse than fragile, it is backwards: it makes "declare this deck properly"
+    a change that turns the board red, so the cheapest way to keep tests green
+    is to leave a deck unable to see its own cards.
+
+    So the declaration is patched instead of hunted. `deck_file` resolves the
+    authored file and every reader binds it module-locally with a `from`-import,
+    so it is patched per module and the patch is asserted to have landed — the
+    same reasoning as `patch_model` above.
+    """
+    # `common` IS ALWAYS PATCHED, because a function-local `from ... import
+    # deck_file` re-resolves on every call and no module-level name exists to
+    # patch — `candidates` does exactly that. Modules that bind it at import
+    # time hold a COPY and need their own patch, which is what `modules` is for.
+    from manamap.pilot import common as _common
+
+    real = {_common: _common.deck_file}
+    for module in modules:
+        if module is _common:
+            continue
+        assert hasattr(module, "deck_file"), (
+            f"{module.__name__} does not bind `deck_file` at module level. If it "
+            f"imports it inside a function, `common` already covers it — pass it "
+            f"only if it holds its own copy, or this patch does nothing")
+        real[module] = module.deck_file
+
+    def blind(mod):
+        def deck_file(slug, name, branch=None):
+            if name == "goldfish_targets.json":
+                # A path that cannot exist, so every reader takes its own
+                # "no declaration" branch rather than a doctored file.
+                return real[mod](slug, name, branch).parent / "__declares_nothing__"
+            return real[mod](slug, name, branch)
+        return deck_file
+
+    for module in real:
+        monkeypatch.setattr(module, "deck_file", blind(module))
+    return sorted(m.__name__ for m in real)
+
+
 def _cache_of(config):
     """pytest's cache, or None when the cacheprovider plugin is not loaded.
 

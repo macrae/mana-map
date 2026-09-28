@@ -329,3 +329,79 @@ def test_a_malformed_declaration_does_not_kill_the_calling_command():
     assert exits == 0, (
         f"`run()` still raises SystemExit {exits} time(s) — it is called in "
         f"process by four commands")
+
+
+def test_the_death_payoff_predicate_has_exactly_one_home():
+    """THIS MIRROR HAS NOW DRIFTED THREE TIMES, and each time a card the model
+    priced was never cast.
+
+    Two places decide whether a death payoff is a permanent worth casting —
+    `goldfish_turn`'s nested `_engine_permanent` (what the simulator CASTS) and
+    `model_coverage.never_cast` (what the coverage report BELIEVES it casts). Both
+    listed the death fields BY NAME. `model_deaths` shipping drifted them once,
+    the drain fields again, and `death_damage` on 2026-09-28 a third time: Boggart
+    Shenanigans — an enchantment with no body whose only modelled effect is damage
+    on a Goblin dying — was read perfectly and never put on the table, on a
+    SLEEVED deck that had switched the channel on.
+
+    Both must ask `is_death_engine`. This test slices out the EXACT predicate on
+    each side, because two earlier versions of it passed with the drift in place:
+    one matched `is_death_engine` inside its own explanatory COMMENT, and one
+    searched all of `simulate_once`, which contains a legitimate second call under
+    `model_sacrifice`.
+    """
+    import inspect
+    import re
+    from manamap.pilot import goldfish_turn, model_coverage
+
+    def code_of(src):
+        return "\n".join(ln for ln in src.splitlines()
+                          if not ln.lstrip().startswith("#"))
+
+    # `_engine_permanent` is nested inside `simulate_once`; slice it by name.
+    whole = inspect.getsource(goldfish_turn.simulate_once)
+    m = re.search(r"\n(\s*)def _engine_permanent\(c\):\n(.*?)(?=\n\1\S|\Z)",
+                  whole, re.S)
+    assert m, "`_engine_permanent` not found — has the casting predicate moved?"
+    sides = {"goldfish_turn._engine_permanent": code_of(m.group(0)),
+             "model_coverage.never_cast":
+                 code_of(inspect.getsource(model_coverage.never_cast))}
+
+    for name, src in sides.items():
+        assert "is_death_engine(" in src, (
+            f"{name} no longer CALLS `is_death_engine` about a death payoff — it "
+            f"is deciding for itself, which is how this drifted three times")
+        # And no death field may appear in that predicate at all: the whole point
+        # is that the field list lives in ONE place.
+        for field in ("death_drain", "death_damage", "gain_on_opponent_death",
+                      "death_draw", "death_treasure"):
+            assert field not in src, (
+                f"{name} names {field!r} directly. Every death field belongs to "
+                f"`is_death_engine`; listing one here is the drift this test "
+                f"exists to stop.")
+
+
+def test_a_per_deck_authored_file_tolerates_a_deck_that_does_not_exist():
+    """`deck_dir` RAISES for an unknown slug, so any module that reads an authored
+    per-deck file breaks every synthetic-slug test in the suite unless it catches
+    that.
+
+    FIXED IN `net_change.forge` ON 2026-09-28 AND REINTRODUCED IN
+    `pilot_policy.load` THE SAME HOUR — five tests in `test_pilot_card_value.py`
+    (slug `fake`) errored with `No deck directory for 'fake'`, none of them about
+    policy. The lesson was written down and then walked into again, so it is a test
+    now rather than a comment.
+    """
+    from manamap.pilot import net_change, pilot_policy
+
+    assert pilot_policy.load("no-such-deck-anywhere") == {}, (
+        "pilot_policy.load raises or invents a policy for an unknown slug")
+    assert pilot_policy.hold_thresholds(
+        pilot_policy.load("no-such-deck-anywhere")) == {}
+
+    # `forge()` must answer rather than raise for a slug with no directory; what
+    # it answers is "unavailable", never a rate.
+    got = net_change.forge("no-such-deck-anywhere", "no-such-branch")
+    assert got.get("available") is False and got.get("why"), (
+        "net_change.forge must return an unavailable block with a reason for a "
+        "deck that is not on disk")

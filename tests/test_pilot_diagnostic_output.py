@@ -98,32 +98,26 @@ def test_a_magnitude_axis_separates_two_cards_a_membership_axis_cannot():
         f"identical multiplier deltas will simply reappear wearing a new name.")
 
 
-def test_absent_is_absent_and_names_the_flag_rather_than_reading_zero():
+def test_absent_is_absent_and_names_the_flag_rather_than_reading_zero(monkeypatch):
     """A deck that opts into neither model has no hoard and no clock. The key is
     missing, not 0.0 — a zero is a measurement nobody made — and the refusal
-    names the flag, because a bare 'no reading' sends the pilot hunting a bug."""
-    # goblin-storm declares NO model flags at all (gishath did until 2026-09-11). This read "heliod" until
-    # 2026-09-07, when heliod's paper check-in declared model_draw and
-    # model_combat and the test began asserting the opposite of that deck's own
-    # targets file. THIRD instance in one day of a test naming a deck and
-    # inheriting a decision the deck later reversed — the others were the
-    # model_draw opt-out test and the Hullbreaker win-line test.
-    #
-    # The guard is below: it asserts the stand-in still declares nothing, so the
-    # day gishath opts in this fails loudly instead of passing on a dead premise.
-    import json as _json
-    from manamap.config import DECKS_DIR
-    _t = DECKS_DIR / "goblin-storm" / "goldfish_targets.json"
-    if _t.exists():
-        _d = _json.loads(_t.read_text())
-        assert not any(_d.get(k) for k in
-                       ("model_draw", "model_combat", "model_drain",
-                        "model_treasures", "model_sacrifice")), (
-            "gishath has opted into a model — this test needs a deck that "
-            "declares NOTHING, or it proves nothing")
+    names the flag, because a bare 'no reading' sends the pilot hunting a bug.
+
+    THE DECLARATION IS PATCHED, NOT HUNTED. This test named heliod until
+    2026-09-07, gishath until 2026-09-11 and goblin-storm until 2026-09-26 —
+    each time the deck it named had its channels correctly declared and the test
+    began asserting the opposite of that deck's own targets file. The guard
+    caught it every time, which is why it is still honest, but the premise it
+    guarded made "declare a deck properly" a red board. `declares_nothing`
+    removes the premise: no real deck has to stay unable to see its own cards.
+    """
+    from conftest import declares_nothing
+    from manamap.pilot import goldfish
+    # `candidates` imports `deck_file` inside its functions, so `common` covers
+    # it; `goldfish` holds its own module-level copy and needs naming.
+    declares_nothing(monkeypatch, goldfish)
     got = diagnostic.run_on(_doc([]), "goblin-storm", iterations=200, quiet=True,
                             targets=[])
-    # gishath declares no flag, so the block refuses and says why.
     assert got["output"]["available"] is False
     assert "model_treasures" in got["output"]["why"]
 

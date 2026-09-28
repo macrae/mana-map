@@ -227,14 +227,25 @@ def test_all_committed_stacks_validate_and_pass():
         #
         # What must hold is that `build-index` keeps it out of the manifest the
         # frontend fetches, which is what makes it unpublishable.
-        if doc["checker"]["verdict"] != "pass":
+        # A MISSING `checker` IS THE SAME CATEGORY AS A FAILING ONE, and reading
+        # `doc["checker"]` raised KeyError instead of asserting it. Two scenarios
+        # lifted by a bridge that omitted permanents were marked `superseded_by`
+        # on 2026-09-28 and their stale verdicts archived, which left them with no
+        # `checker` at all — unverified by any reading, and the test crashed
+        # rather than checking the one thing it exists to check.
+        verdict = (doc.get("checker") or {}).get("verdict")
+        if doc.get("superseded_by"):
+            assert verdict != "pass", (
+                f"{path.name} is superseded and still carries a passing verdict — "
+                f"a replaced board must not keep its ✓")
+        if verdict != "pass":
             manifest = json.load(open(DECKS_DIR / "index.json"))
             decks = manifest["decks"] if isinstance(manifest, dict) else manifest
             row = next(d for d in (decks if isinstance(decks, list) else decks.values())
                        if d.get("slug") == "goblin-storm")
             assert path.name not in (row.get("stack_files") or []), (
-                f"{path.name} is checker-{doc['checker']['verdict']} and IS in the "
-                f"manifest — an unverified line would render as a ✓ on the deck page")
+                f"{path.name} is checker-{verdict!r} and IS in the manifest — an "
+                f"unverified line would render as a ✓ on the deck page")
             continue
         assert doc["checker"]["verdict"] == "pass", f"{path.name} is not checker-verified"
 

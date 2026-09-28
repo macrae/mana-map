@@ -108,6 +108,32 @@ def test_the_validator_accepts_an_absent_block_and_rejects_a_malformed_one():
 #: `KNOWN_FLAGGED` in test_sim_pilot_quality: the record is evidence about the
 #: harness and a floor on the deck, and its win rate is not read as a result.
 KNOWN_UNCAST = {
+    # ── goblin-storm, three runs made 2026-09-26/28 on the CURRENT lists ──
+    #
+    # NOT the stale-join shape below: every card named was in the 99 when the
+    # games were played, so these are TRUE POSITIVES about the AI. Two are
+    # proven from the record itself — `by_card` shows **Faithless Looting
+    # cast 0 / discarded 1** and **Goblin Bombardment cast 0 / discarded 1**, so
+    # the AI held each and threw it away rather than casting it. Both are
+    # documented classes: Forge's AI will not discard its own hand (the sharknado
+    # entry below records the same thing), and it will not sacrifice for a benefit
+    # its evaluator cannot price, which is what a free sacrifice outlet is.
+    #
+    # Past in Flames and Witch's Mark carry NO `by_card` record at all, so the
+    # cause is unknown rather than proven — stated rather than assumed, because a
+    # card that was never drawn and a card that was held and passed over are
+    # different facts and only one of them is about the AI.
+    #
+    # The champion at standard-v3, 100 games:
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600.json",
+    # zada-v1 at standard-v3, 100 games, same four cards:
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-cb6398af-s1412301999-podExperimental-c600.json",
+    # copy-burst-v1 at standard-v3, 100 games. Only Haze of Rage flags here, and
+    # the run is doubly caveated in its own record: it also trips the piloting
+    # gate. Read with the Zada ceiling — the AI cast the four copy effects 84
+    # times across these games while Zada's ability triggered 39 times in total,
+    # so most casts did not target her and produced one token instead of N.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068-s936119400-podExperimental-c600.json",
     # A RECORD IS JUDGED AGAINST TODAY'S DECLARATION, NOT THE ONE IT RAN UNDER.
     # These two flag for a reason that is not the AI's: the deck changed after
     # the run, and the cards now named in `goldfish_targets.json` were not in
