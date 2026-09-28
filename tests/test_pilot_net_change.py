@@ -1485,3 +1485,45 @@ def test_the_forge_block_prints_the_null_beside_the_mde():
     src = inspect.getsource(net_change._print_real_table)
     assert "_pod_null(" in src, "the Forge block must look the null up"
     assert "the table's null" in src, "and print it beside the MDE it scales"
+
+
+def test_forge_never_pools_runs_made_under_different_card_overrides():
+    """A RUN DESCRIBES THE HARNESS IT WAS PLAYED UNDER, not just the list.
+
+    `data/forge_overrides/` changes what the Forge AI may TARGET. On goblin-storm,
+    whose engine is "target your own commander", one unchanged list reads 1/73
+    without the overrides and 9/82 with them. Pooling them gave 10/155 = 0.065 —
+    a rate describing neither deck — and the override README asserted the guard
+    existed while nothing read the fingerprint.
+
+    Drives the production function against the real records.
+    """
+    from manamap.pilot.net_change import forge
+
+    f = forge("goblin-storm", "copy-burst-v1")
+    assert f.get("available"), f.get("why")
+    # The chosen bucket is one harness, and the block names which.
+    assert "card_overrides" in f, "the block must say which harness decided it"
+    br = f["branch"]
+    assert br["games"] != 155, (
+        "155 decided games is the two harnesses pooled — the defect this test "
+        "exists for")
+    assert br["games"] in (73, 82), (
+        f"the branch arm must be ONE harness, got {br['games']} decided games")
+    # And the held-out harness is reported, not dropped in silence.
+    others = f.get("other_tables") or {}
+    assert any("overrides" in k for k in others), (
+        f"a run held out for its harness must be named; got {sorted(others)}")
+
+
+def test_the_label_distinguishes_a_harness_from_a_table():
+    """`standard-v3` and `standard-v3 (overrides …)` are the same TABLE, so the
+    null applies to both — but they are not the same measurement. A reader told
+    only "another table" would think the null did not apply.
+    """
+    from manamap.pilot.net_change import _label
+
+    assert _label(("standard-v3", "")) == "standard-v3"
+    assert _label(("standard-v3", "60636e9e5565")) == "standard-v3 (overrides 60636e9e5565)"
+    # Truncated, so a long sha cannot push the table name off a terminal line.
+    assert _label(("p", "0" * 64)) == "p (overrides " + "0" * 12 + ")"

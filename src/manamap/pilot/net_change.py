@@ -692,6 +692,13 @@ def _seat_sha(doc, want):
     return None
 
 
+def _label(key):
+    """A bucket's name for a reader: the table, and the harness when it is not
+    the plain one. `('standard-v3', '') -> 'standard-v3'`."""
+    pod, ov = key
+    return f"{pod} (overrides {ov[:12]})" if ov else pod
+
+
 def forge(slug, branch):
     """The real table, if it has been played. POOLED WITHIN ONE POD ONLY, over
     DECIDED games only.
@@ -732,6 +739,15 @@ def forge(slug, branch):
             seat = (a.get("seats") or {}).get(want) or {}
             if seat.get("wins") is None:
                 continue
+            # A RUN ALSO DESCRIBES THE HARNESS IT WAS PLAYED UNDER. `data/
+            # forge_overrides/` changes what the AI may TARGET, and on a deck
+            # whose engine is "target your own commander" that is the difference
+            # between 1/73 and 9/82 on one unchanged list. Pooling the two gave
+            # 10/155 = 0.065 — a rate describing neither deck. The fingerprint has
+            # been written into every record since the overrides shipped and
+            # NOTHING READ IT, which is the same defect as a record describing a
+            # list it never played, one layer over and shipped the same day.
+            ov = (doc.get("card_overrides") or {}).get("sha") or ""
             ran = _seat_sha(doc, want)
             if ran and live_sha and ran != live_sha:
                 dropped.append({"run": doc.get("run_id") or path.split("/")[-1],
@@ -739,8 +755,9 @@ def forge(slug, branch):
                                 "games": a.get("games") or 0})
                 if strict:
                     continue
-            row = by_pod.setdefault(pod, {"wins": 0, "decided": 0, "games": 0,
-                                          "runs": 0, "by_route": {}})
+            row = by_pod.setdefault((pod, ov), {"wins": 0, "decided": 0,
+                                                 "games": 0, "runs": 0,
+                                                 "by_route": {}})
             row["wins"] += seat["wins"]
             # A clock-out has NO winner and is excluded from the rate — the same
             # definition the record's own `win_rate` uses.
@@ -806,18 +823,25 @@ def forge(slug, branch):
     if not common:
         return {"available": False,
                 "superseded": {k: v for k, v in superseded.items() if v},
-                "why": (f"the branch sat at {sorted(br)} and the champion at "
-                        f"{sorted(champ)} — no table in common, and a rate from "
+                "why": (f"the branch sat at {sorted(_label(k) for k in br)} "
+                        f"and the champion at "
+                        f"{sorted(_label(k) for k in champ)} — no table in "
+                        f"common under the same harness, and a rate from "
                         f"another table is not this branch's control. Run "
                         f"`manamap pilot simulate {slug} --pod {sorted(br)[0]}`")}
     # The table with the most branch games decides; the others are named.
-    pod = max(common, key=lambda k: br[k]["decided"])
-    a, b = champ[pod], br[pod]
+    key = max(common, key=lambda k: br[k]["decided"])
+    pod, ovsha = key
+    a, b = champ[key], br[key]
     a_w, a_n, b_w, b_n = a["wins"], a["decided"], b["wins"], b["decided"]
     d = stats.diff_proportions(a_w, a_n, b_w, b_n)
     m = stats.mde_proportion(a_w / a_n, a_n, b_n) or {}
     return {"available": True,
             "pod": pod,
+            # WHICH HARNESS DECIDED IT. Absent means no card-script overrides
+            # were loaded; a sha means both arms were played under exactly that
+            # directory, because they are bucketed together or not at all.
+            "card_overrides": ovsha or None,
             # WHAT THIS BLOCK LEFT OUT AND WHY. A run excluded in silence is
             # indistinguishable from a run that was never made.
             "superseded": {k: v for k, v in superseded.items() if v},
@@ -839,9 +863,10 @@ def forge(slug, branch):
             "basis": ("wins over DECIDED games (clock-outs have no winner and are "
                       "excluded), each arm pooled across every run of it at this "
                       "one table"),
-            "other_tables": {k: {"champion_runs": champ.get(k, {}).get("runs", 0),
+            "other_tables": {_label(k): {
+                                 "champion_runs": champ.get(k, {}).get("runs", 0),
                                  "branch_runs": br.get(k, {}).get("runs", 0)}
-                             for k in sorted(set(champ) | set(br)) if k != pod},
+                             for k in sorted(set(champ) | set(br)) if k != key},
             "champion": {"wins": a_w, "games": a_n, "all_games": a["games"],
                          "runs": a["runs"], "rate": round(a_w / a_n, 4),
                          "won_by": a["by_route"]},
@@ -1508,9 +1533,33 @@ def _print_real_table(doc):
         other = {k: v for k, v in (f.get("other_tables") or {}).items()
                  if v.get("champion_runs") or v.get("branch_runs")}
         if other:
-            print("    not pooled (another table): " + ", ".join(
+            print("    not pooled (another table or harness): " + ", ".join(
                 f"{k} ({v['champion_runs']} champion / {v['branch_runs']} branch run(s))"
                 for k, v in other.items()))
+            # THE ACTIONABLE CASE, called out rather than left in a list. A bucket
+            # at THIS table under a different harness is not a foreign table whose
+            # null does not apply — it is the same table, and the only reason it
+            # cannot be compared is that the other arm has never been run under
+            # those overrides. Saying which command fixes that is the difference
+            # between a held-out run and a wasted one.
+            here = {k: v for k, v in other.items()
+                    if k.startswith(f"{f.get('pod')} (overrides")}
+            for k, v in here.items():
+                need = "champion" if not v["champion_runs"] else "branch"
+                # FROM THE DOCUMENT, NOT A CLOSURE. `_print_real_table` takes only
+                # `doc`; reaching for `slug`/`branch` here raised NameError and the
+                # line silently did not print, which is how this was found.
+                _slug = doc.get("slug")
+                seat = _slug if need == "champion" else f"{_slug}@{doc.get('branch')}"
+                print(_wrap(
+                    f"{k} has {v['branch_runs']} branch and "
+                    f"{v['champion_runs']} champion run(s) — the SAME table, held "
+                    f"out only because the {need} has never been played under "
+                    f"those card-script overrides. They change what the AI may "
+                    f"TARGET, so pooling them would average two different "
+                    f"harnesses. To compare: `manamap pilot simulate {seat} "
+                    f"--pod {f.get('pod')} --games N` with "
+                    f"data/forge_overrides/ in place.", indent="      "))
         print(f"    delta {f['delta']:+.3f}  CI [{f['ci95'][0]:+.3f}, "
               f"{f['ci95'][1]:+.3f}]  MDE {f['mde']}")
         # AN MDE MEANS NOTHING WITHOUT THE NULL IT IS SCALED AGAINST, and this

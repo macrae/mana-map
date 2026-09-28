@@ -50,8 +50,20 @@ directory.** That is legitimate only while it is declared, so:
 
 - every file here is TRACKED and reviewable — nothing lives only in Forge's user dir
 - `sim/forge.py` fingerprints this directory into every run record
-  (`overrides.sha` / `overrides.files`), so a record made with overrides can never be
-  mistaken for one made without, and a comparison across the boundary is refused
+  (`card_overrides.sha` / `.cards` / `.n`), so a record made with overrides can never be
+  mistaken for one made without, and `net_change.forge` **buckets runs by table AND
+  fingerprint**, so the two never pool and a held-out harness is named with the command
+  that would make it comparable
+
+  **This bullet was ASPIRATIONAL when first written and it cost a wrong number the same
+  day.** The fingerprint shipped; nothing read it. `net-change` pooled the override run
+  with the plain one and printed `branch 10/155 (0.065)` for a list that is **1/73 =
+  0.014 unpiloted and 9/82 = 0.110 piloted** — a rate describing neither deck, sitting
+  under a README that claimed the comparison was refused. It is the same defect as a
+  Forge record describing a list it never played, one layer over, shipped hours after
+  that one was fixed. A written guard is not a guard; the gate is
+  `test_forge_never_pools_runs_made_under_different_card_overrides`, proven by
+  re-introducing the pooling
 - the 11 spells are OURS. Verified before the first run: **none of the 14 seats under
   `data/opponents/` runs any of them**, so the pod is unaffected and remains a control
 - `ValidTgts$` is never touched, so nothing here changes what is LEGAL — only what
