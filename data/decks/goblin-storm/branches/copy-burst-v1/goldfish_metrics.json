@@ -1,0 +1,427 @@
+{
+  "meta": {
+    "card_advantage": {
+      "cards_that_draw": 12,
+      "draw_not_modelled": [
+        "Forgotten Cave",
+        "Fountainport",
+        "Skullclamp",
+        "Smoldering Crater",
+        "War Room"
+      ],
+      "modelled": 7,
+      "why": "ETB, spell, upkeep and arrival draw are modelled; activated, X-based, death- and attack-triggered draw are not, and the cards are named in `draw_not_modelled`. Read the two numbers together: a deck whose count is twelve and whose modelled figure is one has almost no UNCONDITIONAL card advantage, which is a finding about the deck."
+    },
+    "combat_effects_not_modelled": [
+      "Great Train Heist"
+    ],
+    "commander": "Zada, Hedron Grinder",
+    "commander_cmc": 4,
+    "death_rate": {
+      "opponent_per_turn": 0.7894,
+      "own_per_turn": 0.3529,
+      "source": "forge run sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600 (standard-v3, 2026-09-26): 75 games with our seat, 253 own creature deaths and 566 opponent creature deaths over 717 own turns"
+    },
+    "deck": "goblin-storm",
+    "decklist_sha256": "be52f6ca4000838b1de22f73e6edf3f74bf00dce211a82eca6819c913fb22a94",
+    "interaction_suite_counted": [
+      "Boggart Shenanigans",
+      "Champion's Helm",
+      "Firebrand Archer",
+      "General Kreat, the Boltbringer",
+      "Goblin Bombardment",
+      "Goblin Negotiation",
+      "Grapeshot",
+      "Guttersnipe",
+      "Impact Tremors",
+      "Kessig Flamebreather",
+      "Lavaspur Boots",
+      "Mithril Coat",
+      "Pashalik Mons",
+      "Roaming Throne",
+      "Siege-Gang Commander",
+      "Siege-Gang Lieutenant",
+      "Swiftfoot Boots"
+    ],
+    "iterations": 10000,
+    "max_turn": 10,
+    "model_assumptions": [
+      "Simulates resource development, not full games (no interaction, no removal).",
+      "Draw every turn including turn 1 (multiplayer Commander).",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "One land drop per turn when available.",
+      "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
+      "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+      "Commander cast on first affordable turn (highest spending priority).",
+      "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+      "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+      "X-SPELL DRAW IS PAID FOR OUT OF WHAT IS LEFT. An {X} instant or sorcery that draws X is cast AFTER every other loop has spent what it wanted, with the whole remaining pool, and only when X would be at least 2 — a pilot does not cast Stroke of Genius for one card, and every cheapest-first loop in this module would have, because Scryfall counts {X} as zero and the card's `cmc` is only its fixed part. That floor is the one authored number in this channel. Casting last makes the figure a FLOOR in the other direction too: the spell only ever gets mana nothing else asked for. Corpus sweep: 33 X-cost instants and sorceries that draw X, 28 credited and 5 skipped — a split card whose cmc is both halves, an alternative cost under which X is 0, and three whose X is bounded by a discard or by a graveyard this model does not have.",
+      "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four channels are modelled — a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and an ARRIVAL trigger that draws when other creatures or tokens enter (Welcoming Vampire, Caretaker's Talent), which rides the same single door the ETB damage payoffs use. Activated draw (needs a spending policy this model has no opinion on), X-based draw (board-dependent), and death- or attack-triggered draw (no deaths, and attacks only under `model_combat`) are NOT modelled and the cards are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — 'if you control an artifact', 'you may draw' — is treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus carry one.",
+      "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a 2/3 that draws 'whenever one or more OTHER creatures you control with power 2 or less enter'; registered before its own entry it passed its own gate and drew a card it does not draw, overstating edgar-vampires by 22% at turn eight. The deferral applies to every card and not only the ones worded 'other', which understates Tocasia's Welcome and two relatives by one draw on the turn they land.",
+      "ARRIVAL DRAW IS SMALLER WITHOUT `model_combat`, and legitimately so. The channel rides the one door onto the battlefield, which `model_combat` also uses to spawn token copies and ETB-payoff tokens — those are real additional arrivals that do not exist in the resource-only model. Measured on edgar-vampires: 1.264 extra cards by turn ten with both flags against 1.106 with draw alone. Before 2026-08-28 the gap was 1.264 against 0.323, because every call to that door sat inside `if model_combat:` and a draw-only deck silently lost three quarters of its arrival draws.",
+      "HELD-UP INTERACTION is reported as two series and both are FLOORS. This model casts everything it can afford every turn, so `interaction_castable` is what a pilot developing at full speed has left over, not what a pilot choosing to hold up two mana would have. A low figure is therefore a real finding and a high one is unambiguous good news.",
+      "Tutors are modeled as wildcards: a CAST tutor that fetches to hand or the top — including a TYPED one (Worldly Tutor, Sarkhan's Triumph), which the old literal 'a card' match missed entirely — fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. An ACTIVATED, ETB or death-triggered tutor does not count, because this model only knows 'drawn and affordable'; nor does a land fetch, which is ramp and has no channel here yet. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+      "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering creature's power (Terror of the Peaks), X damage where X counts your board (Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY of what entered (Miirym). Every arrival fires them — cast, token or copy — and a copy is itself an arrival, so they compound, which is the deck working rather than a bug. A payoff worded 'another NONTOKEN' does not re-trigger on its own tokens, which is the brake the rules already had. A chain is capped at 12 deep. X counts the whole board rather than one subtype: exact where the creatures are Dragons, generous otherwise.",
+      "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
+      "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
+      "Rituals are not modeled (conservative).",
+      "Extra card draw is modelled ONLY behind `model_draw` — the assumption above names its channels. With the flag OFF it is one card per turn, always, which understates every deck by an amount proportional to how much draw it runs: conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list that hides, and `meta.card_advantage.draw_not_modelled` names the cards whose draw still has no channel, and is ABSENT rather than empty on a deck where every drawer is read.",
+      "CREATURES TAP WHEN THEY ATTACK (CR 508.1f) and untap at the start of your turn, so an ADDITIONAL COMBAT PHASE is only worth something if something untaps the team. Before this the swing was computed once and multiplied by the phase count, which made an extra combat free damage from a board that had already attacked: ur-dragon's damage at turn ten fell 68.798 -> 59.499 when it was corrected. LANDS still enter untapped, always — that assumption is unchanged and is about lands, not creatures.",
+      "A COMMANDER THAT COPIES A SINGLE-TARGET SPELL across the board is modelled behind `model_commander_copy`, declared per deck and checked against the commander's own text. Zada, Hedron Grinder is the only card in the corpus with the ability. It needs no authored rate: the copy count IS the number of other creatures you control, which this model already measures.",
+      "WHAT A COPIED SPELL DOES is read per effect, and each is one turn unless said otherwise: its draw, a pump (power only — toughness is tracked but no creature blocks here), a PERMANENT +1/+1 counter, a Treasure it creates, double strike, doubled power, damage every creature deals to each opponent, an additional combat phase, and an untap. A spell whose effect is none of these still counts toward the spell count and is otherwise inert.",
+      "THE SPELL COUNT IS TRACKED, so STORM is modelled, as are MAGECRAFT (which fires on a cast OR a copy) and per-cast damage (which fires on a cast only — that difference is a rules fact, not a simplification). Before this there was no spells-cast-this-turn variable at all and storm was unreadable.",
+      "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+      "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
+      "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
+      "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
+      "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK (`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires), the rest go to the bottom. The rate is Forge's, named in the record; this model has no blockers.",
+      "AN ENTRY TRIGGER THAT NAMES A TYPE FIRES ON THAT TYPE (2026-09-11): Dragon Tempest no longer fires on a mana dork; Molten Echoes copies the chosen type. Tokens carry no type line here and pass the gate. A CAST fires what listens for a cast, at every door the commander included: draw on a spell of mana value N or more (Up the Beanstalk), draw for a paid mana on a creature cast (Lifecrafter's Bestiary, paid when the pool has it), damage on casting a creature of power N or more (Sarkhan's Unsealing, counted as noncombat damage to the one opponent). A spell that has a creature deal its power to each opponent (Chandra's Ignition) deals the biggest body's power once; the wipe half has nothing to hit. A tutor that puts a creature ONTO THE BATTLEFIELD (Savage Order) sacrifices the smallest 4-power nontoken body and fetches the highest-power creature of the named type the library holds -- a policy, stated. Evasion for the commander (Majestic Heliopterus) is Forge's to read: this model has no blockers and the connect rate is declared.",
+      "A LAND-MANA BONUS (Mirari's Wake and three others) adds one mana per land from the turn after it lands; DRAW EQUAL TO THE GREATEST POWER resolves against the board at cast and is held while the board is empty; DRAW A CARD FOR EACH <type> ON ENTRY counts the board it joins; an attack token AS BIG AS THE BEST OTHER ATTACKER (Ghalta and Mavren) takes the second-largest swing. NOT modelled and named: Etali, Primal Storm (casting other players' cards is outside this model) and draw equal to combat damage dealt by one creature (Hunter's Insight).",
+      "TEAM HASTE IS MODELLED (2026-09-11). A permanent that says 'creatures you control have haste' lets every creature attack the turn it lands, from the turn the grant itself lands; a typed grant (Karrthus: Dragons) reads the creature's type line; Dragon Tempest's grant reads keyword flying; riot is read as always choosing haste. TOKENS carry no type line and no flying here, so a typed or flying grant does not reach them. NOT read: a grant from the graveyard (Anger), an activated one (Crashing Drawbridge), one conditional on the board ('as long as'), and the lands whose mana carries haste (Hall of the Bandit Lord, Arena of Glory) -- this model taps no particular land. Before this a granted creature waited a turn and its haste enabler was read as nothing.",
+      "Attack triggers, combat-damage triggers and additional combat phases are modelled, which is what makes Treasure sources gated on combat produce here when they produce nothing without this flag. Effects the parser cannot read are named in meta.combat_effects_not_modelled.",
+      "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
+      "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
+      "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
+      "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives.",
+      "BLOOD: a Blood token is created on an ETB, a per-opponent ETB (three, the pod) or a spell's resolution; Blood made by CONNECTING in combat is read and NOT credited, because a blocker can prevent it and this model has no blockers. AT MOST ONE IS CRACKED PER TURN, before the casting loops, and only with a card in hand, since discarding is part of the cost. One a turn is an authored floor: a pilot holding three with mana to spare cracks more, so this understates. Cracking one is a DISCARD and a DRAW, which the commander payoffs below charge for, and it sacrifices an ARTIFACT, which the artifact-sacrifice payoffs charge for.",
+      "ACTIVATED DRAW: a draw you BUY -- '{1}, {T}, Sacrifice this artifact: Draw a card' -- is paid for out of whatever mana the casting loops did not want, and a cost that eats its own source fires once. Energy and {X} activation costs are REFUSED and named, never priced at zero.",
+      "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam.",
+      "DISCARD: a wheel a PERMANENT carries is activated from the battlefield under the same hand-size gate as a wheel that is cast, paying its mana cost every time. It fires at the earliest on the turn AFTER the permanent lands, which is the summoning sickness of the tap in its cost, and a cost that sacrifices its own source fires once and takes the body off the board. An ability activated from the graveyard (Runehorn Hellkite) is a zone this model does not have and is refused rather than fired.",
+      "DISCARD: THE OPPONENT'S HALF OF A WHEEL IS NOW COUNTED, AND ONLY THE TAX ON IT. A symmetrical wheel refills the opponent too, so `whenever an opponent draws a card` payoffs (Razorkin Needlehead, Scrawling Crawler, Mind's Eye, Consecrated Sphinx) fire on their draw step and on every card a wheel deals them. ONE SEAT, the same convention the damage pillar uses -- Brallin's '1 damage to EACH opponent' is counted once against a single 40-life opponent -- so a real three-opponent table pays roughly three times this and every figure here is a FLOOR. WHAT IS STILL NOT MODELLED IS THE COST: the opponent draws those cards and never gets to use them, because this model has no opponent turn, no opponent board and no interaction. So the tax is priced and the risk it offsets is not. A trigger on an opponent CASTING (Rhystic Study) is a different family and stays unread.",
+      "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
+    ],
+    "model_version": "7d7fbdfb76cf",
+    "seed": 42,
+    "treasure_sources_not_modelled": [
+      "Ancestors' Aid",
+      "Fountainport",
+      "Great Train Heist",
+      "Impulsive Pilferer",
+      "Reckless Ransacking",
+      "Sudden Breakthrough"
+    ]
+  },
+  "metrics": {
+    "combat": {
+      "kill_by_poison_rate": 0.0,
+      "kill_by_turn_rate": {
+        "1": 0.0,
+        "10": 0.777,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.003,
+        "6": 0.039,
+        "7": 0.167,
+        "8": 0.398,
+        "9": 0.62
+      },
+      "kill_turn_histogram": {
+        "10": 1565,
+        "5": 34,
+        "6": 357,
+        "7": 1274,
+        "8": 2310,
+        "9": 2227
+      },
+      "mean_board_power_by_turn": {
+        "1": 0.112,
+        "10": 14.684,
+        "2": 0.743,
+        "3": 1.636,
+        "4": 4.245,
+        "5": 4.66,
+        "6": 7.111,
+        "7": 9.529,
+        "8": 10.59,
+        "9": 12.66
+      },
+      "mean_damage_by_turn": {
+        "1": 0.0,
+        "10": 24.43,
+        "2": 0.247,
+        "3": 1.4,
+        "4": 2.254,
+        "5": 4.531,
+        "6": 7.408,
+        "7": 10.187,
+        "8": 12.398,
+        "9": 16.791
+      },
+      "mean_kill_turn": 8.421,
+      "mean_poison_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
+      "median_kill_turn": 8,
+      "no_kill_by_max_turn_rate": 0.223
+    },
+    "commander": {
+      "cast_by_turn_6_rate": 0.935,
+      "cast_turn_histogram": {
+        "10": 64,
+        "2": 816,
+        "3": 264,
+        "4": 7160,
+        "5": 666,
+        "6": 445,
+        "7": 241,
+        "8": 169,
+        "9": 98,
+        "not_by_max_turn": 77
+      },
+      "mean_cast_turn": 4.195,
+      "median_cast_turn": 4
+    },
+    "discard": {
+      "mean_cards_discarded_by_turn": {
+        "1": 0.105,
+        "10": 0.388,
+        "2": 0.159,
+        "3": 0.195,
+        "4": 0.206,
+        "5": 0.244,
+        "6": 0.272,
+        "7": 0.296,
+        "8": 0.324,
+        "9": 0.351
+      },
+      "mean_commander_counters_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
+      "mean_cumulative_event_damage_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
+      "mean_event_damage_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      }
+    },
+    "drain": {
+      "mean_cumulative_drain_by_turn": {
+        "1": 0.0,
+        "10": 1.6,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.084,
+        "5": 0.096,
+        "6": 0.141,
+        "7": 0.481,
+        "8": 0.626,
+        "9": 0.886
+      },
+      "mean_drain_by_turn": {
+        "1": 0.0,
+        "10": 0.713,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.084,
+        "5": 0.012,
+        "6": 0.045,
+        "7": 0.341,
+        "8": 0.145,
+        "9": 0.26
+      },
+      "share_of_games_draining_by_turn_10": 0.368
+    },
+    "interaction_castable_by_turn": {
+      "1": 0.036,
+      "10": 0.508,
+      "2": 0.054,
+      "3": 0.073,
+      "4": 0.046,
+      "5": 0.15,
+      "6": 0.235,
+      "7": 0.323,
+      "8": 0.391,
+      "9": 0.455
+    },
+    "interaction_in_hand_by_turn": {
+      "1": 0.793,
+      "10": 0.625,
+      "2": 0.78,
+      "3": 0.75,
+      "4": 0.773,
+      "5": 0.729,
+      "6": 0.669,
+      "7": 0.623,
+      "8": 0.609,
+      "9": 0.614
+    },
+    "iterations": 10000,
+    "land_drop_hit_rate_by_turn": {
+      "1": 0.999,
+      "10": 0.472,
+      "2": 0.997,
+      "3": 0.907,
+      "4": 0.808,
+      "5": 0.691,
+      "6": 0.604,
+      "7": 0.529,
+      "8": 0.484,
+      "9": 0.473
+    },
+    "mean_available_mana_by_turn": {
+      "1": 0.999,
+      "10": 7.51,
+      "2": 2.163,
+      "3": 3.099,
+      "4": 4.02,
+      "5": 4.73,
+      "6": 5.393,
+      "7": 5.955,
+      "8": 6.477,
+      "9": 6.991
+    },
+    "mean_bodies_by_turn": {
+      "1": 0.151,
+      "10": 13.229,
+      "2": 0.568,
+      "3": 1.38,
+      "4": 1.778,
+      "5": 2.701,
+      "6": 4.677,
+      "7": 6.725,
+      "8": 7.921,
+      "9": 10.326
+    },
+    "mean_extra_cards_drawn_by_turn": {
+      "1": 0.352,
+      "10": 3.877,
+      "2": 0.615,
+      "3": 0.791,
+      "4": 0.857,
+      "5": 1.073,
+      "6": 1.317,
+      "7": 1.692,
+      "8": 2.207,
+      "9": 2.939
+    },
+    "mean_sacrifices_by_turn": {
+      "1": 0.0,
+      "10": 1.096,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.002,
+      "5": 0.012,
+      "6": 0.038,
+      "7": 0.09,
+      "8": 0.2,
+      "9": 0.465
+    },
+    "opening_hand": {
+      "first_seven_land_histogram": {
+        "0": 370,
+        "1": 1682,
+        "2": 3078,
+        "3": 2771,
+        "4": 1537,
+        "5": 478,
+        "6": 77,
+        "7": 7
+      },
+      "keep_can_act_by_t3_rate": 0.992,
+      "keep_first_seven_rate": 0.786,
+      "kept_hand_land_histogram": {
+        "0": 16,
+        "1": 81,
+        "2": 3836,
+        "3": 3532,
+        "4": 1923,
+        "5": 608,
+        "6": 4
+      },
+      "mean_mulligans": 0.257
+    },
+    "sac_cap_hit_rate": 0.0,
+    "targets": [
+      {
+        "assembled_rate": 0.697,
+        "assembled_rate_assisted": 0.697,
+        "by_turn_6_rate": 0.543,
+        "by_turn_6_rate_assisted": 0.543,
+        "label": "Zada online with a cantrip drawn",
+        "mean_turn": 5.095,
+        "mean_turn_assisted": 5.095
+      },
+      {
+        "assembled_rate": 0.671,
+        "assembled_rate_assisted": 0.671,
+        "by_turn_6_rate": 0.533,
+        "by_turn_6_rate_assisted": 0.533,
+        "label": "Early token maker drawn",
+        "mean_turn": 3.372,
+        "mean_turn_assisted": 3.372
+      },
+      {
+        "assembled_rate": 0.36,
+        "assembled_rate_assisted": 0.36,
+        "by_turn_6_rate": 0.2,
+        "by_turn_6_rate_assisted": 0.2,
+        "label": "Storm payoff plus ritual drawn",
+        "mean_turn": 5.488,
+        "mean_turn_assisted": 5.488
+      }
+    ],
+    "treasure": {
+      "engine_online_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
+      "mean_treasures_in_hoard_by_turn": {
+        "1": 0.0,
+        "10": 1.081,
+        "2": 0.0,
+        "3": 0.012,
+        "4": 0.035,
+        "5": 0.053,
+        "6": 0.112,
+        "7": 0.224,
+        "8": 0.417,
+        "9": 0.651
+      }
+    }
+  }
+}
