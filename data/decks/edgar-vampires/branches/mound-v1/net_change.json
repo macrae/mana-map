@@ -650,6 +650,11 @@
  "branch": "mound-v1",
  "changes": {
   "count": 5,
+  "counts": {
+   "in": 3,
+   "out": 3,
+   "rows": 5
+  },
   "diff": {
    "base_names": 96,
    "base_size": 100,
@@ -897,23 +902,25 @@
   "engine_casts": {
    "branch": {
     "covered": true,
-    "never_cast": []
+    "never_cast": [],
+    "played": "fb3507a68183b71705961362a22229c9b833a3f09eb6643e030f96882f6fb41f",
+    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-a4a93300-s762552064-podExperimental-c600"
    },
-   "champion": {
-    "covered": false,
-    "never_cast": [
-     "Altar of Dementia",
-     "Vish Kal, Blood Arbiter",
-     "Blade of the Bloodchief",
-     "Bloodflow Connoisseur",
-     "Deflecting Swat",
-     "Elenda, the Dusk Rose",
-     "Teferi's Protection",
-     "Vampiric Tutor"
-    ]
-   }
+   "champion": null
   },
   "excludes_zero": false,
+  "list_mismatch": {
+   "champion": {
+    "games": 840,
+    "on_disk": "7be137d0bfeb",
+    "played": [
+     "7ce22fd619b3",
+     "88bffd9b9394",
+     "bdaa14183bcd"
+    ],
+    "reads_as": "every Forge run on the champion was made with a different list, so this rate describes that list. A card swap and a cosmetic edit to decklist.txt both land here. Re-run: `manamap pilot simulate edgar-vampires --pod <name> --games N`"
+   }
+  },
   "mde": 0.29,
   "other_tables": {
    "playgroup": {
@@ -933,7 +940,65 @@
     "champion_runs": 4
    }
   },
-  "pod": "standard-v3"
+  "pod": "standard-v3",
+  "superseded": {
+   "champion": [
+    {
+     "games": 60,
+     "played": "7ce22fd619b3",
+     "pod": "standard-v2",
+     "run": "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-3e064845-s1040599109-podExperimental-c600"
+    },
+    {
+     "games": 100,
+     "played": "7ce22fd619b3",
+     "pod": "standard",
+     "run": "giada-angels-vs-baylen-tokens-vs-abaddon-n100-42dc6d00-s1121742080-podExperimental-c600"
+    },
+    {
+     "games": 100,
+     "played": "88bffd9b9394",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n100-717196e1-s1903269601"
+    },
+    {
+     "games": 20,
+     "played": "bdaa14183bcd",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n20-4d56c78c-s1297532812"
+    },
+    {
+     "games": 20,
+     "played": "88bffd9b9394",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n20-717196e1-s1903269601"
+    },
+    {
+     "games": 400,
+     "played": "88bffd9b9394",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n400-717196e1-s1903269601"
+    },
+    {
+     "games": 40,
+     "played": "7ce22fd619b3",
+     "pod": "playgroup",
+     "run": "krenko-tokens-vs-purphoros-pingers-vs-nekusar-discard-vs-neyith-fight-n40-9839cc96-s553924758-podExperimental-c600"
+    },
+    {
+     "games": 40,
+     "played": "7ce22fd619b3",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-cdaddf26-s341395706-podExperimental-c600"
+    },
+    {
+     "games": 60,
+     "played": "7ce22fd619b3",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-cdaddf26-s1450724134-podExperimental-c600"
+    }
+   ]
+  }
  },
  "harness": {
   "iterations": 10000,
@@ -943,7 +1008,7 @@
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
   "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
-  "Death-triggered DRAIN is not modelled at all \u2014 nothing dies in this simulation. Blood Artist, Zulaport Cutthroat and Bastion of Remembrance contribute nothing to any damage or kill row here. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
+  "Death-triggered drain and damage are NOT modelled on this deck: it declares no `model_deaths` rate, so nothing dies in this simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons and Bastion of Remembrance contribute nothing to any damage or kill row. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
  ],
  "mana": {
   "available": true,

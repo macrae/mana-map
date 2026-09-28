@@ -594,6 +594,11 @@
  "branch": "zada-v1",
  "changes": {
   "count": 22,
+  "counts": {
+   "in": 16,
+   "out": 16,
+   "rows": 22
+  },
   "diff": {
    "base_names": 79,
    "base_size": 100,
@@ -1162,31 +1167,31 @@
   "available": true,
   "basis": "wins over DECIDED games (clock-outs have no winner and are excluded), each arm pooled across every run of it at this one table",
   "branch": {
-   "all_games": 120,
-   "games": 96,
-   "rate": 0.0521,
-   "runs": 2,
-   "wins": 5,
+   "all_games": 86,
+   "games": 46,
+   "rate": 0.0435,
+   "runs": 1,
+   "wins": 2,
    "won_by": {
-    "all opponents have lost": 5
+    "all opponents have lost": 2
    }
   },
   "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
   "champion": {
-   "all_games": 40,
-   "games": 32,
-   "rate": 0.0312,
-   "runs": 1,
-   "wins": 1,
+   "all_games": 115,
+   "games": 94,
+   "rate": 0.0745,
+   "runs": 2,
+   "wins": 7,
    "won_by": {
-    "all opponents have lost": 1
+    "all opponents have lost": 7
    }
   },
   "ci95": [
-   -0.1088,
-   0.0899
+   -0.109,
+   0.0777
   ],
-  "delta": 0.0208,
+  "delta": -0.031,
   "engine_casts": {
    "branch": {
     "covered": false,
@@ -1195,19 +1200,21 @@
      "Past in Flames",
      "Assault Strobe",
      "Goblin Bombardment",
-     "Great Train Heist",
-     "Hanweir Garrison",
-     "Legion Warboss",
-     "Reckless Ransacking"
-    ]
+     "Witch's Mark"
+    ],
+    "played": "e01b366ccbd615d4abd1bfe80ba5e610cece5a25260908183013a383e39ba047",
+    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-cb6398af-s1412301999-podExperimental-c600"
    },
    "champion": {
     "covered": true,
-    "never_cast": []
+    "never_cast": [],
+    "played": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836-s14467126-podExperimental-c600"
    }
   },
   "excludes_zero": false,
-  "mde": 0.19,
+  "list_mismatch": null,
+  "mde": 0.18,
   "other_tables": {
    "standard": {
     "branch_runs": 0,
@@ -1218,7 +1225,23 @@
     "champion_runs": 2
    }
   },
-  "pod": "standard-v3"
+  "pod": "standard-v3",
+  "superseded": {
+   "branch": [
+    {
+     "games": 60,
+     "played": "57725742d1bc",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c9abd341-s1383481153-meExperimental-podExperimental-c600"
+    },
+    {
+     "games": 60,
+     "played": "57725742d1bc",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c9abd341-s1383481153-podExperimental-c600"
+    }
+   ]
+  }
  },
  "harness": {
   "iterations": 10000,
@@ -1228,7 +1251,7 @@
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
   "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
-  "Death-triggered DRAIN is not modelled at all \u2014 nothing dies in this simulation. Blood Artist, Zulaport Cutthroat and Bastion of Remembrance contribute nothing to any damage or kill row here. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
+  "Deaths ARE modelled here, at a MEASURED rate: 0.3529 of our creatures and 0.7894 of theirs per own turn, read off forge run sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600 (standard-v3, 2026-09-26): 75 games with our seat, 253 own creature deaths and 566 opponent creature deaths over 717 own turns. Both the life-loss idiom (`death_drain`) and the damage idiom (`death_damage`) are counted. The rate is an AVERAGE, so it cannot represent a turn where eight bodies die at once \u2014 a sacrifice burst is still understated."
  ],
  "mana": {
   "available": true,
@@ -1363,13 +1386,12 @@
   "why": "Lean into Zada: the deck is built on copying a single-target spell across the board and runs only FOUR drawing fodder cantrips out of the 16 that exist in mono-red. This pass takes fodder from 4 to 10, protection from 2 to 4 (Zada is a 3-mana 3/3 the whole deck depends on), and adds the two storm cards that actually convert. Slots come from the ramp surplus (15 vs target 10-12) and the 4-5 drop Goblin bodies, not from the token makers."
  },
  "objective_grade": {
-  "reading": 2.8112,
-  "shortfall": 0.1888,
-  "state": "not resolvable",
-  "why": "missed by 0.1888, which is under the 0.2051 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "reading": 2.2989,
+  "shortfall": 0.7011,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.1888, which is under the 0.2051 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The objective is not met. Hoard @t10, hoard @t6, damage @t10, board power @t6, killed by t6, killed by t10, stall, 2 in a row, extra cards by t8, interaction affordable @t6 and hand can act by t3 improved anyway, which is a different branch's case.",
   "bill": {
    "box": 1,
    "buy": 14,
@@ -1416,21 +1438,59 @@
    "reads_as": "14 to buy; 1 to pull out of a deck that is still together; 65 of 79 already owned",
    "total": 79
   },
-  "fell": [
-   "stall, 2 in a row",
-   "interaction affordable @T6"
-  ],
+  "fell": [],
   "no_call": [
+   "missed drop by T5",
    "mulliganed"
   ],
   "notes": [
-   "Forge, against a real pod: +0.021 win rate, CI [-0.109, +0.090] \u2014 this run cannot separate the two lists."
+   "Forge, against a real pod: -0.031 win rate, CI [-0.109, +0.078] \u2014 this run cannot separate the two lists."
   ],
   "reward": [
    {
-    "measure": "missed drop by T5",
-    "reads_as": "45 games in 100 -> 36 in 100, a swing of 8 games per 100",
-    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
+    "measure": "hoard @T10",
+    "reads_as": "0.38 -> 1.10, a change of +0.72 (+192%)",
+    "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine."
+   },
+   {
+    "measure": "hoard @T6",
+    "reads_as": "0.04 -> 0.13, a change of +0.08 (+188%)",
+    "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
+   },
+   {
+    "measure": "damage @T10",
+    "reads_as": "12.58 -> 20.41, a change of +7.84 (+62%)",
+    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
+   {
+    "measure": "board power @T6",
+    "reads_as": "6.81 -> 7.76, a change of +0.96 (+14%)",
+    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+   },
+   {
+    "measure": "killed by T6",
+    "reads_as": "1 games in 100 -> 3 in 100, a swing of 2 games per 100",
+    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+   },
+   {
+    "measure": "killed by T10",
+    "reads_as": "74 games in 100 -> 77 in 100, a swing of 3 games per 100",
+    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "measure": "stall, 2 in a row",
+    "reads_as": "10 games in 100 -> 9 in 100, a swing of 2 games per 100",
+    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+   },
+   {
+    "measure": "extra cards by T8",
+    "reads_as": "2.13 -> 2.30, a change of +0.17 (+8%)",
+    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   {
+    "measure": "interaction affordable @T6",
+    "reads_as": "29 games in 100 -> 38 in 100, a swing of 9 games per 100",
+    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    },
    {
     "measure": "hand can act by T3",
@@ -1440,21 +1500,9 @@
   ],
   "risk": [
    {
-    "detail": "4 games in 100 -> 6 in 100, a swing of 2 games per 100",
-    "kind": "paid",
-    "what": "stall, 2 in a row",
-    "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
-   },
-   {
-    "detail": "46 games in 100 -> 42 in 100, a swing of 4 games per 100",
-    "kind": "paid",
-    "what": "interaction affordable @T6",
-    "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
-   },
-   {
-    "detail": "the largest is mulliganed at +0.002 against an MDE of 0.016. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at -0.011 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "1 row(s) returned no call",
+    "what": "2 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1490,39 +1538,131 @@
    }
   ],
   "rose": [
-   "missed drop by T5",
+   "hoard @T10",
+   "hoard @T6",
+   "damage @T10",
+   "board power @T6",
+   "killed by T6",
+   "killed by T10",
+   "stall, 2 in a row",
+   "extra cards by T8",
+   "interaction affordable @T6",
    "hand can act by T3"
   ],
-  "state": "inconclusive"
+  "state": "do not merge"
  },
  "slug": "goblin-storm",
  "staged": 29,
  "table": [
   {
+   "better_is": "higher",
+   "branch": 1.0974,
+   "champion": 0.3753,
+   "delta": 0.7221,
+   "mde": 0.1141,
+   "measure": "hoard @T10",
+   "reads_as": "0.38 -> 1.10, a change of +0.72 (+192%)",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "better",
+   "what": "Treasures sitting in the hoard at the end of turn 10, averaged over every game.",
+   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.1275,
+   "champion": 0.0442,
+   "delta": 0.0833,
+   "mde": 0.0204,
+   "measure": "hoard @T6",
+   "reads_as": "0.04 -> 0.13, a change of +0.08 (+188%)",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "better",
+   "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
+   "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
+  },
+  {
+   "better_is": "higher",
+   "branch": 20.4125,
+   "champion": 12.5765,
+   "delta": 7.836,
+   "mde": 1.7195,
+   "measure": "damage @T10",
+   "reads_as": "12.58 -> 20.41, a change of +7.84 (+62%)",
+   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
+   "unit": "mean",
+   "verdict": "better",
+   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
+   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+  },
+  {
+   "better_is": "higher",
+   "branch": 7.7634,
+   "champion": 6.8052,
+   "delta": 0.9582,
+   "mde": 0.1693,
+   "measure": "board power @T6",
+   "reads_as": "6.81 -> 7.76, a change of +0.96 (+14%)",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "better",
+   "what": "Total power on the battlefield at the end of turn 6.",
+   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.0287,
+   "champion": 0.0053,
+   "delta": 0.0234,
+   "mde": 0.0066,
+   "measure": "killed by T6",
+   "reads_as": "1 games in 100 -> 3 in 100, a swing of 2 games per 100",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "better",
+   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
+   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.7704,
+   "champion": 0.7431,
+   "delta": 0.0273,
+   "mde": 0.0173,
+   "measure": "killed by T10",
+   "reads_as": "74 games in 100 -> 77 in 100, a swing of 3 games per 100",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "better",
+   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
+   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+  },
+  {
    "better_is": "lower",
-   "branch": 0.0587,
-   "champion": 0.0404,
-   "delta": 0.0183,
-   "mde": 0.0093,
+   "branch": 0.0854,
+   "champion": 0.1043,
+   "delta": -0.0189,
+   "mde": 0.0121,
    "measure": "stall, 2 in a row",
-   "reads_as": "4 games in 100 -> 6 in 100, a swing of 2 games per 100",
+   "reads_as": "10 games in 100 -> 9 in 100, a swing of 2 games per 100",
    "scale": null,
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "better",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
   },
   {
    "better_is": "lower",
-   "branch": 0.3643,
-   "champion": 0.4469,
-   "delta": -0.0826,
-   "mde": 0.0197,
+   "branch": 0.3984,
+   "champion": 0.4098,
+   "delta": -0.0114,
+   "mde": 0.0195,
    "measure": "missed drop by T5",
-   "reads_as": "45 games in 100 -> 36 in 100, a swing of 8 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.019 this run can resolve",
    "scale": null,
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
   },
@@ -1542,15 +1682,29 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.4199,
-   "champion": 0.4573,
-   "delta": -0.0374,
-   "mde": 0.0236,
+   "branch": 2.2989,
+   "champion": 2.1261,
+   "delta": 0.1728,
+   "mde": 0.1693,
+   "measure": "extra cards by T8",
+   "reads_as": "2.13 -> 2.30, a change of +0.17 (+8%)",
+   "scale": "against the 8 cards every deck draws for free by then",
+   "unit": "mean",
+   "verdict": "better",
+   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
+   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.3797,
+   "champion": 0.2938,
+   "delta": 0.0859,
+   "mde": 0.0231,
    "measure": "interaction affordable @T6",
-   "reads_as": "46 games in 100 -> 42 in 100, a swing of 4 games per 100",
+   "reads_as": "29 games in 100 -> 38 in 100, a swing of 9 games per 100",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "worse",
+   "verdict": "better",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
   },

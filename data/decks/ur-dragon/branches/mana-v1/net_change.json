@@ -788,6 +788,11 @@
  "branch": "mana-v1",
  "changes": {
   "count": 16,
+  "counts": {
+   "in": 10,
+   "out": 9,
+   "rows": 16
+  },
   "diff": {
    "base_names": 97,
    "base_size": 100,
@@ -1205,6 +1210,34 @@
  },
  "forge": {
   "available": false,
+  "superseded": {
+   "champion": [
+    {
+     "games": 60,
+     "played": "5611a822851c",
+     "pod": "standard-v2",
+     "run": "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-acc77874-s898753652-podExperimental-c600"
+    },
+    {
+     "games": 100,
+     "played": "5611a822851c",
+     "pod": "standard",
+     "run": "giada-angels-vs-baylen-tokens-vs-abaddon-n100-45f502ef-s1173684975-podExperimental-c600"
+    },
+    {
+     "games": 100,
+     "played": "b544a740c197",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n100-c040c7ac-s1225470892"
+    },
+    {
+     "games": 40,
+     "played": "7095f2d8d637",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-9def0ac6-s649688774-podExperimental-c600"
+    }
+   ]
+  },
   "why": "no Forge run on the branch \u2014 `manamap pilot simulate ur-dragon@mana-v1 --vs <pod>` puts it at a table and writes where this reads"
  },
  "harness": {
@@ -1215,7 +1248,7 @@
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
   "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
-  "Death-triggered DRAIN is not modelled at all \u2014 nothing dies in this simulation. Blood Artist, Zulaport Cutthroat and Bastion of Remembrance contribute nothing to any damage or kill row here. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
+  "Death-triggered drain and damage are NOT modelled on this deck: it declares no `model_deaths` rate, so nothing dies in this simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons and Bastion of Remembrance contribute nothing to any damage or kill row. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
  ],
  "mana": {
   "available": true,

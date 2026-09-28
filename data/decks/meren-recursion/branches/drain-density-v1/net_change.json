@@ -664,6 +664,11 @@
  "branch": "drain-density-v1",
  "changes": {
   "count": 2,
+  "counts": {
+   "in": 2,
+   "out": 2,
+   "rows": 2
+  },
   "diff": {
    "base_names": 100,
    "base_size": 100,
@@ -844,6 +849,7 @@
  },
  "forge": {
   "available": false,
+  "superseded": {},
   "why": "no Forge run on the deck \u2014 `manamap pilot simulate meren-recursion --vs <pod>` puts it at a table and writes where this reads"
  },
  "harness": {
@@ -854,7 +860,7 @@
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
   "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
-  "Death-triggered DRAIN is not modelled at all \u2014 nothing dies in this simulation. Blood Artist, Zulaport Cutthroat and Bastion of Remembrance contribute nothing to any damage or kill row here. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
+  "Death-triggered drain and damage are NOT modelled on this deck: it declares no `model_deaths` rate, so nothing dies in this simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons and Bastion of Remembrance contribute nothing to any damage or kill row. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
  ],
  "mana": {
   "available": true,

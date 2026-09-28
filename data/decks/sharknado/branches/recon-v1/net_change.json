@@ -1125,6 +1125,11 @@
  "branch": "recon-v1",
  "changes": {
   "count": 86,
+  "counts": {
+   "in": 43,
+   "out": 43,
+   "rows": 86
+  },
   "diff": {
    "base_names": 100,
    "base_size": 100,
@@ -2628,26 +2633,36 @@
      "Izzet Signet",
      "Jace's Archivist",
      "Magus of the Wheel"
-    ]
+    ],
+    "played": "bc16ddc7067e62d84a800edbde465b64665a21620762f455e68d97c6d7c954dc",
+    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c1d1131f-s1251704607-podExperimental-c600"
    },
-   "champion": {
-    "covered": false,
-    "never_cast": [
-     "Improbable Alliance",
-     "Winds of Change",
-     "Faithless Looting",
-     "Jace's Archivist",
-     "Magus of the Wheel",
-     "Molten Psyche",
-     "Reforge the Soul",
-     "Windfall"
-    ]
-   }
+   "champion": null
   },
   "excludes_zero": false,
+  "list_mismatch": {
+   "champion": {
+    "games": 120,
+    "on_disk": "7d623c5f9cf4",
+    "played": [
+     "6a639725e937"
+    ],
+    "reads_as": "every Forge run on the champion was made with a different list, so this rate describes that list. A card swap and a cosmetic edit to decklist.txt both land here. Re-run: `manamap pilot simulate sharknado --pod <name> --games N`"
+   }
+  },
   "mde": 0.175,
   "other_tables": {},
-  "pod": "standard-v3"
+  "pod": "standard-v3",
+  "superseded": {
+   "champion": [
+    {
+     "games": 120,
+     "played": "6a639725e937",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n120-ebff4d05-s1959377157-podExperimental-c600"
+    }
+   ]
+  }
  },
  "harness": {
   "iterations": 10000,
@@ -2657,7 +2672,7 @@
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
   "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
-  "Death-triggered DRAIN is not modelled at all \u2014 nothing dies in this simulation. Blood Artist, Zulaport Cutthroat and Bastion of Remembrance contribute nothing to any damage or kill row here. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
+  "Death-triggered drain and damage are NOT modelled on this deck: it declares no `model_deaths` rate, so nothing dies in this simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons and Bastion of Remembrance contribute nothing to any damage or kill row. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
  ],
  "mana": {
   "available": true,

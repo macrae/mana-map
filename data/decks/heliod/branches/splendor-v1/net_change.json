@@ -573,6 +573,11 @@
  "branch": "splendor-v1",
  "changes": {
   "count": 6,
+  "counts": {
+   "in": 3,
+   "out": 3,
+   "rows": 6
+  },
   "diff": {
    "base_names": 85,
    "base_size": 100,
@@ -843,19 +848,30 @@
   ],
   "delta": -0.0276,
   "engine_casts": {
-   "branch": {
-    "covered": true,
-    "never_cast": []
-   },
-   "champion": {
-    "covered": false,
-    "never_cast": [
-     "Azorius Signet",
-     "Psychosis Crawler"
-    ]
-   }
+   "branch": null,
+   "champion": null
   },
   "excludes_zero": false,
+  "list_mismatch": {
+   "branch": {
+    "games": 40,
+    "on_disk": "034afa608b87",
+    "played": [
+     "badd46c92ff0"
+    ],
+    "reads_as": "every Forge run on the branch was made with a different list, so this rate describes that list. A card swap and a cosmetic edit to decklist.txt both land here. Re-run: `manamap pilot simulate heliod@splendor-v1 --pod <name> --games N`"
+   },
+   "champion": {
+    "games": 300,
+    "on_disk": "f7e21dc6a8bb",
+    "played": [
+     "214af3084f80",
+     "2d7f07f99348",
+     "decc32b080fe"
+    ],
+    "reads_as": "every Forge run on the champion was made with a different list, so this rate describes that list. A card swap and a cosmetic edit to decklist.txt both land here. Re-run: `manamap pilot simulate heliod --pod <name> --games N`"
+   }
+  },
   "mde": 0.34,
   "other_tables": {
    "standard": {
@@ -867,7 +883,43 @@
     "champion_runs": 1
    }
   },
-  "pod": "standard-v3"
+  "pod": "standard-v3",
+  "superseded": {
+   "branch": [
+    {
+     "games": 40,
+     "played": "badd46c92ff0",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-1b132fbb-s454242235-podExperimental-c600"
+    }
+   ],
+   "champion": [
+    {
+     "games": 120,
+     "played": "decc32b080fe",
+     "pod": "standard",
+     "run": "giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84-s573917060-podExperimental-c600"
+    },
+    {
+     "games": 120,
+     "played": "214af3084f80",
+     "pod": "standard",
+     "run": "giada-angels-vs-baylen-tokens-vs-abaddon-n120-b0f44e4a-s968800842-podExperimental-c600"
+    },
+    {
+     "games": 20,
+     "played": "2d7f07f99348",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n20-92280ee6-s452098790"
+    },
+    {
+     "games": 40,
+     "played": "214af3084f80",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-4b0e1964-s1259215204-podExperimental-c600"
+    }
+   ]
+  }
  },
  "harness": {
   "iterations": 10000,
@@ -877,7 +929,7 @@
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
   "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
-  "Death-triggered DRAIN is not modelled at all \u2014 nothing dies in this simulation. Blood Artist, Zulaport Cutthroat and Bastion of Remembrance contribute nothing to any damage or kill row here. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
+  "Death-triggered drain and damage are NOT modelled on this deck: it declares no `model_deaths` rate, so nothing dies in this simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons and Bastion of Remembrance contribute nothing to any damage or kill row. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
  ],
  "mana": {
   "available": true,
