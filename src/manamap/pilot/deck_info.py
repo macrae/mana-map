@@ -526,6 +526,7 @@ def compose(slug, verify=False):
         "open_questions": _open_questions(base),
         "simulation": _simulation(slug, vdoc),
         "experiments": _experiments(slug),
+        "decisions": _decisions(slug),
     }
     info["next"] = _next(info)
     return info
@@ -605,6 +606,31 @@ def _stale_words(sm):
     if ran is not None and cur is not None:
         return f"  ** STALE — measured on V{ran}; deck is V{cur} **"
     return "  ** STALE — measured on a list this deck no longer holds **"
+
+
+def _decisions(slug):
+    """The ledger, composed: how many decisions, which merges await an outcome,
+    and the latest few with predicted beside realised. None when there is no
+    ledger — absent, not empty."""
+    from manamap.pilot import decisions
+    entries = decisions.read(slug)
+    if not entries:
+        return None
+    outcomes = {e["of"]: e for e in entries if e.get("kind") == "outcome"}
+    latest = []
+    for e in [x for x in entries if x.get("kind") in ("propose", "merge", "reject", "withdraw")][-5:]:
+        fp = ((e.get("prediction") or {}).get("forge") or {})
+        oc = outcomes.get(e["id"]) if e.get("kind") == "merge" else None
+        latest.append({"id": e["id"], "at": e.get("at"), "kind": e["kind"], "branch": e.get("branch"),
+                       "as_version": e.get("as_version"),
+                       "predicted": ({"endpoint": (e.get("prediction") or {}).get("endpoint"),
+                                      "grade": (e.get("prediction") or {}).get("grade"),
+                                      "forge_delta": fp.get("delta"), "forge_ci95": fp.get("ci95"),
+                                      "pod": fp.get("pod")} if e.get("prediction") else None),
+                       "realised": ((oc.get("realised") or {}) | {"inside_prediction": oc.get("inside_prediction")}
+                                    if oc else None)})
+    return {"count": len(entries), "awaiting_outcome": decisions.awaiting(slug),
+            "latest": latest}
 
 
 def _engine_casts(rec, slug):
@@ -836,6 +862,15 @@ def _next(info):
             by.setdefault(q["settled_by"], 0)
             by[q["settled_by"]] += 1
         nxt.append("open questions routed: " + ", ".join(f"{k} ×{v}" for k, v in sorted(by.items())))
+    # A MERGE WHOSE OUTCOME CAN BE CLOSED, or one that needs the run that would close it.
+    for w in ((info.get("decisions") or {}).get("awaiting_outcome") or []):
+        if w.get("closable"):
+            nxt.append(f"merge {w['id']} ({w['branch']}) has {w['runs_of_merged_list']} run(s) "
+                       f"of the merged list at {w['pod']} — `decisions {slug} outcome` records "
+                       f"predicted vs realised")
+        elif w.get("pod") and not closed:
+            nxt.append(f"merge {w['id']} ({w['branch']}) awaits a run of the merged list — "
+                       f"`simulate {slug} --pod {w['pod']} --games N`, then `decisions {slug} outcome`")
     if info["simulation"] is None and not closed:
         nxt.append(f"no simulation runs — `simulate {slug} --vs <opp> [--vs …] --games N` "
                    f"(Forge; ◆ seeded)")
@@ -996,6 +1031,18 @@ def _print(info):
                  else " (THE AI NEVER CAST THE ENGINE)")
               + f" · mean round {sm['mean_round']} · "
               f"eliminated by {sm['eliminated_by']} · token dmg share {sm['token_damage_share']}")
+    dc = info.get("decisions")
+    if dc:
+        closable = sum(1 for w in dc["awaiting_outcome"] if w.get("closable"))
+        print(f"  decided    {dc['count']} line(s) in the ledger"
+              + (f" · {len(dc['awaiting_outcome'])} merge(s) awaiting an outcome"
+                 if dc["awaiting_outcome"] else "")
+              + (f" ({closable} closable now)" if closable else ""))
+        for l in dc["latest"][-3:]:
+            pr, rl = l.get("predicted") or {}, l.get("realised") or {}
+            print(f"             {l['id']} {l['kind']:8} {l.get('branch') or '—'}"
+                  + (f" · predicted Δ {pr['forge_delta']:+.3f} at {pr['pod']}" if pr.get("forge_delta") is not None else "")
+                  + (f" · realised {rl.get('rate')} ({'inside' if rl.get('inside_prediction') else 'OUTSIDE' if rl.get('inside_prediction') is False else 'no interval'})" if rl else ""))
     xp = info["experiments"]
     if xp:
         l = xp["latest"]

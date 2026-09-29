@@ -986,9 +986,10 @@ PROPOSED_READY = "PROPOSED · READY"
 PROPOSED_STALE = "PROPOSED · STALE"
 PROPOSED_OUTRUN = "PROPOSED · OUTRUN"
 MERGED = "MERGED"
+REJECTED = "REJECTED"
 
 BRANCH_STATES = (OPEN, PROPOSED_BLOCKED, PROPOSED_READY, PROPOSED_STALE,
-                 PROPOSED_OUTRUN, MERGED)
+                 PROPOSED_OUTRUN, MERGED, REJECTED)
 
 
 def branch_state(slug, branch, doc=None, src=None):
@@ -1016,6 +1017,12 @@ def branch_state(slug, branch, doc=None, src=None):
         return MERGED, f"merged {m.get('at')} into the list after V{m.get('into_version_before')}"
     prop = doc.get("proposal")
     if not prop:
+        # REJECTED is derived from the ledger's last word on this branch —
+        # stored nowhere in the branch file, and undone by a later `propose`.
+        from manamap.pilot import decisions
+        last = decisions.latest_for(slug, branch, base=deck_dir(slug))
+        if last and last.get("kind") == "reject":
+            return REJECTED, f"rejected {str(last.get('at') or '')[:10]}: {last.get('reason', '')[:80]}"
         return OPEN, "no proposal — this is an experiment, not a decision"
 
     from manamap.pilot import deck_versions
@@ -1262,28 +1269,70 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
     doc["proposal"] = prop
     doc["v"] = max(int(doc.get("v") or 2), 3)
     _write_meta(slug, branch, doc)
+    # THE LEDGER LINE. `accepted_on` stays here (it is what `branch_state`
+    # reads); the ledger is the history, and it carries the report's Forge
+    # block too, so a later `outcome` has a prediction to close against.
+    from manamap.pilot import decisions
+    decisions.append(slug, "amend" if amending else "propose", branch=branch,
+                     as_version=as_version, reason=prop.get("why") or None,
+                     forced_reason=reason, branch_decklist_sha256=live,
+                     prediction=decisions.prediction_from(nc), base=deck_dir(slug))
     return {"slug": slug, "branch": branch, "proposal": prop,
             "state": branch_state(slug, branch, doc=doc),
             "pull_list": pull_list(slug, branch, doc=doc)}
 
 
-def withdraw(slug, branch):
+def withdraw(slug, branch, reason=None):
     """Take the proposal back. The "changes requested" path.
 
     Deletes the block and nothing else — the branch stays open, measured and
-    measurable. A withdrawn proposal is not a failure state and is deliberately
-    not recorded as one: the branch's own trail (`staged`, `commits`) already
-    says what happened to the list, and a graveyard of withdrawn intentions is
-    the `HISTORY.md` failure again.
+    measurable, and `branch.json` gains no `withdrawn` key: a graveyard of
+    withdrawn intentions in the branch file is the `HISTORY.md` failure again.
+    THE REASON GOES IN THE LEDGER, which is the one place a withdrawal is
+    recorded, so the decision is not lost either — it was, for the first
+    forty-two branches, and nothing could say why a proposal went away.
     """
     doc = meta(slug, branch)
     if not doc:
         raise SystemExit(f"No branch '{branch}' on {slug}.")
-    prop = doc.pop("proposal", None)
-    if not prop:
+    if not doc.get("proposal"):
         raise SystemExit(f"{slug}/{branch} is not proposed — nothing to withdraw.")
+    if not str(reason or "").strip():
+        raise SystemExit("withdraw needs --reason: the branch directory will not keep "
+                         "it, and the ledger is where a withdrawal is recorded")
+    prop = doc.pop("proposal")
     _write_meta(slug, branch, doc)
+    from manamap.pilot import decisions
+    decisions.append(slug, "withdraw", branch=branch, reason=reason,
+                     as_version=prop.get("as_version"), base=deck_dir(slug))
     return {"slug": slug, "branch": branch, "withdrew": prop}
+
+
+def reject(slug, branch, reason=None):
+    """Record that this branch is NOT going to be merged, and why.
+
+    Appends to the ledger and touches nothing else: the branch stays on disk,
+    measured, and `branch_state` derives REJECTED from the ledger's last word
+    on it until a later `propose` says otherwise. A proposal still open is
+    withdrawn first, under the same reason.
+    """
+    if not str(reason or "").strip():
+        raise SystemExit("reject needs --reason: a refusal with no argument cannot be "
+                         "revisited when the evidence changes")
+    doc = meta(slug, branch)
+    if not doc:
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    if doc.get("merged"):
+        raise SystemExit(f"{slug}/{branch} is merged; a merge is undone by a new branch, "
+                         f"not by rejecting the old one")
+    if doc.get("proposal"):
+        withdraw(slug, branch, reason=reason)
+    from manamap.pilot import decisions
+    nc = load_json(deck_dir(slug, branch) / "net_change.json") or None
+    e = decisions.append(slug, "reject", branch=branch, reason=reason,
+                         prediction=decisions.prediction_from(nc), base=deck_dir(slug))
+    return {"slug": slug, "branch": branch, "decision": e,
+            "state": branch_state(slug, branch)}
 
 
 def delete(slug, branch, force=False):
@@ -1442,6 +1491,15 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     if reason:
         doc["merged"]["forced_reason"] = reason
     _write_meta(slug, branch, doc)
+    # THE LEDGER LINE, with the report's prediction frozen — the figure the
+    # merged list's own runs will later be read against by `decisions outcome`.
+    from manamap.pilot import decisions
+    _nc = load_json(deck_dir(slug, branch) / "net_change.json") or None
+    decisions.append(slug, "merge", branch=branch,
+                     decklist_sha256=doc["merged"]["decklist_sha256"],
+                     into_version_before=doc["merged"]["into_version_before"],
+                     forced_reason=reason, as_version=(doc.get("proposal") or {}).get("as_version"),
+                     prediction=decisions.prediction_from(_nc), base=deck_dir(slug))
 
     # WHAT IS NOW STALE. The registry already carries the command for each stage,
     # so this reads `deck_status` rather than keeping a second list that can
@@ -1692,11 +1750,18 @@ def _dispatch(args):
               f"  To take it back:  deck-branch {slug} withdraw {branch}")
         return
     if action == "withdraw":
-        got = withdraw(slug, branch)
+        got = withdraw(slug, branch, reason=getattr(args, "reason", None))
         w = got["withdrew"]
         print(f"Withdrew the proposal on {slug}/{branch} "
               f"({w.get('as_version')}, made {w.get('at')}).")
-        print("  The branch is untouched and still measured.")
+        print("  The branch is untouched and still measured; the reason is in the ledger.")
+        return
+    if action == "reject":
+        got = reject(slug, branch, reason=getattr(args, "reason", None))
+        state, why = got["state"]
+        print(f"{state} — {slug}/{branch}: {why}")
+        print("  Recorded in decisions.jsonl; the branch stays on disk and measured, "
+              "and a later `propose` reopens it.")
         return
     if action == "delete":
         got = delete(slug, branch, force=getattr(args, "force", False))
@@ -1796,7 +1861,7 @@ def _dispatch(args):
 #: `merge` is absent on purpose — it already runs `regen.run(slug=…)`, which
 #: includes the `deck-info` stage.
 MUTATES_THE_DOSSIER = frozenset(
-    {"new", "stage", "unstage", "commit", "propose", "withdraw", "delete"})
+    {"new", "stage", "unstage", "commit", "propose", "withdraw", "reject", "delete"})
 
 
 def _refresh_dossier(slug):

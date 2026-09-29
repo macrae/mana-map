@@ -1234,6 +1234,35 @@
         'them and say nothing about the current one — re-run <code>simulate</code> ' +
         'or <code>experiment</code> to measure this list.</p>';
     }
+    // THE LEDGER: what each decision predicted, and — once the merged list has
+    // been played at the same table — what it got. Predicted and realised sit
+    // in one row so the instrument's honesty is on the page, not in a commit.
+    var dc = (d.info || {}).decisions;
+    if (dc && dc.latest && dc.latest.length) {
+      var drows = dc.latest.map(function (l) {
+        var pr = l.predicted || {}, rl = l.realised;
+        var predicted = pr.forge_delta != null
+          ? signed(pr.forge_delta) + (pr.forge_ci95 ? ' [' + signed(pr.forge_ci95[0]) + ', ' +
+              signed(pr.forge_ci95[1]) + ']' : '') + ' at ' + esc(pr.pod || '')
+          : (pr.endpoint ? esc(pr.endpoint) + ' ' + esc(pr.grade || '') : '—');
+        var realised = rl
+          ? esc(String(rl.wins)) + '/' + esc(String(rl.decided)) + ' = ' + num(rl.rate) +
+            (rl.difference ? ' · &Delta; ' + signed(rl.difference.delta) : '') +
+            (rl.inside_prediction === true ? ' <span class="chip">inside</span>'
+              : rl.inside_prediction === false ? ' <span class="chip stale">outside</span>' : '')
+          : (l.kind === 'merge' ? 'awaiting a run of the merged list' : '—');
+        return '<tr><td>' + esc(l.id) + '</td><td>' + esc(l.kind) + '</td><td>' +
+          esc(l.branch || '') + (l.as_version ? ' <span class="ev">' + esc(l.as_version) + '</span>' : '') +
+          '</td><td>' + predicted + '</td><td>' + realised + '</td></tr>';
+      }).join('');
+      body += '<h3>Decided</h3><p class="ev">' + dc.count + ' line(s) in the ledger' +
+        (dc.awaiting_outcome && dc.awaiting_outcome.length
+          ? ' · ' + dc.awaiting_outcome.length + ' merge(s) awaiting an outcome' : '') +
+        '. Predicted is what the report said when the pilot decided; realised is the ' +
+        'merged list\'s own runs at the same table and harness.</p>' +
+        '<div class="tablewrap"><table><thead><tr><th>#</th><th>kind</th><th>branch</th>' +
+        '<th>predicted</th><th>realised</th></tr></thead><tbody>' + drows + '</tbody></table></div>';
+    }
     body += '<p class="ev"><b>Every seat is a Forge AI, including this deck.</b> Forge ' +
       'rates its own AI "poor to ok in control, pretty bad for combo", so a control ' +
       'deck\'s rate is a lower bound and a combo deck\'s is not a measurement. A ' +

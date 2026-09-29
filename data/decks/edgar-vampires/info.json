@@ -5126,6 +5126,50 @@
       "reading": "the 95% interval on the win-rate difference is [-0.360, +0.038] and CONTAINS zero. At 20 games per arm this experiment could only have detected a difference of +0.405 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
     }
   },
+  "decisions": {
+    "count": 2,
+    "awaiting_outcome": [
+      {
+        "id": "002",
+        "branch": "elenda-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      }
+    ],
+    "latest": [
+      {
+        "id": "001",
+        "at": "2026-09-16",
+        "kind": "propose",
+        "branch": "elenda-v1",
+        "as_version": "v1.1.1",
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "002",
+        "at": "2026-09-16",
+        "kind": "merge",
+        "branch": "elenda-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not resolvable",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      }
+    ]
+  },
   "next": [
     "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×7"
   ],

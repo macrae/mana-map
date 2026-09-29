@@ -7543,6 +7543,50 @@
     "tokens_observed": 3.8
   },
   "experiments": null,
+  "decisions": {
+    "count": 2,
+    "awaiting_outcome": [
+      {
+        "id": "002",
+        "branch": "final-v2",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      }
+    ],
+    "latest": [
+      {
+        "id": "001",
+        "at": "2026-09-20",
+        "kind": "propose",
+        "branch": "final-v2",
+        "as_version": "v1.3.0",
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "002",
+        "at": "2026-09-20",
+        "kind": "merge",
+        "branch": "final-v2",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      }
+    ]
+  },
   "next": [
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",

@@ -82,6 +82,13 @@ PILOT_STEPS = [
      "An opponent seat under data/opponents/<slug>/ from EDHREC's average deck for a commander"),
     ("sim-scenario", "manamap.sim.bridge",
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
+    ("decisions", "manamap.pilot.decisions",
+     "THE DECISION LEDGER (decisions.jsonl, append-only): every propose / withdraw / reject / "
+     "merge with the prediction frozen at that moment; `outcome` joins a merged list's own "
+     "runs to it; `backfill` seeds it from branch.json"),
+    ("validate-decisions", "manamap.pilot.validate_decisions",
+     "Form-check decisions.jsonl: sequential ids, the closed kind vocabulary, reasons, "
+     "outcomes that name a merge"),
     ("campaign", "manamap.sim.campaign",
      "A PRE-REGISTERED queue of Forge A/Bs (data/campaigns/<name>.json): plan pins the arms "
      "and prepends an A/A per harness, run measures overnight and never merges, status derives "
@@ -196,6 +203,7 @@ PILOT_STEPS = [
 
 _DECK_COMMANDS = {
     "validate-poh-procedures", "validate-pilot-policy",
+    "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
@@ -610,7 +618,7 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "new", "show", "diff", "source",
                                       "stage", "unstage", "commit", "log",
-                                      "propose", "withdraw", "merge", "delete"],
+                                      "propose", "withdraw", "reject", "merge", "delete"],
                              help="list branches / new: open one from a list / show it / "
                                   "diff it against the deck / stage: one card out, one in / "
                                   "source: where every added card comes from / "
@@ -853,6 +861,20 @@ def add_pilot_parser(subparsers):
                                   "ones. Refuses any card whose targeting line is "
                                   "SP$ CopyPermanent, because CopyPermanentAi never "
                                   "reads AITgts$ — a hint the engine cannot act on")
+        if name == "decisions":
+            cmd.add_argument("action", nargs="?", default="list",
+                             choices=["list", "show", "outcome", "backfill", "adopt-policy"],
+                             help="list the ledger / show one line / outcome: close every "
+                                  "merge that has runs of the merged list at its pod / "
+                                  "backfill: seed from branch.json / adopt-policy: record a "
+                                  "piloting rule accepted from an experiment")
+            cmd.add_argument("entry_id", nargs="?", default=None, help="for `show`")
+            cmd.add_argument("--from-experiment", dest="from_experiment", default=None,
+                             metavar="EID", help="for `adopt-policy`")
+            cmd.add_argument("--reason", default=None)
+            cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
+                             help="outcome: compute without appending")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "campaign":
             cmd.add_argument("name", nargs="?", default=None,
                              help="a campaign under data/campaigns/; omit to list them")

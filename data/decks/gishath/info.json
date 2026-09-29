@@ -3002,6 +3002,50 @@
     "tokens_observed": 1.1
   },
   "experiments": null,
+  "decisions": {
+    "count": 2,
+    "awaiting_outcome": [
+      {
+        "id": "002",
+        "branch": "mana-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      }
+    ],
+    "latest": [
+      {
+        "id": "001",
+        "at": "2026-09-16",
+        "kind": "propose",
+        "branch": "mana-v1",
+        "as_version": "v1.1.0",
+        "predicted": {
+          "endpoint": "stall",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "002",
+        "at": "2026-09-20",
+        "kind": "merge",
+        "branch": "mana-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "stall",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      }
+    ]
+  },
   "next": [
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",

@@ -4039,6 +4039,109 @@
     "tokens_observed": 0.12
   },
   "experiments": null,
+  "decisions": {
+    "count": 5,
+    "awaiting_outcome": [
+      {
+        "id": "001",
+        "branch": "archangel-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      },
+      {
+        "id": "003",
+        "branch": "artifacts-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      },
+      {
+        "id": "005",
+        "branch": "splendor-v2",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      }
+    ],
+    "latest": [
+      {
+        "id": "001",
+        "at": "2026-09-08",
+        "kind": "merge",
+        "branch": "archangel-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "board_power_6",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "002",
+        "at": "2026-09-16",
+        "kind": "propose",
+        "branch": "artifacts-v1",
+        "as_version": "v1.3.0",
+        "predicted": {
+          "endpoint": "damage_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "003",
+        "at": "2026-09-16",
+        "kind": "merge",
+        "branch": "artifacts-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "damage_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "004",
+        "at": "2026-09-20",
+        "kind": "propose",
+        "branch": "splendor-v2",
+        "as_version": "v1.4.0",
+        "predicted": {
+          "endpoint": "interaction_6",
+          "grade": "not resolvable",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "005",
+        "at": "2026-09-20",
+        "kind": "merge",
+        "branch": "splendor-v2",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "interaction_6",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      }
+    ]
+  },
   "next": [
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",

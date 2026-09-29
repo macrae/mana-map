@@ -244,7 +244,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (106 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (108 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
@@ -322,6 +322,13 @@ manamap pilot deck-branch <slug> new <name> --objective "forge.win_rate >= 0.25 
                               # the branch's pooled rate there, with the interval on the
                               # difference and the null in the grade
 manamap pilot deck-branch <slug> propose <name> --as v1.0.2   # accept it; wait for cards
+manamap pilot deck-branch <slug> withdraw|reject <name> --reason "…"  # the reason goes in the LEDGER
+manamap pilot decisions <slug> [outcome|backfill]   # THE DECISION LEDGER (decisions.jsonl,
+                              # append-only): every propose/withdraw/reject/merge with the
+                              # report's prediction frozen; `outcome` joins the merged list's
+                              # own runs at the same pod+harness back to the merge —
+                              # predicted beside realised, inside the interval or not.
+                              # `deck-info` says when a merge can be closed.
 manamap pilot card-search --deck <slug> --oracle REGEX [--owned]         # mine the corpus
 manamap pilot model-coverage <slug>                     # WHAT THE MODEL CANNOT SEE, before the games:
                               # seen / DARK (feeds a channel that is OFF) / invisible.

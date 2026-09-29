@@ -188,7 +188,16 @@ manamap pilot calibrate [--iterations N] [--json]
                                         #   20+ games each and says what would close the gap —
                                         #   a Spearman on five points is a null wearing a
                                         #   finding's clothes
-manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|merge|delete]
+manamap pilot decisions <slug> [list|show ID|outcome|backfill|adopt-policy] [--dry-run] [--json]
+                                        #   THE DECISION LEDGER (decisions.jsonl, append-only): every
+                                        #   propose / withdraw / reject / merge with the prediction frozen
+                                        #   at that moment; `outcome` joins the merged list's own runs to
+                                        #   the merge it closes (predicted beside realised, inside or not)
+manamap pilot validate-decisions <slug> #   sequential ids, the closed kind vocabulary, a reason on every
+                                        #   withdraw and reject, an outcome that names a merge
+manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|propose|withdraw|reject|merge|delete]
+                                        #   `withdraw --reason` and `reject --reason` write the ledger;
+                                        #   REJECTED is a derived branch state, stored nowhere
                                         #   THE GIT WORKFLOW FOR A DECK. `new` demands an
                                         #   --objective (`<measure> <op> <number>`, or the
                                         #   real table: `forge.win_rate >= 0.25 @standard-v3`
@@ -916,6 +925,40 @@ of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]
 rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
 annotation on any of those contracts. The one rule is that the debrief may name nothing
 the pilot and the 99 did not — it is a reader, not a witness.
+
+## The decision ledger (`decisions.jsonl`, authored + derived; 2026-09-29)
+
+`deck_branch.propose` froze what the pilot accepted (`accepted_on`) and that was the whole
+record: nothing captured a rejection, nothing re-measured a merged list, and nothing put a
+prediction beside its outcome. Forty-two branches, nine merges, and not one line saying
+whether a merge delivered what its report promised — which is why `calibrate.py`'s
+headline is that nothing here is validated.
+
+`data/decks/<slug>/decisions.jsonl` is APPEND-ONLY, one object per line, the captain's
+log's discipline: a malformed line is an error, nothing rewrites, ids are sequential.
+`branch.json` keeps `accepted_on` (it is what `branch_state` reads); the ledger is the
+HISTORY. Kinds: `propose` / `amend` / `withdraw` / `reject` / `merge` (the branch verbs,
+each written by `deck-branch`), `experiment` (a campaign entry finishing), `adopt-policy`
+(a piloting rule accepted), `outcome` (computed, never authored). A `propose` or `merge`
+carries `prediction` — the report's objective, grade, recommendation, harness and, where
+the real table was measured, the Forge block's delta, interval, MDE, null and run ids.
+`withdraw` and `reject` need `--reason`, and it goes HERE and nowhere else: the branch
+directory gains no `withdrawn` key (a graveyard of withdrawn intentions in the branch file
+is the `HISTORY.md` failure again), and `branch_state` derives REJECTED from the ledger's
+last word on a branch until a later `propose` reopens it.
+
+`decisions <slug> outcome` closes a merge: it finds every deck-level run of the MERGED list
+at the predicted pod under the same harness (override sha, profile), pools it, and records
+the realised rate with its Wilson interval, the realised difference against the champion
+runs the prediction was scaled from, whether that landed INSIDE the predicted interval, and
+the paper record joined by sha (shown beside, never pooled in). Idempotent by run id; not a
+`regen` stage, because an append-only file cannot satisfy recompute-and-compare.
+`deck-info` composes it (`decisions.awaiting_outcome`, the latest lines with predicted
+beside realised) and the derived NEXT says `decisions <slug> outcome` when a merge can be
+closed, or `simulate` on the merged list when it cannot. `validate-decisions` is the gate
+(a GATE row in `deck-status`, like the captain's log). `backfill` seeded fifteen lines on
+five decks from `branch.json` so the registry names an artifact that exists; those lines
+say `backfilled` and carry what `accepted_on` had, which was never a Forge block.
 
 ## Prescriptions (`prescriptions/<id>-*.json`, the diagnosis scoped to a question)
 

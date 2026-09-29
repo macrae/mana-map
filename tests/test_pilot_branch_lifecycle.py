@@ -645,7 +645,7 @@ def test_proposing_twice_is_refused_and_withdraw_is_the_way_back(
     with pytest.raises(SystemExit) as e:
         db.propose("d", "b", "v1.0.3")
     assert "already proposed" in str(e.value) and "withdraw" in str(e.value)
-    got = db.withdraw("d", "b")
+    got = db.withdraw("d", "b", reason="the way back")
     assert got["withdrew"]["as_version"] == "v1.0.2"
     assert "proposal" not in doc
     # And the branch is untouched: its objective and trail survive.
