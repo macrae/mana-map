@@ -192,6 +192,29 @@ DOMINANT = 2.0
 FLOOR = 0.5
 
 
+def _excluded_branch_runs(name, pooled_games):
+    """How much of this table's evidence the default glob does not see.
+
+    Counted here rather than stated in prose, because a hand-written "60%" goes
+    stale the first time somebody runs a branch and nobody notices.
+    """
+    from manamap.config import DECKS_DIR
+
+    runs = games = 0
+    for path in sorted(DECKS_DIR.glob("*/branches/*/sim/*.json")):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if (doc.get("pod") or {}).get("name") != name:
+            continue
+        runs += 1
+        games += (doc.get("summary") or {}).get("decided") or 0
+    total = pooled_games + games
+    return {"runs": runs, "games": games,
+            "share": round(games / total, 4) if total else 0.0}
+
+
 def calibration(name, records=None):
     """How this table actually divides its wins, from every run that faced it.
 
@@ -212,6 +235,26 @@ def calibration(name, records=None):
     differ in N, in clock, in AI profile and in which deck sat in seat 0, and
     games inside a JVM job are a Markov chain rather than independent draws.
     The interval is therefore optimistic and `limits` says so.
+
+    "EVERY RUN THAT FACED IT" WAS NOT TRUE and the default glob is why: it is
+    `DECKS_DIR/*/sim/*.json`, one level, so a BRANCH run at
+    `<slug>/branches/<name>/sim/` has never been in the pool. At standard-v3 that
+    is 14 runs and 623 decided games — **60% of everything that has faced the
+    table** — silently absent from the figure every win rate is now scaled
+    against. Defensible as a choice (a branch is a candidate, not a deck the
+    pilot plays, and pooling zada-v1's void measurements would drag the null
+    toward a deck Forge cannot fly) but it was not a choice anybody made, and the
+    docstring claimed the opposite. Stated now, and `limits` carries it.
+
+    AND A BRANCH SUBJECT WAS NEVER KEYED `SUBJECT`. `seats[0].slug` is
+    `edgar-vampires@fear-v1` while `analysis.seats` keys the same seat
+    `edgar-vampires-fear-v1` — Forge flattens `@` to `-` for its registry — so the
+    equality test could not match and the subject fell through to its own row. Any
+    caller passing branch runs through `records=` got a pool where the OPPONENT
+    rates are computed over every game and `SUBJECT` over a subset, plus one
+    phantom pod seat per branch. The record's own `forge_name` is the authority,
+    which is the same normalisation `net_change._seat_sha` needed for the same
+    reason on the same day.
     """
     import collections
 
@@ -227,12 +270,16 @@ def calibration(name, records=None):
         if (doc.get("pod") or {}).get("name") != name:
             continue
         runs += 1
-        subject = doc["seats"][0]["slug"]
+        # THE SEAT'S OWN `forge_name` IS THE AUTHORITY on what `analysis.seats`
+        # calls it. `slug` carries the branch `@`; the analysis key does not.
+        seat0 = doc["seats"][0]
+        subject = seat0["slug"]
+        analysis_key = (seat0.get("forge_name") or "").removeprefix("mm-") or subject
         decks.add(subject)
         decided = doc["summary"]["decided"]
         games += decided
         for slug, seat in doc["analysis"]["seats"].items():
-            key = "SUBJECT" if slug == subject else slug
+            key = "SUBJECT" if slug in (subject, analysis_key) else slug
             seats[key][0] += seat.get("wins") or 0
             seats[key][1] += decided
 
@@ -275,6 +322,9 @@ def calibration(name, records=None):
                        if top and bottom else None),
         },
         "subject_null": subject_row,
+        # WHAT THE DEFAULT GLOB LEFT OUT, counted rather than asserted — so the
+        # figure cannot drift away from the sentence describing it.
+        "excluded_branch_runs": _excluded_branch_runs(name, games),
         "limits": [
             "Pooled across runs that differ in N, clock, AI profile and which "
             "deck sat in seat 0, so the interval assumes an exchangeability the "
@@ -285,6 +335,22 @@ def calibration(name, records=None):
             "table. A neutral control is `pod-control` and is not this figure.",
             "Truncated games have no winner and are excluded; the denominator "
             "is decided games.",
+            # THE EXCLUDED 60%, said out loud. The default glob is one level deep,
+            # so a branch's runs are not here — and the choice is load-bearing:
+            # pooling them at standard-v3 moves the subject null 0.233 -> 0.179,
+            # because a branch is usually a hypothesis and several are hypotheses
+            # Forge cannot fly. Kept out, because a null that moves when somebody
+            # stages a bad candidate is not a table's property; said out loud,
+            # because "every run that faced it" was in the docstring and untrue.
+            "DECK-LEVEL RUNS ONLY. A branch's runs are excluded, which at "
+            "standard-v3 is 14 runs and 623 decided games — 60% of everything "
+            "that has faced this table. Pooling them would move the subject null "
+            "0.233 -> 0.179. A branch is a candidate rather than a deck the pilot "
+            "plays, so the null describes the fleet's real lists.",
+            "Runs made under `data/forge_overrides/` are pooled like any other. "
+            "None is in the pool today (verified 2026-09-28: 0 of the 9 records "
+            "at standard-v3), but nothing excludes one — and an overridden run is "
+            "a different harness, the distinction `net_change.forge` buckets on.",
         ],
     }
 
@@ -319,6 +385,17 @@ def format_calibration(doc):
             lines.append(f"  ONE DECK ONLY ({doc['decks'][0]}), so this null is "
                          f"that deck's record as much as the table's. Run "
                          f"another deck here before reading it as a baseline.")
+        # WHICH POPULATION THIS NULL DESCRIBES, printed where the null is printed.
+        # Every win rate in `net-change` is now scaled against this figure, and a
+        # reader scaling against it deserves to know it is deck-level runs only —
+        # the rule that made `_pod_null` print here in the first place.
+        excluded = doc.get("excluded_branch_runs") or {}
+        if excluded.get("runs"):
+            lines.append(
+                f"  DECK-LEVEL RUNS ONLY: {excluded['runs']} branch run(s) and "
+                f"{excluded['games']} decided games are NOT in this figure "
+                f"({excluded['share']:.0%} of everything that has faced this "
+                f"table). A branch is a candidate, not a deck the pilot plays.")
     if doc["balance"]["dominant"] or doc["balance"]["floor"]:
         lines.append("  This table is not even. A win rate against it is "
                      "relative to that unevenness, not to 1/n.")

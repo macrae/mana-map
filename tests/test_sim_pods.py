@@ -457,3 +457,75 @@ def test_a_null_pooled_from_one_deck_says_so():
     text = pods.format_calibration(cal)
     if len(cal["decks"]) < 2:
         assert "ONE DECK ONLY" in text
+
+
+def test_a_branch_subject_is_keyed_SUBJECT_not_as_a_phantom_pod_seat():
+    """`analysis.seats` is keyed by Forge's META NAME and `seats[0].slug` carries the
+    branch `@`, so the equality test could not match and a branch's subject fell through
+    to its own row.
+
+    The consequence was a pool with two denominators: opponents accumulated every game
+    while `SUBJECT` accumulated only the deck-level ones, plus one phantom pod seat per
+    branch — `goblin-storm-copy-burst-v1` sitting in the table as though it were an
+    opponent we had chosen to seat.
+
+    Drives the production function over the real records.
+    """
+    import glob
+    import pathlib
+
+    from manamap.sim import pods
+
+    branch = [pathlib.Path(p) for p in sorted(
+        glob.glob("data/decks/*/branches/*/sim/*.json")) if "/logs/" not in p]
+    deck = [pathlib.Path(p) for p in sorted(
+        glob.glob("data/decks/*/sim/*.json")) if "/logs/" not in p]
+    if not branch:
+        pytest.skip("no branch runs on this machine")
+
+    doc = pods.calibration("standard-v3", records=deck + branch)
+    if not doc.get("subject_null"):
+        pytest.skip("no standard-v3 records")
+    seats = {r["seat"] for r in doc["seats"]}
+    # Every non-SUBJECT row must be a real pod seat, never a deck of ours.
+    ours = {p.parts[2] for p in branch}
+    phantom = {s for s in seats if s != "SUBJECT"
+               and any(s.startswith(o) for o in ours)}
+    assert not phantom, (
+        f"branch subjects appear as pod seats: {sorted(phantom)} — the subject was not "
+        f"keyed SUBJECT, so this pool has two denominators")
+    # And one denominator: SUBJECT's games must equal each opponent's.
+    opp = {r["seat"]: r["games"] for r in doc["seats"] if r["seat"] != "SUBJECT"}
+    assert len(set(opp.values())) == 1, f"opponents disagree on the denominator: {opp}"
+    assert doc["subject_null"]["games"] == next(iter(opp.values())), (
+        f"SUBJECT pooled {doc['subject_null']['games']} games while each opponent "
+        f"pooled {next(iter(opp.values()))} — the mis-keying is back")
+
+
+def test_the_null_names_the_population_it_excludes():
+    """AN MDE IS SCALED AGAINST THIS FIGURE, so a reader has to know which runs are in
+    it. The default glob is one level deep and had never said so, while the docstring
+    claimed "every run that faced it" — at standard-v3 that is 60% of the evidence absent
+    from the number every win rate is now divided by.
+
+    The share is COUNTED, not written into prose, because a hand-written "60%" goes stale
+    the first time somebody runs a branch.
+    """
+    from manamap.sim import pods
+
+    doc = pods.calibration("standard-v3")
+    if not doc.get("subject_null"):
+        pytest.skip("no standard-v3 records")
+    ex = doc.get("excluded_branch_runs")
+    assert ex is not None, "the excluded population must be reported, not assumed"
+    assert ex["runs"] >= 1 and ex["games"] >= 1
+    assert 0 < ex["share"] < 1
+    # `format_calibration` returns a STRING, not a list of lines. Joining it with
+    # newlines interleaves its CHARACTERS and no contiguous phrase survives, which is
+    # how the first cut of this assertion failed against output that was already correct.
+    rendered = pods.format_calibration(doc)
+    assert isinstance(rendered, str)
+    assert "DECK-LEVEL RUNS ONLY" in rendered, (
+        "it must print where the null prints — the rule that put the null beside the "
+        "MDE in net-change in the first place")
+    assert str(ex["runs"]) in rendered and str(ex["games"]) in rendered
