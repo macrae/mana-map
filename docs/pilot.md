@@ -103,10 +103,17 @@ manamap pilot sim-progress <slug> [--experiment NAME]   # a RUNNING batch: bar, 
                                         #   estimate with its Wilson interval + a convergence trace. Read-only
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
 manamap pilot fetch-opponent "<commander>" [--as slug] [--note …] | --list   # a pod seat under data/opponents/ from EDHREC's average deck
-manamap pilot experiment <slug> --a V4 --b working --vs <opp>… --games N [--detect X] [--anyway]
+manamap pilot experiment <slug> --a V4 --b working --pod <name> --games N [--looks K] [--until-mde X]
+                                        #   [--detect X] [--anyway] [--aa] [--profile-b P] [--resume]
                                         #   A/B same table; one artifact with the delta. The preflight prints
                                         #   before the JVMs start; `--detect X` REFUSES a run that cannot see X
-                                        #   at 80% power unless `--anyway` (same two flags on `simulate`)
+                                        #   at 80% power unless `--anyway` (same two flags on `simulate`).
+                                        #   `--looks K` is a GROUP-SEQUENTIAL design (O'Brien-Fleming, K<=4):
+                                        #   each look is whole rotated jobs from both arms at its own boundary
+                                        #   z, the record is rewritten after every look and `--resume`
+                                        #   continues it; `--until-mde X` is non-binding futility. `--aa` is one
+                                        #   list twice (the noise floor); `--profile-b P` flies our seat on
+                                        #   another AI profile on arm B only (policy-on vs policy-off)
 manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare blockers"] [--stack]
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version

@@ -723,6 +723,25 @@ def add_pilot_parser(subparsers):
                                   "before four hours are spent finding out")
             cmd.add_argument("--anyway", action="store_true",
                              help="run an underpowered --detect as a screen rather than a test")
+            cmd.add_argument("--looks", type=int, default=1, metavar="K",
+                             help="a group-sequential design with K equally spaced looks "
+                                  "(1-4, O'Brien-Fleming): each look is whole rotated jobs "
+                                  "from both arms, tested at its own boundary; the record "
+                                  "is rewritten after every look and resumes with --resume")
+            cmd.add_argument("--until-mde", type=float, default=None, dest="until_mde",
+                             metavar="X", help="non-binding futility: stop a look whose "
+                                               "boundary interval already excludes +X")
+            cmd.add_argument("--boundary", choices=["obf", "pocock"], default="obf",
+                             help="the boundary scheme (default O'Brien-Fleming)")
+            cmd.add_argument("--aa", action="store_true",
+                             help="an A/A: one list twice, arm B on a second seed base — "
+                                  "the harness's noise floor, said out loud")
+            cmd.add_argument("--resume", action="store_true",
+                             help="continue an unfinished sequential run of the SAME "
+                                  "command line from its next look")
+            cmd.add_argument("--profile-b", dest="profile_b", default=None, metavar="P",
+                             help="fly OUR seat on this AI profile on arm B only (policy-on "
+                                  "vs policy-off on one list); arm A keeps --profile")
             cmd.add_argument("--a", dest="a", default=None, metavar="REF",
                              help="arm A: a version (V4 / tag / sha) or `working`")
             cmd.add_argument("--b", dest="b", default=None, metavar="REF",

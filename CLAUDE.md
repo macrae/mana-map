@@ -296,7 +296,15 @@ manamap pilot simulate <slug> --pod standard-v3 --games N
 manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/opponents/
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
 manamap pilot prescribe <slug> "<question>"             # open a question to the doctor (then /prescribe)
-manamap pilot experiment <slug> --a V1 --b working --vs <pod> --games N   # THE CONTROLLED A/B
+manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--looks K]
+                              # THE CONTROLLED A/B. `--looks K` (<=4, O'Brien-Fleming):
+                              # each look is WHOLE ROTATED JOBS from both arms at its own
+                              # boundary z, never a partial job; the record is rewritten
+                              # after every look and `--resume` continues it; `--until-mde X`
+                              # is non-binding futility. `--aa` is one list twice (the noise
+                              # floor); `--profile-b P` is policy-on vs policy-off on one list.
+                              # Seats rotate per global job like `simulate`; the id carries
+                              # clock, overrides and AI-profile shas, empty at their defaults.
 manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys.
                               # ONE PRIMARY (the objective), TWELVE EXPLORATORY rows,
                               # Holm-corrected. THE REAL TABLE IS IN THE RULE: a Forge

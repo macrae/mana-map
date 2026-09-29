@@ -142,6 +142,56 @@ def diff_means_summary(ma, sa, na, mb, sb, nb):
             "method": "Welch t interval on the difference of means"}
 
 
+#: GROUP-SEQUENTIAL BOUNDARIES, two-sided alpha = 0.05, K equally spaced looks.
+#: O'Brien–Fleming (1979): the k-th look tests at c_K * sqrt(K / k), so an early
+#: stop needs a huge effect and the final look pays ~3% of half-width over a
+#: fixed design — which is what commit ca8e802e measured about early slices:
+#: "large effect absent" is the one early reading that survives. Pocock (1977)
+#: is the constant-boundary alternative, kept so a reader can see the trade.
+#: Pinned by a test against the published tables, the way `T975` is.
+OBF_BOUNDARIES = {1: [1.960], 2: [2.796, 1.977], 3: [3.471, 2.454, 2.004],
+                  4: [4.049, 2.863, 2.337, 2.024]}
+POCOCK_BOUNDARIES = {1: [1.960], 2: [2.178, 2.178], 3: [2.289, 2.289, 2.289],
+                     4: [2.361, 2.361, 2.361, 2.361]}
+BOUNDARIES = {"obf": OBF_BOUNDARIES, "pocock": POCOCK_BOUNDARIES}
+
+
+def look_boundaries(looks, scheme="obf"):
+    """The critical z at each of `looks` equally spaced looks, or a refusal."""
+    table = BOUNDARIES.get(scheme)
+    if table is None:
+        raise ValueError(f"unknown boundary scheme {scheme!r}; one of {sorted(BOUNDARIES)}")
+    if looks not in table:
+        raise ValueError(f"{looks} looks is not tabulated; 1 to {max(table)}")
+    return list(table[looks])
+
+
+def sequential_power(p_a, p_b, n_per_look, looks, scheme="obf", seed=0,
+                     iterations=10000):
+    """Power of a group-sequential two-arm design, by seeded Monte Carlo.
+
+    Each iteration draws `looks` waves of `n_per_look` Bernoulli games per arm,
+    accumulates them, and stops at the first look whose Newcombe interval at
+    that look's boundary z excludes zero (either direction — two-sided). Power
+    is the share of iterations that stop. At `looks = 1` this is the fixed
+    design and a test holds it to `power_for` within Monte Carlo error.
+    """
+    import random
+    rng = random.Random(seed)
+    bounds = look_boundaries(looks, scheme)
+    hits = 0
+    for _ in range(iterations):
+        k_a = k_b = n = 0
+        for k in range(looks):
+            n += n_per_look
+            k_a += sum(rng.random() < p_a for _ in range(n_per_look))
+            k_b += sum(rng.random() < p_b for _ in range(n_per_look))
+            if diff_proportions(k_a, n, k_b, n, z=bounds[k])["excludes_zero"]:
+                hits += 1
+                break
+    return hits / iterations
+
+
 def z_two_sided(alpha):
     """The two-sided critical z for `alpha`, by bisection on erf — no scipy.
 

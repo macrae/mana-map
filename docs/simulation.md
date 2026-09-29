@@ -623,6 +623,41 @@ decklist text rides IN the artifact, so the gitignored logs are exactly regenera
 is same table, same N, same profile, same engine, and the assumptions say so. An A/A is
 refused with the reason (it measures the noise floor; pass different lists knowingly).
 
+**Looks (2026-09-29): a group-sequential A/B, so an overnight queue can stop early
+honestly.** `experiment … --looks K` (K ≤ 4, O'Brien–Fleming by default, `--boundary
+pocock` the alternative) splits N into K equal waves; each look is WHOLE ROTATED JOBS FROM
+BOTH ARMS, never a partial job, because a job's early games differ systematically from its
+late ones (Forge gives turn 1 to the previous loser) and a look cut inside one would be the
+biased slice. Each look tests the primary — wins over DECIDED games — with the Newcombe
+interval at that look's own boundary z (`stats.OBF_BOUNDARIES`, K=4: 4.049, 2.863, 2.337,
+2.024; pinned like `T975`), so an early stop needs a huge effect and the final look pays
+about 3% of half-width over a fixed design. `--until-mde X` adds NON-BINDING futility: stop
+when the boundary interval already excludes +X on the favourable side, which is the "large
+effect absent" reading formalised and touches nothing of the design's alpha. The record is
+rewritten after every wave with `design {looks, boundary, critical, schedule, until_mde}`,
+`status` (running / stopped_efficacy / stopped_futility / complete) and `looks[]` (each
+with its jobs, seeds, seat orders, counts, boundary z and decision); it is the crash-resume
+unit — the same command line with `--resume` re-reads the completed waves' logs and
+continues the global job index, so the seeds and rotations are the ones the design
+planned. A record with no `design` cannot be resumed: a look added after the fact is
+optional stopping. A stopped run's `reading` names the look and its boundary, and calls the
+1.96 interval beside it descriptive. `stats.sequential_power` (seeded Monte Carlo) prices a
+design; at K=1 it equals the exact grid. `experiment.validate` form-checks a record against
+its design and a test sweeps the tracked ones.
+
+**Four instrument fixes shipped with the looks.** The experiment did not rotate seats
+(`simulate` had since the seat-bias finding; the A/B kept our seat at index 0 in every job
+of every arm) — `_run_wave` rotates per GLOBAL job index with the profiles rotated
+alongside, and the label map scores our seat at every index. The id omitted the clock, the
+override sha and the AI-profile sha, each empty at its default so every record keeps its
+name (`-k{K}`, `-aa` and `-bme{P}` are new). The record had no `pod` block, so
+`net_change.forge` could never bucket an experiment with the run records at the same table.
+And one list twice was refused outright: `--aa` runs it as the harness's noise floor on a
+second seed base for arm B, and `--profile-b P` flies our seat on another AI profile on arm
+B only — policy-on against policy-off on one list, the A/B every piloting change needs and
+nothing could express. The win-rate interval also divided by every game PLAYED while the
+rate beside it divided by decided games; one denominator now.
+
 **The preflight, on both commands (2026-09-29).** `experiment` had printed its power
 arithmetic since 2026-09-10; `simulate` — the command that runs most — never did. Both now
 print it before a JVM starts: the baseline (the pod's subject null from `pods

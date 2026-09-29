@@ -87,5 +87,8 @@ def test_an_experiment_records_the_harness_it_flew_under():
     from manamap.sim import experiment
 
     src = inspect.getsource(experiment)
-    assert '"card_overrides": card_overrides(),' in src, (
+    # Read ONCE before the id is built (the id carries its sha) and stamped
+    # into the record from that one reading, so the id and the record cannot
+    # describe two different engines.
+    assert "ov = card_overrides()" in src and '"card_overrides": ov,' in src, (
         "the experiment record must stamp the harness both arms flew under")

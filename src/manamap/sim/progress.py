@@ -25,6 +25,7 @@ the deck; it is arithmetic about the sample.
 """
 
 import glob
+import json
 import math
 import os
 import re
@@ -318,6 +319,20 @@ def main(args):
                 else:
                     print(f"  arm {arm.upper()}\n    [{_bar(0, target)}] 0/{target}"
                           f" — not started; the arms run in sequence\n")
+            # A SEQUENTIAL RUN SAYS WHICH LOOK IT IS ON. The record beside the
+            # logs is rewritten after every look, so it is the authority.
+            rec = root / "experiments" / f"{d.name}.json"
+            try:
+                doc = json.loads(rec.read_text(encoding="utf-8")) if rec.exists() else None
+            except Exception:                        # noqa: BLE001
+                doc = None
+            dz = (doc or {}).get("design") or {}
+            if dz.get("looks", 1) > 1:
+                done_looks = len(doc.get("looks") or [])
+                nxt = dz["schedule"][done_looks] if done_looks < dz["looks"] else None
+                print(f"  look {done_looks} of {dz['looks']} recorded ({doc.get('status')})"
+                      + (f"; the next look is taken after {nxt} games/arm" if nxt else ""))
+                print("    A look is whole jobs from both arms; nothing between looks is a reading.")
 
     print("  A PROGRESS VIEW, NOT A RESULT.")
     print("  · Games inside a job are NOT independent: Forge gives the first turn to")

@@ -39,8 +39,11 @@ def repo(tmp_path, monkeypatch):
     opp.mkdir(parents=True)
     opp.joinpath("decklist.txt").write_text("1 Edgar Markov *CMDR*\n1 Swamp\n")
     monkeypatch.setattr("manamap.config.DECKS_DIR", root / "data" / "decks")
-    monkeypatch.setattr("manamap.config.DECKS_DIR", root / "data" / "decks")
     monkeypatch.setattr(dh, "_REPO_ROOT", root)
+    # THE ENGINE ON THIS MACHINE IS NOT PART OF A UNIT TEST. `run` reads the
+    # installed card-script fingerprint into the id (an axis of the harness);
+    # a test's id must not depend on what happens to be installed here.
+    monkeypatch.setattr(ex, "card_overrides", lambda: None)
     _git(root, "init", "-q")
     (deck / "decklist.txt").write_text(V1)
     _git(root, "add", "."); _git(root, "commit", "-q", "-m", "v1")
@@ -336,3 +339,232 @@ def test_the_experiment_uses_performance_cores_like_simulate_does(repo, monkeypa
         assert seen["jobs"] == forge.default_jobs(), \
             "the experiment must not oversubscribe where simulate does not"
     assert forge.default_jobs() <= (os.cpu_count() or 2), "sanity"
+
+
+# ── group-sequential looks, and the instrument fixes ───────────────────────
+
+def _fake_wave(wins_per_wave):
+    """A `_run_wave` stub that returns canned texts and the rotation the real
+    one would have produced, and a `_score_arm` stub that scores each arm by
+    the number of texts it holds."""
+    def run_wave(letter, meta, opp_names, games, jobs, clock, seed_base, profile,
+                 vs_profile, log_dir, jar, first_job=0):
+        seats = [meta, *opp_names]
+        n = len(seats)
+        parts = ex.split_games(games, jobs)
+        job_ix = [first_job + i for i in range(len(parts))]
+        log_dir.mkdir(parents=True, exist_ok=True)
+        for j in job_ix:
+            (log_dir / f"{letter}-part-{j:02d}.log").write_text(f"{letter}{j}")
+        return {"texts": [f"{letter}{j}" for j in job_ix],
+                "seeds": [seed_base + j for j in job_ix],
+                "orders": [seats[j % n:] + seats[:j % n] for j in job_ix],
+                "jobs": job_ix, "bad": 0}
+
+    def score(texts, meta, opp_names, slug, arm, opponents):
+        waves = len(texts)          # one text per job; jobs per wave = 2 in these tests
+        letter = texts[0][0]
+        games = 10 * len(texts)
+        wins = sum(wins_per_wave[letter][:len(texts)])
+        analysis = {"games": games, "decided": games,
+                    "seats": {slug: {"wins": wins, "win_rate": wins / games}}}
+        return [], analysis, []
+    return run_wave, score
+
+
+def _sequential(repo, monkeypatch, wins, **kw):
+    """Run a 4-look, 80-game, 2-job experiment against the stubs."""
+    run_wave, score = _fake_wave(wins)
+    monkeypatch.setattr(ex, "_run_wave", run_wave)
+    monkeypatch.setattr(ex, "_score_arm", score)
+    monkeypatch.setattr(ex, "forge_jar", lambda: pathlib.Path("/nope/forge.jar"))
+    monkeypatch.setattr(ex, "install_named", lambda meta, text: meta)
+    monkeypatch.setattr(ex, "install_deck", lambda o: f"mm-{o}")
+    monkeypatch.setattr(ex, "card_overrides", lambda: None)
+    monkeypatch.setattr(ex, "forge_version", lambda: "test")
+    monkeypatch.setattr(ex, "_java_version", lambda: "test")
+    monkeypatch.setattr(ex._pods, "record_for", lambda name, opps: {"name": name, "named": bool(name)})
+    kw.setdefault("games", 80); kw.setdefault("jobs", 2); kw.setdefault("looks", 4)
+    return ex.run(SLUG, "V1", "working", ["rival"], seed=7, **kw)
+
+
+def test_a_look_is_whole_jobs_from_both_arms_never_a_partial_job(repo, monkeypatch):
+    """Four looks over 80 games at 2 jobs: waves of 20, each wave two whole jobs
+    per arm, the schedule 20/40/60/80, and a design that would cut a job in two
+    is refused. Every look tests at its OWN boundary."""
+    wins = {"a": [1, 1, 1, 1, 1, 1, 1, 1], "b": [2, 2, 2, 2, 2, 2, 2, 2]}
+    path, doc = _sequential(repo, monkeypatch, wins)
+    assert doc["status"] == "complete" and len(doc["looks"]) == 4
+    assert doc["design"]["schedule"] == [20, 40, 60, 80]
+    for i, lk in enumerate(doc["looks"]):
+        assert lk["jobs"]["a"] == [2 * i, 2 * i + 1] and lk["jobs"]["b"] == [2 * i, 2 * i + 1]
+        assert lk["n_a"] == 20 * (i + 1) and lk["z_boundary"] == [4.049, 2.863, 2.337, 2.024][i]
+    assert doc["looks"][-1]["decision"] == "complete"
+    assert not ex.validate(doc), ex.validate(doc)
+    with pytest.raises(SystemExit) as e:
+        _sequential(repo, monkeypatch, wins, games=90, looks=4)
+    assert "does not divide" in str(e.value)
+
+
+def test_the_experiment_rotates_seats_per_job_like_simulate(tmp_path, monkeypatch):
+    """THE BUG: our seat sat at index 0 in every job of every arm, and the
+    profiles were not rotated with the seats. Drives the REAL `_run_wave` with
+    the JVM stubbed: the `-d` order rotates per GLOBAL job index (a later wave
+    continues the rotation), the `-a` list rotates with it, the seeds continue,
+    and the log names carry the global index. Re-introduce by building every
+    order as `list(seats)` and the second job's `-d` no longer leads with the
+    opponent."""
+    argvs = []
+    real_command = ex.command
+    monkeypatch.setattr(ex, "command", lambda *a, **kw: argvs.append(real_command(*a, **kw)) or argvs[-1])
+    monkeypatch.setattr(ex.subprocess, "run",
+                        lambda cmd, **kw: type("P", (), {"returncode": 0})())
+    got = ex._run_wave("a", "mm-x-xdeck-a", ["mm-rival"], 4, 2, 600, 7,
+                       "Default", "Experimental", tmp_path / "logs",
+                       pathlib.Path("/nope/forge.jar"), first_job=2)
+    assert got["jobs"] == [2, 3] and got["seeds"] == [9, 10]
+    assert got["orders"] == [["mm-x-xdeck-a", "mm-rival"], ["mm-rival", "mm-x-xdeck-a"]]
+    d0 = argvs[0][argvs[0].index("-d") + 1: argvs[0].index("-f")]
+    d1 = argvs[1][argvs[1].index("-d") + 1: argvs[1].index("-f")]
+    assert d0 == ["mm-x-xdeck-a", "mm-rival"] and d1 == ["mm-rival", "mm-x-xdeck-a"]
+    a1 = argvs[1][argvs[1].index("-a") + 1: argvs[1].index("-a") + 3]
+    assert a1 == ["Experimental", "Default"], "the profiles rotate with the seats"
+    assert sorted(p.name for p in (tmp_path / "logs").iterdir()) == ["a-part-02.log", "a-part-03.log"]
+    # and the label map scores our seat at EVERY index
+    label = ex._label_for("mm-x-xdeck-a", ["mm-rival"], SLUG)
+    assert label["Ai(1)-mm-x-xdeck-a"] == SLUG and label["Ai(2)-mm-x-xdeck-a"] == SLUG
+
+
+def test_a_moderate_effect_waits_for_a_later_look(repo, monkeypatch):
+    """THE BUG: a fixed 1.96 at every look. 4/20 against 12/20 excludes zero at
+    1.96 and NOT at the first OBF boundary (4.049); the same arms at 40 games
+    clear the second (2.863). So the run must stop at look 2, never look 1 —
+    re-introduce by dropping `z=` from `_look` and it stops at look 1."""
+    wins = {"a": [2] * 8, "b": [6] * 8}
+    _, doc = _sequential(repo, monkeypatch, wins)
+    assert doc["status"] == "stopped_efficacy"
+    assert len(doc["looks"]) == 2, [lk["decision"] for lk in doc["looks"]]
+    assert doc["looks"][0]["excludes_zero"] is False and doc["looks"][1]["excludes_zero"] is True
+
+
+def test_an_early_look_that_excludes_zero_at_its_boundary_stops_the_run(repo, monkeypatch):
+    """A huge effect stops at look 2; the record says at which boundary, and
+    the 1.96 interval beside it is labelled descriptive."""
+    wins = {"a": [0, 0, 0, 0, 0, 0, 0, 0], "b": [9, 9, 9, 9, 9, 9, 9, 9]}
+    _, doc = _sequential(repo, monkeypatch, wins)
+    assert doc["status"] == "stopped_efficacy"
+    assert doc["looks"][-1]["decision"] == "stop: efficacy" and len(doc["looks"]) < 4
+    assert "STOPPED AT LOOK" in doc["delta"]["reading"] and "descriptive" in doc["delta"]["reading"]
+    assert not ex.validate(doc)
+
+
+def test_futility_stops_only_when_the_asked_for_effect_is_excluded(repo, monkeypatch):
+    """Non-binding futility: with `until_mde` the run stops when the boundary
+    interval already excludes +X on the favourable side, and never without it."""
+    wins = {"a": [5] * 8, "b": [5] * 8}
+    _, plain = _sequential(repo, monkeypatch, wins)
+    assert plain["status"] == "complete"
+    # the same arms again need a new id: `_sequential` fixes seed=7, so run directly
+    run_wave, score = _fake_wave(wins)
+    monkeypatch.setattr(ex, "_run_wave", run_wave); monkeypatch.setattr(ex, "_score_arm", score)
+    _, fut = ex.run(SLUG, "V1", "working", ["rival"], seed=9, games=80, jobs=2, looks=4, until_mde=0.30)
+    assert fut["status"] == "stopped_futility", fut["looks"][-1]
+    assert "futility" in fut["delta"]["reading"]
+
+
+def test_a_killed_wave_resumes_at_the_same_look_with_the_same_seeds(repo, monkeypatch):
+    """The record is rewritten after every wave. Kill the run after look 2,
+    resume the same command line, and looks 3–4 run on the seeds and job
+    indices the design planned; without `--resume` the path is refused, and a
+    record with no design cannot be resumed at all."""
+    wins = {"a": [1] * 8, "b": [1] * 8}
+    run_wave, score = _fake_wave(wins)
+    calls = {"n": 0}
+
+    def dying(*args, **kw):
+        calls["n"] += 1
+        if calls["n"] > 4:                     # 2 waves x 2 arms
+            raise RuntimeError("killed")
+        return run_wave(*args, **kw)
+    monkeypatch.setattr(ex, "_run_wave", dying)
+    monkeypatch.setattr(ex, "_score_arm", score)
+    for name, val in (("forge_jar", lambda: pathlib.Path("/nope/forge.jar")),
+                      ("install_named", lambda meta, text: meta), ("install_deck", lambda o: f"mm-{o}"),
+                      ("card_overrides", lambda: None), ("forge_version", lambda: "test"),
+                      ("_java_version", lambda: "test")):
+        monkeypatch.setattr(ex, name, val)
+    monkeypatch.setattr(ex._pods, "record_for", lambda name, opps: {"name": name, "named": bool(name)})
+    with pytest.raises(RuntimeError):
+        ex.run(SLUG, "V1", "working", ["rival"], seed=7, games=80, jobs=2, looks=4)
+    eid = ex.experiment_id(SLUG, ex.resolve_arm(SLUG, "V1"), ex.resolve_arm(SLUG, "working"),
+                           ["rival"], 80, 7, vs_profile=ex.STANDARD_POD_PROFILE, looks=4)
+    path = ex.deck_dir(SLUG) / ex.EXP_DIR / f"{eid}.json"
+    half = json.loads(path.read_text())
+    assert half["status"] == "running" and len(half["looks"]) == 2
+    with pytest.raises(SystemExit) as e:
+        ex.run(SLUG, "V1", "working", ["rival"], seed=7, games=80, jobs=2, looks=4)
+    assert "--resume" in str(e.value)
+    monkeypatch.setattr(ex, "_run_wave", run_wave)
+    _, done = ex.run(SLUG, "V1", "working", ["rival"], seed=7, games=80, jobs=2, looks=4, resume=True)
+    assert done["status"] == "complete" and len(done["looks"]) == 4
+    assert done["looks"][2]["jobs"]["a"] == [4, 5] and done["looks"][2]["seeds"]["a"] == [11, 12]
+    assert done["seeds"] == [7, 8, 9, 10, 11, 12, 13, 14]
+    # a record that was never sequential cannot grow a look after the fact
+    legacy = {k: v for k, v in done.items() if k not in ("design", "looks")}
+    eid1 = ex.experiment_id(SLUG, ex.resolve_arm(SLUG, "V1"), ex.resolve_arm(SLUG, "working"),
+                            ["rival"], 80, 7, vs_profile=ex.STANDARD_POD_PROFILE, looks=1)
+    (ex.deck_dir(SLUG) / ex.EXP_DIR / f"{eid1}.json").write_text(json.dumps(legacy))
+    with pytest.raises(SystemExit) as e:
+        ex.run(SLUG, "V1", "working", ["rival"], seed=7, games=80, jobs=2, looks=1, resume=True)
+    assert "optional stopping" in str(e.value)
+
+
+def test_an_a_a_needs_the_flag_and_two_seeds(repo, monkeypatch):
+    """One list twice is refused without `--aa` (the existing rule) and runs
+    under it with arm B on a second seed base; `--profile-b` is the other way
+    two arms may share a list, and it may not equal arm A's profile."""
+    monkeypatch.setattr(ex, "forge_jar", lambda: pathlib.Path("/nope/forge.jar"))
+    with pytest.raises(SystemExit) as e:
+        ex.run(SLUG, "working", "working", ["rival"], games=2, dry_run=True)
+    assert "--aa" in str(e.value) and "--profile-b" in str(e.value)
+    _, doc = ex.run(SLUG, "working", "working", ["rival"], games=2, dry_run=True, aa=True)
+    assert doc["experiment_id"].endswith("-aa")
+    with pytest.raises(SystemExit):
+        ex.run(SLUG, "V1", "working", ["rival"], games=2, dry_run=True, aa=True)
+    with pytest.raises(SystemExit) as e:
+        ex.run(SLUG, "working", "working", ["rival"], games=2, dry_run=True, profile_b="Default")
+    assert "differ in nothing" in str(e.value)
+    _, pb = ex.run(SLUG, "working", "working", ["rival"], games=2, dry_run=True,
+                   profile_b="Experimental")
+    assert "-bmeExperimental" in pb["experiment_id"] and pb["profiles_b"][0] == "Experimental"
+
+
+def test_the_experiment_id_carries_the_rest_of_the_harness_and_old_ids_still_resolve(repo):
+    """Clock, overrides and AI-profile shas, looks and A/A are in the id — each
+    EMPTY at its default, so every tracked id is unchanged (that test still
+    runs beside this one)."""
+    a, b = ex.resolve_arm(SLUG, "V1"), ex.resolve_arm(SLUG, "working")
+    base = ex.experiment_id(SLUG, a, b, ["rival"], 20, 1)
+    assert ex.experiment_id(SLUG, a, b, ["rival"], 20, 1, clock=ex.SIM_GAME_CLOCK_SECONDS) == base
+    assert ex.experiment_id(SLUG, a, b, ["rival"], 20, 1, clock=300) == base + "-c300"
+    assert ex.experiment_id(SLUG, a, b, ["rival"], 20, 1, overrides_sha="60636e9e5565") == base + "-ov60636e9e"
+    assert ex.experiment_id(SLUG, a, b, ["rival"], 20, 1, looks=4) == base + "-k4"
+    assert ex.experiment_id(SLUG, a, b, ["rival"], 20, 1, aa=True, looks=2) == base + "-aa-k2"
+
+
+def test_every_tracked_experiment_passes_the_form_check():
+    tracked = sorted((ROOT / "data" / "decks").glob("*/experiments/*.json"))
+    assert len(tracked) >= 2
+    for path in tracked:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        assert ex.validate(doc) == [], (path.name, ex.validate(doc))
+
+
+def test_the_win_rate_interval_divides_by_decided_games():
+    """THE BUG: `delta` divided wins by every game PLAYED, clock-outs included,
+    while the rate beside it divided by decided games."""
+    a = {"games": 100, "decided": 80, "seats": {"x": {"wins": 20, "win_rate": 0.25}}}
+    b = {"games": 100, "decided": 80, "seats": {"x": {"wins": 28, "win_rate": 0.35}}}
+    d = ex.delta(a, b, "x")
+    assert d["win_rate"]["n_a"] == 80 and d["power"]["n_per_arm"] == 80
+    assert d["power"]["baseline_rate_a"] == 0.25

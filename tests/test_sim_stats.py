@@ -314,3 +314,39 @@ def test_holm_is_step_down_not_bonferroni():
     assert [x["rank"] for x in stopped] == [1, 2, 3]
     assert all(x["family"] == 3 for x in stopped)
     assert stats.holm([]) == []
+
+
+# ── group-sequential boundaries ──────────────────────────────────────────
+
+def test_the_obf_and_pocock_tables_match_published_values():
+    """Pinned like `T975`: O'Brien–Fleming c_k = c_K·sqrt(K/k) at two-sided
+    alpha 0.05 (K=4: 4.049, 2.863, 2.337, 2.024), Pocock's constant 2.361."""
+    assert stats.look_boundaries(1) == [1.960]
+    assert stats.look_boundaries(4) == [4.049, 2.863, 2.337, 2.024]
+    assert stats.look_boundaries(2, "pocock") == [2.178, 2.178]
+    k4 = stats.look_boundaries(4)
+    for k in range(1, 5):
+        assert abs(k4[k - 1] - k4[3] * (4 / k) ** 0.5) < 0.01, "OBF's sqrt(K/k) shape"
+    with pytest.raises(ValueError):
+        stats.look_boundaries(5)
+    with pytest.raises(ValueError):
+        stats.look_boundaries(2, "bonferroni")
+
+
+def test_a_look_uses_its_own_boundary_not_1_96():
+    """THE BUG: a fixed 1.96 at every look is optional stopping. 20/100 vs
+    34/100 excludes zero at 1.96 and does NOT at the first OBF look of four
+    (z = 4.049); the same counts at the last look (2.024) do."""
+    assert stats.diff_proportions(20, 100, 34, 100)["excludes_zero"]
+    assert not stats.diff_proportions(20, 100, 34, 100, z=4.049)["excludes_zero"]
+    assert stats.diff_proportions(20, 100, 34, 100, z=2.024)["excludes_zero"]
+
+
+def test_sequential_power_at_one_look_equals_the_exact_fixed_design():
+    """Monte Carlo against the exact grid: within sampling error at K=1, and
+    a four-look OBF design costs only a little power at the same total N."""
+    exact = stats.power_for(0.25, 0.45, 100, 100)
+    mc = stats.sequential_power(0.25, 0.45, 100, 1, iterations=4000, seed=1)
+    assert abs(mc - exact) < 0.03, (mc, exact)
+    obf4 = stats.sequential_power(0.25, 0.45, 25, 4, iterations=4000, seed=1)
+    assert exact - 0.08 < obf4 <= exact + 0.03, (obf4, exact)
