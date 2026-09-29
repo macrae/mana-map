@@ -645,6 +645,27 @@ optional stopping. A stopped run's `reading` names the look and its boundary, an
 design; at K=1 it equals the exact grid. `experiment.validate` form-checks a record against
 its design and a test sweeps the tracked ones.
 
+**The overnight queue (`campaign`, 2026-09-29).** A powered A/B is ten hours an arm on
+this machine, so the loop cannot be a person typing `experiment` at eleven at night; it is
+a queue, and a queue written down BEFORE the games is the only kind that counts as
+pre-registration. `data/campaigns/<name>.json` is TRACKED (like `data/pods/`) and lists
+entries — slug, two arm refs, pod, N, looks, the one registered endpoint (`win_rate`), a
+hypothesis, optional `detect` / `until_mde` / `profile_b` / `aa`. `campaign <name> plan`
+pins each ref to a sha, computes the experiment id the entry will write (so the entry IS
+the run id), preflights every entry against the pod's null and refuses an underpowered
+`detect` unless the entry says `anyway`, prepends an A/A for every harness fingerprint
+(engine build, override sha, pod, clock) that has none — the standing noise-floor check —
+and writes `resolved` back, the one time the command writes the file. `run` goes in order:
+DONE and STALE are skipped, RUNNING is resumed, PENDING is run; a harness that changed
+since planning is refused (another harness is another measurement); each terminal record
+is written to the deck's decision ledger; NOTHING MERGES, and an AST test holds the module
+to that. State is DERIVED, never stored — DONE when the record is terminal, RUNNING when it
+says so, STALE when a pinned `working` or `@branch` list has moved underneath the plan
+(the games would measure a list nobody holds), PENDING otherwise. A gitignored
+`<name>.state.json` carries the entry in flight for `sim-progress`. The first campaign,
+`2026-10-standard-v3`, ships unplanned: `plan` is the pilot's act, because it pins the
+engine's fingerprint at the moment it runs.
+
 **Four instrument fixes shipped with the looks.** The experiment did not rotate seats
 (`simulate` had since the seat-bias finding; the A/B kept our seat at index 0 in every job
 of every arm) — `_run_wave` rotates per GLOBAL job index with the profiles rotated

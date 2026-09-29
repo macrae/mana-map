@@ -303,6 +303,14 @@ def main(args):
         live = any(time.time() - os.path.getmtime(f) < 300
                    for f in (plain + arms["a"] + arms["b"]) if os.path.exists(f))
         print(f"\nSIM PROGRESS — {slug}   {'RUNNING' if live else 'idle'}")
+        # THE CAMPAIGN THIS RUN BELONGS TO, if a queue started it.
+        try:
+            from manamap.sim import campaign as _campaign
+            cam = _campaign.live_for(slug)
+        except Exception:                            # noqa: BLE001
+            cam = None
+        if cam:
+            print(f"  CAMPAIGN {cam['campaign']} · entry {cam['entry']} · pid {cam['pid']}")
         print(f"  {d.name}\n")
         if plain:
             # THE HINT IS THE FORGE DECK NAME, not the CLI argument. Forge

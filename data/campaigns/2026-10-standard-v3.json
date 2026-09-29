@@ -1,0 +1,20 @@
+{
+ "name": "2026-10-standard-v3",
+ "authored": "2026-09-29",
+ "hypothesis": "The first pre-registered queue at the standard table: is goblin-storm's copy-burst-v1 the better list at standard-v3 under the harness installed when it is planned (`resolved.harness` records it), and what is the harness's noise floor there? Every earlier reading of this branch was 100 games or fewer (MDE 0.155 against a 0.233 null); 400 an arm with four O'Brien-Fleming looks can see +0.10 at 80% power (+0.07 would need 626 an arm — the queue's own preflight said so) and stop early only on a large effect.",
+ "entries": [
+  {
+   "id": "copy-burst-v1",
+   "slug": "goblin-storm",
+   "a": "working",
+   "b": "@copy-burst-v1",
+   "pod": "standard-v3",
+   "games": 400,
+   "looks": 4,
+   "primary": "win_rate",
+   "detect": 0.1,
+   "until_mde": 0.1,
+   "hypothesis": "copy-burst-v1 wins more than the champion at standard-v3. The goldfish said MERGE on eight of twelve rows; 73 Forge games read -0.061 with an interval spanning zero. Stop early for futility if +0.10 is already excluded on the favourable side."
+  }
+ ]
+}

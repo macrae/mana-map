@@ -114,6 +114,13 @@ manamap pilot experiment <slug> --a V4 --b working --pod <name> --games N [--loo
                                         #   continues it; `--until-mde X` is non-binding futility. `--aa` is one
                                         #   list twice (the noise floor); `--profile-b P` flies our seat on
                                         #   another AI profile on arm B only (policy-on vs policy-off)
+manamap pilot campaign [<name> [plan|run|status]] [--only ID] [--dry-run] [--json]
+                                        #   THE OVERNIGHT QUEUE, pre-registered: data/campaigns/<name>.json
+                                        #   (tracked) lists A/Bs with their arms, pod, N, looks, endpoint and
+                                        #   hypothesis. `plan` pins refs to shas, preflights, prepends an A/A
+                                        #   per harness and writes `resolved`; `run` goes in order, skips DONE
+                                        #   and STALE, resumes RUNNING and NEVER merges; `status` derives
+                                        #   each entry's state from its record — nothing is stored
 manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare blockers"] [--stack]
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version

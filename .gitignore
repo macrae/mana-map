@@ -119,6 +119,13 @@ data/decks/*/pool.txt
 # was right; the file should never have been committable.
 data/decks/*/decklist.txt.bak
 
+# A campaign's in-flight marker (pid, the entry running) — for `sim-progress`;
+# the campaign file beside it is TRACKED, because a pre-registration that is
+# not on record before the games is not one. `data/*` is ignored wholesale at
+# the top of this file, so the directory needs its exception spelled out.
+!data/campaigns/
+data/campaigns/*.state.json
+
 # ── Secrets ──────────────────────────────────────────────────────────────
 # Listed BEFORE any of these files exist, which is the only time listing them
 # is worth anything. `.env` was not ignored until the day a key was about to go

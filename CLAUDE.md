@@ -244,7 +244,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (105 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (106 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
@@ -305,6 +305,11 @@ manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--loo
                               # floor); `--profile-b P` is policy-on vs policy-off on one list.
                               # Seats rotate per global job like `simulate`; the id carries
                               # clock, overrides and AI-profile shas, empty at their defaults.
+manamap pilot campaign <name> plan|run|status   # THE OVERNIGHT QUEUE. data/campaigns/<name>.json
+                              # is a TRACKED pre-registration of A/Bs; `plan` pins refs to
+                              # shas, preflights, prepends an A/A per harness; `run` skips
+                              # DONE/STALE, resumes RUNNING, NEVER merges; state is derived
+                              # from the records, never stored.
 manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys.
                               # ONE PRIMARY (the objective), TWELVE EXPLORATORY rows,
                               # Holm-corrected. THE REAL TABLE IS IN THE RULE: a Forge

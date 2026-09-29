@@ -82,6 +82,10 @@ PILOT_STEPS = [
      "An opponent seat under data/opponents/<slug>/ from EDHREC's average deck for a commander"),
     ("sim-scenario", "manamap.sim.bridge",
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
+    ("campaign", "manamap.sim.campaign",
+     "A PRE-REGISTERED queue of Forge A/Bs (data/campaigns/<name>.json): plan pins the arms "
+     "and prepends an A/A per harness, run measures overnight and never merges, status derives "
+     "each entry's state from its record"),
     ("sim-progress", "manamap.sim.progress",
      "What a RUNNING simulation has done so far: a bar, the rate, an ETA, "
      "the estimate with its interval, and how far the interval still has to shrink"),
@@ -849,6 +853,19 @@ def add_pilot_parser(subparsers):
                                   "ones. Refuses any card whose targeting line is "
                                   "SP$ CopyPermanent, because CopyPermanentAi never "
                                   "reads AITgts$ — a hint the engine cannot act on")
+        if name == "campaign":
+            cmd.add_argument("name", nargs="?", default=None,
+                             help="a campaign under data/campaigns/; omit to list them")
+            cmd.add_argument("action", nargs="?", default="status",
+                             choices=["plan", "run", "status"],
+                             help="plan: resolve refs to shas, preflight, prepend an A/A, "
+                                  "write `resolved`; run: in order, skip DONE and STALE, "
+                                  "resume RUNNING, never merge; status: the derived states")
+            cmd.add_argument("--only", action="append", default=None, metavar="ID",
+                             help="run just this entry (repeatable)")
+            cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
+                             help="plan without writing; run without starting Forge")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "pods":
             cmd.add_argument("name", nargs="?", default=None,
                              help="one pod; omit to list them all")
