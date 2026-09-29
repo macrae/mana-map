@@ -108,19 +108,12 @@ def declared():
             "cards": sorted(pathlib.PurePosixPath(n).stem for n, _ in files)}
 
 
-def installed():
-    """What the ENGINE actually carries, read out of `cardsfolder.zip`.
-
-    Compares each declared script against the entry of the same basename, so the answer
-    is about the bytes the JVM will load rather than about anything this repo holds. A
-    missing engine, a missing zip or a missing entry all read as not installed, because
-    "I could not check" and "it is not there" have the same consequence for a rate.
-    """
-    files = _override_files()
-    if not files or not CARDSFOLDER.is_file():
+def _engine_bytes(zip_path, names):
+    """The engine's bytes for each declared basename, or None when unreadable."""
+    if not zip_path.is_file():
         return None
     try:
-        zf = zipfile.ZipFile(CARDSFOLDER)
+        zf = zipfile.ZipFile(zip_path)
     except (zipfile.BadZipFile, OSError):
         return None
     with zf:
@@ -128,50 +121,102 @@ def installed():
         for entry in zf.namelist():
             if entry.endswith(".txt"):
                 by_base.setdefault(entry.rsplit("/", 1)[-1], entry)
-        present = []
-        for name, _ in files:
-            base = pathlib.PurePosixPath(name).name
-            entry = by_base.get(base)
+        out = []
+        for name in names:
+            entry = by_base.get(pathlib.PurePosixPath(name).name)
             if entry is None:
                 continue
-            present.append((name, zf.read(entry)))
-    if not present:
+            out.append((name, zf.read(entry)))
+    return out or None
+
+
+def installed():
+    """The override fingerprint the ENGINE carries, or None when it carries none.
+
+    THERE ARE THREE STATES HERE AND THE FIRST CUT OF THIS COLLAPSED THEM TO TWO, which
+    made `simulate` refuse to start on a clean checkout — for every deck, including the
+    seven that must never carry an override. `data/forge_overrides/` is tracked, so a
+    fresh clone declares eleven scripts; the engine ships its own; and reporting the
+    SHIPPED bytes as "installed, and not what you declared" is a check firing on correct
+    data. That is the failure class this repo has rejected six validators for.
+
+    So the engine is compared against BOTH sides:
+
+      PRISTINE   its bytes are Forge's own      -> None. Nothing is installed, which is
+                 a legitimate state and the one a clone starts in.
+      INSTALLED  its bytes are the repo's       -> the override fingerprint.
+      NEITHER    something else entirely        -> a fingerprint that matches neither,
+                 which is the only genuine mismatch: a stale or partial install, and
+                 the state worth refusing a run over.
+    """
+    files = _override_files()
+    if not files:
         return None
-    return {"sha": _digest(present), "n": len(present),
-            "cards": sorted(pathlib.PurePosixPath(n).stem for n, _ in present)}
+    names = [n for n, _ in files]
+    live = _engine_bytes(CARDSFOLDER, names)
+    if live is None:
+        return None
+    live_sha = _digest(live)
+    fingerprint = {"sha": live_sha, "n": len(live),
+                   "cards": sorted(pathlib.PurePosixPath(n).stem for n, _ in live)}
+    if live_sha == _digest(files):
+        return fingerprint              # the engine carries OUR bytes: installed.
+    pristine = _engine_bytes(PRISTINE, names)
+    if pristine is None:
+        # NO BASELINE, SO NO CLAIM. Without `.orig` there is nothing to tell Forge's own
+        # script from a third party's hint, and asserting an install that cannot be
+        # verified is the original sin of this module — the first cut hashed the repo and
+        # called it provenance. Report not-installed and let the run proceed as plain.
+        return None
+    if live_sha == _digest(pristine):
+        return None                     # Forge's own cards. Nothing of ours installed.
+    return fingerprint                  # neither: a stale or partial install.
 
 
 def verify():
-    """`(agrees, declared, installed)` — the whole provenance question, answered.
+    """`(agrees, declared, installed)` — the provenance question, answered.
 
-    `agrees` is True only when the repo declares nothing and the engine carries nothing,
-    or when the two fingerprints match. Anything else is a disagreement, including the
-    case that motivated this module: the repo declaring 11 scripts the engine does not
-    have.
+    Agreement is not "the engine matches the repo". It is "the engine is in a state this
+    repo can name", which is true in three of the four combinations:
+
+      declares nothing, carries nothing   agrees — a plain engine, a plain run
+      declares some,    carries nothing   agrees — the overrides are OFFERED, not
+                                          required. This is the policy-OFF arm of every
+                                          A/B, and a clean checkout, and making it an
+                                          error is what bricked `simulate` for the fleet.
+      declares some,    carries the same  agrees — the policy-ON arm
+      declares some,    carries something agrees NOT — a stale or partial install, where
+                        else              the record could describe neither arm
+
+    A run is refused only in the last case, and `card_overrides()` returns None in the
+    second — so a pristine run is byte-indistinguishable from one made before any of this
+    existed, and it buckets with the tracked baseline record in `net_change.forge`.
     """
     d, i = declared(), installed()
-    if d is None and i is None:
-        return True, None, None
-    if d is None or i is None:
-        return False, d, i
+    if i is None:
+        return True, d, None
+    if d is None:
+        # The engine carries overrides this repo does not declare — unnameable.
+        return False, None, i
     return d["sha"] == i["sha"], d, i
 
 
 def require_agreement():
-    """Raise unless the engine matches the repo. Called before a run starts.
+    """Raise only when the engine is in a state no record could describe.
 
-    A run that discovers the mismatch afterwards has already spent the JVM time and
-    written a record; one that refuses has cost nothing and says what to do.
+    A run that discovers a mismatch afterwards has already spent the batch and published
+    the claim; one that refuses has cost nothing. But refusing a VALID state costs the
+    whole fleet, which is what the first cut of this did.
     """
     agrees, d, i = verify()
     if agrees:
         return
-    what = (f"repo declares {d['n']} override(s) ({d['sha']}), "
-            f"engine carries {i['n'] if i else 0}"
-            + (f" ({i['sha']})" if i else " — none"))
     raise EngineMismatch(
-        f"{what}.\n"
-        f"A run made now would stamp a fingerprint it did not earn, and "
+        f"the engine's card scripts are neither Forge's own nor the "
+        f"{d['n'] if d else 0} this repo declares"
+        + (f" ({d['sha']})" if d else "")
+        + f" — it carries {i['sha']}.\n"
+        f"A run now would stamp a fingerprint describing neither arm, and "
         f"`net_change` buckets on that fingerprint to keep two harnesses apart.\n"
         f"  install: manamap pilot forge-install\n"
         f"  revert:  manamap pilot forge-install --revert")
@@ -194,12 +239,15 @@ def install():
             f"{config.FORGE_HOME}?")
     files = _override_files()
     if not PRISTINE.is_file():
-        # "ALREADY OVERRIDDEN" IS NOT "THE CARD EXISTS". `installed()` fingerprints
-        # whatever the engine carries for each declared basename, so it is non-None on a
-        # perfectly pristine engine — the first cut of this guard read that as "already
-        # patched" and refused every first install. The dangerous case is narrower: the
-        # engine already carries OUR bytes and there is no baseline to recover.
-        if files and verify()[0]:
+        # "ALREADY OVERRIDDEN" NEEDS A DIRECT COMPARISON, not `installed()` and not
+        # `verify()`. Both of those answer None without a baseline — deliberately, since
+        # they must not claim an install they cannot verify — so asking either one here is
+        # circular and refused every first install. The dangerous case is narrow and
+        # checkable on its own: the engine already carries OUR EXACT BYTES and there is no
+        # `.orig` to recover, so copying the current zip would bake the distortion into
+        # the baseline permanently and invisibly.
+        live = _engine_bytes(CARDSFOLDER, [n for n, _ in files])
+        if live is not None and _digest(live) == _digest(files):
             raise EngineMismatch(
                 f"{CARDSFOLDER.name} already carries override scripts and there is no "
                 f"{PRISTINE.name} to rebuild from. Baking them into the baseline would "

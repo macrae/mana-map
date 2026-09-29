@@ -596,13 +596,18 @@ def card_overrides():
     from manamap.sim import forge_pilot
 
     agrees, d, i = forge_pilot.verify()
-    if d is None and i is None:
+    if i is None:
+        # NOTHING IS INSTALLED, SO THIS IS A PLAIN RUN — and it says so by saying
+        # nothing. The repo OFFERING overrides is not a property of a run that did not
+        # use them, and a record that gained a `card_overrides` block on a pristine
+        # engine would no longer be byte-comparable with the tracked baseline it is the
+        # control for. `d` is deliberately dropped here: absent means absent.
         return None
     return {# THE SHA STAYS THE HEADLINE and it is the ENGINE's, because that is what
             # played the games. `net_change` reads this key to bucket a run.
-            "sha": (i or {}).get("sha"),
-            "n": (i or {}).get("n", 0),
-            "cards": (i or {}).get("cards", []),
+            "sha": i["sha"],
+            "n": i["n"],
+            "cards": i["cards"],
             "agrees": agrees,
             "declared": d,
             "installed": i,

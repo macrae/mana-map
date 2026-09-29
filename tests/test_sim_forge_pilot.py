@@ -74,26 +74,57 @@ def test_no_overrides_reads_as_none_not_as_an_empty_fingerprint(engine):
 
 # ------------------------------------------------------------- the engine is the truth
 
-def test_installed_reads_the_engine_not_the_repo(engine):
-    """THE DEFECT THIS MODULE EXISTS FOR.
+def test_declared_without_installed_is_a_valid_state_not_a_mismatch(engine):
+    """A FRESH CLONE MUST BE ABLE TO RUN, and my first cut of this could not.
 
-    `card_overrides()` shipped hashing the repo working tree, so restoring the pristine
-    zip left every run stamping a fingerprint it did not earn. Write an override to the
-    repo WITHOUT installing it: `declared` must see it and `installed` must not.
+    `data/forge_overrides/` is tracked, so a clone declares eleven scripts against a
+    pristine engine. The first `installed()` reported the SHIPPED bytes as "installed,
+    and not what you declared", so `verify()` said False and `simulate` refused to start
+    — for every deck, including the seven that must never carry an override. A check
+    firing on correct data, which this repo has rejected six validators for.
 
-    Re-introducing the bug is making `installed()` hash `_override_files()`.
+    The overrides are OFFERED, not required. This state is also the policy-OFF arm of
+    every A/B the piloting work depends on, so making it an error would make the control
+    unrunnable.
     """
     written, _ = fp.generate_overrides(["test_pump"])
     assert written == ["test_pump"]
 
     assert fp.declared()["n"] == 1, "the repo declares it"
-    # The engine still carries the SHIPPED script, whose bytes differ.
-    assert fp.installed()["sha"] != fp.declared()["sha"], (
-        "installed() must read the engine; if it hashes the repo these are equal and "
-        "the guard is inert")
-    agrees, _, _ = fp.verify()
+    assert fp.installed() is None, (
+        "a PRISTINE engine carries no overrides; reporting the shipped bytes as an "
+        "install is what bricked the fleet")
+    agrees, d, i = fp.verify()
+    assert agrees is True, "a pristine engine is a valid, nameable state"
+    fp.require_agreement()          # must NOT raise
+
+
+def test_the_engine_carrying_something_else_is_the_only_refusal(engine):
+    """The one genuine mismatch: bytes that are neither Forge's nor ours — a stale or
+    partial install, where a record could describe neither arm.
+
+    DETECTING IT REQUIRES THE BASELINE. Without `.orig` there is nothing to tell a
+    foreign hint from Forge's own script, so `installed()` answers None and the run
+    proceeds as plain — an epistemic limit, stated in its docstring, not a bug. So this
+    installs first to establish the baseline, then drifts the engine underneath it, which
+    is also the realistic sequence: a Forge upgrade, or a half-finished patch.
+    """
+    fp.generate_overrides(["test_pump"])
+    fp.install()
+    assert fp.PRISTINE.is_file(), "the baseline this test depends on"
+
+    # A third party's hint: neither ours nor shipped.
+    with zipfile.ZipFile(engine.zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("t/test_pump.txt",
+                   PUMP.replace("ValidTgts$ Creature",
+                                "ValidTgts$ Creature | AITgts$ Goblin.YouCtrl"))
+        z.writestr("t/test_copy.txt", COPY)
+        z.writestr("f/filler.txt", "Name:Filler\nTypes:Land\nOracle:\n")
+
+    agrees, d, i = fp.verify()
     assert agrees is False
-    with pytest.raises(fp.EngineMismatch):
+    assert i is not None and i["sha"] != d["sha"]
+    with pytest.raises(fp.EngineMismatch, match="neither Forge's own nor"):
         fp.require_agreement()
 
 
@@ -249,3 +280,26 @@ def test_the_overridden_set_names_no_copypermanent_card():
         assert stem not in fp.OVERRIDDEN, (
             f"{stem} is SP$ CopyPermanent and cannot be steered; it was removed on "
             f"2026-09-28 after the bytecode check and must not come back")
+
+
+def test_a_pristine_run_records_no_card_overrides_block_at_all(engine, monkeypatch):
+    """ABSENT MEANS ABSENT, at the record layer.
+
+    `card_overrides()` returning `{"sha": None, …}` on a pristine engine would give every
+    plain run a block it never had, and the tracked baseline record this is the CONTROL
+    for has no such key. `net_change.forge` buckets on `(pod, sha or "")`, so the two
+    would still land together — but the record would no longer be byte-comparable with
+    the measurement it is being compared against, and that is the whole contract.
+    """
+    from manamap.sim import forge
+
+    fp.generate_overrides(["test_pump"])
+    assert fp.installed() is None
+    assert forge.card_overrides() is None, (
+        "a run on a pristine engine is a plain run and must say so by saying nothing")
+
+    fp.install()
+    got = forge.card_overrides()
+    assert got is not None and got["sha"] == fp.declared()["sha"]
+    assert got["agrees"] is True
+    assert got["declared"]["sha"] == got["installed"]["sha"]
