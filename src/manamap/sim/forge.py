@@ -1364,8 +1364,13 @@ def main(args):
     _base, _branch = split_seat(slug)
     try:
         _names = _ec.nonland_names(load_deck_cards(_base, _branch))
-    except Exception:
+    except Exception as _exc:                                  # noqa: BLE001 - reported
+        # NOT SILENT. This used to fall back to the unfiltered table and print nothing,
+        # so a seat with no cards.json read every land as "held and never cast" and
+        # nothing distinguished that mode from the filtered one.
         _names = None
+        print(f"  (engine-casts: could not load the deck's list — "
+              f"{type(_exc).__name__}: {_exc}; lands are NOT filtered below)")
     for line in _ec.render(_ec.from_record(rec, _names, _ec.engine_set(_base, _branch))):
         print(line)
     if rec["nonzero_exit_jobs"]:

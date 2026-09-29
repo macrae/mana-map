@@ -142,7 +142,38 @@ def _arm_started(paths):
     return min(times) if times else None
 
 
-def _report(paths, label, target, started, ours_hint=None):
+def held_never_cast(by_card, nonland=None):
+    """Cards with zero casts and at least one discard — the log's own sign of a card
+    held and not played — EXCLUDING LANDS, which are played rather than cast and so can
+    only ever read as "never cast".
+
+    Factored out so it can be tested: the inline version listed `Smoldering Crater`,
+    `Castle Embereth` and `Forgotten Cave` as "held and never cast" on a live run, two
+    commits after I wrote that this site "earns the word" because it filters on
+    `discarded`. Lands get discarded too. `nonland=None` means the deck's list could not
+    be loaded and NOTHING is filtered — the caller must say so, not swallow it.
+    """
+    rows = ((n, v["discarded"]) for n, v in by_card.items()
+            if v["cast"] == 0 and v["discarded"]
+            and (nonland is None or n in nonland))
+    return sorted(rows, key=lambda kv: (-kv[1], kv[0]))
+
+
+def _nonland_for(deck):
+    """The deck's nonland names, or None with the reason — never a silent None."""
+    if not deck:
+        return None, "no deck given"
+    from manamap.pilot.common import load_deck_cards
+    from manamap.sim import engine_casts as _ec
+    from manamap.sim.forge import split_seat
+    base, branch = split_seat(deck)
+    try:
+        return _ec.nonland_names(load_deck_cards(base, branch)), None
+    except Exception as exc:                               # noqa: BLE001 - reported
+        return None, f"{type(exc).__name__}: {exc}"
+
+
+def _report(paths, label, target, started, ours_hint=None, deck=None):
     texts = [Path(p).read_text(errors="replace") for p in paths]
     started = _arm_started(paths) or started
     done = sum(len(_DONE_RE.findall(t)) for t in texts)
@@ -185,13 +216,18 @@ def _report(paths, label, target, started, ours_hint=None):
     ec = sim_parse.engine_casts(facts, lab, ours)
     rows = sorted(ec["by_card"].items(), key=lambda kv: (-kv[1]["cast"], kv[0]))
     top = [f"{n} x{v['cast']}" for n, v in rows[:6]]
-    uncast = sorted(((n, v["discarded"]) for n, v in ec["by_card"].items()
-                     if v["cast"] == 0 and v["discarded"]), key=lambda kv: (-kv[1], kv[0]))
+    nonland, why_not = _nonland_for(deck)
+    uncast = held_never_cast(ec["by_card"], nonland)
     print(f"    ENGINE CASTS ({ours}, {ec['games']} games, {ec['turns']} own turns)")
     print(f"      most cast: {', '.join(top) or '—'}")
     if uncast:
         print(f"      held and never cast: "
               + ", ".join(f"{n} (discarded x{d})" for n, d in uncast[:8]))
+        if nonland is None:
+            # THE FALLBACK IS NAMED, NOT SWALLOWED. Without the deck's list this line
+            # cannot tell a land from a spell, and a reader told nothing would read a
+            # Mountain as a card the AI refused to cast.
+            print(f"      (lands NOT filtered — {why_not}; a land here is played, not held)")
 
     # CONVERGENCE, over our seat only — the figure a branch is judged on.
     per_job = []
@@ -272,13 +308,13 @@ def main(args):
             # names a branch seat `mm-zur-enchantress-drain-v2` — `@` becomes
             # `-` — so passing the argument through matched no seat and "ours"
             # silently fell back to whichever token sorted first.
-            _report(plain, "run", target, started,
+            _report(plain, "run", target, started, deck=slug,
                     ours_hint=forge.deck_meta_name(slug))
         else:
             for arm in ("a", "b"):
                 if arms[arm]:
                     _report(arms[arm], f"arm {arm.upper()}", target, started,
-                            ours_hint=forge.deck_meta_name(slug))
+                            ours_hint=forge.deck_meta_name(slug), deck=slug)
                 else:
                     print(f"  arm {arm.upper()}\n    [{_bar(0, target)}] 0/{target}"
                           f" — not started; the arms run in sequence\n")

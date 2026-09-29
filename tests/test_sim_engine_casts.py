@@ -418,3 +418,36 @@ def test_the_headline_only_says_held_when_something_was_seen():
     assert "never cast" in seen_none
     assert "held and never cast" not in seen_none, (
         "nothing was observed in hand, so 'held' is a claim the log cannot support")
+
+
+# --------------------------------------------- the live view's never-cast line
+
+def test_progress_never_cast_excludes_lands_and_names_an_unfiltered_fallback():
+    """`sim-progress` printed "held and never cast: Smoldering Crater, Castle Embereth,
+    Forgotten Cave" on a live run — LANDS — two commits after I wrote that this site
+    "earns the word" because it filters on `discarded`. Lands get discarded too.
+
+    And the same fix in `forge.py` used to fall back to the unfiltered table SILENTLY when
+    the deck's list could not be loaded, so a seat with no cards.json read every land as
+    held-and-never-cast with nothing distinguishing that mode. `nonland=None` is allowed,
+    but the caller must say so; this asserts the function makes that possible by not
+    filtering, rather than guessing.
+    """
+    from manamap.sim.progress import held_never_cast
+
+    by_card = {"Mountain":           {"cast": 0, "activated": 0, "discarded": 8},
+               "Smoldering Crater":  {"cast": 0, "activated": 0, "discarded": 2},
+               "Faithless Looting":  {"cast": 0, "activated": 0, "discarded": 3},
+               "Zada, Hedron Grinder": {"cast": 16, "activated": 0, "discarded": 0},
+               "Never Seen":         {"cast": 0, "activated": 0, "discarded": 0}}
+    nonland = {"Faithless Looting", "Zada, Hedron Grinder", "Never Seen"}
+
+    got = held_never_cast(by_card, nonland)
+    assert got == [("Faithless Looting", 3)], got
+    # A land can only ever read as "never cast", so it must not be there —
+    # and "Never Seen" was never discarded, so the log gives no sign it was held.
+
+    # With no deck list, NOTHING is filtered — and that is the caller's cue to say so.
+    unfiltered = held_never_cast(by_card, None)
+    assert ("Mountain", 8) in unfiltered and ("Smoldering Crater", 2) in unfiltered
+    assert unfiltered[0] == ("Mountain", 8), "most-discarded first"

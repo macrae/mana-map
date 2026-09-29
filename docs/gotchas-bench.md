@@ -456,6 +456,30 @@ fetches in the corpus — and `goldfish.py` built every land's `colors` from the
 same call, so four fetches modelled as four lands that never produce anything.
 `model_colors` defaults to **True**, so this was on for every deck in the fleet.
 
+### The warm worker serves the code it started with (2026-09-28)
+
+`manamap serve` is also a warm worker: every read-only `manamap pilot <cmd>` routes through
+`/api/cli` and skips the cold start, and CLAUDE.md says to restart it after a code change
+because it holds the old modules until you do. That sentence was true and I read past it.
+
+The daemon had been up since early in a session that changed `sim/progress.py`, and
+`sim-progress` kept printing **"held and never cast: Smoldering Crater, Castle Embereth,
+Forgotten Cave"** — lands — after the fix that filters lands was on disk and the function
+was verified correct by direct import. The command was being served the pre-fix module.
+`MANAMAP_NO_DAEMON=1` on the same command showed the fix immediately.
+
+The exposure is wider than one command. **A NEW subcommand is safe** — the daemon's old
+registry does not know it, the route fails open, and it runs locally with current code.
+**An EXISTING subcommand is not**: `validate-sim`, `net-change`, `pods`, `validate-stack`
+all predate the session and every CLI verification of them could have been stale. Re-run
+with the bypass flag after the fact, all five were fine — but that was luck about which
+modules the worker happened to reload, not a property of the design.
+
+So: after a code change, either restart the worker or verify with `MANAMAP_NO_DAEMON=1`.
+A direct `python -c` import bypasses it and is the honest check; a `manamap pilot` call is
+only a check of the code once you know which code is answering.
+
+
 ### Per-deck AI profiles: Forge's own lever, and the knob that was never switched on (2026-09-28)
 
 `res/ai/*.ai` are plain KEY=VALUE files of 121 `AiProps` knobs.

@@ -458,7 +458,7 @@ about to touch.
 | page | read before touching | size |
 |---|---|---|
 | `docs/gotchas-viz.md` | anything under `viz/` | 63 KB |
-| `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` | 274 KB |
+| `docs/gotchas-bench.md` | `src/manamap/pilot/`, `src/manamap/sim/` | 276 KB |
 | `docs/gotchas-analysis.md` | `src/manamap/analysis/` — synergy, power creep, roles, regions | 8 KB |
 | `docs/gotchas-evidence.md` | a validator, a citation, `engine.json` | 51 KB |
 | `docs/gotchas-magazine-legacy.md` | the DELETED renderer (it is not extended) | 18 KB |
