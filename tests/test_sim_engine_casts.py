@@ -143,6 +143,20 @@ KNOWN_UNCAST = {
     # fly those two, which no `AITgts$` hint addresses — the hint narrows a TARGET and
     # these were never cast at all. The run remains a FLOOR and its record says so.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068-s909090-podExperimental-c600.json",
+    # THE SAME LIST, SAME SEED, SAME OVERRIDES, with OUR seat on the pod's `Experimental`
+    # profile instead of `Default` — the run that tested whether the 0.845 land ratio was
+    # a profile artifact (it was not: 0.845 -> 0.852). Three cards never cast, all three
+    # also on the Default run's list: Faithless Looting and Goblin Bombardment carry
+    # Forge's own `AI:RemoveDeck:All`, the engine declaring in its card scripts that its
+    # AI cannot fly them, which no profile and no targeting hint addresses; Renegade
+    # Tactics is one of the eleven overridden Pump spells and the AI simply declined it.
+    #
+    # NOTE THE BASIS. On the Default run Faithless Looting was MEASURED (discarded x3);
+    # here every one of the three is MODELLED (discarded x1 each, under the x3 line), so
+    # this record's never-cast list rests entirely on the inferred floor. Kept, because
+    # the run's observations — clock-outs 17 -> 32 with an interval excluding zero — are
+    # the finding, and its win rate (3/68) is not read as a result.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068-s909090-meExperimental-podExperimental-c600-ov60636e9e.json",
     # A RECORD IS JUDGED AGAINST TODAY'S DECLARATION, NOT THE ONE IT RAN UNDER.
     # These two flag for a reason that is not the AI's: the deck changed after
     # the run, and the cards now named in `goldfish_targets.json` were not in

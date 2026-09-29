@@ -456,6 +456,54 @@ fetches in the corpus — and `goldfish.py` built every land's `colors` from the
 same call, so four fetches modelled as four lands that never produce anything.
 `model_colors` defaults to **True**, so this was on for every deck in the fleet.
 
+### Our seat on the pod's profile: the land ratio did not move, the clock-outs doubled, and the early slice lied twice (2026-09-28)
+
+`pilot_quality`'s argument for using the pod as a control is that the other seats are "the
+same AI, in the same games, under the same engine". They are not the same AI: our seat runs
+`Default` and every opponent runs `Experimental` (`STANDARD_POD_PROFILE`), which differ in 33
+properties including the sacrifice master toggle. So the cheapest experiment nobody had run
+was to put our seat on the pod's profile and see whether the 0.845 land ratio — the number
+that makes every goblin-storm run read NOT COMPARABLE — was a profile artifact.
+
+Same deck (copy-burst-v1), same pod, same seed (909090), 100 games, `--jobs 4`, same eleven
+overrides installed, same 600s clock. Only our seat's profile changed. The prediction was
+written down before the run: a profile artifact moves the ratio toward 1.0; genuine
+mispiloting leaves it near 0.845.
+
+| | Default | Experimental |
+|---|---|---|
+| land ratio | 0.845 | **0.852** |
+| cast ratio | 0.863 | 0.902 |
+| win rate | 9/82 = 0.110 | 3/68 = 0.044 |
+| clock-outs of 100 | 17 | **32** |
+
+**The land ratio is not a profile artifact.** +0.007 is inside the fleet's within-deck noise
+(median spread 0.037). The seat drops fewer lands than the pod on either profile, the WITHHELD
+band stands, and the 0.85 line is about the deck.
+
+**Matching the pod's profile is not a free fix.** Clock-outs nearly doubled and the
+difference EXCLUDES ZERO (+0.150, ci95 [+0.031, +0.264]). Win rate moved the wrong way and
+spans zero (-0.066, [-0.156, +0.027]) — but it is a comparison across two censoring regimes,
+82 decided against 68, so even that null is softer than it looks. A profile that changes how
+often games reach the clock changes the denominator of every rate it is compared on. The
+Default/Experimental asymmetry is a real flaw in the control claim and NOT what hurts land
+drops; putting our seat on Experimental trades a cosmetic fix for a worse instrument.
+
+**THE EARLY SLICE WAS WRONG TWICE, which answers "can we stop once we see signal".** At 11
+games the land ratio read **0.805** and the cast ratio **1.009** — and I reported the second
+as "a real profile effect, casts brought to parity". The full run says 0.852 and 0.902. Both
+moved by more than the effect being looked for. `sim-progress`'s footer says why: Forge gives
+the first turn to the previous game's loser, so a job's early games differ systematically from
+its late ones and a partial slice is biased. "Large effect absent" is the one early reading
+that survives — the 0.805 was already not heading to 1.0 — but a positive early reading on a
+rate is not signal, it is the bias. Stopping there would have produced two wrong conclusions
+from one run.
+
+Also: `forge.run` writes the record at the END. Killing a run leaves logs and no record —
+nothing `net-change` can bucket, nothing `validate-sim` can check. That is a second, purely
+practical reason a run's N is fixed at launch.
+
+
 ### The warm worker serves the code it started with (2026-09-28)
 
 `manamap serve` is also a warm worker: every read-only `manamap pilot <cmd>` routes through

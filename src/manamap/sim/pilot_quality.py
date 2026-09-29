@@ -9,10 +9,23 @@ its win rate to mean anything.
 WHAT THIS MEASURES, AND WHY IT IS A RATIO RATHER THAN A THRESHOLD. Absolute
 piloting quality would need a calibrated "good" and there is nothing to calibrate
 against — no human plays inside Forge. But every run already contains its own
-control: THE OTHER SEATS, played by the same AI, in the same games, under the
-same engine. So the question becomes answerable without a constant:
+control: THE OTHER SEATS, played by the same engine, in the same games. So the
+question becomes answerable without a constant:
 
     is our seat played about as well as the pod?
+
+"THE SAME AI" IS NOT QUITE TRUE, AND IT WAS MEASURED NOT TO MATTER FOR THIS
+FIGURE. Our seat runs `Default` and every opponent runs `Experimental`
+(`forge.STANDARD_POD_PROFILE`), which differ in 33 properties including the
+sacrifice master toggle. On 2026-09-28 our seat was put on the pod's profile —
+copy-burst-v1, same pod, same seed, same overrides, 100 games, only the profile
+changed — and the land ratio went 0.845 -> 0.852, inside the fleet's within-deck
+noise. So the asymmetry is real and does NOT drive the number this gate reads.
+What it DID drive was clock-outs, 17 -> 32 of 100 with an interval excluding
+zero: a profile changes how often games reach the clock, which changes the
+denominator of every rate compared across it. The control is imperfect in a
+way that leaves this verdict standing and would corrupt a win-rate comparison
+made across the two profiles.
 
 Measured on ur-dragon's treasure branch, 100 games: our seat 0.67 land drops per
 own turn against a pod mean of 0.72, and 1.04 casts per turn against 1.11. Every
@@ -43,11 +56,13 @@ whatever it costs, so a seat that is not making them is not being piloted.
 #: table it is being compared against — and a comparison drawn from it is
 #: measuring the AI's preferences rather than the decks.
 #:
-#: 0.85 is deliberately generous and is NOT calibrated from a fleet, because
-#: there is no fleet of runs to calibrate from; it is the point past which a
-#: gap stops being sampling noise on ~900 turns and starts being a pattern.
-#: It is a stated judgement, and the ratio it guards is reported either way so a
-#: reader never has to take the verdict's word for it.
+#: 0.85 was set by judgement when there was no fleet of runs to calibrate from.
+#: There is one now — 47 runs carrying a verdict, median land ratio 0.946, sd
+#: 0.090, six below the line — and it says the line sits in a defensible place
+#: and CANNOT BE READ TO THREE DECIMALS: the within-deck spread across runs of one
+#: list at one table has a median of 0.037, so `BAND` withholds the verdict near
+#: the line rather than deciding it on a coin flip. The ratio it guards is
+#: reported either way so a reader never has to take the verdict's word for it.
 COMPARABLE = 0.85
 
 #: Half the median WITHIN-deck run-to-run spread in the land ratio, measured over the 47
