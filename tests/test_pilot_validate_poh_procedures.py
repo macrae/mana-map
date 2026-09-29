@@ -123,9 +123,20 @@ def test_two_pages_for_one_condition_are_refused():
 
 def test_it_is_registered_where_the_status_command_looks():
     """A validator is only a gate if something runs it — `deck_status.VALIDATED` is how
-    `deck-status` and the fleet sweep in `test_pilot_tracked_artifacts_validate` see it."""
+    `deck-status` and the fleet sweep in `test_pilot_tracked_artifacts_validate` see it.
+
+    `pilot_policy.json` is deliberately NOT registered, and this test asserted it was until
+    the suite caught the contradiction. The reason is
+    `test_the_registries_name_artifacts_that_exist_on_a_real_deck`: no deck has a policy, so
+    an entry for it is indistinguishable from a typo. I argued in a commit message that
+    pre-registering the gate was the point; that test has the better argument, and this
+    assertion is the same claim restated in a place where nothing would have caught it
+    disagreeing with the other.
+    """
     from manamap.pilot.deck_status import VALIDATED
 
     assert VALIDATED.get("poh_procedures.json") == \
         "manamap.pilot.validate_poh_procedures"
-    assert VALIDATED.get("pilot_policy.json") == "manamap.pilot.validate_pilot_policy"
+    assert "pilot_policy.json" not in VALIDATED, (
+        "no deck has a policy, so registering it here makes a dead entry — the row lands "
+        "with the first policy file, which is one line")
