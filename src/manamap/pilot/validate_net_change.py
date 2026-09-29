@@ -95,10 +95,25 @@ def validate(doc):
                 f"{where}: delta {row['delta']} is under the MDE {row['mde']} and "
                 f"is reported as {row['verdict']!r} — a difference this run could "
                 f"not resolve must be marked noise, not ranked")
-        if not under and row["verdict"] == "noise":
+        # A row over the MDE is `noise` only when Holm says so. A report made
+        # before the correction existed has no `holm` key and is read as before.
+        h = row.get("holm")
+        holm_ok = h.get("significant") if isinstance(h, dict) else True
+        if not under and row["verdict"] == "noise" and holm_ok:
             errors.append(
                 f"{where}: delta {row['delta']} clears the MDE {row['mde']} and is "
                 f"reported as noise")
+        if not under and row["verdict"] != "noise" and holm_ok is False:
+            errors.append(
+                f"{where}: ranked {row['verdict']!r} although Holm rank "
+                f"{h.get('rank')} did not clear its threshold {h.get('threshold')}")
+        # An interval on the difference must agree with its own flag.
+        ci = row.get("ci95_diff")
+        if isinstance(ci, list) and len(ci) == 2 and "excludes_zero" in row:
+            says = row["excludes_zero"]
+            is_ = (ci[0] > 0) or (ci[1] < 0)
+            if says is not None and bool(says) != is_:
+                errors.append(f"{where}: ci95_diff {ci} and excludes_zero={says} disagree")
 
     # ABSENT MEANS ABSENT, AND IT OWES A REASON. This used to be checked on the
     # engine-lift block alone, so deleting that block took the whole rule with
@@ -120,6 +135,40 @@ def validate(doc):
                 "as no difference")
         if "ci95" not in f:
             errors.append("forge: a delta with no interval on the difference")
+        # THE NULL IS STORED OR ITS ABSENCE IS EXPLAINED — on a report that has
+        # the key at all; older reports predate it and are read as before.
+        if "null" in f:
+            null = f.get("null")
+            if null is None and not str(f.get("null_why") or "").strip():
+                errors.append("forge: null is absent with no reason given")
+            if null is not None and not isinstance(null.get("rate"), (int, float)):
+                errors.append("forge: null carries no numeric rate")
+
+    # A FORGE OBJECTIVE NAMES ITS TABLE, AND THE BLOCK THAT GRADED IT IS AT THAT TABLE.
+    o = doc.get("objective") or {}
+    if str(o.get("axis") or "").startswith("forge."):
+        if not o.get("pod"):
+            errors.append(f"objective: {o.get('axis')!r} is measured at a table and names no pod")
+        if f.get("available") and o.get("pod") and f.get("pod") != o.get("pod"):
+            errors.append(f"forge: graded at {f.get('pod')!r} but the objective names "
+                          f"{o.get('pod')!r}")
+        g = doc.get("objective_grade") or {}
+        if g.get("state") in ("met", "not met", "not resolvable"):
+            diff = g.get("difference") or {}
+            if not isinstance(diff.get("ci95"), list):
+                errors.append("objective_grade: a Forge objective graded with no interval "
+                              "on the champion-to-branch difference")
+
+    # THE DESIGN NAMES THE PRIMARY, and it is the objective or nothing.
+    dz = doc.get("design")
+    if isinstance(dz, dict):
+        want = (doc.get("objective") or {}).get("axis")
+        if dz.get("primary") != want:
+            errors.append(f"design.primary {dz.get('primary')!r} is not the "
+                          f"objective's axis {want!r}")
+        if dz.get("exploratory_rows") != len(table):
+            errors.append(f"design.exploratory_rows {dz.get('exploratory_rows')} "
+                          f"is not the {len(table)} rows in the table")
 
     grade = doc.get("objective_grade")
     if doc.get("objective") and not grade:

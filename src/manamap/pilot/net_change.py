@@ -47,6 +47,7 @@ percentage, a hoard read as mana. All three have happened here.
 """
 
 import glob
+import math
 import hashlib
 import json
 
@@ -243,6 +244,15 @@ DERIVED = (
      "changes its spells changes its pip distribution, so the target moves "
      "underneath the base — which is why the GAP is the figure and not the "
      "source count."),
+    ("PRIMARY AND EXPLORATORY",
+     "The objective is the one pre-registered test. The twelve rows are a "
+     "family of looks, each with an interval on its difference, and a row's "
+     "verdict is Holm-corrected across the family.",
+     "Twelve rows at alpha 0.05 with no correction is one false 'better' in "
+     "every other report. `experiment.py` pre-registers `win_rate` for the "
+     "same reason. Measured over 42 tracked reports before shipping: Holm "
+     "flips no verdict — the MDE rule was already near Bonferroni at the top "
+     "rank — so this is what a verdict means, not which rows carry one."),
     ("MDE",
      "The minimum detectable difference: the smallest gap this many games "
      "could resolve at 95% confidence.",
@@ -255,6 +265,152 @@ DERIVED = (
      "The only cost figure in the report. `buy` is money; `elsewhere` is a "
      "card that has to come out of a deck that is currently sleeved."),
 )
+
+
+#: The per-game readers, borrowed from `experiment` so that a Forge mean here
+#: is the figure `experiment` would report — one definition, two commands.
+from manamap.sim.experiment import PER_GAME as _EXP_PER_GAME  # noqa: E402
+_PER_GAME = {k: _EXP_PER_GAME[k] for k in
+             ("combat_damage_dealt_to_players", "first_attack_turn", "eliminated_turn")}
+
+
+def _null_block(pod):
+    """The pod's subject null as `pods.calibration` states it, with the pod's
+    name on it — or (None, why). Absent means absent."""
+    try:
+        from manamap.sim import pods
+        cal = pods.calibration(pod) or {}
+        row = cal.get("subject_null")
+    except Exception as exc:                    # noqa: BLE001
+        return None, f"no calibration for {pod}: {exc.__class__.__name__}"
+    if not row or not isinstance(row.get("rate"), (int, float)) or row["rate"] <= 0:
+        return None, f"{pod} has no measured subject null"
+    return {"pod": pod, "rate": row["rate"], "ci95": row.get("ci95"),
+            "wins": row.get("wins"), "games": row.get("games"),
+            "runs": cal.get("runs"), "decks": len(cal.get("decks") or []),
+            "excluded_overridden_runs": cal.get("excluded_overridden_runs"),
+            "basis": "what our decks score in seat 0 at this table, plain "
+                     "harness, deck-level runs"}, None
+
+
+def _arm_summary(row):
+    """What one pooled arm reads on every Forge endpoint, with n."""
+    from manamap.pilot import candidates
+    out = {}
+    n = row["decided"]
+    out["forge.win_rate"] = {"k": row["wins"], "n": n,
+                             "value": round(row["wins"] / n, 4) if n else None}
+    rg = row.get("resolved_games") or 0
+    out["forge.commander_resolved_rate"] = (
+        {"k": row["resolved"], "n": rg, "value": round(row["resolved"] / rg, 4)}
+        if rg else {"k": None, "n": 0, "value": None})
+    for axis, spec in candidates.FORGE_OBJECTIVE_AXES.items():
+        if spec["kind"] != "mean":
+            continue
+        vals = (row.get("per_game") or {}).get(spec["per_game"]) or []
+        if len(vals) >= 2:
+            mean, sd = stats._mean_sd(vals)
+            srt = sorted(vals)
+            out[axis] = {"n": len(vals), "value": round(mean, 4), "sd": round(sd, 4),
+                         "median": srt[len(srt) // 2], "min": srt[0], "max": srt[-1]}
+        else:
+            out[axis] = {"n": len(vals), "value": None}
+    return out
+
+
+def _endpoints(a, b):
+    """Every Forge endpoint for the chosen bucket: both arms, the interval on
+    the difference (Newcombe on a proportion, Welch on a mean, a bootstrap on
+    the median where the sample is mostly zeros), and the MDE."""
+    from manamap.pilot import candidates
+    sa, sb = _arm_summary(a), _arm_summary(b)
+    out = {}
+    for axis, spec in candidates.FORGE_OBJECTIVE_AXES.items():
+        ca, cb = sa[axis], sb[axis]
+        ep = {"champion": ca, "branch": cb, "kind": spec["kind"],
+              "lower_is_better": spec["lower_is_better"],
+              "conditional": spec["conditional"]}
+        if ca.get("value") is None or cb.get("value") is None:
+            ep.update({"delta": None, "ci95": None, "excludes_zero": None,
+                       "mde": None, "method": None,
+                       "why": "no reading on one arm (absent, not zero)"})
+            out[axis] = ep
+            continue
+        if spec["kind"] == "proportion":
+            d = stats.diff_proportions(ca["k"], ca["n"], cb["k"], cb["n"])
+            m = stats.mde_proportion(ca["k"] / ca["n"], ca["n"], cb["n"]) or {}
+            ep.update({"delta": d["diff"], "ci95": d["ci95"],
+                       "excludes_zero": d["excludes_zero"], "method": d["method"],
+                       "mde": m.get("minimum_detectable_difference")})
+        else:
+            d = stats.diff_means_summary(ca["value"], ca["sd"], ca["n"],
+                                         cb["value"], cb["sd"], cb["n"])
+            se = math.sqrt(ca["sd"] ** 2 / ca["n"] + cb["sd"] ** 2 / cb["n"])
+            ep.update({"delta": d["diff"], "ci95": d["ci95"],
+                       "excludes_zero": d["excludes_zero"], "method": d["method"],
+                       "mde": round(stats.Z_MDE_80 * se, 4)})
+            va = (a.get("per_game") or {}).get(spec["per_game"]) or []
+            vb = (b.get("per_game") or {}).get(spec["per_game"]) or []
+            if va and vb and spec["per_game"] == "combat_damage_dealt_to_players":
+                ep["median"] = stats.diff_medians(va, vb)
+        out[axis] = ep
+    return out
+
+
+def champion_at(slug, pod):
+    """What the champion reads at `pod` today — the anchor `deck-branch new`
+    prints for a Forge objective. The bucket with the most decided games at
+    that table under one harness; None when there is none."""
+    from manamap.pilot.common import decklist_sha256
+    try:
+        live = decklist_sha256(slug)
+    except FileNotFoundError:
+        live = None
+    dropped = []
+    rows = _rows_for_public(f"data/decks/{slug}/sim/*.json", slug, live, dropped)
+    at = {k: v for k, v in rows.items() if k[0] == pod and v["decided"]}
+    if not at:
+        return None
+    key = max(at, key=lambda k: at[k]["decided"])
+    row = at[key]
+    summ = _arm_summary(row)
+    eps = {}
+    for axis, arm in summ.items():
+        ep = {"value": arm.get("value"), "n": arm.get("n")}
+        if arm.get("value") is not None and arm.get("n"):
+            if "k" in arm:
+                m = stats.mde_proportion(arm["value"], arm["n"], arm["n"]) or {}
+                ep["mde"] = m.get("minimum_detectable_difference")
+            else:
+                ep["mde"] = round(stats.Z_MDE_80 * arm["sd"] * math.sqrt(2 / arm["n"]), 4)
+        eps[axis] = ep
+    return {"pod": pod, "label": _label(key), "games": row["decided"],
+            "runs": row["runs"], "endpoints": eps}
+
+
+def _row_difference(ca, cb):
+    """The interval on one row's difference, and the z that ranks it.
+
+    A MEAN cell carries `sd` and `n`, so Welch from summary statistics is the
+    interval the per-game series would give (`stats.diff_means_summary`); a
+    RATE cell carries only `rate` and `n`, so Newcombe on the reconstructed
+    counts, as `diagnostic._diff_rate` does. The z is the Wald statistic — at
+    10,000 games a cell the normal is the regime — used only to ORDER the
+    family for Holm; the interval a reader sees is the better one.
+    """
+    na, nb = ca.get("n"), cb.get("n")
+    if not na or not nb:
+        return None, None
+    ra, rb = ca["rate"], cb["rate"]
+    if ca.get("sd") is not None and cb.get("sd") is not None:
+        diff = stats.diff_means_summary(ra, ca["sd"], na, rb, cb["sd"], nb)
+        se = math.sqrt(ca["sd"] ** 2 / na + cb["sd"] ** 2 / nb)
+    else:
+        diff = stats.diff_proportions(round(ra * na), na, round(rb * nb), nb)
+        se = math.sqrt(max(ra * (1 - ra), 0) / na + max(rb * (1 - rb), 0) / nb)
+    d = rb - ra
+    z = (d / se) if se > 0 else (0.0 if d == 0 else float("inf"))
+    return diff, z
 
 
 def _cell(doc, block, key, turn=None):
@@ -704,7 +860,7 @@ def _label(key):
     return f"{pod} ({', '.join(bits)})" if bits else pod
 
 
-def forge(slug, branch):
+def forge(slug, branch, pod=None):
     """The real table, if it has been played. POOLED WITHIN ONE POD ONLY, over
     DECIDED games only.
 
@@ -718,7 +874,11 @@ def forge(slug, branch):
     a champion rate from another table is not this branch's control. The pod is
     named in the block so a reader can see which table decided it.
     """
-    def rows_for(pattern, want, live_sha, dropped, strict=True):
+    rows_for = _rows_for_public
+    return _forge(slug, branch, pod, rows_for)
+
+
+def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
         """A RUN DESCRIBES THE LIST IT PLAYED, NOT THE LIST ON DISK.
 
         MEASURED, on goblin-storm/zada-v1: both branch records carried
@@ -771,19 +931,42 @@ def forge(slug, branch):
                     continue
             row = by_pod.setdefault((pod, ov, prof), {"wins": 0, "decided": 0,
                                                  "games": 0, "runs": 0,
-                                                 "by_route": {}})
+                                                 "by_route": {},
+                                                 "per_game": {n: [] for n in _PER_GAME},
+                                                 "resolved": 0, "resolved_games": 0,
+                                                 "run_ids": []})
             row["wins"] += seat["wins"]
             # A clock-out has NO winner and is excluded from the rate — the same
             # definition the record's own `win_rate` uses.
             row["decided"] += a.get("decided", a.get("games") or 0)
             row["games"] += a.get("games") or 0
             row["runs"] += 1
+            row["run_ids"].append(doc.get("run_id") or path.split("/")[-1])
+            # THE OTHER ENDPOINTS a branch may aim at, pooled the same way as the
+            # wins: per-game values for the means (read with `experiment`'s own
+            # readers, so the two commands cannot disagree about a figure) and
+            # the commander's games-resolved count. Absent on a record that
+            # predates the block, never zero.
+            ca = seat.get("commander_access") or {}
+            if ca.get("games_resolved") is not None:
+                row["resolved"] += ca["games_resolved"]
+                row["resolved_games"] += a.get("games") or 0
+            per_seat_key = want
             for g in (doc.get("games") or []):
                 if g.get("winner") and want.split("@")[0] in str(g["winner"]):
                     k = g.get("won_by") or "unstated"
                     row["by_route"][k] = row["by_route"].get(k, 0) + 1
+                ps = (g.get("per_seat") or {}).get(per_seat_key)
+                if ps is None:
+                    continue
+                for name, fn in _PER_GAME.items():
+                    v = fn(ps)
+                    if v is not None:
+                        row["per_game"][name].append(v)
         return by_pod
 
+
+def _forge(slug, branch, pod, rows_for):
     from manamap.pilot.common import decklist_sha256
     # FLAG, DO NOT SUPPRESS — and the reason is the ONE COSMETIC EDIT in the
     # sweep. `decklist_sha256` is over the file's bytes, so dropping the set code
@@ -837,8 +1020,22 @@ def forge(slug, branch):
                 "why": (f"no Forge run on {'the branch' if champ else 'the deck'}"
                         f" — `manamap pilot simulate {where} --vs <pod>` puts "
                         f"it at a table and writes where this reads")}
-    common = [pod for pod in br if pod in champ and champ[pod]["decided"]
-              and br[pod]["decided"]]
+    common = [k for k in br if k in champ and champ[k]["decided"]
+              and br[k]["decided"]]
+    # THE OBJECTIVE'S TABLE DECIDES when there is one. A Forge objective names
+    # its pod, and grading it at whichever table happened to hold the most
+    # branch games would be grading it against a different null.
+    if pod:
+        at_pod = [k for k in common if k[0] == pod]
+        if not at_pod:
+            return {"available": False,
+                    "superseded": {k: v for k, v in superseded.items() if v},
+                    "why": (f"the objective is measured at {pod} and "
+                            f"{'neither arm has' if not common else 'the arms have no common harness with'} "
+                            f"a run there — `manamap pilot simulate "
+                            f"{slug} --pod {pod} --games N` and the same for "
+                            f"`{slug}@{branch}`")}
+        common = at_pod
     if not common:
         return {"available": False,
                 "superseded": {k: v for k, v in superseded.items() if v},
@@ -855,8 +1052,18 @@ def forge(slug, branch):
     a_w, a_n, b_w, b_n = a["wins"], a["decided"], b["wins"], b["decided"]
     d = stats.diff_proportions(a_w, a_n, b_w, b_n)
     m = stats.mde_proportion(a_w / a_n, a_n, b_n) or {}
+    null, null_why = _null_block(pod)
     return {"available": True,
             "pod": pod,
+            # THE NULL, STORED BESIDE THE FIGURE IT SCALES. It was printed by
+            # `_print_real_table` and absent from the artifact, so the JSON and
+            # the terminal were not the same document.
+            "null": null, **({"null_why": null_why} if null is None else {}),
+            # EVERY ENDPOINT A BRANCH MAY AIM AT, each with the interval on the
+            # difference and its own MDE; `forge.win_rate` here is the same
+            # figure as the top-level delta / ci95 / mde.
+            "endpoints": _endpoints(a, b),
+            "run_ids": {"champion": a["run_ids"], "branch": b["run_ids"]},
             # WHICH HARNESS DECIDED IT. Absent means no card-script overrides
             # were loaded; a sha means both arms were played under exactly that
             # directory, because they are bucketed together or not at all.
@@ -1067,7 +1274,20 @@ def build(slug, branch, iterations=None, seed=None):
         b = diagnostic.run(slug, branch=branch, iterations=it, seed=sd, quiet=True)
         bar.advance(1)
 
+    # ONE PRIMARY, TWELVE EXPLORATORY. Twelve rows each given an independent
+    # verdict at alpha = 0.05 is roughly one false "better" every two reports,
+    # and `experiment.py` had already solved the identical problem by
+    # pre-registering `win_rate` and calling the other ten descriptive. Here the
+    # primary is THE OBJECTIVE (declared when the branch was opened, graded
+    # below), and the rows are a FAMILY: each carries the interval on its own
+    # difference, and a verdict needs BOTH the MDE and Holm's step-down
+    # correction across the family. Measured before shipping: over the 42
+    # tracked reports and their 438 rows, Holm flips ZERO verdicts — the MDE
+    # rule (2.8016·se) was already within 2% of the Bonferroni-12 threshold
+    # (2.865·se) at the top rank — so this changes what a verdict MEANS, not
+    # which rows carry one today.
     table = []
+    pending = []
     for label, blk, key, turn, want in ROWS:
         ca, cb = _cell(a, blk, key, turn), _cell(b, blk, key, turn)
         if not (ca and cb):
@@ -1076,20 +1296,36 @@ def build(slug, branch, iterations=None, seed=None):
         mde = max(diagnostic.mde(ca), diagnostic.mde(cb))
         good = (delta > 0) == (want > 0)
         spec = METRICS.get(label) or {}
+        diff, z = _row_difference(ca, cb)
         row = {
             "measure": label, "champion": ca["rate"], "branch": cb["rate"],
             "delta": delta, "mde": round(mde, 4),
+            # THE INTERVAL ON THE DIFFERENCE, per row — Welch from the cells'
+            # {rate, sd, n} on a mean, Newcombe on a rate. The MDE said what the
+            # run could see; this says what it saw.
+            "ci95_diff": diff.get("ci95") if diff else None,
+            "excludes_zero": diff.get("excludes_zero") if diff else None,
+            "method": diff.get("method") if diff else None,
+            "z": round(z, 3) if z is not None else None,
+            "role": "exploratory",
             # THE DEFINITION TRAVELS WITH THE FIGURE. `deck.html` renders this
             # artifact and had no way to say what a row meant; a reader who has
             # to leave the page to find out guesses instead, and the guesses go
             # one way — a mean read as a rate, a clock read as a win rate.
             "what": spec.get("what"), "why_we_care": spec.get("why"),
             "unit": spec.get("unit"), "scale": spec.get("scale"),
-            "better_is": "higher" if want > 0 else "lower",
-            "verdict": (("better" if good else "worse") if abs(delta) > mde
-                        else "noise")}
-        row["reads_as"] = reads_as(row)
+            "better_is": "higher" if want > 0 else "lower"}
+        pending.append((row, good, mde))
         table.append(row)
+    for row, h in zip(table, stats.holm([r["z"] or 0.0 for r in table])):
+        row["holm"] = h
+    for row, good, mde in pending:
+        # A verdict needs both: a difference the run could resolve (the MDE)
+        # AND one that survives being one of twelve looks (Holm). `noise` keeps
+        # its meaning — "unresolved", never "no change".
+        clears = abs(row["delta"]) > mde and row["holm"]["significant"]
+        row["verdict"] = ("better" if good else "worse") if clears else "noise"
+        row["reads_as"] = reads_as(row)
 
     doc_meta = deck_branch.meta(slug, branch) or {}
     objective = doc_meta.get("objective")
@@ -1098,7 +1334,31 @@ def build(slug, branch, iterations=None, seed=None):
     change_doc["diff"] = card_diff(slug, branch, bill_doc)
     staged = len(doc_meta.get("staged") or [])
     grade = None
-    if objective:
+    forge_block = forge(slug, branch, pod=(objective or {}).get("pod"))
+    if objective and objective["axis"] in candidates.FORGE_OBJECTIVE_AXES:
+        # THE REAL TABLE AS THE PRIMARY. Graded on the branch's pooled reading
+        # at the objective's pod, against the MDE at those game counts, and the
+        # grade carries the interval on the champion-to-branch difference and
+        # the table's null, so the page shows what the number was read against.
+        ep = ((forge_block.get("endpoints") or {}).get(objective["axis"])
+              if forge_block.get("available") else None)
+        if ep and (ep.get("branch") or {}).get("value") is not None:
+            grade = deck_branch.grade_objective(
+                objective, ep["branch"]["value"], mde=ep.get("mde"),
+                difference={"delta": ep.get("delta"), "ci95": ep.get("ci95"),
+                            "excludes_zero": ep.get("excludes_zero"),
+                            "method": ep.get("method"),
+                            "n_a": (ep.get("champion") or {}).get("n"),
+                            "n_b": (ep.get("branch") or {}).get("n")},
+                null=forge_block.get("null"))
+        else:
+            grade = deck_branch.grade_objective(
+                objective, None,
+                why_unmeasured=(forge_block.get("why") if not forge_block.get("available")
+                                else f"{objective['axis']} has no reading on one arm at "
+                                     f"{objective['pod']} — "
+                                     f"{(ep or {}).get('why') or 'absent, not zero'}"))
+    elif objective:
         block, key, turn = candidates.OBJECTIVE_AXES.get(
             objective["axis"], (None, None, None))
         cell = _cell(b, block, key, turn) if block else None
@@ -1126,16 +1386,27 @@ def build(slug, branch, iterations=None, seed=None):
         "harness": {"iterations": it, "seed": sd,
                     "model_version": goldfish.model_version()},
         "decklist_sha256": (b.get("decklist_sha256")),
+        # THE DESIGN, STATED: which figure is the test and which are the looks.
+        "design": {"primary": (objective or {}).get("axis"),
+                   "alpha": 0.05,
+                   "exploratory_rows": len(table),
+                   "correction": "Holm step-down over the exploratory rows",
+                   "rule": ("a row is better/worse only if its delta clears the "
+                            "MDE AND its |z| survives Holm across the family; "
+                            "the objective is graded on its own, uncorrected, "
+                            "because it was declared before the measurement")},
         "objective": objective,
         "objective_grade": grade,
         "staged": staged,
         "changes": change_doc,
         "blind_spots": blind_spots(slug, branch, change_doc),
-        "definitions": {"rows": METRICS, "derived": [
+        "definitions": {"rows": METRICS,
+                        "forge_endpoints": candidates.FORGE_OBJECTIVE_AXES,
+                        "derived": [
             {"name": n, "what": w, "why": y} for n, w, y in DERIVED]},
         "table": table,
         "mana": mana(slug, branch),
-        "forge": forge(slug, branch),
+        "forge": forge_block,
         "bill": bill_doc,
         "limits": [
             "The goldfish has no opponents and nothing blocks: its kill turn is a "
@@ -1226,7 +1497,29 @@ def recommend(doc):
 
     objective, grade = doc.get("objective"), doc.get("objective_grade") or {}
     state = grade.get("state")
-    if not objective:
+    # THE REAL TABLE CAN SAY NO, ABOVE EVERY OTHER ROW OF THE RULE. The goldfish
+    # has no blockers, and on copy-burst-v1 it said MERGE while Forge read the
+    # branch at -0.061 against the champion. A Forge win-rate loss whose
+    # interval EXCLUDES ZERO at the same pod and harness is the one figure here
+    # with external validity, and a rule that files it as a footnote is the
+    # August lesson repeating. A Forge result that spans zero changes nothing:
+    # that is "cannot tell", and the goldfish's verdict stands on its own terms.
+    f = doc.get("forge") or {}
+    wr = (f.get("endpoints") or {}).get("forge.win_rate") or {}
+    real_table_no = bool(f.get("available") and wr.get("excludes_zero")
+                         and (wr.get("delta") or 0) < 0)
+    if real_table_no:
+        lo, hi = wr["ci95"]
+        null = (f.get("null") or {}).get("rate")
+        out = ("do not merge",
+               f"The real table says no: at {f.get('pod')} the branch wins "
+               f"{wr['delta']:+.3f} less than the deck, CI [{lo:+.3f}, {hi:+.3f}], "
+               f"which excludes zero"
+               + (f" (the table's null is {null:.3f})" if null else "")
+               + (f". The goldfish objective read {state!r}; the goldfish has no "
+                  f"blockers, and its verdict on a table is not evidence against "
+                  f"one." if objective and state else "."))
+    elif not objective:
         out = ("no objective",
                "This branch never stated what it was for, so nothing here can "
                "say whether it worked — only what changed.")
@@ -1644,7 +1937,9 @@ def _print_real_table(doc):
         #
         # So the null is printed here, beside the figure it scales, which is the
         # same rule as every other number in this report.
-        null = _pod_null(f.get("pod"))
+        null = (f.get("null") or {}).get("rate")
+        if null is None and "null" not in f:          # a report from before it was stored
+            null = _pod_null(f.get("pod"))
         if null is not None:
             print(f"    the table's null is {null:.3f} (what our decks score in "
                   f"seat 0 at {f.get('pod')}) — champion "
@@ -1663,6 +1958,14 @@ def _print_real_table(doc):
                 print(f"    to resolve the observed {f['delta']:+.3f} at 80% power: "
                       f"{need['games']}/arm (~{need['hours']:.0f} h at "
                       f"{need['per_minute']} games/min)")
+        # THE OTHER ENDPOINTS, one line each, so a branch aimed at damage or at
+        # the commander's access can read its figure where the win rate is.
+        for axis, ep in (f.get("endpoints") or {}).items():
+            if axis == "forge.win_rate" or ep.get("delta") is None:
+                continue
+            print(f"    {axis:38} {ep['champion']['value']:>8} -> {ep['branch']['value']:>8}"
+                  f"  {ep['delta']:+.3f}  CI [{ep['ci95'][0]:+.3f}, {ep['ci95'][1]:+.3f}]"
+                  f"  MDE {ep['mde']}{'  (conditional)' if ep.get('conditional') else ''}")
 
 
 def _print(doc):
@@ -1699,6 +2002,10 @@ def _print(doc):
 
     # ---------------------------------------------------------- the table
     print("\n  MEASURED   10,000 goldfish games per list, same seed, same harness")
+    dz = doc.get("design") or {}
+    if dz:
+        print(f"    {dz.get('exploratory_rows')} exploratory rows, Holm-corrected; "
+              f"the primary is {dz.get('primary') or 'NOT DECLARED (no objective)'}")
     print(f"    {'measure':20} {'v1.0.1':>9} {'branch':>9} {'delta':>9}  verdict")
     for r in doc["table"]:
         print(f"    {r['measure']:20} {r['champion']:>9.3f} {r['branch']:>9.3f} "

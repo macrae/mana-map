@@ -1623,3 +1623,246 @@ def test_a_mismatch_names_the_versions_it_played_and_the_one_on_disk(tmp_path, m
     out = buf.getvalue()
     assert "those runs describe V4; the deck is V5" in out, out
     assert out.index("describe V4") < out.index("8/30"), "the version line sits above the rate"
+
+
+# ── one primary, twelve exploratory ─────────────────────────────────────
+
+def _fake_diag(cells):
+    """A diagnostic document holding just the cells `ROWS` reads."""
+    doc = {"decklist_sha256": "d" * 64}
+    for (label, blk, key, turn, want), cell in zip(net_change.ROWS, cells):
+        blk_d = doc.setdefault(blk, {})
+        if turn:
+            blk_d.setdefault(key, {})[turn] = cell
+        else:
+            blk_d[key] = cell
+    return doc
+
+
+def test_a_row_over_the_mde_but_not_holm_significant_is_noise(monkeypatch):
+    """THE BUG: a verdict by MDE alone. Twelve rows each at alpha 0.05 is one
+    false 'better' every other report. Build twelve rows where every delta
+    sits just over its own MDE (z ≈ 2.9 on a mean) but only the first
+    clears Holm's top-rank threshold — put the verdict back to `abs(delta) >
+    mde` and eleven rows rank instead of one."""
+    from manamap.pilot import diagnostic, goldfish
+    n = 10000
+    cells_a, cells_b = [], []
+    for i, (label, blk, key, turn, want) in enumerate(net_change.ROWS):
+        # a mean cell (sd given) whose delta is z_i standard errors
+        sd = 1.0
+        se = sd * (2 / n) ** 0.5
+        # 2.82 clears the MDE (2.8016 se) and fails Holm's rank-2 threshold
+        # z(0.05/11) = 2.838, so the walk stops there and eleven rows are noise.
+        z = 3.5 if i == 0 else 2.82
+        cells_a.append({"rate": 5.0, "sd": sd, "n": n})
+        cells_b.append({"rate": round(5.0 + z * se * (1 if want > 0 else -1), 6), "sd": sd, "n": n})
+    a, b = _fake_diag(cells_a), _fake_diag(cells_b)
+    monkeypatch.setattr(diagnostic, "run",
+                        lambda slug, branch=None, iterations=None, seed=None, quiet=True: b if branch else a)
+    monkeypatch.setattr(net_change, "_refuse_a_stale_measurement", lambda s, b: None)
+    monkeypatch.setattr(net_change.deck_branch, "meta", lambda s, b: {"objective": None, "staged": []})
+    monkeypatch.setattr(net_change, "changes", lambda s, b: {})
+    monkeypatch.setattr(net_change, "card_diff", lambda s, b, bill: {})
+    monkeypatch.setattr(net_change.deck_branch, "source", lambda s, b: {"cards": [], "unsourced": []})
+    monkeypatch.setattr(net_change, "blind_spots", lambda s, b, c: [])
+    monkeypatch.setattr(net_change, "mana", lambda s, b: {"available": False, "why": "test"})
+    monkeypatch.setattr(net_change, "forge", lambda s, b, pod=None: {"available": False, "why": "test"})
+    monkeypatch.setattr(net_change, "_death_limit", lambda s, b: [])
+    monkeypatch.setattr(goldfish, "model_version", lambda: "test")
+
+    doc = net_change.build("x", "b")
+    verdicts = [r["verdict"] for r in doc["table"]]
+    assert verdicts[0] == "better" and set(verdicts[1:]) == {"noise"}, verdicts
+    # every row over the MDE, so the OLD rule would have ranked all twelve
+    assert all(abs(r["delta"]) > r["mde"] for r in doc["table"])
+    assert doc["design"]["primary"] is None and doc["design"]["exploratory_rows"] == 12
+    assert doc["table"][0]["holm"]["rank"] == 1 and doc["table"][1]["holm"]["significant"] is False
+    # and every row carries the interval on its own difference, agreeing with itself
+    for r in doc["table"]:
+        assert r["ci95_diff"] and r["role"] == "exploratory" and r["method"].startswith("Welch")
+        assert r["excludes_zero"] == ((r["ci95_diff"][0] > 0) or (r["ci95_diff"][1] < 0))
+    assert not validate_net_change.validate(doc), validate_net_change.validate(doc)
+
+
+def test_the_validator_holds_an_interval_to_its_own_flag_and_the_design_to_the_objective():
+    row = {"measure": "m", "champion": 1.0, "branch": 2.0, "delta": 1.0, "mde": 0.05,
+           "verdict": "better", "ci95_diff": [-0.2, 2.2], "excludes_zero": True,
+           "holm": {"rank": 1, "threshold": 1.96, "significant": True, "family": 1}}
+    errs = validate_net_change.validate(_minimal(table=[row]))
+    assert any("disagree" in e for e in errs), errs
+    # ranked although Holm said no
+    row2 = dict(row, ci95_diff=[0.5, 1.5], holm={"rank": 2, "threshold": 2.9, "significant": False, "family": 2})
+    errs = validate_net_change.validate(_minimal(table=[row2]))
+    assert any("did not clear" in e for e in errs), errs
+    # noise over the MDE is fine when Holm refused it
+    row3 = dict(row2, verdict="noise")
+    assert not [e for e in validate_net_change.validate(_minimal(table=[row3])) if "reported as noise" in e]
+    # the design must name the objective's axis and count the rows
+    bad = _minimal(design={"primary": "kill_by_8", "exploratory_rows": 1},
+                   objective={"axis": "damage_10", "op": ">=", "value": 1},
+                   objective_grade={"state": "met"})
+    errs = validate_net_change.validate(bad)
+    assert any("design.primary" in e for e in errs), errs
+    bad2 = _minimal(design={"primary": None, "exploratory_rows": 7})
+    assert any("exploratory_rows" in e for e in validate_net_change.validate(bad2))
+
+
+# ── the real table in the verdict ────────────────────────────────────────
+
+def _forge_doc(delta, lo, hi, state="met"):
+    ep = {"champion": {"k": 20, "n": 100, "value": 0.2}, "branch": {"k": 20, "n": 100, "value": 0.2 + delta},
+          "delta": delta, "ci95": [lo, hi], "excludes_zero": not (lo <= 0 <= hi),
+          "method": "Newcombe", "mde": 0.15, "kind": "proportion"}
+    return {"slug": "x", "branch": "b", "harness": {}, "limits": [], "staged": 5,
+            "table": [{"measure": "damage @T10", "champion": 10.0, "branch": 14.0,
+                       "delta": 4.0, "mde": 1.0, "verdict": "better"}],
+            "objective": {"axis": "damage_10", "op": ">=", "value": 12.0},
+            "objective_grade": {"state": state, "reading": 14.0},
+            "bill": {"counts": {}}, "mana": {"available": False, "why": "test"},
+            "forge": {"available": True, "pod": "standard-v3", "champion": {"wins": 20, "games": 100, "rate": 0.2, "won_by": {}},
+                      "branch": {"wins": 20, "games": 100, "rate": 0.2 + delta, "won_by": {}},
+                      "delta": delta, "ci95": [lo, hi], "excludes_zero": not (lo <= 0 <= hi), "mde": 0.15,
+                      "null": {"pod": "standard-v3", "rate": 0.233, "games": 412},
+                      "endpoints": {"forge.win_rate": ep}}}
+
+
+def test_a_real_table_loss_that_excludes_zero_blocks_merge_even_when_the_goldfish_met(monkeypatch):
+    """THE BUG: Forge as a footnote. copy-burst-v1 read MERGE from 10,000
+    blocker-less goldfish games while 73 Forge games at the real table read
+    -0.061. A Forge win-rate loss whose interval EXCLUDES ZERO at the same pod
+    and harness now blocks the merge whatever the goldfish said; put the rule
+    back to a note and this reads `merge`."""
+    for fn in ("reward", "risk", "cost"):
+        monkeypatch.setattr(net_change, fn, lambda doc: {} if fn != "reward" else [])
+    got = net_change.recommend(_forge_doc(-0.12, -0.20, -0.04))
+    assert got["state"] == "do not merge", got
+    assert "real table says no" in got["because"] and "standard-v3" in got["because"]
+    assert "0.233" in got["because"], "the null is named beside the verdict"
+    assert "goldfish" in got["because"], "the disagreement is stated, not hidden"
+
+
+def test_a_real_table_that_spans_zero_leaves_a_goldfish_verdict_alone(monkeypatch):
+    """"Cannot tell" is not "no"; the goldfish verdict stands on its own terms
+    and the Forge reading stays a note."""
+    for fn in ("reward", "risk", "cost"):
+        monkeypatch.setattr(net_change, fn, lambda doc: {} if fn != "reward" else [])
+    got = net_change.recommend(_forge_doc(-0.06, -0.13, +0.01))
+    assert got["state"] == "merge", got
+    assert any("cannot separate" in n for n in got["notes"])
+    # and a real-table GAIN never blocks anything
+    assert net_change.recommend(_forge_doc(+0.12, +0.04, +0.20))["state"] == "merge"
+
+
+def _stamped_record(root, rel, pod, seat, sha, wins, decided, games, per_game=None, resolved=None):
+    p = root / rel
+    p.parent.mkdir(parents=True, exist_ok=True)
+    seat_row = {"wins": wins}
+    if resolved is not None:
+        seat_row["commander_access"] = {"games_resolved": resolved}
+    doc = {"pod": {"name": pod}, "run_id": rel.split("/")[-1][:-5],
+           "seats": [{"slug": seat, "decklist_sha256": sha}],
+           "analysis": {"games": games, "decided": decided, "seats": {seat: seat_row}},
+           "games": [{"per_seat": {seat: pg}} for pg in (per_game or [])]}
+    p.write_text(json.dumps(doc))
+
+
+def test_the_null_and_every_endpoint_are_stored_beside_the_win_rate(tmp_path, monkeypatch):
+    """The null was printed and never stored, so the JSON and the terminal were
+    not the same document. Now the block carries `null`, and `endpoints` holds
+    every Forge axis a branch may aim at, each with its own interval and MDE."""
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(net_change, "_engine_casts_caveat", lambda s, b: None)
+    monkeypatch.setattr(net_change, "_null_block",
+                        lambda pod: ({"pod": pod, "rate": 0.233, "games": 412}, None))
+    live = {None: "a" * 64, "b": "c" * 64}
+    monkeypatch.setattr("manamap.pilot.common.decklist_sha256", lambda slug, branch=None: live[branch])
+    seat = net_change.deck_branch_seat("x", "b")
+    pg_a = [{"combat_damage_dealt_to_players": d, "first_attack_turn": t, "eliminated_turn": e}
+            for d, t, e in ((10, 8, 20), (0, None, 12), (25, 6, None), (5, 9, 30), (0, None, 15))]
+    pg_b = [{"combat_damage_dealt_to_players": d, "first_attack_turn": t, "eliminated_turn": e}
+            for d, t, e in ((30, 5, None), (12, 7, 25), (40, 4, None), (8, 6, 22), (20, 5, None))]
+    _stamped_record(tmp_path, "data/decks/x/sim/a.json", "standard-v3", "x", "a" * 64, 8, 27, 40, pg_a, resolved=30)
+    _stamped_record(tmp_path, "data/decks/x/branches/b/sim/c.json", "standard-v3", seat, "c" * 64, 9, 33, 40, pg_b, resolved=38)
+    f = net_change.forge("x", "b")
+    assert f["available"] and f["null"]["rate"] == 0.233
+    ep = f["endpoints"]
+    assert ep["forge.win_rate"]["delta"] == f["delta"] and ep["forge.win_rate"]["ci95"] == f["ci95"]
+    assert ep["forge.commander_resolved_rate"]["champion"] == {"k": 30, "n": 40, "value": 0.75}
+    dmg = ep["forge.combat_damage_dealt_to_players"]
+    assert dmg["champion"]["n"] == 5 and dmg["branch"]["value"] == 22.0 and dmg["ci95"] and dmg["mde"]
+    assert "median" in dmg, "the skewed figure carries a bootstrap on the median"
+    fa = ep["forge.first_attack_turn"]
+    assert fa["conditional"] and fa["champion"]["n"] == 3 and fa["lower_is_better"]
+    assert f["run_ids"] == {"champion": ["a"], "branch": ["c"]}
+    # the anchor a new branch prints reads the same bucket
+    anchor = net_change.champion_at("x", "standard-v3")
+    assert anchor["games"] == 27 and anchor["endpoints"]["forge.win_rate"]["value"] == round(8 / 27, 4)
+    assert anchor["endpoints"]["forge.win_rate"]["mde"]
+    assert net_change.champion_at("x", "vito-era") is None
+
+
+def test_a_forge_objective_is_graded_at_its_own_pod_with_the_interval_on_the_difference(tmp_path, monkeypatch):
+    """`forge.win_rate >= 0.2 @standard-v3` is graded on the branch's pooled
+    rate AT THAT TABLE, never at whichever table held the most branch games,
+    and the grade carries the difference and the null."""
+    from manamap.pilot import diagnostic, goldfish
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(net_change, "_engine_casts_caveat", lambda s, b: None)
+    monkeypatch.setattr(net_change, "_null_block",
+                        lambda pod: ({"pod": pod, "rate": 0.233, "games": 412}, None))
+    live = {None: "a" * 64, "b": "c" * 64}
+    monkeypatch.setattr("manamap.pilot.common.decklist_sha256", lambda slug, branch=None: live[branch])
+    seat = net_change.deck_branch_seat("x", "b")
+    _stamped_record(tmp_path, "data/decks/x/sim/a.json", "standard-v3", "x", "a" * 64, 8, 27, 40)
+    _stamped_record(tmp_path, "data/decks/x/sim/v.json", "vito-era", "x", "a" * 64, 30, 300, 400)
+    _stamped_record(tmp_path, "data/decks/x/branches/b/sim/c.json", "standard-v3", seat, "c" * 64, 9, 33, 40)
+    _stamped_record(tmp_path, "data/decks/x/branches/b/sim/w.json", "vito-era", seat, "c" * 64, 40, 300, 400)
+    one_cell = {"decklist_sha256": "c" * 64,
+                "output": {"damage_by_turn": {"10": {"rate": 10.0, "sd": 1.0, "n": 10000}}}}
+    monkeypatch.setattr(diagnostic, "run", lambda slug, branch=None, iterations=None, seed=None, quiet=True: one_cell)
+    monkeypatch.setattr(net_change, "_refuse_a_stale_measurement", lambda s, b: None)
+    objective = {"axis": "forge.win_rate", "op": ">=", "value": 0.2, "pod": "standard-v3"}
+    monkeypatch.setattr(net_change.deck_branch, "meta", lambda s, b: {"objective": objective, "staged": []})
+    monkeypatch.setattr(net_change, "changes", lambda s, b: {})
+    monkeypatch.setattr(net_change, "card_diff", lambda s, b, bill: {})
+    monkeypatch.setattr(net_change.deck_branch, "source", lambda s, b: {"cards": [], "unsourced": []})
+    monkeypatch.setattr(net_change, "blind_spots", lambda s, b, c: [])
+    monkeypatch.setattr(net_change, "mana", lambda s, b: {"available": False, "why": "test"})
+    monkeypatch.setattr(net_change, "_death_limit", lambda s, b: [])
+    monkeypatch.setattr(goldfish, "model_version", lambda: "test")
+    monkeypatch.setattr(net_change, "reward", lambda doc: [])
+    monkeypatch.setattr(net_change, "risk", lambda doc: {})
+    monkeypatch.setattr(net_change, "cost", lambda doc: {})
+
+    doc = net_change.build("x", "b")
+    assert doc["forge"]["pod"] == "standard-v3", "vito-era held more branch games and must not decide"
+    g = doc["objective_grade"]
+    assert g["state"] == "met" and g["reading"] == round(9 / 33, 4), g
+    assert g["difference"]["ci95"] and g["null"]["rate"] == 0.233
+    assert doc["design"]["primary"] == "forge.win_rate"
+    assert doc["recommendation"]["state"] == "merge", doc["recommendation"]
+    assert not validate_net_change.validate(doc), validate_net_change.validate(doc)
+
+    # the same objective at a table nobody has run: not measured, and it says which
+    monkeypatch.setattr(net_change.deck_branch, "meta",
+                        lambda s, b: {"objective": dict(objective, pod="playgroup"), "staged": []})
+    doc2 = net_change.build("x", "b")
+    assert doc2["forge"]["available"] is False and "playgroup" in doc2["forge"]["why"]
+    assert doc2["objective_grade"]["state"] == "not measured"
+    assert doc2["recommendation"]["state"] == "inconclusive"
+
+
+def test_the_validator_holds_a_forge_objective_to_its_pod_and_its_interval():
+    base = _minimal(objective={"axis": "forge.win_rate", "op": ">=", "value": 0.2},
+                    objective_grade={"state": "met", "reading": 0.27})
+    errs = validate_net_change.validate(base)
+    assert any("names no pod" in e for e in errs), errs
+    assert any("no interval" in e for e in errs), errs
+    wrong_table = _minimal(objective={"axis": "forge.win_rate", "op": ">=", "value": 0.2, "pod": "standard-v3"},
+                           objective_grade={"state": "met", "reading": 0.27, "difference": {"ci95": [0, 1]}},
+                           forge={"available": True, "pod": "vito-era", "mde": 0.1, "ci95": [0, 1],
+                                  "null": None})
+    errs = validate_net_change.validate(wrong_table)
+    assert any("graded at 'vito-era'" in e for e in errs), errs
+    assert any("null is absent with no reason" in e for e in errs), errs

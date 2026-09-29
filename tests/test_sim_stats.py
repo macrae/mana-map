@@ -279,3 +279,38 @@ def test_the_normal_mde_is_the_one_formula_diagnostic_used_to_restate():
     assert diagnostic._mde(p, na, nb) == want
     # and the exact path below diagnostic's cap is untouched
     assert diagnostic._mde(0.25, 12, 12) == stats.mde_proportion(0.25, 12)["minimum_detectable_difference"]
+
+
+def test_welch_from_summary_equals_welch_from_the_series():
+    """`diff_means` is `diff_means_summary` after `_mean_sd`, bit for bit — so
+    a caller holding only {rate, sd, n} per cell gets the interval the series
+    would have given."""
+    xs = [3.0, 4.5, 2.0, 6.5, 5.0, 3.5, 4.0]
+    ys = [5.0, 7.0, 6.5, 8.0, 4.5, 6.0, 7.5, 5.5]
+    ma, sa = stats._mean_sd(xs)
+    mb, sb = stats._mean_sd(ys)
+    assert stats.diff_means(xs, ys) == stats.diff_means_summary(ma, sa, len(xs), mb, sb, len(ys))
+    assert stats.diff_means_summary(1.0, 0.0, 1, 2.0, 0.0, 5) is None
+
+
+def test_the_alpha_over_m_table_matches_published_values():
+    """z(0.05/m), two-sided, m = 1..12 — pinned the way `T975` is."""
+    want = [1.960, 2.241, 2.394, 2.498, 2.576, 2.638, 2.690, 2.734, 2.773, 2.807, 2.838, 2.865]
+    got = [round(stats.z_two_sided(0.05 / m), 3) for m in range(1, 13)]
+    assert got == want, got
+
+
+def test_holm_is_step_down_not_bonferroni():
+    """Rank 1 pays alpha/m, rank 2 alpha/(m-1), and so on — so in a family of
+    three, a second row at z = 2.30 clears its alpha/2 threshold (2.241) where
+    Bonferroni-3 would demand 2.394 of it. And the walk STOPS at the first
+    failure: in [2.3, 2.0, 1.97] nothing clears rank 1 (2.394), so the 1.97 that
+    would pass the rank-3 threshold on its own is not significant either."""
+    h = stats.holm([3.5, 2.30, 1.0])
+    assert [x["significant"] for x in h] == [True, True, False]
+    assert h[0]["threshold"] == 2.394 and h[1]["threshold"] == 2.241 and h[2]["threshold"] == 1.96
+    stopped = stats.holm([2.3, 2.0, 1.97])
+    assert [x["significant"] for x in stopped] == [False, False, False], stopped
+    assert [x["rank"] for x in stopped] == [1, 2, 3]
+    assert all(x["family"] == 3 for x in stopped)
+    assert stats.holm([]) == []

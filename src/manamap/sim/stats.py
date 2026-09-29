@@ -111,7 +111,20 @@ def diff_means(xs, ys):
         return None
     ma, sa = _mean_sd(xs)
     mb, sb = _mean_sd(ys)
-    va, vb = sa ** 2 / len(xs), sb ** 2 / len(ys)
+    return diff_means_summary(ma, sa, len(xs), mb, sb, len(ys))
+
+
+def diff_means_summary(ma, sa, na, mb, sb, nb):
+    """`diff_means` from summary statistics — mean, sample sd and n per arm.
+
+    The same Welch interval, so a caller that kept only `{rate, sd, n}` per
+    cell (the goldfish's `diagnostic` cells) gets the interval the per-game
+    series would have given, bit for bit. `diff_means` is this function after
+    `_mean_sd`; a test holds the two equal.
+    """
+    if na < 2 or nb < 2:
+        return None
+    va, vb = sa ** 2 / na, sb ** 2 / nb
     se = math.sqrt(va + vb)
     d = mb - ma
     if se == 0:
@@ -121,12 +134,55 @@ def diff_means(xs, ys):
         return {"diff": round(d, 4), "ci95": [round(d, 4), round(d, 4)],
                 "excludes_zero": d != 0, "df": None,
                 "method": "both arms constant; no variance to estimate"}
-    df = (va + vb) ** 2 / (va ** 2 / (len(xs) - 1) + vb ** 2 / (len(ys) - 1))
+    df = (va + vb) ** 2 / (va ** 2 / (na - 1) + vb ** 2 / (nb - 1))
     half = t_crit(df) * se
     return {"diff": round(d, 4), "ci95": [round(d - half, 4), round(d + half, 4)],
             "excludes_zero": (d - half) > 0 or (d + half) < 0,
             "df": round(df, 1),
             "method": "Welch t interval on the difference of means"}
+
+
+def z_two_sided(alpha):
+    """The two-sided critical z for `alpha`, by bisection on erf — no scipy.
+
+    z(0.05) = 1.960, z(0.05/12) = 2.865. A test pins the table for m = 1..12
+    against published values, the way `T975` is pinned.
+    """
+    lo, hi = 0.0, 10.0
+    for _ in range(80):
+        mid = (lo + hi) / 2
+        p = 2 * (1 - 0.5 * (1 + math.erf(mid / math.sqrt(2))))
+        if p > alpha:
+            lo = mid
+        else:
+            hi = mid
+    return hi
+
+
+def holm(zs, alpha=0.05):
+    """Holm's step-down correction over a family of |z| statistics.
+
+    Rank the family by |z| descending; the k-th largest is tested at
+    alpha / (m - k + 1), and the walk STOPS at the first failure — everything
+    below it is not significant whatever its own z says. That is what makes it
+    step-down rather than Bonferroni: the top rank pays the full alpha/m, the
+    next alpha/(m-1), and so on, so a second real effect is not hidden behind
+    the first. Returns one dict per input, in input order:
+    `{rank, threshold, significant}`. `m` is the family size, which is the
+    number of rows COMPARED, not the number that cleared anything.
+    """
+    m = len(zs)
+    order = sorted(range(m), key=lambda i: -abs(zs[i]))
+    out = [None] * m
+    alive = True
+    for rank, i in enumerate(order, 1):
+        thr = z_two_sided(alpha / (m - rank + 1))
+        ok = alive and abs(zs[i]) >= thr
+        if not ok:
+            alive = False
+        out[i] = {"rank": rank, "threshold": round(thr, 3), "significant": ok,
+                  "family": m}
+    return out
 
 
 def permutation_p(xs, ys, seed=0, iterations=10000):

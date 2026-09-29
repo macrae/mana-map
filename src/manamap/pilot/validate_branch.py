@@ -86,8 +86,20 @@ def validate(doc, slug=None, branch=None):
             if key not in o:
                 errors.append(f"objective: no {key!r}")
         axis = o.get("axis")
-        if axis and axis not in candidates.OBJECTIVE_AXES:
+        forge_axis = axis in candidates.FORGE_OBJECTIVE_AXES
+        if axis and not forge_axis and axis not in candidates.OBJECTIVE_AXES:
             errors.append(f"objective: {axis!r} is not something the bench measures")
+        # A Forge axis is a property of the list AT A TABLE; a goldfish axis has
+        # no table. The grammar refuses both mismatches and the gate repeats it.
+        if forge_axis and not o.get("pod"):
+            errors.append(f"objective: {axis!r} is measured at a table and names no pod")
+        if axis and not forge_axis and o.get("pod"):
+            errors.append(f"objective: {axis!r} is a goldfish axis and carries a pod "
+                          f"({o.get('pod')!r}) it cannot mean anything at")
+        if forge_axis and o.get("pod"):
+            from manamap.sim import pods
+            if not (pods.PODS_DIR / f"{o['pod']}.json").is_file():
+                errors.append(f"objective: pod {o['pod']!r} is not a table under data/pods/")
         if axis in deck_branch.MEMBERSHIP_AXES:
             errors.append(
                 f"objective: {axis!r} asks whether the parts named in an AUTHORED "

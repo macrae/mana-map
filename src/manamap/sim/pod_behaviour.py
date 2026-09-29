@@ -92,7 +92,12 @@ def observed(logs=None):
 #: (sythis-enchantress, 0.98 casts a turn) and 1.154 fell outside the tolerance
 #: a second time. Same conclusion, same direction: 3.0 per-draw firings a round
 #: against 0.81 for a second-spell trigger, a ratio of 3.7.
-POD = {"casts_per_turn": 1.211, "second_spell_rate": 0.269, "n_seat_games": 4898}
+#: RE-DERIVED A THIRD TIME 2026-09-29 from 137,717 logged opponent turns: the
+#: goblin-storm override and profile runs of 2026-09-28/29 added ~55,000 turns
+#: at a table that casts more, and 1.211 fell outside the tolerance again
+#: (1.264 observed). Same direction, same conclusion; the constant moves with
+#: its evidence, which is the only reason the test beside it exists.
+POD = {"casts_per_turn": 1.264, "second_spell_rate": 0.280, "n_turns": 137717}
 
 #: A second DRAW in a turn needs a draw spell, and Forge does not log draws. This
 #: is bounded rather than measured: it cannot exceed the rate of casting a second
@@ -143,5 +148,5 @@ def rate_for(text, opponents=DEFAULT_OPPONENTS, pod=None):
             return {"pattern": name, "per_round": round(fn(pod, opponents), 2),
                     "scales_with_opponents": scales,
                     "basis": f"{opponents} opponents; " + BASIS[name].format(
-                        n=pod.get("n_seat_games", "?"), **pod)}
+                        n=pod.get("n_turns", pod.get("n_seat_games", "?")), **pod)}
     return None

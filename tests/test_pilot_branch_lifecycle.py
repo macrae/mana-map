@@ -959,3 +959,29 @@ def test_every_branch_in_the_repo_balances_copies():
                 f"{slug}/{branch}: copies can never be fewer than names")
             checked += 1
     assert checked >= 10, f"only {checked} branches checked — the loop found nothing"
+
+
+def test_a_forge_objective_names_its_pod_or_is_refused():
+    """A Forge axis is a property of the list AT A TABLE: `forge.win_rate >= 0.25`
+    is refused until it says `@standard-v3`, a goldfish axis with a pod is
+    refused (it has no table), and an unknown pod is refused with the known
+    ones. Re-introduce by dropping the pod branch from `parse_objective` and
+    the first assertion passes a pod-less claim through."""
+    from manamap.pilot.deck_branch import parse_objective
+    with pytest.raises(SystemExit) as e:
+        parse_objective("forge.win_rate >= 0.25")
+    assert "@standard-v3" in str(e.value) and "table" in str(e.value)
+    got = parse_objective("forge.win_rate >= 0.25 @standard-v3")
+    assert got == {"axis": "forge.win_rate", "op": ">=", "value": 0.25, "pod": "standard-v3"}
+    with pytest.raises(SystemExit) as e:
+        parse_objective("kill_by_8 >= 0.3 @standard-v3")
+    assert "goldfish axis" in str(e.value)
+    with pytest.raises(SystemExit) as e:
+        parse_objective("forge.win_rate >= 0.25 @no-such-table")
+    assert "no-such-table" in str(e.value)
+    # every Forge axis is declared with its direction and whether it is conditional
+    from manamap.pilot import candidates
+    for axis, spec in candidates.FORGE_OBJECTIVE_AXES.items():
+        assert axis.startswith("forge.") and spec["kind"] in ("proportion", "mean")
+        assert isinstance(spec["lower_is_better"], bool) and isinstance(spec["conditional"], bool)
+        assert spec["what"] and spec["why"]

@@ -671,6 +671,43 @@ repo's interval discipline worked — but it took sorting the per-game values in
 throwaway script to see it. `compact()` had been writing those per-game scalars into
 `doc["games"]` all along; the distribution was on disk and merely unsurfaced.
 
+## One primary, twelve exploratory (`net-change`, 2026-09-29)
+
+`experiment` pre-registers `win_rate` and calls its other ten figures descriptive, because
+eleven intervals at α = 0.05 is roughly one that excludes zero by chance every two
+experiments. `net-change` had the identical exposure and no such rule: twelve goldfish
+rows, each with an independent `better / worse / noise` verdict by MDE threshold, no
+interval on any row's difference, and no correction across the family. Now the objective
+— declared when the branch was opened, before anything was measured — is the one primary,
+graded on its own; the rows are a FAMILY, each carrying the interval on its own difference
+(Welch from the cells' `{rate, sd, n}` on a mean, Newcombe on a rate — `stats.
+diff_means_summary` is `diff_means` from summary statistics, held equal by a test), and a
+row's verdict needs both the MDE and Holm's step-down across the family (`stats.holm`,
+`stats.z_two_sided`, no scipy). `noise` keeps its meaning: unresolved, never "no change".
+Measured over the 42 tracked reports before shipping: **Holm flips zero of 438 verdicts**
+and no recommendation moves — the MDE rule (2.8016·se) was already within 2% of the
+Bonferroni-12 threshold (2.865·se) at the top rank. So this changes what a verdict MEANS,
+which `design` now states in every report, not which rows carry one today.
+
+**The real table is in the rule (2026-09-29).** `recommend()` read twelve goldfish rows and
+the objective, and appended Forge as a `note` — on copy-burst-v1 the goldfish said MERGE
+while 73 real games read −0.061. Two changes. First, a branch may aim at the table:
+`forge.win_rate >= 0.25 @standard-v3` is an objective (`candidates.FORGE_OBJECTIVE_AXES`:
+win rate, commander resolved rate, combat damage, and the two CONDITIONAL means, first
+attack turn and eliminated turn, whose `n` is the games in which the event happened). A
+Forge axis is a property of the list AT A TABLE, so it names its pod or is refused, and it
+is graded on the branch's pooled reading at that pod — never at whichever table held the
+most branch games — with the interval on the champion-to-branch difference and the table's
+null carried in the grade. Second, above every other row of the stated rule: **a Forge
+win-rate loss whose interval excludes zero at the same pod and harness is "do not merge"
+whatever the goldfish said**; one that spans zero is "cannot tell" and leaves the goldfish
+verdict alone. The Forge block now STORES the null beside the figure it scales (it was
+printed and never written) and carries `endpoints`, every axis with both arms, the
+interval on the difference (Newcombe / Welch, a bootstrap on the median for combat
+damage), the MDE and the run ids. `deck-branch new` on a Forge objective prints the
+champion's reading at that pod, the null and the MDE, where the line is chosen. Swept: the
+eight tracked reports with a Forge block regenerated; no recommendation moved.
+
 ## Commander damage (CR 903.10a), per defender
 
 A player dealt 21 combat damage by the same commander over a game loses — for some decks

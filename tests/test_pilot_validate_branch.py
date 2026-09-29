@@ -156,3 +156,19 @@ def test_every_tracked_branch_passes_its_own_gate():
             doc, slug=parts[2], branch=parts[4]) == [], path
         checked += 1
     assert checked >= 1, "no tracked branch to check"
+
+
+def test_a_forge_objective_in_branch_json_needs_its_pod_and_a_goldfish_one_refuses_it():
+    from manamap.pilot import validate_branch
+    doc = {"slug": "x", "branch": "b", "v": 2, "opened": "2026-09-29", "why": "",
+           "objective": {"axis": "forge.win_rate", "op": ">=", "value": 0.2}, "commits": []}
+    errs = validate_branch.validate(doc, branch="b")
+    assert any("names no pod" in e for e in errs), errs
+    doc["objective"]["pod"] = "standard-v3"
+    assert not [e for e in validate_branch.validate(doc, branch="b") if "objective" in e]
+    doc["objective"] = {"axis": "kill_by_8", "op": ">=", "value": 0.2, "pod": "standard-v3"}
+    errs = validate_branch.validate(doc, branch="b")
+    assert any("goldfish axis" in e for e in errs), errs
+    doc["objective"] = {"axis": "forge.win_rate", "op": ">=", "value": 0.2, "pod": "nope"}
+    errs = validate_branch.validate(doc, branch="b")
+    assert any("not a table" in e for e in errs), errs

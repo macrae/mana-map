@@ -180,6 +180,55 @@ OBJECTIVE_AXES = dict(AXES, **{
 #: Axes where DOWN is better, so the ranking does not reward a worse deck.
 LOWER_IS_BETTER = {"stall", "land_drop"}
 
+#: FORGE ENDPOINTS A BRANCH MAY AIM AT — the real table in the objective grammar,
+#: `forge.<axis> <op> <n> @<pod>`. A goldfish axis is a property of the list; a
+#: Forge axis is a property of the list AT A TABLE, so the pod is part of the
+#: objective and one without it is refused ("a pod's null is a property of the
+#: table with the subject in it"). Every entry names what it is, in which
+#: direction better lies, and — for the two CONDITIONAL means — that its `n` is
+#: the games in which the event happened, not the games played: a branch that
+#: never attacks has no `first_attack_turn`, and a deck that survives has no
+#: `eliminated_turn`, so both are read over a survivor-shaped subsample and
+#: say so. `net_change.forge` computes them; the goldfish never sees them.
+FORGE_OBJECTIVE_AXES = {
+    "forge.win_rate": {
+        "kind": "proportion", "lower_is_better": False, "conditional": False,
+        "what": "wins over DECIDED games at the named pod (clock-outs have no "
+                "winner and leave the denominator), pooled across every run of "
+                "that list under one harness",
+        "why": "the only figure with external validity on this bench, read "
+               "against the table's null rather than a quarter"},
+    "forge.commander_resolved_rate": {
+        "kind": "proportion", "lower_is_better": False, "conditional": False,
+        "what": "games in which the commander resolved at least once, over "
+                "games played",
+        "why": "a FLOOR on commander access under Forge's AI — the deck's plan "
+               "cannot start until it does"},
+    "forge.combat_damage_dealt_to_players": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "combat_damage_dealt_to_players",
+        "what": "combat damage our seat dealt to players, mean per game, with "
+                "the median beside it because the sample is mostly zeros with a "
+                "tail",
+        "why": "the shape of the kill on a combat deck; the figure that fell "
+               "29.07 -> 18.20 when a go-wide refactor cut every lord"},
+    "forge.first_attack_turn": {
+        "kind": "mean", "lower_is_better": True, "conditional": True,
+        "per_game": "first_attack_turn",
+        "what": "the GLOBAL turn of our seat's first declared attack, mean over "
+                "the games in which it attacked at all",
+        "why": "how long the AI sat on the deck; conditional, so a branch that "
+               "attacks in more games can read WORSE here by attacking late in "
+               "games it used to skip"},
+    "forge.eliminated_turn": {
+        "kind": "mean", "lower_is_better": False, "conditional": True,
+        "per_game": "eliminated_turn",
+        "what": "the global turn our seat was eliminated, mean over the games "
+                "it lost",
+        "why": "survival; conditional on losing, so a deck that wins more can "
+               "read worse here for dying faster in the games it still loses"},
+}
+
 
 def _read(doc, axis):
     block, key, sub = AXES[axis]

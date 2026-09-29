@@ -150,10 +150,18 @@ manamap pilot net-change <slug> --branch N [--write] [--json]
                                         #   GRADED, every row with its MDE and a plain-
                                         #   language reading, WHAT EACH ROW MEASURES and
                                         #   why we care, the deterministic mana half,
-                                        #   Forge, and REWARD / RISK / COST
+                                        #   Forge, and REWARD / RISK / COST.
+                                        #   ONE PRIMARY, TWELVE EXPLORATORY (2026-09-29):
+                                        #   the objective is the pre-registered test; the
+                                        #   rows are a FAMILY, each with the interval on
+                                        #   its difference, and a verdict needs the MDE
+                                        #   AND Holm across the family. Swept before it
+                                        #   shipped: 0 of 438 tracked verdicts moved
 manamap pilot validate-net-change <slug> --branch N
                                         #   nothing under the MDE may be ranked, nothing
-                                        #   over it may be called noise, and an
+                                        #   over it may be called noise unless Holm refused
+                                        #   it, an interval must agree with its own flag,
+                                        #   `design.primary` is the objective's axis, and an
                                         #   unavailable block owes a reason
 manamap pilot validate-branch <slug> --branch N
                                         #   the objective is falsifiable and names an
@@ -168,7 +176,11 @@ manamap pilot calibrate [--iterations N] [--json]
                                         #   finding's clothes
 manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|merge|delete]
                                         #   THE GIT WORKFLOW FOR A DECK. `new` demands an
-                                        #   --objective (`<measure> <op> <number>`) because
+                                        #   --objective (`<measure> <op> <number>`, or the
+                                        #   real table: `forge.win_rate >= 0.25 @standard-v3`
+                                        #   — a Forge axis is a property of the list AT A
+                                        #   TABLE, so it names its pod or is refused;
+                                        #   `candidates.FORGE_OBJECTIVE_AXES`) because
                                         #   a branch that cannot be falsified gets graded on
                                         #   whether it did what it does. `commit` freezes a
                                         #   list with a message and is allowed while cards

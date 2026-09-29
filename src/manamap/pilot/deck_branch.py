@@ -401,7 +401,8 @@ def one(slug, branch):
 #: registry, is independence-checked fleet-wide by `tests/test_metric_hygiene.py`, and
 #: cannot silently grow a second name for the same thing.
 _OBJECTIVE_RE = re.compile(
-    r"^\s*([a-z_0-9]+)\s*(>=|<=|>|<)\s*(-?\d+(?:\.\d+)?)\s*$")
+    r"^\s*((?:forge\.)?[a-z_0-9]+)\s*(>=|<=|>|<)\s*(-?\d+(?:\.\d+)?)"
+    r"\s*(?:@([a-z0-9][a-z0-9-]*))?\s*$")
 
 _OPS = {">=": lambda a, b: a >= b, "<=": lambda a, b: a <= b,
         ">": lambda a, b: a > b, "<": lambda a, b: a < b}
@@ -443,14 +444,36 @@ def parse_objective(text):
         raise SystemExit(
             f"--objective must read `<measure> <op> <number>`, e.g. "
             f'"kill_by_8 >= 0.30". Got: {text!r}')
-    axis, op, value = m.group(1), m.group(2), float(m.group(3))
+    axis, op, value, pod = m.group(1), m.group(2), float(m.group(3)), m.group(4)
+    # THE REAL TABLE IN THE GRAMMAR. `forge.win_rate >= 0.25 @standard-v3` is
+    # a claim about the list AT A TABLE, so the pod is part of it: a Forge axis
+    # with no pod is refused, and a goldfish axis with one is refused too — the
+    # goldfish has no table for the name to mean anything.
+    if axis in candidates.FORGE_OBJECTIVE_AXES:
+        if not pod:
+            raise SystemExit(
+                f"'{axis}' is measured at a TABLE, and the objective must name it: "
+                f'"{axis} {op} {value:g} @standard-v3". A pod\'s null is a property '
+                f"of the table with the subject in it, so the same rate means "
+                f"different things at different pods (`manamap pilot pods`).")
+        from manamap.sim import pods
+        try:
+            pods.load(pod)
+        except Exception as exc:                  # PodError, or a bad file
+            raise SystemExit(f"objective names pod {pod!r}: {exc}")
+        return {"axis": axis, "op": op, "value": value, "pod": pod}
+    if pod:
+        raise SystemExit(
+            f"'{axis}' is a goldfish axis and has no table — drop `@{pod}`, or aim "
+            f"at a Forge endpoint: " + ", ".join(sorted(candidates.FORGE_OBJECTIVE_AXES)))
     if axis not in candidates.OBJECTIVE_AXES:
         raise SystemExit(
             f"'{axis}' is not something the bench measures. Pick one of:\n  "
             + "\n  ".join(sorted(candidates.OBJECTIVE_AXES))
+            + "\n  " + "\n  ".join(f"{a} … @<pod>" for a in sorted(candidates.FORGE_OBJECTIVE_AXES))
             + "\n(`candidates.OBJECTIVE_AXES` — wider than what a SWEEP may rank "
               "on, because a correlated measure is a fine thing to aim at and a "
-              "useless thing to sort by.)")
+              "useless thing to sort by; `FORGE_OBJECTIVE_AXES` need a pod.)")
     if axis in MEMBERSHIP_AXES:
         raise SystemExit(
             f"'{axis}' asks whether the parts named in goldfish_targets.json "
@@ -465,25 +488,36 @@ def parse_objective(text):
     return {"axis": axis, "op": op, "value": value}
 
 
-def grade_objective(objective, reading, mde=None):
+def grade_objective(objective, reading, mde=None, difference=None, null=None,
+                    why_unmeasured=None):
     """met / not met / not resolvable, given a measured value.
 
     NOT RESOLVABLE IS A THIRD STATE AND IT IS THE HONEST ONE. A reading that
     misses by less than the run could detect has not failed — the run could not
     see it. Reporting that as "not met" is the same error as reporting a null as
     a finding, which this repo refuses in three other places.
+
+    `difference` and `null` are copied through untouched: on a Forge axis the
+    grade travels with the interval on the champion-to-branch difference and
+    the table's null, so the number it was graded against is on the page.
     """
     if reading is None:
         return {"state": "not measured",
-                "why": "the axis has no reading on this list"}
+                "why": why_unmeasured or "the axis has no reading on this list"}
     hit = _OPS[objective["op"]](reading, objective["value"])
     miss = abs(reading - objective["value"])
+    extra = {}
+    if difference is not None:
+        extra["difference"] = difference
+    if null is not None:
+        extra["null"] = null
     if not hit and mde is not None and miss < mde:
         return {"state": "not resolvable", "reading": reading, "shortfall": round(miss, 4),
                 "why": (f"missed by {miss:.4f}, which is under the {mde:.4f} this run "
-                        f"could detect — evidence of nothing, not evidence of failure")}
+                        f"could detect — evidence of nothing, not evidence of failure"),
+                **extra}
     return {"state": "met" if hit else "not met", "reading": reading,
-            "shortfall": None if hit else round(miss, 4)}
+            "shortfall": None if hit else round(miss, 4), **extra}
 
 
 def champion_reading(slug, objective):
@@ -497,6 +531,8 @@ def champion_reading(slug, objective):
     """
     from manamap.pilot import candidates, diagnostic, net_change
     axis = objective["axis"]
+    if axis in candidates.FORGE_OBJECTIVE_AXES:
+        return _champion_forge_reading(slug, objective)
     block, key, turn = candidates.OBJECTIVE_AXES.get(axis, (None, None, None))
     if not block:
         return [f"  champion: no diagnostic cell for {axis!r} — cannot anchor this line"]
@@ -523,6 +559,43 @@ def champion_reading(slug, objective):
             lines.append("             THE LINE IS INSIDE THE NOISE — it cannot "
                          "come back MET or NOT MET on evidence")
     lines += _band_caveat(slug, axis, now)
+    return lines
+
+
+def _champion_forge_reading(slug, objective):
+    """The anchor for a Forge objective: what the champion reads at that pod
+    today, the table's null, and the MDE at the champion's decided count —
+    printed where the line is chosen, for the same reason the goldfish anchor is."""
+    from manamap.pilot import net_change
+    from manamap.sim import power, stats
+    axis, pod = objective["axis"], objective["pod"]
+    got = net_change.champion_at(slug, pod)
+    null, n_null = power.null_rate(pod)
+    lines = []
+    if not got:
+        lines.append(f"  champion: no Forge run of this deck at {pod} — the line is "
+                     f"unanchored; `manamap pilot simulate {slug} --pod {pod} --games N`")
+    else:
+        ep = (got.get("endpoints") or {}).get(axis) or {}
+        now = ep.get("value")
+        if now is None:
+            lines.append(f"  champion: {axis} has no reading at {pod} "
+                         f"({got.get('games')} decided games)")
+        else:
+            lines.append(f"  champion:  {axis} reads {now:.4f} at {pod} "
+                         f"({got['games']} decided games over {got['runs']} run(s), "
+                         f"{got['label']})")
+            gap = objective["value"] - now
+            mde = ep.get("mde")
+            if mde:
+                lines.append(f"             this many games can resolve {mde:.4f} against "
+                             f"an equal branch arm; your line asks for a move of {gap:+.4f}")
+                if abs(gap) < mde:
+                    lines.append("             THE LINE IS INSIDE THE NOISE — it cannot "
+                                 "come back MET or NOT MET on evidence")
+    if null is not None:
+        lines.append(f"             the table's null is {null:.3f} — what our decks score "
+                     f"in seat 0 at {pod}")
     return lines
 
 
@@ -1498,7 +1571,8 @@ def _dispatch(args):
         got = new(slug, branch, check_in.read_list(args.source),
                   why=getattr(args, "why", None), objective=objective)
         print(f"Opened {got['path']}  ({got['size']} cards)")
-        print(f"  objective: {objective['axis']} {objective['op']} {objective['value']}")
+        print(f"  objective: {objective['axis']} {objective['op']} {objective['value']}"
+              + (f" @{objective['pod']}" if objective.get("pod") else ""))
         # ANCHOR THE THRESHOLD TO THE CONTROL THAT WILL GRADE IT.
         #
         # `--objective` takes a bare number and the number has to come from

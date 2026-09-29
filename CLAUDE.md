@@ -297,7 +297,17 @@ manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
 manamap pilot prescribe <slug> "<question>"             # open a question to the doctor (then /prescribe)
 manamap pilot experiment <slug> --a V1 --b working --vs <pod> --games N   # THE CONTROLLED A/B
-manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys
+manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys.
+                              # ONE PRIMARY (the objective), TWELVE EXPLORATORY rows,
+                              # Holm-corrected. THE REAL TABLE IS IN THE RULE: a Forge
+                              # win-rate loss whose interval excludes zero at the same
+                              # pod blocks a merge whatever the goldfish said; one that
+                              # spans zero changes nothing. The block stores the pod's
+                              # null and every Forge endpoint with its interval.
+manamap pilot deck-branch <slug> new <name> --objective "forge.win_rate >= 0.25 @standard-v3"
+                              # a Forge objective NAMES ITS TABLE or is refused; graded on
+                              # the branch's pooled rate there, with the interval on the
+                              # difference and the null in the grade
 manamap pilot deck-branch <slug> propose <name> --as v1.0.2   # accept it; wait for cards
 manamap pilot card-search --deck <slug> --oracle REGEX [--owned]         # mine the corpus
 manamap pilot model-coverage <slug>                     # WHAT THE MODEL CANNOT SEE, before the games:
@@ -396,7 +406,7 @@ wrong first attempt, the number — is in the page named beside it.
 **Evidence**
 - **A validator that fires on correct data is worse than no validator, and the only way to know is to MEASURE IT AGAINST THE WHOLE FLEET FIRST.** Six proposed checks have been prototyped and rejected on this ground; one fired on 27% of correct authored data, another on 29 of 91 components. → `docs/gotchas-evidence.md`
 - **Absent means ABSENT, never zero.** A figure nobody measured must be a missing key with a stated reason. `0.0` is a measurement, and a reader cannot tell it from one. → `docs/gotchas-bench.md`
-- **Every rate carries its interval, and a comparison carries the interval on the DIFFERENCE.** Two marginal intervals overlapping implies nothing at all. → `docs/gotchas-bench.md`
+- **Every rate carries its interval, and a comparison carries the interval on the DIFFERENCE.** Two marginal intervals overlapping implies nothing at all. **And a FAMILY of comparisons carries its correction**: `net-change`'s twelve rows are exploratory and Holm-corrected; the objective is the one pre-registered primary, as `win_rate` is in `experiment`. → `docs/gotchas-bench.md`, `docs/simulation.md`
 - **Never `cache-record` to make a board green**, and never hand-patch an agent's prose to make a gate pass. Editing prose to satisfy a check puts a fresh claim under an old byline. → `docs/gotchas-bench.md`
 - **A mean is not a result.** Carry median, min and max: a mean of 17.42 against 2.25 read as a sevenfold win when the median was 0 in both arms and two games were the whole difference. → `docs/gotchas-bench.md`
 - **THE GOLDFISH HAS NO BLOCKERS, so its verdict on board QUALITY is not evidence.** With eminence, the token doublers, the sacrifice engine and four draw channels all finally modelled, it still preferred a go-wide Edgar refactor on damage, kill rate and card advantage — and Forge, 400 games per arm against the pilot's own pod, gave the refactor **31/400 against the champion's 50/400**, a difference whose interval EXCLUDES ZERO. The mechanism is one number: combat damage dealt to players fell **29.07 → 18.20**, because 1/1 tokens do not connect and the refactor had cut every lord. That one missing assumption outweighed every other gap closed the same day. Judge a go-wide or token strategy in FORGE from the start. → `docs/gotchas-bench.md`

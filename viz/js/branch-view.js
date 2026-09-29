@@ -76,13 +76,25 @@
                 'not resolvable': 'unresolved' }[state] || 'unknown';
     var out = '<section class="panel objective ' + cls + '"><h2>Objective</h2>' +
       '<p class="obj-expr"><code>' + esc(o.axis) + ' ' + esc(o.op) + ' ' +
-      esc(o.value) + '</code></p>';
+      esc(o.value) + (o.pod ? ' @' + esc(o.pod) : '') + '</code></p>';
     if (o.why) out += '<p class="ev">' + esc(o.why) + '</p>';
     if (g) {
       out += '<p class="obj-result"><span class="obj-reading">' +
              esc(num(g.reading)) + '</span> &rarr; <b>' +
              esc(state.toUpperCase()) + '</b></p>';
       if (g.why) out += '<p class="ev">' + esc(g.why) + '</p>';
+      // A FORGE OBJECTIVE TRAVELS WITH THE INTERVAL ON THE DIFFERENCE and the
+      // table's null — the two numbers the reading was actually read against.
+      if (g.difference && g.difference.ci95) {
+        out += '<p class="ev">vs the deck: &Delta; ' + signed(g.difference.delta) +
+          ' &nbsp;·&nbsp; CI [' + signed(g.difference.ci95[0]) + ', ' +
+          signed(g.difference.ci95[1]) + ']' +
+          (g.difference.excludes_zero ? ' — excludes zero' : ' — spans zero') + '</p>';
+      }
+      if (g.null && g.null.rate != null) {
+        out += '<p class="ev">the table\'s null is ' + num(g.null.rate) +
+          ' (' + esc(String(g.null.games)) + ' games) at ' + esc(g.null.pod) + '</p>';
+      }
     }
     return out + '</section>';
   }
@@ -101,6 +113,9 @@
                        ' is better</span>' : '') +
         '</td><td class="n">' + num(r.champion) + '</td><td class="n">' +
         num(r.branch) + '</td><td class="n">' + signed(r.delta) +
+        // THE INTERVAL ON THE DIFFERENCE, beside the delta it bounds.
+        (r.ci95_diff ? ' <span class="ev">[' + signed(r.ci95_diff[0]) + ', ' +
+                       signed(r.ci95_diff[1]) + ']</span>' : '') +
         '</td><td class="verdict">' + esc(r.verdict) +
         (r.verdict === 'noise' ? ' <span class="ev">MDE ' + num(r.mde) + '</span>' : '') +
         '</td></tr>';
@@ -121,7 +136,11 @@
     return '<section class="panel"><h2>Measured</h2>' +
       '<p class="ev">' + esc(nc.harness.iterations.toLocaleString()) +
       ' games each, shared seed. A delta smaller than the run could detect is ' +
-      'marked noise rather than ranked — that is no answer, not no change.</p>' +
+      'marked noise rather than ranked — that is no answer, not no change.' +
+      (nc.design ? ' These ' + esc(String(nc.design.exploratory_rows)) +
+        ' rows are EXPLORATORY and Holm-corrected as a family; the primary is ' +
+        (nc.design.primary ? esc(nc.design.primary) : 'not declared') + '.' : '') +
+      '</p>' +
       '<div class="tablewrap"><table class="netchange"><thead><tr><th>Measure</th>' +
       '<th class="n">Deck</th><th class="n">Branch</th><th class="n">&Delta;</th>' +
       '<th>Verdict</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
@@ -237,6 +256,11 @@
       (under ? '<p class="warn">UNDERPOWERED — this run could only resolve a ' +
         'difference of ' + esc(f.mde) + '. It rules out a large effect and ' +
         'cannot say which list is better.</p>' : '') +
+      (f.null && f.null.rate != null ? '<p class="ev">the table\'s null is <b>' +
+        num(f.null.rate) + '</b> — what our decks score in seat 0 here (' +
+        esc(String(f.null.games)) + ' games); the deck reads ' +
+        Math.round(100 * f.champion.rate / f.null.rate) + '% of it, the branch ' +
+        Math.round(100 * f.branch.rate / f.null.rate) + '%</p>' : '') +
       '<p class="ev">' + esc(f.caveat || '') + '</p></section>';
   }
 
