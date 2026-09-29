@@ -499,6 +499,23 @@ def forge_pilot_installed():
     return forge_pilot.installed()
 
 
+def ai_profile_tag(sha=None):
+    """The run-id suffix for a per-deck AI profile, or "".
+
+    OVER THE PROFILE'S CONTENT, NOT ITS NAME, and that distinction is the whole reason this
+    exists beside `profile_tag`. `profile_tag` carries the NAME — `-meExperimental` — which
+    is enough while the four shipped profiles are the only choices. A per-deck `mm-<slug>`
+    profile is one name whose CONTENT changes every time a knob is tried, so iterating
+    values under it would write the same run id every time and the second run would be
+    refused as an existing measurement, or replace the first with `--force`.
+
+    That is the third instance of the omission `profile_tag` and `clock_tag` were each
+    written to fix, and `overrides_tag` the fourth, all in one project. A run id must carry
+    every axis of the configuration that can change a figure.
+    """
+    return f"-ai{sha[:8]}" if sha else ""
+
+
 def overrides_tag(sha=None):
     """The run-id suffix for an overridden engine, or "".
 
@@ -531,15 +548,15 @@ def overrides_tag(sha=None):
 
 
 def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None, clock=None,
-           overrides=None):
+           overrides=None, ai_profile=None):
     seed = default_seed(slug, opponents) if seed is None else int(seed)
     return (f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}"
             f"-s{seed}{profile_tag(profile, vs_profile)}{clock_tag(clock)}"
-            f"{overrides_tag(overrides)}")
+            f"{overrides_tag(overrides)}{ai_profile_tag(ai_profile)}")
 
 
 def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock,
-               overrides=None):
+               overrides=None, ai_profile=None):
     """The run id a given configuration WILL write, before anything runs.
 
     A function because two callers need the answer and neither should re-derive
@@ -550,7 +567,7 @@ def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock,
     """
     pod = vs_profile or STANDARD_POD_PROFILE
     return run_id(slug, opponents, games, seed, profile,
-                  pod_tag_name(pod, opponents), clock, overrides)
+                  pod_tag_name(pod, opponents), clock, overrides, ai_profile)
 
 
 def default_jobs():
@@ -875,7 +892,31 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # id is a function of this run's configuration — `overrides_tag` takes the value
     # rather than looking it up, for the reasons in its docstring.
     _ov = (forge_pilot_installed() or {}).get("sha")
-    rid = run_id_for(slug, opponents, games, seed_base, profile, vs_profile, clock, _ov)
+    # THE DECK'S OWN PILOTING, if it has declared any. A policy is a claim about how this
+    # deck is flown, so `simulate` uses it the way `goldfish` already does — automatically,
+    # never on a flag somebody has to remember. What makes that safe rather than silent is
+    # that the fingerprint is in the run id and in the record, so a policy run can never be
+    # mistaken for a plain one.
+    from manamap.sim import forge_pilot as _fpl
+
+    _base_slug, _branch = split_seat(slug)
+    if profile is None:
+        _, _fp = _fpl.declared_profile(_base_slug, _branch)
+        if _fp:
+            if not _fpl.profile_agrees(_base_slug, _branch):
+                raise SystemExit(
+                    f"{slug}: pilot_policy.json declares an AI profile the engine does not "
+                    f"have. A run now would be flown by a profile nobody declared.\n"
+                    f"  install: manamap pilot forge-install")
+            profile = _fpl.profile_name(_base_slug)
+    # FINGERPRINT WHAT THE ENGINE HAS, not what the policy says — the same rule
+    # `card_overrides` had to learn today. This also covers an EXPLICIT
+    # `--profile mm-<slug>`, which the first cut left carrying only the NAME in the id, so
+    # two knob values under one profile name would have collided again on the flag path
+    # while being distinct on the policy path.
+    _ai = _fpl.profile_content_sha(profile) if profile else None
+    rid = run_id_for(slug, opponents, games, seed_base, profile, vs_profile, clock, _ov,
+                     _ai)
     out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"

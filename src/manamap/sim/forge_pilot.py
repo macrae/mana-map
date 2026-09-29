@@ -362,6 +362,27 @@ OVERRIDDEN = ("ancestors_aid", "ancestral_anger", "assault_strobe", "crimson_wis
               "renegade_tactics", "sudden_breakthrough", "wild_ride")
 
 
+def install_all_profiles():
+    """Install every live deck's profile. `{slug: fingerprint or None}`.
+
+    Withdrawn policies are cleaned up here too, which is why it runs over every deck rather
+    than only the ones with a policy today: a deck whose rule was deleted still has a stale
+    `.ai` in the engine, and a stale profile steers every later run while nothing reports it
+    — the same hazard `install()` rebuilds from pristine to avoid.
+    """
+    from manamap import config
+    from manamap.pilot.common import deck_is_apart
+
+    out = {}
+    for deck in sorted(config.DECKS_DIR.iterdir()):
+        if not (deck / "decklist.txt").is_file():
+            continue
+        if deck_is_apart(deck.name):
+            continue
+        out[deck.name] = install_profile(deck.name)
+    return out
+
+
 def render():
     """The provenance question, as a reader sees it."""
     agrees, d, i = verify()
@@ -410,6 +431,13 @@ def main(args=None):
         except (EngineMismatch, FileNotFoundError) as exc:
             raise SystemExit(str(exc)) from exc
         print(f"installed {n} override(s) into {CARDSFOLDER.name}")
+        # AND EVERY DECK'S PROFILE, because a policy that is declared and not installed is
+        # a run refused (`forge.run` checks agreement) — so the one command that prepares
+        # the engine prepares all of it.
+        for slug, fp in sorted(install_all_profiles().items()):
+            if fp:
+                print(f"  profile {profile_name(slug)}.ai — {fp['n']} knob(s): "
+                      f"{', '.join(fp['keys'])}")
 
     for line in render():
         print(f"  {line}")
@@ -417,3 +445,98 @@ def main(args=None):
     # than only as something a person reads.
     if not verify()[0]:
         raise SystemExit(1)
+
+
+# ─────────────────────────────────────────────── the per-deck AI profile
+
+def profile_name(slug):
+    """What `-a` calls this deck's profile. `@` flattens, as Forge's registry does."""
+    return "mm-" + str(slug).replace("@", "-")
+
+
+def profile_path(slug):
+    return AI_DIR / f"{profile_name(slug)}.ai"
+
+
+def declared_profile(slug, branch=None):
+    """`(text, fingerprint)` for the deck's policy, or `(None, None)`.
+
+    A BRANCH INHERITS THE DECK'S PROFILE, for the reason `pilot_policy.load` already
+    inherits the policy: two candidate 99s are only comparable if the same hand pilots
+    both, and a branch with its own piloting would be the "two models, not two lists"
+    defect that cost this project a day on 2026-09-27.
+    """
+    from manamap.pilot import forge_ai, pilot_policy
+
+    doc = pilot_policy.load(slug, branch)
+    if not (doc.get("forge") or {}):
+        return None, None
+    return (forge_ai.compile_profile(doc, name=profile_name(slug)),
+            forge_ai.forge_fingerprint(doc))
+
+
+def installed_profile(slug):
+    """The profile text the ENGINE has for this deck, or None.
+
+    The same question `installed()` asks of the card scripts, for the same reason: what a
+    record claims must be what the JVM loaded, and the JVM reads `res/ai/`.
+    """
+    path = profile_path(slug)
+    if not path.is_file():
+        return None
+    return path.read_text(encoding="utf-8")
+
+
+def install_profile(slug, branch=None):
+    """Write the deck's compiled profile into the engine. Returns its fingerprint or None.
+
+    Removes a stale profile when the policy no longer declares one, for the same reason
+    `install()` rebuilds the card scripts from pristine: a WITHDRAWN piloting rule that
+    stays in the engine keeps steering every later run while nothing reports it.
+    """
+    text, fp = declared_profile(slug, branch)
+    path = profile_path(slug)
+    if text is None:
+        if path.is_file():
+            path.unlink()
+        return None
+    AI_DIR.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+    return fp
+
+
+def profile_agrees(slug, branch=None):
+    """Is the engine's profile the one this deck's policy declares?
+
+    Three states again, and the same reasoning as `verify()`: no policy and no file agree;
+    a policy whose file is missing or stale does not. A run in the third state would be
+    flown by a profile nobody declared.
+    """
+    text, _ = declared_profile(slug, branch)
+    live = installed_profile(slug)
+    if text is None and live is None:
+        return True
+    return text == live
+
+
+def profile_content_sha(name):
+    """A sha over the `.ai` file the ENGINE holds under `name`, or None.
+
+    Over the file's KEY=VALUE lines rather than its bytes, so the generated header and the
+    `why` comments — which explain the policy and do not change how a game is played —
+    cannot move a run id. The same call `forge_ai.forge_fingerprint` makes over the
+    declaration; this one asks the engine, which is what actually plays.
+
+    Returns None for Forge's own four profiles: they are named in the id already by
+    `profile_tag`, they do not change, and hashing them would rename every historical record.
+    """
+    import hashlib
+
+    if not name or not str(name).startswith("mm-"):
+        return None
+    path = AI_DIR / f"{name}.ai"
+    if not path.is_file():
+        return None
+    body = sorted(ln.strip() for ln in path.read_text(encoding="utf-8").splitlines()
+                  if ln.strip() and not ln.lstrip().startswith("#"))
+    return hashlib.sha256("\n".join(body).encode()).hexdigest()[:12]

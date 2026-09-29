@@ -456,6 +456,64 @@ fetches in the corpus — and `goldfish.py` built every land's `colors` from the
 same call, so four fetches modelled as four lands that never produce anything.
 `model_colors` defaults to **True**, so this was on for every deck in the fleet.
 
+### Per-deck AI profiles: Forge's own lever, and the knob that was never switched on (2026-09-28)
+
+`res/ai/*.ai` are plain KEY=VALUE files of 121 `AiProps` knobs.
+`AiProfileUtil.getAvailableProfiles()` is `new File(res/ai).list()`, so ANY file dropped
+there becomes a name `-a` accepts, and `loadProfile()` falls back to `AiProps.getDefault()`
+per key — so a PARTIAL file holding only the keys you change is legal. `forge.command()`
+already passed `-a` per-seat in `-d` order. **Forge's own supported lever for piloting, no
+engine patching, and the only thing refusing it was `argparse`**: four `choices=[...]` lists
+in `registry.py` naming the four shipped profiles, duplicating a check Forge already does
+better (it validates the name and prints what it has).
+
+**THE KNOB THAT WAS NEVER SWITCHED ON.** `SACRIFICE_DEFAULT_PREF_ENABLE` is **false** in
+`Default.ai`. A policy declaring `SACRIFICE_DEFAULT_PREF_MAX_CMC: 3` therefore compiles into
+a legal profile, runs 400 games, returns no difference, and gets recorded as UNPROVEN —
+"the sacrifice knob does not help", about a knob that was never on. That is
+CLAUDE.md's *A CARD THE MODEL CANNOT READ LOOKS EXACTLY LIKE A CARD THAT DOES NOT HELP*, one
+layer up, and it would have been the first thing this work measured. Forge documents FIVE
+master toggles in its own comments ("Master toggle for the following options", "If disabled,
+the following three options do nothing"); four are encoded with their families and a gated
+key now requires its master.
+
+`PLAY_AGGRO` is deliberately NOT one of them: `CHANCE_TO_ATTACK_INTO_TRADE` "works even if
+not playing all-out aggro, e.g. PLAY_AGGRO disabled", while
+`ATTACK_INTO_TRADE_WHEN_TAPPED_OUT` is "ignored if PLAY_AGGRO is globally **enabled**" — an
+INVERSE relation. Encoding it as a master would refuse a correct policy.
+
+**THE RUN ID NEEDED THE PROFILE'S CONTENT, NOT ITS NAME.** `profile_tag` carries the name,
+which is enough for four fixed profiles and useless for one `mm-<slug>` whose content changes
+every experiment: iterating knob VALUES would write one id and the second run would be
+refused as an existing measurement. That is the fourth instance in this project of a
+configuration axis missing from the id — `profile_tag`, `clock_tag`, `overrides_tag`, and now
+`ai_profile_tag`. Forge's own four are deliberately NOT content-hashed: they are named
+already and hashing them would rename every historical record.
+
+**A MODEL STAMP IS A SHA OVER A WHOLE FILE, SO WHAT LIVES IN THAT FILE MATTERS.** The 121
+constants went into `pilot_policy.py`, which is in `goldfish._MODEL_FILES` — and every knob
+edit then staled all 37 goldfish artifacts, for constants the goldfish does not read and
+cannot read. It took one commit: the stamp moved `c42ed8ea2ec3` -> `e41cebc10cf0` and ~25
+fleet tests went red. Split into `forge_ai.py`, with a test asserting `pilot_policy.py` IS in
+the stamp, `forge_ai.py` is NOT, and neither `goldfish` nor `goldfish_turn` imports the Forge
+half — because the stamp only tells the truth while the dependency really is one-way.
+
+**A REASON AND A DIRECTION CANNOT BE CHECKED AGAINST EACH OTHER, so print both.** The first
+trial policy set `MIN_COUNT_FOR_STORM_SPELLS: 2` under a `why` that said "lowering it so the
+AI casts sooner". The default is 1, so the value RAISED the threshold and would have made the
+AI hold storm spells longer — the opposite of its stated reason, in a file whose whole purpose
+is to make a piloting claim arguable. Nothing mechanical catches that. The compiled profile
+now prints `Default.ai has 1; this sets 2` beside the knob, which makes it visible to a human
+reading the file the engine loaded.
+
+Also refused, each because it produces an unmeasurable experiment: a key Forge does not read,
+a wrong type, and **restating a default** — a policy line that changes nothing gives the A/B
+two identical arms and reports noise as a finding.
+
+NO DECK HAS A POLICY. The mechanism exists and nothing uses it, which is the honest place to
+stop: the one rule ever written was CR-proven correct and measured monotonically harmful.
+
+
 ### The three omissions a run id had, and the power the screen never had (2026-09-28)
 
 **A RUN ID MUST CARRY THE HARNESS, AND THIS WAS THE THIRD TIME.** `profile_tag` and

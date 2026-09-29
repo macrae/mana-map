@@ -466,13 +466,13 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--seed", type=int, default=None,
                              help="RNG seed (default derives from the configuration, so the default REPLAYS; pass one for a new sample)")
             cmd.add_argument("--vs-profile", default=None, dest="vs_profile",
-                             choices=["Default", "Cautious", "Reckless", "Experimental"],
+                             metavar="P",
                              help="AI profile for every OPPONENT seat (default: Experimental, "
                                   "the standard pod since 2026-08-30). "
                                   "The pod is part of the instrument: a win rate is "
                                   "relative to how well the table plays.")
-            cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],
-                             help="AI profile for YOUR seat — the opponents' is "
+            cmd.add_argument("--profile", default=None, metavar="P",
+                             help="AI profile for YOUR seat — Forge's four, or any *.ai in res/ai/ (a per-deck mm-<slug> is compiled from pilot_policy.json). Forge validates the name and lists what it has; argparse was the only thing refusing a deck profile — the opponents' is "
                                   "--vs-profile (measured: aggro profiles make a "
                                   "hold-up deck worse, on six games, which this "
                                   "repo's own power function calls undetectable)")
@@ -732,10 +732,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--clock", type=int, default=None)
             cmd.add_argument("--seed", type=int, default=None,
                              help="seed base (default derives from both arms' lists; same seed replays)")
-            cmd.add_argument("--profile", default=None, choices=["Default", "Cautious", "Reckless", "Experimental"],
+            cmd.add_argument("--profile", default=None, metavar="P",
                              help="AI profile for YOUR seat in BOTH arms")
             cmd.add_argument("--vs-profile", default=None, dest="vs_profile",
-                             choices=["Default", "Cautious", "Reckless", "Experimental"],
+                             metavar="P",
                              help="AI profile for every OPPONENT seat in both "
                                   "arms (default: Experimental, the same pod "
                                   "`simulate` has used since 2026-08-30). This "

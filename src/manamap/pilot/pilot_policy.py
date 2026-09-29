@@ -118,6 +118,11 @@ def validate(doc):
             if not isinstance(value, int) or value < 0:
                 raise PolicyError(f"{rid}: hold_until.{counter} must be a "
                                   f"non-negative integer, not {value!r}")
+    # The Forge half lives in `forge_ai`, which the goldfish never reads —
+    # see that module's docstring for why the split is load-bearing.
+    from manamap.pilot import forge_ai
+
+    forge_ai.validate_forge(doc)
     return doc
 
 
