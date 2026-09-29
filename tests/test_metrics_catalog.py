@@ -180,11 +180,12 @@ def test_the_unavailable_figures_are_genuinely_not_in_a_record():
     gap closed — in which case the catalog entry is stale and must be rewritten
     with its source — or something is publishing a number it cannot measure.
     """
+    # `creature power distribution` and `commander uptime` LEFT this list on
+    # 2026-09-30: the gap closed — as an estimate from the board series — and
+    # their entries were rewritten with their source, which is the exit this
+    # docstring names.
     banned = {
-        "creature power distribution": ("creature_power", "power_p50",
-                                        "power_percentiles"),
         "tokens by type": ("tokens_by_type", "treasure_tokens", "blood_tokens"),
-        "commander uptime": ("commander_uptime", "turns_with_commander"),
         "draw-engine uptime": ("draw_engine_uptime",),
         "anthem-adjusted power": ("anthem_adjusted_power",),
         "opposing threats answered": ("threats_answered", "permanents_removed"),
@@ -201,16 +202,19 @@ def test_the_unavailable_figures_are_genuinely_not_in_a_record():
                     f"catalog calls unavailable under {name!r}"
 
 
-def test_post_wipe_recovery_is_unavailable_even_though_wipe_recovery_exists():
+def test_post_wipe_recovery_is_derivable_and_not_the_damage_figure_beside_it():
     """The subtlest entry, and the reason `status` is not a presence check.
 
     `analysis.wipe_recovery` IS published — it measures damage on the wipe turn
     and over the two turns after. The PRD asks for turns to return to pre-wipe
-    BOARD POWER, which is a different quantity and an impossible one: Forge logs
-    a permanent leaving the battlefield and never one arriving.
+    BOARD POWER, a different quantity. Since the board series (2026-09-30) the
+    board before and after is an ESTIMATE in the record, so the figure is
+    DERIVABLE — the data is there and the subtraction is not — and the entry
+    must still say what is missing.
     """
-    assert CATALOG["post-wipe recovery"]["status"] == UNAVAILABLE
-    assert "board" in CATALOG["post-wipe recovery"]["absent"]
+    assert CATALOG["post-wipe recovery"]["status"] == DERIVABLE
+    assert "nothing" in CATALOG["post-wipe recovery"]["source"]
+    assert "ESTIMATE" in CATALOG["post-wipe recovery"]["caveat"]
 
     runs = _runs()
     with_block = 0
@@ -305,22 +309,46 @@ def test_a_derivable_figure_names_data_that_is_actually_in_the_record():
 
 # ── the split between the engines is the measured one ───────────────────────
 
-def test_everything_about_the_library_or_a_board_arrival_is_off_forge():
+def test_everything_about_the_library_is_off_forge_and_a_board_figure_says_it_is_an_estimate():
     """The measurement that decides half the catalog, asserted as policy.
 
     Forge emits two zone transitions and neither is `from Library` or
-    `to Battlefield`. So no entry may claim Forge for drawing, tutoring,
-    recursion, or what arrives on a board — and the ones that need those are
-    goldfish-only or unavailable.
+    `to Battlefield`. So no entry may claim Forge for drawing, tutoring or
+    recursion. A BOARD figure may claim Forge since 2026-09-30 — the bridge's
+    reconstruction from resolve lines, at every turn — but only as an ESTIMATE
+    that says so in its caveat and names the block it comes from.
     """
     library_bound = ("cards drawn per game", "turns with empty hand",
                      "draw-engine uptime")
     board_bound = ("bodies by turn", "post-wipe recovery", "commander uptime",
-                   "creature power distribution", "anthem-adjusted power")
-
-    for name in library_bound + board_bound:
+                   "creature power distribution", "anthem-adjusted power",
+                   "threat-to-lethal gap")
+    for name in library_bound:
         engine = CATALOG[name]["engine"]
         assert engine in ("goldfish", None), f"{name} claims {engine}"
+    for name in board_bound:
+        row = CATALOG[name]
+        if row["engine"] in ("forge", "both"):
+            text = (row.get("caveat") or "") + (row.get("source") or "")
+            assert "estimate" in text.lower() and "board_series" in text, (
+                f"{name} claims Forge for a board figure without calling it an estimate")
+
+
+def test_the_board_series_is_in_every_record_made_since_it_shipped():
+    """A top-level block, validated where present (the `engine_casts` rule), so
+    older records stay green — but a record made after the date must carry it,
+    or the catalog's PUBLISHED claim is a comment."""
+    from manamap.sim import board_series as bs
+    runs = _runs()
+    since, checked = 0, 0
+    for path in runs:
+        doc = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+        checked += 1
+        if (doc.get("at") or "") >= bs.SINCE:
+            since += 1
+            assert "board_series" in doc, pathlib.Path(path).name
+            assert bs.validate(doc["board_series"], doc.get("games_completed")) == []
+    assert checked >= 15
 
 
 def test_the_zone_limit_is_quoted_from_one_constant():
@@ -389,11 +417,17 @@ def test_the_honest_headline_is_that_most_of_them_are_not_answerable():
     rows = metrics.answerable()
     by_state = {s: sum(1 for r in rows if r["state"] == s)
                 for s in ("full", "partial", "none")}
-    assert by_state == {"full": 2, "partial": 2, "none": 2}, by_state
+    # 2026-09-30: the board series moved two problems from `none` to `full` —
+    # "board dies to wipes" has a board before and after, and the commander's
+    # uptime is a figure. The catalog says how (`board_series`, an estimate).
+    assert by_state == {"full": 4, "partial": 2, "none": 0}, by_state
 
     resilience = metrics.by_group("resilience")
-    assert all(r["status"] == UNAVAILABLE for r in resilience.values())
     assert len(resilience) == 3
+    assert resilience["commander uptime"]["status"] == PUBLISHED
+    assert resilience["post-wipe recovery"]["status"] == DERIVABLE
+    assert resilience["value on creature death"]["status"] == UNAVAILABLE, (
+        "a death TRIGGER is still not attributable in the log")
 
 
 def test_the_catalog_renders_without_a_deck_on_disk():

@@ -45,6 +45,10 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   pilot_quality.py / pod_behaviour.py / power.py / failure.py;
                       #   validate_sim.py re-proves a record against its logs;
                       #   bridge.py lifts a board into a game_state v2 scenario;
+                      #   board_series.py: the bridge's board at EVERY turn's
+                      #   cleanup — bodies, printed power, open lands, commander
+                      #   uptime — an ESTIMATE with its floors named, top-level
+                      #   in the record beside engine_casts (since 2026-09-30);
                       #   opponents.py fetches a pod seat from EDHREC.
                       #   ◆ SEEDED run records under data/decks/<slug>/sim/
                       #   (docs/simulation.md — the engine lives OUTSIDE the repo)

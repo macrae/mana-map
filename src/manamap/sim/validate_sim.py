@@ -138,6 +138,11 @@ def validate(rec, slug, logs_text=None):
                    or any(not isinstance(x, int) or x < 0 for x in v.values())]
             if bad:
                 errors.append(f"engine_casts.by_card: malformed rows for {bad[:3]}")
+    # THE BOARD SERIES, checked only where PRESENT — the `engine_casts` rule.
+    bser = rec.get("board_series")
+    if bser is not None:
+        from manamap.sim import board_series as _bs
+        errors += _bs.validate(bser, n)
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
         facts, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec))
@@ -149,6 +154,12 @@ def validate(rec, slug, logs_text=None):
             from manamap.sim.forge import deck_meta_name
             if sim_parse.engine_casts(facts, label, deck_meta_name(slug)) != ec:
                 errors.append(f"engine_casts does not match what the logs derive — "
+                              f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
+        if bser is not None:
+            from manamap.sim import board_series as _bs
+            from manamap.sim.forge import deck_meta_name
+            if _bs.from_logs(logs_text, record_commanders(rec), deck_meta_name(slug)) != bser:
+                errors.append(f"board_series does not match what the logs derive — "
                               f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
     return errors
 

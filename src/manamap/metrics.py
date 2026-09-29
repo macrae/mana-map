@@ -184,24 +184,29 @@ CATALOG = {
     "bodies by turn": _m(
         "board",
         "Creature count on board at end of each turn.",
-        PUBLISHED, "goldfish",
-        "goldfish_metrics.json → metrics.mean_bodies_by_turn",
-        caveat="In all ten tracked goldfish artifacts — unlike the kill clock "
-               "beside it, which is behind `model_combat` and is in two. "
-               + FORGE_ZONE_LIMIT),
+        PUBLISHED, "both",
+        "goldfish_metrics.json → metrics.mean_bodies_by_turn; "
+        "sim/<run>.json → board_series.by_turn.bodies (our seat, own turns)",
+        caveat="The goldfish figure is exact for a model with no opponents; the "
+               "Forge figure is an ESTIMATE — the bridge's board from resolve "
+               "lines at each turn's cleanup, since 2026-09-30, with its floors "
+               "in `board_series.limits`: a body that entered without being cast "
+               "is seen only when it first acts, an X-count token is not on the "
+               "board. " + FORGE_ZONE_LIMIT + " The estimate is what the bridge "
+               "already builds for a lifted scenario, at every turn instead of one."),
 
     "creature power distribution": _m(
         "board",
         "P25 / P50 / P75 / max power of creatures on board.",
-        UNAVAILABLE, None,
-        None,
-        absent="No percentiles anywhere, and Forge cannot supply the board at "
-               "all. `sim/threat.py` documents a deliberate REFUSAL of board "
-               "power as a measure: counters, anthems, auras, equipment and token "
-               "counts are invisible to the log, so a board-power ranking would "
-               "be biased against exactly the decks that build one. The goldfish "
-               "publishes `combat.mean_board_power_by_turn`, a mean and not a "
-               "distribution — and a mean is not a result."),
+        PUBLISHED, "forge",
+        "sim/<run>.json → board_series.per_game[].by_turn.<t>.printed_power "
+        "and .power_unknown (a per-game series; percentiles are one sort away)",
+        caveat="PRINTED power, and an estimate: counters, anthems, auras and "
+               "equipment are invisible to the log, and a `*/*` creature is "
+               "counted in `power_unknown` rather than as 0 — which is the "
+               "refusal `sim/threat.py` documents, kept as a floor instead of a "
+               "ranking. The goldfish's `combat.mean_board_power_by_turn` is a "
+               "mean, and a mean is not a result."),
 
     "tokens by type": _m(
         "board",
@@ -275,27 +280,30 @@ CATALOG = {
     "threat-to-lethal gap": _m(
         "speed",
         "Turns between board reading as lethal-capable and lethal landing.",
-        UNAVAILABLE, None,
-        None,
-        absent="'Reading as lethal-capable' needs a board state per turn, which "
-               "Forge cannot supply. " + FORGE_ZONE_LIMIT + " The captain's log "
+        DERIVABLE, "forge",
+        "sim/<run>.json → board_series.per_game[].by_turn (printed power per own "
+        "turn) against games[].per_seat[].life_by_turn — nothing computes the "
+        "gap yet; `sim-boards --criterion lethal-missed` is the first consumer",
+        caveat="'Reading as lethal-capable' is PRINTED power against an "
+               "opponent's life — an estimate with the board series' floors "
+               "(counters, anthems, summoning sickness unseen). The captain's log "
                "asks for it directly — ur-dragon 003, 'I ramped fast enough to "
-               "broadcast the win before I could actually present lethal' — so "
-               "this is a real want with no route today."),
+               "broadcast the win before I could actually present lethal'."),
 
     # ── Resilience ──────────────────────────────────────────────────────────
     "post-wipe recovery": _m(
         "resilience",
         "Turns to return to pre-wipe board power.",
-        UNAVAILABLE, None,
-        None,
-        absent="What IS published is `analysis.wipe_recovery` — damage dealt on "
-               "the wipe turn and over the two turns after it. That is value on "
-               "the way down, not board recovery, and the difference is not "
-               "cosmetic. Board size before and after is impossible: Forge logs "
-               "a permanent LEAVING the battlefield and never one arriving, so a "
-               "reconstructed board series would be zeroes wearing the name of a "
-               "measurement."),
+        DERIVABLE, "forge",
+        "sim/<run>.json → board_series.per_game[].by_turn (bodies and printed "
+        "power per own turn) beside analysis.wipe_recovery's wipe turns — "
+        "nothing joins the two yet",
+        caveat="What IS published is `analysis.wipe_recovery` — damage dealt on "
+               "the wipe turn and over the two turns after it: value on the way "
+               "down, not board recovery. The board before and after is now an "
+               "ESTIMATE in `board_series` (since 2026-09-30), with the floors "
+               "that block names; the recovery figure itself is one subtraction "
+               "nobody has written."),
 
     "value on creature death": _m(
         "resilience",
@@ -312,13 +320,15 @@ CATALOG = {
     "commander uptime": _m(
         "resilience",
         "Share of turns after first resolve with the commander on battlefield.",
-        UNAVAILABLE, None,
-        None,
-        absent="Forge logs the commander leaving the battlefield and never "
-               "arriving, so time ON it cannot be reconstructed. `bridge.py` "
-               "tracks a commander's zone for ONE lifted board and never across "
-               "a run. Heliod's whole open question — losing the commander takes "
-               "the engine with it — is unmeasured for this reason."),
+        PUBLISHED, "forge",
+        "sim/<run>.json → board_series.commander_uptime (own turns after the "
+        "first with the commander on the battlefield, share still there; per game "
+        "in board_series.per_game[].commander_uptime)",
+        caveat="An ESTIMATE from the bridge's zone tracking across every turn "
+               "(since 2026-09-30): the commander enters on its resolve line and "
+               "leaves on its zone change, read as `command` because the AI "
+               "always takes the replacement. Heliod's open question — losing "
+               "the commander takes the engine with it — has a figure now."),
 
     # ── Interaction ─────────────────────────────────────────────────────────
     "removal used vs held": _m(

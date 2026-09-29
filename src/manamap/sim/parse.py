@@ -371,12 +371,15 @@ def game_facts(g, commanders=None):
                # whether eleven permanents left one at a time or all at once,
                # which is the only thing that separates attrition from a wipe.
                #
-               # THERE IS NO MATCHING BOARD SERIES AND THERE CANNOT BE. Forge
-               # logs a `Zone Change` when a permanent LEAVES the battlefield
-               # for a graveyard and emits nothing when one arrives — measured
-               # on a 100-game pod run: 0 `to Battlefield` lines in the entire
-               # log. A board count reconstructed from this would be a series of
-               # zeros wearing the name of a measurement, so it is ABSENT.
+               # THERE IS NO ARRIVAL LOG. Forge logs a `Zone Change` when a
+               # permanent LEAVES the battlefield and emits nothing when one
+               # arrives — measured on a 100-game pod run: 0 `to Battlefield`
+               # lines. So no board series lives in `analysis`. What DOES exist
+               # is `board_series` at the record's top level (2026-09-30): the
+               # bridge's reconstruction from resolve lines, at every turn's
+               # cleanup, labelled an ESTIMATE with its floors named. This
+               # counter stays what it is — losses, exact — and the estimate
+               # stays where a reader can see it is one.
                "permanents_lost_by_turn": defaultdict(int),
                # See _COUNTER_PLACED_RE: EVENTS, not counters, and attributed
                # to the tagged seat when the line carries one and to the ACTIVE

@@ -1121,6 +1121,10 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         # old record reads "not measured". The reading -- was the deck's engine
         # ever played -- is computed at print time from this, never stored.
         "engine_casts": sim_parse.engine_casts(facts, label, deck_meta_name(slug)),
+        # THE BOARD, TURN BY TURN, as an ESTIMATE from the resolve lines the
+        # bridge already reads. Top-level beside `engine_casts` for the same
+        # reason: validated only where present, so no older record reddens.
+        "board_series": _board_series().from_logs(texts, commanders, deck_meta_name(slug)),
         "games": [sim_parse.compact(f, label) for f in facts],
         "assumptions": ASSUMPTIONS + ([f"{slug}'s strategic frame calls it "
                                        f"{frame.get('archetype')!r} — read the AI caveat "
@@ -1174,6 +1178,9 @@ def analyze(slug, run_id_or_path):
         record_commanders(rec))
     rec["analysis"] = analysis
     rec["engine_casts"] = sim_parse.engine_casts(facts, label, deck_meta_name(slug))
+    rec["board_series"] = _board_series().from_logs(
+        [l.read_text(encoding="utf-8", errors="replace") for l in logs],
+        record_commanders(rec), deck_meta_name(slug))
     rec["games"] = [sim_parse.compact(f, label) for f in facts]
     # THE POD, BACKFILLED — and marked `named: false`, because a record written
     # before pods existed faced a table nobody named and this is a reading of
@@ -1239,6 +1246,13 @@ def _versions_by_sha(slug):
                 for s in (v.get("decklist_sha256s") or [])}
     except Exception:                    # noqa: BLE001
         return {}
+
+
+def _board_series():
+    """Imported at the call, not at the top: `board_series` imports `bridge`,
+    which imports from this module — a cycle the first install tripped on."""
+    from manamap.sim import board_series
+    return board_series
 
 
 def list_runs(slug):

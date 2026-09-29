@@ -727,6 +727,33 @@ repo's interval discipline worked — but it took sorting the per-game values in
 throwaway script to see it. `compact()` had been writing those per-game scalars into
 `doc["games"]` all along; the distribution was on disk and merely unsurfaced.
 
+## The board series — an estimate from the log the parser said could not carry one (2026-09-30)
+
+`parse.py` records, correctly, that Forge logs a permanent LEAVING the battlefield and
+never one arriving — 0 `to Battlefield` lines in a 100-game run — and concluded that a
+board count "would be a series of zeros wearing the name of a measurement". But
+`bridge.reconstruct` has been building exactly that board for `sim-scenario` since S4: a
+cast permanent enters on its `Resolve Stack` line, a token at the resolution that creates
+it, a land on its `Land:` line, and each leaves on its zone change. `sim/board_series.py`
+builds what the bridge builds at ONE cut at EVERY cut — the start of each turn's cleanup
+step, the PRD's "end of each turn" — one `reconstruct` per global turn (~0.4 ms a cut, a
+second and a half per 100-game run), and the record carries it top-level as `board_series`
+beside `engine_casts`: validated only where present, so no older record reddens, and
+re-derived from the logs by `validate-sim` where they exist. Our seat only, per OWN turn:
+`bodies`, `printed_power` with `power_unknown` beside it (a `*/*` is a body, never 0
+power), `permanents`, `tokens`, `lands`, `open_lands` (untapped at cleanup — mana left
+unused), `rocks_tapped` (a floor on mana sources), and `commander_uptime` (own turns after
+the first with the commander on the battlefield, share still there — heliod's open
+question, "losing the commander takes the engine with it", has a figure). `limits` names
+every floor: a body that entered without being cast is seen only when it first acts, an
+X-count token is not on the board, printed power ignores counters and anthems, removal by
+name takes the first holder, the hand is never logged. The catalog moves `bodies by turn`
+to both engines, `commander uptime` and `creature power distribution` to PUBLISHED (Forge,
+as estimates that say so), and `post-wipe recovery` and `threat-to-lethal gap` to
+DERIVABLE — the data is in `per_game` and the subtraction is not written. The old policy
+test ("everything about a board arrival is off Forge") became "a board figure may claim
+Forge only as an estimate that names `board_series` and calls itself one".
+
 ## One primary, twelve exploratory (`net-change`, 2026-09-29)
 
 `experiment` pre-registers `win_rate` and calls its other ten figures descriptive, because
