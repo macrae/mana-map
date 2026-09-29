@@ -110,6 +110,12 @@ def test_one_game_yields_no_verdict():
 #: uninformative about the DECK, and a run that earns it is still evidence about
 #: the harness. Adding an entry here is an edit somebody has to justify, which
 #: is the whole point — the same shape as the `model_combat` opt-in registry.
+#: TWO ENTRIES LEFT THIS SET on 2026-09-28 and neither was silenced — `pilot_quality`
+#: gained a WITHHELD band (`BAND`), so a run whose land ratio sits inside the fleet's
+#: run-to-run noise no longer gets a verdict at all, and an exception for it is dead.
+#: That is the intended direction: a threshold that cannot be read to three decimals
+#: produces fewer exceptions, not more. The Zada-targeting reasoning one of them carried
+#: is in `docs/gotchas-bench.md`, where it was already cross-referenced.
 KNOWN_FLAGGED = {
     # 2026-09-04, zur-enchantress on the value-chains table. Land drops 78% and
     # spells cast 66% of the pod's rate. The record is kept because it is the
@@ -177,33 +183,6 @@ KNOWN_FLAGGED = {
     # positive at the same n.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-cdaddf26"
     "-s341395706-podExperimental-c600.json",
-    # 2026-09-25, goblin-storm@zada-v1 on standard-v3, our seat on Default.
-    # Land drops and spells cast both 84% of the pod's rate. A TRUE POSITIVE and
-    # kept deliberately, because the observations are the entire value of the run:
-    # ZADA'S TRIGGER FIRED 21 TIMES IN 60 GAMES against 100 casts of her — the AI
-    # will not target its own commander to switch on a copy ability, because its
-    # evaluator prices Brute Force on Zada identically to Brute Force on anything
-    # else. So the win rate (0.040) is not a floor on this deck, it is a
-    # measurement of a DIFFERENT deck, and the record says so. The Experimental
-    # companion run moved tokens_observed 1.98 -> 1.95, which is why the profile
-    # is not the explanation. → docs/gotchas-bench.md
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c9abd341"
-    "-s1383481153-podExperimental-c600.json",
-    # 2026-09-28, goblin-storm/copy-burst-v1 at standard-v3, 100 games, and THE FIRST
-    # RUN MADE UNDER `data/forge_overrides/` — eleven `AITgts$` hints so the AI aims the
-    # deck's pump spells at Zada instead of at whatever else is standing.
-    #
-    # Land drops 0.333 against a pod mean of 0.39 = 0.85... and it rounds to 0.84, one
-    # point under the line. It is kept, and read, for a reason the other entries here do
-    # not have: its CONTROL is flagged identically. The no-override run beside it
-    # (s936119400) reads lands 0.316 and casts 0.636 against this run's 0.333 and 0.605,
-    # so the handicap is COMMON TO BOTH ARMS and cannot explain the difference between
-    # them. That is the condition under which an A/B between two of our own runs survives
-    # a NOT COMPARABLE verdict, and it is why the +0.096 [+0.017, +0.183] is reported at
-    # all. The absolute rate (0.110, 47% of the 0.233 null) is still not a claim about how
-    # the deck plays in the pilot's hands.
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068"
-    "-s909090-podExperimental-c600.json",
 }
 
 
@@ -243,3 +222,51 @@ def test_the_known_flagged_set_is_not_a_dumping_ground():
             still.add(os.path.basename(path))
     stale = KNOWN_FLAGGED - still
     assert not stale, f"no longer flagged, so the exception should go: {stale}"
+
+
+def test_a_ratio_inside_the_run_to_run_noise_gets_no_verdict():
+    """A HARD CUT INSIDE THE NOISE PRODUCES A VERDICT THAT FLIPS ON THE SAME DECK.
+
+    Measured over the 47 tracked runs carrying a verdict: the median WITHIN-deck spread of
+    the land ratio across runs of one list at one table is 0.037, and the 0.85 line falls
+    inside that spread for two decks — edgar-vampires reads 0.826 and 0.933 at standard-v3,
+    and goblin-storm@zada-v1's three runs span 0.840/0.851/0.855 with the line inside.
+
+    `None` is not a new state: `MIN_GAMES` has meant "rates reported, verdict withheld"
+    since the module shipped. This is the same answer for a second cause.
+    """
+    from manamap.sim import pilot_quality as pq
+
+    def verdict(ours, pod):
+        rec = {"seats": [{"slug": "us"}, {"slug": "a"}, {"slug": "b"}],
+               "games": [{"round": 10, "per_seat": {
+                   "us": {"lands": ours, "casts": 5},
+                   "a": {"lands": pod, "casts": 5},
+                   "b": {"lands": pod, "casts": 5}}} for _ in range(20)]}
+        return pq.from_record(rec)["comparable"]
+
+    # ratio 1.0 — comfortably comparable; 0.5 — comfortably not.
+    assert verdict(4, 4) is True
+    assert verdict(2, 4) is False
+    # Just inside the band on either side of the line: no verdict.
+    for ours in (3.40, 3.42, 3.44):          # ratio 0.850, 0.855, 0.860
+        assert verdict(ours, 4.0) is None, f"ratio {ours/4:.3f} must be withheld"
+    # And outside it, a verdict returns.
+    assert verdict(3.30, 4.0) is False       # ratio 0.825, clear of the band
+    assert verdict(3.60, 4.0) is True        # ratio 0.900
+
+
+def test_the_withheld_reading_says_why_and_names_the_noise():
+    """A withheld verdict that does not say what it could not separate is just a gap."""
+    from manamap.sim import pilot_quality as pq
+
+    rec = {"seats": [{"slug": "us"}, {"slug": "a"}, {"slug": "b"}],
+           "games": [{"round": 10, "per_seat": {
+               "us": {"lands": 3.42, "casts": 5},
+               "a": {"lands": 4.0, "casts": 5},
+               "b": {"lands": 4.0, "casts": 5}}} for _ in range(20)]}
+    q = pq.from_record(rec)
+    assert q["comparable"] is None
+    assert "noise" in q["reading"] and "withheld" in q["reading"]
+    assert str(pq.COMPARABLE) in q["reading"], "it must name the line it could not clear"
+    assert "casts_note" in q, "the rates are still reported"

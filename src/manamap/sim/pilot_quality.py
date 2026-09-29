@@ -50,6 +50,12 @@ whatever it costs, so a seat that is not making them is not being piloted.
 #: reader never has to take the verdict's word for it.
 COMPARABLE = 0.85
 
+#: Half the median WITHIN-deck run-to-run spread in the land ratio, measured over the 47
+#: tracked runs that carry a verdict (median spread 0.037). A ratio this close to the line
+#: cannot be told from one on the other side of it, so the verdict is withheld rather than
+#: decided — see the long comment in `from_record`.
+BAND = 0.019
+
 LANDS, CASTS = "lands_per_turn", "casts_per_turn"
 
 #: Below this many games the rates are one table's variance. The n=1 smoke run
@@ -108,8 +114,66 @@ def from_record(rec):
                           f"rates are reported; the verdict is withheld.")
         return out
     ratio = out[LANDS]["ratio"]
-    out["comparable"] = bool(ratio) and ratio >= COMPARABLE
     out["verdict_from"] = LANDS
+    # A HARD CUT INSIDE THE RUN-TO-RUN NOISE PRODUCES A VERDICT THAT FLIPS ON THE SAME
+    # DECK, and it did. Measured over the 47 tracked runs that carry a verdict (median
+    # land ratio 0.946, sd 0.090), the WITHIN-deck spread across runs of one list at one
+    # table has a median of 0.037 — and the 0.85 line falls inside that spread for two
+    # decks:
+    #
+    #   edgar-vampires at standard-v3      0.826 flagged, 0.933 comparable
+    #   goblin-storm@zada-v1 at standard-v3  0.840 flagged, 0.851 and 0.855 comparable
+    #
+    # goblin-storm@zada-v1's three runs span 0.015 and the threshold is inside it, so the
+    # verdict there is not a fact about the deck. It is a coin flip reported as a finding.
+    #
+    # So a ratio within half the median spread of the line gets the verdict this module
+    # already gives a run with too few games: WITHHELD, with the rates reported. `None`
+    # is not a new state — `MIN_GAMES` has meant exactly this since the module shipped,
+    # and extending it to a second cause is cheaper than a threshold nobody can defend.
+    #
+    # The 0.85 itself is left where it is. It was set by judgement with no fleet to
+    # calibrate against, and the fleet now says the distribution is centred at 0.95 with
+    # 6 of 47 runs below the line — a defensible place for it. What the fleet also says is
+    # that a line cannot be read to three decimals.
+    #
+    # AND THE BAND IS A MAGNITUDE HEURISTIC ON PURPOSE, which closes a note the
+    # `KNOWN_FLAGGED` list has carried since 2026-09-12: this gate "compares two per-turn
+    # rates with NO INTERVAL ON THE DIFFERENCE, which this repo's own doctrine forbids
+    # everywhere else… That is a defect in the gate, filed separately."
+    #
+    # Right diagnosis. Measured, the fix is not available at these sample sizes. The data
+    # is there — `games[].per_seat[seat].lands` over `games[].round` gives a per-game
+    # series for our seat and for the pod — so `stats.diff_means` yields a Welch interval
+    # on the difference. Both readings of it were computed over all 47 runs:
+    #
+    #   interval EXCLUDES ZERO  ->  flags 16 of 47, including ur-dragon at ratio 0.931 and
+    #                              zur-enchantress at 0.921, for shortfalls near 3%. It
+    #                              answers "is there ANY difference", not "is it big
+    #                              enough to matter" — significance read as magnitude.
+    #   interval EXCLUDES THE   ->  flags 0 of 47. The half-width is ~0.03 and the 0.85
+    #   LINE                       line as a difference is ~0.06, so nothing can be told
+    #                              from the line with confidence — not even goblin-storm
+    #                              at 0.776, whose [-0.127, -0.057] straddles -0.062.
+    #
+    # So a properly powered version of this gate CANNOT FIRE at 20-120 games, and the
+    # honest reading is that n is the limit rather than the threshold. The band is the
+    # cheap approximation: it withholds where the fleet's own run-to-run noise says the
+    # line is unreadable, and leaves the magnitude judgement where a human can see it.
+    if ratio and abs(ratio - COMPARABLE) < BAND:
+        out["comparable"] = None
+        out["reading"] = (
+            f"land drops {ratio:.3f} against a {COMPARABLE} line — INSIDE the run-to-run "
+            f"noise (the median within-deck spread across the fleet is {2 * BAND:.3f}), "
+            f"so the verdict is withheld rather than decided on a coin flip. Two decks' "
+            f"verdicts flip between runs at this threshold. The rates are reported; read "
+            f"them, and prefer an A/B where both arms sit on the same side.")
+        out["casts_note"] = (
+            "reported, not scored: casts per turn is confounded by the deck's own "
+            "curve (corr with mean mana value = -0.50 across tracked runs), so an "
+            "expensive deck casts fewer spells while being piloted fine.")
+        return out
+    out["comparable"] = bool(ratio) and ratio >= COMPARABLE
     out["casts_note"] = (
         "reported, not scored: casts per turn is confounded by the deck's own "
         "curve (corr with mean mana value = -0.50 across tracked runs), so an "
