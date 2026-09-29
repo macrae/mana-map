@@ -189,6 +189,21 @@ KNOWN_FLAGGED = {
     # is not the explanation. → docs/gotchas-bench.md
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c9abd341"
     "-s1383481153-podExperimental-c600.json",
+    # 2026-09-28, goblin-storm/copy-burst-v1 at standard-v3, 100 games, and THE FIRST
+    # RUN MADE UNDER `data/forge_overrides/` — eleven `AITgts$` hints so the AI aims the
+    # deck's pump spells at Zada instead of at whatever else is standing.
+    #
+    # Land drops 0.333 against a pod mean of 0.39 = 0.85... and it rounds to 0.84, one
+    # point under the line. It is kept, and read, for a reason the other entries here do
+    # not have: its CONTROL is flagged identically. The no-override run beside it
+    # (s936119400) reads lands 0.316 and casts 0.636 against this run's 0.333 and 0.605,
+    # so the handicap is COMMON TO BOTH ARMS and cannot explain the difference between
+    # them. That is the condition under which an A/B between two of our own runs survives
+    # a NOT COMPARABLE verdict, and it is why the +0.096 [+0.017, +0.183] is reported at
+    # all. The absolute rate (0.110, 47% of the 0.233 null) is still not a claim about how
+    # the deck plays in the pilot's hands.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068"
+    "-s909090-podExperimental-c600.json",
 }
 
 

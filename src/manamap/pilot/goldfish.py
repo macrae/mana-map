@@ -322,8 +322,16 @@ class DeclarationError(ValueError):
 #: moved the version at all — every derived artifact would have read as current
 #: while the model underneath it changed. That is the exact failure this stamp
 #: exists to prevent, and the split would have created it.
+#: EVERY FILE THAT CAN CHANGE A FIGURE, which is the whole point of the stamp.
+#:
+#: `pilot_policy.py` was added on 2026-09-28 and NOT added here, which is exactly the
+#: failure this constant exists to prevent — its own docstring says a change to
+#: `goldfish_profiles` or the turn loop "would not have moved the version at all; every
+#: derived artifact would have read as current while the model underneath it changed."
+#: The policy layer decides whether a card is cast at all, so it is model-facing by any
+#: reading, and a change to its vocabulary or its thresholds moves figures.
 _MODEL_FILES = ("goldfish.py", "goldfish_profiles.py", "goldfish_library.py",
-                "goldfish_turn.py")
+                "goldfish_turn.py", "pilot_policy.py")
 
 
 def model_version():
@@ -1434,6 +1442,16 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             "decklist_sha256": doc.get("decklist_sha256"),
             "seed": seed,
             "model_version": model_version(),
+            # WHICH POLICY FLEW IT. `model_version` covers the policy ENGINE; this covers
+            # the per-deck policy DATA, and they are different questions — the same split
+            # as `card_overrides` (the harness) against `decklist_sha256` (the list).
+            # Without it a figure produced under a policy is byte-indistinguishable from
+            # one produced without, which is the defect `card_overrides` was written to
+            # fix at the Forge layer, on the only consumer a policy has today.
+            #
+            # ABSENT MEANS ABSENT: no policy file, no key, so every figure measured before
+            # policies existed stays byte-identical.
+            **({"pilot_policy": _pp.fingerprint(_policy)} if _policy else {}),
             "iterations": iterations,
             "max_turn": max_turn,
             "commander": commanders[0]["name"],

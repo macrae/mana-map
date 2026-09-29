@@ -491,13 +491,55 @@ def clock_tag(clock=None):
     return f"-c{int(clock)}" if clock and int(clock) != SIM_CLOCK_ID_BASELINE else ""
 
 
-def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None, clock=None):
+def forge_pilot_installed():
+    """What the engine carries, as `run` needs it. A named function so the import stays
+    lazy and a test can monkeypatch one name."""
+    from manamap.sim import forge_pilot
+
+    return forge_pilot.installed()
+
+
+def overrides_tag(sha=None):
+    """The run-id suffix for an overridden engine, or "".
+
+    THE HARNESS IS PART OF THE CONFIGURATION AND THE ID DID NOT CARRY IT — the third
+    instance of exactly the omission `profile_tag` and `clock_tag` were each written to
+    fix, and the worst of the three, because this one changes how the AI PLAYS.
+
+    Measured on goblin-storm/copy-burst-v1, one unchanged list: 1/73 with Forge's own
+    card scripts, 9/82 with eleven `AITgts$` hints installed. Same deck, same pod, same
+    clock, same profile — so the two runs differ in nothing the id could see, and at the
+    same seed they would have written the SAME PATH. The second would have been refused
+    as an existing measurement, or with `--force` replaced the first.
+
+    The two records that produced that +0.096 escaped it only by accident: they were made
+    at different seeds, which is itself a confound on the headline and is why this belongs
+    in the id rather than in a note.
+
+    Omitted when nothing is installed, so no record written before this is renamed and a
+    plain run's path is unchanged.
+
+    IT TAKES THE FINGERPRINT RATHER THAN READING THE ENGINE, which is the same shape as
+    `profile` and `clock` and not an accident. The first cut called
+    `forge_pilot.installed()` here, so the id depended on what happened to be installed on
+    the machine asking — which broke the two things an id is FOR: the pod test could no
+    longer find a tracked record by recomputing its name, and a lookup on a machine with
+    overrides installed resolved to a different path than the same lookup without. A run
+    id must be a function of a configuration, not of an environment.
+    """
+    return f"-ov{sha[:8]}" if sha else ""
+
+
+def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None, clock=None,
+           overrides=None):
     seed = default_seed(slug, opponents) if seed is None else int(seed)
     return (f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}"
-            f"-s{seed}{profile_tag(profile, vs_profile)}{clock_tag(clock)}")
+            f"-s{seed}{profile_tag(profile, vs_profile)}{clock_tag(clock)}"
+            f"{overrides_tag(overrides)}")
 
 
-def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock):
+def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock,
+               overrides=None):
     """The run id a given configuration WILL write, before anything runs.
 
     A function because two callers need the answer and neither should re-derive
@@ -508,7 +550,7 @@ def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock):
     """
     pod = vs_profile or STANDARD_POD_PROFILE
     return run_id(slug, opponents, games, seed, profile,
-                  pod_tag_name(pod, opponents), clock)
+                  pod_tag_name(pod, opponents), clock, overrides)
 
 
 def default_jobs():
@@ -829,7 +871,11 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     seed_base = default_seed(slug, opponents) if seed is None else int(seed)
     seeds = [seed_base + i for i in range(len(parts))]
     pod = vs_profile or STANDARD_POD_PROFILE
-    rid = run_id_for(slug, opponents, games, seed_base, profile, vs_profile, clock)
+    # THE RUN NAMES ITSELF AFTER THE HARNESS IT IS ABOUT TO USE. Read once, here, so the
+    # id is a function of this run's configuration — `overrides_tag` takes the value
+    # rather than looking it up, for the reasons in its docstring.
+    _ov = (forge_pilot_installed() or {}).get("sha")
+    rid = run_id_for(slug, opponents, games, seed_base, profile, vs_profile, clock, _ov)
     out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"

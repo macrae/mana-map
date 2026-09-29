@@ -134,6 +134,15 @@ KNOWN_UNCAST = {
     # times across these games while Zada's ability triggered 39 times in total,
     # so most casts did not target her and produced one token instead of N.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068-s936119400-podExperimental-c600.json",
+    # The OVERRIDDEN companion to the run above — same list, same pod, same clock, eleven
+    # `AITgts$` hints installed. Flags for the same four cards and two of them are
+    # documented at the engine level rather than the deck's: Faithless Looting and
+    # Goblin Bombardment both carry Forge's own `AI:RemoveDeck:All`, its marker for a card
+    # its AI has no logic for (`sim/forge_cards.py` reads it). So "never cast" here is not
+    # a fact about the 99; it is Forge declaring in its own card scripts that it cannot
+    # fly those two, which no `AITgts$` hint addresses — the hint narrows a TARGET and
+    # these were never cast at all. The run remains a FLOOR and its record says so.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068-s909090-podExperimental-c600.json",
     # A RECORD IS JUDGED AGAINST TODAY'S DECLARATION, NOT THE ONE IT RAN UNDER.
     # These two flag for a reason that is not the AI's: the deck changed after
     # the run, and the cards now named in `goldfish_targets.json` were not in

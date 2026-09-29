@@ -456,6 +456,74 @@ fetches in the corpus — and `goldfish.py` built every land's `colors` from the
 same call, so four fetches modelled as four lands that never produce anything.
 `model_colors` defaults to **True**, so this was on for every deck in the fleet.
 
+### The three omissions a run id had, and the power the screen never had (2026-09-28)
+
+**A RUN ID MUST CARRY THE HARNESS, AND THIS WAS THE THIRD TIME.** `profile_tag` and
+`clock_tag` each exist because a configuration axis was missing from the id and a run
+silently overwrote a different measurement at the same name. Card-script overrides were the
+third, and the worst, because they change how the AI PLAYS: goblin-storm/copy-burst-v1 reads
+**1/73 with Forge's own scripts and 9/82 with eleven `AITgts$` hints installed** — same
+deck, same pod, same clock, same profile, so at the same seed the two would have written
+THE SAME PATH. The second would have been refused as an existing measurement, or replaced
+the first with `--force`. `overrides_tag` closes it.
+
+The two records that produced that +0.096 escaped the collision **by accident** — they were
+made at different seeds, which is itself a confound on the headline. Their decided counts
+also differ, 82 against 73, so the denominators are not the same population either. The
+interval is still reported, because the piloting handicap is common to both arms (lands
+0.316 vs 0.333), but "same seed, same everything" was never true of it.
+
+`overrides_tag` TAKES the fingerprint rather than reading the engine. The first cut called
+`forge_pilot.installed()` inside it, so the id depended on what happened to be installed on
+the machine asking — which broke the two things an id is for: the pod test could no longer
+find a tracked record by recomputing its name, and the same lookup resolved to different
+paths on two machines. **A run id is a function of a configuration, never of an
+environment.** Six tests caught it.
+
+**A POLICY CHANGE STALED NOTHING.** `pilot_policy.py` shipped the same day and was not added
+to `goldfish._MODEL_FILES`, which is verbatim the failure that constant's own docstring
+exists to prevent — "every derived artifact would have read as current while the model
+underneath it changed". The policy layer decides whether a card is cast at all. Added;
+`model_version` moved `7d7fbdfb76cf` -> `c42ed8ea2ec3` and the fleet regenerated.
+
+Separately, `meta` gained `pilot_policy` — the per-deck policy DATA, which is a different
+question from the policy ENGINE, the same split as `card_overrides` (the harness) against
+`decklist_sha256` (the list). Its fingerprint is over the RULES and not the file bytes, the
+opposite call from `model_version`: there a comment sits beside code that runs, so coarse is
+right; here the `why` genuinely is prose and the thresholds genuinely are the model, so
+editing a reason must not stale a figure it cannot have changed.
+
+**AND THE 100-GAME SCREEN CANNOT SEE ANYTHING WORTH SEEING.** An MDE is meaningless without
+the baseline it is computed against, and the plan for the piloting work quoted **0.115 at
+100 games** — computed against `p_a = 0.014`, the BROKEN arm, a week after the null-scaling
+lesson was learned the hard way one layer up. Against the baseline that now applies,
+`p_a = 0.110`, through this repo's own `sim/stats.py`:
+
+| n/arm | detectable win-rate gain | needed rate | % of the 0.233 null |
+|---|---|---|---|
+| 100 | +0.155 | 0.265 | **114%** |
+| 200 | +0.105 | 0.215 | 92% |
+| 400 | +0.070 | 0.180 | 77% |
+| 1000 | +0.045 | 0.155 | 67% |
+
+`games_for_difference(0.110, 0.05)` returns **None at max_n=1000**: a plausible +0.05 policy
+gain is not reachable. +0.08 needs 308 games/arm, +0.12 needs 152. So at 100 games the only
+detectable improvement is one that lifts the deck ABOVE par, and a "screen" there can
+produce false positives and nothing else.
+
+A COUNT METRIC IS BETTER AND STILL NOT ENOUGH, which is worth knowing before anyone reaches
+for it. Per-game Zada triggers over the 100-game run: mean 0.440, sd 0.795, and **71 of 100
+games have none at all**. That zero-inflation is what costs the power — the detectable
+difference in means is +0.315 at n=100, 72% of the current mean, against the win rate's
+141%. Twice as sensitive, in the same unusable range.
+
+The conclusion the plan has to absorb: **100 games is a smoke test, never a verdict.** It
+answers "did the mechanism fire at all", which is a real question with a visible answer —
+`part-03.log:810` shows one Reckless Ransacking copied 29 times, +3/+2 each. It cannot
+answer "is this better", and an adaptive ladder that treats it as a screen is spending
+5-8 hours per candidate to learn nothing.
+
+
 ### What it cost
 
 `ur-dragon/landbase-v1` swapped two basic-only fetches and four coloured lands

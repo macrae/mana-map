@@ -35,6 +35,7 @@ spell cast into an empty board is two mana for one token, and the play is to hol
 `hold_until.other_creatures` is that sentence as a policy.
 """
 
+import hashlib
 import json
 
 from manamap.pilot.common import deck_file, load_json
@@ -148,3 +149,25 @@ def render(doc):
         lines.append(f"{r['id']}: hold a {r['when']['channel']} until {what}")
         lines.append(f"    {r['why']}")
     return lines
+
+
+def fingerprint(doc):
+    """A stamp for the record: which policy, and which rules were live.
+
+    Over the RULES rather than the file bytes, so reformatting the JSON or editing a
+    `why` does not stale a figure it cannot have changed — the opposite call from
+    `model_version`, which is coarse on purpose because a comment there sits beside code
+    that runs. Here the prose genuinely is prose and the thresholds genuinely are the
+    model, so the stamp follows the thresholds.
+
+    `rules` lists the ids so a reader can see WHICH rule was on without opening the file,
+    and a rule turned off changes the sha.
+    """
+    rules = doc.get("rules") or []
+    live = [{"id": r.get("id"),
+             "channel": (r.get("when") or {}).get("channel"),
+             **{v: r[v] for v in VERBS if v in r}}
+            for r in rules]
+    blob = json.dumps(live, sort_keys=True, separators=(",", ":"))
+    return {"sha": hashlib.sha256(blob.encode()).hexdigest()[:12],
+            "rules": sorted(r["id"] for r in rules if r.get("id"))}
