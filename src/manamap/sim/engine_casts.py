@@ -136,6 +136,24 @@ def from_record(rec, deck_names=None, engine=None):
         rows[name] = {"cast": row["cast"], "activated": row["activated"],
                       "discarded": row["discarded"], "plays": plays,
                       "expected_natural_draws": expected}
+    # EACH ENTRY NAMES WHICH FLOOR PUT IT HERE, because the two are not the same
+    # kind of claim and this block defines both terms two lines below without ever
+    # using them.
+    #
+    # `expected` is a RUN-LEVEL scalar — games x (kept hand + own turns) / library —
+    # so `expected >= 8.0` is not a per-card test at all. It asks "is this run longer
+    # than about 25 games", and it is TRUE on 23 of the 25 tracked runs (smallest
+    # 6.9). So the second disjunct fires unconditionally at any realistic length and
+    # the list becomes every nonland with zero plays.
+    #
+    # That is not wrong: "never played across ~27 expected natural draws" is a real
+    # finding. But it is MODELLED, and a reader checking this gate before trusting a
+    # rate deserves to know which cards were actually SEEN in hand — measured on
+    # ur-dragon's 86-game run, 21 cards are listed and 0 of them were ever observed
+    # being discarded. `pod_behaviour.BASIS` does the same thing for the same reason.
+    def _basis(r):
+        return "measured" if r["discarded"] >= NEVER_CAST_DISCARDS else "modelled"
+
     never = [n for n, r in rows.items()
              if r["plays"] == 0 and (r["discarded"] >= NEVER_CAST_DISCARDS
                                      or expected >= NEVER_CAST_EXPECTED)]
@@ -144,8 +162,16 @@ def from_record(rec, deck_names=None, engine=None):
            "expected_natural_draws_per_card": expected,
            "expected_is": "a MODEL floor: natural draws only, games x (kept hand + own turns) / library",
            "held_is": "a MEASURED floor: a discarded card was in hand; an undiscarded one leaves no trace",
-           "never_cast": [{"card": n, **{k: rows[n][k] for k in ("cast", "activated", "discarded")}}
+           "never_cast": [{"card": n, "basis": _basis(rows[n]),
+                           **{k: rows[n][k] for k in ("cast", "activated", "discarded")}}
                           for n in never],
+           "never_cast_basis": {
+               "measured": sum(1 for n in never if _basis(rows[n]) == "measured"),
+               "modelled": sum(1 for n in never if _basis(rows[n]) == "modelled"),
+               "what": ("measured = the log shows it discarded, so it WAS in hand; "
+                        "modelled = never played across the run's expected natural "
+                        "draws, which is an inference and not an observation"),
+           },
            "by_card": rows}
     if engine:
         eng_rows = [rows[n] for n in engine["cards"] if n in rows]
@@ -180,7 +206,9 @@ def from_record(rec, deck_names=None, engine=None):
     else:
         out["covered"] = None
         out["reading"] = (
-            f"no engine declaration to judge against; {len(never)} card(s) held and never cast"
+            f"no engine declaration to judge against; {len(never)} card(s) "
+            + ("held and never cast"
+               if out["never_cast_basis"]["measured"] else "never cast")
             + (f": {', '.join(never[:6])}" if never else "") + ".")
     return out
 
@@ -191,8 +219,23 @@ def render(q):
     lines = [f"  ENGINE CASTS (did the AI play the deck's plan? {q['games']} games, "
              f"{q['own_turns']} own turns, a singleton expects ~{q['expected_natural_draws_per_card']} natural draws)"]
     if q["never_cast"]:
-        lines.append("    held and never cast: " + ", ".join(
+        # "HELD" IS A CLAIM ABOUT OBSERVATION, so it is only said when something was
+        # observed. ur-dragon's 100-game run lists nine cards under that phrase and
+        # the log shows NONE of them discarded — the word was doing work the evidence
+        # could not support, on the exact line a reader checks before trusting a rate.
+        seen = (q.get("never_cast_basis") or {}).get("measured", 0)
+        lines.append(f"    {'held and never cast' if seen else 'never cast'}: " + ", ".join(
             f"{r['card']} (discarded x{r['discarded']})" for r in q["never_cast"][:8]))
+        # WHICH OF THOSE WERE SEEN, said where the list is printed. At any run over
+        # ~25 games the modelled floor covers every zero-play card, so a reader who
+        # is not told the split will read an inference as an observation.
+        basis = q.get("never_cast_basis") or {}
+        if basis:
+            lines.append(
+                f"      {basis['measured']} seen discarded (MEASURED), "
+                f"{basis['modelled']} inferred from "
+                f"{q['expected_natural_draws_per_card']} expected natural draws "
+                f"(MODELLED — never observed in hand)")
     eng = q.get("engine")
     if eng:
         share = eng.get("played_share")

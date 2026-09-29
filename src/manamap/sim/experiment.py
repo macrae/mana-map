@@ -37,6 +37,7 @@ from manamap.pilot import deck_versions as dv
 from manamap.sim import parse as sim_parse
 from manamap.sim import stats
 from manamap.sim.forge import (ASSUMPTIONS, DEFAULT_PROFILE, FORGE_AI_CAVEAT,
+                               card_overrides,
                                STANDARD_POD_PROFILE, TIMEOUT_FLOOR, TIMEOUT_SLACK,
                                _commanders_by_slug, _java_version, _seat_label,
                                command, commanders_from_text, forge_jar,
@@ -442,6 +443,16 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         "opponents": [{"slug": o, "decklist_sha256": opp_shas[o]} for o in opponents],
         "games_per_arm": int(games), "seed_base": seed, "seeds": seeds_a,
         "profiles": profiles, "clock_seconds": clock, "wall_seconds": wall,
+        # THE HARNESS BOTH ARMS FLEW UNDER. An experiment is the one place in this repo
+        # where two lists are compared under a CONTROLLED instrument, and it recorded
+        # every part of that instrument — opponents, N, profiles, clock, engine build,
+        # seeds — except the card scripts. So an A/B could be run half-overridden with
+        # nothing on disk saying so, on the exact command whose whole purpose is that
+        # the two arms differ in the list and nothing else.
+        #
+        # Both arms run in one invocation against one engine, so there is one value and
+        # it belongs beside `profiles` rather than inside each arm.
+        "card_overrides": card_overrides(),
         "nonzero_exit_jobs": bad_a + bad_b,
         "arms": {
             "a": {"ref": a["ref"], "label": a["label"], "decklist_sha256": a["decklist_sha256"],

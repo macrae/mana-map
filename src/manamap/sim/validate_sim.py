@@ -22,8 +22,48 @@ REQUIRED = {"run_id", "slug", "at", "engine", "seats", "games_requested", "games
 _SHA = re.compile(r"^[0-9a-f]{64}$")
 
 
+def _card_overrides_errors(rec):
+    """The harness a record CLAIMS, checked for internal sense.
+
+    `card_overrides` is deliberately NOT in `REQUIRED`: a plain run has no such key and
+    every record written before 2026-09-28 lacks it, so demanding it would redden history
+    to no purpose. What is checked is that a record carrying one is coherent.
+
+    The cross-check against the live engine is NOT done here and that is deliberate too.
+    A validator runs on a checkout that may have no Forge install at all, and a record is
+    a statement about the machine that MADE it — asking this machine to confirm it would
+    fail on CI and on any clone, which is a check firing on correct data. `forge.run`
+    does the engine comparison at the only moment it is meaningful: before the games.
+    """
+    got = rec.get("card_overrides")
+    if got is None:
+        return []
+    errors = []
+    if not isinstance(got, dict):
+        return [f"card_overrides is {type(got).__name__}, not an object"]
+    for key in ("sha", "n", "cards"):
+        if key not in got:
+            errors.append(f"card_overrides has no {key!r} — a harness stamp that cannot "
+                          f"be compared is not provenance")
+    sha, n, cards = got.get("sha"), got.get("n"), got.get("cards")
+    if sha is not None and not re.fullmatch(r"[0-9a-f]{12}", str(sha)):
+        errors.append(f"card_overrides.sha {sha!r} is not a 12-hex digest")
+    if isinstance(cards, list) and isinstance(n, int) and len(cards) != n:
+        errors.append(f"card_overrides lists {len(cards)} card(s) and claims n={n}")
+    # A record stamped while the engine DISAGREED describes neither arm. `forge.run`
+    # refuses to start in that state, so a record carrying it predates the guard or was
+    # written by hand.
+    if got.get("agrees") is False:
+        errors.append(
+            "card_overrides.agrees is false — this run was made while the engine carried "
+            "neither Forge's own card scripts nor the ones the repo declares, so its rate "
+            "describes neither arm. `simulate` refuses to start in that state now.")
+    return errors
+
+
 def validate(rec, slug, logs_text=None):
     errors = []
+    errors += _card_overrides_errors(rec)
     missing = REQUIRED - set(rec)
     if missing:
         return [f"missing keys {sorted(missing)}"]

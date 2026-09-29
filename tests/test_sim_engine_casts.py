@@ -355,3 +355,66 @@ def test_the_table_s_behaviour_is_counted_per_seat():
     assert agg["seats"]["rival"]["cumulative_combat_damage_by_round"][-1]["mean"] == 0.0
     assert agg["seats"]["sharky"]["cumulative_combat_damage_by_round"][-1]["mean"] == 2.0
     assert agg["our_cumulative_combat_damage_by_round"] == agg["seats"]["sharky"]["cumulative_combat_damage_by_round"]
+
+
+def test_never_cast_names_whether_each_card_was_SEEN_or_only_INFERRED():
+    """THE TWO FLOORS THIS BLOCK DEFINES AND NEVER DISTINGUISHED.
+
+    `expected_is` is documented as "a MODEL floor" and `held_is` as "a MEASURED floor",
+    and the predicate `plays == 0 and (discarded >= 3 or expected >= 8.0)` collapsed them:
+    `expected` is a RUN-LEVEL scalar, games x (kept + own turns) / library, so
+    `expected >= 8.0` asks "is this run longer than about 25 games" and is TRUE on 23 of
+    the 25 tracked runs. Past that length every zero-play nonland lands in the list on the
+    modelled floor alone.
+
+    Which is not wrong — never played across ~27 expected draws is a real finding — but it
+    is an INFERENCE, and this is the gate a reader is told to check before trusting a rate.
+    Measured on the tracked runs: ur-dragon at 100 games lists 9 cards and the log shows 0
+    of them discarded, while sharknado lists 17 of which 11 were genuinely seen.
+    """
+    from manamap.sim import engine_casts as ec
+
+    rec = {"engine_casts": {"seat": "x", "games": 100, "turns": 2000,
+                            "kept_hand_mean": 7.0,
+                            "by_card": {"Seen": {"cast": 0, "activated": 0, "discarded": 5},
+                                        "Unseen": {"cast": 0, "activated": 0, "discarded": 0},
+                                        "Played": {"cast": 4, "activated": 0, "discarded": 0}}},
+           "seats": [{"commander": ["C"]}]}
+    got = ec.from_record(rec, deck_names={"Seen", "Unseen", "Played"})
+    assert got["expected_natural_draws_per_card"] >= ec.NEVER_CAST_EXPECTED, (
+        "this fixture exists to exercise the run length where the modelled floor covers "
+        "everything; if it no longer does, the premise moved")
+
+    by = {r["card"]: r["basis"] for r in got["never_cast"]}
+    assert by == {"Seen": "measured", "Unseen": "modelled"}, by
+    assert "Played" not in by, "a card that was cast is not in the list at all"
+
+    basis = got["never_cast_basis"]
+    assert basis["measured"] == 1 and basis["modelled"] == 1
+    assert "inference" in basis["what"]
+
+    out = ec.render(got)
+    text = "\n".join(out) if isinstance(out, list) else out
+    assert "1 seen discarded (MEASURED)" in text
+    assert "1 inferred from" in text and "MODELLED" in text
+
+
+def test_the_headline_only_says_held_when_something_was_seen():
+    """"HELD" ASSERTS AN OBSERVATION. ur-dragon's run printed "held and never cast" over
+    nine cards the log never shows being discarded."""
+    from manamap.sim import engine_casts as ec
+
+    def rendered(discarded):
+        rec = {"engine_casts": {"seat": "x", "games": 100, "turns": 2000,
+                                "kept_hand_mean": 7.0,
+                                "by_card": {"A": {"cast": 0, "activated": 0,
+                                                  "discarded": discarded}}},
+               "seats": [{"commander": ["C"]}]}
+        out = ec.render(ec.from_record(rec, deck_names={"A"}))
+        return "\n".join(out) if isinstance(out, list) else out
+
+    assert "held and never cast" in rendered(5), "seen in hand — 'held' is earned"
+    seen_none = rendered(0)
+    assert "never cast" in seen_none
+    assert "held and never cast" not in seen_none, (
+        "nothing was observed in hand, so 'held' is a claim the log cannot support")
