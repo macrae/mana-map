@@ -78,6 +78,17 @@ manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
+manamap pilot forge-install [--verify] [--revert] [--generate]   # THE HARNESS, INSTALLED
+                                        #   AND VERIFIED. `data/forge_overrides/` narrows
+                                        #   what the AI may TARGET (`AITgts$`); a per-deck
+                                        #   `res/ai/mm-<slug>.ai` carries the AiProps knobs
+                                        #   a pilot_policy declares. `--verify` reads the
+                                        #   ENGINE back, because the first cut of this
+                                        #   fingerprinted the repo and called it provenance
+                                        #   — restore cardsfolder.zip.orig and every run
+                                        #   still stamped the same sha. A run now REFUSES
+                                        #   to start when the engine carries neither
+                                        #   Forge's own scripts nor the ones declared
 manamap pilot query-docs "<question>" [--k N] [--full] [--json]   # semantic search over THIS REPO'S DOCS —
                                         #   the "why did we do it this way" corpus. `build-docs-db` first
 manamap pilot lookup-doc <chunk-id>     # exact fetch, e.g.
@@ -263,7 +274,20 @@ manamap pilot build-poh <slug>          # THE PILOT'S OPERATING HANDBOOK — num
                                         #   one procedure per printed sheet. Replaces the
                                         #   manual-v5 page at manuals/p/<slug>.html
 manamap pilot validate-poh <slug>       # dangling xrefs, the callout cap, no script,
-                                        #   no build date
+                                        #   no build date — over the RENDERED HTML
+manamap pilot validate-poh-procedures <slug>     # and over the JSON, which had no gate at
+                                        #   all: the closed condition vocabulary (mirrored
+                                        #   from deck_notes.CAUSES so the dossier can COUNT
+                                        #   how games end), the five normal phases, ordered
+                                        #   steps as LISTS because the renderer emits <ol>,
+                                        #   and every non-empty `grounded_in` resolving
+                                        #   against log.jsonl. An EMPTY grounded_in is
+                                        #   honest and never an error
+manamap pilot validate-pilot-policy <slug>       # the declared piloting rules: every rule
+                                        #   named, reasoned, keyed on a channel the
+                                        #   simulator computes, and — for a `forge` section
+                                        #   — on an AiProps key Forge reads whose MASTER
+                                        #   TOGGLE is on. No deck has a policy yet
 manamap pilot install-agent <slug> --routine R   # an agent's whole-file handoff becomes
                                         #   the tracked artifact, STAMPED with the decklist
                                         #   sha. THE ONE PLACE that happens: a `cp` cannot

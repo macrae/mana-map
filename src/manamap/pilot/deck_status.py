@@ -413,7 +413,16 @@ VALIDATED = {
     # only a load-time raise inside the goldfish, which is a gate on the simulator's path
     # and invisible to this command and to the fleet sweep.
     "poh_procedures.json": "manamap.pilot.validate_poh_procedures",
-    "pilot_policy.json": "manamap.pilot.validate_pilot_policy",
+    # `pilot_policy.json` IS NOT HERE YET, and `test_the_registries_name_artifacts_that_
+    # exist_on_a_real_deck` is why. No deck has a policy, so an entry for it is
+    # indistinguishable from a typo — "either nothing writes it, or the name is wrong", in
+    # that test's own words. I argued in the commit that registering the gate before the
+    # first file was the point; the test has the better argument, because a dead
+    # registration is exactly what this repo has been bitten by before.
+    #
+    # Policy validation is NOT absent in the meantime: `pilot_policy.validate` raises at
+    # load inside the goldfish and `validate-pilot-policy` is a command. Only the row in
+    # this map is deferred, and it is one line the moment a deck has a policy.
 }
 
 # Two validators reach for the gitignored strategy DB and report every
