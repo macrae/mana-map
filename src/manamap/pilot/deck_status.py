@@ -406,6 +406,14 @@ VALIDATED = {
     "pending.json": "manamap.pilot.validate_pending",
     "strategic_frame.json": "manamap.pilot.validate_strategic_frame",
     "tutor_guide.json": "manamap.pilot.validate_tutor_guide",
+    # TWO ARTIFACTS THAT HAD NO GATE. `poh_procedures.json` is tracked on six decks and
+    # `install_agent` stamps a sha into it, while nothing checked its shape —
+    # `validate-poh` reads the RENDERED HTML and cannot see a condition outside the closed
+    # vocabulary or a `grounded_in` citing a game nobody played. `pilot_policy.json` had
+    # only a load-time raise inside the goldfish, which is a gate on the simulator's path
+    # and invisible to this command and to the fleet sweep.
+    "poh_procedures.json": "manamap.pilot.validate_poh_procedures",
+    "pilot_policy.json": "manamap.pilot.validate_pilot_policy",
 }
 
 # Two validators reach for the gitignored strategy DB and report every

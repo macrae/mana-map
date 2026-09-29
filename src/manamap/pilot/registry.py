@@ -40,6 +40,10 @@ PILOT_STEPS = [
      "Step a deck back down the ladder"),
     ("pods", "manamap.sim.pods",
      "The named tables: which decks, which archetypes, which brackets — and the --vs flags each expands to"),
+    ("validate-poh-procedures", "manamap.pilot.validate_poh_procedures",
+     "Form-check poh_procedures.json: closed condition vocabulary, the five phases, ordered steps, and grounded_in against the log"),
+    ("validate-pilot-policy", "manamap.pilot.validate_pilot_policy",
+     "Form-check pilot_policy.json: every rule named, reasoned, and keyed on a channel the simulator computes"),
     ("forge-install", "manamap.sim.forge_pilot",
      "Install the tracked card-script overrides into Forge and VERIFY the engine carries them — the provenance a run record stamps"),
     ("metrics", "manamap.metrics",
@@ -187,6 +191,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
+    "validate-poh-procedures", "validate-pilot-policy",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
