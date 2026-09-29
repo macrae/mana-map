@@ -60,9 +60,15 @@ SECTIONS = [
     ("7", "handling", "Handling and rules of engagement",
      "Threat optics, alliances, and who to hit first.",
      ("coach",), "authored"),
+    # DATA since 2026-09-30. It was declared "authored" and never rendered on
+    # any deck; what a pilot needs per opponent — how often they kill us and
+    # how, what they won by, what the table aims at — is in the run records
+    # and the tracked targeting artifact. The authored `manual_prose.matchups`
+    # stays where it is (pilot-notes owns it) and is not rendered here: a
+    # section is data or authored and never both.
     ("8", "matchups", "Matchups",
-     "One page per archetype the pod actually fields.",
-     ("coach",), "authored"),
+     "One page per opponent seat the pod actually fields, measured.",
+     ("data",), "data"),
     ("9", "appendices", "Appendices",
      "Card reference, proven lines, revision log, index.",
      ("verified", "data"), "data"),

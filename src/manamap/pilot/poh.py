@@ -655,23 +655,280 @@ def render_handling(d):
         if recv is not None:
             top = ", ".join(f"{k} {v}" for k, v in
                             sorted(elim.items(), key=lambda kv: -kv[1])[:3])
+            findings = load_json(d["base"] / "sim_findings.json") or {}
+            fs = ((findings.get("runs") or {}).get(sim.get("run_id")) or {}).get("findings") or []
+            loss = next((f for f in fs if f.get("kind") == "loss_decomposition"), None)
+            held = next((f for f in fs if f.get("kind") == "held"), None)
             out += sub("7.5", "What the pod actually did", (
-                f'<p>Across {sim.get("games_completed", "?")} simulated games this '
+                f'<p>Across {sim.get("games_completed", "?")} simulated games on this list this '
                 f'seat was aimed at {recv:.2f} times a game.'
                 + (f' Eliminated by: {esc(top)}.' if top else "") + "</p>"
-                f'<p class="ev">Forge\'s AI, not your table — opponent modelling, '
-                f'never an equilibrium.</p>"'))
+                + (f'<p>{esc(loss["text"])}</p>' if loss else "")
+                + (f'<p>{esc(held["text"])}</p>' if held else "")
+                + '<p class="ev">Forge\'s AI, not your table — opponent modelling, '
+                'never an equilibrium.</p>'))
     return out
 
 
+def _sim_runs(d):
+    """The runs a handbook figure may rest on: at the DEFAULT TABLE, on the
+    CURRENT list, in the harness bucket the page headlines.
+
+    `_latest_sim` took the lexicographically last file — the bug `forge.list_runs`
+    fixed for the dossier and this never adopted — and would happily quote a
+    run of a superseded list. Now: `list_runs` (date order), filtered to
+    `SIM_DEFAULT_POD` and to records whose seat sha is `cards.json`'s, bucketed
+    by harness exactly as `net_change.forge` keys (override sha, our profile).
+    The headline bucket is the PLAIN harness when it has runs, else the bucket
+    with the most decided games — a choice made from tracked data alone, so a
+    clone renders the same bytes. Returns (headline_runs, other_buckets, absent_why).
+    """
+    from manamap.config import SIM_DEFAULT_POD
+    from manamap.sim.forge import list_runs
+    cur = d["cards"].get("decklist_sha256")
+    runs = [r for r in list_runs(d["slug"])
+            if (r.get("pod") or {}).get("name") == SIM_DEFAULT_POD]
+    if not runs:
+        return [], {}, (f"no Forge run at {SIM_DEFAULT_POD}",
+                        f"manamap pilot simulate {d['slug']} --pod {SIM_DEFAULT_POD} --games N")
+    current = [r for r in runs if cur and any(
+        x.get("slug") == d["slug"] and x.get("decklist_sha256") == cur for x in r.get("seats", []))]
+    if not current:
+        return [], {}, (f"{len(runs)} run(s) at {SIM_DEFAULT_POD}, none on the list in cards.json — "
+                        f"every simulated figure would describe an older list",
+                        f"manamap pilot simulate {d['slug']} --pod {SIM_DEFAULT_POD} --games N")
+    buckets = {}
+    for r in current:
+        buckets.setdefault(_key_of(r), []).append(r)
+    if ("", "Default") in buckets:
+        head_key = ("", "Default")
+    else:
+        head_key = max(buckets, key=lambda k: sum((r.get("summary") or {}).get("decided") or 0
+                                                  for r in buckets[k]))
+    head = buckets.pop(head_key)
+    return head, {k: v for k, v in buckets.items()}, None
+
+
+def _key_of(r):
+    return ((r.get("card_overrides") or {}).get("sha") or "",
+            ((r.get("profiles") or ["Default"])[0]) or "Default")
+
+
+def _harness_label(key):
+    ov, prof = key
+    bits = []
+    if ov:
+        bits.append(f"overrides {ov[:8]}")
+    if prof != "Default":
+        bits.append(f"ours {prof}")
+    return ", ".join(bits) or "plain harness"
+
+
+def _pool_seat(runs, slug):
+    """Wins over decided games for `slug` across `runs`, with a Wilson interval."""
+    from manamap.sim.parse import wilson
+    w = sum((r.get("summary") or {}).get("wins", {}).get(slug, 0) for r in runs)
+    n = sum((r.get("summary") or {}).get("decided") or 0 for r in runs)
+    return w, n, (list(wilson(w, n)) if n else None)
+
+
+def _versions_by_sha(d):
+    return {sha: v.get("version") for v in (d["versions"].get("versions") or [])
+            for sha in (v.get("decklist_sha256s") or [])}
+
+
+def _null(pod):
+    try:
+        from manamap.sim import power
+        return power.null_rate(pod)
+    except Exception:                                # noqa: BLE001
+        return None, None
+
+
 def _latest_sim(d):
-    runs = sorted((d["base"] / "sim").glob("*.json")) if (d["base"] / "sim").is_dir() else []
-    return load_json(runs[-1]) if runs else None
+    """Kept for §7.5: the headline bucket's latest run on the current list, or None."""
+    head, _others, _why = _sim_runs(d)
+    return head[-1] if head else None
+
+
+def render_matchups(d):
+    """§8 — one subsection per opponent seat, MEASURED. Pooled over the headline
+    runs on the current list at the default table; every figure with its N."""
+    from manamap.config import SIM_DEFAULT_POD
+    head, others, why = _sim_runs(d)
+    if not head:
+        return absent("Matchups", why[0] + ".", why[1])
+    slug = d["slug"]
+    games = sum((r.get("summary") or {}).get("decided") or 0 for r in head)
+    played = sum(r.get("games_completed") or 0 for r in head)
+    opponents = []
+    for r in head:
+        for x in r.get("seats", [])[1:]:
+            if x["slug"] not in opponents:
+                opponents.append(x["slug"])
+    out = (f'<p class="ev">{len(head)} run(s) on the list in cards.json at <b>{esc(SIM_DEFAULT_POD)}</b>, '
+           f'{played} games played, {games} decided, {esc(_harness_label(_key_of(head[0])))}. '
+           f'Every seat is a Forge AI; a rate is against the table\'s null, not a quarter.</p>')
+    null, n_null = _null(SIM_DEFAULT_POD)
+    w, n, ci = _pool_seat(head, slug)
+    if n:
+        out += (f'<p>This seat: <b>{w}/{n}</b> ({w / n:.3f}, ci95 [{ci[0]:.3f}, {ci[1]:.3f}])'
+                + (f' against a null of {null:.3f} ({n_null} games) — {w / n / null:.0%} of par' if null else "")
+                + '.</p>')
+    # how we were eliminated, pooled
+    elim_by, elim_how = {}, {}
+    for r in head:
+        me = (r.get("analysis") or {}).get("seats", {}).get(slug) or {}
+        for k, v in (me.get("eliminated_by") or {}).items():
+            elim_by[k] = elim_by.get(k, 0) + v
+        for k, v in (me.get("eliminated_how") or {}).items():
+            elim_how[k] = elim_how.get(k, 0) + v
+    lost = sum(elim_by.values())
+    for i, opp in enumerate(opponents, 1):
+        ow, on, oci = _pool_seat(head, opp)
+        killed = elim_by.get(opp, 0)
+        routes = {}
+        for r in head:
+            for o in r.get("outcomes") or []:
+                if o.get("winner") == opp and not o.get("truncated"):
+                    routes[o.get("won_by") or "unstated"] = routes.get(o.get("won_by") or "unstated", 0) + 1
+        body = "<ul>"
+        if on:
+            body += (f'<li>Wins {ow}/{on} of decided games ({ow / on:.3f}, ci95 '
+                     f'[{oci[0]:.3f}, {oci[1]:.3f}]).</li>')
+        if lost:
+            from manamap.sim.parse import wilson
+            klo, khi = wilson(killed, lost)
+            body += (f'<li>Eliminated this seat {killed} of the {lost} times it was eliminated '
+                     f'({killed / lost:.0%}, ci95 [{klo:.3f}, {khi:.3f}]).</li>')
+        if routes:
+            body += '<li>Won by: ' + esc(", ".join(f"{k} ×{v}" for k, v in
+                                                     sorted(routes.items(), key=lambda kv: -kv[1]))) + '.</li>'
+        body += "</ul>"
+        out += sub(f"8.{i}", opp, body)
+    if elim_how:
+        out += sub(f"8.{len(opponents) + 1}", "How this seat dies",
+                   "<p>" + esc(", ".join(f"{k} ×{v}" for k, v in sorted(elim_how.items(), key=lambda kv: -kv[1])))
+                   + '. A drain kill reads as life loss; the parser cannot see what the spell did.</p>')
+    tgt = load_json(d["base"] / "threat" / "targeting.json")
+    if tgt:
+        pol = tgt.get("forge_ai_targeting_policy") or {}
+        rows = "".join(f'<li>{esc(k.replace("_", " "))}: {v.get("rate", 0):.0%} of {v.get("decisions")} decisions '
+                       f'(ci95 [{v["ci95"][0]:.3f}, {v["ci95"][1]:.3f}], permutation p {v.get("permutation_p")})</li>'
+                       for k, v in sorted(pol.items(), key=lambda kv: -(kv[1].get("rate") or 0)))
+        out += sub(f"8.{len(opponents) + 2}", "What the table aims at",
+                   f'<ul>{rows}</ul><p class="ev">Pooled over {tgt.get("games")} games with logs; '
+                   f'Forge\'s AI, not your table — opponent modelling, never an equilibrium.</p>')
+    if others:
+        out += ('<p class="ev">Held out (another harness on the same list): '
+                + esc("; ".join(f"{_harness_label(k)} — {len(v)} run(s)" for k, v in others.items())) + '.</p>')
+    return out
+
+
+def render_appendices(d):
+    """§9 — the sim record per version, the decision ledger, the proven lines."""
+    from manamap.config import SIM_DEFAULT_POD
+    from manamap.sim.forge import list_runs
+    slug = d["slug"]
+    by_sha = _versions_by_sha(d)
+    cur = d["cards"].get("decklist_sha256")
+    out = ""
+    # 9.1 the sim record, every run, grouped by the version it played
+    runs = list_runs(slug)
+    findings = load_json(d["base"] / "sim_findings.json") or {}
+    if runs:
+        groups = {}
+        for r in runs:
+            ran = next((x.get("decklist_sha256") for x in r.get("seats", []) if x.get("slug") == slug), None)
+            v = by_sha.get(ran)
+            label = (f"V{v}" if v is not None else "an uncommitted list") + (" (current)" if ran and ran == cur else "")
+            groups.setdefault(label, []).append(r)
+        body = ""
+        for label, rs in groups.items():
+            rows = ""
+            for r in rs:
+                pod = (r.get("pod") or {}).get("name") or "?"
+                me = (r.get("analysis") or {}).get("seats", {}).get(slug) or {}
+                null, _n = _null(pod)
+                ci = me.get("win_rate_ci95") or [None, None]
+                sf = ((findings.get("runs") or {}).get(r["run_id"]) or {})
+                held = next((f for f in sf.get("findings") or [] if f.get("kind") == "held"), None)
+                pq = next((f for f in sf.get("findings") or [] if f.get("kind") == "pilot_quality"), None)
+                rate = me.get("win_rate")
+                rows += ("<tr><td>" + esc(r.get("at") or "") + "</td><td>" + esc(pod) + "</td>"
+                         f"<td>{r.get('games_completed')}</td><td>{(r.get('summary') or {}).get('decided')}</td>"
+                         + (f"<td>{rate:.3f} [{ci[0]}, {ci[1]}]" + (f" · {rate / null:.0%} of {null:.3f}" if (null and rate is not None) else "") + "</td>"
+                            if rate is not None else "<td>—</td>")
+                         + "<td>" + esc((pq or {}).get("text", "—")[:60] if pq else "—") + "</td>"
+                         + "<td>" + esc(", ".join((held or {}).get("cards", [])[:4]) or ("—" if held else "run sim-findings")) + "</td></tr>")
+            body += (f"<h4>{esc(label)}</h4><table><thead><tr><th>date</th><th>table</th><th>played</th>"
+                     f"<th>decided</th><th>rate [ci95] · of the null</th><th>piloting</th><th>never cast</th></tr></thead>"
+                     f"<tbody>{rows}</tbody></table>")
+        body += ('<p class="ev">Every seat is a Forge AI. The null is what our decks score in seat 0 at that table. '
+                 '"Never cast" and the piloting reading come from sim_findings.json where it exists.</p>')
+        out += sub("9.1", "The simulation record, by version", body)
+    else:
+        out += sub("9.1", "The simulation record", absent(
+            "Simulation record", "no Forge run.", f"manamap pilot simulate {slug} --pod {SIM_DEFAULT_POD} --games N"))
+    # 9.2 the decision ledger
+    try:
+        from manamap.pilot import decisions as _dec
+        ledger = _dec.read(slug)
+    except Exception:                                 # noqa: BLE001
+        ledger = []
+    if ledger:
+        outcomes = {e.get("of"): e for e in ledger if e.get("kind") == "outcome"}
+        rows = ""
+        for e in ledger:
+            if e.get("kind") not in ("propose", "merge", "reject", "withdraw"):
+                continue
+            fp = ((e.get("prediction") or {}).get("forge") or {})
+            pred = (f"Δ {fp['delta']:+.3f} [{fp['ci95'][0]:+.3f}, {fp['ci95'][1]:+.3f}] at {fp.get('pod')}"
+                    if fp.get("delta") is not None and fp.get("ci95") else
+                    ((e.get("prediction") or {}).get("endpoint") or "—") + " " + str((e.get("prediction") or {}).get("grade") or ""))
+            oc = outcomes.get(e["id"]) if e.get("kind") == "merge" else None
+            rl = (oc or {}).get("realised") or {}
+            real = (f"{rl.get('wins')}/{rl.get('decided')} = {rl.get('rate')}"
+                    + (f" · Δ {rl['difference']['delta']:+.3f}" if rl.get("difference") else "")
+                    + (" — inside the prediction" if oc and oc.get("inside_prediction") else
+                       " — OUTSIDE the prediction" if oc and oc.get("inside_prediction") is False else "")
+                    if oc else ("awaiting a run of the merged list" if e.get("kind") == "merge" else "—"))
+            rows += (f"<tr><td>{esc(e['id'])}</td><td>{esc(str(e.get('at') or '')[:10])}</td><td>{esc(e['kind'])}</td>"
+                     f"<td>{esc(e.get('branch') or '')}{(' ' + esc(e['as_version'])) if e.get('as_version') else ''}</td>"
+                     f"<td>{esc(pred)}</td><td>{esc(real)}</td></tr>")
+        out += sub("9.2", "The decision ledger — predicted beside realised",
+                   "<table><thead><tr><th>#</th><th>date</th><th>kind</th><th>branch</th><th>predicted</th>"
+                   "<th>realised</th></tr></thead><tbody>" + rows + "</tbody></table>"
+                   '<p class="ev">Predicted is what the report said when the pilot decided; realised is the '
+                   'merged list\'s own runs at the same table and harness. `decisions <slug> outcome` closes a merge.</p>')
+    # 9.3 proven lines and the revision log
+    stacks = sorted((d["base"] / "stacks").glob("[0-9][0-9][0-9]-*.json")) if (d["base"] / "stacks").is_dir() else []
+    proven = []
+    for pth in stacks:
+        doc = load_json(pth) or {}
+        if (doc.get("checker") or {}).get("verdict") == "pass":
+            src = ((doc.get("scenario") or {}).get("source") or {})
+            proven.append((doc.get("id") or pth.name[:3], doc.get("title") or pth.stem,
+                           "lifted from a simulated game" if src.get("run_id") else "authored board"))
+    body = ""
+    if proven:
+        body += "<ul>" + "".join(f"<li><b>{esc(i)}</b> {esc(t)} <span class=\"ev\">({esc(k)})</span></li>"
+                                 for i, t, k in proven) + "</ul>"
+    else:
+        body += '<p class="ev">No checker-passed line yet.</p>'
+    revs = d["revisions"].get("revisions") or []
+    if revs:
+        body += "<h4>Revisions</h4><ul>" + "".join(
+            f"<li>{esc(str(r.get('at') or ''))} — {esc(r.get('why') or r.get('note') or '')}"
+            f" ({esc(', '.join(r.get('changed') or []))})</li>" for r in revs) + "</ul>"
+    out += sub("9.3", "Proven lines and the revision log", body)
+    return out
 
 
 # ── assembly ─────────────────────────────────────────────────────────────
 
-#: THE SPEC DECLARES TEN SECTIONS AND THIS MAP HOLDS SEVEN. `render()` skips any
+#: (2026-09-30: nine of ten render now — §8 and §9 below. The record stands.)
+#: THE SPEC DECLARED TEN SECTIONS AND THIS MAP HELD SEVEN. `render()` skips any
 #: section with no renderer registered, so `matchups` (8) and `appendices` (9)
 #: have never appeared in a rendered handbook — on any deck, since the book
 #: shipped on 2026-09-02. `validate-poh` reports them as "section(s) not
@@ -694,6 +951,10 @@ RENDERERS = {
     "handling": render_handling,
     "performance": render_performance,
     "systems": render_systems,
+    # Registered 2026-09-30 — both from tracked records only, so the byte-diff
+    # gate holds: run records, sim_findings.json, decisions.jsonl, the stacks.
+    "matchups": render_matchups,
+    "appendices": render_appendices,
 }
 
 

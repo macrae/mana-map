@@ -1315,6 +1315,11 @@ FORGE_JVM_ARGS = ["-Xmx4096m", "-Dio.netty.tryReflectionSetAccessible=true",
                   "-Dfile.encoding=UTF-8"]
 SIM_DIR = "sim"                       # data/decks/<slug>/sim/<run-id>.json (tracked) + logs/ (ignored)
 SIM_DEFAULT_GAMES = 20
+#: THE DEFAULT TABLE. `simulate --pod` takes a name; the handbook and the
+#: deck page need to know which table a figure is read against when the pilot
+#: did not say — `standard-v3` since 2026-09-10 (CLAUDE.md's `simulate` entry
+#: has the calibration). Named here rather than restated in prose.
+SIM_DEFAULT_POD = "standard-v3"
 # Forge's `-c`: WALL-CLOCK SECONDS PER GAME, and a game past it is a draw with no
 # winner. Forge has no turn limit, so this is the only thing that ends a stalled
 # game — and because it is wall time rather than turns, how many games it

@@ -586,3 +586,52 @@ def test_the_preview_is_screen_only_pointer_only_and_wide_only():
     assert "\n    background:" not in block, "use longhands, not the shorthand"
     # The link's own styling must sit OUTSIDE the media query.
     assert css.index("a.cardref {") < guard
+
+
+def test_the_headline_run_is_the_newest_on_the_current_list_at_the_default_table(monkeypatch, tmp_path):
+    """Three records that disagree by date, filename and list: the handbook
+    takes the newest on the CURRENT list at the default table, in the plain
+    harness — never the lexicographically last file, which is what `_latest_sim`
+    used to do and `forge.list_runs` fixed for the dossier long ago."""
+    from manamap.config import SIM_DEFAULT_POD
+    recs = [
+        {"run_id": "z-old-current", "at": "2026-09-01", "pod": {"name": SIM_DEFAULT_POD},
+         "seats": [{"slug": "x", "decklist_sha256": "c" * 64}], "games_completed": 20,
+         "summary": {"wins": {"x": 2}, "decided": 20}, "analysis": {"seats": {"x": {"win_rate": 0.1}}}},
+        {"run_id": "a-new-current", "at": "2026-09-20", "pod": {"name": SIM_DEFAULT_POD},
+         "seats": [{"slug": "x", "decklist_sha256": "c" * 64}], "games_completed": 40,
+         "summary": {"wins": {"x": 8}, "decided": 40}, "analysis": {"seats": {"x": {"win_rate": 0.2}}}},
+        {"run_id": "b-newest-old-list", "at": "2026-09-25", "pod": {"name": SIM_DEFAULT_POD},
+         "seats": [{"slug": "x", "decklist_sha256": "o" * 64}], "games_completed": 100,
+         "summary": {"wins": {"x": 30}, "decided": 100}, "analysis": {"seats": {"x": {"win_rate": 0.3}}}},
+        {"run_id": "c-newest-overridden", "at": "2026-09-27", "pod": {"name": SIM_DEFAULT_POD},
+         "card_overrides": {"sha": "60636e9e5565"},
+         "seats": [{"slug": "x", "decklist_sha256": "c" * 64}], "games_completed": 100,
+         "summary": {"wins": {"x": 30}, "decided": 100}, "analysis": {"seats": {"x": {"win_rate": 0.3}}}},
+    ]
+    monkeypatch.setattr("manamap.sim.forge.list_runs", lambda slug: sorted(recs, key=lambda r: r["at"]))
+    d = {"slug": "x", "base": tmp_path, "cards": {"decklist_sha256": "c" * 64}, "versions": {}, "revisions": {}}
+    head, others, why = poh._sim_runs(d)
+    assert [r["run_id"] for r in head] == ["z-old-current", "a-new-current"], "plain harness, current list only"
+    assert poh._latest_sim(d)["run_id"] == "a-new-current"
+    assert list(others) == [("60636e9e5565", "Default")]
+    d["cards"]["decklist_sha256"] = "n" * 64
+    head, others, why = poh._sim_runs(d)
+    assert head == [] and "none on the list" in why[0] and "simulate x --pod" in why[1]
+
+
+@requires_deck
+def test_matchups_and_appendices_render_from_tracked_records_with_intervals():
+    """Sections 8 and 9 had never rendered on any deck. Now they do, from
+    tracked records only, and every rate they print carries an interval."""
+    html = _rendered("goblin-storm")
+    assert 'id="s8"' in html and 'id="s9"' in html
+    sec8 = html.split('id="s8"', 1)[1].split('id="s9"', 1)[0]
+    assert "ci95 [" in sec8 and "Wins " in sec8, "per-opponent rates carry intervals"
+    sec9 = html.split('id="s9"', 1)[1]
+    assert "The simulation record" in sec9 and "ci95" in sec9 or "not available" in sec9
+    assert "Proven lines" in sec9
+    # a deck with runs on no current list says so with the command
+    html_h = _rendered("heliod")
+    sec8h = html_h.split('id="s8"', 1)[1].split('id="s9"', 1)[0]
+    assert "none on the list" in sec8h and "simulate heliod --pod" in sec8h

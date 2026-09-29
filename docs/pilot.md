@@ -820,7 +820,23 @@ all. Then `deck-version <slug> paper` marks it as sleeved.
 ### build-page — the compact deck page (SUPERSEDED, then DELETED)
 
 **The live renderer is `build-poh`** (`pilot/poh.py`, the Pilot's Operating Handbook,
-since 2026-09-02), and it owns `manuals/p/<slug>.html`. `build-page` was the compact page
+since 2026-09-02), and it owns `manuals/p/<slug>.html`. **Ten sections render since
+2026-09-30**; §8 and §9 had never appeared on any deck. The handbook's simulated figures now
+come from ONE selection rule, `poh._sim_runs`: `forge.list_runs` (date order — `_latest_sim`
+had taken the lexicographically last file, the bug the dossier fixed and this never
+adopted), filtered to `config.SIM_DEFAULT_POD` and to records whose seat sha is
+`cards.json`'s, bucketed by harness as `net_change.forge` keys, the plain harness
+headlining; a deck with runs on no current list says so with the command. **§8 Matchups is
+DATA** (it was declared authored and never rendered; the authored `manual_prose.matchups`
+stays where it is and is not rendered, because a section is one or the other): per opponent
+seat, their win rate, how often and how they eliminated us, what they won by — every rate
+with its interval and N — and the tracked `threat/targeting.json` hypotheses. **§9
+Appendices**: the simulation record grouped by the version each run played (rate against
+the null, the piloting reading and the never-cast list read from `sim_findings.json`, never
+recomputed), the decision ledger with predicted beside realised, the checker-passed lines
+and the revision log. §7.5 grows the loss decomposition and the held cards from the same
+findings file. Everything is read from tracked artifacts, so `make manuals && git diff
+--exit-code` holds. `build-page` was the compact page
 that replaced the magazine (`docs/history/manual-v5-spec.md`); the handbook replaced it in
 turn, and the subcommand went with the magazine renderer on 2026-09-13 (`443cf6b7`).
 
