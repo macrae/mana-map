@@ -576,23 +576,41 @@ def card_overrides():
 
     Returns `None` when the directory is absent, so every existing record and every
     plain run is unchanged.
+
+    IT NOW READS THE ENGINE, AND THAT IS THE WHOLE CORRECTION. The first cut hashed the
+    repo working tree and never opened `cardsfolder.zip`, so it answered "what should be
+    installed" while reporting it as "what was played". Three ways that lied, all of them
+    live on the day it shipped:
+
+      * restore `cardsfolder.zip.orig` and the next run stamped the same sha while the AI
+        misaimed every spell — and `net_change.forge` buckets on that sha specifically to
+        keep two harnesses from pooling into a rate describing neither deck;
+      * the path was RELATIVE, so `simulate` from any directory but the repo root read
+        `null` with the overrides fully installed;
+      * `data/forge_overrides/README.md` asserted "a comparison across the boundary is
+        refused" while nothing refused anything.
+
+    `declared` is the repo, `installed` is the engine, `agrees` is the answer. The sha
+    algorithm is unchanged, so records written before this still compare.
     """
-    root = pathlib.Path("data/forge_overrides/cards")
-    if not root.is_dir():
+    from manamap.sim import forge_pilot
+
+    agrees, d, i = forge_pilot.verify()
+    if d is None and i is None:
         return None
-    files = sorted(p for p in root.rglob("*.txt"))
-    if not files:
-        return None
-    h = hashlib.sha256()
-    for f in files:
-        h.update(f.relative_to(root).as_posix().encode())
-        h.update(f.read_bytes())
-    return {"sha": h.hexdigest()[:12], "n": len(files),
-            "cards": sorted(f.stem for f in files),
+    return {# THE SHA STAYS THE HEADLINE and it is the ENGINE's, because that is what
+            # played the games. `net_change` reads this key to bucket a run.
+            "sha": (i or {}).get("sha"),
+            "n": (i or {}).get("n", 0),
+            "cards": (i or {}).get("cards", []),
+            "agrees": agrees,
+            "declared": d,
+            "installed": i,
             "why": ("AITgts$ narrows what the AI may TARGET; ValidTgts$ is "
                     "untouched, so nothing legal changed. A rate from this run is "
-                    "Forge's AI flying the deck without misaiming the spells Zada "
-                    "copies — it is NOT comparable with a run made without these.")}
+                    "Forge's AI flying the deck without misaiming the spells it "
+                    "was given a hint for — it is NOT comparable with a run made "
+                    "without these.")}
 
 
 def command(seat_names, games, clock, jar=None, seed=None, profiles=None):
@@ -788,6 +806,17 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
+    # THE ENGINE IS CHECKED BEFORE A SINGLE JVM STARTS, not after the record is written.
+    # `card_overrides()` used to hash the repo and stamp that as provenance, so a run made
+    # against a reverted engine claimed a harness it never had — and the bucketing in
+    # `net_change.forge` trusts that stamp to keep two harnesses apart. Refusing here
+    # costs nothing; discovering it afterwards costs the batch and publishes the lie.
+    if not dry_run:
+        from manamap.sim import forge_pilot
+        try:
+            forge_pilot.require_agreement()
+        except forge_pilot.EngineMismatch as exc:
+            raise SystemExit(f"{slug}: {exc}") from exc
     seats = [slug, *opponents]
     names = [install_deck(s, decks_dir) for s in seats]
     jobs = jobs or default_jobs()

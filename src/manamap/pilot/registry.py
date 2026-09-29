@@ -40,6 +40,8 @@ PILOT_STEPS = [
      "Step a deck back down the ladder"),
     ("pods", "manamap.sim.pods",
      "The named tables: which decks, which archetypes, which brackets — and the --vs flags each expands to"),
+    ("forge-install", "manamap.sim.forge_pilot",
+     "Install the tracked card-script overrides into Forge and VERIFY the engine carries them — the provenance a run record stamps"),
     ("metrics", "manamap.metrics",
      "The metrics catalog: one definition per figure, which engine answers it, and what is unavailable and why"),
     ("build", "manamap.pilot.autobuild",
@@ -800,6 +802,21 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--reason", default=None,
                              help="why a gate was waived — a waiver with no "
                                   "reason is a gate nobody will trust")
+        if name == "forge-install":
+            cmd.add_argument("--verify", action="store_true",
+                             help="report what the engine carries against what the "
+                                  "repo declares, and change nothing. This is the "
+                                  "question a run record's `card_overrides.agrees` "
+                                  "answers, asked on demand")
+            cmd.add_argument("--revert", action="store_true",
+                             help="restore Forge's pristine card scripts. Every "
+                                  "install rebuilds from that copy, so this is also "
+                                  "what makes installing twice identical to once")
+            cmd.add_argument("--generate", action="store_true",
+                             help="re-derive the override scripts from the shipped "
+                                  "ones. Refuses any card whose targeting line is "
+                                  "SP$ CopyPermanent, because CopyPermanentAi never "
+                                  "reads AITgts$ — a hint the engine cannot act on")
         if name == "pods":
             cmd.add_argument("name", nargs="?", default=None,
                              help="one pod; omit to list them all")
