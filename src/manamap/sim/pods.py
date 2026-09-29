@@ -265,9 +265,19 @@ def calibration(name, records=None):
     runs, decks, games = 0, set(), 0
     paths = records if records is not None else sorted(
         DECKS_DIR.glob("*/sim/*.json"))
+    overridden = 0
     for path in paths:
         doc = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
         if (doc.get("pod") or {}).get("name") != name:
+            continue
+        # THE NULL IS THE PLAIN HARNESS. A run made under `data/forge_overrides/` is a
+        # different instrument, and the day the first overridden deck-level run landed
+        # it moved this figure 0.233 -> 0.206 — the yardstick every MDE in `net-change`
+        # is scaled against, shifted 12% by one run that changed what the AI may TARGET.
+        # `limits` had said "nothing excludes one"; now something does, and the count of
+        # what was left out is reported beside the null rather than assumed.
+        if (doc.get("card_overrides") or {}).get("sha"):
+            overridden += 1
             continue
         runs += 1
         # THE SEAT'S OWN `forge_name` IS THE AUTHORITY on what `analysis.seats`
@@ -325,6 +335,7 @@ def calibration(name, records=None):
         # WHAT THE DEFAULT GLOB LEFT OUT, counted rather than asserted — so the
         # figure cannot drift away from the sentence describing it.
         "excluded_branch_runs": _excluded_branch_runs(name, games),
+        "excluded_overridden_runs": overridden,
         "limits": [
             "Pooled across runs that differ in N, clock, AI profile and which "
             "deck sat in seat 0, so the interval assumes an exchangeability the "
@@ -347,10 +358,10 @@ def calibration(name, records=None):
             "that has faced this table. Pooling them would move the subject null "
             "0.233 -> 0.179. A branch is a candidate rather than a deck the pilot "
             "plays, so the null describes the fleet's real lists.",
-            "Runs made under `data/forge_overrides/` are pooled like any other. "
-            "None is in the pool today (verified 2026-09-28: 0 of the 9 records "
-            "at standard-v3), but nothing excludes one — and an overridden run is "
-            "a different harness, the distinction `net_change.forge` buckets on.",
+            "PLAIN HARNESS ONLY. A run made under `data/forge_overrides/` is a "
+            "different instrument and is excluded; the count is reported as "
+            "`excluded_overridden_runs`. The first such run to land at standard-v3 "
+            "moved this null 0.233 -> 0.206 before the exclusion existed.",
         ],
     }
 
@@ -389,6 +400,11 @@ def format_calibration(doc):
         # Every win rate in `net-change` is now scaled against this figure, and a
         # reader scaling against it deserves to know it is deck-level runs only —
         # the rule that made `_pod_null` print here in the first place.
+        if doc.get("excluded_overridden_runs"):
+            lines.append(
+                f"  PLAIN HARNESS ONLY: {doc['excluded_overridden_runs']} run(s) made "
+                f"under card-script overrides are NOT in this figure — a different "
+                f"instrument, bucketed separately by `net-change`.")
         excluded = doc.get("excluded_branch_runs") or {}
         if excluded.get("runs"):
             lines.append(

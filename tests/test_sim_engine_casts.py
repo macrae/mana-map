@@ -157,6 +157,15 @@ KNOWN_UNCAST = {
     # the run's observations — clock-outs 17 -> 32 with an interval excluding zero — are
     # the finding, and its win rate (3/68) is not read as a result.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068-s909090-meExperimental-podExperimental-c600-ov60636e9e.json",
+    # THE CHAMPION UNDER THE SAME ELEVEN OVERRIDES — the missing arm of the copy-burst A/B,
+    # and the run that showed the hints did nothing for it: 7/94 plain -> 6/83 overridden,
+    # diff -0.002 [-0.083, +0.083]. Three never cast, all MODELLED (0-2 discards): Goblin
+    # Bombardment carries Forge's own `AI:RemoveDeck:All`; Renegade Tactics is one of the
+    # six hinted spells this list carries and the AI declined it; and Witch's Mark — new
+    # here — is "you may discard a card, if you do draw two", the same loot shape as
+    # Faithless Looting, and the AI will not discard its own hand (the sharknado wheels
+    # story above). No engine flag on it, so this one rests on the documented class alone.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s909090-podExperimental-c600-ov60636e9e.json",
     # A RECORD IS JUDGED AGAINST TODAY'S DECLARATION, NOT THE ONE IT RAN UNDER.
     # These two flag for a reason that is not the AI's: the deck changed after
     # the run, and the cards now named in `goldfish_targets.json` were not in

@@ -693,10 +693,15 @@ def _seat_sha(doc, want):
 
 
 def _label(key):
-    """A bucket's name for a reader: the table, and the harness when it is not
-    the plain one. `('standard-v3', '') -> 'standard-v3'`."""
-    pod, ov = key
-    return f"{pod} (overrides {ov[:12]})" if ov else pod
+    """A bucket's name for a reader: the table, and every harness axis that is
+    not the plain one. `('standard-v3', '', 'Default') -> 'standard-v3'`."""
+    pod, ov, prof = key
+    bits = []
+    if ov:
+        bits.append(f"overrides {ov[:12]}")
+    if prof and prof != "Default":
+        bits.append(f"ours {prof}")
+    return f"{pod} ({', '.join(bits)})" if bits else pod
 
 
 def forge(slug, branch):
@@ -748,6 +753,15 @@ def forge(slug, branch):
             # NOTHING READ IT, which is the same defect as a record describing a
             # list it never played, one layer over and shipped the same day.
             ov = (doc.get("card_overrides") or {}).get("sha") or ""
+            # AND OUR SEAT'S PROFILE, because a profile is a harness too. The key was
+            # `(pod, ov)` for eleven hours and it pooled the branch's Default-override
+            # run (9/82) with its Experimental-override run (3/68) into `12/150` — the
+            # same defect as the 10/155 it was written to fix, one axis over. That the
+            # profile changes the instrument is MEASURED: on one list, same seed, same
+            # overrides, Default -> Experimental took clock-outs from 17 to 32 of 100
+            # with an interval excluding zero. `profiles` is the `-a` list or null;
+            # null is every seat on Default, which is what a pre-profile record means.
+            prof = ((doc.get("profiles") or ["Default"])[0]) or "Default"
             ran = _seat_sha(doc, want)
             if ran and live_sha and ran != live_sha:
                 dropped.append({"run": doc.get("run_id") or path.split("/")[-1],
@@ -755,7 +769,7 @@ def forge(slug, branch):
                                 "games": a.get("games") or 0})
                 if strict:
                     continue
-            row = by_pod.setdefault((pod, ov), {"wins": 0, "decided": 0,
+            row = by_pod.setdefault((pod, ov, prof), {"wins": 0, "decided": 0,
                                                  "games": 0, "runs": 0,
                                                  "by_route": {}})
             row["wins"] += seat["wins"]
@@ -831,7 +845,7 @@ def forge(slug, branch):
                         f"`manamap pilot simulate {slug} --pod {sorted(br)[0]}`")}
     # The table with the most branch games decides; the others are named.
     key = max(common, key=lambda k: br[k]["decided"])
-    pod, ovsha = key
+    pod, ovsha, prof = key
     a, b = champ[key], br[key]
     a_w, a_n, b_w, b_n = a["wins"], a["decided"], b["wins"], b["decided"]
     d = stats.diff_proportions(a_w, a_n, b_w, b_n)
@@ -842,6 +856,9 @@ def forge(slug, branch):
             # were loaded; a sha means both arms were played under exactly that
             # directory, because they are bucketed together or not at all.
             "card_overrides": ovsha or None,
+            # And the profile that flew our seat in this bucket — absent when Default,
+            # so a plain record's block is unchanged.
+            **({"ai_profile": prof} if prof and prof != "Default" else {}),
             # WHAT THIS BLOCK LEFT OUT AND WHY. A run excluded in silence is
             # indistinguishable from a run that was never made.
             "superseded": {k: v for k, v in superseded.items() if v},
@@ -1551,15 +1568,29 @@ def _print_real_table(doc):
                 # line silently did not print, which is how this was found.
                 _slug = doc.get("slug")
                 seat = _slug if need == "champion" else f"{_slug}@{doc.get('branch')}"
+                # NAME THE AXIS THAT ACTUALLY DIFFERS. This said "never been played
+                # under those card-script overrides" for every held-out row, and the
+                # day the champion WAS played under them it was still saying so about
+                # a row that differed only by profile. A reader was told the wrong
+                # reason and the wrong remedy.
+                is_prof = "ours " in k
+                why = ("under that AI profile" if is_prof
+                       else "under those card-script overrides")
+                what = ("A profile changes how the AI plays — measured: Default -> "
+                        "Experimental took clock-outs from 17 to 32 of 100"
+                        if is_prof else
+                        "They change what the AI may TARGET")
+                flag = (" --profile " + k.split("ours ", 1)[1].rstrip(")")
+                        if is_prof else "")
                 print(_wrap(
                     f"{k} has {v['branch_runs']} branch and "
                     f"{v['champion_runs']} champion run(s) — the SAME table, held "
-                    f"out only because the {need} has never been played under "
-                    f"those card-script overrides. They change what the AI may "
-                    f"TARGET, so pooling them would average two different "
+                    f"out only because the {need} has never been played {why}. "
+                    f"{what}, so pooling them would average two different "
                     f"harnesses. To compare: `manamap pilot simulate {seat} "
-                    f"--pod {f.get('pod')} --games N` with "
-                    f"data/forge_overrides/ in place.", indent="      "))
+                    f"--pod {f.get('pod')}{flag} --games N`"
+                    f"{'' if is_prof else ' with data/forge_overrides/ in place'}.",
+                    indent="      "))
         print(f"    delta {f['delta']:+.3f}  CI [{f['ci95'][0]:+.3f}, "
               f"{f['ci95'][1]:+.3f}]  MDE {f['mde']}")
         # AN MDE MEANS NOTHING WITHOUT THE NULL IT IS SCALED AGAINST, and this

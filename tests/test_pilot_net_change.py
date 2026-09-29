@@ -1523,7 +1523,64 @@ def test_the_label_distinguishes_a_harness_from_a_table():
     """
     from manamap.pilot.net_change import _label
 
-    assert _label(("standard-v3", "")) == "standard-v3"
-    assert _label(("standard-v3", "60636e9e5565")) == "standard-v3 (overrides 60636e9e5565)"
+    assert _label(("standard-v3", "", "Default")) == "standard-v3"
+    assert _label(("standard-v3", "60636e9e5565", "Default")) == \
+        "standard-v3 (overrides 60636e9e5565)"
     # Truncated, so a long sha cannot push the table name off a terminal line.
-    assert _label(("p", "0" * 64)) == "p (overrides " + "0" * 12 + ")"
+    assert _label(("p", "0" * 64, "Default")) == "p (overrides " + "0" * 12 + ")"
+    # THE PROFILE IS A HARNESS AXIS TOO, and the label must say so — a reader shown
+    # only "overrides X" for a row that differs by profile is told the wrong reason.
+    assert _label(("standard-v3", "60636e9e5565", "Experimental")) == \
+        "standard-v3 (overrides 60636e9e5565, ours Experimental)"
+    assert _label(("standard-v3", "", "Experimental")) == "standard-v3 (ours Experimental)"
+
+
+
+def test_forge_never_pools_runs_flown_under_different_profiles():
+    """A PROFILE IS A HARNESS TOO. The bucket key was `(pod, override_sha)` for eleven
+    hours and pooled the branch's Default-override run (9/82) with its Experimental-
+    override run (3/68) into `branch 12/150` — the same defect as the 10/155 it had been
+    written to fix, one axis over.
+
+    That the profile changes the instrument is MEASURED, not assumed: one list, same
+    seed, same overrides, Default -> Experimental took clock-outs from 17 to 32 of 100
+    with an interval excluding zero. Drives the production function over the real
+    records; re-introducing the bug is dropping `prof` from the key.
+    """
+    from manamap.pilot.net_change import forge
+
+    f = forge("goblin-storm", "copy-burst-v1")
+    assert f.get("available"), f.get("why")
+    br = f["branch"]
+    assert br["games"] != 150, "150 decided games is the two profiles pooled"
+    assert br["games"] in (82, 68, 73), br["games"]
+    # And the held-out profile is NAMED, not silently dropped.
+    assert any("ours Experimental" in k for k in (f.get("other_tables") or {})), (
+        sorted(f.get("other_tables") or {}))
+
+
+def test_the_pod_null_excludes_overridden_runs_and_counts_them():
+    """THE NULL IS THE PLAIN HARNESS. The first overridden deck-level run to land at
+    standard-v3 moved it 0.233 -> 0.206 before any exclusion existed — the yardstick
+    every MDE is scaled against, shifted 12% by one run that changed what the AI may
+    TARGET. Re-introducing the bug is removing the `card_overrides` skip in
+    `pods.calibration`.
+    """
+    import glob
+    import json
+    import pathlib
+
+    from manamap.sim import pods
+
+    recs = [pathlib.Path(p) for p in sorted(glob.glob("data/decks/*/sim/*.json"))
+            if "/logs/" not in p]
+    over = [p for p in recs
+            if (json.loads(p.read_text()).get("card_overrides") or {}).get("sha")]
+    if not over:
+        pytest.skip("no overridden deck-level run on this machine")
+    doc = pods.calibration("standard-v3", records=recs)
+    assert doc["excluded_overridden_runs"] >= 1
+    clean = pods.calibration("standard-v3", records=[p for p in recs if p not in over])
+    assert doc["subject_null"]["games"] == clean["subject_null"]["games"], (
+        "an overridden run is in the null's denominator")
+    assert "PLAIN HARNESS ONLY" in pods.format_calibration(doc)

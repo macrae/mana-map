@@ -456,6 +456,52 @@ fetches in the corpus — and `goldfish.py` built every land's `colors` from the
 same call, so four fetches modelled as four lands that never produce anything.
 `model_colors` defaults to **True**, so this was on for every deck in the fleet.
 
+### The champion under the overrides: the hints did nothing for it, and two harness bugs came back (2026-09-29)
+
+The copy-burst-v1 comparison had been cross-harness since the overrides shipped: the branch
+had run under them, the champion never had. So the champion ran under the same eleven —
+same pod, seed 909090, 100 games, `--jobs 4`, Default on our seat — and for the first time
+both arms sat in one harness bucket.
+
+| | plain | overridden |
+|---|---|---|
+| champion (v1.0.x) | 7/94 = 0.074 | **6/83 = 0.072** |
+| copy-burst-v1 | 1/73 = 0.014 | 9/82 = 0.110 |
+
+**THE OVERRIDE DID NOTHING FOR THE CHAMPION.** -0.002, ci95 [-0.083, +0.083]. The same hints
+that lifted the branch from 6% of par to 47% left the champion exactly where it was — and the
+lever is weaker there by construction: the champion carries **6** of the eleven hinted spells,
+the branch all eleven, because the branch is the list the override was built around. Zada still
+fired more (0.52/game against 0.35–0.39 pre-override), so the hints were active; they just did
+not convert. That is a property of the lists, not a confound, and it is what copy-burst-v1 IS.
+
+**THE WITHIN-HARNESS A/B, finally:** champion 6/83 against branch 9/82, **+0.037, ci95
+[-0.054, +0.132], spans zero**, MDE 0.155. Whether copy-burst-v1 is the better list is an open
+question at this sample size — the honest state, and the one the plan's own arithmetic
+predicted: a +0.05 gain is unreachable at 1,000 games per arm.
+
+**AND TWO HARNESS BUGS CAME BACK, both mine, both within twelve hours of the fix they undid.**
+
+`net_change.forge` printed `branch 12/150`. The bucket key was `(pod, override_sha)`, and the
+branch's Default-override run (9/82) and Experimental-override run (3/68) share the sha. The
+profile was not in the key — one day after measuring that Default -> Experimental doubles
+clock-outs on the same list. The same defect as the 10/155 it had been written to fix, one
+axis over. The key is `(pod, overrides, profile)` now, the held-out row is labelled `ours
+Experimental`, and the remedy note names the axis that actually differs instead of telling a
+reader to install overrides the champion already had.
+
+`pods.calibration` pooled the overridden champion into the subject null and moved it
+**0.233 -> 0.206** — a 12% shift in the yardstick every MDE is scaled against, from one run
+that changed what the AI may target. `limits` had said "nothing excludes one"; it was true and
+it was a warning I wrote and did not act on. The null is the PLAIN harness now, overridden
+runs are counted and printed beside it, and the figure is back at 0.233.
+
+The record carries one never-cast card not seen before: **Witch's Mark**, "you may discard a
+card, if you do draw two" — the same loot shape as Faithless Looting, and the AI will not
+discard its own hand. No `AI:RemoveDeck` flag on it, so that entry rests on the documented
+class alone.
+
+
 ### Our seat on the pod's profile: the land ratio did not move, the clock-outs doubled, and the early slice lied twice (2026-09-28)
 
 `pilot_quality`'s argument for using the pod as a control is that the other seats are "the
