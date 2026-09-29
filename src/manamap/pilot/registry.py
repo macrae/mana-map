@@ -80,6 +80,14 @@ PILOT_STEPS = [
      "A/B two versions of one deck against the same table: one artifact, each figure for both arms, the delta and whether it is noise"),
     ("fetch-opponent", "manamap.sim.opponents",
      "An opponent seat under data/opponents/<slug>/ from EDHREC's average deck for a commander"),
+    ("sim-findings", "manamap.pilot.pilot_findings",
+     "THE SIM DEBRIEF'S SKELETON: what each run says about how the deck was flown, as findings "
+     "with ids, intervals and sources — rate vs the null, piloting, how we lost, what was held, "
+     "first attack, wipes, targeting; `--boards` adds recurring board shapes where the logs are"),
+    ("validate-sim-findings", "manamap.pilot.validate_sim_findings",
+     "Every citation in the prose is a finding of that run and every number in it is the record's"),
+    ("merge-sim-findings", "manamap.pilot.merge_sim_findings",
+     "Recompute the skeleton and take the sim-debrief agent's PROSE, per run, whitelisted"),
     ("sim-boards", "manamap.sim.boards",
      "Which moments in a run are worth lifting, and how often they RECUR: a criterion "
      "(widest / modal / death / held / pre-wipe / lethal-missed / first-attack) names a cut "
@@ -233,7 +241,7 @@ _DECK_COMMANDS = {
     "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
-    "sim-boards", "validate-lift",
+    "sim-boards", "validate-lift", "sim-findings", "validate-sim-findings", "merge-sim-findings",
 }
 
 
@@ -802,6 +810,14 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--as", dest="as_slug", default=None, help="opponent slug (default: from the commander)")
             cmd.add_argument("--note", default=None, help="why this seat is at your table")
             cmd.add_argument("--list", action="store_true")
+        if name == "sim-findings":
+            cmd.add_argument("--run", default=None, metavar="RUN_ID", help="just this run")
+            cmd.add_argument("--boards", action="store_true",
+                             help="add recurring board shapes (held / death / widest) from the "
+                                  "finder — needs the logs, so only where the run was made")
+            cmd.add_argument("--write", action="store_true",
+                             help="write sim_findings.json (prose carried forward from the tracked file)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "sim-boards":
             cmd.add_argument("run", help="the run id (see `simulate <slug> --list`)")
             cmd.add_argument("--criterion", required=True,

@@ -435,6 +435,10 @@ VALIDATED = {
     # does not go stale when the list changes. `backfill` wrote the first lines
     # in the commit that registered this, so the entry names an artifact that exists.
     "decisions.jsonl": "manamap.pilot.validate_decisions",
+    # The sim debrief's skeleton + prose. A GATE row, not a stage: a deck can be
+    # finished without one, and it does not go stale when the list changes —
+    # each run inside it says which list it measured.
+    "sim_findings.json": "manamap.pilot.validate_sim_findings",
     # The pilot's own claim about how each game ended, joined to the log by id.
     # Authored, tracked, and joined to a file that only grows — the shape that
     # goes quietly wrong, which is why it earned a gate on the day it shipped.

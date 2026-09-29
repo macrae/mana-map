@@ -121,6 +121,14 @@ manamap pilot campaign [<name> [plan|run|status]] [--only ID] [--dry-run] [--jso
                                         #   per harness and writes `resolved`; `run` goes in order, skips DONE
                                         #   and STALE, resumes RUNNING and NEVER merges; `status` derives
                                         #   each entry's state from its record — nothing is stored
+manamap pilot sim-findings <slug> [--run R] [--boards] [--write] [--json]
+                                        #   THE SIM DEBRIEF'S SKELETON: per run, findings with ids,
+                                        #   intervals and sources (rate vs the null, piloting, how we
+                                        #   lost, what was held, first attack, wipes, targeting; --boards
+                                        #   adds recurring shapes where the logs are). Prose is the
+                                        #   sim-debrief agent's and may cite only finding ids
+manamap pilot validate-sim-findings <slug>   # every citation a finding of that run, every number the record's
+manamap pilot merge-sim-findings <slug>      # recompute the skeleton, take the prose, refuse what does not hold
 manamap pilot sim-boards <slug> <run> --criterion C [--n N] [--top K] [--lift|--stack] [--json]
                                         #   WHICH MOMENTS ARE WORTH LIFTING, and how often they RECUR:
                                         #   widest / modal / death / held / pre-wipe / lethal-missed /
@@ -933,6 +941,27 @@ of the note), `cards[]` (`read` ∈ over/under/as-expected/missed), `decisions[]
 rejects ids the log lacks and carries earlier annotations; `validate-debrief` fails the
 annotation on any of those contracts. The one rule is that the debrief may name nothing
 the pilot and the 99 did not — it is a reader, not a witness.
+
+## The sim debrief (`sim_findings.json`, computed skeleton + agent prose; 2026-09-30)
+
+THE CAPTAIN'S LOG STAYS HUMAN. `debrief`'s rule — "you may name nothing the pilot and the
+deck did not" — is what makes the doctor trust a log entry, and a Forge run has no pilot;
+so simulated games never enter `log.jsonl`. They get their own record under the same
+discipline the captain's log uses: `sim-findings` computes the deterministic skeleton — per
+run, findings with ids (`F-<run8>-NN`), each one figure with its interval, its N, a `source`
+naming where in the record it came from and a `basis` when it rests on an inference:
+`rate_vs_null`, `pilot_quality`, `loss_decomposition`, `held` (measured against modelled),
+`first_attack`, `wipe_recovery`, `targeting` (the tracked `threat/targeting.json`),
+`board_shape` (from `sim-boards`, only with `--boards` and only where the logs are) and
+`piloting_delta` (a checker-passed lifted line whose proposed play differed from the AI's).
+A finding never says what to do. The `sim-debrief` agent writes PROSE only — a reading,
+`so_what` items and open questions routed to a closed set of loops — and every citation
+must be a finding id of that run and every number in it a figure, interval or N of a cited
+finding; `merge-sim-findings` recomputes the skeleton unconditionally and takes the prose,
+refusing before the write when it does not hold. Card names are deliberately not checked:
+a heuristic that guessed them would fire on correct prose. `validate-sim-findings` is the
+gate (a GATE row in `deck-status`), and a freshness test holds every tracked file's skeleton
+to a fresh one. The handbook's data sections read this file, never the logs.
 
 ## The decision ledger (`decisions.jsonl`, authored + derived; 2026-09-29)
 

@@ -1,0 +1,821 @@
+{
+  "slug": "goblin-storm",
+  "artifact": "sim_findings.json",
+  "runs": {
+    "giada-angels-vs-vito-vs-baylen-tokens-n20-a209c8f5-s718550261": {
+      "run": {
+        "id": "giada-angels-vs-vito-vs-baylen-tokens-n20-a209c8f5-s718550261",
+        "at": "2026-08-26",
+        "pod": "vito-era",
+        "games": 20,
+        "decided": 20,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 300,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "version": 1,
+        "current": true
+      },
+      "findings": [
+        {
+          "id": "F-1ac704d2-01",
+          "kind": "rate_vs_null",
+          "text": "1 of 20 decided games (0.050, ci95 [0.009, 0.236]) against a null of 0.138 at vito-era — 36% of par",
+          "figure": 0.05,
+          "ci95": [
+            0.009,
+            0.236
+          ],
+          "n": 20,
+          "null": {
+            "rate": 0.138,
+            "games": 744,
+            "pod": "vito-era"
+          },
+          "source": "analysis.seats[goblin-storm].win_rate; pods.calibration(vito-era)"
+        },
+        {
+          "id": "F-1ac704d2-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 1.042,
+          "verdict": true,
+          "n": 20,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-1ac704d2-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 16 of 20 games: giada-angels ×6, vito ×5, baylen-tokens ×5; how: {\"life loss\": 7, \"damage\": 9}",
+          "eliminated_by": {
+            "vito": 5,
+            "baylen-tokens": 5,
+            "giada-angels": 6
+          },
+          "eliminated_how": {
+            "life loss": 7,
+            "damage": 9
+          },
+          "n": 20,
+          "source": "analysis.seats[goblin-storm].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-1ac704d2-04",
+          "kind": "held",
+          "text": "0 card(s) never cast over 20 games (0 seen discarded, 0 inferred)",
+          "cards": [],
+          "measured": [],
+          "modelled": [],
+          "counts": {},
+          "n": 20,
+          "played_share": 1.532,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-1ac704d2-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 10.62 (median 9.0, n 16 of 20 games — games with no attack are absent)",
+          "figure": 10.62,
+          "ci95": [
+            7.66,
+            13.59
+          ],
+          "n": 16,
+          "source": "analysis.seats[goblin-storm].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-1ac704d2-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.2 of games (ci95 [0.081, 0.416]); damage on the wipe turn 1.2",
+          "figure": 0.2,
+          "ci95": [
+            0.081,
+            0.416
+          ],
+          "n": 20,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-1ac704d2-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.646, 0.681], 2856 decisions, permutation p 0.0001)",
+          "figure": 0.6639,
+          "ci95": [
+            0.646,
+            0.681
+          ],
+          "n": 2856,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n100-62a56c7d-s1655008381-podExperimental-c600": {
+      "run": {
+        "id": "giada-angels-vs-baylen-tokens-vs-abaddon-n100-62a56c7d-s1655008381-podExperimental-c600",
+        "at": "2026-09-02",
+        "pod": "standard",
+        "games": 100,
+        "decided": 98,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "version": 1,
+        "current": true
+      },
+      "findings": [
+        {
+          "id": "F-479df2d9-01",
+          "kind": "rate_vs_null",
+          "text": "3 of 98 decided games (0.031, ci95 [0.01, 0.086]) against a null of 0.181 at standard — 17% of par",
+          "figure": 0.031,
+          "ci95": [
+            0.01,
+            0.086
+          ],
+          "n": 98,
+          "null": {
+            "rate": 0.181,
+            "games": 547,
+            "pod": "standard"
+          },
+          "source": "analysis.seats[goblin-storm].win_rate; pods.calibration(standard)"
+        },
+        {
+          "id": "F-479df2d9-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 0.985,
+          "verdict": true,
+          "n": 100,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-479df2d9-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 75 of 100 games: giada-angels ×50, abaddon ×17, baylen-tokens ×8; how: {\"damage\": 73, \"life loss\": 2}",
+          "eliminated_by": {
+            "giada-angels": 50,
+            "baylen-tokens": 8,
+            "abaddon": 17
+          },
+          "eliminated_how": {
+            "damage": 73,
+            "life loss": 2
+          },
+          "n": 100,
+          "source": "analysis.seats[goblin-storm].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-479df2d9-04",
+          "kind": "held",
+          "text": "3 card(s) never cast over 100 games (1 seen discarded, 2 inferred): Mountain, Goblin Bombardment, Past in Flames",
+          "cards": [
+            "Mountain",
+            "Goblin Bombardment",
+            "Past in Flames"
+          ],
+          "measured": [
+            "Mountain"
+          ],
+          "modelled": [
+            "Goblin Bombardment",
+            "Past in Flames"
+          ],
+          "counts": {
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 8
+            },
+            "Goblin Bombardment": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Past in Flames": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            }
+          },
+          "n": 100,
+          "played_share": 1.315,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-479df2d9-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 15.53 (median 13, n 85 of 100 games — games with no attack are absent)",
+          "figure": 15.53,
+          "ci95": [
+            13.64,
+            17.42
+          ],
+          "n": 85,
+          "source": "analysis.seats[goblin-storm].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-479df2d9-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.44 of games (ci95 [0.267, 0.629]); damage on the wipe turn 0.0",
+          "figure": 0.44,
+          "ci95": [
+            0.267,
+            0.629
+          ],
+          "n": 25,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-479df2d9-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.646, 0.681], 2856 decisions, permutation p 0.0001)",
+          "figure": 0.6639,
+          "ci95": [
+            0.646,
+            0.681
+          ],
+          "n": 2856,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "giada-angels-vs-vito-vs-baylen-tokens-n100-a209c8f5-s718550261-podExperimental": {
+      "run": {
+        "id": "giada-angels-vs-vito-vs-baylen-tokens-n100-a209c8f5-s718550261-podExperimental",
+        "at": "2026-09-02",
+        "pod": "vito-era",
+        "games": 100,
+        "decided": 88,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 300,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "version": 1,
+        "current": true
+      },
+      "findings": [
+        {
+          "id": "F-90951a11-01",
+          "kind": "rate_vs_null",
+          "text": "2 of 88 decided games (0.023, ci95 [0.006, 0.079]) against a null of 0.138 at vito-era — 17% of par",
+          "figure": 0.023,
+          "ci95": [
+            0.006,
+            0.079
+          ],
+          "n": 88,
+          "null": {
+            "rate": 0.138,
+            "games": 744,
+            "pod": "vito-era"
+          },
+          "source": "analysis.seats[goblin-storm].win_rate; pods.calibration(vito-era)"
+        },
+        {
+          "id": "F-90951a11-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 1.014,
+          "verdict": true,
+          "n": 100,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-90951a11-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 72 of 100 games: giada-angels ×51, vito ×17, baylen-tokens ×4; how: {\"life loss\": 21, \"damage\": 51}",
+          "eliminated_by": {
+            "vito": 17,
+            "giada-angels": 51,
+            "baylen-tokens": 4
+          },
+          "eliminated_how": {
+            "life loss": 21,
+            "damage": 51
+          },
+          "n": 100,
+          "source": "analysis.seats[goblin-storm].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-90951a11-04",
+          "kind": "held",
+          "text": "1 card(s) never cast over 100 games (0 seen discarded, 1 inferred): Mountain",
+          "cards": [
+            "Mountain"
+          ],
+          "measured": [],
+          "modelled": [
+            "Mountain"
+          ],
+          "counts": {
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            }
+          },
+          "n": 100,
+          "played_share": 1.162,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-90951a11-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 13.09 (median 9.5, n 86 of 100 games — games with no attack are absent)",
+          "figure": 13.09,
+          "ci95": [
+            11.49,
+            14.7
+          ],
+          "n": 86,
+          "source": "analysis.seats[goblin-storm].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-90951a11-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.16 of games (ci95 [0.101, 0.244]); damage on the wipe turn 3.06",
+          "figure": 0.16,
+          "ci95": [
+            0.101,
+            0.244
+          ],
+          "n": 100,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-90951a11-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.646, 0.681], 2856 decisions, permutation p 0.0001)",
+          "figure": 0.6639,
+          "ci95": [
+            0.646,
+            0.681
+          ],
+          "n": 2856,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836-s14467126-podExperimental-c600": {
+      "run": {
+        "id": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836-s14467126-podExperimental-c600",
+        "at": "2026-09-10",
+        "pod": "standard-v3",
+        "games": 40,
+        "decided": 32,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "version": 1,
+        "current": true
+      },
+      "findings": [
+        {
+          "id": "F-a5ac2ad3-01",
+          "kind": "rate_vs_null",
+          "text": "1 of 32 decided games (0.031, ci95 [0.006, 0.157]) against a null of 0.233 at standard-v3 — 13% of par",
+          "figure": 0.031,
+          "ci95": [
+            0.006,
+            0.157
+          ],
+          "n": 32,
+          "null": {
+            "rate": 0.233,
+            "games": 412,
+            "pod": "standard-v3"
+          },
+          "source": "analysis.seats[goblin-storm].win_rate; pods.calibration(standard-v3)"
+        },
+        {
+          "id": "F-a5ac2ad3-02",
+          "kind": "pilot_quality",
+          "text": "OUR SEAT WAS HANDLED WORSE THAN THE POD. A win rate from this run is measuring the AI's preferences as much as the decks; treat the outcome as uninformative and read the observations instead.",
+          "figure": 0.776,
+          "verdict": false,
+          "n": 40,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-a5ac2ad3-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 27 of 40 games: sythis-enchantress ×15, abaddon ×9, jarad-graveyard ×3; how: {\"damage\": 27}",
+          "eliminated_by": {
+            "sythis-enchantress": 15,
+            "abaddon": 9,
+            "jarad-graveyard": 3
+          },
+          "eliminated_how": {
+            "damage": 27
+          },
+          "n": 40,
+          "source": "analysis.seats[goblin-storm].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-a5ac2ad3-04",
+          "kind": "held",
+          "text": "0 card(s) never cast over 40 games (0 seen discarded, 0 inferred)",
+          "cards": [],
+          "measured": [],
+          "modelled": [],
+          "counts": {},
+          "n": 40,
+          "played_share": 1.379,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-a5ac2ad3-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 13.22 (median 11.0, n 40 of 40 games — games with no attack are absent)",
+          "figure": 13.22,
+          "ci95": [
+            11.1,
+            15.35
+          ],
+          "n": 40,
+          "source": "analysis.seats[goblin-storm].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-a5ac2ad3-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.3 of games (ci95 [0.108, 0.603]); damage on the wipe turn 0.0",
+          "figure": 0.3,
+          "ci95": [
+            0.108,
+            0.603
+          ],
+          "n": 10,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-a5ac2ad3-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.646, 0.681], 2856 decisions, permutation p 0.0001)",
+          "figure": 0.6639,
+          "ci95": [
+            0.646,
+            0.681
+          ],
+          "n": 2856,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600": {
+      "run": {
+        "id": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600",
+        "at": "2026-09-27",
+        "pod": "standard-v3",
+        "games": 75,
+        "decided": 62,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "version": 1,
+        "current": true
+      },
+      "findings": [
+        {
+          "id": "F-391e12fb-01",
+          "kind": "rate_vs_null",
+          "text": "6 of 62 decided games (0.097, ci95 [0.045, 0.195]) against a null of 0.233 at standard-v3 — 42% of par",
+          "figure": 0.097,
+          "ci95": [
+            0.045,
+            0.195
+          ],
+          "n": 62,
+          "null": {
+            "rate": 0.233,
+            "games": 412,
+            "pod": "standard-v3"
+          },
+          "source": "analysis.seats[goblin-storm].win_rate; pods.calibration(standard-v3)"
+        },
+        {
+          "id": "F-391e12fb-02",
+          "kind": "pilot_quality",
+          "text": "OUR SEAT WAS HANDLED WORSE THAN THE POD. A win rate from this run is measuring the AI's preferences as much as the decks; treat the outcome as uninformative and read the observations instead.",
+          "figure": 0.831,
+          "verdict": false,
+          "n": 75,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-391e12fb-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 47 of 75 games: sythis-enchantress ×25, abaddon ×13, jarad-graveyard ×9; how: {\"damage\": 46, \"life loss\": 1}",
+          "eliminated_by": {
+            "sythis-enchantress": 25,
+            "jarad-graveyard": 9,
+            "abaddon": 13
+          },
+          "eliminated_how": {
+            "damage": 46,
+            "life loss": 1
+          },
+          "n": 75,
+          "source": "analysis.seats[goblin-storm].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-391e12fb-04",
+          "kind": "held",
+          "text": "3 card(s) never cast over 75 games (0 seen discarded, 3 inferred): Mountain, Faithless Looting, Goblin Bombardment",
+          "cards": [
+            "Mountain",
+            "Faithless Looting",
+            "Goblin Bombardment"
+          ],
+          "measured": [],
+          "modelled": [
+            "Mountain",
+            "Faithless Looting",
+            "Goblin Bombardment"
+          ],
+          "counts": {
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Faithless Looting": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            },
+            "Goblin Bombardment": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            }
+          },
+          "n": 75,
+          "played_share": 1.351,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-391e12fb-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 13.51 (median 13, n 61 of 75 games — games with no attack are absent)",
+          "figure": 13.51,
+          "ci95": [
+            12.3,
+            14.71
+          ],
+          "n": 61,
+          "source": "analysis.seats[goblin-storm].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-391e12fb-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.36 of games (ci95 [0.202, 0.555]); damage on the wipe turn 0.0",
+          "figure": 0.36,
+          "ci95": [
+            0.202,
+            0.555
+          ],
+          "n": 25,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-391e12fb-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.646, 0.681], 2856 decisions, permutation p 0.0001)",
+          "figure": 0.6639,
+          "ci95": [
+            0.646,
+            0.681
+          ],
+          "n": 2856,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s909090-podExperimental-c600-ov60636e9e": {
+      "run": {
+        "id": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s909090-podExperimental-c600-ov60636e9e",
+        "at": "2026-09-29",
+        "pod": "standard-v3",
+        "games": 100,
+        "decided": 83,
+        "harness": {
+          "card_overrides": "60636e9e5565",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+        "version": 1,
+        "current": true
+      },
+      "findings": [
+        {
+          "id": "F-ce3800d7-01",
+          "kind": "rate_vs_null",
+          "text": "6 of 83 decided games (0.072, ci95 [0.034, 0.149]) against a null of 0.233 at standard-v3 — 31% of par",
+          "figure": 0.072,
+          "ci95": [
+            0.034,
+            0.149
+          ],
+          "n": 83,
+          "null": {
+            "rate": 0.233,
+            "games": 412,
+            "pod": "standard-v3"
+          },
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[goblin-storm].win_rate; pods.calibration(standard-v3)"
+        },
+        {
+          "id": "F-ce3800d7-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 0.894,
+          "verdict": true,
+          "n": 100,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-ce3800d7-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 62 of 100 games: sythis-enchantress ×32, abaddon ×21, jarad-graveyard ×9; how: {\"damage\": 61, \"life loss\": 1}",
+          "eliminated_by": {
+            "sythis-enchantress": 32,
+            "abaddon": 21,
+            "jarad-graveyard": 9
+          },
+          "eliminated_how": {
+            "damage": 61,
+            "life loss": 1
+          },
+          "n": 100,
+          "source": "analysis.seats[goblin-storm].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-ce3800d7-04",
+          "kind": "held",
+          "text": "3 card(s) never cast over 100 games (1 seen discarded, 2 inferred): Mountain, Goblin Bombardment, Arena of Glory",
+          "cards": [
+            "Mountain",
+            "Goblin Bombardment",
+            "Arena of Glory"
+          ],
+          "measured": [
+            "Mountain"
+          ],
+          "modelled": [
+            "Goblin Bombardment",
+            "Arena of Glory"
+          ],
+          "counts": {
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 12
+            },
+            "Goblin Bombardment": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Arena of Glory": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            }
+          },
+          "n": 100,
+          "played_share": 1.778,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-ce3800d7-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 14.34 (median 13, n 91 of 100 games — games with no attack are absent)",
+          "figure": 14.34,
+          "ci95": [
+            12.98,
+            15.7
+          ],
+          "n": 91,
+          "source": "analysis.seats[goblin-storm].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-ce3800d7-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.36 of games (ci95 [0.202, 0.555]); damage on the wipe turn 0.0",
+          "figure": 0.36,
+          "ci95": [
+            0.202,
+            0.555
+          ],
+          "n": 25,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-ce3800d7-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.646, 0.681], 2856 decisions, permutation p 0.0001)",
+          "figure": 0.6639,
+          "ci95": [
+            0.646,
+            0.681
+          ],
+          "n": 2856,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    }
+  },
+  "limits": [
+    "every figure is the record's, with its interval and N; a finding never says what to do",
+    "`board_shape` and `targeting` need the logs and exist only where a run was made",
+    "the captain's log is never written from here: a Forge game has no pilot"
+  ]
+}

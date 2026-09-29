@@ -248,7 +248,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (110 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (113 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
@@ -299,6 +299,11 @@ manamap pilot simulate <slug> --pod standard-v3 --games N
                               # played and `NOT the current list` where it is not.
 manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/opponents/
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
+manamap pilot sim-findings <slug> --write   # THE SIM DEBRIEF'S SKELETON (sim_findings.json):
+                              # per run, findings with ids, intervals and sources. Prose is
+                              # the sim-debrief agent's and may cite only finding ids; the
+                              # merge recomputes the skeleton. The captain's log is NEVER
+                              # written from a Forge game — it has no pilot.
 manamap pilot sim-boards <slug> <run> --criterion held --lift --stack   # WHICH board: a criterion names
                               # a cut and a SHAPE, the shortlist is ranked by how many games
                               # RECUR to it (one game is an anecdote), and `extras.finder`

@@ -1,0 +1,785 @@
+{
+  "slug": "heliod",
+  "artifact": "sim_findings.json",
+  "runs": {
+    "giada-angels-vs-vito-vs-baylen-tokens-n20-92280ee6-s452098790": {
+      "run": {
+        "id": "giada-angels-vs-vito-vs-baylen-tokens-n20-92280ee6-s452098790",
+        "at": "2026-08-26",
+        "pod": "vito-era",
+        "games": 20,
+        "decided": 17,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 300,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "2d7f07f993482fe0cacf3623e0b41061f6e37ef0bca55f645a1b3da9ef38b62b",
+        "version": 5,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-319df9ec-01",
+          "kind": "rate_vs_null",
+          "text": "2 of 17 decided games (0.118, ci95 [0.033, 0.343]) against a null of 0.138 at vito-era — 86% of par",
+          "figure": 0.118,
+          "ci95": [
+            0.033,
+            0.343
+          ],
+          "n": 17,
+          "null": {
+            "rate": 0.138,
+            "games": 744,
+            "pod": "vito-era"
+          },
+          "source": "analysis.seats[heliod].win_rate; pods.calibration(vito-era)"
+        },
+        {
+          "id": "F-319df9ec-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 1.085,
+          "verdict": true,
+          "n": 20,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-319df9ec-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 13 of 20 games: giada-angels ×8, vito ×5; how: {\"damage\": 8, \"life loss\": 5}",
+          "eliminated_by": {
+            "giada-angels": 8,
+            "vito": 5
+          },
+          "eliminated_how": {
+            "damage": 8,
+            "life loss": 5
+          },
+          "n": 20,
+          "source": "analysis.seats[heliod].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-319df9ec-04",
+          "kind": "held",
+          "text": "1 card(s) never cast over 20 games (1 seen discarded, 0 inferred): Island",
+          "cards": [
+            "Island"
+          ],
+          "measured": [
+            "Island"
+          ],
+          "modelled": [],
+          "counts": {
+            "Island": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 12
+            }
+          },
+          "n": 20,
+          "played_share": 1.228,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-319df9ec-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 16.83 (median 16.5, n 6 of 20 games — games with no attack are absent)",
+          "figure": 16.83,
+          "ci95": [
+            10.84,
+            22.83
+          ],
+          "n": 6,
+          "source": "analysis.seats[heliod].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-319df9ec-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.05 of games (ci95 [0.009, 0.236]); damage on the wipe turn 0.0",
+          "figure": 0.05,
+          "ci95": [
+            0.009,
+            0.236
+          ],
+          "n": 20,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-319df9ec-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.645, 0.68], 2750 decisions, permutation p 0.0001)",
+          "figure": 0.6625,
+          "ci95": [
+            0.645,
+            0.68
+          ],
+          "n": 2750,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84-s573917060-podExperimental-c600": {
+      "run": {
+        "id": "giada-angels-vs-baylen-tokens-vs-abaddon-n120-996adb84-s573917060-podExperimental-c600",
+        "at": "2026-09-07",
+        "pod": "standard",
+        "games": 120,
+        "decided": 107,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "decc32b080fe821b8307181265a6b5f8344378bd1a66e8de8ca96d4bd415d2cd",
+        "version": 6,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-95000497-01",
+          "kind": "rate_vs_null",
+          "text": "27 of 107 decided games (0.252, ci95 [0.18, 0.342]) against a null of 0.181 at standard — 139% of par",
+          "figure": 0.252,
+          "ci95": [
+            0.18,
+            0.342
+          ],
+          "n": 107,
+          "null": {
+            "rate": 0.181,
+            "games": 547,
+            "pod": "standard"
+          },
+          "source": "analysis.seats[heliod].win_rate; pods.calibration(standard)"
+        },
+        {
+          "id": "F-95000497-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 1.003,
+          "verdict": true,
+          "n": 120,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-95000497-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 53 of 120 games: giada-angels ×39, baylen-tokens ×8, abaddon ×6; how: {\"damage\": 53}",
+          "eliminated_by": {
+            "giada-angels": 39,
+            "abaddon": 6,
+            "baylen-tokens": 8
+          },
+          "eliminated_how": {
+            "damage": 53
+          },
+          "n": 120,
+          "source": "analysis.seats[heliod].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-95000497-04",
+          "kind": "held",
+          "text": "16 card(s) never cast over 120 games (8 seen discarded, 8 inferred): Island, Plains, Azorius Signet, Psychosis Crawler, Glacial Fortress, Temple of Enlightenment",
+          "cards": [
+            "Island",
+            "Plains",
+            "Azorius Signet",
+            "Psychosis Crawler",
+            "Glacial Fortress",
+            "Temple of Enlightenment",
+            "Deserted Beach",
+            "Seachrome Coast",
+            "Hallowed Fountain",
+            "Mana Confluence",
+            "Prairie Stream",
+            "Skycloud Expanse",
+            "Adarkar Wastes",
+            "Command Tower",
+            "Long-Term Plans",
+            "Otawara, Soaring City"
+          ],
+          "measured": [
+            "Island",
+            "Plains",
+            "Azorius Signet",
+            "Psychosis Crawler",
+            "Glacial Fortress",
+            "Temple of Enlightenment",
+            "Deserted Beach",
+            "Seachrome Coast"
+          ],
+          "modelled": [
+            "Hallowed Fountain",
+            "Mana Confluence",
+            "Prairie Stream",
+            "Skycloud Expanse",
+            "Adarkar Wastes",
+            "Command Tower",
+            "Long-Term Plans",
+            "Otawara, Soaring City"
+          ],
+          "counts": {
+            "Island": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 66
+            },
+            "Plains": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 10
+            },
+            "Azorius Signet": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 8
+            },
+            "Psychosis Crawler": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Glacial Fortress": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 5
+            },
+            "Temple of Enlightenment": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Deserted Beach": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Seachrome Coast": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Hallowed Fountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Mana Confluence": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Prairie Stream": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Skycloud Expanse": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Adarkar Wastes": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            },
+            "Command Tower": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            },
+            "Long-Term Plans": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            },
+            "Otawara, Soaring City": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            }
+          },
+          "n": 120,
+          "played_share": 1.568,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-95000497-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 21.12 (median 20.0, n 60 of 120 games — games with no attack are absent)",
+          "figure": 21.12,
+          "ci95": [
+            18.77,
+            23.46
+          ],
+          "n": 60,
+          "source": "analysis.seats[heliod].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-95000497-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.2 of games (ci95 [0.095, 0.373]); damage on the wipe turn 0.0",
+          "figure": 0.2,
+          "ci95": [
+            0.095,
+            0.373
+          ],
+          "n": 30,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-95000497-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.645, 0.68], 2750 decisions, permutation p 0.0001)",
+          "figure": 0.6625,
+          "ci95": [
+            0.645,
+            0.68
+          ],
+          "n": 2750,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "giada-angels-vs-baylen-tokens-vs-abaddon-n120-b0f44e4a-s968800842-podExperimental-c600": {
+      "run": {
+        "id": "giada-angels-vs-baylen-tokens-vs-abaddon-n120-b0f44e4a-s968800842-podExperimental-c600",
+        "at": "2026-09-09",
+        "pod": "standard",
+        "games": 120,
+        "decided": 99,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
+        "version": 10,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-b42e53f8-01",
+          "kind": "rate_vs_null",
+          "text": "20 of 99 decided games (0.202, ci95 [0.135, 0.292]) against a null of 0.181 at standard — 112% of par",
+          "figure": 0.202,
+          "ci95": [
+            0.135,
+            0.292
+          ],
+          "n": 99,
+          "null": {
+            "rate": 0.181,
+            "games": 547,
+            "pod": "standard"
+          },
+          "source": "analysis.seats[heliod].win_rate; pods.calibration(standard)"
+        },
+        {
+          "id": "F-b42e53f8-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 1.049,
+          "verdict": true,
+          "n": 120,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-b42e53f8-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 61 of 120 games: giada-angels ×43, abaddon ×11, baylen-tokens ×7; how: {\"damage\": 61}",
+          "eliminated_by": {
+            "giada-angels": 43,
+            "abaddon": 11,
+            "baylen-tokens": 7
+          },
+          "eliminated_how": {
+            "damage": 61
+          },
+          "n": 120,
+          "source": "analysis.seats[heliod].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-b42e53f8-04",
+          "kind": "held",
+          "text": "19 card(s) never cast over 120 games (7 seen discarded, 12 inferred): Island, Plains, Azorius Signet, Psychosis Crawler, Guardian of Faith, Mana Confluence",
+          "cards": [
+            "Island",
+            "Plains",
+            "Azorius Signet",
+            "Psychosis Crawler",
+            "Guardian of Faith",
+            "Mana Confluence",
+            "Skycloud Expanse",
+            "Adarkar Wastes",
+            "Command Tower",
+            "Deserted Beach",
+            "Hallowed Fountain",
+            "Prairie Stream",
+            "Reliquary Tower",
+            "Seachrome Coast",
+            "Temple of Enlightenment",
+            "Glacial Fortress",
+            "Otawara, Soaring City",
+            "Skyscribing",
+            "Teferi's Protection"
+          ],
+          "measured": [
+            "Island",
+            "Plains",
+            "Azorius Signet",
+            "Psychosis Crawler",
+            "Guardian of Faith",
+            "Mana Confluence",
+            "Skycloud Expanse"
+          ],
+          "modelled": [
+            "Adarkar Wastes",
+            "Command Tower",
+            "Deserted Beach",
+            "Hallowed Fountain",
+            "Prairie Stream",
+            "Reliquary Tower",
+            "Seachrome Coast",
+            "Temple of Enlightenment",
+            "Glacial Fortress",
+            "Otawara, Soaring City",
+            "Skyscribing",
+            "Teferi's Protection"
+          ],
+          "counts": {
+            "Island": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 55
+            },
+            "Plains": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 45
+            },
+            "Azorius Signet": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 13
+            },
+            "Psychosis Crawler": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 10
+            },
+            "Guardian of Faith": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Mana Confluence": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Skycloud Expanse": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Adarkar Wastes": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Command Tower": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Deserted Beach": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Hallowed Fountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Prairie Stream": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Reliquary Tower": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Seachrome Coast": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Temple of Enlightenment": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            },
+            "Glacial Fortress": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            },
+            "Otawara, Soaring City": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            },
+            "Skyscribing": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            },
+            "Teferi's Protection": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 1
+            }
+          },
+          "n": 120,
+          "played_share": 1.575,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-b42e53f8-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 26.12 (median 26.0, n 60 of 120 games — games with no attack are absent)",
+          "figure": 26.12,
+          "ci95": [
+            23.38,
+            28.86
+          ],
+          "n": 60,
+          "source": "analysis.seats[heliod].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-b42e53f8-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.167 of games (ci95 [0.073, 0.336]); damage on the wipe turn 0.0",
+          "figure": 0.167,
+          "ci95": [
+            0.073,
+            0.336
+          ],
+          "n": 30,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-b42e53f8-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.645, 0.68], 2750 decisions, permutation p 0.0001)",
+          "figure": 0.6625,
+          "ci95": [
+            0.645,
+            0.68
+          ],
+          "n": 2750,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    },
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-4b0e1964-s1259215204-podExperimental-c600": {
+      "run": {
+        "id": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-4b0e1964-s1259215204-podExperimental-c600",
+        "at": "2026-09-10",
+        "pod": "standard-v3",
+        "games": 40,
+        "decided": 35,
+        "harness": {
+          "card_overrides": null,
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "214af3084f809e6691c0492fbca4014063c50e75d34dcee46d165c71c4b43175",
+        "version": 10,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-69e1d8f9-01",
+          "kind": "rate_vs_null",
+          "text": "10 of 35 decided games (0.286, ci95 [0.163, 0.451]) against a null of 0.233 at standard-v3 — 123% of par",
+          "figure": 0.286,
+          "ci95": [
+            0.163,
+            0.451
+          ],
+          "n": 35,
+          "null": {
+            "rate": 0.233,
+            "games": 412,
+            "pod": "standard-v3"
+          },
+          "source": "analysis.seats[heliod].win_rate; pods.calibration(standard-v3)"
+        },
+        {
+          "id": "F-69e1d8f9-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 0.909,
+          "verdict": true,
+          "n": 40,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-69e1d8f9-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 21 of 40 games: sythis-enchantress ×9, jarad-graveyard ×7, abaddon ×5; how: {\"damage\": 21}",
+          "eliminated_by": {
+            "jarad-graveyard": 7,
+            "abaddon": 5,
+            "sythis-enchantress": 9
+          },
+          "eliminated_how": {
+            "damage": 21
+          },
+          "n": 40,
+          "source": "analysis.seats[heliod].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-69e1d8f9-04",
+          "kind": "held",
+          "text": "4 card(s) never cast over 40 games (4 seen discarded, 0 inferred): Island, Plains, Azorius Signet, Psychosis Crawler",
+          "cards": [
+            "Island",
+            "Plains",
+            "Azorius Signet",
+            "Psychosis Crawler"
+          ],
+          "measured": [
+            "Island",
+            "Plains",
+            "Azorius Signet",
+            "Psychosis Crawler"
+          ],
+          "modelled": [],
+          "counts": {
+            "Island": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 11
+            },
+            "Plains": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 10
+            },
+            "Azorius Signet": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Psychosis Crawler": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 40,
+          "played_share": 1.687,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-69e1d8f9-05",
+          "kind": "first_attack",
+          "text": "first attack on global turn 20.96 (median 19.5, n 24 of 40 games — games with no attack are absent)",
+          "figure": 20.96,
+          "ci95": [
+            17.2,
+            24.72
+          ],
+          "n": 24,
+          "source": "analysis.seats[heliod].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-69e1d8f9-06",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.4 of games (ci95 [0.168, 0.687]); damage on the wipe turn 0.0",
+          "figure": 0.4,
+          "ci95": [
+            0.168,
+            0.687
+          ],
+          "n": 10,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        },
+        {
+          "id": "F-69e1d8f9-07",
+          "kind": "targeting",
+          "text": "the pod attacks the seat with the most damage dealt 66% of the time (ci95 [0.645, 0.68], 2750 decisions, permutation p 0.0001)",
+          "figure": 0.6625,
+          "ci95": [
+            0.645,
+            0.68
+          ],
+          "n": 2750,
+          "hypothesis": "most_damage_dealt",
+          "source": "threat/targeting.json (pooled over the deck's runs with logs)",
+          "basis": "Forge's AI, not your table — opponent modelling, never an equilibrium"
+        }
+      ],
+      "prose": {}
+    }
+  },
+  "limits": [
+    "every figure is the record's, with its interval and N; a finding never says what to do",
+    "`board_shape` and `targeting` need the logs and exist only where a run was made",
+    "the captain's log is never written from here: a Forge game has no pilot"
+  ]
+}
