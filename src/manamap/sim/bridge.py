@@ -606,7 +606,7 @@ def build_scenario(slug, rec, game_index, turn, step_text, game, label):
     }
 
 
-def lift(slug, run_id, game_index, turn, step_text=None, to_stack=False):
+def lift(slug, run_id, game_index, turn, step_text=None, to_stack=False, extras=None):
     # A branch keeps its runs beside its own list, never in the deck's `sim/`.
     from manamap.sim.forge import _out_dir
     base = _out_dir(slug)
@@ -630,6 +630,17 @@ def lift(slug, run_id, game_index, turn, step_text=None, to_stack=False):
     label = _seat_label([s["forge_name"] for s in rec["seats"]])
     doc = build_scenario(slug, rec, game_index, turn, step_text, game, label)
     phase, step = doc["scenario"]["phase"], doc["scenario"]["step"]
+    # WHAT THE GATE WILL READ BACK. `lift_sha` is over the canonical board, so a
+    # clone without the logs can still tell whether a re-lift moved it once it
+    # has one; `bridge_sha` is over this module, the `model_version` idea — a
+    # scenario lifted under an older bridge says so before anyone re-lifts.
+    from manamap.pilot import validate_lift as _vl
+    doc["scenario"]["source"]["lift_sha"] = _vl.lift_sha(doc)
+    doc["scenario"]["source"]["bridge_sha"] = _vl.bridge_sha()
+    if extras:
+        # the finder's provenance (criterion, shape, recurrence) — what a
+        # handbook proposal cites instead of "I picked this game"
+        doc["scenario"]["extras"].update(extras)
     if to_stack:
         # A BRANCH'S RUN LIVES BESIDE ITS OWN LIST; ITS STACKS DO NOT.
         # `_out_dir` above already resolves "slug@branch" to the branch's sim/

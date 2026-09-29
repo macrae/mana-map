@@ -80,6 +80,14 @@ PILOT_STEPS = [
      "A/B two versions of one deck against the same table: one artifact, each figure for both arms, the delta and whether it is noise"),
     ("fetch-opponent", "manamap.sim.opponents",
      "An opponent seat under data/opponents/<slug>/ from EDHREC's average deck for a commander"),
+    ("sim-boards", "manamap.sim.boards",
+     "Which moments in a run are worth lifting, and how often they RECUR: a criterion "
+     "(widest / modal / death / held / pre-wipe / lethal-missed / first-attack) names a cut "
+     "and a shape; the shortlist is ranked by games reaching that shape, with a Wilson "
+     "interval; --lift hands the exemplar to sim-scenario with the finder's provenance"),
+    ("validate-lift", "manamap.pilot.validate_lift",
+     "A committed lifted scenario against a fresh lift of the same cut: FAIL while "
+     "unresolved, a NOTE once checker-passed; the bridge version where the logs are absent"),
     ("sim-scenario", "manamap.sim.bridge",
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
     ("decisions", "manamap.pilot.decisions",
@@ -225,6 +233,7 @@ _DECK_COMMANDS = {
     "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
+    "sim-boards", "validate-lift",
 }
 
 
@@ -793,6 +802,25 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--as", dest="as_slug", default=None, help="opponent slug (default: from the commander)")
             cmd.add_argument("--note", default=None, help="why this seat is at your table")
             cmd.add_argument("--list", action="store_true")
+        if name == "sim-boards":
+            cmd.add_argument("run", help="the run id (see `simulate <slug> --list`)")
+            cmd.add_argument("--criterion", required=True,
+                             choices=["widest", "modal", "death", "held", "pre-wipe",
+                                      "lethal-missed", "first-attack"],
+                             help="which moment: the widest board / the modal board over own "
+                                  "turns 4-10 / the last main before elimination / a cleanup "
+                                  "with N+ lands untapped and nothing cast / the start of a "
+                                  "wipe turn / an opponent at or under our untapped printed "
+                                  "power with no attack / the first attack")
+            cmd.add_argument("--n", type=int, default=None, help="for `held`: lands untapped (default 4)")
+            cmd.add_argument("--top", type=int, default=1, help="how many shapes to lift")
+            cmd.add_argument("--lift", action="store_true",
+                             help="lift the top shapes' exemplars into sim/scenarios/ (gitignored)")
+            cmd.add_argument("--stack", action="store_true",
+                             help="lift into stacks/NNN-sim-….json (tracked; the resolve loop's input)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "validate-lift":
+            cmd.add_argument("--stack", default=None, metavar="NNN", help="only this stack")
         if name == "sim-scenario":
             cmd.add_argument("run", help="the run id (see `simulate <slug> --list`)")
             cmd.add_argument("--game", type=int, required=True, help="1-based game index in the run")

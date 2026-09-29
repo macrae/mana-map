@@ -754,6 +754,36 @@ DERIVABLE — the data is in `per_game` and the subtraction is not written. The 
 test ("everything about a board arrival is off Forge") became "a board figure may claim
 Forge only as an estimate that names `board_series` and calls itself one".
 
+## The board finder, and the gate a lifted board never had (2026-09-30)
+
+A board is worth a procedure only if it RECURS; one game is an anecdote, and the two
+boards proven so far (goblin-storm 011 "the modal board", 012 "the widest") were chosen by
+reading logs. `sim-boards <slug> <run> --criterion C` reads every game of a run through the
+board series and names, per criterion, a CUT (game, global turn, CR step) and a SHAPE —
+what must be the same for two hits to count as one kind of moment: `widest` (our main with
+the most bodies; shape = bodies bucket + commander on the battlefield), `modal` (every own
+turn 4–10 at precombat main; shape = the exact bodies/lands/commander tuple, so the most
+common one IS the modal board), `death` (our last main before elimination; how, by whom,
+turn bucket), `held` (a cleanup of our turn with N+ lands untapped and nothing cast or
+activated — a held hand; open-lands and hand-estimate buckets), `pre-wipe` (the start of a
+wipe turn), `lethal-missed` (an opponent at or under our untapped PRINTED power and no
+attack — a floor on lethal, never a proof, and its row says so) and `first-attack`. The
+shortlist is ranked by games reaching the shape with a Wilson interval on the share, and
+`--lift` / `--stack` hand the exemplar to `sim-scenario` with `extras.finder` (criterion,
+shape, recurrence, rank) — the provenance a handbook proposal will cite instead of "I picked
+this game". Measured on the first run: `held` at four lands fires in 24 of 100 goblin-storm
+games, a rate worth a procedure and not on every game.
+
+**The gate.** Every lift now stamps `source.lift_sha` (over the canonical board: per seat,
+life, commander zone, sorted name/tapped/pt/token) and `source.bridge_sha` (over
+`bridge.py`, the `model_version` idea). `validate-lift` re-lifts every committed scenario
+from its own cut where the logs are and diffs the canonical boards — FAIL while the
+artifact has no checker verdict yet (the board it will be argued from is wrong: re-lift and
+supersede), a NOTE once the loop has finished on it, pass or fail (finished work is not
+condemned by a later bridge fix, the `unknown_cards` rule), and where the logs are absent, a NOTE when the bridge has moved
+since. `validate-stack` carries the same result as a warning on every lifted scenario. That
+is the gate CLAUDE.md said was missing; goblin-storm 010 is the case it would have caught.
+
 ## One primary, twelve exploratory (`net-change`, 2026-09-29)
 
 `experiment` pre-registers `win_rate` and calls its other ten figures descriptive, because

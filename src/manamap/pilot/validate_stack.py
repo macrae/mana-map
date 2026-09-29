@@ -280,6 +280,16 @@ def scope_warnings(doc):
             f"needed 4 rounds or failed"
         )
     warnings.extend(stale_cross_references(doc))
+    # A LIFTED BOARD THAT NO LONGER MATCHES ITS OWN CUT. Advisory here — the
+    # citation contract is about rules, and finished work is not condemned by
+    # a later bridge fix — and a FAILURE in `validate-lift` while the artifact
+    # is unresolved, which is where the 010-vs-012 case should have been caught.
+    try:
+        from manamap.pilot import validate_lift as _vl
+        _errs, _notes = _vl.check(doc)
+        warnings.extend(_notes + [f"LIFT: {e.splitlines()[0]}" for e in _errs])
+    except Exception as exc:                          # noqa: BLE001 — never a gate here
+        warnings.append(f"lift freshness could not be checked ({exc.__class__.__name__})")
     return warnings
 
 

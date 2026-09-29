@@ -1438,7 +1438,16 @@ are the same gap at a different scale.
   written for, one rung down — but on two archived decks, so it is worth
   closing for the NEXT deck that lands in this state rather than for these.
 
-## 14. Every lifted board predating 2026-09-28 was reconstructed by buggy code — **NO LIVE DECK IS EXPOSED**
+## 14. Every lifted board predating 2026-09-28 was reconstructed by buggy code — **NO LIVE DECK IS EXPOSED; THE GATE EXISTS (2026-09-30)**
+
+*The gate this section said was missing exists.* `validate-lift` re-lifts every committed
+scenario from its own cut where the logs are and diffs the canonical boards; `validate-stack`
+carries the result as a NOTE. Swept on landing: goblin-storm 011 and 012 match their fresh
+lifts; 007 and 010 (checker `fail`) note the card the old bridge dropped — 010 names seat 2's
+Lord of Extinction, the exact case; 008 and 009 (never resolved) FAIL with their diffs and
+await a re-lift; radagast 008 (checker `pass`, a deck in a pile) notes the 11-against-7
+creature count below. What follows is the record of how it was found.
+
 
 **NOTHING FAILS ON THIS, and after scoping it to live decks there is nothing to
 fix.** Recorded because the reasoning is worth keeping and because the missing gate

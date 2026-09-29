@@ -121,6 +121,14 @@ manamap pilot campaign [<name> [plan|run|status]] [--only ID] [--dry-run] [--jso
                                         #   per harness and writes `resolved`; `run` goes in order, skips DONE
                                         #   and STALE, resumes RUNNING and NEVER merges; `status` derives
                                         #   each entry's state from its record — nothing is stored
+manamap pilot sim-boards <slug> <run> --criterion C [--n N] [--top K] [--lift|--stack] [--json]
+                                        #   WHICH MOMENTS ARE WORTH LIFTING, and how often they RECUR:
+                                        #   widest / modal / death / held / pre-wipe / lethal-missed /
+                                        #   first-attack each name a cut and a SHAPE; the shortlist is
+                                        #   ranked by games reaching the shape (Wilson interval), and the
+                                        #   exemplar lifts through sim-scenario with `extras.finder`
+manamap pilot validate-lift <slug> [--stack NNN]   # a committed lifted board against a fresh lift of its
+                                        #   cut: FAIL while it has no verdict yet, NOTE once the loop finished
 manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare blockers"] [--stack]
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
