@@ -805,6 +805,11 @@ def forge(slug, branch):
     cham_sha = live_sha(None)
     br_sha = live_sha(branch)
     br_seat = deck_branch_seat(slug, branch)
+    # THE VERSION BESIDE THE SHA. A mismatch printed as `57725742 on disk` gave a
+    # reader nothing to place; "champion runs describe V4 (deck is V5)" is what
+    # they can act on. Versions come from git; a deck outside a repo, or a sha
+    # that matches no committed list, simply has none — never "V0".
+    by_version = _versions_by_sha(slug)
     cham_glob = f"data/decks/{slug}/sim/*.json"
     br_glob = f"data/decks/{slug}/branches/{branch}/sim/*.json"
     superseded = {"champion": [], "branch": []}
@@ -869,6 +874,15 @@ def forge(slug, branch):
                 arm: {"played": sorted({r["played"] for r in rows}),
                       "games": sum(r["games"] for r in rows),
                       "on_disk": (br_sha if arm == "branch" else cham_sha)[:12],
+                      # Champion versions resolve from git; a branch's commits are
+                      # not versions, so its entry names none rather than guessing.
+                      **({"played_versions": sorted({
+                              f"V{by_version[p]}" for p in {r["played"] for r in rows}
+                              if p in by_version}),
+                          "on_disk_version": (f"V{by_version[cham_sha[:12]]}"
+                                              if cham_sha and cham_sha[:12] in by_version
+                                              else None)}
+                         if arm == "champion" else {}),
                       "reads_as": (
                           f"every Forge run on the {arm} was made with a "
                           f"different list, so this rate describes that list. "
@@ -1500,6 +1514,19 @@ def _print_changes(doc):
                     print(_wrap(r["why"], indent="          "))
 
 
+def _versions_by_sha(slug):
+    """{12-char decklist sha prefix: version number} for a deck, from git.
+    Empty when the deck has no history (a synthetic slug, a clone with no git),
+    which every caller treats as "unknown", not as V0."""
+    try:
+        from manamap.pilot import deck_versions
+        vers = deck_versions.versions(slug)
+    except Exception:                    # noqa: BLE001 — a label, never a gate
+        return {}
+    return {s[:12]: v["version"] for v in vers
+            for s in (v.get("decklist_sha256s") or [])}
+
+
 def _pod_null(pod):
     """The table's subject null, or None when it has none.
 
@@ -1509,15 +1536,21 @@ def _pod_null(pod):
     an untracked table, a zero rate that would make a ratio meaningless — returns
     None and the caller prints nothing.
     """
-    if not pod:
+    from manamap.sim import power
+    return power.null_rate(pod)[0]
+
+
+def _games_to_resolve(rate, delta):
+    """Games per arm to resolve `delta` against `rate` at 80% power, with the
+    hours for two arms — None when the delta is zero or beyond reach."""
+    if not delta or rate is None:
         return None
-    try:
-        from manamap.sim import pods
-        row = (pods.calibration(pod) or {}).get("subject_null") or {}
-        rate = row.get("rate")
-    except Exception:
+    from manamap.sim import power
+    need = stats.games_for_difference(rate, abs(delta))
+    if not need:
         return None
-    return rate if isinstance(rate, (int, float)) and rate > 0 else None
+    return {"games": need, "hours": 2 * need / power.GAMES_PER_MINUTE / 60,
+            "per_minute": power.GAMES_PER_MINUTE}
 
 
 def _print_real_table(doc):
@@ -1532,6 +1565,9 @@ def _print_real_table(doc):
         print(f"    !! {arm.upper()} MEASURED ON A DIFFERENT LIST — "
               f"{m['games']} game(s) on {_and(m['played'])}, "
               f"{m['on_disk']} on disk")
+        if m.get("played_versions") or m.get("on_disk_version"):
+            print(f"       those runs describe {_and(m.get('played_versions') or ['an uncommitted list'])}"
+                  f"; the deck is {m.get('on_disk_version') or 'an uncommitted list'}")
         print(_wrap(m["reads_as"], indent="       "))
     for arm, rows in (f.get("superseded") or {}).items():
         if (f.get("list_mismatch") or {}).get(arm):
@@ -1620,6 +1656,13 @@ def _print_real_table(doc):
                         f"difference of {f['mde']}; it rules out a large "
                         f"effect and cannot say which list is better.",
                         indent="    "))
+            # WHAT IT WOULD TAKE, in games and hours, so "underpowered" is a
+            # figure to budget against rather than a verdict to shrug at.
+            need = _games_to_resolve(f["champion"]["rate"], f["delta"])
+            if need:
+                print(f"    to resolve the observed {f['delta']:+.3f} at 80% power: "
+                      f"{need['games']}/arm (~{need['hours']:.0f} h at "
+                      f"{need['per_minute']} games/min)")
 
 
 def _print(doc):

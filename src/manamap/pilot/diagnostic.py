@@ -705,13 +705,14 @@ EXACT_MDE_MAX_N = 400
 
 
 def _mde(p_a, n_a, n_b):
-    """Smallest difference this many games could reliably detect (power 0.8)."""
-    if n_a <= EXACT_MDE_MAX_N and n_b <= EXACT_MDE_MAX_N:
-        got = st.mde_proportion(p_a, n_a, n_b)
-        return got.get("minimum_detectable_difference") if got else None
-    # z(0.975) + z(0.80) = 1.9600 + 0.8416
-    import math
-    return round(2.8016 * math.sqrt(p_a * (1 - p_a) * (1 / n_a + 1 / n_b)), 4)
+    """Smallest difference this many games could reliably detect (power 0.8).
+
+    ONE FORMULA, in `stats`. This used to restate the normal approximation; the
+    switch (exact below the cap, normal above) and both formulas now live in
+    `stats.mde_proportion`, and this passes its own, tighter cap.
+    """
+    got = st.mde_proportion(p_a, n_a, n_b, exact_max_n=EXACT_MDE_MAX_N)
+    return got.get("minimum_detectable_difference") if got else None
 
 
 def mde(cell, n_a=None, n_b=None):

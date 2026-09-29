@@ -246,14 +246,56 @@ def power_for(p_a, p_b, n_a, n_b, grid=None, z=Z975):
     return total
 
 
-def mde_proportion(p_a, n_a, n_b=None, target_power=0.8, z=Z975, step=0.005):
+#: Above this many games per arm the exact two-binomial grid is no longer the
+#: right tool: it is O(n^2) to build, `math.comb(4000, k)` overflows a double,
+#: and at these sizes the normal approximation is not a compromise but the
+#: regime it is valid in. `diagnostic` passes 400 for the same reason with a
+#: tighter budget (10,000-game cells). ONE FORMULA for the approximation lives
+#: here — it used to be restated in `diagnostic._mde`.
+EXACT_MDE_MAX_N = 1000
+
+#: z(0.975) + z(0.80) — the two-sided 5% critical value plus the 80% power
+#: quantile, the constant every normal-approximation MDE in the repo uses.
+Z_MDE_80 = 1.9600 + 0.8416
+
+
+def mde_proportion_normal(p_a, n_a, n_b=None):
+    """The normal-approximation MDE on a proportion at 80% power — the formula
+    `diagnostic._mde` carried; now the one home for it."""
+    n_b = n_a if n_b is None else n_b
+    d = Z_MDE_80 * math.sqrt(p_a * (1 - p_a) * (1 / n_a + 1 / n_b))
+    d = min(d, 1.0 - p_a)
+    return {"minimum_detectable_rate_b": round(min(p_a + d, 1.0), 4),
+            "minimum_detectable_difference": round(d, 4),
+            "achieved_power": 0.8, "method": "normal approximation"}
+
+
+def _power_normal(p_a, p_b, n_a, n_b, z=Z975):
+    """Two-sided power of a difference-of-proportions z-test, normal theory."""
+    se = math.sqrt(p_a * (1 - p_a) / n_a + p_b * (1 - p_b) / n_b)
+    if se == 0:
+        return 1.0 if p_a != p_b else 0.0
+    d = abs(p_b - p_a) / se
+    phi = lambda x: 0.5 * (1 + math.erf(x / math.sqrt(2)))
+    return phi(d - z) + phi(-d - z)
+
+
+def mde_proportion(p_a, n_a, n_b=None, target_power=0.8, z=Z975, step=0.005,
+                   exact_max_n=EXACT_MDE_MAX_N):
     """The smallest rate for arm B this experiment could reliably detect.
 
     Returns `{minimum_detectable_rate_b, minimum_detectable_difference,
     achieved_power}`, or None if even a certainty (p_b = 1) would not reach the
     target — which is itself worth reporting rather than hiding.
+
+    EXACT below `exact_max_n` games per arm, the normal approximation above it
+    (and the result says which). The exact grid is right where it matters —
+    twenty games an arm, where the boundary decides — and unusable at a
+    thousand, where it is also unnecessary.
     """
     n_b = n_a if n_b is None else n_b
+    if n_a > exact_max_n or n_b > exact_max_n:
+        return mde_proportion_normal(p_a, n_a, n_b)
     grid = _significant_grid(n_a, n_b, z)
     p = p_a
     while p <= 1.0 + 1e-9:
@@ -266,17 +308,24 @@ def mde_proportion(p_a, n_a, n_b=None, target_power=0.8, z=Z975, step=0.005):
     return None
 
 
-def games_for_difference(p_a, difference, target_power=0.8, z=Z975, max_n=1000):
+def games_for_difference(p_a, difference, target_power=0.8, z=Z975, max_n=5000,
+                         exact_max_n=EXACT_MDE_MAX_N):
     """Games per arm needed to detect a given difference. None beyond `max_n`.
 
     Doubling until it passes, then a binary search — the grid is O(n^2) to build,
-    so a linear scan to four hundred is minutes and this is milliseconds.
+    so a linear scan to four hundred is minutes and this is milliseconds. Past
+    `exact_max_n` the normal approximation answers instead of a grid that would
+    take minutes and then overflow, which is why `max_n` can be generous: a
+    figure like "1,200 games per arm" is a real answer to "what would it take",
+    where ">1000" was a shrug.
     """
     p_b = p_a + difference
     if not 0 <= p_b <= 1:
         return None
 
     def ok(n):
+        if n > exact_max_n:
+            return _power_normal(p_a, p_b, n, n, z) >= target_power
         return power_for(p_a, p_b, n, n, _significant_grid(n, n, z), z) >= target_power
 
     n = 8

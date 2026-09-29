@@ -524,7 +524,7 @@ def compose(slug, verify=False):
                                       "skeptic": (rx[-1].get("skeptic") or {}).get("verdict")}
                                      if rx else None)},
         "open_questions": _open_questions(base),
-        "simulation": _simulation(slug),
+        "simulation": _simulation(slug, vdoc),
         "experiments": _experiments(slug),
     }
     info["next"] = _next(info)
@@ -535,7 +535,7 @@ def _current_sha(slug):
     return ((load_json(deck_dir(slug) / "cards.json") or {}).get("decklist_sha256"))
 
 
-def _simulation(slug):
+def _simulation(slug, vdoc=None):
     """The latest run, and WHETHER IT MEASURED THIS LIST.
 
     A run record stamps every seat's decklist sha, so a measurement made against
@@ -554,9 +554,20 @@ def _simulation(slug):
     ran_on = next((s.get("decklist_sha256") for s in r.get("seats", [])
                    if s.get("slug") == slug), None)
     cur = _current_sha(slug)
+    # THE VERSION, SAID OUT LOUD BESIDE THE FIGURE. `stale` was a boolean and
+    # the sha a hex string nobody could place; "measured on V3, deck is V5" is
+    # what a reader can act on. Absent when the deck has no git history or the
+    # run's sha matches no committed version (a working-copy run), never "V0".
+    by_sha = {s: v["version"] for v in (vdoc or {}).get("versions") or []
+              for s in v.get("decklist_sha256s") or []}
+    on_current = sum(1 for x in runs
+                     if status_mod.sim_run_describes(x, slug, cur)) if cur else None
     return {"runs": len(runs), "latest": r["run_id"], "at": r.get("at"),
             "stale": bool(ran_on and cur and ran_on != cur),
             "ran_on_decklist_sha256": ran_on,
+            "ran_on_version": by_sha.get(ran_on),
+            "current_version": (vdoc or {}).get("current_version"),
+            "runs_on_current_list": on_current,
             "games": r.get("games_completed"),
             # WINS AND DECIDED, CARRIED RATHER THAN RECONSTRUCTED. `win_rate` is
             # over DECIDED games and `games` is the TOTAL — heliod's last run was
@@ -585,6 +596,15 @@ def _simulation(slug):
             "mean_round": (r.get("summary") or {}).get("mean_round"),
             "token_damage_share": (tok.get("token_damage_share") or {}).get("mean"),
             "tokens_observed": (tok.get("tokens_observed") or {}).get("mean")}
+
+
+def _stale_words(sm):
+    """"measured on V3; deck is V5" when both versions resolve; the older
+    wording when either is unknown, so a deck outside git still gets a warning."""
+    ran, cur = sm.get("ran_on_version"), sm.get("current_version")
+    if ran is not None and cur is not None:
+        return f"  ** STALE — measured on V{ran}; deck is V{cur} **"
+    return "  ** STALE — measured on a list this deck no longer holds **"
 
 
 def _engine_casts(rec, slug):
@@ -967,7 +987,7 @@ def _print(info):
     sm = info["simulation"]
     if sm:
         print(f"  simulated  {sm['runs']} run(s)"
-              + ("  ** STALE — measured on a list this deck no longer holds **" if sm.get("stale") else "")
+              + (_stale_words(sm) if sm.get("stale") else "")
               + f" · latest {sm['games']} games vs {', '.join(sm['vs'])} · "
               f"win {sm['win_rate']} ci95 {sm['win_rate_ci95']}"
               + ("" if (sm.get("piloting") or {}).get("comparable", True)

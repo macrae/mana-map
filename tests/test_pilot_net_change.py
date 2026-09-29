@@ -1584,3 +1584,42 @@ def test_the_pod_null_excludes_overridden_runs_and_counts_them():
     assert doc["subject_null"]["games"] == clean["subject_null"]["games"], (
         "an overridden run is in the null's denominator")
     assert "PLAIN HARNESS ONLY" in pods.format_calibration(doc)
+
+
+def test_a_mismatch_names_the_versions_it_played_and_the_one_on_disk(tmp_path, monkeypatch):
+    """"57725742 on disk" placed nothing; "those runs describe V4; the deck is
+    V5" does. Versions come from git through `_versions_by_sha`, and a sha git
+    does not know is left out rather than labelled V0."""
+    import contextlib
+    import io
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(net_change, "_engine_casts_caveat", lambda s, b: None)
+    live = {None: "b" * 64, "b": "c" * 64}
+    monkeypatch.setattr("manamap.pilot.common.decklist_sha256",
+                        lambda slug, branch=None: live[branch])
+    monkeypatch.setattr(net_change, "_versions_by_sha",
+                        lambda slug: {"a" * 12: 4, "b" * 12: 5})
+    seat = net_change.deck_branch_seat("x", "b")
+    root = tmp_path / "data" / "decks" / "x"
+    (root / "sim").mkdir(parents=True)
+    (root / "branches" / "b" / "sim").mkdir(parents=True)
+    (root / "sim" / "old.json").write_text(json.dumps({
+        "pod": {"name": "standard-v3"}, "run_id": "old",
+        "seats": [{"slug": "x", "decklist_sha256": "a" * 64}],
+        "analysis": {"games": 40, "decided": 30, "seats": {"x": {"wins": 8}}}, "games": []}))
+    (root / "branches" / "b" / "sim" / "br.json").write_text(json.dumps({
+        "pod": {"name": "standard-v3"}, "run_id": "br",
+        "seats": [{"slug": seat, "decklist_sha256": "c" * 64}],
+        "analysis": {"games": 40, "decided": 33, "seats": {seat: {"wins": 9}}}, "games": []}))
+
+    f = net_change.forge("x", "b")
+    m = f["list_mismatch"]["champion"]
+    assert m["played_versions"] == ["V4"] and m["on_disk_version"] == "V5", m
+    assert "played_versions" not in (f["list_mismatch"].get("branch") or {})
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        net_change._print_real_table({"forge": f, "slug": "x", "branch": "b"})
+    out = buf.getvalue()
+    assert "those runs describe V4; the deck is V5" in out, out
+    assert out.index("describe V4") < out.index("8/30"), "the version line sits above the rate"

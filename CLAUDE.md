@@ -287,6 +287,12 @@ manamap pilot simulate <slug> --pod standard-v3 --games N
                               # A clock-out is `truncated`, has NO winner, and is
                               # excluded from the rate — it used to be awarded to
                               # the last seat, which our deck can never be.
+                              # THE PREFLIGHT PRINTS FIRST: the null, the MDE at N,
+                              # and what +0.05..+0.20 would need. `--detect X`
+                              # REFUSES a run that cannot see X at 80% power;
+                              # `--anyway` runs it as a screen (same on `experiment`).
+                              # `--list` labels every run with the VERSION it
+                              # played and `NOT the current list` where it is not.
 manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/opponents/
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
 manamap pilot prescribe <slug> "<question>"             # open a question to the doctor (then /prescribe)

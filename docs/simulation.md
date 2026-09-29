@@ -623,6 +623,23 @@ decklist text rides IN the artifact, so the gitignored logs are exactly regenera
 is same table, same N, same profile, same engine, and the assumptions say so. An A/A is
 refused with the reason (it measures the noise floor; pass different lists knowingly).
 
+**The preflight, on both commands (2026-09-29).** `experiment` had printed its power
+arithmetic since 2026-09-10; `simulate` — the command that runs most — never did. Both now
+print it before a JVM starts: the baseline (the pod's subject null from `pods
+<name> --calibration`, with its game count as the other side of the test; for a table with
+no null, the deck's last run there), the MDE at this N, and a four-row table of what
++0.05 / +0.10 / +0.15 / +0.20 would need. The hours are per ARM — one for `simulate`, whose
+comparison arm is the null and costs nothing to play again. **`--detect X` turns the
+preflight into a refusal**: a run whose power for X is under 0.8 exits with the games that
+would reach it, and `--anyway` runs it on the record as a screen. Without `--detect`
+nothing is refused; a smoke test made no claim. `sim/power.py` is the one home for the
+null (`null_rate`), the preflight and the refusal; `net-change` prints, beside an
+UNDERPOWERED Forge block, the games per arm that would resolve the observed delta.
+`stats.mde_proportion` is exact below `EXACT_MDE_MAX_N` games (1,000; `diagnostic` passes
+400) and the normal approximation above, labelled — the grid is O(n²) and overflows a
+double near 4,000, which is why `games_for_difference` used to answer ">1000" where it now
+answers "1,199".
+
 First real one (2026-08-19, tracked): radagast **V1 vs V5**, 10/arm vs giada + vito —
 win 0 → 0 (overlap: noise), but Δ combat damage **+27.6/game**, Δ eliminated turn
 **+5.4**, token damage share **0 → 0.19**: the four swap waves measurably improved the

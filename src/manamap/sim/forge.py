@@ -1228,6 +1228,19 @@ def _java_version():
         return None
 
 
+def _versions_by_sha(slug):
+    """{decklist sha: version} from git for a deck seat; {} for an opponent seat,
+    a branch, or a checkout with no history. A label, never a gate."""
+    if "@" in slug:
+        return {}
+    try:
+        from manamap.pilot import deck_versions
+        return {s: v["version"] for v in deck_versions.versions(slug)
+                for s in (v.get("decklist_sha256s") or [])}
+    except Exception:                    # noqa: BLE001
+        return {}
+
+
 def list_runs(slug):
     """Every run record for this deck, OLDEST FIRST — so `[-1]` is the latest.
 
@@ -1308,13 +1321,30 @@ def main(args):
                   f"--pod standard --games N` (or --vs <opponent>, repeatable)")
             return
         print(f"SIMULATION RUNS — {slug} ({len(runs)})\n")
+        # WHICH LIST EACH RUN PLAYED, as a version a reader can place. Five of
+        # six sleeved decks had every run on a superseded list and this listing
+        # said nothing (known-issues §13). Absent for a seat with no git history.
+        by_version = _versions_by_sha(slug)
+        cur_sha = None
+        try:
+            from manamap.pilot.common import decklist_sha256
+            cur_sha = decklist_sha256(slug.split("@")[0], slug.split("@")[1] if "@" in slug else None)
+        except Exception:                # noqa: BLE001 — a label, never a gate
+            pass
         for r in runs:
             s = r["summary"]
             me = (r.get("analysis") or {}).get("seats", {}).get(slug, {})
             ci = me.get("win_rate_ci95")
+            ran = next((x.get("decklist_sha256") for x in r.get("seats", [])
+                        if x.get("slug") == slug), None)
+            ver = by_version.get(ran)
+            which = ""
+            if ran:
+                which = (f"  V{ver}" if ver is not None else "  uncommitted list") + (
+                    "" if (cur_sha and ran == cur_sha) else "  (NOT the current list)")
             print(f"{r['run_id']}  {r['at']}  {r['games_completed']}/{r['games_requested']} games  "
                   f"win {s['win_rate']}{' ci95 ' + str(ci) if ci else ''}  mean round {s['mean_round']}  "
-                  f"{r['wall_seconds']}s on {r['jobs']} JVM(s)")
+                  f"{r['wall_seconds']}s on {r['jobs']} JVM(s){which}")
             pod = r.get("pod")
             table = ", ".join(x["slug"] for x in r["seats"][1:])
             if pod:
@@ -1336,7 +1366,33 @@ def main(args):
                 table = f"{mark}{pod['name']} ({pod['players']}p) — {table}"
             print(f"      vs {table}  ·  wins {s['wins']}")
         return
-    path, rec = run(slug, opponents, games=args.games or SIM_DEFAULT_GAMES, jobs=args.jobs,
+    # THE ARITHMETIC BEFORE THE GAMES. `experiment` has printed its preflight
+    # since 2026-09-10; `simulate` never did, and it is the command that runs
+    # most. The comparison arm is the pod's null — what our decks score in seat
+    # 0 at this table — and its game count is the other side of the test.
+    # `--detect X` makes it a refusal: a run that cannot see X is not a run
+    # that answers the question X asks. `--anyway` is the pilot saying "a
+    # screen, then", on the record.
+    games = args.games or SIM_DEFAULT_GAMES
+    if not getattr(args, "list", False):
+        from manamap.sim import power as _power
+        pod_name = getattr(args, "pod", None)
+        p_a, n_null = _power.null_rate(pod_name)
+        basis = f"the {pod_name} null" if p_a is not None else None
+        if p_a is None:
+            p_a, from_run = _power.baseline_rate(slug, opponents)
+            n_null = None
+            basis = f"this deck's last run at this table ({from_run})" if from_run else None
+        detect = getattr(args, "detect", None)
+        for line in _power.preflight(p_a, games, detect=detect, arms=1, n_a=n_null):
+            print(line)
+        if basis:
+            print(f"    baseline: {basis}")
+        print()
+        if not getattr(args, "dry_run", False):
+            _power.refuse_if_underpowered(p_a, games, detect,
+                                          getattr(args, "anyway", False), n_a=n_null)
+    path, rec = run(slug, opponents, games=games, jobs=args.jobs,
                     clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
                     force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False),
                     profile=getattr(args, "profile", None),

@@ -329,7 +329,7 @@ def _run_arm(arm_letter, meta_name, opp_names, games, jobs, clock, seed, profile
 
 def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         clock=SIM_GAME_CLOCK_SECONDS, seed=None, profile=None, dry_run=False,
-        vs_profile=None, detect=None):
+        vs_profile=None, detect=None, anyway=False):
     if not opponents:
         raise SystemExit("experiment needs at least one opponent: --vs <slug> (repeatable)")
     import os
@@ -389,6 +389,10 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
     if from_run:
         print(f"    baseline from {from_run}")
     print()
+    # ...and it REFUSES only what the pilot asked it to see and it cannot:
+    # `--detect X` without `--anyway` on a run whose power for X is under 0.8.
+    if not dry_run:
+        _power.refuse_if_underpowered(p_a, int(games), detect, anyway)
 
     if dry_run:
         return path, {"experiment_id": eid, "arms": {"a": a["label"], "b": b["label"]},
@@ -614,7 +618,8 @@ def main(args):
                     seed=getattr(args, "seed", None), profile=getattr(args, "profile", None),
                     vs_profile=getattr(args, "vs_profile", None) or seat_profiles,
                     dry_run=getattr(args, "dry_run", False),
-                    detect=getattr(args, "detect", None))
+                    detect=getattr(args, "detect", None),
+                    anyway=getattr(args, "anyway", False))
     if getattr(args, "dry_run", False):
         print(f"would run {doc['games_per_arm']} games/arm, seed {doc['seed']} → {path.name}")
         return

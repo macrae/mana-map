@@ -432,3 +432,33 @@ def test_a_failing_gate_is_named_by_its_artifact_not_by_an_em_dash():
                     f"{path.parent.name}: status.{key} names an em-dash — the "
                     f"artifact filename is what a reader can act on")
     assert seen >= 0
+
+
+def test_the_simulation_panel_names_the_version_it_measured(monkeypatch):
+    """`stale` was a boolean beside a hex sha nobody could place. "measured on
+    V3; deck is V5" is what a reader can act on — and it must be ABSENT, never
+    V0, when git knows no version for the run's list."""
+    from manamap.pilot import deck_info
+
+    rec = {"run_id": "r", "at": "2026-09-01", "games_completed": 40,
+           "seats": [{"slug": "x", "decklist_sha256": "a" * 64}],
+           "summary": {"wins": {"x": 3}, "decided": 30, "mean_round": 9},
+           "analysis": {"seats": {"x": {"win_rate": 0.1, "win_rate_ci95": [0.02, 0.26]}}}}
+    monkeypatch.setattr(deck_info, "sim_runs", lambda slug: [rec])
+    monkeypatch.setattr(deck_info, "_current_sha", lambda slug: "b" * 64)
+    monkeypatch.setattr(deck_info, "_piloting", lambda r: None)
+    monkeypatch.setattr(deck_info, "_engine_casts", lambda r, s: None)
+    vdoc = {"versions": [{"version": 3, "decklist_sha256s": ["a" * 64]},
+                         {"version": 5, "decklist_sha256s": ["b" * 64]}],
+            "current_version": 5}
+
+    sm = deck_info._simulation("x", vdoc)
+    assert sm["stale"] is True
+    assert (sm["ran_on_version"], sm["current_version"]) == (3, 5), sm
+    assert sm["runs_on_current_list"] == 0
+    assert deck_info._stale_words(sm) == "  ** STALE — measured on V3; deck is V5 **"
+
+    # No history: the older wording, and no invented version number.
+    sm2 = deck_info._simulation("x", None)
+    assert sm2["stale"] is True and sm2["ran_on_version"] is None
+    assert "no longer holds" in deck_info._stale_words(sm2)

@@ -480,6 +480,12 @@ def add_pilot_parser(subparsers):
                              help="replay an existing run id (it writes the same bytes)")
             cmd.add_argument("--analyze", default=None, metavar="RUN_ID",
                              help="re-derive a run's analysis from its kept logs (where the run was made)")
+            cmd.add_argument("--detect", type=float, default=None, metavar="DELTA",
+                             help="the change in win rate you want this run to be able to see "
+                                  "against the pod's null; the run is REFUSED when its power "
+                                  "for that is under 0.8 (see --anyway)")
+            cmd.add_argument("--anyway", action="store_true",
+                             help="run an underpowered --detect as a screen rather than a test")
         if name == "model-coverage":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "regen":
@@ -715,6 +721,8 @@ def add_pilot_parser(subparsers):
                                   "The power preflight then says whether this run "
                                   "can see it and how many games it would take — "
                                   "before four hours are spent finding out")
+            cmd.add_argument("--anyway", action="store_true",
+                             help="run an underpowered --detect as a screen rather than a test")
             cmd.add_argument("--a", dest="a", default=None, metavar="REF",
                              help="arm A: a version (V4 / tag / sha) or `working`")
             cmd.add_argument("--b", dest="b", default=None, metavar="REF",

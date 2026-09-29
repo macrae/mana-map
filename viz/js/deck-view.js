@@ -1167,6 +1167,9 @@
     // every run record stamps, and it says so here rather than letting a precise
     // number pass for a current one.
     var simStale = ((d.info || {}).simulation || {}).stale;
+    // The VERSION the run measured, when git knows it — a chip reading
+    // `stale · V3` beside a deck at V5 says what `stale` alone could not.
+    var simVer = ((d.info || {}).simulation || {}).ran_on_version;
     var expStale = (((d.info || {}).experiments || {}).latest || {}).stale;
     if (!runs.length && !exps.length)
       return absent('table', 'At the table', 'Forge, seeded, against your own pod.',
@@ -1201,7 +1204,8 @@
         rows.push(['Games reaching 21', cd.games_reaching_21 + ' / ' + run.games_completed]);
       }
       body += '<h3 class="slug-line">' + esc(run.run_id.slice(0, 46)) +
-        (simStale ? ' <span class="chip stale">stale</span>' : '') + '</h3>' + facts(rows);
+        (simStale ? ' <span class="chip stale">stale' +
+          (simVer != null ? ' · V' + esc(String(simVer)) : '') + '</span>' : '') + '</h3>' + facts(rows);
     });
     exps.forEach(function (x) {
       var d = x.delta || {}, w = d.win_rate || {}, pw = d.power || {};

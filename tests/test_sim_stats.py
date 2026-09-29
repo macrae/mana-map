@@ -246,3 +246,36 @@ def test_an_undetectable_difference_reports_none_rather_than_a_number():
     assert stats.mde_proportion(0.9, 4) is None or \
            stats.mde_proportion(0.9, 4)["minimum_detectable_rate_b"] <= 1.0
     assert stats.games_for_difference(0.25, 0.0001, max_n=64) is None
+
+
+def test_the_mde_switches_to_the_normal_approximation_above_the_cap(monkeypatch):
+    """The exact grid is O(n^2) and overflows a double near 4,000; above
+    `EXACT_MDE_MAX_N` the normal approximation answers, and says so. Bug:
+    remove the switch and this test builds a grid it was told not to."""
+    calls = []
+    real = stats._significant_grid
+    def spy(n_a, n_b, z):
+        calls.append(max(n_a, n_b))
+        return real(n_a, n_b, z)
+    monkeypatch.setattr(stats, "_significant_grid", spy)
+    big = stats.mde_proportion(0.11, 2000, 2000)
+    assert big["method"] == "normal approximation"
+    assert 0.02 < big["minimum_detectable_difference"] < 0.04
+    need = stats.games_for_difference(0.11, 0.05)
+    assert need is not None and 500 < need < 1500, need
+    assert max(calls) <= stats.EXACT_MDE_MAX_N, calls
+    # Below the cap nothing changed: the exact boundary case still holds.
+    assert stats.games_for_difference(0.25, 0.10) == 329
+
+
+def test_the_normal_mde_is_the_one_formula_diagnostic_used_to_restate():
+    """`diagnostic._mde` carried `2.8016 * sqrt(p(1-p)(1/n_a + 1/n_b))` as its
+    own line. One home now; the constant and the rounding are identical."""
+    import math
+    p, na, nb = 0.3, 5000, 5000
+    want = round(2.8016 * math.sqrt(p * (1 - p) * (1 / na + 1 / nb)), 4)
+    assert stats.mde_proportion_normal(p, na, nb)["minimum_detectable_difference"] == want
+    from manamap.pilot import diagnostic
+    assert diagnostic._mde(p, na, nb) == want
+    # and the exact path below diagnostic's cap is untouched
+    assert diagnostic._mde(0.25, 12, 12) == stats.mde_proportion(0.25, 12)["minimum_detectable_difference"]

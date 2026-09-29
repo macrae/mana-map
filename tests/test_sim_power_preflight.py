@@ -6,10 +6,12 @@ since the statistics went in. Nothing called them before launching, so a
 detecting a real ten-point improvement — four hours to be more likely to miss
 than to find, and knowable in a millisecond.
 
-It PRINTS and never refuses. An A/B that cannot resolve the effect the pilot
-cares about is still legitimate — as a noise floor, a smoke test, or the first
-half of a bigger sample — and a gate that blocked it would be a validator firing
-on correct use, which this repo has rejected six times.
+It PRINTS and does not refuse — unless the pilot ASKED a question the run cannot
+answer. `--detect X` is that question; a run whose power for X is under 0.8 is
+refused with the arithmetic, and `--anyway` runs it on the record as a screen.
+Without `--detect` nothing is refused: a noise floor, a smoke test, the first
+half of a bigger sample are all legitimate, and a gate that blocked them would
+be a validator firing on correct use, which this repo has rejected six times.
 """
 
 import json
@@ -79,3 +81,50 @@ def test_the_baseline_comes_from_a_run_against_THIS_table(tmp_path, monkeypatch)
 def test_an_unmeasured_table_reports_absent():
     rate, rid = power.baseline_rate("heliod", ["nobody-has-played-this"])
     assert rate is None and rid is None
+
+
+def test_a_detect_the_run_cannot_see_is_refused_unless_anyway():
+    """THE QUESTION AND THE ANSWER MUST MATCH. 20 games against a 0.233
+    baseline cannot see +0.05 at any useful power; `--detect 0.05` on such a
+    run is refused with the games that would do it, `--anyway` runs it, and
+    no `--detect` at all refuses nothing (re-introduce by making the refusal
+    unconditional and the last assertion fails)."""
+    with pytest.raises(SystemExit) as e:
+        power.refuse_if_underpowered(0.233, 20, 0.05, anyway=False)
+    msg = str(e.value)
+    assert "UNDERPOWERED" in msg and "per arm" in msg and "--anyway" in msg
+    assert power.refuse_if_underpowered(0.233, 20, 0.05, anyway=True) is None
+    assert power.refuse_if_underpowered(0.233, 20, None) is None
+    assert power.refuse_if_underpowered(None, 20, 0.05) is None, "no baseline: nothing to refuse on"
+    # A properly powered question is let through and its power returned.
+    assert power.refuse_if_underpowered(0.244, 100, 0.20) >= 0.8
+
+
+def test_a_one_arm_preflight_quotes_one_arm_of_hours():
+    """`simulate` plays ONE arm — its comparison is the pod's null, already
+    paid for. The hours line hardcoded `2 * games` for every caller, so a
+    100-game simulate read as a 4.8-hour job. (Bug: put the `2 *` back.)"""
+    two = power.preflight(0.233, 100, arms=2)[0]
+    one = power.preflight(0.233, 100, arms=1)[0]
+    assert "games/arm" in two and "about 4.8 h" in two
+    assert "games/arm" not in one and "about 2.4 h" in one
+
+
+def test_the_comparison_arm_can_be_the_null_with_its_own_size():
+    """A run compared against a 400-game null has more power than one against
+    an equal 100-game arm, and the preflight must compute the test that will
+    actually be run."""
+    equal = power.preflight(0.233, 100, detect=0.15)
+    vs_null = power.preflight(0.233, 100, detect=0.15, arms=1, n_a=400)
+    assert "against 400 on the other side" in "\n".join(vs_null)
+    def pw(lines):
+        return float([l for l in lines if "chance of seeing" in l][0].split("%")[0].split()[-1])
+    assert pw(vs_null) > pw(equal)
+
+
+def test_the_null_is_absent_not_defaulted(monkeypatch):
+    """(rate, games) from the pod's calibration, or (None, None) — never a
+    quarter, never a zero."""
+    assert power.null_rate(None) == (None, None)
+    assert power.null_rate("") == (None, None)
+    assert power.null_rate("a-table-that-does-not-exist") == (None, None)

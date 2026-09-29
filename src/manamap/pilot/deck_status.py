@@ -194,6 +194,22 @@ def _stamp_is_stale(stamped, truth):
     return not common.sha_matches(str(stamped), str(truth))
 
 
+def sim_run_describes(doc, slug, sha):
+    """Whether a run record's subject seat played the list whose sha is `sha`.
+
+    The subject is the seat whose `slug` is the deck (seat 0 by construction,
+    but looked up by name so a record is never misread by position). A record
+    made before seats were stamped carries no sha and answers False: it
+    describes SOME list, and not provably this one.
+    """
+    if not doc or not sha:
+        return False
+    seats = doc.get("seats") or []
+    seat = next((s for s in seats if s.get("slug") == slug),
+                seats[0] if seats else None)
+    return bool(seat and seat.get("decklist_sha256") == sha)
+
+
 def status(slug, validate=True):
     """Presence, staleness AND validity.
 
@@ -220,10 +236,25 @@ def status(slug, validate=True):
             # same way printed "0 passing of 4" on a deck with four real runs,
             # and a reader would take that for four FAILURES.
             if key == "sim":
+                # A RUN DESCRIBES THE LIST IT PLAYED, and the row now says how
+                # many describe the list on disk. Measured 2026-09-21 (known-
+                # issues §13): five of six sleeved decks had ZERO runs on the
+                # sleeved list and `deck-status` read "4 run(s)" for each. The
+                # state stays `present` — a run on an older list is older
+                # evidence, not a stale artifact, and `promote.GATES` reads this
+                # row's state; turning it STALE would demote every sleeved deck
+                # for having been played before it was re-simulated.
+                on_current = sum(1 for f in files
+                                 if sim_run_describes(load_json(f), slug, truth))
+                detail = f"{len(files)} run(s)"
+                if files and truth:
+                    detail += f", {on_current} on the current list"
                 rows.append({"stage": key, "artifact": name, "what": what,
                              "how": how.format(slug=slug),
                              "state": "present" if files else "missing",
-                             "detail": f"{len(files)} run(s)",
+                             "detail": detail,
+                             "runs": len(files),
+                             "runs_on_current_list": on_current if truth else None,
                              "required": required,
                              "new": key in ADDED_2026_08})
                 continue
@@ -573,6 +604,14 @@ def main(args):
               f" {row['detail']}{flag}")
         if row["state"] == "missing" and row["new"]:
             print(f"         ^ added 2026-08 — a deck built before it does not have it")
+        # THE FIGURE YOU ARE ABOUT TO QUOTE IS ABOUT ANOTHER LIST. Said here,
+        # where the run count is, rather than left for a reader to derive from
+        # a sha they were never shown.
+        if (row["stage"] == "sim" and row.get("runs")
+                and row.get("runs_on_current_list") == 0):
+            print(f"         ! no Forge run describes the list in cards.json — "
+                  f"every simulated figure for this deck is about an older list; "
+                  f"`manamap pilot simulate {args.slug} --pod standard-v3 --games N`")
 
     # Gate rows are NOT stages — they are artifacts that have a validator but no
     # step in building a deck. Counting them would make "13/15" become "13/17" and

@@ -76,8 +76,11 @@ manamap pilot deck-notes <slug> list [--since D] | show <id>
 manamap pilot model-coverage <slug> [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
 manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD THE FLEET after a model change, in dependency order, parallel across targets
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
-manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J]   # N seeded Commander games in Forge, headless; a ◆ run record
-manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>
+manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J] [--detect X] [--anyway]
+                                        #   N seeded Commander games in Forge, headless; a ◆ run record.
+                                        #   The POWER PREFLIGHT prints first (the pod's null, the MDE at N);
+                                        #   `--detect X` refuses a run that cannot see X unless `--anyway`
+manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>   # `--list` names each run's VERSION
 manamap pilot forge-install [--verify] [--revert] [--generate]   # THE HARNESS, INSTALLED
                                         #   AND VERIFIED. `data/forge_overrides/` narrows
                                         #   what the AI may TARGET (`AITgts$`); a per-deck
@@ -100,7 +103,10 @@ manamap pilot sim-progress <slug> [--experiment NAME]   # a RUNNING batch: bar, 
                                         #   estimate with its Wilson interval + a convergence trace. Read-only
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
 manamap pilot fetch-opponent "<commander>" [--as slug] [--note …] | --list   # a pod seat under data/opponents/ from EDHREC's average deck
-manamap pilot experiment <slug> --a V4 --b working --vs <opp>… --games N   # A/B same table; one artifact with the delta
+manamap pilot experiment <slug> --a V4 --b working --vs <opp>… --games N [--detect X] [--anyway]
+                                        #   A/B same table; one artifact with the delta. The preflight prints
+                                        #   before the JVMs start; `--detect X` REFUSES a run that cannot see X
+                                        #   at 80% power unless `--anyway` (same two flags on `simulate`)
 manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare blockers"] [--stack]
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
@@ -480,6 +486,18 @@ mechanism left `STAGES` together when the magazine agents were retired (2026-08-
 lesson stands: bring the mechanism back with the first stage that needs it, not before.
 The `log` stage is the current example of the same care — the authored log has no gate,
 so the row runs the debrief's validator on the annotation beside it.
+
+**A Forge run is not an artifact of the list; it is a record of the list it played.** The
+`sim` row therefore counts two things — `N run(s), M on the current list` — by comparing
+each record's stamped `seats[].decklist_sha256` to `cards.json`'s (`deck_status.
+sim_run_describes`), and prints a warning when M is zero. Measured 2026-09-21: five of six
+sleeved decks were at M = 0 and every simulated figure quoted for them described a
+superseded list. The state stays `present` — an older run is older evidence, not a stale
+artifact, and `promote.GATES` reads this row. The same join reaches `deck-info`
+(`simulation.ran_on_version` / `current_version`, printed as "measured on V10; deck is
+V12"), `simulate --list` (a `V<n>` and `NOT the current list` beside each run) and
+`net-change`'s mismatch block ("those runs describe V4; the deck is V5"). A sha git does
+not know is left unlabelled, never called V0.
 
 It separates two things that look alike. **INCOMPLETE is a state** — a half-built deck is
 work in progress. **STALE is an error**: most artifacts stamp the `decklist_sha256` they were

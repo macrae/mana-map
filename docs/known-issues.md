@@ -1014,7 +1014,16 @@ A/B carries whatever seat-1 bias the table has, and the two commands are still
 not measuring under the same conditions — a narrower version of the pod-profile
 bug that was fixed.
 
-## 13. Every Forge figure describes a deck that was replaced — **REOPENED, AND IT IS FLEET-WIDE**
+## 13. Every Forge figure describes a deck that was replaced — **THE READER EXISTS (2026-09-29); the runs are still to be made**
+
+*Resolved as a READER on 2026-09-29.* `deck-status`'s `sim` row now reads `N run(s), M on
+the current list` and warns when M is zero (`deck_status.sim_run_describes`); `deck-info`
+prints "measured on V10; deck is V12"; `simulate --list` labels each run with its version
+and `NOT the current list`; `net-change` names the versions on both sides of a mismatch.
+The condition itself — five sleeved decks with no run on the sleeved list — is not a
+reader's to fix: it closes when the current-list campaign runs (the plan's Phase F). What
+follows is the record of how it was found and reopened.
+
 
 **Marked RESOLVED on 2026-09-12 for heliod, and the condition came straight
 back — on five of the six sleeved decks.** That is the finding: this is not a

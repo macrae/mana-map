@@ -141,3 +141,41 @@ def test_the_tutor_guide_has_a_staleness_path_at_all():
     paths = {row[0]: row[2] for row in STAGES}
     assert paths["tutors"], "tutor_guide.json has no staleness path"
     assert "decklist_sha256" in paths["tutors"]
+
+
+def test_the_sim_row_counts_runs_on_the_current_list(tmp_path, monkeypatch):
+    """A RUN DESCRIBES THE LIST IT PLAYED, and the status row now says how many
+    describe the list on disk.
+
+    Measured 2026-09-21 (known-issues §13): five of six sleeved decks had ZERO
+    Forge runs on the sleeved list, and this row read "4 run(s)" for each — a
+    dossier printed a win rate beside a version it did not belong to and nothing
+    said so. Re-introduce the bug by putting `detail = f"{len(files)} run(s)"`
+    back and this fails on the count; the state must stay `present`, because a
+    run on an older list is older evidence and `promote.GATES` reads this row.
+    """
+    from manamap.pilot import deck_status
+
+    base = tmp_path / "decks" / "scratch"
+    (base / "sim").mkdir(parents=True)
+    (base / "cards.json").write_text(json.dumps(
+        {"decklist_sha256": "b" * 64, "cards": []}))
+    (base / "sim" / "old.json").write_text(json.dumps(
+        {"run_id": "old", "seats": [{"slug": "scratch", "decklist_sha256": "a" * 64}]}))
+    (base / "sim" / "new.json").write_text(json.dumps(
+        {"run_id": "new", "seats": [{"slug": "scratch", "decklist_sha256": "b" * 64}]}))
+    (base / "sim" / "unstamped.json").write_text(json.dumps(
+        {"run_id": "unstamped", "seats": [{"slug": "scratch"}]}))
+    monkeypatch.setattr(deck_status, "deck_dir", lambda slug, branch=None: base)
+
+    rows = {r["stage"]: r for r in deck_status.status("scratch", validate=False)}
+    sim = rows["sim"]
+    assert sim["state"] == "present"
+    assert (sim["runs"], sim["runs_on_current_list"]) == (3, 1), sim
+    assert sim["detail"] == "3 run(s), 1 on the current list", sim["detail"]
+    # The subject is found by NAME, not by position, and an unstamped record
+    # answers False rather than matching an absent sha.
+    assert deck_status.sim_run_describes(
+        {"seats": [{"slug": "other", "decklist_sha256": "b" * 64},
+                   {"slug": "scratch", "decklist_sha256": "a" * 64}]}, "scratch", "b" * 64) is False
+    assert deck_status.sim_run_describes({"seats": [{"slug": "scratch"}]}, "scratch", None) is False
