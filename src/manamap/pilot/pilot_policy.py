@@ -146,6 +146,8 @@ def hold_thresholds(doc):
     """
     out = {}
     for r in (doc.get("rules") or []):
+        if "hold_until" not in r:
+            continue                      # a `forge` rule: the goldfish never reads it
         chan = r["when"]["channel"]
         for counter, n in (r.get("hold_until") or {}).items():
             prev = out.setdefault(chan, {}).get(counter)

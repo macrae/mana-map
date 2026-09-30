@@ -45,6 +45,15 @@
       "cites": [
         "log 006"
       ]
+    },
+    {
+      "card": "Teferi's Protection",
+      "ability": "SP$ Effect",
+      "ai_logic": "Fog",
+      "why": "Held while castable on 29 own turns across 9 games and cast 0 times in 80: the shipped script has no AILogic and Forge's EffectAi casts an Effect spell only under a logic it implements. `Fog` is the one it has that fits \u2014 cast it when incoming combat damage would be lethal \u2014 which is the pilot's own use of it (log 006: eating wipe after wipe; a Fog does not stop a wipe, and this hint claims only the combat half).",
+      "cites": [
+        "log 006"
+      ]
     }
   ]
 }
