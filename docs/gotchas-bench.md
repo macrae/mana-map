@@ -3219,3 +3219,52 @@ there because the AI has no logic for it, and an unflagged Altar of Dementia may
 controller or a Windfall may wheel at the wrong time. It is a card the AI will CAST, whose
 activations `engine_casts` can count, which makes it a floor with a number instead of a
 card the instrument cannot see at all.
+
+
+## The sacrifice suite, activated: four passes of one seed (2026-09-30)
+
+The pilot: "Vish Kal … if it's never cast, that's a red flag." Then: "get the sac ability
+activating." Then, of Altar of Dementia: "0 is a possibility, but it is a flag; we need
+to confirm." Twenty games, seed 1664213641, standard-v3, four passes of the same deal —
+each pass one lever more, each lever a fingerprint the record carries:
+
+| card | pre-fix | unflagged (`ov8bf04cfc`) | + hints, sac profile (`ov260c7a72 aif7c3b6a8`) | + `SacOutlet` patch (`tlbeb0c66d`) |
+|---|---|---|---|---|
+| Vish Kal, Blood Arbiter | cast 0 | cast 3 · act 0 / 9 board turns | cast 1 · act 2 / 5 | cast 3 · act 30 / 8 |
+| Viscera Seer | cast 0 | cast 2 · act 0 / 5 | cast 4 · act 4 / 5 | cast 3 · act 2 / 4 |
+| Altar of Dementia | cast 0 | cast 3 · act 0 / 17 | cast 6 · act 0 / 23 | cast 5 · **act 5 / 19** |
+| Bloodflow Connoisseur | cast 0 | cast 3 · act 5 / 3 | cast 3 · act 14 / 14 | cast 5 · act 35 / 12 |
+| Ashnod's Altar | cast 3 · act 0 | cast 1 · act 0 | cast 4 · act 0 | cast 4 · act 0 |
+| win rate (decided) | 5/17 | 4/16 | 2/17 | 8/17 |
+| noncombat damage / life gained per game | 3.65 / 25.25 | 5.75 / 22.65 | 5.2 / 17.85 | 4.55 / 43.55 |
+
+Read the columns as levers, not as a trend: twenty games cannot separate 2/17 from 8/17
+(the MDE at this table is 42 points), and the last column carries every lever at once.
+What IS settled is the mechanism, per card, measured from the telemetry hand and board:
+
+- **`AI:RemoveDeck:All` is never-cast** (the RemoveDeck entry above): four cards the
+  deck was built around had never been cast in 860 games.
+- **Cast is not activated.** Unflagged, Vish Kal sat 9 own turns on the battlefield and
+  Altar 17, with zero activations: the shipped scripts give the AI no logic and no
+  preference for a sacrifice cost, and `Default.ai` has `SACRIFICE_DEFAULT_PREF_ENABLE`
+  off. `forge_hints.json` (the aristocrat logic and a `SacCost` preference, Forge's own
+  shape from `carrion_feeder.txt`) plus the profile knob moved Vish Kal to 2, the Seer
+  to 4 and Bloodflow to 14 — and Altar to 0 over 23 turns, because `MillAi` has no
+  aristocrat path and its targeting gate computes X from the sacrificed creature's power
+  before any creature is chosen, reads 0, and refuses every target.
+- **Altar's 0 was not effective play**: 32 of our own permanents went to the graveyard
+  while it sat on the battlefield across six games — each a free sacrifice declined, each
+  at minimum a Blood Artist trigger where Artist was out. `AILogic$ SacOutlet`
+  (`data/forge_patches/MillAi.java`, the engine's own `shouldSacrificeThreatenedCard`,
+  thinnest library as the target, no preference so the threatened creature is chosen
+  first) took it to 5 activations over 19 turns and the declined deaths from 32 to 14.
+- **Ashnod's Altar reads 0 and always will here**: a mana ability never touches the stack,
+  so the log cannot see it. Unmeasurable, not idle — and `idle_on_battlefield` must not
+  be read for it.
+- **Vish Kal at 30 activations over 8 turns is the next question**, not an answer: the
+  aristocrat logic with a token-first preference feeds it everything it can. Whether that
+  wins is exactly what `data/campaigns/2026-10-edgar-sac-policy.json` pre-registers.
+
+The instruments this took, all of them now on every telemetry run: `castable_uncast` and
+`turns_on_battlefield` per card in `engine_casts.by_card`, `held_while_castable` and
+`idle_on_battlefield` in the reading, and the patch set with kinds in the run id.
