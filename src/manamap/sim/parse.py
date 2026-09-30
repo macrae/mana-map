@@ -361,7 +361,7 @@ HAND_LIMIT = (
     "on records played under the patched formatter; a plain record has no `hand` key.")
 
 
-def hand_facts(events, seats):
+def hand_facts(events, seats, cmc=None):
     """Per-seat hand facts from owner-bearing zone events, or {} when the log carries
     none — the shipped formatter's log has no Hand lines at all, so a plain record
     gets NO key rather than a zero, and every record written before the telemetry
@@ -372,6 +372,14 @@ def hand_facts(events, seats):
     from turn 1 and the hand's contents at turn 1 are the kept seven (or six, or five).
     A land drop is a `Land:` line; the land predicate is the set of names any seat
     played as a land in this game's events, which is a floor and is labelled one.
+
+    `cmc` maps card name -> mana value for the seat(s) whose deck is known (ours: the
+    opponents' lists carry no mana values). With it, every card gets `castable_uncast`:
+    the seat's own turns that ENDED with the card still in hand while the seat had at
+    least that many lands on the battlefield — lands only, so a floor on castability
+    (rocks and colours ignored), and a card cast that turn is not counted for it. It is
+    the exact form of the question engine_casts could only infer: was the card HELD
+    when it could have been played.
     """
     if not any(ev.get("kind") == "zone" and ev.get("owner") for ev in events):
         return {}
@@ -382,12 +390,21 @@ def hand_facts(events, seats):
     land_names = {ev["card"] for ev in events if ev.get("kind") == "land"}
     end_size = {s: {} for s in seats}
     end_lands = {s: {} for s in seats}
+    lands_out = {s: 0 for s in seats}         # lands on the battlefield, a running count
+    in_hand_turns = {s: defaultdict(int) for s in seats}
+    castable_uncast = {s: defaultdict(int) for s in seats}
+    cmc = cmc or {}
     cur_turn, cur_active = None, None
 
     def close_turn():
         if cur_active in hand and cur_turn:
             end_size[cur_active][cur_turn] = len(hand[cur_active])
             end_lands[cur_active][cur_turn] = any(n in land_names for n in hand[cur_active].values())
+            for n in hand[cur_active].values():
+                in_hand_turns[cur_active][n] += 1
+                mv = cmc.get(n)
+                if mv is not None and lands_out[cur_active] >= mv:
+                    castable_uncast[cur_active][n] += 1
 
     for ev in events:
         t = ev.get("turn")
@@ -397,6 +414,7 @@ def hand_facts(events, seats):
         k = ev.get("kind")
         if k == "land" and ev.get("seat") in hand:
             land_turns.add((ev["seat"], t))
+            lands_out[ev["seat"]] += 1
         elif k == "zone" and ev.get("owner") in hand:
             s = ev["owner"]
             if ev["to"] == "Hand":
@@ -419,11 +437,16 @@ def hand_facts(events, seats):
             "missed_land_drops_with_land_in_hand": sum(1 for t in no_drop if end_lands[s][t]),
             "hand_at_end": sorted(({"card": n, "since": arrived[s].get(i, 0)} for i, n in hand[s].items()),
                                   key=lambda d: (d["since"], d["card"])),
+            # PER CARD: own turns it ended in hand, and of those, the turns the seat had
+            # the lands to cast it (only for cards whose mana value is known).
+            "cards": {n: {"turns_in_hand": in_hand_turns[s][n],
+                          **({"castable_uncast": castable_uncast[s][n]} if n in cmc else {})}
+                      for n in sorted(in_hand_turns[s])},
         }
     return out
 
 
-def game_facts(g, commanders=None):
+def game_facts(g, commanders=None, cmc=None):
     """Per-game facts. `commanders` maps a Forge seat label to that seat's commander
     name(s); pass it and the seat gains a per-defender commander-damage tally, omit it
     and the key is ABSENT rather than zero — the log does not name a commander anywhere,
@@ -731,7 +754,7 @@ def game_facts(g, commanders=None):
         d = p["combat_damage_dealt_to_players"]
         p["token_damage_share"] = round(p["token_combat_damage_to_players"] / d, 3) if d else None
     # THE HAND, where the log carries it (telemetry only; see hand_facts).
-    for s, h in hand_facts(g["events"], seats).items():
+    for s, h in hand_facts(g["events"], seats, cmc).items():
         if s in per:
             per[s]["hand"] = h
     # THE OPENING HAND, WHICH WAS MEASURED AND THROWN AWAY. `g["mulligan"]` has
@@ -798,6 +821,16 @@ def engine_casts(facts, label, ours):
                 for name, n in counts.items():
                     row = by_card.setdefault(name, {"cast": 0, "activated": 0, "discarded": 0})
                     row[kind] += n
+            # MEASURED, where the log carries the hand (telemetry only): games the card
+            # was in hand, own turns it ended in hand, and own turns it was castable on
+            # lands alone and still in hand. Keys appear only when present, so every
+            # record made under the shipped formatter re-derives byte for byte.
+            for name, h in ((p.get("hand") or {}).get("cards") or {}).items():
+                row = by_card.setdefault(name, {"cast": 0, "activated": 0, "discarded": 0})
+                row["in_hand_games"] = row.get("in_hand_games", 0) + 1
+                row["turns_in_hand"] = row.get("turns_in_hand", 0) + h["turns_in_hand"]
+                if "castable_uncast" in h:
+                    row["castable_uncast"] = row.get("castable_uncast", 0) + h["castable_uncast"]
     return {"seat": ours, "games": games, "turns": turns,
             "kept_hand_mean": round(sum(kept) / len(kept), 2) if kept else None,
             "by_card": {k: by_card[k] for k in sorted(by_card)}}
@@ -1104,7 +1137,9 @@ def _hand_block(ps):
         "empty_own_turns": mean_ci([h["empty_own_turns"] for h in hs]),
         "own_turns_without_land_drop": mean_ci([h["own_turns_without_land_drop"] for h in hs]),
         "missed_land_drops_with_land_in_hand": mean_ci([h["missed_land_drops_with_land_in_hand"] for h in hs]),
-        "end_of_turn_size_by_turn": {t: round(sum(v) / len(v), 2) for t, v in sorted(by_turn.items())},
+        # STRING KEYS, because this block lives in `analysis` and `validate-sim` proves that
+        # block by exact equality against a JSON round trip, where every key is a string.
+        "end_of_turn_size_by_turn": {str(t): round(sum(v) / len(v), 2) for t, v in sorted(by_turn.items())},
         # WHAT THE SEAT WAS STILL HOLDING WHEN THE GAME ENDED, by how many games — the
         # exact answer to `engine_casts`'s inferred "held and never cast".
         "held_at_end": [{"card": c, "games": n} for c, n in held.most_common(12)],
@@ -1402,14 +1437,16 @@ def compact(fact, label):
                 for s, p in fact["per_seat"].items()}}
 
 
-def analyze_logs(log_texts, label, commanders=None):
+def analyze_logs(log_texts, label, commanders=None, cmc=None):
     """All games across a run's JVM logs → (facts, aggregate). `label` maps Forge seat
     labels (Ai(k)-<name>) to slugs; the first seat in `label` order is ours.
     `commanders` maps the same labels to commander name(s); omit it and every
-    commander-damage key is absent rather than zero."""
+    commander-damage key is absent rather than zero. `cmc` maps OUR deck's card names
+    to mana values (see `hand_facts`); it changes nothing unless the logs carry the
+    telemetry patch's hand lines."""
     facts = []
     for text in log_texts:
         for g in parse_games(text):
-            facts.append(game_facts(g, commanders))
+            facts.append(game_facts(g, commanders, cmc))
     slug_label = next(iter(label)) if label else None
     return facts, aggregate(facts, slug_label, label, commanders)

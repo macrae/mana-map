@@ -126,6 +126,18 @@ def run_findings(slug, rec, targeting=None, boards=None):
             source="engine_casts (top-level) via sim/engine_casts.from_record",
             basis="measured = the log shows it discarded; modelled = never played across the "
                   "run's expected natural draws, an inference")
+        # MEASURED, not inferred: under the telemetry patch the hand is on the log, so
+        # "held" is a count of own turns the card sat in hand while castable on lands
+        # alone. A plain record has none and gets no finding rather than a zero.
+        hc = ecr.get("held_while_castable")
+        if hc:
+            add("held_castable",
+                f"{len(hc)} card(s) held on >= {ec_mod.HELD_CASTABLE_TURNS} castable own turns and cast at most once "
+                f"(MEASURED from the telemetry hand; lands only, a floor): "
+                + ", ".join(f"{x['card']} x{x['castable_uncast']}" for x in hc[:6]),
+                cards=[x["card"] for x in hc],
+                counts={x["card"]: {k: x[k] for k in ("castable_uncast", "cast", "in_hand_games")} for x in hc},
+                basis="own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored")
 
     fa = me.get("first_attack_turn") or {}
     if isinstance(fa, dict) and fa.get("mean") is not None:

@@ -210,7 +210,35 @@ def from_record(rec, deck_names=None, engine=None):
             + ("held and never cast"
                if out["never_cast_basis"]["measured"] else "never cast")
             + (f": {', '.join(never[:6])}" if never else "") + ".")
+    # MEASURED, where the record carries the telemetry hand: cards the AI held on
+    # castable own turns. Absent (None) on a plain-formatter record.
+    out["held_while_castable"] = held_while_castable(rec)
     return out
+
+
+#: A card held on this many own turns while castable on lands alone, and never
+#: cast, is the AI HOLDING it — measured, not inferred. Two, because one turn can be
+#: the AI keeping mana up for something else.
+HELD_CASTABLE_TURNS = 2
+
+
+def held_while_castable(rec):
+    """`[{card, castable_uncast, cast, in_hand_games}]` for cards the record's telemetry
+    hand facts show held on >= HELD_CASTABLE_TURNS castable own turns and cast at most
+    once; [] when the record has no measured hand (a plain-formatter run), and None
+    when there is no engine_casts block at all."""
+    ec = rec.get("engine_casts")
+    if not ec:
+        return None
+    rows = []
+    for name, row in ec.get("by_card", {}).items():
+        cu = row.get("castable_uncast")
+        if cu is None:
+            continue
+        if cu >= HELD_CASTABLE_TURNS and row.get("cast", 0) <= 1:
+            rows.append({"card": _front(name), "castable_uncast": cu, "cast": row.get("cast", 0),
+                         "in_hand_games": row.get("in_hand_games", 0)})
+    return sorted(rows, key=lambda r: (-r["castable_uncast"], r["card"]))
 
 
 def render(q):
@@ -246,4 +274,8 @@ def render(q):
                            if q["covered"] is None and q["games"] < MIN_GAMES else
                            "NO DECLARATION" if q["covered"] is None else "ENGINE NEVER CAST"))
     lines.append("    " + q["reading"])
+    held = q.get("held_while_castable")
+    if held:
+        lines.append("    HELD WHILE CASTABLE (MEASURED from the telemetry hand; lands only, so a floor): "
+                     + ", ".join(f"{r['card']} (x{r['castable_uncast']} turns, cast {r['cast']})" for r in held[:8]))
     return lines

@@ -936,8 +936,12 @@ the mulligans are before turn 1 and excluded — the control game reads 6 for th
 the play and 7 for the draw, one per own turn), `end_of_turn_size` per own turn,
 `empty_own_turns`, `own_turns_without_land_drop`, `missed_land_drops_with_land_in_hand`
 (a FLOOR: a card in hand is a land only if some seat played it as one in the run), and
-`hand_at_end` with the turn each card arrived — which is `engine_casts`'s inferred
-"held and never cast" made exact: goblin-storm kept Goblin Bombardment and Great Train
+`hand_at_end` with the turn each card arrived. With our deck's mana values
+(`forge.cmc_map`) every card also gets `castable_uncast` — own turns it ended in hand
+with at least that many lands on the battlefield, lands only, a floor — merged into
+`engine_casts.by_card` beside `cast`, and `engine_casts.held_while_castable` lists the
+cards held on two or more such turns and cast at most once: `engine_casts`'s inferred
+"held and never cast" made exact, and printed as HELD WHILE CASTABLE (MEASURED): goblin-storm kept Goblin Bombardment and Great Train
 Heist in its opening hand and still held both at turn fourteen. A plain record has no
 `hand` key and its `limits` sentence about card advantage is unchanged, so every record
 on disk re-analyses to the same bytes; a patched record's `limits` says what the hand

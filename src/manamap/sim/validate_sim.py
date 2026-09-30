@@ -160,8 +160,11 @@ def validate(rec, slug, logs_text=None):
                 errors.append(f"engine_casts.games {ec['games']} != games_completed {n}")
             if n and not (isinstance(ec["turns"], int) and ec["turns"] > 0):
                 errors.append(f"engine_casts.turns {ec['turns']!r} is not a positive count")
+            # The three counted keys always; the three MEASURED hand keys only under the
+            # telemetry patch (`parse.engine_casts`), and then together or not at all.
+            base, hand = {"cast", "activated", "discarded"}, {"in_hand_games", "turns_in_hand", "castable_uncast"}
             bad = [k for k, v in ec["by_card"].items()
-                   if set(v) != {"cast", "activated", "discarded"}
+                   if not (set(v) == base or base < set(v) <= base | hand)
                    or any(not isinstance(x, int) or x < 0 for x in v.values())]
             if bad:
                 errors.append(f"engine_casts.by_card: malformed rows for {bad[:3]}")
@@ -172,7 +175,8 @@ def validate(rec, slug, logs_text=None):
         errors += _bs.validate(bser, n)
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
-        facts, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec))
+        from manamap.sim.forge import cmc_map
+        facts, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec), cmc_map(slug))
         if derived != rec["analysis"]:
             keys = [k for k in set(derived) | set(rec["analysis"]) if derived.get(k) != rec["analysis"].get(k)]
             errors.append(f"analysis does not match what the logs derive (differs at {sorted(keys)}) — "

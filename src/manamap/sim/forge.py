@@ -491,6 +491,29 @@ def clock_tag(clock=None):
     return f"-c{int(clock)}" if clock and int(clock) != SIM_CLOCK_ID_BASELINE else ""
 
 
+def cmc_map(slug):
+    """Our deck's card name -> mana value, front face, from cards.json — the input
+    `parse.hand_facts` needs to say whether a held card was castable. `{}` for a seat
+    with no cards.json (an opponent), which turns the measurement off rather than
+    guessing."""
+    base, branch = split_seat(slug)
+    try:
+        from manamap.pilot.common import load_deck_cards
+        doc = load_deck_cards(base, branch)
+    except (FileNotFoundError, OSError, ValueError):
+        return {}
+    out = {}
+    for c in doc.get("cards", []):
+        mv = c.get("cmc")
+        # A LAND IS PLAYED, NOT CAST, and its mana value is 0: without this every land
+        # held in hand would read as castable-and-uncast on every turn.
+        if mv is None or "Land" in (c.get("type_line") or ""):
+            continue
+        out[c["name"]] = mv
+        out[c["name"].split(" // ")[0]] = mv
+    return out
+
+
 def forge_pilot_installed():
     """What the engine carries, as `run` needs it. A named function so the import stays
     lazy and a test can monkeypatch one name."""
@@ -1069,7 +1092,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     commanders = {f"Ai({k})-{names[i]}": set(cmd_by_slug[s])
                   for i, s in enumerate(seats) if cmd_by_slug.get(s)
                   for k in range(1, len(seats) + 1)}
-    facts, analysis = sim_parse.analyze_logs(texts, label, commanders)
+    facts, analysis = sim_parse.analyze_logs(texts, label, commanders, cmc_map(slug))
     # MATCH ON THE FORGE NAME, NOT THE SEAT SLUG. A branch seat is written to
     # Forge as `ur-dragon-treasure-v2` because `@` has no business in a deck
     # registry — so the outcome names the flattened form while `seats` holds the
@@ -1200,7 +1223,7 @@ def analyze(slug, run_id_or_path):
             seat["commander"] = sorted(set(upgraded))
     facts, analysis = sim_parse.analyze_logs(
         [l.read_text(encoding="utf-8", errors="replace") for l in logs], label,
-        record_commanders(rec))
+        record_commanders(rec), cmc_map(slug))
     rec["analysis"] = analysis
     rec["engine_casts"] = sim_parse.engine_casts(facts, label, deck_meta_name(slug))
     rec["board_series"] = _board_series().from_logs(
