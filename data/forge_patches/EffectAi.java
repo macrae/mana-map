@@ -46,30 +46,36 @@ public class EffectAi extends SpellAbilityAi {
     private AiAbilityDecision doProtectionLogic(final Player ai, final SpellAbility sa) {
         final Game game = ai.getGame();
         if (!game.getStack().isEmpty()) {
-            final SpellAbility top = ComputerUtilAbility.getTopSpellAbilityOnStack(game, sa);
-            if (top == null || top.getHostCard() == null || !top.getHostCard().getController().isOpponentOf(ai)) {
-                return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);
-            }
+            // THE WHOLE STACK, not its top. Measured on the fifth pass of one seed: Blasphemous
+            // Act on the stack, three creatures of ours, Teferi's Protection in hand with the
+            // mana open — and the AI answered with Altar of Dementia first, which put OUR ability
+            // on top, after which a top-of-stack test saw no opponent's spell and refused.
             final int myCreatures = ai.getCreaturesInPlay().size();
-            SpellAbility s = top;
-            while (s != null) {
-                final ApiType api = s.getApi();
-                if ((api == ApiType.DestroyAll || api == ApiType.DamageAll || api == ApiType.ChangeZoneAll
-                        || api == ApiType.SacrificeAll) && myCreatures >= 2) {
-                    return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
+            for (final SpellAbilityStackInstance si : game.getStack()) {
+                final SpellAbility top = si.getSpellAbility();
+                if (top == null || top.getHostCard() == null || !top.getHostCard().getController().isOpponentOf(ai)) {
+                    continue;
                 }
-                if (s.usesTargeting() && (api == ApiType.Destroy || api == ApiType.ChangeZone || api == ApiType.DealDamage)) {
-                    for (final Card c : s.getTargets().getTargetCards()) {
-                        if (c.getController().equals(ai) && c.isCommander()) {
-                            return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
+                SpellAbility s = top;
+                while (s != null) {
+                    final ApiType api = s.getApi();
+                    if ((api == ApiType.DestroyAll || api == ApiType.DamageAll || api == ApiType.ChangeZoneAll
+                            || api == ApiType.SacrificeAll) && myCreatures >= 2) {
+                        return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
+                    }
+                    if (s.usesTargeting() && (api == ApiType.Destroy || api == ApiType.ChangeZone || api == ApiType.DealDamage)) {
+                        for (final Card c : s.getTargets().getTargetCards()) {
+                            if (c.getController().equals(ai) && c.isCommander()) {
+                                return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
+                            }
                         }
                     }
+                    s = s.getSubAbility();
                 }
-                s = s.getSubAbility();
-            }
-            final int dmg = ComputerUtil.predictDamageFromSpell(top, ai);
-            if (dmg > 0 && dmg >= ai.getLife()) {
-                return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
+                final int dmg = ComputerUtil.predictDamageFromSpell(top, ai);
+                if (dmg > 0 && dmg >= ai.getLife()) {
+                    return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
+                }
             }
             return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);
         }
