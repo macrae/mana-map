@@ -341,7 +341,9 @@ FLOOR on interaction, and `limits` says so.
 **Card advantage, tutoring and recursion are ABSENT and cannot be added.** Forge
 logs exactly two zone transitions, `Battlefield -> Graveyard` and
 `Battlefield -> Exile`. Measured on a 100-game pod run: **zero `from Library`
-lines of any kind**. No parser change recovers them. The goldfish is the only
+lines of any kind**. No parser change recovers them — but a one-method patch to
+Forge's log FORMATTER does, and the spike below measured it (2026-09-30). Until it
+is productionised the goldfish is the only
 place card advantage is measured — and the goldfish has no blockers, so a Forge
 result must never be read as a verdict on a draw engine.
 
@@ -852,6 +854,71 @@ the whole table through the command zone on round 18. The 1v1 run against the sa
 never got there, best 20 in a single game — one short. As a control, Vito (a drain deck)
 reads 0.35 commander damage a game across 20 games, which is what a correct measurement
 of a deck that does not attack should say.
+
+## The telemetry patch: one method, and what the spike measured (2026-09-30)
+
+The two zone transitions the log carries are not the engine's limit. `javap` on the
+shipped jar (2.0.14) put the filter in `forge.game.GameLogFormatter.visit(GameEventCardChangeZone)`,
+which returns `null` unless the move is Battlefield → Graveyard or Exile; the engine
+fires the event for every move. The spike patched THAT ONE METHOD — drop the filter,
+keep the Ante exclusion, same `ZONE_CHANGE` type and caption — compiled it with
+`javac --release 21` against the fat jar (no Maven), and put the class into a COPY
+named `forge-mm-telemetry.jar`. The pristine jar is untouched and the patch lives in the
+session scratchpad until productionised.
+
+**What a patched line looks like.** `Zone Change: Sol Ring (123) was put into Hand from
+Library.` — the card NAME and id, in sim mode. `parse.RX["zone"]` already matches it.
+Over B's 20 games: 2,157 Library→Hand, 911 Hand→Stack, 906 Stack→Battlefield, 633
+Hand→Battlefield, 381 Library→Exile, 252 Library→Graveyard, 139 Hand→Library, 122
+Command→Stack, 115 Hand→Graveyard. Draws, tutors, mills, wheels, discards, ramp
+landing from the library, and the command zone, every one of them named.
+
+**Measurement 1 — does the patch change a game?** The first design was wrong and
+is recorded because the number is useful: one seeded 20-game table (goblin-storm at
+standard-v3, seed 990990, 4 JVMs), shipped jar twice (A1, A2) and patched once (B).
+**A1 and A2 differed in 18 of 20 games.** Same seed, same jar. The mechanism is the
+one this document already names — `AI eval thread at timeout` fired 130, 105 and 140
+times in the three runs — so at this table two replays of one seed share the SHUFFLE
+and nothing else, and a game-level comparison of patched against pristine cannot
+speak. (A1's wall clock was 22,303 s against A2's 1,802 s: A1 ran under the test
+suite. Load is not a nuisance variable here; it is the variable.) The aggregate is
+consistent with noise and says nothing either way: B 3/13 decided against the pooled
+shipped-jar 2/28, difference −0.16 [−0.44, +0.06].
+
+The decisive control is the one this document's reproducibility claim actually
+covers: a SHORT game on a QUIET machine. One two-seat game (goblin-storm vs
+giada-angels, seed 4242, clock 600), pristine jar twice and patched once, run one at a
+time with nothing else on the machine, **zero AI timeouts in any of the three**.
+Comparing every line the pristine formatter would have written: pristine-vs-pristine
+differs on exactly one line, `Game Result: Game 1 ended in N ms`, and pristine-vs-
+patched differs on exactly the same one line. Same winner, same turn, same 349 old
+lines; the patched log carries 87 new zone lines beside them. The patch is purely
+observational where the control can see, and the control saw everything.
+
+**Measurement 2 — do the old readers survive the new lines?** B's 20 logs parsed in
+full, then parsed again with every new zone line stripped (anything `was put into X
+from Y` where Y is not Battlefield): the two `analysis` blocks are identical at every
+key, and our seat's facts are identical key by key. Nothing that exists today counts
+a line it should not.
+
+**Verdict: GO.** Names are visible (not counts), the patch does not move a game, and
+the existing parser is blind to the new lines rather than confused by them. What GO
+buys, in the catalog's terms: cards drawn per turn, turns with an empty hand, missed
+land drops BY NAME, draw-engine uptime, tutors resolved, `engine_casts.held` MEASURED
+for every card rather than inferred from expected draws, and a hand the bridge no
+longer has to estimate — which is what `line-finder` (Phase D2) needs to reason from a
+known hand.
+
+**What productionising must do**, none of it done yet: detect the jar the way
+`forge_pilot.installed()` detects card overrides (pristine class sha → no telemetry;
+the declared patched sha → a fingerprint; anything else → refuse); carry `-tl<sha8>` in
+the run id and a `telemetry {sha, lines}` block in the record, form-checked by
+`validate_sim`; track the `.java` and the class sha under `data/forge_patches/`; add the
+new facts to `parse.py` and move the catalog rows above from DERIVABLE to PUBLISHED with
+their definitions; and keep telemetry runs OUT of a pod's null until the null has been
+re-run under the same jar, because a null is a property of the instrument as well as
+the table. The spike's scripts and logs are in the session scratchpad
+(`telemetry/noise_floor.py`, `telemetry/one_game.py`, `noise_floor.json`).
 
 ## Artifacts and where they live
 
