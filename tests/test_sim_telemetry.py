@@ -27,8 +27,11 @@ def jars(tmp_path, monkeypatch):
     pdir = tmp_path / "forge_patches"
     pdir.mkdir()
     (pdir / "GameLogFormatter.java").write_text("// patched")
-    man = {"forge": {"version": "9.9.9"}, "pristine_sha": tl._sha(b"pristine bytes"),
-           "source_sha": tl._sha(b"// patched"), "patched_shas": [tl._sha(b"patched bytes")]}
+    man = {"forge": {"version": "9.9.9"},
+           "classes": {"GameLogFormatter.java": {"entry": tl.CLASS_ENTRY, "kind": "log",
+                                                 "pristine_sha": tl._sha(b"pristine bytes"),
+                                                 "source_sha": tl._sha(b"// patched"),
+                                                 "patched_shas": [tl._sha(b"patched bytes")]}}}
     (pdir / "manifest.json").write_text(json.dumps(man))
     monkeypatch.setattr(tl, "PATCH_DIR", pdir)
     monkeypatch.setattr(tl, "SOURCE", pdir / "GameLogFormatter.java")
@@ -56,7 +59,8 @@ def test_a_registered_build_is_the_fingerprint_and_the_jar_for_the_run(jars):
     home, pristine = jars
     out = _write_patched(home, b"patched bytes")
     fp = tl.installed(home)
-    assert fp and fp["sha"] == tl._sha(b"patched bytes") and fp["jar"] == out.name
+    assert fp and fp["sha"] == tl.set_sha([(tl.CLASS_ENTRY, tl._sha(b"patched bytes"))]) and fp["jar"] == out.name
+    assert fp["kinds"] == ["log"] and fp["classes"][0]["source"] == "GameLogFormatter.java"
     jar, fp2 = tl.jar_for_run(home)
     assert jar == out and fp2 == fp
     # --plain-jar is always available, and says so by stamping nothing
@@ -77,6 +81,23 @@ def test_an_unregistered_class_is_the_only_refusal(jars):
     _write_patched(home, b"somebody else's bytes")
     with pytest.raises(tl.EngineMismatch):
         tl.installed(home)
+
+
+def test_an_ai_class_in_the_set_is_named_in_the_fingerprints_kinds(jars, tmp_path, monkeypatch):
+    """The bug this guards: a jar that changes how the AI PLAYS reading as observational."""
+    home, _ = jars
+    man = json.loads(tl.MANIFEST.read_text())
+    man["classes"]["MillAi.java"] = {"entry": tl.PATCHES["MillAi.java"]["entry"], "kind": "ai",
+                                     "pristine_sha": tl._sha(b"mill pristine"), "source_sha": "x",
+                                     "patched_shas": [tl._sha(b"mill patched")]}
+    tl.MANIFEST.write_text(json.dumps(man))
+    out = home / "forge-gui-desktop-9.9.9-mm-telemetry.jar"
+    with zipfile.ZipFile(out, "w") as z:
+        z.writestr(tl.CLASS_ENTRY, b"patched bytes")
+        z.writestr(tl.PATCHES["MillAi.java"]["entry"], b"mill patched")
+    fp = tl.installed(home)
+    assert fp["kinds"] == ["ai", "log"] and len(fp["classes"]) == 2
+    assert fp["sha"] != tl.set_sha([(tl.CLASS_ENTRY, tl._sha(b"patched bytes"))]), "the set moved"
     with pytest.raises(tl.EngineMismatch):
         tl.jar_for_run(home)
 
@@ -145,6 +166,10 @@ def test_the_tracked_manifest_registers_the_source_it_ships_with():
     """The real data/forge_patches/: the manifest's source sha is the sha of the .java
     beside it, so an edited source that was never rebuilt is visible."""
     man = tl.manifest()
-    assert man and man["source_sha"] == tl.source_sha(), \
-        "edit GameLogFormatter.java -> forge-telemetry --build -> commit the manifest"
-    assert man["patched_shas"] and all(len(s) == 12 for s in man["patched_shas"])
+    assert man and man.get("classes"), "the manifest registers a class set"
+    for name in tl.sources():
+        reg = man["classes"].get(name)
+        assert reg and reg["source_sha"] == tl.source_sha(name), \
+            f"edit {name} -> forge-telemetry --build -> commit the manifest"
+        assert reg["patched_shas"] and all(len(x) == 12 for x in reg["patched_shas"])
+        assert reg["kind"] == tl.PATCHES[name]["kind"]

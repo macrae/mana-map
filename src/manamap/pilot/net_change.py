@@ -851,12 +851,14 @@ def _seat_sha(doc, want):
 def _label(key):
     """A bucket's name for a reader: the table, and every harness axis that is
     not the plain one. `('standard-v3', '', 'Default') -> 'standard-v3'`."""
-    pod, ov, prof = key
+    pod, ov, prof, tl = (key + ("",))[:4]
     bits = []
     if ov:
         bits.append(f"overrides {ov[:12]}")
     if prof and prof != "Default":
         bits.append(f"ours {prof}")
+    if tl:
+        bits.append(f"patches {tl[:12]}")
     return f"{pod} ({', '.join(bits)})" if bits else pod
 
 
@@ -922,6 +924,10 @@ def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
             # with an interval excluding zero. `profiles` is the `-a` list or null;
             # null is every seat on Default, which is what a pre-profile record means.
             prof = ((doc.get("profiles") or ["Default"])[0]) or "Default"
+            # THE PATCH SET, when the record carries one — `-tl` in the id. Observational
+            # while it held only the log formatter; since 2026-09-30 it may hold an `ai`
+            # class (MillAi's SacOutlet), which changes play, so it is an axis like `ov`.
+            tl = (doc.get("telemetry") or {}).get("sha") or ""
             ran = _seat_sha(doc, want)
             if ran and live_sha and ran != live_sha:
                 dropped.append({"run": doc.get("run_id") or path.split("/")[-1],
@@ -929,7 +935,7 @@ def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
                                 "games": a.get("games") or 0})
                 if strict:
                     continue
-            row = by_pod.setdefault((pod, ov, prof), {"wins": 0, "decided": 0,
+            row = by_pod.setdefault((pod, ov, prof, tl), {"wins": 0, "decided": 0,
                                                  "games": 0, "runs": 0,
                                                  "by_route": {},
                                                  "per_game": {n: [] for n in _PER_GAME},
@@ -1047,7 +1053,7 @@ def _forge(slug, branch, pod, rows_for):
                         f"`manamap pilot simulate {slug} --pod {sorted(br)[0]}`")}
     # The table with the most branch games decides; the others are named.
     key = max(common, key=lambda k: br[k]["decided"])
-    pod, ovsha, prof = key
+    pod, ovsha, prof, tl = (key + ("",))[:4]
     a, b = champ[key], br[key]
     a_w, a_n, b_w, b_n = a["wins"], a["decided"], b["wins"], b["decided"]
     d = stats.diff_proportions(a_w, a_n, b_w, b_n)

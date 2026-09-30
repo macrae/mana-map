@@ -51,9 +51,18 @@ import zipfile
 from manamap import config
 
 PATCH_DIR = config.DATA_DIR / "forge_patches"
-SOURCE = PATCH_DIR / "GameLogFormatter.java"
+SOURCE = PATCH_DIR / "GameLogFormatter.java"          # the first patch; kept as a name
 MANIFEST = PATCH_DIR / "manifest.json"
 CLASS_ENTRY = "forge/game/GameLogFormatter.class"
+#: THE PATCH SET. Every `.java` under data/forge_patches/ compiles into the one patched
+#: jar; each is registered here with the class entry it replaces and its KIND — `log`
+#: (observational: the formatter) or `ai` (changes how the AI plays). The fingerprint in
+#: the run id (`-tl<sha8>`) is over the whole set, and a set with an `ai` class is an
+#: instrument axis like a card override: `net_change.forge` buckets on it.
+PATCHES = {
+    "GameLogFormatter.java": {"entry": "forge/game/GameLogFormatter.class", "kind": "log"},
+    "MillAi.java": {"entry": "forge/ai/ability/MillAi.class", "kind": "ai"},
+}
 JAR_SUFFIX = "-mm-telemetry.jar"
 _PRISTINE_SUFFIX = "-jar-with-dependencies.jar"
 
@@ -73,20 +82,34 @@ def manifest():
     return json.loads(MANIFEST.read_text(encoding="utf-8"))
 
 
-def source_sha():
-    return _sha(SOURCE.read_bytes()) if SOURCE.is_file() else None
+def source_sha(name="GameLogFormatter.java"):
+    p = PATCH_DIR / name
+    return _sha(p.read_bytes()) if p.is_file() else None
 
 
-def class_sha(jar_path):
-    """The formatter class's sha inside a jar, or None when the jar or entry is absent."""
+def sources():
+    """The patch sources on disk, in PATCHES order — only the ones that exist."""
+    return [n for n in PATCHES if (PATCH_DIR / n).is_file()]
+
+
+def class_sha(jar_path, entry=CLASS_ENTRY):
+    """A class's sha inside a jar, or None when the jar or entry is absent."""
     jar_path = pathlib.Path(jar_path)
     if not jar_path.is_file():
         return None
     try:
         with zipfile.ZipFile(jar_path) as zf:
-            return _sha(zf.read(CLASS_ENTRY))
+            return _sha(zf.read(entry))
     except (zipfile.BadZipFile, KeyError, OSError):
         return None
+
+
+def set_sha(pairs):
+    """The patch-set fingerprint: over sorted (entry, class sha) pairs."""
+    h = hashlib.sha256()
+    for entry, sha in sorted(pairs):
+        h.update(f"{entry}:{sha}\n".encode())
+    return h.hexdigest()[:12]
 
 
 def pristine_jar(home=None):
@@ -111,19 +134,35 @@ def installed(home=None):
     if not man:
         return None
     jar = telemetry_jar(home)
-    live = class_sha(jar)
-    if live is None:
+    if not jar.is_file():
         return None                              # no patched copy: a plain run
-    if live in man.get("patched_shas", []):
-        return {"sha": live, "class": CLASS_ENTRY, "forge": (man.get("forge") or {}).get("version"),
-                "source_sha": man.get("source_sha"), "jar": jar.name}
-    if live == man.get("pristine_sha") or live == class_sha(pristine_jar(home)):
-        return None                              # a copy that was never patched
-    raise EngineMismatch(
-        f"{jar.name} carries a {CLASS_ENTRY} (sha {live}) that {MANIFEST.name} "
-        f"does not register — a stale build, or somebody else's patch. Its log would have a "
-        f"shape nothing describes. Rebuild it (`manamap pilot forge-telemetry --build`) or "
-        f"delete it to run plain.")
+    classes = man.get("classes") or {}
+    pristine = pristine_jar(home)
+    patched, pairs = [], []
+    for name, spec in PATCHES.items():
+        entry = spec["entry"]
+        live = class_sha(jar, entry)
+        if live is None:
+            continue
+        reg = classes.get(name) or {}
+        if live in (reg.get("patched_shas") or []):
+            patched.append({"source": name, "entry": entry, "kind": spec["kind"], "sha": live,
+                            "source_sha": reg.get("source_sha")})
+            pairs.append((entry, live))
+        elif live == reg.get("pristine_sha") or live == class_sha(pristine, entry):
+            continue                             # this class is Forge's own
+        else:
+            raise EngineMismatch(
+                f"{jar.name} carries a {entry} (sha {live}) that {MANIFEST.name} does not "
+                f"register — a stale build, or somebody else's patch. Its behaviour is one "
+                f"nothing on disk describes. Rebuild it (`manamap pilot forge-telemetry "
+                f"--build`) or delete it to run plain.")
+    if not patched:
+        return None                              # a copy in which nothing is patched
+    return {"sha": set_sha(pairs), "class": CLASS_ENTRY, "forge": (man.get("forge") or {}).get("version"),
+            "source_sha": (classes.get("GameLogFormatter.java") or {}).get("source_sha"),
+            "jar": jar.name, "classes": patched,
+            "kinds": sorted({c["kind"] for c in patched})}
 
 
 def jar_for_run(home=None, plain=False):
@@ -155,35 +194,44 @@ def build(home=None, javac="javac"):
     and never touches the pristine jar. Needs a JDK on PATH (javac + jar); the spike
     used 21 and the class is compiled with `--release 21`.
     """
-    if not SOURCE.is_file():
-        raise FileNotFoundError(f"no patch source at {SOURCE}")
+    names = sources()
+    if not names:
+        raise FileNotFoundError(f"no patch source under {PATCH_DIR}")
     pristine = pristine_jar(home)
     out = telemetry_jar(home)
     work = out.parent / ".mm-telemetry-build"
     if work.exists():
         shutil.rmtree(work)
     work.mkdir()
-    subprocess.run([javac, "--release", "21", "-cp", str(pristine), "-d", str(work), str(SOURCE)],
-                   check=True, capture_output=True, text=True)
+    subprocess.run([javac, "--release", "21", "-cp", str(pristine), "-d", str(work),
+                    *[str(PATCH_DIR / n) for n in names]], check=True, capture_output=True, text=True)
     tmp = out.with_suffix(".jar.building")
     shutil.copy(pristine, tmp)
-    subprocess.run(["jar", "uf", str(tmp), "-C", str(work), CLASS_ENTRY],
-                   check=True, capture_output=True, text=True)
+    # `-C dir` applies to the ONE file argument that follows it, so it is repeated per entry.
+    entries = [arg for n in names for arg in ("-C", str(work), PATCHES[n]["entry"])]
+    subprocess.run(["jar", "uf", str(tmp), *entries], check=True, capture_output=True, text=True)
     tmp.replace(out)
     shutil.rmtree(work)
-    live = class_sha(out)
     man = manifest() or {}
     man.setdefault("forge", None)
-    man["pristine_sha"] = class_sha(pristine)
-    man["source_sha"] = source_sha()
-    shas = man.setdefault("patched_shas", [])
-    registered = live in shas
-    if not registered:
-        shas.append(live)
-        man.setdefault("builds", []).append({"sha": live, "at": _dt.date.today().isoformat(),
-                                             "javac": _javac_version(javac)})
-        MANIFEST.write_text(json.dumps(man, indent=2) + "\n", encoding="utf-8")
-    return {"jar": out, "sha": live, "registered_now": not registered}
+    classes = man.setdefault("classes", {})
+    registered_now, pairs = [], []
+    for n in names:
+        entry = PATCHES[n]["entry"]
+        live = class_sha(out, entry)
+        reg = classes.setdefault(n, {"entry": entry, "kind": PATCHES[n]["kind"], "patched_shas": [], "builds": []})
+        reg["pristine_sha"] = class_sha(pristine, entry)
+        reg["source_sha"] = source_sha(n)
+        if live not in reg["patched_shas"]:
+            reg["patched_shas"].append(live)
+            reg["builds"].append({"sha": live, "at": _dt.date.today().isoformat(), "javac": _javac_version(javac)})
+            registered_now.append(n)
+        pairs.append((entry, live))
+    # the legacy single-class keys, kept for a reader of an old manifest
+    for k in ("pristine_sha", "source_sha", "patched_shas", "builds", "class"):
+        man.pop(k, None)
+    MANIFEST.write_text(json.dumps(man, indent=2) + "\n", encoding="utf-8")
+    return {"jar": out, "sha": set_sha(pairs), "registered_now": bool(registered_now), "classes": names}
 
 
 def _javac_version(javac="javac"):
@@ -200,17 +248,19 @@ def render(home=None):
     if not man:
         lines.append("telemetry: the repo declares no formatter patch (data/forge_patches/ absent)")
         return lines
-    lines.append(f"declared: {SOURCE.name} (source {man.get('source_sha')}), Forge "
-                 f"{(man.get('forge') or {}).get('version')}, pristine class {man.get('pristine_sha')}, "
-                 f"{len(man.get('patched_shas', []))} registered build(s)")
+    classes = man.get("classes") or {}
+    lines.append(f"declared: {', '.join(f'{n} [{PATCHES[n][chr(107)+chr(105)+chr(110)+chr(100)]}]' for n in sources())} against Forge "
+                 f"{(man.get('forge') or {}).get('version')}; "
+                 + "; ".join(f"{n}: {len((classes.get(n) or {}).get('patched_shas', []))} registered build(s)" for n in sources()))
     try:
         fp = installed(home)
     except EngineMismatch as exc:
         lines.append(f"engine:   MISMATCH — {exc}")
         return lines
     if fp:
-        lines.append(f"engine:   {fp['jar']} carries build {fp['sha']} — every zone change is "
-                     f"logged with its owner; runs stamp -tl{fp['sha'][:8]}")
+        lines.append(f"engine:   {fp['jar']} carries patch set {fp['sha']} ({', '.join(c['source'] + ' ' + c['sha'] for c in fp['classes'])}); "
+                     f"kinds {fp['kinds']} — runs stamp -tl{fp['sha'][:8]}"
+                     + ("; an `ai` class CHANGES PLAY and buckets like a card override" if "ai" in fp["kinds"] else ""))
     else:
         jar = telemetry_jar(home)
         lines.append(f"engine:   no patched jar at {jar.name} — runs are plain (two zone "

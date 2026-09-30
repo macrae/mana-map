@@ -313,8 +313,12 @@ manamap pilot forge-telemetry [--build]                 # THE PATCHED LOG FORMAT
                               # millisecond line only. The jar is a COPY beside the pristine
                               # one; `simulate`/`experiment` use it when it is there and
                               # stamp `-tl<sha8>` + a `telemetry` block; a class the manifest
-                              # does not register REFUSES the run. Not a bucket axis, not
-                              # excluded from a null — the games are the same games.
+                              # does not register REFUSES the run. THE PATCH SET HAS KINDS:
+                              # `log` (the formatter, observational) and `ai` (MillAi's
+                              # `AILogic$ SacOutlet`, 2026-09-30 — a sacrifice-cost mill
+                              # ability fires when a creature of ours is about to die anyway);
+                              # a set with an `ai` class changes play and `net-change`
+                              # buckets on it like a card override.
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
 manamap pilot sim-findings <slug> --write   # THE SIM DEBRIEF'S SKELETON (sim_findings.json):
                               # per run, findings with ids, intervals and sources. Prose is

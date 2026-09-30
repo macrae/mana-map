@@ -983,3 +983,33 @@ prescription.
 
 S1 and S2 are one session each. The first real question to put through the whole chain is
 the one the log will have raised by then.
+
+
+## The patch set grows an `ai` class: `SacOutlet` for a sacrifice-cost mill ability (2026-09-30)
+
+The formatter patch was observational. The second patch is not, and the pipeline says so:
+`data/forge_patches/` now registers a SET of classes, each with a `kind` — `log` for
+`GameLogFormatter.java`, `ai` for `MillAi.java` — the jar is built from all of them, the
+run id's `-tl<sha8>` is over the set, the record's `telemetry.classes` lists them with
+their kinds, and `net_change.forge` buckets on the set sha, because a set with an `ai`
+class changes how the AI plays.
+
+**Why an engine patch rather than a hint.** Altar of Dementia in Edgar is a free outlet:
+its job is to turn a doomed body into a Blood Artist trigger, and the mill is incidental.
+Forge's `MillAi` has no aristocrat path (only `PumpAi` and `CountersPutAi` do), and its
+own targeting gate computes `X` — the sacrificed creature's power — BEFORE any creature is
+chosen, reads 0, and refuses every target. Measured on the hinted 20-game replay: **32 of
+our own permanents went to the graveyard while the Altar sat on the battlefield across six
+games, and it was activated 0 times.** A card hint cannot reach that; a preference alone
+measured nothing.
+
+**What `AILogic$ SacOutlet` does.** Fires when a creature of ours other than the source
+is marked `SacMe` or is one the engine's own `ComputerUtil.shouldSacrificeThreatenedCard`
+says will die this turn and is not dangerous to sacrifice in combat; aims the mill at the
+legal opponent with the thinnest library; any phase, because it is reactive. The cost is
+paid through the engine's normal `SacCost` path, which prefers the THREATENED creature
+before the profile's default fodder — so the Altar hint carries no `AIPreference` on
+purpose. Ten lines of Java, compiled beside the formatter.
+
+**Measured** (same seed, twenty games at standard-v3): see the record tagged
+`-tlbeb0c66d` and the sacrifice table in `docs/gotchas-bench.md`.

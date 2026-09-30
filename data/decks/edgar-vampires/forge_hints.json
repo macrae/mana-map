@@ -36,6 +36,15 @@
       "cites": [
         "log 006"
       ]
+    },
+    {
+      "card": "Altar of Dementia",
+      "ability": "AB$ Mill",
+      "ai_logic": "SacOutlet",
+      "why": "A free outlet: the shipped mill logic computes X from the sacrificed creature's power before any creature is chosen, reads 0 and refuses every target \u2014 32 of our own permanents died while it sat on the battlefield across six games, activated 0 times. SacOutlet (data/forge_patches/MillAi.java) fires when a creature of ours is about to die anyway (the engine's shouldSacrificeThreatenedCard) or is SacMe, aimed at the thinnest library. No AIPreference on purpose: the SacCost path then prefers the THREATENED creature before the profile's default fodder.",
+      "cites": [
+        "log 006"
+      ]
     }
   ]
 }
