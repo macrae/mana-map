@@ -162,7 +162,7 @@ tests/                # pytest suite; counts in docs/testing.md. Markers in
                       # `-m browser` needs playwright + chromium
 data/                 # artifacts; mostly gitignored, viz-served files tracked
   pods/               # THE NAMED TABLES `--pod <name>` resolves against (pods.py);
-                      #   seven tracked JSON files, each a set of seats and its
+                      #   nine tracked JSON files, each a set of seats and its
                       #   calibration. standard-v3 is the default
   opponents/          # THE SEATS a pod is built from, for `simulate --vs`, from
                       #   EDHREC's average deck (`fetch-opponent`) or authored; tracked
