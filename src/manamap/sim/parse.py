@@ -349,6 +349,80 @@ def _aim(per, owner, ev, seats):
             per[seat]["interaction_received"] += 1
 
 
+HAND_LIMIT = (
+    "HAND FACTS (`per_seat[*].hand`, `seats[*].hand`) are read from the telemetry patch's "
+    "zone lines (sim/telemetry.py, 2026-09-30): every card entering or leaving a hand, "
+    "by name and owner, so hand size at the end of each own turn and the cards still held "
+    "at the end are EXACT. library_to_hand counts every Library -> Hand move from turn 1 "
+    "on (the natural draw, cantrips, tutors and wheels alike; the opening deal and "
+    "mulligans are before turn 1 and excluded). missed_land_drops_with_land_in_hand is "
+    "a FLOOR: a card in hand is recognised as a land only if SOME seat played it as one "
+    "somewhere in this run, so a land nobody ever played is invisible to it. Present only "
+    "on records played under the patched formatter; a plain record has no `hand` key.")
+
+
+def hand_facts(events, seats):
+    """Per-seat hand facts from owner-bearing zone events, or {} when the log carries
+    none — the shipped formatter's log has no Hand lines at all, so a plain record
+    gets NO key rather than a zero, and every record written before the telemetry
+    patch stays byte-identical under re-analysis.
+
+    The hand is the set of card ids that moved INTO Hand and have not moved out. The
+    deal and the mulligans happen before `Turn: Turn 1`, so `library_to_hand` counts
+    from turn 1 and the hand's contents at turn 1 are the kept seven (or six, or five).
+    A land drop is a `Land:` line; the land predicate is the set of names any seat
+    played as a land in this game's events, which is a floor and is labelled one.
+    """
+    if not any(ev.get("kind") == "zone" and ev.get("owner") for ev in events):
+        return {}
+    hand = {s: {} for s in seats}
+    arrived = {s: {} for s in seats}          # id -> turn it entered hand
+    lib_to_hand = {s: 0 for s in seats}
+    land_turns = set()
+    land_names = {ev["card"] for ev in events if ev.get("kind") == "land"}
+    end_size = {s: {} for s in seats}
+    end_lands = {s: {} for s in seats}
+    cur_turn, cur_active = None, None
+
+    def close_turn():
+        if cur_active in hand and cur_turn:
+            end_size[cur_active][cur_turn] = len(hand[cur_active])
+            end_lands[cur_active][cur_turn] = any(n in land_names for n in hand[cur_active].values())
+
+    for ev in events:
+        t = ev.get("turn")
+        if t != cur_turn:
+            close_turn()
+            cur_turn, cur_active = t, ev.get("active")
+        k = ev.get("kind")
+        if k == "land" and ev.get("seat") in hand:
+            land_turns.add((ev["seat"], t))
+        elif k == "zone" and ev.get("owner") in hand:
+            s = ev["owner"]
+            if ev["to"] == "Hand":
+                hand[s][ev["id"]] = ev["card"]
+                arrived[s].setdefault(ev["id"], t or 0)
+                if ev["from"] == "Library" and (t or 0) >= 1:
+                    lib_to_hand[s] += 1
+            elif ev["from"] == "Hand":
+                hand[s].pop(ev["id"], None)
+    close_turn()
+    out = {}
+    for s in seats:
+        own = sorted(end_size[s])
+        no_drop = [t for t in own if (s, t) not in land_turns]
+        out[s] = {
+            "library_to_hand": lib_to_hand[s],
+            "end_of_turn_size": {t: end_size[s][t] for t in own},
+            "empty_own_turns": sum(1 for t in own if end_size[s][t] == 0),
+            "own_turns_without_land_drop": len(no_drop),
+            "missed_land_drops_with_land_in_hand": sum(1 for t in no_drop if end_lands[s][t]),
+            "hand_at_end": sorted(({"card": n, "since": arrived[s].get(i, 0)} for i, n in hand[s].items()),
+                                  key=lambda d: (d["since"], d["card"])),
+        }
+    return out
+
+
 def game_facts(g, commanders=None):
     """Per-game facts. `commanders` maps a Forge seat label to that seat's commander
     name(s); pass it and the seat gains a per-defender commander-damage tally, omit it
@@ -656,6 +730,10 @@ def game_facts(g, commanders=None):
         p["life_by_turn"] = dict(sorted(p["life_by_turn"].items()))
         d = p["combat_damage_dealt_to_players"]
         p["token_damage_share"] = round(p["token_combat_damage_to_players"] / d, 3) if d else None
+    # THE HAND, where the log carries it (telemetry only; see hand_facts).
+    for s, h in hand_facts(g["events"], seats).items():
+        if s in per:
+            per[s]["hand"] = h
     # THE OPENING HAND, WHICH WAS MEASURED AND THROWN AWAY. `g["mulligan"]` has
     # been parsed since the parser existed and `compact()` drops it, so the
     # figure reached the game dict and no further. Both halves ride in `per_seat`
@@ -1009,6 +1087,30 @@ def _cumulative_by_round(facts, labels, nseats):
     return curve
 
 
+def _hand_block(ps):
+    """The seat's hand facts across games, or nothing at all when no game carried
+    them — the same absent-means-absent rule the per-game key keeps."""
+    hs = [p["hand"] for p in ps if p.get("hand")]
+    if not hs:
+        return {}
+    by_turn = defaultdict(list)
+    for h in hs:
+        for t, n in h["end_of_turn_size"].items():
+            by_turn[int(t)].append(n)
+    held = Counter(c["card"] for h in hs for c in h["hand_at_end"])
+    return {"hand": {
+        "games": len(hs),
+        "library_to_hand": mean_ci([h["library_to_hand"] for h in hs]),
+        "empty_own_turns": mean_ci([h["empty_own_turns"] for h in hs]),
+        "own_turns_without_land_drop": mean_ci([h["own_turns_without_land_drop"] for h in hs]),
+        "missed_land_drops_with_land_in_hand": mean_ci([h["missed_land_drops_with_land_in_hand"] for h in hs]),
+        "end_of_turn_size_by_turn": {t: round(sum(v) / len(v), 2) for t, v in sorted(by_turn.items())},
+        # WHAT THE SEAT WAS STILL HOLDING WHEN THE GAME ENDED, by how many games — the
+        # exact answer to `engine_casts`'s inferred "held and never cast".
+        "held_at_end": [{"card": c, "games": n} for c, n in held.most_common(12)],
+    }}
+
+
 def aggregate(facts, slug_label, label, commanders=None):
     """`facts` is a list of game_facts; `slug_label` the Forge seat label of OUR deck;
     `label` maps Forge seat labels to slugs; `commanders` seat label -> commander name(s)."""
@@ -1124,6 +1226,7 @@ def aggregate(facts, slug_label, label, commanders=None):
             "attackers_declared": mean_ci([p.get("attackers_declared", 0) for p in ps]),
             "attackers_blocked": mean_ci([p.get("attackers_blocked", 0) for p in ps]),
             "first_attack_turn": mean_ci([p["first_attack_turn"] for p in ps]),
+            **_hand_block(ps),
             "tokens": {
                 "token_resolutions": mean_ci([p["token_resolutions"] for p in ps]),
                 "tokens_observed": mean_ci([p["tokens_observed"] for p in ps]),
@@ -1261,6 +1364,12 @@ def aggregate(facts, slug_label, label, commanders=None):
         "903.10a and is excluded here too. The block is ABSENT when the seat's commander "
         "is unknown, because the log never names one.",
     ]
+    # UNDER THE TELEMETRY PATCH the sentence above is no longer true, and the record
+    # says so — only then, so every record written under the shipped formatter keeps
+    # its limits byte for byte and re-analyses identically.
+    if any(p.get("hand") for f in facts for p in f["per_seat"].values()):
+        out["limits"] = [HAND_LIMIT if l.startswith("Card advantage, tutoring and recursion are ABSENT")
+                         else l for l in out["limits"]]
     return out
 
 

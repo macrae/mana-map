@@ -930,10 +930,19 @@ written and `validate_sim` refuses a block whose count is zero. It is NOT a buck
 in `net_change.forge` and NOT excluded from a pod's null: the control showed the games
 are the same games, and the tag exists so two runs of one configuration under two jars
 are two paths and a reader knows whether a record's draw facts are measured or absent.
-What is still DERIVABLE rather than PUBLISHED: the draw facts themselves — cards drawn,
-turns with an empty hand, missed land drops by name, draw-engine uptime, `held` measured
-— which need a parser pass over the new lines and a catalog move in the same commit. The
-spike's scripts and logs are in the session scratchpad (`telemetry/noise_floor.py`,
+**The hand, read exactly** (`parse.hand_facts`, same day). A record played under the
+patch carries `analysis.seats[*].hand`: `library_to_hand` from turn 1 on (the deal and
+the mulligans are before turn 1 and excluded — the control game reads 6 for the seat on
+the play and 7 for the draw, one per own turn), `end_of_turn_size` per own turn,
+`empty_own_turns`, `own_turns_without_land_drop`, `missed_land_drops_with_land_in_hand`
+(a FLOOR: a card in hand is a land only if some seat played it as one in the run), and
+`hand_at_end` with the turn each card arrived — which is `engine_casts`'s inferred
+"held and never cast" made exact: goblin-storm kept Goblin Bombardment and Great Train
+Heist in its opening hand and still held both at turn fourteen. A plain record has no
+`hand` key and its `limits` sentence about card advantage is unchanged, so every record
+on disk re-analyses to the same bytes; a patched record's `limits` says what the hand
+facts are and what the floor is. Still not answered: draw-engine UPTIME, which needs a
+predicate for "repeatable draw source" over the arrivals now logged. The spike's scripts and logs are in the session scratchpad (`telemetry/noise_floor.py`,
 `telemetry/one_game.py`, `noise_floor.json`).
 
 ## Artifacts and where they live

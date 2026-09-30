@@ -71,9 +71,14 @@ ENGINES = ("forge", "goldfish", "both", None)
 #: THE MEASUREMENT THAT DECIDES HALF THIS FILE, kept as a constant so an entry
 #: citing it cannot drift from the number. From a 100-game pod run.
 FORGE_ZONE_LIMIT = (
-    "Forge logs exactly two zone transitions — Battlefield to Graveyard and "
-    "Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` "
-    "lines and ZERO `to Battlefield` lines. No parser change recovers this.")
+    "Forge's SHIPPED log has exactly two zone transitions — Battlefield to Graveyard and "
+    "Battlefield to Exile (measured on a 100-game pod run: ZERO `from Library` lines). "
+    "Under the telemetry patch (sim/telemetry.py, 2026-09-30) every zone change is "
+    "logged by name and owner, and a record played under it carries "
+    "`analysis.seats[*].hand`: library_to_hand, empty_own_turns, "
+    "own_turns_without_land_drop, missed_land_drops_with_land_in_hand (a FLOOR — a land "
+    "is recognised only if some seat played it in the run), end_of_turn_size_by_turn and "
+    "held_at_end. A plain record has no `hand` key: absent, never zero.")
 
 
 def _m(group, definition, status, engine, source, absent=None, caveat=None):
@@ -177,8 +182,10 @@ CATALOG = {
         None,
         absent="Neither engine tracks whether a draw source is ON the battlefield "
                "and active. The goldfish prices draw as it fires rather than "
-               "modelling a permanent's uptime, and Forge never logs a permanent "
-               "ARRIVING. " + FORGE_ZONE_LIMIT),
+               "modelling a permanent's uptime; Forge's shipped log never logs a "
+               "permanent ARRIVING, and under the telemetry patch arrivals are logged "
+               "but nothing yet says which permanent is a repeatable draw source. "
+               + FORGE_ZONE_LIMIT),
 
     # ── Board ───────────────────────────────────────────────────────────────
     "bodies by turn": _m(
