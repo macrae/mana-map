@@ -75,8 +75,12 @@ public class EffectAi extends SpellAbilityAi {
         }
         final Combat combat = game.getCombat();
         final PhaseHandler ph = game.getPhaseHandler();
+        // LETHAL OR NEAR IT, not Forge's Fog threshold: measured on an eight-game shell, the
+        // `lifeInDanger` test cast it nine times on ordinary unblocked attacks and twice on a
+        // wrath. A card that phases out the whole board is spent on the swing that would
+        // otherwise end the game, or leave us at two.
         if (combat != null && ph.getPlayerTurn().isOpponentOf(ai) && ph.is(PhaseType.COMBAT_DECLARE_BLOCKERS)
-                && ComputerUtilCombat.lifeInDanger(ai, combat)) {
+                && ComputerUtilCombat.lifeThatWouldRemain(ai, combat) <= 2) {
             return new AiAbilityDecision(100, AiPlayDecision.WillPlay);
         }
         return new AiAbilityDecision(0, AiPlayDecision.CantPlayAi);
