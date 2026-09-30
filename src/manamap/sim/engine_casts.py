@@ -213,6 +213,16 @@ def from_record(rec, deck_names=None, engine=None):
     # MEASURED, where the record carries the telemetry hand: cards the AI held on
     # castable own turns. Absent (None) on a plain-formatter record.
     out["held_while_castable"] = held_while_castable(rec)
+    # AND SAY SO IN THE READING when a held card is one the plan depends on: a
+    # set-level share can read 126% while three engine cards sit in hand castable
+    # for thirty turns, because the share is over draws and this is over turns.
+    eng_cards = set((out.get("engine") or {}).get("cards") or [])
+    held_engine = [r for r in (out["held_while_castable"] or []) if r["card"] in eng_cards]
+    if held_engine:
+        out["reading"] += (" BUT " + ", ".join(f"{r['card']} sat castable and uncast on {r['castable_uncast']} own turns"
+                                              for r in held_engine[:3])
+                           + (f" (+{len(held_engine) - 3} more)" if len(held_engine) > 3 else "")
+                           + " — measured from the hand, not inferred.")
     return out
 
 
