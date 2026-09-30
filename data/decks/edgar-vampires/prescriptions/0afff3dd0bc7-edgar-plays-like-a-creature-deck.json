@@ -2,5 +2,415 @@
   "slug": "edgar-vampires",
   "id": "0afff3dd0bc7",
   "prompt": "Edgar plays like a creature deck and folds to board wipes; I want life gain / life drain to be the ENGINE, not decoration — damage assigned outside combat through Bloodthirsty Conqueror, Vito and whatever doubles or increases it, and big evasive vampires (flying / lifelink / deathtouch) fast rather than a pile of generic 'vampires get +1/+1 when a creature dies' lords that wait for deaths nobody is causing. Stay bracket 3: NO two-card infinites. What do I cut, what do I add, and what should the sequencing of Vish Kal and Blood Artist be around a wipe? (Captain's log 006, 2026-09-29 at Oliver's.)",
-  "as_of_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6"
+  "as_of_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+  "reading": "The pilot's premise is measured and mostly right: in the 60-game standard-v3 run (V2, two swaps older than the sleeved v1.1.1: Elenda and Blade of the Bloodchief in, Immersturm Predator and Unbounded Potential out) our seat dealt 54.8 combat damage a game (ci95 [38.99, 70.61]) against 3.9 noncombat (ci95 [2.56, 5.24]), gained a MEDIAN of 5 life a game (mean 29.72, one 229-life outlier, ci95 [16.83, 42.6]), and kills landed as damage, not life loss — across all killers the three opponent seats in that run died by damage 85 times and by life loss 13. Read that as a floor, not a verdict: the record's own limits say a Vito or Blood Artist drain is life loss and never appears in a damage total, the Forge AI does not sacrifice for a benefit it cannot price, and it cast Vish Kal 0 times in 60 games; the goldfish cannot see the axis at all because `model_drain` is OFF and 11 drain cards (Vito, Sanguine Bond, Vish Kal, every lifelinker) are DARK to it. The wipe premise is three of six logged games filed `wipe` (001, 002, 006), and the audit's answer is not 'more protection' — protection is 7 copies, AT its 5–7 target, held by turn six in 51.6% of goldfish games, and log 002 records two of them uncast for mana — it is sweepers 0 (target 1–3) and a death-drain component of exactly two cards (Blood Artist, Cruel Celebrant; 37.1% drawn, 25.2% by turn six). The deck has no wipe of its own to make the deaths happen and only two cards that pay when they do. The 'pile of generic lords that wait for deaths' is smaller than the note thinks — enumerated from cards.json, exactly four cards carry a 'when a creature dies' pump trigger (Cordial Vampire, Elenda, Blade of the Bloodchief, Yahenni — Yahenni only on an OPPONENT'S creature) and four static creature lords (Legion Lieutenant, Captivating Vampire, Stromkirk Captain, Lord of Lineage's back face) plus two noncreature anthems (Patchwork Banner, Caretaker's Talent level 3); Elenda is the pilot's own 2026-09-16 add and dies into doubled lifelink tokens, so she is excluded from the cut pool. THE CONSTRAINT IS ALREADY BREACHED ON THE SLEEVED LIST: bracket_report puts the floor at 4 with `two_card_infinite` the signal that forces it, and both lines are checker-passed table-kills (stack 004 Conqueror + Vito, 13 resolutions; stack 006 Conqueror + Sanguine Bond, 13 resolutions). Bloodthirsty Conqueror is the one card common to both — it is the deck's ONLY loss-to-gain converter, so it loops with EVERY gain-to-loss piece (Vito, Bond, and any Cliffhaven Vampire / Marauding Blight-Priest you might add). Honouring 'no two-card infinites' therefore costs exactly one card and the whole class it belongs to: cut Conqueror and `bracket-check` recomputes the floor at 3 with zero infinites (the three Game Changers — Ancient Tomb, Teferi's Protection, Vampiric Tutor — sit at bracket 3's 'up to three' cap); keep him and the floor stays 4 whatever else is swapped. What the cut costs the drain axis: the deck's largest evasive body (one of three cards that enter as a 5-power flyer, with Vish Kal and High-Society Hunter), the 'SURVIVING INFINITE' engine target (assembled 7.8%, 3.4% by turn six — it was never the deck's clock), and the free lifegain half of every drain. What it buys: every gain-to-loss card in the corpus becomes a legal add, so lifelink bodies drain three times over. The two readings are ranked separately below (A: keep the pair, floor 4; B: cut Conqueror, floor 3) — the choice is the pilot's, and this document does not make it. SEQUENCING VISH KAL AND BLOOD ARTIST AROUND A WIPE, from the rules and the log rather than the note's lesson: Blood Artist goes DOWN BEFORE the wipe, not after it. CR 603.10a — leaves-the-battlefield triggers 'look back in time', and the rule's own example is 'Whenever a creature dies, you gain 1 life' surviving a destroy-everything spell and triggering per creature — so Blood Artist dying alongside eleven Vampires triggers twelve times (himself included), each 'target player loses 1 life and you gain 1 life' — twelve points of drain the pilot distributes one target at a time, not twelve off each opponent; the TABLE-wide drain on a wipe is Cruel Celebrant's 'each opponent' (creatures you control), and Bastion's if added. Log 002 is the pilot's recollection of that turn — Artist and Conqueror out, eleven deaths, 'took every opponent for 11' — which cannot be Artist alone and is not a measurement of him; it is evidence that the pieces were on the table BEFORE the wipe, which is the sequencing point. Holding him for after the wipe throws that away; the reason to hold a two-mana Artist is a seat holding counters (Tom, log 001), not the wipe. Vish Kal is the opposite: seven mana with no self-protection, and against a DESTROY wipe sacrificing the team to him changes nothing about the death count (Blood Artist triggers either way) and the counters die with him. His sacrifice ability earns its keep in three cases only — an EXILE wipe (Farewell), a BOUNCE wipe (Cyclonic Rift, which log 001 names at Tom's), or a -X/-X wipe, where sacrificing in response manufactures the deaths the wipe would deny — and as the post-wipe rebuild, when the 'small blockers' the note describes become counters on a 5/5 flying lifelinker that Vito converts. So: Artist early, Vish Kal after the table's first wipe or only with Flawless Maneuver (free with Edgar out) or Boros Charm in hand — which is strategy:resource-hedging.wrath-math's 'keeping the best threat in hand for their second sweeper', and the pilot's own 'played it too early'. The exact stack is routed to resolve-stack below; nothing above is asserted as verified.",
+  "axes_engaged": [
+    {
+      "axis": "sweepers",
+      "verdict": "weakness",
+      "measured": {
+        "value": 0
+      },
+      "reading": "No card carries removal:sweeper. The oracle text shows the function on two cards the taxonomy files elsewhere — Winds of Abandon's overload ({4}{W}{W}, exile each creature you don't control) and Liliana's −4 (each player sacrifices two) — so 0 is a floor — but Winds is one-sided and Liliana's edict costs the pilot two bodies, and neither is a wipe of the pilot's OWN board, which is what a death-drain deck's wipe is for; log 002's best turn was somebody else's wipe with Blood Artist out.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+        }
+      ]
+    },
+    {
+      "axis": "protection",
+      "verdict": "adequate",
+      "measured": {
+        "value": 7
+      },
+      "reading": "At target, and the goldfish holds the five-spell group by turn six in 51.6% of games; log 002 is two of them uncast for mana. The note's 'not a lot of protection' is not what the count says — the shortfall is casting it, and two of the five (Flawless Maneuver, Deflecting Swat) are free with Edgar on the battlefield.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+        }
+      ]
+    },
+    {
+      "axis": "threat-density",
+      "verdict": "adequate",
+      "measured": {
+        "value": 10
+      },
+      "reading": "Ten copies, but enumerated from the audit's list only six carry wincon:drain (Blood Artist, Bloodthirsty Conqueror, Cruel Celebrant, Sanctum Seeker, Sanguine Bond, Vito); Akroma's Will, Boros Charm, Vampire Cutthroat and Vampire Socialite are combat wincons. Three of the six (Conqueror, Bond, Vito) are halves of the checker-passed infinites — Vito is stack 004's other half — and Sanctum Seeker needs an attack. The noncombat drain the pilot wants rests on Blood Artist, Cruel Celebrant and Vito, and under reading B Vito stays because the loop needs Conqueror, not him.",
+      "citations": [
+        {
+          "rule": "strategy:life-as-resource.philosophy-of-fire",
+          "quote": "reach must scale (each-opponent drains, commander damage, damage doublers) or be held as targeted finishing rather than the plan"
+        }
+      ]
+    },
+    {
+      "axis": "card-advantage",
+      "verdict": "weakness",
+      "measured": {
+        "value": 7
+      },
+      "reading": "Under target at 7 with nine uncounted probes (Champion of Dusk, Bloodtracker, Preacher, Castle Locthwain, …). 'Turn eight, nine, ten and not enough cards in hand' recurs in 001, 003 and 006; the goldfish's mean extra cards drawn by turn ten is 2.451. A drain engine that also draws (Twilight Prophet) closes two gaps with one slot.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+        }
+      ]
+    },
+    {
+      "axis": "power",
+      "verdict": "liability",
+      "measured": {
+        "value": 4
+      },
+      "reading": "Floor 4, forced by `two_card_infinite` (Conqueror + Vito, Conqueror + Bond, both at mana value ≤ 6); the three Game Changers alone force only 3. The pilot's 'stay bracket 3' is breached by the sleeved list, and by one card.",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Bracket 3 allows up to three, Brackets 4-5 are unlimited"
+        }
+      ]
+    }
+  ],
+  "log_entries_read": [
+    "001",
+    "002",
+    "004",
+    "005",
+    "006"
+  ],
+  "cut_candidates": [
+    {
+      "card": "Cordial Vampire",
+      "why": "The card the note is describing: '+1/+1 counter on each Vampire you control' whenever any creature dies. In a wipe every counter lands on a creature that is dying in the same event, so it pays only when the pilot sacrifices deliberately — and the goldfish measures 0.447 sacrifices by turn six.",
+      "cost_of_cutting": "One of thirteen two-mana Vampires that fire eminence (the castable-Vampire leg, 94.9% drawn; 13 copies is 64% of an opener, 12 is under that). Stacks 002 and 009 name it. 009 proves the go-wide kill the pilot withdrew on 2026-08-28, whose other pieces (Purphoros, Impact Tremors, Warleader's Call) are out of the 99; 002's board (Procession, Mondrak, Socialite, Cordial) is all still in the 99, but its own text says 'Cordial Vampire triggers only on deaths — nothing dies here', so 002 names it as scenery and does not rest on it. Recon has the lord package, this card included, at 68–86% of Tokens-tagged Edgar lists; that is a fact about token decks.",
+      "orphans_stack": [
+        "002",
+        "009"
+      ],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
+        }
+      ]
+    },
+    {
+      "card": "Stromkirk Captain",
+      "why": "A static +1/+1 and first strike for a {1}{B}{R} pip in the deck's shortest colour (R: 20 sources against a target of 22). The lord leg it belongs to is 'the combat plan' the pilot is trying to leave, and it is seven cards deep (79.9% drawn) — the deepest component in the audit after the castable Vampires.",
+      "cost_of_cutting": "The lord group goes 7 to 6 (41% of openers to 36%); the team loses first strike, which mattered in log 001's 'first strike Edgar' swing. Nothing verified names it.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "5 copies is 31% of openers, 7 is 41% (WitchPHD's 7-of, the singleton 4-of, 41.1%), 10 is 54%"
+        }
+      ]
+    },
+    {
+      "card": "Blade of the Bloodchief",
+      "why": "Merged two weeks ago (v1.1.1) as 'a repeatable counter engine', it is the purest 'wait for a creature to die' card in the 99: one equipped body, counters only on deaths, nothing on the death itself. The ledger's reason was 'a repeatable counter engine for the one-shot' that would 'turn the nine sacrifice outlets into counters' — counters on ONE equipped body, which is the Vish Kal shape the pilot 'played too early' and Forge cast 0 times in 60 games.",
+      "cost_of_cutting": "The pilot's own most recent paper swap, and one of four cards (with Cordial Vampire, Elenda and Yahenni) that grow a body when an opponent's creature dies, without an attack. Nothing verified names it; no goldfish target contains it.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "Value is not a win."
+        }
+      ]
+    },
+    {
+      "card": "Legion Lieutenant",
+      "why": "A vanilla static lord. The counter it grants dies with the board; it does nothing for the drain and nothing on a death.",
+      "cost_of_cutting": "A two-mana {W}{B} Vampire on the castable-Vampire leg and a member of the lord group. Nothing verified names it. THE AGGREGATE, priced once here because every entry above is priced alone: taking all ten paired swaps cuts three castable Vampires (Cordial, Legion, Knight — the leg 13 to 10, 64% of openers to 54%), four of the seven lords (Cordial, Stromkirk, Legion, Drana — 7 to 3, 41% to 20%, which is the combat plan the pilot is leaving), three of the six free outlets (Yahenni, Connoisseur, Altar — 6 to 3, 36% to 20%, which cuts AGAINST 'the engine that makes the deaths happen') and protection 7 to 6; ramp, draw and lands are untouched. The list is ranked: the top four adds' natural cuts (Cordial, Stromkirk, Blade, Legion) cost no outlet, and the outlet cuts are ranked last for that reason. Odds are deck-audit's own hypergeometric over 99 cards.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.ratios",
+          "quote": "Take the categories, derive the counts from the deck's actual failure modes."
+        }
+      ]
+    },
+    {
+      "card": "Drana, Liberator of Malakir",
+      "why": "Counters only on COMBAT DAMAGE to a player, on attacking creatures — the combat plan in one card.",
+      "cost_of_cutting": "A three-mana flying first-strike Vampire body; the lord group 7 to 6. Log 003's direction change named 'lords and payoffs' as the plan, so this cut is arguing with the pilot's September thesis, not just the note.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:life-as-resource.philosophy-of-fire",
+          "quote": "raw cards-to-damage math collapses against ~120 combined life"
+        }
+      ]
+    },
+    {
+      "card": "Knight of the Ebon Legion",
+      "why": "A one-mana combat pump; its counter needs 'a player lost 4 or more life this turn', which the drain does supply, but the body is a 1/2 whose only job is to attack.",
+      "cost_of_cutting": "A one-mana castable Vampire (13 to 12 on the eminence leg) that the Forge AI actually used — cast 14 and activated 11 times in the n60 run, the busiest of the easy cuts and the deck's cheapest turn-one play alongside Cutthroat, Dire Moon, Epicure, Master of Dark Rites, Indulgent Aristocrat and Viscera Seer — seven one-drops, so the turn-one Vampire is not at risk.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "a named card is 7.1% of your opening seven, 10.1% by ten cards seen"
+        }
+      ]
+    },
+    {
+      "card": "Yahenni, Undying Partisan",
+      "why": "Pumps only when an OPPONENT'S creature dies — which this deck causes through spot removal, Elspeth's −3, Liliana's −4, Vish Kal's −1/−1 and combat, none of them the drain's business; her free sacrifice outlet makes herself indestructible and pays nothing to the drain.",
+      "cost_of_cutting": "Protection drops 7 to 6 (still inside 5–7) and the free-outlet group 6 to 5 (72.3% drawn; 36% of openers to 31%). Losing an outlet that survives a destroy wipe is real: she is the one body that can eat the board in response and still be standing.",
+      "orphans_stack": [],
+      "difficulty": "contested",
+      "citations": [
+        {
+          "rule": "strategy:resource-hedging.wrath-math",
+          "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
+        }
+      ]
+    },
+    {
+      "card": "Bloodflow Connoisseur",
+      "why": "A three-mana 1/1 whose only text is 'sacrifice a creature: +1/+1 counter on this' — the weakest of the six free outlets (Viscera Seer does the job for {B}, Vish Kal does it with a payoff) and the counters go on a body no one fears.",
+      "cost_of_cutting": "Free-outlet group 6 to 5, the same 36%→31% opener odds as Yahenni; a Vampire body for eminence at three mana. Nothing verified names it.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+          "quote": "stack the classes you want every game (ramp, draw, removal, enablers), tutor only the irreplaceable"
+        }
+      ]
+    },
+    {
+      "card": "Altar of Dementia",
+      "why": "A free outlet whose payoff is milling — the one 'self-mill package' card log 003 floated and never followed with recursion. Against Oliver's mill deck it duplicates his plan; on the pilot's own board it is Ashnod's Altar without the mana.",
+      "cost_of_cutting": "Free-outlet group 6 to 5 and the deck's only self-mill; interaction reads 11 to 10 only because the taxonomy calls it removal:edict, which it is not. Nothing verified names it.",
+      "orphans_stack": [],
+      "difficulty": "easy",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.threat-density",
+          "quote": "unsynergistic win conditions dilute the list"
+        }
+      ]
+    },
+    {
+      "card": "Bloodthirsty Conqueror",
+      "why": "READING B ONLY. The one card common to both checker-passed infinites and the deck's only loss-to-gain converter, so it is the card that makes any gain-to-loss piece a two-card kill. Cutting him is the entire cost of 'no two-card infinites': bracket-check recomputes the floor at 3 with zero infinites; every other swap in this document leaves it at 4.",
+      "cost_of_cutting": "Both verified table-kills (stacks 004 and 006, 13 resolutions each from a 3-life seed); the 'SURVIVING INFINITE' engine target collapses from 7.8% assembled (3.4% by turn six) to nothing; one of three cards that enter as a 5-power flyer (with Vish Kal and High-Society Hunter) and the only one of those three with deathtouch; and the free lifegain on every point of drain, which is what Vito converts. Under reading A this card is not a cut, and the only add that depends on it is Cliffhaven Vampire.",
+      "orphans_stack": [
+        "004",
+        "006"
+      ],
+      "difficulty": "painful",
+      "citations": [
+        {
+          "rule": "strategy:deckbuilding.power-level",
+          "quote": "Contents give a floor, never a verdict."
+        }
+      ]
+    }
+  ],
+  "add_candidates": [
+    {
+      "card": "Bastion of Remembrance",
+      "closes": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+      "source": "pool",
+      "why": "Rank 1, legal under A and B. A third death drain that is an ENCHANTMENT — of the deck's three death drains (Blood Artist, Cruel Celebrant, and this) it would be the one a creature wipe cannot take with the board — the exact failure log 006 records ('then I'm losing Blood Artist too'). Each opponent loses 1 and you gain 1 per death, and with Vito the gain drains one target again. Bloodletter doubles it only 'during your turn' — so on your own Toxic Deluge, not on an opponent's wipe. Takes the death-drain component from 2 cards (14% of an opener) to 3 (20%). It does not loop with Conqueror — it keys on deaths, not on life loss. Comes with a 1/1 body for eminence-free fodder.",
+      "natural_cut": "Cordial Vampire"
+    },
+    {
+      "card": "Toxic Deluge",
+      "closes": "sweepers",
+      "source": "pool",
+      "why": "Rank 2, legal under A and B. The deck's OWN wipe, so the deaths the note says 'nobody is causing' are caused on the pilot's turn — with Blood Artist, Cruel Celebrant and Bastion out, a Deluge for X is a drain for (bodies × drains) against each opponent, doubled by Bloodletter because it is your turn (stack 003's arithmetic). It pays X life, which is the resource lifelink and Conqueror bank and log 004 says the pilot under-spends. Sweepers 0 to 1. It kills the pilot's own board too; that is the point, and Vish Kal in response turns the board into counters before it goes.",
+      "natural_cut": "Stromkirk Captain"
+    },
+    {
+      "card": "Vein Ripper",
+      "closes": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+      "source": "pool",
+      "why": "Rank 3, legal under A and B, and in pool.txt. The 'big evasive vampire' the note asks for AND a death drain in one card: 6/5 flying (cards.csv), ward—sacrifice a creature, and 'whenever a creature dies, target opponent loses 2 life and you gain 2 life' — ANY creature, so an opponent's wipe or Alex's fight deck drains 2 per body on their turn; Bloodletter's doubling to 4 applies only during your turn, i.e. on your own Deluge or a sacrifice. Six mana is the honest cost on a curve whose modal value is 3; Vish Kal is seven and Forge cast him 0 times in the 60-game run.",
+      "natural_cut": "Blade of the Bloodchief"
+    },
+    {
+      "card": "Twilight Prophet",
+      "closes": "threat-density (wincon:drain) — and the card-advantage gap the taxonomy does not credit it for",
+      "source": "pool",
+      "why": "Rank 4, legal under A and B, in pool.txt. A four-mana 2/4 flying Vampire whose upkeep, with ten permanents (the n60 record's lands mean 7.23, median 7, ci95 [6.65, 7.81]; the goldfish's mean 7.6 bodies by turn six), puts a card in hand AND drains each opponent for its mana value — noncombat drain and card advantage on one slot, the two axes log 006 names together ('runs out of steam' and 'assign damage that is not combat'). Needs no attack, no death and no sacrifice.",
+      "natural_cut": "Legion Lieutenant"
+    },
+    {
+      "card": "Malakir Bloodwitch",
+      "closes": "threat-density (wincon:drain)",
+      "source": "recon",
+      "why": "Rank 5, legal under A and B; recon's Aggro-tag finding names it. Five-mana 4/4 flying, protection from white, and on entry each opponent loses life equal to your Vampire count and you gain that much — the one burst drain that scales with the eminence board the deck already builds (mean bodies 7.6 by turn six), doubled by Bloodletter, and with Vito the gain is drained again. Not a loop on its own; with the pair on board any loss already is.",
+      "natural_cut": "Bloodflow Connoisseur"
+    },
+    {
+      "card": "Falkenrath Noble",
+      "closes": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+      "source": "pool",
+      "why": "Rank 6, legal under A and B. Blood Artist's text on a four-mana flying Vampire: fires eminence and triggers on ANY creature dying — an opponent's wipe, Sharpshooter pinging tokens as in log 004 — for 'target player loses 1 life and you gain 1 life', one target per trigger, undoubled on an opponent's turn. Takes the death-drain component to four cards with Bastion.",
+      "natural_cut": "Yahenni, Undying Partisan"
+    },
+    {
+      "card": "Olivia's Wrath",
+      "closes": "sweepers",
+      "source": "log",
+      "why": "Rank 7, legal under A and B; log 001 records it as the finisher turn on v1.0.0 before the LOCK cut it. A ONE-SIDED wipe — each non-Vampire creature gets -X/-X for X = your Vampires — so it clears Alex's blockers (log 006: 'Alex had indestructible' — -X/-X kills indestructible, which the pilot already values Vish Kal for) while the Vampire board and every drain piece stay. Sweepers to 2 with Deluge. Five mana, and its X is the eminence board, so it is dead in the empty-handed late game the note describes; cast it as the alpha, not the reset.",
+      "natural_cut": "Altar of Dementia"
+    },
+    {
+      "card": "Zulaport Cutthroat",
+      "closes": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+      "source": "pool",
+      "why": "Rank 8, legal under A and B. Cruel Celebrant's text ('whenever this creature or another creature you control dies, each opponent loses 1 life and you gain 1 life') on a two-mana 1/1 — the 'each opponent' wording that drains the table on a wipe, where Blood Artist and Falkenrath Noble pick one target per trigger. Not a Vampire, so no eminence token; with Bastion and Noble it takes the death-drain component from two cards to five.",
+      "natural_cut": "Drana, Liberator of Malakir"
+    },
+    {
+      "card": "Cliffhaven Vampire",
+      "closes": "threat-density (wincon:drain)",
+      "source": "pool",
+      "why": "Rank 9 and READING B ONLY — combo_details.json lists Bloodthirsty Conqueror + Cliffhaven Vampire as a two-card infinite, and `bracket.assess` on the 99 plus Cliffhaven returns it as a third contained line — so under reading A this card is forbidden by the pilot's own constraint. Under B it is a third gain-to-loss converter beside Vito and Sanguine Bond: a four-mana 2/4 flying Vampire, 'whenever you gain life, each opponent loses 1 life', so a lifelink hit drains Vito's target for the amount and every opponent for 1, and the floor stays at 3.",
+      "natural_cut": "Bloodthirsty Conqueror"
+    },
+    {
+      "card": "Exsanguinate",
+      "closes": "threat-density (wincon:drain)",
+      "source": "pool",
+      "why": "Rank 10, legal under A and B. A two-mana X spell that is a noncombat kill at any mana total — each opponent loses X, doubled by Bloodletter on your turn, the gain converted by Vito — and the late-game sink log 006 describes needing ('turn eight, nine, ten' with mana and no threat). One card, no board required, no attack into an indestructible blocker.",
+      "natural_cut": "Knight of the Ebon Legion"
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "Vish Kal, Blood Artist and Cruel Celebrant on the battlefield with six Vampires; an opponent casts (a) a destroy-all wipe, (b) Cyclonic Rift overloaded, (c) Farewell exiling creatures. In response the pilot sacrifices every other creature to Vish Kal. Per case: how many Blood Artist / Cruel Celebrant triggers fire, whether sacrificing changes the count against the destroy wipe (the reading above says it does not), how many counters Vish Kal holds, and whether he survives with and without Flawless Maneuver.",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The sequencing answer in the reading rests on CR 603.10a's look-back and on the bounce/exile distinction; a checker-passed board makes it a procedure the handbook can print instead of a doctor's reading."
+    },
+    {
+      "question": "Set `model_drain: true` in goldfish_targets.json (the same commit as any swap), so the eleven DARK drain cards — Vito, Sanguine Bond, Vish Kal, the lifelinkers, Crossway Troublemakers — are priced, and report life gained, life drained and noncombat damage by turn on the current list before and after the swaps. Which of the pilot's four asked-for measures ('life gained and life drained over the span of a game', 'damage assigned through Bloodthirsty Conqueror and Vito and anything that doubles it', 'average creature size', 'big scary vampires fast') does the model then produce, and which remain DARK?",
+      "settled_by": "goldfish",
+      "why_it_matters": "Every drain figure in this document is Forge's, on a list two cards older than the sleeved one, from an AI that never sacrifices and never cast Vish Kal. The goldfish is the instrument that can price a swap on this axis cheaply and on the current list — Forge reads life gained and lost only as a floor — and today it cannot see the axis at all."
+    },
+    {
+      "question": "Bloodthirsty Conqueror + Cliffhaven Vampire: combo_details.json's by_card index lists it as a two-card infinite (Conqueror has twelve two-card partners there) and `bracket.assess` on the 99 plus Cliffhaven returns it as a contained line and the loop has the shape stack 006 verified (Bond's 'target opponent loses that much' against Cliffhaven's 'each opponent loses 1'). Is it deterministic and unbounded on the same terms, and does the mandatory 'each opponent' make it a table-kill with no choice to stop?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "It is the reason Cliffhaven is ranked under reading B only; if the loop is not a kill the card is legal under A as well."
+    },
+    {
+      "question": "Which of the nine adds ranked under both readings actually move life drained and kill-by-turn-8 on this list under Forge against standard-v3, with the paired cuts applied — and does cutting Conqueror (reading B) cost a measurable share of the 0.413 win rate (ci95 [0.283, 0.557], n=60) it was measured with?",
+      "settled_by": "goldfish",
+      "why_it_matters": "A branch with `--objective` is the falsifiable form of this prescription; the objective should be an OUTPUT (damage or kill-by-turn), never an engine-membership axis, per the 2026-08-28 rule."
+    }
+  ],
+  "gaps": [
+    "No candidate_pool.json exists for this deck; every `source: pool` add came from `card-search --deck edgar-vampires` over the corpus (Commander-legal, in identity, not in the 99 by construction) and pool.txt names only Vein Ripper and Twilight Prophet among them. Ownership was not checked and is not a criterion.",
+    "The sim figures are from the two standard-v3 runs on V2 (7ce22fd6…), which differs from the sleeved v1.1.1 by the elenda-v1 swap (Elenda and Blade of the Bloodchief in, Immersturm Predator and Unbounded Potential out). No run exists on the current list. Both runs are floors on a sacrifice deck: the record's own limits say a drain is life loss and never a damage figure, and the AI does not sacrifice for a benefit its evaluator cannot price.",
+    "The goldfish has no reading of life gained or drained on this deck: `model_drain` is OFF and eleven cards are DARK to it. No measured rate in this document is a goldfish drain figure; the proposed edit is an open question, not applied.",
+    "How much the real pods wipe is not measured: standard-v3 wiped in 26.7% of games (ci95 [0.171, 0.39], n=60) while three of six logged games are filed `wipe`. The pilot's tables appear to wipe more than the pod; a `fetch-opponent` seat for Oliver's or Alex's decks would make that a number.",
+    "The ranking under reading A versus reading B differs on exactly one add (Cliffhaven Vampire) and one cut (Bloodthirsty Conqueror); the other nine adds and nine cuts are identical under both. Ten adds is the cap, so Teysa Karlov, Kalastria Highborn, Wound Reflection, Debt to the Deathless and Whip of Erebos were considered and ranked out — Teysa because she doubles death triggers and closes no axis or component the audit measures.",
+    "Exquisite Blood is excluded under BOTH readings: it is a loss-to-gain converter and loops with Vito (stack 001) and with Sanguine Bond (stack 005). Marauding Blight-Priest and Defiant Bloodlord are excluded under reading A for the same reason as Cliffhaven Vampire (combo_details.json lists Blight-Priest + Conqueror as an infinite, and `bracket.assess` on the 99 plus Blight-Priest returns it as a contained line)."
+  ],
+  "skeptic": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "where": "open_questions[3]",
+        "status": "supported",
+        "note": "Closed: now reads 'the nine adds ranked under both readings', matching gaps[4] and the add list (every add except Cliffhaven Vampire). Third pass re-checked that nothing else moved: cuts, adds, axes values, the reading's 'two swaps older' and 'triggers twelve times', Ripper 6/5, Zulaport, the Legion Lieutenant aggregate and ratios citation, Prophet's [6.65, 7.81], Cliffhaven's combo_details source, the Blade ledger quote, stack 002's own text, Knight's 14/11, 'Three of the six', and Bloodletter's 'during your turn' scoping on Bastion, Ripper and Noble are all present as verified in the second review; validate-prescription OK; as_of sha 7be137d0 == decklist.txt. The only remaining 'seven adds' string is inside the merged `skeptic` block quoting the earlier finding, not in the doctor's text."
+      },
+      {
+        "where": "add_candidates[2]",
+        "status": "supported",
+        "note": "Vein Ripper now 6/5 per cards.csv; opponent-wipe drain priced at 2 with Bloodletter's 'during your turn' scoping stated correctly. Legal, mono-B, wincon:drain, in pool.txt, completes no infinite with the 99 under A or B."
+      },
+      {
+        "where": "add_candidates[0]",
+        "status": "supported",
+        "note": "Bastion: 'each opponent' (creatures you control), Bloodletter 'only during your turn — so on your own Toxic Deluge, not on an opponent's wipe' matches the oracle; 2→3 cards = 13.8%→19.9% of openers; no loop with Conqueror (keys on deaths)."
+      },
+      {
+        "where": "add_candidates[5]",
+        "status": "supported",
+        "note": "Falkenrath Noble: 'target player', one target per trigger, undoubled on an opponent's turn — matches oracle. {3}{B} 2/2 flying Vampire, legal."
+      },
+      {
+        "where": "add_candidates[7]",
+        "status": "supported",
+        "note": "Zulaport Cutthroat replaces Teysa: cards.csv {1}{B} Creature — Human Rogue Ally 1/1, 'Whenever this creature or another creature you control dies, each opponent loses 1 life and you gain 1 life'; card_pool flags Commander-legal, identity B; card_roles wincon:drain, so the `closes` target's any_of can hold it. Not a Vampire, as stated. bracket.assess on the 99 + Zulaport: still the same two lines, no new infinite. Death-drain 2→5 with Bastion and Noble is arithmetic on the named three; with Vein Ripper it is six, which the entry does not claim."
+      },
+      {
+        "where": "add_candidates[8]",
+        "status": "supported",
+        "note": "Re-ran bracket.assess on the 99 + Cliffhaven Vampire: 3 contained combos, third is Conqueror + Cliffhaven (bracket 3) — the source is now combo_details.json and the assess call, both as stated. Same for + Marauding Blight-Priest (gaps[5]). Conqueror has 12 two-card infinite partners in by_card."
+      },
+      {
+        "where": "add_candidates[3]",
+        "status": "supported",
+        "note": "Twilight Prophet: lands mean 7.23, median 7, ci95 [6.65, 7.81] — the n60 record's analysis.seats block, now with interval and N; goldfish bodies 7.6 by turn six; 2/4 flying Vampire, ascend at ten permanents per oracle."
+      },
+      {
+        "where": "reading",
+        "status": "supported",
+        "note": "Sequencing corrected: Blood Artist 'triggers twelve times (himself included)', 'target player' one at a time, table drain attributed to Cruel Celebrant's 'each opponent' (creatures you control), and log 002 read as recollection that 'cannot be Artist alone' — evidence the pieces were down BEFORE the wipe, which is the point. CR 603.10a fetched; the rule's example is quoted faithfully. 'Two swaps older' matches versions.json (+2/−2) and decisions.jsonl ('two swaps the pilot settled'). Every Forge figure (54.8 [38.99, 70.61]; 3.9 [2.56, 5.24]; life_gained mean 29.72 / median 5 / max 229 / [16.83, 42.6]; kills 85 damage / 13 life loss; Vish Kal cast 0; 0.413 [0.283, 0.557] n=60; wipes 0.267 [0.171, 0.39] from the seat block) equals the record. model-coverage: model_drain OFF, 11 DARK. Bracket claim re-run: 99 minus Conqueror → floor 3, 0 combos, 3 Game Changers; all ten reading-B swaps → floor 3, 0 contained combos; reading A with the nine shared adds → floor 4, the same two lines only. Conqueror remains the only loss-to-gain converter in cards.json."
+      },
+      {
+        "where": "axes_engaged[2]",
+        "status": "supported",
+        "note": "Now 'three of the six (Conqueror, Bond, Vito) are halves of the checker-passed infinites — Vito is stack 004's other half'; six wincon:drain / four wincon:combat per card_roles matches the audit's ten. The other four axes' measured values equal today's deck-audit (0, 7, 7, 4) and their readings match the values; all eight strategy quotes remain verbatim and in-context."
+      },
+      {
+        "where": "cut_candidates[3]",
+        "status": "supported",
+        "note": "Legion Lieutenant: critical-mass citation replaced by deckbuilding.ratios ('Take the categories, derive the counts from the deck's actual failure modes', verbatim). The aggregate is priced and correct: castable 13→10 = 63.9%→53.7%, lords 7→3 (Cordial, Stromkirk, Legion, Drana) = 41.2%→19.9%, outlets 6→3 (Yahenni, Connoisseur, Altar) = 36.4%→19.9%, protection 7→6 — hypergeometric over 99 in seven. The top four natural cuts (Cordial, Stromkirk, Blade, Legion) are indeed no outlets, and the three outlet cuts are ranked 6/8/9 of ten."
+      },
+      {
+        "where": "cut_candidates[0]",
+        "status": "supported",
+        "note": "Cordial: stack 002 now described from its own text ('Cordial Vampire triggers only on deaths — nothing dies here'; board Procession, Mondrak, Socialite, Cordial all still in the 99) and 009 as the withdrawn go-wide kill whose other pieces are out — both as the stack files read. orphans_stack [002, 009] is correct; 0.447 sacrifices by turn six matches goldfish_metrics."
+      },
+      {
+        "where": "cut_candidates[2]",
+        "status": "supported",
+        "note": "Blade: the ledger is now quoted verbatim ('a repeatable counter engine for the one-shot', 'turn the nine sacrifice outlets into counters') and the Vish Kal link is stated as the doctor's reading of the shape, not as the ledger's reason. Merged 2026-09-16 = two weeks."
+      },
+      {
+        "where": "cut_candidates[5]",
+        "status": "supported",
+        "note": "Knight of the Ebon Legion: cost now carries 'cast 14 and activated 11 times in the n60 run' — engine_casts.by_card agrees — and the seven one-drop creatures enumerated match cards.json."
+      },
+      {
+        "where": "cut_candidates[9]",
+        "status": "supported",
+        "note": "Conqueror, painful: stacks 004 and 006 both checker pass, 13 resolutions each from a 3-life seed; SURVIVING INFINITE 0.078 / 0.034 by turn six; the three 5-power flyers are the only ones in cards.json and Conqueror alone has deathtouch."
+      },
+      {
+        "where": "cut_candidates[1,4,6,7,8]",
+        "status": "supported",
+        "note": "Unchanged and re-checked: R sources 20/22 (mana_analysis); lord 7→6 = 41%→36%; outlets 6→5 = 36%→31%; Yahenni protection:self so 7→6; Altar removal:edict so interaction 11→10; Elspeth −3 / Liliana −4 / Vish Kal's −1/−1 as opponent-creature death causes; Drana's counters on combat damage only."
+      },
+      {
+        "where": "log_entries_read",
+        "status": "supported",
+        "note": "Annotations 001, 002, 004, 005, 006 say what the reading says; log_causes files 001, 002, 006 as `wipe`."
+      },
+      {
+        "where": "gaps",
+        "status": "supported",
+        "note": "Teysa's exclusion is now stated with its reason (closes no measured axis or component); Blight-Priest/Bloodlord sourced to combo_details.json and bracket.assess, both verified above; pool.txt names exactly Vein Ripper and Twilight Prophet among the adds."
+      }
+    ]
+  }
 }
