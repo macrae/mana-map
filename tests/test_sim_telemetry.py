@@ -81,6 +81,8 @@ def test_an_unregistered_class_is_the_only_refusal(jars):
     _write_patched(home, b"somebody else's bytes")
     with pytest.raises(tl.EngineMismatch):
         tl.installed(home)
+    with pytest.raises(tl.EngineMismatch):
+        tl.jar_for_run(home)
 
 
 def test_an_ai_class_in_the_set_is_named_in_the_fingerprints_kinds(jars, tmp_path, monkeypatch):
@@ -98,8 +100,6 @@ def test_an_ai_class_in_the_set_is_named_in_the_fingerprints_kinds(jars, tmp_pat
     fp = tl.installed(home)
     assert fp["kinds"] == ["ai", "log"] and len(fp["classes"]) == 2
     assert fp["sha"] != tl.set_sha([(tl.CLASS_ENTRY, tl._sha(b"patched bytes"))]), "the set moved"
-    with pytest.raises(tl.EngineMismatch):
-        tl.jar_for_run(home)
 
 
 def test_the_fingerprint_reads_the_jar_not_the_repo(jars):
