@@ -6943,11 +6943,11 @@
     "release": "v1.3.0"
   },
   "record": {
-    "games": 6,
-    "win": 2,
+    "games": 7,
+    "win": 3,
     "loss": 4,
     "draw": 0,
-    "last_played": "2026-09-10",
+    "last_played": "2026-09-29",
     "first_played": "2026-08-22",
     "undebriefed": [],
     "causes": {
@@ -6956,12 +6956,13 @@
       "003": "politics",
       "004": "politics",
       "005": "mana-drought",
-      "006": "won"
+      "006": "won",
+      "007": "won"
     },
     "cause_counts": {
       "mana-drought": 2,
       "politics": 2,
-      "won": 2
+      "won": 3
     }
   },
   "model": {
@@ -7498,6 +7499,21 @@
       "from": "log:006",
       "question": "Both logged wins (002, 006) are ones the pilot describes as closing from off the radar after the table ground itself down or an opponent misplayed, and 006's first lesson is 'Dorks first: stay quiet, telegraph less.' Is a quiet-then-close plan something the current 99 supports — a board that can present lethal from a low profile — or is the deck only winning when an opponent hands it the game?",
       "settled_by": "diagnose"
+    },
+    {
+      "from": "log:007",
+      "question": "Firespitter Whelp cast with Panharmonicon and Miirym, Sentinel Wyrm on the battlefield: how many Whelps end up on the board, does Panharmonicon add anything to the Whelp's 'whenever you cast a noncreature or Dragon spell' trigger, and how much damage does each subsequent Dragon cast deal to each opponent? The note counts 'three Whelps with doubled triggers — six, twelve damage every time I cast a dragon'.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:007",
+      "question": "How often does the deck have both a discount (Urza's Incubator, or eminence alone) and a five-colour dork (Faeburrow Elder or Bloom Tender) in play by turn four, so that The Ur-Dragon is castable on turn five as it was here?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:007",
+      "question": "Does one turn-seven steamroll at Oliver's change the standing read of the deck's losses? The log now stands 3W 4L with causes filed as politics twice, mana-drought twice, and the pilot's instruction is 'Leave this deck alone'.",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -7590,7 +7606,7 @@
   "next": [
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
-    "open questions routed: diagnose ×5, goldfish ×10, research-strategy ×6, resolve-stack ×8",
+    "open questions routed: diagnose ×6, goldfish ×11, research-strategy ×6, resolve-stack ×9",
     "6 versions and no experiment — `experiment ur-dragon --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

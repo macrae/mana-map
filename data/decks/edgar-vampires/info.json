@@ -4564,11 +4564,11 @@
     "release": "v1.1.1"
   },
   "record": {
-    "games": 5,
+    "games": 6,
     "win": 0,
     "loss": 5,
     "draw": 0,
-    "last_played": "2026-09-15",
+    "last_played": "2026-09-29",
     "first_played": "2026-08-22",
     "undebriefed": [],
     "causes": {
@@ -4576,13 +4576,14 @@
       "002": "wipe",
       "003": "stalled",
       "004": "combo",
-      "005": "raced"
+      "005": "raced",
+      "006": "wipe"
     },
     "cause_counts": {
       "combo": 1,
       "raced": 1,
       "stalled": 1,
-      "wipe": 2
+      "wipe": 3
     }
   },
   "model": {
@@ -4945,9 +4946,15 @@
     "stale": []
   },
   "prescriptions": {
-    "count": 0,
+    "count": 1,
     "answered": 0,
-    "latest": null
+    "latest": {
+      "id": "0afff3dd0bc7",
+      "prompt": "Edgar plays like a creature deck and folds to board wipes; I want life gain / life drain to be the ENGINE, not decoration — damage assigned outside combat through Bloodthirsty Conqueror, Vito and whatever doubles or increases it, and big evasive vampires (flying / lifelink / deathtouch) fast rather than a pile of generic 'vampires get +1/+1 when a creature dies' lords that wait for deaths nobody is causing. Stay bracket 3: NO two-card infinites. What do I cut, what do I add, and what should the sequencing of Vish Kal and Blood Artist be around a wipe? (Captain's log 006, 2026-09-29 at Oliver's.)",
+      "adds": 0,
+      "cuts": 0,
+      "skeptic": null
+    }
   },
   "open_questions": [
     {
@@ -5064,6 +5071,36 @@
       "from": "log:005",
       "question": "How is mid-range aggro supposed to sequence against a Purphoros-style ETB deck that races on triggers rather than combat — attack it first, hold back, or answer the enchantment? The pilot's read is 'Purphoros is the natural predator for mid-range aggro', from one game.",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:006",
+      "question": "The pilot's constraint is 'stay bracket 3 — no two-card infinites', but deck-facts lists two two-card infinites fully contained in the current 99 — Bloodthirsty Conqueror + Vito, Thorn of the Dusk Rose and Bloodthirsty Conqueror + Sanguine Bond — and both are checker-passed (stacks 004 and 006); engine.json files Conqueror under `wincon` as a priced single point of failure. Is the constraint already breached on the list as sleeved, and what does honouring it cost the drain axis the pilot wants to lead with?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:006",
+      "question": "With Vito on the board, what would 'a 12/12 flying lifelink with Vish Kal' have done on the momentum turn — attacking a seat without indestructible creatures, or attacking Alex after Vish Kal's -1/-1 counters (which the pilot says 'gets around indestructible') cleared a blocker? The note gives Alex at 'about seven life' and 'indestructible creatures' but not the exact board, so the scenario needs the pilot to supply it or a sim-board of the same shape.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:006",
+      "question": "Can the goldfish report what the pilot asked to have measured — 'life gained and life drained over the span of a game, damage assigned through Bloodthirsty Conqueror and Vito and anything that doubles or increases it', plus 'average creature size' and how fast 'big scary vampires' with 'flying / lifelink / deathtouch' arrive — on the current list, and which of those channels are DARK for this deck?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:006",
+      "question": "Which cards in the 99 are the 'generic \"every vampire gets +1/+1 when a creature dies\" cards' the pilot says 'are not helping much', and what in the current conversion stage is 'the engine that makes the deaths happen'? engine.json's `conversion` stage lists ten outlets including Vish Kal; the note says the pump-on-death cards are waiting on deaths that do not come.",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:006",
+      "question": "The deck is 'eating board wipe after board wipe' on a list whose engine.json `protection` stage holds five cards; the pilot says 'there is not a lot of protection'. Does that suite reach the board the deck actually builds, and what is the rebuild after a wipe — the note says it comes back fast but 'small', 'nothing threatening'?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:006",
+      "question": "When the table's consensus target ('The table was all focused on the right person') is the one seat whose board the deck cannot attack into ('Alex had indestructible'), does the strategy literature say to follow the table, redirect the attack, or hold the threat back — and how does a lifelink/drain deck weigh that against a mill and a graveyard deck at the same table?",
+      "settled_by": "research-strategy"
     }
   ],
   "simulation": {
@@ -5171,7 +5208,8 @@
     ]
   },
   "next": [
-    "open questions routed: diagnose ×7, goldfish ×4, research-strategy ×5, resolve-stack ×7"
+    "1 open prescription(s) — `/prescribe edgar-vampires` runs the doctor ⇄ skeptic loop",
+    "open questions routed: diagnose ×10, goldfish ×5, research-strategy ×6, resolve-stack ×8"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

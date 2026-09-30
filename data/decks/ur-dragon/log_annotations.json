@@ -519,6 +519,126 @@
           "why_it_matters": "005's open question asks whether the telegraph is a property of the list or a deployment habit; 006 adds the first win on the quiet line, so the doctor now has both outcomes to read against the same mechanism"
         }
       ]
+    },
+    "007": {
+      "summary": "Four-player at Oliver's on 29 September, second game of the night (Sean, Oliver, Ryan, Alex), played on the current list: the entry's sha 99419d5b… matches decklist.txt exactly, so every card the note names is in the 99 as it stands. A win the pilot calls 'the best game of Magic I have ever played', closed 'on turn six or seven'. The pilot's own account of why: Faeburrow Elder early, then Urza's Incubator, and 'two discounts off plus tapping the Elder for a bunch of mana got me to seven' — The Ur-Dragon on turn five, 'exactly the mana ramp we built'. With no haste, a Dragon already on the board (the note does not name it) attacked, the commander's attack trigger drew a card and put Miirym onto the battlefield from hand, and by turn six the pilot was 'tapping for ten mana'. He then talked Ryan into leaving the commander alone, over Alex's and Oliver's objections, which the note attributes to Ryan doubting the deck's ability to close. The closing turn as the pilot reads it: Firespitter Whelp with Panharmonicon 'doubling the trigger' and Miirym 'doubling the Whelp on entry', giving 'three Whelps with doubled triggers — six, twelve damage every time I cast a dragon'; Alex died first, 'a couple of spells' drained the rest, and the board of 4/4 flyers went unanswered. ONE READING FLAG, not a correction: the note's Whelp count and per-cast damage are the pilot's arithmetic at the table. The printed texts in cards.json — Miirym copies 'another nontoken Dragon you control' as it ENTERS, Panharmonicon adds a trigger when 'an artifact or creature entering causes a triggered ability' to trigger, and the Whelp's trigger is 'Whenever you CAST a noncreature or Dragon spell' — do not obviously reach that count, and the only checker-passed doubling in stacks/ (002) proves Panharmonicon doubling Miirym on a Lathliss ENTERING, with no cast trigger on the board. The closing turn's damage is filed under open_questions for resolve-stack rather than read either way here. The pilot's verdict, verbatim: 'Leave this deck alone.'",
+      "opponents": [
+        {
+          "seat": "Ryan",
+          "archetype": null,
+          "commander": null,
+          "evidence": "I politicked Ryan into not removing the Ur-Dragon and not killing me"
+        },
+        {
+          "seat": "Alex",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Killed Alex super fast"
+        },
+        {
+          "seat": "Oliver",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Alex and Oliver told him he was being stupid for that"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Faeburrow Elder",
+          "read": "over",
+          "why": "'out early' and the mana that landed the commander: 'tapping the Elder for a bunch of mana got me to seven' — the pilot calls it 'basically a Bloom Tender'"
+        },
+        {
+          "card": "Urza's Incubator",
+          "read": "over",
+          "why": "the second piece of the ramp turn: 'Two discounts off' put The Ur-Dragon on turn five"
+        },
+        {
+          "card": "The Ur-Dragon",
+          "read": "over",
+          "why": "'came in on turn five. A nine-drop on turn five is exactly the mana ramp we built'; its attack trigger then drew a card and 'put a permanent from hand onto the battlefield: Miirym'"
+        },
+        {
+          "card": "Miirym, Sentinel Wyrm",
+          "read": "over",
+          "why": "entered free off the commander's attack trigger and 'doubled everything — a 6/6 flyer'; credited with 'doubling the Whelp on entry'"
+        },
+        {
+          "card": "Panharmonicon",
+          "read": "over",
+          "why": "'Panharmonicon doubling the trigger' on the closing turn — the pilot's count of that doubling is an open question, its impact on the game is not"
+        },
+        {
+          "card": "Firespitter Whelp",
+          "read": "over",
+          "why": "'one damage to each opponent on a dragon cast', multiplied by the pilot's reading to 'six, twelve damage every time I cast a dragon' — it and 'a couple of spells to drain the rest' were the kill"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "turn six, The Ur-Dragon and Miirym on board and ten mana up, no haste yet: spend the turn deploying into an open table, or hold the mana and negotiate — the pilot asked Ryan to leave the commander alone, and Ryan agreed 'because he doubts my ability to close'",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "the closing turn: with Firespitter Whelp, Panharmonicon and Miirym on board or in hand, what order to cast them so that the Whelp's per-Dragon damage is largest — the pilot says he 'sequenced things perfectly'; the spread should wait for the resolve-stack answer on what the sequence actually produces",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "Leave this deck alone — the pilot's own closing instruction, on a win closed on turn six or seven.",
+        "A five-colour dork plus a cost reducer is the ramp the build was designed for: Faeburrow Elder and Urza's Incubator together put a nine-drop commander on turn five and ten mana on turn six.",
+        "The commander's attack trigger is the answer to its own lack of haste: a Dragon already on board attacks, the trigger draws and puts Miirym onto the battlefield for free.",
+        "The pilot's own caveat stands beside his verdict: 'If the deck could do that consistently it would be a tier-four deck; it is definitely a three, optimized' — one game says nothing about consistency.",
+        "The note attributes Ryan leaving the commander alone to doubt about the deck's ability to close; this table has now watched it close, and the same request may not be granted twice."
+      ],
+      "engine_stages": [
+        "mana",
+        "ignition",
+        "conversion",
+        "output"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Miirym, Sentinel Wyrm",
+            "Panharmonicon"
+          ],
+          "status": "verified",
+          "stack_artifact": "stacks/002-miirym-panharmonicon-doubling.json"
+        },
+        {
+          "cards": [
+            "Firespitter Whelp",
+            "Panharmonicon",
+            "Miirym, Sentinel Wyrm"
+          ],
+          "status": "needs a stack scenario"
+        },
+        {
+          "cards": [
+            "The Ur-Dragon",
+            "Miirym, Sentinel Wyrm"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Firespitter Whelp cast with Panharmonicon and Miirym, Sentinel Wyrm on the battlefield: how many Whelps end up on the board, does Panharmonicon add anything to the Whelp's 'whenever you cast a noncreature or Dragon spell' trigger, and how much damage does each subsequent Dragon cast deal to each opponent? The note counts 'three Whelps with doubled triggers — six, twelve damage every time I cast a dragon'.",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "the closing turn's whole damage rests on this count; stack 002 proves Panharmonicon doubles Miirym's copy on an ENTERING Dragon but has no cast trigger on its board, and the printed texts do not obviously reach three Whelps"
+        },
+        {
+          "question": "How often does the deck have both a discount (Urza's Incubator, or eminence alone) and a five-colour dork (Faeburrow Elder or Bloom Tender) in play by turn four, so that The Ur-Dragon is castable on turn five as it was here?",
+          "settled_by": "goldfish",
+          "why_it_matters": "the pilot's bracket read hinges on it — 'If the deck could do that consistently it would be a tier-four deck' — and one game cannot say whether turn-five commander is a ceiling or a mode"
+        },
+        {
+          "question": "Does one turn-seven steamroll at Oliver's change the standing read of the deck's losses? The log now stands 3W 4L with causes filed as politics twice, mana-drought twice, and the pilot's instruction is 'Leave this deck alone'.",
+          "settled_by": "diagnose",
+          "why_it_matters": "the pilot's verdict would freeze the list; whether the two politics losses and two mana-drought losses are addressed by what won here, or merely absent from this game, is the question that decides whether freezing is right"
+        }
+      ]
     }
   }
 }
