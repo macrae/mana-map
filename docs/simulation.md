@@ -909,16 +909,32 @@ for every card rather than inferred from expected draws, and a hand the bridge n
 longer has to estimate — which is what `line-finder` (Phase D2) needs to reason from a
 known hand.
 
-**What productionising must do**, none of it done yet: detect the jar the way
-`forge_pilot.installed()` detects card overrides (pristine class sha → no telemetry;
-the declared patched sha → a fingerprint; anything else → refuse); carry `-tl<sha8>` in
-the run id and a `telemetry {sha, lines}` block in the record, form-checked by
-`validate_sim`; track the `.java` and the class sha under `data/forge_patches/`; add the
-new facts to `parse.py` and move the catalog rows above from DERIVABLE to PUBLISHED with
-their definitions; and keep telemetry runs OUT of a pod's null until the null has been
-re-run under the same jar, because a null is a property of the instrument as well as
-the table. The spike's scripts and logs are in the session scratchpad
-(`telemetry/noise_floor.py`, `telemetry/one_game.py`, `noise_floor.json`).
+**The owner, added before it shipped.** The zone line names the card and not its
+owner, and the parser's owner map is learned from cast and land lines — blind to
+exactly the cards that are drawn and never cast. So the patch appends ` owner
+Ai(1)-mm-goblin-storm` to every zone line (a suffix; the shipped caption is intact and
+`parse.RX["zone"]` takes it as an optional group). The same single-game control was
+re-run on that build: the same one differing line, and 87 of 87 zone lines carry an owner.
+
+**Productionised the same day** (`sim/telemetry.py`, `manamap pilot forge-telemetry`).
+`data/forge_patches/` tracks the `.java` and a manifest — the Forge version, the pristine
+class sha, the source sha, and every registered patched class sha (javac output differs
+between JDKs, so a build elsewhere registers its own sha rather than failing against this
+one's). `telemetry.installed()` reads the class out of the patched jar beside the
+pristine one and answers with the three states card scripts answer with: no jar or
+Forge's own class → a plain run; a registered sha → the fingerprint; anything else →
+`simulate` and `experiment` REFUSE before a JVM starts. A run under the patched jar
+carries `-tl<sha8>` in its id and a `telemetry {sha, class, source_sha, jar, lines}` block
+in its record, where `lines` counts the zone lines the shipped formatter would not have
+written and `validate_sim` refuses a block whose count is zero. It is NOT a bucket axis
+in `net_change.forge` and NOT excluded from a pod's null: the control showed the games
+are the same games, and the tag exists so two runs of one configuration under two jars
+are two paths and a reader knows whether a record's draw facts are measured or absent.
+What is still DERIVABLE rather than PUBLISHED: the draw facts themselves — cards drawn,
+turns with an empty hand, missed land drops by name, draw-engine uptime, `held` measured
+— which need a parser pass over the new lines and a catalog move in the same commit. The
+spike's scripts and logs are in the session scratchpad (`telemetry/noise_floor.py`,
+`telemetry/one_game.py`, `noise_floor.json`).
 
 ## Artifacts and where they live
 

@@ -1,0 +1,20 @@
+{
+  "class": "forge/game/GameLogFormatter.class",
+  "pristine_sha": "0422df35b1e1",
+  "source_sha": "5a407ce4e20d",
+  "patched_shas": [
+    "fe64c50348a1"
+  ],
+  "builds": [
+    {
+      "sha": "fe64c50348a1",
+      "at": "2026-09-30",
+      "javac": "javac 21.0.9"
+    }
+  ],
+  "note": "One method patched: GameLogFormatter.visit(GameEventCardChangeZone) logs every zone change, with the owner appended. Measured purely observational on 2026-09-30 (docs/simulation.md, the telemetry patch). A build on another JDK produces another class sha:  registers it here.",
+  "forge": {
+    "version": "2.0.14",
+    "build": "2026-08-08 22:49:26"
+  }
+}

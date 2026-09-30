@@ -46,6 +46,8 @@ PILOT_STEPS = [
      "Form-check pilot_policy.json: every rule named, reasoned, and keyed on a channel the simulator computes"),
     ("forge-install", "manamap.sim.forge_pilot",
      "Install the tracked card-script overrides into Forge and VERIFY the engine carries them — the provenance a run record stamps"),
+    ("forge-telemetry", "manamap.sim.telemetry",
+     "The patched log formatter (every zone change, by name and owner): what the repo declares, what the jar carries, --build to compile it"),
     ("metrics", "manamap.metrics",
      "The metrics catalog: one definition per figure, which engine answers it, and what is unavailable and why"),
     ("build", "manamap.pilot.autobuild",
@@ -905,6 +907,12 @@ def add_pilot_parser(subparsers):
                                   "ones. Refuses any card whose targeting line is "
                                   "SP$ CopyPermanent, because CopyPermanentAi never "
                                   "reads AITgts$ — a hint the engine cannot act on")
+        if name == "forge-telemetry":
+            cmd.add_argument("--build", action="store_true",
+                             help="compile data/forge_patches/GameLogFormatter.java "
+                                  "against the pristine jar and write the patched copy "
+                                  "beside it (needs javac 21+). A new class sha is "
+                                  "registered in the manifest — commit it")
         if name == "decisions":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "show", "outcome", "backfill", "adopt-policy"],

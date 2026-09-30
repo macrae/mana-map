@@ -82,6 +82,15 @@ only home of the `game_changer` column (WotC's Game Changers list, via Scryfall)
 
 The `.gitignore` mechanics matter here: `data/*` blanket-ignores, `!data/decks/` and `!data/strategy/` re-include those directories (trailing slash load-bearing), and then two sets are re-ignored individually — the three derived strategy-DB files, and the transient per-deck dirs: `data/decks/*/.agent-out/` (agent scratchpads), `sim/logs/` (raw Forge games, exactly regenerable when seeded) and `sim/scenarios/` (lifted boards awaiting a question). `!data/opponents/` re-includes the pod.
 
+## Forge patches (`data/forge_patches/`, tracked)
+
+| file | producer | consumers |
+|---|---|---|
+| `GameLogFormatter.java` | hand-patched from Forge 2.0.14's source: `visit(GameEventCardChangeZone)` logs every zone change with the owner appended (see `sim/telemetry.py`) | `forge-telemetry --build` compiles it against the pristine jar |
+| `manifest.json` | `forge-telemetry --build` — the Forge version, the pristine class sha, the source sha, every registered patched class sha with its javac | `telemetry.installed()` (three states: plain / installed / refuse), stamped into run records as `telemetry` and into run ids as `-tl<sha8>` |
+
+The patched jar itself (`~/.mana-map/forge/forge-gui-desktop-<v>-mm-telemetry.jar`) is built, not tracked, like the engine.
+
 ## Consistency invariant
 
 `projection[i]`, `embeddings[i]`, and `cards.csv[i]` all refer to the same card by **position**. Never partially regenerate after the card count changes — re-run the pipeline from the changed step onward (see `docs/pipeline.md`). The integration tests (`tests/test_pipeline_integration.py`) assert cross-artifact count consistency.

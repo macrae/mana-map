@@ -248,7 +248,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (113 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (114 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
@@ -298,6 +298,16 @@ manamap pilot simulate <slug> --pod standard-v3 --games N
                               # `--list` labels every run with the VERSION it
                               # played and `NOT the current list` where it is not.
 manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/opponents/
+manamap pilot forge-telemetry [--build]                 # THE PATCHED LOG FORMATTER. Forge's shipped log
+                              # keeps two zone transitions; one patched method logs EVERY
+                              # zone change by name and owner (draws, tutors, mills, wheels,
+                              # arrivals). Measured purely observational 2026-09-30: pristine
+                              # twice and patched once on a quiet machine differ on the
+                              # millisecond line only. The jar is a COPY beside the pristine
+                              # one; `simulate`/`experiment` use it when it is there and
+                              # stamp `-tl<sha8>` + a `telemetry` block; a class the manifest
+                              # does not register REFUSES the run. Not a bucket axis, not
+                              # excluded from a null — the games are the same games.
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
 manamap pilot sim-findings <slug> --write   # THE SIM DEBRIEF'S SKELETON (sim_findings.json):
                               # per run, findings with ids, intervals and sources. Prose is

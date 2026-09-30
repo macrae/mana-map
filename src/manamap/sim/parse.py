@@ -65,7 +65,10 @@ RX = {
     "noblock":   re.compile(r"^(?:Combat: )?" + _SEAT + r" didn't block " + _PERM),
     "damage":    re.compile(r"^Damage: " + _PERM + r" deals (\d+) (combat |non-combat )?damage(?: \((\w+)\))? to (.+?)\.?$"),
     "life":      re.compile(r"^Life: Life: " + _SEAT + r" (-?\d+) > (-?\d+)"),
-    "zone":      re.compile(r"^Zone Change: " + _PERM + r" was put into (\w+) from (\w+)"),
+    # `(?: owner (\S+))?` is the telemetry patch's suffix (sim/telemetry.py): absent on a
+    # shipped-jar log, present on every zone line of a patched one. Optional, so the
+    # regex matches both and a reader that ignores it is unchanged.
+    "zone":      re.compile(r"^Zone Change: " + _PERM + r" was put into (\w+) from (\w+)\.?(?: owner (\S+))?"),
     "outcome_t": re.compile(r"^Game Outcome: Turn (\d+)"),
     "won":       re.compile(r"^Game Outcome: " + _SEAT + r" has won (?:because|due to) (.*)$"),
     "lost":      re.compile(r"^Game Outcome: " + _SEAT + r" has lost because (.*)$"),
@@ -302,7 +305,10 @@ def _event(line, g):
         return {"kind": "life", "seat": m.group(1), "from": int(m.group(2)), "to": int(m.group(3))}
     m = RX["zone"].match(line)
     if m:
-        return {"kind": "zone", "card": m.group(1), "id": m.group(2), "to": m.group(3), "from": m.group(4)}
+        ev = {"kind": "zone", "card": m.group(1), "id": m.group(2), "to": m.group(3), "from": m.group(4)}
+        if m.group(5):
+            ev["owner"] = m.group(5)           # telemetry only; absent means the shipped log
+        return ev
     return None
 
 

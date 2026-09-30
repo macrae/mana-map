@@ -61,9 +61,36 @@ def _card_overrides_errors(rec):
     return errors
 
 
+def _telemetry_errors(rec):
+    """The log formatter a record CLAIMS, checked for internal sense — the
+    `card_overrides` rule: absent or None is a plain run and fine; a block must be
+    comparable (a 12-hex class sha, the class entry, a line count that is a count)."""
+    got = rec.get("telemetry")
+    if got is None:
+        return []
+    if not isinstance(got, dict):
+        return [f"telemetry is {type(got).__name__}, not an object"]
+    errors = []
+    for key in ("sha", "class"):
+        if key not in got:
+            errors.append(f"telemetry has no {key!r} — a formatter stamp that cannot be "
+                          f"compared is not provenance")
+    sha = got.get("sha")
+    if sha is not None and not re.fullmatch(r"[0-9a-f]{12}", str(sha)):
+        errors.append(f"telemetry.sha {sha!r} is not a 12-hex digest")
+    lines = got.get("lines")
+    if lines is not None and (not isinstance(lines, int) or lines < 0):
+        errors.append(f"telemetry.lines {lines!r} is not a count")
+    if lines == 0:
+        errors.append("telemetry.lines is 0 — a run stamped as patched whose logs carry no "
+                      "new zone line was not played under the patched formatter")
+    return errors
+
+
 def validate(rec, slug, logs_text=None):
     errors = []
     errors += _card_overrides_errors(rec)
+    errors += _telemetry_errors(rec)
     missing = REQUIRED - set(rec)
     if missing:
         return [f"missing keys {sorted(missing)}"]

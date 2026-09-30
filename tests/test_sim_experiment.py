@@ -44,6 +44,7 @@ def repo(tmp_path, monkeypatch):
     # installed card-script fingerprint into the id (an axis of the harness);
     # a test's id must not depend on what happens to be installed here.
     monkeypatch.setattr(ex, "card_overrides", lambda: None)
+    monkeypatch.setattr(ex, "telemetry_for_run", lambda plain=False: (None, None))
     _git(root, "init", "-q")
     (deck / "decklist.txt").write_text(V1)
     _git(root, "add", "."); _git(root, "commit", "-q", "-m", "v1")
@@ -381,6 +382,7 @@ def _sequential(repo, monkeypatch, wins, **kw):
     monkeypatch.setattr(ex, "install_named", lambda meta, text: meta)
     monkeypatch.setattr(ex, "install_deck", lambda o: f"mm-{o}")
     monkeypatch.setattr(ex, "card_overrides", lambda: None)
+    monkeypatch.setattr(ex, "telemetry_for_run", lambda plain=False: (None, None))
     monkeypatch.setattr(ex, "forge_version", lambda: "test")
     monkeypatch.setattr(ex, "_java_version", lambda: "test")
     monkeypatch.setattr(ex._pods, "record_for", lambda name, opps: {"name": name, "named": bool(name)})

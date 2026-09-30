@@ -36,11 +36,12 @@ from manamap.pilot.common import deck_dir, load_json
 from manamap.pilot import deck_versions as dv
 from manamap.sim import parse as sim_parse
 from manamap.sim import stats
+from manamap.sim import telemetry as _telemetry
 from manamap.sim.forge import (ASSUMPTIONS, DEFAULT_PROFILE, FORGE_AI_CAVEAT,
                                card_overrides,
                                STANDARD_POD_PROFILE, TIMEOUT_FLOOR, TIMEOUT_SLACK,
                                _commanders_by_slug, _java_version, _profiles_for,
-                               _seat_label, ai_profile_tag, clock_tag,
+                               _seat_label, ai_profile_tag, clock_tag, telemetry_tag,
                                command, commanders_from_text, forge_jar,
                                forge_version, install_deck, install_named,
                                default_jobs, overrides_tag, profile_tag, seat_sha,
@@ -110,9 +111,15 @@ def resolve_arm(slug, ref):
             "decklist_text": text, "decklist_sha256": v["decklist_sha256"]}
 
 
+def telemetry_for_run(plain=False):
+    """The jar and the formatter fingerprint this experiment runs under. A named
+    seam so a unit test can pin it, as the fixture pins `card_overrides`."""
+    return _telemetry.jar_for_run(plain=plain)
+
+
 def experiment_id(slug, a, b, opponents, games, seed,
                   profile=None, vs_profile=None, clock=None, overrides_sha=None,
-                  ai_sha=None, looks=1, aa=False, profile_b=None):
+                  ai_sha=None, looks=1, aa=False, profile_b=None, telemetry_sha=None):
     """The artifact's name, and — since it is also its identity — its receipt.
 
     THE PROFILES ARE IN IT FOR THE REASON `forge.profile_tag` GIVES: the digest
@@ -135,7 +142,7 @@ def experiment_id(slug, a, b, opponents, games, seed,
     return (f"{_safe(a['ref'])}-vs-{_safe(b['ref'])}-x-{'-'.join(opponents)}"
             f"-n{games}-{digest}-s{seed}"
             + profile_tag(profile, vs_profile) + _clock_tag(clock)
-            + overrides_tag(overrides_sha) + ai_profile_tag(ai_sha)
+            + overrides_tag(overrides_sha) + ai_profile_tag(ai_sha) + telemetry_tag(telemetry_sha)
             + (f"-bme{profile_b}" if profile_b else "")
             + ("-aa" if aa else "")
             + (f"-k{looks}" if looks and looks > 1 else ""))
@@ -496,9 +503,18 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         ov = card_overrides()          # the engine's fingerprint, or None
     except Exception:                  # noqa: BLE001 — a checkout with no Forge
         ov = None
+    # THE LOG FORMATTER, the same way: the patched jar when it is installed and
+    # registered, refused before launch when it is neither, and in the id either way.
+    try:
+        jar, tl = telemetry_for_run()
+    except _telemetry.EngineMismatch as exc:
+        raise SystemExit(f"{slug}: {exc}") from exc
+    except Exception:                  # noqa: BLE001 — a checkout with no Forge
+        jar, tl = None, None
     eid = experiment_id(slug, a, b, opponents, games, seed, profile, vs_profile,
                         clock=clock, overrides_sha=(ov or {}).get("sha"),
-                        looks=looks, aa=aa, profile_b=profile_b)
+                        looks=looks, aa=aa, profile_b=profile_b,
+                        telemetry_sha=(tl or {}).get("sha"))
     out_dir = deck_dir(slug) / EXP_DIR
     path = out_dir / f"{eid}.json"
     # THE LOOKS DIVIDE THE GAMES INTO WHOLE JOBS, or the design is refused. A
@@ -562,7 +578,7 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
                                  "schedule": schedule, "until_mde": until_mde,
                                  "jobs_per_wave": jobs}}
 
-    jar = forge_jar()
+    jar = jar or forge_jar()
     names_a = install_named(f"mm-x-{slug}-a", a["decklist_text"])
     names_b = install_named(f"mm-x-{slug}-b", b["decklist_text"])
     opp_names = [install_deck(o) for o in opponents]
@@ -643,6 +659,7 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
                         profiles, profiles_b, clock, wall, ov, bad, analysis_a, analysis_b,
                         games_a, games_b, looks, boundary, bounds, schedule, until_mde,
                         jobs, aa, looks_out, status, pod_name)
+        doc["telemetry"] = tl        # the formatter both arms flew under, beside card_overrides
         out_dir.mkdir(exist_ok=True)
         path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
         if status != "running":

@@ -516,6 +516,19 @@ def ai_profile_tag(sha=None):
     return f"-ai{sha[:8]}" if sha else ""
 
 
+def telemetry_tag(sha=None):
+    """The run-id suffix for a run played under the patched log formatter, or "".
+
+    NOT an axis that changes a figure — the control in docs/simulation.md showed the
+    games are the same games — but an axis that changes which figures EXIST: a record
+    with `-tl` carries every zone change by name and owner, one without carries two. So
+    two runs of one configuration under the two jars are two paths, and a reader of the
+    id knows whether the draw facts are measured or absent. Empty at the default, so
+    every record on disk keeps its name.
+    """
+    return f"-tl{sha[:8]}" if sha else ""
+
+
 def overrides_tag(sha=None):
     """The run-id suffix for an overridden engine, or "".
 
@@ -548,15 +561,15 @@ def overrides_tag(sha=None):
 
 
 def run_id(slug, opponents, games, seed=None, profile=None, vs_profile=None, clock=None,
-           overrides=None, ai_profile=None):
+           overrides=None, ai_profile=None, telemetry=None):
     seed = default_seed(slug, opponents) if seed is None else int(seed)
     return (f"{'-vs-'.join(opponents)}-n{games}-{config_digest(slug, opponents)}"
             f"-s{seed}{profile_tag(profile, vs_profile)}{clock_tag(clock)}"
-            f"{overrides_tag(overrides)}{ai_profile_tag(ai_profile)}")
+            f"{overrides_tag(overrides)}{ai_profile_tag(ai_profile)}{telemetry_tag(telemetry)}")
 
 
 def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock,
-               overrides=None, ai_profile=None):
+               overrides=None, ai_profile=None, telemetry=None):
     """The run id a given configuration WILL write, before anything runs.
 
     A function because two callers need the answer and neither should re-derive
@@ -567,7 +580,7 @@ def run_id_for(slug, opponents, games, seed, profile, vs_profile, clock,
     """
     pod = vs_profile or STANDARD_POD_PROFILE
     return run_id(slug, opponents, games, seed, profile,
-                  pod_tag_name(pod, opponents), clock, overrides, ai_profile)
+                  pod_tag_name(pod, opponents), clock, overrides, ai_profile, telemetry)
 
 
 def default_jobs():
@@ -866,7 +879,7 @@ def _profiles_for(rotation, subject, profile, pod):
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
         seed=None, force=False, dry_run=False, home=None, decks_dir=None,
-        profile=None, vs_profile=None, pod_name=None):
+        profile=None, vs_profile=None, pod_name=None, plain_jar=False):
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
@@ -915,8 +928,17 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     # two knob values under one profile name would have collided again on the flag path
     # while being distinct on the policy path.
     _ai = _fpl.profile_content_sha(profile) if profile else None
+    # THE LOG FORMATTER IS PART OF THE INSTRUMENT TOO. The patched jar beside the
+    # pristine one logs every zone change by name and owner; `telemetry.installed`
+    # answers with the same three states card scripts do, and the third refuses here,
+    # before a JVM starts, for the same reason `require_agreement` does above.
+    from manamap.sim import telemetry as _tl
+    try:
+        jar, _tlfp = _tl.jar_for_run(home, plain=plain_jar)
+    except _tl.EngineMismatch as exc:
+        raise SystemExit(f"{slug}: {exc}") from exc
     rid = run_id_for(slug, opponents, games, seed_base, profile, vs_profile, clock, _ov,
-                     _ai)
+                     _ai, (_tlfp or {}).get("sha"))
     out_dir = _out_dir(slug)
     log_dir = out_dir / "logs" / rid
     record_path = out_dir / f"{rid}.json"
@@ -926,7 +948,6 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                          f"same name (the seed fixes the shuffle, not the games; see "
                          f"SEEDED_NOTE). Pass --seed N for a separate sample, or "
                          f"--force to replace it.")
-    jar = forge_jar(home)
     # THE POD IS PART OF THE INSTRUMENT. `--profile` set only OUR seat and left
     # every opponent on Default, so the table could never be made to play
     # differently — and a win rate is relative to the pod's competence as much
@@ -1093,6 +1114,10 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         # THE INSTRUMENT INCLUDES ITS OVERRIDES. Absent -> None, so every record
         # made before this exists is unchanged.
         "card_overrides": card_overrides(),
+        # AND ITS LOG FORMATTER. None for a plain run, so every earlier record is
+        # unchanged; a fingerprint plus the count of zone lines the shipped formatter
+        # would not have written — the receipt that the telemetry reached the log.
+        "telemetry": ({**_tlfp, "lines": _tl.count_new_lines(texts)} if _tlfp else None),
         "clock_seconds": clock,
         "wall_seconds": wall, "nonzero_exit_jobs": sum(1 for _, rc in results if rc),
         # THE DENOMINATOR IS DECIDED GAMES, and `truncated` is beside it so the

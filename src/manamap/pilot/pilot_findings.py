@@ -221,6 +221,7 @@ def skeleton(slug, run_ids=None, boards_for=None):
                     "games": rec.get("games_completed"),
                     "decided": (rec.get("summary") or {}).get("decided"),
                     "harness": {"card_overrides": (rec.get("card_overrides") or {}).get("sha"),
+                                "telemetry": (rec.get("telemetry") or {}).get("sha"),
                                 "profile": ((rec.get("profiles") or ["Default"])[0]) or "Default",
                                 "clock": rec.get("clock_seconds"),
                                 "forge": (rec.get("engine") or {}).get("forge")},
