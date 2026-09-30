@@ -40,6 +40,24 @@ prints any flagged card a live deck has since acquired; a fleet test refuses one
 overrides change the fingerprint like any other: a run under them is `-ov<sha>` and is
 never pooled with a run made without.
 
+## `forge_hints.json` — PER-DECK CARD HINTS (2026-09-30)
+
+A deck may declare, in `data/decks/<slug>/forge_hints.json`, the two hint kinds Forge's
+own aristocrat scripts use: `ai_logic` (appended as `| AILogic$ …` to the one ability
+line whose API prefix the hint names — `carrion_feeder.txt` puts `AristocratCounters` on
+its sacrifice ability) and `ai_preference` (`SVar:AIPreference:<kind>$<selector>`, placed
+before the Oracle line — `SacCost$Creature.token,Creature.Other+cmcLE2` says what the AI
+may feed the cost). Each hint says `why` and what it `cites`. `validate-forge-hints`
+refuses a card not in the 99, a hint with nothing to hint, or an ability prefix that
+matches zero or several lines; `forge-install --generate` derives the override onto the
+shipped script (or its unflag override) and refuses a line that already carries a
+different `AILogic$`. Idempotent over its own output. These land in the same fingerprint
+as everything else. Measured first on Edgar: under the unflagged engine Vish Kal, Viscera
+Seer and Altar of Dementia were cast and then sat 9, 5 and 17 own turns on the battlefield
+with zero activations — the shipped scripts give the AI no logic and no preference for the
+sacrifice cost. The knob half lives in `pilot_policy.json` (`SACRIFICE_DEFAULT_PREF_ENABLE`,
+off in `Default.ai`), as a rule with a `forge` verb that explains the key it sets.
+
 ## ELEVEN SPELLS, NOT FIFTEEN — WHAT CANNOT BE STEERED
 
 The deck's four token-copy spells — **Molten Duplication, Heat Shimmer,

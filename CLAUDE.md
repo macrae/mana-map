@@ -298,6 +298,13 @@ manamap pilot simulate <slug> --pod standard-v3 --games N
                               # `--list` labels every run with the VERSION it
                               # played and `NOT the current list` where it is not.
 manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/opponents/
+manamap pilot validate-forge-hints <slug>               # forge_hints.json: per-card AILogic / AIPreference
+                              # hints derived onto the shipped scripts (the shape Forge's own
+                              # aristocrat cards use), plus a `forge` rule in pilot_policy.json
+                              # for the AiProps knobs. `forge-install --generate` installs
+                              # both; the record's card_overrides / ai_profile shas say so.
+                              # Measured 2026-09-30: an unflagged outlet is CAST and then sits
+                              # idle — `idle_on_battlefield` names it — until it is hinted.
 manamap pilot forge-telemetry [--build]                 # THE PATCHED LOG FORMATTER. Forge's shipped log
                               # keeps two zone transitions; one patched method logs EVERY
                               # zone change by name and owner (draws, tutors, mills, wheels,

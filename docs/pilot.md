@@ -2014,3 +2014,24 @@ authored: `ur-dragon/engine.json` names v1.0.2 four times and the pilot's own
 `log.jsonl` — append-only — narrates "v1.0.1 added lands and fixing; v1.0.2
 swapped the mana density". Retiring those names would leave the pilot's own
 record pointing at nothing, to tidy a number.
+
+
+## Per-deck Forge hints and the sacrifice knob (2026-09-30)
+
+`data/decks/<slug>/forge_hints.json` — `{"hints": [{"card", "ability", "ai_logic",
+"ai_preference": {kind: selector}, "why", "cites"}]}` — declares, per card, the two hint
+kinds Forge's own aristocrat scripts carry: an `AILogic$` on one named ability line and an
+`SVar:AIPreference:<kind>$<selector>` line. `validate-forge-hints <slug>` is the gate;
+`forge-install --generate` derives each override onto the shipped script (or its unflag
+override), idempotently, and the fingerprint moves with it. A `pilot_policy.json` rule may
+now be a **`forge` rule** — `{"id", "why", "forge": {KEY: value}}` — which explains AiProps
+keys the document's `forge` section sets and needs no goldfish channel; `forge-install`
+compiles the section into `res/ai/mm-<slug>.ai` and `simulate` flies our seat on it.
+
+Why both exist: under the unflagged engine (`data/forge_overrides/unflag.txt`) Edgar's
+Vish Kal, Viscera Seer and Altar of Dementia were finally CAST and then sat 9, 5 and 17
+own turns on the battlefield with zero activations, because the shipped scripts give the
+AI no logic and no preference for a sacrifice cost and `Default.ai` has
+`SACRIFICE_DEFAULT_PREF_ENABLE` off. `engine_casts.by_card[*].turns_on_battlefield` and
+`idle_on_battlefield` are the measurement; the hint and the knob are the two levers, and
+a replay of the same seed under them is the test.

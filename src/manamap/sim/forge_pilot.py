@@ -398,13 +398,15 @@ def generate_unflag(stems, out_dir=None):
             if entry is None:
                 raise KeyError(f"{stem}: no such card script in {source.name}")
             dest = out_dir / stem[0] / f"{stem}.txt"
-            base = dest.read_text(encoding="utf-8") if dest.is_file() \
-                else zf.read(entry).decode("utf-8", "replace")
-            lines = base.splitlines()
-            kept = [ln for ln in lines if not ln.startswith("AI:RemoveDeck:")]
-            if len(kept) == len(lines):
+            shipped = zf.read(entry).decode("utf-8", "replace")
+            # THE CLAIM IS AGAINST THE SHIPPED SCRIPT, so a regenerate over an override
+            # that already dropped the line is idempotent rather than a refusal.
+            if not any(ln.startswith("AI:RemoveDeck:") for ln in shipped.splitlines()):
                 raise ValueError(f"{stem}: the shipped script carries no AI:RemoveDeck line — "
                                  f"nothing to unflag, so it does not belong in {UNFLAG_FILE.name}")
+            base = dest.read_text(encoding="utf-8") if dest.is_file() else shipped
+            lines = base.splitlines()
+            kept = [ln for ln in lines if not ln.startswith("AI:RemoveDeck:")]
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_text("\n".join(kept) + "\n", encoding="utf-8")
             written.append(stem)
@@ -534,12 +536,19 @@ def generate_hints(slug, out_dir=None):
                     raise ValueError(f"{h['card']}: `{h['ability']}` matches {len(idx)} line(s) of {stem}.txt; "
                                      f"a hint goes on exactly one")
                 if "AILogic$" in lines[idx[0]]:
-                    raise ValueError(f"{h['card']}: that line already carries an AILogic$ — the card "
-                                     f"author's decision, left be")
-                lines[idx[0]] = lines[idx[0]] + f" | AILogic$ {h['ai_logic']}"
+                    if lines[idx[0]].endswith(f"| AILogic$ {h['ai_logic']}"):
+                        pass                                    # already hinted: idempotent
+                    else:
+                        raise ValueError(f"{h['card']}: that line already carries an AILogic$ — the card "
+                                         f"author's decision, left be")
+                else:
+                    lines[idx[0]] = lines[idx[0]] + f" | AILogic$ {h['ai_logic']}"
             for kind, selector in (h.get("ai_preference") or {}).items():
                 key = f"SVar:AIPreference:{kind}$"
-                if any(ln.startswith(key) for ln in lines):
+                have = [ln for ln in lines if ln.startswith(key)]
+                if have:
+                    if have == [key + selector]:
+                        continue                                # already hinted: idempotent
                     raise ValueError(f"{h['card']}: {stem}.txt already states {key}… — left be")
                 # before the Oracle line, where Forge's own scripts put it
                 at = next((i for i, ln in enumerate(lines) if ln.startswith("Oracle:")), len(lines))

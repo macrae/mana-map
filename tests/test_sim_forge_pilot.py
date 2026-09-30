@@ -410,9 +410,11 @@ def test_a_hint_lands_the_aristocrat_logic_and_the_preference_where_forges_own_s
     ab = [ln for ln in got if ln.startswith("A:AB$ PutCounter")]
     assert len(ab) == 1 and ab[0].endswith("| AILogic$ AristocratCounters")
     assert got.index("SVar:AIPreference:SacCost$Creature.token,Creature.Other+cmcLE2") == got.index([ln for ln in got if ln.startswith("Oracle:")][0]) - 1
-    # a second generate is identical (no doubled AILogic, no doubled preference)
-    with pytest.raises(ValueError):
-        fp.generate_hints("d")
+    # a second generate is IDEMPOTENT (no doubled AILogic, no doubled preference) — the
+    # bug this guards: `--generate` refusing its own previous output
+    assert fp.generate_hints("d") == ["test_flagged"]
+    assert (flagged_engine.override_dir / "t" / "test_flagged.txt").read_text().splitlines() == got
+    assert fp.generate_unflag(["test_flagged"]) == ["test_flagged"], "unflag over its own output is idempotent too"
 
 
 def test_a_hint_is_refused_when_it_cannot_be_placed_or_names_a_card_the_deck_lacks(flagged_engine, tmp_path, monkeypatch):
