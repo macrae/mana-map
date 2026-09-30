@@ -432,6 +432,134 @@ def unflag_candidates():
     return out
 
 
+#: PER-DECK CARD HINTS. `data/decks/<slug>/forge_hints.json`:
+#:
+#:   {"hints": [{"card": "Vish Kal, Blood Arbiter",
+#:               "ability": "AB$ PutCounter",              # the line to touch, by its API prefix
+#:               "ai_logic": "AristocratCounters",         # appended as `| AILogic$ …` (optional)
+#:               "ai_preference": {"SacCost": "Creature.token,Creature.Other+cmcLE2"},  # optional
+#:               "why": "…", "cites": ["stacks/004", "log 006"]}]}
+#:
+#: The two hint kinds Forge's own aristocrat scripts use (`carrion_feeder.txt`: `AILogic$
+#: AristocratCounters` on the sacrifice ability plus `SVar:AIPreference:SacCost$…`), derived
+#: onto the shipped script the way every override here is. A hint on a card the deck does
+#: not run, an `ability` prefix that matches no line or several, or an `AILogic$` already on
+#: that line, is refused rather than guessed. `validate-forge-hints` is the gate; the
+#: override lands in the same fingerprint as everything else.
+HINTS_FILE = "forge_hints.json"
+HINT_KEYS = frozenset({"card", "ability", "ai_logic", "ai_preference", "why", "cites"})
+
+
+def hints_for(slug):
+    """The deck's hints, or []."""
+    import json
+    from manamap.pilot.common import deck_dir
+    path = deck_dir(slug) / HINTS_FILE
+    if not path.is_file():
+        return []
+    return list((json.loads(path.read_text(encoding="utf-8")) or {}).get("hints") or [])
+
+
+def validate_hints(slug, doc):
+    """Form: every hint names a card in the 99, says why, and carries at least one hint."""
+    import json
+    from manamap.pilot.common import deck_dir
+    errors = []
+    hints = (doc or {}).get("hints")
+    if not isinstance(hints, list) or not hints:
+        return ["no `hints` list — a file that hints nothing should not exist"]
+    names = set()
+    cj = deck_dir(slug) / "cards.json"
+    if cj.is_file():
+        names = {c["name"] for c in json.loads(cj.read_text(encoding="utf-8")).get("cards", [])}
+        names |= {n.split(" // ")[0] for n in names}
+    seen = set()
+    for i, h in enumerate(hints):
+        where = f"hints[{i}]"
+        if not isinstance(h, dict):
+            errors.append(f"{where}: not an object"); continue
+        unknown = set(h) - HINT_KEYS
+        if unknown:
+            errors.append(f"{where}: unknown key(s) {sorted(unknown)}")
+        card = h.get("card")
+        if not card:
+            errors.append(f"{where}: no card"); continue
+        if names and card not in names:
+            errors.append(f"{where}: {card!r} is not in the 99")
+        if card in seen:
+            errors.append(f"{where}: {card!r} hinted twice — one hint per card")
+        seen.add(card)
+        if not h.get("why"):
+            errors.append(f"{where}: {card}: no `why` — a hint is a piloting decision and says so")
+        if not (h.get("ai_logic") or h.get("ai_preference")):
+            errors.append(f"{where}: {card}: neither ai_logic nor ai_preference — nothing to hint")
+        if h.get("ai_logic") and not h.get("ability"):
+            errors.append(f"{where}: {card}: ai_logic needs `ability`, the API prefix of the line it goes on")
+        pref = h.get("ai_preference")
+        if pref is not None and (not isinstance(pref, dict) or not pref
+                                 or not all(isinstance(k, str) and isinstance(v, str) for k, v in pref.items())):
+            errors.append(f"{where}: {card}: ai_preference is a mapping of kind -> selector, e.g. {{\"SacCost\": \"Creature.token\"}}")
+    return errors
+
+
+def generate_hints(slug, out_dir=None):
+    """Write the deck's hint overrides, layered on any override the card already has.
+    Returns the stems written. Refuses an `ability` prefix matching zero or several
+    lines, or a line already carrying `AILogic$`, or a preference the script already
+    states — the same 'never guess' rule `generate_overrides` keeps."""
+    from manamap.sim import forge_cards
+    out_dir = pathlib.Path(out_dir) if out_dir else OVERRIDE_DIR
+    hints = hints_for(slug)
+    if not hints:
+        return []
+    source = PRISTINE if PRISTINE.is_file() else CARDSFOLDER
+    if not source.is_file():
+        raise FileNotFoundError(f"no card scripts to derive from at {source}")
+    written = []
+    with zipfile.ZipFile(source) as zf:
+        by_stem = {n.rsplit("/", 1)[-1][:-4]: n for n in zf.namelist() if n.endswith(".txt")}
+        for h in hints:
+            stem = forge_cards.stem(h["card"])
+            entry = by_stem.get(stem)
+            if entry is None:
+                raise KeyError(f"{h['card']}: no card script {stem}.txt in {source.name}")
+            dest = out_dir / stem[0] / f"{stem}.txt"
+            base = dest.read_text(encoding="utf-8") if dest.is_file() \
+                else zf.read(entry).decode("utf-8", "replace")
+            lines = base.splitlines()
+            if h.get("ai_logic"):
+                prefix = "A:" + h["ability"]
+                idx = [i for i, ln in enumerate(lines) if ln.startswith(prefix)]
+                if len(idx) != 1:
+                    raise ValueError(f"{h['card']}: `{h['ability']}` matches {len(idx)} line(s) of {stem}.txt; "
+                                     f"a hint goes on exactly one")
+                if "AILogic$" in lines[idx[0]]:
+                    raise ValueError(f"{h['card']}: that line already carries an AILogic$ — the card "
+                                     f"author's decision, left be")
+                lines[idx[0]] = lines[idx[0]] + f" | AILogic$ {h['ai_logic']}"
+            for kind, selector in (h.get("ai_preference") or {}).items():
+                key = f"SVar:AIPreference:{kind}$"
+                if any(ln.startswith(key) for ln in lines):
+                    raise ValueError(f"{h['card']}: {stem}.txt already states {key}… — left be")
+                # before the Oracle line, where Forge's own scripts put it
+                at = next((i for i, ln in enumerate(lines) if ln.startswith("Oracle:")), len(lines))
+                lines.insert(at, key + selector)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            written.append(stem)
+    return written
+
+
+def hinted_decks():
+    """Every live deck with a hints file."""
+    from manamap.pilot.common import deck_is_apart
+    out = []
+    for d in sorted(config.DECKS_DIR.iterdir()) if config.DECKS_DIR.is_dir() else []:
+        if (d / HINTS_FILE).is_file() and not deck_is_apart(d.name):
+            out.append(d.name)
+    return out
+
+
 #: The cards the fleet currently overrides. A LIST, not a glob over the deck, because an
 #: override is a deliberate distortion of the instrument and the set of them is a thing
 #: somebody decided — `--generate` re-derives exactly these and nothing else.
@@ -502,6 +630,13 @@ def main(args=None):
                   f"{', '.join(sorted(unsteerable))}")
         unflagged = generate_unflag(unflag_list())
         print(f"unflagged {len(unflagged)} card(s) the AI would never cast ({UNFLAG_FILE.name})")
+        # PER-DECK HINTS LAST, so they layer on an unflag or an aim override.
+        for slug in hinted_decks():
+            errs = validate_hints(slug, {"hints": hints_for(slug)})
+            if errs:
+                raise SystemExit(f"{slug}/{HINTS_FILE}: " + "; ".join(errs))
+            hinted = generate_hints(slug)
+            print(f"hinted {len(hinted)} card(s) for {slug} ({HINTS_FILE}): {', '.join(hinted)}")
         missing = unflag_candidates()
         if missing:
             print(f"  NOT YET UNFLAGGED — RemoveDeck:All cards in live decks the AI will not cast:")

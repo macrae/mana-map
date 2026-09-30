@@ -47,7 +47,10 @@ CHANNELS = ("spell_token_copy",)
 #: What a rule may DO. One verb for now, deliberately: a hold threshold is the
 #: decision the evidence supports, and a vocabulary that grows one proven verb at a
 #: time cannot outrun what has been measured.
-VERBS = ("hold_until",)
+#: `forge`: the rule EXPLAINS AiProps keys the document's `forge` section sets — each
+#: key it names must be there with the same value, so the reason and the knob cannot
+#: drift apart. Such a rule needs no goldfish channel: the goldfish never reads it.
+VERBS = ("hold_until", "forge")
 
 #: What `hold_until` may count.
 COUNTERS = ("other_creatures",)
@@ -103,14 +106,23 @@ def validate(doc):
                 f"{rid}: no `why`. A piloting rule is a CLAIM about how the deck "
                 f"is flown; one with no reason cannot be argued with, and this "
                 f"file exists to make the manual falsifiable")
+        verbs = [v for v in VERBS if v in r]
+        if len(verbs) != 1:
+            raise PolicyError(f"{rid}: exactly one of {list(VERBS)} is required")
+        if "forge" in r:
+            knobs = r["forge"]
+            if not isinstance(knobs, dict) or not knobs:
+                raise PolicyError(f"{rid}: `forge` is a mapping of the AiProps keys this rule explains")
+            for k, v in knobs.items():
+                if (doc.get("forge") or {}).get(k, object()) != v:
+                    raise PolicyError(f"{rid}: forge.{k} = {v!r} is not what the document's `forge` "
+                                      f"section sets — a rule explains a knob, it does not set a second one")
+            continue
         chan = (r.get("when") or {}).get("channel")
         if chan not in CHANNELS:
             raise PolicyError(
                 f"{rid}: when.channel {chan!r} is not a channel the simulator "
                 f"computes; pick one of {list(CHANNELS)}")
-        verbs = [v for v in VERBS if v in r]
-        if len(verbs) != 1:
-            raise PolicyError(f"{rid}: exactly one of {list(VERBS)} is required")
         for counter, value in (r.get("hold_until") or {}).items():
             if counter not in COUNTERS:
                 raise PolicyError(f"{rid}: hold_until.{counter} is not countable; "
@@ -149,9 +161,13 @@ def render(doc):
         return ["no policy — the simulator uses its own built-in heuristics"]
     lines = []
     for r in doc.get("rules") or []:
-        hold = r.get("hold_until") or {}
-        what = ", ".join(f"{k} >= {v}" for k, v in sorted(hold.items()))
-        lines.append(f"{r['id']}: hold a {r['when']['channel']} until {what}")
+        if "forge" in r:
+            what = ", ".join(f"{k}={v}" for k, v in sorted(r["forge"].items()))
+            lines.append(f"{r['id']}: Forge AI knobs {what}")
+        else:
+            hold = r.get("hold_until") or {}
+            what = ", ".join(f"{k} >= {v}" for k, v in sorted(hold.items()))
+            lines.append(f"{r['id']}: hold a {r['when']['channel']} until {what}")
         lines.append(f"    {r['why']}")
     return lines
 

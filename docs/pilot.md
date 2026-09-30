@@ -83,6 +83,7 @@ manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J] [--detec
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>   # `--list` names each run's VERSION
 manamap pilot forge-install [--verify] [--revert] [--generate]   # THE HARNESS, INSTALLED
 manamap pilot forge-telemetry [--build]                           # THE LOG FORMATTER: declared vs carried; build the patched jar
+manamap pilot validate-forge-hints <slug>                          # forge_hints.json: per-card AILogic / AIPreference hints, gated
                                         #   AND VERIFIED. `data/forge_overrides/` narrows
                                         #   what the AI may TARGET (`AITgts$`); a per-deck
                                         #   `res/ai/mm-<slug>.ai` carries the AiProps knobs

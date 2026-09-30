@@ -1,0 +1,51 @@
+{
+  "hints": [
+    {
+      "card": "Vish Kal, Blood Arbiter",
+      "ability": "AB$ PutCounter",
+      "ai_logic": "AristocratCounters",
+      "ai_preference": {
+        "SacCost": "Creature.token,Creature.Other+cmcLE2"
+      },
+      "why": "Cast every time it was castable once unflagged (20 games, 2026-09-30) and activated 0 times: the shipped script has no AILogic on the sacrifice ability and no sacrifice preference, so the AI never finds a body to feed it. carrion_feeder.txt is Forge's own shape for exactly this ability.",
+      "cites": [
+        "log 006",
+        "stacks/004"
+      ]
+    },
+    {
+      "card": "Bloodflow Connoisseur",
+      "ability": "AB$ PutCounter",
+      "ai_logic": "AristocratCounters",
+      "ai_preference": {
+        "SacCost": "Creature.token,Creature.Other+cmcLE2"
+      },
+      "why": "Held castable on 32 own turns before the unflag; the same ability shape as Vish Kal with the same missing logic.",
+      "cites": [
+        "log 006"
+      ]
+    },
+    {
+      "card": "Viscera Seer",
+      "ability": "AB$ Scry",
+      "ai_logic": "AtOppEOT",
+      "ai_preference": {
+        "SacCost": "Creature.token,Creature.Other+cmcLE1"
+      },
+      "why": "woe_strider.txt is Forge's shape for a sacrifice-to-scry outlet: fire it at an opponent's end step, feeding it tokens and one-drops so the drain triggers (Blood Artist, Cruel Celebrant) see the deaths.",
+      "cites": [
+        "log 006"
+      ]
+    },
+    {
+      "card": "Altar of Dementia",
+      "ai_preference": {
+        "SacCost": "Creature.token,Creature.Other+cmcLE1"
+      },
+      "why": "A free outlet; without a preference the AI has nothing it is willing to feed it. Tokens and one-drops only, so it never mills for a real body.",
+      "cites": [
+        "log 006"
+      ]
+    }
+  ]
+}

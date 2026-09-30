@@ -393,6 +393,8 @@ def hand_facts(events, seats, cmc=None):
     lands_out = {s: 0 for s in seats}         # lands on the battlefield, a running count
     in_hand_turns = {s: defaultdict(int) for s in seats}
     castable_uncast = {s: defaultdict(int) for s in seats}
+    field = {s: {} for s in seats}            # id -> name, nonland permanents on the battlefield
+    field_turns = {s: defaultdict(int) for s in seats}
     cmc = cmc or {}
     cur_turn, cur_active = None, None
 
@@ -405,6 +407,8 @@ def hand_facts(events, seats, cmc=None):
                 mv = cmc.get(n)
                 if mv is not None and lands_out[cur_active] >= mv:
                     castable_uncast[cur_active][n] += 1
+            for n in field[cur_active].values():
+                field_turns[cur_active][n] += 1
 
     for ev in events:
         t = ev.get("turn")
@@ -424,6 +428,13 @@ def hand_facts(events, seats, cmc=None):
                     lib_to_hand[s] += 1
             elif ev["from"] == "Hand":
                 hand[s].pop(ev["id"], None)
+            # THE BATTLEFIELD, for the same seat: what its own turns ended with on the
+            # board, so an activation count can be read against the turns the card was
+            # there to activate. Lands are excluded — they are the castability gate above.
+            if ev["to"] == "Battlefield" and ev["card"] not in land_names:
+                field[s][ev["id"]] = ev["card"]
+            elif ev["from"] == "Battlefield":
+                field[s].pop(ev["id"], None)
     close_turn()
     out = {}
     for s in seats:
@@ -440,8 +451,9 @@ def hand_facts(events, seats, cmc=None):
             # PER CARD: own turns it ended in hand, and of those, the turns the seat had
             # the lands to cast it (only for cards whose mana value is known).
             "cards": {n: {"turns_in_hand": in_hand_turns[s][n],
-                          **({"castable_uncast": castable_uncast[s][n]} if n in cmc else {})}
-                      for n in sorted(in_hand_turns[s])},
+                          **({"castable_uncast": castable_uncast[s][n]} if n in cmc else {}),
+                          **({"turns_on_battlefield": field_turns[s][n]} if field_turns[s][n] else {})}
+                      for n in sorted(set(in_hand_turns[s]) | set(field_turns[s]))},
         }
     return out
 
@@ -831,6 +843,8 @@ def engine_casts(facts, label, ours):
                 row["turns_in_hand"] = row.get("turns_in_hand", 0) + h["turns_in_hand"]
                 if "castable_uncast" in h:
                     row["castable_uncast"] = row.get("castable_uncast", 0) + h["castable_uncast"]
+                if "turns_on_battlefield" in h:
+                    row["turns_on_battlefield"] = row.get("turns_on_battlefield", 0) + h["turns_on_battlefield"]
     return {"seat": ours, "games": games, "turns": turns,
             "kept_hand_mean": round(sum(kept) / len(kept), 2) if kept else None,
             "by_card": {k: by_card[k] for k in sorted(by_card)}}

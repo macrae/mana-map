@@ -46,6 +46,8 @@ PILOT_STEPS = [
      "Form-check pilot_policy.json: every rule named, reasoned, and keyed on a channel the simulator computes"),
     ("forge-install", "manamap.sim.forge_pilot",
      "Install the tracked card-script overrides into Forge and VERIFY the engine carries them — the provenance a run record stamps"),
+    ("validate-forge-hints", "manamap.pilot.validate_forge_hints",
+     "Form-check forge_hints.json: every hinted card is in the 99, says why, and carries a logic or a preference"),
     ("forge-telemetry", "manamap.sim.telemetry",
      "The patched log formatter (every zone change, by name and owner): what the repo declares, what the jar carries, --build to compile it"),
     ("metrics", "manamap.metrics",
@@ -220,7 +222,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
-    "validate-poh-procedures", "validate-pilot-policy",
+    "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",

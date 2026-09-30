@@ -384,3 +384,50 @@ def test_no_live_deck_carries_a_removedeck_all_card_the_list_does_not_unflag():
     announced. `forge-install --generate` prints the same list."""
     assert fp.unflag_candidates() == []
     assert len(fp.unflag_list()) >= 20, "the list iterated almost nothing"
+
+
+# ------------------------------------------------------------------- per-deck hints
+
+def test_a_hint_lands_the_aristocrat_logic_and_the_preference_where_forges_own_scripts_put_them(flagged_engine, tmp_path, monkeypatch):
+    """Derived from the shipped script (or its unflag override), the AILogic on exactly
+    the named ability line, the preference before the Oracle line — the shape
+    `carrion_feeder.txt` ships with. The bug this guards: an unflag override replaced by
+    the hint override, or the reverse, because both write the same file."""
+    import json
+    from manamap import config
+    decks = tmp_path / "decks"; (decks / "d").mkdir(parents=True)
+    (decks / "d" / "cards.json").write_text(json.dumps({"cards": [{"name": "Test Flagged"}]}))
+    (decks / "d" / "forge_hints.json").write_text(json.dumps({"hints": [
+        {"card": "Test Flagged", "ability": "AB$ PutCounter", "ai_logic": "AristocratCounters",
+         "ai_preference": {"SacCost": "Creature.token,Creature.Other+cmcLE2"}, "why": "never activated"}]}))
+    monkeypatch.setattr(config, "DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    assert fp.validate_hints("d", {"hints": fp.hints_for("d")}) == []
+    fp.generate_unflag(["test_flagged"])
+    assert fp.generate_hints("d") == ["test_flagged"]
+    got = (flagged_engine.override_dir / "t" / "test_flagged.txt").read_text().splitlines()
+    assert "AI:RemoveDeck:All" not in got, "the unflag survived the hint"
+    ab = [ln for ln in got if ln.startswith("A:AB$ PutCounter")]
+    assert len(ab) == 1 and ab[0].endswith("| AILogic$ AristocratCounters")
+    assert got.index("SVar:AIPreference:SacCost$Creature.token,Creature.Other+cmcLE2") == got.index([ln for ln in got if ln.startswith("Oracle:")][0]) - 1
+    # a second generate is identical (no doubled AILogic, no doubled preference)
+    with pytest.raises(ValueError):
+        fp.generate_hints("d")
+
+
+def test_a_hint_is_refused_when_it_cannot_be_placed_or_names_a_card_the_deck_lacks(flagged_engine, tmp_path, monkeypatch):
+    import json
+    from manamap import config
+    decks = tmp_path / "decks"; (decks / "d").mkdir(parents=True)
+    (decks / "d" / "cards.json").write_text(json.dumps({"cards": [{"name": "Test Flagged"}]}))
+    monkeypatch.setattr(config, "DECKS_DIR", decks); monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    bad = {"hints": [{"card": "Nope", "ability": "AB$ Pump", "ai_logic": "X", "why": "w"},
+                     {"card": "Test Flagged", "ai_logic": "X", "why": "w"},
+                     {"card": "Test Flagged", "why": "w"}]}
+    errs = fp.validate_hints("d", bad)
+    assert any("not in the 99" in e for e in errs) and any("needs `ability`" in e for e in errs) \
+        and any("nothing to hint" in e for e in errs) and any("hinted twice" in e for e in errs)
+    (decks / "d" / "forge_hints.json").write_text(json.dumps({"hints": [
+        {"card": "Test Flagged", "ability": "AB$ Pump", "ai_logic": "X", "why": "w"}]}))
+    with pytest.raises(ValueError):
+        fp.generate_hints("d")          # no such ability line on the script

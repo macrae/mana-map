@@ -162,7 +162,7 @@ def validate(rec, slug, logs_text=None):
                 errors.append(f"engine_casts.turns {ec['turns']!r} is not a positive count")
             # The three counted keys always; the three MEASURED hand keys only under the
             # telemetry patch (`parse.engine_casts`), and then together or not at all.
-            base, hand = {"cast", "activated", "discarded"}, {"in_hand_games", "turns_in_hand", "castable_uncast"}
+            base, hand = {"cast", "activated", "discarded"}, {"in_hand_games", "turns_in_hand", "castable_uncast", "turns_on_battlefield"}
             bad = [k for k, v in ec["by_card"].items()
                    if not (set(v) == base or base < set(v) <= base | hand)
                    or any(not isinstance(x, int) or x < 0 for x in v.values())]

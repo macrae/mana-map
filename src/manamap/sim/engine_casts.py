@@ -251,6 +251,30 @@ def held_while_castable(rec):
     return sorted(rows, key=lambda r: (-r["castable_uncast"], r["card"]))
 
 
+#: An outlet on the battlefield this many own turns with no activation is the AI not
+#: using it; below that the count is one game's variance.
+IDLE_ON_BOARD_TURNS = 3
+
+
+def idle_on_battlefield(rec, names=None):
+    """`[{card, turns_on_battlefield, activated}]` for cards that sat on the battlefield
+    for >= IDLE_ON_BOARD_TURNS own turns with `activated` per turn under 0.1 — measured
+    from the telemetry board; [] on a plain record; None with no engine_casts. `names`
+    restricts it to cards the caller cares about (the ones with an activated ability)."""
+    ec = rec.get("engine_casts")
+    if not ec:
+        return None
+    rows = []
+    for name, row in ec.get("by_card", {}).items():
+        t = row.get("turns_on_battlefield")
+        if t is None or (names is not None and _front(name) not in names):
+            continue
+        act = row.get("activated", 0)
+        if t >= IDLE_ON_BOARD_TURNS and act < 0.1 * t:
+            rows.append({"card": _front(name), "turns_on_battlefield": t, "activated": act})
+    return sorted(rows, key=lambda r: (-r["turns_on_battlefield"], r["card"]))
+
+
 def render(q):
     if not q:
         return []

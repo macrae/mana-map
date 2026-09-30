@@ -130,3 +130,16 @@ def test_held_while_castable_is_measured_never_inferred():
     assert ec_mod.held_while_castable({"engine_casts": {"by_card": {"X": {"cast": 0, "activated": 0, "discarded": 3}}}}) == [], \
         "a discarded-but-never-seen-castable card is the OLD inference, not this list"
     assert ec_mod.held_while_castable({}) is None
+
+
+def test_turns_on_the_battlefield_are_counted_from_the_arrivals_and_lands_are_not():
+    """goblin-storm's Impact Tremors resolved on turn 3 and stayed; lands never count."""
+    text = (FIX_DIR / "two-seat-one-game-telemetry.log").read_text()
+    facts, _ = parse.analyze_logs([text], LABEL, cmc=CMC)
+    cards = facts[0]["per_seat"][GS]["hand"]["cards"]
+    assert "turns_on_battlefield" not in cards.get("Mountain", {})
+    on_board = {n: v["turns_on_battlefield"] for n, v in cards.items() if "turns_on_battlefield" in v}
+    assert on_board, "nothing resolved?"
+    assert all(v >= 1 for v in on_board.values())
+    ec = parse.engine_casts(facts, LABEL, "goblin-storm")
+    assert any("turns_on_battlefield" in r for r in ec["by_card"].values())
