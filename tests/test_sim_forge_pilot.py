@@ -433,3 +433,28 @@ def test_a_hint_is_refused_when_it_cannot_be_placed_or_names_a_card_the_deck_lac
         {"card": "Test Flagged", "ability": "AB$ Pump", "ai_logic": "X", "why": "w"}]}))
     with pytest.raises(ValueError):
         fp.generate_hints("d")          # no such ability line on the script
+
+
+def test_generate_starts_clean_so_a_withdrawn_hint_leaves_the_override(flagged_engine, tmp_path, monkeypatch):
+    """The bug: generators layer on the existing file, so a hint removed from
+    forge_hints.json survived in the override and the fingerprint never moved."""
+    import json
+    from manamap import config
+    decks = tmp_path / "decks"; (decks / "d").mkdir(parents=True)
+    (decks / "d" / "cards.json").write_text(json.dumps({"cards": [{"name": "Test Flagged"}]}))
+    (decks / "d" / "forge_hints.json").write_text(json.dumps({"hints": [
+        {"card": "Test Flagged", "ai_preference": {"SacCost": "Creature.token"}, "why": "w"}]}))
+    monkeypatch.setattr(config, "DECKS_DIR", decks); monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    monkeypatch.setattr(fp, "OVERRIDDEN", ())
+    monkeypatch.setattr(fp, "install_all_profiles", lambda: {})
+    monkeypatch.setattr(fp, "render", lambda: [])
+    monkeypatch.setattr(fp, "verify", lambda: (True, None, None))
+
+    class A: generate = True; verify = False; revert = False
+    fp.main(A())
+    dest = flagged_engine.override_dir / "t" / "test_flagged.txt"
+    assert "SVar:AIPreference:SacCost$Creature.token" in dest.read_text()
+    (decks / "d" / "forge_hints.json").unlink()          # the hint is withdrawn
+    fp.main(A())
+    assert "AIPreference" not in dest.read_text(), "a withdrawn hint must not survive a regenerate"
+    assert "AI:RemoveDeck" not in dest.read_text(), "the unflag still applies"

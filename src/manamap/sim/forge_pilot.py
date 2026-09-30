@@ -631,6 +631,13 @@ def main(args=None):
     generate = bool(getattr(args, "generate", False))
 
     if generate:
+        # START CLEAN. Every file under cards/ is DERIVED — from the shipped script plus
+        # the three lists — and the generators layer on whatever file is already there,
+        # so a withdrawn hint would otherwise survive in the override it was written
+        # into (measured: Altar of Dementia's preference line outlived its hint and the
+        # fingerprint did not move). Deleting first makes the set exactly the lists.
+        for stale in OVERRIDE_DIR.rglob("*.txt"):
+            stale.unlink()
         written, unsteerable = generate_overrides(OVERRIDDEN)
         print(f"derived {len(written)} override(s) from "
               f"{(PRISTINE if PRISTINE.is_file() else CARDSFOLDER).name}")
