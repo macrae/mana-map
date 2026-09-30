@@ -196,7 +196,7 @@ amount of running the suite on a developed machine could have found them: the
 artifacts were always there. Re-clone and re-run whenever you add a test that
 touches `data/`.
 
-As of 2026-09-22: **3,968 tests** across 177 files — 3,706 in the `make test`
+As of 2026-09-30: **3,972 tests** across 188 files — 3,707 in the `make test`
 selection, 257 browser, 1 `forge` (a real Forge game, opt-in), 4 `fleet` and 3
 `serial_only`. Three are deliberately unmet `xfail(strict=True)` gates, one of them the ship gate in
 `test_embedding_quality.py` (see below); it is a target the code has not reached, not a
