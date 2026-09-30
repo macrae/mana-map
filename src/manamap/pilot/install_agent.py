@@ -64,6 +64,7 @@ MERGED_ELSEWHERE = {
     "pilot-notes": "manamap pilot merge-prose <slug> pilot-notes",
     "debrief": "manamap pilot merge-debrief <slug>",
     "captains-log": "manamap pilot merge-captains-log <slug>",
+    "sim-debrief": "manamap pilot merge-sim-findings <slug>",
 }
 
 STAMP_KEY = "decklist_sha256_prefix"

@@ -790,7 +790,7 @@ it, per this repo's oldest rule about validators, and it is not viable:**
 ```
 
 A gate on MISS fires **195 times** — one per deck-and-routine pair, out of the
-12 static routines crossed with 14 decks. Every deck misses `deck-recon`,
+13 static routines crossed with 14 decks. Every deck misses `deck-recon`,
 `strategic-frame`, `pilot-notes`, `poh-procedures` and `deck-diagnosis`;
 radagast alone misses eighteen. Most of it is legitimate and inert — charter
 consolidations, decks that are broken down, prompt edits — and

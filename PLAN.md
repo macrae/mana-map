@@ -113,7 +113,7 @@ Operating Handbook (`build-poh`) has rendered `manuals/p/<slug>.html` since
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
 Scale (derived; `tests/test_docs_counts.py` polices these): 113 pilot subcommands,
-28 top-level subcommands, 17 agents, 21 skills, 12 static cache routines
+28 top-level subcommands, 18 agents, 22 skills, 13 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.
 
@@ -210,7 +210,7 @@ status and withholds the suggestions that would need a deck to shuffle.
 | | | where |
 |---|---|---|
 | **The workbench gets verbs** | the lifecycle leaves `issue.json` for `deck_versions.json`; `deck-state` and `deck-delete`; `validate-deck-versions` (closes #24); the archive rack folds; the version stamps on the art; the fleet controls, absent without a local server | `docs/pilot.md` |
-| Agent audit + Sprint 0 | 18 → 17 agents; shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/history/agent-audit-2026-08-19.md` |
+| Agent audit + Sprint 0 | the agent set cut from 18 to 17 (back to 18 with the sim debrief, 2026-09-30); shared contract (`.claude/agents-common.md`); L10 repealed; magazine editor/panel/short-list retired; writer + coach → `pilot-notes`; `debrief` new; doctor MODE prescribe | `docs/history/agent-audit-2026-08-19.md` |
 | MVP Sprints 1–3 | `deck-version`, `deck-notes` + `/debrief`, `prescribe`, `deck-info` | `docs/pilot.md` |
 | Simulation S0–S5 | Forge spike + verdict; seeded harness; parser with CIs; `validate-sim`; the pod; the bridge `sim-scenario` → `game_state` v2; the doctor reads the table | `docs/simulation.md` |
 | The chain, once for real | stack 008 — a board lifted from a simulated game, resolved + checker-passed in 3 iterations; matched Forge's log line for line | `docs/simulation.md` |

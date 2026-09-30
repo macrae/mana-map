@@ -1195,7 +1195,7 @@ metric-hygiene test learns the flags it currently cannot see.
 
 **Why last.** It is the highest-risk change in the repo: the simulator produces
 every measured figure on the bench, `model_version()` is a sha over its bytes,
-and that sha keys the agent invocation cache for 12 routines. Every earlier
+and that sha keys the agent invocation cache for 13 routines. Every earlier
 phase reduces the risk — P2-02 makes the test loop fast enough to iterate,
 P4-03 makes the artifact dependencies explicit, P5 removes 6,600 lines of noise
 from the package.

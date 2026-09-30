@@ -377,8 +377,8 @@ manamap pilot deck-info <slug> --write                  # write info.json for th
 manamap pilot build-poh <slug> && manamap pilot build-index    # the HANDBOOK + the manifest
 # agents (Claude Code skills): /publish-deck sequences the lifecycle; then
 # /build-deck /analyze-engine /resolve-stack /write-manual /poh-procedures
-# /debrief /captains-log /prescribe /diagnose-deck /research-strategy /refresh-corpus.
-# 21 skills in .claude/skills/, 17 charters in .claude/agents/
+# /debrief /sim-debrief /captains-log /prescribe /diagnose-deck /research-strategy /refresh-corpus.
+# 22 skills in .claude/skills/, 18 charters in .claude/agents/
 
 make test                     # THE INNER LOOP — non-browser, -n auto, cached.
 make test-fresh               # same with nothing cached; trust this one.

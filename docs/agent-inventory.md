@@ -20,9 +20,9 @@ What is still frozen is the **Python renderer**, not the agent set — and
 `build_index.py`, which `CLAUDE.md` listed under that heading until 2026-09-03,
 is fully live and writes the manifest the whole frontend reads.
 
-So Epic D is a **re-grouping of 17 charters**, not an excavation.
+So Epic D is a **re-grouping of 18 charters**, not an excavation.
 
-## Agents — 17 charters in `.claude/agents/`
+## Agents — 18 charters in `.claude/agents/`
 
 Every one opens by reading `.claude/agents-common.md` (the shared contract);
 `pipeline-runner` and `viz-dev` are exempt there by name.
@@ -31,6 +31,7 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 |---|---|---|---|
 | `captains-log` | `read` (the deck-level roll-up) + the night summaries of `captains_log.json` | `captains-log` | keep → Build (piloting guidance) |
 | `debrief` | `log_annotations.json` — a structured reading of each logged game | `debrief`, `captains-log`, `diagnose-deck`, `prescribe`, `publish-deck` | keep → Build |
+| `sim-debrief` | the `prose` of `sim_findings.json` — a reading of each simulated run that may cite only the computed findings' ids and quote only their figures; the captain's log is never touched (added 2026-09-30) | `sim-debrief` | keep → Build (the simulated counterpart of `debrief`) |
 | `deck-analyst` | `candidate_pool.json` | `build-deck`, `write-manual` | keep → shared service under Auto-Build |
 | `deck-architect` | `build_plan.json` | `build-deck` | keep → Auto-Build |
 | `deck-critic` | adversarial verifier for build plans | `build-deck` | keep → Auto-Build's verify loop |
@@ -59,7 +60,7 @@ and D-2 is explicit that "nothing gets deleted before its useful capability has
 a new home". They are recorded here as *never spawned by a skill* and left in
 place; retiring them is a decision, not a cleanup.
 
-## Skills — 21 in `.claude/skills/`
+## Skills — 22 in `.claude/skills/`
 
 Deck-facing, and the ones a consolidation has to re-home:
 
@@ -74,6 +75,7 @@ Deck-facing, and the ones a consolidation has to re-home:
 | `write-manual` | deck-analyst → strategy-researcher → pilot-notes | **its build half renders the frozen magazine** |
 | `author-decision` | pilot-notes | **step 5 is `build-manual`** — the other magazine coupling |
 | `debrief`, `captains-log`, `poh-procedures`, `research-strategy`, `strategy-lookup`, `rules-lookup`, `build-deck-db` | as named above | |
+| `sim-debrief` | sim-debrief | `sim-findings --write` → spawn for the runs with no prose → `merge-sim-findings` (recomputes the skeleton, takes the prose, refuses what does not hold) → `validate-sim-findings` → route the open questions |
 
 Infrastructure, not deck-facing and not part of the consolidation:
 `run-pipeline`, `run-tests`, `retrain`, `refresh-corpus`, `regen-analysis`,

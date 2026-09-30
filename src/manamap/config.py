@@ -1474,6 +1474,15 @@ AGENT_ROUTINES = {
         "inputs": ["deck:log.jsonl", "cards:semantic", "stacks:passing",
                    "deck:engine.json?"],
     },
+    # THE SIM DEBRIEF — the simulated counterpart. Its input is the computed
+    # skeleton itself: the findings the agent may cite are the whole brief,
+    # and the run records behind them change the skeleton, not the agent.
+    "sim-debrief": {
+        "agent": "sim-debrief",
+        "artifact": "sim_findings.json",
+        "inputs": ["deck:sim_findings.json", "deck:engine.json?",
+                   "deck:poh_procedures.json?"],
+    },
     # THE CAPTAIN'S LOG — the language layer over the same notes the debrief
     # reads. The two are not alternatives: the debrief is the machine-readable
     # reading that `open_questions` routes from and the doctor consults; this is

@@ -216,7 +216,7 @@ that AI agents drive from the outside, and most of the bench (`deck-info`, `deck
 The agent routines are what cost tokens — the doctor and its skeptic, the resolver and its
 checker, the engineer and its critic, the strategy researcher, the notes writer, the handbook's
 procedures author, the debrief, the captain's log and the cartographer — and an invocation
-cache is what makes iterating on them affordable. Seventeen agent charters live in
+cache is what makes iterating on them affordable. Eighteen agent charters live in
 `.claude/agents/`, twenty-one skills in `.claude/skills/`. `docs/agent-cost.md` has the
 breakdown; **two deliberate opt-in exceptions** are the only LLM calls reachable from Python
 itself: `serve.py`'s `ask` bridge, which shells out to `claude -p` as a polled job, and
