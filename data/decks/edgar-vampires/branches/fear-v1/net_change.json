@@ -924,249 +924,7 @@
   "rule": "a row is better/worse only if its delta clears the MDE AND its |z| survives Holm across the family; the objective is graded on its own, uncorrected, because it was declared before the measurement"
  },
  "forge": {
-  "available": true,
-  "basis": "wins over DECIDED games (clock-outs have no winner and are excluded), each arm pooled across every run of it at this one table",
-  "branch": {
-   "all_games": 40,
-   "games": 33,
-   "rate": 0.2727,
-   "runs": 1,
-   "wins": 9,
-   "won_by": {
-    "all opponents have lost": 9
-   }
-  },
-  "card_overrides": null,
-  "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
-  "champion": {
-   "all_games": 100,
-   "games": 73,
-   "rate": 0.3699,
-   "runs": 2,
-   "wins": 27,
-   "won_by": {
-    "all opponents have lost": 27
-   }
-  },
-  "ci95": [
-   -0.2646,
-   0.1005
-  ],
-  "delta": -0.0971,
-  "endpoints": {
-   "forge.combat_damage_dealt_to_players": {
-    "branch": {
-     "max": 308,
-     "median": 22,
-     "min": 0,
-     "n": 40,
-     "sd": 56.5776,
-     "value": 41.275
-    },
-    "champion": {
-     "max": 241,
-     "median": 18,
-     "min": 0,
-     "n": 100,
-     "sd": 57.6091,
-     "value": 45.76
-    },
-    "ci95": [
-     -25.3398,
-     16.3698
-    ],
-    "conditional": false,
-    "delta": -4.485,
-    "excludes_zero": false,
-    "kind": "mean",
-    "lower_is_better": false,
-    "mde": 29.8096,
-    "median": {
-     "ci95": [
-      -7.0,
-      14.0
-     ],
-     "diff": 3.5,
-     "excludes_zero": false,
-     "method": "percentile bootstrap, 10000 resamples, seed 0"
-    },
-    "method": "Welch t interval on the difference of means"
-   },
-   "forge.commander_resolved_rate": {
-    "branch": {
-     "k": 37,
-     "n": 40,
-     "value": 0.925
-    },
-    "champion": {
-     "k": 86,
-     "n": 100,
-     "value": 0.86
-    },
-    "ci95": [
-     -0.0702,
-     0.1601
-    ],
-    "conditional": false,
-    "delta": 0.065,
-    "excludes_zero": false,
-    "kind": "proportion",
-    "lower_is_better": false,
-    "mde": 0.135,
-    "method": "Newcombe score interval on the difference of proportions"
-   },
-   "forge.eliminated_turn": {
-    "branch": {
-     "max": 52,
-     "median": 36,
-     "min": 26,
-     "n": 27,
-     "sd": 6.3632,
-     "value": 36.4815
-    },
-    "champion": {
-     "max": 53,
-     "median": 34,
-     "min": 26,
-     "n": 51,
-     "sd": 6.2611,
-     "value": 35.8039
-    },
-    "ci95": [
-     -2.2743,
-     3.6295
-    ],
-    "conditional": true,
-    "delta": 0.6776,
-    "excludes_zero": false,
-    "kind": "mean",
-    "lower_is_better": false,
-    "mde": 4.2195,
-    "method": "Welch t interval on the difference of means"
-   },
-   "forge.first_attack_turn": {
-    "branch": {
-     "max": 30,
-     "median": 11,
-     "min": 5,
-     "n": 39,
-     "sd": 6.9688,
-     "value": 13.2564
-    },
-    "champion": {
-     "max": 30,
-     "median": 13,
-     "min": 5,
-     "n": 95,
-     "sd": 5.5631,
-     "value": 13.4211
-    },
-    "ci95": [
-     -2.6214,
-     2.292
-    ],
-    "conditional": true,
-    "delta": -0.1647,
-    "excludes_zero": false,
-    "kind": "mean",
-    "lower_is_better": true,
-    "mde": 3.5115,
-    "method": "Welch t interval on the difference of means"
-   },
-   "forge.win_rate": {
-    "branch": {
-     "k": 9,
-     "n": 33,
-     "value": 0.2727
-    },
-    "champion": {
-     "k": 27,
-     "n": 73,
-     "value": 0.3699
-    },
-    "ci95": [
-     -0.2646,
-     0.1005
-    ],
-    "conditional": false,
-    "delta": -0.0971,
-    "excludes_zero": false,
-    "kind": "proportion",
-    "lower_is_better": false,
-    "mde": 0.29,
-    "method": "Newcombe score interval on the difference of proportions"
-   }
-  },
-  "engine_casts": {
-   "branch": {
-    "covered": true,
-    "never_cast": [],
-    "played": "fe63dc33c22ea53badfcd39a6064deded0a403ca0fcd78de09af548737192bc0",
-    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-bd2d3b11-s1173858065-podExperimental-c600"
-   },
-   "champion": null
-  },
-  "excludes_zero": false,
-  "list_mismatch": {
-   "champion": {
-    "games": 840,
-    "on_disk": "7be137d0bfeb",
-    "on_disk_version": "V3",
-    "played": [
-     "7ce22fd619b3",
-     "88bffd9b9394",
-     "bdaa14183bcd"
-    ],
-    "played_versions": [
-     "V1",
-     "V2"
-    ],
-    "reads_as": "every Forge run on the champion was made with a different list, so this rate describes that list. A card swap and a cosmetic edit to decklist.txt both land here. Re-run: `manamap pilot simulate edgar-vampires --pod <name> --games N`"
-   }
-  },
-  "mde": 0.29,
-  "null": {
-   "basis": "what our decks score in seat 0 at this table, plain harness, deck-level runs",
-   "ci95": [
-    0.195,
-    0.276
-   ],
-   "decks": 6,
-   "excluded_overridden_runs": 1,
-   "games": 412,
-   "pod": "standard-v3",
-   "rate": 0.233,
-   "runs": 9,
-   "wins": 96
-  },
-  "other_tables": {
-   "playgroup": {
-    "branch_runs": 0,
-    "champion_runs": 1
-   },
-   "standard": {
-    "branch_runs": 0,
-    "champion_runs": 1
-   },
-   "standard-v2": {
-    "branch_runs": 0,
-    "champion_runs": 1
-   },
-   "vito-era": {
-    "branch_runs": 0,
-    "champion_runs": 4
-   }
-  },
-  "pod": "standard-v3",
-  "run_ids": {
-   "branch": [
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-bd2d3b11-s1173858065-podExperimental-c600"
-   ],
-   "champion": [
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-cdaddf26-s341395706-podExperimental-c600",
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-cdaddf26-s1450724134-podExperimental-c600"
-   ]
-  },
+  "available": false,
   "superseded": {
    "champion": [
     {
@@ -1224,11 +982,12 @@
      "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-cdaddf26-s1450724134-podExperimental-c600"
     }
    ]
-  }
+  },
+  "why": "the branch sat at ['standard-v3'] and the champion at ['standard-v3 (overrides 260c7a72816d, ours mm-edgar-vampires, patches fe64c50348a1)', 'standard-v3 (overrides 60636e9e5565, patches fe64c50348a1)', 'standard-v3 (overrides 8bf04cfcdb21, patches fe64c50348a1)', 'standard-v3 (overrides c6c3ccc1354d, ours mm-edgar-vampires, patches beb0c66dd0d9)'] \u2014 no table in common under the same harness, and a rate from another table is not this branch's control. Run `manamap pilot simulate edgar-vampires --pod ('standard-v3', '', 'Default', '')`"
  },
  "harness": {
   "iterations": 10000,
-  "model_version": "4daeba407286",
+  "model_version": "0fd30a379a0b",
   "seed": 20260826
  },
  "limits": [
@@ -1414,9 +1173,7 @@
    "extra cards by T8",
    "hand can act by T3"
   ],
-  "notes": [
-   "Forge, against a real pod: -0.097 win rate, CI [-0.265, +0.101] \u2014 this run cannot separate the two lists."
-  ],
+  "notes": [],
   "reward": [
    {
     "measure": "damage @T10",
@@ -1482,9 +1239,9 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
+    "detail": "the branch sat at ['standard-v3'] and the champion at ['standard-v3 (overrides 260c7a72816d, ours mm-edgar-vampires, patches fe64c50348a1)', 'standard-v3 (overrides 60636e9e5565, patches fe64c50348a1)', 'standard-v3 (overrides 8bf04cfcdb21, patches fe64c50348a1)', 'standard-v3 (overrides c6c3ccc1354d, ours mm-edgar-vampires, patches beb0c66dd0d9)'] \u2014 no table in common under the same harness, and a rate from another table is not this branch's control. Run `manamap pilot simulate edgar-vampires --pod ('standard-v3', '', 'Default', '')`",
     "kind": "structural",
-    "what": "Forge is a weak pilot",
+    "what": "no game has been played at a real table",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
