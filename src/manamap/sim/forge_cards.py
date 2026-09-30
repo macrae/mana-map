@@ -31,7 +31,12 @@ _AI_RE = re.compile(r"^AI:RemoveDeck:(\w+)", re.M)
 @functools.lru_cache(maxsize=1)
 def _flags():
     """{card name: RemoveDeck kind}. Empty when Forge is not installed."""
-    zips = list(FORGE_HOME.glob("res/cardsfolder/cardsfolder.zip"))
+    # THE SHIPPED SCRIPTS, not the installed ones: `forge-install` overlays the repo's
+    # overrides onto `cardsfolder.zip` (an unflag override REMOVES the line this reads),
+    # and the pristine copy it keeps beside it is what Forge ships. A flag is a fact about
+    # the card as Forge wrote it; whether we unflagged it is `forge_pilot.unflag_list`.
+    zips = list(FORGE_HOME.glob("res/cardsfolder/cardsfolder.zip.orig")) \
+        or list(FORGE_HOME.glob("res/cardsfolder/cardsfolder.zip"))
     if not zips:
         return {}
     out = {}

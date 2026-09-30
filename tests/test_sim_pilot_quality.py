@@ -183,6 +183,15 @@ KNOWN_FLAGGED = {
     # positive at the same n.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-cdaddf26"
     "-s341395706-podExperimental-c600.json",
+    # 2026-09-30, edgar-vampires, the second of four passes of ONE seed (1664213641)
+    # at standard-v3, twenty games each, one lever more per pass. This pass (the
+    # unflagged engine, `ov8bf04cfc`) reads a land ratio of 0.824; the three sibling
+    # passes of the same deal read inside the band. Same defect as the entry above:
+    # at n=20 the gate carries no interval on the difference, so this is n, not
+    # piloting — and the record is kept because the four passes are read side by
+    # side (docs/gotchas-bench.md, "The sacrifice suite, activated").
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n20-da677689"
+    "-s1664213641-podExperimental-c600-ov8bf04cfc-tlfe64c503.json",
 }
 
 
