@@ -1013,3 +1013,33 @@ purpose. Ten lines of Java, compiled beside the formatter.
 
 **Measured** (same seed, twenty games at standard-v3): see the record tagged
 `-tlbeb0c66d` and the sacrifice table in `docs/gotchas-bench.md`.
+
+
+## Two more `ai` classes: `Deflect` and `Protection` (2026-09-30)
+
+The pilot: "Teferi's Protection is a legit amazing card that can save boards and games —
+the fact both of these are 0 is a HUGE red flag." The measurement agreed: over Edgar's four
+telemetry passes (80 games) Deflecting Swat was held while castable on 59 own turns and
+cast 0 times, with **17 opposing spells or abilities aimed at our seat or our permanents**
+while it sat in hand; Teferi's Protection 29 turns, cast 0. Neither is a hint problem.
+
+- **Deflecting Swat.** `ChangeTargetsAi` "can't otherwise play this ability" (its only
+  logic is the Spellskite magnet), and worse, `PlayerControllerAi.chooseNewTargetsFor`
+  returned `null` — "AI currently can't do this" — so a redirect the AI did cast would have
+  changed nothing. Two patches: `AILogic$ Deflect` fires when the top of the stack is an
+  opponent's targeted spell or ability aimed at us or at something we control and there is
+  somewhere else legal to send it; the new-target chooser sends it AWAY from us — the
+  caster's best permanent first, then the caster, then another opponent's best, never back
+  onto anything of ours — carrying a divided allocation across when the spell has one.
+- **Teferi's Protection.** `EffectAi` casts an Effect spell only under a logic it
+  implements, and none fit a protection spell (the earlier `Fog` hint covered lethal combat
+  only). `AILogic$ Protection`: cast against an opponent's board wipe on the stack
+  (`DestroyAll`, `DamageAll`, `ChangeZoneAll`, `SacrificeAll`) when we have two or more
+  creatures to lose; against removal on the stack aimed at our commander; against a spell
+  that would take our life to zero; or at the opponent's declare-blockers when combat is
+  lethal.
+
+`data/forge_patches/` registers five classes now — one `log`, four `ai` — one jar, one
+patch-set sha in every run id (`-tl43a8b062`), and `net_change.forge` buckets on it. The
+jar carries every class javac emits for a patched source (siblings ride with their
+primary), and a two-game smoke under it ran clean before anything was measured.

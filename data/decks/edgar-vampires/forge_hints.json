@@ -49,8 +49,17 @@
     {
       "card": "Teferi's Protection",
       "ability": "SP$ Effect",
-      "ai_logic": "Fog",
-      "why": "Held while castable on 29 own turns across 9 games and cast 0 times in 80: the shipped script has no AILogic and Forge's EffectAi casts an Effect spell only under a logic it implements. `Fog` is the one it has that fits \u2014 cast it when incoming combat damage would be lethal \u2014 which is the pilot's own use of it (log 006: eating wipe after wipe; a Fog does not stop a wipe, and this hint claims only the combat half).",
+      "ai_logic": "Protection",
+      "why": "Held while castable on 29 own turns across 9 games and cast 0 times in 80: Forge's EffectAi casts an Effect spell only under a logic it implements, and none fit a protection spell. `Protection` (data/forge_patches/EffectAi.java) casts it against an opponent's board wipe on the stack, removal aimed at our commander, a spell that would take our life to zero, or lethal combat \u2014 the pilot's own uses of it (log 006: wipe after wipe).",
+      "cites": [
+        "log 006"
+      ]
+    },
+    {
+      "card": "Deflecting Swat",
+      "ability": "SP$ ChangeTargets",
+      "ai_logic": "Deflect",
+      "why": "Held while castable on 59 own turns across 13 games and cast 0 times in 80, while 17 opposing spells or abilities were aimed at our seat or our permanents: the shipped ChangeTargetsAi 'can't otherwise play this ability' and the AI's new-target chooser returned null. `Deflect` (data/forge_patches/ChangeTargetsAi.java + PlayerControllerAi.chooseNewTargetsFor) fires on an opponent's targeted spell aimed at us and sends it to the caster's best permanent, or the caster.",
       "cites": [
         "log 006"
       ]

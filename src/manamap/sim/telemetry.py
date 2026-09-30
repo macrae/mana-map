@@ -62,6 +62,9 @@ CLASS_ENTRY = "forge/game/GameLogFormatter.class"
 PATCHES = {
     "GameLogFormatter.java": {"entry": "forge/game/GameLogFormatter.class", "kind": "log"},
     "MillAi.java": {"entry": "forge/ai/ability/MillAi.class", "kind": "ai"},
+    "ChangeTargetsAi.java": {"entry": "forge/ai/ability/ChangeTargetsAi.class", "kind": "ai"},
+    "EffectAi.java": {"entry": "forge/ai/ability/EffectAi.class", "kind": "ai"},
+    "PlayerControllerAi.java": {"entry": "forge/ai/PlayerControllerAi.class", "kind": "ai"},
 }
 JAR_SUFFIX = "-mm-telemetry.jar"
 _PRISTINE_SUFFIX = "-jar-with-dependencies.jar"
@@ -207,9 +210,11 @@ def build(home=None, javac="javac"):
                     *[str(PATCH_DIR / n) for n in names]], check=True, capture_output=True, text=True)
     tmp = out.with_suffix(".jar.building")
     shutil.copy(pristine, tmp)
-    # `-C dir` applies to the ONE file argument that follows it, so it is repeated per entry.
-    entries = [arg for n in names for arg in ("-C", str(work), PATCHES[n]["entry"])]
-    subprocess.run(["jar", "uf", str(tmp), *entries], check=True, capture_output=True, text=True)
+    # EVERYTHING javac emitted — a class with lambdas or anonymous classes emits siblings
+    # (`Outer$1.class`, `Outer$lambda…`) that must travel with it, or the patched class
+    # references shapes the pristine siblings do not have. The manifest registers the
+    # primary entries; the siblings ride along.
+    subprocess.run(["jar", "uf", str(tmp), "-C", str(work), "."], check=True, capture_output=True, text=True)
     tmp.replace(out)
     shutil.rmtree(work)
     man = manifest() or {}
