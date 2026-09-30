@@ -1,0 +1,22 @@
+{
+ "name": "2026-10-edgar-sac-policy",
+ "authored": "2026-09-30",
+ "hypothesis": "Edgar's sacrifice outlets are cast (unflag.txt) and, under forge_hints.json + SACRIFICE_DEFAULT_PREF_ENABLE, activated \u2014 Vish Kal 2 over 5 battlefield turns, Viscera Seer 4 over 5, Bloodflow 14 over 14 on a 20-game replay of seed 1664213641 at standard-v3. The same replay read 2/17 against 4/16 and 5/17 on the two earlier passes, which a 20-game table cannot distinguish from noise (MDE 42 points). The question a powered A/B answers: does flying our seat on the sacrifice profile WIN MORE than flying it on Default, with the card hints installed on both arms (they are engine-global). 400 an arm, four O'Brien-Fleming looks, sees +0.10 at 80% power against the 0.233 null.",
+ "entries": [
+  {
+   "id": "sac-profile-on-vs-off",
+   "slug": "edgar-vampires",
+   "a": "working",
+   "b": "working",
+   "profile_b": "mm-edgar-vampires",
+   "pod": "standard-v3",
+   "games": 400,
+   "looks": 4,
+   "primary": "win_rate",
+   "detect": 0.1,
+   "until_mde": 0.1,
+   "hypothesis": "Arm B (SACRIFICE_DEFAULT_PREF_ENABLE on) wins more than arm A (Default.ai) on the sleeved v1.1.1 at standard-v3, both under the unflagged, hinted card scripts. Stop early for futility if +0.10 is excluded on the favourable side; the secondary reading is activations per battlefield turn on the outlets and noncombat damage dealt.",
+   "note": "The card hints (AILogic AristocratCounters / AtOppEOT, SacCost preferences) are in the engine for BOTH arms; only the AiProps knob differs. A separate question \u2014 hinted versus unhinted scripts \u2014 cannot be an A/B in one invocation and is read across harness buckets instead."
+  }
+ ]
+}
