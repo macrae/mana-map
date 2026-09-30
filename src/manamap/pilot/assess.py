@@ -184,10 +184,12 @@ def assess(slug, pool, branch=None):
     #    cards ranked by taste puts hexproof and phasing side by side; ranked
     #    against heliod's 119 recorded commander departures it does not, because
     #    48% of them were WIPES and hexproof does nothing about a wipe.
-    # 2. CAN FORGE PILOT IT. `AI:RemoveDeck` marks a card the AI has no logic
-    #    for. It does NOT mean "never cast" — Swan Song carries it and was cast
-    #    28 times in 160 games — so it is reported as a fact about the
-    #    INSTRUMENT: a flagged card may be fine in paper and unpriceable here.
+    # 2. CAN FORGE PILOT IT. `AI:RemoveDeck:All` means the AI will NOT cast it
+    #    proactively (measured and read from the bytecode, 2026-09-30 — the
+    #    earlier "Swan Song was cast 28 times" was the counterspell path); the
+    #    fleet's override list (`data/forge_overrides/unflag.txt`) removes the
+    #    flag for the cards our decks run. Reported as a fact about the
+    #    INSTRUMENT: unlisted, the card cannot be priced here at all.
     # 3. IS THE FLASH GRANTED OR PRINTED. Leyline of Anticipation gives the
     #    whole deck flash; a flash creature only ever flashes itself. On a deck
     #    whose plan is casting at end of turn those are different cards.
@@ -396,9 +398,11 @@ def main(args):
         if r.get("flash"):
             print(f"       flash: {r['flash']}")
         if r.get("forge_ai_flag"):
-            print(f"       FORGE: AI:RemoveDeck:{r['forge_ai_flag']} — the AI has no "
-                  f"logic for this. Not 'never cast' (Swan Song carries it and was "
-                  f"cast 28 times in 160 games), but it cannot be priced reliably here")
+            print(f"       FORGE: AI:RemoveDeck:{r['forge_ai_flag']} — "
+                  + ("the AI NEVER casts an :All card unless it is unflagged in "
+                     "data/forge_overrides/unflag.txt (measured 2026-09-30)"
+                     if r['forge_ai_flag'] == "All" else
+                     "deck-generation only; the AI casts it, with no special logic"))
     worth = [r for r in rows if any(m in r.get("verdict", "") for m in MEASURABLE)]
     print(f"\n  {len(worth)} of {len(rows)} worth measuring:")
     for r in worth:

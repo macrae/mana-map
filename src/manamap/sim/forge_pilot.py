@@ -349,6 +349,89 @@ def generate_overrides(cards, out_dir=None):
     return written, unsteerable
 
 
+#: THE CARDS THE AI WILL NOT CAST, and the list that lets it. `AI:RemoveDeck:All` is
+#: read at PLAY time: `AiController.getSpellAbilityToPlay` filters every non-land
+#: ability whose host `ComputerUtilCard.isCardRemAIDeck` — verified in the 2.0.14
+#: bytecode on 2026-09-30, and measured first: in a 26-land shell with four copies
+#: against a slow opponent, Vish Kal was castable in 7 of 12 games and cast in NONE;
+#: the same script with only the `AI:RemoveDeck:All` line removed was cast 10 times.
+#: The fleet sweep agrees — every `All` PERMANENT in a live deck with games on
+#: record was cast 0 times (14 of 14: Viscera Seer, Goblin Bombardment, Altar of
+#: Dementia, Isochron Scepter, Windfall's Magus…), while every `Random` one was cast
+#: normally. This repo said for a month that the flag was deck-generation only,
+#: measured on Swan Song — a COUNTERSPELL, cast through the AI's reactive path, which
+#: does not filter. The claim was true of one path and false of the one that casts.
+#:
+#: `UNFLAG_FILE` lists, one script stem per line, the cards whose override is the
+#: shipped script minus that line. A tracked list rather than a glob over the fleet
+#: because the set is part of the instrument's fingerprint: derived from the decks it
+#: would move on every swap and split every bucket. `unflag_candidates()` is the sweep
+#: that says what the list is missing.
+UNFLAG_FILE = config.DATA_DIR / "forge_overrides" / "unflag.txt"
+
+
+def unflag_list():
+    """The stems `unflag.txt` names, in order; empty when the file is absent."""
+    if not UNFLAG_FILE.is_file():
+        return []
+    return [ln.strip() for ln in UNFLAG_FILE.read_text(encoding="utf-8").splitlines()
+            if ln.strip() and not ln.startswith("#")]
+
+
+def generate_unflag(stems, out_dir=None):
+    """Write override scripts that are the shipped script MINUS its `AI:RemoveDeck` line.
+
+    Derived like `generate_overrides`, and layered on top of it: a card that is also in
+    `OVERRIDDEN` starts from its AITgts override so both edits land in one file. Refuses a
+    stem whose shipped script carries no flag (an unflag with nothing to remove would be a
+    listed edit that changes nothing — the failure `test_metric_hygiene` exists for).
+    """
+    out_dir = pathlib.Path(out_dir) if out_dir else OVERRIDE_DIR
+    source = PRISTINE if PRISTINE.is_file() else CARDSFOLDER
+    if not source.is_file():
+        raise FileNotFoundError(f"no card scripts to derive from at {source}")
+    written = []
+    with zipfile.ZipFile(source) as zf:
+        by_stem = {n.rsplit("/", 1)[-1][:-4]: n for n in zf.namelist() if n.endswith(".txt")}
+        for stem in stems:
+            entry = by_stem.get(stem)
+            if entry is None:
+                raise KeyError(f"{stem}: no such card script in {source.name}")
+            dest = out_dir / stem[0] / f"{stem}.txt"
+            base = dest.read_text(encoding="utf-8") if dest.is_file() \
+                else zf.read(entry).decode("utf-8", "replace")
+            lines = base.splitlines()
+            kept = [ln for ln in lines if not ln.startswith("AI:RemoveDeck:")]
+            if len(kept) == len(lines):
+                raise ValueError(f"{stem}: the shipped script carries no AI:RemoveDeck line — "
+                                 f"nothing to unflag, so it does not belong in {UNFLAG_FILE.name}")
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text("\n".join(kept) + "\n", encoding="utf-8")
+            written.append(stem)
+    return written
+
+
+def unflag_candidates():
+    """Every `RemoveDeck:All` non-land card in a LIVE deck that `unflag.txt` does not
+    name — the sweep behind the list. `[(slug, card name, stem)]`."""
+    import json
+    from manamap.pilot.common import deck_is_apart
+    from manamap.sim import forge_cards
+    listed = set(unflag_list())
+    out = []
+    for d in sorted(config.DECKS_DIR.iterdir()) if config.DECKS_DIR.is_dir() else []:
+        cj = d / "cards.json"
+        if not cj.is_file() or deck_is_apart(d.name):
+            continue
+        for c in json.loads(cj.read_text(encoding="utf-8")).get("cards", []):
+            if forge_cards.ai_flag(c["name"]) != "All" or "Land" in (c.get("type_line") or ""):
+                continue
+            stem = forge_cards.stem(c["name"])
+            if stem not in listed:
+                out.append((d.name, c["name"], stem))
+    return out
+
+
 #: The cards the fleet currently overrides. A LIST, not a glob over the deck, because an
 #: override is a deliberate distortion of the instrument and the set of them is a thing
 #: somebody decided — `--generate` re-derives exactly these and nothing else.
@@ -417,6 +500,13 @@ def main(args=None):
         if unsteerable:
             print(f"  REFUSED as unsteerable (CopyPermanentAi never reads AITgts$): "
                   f"{', '.join(sorted(unsteerable))}")
+        unflagged = generate_unflag(unflag_list())
+        print(f"unflagged {len(unflagged)} card(s) the AI would never cast ({UNFLAG_FILE.name})")
+        missing = unflag_candidates()
+        if missing:
+            print(f"  NOT YET UNFLAGGED — RemoveDeck:All cards in live decks the AI will not cast:")
+            for slug, name, stem in missing:
+                print(f"    {slug}: {name}  ({stem})")
 
     if revert:
         uninstall()

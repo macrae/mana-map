@@ -3139,3 +3139,83 @@ against the damage yardstick said "the policy does nothing"; reading each rate
 against its own said "it costs 2.5 kills per 100 and the interval excludes zero".
 Every rate carries its interval, and a comparison carries the interval on the
 DIFFERENCE — broken here in the very table used to judge new work.
+
+
+## `AI:RemoveDeck:All` is never-cast, and the repo's own counter-example was a counterspell (2026-09-30)
+
+**The claim that was wrong.** `sim/forge_cards.py` said for a month that Forge's
+`AI:RemoveDeck` marker "governs deck GENERATION, not whether a supplied deck may
+contain it — Swan Song carries `RemoveDeck:All` and was cast 28 times in 160 games".
+`assess` printed it to the pilot on every flagged card. The measurement was real and the
+inference was not: Swan Song is a counterspell, and the AI casts counterspells through a
+reactive path that never asks the question.
+
+**How it was found.** The pilot's 2026-09-29 log: Vish Kal, Blood Arbiter "is a win
+condition in itself… if it's never cast, that's a red flag." Three tracked runs, 220
+games, 0 casts, 6 discards. The first exact read under the telemetry patch (20 games at
+standard-v3 on the current list): in hand in six games, seven-plus lands on the
+battlefield while held in three of them, cast in none — while Crossway Troublemakers and
+Liliana were cast when castable and The Haunt of Hightower was not.
+
+**The isolation.** A constructed shell — 28 basics, 12 rocks, cheap bodies — with four
+copies of the card under test against a slow wall deck, twelve games, seed 777, zero AI
+timeouts, telemetry jar so every draw is on the log:
+
+| variant | drawn (games) | castable and uncast | cast |
+|---|---|---|---|
+| Vish Kal, shipped script | 11 | 7 | **0** |
+| control: Serra Avatar in the same slot | 8 | 1 | 4 |
+| Vish Kal, no activated abilities | — | 1 | 10 |
+| Vish Kal, sacrifice ability only | — | 1 | 10 |
+| Vish Kal, pump ability only | — | 1 | 10 |
+| Vish Kal, full script minus `AI:RemoveDeck:All` | — | 1 | **10** |
+
+The abilities are innocent; the flag is the whole effect. Loose files under
+`res/cardsfolder/<letter>/` load over the zip (which is how the variants ran, and a thing
+to know: a loose file changes the engine while `forge_pilot.installed()` reads only the
+zip, so the bisect deleted its file before it ended).
+
+**The mechanism, in the bytecode.** `forge/ai/AiController.getSpellAbilityToPlay`'s
+candidate filter (`lambda$getSpellAbilityToPlay$8`) drops every ability that is not a
+land play whose host card `ComputerUtilCard.isCardRemAIDeck` — which reads
+`CardRules.getAiHints().getRemAIDecks()`, the parsed `AI:RemoveDeck:All`. `Random` sets
+a different hint and is not read here. Nothing in `PermanentAi`, `PermanentCreatureAi` or
+`ComputerUtilCost` names a sacrifice cost.
+
+**The fleet sweep, before the fix.** Every `RemoveDeck:All` card in a live deck, joined
+to `engine_casts` over every tracked record:
+
+| deck | `All` permanents (games on record) | cast |
+|---|---|---|
+| edgar-vampires (860) | Altar of Dementia, Bloodflow Connoisseur, Viscera Seer, Vish Kal | 0, 0, 0, 0 |
+| goblin-storm (435) | Goblin Bombardment | 0 |
+| heliod (300) | Azorius Signet, Isochron Scepter, Psychosis Crawler | 0, 0, 0 |
+| sharknado (120) | Improbable Alliance, Jace's Archivist, Magus of the Wheel, Psychosis Crawler | 0, 0, 0, 0 |
+
+14 of 14. The `All` sorceries the same: Vampiric Tutor 0/860, Windfall 0/120, Tolarian
+Winds 0/120, Hunter's Insight 0/100, Long-Term Plans 0/300, Skyscribing 0/300; Faithless
+Looting 3/435 and Past in Flames 2/435 (both castable from the graveyard by another path).
+Every `Random` card — Captivating Vampire 112, Indulgent Aristocrat 135, Sanguine Bond 63,
+Mystic Remora 96, Sneak Attack 50 — cast normally. **So goblin-storm's sacrifice outlet,
+sharknado's wheels, heliod's Scepter and Edgar's whole sacrifice suite were uncastable in
+every Forge figure this repo has published**, and the "held and never cast" finding on
+sharknado (below) was this flag, not the AI's judgement.
+
+**The fix, and what it costs.** `data/forge_overrides/unflag.txt` lists 23 stems — every
+`All` non-land card in a live deck on 2026-09-30 — and `forge_pilot.generate_unflag`
+writes each one's override as the shipped script minus that line (layered on an AITgts
+override where both apply). `forge-install --generate` regenerates the set and prints any
+flagged card a live deck has acquired since; a fleet test refuses one. The engine
+fingerprint moved from `60636e9e` (eleven AITgts scripts) to **`8bf04cfcdb21`**, so every
+run from now on is a different instrument from every record on disk, and `net_change.forge`
+will not pool them — correctly. The cost is the null: `pods.calibration` counts PLAIN-harness
+runs only, so until the standard table is re-measured under `8bf04cfcdb21` no fresh run
+feeds a null, and a rate read against 0.233 is read against an instrument that no longer
+exists. Re-measuring it is the calibration campaign, and `pods.calibration` needs to learn
+to bucket by harness rather than exclude — `docs/known-issues.md` §17.
+
+**What an unflagged card is.** Not a card the AI plays well: `RemoveDeck:All` was put
+there because the AI has no logic for it, and an unflagged Altar of Dementia may mill its
+controller or a Windfall may wheel at the wrong time. It is a card the AI will CAST, whose
+activations `engine_casts` can count, which makes it a floor with a number instead of a
+card the instrument cannot see at all.

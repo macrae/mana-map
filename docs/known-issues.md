@@ -1538,3 +1538,17 @@ root at a tmp copy, so no other worker can move the signature) or assert the
 CONTRACT rather than the outcome — same bytes both times, and `cached` true only
 when the signature did not move. Do NOT relax it to `cached in (True, False)`;
 that deletes the only thing it checks.
+
+
+## 17. The null is plain-harness, and the whole fleet is now overridden (2026-09-30)
+
+`pods.calibration` counts only runs with no `card_overrides` sha — the right rule when
+overrides were eleven targeting hints on one deck, and the wrong one now that
+`data/forge_overrides/unflag.txt` removes `AI:RemoveDeck:All` from 23 cards across the
+fleet (the AI never cast them; `docs/gotchas-bench.md`, the RemoveDeck entry). Every run
+since carries `-ov8bf04cfc`, none of them will ever enter a null, and `net-change` reads
+each against a 0.233 measured under an instrument that no longer runs. No test fails:
+the exclusion is deliberate and documented in `pods.py`. What closes it: (a) re-measure
+standard-v3, pod-1 and pod-2 under `8bf04cfcdb21` — the calibration campaign, the
+pilot's act to plan; (b) `pods.calibration` buckets by harness sha and reports the null
+FOR THE HARNESS ASKED, with the plain one kept for the records that were made under it.

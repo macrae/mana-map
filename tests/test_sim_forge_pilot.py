@@ -303,3 +303,84 @@ def test_a_pristine_run_records_no_card_overrides_block_at_all(engine, monkeypat
     assert got is not None and got["sha"] == fp.declared()["sha"]
     assert got["agrees"] is True
     assert got["declared"]["sha"] == got["installed"]["sha"]
+
+
+# ------------------------------------------------------------------- the unflag override
+
+FLAGGED = ("Name:Test Flagged\n"
+           "ManaCost:4 W B B\n"
+           "Types:Legendary Creature Vampire\n"
+           "PT:5/5\n"
+           "K:Flying\n"
+           "A:AB$ PutCounter | Cost$ Sac<1/Creature> | Defined$ Self | CounterType$ P1P1 | CounterNum$ 1\n"
+           "AI:RemoveDeck:All\n"
+           "Oracle:Flying. Sacrifice a creature: put a +1/+1 counter on this.\n")
+
+
+@pytest.fixture
+def flagged_engine(engine, tmp_path, monkeypatch):
+    """The engine fixture plus a flagged card and an unflag list pointed at tmp."""
+    with zipfile.ZipFile(engine.zip_path, "a", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("t/test_flagged.txt", FLAGGED)
+    lst = tmp_path / "overrides" / "unflag.txt"
+    lst.write_text("# comment\ntest_flagged\n")
+    monkeypatch.setattr(fp, "UNFLAG_FILE", lst)
+    return engine
+
+
+def test_unflag_removes_exactly_the_flag_line_and_nothing_else(flagged_engine):
+    """The bug this guards is the whole finding: `AI:RemoveDeck:All` is read at PLAY time
+    and the AI never casts such a card. An unflag override must be the shipped script
+    with that one line gone — every other line verbatim, in order — so nothing legal
+    and nothing about the card's abilities moves, only whether the AI will cast it."""
+    assert fp.unflag_list() == ["test_flagged"]
+    assert fp.generate_unflag(fp.unflag_list()) == ["test_flagged"]
+    got = (flagged_engine.override_dir / "t" / "test_flagged.txt").read_text()
+    assert "AI:RemoveDeck" not in got
+    assert got.splitlines() == [ln for ln in FLAGGED.splitlines() if not ln.startswith("AI:RemoveDeck")]
+
+
+def test_unflag_layers_on_an_aim_override_rather_than_replacing_it(flagged_engine):
+    """A card in both lists gets both edits in one file, because the installer takes
+    one script per card and the second write would otherwise erase the first."""
+    with zipfile.ZipFile(flagged_engine.zip_path, "a", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("t/test_both.txt", PUMP.replace("Name:Test Pump", "Name:Test Both")
+                   .replace("Oracle:", "AI:RemoveDeck:All\nOracle:"))
+    fp.generate_overrides(["test_both"])
+    fp.generate_unflag(["test_both"])
+    got = (flagged_engine.override_dir / "t" / "test_both.txt").read_text()
+    assert "AITgts$ Ally.YouCtrl" in got and "AI:RemoveDeck" not in got
+
+
+def test_unflag_refuses_a_card_that_carries_no_flag(flagged_engine):
+    """An unflag with nothing to remove is a listed edit that changes nothing — the
+    set-and-unread failure `test_metric_hygiene` exists for. Named, not written."""
+    with pytest.raises(ValueError):
+        fp.generate_unflag(["test_pump"])
+    assert not (flagged_engine.override_dir / "t" / "test_pump.txt").exists()
+
+
+def test_the_installer_carries_an_unflag_override_into_the_engine(flagged_engine):
+    fp.generate_unflag(["test_flagged"])
+    fp.install()
+    assert "AI:RemoveDeck" not in flagged_engine.entry("t/test_flagged.txt")
+    assert "AI:RemoveDeck" in fp._engine_bytes(fp.PRISTINE, ["t/test_flagged.txt"])[0][1].decode(), \
+        "the pristine copy keeps the flag, so a revert restores it"
+
+
+def test_the_stem_is_forges_script_name():
+    from manamap.sim import forge_cards
+    assert forge_cards.stem("Vish Kal, Blood Arbiter") == "vish_kal_blood_arbiter"
+    assert forge_cards.stem("Jace's Archivist") == "jaces_archivist"
+    assert forge_cards.stem("Hunter's Insight") == "hunters_insight"
+    assert forge_cards.stem("Elesh Norn // The Argent Etchings") == "elesh_norn"
+
+
+@pytest.mark.skipif(not __import__("manamap.sim.forge_cards", fromlist=["installed"]).installed(),
+                    reason="needs the Forge card scripts")
+def test_no_live_deck_carries_a_removedeck_all_card_the_list_does_not_unflag():
+    """The fleet gate: a flagged card the AI will never cast, sitting in a live deck
+    without an unflag entry, would make every Forge figure on that deck a floor nobody
+    announced. `forge-install --generate` prints the same list."""
+    assert fp.unflag_candidates() == []
+    assert len(fp.unflag_list()) >= 20, "the list iterated almost nothing"

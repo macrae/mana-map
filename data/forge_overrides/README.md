@@ -27,6 +27,19 @@ failures are the same lesson: a target class is read, not guessed.
   `Ally` 2) while the `+` position takes only `YouCtrl` (132), `Other` (68), `YouOwn`
   (44), `OppCtrl` (30) and colours. `+Ally` is not a clause.
 
+## `unflag.txt` — THE CARDS THE AI WOULD NEVER CAST (2026-09-30)
+
+`AI:RemoveDeck:All` on a Forge script is read at play time: the AI's candidate filter
+drops every ability of such a card, so it is never cast proactively. Measured (Vish Kal
+castable in 7 of 12 games, cast in 0; the same script minus that line, cast 10) and read
+from the 2.0.14 bytecode — `docs/gotchas-bench.md` has the record. `unflag.txt` lists,
+one script stem per line, every such non-land card a live deck runs; each one's override
+is the shipped script with that single line removed, layered on an `AITgts$` override
+where a card has both. `manamap pilot forge-install --generate` regenerates the set and
+prints any flagged card a live deck has since acquired; a fleet test refuses one. These
+overrides change the fingerprint like any other: a run under them is `-ov<sha>` and is
+never pooled with a run made without.
+
 ## ELEVEN SPELLS, NOT FIFTEEN — WHAT CANNOT BE STEERED
 
 The deck's four token-copy spells — **Molten Duplication, Heat Shimmer,
