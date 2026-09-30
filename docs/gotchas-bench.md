@@ -3268,3 +3268,25 @@ What IS settled is the mechanism, per card, measured from the telemetry hand and
 The instruments this took, all of them now on every telemetry run: `castable_uncast` and
 `turns_on_battlefield` per card in `engine_casts.by_card`, `held_while_castable` and
 `idle_on_battlefield` in the reading, and the patch set with kinds in the run id.
+
+
+## Deflecting Swat and Teferi's Protection, from 0 to fired (2026-09-30)
+
+Over Edgar's four telemetry passes: Swat held while castable on 59 own turns, cast 0 in 80
+games, with **17 opposing spells or abilities aimed at our seat or our permanents** while
+it sat in hand; Teferi's Protection 29 turns, cast 0. Not hints — Forge's redirect AI has
+no general logic, its new-target chooser returned `null` ("AI currently can't do this"), and
+its effect AI has no logic that fits a protection spell. Two `ai` patches
+(`docs/simulation.md`, "Two more ai classes") and an eight-game constructed shell —
+four of each against a deck of Murders, Doom Blades and three kinds of wrath, seed 4343,
+zero AI timeouts:
+
+| card | in hand (games) | cast | what it answered |
+|---|---|---|---|
+| Deflecting Swat | 11 | 4 | every one a `Murder` on our creature, resolved onto the caster's own Nighthawk or Serra Angel — the log shows the opponent's creature going to the graveyard under the opponent's own spell |
+| Teferi's Protection, first cut | 12 | 11 | two `Day of Judgment`s, and NINE ordinary unblocked attacks — Forge's Fog threshold (`lifeInDanger`) fires on any unblocked flier |
+| Teferi's Protection, `lifeThatWouldRemain <= 2` | 15 | 9 | one `Damnation` at life 4, and combats where the declared attackers were lethal or left us at two (life 10 facing Angel + two Nighthawks; life 6 facing eight) |
+
+The first cut is the lesson: a Fog is cheap and a protection spell is not, and the
+engine's own danger threshold is calibrated for the cheap one. The rule that ships spends
+the card on the swing that would otherwise end the game.
