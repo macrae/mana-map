@@ -3238,6 +3238,25 @@ each pass one lever more, each lever a fingerprint the record carries:
 | win rate (decided) | 5/17 | 4/16 | 2/17 | 8/17 |
 | noncombat damage / life gained per game | 3.65 / 25.25 | 5.75 / 22.65 | 5.2 / 17.85 | 4.55 / 43.55 |
 
+Two more passes of the same seed, once the two instants were patched (`tl0acbd08b`, then
+`tl56cd8561` with Protection scanning the whole stack):
+
+| card | fifth pass | sixth pass |
+|---|---|---|
+| Altar of Dementia | cast 6 · act 11 / 44 board turns | cast 4 · act 34 / 40 |
+| Vish Kal | cast 3 · act 29 / 11 | cast 0 · act 6 / 5 |
+| Viscera Seer | cast 1 · act 1 / 2 | cast 6 · act 10 / 19 |
+| Bloodflow Connoisseur | cast 1 · act 0 / 3 | cast 4 · act 23 / 12 |
+| Deflecting Swat | cast 3 — a Grasp of Fate trigger, a destroy-target-permanent spell, a Warstorm Surge trigger at Vampire Cutthroat | cast 1 |
+| Teferi's Protection | cast 0 — sat through a Blasphemous Act (see below) | cast 2 — a four-attacker Spirit Cleric swing, and Rakdos + three at 5 life |
+| win rate (decided) | 5/14 | 4/16 |
+
+The fifth pass's Teferi's zero was a bug: with Blasphemous Act on the stack, three creatures
+of ours out and the mana open, the AI answered with the Altar first — correctly — which put
+OUR ability on top of the stack, and a logic that looked only at the top saw no opponent's
+spell. It walks every stack instance now, and the sixth pass cast it twice, both times on
+the swing that would have ended the game.
+
 Read the columns as levers, not as a trend: twenty games cannot separate 2/17 from 8/17
 (the MDE at this table is 42 points), and the last column carries every lever at once.
 What IS settled is the mechanism, per card, measured from the telemetry hand and board:
