@@ -1,10 +1,24 @@
 {
   "name": "pod-2",
-  "note": "THE OTHER TABLE: Sean, Stephen, Stuart, David -- the pilot's naming of pod 2 on 2026-09-30. Four players when whole; THREE SEATED HERE, because David's squirrel deck ('makes a bunch of food and tokens') names no commander and a seat is never inferred -- Chatterfang, Squirrel General and Camellia, the Seedmiser both fit the description and only the pilot can say. Add the seat and this table is four players. Stephen's seat is his REAL list: `sisay` under data/decks/ is Stephen's deck, retired there because it is not the pilot's (it was checked in for a manual that was never his to keep), and a pod seat may name any deck with a decklist.txt. Stuart's is an EDHREC average. NEVER PLAYED in simulation; no null until `pods pod-2 --calibration` has games.",
+  "note": "THE OTHER TABLE, four players: Sean, Stephen, Stuart, David -- the pilot's naming of pod 2 on 2026-09-30, one seat per person. Stephen's seat is his REAL list: `sisay` under data/decks/ is Stephen's deck, retired there because it is not the pilot's (it was checked in for a manual that was never his to keep), and a pod seat may name any deck with a decklist.txt. Stuart's and David's are EDHREC averages, so their brackets are the FLOOR of the average list's contents (`bracket.assess`), which reads Optimized on two-card infinites a precon-shaped real list would not carry. NEVER PLAYED in simulation; no null until `pods pod-2 --calibration` has games.",
   "seats": [
-    {"slug": "sisay", "archetype": "five-colour legends tutor (Sisay, Weatherlight Captain)", "bracket": 4,
-     "note": "Stephen. 'Sisay Weatherlight tutor on a stick' per the pilot 2026-09-30. HIS ACTUAL LIST (data/decks/sisay, retired 2026-08-18 as not the pilot's deck). Floor 4: four Game Changers, three two-card infinites."},
-    {"slug": "wilhelt-zombies", "archetype": "dimir decayed zombie tokens + sacrifice", "bracket": 4,
-     "note": "Stuart. 'Rotcleaver decayed zombie deck' per the pilot 2026-09-30 = Wilhelt, the Rotcleaver. EDHREC average, not Stuart's list; floor 4 from four two-card infinites the average list carries (12 combos), which a precon-shaped list would not."}
+    {
+      "slug": "sisay",
+      "archetype": "five-colour legends tutor (Sisay, Weatherlight Captain)",
+      "bracket": 4,
+      "note": "Stephen. 'Sisay Weatherlight tutor on a stick' per the pilot 2026-09-30. HIS ACTUAL LIST (data/decks/sisay, retired 2026-08-18 as not the pilot's deck). Floor 4: four Game Changers, three two-card infinites."
+    },
+    {
+      "slug": "wilhelt-zombies",
+      "archetype": "dimir decayed zombie tokens + sacrifice",
+      "bracket": 4,
+      "note": "Stuart. 'Rotcleaver decayed zombie deck' per the pilot 2026-09-30 = Wilhelt, the Rotcleaver. EDHREC average, not Stuart's list; floor 4 from four two-card infinites the average list carries (12 combos), which a precon-shaped list would not."
+    },
+    {
+      "slug": "chatterfang-squirrels",
+      "archetype": "golgari squirrel tokens + food",
+      "bracket": 4,
+      "note": "David. 'Squirrels deck that makes a bunch of food and tokens'; Chatterfang, Squirrel General confirmed by the pilot 2026-09-30. EDHREC average, not David's list; floor 4 from one two-card infinite (16 combos in the average list), one Game Changer."
+    }
   ]
 }
