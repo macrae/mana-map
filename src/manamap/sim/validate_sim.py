@@ -175,8 +175,8 @@ def validate(rec, slug, logs_text=None):
         errors += _bs.validate(bser, n)
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
-        from manamap.sim.forge import cmc_map
-        facts, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec), cmc_map(slug))
+        from manamap.sim.forge import cmc_map, keyword_map
+        facts, derived = sim_parse.analyze_logs(logs_text, label, record_commanders(rec), cmc_map(slug), keyword_map(slug))
         if derived != rec["analysis"]:
             keys = [k for k in set(derived) | set(rec["analysis"]) if derived.get(k) != rec["analysis"].get(k)]
             errors.append(f"analysis does not match what the logs derive (differs at {sorted(keys)}) — "

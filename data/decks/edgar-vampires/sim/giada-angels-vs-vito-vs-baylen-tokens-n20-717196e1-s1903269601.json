@@ -733,6 +733,169 @@
             16.73
           ]
         },
+        "drain_dealt": {
+          "mean": 13.45,
+          "median": 1.0,
+          "min": 0,
+          "max": 77,
+          "n": 20,
+          "ci95": [
+            2.98,
+            23.92
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 8.25,
+            "median": 0.5,
+            "min": 0,
+            "max": 60,
+            "n": 20,
+            "ci95": [
+              1.13,
+              15.37
+            ]
+          },
+          "trigger": {
+            "mean": 10.9,
+            "median": 0.0,
+            "min": 0,
+            "max": 81,
+            "n": 20,
+            "ci95": [
+              1.25,
+              20.55
+            ]
+          },
+          "other": {
+            "mean": 2.45,
+            "median": 0.0,
+            "min": 0,
+            "max": 13,
+            "n": 20,
+            "ci95": [
+              0.46,
+              4.44
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 5.25,
+          "median": 6.0,
+          "min": 0,
+          "max": 12,
+          "n": 20,
+          "ci95": [
+            3.77,
+            6.73
+          ],
+          "sources": [
+            {
+              "card": "Edgar Markov",
+              "games": 8
+            },
+            {
+              "card": "Nighthawk Scavenger",
+              "games": 2
+            },
+            {
+              "card": "Vampire Token",
+              "games": 2
+            },
+            {
+              "card": "Witty Roastmaster",
+              "games": 1
+            },
+            {
+              "card": "Gifted Aetherborn",
+              "games": 1
+            },
+            {
+              "card": "Preacher of the Schism",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 20,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "by_card": {}
+        },
+        "combat_damage_by_keyword": {
+          "evasive": {
+            "mean": 6.25,
+            "median": 5.5,
+            "min": 0,
+            "max": 20,
+            "n": 16,
+            "ci95": [
+              3.05,
+              9.45
+            ]
+          },
+          "flying": {
+            "mean": 3.69,
+            "median": 0.0,
+            "min": 0,
+            "max": 20,
+            "n": 16,
+            "ci95": [
+              0.82,
+              6.55
+            ]
+          },
+          "ground": {
+            "mean": 21.0,
+            "median": 12.5,
+            "min": 0,
+            "max": 69,
+            "n": 16,
+            "ci95": [
+              10.37,
+              31.63
+            ]
+          },
+          "menace": {
+            "mean": 0.88,
+            "median": 0.0,
+            "min": 0,
+            "max": 8,
+            "n": 16,
+            "ci95": [
+              -0.31,
+              2.06
+            ]
+          },
+          "skulk": {
+            "mean": 1.69,
+            "median": 0.0,
+            "min": 0,
+            "max": 8,
+            "n": 16,
+            "ci95": [
+              0.28,
+              3.09
+            ]
+          }
+        },
+        "evasive_damage_share": {
+          "mean": 0.24,
+          "median": 0.17,
+          "min": 0.0,
+          "max": 1.0,
+          "n": 16,
+          "ci95": [
+            0.1,
+            0.39
+          ]
+        },
         "tokens": {
           "token_resolutions": {
             "mean": 6.2,
@@ -801,14 +964,14 @@
             ]
           },
           "tokens_chumped": {
-            "mean": 0.25,
+            "mean": 0.0,
             "median": 0.0,
             "min": 0,
-            "max": 2,
+            "max": 0,
             "n": 20,
             "ci95": [
-              -0.03,
-              0.53
+              0.0,
+              0.0
             ]
           }
         },
@@ -1446,6 +1609,103 @@
             11.12,
             14.99
           ]
+        },
+        "drain_dealt": {
+          "mean": 0.15,
+          "median": 0.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            -0.14,
+            0.44
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 16.4,
+            "median": 6.5,
+            "min": 0,
+            "max": 87,
+            "n": 20,
+            "ci95": [
+              6.52,
+              26.28
+            ]
+          },
+          "trigger": {
+            "mean": 9.65,
+            "median": 3.0,
+            "min": 0,
+            "max": 48,
+            "n": 20,
+            "ci95": [
+              3.33,
+              15.97
+            ]
+          },
+          "other": {
+            "mean": 6.2,
+            "median": 0.0,
+            "min": 0,
+            "max": 38,
+            "n": 20,
+            "ci95": [
+              1.19,
+              11.21
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 8.65,
+          "median": 7.5,
+          "min": 0,
+          "max": 26,
+          "n": 20,
+          "ci95": [
+            6.0,
+            11.3
+          ],
+          "sources": [
+            {
+              "card": "Angel Token",
+              "games": 6
+            },
+            {
+              "card": "Avacyn, Angel of Hope",
+              "games": 2
+            },
+            {
+              "card": "Angel of Vitality",
+              "games": 2
+            },
+            {
+              "card": "Giada, Font of Hope",
+              "games": 2
+            },
+            {
+              "card": "Lyra Dawnbringer",
+              "games": 2
+            },
+            {
+              "card": "Inspiring Overseer",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.05,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.05,
+            0.15
+          ],
+          "by_card": {
+            "Myriad Landscape": 1
+          }
         },
         "tokens": {
           "token_resolutions": {
@@ -2162,6 +2422,149 @@
             22.5
           ]
         },
+        "drain_dealt": {
+          "mean": 30.15,
+          "median": 12.0,
+          "min": 0,
+          "max": 163,
+          "n": 20,
+          "ci95": [
+            10.52,
+            49.78
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 1.85,
+            "median": 0.0,
+            "min": 0,
+            "max": 8,
+            "n": 20,
+            "ci95": [
+              0.77,
+              2.93
+            ]
+          },
+          "trigger": {
+            "mean": 23.35,
+            "median": 5.0,
+            "min": 0,
+            "max": 162,
+            "n": 20,
+            "ci95": [
+              3.95,
+              42.75
+            ]
+          },
+          "other": {
+            "mean": 4.25,
+            "median": 3.0,
+            "min": 0,
+            "max": 14,
+            "n": 20,
+            "ci95": [
+              2.25,
+              6.25
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 2.3,
+          "median": 3.0,
+          "min": 0,
+          "max": 5,
+          "n": 20,
+          "ci95": [
+            1.6,
+            3.0
+          ],
+          "sources": [
+            {
+              "card": "Vito, Thorn of the Dusk Rose",
+              "games": 3
+            },
+            {
+              "card": "Vampire Nighthawk",
+              "games": 2
+            },
+            {
+              "card": "Veinwitch Coven",
+              "games": 2
+            },
+            {
+              "card": "Marauding Blight-Priest",
+              "games": 1
+            },
+            {
+              "card": "Elephant Token",
+              "games": 1
+            },
+            {
+              "card": "Qarsi Revenant",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.05,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.05,
+            0.15
+          ],
+          "by_card": {
+            "Sorin Markov": 1
+          }
+        },
+        "combat_damage_by_keyword": {
+          "evasive": {
+            "mean": 0.56,
+            "median": 0,
+            "min": 0,
+            "max": 5,
+            "n": 9,
+            "ci95": [
+              -0.53,
+              1.64
+            ]
+          },
+          "flying": {
+            "mean": 0.56,
+            "median": 0,
+            "min": 0,
+            "max": 5,
+            "n": 9,
+            "ci95": [
+              -0.53,
+              1.64
+            ]
+          },
+          "ground": {
+            "mean": 1.33,
+            "median": 1,
+            "min": 0,
+            "max": 2,
+            "n": 9,
+            "ci95": [
+              0.87,
+              1.8
+            ]
+          }
+        },
+        "evasive_damage_share": {
+          "mean": 0.11,
+          "median": 0.0,
+          "min": 0.0,
+          "max": 1.0,
+          "n": 9,
+          "ci95": [
+            -0.11,
+            0.33
+          ]
+        },
         "tokens": {
           "token_resolutions": {
             "mean": 1.75,
@@ -2876,6 +3279,105 @@
             22.67
           ]
         },
+        "drain_dealt": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 20,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0,
+            "max": 0,
+            "n": 20,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "trigger": {
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0,
+            "max": 0,
+            "n": 20,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "other": {
+            "mean": 1.5,
+            "median": 0.0,
+            "min": 0,
+            "max": 23,
+            "n": 20,
+            "ci95": [
+              -0.82,
+              3.82
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 3.25,
+          "median": 3.5,
+          "min": 0,
+          "max": 10,
+          "n": 20,
+          "ci95": [
+            1.95,
+            4.55
+          ],
+          "sources": [
+            {
+              "card": "Baylen, the Haymaker",
+              "games": 9
+            },
+            {
+              "card": "Hare Apparent",
+              "games": 4
+            },
+            {
+              "card": "Jetmir, Nexus of Revels",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 20,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "by_card": {}
+        },
+        "combat_damage_by_keyword": {
+          "ground": {
+            "mean": 26.0,
+            "median": 26,
+            "min": 26,
+            "max": 26,
+            "n": 1
+          }
+        },
+        "evasive_damage_share": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "n": 1
+        },
         "tokens": {
           "token_resolutions": {
             "mean": 3.7,
@@ -2944,14 +3446,14 @@
             ]
           },
           "tokens_chumped": {
-            "mean": 0.2,
+            "mean": 0.0,
             "median": 0.0,
             "min": 0,
-            "max": 1,
+            "max": 0,
             "n": 20,
             "ci95": [
-              0.02,
-              0.38
+              0.0,
+              0.0
             ]
           }
         },
@@ -3541,6 +4043,7 @@
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
       "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
       "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
+      "drain_dealt is an opponent's life LOSS that was not damage, credited to the seat whose life-loss ability resolved last this turn (the elimination attribution's own rule) — a FLOOR: a drain the regex does not read, or one landing after another seat's ability, is credited to nobody. life_gained_by_source reads the line before the gain: a combat damage line from this seat's source is lifelink, a resolve line of this seat's is trigger, anything else is other. biggest_hit is the largest single combat damage event to a player. kills_by_ability counts opposing permanents that left the battlefield in the same turn as, and directly after, one of this seat's activated abilities resolved — a permanent that was going to die anyway is counted, so it is a CEILING per card. combat_damage_by_keyword and evasive_damage_share exist only for the seat whose deck's keywords were known (ours); a source with any of Flying, Trample, Menace, Fear, Intimidate, Shadow, Horsemanship, Skulk or Unblockable is evasive, the rest ground.",
       "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
@@ -3602,6 +4105,21 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 40,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 19,
+            "other": 4
+          },
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Vito, Thorn of the Dusk Rose"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 3,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -3661,6 +4179,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -3725,6 +4255,21 @@
           "counter_events": 5,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 24,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 52,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -3790,6 +4335,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 12,
+            "trigger": 10,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Inspiring Overseer"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 3,
           "commander_casts": 3,
@@ -3853,6 +4410,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 2
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -3900,6 +4469,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Witty Roastmaster"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -3962,6 +4543,18 @@
           "counter_events": 8,
           "mass_counter_events": 7,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 47,
+            "trigger": 4,
+            "other": 38
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 13,
+            "source": "Baneslayer Angel"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -4016,6 +4609,18 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -4081,6 +4686,21 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 21,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 9,
+            "other": 1
+          },
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Marauding Blight-Priest"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -4150,6 +4770,23 @@
           "counter_events": 5,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "drain_dealt": 5,
+          "life_gained_by_source": {
+            "lifelink": 44,
+            "trigger": 36,
+            "other": 11
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 20,
+            "flying": 20,
+            "ground": 30,
+            "evasive_share": 0.196
+          },
+          "biggest_hit": {
+            "amount": 12,
+            "source": "Nighthawk Scavenger"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -4213,6 +4850,18 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 2,
+            "other": 6
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Angel Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -4246,7 +4895,7 @@
           "token_attackers": 0,
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
+          "tokens_chumped": 0,
           "creatures_lost": 2,
           "life_by_turn": {
             "15": 38,
@@ -4269,6 +4918,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -4333,6 +4994,22 @@
           "counter_events": 30,
           "mass_counter_events": 16,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 6,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 6,
+            "flying": 6,
+            "evasive_share": 0.5
+          },
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Nighthawk Scavenger"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 0,
@@ -4397,6 +5074,18 @@
           "counter_events": 4,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 87,
+            "trigger": 10,
+            "other": 13
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 26,
+            "source": "Archangel of Thune"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 2,
           "commander_casts": 2,
@@ -4454,6 +5143,21 @@
           "counter_events": 3,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 11,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 14
+          },
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Vito, Thorn of the Dusk Rose"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -4507,6 +5211,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -4578,6 +5294,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 7,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 8,
+            "other": 1
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Vampire Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -4647,6 +5375,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 20,
+            "trigger": 23,
+            "other": 1
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 11,
+            "source": "Angel Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -4704,6 +5444,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 5,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 5
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -4757,6 +5509,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 7
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -4818,6 +5582,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 13
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -4868,6 +5644,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 23
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -4926,6 +5714,18 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 48,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 11,
+            "source": "Avacyn, Angel of Hope"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 2,
           "commander_casts": 1,
@@ -4980,6 +5780,21 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Elephant Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5023,7 +5838,7 @@
           "token_attackers": 0,
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
+          "tokens_chumped": 0,
           "creatures_lost": 4,
           "life_by_turn": {
             "14": 35,
@@ -5054,6 +5869,24 @@
           "counter_events": 6,
           "mass_counter_events": 6,
           "proliferate_events": 0,
+          "drain_dealt": 12,
+          "life_gained_by_source": {
+            "lifelink": 4,
+            "trigger": 0,
+            "other": 13
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 8,
+            "flying": 4,
+            "ground": 24,
+            "skulk": 4,
+            "evasive_share": 0.25
+          },
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 2,
           "commander_casts": 2,
@@ -5112,6 +5945,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 7,
+            "trigger": 0,
+            "other": 9
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Angel of Vitality"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -5165,6 +6010,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 3,
+          "life_gained_by_source": {
+            "lifelink": 3,
+            "trigger": 0,
+            "other": 3
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Qarsi Revenant"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5217,6 +6074,21 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 26,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Jetmir, Nexus of Revels"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5280,6 +6152,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Giada, Font of Hope"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5335,6 +6219,21 @@
           "counter_events": 4,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 11,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5385,6 +6284,22 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 110,
+          "life_gained_by_source": {
+            "lifelink": 5,
+            "trigger": 110,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 5,
+            "flying": 5,
+            "evasive_share": 1.0
+          },
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Bloodthirsty Conqueror"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5434,6 +6349,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Hare Apparent"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -5510,6 +6437,24 @@
           "counter_events": 2,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 11,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 14,
+            "ground": 3,
+            "menace": 6,
+            "skulk": 8,
+            "evasive_share": 0.778
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Gifted Aetherborn"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 0,
@@ -5577,6 +6522,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 26,
+            "trigger": 20,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 14,
+            "source": "Angel Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -5633,6 +6590,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 26,
+          "life_gained_by_source": {
+            "lifelink": 4,
+            "trigger": 20,
+            "other": 5
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Vampire Nighthawk"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5681,6 +6650,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5722,7 +6703,7 @@
           "token_attackers": 0,
           "token_blockers": 2,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 2,
+          "tokens_chumped": 0,
           "creatures_lost": 3,
           "life_by_turn": {
             "5": 39,
@@ -5751,6 +6732,23 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 23,
+          "life_gained_by_source": {
+            "lifelink": 2,
+            "trigger": 0,
+            "other": 1
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 2,
+            "ground": 8,
+            "skulk": 2,
+            "evasive_share": 0.2
+          },
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Preacher of the Schism"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -5815,6 +6813,18 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 30,
+            "trigger": 1,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Angel Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -5873,6 +6883,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 15,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 3,
+            "other": 12
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Veinwitch Coven"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -5929,6 +6951,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Hare Apparent"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6009,6 +7043,21 @@
           "counter_events": 6,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "drain_dealt": 74,
+          "life_gained_by_source": {
+            "lifelink": 1,
+            "trigger": 21,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 15,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Vampire Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -6061,6 +7110,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6091,7 +7152,7 @@
           "token_attackers": 0,
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
+          "tokens_chumped": 0,
           "creatures_lost": 3,
           "life_by_turn": {
             "9": 38,
@@ -6118,6 +7179,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Hare Apparent"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6180,6 +7253,18 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 18,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 16,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -6241,6 +7326,21 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 111,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 91,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Vito, Thorn of the Dusk Rose"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6288,6 +7388,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 0,
@@ -6338,6 +7450,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 6,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Lyra Dawnbringer"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6389,6 +7513,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -6449,6 +7585,22 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 5,
+            "flying": 5,
+            "evasive_share": 1.0
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Welcoming Vampire"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -6505,6 +7657,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 4,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Giada, Font of Hope"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -6566,6 +7730,18 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 39,
+          "life_gained_by_source": {
+            "lifelink": 8,
+            "trigger": 15,
+            "other": 4
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Epicure of Blood"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6622,6 +7798,18 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -6690,6 +7878,21 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 77,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 14,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 32,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6742,6 +7945,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Angel of Vitality"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6791,6 +8006,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 1,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 1,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -6844,6 +8071,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Hare Apparent"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -6905,6 +8144,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -6973,6 +8224,21 @@
           "counter_events": 12,
           "mass_counter_events": 6,
           "proliferate_events": 0,
+          "drain_dealt": 42,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 55,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 58,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 11,
+            "source": "Knight of the Ebon Legion"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -7044,6 +8310,18 @@
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 18,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 14,
+            "source": "Avacyn, Angel of Hope"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 3,
           "commander_casts": 2,
@@ -7106,6 +8384,21 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 5,
+          "life_gained_by_source": {
+            "lifelink": 4,
+            "trigger": 7,
+            "other": 3
+          },
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Sangromancer"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -7177,6 +8470,18 @@
           "counter_events": 4,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 44,
+            "trigger": 0,
+            "other": 28
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Lyra Dawnbringer"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -7233,6 +8538,21 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 4,
+          "life_gained_by_source": {
+            "lifelink": 3,
+            "trigger": 0,
+            "other": 1
+          },
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Vampire Nighthawk"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -7292,6 +8612,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -7350,6 +8682,21 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Mirkwood Bats"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -7391,7 +8738,7 @@
           "token_attackers": 1,
           "token_blockers": 2,
           "token_combat_damage_to_players": 1,
-          "tokens_chumped": 2,
+          "tokens_chumped": 0,
           "creatures_lost": 5,
           "life_by_turn": {
             "5": 40,
@@ -7431,6 +8778,24 @@
           "counter_events": 4,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "drain_dealt": 23,
+          "life_gained_by_source": {
+            "lifelink": 6,
+            "trigger": 3,
+            "other": 6
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 14,
+            "ground": 13,
+            "menace": 8,
+            "skulk": 6,
+            "evasive_share": 0.467
+          },
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -7505,6 +8870,18 @@
           "counter_events": 6,
           "mass_counter_events": 6,
           "proliferate_events": 0,
+          "drain_dealt": 3,
+          "life_gained_by_source": {
+            "lifelink": 28,
+            "trigger": 9,
+            "other": 27
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 12,
+            "source": "Angel Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -7570,6 +8947,21 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 7,
+          "life_gained_by_source": {
+            "lifelink": 2,
+            "trigger": 10,
+            "other": 10
+          },
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Veinwitch Coven"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -7627,6 +9019,18 @@
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 10,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -7685,6 +9089,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -7743,6 +9159,23 @@
           "counter_events": 7,
           "mass_counter_events": 3,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 60,
+            "trigger": 81,
+            "other": 4
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 14,
+            "flying": 14,
+            "ground": 69,
+            "evasive_share": 0.137
+          },
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -7794,6 +9227,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Angel of Jubilation"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -7844,6 +9289,18 @@
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 163,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 162,
+            "other": 1
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Bloodthirsty Aerialist"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -7885,7 +9342,7 @@
           "token_attackers": 0,
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
+          "tokens_chumped": 0,
           "creatures_lost": 3,
           "life_by_turn": {
             "17": 39,
@@ -7912,6 +9369,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 2,
           "commander_casts": 1,
@@ -7981,6 +9450,24 @@
           "counter_events": 5,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "drain_dealt": 2,
+          "life_gained_by_source": {
+            "lifelink": 7,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 10,
+            "flying": 3,
+            "ground": 7,
+            "skulk": 7,
+            "evasive_share": 0.152
+          },
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -8044,6 +9531,18 @@
           "counter_events": 2,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 3,
+            "trigger": 0,
+            "other": 2
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Herald of War"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 3,
@@ -8110,6 +9609,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 13,
+          "life_gained_by_source": {
+            "lifelink": 2,
+            "trigger": 3,
+            "other": 8
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Malakir Bloodwitch"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 4,
@@ -8151,7 +9662,7 @@
           "token_attackers": 0,
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
+          "tokens_chumped": 0,
           "creatures_lost": 2,
           "life_by_turn": {
             "11": 39,
@@ -8180,6 +9691,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Baylen, the Haymaker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -8249,6 +9772,20 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 18,
+            "trigger": 44,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 15,
+            "source": "Angel Token"
+          },
+          "kills_by_ability": {
+            "Myriad Landscape": 1
+          },
           "interaction_cast": 1,
           "interaction_received": 4,
           "commander_casts": 3,
@@ -8312,6 +9849,20 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 11,
+          "life_gained_by_source": {
+            "lifelink": 6,
+            "trigger": 1,
+            "other": 12
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Dread Presence"
+          },
+          "kills_by_ability": {
+            "Sorin Markov": 1
+          },
           "interaction_cast": 4,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -8365,6 +9916,23 @@
           "counter_events": 3,
           "mass_counter_events": 3,
           "proliferate_events": 0,
+          "drain_dealt": 4,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 7,
+            "flying": 7,
+            "ground": 12,
+            "evasive_share": 0.233
+          },
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -8730,5 +10298,2798 @@
         "discarded": 0
       }
     }
+  },
+  "board_series": {
+    "seat": "edgar-vampires",
+    "games": 20,
+    "since": "2026-09-30",
+    "by_turn": {
+      "bodies": {
+        "1": {
+          "mean": 0.8,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.36,
+            1.24
+          ]
+        },
+        "2": {
+          "mean": 1.25,
+          "median": 2.0,
+          "min": 0,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            0.7,
+            1.8
+          ]
+        },
+        "3": {
+          "mean": 2.25,
+          "median": 2.0,
+          "min": 0,
+          "max": 5,
+          "n": 20,
+          "ci95": [
+            1.62,
+            2.88
+          ]
+        },
+        "4": {
+          "mean": 3.2,
+          "median": 3.0,
+          "min": 1,
+          "max": 6,
+          "n": 20,
+          "ci95": [
+            2.52,
+            3.88
+          ]
+        },
+        "5": {
+          "mean": 4.3,
+          "median": 4.0,
+          "min": 1,
+          "max": 7,
+          "n": 20,
+          "ci95": [
+            3.41,
+            5.19
+          ]
+        },
+        "6": {
+          "mean": 6.06,
+          "median": 7,
+          "min": 1,
+          "max": 13,
+          "n": 17,
+          "ci95": [
+            4.48,
+            7.64
+          ]
+        },
+        "7": {
+          "mean": 6.67,
+          "median": 6,
+          "min": 2,
+          "max": 16,
+          "n": 15,
+          "ci95": [
+            4.86,
+            8.48
+          ]
+        },
+        "8": {
+          "mean": 7.0,
+          "median": 6.5,
+          "min": 1,
+          "max": 17,
+          "n": 12,
+          "ci95": [
+            4.54,
+            9.46
+          ]
+        },
+        "9": {
+          "mean": 7.18,
+          "median": 6,
+          "min": 1,
+          "max": 16,
+          "n": 11,
+          "ci95": [
+            4.66,
+            9.7
+          ]
+        },
+        "10": {
+          "mean": 7.4,
+          "median": 6,
+          "min": 4,
+          "max": 13,
+          "n": 5,
+          "ci95": [
+            4.2,
+            10.6
+          ]
+        },
+        "11": {
+          "mean": 10.33,
+          "median": 8,
+          "min": 7,
+          "max": 16,
+          "n": 3,
+          "ci95": [
+            4.75,
+            15.92
+          ]
+        },
+        "12": {
+          "mean": 12.5,
+          "median": 12.5,
+          "min": 8,
+          "max": 17,
+          "n": 2,
+          "ci95": [
+            3.68,
+            21.32
+          ]
+        }
+      },
+      "printed_power": {
+        "1": {
+          "mean": 0.8,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.36,
+            1.24
+          ]
+        },
+        "2": {
+          "mean": 1.25,
+          "median": 1.5,
+          "min": 0,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            0.67,
+            1.83
+          ]
+        },
+        "3": {
+          "mean": 3.05,
+          "median": 3.0,
+          "min": 0,
+          "max": 9,
+          "n": 20,
+          "ci95": [
+            2.05,
+            4.05
+          ]
+        },
+        "4": {
+          "mean": 5.9,
+          "median": 6.0,
+          "min": 2,
+          "max": 9,
+          "n": 20,
+          "ci95": [
+            4.93,
+            6.87
+          ]
+        },
+        "5": {
+          "mean": 7.85,
+          "median": 8.0,
+          "min": 1,
+          "max": 15,
+          "n": 20,
+          "ci95": [
+            5.97,
+            9.73
+          ]
+        },
+        "6": {
+          "mean": 10.59,
+          "median": 11,
+          "min": 2,
+          "max": 20,
+          "n": 17,
+          "ci95": [
+            8.02,
+            13.15
+          ]
+        },
+        "7": {
+          "mean": 11.27,
+          "median": 9,
+          "min": 4,
+          "max": 20,
+          "n": 15,
+          "ci95": [
+            8.84,
+            13.69
+          ]
+        },
+        "8": {
+          "mean": 12.08,
+          "median": 12.5,
+          "min": 1,
+          "max": 21,
+          "n": 12,
+          "ci95": [
+            9.1,
+            15.06
+          ]
+        },
+        "9": {
+          "mean": 13.0,
+          "median": 13,
+          "min": 1,
+          "max": 21,
+          "n": 11,
+          "ci95": [
+            9.61,
+            16.39
+          ]
+        },
+        "10": {
+          "mean": 15.4,
+          "median": 15,
+          "min": 11,
+          "max": 22,
+          "n": 5,
+          "ci95": [
+            11.86,
+            18.94
+          ]
+        },
+        "11": {
+          "mean": 18.33,
+          "median": 17,
+          "min": 13,
+          "max": 25,
+          "n": 3,
+          "ci95": [
+            11.42,
+            25.25
+          ]
+        },
+        "12": {
+          "mean": 23.0,
+          "median": 23.0,
+          "min": 17,
+          "max": 29,
+          "n": 2,
+          "ci95": [
+            11.24,
+            34.76
+          ]
+        }
+      },
+      "permanents": {
+        "1": {
+          "mean": 1.95,
+          "median": 1.0,
+          "min": 1,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            1.47,
+            2.43
+          ]
+        },
+        "2": {
+          "mean": 3.6,
+          "median": 3.5,
+          "min": 1,
+          "max": 7,
+          "n": 20,
+          "ci95": [
+            2.87,
+            4.33
+          ]
+        },
+        "3": {
+          "mean": 5.85,
+          "median": 5.0,
+          "min": 4,
+          "max": 9,
+          "n": 20,
+          "ci95": [
+            5.19,
+            6.51
+          ]
+        },
+        "4": {
+          "mean": 7.6,
+          "median": 7.0,
+          "min": 5,
+          "max": 12,
+          "n": 20,
+          "ci95": [
+            6.77,
+            8.43
+          ]
+        },
+        "5": {
+          "mean": 9.3,
+          "median": 9.0,
+          "min": 5,
+          "max": 14,
+          "n": 20,
+          "ci95": [
+            8.16,
+            10.44
+          ]
+        },
+        "6": {
+          "mean": 12.18,
+          "median": 13,
+          "min": 7,
+          "max": 17,
+          "n": 17,
+          "ci95": [
+            10.61,
+            13.75
+          ]
+        },
+        "7": {
+          "mean": 13.73,
+          "median": 14,
+          "min": 8,
+          "max": 20,
+          "n": 15,
+          "ci95": [
+            11.84,
+            15.63
+          ]
+        },
+        "8": {
+          "mean": 15.08,
+          "median": 13.5,
+          "min": 8,
+          "max": 27,
+          "n": 12,
+          "ci95": [
+            11.75,
+            18.41
+          ]
+        },
+        "9": {
+          "mean": 15.18,
+          "median": 15,
+          "min": 9,
+          "max": 22,
+          "n": 11,
+          "ci95": [
+            12.99,
+            17.37
+          ]
+        },
+        "10": {
+          "mean": 17.0,
+          "median": 16,
+          "min": 14,
+          "max": 21,
+          "n": 5,
+          "ci95": [
+            14.68,
+            19.32
+          ]
+        },
+        "11": {
+          "mean": 22.0,
+          "median": 21,
+          "min": 20,
+          "max": 25,
+          "n": 3,
+          "ci95": [
+            19.01,
+            24.99
+          ]
+        },
+        "12": {
+          "mean": 25.0,
+          "median": 25.0,
+          "min": 24,
+          "max": 26,
+          "n": 2,
+          "ci95": [
+            23.04,
+            26.96
+          ]
+        }
+      },
+      "tokens": {
+        "1": {
+          "mean": 0.45,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.18,
+            0.72
+          ]
+        },
+        "2": {
+          "mean": 0.7,
+          "median": 1.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.38,
+            1.02
+          ]
+        },
+        "3": {
+          "mean": 1.2,
+          "median": 1.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            0.83,
+            1.57
+          ]
+        },
+        "4": {
+          "mean": 1.45,
+          "median": 1.0,
+          "min": 0,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            0.97,
+            1.93
+          ]
+        },
+        "5": {
+          "mean": 2.1,
+          "median": 2.0,
+          "min": 0,
+          "max": 5,
+          "n": 20,
+          "ci95": [
+            1.52,
+            2.68
+          ]
+        },
+        "6": {
+          "mean": 3.41,
+          "median": 4,
+          "min": 0,
+          "max": 8,
+          "n": 17,
+          "ci95": [
+            2.33,
+            4.49
+          ]
+        },
+        "7": {
+          "mean": 4.4,
+          "median": 4,
+          "min": 0,
+          "max": 11,
+          "n": 15,
+          "ci95": [
+            2.72,
+            6.08
+          ]
+        },
+        "8": {
+          "mean": 5.5,
+          "median": 4.0,
+          "min": 0,
+          "max": 19,
+          "n": 12,
+          "ci95": [
+            2.37,
+            8.63
+          ]
+        },
+        "9": {
+          "mean": 4.27,
+          "median": 4,
+          "min": 0,
+          "max": 12,
+          "n": 11,
+          "ci95": [
+            2.35,
+            6.2
+          ]
+        },
+        "10": {
+          "mean": 4.0,
+          "median": 4,
+          "min": 1,
+          "max": 7,
+          "n": 5,
+          "ci95": [
+            2.14,
+            5.86
+          ]
+        },
+        "11": {
+          "mean": 7.0,
+          "median": 6,
+          "min": 6,
+          "max": 9,
+          "n": 3,
+          "ci95": [
+            5.04,
+            8.96
+          ]
+        },
+        "12": {
+          "mean": 8.5,
+          "median": 8.5,
+          "min": 8,
+          "max": 9,
+          "n": 2,
+          "ci95": [
+            7.52,
+            9.48
+          ]
+        }
+      },
+      "lands": {
+        "1": {
+          "mean": 1.0,
+          "median": 1.0,
+          "min": 1,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "2": {
+          "mean": 1.9,
+          "median": 2.0,
+          "min": 1,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            1.77,
+            2.03
+          ]
+        },
+        "3": {
+          "mean": 2.8,
+          "median": 3.0,
+          "min": 1,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            2.57,
+            3.03
+          ]
+        },
+        "4": {
+          "mean": 3.55,
+          "median": 4.0,
+          "min": 1,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            3.16,
+            3.94
+          ]
+        },
+        "5": {
+          "mean": 4.0,
+          "median": 4.0,
+          "min": 1,
+          "max": 5,
+          "n": 20,
+          "ci95": [
+            3.51,
+            4.49
+          ]
+        },
+        "6": {
+          "mean": 4.59,
+          "median": 5,
+          "min": 1,
+          "max": 6,
+          "n": 17,
+          "ci95": [
+            3.96,
+            5.22
+          ]
+        },
+        "7": {
+          "mean": 4.87,
+          "median": 5,
+          "min": 1,
+          "max": 7,
+          "n": 15,
+          "ci95": [
+            4.06,
+            5.68
+          ]
+        },
+        "8": {
+          "mean": 4.92,
+          "median": 5.0,
+          "min": 1,
+          "max": 7,
+          "n": 12,
+          "ci95": [
+            3.91,
+            5.92
+          ]
+        },
+        "9": {
+          "mean": 5.45,
+          "median": 6,
+          "min": 1,
+          "max": 8,
+          "n": 11,
+          "ci95": [
+            4.26,
+            6.65
+          ]
+        },
+        "10": {
+          "mean": 6.2,
+          "median": 6,
+          "min": 5,
+          "max": 8,
+          "n": 5,
+          "ci95": [
+            5.06,
+            7.34
+          ]
+        },
+        "11": {
+          "mean": 6.33,
+          "median": 6,
+          "min": 6,
+          "max": 7,
+          "n": 3,
+          "ci95": [
+            5.68,
+            6.99
+          ]
+        },
+        "12": {
+          "mean": 6.5,
+          "median": 6.5,
+          "min": 6,
+          "max": 7,
+          "n": 2,
+          "ci95": [
+            5.52,
+            7.48
+          ]
+        }
+      },
+      "open_lands": {
+        "1": {
+          "mean": 0.55,
+          "median": 1.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            0.33,
+            0.77
+          ]
+        },
+        "2": {
+          "mean": 0.75,
+          "median": 0.0,
+          "min": 0,
+          "max": 2,
+          "n": 20,
+          "ci95": [
+            0.35,
+            1.15
+          ]
+        },
+        "3": {
+          "mean": 0.55,
+          "median": 0.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            0.16,
+            0.94
+          ]
+        },
+        "4": {
+          "mean": 0.5,
+          "median": 0.0,
+          "min": 0,
+          "max": 4,
+          "n": 20,
+          "ci95": [
+            0.06,
+            0.94
+          ]
+        },
+        "5": {
+          "mean": 0.95,
+          "median": 1.0,
+          "min": 0,
+          "max": 3,
+          "n": 20,
+          "ci95": [
+            0.56,
+            1.34
+          ]
+        },
+        "6": {
+          "mean": 1.0,
+          "median": 0,
+          "min": 0,
+          "max": 5,
+          "n": 17,
+          "ci95": [
+            0.23,
+            1.77
+          ]
+        },
+        "7": {
+          "mean": 1.2,
+          "median": 1,
+          "min": 0,
+          "max": 4,
+          "n": 15,
+          "ci95": [
+            0.56,
+            1.84
+          ]
+        },
+        "8": {
+          "mean": 1.08,
+          "median": 1.0,
+          "min": 0,
+          "max": 3,
+          "n": 12,
+          "ci95": [
+            0.52,
+            1.65
+          ]
+        },
+        "9": {
+          "mean": 1.18,
+          "median": 1,
+          "min": 0,
+          "max": 4,
+          "n": 11,
+          "ci95": [
+            0.44,
+            1.92
+          ]
+        },
+        "10": {
+          "mean": 2.8,
+          "median": 2,
+          "min": 1,
+          "max": 6,
+          "n": 5,
+          "ci95": [
+            1.11,
+            4.49
+          ]
+        },
+        "11": {
+          "mean": 2.33,
+          "median": 1,
+          "min": 0,
+          "max": 6,
+          "n": 3,
+          "ci95": [
+            -1.3,
+            5.97
+          ]
+        },
+        "12": {
+          "mean": 0.5,
+          "median": 0.5,
+          "min": 0,
+          "max": 1,
+          "n": 2,
+          "ci95": [
+            -0.48,
+            1.48
+          ]
+        }
+      }
+    },
+    "commander_uptime": {
+      "mean_ci": {
+        "mean": 0.86,
+        "median": 0.94,
+        "min": 0.5,
+        "max": 1.0,
+        "n": 14,
+        "ci95": [
+          0.77,
+          0.95
+        ]
+      },
+      "games_with_commander": 14,
+      "basis": "per game: own turns after the first on which the commander was on the battlefield, share still there; mean over games where it resolved at all"
+    },
+    "per_game": [
+      {
+        "turns": 7,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 2,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 3,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 3,
+            "printed_power": 6,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 2,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "5": {
+            "bodies": 5,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 13,
+            "tokens": 3,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "6": {
+            "bodies": 5,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 3,
+            "lands": 6,
+            "open_lands": 5,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 7,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 4,
+            "lands": 6,
+            "open_lands": 4,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 10,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 2,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 1,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 0,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 1,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 0,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 1,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 0,
+            "lands": 5,
+            "open_lands": 3,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 1,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 0,
+            "lands": 6,
+            "open_lands": 3,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "7": {
+            "bodies": 2,
+            "printed_power": 7,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 0,
+            "lands": 7,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "8": {
+            "bodies": 3,
+            "printed_power": 13,
+            "power_unknown": 0,
+            "permanents": 11,
+            "tokens": 0,
+            "lands": 7,
+            "open_lands": 3,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "9": {
+            "bodies": 5,
+            "printed_power": 16,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 1,
+            "lands": 8,
+            "open_lands": 4,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "10": {
+            "bodies": 4,
+            "printed_power": 14,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 1,
+            "lands": 8,
+            "open_lands": 6,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 9,
+        "commander_uptime": 0.8333333333333334,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 2,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 0,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 1,
+            "printed_power": 4,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 0,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "5": {
+            "bodies": 7,
+            "printed_power": 14,
+            "power_unknown": 0,
+            "permanents": 13,
+            "tokens": 5,
+            "lands": 4,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "6": {
+            "bodies": 11,
+            "printed_power": 20,
+            "power_unknown": 0,
+            "permanents": 17,
+            "tokens": 7,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 11,
+            "printed_power": 16,
+            "power_unknown": 0,
+            "permanents": 17,
+            "tokens": 8,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "8": {
+            "bodies": 11,
+            "printed_power": 19,
+            "power_unknown": 0,
+            "permanents": 19,
+            "tokens": 7,
+            "lands": 6,
+            "open_lands": 2,
+            "rocks_tapped": 1,
+            "commander_on_battlefield": true
+          },
+          "9": {
+            "bodies": 13,
+            "printed_power": 21,
+            "power_unknown": 0,
+            "permanents": 21,
+            "tokens": 8,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 1,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 8,
+        "commander_uptime": null,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 2,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 1,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 4,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "7": {
+            "bodies": 4,
+            "printed_power": 7,
+            "power_unknown": 0,
+            "permanents": 18,
+            "tokens": 11,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 1,
+            "commander_on_battlefield": false
+          },
+          "8": {
+            "bodies": 11,
+            "printed_power": 14,
+            "power_unknown": 0,
+            "permanents": 27,
+            "tokens": 19,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 9,
+        "commander_uptime": 0.5,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 4,
+            "printed_power": 6,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 2,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 4,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 2,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 4,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 2,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "7": {
+            "bodies": 4,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 11,
+            "tokens": 2,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "8": {
+            "bodies": 5,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 12,
+            "tokens": 2,
+            "lands": 6,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "9": {
+            "bodies": 6,
+            "printed_power": 10,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 4,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 5,
+        "commander_uptime": null,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 2,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 1,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 2,
+            "printed_power": 7,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 1,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 4,
+            "printed_power": 11,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 2,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 9,
+        "commander_uptime": 0.5714285714285714,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 0,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "4": {
+            "bodies": 5,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 1,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "5": {
+            "bodies": 4,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 0,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "6": {
+            "bodies": 7,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 13,
+            "tokens": 1,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 6,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 13,
+            "tokens": 1,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "8": {
+            "bodies": 1,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 11,
+            "tokens": 0,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "9": {
+            "bodies": 1,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 12,
+            "tokens": 0,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 5,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 4,
+            "printed_power": 4,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 2,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 5,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 2,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 4,
+            "printed_power": 7,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "5": {
+            "bodies": 7,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 9,
+        "commander_uptime": null,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 4,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 2,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 6,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 3,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 6,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 3,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 7,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 4,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "7": {
+            "bodies": 7,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 4,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "8": {
+            "bodies": 7,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 4,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "9": {
+            "bodies": 8,
+            "printed_power": 10,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 4,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 9,
+        "commander_uptime": null,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 3,
+            "printed_power": 4,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 2,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 4,
+            "printed_power": 6,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 13,
+            "printed_power": 16,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 8,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "7": {
+            "bodies": 16,
+            "printed_power": 20,
+            "power_unknown": 0,
+            "permanents": 20,
+            "tokens": 10,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "8": {
+            "bodies": 17,
+            "printed_power": 21,
+            "power_unknown": 0,
+            "permanents": 23,
+            "tokens": 12,
+            "lands": 3,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "9": {
+            "bodies": 16,
+            "printed_power": 19,
+            "power_unknown": 0,
+            "permanents": 22,
+            "tokens": 12,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 11,
+        "commander_uptime": 0.8333333333333334,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 1,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 4,
+            "printed_power": 6,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 3,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 6,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 12,
+            "tokens": 4,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 7,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 5,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 8,
+            "printed_power": 16,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 6,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "8": {
+            "bodies": 8,
+            "printed_power": 14,
+            "power_unknown": 0,
+            "permanents": 20,
+            "tokens": 9,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "9": {
+            "bodies": 4,
+            "printed_power": 13,
+            "power_unknown": 0,
+            "permanents": 15,
+            "tokens": 3,
+            "lands": 6,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "10": {
+            "bodies": 6,
+            "printed_power": 15,
+            "power_unknown": 0,
+            "permanents": 18,
+            "tokens": 4,
+            "lands": 7,
+            "open_lands": 3,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "11": {
+            "bodies": 8,
+            "printed_power": 17,
+            "power_unknown": 0,
+            "permanents": 21,
+            "tokens": 6,
+            "lands": 7,
+            "open_lands": 6,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 5,
+        "commander_uptime": null,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 4,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 4,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 6,
+        "commander_uptime": null,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 2,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 3,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 1,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 5,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 2,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 7,
+            "printed_power": 15,
+            "power_unknown": 0,
+            "permanents": 12,
+            "tokens": 3,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          }
+        }
+      },
+      {
+        "turns": 6,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 2,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 2,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 4,
+            "printed_power": 4,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 3,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 6,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 12,
+            "tokens": 4,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 7,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 4,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "6": {
+            "bodies": 9,
+            "printed_power": 15,
+            "power_unknown": 0,
+            "permanents": 17,
+            "tokens": 6,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 14,
+        "commander_uptime": 0.8888888888888888,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 1,
+            "lands": 4,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 1,
+            "lands": 4,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 3,
+            "printed_power": 6,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 1,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 5,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 11,
+            "tokens": 2,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "8": {
+            "bodies": 7,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 13,
+            "tokens": 3,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "9": {
+            "bodies": 9,
+            "printed_power": 18,
+            "power_unknown": 0,
+            "permanents": 15,
+            "tokens": 4,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "10": {
+            "bodies": 13,
+            "printed_power": 22,
+            "power_unknown": 0,
+            "permanents": 21,
+            "tokens": 7,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "11": {
+            "bodies": 16,
+            "printed_power": 25,
+            "power_unknown": 0,
+            "permanents": 25,
+            "tokens": 9,
+            "lands": 6,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "12": {
+            "bodies": 17,
+            "printed_power": 29,
+            "power_unknown": 0,
+            "permanents": 26,
+            "tokens": 9,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "13": {
+            "bodies": 19,
+            "printed_power": 32,
+            "power_unknown": 0,
+            "permanents": 29,
+            "tokens": 10,
+            "lands": 7,
+            "open_lands": 5,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "14": {
+            "bodies": 20,
+            "printed_power": 34,
+            "power_unknown": 0,
+            "permanents": 30,
+            "tokens": 11,
+            "lands": 7,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 7,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 2,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 2,
+            "printed_power": 3,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 1,
+            "lands": 4,
+            "open_lands": 4,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 3,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 1,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 3,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 1,
+            "lands": 6,
+            "open_lands": 4,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "7": {
+            "bodies": 4,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 11,
+            "tokens": 1,
+            "lands": 6,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 9,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 3,
+            "printed_power": 4,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 5,
+            "printed_power": 7,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 3,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 0,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 3,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 1,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 6,
+            "printed_power": 11,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 4,
+            "lands": 6,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 7,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 17,
+            "tokens": 6,
+            "lands": 7,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "8": {
+            "bodies": 4,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 4,
+            "lands": 7,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "9": {
+            "bodies": 4,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 4,
+            "lands": 8,
+            "open_lands": 3,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 7,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 1,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 2,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 4,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 5,
+            "printed_power": 9,
+            "power_unknown": 0,
+            "permanents": 10,
+            "tokens": 2,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "5": {
+            "bodies": 7,
+            "printed_power": 15,
+            "power_unknown": 0,
+            "permanents": 12,
+            "tokens": 3,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "6": {
+            "bodies": 9,
+            "printed_power": 18,
+            "power_unknown": 0,
+            "permanents": 15,
+            "tokens": 4,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 10,
+            "printed_power": 19,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 5,
+            "lands": 5,
+            "open_lands": 4,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 12,
+        "commander_uptime": 0.6666666666666666,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 2,
+            "printed_power": 2,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 2,
+            "lands": 3,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 3,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 2,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 5,
+            "printed_power": 12,
+            "power_unknown": 0,
+            "permanents": 11,
+            "tokens": 3,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 7,
+            "printed_power": 15,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 4,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "7": {
+            "bodies": 6,
+            "printed_power": 14,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 4,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "8": {
+            "bodies": 6,
+            "printed_power": 14,
+            "power_unknown": 0,
+            "permanents": 14,
+            "tokens": 4,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "9": {
+            "bodies": 7,
+            "printed_power": 16,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 4,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "10": {
+            "bodies": 5,
+            "printed_power": 11,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 4,
+            "lands": 6,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "11": {
+            "bodies": 7,
+            "printed_power": 13,
+            "power_unknown": 0,
+            "permanents": 20,
+            "tokens": 6,
+            "lands": 6,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "12": {
+            "bodies": 8,
+            "printed_power": 17,
+            "power_unknown": 0,
+            "permanents": 24,
+            "tokens": 8,
+            "lands": 7,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      },
+      {
+        "turns": 10,
+        "commander_uptime": 0.8,
+        "by_turn": {
+          "1": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 1,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 2,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 0,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 4,
+            "tokens": 0,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 1,
+            "printed_power": 6,
+            "power_unknown": 0,
+            "permanents": 6,
+            "tokens": 0,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 1,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 1,
+            "lands": 4,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "6": {
+            "bodies": 2,
+            "printed_power": 5,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 1,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "7": {
+            "bodies": 3,
+            "printed_power": 4,
+            "power_unknown": 0,
+            "permanents": 8,
+            "tokens": 2,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "8": {
+            "bodies": 4,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 9,
+            "tokens": 2,
+            "lands": 5,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "9": {
+            "bodies": 6,
+            "printed_power": 10,
+            "power_unknown": 0,
+            "permanents": 13,
+            "tokens": 3,
+            "lands": 5,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          },
+          "10": {
+            "bodies": 9,
+            "printed_power": 15,
+            "power_unknown": 0,
+            "permanents": 16,
+            "tokens": 4,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      }
+    ],
+    "limits": [
+      "AN ESTIMATE FROM RESOLVE LINES, NOT AN ARRIVAL LOG. Forge never logs a permanent entering the battlefield; a cast permanent is placed on its resolution line, a token at the resolution that creates it, a land on its `Land:` line. A body that entered WITHOUT being cast (reanimated, flashed in by an ability, put onto the battlefield by another card) is seen only when it first attacks, blocks or deals damage; one that sat is invisible.",
+      "A token whose count the resolution states as X or 'that many' is not on the board; `token_counts_unread` says how many resolutions were unread.",
+      "`printed_power` is PRINTED: counters, anthems, auras and equipment are invisible to the log. A `*/*` creature is a body in `bodies` and counted in `power_unknown`, never as 0 power.",
+      "`open_lands` is lands untapped at the start of the cleanup step — mana left unused that turn. `rocks_tapped` is nonland permanents tapped for mana this turn, a FLOOR on mana sources: a rock never tapped is invisible.",
+      "Removal by name where more than one seat controls the card takes the first seat; the bridge's reconstruction notes record each such case.",
+      "Summoning sickness, vigilance and the hand are not in the log."
+    ]
   }
 }

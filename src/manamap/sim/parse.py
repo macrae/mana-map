@@ -458,7 +458,14 @@ def hand_facts(events, seats, cmc=None):
     return out
 
 
-def game_facts(g, commanders=None, cmc=None):
+#: Evasion keywords, for `combat_damage_by_keyword`. A source with any of these is
+#: "evasive"; the rest is "ground". Read from the deck's cards.json `keywords`, so only
+#: OUR seat gets the split — an opponent's list carries no keywords here.
+EVASION = ("Flying", "Trample", "Menace", "Fear", "Intimidate", "Shadow", "Horsemanship",
+           "Skulk", "Unblockable")
+
+
+def game_facts(g, commanders=None, cmc=None, keywords=None):
     """Per-game facts. `commanders` maps a Forge seat label to that seat's commander
     name(s); pass it and the seat gains a per-defender commander-damage tally, omit it
     and the key is ABSENT rather than zero — the log does not name a commander anywhere,
@@ -503,6 +510,23 @@ def game_facts(g, commanders=None, cmc=None):
                "counter_events": 0,
                "mass_counter_events": 0,
                "proliferate_events": 0,
+               # THE DRAIN AXIS (2026-09-30). Life LOSS an opponent suffered that was
+               # not damage, credited to the seat whose life-loss ability resolved
+               # last this turn — the same `last_cause` the elimination attribution
+               # reads. A floor: a drain whose resolve line the regex does not read,
+               # or that lands after another seat's ability, is credited to nobody.
+               "drain_dealt": 0,
+               # Life gained, split by what preceded it: a combat damage line from a
+               # source this seat controls (lifelink), a resolve line of this seat's
+               # own spell or ability (trigger), or neither.
+               "life_gained_by_source": {"lifelink": 0, "trigger": 0, "other": 0},
+               # THE THREAT AXIS. Combat damage to players by the source's evasion
+               # keyword (our seat only — needs the deck's keywords), the largest
+               # single-source hit, and opposing permanents that died right after one
+               # of this seat's activated abilities resolved.
+               "combat_damage_by_keyword": None,
+               "biggest_hit": {"amount": 0, "source": None},
+               "kills_by_ability": defaultdict(int),
                # INTERACTION, and deliberately NOT called removal. The log gives
                # `Add To Stack: SEAT cast X targeting [...]`, and the target
                # group is resolved through the same `owner` map the elimination
@@ -600,6 +624,11 @@ def game_facts(g, commanders=None, cmc=None):
     # on 7 combat damage a game — every one a drain, and damage-only attribution got them
     # all wrong. Whichever came later decides.
     last_cause = None                      # (seat, turn, kind)
+    last_gain = None                       # ("lifelink", seat) | ("trigger", seat), reset by other events
+    drain_pending = None                   # (seat, turn): our life-loss ability just resolved or triggered
+    last_activation = None                 # (seat, card, turn): the last activated ability that resolved
+    pending_activation = {}                # seat -> card name of the last "activated X" put on the stack
+    keywords = keywords or {}
     blockers_this_turn = {}          # token id -> (seat, turn) for chump detection
     # PER-CARD COUNTS, kept beside `per_seat` rather than in it: `compact()`
     # copies every per-seat key into the tracked record for all four seats, and
@@ -615,8 +644,10 @@ def game_facts(g, commanders=None, cmc=None):
     for ev in g["events"]:
         k = ev["kind"]
         if k == "land":
+            drain_pending = None            # a fetch or a pain land: not our drain
             per[ev["seat"]]["lands"] += 1
         elif k == "cast":
+            drain_pending = None; last_gain = None   # a spell of anyone's: the credit is spent
             per[ev["seat"]]["casts"] += 1
             _count(ev["seat"], "cast", ev["what"])
             if _is_commander(ev["what"], commanders.get(ev["seat"])):
@@ -625,13 +656,38 @@ def game_facts(g, commanders=None, cmc=None):
         elif k == "activated":
             per[ev["seat"]]["activations"] += 1
             _count(ev["seat"], "activated", ev["what"])
+            # THE KILL ATTRIBUTION starts here, in the branch that already owns the
+            # event — a second `elif` for the same kind lower down is dead code, and
+            # the first cut of this was exactly that (the repo's own gotcha).
+            pending_activation[ev["seat"]] = ev.get("what")
+            last_gain = None
+            drain_pending = None
             _aim(per, owner, ev, seats)
         elif k == "discard":
             per[ev["seat"]]["discards"] += 1
             _count(ev["seat"], "discarded", ev["card"])
         elif k == "triggered":
             per[ev["seat"]]["triggers"] += 1
+            # A TRIGGER'S LIFE CHANGE FOLLOWS ITS STACK LINE in Forge's log, not a
+            # resolve line — measured on one 20-game run: 83 opposing life losses and
+            # 26 of our gains sat directly behind an `Add To Stack: … triggered …` line
+            # (Blood Artist, Cruel Celebrant, Bloodthirsty Conqueror).
+            if ev["seat"] in per:
+                drain_pending = (ev["seat"], ev["turn"])
+                last_gain = ("trigger", ev["seat"])
+        elif k == "mana":
+            drain_pending = None            # a pain land or a filter: its owner's own loss
         elif k == "resolve":
+            # An activated ability resolving: the next opposing death this turn, before
+            # any other event that could have caused it, is credited to it.
+            _rname = ev["text"].split(" - ", 1)[0].strip()
+            _rbare = re.sub(r" \(\d+\)$", "", _rname)
+            if ev["seat"] in per and pending_activation.get(ev["seat"]) == _rbare:
+                last_activation = (ev["seat"], _rbare, ev["turn"])
+            else:
+                last_activation = None
+            last_gain = ("trigger", ev["seat"]) if ev["seat"] in per else None
+            drain_pending = (ev["seat"], ev["turn"]) if (ev["seat"] in per and _LOSES_LIFE.search(ev["text"])) else None
             # A CAST IS NOT AN ARRIVAL, and the line that separates them is the
             # PERMANENT ID. Forge writes a resolving spell as `Resolve Stack:
             # Heliod, the Radiant Dawn - Creature 4 / 4` and an ability of a
@@ -711,6 +767,19 @@ def game_facts(g, commanders=None, cmc=None):
                         if src_seat in per:
                             per[src_seat]["combat_damage_dealt_to_players"] += ev["amount"]
                             per[src_seat]["damage_to_players_by_turn"][ev["turn"]] += ev["amount"]
+                            # THE THREAT AXIS: who hit, how hard, and through what.
+                            bh = per[src_seat]["biggest_hit"]
+                            if ev["amount"] > bh["amount"]:
+                                per[src_seat]["biggest_hit"] = {"amount": ev["amount"], "source": src_name.split(" // ")[0]}
+                            kws = keywords.get(src_name.split(" // ")[0])
+                            if kws is not None:
+                                bk = per[src_seat]["combat_damage_by_keyword"]
+                                if bk is None:
+                                    bk = per[src_seat]["combat_damage_by_keyword"] = defaultdict(int)
+                                ev_kws = [w for w in EVASION if w in kws]
+                                for w in ev_kws:
+                                    bk[w.lower()] += ev["amount"]
+                                bk["evasive" if ev_kws else "ground"] += ev["amount"]
                             if _is_commander(src_name, commanders.get(src_seat)):
                                 per[src_seat]["commander_damage_by_defender"][tgt] += ev["amount"]
                             if _is_token(src_name):
@@ -728,25 +797,47 @@ def game_facts(g, commanders=None, cmc=None):
                         if seat in per:
                             per[seat]["noncombat_damage_dealt_to_players"] += ev["amount"]
                 last_cause = (src_seat, ev["turn"], "damage")
+            drain_pending = None
+            # the gain that follows a combat damage line from this seat's source is lifelink
+            last_gain = ("lifelink", src_seat) if (ev["combat"] and src_seat in per) else None
+            last_activation = None
         elif k == "life":
             p = per.get(ev["seat"])
             if p is None:
                 continue
             p["life_by_turn"][ev["turn"]] = ev["to"]
+            delta_life = ev["to"] - ev["from"]
+            if delta_life > 0:
+                src = ("lifelink" if last_gain and last_gain[0] == "lifelink" and last_gain[1] == ev["seat"]
+                       else "trigger" if last_gain and last_gain[0] == "trigger" and last_gain[1] == ev["seat"]
+                       else "other")
+                p["life_gained_by_source"][src] += delta_life
+            elif delta_life < 0 and drain_pending and drain_pending[1] == ev["turn"] \
+                    and drain_pending[0] != ev["seat"]:
+                per[drain_pending[0]]["drain_dealt"] += -delta_life
             if ev["to"] <= 0 and p["eliminated_turn"] is None:
                 p["eliminated_turn"] = ev["turn"]
                 if last_cause and last_cause[1] == ev["turn"] and last_cause[0] and last_cause[0] != ev["seat"]:
                     p["eliminated_by"] = last_cause[0]
                     p["eliminated_how"] = last_cause[2]
         elif k == "zone" and ev["from"] == "Battlefield":
-            s = owner.get(ev["id"])
+            s = owner.get(ev["id"]) or ev.get("owner")
             if ev["to"] == "Graveyard" and s in per:
                 per[s]["creatures_lost"] += 1      # anything the seat was seen acting with
                 per[s]["permanents_lost_by_turn"][ev["turn"]] += 1
+            if (ev["to"] in ("Graveyard", "Exile") and last_activation and last_activation[2] == ev["turn"]
+                    and s in per and s != last_activation[0]):
+                per[last_activation[0]]["kills_by_ability"][last_activation[1]] += 1
                 if ev["id"] in blockers_this_turn and blockers_this_turn[ev["id"]][1] == ev["turn"]:
                     per[s]["tokens_chumped"] += 1
     # finalise
     for s, p in per.items():
+        p["kills_by_ability"] = dict(sorted(p["kills_by_ability"].items()))
+        if p["combat_damage_by_keyword"] is not None:
+            bk = dict(sorted(p["combat_damage_by_keyword"].items()))
+            dealt = p["combat_damage_dealt_to_players"]
+            bk["evasive_share"] = round(bk.get("evasive", 0) / dealt, 3) if dealt else None
+            p["combat_damage_by_keyword"] = bk
         p["tokens_observed"] = len(p["tokens_observed"])
         p["token_attackers"] = len(p["token_attackers"])
         p["token_blockers"] = len(p["token_blockers"])
@@ -1134,6 +1225,17 @@ def _cumulative_by_round(facts, labels, nseats):
     return curve
 
 
+def _keyword_block(ps):
+    """Combat damage by evasion keyword, for the seat whose deck's keywords were known
+    (ours); absent for every other seat rather than zero."""
+    ks = [p["combat_damage_by_keyword"] for p in ps if p.get("combat_damage_by_keyword")]
+    if not ks:
+        return {}
+    names = sorted({k for d in ks for k in d if k != "evasive_share"})
+    return {"combat_damage_by_keyword": {k: mean_ci([d.get(k, 0) for d in ks]) for k in names},
+            "evasive_damage_share": mean_ci([d["evasive_share"] for d in ks if d.get("evasive_share") is not None])}
+
+
 def _hand_block(ps):
     """The seat's hand facts across games, or nothing at all when no game carried
     them — the same absent-means-absent rule the per-game key keeps."""
@@ -1275,6 +1377,21 @@ def aggregate(facts, slug_label, label, commanders=None):
             "attackers_declared": mean_ci([p.get("attackers_declared", 0) for p in ps]),
             "attackers_blocked": mean_ci([p.get("attackers_blocked", 0) for p in ps]),
             "first_attack_turn": mean_ci([p["first_attack_turn"] for p in ps]),
+            # THE DRAIN AXIS AND THE THREAT AXIS (2026-09-30) — the two things the
+            # pilot said the deck should be, measured rather than described.
+            "drain_dealt": mean_ci([p.get("drain_dealt", 0) for p in ps]),
+            "life_gained_by_source": {
+                k: mean_ci([(p.get("life_gained_by_source") or {}).get(k, 0) for p in ps])
+                for k in ("lifelink", "trigger", "other")},
+            "biggest_hit": {
+                **mean_ci([(p.get("biggest_hit") or {}).get("amount", 0) for p in ps]),
+                "sources": [{"card": c, "games": n} for c, n in Counter(
+                    (p.get("biggest_hit") or {}).get("source") for p in ps
+                    if (p.get("biggest_hit") or {}).get("source")).most_common(6)]},
+            "kills_by_ability": {
+                **mean_ci([sum((p.get("kills_by_ability") or {}).values()) for p in ps]),
+                "by_card": dict(sum((Counter(p.get("kills_by_ability") or {}) for p in ps), Counter()).most_common(8))},
+            **_keyword_block(ps),
             **_hand_block(ps),
             "tokens": {
                 "token_resolutions": mean_ci([p["token_resolutions"] for p in ps]),
@@ -1389,6 +1506,18 @@ def aggregate(facts, slug_label, label, commanders=None):
         "mulligans_taken and mulligan_kept are both reported and neither is "
         "derivable from the other under real rules; a deck that mulligans is "
         "being flattered by one card here.",
+        "drain_dealt is an opponent's life LOSS that was not damage, credited to the seat whose "
+        "life-loss ability resolved last this turn (the elimination attribution's own rule) — a "
+        "FLOOR: a drain the regex does not read, or one landing after another seat's ability, is "
+        "credited to nobody. life_gained_by_source reads the line before the gain: a combat damage "
+        "line from this seat's source is lifelink, a resolve line of this seat's is trigger, "
+        "anything else is other. biggest_hit is the largest single combat damage event to a player. "
+        "kills_by_ability counts opposing permanents that left the battlefield in the same turn as, "
+        "and directly after, one of this seat's activated abilities resolved — a permanent that "
+        "was going to die anyway is counted, so it is a CEILING per card. "
+        "combat_damage_by_keyword and evasive_damage_share exist only for the seat whose deck's "
+        "keywords were known (ours); a source with any of Flying, Trample, Menace, Fear, Intimidate, "
+        "Shadow, Horsemanship, Skulk or Unblockable is evasive, the rest ground.",
         "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs "
         "exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. "
         "Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, "
@@ -1451,7 +1580,7 @@ def compact(fact, label):
                 for s, p in fact["per_seat"].items()}}
 
 
-def analyze_logs(log_texts, label, commanders=None, cmc=None):
+def analyze_logs(log_texts, label, commanders=None, cmc=None, keywords=None):
     """All games across a run's JVM logs → (facts, aggregate). `label` maps Forge seat
     labels (Ai(k)-<name>) to slugs; the first seat in `label` order is ours.
     `commanders` maps the same labels to commander name(s); omit it and every
@@ -1461,6 +1590,6 @@ def analyze_logs(log_texts, label, commanders=None, cmc=None):
     facts = []
     for text in log_texts:
         for g in parse_games(text):
-            facts.append(game_facts(g, commanders, cmc))
+            facts.append(game_facts(g, commanders, cmc, keywords))
     slug_label = next(iter(label)) if label else None
     return facts, aggregate(facts, slug_label, label, commanders)

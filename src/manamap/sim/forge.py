@@ -491,6 +491,25 @@ def clock_tag(clock=None):
     return f"-c{int(clock)}" if clock and int(clock) != SIM_CLOCK_ID_BASELINE else ""
 
 
+def keyword_map(slug):
+    """Our deck's card name -> its `keywords` list (front face), for the combat damage
+    split. `{}` for a seat with no cards.json — the split is then absent, never zero."""
+    base, branch = split_seat(slug)
+    try:
+        from manamap.pilot.common import load_deck_cards
+        doc = load_deck_cards(base, branch)
+    except (FileNotFoundError, OSError, ValueError):
+        return {}
+    out = {}
+    for c in doc.get("cards", []):
+        kws = c.get("keywords")
+        if kws is None:
+            continue
+        out[c["name"]] = list(kws)
+        out[c["name"].split(" // ")[0]] = list(kws)
+    return out
+
+
 def cmc_map(slug):
     """Our deck's card name -> mana value, front face, from cards.json — the input
     `parse.hand_facts` needs to say whether a held card was castable. `{}` for a seat
@@ -1092,7 +1111,7 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
     commanders = {f"Ai({k})-{names[i]}": set(cmd_by_slug[s])
                   for i, s in enumerate(seats) if cmd_by_slug.get(s)
                   for k in range(1, len(seats) + 1)}
-    facts, analysis = sim_parse.analyze_logs(texts, label, commanders, cmc_map(slug))
+    facts, analysis = sim_parse.analyze_logs(texts, label, commanders, cmc_map(slug), keyword_map(slug))
     # MATCH ON THE FORGE NAME, NOT THE SEAT SLUG. A branch seat is written to
     # Forge as `ur-dragon-treasure-v2` because `@` has no business in a deck
     # registry — so the outcome names the flattened form while `seats` holds the
@@ -1223,7 +1242,7 @@ def analyze(slug, run_id_or_path):
             seat["commander"] = sorted(set(upgraded))
     facts, analysis = sim_parse.analyze_logs(
         [l.read_text(encoding="utf-8", errors="replace") for l in logs], label,
-        record_commanders(rec), cmc_map(slug))
+        record_commanders(rec), cmc_map(slug), keyword_map(slug))
     rec["analysis"] = analysis
     rec["engine_casts"] = sim_parse.engine_casts(facts, label, deck_meta_name(slug))
     rec["board_series"] = _board_series().from_logs(

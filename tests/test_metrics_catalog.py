@@ -93,6 +93,10 @@ def test_coverage_adds_up():
 # ── the claims, against real artifacts ──────────────────────────────────────
 
 FORGE_SEAT_KEYS = {
+    "drain dealt": ("drain_dealt",),
+    "life gained by source": ("life_gained_by_source",),
+    "biggest hit": ("biggest_hit",),
+    "kills by ability": ("kills_by_ability",),
     "mulligan rate": ("mulligans_taken", "mulligan_kept"),
     "counter frequency": ("counter_events", "mass_counter_events",
                           "proliferate_events"),

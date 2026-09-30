@@ -1043,3 +1043,29 @@ while it sat in hand; Teferi's Protection 29 turns, cast 0. Neither is a hint pr
 patch-set sha in every run id (`-tl43a8b062`), and `net_change.forge` buckets on it. The
 jar carries every class javac emits for a patched source (siblings ride with their
 primary), and a two-game smoke under it ran clean before anything was measured.
+
+
+## The drain axis and the threat axis, measured (2026-09-30)
+
+The pilot's brief for Edgar is two sentences: life gain / life drain as the ENGINE, and big
+scary vampires with every way to hurt people. Until today the record measured the cost side
+of that plan and none of the identity: a Blood Artist trigger is life LOSS, which no damage
+total sees, and a 12/12 lifelinker connecting reads the same in `combat_damage_dealt_to_players`
+as twelve 1/1 tokens. Five figures now ride in every seat block, from lines the shipped log
+already carries, each with its definition and its floor in `analysis.limits`:
+
+| figure | what it counts | attribution | floor / ceiling |
+|---|---|---|---|
+| `drain_dealt` | an opponent's life loss that was not damage | the seat whose life-loss ability resolved last this turn — the elimination attribution's own rule | FLOOR: an unread resolve line or a later ability credits nobody |
+| `life_gained_by_source` | life gained, split lifelink / trigger / other | the line before the gain: our combat damage → lifelink, our resolve → trigger | attribution by adjacency, the total exact |
+| `combat_damage_by_keyword`, `evasive_damage_share` | our combat damage to players by the source's printed evasion keyword | `cards.json` keywords, so OUR seat only; absent elsewhere | printed keywords only — a granted flying reads as ground |
+| `biggest_hit` | the largest single-source combat damage event to a player, and its card | exact | one event, one source |
+| `kills_by_ability` | opposing permanents that left the battlefield directly after one of our activated abilities resolved | the last resolved activation this turn; any event in between breaks it | CEILING per card: a permanent dying anyway is counted |
+
+Every one is a Forge objective axis a branch can be aimed at — `forge.drain_dealt`,
+`forge.life_gained`, `forge.biggest_hit`, `forge.evasive_damage_share`,
+`forge.kills_by_ability` — with the interval on the difference and an MDE in `net_change`'s
+endpoint table, so drain-v1's objective can finally be stated on the axis the pilot means
+instead of win rate standing in. Every tracked record with logs on disk was re-derived to
+carry them (the catalog marks them PUBLISHED, and the catalog test holds every record to it);
+a record whose logs are gone keeps its old block and says nothing about them.

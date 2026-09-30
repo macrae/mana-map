@@ -399,6 +399,49 @@ CATALOG = {
                "EXCLUDED rather than filed as a draw at position 1, so "
                "`games_ranked` is below the game count."),
 
+    "drain dealt": _m(
+        "outcome",
+        "Life loss (not damage) inflicted on opponents per game, credited to the seat whose life-loss ability resolved last that turn.",
+        PUBLISHED, "forge",
+        "sim/<run>.json → analysis.seats[].drain_dealt (mean, ci95); a Forge objective axis forge.drain_dealt",
+        caveat="A FLOOR: a drain whose resolve line the parser does not read as life loss, or that "
+               "lands after another seat's ability in the same turn, is credited to nobody. "
+               "Reads the Life line that follows a life-loss resolve, so a drain that happens to "
+               "coincide with a damage line to the same player reads as damage."),
+
+    "life gained by source": _m(
+        "outcome",
+        "Life gained per game split into lifelink (after a combat damage line from this seat's source), trigger (after a resolve line of this seat's own spell or ability) and other.",
+        PUBLISHED, "forge",
+        "sim/<run>.json → analysis.seats[].life_gained_by_source.{lifelink,trigger,other}; forge.life_gained is the total",
+        caveat="Attribution is the preceding line, not the rules: a lifelink gain that Forge "
+               "logs after an unrelated resolve reads as trigger. The total is exact."),
+
+    "combat damage by keyword": _m(
+        "outcome",
+        "Our combat damage to players split by the source's evasion keywords, and the evasive share.",
+        PUBLISHED, "forge",
+        "sim/<run>.json → analysis.seats[<ours>].combat_damage_by_keyword / evasive_damage_share; forge.evasive_damage_share",
+        caveat="OUR SEAT ONLY — the split needs the deck's keywords from cards.json and an "
+               "opponent's list carries none, so the key is absent there rather than zero. "
+               "Printed keywords only: a creature granted flying by Akroma's Will reads as ground."),
+
+    "biggest hit": _m(
+        "outcome",
+        "The largest single-source combat damage dealt to a player per game, and which card dealt it.",
+        PUBLISHED, "forge",
+        "sim/<run>.json → analysis.seats[].biggest_hit (mean, ci95, sources); forge.biggest_hit",
+        caveat="One event, one source: a double-striker's two hits are two events."),
+
+    "kills by ability": _m(
+        "outcome",
+        "Opposing permanents that left the battlefield directly after one of this seat's activated abilities resolved, per game and per card.",
+        PUBLISHED, "forge",
+        "sim/<run>.json → analysis.seats[].kills_by_ability (mean, ci95, by_card); forge.kills_by_ability",
+        caveat="A CEILING per card: a permanent that was going to die anyway that turn is "
+               "counted if the ability resolved first; any other event in between breaks the "
+               "attribution. Any permanent, not only creatures — the zone line carries no type."),
+
     "damage by source": _m(
         "outcome",
         "Dealt and taken, split: combat, direct, drain, ping, commander.",

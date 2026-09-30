@@ -357,7 +357,11 @@ manamap pilot net-change <slug> --branch <name> --write  # what a branch costs a
 manamap pilot deck-branch <slug> new <name> --objective "forge.win_rate >= 0.25 @standard-v3"
                               # a Forge objective NAMES ITS TABLE or is refused; graded on
                               # the branch's pooled rate there, with the interval on the
-                              # difference and the null in the grade
+                              # difference and the null in the grade. THE AXES INCLUDE THE
+                              # DECK'S IDENTITY (2026-09-30): forge.drain_dealt (life loss
+                              # that was not damage), forge.life_gained, forge.biggest_hit,
+                              # forge.evasive_damage_share, forge.kills_by_ability — each
+                              # with its floor named in analysis.limits
 manamap pilot deck-branch <slug> propose <name> --as v1.0.2   # accept it; wait for cards
 manamap pilot deck-branch <slug> withdraw|reject <name> --reason "…"  # the reason goes in the LEDGER
 manamap pilot decisions <slug> [outcome|backfill]   # THE DECISION LEDGER (decisions.jsonl,

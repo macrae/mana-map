@@ -915,6 +915,14 @@
    }
   ],
   "forge_endpoints": {
+   "forge.biggest_hit": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "biggest_hit",
+    "what": "the largest single-source combat damage dealt to a player, per game",
+    "why": "one big lifelinker connecting reads differently from twelve tokens; this is the number that separates them"
+   },
    "forge.combat_damage_dealt_to_players": {
     "conditional": false,
     "kind": "mean",
@@ -930,6 +938,14 @@
     "what": "games in which the commander resolved at least once, over games played",
     "why": "a FLOOR on commander access under Forge's AI \u2014 the deck's plan cannot start until it does"
    },
+   "forge.drain_dealt": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "drain_dealt",
+    "what": "life LOSS dealt to opponents that was not damage, per game \u2014 Blood Artist, Vito, Sanguine Bond \u2014 credited to the seat whose life-loss ability resolved last that turn; a floor",
+    "why": "the drain engine's output, which no damage total sees"
+   },
    "forge.eliminated_turn": {
     "conditional": true,
     "kind": "mean",
@@ -938,6 +954,14 @@
     "what": "the global turn our seat was eliminated, mean over the games it lost",
     "why": "survival; conditional on losing, so a deck that wins more can read worse here for dying faster in the games it still loses"
    },
+   "forge.evasive_damage_share": {
+    "conditional": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "evasive_damage_share",
+    "what": "share of our combat damage to players dealt by sources with flying, trample, menace or another evasion keyword, per game with any combat damage (from the deck's own keywords, so our seat only)",
+    "why": "'big scary vampires with all sorts of ways to hurt people' \u2014 measured as the damage that got through because it could not be blocked"
+   },
    "forge.first_attack_turn": {
     "conditional": true,
     "kind": "mean",
@@ -945,6 +969,22 @@
     "per_game": "first_attack_turn",
     "what": "the GLOBAL turn of our seat's first declared attack, mean over the games in which it attacked at all",
     "why": "how long the AI sat on the deck; conditional, so a branch that attacks in more games can read WORSE here by attacking late in games it used to skip"
+   },
+   "forge.kills_by_ability": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "kills_by_ability",
+    "what": "opposing permanents that left the battlefield directly after one of our activated abilities resolved, per game \u2014 Vish Kal's -X/-X, an outlet's kill; a ceiling per card",
+    "why": "removal the deck does with its own creatures rather than with spells"
+   },
+   "forge.life_gained": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "life_gained",
+    "what": "life gained per game, all sources (the record splits it: lifelink, trigger, other)",
+    "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"
    },
    "forge.win_rate": {
     "conditional": false,
@@ -1064,6 +1104,35 @@
   ],
   "delta": -0.0192,
   "endpoints": {
+   "forge.biggest_hit": {
+    "branch": {
+     "max": 111,
+     "median": 7,
+     "min": 0,
+     "n": 40,
+     "sd": 23.5062,
+     "value": 13.85
+    },
+    "champion": {
+     "max": 250,
+     "median": 7,
+     "min": 0,
+     "n": 80,
+     "sd": 30.2935,
+     "value": 14.275
+    },
+    "ci95": [
+     -10.2807,
+     9.4307
+    ],
+    "conditional": false,
+    "delta": -0.425,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 14.0875,
+    "method": "Welch t interval on the difference of means"
+   },
    "forge.combat_damage_dealt_to_players": {
     "branch": {
      "max": 464,
@@ -1125,6 +1194,35 @@
     "mde": 0.175,
     "method": "Newcombe score interval on the difference of proportions"
    },
+   "forge.drain_dealt": {
+    "branch": {
+     "max": 0,
+     "median": 0,
+     "min": 0,
+     "n": 40,
+     "sd": 0.0,
+     "value": 0.0
+    },
+    "champion": {
+     "max": 4,
+     "median": 0,
+     "min": 0,
+     "n": 80,
+     "sd": 0.4472,
+     "value": 0.05
+    },
+    "ci95": [
+     -0.148,
+     0.048
+    ],
+    "conditional": false,
+    "delta": -0.05,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.1401,
+    "method": "Welch t interval on the difference of means"
+   },
    "forge.eliminated_turn": {
     "branch": {
      "max": 51,
@@ -1154,6 +1252,35 @@
     "mde": 5.0919,
     "method": "Welch t interval on the difference of means"
    },
+   "forge.evasive_damage_share": {
+    "branch": {
+     "max": 1.0,
+     "median": 0.535,
+     "min": 0.0,
+     "n": 34,
+     "sd": 0.3424,
+     "value": 0.5004
+    },
+    "champion": {
+     "max": 1.0,
+     "median": 0.538,
+     "min": 0.0,
+     "n": 69,
+     "sd": 0.3413,
+     "value": 0.4819
+    },
+    "ci95": [
+     -0.122,
+     0.159
+    ],
+    "conditional": true,
+    "delta": 0.0185,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.2008,
+    "method": "Welch t interval on the difference of means"
+   },
    "forge.first_attack_turn": {
     "branch": {
      "max": 36,
@@ -1181,6 +1308,64 @@
     "kind": "mean",
     "lower_is_better": true,
     "mde": 4.1577,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.kills_by_ability": {
+    "branch": {
+     "max": 1,
+     "median": 0,
+     "min": 0,
+     "n": 40,
+     "sd": 0.3349,
+     "value": 0.125
+    },
+    "champion": {
+     "max": 5,
+     "median": 0,
+     "min": 0,
+     "n": 80,
+     "sd": 0.7531,
+     "value": 0.2
+    },
+    "ci95": [
+     -0.27,
+     0.12
+    ],
+    "conditional": false,
+    "delta": -0.075,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.2787,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.life_gained": {
+    "branch": {
+     "max": 251,
+     "median": 0,
+     "min": 0,
+     "n": 40,
+     "sd": 40.3361,
+     "value": 10.35
+    },
+    "champion": {
+     "max": 130,
+     "median": 0,
+     "min": 0,
+     "n": 80,
+     "sd": 18.9748,
+     "value": 7.1375
+    },
+    "ci95": [
+     -9.9612,
+     16.3862
+    ],
+    "conditional": false,
+    "delta": 3.2125,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 18.8303,
     "method": "Welch t interval on the difference of means"
    },
    "forge.win_rate": {

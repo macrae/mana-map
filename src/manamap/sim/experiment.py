@@ -181,6 +181,14 @@ PER_GAME = {
     "commander_damage_dealt_total": lambda p: (
         sum((p.get("commander_damage_by_defender") or {}).values())
         if p.get("commander_damage_by_defender") is not None else None),
+    # THE DRAIN AXIS AND THE THREAT AXIS (2026-09-30)
+    "drain_dealt": lambda p: p.get("drain_dealt"),
+    "biggest_hit": lambda p: (p.get("biggest_hit") or {}).get("amount"),
+    "evasive_damage_share": lambda p: (p.get("combat_damage_by_keyword") or {}).get("evasive_share"),
+    "kills_by_ability": lambda p: (sum((p.get("kills_by_ability") or {}).values())
+                                   if p.get("kills_by_ability") is not None else None),
+    "life_gained": lambda p: (sum(v for v in (p.get("life_gained_by_source") or {}).values())
+                              if p.get("life_gained_by_source") is not None else None),
 }
 
 # Counts out of games, not means — so they get Newcombe rather than Welch.
@@ -191,7 +199,7 @@ PROPORTIONS = ("win_rate", "commander_damage_games_reaching_21")
 # report a bootstrap interval on the MEDIAN. Measured, not guessed: that sample is
 # arm B's real commander damage from the kianne experiment.
 SKEWED = ("commander_damage_max_on_one_defender", "commander_damage_dealt_total",
-          "combat_damage_dealt_to_players")
+          "combat_damage_dealt_to_players", "drain_dealt", "kills_by_ability", "life_gained")
 
 # The one figure permitted a verdict. Everything else is descriptive: eleven
 # figures at alpha=0.05 means roughly one interval in two experiments excludes

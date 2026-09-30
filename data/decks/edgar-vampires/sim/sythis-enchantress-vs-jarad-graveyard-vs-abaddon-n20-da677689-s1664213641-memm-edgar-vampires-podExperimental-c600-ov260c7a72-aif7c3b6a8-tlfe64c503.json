@@ -858,14 +858,14 @@
           ]
         },
         "creatures_lost": {
-          "mean": 4.2,
-          "median": 2.0,
+          "mean": 6.85,
+          "median": 5.0,
           "min": 0,
-          "max": 20,
+          "max": 21,
           "n": 20,
           "ci95": [
-            2.01,
-            6.39
+            4.28,
+            9.42
           ]
         },
         "counter_events": {
@@ -1010,6 +1010,101 @@
             16.82,
             23.07
           ]
+        },
+        "drain_dealt": {
+          "mean": 9.95,
+          "median": 3.5,
+          "min": 0,
+          "max": 38,
+          "n": 20,
+          "ci95": [
+            4.51,
+            15.39
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0,
+            "max": 0,
+            "n": 20,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "trigger": {
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0,
+            "max": 0,
+            "n": 20,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "other": {
+            "mean": 1.75,
+            "median": 0.0,
+            "min": 0,
+            "max": 12,
+            "n": 20,
+            "ci95": [
+              0.11,
+              3.39
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 4.2,
+          "median": 5.0,
+          "min": 0,
+          "max": 6,
+          "n": 20,
+          "ci95": [
+            3.2,
+            5.2
+          ],
+          "sources": [
+            {
+              "card": "Abaddon the Despoiler",
+              "games": 6
+            },
+            {
+              "card": "Bloodthirster",
+              "games": 3
+            },
+            {
+              "card": "Rakdos, Lord of Riots",
+              "games": 2
+            },
+            {
+              "card": "Poxwalkers",
+              "games": 1
+            },
+            {
+              "card": "Stormfist Crusader",
+              "games": 1
+            },
+            {
+              "card": "Lord of Change",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 20,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "by_card": {}
         },
         "hand": {
           "games": 20,
@@ -1224,14 +1319,14 @@
             ]
           },
           "tokens_chumped": {
-            "mean": 0.1,
+            "mean": 0.0,
             "median": 0.0,
             "min": 0,
-            "max": 1,
+            "max": 0,
             "n": 20,
             "ci95": [
-              -0.03,
-              0.23
+              0.0,
+              0.0
             ]
           }
         },
@@ -1497,44 +1592,44 @@
           "available": true,
           "definition": "a turn on which 5+ permanents left the battlefield for a graveyard across 2+ seats; recovery is the next 2 turns",
           "games": 20,
-          "games_with_a_wipe_rate": 0.4,
+          "games_with_a_wipe_rate": 0.9,
           "games_with_a_wipe_ci95": [
-            0.219,
-            0.613
+            0.699,
+            0.972
           ],
-          "wipes_seen": 10,
-          "wipes_with_a_full_window": 8,
+          "wipes_seen": 35,
+          "wipes_with_a_full_window": 31,
           "permanents_lost_mine": {
-            "mean": 3.8,
-            "median": 2.0,
+            "mean": 2.37,
+            "median": 2,
             "min": 0,
             "max": 15,
-            "n": 10,
+            "n": 35,
             "ci95": [
-              1.0,
-              6.6
+              1.36,
+              3.38
             ]
           },
           "damage_on_wipe": {
-            "mean": 3.6,
-            "median": 0.0,
+            "mean": 1.2,
+            "median": 0,
             "min": 0,
             "max": 18,
-            "n": 10,
+            "n": 35,
             "ci95": [
-              -0.04,
-              7.24
+              0.03,
+              2.37
             ]
           },
           "damage_after": {
-            "mean": 0.38,
-            "median": 0.0,
+            "mean": 1.35,
+            "median": 0,
             "min": 0,
-            "max": 3,
-            "n": 8,
+            "max": 12,
+            "n": 31,
             "ci95": [
-              -0.36,
-              1.11
+              0.23,
+              2.48
             ]
           },
           "limits": [
@@ -1716,14 +1811,14 @@
           ]
         },
         "creatures_lost": {
-          "mean": 3.0,
-          "median": 2.0,
-          "min": 0,
-          "max": 8,
+          "mean": 9.2,
+          "median": 7.0,
+          "min": 1,
+          "max": 20,
           "n": 20,
           "ci95": [
-            1.97,
-            4.03
+            6.58,
+            11.82
           ]
         },
         "counter_events": {
@@ -1867,6 +1962,160 @@
           "ci95": [
             13.12,
             18.48
+          ]
+        },
+        "drain_dealt": {
+          "mean": 4.6,
+          "median": 0.0,
+          "min": 0,
+          "max": 60,
+          "n": 20,
+          "ci95": [
+            -1.33,
+            10.53
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 12.5,
+            "median": 0.0,
+            "min": 0,
+            "max": 126,
+            "n": 20,
+            "ci95": [
+              -0.31,
+              25.31
+            ]
+          },
+          "trigger": {
+            "mean": 4.2,
+            "median": 0.5,
+            "min": 0,
+            "max": 26,
+            "n": 20,
+            "ci95": [
+              1.03,
+              7.37
+            ]
+          },
+          "other": {
+            "mean": 7.05,
+            "median": 3.0,
+            "min": 0,
+            "max": 49,
+            "n": 20,
+            "ci95": [
+              1.58,
+              12.52
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 8.7,
+          "median": 7.0,
+          "min": 2,
+          "max": 26,
+          "n": 20,
+          "ci95": [
+            5.91,
+            11.49
+          ],
+          "sources": [
+            {
+              "card": "Edgar Markov",
+              "games": 6
+            },
+            {
+              "card": "Nighthawk Scavenger",
+              "games": 3
+            },
+            {
+              "card": "High-Society Hunter",
+              "games": 3
+            },
+            {
+              "card": "Preacher of the Schism",
+              "games": 1
+            },
+            {
+              "card": "Vampire Token",
+              "games": 1
+            },
+            {
+              "card": "Vish Kal, Blood Arbiter",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.05,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.05,
+            0.15
+          ],
+          "by_card": {
+            "Silent Clearing": 1
+          }
+        },
+        "combat_damage_by_keyword": {
+          "evasive": {
+            "mean": 8.15,
+            "median": 4.5,
+            "min": 0,
+            "max": 48,
+            "n": 20,
+            "ci95": [
+              3.05,
+              13.25
+            ]
+          },
+          "flying": {
+            "mean": 7.45,
+            "median": 3.0,
+            "min": 0,
+            "max": 48,
+            "n": 20,
+            "ci95": [
+              2.41,
+              12.49
+            ]
+          },
+          "ground": {
+            "mean": 19.95,
+            "median": 10.5,
+            "min": 0,
+            "max": 114,
+            "n": 20,
+            "ci95": [
+              7.92,
+              31.98
+            ]
+          },
+          "menace": {
+            "mean": 0.7,
+            "median": 0.0,
+            "min": 0,
+            "max": 6,
+            "n": 20,
+            "ci95": [
+              -0.12,
+              1.52
+            ]
+          }
+        },
+        "evasive_damage_share": {
+          "mean": 0.34,
+          "median": 0.29,
+          "min": 0.0,
+          "max": 1.0,
+          "n": 20,
+          "ci95": [
+            0.2,
+            0.49
           ]
         },
         "hand": {
@@ -2084,14 +2333,14 @@
             ]
           },
           "tokens_chumped": {
-            "mean": 0.6,
+            "mean": 0.0,
             "median": 0.0,
             "min": 0,
-            "max": 4,
+            "max": 0,
             "n": 20,
             "ci95": [
-              0.16,
-              1.04
+              0.0,
+              0.0
             ]
           }
         },
@@ -2357,44 +2606,44 @@
           "available": true,
           "definition": "a turn on which 5+ permanents left the battlefield for a graveyard across 2+ seats; recovery is the next 2 turns",
           "games": 20,
-          "games_with_a_wipe_rate": 0.4,
+          "games_with_a_wipe_rate": 0.9,
           "games_with_a_wipe_ci95": [
-            0.219,
-            0.613
+            0.699,
+            0.972
           ],
-          "wipes_seen": 10,
-          "wipes_with_a_full_window": 8,
+          "wipes_seen": 35,
+          "wipes_with_a_full_window": 31,
           "permanents_lost_mine": {
-            "mean": 1.3,
-            "median": 1.0,
+            "mean": 2.54,
+            "median": 2,
             "min": 0,
-            "max": 5,
-            "n": 10,
+            "max": 10,
+            "n": 35,
             "ci95": [
-              0.29,
-              2.31
+              1.67,
+              3.41
             ]
           },
           "damage_on_wipe": {
-            "mean": 0.0,
-            "median": 0.0,
+            "mean": 2.86,
+            "median": 0,
             "min": 0,
-            "max": 0,
-            "n": 10,
+            "max": 77,
+            "n": 35,
             "ci95": [
-              0.0,
-              0.0
+              -1.61,
+              7.32
             ]
           },
           "damage_after": {
-            "mean": 7.0,
-            "median": 0.0,
+            "mean": 2.48,
+            "median": 0,
             "min": 0,
             "max": 56,
-            "n": 8,
+            "n": 31,
             "ci95": [
-              -6.72,
-              20.72
+              -1.1,
+              6.07
             ]
           },
           "limits": [
@@ -2578,14 +2827,14 @@
           ]
         },
         "creatures_lost": {
-          "mean": 1.75,
-          "median": 1.5,
+          "mean": 5.8,
+          "median": 6.0,
           "min": 0,
-          "max": 5,
+          "max": 11,
           "n": 20,
           "ci95": [
-            1.04,
-            2.46
+            4.36,
+            7.24
           ]
         },
         "counter_events": {
@@ -2730,6 +2979,103 @@
             10.58,
             20.29
           ]
+        },
+        "drain_dealt": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 20,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0,
+            "max": 0,
+            "n": 20,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "trigger": {
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0,
+            "max": 0,
+            "n": 20,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "other": {
+            "mean": 1.05,
+            "median": 0.0,
+            "min": 0,
+            "max": 12,
+            "n": 20,
+            "ci95": [
+              -0.23,
+              2.33
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 5.5,
+          "median": 3.0,
+          "min": 0,
+          "max": 18,
+          "n": 20,
+          "ci95": [
+            2.99,
+            8.01
+          ],
+          "sources": [
+            {
+              "card": "Jarad, Golgari Lich Lord",
+              "games": 3
+            },
+            {
+              "card": "Old Stickfingers",
+              "games": 2
+            },
+            {
+              "card": "Yargle and Multani",
+              "games": 2
+            },
+            {
+              "card": "Wight of the Reliquary",
+              "games": 2
+            },
+            {
+              "card": "Daemogoth Titan",
+              "games": 1
+            },
+            {
+              "card": "Ramunap Excavator",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.05,
+          "median": 0.0,
+          "min": 0,
+          "max": 1,
+          "n": 20,
+          "ci95": [
+            -0.05,
+            0.15
+          ],
+          "by_card": {
+            "Wight of the Reliquary": 1
+          }
         },
         "hand": {
           "games": 20,
@@ -3214,44 +3560,44 @@
           "available": true,
           "definition": "a turn on which 5+ permanents left the battlefield for a graveyard across 2+ seats; recovery is the next 2 turns",
           "games": 20,
-          "games_with_a_wipe_rate": 0.4,
+          "games_with_a_wipe_rate": 0.9,
           "games_with_a_wipe_ci95": [
-            0.219,
-            0.613
+            0.699,
+            0.972
           ],
-          "wipes_seen": 10,
-          "wipes_with_a_full_window": 8,
+          "wipes_seen": 35,
+          "wipes_with_a_full_window": 31,
           "permanents_lost_mine": {
-            "mean": 0.5,
-            "median": 0.5,
+            "mean": 1.69,
+            "median": 2,
             "min": 0,
-            "max": 1,
-            "n": 10,
+            "max": 6,
+            "n": 35,
             "ci95": [
-              0.17,
-              0.83
+              1.13,
+              2.24
             ]
           },
           "damage_on_wipe": {
             "mean": 0.0,
-            "median": 0.0,
+            "median": 0,
             "min": 0,
             "max": 0,
-            "n": 10,
+            "n": 35,
             "ci95": [
               0.0,
               0.0
             ]
           },
           "damage_after": {
-            "mean": 0.0,
-            "median": 0.0,
+            "mean": 0.97,
+            "median": 0,
             "min": 0,
-            "max": 0,
-            "n": 8,
+            "max": 23,
+            "n": 31,
             "ci95": [
-              0.0,
-              0.0
+              -0.54,
+              2.47
             ]
           },
           "limits": [
@@ -3434,14 +3780,14 @@
           ]
         },
         "creatures_lost": {
-          "mean": 2.15,
-          "median": 2.0,
+          "mean": 12.0,
+          "median": 9.5,
           "min": 0,
-          "max": 9,
+          "max": 34,
           "n": 20,
           "ci95": [
-            1.18,
-            3.12
+            7.9,
+            16.1
           ]
         },
         "counter_events": {
@@ -3585,6 +3931,125 @@
           "ci95": [
             15.14,
             22.12
+          ]
+        },
+        "drain_dealt": {
+          "mean": 0.45,
+          "median": 0.0,
+          "min": 0,
+          "max": 9,
+          "n": 20,
+          "ci95": [
+            -0.43,
+            1.33
+          ]
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 9.2,
+            "median": 0.0,
+            "min": 0,
+            "max": 65,
+            "n": 20,
+            "ci95": [
+              1.77,
+              16.63
+            ]
+          },
+          "trigger": {
+            "mean": 17.2,
+            "median": 10.0,
+            "min": 0,
+            "max": 79,
+            "n": 20,
+            "ci95": [
+              8.35,
+              26.05
+            ]
+          },
+          "other": {
+            "mean": 9.75,
+            "median": 0.0,
+            "min": 0,
+            "max": 108,
+            "n": 20,
+            "ci95": [
+              -1.43,
+              20.93
+            ]
+          }
+        },
+        "biggest_hit": {
+          "mean": 14.45,
+          "median": 9.0,
+          "min": 0,
+          "max": 58,
+          "n": 20,
+          "ci95": [
+            7.46,
+            21.44
+          ],
+          "sources": [
+            {
+              "card": "Destiny Spinner",
+              "games": 4
+            },
+            {
+              "card": "Heliod, Sun-Crowned",
+              "games": 4
+            },
+            {
+              "card": "Sythis, Harvest's Hand",
+              "games": 3
+            },
+            {
+              "card": "Composer of Spring",
+              "games": 2
+            },
+            {
+              "card": "Cat Token",
+              "games": 1
+            },
+            {
+              "card": "Pegasus Token",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0,
+          "max": 0,
+          "n": 20,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "by_card": {}
+        },
+        "combat_damage_by_keyword": {
+          "ground": {
+            "mean": 9.0,
+            "median": 9.0,
+            "min": 2,
+            "max": 16,
+            "n": 2,
+            "ci95": [
+              -4.72,
+              22.72
+            ]
+          }
+        },
+        "evasive_damage_share": {
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "n": 2,
+          "ci95": [
+            0.0,
+            0.0
           ]
         },
         "hand": {
@@ -4075,44 +4540,44 @@
           "available": true,
           "definition": "a turn on which 5+ permanents left the battlefield for a graveyard across 2+ seats; recovery is the next 2 turns",
           "games": 20,
-          "games_with_a_wipe_rate": 0.4,
+          "games_with_a_wipe_rate": 0.9,
           "games_with_a_wipe_ci95": [
-            0.219,
-            0.613
+            0.699,
+            0.972
           ],
-          "wipes_seen": 10,
-          "wipes_with_a_full_window": 8,
+          "wipes_seen": 35,
+          "wipes_with_a_full_window": 31,
           "permanents_lost_mine": {
-            "mean": 1.4,
-            "median": 1.0,
+            "mean": 4.34,
+            "median": 4,
             "min": 0,
-            "max": 7,
-            "n": 10,
+            "max": 13,
+            "n": 35,
             "ci95": [
-              0.05,
-              2.75
+              3.25,
+              5.43
             ]
           },
           "damage_on_wipe": {
-            "mean": 2.7,
-            "median": 0.0,
+            "mean": 4.66,
+            "median": 0,
             "min": 0,
-            "max": 16,
-            "n": 10,
+            "max": 41,
+            "n": 35,
             "ci95": [
-              -0.9,
-              6.3
+              1.05,
+              8.26
             ]
           },
           "damage_after": {
-            "mean": 1.5,
-            "median": 0.0,
+            "mean": 4.42,
+            "median": 0,
             "min": 0,
-            "max": 12,
-            "n": 8,
+            "max": 66,
+            "n": 31,
             "ci95": [
-              -1.44,
-              4.44
+              -0.48,
+              9.32
             ]
           },
           "limits": [
@@ -4127,44 +4592,44 @@
       "available": true,
       "definition": "a turn on which 5+ permanents left the battlefield for a graveyard across 2+ seats; recovery is the next 2 turns",
       "games": 5,
-      "games_with_a_wipe_rate": 0.8,
+      "games_with_a_wipe_rate": 1.0,
       "games_with_a_wipe_ci95": [
-        0.376,
-        0.964
+        0.566,
+        1.0
       ],
-      "wipes_seen": 5,
-      "wipes_with_a_full_window": 4,
+      "wipes_seen": 14,
+      "wipes_with_a_full_window": 12,
       "permanents_lost_mine": {
-        "mean": 1.4,
-        "median": 1,
+        "mean": 2.5,
+        "median": 2.0,
         "min": 0,
-        "max": 3,
-        "n": 5,
+        "max": 8,
+        "n": 14,
         "ci95": [
-          0.4,
-          2.4
+          1.13,
+          3.87
         ]
       },
       "damage_on_wipe": {
         "mean": 0.0,
-        "median": 0,
+        "median": 0.0,
         "min": 0,
         "max": 0,
-        "n": 5,
+        "n": 14,
         "ci95": [
           0.0,
           0.0
         ]
       },
       "damage_after": {
-        "mean": 14.0,
+        "mean": 5.17,
         "median": 0.0,
         "min": 0,
         "max": 56,
-        "n": 4,
+        "n": 12,
         "ci95": [
-          -13.44,
-          41.44
+          -3.94,
+          14.28
         ]
       },
       "limits": [
@@ -4399,6 +4864,7 @@
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
       "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
       "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
+      "drain_dealt is an opponent's life LOSS that was not damage, credited to the seat whose life-loss ability resolved last this turn (the elimination attribution's own rule) — a FLOOR: a drain the regex does not read, or one landing after another seat's ability, is credited to nobody. life_gained_by_source reads the line before the gain: a combat damage line from this seat's source is lifelink, a resolve line of this seat's is trigger, anything else is other. biggest_hit is the largest single combat damage event to a player. kills_by_ability counts opposing permanents that left the battlefield in the same turn as, and directly after, one of this seat's activated abilities resolved — a permanent that was going to die anyway is counted, so it is a CEILING per card. combat_damage_by_keyword and evasive_damage_share exist only for the seat whose deck's keywords were known (ours); a source with any of Flying, Trample, Menace, Fear, Intimidate, Shadow, Horsemanship, Skulk or Unblockable is evasive, the rest ground.",
       "HAND FACTS (`per_seat[*].hand`, `seats[*].hand`) are read from the telemetry patch's zone lines (sim/telemetry.py, 2026-09-30): every card entering or leaving a hand, by name and owner, so hand size at the end of each own turn and the cards still held at the end are EXACT. library_to_hand counts every Library -> Hand move from turn 1 on (the natural draw, cantrips, tutors and wheels alike; the opening deal and mulligans are before turn 1 and excluded). missed_land_drops_with_land_in_hand is a FLOOR: a card in hand is recognised as a land only if SOME seat played it as one somewhere in this run, so a land nobody ever played is invisible to it. Present only on records played under the patched formatter; a plain record has no `hand` key.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
@@ -8352,7 +8818,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 7,
           "life_by_turn": {
             "1": 39,
             "5": 37,
@@ -8380,12 +8846,31 @@
             "41": 56
           },
           "permanents_lost_by_turn": {
-            "16": 1,
+            "16": 3,
+            "20": 1,
+            "27": 2,
             "29": 1
           },
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 6
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 2,
+            "flying": 2,
+            "ground": 58,
+            "evasive_share": 0.033
+          },
+          "biggest_hit": {
+            "amount": 26,
+            "source": "Preacher of the Schism"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 0,
@@ -8536,7 +9021,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 3,
+          "creatures_lost": 7,
           "life_by_turn": {
             "13": 38,
             "32": 33,
@@ -8554,11 +9039,27 @@
           },
           "permanents_lost_by_turn": {
             "16": 2,
+            "27": 1,
+            "31": 1,
+            "33": 1,
+            "35": 1,
             "40": 1
           },
           "counter_events": 12,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 11,
+            "source": "Daemogoth Titan"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 1,
           "commander_casts": 0,
@@ -8732,7 +9233,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 8,
           "tokens_chumped": 0,
-          "creatures_lost": 5,
+          "creatures_lost": 11,
           "life_by_turn": {
             "21": 36,
             "22": 39,
@@ -8767,12 +9268,26 @@
           },
           "permanents_lost_by_turn": {
             "16": 1,
-            "27": 2,
-            "35": 2
+            "18": 3,
+            "22": 1,
+            "27": 3,
+            "35": 3
           },
           "counter_events": 4,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 14,
+            "trigger": 37,
+            "other": 13
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Sythis, Harvest's Hand"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 4,
@@ -8965,7 +9480,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 15,
           "tokens_chumped": 0,
-          "creatures_lost": 7,
+          "creatures_lost": 10,
           "life_by_turn": {
             "26": 27,
             "40": 29,
@@ -8981,6 +9496,8 @@
             "40": 18
           },
           "permanents_lost_by_turn": {
+            "22": 1,
+            "27": 2,
             "32": 1,
             "39": 1,
             "40": 5
@@ -8988,6 +9505,18 @@
           "counter_events": 14,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 3,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 3
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Abaddon the Despoiler"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -9188,7 +9717,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 3,
+          "creatures_lost": 11,
           "life_by_turn": {
             "9": 34,
             "13": 32,
@@ -9214,12 +9743,26 @@
           },
           "permanents_lost_by_turn": {
             "19": 1,
+            "27": 1,
             "31": 1,
-            "34": 1
+            "34": 6,
+            "36": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 4
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Ramunap Excavator"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -9371,8 +9914,8 @@
           "token_attackers": 2,
           "token_blockers": 1,
           "token_combat_damage_to_players": 3,
-          "tokens_chumped": 1,
-          "creatures_lost": 8,
+          "tokens_chumped": 0,
+          "creatures_lost": 20,
           "life_by_turn": {
             "16": 39,
             "19": 37,
@@ -9408,15 +9951,33 @@
             "44": 4
           },
           "permanents_lost_by_turn": {
-            "13": 3,
+            "13": 4,
             "19": 1,
-            "34": 2,
+            "34": 8,
             "37": 1,
-            "45": 1
+            "38": 3,
+            "45": 3
           },
           "counter_events": 6,
           "mass_counter_events": 4,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 1,
+            "other": 7
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 4,
+            "flying": 4,
+            "ground": 32,
+            "evasive_share": 0.103
+          },
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 2,
           "commander_casts": 2,
@@ -9638,7 +10199,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 6,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 12,
           "life_by_turn": {
             "16": 39,
             "20": 38,
@@ -9658,11 +10219,25 @@
             "34": 11
           },
           "permanents_lost_by_turn": {
-            "36": 1
+            "34": 6,
+            "35": 1,
+            "36": 5
           },
           "counter_events": 4,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Cat Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -9829,7 +10404,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 7,
+          "creatures_lost": 14,
           "life_by_turn": {
             "16": 39,
             "20": 38,
@@ -9851,13 +10426,26 @@
             "45": 4
           },
           "permanents_lost_by_turn": {
-            "34": 2,
+            "34": 7,
+            "38": 2,
             "44": 1,
             "45": 4
           },
           "counter_events": 7,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 29,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Rakdos, Lord of Riots"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -10051,8 +10639,8 @@
           "token_attackers": 3,
           "token_blockers": 1,
           "token_combat_damage_to_players": 14,
-          "tokens_chumped": 1,
-          "creatures_lost": 6,
+          "tokens_chumped": 0,
+          "creatures_lost": 13,
           "life_by_turn": {
             "9": 39,
             "13": 37,
@@ -10085,12 +10673,31 @@
           "permanents_lost_by_turn": {
             "17": 1,
             "25": 1,
-            "35": 1,
-            "36": 3
+            "35": 3,
+            "36": 8
           },
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 10,
+            "trigger": 1,
+            "other": 4
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 5,
+            "flying": 5,
+            "ground": 3,
+            "evasive_share": 0.227
+          },
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Vampire Token"
+          },
+          "kills_by_ability": {
+            "Silent Clearing": 1
+          },
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -10266,7 +10873,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 19,
           "life_by_turn": {
             "18": 41,
             "28": 38,
@@ -10286,11 +10893,31 @@
             "22": 4
           },
           "permanents_lost_by_turn": {
-            "36": 1
+            "19": 1,
+            "34": 1,
+            "36": 7,
+            "38": 5,
+            "40": 3,
+            "41": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 10,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Destiny Spinner"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -10464,7 +11091,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 6,
           "life_by_turn": {
             "28": 37,
             "32": 34,
@@ -10483,12 +11110,26 @@
             "39": 7
           },
           "permanents_lost_by_turn": {
+            "34": 1,
             "35": 1,
-            "36": 1
+            "36": 3,
+            "40": 1
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 5
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Jarad, Golgari Lich Lord"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -10656,8 +11297,8 @@
           "token_attackers": 0,
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
-          "creatures_lost": 3,
+          "tokens_chumped": 0,
+          "creatures_lost": 5,
           "life_by_turn": {
             "13": 36,
             "21": 26,
@@ -10677,12 +11318,26 @@
             "40": 6
           },
           "permanents_lost_by_turn": {
+            "18": 1,
+            "38": 1,
             "39": 2,
             "41": 1
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 38,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Bloodthirster"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -10863,7 +11518,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 79,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 8,
           "life_by_turn": {
             "10": 41,
             "14": 42,
@@ -10889,12 +11544,27 @@
             "35": 49
           },
           "permanents_lost_by_turn": {
-            "17": 1,
-            "29": 1
+            "11": 1,
+            "17": 2,
+            "26": 2,
+            "29": 2,
+            "33": 1
           },
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 4,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 9,
+            "source": "Heliod, Sun-Crowned"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -11114,8 +11784,8 @@
           "token_attackers": 0,
           "token_blockers": 4,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 4,
-          "creatures_lost": 6,
+          "tokens_chumped": 0,
+          "creatures_lost": 15,
           "life_by_turn": {
             "9": 37,
             "10": 36,
@@ -11145,13 +11815,31 @@
             "9": 1,
             "17": 1,
             "23": 1,
-            "24": 1,
+            "24": 2,
+            "25": 1,
+            "26": 2,
             "27": 1,
-            "28": 1
+            "28": 3,
+            "29": 3
           },
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 10,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -11336,7 +12024,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 4,
           "life_by_turn": {
             "13": 35,
             "35": -14
@@ -11349,11 +12037,24 @@
             "15": 2
           },
           "permanents_lost_by_turn": {
-            "17": 1
+            "17": 2,
+            "29": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Reclamation Sage"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -11476,7 +12177,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 5,
           "life_by_turn": {
             "23": 39,
             "24": 37,
@@ -11497,11 +12198,24 @@
           },
           "permanents_lost_by_turn": {
             "17": 1,
-            "29": 1
+            "29": 2,
+            "30": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Poxwalkers"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -11646,8 +12360,8 @@
           "token_attackers": 4,
           "token_blockers": 2,
           "token_combat_damage_to_players": 38,
-          "tokens_chumped": 2,
-          "creatures_lost": 2,
+          "tokens_chumped": 0,
+          "creatures_lost": 5,
           "life_by_turn": {
             "9": 41,
             "10": 40,
@@ -11681,12 +12395,28 @@
             "25": 31
           },
           "permanents_lost_by_turn": {
-            "30": 1,
-            "34": 1
+            "26": 1,
+            "30": 2,
+            "34": 2
           },
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 4,
+          "life_gained_by_source": {
+            "lifelink": 5,
+            "trigger": 26,
+            "other": 33
+          },
+          "combat_damage_by_keyword": {
+            "ground": 18,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 2,
           "commander_casts": 1,
@@ -11830,7 +12560,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 58,
           "tokens_chumped": 0,
-          "creatures_lost": 9,
+          "creatures_lost": 23,
           "life_by_turn": {
             "6": 39,
             "9": 37,
@@ -11865,12 +12595,27 @@
             "37": 36
           },
           "permanents_lost_by_turn": {
-            "30": 7,
-            "34": 2
+            "26": 1,
+            "28": 2,
+            "30": 9,
+            "34": 6,
+            "37": 5
           },
           "counter_events": 37,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 9,
+          "life_gained_by_source": {
+            "lifelink": 37,
+            "trigger": 79,
+            "other": 108
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 30,
+            "source": "Destiny Spinner"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -12159,7 +12904,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 2,
           "life_by_turn": {
             "10": 39,
             "14": 37,
@@ -12181,10 +12926,24 @@
           "eliminated_how": null,
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "27": 2
+          },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -12289,7 +13048,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 2,
           "life_by_turn": {
             "10": 39,
             "13": 35,
@@ -12308,11 +13067,23 @@
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
           "permanents_lost_by_turn": {
-            "37": 1
+            "37": 2
           },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 24,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -12422,7 +13193,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 89,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 5,
           "life_by_turn": {
             "14": 38,
             "18": 40,
@@ -12443,10 +13214,28 @@
             "29": 100,
             "31": 23
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "26": 2,
+            "31": 3
+          },
           "counter_events": 18,
           "mass_counter_events": 16,
           "proliferate_events": 0,
+          "drain_dealt": 10,
+          "life_gained_by_source": {
+            "lifelink": 126,
+            "trigger": 13,
+            "other": 49
+          },
+          "combat_damage_by_keyword": {
+            "ground": 114,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 23,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -12653,7 +13442,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 6,
           "life_by_turn": {
             "29": -61
           },
@@ -12663,11 +13452,27 @@
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
           "permanents_lost_by_turn": {
+            "12": 1,
+            "24": 1,
+            "25": 1,
+            "26": 2,
             "29": 1
           },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -12788,7 +13593,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 4,
           "life_by_turn": {
             "11": 38,
             "25": 37,
@@ -12800,10 +13605,25 @@
           "eliminated_how": null,
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "26": 2,
+            "31": 2
+          },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -12952,7 +13772,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 9,
           "life_by_turn": {
             "15": 41,
             "18": 38,
@@ -12969,10 +13789,25 @@
           "damage_to_players_by_turn": {
             "11": 2
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "25": 1,
+            "26": 8
+          },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 3,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Destiny Spinner"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -13140,7 +13975,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 3,
+          "creatures_lost": 34,
           "life_by_turn": {
             "6": 39,
             "10": 38,
@@ -13175,11 +14010,27 @@
             "35": 66
           },
           "permanents_lost_by_turn": {
-            "34": 3
+            "25": 2,
+            "29": 2,
+            "33": 13,
+            "34": 8,
+            "35": 9
           },
           "counter_events": 54,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 1,
+            "trigger": 53,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 44,
+            "source": "Heliod, Sun-Crowned"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -13504,7 +14355,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 3,
+          "creatures_lost": 4,
           "life_by_turn": {
             "13": 39,
             "17": 34,
@@ -13530,11 +14381,24 @@
           "permanents_lost_by_turn": {
             "10": 1,
             "18": 1,
+            "19": 1,
             "29": 1
           },
           "counter_events": 2,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 9,
+            "source": "Old Stickfingers"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 2,
           "commander_casts": 0,
@@ -13663,7 +14527,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 1,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 5,
           "life_by_turn": {
             "13": 39,
             "21": 38,
@@ -13684,11 +14548,25 @@
             "31": 2
           },
           "permanents_lost_by_turn": {
-            "34": 2
+            "16": 1,
+            "33": 1,
+            "34": 3
           },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 4,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Stormfist Crusader"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -13842,7 +14720,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 1,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 1,
           "life_by_turn": {
             "12": 38,
             "13": 37,
@@ -13863,10 +14741,29 @@
             "28": 7,
             "32": 7
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "19": 1
+          },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 14,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 14,
+            "flying": 14,
+            "ground": 2,
+            "evasive_share": 0.824
+          },
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Nighthawk Scavenger"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -14006,7 +14903,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 5,
+          "creatures_lost": 7,
           "life_by_turn": {
             "21": 39,
             "22": 35,
@@ -14030,13 +14927,28 @@
           "permanents_lost_by_turn": {
             "9": 1,
             "13": 1,
-            "17": 1,
+            "17": 2,
+            "21": 1,
             "25": 1,
             "26": 1
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 11,
+            "source": "Old Stickfingers"
+          },
+          "kills_by_ability": {
+            "Wight of the Reliquary": 1
+          },
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -14212,7 +15124,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 10,
+          "creatures_lost": 13,
           "life_by_turn": {
             "26": 38,
             "28": 29,
@@ -14233,10 +15145,12 @@
           },
           "permanents_lost_by_turn": {
             "18": 1,
+            "23": 1,
             "29": 1,
             "34": 1,
             "36": 2,
-            "38": 1,
+            "37": 1,
+            "38": 2,
             "42": 1,
             "45": 1,
             "46": 1,
@@ -14245,6 +15159,18 @@
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 4,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 2
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Lord of Change"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 5,
@@ -14433,7 +15359,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 5,
+          "creatures_lost": 15,
           "life_by_turn": {
             "7": 39,
             "34": 37,
@@ -14451,11 +15377,36 @@
           },
           "permanents_lost_by_turn": {
             "7": 1,
-            "37": 4
+            "21": 2,
+            "25": 1,
+            "28": 1,
+            "32": 1,
+            "36": 2,
+            "37": 4,
+            "39": 1,
+            "42": 1,
+            "47": 1
           },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 13,
+            "trigger": 0,
+            "other": 7
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 13,
+            "flying": 13,
+            "ground": 15,
+            "evasive_share": 0.464
+          },
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Vish Kal, Blood Arbiter"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -14662,7 +15613,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 24,
           "life_by_turn": {
             "5": 39,
             "9": 36,
@@ -14691,12 +15642,29 @@
             "32": 11
           },
           "permanents_lost_by_turn": {
-            "38": 1,
-            "45": 1
+            "34": 2,
+            "36": 6,
+            "37": 8,
+            "38": 2,
+            "39": 2,
+            "42": 2,
+            "45": 2
           },
           "counter_events": 15,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 17,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 11,
+            "source": "Destiny Spinner"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -14902,7 +15870,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 3,
+          "creatures_lost": 10,
           "life_by_turn": {
             "5": 39,
             "9": 38,
@@ -14925,13 +15893,29 @@
             "36": 23
           },
           "permanents_lost_by_turn": {
-            "18": 1,
+            "18": 2,
+            "25": 1,
             "29": 1,
-            "36": 1
+            "33": 1,
+            "35": 1,
+            "36": 3,
+            "39": 1
           },
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 18,
+            "source": "Yargle and Multani"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -15088,7 +16072,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 9,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 2,
           "life_by_turn": {
             "15": 37,
             "23": 25,
@@ -15109,10 +16093,25 @@
             "37": 12,
             "40": 14
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "17": 1,
+            "35": 1
+          },
           "counter_events": 8,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 20,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 12
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Bloodthirster"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -15276,7 +16275,7 @@
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 7,
           "life_by_turn": {
             "3": 38,
             "11": 36,
@@ -15302,12 +16301,31 @@
             "27": 16
           },
           "permanents_lost_by_turn": {
-            "18": 1,
-            "19": 1
+            "18": 4,
+            "19": 1,
+            "23": 1,
+            "27": 1
           },
           "counter_events": 6,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 1,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 20,
+            "flying": 20,
+            "ground": 11,
+            "evasive_share": 0.645
+          },
+          "biggest_hit": {
+            "amount": 10,
+            "source": "High-Society Hunter"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -15472,7 +16490,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 10,
           "tokens_chumped": 0,
-          "creatures_lost": 4,
+          "creatures_lost": 18,
           "life_by_turn": {
             "16": 45,
             "18": 40,
@@ -15498,13 +16516,28 @@
             "35": 8
           },
           "permanents_lost_by_turn": {
-            "18": 1,
-            "32": 2,
-            "37": 1
+            "18": 3,
+            "25": 2,
+            "28": 2,
+            "32": 4,
+            "35": 4,
+            "37": 3
           },
           "counter_events": 6,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 13,
+            "trigger": 3,
+            "other": 3
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Pegasus Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -15666,7 +16699,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 10,
+          "creatures_lost": 11,
           "life_by_turn": {
             "12": 36,
             "25": 34,
@@ -15690,11 +16723,23 @@
             "20": 1,
             "29": 1,
             "35": 6,
-            "36": 2
+            "36": 3
           },
           "counter_events": 6,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "drain_dealt": 18,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Rakdos, Lord of Riots"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 3,
@@ -15832,8 +16877,8 @@
           "token_attackers": 1,
           "token_blockers": 1,
           "token_combat_damage_to_players": 4,
-          "tokens_chumped": 1,
-          "creatures_lost": 2,
+          "tokens_chumped": 0,
+          "creatures_lost": 4,
           "life_by_turn": {
             "4": 39,
             "5": 38,
@@ -15863,12 +16908,30 @@
             "16": 2
           },
           "permanents_lost_by_turn": {
+            "6": 1,
             "15": 1,
+            "25": 1,
             "33": 1
           },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 9
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 2,
+            "flying": 2,
+            "evasive_share": 0.333
+          },
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Drana, Liberator of Malakir"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -16005,7 +17068,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 10,
           "life_by_turn": {
             "5": 41,
             "13": 42,
@@ -16035,12 +17098,25 @@
             "38": 39
           },
           "permanents_lost_by_turn": {
-            "31": 1,
-            "36": 1
+            "25": 1,
+            "31": 2,
+            "36": 7
           },
           "counter_events": 35,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 6,
+            "trigger": 14,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 34,
+            "source": "Heliod, Sun-Crowned"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -16208,7 +17284,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 8,
           "life_by_turn": {
             "15": 37,
             "19": 34,
@@ -16222,10 +17298,26 @@
           "eliminated_how": "damage",
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "15": 2,
+            "31": 2,
+            "36": 4
+          },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -16338,7 +17430,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 3,
           "life_by_turn": {
             "13": 41,
             "17": 43,
@@ -16358,11 +17450,24 @@
             "21": 15
           },
           "permanents_lost_by_turn": {
-            "27": 1
+            "23": 1,
+            "27": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 8,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 9,
+            "source": "Sythis, Harvest's Hand"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -16484,7 +17589,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 2,
           "life_by_turn": {
             "12": 38,
             "27": 33
@@ -16497,10 +17602,25 @@
             "32": 9,
             "34": 8
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "27": 1,
+            "33": 1
+          },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 9,
+            "source": "Ghoultree"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -16672,6 +17792,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Abaddon the Despoiler"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -16810,8 +17942,8 @@
           "token_attackers": 0,
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
-          "tokens_chumped": 1,
-          "creatures_lost": 2,
+          "tokens_chumped": 0,
+          "creatures_lost": 11,
           "life_by_turn": {
             "8": 39,
             "9": 41,
@@ -16837,12 +17969,34 @@
             "31": 31
           },
           "permanents_lost_by_turn": {
-            "27": 1,
+            "16": 1,
+            "20": 1,
+            "24": 2,
+            "27": 4,
+            "28": 1,
+            "31": 1,
             "32": 1
           },
           "counter_events": 9,
           "mass_counter_events": 5,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 9,
+            "trigger": 0,
+            "other": 2
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 48,
+            "flying": 48,
+            "ground": 28,
+            "evasive_share": 0.632
+          },
+          "biggest_hit": {
+            "amount": 13,
+            "source": "High-Society Hunter"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -17019,7 +18173,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 2,
           "tokens_chumped": 0,
-          "creatures_lost": 6,
+          "creatures_lost": 15,
           "life_by_turn": {
             "6": 39,
             "10": 38,
@@ -17046,12 +18200,29 @@
             "22": 13
           },
           "permanents_lost_by_turn": {
-            "28": 5,
-            "34": 1
+            "28": 10,
+            "30": 1,
+            "31": 2,
+            "34": 2
           },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 6,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 3,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 15,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -17248,7 +18419,7 @@
           "token_blockers": 1,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 4,
           "life_by_turn": {
             "22": 37,
             "35": 29,
@@ -17263,12 +18434,24 @@
             "17": 5
           },
           "permanents_lost_by_turn": {
-            "28": 1,
-            "31": 1
+            "28": 2,
+            "31": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Abaddon the Despoiler"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 2,
           "commander_casts": 4,
@@ -17407,7 +18590,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 136,
           "tokens_chumped": 0,
-          "creatures_lost": 5,
+          "creatures_lost": 24,
           "life_by_turn": {
             "7": 39,
             "10": 35,
@@ -17433,14 +18616,30 @@
             "48": 78
           },
           "permanents_lost_by_turn": {
-            "12": 1,
-            "28": 1,
-            "43": 2,
-            "46": 1
+            "12": 2,
+            "22": 2,
+            "25": 3,
+            "28": 10,
+            "40": 1,
+            "43": 3,
+            "45": 1,
+            "46": 2
           },
           "counter_events": 11,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 32,
+            "trigger": 10,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 28,
+            "source": "Angel Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 1,
           "commander_casts": 5,
@@ -17678,7 +18877,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 8,
           "life_by_turn": {
             "22": 37,
             "48": -41
@@ -17688,10 +18887,26 @@
           "eliminated_how": "damage",
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "25": 2,
+            "28": 2,
+            "31": 4
+          },
           "counter_events": 10,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -17870,7 +19085,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 3,
           "life_by_turn": {
             "23": 26,
             "29": 23,
@@ -17887,11 +19102,23 @@
           },
           "permanents_lost_by_turn": {
             "9": 1,
-            "14": 1
+            "14": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Wight of the Reliquary"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -18039,7 +19266,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 3,
           "life_by_turn": {
             "15": 35,
             "27": 4,
@@ -18052,11 +19279,23 @@
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
           "permanents_lost_by_turn": {
-            "35": 1
+            "35": 3
           },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -18185,7 +19424,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 6,
           "tokens_chumped": 0,
-          "creatures_lost": 4,
+          "creatures_lost": 8,
           "life_by_turn": {
             "5": 39,
             "9": 36,
@@ -18211,13 +19450,30 @@
           },
           "permanents_lost_by_turn": {
             "13": 1,
-            "14": 1,
+            "14": 3,
             "19": 1,
+            "23": 1,
+            "27": 1,
             "29": 1
           },
           "counter_events": 9,
           "mass_counter_events": 8,
           "proliferate_events": 0,
+          "drain_dealt": 60,
+          "life_gained_by_source": {
+            "lifelink": 51,
+            "trigger": 12,
+            "other": 4
+          },
+          "combat_damage_by_keyword": {
+            "ground": 50,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 10,
+            "source": "Edgar Markov"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -18416,7 +19672,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 2,
           "life_by_turn": {
             "19": 34,
             "23": 20,
@@ -18428,10 +19684,24 @@
           "eliminated_how": "life loss",
           "first_attack_turn": null,
           "damage_to_players_by_turn": {},
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "14": 2
+          },
           "counter_events": 2,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 1,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -18558,7 +19828,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 5,
+          "creatures_lost": 8,
           "life_by_turn": {
             "16": 39,
             "18": 37,
@@ -18586,11 +19856,23 @@
             "13": 1,
             "21": 1,
             "25": 1,
-            "28": 1
+            "28": 4
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 4,
+            "source": "Wight of the Reliquary"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -18744,7 +20026,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 3,
+          "creatures_lost": 5,
           "life_by_turn": {
             "16": 39,
             "19": 35,
@@ -18773,12 +20055,25 @@
           },
           "permanents_lost_by_turn": {
             "25": 1,
+            "28": 2,
             "33": 1,
             "35": 1
           },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Abaddon the Despoiler"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 3,
           "interaction_received": 2,
           "commander_casts": 1,
@@ -18981,8 +20276,8 @@
           "token_attackers": 2,
           "token_blockers": 1,
           "token_combat_damage_to_players": 4,
-          "tokens_chumped": 1,
-          "creatures_lost": 4,
+          "tokens_chumped": 0,
+          "creatures_lost": 6,
           "life_by_turn": {
             "15": 39,
             "16": 38,
@@ -19007,12 +20302,30 @@
             "27": 8
           },
           "permanents_lost_by_turn": {
+            "9": 1,
             "13": 2,
-            "28": 2
+            "28": 3
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 12,
+            "flying": 12,
+            "ground": 4,
+            "evasive_share": 0.6
+          },
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Bloodtracker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -19140,7 +20453,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 5,
           "life_by_turn": {
             "9": 37,
             "16": 40,
@@ -19163,11 +20476,25 @@
             "24": 1
           },
           "permanents_lost_by_turn": {
-            "28": 1
+            "21": 1,
+            "28": 2,
+            "35": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 12,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Composer of Spring"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -19320,7 +20647,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 11,
           "life_by_turn": {
             "14": 38,
             "18": 23,
@@ -19336,11 +20663,25 @@
             "13": 1
           },
           "permanents_lost_by_turn": {
-            "18": 1
+            "17": 3,
+            "18": 5,
+            "21": 3
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Deathrite Shaman"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -19432,7 +20773,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 9,
+          "creatures_lost": 19,
           "life_by_turn": {
             "13": 39,
             "14": 37,
@@ -19453,13 +20794,28 @@
             "22": 34
           },
           "permanents_lost_by_turn": {
+            "14": 2,
+            "18": 3,
             "22": 1,
-            "24": 7,
+            "24": 10,
+            "25": 2,
             "33": 1
           },
           "counter_events": 3,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 13,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 1
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Mutalith Vortex Beast"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -19617,7 +20973,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 19,
           "life_by_turn": {
             "3": 38,
             "5": 37,
@@ -19638,10 +20994,32 @@
           "damage_to_players_by_turn": {
             "29": 2
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "23": 6,
+            "24": 5
+          },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 11,
+            "other": 8
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 2,
+            "menace": 2,
+            "evasive_share": 1.0
+          },
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Vampire Socialite"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -19774,7 +21152,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 6,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 19,
           "life_by_turn": {
             "9": 39,
             "14": 37,
@@ -19797,12 +21175,28 @@
             "34": 13
           },
           "permanents_lost_by_turn": {
-            "18": 1,
-            "24": 1
+            "13": 1,
+            "16": 2,
+            "18": 4,
+            "20": 3,
+            "24": 8,
+            "27": 1
           },
           "counter_events": 14,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 9,
+            "trigger": 8,
+            "other": 46
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 10,
+            "source": "Heliod, Sun-Crowned"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -20024,6 +21418,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 2,
+            "source": "Jarad, Golgari Lich Lord"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -20135,8 +21541,8 @@
           "token_attackers": 1,
           "token_blockers": 1,
           "token_combat_damage_to_players": 6,
-          "tokens_chumped": 1,
-          "creatures_lost": 3,
+          "tokens_chumped": 0,
+          "creatures_lost": 4,
           "life_by_turn": {
             "14": 39,
             "15": 35,
@@ -20154,6 +21560,7 @@
             "22": 5
           },
           "permanents_lost_by_turn": {
+            "11": 1,
             "18": 1,
             "24": 1,
             "28": 1
@@ -20161,6 +21568,18 @@
           "counter_events": 2,
           "mass_counter_events": 2,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Abaddon the Despoiler"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -20291,7 +21710,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 1,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 4,
           "life_by_turn": {
             "11": 39,
             "12": 33,
@@ -20312,11 +21731,31 @@
             "39": 7
           },
           "permanents_lost_by_turn": {
-            "23": 1
+            "23": 1,
+            "27": 1,
+            "38": 2
           },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 12,
+          "life_gained_by_source": {
+            "lifelink": 17,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 23,
+            "flying": 17,
+            "ground": 5,
+            "menace": 6,
+            "evasive_share": 0.793
+          },
+          "biggest_hit": {
+            "amount": 7,
+            "source": "Nighthawk Scavenger"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -20503,6 +21942,18 @@
           "counter_events": 4,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 3,
+            "other": 16
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 14,
+            "source": "Dryad of the Ilysian Grove"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -20667,7 +22118,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 2,
           "life_by_turn": {
             "18": 34,
             "23": 33,
@@ -20683,11 +22134,24 @@
             "29": 6
           },
           "permanents_lost_by_turn": {
+            "27": 1,
             "31": 1
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Bloodthirster"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -20828,7 +22292,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 185,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 5,
           "life_by_turn": {
             "14": 39,
             "20": 35,
@@ -20861,11 +22325,24 @@
             "42": 82
           },
           "permanents_lost_by_turn": {
+            "27": 3,
             "31": 2
           },
           "counter_events": 5,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 7,
+            "trigger": 13,
+            "other": 7
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 11,
+            "source": "Spirit Cleric Token"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 2,
@@ -21048,7 +22525,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 5,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 4,
           "life_by_turn": {
             "13": 37,
             "26": 36,
@@ -21067,11 +22544,30 @@
             "30": 5
           },
           "permanents_lost_by_turn": {
-            "20": 2
+            "20": 2,
+            "29": 1,
+            "38": 1
           },
           "counter_events": 4,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 5,
+            "flying": 5,
+            "ground": 5,
+            "evasive_share": 0.333
+          },
+          "biggest_hit": {
+            "amount": 5,
+            "source": "High-Society Hunter"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -21225,7 +22721,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 2,
           "life_by_turn": {
             "42": -42
           },
@@ -21238,10 +22734,25 @@
             "36": 7,
             "39": 8
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "13": 1,
+            "27": 1
+          },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 8,
+            "source": "Jarad, Golgari Lich Lord"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -21388,7 +22899,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 3,
           "life_by_turn": {
             "11": 39,
             "15": 38,
@@ -21408,11 +22919,24 @@
             "25": 5
           },
           "permanents_lost_by_turn": {
-            "28": 1
+            "15": 1,
+            "28": 2
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 12,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Abaddon the Despoiler"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 1,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -21539,8 +23063,8 @@
           "token_attackers": 3,
           "token_blockers": 1,
           "token_combat_damage_to_players": 6,
-          "tokens_chumped": 1,
-          "creatures_lost": 2,
+          "tokens_chumped": 0,
+          "creatures_lost": 3,
           "life_by_turn": {
             "11": 39,
             "12": 37,
@@ -21567,12 +23091,30 @@
             "37": 18
           },
           "permanents_lost_by_turn": {
+            "16": 1,
             "36": 1,
             "37": 1
           },
           "counter_events": 1,
           "mass_counter_events": 1,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 6,
+            "ground": 7,
+            "menace": 6,
+            "evasive_share": 0.25
+          },
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Lord of Lineage"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -21700,7 +23242,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 0,
+          "creatures_lost": 1,
           "life_by_turn": {
             "8": 39,
             "11": 42,
@@ -21726,10 +23268,24 @@
             "23": 10,
             "38": 7
           },
-          "permanents_lost_by_turn": {},
+          "permanents_lost_by_turn": {
+            "16": 1
+          },
           "counter_events": 4,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 30,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Forest"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -21980,6 +23536,18 @@
           "counter_events": 7,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 18,
+            "source": "Yargle and Multani"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -22142,7 +23710,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 30,
           "tokens_chumped": 0,
-          "creatures_lost": 20,
+          "creatures_lost": 21,
           "life_by_turn": {
             "10": 34,
             "26": 32,
@@ -22166,7 +23734,7 @@
           },
           "permanents_lost_by_turn": {
             "9": 1,
-            "29": 2,
+            "29": 3,
             "33": 1,
             "36": 1,
             "37": 15
@@ -22174,6 +23742,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 31,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 5
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 6,
+            "source": "Keeper of Secrets"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -22363,7 +23943,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 5,
           "tokens_chumped": 0,
-          "creatures_lost": 5,
+          "creatures_lost": 18,
           "life_by_turn": {
             "5": 34,
             "6": 33,
@@ -22389,14 +23969,32 @@
             "26": 2
           },
           "permanents_lost_by_turn": {
+            "13": 2,
             "18": 1,
-            "25": 2,
+            "25": 5,
             "26": 1,
-            "29": 1
+            "29": 8,
+            "36": 1
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 5,
+            "trigger": 15,
+            "other": 12
+          },
+          "combat_damage_by_keyword": {
+            "evasive": 7,
+            "flying": 7,
+            "evasive_share": 0.583
+          },
+          "biggest_hit": {
+            "amount": 5,
+            "source": "Nighthawk Scavenger"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -22548,7 +24146,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 7,
           "life_by_turn": {
             "11": 39,
             "14": 35,
@@ -22570,11 +24168,24 @@
             "15": 1
           },
           "permanents_lost_by_turn": {
-            "29": 1
+            "27": 1,
+            "29": 6
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 5,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Composer of Spring"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -22744,7 +24355,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 3,
+          "creatures_lost": 9,
           "life_by_turn": {
             "24": 36,
             "25": 33,
@@ -22762,13 +24373,26 @@
             "16": 3
           },
           "permanents_lost_by_turn": {
-            "29": 1,
-            "37": 1,
-            "38": 1
+            "29": 2,
+            "37": 4,
+            "38": 2,
+            "40": 1
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 3,
+            "source": "Honest Rutstein"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -22938,7 +24562,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 5,
           "life_by_turn": {
             "12": 43,
             "16": 46,
@@ -22957,11 +24581,23 @@
           },
           "permanents_lost_by_turn": {
             "20": 1,
-            "26": 1
+            "26": 4
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 3,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 12
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Creeping Bloodsucker"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 2,
@@ -23079,7 +24715,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 4,
           "life_by_turn": {
             "12": 39,
             "13": 36,
@@ -23101,11 +24737,28 @@
             "29": 16
           },
           "permanents_lost_by_turn": {
-            "21": 1
+            "21": 1,
+            "25": 1,
+            "26": 2
           },
           "counter_events": 1,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 1,
+            "other": 0
+          },
+          "combat_damage_by_keyword": {
+            "ground": 22,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 16,
+            "source": "Yahenni, Undying Partisan"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -23216,7 +24869,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 3,
           "tokens_chumped": 0,
-          "creatures_lost": 2,
+          "creatures_lost": 6,
           "life_by_turn": {
             "7": 39,
             "12": 38,
@@ -23254,11 +24907,27 @@
           },
           "permanents_lost_by_turn": {
             "21": 1,
-            "26": 1
+            "26": 4,
+            "33": 1
           },
           "counter_events": 16,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 65,
+            "trigger": 34,
+            "other": 2
+          },
+          "combat_damage_by_keyword": {
+            "ground": 16,
+            "evasive_share": 0.0
+          },
+          "biggest_hit": {
+            "amount": 58,
+            "source": "Sythis, Harvest's Hand"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -23472,7 +25141,7 @@
           "token_blockers": 0,
           "token_combat_damage_to_players": 0,
           "tokens_chumped": 0,
-          "creatures_lost": 1,
+          "creatures_lost": 6,
           "life_by_turn": {
             "12": 38,
             "16": 37,
@@ -23490,11 +25159,25 @@
             "7": 1
           },
           "permanents_lost_by_turn": {
-            "26": 1
+            "13": 1,
+            "17": 1,
+            "26": 4
           },
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 12
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 1,
+            "source": "Elvish Mystic"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 0,
           "commander_casts": 3,
@@ -23587,8 +25270,7 @@
     "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, never pilot-vs-pod.",
     "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
     "A game past Forge's `-c` clock IS a draw — Forge calls `setGameOver(Draw)` — but it prints a `has won` line for every surviving seat, so a naive parse credits one of them. Such games are now recorded `truncated: true` with no winner and are EXCLUDED from the win rate; `summary.truncated` and `summary.decided` report how many. A truncated game is also not byte-reproducible: Forge interrupts the accounting but not the AI thread, so the outcome lines are a snapshot of a game still being mutated.",
-    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest.",
-    "edgar-vampires's strategic frame calls it \"Mardu Vampire ARISTOCRATS-MIDRANGE on an eminence chassis — v1.1.1 (decklist sha 7be137d0…, sleeved 2026-09-16 after branch elenda-v1 merged). The pilot's stated direction (quiver inventory, 2026-09-16) is two lines: go wide with tokens, and funnel the value into a few bigger Vampires; lifegain-into-drain as a THEME, with the lifegain infinite deliberately out. Edgar Markov's eminence mints a 1/1 Vampire on every Vampire spell from the command zone (stacks 002/010 checker-passed), three replacement doublers multiply it (1→4 with two, 1→8 with three, all six orders — stack 010), and eight sacrifice outlets by role (deck-facts sac-outlet 8: Altar of Dementia, Ashnod's Altar, Bloodflow Connoisseur, Indulgent Aristocrat, Master of Dark Rites, Viscera Seer, Vish Kal, Blood Arbiter, Yahenni, Undying Partisan — seven of them cost no mana) convert the bodies into counters, cards and life loss. The two swaps are both DEATH PAYOFFS: Elenda, the Dusk Rose (+1/+1 per other death, dies into X lifelink Vampires — the hinge between the two lines, since she is the 'big Vampire' that pays out as 'go wide') and Blade of the Bloodchief (two counters per death on an equipped Vampire) replace Immersturm Predator and Unbounded Potential. What the artifacts say that the direction does not: deck-facts and engine-facts both list TWO fully-contained two-card infinites — Bloodthirsty Conqueror with Vito, Thorn of the Dusk Rose, and with Sanguine Bond — and both are checker-passed (stacks 004, 006). Exquisite Blood left the 99; Conqueror is its text on a body. The 'infinite is OUT' decision is not enacted in the list, and this frame carries the loop as present, verified and subordinate-by-choice rather than absent.\" — read the AI caveat against that."
+    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest."
   ],
   "logs": "sim/logs/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n20-da677689-s1664213641-memm-edgar-vampires-podExperimental-c600-ov260c7a72-aif7c3b6a8-tlfe64c503/ (gitignored; regenerate by re-running)"
 }

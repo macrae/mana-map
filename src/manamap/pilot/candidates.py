@@ -204,6 +204,43 @@ FORGE_OBJECTIVE_AXES = {
                 "games played",
         "why": "a FLOOR on commander access under Forge's AI — the deck's plan "
                "cannot start until it does"},
+    # THE DRAIN AXIS AND THE THREAT AXIS (2026-09-30): what the pilot said Edgar should
+    # be — "life gain / life drain as the ENGINE" and "big scary vampires with flying,
+    # lifelink, deathtouch" — as endpoints a branch can be aimed at.
+    "forge.drain_dealt": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "drain_dealt",
+        "what": "life LOSS dealt to opponents that was not damage, per game — Blood "
+                "Artist, Vito, Sanguine Bond — credited to the seat whose life-loss "
+                "ability resolved last that turn; a floor",
+        "why": "the drain engine's output, which no damage total sees"},
+    "forge.life_gained": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "life_gained",
+        "what": "life gained per game, all sources (the record splits it: lifelink, "
+                "trigger, other)",
+        "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"},
+    "forge.biggest_hit": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "biggest_hit",
+        "what": "the largest single-source combat damage dealt to a player, per game",
+        "why": "one big lifelinker connecting reads differently from twelve tokens; "
+               "this is the number that separates them"},
+    "forge.evasive_damage_share": {
+        "kind": "mean", "lower_is_better": False, "conditional": True,
+        "per_game": "evasive_damage_share",
+        "what": "share of our combat damage to players dealt by sources with flying, "
+                "trample, menace or another evasion keyword, per game with any combat "
+                "damage (from the deck's own keywords, so our seat only)",
+        "why": "'big scary vampires with all sorts of ways to hurt people' — measured "
+               "as the damage that got through because it could not be blocked"},
+    "forge.kills_by_ability": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "kills_by_ability",
+        "what": "opposing permanents that left the battlefield directly after one of "
+                "our activated abilities resolved, per game — Vish Kal's -X/-X, an "
+                "outlet's kill; a ceiling per card",
+        "why": "removal the deck does with its own creatures rather than with spells"},
     "forge.combat_damage_dealt_to_players": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "combat_damage_dealt_to_players",

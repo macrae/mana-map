@@ -122,7 +122,12 @@ def test_aggregate_intervals_behave():
 
 
 def test_validate_sim_reproves_the_analysis_from_logs_and_catches_drift():
-    facts, analysis = parse.analyze_logs([FIX], LABEL)
+    # THE RECORD IS WHAT THE PRODUCTION PATH WRITES: `forge.run` derives with the deck's
+    # mana values and keywords, and the validator re-derives with the same, so a test
+    # record built without them would drift on the keyword split alone.
+    from manamap.sim import forge
+    facts, analysis = parse.analyze_logs([FIX], LABEL, cmc=forge.cmc_map("radagast"),
+                                         keywords=forge.keyword_map("radagast"))
     rec = {"run_id": "x", "slug": "radagast", "at": "2026-08-19", "engine": {},
            "seats": [{"slug": "radagast", "forge_name": "radagast", "decklist_sha256": "a" * 64},
                      {"slug": "edgar-vampires", "forge_name": "edgar-vampires", "decklist_sha256": "b" * 64}],

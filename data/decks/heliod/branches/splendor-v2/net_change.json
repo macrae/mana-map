@@ -655,6 +655,14 @@
    }
   ],
   "forge_endpoints": {
+   "forge.biggest_hit": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "biggest_hit",
+    "what": "the largest single-source combat damage dealt to a player, per game",
+    "why": "one big lifelinker connecting reads differently from twelve tokens; this is the number that separates them"
+   },
    "forge.combat_damage_dealt_to_players": {
     "conditional": false,
     "kind": "mean",
@@ -670,6 +678,14 @@
     "what": "games in which the commander resolved at least once, over games played",
     "why": "a FLOOR on commander access under Forge's AI \u2014 the deck's plan cannot start until it does"
    },
+   "forge.drain_dealt": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "drain_dealt",
+    "what": "life LOSS dealt to opponents that was not damage, per game \u2014 Blood Artist, Vito, Sanguine Bond \u2014 credited to the seat whose life-loss ability resolved last that turn; a floor",
+    "why": "the drain engine's output, which no damage total sees"
+   },
    "forge.eliminated_turn": {
     "conditional": true,
     "kind": "mean",
@@ -678,6 +694,14 @@
     "what": "the global turn our seat was eliminated, mean over the games it lost",
     "why": "survival; conditional on losing, so a deck that wins more can read worse here for dying faster in the games it still loses"
    },
+   "forge.evasive_damage_share": {
+    "conditional": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "evasive_damage_share",
+    "what": "share of our combat damage to players dealt by sources with flying, trample, menace or another evasion keyword, per game with any combat damage (from the deck's own keywords, so our seat only)",
+    "why": "'big scary vampires with all sorts of ways to hurt people' \u2014 measured as the damage that got through because it could not be blocked"
+   },
    "forge.first_attack_turn": {
     "conditional": true,
     "kind": "mean",
@@ -685,6 +709,22 @@
     "per_game": "first_attack_turn",
     "what": "the GLOBAL turn of our seat's first declared attack, mean over the games in which it attacked at all",
     "why": "how long the AI sat on the deck; conditional, so a branch that attacks in more games can read WORSE here by attacking late in games it used to skip"
+   },
+   "forge.kills_by_ability": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "kills_by_ability",
+    "what": "opposing permanents that left the battlefield directly after one of our activated abilities resolved, per game \u2014 Vish Kal's -X/-X, an outlet's kill; a ceiling per card",
+    "why": "removal the deck does with its own creatures rather than with spells"
+   },
+   "forge.life_gained": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "life_gained",
+    "what": "life gained per game, all sources (the record splits it: lifelink, trigger, other)",
+    "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"
    },
    "forge.win_rate": {
     "conditional": false,

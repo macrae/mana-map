@@ -298,6 +298,52 @@
           "max": 5,
           "n": 1
         },
+        "drain_dealt": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 0.0,
+            "median": 0,
+            "min": 0,
+            "max": 0,
+            "n": 1
+          },
+          "trigger": {
+            "mean": 0.0,
+            "median": 0,
+            "min": 0,
+            "max": 0,
+            "n": 1
+          },
+          "other": {
+            "mean": 15.0,
+            "median": 15,
+            "min": 15,
+            "max": 15,
+            "n": 1
+          }
+        },
+        "biggest_hit": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1,
+          "sources": []
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1,
+          "by_card": {}
+        },
         "tokens": {
           "token_resolutions": {
             "mean": 2.0,
@@ -734,6 +780,57 @@
           "min": 10,
           "max": 10,
           "n": 1
+        },
+        "drain_dealt": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 32.0,
+            "median": 32,
+            "min": 32,
+            "max": 32,
+            "n": 1
+          },
+          "trigger": {
+            "mean": 21.0,
+            "median": 21,
+            "min": 21,
+            "max": 21,
+            "n": 1
+          },
+          "other": {
+            "mean": 0.0,
+            "median": 0,
+            "min": 0,
+            "max": 0,
+            "n": 1
+          }
+        },
+        "biggest_hit": {
+          "mean": 10.0,
+          "median": 10,
+          "min": 10,
+          "max": 10,
+          "n": 1,
+          "sources": [
+            {
+              "card": "Avacyn, Angel of Hope",
+              "games": 1
+            }
+          ]
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1,
+          "by_card": {}
         },
         "tokens": {
           "token_resolutions": {
@@ -1179,6 +1276,52 @@
           "mean": null,
           "n": 0
         },
+        "drain_dealt": {
+          "mean": 22.0,
+          "median": 22,
+          "min": 22,
+          "max": 22,
+          "n": 1
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 0.0,
+            "median": 0,
+            "min": 0,
+            "max": 0,
+            "n": 1
+          },
+          "trigger": {
+            "mean": 15.0,
+            "median": 15,
+            "min": 15,
+            "max": 15,
+            "n": 1
+          },
+          "other": {
+            "mean": 6.0,
+            "median": 6,
+            "min": 6,
+            "max": 6,
+            "n": 1
+          }
+        },
+        "biggest_hit": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1,
+          "sources": []
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1,
+          "by_card": {}
+        },
         "tokens": {
           "token_resolutions": {
             "mean": 10.0,
@@ -1620,6 +1763,52 @@
           "mean": null,
           "n": 0
         },
+        "drain_dealt": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1
+        },
+        "life_gained_by_source": {
+          "lifelink": {
+            "mean": 0.0,
+            "median": 0,
+            "min": 0,
+            "max": 0,
+            "n": 1
+          },
+          "trigger": {
+            "mean": 0.0,
+            "median": 0,
+            "min": 0,
+            "max": 0,
+            "n": 1
+          },
+          "other": {
+            "mean": 0.0,
+            "median": 0,
+            "min": 0,
+            "max": 0,
+            "n": 1
+          }
+        },
+        "biggest_hit": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1,
+          "sources": []
+        },
+        "kills_by_ability": {
+          "mean": 0.0,
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "n": 1,
+          "by_card": {}
+        },
         "tokens": {
           "token_resolutions": {
             "mean": 2.0,
@@ -2007,6 +2196,7 @@
       "Damage figures see DAMAGE only. Life LOSS that is not damage (Vito's drain, Blood Artist, 'each opponent loses 1 life') shows in life_by_turn, eliminated_turn and eliminated_how='life loss', never in a damage total. Measured: Vito wins 9 of 20 on 7.0 combat damage a game.",
       "interaction_cast counts stack objects a seat aimed at ANOTHER seat's permanent or face, resolved through the learned owner map, once per opposing seat touched. It is not a removal count: the log records that a spell targeted something, never what the spell did, so a Swords, an edict, a drain and a pump spell aimed at an opponent's creature are one and the same to it. A permanent nobody was seen playing is unattributed and counted for neither side.",
       "FORGE GIVES THE FIRST MULLIGAN FREE, which is not the London rule and is a fidelity gap rather than a parser one. Measured across all 130 tracked logs and 5,056 seat-hands with ZERO exceptions: 0 mulligans keeps 7, ONE mulligan also keeps 7, two keeps 6, three keeps 5 -- so kept = 7 - max(0, taken - 1). Under the London mulligan a single mulligan draws seven and bottoms one, for a hand of SIX. So mulligans_taken and mulligan_kept are both reported and neither is derivable from the other under real rules; a deck that mulligans is being flattered by one card here.",
+      "drain_dealt is an opponent's life LOSS that was not damage, credited to the seat whose life-loss ability resolved last this turn (the elimination attribution's own rule) — a FLOOR: a drain the regex does not read, or one landing after another seat's ability, is credited to nobody. life_gained_by_source reads the line before the gain: a combat damage line from this seat's source is lifelink, a resolve line of this seat's is trigger, anything else is other. biggest_hit is the largest single combat damage event to a player. kills_by_ability counts opposing permanents that left the battlefield in the same turn as, and directly after, one of this seat's activated abilities resolved — a permanent that was going to die anyway is counted, so it is a CEILING per card. combat_damage_by_keyword and evasive_damage_share exist only for the seat whose deck's keywords were known (ours); a source with any of Flying, Trample, Menace, Fear, Intimidate, Shadow, Horsemanship, Skulk or Unblockable is evasive, the rest ground.",
       "Card advantage, tutoring and recursion are ABSENT and cannot be added. Forge logs exactly two zone transitions -- Battlefield to Graveyard and Battlefield to Exile. Measured on a 100-game pod run: ZERO `from Library` lines of any kind. Draw, tutor and graveyard recursion are invisible to every record here, and no parser change recovers them; the goldfish is the only place those are measured.",
       "ci95 is a Wilson interval for rates and a normal interval for means; both are meaningless below ~10 games. A seed fixes the SHUFFLE, not the games — one configuration replayed twice gave four different games and one different winner, because Forge aborts its AI's evaluation on a WALL-CLOCK budget. The interval is the claim; the stored logs, not the seed, are the receipt.",
       "commander_access.resolved_rate is the share of games this seat's commander actually RESOLVED. An activated ability of the permanent (a transform, a flip) is not mistaken for that arrival: Forge suffixes such a line with the permanent's id and a resolving spell has none, swept across every tracked log at 77 of 77. `casts` counts spells, so a countered one and a recast after removal increments it and the gap between casts and games_resolved is what commander tax and interaction cost this deck. It is a FLOOR on access under Forge's AI, not a property of the decklist: the same seat's goldfish figure asks only whether the mana was there. ABSENT when the seat's commander is unknown.",
@@ -2056,6 +2246,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 15
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 1,
           "commander_casts": 1,
@@ -2124,6 +2326,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 32,
+            "trigger": 21,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 10,
+            "source": "Avacyn, Angel of Hope"
+          },
+          "kills_by_ability": {},
           "interaction_cast": 0,
           "interaction_received": 3,
           "commander_casts": 1,
@@ -2184,6 +2398,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 22,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 15,
+            "other": 6
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 1,
@@ -2234,6 +2460,18 @@
           "counter_events": 0,
           "mass_counter_events": 0,
           "proliferate_events": 0,
+          "drain_dealt": 0,
+          "life_gained_by_source": {
+            "lifelink": 0,
+            "trigger": 0,
+            "other": 0
+          },
+          "combat_damage_by_keyword": null,
+          "biggest_hit": {
+            "amount": 0,
+            "source": null
+          },
+          "kills_by_ability": {},
           "interaction_cast": 2,
           "interaction_received": 0,
           "commander_casts": 0,
@@ -2306,5 +2544,94 @@
         "discarded": 0
       }
     }
+  },
+  "board_series": {
+    "seat": "radagast",
+    "games": 1,
+    "since": "2026-09-30",
+    "by_turn": {
+      "bodies": {},
+      "printed_power": {},
+      "permanents": {},
+      "tokens": {},
+      "lands": {},
+      "open_lands": {}
+    },
+    "commander_uptime": {
+      "mean_ci": null,
+      "games_with_commander": 1,
+      "basis": "fewer than two games saw the commander resolve"
+    },
+    "per_game": [
+      {
+        "turns": 5,
+        "commander_uptime": 1.0,
+        "by_turn": {
+          "1": {
+            "bodies": 1,
+            "printed_power": 1,
+            "power_unknown": 0,
+            "permanents": 2,
+            "tokens": 0,
+            "lands": 1,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "2": {
+            "bodies": 1,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 3,
+            "tokens": 0,
+            "lands": 2,
+            "open_lands": 1,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "3": {
+            "bodies": 1,
+            "printed_power": 0,
+            "power_unknown": 0,
+            "permanents": 5,
+            "tokens": 0,
+            "lands": 3,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "4": {
+            "bodies": 2,
+            "printed_power": 4,
+            "power_unknown": 0,
+            "permanents": 7,
+            "tokens": 0,
+            "lands": 4,
+            "open_lands": 0,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": false
+          },
+          "5": {
+            "bodies": 6,
+            "printed_power": 8,
+            "power_unknown": 0,
+            "permanents": 12,
+            "tokens": 3,
+            "lands": 5,
+            "open_lands": 2,
+            "rocks_tapped": 0,
+            "commander_on_battlefield": true
+          }
+        }
+      }
+    ],
+    "limits": [
+      "AN ESTIMATE FROM RESOLVE LINES, NOT AN ARRIVAL LOG. Forge never logs a permanent entering the battlefield; a cast permanent is placed on its resolution line, a token at the resolution that creates it, a land on its `Land:` line. A body that entered WITHOUT being cast (reanimated, flashed in by an ability, put onto the battlefield by another card) is seen only when it first attacks, blocks or deals damage; one that sat is invisible.",
+      "A token whose count the resolution states as X or 'that many' is not on the board; `token_counts_unread` says how many resolutions were unread.",
+      "`printed_power` is PRINTED: counters, anthems, auras and equipment are invisible to the log. A `*/*` creature is a body in `bodies` and counted in `power_unknown`, never as 0 power.",
+      "`open_lands` is lands untapped at the start of the cleanup step — mana left unused that turn. `rocks_tapped` is nonland permanents tapped for mana this turn, a FLOOR on mana sources: a rock never tapped is invisible.",
+      "Removal by name where more than one seat controls the card takes the first seat; the bridge's reconstruction notes record each such case.",
+      "Summoning sickness, vigilance and the hand are not in the log."
+    ]
   }
 }
