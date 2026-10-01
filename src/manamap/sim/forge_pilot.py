@@ -440,7 +440,14 @@ def unflag_candidates():
 #:               "ability": "AB$ PutCounter",              # the line to touch, by its API prefix
 #:               "ai_logic": "AristocratCounters",         # appended as `| AILogic$ …` (optional)
 #:               "ai_preference": {"SacCost": "Creature.token,Creature.Other+cmcLE2"},  # optional
+#:               "ability_params": {"IsCurse": "True"},   # appended as `| Key$ Value` (optional)
 #:               "why": "…", "cites": ["stacks/004", "log 006"]}]}
+#:
+#: `ability_params` is the third kind (2026-09-30): a parameter the card author left off
+#: the ability line that the AI reads to decide WHO to aim at — `IsCurse$ True` on Vish
+#: Kal's -X/-X, without which `PumpAi` treats a -X/-X as a pump for our own creatures and
+#: never finds a target. One hint per (card, ability), so a card with two hinted abilities
+#: carries two entries.
 #:
 #: The two hint kinds Forge's own aristocrat scripts use (`carrion_feeder.txt`: `AILogic$
 #: AristocratCounters` on the sacrifice ability plus `SVar:AIPreference:SacCost$…`), derived
@@ -449,7 +456,7 @@ def unflag_candidates():
 #: that line, is refused rather than guessed. `validate-forge-hints` is the gate; the
 #: override lands in the same fingerprint as everything else.
 HINTS_FILE = "forge_hints.json"
-HINT_KEYS = frozenset({"card", "ability", "ai_logic", "ai_preference", "why", "cites"})
+HINT_KEYS = frozenset({"card", "ability", "ai_logic", "ai_preference", "ability_params", "why", "cites"})
 
 
 def hints_for(slug):
@@ -488,15 +495,23 @@ def validate_hints(slug, doc):
             errors.append(f"{where}: no card"); continue
         if names and card not in names:
             errors.append(f"{where}: {card!r} is not in the 99")
-        if card in seen:
-            errors.append(f"{where}: {card!r} hinted twice — one hint per card")
-        seen.add(card)
+        if (card, h.get("ability")) in seen:
+            errors.append(f"{where}: {card!r} hinted twice — one hint per card and ability")
+        seen.add((card, h.get("ability")))
         if not h.get("why"):
             errors.append(f"{where}: {card}: no `why` — a hint is a piloting decision and says so")
-        if not (h.get("ai_logic") or h.get("ai_preference")):
-            errors.append(f"{where}: {card}: neither ai_logic nor ai_preference — nothing to hint")
+        if not (h.get("ai_logic") or h.get("ai_preference") or h.get("ability_params")):
+            errors.append(f"{where}: {card}: neither ai_logic, ai_preference nor ability_params — nothing to hint")
         if h.get("ai_logic") and not h.get("ability"):
             errors.append(f"{where}: {card}: ai_logic needs `ability`, the API prefix of the line it goes on")
+        params = h.get("ability_params")
+        if params is not None:
+            if not h.get("ability"):
+                errors.append(f"{where}: {card}: ability_params needs `ability`, the API prefix of the line it goes on")
+            if (not isinstance(params, dict) or not params
+                    or not all(isinstance(k, str) and k.isidentifier() and isinstance(v, str) and v
+                               for k, v in params.items())):
+                errors.append(f"{where}: {card}: ability_params is a mapping of Param -> value, e.g. {{\"IsCurse\": \"True\"}}")
         pref = h.get("ai_preference")
         if pref is not None and (not isinstance(pref, dict) or not pref
                                  or not all(isinstance(k, str) and isinstance(v, str) for k, v in pref.items())):
@@ -543,6 +558,19 @@ def generate_hints(slug, out_dir=None):
                                          f"author's decision, left be")
                 else:
                     lines[idx[0]] = lines[idx[0]] + f" | AILogic$ {h['ai_logic']}"
+            for key, val in (h.get("ability_params") or {}).items():
+                prefix = "A:" + h["ability"]
+                idx = [i for i, ln in enumerate(lines) if ln.startswith(prefix)]
+                if len(idx) != 1:
+                    raise ValueError(f"{h['card']}: `{h['ability']}` matches {len(idx)} line(s) of {stem}.txt; "
+                                     f"a hint goes on exactly one")
+                token = f"| {key}$ {val}"
+                if f"{key}$" in lines[idx[0]]:
+                    if token in lines[idx[0]]:
+                        continue                                # already hinted: idempotent
+                    raise ValueError(f"{h['card']}: that line already states {key}$ — the card "
+                                     f"author's decision, left be")
+                lines[idx[0]] = lines[idx[0]] + " " + token
             for kind, selector in (h.get("ai_preference") or {}).items():
                 key = f"SVar:AIPreference:{kind}$"
                 have = [ln for ln in lines if ln.startswith(key)]

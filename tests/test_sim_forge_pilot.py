@@ -458,3 +458,46 @@ def test_generate_starts_clean_so_a_withdrawn_hint_leaves_the_override(flagged_e
     fp.main(A())
     assert "AIPreference" not in dest.read_text(), "a withdrawn hint must not survive a regenerate"
     assert "AI:RemoveDeck" not in dest.read_text(), "the unflag still applies"
+
+
+def test_an_ability_param_hint_lands_on_the_named_line_and_a_card_may_carry_two_hints(flagged_engine, tmp_path, monkeypatch):
+    """`ability_params` (2026-09-30): `IsCurse$ True` on Vish Kal's -X/-X, the parameter
+    the card author left off, without which PumpAi aims a -X/-X at OUR creatures. One
+    hint per (card, ability), so the sacrifice hint and the removal hint coexist. The
+    bug this guards: the one-hint-per-card rule, which made the second ability
+    unhintable, and a generator that appended the param twice on a second run."""
+    import json
+    from manamap import config
+    with zipfile.ZipFile(flagged_engine.zip_path, "a", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("t/test_two.txt", FLAGGED.replace("Name:Test Flagged", "Name:Test Two").replace(
+            "AI:RemoveDeck:All\n",
+            "A:AB$ Pump | Cost$ SubCounter<All/P1P1> | ValidTgts$ Creature | NumAtt$ -X | NumDef$ -X\n"
+            "SVar:X:SVar$CostCountersRemoved\nAI:RemoveDeck:All\n"))
+    decks = tmp_path / "decks"; (decks / "d").mkdir(parents=True)
+    (decks / "d" / "cards.json").write_text(json.dumps({"cards": [{"name": "Test Two"}]}))
+    hints = {"hints": [
+        {"card": "Test Two", "ability": "AB$ PutCounter", "ai_logic": "AristocratCounters", "why": "w"},
+        {"card": "Test Two", "ability": "AB$ Pump", "ability_params": {"IsCurse": "True"}, "why": "w"}]}
+    (decks / "d" / "forge_hints.json").write_text(json.dumps(hints))
+    monkeypatch.setattr(config, "DECKS_DIR", decks); monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    assert fp.validate_hints("d", hints) == []
+    assert fp.generate_hints("d") == ["test_two", "test_two"]
+    got = (flagged_engine.override_dir / "t" / "test_two.txt").read_text().splitlines()
+    pump = [ln for ln in got if ln.startswith("A:AB$ Pump")]
+    assert len(pump) == 1 and pump[0].endswith("| NumDef$ -X | IsCurse$ True")
+    assert [ln for ln in got if ln.startswith("A:AB$ PutCounter")][0].endswith("| AILogic$ AristocratCounters")
+    fp.generate_hints("d")                      # idempotent
+    assert (flagged_engine.override_dir / "t" / "test_two.txt").read_text().splitlines() == got
+    # the same (card, ability) twice is still refused; a param needs its line; a bad mapping is refused
+    errs = fp.validate_hints("d", {"hints": [
+        {"card": "Test Two", "ability": "AB$ Pump", "ability_params": {"IsCurse": "True"}, "why": "w"},
+        {"card": "Test Two", "ability": "AB$ Pump", "ability_params": {"IsCurse": "False"}, "why": "w"},
+        {"card": "Test Two", "ability_params": {"IsCurse": "True"}, "why": "w"},
+        {"card": "Test Two", "ability": "AB$ PutCounter", "ability_params": {"Is Curse": ""}, "why": "w"}]})
+    assert any("hinted twice" in e for e in errs) and any("ability_params needs `ability`" in e for e in errs) \
+        and any("mapping of Param" in e for e in errs)
+    # a line that already states the param with ANOTHER value is the author's decision
+    (decks / "d" / "forge_hints.json").write_text(json.dumps({"hints": [
+        {"card": "Test Two", "ability": "AB$ Pump", "ability_params": {"NumAtt": "-1"}, "why": "w"}]}))
+    with pytest.raises(ValueError):
+        fp.generate_hints("d")

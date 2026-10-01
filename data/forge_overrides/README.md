@@ -47,9 +47,15 @@ own aristocrat scripts use: `ai_logic` (appended as `| AILogic$ …` to the one 
 line whose API prefix the hint names — `carrion_feeder.txt` puts `AristocratCounters` on
 its sacrifice ability) and `ai_preference` (`SVar:AIPreference:<kind>$<selector>`, placed
 before the Oracle line — `SacCost$Creature.token,Creature.Other+cmcLE2` says what the AI
-may feed the cost). Each hint says `why` and what it `cites`. `validate-forge-hints`
-refuses a card not in the 99, a hint with nothing to hint, or an ability prefix that
-matches zero or several lines; `forge-install --generate` derives the override onto the
+may feed the cost), and a third (same day, later): `ability_params` — a parameter the
+card author left off the ability line that the AI reads to decide WHO to aim at, appended
+as `| Key$ Value`. Vish Kal's -X/-X has no `IsCurse$ True` (72 of the 95 -X/-X Pump lines
+in the 2.0.14 corpus carry it), so `PumpAi` read it as a pump for OUR creatures; with the
+param and the PumpAi patch (`data/forge_patches/PumpAi.java`, X priced from the counters
+the cost would remove) it killed three Angels in an eight-game shell. One hint per (card,
+ability), so Vish Kal carries two. Each hint says `why` and what it `cites`.
+`validate-forge-hints` refuses a card not in the 99, a hint with nothing to hint, or an
+ability prefix that matches zero or several lines; `forge-install --generate` derives the override onto the
 shipped script (or its unflag override) and refuses a line that already carries a
 different `AILogic$`. Idempotent over its own output. These land in the same fingerprint
 as everything else. Measured first on Edgar: under the unflagged engine Vish Kal, Viscera

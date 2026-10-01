@@ -3309,3 +3309,26 @@ zero AI timeouts:
 The first cut is the lesson: a Fog is cheap and a protection spell is not, and the
 engine's own danger threshold is calibrated for the cheap one. The rule that ships spends
 the card on the swing that would otherwise end the game.
+
+
+## Vish Kal's -X/-X: X priced before the cost exists, and a curse that never said so (2026-09-30)
+
+`kills_by_ability` was ≈ 0 on every Edgar record — 0.00 to 0.05 a game across six passes —
+while the same card's sacrifice half activated 29–30 times a pass. Not a hint problem and
+not one problem: `SVar:X:SVar$CostCountersRemoved` is set by the engine only when the cost
+is paid, so `PumpAi` read X = 0 before every activation and refused it (`attack == 0`); and
+the ability line has no `IsCurse$`, so even a priced X would have been aimed at OUR
+creatures. The fix is one `ai` patch (`PumpAi.java`: X = the counters the cost would remove
+from the source now) plus a new hint kind (`ability_params: {"IsCurse": "True"}`), and the
+shell that proves it is eight two-seat games, seed 4343:
+
+| jar | Pump activations | what died | kills_by_ability |
+|---|---|---|---|
+| patched + hint | 3 | Resplendent Angel (-7/-7), Emeria Shepherd (-5/-5), Archangel of Tithes (-6/-6) | 2 credited (the third resolved inside combat, where a phase line sits between the resolve and the death) |
+| pristine + hint | 0 | — | 0 |
+
+The attribution floor shows in the same table: `kills_by_ability` credits a death only
+when it follows the activation's resolve directly, and one of the three kills landed
+inside a combat step. The log is exact; the figure is a floor, as its definition says.
+Vish Kal needed TWO fixes, and the first alone would have measured as "still never
+fires" — check `activated <card> targeting` in the log, not just the activation count.

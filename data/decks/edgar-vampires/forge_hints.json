@@ -14,6 +14,18 @@
       ]
     },
     {
+      "card": "Vish Kal, Blood Arbiter",
+      "ability": "AB$ Pump",
+      "ability_params": {
+        "IsCurse": "True"
+      },
+      "why": "The -X/-X half, activated 0 times across six passes while the sacrifice half fired 29-30 a pass (kills_by_ability 0.00-0.05 a game): the shipped line has no IsCurse$, so PumpAi reads a -X/-X as a pump for OUR creatures and never looks at an opponent's; and X is SVar$CostCountersRemoved, which the engine sets only when the cost is paid, so every evaluation reads 0 and refuses. IsCurse$ True is the card author's omission (72 of the 95 -X/-X Pump lines in the 2.0.14 corpus carry it; Vish Kal is one of the 23 that do not); the X pricing is data/forge_patches/PumpAi.java.",
+      "cites": [
+        "log 006",
+        "stacks/004"
+      ]
+    },
+    {
       "card": "Bloodflow Connoisseur",
       "ability": "AB$ PutCounter",
       "ai_logic": "AristocratCounters",
@@ -41,7 +53,7 @@
       "card": "Altar of Dementia",
       "ability": "AB$ Mill",
       "ai_logic": "SacOutlet",
-      "why": "A free outlet: the shipped mill logic computes X from the sacrificed creature's power before any creature is chosen, reads 0 and refuses every target \u2014 32 of our own permanents died while it sat on the battlefield across six games, activated 0 times. SacOutlet (data/forge_patches/MillAi.java) fires when a creature of ours is about to die anyway (the engine's shouldSacrificeThreatenedCard) or is SacMe, aimed at the thinnest library. No AIPreference on purpose: the SacCost path then prefers the THREATENED creature before the profile's default fodder.",
+      "why": "A free outlet: the shipped mill logic computes X from the sacrificed creature's power before any creature is chosen, reads 0 and refuses every target — 32 of our own permanents died while it sat on the battlefield across six games, activated 0 times. SacOutlet (data/forge_patches/MillAi.java) fires when a creature of ours is about to die anyway (the engine's shouldSacrificeThreatenedCard) or is SacMe, aimed at the thinnest library. No AIPreference on purpose: the SacCost path then prefers the THREATENED creature before the profile's default fodder.",
       "cites": [
         "log 006"
       ]
@@ -50,7 +62,7 @@
       "card": "Teferi's Protection",
       "ability": "SP$ Effect",
       "ai_logic": "Protection",
-      "why": "Held while castable on 29 own turns across 9 games and cast 0 times in 80: Forge's EffectAi casts an Effect spell only under a logic it implements, and none fit a protection spell. `Protection` (data/forge_patches/EffectAi.java) casts it against an opponent's board wipe on the stack, removal aimed at our commander, a spell that would take our life to zero, or lethal combat \u2014 the pilot's own uses of it (log 006: wipe after wipe).",
+      "why": "Held while castable on 29 own turns across 9 games and cast 0 times in 80: Forge's EffectAi casts an Effect spell only under a logic it implements, and none fit a protection spell. `Protection` (data/forge_patches/EffectAi.java) casts it against an opponent's board wipe on the stack, removal aimed at our commander, a spell that would take our life to zero, or lethal combat — the pilot's own uses of it (log 006: wipe after wipe).",
       "cites": [
         "log 006"
       ]

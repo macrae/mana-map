@@ -1044,6 +1044,34 @@ patch-set sha in every run id (`-tl43a8b062`), and `net_change.forge` buckets on
 jar carries every class javac emits for a patched source (siblings ride with their
 primary), and a two-game smoke under it ran clean before anything was measured.
 
+## A sixth `ai` class and a third hint kind: Vish Kal's -X/-X (2026-09-30, evening)
+
+`kills_by_ability` read 0.00–0.05 a game on every Edgar record while the sacrifice half
+of Vish Kal activated 29–30 times a pass: the AristocratCounters logic fed him counters
+and nothing ever spent them. Two causes, read from the 2.0.14 source and both needed:
+
+- **X is priced before it exists.** The ability is `NumAtt$ -X | NumDef$ -X` with
+  `SVar:X:SVar$CostCountersRemoved`, and the engine sets `CostCountersRemoved` only when
+  the cost is PAID (`CostRemoveCounter.payAsDecided`). `PumpAi.checkApiLogic` evaluates X
+  first, reads 0, and refuses any X pump whose amount is zero. `data/forge_patches/
+  PumpAi.java` prices X as the counters a `SubCounter<All/…>` (or numeric) cost paid from
+  the source would remove right now — the number `AiCostDecision` pays for `All` — and
+  leaves the rest of the logic to decide: `getCurseCreatures` keeps only creatures the
+  -X/-X would kill, `useRemovalNow` decides now or later.
+- **The script never says it is a curse.** `SpellAbility.isCurse()` is `hasParam("IsCurse")`
+  and the card author left it off (72 of the 95 -X/-X Pump lines in the corpus carry it),
+  so even with X priced the AI would look for one of OUR creatures to "pump". The third
+  hint kind, `ability_params` (`forge_pilot.HINT_KEYS`), appends `| IsCurse$ True` to the
+  named ability line; one hint per (card, ability), so Vish Kal carries two.
+
+Measured on an eight-game two-seat shell (Vish Kal commanding 62 cheap W/B creatures
+against giada-angels, seed 4343, profile mm-edgar-vampires, zero AI timeouts): under the
+patched jar the removal fired **3 times, each one killing an Angel** (Resplendent Angel
+-7/-7, Emeria Shepherd -5/-5, Archangel of Tithes -6/-6); under the pristine jar with the
+same hint, **0**. The patch set is `c22ecaf3328d` and the card overrides `8c347642bcf0`
+(Toxic Deluge unflagged in the same pass); every Edgar record before this is a different
+bucket, which is the point of the harness pin in the drain-v1 plan.
+
 
 ## The drain axis and the threat axis, measured (2026-09-30)
 
