@@ -921,7 +921,7 @@ def _profiles_for(rotation, subject, profile, pod):
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
         seed=None, force=False, dry_run=False, home=None, decks_dir=None,
-        profile=None, vs_profile=None, pod_name=None, plain_jar=False):
+        profile=None, vs_profile=None, pod_name=None, plain_jar=False, cast_proofs=None):
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
@@ -1192,6 +1192,10 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         # bridge already reads. Top-level beside `engine_casts` for the same
         # reason: validated only where present, so no older record reddens.
         "board_series": _board_series().from_logs(texts, commanders, deck_meta_name(slug)),
+        # THE CAST PROOFS the gate read before this arm (a branch seat only): which adds
+        # were PLAYED / HELD / CAST-LATE / unproven under this harness, and whether the
+        # pilot ran it anyway. None on a deck seat and on every earlier record.
+        "cast_proofs": cast_proofs,
         "games": [sim_parse.compact(f, label) for f in facts],
         "assumptions": ASSUMPTIONS + ([f"{slug}'s strategic frame calls it "
                                        f"{frame.get('archetype')!r} — read the AI caveat "
@@ -1473,11 +1477,22 @@ def main(args):
         if not getattr(args, "dry_run", False):
             _power.refuse_if_underpowered(p_a, games, detect,
                                           getattr(args, "anyway", False), n_a=n_null)
+    # MEASURE TWICE. A branch arm is five hours on a list; if the AI will not play one
+    # of the cards that list was staged for, the arm measures a different list. Every
+    # add must carry a PLAYED proof (`forge-cast-check --adds`) under THIS harness, or
+    # the run is refused — `--anyway` runs it with the slots recorded as FLOORS. A deck
+    # seat has no adds and is not gated; its cards are read post hoc by `engine_casts`.
+    _cp = None
+    _base, _branch = split_seat(slug)
+    if _branch and not getattr(args, "list", False):
+        from manamap.sim import cast_check as _cc
+        _cp = _cc.gate(_base, _branch, profile=getattr(args, "profile", None),
+                       anyway=getattr(args, "anyway", False))
     path, rec = run(slug, opponents, games=games, jobs=args.jobs,
                     clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
                     force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False),
                     profile=getattr(args, "profile", None),
-                    pod_name=getattr(args, "pod", None),
+                    pod_name=getattr(args, "pod", None), cast_proofs=_cp,
                     vs_profile=getattr(args, "vs_profile", None) or seat_profiles)
     if getattr(args, "dry_run", False):
         print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s), seeds "

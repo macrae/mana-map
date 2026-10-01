@@ -408,6 +408,10 @@ VALIDATED = {
     # the validator test now recurses into `branches/*` — before that the whole
     # branch tree was gated by nothing.
     "net_change.json": "manamap.pilot.validate_net_change",
+    # THE CAST PROOFS (2026-10-01): a branch's measurement that the Forge AI plays each
+    # of its adds, stamped with the harness it was taken under; `simulate` on a branch
+    # seat refuses an add this file does not prove.
+    "cast_proofs.json": "manamap.pilot.validate_cast_proofs",
     # THE LAST TRACKED PILOT ARTIFACT THAT HAD NO GATE. It holds the objective a
     # branch is graded against and the pilot's acceptance of it, and nothing
     # checked either until `propose` shipped.

@@ -974,6 +974,45 @@ def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
         return by_pod
 
 
+def _cast_proofs_from_runs(slug, branch, run_ids):
+    """What the branch's pooled arms say about the adds: the gate's block where a record
+    carries one, and the post-hoc read — an add `held_while_castable` or never cast in an
+    arm — where it does not. Returns None when the branch has no pooled runs."""
+    if not run_ids or not branch:
+        return None
+    from manamap.sim import cast_check as _cc, engine_casts as _ec, forge as _forge_mod
+    try:
+        adds = set(_cc.adds(slug, branch))
+    except Exception:                              # noqa: BLE001
+        adds = set()
+    held, late, gated, anyway = set(), set(), set(), False
+    try:
+        runs = _forge_mod.list_runs(f"{slug}@{branch}")
+    except (FileNotFoundError, SystemExit):        # a synthetic slug has no seat on disk
+        return None
+    for rec in runs:
+        if rec.get("run_id") not in run_ids:
+            continue
+        cp = rec.get("cast_proofs")
+        if cp:
+            gated.add(rec["run_id"]); held |= set(cp.get("held") or []); late |= set(cp.get("late") or [])
+            anyway = anyway or bool(cp.get("anyway"))
+        by = ((rec.get("engine_casts") or {}).get("by_card") or {})
+        for name in adds:
+            row = by.get(name) or by.get(name.split(" // ")[0]) or {}
+            if row.get("in_hand_games") and not row.get("cast") and not row.get("activated"):
+                held.add(name)
+            elif row.get("castable_uncast", 0) >= 2 * max(1, row.get("in_hand_games") or 1) and \
+                    (row.get("cast", 0) + row.get("activated", 0)) * 2 < (row.get("in_hand_games") or 0):
+                late.add(name)
+    return {"adds": sorted(adds), "held": sorted(held), "late": sorted(late - held),
+            "gated_runs": sorted(gated), "anyway": anyway,
+            "floor": bool(held or late),
+            "reads_as": ("every branch figure on this page is a FLOOR: " + ", ".join(sorted(held)) + " never played"
+                         + (f"; {', '.join(sorted(late - held))} cast late" if (late - held) else "")
+                         if (held or late) else "every add the branch stages was played in its arms")}
+
+
 def _forge(slug, branch, pod, rows_for):
     from manamap.pilot.common import decklist_sha256
     # FLAG, DO NOT SUPPRESS — and the reason is the ONE COSMETIC EDIT in the
@@ -1063,6 +1102,11 @@ def _forge(slug, branch, pod, rows_for):
     null, null_why = _null_block(pod)
     return {"available": True,
             "pod": pod,
+            # WHICH ADDS THE AI PLAYED IN THE BRANCH'S OWN ARMS (2026-10-01): the gate's
+            # block on each branch record, and `held_while_castable` read post hoc from
+            # the same records — so an arm run before the gate existed is labelled too.
+            # A held add makes every branch figure here a FLOOR, and the page says so.
+            "cast_proofs": _cast_proofs_from_runs(slug, branch, b.get("run_ids") or []),
             # THE NULL, STORED BESIDE THE FIGURE IT SCALES. It was printed by
             # `_print_real_table` and absent from the artifact, so the JSON and
             # the terminal were not the same document.
@@ -1392,7 +1436,10 @@ def build(slug, branch, iterations=None, seed=None):
         # rewritten every figure beside them, so the artifact cannot say the
         # evidence was replaced underneath the decision. This is what lets it.
         "harness": {"iterations": it, "seed": sd,
-                    "model_version": goldfish.model_version()},
+                    "model_version": goldfish.model_version(),
+                    # WHICH ADDS THE AI PLAYED, frozen with the decision (2026-10-01).
+                    "cast_proofs": ((forge_block.get("cast_proofs") or None)
+                                    if forge_block.get("available") else None)},
         "decklist_sha256": (b.get("decklist_sha256")),
         # THE DESIGN, STATED: which figure is the test and which are the looks.
         "design": {"primary": (objective or {}).get("axis"),
@@ -1453,6 +1500,20 @@ def main(args):
                 model_coverage.analyze(args.slug, scope))
             if line:
                 print(f"  {'branch' if scope else 'deck  '}  {line}")
+    except Exception:                              # noqa: BLE001 - never block
+        pass
+    # MEASURE TWICE, said here too: which of the branch's adds the Forge AI has been
+    # PROVEN to play under the current harness. The gate is in `simulate`; this is the
+    # same reading at the report, so a reader sees it before the figures.
+    try:
+        from manamap.sim import cast_check as _cc
+        _cp = _cc.status(args.slug, branch, _cc.current_harness(args.slug, branch))
+        n = sum(len(_cp[k]) for k in ("proven", "held", "late", "unproven"))
+        if n:
+            print(f"  branch  CAST PROOFS — {len(_cp['proven'])}/{n} adds PLAYED under the current harness"
+                  + (f"; HELD: {', '.join(_cp['held'])}" if _cp["held"] else "")
+                  + (f"; CAST-LATE: {', '.join(_cp['late'])}" if _cp["late"] else "")
+                  + (f"; unproven: {', '.join(_cp['unproven'])}" if _cp["unproven"] else ""))
     except Exception:                              # noqa: BLE001 - never block
         pass
     doc = build(args.slug, branch,
@@ -1880,6 +1941,9 @@ def _print_real_table(doc):
         print(f"    {f['why']}")
     else:
         print(f"    at {f.get('pod', '?')} — {f.get('basis', '')}")
+        _cpf = f.get("cast_proofs")
+        if _cpf:
+            print(f"    CAST PROOFS  {'FLOOR — ' if _cpf['floor'] else ''}{_cpf['reads_as']}")
         print(f"    champion {f['champion']['wins']}/{f['champion']['games']} "
               f"({f['champion']['rate']:.3f})   "
               f"branch {f['branch']['wins']}/{f['branch']['games']} "
@@ -2001,7 +2065,10 @@ def _print(doc):
     else:
         print(f"    {o['axis']} {o['op']} {o['value']}")
         state = (g or {}).get("state", "?").upper()
-        print(f"    RESULT   {(g or {}).get('reading', '—')}   ->   {state}")
+        _cpf = (doc.get("forge") or {}).get("cast_proofs") or {}
+        floor = (f"   FLOOR ({len(_cpf['held'])} add(s) held" + (f", {len(_cpf['late'])} cast late" if _cpf.get("late") else "") + ")"
+                 if _cpf.get("floor") else "")
+        print(f"    RESULT   {(g or {}).get('reading', '—')}   ->   {state}{floor}")
         if (g or {}).get("why"):
             print(_wrap(g["why"], indent="             "))
         if o.get("why"):

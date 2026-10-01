@@ -1067,6 +1067,37 @@ branch), or NOT DRAWN / inconclusive. It measures nothing about the card's value
 it enforces: every add a branch objective depends on being cast or activated runs this
 first, and the result goes in the stage `--why`.
 
+**The gate (2026-10-01, the same day, after Bastion of Remembrance read CAST-LATE in the
+same arm — cast in 10 of 30 games it was drawn, castable on 48 turns).** The pilot: "no
+more finding out after hours of running that the cards aren't firing … measure twice cut
+once." Four pieces:
+- `forge-cast-check <slug> --branch B --adds --write` runs one shell per card the branch
+  ADDS (`deck_branch.diff`, copies that rose included), `--jobs` at a time, and writes
+  `branches/B/cast_proofs.json`: per card the counts (`triggered` joined them — "cast" is
+  not enough for a card whose job is its trigger), one of five verdicts (PLAYED /
+  CAST-LATE / HELD / UNPLAYED / NOT DRAWN), the CLASS read off the card's installed script
+  (`cast_check.diagnose`: `removedeck-all`, `x-priced-before-cost`, `no-iscurse`,
+  `no-ai-logic`, `permanent-cast-priority`, or `unknown` — never a guess; a Java patch the
+  installed jar carries is credited, so Vish Kal reads clean under PumpAi) and its remedy.
+  The file is stamped with the harness — overrides sha, pilot profile and its content sha,
+  patch set, jar — and a row PLAYED under the same tuple is kept rather than re-run. The
+  validator (`validate-cast-proofs`) holds it to form; `deck_status.VALIDATED` and the
+  fleet sweep gate it.
+- `simulate <slug>@B` REFUSES before a JVM starts when any add is HELD, CAST-LATE or
+  unproven under the harness the run would stamp — a proof under another tuple is
+  unproven, like a goldfish figure under another `model_version` — naming the card, the
+  class and the command; `--anyway` runs it and the record's `cast_proofs` block names the
+  slots as FLOORS (`validate-sim` refuses a record that ran unproven without it).
+- `net-change` prints CAST PROOFS in its preflight and on THE REAL TABLE, reads the
+  branch's own arms post hoc too (`_cast_proofs_from_runs`: a record's gate block, else
+  an add in hand and never cast in `engine_casts`), marks the objective's RESULT `FLOOR
+  (n add(s) held)`, and freezes the reading in `harness.cast_proofs` so `propose` copies
+  it into the decision. `deck-info` NEXT names the check ahead of `simulate`; `deck-branch
+  stage` warns, never refuses — the gate is at the expensive step.
+- The Deluge remedy itself (an `IsCurse$` hint plus a PumpAllAi patch pricing X) and the
+  cast-priority hint Bastion / Anointed Procession / Sanguine Bond need are harness
+  changes and wait for drain-v1 to decide; each is proven with the same shell first.
+
 ## A sixth `ai` class and a third hint kind: Vish Kal's -X/-X (2026-09-30, evening)
 
 `kills_by_ability` read 0.00–0.05 a game on every Edgar record while the sacrifice half

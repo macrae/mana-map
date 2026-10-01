@@ -216,6 +216,10 @@ manamap pilot validate-decisions <slug> #   sequential ids, the closed kind voca
 manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|propose|withdraw|reject|merge|delete]
                                         #   `withdraw --reason` and `reject --reason` write the ledger;
                                         #   REJECTED is a derived branch state, stored nowhere
+                                        #   MEASURE TWICE (2026-10-01): after `commit`,
+                                        #   `forge-cast-check <slug> --branch B --adds --write`
+                                        #   proves every add in a shell; `simulate <slug>@B`
+                                        #   REFUSES an add not PLAYED under the harness.
                                         #   THE GIT WORKFLOW FOR A DECK. `new` demands an
                                         #   --objective (`<measure> <op> <number>`, or the
                                         #   real table: `forge.win_rate >= 0.25 @standard-v3`

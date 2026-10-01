@@ -108,8 +108,12 @@ ranked adds that close a named axis, cuts priced, accumulated under `prescriptio
 
 **13 — Change it, on a branch, and PROPOSE it.** A candidate 99 lives at
 `branches/<name>/` — `deck-branch <slug> new … --objective "<measure> <op> <n>"`,
-then `stage --out X --in Y`, then `net-change --branch <name>`, which is the report
-a purchase rests on. When you accept it:
+then `stage --out X --in Y`, then `commit -m "…"`, then **prove every add before a
+Forge arm**: `forge-cast-check <slug> --branch <name> --adds --write` (a two-seat shell
+per add; a HELD or CAST-LATE card gets its hint or patch FIRST — the class and remedy are
+on the row — and is re-checked), then `simulate <slug>@<name> --pod … --games 200`, which
+refuses an unproven add, then `net-change --branch <name>`, which is the report a
+purchase rests on. When you accept it:
 
 ```bash
 manamap pilot deck-branch <slug> propose <name> --as v1.0.2 --why "…" [--proxy] [--ordered "…"]

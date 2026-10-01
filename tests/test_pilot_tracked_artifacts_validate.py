@@ -29,6 +29,7 @@ from manamap.pilot.deck_status import VALIDATED
 from manamap.pilot import (
     validate_build,
     validate_candidate_scan,
+    validate_cast_proofs,
     validate_deck,
     validate_deck_map,
     validate_diagnosis,
@@ -56,7 +57,7 @@ from conftest import module_closure, requires_branch, requires_deck
 #: `GATED` below maps artifact -> module by importing from `deck_status.VALIDATED`,
 #: which is the registry; these are the same modules, named here because the key
 #: has to be computable before the first test runs.
-_VALIDATORS = (validate_build, validate_candidate_scan, validate_deck,
+_VALIDATORS = (validate_build, validate_candidate_scan, validate_cast_proofs, validate_deck,
                validate_deck_map, validate_diagnosis, validate_edhrec_cards, validate_engine,
                validate_goldfish_targets, validate_prescription,
                validate_stack, validate_strategic_frame, validate_tutor_guide)
@@ -115,7 +116,7 @@ NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "cards.json", "brief.json"
 #: named here rather than skipped silently, because "no case" and "no gate" look
 #: identical from the outside.
 BRANCH_AWARE = {"cards.json", "deck_map.json", "goldfish_targets.json",
-                "net_change.json", "branch.json"}
+                "net_change.json", "branch.json", "cast_proofs.json"}
 
 
 def _is_retired(deck_dir):

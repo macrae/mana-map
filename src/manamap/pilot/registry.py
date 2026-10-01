@@ -60,6 +60,8 @@ PILOT_STEPS = [
     ("forge-cast-check", "manamap.sim.cast_check",
      "PROVE the Forge AI will cast/activate a card before a branch depends on it: a short two-seat shell, "
      "drawn / cast / activated / held-while-castable counted. Unflagged is not castable (Toxic Deluge: 28 drawn, 0 cast)"),
+    ("validate-cast-proofs", "manamap.pilot.validate_cast_proofs",
+     "Form-check a branch's cast_proofs.json: the harness stamp, every row's counts and a verdict in the vocabulary"),
     ("forge-telemetry", "manamap.sim.telemetry",
      "The patched log formatter (every zone change, by name and owner): what the repo declares, what the jar carries, --build to compile it"),
     ("metrics", "manamap.metrics",
@@ -236,7 +238,7 @@ PILOT_STEPS = [
 _DECK_COMMANDS = {
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
-    "forge-cast-check",
+    "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
@@ -574,7 +576,7 @@ def add_pilot_parser(subparsers):
                     # NOTHING, because no validator could be pointed at one.
                     'validate-deck', 'validate-deck-map',
                     'validate-goldfish-targets', 'validate-diagnostic',
-                    'net-change', 'validate-net-change', 'validate-branch'):
+                    'net-change', 'validate-net-change', 'validate-branch', 'validate-cast-proofs'):
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="run against a branch (see `deck-branch <slug> list`) "
                                   "instead of the deck's own list")
@@ -1125,7 +1127,13 @@ def add_pilot_parser(subparsers):
                                   "assess's read, and a predicted direction per Forge axis (a view)")
         if name == "forge-cast-check":
             from manamap.sim.cast_check import DEFAULT_CLOCK, DEFAULT_COPIES, DEFAULT_GAMES, DEFAULT_VS
-            cmd.add_argument("--card", required=True, help="the card to prove (corpus name)")
+            cmd.add_argument("--card", default=None, help="the card to prove (corpus name); or --adds")
+            cmd.add_argument("--adds", action="store_true",
+                             help="prove EVERY card the branch adds (needs --branch); writes cast_proofs.json with --write")
+            cmd.add_argument("--jobs", type=int, default=None, help="shells at a time with --adds (default 2)")
+            cmd.add_argument("--write", action="store_true", help="--adds: write the branch's tracked cast_proofs.json")
+            cmd.add_argument("--force", action="store_true",
+                             help="--adds: re-run cards already PLAYED under the same harness")
             cmd.add_argument("--copies", type=int, default=None, help=f"copies in the shell (default {DEFAULT_COPIES})")
             cmd.add_argument("--games", type=int, default=None, help=f"two-seat games (default {DEFAULT_GAMES})")
             cmd.add_argument("--vs", default=None, metavar="SEAT", help=f"the opposing seat (default {DEFAULT_VS})")

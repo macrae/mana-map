@@ -82,3 +82,30 @@ def ai_flag(name):
         if face.strip() in f:
             return f[face.strip()]
     return None
+
+
+def _zip(installed_copy=False):
+    """The shipped archive (`.orig`, what Forge wrote) or the INSTALLED one (with the
+    repo's overrides laid over it) — two different questions about one card."""
+    if installed_copy:
+        zips = list(FORGE_HOME.glob("res/cardsfolder/cardsfolder.zip"))
+    else:
+        zips = list(FORGE_HOME.glob("res/cardsfolder/cardsfolder.zip.orig")) \
+            or list(FORGE_HOME.glob("res/cardsfolder/cardsfolder.zip"))
+    return zips[0] if zips else None
+
+
+def script(name, installed_copy=False):
+    """A card's Forge script text, or None when Forge is absent or the card has no
+    script. `installed_copy=True` reads what the engine PLAYS (overrides included);
+    the default reads what Forge SHIPPED. A DFC is its front face's stem."""
+    z = _zip(installed_copy)
+    if z is None:
+        return None
+    s = stem(name)
+    entry = f"{s[0]}/{s}.txt"
+    try:
+        with zipfile.ZipFile(z) as zf:
+            return zf.read(entry).decode("utf-8", errors="replace")
+    except KeyError:
+        return None

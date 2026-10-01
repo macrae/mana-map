@@ -817,6 +817,21 @@ def _next(info):
         if (_built and not (b.get("proposal") or {}).get("as_version")
                 and not (_last and _last[:10] > _built[:10])):
             continue
+        # MEASURE TWICE: a committed branch whose adds have no PLAYED proof under the
+        # current harness is told to prove them BEFORE `simulate`, which will refuse.
+        if _meta.get("commits") and not (b.get("proposal") or {}).get("as_version"):
+            try:
+                from manamap.sim import cast_check as _cc
+                _cp = _cc.status(slug, b["name"], _cc.current_harness(slug, b["name"]))
+                if _cp["unproven"] or _cp["held"] or _cp["late"]:
+                    bits = [f"{len(_cp['unproven'])} unproven" if _cp["unproven"] else "",
+                            f"{len(_cp['held'])} HELD" if _cp["held"] else "",
+                            f"{len(_cp['late'])} cast-late" if _cp["late"] else ""]
+                    nxt.append(f"branch `{b['name']}`: {', '.join(x for x in bits if x)} add(s) under the current harness — "
+                               f"`manamap pilot forge-cast-check {slug} --branch {b['name']} --adds --write` "
+                               f"before `simulate {slug}@{b['name']}` (which refuses them)")
+            except Exception:                          # noqa: BLE001 - no Forge, no gate
+                pass
         if b.get("unreadable"):
             nxt.append(f"branch `{b['name']}` will not parse — fix "
                        f"data/decks/{slug}/branches/{b['name']}/decklist.txt")

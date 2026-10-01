@@ -87,6 +87,25 @@ def _telemetry_errors(rec):
     return errors
 
 
+def _cast_proofs_errors(rec):
+    """The gate's block on a branch record (2026-10-01): absent or None on a deck seat
+    and on every earlier record; where present, the four lists and the rule that an
+    unproven add only ran under --anyway."""
+    cp = rec.get("cast_proofs")
+    if cp is None:
+        return []
+    want = {"proven", "held", "late", "unproven", "as_of", "harness_matches", "harness", "anyway"}
+    if not isinstance(cp, dict) or not want <= set(cp):
+        return ["cast_proofs: wrong shape"]
+    errors = []
+    for k in ("proven", "held", "late", "unproven"):
+        if not isinstance(cp[k], list) or any(not isinstance(x, str) for x in cp[k]):
+            errors.append(f"cast_proofs.{k}: not a list of card names")
+    if (cp["held"] or cp["late"] or cp["unproven"]) and not cp["anyway"]:
+        errors.append("cast_proofs: the gate refuses an unproven add unless --anyway, and this record says it ran")
+    return errors
+
+
 def validate(rec, slug, logs_text=None):
     errors = []
     errors += _card_overrides_errors(rec)
@@ -168,6 +187,8 @@ def validate(rec, slug, logs_text=None):
                    or any(not isinstance(x, int) or x < 0 for x in v.values())]
             if bad:
                 errors.append(f"engine_casts.by_card: malformed rows for {bad[:3]}")
+    # THE CAST PROOFS, checked only where PRESENT and not None — the same rule.
+    errors += _cast_proofs_errors(rec)
     # THE BOARD SERIES, checked only where PRESENT — the `engine_casts` rule.
     bser = rec.get("board_series")
     if bser is not None:

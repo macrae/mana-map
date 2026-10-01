@@ -1568,3 +1568,18 @@ overrides sha but not the AI profile or the patch-set sha, two of the four bucke
 `net_change.forge` keys on. The fix is a reader in `_rows_for_public` that admits an
 experiment arm by its `decklist_sha256` under the same four-tuple, with a test and a
 `docs/simulation.md` line; not built for the campaign because `simulate` answers it.
+
+
+## 19. Two Forge AI shapes the drain-v1 arm measured as floors, unpatched (2026-10-01)
+
+- **A pay-X-life sweep never fires.** Toxic Deluge is `SP$ PumpAll | Cost$ 2 B PayLife<X>`
+  with `SVar:X:Count$xPaid` and no `IsCurse$`: `PumpAllAi` reads a −X/−X as a pump of our
+  own creatures and, even in its curse branch, prices X at 0 before the life is paid. The
+  remedy is an `ability_params` IsCurse hint plus a PumpAllAi `ai` patch pricing X as the
+  smallest life that clears the best opposing board net of ours. Waits for drain-v1 to
+  decide (the harness is pinned); proven on a shell first.
+- **A cheap do-nothing-now permanent is cast late.** Bastion of Remembrance, Anointed
+  Procession, Sanguine Bond and Caretaker's Talent sit castable for 30–48 own turns a run
+  and are cast behind every creature in hand (`PermanentAi`). The remedy is a cast-priority
+  hint in `PermanentAi`'s `AICastPreference` vocabulary, to be read and measured; until
+  then `forge-cast-check` reports the shape as CAST-LATE and the branch's drain is a floor.

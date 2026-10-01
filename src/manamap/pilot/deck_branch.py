@@ -799,6 +799,18 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
     (path / "decklist.txt").write_text(
         check_in.render_decklist(checked["entries"]), encoding="utf-8")
 
+    # MEASURE TWICE, said at the cheap step: staging never refuses (the gate is at
+    # `simulate`, the expensive one), but it says now when the card has no PLAYED proof.
+    try:
+        from manamap.sim import cast_check as _cc
+        _pr = ((_cc.read_proofs(slug, branch) or {}).get("cards") or {}).get(in_name)
+        _w = (_pr or {}).get("verdict_word")
+        if _w in ("HELD", "CAST-LATE"):
+            checked["warnings"].append(f"{in_name} is {_w} in the branch's cast proofs — fix it before `simulate`, which refuses it")
+        elif _w != "PLAYED":
+            checked["warnings"].append(f"no cast proof for {in_name} — `forge-cast-check {slug} --branch {branch} --adds --write` before `simulate`")
+    except Exception:                                  # noqa: BLE001 - no Forge, no warning
+        pass
     doc = meta(slug, branch) or {"slug": slug, "branch": branch, "v": 2}
     doc.setdefault("staged", []).append({
         "at": datetime.date.today().isoformat(),
