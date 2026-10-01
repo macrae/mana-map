@@ -117,3 +117,26 @@ def test_the_validator_passes_the_real_scan_and_fails_the_broken_shapes(doc):
     bad2 = json.loads(json.dumps(doc)); bad2["as_of"] = "yesterday"; bad2["dimensions"]["x"] = {"candidates": []}
     errs2, _ = vcs.validate("edgar-vampires", bad2)
     assert any("ISO date" in e for e in errs2) and any("not a known dimension" in e for e in errs2)
+
+
+def test_the_shortlist_joins_every_source_and_predicts_a_direction_not_a_number():
+    """The Phase 3 join: scan dimensions + flags, the prescription's rank, the recon
+    findings naming the card, the EDHREC page, assess's read, and a predicted direction
+    per Forge axis read off the dimension — a rule stated in AXIS_PREDICTION, never a
+    score. Twilight Prophet is the row that found the bug: in the tracked scan's top
+    forty of drain and past the cut of draw, so a join over the tracked file read it as
+    'not a draw card'; the join scans live."""
+    doc = cs.shortlist("edgar-vampires", ["Twilight Prophet", "Exquisite Blood", "Not A Card"])
+    rows = {r["name"]: r for r in doc["rows"]}
+    tp = rows["Twilight Prophet"]
+    assert set(tp["dimensions"]) >= {"drain", "draw"} and "draw.put_into_hand" in tp["matched"]["draw"]["oracle"]
+    assert tp["predicted"]["forge.extra_draw_per_turn"] == "up" and tp["predicted"]["forge.drain_dealt"] == "up"
+    assert tp["prescription"] and tp["prescription"]["as"] == "add"
+    assert any(f["dimension"] == "draw" for f in tp["recon"])
+    assert tp["edhrec"] and tp["edhrec"]["num_decks"] > 1000
+    assert tp["assess"] and tp["assess"]["job"]
+    eb = rows["Exquisite Blood"]
+    assert "Sanguine Bond" in eb["infinite_with"] and eb["dimensions"]["drain"]["converter"] == "converter_loss_to_gain"
+    assert rows["Not A Card"]["in_scan"] is False and rows["Not A Card"]["predicted"] == {}
+    assert doc["sources"]["assess"] == "ok" and doc["sources"]["recon"] and doc["sources"]["prescription"]
+    assert all(v in ("up", "down") or v.startswith(("up", "down")) for r in doc["rows"] for v in r["predicted"].values())

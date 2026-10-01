@@ -1115,6 +1115,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--write", action="store_true",
                              help="write the tracked candidate_scan.json (dated; the evidence a stage cites)")
             cmd.add_argument("--out", default=None, help="Also write JSON here (a view, never tracked; slug-scoped)")
+            cmd.add_argument("--shortlist", action="append", default=[], metavar="CARD",
+                             help="JOIN every source on these cards instead of scanning: the scan's dimensions and "
+                                  "flags, the prescription's rank, the recon findings naming it, the EDHREC page, "
+                                  "assess's read, and a predicted direction per Forge axis (a view)")
         if name == "fetch-edhrec":
             cmd.add_argument("--theme", action="append", default=[], metavar="THEME",
                              help="an EDHREC theme page beside the base page, repeatable (e.g. aristocrats, lifedrain)")

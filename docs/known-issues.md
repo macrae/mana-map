@@ -1552,3 +1552,19 @@ the exclusion is deliberate and documented in `pods.py`. What closes it: (a) re-
 standard-v3, pod-1 and pod-2 under `8bf04cfcdb21` — the calibration campaign, the
 pilot's act to plan; (b) `pods.calibration` buckets by harness sha and reports the null
 FOR THE HARNESS ASKED, with the plain one kept for the records that were made under it.
+
+## 18. An `experiment` or `campaign` record never reaches `net_change.forge` (2026-09-30)
+
+`net_change._forge` globs `data/decks/<slug>/sim/*.json` and
+`branches/<b>/sim/*.json`; `experiment.run` writes `experiments/<eid>.json`
+(`EXP_DIR`), and nothing in `net_change.py` or `decisions.py` reads it. So a branch
+objective is graded only from `simulate` runs of each arm — which is how the drain-v1
+campaign is run (both arms through `simulate`, the branch arm as `<slug>@<branch>`) —
+and an A/B that `experiment` or `campaign` played, however powered, counts for nothing
+in the branch's `net_change.json`. Two smaller holes beside it: `campaign.validate`
+refuses any primary endpoint but `win_rate`, so a mean axis (`forge.drain_dealt`) cannot
+be a campaign's objective; and the campaign fingerprint carries the pod and the
+overrides sha but not the AI profile or the patch-set sha, two of the four bucket axes
+`net_change.forge` keys on. The fix is a reader in `_rows_for_public` that admits an
+experiment arm by its `decklist_sha256` under the same four-tuple, with a test and a
+`docs/simulation.md` line; not built for the campaign because `simulate` answers it.

@@ -352,6 +352,19 @@ def format_report(doc):
 
 def main(args):
     slug = args.slug
+    names = list(getattr(args, "shortlist", None) or [])
+    if names:
+        doc = shortlist(slug, names, branch=getattr(args, "against_branch", None))
+        if getattr(args, "as_json", False):
+            print(json.dumps(doc, indent=2, ensure_ascii=False))
+        else:
+            print(format_shortlist(doc))
+        out = getattr(args, "out", None)
+        if out:
+            p = resolve_out_path(out, slug, "shortlist")
+            p.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            print(f"  wrote {p}")
+        return
     dim = getattr(args, "dimension", None) or "all"
     dims = DIMENSIONS if dim == "all" else (dim,)
     doc = scan(slug, dims, branch=getattr(args, "against_branch", None),
@@ -375,3 +388,130 @@ def main(args):
 
 if __name__ == "__main__":
     raise SystemExit("Run via `manamap pilot scan-candidates <slug>`.")
+
+
+# ── THE SHORTLIST JOIN (Phase 3 of the drain-v1 plan) ────────────────────────────────────
+#
+# One row per candidate the pilot is weighing: what the scan says (dimensions, flags),
+# what the prescription said (rank, closes, natural cut), which recon findings name it
+# (dimension, confidence), the EDHREC page figures, `assess`'s read (job, gate, what the
+# goldfish can price, the Forge AI flag) and a PREDICTED DIRECTION per Forge axis read off
+# the flags — up / flat / unknown, never a number. A view, never tracked.
+
+#: Which scan dimension predicts which Forge axis to move, and how. Stated here so the
+#: shortlist's "predicted" column is a rule a reader can disagree with, not a judgement.
+AXIS_PREDICTION = {
+    "drain": {"forge.drain_dealt": "up"},
+    "gain": {"forge.life_gained": "up"},
+    "threat": {"forge.biggest_hit": "up", "forge.evasive_damage_share": "up"},
+    "outlet": {"forge.drain_dealt": "up (via deaths)", "forge.kills_by_ability": "up (floor: AI must activate)"},
+    "sweeper": {"forge.drain_dealt": "up (deaths on our terms)", "forge.combat_damage_dealt_to_players": "down (our board dies too)"},
+    "draw": {"forge.extra_draw_per_turn": "up", "forge.empty_hand_turns": "down"},
+}
+
+
+def _prescription(slug):
+    """The newest prescription's adds and cuts, by card."""
+    import glob
+    paths = sorted(glob.glob(str(deck_dir(slug) / "prescriptions" / "*.json")))
+    if not paths:
+        return {}, {}, None
+    doc = load_json(__import__("pathlib").Path(paths[-1])) or {}
+    adds = {a["card"]: dict(a, rank=i + 1) for i, a in enumerate(doc.get("add_candidates") or [])}
+    cuts = {c["card"]: dict(c, rank=i + 1) for i, c in enumerate(doc.get("cut_candidates") or [])}
+    return adds, cuts, doc.get("id")
+
+
+def _recon(slug):
+    doc = load_json(deck_dir(slug) / "deck_recon.json") or {}
+    by = {}
+    for i, f in enumerate(doc.get("findings") or []):
+        for c in f.get("cards") or []:
+            by.setdefault(c, []).append({"finding": i, "dimension": f.get("dimension"),
+                                         "confidence": f.get("confidence"), "claim": f.get("claim", "")[:140]})
+    return by, doc.get("as_of")
+
+
+def shortlist(slug, names, branch=None):
+    """Join every source the bench has on `names`. Returns the rows and the sources' dates."""
+    from manamap.pilot import assess as _assess
+    # A LIVE, UNCAPPED scan: the tracked file keeps forty rows per dimension and a card
+    # can sit in the top forty of one dimension and past the cut of another (Twilight
+    # Prophet is rank 1110 in draw), which read as "not a draw card" the first time.
+    scan_doc = scan(slug, branch=branch, limit=5000)
+    in_scan = {}
+    for dim, block in scan_doc["dimensions"].items():
+        for r in block["candidates"]:
+            if r["name"] in names:
+                in_scan.setdefault(r["name"], {})[dim] = r
+    adds, cuts, rx_id = _prescription(slug)
+    recon, recon_as_of = _recon(slug)
+    _, edhrec = _edhrec(slug)
+    try:
+        arows = {r["card"]: r for r in (_assess.assess(slug, list(names), branch) or {}).get("cards") or []}
+        assess_error = None
+    except Exception as exc:                        # noqa: BLE001 - a view degrades, never dies
+        arows, assess_error = {}, f"{exc.__class__.__name__}: {exc}"
+    rows = []
+    for name in names:
+        dims = in_scan.get(name, {})
+        any_row = next(iter(dims.values()), None)
+        predicted = {}
+        for dim in dims:
+            for axis, direction in AXIS_PREDICTION[dim].items():
+                predicted.setdefault(axis, direction)
+        a = arows.get(name) or {}
+        rows.append({
+            "name": name,
+            "dimensions": {d: {k: v for k, v in r["flags"].items() if v not in (False, None, 0, "plain")} for d, r in dims.items()},
+            "matched": {d: r["matched"] for d, r in dims.items()},
+            "edhrec_rank": any_row["edhrec_rank"] if any_row else None,
+            "infinite_with": sorted({x for r in dims.values() for x in r["combos"]["infinite_with"]}),
+            "forge_ai_flag": any_row["forge_ai_flag"] if any_row else a.get("forge_ai_flag"),
+            "prescription": ({"as": "add", "rank": adds[name]["rank"], "closes": adds[name].get("closes"),
+                              "natural_cut": adds[name].get("natural_cut")} if name in adds else
+                             {"as": "cut", "rank": cuts[name]["rank"], "difficulty": cuts[name].get("difficulty")} if name in cuts else None),
+            "recon": recon.get(name) or [],
+            "edhrec": ({k: edhrec[name].get(k) for k in ("synergy", "num_decks", "from")} if name in edhrec else None),
+            "assess": ({k: a.get(k) for k in ("job", "gate", "model_sees", "answers", "verdict", "mv")} if a else None),
+            "predicted": predicted,
+            "in_scan": bool(dims),
+        })
+    return {"slug": slug, "against_branch": branch, "sources": {"scan": scan_doc.get("as_of"), "prescription": rx_id,
+                                                                 "recon": recon_as_of, "edhrec": scan_doc["sources"].get("edhrec_cards"),
+                                                                 "assess": assess_error or "ok"},
+            "rows": rows}
+
+
+def format_shortlist(doc):
+    out = [f"SHORTLIST — {doc['slug']}" + (f" against branch {doc['against_branch']}" if doc.get("against_branch") else "")
+           + f" · scan {doc['sources']['scan']} · prescription {doc['sources']['prescription']} · recon {doc['sources']['recon']}"
+           + f" · EDHREC {doc['sources']['edhrec'] or 'ABSENT'}"
+           + ("" if doc["sources"].get("assess") == "ok" else f"\n  assess unavailable: {doc['sources'].get('assess')}")]
+    for r in doc["rows"]:
+        out.append("")
+        head = f"  {r['name']}" + (f"  edhrec {r['edhrec_rank']}" if r["edhrec_rank"] is not None else "")
+        if r["edhrec"]:
+            head += f"  page synergy {r['edhrec']['synergy']:+.2f} · {r['edhrec']['num_decks']} decks ({r['edhrec']['from']})"
+        if r["forge_ai_flag"]:
+            head += f"  AI:{r['forge_ai_flag']}"
+        if r["infinite_with"]:
+            head += f"  ⚠ INFINITE with {', '.join(r['infinite_with'])}"
+        out.append(head)
+        if not r["in_scan"]:
+            out.append("    scan: NOT ADMITTED by any dimension (in the 99, out of identity, a Game Changer, or matches no predicate)")
+        for d, fl in r["dimensions"].items():
+            out.append(f"    {d:8s} " + (", ".join(f"{k}={v}" for k, v in fl.items()) or "—")
+                       + "   admitted by " + " · ".join(f"{k}:{','.join(v)}" for k, v in r["matched"][d].items() if v))
+        if r["prescription"]:
+            p = r["prescription"]
+            out.append(f"    prescription: {p['as']} #{p['rank']}" + (f" — closes {p['closes']}" if p.get("closes") else "")
+                       + (f"; natural cut {p['natural_cut']}" if p.get("natural_cut") else "") + (f"; {p['difficulty']}" if p.get("difficulty") else ""))
+        for f in r["recon"]:
+            out.append(f"    recon[{f['finding']}] {f['dimension']} · {f['confidence']}: {f['claim']}")
+        if r["assess"]:
+            a = r["assess"]
+            out.append(f"    assess: job {a.get('job')} · gate {a.get('gate')} · model sees {a.get('model_sees') or '—'} · {a.get('verdict')}")
+        if r["predicted"]:
+            out.append("    predicted: " + "; ".join(f"{k} {v}" for k, v in r["predicted"].items()))
+    return "\n".join(out)
