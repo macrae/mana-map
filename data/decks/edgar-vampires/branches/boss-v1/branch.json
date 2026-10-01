@@ -1,0 +1,94 @@
+{
+ "slug": "edgar-vampires",
+ "branch": "boss-v1",
+ "v": 2,
+ "opened": "2026-10-01",
+ "why": "v1.2.0 at BRACKET 4 \u2014 the pilot's call, 2026-10-01, after drain-v1's 200-game arm read as an overall downgrade: 'bring back bloodthirsty conqueror... let's go full on Tier 4... I want something that can close or win by T6'. READING B IS REVERSED: Conqueror stays, so Conqueror+Vito and Conqueror+Sanguine Bond are two-card infinites the deck carries by construction and that is accepted. THE LOOP IS NOT THE PLAN: nothing tutors for it, Exquisite Blood stays out. The clock target is stated honestly as T7-T8 \u2014 a T6 POD kill needs ~120 life across three opponents and Sanctum Seeker with six attackers doubled by Bloodletter is ~12 to each a combat. WHAT drain-v1 TAUGHT (same harness, 200 games each arm): drain 6.59 -> 10.66, +4.07 [0.45, 7.69] EXCLUDES ZERO, so the five adds that played do raise drain; but life_gained -14.5, biggest_hit -1.95 and combat damage -16.6 mean (median -3.0, tail-driven) all excluded zero, and essentially all of that was Conqueror's departure \u2014 he was the gain engine and the deck's biggest body. So: Conqueror in, the five proven adds in, the lords NOT cut as deeply (7 -> 5 plus Shared Animosity, where drain-v1 went 7 -> 4), and bracket-4 mana. THE OBJECTIVE IS DELIBERATELY THE SAME LINE drain-v1 MISSED (10.66 against >= 12), so the two branches are directly comparable and the question is exactly 'does Conqueror's return plus Mirkwood Bats and Indulging Patrician clear it'. Combat damage, biggest hit, life gained and win rate are read as exploratory with their intervals, and the branch is NOT proposable if combat damage or biggest hit falls with an interval excluding zero. Harness PINNED as before: standard-v3 / overrides 8c347642 / mm-edgar-vampires (aif7c3b6a8) / patches c22ecaf3. No pay-X sweeper is staged, so the PumpAllAi patch is deliberately NOT made yet and the champion's 200 games stay the comparison. EVERY ADD IS CAST-CHECKED BEFORE THE ARM (the 2026-10-01 gate).",
+ "objective": {
+  "axis": "forge.drain_dealt",
+  "op": ">=",
+  "value": 12.0,
+  "pod": "standard-v3",
+  "why": "v1.2.0 at BRACKET 4 \u2014 the pilot's call, 2026-10-01, after drain-v1's 200-game arm read as an overall downgrade: 'bring back bloodthirsty conqueror... let's go full on Tier 4... I want something that can close or win by T6'. READING B IS REVERSED: Conqueror stays, so Conqueror+Vito and Conqueror+Sanguine Bond are two-card infinites the deck carries by construction and that is accepted. THE LOOP IS NOT THE PLAN: nothing tutors for it, Exquisite Blood stays out. The clock target is stated honestly as T7-T8 \u2014 a T6 POD kill needs ~120 life across three opponents and Sanctum Seeker with six attackers doubled by Bloodletter is ~12 to each a combat. WHAT drain-v1 TAUGHT (same harness, 200 games each arm): drain 6.59 -> 10.66, +4.07 [0.45, 7.69] EXCLUDES ZERO, so the five adds that played do raise drain; but life_gained -14.5, biggest_hit -1.95 and combat damage -16.6 mean (median -3.0, tail-driven) all excluded zero, and essentially all of that was Conqueror's departure \u2014 he was the gain engine and the deck's biggest body. So: Conqueror in, the five proven adds in, the lords NOT cut as deeply (7 -> 5 plus Shared Animosity, where drain-v1 went 7 -> 4), and bracket-4 mana. THE OBJECTIVE IS DELIBERATELY THE SAME LINE drain-v1 MISSED (10.66 against >= 12), so the two branches are directly comparable and the question is exactly 'does Conqueror's return plus Mirkwood Bats and Indulging Patrician clear it'. Combat damage, biggest hit, life gained and win rate are read as exploratory with their intervals, and the branch is NOT proposable if combat damage or biggest hit falls with an interval excluding zero. Harness PINNED as before: standard-v3 / overrides 8c347642 / mm-edgar-vampires (aif7c3b6a8) / patches c22ecaf3. No pay-X sweeper is staged, so the PumpAllAi patch is deliberately NOT made yet and the champion's 200 games stay the comparison. EVERY ADD IS CAST-CHECKED BEFORE THE ARM (the 2026-10-01 gate)."
+ },
+ "commits": [
+  {
+   "at": "2026-10-01",
+   "decklist_sha256": "1970a63403b4108879baff249c41a22d20128dfca531d2cb86098fb27e2d70ee",
+   "message": "v1.2.0 at BRACKET 4: Conqueror stays; the five adds drain-v1 PROVED the AI plays come in beside Mirkwood Bats, Shared Animosity, Orcish Bowmasters, Smothering Tithe and Indulging Patrician; out go the two cards outside the goldfish noise floor (Ashnod's Altar, dead in Forge at 0 activations in 61 board turns; Altar of Dementia, a mill payoff with no package), three prescription cuts and three flat anthem/6-drop slots. Lords 7 -> 5 plus a scaling anthem, not 7 -> 4. Game Changers 3 -> 5, uncapped at bracket 4."
+  }
+ ],
+ "base_version": 3,
+ "staged": [
+  {
+   "at": "2026-10-01",
+   "out": "Ashnod's Altar",
+   "in": "Mirkwood Bats",
+   "strength": 0.9,
+   "why": "THE WORST CARD IN THE DECK BY BOTH INSTRUMENTS. Goldfish card-value -0.035, the only card outside the 0.015 noise floor on the negative side; Forge, 200 games at the pinned harness: cast 17, 61 turns on the battlefield, ZERO activations \u2014 and docs/gotchas-bench.md already records 0 for 59 castings under both AI profiles. An outlet the AI cannot use is not an outlet. Mirkwood Bats drains EACH OPPONENT 1 whenever you CREATE OR SACRIFICE A TOKEN: eminence mints a token on every other Vampire cast and the remaining four outlets eat them, so it is paid by the engine the deck already runs rather than by a new one. EDHREC rank 228, the best-ranked drain card on the pilot's own candidate list. Predicted: drain_dealt up. Cites strategy:aristocrats."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Altar of Dementia",
+   "in": "Orcish Bowmasters",
+   "strength": 0.85,
+   "why": "Goldfish -0.025, second-worst and outside the noise floor; its payoff is MILLING, and the self-mill package log 003 floated was never built, so it converts a death into nothing this deck uses. Orcish Bowmasters is a BRACKET-4 Game Changer the old bracket-3 ceiling forbade (the candidate scan dropped it with six others): two mana, flash, one damage on entry and on every extra card an opponent draws, then an Army that grows with it \u2014 a body, a clock and a tax on the three draw engines this pod runs. Predicted: noncombat damage up, kills_by_ability up. Game Changers 3 -> 4, which bracket 4 does not cap."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Blade of the Bloodchief",
+   "in": "Vein Ripper",
+   "strength": 0.9,
+   "why": "Blade is the purest wait-for-a-death counter engine in the list (prescription cut #3) and NO MODEL CHANNEL READS IT \u2014 card-value cannot even rank it. Vein Ripper was PROVEN in drain-v1's arm: 22 casts, 177 triggers, 54 battlefield turns, and its 6/5 flying body is the biggest in the deck after Conqueror \u2014 which is the biggest_hit row drain-v1 lost. Ward is a sacrifice, so it protects itself with the engine. Predicted: biggest_hit up, evasive share up, drain up."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Cordial Vampire",
+   "in": "Bastion of Remembrance",
+   "strength": 0.85,
+   "why": "Cordial puts its counters on creatures dying in the same wipe (prescription cut #1, +0.009 inside the noise floor). Bastion was PROVEN in drain-v1: 19 casts, 117 triggers \u2014 a death drain on an ENCHANTMENT, so an opponent's wipe pays instead of costing, which is the failure log 006 records. Cast late (72 castable turns): that is the `permanent-cast-priority` class and there is NO hint for it in Forge (AICastPreference is don't-cast only), so it is read as a floor. Cites strategy:aristocrats.wipe-insurance."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Stromkirk Captain",
+   "in": "Twilight Prophet",
+   "strength": 0.85,
+   "why": "Stromkirk is a static lord in the deck's shortest colour (prescription cut #2, 'easy'; +0.011 inside the noise floor). Twilight Prophet was PROVEN in drain-v1: 35 casts, 46 triggers, 93 battlefield turns, and ascend was reached (47 city's-blessing lines in the arm) \u2014 a 2/4 flier that puts the top card into hand and drains each opponent for its mana value every upkeep. It is the one card the sources name for BOTH halves of the pilot's complaint (recon finding 1, 245/484 lifedrain lists). Predicted: drain up, extra_draw_per_turn up."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "The Haunt of Hightower",
+   "in": "Malakir Bloodwitch",
+   "strength": 0.8,
+   "why": "Haunt is six mana for a 2/2 that grows on cards leaving opponents' HANDS \u2014 this deck causes no discard, so it is a 6-drop 2/2 (+0.003, inside the noise floor). Malakir Bloodwitch was PROVEN in drain-v1: 31 casts, 32 triggers, 96 battlefield turns \u2014 a 4/4 flier with protection from white whose ETB drains each opponent for the number of Vampires you control and gains that much, so it pays the gain half too. Most-run drain Vampire the deck lacks (recon finding 0, 261/484; EDHREC synergy +0.46 over 26,911 decks). Predicted: drain up, life gained up, biggest_hit up."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Patchwork Banner",
+   "in": "Shared Animosity",
+   "strength": 0.95,
+   "why": "THE PILOT'S OWN RULE, 2026-10-01: 'lords and anthems that just add +1/+1 counter are weak... there's one I cut I should add back that gives each creature +1/+1 for each attacking creature of the same kind, and that's the only lord/anthem I want to see.' Shared Animosity is that card and git shows it was in this list twice before. It is +1/+0 per OTHER attacking Vampire, so it scales with the width eminence creates instead of adding a flat point, and as an ENCHANTMENT a creature wipe does not take it. Patchwork Banner is the flat version it outclasses (-0.006). This is the staged answer to 'close by T6' and to the combat-damage row drain-v1 lost. Cites strategy:deckbuilding.typal-density.lord-exposure."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Crossway Troublemakers",
+   "in": "Smothering Tithe",
+   "strength": 0.8,
+   "why": "Crossway is six mana (-0.004) in a deck whose curve already tops out. Smothering Tithe is a BRACKET-4 Game Changer the old ceiling forbade: in a four-player pod every opponent's draw is a Treasure unless they pay {2}, which is the mana that makes a lethal turn possible two turns earlier \u2014 the recon names the same hole on this fleet's other decks. It is `permanent-cast-priority` by class (cast behind creatures), so its contribution is a floor. Game Changers 4 -> 5."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Legion's Landing",
+   "in": "Indulging Patrician",
+   "strength": 0.8,
+   "why": "Legion's Landing is a 1/1 lifelink token and a flip land (-0.005). Indulging Patrician is three mana, flying, lifelink, and drains EACH OPPONENT 3 at your end step whenever you gained 3 that turn \u2014 with Conqueror back, every point an opponent loses gains you that much, so the Patrician converts the gain half into drain without being a loop. It is the gain-to-drain the branch lost when Conqueror left (life gained -14.5). Predicted: drain up, life gained up, evasive share up. Cites strategy:life-as-resource.lifegain-engine."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Herald's Horn",
+   "in": "Species Specialist",
+   "strength": 0.8,
+   "why": "Herald's Horn is a cost reducer whose draw is conditional on the top card (+0.002, inside the noise floor; 96 battlefield turns, zero activations). Species Specialist naming Vampire was PROVEN in drain-v1: 33 casts, 89 triggers, 111 battlefield turns \u2014 it draws when a Vampire you control dies INCLUDING the eminence tokens, which Midnight Reaper and Grim Haruspex ('nontoken') cannot see (recon finding 6). The audit reads card-advantage UNDER at 7 of 10 and the pilot's oldest complaint is 1-2 cards in hand from turn 5. Cites strategy:card-advantage.plan-draw."
+  }
+ ]
+}
