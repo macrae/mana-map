@@ -1,0 +1,31 @@
+{
+ "slug": "sharknado",
+ "branch": "swords-v1",
+ "v": 2,
+ "opened": "2026-10-01",
+ "why": "A PATCH (one swap): Stromkirk Noble out, Swords to Plowshares in. The Noble is a builder-filled slot (components castability 1.0, curve 1.0, similarity 0.78, synergy 0.33, EDHREC 0.08, combo 0; alternates within 0.004) with no relation to the draw/discard engine \u2014 the pilot's own read, 2026-10-01: 'what is the point of this in the deck?'. The deck answers NO resolved permanent of any class (audit interaction-breadth: 0 of 5 classes; interaction 7/8 UNDER, counted mostly as pingers) and lost 53 of 105 decided games to sythis-enchantress, a creature-based engine, in its latest 120-game run at standard-v3 (rate 0.124). Swords is the one-mana answer to Sythis herself; recon finding 2 names it at 63% of partner lists. The objective is the real table: does answering the dominant seat move the rate \u2014 MDE at 200/arm against 0.124 is about 0.11, so the line sits at 0.20. Every add is cast-checked before the arm (the 2026-10-01 gate).",
+ "objective": {
+  "axis": "forge.win_rate",
+  "op": ">=",
+  "value": 0.2,
+  "pod": "standard-v3",
+  "why": "A PATCH (one swap): Stromkirk Noble out, Swords to Plowshares in. The Noble is a builder-filled slot (components castability 1.0, curve 1.0, similarity 0.78, synergy 0.33, EDHREC 0.08, combo 0; alternates within 0.004) with no relation to the draw/discard engine \u2014 the pilot's own read, 2026-10-01: 'what is the point of this in the deck?'. The deck answers NO resolved permanent of any class (audit interaction-breadth: 0 of 5 classes; interaction 7/8 UNDER, counted mostly as pingers) and lost 53 of 105 decided games to sythis-enchantress, a creature-based engine, in its latest 120-game run at standard-v3 (rate 0.124). Swords is the one-mana answer to Sythis herself; recon finding 2 names it at 63% of partner lists. The objective is the real table: does answering the dominant seat move the rate \u2014 MDE at 200/arm against 0.124 is about 0.11, so the line sits at 0.20. Every add is cast-checked before the arm (the 2026-10-01 gate)."
+ },
+ "commits": [
+  {
+   "at": "2026-10-01",
+   "decklist_sha256": "03d9f5dbf30f867d40de5882acd1f837f3b5eed93f0257560b5403512348d131",
+   "message": "v1.0.x patch: Stromkirk Noble -> Swords to Plowshares \u2014 the filler slot becomes the deck's first permanent answer"
+  }
+ ],
+ "base_version": 5,
+ "staged": [
+  {
+   "at": "2026-10-01",
+   "out": "Stromkirk Noble",
+   "in": "Swords to Plowshares",
+   "strength": 0.9,
+   "why": "Noble: filler by the build plan's own components (no combo, synergy 0.33, EDHREC 0.08), cast 15 times in 120 games, no game decided by it. Swords: the deck's first answer to a resolved permanent (interaction-breadth 0 -> creature class answered), one mana in the slot's cost, no Forge AI flag, cast through Forge's removal path. Recon [2]: 63% of partner lists. Predicted: forge.win_rate up at standard-v3 by removing sythis' engine early; eliminated-by sythis down."
+  }
+ ]
+}
