@@ -816,7 +816,7 @@
           "is_new": false
         }
       ],
-      "has_cards": false
+      "has_cards": true
     },
     {
       "name": "drain-v1",
@@ -2292,6 +2292,738 @@
         }
       ],
       "has_cards": true
+    },
+    {
+      "name": "entry-v1",
+      "opened": "2026-10-01",
+      "why": "CONVERT ENTRIES, NOT DEATHS. Measured on the champion's own 84-game log set at the pinned harness (2026-10-01): eminence fires 8.04 times a game and 9.64 of our creatures die a game, and the death-drain payoffs trigger 1.90 times — a conversion rate near 20%. Blood Artist is CAST in 17% of games and sits on the battlefield about half a turn per game: the deck has ~4 death payoffs in 99 cards, they are 2-mana creatures, and they die to the same wipes that kill the fodder. Meanwhile the deck declares 5.5 attacks a game across ~10 of its own turns, because 1/1 tokens into three opponents' blockers are never profitable, and its biggest hit is 8.4. THAT is the pilot's 'slower, less scary, runs out of gas' — not a draw problem (1.46 extra cards a turn, 2 in hand) but a CONVERSION problem. WHY THE LAST TWO BRANCHES FAILED THE SAME WAY: both answered it with 4-5 mana payoffs. drain-v1 and boss-v1 each raised drain ~+4.5 and lost ~17 combat damage, taking TOTAL life removed from 59.5 to 47.5 and 47.2 — a 4:1 losing trade that no single old axis could see, which is why forge.life_removed_total was added today. THIS BRANCH converts the 8 entries a game instead, at 2-3 mana, needing no attack step and no blocker maths, and cuts only cards that convert NOTHING — nothing that attacks and no lord, which is the mistake the August go-wide refactor made when it cut every lord and took combat damage 29.07 -> 18.20. Two of the three adds are ENCHANTMENTS, so a creature wipe does not take the payoff with the fodder. Bracket 4 stands (pilot, 2026-10-01); Conqueror and the loop stay, unbuilt-for. Harness PINNED: standard-v3 / ov8c347642 / mm-edgar-vampires (aif7c3b6a8) / tlc22ecaf3 — the champion's 200 games stay the comparison. The line is the champion's total output 59.53 plus the MDE at 200/arm (19.30), rounded: >= 79. Every add is cast-checked before the arm.",
+      "state": "OPEN",
+      "state_why": "no proposal — this is an experiment, not a decision",
+      "proposal": null,
+      "pull_list": {
+        "buy": [
+          {
+            "name": "Corpse Knight"
+          },
+          {
+            "name": "Warleader's Call"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Impact Tremors",
+            "where": [
+              "goblin-storm"
+            ]
+          }
+        ],
+        "proxy": [],
+        "free": [],
+        "box": [],
+        "blocking": 3,
+        "procurement": null
+      },
+      "base_version": 3,
+      "size": 100,
+      "add": 3,
+      "out": 3,
+      "counts": {
+        "in_deck": 93,
+        "box": 0,
+        "elsewhere": 1,
+        "buy": 2,
+        "free": 0
+      },
+      "unsourced": [
+        "Corpse Knight",
+        "Impact Tremors",
+        "Warleader's Call"
+      ],
+      "mergeable": false,
+      "free": 0,
+      "cards": [
+        {
+          "name": "Akroma's Will",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Altar of Dementia",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ancient Tomb",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Anguished Unmaking",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Anointed Procession",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arcane Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Battlefield Forge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blade of the Bloodchief",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blazemire Verge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bleachbone Verge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blood Artist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blood Crypt",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloodflow Connoisseur",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloodletter of Aclazotz",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloodline Keeper // Lord of Lineage",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloodstained Mire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloodthirsty Conqueror",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Bloodtracker",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Boros Charm",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Caretaker's Talent",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Castle Locthwain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Caves of Koilos",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Champion of Dusk",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Charismatic Conqueror",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "City of Brass",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Command Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Concealed Courtyard",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cordial Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Corpse Knight",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Crossway Troublemakers",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Cruel Celebrant",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Deflecting Swat",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Despark",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Drana, Liberator of Malakir",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Edgar Markov",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Elenda, the Dusk Rose",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Elspeth, Storm Slayer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Flawless Maneuver",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gifted Aetherborn",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Godless Shrine",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Haunted Ridge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Herald's Horn",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Impact Tremors",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Indulgent Aristocrat",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Knight of the Ebon Legion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Legion Lieutenant",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Legion's Landing // Adanto, the First Fort",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Liliana, Dreadhorde General",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Luxury Suite",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mana Confluence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Marsh Flats",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Master of Dark Rites",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mavren Fein, Dusk Apostle",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Midgar, City of Mako // Reactor Raid",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Minas Tirith",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mondrak, Glory Dominus",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Night's Whisper",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nighthawk Scavenger",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nomad Outpost",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Patchwork Banner",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Path to Exile",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plains",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Preacher of the Schism",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Reflecting Pool",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sanctum Seeker",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sanguine Bond",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Savai Triome",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Shattered Sanctum",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Silent Clearing",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skullclamp",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Smoldering Marsh",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sol Ring",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spectator Seating",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Stroke of Midnight",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Stromkirk Captain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sulfurous Springs",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sundown Pass",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Survivors' Encampment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swamp",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Takenuma, Abandoned Mire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Talisman of Indulgence",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Teferi's Protection",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vampire Cutthroat",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vampire Socialite",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vampire of the Dire Moon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vampiric Tutor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vault of Champions",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Viscera Seer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vish Kal, Blood Arbiter",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Vito, Thorn of the Dusk Rose",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Voldaren Epicure",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Warleader's Call",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Welcoming Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Winds of Abandon",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Yahenni, Undying Partisan",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        }
+      ],
+      "has_cards": false
     },
     {
       "name": "fear-v1",
@@ -6741,10 +7473,11 @@
     ]
   },
   "next": [
-    "branch `boss-v1`: 10 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch boss-v1 --adds --write` before `simulate edgar-vampires@boss-v1` (which refuses them)",
     "branch `boss-v1` needs 6 card(s) sourced — `manamap pilot deck-branch edgar-vampires source boss-v1`",
     "branch `drain-v1`: 1 HELD add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch drain-v1 --adds --write` before `simulate edgar-vampires@drain-v1` (which refuses them)",
     "branch `drain-v1` needs 4 card(s) sourced — `manamap pilot deck-branch edgar-vampires source drain-v1`",
+    "branch `entry-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch entry-v1 --adds --write` before `simulate edgar-vampires@entry-v1` (which refuses them)",
+    "branch `entry-v1` needs 3 card(s) sourced — `manamap pilot deck-branch edgar-vampires source entry-v1`",
     "open questions routed: diagnose ×10, goldfish ×5, research-strategy ×6, resolve-stack ×8"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

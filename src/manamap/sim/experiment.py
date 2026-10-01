@@ -209,6 +209,18 @@ PER_GAME = {
                                    if p.get("kills_by_ability") is not None else None),
     "life_gained": lambda p: (sum(v for v in (p.get("life_gained_by_source") or {}).values())
                               if p.get("life_gained_by_source") is not None else None),
+    # WHAT THE DECK ACTUALLY TAKES OFF THE TABLE (2026-10-01). The drain-v1 and boss-v1
+    # arms both traded ~17 combat damage for ~4.5 drain and read as "drain up" on the
+    # objective while the deck's TOTAL output fell 59.5 -> 47.3. No single axis could see
+    # that, because combat damage, noncombat damage and drain were three separate rows and
+    # the objective named one of them. This is the sum: every point of life this seat
+    # removed from opponents, however it left them.
+    "noncombat_damage_dealt_to_players": lambda p: p.get("noncombat_damage_dealt_to_players"),
+    "life_removed_total": lambda p: (
+        None if p.get("combat_damage_dealt_to_players") is None else
+        (p.get("combat_damage_dealt_to_players") or 0)
+        + (p.get("noncombat_damage_dealt_to_players") or 0)
+        + (p.get("drain_dealt") or 0)),
     # THE DRAW AXIS (2026-09-30): the telemetry patch's hand facts, per own turn.
     "extra_draw_per_turn": lambda p: _extra_draw_per_turn(p.get("hand")),
     "empty_hand_turns": lambda p: (p.get("hand") or {}).get("empty_own_turns"),
@@ -223,7 +235,8 @@ PROPORTIONS = ("win_rate", "commander_damage_games_reaching_21")
 # arm B's real commander damage from the kianne experiment.
 SKEWED = ("commander_damage_max_on_one_defender", "commander_damage_dealt_total",
           "combat_damage_dealt_to_players", "drain_dealt", "kills_by_ability", "life_gained",
-          "extra_draw_per_turn", "empty_hand_turns")
+          "extra_draw_per_turn", "empty_hand_turns", "noncombat_damage_dealt_to_players",
+          "life_removed_total")
 
 # The one figure permitted a verdict. Everything else is descriptive: eleven
 # figures at alpha=0.05 means roughly one interval in two experiments excludes

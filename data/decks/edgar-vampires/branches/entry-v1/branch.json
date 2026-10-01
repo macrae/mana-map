@@ -1,0 +1,45 @@
+{
+ "slug": "edgar-vampires",
+ "branch": "entry-v1",
+ "v": 2,
+ "opened": "2026-10-01",
+ "why": "CONVERT ENTRIES, NOT DEATHS. Measured on the champion's own 84-game log set at the pinned harness (2026-10-01): eminence fires 8.04 times a game and 9.64 of our creatures die a game, and the death-drain payoffs trigger 1.90 times \u2014 a conversion rate near 20%. Blood Artist is CAST in 17% of games and sits on the battlefield about half a turn per game: the deck has ~4 death payoffs in 99 cards, they are 2-mana creatures, and they die to the same wipes that kill the fodder. Meanwhile the deck declares 5.5 attacks a game across ~10 of its own turns, because 1/1 tokens into three opponents' blockers are never profitable, and its biggest hit is 8.4. THAT is the pilot's 'slower, less scary, runs out of gas' \u2014 not a draw problem (1.46 extra cards a turn, 2 in hand) but a CONVERSION problem. WHY THE LAST TWO BRANCHES FAILED THE SAME WAY: both answered it with 4-5 mana payoffs. drain-v1 and boss-v1 each raised drain ~+4.5 and lost ~17 combat damage, taking TOTAL life removed from 59.5 to 47.5 and 47.2 \u2014 a 4:1 losing trade that no single old axis could see, which is why forge.life_removed_total was added today. THIS BRANCH converts the 8 entries a game instead, at 2-3 mana, needing no attack step and no blocker maths, and cuts only cards that convert NOTHING \u2014 nothing that attacks and no lord, which is the mistake the August go-wide refactor made when it cut every lord and took combat damage 29.07 -> 18.20. Two of the three adds are ENCHANTMENTS, so a creature wipe does not take the payoff with the fodder. Bracket 4 stands (pilot, 2026-10-01); Conqueror and the loop stay, unbuilt-for. Harness PINNED: standard-v3 / ov8c347642 / mm-edgar-vampires (aif7c3b6a8) / tlc22ecaf3 \u2014 the champion's 200 games stay the comparison. The line is the champion's total output 59.53 plus the MDE at 200/arm (19.30), rounded: >= 79. Every add is cast-checked before the arm.",
+ "objective": {
+  "axis": "forge.life_removed_total",
+  "op": ">=",
+  "value": 79.0,
+  "pod": "standard-v3",
+  "why": "CONVERT ENTRIES, NOT DEATHS. Measured on the champion's own 84-game log set at the pinned harness (2026-10-01): eminence fires 8.04 times a game and 9.64 of our creatures die a game, and the death-drain payoffs trigger 1.90 times \u2014 a conversion rate near 20%. Blood Artist is CAST in 17% of games and sits on the battlefield about half a turn per game: the deck has ~4 death payoffs in 99 cards, they are 2-mana creatures, and they die to the same wipes that kill the fodder. Meanwhile the deck declares 5.5 attacks a game across ~10 of its own turns, because 1/1 tokens into three opponents' blockers are never profitable, and its biggest hit is 8.4. THAT is the pilot's 'slower, less scary, runs out of gas' \u2014 not a draw problem (1.46 extra cards a turn, 2 in hand) but a CONVERSION problem. WHY THE LAST TWO BRANCHES FAILED THE SAME WAY: both answered it with 4-5 mana payoffs. drain-v1 and boss-v1 each raised drain ~+4.5 and lost ~17 combat damage, taking TOTAL life removed from 59.5 to 47.5 and 47.2 \u2014 a 4:1 losing trade that no single old axis could see, which is why forge.life_removed_total was added today. THIS BRANCH converts the 8 entries a game instead, at 2-3 mana, needing no attack step and no blocker maths, and cuts only cards that convert NOTHING \u2014 nothing that attacks and no lord, which is the mistake the August go-wide refactor made when it cut every lord and took combat damage 29.07 -> 18.20. Two of the three adds are ENCHANTMENTS, so a creature wipe does not take the payoff with the fodder. Bracket 4 stands (pilot, 2026-10-01); Conqueror and the loop stay, unbuilt-for. Harness PINNED: standard-v3 / ov8c347642 / mm-edgar-vampires (aif7c3b6a8) / tlc22ecaf3 \u2014 the champion's 200 games stay the comparison. The line is the champion's total output 59.53 plus the MDE at 200/arm (19.30), rounded: >= 79. Every add is cast-checked before the arm."
+ },
+ "commits": [
+  {
+   "at": "2026-10-01",
+   "decklist_sha256": "ae83766447d3d80a881bab8356a342a62de75561d9efb743c2cd99a8b35740ff",
+   "message": "convert ENTRIES not deaths: Corpse Knight, Impact Tremors and Warleader's Call for three cards that convert nothing (a 6-mana 2/2 off discards we never cause, the Altar the AI has never once activated, and a 5-drop whose draw explicitly misses our own tokens). 14 mana out, 7 in \u2014 the curve gets lighter, no lord and nothing that attacks is cut, and two of three payoffs are enchantments that survive a wipe."
+  }
+ ],
+ "base_version": 3,
+ "staged": [
+  {
+   "at": "2026-10-01",
+   "out": "The Haunt of Hightower",
+   "in": "Corpse Knight",
+   "strength": 0.9,
+   "why": "Haunt is SIX MANA for a 2/2 that grows on cards leaving opponents' HANDS \u2014 this deck causes no discard, so it converts nothing and card-value reads +0.003, inside the 0.015 noise floor. Corpse Knight is TWO mana and drains EACH OPPONENT 1 whenever another creature you control enters: at 8.04 eminence triggers a game that is ~24 points off the table, trebled across the pod per trigger, with no attack step and no blocker maths. It is LIFE LOSS, so it feeds forge.drain_dealt as well as the total, and it is a 2/3 body that blocks. Four mana comes off the curve, which is the 40%-of-games missed land drop by T5. Predicted: life_removed_total up, drain up."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Ashnod's Altar",
+   "in": "Impact Tremors",
+   "strength": 0.9,
+   "why": "Ashnod's Altar is the worst card in the deck by both instruments: card-value -0.035, the only card outside the noise floor on the negative side, and in 200 Forge games it was cast 17 times, sat 61 turns on the battlefield and was activated ZERO times \u2014 docs/gotchas-bench.md already records 0 for 59 castings under both AI profiles. An outlet the AI cannot use is not an outlet. Impact Tremors is two mana, an ENCHANTMENT so a creature wipe cannot take it, and deals 1 to each opponent on every creature entering \u2014 the same 8 entries a game, as damage this time, and it is the card the pilot withdrew in August for a refactor that failed for a DIFFERENT reason (it cut every lord and leaned on 1/1s connecting in combat; this branch cuts no lord and nothing that attacks). Predicted: noncombat damage up, life_removed_total up."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "High-Society Hunter",
+   "in": "Warleader's Call",
+   "strength": 0.85,
+   "why": "Hunter is FIVE mana and its draw reads 'whenever another NONTOKEN creature dies' \u2014 so every one of the 8 eminence tokens a game that dies draws nothing. It is the nontoken trap recon finding 6 names, on a five-drop, and its card-value is +0.004, inside the noise floor. Warleader's Call is three mana, an ENCHANTMENT, and does both halves of what this deck needs: creatures you control get +1/+1 AND it deals 1 to each opponent on every creature entering. The anthem is additive but it arrives attached to a multiplier, which is the pilot's own test (2026-10-01: an effect earns its slot if it MULTIPLIES), and unlike a lord it survives a creature wipe. Two mana comes off the curve. Predicted: noncombat damage up, combat damage up, life_removed_total up."
+  }
+ ]
+}

@@ -260,6 +260,25 @@ FORGE_OBJECTIVE_AXES = {
         "what": "own turns that ended with ZERO cards in hand, per game — exact under the "
                 "telemetry patch, absent on a plain record",
         "why": "the complaint itself, counted: a turn spent with nothing to rebuild with"},
+    # THE AXIS THE TWO FAILED BRANCHES NEEDED (2026-10-01). Both read "drain up" and both
+    # took the deck's total output DOWN, because the objective named one component of it.
+    "forge.life_removed_total": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "life_removed_total",
+        "what": "every point of life this seat removed from opponents in a game — combat "
+                "damage plus noncombat damage plus drain, summed, with the median beside "
+                "the mean because the sample has a long tail",
+        "why": "the only axis that cannot be gamed by trading one kind of output for a "
+               "smaller amount of another: drain-v1 and boss-v1 each raised drain by ~4.5 "
+               "while losing ~17 combat damage, and this row would have said so"},
+    "forge.noncombat_damage_dealt_to_players": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "noncombat_damage_dealt_to_players",
+        "what": "damage to players that did not come from combat, per game — an ETB pinger, "
+                "a Purphoros, a direct-damage spell",
+        "why": "the output an ENTRY payoff produces, which needs no attack step and no "
+               "blocker maths; the champion makes 8.04 eminence tokens a game and converts "
+               "almost none of them"},
     "forge.combat_damage_dealt_to_players": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "combat_damage_dealt_to_players",

@@ -155,3 +155,33 @@ def test_the_draw_axes_are_objective_axes_with_per_game_readers():
         assert spec["kind"] == "mean" and spec["per_game"] in experiment.PER_GAME
         assert spec["per_game"] in net_change._PER_GAME and spec["per_game"] in experiment.SKEWED
     assert candidates.FORGE_OBJECTIVE_AXES["forge.empty_hand_turns"]["lower_is_better"] is True
+
+
+# ── total output (2026-10-01): the axis the two failed branches needed ───────────────────
+
+def test_life_removed_total_is_the_sum_of_the_three_ways_life_leaves_an_opponent():
+    """THE BUG THIS EXISTS FOR, measured twice: drain-v1 and boss-v1 each raised
+    `drain_dealt` by about 4.5 and took the deck's TOTAL output from 59.5 to 47.3, and the
+    objective named only the component that rose. One row makes that trade visible."""
+    from manamap.sim.experiment import PER_GAME
+    read = PER_GAME["life_removed_total"]
+    assert read({"combat_damage_dealt_to_players": 31, "noncombat_damage_dealt_to_players": 5, "drain_dealt": 11}) == 47
+    # an absent component is zero in the SUM but an absent combat figure is absent overall:
+    # a record with no combat reading has not measured output at all.
+    assert read({"combat_damage_dealt_to_players": 31}) == 31
+    assert read({"noncombat_damage_dealt_to_players": 5, "drain_dealt": 11}) is None
+    assert read({}) is None
+    # the trade the two branches made, as the row reads it
+    champ = read({"combat_damage_dealt_to_players": 48.6, "noncombat_damage_dealt_to_players": 4.3, "drain_dealt": 6.6})
+    branch = read({"combat_damage_dealt_to_players": 31.0, "noncombat_damage_dealt_to_players": 5.1, "drain_dealt": 11.0})
+    assert champ > branch, "the branch raised drain and lowered total output; the row must say so"
+
+
+def test_the_two_output_axes_are_objective_axes_with_per_game_readers():
+    from manamap.pilot import candidates, net_change
+    from manamap.sim import experiment
+    for axis in ("forge.life_removed_total", "forge.noncombat_damage_dealt_to_players"):
+        spec = candidates.FORGE_OBJECTIVE_AXES[axis]
+        assert spec["kind"] == "mean" and spec["lower_is_better"] is False
+        assert spec["per_game"] in experiment.PER_GAME and spec["per_game"] in net_change._PER_GAME
+        assert spec["per_game"] in experiment.SKEWED, "both are long-tailed; the median rides along"

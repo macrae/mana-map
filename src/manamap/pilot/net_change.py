@@ -273,7 +273,8 @@ from manamap.sim.experiment import PER_GAME as _EXP_PER_GAME  # noqa: E402
 _PER_GAME = {k: _EXP_PER_GAME[k] for k in
              ("combat_damage_dealt_to_players", "first_attack_turn", "eliminated_turn",
               "drain_dealt", "biggest_hit", "evasive_damage_share", "kills_by_ability", "life_gained",
-              "extra_draw_per_turn", "empty_hand_turns")}
+              "extra_draw_per_turn", "empty_hand_turns", "noncombat_damage_dealt_to_players",
+              "life_removed_total")}
 
 
 def _null_block(pod):
