@@ -3332,3 +3332,21 @@ when it follows the activation's resolve directly, and one of the three kills la
 inside a combat step. The log is exact; the figure is a floor, as its definition says.
 Vish Kal needed TWO fixes, and the first alone would have measured as "still never
 fires" — check `activated <card> targeting` in the log, not just the activation count.
+
+## A Forge run launched from the agent's background shell is cut at two hours (2026-09-30)
+
+The drain-v1 champion baseline — `simulate edgar-vampires --pod standard-v3 --games 200
+--jobs 4`, launched as a Claude Code background task — stopped at **84 of 200 games,
+wall 7198.9 s**: all four JVMs ended together, exit code 0, no `[manamap] job killed`
+line (the per-job cap was 45,120 s), three of them mid-way through an ordinary AI
+timeout trace, and the harness wrote a complete record for the games that had finished.
+Every earlier tracked run with longer JVMs completed (goblin-storm 16,184 s at 100/100,
+edgar 11,243 s at 400/400), so Forge has no two-hour limit; the background task does.
+The record is valid for what it holds — 84 games under the pinned harness pool with any
+later run at the same tuple — and the remainder was relaunched in its own session
+(`python -c "os.setsid(); subprocess.call([... simulate ...])"` under `nohup`; macOS has
+no `setsid`) with a FRESH `--seed`, because the default seed is a digest of the
+configuration and a second run under it would replay the same games. Rule: a Forge run
+expected to pass two hours is launched detached or by the pilot in a terminal, never as
+a tool background task, and a short run with a stray `games_completed < games_requested`
+is read as this before anything else.
