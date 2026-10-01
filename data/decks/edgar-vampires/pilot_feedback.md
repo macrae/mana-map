@@ -101,3 +101,50 @@ Both answers are recorded here rather than edited into `log_annotations.json`,
 which is derived: the debrief agent wrote what it could see, correctly, and
 rewriting its output to add what only the pilot knows would put the pilot's
 words behind an agent's byline.
+
+## 2026-10-01 — bracket 4, and an effect earns its slot only if it MULTIPLIES
+
+This supersedes the 2026-08-03 entry above on two points: the deck is no longer held at
+bracket 3, and "go wide, make the tokens matter" is no longer served by stacking flat
+anthems. Everything else in that entry stands — eminence is still the engine.
+
+> "bring back bloodthirsty conqueror... and fuck it... let's go full on Tier 4... I want
+> something that can close or win by T6"
+
+> "I don't want it to be an aristocrats/anthems build, where I lean in heavy to that, but I
+> by no means am banning all kinds of aristocrats and anthems... if they work with what we
+> are doing, great.. but I do not want the design to be a bunch of vampires and artifacts
+> that give +1/+1 to all creatures... it's too slow, unless those effects can be multiplied"
+
+> "lords and anthems that just add +1/+1 counter are weak... it's why I end up with a
+> handful of slightly larger than 1/1 token vampires I can't convert with"
+
+**What this means for the build.**
+
+1. **BRACKET 4.** Reading B — cut Bloodthirsty Conqueror for a true bracket 3 with zero
+   two-card infinites — is REVERSED and must not be re-proposed. Conqueror stays, so
+   Conqueror + Vito and Conqueror + Sanguine Bond are two-card infinites the deck carries by
+   construction, and that is accepted. **The loop is not the plan**: nothing tutors for it and
+   Exquisite Blood stays out. Game Changers are uncapped.
+2. **The clock is T7–T8, stated honestly.** A pod kill is about 120 life across three
+   opponents; Sanctum Seeker with six attackers, doubled by Bloodletter on your turn, is
+   about 12 to each a combat. T6 is a god-hand, not a plan, unless the loop assembles.
+3. **MULTIPLICATIVE, NOT ADDITIVE.** Aristocrats and anthems are not banned — they earn a
+   slot when they multiply something the deck already makes. Shared Animosity (+1/+0 per other
+   attacking Vampire) is the pilot's named exception and the one anthem they want to see;
+   Anointed Procession and Mondrak double tokens; Bloodletter doubles drain. A flat
+   "+1/+1 to your team" body or artifact is the slowness this entry is about, and a drain
+   payoff like Sanctum Seeker is not an anthem at all. Captivating Vampire's static pump is
+   incidental to its tap-five steal, which Forge activated 187 times in 200 games.
+4. **What was measured, so the next pass does not re-learn it.** drain-v1 cut Conqueror and
+   went from seven lords to four: drain rose for real (+4.07, interval excluding zero) and
+   life gained fell 14.5, biggest hit 1.95 and combat damage 16.6 — nearly all of it
+   Conqueror's departure, since he was the gain engine and the deck's biggest body. The
+   earlier go-wide refactor that cut EVERY lord took combat damage 29.07 → 18.20 and lost a
+   400-game A/B. So the answer is neither "stack them" nor "cut them all": keep the ones that
+   multiply, cut the flat ones.
+
+**Open against this entry.** `Legion Lieutenant` is the one card in boss-v1 that is a flat
+static lord and nothing else; it is the first cut on the next pass (the branch's arm is
+mid-run and its list cannot change). `Bloodline Keeper` reads flat but its front face makes a
+1/1 Vampire every turn, which is fodder and eminence width, so it stays.
