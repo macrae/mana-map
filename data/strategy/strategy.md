@@ -51,6 +51,31 @@ Sources:
 - Mike Flores, "Who's the Beatdown?" — https://articles.starcitygames.com/premium/whos-the-beatdown/
 - Patrick Chapin, "Next Level Magic" (print)
 
+### strategy:card-advantage.plan-draw — Draw on the Plan: Not Running Out After Turn 7
+
+The ten draw slots in strategy:deckbuilding.ratios say nothing about shape,
+and shape decides turn eight. Steady draw — Phyrexian Arena, Black Market
+Connections — pays a card a turn whatever the board does, best cast early.
+Zaccagnino: "if games are ending between turns 6-9, this slow drip card
+advantage just isn't all that impressive". On-plan draw pays only when the
+deck does what it does — on death (Midnight Reaper, Grim Haruspex, Species
+Specialist), on cast (Vanquisher's Banner), on gain (Well of Lost Dreams, Dawn
+of Hope) — so it draws nothing in the engine-less hand and in bursts once the
+engine runs, the wipe-insurance property (strategy:aristocrats.wipe-
+insurance). The trade is correlation: steady draw diversifies, on-plan draw
+fails with the plan and refills with it. A typal or aristocrat midrange that
+empties its hand by turn 7 wants the slots split, not stacked — steady draw
+live in the enabler-less keep (strategy:mulligans.engine-hands), the rest on-
+plan so a sacrifice or a swing draws the next wave; no primer gives the split.
+Price life-costed draw against the drain that refunds it: Reaper's point per
+card is negligible beside Blood Artist gains (GenoDoak777).
+
+Sources:
+- Timothy Zaccagnino, "The 20 Most Overrated and Overplayed Cards in Commander Ranked" — https://draftsim.com/mtg-overrated-commander-cards/
+- Steve Vrooman, "The 52 Best Black Card Draw Cards in Magic Ranked" — https://draftsim.com/black-card-draw-mtg/
+- GenoDoak777, "Cards That Draw a Card When Creatures Die in Commander - Top 10" — https://cardmystic.com/articles/5773cd5d-ac55-43dd-b674-bfb869cf35e7
+- Reid Duke, "The Basics of Card Advantage" — https://magic.wizards.com/en/articles/archive/level-one/basics-card-advantage-2015-07-13
+
 ## strategy:tempo — Tempo
 
 Tempo is board position bought with mana efficiency: Duke defines it as board
@@ -138,6 +163,52 @@ held as targeted finishing rather than the plan
 Sources:
 - Mike Flores, "Life and Cards I: Philosophy of Fire" — https://magic.wizards.com/en/news/making-magic/life-and-cards-i-philosophy-fire-2014-04-28
 - Patrick Chapin, "Next Level Magic" (print)
+
+### strategy:life-as-resource.lifegain-engine — Life Gain as an Engine
+
+Life gain is a buffer until something converts it; the engine is sources,
+converters and draw (Dunn). Gain-to-loss: Sanguine Bond and Vito, Thorn of the
+Dusk Rose turn each gain into "target opponent loses that much life" — Vito
+"is Sanguine Bond on a cheaper, albeit legendary body" — and Cliffhaven
+Vampire drains each opponent 1 per gain event. Loss-to-gain: Exquisite Blood,
+which with either of the first two is a two-card infinite (strategy:life-as-
+resource.lifegain-engine.bond-blood). Read a converter's scaling before its
+source: Vito, Bond and Well of Lost Dreams scale with the AMOUNT gained, so a
+six-power lifelink body connecting is six aimed drain or six cards; Cliffhaven
+and Dawn of Hope scale with the COUNT of gain events, so Soul Warden shapes
+feed them and one big hit does not. Hurst's test — "The amount of life doesn't
+have to be large, just consistent" — is a count engine's; a lifelink-body deck
+is an amount engine and should pick converters to match. Draw is the same
+split: Well is "a one-to-one ratio of mana-to-card-draw" on the amount, Dawn
+"still 2 mana for each card" per event (Dunn); Zucchetti's Liesa list runs all
+three. Lifelink is a source, not a payoff.
+
+Sources:
+- Jeff Dunn, "The 54 Best Payoffs for Gaining Life in Magic Ranked" — https://draftsim.com/mtg-lifegain-payoffs/
+- Andy Hurst, "An EDH Deck Tech - Pridemates" — https://andythurst.substack.com/p/an-edh-deck-tech-pridemates
+- Jonathan Zucchetti, "Recross the Paths - Building a Vampire Deck with Liesa, Shroud of Dusk" — https://edhrec.com/articles/recross-the-paths-building-a-vampire-deck-with-liesa-shroud-of-dusk
+
+### strategy:life-as-resource.lifegain-engine.bond-blood — The Bond + Blood Infinite in Bracket Terms
+
+Sanguine Bond or Vito with Exquisite Blood loops any gain, or any opponent's
+loss, until the table is dead: Spellbook's record reads "Infinite lifeloss.
+Infinite lifegain", estimated "Spicy (Bracket 3-4+)", and Furtado's Edgar
+guide names the Vito half outright — "gain some life and then just have them
+trigger back and forth forever". It is the shape Bracket 3's barometer names:
+decks there should not have two-card infinites that "happen cheaply and in
+about the first six or so turns" (strategy:deckbuilding.power-
+level.barometers). Ten mana across two enchantments rarely does, but the test
+is intent, not turn count: holding both halves is a declaration the pregame
+conversation has to carry, and a list that wants to stay at 3 runs one half as
+a fair engine — Bond or Vito alone is a drain doubler on every gain, Exquisite
+Blood alone a buffer that refunds every drain. Price the pair by what it costs
+the bracket, not by how often it assembles (strategy:deckbuilding.redundancy-
+vs-tutors).
+
+Sources:
+- Commander Spellbook, "Sanguine Bond | Exquisite Blood" (combo record 690-3966) — https://commanderspellbook.com/combo/690-3966/
+- Pedro Furtado, "Edgar Markov Commander Deck Guide" — https://draftsim.com/edgar-markov-edh-deck/
+- Gavin Verhey, "Introducing Commander Brackets Beta" — https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta
 
 ## strategy:threat-assessment — Threat Assessment
 
@@ -500,6 +571,81 @@ Sources:
 - Frank Karsten, "How Many Lands Do You Need to Consistently Hit Your Land Drops?" (mirror of the 2017 ChannelFireball article) — https://orkerhulen.dk/onewebmedia/How%20Many%20Lands%20Do%20You%20Need%20to%20Consistently%20Hit%20Your%20Land%20Drops.pdf
 - Reid Duke, "Linear Strategies" — https://magic.wizards.com/en/articles/archive/level-one/linear-strategies-2014-12-29
 
+## strategy:aristocrats — Aristocrats: Outlet & Death-Trigger Economics
+
+An aristocrats turn needs three things — fodder, an outlet, a payoff — and the
+outlet is the piece that gives the pilot "control over when things die"
+(Ullman). Price outlets by activation first. A free one (Viscera Seer; Warren
+Soultrader's one life is "essentially free in our 40-life format", Gottfried)
+fires with no mana open, in response to removal, and loops as many times as
+you have bodies; a mana-gated one (Indulgent Aristocrat's {2}) converts one
+body per two mana and competes with the curve — a payoff with an outlet
+attached. Commander Theory's frame: the outlet makes every creature you own
+answer-proof. Gregory's correction is the real cost: a free outlet is "a
+fragile, highly suspicious permanent" that "signif[ies] a checkmate scenario",
+so it eats the removal your payoffs would otherwise draw. Fodder comes three
+ways (Gottfried): tokens, cheap bodies, recursive creatures; a real threat is
+fodder only when it is about to die anyway — sacrificed in response, a one-
+for-one becomes a death trigger plus a wasted spell. Drain per death is the
+exchange rate: payoffs on board × deaths you can manufacture this turn,
+against the lowest life total (strategy:combat-math.racing).
+
+Sources:
+- Cooper Gottfried, "EDHREC Guide to Aristocrats in Commander" — https://edhrec.com/guides/edhrec-guide-to-aristocrats-in-commander
+- Alex Ullman, "Treasured Finds: The Four Types of Aristocrat Commanders" — https://nerdtothecore.com/2023/11/15/treasured-finds-the-four-types-of-aristocrat-commanders/
+- Kristen Gregory, "There's No Such Thing as Free in Commander" — https://blog.cardkingdom.com/theres-no-such-thing-as-free-in-commander/
+- Commander Theory, "Sacrifice Outlets" (unattributed blog post) — https://commandertheory.com/post/58081860785/sacrifice-outlets/amp
+
+### strategy:aristocrats.drain-scope — Drain Scope in a Pod: Target vs Each Opponent
+
+Read the trigger and the drain separately. Blood Artist triggers on every
+creature that dies, anyone's, and drains "target player" for 1; Zulaport
+Cutthroat, Cruel Celebrant and Bastion of Remembrance trigger only on your own
+creatures and drain each opponent for 1. In a four-player pod the each-
+opponent shape moves 3 life per death against Blood Artist's 1 — the three-to-
+one that strategy:multiplayer.asymmetry asks of a scaling payoff — so ten
+deaths through two each-opponent payoffs take 60 of the table's ~120 life, and
+the same ten through Blood Artist take 20, aimed. What Blood Artist buys is
+two different things. Trigger scope: a table's chump blocks, trades and
+someone else's sweeper all pay you (alexis: it triggers "from your opponents'
+creatures, too", where Cutthroat "cares specifically about your creatures").
+And a choice of target — a finisher and a political lever: every drain at the
+player on 4 while the rest of the table watches (Royale: Blood Artist can
+"target just one opponent unlike the other cards in the deck with similar
+effects"). EDHREC's Edgar lifedrain theme carries Blood Artist in 89% of 484
+decks. Rule: each-opponent for the race, targeted for the kill.
+
+Sources:
+- alexis, "Ygra, Eater of All Commander Deck Guide" — https://draftsim.com/ygra-eater-of-all-edh-deck/
+- David Royale, "Teysa Karlov Commander Deck Guide" — https://draftsim.com/mtg-teysa-karlov-edh-deck/
+- EDHREC, "Edgar Markov — Lifedrain" (theme page, inclusion rates) — https://edhrec.com/commanders/edgar-markov/lifedrain
+- Jason Rice, "Unified Theory of Commander: Card Advantage" — https://brainstormbrewery.com/unified-theory-of-commander-card-advantage/
+
+### strategy:aristocrats.wipe-insurance — Rebuilding After a Wipe: Death-Triggered Draw
+
+With a free outlet and a death-draw body on board, a wrath on the stack is
+answered by sacrificing the whole board in response — each body a card, the
+drains firing on the way out — so the wipe resolves against an empty table and
+a full hand. Vrooman: Midnight Reaper "gives you plenty of cards as you sac
+your way through your board"; GenoDoak777 says it directly — repeatable death-
+triggered draw keeps a sacrifice deck from "running out of gas" after a wipe.
+The four shapes differ on what counts. Midnight Reaper and Grim Haruspex read
+nontoken creatures (Haruspex only yours, Reaper a life per card); Species
+Specialist reads a chosen type, tokens included — asymmetric in a typal deck;
+Liliana's Standard Bearer has flash and draws one per creature that died under
+your control this turn — held, it IS the insurance, the way Vrooman keeps
+Haruspex face-down via morph as a wipe surprise. Against steady draw: Arena
+pays a card a turn regardless; death draw pays nothing until bodies die, then
+in a burst, exactly when the hand is empty (strategy:card-advantage.plan-
+draw). Hold the second outlet and one draw body back for the rebuild
+(strategy:resource-hedging.wrath-math).
+
+Sources:
+- Steve Vrooman, "The 52 Best Black Card Draw Cards in Magic Ranked" — https://draftsim.com/black-card-draw-mtg/
+- GenoDoak777, "Cards That Draw a Card When Creatures Die in Commander - Top 10" — https://cardmystic.com/articles/5773cd5d-ac55-43dd-b674-bfb869cf35e7
+- David Royale, "Teysa Karlov Commander Deck Guide" — https://draftsim.com/mtg-teysa-karlov-edh-deck/
+- Reid Duke, "Board Sweepers" — https://magic.wizards.com/en/articles/archive/level-one/board-sweepers-2015-06-22
+
 ## strategy:mulligans — Mulligan Theory
 
 Duke's frame: the mulligan question is only "which choice gives you better odds
@@ -778,7 +924,8 @@ counts of *functions*, not cards, so a card doing two jobs fills two slots
 (Hinds counts self-mill as draw, reanimation as interaction) and a graveyard
 deck legitimately runs 5 draw. Hinds' own verdict on his template is that it is
 "too 'one size fits all'". Take the categories, derive the counts from the
-deck's actual failure modes.
+deck's actual failure modes — and for draw, shape as well as count
+(strategy:card-advantage.plan-draw).
 
 Sources:
 - The 8x8 Theory, "What is the 8x8 Theory?" — https://the8x8theory.tumblr.com/what-is-the-8x8-theory
@@ -860,6 +1007,56 @@ Sources:
 - Learn cEDH, "How Many Combos Are Too Many?" (written lesson from Eisenherz's video) — https://learncedh.com/intermediate-course/how-many-combos-are-too-many
 - Kristen Gregory, "5 Reasons Your Commander Deck Isn't Winning Games" — https://blog.cardkingdom.com/5-reasons-your-commander-deck-isnt-winning-games/
 - Benjamin Nicol, "Solve the Equation - How to Tell if a Strategy Has Enough Support by Using Deck Templates" — https://edhrec.com/articles/solve-the-equation-how-to-tell-if-a-strategy-has-enough-support-using-deck-templates
+
+### strategy:deckbuilding.typal-density — Typal Density: Lords, Bodies & the Creature Floor
+
+Walser's floor: typal decks want 30+ creatures "because typal payoffs and
+lords work best with a high saturation of creatures"; Furtado's Edgar list
+runs 28, all Vampires. A lord is an anthem on a body, and both halves scale
+with the bodies on board — the +1/+1 is worth the number of creatures it
+touches, so the creature floor comes first and the lord count second. The
+anthem half is what makes small bodies connect, and this bench measured it: a
+go-wide Edgar refactor that cut every lord and anthem dropped Forge's combat
+damage to players from 29.07 to 18.20 per game and won 31/400 against the
+champion's 50/400, an interval excluding zero — a wide board of 1/1s is simply
+blocked. DougY's lord survey adds the axes a bare +1/+1 misses: cost reduction
+is "one of the best things you can get" from a lord, and keyword grants
+(evasion, haste, deathtouch) turn a wide board into one that connects;
+Walser's anthem rule is the same scaling read from the other side — an anthem
+is "great on turn 3 and fine on turn 10" because it buffs whatever you
+control. Count bodies, then count what pumps them, then read the wipe cost of
+each pump (strategy:deckbuilding.typal-density.lord-exposure).
+
+Sources:
+- A.L. Walser, "Here's Exactly How Many Creatures to Put in Your Commander Deck" — https://draftsim.com/how-many-creatures-in-a-commander-deck/
+- Pedro Furtado, "Edgar Markov Commander Deck Guide" — https://draftsim.com/edgar-markov-edh-deck/
+- DougY, "The Top 10 Lords in Commander" — https://edhrec.com/articles/the-top-10-lords-in-commander
+- A.L. Walser, "The 59 Best Anthem Effects in Magic Ranked" — https://draftsim.com/mtg-anthem/
+- Mana Map, "docs/gotchas-bench.md" (this bench's Forge measurement of the Edgar go-wide refactor) — https://github.com/macrae/mana-map/blob/main/docs/gotchas-bench.md
+
+### strategy:deckbuilding.typal-density.lord-exposure — Lords Under the Wrath: Bodies vs Noncreature Anthems
+
+The body half of a lord is its cost. Creature lords make a typal deck "more
+susceptible to board wipes and removal" (Cullen), and the lord is the target
+the removal picks — a Legion Lieutenant eats the spell the payoff would have
+drawn. Cullen's fix is the noncreature anthem: Icon of Ancestry, Vanquisher's
+Banner, which survive the wrath — Icon "lets you convert excess mana into more
+gas"; Walser's Legion's Initiative is the anthem you "cash in for some
+protection against board wipes". No primer gives the lord count at which an
+anthem beats a body; the trade is explicit, though — every lord past the
+creature floor is +1 on every body and one more body under the wrath — so
+price the marginal slot on the sweeper you assume (strategy:resource-
+hedging.wrath-math), and buy the rebuild with it (strategy:aristocrats.wipe-
+insurance). Menery's framing holds for the typal deck too: with sweepers
+"you're either playing them or you're building your deck to work around them –
+possibly both"; Furtado accepts his own because the Edgar deck "can get back
+online pretty quickly after one".
+
+Sources:
+- Scott Cullen, "Tribal Cards You Need for Commander" — https://blog.cardkingdom.com/tribal-cards-you-need-for-commander/
+- A.L. Walser, "The 59 Best Anthem Effects in Magic Ranked" — https://draftsim.com/mtg-anthem/
+- Sheldon Menery, "Mechanics Under The Commander Hood: Board Wipes, Part One" — https://articles.starcitygames.com/articles/mechanics-under-the-commander-hood-board-wipes-part-one/
+- Pedro Furtado, "Edgar Markov Commander Deck Guide" — https://draftsim.com/edgar-markov-edh-deck/
 
 ### strategy:deckbuilding.interaction-suite — Interaction Suite: Breadth, Depth & Answers to Answers
 

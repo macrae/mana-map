@@ -157,3 +157,36 @@ Nitpicking Nerds' final-cuts piece (video, no written write-up); and the
 first page of "how many board wipes"/"budget commander" search results, which
 is dominated by affiliate SEO (farseek, geekydomain, scrollvault, spellweave,
 tcgprotectors, orbsportscards) — all omitted deliberately.
+
+## 2026-09-30 — sixth research pass: aristocrats, the lifegain engine, typal density, on-plan draw
+
+- added strategy:aristocrats — outlet + death-trigger economics: free vs mana-gated outlets priced by activation (Gottfried's "essentially free in our 40-life format", Ullman's control-over-timing, Commander Theory's answer-proofing), Gregory's correction that a free outlet is itself the removal magnet, fodder's three sources, a threat as fodder only in response, drain-per-death as the exchange rate
+- added strategy:aristocrats.drain-scope — trigger scope vs drain scope: Blood Artist's any-creature trigger and single target against the each-opponent shape (Zulaport Cutthroat, Cruel Celebrant, Bastion of Remembrance), the three-to-one in a pod (60 vs 20 life over ten deaths), targeting as finisher and political lever, EDHREC's 89%-of-484 Edgar lifedrain inclusion; rule: each-opponent for the race, targeted for the kill
+- added strategy:aristocrats.wipe-insurance — sacrifice-in-response as the wipe answer, the four death-draw shapes read off oracle text (nontoken / own nontoken / chosen type incl. tokens / flash count-this-turn), Vrooman's and GenoDoak777's running-out-of-gas framing, held insurance vs steady draw, the rebuild package
+- added strategy:life-as-resource.lifegain-engine — sources/converters/draw; gain-to-loss (Vito, Sanguine Bond, Cliffhaven Vampire) vs loss-to-gain (Exquisite Blood); AMOUNT-scaled (Vito, Bond, Well of Lost Dreams) vs COUNT-scaled (Cliffhaven, Dawn of Hope) converters and which source feeds which; lifelink as source never payoff; Dunn's draw-rate quotes
+- added strategy:life-as-resource.lifegain-engine.bond-blood — Bond/Vito + Exquisite Blood as a two-card infinite per Spellbook ("Spicy (Bracket 3-4+)") and Furtado, read against the Bracket 3 six-turn wording; intent over assembly odds; one half alone as the fair engine
+- added strategy:deckbuilding.typal-density — Walser's 30+ creature floor, lord = anthem on a body with both halves scaling on board width, this bench's Forge measurement of cutting every lord (29.07 → 18.20 combat damage, 31/400 vs 50/400), DougY's cost-reduction and keyword axes, Walser's turn-3/turn-10 anthem rule
+- added strategy:deckbuilding.typal-density.lord-exposure — Cullen's wipe-exposure cost and noncreature-anthem fix (Icon of Ancestry, Vanquisher's Banner), Legion's Initiative as cash-in protection, Menery's play-them-or-build-around-them, Furtado's quick rebuild; the lord count at which an anthem beats a body is explicitly unsourced and left as the trade-off
+- added strategy:card-advantage.plan-draw — steady draw (Phyrexian Arena, Black Market Connections; Zaccagnino's turn 6-9 objection) vs on-plan draw (death / cast / gain), correlation as the trade, split-not-stack for a midrange that empties by turn 7 (the split itself flagged unsourced), life-costed draw priced against drain refunds
+- amended strategy:deckbuilding.ratios — one cross-reference to strategy:card-advantage.plan-draw: draw has a shape as well as a count
+
+Verification note: every URL added this pass was fetched this session
+(Draftsim ×7, EDHREC guide + two articles + the Edgar lifedrain theme page,
+Card Kingdom ×2, nerdtothecore, Commander Spellbook, Hurst's Substack,
+cardmystic, Commander Theory via its /amp path, the Verhey announcement, Star
+City Games, and the bench's own gotchas-bench.md on GitHub, which renders
+publicly). Commander Theory's "Sacrifice Outlets" post carries no byline and
+is cited to the site, as the Commander Deck Maker pages were; its Grim
+Haruspex post redirects to a Tumblr login and was not used. Sought but
+unusable: wiki.edhrec.com (DNS failure); both TCGplayer articles ("How to
+Build a Lifegain Commander Deck", "Exiting the Phyrexian Arena") render only
+a header to a plain fetcher; Goonhammer's "Getting Started: Commander" fetched
+blank; the MTG Salvation "Zulaport Cutthroat is broken" thread has no post
+comparing drain scope; no reddit thread on lord counts surfaced through four
+query phrasings (results were eBay listings); turnzerohq's tribal guide is
+unattributed SEO and was omitted with the gamertagmythras / grimdeck /
+krakenthemeta / geekydomain tier. Two figures in the new sections are the
+doc's own arithmetic from oracle text, not a primer's: the 60-vs-20 drain
+over ten deaths, and the AMOUNT / COUNT split of converters. Two
+prescriptions are explicitly unsourced and flagged in-text: the lord count
+past which an anthem beats a body, and the steady / on-plan draw split.
