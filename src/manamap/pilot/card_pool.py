@@ -305,3 +305,48 @@ def read_pool_with_csv_module():
                 "mana_cost": row.get("mana_cost", ""),
             }
     return pool
+
+
+#: KEYWORDS, POWER AND TOUGHNESS, read on demand like legality — the first corpus
+#: view that needs them (`candidate_scan`, 2026-09-30: "big, evasive, scary Vampires"
+#: is a question about printed keywords and printed power). Not folded into
+#: `CORPUS_COLUMNS`: three more columns on every `deck-facts` parse for one reader is
+#: the trade the comment on that list refuses. This module stays the only reader of
+#: cards.csv (`tests/test_pilot_memo.py`).
+KEYWORD_COLUMNS = ["name", "keywords", "power", "toughness"]
+
+
+def _int_or_none(value):
+    """A printed power/toughness as an int, or None for `*`, `1+*`, `X` and blanks —
+    a characteristic-defining stat is not a number and must not read as 0."""
+    text = _text(value).strip()
+    if not text:
+        return None
+    try:
+        return int(text)
+    except ValueError:
+        return None
+
+
+def _read_keywords():
+    """FIRST PRINTING WINS, and here that is correct: keywords and printed stats are
+    oracle properties and do not vary by printing the way legality does."""
+    import pandas as pd
+
+    frame = pd.read_csv(OUTPUT_CSV_PATH, usecols=KEYWORD_COLUMNS)
+    out = {}
+    for name, kw, p, t in zip(frame["name"], frame["keywords"], frame["power"], frame["toughness"]):
+        if name in out:
+            continue
+        out[name] = {
+            "keywords": [k.strip() for k in _text(kw).split(",") if k.strip()],
+            "power": _int_or_none(p),
+            "toughness": _int_or_none(t),
+        }
+    return out
+
+
+def card_keywords():
+    """{name: {keywords: [...], power: int|None, toughness: int|None}}. {} if the
+    corpus is absent. Keyed on the joined "A // B" name like every other view."""
+    return mtime_memo(OUTPUT_CSV_PATH, "corpus:keywords", _read_keywords, absent={}) or {}

@@ -32,6 +32,15 @@ PILOT_STEPS = [
      "Form-check deck_recon.json: cards real, legal, in identity; ownership falsified"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
+    ("scan-candidates", "manamap.pilot.candidate_scan",
+     "One pass over the corpus along a deck's DIMENSIONS (drain, gain, threat, outlet, sweeper, draw): "
+     "every row says which predicate found it; converters and two-card infinites FLAGGED, never ranked"),
+    ("validate-candidate-scan", "manamap.pilot.validate_candidate_scan",
+     "Form-check candidate_scan.json: real, legal, in-identity cards, no Game Changer, every infinite_with a real two-card line"),
+    ("fetch-edhrec", "manamap.sim.edhrec",
+     "EDHREC's commander page (and --theme pages) as dated per-card synergy/inclusion: edhrec_cards.json"),
+    ("validate-edhrec-cards", "manamap.pilot.validate_edhrec_cards",
+     "Form-check edhrec_cards.json: names resolve, as_of a date, URLs on EDHREC, synergy in [-1, 1]"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
     ("promote", "manamap.pilot.promote",
@@ -223,6 +232,7 @@ PILOT_STEPS = [
 
 _DECK_COMMANDS = {
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints",
+    "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
@@ -1093,6 +1103,22 @@ def add_pilot_parser(subparsers):
             # even when --deck scoped the query.
             cmd.add_argument("--out", default=None,
                              help="Write JSON here as well (a view, never tracked)")
+        if name == "scan-candidates":
+            from manamap.pilot.candidate_scan import DEFAULT_LIMIT, DIMENSIONS
+            cmd.add_argument("--dimension", default="all", choices=(*DIMENSIONS, "all"),
+                             help="one dimension, or all (the default; --write needs all)")
+            cmd.add_argument("--against-branch", default=None, metavar="NAME", dest="against_branch",
+                             help="exclude and check infinites against a BRANCH's staged list rather "
+                                  "than the deck's — Conqueror's departure is honoured")
+            cmd.add_argument("--limit", type=int, default=None, help=f"rows per dimension (default {DEFAULT_LIMIT})")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--write", action="store_true",
+                             help="write the tracked candidate_scan.json (dated; the evidence a stage cites)")
+            cmd.add_argument("--out", default=None, help="Also write JSON here (a view, never tracked; slug-scoped)")
+        if name == "fetch-edhrec":
+            cmd.add_argument("--theme", action="append", default=[], metavar="THEME",
+                             help="an EDHREC theme page beside the base page, repeatable (e.g. aristocrats, lifedrain)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "pool-facts":
             # Takes paths, not a slug: a collection is not a deck, and forcing it
             # into data/decks/<slug>/ would put it in reach of validate-deck.

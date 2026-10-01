@@ -28,6 +28,7 @@ from manamap.config import (CARD_ROLES_PATH, COLLECTION_DIR, COMBO_DETAILS_PATH,
 from manamap.pilot.deck_status import VALIDATED
 from manamap.pilot import (
     validate_build,
+    validate_candidate_scan,
     validate_deck,
     validate_deck_map,
     validate_diagnosis,
@@ -37,6 +38,7 @@ from manamap.pilot import (
     validate_stack,
     validate_strategic_frame,
     validate_tutor_guide,
+    validate_edhrec_cards,
 )
 
 from conftest import module_closure, requires_branch, requires_deck
@@ -54,8 +56,8 @@ from conftest import module_closure, requires_branch, requires_deck
 #: `GATED` below maps artifact -> module by importing from `deck_status.VALIDATED`,
 #: which is the registry; these are the same modules, named here because the key
 #: has to be computable before the first test runs.
-_VALIDATORS = (validate_build, validate_deck,
-               validate_deck_map, validate_diagnosis, validate_engine,
+_VALIDATORS = (validate_build, validate_candidate_scan, validate_deck,
+               validate_deck_map, validate_diagnosis, validate_edhrec_cards, validate_engine,
                validate_goldfish_targets, validate_prescription,
                validate_stack, validate_strategic_frame, validate_tutor_guide)
 
@@ -104,7 +106,8 @@ def test_the_test_does_not_know_about_a_gate_the_status_command_lacks():
 # validators did not skip — they raised `AttributeError: 'NoneType' object has no
 # attribute 'get'`, which is a FAILURE, not a skip. A gate that cannot run must
 # say so; crashing is the one thing it must not do.
-NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "cards.json", "brief.json"}
+NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "cards.json", "brief.json",
+                "candidate_scan.json", "edhrec_cards.json"}
 
 
 #: Validators that can be pointed at a branch. The rest take a slug only, so a

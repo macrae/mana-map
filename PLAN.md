@@ -112,7 +112,7 @@ Operating Handbook (`build-poh`) has rendered `manuals/p/<slug>.html` since
 2026-09-02. The card atlas in `viz/` is unchanged and live; the **deck
 page** (`viz/deck.html?deck=<slug>`) is new and is the workbench surface.
 
-Scale (derived; `tests/test_docs_counts.py` polices these): 115 pilot subcommands,
+Scale (derived; `tests/test_docs_counts.py` polices these): 119 pilot subcommands,
 28 top-level subcommands, 18 agents, 22 skills, 13 static cache routines
 (plus `stack:`/`decision:`/`prescription:` per artifact). Test counts live in
 `docs/testing.md` only.

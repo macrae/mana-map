@@ -394,6 +394,10 @@ VALIDATED = {
     "cards.json": "manamap.pilot.validate_deck",
     "deck_map.json": "manamap.pilot.validate_deck_map",
     "deck_recon.json": "manamap.pilot.validate_recon",
+    # Two dated evidence artifacts of the same kind as recon (2026-09-30): the corpus
+    # scan a staging --why cites, and EDHREC's commander-page figures it reads.
+    "candidate_scan.json": "manamap.pilot.validate_candidate_scan",
+    "edhrec_cards.json": "manamap.pilot.validate_edhrec_cards",
     "diagnosis.json": "manamap.pilot.validate_diagnosis",
     # `diagnostic.json` — the vitals — was tracked, written by `diagnose
     # --write`, and reported by nothing: no validator, no freshness test, no row
@@ -471,7 +475,7 @@ VALIDATED = {
 # they report `unverified` rather than failing — the same distinction
 # `tests/conftest.py`'s markers make.
 _NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
-_NEEDS_CORPUS = {"build_plan.json", "deck_recon.json"}
+_NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "candidate_scan.json", "edhrec_cards.json"}
 
 
 def _validity(slug, artifact):

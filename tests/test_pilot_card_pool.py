@@ -114,3 +114,19 @@ def test_load_frame_returns_none_without_a_corpus(monkeypatch, tmp_path):
     assert card_pool.load_pool() is None
     with pytest.raises(FileNotFoundError):
         card_pool.card_flags()
+
+
+def test_card_keywords_is_a_corpus_view_with_printed_stats_and_unknown_power_as_none():
+    """`card_keywords` (2026-09-30): keywords, power and toughness on demand through the
+    one reader of cards.csv. A `*` power is None, never 0 — a characteristic-defining
+    stat is not a number — and the view is memoised like every other."""
+    import pytest
+    from manamap import config
+    from manamap.pilot import card_pool
+    if not config.OUTPUT_CSV_PATH.exists():
+        pytest.skip("requires the card corpus")
+    k = card_pool.card_keywords()
+    assert k["Vein Ripper"] == {"keywords": ["Flying", "Ward"], "power": 6, "toughness": 5}
+    assert k["Tarmogoyf"]["power"] is None and k["Tarmogoyf"]["toughness"] is None
+    assert "Eminence" in k["Edgar Markov"]["keywords"]
+    assert card_pool.card_keywords() is k

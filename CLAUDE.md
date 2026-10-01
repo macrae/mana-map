@@ -248,7 +248,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (115 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (119 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
@@ -371,6 +371,16 @@ manamap pilot decisions <slug> [outcome|backfill]   # THE DECISION LEDGER (decis
                               # predicted beside realised, inside the interval or not.
                               # `deck-info` says when a merge can be closed.
 manamap pilot card-search --deck <slug> --oracle REGEX [--owned]         # mine the corpus
+manamap pilot scan-candidates <slug> [--dimension drain|gain|threat|outlet|sweeper|draw] [--against-branch B] --write
+                              # ONE PASS along the deck's DIMENSIONS: every row names the
+                              # predicate that admitted it (oracle id / role / tag / printed
+                              # keyword); a converter or a two-card infinite with the (staged)
+                              # 99 is FLAGGED and sorted last, never ranked or dropped; death-
+                              # draw splits on `nontoken`. Retrieval, not judgement — sorted by
+                              # EDHREC rank. Writes the dated candidate_scan.json (validated)
+manamap pilot fetch-edhrec <slug> [--theme aristocrats] # EDHREC's commander page(s) as dated per-card
+                              # synergy / inclusion (edhrec_cards.json, ★ evidence, validated);
+                              # cards newer than the corpus are listed apart, not failed
 manamap pilot model-coverage <slug>                     # WHAT THE MODEL CANNOT SEE, before the games:
                               # seen / DARK (feeds a channel that is OFF) / invisible.
                               # 236 DARK cards across the fleet when it shipped; goldfish

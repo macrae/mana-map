@@ -656,6 +656,52 @@ function"); a second opinion here would be a third answer to "is this card good"
 nothing reconciles. Results rank by EDHREC rank, unranked last — a card with no rank is
 usually just new, and a new set's answer to a problem is exactly what this should surface.
 
+## Scanning along the deck's dimensions (`scan-candidates`, ◆; `fetch-edhrec`, ★) — 2026-09-30
+
+`card-search` answers one question at a time and reaches each of a deck's goals through a
+different door — `--role wincon:drain` here, an oracle regex there, and never the
+mechanical tags or the printed keywords and power that decide "big and scary".
+`scan-candidates` is ONE pass over the corpus along named DIMENSIONS — `drain`, `gain`,
+`threat`, `outlet`, `sweeper`, `draw` — built for edgar-vampires/drain-v1, where the
+pilot's brief was exactly that list. Per dimension a named predicate set admits a card
+(`candidate_scan.ADMIT`: oracle predicate ids, roles, mechanical tags, printed keywords;
+`threat` is printed power ≥ 4 plus a flying/trample/menace/deathtouch/lifelink/double-
+strike keyword or an activated ability that hurts people), and every row records WHICH
+one fired, so a staging `--why` can point at a row and the row says why it is there.
+
+```bash
+manamap pilot fetch-edhrec edgar-vampires --theme aristocrats --theme lifedrain   # the dated ★ page figures
+manamap pilot scan-candidates edgar-vampires --dimension draw                     # one dimension, to read
+manamap pilot scan-candidates edgar-vampires --against-branch drain-v1 --write    # the whole scan, tracked
+manamap pilot validate-candidate-scan edgar-vampires && manamap pilot validate-edhrec-cards edgar-vampires
+```
+
+Three rules, each a lesson this bench has already paid for:
+
+- **It retrieves and labels; it does not score fit** — the `close` contract. Rows sort by
+  EDHREC rank (unranked last) and every signal is stated per row: synergy edges into the
+  99 with their rule names, the EDHREC page's `synergy` and `num_decks` when
+  `edhrec_cards.json` exists (absent otherwise, never zero), the Forge AI flag.
+- **A converter is admitted, FLAGGED and sorted last — never ranked away, never dropped.**
+  Exquisite Blood names no drain itself and is the one card every published drain list
+  runs that bracket 3 forbids beside Vito or Sanguine Bond; it appears with
+  `converter: converter_loss_to_gain` and `infinite_with: [Sanguine Bond, Vito…]`, after
+  every unflagged row. `--against-branch` checks infinites against the STAGED list, so
+  Cliffhaven Vampire is flagged with Bloodthirsty Conqueror on the deck and clean on a
+  branch that cut him. Game Changers are dropped and counted.
+- **Death-triggered draw splits on one word.** `nontoken` (Midnight Reaper, Grim
+  Haruspex) misses every eminence token; Species Specialist and Liliana's Standard
+  Bearer do not. No source makes the distinction, so `flags.nontoken` does.
+
+Both artifacts are DATED evidence like `deck_recon.json`, gated by their validators and by
+`deck_status.VALIDATED`. `validate-candidate-scan` holds every candidate to real, legal,
+in identity, not a Game Changer, every `infinite_with` a real two-card line, and the
+flagged rows last; a candidate that has since joined the 99 or a moved decklist sha is a
+WARN, because the list moves under a dated file. `fetch-edhrec` partitions cards newer
+than the corpus into `not_in_corpus` (three on 2026-09-30) rather than failing on them.
+Keywords and power come from `card_pool.card_keywords()`, the first on-demand view of
+those columns, so `card_pool` stays the only reader of cards.csv.
+
 ## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
 
 Every change to the 99 is a commit (`decklist.txt` is tracked), so the list of lists
