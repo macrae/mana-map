@@ -1580,6 +1580,19 @@ experiment arm by its `decklist_sha256` under the same four-tuple, with a test a
   decide (the harness is pinned); proven on a shell first.
 - **A cheap do-nothing-now permanent is cast late.** Bastion of Remembrance, Anointed
   Procession, Sanguine Bond and Caretaker's Talent sit castable for 30–48 own turns a run
-  and are cast behind every creature in hand (`PermanentAi`). The remedy is a cast-priority
-  hint in `PermanentAi`'s `AICastPreference` vocabulary, to be read and measured; until
-  then `forge-cast-check` reports the shape as CAST-LATE and the branch's drain is a floor.
+  and are cast behind every creature in hand (`PermanentAi`). **There is no hint for this**,
+  read from the 2.0.14 source on 2026-10-01: `AICastPreference` is entirely DON'T-CAST
+  conditions — `MustHaveInHand`, `MaxControlled[Globally|WithoutOppAuras]`,
+  `NumManaSources[NextTurn]`, `Never/AlwaysCastIfLife{Below,Above}`, `OnlyFromZone`, used by
+  nine cards in the whole corpus — so it can DELAY a cast and never hasten one. The only
+  remedies are a patch to the AI's spell ORDERING (`AiController`'s choice among castable
+  spells, which changes play for every deck and every pod seat — not attempted) or accepting
+  the lateness and reading such a card as a floor. `forge-cast-check` reports the shape as
+  CAST-LATE and names the class; the earlier claim in this entry that a hint existed was
+  wrong and is corrected here rather than deleted.
+
+  A SECOND LIMIT, measured the same day: the two-seat shell UNDERSTATES lateness. Bastion of
+  Remembrance read PLAYED in its 8-game shell (cast in 3 of 4 drawn games, 2 castable-uncast
+  turns) and CAST-LATE in the 200-game pod arm (19 casts across 37 in-hand games, 72
+  castable turns) — fewer competing spells in hand, so it gets cast. The gate catches HELD
+  reliably and CAST-LATE only sometimes; the class tag from the script catches the rest.

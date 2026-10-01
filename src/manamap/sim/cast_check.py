@@ -157,7 +157,11 @@ def diagnose(card, installed_copy=True):
     if not abilities and re.search(r"\b(Enchantment|Artifact)\b", types) and "Creature" not in types:
         # a cheap do-nothing-now permanent: the AI casts it after every creature in hand
         classes.append("permanent-cast-priority")
-        remedies.append("a cast-priority hint (PermanentAi's AICastPreference vocabulary) — an OPEN item; measured as CAST-LATE, never refused outright")
+        remedies.append("NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only "
+                        "(MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], "
+                        "Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can "
+                        "delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every "
+                        "deck affected — not done) or accept the lateness and judge the card knowing it")
     return {"script": {"abilities": [p for p, _, _ in abilities], "apis": sorted({a for _, a, _ in abilities}),
                        "x": x, "types": types.strip(), "ai_flag": flag,
                        "is_curse": any("IsCurse$" in r for _, _, r in abilities) if abilities else None,
