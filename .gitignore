@@ -42,6 +42,12 @@ __pycache__/
 # single record. `data/*` catches it otherwise, which is how the first
 # cut of this would have passed locally and failed on CI.
 !data/pods/
+# PREVIEW CARD SCRIPTS for a set Forge does not ship yet (data/forge_previews/, 2026-10-01).
+# Tracked for the same reason the overrides and the patch set are: a hand-written card script
+# is a CLAIM about a card that the engine will play, and a clone that cannot reproduce it
+# cannot reproduce the measurement. Installing one moves `card_overrides.sha`, so it is a
+# harness change and never lands under a pending branch arm.
+!data/forge_previews/
 !data/strategy/
 # A physical card collection (`COLLECTION_DIR`), read by `deck-history` to tell a
 # proposed swap you already own from one you would have to buy. Tracked so a
