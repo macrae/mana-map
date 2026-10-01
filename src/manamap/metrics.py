@@ -152,28 +152,39 @@ CATALOG = {
     "cards drawn per game": _m(
         "card_flow",
         "Total draws beyond the natural draw step.",
-        OPT_IN, "goldfish",
+        OPT_IN, "both",
         "goldfish_metrics.json → metrics.mean_extra_cards_drawn_by_turn; "
-        "diagnostic.json → steam.extra_cards_by_turn",
-        caveat="Counts only draw the model can price — a card's own ETB draw, an "
-               "instant or sorcery that draws, an upkeep trigger, and a trigger "
+        "diagnostic.json → steam.extra_cards_by_turn; "
+        "sim/<run>.json → games[].per_seat[].hand.library_to_hand, read per own turn as "
+        "the Forge objective axis forge.extra_draw_per_turn (telemetry records only)",
+        caveat="GOLDFISH: counts only draw the model can price — a card's own ETB draw, "
+               "an instant or sorcery that draws, an upkeep trigger, and a trigger "
                "that draws when other creatures enter. Activated, X-based, "
                "sacrifice-gated and death-triggered draw are NOT counted, and the "
                "cards are named in the goldfish artifact. OPT-IN: it rides "
                "behind `model_draw` and is present in ONE of the ten tracked "
-               "goldfish artifacts. " + FORGE_ZONE_LIMIT),
+               "goldfish artifacts. FORGE (since 2026-09-30): EXACT and complete — every "
+               "Library -> Hand move from turn 1, whatever caused it — but only on a "
+               "record played under the telemetry patch; read as "
+               "(library_to_hand - one natural draw per own turn, none for turn 1 on the "
+               "play) / own turns. " + FORGE_ZONE_LIMIT),
 
     "turns with empty hand": _m(
         "card_flow",
         "Count of turns ending with zero cards in hand.",
-        PUBLISHED, "goldfish",
-        "diagnostic.json → stall.cause.hand_empty (against stall.cause.stall_turns)",
-        caveat="Measured as a STALL WITH AN EMPTY HAND rather than an empty hand "
-               "as such: the goldfish records `hand_size_by_turn` alongside "
+        PUBLISHED, "both",
+        "diagnostic.json → stall.cause.hand_empty (against stall.cause.stall_turns); "
+        "sim/<run>.json → analysis.seats[].hand.empty_own_turns (mean, ci95) and "
+        "games[].per_seat[].hand.empty_own_turns, the Forge objective axis "
+        "forge.empty_hand_turns (telemetry records only)",
+        caveat="GOLDFISH: measured as a STALL WITH AN EMPTY HAND rather than an empty "
+               "hand as such: the goldfish records `hand_size_by_turn` alongside "
                "`stall_by_turn`, and `cause` splits a stall into hand_empty and "
                "mana_short. A turn with an empty hand that was not a stall — "
                "everything was cast — is not counted, which is the honest "
-               "reading of the metric's intent. " + FORGE_ZONE_LIMIT),
+               "reading of the metric's intent. FORGE (since 2026-09-30): the count of "
+               "OWN turns that ended with zero cards in hand, exact, telemetry records "
+               "only — the two definitions differ and are not pooled. " + FORGE_ZONE_LIMIT),
 
     "draw-engine uptime": _m(
         "card_flow",

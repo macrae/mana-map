@@ -327,9 +327,19 @@ def test_everything_about_the_library_is_off_forge_and_a_board_figure_says_it_is
     board_bound = ("bodies by turn", "post-wipe recovery", "commander uptime",
                    "creature power distribution", "anthem-adjusted power",
                    "threat-to-lethal gap")
+    # `cards drawn per game` and `turns with empty hand` LEFT the goldfish-only rule on
+    # 2026-09-30: under the telemetry patch every Library -> Hand move is logged, so a
+    # library figure may claim Forge — but only by naming the `hand` block and saying it
+    # is a telemetry-records-only reading, since a plain record has no such key.
     for name in library_bound:
-        engine = CATALOG[name]["engine"]
-        assert engine in ("goldfish", None), f"{name} claims {engine}"
+        row = CATALOG[name]
+        engine = row["engine"]
+        if engine in ("forge", "both"):
+            text = (row.get("caveat") or "") + (row.get("source") or "")
+            assert "telemetry" in text.lower() and ".hand" in text, (
+                f"{name} claims Forge for a library figure without the telemetry caveat")
+        else:
+            assert engine in ("goldfish", None), f"{name} claims {engine}"
     for name in board_bound:
         row = CATALOG[name]
         if row["engine"] in ("forge", "both"):
@@ -441,3 +451,28 @@ def test_the_catalog_renders_without_a_deck_on_disk():
         assert group.upper().replace("_", " ") in text
     assert "unavailable" in text and "opt-in" in text
     assert metrics.format_problems().count("PRD") == 1
+
+
+def test_the_hand_facts_are_on_every_telemetry_record_and_on_no_plain_one():
+    """The Forge half of the two card-flow rows is a claim about RECORDS: a record played
+    under the telemetry patch (`telemetry.lines > 0`) carries `hand` on every seat and on
+    every game's per-seat row, and a record played under the shipped formatter carries it
+    nowhere — absent, never zero. Both halves asserted, the way the opt-in guard does."""
+    from manamap.sim.experiment import PER_GAME
+    with_hand, without = 0, 0
+    for path in _runs():
+        rec = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+        patched = bool((rec.get("telemetry") or {}).get("lines"))
+        seats = rec["analysis"]["seats"]
+        rows = [ps for g in (rec.get("games") or []) for ps in (g.get("per_seat") or {}).values()]
+        if patched:
+            with_hand += 1
+            assert all("hand" in s for s in seats.values()), pathlib.Path(path).name
+            assert rows and all("hand" in ps for ps in rows), pathlib.Path(path).name
+            vals = [PER_GAME["extra_draw_per_turn"](ps) for ps in rows]
+            assert all(v is not None for v in vals), pathlib.Path(path).name
+        else:
+            without += 1
+            assert not any("hand" in s for s in seats.values()), pathlib.Path(path).name
+            assert all(PER_GAME["extra_draw_per_turn"](ps) is None for ps in rows), pathlib.Path(path).name
+    assert with_hand >= 3 and without >= 10, "the guard iterated almost nothing on one side"

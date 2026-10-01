@@ -1061,11 +1061,18 @@ already carries, each with its definition and its floor in `analysis.limits`:
 | `combat_damage_by_keyword`, `evasive_damage_share` | our combat damage to players by the source's printed evasion keyword | `cards.json` keywords, so OUR seat only; absent elsewhere | printed keywords only — a granted flying reads as ground |
 | `biggest_hit` | the largest single-source combat damage event to a player, and its card | exact | one event, one source |
 | `kills_by_ability` | opposing permanents that left the battlefield directly after one of our activated abilities resolved | the last resolved activation this turn; any event in between breaks it | CEILING per card: a permanent dying anyway is counted |
+| `extra_draw_per_turn` (the draw axis, same day) | Library → Hand moves beyond one natural draw per own turn (none for turn 1 on the play), over own turns | exact, from the telemetry patch's owner-bearing zone lines | TELEMETRY RECORDS ONLY — a plain record has no `hand` and the axis is absent, never zero |
+| `empty_hand_turns` | own turns that ended with zero cards in hand | exact, same source | telemetry records only; LOWER is better |
 
+The last two are the pilot's oldest Edgar complaint — "running out of steam post turn 7/8
+... trying to rebuild with 1 or 2 cards (or zero) in hand" — read from `hand_facts` per
+game: the champion at the pinned harness holds 1–2 cards at the end of its own turns from
+turn 5 on. Hand size at a fixed turn is deliberately NOT an axis: only 3–6 of 20 games
+reach our eighth own turn, so it would be read over the games the deck already survived.
 Every one is a Forge objective axis a branch can be aimed at — `forge.drain_dealt`,
 `forge.life_gained`, `forge.biggest_hit`, `forge.evasive_damage_share`,
-`forge.kills_by_ability` — with the interval on the difference and an MDE in `net_change`'s
-endpoint table, so drain-v1's objective can finally be stated on the axis the pilot means
+`forge.kills_by_ability`, `forge.extra_draw_per_turn`, `forge.empty_hand_turns` — with the
+interval on the difference and an MDE in `net_change`'s endpoint table, so drain-v1's objective can finally be stated on the axis the pilot means
 instead of win rate standing in. Every tracked record with logs on disk was re-derived to
 carry them (the catalog marks them PUBLISHED, and the catalog test holds every record to it);
 a record whose logs are gone keeps its old block and says nothing about them.

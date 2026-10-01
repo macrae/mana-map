@@ -165,6 +165,26 @@ def _dig(d, path):
     return d
 
 
+def _extra_draw_per_turn(hand):
+    """Draw beyond the natural draw step, per own turn — or None without hand facts.
+
+    The natural draw is one per own turn, except the first turn of the seat ON THE PLAY
+    (`end_of_turn_size` carries turn 1 for that seat and no draw happened on it): the
+    telemetry control game reads 6 library-to-hand moves over 7 own turns for the seat
+    on the play and 7 over 7 for the draw — both are ZERO extra, not -0.14 and 0.
+    Keys are ints in memory and strings on disk, so both spellings of turn 1 are read.
+    """
+    if not hand:
+        return None
+    sizes = hand.get("end_of_turn_size") or {}
+    own = len(sizes)
+    if not own or hand.get("library_to_hand") is None:
+        return None
+    on_the_play = 1 in sizes or "1" in sizes
+    natural = own - (1 if on_the_play else 0)
+    return round((hand["library_to_hand"] - natural) / own, 4)
+
+
 # How to read a per-game row for each figure that is a MEAN. The aggregates
 # already carry the mean; these give the raw distribution, which is what a Welch
 # interval, a permutation test and a bootstrap all need and none of which can be
@@ -189,6 +209,9 @@ PER_GAME = {
                                    if p.get("kills_by_ability") is not None else None),
     "life_gained": lambda p: (sum(v for v in (p.get("life_gained_by_source") or {}).values())
                               if p.get("life_gained_by_source") is not None else None),
+    # THE DRAW AXIS (2026-09-30): the telemetry patch's hand facts, per own turn.
+    "extra_draw_per_turn": lambda p: _extra_draw_per_turn(p.get("hand")),
+    "empty_hand_turns": lambda p: (p.get("hand") or {}).get("empty_own_turns"),
 }
 
 # Counts out of games, not means — so they get Newcombe rather than Welch.
@@ -199,7 +222,8 @@ PROPORTIONS = ("win_rate", "commander_damage_games_reaching_21")
 # report a bootstrap interval on the MEDIAN. Measured, not guessed: that sample is
 # arm B's real commander damage from the kianne experiment.
 SKEWED = ("commander_damage_max_on_one_defender", "commander_damage_dealt_total",
-          "combat_damage_dealt_to_players", "drain_dealt", "kills_by_ability", "life_gained")
+          "combat_damage_dealt_to_players", "drain_dealt", "kills_by_ability", "life_gained",
+          "extra_draw_per_turn", "empty_hand_turns")
 
 # The one figure permitted a verdict. Everything else is descriptive: eleven
 # figures at alpha=0.05 means roughly one interval in two experiments excludes

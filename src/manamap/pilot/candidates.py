@@ -241,6 +241,25 @@ FORGE_OBJECTIVE_AXES = {
                 "our activated abilities resolved, per game — Vish Kal's -X/-X, an "
                 "outlet's kill; a ceiling per card",
         "why": "removal the deck does with its own creatures rather than with spells"},
+    # THE DRAW AXIS (2026-09-30): the pilot's oldest Edgar complaint — "running out of
+    # steam post turn 7/8 ... trying to rebuild with 1 or 2 cards (or zero) in hand" —
+    # read from the hand facts the telemetry patch makes EXACT. Absent on a record
+    # played under the shipped formatter (no `hand` key), never zero.
+    "forge.extra_draw_per_turn": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "extra_draw_per_turn",
+        "what": "cards that reached our hand from the library BEYOND the natural draw "
+                "step, per own turn, per game — (library_to_hand minus one per own turn, "
+                "minus nothing for the first turn on the play) over own turns; a wheel, a "
+                "cantrip, a tutor and a death-trigger draw all count, a mulligan does not",
+        "why": "the draw the DECK added, so a list that refills its hand reads apart from "
+               "one that only draws for the turn; telemetry records only"},
+    "forge.empty_hand_turns": {
+        "kind": "mean", "lower_is_better": True, "conditional": False,
+        "per_game": "empty_hand_turns",
+        "what": "own turns that ended with ZERO cards in hand, per game — exact under the "
+                "telemetry patch, absent on a plain record",
+        "why": "the complaint itself, counted: a turn spent with nothing to rebuild with"},
     "forge.combat_damage_dealt_to_players": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "combat_damage_dealt_to_players",

@@ -111,3 +111,47 @@ def test_a_pain_lands_self_loss_after_our_drain_is_not_our_drain():
     per = _facts([f"Resolve Stack: Blood Artist (9) - Target player loses 1 life.", f"Life: Life: {B} 40 > 39",
                   f"Mana: Sulfurous Springs (55) - {{T}}: Add {{B}}.", f"Life: Life: {B} 39 > 38"])
     assert per[A]["drain_dealt"] == 1, "the first loss is the drain, the second is the land"
+
+
+# ── the draw axis (2026-09-30): two readers over the telemetry hand facts ─────────────
+
+def _hand(lib, sizes, empty=0):
+    return {"hand": {"library_to_hand": lib, "end_of_turn_size": sizes, "empty_own_turns": empty}}
+
+
+def test_extra_draw_is_read_per_own_turn_beyond_the_natural_draw():
+    from manamap.sim.experiment import PER_GAME
+    read = PER_GAME["extra_draw_per_turn"]
+    # on the draw: ten own turns, ten natural draws, fourteen moves -> 0.4 a turn
+    assert read(_hand(14, {str(t): 2 for t in range(2, 21, 2)})) == 0.4
+    # on the play (turn 1 is ours and has no draw): nine natural draws over ten turns
+    assert read(_hand(14, {str(t): 2 for t in range(1, 20, 2)})) == 0.5
+    # the control game's two seats: 6 over 7 on the play, 7 over 7 on the draw — ZERO extra
+    assert read(_hand(6, {t: 3 for t in (1, 3, 5, 7, 9, 11, 13)})) == 0.0
+    assert read(_hand(7, {t: 3 for t in (2, 4, 6, 8, 10, 12, 14)})) == 0.0
+
+
+def test_extra_draw_counts_own_turns_not_the_games_turns():
+    """The bug: dividing by the game's last turn number (a four-seat game's turn 40 is
+    our tenth), which would read a quarter of the real rate."""
+    from manamap.sim.experiment import PER_GAME
+    sizes = {str(t): 1 for t in (2, 6, 10, 14, 18, 22, 26, 30, 34, 38)}   # seat 2 of 4, turn 38 last
+    assert PER_GAME["extra_draw_per_turn"](_hand(15, sizes)) == 0.5
+
+
+def test_the_draw_axis_is_absent_without_hand_facts_never_zero():
+    from manamap.sim.experiment import PER_GAME
+    for p in ({}, {"hand": None}, {"hand": {"library_to_hand": 3, "end_of_turn_size": {}}}):
+        assert PER_GAME["extra_draw_per_turn"](p) is None
+        assert PER_GAME["empty_hand_turns"](p) is None
+    assert PER_GAME["empty_hand_turns"](_hand(9, {"1": 0, "3": 0}, empty=2)) == 2
+
+
+def test_the_draw_axes_are_objective_axes_with_per_game_readers():
+    from manamap.pilot import candidates, net_change
+    from manamap.sim import experiment
+    for axis in ("forge.extra_draw_per_turn", "forge.empty_hand_turns"):
+        spec = candidates.FORGE_OBJECTIVE_AXES[axis]
+        assert spec["kind"] == "mean" and spec["per_game"] in experiment.PER_GAME
+        assert spec["per_game"] in net_change._PER_GAME and spec["per_game"] in experiment.SKEWED
+    assert candidates.FORGE_OBJECTIVE_AXES["forge.empty_hand_turns"]["lower_is_better"] is True
