@@ -57,6 +57,9 @@ PILOT_STEPS = [
      "Install the tracked card-script overrides into Forge and VERIFY the engine carries them — the provenance a run record stamps"),
     ("validate-forge-hints", "manamap.pilot.validate_forge_hints",
      "Form-check forge_hints.json: every hinted card is in the 99, says why, and carries a logic or a preference"),
+    ("forge-cast-check", "manamap.sim.cast_check",
+     "PROVE the Forge AI will cast/activate a card before a branch depends on it: a short two-seat shell, "
+     "drawn / cast / activated / held-while-castable counted. Unflagged is not castable (Toxic Deluge: 28 drawn, 0 cast)"),
     ("forge-telemetry", "manamap.sim.telemetry",
      "The patched log formatter (every zone change, by name and owner): what the repo declares, what the jar carries, --build to compile it"),
     ("metrics", "manamap.metrics",
@@ -233,6 +236,7 @@ PILOT_STEPS = [
 _DECK_COMMANDS = {
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
+    "forge-cast-check",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
@@ -1119,6 +1123,17 @@ def add_pilot_parser(subparsers):
                              help="JOIN every source on these cards instead of scanning: the scan's dimensions and "
                                   "flags, the prescription's rank, the recon findings naming it, the EDHREC page, "
                                   "assess's read, and a predicted direction per Forge axis (a view)")
+        if name == "forge-cast-check":
+            from manamap.sim.cast_check import DEFAULT_CLOCK, DEFAULT_COPIES, DEFAULT_GAMES, DEFAULT_VS
+            cmd.add_argument("--card", required=True, help="the card to prove (corpus name)")
+            cmd.add_argument("--copies", type=int, default=None, help=f"copies in the shell (default {DEFAULT_COPIES})")
+            cmd.add_argument("--games", type=int, default=None, help=f"two-seat games (default {DEFAULT_GAMES})")
+            cmd.add_argument("--vs", default=None, metavar="SEAT", help=f"the opposing seat (default {DEFAULT_VS})")
+            cmd.add_argument("--clock", type=int, default=None, help=f"seconds per game (default {DEFAULT_CLOCK})")
+            cmd.add_argument("--seed", type=int, default=None, help="Forge seed (default 4343)")
+            cmd.add_argument("--branch", default=None, metavar="NAME", help="take the commander and filler from a branch's list")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--out", default=None, help="Also write the JSON view and the game log here (never tracked; slug-scoped)")
         if name == "fetch-edhrec":
             cmd.add_argument("--theme", action="append", default=[], metavar="THEME",
                              help="an EDHREC theme page beside the base page, repeatable (e.g. aristocrats, lifedrain)")

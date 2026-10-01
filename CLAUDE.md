@@ -248,7 +248,7 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (119 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (120 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
@@ -378,6 +378,16 @@ manamap pilot scan-candidates <slug> [--dimension drain|gain|threat|outlet|sweep
                               # 99 is FLAGGED and sorted last, never ranked or dropped; death-
                               # draw splits on `nontoken`. Retrieval, not judgement — sorted by
                               # EDHREC rank. Writes the dated candidate_scan.json (validated)
+manamap pilot forge-cast-check <slug> --card "Toxic Deluge" [--games 8 --copies 4 --vs giada-angels]
+                              # PROVE THE AI PLAYS A CARD BEFORE A NIGHT IS SPENT ON IT: a
+                              # two-seat shell (the deck's commander, N copies, its own cheap
+                              # spells as filler, basics), counted from the telemetry hand
+                              # facts — drawn / cast / activated / HELD while castable.
+                              # Unflagged is NOT castable: Toxic Deluge was drawn 28 times
+                              # and cast 0 in a 200-game branch arm (2026-10-01) because its
+                              # script lacks IsCurse$ and X is priced before the life is paid.
+                              # Every add that must be cast or activated for a branch's
+                              # objective runs this first; a HELD card is a piloting item
 manamap pilot fetch-edhrec <slug> [--theme aristocrats] # EDHREC's commander page(s) as dated per-card
                               # synergy / inclusion (edhrec_cards.json, ★ evidence, validated);
                               # cards newer than the corpus are listed apart, not failed

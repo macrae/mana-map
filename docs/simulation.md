@@ -1044,6 +1044,29 @@ patch-set sha in every run id (`-tl43a8b062`), and `net_change.forge` buckets on
 jar carries every class javac emits for a patched source (siblings ride with their
 primary), and a two-game smoke under it ran clean before anything was measured.
 
+## The cast preflight: `forge-cast-check` (2026-10-01)
+
+The drain-v1 branch arm (200 games) was the measurement that made this a tool: Toxic
+Deluge, unflagged on 2026-09-30 and staged as the deck's one sweeper, was **drawn 28
+times and cast 0**, held at game end, never discarded. The scan row carried the AI flag
+and "unflagged" was read as "castable". It is not: `AI:RemoveDeck:All` is one filter, and
+each API's AI class can refuse a card for reasons of its own. Deluge's script has no
+`IsCurse$`, so `PumpAllAi` treats a -X/-X sweep as a pump of OUR creatures, and its X is
+`Count$xPaid` — priced at 0 before the life is paid, so even the curse branch would read
+"-0/-0 kills nothing". The same two defects Vish Kal had, on a different API, found after
+a night of games instead of before.
+
+`forge-cast-check <slug> --card NAME` builds a two-seat shell — the deck's own commander
+over `--copies` of the card, the deck's cheapest spells as filler (a sweeper needs
+creatures to see, an outlet needs fodder) and basics of the card's colours — and plays
+`--games` short games against one named seat under the jar and the pilot profile
+`simulate` would use. It counts from the telemetry hand facts: drawn, cast, activated,
+discarded, castable-and-uncast own turns, held at game end, and prints one verdict:
+PLAYED (with the counts), HELD (castable in N games, cast 0 — a hint or a patch before any
+branch), or NOT DRAWN / inconclusive. It measures nothing about the card's value. The rule
+it enforces: every add a branch objective depends on being cast or activated runs this
+first, and the result goes in the stage `--why`.
+
 ## A sixth `ai` class and a third hint kind: Vish Kal's -X/-X (2026-09-30, evening)
 
 `kills_by_ability` read 0.00–0.05 a game on every Edgar record while the sacrifice half
