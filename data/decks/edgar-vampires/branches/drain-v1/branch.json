@@ -2,15 +2,65 @@
  "slug": "edgar-vampires",
  "branch": "drain-v1",
  "v": 2,
- "opened": "2026-09-30",
- "why": "A MINOR increment (v1.2.0) aimed at the pilot's 2026-09-29 direction change: life gain / life drain as the ENGINE, at bracket 3 \u2014 prescription 0afff3dd0bc7 holds the ranked cuts and adds under both readings of the Conqueror question. OPENED AS A MARKER AND PAUSED (2026-09-30, the pilot's call): no swap is staged until Forge can be trusted to CAST this deck's spells per its strategy \u2014 Vish Kal was cast 0 times in 220 games across three tracked runs while the deck's other six-drops were cast 4-6 times per 60 \u2014 and until a Forge endpoint exists for the drain axis (life loss dealt outside combat, life gained), which win_rate here only stands in for.",
+ "opened": "2026-10-01",
+ "why": "v1.2.0 MINOR, the 2026-09-29 direction (log 006): life gain / life DRAIN as the engine, big evasive Vampires, true bracket 3 under reading B (Bloodthirsty Conqueror out, zero two-card infinites). Six swaps, decided 2026-09-30 ('five or six, I just want the absolute best deck'). Harness PINNED: standard-v3 / overrides 8c347642 / profile mm-edgar-vampires (aif7c3b6a8) / patch set c22ecaf3 \u2014 no forge-install, hint or patch change until this branch decides. Champion baseline 2026-09-30/10-01: 200 games (two runs, seeds 1664213641 + 1664224641), 144 decided, win rate 0.340; drain_dealt mean 6.59, sd 18.0, median 0 -> MDE@200/arm 5.04, so the line sits one MDE above the mean. Exploratory: forge.extra_draw_per_turn (1.46), empty_hand_turns (0.62), biggest_hit (8.40), evasive_damage_share (0.32), life_gained (35.0), kills_by_ability (0.47), combat damage (48.6); win rate is the guard. Evidence: candidate_scan.json + edhrec_cards.json (2026-09-30), deck_recon.json (2026-09-30), prescription 0afff3dd0bc7 (skeptic PASS), strategy:aristocrats, strategy:life-as-resource.lifegain-engine, strategy:deckbuilding.typal-density, strategy:card-advantage.plan-draw.",
  "objective": {
-  "axis": "forge.win_rate",
+  "axis": "forge.drain_dealt",
   "op": ">=",
-  "value": 0.35,
+  "value": 12.0,
   "pod": "standard-v3",
-  "why": "A MINOR increment (v1.2.0) aimed at the pilot's 2026-09-29 direction change: life gain / life drain as the ENGINE, at bracket 3 \u2014 prescription 0afff3dd0bc7 holds the ranked cuts and adds under both readings of the Conqueror question. OPENED AS A MARKER AND PAUSED (2026-09-30, the pilot's call): no swap is staged until Forge can be trusted to CAST this deck's spells per its strategy \u2014 Vish Kal was cast 0 times in 220 games across three tracked runs while the deck's other six-drops were cast 4-6 times per 60 \u2014 and until a Forge endpoint exists for the drain axis (life loss dealt outside combat, life gained), which win_rate here only stands in for."
+  "why": "v1.2.0 MINOR, the 2026-09-29 direction (log 006): life gain / life DRAIN as the engine, big evasive Vampires, true bracket 3 under reading B (Bloodthirsty Conqueror out, zero two-card infinites). Six swaps, decided 2026-09-30 ('five or six, I just want the absolute best deck'). Harness PINNED: standard-v3 / overrides 8c347642 / profile mm-edgar-vampires (aif7c3b6a8) / patch set c22ecaf3 \u2014 no forge-install, hint or patch change until this branch decides. Champion baseline 2026-09-30/10-01: 200 games (two runs, seeds 1664213641 + 1664224641), 144 decided, win rate 0.340; drain_dealt mean 6.59, sd 18.0, median 0 -> MDE@200/arm 5.04, so the line sits one MDE above the mean. Exploratory: forge.extra_draw_per_turn (1.46), empty_hand_turns (0.62), biggest_hit (8.40), evasive_damage_share (0.32), life_gained (35.0), kills_by_ability (0.47), combat damage (48.6); win rate is the guard. Evidence: candidate_scan.json + edhrec_cards.json (2026-09-30), deck_recon.json (2026-09-30), prescription 0afff3dd0bc7 (skeptic PASS), strategy:aristocrats, strategy:life-as-resource.lifegain-engine, strategy:deckbuilding.typal-density, strategy:card-advantage.plan-draw."
  },
- "commits": [],
- "base_version": 3
+ "commits": [
+  {
+   "at": "2026-10-01",
+   "decklist_sha256": "f38db6112a74cf714abd86dd77b1501165adb0bc4cf5eb134b5eb33996b9c4f1",
+   "message": "v1.2.0 tier 1: six drain-engine swaps under reading B \u2014 Vein Ripper, Bastion of Remembrance, Twilight Prophet, Species Specialist, Toxic Deluge, Malakir Bloodwitch for Conqueror, Cordial, Legion Lieutenant, Blade, Stromkirk Captain, Bloodflow. Lords 7 -> 4, free outlets 6 -> 5, the eminence leg -2 (Bastion, Deluge, Specialist are not Vampires)."
+  }
+ ],
+ "base_version": 3,
+ "staged": [
+  {
+   "at": "2026-10-01",
+   "out": "Bloodthirsty Conqueror",
+   "in": "Vein Ripper",
+   "strength": 0.9,
+   "why": "Reading B: Conqueror is the one card in both two-card infinites (stacks 004/006 with Vito / Sanguine Bond); cutting him takes the floor from 4 to 3. Vein Ripper is a 6/5 flying Vampire whose ward is a sacrifice and whose death trigger is a 2-point drain \u2014 candidate_scan drain+threat row (death_drain), prescription add #3, recon finding 2 (the strongest card-specific write-ups), EDHREC synergy +0.15 on the base page. Predicted: drain_dealt up, biggest_hit up, evasive share up. Cites strategy:aristocrats.drain-scope."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Cordial Vampire",
+   "in": "Bastion of Remembrance",
+   "strength": 0.85,
+   "why": "Cordial is a +1/+1-counters lord whose counters die with the board in the wipes log 006 describes (prescription cut #1). Bastion is a death drain on an ENCHANTMENT \u2014 each opponent loses 1 and you gain 1 per creature death, so an opponent's wipe pays instead of costing (recon finding 3; candidate_scan drain row death_drain=True; prescription add #1, natural cut Cordial). Predicted: drain_dealt up. Cites strategy:aristocrats.wipe-insurance."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Legion Lieutenant",
+   "in": "Twilight Prophet",
+   "strength": 0.85,
+   "why": "Legion Lieutenant is a vanilla static lord (prescription cut #4). Twilight Prophet is a 2/4 flying Vampire that, with the city's blessing, puts the top card into hand every upkeep and drains each opponent for its mana value \u2014 the one card the sources name for both halves of the pilot's complaint (recon finding 1, 245/484 lifedrain lists; EDHREC synergy +0.39, 23,648 decks; prescription add #4; candidate_scan drain+gain+draw rows). Predicted: drain_dealt up, extra_draw_per_turn up, empty_hand_turns down. Cites strategy:card-advantage.plan-draw."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Blade of the Bloodchief",
+   "in": "Species Specialist",
+   "strength": 0.8,
+   "why": "Blade is the purest wait-for-a-death counter engine in the list (prescription cut #3). Species Specialist, naming Vampire, draws a card whenever a Vampire you control dies \u2014 INCLUDING the eminence tokens, which Midnight Reaper and Grim Haruspex ('nontoken') cannot see (recon finding 6; candidate_scan draw row trigger=death, nontoken=False). The complaint is 1-2 cards in hand from turn 5; the baseline draws 1.46 extra a turn and still empties, so draw that lands on the deaths the outlets cause is the shape wanted. Predicted: extra_draw_per_turn up, empty_hand_turns down. Cites strategy:aristocrats.wipe-insurance, strategy:card-advantage.plan-draw."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Stromkirk Captain",
+   "in": "Toxic Deluge",
+   "strength": 0.8,
+   "why": "Stromkirk is a static lord in the deck's shortest colour (prescription cut #2, 'easy'). The deck carries zero sweepers (audit: sweepers 0 UNDER); Toxic Deluge is the three-mana one whose life cost a drain deck refunds, and with Bastion, Blood Artist, Cruel Celebrant and Species Specialist out it is deaths on our terms \u2014 every creature that dies drains and draws (prescription add #2; candidate_scan sweeper row; recon finding 9). RemoveDeck:All was unflagged on 2026-09-30 so the Forge AI can cast it. Predicted: drain_dealt up, combat damage down. Cites strategy:deckbuilding.typal-density.lord-exposure."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Bloodflow Connoisseur",
+   "in": "Malakir Bloodwitch",
+   "strength": 0.8,
+   "why": "Bloodflow is a three-mana 1/1 whose only text is a sacrifice outlet, the weakest of six (prescription cut #8, 'easy'; its natural cut for this add); five outlets remain. Malakir Bloodwitch is a 4/4 flying Vampire with protection from white whose ETB drains each opponent for the number of Vampires you control and gains that much \u2014 the most-run drain Vampire the deck lacks (recon finding 0, 261/484 lifedrain lists; EDHREC synergy +0.46, 26,911 decks; prescription add #5; candidate_scan drain+gain+threat rows). The sixth swap, decided 2026-09-30 ('five or six, I just want the absolute best deck'). Predicted: drain_dealt up, biggest_hit up, evasive share up. Cites strategy:life-as-resource.lifegain-engine."
+  }
+ ]
 }

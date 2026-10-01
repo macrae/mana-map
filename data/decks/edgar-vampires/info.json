@@ -34,33 +34,64 @@
   "branches": [
     {
       "name": "drain-v1",
-      "opened": "2026-09-30",
-      "why": "A MINOR increment (v1.2.0) aimed at the pilot's 2026-09-29 direction change: life gain / life drain as the ENGINE, at bracket 3 — prescription 0afff3dd0bc7 holds the ranked cuts and adds under both readings of the Conqueror question. OPENED AS A MARKER AND PAUSED (2026-09-30, the pilot's call): no swap is staged until Forge can be trusted to CAST this deck's spells per its strategy — Vish Kal was cast 0 times in 220 games across three tracked runs while the deck's other six-drops were cast 4-6 times per 60 — and until a Forge endpoint exists for the drain axis (life loss dealt outside combat, life gained), which win_rate here only stands in for.",
+      "opened": "2026-10-01",
+      "why": "v1.2.0 MINOR, the 2026-09-29 direction (log 006): life gain / life DRAIN as the engine, big evasive Vampires, true bracket 3 under reading B (Bloodthirsty Conqueror out, zero two-card infinites). Six swaps, decided 2026-09-30 ('five or six, I just want the absolute best deck'). Harness PINNED: standard-v3 / overrides 8c347642 / profile mm-edgar-vampires (aif7c3b6a8) / patch set c22ecaf3 — no forge-install, hint or patch change until this branch decides. Champion baseline 2026-09-30/10-01: 200 games (two runs, seeds 1664213641 + 1664224641), 144 decided, win rate 0.340; drain_dealt mean 6.59, sd 18.0, median 0 -> MDE@200/arm 5.04, so the line sits one MDE above the mean. Exploratory: forge.extra_draw_per_turn (1.46), empty_hand_turns (0.62), biggest_hit (8.40), evasive_damage_share (0.32), life_gained (35.0), kills_by_ability (0.47), combat damage (48.6); win rate is the guard. Evidence: candidate_scan.json + edhrec_cards.json (2026-09-30), deck_recon.json (2026-09-30), prescription 0afff3dd0bc7 (skeptic PASS), strategy:aristocrats, strategy:life-as-resource.lifegain-engine, strategy:deckbuilding.typal-density, strategy:card-advantage.plan-draw.",
       "state": "OPEN",
       "state_why": "no proposal — this is an experiment, not a decision",
       "proposal": null,
       "pull_list": {
-        "buy": [],
+        "buy": [
+          {
+            "name": "Malakir Bloodwitch"
+          },
+          {
+            "name": "Species Specialist"
+          },
+          {
+            "name": "Twilight Prophet"
+          },
+          {
+            "name": "Vein Ripper"
+          }
+        ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 0,
+        "box": [
+          {
+            "name": "Bastion of Remembrance",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
+            "name": "Toxic Deluge",
+            "where": [
+              "Hapatra"
+            ]
+          }
+        ],
+        "blocking": 4,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 6,
+      "out": 6,
       "counts": {
-        "in_deck": 96,
-        "box": 0,
+        "in_deck": 90,
+        "box": 2,
         "elsewhere": 0,
-        "buy": 0,
+        "buy": 4,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Malakir Bloodwitch",
+        "Species Specialist",
+        "Twilight Prophet",
+        "Vein Ripper"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
@@ -113,14 +144,19 @@
           "is_new": false
         },
         {
-          "name": "Battlefield Forge",
-          "state": "in_deck",
-          "where": [],
+          "name": "Bastion of Remembrance",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
-          "name": "Blade of the Bloodchief",
+          "name": "Battlefield Forge",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -155,13 +191,6 @@
           "is_new": false
         },
         {
-          "name": "Bloodflow Connoisseur",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Bloodletter of Aclazotz",
           "state": "in_deck",
           "where": [],
@@ -177,13 +206,6 @@
         },
         {
           "name": "Bloodstained Mire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Bloodthirsty Conqueror",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -261,13 +283,6 @@
         },
         {
           "name": "Concealed Courtyard",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cordial Vampire",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -386,13 +401,6 @@
           "is_new": false
         },
         {
-          "name": "Legion Lieutenant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Legion's Landing // Adanto, the First Fort",
           "state": "in_deck",
           "where": [],
@@ -412,6 +420,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Malakir Bloodwitch",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -575,6 +590,13 @@
           "is_new": false
         },
         {
+          "name": "Species Specialist",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Spectator Seating",
           "state": "in_deck",
           "where": [],
@@ -583,13 +605,6 @@
         },
         {
           "name": "Stroke of Midnight",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stromkirk Captain",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -652,6 +667,25 @@
           "is_new": false
         },
         {
+          "name": "Toxic Deluge",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Twilight Prophet",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Vampire Cutthroat",
           "state": "in_deck",
           "where": [],
@@ -685,6 +719,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Vein Ripper",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Viscera Seer",
@@ -736,7 +777,7 @@
           "is_new": false
         }
       ],
-      "has_cards": false
+      "has_cards": true
     },
     {
       "name": "elenda-v1",
@@ -5138,97 +5179,97 @@
           "n": 10000
         },
         "3": {
-          "rate": 0.0672,
+          "rate": 0.0673,
           "ci95": [
-            0.0625,
-            0.0723
+            0.0626,
+            0.0724
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0454,
+          "rate": 0.0457,
           "ci95": [
-            0.0415,
-            0.0497
+            0.0418,
+            0.05
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.034,
+          "rate": 0.0355,
           "ci95": [
-            0.0306,
-            0.0377
+            0.032,
+            0.0393
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0249,
+          "rate": 0.027,
           "ci95": [
-            0.022,
-            0.0281
+            0.024,
+            0.0304
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0348,
+          "rate": 0.039,
           "ci95": [
-            0.0314,
-            0.0386
+            0.0354,
+            0.043
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0425,
+          "rate": 0.0499,
           "ci95": [
-            0.0387,
-            0.0466
+            0.0458,
+            0.0543
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0426,
+          "rate": 0.0515,
           "ci95": [
-            0.0388,
-            0.0467
+            0.0473,
+            0.056
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0374,
+          "rate": 0.0452,
           "ci95": [
-            0.0339,
-            0.0413
+            0.0413,
+            0.0494
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1055,
+        "rate": 0.1124,
         "ci95": [
-          0.0996,
-          0.1117
+          0.1064,
+          0.1187
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 5762,
-        "hand_empty": 1102,
-        "mana_short": 4660
+        "stall_turns": 6085,
+        "hand_empty": 1329,
+        "mana_short": 4756
       },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.3989,
+        "rate": 0.399,
         "ci95": [
-          0.3893,
-          0.4085
+          0.3894,
+          0.4086
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2833,
+      "missed_land_drop_rate": 0.2849,
       "mulliganed": {
         "rate": 0.1892,
         "ci95": [
@@ -5243,15 +5284,15 @@
         "3": 3.248,
         "4": 4.181,
         "5": 4.938,
-        "6": 5.588,
-        "7": 6.186,
-        "8": 6.786,
-        "9": 7.4,
-        "10": 8.036
+        "6": 5.587,
+        "7": 6.182,
+        "8": 6.777,
+        "9": 7.385,
+        "10": 8.016
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.1141
+      "mana_stdev_turn_five": 1.114
     },
     "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6"
   },
@@ -5315,7 +5356,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.318,
+          "value": 6.321,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -5465,15 +5506,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.018,
+            "10": 7.995,
             "2": 2.147,
             "3": 3.257,
             "4": 4.19,
             "5": 4.942,
-            "6": 5.59,
-            "7": 6.182,
-            "8": 6.782,
-            "9": 7.379
+            "6": 5.589,
+            "7": 6.177,
+            "8": 6.772,
+            "9": 7.363
           },
           "tier": "data",
           "weight": "detail",
@@ -5484,15 +5525,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.554,
+            "10": 0.549,
             "2": 0.997,
             "3": 0.919,
             "4": 0.809,
             "5": 0.691,
-            "6": 0.598,
-            "7": 0.538,
-            "8": 0.529,
-            "9": 0.528
+            "6": 0.597,
+            "7": 0.535,
+            "8": 0.525,
+            "9": 0.523
           },
           "tier": "data",
           "weight": "detail",
@@ -5503,15 +5544,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.56,
-            "10": 15.72,
+            "10": 15.488,
             "2": 1.438,
-            "3": 2.806,
-            "4": 4.563,
-            "5": 6.119,
-            "6": 7.6,
-            "7": 9.55,
-            "8": 11.486,
-            "9": 13.507
+            "3": 2.8,
+            "4": 4.527,
+            "5": 6.004,
+            "6": 7.458,
+            "7": 9.397,
+            "8": 11.31,
+            "9": 13.312
           },
           "tier": "data",
           "weight": "detail",
@@ -5537,12 +5578,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 654,
+            "10": 655,
             "5": 2,
-            "6": 402,
-            "7": 2722,
-            "8": 3794,
-            "9": 2129
+            "6": 433,
+            "7": 2717,
+            "8": 3744,
+            "9": 2150
           },
           "tier": "data",
           "weight": "detail",
@@ -5558,7 +5599,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.318,
+    "commander_mean_cast_turn": 6.321,
     "commander_cast_by_turn_6_pct": 60,
     "targets": [
       {
@@ -5607,19 +5648,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.99,
+      "mean_kill_turn": 7.987,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
       "kill_by_turn_8_pct": 69,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 3,
       "kill_turn_histogram": {
-        "10": 654,
+        "10": 655,
         "5": 2,
-        "6": 402,
-        "7": 2722,
-        "8": 3794,
-        "9": 2129
+        "6": 433,
+        "7": 2717,
+        "8": 3744,
+        "9": 2150
       }
     }
   },
@@ -5810,46 +5851,46 @@
     }
   ],
   "simulation": {
-    "runs": 15,
-    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n20-da677689-s1664213641-podExperimental-c600-ov8bf04cfc-tlfe64c503",
-    "at": "2026-09-30",
+    "runs": 17,
+    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n116-da677689-s1664224641-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3",
+    "at": "2026-10-01",
     "stale": false,
     "ran_on_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
     "ran_on_version": 3,
     "current_version": 3,
-    "runs_on_current_list": 6,
-    "games": 20,
-    "wins": 4,
-    "decided": 16,
+    "runs_on_current_list": 8,
+    "games": 116,
+    "wins": 26,
+    "decided": 81,
     "vs": [
       "sythis-enchantress",
       "jarad-graveyard",
       "abaddon"
     ],
-    "win_rate": 0.25,
+    "win_rate": 0.321,
     "win_rate_ci95": [
-      0.102,
-      0.495
+      0.229,
+      0.429
     ],
     "piloting": {
-      "comparable": false,
-      "lands_ratio": 0.824,
-      "casts_ratio": 0.742,
-      "reading": "OUR SEAT WAS HANDLED WORSE THAN THE POD. A win rate from this run is measuring the AI's preferences as much as the decks; treat the outcome as uninformative and read the observations instead."
+      "comparable": true,
+      "lands_ratio": 0.932,
+      "casts_ratio": 0.835,
+      "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
     },
     "engine_casts": {
       "covered": true,
       "never_cast": [],
-      "reading": "the AI played the deck's declared engine; a win rate from this run is about the deck. BUT Night's Whisper sat castable and uncast on 15 own turns, Ashnod's Altar sat castable and uncast on 6 own turns, Sanctum Seeker sat castable and uncast on 5 own turns (+5 more) — measured from the hand, not inferred."
+      "reading": "the AI played the deck's declared engine; a win rate from this run is about the deck."
     },
     "eliminated_by": {
-      "sythis-enchantress": 6,
-      "abaddon": 3,
-      "jarad-graveyard": 1
+      "sythis-enchantress": 32,
+      "abaddon": 7,
+      "jarad-graveyard": 10
     },
-    "mean_round": 19.2,
-    "token_damage_share": 0.31,
-    "tokens_observed": 3.65
+    "mean_round": 19.5,
+    "token_damage_share": 0.2,
+    "tokens_observed": 2.42
   },
   "experiments": {
     "count": 1,
@@ -5914,6 +5955,7 @@
     ]
   },
   "next": [
+    "branch `drain-v1` needs 4 card(s) sourced — `manamap pilot deck-branch edgar-vampires source drain-v1`",
     "open questions routed: diagnose ×10, goldfish ×5, research-strategy ×6, resolve-stack ×8"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

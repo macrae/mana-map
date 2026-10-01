@@ -843,6 +843,14 @@
     "what": "the global turn our seat was eliminated, mean over the games it lost",
     "why": "survival; conditional on losing, so a deck that wins more can read worse here for dying faster in the games it still loses"
    },
+   "forge.empty_hand_turns": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "per_game": "empty_hand_turns",
+    "what": "own turns that ended with ZERO cards in hand, per game \u2014 exact under the telemetry patch, absent on a plain record",
+    "why": "the complaint itself, counted: a turn spent with nothing to rebuild with"
+   },
    "forge.evasive_damage_share": {
     "conditional": true,
     "kind": "mean",
@@ -850,6 +858,14 @@
     "per_game": "evasive_damage_share",
     "what": "share of our combat damage to players dealt by sources with flying, trample, menace or another evasion keyword, per game with any combat damage (from the deck's own keywords, so our seat only)",
     "why": "'big scary vampires with all sorts of ways to hurt people' \u2014 measured as the damage that got through because it could not be blocked"
+   },
+   "forge.extra_draw_per_turn": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "extra_draw_per_turn",
+    "what": "cards that reached our hand from the library BEYOND the natural draw step, per own turn, per game \u2014 (library_to_hand minus one per own turn, minus nothing for the first turn on the play) over own turns; a wheel, a cantrip, a tutor and a death-trigger draw all count, a mulligan does not",
+    "why": "the draw the DECK added, so a list that refills its hand reads apart from one that only draws for the turn; telemetry records only"
    },
    "forge.first_attack_turn": {
     "conditional": true,
@@ -1022,7 +1038,7 @@
     }
    ]
   },
-  "why": "the branch sat at ['standard-v3'] and the champion at ['standard-v3 (overrides 260c7a72816d, ours mm-edgar-vampires, patches fe64c50348a1)', 'standard-v3 (overrides 60636e9e5565, patches fe64c50348a1)', 'standard-v3 (overrides 8bf04cfcdb21, patches fe64c50348a1)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 0acbd08b61d7)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 56cd856103f4)', 'standard-v3 (overrides c6c3ccc1354d, ours mm-edgar-vampires, patches beb0c66dd0d9)'] \u2014 no table in common under the same harness, and a rate from another table is not this branch's control. Run `manamap pilot simulate edgar-vampires --pod ('standard-v3', '', 'Default', '')`"
+  "why": "the branch sat at ['standard-v3'] and the champion at ['standard-v3 (overrides 260c7a72816d, ours mm-edgar-vampires, patches fe64c50348a1)', 'standard-v3 (overrides 60636e9e5565, patches fe64c50348a1)', 'standard-v3 (overrides 8bf04cfcdb21, patches fe64c50348a1)', 'standard-v3 (overrides 8c347642bcf0, ours mm-edgar-vampires, patches c22ecaf3328d)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 0acbd08b61d7)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 56cd856103f4)', 'standard-v3 (overrides c6c3ccc1354d, ours mm-edgar-vampires, patches beb0c66dd0d9)'] \u2014 no table in common under the same harness, and a rate from another table is not this branch's control. Run `manamap pilot simulate edgar-vampires --pod ('standard-v3', '', 'Default', '')`"
  },
  "harness": {
   "iterations": 10000,
@@ -1168,7 +1184,7 @@
   "why": "Single-card patch measured for a yay/nay (2026-09-11): Dusk Legion Sergeant for Stroke of Midnight. a two-mana Vampire (an eminence trigger) whose sacrifice gives every nontoken Vampire persist for the turn -- a second life against the wipe that ends most of the deck's games; interaction reads 12 against a 5-6 target, and Stroke is a three-mana spot removal The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it."
  },
  "objective_grade": {
-  "reading": 0.7342,
+  "reading": 0.7291,
   "shortfall": null,
   "state": "met"
  },
@@ -1215,12 +1231,12 @@
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "19.55 -> 20.35, a change of +0.80 (+4%)",
+    "reads_as": "19.31 -> 20.10, a change of +0.78 (+4%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "11.09 -> 11.57, a change of +0.47 (+4%)",
+    "reads_as": "10.91 -> 11.38, a change of +0.47 (+4%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
@@ -1231,7 +1247,7 @@
   ],
   "risk": [
    {
-    "detail": "the largest is stall, 2 in a row at +0.009 against an MDE of 0.013. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is stall, 2 in a row at +0.011 against an MDE of 0.013. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1264,7 +1280,7 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "the branch sat at ['standard-v3'] and the champion at ['standard-v3 (overrides 260c7a72816d, ours mm-edgar-vampires, patches fe64c50348a1)', 'standard-v3 (overrides 60636e9e5565, patches fe64c50348a1)', 'standard-v3 (overrides 8bf04cfcdb21, patches fe64c50348a1)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 0acbd08b61d7)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 56cd856103f4)', 'standard-v3 (overrides c6c3ccc1354d, ours mm-edgar-vampires, patches beb0c66dd0d9)'] \u2014 no table in common under the same harness, and a rate from another table is not this branch's control. Run `manamap pilot simulate edgar-vampires --pod ('standard-v3', '', 'Default', '')`",
+    "detail": "the branch sat at ['standard-v3'] and the champion at ['standard-v3 (overrides 260c7a72816d, ours mm-edgar-vampires, patches fe64c50348a1)', 'standard-v3 (overrides 60636e9e5565, patches fe64c50348a1)', 'standard-v3 (overrides 8bf04cfcdb21, patches fe64c50348a1)', 'standard-v3 (overrides 8c347642bcf0, ours mm-edgar-vampires, patches c22ecaf3328d)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 0acbd08b61d7)', 'standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 56cd856103f4)', 'standard-v3 (overrides c6c3ccc1354d, ours mm-edgar-vampires, patches beb0c66dd0d9)'] \u2014 no table in common under the same harness, and a rate from another table is not this branch's control. Run `manamap pilot simulate edgar-vampires --pod ('standard-v3', '', 'Default', '')`",
     "kind": "structural",
     "what": "no game has been played at a real table",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
@@ -1282,13 +1298,13 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 20.3486,
-   "champion": 19.548,
+   "branch": 20.0955,
+   "champion": 19.3106,
    "ci95_diff": [
-    0.6136,
-    0.9876
+    0.5993,
+    0.9705
    ],
-   "delta": 0.8006,
+   "delta": 0.7849,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1296,27 +1312,27 @@
     "significant": true,
     "threshold": 2.807
    },
-   "mde": 0.2702,
+   "mde": 0.2671,
    "measure": "damage @T10",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "19.55 -> 20.35, a change of +0.80 (+4%)",
+   "reads_as": "19.31 -> 20.10, a change of +0.78 (+4%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "better",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": 8.389
+   "z": 8.291
   },
   {
    "better_is": "higher",
-   "branch": 11.5683,
-   "champion": 11.0937,
+   "branch": 11.3799,
+   "champion": 10.9063,
    "ci95_diff": [
-    0.3593,
-    0.5899
+    0.3579,
+    0.5893
    ],
-   "delta": 0.4746,
+   "delta": 0.4736,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1324,55 +1340,55 @@
     "significant": true,
     "threshold": 2.773
    },
-   "mde": 0.1654,
+   "mde": 0.1658,
    "measure": "board power @T6",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "11.09 -> 11.57, a change of +0.47 (+4%)",
+   "reads_as": "10.91 -> 11.38, a change of +0.47 (+4%)",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": 8.071
+   "z": 8.026
   },
   {
    "better_is": "higher",
-   "branch": 0.0427,
-   "champion": 0.0372,
+   "branch": 0.0453,
+   "champion": 0.0408,
    "ci95_diff": [
-    0.0001,
-    0.0109
+    -0.0011,
+    0.0101
    ],
-   "delta": 0.0055,
-   "excludes_zero": true,
+   "delta": 0.0045,
+   "excludes_zero": false,
    "holm": {
     "family": 10,
     "rank": 5,
     "significant": false,
     "threshold": 2.638
    },
-   "mde": 0.008,
+   "mde": 0.0082,
    "measure": "killed by T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.008 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 1.986
+   "z": 1.568
   },
   {
    "better_is": "higher",
-   "branch": 0.9741,
-   "champion": 0.9631,
+   "branch": 0.9737,
+   "champion": 0.9632,
    "ci95_diff": [
-    0.0062,
-    0.0159
+    0.0057,
+    0.0154
    ],
-   "delta": 0.011,
+   "delta": 0.0105,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1390,17 +1406,17 @@
    "verdict": "better",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 4.462
+   "z": 4.249
   },
   {
    "better_is": "lower",
-   "branch": 0.115,
-   "champion": 0.1055,
+   "branch": 0.1234,
+   "champion": 0.1124,
    "ci95_diff": [
-    0.0008,
-    0.0182
+    0.0021,
+    0.0199
    ],
-   "delta": 0.0095,
+   "delta": 0.011,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1408,22 +1424,22 @@
     "significant": false,
     "threshold": 2.69
    },
-   "mde": 0.0126,
+   "mde": 0.013,
    "measure": "stall, 2 in a row",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.013 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.013 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": 2.145
+   "z": 2.412
   },
   {
    "better_is": "lower",
-   "branch": 0.3993,
-   "champion": 0.3989,
+   "branch": 0.3994,
+   "champion": 0.399,
    "ci95_diff": [
     -0.0132,
     0.014
@@ -1478,13 +1494,13 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.1133,
-   "champion": 1.1178,
+   "branch": 1.074,
+   "champion": 1.0805,
    "ci95_diff": [
-    -0.0556,
-    0.0466
+    -0.0562,
+    0.0432
    ],
-   "delta": -0.0045,
+   "delta": -0.0065,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -1492,27 +1508,27 @@
     "significant": false,
     "threshold": 2.241
    },
-   "mde": 0.0734,
+   "mde": 0.0716,
    "measure": "extra cards by T8",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.073 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.072 this run can resolve",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": -0.173
+   "z": -0.256
   },
   {
    "better_is": "higher",
-   "branch": 0.2792,
-   "champion": 0.2883,
+   "branch": 0.2661,
+   "champion": 0.2768,
    "ci95_diff": [
-    -0.0226,
-    0.0045
+    -0.024,
+    0.0028
    ],
-   "delta": -0.0091,
+   "delta": -0.0107,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -1520,17 +1536,17 @@
     "significant": false,
     "threshold": 2.576
    },
-   "mde": 0.0194,
+   "mde": 0.0192,
    "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.009 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.019 this run can resolve",
    "role": "exploratory",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": -1.313
+   "z": -1.568
   },
   {
    "better_is": "higher",

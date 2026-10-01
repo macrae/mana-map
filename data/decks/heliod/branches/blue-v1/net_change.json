@@ -847,6 +847,14 @@
     "what": "the global turn our seat was eliminated, mean over the games it lost",
     "why": "survival; conditional on losing, so a deck that wins more can read worse here for dying faster in the games it still loses"
    },
+   "forge.empty_hand_turns": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "per_game": "empty_hand_turns",
+    "what": "own turns that ended with ZERO cards in hand, per game \u2014 exact under the telemetry patch, absent on a plain record",
+    "why": "the complaint itself, counted: a turn spent with nothing to rebuild with"
+   },
    "forge.evasive_damage_share": {
     "conditional": true,
     "kind": "mean",
@@ -854,6 +862,14 @@
     "per_game": "evasive_damage_share",
     "what": "share of our combat damage to players dealt by sources with flying, trample, menace or another evasion keyword, per game with any combat damage (from the deck's own keywords, so our seat only)",
     "why": "'big scary vampires with all sorts of ways to hurt people' \u2014 measured as the damage that got through because it could not be blocked"
+   },
+   "forge.extra_draw_per_turn": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "extra_draw_per_turn",
+    "what": "cards that reached our hand from the library BEYOND the natural draw step, per own turn, per game \u2014 (library_to_hand minus one per own turn, minus nothing for the first turn on the play) over own turns; a wheel, a cantrip, a tutor and a death-trigger draw all count, a mulligan does not",
+    "why": "the draw the DECK added, so a list that refills its hand reads apart from one that only draws for the turn; telemetry records only"
    },
    "forge.first_attack_turn": {
     "conditional": true,

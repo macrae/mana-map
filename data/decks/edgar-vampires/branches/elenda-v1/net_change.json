@@ -743,6 +743,14 @@
     "what": "the global turn our seat was eliminated, mean over the games it lost",
     "why": "survival; conditional on losing, so a deck that wins more can read worse here for dying faster in the games it still loses"
    },
+   "forge.empty_hand_turns": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "per_game": "empty_hand_turns",
+    "what": "own turns that ended with ZERO cards in hand, per game \u2014 exact under the telemetry patch, absent on a plain record",
+    "why": "the complaint itself, counted: a turn spent with nothing to rebuild with"
+   },
    "forge.evasive_damage_share": {
     "conditional": true,
     "kind": "mean",
@@ -750,6 +758,14 @@
     "per_game": "evasive_damage_share",
     "what": "share of our combat damage to players dealt by sources with flying, trample, menace or another evasion keyword, per game with any combat damage (from the deck's own keywords, so our seat only)",
     "why": "'big scary vampires with all sorts of ways to hurt people' \u2014 measured as the damage that got through because it could not be blocked"
+   },
+   "forge.extra_draw_per_turn": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "extra_draw_per_turn",
+    "what": "cards that reached our hand from the library BEYOND the natural draw step, per own turn, per game \u2014 (library_to_hand minus one per own turn, minus nothing for the first turn on the play) over own turns; a wheel, a cantrip, a tutor and a death-trigger draw all count, a mulligan does not",
+    "why": "the draw the DECK added, so a list that refills its hand reads apart from one that only draws for the turn; telemetry records only"
    },
    "forge.first_attack_turn": {
     "conditional": true,
@@ -1068,13 +1084,13 @@
   "why": "Two death-payoff swaps the pilot called 2026-09-12: Elenda, the Dusk Rose for Gifted Aetherborn, Blade of the Bloodchief for Unbounded Potential. Both turn the nine sacrifice outlets into counters, and Elenda into lifelink tokens on death, doubled by Procession and Mondrak. Nothing dies in the goldfish and the Forge AI does not sacrifice in response, so the objective is a CONTROL at the champion's own kill-by-8 reading."
  },
  "objective_grade": {
-  "reading": 0.6887,
-  "shortfall": 0.0113,
+  "reading": 0.6874,
+  "shortfall": 0.0126,
   "state": "not resolvable",
-  "why": "missed by 0.0113, which is under the 0.0183 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "why": "missed by 0.0126, which is under the 0.0184 this run could detect \u2014 evidence of nothing, not evidence of failure"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0113, which is under the 0.0183 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The miss is smaller than this run can see. missed by 0.0126, which is under the 0.0184 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
    "box": 0,
    "buy": 0,
@@ -1118,7 +1134,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.265. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.263. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1156,11 +1172,11 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 19.548,
-   "champion": 19.548,
+   "branch": 19.3106,
+   "champion": 19.3106,
    "ci95_diff": [
-    -0.185,
-    0.185
+    -0.1842,
+    0.1842
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1170,10 +1186,10 @@
     "significant": false,
     "threshold": 2.807
    },
-   "mde": 0.2645,
+   "mde": 0.2633,
    "measure": "damage @T10",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.265 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.263 this run can resolve",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
@@ -1184,11 +1200,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 11.0937,
-   "champion": 11.0937,
+   "branch": 10.9063,
+   "champion": 10.9063,
    "ci95_diff": [
-    -0.1148,
-    0.1148
+    -0.1153,
+    0.1153
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1198,10 +1214,10 @@
     "significant": false,
     "threshold": 2.773
    },
-   "mde": 0.1641,
+   "mde": 0.1649,
    "measure": "board power @T6",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.164 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.165 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
@@ -1212,11 +1228,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.0372,
-   "champion": 0.0372,
+   "branch": 0.0408,
+   "champion": 0.0408,
    "ci95_diff": [
-    -0.0053,
-    0.0053
+    -0.0055,
+    0.0055
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1226,10 +1242,10 @@
     "significant": false,
     "threshold": 2.734
    },
-   "mde": 0.0075,
+   "mde": 0.0078,
    "measure": "killed by T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.007 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.008 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
@@ -1240,8 +1256,8 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9631,
-   "champion": 0.9631,
+   "branch": 0.9632,
+   "champion": 0.9632,
    "ci95_diff": [
     -0.0052,
     0.0052
@@ -1268,11 +1284,11 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.1055,
-   "champion": 0.1055,
+   "branch": 0.1124,
+   "champion": 0.1124,
    "ci95_diff": [
-    -0.0085,
-    0.0085
+    -0.0088,
+    0.0088
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1282,10 +1298,10 @@
     "significant": false,
     "threshold": 2.638
    },
-   "mde": 0.0122,
+   "mde": 0.0125,
    "measure": "stall, 2 in a row",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.012 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.013 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
@@ -1296,8 +1312,8 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.3989,
-   "champion": 0.3989,
+   "branch": 0.399,
+   "champion": 0.399,
    "ci95_diff": [
     -0.0136,
     0.0136
@@ -1352,11 +1368,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.1178,
-   "champion": 1.1178,
+   "branch": 1.0805,
+   "champion": 1.0805,
    "ci95_diff": [
-    -0.0514,
-    0.0514
+    -0.0501,
+    0.0501
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1366,10 +1382,10 @@
     "significant": false,
     "threshold": 2.394
    },
-   "mde": 0.0734,
+   "mde": 0.0716,
    "measure": "extra cards by T8",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.073 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.072 this run can resolve",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
@@ -1380,11 +1396,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2883,
-   "champion": 0.2883,
+   "branch": 0.2768,
+   "champion": 0.2768,
    "ci95_diff": [
-    -0.0136,
-    0.0136
+    -0.0134,
+    0.0134
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1394,7 +1410,7 @@
     "significant": false,
     "threshold": 2.241
    },
-   "mde": 0.0194,
+   "mde": 0.0192,
    "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.019 this run can resolve",

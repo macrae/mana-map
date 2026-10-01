@@ -924,7 +924,7 @@ counts of *functions*, not cards, so a card doing two jobs fills two slots
 (Hinds counts self-mill as draw, reanimation as interaction) and a graveyard
 deck legitimately runs 5 draw. Hinds' own verdict on his template is that it is
 "too 'one size fits all'". Take the categories, derive the counts from the
-deck's actual failure modes — and for draw, shape as well as count
+deck's actual failure modes. For draw, shape as well as count
 (strategy:card-advantage.plan-draw).
 
 Sources:
