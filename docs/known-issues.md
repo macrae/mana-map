@@ -1591,6 +1591,14 @@ experiment arm by its `decklist_sha256` under the same four-tuple, with a test a
   CAST-LATE and names the class; the earlier claim in this entry that a hint existed was
   wrong and is corrected here rather than deleted.
 
+  A THIRD LIMIT: **the shell cannot prove a COMBAT-GATED trigger.** Shared Animosity read
+  PLAYED (cast in every shell it was drawn in) with `triggered` 0, and the cause is that our
+  seat declared ZERO attacks in the shell — the filler is the deck's cheapest spells against
+  one opposing board and the AI never swings. So for a card whose payoff is on attack, the
+  gate answers only "will the AI cast it", and whether it DOES anything is read in the pod
+  arm against `first_attack_turn` and `combat_damage_dealt_to_players`. The `triggered`
+  column is evidence when it is non-zero and silent when it is zero on a combat trigger.
+
   A SECOND LIMIT, measured the same day: the two-seat shell UNDERSTATES lateness. Bastion of
   Remembrance read PLAYED in its 8-game shell (cast in 3 of 4 drawn games, 2 castable-uncast
   turns) and CAST-LATE in the 200-game pod arm (19 casts across 37 in-hand games, 72

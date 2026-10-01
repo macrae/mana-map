@@ -415,6 +415,11 @@ def write_proofs(slug, branch, kept, docs, current, shell=None):
            "limits": ["A shell, not the deck: the card's VALUE is not measured here, only whether the AI plays it.",
                       "Castable is a lands-only floor (colours ignored), the same floor engine_casts carries.",
                       "Two seats, short clock: a card that needs a four-player board or a long game can read HELD here and play at the table.",
+                      "A COMBAT-GATED TRIGGER CANNOT BE PROVEN HERE. Measured 2026-10-01: our seat declared ZERO attacks "
+                      "across Shared Animosity's shells, so its `triggered` count is 0 and means nothing — the shell's filler "
+                      "is the deck's cheapest spells against one opposing board, and the AI does not swing. `cast` is the "
+                      "verdict this tool owns; a trigger that needs combat is read in the pod arm, where `first_attack_turn` "
+                      "says whether the deck attacked at all.",
                       "A proof is a measurement under one harness (overrides, profile, patch set); a changed harness voids it, like model_version."]}
     p = proofs_path(slug, branch)
     p.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

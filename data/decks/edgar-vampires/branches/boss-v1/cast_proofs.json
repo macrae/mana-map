@@ -1,0 +1,504 @@
+{
+  "slug": "edgar-vampires",
+  "branch": "boss-v1",
+  "as_of": "2026-10-01",
+  "harness": {
+    "overrides": "8c347642bcf0",
+    "patches": "c22ecaf3328d",
+    "forge": {
+      "version": "2.0.14",
+      "build": "2026-08-08 22:49:26"
+    },
+    "jar": "forge-gui-desktop-2.0.14-mm-telemetry.jar",
+    "profile": "mm-edgar-vampires",
+    "profile_sha": "f7c3b6a8cec1"
+  },
+  "shell": {
+    "vs": "giada-angels",
+    "games": 8,
+    "copies": 4,
+    "clock": 300,
+    "seed": 4343
+  },
+  "cards": {
+    "Bastion of Remembrance": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 5,
+      "cast": 3,
+      "activated": 0,
+      "triggered": 5,
+      "discarded": 0,
+      "castable_uncast_turns": 5,
+      "held_at_end_games": 2,
+      "held_castable_games": 3,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 5 across 5 drawn game(s); held castable and uncast on 5 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "permanent-cast-priority"
+      ],
+      "remedies": [
+        "NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only (MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every deck affected — not done) or accept the lateness and judge the card knowing it"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Enchantment",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Indulging Patrician": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 6,
+      "cast": 5,
+      "activated": 0,
+      "triggered": 1,
+      "discarded": 0,
+      "castable_uncast_turns": 9,
+      "held_at_end_games": 3,
+      "held_castable_games": 2,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 5 / activated 0 / triggered 1 across 5 drawn game(s); held castable and uncast on 9 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Vampire Noble",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 18,
+          "Plains": 18
+        },
+        "cmc": 3.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Malakir Bloodwitch": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 2,
+      "drawn": 3,
+      "cast": 1,
+      "activated": 0,
+      "triggered": 1,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 1,
+      "held_castable_games": 1,
+      "timeouts": 1,
+      "verdict": "PLAYED: cast 1 / activated 0 / triggered 1 across 2 drawn game(s); held castable and uncast on 2 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": "Count$Valid Vampire.YouCtrl",
+        "types": "Creature Vampire Shaman",
+        "ai_flag": "Random",
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 5.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Mirkwood Bats": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 4,
+      "drawn": 5,
+      "cast": 2,
+      "activated": 0,
+      "triggered": 6,
+      "discarded": 0,
+      "castable_uncast_turns": 4,
+      "held_at_end_games": 2,
+      "held_castable_games": 1,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 2 / activated 0 / triggered 6 across 4 drawn game(s); held castable and uncast on 4 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Bat",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 4.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Orcish Bowmasters": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 6,
+      "cast": 2,
+      "activated": 0,
+      "triggered": 9,
+      "discarded": 1,
+      "castable_uncast_turns": 1,
+      "held_at_end_games": 2,
+      "held_castable_games": 1,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 2 / activated 0 / triggered 9 across 5 drawn game(s); held castable and uncast on 1 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Orc Archer",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 2.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Shared Animosity": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 3,
+      "drawn": 4,
+      "cast": 4,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 0,
+      "held_at_end_games": 3,
+      "held_castable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 4 / activated 0 / triggered 0 across 3 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "permanent-cast-priority"
+      ],
+      "remedies": [
+        "NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only (MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every deck affected — not done) or accept the lateness and judge the card knowing it"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": "Count$Valid Creature.attacking+!TriggeredAttacker+sharesCreatureTypeWith TriggeredAttacker",
+        "types": "Enchantment",
+        "ai_flag": "Random",
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Smothering Tithe": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 4,
+      "drawn": 4,
+      "cast": 2,
+      "activated": 0,
+      "triggered": 15,
+      "discarded": 0,
+      "castable_uncast_turns": 0,
+      "held_at_end_games": 1,
+      "held_castable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 2 / activated 0 / triggered 15 across 4 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "permanent-cast-priority"
+      ],
+      "remedies": [
+        "NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only (MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every deck affected — not done) or accept the lateness and judge the card knowing it"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Enchantment",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Plains": 36
+        },
+        "cmc": 4.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Species Specialist": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 3,
+      "drawn": 8,
+      "cast": 5,
+      "activated": 0,
+      "triggered": 15,
+      "discarded": 0,
+      "castable_uncast_turns": 1,
+      "held_at_end_games": 3,
+      "held_castable_games": 1,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 5 / activated 0 / triggered 15 across 3 drawn game(s); held castable and uncast on 1 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Human Warrior",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": [
+          "MostProminentInComputerDeck"
+        ]
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 4.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Twilight Prophet": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 8,
+      "cast": 6,
+      "activated": 0,
+      "triggered": 12,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 2,
+      "held_castable_games": 1,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 6 / activated 0 / triggered 12 across 5 drawn game(s); held castable and uncast on 2 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": "Remembered$CardManaCost",
+        "types": "Creature Vampire Cleric",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 4.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Vein Ripper": {
+      "as_of": "2026-10-01",
+      "games": 8,
+      "drawn_games": 3,
+      "drawn": 5,
+      "cast": 3,
+      "activated": 0,
+      "triggered": 3,
+      "discarded": 0,
+      "castable_uncast_turns": 0,
+      "held_at_end_games": 2,
+      "held_castable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 3 across 3 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Vampire Assassin",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 6.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    }
+  },
+  "limits": [
+    "A shell, not the deck: the card's VALUE is not measured here, only whether the AI plays it.",
+    "Castable is a lands-only floor (colours ignored), the same floor engine_casts carries.",
+    "Two seats, short clock: a card that needs a four-player board or a long game can read HELD here and play at the table.",
+    "A proof is a measurement under one harness (overrides, profile, patch set); a changed harness voids it, like model_version."
+  ]
+}
