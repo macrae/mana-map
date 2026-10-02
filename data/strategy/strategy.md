@@ -577,18 +577,19 @@ An aristocrats turn needs three things — fodder, an outlet, a payoff — and t
 outlet is the piece that gives the pilot "control over when things die"
 (Ullman). Price outlets by activation first. A free one (Viscera Seer; Warren
 Soultrader's one life is "essentially free in our 40-life format", Gottfried)
-fires with no mana open, in response to removal, and loops as many times as
+fires with no mana open, in response to removal, and loops while
 you have bodies; a mana-gated one (Indulgent Aristocrat's {2}) converts one
 body per two mana and competes with the curve — a payoff with an outlet
-attached. Commander Theory's frame: the outlet makes every creature you own
-answer-proof. Gregory's correction is the real cost: a free outlet is "a
+attached. Commander Theory's frame: an outlet makes every creature
+answer-proof. Gregory's correction is the cost: a free outlet is "a
 fragile, highly suspicious permanent" that "signif[ies] a checkmate scenario",
-so it eats the removal your payoffs would otherwise draw. Fodder comes three
-ways (Gottfried): tokens, cheap bodies, recursive creatures; a real threat is
-fodder only when it is about to die anyway — sacrificed in response, a one-
+so it eats the removal your payoffs would draw. Fodder comes three
+ways (Gottfried): tokens, cheap bodies, recursion; a real threat is
+fodder only when about to die anyway — sacrificed in response, a one-
 for-one becomes a death trigger plus a wasted spell. Drain per death is the
-exchange rate: payoffs on board × deaths you can manufacture this turn,
-against the lowest life total (strategy:combat-math.racing).
+exchange rate: converters live × deaths you can manufacture this turn, against
+the lowest total (strategy:combat-math.racing) — closing is a separate question
+(strategy:conversion).
 
 Sources:
 - Cooper Gottfried, "EDHREC Guide to Aristocrats in Commander" — https://edhrec.com/guides/edhrec-guide-to-aristocrats-in-commander
@@ -645,6 +646,221 @@ Sources:
 - GenoDoak777, "Cards That Draw a Card When Creatures Die in Commander - Top 10" — https://cardmystic.com/articles/5773cd5d-ac55-43dd-b674-bfb869cf35e7
 - David Royale, "Teysa Karlov Commander Deck Guide" — https://draftsim.com/mtg-teysa-karlov-edh-deck/
 - Reid Duke, "Board Sweepers" — https://magic.wizards.com/en/articles/archive/level-one/board-sweepers-2015-06-22
+
+## strategy:conversion — Conversion: Turning a Board Into Dead Opponents
+
+Production is not conversion. John puts the whole of it in two sentences: "The
+point of your deck's engine is not to make resources. The point of your engine
+is to win the game." A deck that makes bodies, cards or mana has a
+numerator; winning needs a channel that turns each unit into life lost, and in a
+pod that channel must clear three 40-life totals, or 21 commander damage each
+(John). Anderson gives the shape of the failure: trading creatures for
+immediate damage
+"won't go far enough to bring down multiple 40-life opponents, especially with
+whoever we don't kill first taking free shots at us while we're tapped out".
+Collins names it from inside a sacrifice list — without a good output "all our
+deck will do is spin its wheels". Gregory's is sharpest: most strategies take
+actions "at least positive to your board state" while aristocrats "throw away
+those incremental accruals", so the best such decks "sacrifice things
+incidentally, and are built around another strategy entirely". Diagnose a
+non-closing deck as three numbers, not one — units produced, the fraction a
+converter is live for, and the life each converted unit removes
+(strategy:deckbuilding.threat-density).
+
+Sources:
+- John, "How to Win in Commander? Attack Your Opponents Until They Die" (airza.net) — https://airza.net/2025/03/13/how-to-win-in-commander-attack-your-opponents-until-they-die
+- Tom Anderson, "Commander Archetype Inspection: Go Wide" — https://blog.cardkingdom.com/commander-archetype-inspection-go-wide/
+- Kristen Gregory, "Aristocrats Decks are a Trap in Commander" — https://blog.cardkingdom.com/aristocrats-decks-are-a-trap-in-commander/
+- Ciel Collins, "Dueling Deck Techs: Aristocrats" — https://commandersherald.com/dueling-deck-techs-aristocrats/
+
+### strategy:conversion.payoff-density — Payoff Density: the Ratio Nobody States
+
+No Commander primer gives an enabler-to-payoff ratio — that is a gap in the
+literature, not a number to look up. The fetchable floors sit one question over:
+Zupke's 3-5 finishers, Eisenherz's two primary combos, Nicol's 7-8 enablers
+against 10-12 enhancers (strategy:deckbuilding.threat-density). What exists
+instead is revealed preference. Across EDHREC's 1,496 Edgar Markov decks tagged
+aristocrats, Blood Artist appears in 93%, Cruel Celebrant 79%, Vito 72%,
+Bloodthirsty Conqueror 58% and Sanguine Bond 43% — the field's aristocrat Edgar
+carries three or four death-drains *plus* both amount-scaling converters, not
+four converters in total. Slots are the wrong unit anyway: what converts is
+converter-turns on the battlefield. Read the rate as a product — units produced
+× P(a converter is live when the unit resolves) × life per unit — and measure the
+middle term before buying more of the first. This bench's Edgar: 9.64 of its own
+creatures die a game and its death-drains fire 1.90 times, a 20% conversion, with
+its most-included converter cast in 17% of games. Count presence, then slots.
+
+Sources:
+- EDHREC, "Edgar Markov — Aristocrats" (theme page, 1,496 decks) — https://edhrec.com/commanders/edgar-markov/aristocrats
+- Andy Zupke, "Building a Commander Deck - Part Two: Structure" — https://blog.cardsphere.com/building-a-commander-deck-part-two-structure/
+- Benjamin Nicol, "Solve the Equation - How to Tell if a Strategy Has Enough Support by Using Deck Templates" — https://edhrec.com/articles/solve-the-equation-how-to-tell-if-a-strategy-has-enough-support-using-deck-templates
+- Mana Map, "edgar-vampires Forge run records (seeded, one pinned harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/edgar-vampires/sim
+
+### strategy:conversion.durability — Converters That Outlive Their Fodder
+
+A converter's type line is part of its rate. Zaccagnino reads Bastion of
+Remembrance as "a three-mana Zulaport Cutthroat on an enchantment" where "being
+an enchantment keeps it safe from a larger swathe of removal and board wipes";
+Cullen's case for noncreature anthems is the same trade one slot over
+(strategy:deckbuilding.typal-density.lord-exposure). The sharpening no primer
+states is a correlation: a creature converter dies to the same sweeper that
+kills the fodder, so a death-drain deck's conversion rate collapses at the exact
+moment its death count spikes — the largest conversion event of the game is the
+one the converter is absent for. Three fixes, cheapest first: put the converter
+on a type the wipe does not read; put it where removal cannot reach it at all
+(strategy:multiplayer.zonal-commander); or hold a converter and a death-draw
+body back for the rebuild (strategy:aristocrats.wipe-insurance,
+strategy:resource-hedging.wrath-math). Price a two-mana creature converter as a
+cheap body with high variance in uptime, not as a rate — this bench's Edgar kept
+its most-included one on the battlefield 0.6 turns a game.
+
+Sources:
+- Timothy Zaccagnino, "The Best Cards Like Blood Artist In MTG" — https://www.thegamer.com/magic-the-gathering-mtg-best-cards-like-blood-artist/
+- Scott Cullen, "Tribal Cards You Need for Commander" — https://blog.cardkingdom.com/tribal-cards-you-need-for-commander/
+- Mana Map, "edgar-vampires Forge run records (seeded, one pinned harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/edgar-vampires/sim
+
+### strategy:conversion.entries-vs-deaths — Converting Entries, Not Deaths
+
+A death costs a permanent; an entry costs nothing, because the entry already
+happened. For a deck whose production channel is tokens, that makes entry
+conversion the cheaper half of the same engine. Furtado's frame: when every
+creature you play damages opponents on arrival "it's like they're
+pseudo-unblockable, hasted threats", and that "gets better in go-wide token
+strategies" — the per-trigger rate doing the rest (Purphoros' 2 against Impact
+Tremors' 1). Scope multiplies it again: an each-opponent trigger moves three life
+per unit where a targeted one moves one — Zaccagnino's "a single creature dying
+under your control is worth three total damage in situations where Blood Artist
+would only deal one" (strategy:aristocrats.drain-scope). This is Gregory's
+prescription made mechanical: sacrifice incidentally, convert what the deck does
+anyway. It is also the under-adopted lane — of EDHREC's 51,341 Edgar lists, Blood
+Artist appears in 82% against Impact Tremors' 20% and Warleader's Call's 18%, and
+the Call is also an anthem, doing the job that makes a wide board connect
+(strategy:deckbuilding.typal-density). Noncombat-damage doublers scale this
+channel the way anthems scale combat.
+
+Sources:
+- Pedro Furtado, "The 24 Best Impact Tremors Effects in Magic Ranked" — https://draftsim.com/mtg-impact-tremors-effects/
+- Timothy Zaccagnino, "The Best Cards Like Blood Artist In MTG" — https://www.thegamer.com/magic-the-gathering-mtg-best-cards-like-blood-artist/
+- Kristen Gregory, "Aristocrats Decks are a Trap in Commander" — https://blog.cardkingdom.com/aristocrats-decks-are-a-trap-in-commander/
+- EDHREC, "Edgar Markov" (commander page, 51,341 decks) — https://edhrec.com/commanders/edgar-markov
+
+### strategy:conversion.combat-channel — Why Combat Converts Badly in a Pod
+
+Combat is the channel with three taxes. Three sets of blockers divide your width
+instead of multiplying it; an attack chooses one enemy and opens you to the two
+seats you did not choose (strategy:multiplayer.politics,
+strategy:multiplayer.threat-deflection); and the step comes once a turn however
+much you built. Anderson states the result — trading creatures for immediate
+damage "won't go far enough to bring down multiple 40-life opponents, especially
+with whoever we don't kill first taking free shots at us while we're tapped out"
+— and his fix is multiplicative: effects reading "each creature you control",
+which is why the go-wide combat channel lives or dies on anthems
+(strategy:deckbuilding.typal-density; this bench measured combat damage fall
+29.07 → 18.20 when a refactor cut every lord). None of this abandons combat:
+Duke's creatures are still for combat, and a wide board under an anthem is the
+format's cheapest twenty points. It costs it. GAP: no writer prices the
+damage-per-mana of an attack step against that of a trigger; the comparison in
+the literature is qualitative only, so a deck that needs the answer must measure
+both channels on one harness and report both totals.
+
+Sources:
+- Tom Anderson, "Commander Archetype Inspection: Go Wide" — https://blog.cardkingdom.com/commander-archetype-inspection-go-wide/
+- Reid Duke, "Attacking and Blocking" — https://magic.wizards.com/en/articles/archive/level-one/attacking-and-blocking-2015-07-27
+- Mana Map, "docs/gotchas-bench.md" (this bench's Forge measurement of the Edgar go-wide refactor) — https://github.com/macrae/mana-map/blob/main/docs/gotchas-bench.md
+
+### strategy:conversion.output-conservation — Conserved Output: When a Swap Nets Zero
+
+Adding a converter is a swap, and a swap can net zero. SaffronOlive's rule is the
+discipline: ask not "Can this card work in my deck?" but "Is this the best option
+for this slot in my deck?" — his case is a card rating 7 out of 10 going in over
+an 8 or a 9, a net loss however well it fits the theme. An added payoff gains
+what it adds MINUS what the cut card was quietly contributing
+(strategy:conversion.quiet-contributors). When several different substitutions
+each raise one channel and lower another by a similar amount, the honest reading
+is that converter count is not the binding constraint and the list is at a local
+optimum for its slot count — where strategy:deckbuilding.cutting's late-cut
+arithmetic already points. GAP: nothing this pass reached names
+conserved output as a phenomenon; the nearest established framings are
+opportunity cost per slot and diminishing returns on redundancy (strategy:deckbuilding.redundancy-vs-tutors), and neither predicts a
+total. Read conservation as evidence about the bottleneck, not about the cards,
+and measure the TOTAL, not the row you aimed at. This bench's Edgar:
+59.5 life removed a game against 47.5, 47.2 and 57.9 for three refits.
+
+Sources:
+- SaffronOlive, "Brewer's Minute: Opportunity Cost in Deck Building" — https://www.mtggoldfish.com/articles/brewer-s-minute-opportunity-cost-in-deck-building
+- Mana Map, "edgar-vampires Forge run records (seeded, one pinned harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/edgar-vampires/sim
+
+### strategy:conversion.raising-the-ceiling — What Raises the Ceiling When Swaps Do Not
+
+If output is conserved under substitution, the ceiling sits upstream of the
+payoffs — in how many INPUT events the deck generates and how fast it deploys
+them. The literature's levers, roughly ordered for a cast-triggered
+deck. Mana, where John is blunt: "for a 6 mana commander,
+investing in cards and ramp is the only thing that lets us cast our commander at
+all". Cost reduction, which Walser frames as ramp that changes only "the amount
+of mana you pay" and "encourages playing bundles of spells in a manner that Storm
+decks in particular can use" — more casts per turn off the same lands, and on a
+cast-triggered commander every qualifying cast is another trigger. Velocity
+(strategy:critical-mass.storm-math). Extra
+combats, which re-run the whole combat channel for one card and need board,
+evasion and anthems to pay (Sison). Damage doublers. And consistency, which
+Karsten prices directly (strategy:deckbuilding.mana-base,
+strategy:deckbuilding.curve).
+The test that separates a payoff problem from an input problem: hold the 99 fixed
+and ask what the deck does with two more mana, or one fewer missed land drop. If
+the answer is "the same thing, twice", stop swapping spells.
+
+Sources:
+- John, "How to Win in Commander? Attack Your Opponents Until They Die" (airza.net) — https://airza.net/2025/03/13/how-to-win-in-commander-attack-your-opponents-until-they-die
+- A.L. Walser, "The 50 Best Cost Reducers in Magic Ranked" — https://draftsim.com/mtg-cost-reducer/
+- Julian Sison, "Seize the Day: Commander Staples That Unlock Extra Combat Power" — https://www.coolstuffinc.com/a/juliansison-seo-10212024-seize-the-day-commander-staples-that-unlock-extra-combat-power
+- Frank Karsten, "How Many Lands Do You Need to Consistently Hit Your Land Drops?" (mirror of the 2017 ChannelFireball article) — https://orkerhulen.dk/onewebmedia/How%20Many%20Lands%20Do%20You%20Need%20to%20Consistently%20Hit%20Your%20Land%20Drops.pdf
+
+### strategy:conversion.quiet-contributors — Pricing a Slot That Does Nothing Now
+
+Cutting the card that was doing nothing visible is how an aggressive deck loses a
+channel nobody was watching. Sherwood's quadrant theory is the pre-cut test:
+grade the card in Developing, Winning, Losing and Parity — the last being where
+"all the players have the resources to win, but no one has the advantage", whose
+goal is to "break parity and move on to winning" — and that a card "crosses the line
+into win more when the player was winning anyway and the new card only increases
+the margin of victory". katydee's definition is the sharper half: a win-more card
+"works very well, but only if you're already winning", so "it never helps turn a
+loss into a win", and his caveat is the one that bites a cut list — the concept
+makes players worse, because the easy error is labelling a genuinely good card
+win-more and never testing it again. An enchantment that converts and a body that
+attacks are not the same slot: the cut card's quiet contributions (evasion, a
+blocker, a draw trigger) surface in rows you did not aim at. Rule: before
+cutting, name the channel the card feeds and the figure that would fall without
+it; after cutting, read every channel. And free is never free (Gregory).
+
+Sources:
+- John Sherwood, "The EDHREC Guide to Quadrant Theory in Commander" — https://edhrec.com/guides/the-edhrec-guide-to-quadrant-theory-in-commander
+- katydee, "The Problem of \"Win-More\"" — https://www.lesswrong.com/posts/Dfi7Snzs4pGSAu52b/the-problem-of-win-more
+- Kristen Gregory, "There's No Such Thing as Free in Commander" — https://blog.cardkingdom.com/theres-no-such-thing-as-free-in-commander/
+
+### strategy:conversion.kill-pattern — The Kill Pattern a Vampire List Actually Closes With
+
+Ask a primer how its Edgar wins and the answer is combat. Furtado: "Your typical
+wincon in this deck is going to come from combat damage. Your board state will
+get very large very quickly so swinging with 10+ medium-powered creatures won't
+be uncommon", with a mass-drain body as the alternate — Malakir Bloodwitch
+"becomes an instant win card if your board state is big enough". Inclusion
+agrees: across EDHREC's 51,341 Edgar lists the two most-played cards are a lord
+and a converter (Captivating Vampire 82%, Blood Artist 82%), and only 1,496 lists
+are tagged aristocrats against 2,144 tokens and 1,587 aggro — the aristocrat
+Edgar is a minority build, and inside it the compact closer is the gain-to-loss
+loop (Bloodthirsty Conqueror 58%, Exquisite Blood 53%, Sanguine Bond 43% —
+strategy:life-as-resource.lifegain-engine.bond-blood). GAP: no fetchable primer
+states a kill turn or a combat-versus-trigger split for this archetype; the
+high-power Edgar writing lives on Moxfield and Archidekt, which refuse automated
+retrieval. The literature supports the *mechanism* claim, not the *timing* one —
+treat any turn number for this deck as the bench's own measurement.
+
+Sources:
+- Pedro Furtado, "Edgar Markov Commander Deck Guide" — https://draftsim.com/edgar-markov-edh-deck/
+- EDHREC, "Edgar Markov" (commander page, 51,341 decks) — https://edhrec.com/commanders/edgar-markov
+- EDHREC, "Edgar Markov — Aristocrats" (theme page, 1,496 decks) — https://edhrec.com/commanders/edgar-markov/aristocrats
 
 ## strategy:mulligans — Mulligan Theory
 
@@ -837,6 +1053,31 @@ the insurance, pay the tax, rebuild (strategy:resource-hedging).
 
 Sources:
 - Scott Cullen, "Choosing the Right Protection for Your Commander" — https://blog.cardkingdom.com/choosing-the-right-protection-for-your-commander/
+- Ilija Miljkovac, "How Does the Commander Tax Work in EDH?" — https://draftsim.com/mtg-commander-tax-edh/
+
+### strategy:multiplayer.zonal-commander — The Commander You Need Not Cast
+
+Some commanders are a static ability with an optional body. Macready on eminence: it "grants them an ability that affects the
+Battlefield from the Command Zone, so they can shape games even if they are never
+played" — untouchable there, which is why its designer Verhey called it (as
+Macready quotes him) "The Magic Mechanic I Shouldn't Have Made!". Iñaki's rules
+framing is the test: the ability "works while that creature is in the command
+zone or on the battlefield", and against a pilot who never casts it "there's
+little you can do". Casting it therefore buys three things at full price:
+a body, its battlefield-only text, and a removal magnet. Furtado says the
+quiet part for the six-drop case: "Edgar can get expensive quickly as a 6-drop,
+but even leaving it in the command zone reasonably grows your board." Then the
+tax compounds at {2} a trip (strategy:multiplayer.commander-insurance),
+"prohibitively expensive" past three or four casts (Bockman). GAP: nobody gives
+the threshold at which the body is worth the cast. Make it a comparison, not a
+habit — cast it when the body closes or protects, else spend the mana on
+something nobody can tax (strategy:conversion.raising-the-ceiling).
+
+Sources:
+- Ben Macready, "The most powerful mechanic in MTG's Commander format returns, except now it hurts you" — https://www.wargamer.com/magic-the-gathering/eminence-sahir
+- Ignacio (Iñaki), "Eminence in MTG: Rules, History, and All 6 Cards Ranked" — https://draftsim.com/eminence-mtg/
+- Pedro Furtado, "Edgar Markov Commander Deck Guide" — https://draftsim.com/edgar-markov-edh-deck/
+- Robert Bockman, "What is the point of Commander Tax? Rules Explained" — https://www.coolstuffinc.com/a/what-is-commander-tax-rules-06252026
 - Ilija Miljkovac, "How Does the Commander Tax Work in EDH?" — https://draftsim.com/mtg-commander-tax-edh/
 
 ## strategy:deckbuilding — Deck Construction

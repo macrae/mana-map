@@ -190,3 +190,48 @@ doc's own arithmetic from oracle text, not a primer's: the 60-vs-20 drain
 over ten deaths, and the AMOUNT / COUNT split of converters. Two
 prescriptions are explicitly unsourced and flagged in-text: the lord count
 past which an anthem beats a body, and the steady / on-plan draw split.
+
+## 2026-10-01 — seventh research pass: the conversion layer, conserved output, the zonal commander
+
+Opened a new pillar for the problem class behind edgar-vampires: a deck that
+produces units reliably and cannot turn them into dead opponents. Three of the
+ten new sections name a hole in the literature rather than filling it.
+
+- added strategy:conversion — the pillar: production is not conversion. John's "the point of your engine is not to make resources. The point of your engine is to win the game", three 40-life totals (or 21 commander damage each), Anderson's "won't go far enough to bring down multiple 40-life opponents... while we're tapped out", Collins' "spin its wheels", Gregory's aristocrats-are-a-trap argument ("throw away those incremental accruals"; the best such decks "sacrifice things incidentally, and are built around another strategy entirely"); the three-number diagnosis (units × converter presence × life per unit) is the doc's own framing, not a primer's
+- added strategy:conversion.payoff-density — SOURCED GAP: no Commander primer states an enabler-to-payoff ratio, so the section says so and substitutes revealed preference — EDHREC's Edgar aristocrats theme, n=1,496: Blood Artist 93%, Cruel Celebrant 79%, Vito 72%, Bloodthirsty Conqueror 58%, Sanguine Bond 43% (fetched from EDHREC's own JSON, counts over potential_decks). The rule "count converter-turns, not slots" and the 20% conversion figure (9.64 deaths, 1.90 fires, converter cast in 17% of games) are this bench's Forge arithmetic
+- added strategy:conversion.durability — Zaccagnino's Bastion of Remembrance reading ("a three-mana Zulaport Cutthroat on an enchantment"; "being an enchantment keeps it safe from a larger swathe of removal and board wipes") and Cullen's noncreature-anthem case. The CORRELATION — a creature converter dies to the same sweeper that makes the deaths, so the rate collapses exactly when the death count spikes — is explicitly flagged in-text as stated by no primer; the 0.6 battlefield-turns figure is ours
+- added strategy:conversion.entries-vs-deaths — Furtado's on-entry damage theory ("it's like they're pseudo-unblockable, hasted threats", better "in go-wide token strategies") and Zaccagnino's each-opponent arithmetic ("worth three total damage in situations where Blood Artist would only deal one"); EDHREC's whole-commander page (n=51,341) for the adoption gap, Blood Artist 82% against Impact Tremors 20% and Warleader's Call 18%. The claim that an entry is free where a death costs a permanent is the doc's own, offered as the mechanical form of Gregory's "sacrifice incidentally"
+- added strategy:conversion.combat-channel — Anderson on why trading creatures for damage does not scale to three seats, plus the existing lord measurement (29.07 → 18.20). UNSOURCED GAP named in-text: nobody prices the damage-per-mana of an attack step against that of a trigger, so the comparison must be measured on one harness
+- added strategy:conversion.output-conservation — SaffronOlive's opportunity-cost rule ("Is this the best option for this slot in my deck?"; a 7-out-of-10 going in over an 8 or 9 is a net loss). UNSOURCED: "conserved output" is not a named phenomenon in Magic writing — the nearest framings are opportunity cost per slot and diminishing returns on redundancy, and neither predicts a total, so the section instructs reading conservation as evidence about the bottleneck. The four totals (59.5 / 47.5 / 47.2 / 57.9) are ours
+- added strategy:conversion.raising-the-ceiling — the levers the literature does name for an input-limited deck: John on a six-mana commander ("investing in cards and ramp is the only thing that lets us cast our commander at all"), Walser on cost reduction as ramp that changes only "the amount of mana you pay" and "encourages playing bundles of spells", Sison on extra combats, Karsten on consistency. The two-more-mana / one-fewer-missed-land-drop test is ours
+- added strategy:conversion.quiet-contributors — Sherwood's quadrant theory (the four quadrants quoted, plus "crosses the line into win more when the player was winning anyway") and katydee's win-more definition with the caveat that matters when cutting ("it never helps turn a loss into a win"; the concept makes players worse because good cards get mislabelled). The name-the-channel-before-you-cut rule is ours
+- added strategy:conversion.kill-pattern — Furtado's stated Edgar wincon quoted in full ("going to come from combat damage... swinging with 10+ medium-powered creatures"), EDHREC's theme counts (aristocrats 1,496 against tokens 2,144 and aggro 1,587; Conqueror 58%, Exquisite Blood 53%, Sanguine Bond 43%). SOURCED GAP: no fetchable primer gives a kill turn or a combat-versus-trigger split — the high-power Edgar writing is on Moxfield (403) and Archidekt (402), so the mechanism claim is sourced and the timing claim is not
+- added strategy:multiplayer.zonal-commander — Macready on eminence affecting the battlefield from the command zone "even if they are never played" and Verhey's "The Magic Mechanic I Shouldn't Have Made!" as Macready quotes it, Iñaki's rules framing and "there's little you can do", Furtado's "Edgar can get expensive quickly as a 6-drop, but even leaving it in the command zone reasonably grows your board", Bockman on the tax being "prohibitively expensive" past three or four casts. UNSOURCED GAP: no writer gives the threshold at which the body is worth the cast
+- amended strategy:aristocrats — one cross-reference out to strategy:conversion (the three legs say nothing about whether the deck closes), with the surrounding prose tightened to hold the section under the size cap; "payoffs on board" reworded to "converters live" for consistency with the new pillar's vocabulary
+
+Verification note: every URL added this pass was fetched this session and the
+load-bearing quotes were re-checked against raw HTML, not a summariser —
+cardkingdom ×2 (Anderson's Go Wide, Gregory's Aristocrats-are-a-trap),
+commandersherald (Collins), thegamer (Zaccagnino, byline read from the page's
+JSON-LD), draftsim ×4 (Furtado's Edgar guide and Impact Tremors list, Iñaki's
+eminence piece, Walser's cost reducers), wargamer (Macready), mtggoldfish
+(SaffronOlive), lesswrong (katydee), edhrec (Sherwood's quadrant guide, plus
+json.edhrec.com for the Edgar commander and aristocrats-theme inclusion
+counts), coolstuffinc ×1 (Bockman), airza.net (John), and the bench's own
+sim-record directory and gotchas-bench.md on GitHub, both of which return 200
+publicly. Sought and unusable: Moxfield primers (403) and Archidekt guides
+(402), which is where the high-power Edgar writing lives, so the kill-pattern
+section cites the mechanism and not the turn; edh.fandom.com's Group Slug and
+Aristocrats pages (402); MTGNexus' "Archetypes: Enablers and Payoffs" thread
+(403), which search snippets claimed carried a 2:1 enabler-to-payoff ratio —
+omitted rather than cited unfetched; the Out of the Box MTG substack episode
+page (transcript not published); Draftsim's group-slug list, which turned out
+to contain no multiplayer arithmetic; tcgplaymatpros (402). The SEO tier
+(manacove, wubrgapp, tappeddecks, mtgapp, cultureofgaming, krakenthemeta,
+gamertagmythras, grimdeck, gamequery) was read and omitted, including one page
+whose "10-15 token producers, 2-3 payoffs, 1-2 doublers" ratio was the only
+numeric answer found to the payoff-density question — unattributable, so the
+section records the gap instead. Four claims in the new sections are the doc's
+own arithmetic or framing and are labelled as such in-text: the
+units × presence × life-per-unit product, the sweeper/converter correlation,
+the entry-costs-nothing asymmetry, and the two-more-mana test.
