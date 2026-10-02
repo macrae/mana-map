@@ -1572,12 +1572,23 @@ experiment arm by its `decklist_sha256` under the same four-tuple, with a test a
 
 ## 19. Two Forge AI shapes the drain-v1 arm measured as floors, unpatched (2026-10-01)
 
-- **A pay-X-life sweep never fires.** Toxic Deluge is `SP$ PumpAll | Cost$ 2 B PayLife<X>`
-  with `SVar:X:Count$xPaid` and no `IsCurse$`: `PumpAllAi` reads a −X/−X as a pump of our
-  own creatures and, even in its curse branch, prices X at 0 before the life is paid. The
-  remedy is an `ability_params` IsCurse hint plus a PumpAllAi `ai` patch pricing X as the
-  smallest life that clears the best opposing board net of ours. Waits for drain-v1 to
-  decide (the harness is pinned); proven on a shell first.
+- ~~**A pay-X-life sweep never fires.**~~ **FIXED 2026-10-01, patch set 9473cf359146.**
+  Toxic Deluge is `SP$ PumpAll | Cost$ 2 B PayLife<X>` with `SVar:X:Count$xPaid` and no
+  `IsCurse$`, so `PumpAllAi` read a −X/−X as a pump of our own creatures and, even in its
+  curse branch, priced X at 0 before the life was paid. The `PumpAllAi` patch chooses X by
+  walking every value the cost can pay and keeping the one that clears the most opposing
+  value net of ours (the engine's own `evaluateCreatureList`), requires a positive margin so
+  a symmetric sweeper does not trade evenly, holds back a life reserve, and reads `curse` as
+  `sa.isCurse() || defense < 0` — a negative `NumDef` is a sweeper whatever the script says.
+  MEASURED on an 8-game shell: **cast 4 times across 7 drawn games, against 0 across 4
+  before.** No `ability_params` IsCurse hint was needed in the end; the `defense < 0` read
+  covers it for every card of the shape rather than one card at a time.
+
+  **It changed the TABLE, not only our decks.** jarad-graveyard, a standard-v3 seat, runs
+  Toxic Deluge. Every figure measured at the old patch set is therefore void for comparison
+  against a run at the new one, which is what the four-tuple bucketing already enforces —
+  but the champion's own numbers may MOVE with no change to its list, and a threshold chosen
+  against the old reading has to be re-read before it grades anything.
 - **A cheap do-nothing-now permanent is cast late.** Bastion of Remembrance, Anointed
   Procession, Sanguine Bond and Caretaker's Talent sit castable for 30–48 own turns a run
   and are cast behind every creature in hand (`PermanentAi`). **There is no hint for this**,
