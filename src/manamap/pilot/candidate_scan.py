@@ -92,6 +92,135 @@ _P = {
 }
 PREDICATES = {k: re.compile(v, re.IGNORECASE | re.DOTALL) for k, v in _P.items()}
 
+#: WHICH EVENT DOES THIS CARD KEY ON. `function_overlap` below says two cards READ
+#: alike; this says whether they FIRE on the same thing, which is the question a deck
+#: actually asks. Measured need, 2026-10-02: Corpse Knight ("whenever another creature
+#: you control enters"), Blood Artist ("whenever a creature dies"), Vito ("whenever you
+#: gain life") and Bloodthirsty Conqueror ("whenever an opponent loses life") sit at
+#: 0.96-0.98 cosine to one another in the ability space, and in a deck minting 8.04
+#: tokens a game and losing 9.64 creatures they are four DIFFERENT multipliers rather
+#: than four copies of one card. Similarity alone would have called them redundant.
+#:
+#: THE SELF/OTHER SPLIT IS LOAD-BEARING, and it is the distinction that already cost a
+#: slot: Vampire Socialite reads "WHEN THIS CREATURE ENTERS, if an opponent lost life
+#: this turn, put a +1/+1 counter on each other Vampire" — a ONE-SHOT on itself — and was
+#: cut as though it were the same shape as Cordial Vampire's "whenever this creature or
+#: another creature dies", which re-applies all game. One fires once. The other never
+#: stops. No regex can be trusted to tell a reader which card is which unless it keeps
+#: that split, so `enters.self` and `dies.self` are reported separately and never merged
+#: into `enters.other` / `dies.other`.
+_E = {
+    # THE SUBJECT NOUN SITS WHERE THE WILDCARD IS, and a first pass got this wrong in
+    # the most expensive possible way: "Whenever THIS CREATURE OR ANOTHER CREATURE dies"
+    # is the printed wording of Blood Artist, Zulaport Cutthroat and Cordial Vampire, and
+    # a pattern anchored on "whenever (another|a|each)" read all three as `static` —
+    # every aristocrat in the format, silently classed as having no trigger at all. The
+    # subject may therefore be anything up to the first clause break, and the compound
+    # "this creature or another creature" must fire BOTH ids, because the card really
+    # does cover its own death and the deck cares which.
+    "enters.other":   r"whenever [^.\n]{0,60}?\b(another|a|one or more|each)\b[^,.\n]{0,40}?\b(creature|permanent|token|vampire|artifact)s?\b[^,.\n]{0,36}?\benters?\b",
+    "enters.self":    r"when(ever)? this (creature|card|permanent|artifact|enchantment|land|token)\b[^,.\n]{0,60}?\benters?\b",
+    "dies.other":     r"whenever [^.\n]{0,60}?\b(another|a|one or more|each)\b[^,.\n]{0,40}?\b(creature|permanent|token|vampire)s?\b[^,.\n]{0,36}?\b(dies|die)\b",
+    "dies.self":      r"when(ever)? this (creature|card|permanent|token)\b[^,.\n]{0,60}?\b(dies|die)\b",
+    # THE TOKEN EVENTS, found by the sweep and not by design. Mirkwood Bats reads
+    # "Whenever you create or sacrifice a token, each opponent loses 1 life" and the first
+    # pass classed it `no_trigger` — on a deck whose commander mints 8.04 tokens a game,
+    # which is the single event most worth seeing. A card can key on the token rather than
+    # on the creature, and "creature enters" does not cover it.
+    "token_created":  r"whenever you create[^,.\n]{0,40}?\btokens?\b",
+    "sacrifice_event": r"whenever (you|an opponent|a player)[^,.\n]{0,34}?sacrifices?\b",
+    "gain_life":      r"whenever you gain life\b",
+    "opp_loses_life": r"whenever (an|each|one or more) opponents? loses? life\b",
+    "attacks":        r"whenever [^,\n]{0,48}?attacks\b",
+    "cast":           r"whenever you cast\b",
+    "combat_damage":  r"deals combat damage to (a|target) player\b",
+    "upkeep":         r"at the beginning of (your|each) ([\w' ]{0,16})?upkeep\b",
+    "end_step":       r"at the beginning of (your|each) ([\w' ]{0,16})?end step\b",
+    "main_phase":     r"at the beginning of (your|each) (precombat |postcombat |first )?main phase\b",
+    "sacrifice_cost": r"sacrifice (a|another|an|two|three|x) [^:\n]{0,40}:",
+    "activated":      r"(\{[^}]{1,14}\})[^:\n]{0,40}:",
+}
+EVENTS = {k: re.compile(v, re.IGNORECASE | re.DOTALL) for k, v in _E.items()}
+
+
+def trigger_events(text):
+    """The events a card's abilities key on, as sorted ids; `['no_trigger']` when none fire.
+
+    A card may key on several and ALL are reported — Zulaport Cutthroat is both
+    `dies.other` and `dies.self`, because its text is "whenever this creature or
+    another creature you control dies". Reporting both is the point: the reader
+    sees that it also covers its own death, which a single id would hide.
+    """
+    low = (text or "").lower()
+    hits = sorted(k for k, rx in EVENTS.items() if rx.search(low))
+    return hits or ["no_trigger"]
+
+
+#: THE ABILITY SPACE, loaded once per process. `embeddings_ability.npy` is the FUNCTION
+#: space and is the only legitimate source of similarity here — the layout space knows
+#: colour and type and would answer "what else is a black two-drop".
+_ABILITY = {}
+
+
+def _ability_space():
+    """(unit-normalised ability embeddings, name -> row). Empty when the artifact is absent.
+
+    Absent means absent: on a fresh clone with no pipeline run there is no ability
+    space, and the scan must still produce rows rather than fail. Callers check for
+    the empty dict and omit `function_overlap` from the row instead of writing a 0.0,
+    which a reader could not tell from a measured dissimilarity.
+    """
+    if _ABILITY:
+        return _ABILITY
+    import numpy as np
+    from manamap import config
+    path = config.DATA_DIR / "embeddings_ability.npy"
+    if not path.exists():
+        _ABILITY["index"] = {}
+        return _ABILITY
+    frame = load_frame()
+    emb = np.load(path)
+    names = list(frame["name"])
+    if len(names) != emb.shape[0]:
+        # INDEX ALIGNMENT IS THE PIPELINE'S LOUDEST INVARIANT: projection[i] ==
+        # cards.csv[i] == embeddings[i]. A mismatch means a partial regeneration, and
+        # guessing which rows moved would silently mislabel every neighbour. Degrade.
+        _ABILITY["index"] = {}
+        return _ABILITY
+    norms = np.linalg.norm(emb, axis=1, keepdims=True)
+    _ABILITY["matrix"] = emb / (norms + 1e-9)
+    _ABILITY["index"] = {n: i for i, n in enumerate(names)}
+    return _ABILITY
+
+
+def function_overlap(name, present):
+    """The card in the 99 this candidate most resembles IN FUNCTION, and how closely.
+
+    Answers "do I already own this card's job?" — the column the scanner lacked while
+    four consecutive Edgar branches each bought another copy of a drain body the deck
+    already had seven of (Cruel Celebrant 0.981, Sanctum Seeker 0.980, Bloodthirsty
+    Conqueror 0.975, Vito 0.971, Blood Artist 0.970, Sanguine Bond 0.963, Bloodletter
+    0.945 against that cluster's centre).
+
+    It is a SIGNAL, not a verdict, and `trigger_events` is why: a high cosine to a card
+    you own means "reads alike", and two cards that read alike can fire on different
+    events and stack. Returns None when the ability space or either name is unavailable.
+    """
+    space = _ability_space()
+    idx = space.get("index") or {}
+    if not idx or name not in idx:
+        return None
+    mine = [p for p in present if p in idx]
+    if not mine:
+        return None
+    import numpy as np
+    m = space["matrix"]
+    sims = m[[idx[p] for p in mine]] @ m[idx[name]]
+    best = int(np.argmax(sims))
+    return {"nearest_in_99": mine[best], "cosine": round(float(sims[best]), 4),
+            "space": "embeddings_ability.npy"}
+
+
 #: Which predicates / roles / tags / keywords ADMIT a card to each dimension. Everything
 #: else in `_P` is a FLAG recorded on an admitted row, never an admission.
 ADMIT = {
@@ -127,6 +256,19 @@ LIMITS = (
     "`two_card_lines`/`bracket_max` only. Game Changers are dropped (bracket 3) and counted.",
     "`edhrec` per row is present only when edhrec_cards.json exists for the deck, dated by "
     "its own as_of; absent means not fetched, never zero.",
+    "`function_overlap` is the 99's NEAREST card in the ability space with its cosine — "
+    "'do I already own this job?'. It is a signal and never a verdict, and it is read "
+    "TOGETHER with `trigger_events`: Corpse Knight sits at 0.974 to a drain body this deck "
+    "already runs and fires on creatures ENTERING while that one fires on deaths, which in "
+    "a deck minting 8.04 tokens and losing 9.64 creatures a game is a second multiplier "
+    "rather than a duplicate. High cosine plus the SAME event is redundancy; high cosine "
+    "plus a different event is a new line on an old theme. Absent when the ability space "
+    "is missing or the card is not in it — never 0.0, which would read as measured.",
+    "`trigger_events` reads PRINTED text, keeps the self/other split ("
+    "`enters.self` is a one-shot on the card itself, `enters.other` re-applies), and "
+    "reports every event a card keys on rather than picking one. It says what the card "
+    "WOULD fire on, not that the deck fires it: an `enters.other` drain in a deck that "
+    "makes no tokens is still classed `enters.other` here.",
 )
 
 
@@ -291,6 +433,12 @@ def scan(slug, dimensions=DIMENSIONS, branch=None, limit=DEFAULT_LIMIT):
                 "synergy_into_99": edges,
                 "combos": {"infinite_with": inf, "two_card_lines": lines, "bracket_max": bmax},
                 "forge_ai_flag": forge_cards.ai_flag(name),
+                # WHICH EVENT, and DO I ALREADY OWN THIS JOB. The pair is deliberate:
+                # similarity alone called Corpse Knight and Blood Artist the same card at
+                # 0.97, and they fire on entries and deaths — two events this deck produces
+                # 8.04 and 9.64 times a game, so both stack rather than duplicating.
+                "trigger_events": trigger_events(text),
+                "function_overlap": function_overlap(name, present),
                 "oracle_text": text,
             }
             if edhrec:
@@ -313,14 +461,31 @@ def scan(slug, dimensions=DIMENSIONS, branch=None, limit=DEFAULT_LIMIT):
             "candidates": allrows[:limit],
             "truncated": max(0, len(allrows) - limit),
         }
-    return {
+    doc = {
         "slug": slug, "as_of": date.today().isoformat(),
         "decklist_sha256": decklist_sha256(slug, branch), "against_branch": branch,
         "identity": sorted(ident), "limit": limit,
         "sources": {"edhrec_cards": edhrec_as_of, "combo_details": details.get("meta"),
-                    "predicates": {k: v for k, v in _P.items()}},
+                    "predicates": {k: v for k, v in _P.items()},
+                    # The event patterns travel with the artifact for the same reason the
+                    # admission predicates do: "why is this row classed enters.other" has
+                    # to be answerable from the file, not from whatever the code says today.
+                    "events": {k: v for k, v in _E.items()},
+                    "ability_space": "embeddings_ability.npy"},
         "dimensions": out_dims, "excluded": excluded, "limits": list(LIMITS),
     }
+    return _with_oracle(doc, present)
+
+
+def _with_oracle(doc, present):
+    """Attach the 99's oracle text for the report's SAME-EVENT comparison only.
+
+    Underscore-prefixed because it is a rendering aid, not evidence: `main` strips it
+    before the artifact is written, so cast_proofs-style key creep cannot reach the
+    tracked file and the validator never has to know about it.
+    """
+    doc["_oracle"] = {n: corpus_oracle().get(n, "") for n in present}
+    return doc
 
 
 def format_report(doc):
@@ -347,6 +512,34 @@ def format_report(doc):
             why = " · ".join(f"{k}:{','.join(v)}" for k, v in r["matched"].items() if v)
             out.append(f"      {why}" + (f"  flags: {fl}" if fl else "")
                        + (f"  synergy→99: {len(r['synergy_into_99'])}" if r["synergy_into_99"] else ""))
+            # THE TWO READ TOGETHER OR NOT AT ALL. A cosine without the event says
+            # "you own this card" about a second multiplier; an event without the
+            # cosine hides the eighth copy. So one line carries both, and it says
+            # SAME EVENT when the overlap is close AND keyed to the same thing —
+            # which is the only combination that means redundancy.
+            ov = r.get("function_overlap")
+            ev = r.get("trigger_events") or []
+            if ov or ev:
+                bits = []
+                if ev:
+                    bits.append("fires on " + ",".join(ev))
+                if ov:
+                    near = ov["nearest_in_99"]
+                    bits.append(f"nearest in 99: {near} {ov['cosine']:.2f}")
+                    if ov["cosine"] >= 0.95:
+                        # `no_trigger` IS THE ABSENCE OF AN EVENT, NOT AN EVENT, and
+                        # intersecting it with itself called Feed the Swarm a duplicate of
+                        # Anguished Unmaking because both are instants. Two one-shots that
+                        # read alike may still both be worth running, so the verdict is
+                        # withheld and the cosine is left to speak.
+                        mine = set(ev) - {"no_trigger"}
+                        theirs = set(trigger_events(doc.get("_oracle", {}).get(near, ""))) - {"no_trigger"}
+                        if mine and theirs:
+                            bits.append("SAME EVENT — likely a duplicate" if (mine & theirs)
+                                        else "different event — stacks rather than duplicates")
+                        else:
+                            bits.append("neither keys on an event — judge on the text")
+                out.append("      " + " · ".join(bits))
     return "\n".join(out)
 
 
@@ -370,9 +563,13 @@ def main(args):
     doc = scan(slug, dims, branch=getattr(args, "against_branch", None),
                limit=getattr(args, "limit", None) or DEFAULT_LIMIT)
     if getattr(args, "as_json", False):
-        print(json.dumps(doc, indent=2, ensure_ascii=False))
+        print(json.dumps({k: v for k, v in doc.items() if not k.startswith("_")},
+                         indent=2, ensure_ascii=False))
     else:
         print(format_report(doc))
+    # The report is rendered; the rendering aid must not reach a file. Popped HERE rather
+    # than inside each writer, so a future third write path cannot miss it.
+    doc.pop("_oracle", None)
     if getattr(args, "write", False):
         if dim != "all":
             raise SystemExit("--write records the whole scan: run it without --dimension (or with all)")
