@@ -61,14 +61,14 @@ advantage just isn't all that impressive". On-plan draw pays only when the
 deck does what it does — on death (Midnight Reaper, Grim Haruspex, Species
 Specialist), on cast (Vanquisher's Banner), on gain (Well of Lost Dreams, Dawn
 of Hope) — so it draws nothing in the engine-less hand and in bursts once the
-engine runs, the wipe-insurance property (strategy:aristocrats.wipe-
-insurance). The trade is correlation: steady draw diversifies, on-plan draw
-fails with the plan and refills with it. A typal or aristocrat midrange that
-empties its hand by turn 7 wants the slots split, not stacked — steady draw
-live in the enabler-less keep (strategy:mulligans.engine-hands), the rest on-
-plan so a sacrifice or a swing draws the next wave; no primer gives the split.
-Price life-costed draw against the drain that refunds it: Reaper's point per
-card is negligible beside Blood Artist gains (GenoDoak777).
+engine runs, the wipe-insurance property (
+strategy:aristocrats.wipe-insurance). The trade is correlation: steady draw
+diversifies, on-plan draw fails with the plan and refills with it. A typal or
+aristocrat midrange that empties its hand by turn 7 wants the slots split, not
+stacked — steady draw live in the enabler-less keep
+(strategy:mulligans.engine-hands), the rest on- plan so a sacrifice or a swing
+draws the next wave; no primer gives the split. Price life-costed draw against
+the drain that refunds it: Reaper's point per card is negligible beside Blood Artist gains (GenoDoak777).
 
 Sources:
 - Timothy Zaccagnino, "The 20 Most Overrated and Overplayed Cards in Commander Ranked" — https://draftsim.com/mtg-overrated-commander-cards/
@@ -171,17 +171,17 @@ converters and draw (Dunn). Gain-to-loss: Sanguine Bond and Vito, Thorn of the
 Dusk Rose turn each gain into "target opponent loses that much life" — Vito
 "is Sanguine Bond on a cheaper, albeit legendary body" — and Cliffhaven
 Vampire drains each opponent 1 per gain event. Loss-to-gain: Exquisite Blood,
-which with either of the first two is a two-card infinite (strategy:life-as-
-resource.lifegain-engine.bond-blood). Read a converter's scaling before its
-source: Vito, Bond and Well of Lost Dreams scale with the AMOUNT gained, so a
-six-power lifelink body connecting is six aimed drain or six cards; Cliffhaven
-and Dawn of Hope scale with the COUNT of gain events, so Soul Warden shapes
-feed them and one big hit does not. Hurst's test — "The amount of life doesn't
-have to be large, just consistent" — is a count engine's; a lifelink-body deck
-is an amount engine and should pick converters to match. Draw is the same
-split: Well is "a one-to-one ratio of mana-to-card-draw" on the amount, Dawn
-"still 2 mana for each card" per event (Dunn); Zucchetti's Liesa list runs all
-three. Lifelink is a source, not a payoff.
+which with either of the first two is a two-card infinite (
+strategy:life-as-resource.lifegain-engine.bond-blood). Read a converter's
+scaling before its source: Vito, Bond and Well of Lost Dreams scale with the
+AMOUNT gained, so a six-power lifelink body connecting is six aimed drain or six
+cards; Cliffhaven and Dawn of Hope scale with the COUNT of gain events, so Soul
+Warden shapes feed them and one big hit does not. Hurst's test — "The amount of
+life doesn't have to be large, just consistent" — is a count engine's; a
+lifelink-body deck is an amount engine and should pick converters to match. Draw
+is the same split: Well is "a one-to-one ratio of mana-to-card-draw" on the
+amount, Dawn "still 2 mana for each card" per event (Dunn); Zucchetti's Liesa
+list runs all three. Lifelink is a source, not a payoff.
 
 Sources:
 - Jeff Dunn, "The 54 Best Payoffs for Gaining Life in Magic Ranked" — https://draftsim.com/mtg-lifegain-payoffs/
@@ -196,14 +196,14 @@ Infinite lifegain", estimated "Spicy (Bracket 3-4+)", and Furtado's Edgar
 guide names the Vito half outright — "gain some life and then just have them
 trigger back and forth forever". It is the shape Bracket 3's barometer names:
 decks there should not have two-card infinites that "happen cheaply and in
-about the first six or so turns" (strategy:deckbuilding.power-
-level.barometers). Ten mana across two enchantments rarely does, but the test
-is intent, not turn count: holding both halves is a declaration the pregame
-conversation has to carry, and a list that wants to stay at 3 runs one half as
-a fair engine — Bond or Vito alone is a drain doubler on every gain, Exquisite
-Blood alone a buffer that refunds every drain. Price the pair by what it costs
-the bracket, not by how often it assembles (strategy:deckbuilding.redundancy-
-vs-tutors).
+about the first six or so turns" (
+strategy:deckbuilding.power-level.barometers). Ten mana across two enchantments
+rarely does, but the test is intent, not turn count: holding both halves is a
+declaration the pregame conversation has to carry, and a list that wants to stay
+at 3 runs one half as a fair engine — Bond or Vito alone is a drain doubler on
+every gain, Exquisite Blood alone a buffer that refunds every drain. Price the
+pair by what it costs the bracket, not by how often it assembles (
+strategy:deckbuilding.redundancy-vs-tutors).
 
 Sources:
 - Commander Spellbook, "Sanguine Bond | Exquisite Blood" (combo record 690-3966) — https://commanderspellbook.com/combo/690-3966/
@@ -637,9 +637,9 @@ Liliana's Standard Bearer has flash and draws one per creature that died under
 your control this turn — held, it IS the insurance, the way Vrooman keeps
 Haruspex face-down via morph as a wipe surprise. Against steady draw: Arena
 pays a card a turn regardless; death draw pays nothing until bodies die, then
-in a burst, exactly when the hand is empty (strategy:card-advantage.plan-
-draw). Hold the second outlet and one draw body back for the rebuild
-(strategy:resource-hedging.wrath-math).
+in a burst, exactly when the hand is empty (
+strategy:card-advantage.plan-draw). Hold the second outlet and one draw body
+back for the rebuild (strategy:resource-hedging.wrath-math).
 
 Sources:
 - Steve Vrooman, "The 52 Best Black Card Draw Cards in Magic Ranked" — https://draftsim.com/black-card-draw-mtg/
@@ -673,27 +673,74 @@ Sources:
 - Kristen Gregory, "Aristocrats Decks are a Trap in Commander" — https://blog.cardkingdom.com/aristocrats-decks-are-a-trap-in-commander/
 - Ciel Collins, "Dueling Deck Techs: Aristocrats" — https://commandersherald.com/dueling-deck-techs-aristocrats/
 
-### strategy:conversion.payoff-density — Payoff Density: the Ratio Nobody States
+### strategy:conversion.payoff-density — Payoff Density Is Not the Lever
 
-No Commander primer gives an enabler-to-payoff ratio — that is a gap in the
-literature, not a number to look up. The fetchable floors sit one question over:
-Zupke's 3-5 finishers, Eisenherz's two primary combos, Nicol's 7-8 enablers
-against 10-12 enhancers (strategy:deckbuilding.threat-density). What exists
-instead is revealed preference. Across EDHREC's 1,496 Edgar Markov decks tagged
-aristocrats, Blood Artist appears in 93%, Cruel Celebrant 79%, Vito 72%,
-Bloodthirsty Conqueror 58% and Sanguine Bond 43% — the field's aristocrat Edgar
-carries three or four death-drains *plus* both amount-scaling converters, not
-four converters in total. Slots are the wrong unit anyway: what converts is
-converter-turns on the battlefield. Read the rate as a product — units produced
-× P(a converter is live when the unit resolves) × life per unit — and measure the
-middle term before buying more of the first. This bench's Edgar: 9.64 of its own
-creatures die a game and its death-drains fire 1.90 times, a 20% conversion, with
-its most-included converter cast in 17% of games. Count presence, then slots.
+Density is not the lever, and this bench has the control: yawgmoth-swarm runs
+nine drain payoffs against edgar-vampires' four, cheaper on average (mean mana
+value 2.78 against 3.00), and fires FEWER times a game — 1.40 against 1.76. No
+Commander primer states an enabler-to-payoff ratio either; that is a gap in the
+literature, not a number to look up, and the fetchable floors sit one question
+over (Zupke's 3-5 finishers, Nicol's 7-8 enablers against 10-12 enhancers —
+strategy:deckbuilding.threat-density). What exists is revealed preference:
+across EDHREC's 1,496 Edgar decks tagged aristocrats, Blood Artist appears in
+93%, Cruel Celebrant 79%, Vito 72%, Bloodthirsty Conqueror 58%. Read the rate as
+a product instead — units produced × P(a payoff is available when the unit
+resolves) × life per fire — and note that only the first term is about slots.
+Edgar: 9.64 of its own creatures die a game and its death-drains fire 1.90
+times, a 20% conversion. Buy availability (strategy:conversion.availability) and
+yield (strategy:conversion.yield) before buying copies.
 
 Sources:
 - EDHREC, "Edgar Markov — Aristocrats" (theme page, 1,496 decks) — https://edhrec.com/commanders/edgar-markov/aristocrats
 - Andy Zupke, "Building a Commander Deck - Part Two: Structure" — https://blog.cardsphere.com/building-a-commander-deck-part-two-structure/
 - Benjamin Nicol, "Solve the Equation - How to Tell if a Strategy Has Enough Support by Using Deck Templates" — https://edhrec.com/articles/solve-the-equation-how-to-tell-if-a-strategy-has-enough-support-using-deck-templates
+- Mana Map, "edgar-vampires Forge run records (seeded, one pinned harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/edgar-vampires/sim
+
+### strategy:conversion.yield — Yield per Fire: Scope × Scaling
+
+Yield per fire is scope × scaling, and the two axes cross. Scope: a targeted
+drain takes 1 life off a four-player table where an each-opponent drain takes 3
+(strategy:aristocrats.drain-scope). Dunn states the axis once, cleanly —
+"Vizkopa's ability hits each opponent, instead of just one target", at "a
+similar mana investment to Sanguine Bond". Scaling: AMOUNT-scaled converters pay
+the size of the event (Vito, Sanguine Bond — "target opponent loses that much
+life"), COUNT-scaled ones pay once per event whatever its size (Cruel Celebrant,
+Epicure of Blood, Marauding Blight-Priest) —
+strategy:life-as-resource.lifegain-engine. GAP: no writer states the crossover,
+so here is the arithmetic. Per event an amount-scaled targeted converter removes
+A life from the table where a count-scaled each-opponent one removes 3, so
+targeted wins only when the mean gain event exceeds 3. Measure that mean: a deck
+whose gain arrives as 1-life drain refunds sits near 1, which collapses Vito and
+Bond to the lowest yield of the four quadrants — one life a fire. Measured
+per-fire yields here: 3.75 life where the payoff is each-opponent, 1.83 where
+the highest-firing payoff is single-target.
+
+Sources:
+- Jeff Dunn, "The 54 Best Payoffs for Gaining Life in Magic Ranked" — https://draftsim.com/mtg-lifegain-payoffs/
+- Timothy Zaccagnino, "The Best Cards Like Blood Artist In MTG" — https://www.thegamer.com/magic-the-gathering-mtg-best-cards-like-blood-artist/
+- Mana Map, "edgar-vampires Forge run records (seeded, one pinned harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/edgar-vampires/sim
+
+### strategy:conversion.availability — Putting the Payoff Where It Cannot Be Missed
+
+Availability is bought with LOCATION, not with copies. Timm's test for an engine
+is "repeatable, recoverable, affordable", and his ranking of locations is
+explicit: your commander "is the key to your greatest advantage engine as it is
+the most reliably repeatable card in the 100 cards", and inside the 99 he would
+"favour permanents with abilities rather than instants/sorceries". The command
+zone is the strongest form of that — a payoff there cannot be kept off the
+table, only taxed (strategy:multiplayer.commander-insurance,
+strategy:multiplayer.zonal-commander) — then an enchantment or artifact
+(strategy:conversion.durability), then recursion, and only then more copies,
+which climb slowly: five copies of an effect is 31% of opening hands, seven 41%
+(strategy:deckbuilding.redundancy-vs-tutors). The bench's spread is the whole
+argument. A deck whose payoff is its commander had one available in 80.8% of
+games; a deck running four of them as two-mana creatures managed 36-39%. Count
+the fraction of games the payoff reaches the battlefield before counting the
+payoffs.
+
+Sources:
+- Keir Timm, "Sophisticated Synergies and EDH Engines" — https://www.intothe99.com/post/sophisticated-synergies-and-edh-engines
+- Scott Cullen, "Choosing the Right Protection for Your Commander" — https://blog.cardkingdom.com/choosing-the-right-protection-for-your-commander/
 - Mana Map, "edgar-vampires Forge run records (seeded, one pinned harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/edgar-vampires/sim
 
 ### strategy:conversion.durability — Converters That Outlive Their Fodder
@@ -706,8 +753,9 @@ Cullen's case for noncreature anthems is the same trade one slot over
 states is a correlation: a creature converter dies to the same sweeper that
 kills the fodder, so a death-drain deck's conversion rate collapses at the exact
 moment its death count spikes — the largest conversion event of the game is the
-one the converter is absent for. Three fixes, cheapest first: put the converter
-on a type the wipe does not read; put it where removal cannot reach it at all
+one the converter is absent for. Three fixes, cheapest first
+(strategy:conversion.availability): put the converter on a type the wipe does
+not read; put it where removal cannot reach it
 (strategy:multiplayer.zonal-commander); or hold a converter and a death-draw
 body back for the rebuild (strategy:aristocrats.wipe-insurance,
 strategy:resource-hedging.wrath-math). Price a two-mana creature converter as a
@@ -727,16 +775,16 @@ conversion the cheaper half of the same engine. Furtado's frame: when every
 creature you play damages opponents on arrival "it's like they're
 pseudo-unblockable, hasted threats", and that "gets better in go-wide token
 strategies" — the per-trigger rate doing the rest (Purphoros' 2 against Impact
-Tremors' 1). Scope multiplies it again: an each-opponent trigger moves three life
-per unit where a targeted one moves one — Zaccagnino's "a single creature dying
-under your control is worth three total damage in situations where Blood Artist
-would only deal one" (strategy:aristocrats.drain-scope). This is Gregory's
-prescription made mechanical: sacrifice incidentally, convert what the deck does
-anyway. It is also the under-adopted lane — of EDHREC's 51,341 Edgar lists, Blood
-Artist appears in 82% against Impact Tremors' 20% and Warleader's Call's 18%, and
-the Call is also an anthem, doing the job that makes a wide board connect
-(strategy:deckbuilding.typal-density). Noncombat-damage doublers scale this
-channel the way anthems scale combat.
+Tremors' 1). Scope multiplies it again: an each-opponent trigger moves three
+life per unit where a targeted one moves one — Zaccagnino's "a single creature
+dying under your control is worth three total damage in situations where Blood
+Artist would only deal one" (strategy:aristocrats.drain-scope). This is
+Gregory's prescription made mechanical: sacrifice incidentally, convert what the
+deck does anyway. It is also the under-adopted lane — of EDHREC's 51,341 Edgar
+lists, Blood Artist appears in 82% against Impact Tremors' 20% and Warleader's
+Call's 18%, and the Call is also an anthem, doing the job that makes a wide
+board connect (strategy:deckbuilding.typal-density). Noncombat-damage doublers
+scale this channel the way anthems scale combat.
 
 Sources:
 - Pedro Furtado, "The 24 Best Impact Tremors Effects in Magic Ranked" — https://draftsim.com/mtg-impact-tremors-effects/
@@ -768,45 +816,66 @@ Sources:
 - Reid Duke, "Attacking and Blocking" — https://magic.wizards.com/en/articles/archive/level-one/attacking-and-blocking-2015-07-27
 - Mana Map, "docs/gotchas-bench.md" (this bench's Forge measurement of the Edgar go-wide refactor) — https://github.com/macrae/mana-map/blob/main/docs/gotchas-bench.md
 
-### strategy:conversion.output-conservation — Conserved Output: When a Swap Nets Zero
+### strategy:conversion.passive-tax — Passive Each-Opponent Taxation
 
-Adding a converter is a swap, and a swap can net zero. SaffronOlive's rule is the
-discipline: ask not "Can this card work in my deck?" but "Is this the best option
-for this slot in my deck?" — his case is a card rating 7 out of 10 going in over
-an 8 or a 9, a net loss however well it fits the theme. An added payoff gains
-what it adds MINUS what the cut card was quietly contributing
-(strategy:conversion.quiet-contributors). When several different substitutions
-each raise one channel and lower another by a similar amount, the honest reading
-is that converter count is not the binding constraint and the list is at a local
-optimum for its slot count — where strategy:deckbuilding.cutting's late-cut
-arithmetic already points. GAP: nothing this pass reached names
-conserved output as a phenomenon; the nearest established framings are
-opportunity cost per slot and diminishing returns on redundancy (strategy:deckbuilding.redundancy-vs-tutors), and neither predicts a
-total. Read conservation as evidence about the bottleneck, not about the cards,
-and measure the TOTAL, not the row you aimed at. This bench's Edgar:
-59.5 life removed a game against 47.5, 47.2 and 57.9 for three refits.
+The shape this bench has measured carrying a total is narrow: cheap,
+each-opponent, PASSIVE — an upkeep trigger, no attack and no activation —
+non-creature, and scaling on a state the deck already produces. Three four-mana
+artifacts reading "at the beginning of each opponent's upkeep, deal damage for
+cards in hand above four" fired 3.86 times a game and carried 9.45 of one deck's
+noncombat damage; cutting them took its total life removed from 15.62 to 7.88.
+Passive each-opponent taxation is a named archetype — group slug, which Ignacio
+frames by its symmetry, "we're all gonna be having a bad time together" — and
+the hand-size family (Black Vise, Viseling, Iron Maiden, Misers' Cage, Ebony Owl
+Netsuke) is collected as a family in forum writing rather than in any primer.
+Two prices. The trigger reads an opponent's state, which they can change; and
+taxing the whole table makes you everyone's problem at once
+(strategy:multiplayer.threat-deflection). GAP: nobody prices a passive upkeep
+trigger against an attack step or a death trigger, which leaves the comparison
+to the harness (strategy:conversion.combat-channel).
+
+Sources:
+- Ignacio (Iñaki), "The 21 Best Group Slug Commanders in Magic Ranked" — https://draftsim.com/mtg-group-slug-commander/
+- MTG Salvation, "Cards that punish people for holding cards?" (forum thread; the hand-size family collected in one post) — https://www.mtgsalvation.com/forums/the-game/commander-edh/199278-cards-that-punish-people-for-holding-cards
+- Mana Map, "heliod Forge run records (seeded, same pod and harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/heliod/sim
+
+### strategy:conversion.substitution — Substitution: Every Measured Swap Has Been a Decrease
+
+Adding a payoff is a swap, and on this bench no swap has raised a total. Across
+22 same-pod same-harness version pairs, four differences exclude zero and all
+four are DECREASES — observational, spanning several merges and seeds rather
+than an A/B, which is why it is read as a pattern and not an effect. The
+clearest case cut three working passive pingers and took total life removed from
+15.62 to 7.88, −7.73 [−12.11, −3.36]; noncombat damage fell 9.45 to 1.23, which
+is the whole of it (strategy:conversion.passive-tax). SaffronOlive's rule is the
+discipline that predicts the asymmetry: ask not "Can this card work in my deck?"
+but "Is this the best option for this slot in my deck?" — a card rating 7 out of
+10 going in over an 8 or a 9 is a net loss however well it fits the theme. GAP:
+nothing this pass reached names the asymmetry itself. Its practical form: a CUT
+is a reliable experiment and an ADDITION is not, so prove a card is dead by
+removing it, and when it is the ceiling you want, change an input rather than a
+slot (strategy:conversion.raising-the-ceiling).
 
 Sources:
 - SaffronOlive, "Brewer's Minute: Opportunity Cost in Deck Building" — https://www.mtggoldfish.com/articles/brewer-s-minute-opportunity-cost-in-deck-building
-- Mana Map, "edgar-vampires Forge run records (seeded, one pinned harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/edgar-vampires/sim
+- Mana Map, "heliod and edgar-vampires Forge run records (seeded, same pod and harness)" — https://github.com/macrae/mana-map/tree/main/data/decks/heliod/sim
 
 ### strategy:conversion.raising-the-ceiling — What Raises the Ceiling When Swaps Do Not
 
-If output is conserved under substitution, the ceiling sits upstream of the
-payoffs — in how many INPUT events the deck generates and how fast it deploys
-them. The literature's levers, roughly ordered for a cast-triggered
-deck. Mana, where John is blunt: "for a 6 mana commander,
+Since no measured swap on this bench has raised a total, the ceiling sits
+upstream of the payoffs — in how many INPUT events the deck generates and how
+fast it deploys them. The literature's levers, roughly ordered for a
+cast-triggered deck. Mana, where John is blunt: "for a 6 mana commander,
 investing in cards and ramp is the only thing that lets us cast our commander at
-all". Cost reduction, which Walser frames as ramp that changes only "the amount
-of mana you pay" and "encourages playing bundles of spells in a manner that Storm
+all". Cost reduction, which Walser frames as ramp changing only "the amount of
+mana you pay" and "encourages playing bundles of spells in a manner that Storm
 decks in particular can use" — more casts per turn off the same lands, and on a
 cast-triggered commander every qualifying cast is another trigger. Velocity
-(strategy:critical-mass.storm-math). Extra
-combats, which re-run the whole combat channel for one card and need board,
-evasion and anthems to pay (Sison). Damage doublers. And consistency, which
-Karsten prices directly (strategy:deckbuilding.mana-base,
-strategy:deckbuilding.curve).
-The test that separates a payoff problem from an input problem: hold the 99 fixed
+(strategy:critical-mass.storm-math). Extra combats, which re-run the
+whole combat channel for one card (Sison). Damage doublers, and free spells,
+which buy a cast without a land. And consistency, which Karsten prices directly
+(strategy:deckbuilding.mana-base, strategy:deckbuilding.curve).
+The test separating a payoff problem from an input problem: hold the 99 fixed
 and ask what the deck does with two more mana, or one fewer missed land drop. If
 the answer is "the same thing, twice", stop swapping spells.
 
@@ -818,26 +887,49 @@ Sources:
 
 ### strategy:conversion.quiet-contributors — Pricing a Slot That Does Nothing Now
 
-Cutting the card that was doing nothing visible is how an aggressive deck loses a
-channel nobody was watching. Sherwood's quadrant theory is the pre-cut test:
+Cutting the card that was doing nothing visible is how an aggressive deck loses
+a channel nobody was watching. Sherwood's quadrant theory is the pre-cut test:
 grade the card in Developing, Winning, Losing and Parity — the last being where
 "all the players have the resources to win, but no one has the advantage", whose
-goal is to "break parity and move on to winning" — and that a card "crosses the line
-into win more when the player was winning anyway and the new card only increases
-the margin of victory". katydee's definition is the sharper half: a win-more card
-"works very well, but only if you're already winning", so "it never helps turn a
-loss into a win", and his caveat is the one that bites a cut list — the concept
-makes players worse, because the easy error is labelling a genuinely good card
-win-more and never testing it again. An enchantment that converts and a body that
-attacks are not the same slot: the cut card's quiet contributions (evasion, a
-blocker, a draw trigger) surface in rows you did not aim at. Rule: before
-cutting, name the channel the card feeds and the figure that would fall without
-it; after cutting, read every channel. And free is never free (Gregory).
+goal is to "break parity and move on to winning" — and that a card "crosses the
+line into win more when the player was winning anyway and the new card only
+increases the margin of victory". katydee's definition is the sharper half: a
+win-more card "works very well, but only if you're already winning", so "it
+never helps turn a loss into a win", and his caveat is the one that bites a cut
+list — the concept makes players worse, because the easy error is labelling a
+genuinely good card win-more and never testing it again. An enchantment that
+converts and a body that attacks are not the same slot: the cut card's quiet
+contributions (evasion, a blocker, a draw trigger) surface in rows you did not
+aim at. Rule: before cutting, name the channel the card feeds and the figure
+that would fall without it; after cutting, read every channel. And free is never free (Gregory).
 
 Sources:
 - John Sherwood, "The EDHREC Guide to Quadrant Theory in Commander" — https://edhrec.com/guides/the-edhrec-guide-to-quadrant-theory-in-commander
 - katydee, "The Problem of \"Win-More\"" — https://www.lesswrong.com/posts/Dfi7Snzs4pGSAu52b/the-problem-of-win-more
 - Kristen Gregory, "There's No Such Thing as Free in Commander" — https://blog.cardkingdom.com/theres-no-such-thing-as-free-in-commander/
+
+### strategy:conversion.measure-choice — Which Output Number Predicts Winning
+
+Pick the output number before the experiment, because efficiency and winning
+come apart. On this bench the deck with the best life-removed-per-fire has the
+worst win rate, and the deck with the highest TOTAL life removed has the best —
+a ratio can be maximised by firing rarely, since the deck sets its own
+denominator. The literature never states which output statistic predicts a
+multiplayer win, and that is a gap worth naming; it is consistent, though, about
+the quantities it reasons in. Flores' Philosophy of Fire counts cards as quanta
+of damage against a fixed lethal total
+(strategy:life-as-resource.philosophy-of-fire). Duke's racing counts CLOCKS —
+turns until a named player dies, both ways (strategy:combat-math.racing). John's
+pod arithmetic is a total: three 40-life seats, or 21 commander damage each.
+None of the three is a rate. The rule here is this doc's own: aim a branch at a
+quantity monotone in winning — a total, or a clock on one seat — never at a
+quotient whose denominator the deck controls, and print the total beside any
+efficiency figure (strategy:aristocrats.drain-scope — each-opponent for the race, targeted for the kill).
+
+Sources:
+- Mike Flores, "Life and Cards I: Philosophy of Fire" — https://magic.wizards.com/en/news/making-magic/life-and-cards-i-philosophy-fire-2014-04-28
+- Reid Duke, "Damage Racing" — https://magic.wizards.com/en/articles/archive/level-one/damage-racing-2015-05-04
+- John, "How to Win in Commander? Attack Your Opponents Until They Die" (airza.net) — https://airza.net/2025/03/13/how-to-win-in-commander-attack-your-opponents-until-they-die
 
 ### strategy:conversion.kill-pattern — The Kill Pattern a Vampire List Actually Closes With
 
@@ -847,15 +939,15 @@ get very large very quickly so swinging with 10+ medium-powered creatures won't
 be uncommon", with a mass-drain body as the alternate — Malakir Bloodwitch
 "becomes an instant win card if your board state is big enough". Inclusion
 agrees: across EDHREC's 51,341 Edgar lists the two most-played cards are a lord
-and a converter (Captivating Vampire 82%, Blood Artist 82%), and only 1,496 lists
-are tagged aristocrats against 2,144 tokens and 1,587 aggro — the aristocrat
-Edgar is a minority build, and inside it the compact closer is the gain-to-loss
-loop (Bloodthirsty Conqueror 58%, Exquisite Blood 53%, Sanguine Bond 43% —
-strategy:life-as-resource.lifegain-engine.bond-blood). GAP: no fetchable primer
-states a kill turn or a combat-versus-trigger split for this archetype; the
-high-power Edgar writing lives on Moxfield and Archidekt, which refuse automated
-retrieval. The literature supports the *mechanism* claim, not the *timing* one —
-treat any turn number for this deck as the bench's own measurement.
+and a converter (Captivating Vampire 82%, Blood Artist 82%), and only 1,496
+lists are tagged aristocrats against 2,144 tokens and 1,587 aggro — the
+aristocrat Edgar is a minority build, and inside it the compact closer is the
+gain-to-loss loop (Bloodthirsty Conqueror 58%, Exquisite Blood 53%, Sanguine
+Bond 43% — strategy:life-as-resource.lifegain-engine.bond-blood). GAP: no
+fetchable primer states a kill turn or a combat-versus-trigger split for this
+archetype; the high-power Edgar writing lives on Moxfield and Archidekt, which
+refuse automated retrieval. The literature supports the *mechanism* claim, not
+the *timing* one — treat any turn number for this deck as the bench's own measurement.
 
 Sources:
 - Pedro Furtado, "Edgar Markov Commander Deck Guide" — https://draftsim.com/edgar-markov-edh-deck/
@@ -912,14 +1004,14 @@ Sources:
 ## strategy:multiplayer — Commander & Multiplayer Dynamics
 
 Multiplayer Commander changes the resource mathematics of every 1v1 framework:
-three opponents, ~120 combined life, and a table of political actors. One-for-one
-answers and incremental damage lose value; asymmetric effects, repeatable
-engines, and other people's removal gain it. The frameworks above still apply,
-but each needs a multiplayer correction — role assignment becomes seat-relative,
-threat assessment becomes mutual (the table is assessing you), and information
-inference now includes table talk. Commander theory is younger than 1v1 theory
-and article-borne: EDHREC and Commander's Herald carry most of the written
-threat-assessment and politics work. The subsections below carry the
+three opponents, ~120 combined life, and a table of political actors.
+One-for-one answers and incremental damage lose value; asymmetric effects,
+repeatable engines, and other people's removal gain it. The frameworks above
+still apply, but each needs a multiplayer correction — role assignment becomes
+seat-relative, threat assessment becomes mutual (the table is assessing you),
+and information inference now includes table talk. Commander theory is younger
+than 1v1 theory and article-borne: EDHREC and Commander's Herald carry most of
+the written threat-assessment and politics work. The subsections below carry the
 corrections.
 
 Sources:
@@ -1057,21 +1149,21 @@ Sources:
 
 ### strategy:multiplayer.zonal-commander — The Commander You Need Not Cast
 
-Some commanders are a static ability with an optional body. Macready on eminence: it "grants them an ability that affects the
-Battlefield from the Command Zone, so they can shape games even if they are never
-played" — untouchable there, which is why its designer Verhey called it (as
-Macready quotes him) "The Magic Mechanic I Shouldn't Have Made!". Iñaki's rules
-framing is the test: the ability "works while that creature is in the command
-zone or on the battlefield", and against a pilot who never casts it "there's
-little you can do". Casting it therefore buys three things at full price:
-a body, its battlefield-only text, and a removal magnet. Furtado says the
-quiet part for the six-drop case: "Edgar can get expensive quickly as a 6-drop,
-but even leaving it in the command zone reasonably grows your board." Then the
-tax compounds at {2} a trip (strategy:multiplayer.commander-insurance),
-"prohibitively expensive" past three or four casts (Bockman). GAP: nobody gives
-the threshold at which the body is worth the cast. Make it a comparison, not a
-habit — cast it when the body closes or protects, else spend the mana on
-something nobody can tax (strategy:conversion.raising-the-ceiling).
+Some commanders are a static ability with an optional body. Macready on
+eminence: it "grants them an ability that affects the Battlefield from the
+Command Zone, so they can shape games even if they are never played" —
+untouchable there, which is why its designer Verhey called it (as Macready
+quotes him) "The Magic Mechanic I Shouldn't Have Made!". Iñaki's rules framing
+is the test: the ability "works while that creature is in the command zone or on
+the battlefield", and against a pilot who never casts it "there's little you can
+do". Casting it therefore buys three things at full price: a body, its
+battlefield-only text, and a removal magnet. Furtado says the quiet part for the
+six-drop case: "Edgar can get expensive quickly as a 6-drop, but even leaving it
+in the command zone reasonably grows your board." Then the tax compounds at {2}
+a trip (strategy:multiplayer.commander-insurance), "prohibitively expensive"
+past three or four casts (Bockman). GAP: nobody gives the threshold at which the
+body is worth the cast. Make it a comparison, not a habit — cast it when the
+body closes or protects, else spend the mana on something nobody can tax (strategy:conversion.raising-the-ceiling).
 
 Sources:
 - Ben Macready, "The most powerful mechanic in MTG's Commander format returns, except now it hurts you" — https://www.wargamer.com/magic-the-gathering/eminence-sahir
@@ -1286,12 +1378,12 @@ gas"; Walser's Legion's Initiative is the anthem you "cash in for some
 protection against board wipes". No primer gives the lord count at which an
 anthem beats a body; the trade is explicit, though — every lord past the
 creature floor is +1 on every body and one more body under the wrath — so
-price the marginal slot on the sweeper you assume (strategy:resource-
-hedging.wrath-math), and buy the rebuild with it (strategy:aristocrats.wipe-
-insurance). Menery's framing holds for the typal deck too: with sweepers
-"you're either playing them or you're building your deck to work around them –
-possibly both"; Furtado accepts his own because the Edgar deck "can get back
-online pretty quickly after one".
+price the marginal slot on the sweeper you assume (
+strategy:resource-hedging.wrath-math), and buy the rebuild with it (
+strategy:aristocrats.wipe-insurance). Menery's framing holds for the typal deck
+too: with sweepers "you're either playing them or you're building your deck to
+work around them – possibly both"; Furtado accepts his own because the Edgar
+deck "can get back online pretty quickly after one".
 
 Sources:
 - Scott Cullen, "Tribal Cards You Need for Commander" — https://blog.cardkingdom.com/tribal-cards-you-need-for-commander/

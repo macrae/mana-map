@@ -202,7 +202,7 @@ ten new sections name a hole in the literature rather than filling it.
 - added strategy:conversion.durability — Zaccagnino's Bastion of Remembrance reading ("a three-mana Zulaport Cutthroat on an enchantment"; "being an enchantment keeps it safe from a larger swathe of removal and board wipes") and Cullen's noncreature-anthem case. The CORRELATION — a creature converter dies to the same sweeper that makes the deaths, so the rate collapses exactly when the death count spikes — is explicitly flagged in-text as stated by no primer; the 0.6 battlefield-turns figure is ours
 - added strategy:conversion.entries-vs-deaths — Furtado's on-entry damage theory ("it's like they're pseudo-unblockable, hasted threats", better "in go-wide token strategies") and Zaccagnino's each-opponent arithmetic ("worth three total damage in situations where Blood Artist would only deal one"); EDHREC's whole-commander page (n=51,341) for the adoption gap, Blood Artist 82% against Impact Tremors 20% and Warleader's Call 18%. The claim that an entry is free where a death costs a permanent is the doc's own, offered as the mechanical form of Gregory's "sacrifice incidentally"
 - added strategy:conversion.combat-channel — Anderson on why trading creatures for damage does not scale to three seats, plus the existing lord measurement (29.07 → 18.20). UNSOURCED GAP named in-text: nobody prices the damage-per-mana of an attack step against that of a trigger, so the comparison must be measured on one harness
-- added strategy:conversion.output-conservation — SaffronOlive's opportunity-cost rule ("Is this the best option for this slot in my deck?"; a 7-out-of-10 going in over an 8 or 9 is a net loss). UNSOURCED: "conserved output" is not a named phenomenon in Magic writing — the nearest framings are opportunity cost per slot and diminishing returns on redundancy, and neither predicts a total, so the section instructs reading conservation as evidence about the bottleneck. The four totals (59.5 / 47.5 / 47.2 / 57.9) are ours
+- deprecated strategy:conversion.output-conservation — ADDED IN THIS PASS AND SUPERSEDED THE SAME DAY by strategy:conversion.substitution once the fleet control arrived (see the eighth pass below); the verb on this bullet was changed from `added` so the entry still resolves against the doc. SaffronOlive's opportunity-cost rule ("Is this the best option for this slot in my deck?"; a 7-out-of-10 going in over an 8 or 9 is a net loss). UNSOURCED: "conserved output" is not a named phenomenon in Magic writing — the nearest framings are opportunity cost per slot and diminishing returns on redundancy, and neither predicts a total, so the section instructs reading conservation as evidence about the bottleneck. The four totals (59.5 / 47.5 / 47.2 / 57.9) are ours
 - added strategy:conversion.raising-the-ceiling — the levers the literature does name for an input-limited deck: John on a six-mana commander ("investing in cards and ramp is the only thing that lets us cast our commander at all"), Walser on cost reduction as ramp that changes only "the amount of mana you pay" and "encourages playing bundles of spells", Sison on extra combats, Karsten on consistency. The two-more-mana / one-fewer-missed-land-drop test is ours
 - added strategy:conversion.quiet-contributors — Sherwood's quadrant theory (the four quadrants quoted, plus "crosses the line into win more when the player was winning anyway") and katydee's win-more definition with the caveat that matters when cutting ("it never helps turn a loss into a win"; the concept makes players worse because good cards get mislabelled). The name-the-channel-before-you-cut rule is ours
 - added strategy:conversion.kill-pattern — Furtado's stated Edgar wincon quoted in full ("going to come from combat damage... swinging with 10+ medium-powered creatures"), EDHREC's theme counts (aristocrats 1,496 against tokens 2,144 and aggro 1,587; Conqueror 58%, Exquisite Blood 53%, Sanguine Bond 43%). SOURCED GAP: no fetchable primer gives a kill turn or a combat-versus-trigger split — the high-power Edgar writing is on Moxfield (403) and Archidekt (402), so the mechanism claim is sourced and the timing claim is not
@@ -235,3 +235,66 @@ section records the gap instead. Four claims in the new sections are the doc's
 own arithmetic or framing and are labelled as such in-text: the
 units × presence × life-per-unit product, the sweeper/converter correlation,
 the entry-costs-nothing asymmetry, and the two-more-mana test.
+
+## 2026-10-01 — eighth pass: the fleet control refutes conserved output; yield, availability, the passive tax
+
+A fleet control landed hours after the seventh pass committed and refuted the
+frame that pass was built on. Output is NOT conserved under substitution: across
+22 same-pod same-harness version pairs, four differences exclude zero and ALL
+FOUR ARE DECREASES — no swap on this bench has ever raised a total. The same
+control retired payoff COUNT as the lever (yawgmoth-swarm's nine drain payoffs,
+cheaper on average, fire FEWER times a game than edgar-vampires' four) in favour
+of two axes the doc did not have: yield per fire and availability. This pass
+corrects the superseded section, adds the two axes, and adds the shape the bench
+has actually measured carrying a total.
+
+- renamed strategy:conversion.output-conservation — superseded by strategy:conversion.substitution. The old id asserted conservation, which the control refutes in a specific direction: substitution is not symmetric, it is downward. The id is retired rather than re-pointed because the claim changed, not the wording
+- added strategy:conversion.substitution — the control stated as the finding: 22 version pairs, four differences excluding zero, all four DECREASES, labelled observational-across-merges-and-seeds rather than an A/B in the text itself. The clearest case (three passive pingers cut; total life removed 15.62 → 7.88, −7.73 [−12.11, −3.36]; noncombat 9.45 → 1.23) carries the whole of the loss. SaffronOlive's opportunity-cost rule is the discipline that predicts the asymmetry ("Is this the best option for this slot in my deck?"; a 7-out-of-10 going in over an 8 or a 9 is a net loss). UNSOURCED GAP: nothing this pass reached names the cut/addition asymmetry; the practical form — prove a card is dead by removing it, and change an input rather than a slot when the ceiling is what you want — is the doc's own
+- added strategy:conversion.yield — the scope × scaling 2×2, which is where the pilot's breadth finding belongs. Dunn states the scope axis once and cleanly ("Vizkopa's ability hits each opponent, instead of just one target", at "a similar mana investment to Sanguine Bond"); the AMOUNT / COUNT axis was already in strategy:life-as-resource.lifegain-engine and is cross-referenced, not restated. UNSOURCED GAP: no writer states the crossover, so the section derives it — per event an amount-scaled targeted converter removes A life from the table where a count-scaled each-opponent one removes 3, so targeted wins only when the mean gain event exceeds 3, which is directly measurable. Verified against oracle text in data/decks/edgar-vampires/cards.json: three of the five drain payoffs are single-target (Blood Artist "target player loses 1", Sanguine Bond and Vito "target opponent loses that much life"), Cruel Celebrant is the only each-opponent DEATH drain, Sanctum Seeker's each-opponent trigger is gated on attacking and so inherits the combat channel's taxes, and Edgar's eminence token is a plain 1/1 with no lifelink — which is what collapses the amount-scaled converters to one life a fire. The 3.75 / 1.83 per-fire yields are the bench's
+- added strategy:conversion.availability — Timm's engine test ("repeatable, recoverable, affordable"), his ranking of locations (the commander "is the key to your greatest advantage engine as it is the most reliably repeatable card in the 100 cards"; inside the 99, "favour permanents with abilities rather than instants/sorceries"), and the doc's existing hypergeometric figures for the alternative of buying availability with copies (5 copies = 31% of openers, 7 = 41%). The ordering — command zone, then enchantment or artifact, then recursion, then copies — is the doc's own synthesis of Timm with strategy:conversion.durability. The 80.8%-against-36-39% spread is the bench's
+- added strategy:conversion.passive-tax — the shape measured to carry a total: cheap, each-opponent, PASSIVE (an upkeep trigger, no attack and no activation), non-creature, scaling on a state the deck already produces. heliod's three four-mana hand-size artifacts fired 3.86 times a game and carried 9.45 of its noncombat damage. Group slug is the named archetype (Ignacio's "we're all gonna be having a bad time together"); the hand-size family (Black Vise, Viseling, Iron Maiden, Misers' Cage, Ebony Owl Netsuke) is collected in forum writing rather than any primer, and the section says so. UNSOURCED GAP: nobody prices a passive upkeep trigger against an attack step or a death trigger
+- added strategy:conversion.measure-choice — the objective-choice warning the pilot asked for: on this bench the best per-fire yield has the WORST win rate and the highest total has the best, because a ratio can be maximised by firing rarely. The literature never names a predictive output statistic — a gap, stated as one — but it reasons in totals (Flores' quanta of damage against a fixed lethal; John's three 40-life seats) and CLOCKS (Duke's racing), never in rates. The rule "aim at a quantity monotone in winning, never at a quotient whose denominator the deck controls, and print the total beside any efficiency figure" is the doc's own
+- amended strategy:conversion.payoff-density — retitled "Payoff Density Is Not the Lever" and re-led with the control (yawgmoth-swarm nine payoffs at mean mana value 2.78 firing 1.40 a game against edgar's four at 3.00 firing 1.76) instead of with the literature's missing ratio, which is still named as a gap. The conversion rate is now stated as a product — units × availability × yield per fire — with the note that only the first term is about slots, and the section hands off to the two new ones
+- amended strategy:conversion.durability — its first fix now routes through strategy:conversion.availability, since location is the lever and the type line is only the cheapest form of it
+- amended strategy:conversion.raising-the-ceiling — opening rewritten from "if output is conserved under substitution" to "since no measured swap on this bench has raised a total", and free spells added to the lever list beside cost reduction and extra combats
+- amended strategy:card-advantage.plan-draw — repaired a cross-reference that line-wrapping had split mid-id ("strategy:aristocrats.wipe-" + "insurance"), which left it unresolvable to anything reading the doc programmatically
+- amended strategy:aristocrats.wipe-insurance — same repair (strategy:card-advantage.plan-draw)
+- amended strategy:life-as-resource.lifegain-engine — same repair (strategy:life-as-resource.lifegain-engine.bond-blood)
+- amended strategy:life-as-resource.lifegain-engine.bond-blood — same repair, two references
+- amended strategy:deckbuilding.typal-density.lord-exposure — same repair, two references
+
+One edit reaches backwards, and it is flagged here rather than done quietly: the
+seventh pass's committed bullet for strategy:conversion.output-conservation had
+to stop saying `added`, because the validator requires an added id to exist and
+this pass retired it. Its verb is now `deprecated`, its text is otherwise
+untouched, and it names its successor; the seventh pass's own description of what
+it added is preserved word for word.
+
+Verification note: the new URLs this pass were fetched and their load-bearing
+quotes re-checked against raw HTML — intothe99 (Timm), draftsim's lifegain
+payoff list (Dunn's Vizkopa note) and draftsim's group-slug list (Ignacio). One
+source is cited WITHOUT a quoted sentence on purpose: MTG Salvation's "Cards
+that punish people for holding cards?" thread returns content to a browser-like
+fetch but 403s a plain one behind Cloudflare, so its wording could not be
+re-verified to the standard every other quote here meets;
+strategy:conversion.passive-tax therefore names the hand-size family — whose
+membership is a fact about five cards' oracle text — and attributes the
+collecting to the thread without quoting it. A second MTG Salvation thread, on
+early elimination, was fetched, read and then DROPPED for the same reason:
+strategy:conversion.measure-choice rests on Flores, Duke and John instead, all
+of which verify. Searched and found empty: no article compares an amount-scaled
+targeted drain against a count-scaled each-opponent one (four phrasings), and no
+article prices a passive upkeep trigger against an attack step — both recorded
+in-text as gaps rather than filled.
+
+The fleet-control figures folded in here were supplied by the orchestrator and
+are NOT re-derived: the 22 version pairs and their four decreases, heliod's
+15.62 → 7.88 and 9.45 → 1.23 with 3.86 fires a game, yawgmoth-swarm's nine
+payoffs at mean mana value 2.78 firing 1.40 against edgar's four at 3.00 firing
+1.76, the 80.8% / 36-39% availability spread, and the 3.75 / 1.83 per-fire
+yields. The one thing this pass checked for itself is the oracle text behind the
+breadth claim, read from the deck's own cards.json and quoted in the yield
+bullet above. Five sections changed in whitespace only, from re-wrapping around
+the repaired ids and nothing else: strategy:multiplayer,
+strategy:conversion.entries-vs-deaths, strategy:conversion.combat-channel,
+strategy:conversion.kill-pattern and strategy:multiplayer.zonal-commander.
