@@ -318,3 +318,56 @@ Oathsworn Vampire.
 real oracle text from the corpus before you place it — do not place from the name", and then staged
 eleven cards without doing it myself. `card_pool.corpus_oracle()` is one call. Every add gets read
 from it before it is staged, not after the arm is running.
+
+### 2026-10-02: treasury-v1's arm KILLED at 120/200, and the A/A that should have come first
+
+The pilot: "kill the current experiment, it's flawed, run the A/A we need to dial this in". Agreed,
+and the flaw is mine. Three things were wrong with how four nights of arms were graded.
+
+**1. The threshold was the instrument's detection floor, not a goal.** `forge.life_removed_total
+>= 79` was set as the champion's 59.53 PLUS the MDE at 200 games/arm (19.30), rounded. The MDE is
+a property of the experiment. So the objective read "improve by the smallest amount this run is
+capable of resolving", it would MOVE if the game count changed, and against the real target —
+about 120 life to kill a three-opponent pod — 79 means nothing at all. `deck-branch new` prints
+the champion's reading at the moment the line is chosen precisely so a number cannot come from the
+wrong place, and the number still came from the wrong place.
+
+**2. The metric's run-to-run scatter on an UNCHANGED list is the size of the effect demanded.**
+The champion measuring itself at this pod:
+
+| games | life_removed_total |
+|---|---|
+| 84  | 74.39 |
+| 116 | 48.77 |
+| 200 | 59.53 |
+
+A 26-point spread between two runs of one list at 84 and 116 games, against a threshold set 19.5
+points above the mean. One 20-game champion run read **79.00 exactly** — the deck clears its own
+"goal" by luck on some samples.
+
+**3. The statistic is the wrong one for the distribution.** drain_dealt has median 0.0 against mean
+6.14; combat damage has median 27 against mean 49.6. Both are heavily right-skewed, so a handful of
+long blow-out games set the mean we have been grading eleven-card swaps on. "A mean is not a result"
+is already a rule here and `net_change` already bootstraps medians; the OBJECTIVE was not using them.
+
+**And the structural miss: NO A/A EXISTS ANYWHERE ON THIS BENCH.** Not for Edgar, not for any deck.
+`experiment --aa` runs one list twice on two seed bases and is the one command that says how far
+apart two arms of an identical deck land. Without it every "NOT MET" has been read against an
+unknown noise floor. The win-rate side is no better: the preflight for 200 games/arm resolves
++0.140, and treasury-v1 was reading 0.09 BELOW the champion — inside the noise either way.
+
+**Running now:** `experiment edgar-vampires --a working --b working --aa --pod standard-v3
+--games 200 --looks 4`, about 9.5 hours, four looks at 50/100/150/200 games per arm, arm B on
+seed+100000. The looks matter as much as the final number: they give the scatter at four sample
+sizes, which is what sets a defensible N and a defensible threshold for every future arm.
+
+**What survives from the killed arm.** Its 120 games of logs are still on disk (gitignored). The
+mechanism counts are real and worth keeping: of the eleven adds, Pitiless Plunderer triggered 69
+times, Corpse Knight 59, Bontu's Monument 52, Stitcher's Supplier 49, Zulaport Cutthroat 42,
+Falkenrath Aristocrat activated 130 and Phyrexian Reclamation 32 — the recursion piece does fire.
+Marshland Bloodcaster was cast 26 times and activated ZERO, which with its real oracle text (a
+tap-activated cost conversion, not the Blood engine I wrote down) makes it the one dead slot.
+Vish Kal, Blood Arbiter activated **141 times** against 0 in 220 games before the PumpAi patch,
+which is the harness fix earning its keep.
+
+No verdict is recorded for treasury-v1. It was not measured; it was interrupted.
