@@ -1650,3 +1650,33 @@ the kind of claim `validate-diagnosis` exists to force someone to make. That is 
 Neither is urgent — goblin-storm is not in anyone's sleeves and the failure describes a stale
 artifact rather than a wrong measurement reaching a reader. What is urgent is not forgetting that
 the suite is not green, because every other entry on this page is written as though it is.
+
+
+## 21. sharknado's branch artifacts are stale behind a DECLARATION change (2026-10-01, regen queued)
+
+Correcting `goldfish_targets.json` — "A real answer drawn" named Decree of Silence, which is not
+in the 99 — moved two target rates on the champion, and `common.deck_file` lets a branch read the
+DECK's authored file when it has no copy of its own. So all five sharknado branches inherit the
+corrected declaration and their committed figures are now stale against a fresh run:
+
+```
+test_goldfish_metrics_match_a_fresh_run[sharknado@budget-v1, @ivora-v1, @recon-v1,
+                                       @shelter-v1, @tax-v1]
+test_net_change_matches_a_fresh_run[sharknado@recon-v1]
+test_info_json_matches_a_fresh_run[sharknado]
+```
+
+This is the documented rule — a model change makes every derived artifact stale — arriving through
+a declaration rather than through the model code, so `meta.model_version` does NOT flag it. That is
+worth noticing: the stamp covers the four goldfish modules and nothing stamps the per-deck
+declaration those modules read, so a corrected target is invisible to the staleness check that
+exists and visible only to the regenerate-and-compare tests.
+
+**NOT regenerated at the time of writing, deliberately.** A 200-game Forge baseline was mid-run on
+a machine already at load 16.6 across 8 logical cores, and the game clock is 600 seconds. A
+clock-out is recorded as `truncated`, has no winner and is excluded from the win rate, so a
+CPU-heavy regen running alongside the measurement could have silently cost the baseline games.
+`manamap pilot regen --slug sharknado --jobs 4 && make manuals` is queued to run once both Forge
+runs are quiet.
+
+If that queued job did not run, this is the command, and the tests above are how you know.
