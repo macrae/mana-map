@@ -6684,9 +6684,6 @@
             "name": "Falkenrath Aristocrat"
           },
           {
-            "name": "Marshland Bloodcaster"
-          },
-          {
             "name": "Qarsi Revenant"
           }
         ],
@@ -6711,6 +6708,12 @@
           }
         ],
         "box": [
+          {
+            "name": "Mirkwood Bats",
+            "where": [
+              "Hapatra"
+            ]
+          },
           {
             "name": "Phyrexian Reclamation",
             "where": [
@@ -6737,7 +6740,7 @@
             ]
           }
         ],
-        "blocking": 6,
+        "blocking": 5,
         "procurement": null
       },
       "base_version": 3,
@@ -6746,16 +6749,15 @@
       "out": 11,
       "counts": {
         "in_deck": 85,
-        "box": 4,
+        "box": 5,
         "elsewhere": 1,
-        "buy": 5,
+        "buy": 4,
         "free": 1
       },
       "unsourced": [
         "Bontu's Monument",
         "Corpse Knight",
         "Falkenrath Aristocrat",
-        "Marshland Bloodcaster",
         "Qarsi Revenant",
         "Urza's Incubator"
       ],
@@ -7121,13 +7123,6 @@
           "is_new": false
         },
         {
-          "name": "Marshland Bloodcaster",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Master of Dark Rites",
           "state": "in_deck",
           "where": [],
@@ -7154,6 +7149,18 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Mirkwood Bats",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Mondrak, Glory Dominus",
@@ -8202,31 +8209,31 @@
     }
   ],
   "simulation": {
-    "runs": 17,
-    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n116-da677689-s1664224641-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3",
-    "at": "2026-10-01",
+    "runs": 18,
+    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-da677689-s20261001-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tl9473cf35",
+    "at": "2026-10-02",
     "stale": false,
     "ran_on_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
     "ran_on_version": 3,
     "current_version": 3,
-    "runs_on_current_list": 8,
-    "games": 116,
-    "wins": 26,
-    "decided": 81,
+    "runs_on_current_list": 9,
+    "games": 200,
+    "wins": 48,
+    "decided": 155,
     "vs": [
       "sythis-enchantress",
       "jarad-graveyard",
       "abaddon"
     ],
-    "win_rate": 0.321,
+    "win_rate": 0.31,
     "win_rate_ci95": [
-      0.229,
-      0.429
+      0.242,
+      0.386
     ],
     "piloting": {
       "comparable": true,
-      "lands_ratio": 0.932,
-      "casts_ratio": 0.835,
+      "lands_ratio": 0.901,
+      "casts_ratio": 0.833,
       "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
     },
     "engine_casts": {
@@ -8235,13 +8242,13 @@
       "reading": "the AI played the deck's declared engine; a win rate from this run is about the deck."
     },
     "eliminated_by": {
-      "sythis-enchantress": 32,
-      "abaddon": 7,
-      "jarad-graveyard": 10
+      "jarad-graveyard": 16,
+      "sythis-enchantress": 62,
+      "abaddon": 21
     },
-    "mean_round": 19.5,
+    "mean_round": 20.9,
     "token_damage_share": 0.2,
-    "tokens_observed": 2.42
+    "tokens_observed": 2.96
   },
   "experiments": {
     "count": 1,
@@ -8312,7 +8319,8 @@
     "branch `drain-v1` needs 4 card(s) sourced — `manamap pilot deck-branch edgar-vampires source drain-v1`",
     "branch `entry-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch entry-v1 --adds --write` before `simulate edgar-vampires@entry-v1` (which refuses them)",
     "branch `entry-v1` needs 3 card(s) sourced — `manamap pilot deck-branch edgar-vampires source entry-v1`",
-    "branch `treasury-v1` needs 6 card(s) sourced — `manamap pilot deck-branch edgar-vampires source treasury-v1`",
+    "branch `treasury-v1`: 1 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch treasury-v1 --adds --write` before `simulate edgar-vampires@treasury-v1` (which refuses them)",
+    "branch `treasury-v1` needs 5 card(s) sourced — `manamap pilot deck-branch edgar-vampires source treasury-v1`",
     "open questions routed: diagnose ×10, goldfish ×5, research-strategy ×6, resolve-stack ×8"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
