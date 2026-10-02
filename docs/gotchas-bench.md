@@ -3400,6 +3400,29 @@ The other ten axes all span zero at this look, and one shows the width problem p
 damage dealt to players read 48.76 against 44.98 with an interval of [−31.9, +24.3]. The interval
 is wider than the quantity.
 
+**HOW STRONG IS THIS? WEAKER THAN I FIRST WROTE IT, and the pilot asking "sure?" is what got
+it checked.** The firing is marginal: at 42 and 41 decided games, one game either way flips it —
+8/42 against 15/41 gives [−0.018, +0.353] and SPANS zero, as does 7/42 against 14/41. So a single
+marginal firing of a 95% interval on a null comparison is also just what a 95% interval does
+one time in twenty. It is suggestive, not a demonstration, and the first draft of this entry
+called it "damning", which it is not.
+
+**The confound WAS checked and is clean**: both arms run job indices [0,1,2,3], so seat rotation —
+turn order, which matters enormously in Commander — is matched between them. The only difference
+is the seed base (+100,000). And `--aa` refuses to run if the two refs resolve to different lists.
+
+**What the fragility check sharpened.** The two arms are the same deck, so a gap that PERSISTS as
+n grows cannot be noise; it would be a systematic asymmetry between the arms, which would be a bug
+in the A/A itself. If it shrinks toward zero, the naive test merely fired on a one-in-twenty event.
+Looks 2-4 distinguish two genuinely different problems, which is a better reason to let the run
+finish than "quantify the noise".
+
+**THE ROBUST EVIDENCE IS NOT THE A/A AT ALL — it predates it and needs no test.** The champion
+measuring its own `life_removed_total`: **74.39 at 84 games, 48.77 at 116, 59.53 at 200.** Three
+independent samples of ONE list, spanning 26 points, against branch objectives set 19.5 points
+above the mean. No significance machinery is required to see that a threshold inside that spread
+cannot grade anything.
+
 **What this invalidates.** Every branch verdict on this bench that rests on a win rate or a
 per-game mean compared across two separately-run `simulate` records, at 200 games per arm or
 fewer, with no A/A beneath it. That is drain-v1, boss-v1, entry-v1 and the killed treasury-v1 arm
