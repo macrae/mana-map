@@ -4,9 +4,102 @@
 gotchas; this says what exists and what is open. The magazine era's plan is archived
 verbatim in git at `git show 23e8cec:docs/history/PLAN-2026-08-magazine-era.md`.*
 
-Last updated **2026-09-26**. Everything below is committed and pushed to `main` except
+Last updated **2026-10-02**. Everything below is committed and pushed to `main` except
 where marked. Every figure was derived from the repo at write time — **do not quote one
 from memory**; the command that prints it is named beside it.
+
+## QUEUED, 2026-10-02 — the Reality Fracture refresh and a set filter for the map
+
+**Reality Fracture (FRA) released today.** Scryfall has it live: `fra` 461 cards and `frc`
+(Reality Fracture Commander) 103, plus three token sets. The corpus holds **20 `fra` cards**,
+the previews that leaked in before release, so a refresh brings in roughly **544 new cards**
+and takes the count from 34,890 to about 35,430. This is the run `corpus-gates` has been red
+waiting for (`docs/known-issues.md` §9c names Reality Fracture by date), and the preview-season
+caveat in the runbook is now resolved: release day means Scryfall no longer marks them
+`not_legal`.
+
+**Nothing starts until the A/A finishes.** A refresh is a ~2h pipeline dominated by the ability
+retrain, and the house rule is never to refresh the corpus while Forge is measuring. The A/A is
+the measurement every Edgar decision is now waiting on, and extra CPU inflates the very noise it
+exists to quantify. The refresh is chained to start when the experiment goes quiet.
+
+### A. The refresh — `.claude/skills/refresh-corpus` is the runbook, follow it, do not improvise
+
+Automated (chained, unattended): the free preflight (clean tree check, confirm Scryfall's
+`updated_at` actually moved past `data/.download-meta.json`, `pilot download-rulings`, save the
+`eval-embeddings` TEST-split baseline, `pilot cache-status` per deck so post-refresh MISSes are
+attributable), then `manamap run` end to end.
+
+**Needs hands afterwards, and these are the sharp edges, not the pipeline:**
+
+1. **Region names.** `cluster-regions` matches authored names by `map|level|mechanical-label`
+   signature, and a fresh clustering changes signatures, so dozens of L0/L1 regions come back
+   unmatched. The step REPORTS them and
+   `test_regions_are_named_three_levels_deep` FAILS until every one is named. The 2026-08-12
+   refresh needed 96 — 18 adapted from direction-shifted families, 78 authored. Budget for it.
+2. **The four gates in order**: the fast suite (watch for a renamed golden card, the strict
+   xfail on neighbour spread, and the `MEASURED × 0.8` regression floors — a floor failure means
+   investigate, never re-roll the seed), then the **browser suite, which is required here**
+   because the corpus-count assertions live in it, then the `neighbours.bin` sha gate, then the
+   Game-Changer legality check.
+3. **Card counts in prose**, which no test guards: the header total and supertype percentages in
+   `CLAUDE.md`, plus totals and coverage ratios in `docs/architecture.md` and
+   `docs/data-artifacts.md`. Leave the frozen design records alone.
+4. **Bump `DATA_VERSION`** in `viz/js/mana-map.js`. A full run retrains, so every
+   embedding-derived value changes meaning.
+5. **The cache pass, impact FIRST**: `pilot impact <slug>` on every deck BEFORE any
+   `cache-record`, because recording destroys the diff baseline. A MISSed routine that quotes a
+   numeric synergy or obsolescence rank is RE-SPAWNED, never re-blessed.
+6. **Look at the deployed map** before committing. Find Similar on a known card should return
+   neighbours that MOVED; unchanged neighbours mean a stale cache, which is where refresh
+   regressions hide.
+
+### B. The set filter — the pilot's ask, and the data is already there
+
+> "including the card series as a highlight or filter option in the mana-map would be super cool"
+
+**What already exists.** `data/cards.csv` carries `set_code`, `set_name` AND `released_at` for
+every card — `ingest/extract.py:203-205` has written all three since the beginning.
+`card_pool.CORPUS_COLUMNS` simply does not read them, and `viz_index.json` does not carry them:
+its per-card record is `{n, s, c, r, m, g}` — name, supertype, colour, rarity, mana value, role
+tags. So no new Scryfall call and no new extraction is needed. Only the export and the frontend.
+
+**Why it is sequenced BEFORE the pipeline run, not after.** `viz_index.json` is written by step
+14. Landing the exporter change first means the refresh produces an index that already carries
+set codes, which is one pipeline run instead of two.
+
+1. **`export/viz_index.py`** — add `"e"` (the set code) to each record in `build_viz_index`.
+   Four characters a card against a 3.58 MB index, so the cost is small and it gzips well, but
+   MEASURE the gz size and state it: `library.html` fetches this file after its first render and
+   the page's degradation story depends on it staying modest.
+2. **A set lookup, as its own small artifact.** `viz_index.json` is a bare JSON LIST and every
+   consumer indexes it positionally, so it must not become an object. Write `data/sets.json`
+   instead: `{code: {name, released_at, count}}`, roughly 350 entries and ~15 KB, which gives
+   the UI real labels and lets the picker sort newest-first so "show me Reality Fracture" is one
+   click rather than a hunt through 349 codes. **It is a new tracked artifact, so it ships with
+   its gate in the same commit** — a test asserting every code in `viz_index.json` resolves in
+   `sets.json` and that the counts agree, which is also the index-alignment check for this pair.
+3. **Two surfaces, because the pilot asked for highlight OR filter and they are different
+   questions.**
+   - **Curate (`library.html`)** gets a FILTER beside the existing colour/type/role controls:
+     narrow the grid to one set. This is the "what did I just get" view.
+   - **The atlas (`index.html`, explore mode)** gets a HIGHLIGHT: dim every card outside the
+     chosen set rather than removing it, so a new set's shape in the embedding space is visible
+     against the whole corpus. That is the view worth having — it answers "what KIND of cards did
+     this set add" in one glance, which no list can.
+4. **Cache-bust `?v=N` on every script and CSS tag in the pages touched**, and remember
+   `index.html`'s nine busts move together. `DATA_VERSION` is already being bumped by the
+   refresh; a set filter alone would not warrant it, since a reader draws no different conclusion
+   from the same embeddings.
+5. **Tests**: the `sets.json` gate above; a viz-index test asserting `"e"` is present and
+   non-empty for every card; and a browser test that the filter narrows the grid and the
+   highlight dims rather than removes. Each proven by re-introducing its bug.
+
+**Open question for the pilot, not a blocker.** Whether the atlas highlight should offer
+"everything released since <date>" as well as a single set. A new-set highlight answers "what is
+new"; a since-date highlight answers "what has changed since I last looked", which is a different
+and possibly better question for someone who refreshes every few months. Cheap to add once the
+release date is in `sets.json`, so it is listed rather than guessed at.
 
 ## Where things stand, 2026-09-26
 
