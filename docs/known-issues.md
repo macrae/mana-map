@@ -1615,3 +1615,38 @@ experiment arm by its `decklist_sha256` under the same four-tuple, with a test a
   turns) and CAST-LATE in the 200-game pod arm (19 casts across 37 in-hand games, 72
   castable turns) — fewer competing spells in hand, so it gets cast. The gate catches HELD
   reliably and CAST-LATE only sometimes; the class tag from the script catches the rest.
+
+
+## 20. THE BOARD IS RED: goblin-storm's diagnosis.json fails its validator (2026-10-01)
+
+This page's whole premise is that `make test-fresh` is green, so what is wrong here is what no
+test fails on. That premise does not hold right now, and this entry is here so the exception is
+recorded rather than discovered.
+
+`tests/test_pilot_tracked_artifacts_validate.py::test_tracked_artifact_passes_its_validator[goblin-storm/diagnosis.json]`
+fails with two errors:
+
+```
+- axes[12] (consistency): measured.value = 0.9, but deck-audit computes 0.909
+  — the diagnosis must carry the audit's figure, not its own
+- cut_candidates[2] (Goblin Burrows): cutting this card touches checker-passed stack(s) 012,
+  but orphans_stack says []. A verified line resting on a card the cut list proposes must be
+  priced, not omitted
+```
+
+**It is NOT caused by the 2026-10-01 harness and metric work.** Checked rather than assumed: the
+test fails identically at `25b5f110`, the last commit before that session's changes.
+
+The two halves want different fixes and only one of them is mechanical. The **0.9 against 0.909**
+is a figure the diagnosis is supposed to copy from `deck-audit`, so either the audit moved under
+it (a model change, which would make the whole diagnosis stale and wants the doctor re-run) or
+the figure was rounded when it was written. Decide which before touching it — patching the number
+makes the gate pass either way, and if the audit moved then every other figure in the file is
+suspect too, which a passing gate would then hide. The **orphaned stack** is the doctor's own
+judgement: stack 012 is checker-passed and rests on Goblin Burrows, and what cutting it costs is
+the kind of claim `validate-diagnosis` exists to force someone to make. That is a
+`/diagnose-deck` run, not an edit.
+
+Neither is urgent — goblin-storm is not in anyone's sleeves and the failure describes a stale
+artifact rather than a wrong measurement reaching a reader. What is urgent is not forgetting that
+the suite is not green, because every other entry on this page is written as though it is.
