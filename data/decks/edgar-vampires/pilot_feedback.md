@@ -371,3 +371,11 @@ Vish Kal, Blood Arbiter activated **141 times** against 0 in 220 games before th
 which is the harness fix earning its keep.
 
 No verdict is recorded for treasury-v1. It was not measured; it was interrupted.
+
+**The must-be-a-Vampire rule is scoped to the ARMY, not the payoffs (2026-10-02).** The pilot,
+on Mirkwood Bats being a Bat: "it's ok, not _everything_ needs to be a bat". Eminence triggers on
+CASTING a Vampire spell, so creature type is load-bearing for the cheap bodies that make up the
+army — a one-drop that is not a Vampire mints no token and is a worse card for it. It is NOT
+load-bearing for a payoff that multiplies what the army already produces. Mirkwood Bats keys on
+tokens being created or sacrificed and does not care what type anything is. So: ask "is this a
+Vampire?" of layer one, and do not ask it of a multiplier.
