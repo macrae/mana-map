@@ -1144,6 +1144,22 @@
     "what": "life gained per game, all sources (the record splits it: lifelink, trigger, other)",
     "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"
    },
+   "forge.life_removed_total": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "life_removed_total",
+    "what": "every point of life this seat removed from opponents in a game \u2014 combat damage plus noncombat damage plus drain, summed, with the median beside the mean because the sample has a long tail",
+    "why": "the only axis that cannot be gamed by trading one kind of output for a smaller amount of another: drain-v1 and boss-v1 each raised drain by ~4.5 while losing ~17 combat damage, and this row would have said so"
+   },
+   "forge.noncombat_damage_dealt_to_players": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "noncombat_damage_dealt_to_players",
+    "what": "damage to players that did not come from combat, per game \u2014 an ETB pinger, a Purphoros, a direct-damage spell",
+    "why": "the output an ENTRY payoff produces, which needs no attack step and no blocker maths; the champion makes 8.04 eminence tokens a game and converts almost none of them"
+   },
    "forge.win_rate": {
     "conditional": false,
     "kind": "proportion",
@@ -1264,6 +1280,7 @@
   "why": "no Forge run on the branch \u2014 `manamap pilot simulate ur-dragon@responses-v2 --vs <pod>` puts it at a table and writes where this reads"
  },
  "harness": {
+  "cast_proofs": null,
   "iterations": 10000,
   "model_version": "0fd30a379a0b",
   "seed": 20260826

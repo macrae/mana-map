@@ -15,14 +15,15 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 18,
     "stale": [
-      "map",
       "tutors",
       "prose"
     ],
-    "invalid": [],
+    "invalid": [
+      "decisions.jsonl"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -4463,8 +4464,8 @@
       "name": "swords-v1",
       "opened": "2026-10-01",
       "why": "A PATCH (one swap): Stromkirk Noble out, Swords to Plowshares in. The Noble is a builder-filled slot (components castability 1.0, curve 1.0, similarity 0.78, synergy 0.33, EDHREC 0.08, combo 0; alternates within 0.004) with no relation to the draw/discard engine — the pilot's own read, 2026-10-01: 'what is the point of this in the deck?'. The deck answers NO resolved permanent of any class (audit interaction-breadth: 0 of 5 classes; interaction 7/8 UNDER, counted mostly as pingers) and lost 53 of 105 decided games to sythis-enchantress, a creature-based engine, in its latest 120-game run at standard-v3 (rate 0.124). Swords is the one-mana answer to Sythis herself; recon finding 2 names it at 63% of partner lists. The objective is the real table: does answering the dominant seat move the rate — MDE at 200/arm against 0.124 is about 0.11, so the line sits at 0.20. Every add is cast-checked before the arm (the 2026-10-01 gate).",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-10-01 into the list after VNone",
       "proposal": null,
       "pull_list": {
         "buy": [],
@@ -6365,12 +6366,12 @@
     "within_target": null
   },
   "paper": {
-    "version": 5,
-    "sha": "40d4dbab5d5f",
-    "decklist_sha256": "7d623c5f9cf439d7b482b54cbd1aae3c403268ba5c0ac9dcec1e14e73dbf5e3d",
-    "built_at": "2026-09-26",
-    "note": "Both swaps confirmed made in cardboard by the pilot: Astral Drift -> Shelter and Gleaming Bastion -> a basic Island. The lock was two changes behind — it still pointed at V3/v1.0.0 from 2026-09-21 while the working list had moved twice, so regen.is_pinned() was driving the whole chain against a list that was not in the case.",
-    "release": "v1.0.2"
+    "version": 6,
+    "sha": "6f6b9b32cc04",
+    "decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
+    "built_at": "2026-10-01",
+    "note": "Sleeved as of 2026-10-01, before the pilot's game that night: the four swaps (Negate, Mask of Memory, Marauding Mako, Swords to Plowshares) were made in cardboard by hand, and this lock records that V6 / v1.1.0 is the physical deck. CARRIED FORWARD from the pilot's own observation the same day: the tracked list and the paper list may still differ elsewhere. The pilot said Goblin Engineer is not in the sleeved deck; it is not in the tracked list either, so that one resolved, but a full `check-in` against the real paper list has never been run on this deck and is the only way to settle the rest.",
+    "release": "v1.1.0"
   },
   "record": {
     "games": 0,
@@ -6835,7 +6836,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "6a639725e9370ac15d8caa9b50a49e85f69e7391d12e09ceb0fe20990e3edc34",
     "ran_on_version": 1,
-    "current_version": null,
+    "current_version": 6,
     "runs_on_current_list": 0,
     "games": 120,
     "wins": 13,
@@ -6881,7 +6882,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 4,
+    "count": 5,
     "awaiting_outcome": [
       {
         "id": "001",
@@ -6900,6 +6901,13 @@
       {
         "id": "004",
         "branch": "shelter-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      },
+      {
+        "id": "005",
+        "branch": "swords-v1",
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
@@ -6965,17 +6973,25 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "005",
+        "at": "2026-10-01T19:18:40-07:00",
+        "kind": "merge",
+        "branch": "swords-v1",
+        "as_version": null,
+        "predicted": null,
+        "realised": null
       }
     ]
   },
   "next": [
-    "stale: map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "1 artifact(s) fail their own gate (decisions.jsonl) — `deck-status sharknado` names them; fix before anything else reads them",
+    "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
-    "branch `swords-v1` is fully sourced (+0 -0) — `manamap pilot deck-branch sharknado merge swords-v1 --write`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×4",
-    "5 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
+    "6 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

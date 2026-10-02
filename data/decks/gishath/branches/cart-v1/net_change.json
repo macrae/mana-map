@@ -1002,6 +1002,22 @@
     "what": "life gained per game, all sources (the record splits it: lifelink, trigger, other)",
     "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"
    },
+   "forge.life_removed_total": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "life_removed_total",
+    "what": "every point of life this seat removed from opponents in a game \u2014 combat damage plus noncombat damage plus drain, summed, with the median beside the mean because the sample has a long tail",
+    "why": "the only axis that cannot be gamed by trading one kind of output for a smaller amount of another: drain-v1 and boss-v1 each raised drain by ~4.5 while losing ~17 combat damage, and this row would have said so"
+   },
+   "forge.noncombat_damage_dealt_to_players": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "noncombat_damage_dealt_to_players",
+    "what": "damage to players that did not come from combat, per game \u2014 an ETB pinger, a Purphoros, a direct-damage spell",
+    "why": "the output an ENTRY payoff produces, which needs no attack step and no blocker maths; the champion makes 8.04 eminence tokens a game and converts almost none of them"
+   },
    "forge.win_rate": {
     "conditional": false,
     "kind": "proportion",
@@ -1103,6 +1119,23 @@
    }
   },
   "card_overrides": null,
+  "cast_proofs": {
+   "adds": [
+    "Alpine Meadow",
+    "Arctic Treeline",
+    "Chandra's Ignition",
+    "Clifftop Retreat",
+    "Commercial District",
+    "Mountain",
+    "Plains"
+   ],
+   "anyway": false,
+   "floor": false,
+   "gated_runs": [],
+   "held": [],
+   "late": [],
+   "reads_as": "every add the branch stages was played in its arms"
+  },
   "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
   "champion": {
    "all_games": 80,
@@ -1422,6 +1455,64 @@
     "mde": 18.8303,
     "method": "Welch t interval on the difference of means"
    },
+   "forge.life_removed_total": {
+    "branch": {
+     "max": 464,
+     "median": 21,
+     "min": 0,
+     "n": 40,
+     "sd": 116.6844,
+     "value": 74.675
+    },
+    "champion": {
+     "max": 777,
+     "median": 27,
+     "min": 0,
+     "n": 80,
+     "sd": 126.9846,
+     "value": 75.425
+    },
+    "ci95": [
+     -46.3782,
+     44.8782
+    ],
+    "conditional": false,
+    "delta": -0.75,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 65.2204,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.noncombat_damage_dealt_to_players": {
+    "branch": {
+     "max": 40,
+     "median": 0,
+     "min": 0,
+     "n": 40,
+     "sd": 9.0452,
+     "value": 3.675
+    },
+    "champion": {
+     "max": 23,
+     "median": 0,
+     "min": 0,
+     "n": 80,
+     "sd": 5.2849,
+     "value": 2.3625
+    },
+    "ci95": [
+     -1.7204,
+     4.3454
+    ],
+    "conditional": false,
+    "delta": 1.3125,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 4.3353,
+    "method": "Welch t interval on the difference of means"
+   },
    "forge.win_rate": {
     "branch": {
      "k": 13,
@@ -1529,6 +1620,23 @@
   }
  },
  "harness": {
+  "cast_proofs": {
+   "adds": [
+    "Alpine Meadow",
+    "Arctic Treeline",
+    "Chandra's Ignition",
+    "Clifftop Retreat",
+    "Commercial District",
+    "Mountain",
+    "Plains"
+   ],
+   "anyway": false,
+   "floor": false,
+   "gated_runs": [],
+   "held": [],
+   "late": [],
+   "reads_as": "every add the branch stages was played in its arms"
+  },
   "iterations": 10000,
   "model_version": "0fd30a379a0b",
   "seed": 20260826
