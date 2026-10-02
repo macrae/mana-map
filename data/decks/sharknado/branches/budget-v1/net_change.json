@@ -134,7 +134,7 @@
    {
     "free": false,
     "name": "Decree of Silence",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -212,7 +212,7 @@
    {
     "free": false,
     "name": "Gossip's Talent",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -314,7 +314,7 @@
    {
     "free": false,
     "name": "Marketback Walker",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -524,7 +524,7 @@
    {
     "free": false,
     "name": "Stromkirk Noble",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -620,10 +620,10 @@
   ],
   "counts": {
    "box": 0,
-   "buy": 4,
+   "buy": 8,
    "elsewhere": 1,
    "free": 0,
-   "in_deck": 95
+   "in_deck": 91
   },
   "counts_are": "distinct names",
   "diff": {
@@ -631,10 +631,14 @@
     "Astral Drift",
     "Battlefield Forge",
     "Clifftop Retreat",
+    "Decree of Silence",
     "Gleaming Bastion",
-    "Inspiring Vantage"
+    "Gossip's Talent",
+    "Inspiring Vantage",
+    "Marketback Walker",
+    "Stromkirk Noble"
    ],
-   "add_copies": 5,
+   "add_copies": 9,
    "base_names": 100,
    "base_size": 100,
    "names": 100,
@@ -642,10 +646,14 @@
     "Ferrous Lake",
     "Fiery Islet",
     "Island",
+    "Marauding Mako",
+    "Mask of Memory",
+    "Negate",
     "Riverpyre Verge",
-    "Shelter"
+    "Shelter",
+    "Swords to Plowshares"
    ],
-   "out_copies": 5,
+   "out_copies": 9,
    "quantity": [],
    "size": 100
   },
@@ -658,17 +666,31 @@
    "Astral Drift",
    "Battlefield Forge",
    "Clifftop Retreat",
+   "Decree of Silence",
    "Gleaming Bastion",
-   "Inspiring Vantage"
+   "Gossip's Talent",
+   "Inspiring Vantage",
+   "Marketback Walker",
+   "Stromkirk Noble"
   ]
  },
  "blind_spots": [
   {
    "cards": [
-    "Astral Drift"
+    "Decree of Silence",
+    "Negate"
+   ],
+   "class": "counterspell",
+   "headline": "2 card(s) carrying a counterspell effect",
+   "why": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Astral Drift",
+    "Mask of Memory"
    ],
    "class": "draw",
-   "headline": "1 card(s) carrying a draw effect",
+   "headline": "2 card(s) carrying a draw effect",
    "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
   },
   {
@@ -681,10 +703,11 @@
   },
   {
    "cards": [
-    "Astral Drift"
+    "Astral Drift",
+    "Swords to Plowshares"
    ],
    "class": "removal",
-   "headline": "1 card(s) carrying a removal effect",
+   "headline": "2 card(s) carrying a removal effect",
    "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
   },
   {
@@ -705,32 +728,72 @@
  ],
  "branch": "budget-v1",
  "changes": {
-  "count": 10,
+  "count": 18,
   "counts": {
-   "in": 5,
-   "out": 5,
-   "rows": 10
+   "in": 9,
+   "out": 9,
+   "rows": 18
   },
   "diff": {
    "base_names": 100,
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 5,
-    "in_copies": 5,
+    "in": 9,
+    "in_copies": 9,
     "lands_in": 4,
     "lands_out": 4,
-    "out": 5,
-    "out_copies": 5,
-    "spells_in": 1,
-    "spells_out": 1
+    "out": 9,
+    "out_copies": 9,
+    "spells_in": 5,
+    "spells_out": 5
    },
    "in": [
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Marketback Walker",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Artifact Creature \u2014 Construct",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Stromkirk Noble",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Vampire Noble",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gossip's Talent",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment \u2014 Class",
+     "why": null
+    },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
      "name": "Astral Drift",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 8,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Decree of Silence",
      "pair": null,
      "state": "buy",
      "type_line": "Enchantment",
@@ -780,6 +843,42 @@
    "names": 100,
    "out": [
     {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Marauding Mako",
+     "pair": null,
+     "type_line": "Creature \u2014 Shark Pirate",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Swords to Plowshares",
+     "pair": null,
+     "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Mask of Memory",
+     "pair": null,
+     "type_line": "Artifact \u2014 Equipment",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Negate",
+     "pair": null,
+     "type_line": "Instant",
+     "why": null
+    },
+    {
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
@@ -827,8 +926,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 5,
-    "out": 5
+    "in": 9,
+    "out": 9
    }
   },
   "lands": [
@@ -891,8 +990,56 @@
    },
    {
     "at": null,
+    "in": "Decree of Silence",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Gossip's Talent",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Marketback Walker",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Stromkirk Noble",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Marauding Mako",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Mask of Memory",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Negate",
+    "why": null
+   },
+   {
+    "at": null,
     "in": null,
     "out": "Shelter",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Swords to Plowshares",
     "why": null
    }
   ],
@@ -1016,6 +1163,22 @@
     "what": "life gained per game, all sources (the record splits it: lifelink, trigger, other)",
     "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"
    },
+   "forge.life_removed_total": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "life_removed_total",
+    "what": "every point of life this seat removed from opponents in a game \u2014 combat damage plus noncombat damage plus drain, summed, with the median beside the mean because the sample has a long tail",
+    "why": "the only axis that cannot be gamed by trading one kind of output for a smaller amount of another: drain-v1 and boss-v1 each raised drain by ~4.5 while losing ~17 combat damage, and this row would have said so"
+   },
+   "forge.noncombat_damage_dealt_to_players": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "noncombat_damage_dealt_to_players",
+    "what": "damage to players that did not come from combat, per game \u2014 an ETB pinger, a Purphoros, a direct-damage spell",
+    "why": "the output an ENTRY payoff produces, which needs no attack step and no blocker maths; the champion makes 8.04 eminence tokens a game and converts almost none of them"
+   },
    "forge.win_rate": {
     "conditional": false,
     "kind": "proportion",
@@ -1118,6 +1281,7 @@
   "why": "no Forge run on the branch \u2014 `manamap pilot simulate sharknado@budget-v1 --vs <pod>` puts it at a table and writes where this reads"
  },
  "harness": {
+  "cast_proofs": null,
   "iterations": 10000,
   "model_version": "0fd30a379a0b",
   "seed": 20260826
@@ -1266,28 +1430,32 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "The objective is met and nothing measured here got worse.",
+  "because": "You buy nothing and pay stall, 2 in a row, interaction affordable @T6 and hand can act by T3.",
   "bill": {
    "box": 0,
-   "buy": 4,
+   "buy": 8,
    "elsewhere": 1,
    "free": 0,
-   "in_deck": 95
+   "in_deck": 91
   },
   "cost": {
-   "buy": 4,
+   "buy": 8,
    "buy_cards": [
     "Astral Drift",
     "Clifftop Retreat",
+    "Decree of Silence",
     "Gleaming Bastion",
-    "Inspiring Vantage"
+    "Gossip's Talent",
+    "Inspiring Vantage",
+    "Marketback Walker",
+    "Stromkirk Noble"
    ],
    "counts": {
     "box": 0,
-    "buy": 4,
+    "buy": 8,
     "elsewhere": 1,
     "free": 0,
-    "in_deck": 95
+    "in_deck": 91
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -1300,41 +1468,69 @@
      "name": "Battlefield Forge"
     }
    ],
-   "owned": 96,
-   "reads_as": "4 to buy; 1 to pull out of a deck that is still together; 96 of 100 already owned",
+   "owned": 92,
+   "reads_as": "8 to buy; 1 to pull out of a deck that is still together; 92 of 100 already owned",
    "total": 100
   },
-  "fell": [],
+  "fell": [
+   "stall, 2 in a row",
+   "interaction affordable @T6",
+   "hand can act by T3"
+  ],
   "no_call": [
    "damage @T10",
    "board power @T6",
    "killed by T6",
    "killed by T10",
-   "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
-   "extra cards by T8",
-   "interaction affordable @T6",
-   "hand can act by T3"
+   "extra cards by T8"
   ],
-  "notes": [
-   "Nothing moved: all 10 measures came back inside this run's minimum detectable difference. The change is real and smaller than this run can resolve \u2014 an answer about its SIZE, not a failure to measure."
-  ],
+  "notes": [],
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is missed drop by T5 at +0.011 against an MDE of 0.019. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "12 games in 100 -> 15 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "stall, 2 in a row",
+    "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+   },
+   {
+    "detail": "23 games in 100 -> 13 in 100, a swing of 10 games per 100",
+    "kind": "paid",
+    "what": "interaction affordable @T6",
+    "why_it_matters": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   },
+   {
+    "detail": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
+    "kind": "paid",
+    "what": "hand can act by T3",
+    "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
+   },
+   {
+    "detail": "the largest is extra cards by T8 at -0.298 against an MDE of 0.394. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "10 row(s) returned no call",
+    "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
     "cards": [
-     "Astral Drift"
+     "Decree of Silence",
+     "Negate"
+    ],
+    "detail": "the goldfish has no opponents, so a counterspell has nothing to counter and reads as a dead card",
+    "kind": "unmeasured",
+    "what": "2 card(s) carrying a counterspell effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Astral Drift",
+     "Mask of Memory"
     ],
     "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
     "kind": "unmeasured",
-    "what": "1 card(s) carrying a draw effect",
+    "what": "2 card(s) carrying a draw effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -1348,11 +1544,12 @@
    },
    {
     "cards": [
-     "Astral Drift"
+     "Astral Drift",
+     "Swords to Plowshares"
     ],
     "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
-    "what": "1 card(s) carrying a removal effect",
+    "what": "2 card(s) carrying a removal effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -1385,7 +1582,7 @@
    }
   ],
   "rose": [],
-  "state": "merge"
+  "state": "a trade"
  },
  "slug": "sharknado",
  "staged": 6,
@@ -1393,96 +1590,96 @@
   {
    "better_is": "higher",
    "branch": 61.0786,
-   "champion": 60.5466,
+   "champion": 61.5711,
    "ci95_diff": [
-    -0.5307,
-    1.5947
+    -1.5541,
+    0.5691
    ],
-   "delta": 0.532,
+   "delta": -0.4925,
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 4,
+    "rank": 6,
     "significant": false,
-    "threshold": 2.69
+    "threshold": 2.576
    },
    "mde": 1.5296,
    "measure": "damage @T10",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.532 is smaller than the 1.530 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.492 is smaller than the 1.530 this run can resolve",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "noise",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": 0.981
+   "z": -0.909
   },
   {
    "better_is": "higher",
    "branch": 9.8911,
-   "champion": 9.8341,
+   "champion": 9.93,
    "ci95_diff": [
-    -0.046,
-    0.16
+    -0.1418,
+    0.064
    ],
-   "delta": 0.057,
+   "delta": -0.0389,
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 3,
+    "rank": 7,
     "significant": false,
-    "threshold": 2.734
+    "threshold": 2.498
    },
-   "mde": 0.1481,
+   "mde": 0.1479,
    "measure": "board power @T6",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.057 is smaller than the 0.148 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.039 is smaller than the 0.148 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": 1.085
+   "z": -0.741
   },
   {
    "better_is": "higher",
    "branch": 0.2152,
-   "champion": 0.2097,
+   "champion": 0.2137,
    "ci95_diff": [
-    -0.0058,
-    0.0168
+    -0.0099,
+    0.0129
    ],
-   "delta": 0.0055,
+   "delta": 0.0015,
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 5,
+    "rank": 10,
     "significant": false,
-    "threshold": 2.638
+    "threshold": 1.96
    },
    "mde": 0.0163,
    "measure": "killed by T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.016 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 0.951
+   "z": 0.258
   },
   {
    "better_is": "higher",
    "branch": 0.9846,
-   "champion": 0.9833,
+   "champion": 0.9855,
    "ci95_diff": [
-    -0.0022,
-    0.0048
+    -0.0043,
+    0.0025
    ],
-   "delta": 0.0013,
+   "delta": -0.0009,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -1490,7 +1687,7 @@
     "significant": false,
     "threshold": 2.394
    },
-   "mde": 0.0051,
+   "mde": 0.0049,
    "measure": "killed by T10",
    "method": "Newcombe score interval on the difference of proportions",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.005 this run can resolve",
@@ -1500,101 +1697,73 @@
    "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 0.731
+   "z": -0.524
   },
   {
    "better_is": "lower",
    "branch": 0.1511,
-   "champion": 0.1468,
+   "champion": 0.123,
    "ci95_diff": [
-    -0.0056,
-    0.0142
+    0.0186,
+    0.0376
    ],
-   "delta": 0.0043,
-   "excludes_zero": false,
+   "delta": 0.0281,
+   "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 7,
-    "significant": false,
-    "threshold": 2.498
+    "rank": 2,
+    "significant": true,
+    "threshold": 2.773
    },
    "mde": 0.0142,
    "measure": "stall, 2 in a row",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.014 this run can resolve",
+   "reads_as": "12 games in 100 -> 15 in 100, a swing of 3 games per 100",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": 0.854
+   "z": 5.783
   },
   {
    "better_is": "lower",
    "branch": 0.392,
-   "champion": 0.381,
+   "champion": 0.3842,
    "ci95_diff": [
-    -0.0025,
-    0.0245
+    -0.0057,
+    0.0213
    ],
-   "delta": 0.011,
+   "delta": 0.0078,
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 1,
+    "rank": 5,
     "significant": false,
-    "threshold": 2.807
+    "threshold": 2.638
    },
    "mde": 0.0193,
    "measure": "missed drop by T5",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.019 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": 1.597
+   "z": 1.132
   },
   {
    "better_is": "lower",
    "branch": 0.1929,
-   "champion": 0.1941,
+   "champion": 0.1914,
    "ci95_diff": [
-    -0.0122,
-    0.0098
+    -0.0094,
+    0.0124
    ],
-   "delta": -0.0012,
-   "excludes_zero": false,
-   "holm": {
-    "family": 10,
-    "rank": 10,
-    "significant": false,
-    "threshold": 1.96
-   },
-   "mde": 0.0157,
-   "measure": "mulliganed",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.016 this run can resolve",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
-   "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
-   "z": -0.215
-  },
-  {
-   "better_is": "higher",
-   "branch": 12.0657,
-   "champion": 12.097,
-   "ci95_diff": [
-    -0.3017,
-    0.2391
-   ],
-   "delta": -0.0313,
+   "delta": 0.0015,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -1602,73 +1771,101 @@
     "significant": false,
     "threshold": 2.241
    },
+   "mde": 0.0156,
+   "measure": "mulliganed",
+   "method": "Newcombe score interval on the difference of proportions",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.016 this run can resolve",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
+   "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
+   "z": 0.269
+  },
+  {
+   "better_is": "higher",
+   "branch": 12.0657,
+   "champion": 12.3641,
+   "ci95_diff": [
+    -0.5736,
+    -0.0232
+   ],
+   "delta": -0.2984,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 4,
+    "significant": false,
+    "threshold": 2.69
+   },
    "mde": 0.3937,
    "measure": "extra cards by T8",
    "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.031 is smaller than the 0.394 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.298 is smaller than the 0.394 this run can resolve",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "noise",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": -0.227
+   "z": -2.125
   },
   {
    "better_is": "higher",
    "branch": 0.1316,
-   "champion": 0.126,
+   "champion": 0.227,
    "ci95_diff": [
-    -0.0071,
-    0.0184
+    -0.1094,
+    -0.0814
    ],
-   "delta": 0.0056,
-   "excludes_zero": false,
+   "delta": -0.0954,
+   "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 6,
-    "significant": false,
-    "threshold": 2.576
+    "rank": 1,
+    "significant": true,
+    "threshold": 2.807
    },
-   "mde": 0.0183,
+   "mde": 0.0216,
    "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.018 this run can resolve",
+   "reads_as": "23 games in 100 -> 13 in 100, a swing of 10 games per 100",
    "role": "exploratory",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": 0.862
+   "z": -13.366
   },
   {
    "better_is": "higher",
    "branch": 0.9481,
-   "champion": 0.9515,
+   "champion": 0.9579,
    "ci95_diff": [
-    -0.0095,
-    0.0027
+    -0.0157,
+    -0.0039
    ],
-   "delta": -0.0034,
-   "excludes_zero": false,
+   "delta": -0.0098,
+   "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 2,
-    "significant": false,
-    "threshold": 2.773
+    "rank": 3,
+    "significant": true,
+    "threshold": 2.734
    },
    "mde": 0.0088,
    "measure": "hand can act by T3",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.009 this run can resolve",
+   "reads_as": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
    "role": "exploratory",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
-   "z": -1.101
+   "z": -3.275
   }
  ]
 }

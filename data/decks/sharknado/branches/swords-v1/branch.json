@@ -16,6 +16,11 @@
    "at": "2026-10-01",
    "decklist_sha256": "03d9f5dbf30f867d40de5882acd1f837f3b5eed93f0257560b5403512348d131",
    "message": "v1.0.x patch: Stromkirk Noble -> Swords to Plowshares \u2014 the filler slot becomes the deck's first permanent answer"
+  },
+  {
+   "at": "2026-10-01",
+   "decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
+   "message": "v1.1.0: the four swaps the pilot made in paper on 2026-10-01 \u2014 Negate for Decree of Silence, Mask of Memory for Gossip's Talent, Marauding Mako for Marketback Walker, Swords to Plowshares for Stromkirk Noble. Three of the four were FILLER by the builder's own score (14-20% of it came from anything about this deck); the fourth was an eight-mana counterspell the AI discarded more often than it cast."
   }
  ],
  "base_version": 5,
@@ -26,6 +31,33 @@
    "in": "Swords to Plowshares",
    "strength": 0.9,
    "why": "Noble: filler by the build plan's own components (no combo, synergy 0.33, EDHREC 0.08), cast 15 times in 120 games, no game decided by it. Swords: the deck's first answer to a resolved permanent (interaction-breadth 0 -> creature class answered), one mana in the slot's cost, no Forge AI flag, cast through Forge's removal path. Recon [2]: 63% of partner lists. Predicted: forge.win_rate up at standard-v3 by removing sythis' engine early; eliminated-by sythis down."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Decree of Silence",
+   "in": "Negate",
+   "strength": 0.9,
+   "why": "APPLIED IN PAPER by the pilot, 2026-10-01. Decree is EIGHT mana for three counters and its cycling mode is a six-mana Cancel; over 120 games at standard-v3 Forge cast it 7 times, cycled it 2 and DISCARDED it 10 \u2014 in a wheels deck an eight-drop in hand is what Brallin eats. Negate is two mana for the same job on a noncreature spell, and protection is the audit's gap at 4 against a target of 5-7. The deck's own build plan gave the Decree slot NO scored components and no alternates, which is the builder saying it had nothing for that slot."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Gossip's Talent",
+   "in": "Mask of Memory",
+   "strength": 0.9,
+   "why": "APPLIED IN PAPER. Gossip's Talent is a filler slot by the builder's own score \u2014 20% of it came from anything about THIS deck \u2014 and all three levels are wrong here: surveil feeds a graveyard plan the recon records as never built, surveil is not a discard so Brallin never triggers, and level 3 blinks a creature that dealt damage, which on Shabraz RESETS every +1/+1 counter it has earned. Forge cast it in 12 of 120 games. Mask of Memory is two mana and hits BOTH halves of the engine on one connection: draw two grows Shabraz and gains life, then the discard pings every opponent with Brallin."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Marketback Walker",
+   "in": "Marauding Mako",
+   "strength": 0.85,
+   "why": "APPLIED IN PAPER. Marketback Walker is a 0-mana X/X that enters with X counters and costs {4} per counter after that, and draws on death for each \u2014 a mana sink in a deck that wants its mana for wheels; filler at 15% deck-specific score. Marauding Mako is ONE mana, a Shark, puts a +1/+1 counter on itself per card discarded (so every wheel and every Brallin trigger grows it) and cycles {2} when the draw is better than the body. Recon finding 4 names it at 1,679 of 3,487 partner lists."
   }
- ]
+ ],
+ "merged": {
+  "at": "2026-10-01",
+  "decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
+  "into_version_before": null,
+  "forced_reason": "The four swaps were MADE IN CARDBOARD by the pilot on 2026-10-01 before this merge \u2014 the sourcing gate predicts whether the cards can be got, and that question is settled by the deck existing in paper. Recording the list the pilot is shuffling is the point of the merge."
+ }
 }
