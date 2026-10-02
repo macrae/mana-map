@@ -83,6 +83,30 @@ manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J] [--detec
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>   # `--list` names each run's VERSION
 manamap pilot forge-install [--verify] [--revert] [--generate]   # THE HARNESS, INSTALLED
 manamap pilot forge-telemetry [--build]                           # THE LOG FORMATTER: declared vs carried; build the patched jar
+manamap pilot forge-cast-check <slug> --card "<name>" | --branch <b> --adds [--write] [--jobs N]
+                                        # PROVE THE AI PLAYS A CARD BEFORE A NIGHT IS SPENT ON IT.
+                                        #   A two-seat shell — the deck's commander, N copies of the
+                                        #   card, the deck's own cheap spells as filler, basics —
+                                        #   counted from the telemetry hand facts: drawn / cast /
+                                        #   activated / triggered / HELD while castable. Verdicts
+                                        #   PLAYED / CAST-LATE / HELD / UNPLAYED / NOT DRAWN, each
+                                        #   with the CLASS derived from the card's own script and the
+                                        #   remedy named. `--branch B --adds --write` proves EVERY add
+                                        #   and writes the branch's cast_proofs.json; a proof is a
+                                        #   measurement under one harness tuple and a changed tuple
+                                        #   voids it. `simulate <slug>@<branch>` REFUSES an add that is
+                                        #   not PLAYED under the current harness (`--anyway` runs it
+                                        #   with the slot recorded as a FLOOR). THE SHELL'S LIMITS ARE
+                                        #   IN THE FILE: it cannot prove a combat-gated trigger (our
+                                        #   seat does not attack in a two-seat shell) and it
+                                        #   UNDERSTATES lateness, because fewer competing spells in
+                                        #   hand means a cheap permanent gets cast
+manamap pilot validate-cast-proofs <slug> --branch <b>   # cast_proofs.json: form, names in the branch's
+                                        #   IN set, the harness stamp present, every verdict in the
+                                        #   vocabulary
+manamap pilot validate-edhrec-cards <slug>               # edhrec_cards.json: the ★ page figures, dated
+                                        #   by their own as_of; cards newer than the corpus are listed
+                                        #   apart rather than failed
 manamap pilot validate-forge-hints <slug>                          # forge_hints.json: per-card AILogic / AIPreference hints, gated
                                         #   AND VERIFIED. `data/forge_overrides/` narrows
                                         #   what the AI may TARGET (`AITgts$`); a per-deck

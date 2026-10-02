@@ -3368,3 +3368,57 @@ in `simulate` on a branch seat (`docs/simulation.md`, "The gate"); the rule is t
 card's standing under the Forge AI is a MEASUREMENT taken in a shell before the arm,
 stamped with the harness, never an inference from its script — the script only names
 the class and the remedy once the shell has said HELD.
+
+## THE A/A, 2026-10-02: THE HARNESS PRODUCED A SIGNIFICANT RESULT FROM NO CHANGE AT ALL
+
+The bench ran experiments for months without ever running the one control that says whether the
+instrument can see anything: **one list against itself**. `experiment --aa` has existed the whole
+time. No A/A record existed for any deck. The first one, on edgar-vampires' champion at
+standard-v3 under the pinned harness, at its first look:
+
+| | games | decided | wins | win rate |
+|---|---|---|---|---|
+| arm A | 50 | 42 | 7 | **0.167** |
+| arm B | 50 | 41 | 15 | **0.366** |
+
+**Identical decklist. Identical table. A gap of 0.199, and the plain Newcombe 95% interval on
+the difference is [+0.0086, +0.3734] — IT EXCLUDES ZERO.** At 50 games per arm this harness
+manufactures a statistically significant difference between a deck and itself.
+
+For scale: the treasury-v1 arm read 0.217 against the champion's 0.310, a difference of 0.093 —
+**less than half the noise the instrument generates on its own.** Four nights of branch verdicts
+were read against that.
+
+**THE SEQUENTIAL BOUNDARY CAUGHT IT AND NOTHING ELSE DID.** O'Brien-Fleming demands z = 4.049 at
+look 1 of 4, and by that standard the result correctly does NOT clear: `excludes_zero` is false at
+the boundary. The protection was built, works, and is the right answer. What fails is the PLAIN
+interval — and the plain interval is what `net_change` prints, what a branch objective is graded
+on, and what every verdict so far has used. The lesson is not "add a control"; it is **route the
+grading through the boundary that already exists.**
+
+The other ten axes all span zero at this look, and one shows the width problem plainly: combat
+damage dealt to players read 48.76 against 44.98 with an interval of [−31.9, +24.3]. The interval
+is wider than the quantity.
+
+**What this invalidates.** Every branch verdict on this bench that rests on a win rate or a
+per-game mean compared across two separately-run `simulate` records, at 200 games per arm or
+fewer, with no A/A beneath it. That is drain-v1, boss-v1, entry-v1 and the killed treasury-v1 arm
+on edgar-vampires, and by construction the same reading on every other deck. The measurements are
+real; the VERDICTS are not evidence.
+
+**What it does not invalidate.** Mechanism counts from the logs — casts, triggers, activations —
+which are counted events and not estimated rates: Vish Kal activated 141 times against 0 before
+the PumpAi patch is a fact, as is Marshland Bloodcaster cast 26 times and activated 0. The
+deterministic tools are untouched: `mana-analysis`, `mana-fit`, the bracket engine, the citation
+contract. And the cast-proof gate is untouched, because "did the AI cast this card" is a count.
+
+**Open, and the reason the run continues.** Look 1 says 50 per arm is hopeless, which was
+guessable. The number the bench needs is the gap at **200** per arm, because 200 is what every
+branch arm used, and looks 2, 3 and 4 give the ladder at 100, 150 and 200. That ladder is what
+sizes every future experiment here. Killing the run after look 1 would leave the instrument known
+broken and un-fixed.
+
+**The rule until that lands.** No branch is graded on a Forge win rate or a per-game mean without
+an A/A at the same N and the same harness beneath it. A mechanism endpoint — did the card get
+cast, did the trigger fire, how many times — is still readable, and is usually the cheaper
+question anyway, which the power preflight has been saying all along.
