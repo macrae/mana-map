@@ -152,8 +152,13 @@ def test_a_proposal_freezes_the_forge_prediction_beside_the_goldfish_one():
 
 
 def test_the_validator_holds_the_ledger_to_its_form():
-    ok = [{"id": "001", "at": "2026-09-29", "kind": "propose", "branch": "b", "prediction": {}},
-          {"id": "002", "at": "2026-09-29", "kind": "merge", "branch": "b", "decklist_sha256": "m" * 64, "prediction": {}},
+    # The prediction is a REAL one, not `{}`. An empty dict is an absence wearing
+    # the key — it carries none of the figures the rule exists to freeze — and the
+    # validator now wants a reason for it like any other absence. Measured before
+    # tightening: 0 of the fleet's 16 propose/merge entries carry an empty one.
+    _pred = {"endpoint": "forge.win_rate", "grade": "MET"}
+    ok = [{"id": "001", "at": "2026-09-29", "kind": "propose", "branch": "b", "prediction": _pred},
+          {"id": "002", "at": "2026-09-29", "kind": "merge", "branch": "b", "decklist_sha256": "m" * 64, "prediction": _pred},
           {"id": "003", "at": "2026-09-30", "kind": "outcome", "of": "002", "realised": {"rate": 0.3, "run_ids": ["r"]}}]
     assert validate_decisions.validate(ok) == []
     gap = [ok[0], dict(ok[1], id="003")]
@@ -162,7 +167,7 @@ def test_the_validator_holds_the_ledger_to_its_form():
         [{"id": "001", "at": "x", "kind": "reject", "branch": "b"}]))
     assert any("not a merge" in e for e in validate_decisions.validate(
         [{"id": "001", "at": "x", "kind": "outcome", "of": "009", "realised": {"rate": 0.1, "run_ids": ["r"]}}]))
-    assert any("no prediction" in e for e in validate_decisions.validate(
+    assert any("neither a prediction nor" in e for e in validate_decisions.validate(
         [{"id": "001", "at": "x", "kind": "propose", "branch": "b"}]))
     assert validate_decisions.validate(
         [{"id": "001", "at": "x", "kind": "propose", "branch": "b", "backfilled": True}]) == []
@@ -177,3 +182,75 @@ def test_every_tracked_ledger_passes_its_gate():
     for f in files:
         lines = [json.loads(l) for l in f.read_text(encoding="utf-8").splitlines() if l.strip()]
         assert validate_decisions.validate(lines) == [], (f, validate_decisions.validate(lines))
+
+
+def test_a_merge_with_no_report_may_NAME_the_absence_but_never_hide_it():
+    """The gate that sharknado/swords-v1 needed, and the three ways to fail it.
+
+    Nine of the fleet's ten merges freeze the branch's report so `decisions
+    outcome` has figures to close against. The tenth merged four swaps the pilot
+    had already made in CARDBOARD, off a branch that was never measured: there
+    was no report, so a `prediction` would have been invented and an omitted key
+    was indistinguishable from a merge that simply forgot one. A NAMED absence
+    passes; a silent or blank one does not.
+
+    Driven through `validate_decisions.validate`, the production function, so the
+    rule is not re-derived here.
+    """
+    def merge(**kw):
+        base = {"id": "001", "at": "2026-10-01", "kind": "merge", "branch": "b",
+                "decklist_sha256": "m" * 64}
+        base.update(kw)
+        return [base]
+
+    # 1. SILENT — neither key. This is what the ledger looked like and must fail.
+    silent = validate_decisions.validate(merge())
+    assert any("neither a prediction nor" in e for e in silent), silent
+
+    # 2. NAMED — a real reason. Passes, and this is the case the change exists for.
+    assert validate_decisions.validate(merge(
+        prediction_note="no net_change.json on the branch at merge time, so there is "
+                        "no report to freeze")) == []
+
+    # 3. BLANK — the escape hatch must not open on an empty string or whitespace,
+    #    or "name your reason" degrades into "set the key". Both spellings fail.
+    for blank in ("", "   ", "\n"):
+        got = validate_decisions.validate(merge(prediction_note=blank))
+        assert any("neither a prediction nor" in e for e in got), (blank, got)
+
+    # 4. An EMPTY prediction dict is a report that measured nothing, which is the
+    #    same absence wearing the other key — it needs a reason too.
+    got = validate_decisions.validate(merge(prediction={}))
+    assert any("neither a prediction nor" in e for e in got), got
+
+    # 5. A real prediction still passes with no note at all.
+    assert validate_decisions.validate(merge(prediction={"endpoint": "forge.win_rate"})) == []
+
+
+def test_the_merge_path_writes_the_absence_rather_than_leaving_it_silent():
+    """`deck-branch merge` on an UNMEASURED branch must state why no prediction.
+
+    The validator change above is only half the fix: if the writer kept omitting
+    the key, every future unmeasured merge would need a hand edit. This drives
+    `decisions.prediction_from` — the production function the merge path calls —
+    and asserts the branch of the merge code that chooses the note.
+    """
+    from manamap.pilot import decisions
+    # No net_change at all: nothing to freeze.
+    assert decisions.prediction_from(None) is None
+    assert decisions.prediction_from({}) is None
+    # A real one: a prediction, so no note is wanted.
+    pred = decisions.prediction_from(
+        {"objective": {"axis": "forge.win_rate"}, "objective_grade": {"state": "MET"},
+         "decklist_sha256": "a" * 64})
+    assert pred and pred["endpoint"] == "forge.win_rate"
+
+    # The merge path's own expression, read out of the source so this test fails
+    # if the branch is deleted rather than passing vacuously.
+    import inspect
+    from manamap.pilot import deck_branch
+    src = inspect.getsource(deck_branch.merge if hasattr(deck_branch, "merge") else deck_branch)
+    assert "prediction_note=_note" in src, (
+        "the merge path no longer passes a prediction_note — an unmeasured merge "
+        "would write a silent absence again")
+    assert "no net_change.json on the branch at merge time" in src

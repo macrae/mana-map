@@ -1507,11 +1507,24 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     # merged list's own runs will later be read against by `decisions outcome`.
     from manamap.pilot import decisions
     _nc = load_json(deck_dir(slug, branch) / "net_change.json") or None
+    _pred = decisions.prediction_from(_nc)
+    # ABSENT MEANS ABSENT, WITH A STATED REASON. A merge normally freezes the
+    # report's figures so `decisions outcome` has something to close against.
+    # A branch that was never measured has nothing to freeze — sharknado's
+    # swords-v1 was four swaps the pilot made in CARDBOARD, merged to record the
+    # list being shuffled rather than to accept a measured proposal. Writing a
+    # `prediction` there would be inventing one, and leaving the key out
+    # silently made the entry indistinguishable from a merge whose prediction
+    # was simply forgotten. So the absence is named.
+    _note = None if _pred else (
+        "no net_change.json on the branch at merge time, so there is no report to "
+        "freeze — this merge records a list rather than accepting a measured "
+        "proposal, and `decisions outcome` has nothing to close it against")
     decisions.append(slug, "merge", branch=branch,
                      decklist_sha256=doc["merged"]["decklist_sha256"],
                      into_version_before=doc["merged"]["into_version_before"],
                      forced_reason=reason, as_version=(doc.get("proposal") or {}).get("as_version"),
-                     prediction=decisions.prediction_from(_nc), base=deck_dir(slug))
+                     prediction=_pred, prediction_note=_note, base=deck_dir(slug))
 
     # WHAT IS NOW STALE. The registry already carries the command for each stage,
     # so this reads `deck_status` rather than keeping a second list that can

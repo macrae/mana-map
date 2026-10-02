@@ -34,9 +34,21 @@ def validate(entries):
             errors.append(f"{where}: a {kind} with no reason")
         if kind == "merge" and not e.get("decklist_sha256"):
             errors.append(f"{where}: a merge that does not name the list it made")
-        if kind in ("propose", "merge") and not e.get("backfilled") and "prediction" not in e:
-            errors.append(f"{where}: a live {kind} carries no prediction — the report's "
-                          f"figures at the moment of the decision are the point")
+        if (kind in ("propose", "merge") and not e.get("backfilled")
+                and not e.get("prediction")
+                and not str(e.get("prediction_note") or "").strip()):
+            # A NAMED ABSENCE IS ALLOWED; A SILENT ONE IS NOT. Nine of the
+            # fleet's ten merges freeze a report and should. The tenth —
+            # sharknado 005, swords-v1 — merged four swaps the pilot had already
+            # made in cardboard, off a branch that was never measured, so there
+            # was no report to freeze and a `prediction` would have been
+            # invented. This fires on a merge that forgot its prediction and
+            # passes one that says why it has none, which is the difference
+            # between a missing measurement and a hidden one.
+            errors.append(f"{where}: a live {kind} carries neither a prediction nor a "
+                          f"`prediction_note` saying why — the report's figures at the "
+                          f"moment of the decision are the point, and an absent figure "
+                          f"must name its reason")
         if kind == "outcome":
             if e.get("of") not in merges:
                 errors.append(f"{where}: outcome of {e.get('of')!r}, which is not a merge here")
