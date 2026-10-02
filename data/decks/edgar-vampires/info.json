@@ -6681,10 +6681,19 @@
             "name": "Corpse Knight"
           },
           {
+            "name": "Drana's Emissary"
+          },
+          {
             "name": "Falkenrath Aristocrat"
           },
           {
             "name": "Qarsi Revenant"
+          },
+          {
+            "name": "Tithe Drinker"
+          },
+          {
+            "name": "Wispdrinker Vampire"
           }
         ],
         "unsleeve": [
@@ -6732,34 +6741,31 @@
               "Black",
               "Mystery Booster 2"
             ]
-          },
-          {
-            "name": "Zulaport Cutthroat",
-            "where": [
-              "Hapatra"
-            ]
           }
         ],
-        "blocking": 5,
+        "blocking": 8,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 11,
-      "out": 11,
+      "add": 13,
+      "out": 13,
       "counts": {
-        "in_deck": 85,
-        "box": 5,
+        "in_deck": 83,
+        "box": 4,
         "elsewhere": 1,
-        "buy": 4,
+        "buy": 7,
         "free": 1
       },
       "unsourced": [
         "Bontu's Monument",
         "Corpse Knight",
+        "Drana's Emissary",
         "Falkenrath Aristocrat",
         "Qarsi Revenant",
-        "Urza's Incubator"
+        "Tithe Drinker",
+        "Urza's Incubator",
+        "Wispdrinker Vampire"
       ],
       "mergeable": false,
       "free": 1,
@@ -6990,13 +6996,6 @@
           "is_new": true
         },
         {
-          "name": "Cruel Celebrant",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Deflecting Swat",
           "state": "in_deck",
           "where": [],
@@ -7009,6 +7008,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Drana's Emissary",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -7075,13 +7081,6 @@
         },
         {
           "name": "High-Society Hunter",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Indulgent Aristocrat",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -7392,6 +7391,13 @@
           "is_new": false
         },
         {
+          "name": "Tithe Drinker",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Urza's Incubator",
           "state": "elsewhere",
           "where": [
@@ -7484,23 +7490,18 @@
           "is_new": false
         },
         {
+          "name": "Wispdrinker Vampire",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Yahenni, Undying Partisan",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Zulaport Cutthroat",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
-          "free": false,
-          "is_new": true
         }
       ],
       "has_cards": true
@@ -8319,8 +8320,8 @@
     "branch `drain-v1` needs 4 card(s) sourced — `manamap pilot deck-branch edgar-vampires source drain-v1`",
     "branch `entry-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch entry-v1 --adds --write` before `simulate edgar-vampires@entry-v1` (which refuses them)",
     "branch `entry-v1` needs 3 card(s) sourced — `manamap pilot deck-branch edgar-vampires source entry-v1`",
-    "branch `treasury-v1`: 1 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch treasury-v1 --adds --write` before `simulate edgar-vampires@treasury-v1` (which refuses them)",
-    "branch `treasury-v1` needs 5 card(s) sourced — `manamap pilot deck-branch edgar-vampires source treasury-v1`",
+    "branch `treasury-v1`: 4 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch treasury-v1 --adds --write` before `simulate edgar-vampires@treasury-v1` (which refuses them)",
+    "branch `treasury-v1` needs 8 card(s) sourced — `manamap pilot deck-branch edgar-vampires source treasury-v1`",
     "open questions routed: diagnose ×10, goldfish ×5, research-strategy ×6, resolve-stack ×8"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
