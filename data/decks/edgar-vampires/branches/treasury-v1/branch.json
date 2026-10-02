@@ -1,0 +1,108 @@
+{
+ "slug": "edgar-vampires",
+ "branch": "treasury-v1",
+ "v": 2,
+ "opened": "2026-10-01",
+ "why": "THE INPUT THESIS. Three arms in a row added a drain PAYOFF and the total did not move: drain-v1 47.5, boss-v1 47.2, entry-v1 57.9 against a champion 59.5 and an objective of 79. entry-v1 proved the MECHANISM (noncombat damage 4.32 -> 10.31, interval excludes zero) and still lost ground overall, and the fleet control says payoff density is not the lever: yawgmoth carries nine payoffs and fires fewer of them than Edgar does. The deck already converts: eminence mints 8.04 tokens a game and 9.64 creatures die. What it does not do is KEEP GOING -- 5.5 attacks a game, a biggest hit of 8.4, and the pilot's own report of sitting on one or two cards from turn eight. So this branch changes the INPUT side instead of the output side: cost reduction so a turn casts two vampires rather than one, treasure and ritual mana so the curve does not cap the turn, and a graveyard loop so a dead vampire is fuel rather than a loss. Eminence triggers on CAST, which is why recursion must return to HAND or cast from the yard -- a reanimation straight to the battlefield mints nothing.",
+ "objective": {
+  "axis": "forge.life_removed_total",
+  "op": ">=",
+  "value": 79.0,
+  "pod": "standard-v3",
+  "why": "THE INPUT THESIS. Three arms in a row added a drain PAYOFF and the total did not move: drain-v1 47.5, boss-v1 47.2, entry-v1 57.9 against a champion 59.5 and an objective of 79. entry-v1 proved the MECHANISM (noncombat damage 4.32 -> 10.31, interval excludes zero) and still lost ground overall, and the fleet control says payoff density is not the lever: yawgmoth carries nine payoffs and fires fewer of them than Edgar does. The deck already converts: eminence mints 8.04 tokens a game and 9.64 creatures die. What it does not do is KEEP GOING -- 5.5 attacks a game, a biggest hit of 8.4, and the pilot's own report of sitting on one or two cards from turn eight. So this branch changes the INPUT side instead of the output side: cost reduction so a turn casts two vampires rather than one, treasure and ritual mana so the curve does not cap the turn, and a graveyard loop so a dead vampire is fuel rather than a loss. Eminence triggers on CAST, which is why recursion must return to HAND or cast from the yard -- a reanimation straight to the battlefield mints nothing."
+ },
+ "commits": [
+  {
+   "at": "2026-10-01",
+   "decklist_sha256": "0112ba2ae411a5944a0934cace2124d41018a7a702ba7522421a6914929d8ef0",
+   "message": "the INPUT thesis: twelve swaps moving spend from the output side to cost reduction, treasure and a graveyard loop\n\nThree arms in a row added a drain PAYOFF and the total did not move -- drain-v1 47.5, boss-v1\n47.2, entry-v1 57.9, against a champion 59.5 and an objective of 79. entry-v1 CONFIRMED the\nmechanism (noncombat damage to players 4.32 -> 10.31, interval excludes zero) and still lost\nground on the total, and the fleet control refutes the density reading: yawgmoth carries nine\ndrain payoffs and fires fewer of them than Edgar fires its four.\n\nSo the deck is not short of conversion. It converts: eminence mints 8.04 tokens a game, 9.64\ncreatures die, and the payoffs that exist fire 1.90 times. It is short of INPUT -- 5.5 attacks\na game, a biggest hit of 8.4, and the pilot's own report of sitting on one or two cards from\nturn eight trying to rebuild. Twelve slots move from the output side to the input side:\n\n  COST REDUCTION    Urza's Incubator, Bontu's Monument, Oketra's Monument -- {2} and two {1}s\n                    off Vampire and creature spells, so a turn casts two vampires not one.\n                    Both Monuments also carry a TRIGGER (a drain, a token), which is the\n                    multiplicative shape the pilot will accept from a static permanent; a\n                    flat +1/+1 anthem is not.\n  MANA              Pitiless Plunderer (a Treasure per other death, at 9.64 deaths a game),\n                    Black Market Connections (Treasure + card + 3/2 body, every turn).\n  RECURSION         Phyrexian Reclamation returns a creature TO HAND -- eminence triggers on\n                    CAST, so a reanimation straight to the battlefield mints nothing and a\n                    return to hand mints a token on the recast. Stitcher's Supplier fills the\n                    yard the loop spends; Qarsi Revenant reanimates on its own death.\n  CONVERSION        Zulaport Cutthroat (death side) and Corpse Knight (entry side) each drain\n                    one per creature, which eminence tokens trigger on both ends.\n  THREAT            Falkenrath Aristocrat, 4/1 flying haste with a sacrifice outlet that has a\n                    visible board payoff; Marshland Bloodcaster casts Vampires for FREE off\n                    three Blood, the ceiling of the thesis.\n\nTwo of the twelve cuts are MEASURED rather than judged: Ashnod's Altar is 0 for 59 castings\nunder both AI profiles because colourless mana is a benefit Forge's evaluator cannot price,\nand Altar of Dementia is an AI:RemoveDeck:All card cast 0 times in 860 games. Four more are\nthe flat-anthem shape the pilot ruled out (Patchwork Banner, Legion Lieutenant, Cordial\nVampire, Blade of the Bloodchief).\n\nObjective forge.life_removed_total >= 79 @standard-v3, against a champion 59.535 over 144\ndecided games. The branch is NOT cast-checked yet and NOT measured; the arm waits on a\nchampion re-baseline at the new patch set.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+  }
+ ],
+ "base_version": 3,
+ "staged": [
+  {
+   "at": "2026-10-01",
+   "out": "Herald's Horn",
+   "in": "Urza's Incubator",
+   "strength": null,
+   "why": "A STRICTLY BIGGER DISCOUNT ON THE SAME AXIS. The Horn is {3} for {1} off creature spells plus a top-of-library peek; the Incubator is {3} for {2} off every Vampire, creature or not. Two mana off is the difference between one vampire a turn and two."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Patchwork Banner",
+   "in": "Bontu's Monument",
+   "strength": null,
+   "why": "A FLAT ANTHEM FOR A DISCOUNT PLUS A DRAIN. The Banner gives +1/+1 and a tap-for-mana the deck rarely needs; the Monument takes {1} off every creature spell AND drains each opponent for 1 whenever a creature enters -- which with eminence minting a token per other Vampire cast is two drains per cast, not one. Multiplicative, which is the only kind of static effect this deck wants."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Blade of the Bloodchief",
+   "in": "Oketra's Monument",
+   "strength": null,
+   "why": "An equipment that needs a creature to carry it and a death to grow, for a second {1}-off on every creature spell plus a 1/1 Warrior token on every nonartifact creature cast. The token is a BODY and a death, which the sacrifice side converts."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Ashnod's Altar",
+   "in": "Pitiless Plunderer",
+   "strength": null,
+   "why": "MEASURED, NOT PREFERRED: the Altar is 0 for 59 castings under both AI profiles because colourless mana is a benefit Forge's evaluator cannot price. The Plunderer makes a TREASURE on every other creature's death -- a visible permanent, off a trigger rather than an activation, which is the shape the AI does play. With 9.64 deaths a game that is the mana the curve is short of."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Bloodtracker",
+   "in": "Black Market Connections",
+   "strength": null,
+   "why": "A four-drop that needs {1} and a life payment per counter, for a three-mode enchantment that makes a Treasure, draws a card, AND makes a 3/2 Rat every turn for life. Every mode is on the thesis: mana, cards, bodies. The life cost is a resource this deck regenerates."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Altar of Dementia",
+   "in": "Phyrexian Reclamation",
+   "strength": null,
+   "why": "MEASURED: the Altar is an AI:RemoveDeck:All card, cast 0 times in 860 games. The Reclamation returns a creature from the graveyard TO HAND for {1} and 2 life -- to HAND, so recasting it triggers eminence again. Cast-checked under this harness: cast 3 of 4 drawn games, activated once."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Legion's Landing",
+   "in": "Stitcher's Supplier",
+   "strength": null,
+   "why": "A one-mana 1/1 lifelink token that needs three attackers to flip, for a one-mana 1/1 that mills three on entry AND three on death. It FILLS the graveyard the recursion engine spends, and it is itself a cheap body that dies."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Cordial Vampire",
+   "in": "Zulaport Cutthroat",
+   "strength": null,
+   "why": "A two-drop that puts +1/+1 counters on other Vampires when something dies -- the flat-growth shape the pilot ruled out -- for a two-drop that drains each opponent for 1 when ANY creature of ours dies. At 9.64 deaths a game this is the conversion rate the deck is short of, and it is damage that does not need an attack."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Legion Lieutenant",
+   "in": "Corpse Knight",
+   "strength": null,
+   "why": "A lord giving other Vampires +1/+1, for a two-drop draining each opponent for 1 on every creature ENTERING. Eminence tokens trigger it; so does every vampire cast. Entry-side conversion to pair with the Cutthroat's death-side."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "The Haunt of Hightower",
+   "in": "Falkenrath Aristocrat",
+   "strength": null,
+   "why": "A six-drop 2/2 that grows by one per discard and needs to connect, for a four-drop 4/1 FLYING HASTE that sacrifices a creature to become indestructible and grow. Haste means it attacks the turn it lands, flying means the 8.4 biggest hit is not blocked, and the sacrifice is an outlet with a visible board payoff -- the shape the AI actually activates."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Crossway Troublemakers",
+   "in": "Marshland Bloodcaster",
+   "strength": null,
+   "why": "A six-drop granting evasion and a draw-on-death, for a five-drop that makes a BLOOD token on every other Vampire entering and casts Vampires for free off three Blood. Free vampire casts are eminence triggers that cost nothing, which is the ceiling of the input thesis."
+  },
+  {
+   "at": "2026-10-01",
+   "out": "Vampire Socialite",
+   "in": "Qarsi Revenant",
+   "strength": null,
+   "why": "A three-drop that needs a Vampire to have dealt damage before it does anything, for a three-drop 3/4 FLYING DEATHTOUCH with lifelink that exiles a creature from a graveyard on entry, and whose own death puts a creature from any graveyard into play. A body, evasion, graveyard interaction and a free reanimation on one card."
+  }
+ ]
+}

@@ -148,3 +148,95 @@ anthems. Everything else in that entry stands — eminence is still the engine.
 static lord and nothing else; it is the first cut on the next pass (the branch's arm is
 mid-run and its list cannot change). `Bloodline Keeper` reads flat but its front face makes a
 1/1 Vampire every turn, which is fodder and eminence width, so it stays.
+
+---
+
+## 2026-10-01 — the INPUT thesis, and the recursion list read card by card
+
+> "my thesis is starting to form more that the bottleneck is card draw... the pattern is that
+> I often run out of steam very quickly, T7/T8 I have a card and am behind in mana...
+> consistently with this deck. it needs to be faster... more ramp, dorks/rocks, this is a
+> three color so things that give all three of those colors, discount vampires, cast vampires
+> for free, stacking vampire spells, graveyard recursion.. milling a bunch of vamps and
+> recursing them... I broke down Yawgmoth for parts.. all of those cards are up for grabs"
+
+> "vampires are nobles and wealthy we should be rich with mana, we are NOT paupers!!!!"
+
+**The pilot is right and the three failed arms are the evidence.** drain-v1 (47.5), boss-v1
+(47.2) and entry-v1 (57.9) each added a drain PAYOFF against a champion of 59.5, and none of
+them beat it. entry-v1 CONFIRMED its mechanism — noncombat damage to players 4.32 → 10.31,
+interval excluding zero — and still lost ground on the total. The fleet control kills the
+density reading outright: yawgmoth-swarm carries nine drain payoffs to Edgar's four, cheaper
+on average, and fires FEWER of them (1.40/game against 1.76). So the output side is not the
+constraint. Edgar already converts: eminence mints 8.04 tokens a game, 9.64 creatures die,
+and the payoffs that exist fire 1.90 times. What it cannot do is keep going — 5.5 attacks a
+game, a biggest hit of 8.4, 59.5 of the ~120 life a pod kill needs.
+
+**THE RULE THAT ORDERS EVERY RECURSION CARD: eminence triggers on CAST.** Edgar's token comes
+from "whenever you cast another Vampire spell". So a card that returns a creature to the
+BATTLEFIELD mints nothing, and a card that returns it to HAND — or lets it be cast from the
+graveyard — mints a token on every recast and pays the deck twice. Reanimation and recursion
+are not interchangeable here. This is the filter the next three branches are chosen with.
+
+### The recursion / bounce list (2026-10-01), read against the corpus and the engine
+
+Two are out before strategy:
+
+- **Vampire Charmseeker** — colour identity **BU**, not castable in Mardu. Also mana value 8.
+- **Universal Changeling** — **no such card in the corpus.** The list was machine-generated
+  and invented it. Changeling Outcast is real; this one is not.
+
+Two are blocked by the engine, read from the pristine scripts:
+
+- **Viscera Seer** — `AI:RemoveDeck:All`, and already known: cast 0 times in 500 games. It is
+  in `unflag.txt`, and even unflagged a scry outlet is a benefit Forge's evaluator cannot
+  price, which is the Ashnod's Altar lesson.
+- **Vampire Lacerator** — `AI:RemoveDeck:All` **(new finding)**. A 2/2 for one mana the AI
+  will never cast. `forge-install --generate` refuses a live deck that acquires it unflagged,
+  so the gate already covers this, but do not propose it as a cheap eminence body without
+  adding it to `unflag.txt` first.
+
+One is the shape that measured as nothing before, and must not be bought twice:
+
+- **Erratic Portal** — {4}, then {1} and a tap to return a creature to its owner's hand. The
+  whole value is choosing to bounce OUR own one-drop Vampire to recast it, which is a benefit
+  the evaluator cannot see. This is the Zada failure exactly: the AI will not target its own
+  creature to switch on an ability, and a run on a deck built around it measures a different
+  deck rather than a floor. Needs a patched AI class before it is worth a slot.
+- **Blood Clock** and **Umbilicus** are SYMMETRIC — every player bounces a permanent at their
+  own upkeep unless they pay 2 life. They bounce our board too, the opponents simply pay, and
+  neither is aimed. Not candidates.
+
+**The three that are on the thesis, in order:**
+
+1. **Oversold Cemetery** {1}{B} enchantment — at your upkeep, with four or more creature
+   cards in the graveyard, return one to your HAND. Free, repeatable, no activation, and the
+   condition is one Edgar meets by turn four at 9.64 deaths a game. The cheapest permanent
+   recursion engine in the colours, EDHREC rank 1675, and the only card on the list that
+   makes Stitcher's Supplier's self-mill into fuel rather than a cost.
+2. **Athreos, God of Passage** {1}{W}{B} — whenever another creature you own dies, return it
+   to your hand unless an opponent pays 3 life. Both halves are on the objective: either the
+   vampire comes back to be recast for an eminence token, or an opponent pays life, and
+   `forge.life_removed_total` is exactly what this branch is graded on. Indestructible, and
+   not a creature below seven devotion, so it is a safe enchantment that the pod's removal
+   mostly cannot answer. No AI flag.
+3. **Oathsworn Vampire** {1}{B} — may be cast from the graveyard whenever you gained life
+   this turn, which in a lifelink-and-drain deck is nearly every turn. A Vampire that recasts
+   ITSELF, minting a token each time, from a graveyard the deck fills anyway. Enters tapped;
+   that is the whole cost.
+
+Worth a slot behind those three: **Changeling Outcast** {B} (unblockable, and a Vampire by
+changeling, so casting it is an eminence trigger), **Order of Midnight // Alter Fate** {1}{B}
+(the sorcery half returns a creature to hand for two mana and the 2/1 flier is still castable
+later — two cards in a slot), and **Falkenrath Gorger** {R}, which gives every Vampire card
+you own outside the battlefield madness at its mana cost. The Gorger is the ceiling of the
+thesis and the one that needs a discard outlet the deck does not yet have; it is a second
+branch, not a slot in this one.
+
+**Skipped on value, not on rules**: Skyclave Shade (not a Vampire, so no eminence),
+Vampire Soulcaller ({5} for one return, rank 15381), Bloodmad Vampire, Knight of the Ebon
+Legion (a strong card whose pump is an ACTIVATION, so read `activated` against `cast` before
+trusting a result that rests on it).
+
+**The 18-card Vamps pile has not reached the bench.** The pilot named it on 2026-10-01; the
+list itself was never pasted into the session. Nothing above stands in for it.
