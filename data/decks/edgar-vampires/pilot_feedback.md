@@ -267,3 +267,54 @@ therefore stands as drawn, and treasury-v1's arm runs against a control at its o
 Worth keeping: the old 59.535 was pooled from the run the two-hour cap killed at 84 games plus its
 116-game resume, and those halves read **74.39 and 48.77**. Either one alone would have put the
 objective line twenty points off. The clean 200-game run lands on their pooled value.
+
+### CORRECTION, 2026-10-02: I staged three of treasury-v1's slots on card text I had wrong
+
+Found mid-arm, at 80 of 200 games, by checking why two of the eleven adds produced no trigger
+line in the logs. The cast-proof gate said all eleven are CAST and it was right. It cannot say
+whether the person adding them read the card.
+
+**Marshland Bloodcaster.** I wrote that it "makes a BLOOD token on every other Vampire entering
+and casts Vampires for free off three Blood", and called it "the ceiling of the input thesis".
+Its actual text is *"Flying. {1}{B}, {T}: Rather than pay the mana cost of the next spell you cast
+this turn, you may pay life equal to that spell's mana value."* There is no Blood, no free cast
+and no trigger of any kind — I had conflated it with Voldaren Bloodcaster // Bloodbat Summoner.
+What it really is: a five-mana flier with a tap-activated cost conversion, which is on the input
+thesis in principle and is the slowest possible shape of it. Cast 19 times in 80 games, and the
+logs show the ability firing zero times.
+
+**Qarsi Revenant.** I wrote that it "exiles a creature from a graveyard on entry, and whose own
+death puts a creature from any graveyard into play". Its actual text is *"Flying, deathtouch,
+lifelink. Renew — {2}{B}, Exile this card from your graveyard: Put a flying counter, a deathtouch
+counter, and a lifelink counter on target creature. Activate only as a sorcery."* No ETB, no death
+trigger, and **it is not a recursion piece at all** — it is a three-mana evasive body with keywords
+and a graveyard-activated keyword grant. Cast 13 times, ability fired zero times.
+
+**Bontu's Monument, partly.** I claimed that with eminence "a token per other Vampire cast is two
+drains per cast, not one". The drain is *"whenever you CAST a creature spell"* — a token ENTERING
+is not a cast, so eminence tokens do not trigger it. One drain per cast, not two. Corpse Knight is
+the one that reads *entering*, so that half of the pairing was right.
+
+**Also worth recording, smaller:** Falkenrath Aristocrat's +1/+1 applies only *"if the sacrificed
+creature was a Human"*, and this deck's fodder is Vampire tokens, so the growth half will rarely
+fire. The flying haste body and the free indestructible outlet are real.
+
+**What this does to the experiment.** The recursion half is ONE card, not three. Phyrexian
+Reclamation is the only piece that returns a creature to hand; Stitcher's Supplier fills the
+graveyard that Reclamation spends, which is fuel rather than recursion; Qarsi does nothing of the
+kind. The pilot's requirement was explicit — *"we need to make sure the recursion engine is large
+enough/consistent enough to hit and we need to make sure we can get vampires back to our hand"* —
+and this package does not meet it. The cost-reduction and treasure halves ARE as described and are
+being played: Bontu's Monument 52 triggers, Pitiless Plunderer 54, Stitcher's Supplier 33, Zulaport
+Cutthroat 30, Corpse Knight 17, and Edgar's own eminence 618 across 80 games (7.7 a game, in line
+with the champion's 8.04).
+
+So read the arm as a test of COST REDUCTION plus TREASURE with a thin recursion half, and not as the
+test of the recursion thesis. The recursion thesis is still untested, and the three cards for it are
+already read against the corpus in the entry above: Oversold Cemetery, Athreos, God of Passage and
+Oathsworn Vampire.
+
+**The process lesson, which is mine.** I told the engine-modelling agent to "read each new card's
+real oracle text from the corpus before you place it — do not place from the name", and then staged
+eleven cards without doing it myself. `card_pool.corpus_oracle()` is one call. Every add gets read
+from it before it is staged, not after the arm is running.
