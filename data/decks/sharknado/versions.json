@@ -1,7 +1,7 @@
 {
   "slug": "sharknado",
-  "current_version": 5,
-  "working_decklist_sha256": "7d623c5f9cf439d7b482b54cbd1aae3c403268ba5c0ac9dcec1e14e73dbf5e3d",
+  "current_version": 6,
+  "working_decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
   "versions": [
     {
       "version": 1,
@@ -260,6 +260,41 @@
       "tags": [
         "v1.0.2"
       ]
+    },
+    {
+      "version": 6,
+      "sha": "6f6b9b32cc04",
+      "first_sha": "6f6b9b32cc04",
+      "date": "2026-10-01",
+      "first_date": "2026-10-01",
+      "subject": "sharknado: merge branch swords-v1 — the four swaps the pilot made in paper on 2026-10-01",
+      "decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
+      "decklist_sha256s": [
+        "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c"
+      ],
+      "size": 100,
+      "in": [
+        "Marauding Mako",
+        "Mask of Memory",
+        "Negate",
+        "Swords to Plowshares"
+      ],
+      "out": [
+        "Decree of Silence",
+        "Gossip's Talent",
+        "Marketback Walker",
+        "Stromkirk Noble"
+      ],
+      "games": 0,
+      "record": {
+        "win": 0,
+        "loss": 0,
+        "draw": 0
+      },
+      "log_ids": [],
+      "tags": [
+        "v1.1.0"
+      ]
     }
   ],
   "tags": {
@@ -290,13 +325,20 @@
       "decklist_sha256": "7d623c5f9cf439d7b482b54cbd1aae3c403268ba5c0ac9dcec1e14e73dbf5e3d",
       "at": "2026-09-26",
       "note": "Astral Drift -> Shelter and Gleaming Bastion -> a basic Island, both made in cardboard. The Island is the deck's first basic: Gleaming Bastion's W/U mode is gated on controlling one, so at zero basics it made {C} from the turn after it entered."
+    },
+    "v1.1.0": {
+      "version": 6,
+      "sha": "6f6b9b32cc04",
+      "decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
+      "at": "2026-10-01",
+      "note": "The four swaps the pilot made in cardboard on 2026-10-01: Negate, Mask of Memory, Marauding Mako and Swords to Plowshares for Decree of Silence, Gossip's Talent, Marketback Walker and Stromkirk Noble. MINOR by the semver rule — four swaps that move the measured axes, not a land pass. Three of the four cuts were filler by the builder's own score and two were found by the pilot's eye."
     }
   },
   "paper": {
-    "version": 5,
-    "release": "v1.0.2",
-    "built_at": "2026-09-26",
-    "note": "Both swaps confirmed made in cardboard by the pilot: Astral Drift -> Shelter and Gleaming Bastion -> a basic Island. The lock was two changes behind — it still pointed at V3/v1.0.0 from 2026-09-21 while the working list had moved twice, so regen.is_pinned() was driving the whole chain against a list that was not in the case.",
+    "version": 6,
+    "release": "v1.1.0",
+    "built_at": "2026-10-01",
+    "note": "Sleeved as of 2026-10-01, before the pilot's game that night: the four swaps (Negate, Mask of Memory, Marauding Mako, Swords to Plowshares) were made in cardboard by hand, and this lock records that V6 / v1.1.0 is the physical deck. CARRIED FORWARD from the pilot's own observation the same day: the tracked list and the paper list may still differ elsewhere. The pilot said Goblin Engineer is not in the sleeved deck; it is not in the tracked list either, so that one resolved, but a full `check-in` against the real paper list has never been run on this deck and is the only way to settle the rest.",
     "locked": true,
     "in_sync": true,
     "versions_behind": 0,
