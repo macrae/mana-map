@@ -28,7 +28,13 @@ from manamap.pilot.common import deck_dir, report_errors
 ARTIFACT = "diagnostic.json"
 
 #: Blocks that carry `{rate, ci95, n}` cells, and how deep they sit.
+#: A name may be DOTTED to reach a nested block — `stall.late` holds the
+#: late-window reading and its cells sit one level further down, so the gate has
+#: to follow the path rather than stop at the section. Added with the block
+#: itself: a new measured cell that nothing checks is how an interval-less figure
+#: reaches a reader.
 RATE_BLOCKS = (("stall", "by_turn"), ("stall", "two_in_a_row"),
+               ("stall", "late.stall_rate"), ("stall", "late.hand_size"),
                ("engine", "online_by_turn"), ("engine", "any_route_by_turn"),
                ("mana", "missed_land_drop_by_five"), ("mana", "mulliganed"),
                ("output", "hoard_by_turn"), ("output", "damage_by_turn"),
@@ -54,10 +60,18 @@ def validate(doc):
             errors.append(f"missing top-level key {key!r}")
     for block, name in RATE_BLOCKS:
         section = doc.get(block)
-        if not isinstance(section, dict) or name not in section:
+        # Follow a dotted name one segment at a time, and treat a missing segment
+        # as "this deck does not report it" rather than an error — the late block
+        # is absent on a model that never reaches its window, which is correct.
+        for part in name.split("."):
+            if not isinstance(section, dict) or part not in section:
+                section = None
+                break
+            section = section[part]
+        if section is None:
             continue
         seen = False
-        for turn, cell in _cells(section[name]):
+        for turn, cell in _cells(section):
             seen = True
             where = f"{block}.{name}" + (f"[{turn}]" if turn else "")
             if "ci95" not in cell:

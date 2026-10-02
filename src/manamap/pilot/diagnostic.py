@@ -54,6 +54,20 @@ HARNESS = {
 #: make the metric mostly a restatement of that structural fact.
 STALL_FROM_TURN = 2
 
+#: THE LATE WINDOW, AND WHY IT IS A SECOND NUMBER RATHER THAN A NEW DEFAULT.
+#: `STALL_FROM_TURN` averages the whole game, and on edgar-vampires turns 1 and 2
+#: stall at 0.559 and 0.247 — most of the total, and all of it the structural
+#: "no lands yet" fact the comment above already describes. That swamps the
+#: window the pilot actually complains about. Their captain's log, entry 006:
+#: "get out to turn eight, nine, ten and not have enough cards in hand to play
+#: things", and the series bends the wrong way exactly there — 0.027 at T6
+#: against 0.039 / 0.050 / 0.052 at T7-9, intervals that do not overlap.
+#:
+#: The headline figure is NOT moved to 7: the fleet band below was measured at
+#: `STALL_FROM_TURN` and `_place` reads it, so changing it would silently
+#: re-place every deck against a band that no longer describes the same thing.
+LATE_FROM_TURN = 7
+
 
 #: WHERE THE FLEET SITS, so a reading can be placed without being GRADED against
 #: other decks. Measured across all 13 tracked decks at 4,000 games each on
@@ -199,6 +213,7 @@ def stall(rows):
         "from_turn": STALL_FROM_TURN,
         "cause": {"stall_turns": len(stalled), "hand_empty": empty,
                   "mana_short": len(stalled) - empty},
+        "late": _late(rows, turns),
         "basis": "a turn on which no card in hand was castable with the mana "
                  "that turn produced — not a turn on which nothing was cast",
     }
@@ -353,6 +368,71 @@ def _mean_cell(xs):
     return {"rate": round(mean, 4),
             "ci95": [round(mean - half, 4), round(mean + half, 4)],
             "sd": round(sd, 4), "n": len(xs)}
+
+
+def _late(rows, turns):
+    """THE SAME CAUSE SPLIT, INSIDE THE WINDOW THE PILOT LIVES IN.
+
+    `cause` above counts from turn 2, so on a deck that stalls 0.559 of the time
+    on turn one it is mostly a statement about turn one. This asks the question
+    again from `LATE_FROM_TURN`, where the pilot's complaint is, and adds the two
+    things that complaint is actually about:
+
+    - `hand_size`, per turn. The pilot's words are "not enough CARDS IN HAND",
+      and the series has been collected per game since the stall block was
+      written (`goldfish_turn.py`, declared beside `stall_by_turn` with the
+      comment "a stall with cards left is a mana problem; a stall with an empty
+      hand is a draw problem") and aggregated nowhere.
+    - `vs_turn_six`, the RISE. The complaint is a SHAPE — fine, then worse — and
+      not a level: a deck can hold a low average and still collapse at eight.
+      Reported as a difference of two rates with an interval on the DIFFERENCE,
+      because two marginal intervals overlapping implies nothing at all.
+
+    Absent rather than zero when the model does not reach the window: a ten-turn
+    goldfish on a deck with `LATE_FROM_TURN` past `max_turn` has nothing to say,
+    and a 0.0 would read as "it never stalls".
+    """
+    i0 = LATE_FROM_TURN - 1
+    if not rows or turns <= i0:
+        return None
+    n = len(rows)
+    stalled = [(r, i) for r in rows for i in range(i0, turns) if r["stall_by_turn"][i]]
+    empty = sum(1 for r, i in stalled if r["hand_size_by_turn"][i] == 0)
+    # The pooled rate over the window: stall turns / turn-opportunities, which is
+    # a different denominator from `by_turn`'s games and is said so in `basis`.
+    opportunities = n * (turns - i0)
+    rate = _rate(len(stalled), opportunities)
+    # THE RISE, against the floor the series actually has rather than a turn
+    # picked by hand: T6 is the minimum on every deck measured so far, but
+    # asserting that would be a fleet claim, so it is found, named and reported.
+    floor_i = min(range(0, i0), key=lambda i: sum(r["stall_by_turn"][i] for r in rows))
+    floor = _rate(sum(r["stall_by_turn"][floor_i] for r in rows), n)
+    rise = None
+    if rate and floor:
+        d = st.diff_proportions(sum(r["stall_by_turn"][floor_i] for r in rows), n,
+                               len(stalled), opportunities)
+        if d:
+            rise = {"from_turn": floor_i + 1, "floor_rate": floor["rate"],
+                    "diff": d["diff"], "ci95": d["ci95"],
+                    "excludes_zero": d["excludes_zero"]}
+    return {
+        "from_turn": LATE_FROM_TURN,
+        "stall_turns": len(stalled),
+        "hand_empty": empty,
+        "mana_short": len(stalled) - empty,
+        "stall_rate": rate,
+        "vs_floor": rise,
+        "hand_size": {str(i + 1): _mean_cell([r["hand_size_by_turn"][i] for r in rows])
+                      for i in range(i0, turns)},
+        "basis": (
+            "`stall_rate`'s denominator is turn-OPPORTUNITIES (games x turns in "
+            "the window), not games, so it is not comparable to `by_turn`, whose "
+            "denominator is games. `vs_floor` compares it to the single turn with "
+            "the fewest stalls before the window — the turn is reported, not "
+            "assumed. `hand_size` is the hand at the END of the turn, after the "
+            "model has cast everything it could afford, so it is a FLOOR on what "
+            "a pilot holding cards back would have."),
+    }
 
 
 def steam(rows, got):
