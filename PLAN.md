@@ -95,11 +95,61 @@ set codes, which is one pipeline run instead of two.
    non-empty for every card; and a browser test that the filter narrows the grid and the
    highlight dims rather than removes. Each proven by re-introducing its bug.
 
-**Open question for the pilot, not a blocker.** Whether the atlas highlight should offer
-"everything released since <date>" as well as a single set. A new-set highlight answers "what is
-new"; a since-date highlight answers "what has changed since I last looked", which is a different
-and possibly better question for someone who refreshes every few months. Cheap to add once the
-release date is in `sets.json`, so it is listed rather than guessed at.
+### B2. Released-before / released-after filters — approved, and the date in the corpus is the WRONG ONE
+
+> "yeah released before and released after date filters seem like they'd be fun!"
+
+They would, and a range gives "cards from this era", which is a real question. But the field
+they would be built on is not what it looks like, and this was caught before anyone implemented it:
+
+**`released_at` in `cards.csv` is the date of WHICHEVER PRINTING the corpus happens to hold, not
+the date the card first existed.** Measured:
+
+| card | corpus date | corpus printing |
+|---|---|---|
+| Sol Ring | 2026-06-26 | Marvel Super Heroes Commander |
+| Lightning Bolt | 2026-06-26 | Marvel Super Heroes Commander |
+| Swords to Plowshares | 2026-06-26 | Marvel Super Heroes Commander |
+| Edgar Markov | 2025-01-24 | Innistrad Remastered |
+
+A 1993 card reads as four months old. The scale: **2,838 cards carry a 2026-or-later date, and
+the two largest contributors are Marvel Super Heroes Commander (592) and Secrets of Strixhaven
+Commander (326)** — Commander products, which are overwhelmingly reprints. So a naive
+"released after 2026-01-01" filter returns Sol Ring, Lightning Bolt and Swords to Plowshares and
+hides most of what is genuinely new behind a thousand old cards. It would not be a slightly-off
+filter; it would be a confidently wrong one, which is worse than no filter.
+
+**The fix: a `first_released_at` column, derived from every printing.** Scryfall's oracle-level
+bulk gives one printing per card and the chosen printing skews recent, so the earliest date has
+to come from the `default_cards` bulk, which carries every printing: group by `oracle_id`, take
+`min(released_at)`, join onto the corpus by oracle id (`cards.csv` already carries `oracle_id` as
+its first column, so the join key exists). One extra bulk download in `ingest/download.py`
+alongside the existing one, and a groupby over a few hundred thousand rows — minutes, not hours,
+and it only has to run when the dump moves.
+
+**Sequencing:** this is a change to `extract`, so it must land BEFORE the pipeline run or the
+refresh produces a corpus without the column and the whole thing runs twice. It joins the set
+filter in the pre-refresh batch.
+
+**The gate it ships with**, because a derived date is exactly the kind of field that looks right
+and is not: a test asserting a handful of hand-named old cards resolve to their real first
+printing — Sol Ring 1993, Lightning Bolt 1993, Counterspell 1993, Demonic Tutor 1994 — and that
+`first_released_at <= released_at` holds for EVERY card in the corpus, which is the invariant
+that catches the whole class rather than four examples. Proven by re-introducing the bug: point
+the column at the printing date and the old-card assertions fail.
+
+**What is NOT affected.** The set-code filter in B above is fine as specified. For a brand-new
+set the corpus printing of its new cards IS that set, so "show me Reality Fracture" works. Worth
+stating in the UI copy, though, that a set filter shows the cards whose corpus printing is that
+set — so it includes that set's reprints and excludes a card the corpus represents by a different
+printing. That is the honest description and it is also the useful behaviour for "what came in
+this box".
+
+**Both directions, as asked**: `before <date>` and `after <date>`, combinable into a range, on
+both surfaces — a filter in Curate and a dim-the-rest highlight on the atlas. The atlas version
+is the one to look forward to: highlighting everything printed after a date against the whole
+corpus shows where new design has been landing, which is the same question `power-creep` answers
+numerically and nothing has ever shown visually.
 
 ## Where things stand, 2026-09-26
 
