@@ -256,3 +256,14 @@ being asked to clear a line drawn on a different table. Read the re-baseline FIR
 
 Vish Kal, Blood Arbiter is in both the champion and treasury-v1, and the PumpAi patch that
 prices its −X/−X is in both arms, so that one is symmetric and needs no adjustment.
+
+**The re-baseline came back, 2026-10-02: the patch moved nothing.** 200 clean games at patch set
+9473cf359146 give `life_removed_total` **59.53** against 59.535 pooled at the old set, and a win
+rate of 0.304 (48/158 decided) against 0.336, a difference spanning zero. jarad's wins went 11/146
+to 23/158 — the shape I predicted — but the interval on that difference is +0.070 [−0.0015,
++0.1416] and spans zero by a hair, so it is suggestive and NOT a finding. The 79 objective line
+therefore stands as drawn, and treasury-v1's arm runs against a control at its own harness.
+
+Worth keeping: the old 59.535 was pooled from the run the two-hour cap killed at 84 games plus its
+116-game resume, and those halves read **74.39 and 48.77**. Either one alone would have put the
+objective line twenty points off. The clean 200-game run lands on their pooled value.
