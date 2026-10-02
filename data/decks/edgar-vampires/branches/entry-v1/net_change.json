@@ -980,7 +980,523 @@
   "rule": "a row is better/worse only if its delta clears the MDE AND its |z| survives Holm across the family; the objective is graded on its own, uncorrected, because it was declared before the measurement"
  },
  "forge": {
-  "available": false,
+  "ai_profile": "mm-edgar-vampires",
+  "available": true,
+  "basis": "wins over DECIDED games (clock-outs have no winner and are excluded), each arm pooled across every run of it at this one table",
+  "branch": {
+   "all_games": 199,
+   "games": 163,
+   "rate": 0.3006,
+   "runs": 1,
+   "wins": 49,
+   "won_by": {
+    "all opponents have lost": 49
+   }
+  },
+  "card_overrides": "8c347642bcf0",
+  "cast_proofs": {
+   "adds": [
+    "Corpse Knight",
+    "Impact Tremors",
+    "Warleader's Call"
+   ],
+   "anyway": false,
+   "floor": false,
+   "gated_runs": [
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-79785148-s37928264-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3"
+   ],
+   "held": [],
+   "late": [],
+   "reads_as": "every add the branch stages was played in its arms"
+  },
+  "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
+  "champion": {
+   "all_games": 200,
+   "games": 144,
+   "rate": 0.3403,
+   "runs": 2,
+   "wins": 49,
+   "won_by": {
+    "all opponents have lost": 49
+   }
+  },
+  "ci95": [
+   -0.1433,
+   0.064
+  ],
+  "delta": -0.0397,
+  "endpoints": {
+   "forge.biggest_hit": {
+    "branch": {
+     "max": 32,
+     "median": 6,
+     "min": 0,
+     "n": 199,
+     "sd": 5.9477,
+     "value": 7.2211
+    },
+    "champion": {
+     "max": 67,
+     "median": 6,
+     "min": 0,
+     "n": 200,
+     "sd": 9.0131,
+     "value": 8.4
+    },
+    "ci95": [
+     -2.6767,
+     0.3189
+    ],
+    "conditional": false,
+    "delta": -1.1789,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 2.1409,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.combat_damage_dealt_to_players": {
+    "branch": {
+     "max": 330,
+     "median": 19,
+     "min": 0,
+     "n": 199,
+     "sd": 53.0072,
+     "value": 41.1608
+    },
+    "champion": {
+     "max": 406,
+     "median": 23,
+     "min": 0,
+     "n": 200,
+     "sd": 64.7246,
+     "value": 48.635
+    },
+    "ci95": [
+     -19.0806,
+     4.1322
+    ],
+    "conditional": false,
+    "delta": -7.4742,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 16.5901,
+    "median": {
+     "ci95": [
+      -11.0,
+      3.5
+     ],
+     "diff": -3.5,
+     "excludes_zero": false,
+     "method": "percentile bootstrap, 10000 resamples, seed 0"
+    },
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.commander_resolved_rate": {
+    "branch": {
+     "k": 173,
+     "n": 199,
+     "value": 0.8693
+    },
+    "champion": {
+     "k": 172,
+     "n": 200,
+     "value": 0.86
+    },
+    "ci95": [
+     -0.0586,
+     0.0772
+    ],
+    "conditional": false,
+    "delta": 0.0093,
+    "excludes_zero": false,
+    "kind": "proportion",
+    "lower_is_better": false,
+    "mde": 0.085,
+    "method": "Newcombe score interval on the difference of proportions"
+   },
+   "forge.drain_dealt": {
+    "branch": {
+     "max": 105,
+     "median": 0,
+     "min": 0,
+     "n": 199,
+     "sd": 14.0319,
+     "value": 6.4372
+    },
+    "champion": {
+     "max": 136,
+     "median": 0,
+     "min": 0,
+     "n": 200,
+     "sd": 18.0023,
+     "value": 6.585
+    },
+    "ci95": [
+     -3.3142,
+     3.0186
+    ],
+    "conditional": false,
+    "delta": -0.1478,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 4.526,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.eliminated_turn": {
+    "branch": {
+     "max": 58,
+     "median": 35,
+     "min": 21,
+     "n": 122,
+     "sd": 8.2171,
+     "value": 35.5574
+    },
+    "champion": {
+     "max": 56,
+     "median": 35,
+     "min": 23,
+     "n": 110,
+     "sd": 7.3144,
+     "value": 35.4909
+    },
+    "ci95": [
+     -1.9321,
+     2.0651
+    ],
+    "conditional": true,
+    "delta": 0.0665,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 2.8568,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.empty_hand_turns": {
+    "branch": {
+     "max": 6,
+     "median": 0,
+     "min": 0,
+     "n": 199,
+     "sd": 1.3479,
+     "value": 0.7839
+    },
+    "champion": {
+     "max": 6,
+     "median": 0,
+     "min": 0,
+     "n": 200,
+     "sd": 1.1104,
+     "value": 0.615
+    },
+    "ci95": [
+     -0.0735,
+     0.4113
+    ],
+    "conditional": false,
+    "delta": 0.1689,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "mde": 0.3465,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.evasive_damage_share": {
+    "branch": {
+     "max": 1.0,
+     "median": 0.074,
+     "min": 0.0,
+     "n": 188,
+     "sd": 0.2678,
+     "value": 0.2065
+    },
+    "champion": {
+     "max": 1.0,
+     "median": 0.254,
+     "min": 0.0,
+     "n": 191,
+     "sd": 0.3105,
+     "value": 0.3163
+    },
+    "ci95": [
+     -0.1681,
+     -0.0515
+    ],
+    "conditional": true,
+    "delta": -0.1098,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.0834,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.extra_draw_per_turn": {
+    "branch": {
+     "max": 3.5,
+     "median": 1.1818,
+     "min": 0.1667,
+     "n": 199,
+     "sd": 0.5129,
+     "value": 1.2865
+    },
+    "champion": {
+     "max": 4.5,
+     "median": 1.3333,
+     "min": 0.1667,
+     "n": 200,
+     "sd": 0.6884,
+     "value": 1.4618
+    },
+    "ci95": [
+     -0.2944,
+     -0.0562
+    ],
+    "conditional": false,
+    "delta": -0.1753,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.1702,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.first_attack_turn": {
+    "branch": {
+     "max": 56,
+     "median": 12,
+     "min": 5,
+     "n": 192,
+     "sd": 6.834,
+     "value": 13.4115
+    },
+    "champion": {
+     "max": 42,
+     "median": 13,
+     "min": 5,
+     "n": 192,
+     "sd": 6.5205,
+     "value": 13.3333
+    },
+    "ci95": [
+     -1.2579,
+     1.4143
+    ],
+    "conditional": true,
+    "delta": 0.0782,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "mde": 1.9098,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.kills_by_ability": {
+    "branch": {
+     "max": 11,
+     "median": 0,
+     "min": 0,
+     "n": 199,
+     "sd": 1.1071,
+     "value": 0.3116
+    },
+    "champion": {
+     "max": 9,
+     "median": 0,
+     "min": 0,
+     "n": 200,
+     "sd": 1.2636,
+     "value": 0.465
+    },
+    "ci95": [
+     -0.3865,
+     0.0797
+    ],
+    "conditional": false,
+    "delta": -0.1534,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.3332,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.life_gained": {
+    "branch": {
+     "max": 332,
+     "median": 7,
+     "min": 0,
+     "n": 199,
+     "sd": 44.0897,
+     "value": 25.2261
+    },
+    "champion": {
+     "max": 479,
+     "median": 10,
+     "min": 0,
+     "n": 200,
+     "sd": 61.8337,
+     "value": 34.98
+    },
+    "ci95": [
+     -20.2879,
+     0.7801
+    ],
+    "conditional": false,
+    "delta": -9.7539,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 15.0572,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.life_removed_total": {
+    "branch": {
+     "max": 387,
+     "median": 35,
+     "min": 0,
+     "n": 199,
+     "sd": 61.7178,
+     "value": 57.9045
+    },
+    "champion": {
+     "max": 408,
+     "median": 30,
+     "min": 0,
+     "n": 200,
+     "sd": 68.898,
+     "value": 59.535
+    },
+    "ci95": [
+     -14.4645,
+     11.2035
+    ],
+    "conditional": false,
+    "delta": -1.6305,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 18.3448,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.noncombat_damage_dealt_to_players": {
+    "branch": {
+     "max": 89,
+     "median": 5,
+     "min": 0,
+     "n": 199,
+     "sd": 14.0634,
+     "value": 10.3065
+    },
+    "champion": {
+     "max": 42,
+     "median": 2,
+     "min": 0,
+     "n": 200,
+     "sd": 6.087,
+     "value": 4.315
+    },
+    "ci95": [
+     3.8632,
+     8.1198
+    ],
+    "conditional": false,
+    "delta": 5.9915,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 3.0422,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.win_rate": {
+    "branch": {
+     "k": 49,
+     "n": 163,
+     "value": 0.3006
+    },
+    "champion": {
+     "k": 49,
+     "n": 144,
+     "value": 0.3403
+    },
+    "ci95": [
+     -0.1433,
+     0.064
+    ],
+    "conditional": false,
+    "delta": -0.0397,
+    "excludes_zero": false,
+    "kind": "proportion",
+    "lower_is_better": false,
+    "mde": 0.16,
+    "method": "Newcombe score interval on the difference of proportions"
+   }
+  },
+  "engine_casts": {
+   "branch": {
+    "covered": true,
+    "never_cast": [],
+    "played": "ae83766447d3d80a881bab8356a342a62de75561d9efb743c2cd99a8b35740ff",
+    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-79785148-s37928264-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3"
+   },
+   "champion": {
+    "covered": true,
+    "never_cast": [],
+    "played": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-da677689-s1664213641-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3"
+   }
+  },
+  "excludes_zero": false,
+  "list_mismatch": null,
+  "mde": 0.16,
+  "null": {
+   "basis": "what our decks score in seat 0 at this table, plain harness, deck-level runs",
+   "ci95": [
+    0.195,
+    0.276
+   ],
+   "decks": 6,
+   "excluded_overridden_runs": 9,
+   "games": 412,
+   "pod": "standard-v3",
+   "rate": 0.233,
+   "runs": 9,
+   "wins": 96
+  },
+  "other_tables": {
+   "standard-v3 (overrides 260c7a72816d, ours mm-edgar-vampires, patches fe64c50348a1)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   },
+   "standard-v3 (overrides 60636e9e5565, patches fe64c50348a1)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   },
+   "standard-v3 (overrides 8bf04cfcdb21, patches fe64c50348a1)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   },
+   "standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 0acbd08b61d7)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   },
+   "standard-v3 (overrides 8da320bbd1c6, ours mm-edgar-vampires, patches 56cd856103f4)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   },
+   "standard-v3 (overrides c6c3ccc1354d, ours mm-edgar-vampires, patches beb0c66dd0d9)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   }
+  },
+  "pod": "standard-v3",
+  "run_ids": {
+   "branch": [
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-79785148-s37928264-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3"
+   ],
+   "champion": [
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n116-da677689-s1664224641-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3",
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-da677689-s1664213641-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3"
+   ]
+  },
   "superseded": {
    "champion": [
     {
@@ -1038,11 +1554,24 @@
      "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-cdaddf26-s1450724134-podExperimental-c600"
     }
    ]
-  },
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate edgar-vampires@entry-v1 --vs <pod>` puts it at a table and writes where this reads"
+  }
  },
  "harness": {
-  "cast_proofs": null,
+  "cast_proofs": {
+   "adds": [
+    "Corpse Knight",
+    "Impact Tremors",
+    "Warleader's Call"
+   ],
+   "anyway": false,
+   "floor": false,
+   "gated_runs": [
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-79785148-s37928264-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tlc22ecaf3"
+   ],
+   "held": [],
+   "late": [],
+   "reads_as": "every add the branch stages was played in its arms"
+  },
   "iterations": 10000,
   "model_version": "0fd30a379a0b",
   "seed": 20260826
@@ -1187,11 +1716,37 @@
   "why": "CONVERT ENTRIES, NOT DEATHS. Measured on the champion's own 84-game log set at the pinned harness (2026-10-01): eminence fires 8.04 times a game and 9.64 of our creatures die a game, and the death-drain payoffs trigger 1.90 times \u2014 a conversion rate near 20%. Blood Artist is CAST in 17% of games and sits on the battlefield about half a turn per game: the deck has ~4 death payoffs in 99 cards, they are 2-mana creatures, and they die to the same wipes that kill the fodder. Meanwhile the deck declares 5.5 attacks a game across ~10 of its own turns, because 1/1 tokens into three opponents' blockers are never profitable, and its biggest hit is 8.4. THAT is the pilot's 'slower, less scary, runs out of gas' \u2014 not a draw problem (1.46 extra cards a turn, 2 in hand) but a CONVERSION problem. WHY THE LAST TWO BRANCHES FAILED THE SAME WAY: both answered it with 4-5 mana payoffs. drain-v1 and boss-v1 each raised drain ~+4.5 and lost ~17 combat damage, taking TOTAL life removed from 59.5 to 47.5 and 47.2 \u2014 a 4:1 losing trade that no single old axis could see, which is why forge.life_removed_total was added today. THIS BRANCH converts the 8 entries a game instead, at 2-3 mana, needing no attack step and no blocker maths, and cuts only cards that convert NOTHING \u2014 nothing that attacks and no lord, which is the mistake the August go-wide refactor made when it cut every lord and took combat damage 29.07 -> 18.20. Two of the three adds are ENCHANTMENTS, so a creature wipe does not take the payoff with the fodder. Bracket 4 stands (pilot, 2026-10-01); Conqueror and the loop stay, unbuilt-for. Harness PINNED: standard-v3 / ov8c347642 / mm-edgar-vampires (aif7c3b6a8) / tlc22ecaf3 \u2014 the champion's 200 games stay the comparison. The line is the champion's total output 59.53 plus the MDE at 200/arm (19.30), rounded: >= 79. Every add is cast-checked before the arm."
  },
  "objective_grade": {
-  "state": "not measured",
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate edgar-vampires@entry-v1 --vs <pod>` puts it at a table and writes where this reads"
+  "difference": {
+   "ci95": [
+    -14.4645,
+    11.2035
+   ],
+   "delta": -1.6305,
+   "excludes_zero": false,
+   "method": "Welch t interval on the difference of means",
+   "n_a": 200,
+   "n_b": 199
+  },
+  "null": {
+   "basis": "what our decks score in seat 0 at this table, plain harness, deck-level runs",
+   "ci95": [
+    0.195,
+    0.276
+   ],
+   "decks": 6,
+   "excluded_overridden_runs": 9,
+   "games": 412,
+   "pod": "standard-v3",
+   "rate": 0.233,
+   "runs": 9,
+   "wins": 96
+  },
+  "reading": 57.9045,
+  "shortfall": 21.0955,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "The objective names forge.life_removed_total, and this list has no reading for it. That is a missing measurement, not a failure \u2014 the axis may need a model flag set in goldfish_targets.json.",
+  "because": "The objective is not met. Damage @t10, killed by t6, killed by t10 and hand can act by t3 improved anyway, which is a different branch's case.",
   "bill": {
    "box": 0,
    "buy": 2,
@@ -1236,7 +1791,9 @@
    "mulliganed",
    "interaction affordable @T6"
   ],
-  "notes": [],
+  "notes": [
+   "Forge, against a real pod: -0.040 win rate, CI [-0.143, +0.064] \u2014 this run cannot separate the two lists."
+  ],
   "reward": [
    {
     "measure": "damage @T10",
@@ -1292,9 +1849,9 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate edgar-vampires@entry-v1 --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
     "kind": "structural",
-    "what": "no game has been played at a real table",
+    "what": "Forge is a weak pilot",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, one opponent at 40 life who does nothing"
    }
   ],
@@ -1304,7 +1861,7 @@
    "killed by T10",
    "hand can act by T3"
   ],
-  "state": "inconclusive"
+  "state": "do not merge"
  },
  "slug": "edgar-vampires",
  "staged": 3,
