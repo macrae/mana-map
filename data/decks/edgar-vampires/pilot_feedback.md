@@ -240,3 +240,19 @@ trusting a result that rests on it).
 
 **The 18-card Vamps pile has not reached the bench.** The pilot named it on 2026-10-01; the
 list itself was never pasted into the session. Nothing above stands in for it.
+
+### Why the champion re-baseline at patch set 9473cf359146 is not a formality
+
+The PumpAllAi patch was written to make OUR Toxic Deluge castable. It also changes the TABLE:
+**jarad-graveyard, one of the three standard-v3 seats, runs Toxic Deluge**, and before the
+patch it could never cast it. So from this run on, an opponent sweeps the board — and Edgar
+is a go-wide token deck whose output is 8.04 eminence tokens a game. The champion's own
+`life_removed_total` may well FALL at the new harness through no change to the deck at all.
+
+That is the whole reason a harness change voids every figure measured under the old one, and it
+is why the objective threshold may need rebasing: 79 was chosen against a champion of 59.535
+measured at patch set c22ecaf3328d. If the new champion reads materially lower, the branch is
+being asked to clear a line drawn on a different table. Read the re-baseline FIRST, then grade.
+
+Vish Kal, Blood Arbiter is in both the champion and treasury-v1, and the PumpAi patch that
+prices its −X/−X is in both arms, so that one is symmetric and needs no adjustment.
