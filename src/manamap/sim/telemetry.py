@@ -66,6 +66,7 @@ PATCHES = {
     "EffectAi.java": {"entry": "forge/ai/ability/EffectAi.class", "kind": "ai"},
     "PlayerControllerAi.java": {"entry": "forge/ai/PlayerControllerAi.class", "kind": "ai"},
     "PumpAi.java": {"entry": "forge/ai/ability/PumpAi.class", "kind": "ai"},
+    "PumpAllAi.java": {"entry": "forge/ai/ability/PumpAllAi.class", "kind": "ai"},
 }
 JAR_SUFFIX = "-mm-telemetry.jar"
 _PRISTINE_SUFFIX = "-jar-with-dependencies.jar"
