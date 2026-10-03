@@ -185,12 +185,10 @@ KNOWN_UNCAST = {
     # same three v1.3.0 arrivals. Every ur-dragon record predating 2026-09-20
     # flags this way, which is the tell that it is the JOIN and not the AI.
     "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-acc77874-s898753652-podExperimental-c600.json",
-    # 2026-09-10, sharknado@recon-v1 at standard-v3: Wheel of Fortune cast once,
-    # Windfall / Magus / Jace's Archivist / Faithless Looting never, in 60
-    # games. Forge's AI will not discard its own hand. Kept as the record that
-    # made this block exist. (Its 20-game Experimental sibling shows the same
-    # casts but is under the per-card lines at that N and does not flag.)
-    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n60-c1d1131f-s1251704607-podExperimental-c600.json",
+    # (sharknado@recon-v1's 60-game record, the one that made this block exist —
+    # Wheel of Fortune cast once, Windfall / Magus / Jace's Archivist / Faithless
+    # Looting never — left the tree with the branch on 2026-10-03; it reads out of
+    # 763d19ba. The deck-level sharknado entry below records the same finding.)
     # 2026-09-13, sharknado (the DECK, not the branch) at standard-v3, 120
     # games: Jace's Archivist, Winds of Change, Faithless Looting and
     # Improbable Alliance never cast. The seat cast 95 wheels and DISCARDED

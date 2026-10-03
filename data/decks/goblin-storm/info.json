@@ -15,9 +15,7 @@
     "complete": 17,
     "of": 18,
     "stale": [],
-    "invalid": [
-      "diagnosis.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -1892,8 +1890,8 @@
     "verified_lines": 10
   },
   "diagnosis": {
-    "verdict": "It functions and it does not convert. Every mana axis is at or over target and the turn-3 land drop lands 90%, so nothing downstream is waiting on mana; five checker-passed stacks record what the board can do. What limits it is turning bodies into life totals — across 100 games on the standard pod it won 3 (0.031, ci95 [0.01, 0.086]) against the 0.144 seat-0 null this table gives our decks, dealt a median 4.0 combat damage against a mean 44.58 taken, and dealt a mean 0.28 noncombat damage to players (median 0, ci95 [0.01, 0.55]) while a mean 4.93 token-creation events resolved. threat-density reads 2 because the taxonomy files the ten reach cards as removal, and the ceiling assembles 26.5% because the storm target is an AND of two independent four-card groups.",
-    "skeptic": null,
+    "verdict": "It functions: every mana axis is at target and the turn-3 land drop lands 0.909. What limits it is the multiplier, not the spells. Zada arrives at mean turn 4.248 onto a goldfish board of 1.906 bodies at turn 4 and 2.437 at turn 5, and the goldfish kill lands by turn 8 in 0.255 of games. Both logged losses (001, 002) were openers with no cheap Goblin. Protecting Zada (Swiftfoot Boots alone) is an open question, not a proven limit, until the table's removal is known.",
+    "skeptic": "pass",
     "stale": false
   },
   "audit": {
@@ -1943,33 +1941,28 @@
     },
     {
       "from": "diagnosis",
-      "question": "On a board of Impact Tremors, Boggart Shenanigans, Pashalik Mons and N Goblin tokens, how much life loss does Blasphemous Act actually convert into, and can all of it be aimed at one player? Boggart Shenanigans reads \"target player or planeswalker\" and Pashalik Mons reads \"any target\", both as leaves-the-battlefield triggers.",
+      "question": "Widen the fodder target to all 11 cheap-body cards (add Goblin Bushwhacker, Goblin Lackey, Impulsive Pilferer, Conspicuous Snoop, Grenzo, Rundvelt Hordemaster) and re-measure, with and without Goblin Instigator and Hordeling Outburst. Also run a keep rule that requires one of them.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does a storm-copied Spreading Insurrection, with Goblin Bombardment or Broadside Bombardiers out, turn each stolen creature into damage and widen the board Zada and Battle Hymn count? And how often does it come up?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Add a fourth goldfish target for the reach kill — an any_of of the each-opponent damage payoffs (Impact Tremors, General Kreat, Boggart Shenanigans, Pashalik Mons) ANDed with the existing token group — and measure it.",
-      "settled_by": "goldfish"
+      "question": "With Frontline Heroism on the battlefield, cast a spell targeting only Zada: does the Heroism Soldier exist in time to count as an 'other creature' for Zada's copies, and does Heroism's own copy also get copied?",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Does widening the ritual any_of group to five (Jeska's Will) and to six (Pyretic Ritual) move the storm target's 26.5% / 16.9%-by-turn-6, and by how much, with the payoff group left at four?",
-      "settled_by": "goldfish"
+      "question": "Witch's Mark and Daring Discovery cast targeting only Zada: does each copy make its own discard-draw-two or discover 4?",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Which section governs the protection budget? strategy:deckbuilding.threat-density states \"5-7 protection slots\" with no archetype condition, while strategy:deckbuilding.interaction-suite budgets answers-to-answers at 2-4 generic / 4-6 combo / 6-8 Voltron. config.DECK_AXIS_TARGETS['protection'] hardwires the former, which is why this axis reads UNDER at 2 on a deck with one commander-gated target of three.",
+      "question": "How much targeted removal on the commander does the pilot's actual table run, and when?",
       "settled_by": "research-strategy"
-    },
-    {
-      "from": "diagnosis",
-      "question": "When a spell targets only Zada and Frontline Heroism is on the battlefield, does the Heroism Soldier token exist in time to be a legal target for Zada's copies, and does Heroism's own copy trigger?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Re-run the goldfish with a keep rule that requires a Goblin body at mana value 2 or less in the opening hand, and compare the token target's 60.0% / 48.7%-by-turn-6 and the Zada target's 66.3% against the current 79.1% keep rate. Does the gate the log names cost or buy assembly?",
-      "settled_by": "goldfish"
     },
     {
       "from": "log:001",
@@ -2031,10 +2024,9 @@
   "experiments": null,
   "decisions": null,
   "next": [
-    "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "branch `zada-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check goblin-storm --branch zada-v1 --adds --write` before `simulate goblin-storm@zada-v1` (which refuses them)",
     "branch `zada-v1` needs 15 card(s) sourced — `manamap pilot deck-branch goblin-storm source zada-v1`",
-    "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×2, resolve-stack ×5"
+    "open questions routed: diagnose ×1, goldfish ×3, research-strategy ×2, resolve-stack ×6"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

@@ -107,8 +107,8 @@ WHEELS, LOOTS, DISC, DRAW, SECOND = (26, 40, 13, 28, 20)
 @requires_data
 @requires_deck
 def test_sharknado_wheels_and_the_partner_is_cast(monkeypatch):
-    on = goldfish.run("sharknado", branch="recon-v1", iterations=1200, quiet=True, model_discard=True)["metrics"]
-    off = goldfish.run("sharknado", branch="recon-v1", iterations=1200, quiet=True, model_discard=False)["metrics"]
+    on = goldfish.run("sharknado", iterations=1200, quiet=True, model_discard=True)["metrics"]
+    off = goldfish.run("sharknado", iterations=1200, quiet=True, model_discard=False)["metrics"]
     assert "discard" in on and "discard" not in off, "absent, not zero, when the flag is off"
     assert on["discard"]["mean_cards_discarded_by_turn"]["8"] > 1
     assert on["mean_extra_cards_drawn_by_turn"]["8"] > off["mean_extra_cards_drawn_by_turn"]["8"] * 2, \
@@ -123,7 +123,7 @@ def test_sharknado_wheels_and_the_partner_is_cast(monkeypatch):
     def blind(card):
         d = real(card); d["wheel_draws"] = 0; return d
     patch_model(monkeypatch, "draw_profile", blind)
-    blinded = goldfish.run("sharknado", branch="recon-v1", iterations=1200, quiet=True, model_discard=True)["metrics"]
+    blinded = goldfish.run("sharknado", iterations=1200, quiet=True, model_discard=True)["metrics"]
     assert blinded["mean_extra_cards_drawn_by_turn"]["8"] < on["mean_extra_cards_drawn_by_turn"]["8"] * 0.6
 
 
