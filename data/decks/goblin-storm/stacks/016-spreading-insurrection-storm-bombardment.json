@@ -1,0 +1,528 @@
+{
+ "id": "016",
+ "slug": "spreading-insurrection-storm-bombardment",
+ "deck": "goblin-storm",
+ "title": "Storm-copied Spreading Insurrection into Goblin Bombardment",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Zada, Hedron Grinder",
+    "Goblin Bombardment",
+    "Goblin token 1 (1/1 red Goblin creature token)",
+    "Goblin token 2 (1/1 red Goblin creature token)",
+    "Mountain x5 (all tapped to cast Spreading Insurrection)"
+   ],
+   "opponents": [
+    {
+     "life": 20,
+     "board": [
+      "Opponent creature A",
+      "Opponent creature B",
+      "Opponent creature C"
+     ]
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [],
+  "mana_available": "{0} (the {4}{R} to cast Spreading Insurrection is already paid; no other mana source)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Spreading Insurrection",
+    "controller": "you",
+    "note": "cast as the third spell this turn; two spells were cast before it, so storm makes two copies"
+   }
+  ],
+  "extras": {
+   "spells_cast_before_this_turn": 2,
+   "note_for_the_resolver": "Opponent creatures A-C are generic nontoken creatures with no relevant abilities.",
+   "timing": "It is your precombat main phase, you are the active player, and the stack was empty when you cast Spreading Insurrection (cost {4}{R}, already paid). It has just become cast and is on the stack."
+  },
+  "question": "Spreading Insurrection is cast as the third spell this turn, targeting Opponent creature A. Storm copies it twice; each copy targets a different opponent creature. After all resolve, can you sacrifice the three stolen creatures to Goblin Bombardment, and how much damage does that deal? Who owns and where do the sacrificed creatures go?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Spreading Insurrection (original) is on the stack: cast from hand in your precombat main phase, as the active player, with the stack empty, as the third spell this turn, targeting Opponent creature A. Five Mountains were tapped to pay {4}{R}.",
+    "effect": "Sorcery timing is satisfied (your main phase, your turn, empty stack), which also fixes you as the active player for every later priority step (117.3b). The target is legal: A is a creature you don't control. Zada, Hedron Grinder's ability does NOT trigger: it triggers on an instant or sorcery that targets only Zada, and this spell targets an opponent's creature, so the event does not match.",
+    "citations": [
+     {
+      "rule": "307.1",
+      "quote": "A player who has priority may cast a sorcery card from their hand during a main phase of their turn when the stack is empty."
+     },
+     {
+      "rule": "601.2c",
+      "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Storm triggers on the cast and is put on the stack above the original spell.",
+    "effect": "Two spells were cast before Spreading Insurrection this turn, so the storm trigger will create two copies. It becomes the topmost object on the stack before anyone receives priority.",
+    "citations": [
+     {
+      "rule": "702.40a",
+      "quote": "“Storm” means “When you cast this spell, copy it for each other spell that was cast before it this turn. If the spell has any targets, you may choose new targets for any of the copies.”"
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "All players pass priority; the storm trigger resolves and puts two copies onto the stack, with new targets Opponent creature B and Opponent creature C.",
+    "effect": "Each copy is put on the stack with its new target; B and C are legal new targets (creatures you don't control). The copies are not cast, so they do not trigger storm, Zada, or anything else that triggers on casting, and they do not count for storm.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "707.10c",
+      "quote": "If the player chooses to change some or all of the targets, the new targets must be legal. Once the player has decided what the copy’s targets will be, the copy is put onto the stack with those targets."
+     },
+     {
+      "rule": "707.10",
+      "quote": "a copy of a spell isn’t cast and a copy of an activated ability isn’t activated."
+     },
+     {
+      "rule": "707.10",
+      "quote": "A copy of a spell or ability is controlled by the player under whose control it was put on the stack."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Priority passes; the top copy (targeting C) resolves.",
+    "effect": "Target still legal. You gain control of C until end of turn (a layer-2 control-changing effect), untap it (no change if it was already untapped), and it gains haste until end of turn. You are the active player (step 1), so you get priority after each resolution. The copy then leaves the stack and, because it is a copy of a spell outside the stack, ceases to exist as a state-based action.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "613.1b",
+      "quote": "Layer 2: Control-changing effects are applied."
+     },
+     {
+      "rule": "611.2a",
+      "quote": "A continuous effect generated by the resolution of a spell or ability lasts as long as stated by the spell or ability creating it (such as “until end of turn”)."
+     },
+     {
+      "rule": "701.26b",
+      "quote": "To untap a permanent, rotate it back to the upright position from a sideways position."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     },
+     {
+      "rule": "704.5e",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Priority passes; the second copy (targeting B) resolves.",
+    "effect": "Same as step 4: you gain control of B until end of turn, untap it, it gains haste; the copy ceases to exist.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "613.1b",
+      "quote": "Layer 2: Control-changing effects are applied."
+     },
+     {
+      "rule": "704.5e",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Priority passes; the original Spreading Insurrection (targeting A) resolves.",
+    "effect": "A is still a legal target (you do not yet control it). You gain control of A until end of turn, untap it, it gains haste. The card goes to your graveyard. You now control all three opponent creatures.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     },
+     {
+      "rule": "404.1",
+      "quote": "as is any instant or sorcery spell that’s finished resolving."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "With the stack empty and priority, you activate Goblin Bombardment three times, sacrificing A, B and C as the costs, each activation targeting the opponent.",
+    "effect": "Legal: the activation follows the casting steps, including 601.2h cost payment (602.2b), and you control the stolen creatures, and only a permanent you control can be sacrificed. Bombardment's cost has no tap symbol, so the summoning-sickness rule is irrelevant (haste is not even needed). You retain priority after each activation, so all three can be stacked. Each sacrificed creature goes to its OWNER's graveyard — the opponent's — not yours. Each ability targets 'any target', which includes a player.",
+    "citations": [
+     {
+      "rule": "602.2",
+      "quote": "Only an object’s controller (or its owner, if it doesn’t have a controller) can activate its activated ability unless the object specifically says otherwise."
+     },
+     {
+      "rule": "602.2b",
+      "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i. Those rules apply to activating an ability just as they apply to casting a spell."
+     },
+     {
+      "rule": "601.2h",
+      "quote": "The player pays the total cost."
+     },
+     {
+      "rule": "701.21a",
+      "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard. A player can’t sacrifice something that isn’t a permanent, or something that’s a permanent they don’t control."
+     },
+     {
+      "rule": "110.2",
+      "quote": "A permanent’s owner is the same as the owner of the card that represents it"
+     },
+     {
+      "rule": "302.6",
+      "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+     },
+     {
+      "rule": "117.3c",
+      "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+     },
+     {
+      "rule": "115.4",
+      "quote": "These targets may be creatures, players, planeswalkers, or battles."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "The three Bombardment abilities resolve one at a time (each after all players pass).",
+    "effect": "Each deals 1 damage to the opponent, who loses 1 life per damage: 3 damage total, opponent 20 -> 17. The sacrificed creatures are new objects in the opponent's graveyard; the 'until end of turn' control effects have nothing left to apply to.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+     },
+     {
+      "rule": "400.7",
+      "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "State-based actions are checked before each priority.",
+    "effect": "Opponent is at 17 life (> 0), so nobody loses; no other state-based action applies. Not asked, but possible: Zada and the two 1/1 Goblin creature tokens could also be sacrificed for 1 damage each, 6 in total (opponent to 14). The three stolen creatures alone deal 3.",
+    "citations": [
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Yes. Storm makes two copies (two spells cast before it); copies retargeted to B and C, original keeps A; all three resolve and you control A, B, C until end of turn. Zada does not trigger (the spell does not target only Zada; copies are not cast). Sacrificing the three stolen creatures to Goblin Bombardment is legal (you control them; no tap cost) and deals 3 damage: opponent 20 -> 17. The creatures go to their owner's (the opponent's) graveyard. Spreading Insurrection goes to your graveyard; the copies cease to exist.",
+   "you": {
+    "battlefield": [
+     "Zada, Hedron Grinder",
+     "Goblin Bombardment",
+     "Goblin token 1 (1/1 red Goblin creature token)",
+     "Goblin token 2 (1/1 red Goblin creature token)",
+     "Mountain x5 (tapped)"
+    ],
+    "graveyard": [
+     "Spreading Insurrection"
+    ],
+    "hand": [],
+    "mana_available": "{0}"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 17,
+     "battlefield": [],
+     "graveyard": [
+      "Opponent creature A",
+      "Opponent creature B",
+      "Opponent creature C"
+     ]
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "307.1",
+    "status": "supported",
+    "note": "NEW (prior missing-step finding FIXED). Full text: 'A player who has priority may cast a sorcery card from their hand during a main phase of their turn when the stack is empty.' Spreading Insurrection is a Sorcery (cards.json); extras.timing states precombat main, active player, empty stack. 'Of their turn' makes the caster the active player, which grounds the later 117.3b claims."
+   },
+   {
+    "step": 1,
+    "rule": "601.2c",
+    "status": "supported",
+    "note": "Target chosen on cast; A fits 'target creature you don't control' (oracle)."
+   },
+   {
+    "step": 1,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Zada triggers only on a spell that targets only Zada; no match. Consistent with Zada ruling 2018-03-16: 'Zada's ability triggers whenever you cast an instant or sorcery spell that targets only Zada and no other object or player.'"
+   },
+   {
+    "step": 2,
+    "rule": "702.40a",
+    "status": "supported",
+    "note": "Two spells cast before it -> two copies; new targets allowed. Printed reminder 'each spell cast before it' is equivalent to CR 'each other spell'."
+   },
+   {
+    "step": 2,
+    "rule": "603.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Full text puts waiting triggers on the stack after the SBA check, before a player gets priority."
+   },
+   {
+    "step": 3,
+    "rule": "117.4",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "707.10c",
+    "status": "supported",
+    "note": "New targets B and C are legal. Agrees with ruling 2021-06-18 ('You can make different choices for each copy')."
+   },
+   {
+    "step": 3,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "'a copy of a spell isn't cast' -> no storm/Zada trigger from copies. Agrees with rulings 2021-06-18 ('They aren't cast and won't be counted by other spells with storm') and Zada 2018-03-16."
+   },
+   {
+    "step": 3,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Copy controlled (and, per the same rule, owned) by you."
+   },
+   {
+    "step": 4,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "Now grounded: step 1 establishes you are the active player via 307.1."
+   },
+   {
+    "step": 4,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "613.1b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "611.2a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "701.26b",
+    "status": "supported",
+    "note": "Full text 'Only tapped permanents can be untapped' matches the stated no-op on an untapped creature."
+   },
+   {
+    "step": 4,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Copy goes to its owner's (your) graveyard per 707.10 ownership, then 704.5e."
+   },
+   {
+    "step": 4,
+    "rule": "704.5e",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "613.1b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "704.5e",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "A is still controlled by the opponent at resolution, so still a legal 'creature you don't control'."
+   },
+   {
+    "step": 6,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "You own the card -> your graveyard."
+   },
+   {
+    "step": 6,
+    "rule": "404.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "602.2",
+    "status": "supported",
+    "note": "Controller activates; Bombardment is yours."
+   },
+   {
+    "step": 7,
+    "rule": "602.2b",
+    "status": "supported",
+    "note": "PRIOR FINDING FIXED. Full text: 'The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b-i ... An activated ability's analog to a spell's mana cost (as referenced in rule 601.2f) is its activation cost.' Brings 601.2h (and 601.2c target choice) into the activation."
+   },
+   {
+    "step": 7,
+    "rule": "601.2h",
+    "status": "supported",
+    "note": "PRIOR FINDING FIXED: now reached through 602.2b. 'Sacrifice a creature' is the total cost, paid in full."
+   },
+   {
+    "step": 7,
+    "rule": "701.21a",
+    "status": "supported",
+    "note": "Controller sacrifices; to OWNER's graveyard; cannot sacrifice what you don't control. Establishes both legality and destination."
+   },
+   {
+    "step": 7,
+    "rule": "110.2",
+    "status": "supported",
+    "note": "A-C are nontoken (extras), so owner = card's owner = opponent."
+   },
+   {
+    "step": 7,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "Only tap/untap-symbol abilities of the creature itself; Bombardment's cost has neither. Correctly used to dismiss haste."
+   },
+   {
+    "step": 7,
+    "rule": "117.3c",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "115.4",
+    "status": "supported",
+    "note": "'any target' includes players."
+   },
+   {
+    "step": 8,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": "3 damage, single opponent: 20 -> 17. Per-seat and pod total coincide (scenario-facts: 1 opponent, 20 life)."
+   },
+   {
+    "step": 8,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "400.7",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 9,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Note (not failing): the 'not asked' extension sacrifices Zada; if done, 903.9a (commander to command zone, an SBA) would apply, so 'no other state-based action applies' is true only of the main line. The 6-damage / 14-life arithmetic is unaffected and follows from step 7's 602.2/701.21a."
+   },
+   {
+    "step": 9,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "17 > 0."
+   }
+  ],
+  "iterations": 2,
+  "summary": "Iteration 2: all three prior failures fixed. (1) 601.2a scenario inconsistency: scenario.hand is now [], mana_available '{0}' with the {4}{R} stated as paid, board shows Mountain x5 tapped, extras.timing states precombat main / active player / empty stack; scenario-facts agrees (hand [], spent_paying_a_cost []). (2) 307.1 now cited at step 1, verbatim, and grounds 117.3b. (3) 602.2b now cited at step 7 beside 601.2h. Every one of 37 citations re-checked against full lookup-rule text; all quotes verbatim and in context. Card text matches cards.json (Spreading Insurrection Sorcery {4}{R} with storm; Goblin Bombardment 'Sacrifice a creature: ... 1 damage to any target'; Zada targets-only-Zada). No step contradicts a WotC ruling (Spreading Insurrection 5 rulings 2021-06-18, Zada 8 rulings 2018-03-16; Goblin Bombardment has no official rulings). No sibling figure is quoted (scenario-facts lists 001-015 as not like-for-like; none cited). Missing-step audit: triggers (storm, Zada non-trigger), SBAs (704.3, 704.5e, 704.5a), priority (117.3b/c, 117.4), replacement effects (none on board) all addressed. Only remark: step 9's optional extension sacrificing Zada would bring 903.9a into play; not material to the answer."
+ }
+}

@@ -1,0 +1,475 @@
+{
+ "id": "014",
+ "slug": "zada-witchs-mark-copies",
+ "deck": "goblin-storm",
+ "title": "Witch's Mark cast at Zada with three Goblins out",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Zada, Hedron Grinder",
+    "Goblin token 1 (1/1 red Goblin creature token)",
+    "Goblin token 2 (1/1 red Goblin creature token)",
+    "Goblin token 3 (1/1 red Goblin creature token)",
+    "Mountain x2 (both tapped to cast Witch's Mark)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": []
+    }
+   ]
+  },
+  "hand": [
+   "Mountain",
+   "Mountain"
+  ],
+  "graveyard": [],
+  "mana_available": "{0} (the {1}{R} to cast Witch's Mark is already paid; no other mana source)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Witch's Mark",
+    "controller": "you",
+    "note": "cast targeting only Zada, Hedron Grinder"
+   }
+  ],
+  "extras": {
+   "goblin_tokens": 3,
+   "timing": "It is your precombat main phase, you are the active player, and the stack was empty when you cast Witch's Mark (cost {1}{R}, already paid). It has just become cast and is on the stack; any abilities that triggered on casting it have not yet been put on the stack."
+  },
+  "question": "Witch's Mark is cast with its one target being Zada. How many copies does Zada create, and does EACH copy offer its own optional discard-a-card-then-draw-two and create its own Wicked Role on its own target? With two other cards in hand, how many cards can you draw in total?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Casting Witch's Mark (precombat main phase, you are the active player, stack empty, so sorcery timing is satisfied). You move it from hand to the stack (hand: 3 -> 2, the two Mountains). Its 'up to one target creature you control' is a variable number of targets: you announce ONE target, then announce Zada, Hedron Grinder as that target. You then activate the mana abilities of the two Mountains on the battlefield (both become tapped) and pay the total cost {1}{R}.",
+    "effect": "Witch's Mark is on the stack targeting only Zada. Mana pool empty; no other mana source. Hand: Mountain, Mountain.",
+    "citations": [
+     {
+      "rule": "307.1",
+      "quote": "A player who has priority may cast a sorcery card from their hand during a main phase of their turn when the stack is empty."
+     },
+     {
+      "rule": "601.2a",
+      "quote": "To propose the casting of a spell, a player first moves that card (or that copy of a card) from where it is to the stack."
+     },
+     {
+      "rule": "601.2c",
+      "quote": "If the spell has a variable number of targets, the player announces how many targets they will choose before they announce those targets."
+     },
+     {
+      "rule": "601.2g",
+      "quote": "If the total cost includes a mana payment, the player then has a chance to activate mana abilities (see rule 605, “Mana Abilities”). Mana abilities must be activated before costs are paid."
+     },
+     {
+      "rule": "601.2h",
+      "quote": "The player pays the total cost."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "The spell becomes cast. It targets only Zada, so Zada's cast trigger triggers at this moment.",
+    "effect": "Zada's triggered ability is waiting to be put on the stack above Witch's Mark. (Official ruling agrees: Zada triggers on an instant or sorcery that targets only Zada and no other object or player.)",
+    "citations": [
+     {
+      "rule": "601.2i",
+      "quote": "Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Before you receive priority, state-based actions are checked (none apply) and Zada's trigger is put on the stack.",
+    "effect": "Stack, bottom to top: Witch's Mark (targeting Zada), Zada's trigger.",
+    "citations": [
+     {
+      "rule": "704.3",
+      "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "All players pass priority; Zada's trigger resolves. 'Each other creature you control that the spell could target' is the three Goblin tokens (each a creature you control, a legal target for 'target creature you control'). One copy of Witch's Mark is created per token.",
+    "effect": "THREE copies are put on the stack above the original, one targeting each Goblin token, in the order you choose. The copies are not cast, so Zada does not trigger again. The trigger then leaves the stack.",
+    "citations": [
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     },
+     {
+      "rule": "707.10d",
+      "quote": "Some effects copy a spell or ability for each player or object it “could target.” The copies are put onto the stack with those targets in the order of their controller’s choice."
+     },
+     {
+      "rule": "707.10",
+      "quote": "a copy of a spell isn’t cast"
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Each copy is a full Witch's Mark spell. Its target (one token) is copied from the trigger's assignment; its 'You may discard a card' choice is NOT copied, because it is a choice made on resolution, so each copy offers its own independent optional discard-then-draw-two.",
+    "effect": "Four independent instances of 'you may discard a card; if you do, draw two cards' will resolve (three copies + original), each also creating its own Wicked Role on its own target.",
+    "citations": [
+     {
+      "rule": "707.10",
+      "quote": "Choices that are normally made on resolution are not copied."
+     },
+     {
+      "rule": "707.10",
+      "quote": "A copy of a spell is itself a spell, even though it has no spell card associated with it."
+     },
+     {
+      "rule": "608.2d",
+      "quote": "If an effect of a spell or ability offers any choices other than choices already made as part of casting the spell, activating the ability, or otherwise putting the spell or ability on the stack, the player announces these while applying the effect."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "You receive priority; all pass; the top copy (targeting Goblin token 3) resolves. Its target is still legal. Instructions in order: you discard a Mountain (hand 2 -> 1), so you draw two cards one at a time (hand 1 -> 3); then a Wicked Role token is created attached to Goblin token 3.",
+    "effect": "Hand 3 cards (1 Mountain + 2 drawn). Goblin token 3 enchanted by Wicked (+1/+1). The copy leaves the stack and ceases to exist.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.9a",
+      "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+     },
+     {
+      "rule": "121.2",
+      "quote": "If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     },
+     {
+      "rule": "111.10q",
+      "quote": "A Wicked Role token is a colorless Aura Role enchantment token named Wicked with enchant creature, “Enchanted creature gets +1/+1,” and “When this token is put into a graveyard from the battlefield, each opponent loses 1 life.”"
+     },
+     {
+      "rule": "707.10a",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "State-based actions are checked before priority: Goblin token 3 has only one Role attached, so the Role-uniqueness rule does not apply. All pass; the next copy (targeting Goblin token 2) resolves: discard (3 -> 2), draw two (2 -> 4), Wicked Role on Goblin token 2.",
+    "effect": "Hand 4. Goblin token 2 enchanted by Wicked. No SBA.",
+    "citations": [
+     {
+      "rule": "704.5y",
+      "quote": "If a permanent has more than one Role controlled by the same player attached to it, each of those Roles except the one with the most recent timestamp is put into its owner’s graveyard."
+     },
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "121.2",
+      "quote": "If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "SBA check (none). All pass; the last copy (targeting Goblin token 1) resolves: discard (4 -> 3), draw two (3 -> 5), Wicked Role on Goblin token 1.",
+    "effect": "Hand 5. Goblin token 1 enchanted by Wicked. No SBA.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "All pass; the original Witch's Mark (targeting Zada, still legal) resolves last: discard (5 -> 4), draw two (4 -> 6), Wicked Role on Zada. As the final part of resolution it is put into your graveyard.",
+    "effect": "Hand 6. Zada enchanted by Wicked. Stack empty. No Role SBA applies (each creature has exactly one Role). Witch's Mark and four discarded cards are in the graveyard.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "Otherwise, the spell or ability will resolve normally."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     },
+     {
+      "rule": "704.5y",
+      "quote": "If a permanent has more than one Role controlled by the same player attached to it, each of those Roles except the one with the most recent timestamp is put into its owner’s graveyard."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Zada creates exactly 3 copies (one per Goblin token). Each copy and the original independently offer 'you may discard a card; if you do, draw two' (the choice is made on resolution and is not copied) and each creates its own Wicked Role on its own target. From the two Mountains in hand, discarding on every one of the four instances: 4 discards, 8 cards drawn, hand 2 -> 6 (net +4). Exactly FOUR Wicked Role tokens exist, ONE attached to each of Zada, Goblin token 1, Goblin token 2 and Goblin token 3; no creature has two Roles, so 704.5y never applies. No life changes. Assumes the library holds at least 8 cards.",
+   "you": {
+    "battlefield": [
+     "Zada, Hedron Grinder - 4/4 (3/3 + 1 Wicked Role)",
+     "Goblin token 1 - 2/2 (1/1 + 1 Wicked Role)",
+     "Goblin token 2 - 2/2 (1/1 + 1 Wicked Role)",
+     "Goblin token 3 - 2/2 (1/1 + 1 Wicked Role)",
+     "Mountain x2 (tapped)"
+    ],
+    "wicked_role_tokens": {
+     "total": 4,
+     "attached_to": {
+      "Zada, Hedron Grinder": 1,
+      "Goblin token 1": 1,
+      "Goblin token 2": 1,
+      "Goblin token 3": 1
+     }
+    },
+    "hand_size": 6,
+    "cards_drawn": 8,
+    "cards_discarded": 4,
+    "graveyard": [
+     "Witch's Mark",
+     "Mountain",
+     "Mountain",
+     "two of the drawn cards (your choice of which)"
+    ],
+    "mana_pool": "empty"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": []
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "307.1",
+    "status": "supported",
+    "note": "Full text: sorcery from hand, main phase, own turn, stack empty, with priority. extras.timing supplies all four conditions. Witch's Mark is a {1}{R} Sorcery per cards.json. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 1,
+    "rule": "601.2a",
+    "status": "supported",
+    "note": "Card moves from hand to the stack. Fixes iteration-1 finding (601.2a): scenario.hand is now [Mountain, Mountain] and scenario-facts --stack 014 echoes that 2-card hand. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 1,
+    "rule": "601.2c",
+    "status": "supported",
+    "note": "'up to one target' is a variable target count; announce one, then Zada. Fixes iteration-1 missing-step finding (601.2c). Witch's Mark ruling 2023-09-01 ('If you don't choose a target ... the Wicked Role token won't be created') confirms the target is optional, so announcing the count matters. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 1,
+    "rule": "601.2g",
+    "status": "supported",
+    "note": "Mana abilities of the two Mountains activated before payment. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 1,
+    "rule": "601.2h",
+    "status": "supported",
+    "note": "Total cost {1}{R} paid. Fixes the 601.2h part of the iteration-1 finding: board shows Mountains tapped, mana_available {0}, final_state mana_pool empty. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 2,
+    "rule": "601.2i",
+    "status": "supported",
+    "note": "Spell becomes cast; cast triggers trigger. Discard is not targeted, so the spell targets only Zada. Zada ruling 2018-03-16: 'triggers whenever you cast an instant or sorcery spell that targets only Zada and no other object or player.' Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 2,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 3,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Full text: SBA check, then waiting triggers put on stack, before priority. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds. Iteration-2 finding (117.5, step null) RESOLVED: extras.timing now reads 'It has just become cast and is on the stack; any abilities that triggered on casting it have not yet been put on the stack', which is the 601.2i moment and agrees with 704.3/117.5 and with scenario.stack holding only Witch's Mark. The phrase 'you hold priority' no longer appears in the scenario."
+   },
+   {
+    "step": 3,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 4,
+    "rule": "608.1",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 4,
+    "rule": "707.10d",
+    "status": "supported",
+    "note": "Single target; each Goblin token is a legal target for the one 'target creature you control', so one copy each, ordered by controller. Fixes iteration-1 body-split finding: tokens are now named '1/1 red Goblin creature token' and scenario-facts your_board.creature_bodies = [Zada, Goblin token 1, 2, 3] (4 bodies). Zada ruling 2018-03-16: 'You choose the order the copies are put onto the stack. The original spell will be on the stack beneath those copies and will resolve last.' Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 4,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "'a copy of a spell isn't cast'; Zada ruling 2018-03-16 agrees Zada does not retrigger. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 4,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Ability half: trigger removed and ceases to exist. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 5,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "'Choices that are normally made on resolution are not copied'; the optional discard is a resolution-time choice. Phrase 'target copied from the trigger's assignment' is loose (707.10 copies targets; Zada's text 'Each copy targets a different one of those creatures' then sets them) but the outcome is right. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 5,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Copy is itself a spell. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 5,
+    "rule": "608.2d",
+    "status": "supported",
+    "note": "'You may discard' is announced while applying the effect. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 6,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "Active player gets priority after the trigger resolves. The SBA/trigger check before that priority (704.3/117.5) is not mentioned here, though steps 7-8 do mention it; nothing applies, so not a finding. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 6,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "Target still legal. Witch's Mark ruling 2023-09-01 (illegal chosen target means no discard, draw or Role) does not apply. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 6,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Oracle order: discard/draw sentence before Role creation. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 6,
+    "rule": "701.9a",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 6,
+    "rule": "121.2",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 6,
+    "rule": "111.10q",
+    "status": "supported",
+    "note": "Establishes Wicked's characteristics; the attachment comes from Witch's Mark's own text. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 6,
+    "rule": "707.10a",
+    "status": "supported",
+    "note": "Ordering is loose: under 608.2n the resolved copy goes to the graveyard, and it ceases to exist at the next SBA check (707.10a: 'These are state-based actions'), which is step 7's check, not during this resolution. The outcome is unchanged. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 7,
+    "rule": "704.5y",
+    "status": "supported",
+    "note": "Correctly not applied: one Role per creature. Matches Witch's Mark ruling 2023-09-01 and 303.7a. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 7,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 7,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 7,
+    "rule": "121.2",
+    "status": "supported",
+    "note": "Hand arithmetic 3->2->4 checks. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 8,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Hand 4->3->5 checks. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 8,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 9,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "Zada still a legal target, so the spell resolves normally. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 9,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Instant/sorcery half: original goes to its owner's graveyard. Hand 5->4->6; 8 draws and 4 discards (2 Mountains + 2 drawn cards) are consistent with final_state.graveyard. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   },
+   {
+    "step": 9,
+    "rule": "704.5y",
+    "status": "supported",
+    "note": "Correctly not applied. Zada 3/3 + Wicked = 4/4 matches cards.json P/T 3/3; tokens 2/2. Iteration 3: re-looked-up in full; quote is a verbatim substring and the claim holds."
+   }
+  ],
+  "iterations": 3,
+  "summary": "Iteration 3. Mechanical gate OK. All 32 citations re-looked-up in full: every quote verbatim, every claim supported. The iteration-2 117.5 scenario defect is resolved by the rewritten extras.timing; the resolution is unchanged and nothing regressed. Rulings section present (Zada 8, Witch's Mark 10, 2018-03-16 / 2023-09-01); no ruling contradicts any step. Oracle text and P/T match cards.json; Witch's Mark is in decklist.txt line 84. No sibling figure is quoted, so no comparability finding. Two loose phrasings already recorded remain non-findings (step 5 'target copied from the trigger's assignment'; step 6 copy 'ceases to exist' is the next SBA check per 707.10a). Siblings 013 and 015 carry the same corrected timing sentence."
+ }
+}

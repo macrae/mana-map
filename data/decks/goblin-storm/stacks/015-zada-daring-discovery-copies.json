@@ -1,0 +1,489 @@
+{
+ "id": "015",
+ "slug": "zada-daring-discovery-copies",
+ "deck": "goblin-storm",
+ "title": "Daring Discovery cast at Zada with three Goblins out",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Zada, Hedron Grinder",
+    "Goblin token 1 (1/1 red Goblin creature token)",
+    "Goblin token 2 (1/1 red Goblin creature token)",
+    "Goblin token 3 (1/1 red Goblin creature token)",
+    "Mountain x5 (all tapped to cast Daring Discovery)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": []
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [],
+  "mana_available": "{0} (the {4}{R} to cast Daring Discovery is already paid; no other mana source)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Daring Discovery",
+    "controller": "you",
+    "note": "cast with exactly one target, Zada, Hedron Grinder"
+   }
+  ],
+  "extras": {
+   "goblin_tokens": 3,
+   "timing": "It is your precombat main phase, you are the active player, and the stack was empty when you cast Daring Discovery (cost {4}{R}, already paid). It has just become cast and is on the stack; any abilities that triggered on casting it have not yet been put on the stack."
+  },
+  "question": "Daring Discovery has 'up to three target creatures' and is cast with Zada as its only target. Does Zada's trigger fire, and if so how many copies are created? Does each copy perform its own discover 4, and are the cards cast via discover from those copies themselves 'cast' (so able to trigger Zada again if they target only Zada)?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Daring Discovery was cast ({4}{R}, paid by tapping all five Mountains) announcing ONE target for 'up to three target creatures': Zada, Hedron Grinder.",
+    "effect": "'Up to three' is a variable number of targets; you announce the number (one) before the target. The spell is targeted, since one target was chosen. The total cost was paid in full; the scenario gives no other mana source, so your pool is empty at the moment the spell is cast (this can change later if a discovered spell adds mana - see step 7 and final_state).",
+    "citations": [
+     {
+      "rule": "601.2c",
+      "quote": "If the spell has a variable number of targets, the player announces how many targets they will choose before they announce those targets."
+     },
+     {
+      "rule": "115.6",
+      "quote": "that spell or ability is targeted only if one or more targets have been chosen for it"
+     },
+     {
+      "rule": "601.2h",
+      "quote": "The player pays the total cost."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Daring Discovery becomes cast; Zada's ability checks its condition.",
+    "effect": "Daring Discovery is a sorcery spell, and the number of different objects chosen as its targets is one: Zada. So it 'targets only Zada' and Zada's ability TRIGGERS. (Zada's official ruling says the same: it triggers on a spell that targets only Zada and no other object or player.)",
+    "citations": [
+     {
+      "rule": "601.2i",
+      "quote": "Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+     },
+     {
+      "rule": "115.9c",
+      "quote": "checks the number of different objects or players that were chosen as targets of that spell or ability when it was put on the stack"
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Before you receive priority, state-based actions are checked (none apply) and Zada's trigger goes on the stack above Daring Discovery.",
+    "effect": "Stack, bottom to top: Daring Discovery (targeting Zada), Zada trigger.",
+    "citations": [
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "All players pass; Zada's trigger resolves.",
+    "effect": "Zada's text copies Daring Discovery once for each OTHER creature you control that the spell could target. Copy-for-each-'could target' effects put each copy on the stack with its own one of those targets, in the order you choose; Daring Discovery has a single chosen target, so each copy gets one. The board has three Goblin creature tokens (1/1 red, no stated targeting restriction), so THREE copies are created, one targeting each Goblin. The copies are put on the stack, not cast, so Zada does NOT trigger off them (Zada's official ruling agrees). Each copy keeps the original's other copiable characteristics, including its discover 4. All copies sit above the original, which resolves last.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "707.10d",
+      "quote": "Some effects copy a spell or ability for each player or object it “could target.” The copies are put onto the stack with those targets in the order of their controller’s choice."
+     },
+     {
+      "rule": "707.10",
+      "quote": "To copy a spell, activated ability, or triggered ability means to put a copy of it onto the stack; a copy of a spell isn’t cast"
+     },
+     {
+      "rule": "707.2",
+      "quote": "When copying an object, the copy acquires the copiable values of the original object’s characteristics"
+     },
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Priority round: no state-based actions, no triggers waiting; you receive priority and all players pass.",
+    "effect": "Stack, bottom to top: Daring Discovery (Zada), Copy A (Goblin 1), Copy B (Goblin 2), Copy C (Goblin 3) - order as you chose.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Copy C resolves: its target Goblin is checked (still legal), then its instructions are followed in order.",
+    "effect": "That Goblin token can't block this turn. Then the copy performs ITS OWN discover 4: exile from the top of your library until a nonland card with mana value 4 or less is exiled; you may cast it without paying its mana cost, otherwise it goes to your hand; the rest go to the bottom in a random order. What is found depends on the unknown library order - this scenario does not specify it.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.57a",
+      "quote": "“Discover N” means “Exile cards from the top of your library until you exile a nonland card with mana value N or less. You may cast that card without paying its mana cost if the resulting spell’s mana value is less than or equal to N. If you don’t cast it, put that card into your hand."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "If you choose to cast the discovered card, it is CAST during Copy C's resolution.",
+    "effect": "Casting via discover is a real cast (only the mana cost is waived as an alternative cost), following the full casting procedure including choosing targets, except no player gets priority right after. It becomes the topmost object on the stack and the copy finishes resolving. Because it is CAST, 'whenever you cast' abilities trigger - including Zada's, if the discovered card is an instant or sorcery that you cast targeting only Zada (Zada must still be on the battlefield to be a target). Such a Zada trigger waits until a player would next receive priority. If the discovered spell adds mana (the deck runs Seething Song, Battle Hymn and Brightstone Ritual, all mana value 4 or less), that mana goes into your pool and stays there as unspent mana until the current step or phase ends, so it can pay for later casts this phase.",
+    "citations": [
+     {
+      "rule": "608.2g",
+      "quote": "If an effect specifically instructs or allows a player to cast a spell during resolution, they do so by following the steps in rules 601.2a–i, except no player receives priority after it’s cast. That spell becomes the topmost object on the stack, and the currently resolving spell or ability continues to resolve"
+     },
+     {
+      "rule": "118.9",
+      "quote": "Alternative costs are usually phrased, “You may [action] rather than pay [this object’s] mana cost,” or “You may cast [this object] without paying its mana cost.”"
+     },
+     {
+      "rule": "601.2i",
+      "quote": "Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+     },
+     {
+      "rule": "106.4",
+      "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "Copy C finishes resolving and leaves the stack.",
+    "effect": "A copy of a spell put anywhere but the stack ceases to exist; nothing goes to your graveyard from the copy.",
+    "citations": [
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     },
+     {
+      "rule": "704.5e",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "Before priority: state-based actions, then any waiting Zada trigger (from step 7) goes on the stack ABOVE the discovered spell.",
+    "effect": "If the discovered card was an instant/sorcery targeting only Zada, its Zada trigger resolves first. It copies that spell once per OTHER creature you control that the spell could target AT THAT MOMENT: three Goblins on this board, but more if an earlier discovered spell created creatures (the deck runs Dragon Fodder, Krenko's Command and Empty the Warrens, all discoverable at 4). The discovered spell and its copies all resolve before Copy B. If you put the card in hand, or cast a spell that did not target only Zada, no Zada trigger is added.",
+    "citations": [
+     {
+      "rule": "704.3",
+      "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+     },
+     {
+      "rule": "603.3",
+      "quote": "The ability becomes the topmost object on the stack."
+     },
+     {
+      "rule": "707.10d",
+      "quote": "The copies are put onto the stack with those targets in the order of their controller’s choice."
+     }
+    ]
+   },
+   {
+    "n": 10,
+    "action": "Once everything above it has resolved, Copy B resolves, then Copy A - each exactly as steps 6-9.",
+    "effect": "Each target Goblin can't block this turn; each copy performs its own discover 4, each discovered card may be cast for free, and each such cast can itself trigger Zada. The copy count for any such later trigger is one per other creature you control that the spell could target when the trigger resolves - NOT bounded at three, because Goblins made by an earlier discovered spell count.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2g",
+      "quote": "That spell becomes the topmost object on the stack, and the currently resolving spell or ability continues to resolve"
+     }
+    ]
+   },
+   {
+    "n": 11,
+    "action": "The original Daring Discovery resolves last.",
+    "effect": "Zada (still a legal target) can't block this turn; the original performs the FOURTH discover 4, with the same cast-and-maybe-retrigger options. Then it goes to your graveyard. If Zada had left the battlefield before this point, the original's only target would be illegal and it would not resolve, losing its discover (the official Daring Discovery ruling says the same).",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve."
+     },
+     {
+      "rule": "701.57a",
+      "quote": "Put the remaining exiled cards on the bottom of your library in a random order."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "INVARIANT (holds whatever the library holds): Zada's trigger fires on Daring Discovery (one target, Zada, means it targets only Zada); it makes exactly THREE copies of Daring Discovery, one per Goblin token; those copies are not cast and do not retrigger Zada. PROVIDED EACH TARGET IS STILL LEGAL WHEN ITS SPELL RESOLVES: Daring Discovery's discover 4 is performed four times (three copies + the original, which resolves last), and Zada and the three Goblin tokens can't block this turn. Each copy and the original has exactly one target, and a spell whose targets are all illegal does not resolve (608.2b; the 2023-11-10 Daring Discovery ruling agrees), so the count is one fewer for each copy (or the original) whose only target is gone by then - e.g. a discovered Skirk Prospector or Goblin Bombardment sacrificing a later copy's Goblin, or a Grapeshot killing it. CONDITIONAL ON THE UNSPECIFIED LIBRARY: which four cards are discovered, whether each is cast or put into hand, and everything that follows from them. Each card cast via discover IS cast, so a discovered instant or sorcery cast targeting only Zada triggers Zada again, copied once per other creature you control that it could target at that moment - more than three if earlier discovered spells made Goblins. Hand size, board, storm count and mana pool all depend on those hits: cantrips (and their Zada copies) draw, token makers add bodies, and rituals add mana that stays in the pool until the step or phase ends (106.4).",
+   "you": {
+    "battlefield": "At least: Zada, Hedron Grinder; Goblin tokens 1-3 (1/1 red); five tapped Mountains. Zada and the three Goblins can't block this turn. Any further permanents depend on the discovered cards.",
+    "graveyard": "Daring Discovery, plus any discovered instants or sorceries that resolved (copies cease to exist).",
+    "hand": "Started empty; afterwards it depends on the discovered cards (cards put into hand, cards drawn by discovered cantrips and their copies). No fixed bound.",
+    "mana_pool": "Empty when Daring Discovery was cast; afterwards it depends on whether a discovered ritual added mana, which stays until the step or phase ends.",
+    "daring_discovery_copies_from_zada": 3,
+    "daring_discovery_discovers_performed": "4 if every target stays legal until its spell resolves; one fewer for each Daring Discovery (copy or original) whose only target is illegal on resolution (608.2b)"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": "40 before any discovered spell resolves; may be lower depending on what is discovered (e.g. damage spells and their copies)",
+     "board": []
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "fail",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "601.2c",
+    "status": "supported",
+    "note": "Re-verified against full text: a variable number of targets is announced before the targets."
+   },
+   {
+    "step": 1,
+    "rule": "115.6",
+    "status": "supported",
+    "note": "Targeted only if one or more targets are chosen; one was."
+   },
+   {
+    "step": 1,
+    "rule": "601.2h",
+    "status": "supported",
+    "note": "Total cost paid; empty pool at cast time comes from mana_available {0}."
+   },
+   {
+    "step": 2,
+    "rule": "601.2i",
+    "status": "supported",
+    "note": "Cast triggers trigger as the spell becomes cast. Consistent with the reworded extras.timing (spell just cast, triggers not yet on the stack)."
+   },
+   {
+    "step": 2,
+    "rule": "115.9c",
+    "status": "supported",
+    "note": "One different object chosen, so it targets only Zada. Agrees with Zada ruling 2018-03-16 ('targets only Zada and no other object or player')."
+   },
+   {
+    "step": 2,
+    "rule": "603.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "117.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "603.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "707.10d",
+    "status": "supported",
+    "note": "Copy per object it could target, own target each, order chosen; a single-target spell, three legal Goblins. cards.json Zada oracle: 'Each copy targets a different one of those creatures.' Agrees with Zada ruling 2018-03-16 on copy order and the original resolving last."
+   },
+   {
+    "step": 4,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "A copy of a spell isn't cast, so Zada does not retrigger (Zada ruling 2018-03-16 agrees)."
+   },
+   {
+    "step": 4,
+    "rule": "707.2",
+    "status": "supported",
+    "note": "Copiable values include Discover 4."
+   },
+   {
+    "step": 4,
+    "rule": "405.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "117.4",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "Copy C resolves first, before any discovered spell exists, so 'still legal' holds for it."
+   },
+   {
+    "step": 6,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Can't-block, then Discover 4, in printed order."
+   },
+   {
+    "step": 6,
+    "rule": "701.57a",
+    "status": "supported",
+    "note": "Agrees with Daring Discovery ruling 2023-11-10: discover's exile is mandatory; only cast-or-hand is optional."
+   },
+   {
+    "step": 7,
+    "rule": "608.2g",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "118.9",
+    "status": "supported",
+    "note": "'Without paying its mana cost' is an alternative cost; still a cast."
+   },
+   {
+    "step": 7,
+    "rule": "601.2i",
+    "status": "supported",
+    "note": "608.2g runs 601.2a-i, so the discovered spell becomes cast and cast triggers fire."
+   },
+   {
+    "step": 7,
+    "rule": "106.4",
+    "status": "supported",
+    "note": "Mana goes to the pool and empties at end of step/phase. Seething Song (MV3), Battle Hymn (MV2), Brightstone Ritual (MV1) are in cards.json."
+   },
+   {
+    "step": 8,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "704.5e",
+    "status": "supported",
+    "note": "Loose wording ('nothing goes to your graveyard') accepted as in iterations 1-2; a copy is not a card."
+   },
+   {
+    "step": 9,
+    "rule": "704.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 9,
+    "rule": "603.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 9,
+    "rule": "707.10d",
+    "status": "supported",
+    "note": "Dragon Fodder, Krenko's Command (MV2) and Empty the Warrens (MV4) are in cards.json as stated."
+   },
+   {
+    "step": 10,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 10,
+    "rule": "608.2g",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 11,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "Agrees with Daring Discovery ruling 2023-11-10."
+   },
+   {
+    "step": 11,
+    "rule": "701.57a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 11,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "608.2b also puts a spell that doesn't resolve into the graveyard, so the graveyard line holds either way."
+   },
+   {
+    "step": null,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "PRIOR FINDING FIXED (summary and count field). final_state.summary now marks only the trigger and the 3-copy count as INVARIANT, and makes the four discovers and the can't-block effects conditional on each target staying legal, citing 608.2b and the 2023-11-10 ruling. final_state.you.daring_discovery_discovers_performed is now '4 if every target stays legal...; one fewer for each...'. The examples match cards.json: Skirk Prospector (MV1, 'Sacrifice a Goblin: Add {R}'), Goblin Bombardment (MV2, 'Sacrifice a creature'), Grapeshot (MV2). Each is usable in the priority window before the next copy (117.3b). daring_discovery_copies_from_zada = 3 is correctly invariant: the copies are made when the trigger resolves (707.10d), before any discover."
+   },
+   {
+    "step": null,
+    "rule": "608.2b",
+    "status": "unsupported",
+    "note": "REGRESSION FROM THE FIX, inside final_state. final_state.you.battlefield still reads unconditionally 'At least: Zada, Hedron Grinder; Goblin tokens 1-3 (1/1 red); five tapped Mountains. Zada and the three Goblins can't block this turn.' But the revised summary now names the case where that is false: a discovered Skirk Prospector or Goblin Bombardment sacrificing a Goblin, or a Grapeshot killing one. In that case the Goblin is not on the battlefield, so 'At least ... Goblin tokens 1-3' is wrong, and if its copy then fails to resolve (608.2b), the unconditional can't-block sentence contradicts the summary's own conditional. Fix: make the field match the summary, e.g. 'Zada, Goblin tokens 1-3 and five tapped Mountains, minus any Goblin (or Zada) sacrificed or killed by a discovered card; each that was a legal target when its Daring Discovery resolved can't block this turn.'"
+   },
+   {
+    "step": 10,
+    "rule": "608.2b",
+    "status": "unsupported",
+    "note": "Same condition, missing at step level. Step 10 is the first point where a discovered spell (from Copy C) can have removed a target. Its effect still says unconditionally 'Each target Goblin can't block this turn; each copy performs its own discover 4'. 'exactly as steps 6-9' brings in step 6's check, but step 6 states the outcome '(still legal)', which is true for Copy C only. Daring Discovery ruling 2023-11-10: 'If each target chosen is an illegal target as that spell or ability tries to resolve, it won't resolve and you won't discover.' Step 11 already states this for the original. Fix: add the same clause for Copies B and A, citing 608.2b. 405.5 and 608.2g, which step 10 already cites, do support what they are cited for. This finding is about the unconditional claim."
+   },
+   {
+    "step": null,
+    "rule": "111.1",
+    "status": "supported",
+    "note": "scenario-facts: bodies [Zada, Goblin token 1-3] (4); 1 opponent at 40 (per-seat equals pod total, and no drain is claimed). No sibling figure is quoted, so comparability is not at issue. Rulings section present for both named cards. Missing-steps audit: SBA/priority/trigger placement is covered at steps 3, 5 and 9. No replacement effects on board. No new omissions."
+   }
+  ],
+  "iterations": 3
+ }
+}

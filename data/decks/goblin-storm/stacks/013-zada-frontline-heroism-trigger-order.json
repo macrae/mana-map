@@ -1,0 +1,532 @@
+{
+ "id": "013",
+ "slug": "zada-frontline-heroism-trigger-order",
+ "deck": "goblin-storm",
+ "title": "Frontline Heroism and Zada trigger on the same cast",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Zada, Hedron Grinder",
+    "Goblin token 1 (1/1 red Goblin creature token)",
+    "Goblin token 2 (1/1 red Goblin creature token)",
+    "Goblin token 3 (1/1 red Goblin creature token)",
+    "Frontline Heroism",
+    "Mountain x1 (tapped to cast Crimson Wisps)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": []
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [],
+  "mana_available": "{0} (the {R} to cast Crimson Wisps is already paid; no other mana source)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Crimson Wisps",
+    "controller": "you",
+    "note": "cast targeting only Zada, Hedron Grinder"
+   }
+  ],
+  "extras": {
+   "goblin_tokens": 3,
+   "note_for_the_resolver": "Both Zada's and Frontline Heroism's abilities trigger on this one cast; you control both triggers and choose their order on the stack.",
+   "timing": "It is your precombat main phase, you are the active player, and the stack was empty when you cast Crimson Wisps (cost {R}, already paid). It has just become cast and is on the stack; any abilities that triggered on casting it have not yet been put on the stack."
+  },
+  "question": "Crimson Wisps is cast targeting only Zada, with Frontline Heroism on the battlefield, and both Zada's and Frontline Heroism's abilities trigger. If you put Zada's trigger on the stack first so Frontline Heroism's resolves first, does the Soldier token it creates exist when Zada's trigger resolves, and so receive a copy of its own? Does the copy Frontline Heroism creates trigger Zada or Frontline Heroism again? How many cards do you draw in total under that order, and under the opposite order?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Crimson Wisps is cast targeting only Zada, Hedron Grinder, paying its cost {R} with the one {R} available. It becomes cast and both cast triggers trigger at that moment: Zada's (an instant targeting only Zada) and Frontline Heroism's second ability (a spell that targets only a single creature you control).",
+    "effect": "Your mana pool is now empty. Two triggered abilities you control are waiting to go on the stack, above Crimson Wisps.",
+    "citations": [
+     {
+      "rule": "601.2h",
+      "quote": "The player pays the total cost."
+     },
+     {
+      "rule": "601.2i",
+      "quote": "Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Before you receive priority, state-based actions are checked (none apply) and the two triggers are put on the stack. You control both, so you choose their order. ORDER A (the question's order): Zada's trigger first, Frontline Heroism's trigger on top of it.",
+    "effect": "Stack, bottom to top: Crimson Wisps (targeting Zada), Zada trigger, Frontline Heroism trigger.",
+    "citations": [
+     {
+      "rule": "704.3",
+      "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+     },
+     {
+      "rule": "603.3b",
+      "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     },
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "ORDER A: all players pass; Frontline Heroism's trigger (top) resolves.",
+    "effect": "You create a 1/1 red Soldier creature token with haste, then copy Crimson Wisps. Frontline Heroism names a new target for the copy, the Soldier, so the copy is put on top of the stack targeting the Soldier, not Zada, above Zada's trigger. The Soldier is now a creature you control on the battlefield. The CR's own worked example for this rule is Frontline Heroism.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "111.2",
+      "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+     },
+     {
+      "rule": "707.10",
+      "quote": "To copy a spell, activated ability, or triggered ability means to put a copy of it onto the stack"
+     },
+     {
+      "rule": "707.10e",
+      "quote": "Some effects copy a spell or ability and specify a new target for the copy."
+     },
+     {
+      "rule": "707.10e",
+      "quote": "If that player or object isn’t a legal target for each instance of the word “target,” the copy isn’t created."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Does the Frontline copy trigger Zada or Frontline Heroism? No.",
+    "effect": "The copy was put onto the stack, not cast, so neither cast trigger triggers. (The official Frontline Heroism ruling of 2024-11-08 agrees: its copy is not cast and does not retrigger cast triggers.)",
+    "citations": [
+     {
+      "rule": "707.10",
+      "quote": "a copy of a spell isn’t cast and a copy of an activated ability isn’t activated."
+     },
+     {
+      "rule": "601.2i",
+      "quote": "Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "ORDER A: priority returns; all pass; the Wisps copy targeting the Soldier resolves.",
+    "effect": "The Soldier is a legal target. It becomes red and gains haste until end of turn, and you draw a card. Resolving puts the copy into a graveyard, where it immediately ceases to exist as a state-based action before anyone gets priority (step 9 gives the rules). Draws so far: 1.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "121.1",
+      "quote": "It may also be done as part of a cost or effect of a spell or ability."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "ORDER A: all pass; Zada's trigger resolves. 'Each other creature you control that the spell could target' is counted now, at resolution, not when it triggered.",
+    "effect": "Other creatures you control that Wisps could target: Goblin tokens 1, 2 and 3 and the Soldier, 4 in all. Each is a legal target, so one copy is created for each, targeting that creature, and you put them on the stack in any order, above the original. So yes: the Soldier exists and gets a copy of its own. None of the copies is cast, so nothing triggers again. (The Zada ruling of 2018-03-16 agrees that you choose the order.)",
+    "citations": [
+     {
+      "rule": "608.2h",
+      "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+     },
+     {
+      "rule": "707.10d",
+      "quote": "Some effects copy a spell or ability for each player or object it “could target.” The copies are put onto the stack with those targets in the order of their controller’s choice."
+     },
+     {
+      "rule": "707.10d",
+      "quote": "If that player or object isn’t a legal target for each instance of the word “target,” a copy isn’t created for that player or object."
+     },
+     {
+      "rule": "707.10",
+      "quote": "a copy of a spell isn’t cast and a copy of an activated ability isn’t activated."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "ORDER A: the four Zada copies resolve one at a time, each after a full round of passes.",
+    "effect": "Each Goblin and the Soldier becomes red and gains haste. You draw 4 cards. As each copy finishes resolving it is put into a graveyard and then ceases to exist (step 9). Draws so far: 5.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "ORDER A: the original Crimson Wisps resolves last.",
+    "effect": "Zada becomes red and gains haste and you draw a card. ORDER A TOTAL: 6 cards (1 Frontline copy + 4 Zada copies + 1 original). The original Crimson Wisps card goes to your graveyard and stays there.",
+    "citations": [
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "State-based actions after each copy resolves (steps 5 and 7 in Order A, and every copy in Order B).",
+    "effect": "Each resolved copy of Crimson Wisps is put into your graveyard as its last act of resolving. Before the next player gets priority the game checks state-based actions, and a copy of a spell in any zone other than the stack ceases to exist. The original is a card, not a copy, so it stays. Your graveyard therefore holds only the one Crimson Wisps card.",
+    "citations": [
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "704.5e",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     },
+     {
+      "rule": "707.10a",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 10,
+    "action": "ORDER B (opposite): Frontline Heroism's trigger put on the stack first, Zada's trigger on top. Zada's trigger resolves first.",
+    "effect": "When Zada's trigger resolves, the other creatures you control are only Goblin tokens 1-3; the Soldier does not exist yet. So 3 copies, each targeting a different Goblin, go on the stack above Frontline's trigger. They resolve for 3 draws, and each copy then ceases to exist.",
+    "citations": [
+     {
+      "rule": "603.3b",
+      "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     },
+     {
+      "rule": "608.2h",
+      "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+     },
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     },
+     {
+      "rule": "707.10d",
+      "quote": "Some effects copy a spell or ability for each player or object it “could target.” The copies are put onto the stack with those targets in the order of their controller’s choice."
+     }
+    ]
+   },
+   {
+    "n": 11,
+    "action": "ORDER B: Frontline Heroism's trigger resolves, then its copy, then the original Wisps.",
+    "effect": "The Soldier is created. The copy targeting it resolves (1 draw), then the original resolves on Zada (1 draw). The Soldier never gets a Zada copy because Zada's trigger had already resolved. ORDER B TOTAL: 5 cards (3 + 1 + 1).",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "121.1",
+      "quote": "It may also be done as part of a cost or effect of a spell or ability."
+     },
+     {
+      "rule": "707.10e",
+      "quote": "Some effects copy a spell or ability and specify a new target for the copy."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Order the triggers so Frontline Heroism resolves FIRST (put Zada's trigger on the stack first). The Soldier then exists when Zada's trigger resolves and gets its own copy, because Zada counts creatures at resolution (608.2h). Order A: 6 cards. Order B (Zada resolves first): 5 cards. Neither the Frontline copy nor any Zada copy is cast, so neither triggers anything again (707.10). One opponent at 40, no life change. The one {R} was spent casting Wisps, and every copy ceased to exist after resolving, so the graveyard holds only the original card. Assumption: your library holds at least 6 cards. A draw from an empty library is a state-based loss (704.5b), so a smaller library changes the outcome.",
+   "you": {
+    "battlefield": [
+     "Zada, Hedron Grinder (red, haste)",
+     "Goblin token 1 (red, haste)",
+     "Goblin token 2 (red, haste)",
+     "Goblin token 3 (red, haste)",
+     "Soldier token 1/1 red, haste",
+     "Frontline Heroism",
+     "Mountain (tapped; paid {R} for Crimson Wisps)"
+    ],
+    "cards_drawn": {
+     "order_A_frontline_resolves_first": 6,
+     "order_B_zada_resolves_first": 5
+    },
+    "graveyard": [
+     "Crimson Wisps"
+    ],
+    "mana_available": "none (the one {R} paid for Crimson Wisps, step 1)"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": []
+    }
+   ],
+   "assumptions": [
+    "Your library holds at least 6 cards (5 under Order B). Under 704.5b, a player who attempted to draw from an empty library since state-based actions were last checked loses the game."
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "iterations": 3,
+  "summary": "Iteration 3. The 110.1 missing-step finding is FIXED: final_state.you.battlefield now lists 'Mountain (tapped; paid {R} for Crimson Wisps)', which matches the scenario's 'Mountain x1 (tapped to cast Crimson Wisps)' and scenario-facts your_board.lands ['Mountain x1']. No step moves it, so 110.1 holds. Nothing else regressed: the stack file's steps and final_state are byte-equal to .agent-out/stack-resolver-013.json, and the 37 (step, rule) citation pairs match the iteration-2 findings in order and count. I re-fetched all 21 distinct rules with lookup-rule and re-judged each against the full text; all are supported. The new library assumption is correct: Order A draws 1+4+1=6 and Order B draws 3+1+1=5. The final_state paraphrase of 704.5b ('attempted to draw from an empty library since state-based actions were last checked loses the game') is faithful to the rule. It is prose, not a citation, so the citation contract does not apply to it. Checked the rulings in scenario-facts rulings.cards (Zada x8 2018-03-16, Frontline Heroism x9 2024-11-08, Crimson Wisps x3 2008-05-01). None contradicts any step. Frontline 2024-11-08 says 'last ability resolves before the spell that caused it to trigger', consistent with steps 8 and 11. Oracle texts in cards.json match the resolution. The resolution quotes no sibling. Observation, not a finding: final_state has no hand list, but cards_drawn carries the count and the scenario hand was empty.",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "601.2h",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Prior finding FIXED. 'The player pays the total cost.' Crimson Wisps costs {R} (cards.json); the scenario now says the Mountain was tapped for it and mana_available is {0}. Step 1 and final_state.mana_available ('none') now agree with that."
+   },
+   {
+    "step": 1,
+    "rule": "601.2i",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Full text: cast triggers trigger as the spell becomes cast. Oracle check: Wisps ('Target creature ...') targets only Zada, so Zada's trigger ('an instant or sorcery spell that targets only Zada') and Frontline Heroism's second ability ('a spell that targets only a single creature you control') both match. Agrees with the Zada ruling of 2018-03-16."
+   },
+   {
+    "step": 1,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 2,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim. The full text has SBAs checked, then waiting triggers put on the stack, before anyone gets priority. That is what the step claims."
+   },
+   {
+    "step": 2,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim. Neither trigger condition is 'another ability triggering', so both go in the first part, in any order you choose."
+   },
+   {
+    "step": 2,
+    "rule": "405.2",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Order A stack, bottom to top: Wisps, Zada trigger, Frontline trigger. Correct."
+   },
+   {
+    "step": 3,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 3,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. The token is created, then the spell is copied, in the order written."
+   },
+   {
+    "step": 3,
+    "rule": "111.2",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 3,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Prior finding FIXED. The quote now covers only 'put a copy of it onto the stack'. The rest of 707.10 says a copy keeps the original's targets, but 707.10e (cited next) overrides that, so the claim is no longer carried by bare 707.10."
+   },
+   {
+    "step": 3,
+    "rule": "707.10e",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim. It establishes the specified new target, and the CR's own example for this rule is Frontline Heroism. The Soldier is a legal target, so the copy is created."
+   },
+   {
+    "step": 3,
+    "rule": "707.10e",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim legality clause. The Soldier is a creature with no restrictions on targeting it, so the copy exists."
+   },
+   {
+    "step": 4,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. 'a copy of a spell isn't cast'. Agrees with the Frontline Heroism ruling of 2024-11-08 ('created on the stack, so it's not \"cast\"') and the Zada ruling of 2018-03-16 ('not cast ... (like Zada's ability itself) won't trigger')."
+   },
+   {
+    "step": 4,
+    "rule": "601.2i",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Cast triggers trigger only at this point in the casting procedure. A copy never goes through casting (707.10, cited with it), so this is supported read alongside 707.10."
+   },
+   {
+    "step": 5,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 5,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. The Soldier is still on the battlefield and is a legal target."
+   },
+   {
+    "step": 5,
+    "rule": "121.1",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 6,
+    "rule": "608.2h",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. 'determined only once, when the effect is applied': the creatures Zada's trigger can copy for are counted at resolution. In Order A the Soldier exists by then, so Goblins 1-3 plus the Soldier make 4. Zada is excluded ('each other')."
+   },
+   {
+    "step": 6,
+    "rule": "707.10d",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Prior finding FIXED. Verbatim. One copy for each creature Wisps could target, each with that creature as its target, put on the stack in the order you choose. Agrees with the Zada ruling of 2018-03-16 ('You choose the order the copies are put onto the stack. The original spell will be on the stack beneath those copies and will resolve last')."
+   },
+   {
+    "step": 6,
+    "rule": "707.10d",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim legality clause: no copy is created for a creature that is not a legal target. All four are legal."
+   },
+   {
+    "step": 6,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Prior finding FIXED. Now used only for 'none of the copies is cast', which it establishes."
+   },
+   {
+    "step": 7,
+    "rule": "117.4",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 7,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. A resolving copy goes to its owner's graveyard, and step 9 then removes it."
+   },
+   {
+    "step": 8,
+    "rule": "608.1",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 8,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Order A total: 1 + 4 + 1 = 6. Arithmetic checked."
+   },
+   {
+    "step": 9,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Prior missing-step finding FIXED by this new step."
+   },
+   {
+    "step": 9,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim. SBAs are checked whenever a player would get priority, which happens after every resolution (117.3b, step 5)."
+   },
+   {
+    "step": 9,
+    "rule": "704.5e",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim. The copies cease to exist and the original card stays."
+   },
+   {
+    "step": 9,
+    "rule": "707.10a",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Verbatim. The full text adds 'These are state-based actions', which is consistent with citing 704.3 here."
+   },
+   {
+    "step": 10,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Order B: Frontline trigger below, Zada trigger on top."
+   },
+   {
+    "step": 10,
+    "rule": "608.2h",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. The Soldier does not exist yet, so there are 3 copies."
+   },
+   {
+    "step": 10,
+    "rule": "405.2",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. The copies go on top of Frontline's trigger, which is still on the stack."
+   },
+   {
+    "step": 10,
+    "rule": "707.10d",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Each of the 3 copies targets a different Goblin."
+   },
+   {
+    "step": 11,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 11,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3."
+   },
+   {
+    "step": 11,
+    "rule": "121.1",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. Order B total: 3 + 1 + 1 = 5. Arithmetic checked."
+   },
+   {
+    "step": 11,
+    "rule": "707.10e",
+    "status": "supported",
+    "note": "Re-verified against the full text in iteration 3. The Frontline copy targets the Soldier. The original Wisps is still on the stack below it, so it can be copied."
+   }
+  ]
+ }
+}
