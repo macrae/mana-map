@@ -185,17 +185,16 @@
     },
     "deck-diagnosis": {
       "agent": "deck-doctor+deck-skeptic",
-      "agent_prompt_sha256": "7a651f0164c4c111a18411efd6e9d470d6570838c4682a3bbd1a071bc1593356",
+      "agent_prompt_sha256": "48541cd914ddc0c481d95c2cbae74b1d05d7cae05a09355afee236b8d90d1b1c",
       "artifact": "data/decks/goblin-storm/diagnosis.json",
-      "artifact_sha256": "519d14c5fb9d1fc2269d9dc0717cf68ea41d1399377da4c7d431bb49487f2d9c",
+      "artifact_sha256": "64251d153e9dd5ac96a62274895afcd15725dd0b555783914d222bd2212ea0aa",
       "card_refs": [
         "Ancestors' Aid",
-        "Arena of Glory",
         "Battle Hymn",
         "Blasphemous Act",
         "Boggart Shenanigans",
         "Brightstone Ritual",
-        "Castle Embereth",
+        "Broadside Bombardiers",
         "Chaos Warp",
         "Conspicuous Snoop",
         "Crimson Wisps",
@@ -205,25 +204,22 @@
         "Dwarven Mine",
         "Empty the Warrens",
         "Expedite",
-        "Faithless Looting",
         "Fists of Flame",
         "Forgotten Cave",
-        "Fountainport",
         "Frontline Heroism",
         "Gempalm Incinerator",
         "General Kreat, the Boltbringer",
+        "Goblin Bombardment",
         "Goblin Burrows",
         "Goblin Bushwhacker",
-        "Goblin Chieftain",
-        "Goblin Dark-Dwellers",
+        "Goblin Lackey",
         "Goblin Matron",
-        "Goblin Trashmaster",
-        "Goblin Warchief",
+        "Goblin Negotiation",
         "Grapeshot",
         "Great Train Heist",
+        "Grenzo, Havoc Raiser",
         "Haze of Rage",
         "Hidden Volcano",
-        "Howlsquad Heavy",
         "Idol of Oblivion",
         "Impact Tremors",
         "Impulsive Pilferer",
@@ -233,11 +229,8 @@
         "Mana Geyser",
         "Mogg War Marshal",
         "Moggcatcher",
-        "Mountain",
         "Pashalik Mons",
-        "Past in Flames",
         "Quest for the Goblin Lord",
-        "Redcap Gutter-Dweller",
         "Reliquary Tower",
         "Renegade Tactics",
         "Roaming Throne",
@@ -246,29 +239,29 @@
         "Searslicer Goblin",
         "Seething Song",
         "Siege-Gang Commander",
-        "Siege-Gang Lieutenant",
         "Skirk Prospector",
+        "Skullclamp",
         "Smoldering Crater",
         "Sol Ring",
+        "Spinerock Knoll",
         "Spreading Insurrection",
         "Storm-Kiln Artist",
         "Swiftfoot Boots",
         "Throne of Eldraine",
-        "Vandalblast",
-        "War Room",
         "Wild Ride",
-        "Witch's Mark"
+        "Witch's Mark",
+        "Zada, Hedron Grinder"
       ],
       "card_refs_version": 2,
       "extra": {
         "cards_semantic": "f5691aac67b08a91963fafbe46376eee5b517141ce07399aaa8a08f15bd1f176",
-        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+        "strategy_doc_sha256": "ed710102a5229895943a0d7030bb303eee1c33ed317166e9e00cb710b88aaf63"
       },
-      "fingerprint": "5c5c39a10889c5336149b684073ae1c3207f0b79c3dcdd1bb4464ec3df7429e3",
+      "fingerprint": "012f9998d0c5d2aa856877393c013c0c3072d591f20754c26ffa8c7a6e94aeac",
       "inputs": [
         {
           "path": "data/card_roles.json",
-          "sha256": "6f89de340174e7c28ecbba43fd75d41f33e78d7d951add33a09d8cc5926b46bc"
+          "sha256": "2f3980812e95e4a567fc79ee7ab920df942b50e4db40a7276f30d6c58e2ae041"
         },
         {
           "path": "data/combo_details.json",
@@ -283,20 +276,48 @@
           "sha256": null
         },
         {
-          "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256",
-          "sha256": "79e03ad3f8f19675f270a0846fd2c7addb4f7f28b551bed37161b040ab5190b1"
+          "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
+          "sha256": "81b583d34c1895ecb7a80bc2f476bdd51c639034f0de6cda266304f4cbe8c8f1"
         },
         {
           "path": "data/decks/goblin-storm/goldfish_targets.json",
-          "sha256": "c831ebd4d354a89d6bcf0f9e67cb050ba2c8a48e4d959368f22b9345e01b78dc"
+          "sha256": "f45066807b5542bc6262c64b58fbd8157a636aa30198ac2c02dafaac8ef8e399"
+        },
+        {
+          "path": "data/decks/goblin-storm/log_annotations.json",
+          "sha256": "a4468f69b450f78ca1ddf9c1cab281be4c66d56d8043a77098ef4fd9ec07de46"
         },
         {
           "path": "data/decks/goblin-storm/mana_analysis.json",
-          "sha256": "7dc65c4e5be08a4731e2891c096b5667ab8ce3215c1aac96e0370479ce6dd5f5"
+          "sha256": "5b3fcd20242f03c725b3a2a49b5da47d3583cb81616b31184b214352583a47f7"
         },
         {
           "path": "data/decks/goblin-storm/pilot_feedback.md",
           "sha256": null
+        },
+        {
+          "path": "data/decks/goblin-storm/sim/giada-angels-vs-baylen-tokens-vs-abaddon-n100-62a56c7d-s1655008381-podExperimental-c600.json",
+          "sha256": "bb41368b75fc1ad68e059152f1a783707693c7bdb730b3f48bae694493c81ebd"
+        },
+        {
+          "path": "data/decks/goblin-storm/sim/giada-angels-vs-vito-vs-baylen-tokens-n100-a209c8f5-s718550261-podExperimental.json",
+          "sha256": "bf14af5692a3e30f055028aa3172ed76e152e3d90e225a37579f2656eb96ab2d"
+        },
+        {
+          "path": "data/decks/goblin-storm/sim/giada-angels-vs-vito-vs-baylen-tokens-n20-a209c8f5-s718550261.json",
+          "sha256": "514199f42f5caf194288c09d909c7cc7e598446976fd945702434eb27f496600"
+        },
+        {
+          "path": "data/decks/goblin-storm/sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600.json",
+          "sha256": "c1eb7f8e6bf75394c07751a8931e7b5d3ec27166f159718c490bf380a1dabdd7"
+        },
+        {
+          "path": "data/decks/goblin-storm/sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s909090-podExperimental-c600-ov60636e9e.json",
+          "sha256": "21b989b837566910c1a5d6095bc80e7b53c78978fecc0a8bcceac8d8a1cb6842"
+        },
+        {
+          "path": "data/decks/goblin-storm/sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836-s14467126-podExperimental-c600.json",
+          "sha256": "39b903879e277ec8bfa897e5ae94af0d518a22f8bac1df158c0ab31b269d129d"
         },
         {
           "path": "data/decks/goblin-storm/stacks/001-zada-crimson-wisps-engine.json",
@@ -319,16 +340,20 @@
           "sha256": "ca015accd2ec70f7c8e34d45cc18866bed26444c431b640c1af74ea1a28328aa"
         },
         {
+          "path": "data/decks/goblin-storm/stacks/012-sim-g61-t27-precombat-main.json",
+          "sha256": "af32d7d6f762b8d682883b085cc308ae489c8d51f337fc4ca62dd6943f3e6937"
+        },
+        {
           "path": "data/decks/goblin-storm/strategic_frame.json",
           "sha256": "66d03d8649d5c2f5a7d1ff5f24d9d269551a0fd286fd2457be68faca97112cdd"
         },
         {
           "path": "data/obsolescence_index.json",
-          "sha256": "4fbdea0366775b8d03636590e378d05b49230ba648ffe6792fcbd2936a99f8f5"
+          "sha256": "472853c439420804cf1b0e1ec7f57817006eac41e0f1b7761757687a6611ca36"
         },
         {
           "path": "src/manamap/pilot/deck_audit.py",
-          "sha256": "a64da0cb9773d88fc7b4094bd79689491fbffacb64426152bc39f785b53bf68c"
+          "sha256": "8649d13a63c8e548acf30b02295aaf6640bccb6c5831359d7021a41f8cb1acc0"
         }
       ]
     },
