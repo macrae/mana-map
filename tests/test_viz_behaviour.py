@@ -126,15 +126,34 @@ def test_drill_renders_its_layout(page):
 
 
 def test_drill_back_restores_the_world(page):
+    # WAIT FOR THE STATE, NOT FOR A DURATION. This slept 2000 ms after entering and
+    # 900 ms after `back()`; under load (four Forge JVMs, load average ~20,
+    # 2026-10-03) it failed about one run in three with `active` still true —
+    # `back()` landed before the drill had finished entering, and the entry then
+    # completed on top of it. Each wait is now the condition the next step needs,
+    # with a deadline that only bounds a real hang.
     result = page.evaluate("""async () => {
+        const until = async (cond, ms) => {
+            const end = Date.now() + ms;
+            while (!cond()) {
+                if (Date.now() > end) return false;
+                await new Promise(r => setTimeout(r, 50));
+            }
+            return true;
+        };
+        const drilled = () => Drill.isActive()
+            && MM.mapRenderer.layers.some(t => t._isDrill);
         const rd = await MM.getRegionData();
         const reg = rd.regions.find(r => r.level === 1 && r.count > 100);
         await Drill.enterRegion(reg.id);
-        await new Promise(r => setTimeout(r, 2000));
+        const entered = await until(drilled, 30000);
         Drill.back();
-        await new Promise(r => setTimeout(r, 900));
+        await until(() => !Drill.isActive()
+            && !MM.mapRenderer.layers.some(t => t._isDrill)
+            && document.querySelectorAll('.map-label').length > 0, 30000);
         const layers = MM.mapRenderer.layers;
         return {
+            entered: entered,
             active: Drill.isActive(),
             drillTraces: layers.filter(t => t._isDrill).length,
             hiddenBaseTraces: layers.filter(t => t.visible === false).length,
@@ -144,6 +163,7 @@ def test_drill_back_restores_the_world(page):
         };
     }""")
     assert page.js_errors == []
+    assert result["entered"], "the drill never finished entering, so `back` was never tested"
     assert not result["active"] and result["drillTraces"] == 0
     assert result["hiddenBaseTraces"] == 0, "the world stayed hidden"
     assert result["annotations"] > 0, "region labels did not come back"
