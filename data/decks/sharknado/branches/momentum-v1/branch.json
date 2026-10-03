@@ -1,0 +1,66 @@
+{
+ "slug": "sharknado",
+ "branch": "momentum-v1",
+ "v": 2,
+ "opened": "2026-10-02",
+ "why": "wheels-v1 and rituals-v1 combined, by the pilot's call 2026-10-02: the six swaps share no card and one feeds the other. Three slots outside both commander axes (Kefnet, Waterbender, Silent Hallcreeper) become cheap punishers of the opponents' half of a wheel; two slow Treasure makers become rituals that fund a wheel and its follow-up in one turn (82% of the champion's goldfish stall turns are mana-short); Enduring Curiosity becomes Teferi's Protection. At 200 games a run could not have split the two halves' effects anyway, and one run frees six hours of Forge. The goldfish cannot price the ritual half (rituals unmodelled, Treasure off, Mana Geyser reads opponents' tapped lands), so Forge is the instrument.",
+ "objective": {
+  "axis": "forge.win_rate",
+  "op": ">=",
+  "value": 0.2,
+  "pod": "standard-v3",
+  "why": "wheels-v1 and rituals-v1 combined, by the pilot's call 2026-10-02: the six swaps share no card and one feeds the other. Three slots outside both commander axes (Kefnet, Waterbender, Silent Hallcreeper) become cheap punishers of the opponents' half of a wheel; two slow Treasure makers become rituals that fund a wheel and its follow-up in one turn (82% of the champion's goldfish stall turns are mana-short); Enduring Curiosity becomes Teferi's Protection. At 200 games a run could not have split the two halves' effects anyway, and one run frees six hours of Forge. The goldfish cannot price the ritual half (rituals unmodelled, Treasure off, Mana Geyser reads opponents' tapped lands), so Forge is the instrument."
+ },
+ "commits": [
+  {
+   "at": "2026-10-02",
+   "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+   "message": "momentum-v1: wheels-v1 and rituals-v1 as one list"
+  }
+ ],
+ "base_version": 6,
+ "staged": [
+  {
+   "at": "2026-10-02",
+   "out": "Waterbender Ascension",
+   "in": "Razorkin Needlehead",
+   "strength": null,
+   "why": "draws only on the fourth combat hit (tax-v1: card value +0.000) -> 1 damage to an opponent for every card they draw"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "Kefnet the Mindful",
+   "in": "Scrawling Crawler",
+   "strength": null,
+   "why": "one card per {3}{U}, no discard, a body that acts only at seven cards (Forge: 9 activations in 120 games) -> everyone draws each upkeep and each opponent loses 1 per draw"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "Silent Hallcreeper",
+   "in": "Faerie Mastermind",
+   "strength": null,
+   "why": "at most one draw, ever, on a combat hit -> draws whenever an opponent draws their second card in a turn, which every wheel does"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "Generous Plunderer",
+   "in": "Mana Geyser",
+   "strength": null,
+   "why": "one Treasure an upkeep that also hands an opponent one -> a ritual that reads every opponent's tapped lands"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "Treasure Map",
+   "in": "Jeska's Will",
+   "strength": null,
+   "why": "three Treasure after three turns of {1}-and-tap -> red mana equal to an opponent's hand (a wheel just gave them seven) and impulse three"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "Enduring Curiosity",
+   "in": "Teferi's Protection",
+   "strength": null,
+   "why": "combat-gated draw, cast 4 times in 120 Forge games -> the commanders survive the wrath aimed at them"
+  }
+ ]
+}
