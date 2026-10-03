@@ -10,7 +10,7 @@ import pytest
 from manamap import config
 from manamap.sim import cast_check as cc
 
-from conftest import requires_deck
+from conftest import requires_corpus, requires_deck
 
 OURS = "Ai(1)-mm-castcheck-edgar-vampires"
 OPP = "Ai(2)-mm-giada-angels"
@@ -71,6 +71,7 @@ def test_the_opponents_copy_is_not_ours():
     assert cc.verdict(c).startswith("NOT DRAWN")
 
 
+@requires_corpus
 @requires_deck
 @pytest.mark.skipif(not (config.DECKS_DIR / "edgar-vampires" / "cards.json").exists(), reason="requires edgar-vampires")
 def test_the_shell_is_the_decks_commander_copies_filler_and_basics_of_the_cards_colours():

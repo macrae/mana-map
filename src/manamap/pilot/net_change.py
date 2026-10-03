@@ -476,6 +476,27 @@ def mana(slug, branch):
     }
 
 
+def _pool(slug, branch):
+    """The corpus pool, or — with NO CORPUS (a fresh clone, CI's push job) — the
+    deck's and the branch's own cards.json. `card_pool.load_pool` returns None there
+    by contract and both readers below crashed on it (2026-10-03). Every name a
+    branch diff can produce is in one of those two files, and they carry the type
+    line and mana value the split and the rows need."""
+    from manamap.pilot import card_pool
+    pool = card_pool.load_pool()
+    if pool is not None:
+        return pool
+    pool = {}
+    for b in (branch, None):
+        try:
+            doc = load_deck_cards(slug, b)
+        except FileNotFoundError:
+            continue
+        for c in (doc.get("cards") if isinstance(doc, dict) else doc) or []:
+            pool.setdefault(c.get("name"), {"type_line": c.get("type_line"), "cmc": c.get("cmc")})
+    return pool
+
+
 def card_diff(slug, branch, bill=None):
     """THE MERGE-REQUEST DIFF: every card out, every card in, against the deck.
 
@@ -495,8 +516,7 @@ def card_diff(slug, branch, bill=None):
     a spell swap moves the sampled rows, a land swap moves only the
     deterministic mana block, and mixing them lets one borrow the other's credit.
     """
-    from manamap.pilot import card_pool
-    pool = card_pool.load_pool()
+    pool = _pool(slug, branch)
     d = deck_branch.diff(slug, branch)
     meta = deck_branch.meta(slug, branch) or {}
     # PAIRING SURVIVES THE TWO COLUMNS. A staged swap is one decision about two
@@ -609,9 +629,8 @@ def changes(slug, branch):
     sampled rows, a land swap moves only the deterministic mana block. Mixing
     them lets a land pass borrow credit from a spell pass.
     """
-    from manamap.pilot import card_pool
     meta = deck_branch.meta(slug, branch) or {}
-    pool = card_pool.load_pool()
+    pool = _pool(slug, branch)
 
     def is_land(name):
         return "Land" in ((pool.get(name) or {}).get("type_line") or "")
@@ -1515,7 +1534,7 @@ def main(args):
                   + (f"; HELD: {', '.join(_cp['held'])}" if _cp["held"] else "")
                   + (f"; CAST-LATE: {', '.join(_cp['late'])}" if _cp["late"] else "")
                   + (f"; unproven: {', '.join(_cp['unproven'])}" if _cp["unproven"] else ""))
-    except Exception:                              # noqa: BLE001 - never block
+    except (Exception, SystemExit):                # noqa: BLE001 - never block; no Forge exits
         pass
     doc = build(args.slug, branch,
                 iterations=getattr(args, "iterations", None),

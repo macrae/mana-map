@@ -25,6 +25,15 @@ requires_data = pytest.mark.skipif(
 )
 
 # Pilot subsystem artifact gates (same pattern).
+# THE CORPUS ALONE, without the trained artifacts `requires_data` waits for. CI's
+# push job has neither; its corpus-gates job downloads and extracts cards.csv but
+# never trains, so a test that only reads the corpus belongs under THIS marker —
+# under `requires_data` it would skip in the one job that can run it.
+requires_corpus = pytest.mark.skipif(
+    not config.OUTPUT_CSV_PATH.exists(),
+    reason="requires cards.csv (run `manamap download && manamap extract`)",
+)
+
 requires_rules = pytest.mark.skipif(
     not config.RULES_INDEX_PATH.exists(),
     reason="requires the rules DB (run `manamap pilot download-rules && manamap pilot build-rules-db`)",

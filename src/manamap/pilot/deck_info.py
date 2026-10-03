@@ -830,7 +830,10 @@ def _next(info):
                     nxt.append(f"branch `{b['name']}`: {', '.join(x for x in bits if x)} add(s) under the current harness — "
                                f"`manamap pilot forge-cast-check {slug} --branch {b['name']} --adds --write` "
                                f"before `simulate {slug}@{b['name']}` (which refuses them)")
-            except Exception:                          # noqa: BLE001 - no Forge, no gate
+            # `forge_jar()` EXITS when Forge is not installed, and SystemExit is not an
+            # Exception — so "no Forge, no gate" crashed deck-info on CI and on any fresh
+            # clone (2026-10-03).
+            except (Exception, SystemExit):            # noqa: BLE001 - no Forge, no gate
                 pass
         if b.get("unreadable"):
             nxt.append(f"branch `{b['name']}` will not parse — fix "

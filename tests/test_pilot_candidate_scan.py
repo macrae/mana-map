@@ -12,9 +12,9 @@ from manamap import config
 from manamap.pilot import candidate_scan as cs
 from manamap.pilot import validate_candidate_scan as vcs
 
-from conftest import requires_deck, requires_roles
+from conftest import requires_corpus, requires_deck, requires_roles
 
-pytestmark = [requires_deck, requires_roles,
+pytestmark = [requires_corpus, requires_deck, requires_roles,
               pytest.mark.skipif(not (config.DECKS_DIR / "edgar-vampires" / "cards.json").exists(),
                                  reason="requires the edgar-vampires deck"),
               pytest.mark.skipif(not config.COMBO_DETAILS_PATH.exists(), reason="requires combo_details.json")]
