@@ -1,0 +1,52 @@
+{
+ "slug": "edgar-vampires",
+ "branch": "draw-v1",
+ "v": 2,
+ "opened": "2026-10-02",
+ "why": "Turns 7-10 stall on an EMPTY HAND 67.6% of the time (b1aa4db6), which the captain's log says six times. Four swaps of cards the diagnosis argues pay nothing for draw that fires on DEATHS or refills the hand; every add PLAYED in forge-cast-check 2026-10-02. Objective halves the champion's 0.72 empty-hand own turns per game (200 games, ci95 [0.55, 0.90]).",
+ "objective": {
+  "axis": "forge.empty_hand_turns",
+  "op": "<=",
+  "value": 0.36,
+  "pod": "standard-v3",
+  "why": "Turns 7-10 stall on an EMPTY HAND 67.6% of the time (b1aa4db6), which the captain's log says six times. Four swaps of cards the diagnosis argues pay nothing for draw that fires on DEATHS or refills the hand; every add PLAYED in forge-cast-check 2026-10-02. Objective halves the champion's 0.72 empty-hand own turns per game (200 games, ci95 [0.55, 0.90])."
+ },
+ "commits": [
+  {
+   "at": "2026-10-02",
+   "decklist_sha256": "631f7e245625e80be76e11f8218e7b32aae941c11557f6f2804da6ecbaa703ea",
+   "message": "draw-v1: four death/refill draw swaps for the T7-10 empty-hand stall"
+  }
+ ],
+ "base_version": 3,
+ "staged": [
+  {
+   "at": "2026-10-02",
+   "out": "Altar of Dementia",
+   "in": "Midnight Reaper",
+   "strength": null,
+   "why": "an outlet whose output pays nothing in the 99 (diagnosis) -> a card per nontoken death; PLAYED cast 6 of 7 draws"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "Bloodflow Connoisseur",
+   "in": "Dark Prophecy",
+   "strength": null,
+   "why": "an outlet that only grows itself (diagnosis) -> draw on EVERY creature of ours dying, tokens included: a wipe refills the hand; PLAYED cast 2 of 3. Costs BBB in a deck four black sources short - named, not hidden"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "The Haunt of Hightower",
+   "in": "Ajani Unrelenting",
+   "strength": null,
+   "why": "'a six-mana body, not a plan' (engine.json) -> a six-drop that refills one card per creature (-2) and wipes everything but our tokens (-3); FRA; PLAYED cast 4, activated 4"
+  },
+  {
+   "at": "2026-10-02",
+   "out": "Vish Kal, Blood Arbiter",
+   "in": "Morbid Opportunist",
+   "strength": null,
+   "why": "seven mana, 0 activations on record, above the deck's T7 mean mana of 6.185 (diagnosis) -> three mana, a card on any turn something dies; PLAYED cast 5"
+  }
+ ]
+}

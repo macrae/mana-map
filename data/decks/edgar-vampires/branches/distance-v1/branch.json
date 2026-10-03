@@ -1,0 +1,31 @@
+{
+ "slug": "edgar-vampires",
+ "branch": "distance-v1",
+ "v": 2,
+ "opened": "2026-10-02",
+ "why": "ACTION AT A DISTANCE is Edgar's weakest identity axis (noncombat damage 4.32/game). Ingris Stingerquill (FRA) pings each opponent for every attacker, so it scales with the 8.04 bodies eminence mints rather than adding a flat payoff. Objective is TOTAL life removed, not noncombat damage alone: entry-v1 raised noncombat 4.32 -> 10.31 and still lost ground on the total. BLOCKED on Forge: the 2026-08-08 build has no Ingris script, so simulate refuses until Forge ships FRA.",
+ "objective": {
+  "axis": "forge.life_removed_total",
+  "op": ">=",
+  "value": 79.0,
+  "pod": "standard-v3",
+  "why": "ACTION AT A DISTANCE is Edgar's weakest identity axis (noncombat damage 4.32/game). Ingris Stingerquill (FRA) pings each opponent for every attacker, so it scales with the 8.04 bodies eminence mints rather than adding a flat payoff. Objective is TOTAL life removed, not noncombat damage alone: entry-v1 raised noncombat 4.32 -> 10.31 and still lost ground on the total. BLOCKED on Forge: the 2026-08-08 build has no Ingris script, so simulate refuses until Forge ships FRA."
+ },
+ "commits": [
+  {
+   "at": "2026-10-02",
+   "decklist_sha256": "3624489b791dae0fa58178948a06412c2d066f5476943ef405b532c6816f983e",
+   "message": "distance-v1: Ingris for Legion Lieutenant (waits on an FRA-aware Forge)"
+  }
+ ],
+ "base_version": 3,
+ "staged": [
+  {
+   "at": "2026-10-02",
+   "out": "Legion Lieutenant",
+   "in": "Ingris Stingerquill",
+   "strength": null,
+   "why": "a vanilla static lord (prescription; the pilot's flat-anthems rule names this card) -> every attacking creature deals 1 to EACH opponent, plus {4}: a Cadet and team haste. NOT cast-proven: Forge has no script yet"
+  }
+ ]
+}

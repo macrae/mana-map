@@ -1,0 +1,212 @@
+{
+  "slug": "edgar-vampires",
+  "branch": "draw-v1",
+  "as_of": "2026-10-02",
+  "harness": {
+    "overrides": "8c347642bcf0",
+    "patches": "9473cf359146",
+    "forge": {
+      "version": "2.0.14",
+      "build": "2026-08-08 22:49:26"
+    },
+    "jar": "forge-gui-desktop-2.0.14-mm-telemetry.jar",
+    "profile": "mm-edgar-vampires",
+    "profile_sha": "f7c3b6a8cec1"
+  },
+  "shell": {
+    "vs": "giada-angels",
+    "games": 8,
+    "copies": 4,
+    "clock": 300,
+    "seed": 4343
+  },
+  "cards": {
+    "Ajani Unrelenting": {
+      "as_of": "2026-10-02",
+      "games": 8,
+      "drawn_games": 2,
+      "drawn": 2,
+      "cast": 1,
+      "activated": 1,
+      "triggered": 1,
+      "discarded": 0,
+      "castable_uncast_turns": 0,
+      "held_at_end_games": 1,
+      "held_castable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 1 / activated 1 / triggered 1 across 2 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "no-script"
+      ],
+      "remedies": [
+        "Forge has no script for this card — it cannot be played at all"
+      ],
+      "script": null,
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 36
+        },
+        "cmc": 6.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Dark Prophecy": {
+      "as_of": "2026-10-02",
+      "games": 8,
+      "drawn_games": 1,
+      "drawn": 1,
+      "cast": 1,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 0,
+      "held_castable_games": 1,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 1 / activated 0 / triggered 0 across 1 drawn game(s); held castable and uncast on 2 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "permanent-cast-priority"
+      ],
+      "remedies": [
+        "NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only (MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every deck affected — not done) or accept the lateness and judge the card knowing it"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Enchantment",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Midnight Reaper": {
+      "as_of": "2026-10-02",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 9,
+      "cast": 8,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 7,
+      "held_at_end_games": 2,
+      "held_castable_games": 4,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 8 / activated 0 / triggered 0 across 5 drawn game(s); held castable and uncast on 7 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Zombie Knight",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Morbid Opportunist": {
+      "as_of": "2026-10-02",
+      "games": 8,
+      "drawn_games": 7,
+      "drawn": 11,
+      "cast": 12,
+      "activated": 0,
+      "triggered": 6,
+      "discarded": 0,
+      "castable_uncast_turns": 6,
+      "held_at_end_games": 3,
+      "held_castable_games": 2,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 12 / activated 0 / triggered 6 across 7 drawn game(s); held castable and uncast on 6 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Human Rogue",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Edgar Markov",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Swamp": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    }
+  },
+  "limits": [
+    "A shell, not the deck: the card's VALUE is not measured here, only whether the AI plays it.",
+    "Castable is a lands-only floor (colours ignored), the same floor engine_casts carries.",
+    "Two seats, short clock: a card that needs a four-player board or a long game can read HELD here and play at the table.",
+    "A COMBAT-GATED TRIGGER CANNOT BE PROVEN HERE. Measured 2026-10-01: our seat declared ZERO attacks across Shared Animosity's shells, so its `triggered` count is 0 and means nothing — the shell's filler is the deck's cheapest spells against one opposing board, and the AI does not swing. `cast` is the verdict this tool owns; a trigger that needs combat is read in the pod arm, where `first_attack_turn` says whether the deck attacked at all.",
+    "A proof is a measurement under one harness (overrides, profile, patch set); a changed harness voids it, like model_version."
+  ]
+}
