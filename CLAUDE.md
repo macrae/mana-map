@@ -2,7 +2,7 @@
 
 **A workbench for crafting, experimenting, researching and analysing Commander decks**
 (`docs/vision.md` is the page everything is written against), on top of an MTG card
-embedding pipeline: ~34,900 oracle cards from Scryfall, two small neural nets (128-dim), a
+embedding pipeline: ~35,000 oracle cards from Scryfall, two small neural nets (128-dim), a
 2D projection, and an interactive card map served from `viz/`.
 
 **Simulation is the centre.** Forge runs headless and **seeded** against the pilot's own

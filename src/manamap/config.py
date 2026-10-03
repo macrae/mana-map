@@ -47,6 +47,16 @@ OUTPUT_CSV_PATH = DATA_DIR / "cards.csv"
 
 BULK_DATA_URL = "https://api.scryfall.com/bulk-data"
 BULK_DATA_TYPE = "oracle_cards"
+# The oracle dump holds ONE printing per card, and the one it picks skews recent:
+# Sol Ring's corpus printing is a 2026 Commander reprint. "When did this card first
+# exist" therefore needs EVERY printing — `default_cards`, ~80 MB gzipped — reduced
+# at download time to {oracle_id: earliest released_at}. The bulk itself is streamed
+# and never stored; only the reduction is, beside its own sidecar.
+BULK_PRINTINGS_TYPE = "default_cards"
+FIRST_PRINTINGS_PATH = DATA_DIR / "first_printings.json"
+# Written by `viz-index`: {set code: {name, released_at, count}} over the corpus's
+# OWN printings, so the set picker has labels and can sort newest-first.
+SETS_PATH = DATA_DIR / "sets.json"
 
 EXCLUDED_LAYOUTS = {
     "token",
@@ -65,6 +75,12 @@ MULTI_FACE_LAYOUTS = {
     "modal_dfc",
     "adventure",
     "reversible_card",
+    # Secrets of Strixhaven's "prepare" (a creature with a castable spell copy, e.g.
+    # Bloodline Recollector // Ancestral Craving). Unlisted from the August refresh
+    # to 2026-10-02, so 70 cards had NO oracle text — embedded from a type line,
+    # invisible to `card-search --oracle` and to the goldfish. `extract` now
+    # refuses an unlisted layout of this shape instead of writing it blank.
+    "prepare",
 }
 
 SUPERTYPE_PRIORITY = [

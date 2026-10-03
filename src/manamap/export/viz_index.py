@@ -53,6 +53,7 @@ from manamap.config import (
     NEIGHBOURS_NO_REASON,
     OBSOLESCENCE_INDEX_PATH,
     OUTPUT_CSV_PATH,
+    SETS_PATH,
     SYNERGY_GRAPH_PATH,
     SYNERGY_RULES,
     VIZ_INDEX_PATH,
@@ -82,6 +83,12 @@ def build_viz_index(df, roles_by_name):
     `rarity` is here because `MM.categoryColor` reads it; role tags are here to
     answer "why is this card next to that one" without another fetch. Oracle text
     is *not* here on purpose — the card image already carries it.
+
+    `e` is the set code of the CORPUS printing — the set filter's key, resolved to
+    a label through `sets.json`. `f` is the date the card FIRST existed, across
+    every printing, and is what the before/after filters read; it is a different
+    fact from `e`'s set date for every reprint. `f` is omitted, never guessed,
+    where step 1 could not resolve one.
     """
     records = []
     for row in df.itertuples(index=False):
@@ -91,12 +98,38 @@ def build_viz_index(df, roles_by_name):
             "c": row.primary_color if isinstance(row.primary_color, str) else "Colorless",
             "r": row.rarity if isinstance(row.rarity, str) else "",
             "m": 0.0 if pd.isna(row.cmc) else float(row.cmc),
+            "e": row.set_code if isinstance(row.set_code, str) else "",
         }
+        first = getattr(row, "first_released_at", None)
+        if isinstance(first, str) and first:
+            rec["f"] = first
         tags = roles_by_name.get(row.name)
         if tags:
             rec["g"] = tags
         records.append(rec)
     return records
+
+
+def build_sets(df):
+    """{set code: {name, released_at, count}} over the corpus's own printings.
+
+    A SEPARATE artifact because `viz_index.json` is a bare list every consumer
+    indexes positionally. `count` is how many corpus rows carry the code, which a
+    test reconciles against `viz_index` — the alignment check for this pair.
+    Keyed in newest-first order so a reader can take the keys as the picker.
+    """
+    sets = {}
+    for row in df[["set_code", "set_name", "released_at"]].itertuples(index=False):
+        if not isinstance(row.set_code, str):
+            continue
+        entry = sets.setdefault(row.set_code, {
+            "name": row.set_name if isinstance(row.set_name, str) else row.set_code,
+            "released_at": row.released_at if isinstance(row.released_at, str) else "",
+            "count": 0,
+        })
+        entry["count"] += 1
+    return dict(sorted(sets.items(), key=lambda kv: (kv[1]["released_at"], kv[0]),
+                       reverse=True))
 
 
 def _pad(rows, k):
@@ -283,6 +316,11 @@ def main(space=None):
         with open(VIZ_INDEX_PATH, "w", encoding="utf-8") as fh:
             json.dump(records, fh, separators=(",", ":"), ensure_ascii=False)
         print(f"  {VIZ_INDEX_PATH} — {VIZ_INDEX_PATH.stat().st_size / 1048576:.2f} MB")
+        sets = build_sets(df)
+        with open(SETS_PATH, "w", encoding="utf-8") as fh:
+            json.dump(sets, fh, separators=(",", ":"), ensure_ascii=False)
+        print(f"  {SETS_PATH} — {len(sets):,} sets, "
+              f"{SETS_PATH.stat().st_size / 1024:.1f} KB")
 
     print("\nBuilding neighbour tables...")
     # Unpacked by name, not by index. This was `counts = tables[4]` with a `*tables`

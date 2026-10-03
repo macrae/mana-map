@@ -102,7 +102,8 @@ def test_family_priority_covers_every_coloured_family():
 #: set releases — not a fuzzy fallback in the lens. Named with its expiry so
 #: the exemption cannot quietly outlive the reason.
 NOT_YET_IN_CORPUS = {
-    "ingris-infect": "Ingris Stingerquill, Reality Fracture, releases 2026-10-02",
+    # Empty since the 2026-10-02 refresh brought Ingris Stingerquill (Reality
+    # Fracture) in. Keep the mechanism: the next preview-season deck needs it.
 }
 
 

@@ -61,14 +61,19 @@ def test_the_per_attacker_ping_is_read_once_and_the_activation_is_not_a_trigger(
 @requires_data
 def test_the_corpus_sweep_is_locked():
     """46 infect creatures, 46 toxic cards, ZERO per-attacker pings in the
-    2026-08 corpus. A widened pattern, or the next set, moves these on purpose."""
+    2026-08 corpus. A widened pattern, or the next set, moves these on purpose.
+
+    2026-10-02 refresh (Reality Fracture): ping 0 -> 1, +Ingris Stingerquill
+    (FRA) — "Whenever a creature you control attacks, that creature deals 1
+    damage to each opponent", the card this channel was written for from its
+    preview. Nothing left."""
     inf = tox = ping = 0
     with open(OUTPUT_CSV_PATH, encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             p = goldfish.combat_profile({"oracle_text": row["oracle_text"],
                                          "type_line": row["type_line"], "power": row.get("power")})
             inf += p["infect"]; tox += bool(p["toxic"]); ping += bool(p["attack_ping_per_attacker"])
-    assert (inf, tox, ping) == (46, 46, 0), (inf, tox, ping)
+    assert (inf, tox, ping) == (46, 46, 1), (inf, tox, ping)
 
 
 @requires_data

@@ -4,8 +4,8 @@ Fifteen numbered steps (sixteen registry entries — `train`/`train-ability` are
 
 | # | CLI step | Module | What it does | Output |
 |---|----------|--------|--------------|--------|
-| 1 | `download` | `ingest/download.py` | Fetches Scryfall oracle_cards bulk JSON (idempotent via `.download-meta.json` sidecar) | `data/oracle-cards.json.gz` |
-| 2 | `extract` | `ingest/extract.py` | Parses JSON → flat CSV (35 cols) with derived columns (supertype, primary_color, mechanical_tags, embedding_text) and Scryfall's `game_changer` flag | `data/cards.csv` |
+| 1 | `download` | `ingest/download.py` | Fetches Scryfall oracle_cards bulk JSON (idempotent via `.download-meta.json` sidecar), then STREAMS `default_cards` (every printing, ~80 MB gz, never stored) and reduces it to the earliest paper `released_at` per oracle id (~10 s) | `data/oracle-cards.json.gz`, `data/first_printings.json` |
+| 2 | `extract` | `ingest/extract.py` | Parses JSON → flat CSV (36 cols) with derived columns (supertype, primary_color, mechanical_tags, embedding_text, and `first_released_at` joined from step 1 — FATAL if that file is absent) and Scryfall's `game_changer` flag | `data/cards.csv` |
 | 3 | `preprocess` | `ingest/preprocess.py` | Sentence embeddings (all-MiniLM-L6-v2, frozen), categorical encoding, keyword + tag multi-hot | `data/text_embeddings.npy`, `data/card_features.npz`, `data/color_vectors.npy`, `data/mechanical_tags.npy` |
 | 4a | `train` | `training/train.py` | Triplet training — positives by (supertype, primary_color) | `data/model.pt` |
 | 4b | `train-ability` | `training/train_ability.py` | **Symmetric in-batch InfoNCE** (τ = 0.05, batch 256) — positives mined by *rarest specific role first*, with ≥2 shared mechanical tags as the fallback and random as the last tier. The previous `TripletMarginLoss` over tag overlap was replaced because a margin loss stops producing gradient once satisfied | `data/model_ability.pt` |
@@ -37,8 +37,9 @@ Steps 1 and 7 need internet. Every module also keeps a main-guard, so `python -m
 - Steps 1–2: ~1 min (download size ~200MB)
 - Step 3: ~5–10 min (sentence embeddings for ~34K cards)
 - Step 4a (layout): a few minutes — the task is nearly trivial and it early-stops around 7 epochs.
-  **Step 4b (function) legitimately takes ~1 h on MPS**: 34,890 cards, slow validation
-  convergence, ~16 epochs. That is not a hang.
+  **Step 4b (function): 4 min 41 s on MPS** at the 2026-10-02 refresh (34,955 cards, 37
+  epochs to early stop, ~7.5 s each). The old "~1 h" was the triplet-loss model's figure and
+  outlived the July switch to InfoNCE by two months.
 - Step 5: ~1 min · Step 6: ~5 min (PaCMAP) · Steps 7–8: ~3 min
 - Step 9: seconds · Step 10 (synergy): ~30 s · Step 11 (power-creep): ~5.5 min · Step 12 (regions): ~10 s · Step 13 (card-roles): ~10 s · Step 14 (viz-index): ~30 s · Step 15 (eval-embeddings): ~40 s
 

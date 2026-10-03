@@ -721,6 +721,43 @@ class TestProcessCard:
             assert f"legal_{fmt}" in row
 
     def test_csv_column_count(self):
-        """Every row should have exactly 35 columns (27 base + 8 legality)."""
+        """Every row should have exactly 36 columns (28 base + 8 legality)."""
         row = process_card(_lightning_bolt())
-        assert len(row) == 35
+        assert len(row) == 36
+
+    def test_first_released_at_comes_from_the_reduction_not_the_printing(self):
+        """The corpus printing of Lightning Bolt here is Beta; its first printing is
+        Alpha. The column must carry the reduction's date, never `released_at`."""
+        row = process_card(_lightning_bolt(), {"abc-123": "1993-08-05"})
+        assert row["first_released_at"] == "1993-08-05"
+        assert row["released_at"] == "1993-10-04"
+
+    def test_first_released_at_is_absent_without_the_reduction(self):
+        """Absent means absent: no back-fill from the printing date, which is the
+        exact wrong answer the column exists to replace."""
+        assert process_card(_lightning_bolt())["first_released_at"] is None
+        assert process_card(_lightning_bolt(), {"other": "1993-08-05"})["first_released_at"] is None
+
+
+def test_a_prepare_card_keeps_both_faces_text():
+    """`prepare` (Secrets of Strixhaven) keeps its text on the faces with a null
+    top-level `oracle_text`. Unlisted, it was extracted with NO text: 70 cards,
+    2026-08-12 to 2026-10-02."""
+    card = {
+        "oracle_id": "prep-1", "name": "Bloodline Recollector // Ancestral Craving",
+        "layout": "prepare", "type_line": "Creature — Vampire Warlock // Instant",
+        "oracle_text": None, "colors": ["B"], "color_identity": ["B"], "cmc": 2.0,
+        "keywords": [], "rarity": "rare", "legalities": {},
+        "card_faces": [
+            {"name": "Bloodline Recollector", "mana_cost": "{1}{B}",
+             "type_line": "Creature — Vampire Warlock", "power": "2", "toughness": "2",
+             "oracle_text": "At the beginning of each end step, if three or more "
+                            "creatures died this turn, this creature becomes prepared."},
+            {"name": "Ancestral Craving", "mana_cost": "{B}", "type_line": "Instant",
+             "oracle_text": "Target player draws three cards and loses 3 life."},
+        ],
+    }
+    row = process_card(card)
+    assert "becomes prepared" in row["oracle_text"]
+    assert "draws three cards" in row["oracle_text"]
+    assert row["power"] == "2"

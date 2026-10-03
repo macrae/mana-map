@@ -676,13 +676,17 @@ def test_the_team_haste_sweep_is_locked():
             by[grant] += 1
         if "Creature" in str(row["type_line"]) and goldfish._HASTE_RE.search(text):
             own += 1
+    # 2026-10-02 refresh (Reality Fracture): all 29 -> 30, +Samut, Hazoret's
+    # Champion (FRA, "Creatures you control have haste."); Thopter 1 -> 2,
+    # +Saheeli, Jewel of Avishkar (FRA, "Thopters you control have haste.").
+    # Nothing left: none of the 216 Alchemy "A-" cards Scryfall dropped matched.
     assert dict(by) == {
-        "all": 29, "nontoken": 2, "flying": 1,
+        "all": 30, "nontoken": 2, "flying": 1,
         "Dinosaur": 2, "Goblin": 2, "Sliver": 2, "Dalek": 1, "Dragon": 1,
-        "Villain": 1, "Rigger": 1, "Fish": 1, "Thopter": 1, "Spirit": 1,
+        "Villain": 1, "Rigger": 1, "Fish": 1, "Thopter": 2, "Spirit": 1,
         "Skeleton": 1, "Horse": 1, "Minotaur": 1, "Demon": 1,
     }, dict(by)
-    assert sum(by.values()) == 49
+    assert sum(by.values()) == 51
     # Creatures with KEYWORD haste. BOUNDED, not pinned, and the bound is set by
     # the bug: the old `\bhaste\b` read matched prose and gave 1,250, so any
     # regression to reading the word rather than the keyword lands far outside

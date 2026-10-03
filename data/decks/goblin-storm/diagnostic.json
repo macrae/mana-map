@@ -106,6 +106,69 @@
    "hand_empty": 1430,
    "mana_short": 3497
   },
+  "late": {
+   "from_turn": 7,
+   "stall_turns": 2079,
+   "hand_empty": 1301,
+   "mana_short": 778,
+   "stall_rate": {
+    "rate": 0.052,
+    "ci95": [
+     0.0498,
+     0.0542
+    ],
+    "n": 40000
+   },
+   "vs_floor": {
+    "from_turn": 4,
+    "floor_rate": 0.0181,
+    "diff": 0.0339,
+    "ci95": [
+     0.0304,
+     0.0372
+    ],
+    "excludes_zero": true
+   },
+   "hand_size": {
+    "7": {
+     "rate": 3.4506,
+     "ci95": [
+      3.4115,
+      3.4897
+     ],
+     "sd": 1.9939,
+     "n": 10000
+    },
+    "8": {
+     "rate": 3.3533,
+     "ci95": [
+      3.3118,
+      3.3948
+     ],
+     "sd": 2.1154,
+     "n": 10000
+    },
+    "9": {
+     "rate": 3.41,
+     "ci95": [
+      3.3651,
+      3.4549
+     ],
+     "sd": 2.2933,
+     "n": 10000
+    },
+    "10": {
+     "rate": 3.5877,
+     "ci95": [
+      3.5374,
+      3.638
+     ],
+     "sd": 2.5648,
+     "n": 10000
+    }
+   },
+   "basis": "`stall_rate`'s denominator is turn-OPPORTUNITIES (games x turns in the window), not games, so it is not comparable to `by_turn`, whose denominator is games. `vs_floor` compares it to the single turn with the fewest stalls before the window \u2014 the turn is reported, not assumed. `hand_size` is the hand at the END of the turn, after the model has cast everything it could afford, so it is a FLOOR on what a pilot holding cards back would have."
+  },
   "basis": "a turn on which no card in hand was castable with the mana that turn produced \u2014 not a turn on which nothing was cast"
  },
  "engine": {

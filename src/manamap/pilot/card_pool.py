@@ -49,6 +49,12 @@ CORPUS_COLUMNS = [
     "game_changer", "legal_commander", "mechanical_tags", "set_code",
 ]
 
+#: Read when the corpus has them, absent otherwise. `first_released_at` arrived
+#: with the 2026-10-02 refresh; a cards.csv extracted before it still parses, and
+#: every reader treats the missing date as ABSENT (no date filter can match it),
+#: never as some default date.
+OPTIONAL_COLUMNS = ["first_released_at"]
+
 
 #: Legality is read ON DEMAND, not folded into `CORPUS_COLUMNS`.
 #:
@@ -108,7 +114,8 @@ def _read_legality(column):
 def _read_frame():
     import pandas as pd
 
-    return pd.read_csv(OUTPUT_CSV_PATH, usecols=CORPUS_COLUMNS)
+    wanted = set(CORPUS_COLUMNS) | set(OPTIONAL_COLUMNS)
+    return pd.read_csv(OUTPUT_CSV_PATH, usecols=lambda c: c in wanted)
 
 
 def load_frame():
@@ -129,9 +136,10 @@ def _build_pool():
     # `zip` over the seven columns this needs, not `itertuples` over all 13:
     # itertuples builds a 13-field namedtuple per row and there are 34,322 of
     # them, which cost more than the wider parse it was meant to amortise.
-    for row in _rows(frame, "name", "set_code", "type_line", "color_identity",
-                     "legal_commander", "edhrec_rank", "game_changer", "cmc",
-                     "mana_cost"):
+    has_first = "first_released_at" in frame.columns
+    cols = ["name", "set_code", "type_line", "color_identity", "legal_commander",
+            "edhrec_rank", "game_changer", "cmc", "mana_cost"]
+    for row in _rows(frame, *cols, *(["first_released_at"] if has_first else [])):
         if str(row["set_code"] or "").lower() in UNSET_CODES:
             continue
         if "Stickers" in str(row["type_line"] or ""):
@@ -152,6 +160,10 @@ def _build_pool():
             "type_line": _text(row["type_line"]),
             "cmc": 0.0 if _missing(row["cmc"]) else float(row["cmc"]),
             "mana_cost": _text(row["mana_cost"]),
+            "set_code": _text(row["set_code"]),
+            # None when unresolved or not extracted yet — absent, never a guess.
+            "first_released_at": (_text(row["first_released_at"]) or None)
+                                 if has_first else None,
         }
     return pool
 

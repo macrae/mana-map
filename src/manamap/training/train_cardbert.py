@@ -303,8 +303,25 @@ def embed_only(args=None):
     checkpoint = torch.load(MODEL_PATH, map_location=device)
     cards = card_source.enriched(
         pd.read_csv(OUTPUT_CSV_PATH, low_memory=False).to_dict("records"))
-    schema = CF.build_schema(CF.vocabularies(cards))
+    vocabs = CF.vocabularies(cards)
+    schema = CF.build_schema(vocabs)
     names = [f.name for f in schema]
+    # FIELD NAMES ARE NOT ENOUGH. A vocabulary is most-frequent-first, so 268 new
+    # cards reorder the subtype list from slot 24 on while every field keeps its
+    # name: each multi-hot slot past that point would feed the weights a DIFFERENT
+    # subtype, and the embeddings come out confident and wrong (found on the
+    # 2026-10-02 Reality Fracture refresh). Checkpoints since then carry the
+    # vocabularies; one without them cannot be re-embedded on a moved corpus.
+    saved = checkpoint.get("vocabs")
+    if saved is None:
+        raise SystemExit(
+            "this checkpoint predates saved vocabularies, so there is no way to know "
+            "the slot order it was trained on. Retrain.")
+    if saved != vocabs:
+        moved = sorted(k for k in vocabs if saved.get(k) != vocabs[k])
+        raise SystemExit(
+            f"the corpus has reordered this checkpoint's vocabularies ({', '.join(moved)}) "
+            "— its multi-hot slots no longer mean what they meant. Retrain.")
     if names != list(checkpoint.get("fields") or []):
         raise SystemExit(
             "the schema has changed since this checkpoint was trained "
@@ -352,7 +369,8 @@ def main(args=None):
     say(f"  device {device}")
     cards = card_source.enriched(
         pd.read_csv(OUTPUT_CSV_PATH, low_memory=False).to_dict("records"))
-    schema = CF.build_schema(CF.vocabularies(cards))
+    vocabs = CF.vocabularies(cards)
+    schema = CF.build_schema(vocabs)
     cache, why = SE.load()
     if cache is None:
         raise SystemExit(f"span cache unusable ({why}) — run `manamap span-cache`")
@@ -404,6 +422,7 @@ def main(args=None):
             best, bad = val_loss, 0
             torch.save({"state": model.state_dict(), "d_model": d_model,
                         "layers": layers, "fields": [f.name for f in schema],
+                        "vocabs": vocabs,
                         "epoch": epoch, "val_loss": val_loss,
                         "view_weight": view_weight,
                         "objective": objective}, model_path)

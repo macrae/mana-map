@@ -143,6 +143,7 @@ def test_the_whole_family_is_read_and_every_skip_is_deliberate():
         if not goldfish.draw_profile(card)["x_draw_multiplier"]:
             skipped.add(r["name"])
     assert skipped == {
+        "Dirgur Focusmage // Braingeyser",  # prepare (2026-10-02): cmc is the creature's
         "Expansion // Explosion",   # cmc is both halves
         "Ingenious Mastery",        # alternative cost, X = 0
         "Occult Epiphany",          # draws X, discards X

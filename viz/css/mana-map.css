@@ -605,6 +605,16 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   font-weight: 600; }
 .toolbar [data-modes][hidden] { display: none; }
 
+/* The printing highlight: a set and a first-printed range, one group so the
+   row wraps as a unit. `color-scheme` makes the native date picker dark rather
+   than a white calendar dropped onto #1a1a2e. */
+.print-filter { display: flex; align-items: center; gap: 6px; }
+.print-filter input[type="date"] { color-scheme: dark; padding: 4px 6px; }
+.print-filter select { max-width: 15rem; }
+.print-filter select:disabled, .print-filter input:disabled { opacity: 0.45; cursor: not-allowed; }
+.print-filter .print-to { font-size: 0.8rem; color: #8a8aa0; }
+.print-filter .toggle-btn[hidden] { display: none; }
+
 /* ── "Start somewhere else" ────────────────────────────────────────────────
    Nine buttons used to sit ABOVE the card the front door is about. They are
    ways of choosing a DIFFERENT card, which is a smaller question, so they fold

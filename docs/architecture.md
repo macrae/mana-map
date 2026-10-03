@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mana Map embeds every Magic: The Gathering oracle card (~34,900 and growing) into a 128-dim vector space using two lightweight fusion MLPs, then projects to 2D with PaCMAP for the interactive map. On top of the embeddings sit four analysis layers: synergy detection, power-creep detection, region clustering, and the deckbuilding role taxonomy.
+Mana Map embeds every Magic: The Gathering oracle card (~35,000 and growing) into a 128-dim vector space using two lightweight fusion MLPs, then projects to 2D with PaCMAP for the interactive map. On top of the embeddings sit four analysis layers: synergy detection, power-creep detection, region clustering, and the deckbuilding role taxonomy.
 
 ## Models (`src/manamap/training/model.py`)
 

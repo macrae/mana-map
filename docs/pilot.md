@@ -651,7 +651,11 @@ manamap pilot card-search --deck heliod --name "^Sword of " --include-owned
 
 Filters: `--identity` / `--deck`, `--oracle` (regex, repeatable, ANY unless `--all`),
 `--name`, `--type`, `--role`, `--cmc-min/max`, `--no-game-changers`, `--owned` /
-`--unowned`, `--limit`. Three rules it enforces so a caller cannot get them wrong:
+`--unowned`, `--set CODE`, `--released-after` / `--released-before DATE`, `--limit`.
+`--set` matches the CORPUS printing, so `--set fra` includes Reality Fracture's reprints.
+The date bounds are inclusive, on the card's FIRST printing (`first_released_at`, never
+the corpus printing's date — Sol Ring's is 2026), and a partial date pads toward the
+edge it faces: `--released-before 2024` keeps all of 2024. Three rules it enforces so a caller cannot get them wrong:
 
 - **Identity is DERIVED, never authored.** `--deck` takes it from that deck's commander,
   the same rule `build_deck.load_brief` follows, and passing `--identity` alongside is a

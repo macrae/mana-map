@@ -69,4 +69,26 @@ def test_the_corpus_sweep_is_locked():
             credited += bool(goldfish.combat_profile({"oracle_text": row["oracle_text"],
                                                       "type_line": row["type_line"],
                                                       "power": row.get("power")})["token_bodies"])
-    assert credited == 1994, credited
+    # 2026-10-02 Reality Fracture refresh, 34,955 rows: 1994 + 19 new − 21 Alchemy
+    # `A-` cards Scryfall dropped = 1992; then the bracketed-loyalty fix took
+    # four phantom bodies off (Kiora of Salt and Sand, Way of the Wildspeaker,
+    # Way of the Healer, Elspeth's Talent) = 1988. Way of the Deathbringer is the
+    # one bracketed false positive left, named in `_ACTIVATION_COST_RE`'s comment.
+    # Then +7 when `prepare` joined MULTI_FACE_LAYOUTS and 70 cards gained their
+    # spell face: Fatehold Chronologist, Semester Foreseer, Prudent Fateseer, Campus
+    # Composer, Lluwen, Eccentric Pestfinder and Strife Scholar each make a token
+    # there = 1995. Pestfinder's copy is gated on lifegain, which the credit ignores.
+    assert credited == 1995, credited
+
+
+def test_a_granted_bracketed_loyalty_ability_is_not_a_free_body():
+    """Kiora of Salt and Sand GIVES planeswalkers `"[−8]: Create an 8/8 …"`. The
+    token is bought with loyalty, so it is not a cast/ETB body — and before
+    2026-10-02 the bracket hid the cost and credited an 8/8 for free."""
+    kiora = {"oracle_text": 'Planeswalkers you control have "[−8]: Create an 8/8 '
+                            'blue Leviathan creature token."',
+             "type_line": "Legendary Creature — Merfolk Noble", "power": "3"}
+    assert goldfish.combat_profile(kiora)["token_bodies"] == 0
+    # The unbracketed printed form was already handled, and still is.
+    printed = dict(kiora, oracle_text="−8: Create an 8/8 blue Leviathan creature token.")
+    assert goldfish.combat_profile(printed)["token_bodies"] == 0

@@ -15,7 +15,7 @@ different things:
 | job | state | |
 |---|---|---|
 | `test` (every push) | **GREEN** | must stay green — this is the signal |
-| `corpus-gates` (weekly) | **RED, expected** | the corpus is 266 cards ahead of the tracked artifacts; refresh after FRA on 2026-10-02 (§9c) |
+| `corpus-gates` (weekly) | **should be GREEN** after the 2026-10-02 Reality Fracture refresh (§9c, resolved) — a red here is now a real finding | |
 
 The `test` job went green on 2026-09-22 for the first time since **2026-08-25**,
 and the byte-diff determinism gate ran for the first time in that whole period —
@@ -670,7 +670,13 @@ O3 above argues for ADDING one (drain) — which should be weighed against this.
 
 Run it with `pytest -m fleet`.
 
-## 9c. `corpus-gates` is RED ON PURPOSE until Reality Fracture — expected, not ignored
+## 9c. ~~`corpus-gates` is RED ON PURPOSE until Reality Fracture~~ — RESOLVED 2026-10-02
+
+**Resolved by the Reality Fracture refresh, 2026-10-02.** The corpus went to
+**34,955**, not the 35,156 below: Scryfall had since DROPPED 216 Alchemy `A-`
+rebalances from its oracle bulk, and FRA added 268 new cards rather than the 461
+its set page lists (that figure counts printings). Every tracked matrix, CardBERT's
+included, was rebuilt at 34,955. The rest of this entry is the record as written.
 
 *Decided 2026-09-22. Revisit after FRA releases 2026-10-02.*
 

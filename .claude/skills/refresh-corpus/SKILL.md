@@ -5,19 +5,17 @@ description: Pull a fresh Scryfall dump and regenerate the whole corpus — the 
 
 # Refresh the corpus (the full-pipeline runbook)
 
-> **A CI JOB IS WAITING ON THIS REFRESH.** `corpus-gates` runs weekly against a
-> FRESH Scryfall pull and is RED until it happens: every tracked matrix is at
-> 34,890 cards against a live 35,156, so the four card-count assertions fail on
-> the index-alignment invariant. That red is deliberate and dated —
-> `docs/known-issues.md` §9c — and running this runbook after **Reality
-> Fracture (2026-10-02)** is what closes it. Nothing needs editing; the
-> assertions go green when the artifacts do.
+> **Last run: 2026-10-02, Reality Fracture** — 34,890 → 34,955 (+281: FRA 249,
+> FRC 17, other 15; −216 Alchemy `A-` rebalances Scryfall dropped from its oracle
+> bulk). That closed the dated red on `corpus-gates` (`docs/known-issues.md` §9c).
+> Three things it found that this runbook now says: step 2b (CardBERT is not part of
+> `run`), the vocabulary trap inside it, and that `region_names.json` was untracked.
 
 
 A fresh Scryfall dump changes the card count, and index alignment
 (`projection[i] == cards.csv[i] == embeddings[i]`) makes a partial regeneration
 incoherent — so a refresh is always the FULL `manamap run`, retrain included
-(~1.5–2h wall, dominated by the ~1h ability-model retrain on MPS). This runbook
+(~25 min wall for `manamap run` on 2026-10-02 — the ability retrain is ~5 min since InfoNCE, and step 11 is now the longest at ~6 min — PLUS the CardBERT retrain, which is NOT part of `run`; see 2b). This runbook
 exists because the cost is not the pipeline: it is the dozen sharp edges around
 it, each of which has cut someone once.
 
@@ -56,6 +54,27 @@ a second run.
 Background it; it is safe to leave. If it dies mid-way, resume with
 `manamap run --from STEP` — but never stop permanently between `extract` and
 `viz-index`: a half-regenerated `data/` violates index alignment.
+
+## 2b. CardBERT — a DEPLOYED space that `manamap run` does not rebuild
+
+The similarity toggle serves four tracked CardBERT artifacts, and `run` touches none
+of them, so after a refresh they sit at the old row count. Step 15 skips (and names)
+any shadow space whose rows disagree with the corpus; the deployed one still has to
+be rebuilt before committing:
+
+```bash
+.venv/bin/manamap span-cache --force      # new oracle text = new spans; a miss is a KeyError
+.venv/bin/manamap train-cardbert          # a RETRAIN, not --embed-only (see below)
+.venv/bin/manamap reduce --space cardbert && .venv/bin/manamap cluster-regions --space cardbert
+.venv/bin/manamap export --space cardbert && .venv/bin/manamap viz-index --space cardbert
+```
+
+**`--embed-only` cannot survive a refresh.** Vocabularies are most-frequent-first, and
+FRA's 268 new cards reordered the subtype list from slot 24 on with every FIELD NAME
+unchanged — the only thing the old guard compared. Re-embedding would have fed every
+multi-hot slot past that point a different subtype and shipped confident, wrong
+neighbours. Checkpoints now carry their vocabularies and `--embed-only` refuses a
+moved one; a pre-2026-10-02 checkpoint is refused outright.
 
 ## 3. Gates (in this order, and read the failures — they are designed tripwires)
 

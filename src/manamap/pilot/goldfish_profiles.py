@@ -1954,7 +1954,15 @@ _DMG_EQUAL_TREASURE_RE = re.compile(
 # not read as one.
 # A planeswalker's loyalty ability ("+1:", "−3:", "0:") is an activation too —
 # Huatli, Poet of Unity's Dinosaur was the fleet's one instance.
-_ACTIVATION_COST_RE = re.compile(r"(?:\{[^}]+\}[^:.\n]{0,60}|(?:^|\s)[+\-\u2212]?\d+):")
+# GRANTED loyalty abilities print in brackets inside quotes — `has "[−8]: Create
+# an 8/8 …"` — so the cost may open on a quote or bracket and close on a bracket.
+# Reality Fracture prints that form on ~34 cards; before 2026-10-02 it credited
+# Kiora of Salt and Sand, Way of the Wildspeaker, Way of the Healer and Elspeth's
+# Talent with free bodies, and those four were the whole corpus sweep's delta.
+# Way of the Deathbringer still reads 1: its token follows a period inside the
+# granted ability, and `_inside_activation` bounds on the sentence.
+_ACTIVATION_COST_RE = re.compile(
+    r"(?:\{[^}]+\}[^:.\n]{0,60}|(?:^|[\s\"\u201c])\[?[+\-\u2212]?\d+\]?):")
 
 
 def _inside_activation(text, pos):

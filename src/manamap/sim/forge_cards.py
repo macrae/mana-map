@@ -102,10 +102,17 @@ def script(name, installed_copy=False):
     z = _zip(installed_copy)
     if z is None:
         return None
-    s = stem(name)
-    entry = f"{s[0]}/{s}.txt"
-    try:
-        with zipfile.ZipFile(z) as zf:
-            return zf.read(entry).decode("utf-8", errors="replace")
-    except KeyError:
-        return None
+    # A transform DFC is filed under its FRONT face; a split or `prepare` card under
+    # its WHOLE name (`bloodline_recollector_ancestral_craving.txt`). Reading only the
+    # front reported every prepare card as unscripted (2026-10-02).
+    stems = [stem(name)]
+    if " // " in name:
+        whole = re.sub(r"[^a-z0-9]+", "_", re.sub(r"[',]", "", name.lower())).strip("_")
+        stems.append(whole)
+    with zipfile.ZipFile(z) as zf:
+        for s in stems:
+            try:
+                return zf.read(f"{s[0]}/{s}.txt").decode("utf-8", errors="replace")
+            except KeyError:
+                continue
+    return None

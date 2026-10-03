@@ -13,7 +13,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Mana Map</title>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=226">
+<link rel="stylesheet" href="css/mana-map.css?v=227">
 </head>
 <body>
 
@@ -77,6 +77,22 @@
     <input id="search" type="text" placeholder="Card name..." autocomplete="off">
     <div id="searchResults" class="search-results" hidden></div>
   </div>
+  <!-- The printing HIGHLIGHT. Explore only: it dims the atlas around a set or a
+       first-printed range, and only the atlas has a corpus to dim against. A set
+       is the CORPUS printing's set, so it includes that set's reprints; the
+       dates are when a card FIRST existed, which for a reprint is a different
+       year. Both are said where they are chosen. -->
+  <div class="print-filter" id="printFilter" data-modes="explore">
+    <label for="setSelect" title="Cards whose corpus printing is this set — so it includes the set's reprints">Set</label>
+    <select id="setSelect" title="Cards whose corpus printing is this set — so it includes the set's reprints">
+      <option value="">any set</option>
+    </select>
+    <label for="firstAfter" title="When the card FIRST existed, across every printing — not when this printing came out">First printed</label>
+    <input id="firstAfter" type="date" aria-label="First printed on or after" title="on or after">
+    <span class="print-to">to</span>
+    <input id="firstBefore" type="date" aria-label="First printed on or before" title="on or before">
+    <button class="toggle-btn" id="printClear" type="button" hidden title="Clear the set and date highlight (Esc)">×</button>
+  </div>
   <div class="toggles" id="toggles" data-modes="explore build"></div>
   <div class="topo-toggles" data-modes="explore">
     <button class="toggle-btn" id="toggleContours" title="Density contours">Topo</button>
@@ -115,16 +131,16 @@
      even if the atlas never loads. -->
 <!-- Probes for a local `manamap serve`. Dependency-free and early, because
      every agent affordance is gated on the answer. -->
-<script src="js/api.js?v=226"></script>
-<script src="js/shell.js?v=226"></script>
-<script src="js/stage.js?v=226"></script>
-<script src="js/session.js?v=226"></script>
-<script src="js/decklist.js?v=226"></script>
-<script src="js/discovery.js?v=226"></script>
-<script src="js/render/canvas.js?v=226"></script>
-<script src="js/mana-map.js?v=226"></script>
-<script src="js/drill.js?v=226"></script>
-<script src="js/force.js?v=226"></script>
-<script src="js/build.js?v=226"></script>
+<script src="js/api.js?v=227"></script>
+<script src="js/shell.js?v=227"></script>
+<script src="js/stage.js?v=227"></script>
+<script src="js/session.js?v=227"></script>
+<script src="js/decklist.js?v=227"></script>
+<script src="js/discovery.js?v=227"></script>
+<script src="js/render/canvas.js?v=227"></script>
+<script src="js/mana-map.js?v=227"></script>
+<script src="js/drill.js?v=227"></script>
+<script src="js/force.js?v=227"></script>
+<script src="js/build.js?v=227"></script>
 </body>
 </html>

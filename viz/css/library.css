@@ -69,14 +69,20 @@
    the loudest thing on a screen whose subject is card art. `color-scheme: dark`
    is what makes the OPTION LIST dark too; styling the closed control alone
    leaves an opening menu that flashes white. */
-.cur-role, .cur-sort, .cur-move {
+.cur-role, .cur-set, .cur-date, .cur-sort, .cur-move {
   font: inherit; font-size: .78rem; padding: .28rem .4rem; border-radius: 5px;
   max-width: 100%; color: var(--ink); color-scheme: dark;
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .14);
 }
 .cur-sort { flex: 0 0 auto; }
-.cur-role { width: 100%; }
+.cur-role, .cur-set { width: 100%; }
+/* First printed: two native date inputs, stacked so each keeps its label in a
+   rail this narrow. */
+.cur-dates { display: flex; flex-direction: column; gap: 4px; }
+.cur-dates label { display: flex; align-items: center; justify-content: space-between;
+  gap: 6px; font-size: .74rem; opacity: .8; white-space: nowrap; }
+.cur-date { flex: 0 1 8.2rem; min-width: 0; }
 /* A sort waiting on the card index is shown greyed rather than hidden — a
    control that appears when a fetch returns is a control nobody finds. */
 .cur-sort option:disabled { opacity: .45; }

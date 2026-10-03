@@ -1095,6 +1095,16 @@ def add_pilot_parser(subparsers):
                              help="only cards it CANNOT — the blind spots")
             cmd.add_argument("--cmc-max", type=float, default=None, dest="cmc_max")
             cmd.add_argument("--cmc-min", type=float, default=None, dest="cmc_min")
+            cmd.add_argument("--set", action="append", default=[], metavar="CODE",
+                             help="Scryfall set code of the CORPUS printing, repeatable "
+                                  "(any) — so `--set fra` includes FRA's reprints")
+            cmd.add_argument("--released-after", default=None, metavar="DATE",
+                             dest="released_after",
+                             help="first printed ON OR AFTER this date (YYYY[-MM[-DD]]); "
+                                  "the card's FIRST printing, not the corpus printing")
+            cmd.add_argument("--released-before", default=None, metavar="DATE",
+                             dest="released_before",
+                             help="first printed ON OR BEFORE this date (YYYY[-MM[-DD]])")
             cmd.add_argument("--no-game-changers", action="store_true", dest="no_game_changers",
                              help="drop Game Changers (they force bracket 4)")
             group = cmd.add_mutually_exclusive_group()

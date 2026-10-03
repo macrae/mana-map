@@ -38,6 +38,7 @@ from manamap.config import (
     NEIGHBOURS_NONE,
     NEIGHBOURS_NO_REASON,
     OUTPUT_CSV_PATH,
+    SETS_PATH,
     VIZ_INDEX_PATH,
 )
 from manamap.export import viz_index as vi
@@ -272,7 +273,7 @@ def test_viz_index_carries_what_the_landing_needs(index):
     """Enough to pick, filter and colour — and no oracle text, because the Scryfall
     card image already shows it and a local copy is weight nobody sees."""
     rec = index[0]
-    assert set(rec) <= {"n", "s", "c", "r", "m", "g"}
+    assert set(rec) <= {"n", "s", "c", "r", "m", "e", "f", "g"}
     for key in ("n", "s", "c", "m"):
         assert key in rec
     assert not any("o" in r or "t" in r for r in index[:500]), "oracle text leaked in"
@@ -284,6 +285,47 @@ def test_viz_index_supports_the_coarse_filters(index):
     assert sum(1 for r in index if r["s"] == "Creature") > 15000
     assert len({r["c"] for r in index}) >= 7
     assert sum(1 for r in index if r["m"] > 0) > 25000
+
+
+def test_every_card_carries_its_set_code(index):
+    """The set filter's key. A blank one is a card no set filter can ever show."""
+    blank = [r["n"] for r in index if not r.get("e")]
+    assert not blank, blank[:10]
+
+
+def test_first_release_is_the_cards_not_the_printings(index):
+    """`f` must be the FIRST printing. Sol Ring's corpus printing is a 2026
+    Commander reprint; if `f` followed the printing, a "first printed after 2026"
+    filter would return it."""
+    by_name = {r["n"]: r for r in index}
+    assert by_name["Sol Ring"]["f"].startswith("1993")
+    dated = [r for r in index if "f" in r]
+    assert len(dated) >= len(index) * 0.999
+    assert all(len(r["f"]) == 10 and r["f"][4] == "-" for r in dated)
+
+
+@pytest.fixture(scope="module")
+def sets():
+    with open(SETS_PATH, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def test_every_set_code_resolves_and_the_counts_agree(index, sets):
+    """The alignment check for this pair: `sets.json` is regenerated with
+    `viz_index.json`, so a code it cannot label or a count that disagrees means
+    one of the two is stale."""
+    from collections import Counter
+
+    counts = Counter(r["e"] for r in index)
+    assert set(counts) == set(sets)
+    assert {code: v["count"] for code, v in sets.items()} == dict(counts)
+
+
+def test_sets_are_listed_newest_first(sets):
+    """The picker takes the keys in order, so "show me the new set" is the top row."""
+    dates = [v["released_at"] for v in sets.values()]
+    assert dates == sorted(dates, reverse=True)
+    assert all(v["name"] for v in sets.values())
 
 
 def test_boot_payload_stays_small():

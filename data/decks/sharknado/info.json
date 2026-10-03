@@ -21,9 +21,7 @@
       "tutors",
       "prose"
     ],
-    "invalid": [
-      "decisions.jsonl"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -6321,6 +6319,69 @@
         "hand_empty": 1194,
         "mana_short": 5299
       },
+      "late": {
+        "from_turn": 7,
+        "stall_turns": 3702,
+        "hand_empty": 1181,
+        "mana_short": 2521,
+        "stall_rate": {
+          "rate": 0.0925,
+          "ci95": [
+            0.0897,
+            0.0954
+          ],
+          "n": 40000
+        },
+        "vs_floor": {
+          "from_turn": 5,
+          "floor_rate": 0.0105,
+          "diff": 0.082,
+          "ci95": [
+            0.0785,
+            0.0855
+          ],
+          "excludes_zero": true
+        },
+        "hand_size": {
+          "7": {
+            "rate": 5.7228,
+            "ci95": [
+              5.658,
+              5.7876
+            ],
+            "sd": 3.304,
+            "n": 10000
+          },
+          "8": {
+            "rate": 5.8899,
+            "ci95": [
+              5.8028,
+              5.977
+            ],
+            "sd": 4.4455,
+            "n": 10000
+          },
+          "9": {
+            "rate": 6.0517,
+            "ci95": [
+              5.9487,
+              6.1547
+            ],
+            "sd": 5.2528,
+            "n": 10000
+          },
+          "10": {
+            "rate": 5.978,
+            "ci95": [
+              5.8706,
+              6.0854
+            ],
+            "sd": 5.4782,
+            "n": 10000
+          }
+        },
+        "basis": "`stall_rate`'s denominator is turn-OPPORTUNITIES (games x turns in the window), not games, so it is not comparable to `by_turn`, whose denominator is games. `vs_floor` compares it to the single turn with the fewest stalls before the window — the turn is reported, not assumed. `hand_size` is the hand at the END of the turn, after the model has cast everything it could afford, so it is a FLOOR on what a pilot holding cards back would have."
+      },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
@@ -6447,7 +6508,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A discard converted to board or cards (the non-damage half of the tax)": {
-          "value": 72,
+          "value": 77,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
@@ -6495,7 +6556,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A real answer drawn — a counter, a sweeper or a tax": {
-          "value": 35,
+          "value": 57,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A real answer drawn — a counter, a sweeper or a tax' by turn six",
@@ -6685,7 +6746,7 @@
       },
       {
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "by_turn_6_pct": 72
+        "by_turn_6_pct": 77
       },
       {
         "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
@@ -6709,7 +6770,7 @@
       },
       {
         "label": "A real answer drawn — a counter, a sweeper or a tax",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 57
       },
       {
         "label": "Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step",
@@ -6827,6 +6888,11 @@
       "from": "engine",
       "question": "Is deck-audit's interaction-breadth reading of 0 classes a real hole or a role-gate artifact for THIS deck? Enumerated (notes[2]): Commit // Memory answers any nonland permanent and is invisible to the axis because its only role is draw:burst; Irencrag Pyromancer and Niv-Mizzet pass the role gate but say 'any target' rather than 'target creature'; Echo of Eons, Time Reversal and Memory shuffle every graveyard away. Land is the one class with genuinely nothing. The question for the corpus is whether a 5-of-5 breadth target is the right yardstick for a deck whose plan does not contest the board at all — strategy:deckbuilding.interaction-suite is the source the axis quotes.",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "engine",
+      "question": "Mask of Memory's two draws per connection sit in the goldfish's `draw_not_modelled` list, so the V1.0.2 card-flow add contributes to no figure in this file. What do extra cards drawn and damage@T8 read with attack-triggered draw modelled?",
+      "settled_by": "goldfish"
     }
   ],
   "simulation": {
@@ -6986,11 +7052,10 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (decisions.jsonl) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
-    "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×4",
+    "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
     "6 versions and no experiment — `experiment sharknado --a V<n> --b working --vs <pod> --games N` measures a swap"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

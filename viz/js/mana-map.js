@@ -91,7 +91,9 @@
   // deck artifacts are cache-busted through this constant, so a deck edit that does not
   // bump it serves the OLD 99 from cache — silently, and looking exactly like a render
   // bug: cut cards keep drawing and the panel counts a sideboard that no longer exists.
-  const DATA_VERSION = 9;   // 2026-09-01 a SECOND similarity space: the toggle changes which .bin answers 'what is like this card', and the incident above is exactly this case — same shape, different meaning
+  // 9: 2026-09-01 a SECOND similarity space: the toggle changes which .bin answers 'what is
+  // like this card' — same shape, different meaning.
+  const DATA_VERSION = 10;  // 2026-10-02 Reality Fracture: 34,955 cards and EVERY space retrained, so every row index and every neighbour means something new
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to
@@ -127,6 +129,10 @@
     // Lazy: only fetched when the Role grouping is selected. 0.39 MB gzipped against a
     // 1.83 MB discovery boot is not something to spend before someone asks for it.
     cardRoles: v(DATA_BASE + 'card_roles.json'),
+    // Lazy: the set picker's labels and newest-first order, fetched the first time
+    // Explore is reached. ~15 KB, and the filter works without it — the codes
+    // themselves ride in `viz_index.json` as `e`.
+    sets: v(DATA_BASE + 'sets.json'),
   };
   const MAP_CONFIGS = {
     default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
@@ -318,6 +324,10 @@
     // recently asked for, and because leaving it on while clearing a region
     // would look like Escape did nothing.
     if (queryFocus) { clearQueryFocus(); return; }
+    // The printing highlight next: it is a toolbar narrowing like the query,
+    // and leaving it lit while Escape peeled a region would look like the key
+    // did nothing.
+    if (printFocus) { clearPrintFocus(); return; }
     if (regionFocus) { clearRegionFocus(); return; }
     // The WHOLE legend selection, in one press. "Each press does exactly one
     // visible thing" — and "the legend filter is gone" is one thing, where
@@ -666,6 +676,195 @@
     setStatus(allData.length.toLocaleString() + ' cards shown');
     return true;
   }
+
+  /* ── The printing highlight: a SET and a FIRST-PRINTED range ─────────────
+   *
+   * "Show me Reality Fracture" and "show me everything first printed since
+   * 2024" are both a row Set — the same SHAPE as `regionFocus` and
+   * `queryFocus` — so they join `spotlightFor` and `narrowedTo` rather than
+   * growing a third dimming path. It is a HIGHLIGHT, never a hide: a new set's
+   * shape in the embedding space only means something against the whole
+   * corpus, which is the region focus's argument one more time.
+   *
+   * TWO DIFFERENT DATES, and confusing them is a confidently wrong filter.
+   * `e` is the set of the CORPUS printing; `f` is the date the card FIRST
+   * existed across every printing. The corpus printing of Sol Ring is a 2026
+   * Commander product, so "printed after 2026-01-01" on the printing date
+   * lights Sol Ring. The date bounds read `f` and only `f`.
+   *
+   * A CARD WITH NO `f` MATCHES NO DATE BOUND. Not 0, not the epoch, not "today":
+   * an unknown date is absent, and treating it as any value puts it on one side
+   * of every bound, which reads as a measurement. The count of cards excluded
+   * for that reason is carried and shown, so the exclusion is visible.
+   *
+   * Both read `Discovery.index` — `viz_index.json`, positionally aligned with
+   * every projection — because no projection carries set or date. That also
+   * means switching maps keeps the highlight: the rows do not move. */
+  let printFocus = null;    // { set, after, before, rows: Set, undated } | null
+  let printControlsReady = null;   // the one-shot promise behind the picker
+
+  const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+  function computePrintFocus(set, after, before) {
+    const index = (window.Discovery && Discovery.index) || null;
+    if (!index) return null;
+    if (after && !ISO_DATE.test(after)) after = '';
+    if (before && !ISO_DATE.test(before)) before = '';
+    if (!set && !after && !before) return null;
+    const rows = new Set();
+    let undated = 0;
+    for (let i = 0; i < index.length; i++) {
+      const rec = index[i];
+      if (!rec) continue;
+      if (set && rec.e !== set) continue;
+      if (after || before) {
+        // ISO dates compare correctly as strings, which is why the contract
+        // insists on YYYY-MM-DD rather than anything a locale might produce.
+        const f = rec.f;
+        if (typeof f !== 'string' || !f) { undated++; continue; }
+        if (after && f < after) continue;
+        if (before && f > before) continue;
+      }
+      rows.add(i);
+    }
+    return { set, after, before, rows, undated };
+  }
+
+  function printLabel(pf) {
+    const bits = [];
+    if (pf.set) {
+      const cat = setCatalogue && setCatalogue.byCode[pf.set];
+      bits.push('in ' + (cat ? cat.name + ' (' + pf.set.toUpperCase() + ')'
+                             : pf.set.toUpperCase()));
+    }
+    if (pf.after && pf.before) bits.push('first printed ' + pf.after + ' to ' + pf.before);
+    else if (pf.after) bits.push('first printed on or after ' + pf.after);
+    else if (pf.before) bits.push('first printed on or before ' + pf.before);
+    return bits.join(', ');
+  }
+
+  function applyPrintFocus() {
+    // A DISABLED control contributes nothing. An input can still hold a value
+    // while disabled, and on an index with no `f` a stray date would narrow the
+    // atlas to zero cards through a control that says it is off.
+    const read = function (id) {
+      const el = document.getElementById(id);
+      return el && !el.disabled ? el.value || '' : '';
+    };
+    printFocus = computePrintFocus(read('setSelect'), read('firstAfter'), read('firstBefore'));
+    syncPrintClear();
+    render();
+    refreshDrillButton();
+  }
+
+  /* Clearing restores normal rendering AND the controls, or the toolbar keeps
+   * claiming a filter the map has dropped. */
+  function clearPrintFocus() {
+    if (!printFocus) return false;
+    printFocus = null;
+    for (const id of ['setSelect', 'firstAfter', 'firstBefore']) {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    }
+    syncPrintClear();
+    render();
+    refreshDrillButton();
+    return true;
+  }
+
+  function syncPrintClear() {
+    const b = document.getElementById('printClear');
+    if (b) b.hidden = !printFocus;
+  }
+
+  /* `sets.json` turns a code into "Reality Fracture (FRA) · 461" and puts the
+   * picker newest-first. It is a small sidecar, fetched the first time Explore
+   * is reached rather than in the discovery boot — and if it fails, the picker
+   * still works on raw codes tallied from the index, which is the one thing
+   * the filter actually needs. */
+  let setCatalogue = null;  // { order: [code], byCode: {code: {name, released_at, count}} }
+
+  function preparePrintControls() {
+    if (printControlsReady) return printControlsReady;
+    const index = (window.Discovery && Discovery.index) || null;
+    if (!index) return Promise.resolve(false);   // not yet; the next call retries
+    const select = document.getElementById('setSelect');
+    const after = document.getElementById('firstAfter');
+    const before = document.getElementById('firstBefore');
+    if (!select) return Promise.resolve(false);
+
+    // WHICH HALF THE INDEX CAN ANSWER. An index written before the set filter
+    // shipped carries neither key, and a control that silently matches nothing
+    // is indistinguishable from a set with no cards — so it is disabled and
+    // says which artifact is behind.
+    let hasSet = false, hasDate = false;
+    const tally = Object.create(null);
+    for (let i = 0; i < index.length; i++) {
+      const rec = index[i];
+      if (!rec) continue;
+      if (typeof rec.e === 'string' && rec.e) {
+        hasSet = true;
+        tally[rec.e] = (tally[rec.e] || 0) + 1;
+      }
+      if (!hasDate && typeof rec.f === 'string' && rec.f) hasDate = true;
+    }
+    const stale = 'viz_index.json predates this filter — re-run `manamap viz-index`';
+    select.disabled = !hasSet;
+    if (!hasSet) select.title = stale;
+    for (const el of [after, before]) {
+      if (!el) continue;
+      el.disabled = !hasDate;
+      if (!hasDate) el.title = stale;
+    }
+    if (!hasSet) { printControlsReady = Promise.resolve(false); return printControlsReady; }
+
+    const fill = function (cat) {
+      // Codes the catalogue knows, in its newest-first order, then any the
+      // index carries that it does not — never dropped, labelled raw.
+      const order = cat ? cat.order.filter(c => tally[c]) : [];
+      const known = new Set(order);
+      Object.keys(tally).sort().forEach(c => { if (!known.has(c)) order.push(c); });
+      const keep = select.value;
+      select.innerHTML = '<option value="">any set</option>' + order.map(function (c) {
+        const meta = cat && cat.byCode[c];
+        const label = (meta ? meta.name + ' (' + c.toUpperCase() + ')' : c.toUpperCase())
+          + ' · ' + tally[c].toLocaleString();
+        return '<option value="' + escHtml(c) + '">' + escHtml(label) + '</option>';
+      }).join('');
+      select.value = keep;
+    };
+    fill(null);
+    printControlsReady = fetch(DATA.sets)
+      .then(r => { if (!r.ok) throw new Error('sets ' + r.status); return r.json(); })
+      .then(function (obj) {
+        // Key order IS the newest-first order the exporter wrote; it is
+        // re-sorted here anyway, because "the JSON kept its key order" is a
+        // property of one serialiser, not of the format.
+        const order = Object.keys(obj).sort(function (a, b) {
+          const x = (obj[a] && obj[a].released_at) || '', y = (obj[b] && obj[b].released_at) || '';
+          return x < y ? 1 : x > y ? -1 : (a < b ? -1 : 1);
+        });
+        setCatalogue = { order: order, byCode: obj };
+        fill(setCatalogue);
+        if (printFocus) render();   // the status line can name the set now
+        return true;
+      })
+      .catch(function () { return true; });   // raw codes stand
+    return printControlsReady;
+  }
+
+  function initPrintControls() {
+    const select = document.getElementById('setSelect');
+    if (!select) return;
+    select.addEventListener('change', applyPrintFocus);
+    for (const id of ['firstAfter', 'firstBefore']) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', applyPrintFocus);
+    }
+    const clear = document.getElementById('printClear');
+    if (clear) clear.addEventListener('click', clearPrintFocus);
+  }
+  initPrintControls();
 
   // WHICH RELATIONS EARN AN ARC ON WHICH MAP — measured, not chosen.
   //
@@ -2129,6 +2328,9 @@
   Discovery.ready()
     .then(() => {
       if (!wantedDeck && currentMode === 'discover') Discovery.land(params);
+      // Booted straight into the atlas (`?mode=explore`): no `setMode` call
+      // reaches the picker on that path, so it is prepared here.
+      if (currentMode === 'explore') preparePrintControls();
     })
     .catch(err => setStatus('Discovery unavailable: ' + err.message));
 
@@ -2227,6 +2429,10 @@
     // TRACE LIST, so it only ever lists groups that survived `visible`. A
     // hidden group has no row to click.
     if (legendKeys.size && !legendKeys.has(grouping().keyOf(d))) return false;
+    // An EMPTY printing set narrows to nothing — unlike the query, whose empty
+    // set means "no term yet". A set and a date range that match no card is an
+    // answer, and Drill offering to re-map the whole corpus would contradict it.
+    if (printFocus && !printFocus.rows.has(i)) return false;
     if (queryFocus && queryFocus.rows.size) return queryFocus.rows.has(i);
     return true;
   }
@@ -2755,6 +2961,9 @@
     // The lens is not gone — `orientTo` still runs when you ask for it from inside Explore
     // (clicking a card, following a relation). What changed is that arriving is not asking.
     if (mode === 'explore') {
+      // The set picker's labels, the first time the atlas is reached. Not
+      // awaited: the picker is usable on raw codes the moment the index is in.
+      preparePrintControls();
       clearOrientation();
       regionFocus = null;
       legendKeys.clear();
@@ -3045,6 +3254,10 @@
       const rowSets = [];
       if (regionFocus) rowSets.push(regionFocus.rows);
       if (queryFocus && queryFocus.rows.size) rowSets.push(queryFocus.rows);
+      // Pushed even when EMPTY: a printing filter that matches nothing dims
+      // everything, which is what it means. (The query's empty set means "no
+      // term yet", which is why it alone is guarded on size.)
+      if (printFocus) rowSets.push(printFocus.rows);
       if (!rowSets.length) return groupLit ? LIT : UNLIT;       // scalar, free
       if (!groupLit) return UNLIT;                              // scalar, free
       return g.customdata.map(function (idx) {
@@ -3064,7 +3277,8 @@
       let opacity;
       if (dimsAll) {
         opacity = 0.08;
-      } else if (regionFocus || legendKeys.size || (queryFocus && queryFocus.rows.size)) {
+      } else if (regionFocus || legendKeys.size || printFocus ||
+                 (queryFocus && queryFocus.rows.size)) {
         // A spotlight, not a filter. Everything stays on screen at a low alpha so you can
         // still see WHERE the lit set sits — the question the atlas exists to answer, and
         // the one that hiding everything else destroyed.
@@ -3128,6 +3342,21 @@
       // see where YOUR cards are, not to be told how many exist.
       setStatus(orientationRows().length + ' cards from ' + orientation.label +
                 ' — highlighted in the full map · Esc to see everything');
+    } else if (currentMode === 'explore' && printFocus) {
+      // The count is of what is LIT — `narrowedTo`, so the supertype toggles and
+      // a legend selection compose into it — and the undated exclusion is said
+      // out loud, because a date bound silently dropping cards with no date is
+      // the zero-for-absent failure wearing a filter's clothes.
+      let n = 0;
+      for (let i = 0; i < allData.length; i++) if (narrowedTo(allData[i], i)) n++;
+      const undated = (printFocus.after || printFocus.before) && printFocus.undated
+        ? ' \u00b7 ' + printFocus.undated.toLocaleString() + ' with no first-printed date excluded'
+        : '';
+      const reprints = printFocus.set
+        ? ' \u00b7 a set means the corpus printing, so its reprints count' : '';
+      setStatus(n.toLocaleString() + ' card' + (n === 1 ? '' : 's') + ' highlighted '
+        + printLabel(printFocus) + (legendKeys.size ? ' (' + Array.from(legendKeys).join(' + ') + ')' : '')
+        + undated + reprints + ' \u00b7 Esc to clear');
     } else if (currentMode === 'explore' && legendKeys.size) {
       // Counts what the legend NARROWED to, not what is drawn. Saying "34,890
       // cards shown" over a map where all but 2,431 have receded is the
@@ -3250,6 +3479,26 @@
     groupKey: function (d) { return grouping().keyOf(d); },
     groupColour: function (d) { const g = grouping(); return g.palette[g.keyOf(d)] || '#666'; },
     get regionFocus() { return regionFocus; },
+    /* The printing highlight. `setPrintFocus` drives the CONTROLS and then
+     * applies, so the toolbar and the map cannot disagree about what is lit. */
+    get printFocus() {
+      return printFocus && { set: printFocus.set, after: printFocus.after,
+                             before: printFocus.before, count: printFocus.rows.size,
+                             undated: printFocus.undated };
+    },
+    printRows: function () { return printFocus ? Array.from(printFocus.rows) : null; },
+    setPrintFocus: function (set, after, before) {
+      return Promise.resolve(preparePrintControls()).then(function () {
+        const pairs = [['setSelect', set], ['firstAfter', after], ['firstBefore', before]];
+        for (const [id, val] of pairs) {
+          const el = document.getElementById(id);
+          if (el) el.value = val || '';
+        }
+        applyPrintFocus();
+        return MM.printFocus;
+      });
+    },
+    clearPrintFocus: clearPrintFocus,
     /* Kept as `{key}` for the FIRST selection so `build.js` and the browser
      * suite read what they always read; `legendGroups` is the honest plural. */
     get legendFocus() {

@@ -1,0 +1,1656 @@
+{
+ "_readme": [
+  "Hand-authored region names for the Mana Map, keyed by CONTENT SIGNATURE rather than",
+  "region id. Ids like 'l0_3' are positional: HDBSCAN renumbers on every run, so a name",
+  "keyed to one would silently reattach to a different part of the map after a re-cluster.",
+  "The signature is '<map>|<level>|<mechanically generated label>', which changes only when",
+  "the cluster's actual character changes.",
+  "",
+  "NAMED FROM MAGIC'S OWN LORE, 2026-09-01, replacing a set of retail and geography puns",
+  "('The Discount Bunker', 'Swolesville', 'BOGO - Token Makers'). The scheme:",
+  "",
+  "  default map  Organised by COLOUR and TYPE, which is how Magic's planes are already",
+  "               organised, so each colour gets a canonical realm and its sub-regions are",
+  "               places within it. White is Serra's Realm, blue Tolaria, black Urborg and",
+  "               Stensia, red Shiv and Keld, green Yavimaya and Llanowar, gold Ravnica,",
+  "               colourless Mirrodin. Sub-regions compose MODIFIER + NOUN the way Magic",
+  "               names places: 'Stensian Crypts', 'Bogardan Rot Farms', 'Vedalken Denial'.",
+  "",
+  "  ability map  Organised by MECHANIC, so each macro region gets the lore EVENT or",
+  "               INSTITUTION that mechanic belongs to. Counterspells are Tolarian Academy,",
+  "               reanimation the Golgari Rot Farms, unblockable is Rath's Shadow (the",
+  "               Shadow mechanic is literally Rath's), and entering the battlefield is the",
+  "               Blind Eternities. Sub-regions take a mechanic as their modifier:",
+  "               'Seeking Groves', 'Servitor Perch', 'Warded Silence'.",
+  "",
+  "  quadrants    A cluster HDBSCAN split into (North)/(South)/(East)/(West) is ONE place in",
+  "               four corners and shares its base name. An earlier pass seeded each",
+  "               direction separately and produced 'East Time Rift' beside 'West Sanctum",
+  "               of Foresight' for two halves of the same region.",
+  "",
+  "  gold         Ravnica's guilds are DEFINED by mechanic, so the guild follows the",
+  "               mechanic rather than a hash: Boros for attack triggers, Izzet for card",
+  "               draw, Golgari for graveyards, Simic for counters, Orzhov for lifegain.",
+  "",
+  "A region with no entry here keeps its mechanical name and is REPORTED by",
+  "`manamap cluster-regions`, so a re-cluster degrades visibly instead of quietly losing",
+  "its names. Neighbourhoods (level 2) are named procedurally from their parent -- there are",
+  "410 of them across both maps, and a bad joke repeated 400 times is worse than none.",
+  "",
+  "label = what you read when zoomed to that level. short = the map annotation."
+ ],
+ "names": {
+  "ability|0|+1/+1 Counters": [
+   "The Evolution Vats",
+   "Evolution Vats"
+  ],
+  "ability|0|Anthems": [
+   "The Coalition Banner",
+   "Coalition Banner"
+  ],
+  "ability|0|Card Draw & Discard": [
+   "The Tolarian Archives",
+   "Tolarian Archives"
+  ],
+  "ability|0|Cost Reduction & Anthems": [
+   "The Coalition Banner",
+   "Coalition Banner"
+  ],
+  "ability|0|Cost Reduction & Counterspells": [
+   "Tolarian Academy",
+   "Tolaria"
+  ],
+  "ability|0|Cost Reduction & Protection": [
+   "The Thran Sanctum",
+   "Thran Sanctum"
+  ],
+  "ability|0|ETB": [
+   "The Blind Eternities",
+   "Blind Eternities"
+  ],
+  "ability|0|ETB & Flyers": [
+   "Jaya's Furnace",
+   "Jaya's Furnace"
+  ],
+  "ability|0|Equipment & Auras": [
+   "The Kaldra Forge",
+   "Kaldra Forge"
+  ],
+  "ability|0|Flyers": [
+   "The Windgrace Reach",
+   "Windgrace Reach"
+  ],
+  "ability|0|Flyers & ETB": [
+   "Serra's Ascension",
+   "Serra's Ascension"
+  ],
+  "ability|0|Lifegain": [
+   "Orzhova",
+   "Orzhova"
+  ],
+  "ability|0|Mana Ramp & Tap Abilities": [
+   "The Llanowar Leylines",
+   "Llanowar Leylines"
+  ],
+  "ability|0|Mana Ramp & Tap Abilities — Card Draw": [
+   "The Thran Reservoir",
+   "Thran Reservoir"
+  ],
+  "ability|0|Mana Ramp & Tap Abilities — ETB": [
+   "The Llanowar Leylines",
+   "Llanowar Leylines"
+  ],
+  "ability|0|Mana Ramp & Token Makers": [
+   "The Seedslick Vats",
+   "Seedslick Vats"
+  ],
+  "ability|0|Protection": [
+   "The Argent Shield",
+   "Argent Shield"
+  ],
+  "ability|0|Reanimation & Graveyard": [
+   "The Golgari Rot Farms",
+   "Rot Farms"
+  ],
+  "ability|0|Red Instants": [
+   "Jaya's Furnace",
+   "Jaya's Furnace"
+  ],
+  "ability|0|Removal": [
+   "The Killing Fields",
+   "Killing Fields"
+  ],
+  "ability|0|Sacrifice": [
+   "The Cabal Altars",
+   "Cabal Altars"
+  ],
+  "ability|0|Tap Abilities": [
+   "The Turning Works",
+   "Turning Works"
+  ],
+  "ability|0|Token Makers": [
+   "The Vat Grounds",
+   "Vat Grounds"
+  ],
+  "ability|0|Token Makers & Damage Triggers": [
+   "The Skirk Warrens",
+   "Skirk Warrens"
+  ],
+  "ability|0|Tutors": [
+   "The Infinite Archive",
+   "Infinite Archive"
+  ],
+  "ability|0|Tutors & Bounce": [
+   "The Sanctum of Foresight",
+   "Sanctum of Foresight"
+  ],
+  "ability|0|Tutors & Counterspells": [
+   "The Sanctum of Foresight",
+   "Sanctum of Foresight"
+  ],
+  "ability|0|Unblockable": [
+   "Rath's Shadow",
+   "Rath's Shadow"
+  ],
+  "ability|1|+1/+1 Counters": [
+   "The Growth Chambers",
+   "Growth Chambers"
+  ],
+  "ability|1|+1/+1 Counters & Card Draw": [
+   "Vigor Stacks",
+   "Vigor Stacks"
+  ],
+  "ability|1|+1/+1 Counters & ETB": [
+   "Vigor Gate",
+   "Vigor Gate"
+  ],
+  "ability|1|+1/+1 Counters — ETB — Graveyard": [
+   "Vigor Waystep",
+   "Vigor Waystep"
+  ],
+  "ability|1|+1/+1 Counters — ETB — Token Makers": [
+   "Vigor Threshold",
+   "Vigor Threshold"
+  ],
+  "ability|1|+1/+1 Counters — Flyers": [
+   "Vigor Roosts",
+   "Vigor Roosts"
+  ],
+  "ability|1|-1/-1 Counters": [
+   "The Withering",
+   "Withering"
+  ],
+  "ability|1|Anthems": [
+   "The Banners",
+   "Banners"
+  ],
+  "ability|1|Anthems & Tap Abilities": [
+   "Bannered Threshold",
+   "Bannered Threshold"
+  ],
+  "ability|1|Anthems & Token Makers": [
+   "Bannered Vats",
+   "Bannered Vats"
+  ],
+  "ability|1|Anthems — ETB": [
+   "Bannered Threshold",
+   "Bannered Threshold"
+  ],
+  "ability|1|Anthems — Flyers": [
+   "Bannered Aerie",
+   "Bannered Aerie"
+  ],
+  "ability|1|Anthems — Token Makers": [
+   "Bannered Broods",
+   "Bannered Broods"
+  ],
+  "ability|1|Attack Triggers": [
+   "The Warpath",
+   "Warpath"
+  ],
+  "ability|1|Auras": [
+   "The Bindings",
+   "Bindings"
+  ],
+  "ability|1|Black Sorceries": [
+   "Stensian Ritual Ground",
+   "Stensian Ritual"
+  ],
+  "ability|1|Blue Sorceries": [
+   "Vedalken Ritual Ground",
+   "Vedalken Ritual"
+  ],
+  "ability|1|Bounce": [
+   "The Returning Tide",
+   "Returning Tide"
+  ],
+  "ability|1|Card Draw": [
+   "The Stacks",
+   "Stacks"
+  ],
+  "ability|1|Card Draw & Discard": [
+   "Scrivened Ashes",
+   "Scrivened Ashes"
+  ],
+  "ability|1|Card Draw & Discard — ETB": [
+   "Scrivened Waystep",
+   "Scrivened Waystep"
+  ],
+  "ability|1|Card Draw & Discard — Flyers": [
+   "Scrivened Roosts",
+   "Scrivened Roosts"
+  ],
+  "ability|1|Card Draw & Discard — Tap Abilities": [
+   "Scrivened Works",
+   "Scrivened Works"
+  ],
+  "ability|1|Colorless Unknown": [
+   "Panoptic Muster",
+   "Panoptic Muster"
+  ],
+  "ability|1|Cost Reduction": [
+   "The Lightened Toll",
+   "Lightened Toll"
+  ],
+  "ability|1|Counterspells": [
+   "The Silence",
+   "Silence"
+  ],
+  "ability|1|Creatures": [
+   "The Ranks",
+   "Ranks"
+  ],
+  "ability|1|Damage Triggers & Lifegain": [
+   "Ember Mending Halls",
+   "Ember Mending"
+  ],
+  "ability|1|Damage Triggers & Upkeep": [
+   "Ember Dawn Watch",
+   "Ember Dawn"
+  ],
+  "ability|1|Discard & Card Draw": [
+   "Scrivened Margins",
+   "Scrivened Margins"
+  ],
+  "ability|1|ETB & Discard": [
+   "Scrivened Waystep",
+   "Scrivened Waystep"
+  ],
+  "ability|1|ETB — Flyers": [
+   "Arrival Skyreach",
+   "Arrival Skyreach"
+  ],
+  "ability|1|ETB — Flyers — Card Draw": [
+   "Arrival Aerie",
+   "Arrival Aerie"
+  ],
+  "ability|1|ETB — Flyers — Lifegain": [
+   "Arrival Roosts",
+   "Arrival Roosts"
+  ],
+  "ability|1|Equipment & Auras": [
+   "Forged Weaving",
+   "Forged Weaving"
+  ],
+  "ability|1|Equipment & Unblockable": [
+   "Forged Slipway",
+   "Forged Slipway"
+  ],
+  "ability|1|Flyers (East)": [
+   "East Skyreach",
+   "E. Skyreach"
+  ],
+  "ability|1|Flyers (North)": [
+   "North Skyreach",
+   "N. Skyreach"
+  ],
+  "ability|1|Flyers (South)": [
+   "South Skyreach",
+   "S. Skyreach"
+  ],
+  "ability|1|Flyers (West)": [
+   "West Skyreach",
+   "W. Skyreach"
+  ],
+  "ability|1|Graveyard": [
+   "The Rot Farms",
+   "Rot Farms"
+  ],
+  "ability|1|Graveyard & Mill": [
+   "Charnel Shoals",
+   "Charnel Shoals"
+  ],
+  "ability|1|Izzet Instants": [
+   "Izzet Quickening",
+   "Izzet Quickening"
+  ],
+  "ability|1|Lifegain": [
+   "Mending Aristocrat Quarter",
+   "Mending Aristocrat"
+  ],
+  "ability|1|Lifegain & Death Triggers": [
+   "Mending Aristocrat Quarter",
+   "Mending Aristocrat"
+  ],
+  "ability|1|Lifegain (East)": [
+   "East Mending Quarter",
+   "E. Mending"
+  ],
+  "ability|1|Lifegain (West)": [
+   "West Mending Quarter",
+   "W. Mending"
+  ],
+  "ability|1|Mana Ramp": [
+   "The Waystation",
+   "Waystation"
+  ],
+  "ability|1|Mana Ramp & Tap Abilities (North)": [
+   "North Leyline Junction",
+   "N. Leyline Junction"
+  ],
+  "ability|1|Mana Ramp & Tap Abilities (South)": [
+   "South Leyline Junction",
+   "S. Leyline Junction"
+  ],
+  "ability|1|Mana Ramp & Tap Abilities — Card Draw": [
+   "Leyline Long Study",
+   "Leyline Long"
+  ],
+  "ability|1|Mana Ramp & Tap Abilities — ETB (North)": [
+   "North Leyline Landing",
+   "N. Leyline"
+  ],
+  "ability|1|Mana Ramp & Tap Abilities — ETB (South)": [
+   "South Leyline Landing",
+   "S. Leyline"
+  ],
+  "ability|1|Mana Ramp & Tap Abilities — Sacrifice": [
+   "Leyline Sacristy",
+   "Leyline Sacristy"
+  ],
+  "ability|1|Mill & Graveyard": [
+   "Charnel Shoals",
+   "Charnel Shoals"
+  ],
+  "ability|1|Protection": [
+   "The Shield",
+   "Shield"
+  ],
+  "ability|1|Protection — +1/+1 Counters": [
+   "Warded Vigor Terrace",
+   "Warded Vigor"
+  ],
+  "ability|1|Protection — Flyers": [
+   "The Shield",
+   "Shield"
+  ],
+  "ability|1|Protection — Lifegain": [
+   "Warded Quickening",
+   "Warded Quickening"
+  ],
+  "ability|1|Reanimation": [
+   "The Wake",
+   "Wake"
+  ],
+  "ability|1|Reanimation & Graveyard": [
+   "Raised Landing",
+   "Raised Landing"
+  ],
+  "ability|1|Reanimation & Graveyard — ETB": [
+   "Raised Landing",
+   "Raised Landing"
+  ],
+  "ability|1|Reanimation & Graveyard — Flyers": [
+   "Raised Perch",
+   "Raised Perch"
+  ],
+  "ability|1|Red Instants": [
+   "Pyre Split Second",
+   "Pyre Split"
+  ],
+  "ability|1|Removal": [
+   "The Reach",
+   "Reach"
+  ],
+  "ability|1|Removal & Graveyard": [
+   "Killing Rot Farms",
+   "Killing Rot"
+  ],
+  "ability|1|Removal — ETB": [
+   "Killing Waystep",
+   "Killing Waystep"
+  ],
+  "ability|1|Removal — ETB — Flyers": [
+   "Killing Aerie",
+   "Killing Aerie"
+  ],
+  "ability|1|Removal — Tap Abilities": [
+   "Killing Bent Knee",
+   "Killing Bent"
+  ],
+  "ability|1|Sacrifice": [
+   "The Blood Pact",
+   "Blood Pact"
+  ],
+  "ability|1|Tap Abilities — Card Draw": [
+   "Servitor Archives",
+   "Servitor Archives"
+  ],
+  "ability|1|Tap Abilities — Flyers": [
+   "Servitor Perch",
+   "Servitor Perch"
+  ],
+  "ability|1|Token Makers & Card Draw": [
+   "Brood Archives",
+   "Brood Archives"
+  ],
+  "ability|1|Token Makers & ETB": [
+   "Brood Landing",
+   "Brood Landing"
+  ],
+  "ability|1|Token Makers — Card Draw": [
+   "Brood Waystation",
+   "Brood Waystation"
+  ],
+  "ability|1|Token Makers — Flyers": [
+   "Brood Skyreach",
+   "Brood Skyreach"
+  ],
+  "ability|1|Token Makers — Graveyard": [
+   "Brood Boneyard",
+   "Brood Boneyard"
+  ],
+  "ability|1|Token Makers — Mana Ramp": [
+   "Brood Waystation",
+   "Brood Waystation"
+  ],
+  "ability|1|Tramplers": [
+   "The Downs",
+   "Downs"
+  ],
+  "ability|1|Tramplers & Flyers": [
+   "Stomping Perch",
+   "Stomping Perch"
+  ],
+  "ability|1|Tramplers & Upkeep": [
+   "Stomping Dawn Watch",
+   "Stomping Dawn"
+  ],
+  "ability|1|Tutors — ETB": [
+   "Seeking Gate",
+   "Seeking Gate"
+  ],
+  "ability|1|Tutors — Mana Ramp": [
+   "Seeking Groves",
+   "Seeking Groves"
+  ],
+  "ability|1|Unblockable": [
+   "The Shadow",
+   "Shadow"
+  ],
+  "ability|1|Unblockable & +1/+1 Counters": [
+   "Shadowed Evolution Vats",
+   "Shadowed Evolution"
+  ],
+  "ability|1|Unblockable — +1/+1 Counters": [
+   "Shadowed Vigor Terrace",
+   "Shadowed Vigor"
+  ],
+  "ability|1|Unblockable — Menace": [
+   "Shadowed Dread Pass",
+   "Shadowed Dread"
+  ],
+  "ability|1|Upkeep & Attack Triggers": [
+   "Vigil Charge",
+   "Vigil Charge"
+  ],
+  "ability|1|White Instants": [
+   "Sunlit Quickening",
+   "Sunlit Quickening"
+  ],
+  "default|0|Black Creatures — ETB": [
+   "Urborg",
+   "Urborg"
+  ],
+  "default|0|Black Creatures — ETB — Flyers (East)": [
+   "East Stronghold",
+   "E. Stronghold"
+  ],
+  "default|0|Black Creatures — ETB — Flyers (North)": [
+   "North Stronghold",
+   "N. Stronghold"
+  ],
+  "default|0|Black Creatures — ETB — Flyers (South)": [
+   "South Stronghold",
+   "S. Stronghold"
+  ],
+  "default|0|Black Creatures — ETB — Flyers (West)": [
+   "West Stronghold",
+   "W. Stronghold"
+  ],
+  "default|0|Black Creatures — Flyers": [
+   "Stensia",
+   "Stensia"
+  ],
+  "default|0|Black Creatures — Tap Abilities": [
+   "The Withering March",
+   "Withering March"
+  ],
+  "default|0|Black Enchantments": [
+   "The Ninth Sphere",
+   "Ninth Sphere"
+  ],
+  "default|0|Black Sorceries": [
+   "The Ritual Ground",
+   "Ritual Ground"
+  ],
+  "default|0|Blue Creatures": [
+   "The Aether Reaches",
+   "Aether Reaches"
+  ],
+  "default|0|Blue Creatures — Flyers — ETB (East)": [
+   "East Aether Reaches",
+   "E. Aether Reaches"
+  ],
+  "default|0|Blue Creatures — Flyers — ETB (North)": [
+   "North Aether Reaches",
+   "N. Aether Reaches"
+  ],
+  "default|0|Blue Creatures — Flyers — ETB (South)": [
+   "South Aether Reaches",
+   "S. Aether Reaches"
+  ],
+  "default|0|Blue Creatures — Flyers — ETB (West)": [
+   "West Aether Reaches",
+   "W. Aether Reaches"
+  ],
+  "default|0|Blue Enchantments": [
+   "The Time Rift",
+   "Time Rift"
+  ],
+  "default|0|Blue Instants": [
+   "Riptide Laboratory",
+   "Riptide Laboratory"
+  ],
+  "default|0|Blue Instants — Card Draw — Removal (North)": [
+   "North Riptide Laboratory",
+   "N. Riptide"
+  ],
+  "default|0|Blue Instants — Card Draw — Removal (South)": [
+   "South Riptide Laboratory",
+   "S. Riptide"
+  ],
+  "default|0|Colorless Artifacts": [
+   "Argentum",
+   "Argentum"
+  ],
+  "default|0|Colorless Creatures": [
+   "Mirrodin",
+   "Mirrodin"
+  ],
+  "default|0|Enchantments": [
+   "Nyx",
+   "Nyx"
+  ],
+  "default|0|Gold Creatures": [
+   "The Tenth District",
+   "Tenth District"
+  ],
+  "default|0|Gold Creatures — ETB": [
+   "The Tenth District",
+   "Tenth District"
+  ],
+  "default|0|Gold Creatures — Flyers": [
+   "Nivix",
+   "Nivix"
+  ],
+  "default|0|Gold Creatures — Flyers — ETB (North)": [
+   "North Nivix",
+   "N. Nivix"
+  ],
+  "default|0|Gold Creatures — Flyers — ETB (South)": [
+   "South Nivix",
+   "S. Nivix"
+  ],
+  "default|0|Gold Lands": [
+   "The Guildgates",
+   "Guildgates"
+  ],
+  "default|0|Green Creatures — ETB — +1/+1 Counters": [
+   "West Llanowar",
+   "W. Llanowar"
+  ],
+  "default|0|Green Creatures — ETB — Tramplers": [
+   "East Llanowar",
+   "E. Llanowar"
+  ],
+  "default|0|Green Creatures — ETB — Tramplers (East)": [
+   "East Llanowar",
+   "E. Llanowar"
+  ],
+  "default|0|Green Creatures — ETB — Tramplers (North)": [
+   "North Llanowar",
+   "N. Llanowar"
+  ],
+  "default|0|Green Creatures — ETB — Tramplers (South)": [
+   "South Llanowar",
+   "S. Llanowar"
+  ],
+  "default|0|Green Creatures — ETB — Tramplers (West)": [
+   "West Llanowar",
+   "W. Llanowar"
+  ],
+  "default|0|Green Creatures — Tramplers": [
+   "Yavimaya",
+   "Yavimaya"
+  ],
+  "default|0|Green Enchantments": [
+   "Krosa",
+   "Krosa"
+  ],
+  "default|0|Lands": [
+   "Zendikar",
+   "Zendikar"
+  ],
+  "default|0|Red Creatures — ETB": [
+   "Shiv",
+   "Shiv"
+  ],
+  "default|0|Red Creatures — ETB — Attack Triggers": [
+   "The Keldon Warcamp",
+   "Keldon Warcamp"
+  ],
+  "default|0|Red Creatures — ETB — Flyers": [
+   "Skirk Ridge",
+   "Skirk Ridge"
+  ],
+  "default|0|Red Sorceries": [
+   "The Furnace Layer",
+   "Furnace Layer"
+  ],
+  "default|0|Selesnya": [
+   "Vitu-Ghazi",
+   "Vitu-Ghazi"
+  ],
+  "default|0|White Creatures — Flyers — ETB (East)": [
+   "East Serra's Realm",
+   "E. Serra's Realm"
+  ],
+  "default|0|White Creatures — Flyers — ETB (North)": [
+   "North Serra's Realm",
+   "N. Serra's Realm"
+  ],
+  "default|0|White Creatures — Flyers — ETB (South)": [
+   "South Serra's Realm",
+   "S. Serra's Realm"
+  ],
+  "default|0|White Creatures — Flyers — ETB (West)": [
+   "West Serra's Realm",
+   "W. Serra's Realm"
+  ],
+  "default|0|White Enchantments": [
+   "Nyx",
+   "Nyx"
+  ],
+  "default|0|White Instants": [
+   "Benalia",
+   "Benalia"
+  ],
+  "default|1|Black Artifacts": [
+   "Withering Works",
+   "Withering Works"
+  ],
+  "default|1|Black Creatures — ETB — Death Triggers": [
+   "Sanguine Landing",
+   "Sanguine Landing"
+  ],
+  "default|1|Black Creatures — ETB — Flyers": [
+   "Bogardan Aerie",
+   "Bogardan Aerie"
+  ],
+  "default|1|Black Creatures — ETB — Flyers — Death Triggers": [
+   "Urborg Skyreach",
+   "Urborg Skyreach"
+  ],
+  "default|1|Black Creatures — ETB — Flyers — Graveyard": [
+   "Bogardan Aerie",
+   "Bogardan Aerie"
+  ],
+  "default|1|Black Creatures — ETB — Graveyard": [
+   "Nightmare Gate",
+   "Nightmare Gate"
+  ],
+  "default|1|Black Creatures — Flyers — ETB": [
+   "Bogardan Roosts",
+   "Bogardan Roosts"
+  ],
+  "default|1|Black Creatures — Flyers — ETB — Graveyard": [
+   "Stensian Crypts",
+   "Stensian Crypts"
+  ],
+  "default|1|Black Creatures — Flyers — ETB — Graveyard (East)": [
+   "East Bogardan Aerie",
+   "E. Bogardan"
+  ],
+  "default|1|Black Creatures — Flyers — ETB — Graveyard (West)": [
+   "West Bogardan Aerie",
+   "W. Bogardan"
+  ],
+  "default|1|Black Creatures — Flyers — ETB — Lifegain": [
+   "Stensian Roosts",
+   "Stensian Roosts"
+  ],
+  "default|1|Black Creatures — Flyers — Graveyard": [
+   "Stensian Skyreach",
+   "Stensian Skyreach"
+  ],
+  "default|1|Black Enchantments — Auras — Death Triggers": [
+   "Bogardan Threshold",
+   "Bogardan Threshold"
+  ],
+  "default|1|Black Enchantments — Auras — ETB": [
+   "Ebon Waystep",
+   "Ebon Waystep"
+  ],
+  "default|1|Black Enchantments — Auras — ETB — Death Triggers": [
+   "Bogardan Threshold",
+   "Bogardan Threshold"
+  ],
+  "default|1|Black Enchantments — Auras — ETB — Graveyard": [
+   "Charnel Threshold",
+   "Charnel Threshold"
+  ],
+  "default|1|Black Enchantments — Auras — ETB — Lifegain": [
+   "Ebon Waystep",
+   "Ebon Waystep"
+  ],
+  "default|1|Black Enchantments — Upkeep": [
+   "Withering Dawn Watch",
+   "Withering Dawn"
+  ],
+  "default|1|Black Instants — Removal — Graveyard": [
+   "Bogardan Rot Farms",
+   "Bogardan Rot"
+  ],
+  "default|1|Black Instants — Removal — Graveyard — Card Draw": [
+   "Urborg Boneyard",
+   "Urborg Boneyard"
+  ],
+  "default|1|Black Instants — Removal — Graveyard — Lifegain": [
+   "Sanguine Gallows",
+   "Sanguine Gallows"
+  ],
+  "default|1|Black Instants — Removal — Lifegain": [
+   "Charnel Gallows",
+   "Charnel Gallows"
+  ],
+  "default|1|Black Sorceries — Graveyard": [
+   "Nightmare Barrows",
+   "Nightmare Barrows"
+  ],
+  "default|1|Black Sorceries — Removal — Graveyard — Lifegain": [
+   "Urborg Crypts",
+   "Urborg Crypts"
+  ],
+  "default|1|Black Sorceries — Removal — Graveyard — Mana Ramp": [
+   "Sanguine Crypts",
+   "Sanguine Crypts"
+  ],
+  "default|1|Black Sorceries — Removal — Graveyard — Reanimation": [
+   "Urborg Barrows",
+   "Urborg Barrows"
+  ],
+  "default|1|Blue Artifacts": [
+   "Drowned Assembly",
+   "Drowned Assembly"
+  ],
+  "default|1|Blue Creatures — Flyers — Card Draw": [
+   "Tolarian Roosts",
+   "Tolarian Roosts"
+  ],
+  "default|1|Blue Creatures — Flyers — Card Draw — ETB (East)": [
+   "East Tolarian Roosts",
+   "E. Tolarian"
+  ],
+  "default|1|Blue Creatures — Flyers — Card Draw — ETB (West)": [
+   "West Tolarian Roosts",
+   "W. Tolarian"
+  ],
+  "default|1|Blue Creatures — Flyers — ETB — Card Draw (East)": [
+   "East Sunken Roosts",
+   "E. Sunken"
+  ],
+  "default|1|Blue Creatures — Flyers — ETB — Card Draw (North)": [
+   "North Sunken Roosts",
+   "N. Sunken"
+  ],
+  "default|1|Blue Creatures — Flyers — ETB — Card Draw (South)": [
+   "South Sunken Roosts",
+   "S. Sunken"
+  ],
+  "default|1|Blue Creatures — Flyers — ETB — Card Draw (West)": [
+   "West Sunken Roosts",
+   "W. Sunken"
+  ],
+  "default|1|Blue Creatures — Flyers — ETB — Token Makers": [
+   "Sunken Broods",
+   "Sunken Broods"
+  ],
+  "default|1|Blue Enchantments — Auras — Card Draw": [
+   "Riptide Long Study",
+   "Riptide Long"
+  ],
+  "default|1|Blue Enchantments — Auras — ETB": [
+   "Sunken Gate",
+   "Sunken Gate"
+  ],
+  "default|1|Blue Enchantments — Auras — ETB — Card Draw": [
+   "Riptide Long Study",
+   "Riptide Long"
+  ],
+  "default|1|Blue Enchantments — Auras — ETB — Flyers": [
+   "Sunken Gate",
+   "Sunken Gate"
+  ],
+  "default|1|Blue Enchantments — Card Draw": [
+   "Riptide Archives",
+   "Riptide Archives"
+  ],
+  "default|1|Blue Enchantments — Card Draw — ETB": [
+   "Riptide Threshold",
+   "Riptide Threshold"
+  ],
+  "default|1|Blue Enchantments — Card Draw — Upkeep": [
+   "Riptide Archives",
+   "Riptide Archives"
+  ],
+  "default|1|Blue Instants — Card Draw — Counterspells": [
+   "Aetheric Archives",
+   "Aetheric Archives"
+  ],
+  "default|1|Blue Instants — Card Draw — Counterspells (North)": [
+   "North Aetheric Archives",
+   "N. Aetheric"
+  ],
+  "default|1|Blue Instants — Card Draw — Counterspells (South)": [
+   "South Aetheric Archives",
+   "S. Aetheric"
+  ],
+  "default|1|Blue Instants — Card Draw — Counterspells — Bounce": [
+   "Lumengrid Archives",
+   "Lumengrid Archives"
+  ],
+  "default|1|Blue Instants — Card Draw — Mana Ramp": [
+   "Drowned Stacks",
+   "Drowned Stacks"
+  ],
+  "default|1|Blue Instants — Counterspells": [
+   "Vedalken Denial",
+   "Vedalken Denial"
+  ],
+  "default|1|Blue Sorceries — Card Draw": [
+   "Riptide Stacks",
+   "Riptide Stacks"
+  ],
+  "default|1|Blue Sorceries — Card Draw — Graveyard": [
+   "Tolarian Crypts",
+   "Tolarian Crypts"
+  ],
+  "default|1|Blue Sorceries — Card Draw — Graveyard (East)": [
+   "East Tolarian Crypts",
+   "E. Tolarian"
+  ],
+  "default|1|Blue Sorceries — Card Draw — Graveyard (North)": [
+   "North Tolarian Crypts",
+   "N. Tolarian"
+  ],
+  "default|1|Blue Sorceries — Card Draw — Graveyard (South)": [
+   "South Tolarian Crypts",
+   "S. Tolarian"
+  ],
+  "default|1|Blue Sorceries — Card Draw — Graveyard (West)": [
+   "West Tolarian Crypts",
+   "W. Tolarian"
+  ],
+  "default|1|Blue Sorceries — Card Draw — Token Makers": [
+   "Tolarian Archives",
+   "Tolarian Archives"
+  ],
+  "default|1|Colorless Artifacts — Equipment": [
+   "Razorfield Forge",
+   "Razorfield Forge"
+  ],
+  "default|1|Colorless Artifacts — Equipment — Attack Triggers": [
+   "Razorfield Whetstone",
+   "Razorfield Whetstone"
+  ],
+  "default|1|Colorless Artifacts — Equipment — ETB": [
+   "Razorfield Forge",
+   "Razorfield Forge"
+  ],
+  "default|1|Colorless Artifacts — Equipment — Mana Ramp": [
+   "Panoptic Waystation",
+   "Panoptic Waystation"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Equipment": [
+   "Thran Servitor Row",
+   "Thran Servitor"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Equipment — Card Draw": [
+   "Seedslick Long Study",
+   "Seedslick Long"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Equipment — Mana Ramp": [
+   "Seedslick Leylines",
+   "Seedslick Leylines"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Mana Ramp": [
+   "Mirran Groves",
+   "Mirran Groves"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Mana Ramp — Card Draw (East)": [
+   "East Thran Scriptorium",
+   "E. Thran"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Mana Ramp — Card Draw (North)": [
+   "North Thran Scriptorium",
+   "N. Thran"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Mana Ramp — Card Draw (South)": [
+   "South Thran Scriptorium",
+   "S. Thran"
+  ],
+  "default|1|Colorless Artifacts — Tap Abilities — Mana Ramp — Card Draw (West)": [
+   "West Thran Scriptorium",
+   "W. Thran"
+  ],
+  "default|1|Colorless Creatures — ETB": [
+   "Leaden Landing",
+   "Leaden Landing"
+  ],
+  "default|1|Colorless Creatures — Flyers — ETB — Tap Abilities": [
+   "Razorfield Skyreach",
+   "Razorfield Skyreach"
+  ],
+  "default|1|Colorless Creatures — Flyers — ETB — Tramplers": [
+   "Leaden Roosts",
+   "Leaden Roosts"
+  ],
+  "default|1|Colorless Creatures — Flyers — ETB — Tramplers (East)": [
+   "East Leaden Roosts",
+   "E. Leaden"
+  ],
+  "default|1|Colorless Creatures — Flyers — ETB — Tramplers (North)": [
+   "North Leaden Roosts",
+   "N. Leaden"
+  ],
+  "default|1|Colorless Creatures — Flyers — ETB — Tramplers (South)": [
+   "South Leaden Roosts",
+   "S. Leaden"
+  ],
+  "default|1|Colorless Creatures — Flyers — ETB — Tramplers (West)": [
+   "West Leaden Roosts",
+   "W. Leaden"
+  ],
+  "default|1|Colorless Lands — Mana Ramp — Tap Abilities": [
+   "Oxidda Waystation",
+   "Oxidda Waystation"
+  ],
+  "default|1|Colorless Lands — Mana Ramp — Tap Abilities (North)": [
+   "North Oxidda Waystation",
+   "N. Oxidda"
+  ],
+  "default|1|Colorless Lands — Mana Ramp — Tap Abilities (South)": [
+   "South Oxidda Waystation",
+   "S. Oxidda"
+  ],
+  "default|1|Colorless Lands — Mana Ramp — Tap Abilities — Tutors": [
+   "Seedslick Wellspring",
+   "Seedslick Wellspring"
+  ],
+  "default|1|Colorless Unknown": [
+   "Mirran Ranks",
+   "Mirran Ranks"
+  ],
+  "default|1|Colorless Unknown — Attack Triggers": [
+   "Thran Bent Knee",
+   "Thran Bent"
+  ],
+  "default|1|Colorless Unknown — Tap Abilities": [
+   "Thran Bent Knee",
+   "Thran Bent"
+  ],
+  "default|1|Gold Artifacts": [
+   "Rakdos Works",
+   "Rakdos Works"
+  ],
+  "default|1|Gold Artifacts — ETB": [
+   "Rakdos Gallows",
+   "Rakdos Gallows"
+  ],
+  "default|1|Gold Artifacts — Mana Ramp": [
+   "Rakdos Works",
+   "Rakdos Works"
+  ],
+  "default|1|Gold Creatures — +1/+1 Counters": [
+   "Simic Vigor Terrace",
+   "Simic Vigor"
+  ],
+  "default|1|Gold Creatures — Attack Triggers — ETB": [
+   "Boros Landing",
+   "Boros Landing"
+  ],
+  "default|1|Gold Creatures — Attack Triggers — Flyers": [
+   "Boros Perch",
+   "Boros Perch"
+  ],
+  "default|1|Gold Creatures — Card Draw": [
+   "Izzet Archives",
+   "Izzet Archives"
+  ],
+  "default|1|Gold Creatures — Card Draw — ETB": [
+   "Izzet Gate",
+   "Izzet Gate"
+  ],
+  "default|1|Gold Creatures — Card Draw — ETB — +1/+1 Counters": [
+   "Izzet Archives",
+   "Izzet Archives"
+  ],
+  "default|1|Gold Creatures — Card Draw — ETB — Flyers": [
+   "Grixis Archives",
+   "Grixis Archives"
+  ],
+  "default|1|Gold Creatures — Card Draw — Flyers": [
+   "Izzet Perch",
+   "Izzet Perch"
+  ],
+  "default|1|Gold Creatures — ETB — Card Draw": [
+   "Izzet Landing",
+   "Izzet Landing"
+  ],
+  "default|1|Gold Creatures — ETB — Flyers — Attack Triggers": [
+   "Boros Aerie",
+   "Boros Aerie"
+  ],
+  "default|1|Gold Creatures — ETB — Flyers — Card Draw": [
+   "Simic Landing",
+   "Simic Landing"
+  ],
+  "default|1|Gold Creatures — ETB — Graveyard": [
+   "Golgari Gate",
+   "Golgari Gate"
+  ],
+  "default|1|Gold Creatures — ETB — Sacrifice": [
+   "Rakdos Waystep",
+   "Rakdos Waystep"
+  ],
+  "default|1|Gold Creatures — ETB — Tap Abilities": [
+   "Naya Gate",
+   "Naya Gate"
+  ],
+  "default|1|Gold Creatures — ETB — Tramplers": [
+   "Naya Gate",
+   "Naya Gate"
+  ],
+  "default|1|Gold Creatures — Flyers — Attack Triggers": [
+   "Boros Aerie",
+   "Boros Aerie"
+  ],
+  "default|1|Gold Creatures — Flyers — Attack Triggers — ETB (East)": [
+   "East Boros Roosts",
+   "E. Boros"
+  ],
+  "default|1|Gold Creatures — Flyers — Attack Triggers — ETB (West)": [
+   "West Boros Roosts",
+   "W. Boros"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — Damage Triggers": [
+   "East Izzet Perch",
+   "E. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — ETB": [
+   "Izzet Gate",
+   "Izzet Gate"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — ETB (East)": [
+   "East Izzet Perch",
+   "E. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — ETB (North)": [
+   "North Izzet Perch",
+   "N. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — ETB (South)": [
+   "South Izzet Perch",
+   "S. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — ETB (West)": [
+   "West Izzet Perch",
+   "W. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — Lifegain": [
+   "Orzhov Roosts",
+   "Orzhov Roosts"
+  ],
+  "default|1|Gold Creatures — Flyers — Card Draw — Tap Abilities": [
+   "Izzet Aerie",
+   "Izzet Aerie"
+  ],
+  "default|1|Gold Creatures — Flyers — Damage Triggers": [
+   "Rakdos Roosts",
+   "Rakdos Roosts"
+  ],
+  "default|1|Gold Creatures — Flyers — Death Triggers": [
+   "Orzhov Perch",
+   "Orzhov Perch"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Attack Triggers": [
+   "Boros Roosts",
+   "Boros Roosts"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Card Draw": [
+   "Izzet Aerie",
+   "Izzet Aerie"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Card Draw (East)": [
+   "East Izzet Perch",
+   "E. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Card Draw (North)": [
+   "Izzet Aerie",
+   "Izzet Aerie"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Card Draw (South)": [
+   "South Izzet Perch",
+   "S. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Card Draw (West)": [
+   "West Izzet Perch",
+   "W. Izzet"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Graveyard": [
+   "Golgari Perch",
+   "Golgari Perch"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Tap Abilities": [
+   "Bant Perch",
+   "Bant Perch"
+  ],
+  "default|1|Gold Creatures — Flyers — ETB — Tramplers": [
+   "Prismatic Aerie",
+   "Prismatic Aerie"
+  ],
+  "default|1|Gold Creatures — Flyers — Graveyard — Attack Triggers": [
+   "Boros Skyreach",
+   "Boros Skyreach"
+  ],
+  "default|1|Gold Creatures — Flyers — Graveyard — Card Draw": [
+   "Golgari Roosts",
+   "Golgari Roosts"
+  ],
+  "default|1|Gold Creatures — Flyers — Graveyard — ETB": [
+   "Golgari Skyreach",
+   "Golgari Skyreach"
+  ],
+  "default|1|Gold Creatures — Flyers — Graveyard — Lifegain": [
+   "Golgari Aerie",
+   "Golgari Aerie"
+  ],
+  "default|1|Gold Creatures — Flyers — Tramplers": [
+   "Prismatic Aerie",
+   "Prismatic Aerie"
+  ],
+  "default|1|Gold Creatures — Graveyard — ETB — +1/+1 Counters": [
+   "Golgari Waystep",
+   "Golgari Waystep"
+  ],
+  "default|1|Gold Creatures — Graveyard — ETB — Death Triggers": [
+   "Golgari Waystep",
+   "Golgari Waystep"
+  ],
+  "default|1|Gold Creatures — Graveyard — ETB — Lifegain": [
+   "Golgari Landing",
+   "Golgari Landing"
+  ],
+  "default|1|Gold Creatures — Graveyard — Flyers — Card Draw": [
+   "Golgari Roosts",
+   "Golgari Roosts"
+  ],
+  "default|1|Gold Creatures — Graveyard — Flyers — ETB": [
+   "Golgari Perch",
+   "Golgari Perch"
+  ],
+  "default|1|Gold Creatures — Graveyard — Removal": [
+   "Golgari Barrows",
+   "Golgari Barrows"
+  ],
+  "default|1|Gold Creatures — Lifegain": [
+   "Orzhov Stomping Grounds",
+   "Orzhov Stomping"
+  ],
+  "default|1|Gold Creatures — Lifegain — ETB": [
+   "Orzhov Threshold",
+   "Orzhov Threshold"
+  ],
+  "default|1|Gold Creatures — Lifegain — Flyers — ETB": [
+   "Orzhov Threshold",
+   "Orzhov Threshold"
+  ],
+  "default|1|Gold Creatures — Lifegain — Flyers — Graveyard": [
+   "Golgari Aerie",
+   "Golgari Aerie"
+  ],
+  "default|1|Gold Creatures — Lifegain — Tramplers": [
+   "Orzhov Stomping Grounds",
+   "Orzhov Stomping"
+  ],
+  "default|1|Gold Creatures — Mana Ramp": [
+   "Gruul Leylines",
+   "Gruul Leylines"
+  ],
+  "default|1|Gold Creatures — Tramplers": [
+   "Gruul Stomping Grounds",
+   "Gruul Stomping"
+  ],
+  "default|1|Gold Creatures — Tramplers — ETB": [
+   "Gruul Stomping Grounds",
+   "Gruul Stomping"
+  ],
+  "default|1|Gold Creatures — Tramplers — ETB — +1/+1 Counters": [
+   "Simic Waystep",
+   "Simic Waystep"
+  ],
+  "default|1|Gold Creatures — Tramplers — ETB — Mana Ramp": [
+   "Simic Landing",
+   "Simic Landing"
+  ],
+  "default|1|Gold Creatures — Tramplers — Mana Ramp": [
+   "Simic Wellspring",
+   "Simic Wellspring"
+  ],
+  "default|1|Gold Creatures — Tramplers — Token Makers": [
+   "Selesnya Broods",
+   "Selesnya Broods"
+  ],
+  "default|1|Gold Enchantments": [
+   "Simic Starfield",
+   "Simic Starfield"
+  ],
+  "default|1|Gold Enchantments — Auras — Card Draw — ETB": [
+   "Simic Starfield",
+   "Simic Starfield"
+  ],
+  "default|1|Gold Enchantments — Auras — Card Draw — Mana Ramp": [
+   "Ravnican Starfield",
+   "Ravnican Starfield"
+  ],
+  "default|1|Gold Instants": [
+   "Ravnican Held Breath",
+   "Ravnican Held"
+  ],
+  "default|1|Gold Instants — Removal — Graveyard — Card Draw": [
+   "Ravnican Long Study",
+   "Ravnican Long"
+  ],
+  "default|1|Gold Instants — Removal — Graveyard — Lifegain": [
+   "Ravnican Held Breath",
+   "Ravnican Held"
+  ],
+  "default|1|Gold Lands": [
+   "Rakdos Fetch Roads",
+   "Rakdos Fetch"
+  ],
+  "default|1|Gold Lands — Mana Ramp": [
+   "Rakdos Fetch Roads",
+   "Rakdos Fetch"
+  ],
+  "default|1|Gold Lands — Tap Abilities": [
+   "Boros Fetch Roads",
+   "Boros Fetch"
+  ],
+  "default|1|Gold Planeswalkers": [
+   "Orzhov Muster",
+   "Orzhov Muster"
+  ],
+  "default|1|Gold Sorceries": [
+   "Orzhov Ritual Ground",
+   "Orzhov Ritual"
+  ],
+  "default|1|Green Artifacts": [
+   "Verdant Works",
+   "Verdant Works"
+  ],
+  "default|1|Green Creatures — ETB — +1/+1 Counters": [
+   "West Yavimayan Landing",
+   "W. Yavimayan"
+  ],
+  "default|1|Green Creatures — ETB — Tramplers": [
+   "East Yavimayan Landing",
+   "E. Yavimayan"
+  ],
+  "default|1|Green Creatures — ETB — Tramplers — +1/+1 Counters (East)": [
+   "East Yavimayan Landing",
+   "E. Yavimayan"
+  ],
+  "default|1|Green Creatures — ETB — Tramplers — +1/+1 Counters (North)": [
+   "North Yavimayan Landing",
+   "N. Yavimayan"
+  ],
+  "default|1|Green Creatures — ETB — Tramplers — +1/+1 Counters (South)": [
+   "South Yavimayan Landing",
+   "S. Yavimayan"
+  ],
+  "default|1|Green Creatures — ETB — Tramplers — +1/+1 Counters (West)": [
+   "West Yavimayan Landing",
+   "W. Yavimayan"
+  ],
+  "default|1|Green Creatures — Mana Ramp": [
+   "Wildgrowth Leylines",
+   "Wildgrowth Leylines"
+  ],
+  "default|1|Green Creatures — Tramplers — ETB — +1/+1 Counters": [
+   "Skyshroud Threshold",
+   "Skyshroud Threshold"
+  ],
+  "default|1|Green Creatures — Tramplers — ETB — Death Triggers": [
+   "Yavimayan Waystep",
+   "Yavimayan Waystep"
+  ],
+  "default|1|Green Creatures — Tramplers — ETB — Mana Ramp": [
+   "Yavimayan Wellspring",
+   "Yavimayan Wellspring"
+  ],
+  "default|1|Green Enchantments — Auras — Card Draw": [
+   "Skyshroud Waystep",
+   "Skyshroud Waystep"
+  ],
+  "default|1|Green Enchantments — Auras — ETB": [
+   "Llanowar Landing",
+   "Llanowar Landing"
+  ],
+  "default|1|Green Enchantments — Auras — ETB — Card Draw": [
+   "Skyshroud Waystep",
+   "Skyshroud Waystep"
+  ],
+  "default|1|Green Enchantments — Auras — ETB — Mana Ramp": [
+   "Llanowar Landing",
+   "Llanowar Landing"
+  ],
+  "default|1|Green Enchantments — Auras — ETB — Tap Abilities": [
+   "Skyshroud Gate",
+   "Skyshroud Gate"
+  ],
+  "default|1|Green Enchantments — Auras — ETB — Token Makers": [
+   "Yavimayan Swarmfields",
+   "Yavimayan Swarmfields"
+  ],
+  "default|1|Green Enchantments — Auras — ETB — Tramplers": [
+   "Llanowar Landing",
+   "Llanowar Landing"
+  ],
+  "default|1|Green Enchantments — Auras — Token Makers": [
+   "Yavimayan Swarmfields",
+   "Yavimayan Swarmfields"
+  ],
+  "default|1|Green Enchantments — Auras — Upkeep": [
+   "Yavimayan Swarmfields",
+   "Yavimayan Swarmfields"
+  ],
+  "default|1|Green Enchantments — Card Draw": [
+   "Skyshroud Waystep",
+   "Skyshroud Waystep"
+  ],
+  "default|1|Green Enchantments — Token Makers": [
+   "Yavimayan Vats",
+   "Yavimayan Vats"
+  ],
+  "default|1|Green Instants — Graveyard": [
+   "Verdant Crypts",
+   "Verdant Crypts"
+  ],
+  "default|1|Green Instants — Removal": [
+   "Tangled Unmaking",
+   "Tangled Unmaking"
+  ],
+  "default|1|Green Instants — Removal — Card Draw": [
+   "Baloth Reach",
+   "Baloth Reach"
+  ],
+  "default|1|Green Instants — Removal — Flyers": [
+   "Llanowar Aerie",
+   "Llanowar Aerie"
+  ],
+  "default|1|Green Instants — Removal — Graveyard": [
+   "Verdant Crypts",
+   "Verdant Crypts"
+  ],
+  "default|1|Green Sorceries — Graveyard": [
+   "Bolewood Crypts",
+   "Bolewood Crypts"
+  ],
+  "default|1|Green Sorceries — Graveyard — Mana Ramp": [
+   "Skyshroud Rot Farms",
+   "Skyshroud Rot"
+  ],
+  "default|1|Green Sorceries — Graveyard — Tutors": [
+   "Llanowar Boneyard",
+   "Llanowar Boneyard"
+  ],
+  "default|1|Green Sorceries — Mana Ramp": [
+   "Skyshroud Waystation",
+   "Skyshroud Waystation"
+  ],
+  "default|1|Green Sorceries — Mana Ramp — Tap Abilities": [
+   "Wildgrowth Wellspring",
+   "Wildgrowth Wellspring"
+  ],
+  "default|1|Green Sorceries — Mana Ramp — Tutors": [
+   "Yavimayan Waystation",
+   "Yavimayan Waystation"
+  ],
+  "default|1|Green Sorceries — Tutors": [
+   "Llanowar Boneyard",
+   "Llanowar Boneyard"
+  ],
+  "default|1|Red Artifacts": [
+   "Cinder Assembly",
+   "Cinder Assembly"
+  ],
+  "default|1|Red Creatures — ETB": [
+   "Cinder Threshold",
+   "Cinder Threshold"
+  ],
+  "default|1|Red Creatures — ETB — Attack Triggers": [
+   "Pyre Gate",
+   "Pyre Gate"
+  ],
+  "default|1|Red Creatures — Flyers — ETB — Attack Triggers": [
+   "Shivan Aerie",
+   "Shivan Aerie"
+  ],
+  "default|1|Red Creatures — Flyers — ETB — Attack Triggers (East)": [
+   "East Shivan Aerie",
+   "E. Shivan"
+  ],
+  "default|1|Red Creatures — Flyers — ETB — Attack Triggers (North)": [
+   "North Shivan Aerie",
+   "N. Shivan"
+  ],
+  "default|1|Red Creatures — Flyers — ETB — Attack Triggers (South)": [
+   "South Shivan Aerie",
+   "S. Shivan"
+  ],
+  "default|1|Red Creatures — Flyers — ETB — Attack Triggers (West)": [
+   "West Shivan Aerie",
+   "W. Shivan"
+  ],
+  "default|1|Red Creatures — Flyers — ETB — Token Makers": [
+   "Blasted Skyreach",
+   "Blasted Skyreach"
+  ],
+  "default|1|Red Creatures — Tramplers — ETB — Attack Triggers": [
+   "Keldon Warpath",
+   "Keldon Warpath"
+  ],
+  "default|1|Red Creatures — Tramplers — ETB — Menace": [
+   "Cinder Dread Pass",
+   "Cinder Dread"
+  ],
+  "default|1|Red Enchantments — Auras": [
+   "Cinder Enchanted Coil",
+   "Cinder Enchanted"
+  ],
+  "default|1|Red Enchantments — Auras — ETB": [
+   "Furnace Threshold",
+   "Furnace Threshold"
+  ],
+  "default|1|Red Enchantments — Auras — Token Makers": [
+   "Pyre Warrens",
+   "Pyre Warrens"
+  ],
+  "default|1|Red Enchantments — Auras — Upkeep": [
+   "Cinder Enchanted Coil",
+   "Cinder Enchanted"
+  ],
+  "default|1|Red Enchantments — ETB": [
+   "Shivan Dawn Watch",
+   "Shivan Dawn"
+  ],
+  "default|1|Red Enchantments — Token Makers": [
+   "Pyre Warrens",
+   "Pyre Warrens"
+  ],
+  "default|1|Red Enchantments — Upkeep": [
+   "Shivan Dawn Watch",
+   "Shivan Dawn"
+  ],
+  "default|1|Red Instants": [
+   "Ghitu Held Breath",
+   "Ghitu Held"
+  ],
+  "default|1|Red Instants — Card Draw": [
+   "Keldon Long Study",
+   "Keldon Long"
+  ],
+  "default|1|Red Instants — Mana Ramp": [
+   "Skirk Waystation",
+   "Skirk Waystation"
+  ],
+  "default|1|Red Lands": [
+   "Ghitu Fetch Roads",
+   "Ghitu Fetch"
+  ],
+  "default|1|Red Sorceries — Graveyard": [
+   "Furnace Rot Farms",
+   "Furnace Rot"
+  ],
+  "default|1|Red Sorceries — Removal": [
+   "Skirk Unmaking",
+   "Skirk Unmaking"
+  ],
+  "default|1|Red Sorceries — Removal — Card Draw": [
+   "Cinder Unmaking",
+   "Cinder Unmaking"
+  ],
+  "default|1|Red Sorceries — Removal — Graveyard": [
+   "Skirk Boneyard",
+   "Skirk Boneyard"
+  ],
+  "default|1|White Artifacts": [
+   "Radiant Scrapheap",
+   "Radiant Scrapheap"
+  ],
+  "default|1|White Creatures — ETB": [
+   "Serran Landing",
+   "Serran Landing"
+  ],
+  "default|1|White Creatures — ETB — Lifegain — Tap Abilities": [
+   "Serran Landing",
+   "Serran Landing"
+  ],
+  "default|1|White Creatures — ETB — Lifegain — Token Makers": [
+   "Benalish Broods",
+   "Benalish Broods"
+  ],
+  "default|1|White Creatures — Flyers — ETB — +1/+1 Counters": [
+   "Serran Perch",
+   "Serran Perch"
+  ],
+  "default|1|White Creatures — Flyers — ETB — Graveyard": [
+   "Serran Roosts",
+   "Serran Roosts"
+  ],
+  "default|1|White Creatures — Flyers — ETB — Lifegain (East)": [
+   "East Halcyon Aerie",
+   "E. Halcyon"
+  ],
+  "default|1|White Creatures — Flyers — ETB — Lifegain (North)": [
+   "North Halcyon Aerie",
+   "N. Halcyon"
+  ],
+  "default|1|White Creatures — Flyers — ETB — Lifegain (South)": [
+   "South Halcyon Aerie",
+   "S. Halcyon"
+  ],
+  "default|1|White Creatures — Flyers — ETB — Lifegain (West)": [
+   "West Halcyon Aerie",
+   "W. Halcyon"
+  ],
+  "default|1|White Creatures — Flyers — Lifegain": [
+   "Halcyon Roosts",
+   "Halcyon Roosts"
+  ],
+  "default|1|White Enchantments": [
+   "Angelfire Nyxborn Reach",
+   "Angelfire Nyxborn"
+  ],
+  "default|1|White Enchantments — Auras — ETB": [
+   "Sunlit Landing",
+   "Sunlit Landing"
+  ],
+  "default|1|White Enchantments — Auras — ETB — Removal": [
+   "Radiant Waystep",
+   "Radiant Waystep"
+  ],
+  "default|1|White Enchantments — ETB": [
+   "Benalish Waystep",
+   "Benalish Waystep"
+  ],
+  "default|1|White Enchantments — Removal": [
+   "Angelfire Gallows",
+   "Angelfire Gallows"
+  ],
+  "default|1|White Enchantments — Token Makers": [
+   "Benalish Waystep",
+   "Benalish Waystep"
+  ],
+  "default|1|White Instants — Removal — Card Draw": [
+   "Argent Gallows",
+   "Argent Gallows"
+  ],
+  "default|1|White Instants — Removal — Lifegain": [
+   "Benalish Reach",
+   "Benalish Reach"
+  ],
+  "default|1|White Instants — Removal — Protection": [
+   "Sursi Unmaking",
+   "Sursi Unmaking"
+  ],
+  "default|1|White Sorceries — Graveyard": [
+   "Benalish Boneyard",
+   "Benalish Boneyard"
+  ],
+  "default|1|White Sorceries — Removal": [
+   "Halcyon Gallows",
+   "Halcyon Gallows"
+  ],
+  "default|1|White Sorceries — Removal — Graveyard — Lifegain": [
+   "Benalish Barrows",
+   "Benalish Barrows"
+  ],
+  "default|1|White Sorceries — Removal — Graveyard — Token Makers": [
+   "Radiant Crypts",
+   "Radiant Crypts"
+  ]
+ }
+}

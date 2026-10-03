@@ -90,7 +90,18 @@ def test_the_corpus_sweep_is_locked():
 # a trigger's effect window. Magmakin Artillerist was the third card the strip
 # moved and it stays in the count — it swapped a phantom draw for the damage it
 # actually deals, which is the whole reason the bug was worth finding.
-WHEELS, LOOTS, DISC, DRAW, SECOND = (25, 40, 13, 29, 20)
+#
+# DRAW 29 -> 28 on 2026-10-02, the Reality Fracture refresh, and no parser
+# moved: −A-Wizard Class (Alchemy, dropped by Scryfall from oracle bulk). Its
+# paper twin Wizard Class still reads, so the payoff left the count only as a
+# duplicate. No FRA/FRC card matches any of the five.
+#
+# WHEELS 25 -> 26 the same day, and again no parser moved: `prepare` joined
+# MULTI_FACE_LAYOUTS, so 70 Secrets of Strixhaven cards that had been written with
+# NO oracle text now carry their spell face. Naktamun Lorespinner // Wheel of
+# Fortune is the one wheel among them. Its copy is castable only once it becomes
+# prepared (one or fewer cards in hand), which the per-card profile does not read.
+WHEELS, LOOTS, DISC, DRAW, SECOND = (26, 40, 13, 28, 20)
 
 
 @requires_data
@@ -157,7 +168,11 @@ def test_the_two_draw_shapes_are_locked_to_the_corpus():
     # a pattern change (the reason it exists — read the delta card by card) or a
     # set release (`run --from download` moves it, and the figure is updated in
     # the same commit). Corpus at 34,890 rows (2026-08-12).
-    assert (scry, reveal) == (34, 3), (scry, reveal)
+    #
+    # 2026-10-02 refresh (34,955 rows): scry 34 -> 31, −A-Mentor's Guidance,
+    # −A-Urza's Command, −A-Young Blue Dragon // A-Sand Augury (Alchemy, dropped
+    # by Scryfall). All three paper twins still match; no FRA/FRC card does.
+    assert (scry, reveal) == (31, 3), (scry, reveal)
 
 
 # ── the wheel that is a PERMANENT ─────────────────────────────────────────
@@ -332,8 +347,14 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
     exactly that number: anything else means the delta is coming from somewhere
     other than the cards this commit taught the model to see.
 
-    RE-BASELINED FIVE TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14,
-    15.482 on 2026-09-21, and now 15.517 on 2026-09-22. The fifth was the deck
+    RE-BASELINED SIX TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14,
+    15.482 on 2026-09-21, 15.517 on 2026-09-22, and 15.239 on 2026-10-02. The
+    sixth was the deck: the swords-v1 merge (6f6b9b32, 2026-10-01) cut Decree of
+    Silence, Gossip's Talent, Marketback Walker and Stromkirk Noble for Marauding
+    Mako, Mask of Memory, Negate and Swords to Plowshares, and did not move this
+    figure with it. Proven, not assumed: today's code on the 40d4dbab list reads
+    exactly 15.517, and today's list on an approximate pre-refresh corpus reads
+    exactly 15.239 — the Reality Fracture refresh moved nothing. The fifth was the deck
     yet again, and for a reason outside the draw model entirely: Gleaming
     Bastion came out for a basic Island. The Bastion's W/U mode is gated on
     controlling a basic land and the 99 held none, so it made {C} from the turn
@@ -386,7 +407,7 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
             card["oracle_text"] = "Flying"      # the bug, re-introduced
             checked += 1
     assert checked == 4, f"sharknado should hold four activated wheels, not {checked}"
-    assert t10(blind) == 15.517, "the pre-change figure is not being recovered"
+    assert t10(blind) == 15.239, "the pre-change figure is not being recovered"
     assert with_wheels > 22, (
         f"the activated wheels are worth ~7.9 cards by turn ten; got {with_wheels}")
 
@@ -1085,9 +1106,11 @@ def test_the_reminder_strip_changes_exactly_the_three_it_should():
     finally:
         gp._REMINDER_RE = real
 
-    assert moved == ["Magmakin Artillerist", "Marauding Mako",
-                     "Scrounging Skyray"], (
-        f"the reminder strip now moves {len(moved)} cards, not three: {moved}. "
+    # Defacing Duskmage joined on 2026-10-02 when `prepare` cards gained their text:
+    # its stripped parenthetical is the prepare REMINDER, so stripping is right.
+    assert moved == ["Defacing Duskmage // Vandal's Edit", "Magmakin Artillerist",
+                     "Marauding Mako", "Scrounging Skyray"], (
+        f"the reminder strip now moves {len(moved)} cards, not four: {moved}. "
         f"A card that JOINED this list has a real ability inside brackets being "
         f"eaten; a card that LEFT it means the strip stopped reaching a cycling "
         f"or a landcycling reminder it used to catch.")

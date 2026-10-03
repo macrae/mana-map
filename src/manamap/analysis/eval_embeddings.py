@@ -452,6 +452,9 @@ def evaluate(embeddings, groups):
 #: moment it exists and skipped silently when it does not, so `eval-embeddings`
 #: is the same command before and after a training run — the comparison the
 #: whole staging plan rests on should not need a different invocation.
+_REPORTED_STALE = set()     # say each stale space once per process, not per section
+
+
 def spaces_on_disk():
     """`{label: path}` for every embedding artifact present."""
     from manamap.training.train_cardbert import EMBEDDINGS_PATH as CARDBERT_PATH
@@ -464,7 +467,22 @@ def spaces_on_disk():
         "vae (masked imputation)": VAE_EMBEDDINGS_PATH,
         "cardbert (masked fields)": CARDBERT_PATH,
     }
-    return {label: path for label, path in candidates.items() if path.exists()}
+    present = {label: path for label, path in candidates.items() if path.exists()}
+    # A SHADOW SPACE IS NOT REBUILT BY `manamap run`, so after a corpus refresh it
+    # sits at the old row count until someone retrains it. Indexing it with the new
+    # corpus's rows died on an IndexError at step 15 (2026-10-02); scoring it on
+    # misaligned rows would be worse. Skip it, and say so where the reader looks.
+    rows = len(np.load(ABILITY_EMBEDDINGS_PATH, mmap_mode="r"))
+    aligned = {}
+    for label, path in present.items():
+        n = len(np.load(path, mmap_mode="r"))
+        if n == rows:
+            aligned[label] = path
+        elif (label, n, rows) not in _REPORTED_STALE:
+            _REPORTED_STALE.add((label, n, rows))
+            print(f"  SKIPPED {label}: {n:,} rows against a {rows:,}-card corpus "
+                  f"— stale since the last refresh; retrain it to score it")
+    return aligned
 
 
 def _normalized(path):

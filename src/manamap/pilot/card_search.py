@@ -155,9 +155,26 @@ def deck_names(slug):
     return out
 
 
+def date_bound(text, end):
+    """'2024' / '2024-06' / '2024-06-15' -> an inclusive ISO bound.
+
+    A partial date pads to the edge of its own range on the side the bound faces:
+    `--released-before 2024` keeps everything from 2024, `--released-after 2024`
+    starts on 1 January. ISO dates then compare correctly as strings.
+    """
+    parts = str(text).strip().split("-")
+    if not (1 <= len(parts) <= 3 and all(p.isdigit() for p in parts) and len(parts[0]) == 4):
+        raise SystemExit(f"not a date: {text!r} — use YYYY, YYYY-MM or YYYY-MM-DD")
+    y, m, d = (parts + [None, None])[:3]
+    m = m or ("12" if end else "01")
+    d = d or ("31" if end else "01")
+    return f"{y}-{int(m):02d}-{int(d):02d}"
+
+
 def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_max=None,
            cmc_min=None, exclude=(), limit=MAX_RESULTS, allow_game_changers=True,
-           require_all=False, owned=None, channels=None, unmodelled=None):
+           require_all=False, owned=None, channels=None, unmodelled=None,
+           sets=None, released_after=None, released_before=None):
     """Filter the corpus. Returns (rows, meta) — rows already ranked and capped.
 
     `oracle` is a list of regexes: a card matches when ANY of them hits, or ALL
@@ -165,6 +182,11 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
     someone here is usually "how do I do X" with several phrasings of X, and a
     card that says "additional combat phase" and one that says "untap all
     creatures" are alternative answers, not a conjunction.
+
+    `sets` matches the CORPUS printing's set code, so it includes that set's
+    reprints. `released_after` / `released_before` are inclusive ISO bounds on the
+    date the card FIRST existed; a card whose first date is unknown matches no
+    date bound rather than defaulting to one.
     """
     pool = load_pool()
     if pool is None:
@@ -186,6 +208,7 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
     type_pats = [re.compile(t, re.IGNORECASE) for t in (types or [])]
     want_roles = set(roles or [])
     exclude = set(exclude or [])
+    want_sets = {c.lower() for c in (sets or [])}
     # `pool-facts` knew the box but could not filter by oracle text; this could
     # filter by oracle text but could not see the box. Every "what could I add that I
     # already have" question needed both, so it was answered by hand every time.
@@ -207,6 +230,15 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
         if cmc_max is not None and cmc > cmc_max:
             continue
         if cmc_min is not None and cmc < cmc_min:
+            continue
+        if want_sets and rec.get("set_code", "").lower() not in want_sets:
+            continue
+        first = rec.get("first_released_at")
+        if (released_after or released_before) and not first:
+            continue
+        if released_after and first < released_after:
+            continue
+        if released_before and first > released_before:
             continue
         if name_pats and not any(p.search(name) for p in name_pats):
             continue
@@ -244,6 +276,8 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
             "color_identity": sorted(rec["color_identity"]),
             "edhrec_rank": rec["edhrec_rank"],
             "game_changer": rec["game_changer"],
+            "set_code": rec.get("set_code"),
+            "first_released_at": rec.get("first_released_at"),
             "roles": sorted(card_roles),
             "owned": is_owned,
             "matched": hits,
@@ -281,6 +315,10 @@ def analyze(args):
                 "--identity and --deck both given: a deck's identity is DERIVED from its "
                 "commander and may not be overridden. Drop one.")
         identity = parse_identity_arg(args.identity)
+    after = (date_bound(args.released_after, end=False)
+             if getattr(args, "released_after", None) else None)
+    before = (date_bound(args.released_before, end=True)
+              if getattr(args, "released_before", None) else None)
     rows, meta = search(
         identity=identity,
         oracle=getattr(args, "oracle", None) or [],
@@ -297,6 +335,9 @@ def analyze(args):
         require_all=getattr(args, "require_all", False),
         owned=(True if getattr(args, "owned", False)
                else False if getattr(args, "unowned", False) else None),
+        sets=getattr(args, "set", None) or [],
+        released_after=after,
+        released_before=before,
     )
     return {
         "identity": sorted(identity) if identity is not None else None,
@@ -308,6 +349,9 @@ def analyze(args):
                   "role": getattr(args, "role", None) or [],
                   "cmc_min": getattr(args, "cmc_min", None),
                   "cmc_max": getattr(args, "cmc_max", None),
+                  "set": getattr(args, "set", None) or [],
+                  "released_after": after,
+                  "released_before": before,
                   "require_all": bool(getattr(args, "require_all", False))},
         "meta": meta,
         "results": rows,
@@ -330,8 +374,11 @@ def format_report(doc):
         gc = " ★GC" if r["game_changer"] else ""
         own = "" if r.get("owned") is None else ("  ✓owned" if r["owned"] else "  ·buy")
         out.append(f"  {str(r['mana_cost']) or '—':<12} {r['name']}{gc}{own}")
+        first = r.get("first_released_at")
         out.append(f"    {r['type_line']}  ·  edhrec "
                    f"{rank if rank is not None else 'unranked'}"
+                   + (f"  ·  {r['set_code']}" if r.get("set_code") else "")
+                   + (f", first {first[:4]}" if first else "")
                    + (f"  ·  roles {', '.join(r['roles'])}" if r["roles"] else ""))
         # THE LINE THAT WOULD HAVE SAVED A WHOLE BRANCH. "model: —" means the
         # goldfish reads this as a body and a mana cost: measure it and it will

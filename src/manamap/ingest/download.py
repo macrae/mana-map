@@ -8,8 +8,10 @@ from manamap.ingest.common import dump_exists, dump_paths, open_dump
 from manamap.config import (
     BULK_DATA_TYPE,
     BULK_DATA_URL,
+    BULK_PRINTINGS_TYPE,
     DATA_DIR,
     DOWNLOAD_META_PATH,
+    FIRST_PRINTINGS_PATH,
     RAW_JSON_PATH,
     USER_AGENT,
 )
@@ -98,6 +100,67 @@ def save_meta(updated_at, download_uri, meta_path=DOWNLOAD_META_PATH, **extra):
     meta_path.write_text(json.dumps(meta, indent=2))
 
 
+def oracle_id_of(card):
+    """A printing's oracle id. Reversible cards carry it on their faces only."""
+    oid = card.get("oracle_id")
+    if not oid:
+        faces = card.get("card_faces") or []
+        oid = faces[0].get("oracle_id") if faces else None
+    return oid
+
+
+def reduce_first_printings(cards):
+    """{oracle_id: earliest released_at} over an iterable of printings.
+
+    PAPER printings decide where a card has any: an MTGO-only cube or an Arena
+    remaster can predate the cardboard, and "first released" here means the card
+    a pilot could first have sleeved. A card with only digital printings (Alchemy)
+    falls back to its earliest digital one rather than going absent. ISO dates
+    compare correctly as strings, so `min` needs no parsing.
+    """
+    paper, digital = {}, {}
+    for card in cards:
+        oid, date = oracle_id_of(card), card.get("released_at")
+        if not oid or not date:
+            continue
+        bucket = digital if card.get("digital") else paper
+        if date < bucket.get(oid, "9999"):
+            bucket[oid] = date
+    return {**digital, **paper}
+
+
+def stream_jsonl_gz(url):
+    """Yield each card object from a gzipped JSONL URL without touching disk."""
+    import gzip
+    import io
+
+    resp = SESSION.get(url, stream=True)
+    resp.raise_for_status()
+    resp.raw.decode_content = False
+    with gzip.GzipFile(fileobj=resp.raw) as gz:
+        for n, line in enumerate(io.TextIOWrapper(gz, encoding="utf-8"), 1):
+            if line.strip():
+                yield json.loads(line)
+            if n % 20000 == 0:
+                print(f"\r  Printings read: {n:,}", end="", flush=True)
+    print()
+
+
+def refresh_first_printings(path=FIRST_PRINTINGS_PATH):
+    """Step 1's second half: the earliest printing of every card, by oracle id."""
+    uri, updated_at = get_bulk_data_info(BULK_PRINTINGS_TYPE)
+    if path.exists() and json.loads(path.read_text()).get("updated_at") == updated_at:
+        print("  First printings up to date — skipping.")
+        return
+    print("  Streaming every printing (default_cards) for first-release dates...")
+    first = reduce_first_printings(stream_jsonl_gz(uri))
+    path.write_text(json.dumps(
+        {"updated_at": updated_at, "source": uri, "first_released_at": first},
+        separators=(",", ":"),
+    ))
+    print(f"  {len(first):,} oracle ids -> {path.name}")
+
+
 def main():
     DATA_DIR.mkdir(exist_ok=True)
 
@@ -107,12 +170,15 @@ def main():
 
     if dump_exists(RAW_JSON_PATH) and is_up_to_date(updated_at):
         print("  Already up to date — skipping download.")
-        return
+    else:
+        print(f"  Downloading oracle cards from Scryfall...")
+        download_file(download_uri)
+        save_meta(updated_at, download_uri)
+        print("  Download complete.")
 
-    print(f"  Downloading oracle cards from Scryfall...")
-    download_file(download_uri)
-    save_meta(updated_at, download_uri)
-    print("  Download complete.")
+    # Independent of the oracle sidecar: an up-to-date dump from before this
+    # existed must still get its first-release dates.
+    refresh_first_printings()
 
 
 if __name__ == "__main__":

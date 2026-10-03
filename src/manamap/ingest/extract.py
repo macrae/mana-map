@@ -7,6 +7,7 @@ import pandas as pd
 from manamap.ingest.common import open_dump
 from manamap.config import (
     EXCLUDED_LAYOUTS,
+    FIRST_PRINTINGS_PATH,
     LEGALITY_FORMATS,
     MULTI_FACE_LAYOUTS,
     OUTPUT_CSV_PATH,
@@ -126,8 +127,13 @@ def build_embedding_text(type_line, oracle_text, keywords, mana_cost="", power=N
     return ". ".join(parts)
 
 
-def process_card(card):
-    """Transform a single Scryfall card object into a flat row dict."""
+def process_card(card, first_printings=None):
+    """Transform a single Scryfall card object into a flat row dict.
+
+    `first_printings` is `{oracle_id: earliest released_at}` from step 1. Without
+    it `first_released_at` is None — absent, never back-filled from
+    `released_at`, which is the date of whichever printing the dump chose.
+    """
     layout = card.get("layout", "")
     is_multi = layout in MULTI_FACE_LAYOUTS
 
@@ -203,6 +209,9 @@ def process_card(card):
         "set_code": card.get("set", ""),
         "set_name": card.get("set_name", ""),
         "released_at": card.get("released_at", ""),
+        # When the CARD first existed, across every printing. `released_at` above is
+        # the corpus printing's date: Sol Ring reads 2026 there and 1993 here.
+        "first_released_at": (first_printings or {}).get(card.get("oracle_id")),
         "artist": card.get("artist", ""),
         "flavor_text": (card.get("flavor_text") or "").replace("\n", " "),
         "edhrec_rank": card.get("edhrec_rank"),
@@ -216,6 +225,17 @@ def process_card(card):
         **legal_cols,
     }
     return row
+
+
+def load_first_printings(path=FIRST_PRINTINGS_PATH):
+    """Step 1's reduction. Missing is FATAL: a corpus without the column would
+    reach `viz-index` and ship a date filter that silently matches nothing."""
+    if not path.exists():
+        raise SystemExit(
+            f"{path} not found — run `manamap download` (step 1), which writes it "
+            f"from Scryfall's default_cards bulk."
+        )
+    return json.loads(path.read_text())["first_released_at"]
 
 
 def main():
@@ -234,11 +254,26 @@ def main():
 
     # Filter excluded layouts
     filtered = [c for c in cards if c.get("layout") not in EXCLUDED_LAYOUTS]
+
+    # A NEW multi-face layout must be listed, or every card in it is written with no
+    # oracle text and nothing downstream complains: `prepare` sat unlisted for seven
+    # weeks. Faces present, no top-level text, layout unknown -> refuse.
+    unknown = sorted({c["layout"] for c in filtered
+                      if c.get("card_faces") and c.get("oracle_text") is None
+                      and c.get("layout") not in MULTI_FACE_LAYOUTS})
+    if unknown:
+        raise SystemExit(
+            f"unlisted multi-face layout(s) {unknown}: their text lives on the faces "
+            f"and would be written EMPTY. Add them to MULTI_FACE_LAYOUTS in config.py.")
     print(f"  After filtering excluded layouts: {len(filtered):,} cards.")
+
+    first_printings = load_first_printings()
 
     # Process each card
     print("Processing cards...")
-    rows = [process_card(c) for c in filtered]
+    rows = [process_card(c, first_printings) for c in filtered]
+    missing = sum(1 for r in rows if not r["first_released_at"])
+    print(f"  first_released_at: {len(rows) - missing:,} resolved, {missing:,} absent")
 
     # Build DataFrame and write CSV
     df = pd.DataFrame(rows)

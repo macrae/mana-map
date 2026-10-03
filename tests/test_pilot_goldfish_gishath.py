@@ -105,7 +105,11 @@ def test_the_four_sweeps_are_locked():
     # the figure is updated in the same commit as the refresh). Corpus at 34,890
     # rows (2026-08-12); if the count moved and the corpus did not, it is the
     # first kind. Same for `test_the_second_batch_sweeps_are_locked` below.
-    assert (g, p, s, b) == (7, 10, 1, 4), (g, p, s, b)
+    #
+    # 2026-10-02 refresh (34,955 rows): g 7 -> 8, +Rise of the Deathbringer (FRA,
+    # "Draw cards equal to the greatest power among creatures you control" — a
+    # modal instant, the same shape as Return of the Wildspeaker). Nothing left.
+    assert (g, p, s, b) == (8, 10, 1, 4), (g, p, s, b)
 
 
 # ── 2. The declared reveal ────────────────────────────────────────────────
@@ -274,7 +278,11 @@ def test_the_second_batch_sweeps_are_locked():
     # `gate=144` counts every ETB type-gated card in the corpus and is the most
     # SET-SENSITIVE figure in the suite: a tribal set moves it by a dozen without
     # any parser changing. See the note on this test.
-    assert c == dict(gate=144, chosen=1, spell_dmg=1, cast_dmg=1, mv=3, pay=1, tutor_bf=3), c
+    #
+    # 2026-10-02 refresh (34,955 rows): tutor_bf 3 -> 4, +Sphinx's Approach (FRA,
+    # "search your library for a Sphinx creature card, put it onto the
+    # battlefield" — Dragon's Approach's twin, gated the same way). Nothing left.
+    assert c == dict(gate=144, chosen=1, spell_dmg=1, cast_dmg=1, mv=3, pay=1, tutor_bf=4), c
 
 
 def _sim(cards, model_draw=False, iterations=200, seed=9):

@@ -8659,3 +8659,334 @@ def test_curate_defers_its_art_rather_than_asking_for_all_of_it_at_once(
         assert page.js_errors == []
     finally:
         page.close()
+
+
+# ── The printing filter: set + first-printed, a FILTER in Curate and a
+#    HIGHLIGHT on the atlas (PLAN.md §B, §B2) ────────────────────────────────
+#
+# THE INDEX IS SERVED THROUGH A ROUTE, NOT WRITTEN INTO `data/`. The fields
+# under test (`e`, `f` in `viz_index.json`, and `sets.json`) are produced by
+# step 14, and a test that waited on a corpus refresh to exist — or that read
+# whichever cards the refresh happened to date — would be testing the data,
+# not the filter. So the REAL index is read (row order intact, so it stays
+# aligned with every projection the atlas draws) and the two fields are
+# overwritten deterministically: every card is `bulk` / 2000-01-01, and a few
+# named cards are set apart. One card, Rhystic Study, carries NO `f` at all,
+# which is the case the contract is most explicit about: it must match no
+# date bound, never be read as 0 or the epoch.
+
+PRINT_SETS = {
+    "tst": {"name": "Test Fracture", "released_at": "2026-10-02", "count": 3},
+    "bulk": {"name": "Bulk Printing", "released_at": "2000-01-01", "count": 0},
+}
+PRINT_OVERRIDES = {
+    "Sol Ring": {"e": "tst", "f": "1993-08-05"},
+    "Lightning Bolt": {"e": "tst", "f": "1993-08-05"},
+    # In the set, with NO first-printed date: the undated case.
+    "Rhystic Study": {"e": "tst"},
+    "Llanowar Elves": {"e": "bulk", "f": "1993-08-05"},
+    "Command Tower": {"e": "bulk", "f": "2011-06-17"},
+}
+
+_PRINT_INDEX_CACHE: dict = {}
+
+
+def _printing_index(strip=False):
+    """The real `viz_index.json`, with `e` and `f` set deterministically.
+
+    `strip=True` removes both, which is the shape every index had before the
+    filter shipped — the degradation case."""
+    if strip in _PRINT_INDEX_CACHE:
+        return _PRINT_INDEX_CACHE[strip]
+    from manamap.config import VIZ_INDEX_PATH
+
+    with open(VIZ_INDEX_PATH, encoding="utf-8") as fh:
+        rows = json.load(fh)
+    seen = set()
+    for rec in rows:
+        rec.pop("e", None)
+        rec.pop("f", None)
+        if strip:
+            continue
+        name = rec.get("n")
+        if name in PRINT_OVERRIDES and name not in seen:
+            seen.add(name)
+            rec.update(PRINT_OVERRIDES[name])
+        else:
+            rec["e"] = "bulk"
+            rec["f"] = "2000-01-01"
+    if not strip:
+        missing = set(PRINT_OVERRIDES) - seen
+        assert not missing, f"fixture cards absent from the corpus: {missing}"
+    body = json.dumps(rows, separators=(",", ":"))
+    _PRINT_INDEX_CACHE[strip] = body
+    return body
+
+
+def _route_printing(page, strip=False, sets=True):
+    body = _printing_index(strip)
+    page.route("**/viz_index.json*", lambda route: route.fulfill(
+        status=200, content_type="application/json", body=body))
+    if sets:
+        page.route("**/sets.json*", lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps(PRINT_SETS)))
+    else:
+        page.route("**/sets.json*", lambda route: route.abort())
+
+
+def _printing_atlas(browser, viz_server, strip=False):
+    """The atlas in Explore, booted against the routed index."""
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    errors: list[str] = []
+    _add = _record(errors)
+    page.on("pageerror", lambda e: _add(e))
+    page.on("console", lambda m: _add(m.text) if m.type == "error" else None)
+    _route_printing(page, strip=strip)
+    page.goto(f"{viz_server}/viz/index.html?mode=explore")
+    page.add_style_tag(content="*, *::before, *::after {"
+                               " transition: none !important; animation: none !important; }")
+    page.js_errors = errors
+    page.wait_for_function(
+        "() => window.MM && MM.allData && MM.allData.length > 0"
+        "      && window.Discovery && Discovery.index"
+        "      && MM.mapRenderer && MM.mapRenderer.getCamera() !== null",
+        timeout=BOOT_TIMEOUT_MS)
+    return page
+
+
+# What the base scatter is drawing: every point, and how many are LIT. A
+# layer's opacity is a scalar or a per-point array (`spotlightFor`); 0.5
+# separates LIT (0.95) and the resting 0.85 from UNLIT (0.09).
+_ATLAS_INK = """() => {
+    let total = 0, lit = 0;
+    for (const l of MM.mapRenderer.layers) {
+        if (!l.marker || !l.marker.glow || l.visible === false) continue;
+        const n = l.x.length, op = l.marker.opacity;
+        total += n;
+        if (Array.isArray(op)) lit += op.filter(a => a > 0.5).length;
+        else if ((op == null ? 1 : op) > 0.5) lit += n;
+    }
+    return { total, lit };
+}"""
+
+
+def test_the_printing_highlight_dims_the_atlas_rather_than_removing_it(
+        browser, viz_server):
+    """A HIGHLIGHT, NOT A FILTER: the point of seeing a set on the atlas is its
+    SHAPE against the whole corpus, which is only visible if the rest stays
+    drawn. The point count is unchanged; what changes is how many are lit.
+
+    Proven by re-introducing the bug — `visible` in `render()` testing
+    `printFocus.rows` — which drops 34K points to three and fails the total."""
+    page = _printing_atlas(browser, viz_server)
+    try:
+        before = page.evaluate(_ATLAS_INK)
+        assert before["total"] > 1000 and before["lit"] == before["total"], before
+
+        focus = page.evaluate("() => MM.setPrintFocus('tst', '', '')")
+        assert focus["count"] == 3, focus
+        after = page.evaluate(_ATLAS_INK)
+        assert after["total"] == before["total"], (
+            f"the highlight REMOVED points: {before['total']} -> {after['total']}")
+        assert after["lit"] == 3, f"expected the three tst cards lit: {after}"
+
+        lit_names = page.evaluate(
+            "() => MM.printRows().map(i => Discovery.record(i).n).sort()")
+        assert lit_names == ["Lightning Bolt", "Rhystic Study", "Sol Ring"], lit_names
+        status = page.inner_text("#status")
+        assert "3 cards highlighted" in status and "Test Fracture" in status, status
+
+        # The picker carries the catalogue's label, not a raw code.
+        label = page.eval_on_selector(
+            "#setSelect", "s => [...s.options].find(o => o.value === 'tst').textContent")
+        assert label.startswith("Test Fracture (TST)"), label
+
+        # Escape restores normal rendering, and the controls with it.
+        page.keyboard.press("Escape")
+        page.wait_for_function("() => MM.printFocus === null", timeout=BOOT_TIMEOUT_MS)
+        cleared = page.evaluate(_ATLAS_INK)
+        assert cleared == before, f"clearing did not restore the atlas: {cleared}"
+        assert page.eval_on_selector("#setSelect", "s => s.value") == ""
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_an_atlas_date_bound_never_matches_a_card_with_no_first_printed_date(
+        browser, viz_server):
+    """ABSENT IS NOT THE EPOCH. Rhystic Study carries no `f`. Read as 0 / ''
+    it would sit BEFORE every date, so a "first printed on or before" bound
+    would light it — which is exactly what re-introducing that bug does, and
+    why the before-only bound is the half that catches it. Both bounds, and
+    the range, must leave it dark; the status must say how many were excluded
+    for having no date."""
+    page = _printing_atlas(browser, viz_server)
+    try:
+        rhystic, sol = page.evaluate(
+            "() => [Discovery.index.findIndex(r => r.n === 'Rhystic Study'),"
+            "       Discovery.index.findIndex(r => r.n === 'Sol Ring')]")
+        assert rhystic >= 0 and sol >= 0
+        for after, before in (("", "2100-01-01"), ("1900-01-01", ""),
+                              ("1900-01-01", "2100-01-01")):
+            focus = page.evaluate("([a, b]) => MM.setPrintFocus('', a, b)", [after, before])
+            rows = set(page.evaluate("() => MM.printRows()"))
+            assert sol in rows, (after, before)
+            assert rhystic not in rows, (
+                f"an undated card matched the bound {after!r}..{before!r}")
+            assert focus["undated"] == 1, focus
+            assert "no first-printed date excluded" in page.inner_text("#status")
+        # And it is a real bound, not "everything dated": 1993 cards only.
+        focus = page.evaluate("() => MM.setPrintFocus('', '', '1995-12-31')")
+        assert focus["count"] == 3, focus   # Sol Ring, Lightning Bolt, Llanowar Elves
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_an_index_without_printing_fields_disables_the_atlas_controls(
+        browser, viz_server):
+    """THE SHAPE EVERY INDEX HAD BEFORE THIS SHIPPED. A set picker that
+    silently matched nothing would read as "this set added no cards"; the
+    controls are disabled and say which artifact is behind instead."""
+    page = _printing_atlas(browser, viz_server, strip=True)
+    try:
+        page.evaluate("() => MM.setPrintFocus('tst', '1900-01-01', '')")
+        state = page.evaluate("""() => ({
+            set: document.getElementById('setSelect').disabled,
+            after: document.getElementById('firstAfter').disabled,
+            title: document.getElementById('setSelect').title,
+            focus: MM.printFocus })""")
+        assert state["set"] and state["after"], state
+        assert "viz-index" in state["title"], state
+        assert state["focus"] is None, "a disabled control still narrowed the map"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def _printing_curate(browser, viz_server, sets=True):
+    """Curate against the facet store, with the routed index."""
+    page = browser.new_page(viewport={"width": 1400, "height": 900})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    _route_printing(page, sets=sets)
+    page.goto(f"{viz_server}/viz/library.html")
+    page.evaluate(
+        "doc => { localStorage.setItem('manamap-library', JSON.stringify(doc));"
+        "         location.reload(); }",
+        CURATE_FACETS)
+    page.wait_for_function("() => window.Curate && Curate.facts === 'ready'",
+                           timeout=BOOT_TIMEOUT_MS)
+    page.js_errors = errors
+    return page
+
+
+def test_the_set_filter_narrows_the_curate_grid(browser, viz_server):
+    """"WHAT DID I JUST GET": one set, chosen in the rail, narrows the grid to
+    the cards whose corpus printing is that set. Driven through the real
+    <select>, not the API, so the wiring is what is tested.
+
+    Proven by re-introducing the bug — `passes` ignoring `sel.e` — which
+    leaves all six cards on screen."""
+    page = _printing_curate(browser, viz_server)
+    try:
+        page.evaluate("() => Curate.setRail('all')")
+        assert len(page.evaluate("() => Curate.shown")) == 6
+        page.wait_for_function(
+            "() => [...document.querySelectorAll('#cur-set option')]"
+            "        .some(o => o.textContent.startsWith('Test Fracture (TST)'))",
+            timeout=BOOT_TIMEOUT_MS)
+        page.select_option("#cur-set", "tst")
+        assert sorted(page.evaluate("() => Curate.shown")) == [
+            "Lightning Bolt", "Rhystic Study", "Sol Ring"]
+        assert page.evaluate("() => Curate.filters.e") == ["tst"]
+        assert len(page.query_selector_all(".cur-grid .cur-tile")) == 3
+
+        # The card the corpus cannot resolve is a bucket of its own, never
+        # filed under a set and never silently gone.
+        nofacts = page.evaluate("() => Curate.NOFACTS")
+        page.evaluate("v => Curate.setFilter('e', [v])", nofacts)
+        assert page.evaluate("() => Curate.shown") == [
+            "Nicol Bolas, the Card That Is Not"]
+        options = page.eval_on_selector_all("#cur-set option", "os => os.map(o => o.textContent)")
+        assert any(o.startswith("not in corpus") for o in options), options
+        # Newest first: the 2026 set is offered before the 2000 one.
+        tst = next(i for i, o in enumerate(options) if o.startswith("Test Fracture"))
+        bulk = next(i for i, o in enumerate(options) if o.startswith("Bulk Printing"))
+        assert tst < bulk, options
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_curate_date_bound_excludes_a_card_with_no_first_printed_date(
+        browser, viz_server):
+    """The Curate half of the same rule: Rhystic Study has no `f`, and a
+    before-only bound must not admit it as if it were printed at the epoch.
+    The rail says how many cards the bound excluded for having no date.
+
+    Proven by re-introducing the bug — a missing `f` read as '' — which
+    admits Rhystic Study under the before-only bound."""
+    page = _printing_curate(browser, viz_server)
+    try:
+        page.evaluate("() => Curate.setRail('all')")
+        page.fill("#cur-before", "2100-01-01")
+        page.dispatch_event("#cur-before", "change")
+        shown = page.evaluate("() => Curate.shown")
+        assert "Rhystic Study" not in shown, shown
+        assert sorted(shown) == ["Command Tower", "Lightning Bolt",
+                                 "Llanowar Elves", "Sol Ring"], shown
+        # Rhystic Study (no date) and the card not in the corpus at all.
+        assert page.evaluate("() => Curate.undated") == 2
+        assert "no first-printed date" in page.inner_text("#cur-rail")
+
+        page.evaluate("() => Curate.setDates('2000-01-01', '')")
+        assert page.evaluate("() => Curate.shown") == ["Command Tower"]
+        page.evaluate("() => Curate.setDates('1993-08-05', '1993-08-05')")
+        assert sorted(page.evaluate("() => Curate.shown")) == [
+            "Lightning Bolt", "Llanowar Elves", "Sol Ring"], "bounds are inclusive"
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_curate_set_picker_survives_a_missing_set_catalogue(browser, viz_server):
+    """`sets.json` is labels and order, not the filter. With it failing the
+    picker falls back to raw codes and still narrows."""
+    page = _printing_curate(browser, viz_server, sets=False)
+    try:
+        page.evaluate("() => Curate.setRail('all')")
+        options = page.eval_on_selector_all("#cur-set option", "os => os.map(o => o.value)")
+        assert "tst" in options, options
+        page.select_option("#cur-set", "tst")
+        assert len(page.evaluate("() => Curate.shown")) == 3
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_real_index_offers_reality_fracture_newest_first(browser, viz_server):
+    """AGAINST THE REAL ARTIFACTS, so it waits on the refresh that writes them.
+    Skips until `data/sets.json` exists; after it, FRA must be offered by name
+    near the top of the atlas picker, and highlighting it must leave the point
+    count alone."""
+    from manamap.config import DATA_DIR
+
+    if not (DATA_DIR / "sets.json").exists():
+        pytest.skip("data/sets.json not built yet — run `manamap viz-index`")
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    try:
+        page.goto(f"{viz_server}/viz/index.html?mode=explore")
+        page.wait_for_function(
+            "() => window.MM && MM.allData && MM.allData.length > 0 && Discovery.index"
+            "      && MM.mapRenderer && MM.mapRenderer.getCamera() !== null",
+            timeout=BOOT_TIMEOUT_MS)
+        before = page.evaluate(_ATLAS_INK)
+        focus = page.evaluate("() => MM.setPrintFocus('fra', '', '')")
+        assert focus and focus["count"] > 100, focus
+        options = page.eval_on_selector_all(
+            "#setSelect option", "os => os.slice(0, 8).map(o => o.textContent)")
+        assert any(o.startswith("Reality Fracture (FRA)") for o in options), options
+        assert page.evaluate(_ATLAS_INK)["total"] == before["total"]
+    finally:
+        page.close()

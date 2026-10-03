@@ -53,6 +53,11 @@ untouched and this is the other half.
   permanently — an `<img>` error carries no status, so a 429 is indistinguishable from a
   404. `ART_GAP` is 110ms here, not 70: 190 cards at 70 is thirteen seconds of sustained
   over-rate against Scryfall's published ~10/s.
+- **Set and first-printed are FILTERS here** (the atlas has the highlight). A set select
+  — newest first from `sets.json`, raw codes if it fails — and two inclusive date bounds
+  on `f`, the FIRST printing. Counts are of your cards, like every facet. A card the
+  index cannot resolve is the `not in corpus` set bucket and, like a resolved card with
+  no `f`, matches no date bound; the rail states how many a bound excluded for that.
 - **It cannot ADD a card.** Keeping is a gesture made at the Atlas. Nothing calls
   `Session.useCards` — that assigns every entry a `row` into the projection, which the map
   and the graph need and this page has neither of — so every entry stays `row: -1`, and the
@@ -1395,6 +1400,17 @@ atlas position. The panel says so in its own body copy, for the same reason dril
   names the two fields that contributed most; the counts overlap, so they are reported
   rather than summed
 - Multi-select up to 8 (Shift+click / Shift+drag box select); keyboard nav (arrows, 1–8, Delete, Escape, `/`)
+- **The printing highlight** (`#setSelect`, `#firstAfter`, `#firstBefore`; `printFocus`):
+  a set and/or a first-printed range DIMS the atlas around the matches rather than
+  removing anything — a new set's shape only reads against the whole corpus. It is a
+  row Set like `regionFocus` and `queryFocus`, so it joins `spotlightFor` and
+  `narrowedTo` (status count, Drill) and Escape peels it, right after the query. Two
+  different facts from `viz_index.json`: `e` is the set of the CORPUS printing (so a set
+  includes its reprints), `f` is when the card FIRST existed across every printing. **A
+  card with no `f` matches NO date bound** — never 0, never the epoch — and the status
+  says how many were excluded that way. `sets.json` (`MM.DATA.sets`) supplies names and
+  newest-first order on first entry to Explore; without it the picker falls back to raw
+  codes. An index with neither field disables the controls and names the artifact
 
 ### Navigating with the arrows
 

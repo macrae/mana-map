@@ -6890,6 +6890,69 @@
         "hand_empty": 598,
         "mana_short": 3872
       },
+      "late": {
+        "from_turn": 7,
+        "stall_turns": 601,
+        "hand_empty": 488,
+        "mana_short": 113,
+        "stall_rate": {
+          "rate": 0.015,
+          "ci95": [
+            0.0139,
+            0.0163
+          ],
+          "n": 40000
+        },
+        "vs_floor": {
+          "from_turn": 6,
+          "floor_rate": 0.0201,
+          "diff": -0.0051,
+          "ci95": [
+            -0.0082,
+            -0.0022
+          ],
+          "excludes_zero": true
+        },
+        "hand_size": {
+          "7": {
+            "rate": 3.6093,
+            "ci95": [
+              3.5734,
+              3.6452
+            ],
+            "sd": 1.831,
+            "n": 10000
+          },
+          "8": {
+            "rate": 3.5748,
+            "ci95": [
+              3.5388,
+              3.6108
+            ],
+            "sd": 1.835,
+            "n": 10000
+          },
+          "9": {
+            "rate": 3.6214,
+            "ci95": [
+              3.5859,
+              3.6569
+            ],
+            "sd": 1.8099,
+            "n": 10000
+          },
+          "10": {
+            "rate": 3.7251,
+            "ci95": [
+              3.6902,
+              3.76
+            ],
+            "sd": 1.7794,
+            "n": 10000
+          }
+        },
+        "basis": "`stall_rate`'s denominator is turn-OPPORTUNITIES (games x turns in the window), not games, so it is not comparable to `by_turn`, whose denominator is games. `vs_floor` compares it to the single turn with the fewest stalls before the window — the turn is reported, not assumed. `hand_size` is the hand at the END of the turn, after the model has cast everything it could afford, so it is a FLOOR on what a pilot holding cards back would have."
+      },
       "basis": "a turn on which no card in hand was castable with the mana that turn produced — not a turn on which nothing was cast"
     },
     "mana": {
