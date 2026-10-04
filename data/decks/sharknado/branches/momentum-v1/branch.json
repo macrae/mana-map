@@ -1,7 +1,7 @@
 {
  "slug": "sharknado",
  "branch": "momentum-v1",
- "v": 2,
+ "v": 3,
  "opened": "2026-10-02",
  "why": "wheels-v1 and rituals-v1 combined, by the pilot's call 2026-10-02: the six swaps share no card and one feeds the other. Three slots outside both commander axes (Kefnet, Waterbender, Silent Hallcreeper) become cheap punishers of the opponents' half of a wheel; two slow Treasure makers become rituals that fund a wheel and its follow-up in one turn (82% of the champion's goldfish stall turns are mana-short); Enduring Curiosity becomes Teferi's Protection. At 200 games a run could not have split the two halves' effects anyway, and one run frees six hours of Forge. The goldfish cannot price the ritual half (rituals unmodelled, Treasure off, Mana Geyser reads opponents' tapped lands), so Forge is the instrument.",
  "objective": {
@@ -62,5 +62,50 @@
    "strength": null,
    "why": "combat-gated draw, cast 4 times in 120 Forge games -> the commanders survive the wrath aimed at them"
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-10-04",
+  "as_version": "v1.2.0",
+  "why": "The pilot's call 2026-10-04: an upgrade. Six swaps that put both commanders' plan in every slot. Forge 200/arm at standard-v3: win 0.097 -> 0.155 (+0.058 [-0.016, +0.130], inconclusive on the rate; MDE 0.115), drain_dealt 0.6 -> 2.9 (+2.28 [+1.22, +3.33], excludes zero), life removed 30.6 -> 36.9, decided games 154 -> 174. Both arms are floors: the AI holds most of the wheels (PLAN, 1409d752). The goldfish reads it worse and cannot see rituals, Treasure, more than one opponent, or Kefnet's seven-card clause.",
+  "base_version": 6,
+  "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+  "accepted_on": {
+   "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+   "state": "inconclusive",
+   "objective": {
+    "axis": "forge.win_rate",
+    "op": ">=",
+    "pod": "standard-v3",
+    "value": 0.2,
+    "why": "wheels-v1 and rituals-v1 combined, by the pilot's call 2026-10-02: the six swaps share no card and one feeds the other. Three slots outside both commander axes (Kefnet, Waterbender, Silent Hallcreeper) become cheap punishers of the opponents' half of a wheel; two slow Treasure makers become rituals that fund a wheel and its follow-up in one turn (82% of the champion's goldfish stall turns are mana-short); Enduring Curiosity becomes Teferi's Protection. At 200 games a run could not have split the two halves' effects anyway, and one run frees six hours of Forge. The goldfish cannot price the ritual half (rituals unmodelled, Treasure off, Mana Geyser reads opponents' tapped lands), so Forge is the instrument."
+   },
+   "grade": "not resolvable",
+   "reading": 0.1552,
+   "harness": {
+    "cast_proofs": {
+     "adds": [
+      "Faerie Mastermind",
+      "Jeska's Will",
+      "Mana Geyser",
+      "Razorkin Needlehead",
+      "Scrawling Crawler",
+      "Teferi's Protection"
+     ],
+     "anyway": false,
+     "floor": true,
+     "gated_runs": [
+      "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-62a3b245-s1654895173-podExperimental-c600-ov8c347642-tl9473cf35"
+     ],
+     "held": [],
+     "late": [
+      "Teferi's Protection"
+     ],
+     "reads_as": "every branch figure on this page is a FLOOR:  never played; Teferi's Protection cast late"
+    },
+    "iterations": 10000,
+    "model_version": "0eaf7530e24d",
+    "seed": 20260826
+   }
+  }
+ }
 }
