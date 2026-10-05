@@ -74,6 +74,7 @@ own time, and rewriting it would destroy the thing it is kept for.
 | [history/prd-2026-08.md](history/prd-2026-08.md) | 404 | The superseded PRD, kept verbatim: the `PRD-v1 §N` citations in source resolve here. Archived 2026-10-05. |
 | [history/audit-2026-09-12.md](history/audit-2026-09-12.md) | 482 | The read-only audit at `bccca716` that became the paydown plan: the fleet, the red board, 42 issues in nine themes, the debt by area. A finished audit; the live list is `known-issues.md`. Archived 2026-10-05. |
 | [history/paydown-plan.md](history/paydown-plan.md) | 1442 | The six-phase paydown and its tracker, FINISHED (44 of 45 done, 1 dropped): what it deleted, and the ground rules it ran under. Archived 2026-10-05. |
+| [history/plan-to-2026-10-05.md](history/plan-to-2026-10-05.md) | 1212 | PLAN.md as it stood until the 2026-10-05 rewrite: every dated state block, the 2026-09-16 PUNCHLIST (the pilot's own to-dos), the build-out record and the decisions with their reasons. |
 | [history/testing-log.md](history/testing-log.md) | 934 | The test suite's dated record to 2026-10-05: every runtime measured along the way, each testing lesson in full (flakes, mutation, the cache key), and the 2026-09-21 adversarial audit's 29 findings. `testing.md` is the live page. |
 | history/ur-dragon-treasure.decklist.txt · history/ur-dragon-treasure-brief.json | — | The list and brief the two Ur-Dragon memos cost out. Archived 2026-09-12. |
 
