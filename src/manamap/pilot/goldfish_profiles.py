@@ -30,6 +30,7 @@ from manamap.config import (
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
     GOLDFISH_OPPONENT_LIFE,
+    GOLDFISH_OPPONENTS,
     GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
 )
@@ -640,9 +641,8 @@ def blood_profile(card):
         # `meta` surfaces; `(0, None)` would file it with the vanilla bears.
         return (1, "unmodelled") if _BLOOD_LOOSE_RE.search(text) else (0, None)
     if _BLOOD_PER_OPPONENT_RE.search(text):
-        # The pod is three opponents, which is what `opponent_life` is already
-        # scaled against; stated in MODEL_ASSUMPTIONS rather than guessed here.
-        return 3, "per_opponent"
+        # One Blood per opponent at the table (`GOLDFISH_OPPONENTS`).
+        return GOLDFISH_OPPONENTS, "per_opponent"
     match = _BLOOD_CREATE_RE.search(text)
     word = (match.group(1) or "a").lower()
     count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1) or 1
@@ -775,7 +775,14 @@ def event_payoffs(card):
     # phantom draw; Marauding Mako and Scrounging Skyray lose a phantom draw
     # each. Parenthesised text in an oracle is always reminder text, so the
     # strip is safe by construction.
-    text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
+    #
+    # A FACE BOUNDARY ENDS A TRIGGER'S WINDOW. Defacing Duskmage's front face says
+    # "whenever an opponent draws their second card each turn, this creature
+    # becomes prepared" and its spell face says "Draw two cards"; joined by " // "
+    # the window ran across the boundary and the trigger read as drawing two
+    # (2026-10-04, found when GOLDFISH_OPPONENTS tripled it). As a line break the
+    # window stops there, and a trigger printed on a back face still matches.
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "").replace(" // ", "\n")
     out = {"per_discard_damage": 0, "per_discard_counter": 0,
            "per_discard_draw": 0, "per_discard_token_power": 0,
            "per_draw_damage": 0, "per_draw_counter": 0,

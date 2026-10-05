@@ -1111,11 +1111,12 @@ def test_the_reminder_strip_changes_exactly_the_three_it_should():
     finally:
         gp._REMINDER_RE = real
 
-    # Defacing Duskmage joined on 2026-10-02 when `prepare` cards gained their text:
-    # its stripped parenthetical is the prepare REMINDER, so stripping is right.
-    assert moved == ["Defacing Duskmage // Vandal's Edit", "Magmakin Artillerist",
-                     "Marauding Mako", "Scrounging Skyray"], (
-        f"the reminder strip now moves {len(moved)} cards, not four: {moved}. "
+    # Defacing Duskmage joined on 2026-10-02 when `prepare` cards gained their text
+    # and LEFT on 2026-10-04: it only moved because its trigger window ran across
+    # the " // " face boundary into the spell face, which now ends the window.
+    assert moved == ["Magmakin Artillerist", "Marauding Mako",
+                     "Scrounging Skyray"], (
+        f"the reminder strip now moves {len(moved)} cards, not three: {moved}. "
         f"A card that JOINED this list has a real ability inside brackets being "
         f"eaten; a card that LEFT it means the strip stopped reaching a cycling "
         f"or a landcycling reminder it used to catch.")

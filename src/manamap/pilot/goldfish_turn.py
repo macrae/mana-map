@@ -32,6 +32,7 @@ from manamap.config import (
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
     GOLDFISH_OPPONENT_LIFE,
+    GOLDFISH_OPPONENTS,
     GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
 )
@@ -2259,13 +2260,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # off it is safe where the same field on our own draws is
                 # refused as a Curiosity loop, because our draws do not cause
                 # theirs.
+                # DAMAGE stays one seat (the clock is per seat); what WE draw off
+                # their draws is paid by EVERY opponent, so it scales with the
+                # seats at the table (`GOLDFISH_OPPONENTS`, 2026-10-04).
                 _evt_dmg += _e["per_opponent_draw_damage"] * opponent_draws_this_turn
                 if _e["per_opponent_draw_our_draw"] and opponent_draws_this_turn:
-                    draw_n(_e["per_opponent_draw_our_draw"] * opponent_draws_this_turn)
+                    draw_n(_e["per_opponent_draw_our_draw"] * opponent_draws_this_turn
+                           * GOLDFISH_OPPONENTS)
                 if opponent_draws_this_turn >= 2:
                     _evt_dmg += _e["opponent_second_draw_damage"]
                     if _e["opponent_second_draw_our_draw"]:
-                        draw_n(_e["opponent_second_draw_our_draw"])
+                        draw_n(_e["opponent_second_draw_our_draw"] * GOLDFISH_OPPONENTS)
                 _ctr = (_e["per_discard_counter"] * _disc_t
                         + _e["per_draw_counter"] * drawn_this_turn)
                 counter_power += _ctr

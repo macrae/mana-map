@@ -61,3 +61,44 @@ def test_switching_the_gate_off_gives_back_kefnets_phantom_swings(monkeypatch):
     a = on["output"]["damage_by_turn"]["10"]["rate"]
     b = off["output"]["damage_by_turn"]["10"]["rate"]
     assert b > a, f"blinding the gate should restore Kefnet's free swings ({a} vs {b})"
+
+
+# ── the seats at the table (2026-10-04) ───────────────────────────────────
+
+def test_a_trigger_window_ends_at_a_face_boundary():
+    """Defacing Duskmage: the front face's trigger only PREPARES the card; the
+    "Draw two cards" belongs to the spell face across the " // "."""
+    e = gp.event_payoffs({"name": "Defacing Duskmage // Vandal's Edit",
+                          "type_line": "Creature — Dog Warlock // Instant",
+                          "oracle_text": "Deathtouch\nWhenever an opponent draws their second card "
+                                         "each turn, this creature becomes prepared. // "
+                                         "Draw two cards. Each player loses 2 life."})
+    assert e["opponent_second_draw_our_draw"] == 0
+    m = gp.event_payoffs({"name": "Faerie Mastermind", "type_line": "Creature — Faerie Rogue",
+                          "oracle_text": "Flash\nFlying\nWhenever an opponent draws their second "
+                                         "card each turn, you draw a card."})
+    assert m["opponent_second_draw_our_draw"] == 1
+
+
+@requires_data
+@requires_deck
+def test_what_we_draw_off_opponents_scales_with_the_seats(monkeypatch):
+    """Faerie Mastermind draws once per OPPONENT drawing a second card — at a
+    four-player table that is three opponents. Proved by setting the seats to one:
+    the swap that adds Mastermind must then be worth fewer cards. Measured
+    2026-10-04: Hallcreeper -> Mastermind +0.62 extra cards by T8 at three seats,
+    -0.17 at one."""
+    from manamap.pilot import diagnostic, goldfish_turn, try_swap
+    swap = [("Silent Hallcreeper", "Faerie Mastermind")]
+
+    def gain():
+        a = diagnostic.run("sharknado", iterations=1500, seed=5, quiet=True)
+        doc, _, _, _ = try_swap.apply_swaps("sharknado", None, swap)
+        b = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=5, quiet=True)
+        return (b["steam"]["extra_cards_by_turn"]["8"]["rate"]
+                - a["steam"]["extra_cards_by_turn"]["8"]["rate"])
+
+    three = gain()
+    monkeypatch.setattr(goldfish_turn, "GOLDFISH_OPPONENTS", 1)
+    one = gain()
+    assert three > one, (three, one)

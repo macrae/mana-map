@@ -1245,6 +1245,12 @@ GOLDFISH_MAX_MULLIGANS = 2
 # finish a seat", not "how fast does it win a four-player game" — summing three
 # opponents' life would invent a number the model cannot support.
 GOLDFISH_OPPONENT_LIFE = 40
+#: THE SEATS AT THE TABLE, for OUR side of the opponents' events (2026-10-04). The
+#: kill clock above stays one seat — "each opponent loses 1" is already per seat —
+#: but a payoff that rewards US whenever AN opponent draws (Faerie Mastermind,
+#: Consecrated Sphinx, a Blood made per opponent) fires for every opponent at a
+#: Commander table, and counting one seat undercounted it threefold.
+GOLDFISH_OPPONENTS = 3
 #: Ten poison counters lose the game (CR 704.5c); the goldfish's second clock.
 GOLDFISH_POISON_TO_LOSE = 10
 
