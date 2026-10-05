@@ -50,7 +50,7 @@ its own seed, the two lists aligned slot for slot, an interval on the DIFFERENCE
 each card's visibility to the model, the keep list, and colour sources before and after.
 Quote a screen with its interval. Two limits you must carry: a card the model reports as
 DARK or invisible measures as nothing, so a null on it is not evidence; and the goldfish
-has no blockers and does not read a static lord or anthem (`docs/known-issues.md` 9d), so
+has no blockers and does not read a static lord or anthem (`docs/known-issues.md` §22), so
 a screen that cuts a lord is understated by the pump. Never rank an add or cut a card the
 keep list names (`protected.json`) — the validator refuses it.
 

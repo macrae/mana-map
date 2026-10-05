@@ -4,18 +4,23 @@
 fails, and **who or what unblocks it**. A row leaves this page when the test is
 green, never because the test was changed to suit the artifact.
 
-Last verified against **`make test-fresh`**: **2026-09-21**, **3,695 passing /
-0 failing** / 8 skipped / 3 xfailed, 617 s.
+Last verified **2026-10-05**: `make test` and `make test-fleet` green locally, and CI
+green on both jobs for `e0fab704` (runtimes and counts: `docs/testing.md`). This page was
+last AUDITED section by section on 2026-09-21; sections dated since were added one at a
+time, and §20–§22 were re-checked on 2026-10-05.
 
-## THE SUITE IS GREEN. `corpus-gates` is red ON PURPOSE (§9c).
+## THE SUITE IS GREEN, both tiers, and so is CI.
 
-**CI, as of 2026-09-22.** The `tests` workflow has two jobs and they mean
+**CI, as of 2026-10-05.** The `tests` workflow has two jobs and they mean
 different things:
 
 | job | state | |
 |---|---|---|
-| `test` (every push) | **GREEN** | must stay green — this is the signal |
-| `corpus-gates` (weekly) | **should be GREEN** after the 2026-10-02 Reality Fracture refresh (§9c, resolved) — a red here is now a real finding | |
+| `test` (every push) | **GREEN** — runs `make test` AND `make test-fleet` since 2026-10-05 | must stay green — this is the signal |
+| `corpus-gates` (weekly, and on push) | **GREEN** since the Reality Fracture refresh (§9c) — a red here is a real finding | |
+
+The fleet tier carries one STRICT xfail, the axis-independence gate (§9b), which is a
+decision for the pilot and fails loudly the day it is made.
 
 The `test` job went green on 2026-09-22 for the first time since **2026-08-25**,
 and the byte-diff determinism gate ran for the first time in that whole period —
@@ -1630,7 +1635,11 @@ experiment arm by its `decklist_sha256` under the same four-tuple, with a test a
   reliably and CAST-LATE only sometimes; the class tag from the script catches the rest.
 
 
-## 20. THE BOARD IS RED: goblin-storm's diagnosis.json fails its validator (2026-10-01)
+## 20. ~~THE BOARD IS RED: goblin-storm's diagnosis.json fails its validator~~ — RESOLVED 2026-10-05
+
+**Resolved by the re-diagnosis of 2026-10-05**, which passed `validate-diagnosis` and the skeptic at
+iteration 3 (`849343a4`). The entry as written:
+
 
 This page's whole premise is that `make test-fresh` is green, so what is wrong here is what no
 test fails on. That premise does not hold right now, and this entry is here so the exception is
@@ -1665,7 +1674,15 @@ artifact rather than a wrong measurement reaching a reader. What is urgent is no
 the suite is not green, because every other entry on this page is written as though it is.
 
 
-## 21. sharknado's branch artifacts are stale behind a DECLARATION change (2026-10-01, regen queued)
+## 21. sharknado's branch artifacts are stale behind a DECLARATION change — RESOLVED; its agent artifacts are not
+
+**The branch half is resolved**: every sharknado branch's `net_change.json` and goldfish figures
+pass freshness in the fleet tier (CI green 2026-10-05). **What is still stale is the agent half**:
+`deck-status sharknado` FAILS on `tutor_guide.json` and `manual_prose.json`, both built against
+decklist `7d623c5f9cf4…` while the deck is `6e11bf86ad4e…`. Unblocked by `/write-manual
+sharknado` (the pilot-notes agent) — a spawn, not a command, so it waits for the pilot. The
+entry as written:
+
 
 Correcting `goldfish_targets.json` — "A real answer drawn" named Decree of Silence, which is not
 in the 99 — moved two target rates on the champion, and `common.deck_file` lets a branch read the
@@ -1694,7 +1711,7 @@ runs are quiet.
 
 If that queued job did not run, this is the command, and the tests above are how you know.
 
-## 9d. The goldfish does not read a static lord or anthem
+## 22. The goldfish does not read a static lord or anthem
 
 *Found 2026-10-05 by the deck-skeptic, round 3 of edgar-vampires' re-diagnosis.*
 

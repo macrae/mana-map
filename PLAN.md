@@ -37,7 +37,7 @@ rule, module headers and file maps, three finished records archived.
 
 ## Next, in order
 
-1. **The goldfish does not read a static lord** (`docs/known-issues.md` 9d). "Other
+1. **The goldfish does not read a static lord** (`docs/known-issues.md` §22). "Other
    Vampires you control get +1/+1" is a vanilla body to the model, so every Edgar cut of a
    lord is understated by the pump. It is a model change: a corpus sweep of static
    "get +N/+N" lines (tribal scoping included), then `manamap pilot regen --jobs 8 && make
