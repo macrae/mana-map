@@ -56,6 +56,7 @@ def _violations(paths):
     return sorted(lists & versions)
 
 
+@pytest.mark.regression
 def test_the_working_tree_does_not_stage_a_decklist_with_its_version_list():
     """The check that fires while you can still act on it.
 
@@ -76,6 +77,7 @@ def test_the_working_tree_does_not_stage_a_decklist_with_its_version_list():
         f"    make manuals && git add data/decks && git commit   # the record")
 
 
+@pytest.mark.regression
 def test_no_commit_in_recent_history_broke_the_protocol():
     """The same rule held at rest over what is already committed.
 

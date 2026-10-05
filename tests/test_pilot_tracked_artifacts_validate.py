@@ -329,6 +329,7 @@ def test_every_tracked_simulation_run_passes_its_validator(slug, capsys, unchang
 
 
 # ── The two validators that were wired into nothing ──────────────────────
+@pytest.mark.regression
 def test_the_strategy_doc_passes_its_validator(capsys):
     """`strategy.md` and `CHANGELOG.md` are tracked, and every `strategy:<id>`
     citation in the fleet resolves against them. Ungated until now."""

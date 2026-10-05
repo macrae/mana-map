@@ -4,7 +4,7 @@
 fails, and **who or what unblocks it**. A row leaves this page when the test is
 green, never because the test was changed to suit the artifact.
 
-Last verified **2026-10-05**: `make test` and `make test-fleet` green locally, and CI
+Last verified **2026-10-05**: `make test` and `make test-fleet` (now `make regression`) green locally, and CI
 green on both jobs for `e0fab704` (runtimes and counts: `docs/testing.md`). This page was
 last AUDITED section by section on 2026-09-21; sections dated since were added one at a
 time, and §20–§22 were re-checked on 2026-10-05.
@@ -16,7 +16,7 @@ different things:
 
 | job | state | |
 |---|---|---|
-| `test` (every push) | **GREEN** — runs `make test` AND `make test-fleet` since 2026-10-05 | must stay green — this is the signal |
+| `test` (every push) | **GREEN** — runs `make test` AND `make test-fleet` since 2026-10-05; the unit / isolation / regression split replaced them the same day | must stay green — this is the signal |
 | `corpus-gates` (weekly, and on push) | **GREEN** since the Reality Fracture refresh (§9c) — a red here is a real finding | |
 
 The fleet tier carries one STRICT xfail, the axis-independence gate (§9b), which is a

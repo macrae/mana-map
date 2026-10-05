@@ -22,6 +22,7 @@ DECKS = DATA_DIR / "decks"
 
 # ── the home ────────────────────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_the_lifecycle_is_read_from_deck_versions_and_nowhere_else():
     """ONE HOME, NO FALLBACK. Reading `deck_versions.json` and then falling back
     to `issue.json` would be two homes for one fact — the divergence this repo
@@ -40,6 +41,7 @@ def test_the_lifecycle_is_read_from_deck_versions_and_nowhere_else():
     assert checked >= 8
 
 
+@pytest.mark.regression
 def test_no_issue_json_still_carries_a_status():
     """The migration moved three and `validate-issue` now rejects the key. A
     leftover would be OBEYED BY NOBODY while looking exactly like it worked,
@@ -52,6 +54,7 @@ def test_no_issue_json_still_carries_a_status():
     assert checked >= 5
 
 
+@pytest.mark.regression
 def test_the_three_migrated_decks_kept_their_verdicts():
     """The golden. A migration that changes what `deck_is_apart` answers for any
     deck has moved a fact, not a file."""
@@ -137,6 +140,7 @@ def test_the_pilots_words_map_onto_the_vocabulary():
 
 # ── the gate ────────────────────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_the_validator_is_silent_on_every_tracked_file():
     """A VALIDATOR THAT FIRES ON CORRECT DATA IS WORSE THAN NO VALIDATOR, and the
     only way to know is to measure it against the whole fleet."""
@@ -183,6 +187,7 @@ def test_the_validator_catches_a_truncated_sha():
 
 # ── the destructive verb ────────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_delete_refuses_every_deck_that_is_a_record():
     """A destructive command that never refuses has not been tested. Every deck
     that was sleeved, played or published must come back with a reason."""
@@ -197,6 +202,7 @@ def test_delete_refuses_every_deck_that_is_a_record():
     assert checked >= 6
 
 
+@pytest.mark.regression
 def test_the_refusal_is_not_keyed_on_the_magazine_renderer_alone():
     """`published` once meant "the magazine renderer ran", and that renderer was
     deleted 2026-09-13 — a destructive gate keyed only on it would have inverted
@@ -227,6 +233,7 @@ def test_locking_an_archived_deck_is_refused(tmp_path, monkeypatch):
         deck_versions.set_paper("scratch")
 
 
+@pytest.mark.regression
 def test_no_tracked_deck_is_both_dead_and_sleeved():
     """The fleet-wide assertion, so the invariant is not only checked one deck at
     a time by a validator somebody has to remember to run."""

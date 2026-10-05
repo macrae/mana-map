@@ -197,6 +197,7 @@ def test_mana_analysis_matches_a_fresh_run(target, tmp_path, unchanged):
         f"`manamap pilot mana-analysis {slug}` and commit it.")
 
 
+@pytest.mark.regression
 def test_the_net_change_gate_says_so_when_it_has_nothing_to_gate():
     """AN EMPTY PARAMETRIZE IS A GATE THAT EVAPORATED, and pytest reports it as
     one grey "got empty parameter set" line nobody reads.

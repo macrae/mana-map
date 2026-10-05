@@ -17,6 +17,10 @@ import pytest
 from manamap.config import DECKS_DIR, SIM_DIR
 from manamap.sim import forge
 
+# Regression tier: these read the tracked fleet without a data gate
+# (found by `make test-unit-isolated`, docs/testing.md).
+pytestmark = pytest.mark.regression
+
 
 def test_one_of_our_decks_still_writes_where_it_always_did():
     """The fallback must be a FALLBACK. Decks are tried first, so no existing

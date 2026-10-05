@@ -84,6 +84,7 @@ def test_parse_returns_typed_abilities_with_counts():
     assert out["counts"]["keyword"] == 1 and out["counts"]["spell"] == 0
 
 
+@pytest.mark.regression
 def test_every_kind_is_reachable_on_the_real_corpus():
     """A class nothing lands in is a class that does not exist, and a sweep is
     the only way to know."""

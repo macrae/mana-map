@@ -276,6 +276,7 @@ def test_scenario_named_cards_reads_a_v2_game_state():
     assert "seat-2" not in names and "Beast" not in names
 
 
+@pytest.mark.regression
 def test_the_whole_deck_view_omits_rulings_and_the_stack_view_carries_them(monkeypatch, tmp_path):
     """No dump on disk: the per-stack section says so and names the command,
     nothing raises, and the notes carry one line. The all-stacks view never

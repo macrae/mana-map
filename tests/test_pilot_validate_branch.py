@@ -158,6 +158,7 @@ def test_every_tracked_branch_passes_its_own_gate():
     assert checked >= 1, "no tracked branch to check"
 
 
+@pytest.mark.regression
 def test_a_forge_objective_in_branch_json_needs_its_pod_and_a_goldfish_one_refuses_it():
     from manamap.pilot import validate_branch
     doc = {"slug": "x", "branch": "b", "v": 2, "opened": "2026-09-29", "why": "",

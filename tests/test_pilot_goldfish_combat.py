@@ -176,6 +176,7 @@ def test_board_power_is_not_body_count():
         metrics["mean_bodies_by_turn"]["10"]
 
 
+@pytest.mark.regression
 def test_the_opted_in_set_is_named_not_counted():
     """THE OPT-IN CONTRACT, as a LEDGER. A channel switched on for one deck must not
     move a deck that did not ask; that half is `test_goldfish_metrics_match_a_fresh_run`

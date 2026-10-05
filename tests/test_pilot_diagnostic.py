@@ -62,6 +62,7 @@ def test_engine_online_is_counted_not_multiplied():
         f"0.25 and got {got['online_by_turn']['3']['rate']}")
 
 
+@pytest.mark.regression
 def test_the_joint_and_the_product_disagree_on_the_real_deck_too():
     """The synthetic case proves the code counts; this proves it MATTERS on a
     real declaration. No skip: a deck with no `required` marking is a fixture

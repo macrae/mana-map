@@ -28,6 +28,7 @@ def test_the_split_is_by_text_not_by_row():
     assert mask.dtype == bool and len(mask) == 5
 
 
+@pytest.mark.regression
 def test_no_duplicate_text_family_crosses_the_split_on_the_real_corpus():
     from manamap.config import OUTPUT_CSV_PATH
 

@@ -67,6 +67,7 @@ def test_a_land_never_counts_as_a_rock():
     assert got["produces"] == 0
 
 
+@pytest.mark.regression
 def test_restricted_mana_is_counted_but_named():
     """`spend()` is a scalar and cannot represent "only to cast Dragon spells".
     Delighted Halfling's legendary-only mana is nearly free in Commander;

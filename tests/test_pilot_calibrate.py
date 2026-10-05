@@ -21,6 +21,7 @@ def test_it_refuses_a_verdict_below_a_usable_sample(monkeypatch):
     assert "more deck(s)" in got["what_it_would_take"]
 
 
+@pytest.mark.regression
 def test_a_deck_below_the_game_threshold_is_excluded_not_downweighted():
     """heliod's 8 games is a shuffle, not a sample: its win rate reads 0.250
     against a fleet that spans 0.00-0.21, purely on n. Including it flipped the
@@ -57,6 +58,7 @@ def test_spearman_handles_ties():
     assert calibrate._spearman([1, 1, 2], [5, 5, 9]) == pytest.approx(1.0)
 
 
+@pytest.mark.regression
 def test_runs_against_a_different_pod_are_dropped_not_pooled():
     """A WIN RATE IS AGAINST SOMEBODY.
 

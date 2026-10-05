@@ -153,6 +153,7 @@ def test_the_fingerprint_moves_with_a_VALUE_not_just_a_name():
     assert a["keys"] == ["MULLIGAN_THRESHOLD"] and a["n"] == 1
 
 
+@pytest.mark.regression
 def test_the_run_id_carries_the_profile_content():
     opp = ["sythis-enchantress"]
     # A REAL deck: `run_id_for` derives a config digest from every seat's decklist.

@@ -6,11 +6,14 @@ description: Run the Mana Map test suite and interpret results. Use before commi
 # Run the tests
 
 ```bash
-make test                 # THE FAST TIER: what you run all day (runtimes: docs/testing.md)
-make test-fleet           # the slow tier: `slow or fleet` — producers re-run per deck
-make prepush              # both tiers; run before every push (CI runs both)
-make test-fresh           # both tiers with nothing served from the regenerate-and-compare cache
+make test                 # THE UNIT TIER: no tracked data, ~1 min (runtimes: docs/testing.md)
+make test-unit-isolated   # the unit tier against an EMPTY data dir — proves it reads none
+make regression           # the tracked fleet + corpus: validators, producers re-run per deck
+make integration          # browser + Forge + the pages rebuilt byte-identically
+make prepush              # unit + isolation + regression; before every push (CI runs it)
+make test-fresh           # unit + regression with nothing served from the cache
 make test-browser         # the playwright suite (-n 4, plus the serial_only tests)
+make test-report          # both tiers uncached + coverage, recorded -> /test-report reads it
 pytest -m forge           # ONE real Forge game (~10 s; needs ~/.mana-map/forge; opt-in)
 .venv/bin/pytest -n0 -k NAME   # one test, no worker startup
 .venv/bin/pytest -m ""    # literally everything
@@ -22,7 +25,7 @@ A bare `pytest` is `make test` — `addopts` carries
 ## Interpreting results
 
 - **Counts live in one place**: `docs/testing.md` (the only file allowed to state them);
-  re-derive with `.venv/bin/pytest --co -n0 | tail -1` (fast tier) or `-m ""` (everything).
+  re-derive with `.venv/bin/pytest --co -n0 -qq` (unit tier; `-m regression`, `-m integration`, `-m ""` for the others).
 - **Data-gated tests auto-skip** on a fresh clone via the markers in `tests/conftest.py`
   (`requires_data` / `requires_corpus` / `requires_rules` / `requires_rulings` /
   `requires_deck` / `requires_strategy` / `requires_roles` / `requires_branch`).

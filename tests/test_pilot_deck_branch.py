@@ -255,6 +255,7 @@ def test_a_branch_is_a_legal_deck_or_it_is_not_a_branch():
     assert not checked["blocking"], checked["blocking"]
 
 
+@pytest.mark.regression
 def test_deck_dir_refuses_an_unknown_branch():
     if not (DECKS_DIR / SLUG).is_dir():
         pytest.skip("no deck fixture")
@@ -447,6 +448,7 @@ def test_no_tracked_branch_is_still_graded_on_an_authored_axis():
 # `deck_is_apart` — one predicate where four modules had grown their own
 # ──────────────────────────────────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_a_broken_down_or_retired_deck_is_apart():
     """`merge` refused ur-dragon on twelve cards, four of which sit in decks
     that do not physically exist. The pilot was being told to unsleeve a deck

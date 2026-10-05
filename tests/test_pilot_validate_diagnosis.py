@@ -12,6 +12,11 @@ from manamap.pilot import validate_diagnosis as vd
 from manamap.pilot.common import deck_dir
 
 from conftest import requires_data, requires_deck, requires_roles, requires_strategy
+import pytest
+
+# Regression tier: these read the tracked fleet without a data gate
+# (found by `make test-unit-isolated`, docs/testing.md).
+pytestmark = pytest.mark.regression
 
 
 def _deck(main=("Alpha", "Beta"), commander="Cmdr", bench=()):

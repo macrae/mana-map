@@ -132,15 +132,17 @@ manamap pilot simulate <slug> --pod standard-v3 --games N   # optional; prints i
 manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--looks K] [--aa]
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board -> /resolve-stack
 
-# ── AGENTS (Claude Code skills, 22 in .claude/skills/, 18 charters in .claude/agents/) ──
+# ── AGENTS (Claude Code skills, 23 in .claude/skills/, 20 charters in .claude/agents/) ──
 # /publish-deck sequences the lifecycle; /diagnose-deck /prescribe /resolve-stack
 # /analyze-engine /build-deck /debrief /captains-log /sim-debrief /poh-procedures
-# /write-manual /research-strategy /refresh-corpus
+# /write-manual /research-strategy /refresh-corpus /test-report (pre/post-test agents)
 
-make test                     # the FAST tier — runtimes in docs/testing.md, nowhere else
-make test-fleet               # the slow tier (`slow or fleet`)
-make prepush                  # both; before every push. CI runs both.
+make test                     # the UNIT tier: no tracked data, ~1 min (runtimes: docs/testing.md)
+make regression               # the tracked fleet + corpus, every producer re-run
+make integration              # browser + Forge + the pages rebuilt byte-identically
+make prepush                  # unit + its isolation proof + regression; before every push
 make test-browser             # playwright; local only
+make test-report              # both tiers uncached + coverage -> data/test_reports/; /test-report reads it
 .venv/bin/pytest -n0 -k NAME  # one test
 
 manamap serve                 # viz + a LOCAL /api, and a WARM WORKER: read-only `manamap
@@ -264,7 +266,7 @@ sleeved decks only.
 
 - **The deck manifest is generated**: `manamap pilot build-index` writes `data/decks/index.json`, which every page fetches; a test asserts it matches the artifacts.
 - **`mana_analysis.json` is tracked and staleness-tested**: run `manamap pilot mana-analysis <slug>` AFTER `goldfish`, since it embeds goldfish figures.
-- **CI** (`.github/workflows/test.yml`) runs `make test` and `make test-fleet` on every push and PR, then `make manuals` and `git diff --exit-code -- manuals/ data/decks/` — the determinism claim asserted from outside the code. A weekly `corpus-gates` job downloads the corpus and runs the gates a push cannot reach. The browser suite stays local.
+- **CI** (`.github/workflows/test.yml`) runs the unit tier, its isolation proof and the regression tier on every push and PR, then `make manuals` and `git diff --exit-code -- manuals/ data/decks/` — the determinism claim asserted from outside the code. An `integration` job runs the browser suite on every push; Forge stays local. A weekly `corpus-gates` job downloads the corpus (the network leg) and runs the gates a push cannot reach.
 
 ## Pointers
 

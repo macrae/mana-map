@@ -285,6 +285,7 @@ def test_every_record_made_after_the_block_existed_carries_it():
     assert not missing, f"records dated after 2026-09-10 with no engine_casts block: {missing}"
 
 
+@pytest.mark.regression
 def test_no_kept_record_has_an_uncast_engine_by_accident():
     """A run whose declared engine went uncast is a floor, not a result. Every
     such record is listed by name with its reason, or this fails."""

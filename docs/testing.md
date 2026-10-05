@@ -1,63 +1,113 @@
 # Testing
 
 ```bash
-make test            # THE FAST TIER — what you run all day                    ~2.8 min
-make test-fleet      # the slow tier: every producer re-run, fleet constants   ~11 min
-make prepush         # both tiers — before every push (CI runs both too)
-make test-fresh      # both tiers, nothing served from the cache — trust this one
-make test-browser    # playwright, -n 4, then the serial_only tests            ~7 min
-make test-all        # test-fresh + test-browser
-pytest -n0 -k NAME   # one test; worker startup outweighs the split
-pytest -m forge      # ONE real Forge game (needs ~/.mana-map/forge)
-pytest -m ""         # literally everything, browser included
-pytest --lf          # only what failed last time
+make test                 # UNIT: no tracked data — the inner loop          ~1 min
+make test-unit-isolated   # the unit tier against an EMPTY data dir — proves it
+make regression           # REGRESSION: the tracked fleet + corpus           ~15 min
+make integration          # INTEGRATION: browser, Forge, pages byte-identical
+make prepush              # unit + isolation + regression — before every push (CI runs it)
+make test-fresh           # unit + regression, nothing served from the cache
+make test-report          # measure it: counts, time, coverage -> data/test_reports/
+make test-browser         # playwright, -n 4, then the serial_only tests     ~7 min
+pytest -n0 -k NAME        # one test; worker startup outweighs the split
+pytest -m forge           # ONE real Forge game (needs ~/.mana-map/forge)
+pytest -m ""              # literally everything, browser included
+pytest --lf               # only what failed last time
 ```
 
-**A bare `pytest` is `make test`.** `addopts` in `pyproject.toml` carries
-`-m 'not browser and not forge and not fleet and not slow' -n auto`.
+**A bare `pytest` is `make test`, the unit tier.** `addopts` in `pyproject.toml`
+carries `-m unit -n auto`.
 
 **This file is the only place that states test counts and runtimes.** They move on
 almost every commit; README and CLAUDE.md point here instead. The dated record of
 how the suite got here — every earlier measurement, every lesson in full, the
 2026-09-21 adversarial audit — is [`history/testing-log.md`](history/testing-log.md).
 
-## The tiers, measured 2026-10-05 (8-core Mac, `-n auto`)
+## The three tiers (2026-10-05, 8-core Mac, `-n auto`)
 
-| tier | selects | tests | wall |
+| tier | what it touches | tests | wall |
 |---|---|---:|---:|
-| fast — `make test`, warm cache | everything not marked below | 4,023 | **2:46** |
-| fast — `--no-test-cache` | | | **5:17** |
-| fleet — `make test-fleet` | `slow or fleet` | 142 | **11:07** |
-| browser — `make test-browser` | `browser` | 264 | ~7 min (2026-09-12) |
-| forge | `forge` | 1 | ~10 s |
-| **total collected** | | **4,430** | |
+| **unit** — `make test` | inline data only; no tracked artifact, no outside system | 2,514 | **0:58** uncached |
+| unit, isolated — `make test-unit-isolated` | the same, against an empty `MANAMAP_DATA_DIR` | 2,514 | **0:52** |
+| **regression** — `make regression` | the tracked fleet and corpus: every artifact validator, every producer re-run per deck and branch, the constants calibrated across the fleet | 1,664 | **15:06** uncached |
+| **integration** — `make integration` | a real browser (264), the Forge engine (1), the network; then `make manuals` + `git diff --exit-code` | 265 | ~7 min + |
+| **total collected** | | **4,443** | |
+
+**What decides the tier is what a test TOUCHES, never its runtime** — runtime flaps,
+and a slow pure function is still a unit test. `tests/conftest.py` (`tier_of`)
+assigns every test exactly one, before `-m` deselects anything:
+
+- **integration** — marked `browser`, `forge` or `network`.
+- **regression** — marked `slow` or `fleet`; or carrying any `skipif` (every one in
+  this suite is a data gate: `requires_*`, `needs_*`); or taking a fixture whose value
+  is tracked data (`conftest.DATA_FIXTURES`: `unchanged`, `deck`, `slug`, `corpus`, …).
+- **unit** — everything else.
+- An explicit `@pytest.mark.unit|regression|integration` (or a module `pytestmark`)
+  wins. 181 tests carry one: the ones `make test-unit-isolated` caught reading the
+  fleet with no gate (134 failed against an empty data dir, 47 skipped only there).
+
+**The unit tier is proven, not assumed.** `make test-unit-isolated` runs it against an
+empty data dir; a failure or a skip there is a test that reads tracked data and must
+be marked `regression`. `prepush` and CI run it, and `tests/test_tiers.py` holds the
+classifier to its rules through a real inner pytest. What the isolation run cannot
+see is a test that reads `ROOT / "data"` directly rather than through `config` —
+it still passes against an empty `MANAMAP_DATA_DIR`. Route data reads through
+`config`.
 
 To print today's numbers rather than trust these:
 
 ```bash
-.venv/bin/pytest --co -n0 -m "" | tail -1                     # everything
-.venv/bin/pytest --co -n0 | tail -1                           # the fast tier
-.venv/bin/pytest --durations=30                               # where the time goes
+.venv/bin/pytest --co -n0 -qq | awk -F': ' '{s+=$2} END {print s}'               # unit
+.venv/bin/pytest --co -n0 -qq -m regression | awk -F': ' '{s+=$2} END {print s}' # regression
+.venv/bin/pytest --durations=30                                                   # where the time goes
 ```
 
-**What decides the tier is time, not importance.** The fleet tier is not optional
-— `make prepush` and CI run it — it is the part that re-runs 10,000-game producers
-per deck and branch (`slow`) or re-derives a calibrated constant across the whole
-fleet (`fleet`). A test that takes over ~10 s is `slow`; keep the decision loop
-(`try`, the paired intervals) in the fast tier even when it costs a few seconds,
-because a regression there should surface the same day.
+Keep the decision loop (`try`, the paired intervals) testable in the unit tier
+with inline decks where it can be, because a regression there should surface in
+the inner loop, not before a push.
+
+## The measured report (`make test-report`)
+
+The table above is written by hand; this one is generated. `make test-report` runs
+the unit and regression tiers with nothing from the cache and under coverage, recording every test
+(`tests/report_plugin.py`, `--record-run`), and `python -m manamap.suite_report
+record` folds the runs into a dated, tracked report in `data/test_reports/`. `diff`
+recomputes the findings between the latest two — failures, counts by file, wall
+time, files that slowed, skip reasons that grew, coverage by module, and whether the
+harness itself changed in between — and `render --write-docs` rewrites the block
+below, which `tests/test_suite_report.py` holds to the latest report. The
+`/test-report` skill runs it end to end with a pre-test (`test-preflight`) and a
+post-test (`test-debrief`) agent; the agents read the figures and compute none.
+Coverage costs time, so these walls compare only with each other.
+
+<!-- suite-report:begin (generated by `python -m manamap.suite_report render --write-docs`; do not edit) -->
+
+Measured 2026-10-05 at `2156ec90` (uncommitted changes in src/ or tests/), 8 CPUs, Python 3.10.0, by `make test-report` — the tracked record is `data/test_reports/2026-10-05-2156ec90.json`.
+
+| tier | collected | passed | skipped | xfailed | failed | wall | in tests |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| fast (uncached, under coverage) | 4,036 | 4,024 | 9 | 1 | 2 | **9:57** | 34:10 |
+| fleet (uncached, under coverage) | 142 | 137 | 3 | 2 | 0 | **23:21** | 178:07 |
+
+Line coverage: the fast tier alone **73.5%**; both measured tiers **76.0%** of 30,797 statements in `src/manamap/` (7,394 never run).
+
+The five slowest tests: `test_net_change_matches_a_fresh_run[edgar-vampires@drain-v1]` 304s; `test_net_change_matches_a_fresh_run[goblin-storm@copy-burst-v1]` 283s; `test_every_tracked_simulation_run_passes_its_validator[edgar-vampires]` 218s; `test_net_change_matches_a_fresh_run[sharknado@momentum-v1]` 211s; `test_net_change_matches_a_fresh_run[edgar-vampires@entry-v1]` 188s.
+
+<!-- suite-report:end -->
 
 ## Markers
 
 Registered in `pyproject.toml`:
 
-| marker | means | default run |
+| marker | means | tier |
 |---|---|---|
-| `slow` | re-runs a 10,000-game producer, or thousands of goldfish games | excluded — fleet tier |
-| `fleet` | re-derives a calibrated constant across every tracked deck | excluded — fleet tier |
-| `browser` | drives a real Chromium via playwright | excluded — `make test-browser` |
-| `serial_only` | asserts a wall-clock budget; run alone, `-n0` | excluded with `browser` |
-| `forge` | runs the Forge engine headless | excluded — opt in |
+| `unit` / `regression` / `integration` | the tier — assigned by `conftest.tier_of`; set by hand only to override it | itself |
+| `slow` | re-runs a 10,000-game producer, or thousands of goldfish games | regression |
+| `fleet` | re-derives a calibrated constant across every tracked deck | regression |
+| `browser` | drives a real Chromium via playwright | integration — `make test-browser` |
+| `serial_only` | asserts a wall-clock budget; run alone, `-n0` | integration, with `browser` |
+| `forge` | runs the Forge engine headless | integration — opt in |
+| `network` | reaches an outside service (Scryfall, EDHREC); none yet — every such test mocks it, and the weekly `corpus-gates` CI job is the real network leg | integration |
 
 ## Skip conditions (`tests/conftest.py`)
 

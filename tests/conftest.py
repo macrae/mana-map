@@ -159,6 +159,54 @@ _UNCHANGED_KEYS = {}                 # nodeid -> key, pending a passing result
 _CACHE_PREFIX = "manamap/unchanged"
 CACHED_SKIP = "cached: unchanged since the last passing run"
 
+# `--record-run PATH`: the raw input to `manamap.suite_report` (docs/testing.md,
+# "The measured report"). Inert unless the option is given.
+pytest_plugins = ["report_plugin"]
+
+
+# ── THE THREE TIERS (2026-10-05) ────────────────────────────────────────
+#
+# Every test is exactly one of `unit`, `regression` or `integration`, decided HERE
+# from what it touches — never by hand on 4,000 tests, and never by timing, which
+# flaps. An explicit `@pytest.mark.<tier>` (or a module `pytestmark`) wins.
+#
+#   integration  an outside system: a real browser, the Forge engine, the network.
+#   regression   the tracked fleet or corpus: a data gate (every `skipif` here is
+#                one — `requires_*`, `needs_*`), a fixture that reads real
+#                artifacts, the regenerate-and-compare cache, or `slow`/`fleet`.
+#   unit         everything else: inline data, no tracked artifact. Proven, not
+#                assumed: `make test-unit-isolated` runs the tier against an EMPTY
+#                data dir, and a unit test that fails there is mis-tiered.
+TIERS = ("unit", "regression", "integration")
+_INTEGRATION_MARKS = {"browser", "forge", "network"}
+_REGRESSION_MARKS = {"slow", "fleet"}
+#: Fixtures whose value IS tracked data (or the cache that compares against it).
+DATA_FIXTURES = {"unchanged", "data_dir", "deck", "slug", "corpus", "paper",
+                 "engine", "rulings_dir"}
+
+
+def tier_of(item):
+    """The tier a collected test belongs to (see the block above)."""
+    names = {m.name for m in item.iter_markers()}
+    explicit = names & set(TIERS)
+    if explicit:
+        assert len(explicit) == 1, f"{item.nodeid} is marked {sorted(explicit)}"
+        return explicit.pop()
+    if names & _INTEGRATION_MARKS:
+        return "integration"
+    if names & _REGRESSION_MARKS or "skipif" in names:
+        return "regression"
+    if DATA_FIXTURES & set(getattr(item, "fixturenames", ())):
+        return "regression"
+    return "unit"
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_collection_modifyitems(config, items):
+    # tryfirst: the tier must be on the item before `-m` deselects anything.
+    for item in items:
+        item.add_marker(getattr(pytest.mark, tier_of(item)))
+
 
 def pytest_addoption(parser):
     parser.addoption(

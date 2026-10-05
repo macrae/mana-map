@@ -34,6 +34,7 @@ def _write(dir_, name, seats, **extra):
 
 # ── the property that makes a pod safe to adopt ─────────────────────────────
 
+@pytest.mark.regression
 def test_a_pod_expands_to_the_same_run_id_as_the_flags_it_replaces():
     """`--pod standard` is a SPELLING, not a new measurement.
 
@@ -73,12 +74,14 @@ def test_a_pod_expands_to_the_same_run_id_as_the_flags_it_replaces():
     assert found, f"no record matches {pattern}"
 
 
+@pytest.mark.regression
 def test_the_standard_pod_is_the_three_decks_the_docs_name():
     assert pods.seats("standard") == ["giada-angels", "baylen-tokens", "abaddon"]
     assert pods.profiles("standard") is None, \
         "the standard pod expresses no profile opinion — --vs-profile decides"
 
 
+@pytest.mark.regression
 def test_the_vito_era_pod_exists_so_an_old_record_can_be_reproduced():
     """A superseded table is kept, not deleted — a record must stay replayable.
 
@@ -152,6 +155,7 @@ def test_the_resolver_passes_bare_flags_straight_through():
     assert got == ["a", "b"] and profiles is None
 
 
+@pytest.mark.regression
 def test_an_unknown_pod_names_the_ones_that_exist():
     with pytest.raises(SystemExit) as exc:
         forge.resolve_table(SimpleNamespace(vs=[], pod="no-such-pod"))
@@ -212,6 +216,7 @@ def test_composition_is_what_a_result_should_be_reported_by(sandbox):
     assert info["players"] == 3
 
 
+@pytest.mark.regression
 def test_every_pod_on_disk_loads():
     names = pods.available()
     assert len(names) >= 2, "the guard iterated almost nothing"
@@ -224,6 +229,7 @@ def test_every_pod_on_disk_loads():
 
 # ── the tables that ship ────────────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_the_pods_on_disk_cover_three_four_and_five_players():
     """Pod SIZE is a variable now, and the sizes are the ones actually played.
 
@@ -236,6 +242,7 @@ def test_the_pods_on_disk_cover_three_four_and_five_players():
     assert sizes["playgroup-small"] == 3, "Alex's is three"
 
 
+@pytest.mark.regression
 def test_the_playgroup_seats_each_say_where_they_came_from():
     """Two archetypes are the log's words and two are the pilot's.
 
@@ -257,6 +264,7 @@ def test_the_playgroup_seats_each_say_where_they_came_from():
     assert len(reds) >= 3, "goblin-storm 002: 'the red density took the game over'"
 
 
+@pytest.mark.regression
 def test_a_coverage_seat_never_claims_to_be_someones_deck():
     """`value-chains` is archetypes, and says so rather than implying a table."""
     doc = pods.load("value-chains")
@@ -265,6 +273,7 @@ def test_a_coverage_seat_never_claims_to_be_someones_deck():
     assert not any(s.get("bracket") for s in doc["seats"])
 
 
+@pytest.mark.regression
 def test_every_seat_a_pod_names_exists_on_disk():
     """A pod naming a seat that is not fetched fails at the JVM, late and loudly.
 
@@ -285,6 +294,7 @@ def test_every_seat_a_pod_names_exists_on_disk():
 
 # ── the table a record faced ────────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_a_record_says_which_table_it_faced():
     """Until pods existed, the only record of the table was the run id.
 
@@ -334,6 +344,7 @@ def test_most_of_the_record_faced_the_table_the_docs_call_unfair():
         "if this flips, the fleet has been re-measured and the caveat is stale"
 
 
+@pytest.mark.regression
 def test_an_ad_hoc_table_matches_nothing_rather_than_the_nearest_pod():
     """A near miss must be no match. Matching loosely would mislabel a record."""
     assert pods.match(["giada-angels", "baylen-tokens"]) is None
@@ -342,6 +353,7 @@ def test_an_ad_hoc_table_matches_nothing_rather_than_the_nearest_pod():
     assert pods.match(["giada-angels", "baylen-tokens", "abaddon"]) == "standard"
 
 
+@pytest.mark.regression
 def test_a_stamped_pod_is_not_overwritten_by_a_reading():
     """`--analyze` backfills a reading and must never downgrade a fact."""
     stamped = pods.record_for("standard", [])
@@ -352,6 +364,7 @@ def test_a_stamped_pod_is_not_overwritten_by_a_reading():
 
 # ── calibration: what the null actually is ──────────────────────────────────
 
+@pytest.mark.regression
 def test_a_measured_pod_reports_a_null_that_is_not_one_over_n():
     """The reason this exists. A four-player win rate reads against 0.25 unless
     something says otherwise, and until now nothing did.
@@ -376,6 +389,7 @@ def test_a_measured_pod_reports_a_null_that_is_not_one_over_n():
     assert sum(r["wins"] for r in cal["seats"]) <= cal["games"] * len(cal["seats"])
 
 
+@pytest.mark.regression
 def test_the_table_that_replaced_the_unfair_one_is_also_uneven():
     """`vito-era` was dropped for being unfair. `standard` is uneven too.
 
@@ -411,6 +425,7 @@ def test_an_unplayed_table_says_it_has_no_null_rather_than_assuming_one():
     assert "subject_null" not in cal, "an unmeasured null must not be a number"
 
 
+@pytest.mark.regression
 def test_the_calibration_carries_the_limits_of_its_own_pooling():
     """It pools runs that differ in N, clock, profile and subject deck."""
     cal = pods.calibration("vito-era")
@@ -421,6 +436,7 @@ def test_the_calibration_carries_the_limits_of_its_own_pooling():
     assert "Truncated" in text
 
 
+@pytest.mark.regression
 def test_calibration_is_derived_and_stores_nothing():
     """It moves as runs accumulate, so storing it would date immediately."""
     doc = pods.load("standard")
@@ -429,6 +445,7 @@ def test_calibration_is_derived_and_stores_nothing():
         assert "rate" not in seat and "win_rate" not in seat
 
 
+@pytest.mark.regression
 def test_a_seat_that_won_nothing_reports_a_share_of_zero_not_none():
     """`0.0` is falsy AND a measurement.
 
@@ -446,6 +463,7 @@ def test_a_seat_that_won_nothing_reports_a_share_of_zero_not_none():
     assert all(r["share_of_fair"] is not None for r in cal["seats"])
 
 
+@pytest.mark.regression
 def test_a_null_pooled_from_one_deck_says_so():
     """A baseline from a single deck is that deck's record wearing the table's name.
 
@@ -503,6 +521,7 @@ def test_a_branch_subject_is_keyed_SUBJECT_not_as_a_phantom_pod_seat():
         f"pooled {next(iter(opp.values()))} — the mis-keying is back")
 
 
+@pytest.mark.regression
 def test_the_null_names_the_population_it_excludes():
     """AN MDE IS SCALED AGAINST THIS FIGURE, so a reader has to know which runs are in
     it. The default glob is one level deep and had never said so, while the docstring

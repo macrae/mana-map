@@ -55,6 +55,7 @@ def test_cli_refuses_a_command_that_is_not_on_the_allow_list():
             serve._cli(argv)
 
 
+@pytest.mark.regression
 def test_cli_refuses_a_write_flag_on_a_command_it_would_otherwise_run():
     """THE SECOND GATE. `deck-info` IS on the allow-list and `deck-info --write`
     must still be refused — a read-only command can grow a writing flag later
@@ -77,6 +78,7 @@ def test_every_allow_listed_name_is_a_real_pilot_command():
     assert len(serve.CLI_READONLY) >= 10
 
 
+@pytest.mark.regression
 def test_cli_accepts_the_pilot_prefix_because_argv_carries_it():
     """The client forwards `sys.argv[2:]`, but a caller pasting a full command
     line is the obvious mistake and costs nothing to absorb."""
@@ -162,6 +164,7 @@ def _positional_choices(command):
             if not a.option_strings and a.choices}
 
 
+@pytest.mark.regression
 def test_a_positional_write_cannot_reach_the_api():
     """THE GATE READ FLAGS AND THE WRITE WAS A WORD.
 

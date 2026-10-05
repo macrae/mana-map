@@ -13,6 +13,10 @@ import pytest
 from conftest import A_BRANCH, requires_branch, requires_deck
 from manamap.pilot import candidates, diagnostic
 
+# Regression tier: these read the tracked fleet without a data gate
+# (found by `make test-unit-isolated`, docs/testing.md).
+pytestmark = pytest.mark.regression
+
 DOUBLER = ("If an effect would create one or more tokens under your control, "
            "it creates twice that many of those tokens instead.")
 

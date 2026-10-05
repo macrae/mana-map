@@ -13,7 +13,7 @@
 
 ---
 
-- [ ] `make test` passes
+- [ ] `make prepush` passes (unit + its isolation proof + regression; CI runs it too)
 - [ ] `make test-fresh` passes, if you touched anything the test cache covers
       (the artifact/manual freshness tests, the tracked-artifact validators)
 

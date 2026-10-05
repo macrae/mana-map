@@ -110,6 +110,7 @@ def test_a_real_draw_line_closes_its_game():
     assert games[0]["ms"] == 300004 and games[1]["winner"] == "Ai(3)-mm-opp-b"
 
 
+@pytest.mark.regression
 def test_every_tracked_run_accounts_for_all_its_games():
     """WON + DRAWN + UNFINISHED == PLAYED.
 
@@ -138,6 +139,7 @@ def test_every_tracked_run_accounts_for_all_its_games():
     assert checked >= 10, "the tracked runs have not been re-derived"
 
 
+@pytest.mark.regression
 def test_no_tracked_run_still_credits_a_truncated_game():
     """Held at rest over the committed records, so a future `--analyze` that
     reintroduces the bug is caught by the artifacts rather than by a reader."""

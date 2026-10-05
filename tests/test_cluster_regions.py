@@ -273,6 +273,7 @@ class TestOutputFormat:
             pytest.skip(f"{path.name} not generated (run `manamap cluster-regions`)")
         return json.loads(path.read_text(encoding="utf-8"))["regions"]
 
+    @pytest.mark.regression
     @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
     def test_every_l0_region_carries_the_required_fields(self, path):
         regions = self._regions(path)
@@ -282,6 +283,7 @@ class TestOutputFormat:
             missing = [f for f in self.L0_FIELDS if f not in region]
             assert not missing, f"{region.get('id')} lacks {missing}"
 
+    @pytest.mark.regression
     @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
     def test_every_l1_region_names_a_parent_that_exists(self, path):
         regions = self._regions(path)
@@ -293,6 +295,7 @@ class TestOutputFormat:
                 f"{region['id']} names parent {region.get('parent')!r}, which "
                 f"is not a region in this file")
 
+    @pytest.mark.regression
     @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
     def test_the_short_label_is_a_shortening(self, path):
         """`short` is what the map draws when a name will not fit. A `short`
@@ -307,6 +310,7 @@ class TestOutputFormat:
         assert checked > 10, f"only {checked} regions carry a short label"
 
     @pytest.mark.parametrize("path", REGION_PATHS, ids=lambda p: p.stem)
+    @pytest.mark.regression
     def test_the_artifact_round_trips_through_json(self, path):
         doc = json.loads(path.read_text(encoding="utf-8"))
         assert json.loads(json.dumps(doc)) == doc
@@ -330,12 +334,14 @@ class TestMembership:
             pytest.skip(f"{path.name} not generated (run `manamap cluster-regions`)")
         return json.loads(path.read_text(encoding="utf-8"))
 
+    @pytest.mark.regression
     def test_membership_covers_every_card(self, path):
         doc = self._load(path)
         n = doc["meta"]["card_count"]
         assert len(doc["membership"]["l0"]) == n
         assert len(doc["membership"]["l1"]) == n
 
+    @pytest.mark.regression
     def test_every_label_indexes_a_real_region(self, path):
         doc = self._load(path)
         ids = {r["id"] for r in doc["regions"]}
@@ -345,6 +351,7 @@ class TestMembership:
                     continue          # noise is a real answer, not a gap
                 assert f"l{level}_{cid}" in ids
 
+    @pytest.mark.regression
     def test_membership_counts_match_the_stored_counts(self, path):
         """The two halves of the artifact must agree, or a drill lights up the
         wrong number of cards from the same file that labelled the region."""
@@ -357,6 +364,7 @@ class TestMembership:
                     continue
                 assert by_id[f"l{level}_{cid}"]["count"] == seen
 
+    @pytest.mark.regression
     def test_regions_record_both_axes(self, path):
         doc = self._load(path)
         for region in doc["regions"]:

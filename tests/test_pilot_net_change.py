@@ -935,6 +935,7 @@ def test_net_change_refuses_to_measure_a_list_it_has_not_fetched(tmp_path, monke
     assert ok, "a freshly fetched branch must not be refused"
 
 
+@pytest.mark.regression
 def test_the_validator_refuses_a_report_about_a_list_that_moved():
     """The gate `validate-net-change` did not have, and the reason a stale
     report survived long enough to be proposed on.
@@ -1053,6 +1054,7 @@ def test_the_only_cumulative_series_says_so_in_its_name():
         "which of the two `damage @T10` reads")
 
 
+@pytest.mark.regression
 def test_changes_reports_the_NET_diff_not_the_staging_log():
     """A SUPERSEDED SWAP IS NOT A CHANGE, and reading `staged` published nine.
 
@@ -1457,6 +1459,7 @@ def test_pod_null_is_absent_not_defaulted():
     assert _pod_null("a-table-that-does-not-exist") is None
 
 
+@pytest.mark.regression
 def test_pod_null_reads_the_measured_calibration():
     """Drive the production lookup against the real calibration rather than
     restating 0.233, so a recalibration moves the test with the data.
@@ -1490,6 +1493,7 @@ def test_the_forge_block_prints_the_null_beside_the_mde():
     assert "the table's null" in src, "and print it beside the MDE it scales"
 
 
+@pytest.mark.regression
 def test_forge_never_pools_runs_made_under_different_card_overrides():
     """A RUN DESCRIBES THE HARNESS IT WAS PLAYED UNDER, not just the list.
 
@@ -1539,6 +1543,7 @@ def test_the_label_distinguishes_a_harness_from_a_table():
 
 
 
+@pytest.mark.regression
 def test_forge_never_pools_runs_flown_under_different_profiles():
     """A PROFILE IS A HARNESS TOO. The bucket key was `(pod, override_sha)` for eleven
     hours and pooled the branch's Default-override run (9/82) with its Experimental-

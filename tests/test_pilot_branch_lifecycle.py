@@ -822,6 +822,7 @@ def test_staging_on_a_proposed_branch_says_what_it_will_do(tmp_path, monkeypatch
 
 # ── #25: what the bill counts, and what `log` shows ─────────────────────────
 
+@pytest.mark.regression
 def test_a_card_held_only_by_a_broken_down_deck_is_free_not_contested():
     """`elsewhere` MEANT "in some other deck" AND WAS RENDERED AS A COST.
 
@@ -863,6 +864,7 @@ def test_a_card_held_only_by_a_broken_down_deck_is_free_not_contested():
     assert checked >= 10, f"only {checked} branches checked"
 
 
+@pytest.mark.regression
 def test_log_shows_the_staged_swaps_unstage_points_at():
     """`unstage` refuses with "No staged swap matches that — `log` lists them".
 
@@ -961,6 +963,7 @@ def test_every_branch_in_the_repo_balances_copies():
     assert checked >= 10, f"only {checked} branches checked — the loop found nothing"
 
 
+@pytest.mark.regression
 def test_a_forge_objective_names_its_pod_or_is_refused():
     """A Forge axis is a property of the list AT A TABLE: `forge.win_rate >= 0.25`
     is refused until it says `@standard-v3`, a goldfish axis with a pod is

@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test test-fleet prepush test-all test-browser test-fresh serve manuals clean check demo docs-sizes
+.PHONY: help setup test test-unit-isolated regression integration prepush test-all test-browser test-fresh test-report serve manuals clean check demo docs-sizes
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -67,22 +67,48 @@ setup: $(VENV)  ## Create .venv and install everything, in the order that works
 # did not check.
 PYTEST_ARGS ?=
 
-# TWO TIERS (2026-10-05). The fast tier is what you run all day; the fleet tier
-# re-runs every 10,000-game producer per deck and branch (`slow`) and re-derives
-# calibrated constants across the fleet (`fleet`), and is what runs before a push
-# and in CI. Runtimes are MEASURED in docs/testing.md, not restated here — this
-# line said ~20s for weeks while the real figure was 772s.
-test:  ## The inner loop: non-browser, parallel, cached (see docs/testing.md)
+# ── THE THREE TIERS (docs/testing.md; `tests/conftest.py` assigns them) ─────────
+# unit: no tracked data, ~1 min, the inner loop. regression: the tracked fleet and
+# corpus, every producer re-run. integration: a real browser, Forge, and the pages
+# rebuilding byte-identically. `prepush` is unit (+ its isolation proof) + regression.
+test:  ## THE UNIT TIER: no tracked data, ~1 min — the inner loop (a bare pytest)
 	$(PYTEST) $(PYTEST_ARGS)
 
-test-fleet:  ## The slow tier: every producer re-run per deck + fleet constants
-	$(PYTEST) -m "slow or fleet" $(PYTEST_ARGS)
+# The proof that the unit tier IS one: the same tests against an EMPTY data dir.
+# A unit test that fails or skips here reads tracked data and must be marked
+# `regression` (tests/test_tiers.py holds the classifier to its rules).
+test-unit-isolated:  ## The unit tier against an EMPTY data dir — proves it reads no tracked data
+	@tmp=$$(mktemp -d) && MANAMAP_DATA_DIR=$$tmp $(PYTEST) --no-test-cache -p no:cacheprovider $(PYTEST_ARGS); \
+		rc=$$?; rm -rf $$tmp; exit $$rc
 
-prepush: test test-fleet  ## Both tiers — run before every push
+regression:  ## THE REGRESSION TIER: the tracked fleet + corpus, every producer re-run (~12 min uncached)
+	$(PYTEST) -m regression $(PYTEST_ARGS)
 
-test-fresh:  ## Both tiers with nothing served from the cache — trust this one
+integration:  ## THE INTEGRATION TIER: browser + Forge + the pages rebuild byte-identically
+	$(MAKE) test-browser
+	$(PYTEST) -m "integration and not browser" -n0 $(PYTEST_ARGS)
+	$(MAKE) manuals
+	git diff --exit-code -- manuals/ data/decks/
+
+prepush: test test-unit-isolated regression  ## unit + its isolation proof + regression — before every push
+
+test-fresh:  ## unit + regression with nothing served from the cache — trust this one
 	$(PYTEST) --no-test-cache
-	$(PYTEST) --no-test-cache -m "slow or fleet"
+	$(PYTEST) --no-test-cache -m regression
+
+# THE MEASURED REPORT (docs/testing.md). unit and regression, nothing from the
+# cache, under coverage, each recorded with `--record-run`; a failing tier still
+# records (its exit status is in the report) and `record` then exits non-zero.
+# Coverage costs time, so these walls compare only with other `test-report` walls.
+REPORT_RAW := .pytest_cache/suite-report
+test-report:  ## unit + regression uncached + coverage -> data/test_reports/ (~30 min)
+	rm -rf $(REPORT_RAW) && mkdir -p $(REPORT_RAW)
+	-COVERAGE_FILE=$(REPORT_RAW)/.coverage $(PYTEST) --no-test-cache --record-run=$(REPORT_RAW)/unit.json \
+		--cov=manamap --cov-report=json:$(REPORT_RAW)/coverage-unit.json
+	-COVERAGE_FILE=$(REPORT_RAW)/.coverage $(PYTEST) --no-test-cache -m regression \
+		--record-run=$(REPORT_RAW)/regression.json \
+		--cov=manamap --cov-append --cov-report=json:$(REPORT_RAW)/coverage.json
+	$(PY) -m manamap.suite_report record $(REPORT_RAW)
 
 test-browser:  ## The playwright suite (~4 min; needs `make setup`)
 	$(PYTEST) -m "browser and not serial_only" -n 4
@@ -93,7 +119,7 @@ test-browser:  ## The playwright suite (~4 min; needs `make setup`)
 	# read 35 ms against a 30 ms limit with the renderer untouched.
 	$(PYTEST) -m "browser and serial_only" -n0
 
-test-all: test-fresh test-browser  ## Everything, uncached. What CI would run if it ran it all.
+test-all: test-fresh test-unit-isolated integration  ## Every tier, uncached — what CI runs across its jobs
 
 check: prepush  ## Alias for `make prepush` — what to run before opening a PR
 

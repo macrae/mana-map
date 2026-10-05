@@ -116,6 +116,7 @@ def test_load_frame_returns_none_without_a_corpus(monkeypatch, tmp_path):
         card_pool.card_flags()
 
 
+@pytest.mark.regression
 def test_card_keywords_is_a_corpus_view_with_printed_stats_and_unknown_power_as_none():
     """`card_keywords` (2026-09-30): keywords, power and toughness on demand through the
     one reader of cards.csv. A `*` power is None, never 0 — a characteristic-defining

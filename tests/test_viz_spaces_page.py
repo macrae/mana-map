@@ -12,6 +12,10 @@ import pytest
 
 from manamap.config import DATA_DIR
 
+# Regression tier: these read the tracked fleet without a data gate
+# (found by `make test-unit-isolated`, docs/testing.md).
+pytestmark = pytest.mark.regression
+
 PAGE = DATA_DIR.parent / "viz" / "spaces.html"
 SCRIPT = DATA_DIR.parent / "viz" / "js" / "spaces-view.js"
 PROJECTIONS = DATA_DIR / "eval" / "space_projections.json"

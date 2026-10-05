@@ -225,8 +225,8 @@ that AI agents drive from the outside, and most of the bench (`deck-info`, `deck
 The agent routines are what cost tokens — the doctor and its skeptic, the resolver and its
 checker, the engineer and its critic, the strategy researcher, the notes writer, the handbook's
 procedures author, the debrief, the captain's log and the cartographer — and an invocation
-cache is what makes iterating on them affordable. Eighteen agent charters live in
-`.claude/agents/`, twenty-one skills in `.claude/skills/`. `docs/agent-cost.md` has the
+cache is what makes iterating on them affordable. Twenty agent charters live in
+`.claude/agents/`, twenty-three skills in `.claude/skills/`. `docs/agent-cost.md` has the
 breakdown; **two deliberate opt-in exceptions** are the only LLM calls reachable from Python
 itself: `serve.py`'s `ask` bridge, which shells out to `claude -p` as a polled job, and
 `mm ask`, whose SDK is an optional extra the core install does not pull.
@@ -782,11 +782,11 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-make test          # the fast tier — what you run all day
-make test-fleet    # the slow tier: every producer re-run per deck, fleet constants
-make prepush       # both; before a push. CI runs both.
-make test-browser  # the playwright suite, local only
-pytest -m forge    # one real Forge game; needs ~/.mana-map/forge
+make test          # UNIT: no tracked data, ~1 min — what you run all day
+make regression    # REGRESSION: the tracked fleet + corpus, every producer re-run
+make integration   # INTEGRATION: a real browser, Forge, the pages rebuilt byte-identically
+make prepush       # unit (+ its isolation proof) + regression; before a push. CI runs it.
+make test-report   # measure it: counts, time, coverage -> data/test_reports/
 ```
 
 **Counts and runtimes live in `docs/testing.md` and nowhere else**, with the markers, the

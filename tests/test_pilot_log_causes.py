@@ -107,6 +107,7 @@ def test_add_with_a_cause_goes_through_the_same_writer(tmp_path, monkeypatch):
 
 # ── the gate ─────────────────────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_the_validator_is_silent_on_every_tracked_file():
     """A VALIDATOR THAT FIRES ON CORRECT DATA IS WORSE THAN NO VALIDATOR, and
     the only way to know is to measure it against the whole fleet."""
@@ -130,6 +131,7 @@ def test_the_validator_catches_a_cause_that_contradicts_its_result():
     assert any("other direction" in e for e in errs), errs
 
 
+@pytest.mark.regression
 def test_every_logged_game_on_a_played_deck_has_a_stated_cause():
     """The backfill, held at rest. A cause is the pilot's claim about their own
     game — nothing derives it — so a game without one is a row the dossier's

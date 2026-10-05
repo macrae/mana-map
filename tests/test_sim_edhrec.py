@@ -58,6 +58,7 @@ def test_the_slug_and_url_forms():
     assert edhrec.url_for("edgar-markov").endswith("/commanders/edgar-markov.json")
 
 
+@pytest.mark.regression
 def test_the_validator_fails_on_an_unknown_name_a_bad_url_and_a_synergy_out_of_range(page, tmp_path, monkeypatch):
     from manamap import config
     from manamap.pilot import validate_edhrec_cards as v

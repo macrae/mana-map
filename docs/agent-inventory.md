@@ -20,9 +20,9 @@ The **Python renderer** was frozen at the time and was deleted on 2026-09-13; th
 manifest half of `build_index.py` lives on as `deck_manifest.py`, which writes the
 `data/decks/index.json` the whole frontend reads.
 
-So Epic D is a **re-grouping of 18 charters**, not an excavation.
+So Epic D was a **re-grouping of 18 charters**, not an excavation.
 
-## Agents — 18 charters in `.claude/agents/`
+## Agents — 20 charters in `.claude/agents/`
 
 Every one opens by reading `.claude/agents-common.md` (the shared contract);
 `pipeline-runner` and `viz-dev` are exempt there by name.
@@ -47,6 +47,8 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 | `deck-cartographer` | city names on `deck_map.json`, names only | `publish-deck` | ambiguous — demoted to OPTIONAL by the 2026-08-19 audit; not a `deck_status.STAGES` row |
 | `pipeline-runner` | runs pipeline steps via the CLI | **no skill spawns it** | see below |
 | `viz-dev` | frontend work under `viz/` | **no skill spawns it** | see below |
+| `test-preflight` | nothing — a GO / WAIT / FIX verdict over `suite_report preflight` (collisions, plugins, dirty source, harness changes since the last report); exempt from `agents-common.md` (added 2026-10-05) | `test-report` | infrastructure |
+| `test-debrief` | nothing tracked — a reading of `suite_report diff` that may cite only finding ids and quote only their figures, plus a proposed diff to docs/testing.md's hand-written table; the generated block is code's (added 2026-10-05) | `test-report` | infrastructure (the test-suite counterpart of `sim-debrief`) |
 
 ### The two "orphans" are invocable, so they are not deletable
 
@@ -60,7 +62,7 @@ and D-2 is explicit that "nothing gets deleted before its useful capability has
 a new home". They are recorded here as *never spawned by a skill* and left in
 place; retiring them is a decision, not a cleanup.
 
-## Skills — 22 in `.claude/skills/`
+## Skills — 23 in `.claude/skills/`
 
 Deck-facing, and the ones a consolidation has to re-home:
 
@@ -79,7 +81,8 @@ Deck-facing, and the ones a consolidation has to re-home:
 
 Infrastructure, not deck-facing and not part of the consolidation:
 `run-pipeline`, `run-tests`, `retrain`, `refresh-corpus`, `regen-analysis`,
-`serve-viz`.
+`serve-viz`, and `test-report` (added 2026-10-05), which spawns `test-preflight` →
+`make test-report` → `test-debrief` over the findings `manamap.suite_report` computes.
 
 ## Front-end surfaces that depend on the harness
 

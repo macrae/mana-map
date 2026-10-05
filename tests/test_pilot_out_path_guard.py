@@ -40,6 +40,7 @@ def test_a_path_carrying_the_slug_is_allowed(tmp_path):
     assert out.name == "audit-heliod.json"
 
 
+@pytest.mark.regression
 def test_a_bare_filename_still_means_the_decks_own_directory():
     """Unchanged behaviour: no separator means the deck's own folder, which is
     already unambiguous — two decks cannot share it."""

@@ -30,6 +30,10 @@ from conftest import requires_data
 from manamap.analysis import eval_embeddings
 from manamap.config import SIMILARITY_GOLDEN_PATH
 
+# Regression tier: these read the tracked fleet without a data gate
+# (found by `make test-unit-isolated`, docs/testing.md).
+pytestmark = pytest.mark.regression
+
 # Measured on the shipped artifacts, test split (see docs/architecture.md).
 # Floors sit below the measurement, not at it — this catches breakage, not noise.
 MEASURED = {

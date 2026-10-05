@@ -114,6 +114,7 @@ def test_every_weighted_block_is_maskable():
         CS.serialize(_card(), block)
 
 
+@pytest.mark.regression
 def test_real_cards_serialise_without_leaking_pandas_sentinels():
     import pandas as pd
     import re

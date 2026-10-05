@@ -1,10 +1,11 @@
 name: tests
 
-# The non-browser suite on every push and pull request. Deliberately NOT the
-# browser suite: it needs a chromium download, takes four minutes, and asserts
-# on real rendering under contention — which is how its five historical flakes
-# were all born. It stays a local pre-push gate (`make test-browser`), and the
-# PR template asks whether you ran it.
+# THE THREE TIERS (docs/testing.md). `test` runs unit (+ its isolation proof) and
+# regression on every push and PR — the gate. `integration` runs the browser suite
+# in its own job (since 2026-10-05; it used to be local-only): a chromium download
+# and real rendering, so it is separate and its two workers stay at the suite's own
+# -n 4 / serial split. Forge has no engine here and stays local. The network leg is
+# `corpus-gates`, weekly: the Scryfall download is the outside service.
 #
 # There is no cache flag here and none is needed. The regenerate-and-compare
 # cache lives in `.pytest_cache/`, which is gitignored, so a fresh checkout has
@@ -92,15 +93,14 @@ jobs:
           manamap pilot download-rules
           manamap pilot build-rules-db
 
-      - name: Test
+      - name: Test (unit tier)
         # `make test`, NOT a bare pytest — CI must exercise the entry point
         # CONTRIBUTING tells people to use, or the Makefile is the one thing
         # nothing checks. It was, and `make manuals` broke on the first run
         # because it assumed a `.venv` that CI never creates.
         #
-        # The fast suite. Most data-gated tests still run — the artifacts they
-        # need are tracked on purpose. `-n auto` is already the default in
-        # pyproject.
+        # The unit tier: no tracked data, about a minute. `-n auto` is already
+        # the default in pyproject.
         #
         # `-rs` PRINTS THE SKIP REASONS, because "CI is green" used to mean
         # "everything ran" and it did not: the corpus (`data/cards.csv`,
@@ -109,12 +109,18 @@ jobs:
         # cannot check, it must at least NAME — see the scheduled job below.
         run: make test PYTEST_ARGS=-rs
 
-      - name: Test (fleet tier)
-        # The `slow` and `fleet` markers, excluded from `make test` since
-        # 2026-10-05: every 10,000-game producer re-run per deck and branch, and
-        # the constants calibrated across the fleet. Most need the corpus and
-        # skip here (`-rs` names them); the weekly job below runs them for real.
-        run: make test-fleet PYTEST_ARGS=-rs
+      - name: The unit tier reads no tracked data
+        # The same tests against an EMPTY data dir. A failure here is a test that
+        # reads the fleet without saying so — mark it `regression`.
+        run: make test-unit-isolated
+
+      - name: Test (regression tier)
+        # The tracked fleet and corpus: every artifact validator, the 10,000-game
+        # producers re-run per deck and branch, the constants calibrated across
+        # the fleet. Most data-gated tests run — the artifacts are tracked on
+        # purpose; what needs the corpus skips (`-rs` names it) and the weekly
+        # job below runs it for real.
+        run: make regression PYTEST_ARGS=-rs
 
       - name: The manuals and version lists must still rebuild byte-identically
         # Cheap (9 s) and it is the project's central determinism claim, so it
@@ -129,6 +135,33 @@ jobs:
         run: |
           make manuals
           git diff --exit-code -- manuals/ data/decks/
+
+  # ── THE INTEGRATION TIER: the pages, in a real browser ────────────────────
+  #
+  # Every push. The viz pages boot in chromium against a real server and assert on
+  # what rendered — the only tests that catch a frontend regression. The manuals
+  # byte-diff (the other half of "the pages publish correctly") runs in `test`
+  # above, after the suite, where it always has.
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install llvmlite==0.41.1 numba==0.58.1
+          pip install -e ".[dev]"
+          python -m playwright install --with-deps chromium
+      - name: The browser suite
+        run: make test-browser
 
   # ── THE GATES A PER-PUSH RUN CANNOT REACH ────────────────────────────────
   #
@@ -177,4 +210,4 @@ jobs:
       - name: Every gate, including the ones a push cannot reach
         run: |
           make test PYTEST_ARGS=-rs
-          make test-fleet PYTEST_ARGS=-rs
+          make regression PYTEST_ARGS=-rs

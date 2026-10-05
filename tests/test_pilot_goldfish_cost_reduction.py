@@ -253,6 +253,7 @@ def test_a_scaling_dork_is_seen_at_all():
         assert got["produces"] >= 1, name
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize("name,why", [
     ("Charmed Pendant", "pays with a mill, so it is not a repeatable rate"),
     ("Idol of False Gods", "makes a token that sacrifices itself — the Jeweled "
@@ -347,6 +348,7 @@ def test_a_scaling_dork_is_priced_from_the_board_and_never_overstated():
 
 # ── a changeling is every creature type, in every zone ───────────────────
 
+@pytest.mark.regression
 def test_a_changeling_is_every_creature_type():
     """"Changeling (This card is every creature type.)" is a rules fact, and it
     holds in EVERY ZONE — so a changeling SPELL on the stack is a Dragon spell
@@ -369,6 +371,7 @@ def test_a_changeling_is_every_creature_type():
     assert len(every) > 100, "a changeling answers the corpus's whole type list"
 
 
+@pytest.mark.regression
 def test_a_changeling_takes_the_commanders_discount():
     """The consequence, priced. A {1} changeling under an eminence commander
     costs nothing, and the floor is the coloured pip count as always."""

@@ -145,6 +145,7 @@ def test_every_signal_the_model_sets_is_read_by_something():
         "is a claim the model must act on:\n  " + "\n  ".join(dead))
 
 
+@pytest.mark.regression
 def test_no_aggregate_pools_runs_against_different_pods():
     """A5: A WIN RATE IS AGAINST SOMEBODY.
 

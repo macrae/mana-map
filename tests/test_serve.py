@@ -76,6 +76,7 @@ def test_health_is_cheap_and_says_yes():
     assert serve.call("health", {}) == {"ok": True, "api": 1}
 
 
+@pytest.mark.regression
 def test_the_agent_list_is_read_from_disk():
     """Read rather than transcribed, for the reason every registry in this repo
     is read: a hardcoded list is a second place to remember, and it is the one
@@ -498,6 +499,7 @@ def test_the_page_may_draft_an_authored_file_but_not_author_one():
     assert "judgements somebody has to make" in str(exc.value)
 
 
+@pytest.mark.regression
 def test_a_draft_never_overwrites_what_is_already_there():
     """The authored file is the one thing no command can rebuild, and the page
     is the caller least able to know whether it was edited."""

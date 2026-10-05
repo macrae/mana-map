@@ -162,6 +162,7 @@ def test_the_parser_takes_the_owner_suffix_and_ignores_its_absence():
                                "Zone Change: B (2) was put into Graveyard from Battlefield. owner X\n"]) == 1
 
 
+@pytest.mark.regression
 def test_the_tracked_manifest_registers_the_source_it_ships_with():
     """The real data/forge_patches/: the manifest's source sha is the sha of the .java
     beside it, so an edited source that was never rebuilt is visible."""

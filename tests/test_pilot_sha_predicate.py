@@ -316,6 +316,7 @@ def test_everything_regen_rebuilds_is_on_the_status_board():
         + "\n  ".join(invisible))
 
 
+@pytest.mark.regression
 def test_the_registries_name_artifacts_that_exist_on_a_real_deck():
     """A registry entry for a file nothing writes is a permanent GATE row that
     can never clear — the shape `deck_status.ADDED_2026_08` exists to make

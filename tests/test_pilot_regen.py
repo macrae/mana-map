@@ -44,6 +44,7 @@ def test_every_stage_names_a_real_module_with_a_main():
     assert checked >= 6
 
 
+@pytest.mark.regression
 def test_net_change_is_offered_for_branches_only():
     """`net-change` compares a branch AGAINST the deck, so there is nothing for
     it to say about the deck alone. Without the flag it would be planned for
@@ -70,6 +71,7 @@ def test_only_accepts_every_stage_it_advertises():
         assert all(r[0] == stage for r in rows)
 
 
+@pytest.mark.regression
 def test_a_dry_run_writes_nothing(tmp_path, monkeypatch):
     """`--dry-run` is the first thing anyone will type at a command that
     rewrites 72 tracked files, so it had better be inert."""
@@ -79,6 +81,7 @@ def test_a_dry_run_writes_nothing(tmp_path, monkeypatch):
     assert any("dry-run" in line for line in lines)
 
 
+@pytest.mark.regression
 def test_slug_scopes_the_plan_to_one_deck():
     everything = regen.plan()
     if not everything:
@@ -90,6 +93,7 @@ def test_slug_scopes_the_plan_to_one_deck():
         assert {s for s, _b in found} == {slug}
 
 
+@pytest.mark.regression
 def test_a_retired_deck_is_not_regenerated(monkeypatch):
     """A retired deck's artifacts are HISTORY, NOT CLAIMS — the same rule the
     freshness gates follow. Re-introducing the bug: make `is_retired` always
@@ -114,6 +118,7 @@ def test_the_args_shim_reports_unset_flags_as_absent_not_as_an_error():
     assert args.some_flag_nobody_set is None
 
 
+@pytest.mark.regression
 def test_regen_bootstraps_a_derived_artifact_it_is_missing():
     """A REFRESHER THAT CANNOT CREATE HIDES ITS OWN GAPS.
 
@@ -154,6 +159,7 @@ def test_regen_bootstraps_a_derived_artifact_it_is_missing():
     assert checked >= 2
 
 
+@pytest.mark.regression
 def test_only_a_sleeved_deck_is_built_automatically():
     """SLEEVED IS BUILT; ON THE BENCH IS TRIGGERED BY HAND.
 
@@ -220,6 +226,7 @@ def test_a_branch_is_never_bootstrapped():
             f"{slug}@{branch} is planned for an artifact it does not have")
 
 
+@pytest.mark.regression
 def test_the_sweep_refreshes_every_live_deck_that_already_has_the_artifact():
     """WHATEVER IS GATED MUST BE SWEPT. The rule this replaced said the opposite.
 
@@ -276,6 +283,7 @@ def test_the_sweep_refreshes_every_live_deck_that_already_has_the_artifact():
             f"regression it guards needs one on disk")
 
 
+@pytest.mark.regression
 def test_a_retired_deck_is_still_never_swept_even_holding_the_artifact():
     """Widening the sweep to every LIVE deck must not widen it to a dead one.
 
@@ -301,6 +309,7 @@ def test_a_retired_deck_is_still_never_swept_even_holding_the_artifact():
     assert checked >= 1, "no retired deck with the artifact to prove this against"
 
 
+@pytest.mark.regression
 def test_naming_a_deck_is_the_manual_trigger_and_works_on_any_deck():
     """`--slug` must reach a BENCH deck, or the rule above becomes "you may
     never regenerate a deck you have not sleeved" — which is not the rule.
@@ -330,6 +339,7 @@ def test_naming_a_deck_is_the_manual_trigger_and_works_on_any_deck():
     assert all(s == slug for s, _b in rows[0][3]), rows
 
 
+@pytest.mark.regression
 def test_an_archived_deck_is_never_swept_or_named_into_a_rebuild():
     """History is frozen. `is_retired` already excluded these; this pins it so a
     later change to the sleeved rule cannot quietly re-admit them."""

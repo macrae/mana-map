@@ -19,6 +19,10 @@ from manamap.sim import experiment as ex
 from manamap.pilot import deck_history as dh
 from conftest import ROOT
 
+# Regression tier: these read the tracked fleet without a data gate
+# (found by `make test-unit-isolated`, docs/testing.md).
+pytestmark = pytest.mark.regression
+
 SLUG = "xdeck"
 V1 = "1 Radagast of Rhosgobel *CMDR*\n1 Craterhoof Behemoth\n30 Forest\n"
 V2 = V1.replace("Craterhoof Behemoth", "Hornet Queen")

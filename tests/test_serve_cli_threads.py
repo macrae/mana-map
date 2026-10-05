@@ -37,6 +37,7 @@ import threading
 import time
 
 from manamap import serve
+import pytest
 
 
 def test_redirect_stdout_is_process_global_not_per_thread():
@@ -70,6 +71,7 @@ def test_redirect_stdout_is_process_global_not_per_thread():
     assert got["A"] == "", "A should have captured nothing — its output went to B"
 
 
+@pytest.mark.regression
 def test_concurrent_cli_calls_do_not_swap_their_output():
     """The real thing, through `serve._cli`, with two different decks.
 

@@ -49,6 +49,7 @@ def test_every_channel_names_a_real_flag_or_is_always_on():
     assert checked >= 4
 
 
+@pytest.mark.regression
 def test_dark_is_per_channel_not_per_card(monkeypatch):
     """THE BUG THIS SHIPPED WITH FOR ONE ITERATION. Nearly every creature feeds
     `bodies`, which is always on, so "seen if anything is active" reported a
@@ -71,6 +72,7 @@ def test_dark_is_per_channel_not_per_card(monkeypatch):
     assert any(r["active"] for r in dark), "no dark card has an active channel"
 
 
+@pytest.mark.regression
 def test_a_deck_with_a_flag_on_is_not_dark_for_that_channel():
     """The control. Without it the test above passes on a broken analyzer that
     calls everything dark."""
@@ -82,6 +84,7 @@ def test_a_deck_with_a_flag_on_is_not_dark_for_that_channel():
                 f"{row['name']}: {channel} is dark but {flag} is on")
 
 
+@pytest.mark.regression
 def test_the_declaration_is_resolved_the_way_the_simulation_resolves_it():
     """RE-INTRODUCING A REAL BUG. `goldfish` reads the declaration through
     `common.deck_file`, which FALLS BACK from a branch to the deck — a branch
@@ -108,6 +111,7 @@ def test_the_declaration_is_resolved_the_way_the_simulation_resolves_it():
             f"{slug}@{branch} resolved a different declaration than the deck")
 
 
+@pytest.mark.regression
 def test_states_are_exhaustive_and_exclusive():
     report = _report()
     counts = report["counts"]
@@ -127,6 +131,7 @@ def test_the_headline_is_empty_when_nothing_is_dark_and_names_the_branch():
     assert "3 of 9" in line and "combat" in line and "--branch b1" in line
 
 
+@pytest.mark.regression
 def test_an_invisible_card_is_not_reported_as_dark():
     """A removal spell in a resource model is CORRECTLY invisible, and calling
     that a defect would make the report noise."""
@@ -238,6 +243,7 @@ def test_the_modelled_trigger_set_matches_what_goldfish_branches_on():
 
 # ── read correctly, never played ────────────────────────────────────────────
 
+@pytest.mark.regression
 def test_no_deck_computes_an_effect_it_never_gets_to_apply():
     """A CARD CAN BE READ CORRECTLY AND NEVER CAST.
 
@@ -294,6 +300,7 @@ def test_no_deck_computes_an_effect_it_never_gets_to_apply():
             for s, v in offenders.items()))
 
 
+@pytest.mark.regression
 def test_a_mass_animator_feeds_the_combat_channel_and_is_castable():
     """Opalescence and Starfield of Nyx were INVISIBLE to this report on the branch
     built around them (zur-enchantress/best-v1, 2026-09-09) while `goldfish` had

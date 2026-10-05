@@ -249,6 +249,7 @@ def test_the_validator_catches_a_script_and_a_dangling_reference():
     assert any("did not render" in e for e in errors)
 
 
+@pytest.mark.regression
 def test_make_manuals_renders_the_handbook():
     """THE GATE THAT COULD NOT FAIL.
 

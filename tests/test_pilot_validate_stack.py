@@ -461,6 +461,7 @@ def test_the_check_does_not_fire_across_the_committed_fleet():
         f"fires on correct data teaches its reader to skip the output.")
 
 
+@pytest.mark.regression
 def test_stale_cross_reference_is_advisory_never_an_error():
     """A resolution gets three iterations and no more, so a cosmetic pointer must
     not be able to condemn an artifact whose rules and arithmetic a checker has

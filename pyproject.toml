@@ -43,7 +43,7 @@ dependencies = [
 # They are fixed and one test is quarantined as `serial_only`. Nothing else was
 # needed: `viz_server` already picks a free port per session and `browser` is
 # session-scoped, so each xdist worker gets its own of both.
-dev = ["pytest", "pytest-xdist", "playwright"]
+dev = ["pytest", "pytest-xdist", "pytest-cov", "playwright"]
 
 # SVEN — `mm ask`. An EXTRA, not a dependency, and the split is the point: the
 # pipeline and every pilot command stay deterministic and installable with no
@@ -74,14 +74,23 @@ testpaths = ["tests"]
 # "browser is excluded by default" rule lived in the comment below and in no
 # config anyone ran. A default nobody can afford is a default nobody uses.
 #
-#   pytest                          the inner loop
+#   pytest                          the inner loop: the unit tier
 #   pytest -n0                      same, one process (faster for a single -k;
 #                                   worker startup outweighs the split there)
 #   pytest -m browser -n 4          the viz suite
 #   pytest -m ""                    literally everything, the old default
 #   pytest --no-test-cache          nothing served from the cache (see conftest)
-addopts = "-q -m 'not browser and not forge and not fleet and not slow' -n auto"
+#
+# THE THREE TIERS (2026-10-05; `tests/conftest.py` assigns them from what a test
+# touches): a bare `pytest` is `unit`, the inner loop. `make regression` reads the
+# tracked fleet and corpus; `make integration` drives a browser, Forge and the
+# published pages. `make prepush` is unit + regression, which is what CI gates on.
+addopts = "-q -m unit -n auto"
 markers = [
+    "unit: no tracked data, no outside system - the inner loop (assigned in conftest)",
+    "regression: reads the tracked fleet or corpus, or re-runs a producer (assigned in conftest)",
+    "integration: a real browser, the Forge engine, or the network (assigned in conftest)",
+    "network: reaches an outside service (Scryfall, EDHREC); integration tier",
     # Browser tests. They boot a real Chromium against a real server and assert on what
     # rendered — the only tests here that can catch a viz regression. Excluded from the
     # default run because they are ~100x slower than the rest; run them with

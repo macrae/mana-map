@@ -3820,7 +3820,7 @@ manamap pilot build-poh <slug> && manamap pilot build-index    # the HANDBOOK + 
 # agents (Claude Code skills): /publish-deck sequences the lifecycle; then
 # /build-deck /analyze-engine /resolve-stack /write-manual /poh-procedures
 # /debrief /sim-debrief /captains-log /prescribe /diagnose-deck /research-strategy /refresh-corpus.
-# 22 skills in .claude/skills/, 18 charters in .claude/agents/
+# 23 skills in .claude/skills/, 20 charters in .claude/agents/
 
 make test                     # THE INNER LOOP — non-browser, -n auto, cached.
 make test-fresh               # same with nothing cached; trust this one.

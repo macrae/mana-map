@@ -402,6 +402,7 @@ def test_a_deck_state_names_its_own_commander():
     assert got["commander"], "a deck's own commander is not optional context"
 
 
+@pytest.mark.regression
 def test_a_run_piloted_by_the_wrong_commander_is_flagged_not_left_to_notice(monkeypatch):
     """SIX OF ZUR'S EIGHT RUNS were piloted by `Zur the Enchanter` while the
     deck is built on `Zur, Eternal Schemer`. The played commander was in the run

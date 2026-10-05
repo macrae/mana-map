@@ -458,6 +458,7 @@ def test_the_branch_form_of_the_fix_is_named(tmp_path, capsys, monkeypatch):
     assert "fetch-deck zur-enchantress --branch toolbox-v1" in capsys.readouterr().out
 
 
+@pytest.mark.regression
 def test_a_deck_that_loads_still_reports_OK():
     """The control. Without it this change could have made every run PARTIAL."""
     import argparse

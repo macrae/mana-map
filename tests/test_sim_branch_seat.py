@@ -22,6 +22,7 @@ def test_a_branch_seat_resolves_to_its_own_directory():
     assert forge.split_seat("vito") == ("vito", None)
 
 
+@pytest.mark.regression
 def test_a_branch_run_is_filed_beside_the_list_it_measured():
     """A branch's win rate under the champion's name is the silent-overwrite
     class this repo keeps finding."""

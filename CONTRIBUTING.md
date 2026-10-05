@@ -64,10 +64,12 @@ harness, the renderer and the tests, which is nearly all of the code.
 ## Tests
 
 ```bash
-make test           # non-browser, non-forge, parallel, cached
-make test-fresh     # same with nothing cached — trust this
-make test-browser   # playwright against a real Chromium
-make test-all       # test-fresh + test-browser
+make test           # the unit tier: no tracked data, ~1 min, cached
+make regression     # the tracked fleet + corpus, every producer re-run
+make integration    # a real browser, Forge, the pages rebuilt byte-identically
+make prepush        # unit + its isolation proof + regression — before a push
+make test-fresh     # unit + regression with nothing cached — trust this
+make test-all       # every tier, uncached
 pytest -m forge     # one real Forge game; needs ~/.mana-map/forge
 ```
 

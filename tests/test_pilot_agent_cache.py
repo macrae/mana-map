@@ -441,6 +441,7 @@ def test_real_deck_routines_resolve():
     assert resolved, "no routine resolved for goblin-storm at all"
 
 
+@pytest.mark.regression
 def test_build_routines_require_a_brief():
     """A deck with no brief cannot be built — that must be exit 2, not a MISS."""
     with pytest.raises(ac.MissingInput, match="brief.json"):

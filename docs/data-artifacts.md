@@ -86,6 +86,12 @@ only home of the `game_changer` column (WotC's Game Changers list, via Scryfall)
 
 The `.gitignore` mechanics matter here: `data/*` blanket-ignores, `!data/decks/` and `!data/strategy/` re-include those directories (trailing slash load-bearing), and then two sets are re-ignored individually — the three derived strategy-DB files, and the transient per-deck dirs: `data/decks/*/.agent-out/` (agent scratchpads), `sim/logs/` (raw Forge games, exactly regenerable when seeded) and `sim/scenarios/` (lifted boards awaiting a question). `!data/opponents/` re-includes the pod.
 
+## The suite's reports (`data/test_reports/`, tracked)
+
+| file | producer | consumers |
+|---|---|---|
+| `<date>-<sha8>.json` | `make test-report` → `python -m manamap.suite_report record` — the unit and regression tiers uncached and under coverage: per tier the outcomes, wall and in-test seconds, the cache count, skip reasons, every test that did not pass, the 25 slowest, a per-file roll-up; line coverage for the unit tier and both, per module | `suite_report diff` (findings, recomputed from two reports, never stored), `render --write-docs` (the generated block in `docs/testing.md`), the `test-debrief` agent. Gated by `tests/test_suite_report.py`: every report well-formed and named for itself, the docs block the render of the latest |
+
 ## Forge patches (`data/forge_patches/`, tracked)
 
 | file | producer | consumers |
