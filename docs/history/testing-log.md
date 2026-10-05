@@ -1,4 +1,8 @@
-# Testing
+# Testing — the log, to 2026-10-05
+
+> **HISTORY.** The live page is [`docs/testing.md`](../testing.md). This is the dated
+> record it was until the 2026-10-05 rewrite: every measurement, every lesson in full,
+> the 2026-09-21 adversarial audit. Runtimes and counts below are of their date.
 
 ```bash
 make test            # THE DEFAULT: non-browser, non-forge, -n auto, cached  ~5 min

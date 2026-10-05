@@ -3445,3 +3445,330 @@ broken and un-fixed.
 an A/A at the same N and the same harness beneath it. A mechanism endpoint — did the card get
 cast, did the trigger fire, how many times — is still readable, and is usually the cheaper
 question anyway, which the power preflight has been saying all along.
+
+## CLAUDE.md's rule digest, verbatim as of 2026-10-05
+
+> Moved here VERBATIM when CLAUDE.md was compacted on 2026-10-05: CLAUDE.md now carries
+> each rule as one line and points here. Several of these bullets had grown past the
+> sections above them (the A/A's completion, the `AI:RemoveDeck:All` sweep, the lifted
+> board's five omissions), so nothing below was reworded and no number was dropped.
+> Arrows (→) inside it point at the page the bullet originally pointed at.
+
+Each of these cost something to learn. The full record — the measurement, the
+wrong first attempt, the number — is in the page named beside it.
+
+**Evidence**
+- **A validator that fires on correct data is worse than no validator, and the only way to know is to MEASURE IT AGAINST THE WHOLE FLEET FIRST.** Six proposed checks have been prototyped and rejected on this ground; one fired on 27% of correct authored data, another on 29 of 91 components. → `docs/gotchas-evidence.md`
+- **Absent means ABSENT, never zero.** A figure nobody measured must be a missing key with a stated reason. `0.0` is a measurement, and a reader cannot tell it from one. → `docs/gotchas-bench.md`
+- **Every rate carries its interval, and a comparison carries the interval on the DIFFERENCE.** Two marginal intervals overlapping implies nothing at all. **And a FAMILY of comparisons carries its correction**: `net-change`'s twelve rows are exploratory and Holm-corrected; the objective is the one pre-registered primary, as `win_rate` is in `experiment`. → `docs/gotchas-bench.md`, `docs/simulation.md`
+- **Never `cache-record` to make a board green**, and never hand-patch an agent's prose to make a gate pass. Editing prose to satisfy a check puts a fresh claim under an old byline. → `docs/gotchas-bench.md`
+- **NO BRANCH IS GRADED ON A FORGE RATE OR MEAN WITHOUT AN A/A AT THE SAME N, because the bench had never run one.** `experiment --aa` is one list against itself and no A/A record existed for ANY deck until 2026-10-02. The robust half of what it showed needs no significance test at all: **the champion measuring its OWN total life removed read 74.39 at 84 games, 48.77 at 116 and 59.53 at 200** — a 26-point spread on one list across independent samples, against branch objectives set 19.5 points above the mean. That alone makes drain-v1, boss-v1, entry-v1 and treasury-v1's verdicts unreadable; the measurements are real, the VERDICTS are not evidence. The A/A's first look agrees but only suggestively — arm A 7/42, arm B 15/41, gap 0.199, plain interval [+0.009, +0.373] excluding zero, and ONE GAME EITHER WAY FLIPS THAT (8/42 vs 15/41 spans zero), so it is a marginal firing at small n and not a demonstration. **Completed 2026-10-03 at 200/arm: 40/176 (0.227) against 48/171 (0.281), gap 0.054, plain interval [−0.038, +0.144] — spans zero, and every one of the eleven endpoints spans zero too.** The look-1 firing shrank as the sample grew, as noise does, so there is no arm asymmetry to chase. What the A/A FIXES is scale: at 200 games/arm ONE list reads 5.4 points apart from itself and the interval is ±0.09 wide, so a branch effect under ~0.14 cannot be seen. Worth noting which guard worked: the O'Brien-Fleming boundary (z 4.049 at look 1) refuses it and the PLAIN interval does not — and the plain interval is what `net_change` prints. Mechanism endpoints stay readable throughout, because a cast, a trigger and an activation are COUNTS rather than estimated rates. → `docs/gotchas-bench.md`
+- **A mean is not a result.** Carry median, min and max: a mean of 17.42 against 2.25 read as a sevenfold win when the median was 0 in both arms and two games were the whole difference. → `docs/gotchas-bench.md`
+- **THE GOLDFISH HAS NO BLOCKERS, so its verdict on board QUALITY is not evidence.** With eminence, the token doublers, the sacrifice engine and four draw channels all finally modelled, it still preferred a go-wide Edgar refactor on damage, kill rate and card advantage — and Forge, 400 games per arm against the pilot's own pod, gave the refactor **31/400 against the champion's 50/400**, a difference whose interval EXCLUDES ZERO. The mechanism is one number: combat damage dealt to players fell **29.07 → 18.20**, because 1/1 tokens do not connect and the refactor had cut every lord. That one missing assumption outweighed every other gap closed the same day. Judge a go-wide or token strategy in FORGE from the start. → `docs/gotchas-bench.md`
+- **THE FORGE AI WILL NOT SACRIFICE FOR A BENEFIT ITS EVALUATOR CANNOT PRICE**, so a Forge result on a sacrifice deck is a FLOOR. `Indulgent Aristocrat` puts +1/+1 COUNTERS on the board and activates 0.41/cast under `--profile Experimental` against 0.07 under Default; `Ashnod's Altar` makes colourless MANA and is **0 for 59 castings under BOTH**, while `Viscera Seer` (scry) was cast 0 times in 500 games. Cost is not the discriminator -- the Aristocrat costs {2} and the Altar is free. Prefer an outlet with a visible BOARD payoff, and a TRIGGER over an ACTIVATION. Check `activated <card>` against `cast <card>` before trusting any result that rests on one. -> `docs/gotchas-bench.md`
+- **`AI:RemoveDeck:All` MEANS THE AI NEVER CASTS THE CARD, and this file said the opposite for a month.** `AiController.getSpellAbilityToPlay` filters every non-land ability whose host `isCardRemAIDeck` (2.0.14 bytecode, read 2026-09-30). Measured first: in a 26-land shell with four copies against a slow opponent, Vish Kal was castable in **7 of 12 games and cast in none**; the same script with only that line removed was cast **10 times**; a plain seven-drop control was cast 4 of 5. The fleet sweep agreed — **every `All` permanent in a live deck with games on record was cast 0 times, 14 of 14** (Viscera Seer, Goblin Bombardment, Altar of Dementia, Isochron Scepter, Magus of the Wheel, Vish Kal in 860 games…), while every `Random` one was cast normally. The earlier belief rested on Swan Song, 28 casts in 160 games: a COUNTERSPELL, cast through the reactive path, which does not filter. The sharknado Windfall finding below was THIS. `data/forge_overrides/unflag.txt` lists the 23 cards whose override is the shipped script minus that line; `forge-install --generate` prints any a live deck has since acquired, and a fleet test refuses one. Every run since carries `-ov8bf04cfc`, and THE NULL MUST BE RE-MEASURED under it — `pods.calibration` counts plain-harness runs only, so until then no fresh run feeds a null. → `docs/gotchas-bench.md`
+- **A FORGE RESULT ON A DECK WHOSE ENGINE THE AI NEVER CAST IS A FLOOR, and the record now says so.** sharknado's seat cast Wheel of Fortune once and Windfall never in 60 games while DISCARDING Windfall three times and Faithless Looting six -- the log's own statement that the card was held and passed over. `record["engine_casts"]` carries per-card cast / activated / discarded for our seat (MEASURED, top-level, validated where present); `sim/engine_casts.py` reads it at print time against the deck's declaration and prints "held and never cast" at the `simulate` tail, in `deck-info` and live in `sim-progress`. Under the telemetry jar it is no longer an inference: every card carries `castable_uncast` (own turns it ended in hand with the lands to cast it) and `held_while_castable` names the cards held on two or more such turns — HELD WHILE CASTABLE (MEASURED). Check it before reading any rate, the way the piloting gate is checked. → `docs/gotchas-bench.md`
+- **THE AI WILL NOT TARGET ITS OWN COMMANDER TO SWITCH ON A COPY ABILITY, and that makes a run measure a DIFFERENT DECK rather than a floor.** Zada, Hedron Grinder's whole deck is "an instant or sorcery that targets only Zada, copy it for each other creature you control". Over 60 games she was **cast 100 times and her trigger fired 21** — 0.35 per game against ~11.9 spells cast. Forge implements the card correctly; its evaluator prices `Brute Force` on Zada as +3/+3 on one creature, identical to any other target, so the targeting heuristic cannot see that this one multiplies. `engine_casts` said the plan was played at 134-160% of expected natural draws and was right: every card was cast, just never at Zada. So goblin-storm's 0.031 baseline and the branch's 0.040 / 0.065 are all void as deck measurements, and the A/B is not rescued by comparing them. `--profile Experimental` does not help — `tokens_observed` moved 1.98 → 1.95. THE PREFLIGHT is one grep: `grep -rc "triggered <Commander>" .../sim/logs/<run>/*.log`. The fix for evidence is `sim-scenario --stack` plus `/resolve-stack` — one of the 21 real boards, proven by CITATION (✓) instead of a rate. → `docs/gotchas-bench.md`
+- **UNFLAGGED IS NOT CASTABLE. MEASURE TWICE: NO ADD ENTERS A FORGE ARM UNPROVEN.** Three cards cleared by the scan were found NOT PLAYED only after a night of games — Vish Kal's −X/−X (0 activations, six passes), Toxic Deluge (drawn 28, cast 0 across a 200-game arm) and Bastion of Remembrance (cast in 10 of 30 games it was drawn, castable on 48 turns). `AI:RemoveDeck:All` is one filter; each API's AI class refuses for its own reasons — X priced before its cost is paid (`Count$xPaid` + `PayLife<X>`, `SVar$CostCountersRemoved`), a −X/−X with no `IsCurse$`, no `AILogic$` for the shape, a cheap do-nothing-now permanent cast behind every creature. `forge-cast-check <slug> --branch B --adds --write` proves every add in a two-seat shell and names the class and the remedy; `simulate` on a branch seat REFUSES an add without a PLAYED proof under the current harness. → `docs/gotchas-bench.md`
+- **A LIFTED BOARD IS AN INFERENCE, AND IT WAS OMITTING PERMANENTS IN FIVE WAYS.** `sim-scenario` reconstructs a board from an event stream, and every gap in that reconstruction reads as a fact about the game. Found in ONE session (2026-09-28) by pointing `rules-checker` at two real boards: a creature with a characteristic-defining power (`Creature * / *`) never reached the board because `_CREATURE` demanded digits — ~107 resolutions in one run, **all opponents', so it flattered every lethal claim**; every AURA was discarded as an instant (`Rancor (203) - Attach to X` matches `_SPELL`), which made Sphere of Safety's tax read {2} instead of {3}; a TOKEN existed only from the moment it ACTED, so **the lift listed 187 of 1843 live tokens — 10%**, and a published board-width figure was wrong by 18x (">= 6 other bodies" 2.0% against ~21%); `_WORDS` stopped at "seven" so Krenko's "creates eight" was unreadable, losing the BIGGEST boards; and **705 of 857 token deaths (82%) had no owner**, so a death was charged to whichever seat held a match — which can delete an opponent's blocker. All five fixed and tested. A sixth is DOCUMENTED, not fixed: the graveyard is battlefield-deaths-only (mills and discards are not zone events), so a `*/*` power cannot be computed from it — `graveyard_is_a_floor` says so. The repo's only PASSING lifted scenario is radagast/008, which predates all of this — re-lifting gives our seat 11 creatures against the 7 its ✓ was resolved with — but radagast is BROKEN DOWN FOR PARTS, so scoped to live decks the exposure is **zero**. The gate exists since 2026-09-30: `validate-lift` re-lifts every committed board from its own cut and `validate-stack` carries the result as a NOTE — FAIL while it has no verdict yet, NOTE once the loop finished. → `docs/gotchas-bench.md`
+- **A FORGE RECORD DESCRIBES THE LIST IT PLAYED, NOT THE LIST ON DISK.** Every record stamps `seats[].decklist_sha256` and nothing read it, so `net-change` reported 120 games as goblin-storm/zada-v1's rate that were played on its FOURTH commit against its seventh on disk — eight cards in and nine out since, including the branch's largest claimed gain. Fleet sweep: **29 of 41 branches, 10,120 games**, mostly champion arms, because a merged branch rewrites the champion's list. It FLAGS rather than suppresses (`forge.list_mismatch`, printed ABOVE the rate in the CLI and on `branch.html`) because the sha is over file BYTES: edgar's list dropped a set code from `Gifted Aetherborn (AER) 61` in the same commit as two real swaps, so a cosmetic edit trips it identically. `engine_casts` IS strict — it named five cards "held and never cast" that were not in the simulated list at all. → `docs/gotchas-bench.md`
+- **A 100-GAME FORGE RUN IS NOT A RESULT.** The same champion read 18/100 and then **50/400**, so the first estimate of a refactor's cost was more than double the powered one. MDE against an 0.18 baseline: **42 points at 20 games/arm, 17.5 at 100, 8.5 at 400**. → `docs/gotchas-bench.md`
+- **A COMMANDER'S ABILITY IS NOT AUTOMATICALLY MODELLED.** `command_zone_reduction` reads a commander for COST REDUCTION only; Edgar Markov's eminence MINTS A TOKEN on every other Vampire cast and was absent entirely — the deck's whole axis, understating bodies at turn ten by 50%. `deck-audit`'s engine brief had described it in prose the whole time. Before trusting a figure on a deck, check that the model reads the commander. → `docs/gotchas-bench.md`
+- **A MEASURE COMPUTED FROM AN AUTHORED FILE IS NOT EVIDENCE, however tight its interval.** The engine lift split games by the `required` flags in `goldfish_targets.json` — which the same hand writes. Three defensible declarations of one Ur-Dragon list, same 10,000 games, same seed, gave **+0.007 (spans zero), −0.036 (REAL) and +0.014 (REAL)** against kill-by-T8; one of them said, at an interval excluding zero, that assembling the engine made the deck win LESS. Deleted 2026-08-28, and `deck_branch.MEMBERSHIP_AXES` now refuses `engine_online_*` and `any_route_*` as branch objectives. Aim a branch at an OUTPUT the deck produces. → `docs/gotchas-bench.md`
+- **Every figure carries its definition, in the report that prints it.** A number a reader has to look up elsewhere gets guessed at, and the guesses go one way: a mean read as a rate, a clock read as a win rate, a hoard read as mana. All three have happened. `net_change.METRICS` is the registry and a test asserts it matches `ROWS` exactly, in both directions. → `docs/pilot.md`
+
+**Changing a matcher or a model**
+- **Widening a pattern needs a CORPUS SWEEP in the same commit** — newly matched, newly dropped, and the extreme tail read card by card. Skipped once, it billed Jeweled Lotus three mana every turn forever and counted `Add {R}, {G}, or {W}` as three. → `docs/gotchas-bench.md`
+- **A CONDITION IS SCOPED TO THE CLAUSE IT ATTACHES TO.** `enters_tapped_unconditionally` searched the whole oracle text for "unless", so Archway Commons — *"This land enters tapped. When this land enters, sacrifice it unless you pay {1}"* — read as an UNTAPPED five-colour source and `mana-fit` offered it as one. Eleven lands share the wording. The obvious fix is worse and the sweep is what says so: scoping to the SENTENCE flags all ten shocklands, whose idiom spans two. → `docs/gotchas-bench.md`
+- **A FETCHLAND'S COLOURS ARE A PROPERTY OF THE DECK, NOT OF THE CARD**, so a function
+  that takes only a card cannot answer the question and must not pretend to. `land_colors`
+  credits basic types in the type line and symbols in an `add` clause; a fetch has neither,
+  so all sixteen true fetches in the corpus read as producing NOTHING — and `goldfish` built
+  every land's colours from the same call, modelling four fetches as four colourless lands.
+  Measured on ur-dragon/landbase-v1: `mana-fit` reported **every colour worse** on a change
+  that left colour access flat (W +1, U −1, B +2, R 0, G 0) and **halved the recurring life,
+  8 → 4 per tap-cycle**. `land_colors(card, pool=…)` takes the deck; without `pool` it is
+  byte-identical, which is what keeps a caller that has no deck reproducible. The sweep's
+  load-bearing split is one word: **`a Mountain card` finds a shockland, `a basic Mountain
+  card` cannot** — 16 true fetches against 20 Panorama-shaped ones that read almost
+  identically. → `docs/gotchas-bench.md`
+- **The goldfish CANNOT rank two lands that make the same colours.** It plays the first land in hand and credits its colours the same turn — LANDS have no tapped state and there is no choice of which land to play. (CREATURES do tap when they attack, added 2026-09-26; that is a different question and does not help a land swap.) A twelve-land `candidates` sweep returned exactly two distinct readings, with always-tapped Grand Coliseum tying never-tapped Forbidden Orchard. `mana-analysis` and `mana-fit` are deterministic for exactly this reason and are the whole of the evidence for a land swap. → `docs/gotchas-bench.md`
+- **A flag the model sets is a claim the model must ACT ON.** `treasure_doubler` shipped set-and-unread; fifteen candidates returned byte-identical −0.026. `tests/test_metric_hygiene.py` checks this now.
+- **A ONE-TURN GRANT IS NOT A PERMANENT DOUBLER, and a channel placed where it cannot fire is not a channel.** `team_damage_multiplier` matched "creatures you control gain double strike" anywhere in an oracle, so Elesh Norn // The Argent Etchings doubled all of sharknado's damage off a SAGA BACK FACE chapter lasting one turn, behind a three-creature sacrifice — cutting it measured **−2.2 damage** and read as a reason to keep it. **75 corpus cards read as permanent doublers, 53 after the fix: 22 were phantom**, and sharknado's damage@8 fell 31.45 → 29.47. The rule is ONE-SHOT versus RE-APPLIED, not temporary versus permanent: Atarka's identical clause fires every combat and is real, which an existing test caught when the first fix dropped it. Separately, the Blood crack was placed on leftover mana and a goldfish spends its pool casting — **49 of 300 games ended with Blood uncracked**, a confident zero from a channel that never ran. → `docs/gotchas-bench.md`
+- **A CARD THE MODEL CANNOT READ LOOKS EXACTLY LIKE A CARD THAT DOES NOT HELP.** Four in a row measured "no effect" from a sweep that had never priced them — 400 of 405 sacrifice-gated draws read as zero, and Blood, artifact-sacrifice payoffs and draw DOUBLERS had no channel at all. Before trusting a null on a swap, check `draw_profile`'s `unmodelled` and `model-coverage`. When a card's value is contingent on something the model omits, measure the CEILING with the omission reversed and LABEL it: Jaws came back floor −0.43, ceiling +0.09, which settles the card instead of leaving a standing doubt about the instrument. → `docs/gotchas-bench.md`
+- **A model change makes every derived artifact stale.** `meta.model_version` (a sha over `goldfish.py`, `goldfish_profiles.py`, `goldfish_library.py` and `goldfish_turn.py` — `_MODEL_FILES`, so splitting the module did not blind the stamp) makes that decidable; the three prose validators REPORT it and never fail on it. Regenerate the fleet after any model change. The 39 figures already stale predate stamping and report as unknown, not stale. → `docs/gotchas-bench.md`
+- **Adding a metric requires re-running the independence check.** Three magnitude axes shipped that were one axis at r = 0.92–0.98. → `tests/test_metric_hygiene.py`
+- **THE COMMANDER'S OWN TEXT IS NOT MODELLED UNTIL SOMEBODY MODELS IT.** zur-enchantress was rebuilt around Zur, Eternal Schemer and the goldfish read NEITHER of his abilities — the static grant of deathtouch/lifelink/hexproof to every enchantment creature, nor the `{1}{W}` that animates an enchantment into a body whose power is its mana value. Modelling them took kill-by-t8 from 0.153 to 0.327 on an unchanged 99. A commander ability that only one card in the corpus has is DECLARED per deck (`model_commander_animate`, `model_commander_attack_tutor`); one a handful share is parsed after a sweep. → `docs/gotchas-bench.md`
+- **A CARD CAN BE READ CORRECTLY AND NEVER PLAYED.** Every casting loop in the goldfish selects on a CHANNEL — draws, ramps, makes Treasure, has a body — and a card matching none of them sits in hand for ten turns while its profile says exactly what it would have done. Found FIVE times in one session and only caught as a class on the fourth: the Shrines measured as exactly nothing, a SLEEVED deck ran its sacrifice engine on 2 of its 4 outlets, and four of six attack enablers were uncastable, which made the model unable to start its own engine. `model_coverage.never_cast` / `silent_losses` are the predicate and a fleet test asserts no deck computes an effect it never applies. **Teach the casting predicate in the SAME commit as the ability.** → `docs/gotchas-bench.md`
+- **A RATE DRIVING A FIGURE MUST NAME WHERE IT WAS MEASURED.** `model_commander_attack_tutor` fired every turn and reported 5.70 fires a game; Forge resolved the search 1.22 times. Correcting it took kill-by-t8 from 0.501 to 0.173 and undid more than half of one day's measured gains. `fires_per_turn`, `model_deaths` and their `source` keys are REQUIRED for exactly this reason, and a CEILING (1.0 when the attack is free) is labelled as one in the record rather than read as a forecast. → `docs/gotchas-bench.md`
+- **A land whose only coloured mode costs extra mana is not a coloured source on curve.** `land_colors` counts `{1}, {T}: Add one mana of any color` at full value; six such lands made every colour in zur-enchantress read at or above target when all three were short. Reported (`sources.gated`, `on_curve_probability.lands_only_ungated`) rather than discounted, because a fraction to divide by would be an authored number driving a headline. The obvious fix is BACKWARDS — cutting them for basics makes every colour worse. → `docs/gotchas-bench.md`
+
+**Branches, paths and artifacts**
+- **A branched write needs a branched READ.** Three instances now, the third committed inside the commit fixing the class: `goldfish.main` measured the champion and filed it under the branch, understating turn-10 hoard by 4×. Every branch measurement must record the branch's own `decklist_sha256`. → `docs/gotchas-bench.md`
+- **A BRANCH MAY NOT DECLARE A MODEL CHANNEL ITS DECK DOES NOT — that is two simulators, not an A/B.** `common.deck_file` prefers a branch's copy of an authored file, and its docstring asserted nobody writes a second `goldfish_targets.json`. goblin-storm/zada-v1 did: it declared `model_draw`, `model_combat` and `model_commander_copy` while the deck declared NOTHING, so Zada's whole ability was modelled on one arm only. `net_change` then dropped **7 of its 12 rows** (no champion `output` block at all) and the two surviving rows that moved were the two the asymmetry flattered — missed-drop-by-T5 −0.083 "better" → noise, interaction-affordable-@T6 −0.037 "worse" → **+0.095 better**. Declared identically, DARK went 7 → 0 and the branch won ten of twelve rows: damage @T10 **16.01 → 27.73**. A branch MAY name its own new cards in a target's `any_of` (meren-recursion does, legitimately — a target names cards); it may never change the instrument. → `docs/gotchas-bench.md`
+- **`--out` on a per-deck command is slug-scoped, and a shell redirect cannot be policed.** Concurrent agents overwrote each other's views seven times across two sessions. → `docs/gotchas-bench.md`
+- **A new tracked artifact needs a gate in the same commit** — a validator, a freshness test, or both — and a `deck_status.VALIDATED` entry so the status command sees what the tests see. → `docs/gotchas-evidence.md`
+- **ONE PREDICATE, ONE HOME.** Four modules had grown their own answer to "is this deck in a pile" — `common.UNPLAYABLE_STATUSES`, `deck_info.STATE_RETIRED`, `net_change.FREE_TO_RAID` and `deck_branch._deck_holders`, which carried the status and did nothing with it. None disagreed yet and it was already costing something: `deck-branch merge` refused Ur-Dragon on 12 cards, 4 of which sit in decks that do not physically exist. `common.deck_is_apart` decides; everything else reads the row. → `docs/gotchas-bench.md`
+- **A DECIDED BRANCH IS NOT AN EXPERIMENT, and until `propose` shipped they rendered identically.** A branch had two observable states — the directory exists, or `merged` is present — and `delete` was the only reader of `merged`. `deck_branch.branch_state` derives six and stores none, so a proposal un-blocks itself when a card lands in a box. `base_version` had been written since branches shipped and **no code had ever compared it to anything**; that comparison is `PROPOSED · OUTRUN`. → `docs/pilot.md`
+- **Count COPIES, not decklist entries.** `cards.json` stores basics as one entry with `quantity: N`; counting entries once published "18 lands" for a 33-land deck. Use `common.expand_copies()`. → `docs/gotchas-bench.md`
+
+**Tests**
+- **A test that re-derives the rule is testing itself.** Drive the production function, and prove the test by RE-INTRODUCING the bug it was written for. Four such tests shipped, one guarding the flagship metric. → `docs/testing.md`
+- **A loop over a possibly-empty collection needs `assert checked >= N`.** Fourteen lacked it; several passed by iterating zero times.
+- **A control can be blind to the class it exists for.** The branch control proved the WRITE landed correctly and could not see a read from the wrong place.
+
+**The frontend**
+- **Cache-bust `?v=N` on every script and CSS tag in `viz/index.html` AND `viz/deck.html` after any JS/CSS change**; `index.html`'s nine busts move together. Bump `DATA_VERSION` whenever a consumer would draw a DIFFERENT CONCLUSION from the bytes — a retrain qualifies, a content refresh does not.
+- **`viz/` and `data/` must stay top-level siblings**; every fetch is `../data/<file>`. Serve from the repo root.
+- **A renderer kept behind a flag is a renderer nobody is testing.** → `docs/gotchas-viz.md`
+
+## CLAUDE.md's command commentary, verbatim as of 2026-10-05
+
+> The annotated command block CLAUDE.md carried until the 2026-10-05 compaction, kept
+> whole because its comments hold measurements (the pod calibration, the telemetry
+> patch, `regen`'s timings, the cast-check record). CLAUDE.md now lists the commands
+> with one line each; `docs/pilot.md` is the reference.
+
+```bash
+manamap run                   # full 15-step pipeline (steps 1 & 7 need internet)
+manamap run --from STEP       # resume from a step
+manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
+manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
+                              # fast analysis-only refresh (no retrain)
+manamap pilot <cmd>           # the bench (123 pilot subcommands); `manamap pilot --help`
+
+manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
+manamap pilot try <slug> --out "A" --in "B" [--out C --in D …] [--each] [--stage NAME]
+                              # THE SWAP LOOP (2026-10-04): an idea to an answer in ~10 s, one
+                              # screen, nothing written. Every card in and out with its roles,
+                              # declared target, what the goldfish can SEE of it, and what
+                              # Forge's AI did with it on record (AI behaviour, NEVER a reason
+                              # to cut); the keep list; colour sources before/after; the
+                              # net-change rows (same harness, measured identical to a staged
+                              # and fetched branch); one line. `--stage` writes a branch only
+                              # after the screen. Through `manamap serve` it skips the cold start.
+data/decks/<slug>/protected.json                        # THE PILOT'S KEEP LIST, hand-written only:
+                              # stage / new / propose / merge, try, the build's must-include,
+                              # the candidates auto-cut and the diagnosis/prescription gates all
+                              # refuse to cut a card it names. `validate-protected` gates it.
+                              # Born of draw-v1 cutting Vish Kal unread.
+manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
+                              # THE ONE COMMAND (PRD Epic A): brief -> a legal, MEASURED 99
+                              # on the bench, six stages in ~10s. Omit --commander and it
+                              # proposes three and halts. The dev batch is the GOLDFISH,
+                              # not Forge: a 12-minute Forge batch is ~20 games, whose MDE
+                              # is 42 points. Forge is a TARGETED PROBE since 2026-10-04 (`forge-cast-check`);
+                              # a pod run is optional and never gates a merge.
+manamap pilot validate-brief <slug> [--themes]          # the gate brief.json never had
+manamap pilot check-in <slug> --from <file>             # a PAPER list -> decklist.txt: diff, refuse, apply
+manamap pilot deck-version <slug> [list|show|tag|restore|paper]  # every list from git, joined to the log;
+                                                        #   `paper` marks the version you have SLEEVED
+manamap pilot deck-state <slug> [archive|retire|supersede|revive] --reason "…"
+                              # IS THIS STILL A DECK OR A PILE OF CARDS. Writes
+                              # deck_versions.json's `lifecycle`, WITHDRAWS the paper
+                              # lock (the two contradict), and rewrites info.json —
+                              # which it must, since `regen` skips archived decks
+manamap pilot deck-delete <slug>                        # only a deck that was never sleeved,
+                              # never played and never published; git rm, staged not committed
+manamap pilot deck-notes <slug> add "…" --result win|loss --cause <code>
+                              # the captain's log (authored). `--cause` is a CLOSED
+                              # vocabulary (deck_notes.CAUSES) so the dossier's priors
+                              # table can COUNT how games end; it lands in the sidecar
+                              # log_causes.json because log.jsonl is append-only
+manamap pilot deck-notes <slug> cause <id> --cause <code>   # file one after the fact
+manamap pilot simulate <slug> --pod standard-v3 --games N
+                              # Forge, seeded, against THE STANDARD TABLE — three
+                              # bracket-3 decks with ZERO combos between them,
+                              # chosen by a ROUND ROBIN with none of our decks
+                              # seated, then CALIBRATED with five of them (185
+                              # decided games): sythis 1.45x, subject null 0.292,
+                              # jarad a 0.48x floor. `standard` (giada 2.15x) and
+                              # `vito-era` (13 two-card infinites, 0.447) are kept so
+                              # old records resolve; naming either is deliberate.
+                              # The table is `vito-era`; `vito` alone is an
+                              # opponent SEAT under data/opponents/, not a pod.
+                              # A POD'S NULL IS A PROPERTY OF THE TABLE WITH THE
+                              # SUBJECT IN IT: sythis reads 0.25 against heliod
+                              # and 0.66 against zur. Read `pods <name> --calibration`.
+                              # A clock-out is `truncated`, has NO winner, and is
+                              # excluded from the rate — it used to be awarded to
+                              # the last seat, which our deck can never be.
+                              # THE PREFLIGHT PRINTS FIRST: the null, the MDE at N,
+                              # and what +0.05..+0.20 would need. `--detect X`
+                              # REFUSES a run that cannot see X at 80% power;
+                              # `--anyway` runs it as a screen (same on `experiment`).
+                              # `--list` labels every run with the VERSION it
+                              # played and `NOT the current list` where it is not.
+manamap pilot fetch-opponent "<commander>" --as <slug>  # a pod seat under data/opponents/
+manamap pilot validate-forge-hints <slug>               # forge_hints.json: per-card AILogic / AIPreference
+                              # hints derived onto the shipped scripts (the shape Forge's own
+                              # aristocrat cards use), plus a `forge` rule in pilot_policy.json
+                              # for the AiProps knobs. `forge-install --generate` installs
+                              # both; the record's card_overrides / ai_profile shas say so.
+                              # Measured 2026-09-30: an unflagged outlet is CAST and then sits
+                              # idle — `idle_on_battlefield` names it — until it is hinted.
+manamap pilot forge-telemetry [--build]                 # THE PATCHED LOG FORMATTER. Forge's shipped log
+                              # keeps two zone transitions; one patched method logs EVERY
+                              # zone change by name and owner (draws, tutors, mills, wheels,
+                              # arrivals). Measured purely observational 2026-09-30: pristine
+                              # twice and patched once on a quiet machine differ on the
+                              # millisecond line only. The jar is a COPY beside the pristine
+                              # one; `simulate`/`experiment` use it when it is there and
+                              # stamp `-tl<sha8>` + a `telemetry` block; a class the manifest
+                              # does not register REFUSES the run. THE PATCH SET HAS KINDS:
+                              # `log` (the formatter, observational) and `ai` (MillAi's
+                              # `AILogic$ SacOutlet`, 2026-09-30 — a sacrifice-cost mill
+                              # ability fires when a creature of ours is about to die anyway);
+                              # a set with an `ai` class changes play and `net-change`
+                              # buckets on it like a card override.
+manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # lift a board -> /resolve-stack
+manamap pilot sim-findings <slug> --write   # THE SIM DEBRIEF'S SKELETON (sim_findings.json):
+                              # per run, findings with ids, intervals and sources. Prose is
+                              # the sim-debrief agent's and may cite only finding ids; the
+                              # merge recomputes the skeleton. The captain's log is NEVER
+                              # written from a Forge game — it has no pilot.
+manamap pilot sim-boards <slug> <run> --criterion held --lift --stack   # WHICH board: a criterion names
+                              # a cut and a SHAPE, the shortlist is ranked by how many games
+                              # RECUR to it (one game is an anecdote), and `extras.finder`
+                              # carries the provenance a handbook proposal cites.
+                              # `validate-lift` re-lifts every committed board from its own
+                              # cut: FAIL while it has no verdict yet, NOTE once finished — the
+                              # gate CLAUDE.md:400 said was missing.
+manamap pilot prescribe <slug> "<question>"             # open a question to the doctor (then /prescribe)
+manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--looks K]
+                              # THE CONTROLLED A/B. `--looks K` (<=4, O'Brien-Fleming):
+                              # each look is WHOLE ROTATED JOBS from both arms at its own
+                              # boundary z, never a partial job; the record is rewritten
+                              # after every look and `--resume` continues it; `--until-mde X`
+                              # is non-binding futility. `--aa` is one list twice (the noise
+                              # floor); `--profile-b P` is policy-on vs policy-off on one list.
+                              # Seats rotate per global job like `simulate`; the id carries
+                              # clock, overrides and AI-profile shas, empty at their defaults.
+manamap pilot campaign <name> plan|run|status   # THE OVERNIGHT QUEUE. data/campaigns/<name>.json
+                              # is a TRACKED pre-registration of A/Bs; `plan` pins refs to
+                              # shas, preflights, prepends an A/A per harness; `run` skips
+                              # DONE/STALE, resumes RUNNING, NEVER merges; state is derived
+                              # from the records, never stored.
+manamap pilot net-change <slug> --branch <name> --write  # what a branch costs and buys.
+                              # ONE PRIMARY (the objective), TWELVE EXPLORATORY rows,
+                              # Holm-corrected. THE REAL TABLE IS IN THE RULE: a Forge
+                              # win-rate loss whose interval excludes zero at the same
+                              # pod blocks a merge whatever the goldfish said; one that
+                              # spans zero changes nothing. The block stores the pod's
+                              # null and every Forge endpoint with its interval.
+manamap pilot deck-branch <slug> new <name> --objective "forge.win_rate >= 0.25 @standard-v3"
+                              # a Forge objective NAMES ITS TABLE or is refused; graded on
+                              # the branch's pooled rate there, with the interval on the
+                              # difference and the null in the grade. THE AXES INCLUDE THE
+                              # DECK'S IDENTITY (2026-09-30): forge.drain_dealt (life loss
+                              # that was not damage), forge.life_gained, forge.biggest_hit,
+                              # forge.evasive_damage_share, forge.kills_by_ability — each
+                              # with its floor named in analysis.limits
+manamap pilot deck-branch <slug> propose <name> --as v1.0.2   # accept it; wait for cards
+manamap pilot deck-branch <slug> withdraw|reject <name> --reason "…"  # the reason goes in the LEDGER
+manamap pilot decisions <slug> [outcome|backfill]   # THE DECISION LEDGER (decisions.jsonl,
+                              # append-only): every propose/withdraw/reject/merge with the
+                              # report's prediction frozen; `outcome` joins the merged list's
+                              # own runs at the same pod+harness back to the merge —
+                              # predicted beside realised, inside the interval or not.
+                              # `deck-info` says when a merge can be closed.
+manamap pilot card-search --deck <slug> --oracle REGEX [--owned]         # mine the corpus
+manamap pilot scan-candidates <slug> [--dimension drain|gain|threat|outlet|sweeper|draw] [--against-branch B] --write
+                              # ONE PASS along the deck's DIMENSIONS: every row names the
+                              # predicate that admitted it (oracle id / role / tag / printed
+                              # keyword); a converter or a two-card infinite with the (staged)
+                              # 99 is FLAGGED and sorted last, never ranked or dropped; death-
+                              # draw splits on `nontoken`. Retrieval, not judgement — sorted by
+                              # EDHREC rank. Writes the dated candidate_scan.json (validated)
+manamap pilot forge-cast-check <slug> --card "Toxic Deluge" [--games 8 --copies 4 --vs giada-angels]
+                              # PROVE THE AI PLAYS A CARD BEFORE A NIGHT IS SPENT ON IT: a
+                              # two-seat shell (the deck's commander, N copies, its own cheap
+                              # spells as filler, basics), counted from the telemetry hand
+                              # facts — drawn / cast / activated / HELD while castable.
+                              # Unflagged is NOT castable: Toxic Deluge was drawn 28 times
+                              # and cast 0 in a 200-game branch arm (2026-10-01) because its
+                              # script lacks IsCurse$ and X is priced before the life is paid.
+                              # Every add that must be cast or activated for a branch's
+                              # objective runs this first; a HELD card is a piloting item.
+                              # `--branch B --adds --write` proves EVERY add and writes the
+                              # branch's cast_proofs.json (validated, stamped with the
+                              # harness); `simulate <slug>@<branch>` REFUSES an add that is
+                              # not PLAYED under the current harness (--anyway runs it with
+                              # the slots recorded as FLOORS), net-change prints CAST PROOFS
+                              # and marks the primary FLOOR, deck-info NEXT names the check
+manamap pilot fetch-edhrec <slug> [--theme aristocrats] # EDHREC's commander page(s) as dated per-card
+                              # synergy / inclusion (edhrec_cards.json, ★ evidence, validated);
+                              # cards newer than the corpus are listed apart, not failed
+manamap pilot model-coverage <slug>                     # WHAT THE MODEL CANNOT SEE, before the games:
+                              # seen / DARK (feeds a channel that is OFF) / invisible.
+                              # 236 DARK cards across the fleet when it shipped; goldfish
+                              # and net-change now print the headline as a PREFLIGHT.
+manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]
+                              # REBUILD THE FLEET after a model change, in dependency
+                              # order (goldfish -> mana-analysis -> net-change ->
+                              # diagnose -> benchmark -> deck-info), parallel across
+                              # TARGETS. MEASURED 2026-09-04 at 72 targets: 109s at
+                              # --jobs 8, the goldfish stage alone 83.6s -> 23.7s. The
+                              # fleet is 96 targets now, so that is a ratio, not a
+                              # runtime. BIT-IDENTICAL: games inside
+                              # one run are never split, only decks are.
+                              # A MISSING artifact is CREATED, not skipped -- but only
+                              # on a SLEEVED deck (`regen.BOOTSTRAP` + `is_pinned`).
+                              # REFRESH IS EVERY LIVE DECK; BOOTSTRAP IS SLEEVED ONLY.
+                              # Two questions, and one gate used to answer both: the
+                              # sweep was sleeved-only while the freshness tests check
+                              # every deck that is not RETIRED, so a model change left
+                              # emiel-blink and meren-recursion stale and the board red
+                              # (2026-09-26). An artifact that EXISTS is tracked and
+                              # already gated, so it is rebuilt wherever it lives; an
+                              # artifact that is MISSING is still only created on a
+                              # SLEEVED deck, because minting a tracked figure for a
+                              # list that changes daily is the pilot's call.
+                              # `manamap pilot regen --jobs 8 && make manuals` is now
+                              # the WHOLE recipe after a model change.
+manamap pilot deck-info <slug> --write                  # write info.json for the deck page
+manamap pilot build-poh <slug> && manamap pilot build-index    # the HANDBOOK + the manifest
+# agents (Claude Code skills): /publish-deck sequences the lifecycle; then
+# /build-deck /analyze-engine /resolve-stack /write-manual /poh-procedures
+# /debrief /sim-debrief /captains-log /prescribe /diagnose-deck /research-strategy /refresh-corpus.
+# 22 skills in .claude/skills/, 18 charters in .claude/agents/
+
+make test                     # THE INNER LOOP — non-browser, -n auto, cached.
+make test-fresh               # same with nothing cached; trust this one.
+                              # RUNTIMES LIVE IN docs/testing.md, not here. This
+                              # line said ~22s/~29s for weeks while the real
+                              # figure was 772s — a number nobody re-measured
+                              # after the suite tripled.
+make test-browser             # the playwright suite
+.venv/bin/pytest -n0 -k NAME  # one test, no worker startup
+.venv/bin/pytest -m forge     # ONE real Forge game; needs ~/.mana-map/forge
+.venv/bin/pytest -m ""        # literally everything, browser included
+
+# .mcp.json registers an MCP SERVER (`manamap.mcp_server`) exposing seven read-only
+# tools to Claude Code: deck_state, fleet, search_docs, search_code, stats,
+# run_command, command_help. Structured data from the warm daemon instead of parsed prose —
+# `deck-status heliod` is 2.9s cold, 0.003s warm, byte-identical. No SDK: MCP is
+# JSON-RPC over stdio and the subset a tool server needs is ~150 lines, the same
+# reasoning that keeps scipy out of sim/stats.py. It CANNOT write; the gate is
+# `serve._cli`, imported rather than restated.
+
+manamap serve                 # viz + a LOCAL /api the deployed site does not have
+                              # ALSO A WARM WORKER: with it running, every read-only
+                              # `manamap pilot <cmd>` routes through /api/cli and skips
+                              # the cold start. query-rules 6.93s -> 0.16s (43x),
+                              # deck-facts 1.44s -> 0.14s, deck-audit 2.26s -> 0.59s;
+                              # output byte-identical. Fails OPEN — no server, or any
+                              # error at all, and the command runs locally as before.
+                              # MANAMAP_NO_DAEMON=1 opts out; MANAMAP_DAEMON=host:port
+                              # points elsewhere. Restart the server after a code change:
+                              # it holds the old modules until you do.
+python -m http.server 8000    # or plain static, FROM REPO ROOT (no Build agents)
+# http://localhost:8000/viz/workbench.html          THE LANDING PAGE — start here
+# http://localhost:8000/viz/index.html              the card map (3 modes)
+# http://localhost:8000/viz/index.html?cards=1)%20Sol%20Ring,%202)%20Zur%20the%20Enchanter
+#                                                   a walk seeded from cards you name
+# http://localhost:8000/viz/deck.html?deck=heliod   a deck's dossier
+# http://localhost:8000/viz/branch.html?deck=ur-dragon&branch=eminence-v3
+#                                                   a candidate 99 and its net change
+# http://localhost:8000/manuals/p/heliod.html       its Pilot's Operating Handbook (printable, no JS)
+```

@@ -6,22 +6,26 @@ description: Run the Mana Map test suite and interpret results. Use before commi
 # Run the tests
 
 ```bash
-make test                 # THE INNER LOOP: non-browser, non-forge, -n auto, cached (~22-40 s)
-make test-fresh           # same with nothing served from the regenerate-and-compare cache
-make test-browser         # the playwright suite (-n 4, plus the one serial_only test)
+make test                 # THE FAST TIER: what you run all day (runtimes: docs/testing.md)
+make test-fleet           # the slow tier: `slow or fleet` — producers re-run per deck
+make prepush              # both tiers; run before every push (CI runs both)
+make test-fresh           # both tiers with nothing served from the regenerate-and-compare cache
+make test-browser         # the playwright suite (-n 4, plus the serial_only tests)
 pytest -m forge           # ONE real Forge game (~10 s; needs ~/.mana-map/forge; opt-in)
 .venv/bin/pytest -n0 -k NAME   # one test, no worker startup
 .venv/bin/pytest -m ""    # literally everything
 ```
 
-A bare `pytest` is `make test` — `addopts` carries `-m 'not browser and not forge' -n auto`.
+A bare `pytest` is `make test` — `addopts` carries
+`-m 'not browser and not forge and not fleet and not slow' -n auto`.
 
 ## Interpreting results
 
 - **Counts live in one place**: `docs/testing.md` (the only file allowed to state them);
-  re-derive with `.venv/bin/python -m pytest -m "not browser and not forge" --collect-only -q | tail -1`.
+  re-derive with `.venv/bin/pytest --co -n0 | tail -1` (fast tier) or `-m ""` (everything).
 - **Data-gated tests auto-skip** on a fresh clone via the markers in `tests/conftest.py`
-  (`requires_data` / `requires_rules` / `requires_deck` / `requires_strategy` / `requires_roles`).
+  (`requires_data` / `requires_corpus` / `requires_rules` / `requires_rulings` /
+  `requires_deck` / `requires_strategy` / `requires_roles` / `requires_branch`).
   Skips are normal there; a *failure* on a developed checkout usually means `data/`
   artifacts are mutually inconsistent (a partial pipeline run) — fix by re-running the
   pipeline from the changed step, never by editing tests.
@@ -32,8 +36,9 @@ A bare `pytest` is `make test` — `addopts` carries `-m 'not browser and not fo
   fail when a doc states a stale count (agents, skills, subcommands, routines), omits a
   pilot subcommand from `docs/pilot.md`'s command block, or leaves a tracked per-deck
   file undocumented — they are the first thing to read when a docs-only change goes red.
-- **One `xfail(strict=True)`** is a deliberately unmet ship gate (`test_embedding_quality.py`),
-  not a broken test.
+- **A strict xfail is a stated goal, not a broken test** — its reason names where the
+  issue is tracked (e.g. `test_metric_hygiene.py`'s axis gate, known-issues 9b). It
+  fails loudly the day it starts passing.
 - The suite is CWD-independent and honors `MANAMAP_DATA_DIR` (point it elsewhere to
   sandbox or force skips). The browser suite needs `playwright install chromium`.
 
