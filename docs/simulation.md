@@ -869,7 +869,7 @@ and no recommendation moves — the MDE rule (2.8016·se) was already within 2% 
 Bonferroni-12 threshold (2.865·se) at the top rank. So this changes what a verdict MEANS,
 which `design` now states in every report, not which rows carry one today.
 
-**The real table is in the rule (2026-09-29).** `recommend()` read twelve goldfish rows and
+**SUPERSEDED 2026-10-04 (`460a1aa1`): a Forge loss is now a `forge_warning` beside the verdict and blocks nothing — the decision loop is the paired goldfish. The record of the rule as it was:** **The real table is in the rule (2026-09-29).** `recommend()` read twelve goldfish rows and
 the objective, and appended Forge as a `note` — on copy-burst-v1 the goldfish said MERGE
 while 73 real games read −0.061. Two changes. First, a branch may aim at the table:
 `forge.win_rate >= 0.25 @standard-v3` is an objective (`candidates.FORGE_OBJECTIVE_AXES`:

@@ -637,6 +637,28 @@ The vocabulary lives in `pilot/common.py` (`DECK_STATUSES`, `UNPLAYABLE_STATUSES
 `issue_spec` is the frozen renderer that gets deleted with the magazine. `issue_spec`
 re-exports it under the old names so the legacy banner is unchanged.
 
+## The swap loop and the keep list (2026-10-04)
+
+`manamap pilot try <slug> --out A --in B [...]` takes a swap idea to an answer in about
+ten seconds and writes nothing. One screen: every card in and out with its roles, whether
+a declared target names it, what the goldfish can see of it (`model_coverage.card_state`:
+seen / DARK / invisible) and what Forge's AI did with it in runs on disk — labelled AI
+behaviour, never a reason to cut; the keep list and `stage`'s own refusals
+(`deck_branch.swap_entries`); colour sources before and after (`mana_fit.shortfall(...,
+deck_doc=)`); the `net-change` rows through the shared `net_change.compare_readings`, each
+with a paired interval (`goldfish` seeds every game and `diagnostic.align` keeps the lists
+in the same slots); and one line — better / worse / trade / no call, how far to trust it,
+and the cheapest thing that would raise it. New cards are shaped by `fetch_deck.shape_card`
+from the local Scryfall dump, so `try` measures exactly what a staged, fetched branch
+measures (tested). `--stage NAME` writes a branch only after the screen.
+
+`data/decks/<slug>/protected.json` — `{"cards": [{"name", "why", "at"}]}` — is the pilot's
+keep list, written by hand only. `deck-branch stage / new / propose / merge`, `try`, the
+build's must-include set, the `candidates` auto-cut and the diagnosis/prescription cut
+gates all refuse to cut a card it names; `merge` folds the refusal into `blocking`, so
+`--force` cannot reach it. `validate-protected <slug>` is the gate: every card in the 99,
+not the commander, with a why. Born of edgar-vampires/draw-v1 cutting Vish Kal unread.
+
 ## Mining the corpus (`card-search`, tier ◆, computed on demand)
 
 Every other command on the bench measures a deck; this is the only one that answers the
@@ -900,7 +922,7 @@ so the commit is what `deck-version` numbers and what the captain's log stamps g
 against. Check a deck in without committing and tonight's games attach to no version at
 all. Then `deck-version <slug> paper` marks it as sleeved.
 
-### build-page — the compact deck page (SUPERSEDED, then DELETED)
+### The handbook — `build-poh` (`build-page` before it was superseded, then deleted)
 
 **The live renderer is `build-poh`** (`pilot/poh.py`, the Pilot's Operating Handbook,
 since 2026-09-02), and it owns `manuals/p/<slug>.html`. **Ten sections render since
@@ -1021,6 +1043,42 @@ POINT, byte-identical on every later regeneration. `tests/test_pilot_commit_prot
 checks the staged changeset and names the two-commit dance; `make manuals` regenerates
 it and CI compares the bytes.
 
+## Version numbers: what earns which digit
+
+`vMAJOR.MINOR.PATCH`, every slug starting at `v1.0.0`.
+
+| digit | earns it |
+|---|---|
+| **patch** | a mana fix, or a **single-card swap** |
+| **minor** | a sizable change — several cards, or a new capability |
+| **major** | the strategy or the commander changed |
+
+**Patch grew a second clause on 2026-09-08**, because the original wording —
+"patch = mana only" — could not describe most of what actually happens to a
+deck. Three tags had already fallen through the gap:
+
+```
+  ur-dragon      V2  +5  -5    tagged v1.0.1   ->  v1.1.0
+  ur-dragon      V3  +18 -17   tagged v1.0.2   ->  v1.2.0
+  edgar-vampires V2  +12 -12   tagged v1.0.1   ->  v1.1.0
+```
+
+An eighteen-card rebuild reading as a mana patch is not a cosmetic problem: the
+version is what the captain's log stamps a game against, and it is the first
+thing a reader uses to judge how much of a deck's record still applies.
+
+`heliod` v1.2.1 is the case that surfaced it — Archangel of Tithes in for White
+Sun's Zenith, one card for one card at identical pip cost. It was tagged a patch
+with a note saying the scheme did not quite cover it. Under the corrected rule
+it simply is one.
+
+**RENAMES ARE ADDITIVE.** The old name is kept as an alias on the same version
+rather than deleted, because prose cites tags BY NAME and that prose is
+authored: `ur-dragon/engine.json` names v1.0.2 four times and the pilot's own
+`log.jsonl` — append-only — narrates "v1.0.1 added lands and fixing; v1.0.2
+swapped the mana density". Retiring those names would leave the pilot's own
+record pointing at nothing, to tidy a number.
+
 ## The captain's log (`log.jsonl`, authored) and the debrief (`log_annotations.json`, ★)
 
 What happened when the deck was PLAYED — the one thing no other artifact records.
@@ -1112,9 +1170,14 @@ file without a passing skeptic. Prescriptions ACCUMULATE and are never overwritt
 later decklist makes one stale (MISS; `validate-prescription` checks form only), never
 wrong. Both doctor modes read `log_annotations.json`.
 
-## Simulation — a table, not a goldfish (`simulate`, tier ◆ seeded)
+## Forge: the probe (`forge-cast-check`, `simulate`, tier ◆ seeded)
 
-Forge is the rules engine; this repo owns the harness, the parser and the bridge.
+**Since 2026-10-04 Forge answers narrow questions and never gates a merge.** The
+first is `forge-cast-check <slug> --card X` — does the AI play this card at all, in a
+two-seat shell — and every add a branch needs cast is proven that way before an arm
+(`--branch B --adds --write`). A pod run is optional; in `net-change` its loss is a
+`forge_warning`. Forge is the rules engine; this repo owns the harness, the parser and
+the bridge.
 `manamap pilot simulate <slug> --vs <opponent>… --games N` runs N seeded Commander games
 headless against seats from `data/opponents/` (your pod, via `fetch-opponent`) or your
 other decks, and writes one tracked run record — win rate with a Wilson interval, who
@@ -1123,6 +1186,26 @@ counted two honest ways — with Forge's own AI caveat in its assumptions. `vali
 re-derives the analysis from the logs where they exist; `sim-scenario` lifts one board at
 a CR step into a **game state v2** scenario for `/resolve-stack`. The design, the spike
 and the measured limits are in **`docs/simulation.md`**; the v2 schema is below.
+
+## Per-deck Forge hints and the sacrifice knob (2026-09-30)
+
+`data/decks/<slug>/forge_hints.json` — `{"hints": [{"card", "ability", "ai_logic",
+"ai_preference": {kind: selector}, "why", "cites"}]}` — declares, per card, the two hint
+kinds Forge's own aristocrat scripts carry: an `AILogic$` on one named ability line and an
+`SVar:AIPreference:<kind>$<selector>` line. `validate-forge-hints <slug>` is the gate;
+`forge-install --generate` derives each override onto the shipped script (or its unflag
+override), idempotently, and the fingerprint moves with it. A `pilot_policy.json` rule may
+now be a **`forge` rule** — `{"id", "why", "forge": {KEY: value}}` — which explains AiProps
+keys the document's `forge` section sets and needs no goldfish channel; `forge-install`
+compiles the section into `res/ai/mm-<slug>.ai` and `simulate` flies our seat on it.
+
+Why both exist: under the unflagged engine (`data/forge_overrides/unflag.txt`) Edgar's
+Vish Kal, Viscera Seer and Altar of Dementia were finally CAST and then sat 9, 5 and 17
+own turns on the battlefield with zero activations, because the shipped scripts give the
+AI no logic and no preference for a sacrifice cost and `Default.ai` has
+`SACRIFICE_DEFAULT_PREF_ENABLE` off. `engine_casts.by_card[*].turns_on_battlefield` and
+`idle_on_battlefield` are the measurement; the hint and the knob are the two levers, and
+a replay of the same seed under them is the test.
 
 ## Goldfish metrics (`goldfish_metrics.json`, tier ◆)
 
@@ -1356,7 +1439,7 @@ steps it skipped, and nothing about the citation contract changes.
 | `stack-resolver` / `rules-checker` | board, hand, mana, stack, question | prose board, static opponents | **now**: `seats[]`, `actions[]`; the checker's missing-steps list names combat steps (506–511) by the `step` vocabulary |
 | `scenario-facts` | `board_bodies`, `opponents_of` | regex over strings | **now**: the object fields (`pt`, `token`, `annotations`, `type`), falling back to the string regex per entry |
 | `sim-scenario` (the bridge) | a Forge game's events up to a cut | — | **now**: writes a v2 scenario — life exact, lands exact (tapped since the controller's last untap), cast permanents from resolve lines, tokens from first use, commander exit read as `command`, hand as `{unknown: n, estimate: true}`; every approximation in `extras.reconstruction_notes`; `question` empty on purpose |
-| `goldfish` (`model_combat`) | one opponent, 40 life, does nothing | internal | could emit a v2 `seats[]` snapshot at turn N |
+| `goldfish` (`model_combat`) | one seat at 40 life for damage, doing nothing; three seats only for what we gain off their draws | internal | could emit a v2 `seats[]` snapshot at turn N |
 | `debrief` | `opponents[].seat / archetype / commander` | free text | the same three words; `seat` ids are the vocabulary for "the Dimir player" |
 | `prescribe` | pod description in the prompt | free text | may carry `seats[]` with `archetype` only — the doctor reasons about a pod, not a board |
 | `opponent` (post-MVP) | everything its seat may see | — | the actor: given a state with its own hand known and others `{unknown: n}`, emits the next `action` |
@@ -1824,8 +1907,8 @@ claimed 42 cases for `test_pilot_build_manual` (91), 29 for `test_pilot_validate
 (51) and 57 for `test_pilot_agent_cache` (83), while omitting twenty-odd files entirely.
 A number restated in two places is a number that will disagree with itself.
 
-Data-gated tests use `requires_rules` / `requires_deck` / `requires_strategy` /
-`requires_roles` markers from `tests/conftest.py`.
+Data-gated tests use the skip markers in `tests/conftest.py`; `docs/testing.md` lists
+all eight with the command that satisfies each.
 
 ## LEGACY — the magazine renderer (DELETED 2026-09-13; replaced by `poh.py` on 2026-09-02)
 
@@ -2058,83 +2141,3 @@ Rendered as **The Short List**, straight from the artifact with no prose key —
 would change `prose:shape` and invalidate both prose routines for no gain. The writer's
 `upgrades` key is the section's opening copy and is cached separately. Tiers are marked
 inline: computed evidence ◆, every ranking and verdict ★.
-
-
-## Version numbers: what earns which digit
-
-`vMAJOR.MINOR.PATCH`, every slug starting at `v1.0.0`.
-
-| digit | earns it |
-|---|---|
-| **patch** | a mana fix, or a **single-card swap** |
-| **minor** | a sizable change — several cards, or a new capability |
-| **major** | the strategy or the commander changed |
-
-**Patch grew a second clause on 2026-09-08**, because the original wording —
-"patch = mana only" — could not describe most of what actually happens to a
-deck. Three tags had already fallen through the gap:
-
-```
-  ur-dragon      V2  +5  -5    tagged v1.0.1   ->  v1.1.0
-  ur-dragon      V3  +18 -17   tagged v1.0.2   ->  v1.2.0
-  edgar-vampires V2  +12 -12   tagged v1.0.1   ->  v1.1.0
-```
-
-An eighteen-card rebuild reading as a mana patch is not a cosmetic problem: the
-version is what the captain's log stamps a game against, and it is the first
-thing a reader uses to judge how much of a deck's record still applies.
-
-`heliod` v1.2.1 is the case that surfaced it — Archangel of Tithes in for White
-Sun's Zenith, one card for one card at identical pip cost. It was tagged a patch
-with a note saying the scheme did not quite cover it. Under the corrected rule
-it simply is one.
-
-**RENAMES ARE ADDITIVE.** The old name is kept as an alias on the same version
-rather than deleted, because prose cites tags BY NAME and that prose is
-authored: `ur-dragon/engine.json` names v1.0.2 four times and the pilot's own
-`log.jsonl` — append-only — narrates "v1.0.1 added lands and fixing; v1.0.2
-swapped the mana density". Retiring those names would leave the pilot's own
-record pointing at nothing, to tidy a number.
-
-
-## The swap loop and the keep list (2026-10-04)
-
-`manamap pilot try <slug> --out A --in B [...]` takes a swap idea to an answer in about
-ten seconds and writes nothing. One screen: every card in and out with its roles, whether
-a declared target names it, what the goldfish can see of it (`model_coverage.card_state`:
-seen / DARK / invisible) and what Forge's AI did with it in runs on disk — labelled AI
-behaviour, never a reason to cut; the keep list and `stage`'s own refusals
-(`deck_branch.swap_entries`); colour sources before and after (`mana_fit.shortfall(...,
-deck_doc=)`); the `net-change` rows through the shared `net_change.compare_readings`, each
-with a paired interval (`goldfish` seeds every game and `diagnostic.align` keeps the lists
-in the same slots); and one line — better / worse / trade / no call, how far to trust it,
-and the cheapest thing that would raise it. New cards are shaped by `fetch_deck.shape_card`
-from the local Scryfall dump, so `try` measures exactly what a staged, fetched branch
-measures (tested). `--stage NAME` writes a branch only after the screen.
-
-`data/decks/<slug>/protected.json` — `{"cards": [{"name", "why", "at"}]}` — is the pilot's
-keep list, written by hand only. `deck-branch stage / new / propose / merge`, `try`, the
-build's must-include set, the `candidates` auto-cut and the diagnosis/prescription cut
-gates all refuse to cut a card it names; `merge` folds the refusal into `blocking`, so
-`--force` cannot reach it. `validate-protected <slug>` is the gate: every card in the 99,
-not the commander, with a why. Born of edgar-vampires/draw-v1 cutting Vish Kal unread.
-
-## Per-deck Forge hints and the sacrifice knob (2026-09-30)
-
-`data/decks/<slug>/forge_hints.json` — `{"hints": [{"card", "ability", "ai_logic",
-"ai_preference": {kind: selector}, "why", "cites"}]}` — declares, per card, the two hint
-kinds Forge's own aristocrat scripts carry: an `AILogic$` on one named ability line and an
-`SVar:AIPreference:<kind>$<selector>` line. `validate-forge-hints <slug>` is the gate;
-`forge-install --generate` derives each override onto the shipped script (or its unflag
-override), idempotently, and the fingerprint moves with it. A `pilot_policy.json` rule may
-now be a **`forge` rule** — `{"id", "why", "forge": {KEY: value}}` — which explains AiProps
-keys the document's `forge` section sets and needs no goldfish channel; `forge-install`
-compiles the section into `res/ai/mm-<slug>.ai` and `simulate` flies our seat on it.
-
-Why both exist: under the unflagged engine (`data/forge_overrides/unflag.txt`) Edgar's
-Vish Kal, Viscera Seer and Altar of Dementia were finally CAST and then sat 9, 5 and 17
-own turns on the battlefield with zero activations, because the shipped scripts give the
-AI no logic and no preference for a sacrifice cost and `Default.ai` has
-`SACRIFICE_DEFAULT_PREF_ENABLE` off. `engine_casts.by_card[*].turns_on_battlefield` and
-`idle_on_battlefield` are the measurement; the hint and the knob are the two levers, and
-a replay of the same seed under them is the test.
