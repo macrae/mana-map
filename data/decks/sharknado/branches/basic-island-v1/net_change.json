@@ -1072,7 +1072,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "72d097c4af39",
+  "model_version": "01915c648ae1",
   "seed": 20260826
  },
  "limits": [
@@ -1267,7 +1267,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "61.57 -> 60.52, a change of -1.05 (-2%)",
+    "detail": "60.94 -> 59.90, a change of -1.05 (-2%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -1279,7 +1279,7 @@
     "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
-    "detail": "12.40 -> 12.28, a change of -0.12 (-1%)",
+    "detail": "12.40 -> 12.27, a change of -0.12 (-1%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
@@ -1297,7 +1297,7 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is killed by T6 at -0.003 against an MDE of 0.003. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at -0.002 against an MDE of 0.003. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1345,13 +1345,13 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 60.5178,
-   "champion": 61.5683,
+   "branch": 59.8994,
+   "champion": 60.9448,
    "ci95_diff": [
-    -1.3064,
-    -0.7946
+    -1.3019,
+    -0.7889
    ],
-   "delta": -1.0505,
+   "delta": -1.0454,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1359,17 +1359,17 @@
     "significant": true,
     "threshold": 2.734
    },
-   "mde": 0.3658,
+   "mde": 0.3666,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "61.57 -> 60.52, a change of -1.05 (-2%)",
+   "reads_as": "60.94 -> 59.90, a change of -1.05 (-2%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -8.045
+   "z": -7.99
   },
   {
    "better_is": "higher",
@@ -1383,9 +1383,9 @@
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 7,
+    "rank": 8,
     "significant": false,
-    "threshold": 2.498
+    "threshold": 2.394
    },
    "mde": 0.0247,
    "measure": "board power @T6",
@@ -1401,14 +1401,14 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2047,
-   "champion": 0.2072,
+   "branch": 0.1983,
+   "champion": 0.2005,
    "ci95_diff": [
-    -0.0049,
-    -0.0001
+    -0.0046,
+    0.0002
    ],
-   "delta": -0.0025,
-   "excludes_zero": true,
+   "delta": -0.0022,
+   "excludes_zero": false,
    "holm": {
     "family": 10,
     "rank": 6,
@@ -1418,42 +1418,42 @@
    "mde": 0.0034,
    "measure": "killed by T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.003 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.003 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": -2.035
+   "z": -1.821
   },
   {
    "better_is": "higher",
-   "branch": 0.9812,
-   "champion": 0.9815,
+   "branch": 0.9806,
+   "champion": 0.9812,
    "ci95_diff": [
-    -0.0012,
-    0.0006
+    -0.0016,
+    0.0004
    ],
-   "delta": -0.0003,
+   "delta": -0.0006,
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 8,
+    "rank": 7,
     "significant": false,
-    "threshold": 2.394
+    "threshold": 2.498
    },
-   "mde": 0.0013,
+   "mde": 0.0014,
    "measure": "killed by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.001 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": -0.626
+   "z": -1.177
   },
   {
    "better_is": "lower",
@@ -1541,13 +1541,13 @@
   },
   {
    "better_is": "higher",
-   "branch": 12.2753,
+   "branch": 12.2747,
    "champion": 12.3968,
    "ci95_diff": [
-    -0.1841,
-    -0.0589
+    -0.1847,
+    -0.0595
    ],
-   "delta": -0.1215,
+   "delta": -0.1221,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1558,14 +1558,14 @@
    "mde": 0.0895,
    "measure": "extra cards by T8",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "12.40 -> 12.28, a change of -0.12 (-1%)",
+   "reads_as": "12.40 -> 12.27, a change of -0.12 (-1%)",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": -3.805
+   "z": -3.823
   },
   {
    "better_is": "higher",

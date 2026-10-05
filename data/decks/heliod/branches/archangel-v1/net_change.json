@@ -1061,7 +1061,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "72d097c4af39",
+  "model_version": "01915c648ae1",
   "seed": 20260826
  },
  "limits": [
@@ -1208,7 +1208,7 @@
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy nothing and pay stall, 2 in a row and extra cards by T8.",
+  "because": "You buy nothing and pay damage @T10, stall, 2 in a row and extra cards by T8.",
   "bill": {
    "box": 1,
    "buy": 3,
@@ -1245,11 +1245,11 @@
    "total": 85
   },
   "fell": [
+   "damage @T10",
    "stall, 2 in a row",
    "extra cards by T8"
   ],
   "no_call": [
-   "damage @T10",
    "board power @T6",
    "killed by T6",
    "killed by T10",
@@ -1261,6 +1261,12 @@
   "notes": [],
   "reward": [],
   "risk": [
+   {
+    "detail": "4.67 -> 4.58, a change of -0.09 (-2%)",
+    "kind": "paid",
+    "what": "damage @T10",
+    "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
    {
     "detail": "1 games in 100 -> 1 in 100, a swing of 1 games per 100",
     "kind": "paid",
@@ -1276,7 +1282,7 @@
    {
     "detail": "the largest is interaction affordable @T6 at -0.020 against an MDE of 0.020. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "8 row(s) returned no call",
+    "what": "7 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1310,31 +1316,31 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 5.0134,
-   "champion": 5.0934,
+   "branch": 4.5767,
+   "champion": 4.6704,
    "ci95_diff": [
-    -0.1451,
-    -0.0149
+    -0.1497,
+    -0.0377
    ],
-   "delta": -0.08,
+   "delta": -0.0937,
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 4,
-    "significant": false,
-    "threshold": 2.69
+    "rank": 3,
+    "significant": true,
+    "threshold": 2.734
    },
-   "mde": 0.0931,
+   "mde": 0.08,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.080 is smaller than the 0.093 this run can resolve",
+   "reads_as": "4.67 -> 4.58, a change of -0.09 (-2%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -2.407
+   "z": -3.279
   },
   {
    "better_is": "higher",
@@ -1394,31 +1400,31 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.1289,
-   "champion": 0.13,
+   "branch": 0.0739,
+   "champion": 0.0751,
    "ci95_diff": [
-    -0.0089,
-    0.0067
+    -0.0067,
+    0.0043
    ],
-   "delta": -0.0011,
+   "delta": -0.0012,
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 9,
+    "rank": 8,
     "significant": false,
-    "threshold": 2.241
+    "threshold": 2.394
    },
-   "mde": 0.0112,
+   "mde": 0.0079,
    "measure": "killed by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.011 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": -0.275
+   "z": -0.425
   },
   {
    "better_is": "lower",
@@ -1460,9 +1466,9 @@
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 8,
+    "rank": 9,
     "significant": false,
-    "threshold": 2.394
+    "threshold": 2.241
    },
    "mde": 0.0133,
    "measure": "missed drop by T5",
@@ -1544,9 +1550,9 @@
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 3,
+    "rank": 4,
     "significant": true,
-    "threshold": 2.734
+    "threshold": 2.69
    },
    "mde": 0.0199,
    "measure": "interaction affordable @T6",

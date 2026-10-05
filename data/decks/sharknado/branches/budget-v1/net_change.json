@@ -1283,7 +1283,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "72d097c4af39",
+  "model_version": "01915c648ae1",
   "seed": 20260826
  },
  "limits": [
@@ -1425,7 +1425,7 @@
   "why": "THE CART CAME BACK AT $2,464.64 AND FOUR CARDS WERE 77% OF IT: Volcanic Island $725.35, Tundra $475.00, Wheel of Fortune $318.00, Plateau $304.00 \u2014 $1,822.35, all Revised-era and moderately played. The pilot's line is under $1,000. Cutting the three original DUALS alone takes the subtotal from $2,354.94 to $850.59, about $897 all-in, and clears the line WITHOUT TOUCHING A SPELL: Wheel of Fortune stays. They are replaced by lands making the same colours from the Verge and slow-land cycles, which cost cents. THE EVIDENCE HERE IS THE DETERMINISTIC MANA BLOCK, not the objective below: the goldfish plays the first land in hand and credits its colours the same turn, so it cannot rank two lands that make the same colours, and mana-analysis is the whole of the evidence for a land swap. The objective is a NO-REGRESSION line set OUTSIDE the run's resolution so it can actually come back met or not met \u2014 the first two attempts were set inside the MDE and the tool refused them, correctly."
  },
  "objective_grade": {
-  "reading": 33.1833,
+  "reading": 32.7385,
   "shortfall": null,
   "state": "met"
  },
@@ -1490,7 +1490,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "61.57 -> 60.82, a change of -0.75 (-1%)",
+    "detail": "60.94 -> 60.18, a change of -0.77 (-1%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -1526,7 +1526,7 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is killed by T6 at -0.006 against an MDE of 0.006. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T6 at -0.005 against an MDE of 0.006. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "4 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1607,13 +1607,13 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 60.8213,
-   "champion": 61.5683,
+   "branch": 60.1753,
+   "champion": 60.9448,
    "ci95_diff": [
-    -1.1774,
-    -0.3166
+    -1.2005,
+    -0.3385
    ],
-   "delta": -0.747,
+   "delta": -0.7695,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1621,17 +1621,17 @@
     "significant": true,
     "threshold": 2.638
    },
-   "mde": 0.6152,
+   "mde": 0.616,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "61.57 -> 60.82, a change of -0.75 (-1%)",
+   "reads_as": "60.94 -> 60.18, a change of -0.77 (-1%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -3.402
+   "z": -3.5
   },
   {
    "better_is": "higher",
@@ -1663,13 +1663,13 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2016,
-   "champion": 0.2072,
+   "branch": 0.1956,
+   "champion": 0.2005,
    "ci95_diff": [
-    -0.0101,
-    -0.0011
+    -0.0093,
+    -0.0005
    ],
-   "delta": -0.0056,
+   "delta": -0.0049,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1677,27 +1677,27 @@
     "significant": false,
     "threshold": 2.498
    },
-   "mde": 0.0064,
+   "mde": 0.0063,
    "measure": "killed by T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.006 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.006 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": -2.447
+   "z": -2.168
   },
   {
    "better_is": "higher",
-   "branch": 0.9815,
-   "champion": 0.9815,
+   "branch": 0.9813,
+   "champion": 0.9812,
    "ci95_diff": [
     -0.0019,
-    0.0019
+    0.0021
    ],
-   "delta": 0.0,
+   "delta": 0.0001,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -1715,7 +1715,7 @@
    "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 0.0
+   "z": 0.1
   },
   {
    "better_is": "lower",

@@ -103,7 +103,7 @@
       "DISCARD: THE OPPONENT'S HALF OF A WHEEL IS NOW COUNTED, AND ONLY THE TAX ON IT. A symmetrical wheel refills the opponent too, so `whenever an opponent draws a card` payoffs (Razorkin Needlehead, Scrawling Crawler, Mind's Eye, Consecrated Sphinx) fire on their draw step and on every card a wheel deals them. ONE SEAT, the same convention the damage pillar uses -- Brallin's '1 damage to EACH opponent' is counted once against a single 40-life opponent -- so a real three-opponent table pays roughly three times this and every figure here is a FLOOR. WHAT IS STILL NOT MODELLED IS THE COST: the opponent draws those cards and never gets to use them, because this model has no opponent turn, no opponent board and no interaction. So the tax is priced and the risk it offsets is not. A trigger on an opponent CASTING (Rhystic Study) is a different family and stays unread.",
       "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
     ],
-    "model_version": "72d097c4af39",
+    "model_version": "01915c648ae1",
     "partner": "Brallin, Skyshark Rider",
     "seed": 42
   },
@@ -112,23 +112,23 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.984,
+        "10": 0.983,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
-        "5": 0.025,
-        "6": 0.211,
-        "7": 0.625,
-        "8": 0.885,
-        "9": 0.962
+        "5": 0.024,
+        "6": 0.204,
+        "7": 0.607,
+        "8": 0.876,
+        "9": 0.959
       },
       "kill_turn_histogram": {
-        "10": 220,
-        "5": 247,
-        "6": 1861,
-        "7": 4141,
-        "8": 2601,
-        "9": 768
+        "10": 243,
+        "5": 241,
+        "6": 1799,
+        "7": 4034,
+        "8": 2686,
+        "9": 827
       },
       "mean_board_power_by_turn": {
         "1": 0.169,
@@ -138,23 +138,23 @@
         "4": 5.415,
         "5": 7.863,
         "6": 9.816,
-        "7": 11.899,
+        "7": 11.9,
         "8": 14.14,
         "9": 16.498
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 60.405,
+        "10": 59.764,
         "2": 0.169,
-        "3": 1.177,
-        "4": 3.205,
-        "5": 6.646,
-        "6": 14.315,
-        "7": 22.699,
-        "8": 33.003,
-        "9": 45.7
+        "3": 1.172,
+        "4": 3.048,
+        "5": 6.464,
+        "6": 14.105,
+        "7": 22.374,
+        "8": 32.57,
+        "9": 45.156
       },
-      "mean_kill_turn": 7.248,
+      "mean_kill_turn": 7.284,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -168,7 +168,7 @@
         "9": 0.0
       },
       "median_kill_turn": 7,
-      "no_kill_by_max_turn_rate": 0.016
+      "no_kill_by_max_turn_rate": 0.017
     },
     "commander": {
       "cast_by_turn_6_rate": 0.838,
@@ -177,8 +177,8 @@
         "3": 723,
         "4": 871,
         "5": 5199,
-        "6": 1588,
-        "7": 778,
+        "6": 1587,
+        "7": 779,
         "8": 398,
         "9": 213,
         "not_by_max_turn": 121
@@ -189,51 +189,51 @@
     "discard": {
       "mean_cards_discarded_by_turn": {
         "1": 0.082,
-        "10": 12.573,
+        "10": 12.571,
         "2": 0.265,
         "3": 0.525,
         "4": 0.679,
         "5": 1.175,
         "6": 2.553,
-        "7": 4.2,
+        "7": 4.199,
         "8": 6.359,
-        "9": 9.14
+        "9": 9.138
       },
       "mean_commander_counters_by_turn": {
         "1": 0.0,
-        "10": 37.713,
+        "10": 37.709,
         "2": 0.0,
         "3": 0.084,
         "4": 0.509,
         "5": 2.019,
         "6": 6.677,
-        "7": 12.178,
-        "8": 19.221,
-        "9": 27.872
+        "7": 12.175,
+        "8": 19.219,
+        "9": 27.869
       },
       "mean_cumulative_event_damage_by_turn": {
         "1": 0.0,
-        "10": 15.53,
+        "10": 15.528,
         "2": 0.0,
         "3": 0.012,
         "4": 0.119,
         "5": 0.61,
         "6": 2.115,
-        "7": 4.052,
+        "7": 4.051,
         "8": 6.779,
-        "9": 10.563
+        "9": 10.562
       },
       "mean_event_damage_by_turn": {
         "1": 0.0,
-        "10": 4.967,
+        "10": 4.966,
         "2": 0.0,
         "3": 0.012,
         "4": 0.107,
         "5": 0.491,
         "6": 1.505,
-        "7": 1.937,
-        "8": 2.727,
-        "9": 3.784
+        "7": 1.936,
+        "8": 2.728,
+        "9": 3.782
       }
     },
     "interaction_castable_by_turn": {
@@ -281,9 +281,9 @@
       "4": 4.021,
       "5": 4.768,
       "6": 5.513,
-      "7": 6.385,
+      "7": 6.384,
       "8": 7.347,
-      "9": 8.339
+      "9": 8.338
     },
     "mean_bodies_by_turn": {
       "1": 0.188,
@@ -293,21 +293,21 @@
       "4": 1.325,
       "5": 1.652,
       "6": 2.418,
-      "7": 3.432,
+      "7": 3.433,
       "8": 4.64,
       "9": 6.0
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.166,
-      "10": 22.424,
+      "10": 22.423,
       "2": 0.493,
       "3": 0.919,
       "4": 1.243,
       "5": 2.156,
       "6": 4.869,
-      "7": 7.973,
-      "8": 11.993,
-      "9": 16.949
+      "7": 7.971,
+      "8": 11.992,
+      "9": 16.948
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -341,12 +341,12 @@
         "3": 0.055,
         "4": 0.134,
         "5": 0.662,
-        "6": 0.829,
+        "6": 0.828,
         "7": 0.91,
         "8": 0.952,
         "9": 0.975
       },
-      "both_online_by_turn_6_rate": 0.829,
+      "both_online_by_turn_6_rate": 0.828,
       "cast_by_turn_6_rate": 0.938,
       "mean_both_online_turn": 5.425,
       "mean_cast_turn": 4.23,
@@ -378,8 +378,8 @@
         "by_turn_6_rate": 0.337,
         "by_turn_6_rate_assisted": 0.337,
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "mean_turn": 5.658,
-        "mean_turn_assisted": 5.658
+        "mean_turn": 5.659,
+        "mean_turn_assisted": 5.659
       },
       {
         "assembled_rate": 0.775,
@@ -414,8 +414,8 @@
         "by_turn_6_rate": 0.527,
         "by_turn_6_rate_assisted": 0.527,
         "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
-        "mean_turn": 5.278,
-        "mean_turn_assisted": 5.278
+        "mean_turn": 5.279,
+        "mean_turn_assisted": 5.279
       },
       {
         "assembled_rate": 0.841,

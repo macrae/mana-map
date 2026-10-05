@@ -199,6 +199,9 @@ manamap pilot validate-diagnostic <slug> [--branch N]
                                         #   the vitals' form: every rate carries its
                                         #   interval, and an unavailable block is ABSENT
                                         #   rather than zeroed
+manamap pilot try <slug> --out A --in B [--out C --in D …] [--branch N] [--each] [--stage NAME] [--json]
+                                                               # THE SWAP LOOP: one screen, nothing written; --stage after
+manamap pilot validate-protected <slug>                        # protected.json: the pilot's keep list, gated
 manamap pilot net-change <slug> --branch N [--write] [--json]
                                         #   THE REPORT A PURCHASE RESTS ON: THE CHANGE
                                         #   (every swap, with the reason it was staged,
@@ -2093,6 +2096,28 @@ authored: `ur-dragon/engine.json` names v1.0.2 four times and the pilot's own
 swapped the mana density". Retiring those names would leave the pilot's own
 record pointing at nothing, to tidy a number.
 
+
+## The swap loop and the keep list (2026-10-04)
+
+`manamap pilot try <slug> --out A --in B [...]` takes a swap idea to an answer in about
+ten seconds and writes nothing. One screen: every card in and out with its roles, whether
+a declared target names it, what the goldfish can see of it (`model_coverage.card_state`:
+seen / DARK / invisible) and what Forge's AI did with it in runs on disk — labelled AI
+behaviour, never a reason to cut; the keep list and `stage`'s own refusals
+(`deck_branch.swap_entries`); colour sources before and after (`mana_fit.shortfall(...,
+deck_doc=)`); the `net-change` rows through the shared `net_change.compare_readings`, each
+with a paired interval (`goldfish` seeds every game and `diagnostic.align` keeps the lists
+in the same slots); and one line — better / worse / trade / no call, how far to trust it,
+and the cheapest thing that would raise it. New cards are shaped by `fetch_deck.shape_card`
+from the local Scryfall dump, so `try` measures exactly what a staged, fetched branch
+measures (tested). `--stage NAME` writes a branch only after the screen.
+
+`data/decks/<slug>/protected.json` — `{"cards": [{"name", "why", "at"}]}` — is the pilot's
+keep list, written by hand only. `deck-branch stage / new / propose / merge`, `try`, the
+build's must-include set, the `candidates` auto-cut and the diagnosis/prescription cut
+gates all refuse to cut a card it names; `merge` folds the refusal into `blocking`, so
+`--force` cannot reach it. `validate-protected <slug>` is the gate: every card in the 99,
+not the commander, with a why. Born of edgar-vampires/draw-v1 cutting Vish Kal unread.
 
 ## Per-deck Forge hints and the sacrifice knob (2026-09-30)
 

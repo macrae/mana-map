@@ -82,7 +82,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "72d097c4af39",
+    "model_version": "01915c648ae1",
     "seed": 42
   },
   "metrics": {
@@ -90,21 +90,20 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.125,
+        "10": 0.074,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
         "6": 0.0,
-        "7": 0.001,
-        "8": 0.01,
-        "9": 0.049
+        "7": 0.0,
+        "8": 0.002,
+        "9": 0.021
       },
       "kill_turn_histogram": {
-        "10": 768,
-        "7": 8,
-        "8": 92,
-        "9": 385
+        "10": 533,
+        "8": 24,
+        "9": 181
       },
       "mean_board_power_by_turn": {
         "1": 0.071,
@@ -120,17 +119,17 @@
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 5.05,
+        "10": 4.599,
         "2": 0.09,
-        "3": 0.35,
-        "4": 0.878,
-        "5": 1.418,
-        "6": 2.28,
-        "7": 3.108,
-        "8": 3.804,
-        "9": 4.437
+        "3": 0.341,
+        "4": 0.737,
+        "5": 1.217,
+        "6": 1.937,
+        "7": 2.671,
+        "8": 3.344,
+        "9": 3.97
       },
-      "mean_kill_turn": 9.527,
+      "mean_kill_turn": 9.69,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -144,7 +143,7 @@
         "9": 0.0
       },
       "median_kill_turn": 10,
-      "no_kill_by_max_turn_rate": 0.875
+      "no_kill_by_max_turn_rate": 0.926
     },
     "commander": {
       "cast_by_turn_6_rate": 0.883,

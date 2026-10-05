@@ -82,7 +82,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "72d097c4af39",
+    "model_version": "01915c648ae1",
     "seed": 42,
     "treasure_sources_not_modelled": []
   },
@@ -91,50 +91,50 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.905,
+        "10": 0.888,
         "2": 0.0,
         "3": 0.0,
         "4": 0.001,
-        "5": 0.019,
-        "6": 0.079,
-        "7": 0.29,
-        "8": 0.6,
-        "9": 0.806
+        "5": 0.018,
+        "6": 0.075,
+        "7": 0.266,
+        "8": 0.563,
+        "9": 0.78
       },
       "kill_turn_histogram": {
-        "10": 981,
-        "4": 11,
-        "5": 175,
-        "6": 600,
-        "7": 2116,
-        "8": 3093,
-        "9": 2070
+        "10": 1080,
+        "4": 10,
+        "5": 168,
+        "6": 570,
+        "7": 1916,
+        "8": 2965,
+        "9": 2173
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 61.933,
+        "10": 61.904,
         "2": 0.219,
         "3": 1.995,
         "4": 4.765,
         "5": 8.77,
-        "6": 14.916,
-        "7": 23.267,
-        "8": 34.021,
-        "9": 46.845
+        "6": 14.911,
+        "7": 23.245,
+        "8": 34.004,
+        "9": 46.812
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 50.123,
+        "10": 48.728,
         "2": 0.073,
-        "3": 0.445,
-        "4": 2.292,
-        "5": 5.422,
-        "6": 10.109,
-        "7": 16.554,
-        "8": 25.602,
-        "9": 36.614
+        "3": 0.432,
+        "4": 2.093,
+        "5": 5.017,
+        "6": 9.581,
+        "7": 15.866,
+        "8": 24.705,
+        "9": 35.505
       },
-      "mean_kill_turn": 8.016,
+      "mean_kill_turn": 8.083,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -148,20 +148,20 @@
         "9": 0.0
       },
       "median_kill_turn": 8,
-      "no_kill_by_max_turn_rate": 0.095
+      "no_kill_by_max_turn_rate": 0.112
     },
     "commander": {
       "cast_by_turn_6_rate": 0.26,
       "cast_turn_histogram": {
-        "10": 899,
+        "10": 898,
         "3": 219,
         "4": 307,
         "5": 680,
-        "6": 1391,
-        "7": 1382,
-        "8": 1641,
+        "6": 1390,
+        "7": 1378,
+        "8": 1645,
         "9": 1137,
-        "not_by_max_turn": 2344
+        "not_by_max_turn": 2346
       },
       "mean_cast_turn": 7.27,
       "median_cast_turn": 7
@@ -169,7 +169,7 @@
     "commander_reveal": {
       "ceiling_note": "this model has no blockers; the rate is Forge's, not this model's",
       "declared": true,
-      "games_it_fired": 7202,
+      "games_it_fired": 7200,
       "mean_bodies": 4.026,
       "mean_fired": 2.002,
       "rate": {
@@ -210,46 +210,46 @@
       "3": 0.892,
       "4": 0.761,
       "5": 0.639,
-      "6": 0.559,
+      "6": 0.558,
       "7": 0.528,
-      "8": 0.53,
+      "8": 0.529,
       "9": 0.562
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.658,
+      "10": 9.657,
       "2": 2.14,
       "3": 3.383,
       "4": 4.336,
       "5": 5.144,
-      "6": 6.053,
+      "6": 6.052,
       "7": 6.843,
-      "8": 7.678,
-      "9": 8.603
+      "8": 7.677,
+      "9": 8.602
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 10.834,
+      "10": 10.831,
       "2": 0.118,
       "3": 0.603,
       "4": 1.319,
       "5": 2.131,
       "6": 3.108,
-      "7": 4.453,
-      "8": 6.136,
-      "9": 8.282
+      "7": 4.452,
+      "8": 6.133,
+      "9": 8.279
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 4.161,
+      "10": 4.16,
       "2": 0.062,
       "3": 0.087,
       "4": 0.153,
       "5": 0.293,
       "6": 0.625,
-      "7": 1.115,
-      "8": 1.85,
-      "9": 2.806
+      "7": 1.116,
+      "8": 1.849,
+      "9": 2.801
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -282,7 +282,7 @@
         "by_turn_6_rate": 0.743,
         "by_turn_6_rate_assisted": 0.844,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 3.102,
+        "mean_turn": 3.103,
         "mean_turn_assisted": 2.829
       },
       {
@@ -292,7 +292,7 @@
         "by_turn_6_rate_assisted": 0.778,
         "label": "Cost reducer or cheat-into-play drawn",
         "mean_turn": 3.354,
-        "mean_turn_assisted": 3.19
+        "mean_turn_assisted": 3.191
       },
       {
         "assembled_rate": 0.861,
@@ -318,25 +318,25 @@
         "by_turn_6_rate": 0.284,
         "by_turn_6_rate_assisted": 0.53,
         "label": "Enrage engine drawn",
-        "mean_turn": 5.721,
+        "mean_turn": 5.722,
         "mean_turn_assisted": 4.999
       },
       {
         "assembled_rate": 0.719,
-        "assembled_rate_assisted": 0.884,
+        "assembled_rate_assisted": 0.883,
         "by_turn_6_rate": 0.526,
         "by_turn_6_rate_assisted": 0.7,
         "label": "Protection held for the board",
-        "mean_turn": 3.837,
-        "mean_turn_assisted": 3.702
+        "mean_turn": 3.835,
+        "mean_turn_assisted": 3.701
       },
       {
         "assembled_rate": 0.091,
-        "assembled_rate_assisted": 0.391,
+        "assembled_rate_assisted": 0.392,
         "by_turn_6_rate": 0.02,
         "by_turn_6_rate_assisted": 0.128,
         "label": "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur",
-        "mean_turn": 7.794,
+        "mean_turn": 7.793,
         "mean_turn_assisted": 7.324
       }
     ],

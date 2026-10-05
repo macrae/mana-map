@@ -1116,7 +1116,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "72d097c4af39",
+  "model_version": "01915c648ae1",
   "seed": 20260826
  },
  "limits": [
@@ -1258,8 +1258,8 @@
   "why": "Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive a turn or be equipped first, so the deck has no instant-speed protection at all. Shelter is {1}{W} at instant speed and draws a card, which Shabraz pays for with a counter and a life. Astral Drift is gated on CYCLING rather than discarding, which is not what Brallin taxes, and it is a blink effect with almost nothing in the 99 worth blinking; the declaration names it in no target group. White for white, and white sits five sources OVER target, so the manabase does not move. All 17 wheels stay \u2014 an earlier version of this branch cut two of them for Mask of Memory and measured an 8% card-advantage loss for it."
  },
  "objective_grade": {
-  "reading": 33.1324,
-  "shortfall": 3.3676,
+  "reading": 32.7004,
+  "shortfall": 3.7996,
   "state": "not met"
  },
  "recommendation": {
@@ -1312,7 +1312,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "61.57 -> 60.64, a change of -0.93 (-2%)",
+    "detail": "60.94 -> 60.00, a change of -0.94 (-2%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -1400,13 +1400,13 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 60.638,
-   "champion": 61.5683,
+   "branch": 60.0025,
+   "champion": 60.9448,
    "ci95_diff": [
-    -1.3173,
-    -0.5433
+    -1.3301,
+    -0.5545
    ],
-   "delta": -0.9303,
+   "delta": -0.9423,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1414,17 +1414,17 @@
     "significant": true,
     "threshold": 2.734
    },
-   "mde": 0.5532,
+   "mde": 0.5543,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "61.57 -> 60.64, a change of -0.93 (-2%)",
+   "reads_as": "60.94 -> 60.00, a change of -0.94 (-2%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -4.711
+   "z": -4.762
   },
   {
    "better_is": "higher",
@@ -1456,13 +1456,13 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.2082,
-   "champion": 0.2072,
+   "branch": 0.2016,
+   "champion": 0.2005,
    "ci95_diff": [
-    -0.0029,
+    -0.0027,
     0.0049
    ],
-   "delta": 0.001,
+   "delta": 0.0011,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -1480,25 +1480,25 @@
    "verdict": "noise",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 0.506
+   "z": 0.564
   },
   {
    "better_is": "higher",
-   "branch": 0.9825,
-   "champion": 0.9815,
+   "branch": 0.9818,
+   "champion": 0.9812,
    "ci95_diff": [
-    -0.0009,
-    0.0029
+    -0.0013,
+    0.0025
    ],
-   "delta": 0.001,
+   "delta": 0.0006,
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 7,
+    "rank": 8,
     "significant": false,
-    "threshold": 2.498
+    "threshold": 2.394
    },
-   "mde": 0.0027,
+   "mde": 0.0028,
    "measure": "killed by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
    "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.003 this run can resolve",
@@ -1508,7 +1508,7 @@
    "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 1.021
+   "z": 0.606
   },
   {
    "better_is": "lower",
@@ -1550,9 +1550,9 @@
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 8,
+    "rank": 7,
     "significant": false,
-    "threshold": 2.394
+    "threshold": 2.498
    },
    "mde": 0.0079,
    "measure": "missed drop by T5",

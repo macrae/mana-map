@@ -2861,6 +2861,61 @@ def spell_count_profile(card):
     return out
 
 
+#: A CREATURE THAT MAY NOT ATTACK, and until 2026-10-04 the goldfish attacked with
+#: every one. Defender (315 corpus creatures) swung like any body, and Kefnet the
+#: Mindful — "Kefnet can't attack or block unless you have seven or more cards in
+#: hand" — read as a freely attacking 5/5 flyer, so cutting him from sharknado
+#: cost the model damage he never deals. Swept on the Scryfall dump (line breaks
+#: intact; cards.csv flattens them and hides the sentence boundary). The clause
+#: must name the card itself ("this creature", "it", its name or the part before
+#: the comma), so a card that forbids OTHER creatures from attacking is not read.
+_DEFENDER_LINE_RE = re.compile(r"^\s*defender\b", re.I | re.M)
+_ATTACK_GATE_RE = re.compile(
+    r"(?:^|[.\n]\s*)(?P<who>[^.\n]*?) can't attack(?: or block)?(?P<alone> alone)?"
+    r"(?: unless (?P<cond>[^.\n]*))?\.", re.I)
+_HAND_GATE_RE = re.compile(r"you have (\w+) or (more|fewer) cards in (?:your )?hand", re.I)
+
+
+def attack_gate(card):
+    """None when the card attacks freely. Else `{"kind", "min_hand"?}`:
+    `never` (Defender, or an unconditional "can't attack"), `hand` (attacks only
+    with `min_hand` or more cards in hand — checkable here), or `unless` (a
+    condition this model cannot evaluate; such a creature is held back, the
+    conservative reading, and named by its kind). "Can't attack alone" is not a
+    gate: nothing here attacks alone when anything else can."""
+    # THE FACE THAT IS CAST. A transformed back face (Ulvenwald Abomination) is
+    # not the creature that entered, and this model does not transform.
+    text = (card.get("oracle_text") or "").split(" // ")[0]
+    if "Creature" not in (card.get("type_line") or "").split(" // ")[0]:
+        return None
+    if _DEFENDER_LINE_RE.search(text):
+        return {"kind": "never", "why": "defender"}
+    name = str(card.get("name") or "").split(" // ")[0]
+    # Its name, the part before a comma, and the FIRST WORD: the Amonkhet gods
+    # print "Kefnet can't attack or block unless …".
+    selves = {"this creature", "it", name.lower(), name.split(",")[0].strip().lower(),
+              name.split(" ")[0].strip(",").lower()}
+    for m in _ATTACK_GATE_RE.finditer(text):
+        who = m.group("who").strip().lower()
+        if who not in selves:
+            continue
+        if m.group("alone"):
+            return None
+        cond = m.group("cond")
+        if not cond:
+            return {"kind": "never", "why": "can't attack"}
+        h = _HAND_GATE_RE.search(cond)
+        if h:
+            word = h.group(1).lower()
+            n = int(word) if word.isdigit() else _NUMBER_WORDS.get(word)
+            if n is not None:
+                # Kefnet: seven or MORE. Hazoret: one or FEWER.
+                key = "min_hand" if h.group(2).lower() == "more" else "max_hand"
+                return {"kind": "hand", key: n, "why": cond}
+        return {"kind": "unless", "why": cond}
+    return None
+
+
 def combat_profile(card):
     """What this card does once there is a combat step.
 
@@ -2882,6 +2937,8 @@ def combat_profile(card):
         # cannot be priced without it.
         "toughness": _stat(card.get("toughness")) if is_creature else 0,
         "haste": bool(_HASTE_RE.search(text)),
+        # Read by the combat step: who may not attack, and on what condition.
+        "attack_gate": attack_gate(card),
         # Read for the flying-gated grant (Dragon Tempest) only.
         "flying": is_creature and bool(_FLYING_KW_RE.search(text)),
         "type_line": type_line,

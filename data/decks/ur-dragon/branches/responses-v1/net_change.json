@@ -1307,7 +1307,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "72d097c4af39",
+  "model_version": "01915c648ae1",
   "seed": 20260826
  },
  "limits": [
@@ -1449,13 +1449,12 @@
   "why": "Prescription 0241fb6a70f1 adds 2, 3, 5: flash for every Dragon, a one-mana counter, and the one Dragon whose ETB counters. The goldfish cannot see any of it (no opponents), so its objective is a CONTROL \u2014 the three swaps may not cost more than about two points of unopposed clock (0.802 today). The gate is Forge at standard-v3: MDE 0.195 at 100 games a side against the 0.353 baseline."
  },
  "objective_grade": {
-  "reading": 0.7664,
-  "shortfall": 0.0136,
-  "state": "not resolvable",
-  "why": "missed by 0.0136, which is under the 0.0168 this run could detect \u2014 evidence of nothing, not evidence of failure"
+  "reading": 0.7366,
+  "shortfall": 0.0434,
+  "state": "not met"
  },
  "recommendation": {
-  "because": "The miss is smaller than this run can see. missed by 0.0136, which is under the 0.0168 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
+  "because": "The objective is not met. Missed drop by t5 and mulliganed improved anyway, which is a different branch's case.",
   "bill": {
    "box": 2,
    "buy": 4,
@@ -1528,7 +1527,7 @@
   ],
   "risk": [
    {
-    "detail": "58.83 -> 56.05, a change of -2.77 (-5%)",
+    "detail": "57.37 -> 54.66, a change of -2.71 (-5%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
@@ -1540,13 +1539,13 @@
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "26 games in 100 -> 24 in 100, a swing of 2 games per 100",
+    "detail": "24 games in 100 -> 21 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "96 games in 100 -> 94 in 100, a swing of 2 games per 100",
+    "detail": "95 games in 100 -> 93 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
@@ -1609,20 +1608,20 @@
    "missed drop by T5",
    "mulliganed"
   ],
-  "state": "inconclusive"
+  "state": "do not merge"
  },
  "slug": "ur-dragon",
  "staged": 3,
  "table": [
   {
    "better_is": "higher",
-   "branch": 1.8301,
-   "champion": 1.7842,
+   "branch": 1.8294,
+   "champion": 1.7833,
    "ci95_diff": [
-    -0.0437,
-    0.1355
+    -0.0434,
+    0.1356
    ],
-   "delta": 0.0459,
+   "delta": 0.0461,
    "excludes_zero": false,
    "holm": {
     "family": 11,
@@ -1640,17 +1639,17 @@
    "verdict": "noise",
    "what": "Treasures sitting in the hoard at the end of turn 10, averaged over every game.",
    "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine.",
-   "z": 1.005
+   "z": 1.009
   },
   {
    "better_is": "higher",
-   "branch": 0.4136,
-   "champion": 0.4201,
+   "branch": 0.4131,
+   "champion": 0.4193,
    "ci95_diff": [
-    -0.0351,
-    0.0221
+    -0.0348,
+    0.0224
    ],
-   "delta": -0.0065,
+   "delta": -0.0062,
    "excludes_zero": false,
    "holm": {
     "family": 11,
@@ -1668,45 +1667,45 @@
    "verdict": "noise",
    "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
    "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered.",
-   "z": -0.445
+   "z": -0.425
   },
   {
    "better_is": "higher",
-   "branch": 56.0518,
-   "champion": 58.8253,
+   "branch": 54.6608,
+   "champion": 57.3715,
    "ci95_diff": [
-    -4.1212,
-    -1.4258
+    -4.0424,
+    -1.379
    ],
-   "delta": -2.7735,
+   "delta": -2.7107,
    "excludes_zero": true,
    "holm": {
     "family": 11,
-    "rank": 4,
+    "rank": 6,
     "significant": true,
-    "threshold": 2.734
+    "threshold": 2.638
    },
-   "mde": 1.9263,
+   "mde": 1.9035,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "58.83 -> 56.05, a change of -2.77 (-5%)",
+   "reads_as": "57.37 -> 54.66, a change of -2.71 (-5%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -4.034
+   "z": -3.99
   },
   {
    "better_is": "higher",
-   "branch": 13.5327,
-   "champion": 14.6064,
+   "branch": 13.532,
+   "champion": 14.6054,
    "ci95_diff": [
-    -1.319,
-    -0.8284
+    -1.3187,
+    -0.8281
    ],
-   "delta": -1.0737,
+   "delta": -1.0734,
    "excludes_zero": true,
    "holm": {
     "family": 11,
@@ -1724,45 +1723,45 @@
    "verdict": "worse",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": -8.58
+   "z": -8.578
   },
   {
    "better_is": "higher",
-   "branch": 0.2387,
-   "champion": 0.2603,
+   "branch": 0.2126,
+   "champion": 0.2361,
    "ci95_diff": [
-    -0.0329,
-    -0.0103
+    -0.0343,
+    -0.0127
    ],
-   "delta": -0.0216,
+   "delta": -0.0235,
    "excludes_zero": true,
    "holm": {
     "family": 11,
-    "rank": 6,
+    "rank": 4,
     "significant": true,
-    "threshold": 2.638
+    "threshold": 2.734
    },
-   "mde": 0.0161,
+   "mde": 0.0154,
    "measure": "killed by T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "26 games in 100 -> 24 in 100, a swing of 2 games per 100",
+   "reads_as": "24 games in 100 -> 21 in 100, a swing of 2 games per 100",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": -3.763
+   "z": -4.271
   },
   {
    "better_is": "higher",
-   "branch": 0.9439,
-   "champion": 0.9595,
+   "branch": 0.9299,
+   "champion": 0.947,
    "ci95_diff": [
-    -0.0214,
-    -0.0098
+    -0.0236,
+    -0.0106
    ],
-   "delta": -0.0156,
+   "delta": -0.0171,
    "excludes_zero": true,
    "holm": {
     "family": 11,
@@ -1770,17 +1769,17 @@
     "significant": true,
     "threshold": 2.773
    },
-   "mde": 0.0083,
+   "mde": 0.0094,
    "measure": "killed by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "96 games in 100 -> 94 in 100, a swing of 2 games per 100",
+   "reads_as": "95 games in 100 -> 93 in 100, a swing of 2 games per 100",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": -5.254
+   "z": -5.123
   },
   {
    "better_is": "lower",
@@ -1868,10 +1867,10 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.5557,
-   "champion": 0.5599,
+   "branch": 0.5558,
+   "champion": 0.56,
    "ci95_diff": [
-    -0.0191,
+    -0.019,
     0.0107
    ],
    "delta": -0.0042,

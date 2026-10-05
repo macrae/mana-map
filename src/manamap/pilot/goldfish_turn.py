@@ -548,7 +548,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                              toughness=1,
                              is_token=False, is_legendary=False, type_line="",
                              infect=False, toxic=0, flying=False,
-                             temporary=False):
+                             temporary=False, attack_gate=None):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -588,8 +588,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # desynchronise it. The cost is the six sites that rewrite an entry
             # as `_e[:7] + (tapped,)`: each now re-appends `_e[8:]`, or it would
             # truncate this field instead.
+            # THE TENTH FIELD IS THE ATTACK GATE (`goldfish_profiles.attack_gate`):
+            # Defender, "can't attack", or a condition. Read by `_may_attack`.
             battlefield.append((power, arrived, haste, mult, is_token,
-                                (infect, toxic), toughness, False, temporary))
+                                (infect, toxic), toughness, False, temporary,
+                                attack_gate))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -710,7 +713,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                  is_legendary=True, type_line=cprof["type_line"],
                                  flying=cprof["flying"],
                                  infect=cprof["infect"], toxic=cprof["toxic"],
-                                 toughness=cprof["toughness"])
+                                 toughness=cprof["toughness"],
+                                 attack_gate=cprof.get("attack_gate"))
                 if cprof["team_damage_multiplier"] > 1:
                     team_damage_multiplier *= cprof["team_damage_multiplier"]
                 if any((cprof["attack_mana"], cprof["attack_damage"],
@@ -831,7 +835,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      is_legendary="Legendary" in tl, type_line=tl,
                                      infect=combat["infect"], toxic=combat["toxic"],
                                      flying=combat["flying"],
-                                     toughness=combat["toughness"])
+                                     toughness=combat["toughness"],
+                                     attack_gate=combat.get("attack_gate"))
             if combat["token_bodies"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
@@ -1449,11 +1454,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if sc["storm_token_bodies"]:
                 each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
                 for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
-                    # NINE FIELDS, like the one door above — this append
+                    # TEN FIELDS, like the one door above — this append
                     # bypasses `creature_entered` and would otherwise build a
-                    # short entry that every `e[8]` read would raise on.
+                    # short entry that every `e[8]` read would raise on. The
+                    # tenth, the attack gate, is None: a Goblin token attacks.
                     battlefield.append((each, turn, False, 1, True, (0, 0), 1,
-                                        False, False))
+                                        False, False, None))
                     creature_types.append("Creature — Goblin")
                     creature_flying.append(False)
                     bodies_cum += 1
@@ -2022,7 +2028,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             is_legendary="Legendary" in (card.get("type_line") or ""),
                             type_line=card.get("type_line") or "",
                             infect=combat["infect"], toxic=combat["toxic"],
-                            flying=combat["flying"])
+                            flying=combat["flying"],
+                            attack_gate=combat.get("attack_gate"))
                         creatures_entered_this_turn += 1
                 # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
                 # whether or not the commander has ever been cast. "Another"
@@ -2327,10 +2334,23 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # door says every unpack takes it; these two combat unpacks did not,
             # so the ninth field raised `too many values to unpack (expected 8)`
             # here rather than anywhere near the field that was added.
+            def _may_attack(entry):
+                """The attack gate (field 10): Defender and "can't attack" never;
+                a hand-size condition against the hand right now; any other
+                condition held back, the conservative reading."""
+                gate = entry[9] if len(entry) > 9 else None
+                if not gate:
+                    return True
+                if gate.get("kind") == "hand":
+                    if "min_hand" in gate:
+                        return len(hand) >= gate["min_hand"]
+                    return len(hand) <= gate.get("max_hand", 0)
+                return False
             _able = [i for i, ((p, arrived, haste, mult, _tok, pz, _t, tapped, *_), tl_, fl_)
                      in enumerate(zip(battlefield, creature_types, creature_flying))
-                     if not tapped and (haste or arrived < turn
-                                        or (haste_grants and _granted(tl_, fl_, _tok)))]
+                     if not tapped and _may_attack(battlefield[i])
+                     and (haste or arrived < turn
+                          or (haste_grants and _granted(tl_, fl_, _tok)))]
             attackers = [(((battlefield[i][0] + team_anthem + turn_pump) * turn_power_mult)
                           * (battlefield[i][3] if battlefield[i][3] > 1
                              else (2 if turn_double_strike else 1)), battlefield[i][5])
@@ -2389,8 +2409,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             def _recount():
                 _ab = [i for i, ((p_, arr_, hs_, ml_, tok_, pz_, _t_, tp_, *_), tl_, fl_)
                        in enumerate(zip(battlefield, creature_types, creature_flying))
-                       if not tp_ and (hs_ or arr_ < turn
-                                       or (haste_grants and _granted(tl_, fl_, tok_)))]
+                       if not tp_ and _may_attack(battlefield[i])
+                       and (hs_ or arr_ < turn
+                            or (haste_grants and _granted(tl_, fl_, tok_)))]
                 _at = [(((battlefield[i][0] + team_anthem + turn_pump) * turn_power_mult)
                         * (battlefield[i][3] if battlefield[i][3] > 1
                            else (2 if turn_double_strike else 1)), battlefield[i][5])
