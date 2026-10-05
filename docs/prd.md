@@ -1,7 +1,7 @@
 # ManaMap — Product Requirements
 
 *Engineering handoff. September 2026. Single user: Sean MacRae. No hosting, auth,
-or multi-tenancy in scope. Supersedes [`prd-2026-08.md`](prd-2026-08.md), which is
+or multi-tenancy in scope. Supersedes [`history/prd-2026-08.md`](history/prd-2026-08.md), which is
 kept verbatim because source citations resolve against its numbering as
 `PRD-v1 §N`.*
 

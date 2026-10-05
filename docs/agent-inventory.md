@@ -16,9 +16,9 @@ retired on 2026-08-19** (`docs/history/agent-audit-2026-08-19.md`). `git log
 `short-list-analyst`, `upgrade-scout`, plus the `design-issue` and `short-list`
 skills. `pilot-notes` is the fold of the deleted writer and coach.
 
-What is still frozen is the **Python renderer**, not the agent set — and
-`build_index.py`, which `CLAUDE.md` listed under that heading until 2026-09-03,
-is fully live and writes the manifest the whole frontend reads.
+The **Python renderer** was frozen at the time and was deleted on 2026-09-13; the
+manifest half of `build_index.py` lives on as `deck_manifest.py`, which writes the
+`data/decks/index.json` the whole frontend reads.
 
 So Epic D is a **re-grouping of 18 charters**, not an excavation.
 
@@ -66,14 +66,14 @@ Deck-facing, and the ones a consolidation has to re-home:
 
 | Skill | Spawns | Note |
 |---|---|---|
-| `publish-deck` | debrief, deck-cartographer, deck-engineer, engine-critic, pilot-notes | **The router that already exists** — 13 ordered phases, and its own text says "None of them knew the sequence, and that is the failure this runbook exists to stop." Its only magazine coupling was phase 9 (`build-manual`) |
+| `publish-deck` | debrief, deck-cartographer, deck-engineer, engine-critic, pilot-notes | **The router that already exists** — 13 ordered phases, and its own text says "None of them knew the sequence, and that is the failure this runbook exists to stop." Its only magazine coupling was phase 9 (`build-manual`), now `build-poh` |
 | `build-deck` | deck-analyst → deck-architect → deck-critic | the agent build loop, gated on `validate-build` / `bracket-check` |
 | `diagnose-deck` | deck-doctor ⇄ deck-skeptic | |
 | `prescribe` | deck-doctor (MODE prescribe) ⇄ deck-skeptic | |
 | `analyze-engine` | deck-engineer ⇄ engine-critic | |
 | `resolve-stack` | stack-resolver ⇄ rules-checker | max 3 iterations |
-| `write-manual` | deck-analyst → strategy-researcher → pilot-notes | **its build half renders the frozen magazine** |
-| `author-decision` | pilot-notes | **step 5 is `build-manual`** — the other magazine coupling |
+| `write-manual` | deck-analyst → strategy-researcher → pilot-notes | its build half renders the handbook (`build-poh`) since the magazine was deleted |
+| `author-decision` | pilot-notes | step 5 rebuilds the handbook (`build-poh`) |
 | `debrief`, `captains-log`, `poh-procedures`, `research-strategy`, `strategy-lookup`, `rules-lookup`, `build-deck-db` | as named above | |
 | `sim-debrief` | sim-debrief | `sim-findings --write` → spawn for the runs with no prose → `merge-sim-findings` (recomputes the skeleton, takes the prose, refuses what does not hold) → `validate-sim-findings` → route the open questions |
 
@@ -111,10 +111,10 @@ to `claude -p`, deliberately, so the local Build page can ask for an agent.
   "piloting guidance generation" lands.
 - **Spen** — `publish-deck` is the router today and knows the sequence.
 
-**Two magazine couplings block a clean retirement**, both in skills rather than
-agents: `write-manual`'s build half and `author-decision`'s step 5 both call
-`build-manual`. And `validate_poh.py` is the **only** validator that touches
-`manual_prose.json`, so retiring it leaves the router's prose output ungated.
+**The two magazine couplings are gone** (2026-09-13): `write-manual`'s build half and
+`author-decision`'s step 5 called `build-manual`, and both call `build-poh` now.
+`validate_poh.py` is still the **only** validator that touches `manual_prose.json`,
+so retiring the handbook would leave the router's prose output ungated.
 
 ## Cost, per routine
 

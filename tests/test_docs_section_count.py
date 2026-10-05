@@ -28,9 +28,9 @@ DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
 
 #: Live documents whose SUBJECT is something that no longer exists, so naming
 #: its files is the whole job. `gotchas-magazine-legacy.md` holds every
-#: measurement the magazine renderer cost and outlived it by design;
-#: `paydown-plan.md` schedules deletions and has to name what it deletes.
-_RECORDS_OF_DELETED_THINGS = {"gotchas-magazine-legacy.md", "paydown-plan.md"}
+#: measurement the magazine renderer cost and outlived it by design. (The
+#: paydown plan, which named what it deleted, moved to `docs/history/` 2026-10-05.)
+_RECORDS_OF_DELETED_THINGS = {"gotchas-magazine-legacy.md"}
 SURFACES = [
     ROOT / "CLAUDE.md",
     ROOT / "PLAN.md",

@@ -591,7 +591,7 @@ there for two days; the simulation doc is the home.
 ### IN FLIGHT — the PRD v2 build-out (2026-09-03)
 
 **New investors, and the vision changed.** `docs/prd.md` is the September PRD,
-now tracked; `docs/prd-2026-08.md` is the superseded one that ~27 `PRD-v1 §N`
+now tracked; `docs/history/prd-2026-08.md` is the superseded one that ~27 `PRD-v1 §N`
 citations across 15 source files resolve against. Neither had ever been in the
 repo, so every one of those citations pointed at nothing.
 
@@ -909,7 +909,7 @@ family, Archway Commons, the gated lands). Read the issue for what remains.
 
 Closed 2026-08-31: the branch-state tests were rebuilt on `tmp_path` fixtures.
 The live successor is **#35** — three tests still name one deck as an example of
-a property — sequenced as part of Phase 2 of `docs/paydown-plan.md`.
+a property — sequenced as part of Phase 2 of `docs/history/paydown-plan.md`.
 
 ### The red tests, and the issue each one lives in
 

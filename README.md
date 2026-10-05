@@ -865,7 +865,7 @@ covers what you are about to touch.
 Historical design records, for provenance only — none of it describes live code:
 `docs/history/manual-v5-spec.md` (the compact deck page that replaced the magazine),
 `docs/history/agent-audit-2026-08-19.md` (the audit behind the pivot), and
-`docs/prd-2026-08.md` (the superseded PRD that ~27 `PRD-v1 §N` citations resolve against).
+`docs/history/prd-2026-08.md` (the superseded PRD that ~27 `PRD-v1 §N` citations resolve against).
 `STYLEv3.md`, the magazine's constitution, was **deleted 2026-08-25**; its `STYLEv3 §N`
 comments resolve through `git show 23e8cec:STYLEv3.md`.
 

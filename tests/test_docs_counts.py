@@ -36,11 +36,10 @@ import pytest
 from repo_tree import exists_anywhere
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-# `prd-2026-08.md` is here for the same reason as the design records: it is a
-# SUPERSEDED document kept verbatim so that ~27 `PRD-v1 §N` citations resolve.
-# Its counts are the counts of August, on purpose. `prd.md` is deliberately NOT
-# excluded — it is live, and its intake notes are ours to keep accurate.
-DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md", "prd-2026-08.md"}
+# `prd.md` is deliberately NOT excluded — it is live, and its intake notes are
+# ours to keep accurate. The superseded `prd-2026-08.md`, the 2026-09-12 audit and
+# the paydown plan moved to `docs/history/` on 2026-10-05, which no scan here reads.
+DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
 
 SURFACES = [
     ROOT / "CLAUDE.md",
@@ -364,10 +363,6 @@ def test_no_doc_tells_you_to_run_a_subcommand_that_does_not_exist():
     exempt = {
         "docs/gotchas-magazine-legacy.md":
             "the operational record of the deleted renderer; naming its commands is the point",
-        "docs/audit-2026-09-12.md":
-            "a dated read-only audit — it describes the tree as it stood",
-        "docs/paydown-plan.md":
-            "the plan that scheduled the deletions; the task rows name what they removed",
         "data/decks/goblin-storm/README.md":
             "a per-deck record of how that deck's page was built at the time",
     }
