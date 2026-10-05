@@ -1,8 +1,8 @@
 {
   "slug": "goblin-storm",
   "as_of_decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
-  "archetype": "A mono-red Goblin go-wide deck whose commander turns one-target cantrips into one copy per creature; storm is a second, thinner route. deck-audit establishes no archetype, so base targets apply. Two of the three declared targets are commander_gated false, so the deck has plans without Zada.",
-  "verdict": "It functions: every mana axis is at target and the turn-3 land drop lands 0.909. What limits it is the multiplier, not the spells. Zada arrives at mean turn 4.248 onto a goldfish board of 1.906 bodies at turn 4 and 2.437 at turn 5, and the goldfish kill lands by turn 8 in 0.255 of games. Both logged losses (001, 002) were openers with no cheap Goblin. Protecting Zada (Swiftfoot Boots alone) is an open question, not a proven limit, until the table's removal is known.",
+  "archetype": "A mono-red Goblin go-wide deck whose commander copies a one-target spell once per other creature; storm is a second, thinner route. deck-audit establishes no archetype, so base targets apply. Two of the three declared targets are commander_gated false, so the deck has plans without Zada.",
+  "verdict": "It functions: mana sources, colour sources and land count are at target, and taplands is the one mana axis over what an aggressive deck wants. What limits it is the board Zada multiplies, not the spells or the mana. Zada arrives at mean turn 4.076 onto 1.937 goldfish bodies at turn 4 and 2.478 at turn 5, and the goldfish kill lands by turn 8 in only 0.282 of games. Log 001 stalled on a keep with no cheap body; 002 was raced by a turn-five Krenko.",
   "axes": [
     {
       "axis": "mana-base",
@@ -24,7 +24,7 @@
       "measured": {
         "value": 41
       },
-      "reading": "41 against a Burgess target of 36, before counting rituals and Treasure. Mana is not the problem.",
+      "reading": "41 against a Burgess target of 36, before rituals and Treasure. Mana is not the problem.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -38,11 +38,11 @@
       "measured": {
         "value": 5
       },
-      "reading": "5 unconditional taplands (Den of the Bugbear, Forgotten Cave, Hidden Volcano, Smoldering Crater, Spinerock Knoll) plus 3 conditional ones. The cited section asks for near zero in an aggressive deck, and this one needs a body on turn 1 or 2, so 5 is above what the source supports. The goldfish always puts lands in untapped, so it cannot price this. The cost is real but small next to the body gap.",
+      "reading": "Five taplands by the audit's count, three more conditional. Den of the Bugbear is conditional by its own text, \"If you control two or more other lands, this land enters tapped\", so it is untapped on turns 1-2. An aggressive deck wants near zero, and the goldfish never taps a land, so it cannot price this.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
-          "quote": "near zero in an aggressive one"
+          "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
         }
       ]
     },
@@ -52,7 +52,7 @@
       "measured": {
         "value": 1
       },
-      "reading": "Red has 37 sources against a Karsten target of 36. This refutes the previous diagnosis's case for cutting Kher Keep and Goblin Burrows to fix a red shortfall: there is no shortfall to fix.",
+      "reading": "Red has 37 sources against a Karsten target of 36. There is no colour shortfall to fix.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
@@ -66,7 +66,7 @@
       "measured": {
         "value": 15
       },
-      "reading": "Over target, but Blasphemous Act is in the count off its 'costs {1} less' clause, and it is not ramp. The rest are rituals and Treasure that the storm turn spends.",
+      "reading": "Over target, but Blasphemous Act is counted off its cost-reduction clause and is not ramp. The rituals are storm fuel; the current model also spends them on Zada, who is cast on turn 3 in 1068 of 10,000 games, at mean turn 4.076.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -80,7 +80,7 @@
       "measured": {
         "value": 8
       },
-      "reading": "A question, not a finding. The audit names ten cards it did not count (Crimson Wisps, Expedite, Fists of Flame and Renegade Tactics among them), and those four are cantrips Zada copies once per creature. The real limit on draw is how many bodies are on board, not how many draw cards are in the 99.",
+      "reading": "A question, not a finding. The audit names ten uncounted cards, and Crimson Wisps, Expedite, Fists of Flame and Renegade Tactics are cantrips Zada copies once per creature. Witch's Mark at Zada with three Goblins draws 8, discards 4, hand 2 -> 6, net +4 (stack 014), and the goldfish does not model its draw. Draw scales with bodies, not with draw slots.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -94,7 +94,7 @@
       "measured": {
         "value": 13
       },
-      "reading": "13 counted, but three of them answer nothing: Impact Tremors and General Kreat hit each opponent, and Boggart Shenanigans hits only a player or planeswalker. Chaos Warp has no role and is missing from the count. That leaves about eleven real answers, still above the floor of 8.",
+      "reading": "13 counted, but Impact Tremors and General Kreat hit each opponent and Boggart Shenanigans hits only a player or planeswalker. Chaos Warp has no role and is missing. About eleven real answers, still above the floor of 8.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -108,7 +108,7 @@
       "measured": {
         "value": 0
       },
-      "reading": "Blasphemous Act deals 13 damage to each creature. The taxonomy files it as ramp and interaction, not as a sweeper. By its oracle text the deck runs one, which meets the floor. In this deck it also kills Zada and every body the engine needs. It is a reset button, not a free answer.",
+      "reading": "The taxonomy sees none, but two cards sweep by oracle text: Blasphemous Act (13 damage to each creature) and Vandalblast on overload (each artifact you don't control). Act also kills Zada and every body the engine needs, so it is a reset button, not a free answer.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -118,23 +118,23 @@
     },
     {
       "axis": "protection",
-      "verdict": "adequate",
+      "verdict": "weakness",
       "measured": {
         "value": 2
       },
-      "reading": "Of the two listed cards, only Swiftfoot Boots can protect Zada; Roaming Throne's ward covers only itself. Under the cited decision test this is still open, not a weakness. Zada gates one of three targets, and the log does not say what removal the table aims at her. Against a light-interaction table the section says to skip the insurance.",
+      "reading": "Swiftfoot Boots is the one card that protects Zada; Roaming Throne's ward protects only itself. One card is under the audit's 5-7, the combo band of 4-6 and the generic 2-4, and Boots is only the constant half of the hub rule: the held response is missing.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
           "quote": "5-7 protection slots"
         },
         {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "His decision test: how critical is the commander to the plan, and what removal this table actually runs."
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Answers to answers are a separate budget — Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron"
         },
         {
           "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "against light-interaction pods, skip the insurance, pay the tax, rebuild"
+          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
         }
       ]
     },
@@ -144,7 +144,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "The taxonomy undercounts this. Impact Tremors, General Kreat, Grapeshot, Empty the Warrens, Haze of Rage, Goblin Bombardment and Siege-Gang Commander all end games, and stacks 002, 003 and 005 are checker-passed damage lines. There are enough finishers; the slow part is building the board that turns them on.",
+      "reading": "The taxonomy undercounts this. Impact Tremors, General Kreat, Grapeshot, Empty the Warrens, Haze of Rage, Goblin Bombardment and Siege-Gang Commander all close, and stacks 002, 003 and 005 are checker-passed damage lines. Finishers are not short; the board that turns them on is.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
@@ -158,7 +158,7 @@
       "measured": {
         "value": 27
       },
-      "reading": "27 front-face creatures sits inside the aggro range. The count is fine; the problem is that the cheap end is thin (see engine.fodder).",
+      "reading": "27 front-face creatures sits inside the aggro range. The count is fine; the cheap end is thin (see engine fodder).",
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
@@ -172,7 +172,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "The audit cannot see Chaos Warp because it has no role. By its oracle text it answers any permanent, so enchantments and lands are covered by that one card. I grepped all 79 entries: graveyard is the only class nothing answers.",
+      "reading": "Chaos Warp has no role, and by its oracle text it answers any permanent, so enchantment and land are covered by that one card. Graveyard is the class nothing in the 79 entries answers.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -184,9 +184,9 @@
       "axis": "consistency",
       "verdict": "strength",
       "measured": {
-        "value": 0.909
+        "value": 0.916
       },
-      "reading": "0.909 of games make the turn-3 land drop, against a 0.74 floor. The keep rate is 0.791. Lands are not why openers fail.",
+      "reading": "0.916 of games make the turn-3 land drop against a 0.74 floor, and the first seven is kept 0.793 of the time. Lands are not why openers fail.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -200,7 +200,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "The modal mana value is 2, with 19 two-drops and 13 three-drops. The curve is right; what matters is which of those two-drops are bodies.",
+      "reading": "Modal mana value 2, with 19 two-drops and 13 three-drops. The curve is right; what matters is which two-drops are bodies.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.curve",
@@ -214,7 +214,7 @@
       "measured": {
         "value": 4
       },
-      "reading": "Bracket floor 4, driven by combo content and one two-card infinite, with no Game Changers. Reported, not scored.",
+      "reading": "Bracket floor 4 from combo content and one two-card infinite, no Game Changers. Reported, not scored.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.power-level",
@@ -228,7 +228,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "Goblin Matron and Moggcatcher. Goblin Lackey also puts a Goblin from hand onto the battlefield. Conspicuous Snoop does not cheat: it lets you cast Goblins from the top of the library and pay for them.",
+      "reading": "Goblin Matron and Moggcatcher. Goblin Lackey puts a Goblin from hand onto the battlefield; Conspicuous Snoop only lets you cast Goblins from the top and pay for them.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.redundancy-vs-tutors",
@@ -238,7 +238,7 @@
     }
   ],
   "engine": {
-    "declared": "Bodies set the copy count: Zada copies a one-target cantrip or pump once per other creature. Storm (rituals plus Grapeshot, Empty the Warrens or Haze of Rage) is the second route, and it also runs off bodies through Brightstone Ritual and Battle Hymn.",
+    "declared": "Bodies set the copy count: Zada copies a one-target cantrip or pump once per other creature. Storm (rituals plus Grapeshot, Empty the Warrens, Haze of Rage or Spreading Insurrection) is the second route.",
     "components": [
       {
         "role": "piece",
@@ -247,8 +247,8 @@
         ],
         "count": 1,
         "thinnest": false,
-        "measured_rate": 0.93,
-        "reading": "Cast by turn 6 in 0.93 of goldfish games, mean turn 4.248. She arrives on time. What she arrives into is the problem."
+        "measured_rate": 0.944,
+        "reading": "Cast by turn 6 in 0.944 of goldfish games, mean turn 4.076, partly off rituals cast into her. She arrives on time; what she arrives into is the problem."
       },
       {
         "role": "fodder",
@@ -261,8 +261,8 @@
         ],
         "count": 5,
         "thinnest": false,
-        "measured_rate": 0.665,
-        "reading": "The declared group is five cards, at 0.665 overall and 0.528 by turn 6. The deck actually has 11 body cards at mana value 2 or less: the five above plus Goblin Bushwhacker, Goblin Lackey, Impulsive Pilferer, Conspicuous Snoop, Grenzo and Rundvelt Hordemaster. Goblin Negotiation is left out because it only makes tokens off excess damage. Kher Keep and Dwarven Mine are land bodies and are not counted. The corpus prices 10 copies at 54% of openers, so close to half of openers start with no cheap body. Both logged games were in that half."
+        "measured_rate": 0.672,
+        "reading": "The declared group is five cards, 0.672 overall and 0.539 by turn 6. The deck has 11 nonland body cards at mana value 2 or less: these five plus Goblin Bushwhacker, Goblin Lackey, Impulsive Pilferer, Conspicuous Snoop, Grenzo and Rundvelt Hordemaster. Eleven copies put one in an opening seven about 57% of the time, so over four openers in ten have none. Both logged games were in that group."
       },
       {
         "role": "ignition",
@@ -276,8 +276,8 @@
         ],
         "count": 6,
         "thinnest": false,
-        "measured_rate": 0.702,
-        "reading": "0.702 assembled, 0.545 by turn 6. Witch's Mark and Daring Discovery can also target only Zada and are not declared, so the true count is higher. Its by-turn-6 rate is only 0.017 above the declared fodder group's, so by presence alone the two cannot be ranked. The case that bodies bind rests on how many are on board when Zada lands (1.906 at turn 4) and on the two logs, not on this comparison."
+        "measured_rate": 0.703,
+        "reading": "0.703 assembled, 0.552 by turn 6. Witch's Mark is a seventh verified ignition (with three Goblins it draws 8, discards 4, hand 2 -> 6, net +4 (stack 014)) and is not declared. Daring Discovery is not counted: its stack 015 failed the checker. Frontline Heroism adds one body per ignition cast: put Zada's trigger on the stack first so Frontline Heroism's resolves first; the Soldier then gets a copy, 6 cards against 5 the other way (stack 013)."
       },
       {
         "role": "payoff",
@@ -289,8 +289,8 @@
         ],
         "count": 4,
         "thinnest": true,
-        "measured_rate": 0.345,
-        "reading": "The thinnest group by size. Paired with four rituals it gives the storm target 0.345, and 0.2 by turn 6. It is the ceiling route, not the median one."
+        "measured_rate": 0.348,
+        "reading": "The thinnest group. With four rituals the storm target reads 0.348, and 0.205 by turn 6; the ritual change did not move it, because the target counts cards drawn. It is the ceiling route, not the median one."
       },
       {
         "role": "mana",
@@ -302,8 +302,8 @@
         ],
         "count": 4,
         "thinnest": false,
-        "measured_rate": 0.345,
-        "reading": "Same target as the payoff group. Ancestors' Aid (an untapped Treasure), Skirk Prospector and Storm-Kiln Artist also make mana mid-turn and are not declared. Great Train Heist is not one of them: its Treasure enters tapped."
+        "measured_rate": 0.348,
+        "reading": "Same target as the payoff group. Ancestors' Aid (an untapped Treasure), Skirk Prospector and Storm-Kiln Artist also make mana mid-turn and are not declared. Great Train Heist is not one: its Treasure enters tapped. Mana Geyser's yield rests on an authored 0.5 tapped-land share."
       },
       {
         "role": "protection",
@@ -318,10 +318,9 @@
     "single_points_of_failure": [
       {
         "component": "Zada, for the copy target only",
-        "why": "The 'Zada online' target is commander_gated, and removal on her turns every ignition card back into a one-for-one. The token and storm targets are commander_gated false and survive without her, so this is a point of failure for one route, not the whole deck.",
+        "why": "The 'Zada online' target is commander_gated; removal on her turns every ignition card except a Frontline Heroism trigger back into a one-for-one, since Frontline Heroism makes a Soldier and copies the spell without her. The token and storm targets are commander_gated false and survive without her, so this is a failure point for one route, not the deck.",
         "closers": [
-          "Deflecting Swat",
-          "Mithril Coat"
+          "Deflecting Swat"
         ],
         "citations": [
           {
@@ -339,13 +338,13 @@
   "lean_into": [
     {
       "what": "Mulligan to a cheap body, not to a cantrip",
-      "why": "This is the pilot's own conclusion, logged twice (001: 'The gate is GOBLIN PRESENCE, not cantrip density'; 002 repeats it). The deck's mana supports it: with consistency at 0.909, shipping a hand with no body costs little.",
+      "why": "The pilot's own conclusion. Log 001 is filed stalled: cantrips and a copy engine with no body to target. Log 002 is filed raced: Oliver's Krenko killed the table on turn five. With 11 cheap body cards, about 43% of opening sevens hold none, which is the case for the fodder adds.",
       "evidence": {
         "log_entries": [
           "001",
           "002"
         ],
-        "consistency": 0.909
+        "cheap_body_cards": 11
       },
       "citations": [
         {
@@ -355,12 +354,14 @@
       ]
     },
     {
-      "what": "The copy-cantrip turn is verified; build toward it",
-      "why": "Stack 001 (Crimson Wisps on Zada with four Goblins) and stack 003 (Fists of Flame lethal) are checker-passed. Both need bodies on board before the spell, which is the argument for every fodder add below.",
+      "what": "The copy turn is verified; build the board it needs",
+      "why": "Stacks 001 (Crimson Wisps), 003 (Fists of Flame), 013 (Frontline Heroism: put Zada's trigger on the stack first so Frontline Heroism's resolves first; the Soldier then gets a copy, 6 cards against 5 the other way (stack 013)) and 014 (Witch's Mark draws 8, discards 4, hand 2 -> 6, net +4 (stack 014)) are checker-passed. Every one scales with bodies on board before the spell, which is the case for every fodder add below.",
       "evidence": {
         "stacks": [
           "001",
-          "003"
+          "003",
+          "013",
+          "014"
         ]
       },
       "citations": [
@@ -369,27 +370,36 @@
           "quote": "the enabler slots fail first"
         }
       ]
+    },
+    {
+      "what": "Keep Witch's Mark",
+      "why": "Witch's Mark at Zada with three Goblins draws 8, discards 4, hand 2 -> 6, net +4 (stack 014). The goldfish lists it in draw_not_modelled, so any measurement that cuts it (copy-burst-v1 does) cannot see what it loses.",
+      "evidence": {
+        "stacks": [
+          "014"
+        ]
+      }
     }
   ],
   "cut_candidates": [
     {
       "card": "Quest for the Goblin Lord",
-      "why": "It does nothing until five Goblins have entered, and then gives a flat +2/+0. It makes no body and has no effect the turn it is cast.",
-      "cost_of_cutting": "On a wide board it is a real anthem for one mana, and it is a cheap enchantment that adds to storm count. The deck loses a late-game damage multiplier.",
+      "why": "Nothing until five Goblins have entered, then a flat +2/+0. It makes no body and does nothing the turn it is cast.",
+      "cost_of_cutting": "On a wide board it is a real anthem for one mana and a cheap spell for storm count. The deck loses a late damage multiplier.",
       "orphans_stack": [],
       "difficulty": "easy"
     },
     {
       "card": "Throne of Eldraine",
-      "why": "Five mana in a deck whose modal mana value is 2, and its mana is spells_only. It speeds up the deck after the turns where the deck is losing.",
-      "cost_of_cutting": "It is one of the 8 counted card-advantage cards ({3},{T}: draw two), so that count drops to 7. Its four red mana funds a storm turn of red spells. The restriction costs more than it looks, though: that mana cannot cast the six colourless spells (Sol Ring, Ruby Medallion, Skullclamp, Swiftfoot Boots, Idol of Oblivion, Roaming Throne) or pay any activated ability (Siege-Gang Commander, Pashalik Mons, Moggcatcher, the utility lands, equip, encore). What the cut loses is red-spell mana only.",
+      "why": "Five mana in a deck whose modal mana value is 2, and its mana is spells_only. It accelerates the turns after the deck is already losing.",
+      "cost_of_cutting": "It is one of the 8 counted card-advantage cards ({3},{T}: draw two), so that count drops to 7, and its four red mana funds a storm turn of red spells. That mana cannot cast the colourless artifacts or pay any activated ability.",
       "orphans_stack": [],
       "difficulty": "contested"
     },
     {
       "card": "Moggcatcher",
-      "why": "A {2}{R}{R} Human, so it adds nothing to Brightstone Ritual, Gempalm Incinerator or Skirk Prospector. It then needs {3} and a tap on a later turn: six or seven mana across two turns (six with Ruby Medallion), against 4.711 mean mana at turn 5.",
-      "cost_of_cutting": "It is one of the two tutors, and of those two it is the one that puts the Goblin straight onto the battlefield (Krenko, Siege-Gang Commander) every turn it survives. Tutor count halves.",
+      "why": "A {2}{R}{R} Human, so it adds nothing to Brightstone Ritual, Gempalm Incinerator or Skirk Prospector, and it needs {3} and a tap on a later turn: six or seven mana across two turns against 4.752 mean mana at turn 5.",
+      "cost_of_cutting": "One of two tutors, and the one that puts a Goblin (Krenko, Siege-Gang Commander) straight onto the battlefield every turn it survives. Tutor count halves.",
       "orphans_stack": [],
       "difficulty": "painful",
       "citations": [
@@ -405,7 +415,7 @@
       "card": "Goblin Instigator",
       "closes": "engine component: fodder (Early token maker drawn)",
       "source": "pool",
-      "why": "{1}{R} for two Goblin bodies. That raises the deck's cheap-body count from 11 to 12, the logged mulligan criterion, and both bodies count for Brightstone Ritual, Prospector and Zada's copies.",
+      "why": "{1}{R} for two Goblin bodies. Cheap body cards go 11 to 12 (about 57% to 61% of openers), and both bodies count for Brightstone Ritual, Prospector and Zada's copies. It reaches the 0.672 figure only if added to that any_of.",
       "natural_cut": "Quest for the Goblin Lord",
       "bracket_delta": {
         "before": 4,
@@ -422,7 +432,7 @@
       "card": "Hordeling Outburst",
       "closes": "engine component: fodder (Early token maker drawn)",
       "source": "pool",
-      "why": "{1}{R}{R} sorcery for three Goblin tokens. It is the Dragon Fodder and Krenko's Command shape with one more body, and every body is a Goblin, so it counts for Brightstone Ritual, Skirk Prospector, Krenko's X and Zada's copies. It also adds one to storm count. It joins the declared group only if the pilot adds it to that any_of, so its effect on 0.665 is open_questions[0].",
+      "why": "{1}{R}{R} sorcery for three Goblin tokens: the Dragon Fodder shape plus one body, and a spell for storm count. Mana value 3, so it does not raise the cheap-body count; it joins the declared group only if added to its any_of.",
       "natural_cut": "Moggcatcher",
       "bracket_delta": {
         "before": 4,
@@ -439,7 +449,7 @@
       "card": "Deflecting Swat",
       "closes": "protection",
       "source": "pool",
-      "why": "Free while you control a commander, and it redirects removal aimed at Zada on the pivot turn. It is conditional: it earns the slot only if open_questions[4] finds the table aims targeted removal at the commander. Otherwise the cited section says to skip the insurance.",
+      "why": "The held response the hub rule asks for: free while you control a commander, it redirects removal aimed at Zada on the pivot turn. Boots is the constant half. How much it is worth still depends on the table's removal (open_questions[3]).",
       "natural_cut": "Throne of Eldraine",
       "bracket_delta": {
         "before": 4,
@@ -460,7 +470,7 @@
       "card": "Soul-Guide Lantern",
       "closes": "interaction-breadth",
       "source": "pool",
-      "why": "One colourless mana to cover graveyard, the one class nothing in the 79 entries answers. Ranked last because neither logged pod showed a graveyard deck. It belongs in the list only if this table runs one.",
+      "why": "One colourless mana covers graveyard, the one class nothing in the 79 entries answers. Ranked last: neither logged pod showed a graveyard deck.",
       "bracket_delta": {
         "before": 4,
         "after": 4
@@ -479,135 +489,127 @@
   ],
   "open_questions": [
     {
-      "question": "Widen the fodder target to all 11 cheap-body cards (add Goblin Bushwhacker, Goblin Lackey, Impulsive Pilferer, Conspicuous Snoop, Grenzo, Rundvelt Hordemaster) and re-measure, with and without Goblin Instigator and Hordeling Outburst. Also run a keep rule that requires one of them.",
+      "question": "Widen the fodder target to all 11 cheap-body cards and re-measure, with and without Goblin Instigator and Hordeling Outburst; also run a keep rule requiring one of them.",
       "settled_by": "goldfish",
-      "why_it_matters": "The declared group of five understates the deck's own bodies, so 0.665 is not the logged mulligan criterion. The fodder adds are sized off a figure nobody has measured."
+      "why_it_matters": "The declared group of five is not the pilot's logged mulligan criterion, so the fodder adds are sized off a figure nobody has measured."
     },
     {
-      "question": "Does a storm-copied Spreading Insurrection, with Goblin Bombardment or Broadside Bombardiers out, turn each stolen creature into damage and widen the board Zada and Battle Hymn count? And how often does it come up?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "It is a five-drop that Zada cannot copy, but it is also a body source and a removal line in this 99. Whether it is a cut depends on that line, so the cut was withdrawn."
+      "question": "Does spending a ritual on Zada before a body is down cost the storm turn its fuel? Answering it needs a goldfish model change first: the ritual loop always counts the uncast commander as a cost a ritual may reach (goldfish_turn.py:912-913), and no flag turns that off.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The current model casts Zada on turn 3 in 1068 of 10,000 games (mean turn 4.076), partly off rituals. Once a declared switch exists, re-run at the same seeds with and without it and compare the storm target and kill by turn 8; until then the trade is unpriced."
     },
     {
-      "question": "With Frontline Heroism on the battlefield, cast a spell targeting only Zada: does the Heroism Soldier exist in time to count as an 'other creature' for Zada's copies, and does Heroism's own copy also get copied?",
+      "question": "Daring Discovery cast at Zada: how many discovers resolve, and does a discovered card that kills a later copy's target cut the count? Stack 015 is a saved FAIL.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "Frontline Heroism is already in the 99. If it widens Zada's copy count by one per spell, it is a body source the fodder analysis has not counted."
-    },
-    {
-      "question": "Witch's Mark and Daring Discovery cast targeting only Zada: does each copy make its own discard-draw-two or discover 4?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "If so, both belong in the ignition group, and the card-advantage reading gets stronger."
+      "why_it_matters": "If it passes it is an eighth ignition card; until then it is a five-mana sorcery the copy route cannot count on."
     },
     {
       "question": "How much targeted removal on the commander does the pilot's actual table run, and when?",
       "settled_by": "research-strategy",
-      "why_it_matters": "The corpus's insurance test depends on the table's removal. The log does not record what was aimed at Zada, so protection stays open, and the Deflecting Swat add is conditional on the answer."
+      "why_it_matters": "The insurance test depends on it, and the log does not record what was aimed at Zada; the Deflecting Swat add is conditional on the answer."
     }
   ],
   "gaps": [
-    "Forge win rates are not used. The AI does not target Zada with spells to fire her copy trigger, so goblin-storm's runs measure a different deck.",
+    "Forge win rates are not used. The AI does not target Zada to fire her copy trigger, so goblin-storm's runs measure a different deck; Forge is a probe here, not evidence.",
     "No deck_recon.json exists, so no claim here rests on what other Zada lists run.",
-    "The goldfish has no blockers and no removal. It cannot price protection, and its bodies-by-turn figures are a ceiling.",
-    "The log has two entries, both losses, both on this decklist. The cheap-body finding repeats across them, but two games is a small base.",
-    "Goblin Burrows and Reliquary Tower are not proposed as cuts: both appear in checker-passed stack 012, and red sources are at target, so the old reason to cut Burrows no longer holds."
+    "The goldfish has no blockers and no removal; bodies and kill figures are a ceiling, and protection cannot be priced.",
+    "Witch's Mark draw is not modelled by the goldfish, so the card-advantage reading leans on stack 014 (draws 8, discards 4, hand 2 -> 6, net +4), not a rate.",
+    "The log has two entries, both losses on this decklist. The cheap-body finding repeats across both, but two games is a small base.",
+    "Goblin Burrows and Reliquary Tower are not proposed as cuts: both appear in checker-passed stack 012."
   ],
   "skeptic": {
     "verdict": "pass",
+    "iterations": 3,
     "findings": [
       {
         "where": "verdict",
         "status": "supported",
-        "note": "Iteration 2. validate-diagnosis OK. Every figure still matches the current goldfish_metrics.json (sha c8651652…): Zada's mean cast turn 4.248, bodies 1.906 at T4 and 2.437 at T5, kill by T8 0.255, turn-3 land drop 0.909. Protection is now an open question rather than the 'second limit', which is what commander-insurance's decision test supports."
+        "note": "Iteration 3. validate-diagnosis OK (16 axes, 2 weak, 3 cut / 4 add, 4 open questions). HEAD is unchanged since round 2 (3a716edd), and a fresh deck-audit shows goldfish_metrics.json and mana_analysis.json still current at sha c8651652…, equal to as_of_decklist_sha256. All 16 axes[].measured.value equal the audit today. The verdict still quotes 4.076, 1.937/2.478 and 0.282, and log causes 001 stalled / 002 raced. There is no saved copy of the round-2 diagnosis: deck-doctor.json is field-identical to the merged diagnosis.json, so it is the round-3 output. 'Nothing else moved' was therefore checked against the figures and fragments my round-2 notes verified, not a byte diff. Every one is present: 'draws 8, discards 4, hand 2 -> 6, net +4' x5, Den of the Bugbear, 43%, 1068, 4.752, the Great Train Heist exclusion, cuts Quest/Throne of Eldraine/Moggcatcher (easy/contested/painful), adds Instigator/Outburst/Swat/Lantern, and the axis verdicts are unchanged."
       },
       {
-        "where": "axes[2]",
+        "where": "axes[4]",
         "status": "supported",
-        "note": "Prior mis-cited finding fixed: the cut now cites 'near zero in an aggressive one', the clause that fits the deck as described (axes[10] calls it aggro). The cards are named (Den of the Bugbear, Forgotten Cave, Hidden Volcano, Smoldering Crater, Spinerock Knoll), matching the audit. 'The goldfish always puts lands in untapped' is right: the model has no tapped state for lands. Calling it a weakness at 5 against near zero is what the source says. The cost is honestly scaled as small, and no cut is forced on it."
-      },
-      {
-        "where": "axes[7]",
-        "status": "supported",
-        "note": "Now says Blasphemous Act also kills Zada and the engine's bodies, which is true by its oracle text ('13 damage to each creature')."
+        "note": "Iter-1 finding (1) is fixed. cast_turn_histogram['3'] = 1068 and the histogram sums to 10,000, so the figure and the 4.076 mean are both current. 'Partly off rituals' holds: at 3a716edd~1, before the ritual step existed, the T3 bucket was 210 and T2 was 757; the T2 bucket did not move (758), so the ritual effect is in the T3 bucket the reading quotes. goldfish_turn.py:912-913 adds the commander to the ritual step's _wants. Blasphemous Act is in the ramp list only because of its cost clause. Correct."
       },
       {
         "where": "axes[8]",
         "status": "supported",
-        "note": "Prior over-claim fixed. The verdict is adequate, the reading calls it open, and it cites the section's decision test plus the verbatim 'against light-interaction pods, skip the insurance, pay the tax, rebuild', both checked against the full strategy:multiplayer.commander-insurance text. It is tied to open_questions[4]. This is a real correction, not a rewording: the verdict changed, and the Swat add is now conditional."
+        "note": "Iter-1 finding (2) is fixed. I enumerated all 79 entries: Swiftfoot Boots is the only card that can protect Zada. Roaming Throne's Ward {2} covers only itself, and Shinka grants first strike. The quote 'the engine's hub justifies constant protection down plus a held response on the pivot turn' is verbatim from strategy:multiplayer.commander-insurance. The section's conditional half (the decision test, and 'against light-interaction pods, skip the insurance') is still honoured: add_candidates[2] quotes it and open_questions[3] keeps the table's removal open. One real card falls below all three cited bands (5-7, 4-6, 2-4), so a weakness on the count is grounded."
       },
       {
-        "where": "axes[15]",
+        "where": "axes[5]",
         "status": "supported",
-        "note": "Prior contradicts-artifact finding fixed. The axis now says Snoop casts and pays ('You may cast Goblin spells from the top of your library'); only Lackey cheats from hand."
-      },
-      {
-        "where": "engine.components[1]",
-        "status": "supported",
-        "note": "Now says Kher Keep and Dwarven Mine are land bodies that were excluded. The 11 cheap nonland bodies were re-enumerated from cards.json, and the hypergeometric 0.574 supports 'close to half'."
+        "note": "Iter-1 finding (3) is fixed everywhere: axes[5], engine.components[2], lean_into[1], lean_into[2] and gaps[3] all read 'draws 8, discards 4, hand 2 -> 6, net +4'. That matches stack 014's final_state (cards_drawn 8, cards_discarded 4, hand_size 6; checker pass). Witch's Mark appears in goldfish meta.card_advantage.draw_not_modelled. possible_uncounted has the ten cards the reading says it has. Crimson Wisps, Expedite, Fists of Flame and Renegade Tactics each target a creature and draw, per their oracle text."
       },
       {
         "where": "engine.components[2]",
         "status": "supported",
-        "note": "Prior over-claim fixed: 'not the binding group' is gone. It now says the 0.017 gap (0.545 against 0.528) cannot rank the two groups, and puts the bodies case on 1.906 at T4 plus the two logs, which is the evidence that actually exists."
+        "note": "Iter-1 finding (4) is fixed. Stack 013 (checker pass) final_state: 'put Zada's trigger on the stack first' means Frontline Heroism's trigger resolves first. Order A draws 6 and order B draws 5, and the copies are not cast (707.10). The audit's ignition rates (0.703, and 0.552 by turn 6) match. Daring Discovery is correctly excluded because stack 015 is a checker FAIL."
+      },
+      {
+        "where": "axes[2]",
+        "status": "supported",
+        "note": "Iter-1 finding (5) is fixed. Value 5 equals the audit's taplands.value. Den of the Bugbear's oracle text in cards.json is 'If you control two or more other lands, this land enters tapped', which is quoted correctly. That makes it untapped on turns 1-2, so the audit's 'no condition' list misfiles it, and the reading names that disagreement instead of picking a side. The whole strategy:deckbuilding.mana-base section ends 'around eight taplands is comfortable in a slow deck, near zero in an aggressive one'. Applying the aggressive clause to a deck the diagnosis calls go-wide aggro (axes[10]) is in context. The audit's own high of 8 is the slow-deck figure."
+      },
+      {
+        "where": "lean_into[0]",
+        "status": "supported",
+        "note": "Iter-1 finding (6) is fixed: 0.916 is no longer used as a mulligan cost. The 43% is right: 1 - C(88,7)/C(99,7) = 0.574 for 11 copies. I enumerated the 11 nonland body cards at MV<=2 from cards.json and found these 11 and no others. Causes 001 stalled and 002 raced match log_causes.json. The strategy:mulligans.engine-hands quote is verbatim, and the section (mulligan to enabler classes, ship hands that assemble after the field's clock) supports the lean."
+      },
+      {
+        "where": "engine.components[1]",
+        "status": "supported",
+        "note": "0.672 and 0.539 match audit targets[1]. 'Both logged games were in that group' holds: log 001 had 'zero goblins', and all 11 cheap-body cards are Goblins; log 002's only creature was Krenko (MV4)."
+      },
+      {
+        "where": "engine.components[3]",
+        "status": "supported",
+        "note": "0.348 and 0.205 match audit targets[2]. 'The ritual change did not move it' checks out: at 3a716edd~1 the same target read 0.347 and 0.204."
       },
       {
         "where": "engine.components[4]",
         "status": "supported",
-        "note": "Prior contradicts-artifact finding fixed. Great Train Heist is excluded because its Treasure enters tapped (oracle text 'create a tapped Treasure token'), and Ancestors' Aid's Treasure is correctly called untapped."
+        "note": "Great Train Heist is now excluded because its Treasure enters tapped (its oracle text says 'create a tapped Treasure token'). Ancestors' Aid's Treasure is untapped. The Mana Geyser authored share checks out: goldfish_turn.py:896-898 uses GEYSER_TAPPED_SHARE, and goldfish meta states it as 0.5."
       },
       {
         "where": "engine.single_points_of_failure[0]",
         "status": "supported",
-        "note": "Unchanged and still scoped to the one commander_gated target. Mithril Coat and Deflecting Swat are both commander-legal and within identity per cards.csv."
+        "note": "Round-2 over-claim fixed. The entry now reads 'removal on her turns every ignition card except a Frontline Heroism trigger back into a one-for-one, since Frontline Heroism makes a Soldier and copies the spell without her'. That is the scope I asked for. Frontline Heroism's oracle text in cards.json reads 'Whenever you cast a spell that targets only a single creature you control, create a 1/1 red Soldier creature token with haste, then copy that spell'. I enumerated every card in cards.json whose text contains 'copy'. The only non-storm copy engines are Zada and Frontline Heroism. Storm-Kiln Artist's magecraft adds a Treasure, which is mana and not a card, so 'one-for-one' still holds in card terms. Audit targets confirm the 'one route, not the deck' framing: 'Zada online with a cantrip drawn' is commander_gated true; 'Early token maker drawn' and 'Storm payoff plus ritual drawn' are false. The wording 'except a Frontline Heroism trigger' is loose (more exactly, 'unless Frontline Heroism is on the battlefield'), but the following clause makes the meaning plain and the claim is no longer false."
       },
       {
-        "where": "cut_candidates[0]",
+        "where": "axes[6]",
         "status": "supported",
-        "note": "Quest is unchanged. No stack references it (grepped 001–012). The flat +2/+0 matches its oracle text, and the cost is real."
+        "note": "Thirteen counted, minus Impact Tremors, General Kreat and Boggart Shenanigans (oracle text confirms each hits players only), plus Chaos Warp (no role, any permanent) gives 11, as the reading says. The quote is verbatim from strategy:deckbuilding.interaction-suite."
       },
       {
-        "where": "cut_candidates[1]",
+        "where": "axes[11]",
         "status": "supported",
-        "note": "Prior over-claim fixed. The cost now names the six colourless spells and the activated abilities (Siege-Gang, Pashalik, Moggcatcher, the utility lands, equip, encore) that Throne's 'monocolored spells of that color' mana cannot pay. All six spells are confirmed colourless in cards.json. Rating it contested stays fair."
+        "note": "Chaos Warp's oracle text ('target permanent') covers enchantment and land. I enumerated all 79 entries and found no graveyard hate, so the claim that graveyard is the uncovered class holds. The 'cover the classes' quote is in context."
       },
       {
-        "where": "cut_candidates[2]",
+        "where": "axes[15]",
         "status": "supported",
-        "note": "Moggcatcher is painful, and the cost (tutor count halves; the only tutor that puts the Goblin onto the battlefield, repeatably) is real. The mana arithmetic is corrected to 6 with Ruby Medallion and 7 without. Its only mention in stack 012 is the checker's Human enumeration, so orphans_stack [] is correct. With Spreading Insurrection withdrawn, the list still carries a painful entry."
+        "note": "The Snoop and Lackey misreading is fixed. Lackey puts a Goblin from hand onto the battlefield. Snoop casts from the library top and pays the cost."
       },
       {
-        "where": "add_candidates[0]",
+        "where": "cut_candidates",
         "status": "supported",
-        "note": "Goblin Instigator: a {1}{R} Goblin whose ETB makes a Goblin token. Legal and within identity. It closes the declared token-maker target, and 11→12 cheap bodies is correct (MV 2)."
+        "note": "None of Quest, Throne or Moggcatcher is on a board in any checker-pass stack (001-005, 012, 013, 014, 016). Moggcatcher's only mention in 012 is a checker enumeration note, so orphans_stack [] is correct. The list has one painful entry (Moggcatcher: one of two tutors, priced). Throne's cost now includes the restriction that it cannot pay for colourless spells or activations. Moggcatcher's '4.752 mean mana at turn 5' matches mean_available_mana_by_turn['5']. The Spreading Insurrection cut is withdrawn, which stack 016 (pass, Insurrection into Bombardment) supports."
       },
       {
-        "where": "add_candidates[1]",
+        "where": "add_candidates",
         "status": "supported",
-        "note": "The prior Young Pyromancer finding is answered by REPLACING the card, not rewording it. Hordeling Outburst per cards.csv is a {1}{R}{R} sorcery, 'Create three 1/1 red Goblin creature tokens', red, commander-legal, not already in the decklist. Its tokens are Goblins, so the Brightstone, Prospector and Krenko-X claims hold, and the add no longer carries the Human defect the Moggcatcher cut is charged with. On `closes`: it is a token maker, the shape the 'Early token maker drawn' label names, and the why says outright that it reaches 0.665 only if added to the any_of (open_questions[0]). That disclosure is what the Cratermaker entry lacked. The why makes no MV≤2 claim, correctly, since it is MV 3. The quote 'stack the classes you want every game … tutor only the irreplaceable' is used in its context in strategy:deckbuilding.redundancy-vs-tutors, which is redundancy over tutoring."
-      },
-      {
-        "where": "add_candidates[2]",
-        "status": "supported",
-        "note": "Deflecting Swat is now conditional on open_questions[4], and it cites the section's own skip clause beside the hub clause. Its oracle text (free if you control a commander; redirect a target) matches the claim."
-      },
-      {
-        "where": "add_candidates[3]",
-        "status": "supported",
-        "note": "Soul-Guide Lantern is unchanged. 'Exile each opponent's graveyard' closes the one uncovered class, with the meta caveat quoted in context."
+        "note": "I ran card-search with identity R. Goblin Instigator ({1}{R} Goblin Rogue, Goblin token), Hordeling Outburst ({1}{R}{R}, three Goblin tokens), Deflecting Swat ({2}{R}, free with a commander) and Soul-Guide Lantern ({1}) are all in identity and Commander-legal, and their oracle text matches each why. Instigator's 57% -> 61% checks out (0.574 -> 0.607). Both fodder adds say they reach the declared target only if added to its any_of, which is honest about the closes. Swat closes protection, and the add keeps the light-pod caveat."
       },
       {
         "where": "open_questions[1]",
         "status": "supported",
-        "note": "Prior over-claim on the Spreading Insurrection cut is handled by withdrawing the cut. The Threaten-plus-sacrifice line (Goblin Bombardment 'Sacrifice a creature', Broadside Bombardiers 'Sacrifice another creature') and the wider board for Zada and Battle Hymn are routed to resolve-stack instead of asserted. No unverified line is stated as fact."
+        "note": "Round-2 caveat addressed. The question now says it 'needs a goldfish model change first' and that 'no flag turns that off', citing goldfish_turn.py:912-913. I re-read those lines: 912 'if commander_turn is None:', 913 '_wants.append(reduced_cost(commander_card, …))'. A grep of goldfish*.py finds no model_/flag key gating it, so the statement is accurate. why_it_matters keeps 1068/10,000 and mean 4.076, both still current, and now says the trade is unpriced until a declared switch exists. That does not over-claim."
       },
       {
-        "where": "open_questions[2]",
+        "where": "lean_into[2]",
         "status": "supported",
-        "note": "Frontline Heroism (in the 99: 'Whenever you cast a spell that targets only a single creature you control, create a 1/1 … then copy that spell') is now engaged, as an open timing question for resolve-stack and not a claim. This answers the omission flagged last round."
-      },
-      {
-        "where": "gaps",
-        "status": "supported",
-        "note": "The Forge void, the goldfish ceiling and the absent recon are all stated. Not a finding, but for the record: stack 012's board includes the branch-only Hanweir Garrison. The Burrows and Reliquary gap remains a non-prescription."
+        "note": "branches/copy-burst-v1/decklist.txt has 0 copies of Witch's Mark, so the branch cuts it, as stated."
       }
     ]
   }
