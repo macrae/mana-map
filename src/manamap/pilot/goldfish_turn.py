@@ -32,9 +32,11 @@ from manamap.config import (
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
     GOLDFISH_OPPONENT_LIFE,
+    GEYSER_TAPPED_SHARE,
     GOLDFISH_OPPONENTS,
     GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
+    OPPONENT_HAND,
     TITHE_PAY_RATE,
 )
 from manamap.pilot import manabase
@@ -430,6 +432,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if _e[7]:
                 battlefield[_i] = _e[:7] + (False,) + _e[8:]
         spells_cast_this_turn = 0   # STORM reads this: copies = the count BEFORE it
+        ritual_sources = []         # this turn's ritual mana, removed at end of turn
         turn_pump = 0        # applies to EVERY attacker this turn
         turn_double_strike = False   # a spell granted it; ONE turn
         turn_power_mult = 1          # a spell doubled power; ONE turn
@@ -869,6 +872,57 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
                 elif card["treasure_trigger"] == "etb":
                     treasures += (card["treasure_n"] + treasure_bonus) * treasure_multiplier
+
+        # ── RITUALS (2026-10-05) ────────────────────────────────────────────
+        # A ritual is cast only when it is the difference: its NET mana (what it
+        # adds minus what it costs) must make a card in hand — or the commander —
+        # castable this turn when it otherwise is not. It goes through `spend`
+        # and `_note_cast`, so its colour is checked and storm counts it; its mana
+        # joins the pool and its colours the turn's sources, and those sources
+        # leave again at the end of the turn (`ritual_sources`). The two rituals
+        # that read the OPPONENTS rest on authored rates (config.py).
+        def _ritual_yield(r):
+            k = r["kind"]
+            if k == "fixed":
+                return r["n"]
+            if k == "creatures":
+                return len(battlefield)
+            if k == "typed":
+                return sum(1 for tl_ in creature_types if r["type"] in (tl_ or ""))
+            if k == "hand":
+                return max(len(hand) - 1, 0)
+            if k == "opp_hand":
+                return 7 if opponent_draws_this_turn >= 7 else OPPONENT_HAND
+            if k == "opp_tapped_lands":
+                return int(round(GEYSER_TAPPED_SHARE * min(turn, GOLDFISH_MAX_TURN)
+                                 * GOLDFISH_OPPONENTS))
+            return 0
+        while True:
+            _rits = [c for c in hand if c.get("ritual")]
+            if not _rits:
+                break
+            _best = max(_rits, key=lambda c: _ritual_yield(c["ritual"]) - c["cmc"])
+            _y = _ritual_yield(_best["ritual"])
+            _net = _y - _best["cmc"]
+            if _net <= 0:
+                break
+            _avail = pool + treasures
+            _wants = [reduced_cost(c, reductions, chosen_type) for c in hand
+                      if not c["is_land"] and not c.get("ritual")]
+            if commander_turn is None:
+                _wants.append(reduced_cost(commander_card, reductions, chosen_type))
+            if not any(_avail < w_ <= _avail + _net for w_ in _wants):
+                break
+            if not spend(_best["cmc"], _best["pips"]):
+                break
+            pool += _y
+            if _best["ritual"]["colors"]:
+                _add = [frozenset(_best["ritual"]["colors"])] * _y
+                sources.extend(_add)
+                ritual_sources.extend(_add)
+            _note_cast(_best)
+            if _best["ritual"]["impulse"] and commander_turn is not None:
+                draw_n(_best["ritual"]["impulse"])
 
         # A REDUCER ON THE BATTLEFIELD DOES CUT THE COMMANDER'S COST. Eminence
         # says "OTHER Dragon spells", so it never pays for itself — but
@@ -2916,6 +2970,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         available = lands_in_play * (1 + land_mana_bonus) + rock_production + treasures
         stall_by_turn.append(not any(
             (not c["is_land"]) and c["cmc"] <= available for c in hand))
+        for _rs in ritual_sources:          # ritual mana does not outlive its turn
+            if _rs in sources:
+                sources.remove(_rs)
         hand_size_by_turn.append(len(hand))
         # AT THE END OF THE TURN, because the sacrifice step runs inside combat.
         # This was recorded BEFORE the combat step, so every entry held the

@@ -115,7 +115,7 @@ def channels_for(profile):
     """Every channel this card's text would feed, flags ignored."""
     found = set()
     if profile["is_land"] or profile["produces"] or profile.get("land_mana_bonus") or profile["reduces"] \
-            or profile["scales_with_colors"]:
+            or profile["scales_with_colors"] or profile.get("ritual"):
         found.add("mana")
     if profile["creature_bodies"] or profile["bodies"]:
         found.add("bodies")
@@ -253,7 +253,8 @@ def never_cast(profile, flags):
     """
     if profile["is_land"] or profile["bodies"] > 0 or profile["produces"] > 0 \
             or profile.get("land_mana_bonus") \
-            or profile["tutor"] or profile["reduces"]:
+            or profile["tutor"] or profile["reduces"] \
+            or profile.get("ritual"):            # the ritual step casts it (2026-10-05)
         return False
     cb = profile.get("combat") or {}
     if flags.get("model_combat"):

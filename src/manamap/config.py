@@ -1256,6 +1256,15 @@ GOLDFISH_OPPONENTS = 3
 #: table, and nothing here can measure it. Half is the stated middle; `try` and
 #: MODEL_ASSUMPTIONS print it, so any figure resting on it says so.
 TITHE_PAY_RATE = 0.5
+#: TWO MORE AUTHORED RATES, for the rituals that read the OPPONENTS' state, which
+#: this model does not have (2026-10-05, the pilot's call). Labelled like the
+#: Tithe rate: stated here, in MODEL_ASSUMPTIONS, and by `try`.
+#:   Mana Geyser — "{R} for each tapped land your opponents control": an opponent's
+#:   lands tapped on their own turn stay tapped through ours; this is the share.
+GEYSER_TAPPED_SHARE = 0.5
+#:   Jeska's Will / Rousing Refrain — cards in the target opponent's hand on our
+#:   turn: OPPONENT_HAND normally, a full seven on a turn a wheel refilled them.
+OPPONENT_HAND = 4
 #: Ten poison counters lose the game (CR 704.5c); the goldfish's second clock.
 GOLDFISH_POISON_TO_LOSE = 10
 

@@ -133,3 +133,43 @@ def test_an_opponent_who_always_pays_the_tithe_costs_the_deck_its_mana(monkeypat
     a = stated["output"]["damage_by_turn"]["10"]["rate"]
     b = always["output"]["damage_by_turn"]["10"]["rate"]
     assert a > b, f"Tithe's Treasure should be worth damage by turn ten ({a} vs {b})"
+
+
+# ── rituals (2026-10-05) ───────────────────────────────────────────────────
+
+def test_the_rituals_are_read_and_the_costly_ones_refused():
+    def r(name, text, tl="Instant"):
+        return gp.ritual_profile({"name": name, "type_line": tl, "oracle_text": text})
+    assert r("Dark Ritual", "Add {B}{B}{B}.") == {"kind": "fixed", "n": 3,
+                                                   "colors": frozenset({"B"}), "impulse": 0}
+    assert r("Battle Hymn", "Add {R} for each creature you control.")["kind"] == "creatures"
+    br = r("Brightstone Ritual", "Add {R} for each Goblin on the battlefield.")
+    assert br["kind"] == "typed" and br["type"] == "Goblin"
+    jw = r("Jeska's Will", "Choose one. If you control a commander as you cast this spell, you may "
+           "choose both instead.\n• Add {R} for each card in target opponent's hand.\n• Exile the "
+           "top three cards of your library. You may play them this turn.", "Sorcery")
+    assert jw["kind"] == "opp_hand" and jw["impulse"] == 3
+    assert r("Mana Geyser", "Add {R} for each tapped land your opponents control.",
+             "Sorcery")["kind"] == "opp_tapped_lands"
+    # An additional cost or restricted mana is refused, not read as free mana.
+    assert r("Infernal Plunge", "As an additional cost to cast this spell, sacrifice a "
+             "creature.\nAdd {R}{R}{R}.", "Sorcery") is None
+    assert r("Geosurge", "Add {R}{R}{R}{R}{R}{R}{R}. Spend this mana only to cast artifact or "
+             "creature spells.", "Sorcery") is None
+    assert r("Lightning Bolt", "Lightning Bolt deals 3 damage to any target.") is None
+
+
+@requires_data
+@requires_deck
+def test_a_ritual_is_cast_when_it_is_the_difference(monkeypatch):
+    """PROVED BY BLINDING: sharknado with Mana Geyser and Jeska's Will in the list
+    reads more damage by turn ten when the rituals are read than when they are not.
+    Measured 2026-10-05: 64.19 against 63.70 at 3,000 games, seed 9."""
+    from manamap.pilot import diagnostic, goldfish_library, try_swap
+    doc, _, _, _ = try_swap.apply_swaps("sharknado", None, [
+        ("Generous Plunderer", "Mana Geyser"), ("Treasure Map // Treasure Cove", "Jeska's Will")])
+    on = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
+    monkeypatch.setattr(goldfish_library, "ritual_profile", lambda card: None)
+    off = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
+    assert (on["output"]["damage_by_turn"]["10"]["rate"]
+            > off["output"]["damage_by_turn"]["10"]["rate"])

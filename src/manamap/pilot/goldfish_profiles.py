@@ -2940,6 +2940,66 @@ def attack_gate(card):
     return None
 
 
+#: RITUALS (2026-10-05). "Rituals are not modeled" was a stated assumption for the
+#: life of this file: a spell that adds mana produced 0 and was never cast. Swept
+#: on the dump (Commander-legal instants and sorceries whose text adds mana): six
+#: FIXED (Dark Ritual, Cabal Ritual, Seething Song, Desperate Ritual, Pyretic
+#: Ritual, Channel the Suns) and eleven FOR EACH; of those the model can count
+#: creatures you control (Battle Hymn), a creature type you control (Brightstone
+#: Ritual's Goblins), cards in your hand (Inner Fire), and — on two AUTHORED rates
+#: in config.py — an opponent's hand (Jeska's Will, Rousing Refrain) and their
+#: tapped lands (Mana Geyser). The rest stay unmodelled and named.
+_RITUAL_FIXED_RE = re.compile(r"^(?:• )?add ((?:\{[wubrgc]\})+)\.", re.I | re.M)
+_RITUAL_EACH_RE = re.compile(r"^(?:• )?add \{([wubrgc])\} for each ([^.]+)\.", re.I | re.M)
+#: Refused, not read: a ritual with an ADDITIONAL COST (Infernal Plunge, Culling the
+#: Weak sacrifice a creature) or mana it may only spend on some spells (Geosurge).
+_RITUAL_REFUSE_RE = re.compile(r"as an additional cost|spend this mana only", re.I)
+_RITUAL_IMPULSE_RE = re.compile(r"exile the top (\w+) cards of your library\. "
+                                r"you may play them this turn", re.I)
+
+
+def ritual_profile(card):
+    """None, or how much mana this instant/sorcery adds and on what it depends:
+    `{"kind", "n"|"type", "colors", "impulse"}`. Kinds: `fixed` (n symbols),
+    `creatures`, `typed` (a creature type you control), `hand` (cards in your
+    hand), `opp_hand`, `opp_tapped_lands` (the two on authored rates)."""
+    tl = (card.get("type_line") or "").split(" // ")[0]
+    if "Instant" not in tl and "Sorcery" not in tl:
+        return None
+    text = (card.get("oracle_text") or "").split(" // ")[0]
+    if _RITUAL_REFUSE_RE.search(text):
+        return None
+    imp = _RITUAL_IMPULSE_RE.search(text)
+    impulse = 0
+    if imp:
+        w = imp.group(1).lower()
+        impulse = int(w) if w.isdigit() else (_NUMBER_WORDS.get(w) or 0)
+    m = _RITUAL_FIXED_RE.search(text)
+    if m:
+        syms = re.findall(r"\{([wubrgc])\}", m.group(1), re.I)
+        return {"kind": "fixed", "n": len(syms),
+                "colors": frozenset(s.upper() for s in syms if s.upper() != "C"),
+                "impulse": impulse}
+    m = _RITUAL_EACH_RE.search(text)
+    if not m:
+        return None
+    color = frozenset() if m.group(1).upper() == "C" else frozenset({m.group(1).upper()})
+    what = m.group(2).strip().lower()
+    base = {"colors": color, "impulse": impulse}
+    if what == "creature you control":
+        return dict(base, kind="creatures")
+    t = re.match(r"(\w+) (?:you control|on the battlefield)$", what)
+    if t:
+        return dict(base, kind="typed", type=t.group(1).capitalize())
+    if what == "card in your hand":
+        return dict(base, kind="hand")
+    if what in ("card in target opponent's hand",):
+        return dict(base, kind="opp_hand")
+    if what == "tapped land your opponents control":
+        return dict(base, kind="opp_tapped_lands")
+    return None
+
+
 def combat_profile(card):
     """What this card does once there is a combat step.
 

@@ -16,7 +16,7 @@ Model assumptions (v1):
 - Bodies-by-turn casts creature/token cards greedily by cost with leftover
   mana, counting the card itself (if a creature) plus tokens parsed from
   "create ... token" text. Crude by design: no interactions, no haste math.
-- Cost reducers, rituals, and card draw beyond one per turn are NOT modeled;
+- Cost reducers and card draw beyond one per turn are NOT modeled (rituals are, since 2026-10-05);
   estimates are therefore conservative for decks that use them.
 """
 
@@ -463,7 +463,14 @@ MODEL_ASSUMPTIONS = [
     "with a board state (Animar, Rakdos, Hamza) is refused rather than counted "
     "flat, and cost reduction on artifacts, noncreature spells or a colour is "
     "not modeled at all.",
-    "Rituals are not modeled (conservative).",
+    "RITUALS ARE CAST WHEN THEY ARE THE DIFFERENCE (2026-10-05): a spell that adds "
+    "mana (Dark Ritual, Seething Song, Battle Hymn, Brightstone Ritual, Inner Fire) "
+    "is cast only if its net mana makes a card in hand, or the commander, castable "
+    "this turn; its mana lasts the turn. Mana Geyser and Jeska's Will / Rousing "
+    "Refrain read the OPPONENTS' state this model does not have, on two AUTHORED "
+    "rates in config.py: GEYSER_TAPPED_SHARE (0.5 of their lands still tapped on "
+    "our turn) and OPPONENT_HAND (4 cards, 7 on a turn a wheel refilled them). "
+    "Rituals with an additional cost or restricted mana are not read.",
     # SUPERSEDED BY `model_draw` AND CORRECTED 2026-09-26. This read "extra card
     # draw is NOT modeled: one card per turn, always" and "card advantage is
     # measured nowhere in this suite" — both flatly contradicted by the

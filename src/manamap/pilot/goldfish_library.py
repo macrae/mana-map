@@ -54,6 +54,7 @@ from manamap.pilot.goldfish_profiles import (
     cast_pips,
     cast_token_profile,
     combat_profile,
+    ritual_profile,
     cost_reduction,
     creature_body_count,
     death_profile,
@@ -159,6 +160,9 @@ def classify(card, pool=None):
         # byte-identical and this stays a pure widening of the sim card.
         "creature_bodies": 0 if "Land" in type_line else creature_body_count(card),
         "combat": combat_profile(card),
+        # A ritual's mana and what it depends on; cast by `goldfish_turn`'s ritual
+        # step only when it makes a card in hand castable this turn.
+        "ritual": ritual_profile(card),
         # ON EVERY CARD, not only the commander. Read under `model_combat` /
         # `model_draw` like the rest, so a deck that opts into neither is
         # byte-identical.

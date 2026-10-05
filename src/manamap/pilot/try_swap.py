@@ -244,6 +244,15 @@ def run(slug, swaps, branch=None, iterations=None, seed=None, each=False):
            for c in (base_doc.get("cards") or []) + (doc.get("cards") or [])):
         trust += (f"; Smothering Tithe's Treasure assumes opponents pay its tax "
                   f"{TITHE_PAY_RATE:.0%} of the time (an authored rate)")
+    from manamap.config import GEYSER_TAPPED_SHARE, OPPONENT_HAND
+    _rk = {(_gp.ritual_profile(c) or {}).get("kind")
+           for c in (base_doc.get("cards") or []) + (doc.get("cards") or [])}
+    if "opp_tapped_lands" in _rk:
+        trust += (f"; Mana Geyser assumes {GEYSER_TAPPED_SHARE:.0%} of opponents' lands "
+                  f"are still tapped on your turn (an authored rate)")
+    if "opp_hand" in _rk:
+        trust += (f"; Jeska's Will assumes an opponent holds {OPPONENT_HAND} cards, "
+                  f"7 after a wheel (an authored rate)")
     per_swap = []
     if each and len(rows) > 1:
         for (o, i) in swaps:
