@@ -1,0 +1,33 @@
+  POWER PREFLIGHT   baseline 0.310 · 200 games/arm · about 9.5 h
+    this run resolves a change of +0.140 or larger (a rise to 0.450)
+    smaller than that comes back INCONCLUSIVE — which is not evidence of no effect
+
+    you want to detect      power here   games/arm needed   hours
+    +0.05                         0.19               1395    66.4
+    +0.10                         0.56                362    17.2
+    +0.15                         0.87                165     7.9
+    +0.20                         0.98                 95     4.5
+
+    The win rate also DISCARDS clocked-out games — they have no
+    winner — so the effective sample is below the games played.
+    A mechanism endpoint (does the swap do its job?) is usually a
+    cheaper question than the outcome (does the deck win more?).
+    baseline from sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-da677689-s20261001-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tl9473cf35
+
+edgar-vampires: experiment working-vs-working-x-sythis-enchantress-jarad-graveyard-abaddon-
+  A working copy
+  B working copy
+  200 games/arm vs sythis-enchantress, jarad-graveyard, abaddon in 55195.8s
+  win rate                                 A 0.227   B 0.281   Δ 0.054   95% [-0.038, +0.144]
+  eliminated_turn                          A 37.42   B 36.05   Δ -1.37   95% [-3.375, +0.626]
+  combat_damage_dealt_to_players           A 44.37   B 40.95   Δ -3.42   95% [-14.599, +7.769]
+  combat_damage_taken                      A 37.05   B 31.2   Δ -5.85   95% [-12.829, +1.149]
+  first_attack_turn                        A 12.79   B 13.51   Δ 0.72   95% [-0.527, +1.948]
+  token_damage_share                       A 0.24   B 0.23   Δ -0.01   95% [-0.056, +0.036]
+  tokens_observed                          A 3.29   B 3.25   Δ -0.04   95% [-0.708, +0.638]
+  token_resolutions                        A 8.04   B 8.14   Δ 0.1   95% [-0.823, +1.033]
+  commander_damage_max_on_one_defender     A 5.23   B 4.93   Δ -0.3   95% [-1.668, +1.078]
+  commander_damage_dealt_total             A 7.31   B 6.95   Δ -0.36   95% [-2.788, +2.068]
+  commander_damage_games_reaching_21       A 10   B 8   Δ -2   95% [-0.054, +0.033]
+  → the 95% interval on the win-rate difference is [-0.038, +0.144] and CONTAINS zero. At [176, 171] games per arm this experiment could only have detected a difference of +0.140 or larger, so it is uninformative about anything smaller — that is not evidence of no effect.
+  → experiments/working-vs-working-x-sythis-enchantress-jarad-graveyard-abaddon-n200-278c65d6-s180184729-podExperimental-ov8c347642-tl9473cf35-aa-k4.json
