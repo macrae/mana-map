@@ -87,7 +87,9 @@ post-test (`test-debrief`) agent; the agents read the figures and compute none.
 Coverage costs time, so these walls compare only with each other.
 
 **Watching a run.** Every pytest run rooted in this repo writes
-`.progress/pytest-<pid>.json` (done/total, failures, a 5-second heartbeat), which the
+`.progress/pytest-<pid>.json` (done/total, failures, a 5-second heartbeat) through
+`manamap.progress` — as do `manamap pilot regen` (targets) and `simulate` (games,
+counted from the Forge logs as they grow) — which the
 `job-band` Claude Code mod draws above the prompt: a bar, elapsed, an ETA, and a
 yellow NO HEARTBEAT when the run died or the machine slept. `MANAMAP_NO_PROGRESS=1`
 turns the writer off.

@@ -33,6 +33,7 @@ import time
 
 from manamap import config
 from manamap.pilot.common import deck_lifecycle
+from manamap.progress import Progress
 
 
 class _Args:
@@ -226,17 +227,29 @@ def run(only=None, slug=None, jobs=None, dry_run=False, echo=print):
         return {"failures": [], "seconds": 0.0, "ran": 0}
 
     failures, began = [], time.time()
+    progress = Progress("regen" + (f" {slug}" if slug else ""), total=total,
+                        unit="targets").start()
     for stage, module, kwargs, found in rows:
         echo(f"\n  {stage}  ({len(found)})")
         jobs_list = [(module, kwargs, s, b) for s, b in found]
         started = time.time()
+        progress.set(detail=stage)
         # A pool of ONE runs in-process: cheaper for a single target, and it
         # keeps `--slug` debuggable because a traceback is not pickled.
         if jobs == 1 or len(jobs_list) == 1:
-            results = [_one(j) for j in jobs_list]
+            results = []
+            for j in jobs_list:
+                results.append(_one(j))
+                progress.advance(failed=int(results[-1][2] is not None))
         else:
+            # Collected as each target FINISHES (so the progress moves), then
+            # put back in job order: the printed report is unchanged.
+            results = [None] * len(jobs_list)
             with concurrent.futures.ProcessPoolExecutor(max_workers=jobs) as pool:
-                results = list(pool.map(_one, jobs_list))
+                futures = {pool.submit(_one, j): i for i, j in enumerate(jobs_list)}
+                for fut in concurrent.futures.as_completed(futures):
+                    results[futures[fut]] = fut.result()
+                    progress.advance(failed=int(results[futures[fut]][2] is not None))
         for s, b, error, seconds in results:
             name = s + (f"@{b}" if b else "")
             if error:
@@ -247,6 +260,7 @@ def run(only=None, slug=None, jobs=None, dry_run=False, echo=print):
         echo(f"    {'':34} stage    {time.time() - started:5.1f}s")
 
     seconds = time.time() - began
+    progress.finish(ok=not failures)
     echo(f"\n  {total} target(s) in {seconds:.1f}s"
          + (f" — {len(failures)} FAILED" if failures else ""))
     if failures:

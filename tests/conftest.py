@@ -122,6 +122,20 @@ requires_roles = pytest.mark.skipif(
 )
 
 
+@pytest.fixture(autouse=True, scope="session")
+def _progress_stays_off_the_band(tmp_path_factory):
+    """Code UNDER test writes its progress to a throwaway dir, never the repo's.
+
+    `simulate` and `regen` write `.progress/` for the job band, so a unit test
+    driving `forge.run` against a fake Forge put a "simulate mine ✔" row on the
+    band as if a real batch had run (found 2026-10-05, the day the hook landed).
+    The run's OWN row is unaffected: report_plugin builds its writer at configure
+    time, before any fixture, with the real directory.
+    """
+    from manamap import progress
+    progress.DIR = tmp_path_factory.mktemp("progress")
+
+
 @pytest.fixture(scope="session")
 def data_dir():
     """The resolved data directory (honors MANAMAP_DATA_DIR)."""

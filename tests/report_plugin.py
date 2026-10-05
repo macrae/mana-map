@@ -15,7 +15,6 @@ What it writes is RAW — one row per test, keyed by nodeid — and stays out of
 """
 import json
 import os
-import threading
 import time
 from pathlib import Path
 
@@ -93,81 +92,41 @@ class Recorder:
 
 # ── Live progress, for the job band (on for every run; MANAMAP_NO_PROGRESS=1 opts out)
 #
-# `<repo>/.progress/pytest-<pid>.json`, the protocol the Claude Code `job-band` mod
-# reads: done/total, failures, and a HEARTBEAT refreshed every few seconds by a
-# daemon thread, so a run that died — or a laptop that slept through one (the first
-# three-tier report crawled 1h50m that way, unseen) — shows as a stopped heartbeat
-# rather than a quiet terminal. Written atomically (temp file + rename). Only for a
-# run rooted in this repo: the inner pytests some tests launch in a tmp dir stay off
-# the band.
-HEARTBEAT_S = 5
-REPO = Path(__file__).resolve().parent.parent
+# `manamap.progress` writes `.progress/pytest-<pid>.json` with a heartbeat, which
+# the Claude Code `job-band` mod draws above the prompt — a run that died, or a
+# laptop that slept through one (the first three-tier report crawled 1h50m that
+# way, unseen), shows as a stopped heartbeat rather than a quiet terminal. Only for
+# a run rooted in this repo: the inner pytests some tests launch in a tmp dir stay
+# off the band.
+from manamap.progress import REPO, Progress as _Writer  # noqa: E402
 
 
 class Progress:
     def __init__(self, config):
-        self.config = config
-        self.path = REPO / ".progress" / f"pytest-{os.getpid()}.json"
-        self.started = time.time()
-        self.total = None
-        self.seen = set()
-        self.failed = 0
-        self.state = "running"
-        self.lock = threading.Lock()
-        self.stop = threading.Event()
         mark = config.getoption("markexpr") or "everything"
-        self.label = f"pytest {mark}" if len(mark) <= 24 else "pytest"
-
-    def write(self):
-        with self.lock:
-            payload = {"label": self.label, "done": len(self.seen), "total": self.total,
-                       "unit": "tests", "failed": self.failed, "state": self.state,
-                       "started_at": self.started, "updated_at": time.time(),
-                       "detail": f"pid {os.getpid()}"}
-        try:
-            self.path.parent.mkdir(exist_ok=True)
-            tmp = self.path.with_suffix(".tmp")
-            tmp.write_text(json.dumps(payload))
-            os.replace(tmp, self.path)
-        except OSError:
-            pass  # a read-only checkout: no band, never a failed run
-
-    def _beat(self):
-        while not self.stop.wait(HEARTBEAT_S):
-            self.write()
+        self.writer = _Writer(f"pytest {mark}" if len(mark) <= 24 else "pytest",
+                              unit="tests", name="pytest")
+        self.seen = set()
 
     def pytest_sessionstart(self, session):
-        # Prune what finished runs left behind a day ago: the band hides them
-        # after two minutes, but the files would otherwise pile up forever.
-        for old in self.path.parent.glob("pytest-*.json"):
-            try:
-                if time.time() - old.stat().st_mtime > 86400:
-                    old.unlink()
-            except OSError:
-                pass
-        self.write()
-        threading.Thread(target=self._beat, daemon=True, name="progress-heartbeat").start()
+        self.writer.start()
 
     def pytest_collection_finish(self, session):
         if session.items:
-            self.total = len(session.items)
+            self.writer.set(total=len(session.items))
 
     @pytest.hookimpl(optionalhook=True)
     def pytest_xdist_node_collection_finished(self, node, ids):
-        self.total = max(self.total or 0, len(ids))
+        self.writer.set(total=max(self.writer.total or 0, len(ids)))
 
     def pytest_runtest_logreport(self, report):
-        if report.when == "call" or report.outcome != "passed":
-            with self.lock:
-                if report.nodeid not in self.seen:
-                    self.seen.add(report.nodeid)
-                    if report.failed and not hasattr(report, "wasxfail"):
-                        self.failed += 1
+        if (report.when == "call" or report.outcome != "passed") \
+                and report.nodeid not in self.seen:
+            self.seen.add(report.nodeid)
+            self.writer.advance(failed=int(report.failed and not hasattr(report, "wasxfail")))
 
     def pytest_sessionfinish(self, session, exitstatus):
-        self.stop.set()
-        self.state = "passed" if exitstatus in (0, 5) and not self.failed else "failed"
-        self.write()
+        self.writer.finish(ok=exitstatus in (0, 5))
 
 
 @pytest.hookimpl(trylast=True)

@@ -35,6 +35,8 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
   config.py           # ALL constants: paths, hyperparams, tag patterns, synergy rules,
                       #   and the goldfish's AUTHORED RATES (seats, Tithe pay, Geyser)
   mechanical_tags.py  # regex tags — a FROZEN, model-facing vocabulary
+  progress.py         # live .progress/<job>.json + heartbeat (regen, simulate, pytest) for
+                      #   the Claude Code job band; display only, never a result
   pipeline.py, cli.py # the 15-step STEPS registry; `manamap` console script
   ingest/ training/ export/ analysis/   # the card pipeline (docs/pipeline.md)
   sim/                # Forge, OUTSIDE the repo engine: forge.py (seeded harness), parse.py

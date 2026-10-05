@@ -127,6 +127,8 @@ manamap pilot build-docs-db             # (re)index docs/ — gitignored, regene
 manamap pilot build-code-db             # same over src/; a stale code index answers about code that is gone
 manamap pilot sim-progress <slug> [--experiment NAME]   # a RUNNING batch: bar, rate, ETA, and the running
                                         #   estimate with its Wilson interval + a convergence trace. Read-only
+                                        #   (`simulate`, `regen` and every pytest run also write .progress/ for
+                                        #   the Claude Code job band: games done, ETA, a heartbeat — manamap.progress)
 manamap pilot validate-sim <slug>                 # form + re-derive the analysis from logs where they exist
 manamap pilot fetch-opponent "<commander>" [--as slug] [--note …] | --list   # a pod seat under data/opponents/ from EDHREC's average deck
 manamap pilot experiment <slug> --a V4 --b working --pod <name> --games N [--looks K] [--until-mde X]

@@ -1097,8 +1097,21 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                         f"+ {TIMEOUT_FLOOR}s)\n")
                 return log, None, True
 
-    with ThreadPoolExecutor(max_workers=len(cmds)) as ex:
-        raw = list(ex.map(one, enumerate(cmds)))
+    # The job band (`manamap.progress`): finished games counted from the logs as
+    # they grow, by `sim-progress`'s own pattern, so the band and the command
+    # agree on what "a game ended" means. Display only — never part of the record.
+    from manamap.progress import LogCounter, Progress
+    from manamap.sim.progress import _DONE_RE
+    progress = Progress(f"simulate {slug}" + (f" vs {pod_name}" if pod_name else ""),
+                        total=sum(parts), unit="games", name="simulate",
+                        counter=LogCounter(_DONE_RE, str(log_dir / "part-*.log"))).start()
+    raw = None
+    try:
+        with ThreadPoolExecutor(max_workers=len(cmds)) as ex:
+            raw = list(ex.map(one, enumerate(cmds)))
+    finally:
+        # A killed (capped) job is a run that lost games: not a clean finish.
+        progress.finish(ok=raw is not None and not any(k for _l, _rc, k in raw))
     timed_out = [i for i, (_log, _rc, killed) in enumerate(raw) if killed]
     results = [(log, rc) for log, rc, _killed in raw]
     wall = round(time.time() - t0, 1)
