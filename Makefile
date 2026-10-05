@@ -81,8 +81,13 @@ test-unit-isolated:  ## The unit tier against an EMPTY data dir — proves it re
 	@tmp=$$(mktemp -d) && MANAMAP_DATA_DIR=$$tmp $(PYTEST) --no-test-cache -p no:cacheprovider $(PYTEST_ARGS); \
 		rc=$$?; rm -rf $$tmp; exit $$rc
 
-regression:  ## THE REGRESSION TIER: the tracked fleet + corpus, every producer re-run (~12 min uncached)
-	$(PYTEST) -m regression $(PYTEST_ARGS)
+# Two steps: everything parallel, then the fleet regen ALONE — it writes the tracked
+# decks in place (snapshotted and restored), so nothing else may read them meanwhile.
+REGRESSION_PARALLEL := -m "regression and not regen"
+REGRESSION_SERIAL := -m regen -n0
+regression:  ## THE REGRESSION TIER: the tracked fleet + corpus, every producer re-run
+	$(PYTEST) $(REGRESSION_PARALLEL) $(PYTEST_ARGS)
+	$(PYTEST) $(REGRESSION_SERIAL) $(PYTEST_ARGS)
 
 integration:  ## THE INTEGRATION TIER: browser + Forge + the pages rebuild byte-identically
 	$(MAKE) test-browser
@@ -94,20 +99,35 @@ prepush: test test-unit-isolated regression  ## unit + its isolation proof + reg
 
 test-fresh:  ## unit + regression with nothing served from the cache — trust this one
 	$(PYTEST) --no-test-cache
-	$(PYTEST) --no-test-cache -m regression
+	$(PYTEST) --no-test-cache $(REGRESSION_PARALLEL)
+	$(PYTEST) --no-test-cache $(REGRESSION_SERIAL)
 
 # THE MEASURED REPORT (docs/testing.md). unit and regression, nothing from the
 # cache, under coverage, each recorded with `--record-run`; a failing tier still
 # records (its exit status is in the report) and `record` then exits non-zero.
 # Coverage costs time, so these walls compare only with other `test-report` walls.
 REPORT_RAW := .pytest_cache/suite-report
-test-report:  ## unit + regression uncached + coverage -> data/test_reports/ (~30 min)
+# A MEASURED RUN MUST NOT SLEEP. The first report under the three tiers ran on a
+# laptop that idled into sleep at 13:27 and crawled through DarkWakes for 1h50m —
+# every wall and per-test duration would have counted the sleep. `caffeinate -i`
+# (macOS) holds the machine awake for exactly the command it wraps; elsewhere it
+# expands to nothing.
+KEEPAWAKE := $(if $(shell command -v caffeinate 2>/dev/null),caffeinate -i,)
+# DEFAULT: the unit tier alone, ~1-2 min — a report is something to ask for, not
+# wait on. FULL=1 adds the regression tier (both steps, ~25 min): run that in the
+# background when the baseline itself is the question.
+COV := COVERAGE_FILE=$(REPORT_RAW)/.coverage
+test-report:  ## The unit tier uncached + coverage -> data/test_reports/ (~2 min); FULL=1 adds regression
 	rm -rf $(REPORT_RAW) && mkdir -p $(REPORT_RAW)
-	-COVERAGE_FILE=$(REPORT_RAW)/.coverage $(PYTEST) --no-test-cache --record-run=$(REPORT_RAW)/unit.json \
+	-$(COV) $(KEEPAWAKE) $(PYTEST) --no-test-cache --record-run=$(REPORT_RAW)/unit.json \
 		--cov=manamap --cov-report=json:$(REPORT_RAW)/coverage-unit.json
-	-COVERAGE_FILE=$(REPORT_RAW)/.coverage $(PYTEST) --no-test-cache -m regression \
-		--record-run=$(REPORT_RAW)/regression.json \
+ifdef FULL
+	-$(COV) $(KEEPAWAKE) $(PYTEST) --no-test-cache $(REGRESSION_PARALLEL) \
+		--record-run=$(REPORT_RAW)/regression.json --cov=manamap --cov-append --cov-report=
+	-$(COV) $(KEEPAWAKE) $(PYTEST) --no-test-cache $(REGRESSION_SERIAL) \
+		--record-run=$(REPORT_RAW)/regression.regen.json \
 		--cov=manamap --cov-append --cov-report=json:$(REPORT_RAW)/coverage.json
+endif
 	$(PY) -m manamap.suite_report record $(REPORT_RAW)
 
 test-browser:  ## The playwright suite (~4 min; needs `make setup`)

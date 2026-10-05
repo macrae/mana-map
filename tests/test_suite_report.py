@@ -85,7 +85,7 @@ def test_build_rolls_up_outcomes_files_and_the_cache(tmp_path):
     assert t["by_file"]["tests/test_a.py"] == {"tests": 2, "seconds": 4.0}
     assert t["slowest"][0] == ["tests/test_a.py::x", 3.0]
     assert rep["coverage"]["combined"]["by_module"] == {"src/manamap/a.py": 50.0}
-    assert sr.report_name(rep) == f"{rep['date']}-aaaaaaaa.json"
+    assert sr.report_name(rep) == f"{rep['date']}-aaaaaaaa.unit.json"  # unit tier only: unit scope
 
 
 def test_findings_name_count_wall_skips_and_coverage_moves(tmp_path):
@@ -120,6 +120,41 @@ def test_failures_are_findings_even_with_no_previous_report(tmp_path):
     assert {"unit:error:tests/t.py::x", "unit:exit"} <= ids
 
 
+def test_a_tier_measured_in_two_runs_is_one_tier(tmp_path):
+    """`make regression` is the parallel run, then the fleet regen alone: two
+    raw files, one tier — walls add, tests union, a failure in either stands."""
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    (raw / "unit.json").write_text(json.dumps(_raw({"tests/u.py::a": _t()})))
+    (raw / "regression.json").write_text(json.dumps(_raw(
+        {"tests/r.py::a": _t(), "tests/r.py::b": _t()}, wall_seconds=60.0)))
+    (raw / "regression.regen.json").write_text(json.dumps(_raw(
+        {"tests/f.py::regen": _t("failed", 300.0)}, wall_seconds=300.0, exitstatus=1)))
+    rep = sr.build(raw, sha="f" * 40, dirty=False)
+    r = rep["tiers"]["regression"]
+    assert rep["scope"] == "full"
+    assert r["collected"] == 3 and r["wall_seconds"] == 360.0 and r["exitstatus"] == 1
+    assert r["not_passed"] == [["tests/f.py::regen", "failed"]]
+
+
+def test_a_unit_report_never_reads_as_a_coverage_drop_against_a_full_one(tmp_path):
+    """The default `make test-report` measures the unit tier alone. Its coverage
+    against a full report's would read as a 20-point fall that nothing caused."""
+    full = _report(tmp_path, {"tests/t.py::x": _t()}, sha="1" * 40,
+                   coverage=_cov({"src/manamap/a.py": 80.0}))
+    full["scope"] = "full"
+    raw = tmp_path / "unitonly"
+    raw.mkdir()
+    (raw / "unit.json").write_text(json.dumps(_raw({"tests/t.py::x": _t()})))
+    (raw / "coverage-unit.json").write_text(json.dumps(_cov({"src/manamap/a.py": 55.0})))
+    unit = sr.build(raw, sha="2" * 40, dirty=False)
+    assert unit["scope"] == "unit"
+    assert sr.report_name(unit).endswith("-22222222.unit.json")
+    kinds = {f["id"]: f["kind"] for f in sr.findings(unit, full)}
+    assert kinds["scope:differs"] == "scope-not-comparable"
+    assert "coverage:total" not in kinds and "coverage:modules" not in kinds
+
+
 def test_write_docs_replaces_only_the_block(tmp_path):
     rep = _report(tmp_path, {"tests/t.py::x": _t()})
     doc = tmp_path / "testing.md"
@@ -149,8 +184,9 @@ def test_every_tracked_report_is_well_formed_and_named_for_itself():
 
 def test_the_docs_block_is_the_render_of_the_latest_report():
     """docs/testing.md is the only page that states counts; its measured block is
-    generated. A new report without `render --write-docs` fails here."""
-    latest = json.loads(sr.history()[-1].read_text())
+    generated from the latest FULL report (a unit-scope one is a quick reading,
+    not the baseline). A new full report without `render --write-docs` fails here."""
+    latest = json.loads(sr.history(scope="full")[-1].read_text())
     text = sr.TESTING_MD.read_text()
     assert sr.BLOCK_BEGIN in text
     a = text.index(sr.BLOCK_BEGIN)

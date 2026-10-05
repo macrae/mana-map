@@ -122,25 +122,46 @@ def _coverage_rollup(path):
     }
 
 
+def _merge_raw(paths):
+    """One tier measured in several pytest runs (`make regression` is a parallel
+    run and then the fleet regen alone) -> one raw run: walls add, tests union,
+    the worst exit status stands."""
+    raws = [json.loads(p.read_text()) for p in paths]
+    if len(raws) == 1:
+        return raws[0]
+    out = dict(raws[0])
+    out["markexpr"] = " + ".join(r["markexpr"] for r in raws)
+    out["collected"] = sum(r["collected"] for r in raws)
+    out["wall_seconds"] = round(sum(r["wall_seconds"] for r in raws), 2)
+    out["exitstatus"] = max((r["exitstatus"] for r in raws), key=lambda s: (s not in (0, 5), s))
+    out["no_test_cache"] = all(r["no_test_cache"] for r in raws)
+    out["instrumented"] = all(r["instrumented"] for r in raws)
+    out["tests"] = {k: v for r in raws for k, v in r["tests"].items()}
+    return out
+
+
 def build(raw_dir, *, sha=None, today=None, dirty=None):
-    """The tracked report from `make test-report`'s raw directory."""
+    """The tracked report from `make test-report`'s raw directory: `<tier>.json`,
+    plus `<tier>.<step>.json` for a tier measured in more than one run."""
     raw_dir = Path(raw_dir)
     tiers = {}
     for tier in TIERS:
-        f = raw_dir / f"{tier}.json"
-        if f.exists():
-            tiers[tier] = _tier_rollup(json.loads(f.read_text()))
+        files = sorted(raw_dir.glob(f"{tier}.json")) + sorted(raw_dir.glob(f"{tier}.*.json"))
+        if files:
+            tiers[tier] = _tier_rollup(_merge_raw(files))
     if not tiers:
         raise SystemExit(f"no raw runs in {raw_dir} (expected {', '.join(TIERS)}.json)")
     coverage = {}
     for key, name in (("unit", "coverage-unit.json"), ("combined", "coverage.json")):
         if (raw_dir / name).exists():
             coverage[key] = _coverage_rollup(raw_dir / name)
-    # Only the combined run keeps a per-module table; the unit tier's totals suffice.
-    if "unit" in coverage:
+    # A full report keeps the per-module table on the combined run only; a
+    # unit-scope report has nothing else, so its unit table stays.
+    if "unit" in coverage and "combined" in coverage:
         coverage["unit"].pop("by_module")
     return {
         "schema": SCHEMA,
+        "scope": "full" if "regression" in tiers else "unit",
         "date": (today or date.today()).isoformat(),
         "sha": sha or _git("rev-parse", "HEAD"),
         "dirty": (bool(_git("status", "--porcelain", "--", "src", "tests"))
@@ -152,13 +173,36 @@ def build(raw_dir, *, sha=None, today=None, dirty=None):
     }
 
 
+#: What a report measured. `unit` is the default `make test-report` (~2 min);
+#: `full` adds regression (`FULL=1`). Two scopes never compare: a unit report's
+#: coverage would read as a 20-point drop against a full one. A report from
+#: before scopes existed measured both tiers, so it reads as `full`.
+SCOPES = ("unit", "full")
+
+
+def scope_of(report):
+    return report.get("scope", "full")
+
+
 def report_name(report):
-    return f"{report['date']}-{report['sha'][:8]}.json"
+    suffix = "" if scope_of(report) == "full" else f".{scope_of(report)}"
+    return f"{report['date']}-{report['sha'][:8]}{suffix}.json"
 
 
-def history(directory=REPORTS):
-    """Every tracked report, oldest first (the name sorts by date)."""
-    return sorted(Path(directory).glob("*.json"))
+def history(directory=REPORTS, scope=None):
+    """Every tracked report, oldest first (the name sorts by date), optionally
+    only those of one scope."""
+    paths = sorted(Path(directory).glob("*.json"))
+    if scope is None:
+        return paths
+    return [p for p in paths if scope_of(json.loads(p.read_text())) == scope]
+
+
+def _main_coverage(report):
+    """The coverage a report's figures are about: both tiers for a full report,
+    the unit tier for a unit one."""
+    cov = report.get("coverage") or {}
+    return cov.get("combined") or cov.get("unit")
 
 
 # ── diff: the findings ──────────────────────────────────────────────────
@@ -191,9 +235,9 @@ def findings(cur, prev=None, *, harness_changed=None):
                 f"{t['cached']} {tier} test(s) were served from the cache, so this "
                 f"run's time and coverage under-count them", tier=tier, cached=t["cached"])
 
-    cov = cur.get("coverage") or {}
-    if "combined" in cov:
-        lowest = sorted(cov["combined"]["by_module"].items(), key=lambda kv: kv[1])
+    main_cov = _main_coverage(cur)
+    if main_cov and "by_module" in main_cov:
+        lowest = sorted(main_cov["by_module"].items(), key=lambda kv: kv[1])
         add("coverage:lowest", "coverage-lowest",
             f"the {LOWEST_COVERED_N} least-covered modules",
             modules=lowest[:LOWEST_COVERED_N])
@@ -206,8 +250,8 @@ def findings(cur, prev=None, *, harness_changed=None):
                 f"{tier} wall {t['wall_seconds']:.0f}s, {t['test_seconds']:.0f}s in tests "
                 f"(no previous report)", tier=tier, wall=t["wall_seconds"],
                 in_tests=t["test_seconds"], collected=t["collected"])
-        if "combined" in cov:
-            c = cov["combined"]
+        if main_cov:
+            c = main_cov
             add("coverage:total", "coverage-absolute",
                 f"coverage {c['percent']:.2f}% (no previous report)",
                 percent=c["percent"], statements=c["statements"], missing=c["missing"])
@@ -262,9 +306,14 @@ def findings(cur, prev=None, *, harness_changed=None):
             add(f"{tier}:skips", "skips", f"{tier} skip reasons that grew",
                 tier=tier, reasons=moved)
 
-    pc = (prev.get("coverage") or {}).get("combined")
-    if "combined" in cov and pc:
-        c = cov["combined"]
+    pc = _main_coverage(prev)
+    if scope_of(cur) != scope_of(prev):
+        add("scope:differs", "scope-not-comparable",
+            f"a {scope_of(cur)} report against a {scope_of(prev)} one: coverage "
+            f"is not compared", current=scope_of(cur), previous=scope_of(prev))
+        pc = None
+    if main_cov and pc and "by_module" in main_cov and "by_module" in pc:
+        c = main_cov
         add("coverage:total", "coverage",
             f"coverage {pc['percent']:.2f}% -> {c['percent']:.2f}%",
             before=pc["percent"], after=c["percent"],
@@ -288,13 +337,16 @@ def _harness_changed(prev, cur):
 
 
 def diff(cur_path=None, prev_path=None):
-    """Findings for the latest report against the one before it (or two named)."""
+    """Findings for the latest report against the previous one OF THE SAME SCOPE
+    (or two named)."""
     reports = history()
     if cur_path is None:
         if not reports:
             raise SystemExit("no reports in data/test_reports/ — run `make test-report`")
         cur_path = reports[-1]
-        prev_path = reports[-2] if len(reports) > 1 else None
+        same = history(scope=scope_of(json.loads(cur_path.read_text())))
+        same = [p for p in same if p != cur_path]
+        prev_path = same[-1] if same else None
     cur = json.loads(Path(cur_path).read_text())
     prev = json.loads(Path(prev_path).read_text()) if prev_path else None
     return {
@@ -470,9 +522,11 @@ def main(argv=None):
     elif args.cmd == "diff":
         print(json.dumps(diff(*args.reports[:2]), indent=1))
     elif args.cmd == "render":
-        reports = history()
+        # The docs block is the latest FULL report: a unit-scope one would drop
+        # the regression row every time someone asked for a quick reading.
+        reports = history(scope="full")
         if not reports:
-            raise SystemExit("no reports in data/test_reports/ — run `make test-report`")
+            raise SystemExit("no full report in data/test_reports/ — `make test-report FULL=1`")
         report = json.loads(reports[-1].read_text())
         if args.write_docs:
             write_docs(report)

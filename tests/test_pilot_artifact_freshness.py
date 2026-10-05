@@ -155,28 +155,56 @@ def test_bracket_report_matches_a_fresh_run(target, tmp_path, unchanged):
 
 
 @pytest.mark.slow
+@pytest.mark.regen
 @requires_data
 @requires_deck
-@pytest.mark.parametrize("target", _slugs("goldfish_metrics.json"), ids=_id)
-def test_goldfish_metrics_match_a_fresh_run(target, tmp_path, unchanged):
-    """Seeded and deterministic, so a difference is a real change in the model
-    or in the deck — never noise.
+def test_the_fleet_regenerates_byte_identically(unchanged):
+    """goldfish_metrics, net_change, diagnostic and benchmark — every deck and
+    branch — must equal what `manamap pilot regen` writes today. Seeded and
+    deterministic, so a difference is a real change in the model or a list,
+    never noise; and these are the documents a purchase rests on, so one that
+    no longer describes its lists is worse than none.
 
-    Ten thousand games per deck, ninety thousand across the fleet, 20.5 s every
-    run to re-derive nine files that move only when a decklist or the simulator
-    does. That determinism is exactly what makes it safe to cache.
+    ONE REGEN, NOT 85 RE-DERIVATIONS (2026-10-05). This was four parametrized
+    tests, one case per artifact per deck and branch: 85 cases, 74% of the
+    regression tier's CPU, and under xdist's scheduler two workers ground
+    through them for ~15 minutes while six sat idle. `regen --jobs` does the
+    same work in dependency order across every core in ~6 minutes, and covers
+    EXACTLY the same targets — checked case for case before the swap
+    (goldfish 38, net-change 33, diagnose 6, benchmark 8; retired decks skipped
+    by both). It also compares bytes, which is stricter than the JSON equality
+    the four used.
+
+    It writes IN PLACE, so it runs alone: marked `regen`, excluded from the
+    parallel run and run serially after it (`make regression`). Every tracked
+    file under data/decks/ is snapshotted first and restored after, pass or
+    fail. The key is the whole decks tree because net_change and info embed
+    other decks' state (CROSS_DECK, above).
     """
-    slug, branch = target
-    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
-    unchanged(*CODE, root)
+    import subprocess
 
-    def rerun():
-        goldfish.main(type("Args", (), {"slug": slug, "branch": branch})())
+    from manamap.pilot import benchmark, regen
 
-    fresh, old = _roundtrip(target, "goldfish_metrics.json", rerun, tmp_path)
-    assert fresh == old, (
-        f"{_id(target)}/goldfish_metrics.json is stale — rerun "
-        f"`manamap pilot goldfish {slug}` and commit it.")
+    unchanged(*module_closure(regen, benchmark), *CODE, *CROSS_DECK)
+    root = DECKS_DIR.parent.parent
+    listed = subprocess.run(["git", "ls-files", "-z", "--", str(DECKS_DIR)],
+                            cwd=root, capture_output=True, check=True).stdout
+    tracked = [root / f for f in listed.decode().split("\0") if f]
+    assert len(tracked) >= 100, f"only {len(tracked)} tracked deck files to compare"
+    before = {f: f.read_bytes() for f in tracked if f.exists()}
+    try:
+        result = regen.run(echo=lambda *a, **k: None)
+        stale = sorted(str(f.relative_to(root)) for f, b in before.items()
+                       if f.read_bytes() != b)
+    finally:
+        for f, b in before.items():
+            if not f.exists() or f.read_bytes() != b:
+                f.write_bytes(b)
+    assert not result["failures"], f"regen failed: {result['failures']}"
+    assert not stale, (
+        f"{len(stale)} tracked artifact(s) no longer match a fresh run — "
+        f"`manamap pilot regen --jobs 8 && make manuals`, then commit:\n  "
+        + "\n  ".join(stale))
 
 
 @requires_deck
@@ -216,58 +244,6 @@ def test_the_net_change_gate_says_so_when_it_has_nothing_to_gate():
     assert all(b for _s, b in targets), (
         "net-change is branch-only by definition; a deck-level target means "
         "something wrote one where it does not belong")
-
-
-@pytest.mark.slow
-@requires_data
-@requires_deck
-@pytest.mark.parametrize("target", _slugs("net_change.json"), ids=_id)
-def test_net_change_matches_a_fresh_run(target, tmp_path, unchanged):
-    """The document a purchase rests on. Deterministic under a fixed seed, so a
-    difference is a real change in the model or in either list — and a report
-    that no longer describes the lists it compares is worse than none, because
-    it was already acted on."""
-    slug, branch = target
-    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
-    unchanged(*CODE, *CROSS_DECK, root)
-
-    def rerun():
-        net_change.main(type("Args", (), {
-            "slug": slug, "branch": branch, "write": True, "as_json": False,
-            "json": False, "iterations": None, "seed": None})())
-
-    fresh, old = _roundtrip(target, "net_change.json", rerun, tmp_path)
-    assert fresh == old, (
-        f"{_id(target)}/net_change.json is stale — rerun `manamap pilot "
-        f"net-change {slug} --branch {branch} --write` and commit it.")
-
-
-@pytest.mark.slow
-@requires_data
-@requires_deck
-@pytest.mark.parametrize("target", _slugs("diagnostic.json"), ids=_id)
-def test_diagnostic_matches_a_fresh_run(target, tmp_path, unchanged):
-    """The vitals. Seeded and deterministic like the goldfish it composes, so a
-    difference is a real change in the model or the deck — never noise.
-
-    It was TRACKED and gated by nothing: no validator, no freshness test, no
-    `deck_status` row. Composed from the goldfish, so it goes stale on every
-    model change — the artifact whose staleness was least visible.
-    """
-    slug, branch = target
-    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
-    unchanged(*CODE, root)
-
-    def rerun():
-        diagnostic.main(type("Args", (), {
-            "slug": slug, "branch": branch, "write": True, "as_json": False,
-            "iterations": None, "seed": None, "vs": None})())
-
-    fresh, old = _roundtrip(target, "diagnostic.json", rerun, tmp_path)
-    assert fresh == old, (
-        f"{_id(target)}/diagnostic.json is stale — rerun `manamap pilot "
-        f"diagnose {slug}" + (f" --branch {branch}" if branch else "")
-        + " --write` and commit it.")
 
 
 @requires_data
@@ -315,43 +291,6 @@ def test_info_json_never_carries_a_version_block(target):
     doc = json.loads(path.read_text())
     assert "version" not in doc, "versions cannot be committed accurately"
     assert "_note" in doc and "one commit behind" in doc["_note"]
-
-
-@pytest.mark.slow
-@requires_data
-@requires_deck
-@pytest.mark.parametrize("target", _slugs("benchmark.json"), ids=_id)
-def test_benchmark_matches_a_fresh_run(target, unchanged):
-    """`benchmark.json` is tracked, so the workbench can read it on a static
-    host — and it is deterministic (fixed seed, fixed iterations, uniform
-    flags), so it must equal what a fresh run produces. A stale benchmark is a
-    ranking computed against a deck that no longer exists.
-
-    THE `unchanged` GATE WAS MISSING, and it is the only freshness test in this
-    file that ever lacked it. `benchmark.measure` is a full 10,000-iteration
-    goldfish with treasures and combat forced on, so all ten targets ran on
-    EVERY `make test`, cache warm or cold: 40.6s of CPU that no edit had asked
-    for, and the floor under the whole suite. Its seven siblings all take the
-    fixture; this one takes it now.
-    """
-    # `benchmark` has no branch concept — it freezes ONE harness so decks are
-    # comparable, and a branch is not a deck. `_slugs` still yields the tuple.
-    slug, _branch = target
-    import io as _io
-    import contextlib
-
-    from manamap.config import DECKS_DIR
-    from manamap.pilot import benchmark
-
-    path = DECKS_DIR / slug / "benchmark.json"
-    if not path.exists():
-        pytest.skip(f"{slug} has no benchmark record")
-    unchanged(*CODE, DECKS_DIR / slug)
-    with contextlib.redirect_stdout(_io.StringIO()):
-        fresh = benchmark.measure(slug)
-    stored = json.loads(path.read_text())
-    assert stored == fresh, (
-        f"{_id(target)}/benchmark.json is stale — `manamap pilot benchmark {slug}`")
 
 
 # ── versions.json — the rap sheet, and the one artifact that reads git ───

@@ -247,6 +247,7 @@ def test_no_tracked_deck_is_both_dead_and_sleeved():
     assert checked >= 8
 
 
+@pytest.mark.regression
 def test_the_holder_report_reads_the_path_the_artifact_actually_uses():
     """A REPORT THAT IS SILENT LOOKS EXACTLY LIKE A REPORT WITH NOTHING TO SAY.
 

@@ -3,11 +3,12 @@
 ```bash
 make test                 # UNIT: no tracked data — the inner loop          ~1 min
 make test-unit-isolated   # the unit tier against an EMPTY data dir — proves it
-make regression           # REGRESSION: the tracked fleet + corpus           ~15 min
+make regression           # REGRESSION: the tracked fleet + corpus, then the fleet regen alone
 make integration          # INTEGRATION: browser, Forge, pages byte-identical
 make prepush              # unit + isolation + regression — before every push (CI runs it)
 make test-fresh           # unit + regression, nothing served from the cache
-make test-report          # measure it: counts, time, coverage -> data/test_reports/
+make test-report          # measure the unit tier: counts, time, coverage   ~2 min
+make test-report FULL=1   # + regression — the baseline, run in the background
 make test-browser         # playwright, -n 4, then the serial_only tests     ~7 min
 pytest -n0 -k NAME        # one test; worker startup outweighs the split
 pytest -m forge           # ONE real Forge game (needs ~/.mana-map/forge)
@@ -16,7 +17,8 @@ pytest --lf               # only what failed last time
 ```
 
 **A bare `pytest` is `make test`, the unit tier.** `addopts` in `pyproject.toml`
-carries `-m unit -n auto`.
+carries `-m unit -n auto --dist worksteal`: an idle worker takes queued tests off
+a busy one, so a file of heavy tests no longer strands two workers with the tail.
 
 **This file is the only place that states test counts and runtimes.** They move on
 almost every commit; README and CLAUDE.md point here instead. The dated record of
@@ -27,11 +29,11 @@ how the suite got here — every earlier measurement, every lesson in full, the
 
 | tier | what it touches | tests | wall |
 |---|---|---:|---:|
-| **unit** — `make test` | inline data only; no tracked artifact, no outside system | 2,514 | **0:58** uncached |
-| unit, isolated — `make test-unit-isolated` | the same, against an empty `MANAMAP_DATA_DIR` | 2,514 | **0:52** |
-| **regression** — `make regression` | the tracked fleet and corpus: every artifact validator, every producer re-run per deck and branch, the constants calibrated across the fleet | 1,664 | **15:06** uncached |
+| **unit** — `make test` | inline data only; no tracked artifact, no outside system | 2,515 | **0:42** uncached |
+| unit, isolated — `make test-unit-isolated` | the same, against an empty `MANAMAP_DATA_DIR` | 2,515 | **0:38** |
+| **regression** — `make regression` | the tracked fleet and corpus: every artifact validator, the constants calibrated across the fleet — in parallel; then, ALONE, one `regen` of the whole fleet compared byte for byte (`test_the_fleet_regenerates_byte_identically`, marker `regen`; it replaced 85 per-artifact re-derivations that were 74% of the tier's CPU) | 1,582 | **13:10** uncached (6:25 parallel + 6:43 regen) |
 | **integration** — `make integration` | a real browser (264), the Forge engine (1), the network; then `make manuals` + `git diff --exit-code` | 265 | ~7 min + |
-| **total collected** | | **4,443** | |
+| **total collected** | | **4,362** | |
 
 **What decides the tier is what a test TOUCHES, never its runtime** — runtime flaps,
 and a slow pure function is still a unit test. `tests/conftest.py` (`tier_of`)
@@ -43,8 +45,9 @@ assigns every test exactly one, before `-m` deselects anything:
   is tracked data (`conftest.DATA_FIXTURES`: `unchanged`, `deck`, `slug`, `corpus`, …).
 - **unit** — everything else.
 - An explicit `@pytest.mark.unit|regression|integration` (or a module `pytestmark`)
-  wins. 181 tests carry one: the ones `make test-unit-isolated` caught reading the
-  fleet with no gate (134 failed against an empty data dir, 47 skipped only there).
+  wins. 183 tests carry one: the ones `make test-unit-isolated` caught reading the
+  fleet with no gate (134 failed against an empty data dir, 47 skipped only there, and 2 more
+  whose runtime skip the first test report caught).
 
 **The unit tier is proven, not assumed.** `make test-unit-isolated` runs it against an
 empty data dir; a failure or a skip there is a test that reads tracked data and must
@@ -69,29 +72,38 @@ the inner loop, not before a push.
 ## The measured report (`make test-report`)
 
 The table above is written by hand; this one is generated. `make test-report` runs
-the unit and regression tiers with nothing from the cache and under coverage, recording every test
+the unit tier (~2 min) — and with `FULL=1` the regression tier too — with nothing from
+the cache, under coverage and under `caffeinate` (a laptop that idles to sleep
+mid-run measured 1h50m of nothing on 2026-10-05), recording every test
 (`tests/report_plugin.py`, `--record-run`), and `python -m manamap.suite_report
-record` folds the runs into a dated, tracked report in `data/test_reports/`. `diff`
-recomputes the findings between the latest two — failures, counts by file, wall
+record` folds the runs into a dated, tracked report in `data/test_reports/`
+(`<date>-<sha8>.json` for a full report, `….unit.json` for a unit one). `diff`
+recomputes the findings between the latest two OF THE SAME SCOPE — failures, counts by file, wall
 time, files that slowed, skip reasons that grew, coverage by module, and whether the
 harness itself changed in between — and `render --write-docs` rewrites the block
-below, which `tests/test_suite_report.py` holds to the latest report. The
+below from the latest FULL report, which `tests/test_suite_report.py` holds it to. The
 `/test-report` skill runs it end to end with a pre-test (`test-preflight`) and a
 post-test (`test-debrief`) agent; the agents read the figures and compute none.
 Coverage costs time, so these walls compare only with each other.
 
+**Watching a run.** Every pytest run rooted in this repo writes
+`.progress/pytest-<pid>.json` (done/total, failures, a 5-second heartbeat), which the
+`job-band` Claude Code mod draws above the prompt: a bar, elapsed, an ETA, and a
+yellow NO HEARTBEAT when the run died or the machine slept. `MANAMAP_NO_PROGRESS=1`
+turns the writer off.
+
 <!-- suite-report:begin (generated by `python -m manamap.suite_report render --write-docs`; do not edit) -->
 
-Measured 2026-10-05 at `2156ec90` (uncommitted changes in src/ or tests/), 8 CPUs, Python 3.10.0, by `make test-report` — the tracked record is `data/test_reports/2026-10-05-2156ec90.json`.
+Measured 2026-10-05 at `71014751`, 8 CPUs, Python 3.10.0, by `make test-report` — the tracked record is `data/test_reports/2026-10-05-71014751.json`.
 
 | tier | collected | passed | skipped | xfailed | failed | wall | in tests |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| fast (uncached, under coverage) | 4,036 | 4,024 | 9 | 1 | 2 | **9:57** | 34:10 |
-| fleet (uncached, under coverage) | 142 | 137 | 3 | 2 | 0 | **23:21** | 178:07 |
+| unit (uncached, under coverage) | 2,515 | 2,513 | 2 | 0 | 0 | **1:06** | 4:36 |
+| regression (uncached, under coverage) | 1,664 | 1,651 | 10 | 3 | 0 | **38:19** | 173:25 |
 
-Line coverage: the fast tier alone **73.5%**; both measured tiers **76.0%** of 30,797 statements in `src/manamap/` (7,394 never run).
+Line coverage: the unit tier alone **56.6%**; both measured tiers **76.0%** of 30,805 statements in `src/manamap/` (7,387 never run).
 
-The five slowest tests: `test_net_change_matches_a_fresh_run[edgar-vampires@drain-v1]` 304s; `test_net_change_matches_a_fresh_run[goblin-storm@copy-burst-v1]` 283s; `test_every_tracked_simulation_run_passes_its_validator[edgar-vampires]` 218s; `test_net_change_matches_a_fresh_run[sharknado@momentum-v1]` 211s; `test_net_change_matches_a_fresh_run[edgar-vampires@entry-v1]` 188s.
+The five slowest tests: `test_every_tracked_simulation_run_passes_its_validator[edgar-vampires]` 356s; `test_net_change_matches_a_fresh_run[goblin-storm@copy-burst-v1]` 268s; `test_net_change_matches_a_fresh_run[edgar-vampires@drain-v1]` 204s; `test_a_procedure_page_names_only_cards_the_deck_runs` 174s; `test_futility_stops_only_when_the_asked_for_effect_is_excluded` 163s.
 
 <!-- suite-report:end -->
 

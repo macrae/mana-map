@@ -142,7 +142,7 @@ make regression               # the tracked fleet + corpus, every producer re-ru
 make integration              # browser + Forge + the pages rebuilt byte-identically
 make prepush                  # unit + its isolation proof + regression; before every push
 make test-browser             # playwright; local only
-make test-report              # both tiers uncached + coverage -> data/test_reports/; /test-report reads it
+make test-report              # unit tier + coverage, ~2 min -> data/test_reports/ (FULL=1: + regression)
 .venv/bin/pytest -n0 -k NAME  # one test
 
 manamap serve                 # viz + a LOCAL /api, and a WARM WORKER: read-only `manamap

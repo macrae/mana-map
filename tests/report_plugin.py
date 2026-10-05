@@ -1,4 +1,5 @@
-"""Record a test run for `manamap.suite_report` — opt in with `--record-run PATH`.
+"""Record a test run for `manamap.suite_report` (`--record-run PATH`), and show
+it live (`.progress/`, read by the `job-band` Claude Code mod; see `Progress`).
 
 Registered by `conftest.pytest_configure`; it does nothing unless the option is
 given, so an ordinary `make test` pays nothing for it. `make test-report` passes it
@@ -13,6 +14,8 @@ What it writes is RAW — one row per test, keyed by nodeid — and stays out of
 (`.pytest_cache/`). The tracked report is the compact roll-up the builder makes.
 """
 import json
+import os
+import threading
 import time
 from pathlib import Path
 
@@ -88,8 +91,93 @@ class Recorder:
         self.path.write_text(json.dumps(payload, indent=1) + "\n")
 
 
+# ── Live progress, for the job band (on for every run; MANAMAP_NO_PROGRESS=1 opts out)
+#
+# `<repo>/.progress/pytest-<pid>.json`, the protocol the Claude Code `job-band` mod
+# reads: done/total, failures, and a HEARTBEAT refreshed every few seconds by a
+# daemon thread, so a run that died — or a laptop that slept through one (the first
+# three-tier report crawled 1h50m that way, unseen) — shows as a stopped heartbeat
+# rather than a quiet terminal. Written atomically (temp file + rename). Only for a
+# run rooted in this repo: the inner pytests some tests launch in a tmp dir stay off
+# the band.
+HEARTBEAT_S = 5
+REPO = Path(__file__).resolve().parent.parent
+
+
+class Progress:
+    def __init__(self, config):
+        self.config = config
+        self.path = REPO / ".progress" / f"pytest-{os.getpid()}.json"
+        self.started = time.time()
+        self.total = None
+        self.seen = set()
+        self.failed = 0
+        self.state = "running"
+        self.lock = threading.Lock()
+        self.stop = threading.Event()
+        mark = config.getoption("markexpr") or "everything"
+        self.label = f"pytest {mark}" if len(mark) <= 24 else "pytest"
+
+    def write(self):
+        with self.lock:
+            payload = {"label": self.label, "done": len(self.seen), "total": self.total,
+                       "unit": "tests", "failed": self.failed, "state": self.state,
+                       "started_at": self.started, "updated_at": time.time(),
+                       "detail": f"pid {os.getpid()}"}
+        try:
+            self.path.parent.mkdir(exist_ok=True)
+            tmp = self.path.with_suffix(".tmp")
+            tmp.write_text(json.dumps(payload))
+            os.replace(tmp, self.path)
+        except OSError:
+            pass  # a read-only checkout: no band, never a failed run
+
+    def _beat(self):
+        while not self.stop.wait(HEARTBEAT_S):
+            self.write()
+
+    def pytest_sessionstart(self, session):
+        # Prune what finished runs left behind a day ago: the band hides them
+        # after two minutes, but the files would otherwise pile up forever.
+        for old in self.path.parent.glob("pytest-*.json"):
+            try:
+                if time.time() - old.stat().st_mtime > 86400:
+                    old.unlink()
+            except OSError:
+                pass
+        self.write()
+        threading.Thread(target=self._beat, daemon=True, name="progress-heartbeat").start()
+
+    def pytest_collection_finish(self, session):
+        if session.items:
+            self.total = len(session.items)
+
+    @pytest.hookimpl(optionalhook=True)
+    def pytest_xdist_node_collection_finished(self, node, ids):
+        self.total = max(self.total or 0, len(ids))
+
+    def pytest_runtest_logreport(self, report):
+        if report.when == "call" or report.outcome != "passed":
+            with self.lock:
+                if report.nodeid not in self.seen:
+                    self.seen.add(report.nodeid)
+                    if report.failed and not hasattr(report, "wasxfail"):
+                        self.failed += 1
+
+    def pytest_sessionfinish(self, session, exitstatus):
+        self.stop.set()
+        self.state = "passed" if exitstatus in (0, 5) and not self.failed else "failed"
+        self.write()
+
+
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config):
+    if hasattr(config, "workerinput"):
+        return
     path = config.getoption("--record-run", None)
-    if path and not hasattr(config, "workerinput"):
+    if path:
         config.pluginmanager.register(Recorder(config, path), "manamap-recorder")
+    if (not os.environ.get("MANAMAP_NO_PROGRESS")
+            and Path(config.rootpath).resolve() == REPO
+            and not config.getoption("collectonly")):
+        config.pluginmanager.register(Progress(config), "manamap-progress")

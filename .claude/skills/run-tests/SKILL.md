@@ -13,7 +13,7 @@ make integration          # browser + Forge + the pages rebuilt byte-identically
 make prepush              # unit + isolation + regression; before every push (CI runs it)
 make test-fresh           # unit + regression with nothing served from the cache
 make test-browser         # the playwright suite (-n 4, plus the serial_only tests)
-make test-report          # both tiers uncached + coverage, recorded -> /test-report reads it
+make test-report          # unit tier uncached + coverage, ~2 min (FULL=1: + regression) -> /test-report
 pytest -m forge           # ONE real Forge game (~10 s; needs ~/.mana-map/forge; opt-in)
 .venv/bin/pytest -n0 -k NAME   # one test, no worker startup
 .venv/bin/pytest -m ""    # literally everything

@@ -1,0 +1,1021 @@
+{
+ "schema": 1,
+ "scope": "unit",
+ "date": "2026-10-05",
+ "sha": "71014751d5494c5f6c69166ca0a0eadf7eecdcf4",
+ "dirty": true,
+ "machine": {
+  "python": "3.10.0",
+  "platform": "darwin",
+  "cpus": 8
+ },
+ "tiers": {
+  "unit": {
+   "markexpr": "unit",
+   "no_test_cache": true,
+   "instrumented": true,
+   "exitstatus": 0,
+   "collected": 2515,
+   "wall_seconds": 67.67,
+   "test_seconds": 316.08,
+   "outcomes": {
+    "passed": 2515
+   },
+   "cached": 0,
+   "skip_reasons": [],
+   "not_passed": [],
+   "slowest": [
+    [
+     "tests/test_serve_cli_threads.py::test_stdout_survives_concurrent_cli_calls",
+     11.32
+    ],
+    [
+     "tests/test_pilot_net_change.py::test_a_mismatch_names_the_versions_it_played_and_the_one_on_disk",
+     7.45
+    ],
+    [
+     "tests/test_pilot_net_change.py::test_a_rate_measured_on_another_list_says_so_before_it_says_the_rate",
+     6.99
+    ],
+    [
+     "tests/test_sim_experiment.py::test_the_delta_puts_an_interval_on_the_difference_not_on_each_arm",
+     6.18
+    ],
+    [
+     "tests/test_sim_experiment.py::test_only_the_win_rate_is_pre_registered",
+     6.08
+    ],
+    [
+     "tests/test_sim_power_preflight.py::test_a_detect_the_run_cannot_see_is_refused_unless_anyway",
+     5.88
+    ],
+    [
+     "tests/test_mcp_server.py::test_nothing_but_json_frames_reach_stdout",
+     5.83
+    ],
+    [
+     "tests/test_sim_experiment.py::test_the_reading_never_calls_an_uninformative_result_no_effect",
+     5.45
+    ],
+    [
+     "tests/test_pilot_deck_manifest.py::test_the_manifest_is_byte_deterministic",
+     5.33
+    ],
+    [
+     "tests/test_model_vae.py::test_the_decoder_never_sees_the_encoder",
+     5.23
+    ],
+    [
+     "tests/test_sim_experiment.py::test_the_delta_carries_commander_damage_per_defender",
+     5.2
+    ],
+    [
+     "tests/test_sim_forge.py::test_a_run_records_the_list_it_PLAYED_not_the_one_on_disk_when_it_ends",
+     4.95
+    ],
+    [
+     "tests/test_sim_experiment.py::test_a_real_win_rate_difference_is_called",
+     4.89
+    ],
+    [
+     "tests/test_sim_experiment.py::test_an_arm_with_no_commander_damage_block_reports_none_not_zero",
+     4.52
+    ],
+    [
+     "tests/test_sim_experiment.py::test_the_final_print_reads_keys_the_delta_actually_emits",
+     4.07
+    ],
+    [
+     "tests/test_pilot_deck_versions.py::test_tags_are_authored_and_resolve",
+     4.05
+    ],
+    [
+     "tests/test_sim_experiment.py::test_a_figure_with_no_per_game_values_says_so_rather_than_implying_precision",
+     3.79
+    ],
+    [
+     "tests/test_pilot_net_change.py::test_the_pod_null_excludes_overridden_runs_and_counts_them",
+     3.69
+    ],
+    [
+     "tests/test_train_vae.py::test_targets_are_built_only_for_masked_blocks",
+     3.55
+    ],
+    [
+     "tests/test_card_fields.py::test_encoding_never_raises_on_a_malformed_card",
+     3.37
+    ],
+    [
+     "tests/test_pilot_card_value.py::test_an_invisible_card_is_excluded_from_the_ranking_not_ranked_last",
+     3.15
+    ],
+    [
+     "tests/test_pilot_card_value.py::test_the_report_says_it_is_not_a_cut_list",
+     2.83
+    ],
+    [
+     "tests/test_pilot_card_value.py::test_a_land_is_blanked_by_a_land",
+     2.8
+    ],
+    [
+     "tests/test_console.py::test_json_output_is_identical_with_and_without_a_tty[args0]",
+     2.76
+    ],
+    [
+     "tests/test_pilot_sha_predicate.py::test_no_module_holds_a_module_level_copy_of_the_deck_root",
+     2.67
+    ]
+   ],
+   "by_file": {
+    "tests/test_analysis_common.py": {
+     "tests": 17,
+     "seconds": 0.04
+    },
+    "tests/test_card_fields.py": {
+     "tests": 27,
+     "seconds": 8.06
+    },
+    "tests/test_card_parse.py": {
+     "tests": 7,
+     "seconds": 0.0
+    },
+    "tests/test_card_roles.py": {
+     "tests": 24,
+     "seconds": 0.02
+    },
+    "tests/test_card_serialize.py": {
+     "tests": 9,
+     "seconds": 0.14
+    },
+    "tests/test_cardbert.py": {
+     "tests": 19,
+     "seconds": 3.07
+    },
+    "tests/test_cluster_regions.py": {
+     "tests": 28,
+     "seconds": 0.03
+    },
+    "tests/test_combos.py": {
+     "tests": 30,
+     "seconds": 0.03
+    },
+    "tests/test_conftest_cache.py": {
+     "tests": 8,
+     "seconds": 1.68
+    },
+    "tests/test_console.py": {
+     "tests": 14,
+     "seconds": 3.38
+    },
+    "tests/test_console_contract.py": {
+     "tests": 12,
+     "seconds": 0.33
+    },
+    "tests/test_decklist_parity.py": {
+     "tests": 5,
+     "seconds": 0.01
+    },
+    "tests/test_docs_counts.py": {
+     "tests": 12,
+     "seconds": 6.9
+    },
+    "tests/test_docs_section_count.py": {
+     "tests": 7,
+     "seconds": 1.07
+    },
+    "tests/test_embedding_pool_eval.py": {
+     "tests": 15,
+     "seconds": 0.16
+    },
+    "tests/test_extract.py": {
+     "tests": 59,
+     "seconds": 0.05
+    },
+    "tests/test_first_printings.py": {
+     "tests": 10,
+     "seconds": 0.01
+    },
+    "tests/test_goldfish_cast_draw.py": {
+     "tests": 3,
+     "seconds": 0.01
+    },
+    "tests/test_goldfish_cast_token.py": {
+     "tests": 4,
+     "seconds": 0.01
+    },
+    "tests/test_goldfish_commander_copy.py": {
+     "tests": 15,
+     "seconds": 0.5
+    },
+    "tests/test_goldfish_granted_mana.py": {
+     "tests": 19,
+     "seconds": 0.02
+    },
+    "tests/test_goldfish_mass_animate.py": {
+     "tests": 1,
+     "seconds": 0.0
+    },
+    "tests/test_ingest_common.py": {
+     "tests": 11,
+     "seconds": 0.04
+    },
+    "tests/test_mcp_server.py": {
+     "tests": 18,
+     "seconds": 7.49
+    },
+    "tests/test_mechanical_tags.py": {
+     "tests": 44,
+     "seconds": 0.05
+    },
+    "tests/test_metric_hygiene.py": {
+     "tests": 8,
+     "seconds": 0.93
+    },
+    "tests/test_metrics_catalog.py": {
+     "tests": 98,
+     "seconds": 13.02
+    },
+    "tests/test_model_vae.py": {
+     "tests": 12,
+     "seconds": 8.54
+    },
+    "tests/test_no_secrets.py": {
+     "tests": 3,
+     "seconds": 1.02
+    },
+    "tests/test_pilot_agent_cache.py": {
+     "tests": 6,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_agent_stamps.py": {
+     "tests": 4,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_archetype_detection.py": {
+     "tests": 9,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_archetypes.py": {
+     "tests": 8,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_assess.py": {
+     "tests": 3,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_autobuild.py": {
+     "tests": 19,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_bracket.py": {
+     "tests": 35,
+     "seconds": 0.05
+    },
+    "tests/test_pilot_branch_lifecycle.py": {
+     "tests": 40,
+     "seconds": 0.46
+    },
+    "tests/test_pilot_branch_objective_anchor.py": {
+     "tests": 2,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_brew.py": {
+     "tests": 5,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_build_deck.py": {
+     "tests": 62,
+     "seconds": 0.1
+    },
+    "tests/test_pilot_build_partner.py": {
+     "tests": 3,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_calibrate.py": {
+     "tests": 5,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_captains_log.py": {
+     "tests": 17,
+     "seconds": 0.85
+    },
+    "tests/test_pilot_card_pool.py": {
+     "tests": 1,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_card_refs.py": {
+     "tests": 20,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_card_search.py": {
+     "tests": 3,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_card_value.py": {
+     "tests": 12,
+     "seconds": 14.88
+    },
+    "tests/test_pilot_check_in.py": {
+     "tests": 1,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_collection.py": {
+     "tests": 7,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_decisions.py": {
+     "tests": 7,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_deck_audit.py": {
+     "tests": 41,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_deck_branch.py": {
+     "tests": 16,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_deck_facts.py": {
+     "tests": 12,
+     "seconds": 2.3
+    },
+    "tests/test_pilot_deck_history.py": {
+     "tests": 3,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_deck_info.py": {
+     "tests": 11,
+     "seconds": 4.44
+    },
+    "tests/test_pilot_deck_manifest.py": {
+     "tests": 1,
+     "seconds": 5.33
+    },
+    "tests/test_pilot_deck_map.py": {
+     "tests": 6,
+     "seconds": 0.32
+    },
+    "tests/test_pilot_deck_paper.py": {
+     "tests": 9,
+     "seconds": 14.97
+    },
+    "tests/test_pilot_deck_state.py": {
+     "tests": 10,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_deck_status.py": {
+     "tests": 3,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_deck_versions.py": {
+     "tests": 31,
+     "seconds": 48.79
+    },
+    "tests/test_pilot_diagnosis_report.py": {
+     "tests": 14,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_diagnostic.py": {
+     "tests": 9,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_dossier_drift.py": {
+     "tests": 4,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_fetch_deck.py": {
+     "tests": 26,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_formats.py": {
+     "tests": 17,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_goldfish.py": {
+     "tests": 36,
+     "seconds": 7.02
+    },
+    "tests/test_pilot_goldfish_activations.py": {
+     "tests": 3,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_goldfish_attack_gate.py": {
+     "tests": 7,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_goldfish_colors.py": {
+     "tests": 14,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_goldfish_combat.py": {
+     "tests": 44,
+     "seconds": 6.98
+    },
+    "tests/test_pilot_goldfish_cost_reduction.py": {
+     "tests": 28,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_goldfish_discard.py": {
+     "tests": 27,
+     "seconds": 0.06
+    },
+    "tests/test_pilot_goldfish_drain_and_draw.py": {
+     "tests": 41,
+     "seconds": 0.5
+    },
+    "tests/test_pilot_goldfish_gishath.py": {
+     "tests": 13,
+     "seconds": 5.63
+    },
+    "tests/test_pilot_goldfish_infect.py": {
+     "tests": 2,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_goldfish_mana.py": {
+     "tests": 13,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_goldfish_rooms.py": {
+     "tests": 8,
+     "seconds": 0.51
+    },
+    "tests/test_pilot_goldfish_static_lord.py": {
+     "tests": 3,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_goldfish_treasure.py": {
+     "tests": 22,
+     "seconds": 0.06
+    },
+    "tests/test_pilot_goldfish_x_spells.py": {
+     "tests": 5,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_log_causes.py": {
+     "tests": 7,
+     "seconds": 0.09
+    },
+    "tests/test_pilot_mana_analysis.py": {
+     "tests": 15,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_manabase.py": {
+     "tests": 54,
+     "seconds": 0.07
+    },
+    "tests/test_pilot_memo.py": {
+     "tests": 7,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_merge_prose.py": {
+     "tests": 1,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_model_coverage.py": {
+     "tests": 6,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_model_staleness.py": {
+     "tests": 3,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_net_change.py": {
+     "tests": 56,
+     "seconds": 22.75
+    },
+    "tests/test_pilot_out_path_guard.py": {
+     "tests": 13,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_pending.py": {
+     "tests": 19,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_poh.py": {
+     "tests": 12,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_policy_forge.py": {
+     "tests": 14,
+     "seconds": 0.03
+    },
+    "tests/test_pilot_pool_facts.py": {
+     "tests": 35,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_prescribe.py": {
+     "tests": 1,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_promote.py": {
+     "tests": 11,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_regen.py": {
+     "tests": 6,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_retrieve.py": {
+     "tests": 5,
+     "seconds": 0.06
+    },
+    "tests/test_pilot_rules_db.py": {
+     "tests": 10,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_rulings.py": {
+     "tests": 5,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_scenario_facts.py": {
+     "tests": 14,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_sha_predicate.py": {
+     "tests": 8,
+     "seconds": 2.69
+    },
+    "tests/test_pilot_stall_late_window.py": {
+     "tests": 5,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_strategy_db.py": {
+     "tests": 6,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_tracked_artifacts_validate.py": {
+     "tests": 2,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_try_and_protected.py": {
+     "tests": 1,
+     "seconds": 0.0
+    },
+    "tests/test_pilot_upgrades.py": {
+     "tests": 10,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_validate_branch.py": {
+     "tests": 22,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_validate_brief.py": {
+     "tests": 20,
+     "seconds": 0.05
+    },
+    "tests/test_pilot_validate_build.py": {
+     "tests": 38,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_validate_goldfish_targets.py": {
+     "tests": 19,
+     "seconds": 0.05
+    },
+    "tests/test_pilot_validate_poh_procedures.py": {
+     "tests": 10,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_validate_recon.py": {
+     "tests": 8,
+     "seconds": 0.01
+    },
+    "tests/test_pilot_validate_stack.py": {
+     "tests": 24,
+     "seconds": 0.08
+    },
+    "tests/test_pilot_validate_strategic_frame.py": {
+     "tests": 14,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_validate_strategy.py": {
+     "tests": 18,
+     "seconds": 0.04
+    },
+    "tests/test_pilot_validate_tutor_guide.py": {
+     "tests": 8,
+     "seconds": 0.02
+    },
+    "tests/test_pilot_version_drift_copies.py": {
+     "tests": 4,
+     "seconds": 0.01
+    },
+    "tests/test_pod_behaviour.py": {
+     "tests": 7,
+     "seconds": 0.0
+    },
+    "tests/test_power_creep.py": {
+     "tests": 40,
+     "seconds": 0.14
+    },
+    "tests/test_preprocess.py": {
+     "tests": 40,
+     "seconds": 0.12
+    },
+    "tests/test_serve.py": {
+     "tests": 37,
+     "seconds": 0.12
+    },
+    "tests/test_serve_cli.py": {
+     "tests": 6,
+     "seconds": 2.42
+    },
+    "tests/test_serve_cli_threads.py": {
+     "tests": 2,
+     "seconds": 11.53
+    },
+    "tests/test_sim_axis_metrics.py": {
+     "tests": 15,
+     "seconds": 0.02
+    },
+    "tests/test_sim_board_series.py": {
+     "tests": 5,
+     "seconds": 0.23
+    },
+    "tests/test_sim_boards.py": {
+     "tests": 6,
+     "seconds": 0.31
+    },
+    "tests/test_sim_branch_seat.py": {
+     "tests": 3,
+     "seconds": 0.55
+    },
+    "tests/test_sim_bridge.py": {
+     "tests": 12,
+     "seconds": 0.07
+    },
+    "tests/test_sim_cast_check.py": {
+     "tests": 9,
+     "seconds": 0.04
+    },
+    "tests/test_sim_edhrec.py": {
+     "tests": 5,
+     "seconds": 0.0
+    },
+    "tests/test_sim_engine_casts.py": {
+     "tests": 10,
+     "seconds": 3.25
+    },
+    "tests/test_sim_engine_casts_reading.py": {
+     "tests": 5,
+     "seconds": 0.01
+    },
+    "tests/test_sim_experiment.py": {
+     "tests": 23,
+     "seconds": 56.11
+    },
+    "tests/test_sim_failure_decomposition.py": {
+     "tests": 18,
+     "seconds": 0.04
+    },
+    "tests/test_sim_forge.py": {
+     "tests": 14,
+     "seconds": 8.73
+    },
+    "tests/test_sim_forge_pilot.py": {
+     "tests": 2,
+     "seconds": 0.01
+    },
+    "tests/test_sim_hand_facts.py": {
+     "tests": 9,
+     "seconds": 0.09
+    },
+    "tests/test_sim_interaction.py": {
+     "tests": 10,
+     "seconds": 0.02
+    },
+    "tests/test_sim_latest_run.py": {
+     "tests": 4,
+     "seconds": 0.02
+    },
+    "tests/test_sim_opponents.py": {
+     "tests": 2,
+     "seconds": 0.0
+    },
+    "tests/test_sim_parse.py": {
+     "tests": 28,
+     "seconds": 1.18
+    },
+    "tests/test_sim_pilot_quality.py": {
+     "tests": 70,
+     "seconds": 4.93
+    },
+    "tests/test_sim_pods.py": {
+     "tests": 13,
+     "seconds": 3.1
+    },
+    "tests/test_sim_power_preflight.py": {
+     "tests": 5,
+     "seconds": 6.81
+    },
+    "tests/test_sim_progress.py": {
+     "tests": 8,
+     "seconds": 0.02
+    },
+    "tests/test_sim_progress_branch.py": {
+     "tests": 5,
+     "seconds": 0.05
+    },
+    "tests/test_sim_stats.py": {
+     "tests": 32,
+     "seconds": 5.37
+    },
+    "tests/test_sim_telemetry.py": {
+     "tests": 11,
+     "seconds": 0.04
+    },
+    "tests/test_sim_threat.py": {
+     "tests": 19,
+     "seconds": 0.71
+    },
+    "tests/test_sim_truncated_games.py": {
+     "tests": 4,
+     "seconds": 0.0
+    },
+    "tests/test_sim_validate_sim.py": {
+     "tests": 5,
+     "seconds": 1.42
+    },
+    "tests/test_sim_wipe_recovery.py": {
+     "tests": 19,
+     "seconds": 0.04
+    },
+    "tests/test_spaces.py": {
+     "tests": 8,
+     "seconds": 0.01
+    },
+    "tests/test_span_encoder.py": {
+     "tests": 35,
+     "seconds": 0.09
+    },
+    "tests/test_suite_report.py": {
+     "tests": 10,
+     "seconds": 0.76
+    },
+    "tests/test_sven_core.py": {
+     "tests": 25,
+     "seconds": 2.13
+    },
+    "tests/test_sven_loop.py": {
+     "tests": 13,
+     "seconds": 2.22
+    },
+    "tests/test_sven_spend.py": {
+     "tests": 12,
+     "seconds": 0.07
+    },
+    "tests/test_synergy.py": {
+     "tests": 22,
+     "seconds": 0.06
+    },
+    "tests/test_tiers.py": {
+     "tests": 1,
+     "seconds": 2.34
+    },
+    "tests/test_train_vae.py": {
+     "tests": 7,
+     "seconds": 4.02
+    },
+    "tests/test_validators_actually_fail.py": {
+     "tests": 26,
+     "seconds": 0.07
+    },
+    "tests/test_viz_cache_busts.py": {
+     "tests": 4,
+     "seconds": 0.02
+    },
+    "tests/test_viz_deck_lens.py": {
+     "tests": 8,
+     "seconds": 0.01
+    },
+    "tests/test_viz_drill.py": {
+     "tests": 14,
+     "seconds": 0.03
+    },
+    "tests/test_viz_ladder.py": {
+     "tests": 1,
+     "seconds": 0.0
+    },
+    "tests/test_viz_shell.py": {
+     "tests": 3,
+     "seconds": 0.01
+    },
+    "tests/test_viz_viewer.py": {
+     "tests": 25,
+     "seconds": 0.06
+    }
+   }
+  }
+ },
+ "coverage": {
+  "unit": {
+   "percent": 55.03,
+   "statements": 30833,
+   "missing": 13865,
+   "by_module": {
+    "src/manamap/__init__.py": 100.0,
+    "src/manamap/analysis/__init__.py": 100.0,
+    "src/manamap/analysis/card_roles.py": 77.0,
+    "src/manamap/analysis/cluster_regions.py": 36.2,
+    "src/manamap/analysis/commander_search.py": 16.4,
+    "src/manamap/analysis/common.py": 86.7,
+    "src/manamap/analysis/eval_commander_search.py": 15.0,
+    "src/manamap/analysis/eval_embeddings.py": 30.2,
+    "src/manamap/analysis/eval_obsolescence.py": 0.0,
+    "src/manamap/analysis/power_creep.py": 80.4,
+    "src/manamap/analysis/project_spaces.py": 0.0,
+    "src/manamap/analysis/synergy.py": 77.6,
+    "src/manamap/cli.py": 37.9,
+    "src/manamap/config.py": 100.0,
+    "src/manamap/console.py": 74.8,
+    "src/manamap/export/__init__.py": 100.0,
+    "src/manamap/export/export_embeddings.py": 0.0,
+    "src/manamap/export/reduce.py": 0.0,
+    "src/manamap/export/viz_index.py": 12.0,
+    "src/manamap/ingest/__init__.py": 100.0,
+    "src/manamap/ingest/common.py": 96.6,
+    "src/manamap/ingest/download.py": 29.6,
+    "src/manamap/ingest/download_combos.py": 0.0,
+    "src/manamap/ingest/edhrec.py": 42.2,
+    "src/manamap/ingest/extract.py": 77.9,
+    "src/manamap/ingest/preprocess.py": 55.8,
+    "src/manamap/ingest/process_combos.py": 74.0,
+    "src/manamap/mcp_server.py": 90.4,
+    "src/manamap/mechanical_tags.py": 96.2,
+    "src/manamap/metrics.py": 75.8,
+    "src/manamap/pilot/__init__.py": 100.0,
+    "src/manamap/pilot/agent_cache.py": 13.6,
+    "src/manamap/pilot/archetypes.py": 55.4,
+    "src/manamap/pilot/assess.py": 16.1,
+    "src/manamap/pilot/autobuild.py": 36.6,
+    "src/manamap/pilot/benchmark.py": 19.5,
+    "src/manamap/pilot/bracket.py": 94.2,
+    "src/manamap/pilot/brew.py": 41.7,
+    "src/manamap/pilot/build_corpus.py": 65.6,
+    "src/manamap/pilot/build_deck.py": 51.7,
+    "src/manamap/pilot/build_rules_db.py": 64.0,
+    "src/manamap/pilot/build_strategy_db.py": 29.4,
+    "src/manamap/pilot/calibrate.py": 49.6,
+    "src/manamap/pilot/candidate_scan.py": 11.8,
+    "src/manamap/pilot/candidates.py": 18.4,
+    "src/manamap/pilot/captains_log.py": 73.3,
+    "src/manamap/pilot/card_pool.py": 56.8,
+    "src/manamap/pilot/card_refs.py": 100.0,
+    "src/manamap/pilot/card_search.py": 30.5,
+    "src/manamap/pilot/card_value.py": 70.8,
+    "src/manamap/pilot/check_in.py": 39.7,
+    "src/manamap/pilot/close.py": 8.5,
+    "src/manamap/pilot/collection.py": 90.1,
+    "src/manamap/pilot/commander_search_cmd.py": 18.4,
+    "src/manamap/pilot/common.py": 93.9,
+    "src/manamap/pilot/decisions.py": 26.4,
+    "src/manamap/pilot/deck_audit.py": 85.5,
+    "src/manamap/pilot/deck_branch.py": 34.0,
+    "src/manamap/pilot/deck_delete.py": 36.7,
+    "src/manamap/pilot/deck_facts.py": 90.0,
+    "src/manamap/pilot/deck_history.py": 36.6,
+    "src/manamap/pilot/deck_info.py": 55.4,
+    "src/manamap/pilot/deck_manifest.py": 84.6,
+    "src/manamap/pilot/deck_map.py": 43.1,
+    "src/manamap/pilot/deck_model.py": 46.7,
+    "src/manamap/pilot/deck_notes.py": 55.8,
+    "src/manamap/pilot/deck_state.py": 14.9,
+    "src/manamap/pilot/deck_status.py": 70.1,
+    "src/manamap/pilot/deck_versions.py": 68.5,
+    "src/manamap/pilot/diagnosis_report.py": 73.6,
+    "src/manamap/pilot/diagnostic.py": 40.3,
+    "src/manamap/pilot/download_rules.py": 30.2,
+    "src/manamap/pilot/download_rulings.py": 23.3,
+    "src/manamap/pilot/engine_facts.py": 9.9,
+    "src/manamap/pilot/fetch_deck.py": 94.8,
+    "src/manamap/pilot/forge_ai.py": 95.9,
+    "src/manamap/pilot/formats.py": 100.0,
+    "src/manamap/pilot/game_state.py": 85.4,
+    "src/manamap/pilot/goldfish.py": 60.3,
+    "src/manamap/pilot/goldfish_library.py": 98.0,
+    "src/manamap/pilot/goldfish_profiles.py": 95.4,
+    "src/manamap/pilot/goldfish_turn.py": 51.6,
+    "src/manamap/pilot/impact.py": 9.3,
+    "src/manamap/pilot/install_agent.py": 72.3,
+    "src/manamap/pilot/mana_analysis.py": 83.3,
+    "src/manamap/pilot/mana_fit.py": 7.6,
+    "src/manamap/pilot/manabase.py": 96.6,
+    "src/manamap/pilot/merge_captains_log.py": 83.0,
+    "src/manamap/pilot/merge_debrief.py": 18.9,
+    "src/manamap/pilot/merge_deck_map.py": 43.6,
+    "src/manamap/pilot/merge_prose.py": 20.5,
+    "src/manamap/pilot/merge_sim_findings.py": 21.6,
+    "src/manamap/pilot/model_coverage.py": 42.1,
+    "src/manamap/pilot/model_staleness.py": 78.3,
+    "src/manamap/pilot/net_change.py": 59.0,
+    "src/manamap/pilot/page_spec.py": 100.0,
+    "src/manamap/pilot/pilot_findings.py": 10.8,
+    "src/manamap/pilot/pilot_policy.py": 27.5,
+    "src/manamap/pilot/poh.py": 12.5,
+    "src/manamap/pilot/poh_design.py": 50.0,
+    "src/manamap/pilot/poh_spec.py": 85.0,
+    "src/manamap/pilot/pool_facts.py": 52.6,
+    "src/manamap/pilot/prescribe.py": 25.0,
+    "src/manamap/pilot/promote.py": 40.6,
+    "src/manamap/pilot/protected.py": 48.3,
+    "src/manamap/pilot/query_rules.py": 22.6,
+    "src/manamap/pilot/query_strategy.py": 21.9,
+    "src/manamap/pilot/regen.py": 51.9,
+    "src/manamap/pilot/registry.py": 99.3,
+    "src/manamap/pilot/retrieve.py": 22.2,
+    "src/manamap/pilot/rulings.py": 24.4,
+    "src/manamap/pilot/scaffold_targets.py": 21.2,
+    "src/manamap/pilot/scenario_facts.py": 67.6,
+    "src/manamap/pilot/try_swap.py": 8.9,
+    "src/manamap/pilot/upgrades.py": 13.4,
+    "src/manamap/pilot/validate_branch.py": 60.5,
+    "src/manamap/pilot/validate_brief.py": 72.6,
+    "src/manamap/pilot/validate_build.py": 78.1,
+    "src/manamap/pilot/validate_candidate_scan.py": 9.4,
+    "src/manamap/pilot/validate_captains_log.py": 76.7,
+    "src/manamap/pilot/validate_cast_proofs.py": 67.1,
+    "src/manamap/pilot/validate_debrief.py": 77.1,
+    "src/manamap/pilot/validate_decisions.py": 84.4,
+    "src/manamap/pilot/validate_deck.py": 83.3,
+    "src/manamap/pilot/validate_deck_map.py": 80.0,
+    "src/manamap/pilot/validate_deck_versions.py": 83.1,
+    "src/manamap/pilot/validate_diagnosis.py": 40.2,
+    "src/manamap/pilot/validate_diagnostic.py": 81.2,
+    "src/manamap/pilot/validate_edhrec_cards.py": 16.1,
+    "src/manamap/pilot/validate_engine.py": 74.7,
+    "src/manamap/pilot/validate_forge_hints.py": 27.8,
+    "src/manamap/pilot/validate_goldfish_targets.py": 92.9,
+    "src/manamap/pilot/validate_lift.py": 68.9,
+    "src/manamap/pilot/validate_log_causes.py": 73.9,
+    "src/manamap/pilot/validate_net_change.py": 81.0,
+    "src/manamap/pilot/validate_pending.py": 62.7,
+    "src/manamap/pilot/validate_pilot_policy.py": 19.2,
+    "src/manamap/pilot/validate_poh.py": 70.4,
+    "src/manamap/pilot/validate_poh_procedures.py": 81.6,
+    "src/manamap/pilot/validate_prescription.py": 14.0,
+    "src/manamap/pilot/validate_protected.py": 12.2,
+    "src/manamap/pilot/validate_recon.py": 74.6,
+    "src/manamap/pilot/validate_sim_findings.py": 41.8,
+    "src/manamap/pilot/validate_stack.py": 56.4,
+    "src/manamap/pilot/validate_strategic_frame.py": 87.0,
+    "src/manamap/pilot/validate_strategy.py": 87.7,
+    "src/manamap/pilot/validate_tutor_guide.py": 86.7,
+    "src/manamap/pipeline.py": 17.5,
+    "src/manamap/serve.py": 44.6,
+    "src/manamap/sim/__init__.py": 100.0,
+    "src/manamap/sim/board_series.py": 94.3,
+    "src/manamap/sim/boards.py": 79.0,
+    "src/manamap/sim/bridge.py": 89.1,
+    "src/manamap/sim/campaign.py": 11.5,
+    "src/manamap/sim/cast_check.py": 42.0,
+    "src/manamap/sim/edhrec.py": 57.7,
+    "src/manamap/sim/engine_casts.py": 69.9,
+    "src/manamap/sim/experiment.py": 65.7,
+    "src/manamap/sim/failure.py": 96.6,
+    "src/manamap/sim/forge.py": 69.5,
+    "src/manamap/sim/forge_cards.py": 54.8,
+    "src/manamap/sim/forge_pilot.py": 22.0,
+    "src/manamap/sim/opponents.py": 46.3,
+    "src/manamap/sim/parse.py": 98.7,
+    "src/manamap/sim/pilot_quality.py": 76.4,
+    "src/manamap/sim/pod_behaviour.py": 49.0,
+    "src/manamap/sim/pods.py": 67.5,
+    "src/manamap/sim/power.py": 51.8,
+    "src/manamap/sim/progress.py": 63.9,
+    "src/manamap/sim/stats.py": 96.5,
+    "src/manamap/sim/telemetry.py": 52.5,
+    "src/manamap/sim/threat.py": 62.7,
+    "src/manamap/sim/validate_sim.py": 73.2,
+    "src/manamap/spaces.py": 90.0,
+    "src/manamap/suite_report.py": 67.1,
+    "src/manamap/sven/__init__.py": 100.0,
+    "src/manamap/sven/api.py": 83.7,
+    "src/manamap/sven/cache.py": 74.0,
+    "src/manamap/sven/core.py": 64.2,
+    "src/manamap/sven/llm.py": 79.3,
+    "src/manamap/sven/loop.py": 78.5,
+    "src/manamap/sven/spend.py": 94.7,
+    "src/manamap/sven/stream.py": 84.9,
+    "src/manamap/sven/tools.py": 47.0,
+    "src/manamap/training/__init__.py": 100.0,
+    "src/manamap/training/card_fields.py": 95.9,
+    "src/manamap/training/card_parse.py": 100.0,
+    "src/manamap/training/card_serialize.py": 97.7,
+    "src/manamap/training/card_source.py": 61.2,
+    "src/manamap/training/common.py": 13.3,
+    "src/manamap/training/embed.py": 0.0,
+    "src/manamap/training/loss_cardbert.py": 80.3,
+    "src/manamap/training/masking.py": 72.3,
+    "src/manamap/training/model.py": 0.0,
+    "src/manamap/training/model_cardbert.py": 100.0,
+    "src/manamap/training/model_vae.py": 98.9,
+    "src/manamap/training/recoverability.py": 0.0,
+    "src/manamap/training/span_encoder.py": 60.7,
+    "src/manamap/training/train.py": 0.0,
+    "src/manamap/training/train_ability.py": 0.0,
+    "src/manamap/training/train_cardbert.py": 29.4,
+    "src/manamap/training/train_vae.py": 23.9,
+    "src/manamap/training/vae_cache.py": 0.0
+   }
+  }
+ }
+}

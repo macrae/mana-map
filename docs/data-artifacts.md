@@ -90,7 +90,7 @@ The `.gitignore` mechanics matter here: `data/*` blanket-ignores, `!data/decks/`
 
 | file | producer | consumers |
 |---|---|---|
-| `<date>-<sha8>.json` | `make test-report` → `python -m manamap.suite_report record` — the unit and regression tiers uncached and under coverage: per tier the outcomes, wall and in-test seconds, the cache count, skip reasons, every test that did not pass, the 25 slowest, a per-file roll-up; line coverage for the unit tier and both, per module | `suite_report diff` (findings, recomputed from two reports, never stored), `render --write-docs` (the generated block in `docs/testing.md`), the `test-debrief` agent. Gated by `tests/test_suite_report.py`: every report well-formed and named for itself, the docs block the render of the latest |
+| `<date>-<sha8>.json` (full), `<date>-<sha8>.unit.json` (unit) | `make test-report [FULL=1]` → `python -m manamap.suite_report record` — the unit tier, and with FULL=1 the regression tier, uncached and under coverage: per tier the outcomes, wall and in-test seconds, the cache count, skip reasons, every test that did not pass, the 25 slowest, a per-file roll-up; line coverage for the unit tier and both, per module | `suite_report diff` (findings, recomputed from two reports, never stored), `render --write-docs` (the generated block in `docs/testing.md`), the `test-debrief` agent. Gated by `tests/test_suite_report.py`: every report well-formed and named for itself, the docs block the render of the latest |
 
 ## Forge patches (`data/forge_patches/`, tracked)
 

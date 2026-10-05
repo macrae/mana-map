@@ -85,12 +85,21 @@ testpaths = ["tests"]
 # touches): a bare `pytest` is `unit`, the inner loop. `make regression` reads the
 # tracked fleet and corpus; `make integration` drives a browser, Forge and the
 # published pages. `make prepush` is unit + regression, which is what CI gates on.
-addopts = "-q -m unit -n auto"
+#
+# `--dist worksteal`: an idle worker takes queued tests off a busy one. Under the
+# default `load` the heavy parametrized tests of one file land side by side on
+# two workers, and the first three-tier report ran 38:19 on 173 CPU-minutes —
+# six workers idle for the last ~15 minutes.
+addopts = "-q -m unit -n auto --dist worksteal"
 markers = [
     "unit: no tracked data, no outside system - the inner loop (assigned in conftest)",
     "regression: reads the tracked fleet or corpus, or re-runs a producer (assigned in conftest)",
     "integration: a real browser, the Forge engine, or the network (assigned in conftest)",
     "network: reaches an outside service (Scryfall, EDHREC); integration tier",
+    # The one test that runs `manamap pilot regen` over the whole fleet, IN PLACE.
+    # It must not share the machine's decks with a parallel run, so `make
+    # regression` runs it alone after the rest (`-m regen -n0`).
+    "regen: regenerates the fleet in place; run alone, after the parallel regression run",
     # Browser tests. They boot a real Chromium against a real server and assert on what
     # rendered — the only tests here that can catch a viz regression. Excluded from the
     # default run because they are ~100x slower than the rest; run them with

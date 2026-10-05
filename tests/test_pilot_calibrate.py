@@ -88,6 +88,7 @@ def test_the_pod_is_chosen_by_games_not_by_run_count():
     assert pod == ["x"], pod
 
 
+@pytest.mark.regression
 def test_a_correlation_with_the_wrong_sign_is_a_confound_not_a_result():
     """THE FIRST REAL RUN'S STRONGEST NUMBER WAS ITS WORST.
 

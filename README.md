@@ -786,7 +786,7 @@ make test          # UNIT: no tracked data, ~1 min — what you run all day
 make regression    # REGRESSION: the tracked fleet + corpus, every producer re-run
 make integration   # INTEGRATION: a real browser, Forge, the pages rebuilt byte-identically
 make prepush       # unit (+ its isolation proof) + regression; before a push. CI runs it.
-make test-report   # measure it: counts, time, coverage -> data/test_reports/
+make test-report   # measure the unit tier: counts, time, coverage (FULL=1 adds regression)
 ```
 
 **Counts and runtimes live in `docs/testing.md` and nowhere else**, with the markers, the
