@@ -81,13 +81,13 @@
       },
       {
         "stage": "sim",
-        "what": "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
-        "how": "manamap pilot simulate meren-recursion --pod standard-v3 --games 100"
+        "what": "OPTIONAL Forge probe (2026-10-04): the decision loop is `try`; Forge answers narrow questions — does the AI play this card",
+        "how": "manamap pilot forge-cast-check meren-recursion --card \"<name>\""
       },
       {
         "stage": "sim",
-        "what": "how it does against your actual pod",
-        "how": "manamap pilot simulate meren-recursion --vs <opponent> --games 12"
+        "what": "optional: a Forge probe on a card the goldfish cannot see",
+        "how": "manamap pilot forge-cast-check meren-recursion --card \"<name>\""
       }
     ]
   },
@@ -1244,9 +1244,9 @@
   "next": [
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 2 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` before `simulate meren-recursion@drain-density-v1` (which refuses them)",
+    "branch `drain-density-v1`: 2 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 1 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
-    "no simulation runs — `simulate meren-recursion --vs <opp> [--vs …] --games N` (Forge; ◆ seeded)"
+    "try a swap in seconds — `try meren-recursion --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

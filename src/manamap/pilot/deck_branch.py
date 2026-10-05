@@ -830,7 +830,7 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
         _pr = ((_cc.read_proofs(slug, branch) or {}).get("cards") or {}).get(in_name)
         _w = (_pr or {}).get("verdict_word")
         if _w in ("HELD", "CAST-LATE"):
-            checked["warnings"].append(f"{in_name} is {_w} in the branch's cast proofs — fix it before `simulate`, which refuses it")
+            checked["warnings"].append(f"{in_name} is {_w} in the branch's cast proofs — a Forge probe of this branch would refuse it")
         elif _w != "PLAYED":
             checked["warnings"].append(f"no cast proof for {in_name} — `forge-cast-check {slug} --branch {branch} --adds --write` before `simulate`")
     except Exception:                                  # noqa: BLE001 - no Forge, no warning

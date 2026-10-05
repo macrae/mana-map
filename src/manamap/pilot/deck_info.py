@@ -829,7 +829,7 @@ def _next(info):
                             f"{len(_cp['late'])} cast-late" if _cp["late"] else ""]
                     nxt.append(f"branch `{b['name']}`: {', '.join(x for x in bits if x)} add(s) under the current harness — "
                                f"`manamap pilot forge-cast-check {slug} --branch {b['name']} --adds --write` "
-                               f"before `simulate {slug}@{b['name']}` (which refuses them)")
+                               f"— the Forge probe for cards the goldfish cannot see")
             # `forge_jar()` EXITS when Forge is not installed, and SystemExit is not an
             # Exception — so "no Forge, no gate" crashed deck-info on CI and on any fresh
             # clone (2026-10-03).
@@ -886,12 +886,11 @@ def _next(info):
             nxt.append(f"merge {w['id']} ({w['branch']}) has {w['runs_of_merged_list']} run(s) "
                        f"of the merged list at {w['pod']} — `decisions {slug} outcome` records "
                        f"predicted vs realised")
-        elif w.get("pod") and not closed:
-            nxt.append(f"merge {w['id']} ({w['branch']}) awaits a run of the merged list — "
-                       f"`simulate {slug} --pod {w['pod']} --games N`, then `decisions {slug} outcome`")
+    # FORGE IS A TARGETED PROBE, NOT A NEXT STEP (2026-10-04, the pilot's ruling).
+    # NEXT used to send every deck to an overnight pod run; a swap is now
+    # answered in seconds by `try`, and Forge is asked a narrow question — does
+    # the AI play this card — by `forge-cast-check`.
     if info["simulation"] is None and not closed:
-        nxt.append(f"no simulation runs — `simulate {slug} --vs <opp> [--vs …] --games N` "
-                   f"(Forge; ◆ seeded)")
         # SIMULATION IS NOT A LIFECYCLE STAGE and is not being made one here.
         # Adding it to `STAGES` would change the denominator for all eleven decks
         # in one commit and mark nine of them newly incomplete for a measurement
@@ -899,11 +898,10 @@ def _next(info):
         # has a panel for it and that panel used to vanish — which is the same
         # defect, on an artifact that happens not to be a stage.
         info["status"]["todo"].append({
-            "stage": "sim", "what": "how it does against your actual pod",
-            "how": f"manamap pilot simulate {slug} --vs <opponent> --games 12"})
-    elif info["experiments"] is None and info["version"]["of"] > 1 and not closed:
-        nxt.append(f"{info['version']['of']} versions and no experiment — "
-                   f"`experiment {slug} --a V<n> --b working --vs <pod> --games N` measures a swap")
+            "stage": "sim", "what": "optional: a Forge probe on a card the goldfish cannot see",
+            "how": f"manamap pilot forge-cast-check {slug} --card \"<name>\""})
+    if not closed:
+        nxt.append(f"try a swap in seconds — `try {slug} --out \"A\" --in \"B\"`")
     if info["bracket"] and info["bracket"].get("within_target") is False:
         nxt.append(f"bracket floor {info['bracket']['floor']} exceeds target "
                    f"{info['bracket']['target']} — `bracket-check {slug}` names the drivers")

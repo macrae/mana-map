@@ -270,7 +270,8 @@ manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
                               # on the bench, six stages in ~10s. Omit --commander and it
                               # proposes three and halts. The dev batch is the GOLDFISH,
                               # not Forge: a 12-minute Forge batch is ~20 games, whose MDE
-                              # is 42 points. `simulate` against a pod is the staging gate.
+                              # is 42 points. Forge is a TARGETED PROBE since 2026-10-04 (`forge-cast-check`);
+                              # a pod run is optional and never gates a merge.
 manamap pilot validate-brief <slug> [--themes]          # the gate brief.json never had
 manamap pilot check-in <slug> --from <file>             # a PAPER list -> decklist.txt: diff, refuse, apply
 manamap pilot deck-version <slug> [list|show|tag|restore|paper]  # every list from git, joined to the log;

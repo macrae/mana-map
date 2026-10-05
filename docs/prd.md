@@ -584,6 +584,14 @@ byte-deterministic; `pilot benchmark` adds ~2.3s. **Dev batch ≈ 6 seconds.** F
 moves to the staging gate as a backgrounded 400-game job, where the same table
 gives an MDE of 8.5 points.
 
+**Superseded 2026-10-04, by the pilot's ruling.** In practice the staging gate was a
+day per answer — 0.7 games/min, runs killed by a sleeping laptop and the two-hour
+background cap — and both overnight verdicts that week came back INCONCLUSIVE, while
+Forge's AI held sharknado's wheels so its rates were floors. Forge is now a TARGETED
+PROBE (`forge-cast-check`: does the AI play this card, ~1 min a card); the decision loop
+is `try` (seconds) and `net-change`, with paired goldfish intervals; a pod run is
+optional and its result is a warning beside the verdict, never a gate.
+
 ### Why B-1's reproducibility criterion was rewritten
 
 Measured 2026-09-02: the same deck, pod, seed, clock and job count run twice

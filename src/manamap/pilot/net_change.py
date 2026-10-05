@@ -1647,18 +1647,21 @@ def recommend(doc):
     wr = (f.get("endpoints") or {}).get("forge.win_rate") or {}
     real_table_no = bool(f.get("available") and wr.get("excludes_zero")
                          and (wr.get("delta") or 0) < 0)
+    # A WARNING, NOT A GATE (2026-10-04). The pilot moved Forge out of the decision
+    # loop: it is a targeted probe, and a pod win rate is a floor wherever the AI
+    # mis-pilots the deck. The real-table loss is still printed LOUDLY beside the
+    # verdict — it caught copy-burst-v1 — but it no longer overrides it.
+    forge_warning = ""
     if real_table_no:
         lo, hi = wr["ci95"]
         null = (f.get("null") or {}).get("rate")
-        out = ("do not merge",
-               f"The real table says no: at {f.get('pod')} the branch wins "
-               f"{wr['delta']:+.3f} less than the deck, CI [{lo:+.3f}, {hi:+.3f}], "
-               f"which excludes zero"
-               + (f" (the table's null is {null:.3f})" if null else "")
-               + (f". The goldfish objective read {state!r}; the goldfish has no "
-                  f"blockers, and its verdict on a table is not evidence against "
-                  f"one." if objective and state else "."))
-    elif not objective:
+        forge_warning = (
+            f" WARNING — a Forge run at {f.get('pod')} has the branch winning "
+            f"{wr['delta']:+.3f} less than the deck, CI [{lo:+.3f}, {hi:+.3f}], which "
+            f"excludes zero" + (f" (the table's null is {null:.3f})" if null else "")
+            + ". Check whether the AI plays the swapped cards before reading it as "
+              "a verdict on the list.")
+    if not objective:
         out = ("no objective",
                "This branch never stated what it was for, so nothing here can "
                "say whether it worked — only what changed.")
@@ -1687,7 +1690,8 @@ def recommend(doc):
                f"no reading for it. That is a missing measurement, not a failure "
                f"— the axis may need a model flag set in goldfish_targets.json.")
 
-    got = {"state": out[0], "because": out[1],
+    got = {"state": out[0], "because": out[1] + forge_warning,
+           **({"forge_warning": forge_warning.strip()} if forge_warning else {}),
            "rose": rose, "fell": fell, "no_call": no_call,
            "bill": (doc.get("bill") or {}).get("counts") or {},
            "reward": reward(doc), "risk": risk(doc), "cost": cost(doc)}

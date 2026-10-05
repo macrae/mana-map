@@ -87,7 +87,10 @@ the **Pilot's Operating Handbook**, the live renderer since 2026-09-02, and it o
 sections 3, 4 and 7 are authored with an agent's first draft (`/poh-procedures`). The
 magazine renderer this phase used to describe was deleted on 2026-09-13.
 
-**10 — Simulate it.** `fetch-opponent "<commander>" --as <slug>` for each seat at
+**10 — Simulate it (OPTIONAL since 2026-10-04).** Forge is a targeted probe, not a
+gate: the pilot ruled the overnight pod run out of the decision loop (slow, brittle, and
+a floor wherever the AI mis-pilots the deck). Run it when you want a table reading; skip
+it otherwise. `fetch-opponent "<commander>" --as <slug>` for each seat at
 your table (`data/opponents/`; once, then reuse), then `simulate <slug> --vs a --vs b
 --vs c --games N` — N seeded Commander games in Forge, headless, one tracked run
 record under `sim/` with win rate and interval, who kills you and how, the kill curve,
@@ -106,14 +109,16 @@ Nothing here needs the page; this is the bench's reason to exist.
 ranked adds that close a named axis, cuts priced, accumulated under `prescriptions/`.
 `/diagnose-deck` is the whole reading when you want all of it rather than an answer.
 
-**13 — Change it, on a branch, and PROPOSE it.** A candidate 99 lives at
-`branches/<name>/` — `deck-branch <slug> new … --objective "<measure> <op> <n>"`,
-then `stage --out X --in Y`, then `commit -m "…"`, then **prove every add before a
-Forge arm**: `forge-cast-check <slug> --branch <name> --adds --write` (a two-seat shell
-per add; a HELD or CAST-LATE card gets its hint or patch FIRST — the class and remedy are
-on the row — and is re-checked), then `simulate <slug>@<name> --pod … --games 200`, which
-refuses an unproven add, then `net-change --branch <name>`, which is the report a
-purchase rests on. When you accept it:
+**13 — Change it, on a branch, and PROPOSE it.** Start with **`try <slug> --out X --in Y
+[...]`** — an answer in seconds, nothing written: every card in and out, the keep list
+(`protected.json`), the colour sources, the paired goldfish rows and one line. Read its
+OUT list before anything else. `try … --stage <name>` (or `deck-branch <slug> new …
+--objective "<measure> <op> <n>"` and `stage --out X --in Y`) puts it on a branch, then
+`commit -m "…"`, then `net-change --branch <name>`, which is the report a purchase rests
+on. Forge is a PROBE: for an add the goldfish cannot see, `forge-cast-check <slug>
+--branch <name> --adds --write` says in about a minute a card whether the AI plays it; a
+pod run (`simulate <slug>@<name>`) is optional and its result is a warning beside the
+verdict, never a gate. When you accept it:
 
 ```bash
 manamap pilot deck-branch <slug> propose <name> --as v1.0.2 --why "…" [--proxy] [--ordered "…"]

@@ -4,6 +4,17 @@
 grew. The `game_state` v2 schema it consumes is in `docs/pilot.md`. Last revised
 2026-09-12.*
 
+> **2026-10-04 — the decision loop moved.** The pilot ruled overnight pod runs out of it:
+> a day per answer, runs killed by a sleeping laptop and the two-hour background cap, an
+> MDE of ~0.14 at 200 games, and Forge's AI mis-piloting sharknado's wheels so its rates
+> are floors. A swap is now answered by `try` in seconds — the goldfish with a seed per
+> game, lists aligned slot for slot and PAIRED intervals (`net_change._paired`), Defender
+> and attack restrictions read, three seats for what we gain off opponents' draws, and
+> Smothering Tithe's Treasure at a stated pay rate. Forge is a TARGETED PROBE:
+> `forge-cast-check` asks whether the AI plays a card (~1 min); a pod run is optional and
+> its result is a warning beside the verdict, never a gate. What follows is the record of
+> how the Forge harness was built, and it is still how a probe works.
+
 **This is the thing the rest of the bench serves.** A claim about a deck is worth what the
 experiment behind it is worth, and this is where experiments run: `simulate` for a deck
 against a real pod, `experiment` for two versions of a deck against the same pod, and the

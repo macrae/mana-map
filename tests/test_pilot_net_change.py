@@ -1727,19 +1727,20 @@ def _forge_doc(delta, lo, hi, state="met"):
                       "endpoints": {"forge.win_rate": ep}}}
 
 
-def test_a_real_table_loss_that_excludes_zero_blocks_merge_even_when_the_goldfish_met(monkeypatch):
-    """THE BUG: Forge as a footnote. copy-burst-v1 read MERGE from 10,000
-    blocker-less goldfish games while 73 Forge games at the real table read
-    -0.061. A Forge win-rate loss whose interval EXCLUDES ZERO at the same pod
-    and harness now blocks the merge whatever the goldfish said; put the rule
-    back to a note and this reads `merge`."""
+def test_a_real_table_loss_that_excludes_zero_is_a_loud_warning_not_a_gate(monkeypatch):
+    """THE RULE CHANGED ON 2026-10-04, by the pilot's ruling: Forge is a targeted
+    probe, not the decision loop, and a pod win rate is a floor wherever the AI
+    mis-pilots a deck (sharknado holds its wheels). So a Forge loss whose interval
+    excludes zero no longer overrides the goldfish's verdict — but it was right
+    once (copy-burst-v1 read MERGE while 73 Forge games read -0.061), so it is
+    printed LOUDLY beside the verdict, with the pod, the interval and the null."""
     for fn in ("reward", "risk", "cost"):
         monkeypatch.setattr(net_change, fn, lambda doc: {} if fn != "reward" else [])
     got = net_change.recommend(_forge_doc(-0.12, -0.20, -0.04))
-    assert got["state"] == "do not merge", got
-    assert "real table says no" in got["because"] and "standard-v3" in got["because"]
-    assert "0.233" in got["because"], "the null is named beside the verdict"
-    assert "goldfish" in got["because"], "the disagreement is stated, not hidden"
+    assert got["state"] == "merge", got
+    assert got["forge_warning"].startswith("WARNING"), got
+    assert "standard-v3" in got["because"] and "0.233" in got["because"]
+    assert "AI plays the swapped cards" in got["because"]
 
 
 def test_a_real_table_that_spans_zero_leaves_a_goldfish_verdict_alone(monkeypatch):

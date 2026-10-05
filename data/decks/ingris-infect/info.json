@@ -82,8 +82,8 @@
       },
       {
         "stage": "sim",
-        "what": "Forge runs against a pod — the goldfish has no blockers, so its verdict on board quality is not evidence",
-        "how": "manamap pilot simulate ingris-infect --pod standard-v3 --games 100"
+        "what": "OPTIONAL Forge probe (2026-10-04): the decision loop is `try`; Forge answers narrow questions — does the AI play this card",
+        "how": "manamap pilot forge-cast-check ingris-infect --card \"<name>\""
       }
     ]
   },
@@ -2591,6 +2591,7 @@
   "open_questions": [],
   "simulation": null,
   "experiments": null,
+  "decisions": null,
   "next": [
     "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
     "nothing else outstanding — this deck's record is complete as it stands"
