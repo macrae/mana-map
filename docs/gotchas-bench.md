@@ -2,7 +2,96 @@
 
 The pilot bench: agents and the invocation cache, the simulator and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching anything under `src/manamap/pilot/` or `src/manamap/sim/`.
 
-Extracted verbatim from `CLAUDE.md` — every measurement here was in that file and none was reworded. `CLAUDE.md` loads into every session; this does not, so the rules that bite regardless of what you are touching stayed there and the full record moved here.
+Most of it was extracted verbatim from `CLAUDE.md` (2026-08-27 and again 2026-10-05) and none of that was reworded; later sections were written here directly. `CLAUDE.md` loads into every session and carries one line per rule; this holds the full record. **Search it by the contents below, or by a card or command name.**
+
+## Contents, by topic
+
+*Every `##` section below, grouped. The bullets before the first section are the oldest
+notes (agents, the cache, the frontend bridge, drafts) and are not indexed individually.*
+
+**Evidence — intervals, samples, what counts as a result**
+
+- [RE-DERIVING A NUMBER IS NOT REPLICATING A FINDING](#re-deriving-a-number-is-not-replicating-a-finding)
+- [A branch aimed at a MECHANISM still has to be graded on a sample that can see it](#a-branch-aimed-at-a-mechanism-still-has-to-be-graded-on-a-sample-that-can-see-it)
+- [The win rate is a low-power endpoint, and the arithmetic was always available](#the-win-rate-is-a-low-power-endpoint-and-the-arithmetic-was-always-available)
+- [A pre-registered threshold read off a baseline that has since moved](#a-pre-registered-threshold-read-off-a-baseline-that-has-since-moved)
+- [teeth-v1, called at 36 of 100 — and the drift report that would have sent the pilot to the wrong sleeves](#teeth-v1-called-at-36-of-100--and-the-drift-report-that-would-have-sent-the-pilot-to-the-wrong-sleeves)
+- [An axis with no population to check it against, and the null it found (2026-09-14)](#an-axis-with-no-population-to-check-it-against-and-the-null-it-found-2026-09-14)
+- [THE A/A, 2026-10-02: THE HARNESS PRODUCED A SIGNIFICANT RESULT FROM NO CHANGE AT ALL](#the-aa-2026-10-02-the-harness-produced-a-significant-result-from-no-change-at-all)
+- [`OK` from a validator that checked nothing but the file's shape](#ok-from-a-validator-that-checked-nothing-but-the-files-shape)
+- [A rate that nothing had ever asked about](#a-rate-that-nothing-had-ever-asked-about)
+- [Two branches on one deck, measured on one harness, and the cheap one won (2026-09-14)](#two-branches-on-one-deck-measured-on-one-harness-and-the-cheap-one-won-2026-09-14)
+
+**Forge — the AI, the harness, the record**
+
+- [The simulation could not see the deck, 2026-08-29](#the-simulation-could-not-see-the-deck-2026-08-29)
+- [The Forge AI will not press a sacrifice button, 2026-08-30](#the-forge-ai-will-not-press-a-sacrifice-button-2026-08-30)
+- [Forge's `-c` clock ends a game's ACCOUNTING, not its AI thread](#forges--c-clock-ends-a-games-accounting-not-its-ai-thread)
+- [Two regexes in the parser, both wrong about a game's outcome](#two-regexes-in-the-parser-both-wrong-about-a-games-outcome)
+- [Forge models the card correctly and the AI barely uses it](#forge-models-the-card-correctly-and-the-ai-barely-uses-it)
+- [Zur: the goldfish and Forge were not measuring the same deck, twice over](#zur-the-goldfish-and-forge-were-not-measuring-the-same-deck-twice-over)
+- [Gishath: Forge saw the win condition and the goldfish saw a 7-power body](#gishath-forge-saw-the-win-condition-and-the-goldfish-saw-a-7-power-body)
+- [2026-09-11 — The real table pooled five tables, and counted clock-outs as losses](#2026-09-11--the-real-table-pooled-five-tables-and-counted-clock-outs-as-losses)
+- [sharknado is a deck Forge cannot pilot, and the AI profile does not fix it (2026-09-14)](#sharknado-is-a-deck-forge-cannot-pilot-and-the-ai-profile-does-not-fix-it-2026-09-14)
+- [A RUN RECORD IS JUDGED AGAINST TODAY'S DECLARATION (2026-09-21)](#a-run-record-is-judged-against-todays-declaration-2026-09-21)
+- [FORGE CANNOT LOAD A RECENT CARD, AND SAYS SO ONLY IN THE LOG (2026-09-21)](#forge-cannot-load-a-recent-card-and-says-so-only-in-the-log-2026-09-21)
+- [The AI will not target its own commander to switch on a copy ability (2026-09-25)](#the-ai-will-not-target-its-own-commander-to-switch-on-a-copy-ability-2026-09-25)
+- [A FORGE RECORD DESCRIBES THE LIST IT PLAYED, NOT THE LIST ON DISK (2026-09-26)](#a-forge-record-describes-the-list-it-played-not-the-list-on-disk-2026-09-26)
+- [The pilot loop found six reconstruction defects in one session (2026-09-28)](#the-pilot-loop-found-six-reconstruction-defects-in-one-session-2026-09-28)
+- [The policy layer, and the first rule it killed (2026-09-28)](#the-policy-layer-and-the-first-rule-it-killed-2026-09-28)
+- [`AI:RemoveDeck:All` is never-cast, and the repo's own counter-example was a counterspell (2026-09-30)](#airemovedeckall-is-never-cast-and-the-repos-own-counter-example-was-a-counterspell-2026-09-30)
+- [The sacrifice suite, activated: four passes of one seed (2026-09-30)](#the-sacrifice-suite-activated-four-passes-of-one-seed-2026-09-30)
+- [Deflecting Swat and Teferi's Protection, from 0 to fired (2026-09-30)](#deflecting-swat-and-teferis-protection-from-0-to-fired-2026-09-30)
+- [Vish Kal's -X/-X: X priced before the cost exists, and a curse that never said so (2026-09-30)](#vish-kals--x-x-x-priced-before-the-cost-exists-and-a-curse-that-never-said-so-2026-09-30)
+- [A Forge run launched from the agent's background shell is cut at two hours (2026-09-30)](#a-forge-run-launched-from-the-agents-background-shell-is-cut-at-two-hours-2026-09-30)
+- [Unflagged is not castable: three cards in two days, each found after the games (2026-10-01)](#unflagged-is-not-castable-three-cards-in-two-days-each-found-after-the-games-2026-10-01)
+
+**The goldfish — channels, casting, what it can see**
+
+- [2026-09-04/05 — A card read correctly and never played](#2026-09-0405--a-card-read-correctly-and-never-played)
+- [2026-09-06 — The commander was doing nothing, twice over](#2026-09-06--the-commander-was-doing-nothing-twice-over)
+- [The drain angle, measured against Forge rather than argued](#the-drain-angle-measured-against-forge-rather-than-argued)
+- [The Shrine count was always a fiction](#the-shrine-count-was-always-a-fiction)
+- [A ROOM'S `cmc` IS BOTH DOORS, AND THE MODEL CHARGES IT TO CAST THE FIRST ONE](#a-rooms-cmc-is-both-doors-and-the-model-charges-it-to-cast-the-first-one)
+- [THREE PARALLEL LISTS, TWO CASTING LOOPS, AND ONLY ONE OF THEM APPENDED](#three-parallel-lists-two-casting-loops-and-only-one-of-them-appended)
+- [THE UNLOCK DOOR, MODELLED — AND IT MADE ROOMS WORSE](#the-unlock-door-modelled--and-it-made-rooms-worse)
+- [The goldfish asks whether the mana was there; nothing asked whether the commander STICKS](#the-goldfish-asks-whether-the-mana-was-there-nothing-asked-whether-the-commander-sticks)
+- [The goldfish had no reason to cast 24 of a deck's 28 instants and sorceries](#the-goldfish-had-no-reason-to-cast-24-of-a-decks-28-instants-and-sorceries)
+- [Haste was read per card, so the enabler the pilot asked for was worth nothing](#haste-was-read-per-card-so-the-enabler-the-pilot-asked-for-was-worth-nothing)
+- [A wheel on a permanent is an ACTIVATED ability, and the model read three of them as vanilla bodies (2026-09-13)](#a-wheel-on-a-permanent-is-an-activated-ability-and-the-model-read-three-of-them-as-vanilla-bodies-2026-09-13)
+- [A doubler that was never there, and four cards the model could not read (2026-09-14)](#a-doubler-that-was-never-there-and-four-cards-the-model-could-not-read-2026-09-14)
+- [Two goldfish channels, and the sweep that found the cards (2026-09-27)](#two-goldfish-channels-and-the-sweep-that-found-the-cards-2026-09-27)
+- [The speed sprint, 2026-08-30/31](#the-speed-sprint-2026-08-3031)
+- [A granted mana ability belongs to whoever received it (2026-08-31)](#a-granted-mana-ability-belongs-to-whoever-received-it-2026-08-31)
+
+**Lands and mana**
+
+- [The manabase, 2026-08-28](#the-manabase-2026-08-28)
+- [A fetchland's colours are a property of the DECK, not of the card](#a-fetchlands-colours-are-a-property-of-the-deck-not-of-the-card)
+- [Six lands counted as coloured sources that cannot pay a coloured cost](#six-lands-counted-as-coloured-sources-that-cannot-pay-a-coloured-cost)
+
+**Branches, net change and the paper lock**
+
+- [The net change report, 2026-08-28](#the-net-change-report-2026-08-28)
+- [The proposal — a decided branch, 2026-08-28](#the-proposal--a-decided-branch-2026-08-28)
+- [`regen` is not the fleet, and a model change needs the fleet](#regen-is-not-the-fleet-and-a-model-change-needs-the-fleet)
+- [A test that names a deck inherits that deck's decisions](#a-test-that-names-a-deck-inherits-that-decks-decisions)
+- [The paper lock is a claim, and drift only runs one way](#the-paper-lock-is-a-claim-and-drift-only-runs-one-way)
+- [A BRANCH HAS NO DECLARATION OF ITS OWN, so editing the deck's stales every branch](#a-branch-has-no-declaration-of-its-own-so-editing-the-decks-stales-every-branch)
+- [A BRANCH AND ITS CHAMPION MUST BE MEASURED BY THE SAME SIMULATOR (2026-09-26)](#a-branch-and-its-champion-must-be-measured-by-the-same-simulator-2026-09-26)
+
+**Matchers and the corpus**
+
+- [A ROLE-GATED CHECK CANNOT SEE A CARD DOING A SECOND JOB (2026-09-21)](#a-role-gated-check-cannot-see-a-card-doing-a-second-job-2026-09-21)
+- [A TUTOR-ASSISTED FIGURE IS TYPE-BLIND (2026-09-21)](#a-tutor-assisted-figure-is-type-blind-2026-09-21)
+- [`combo_graph.partners` IS CO-MEMBERSHIP, NOT A TWO-CARD COMBO (2026-09-21)](#combo_graphpartners-is-co-membership-not-a-two-card-combo-2026-09-21)
+
+**Moved from CLAUDE.md, verbatim (2026-10-05)**
+
+- [CLAUDE.md's rule digest, verbatim as of 2026-10-05](#claudemds-rule-digest-verbatim-as-of-2026-10-05)
+- [CLAUDE.md's command commentary, verbatim as of 2026-10-05](#claudemds-command-commentary-verbatim-as-of-2026-10-05)
+
+
 
 - **(History, 2026-08) The cache board was green once and the 23 MISSes of the embedding rebuild were re-blessed rather than re-spawned — with the reason.** It is red fleet-wide now, deliberately (see PLAN.md §Decisions); the rule below is unchanged. The embedding rebuild regenerated `synergy_graph.json` and `obsolescence_index.json`, which MISSed `writer-prose`, `the-ten` and `issue-plan` on all seven decks (plus hapatra's `candidate-pool` and `deck-build`). Re-spawning was ~2.46M tokens. **What did NOT miss is the load-bearing part**: every `stack:NNN` stayed HIT, as did `strategic-frame` and `coach-prose` — nothing rules-verified depends on those graphs. What missed is prose and packaging, and none of it quotes a synergy rank numerically. The record is still a claim someone read the artifact and agreed it holds; that claim was made deliberately, and this is its reasoning. **The rule itself is unchanged: never `cache-record` to make a board green.** If a future MISS touches a routine whose output cites the changed artifact, re-spawn it.
 - **REVERSED 2026-08-25 — the frontend now reaches a LOCAL server, and the note below is kept because its reasoning still binds.** `manamap serve` exposes `/api/` beside the static files; GitHub Pages does not. The owner's reason: *"I AM the sole user … having a build process produces higher quality code, so we will check in and build what we can, but at the end of the day I want the software to work how I need it to … and that's have sub-agents accessible for questions, resolutions, etc. in the Build page."* So **the static build is HYGIENE, not a second audience** — it keeps CI honest and the artifacts deterministic, and those disciplines are why the code is worth trusting. The old objection ("two products, and only one is the one you test") is answered rather than ignored: **the difference is a feature of the page**. `Api.probe()` runs ONCE, every agent affordance is gated on `Api.ready`, and a page that cannot reach a server renders its static half and **names the command that would start one** — absent, never broken, never silent. **The browser still makes no model calls**: it asks the local server to run a NAMED command from an allow-list, exactly as a terminal would. Commands are a `{name: (function, {arg: coercion})}` table — nothing reaches a shell, an unknown name is a 404 rather than an attempt, a bad argument is a 400, and a missing required argument is checked at the endpoint (it once reached `edhrec_slug(None)` and surfaced as a 500, a server fault for a caller's mistake). Bound to `127.0.0.1`, deliberately not configurable. **Agent jobs are async and PRICED before they are spent** — `claude -p` with the repo's own `.claude/agents/*.md` charters, so the answer in the page is the answer in the terminal; the cheapest measured routine is 54.5k tokens and `candidate-pool` is 235k, and a button that spends a quarter of a million tokens without saying so is the one thing this must not become. And the probe's own bug is worth keeping: a **404 is the DEPLOYED shape**, not a malfunction, so reporting it as "the API answered oddly" would have shown a fault message to every visitor of the published site.
