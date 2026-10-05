@@ -93,7 +93,7 @@ thing that made the deck legal — the code did that.
 
 ## Notes
 
-- The deck flows straight into the lifecycle from step 8 (`/publish-deck`: measure, frame, engine, notes, page, then simulate/log/prescribe) — a built deck is an
+- The deck flows straight into the lifecycle from step 8 (`/publish-deck`: measure, frame, engine, notes, page, then log/prescribe; screen swaps with `try`, and use Forge only as a probe) — a built deck is an
   ordinary deck. `/write-manual` needs nothing special from here.
 - Engines the architect names are **candidates**, never facts. Promoting one to ✓
   means running `/resolve-stack` on it like any other line.

@@ -40,11 +40,23 @@ cat data/decks/<slug>/log_annotations.json           # the debrief: what happene
 ```
 
 ```bash
-.venv/bin/manamap pilot simulate <slug> --list                # the simulation runs, with intervals
+.venv/bin/manamap pilot try <slug> --out "A" --in "B" [--out C --in D]   # a swap, screened
+.venv/bin/manamap pilot simulate <slug> --list                # the Forge runs, with intervals
 ```
 
-**A simulation run is evidence about the deck at a TABLE, read with two caveats that
-ride in the record.** `sim/<run-id>.json` carries `analysis`: win rate with a 95% interval,
+**`try` is the primary evidence for any swap you rank** (since 2026-10-04). About ten
+seconds, nothing written: the paired goldfish delta on `net-change`'s rows — every game on
+its own seed, the two lists aligned slot for slot, an interval on the DIFFERENCE — plus
+each card's visibility to the model, the keep list, and colour sources before and after.
+Quote a screen with its interval. Two limits you must carry: a card the model reports as
+DARK or invisible measures as nothing, so a null on it is not evidence; and the goldfish
+has no blockers and does not read a static lord or anthem (`docs/known-issues.md` 9d), so
+a screen that cuts a lord is understated by the pump. Never rank an add or cut a card the
+keep list names (`protected.json`) — the validator refuses it.
+
+**A Forge run is a probe, read with two caveats that ride in the record.** It never gates
+a merge, and no Forge rate or mean is graded without an A/A at the same N and the same AI
+profile (pool runs only across one profile). `sim/<run-id>.json` carries `analysis`: win rate with a 95% interval,
 who eliminated whom and how (damage or life loss), combat damage dealt and taken, the
 token figures (two honest ways — `analysis.limits` says what each cannot see), and our
 seat's cumulative damage by round. Cite a figure WITH its interval and its N ("0 of 20,
