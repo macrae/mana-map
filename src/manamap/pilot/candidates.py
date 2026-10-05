@@ -469,7 +469,8 @@ def _with_swap(slug, branch, name, cut, axis, iterations, join=None):
         # `declaration_fits` correctly refused to measure an engine whose
         # declaration no longer described the list. The sweep was testing its own
         # cut, not the candidates.
-        declared = _declared_cards(slug, branch)
+        from manamap.pilot import protected
+        declared = _declared_cards(slug, branch) | set(protected.names(slug))
         pool_cards = [c for c in swapped["cards"]
                       if not c.get("is_commander")
                       and "Land" not in (c.get("type_line") or "")

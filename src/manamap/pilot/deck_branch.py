@@ -653,6 +653,12 @@ def new(slug, branch, text, why=None, at=None, objective=None):
     if checked["blocking"]:
         raise SystemExit("Refusing to open the branch:\n  - "
                          + "\n  - ".join(checked["blocking"]))
+    # A WHOLE LIST SKIPS `stage`, so the keep list is checked here too: every card
+    # the champion runs that this list does not.
+    from manamap.pilot import protected
+    kept = {e["name"] for e in checked["entries"]}
+    protected.refuse(slug, [n for n in _entries(_list_text(slug)) if n not in kept],
+                     "to open the branch")
     path.mkdir(parents=True)
     (path / "decklist.txt").write_text(
         check_in.render_decklist(checked["entries"]), encoding="utf-8")
@@ -733,6 +739,59 @@ def warn_if_proposed(slug, branch, verb, doc=None):
           f"--as {version} --why \"…\"` (which AMENDS rather than refusing).")
 
 
+def swap_entries(slug, branch, entries, out_name, in_name):
+    """One copy of OUT out, one of IN in, on parsed decklist ENTRIES — in memory.
+
+    The whole of `stage`'s swap arithmetic and its refusals (not in the list, the
+    commander, the pilot's keep list, already in the list), with nothing written.
+    `try` calls it to measure a swap before anything exists on disk, and `stage`
+    calls it to write one, so the two can never disagree about what a swap is.
+    Returns `(staged_entries, out_entry, in_entry_or_None)`.
+    """
+    where = f"{slug}/{branch}" if branch else slug
+    out_e = _resolve_in_list(entries, out_name)
+    if out_e is None:
+        raise SystemExit(
+            f"{out_name!r} is not in {where} — nothing to swap out. "
+            f"`deck-branch {slug} diff {branch}` shows what is.")
+    if out_e.get("is_commander"):
+        raise SystemExit(
+            f"{out_e['name']} is the COMMANDER. Changing it is a different deck, "
+            f"not a swap — open a new branch from a new list.")
+    # THE PILOT'S KEEP LIST, before anything is written (draw-v1 cut Vish Kal).
+    from manamap.pilot import protected
+    protected.refuse(slug, [out_e["name"]], "that swap")
+    in_e = _resolve_in_list(entries, in_name)
+    # A basic already in the list is not a duplicate; it is one more copy. The
+    # out side has known this since the branch tool shipped (decrement, never
+    # delete); the in side refused "Forest" on a list holding six of them, so a
+    # land pass that wanted a seventh could not be staged (gishath/mana-v1,
+    # 2026-09-16). Same predicate as the manifest's furniture list.
+    from manamap.pilot.deck_manifest import _BASIC_LANDS
+    in_is_basic = in_e is not None and in_e["name"].lower() in _BASIC_LANDS
+    if in_e is not None and not in_is_basic:
+        raise SystemExit(f"{in_name!r} is already in {where}.")
+
+    staged_entries = []
+    for e in entries:
+        if e is out_e:
+            # Basics carry a quantity; a singleton does not. Decrement rather
+            # than delete, or swapping one Mountain would cut all of them.
+            # PER ENTRY, on purpose: removing ONE copy. Not `count_copies`.
+            left = int(e.get("quantity") or 1) - 1
+            if left > 0:
+                staged_entries.append(dict(e, quantity=left))
+            continue
+        if e is in_e:
+            staged_entries.append(dict(e, quantity=int(e.get("quantity") or 1) + 1))
+            continue
+        staged_entries.append(e)
+    if in_e is None:
+        staged_entries.append({"name": in_name, "quantity": 1})
+
+    return staged_entries, out_e, in_e
+
+
 def stage(slug, branch, out_name, in_name, strength=None, why=None):
     """One card out, one card in — the staging area, and its provenance.
 
@@ -754,43 +813,7 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
     if not path.is_dir():
         raise SystemExit(f"No branch '{branch}' on {slug}.")
     entries = _parsed(slug, branch)
-    out_e = _resolve_in_list(entries, out_name)
-    if out_e is None:
-        raise SystemExit(
-            f"{out_name!r} is not in {slug}/{branch} — nothing to swap out. "
-            f"`deck-branch {slug} diff {branch}` shows what is.")
-    if out_e.get("is_commander"):
-        raise SystemExit(
-            f"{out_e['name']} is the COMMANDER. Changing it is a different deck, "
-            f"not a swap — open a new branch from a new list.")
-    in_e = _resolve_in_list(entries, in_name)
-    # A basic already in the list is not a duplicate; it is one more copy. The
-    # out side has known this since the branch tool shipped (decrement, never
-    # delete); the in side refused "Forest" on a list holding six of them, so a
-    # land pass that wanted a seventh could not be staged (gishath/mana-v1,
-    # 2026-09-16). Same predicate as the manifest's furniture list.
-    from manamap.pilot.deck_manifest import _BASIC_LANDS
-    in_is_basic = in_e is not None and in_e["name"].lower() in _BASIC_LANDS
-    if in_e is not None and not in_is_basic:
-        raise SystemExit(f"{in_name!r} is already in {slug}/{branch}.")
-
-    staged_entries = []
-    for e in entries:
-        if e is out_e:
-            # Basics carry a quantity; a singleton does not. Decrement rather
-            # than delete, or swapping one Mountain would cut all of them.
-            # PER ENTRY, on purpose: removing ONE copy. Not `count_copies`.
-            left = int(e.get("quantity") or 1) - 1
-            if left > 0:
-                staged_entries.append(dict(e, quantity=left))
-            continue
-        if e is in_e:
-            staged_entries.append(dict(e, quantity=int(e.get("quantity") or 1) + 1))
-            continue
-        staged_entries.append(e)
-    if in_e is None:
-        staged_entries.append({"name": in_name, "quantity": 1})
-
+    staged_entries, out_e, in_e = swap_entries(slug, branch, entries, out_name, in_name)
     text = check_in.render_decklist(staged_entries)
     checked = check_in.analyze(slug, text)
     if checked["blocking"]:
@@ -1145,6 +1168,8 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
         raise SystemExit(
             f"{slug}/{branch} is already merged ({doc['merged'].get('at')}). "
             f"There is nothing left to propose.")
+    from manamap.pilot import protected
+    protected.refuse(slug, diff(slug, branch).get("out") or [], f"to propose {branch}")
     # SAME VERSION AMENDS; A DIFFERENT ONE STILL REFUSES.
     #
     # This refused any second proposal, so the way back from `PROPOSED · STALE`
@@ -1379,6 +1404,10 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     text = _list_text(slug, branch)
     checked = check_in.analyze(slug, text)
     blocking = list(checked["blocking"])
+    # The keep list is not a sourcing question, so `--force` does not reach it:
+    # the pilot releases a card by editing protected.json, never by a flag.
+    from manamap.pilot import protected
+    blocking += protected.refusals(slug, diff(slug, branch).get("out") or [])
     if s["unsourced"] and not force:
         held = {r["name"]: r for r in s["cards"]}
         detail = []

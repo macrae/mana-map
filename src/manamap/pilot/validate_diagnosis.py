@@ -33,6 +33,7 @@ Cross-checks degrade gracefully when a reference artifact is absent (fresh
 clone): skipped, never failed.
 """
 
+import pathlib
 import json
 
 from manamap.config import DECK_AXIS_TARGETS
@@ -159,6 +160,10 @@ def _validate_cuts(doc, main_names, commander_names, deck_path):
                           f"name cards the deck actually runs")
         if name in commander_names:
             errors.append(f"{label}: the commander cannot be cut")
+        if deck_path is not None:
+            from manamap.pilot import protected
+            for line in protected.refusals(pathlib.Path(deck_path).name, [name]):
+                errors.append(f"{label}: {line}")
         if name in seen:
             errors.append(f"{label}: duplicate of cut_candidates[{seen[name]}]")
         else:

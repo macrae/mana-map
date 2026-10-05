@@ -461,6 +461,9 @@ VALIDATED = {
     # only a load-time raise inside the goldfish, which is a gate on the simulator's path
     # and invisible to this command and to the fleet sweep.
     "poh_procedures.json": "manamap.pilot.validate_poh_procedures",
+    # THE PILOT'S KEEP LIST (2026-10-04). Every path that can cut a card refuses one
+    # named here; the gate checks each is in the 99, not the commander, with a why.
+    "protected.json": "manamap.pilot.validate_protected",
     # `pilot_policy.json` IS NOT HERE YET, and `test_the_registries_name_artifacts_that_
     # exist_on_a_real_deck` is why. No deck has a policy, so an entry for it is
     # indistinguishable from a typo — "either nothing writes it, or the name is wrong", in

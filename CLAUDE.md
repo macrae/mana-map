@@ -248,9 +248,23 @@ manamap run --from STEP       # resume from a step
 manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
-manamap pilot <cmd>           # the bench (121 pilot subcommands); `manamap pilot --help`
+manamap pilot <cmd>           # the bench (123 pilot subcommands); `manamap pilot --help`
 
 manamap pilot deck-info <slug>                          # START HERE: where a deck stands + a derived NEXT
+manamap pilot try <slug> --out "A" --in "B" [--out C --in D …] [--each] [--stage NAME]
+                              # THE SWAP LOOP (2026-10-04): an idea to an answer in ~10 s, one
+                              # screen, nothing written. Every card in and out with its roles,
+                              # declared target, what the goldfish can SEE of it, and what
+                              # Forge's AI did with it on record (AI behaviour, NEVER a reason
+                              # to cut); the keep list; colour sources before/after; the
+                              # net-change rows (same harness, measured identical to a staged
+                              # and fetched branch); one line. `--stage` writes a branch only
+                              # after the screen. Through `manamap serve` it skips the cold start.
+data/decks/<slug>/protected.json                        # THE PILOT'S KEEP LIST, hand-written only:
+                              # stage / new / propose / merge, try, the build's must-include,
+                              # the candidates auto-cut and the diagnosis/prescription gates all
+                              # refuse to cut a card it names. `validate-protected` gates it.
+                              # Born of draw-v1 cutting Vish Kal unread.
 manamap pilot build <slug> --commander "<name>" [--brief "…"] [--from FILE]
                               # THE ONE COMMAND (PRD Epic A): brief -> a legal, MEASURED 99
                               # on the bench, six stages in ~10s. Omit --commander and it

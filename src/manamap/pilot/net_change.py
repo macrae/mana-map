@@ -1323,41 +1323,12 @@ def _death_limit(slug, branch):
             f"once — a sacrifice burst is still understated."]
 
 
-def build(slug, branch, iterations=None, seed=None):
-    from manamap import console
-    from manamap.pilot import candidates, diagnostic, goldfish
-
-    _refuse_a_stale_measurement(slug, branch)
-    it = iterations or diagnostic.HARNESS["iterations"]
-    sd = seed if seed is not None else diagnostic.HARNESS["seed"]
-    # TWO 10,000-GAME RUNS, ~15 s, and until now it printed nothing at all until
-    # both had finished. A command that is silent for fifteen seconds is
-    # indistinguishable from one that has hung, and this is the one the pilot
-    # runs on every branch.
-    #
-    # The bar counts ARMS, not games, because that is the honest unit: `run`
-    # does not report progress inside itself, and a bar that crept while a
-    # simulation was actually blocked would be worse than none —
-    # `console.py`'s third rule, never fake a percentage.
-    with console.task(f"Measuring {slug} vs {branch}", total=2, unit="arms") as bar:
-        bar.state("champion")
-        a = diagnostic.run(slug, iterations=it, seed=sd, quiet=True)
-        bar.advance(1, state="branch")
-        b = diagnostic.run(slug, branch=branch, iterations=it, seed=sd, quiet=True)
-        bar.advance(1)
-
-    # ONE PRIMARY, TWELVE EXPLORATORY. Twelve rows each given an independent
-    # verdict at alpha = 0.05 is roughly one false "better" every two reports,
-    # and `experiment.py` had already solved the identical problem by
-    # pre-registering `win_rate` and calling the other ten descriptive. Here the
-    # primary is THE OBJECTIVE (declared when the branch was opened, graded
-    # below), and the rows are a FAMILY: each carries the interval on its own
-    # difference, and a verdict needs BOTH the MDE and Holm's step-down
-    # correction across the family. Measured before shipping: over the 42
-    # tracked reports and their 438 rows, Holm flips ZERO verdicts — the MDE
-    # rule (2.8016·se) was already within 2% of the Bonferroni-12 threshold
-    # (2.865·se) at the top rank — so this changes what a verdict MEANS, not
-    # which rows carry one today.
+def compare_readings(a, b):
+    """The exploratory family: every ROW read on two diagnostic readings, each with
+    the interval on its own difference, its MDE, Holm across the family, and a
+    verdict that needs both. Shared by `build` (two lists on disk) and `try` (a
+    list held in memory), so the two can never grade a row differently."""
+    from manamap.pilot import diagnostic
     table = []
     pending = []
     for label, blk, key, turn, want in ROWS:
@@ -1398,6 +1369,45 @@ def build(slug, branch, iterations=None, seed=None):
         clears = abs(row["delta"]) > mde and row["holm"]["significant"]
         row["verdict"] = ("better" if good else "worse") if clears else "noise"
         row["reads_as"] = reads_as(row)
+    return table
+
+
+def build(slug, branch, iterations=None, seed=None):
+    from manamap import console
+    from manamap.pilot import candidates, diagnostic, goldfish
+
+    _refuse_a_stale_measurement(slug, branch)
+    it = iterations or diagnostic.HARNESS["iterations"]
+    sd = seed if seed is not None else diagnostic.HARNESS["seed"]
+    # TWO 10,000-GAME RUNS, ~15 s, and until now it printed nothing at all until
+    # both had finished. A command that is silent for fifteen seconds is
+    # indistinguishable from one that has hung, and this is the one the pilot
+    # runs on every branch.
+    #
+    # The bar counts ARMS, not games, because that is the honest unit: `run`
+    # does not report progress inside itself, and a bar that crept while a
+    # simulation was actually blocked would be worse than none —
+    # `console.py`'s third rule, never fake a percentage.
+    with console.task(f"Measuring {slug} vs {branch}", total=2, unit="arms") as bar:
+        bar.state("champion")
+        a = diagnostic.run(slug, iterations=it, seed=sd, quiet=True)
+        bar.advance(1, state="branch")
+        b = diagnostic.run(slug, branch=branch, iterations=it, seed=sd, quiet=True)
+        bar.advance(1)
+
+    # ONE PRIMARY, TWELVE EXPLORATORY. Twelve rows each given an independent
+    # verdict at alpha = 0.05 is roughly one false "better" every two reports,
+    # and `experiment.py` had already solved the identical problem by
+    # pre-registering `win_rate` and calling the other ten descriptive. Here the
+    # primary is THE OBJECTIVE (declared when the branch was opened, graded
+    # below), and the rows are a FAMILY: each carries the interval on its own
+    # difference, and a verdict needs BOTH the MDE and Holm's step-down
+    # correction across the family. Measured before shipping: over the 42
+    # tracked reports and their 438 rows, Holm flips ZERO verdicts — the MDE
+    # rule (2.8016·se) was already within 2% of the Bonferroni-12 threshold
+    # (2.865·se) at the top rank — so this changes what a verdict MEANS, not
+    # which rows carry one today.
+    table = compare_readings(a, b)
 
     doc_meta = deck_branch.meta(slug, branch) or {}
     objective = doc_meta.get("objective")

@@ -45,7 +45,7 @@ DEFAULT_LIMIT = 10
 SPLASH_PIP_SHARE = 0.08
 
 
-def shortfall(slug, branch=None):
+def shortfall(slug, branch=None, deck_doc=None):
     """Per colour: what the list demands, what it has, and the gap.
 
     COMPOSED FROM `mana_analysis`, never recomputed. That module already owns
@@ -59,7 +59,7 @@ def shortfall(slug, branch=None):
     """
     from manamap.pilot import mana_analysis
 
-    doc = mana_analysis.analyze(slug, branch)
+    doc = mana_analysis.analyze(slug, branch, deck_doc=deck_doc)
     have = doc["sources"]["total"]
     targets = doc["source_targets"]
     rows = {}

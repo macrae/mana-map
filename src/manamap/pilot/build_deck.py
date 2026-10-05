@@ -125,6 +125,12 @@ def load_brief(slug):
     brief["bracket"] = target
     brief.setdefault("must_include", [])
     brief.setdefault("must_exclude", [])
+    # THE PILOT'S KEEP LIST IS A MUST-INCLUDE the brief does not have to repeat:
+    # a rebuild may not drop a card the pilot protected (protected.json).
+    from manamap.pilot import protected
+    for name in protected.names(brief.get("slug")) if brief.get("slug") else []:
+        if name not in brief["must_include"]:
+            brief["must_include"].append(name)
     brief["_pool"] = resolve_pool(brief)
     return brief
 

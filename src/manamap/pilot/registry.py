@@ -57,6 +57,8 @@ PILOT_STEPS = [
      "Install the tracked card-script overrides into Forge and VERIFY the engine carries them — the provenance a run record stamps"),
     ("validate-forge-hints", "manamap.pilot.validate_forge_hints",
      "Form-check forge_hints.json: every hinted card is in the 99, says why, and carries a logic or a preference"),
+    ("validate-protected", "manamap.pilot.validate_protected",
+     "Form-check protected.json: the pilot's keep list — every card in the 99, not the commander, with a why"),
     ("forge-cast-check", "manamap.sim.cast_check",
      "PROVE the Forge AI will cast/activate a card before a branch depends on it: a short two-seat shell, "
      "drawn / cast / activated / held-while-castable counted. Unflagged is not castable (Toxic Deluge: 28 drawn, 0 cast)"),
@@ -151,6 +153,9 @@ PILOT_STEPS = [
     ("validate-branch", "manamap.pilot.validate_branch",
      "Form-check branch.json: the objective is falsifiable and a proposal "
      "freezes what it was accepted on"),
+    ("try", "manamap.pilot.try_swap",
+     "A swap idea to an answer in under two minutes: the cards, the keep list, the mana, "
+     "the goldfish rows and one line — nothing written unless --stage"),
     ("net-change", "manamap.pilot.net_change",
      "What a branch costs, what it buys, and whether it met its objective"),
     ("calibrate", "manamap.pilot.calibrate",
@@ -236,7 +241,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
-    "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints",
+    "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints", "validate-protected",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
     "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
@@ -260,7 +265,7 @@ _DECK_COMMANDS = {
     "build", "validate-brief", "promote", "demote",
     "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
-    "validate-diagnostic", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
+    "validate-diagnostic", "try", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
     "sim-boards", "validate-lift", "sim-findings", "validate-sim-findings", "merge-sim-findings",
 }
 
@@ -580,6 +585,20 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="run against a branch (see `deck-branch <slug> list`) "
                                   "instead of the deck's own list")
+        if name == "try":
+            cmd.add_argument("--out", action="append", metavar="CARD",
+                             help="a card leaving the list (repeat; pairs with --in in order)")
+            cmd.add_argument("--in", dest="in_", action="append", metavar="CARD",
+                             help="the card taking its place (repeat)")
+            cmd.add_argument("--branch", default=None, metavar="NAME",
+                             help="try the swaps on a branch's list instead of the deck's")
+            cmd.add_argument("--each", action="store_true",
+                             help="also measure every swap alone, to see which one moves what")
+            cmd.add_argument("--stage", default=None, metavar="NAME",
+                             help="after the screen, write the swaps to this branch (opened if new)")
+            cmd.add_argument("--iterations", type=int, default=None)
+            cmd.add_argument("--seed", type=int, default=None)
+            cmd.add_argument("--json", action="store_true")
         if name == "net-change":
             cmd.add_argument("--iterations", type=int, default=None)
             cmd.add_argument("--seed", type=int, default=None)

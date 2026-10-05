@@ -37,7 +37,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 121 pilot subcommands answer in JSON, instantly, for free.
+  design: 123 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -930,12 +930,15 @@ CLI_READONLY = frozenset({
     # 7,500 lines of measurements that were previously findable only by already
     # knowing they existed.
     "query-docs", "lookup-doc", "query-code",
+    # THE SWAP LOOP (2026-10-04). `try` writes only its gitignored champion cache
+    # under data/cache/try/; `--stage` writes a branch and is refused below.
+    "try",
 })
 
 #: Any of these on the parsed namespace means the command intends to WRITE.
 #: Belt and braces over `CLI_READONLY`, because a read-only command can grow a
 #: `--write` flag later and nobody will remember this file.
-_CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway")
+_CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway", "stage")
 
 #: A WRITE THE FLAG CHECK CANNOT SEE, because the verb is a POSITIONAL.
 #:

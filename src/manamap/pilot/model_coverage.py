@@ -361,6 +361,49 @@ def silent_losses(slug, branch=None):
     return out
 
 
+def declaration(slug, branch=None):
+    """`(flags, named)` — which channels the deck switches on, and which cards its
+    declared targets name. Read the way `goldfish.run` reads it (`deck_file` falls
+    back from a branch to the deck)."""
+    targets_doc = {}
+    path = deck_file(slug, "goldfish_targets.json", branch)
+    if path.exists():
+        targets_doc = json.loads(path.read_text(encoding="utf-8")) or {}
+    flags = {flag: bool(targets_doc.get(flag))
+             for flag in sorted({f for f in CHANNELS.values() if f})}
+    named = {name
+             for target in (targets_doc.get("targets") or [])
+             for need in (target.get("need") or [])
+             for name in (need.get("any_of") or [])}
+    return flags, named
+
+
+def card_state(card, flags, named=()):
+    """One card: which channels could read it, which are on, and its state —
+    `seen`, `dark` (something about it feeds a channel that is OFF) or
+    `invisible` (no channel reads it at all). Shared by the coverage report and
+    `try`, so a swap screen and this report can never disagree about a card."""
+    from manamap.pilot import goldfish
+    possible = channels_for(goldfish.classify(card))
+    if card["name"] in named:
+        possible.add("target")
+    active = {c for c in possible
+              if CHANNELS[c] is None or flags.get(CHANNELS[c])}
+    # DARK IS PER-CHANNEL, NOT PER-CARD, and getting this wrong hid the
+    # whole problem on the first pass: nearly every creature feeds `bodies`,
+    # which is always on, so "seen if anything is active" reported gishath —
+    # a deck that opts into NOTHING — as 0 dark. A card is dark when
+    # ANYTHING about it is not being read, whatever else is.
+    return {
+        "name": card["name"],
+        "possible": sorted(possible),
+        "active": sorted(active),
+        "dark_channels": sorted(possible - active),
+        "state": ("dark" if possible - active
+                  else "seen" if active else "invisible"),
+    }
+
+
 def analyze(slug, branch=None):
     """`{flags, cards, counts}` — what this deck needs and what is switched on."""
     from manamap.pilot import goldfish
@@ -373,41 +416,13 @@ def analyze(slug, branch=None):
     # directly reported ur-dragon@landbase-v1 as 30 cards dark when the deck's
     # declaration (which the simulation actually used) makes it 2 — a coverage
     # report that disagrees with the model it reports on is worse than none.
-    targets_doc = {}
-    path = deck_file(slug, "goldfish_targets.json", branch)
-    if path.exists():
-        targets_doc = json.loads(path.read_text(encoding="utf-8")) or {}
-
-    flags = {flag: bool(targets_doc.get(flag))
-             for flag in sorted({f for f in CHANNELS.values() if f})}
-    named = {name
-             for target in (targets_doc.get("targets") or [])
-             for need in (target.get("need") or [])
-             for name in (need.get("any_of") or [])}
-
+    flags, named = declaration(slug, branch)
     seen_names, rows = set(), []
     for card in cards:
         if card["name"] in seen_names:
             continue
         seen_names.add(card["name"])
-        possible = channels_for(goldfish.classify(card))
-        if card["name"] in named:
-            possible.add("target")
-        active = {c for c in possible
-                  if CHANNELS[c] is None or flags.get(CHANNELS[c])}
-        # DARK IS PER-CHANNEL, NOT PER-CARD, and getting this wrong hid the
-        # whole problem on the first pass: nearly every creature feeds `bodies`,
-        # which is always on, so "seen if anything is active" reported gishath —
-        # a deck that opts into NOTHING — as 0 dark. A card is dark when
-        # ANYTHING about it is not being read, whatever else is.
-        rows.append({
-            "name": card["name"],
-            "possible": sorted(possible),
-            "active": sorted(active),
-            "dark_channels": sorted(possible - active),
-            "state": ("dark" if possible - active
-                      else "seen" if active else "invisible"),
-        })
+        rows.append(card_state(card, flags, named))
 
     rows.sort(key=lambda r: (r["state"] != "dark", r["name"]))
     counts = {state: sum(1 for r in rows if r["state"] == state)

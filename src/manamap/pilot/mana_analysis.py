@@ -163,8 +163,10 @@ def nonland_producer_kind(card):
     return "ramp:rock"
 
 
-def analyze(slug, branch=None):
-    deck_doc = load_deck_cards(slug, branch)
+def analyze(slug, branch=None, deck_doc=None):
+    # `deck_doc` measures a list held in memory (`try`); the goldfish figures this
+    # embeds are still read from disk for `branch`, so they describe the base list.
+    deck_doc = deck_doc if deck_doc is not None else load_deck_cards(slug, branch)
     entries = deck_doc["cards"]
     # Every count below is about the library the shuffler sees, so it runs on
     # COPIES: eleven Islands are eleven blue sources, not one. Counting entries
