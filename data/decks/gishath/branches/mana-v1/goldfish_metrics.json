@@ -82,7 +82,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "9b63d7778a83",
+    "model_version": "e10c672a7a65",
     "seed": 42,
     "treasure_sources_not_modelled": []
   },
@@ -91,50 +91,50 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.888,
+        "10": 0.89,
         "2": 0.0,
         "3": 0.0,
         "4": 0.001,
         "5": 0.018,
-        "6": 0.075,
-        "7": 0.266,
-        "8": 0.563,
-        "9": 0.78
+        "6": 0.078,
+        "7": 0.276,
+        "8": 0.572,
+        "9": 0.784
       },
       "kill_turn_histogram": {
-        "10": 1080,
-        "4": 10,
-        "5": 168,
-        "6": 570,
-        "7": 1916,
-        "8": 2965,
-        "9": 2173
+        "10": 1062,
+        "4": 13,
+        "5": 169,
+        "6": 600,
+        "7": 1974,
+        "8": 2963,
+        "9": 2120
       },
       "mean_board_power_by_turn": {
         "1": 0.0,
-        "10": 61.904,
+        "10": 65.791,
         "2": 0.219,
-        "3": 1.995,
-        "4": 4.765,
-        "5": 8.77,
-        "6": 14.911,
-        "7": 23.245,
-        "8": 34.004,
-        "9": 46.812
+        "3": 2.003,
+        "4": 4.827,
+        "5": 8.944,
+        "6": 15.315,
+        "7": 24.055,
+        "8": 35.468,
+        "9": 49.295
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 48.728,
+        "10": 51.484,
         "2": 0.073,
-        "3": 0.432,
-        "4": 2.093,
-        "5": 5.017,
-        "6": 9.581,
-        "7": 15.866,
-        "8": 24.705,
-        "9": 35.505
+        "3": 0.434,
+        "4": 2.116,
+        "5": 5.104,
+        "6": 9.796,
+        "7": 16.329,
+        "8": 25.623,
+        "9": 37.138
       },
-      "mean_kill_turn": 8.083,
+      "mean_kill_turn": 8.057,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -148,7 +148,7 @@
         "9": 0.0
       },
       "median_kill_turn": 8,
-      "no_kill_by_max_turn_rate": 0.112
+      "no_kill_by_max_turn_rate": 0.11
     },
     "commander": {
       "cast_by_turn_6_rate": 0.26,
@@ -157,10 +157,10 @@
         "3": 219,
         "4": 307,
         "5": 680,
-        "6": 1390,
-        "7": 1378,
-        "8": 1645,
-        "9": 1137,
+        "6": 1391,
+        "7": 1377,
+        "8": 1646,
+        "9": 1136,
         "not_by_max_turn": 2346
       },
       "mean_cast_turn": 7.27,
@@ -170,8 +170,8 @@
       "ceiling_note": "this model has no blockers; the rate is Forge's, not this model's",
       "declared": true,
       "games_it_fired": 7200,
-      "mean_bodies": 4.026,
-      "mean_fired": 2.002,
+      "mean_bodies": 4.027,
+      "mean_fired": 2.001,
       "rate": {
         "connects_per_attack": 0.7,
         "source": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-432faa65 (V3, 40 games): Gishath assigned to attack 60 times, the reveal trigger resolved 42 times = 0.70 per attack, read 2026-09-11 from the logs' `Combat: … assigned … to attack` and `Resolve Stack: Whenever Gishath` lines",
@@ -180,7 +180,7 @@
     },
     "interaction_castable_by_turn": {
       "1": 0.122,
-      "10": 0.504,
+      "10": 0.505,
       "2": 0.212,
       "3": 0.183,
       "4": 0.247,
@@ -188,7 +188,7 @@
       "6": 0.283,
       "7": 0.323,
       "8": 0.37,
-      "9": 0.443
+      "9": 0.444
     },
     "interaction_in_hand_by_turn": {
       "1": 0.747,
@@ -212,12 +212,12 @@
       "5": 0.639,
       "6": 0.558,
       "7": 0.528,
-      "8": 0.529,
-      "9": 0.562
+      "8": 0.53,
+      "9": 0.563
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.657,
+      "10": 9.655,
       "2": 2.14,
       "3": 3.383,
       "4": 4.336,
@@ -229,27 +229,27 @@
     },
     "mean_bodies_by_turn": {
       "1": 0.0,
-      "10": 10.831,
+      "10": 10.832,
       "2": 0.118,
       "3": 0.603,
       "4": 1.319,
       "5": 2.131,
       "6": 3.108,
-      "7": 4.452,
-      "8": 6.133,
-      "9": 8.279
+      "7": 4.453,
+      "8": 6.134,
+      "9": 8.281
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 4.16,
+      "10": 4.184,
       "2": 0.062,
       "3": 0.087,
-      "4": 0.153,
-      "5": 0.293,
-      "6": 0.625,
-      "7": 1.116,
-      "8": 1.849,
-      "9": 2.801
+      "4": 0.154,
+      "5": 0.294,
+      "6": 0.627,
+      "7": 1.122,
+      "8": 1.861,
+      "9": 2.818
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -282,17 +282,17 @@
         "by_turn_6_rate": 0.743,
         "by_turn_6_rate_assisted": 0.844,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 3.103,
+        "mean_turn": 3.104,
         "mean_turn_assisted": 2.829
       },
       {
         "assembled_rate": 0.815,
-        "assembled_rate_assisted": 0.923,
+        "assembled_rate_assisted": 0.922,
         "by_turn_6_rate": 0.644,
         "by_turn_6_rate_assisted": 0.778,
         "label": "Cost reducer or cheat-into-play drawn",
-        "mean_turn": 3.354,
-        "mean_turn_assisted": 3.191
+        "mean_turn": 3.353,
+        "mean_turn_assisted": 3.188
       },
       {
         "assembled_rate": 0.861,
@@ -300,8 +300,8 @@
         "by_turn_6_rate": 0.622,
         "by_turn_6_rate_assisted": 0.764,
         "label": "Dinosaur payoff drawn (per-dino trigger engine)",
-        "mean_turn": 3.932,
-        "mean_turn_assisted": 3.521
+        "mean_turn": 3.933,
+        "mean_turn_assisted": 3.522
       },
       {
         "assembled_rate": 0.808,
@@ -309,7 +309,7 @@
         "by_turn_6_rate": 0.611,
         "by_turn_6_rate_assisted": 0.753,
         "label": "The Gishath connection kit (haste or evasion for the 7/6)",
-        "mean_turn": 3.614,
+        "mean_turn": 3.617,
         "mean_turn_assisted": 3.39
       },
       {
@@ -319,36 +319,36 @@
         "by_turn_6_rate_assisted": 0.53,
         "label": "Enrage engine drawn",
         "mean_turn": 5.722,
-        "mean_turn_assisted": 4.999
+        "mean_turn_assisted": 5.0
       },
       {
         "assembled_rate": 0.719,
-        "assembled_rate_assisted": 0.883,
+        "assembled_rate_assisted": 0.884,
         "by_turn_6_rate": 0.526,
         "by_turn_6_rate_assisted": 0.7,
         "label": "Protection held for the board",
         "mean_turn": 3.835,
-        "mean_turn_assisted": 3.701
+        "mean_turn_assisted": 3.702
       },
       {
-        "assembled_rate": 0.091,
+        "assembled_rate": 0.092,
         "assembled_rate_assisted": 0.392,
         "by_turn_6_rate": 0.02,
-        "by_turn_6_rate_assisted": 0.128,
+        "by_turn_6_rate_assisted": 0.129,
         "label": "THE ONE-SIDED APOCALYPSE (stack 004): Blasphemous Act + Temple Altisaur",
-        "mean_turn": 7.793,
+        "mean_turn": 7.792,
         "mean_turn_assisted": 7.324
       }
     ],
     "treasure": {
       "engine_online_rate_by_turn": {
         "1": 0.0,
-        "10": 0.247,
+        "10": 0.248,
         "2": 0.0,
         "3": 0.0,
         "4": 0.003,
         "5": 0.013,
-        "6": 0.039,
+        "6": 0.04,
         "7": 0.079,
         "8": 0.128,
         "9": 0.181
@@ -360,7 +360,7 @@
         "3": 0.0,
         "4": 0.003,
         "5": 0.016,
-        "6": 0.05,
+        "6": 0.051,
         "7": 0.116,
         "8": 0.208,
         "9": 0.348

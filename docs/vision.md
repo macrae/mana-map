@@ -151,8 +151,8 @@ table sets, who kills you and how, and whether the kill the goldfish measured ac
 lands. That is why it is a probe and not the judge.
 
 *The goldfish has no blockers.* It is the decision instrument because it is fast,
-paired and declared — not because it sees everything. It cannot price a lord's static
-pump, a blocker's value or removal, and its verdict on board quality is not evidence.
+paired and declared — not because it sees everything. It cannot price a blocker's value
+or removal, and its verdict on board quality is not evidence.
 `model-coverage` and `try` say what it cannot see, card by card.
 
 *Nineteen games. Not two hundred.* Five decks carry a captain's log (as of 2026-10-05) and

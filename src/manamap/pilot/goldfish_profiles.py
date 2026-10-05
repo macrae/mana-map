@@ -15,6 +15,27 @@ below: the trigger pattern whose `.*` ate the subject noun, the condition scoped
 to the wrong clause, the fetchland whose colours are a property of the DECK, the
 `.*` in `token_bodies` that credits a free body. They were paid for one at a
 time and they are why this file is long.
+
+INDEX OF THE READERS, by channel (each takes a card dict and returns a profile):
+  draw and discard   draw_profile, activated_wheel, activated_draw, blood_profile,
+                     event_payoffs, has_event_payoff
+  bodies and tokens  creature_body_count, body_count, cast_token_profile,
+                     token_doubler, is_etb_engine
+  sacrifice/deaths   sac_outlet_profile, death_profile, is_death_engine,
+                     artifact_sac_payoffs, drain_profile
+  combat             combat_profile (the big one: power, haste, flying, attack_gate,
+                     static_lord, every ETB and attack payoff), attack_gate,
+                     static_lord + lord_applies, team_haste_grant
+  spells             spell_count_profile (storm, magecraft, per-cast damage),
+                     spell_pump, spell_counters, spell_treasure, spell_untap,
+                     spell_combat_effects, spell_token_copy, ritual_profile
+  the copy commander commander_copies_spells, copy_fodder
+  mana               treasure_profile, produced_mana, cost_reduction, reduced_cost,
+                     mana_value, cast_pips, can_pay
+  odds and ends      is_tutor, room_profile, subtypes_of, chosen_type_for,
+                     devotion_gate, devotion_of
+`goldfish_library.classify` calls them once per card per run; the turn loop
+(`goldfish_turn.simulate_once`) reads only the profiles.
 """
 
 import contextlib
@@ -2940,6 +2961,89 @@ def attack_gate(card):
     return None
 
 
+#: A STATIC LORD OR ANTHEM (2026-10-05). "Other Vampires you control get +1/+1"
+#: was a vanilla body to this model: `team_anthem` was fed only by +1/+1 COUNTERS,
+#: so cutting Legion Lieutenant for a cheap Vampire read as a GAIN (+0.022
+#: damage@T10) and every cut of a lord was understated by exactly its pump.
+#:
+#: Read SENTENCE BY SENTENCE on the front face, because a static ability is a
+#: sentence of its own and the corpus CSV flattens line breaks ("Trample Other
+#: Dinosaurs you control get +1/+1"): a leading keyword line is skipped, never
+#: read as part of the subject. Accepted subjects: "creatures", "<Type>
+#: creatures", "<Types>" and "<Type> and <Type>s", each optionally "Other".
+#: REFUSED, conservatively (understating is this file's direction): anything
+#: inside a trigger or an activation (When/Whenever/At/a cost and a colon),
+#: "until end of turn", "for each", and subjects scoped by colour, tokens,
+#: attacking, tapped, equipped or a condition ("During your turn"). Only the
+#: POWER half matters: this model has no blockers, so +0/+N is None.
+_LORD_SENTENCE_RE = re.compile(
+    r"^(?P<other>other )?(?P<subj>[a-z][a-z ]*?) you control get "
+    r"\+(?P<n>\d+)/\+\d+(?P<rest>.*)$", re.I)
+_LORD_REFUSE_SUBJ = re.compile(
+    r"\b(?:white|blue|black|red|green|multicolou?red|colou?rless|monocolou?red|"
+    r"tokens?|nontoken|attacking|blocking|tapped|untapped|equipped|enchanted|"
+    r"legendary|nonlegendary|commanders?|modified|outlaws?|each|target|your|that|"
+    r"with|without|of)\b", re.I)
+#: A condition AFTER the pump ("... as long as you control three or more
+#: creatures", Jetmir) is a condition this model does not evaluate: refused.
+_LORD_REFUSE_REST = re.compile(r"as long as|\bif\b|during|for each|until end of turn", re.I)
+_LORD_KEYWORD_PREFIX = re.compile(
+    r"^(?:(?:flying|first strike|double strike|deathtouch|lifelink|trample|vigilance|"
+    r"haste|menace|reach|flash|defender|indestructible|hexproof|prowess|ward \{[^}]*\}"
+    r")(?:, | )?)+(?=(?-i:[A-Z]))", re.I)
+
+
+def static_lord(card):
+    """None, or `{"n": power bonus, "types": [plural words] or None for every
+    creature, "other": bool}` for a static "... you control get +N/+M" on the
+    face that is cast. `types` are matched against a creature's type line by
+    `lord_applies`."""
+    text = (card.get("oracle_text") or "").split(" // ")[0]
+    front_type = (card.get("type_line") or "").split(" // ")[0]
+    if not text or "Instant" in front_type or "Sorcery" in front_type:
+        return None
+    for raw in re.split(r"(?:\n|(?<=[.)])\s+)", text):
+        sentence = _LORD_KEYWORD_PREFIX.sub("", raw.strip())
+        m = _LORD_SENTENCE_RE.match(sentence)
+        if not m:
+            continue
+        if _LORD_REFUSE_REST.search(m.group("rest")):
+            continue
+        subj = m.group("subj").strip()
+        if _LORD_REFUSE_SUBJ.search(subj):
+            continue
+        n = int(m.group("n"))
+        if n <= 0:
+            continue
+        if re.fullmatch(r"creatures", subj, re.I):
+            return {"n": n, "types": None, "other": bool(m.group("other"))}
+        # "<Type> creatures", "<Types>", "<Types> and <Types>", "Eldrazi Spawn
+        # creatures": each PHRASE is one type, matched word by word.
+        subj = re.sub(r"\s+creatures$", "", subj, flags=re.I)
+        phrases = [ph.split() for ph in re.split(r"\s+and\s+", subj) if ph.strip()]
+        if not phrases or not all(w[0].isupper() or w.lower() in ("artifact", "land")
+                                  for ph in phrases for w in ph):
+            continue
+        return {"n": n, "types": [" ".join(ph) for ph in phrases],
+                "other": bool(m.group("other"))}
+    return None
+
+
+def lord_applies(lord, type_line):
+    """Does `lord` pump a creature with this type line? A plural subject word
+    ("Vampires", "Elves", "Wolves", "Aetherborn") matches a type it pluralises."""
+    if lord["types"] is None:
+        return True
+    have = {t.lower() for t in re.split(r"[\s—-]+", type_line or "") if t}
+
+    def word_ok(w):
+        w = w.lower()
+        return any(w in (t, t + "s", t + "es", t[:-1] + "ves", t[:-1] + "ies")
+                   for t in have)
+    # A phrase ("Eldrazi Spawn") matches only when EVERY word does.
+    return any(all(word_ok(w) for w in phrase.split()) for phrase in lord["types"])
+
+
 #: RITUALS (2026-10-05). "Rituals are not modeled" was a stated assumption for the
 #: life of this file: a spell that adds mana produced 0 and was never cast. Swept
 #: on the dump (Commander-legal instants and sorceries whose text adds mana): six
@@ -3023,6 +3127,8 @@ def combat_profile(card):
         "haste": bool(_HASTE_RE.search(text)),
         # Read by the combat step: who may not attack, and on what condition.
         "attack_gate": attack_gate(card),
+        # A static "... you control get +N/+N" — see `static_lord`.
+        "static_lord": static_lord(card),
         # Read for the flying-gated grant (Dragon Tempest) only.
         "flying": is_creature and bool(_FLYING_KW_RE.search(text)),
         "type_line": type_line,

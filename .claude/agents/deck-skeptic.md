@@ -49,9 +49,10 @@ reading says it says is `contradicts-artifact` — read the entry.
 
 **A `try` screen is re-runnable in ten seconds — re-run every one the doctor ranks on**
 (`.venv/bin/manamap pilot try <slug> --out "A" --in "B"`); a figure that does not reproduce
-is `contradicts-artifact`. A screen that cuts a static lord or credits a pump is
-`over-claimed` (the goldfish does not read one; `docs/known-issues.md` §22), and a null on a
-card the screen marks DARK or invisible is not evidence.
+is `contradicts-artifact`. A static lord's pump is read
+(since 2026-10-05, `docs/known-issues.md` §22) — but one scoped by colour, tokens or a
+condition is refused, so a screen on such a lord is `over-claimed` unless `try` shows it
+seen; and a null on a card the screen marks DARK or invisible is not evidence.
 
 **A sim figure without its interval and its N is `over-claimed`**, and one that forgets the
 AI caveat on a control or combo deck is `mis-cited`. Pooling Forge runs across AI profiles

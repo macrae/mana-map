@@ -151,7 +151,7 @@ an unlocked deck says it is unlocked rather than being assumed playable — and 
 authored flag is what decides whether the whole chain runs for it automatically.
 
 And **the goldfish has no blockers and only models what a deck declares.** It cannot price
-a lord's static pump or a blocker's worth, so its verdict on board quality is not evidence. Every channel — draw, combat,
+a blocker's worth or removal, so its verdict on board quality is not evidence. Every channel — draw, combat,
 Treasure, sacrifice, the copy commander, the spell count — is off until that deck's
 `goldfish_targets.json` switches it on, so a card feeding an off channel measures as exactly
 nothing and looks identical to a card that does not help. `model-coverage <slug>` is the

@@ -1060,7 +1060,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "9b63d7778a83",
+  "model_version": "e10c672a7a65",
   "seed": 20260826
  },
  "limits": [
@@ -1202,12 +1202,12 @@
   "why": "Single-card patch measured for a yay/nay (2026-09-11): New Blood for Boros Charm. steal a creature and make it a Vampire for four: removal, a body and the type, at sorcery speed The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it."
  },
  "objective_grade": {
-  "reading": 0.7065,
+  "reading": 0.7553,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy damage @T10, board power @T6, killed by T6, killed by T10 and extra cards by T8 and pay hand can act by T3.",
+  "because": "You buy damage @T10, board power @T6, killed by T6 and extra cards by T8 and pay hand can act by T3.",
   "bill": {
    "box": 1,
    "buy": 2,
@@ -1239,6 +1239,7 @@
    "hand can act by T3"
   ],
   "no_call": [
+   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
@@ -1248,23 +1249,18 @@
   "reward": [
    {
     "measure": "damage @T10",
-    "reads_as": "19.23 -> 19.63, a change of +0.40 (+2%)",
+    "reads_as": "22.52 -> 22.95, a change of +0.43 (+2%)",
     "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
     "measure": "board power @T6",
-    "reads_as": "10.94 -> 11.19, a change of +0.25 (+2%)",
+    "reads_as": "12.04 -> 12.31, a change of +0.28 (+2%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "measure": "killed by T6",
-    "reads_as": "4 games in 100 -> 4 in 100, a swing of 0 games per 100",
+    "reads_as": "9 games in 100 -> 9 in 100, a swing of 1 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
-   },
-   {
-    "measure": "killed by T10",
-    "reads_as": "97 games in 100 -> 97 in 100, a swing of 0 games per 100",
-    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
     "measure": "extra cards by T8",
@@ -1282,7 +1278,7 @@
    {
     "detail": "the largest is stall, 2 in a row at -0.005 against an MDE of 0.006. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "4 row(s) returned no call",
+    "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1324,7 +1320,6 @@
    "damage @T10",
    "board power @T6",
    "killed by T6",
-   "killed by T10",
    "extra cards by T8"
   ],
   "state": "a trade"
@@ -1334,13 +1329,13 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 19.632,
-   "champion": 19.2322,
+   "branch": 22.946,
+   "champion": 22.5201,
    "ci95_diff": [
-    0.3598,
-    0.4398
+    0.3779,
+    0.4739
    ],
-   "delta": 0.3998,
+   "delta": 0.4259,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1348,27 +1343,27 @@
     "significant": true,
     "threshold": 2.773
    },
-   "mde": 0.0572,
+   "mde": 0.0686,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "19.23 -> 19.63, a change of +0.40 (+2%)",
+   "reads_as": "22.52 -> 22.95, a change of +0.43 (+2%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "better",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": 19.588
+   "z": 17.401
   },
   {
    "better_is": "higher",
-   "branch": 11.1931,
-   "champion": 10.9385,
+   "branch": 12.3129,
+   "champion": 12.0362,
    "ci95_diff": [
-    0.2304,
-    0.2788
+    0.2498,
+    0.3036
    ],
-   "delta": 0.2546,
+   "delta": 0.2767,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1376,73 +1371,73 @@
     "significant": true,
     "threshold": 2.807
    },
-   "mde": 0.0346,
+   "mde": 0.0384,
    "measure": "board power @T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "10.94 -> 11.19, a change of +0.25 (+2%)",
+   "reads_as": "12.04 -> 12.31, a change of +0.28 (+2%)",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": 20.588
+   "z": 20.168
   },
   {
    "better_is": "higher",
-   "branch": 0.044,
-   "champion": 0.0415,
+   "branch": 0.0914,
+   "champion": 0.0858,
    "ci95_diff": [
-    0.0012,
-    0.0038
+    0.0037,
+    0.0075
    ],
-   "delta": 0.0025,
+   "delta": 0.0056,
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 6,
+    "rank": 3,
     "significant": true,
-    "threshold": 2.576
+    "threshold": 2.734
    },
-   "mde": 0.0018,
+   "mde": 0.0027,
    "measure": "killed by T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "4 games in 100 -> 4 in 100, a swing of 0 games per 100",
+   "reads_as": "9 games in 100 -> 9 in 100, a swing of 1 games per 100",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 3.907
+   "z": 5.913
   },
   {
    "better_is": "higher",
-   "branch": 0.9717,
-   "champion": 0.9683,
+   "branch": 0.9755,
+   "champion": 0.9737,
    "ci95_diff": [
-    0.0018,
-    0.005
+    0.0004,
+    0.0032
    ],
-   "delta": 0.0034,
+   "delta": 0.0018,
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 5,
+    "rank": 7,
     "significant": true,
-    "threshold": 2.638
+    "threshold": 2.498
    },
-   "mde": 0.0023,
+   "mde": 0.002,
    "measure": "killed by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "97 games in 100 -> 97 in 100, a swing of 0 games per 100",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.002 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
-   "verdict": "better",
+   "verdict": "noise",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 4.189
+   "z": 2.546
   },
   {
    "better_is": "lower",
@@ -1456,9 +1451,9 @@
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 7,
+    "rank": 6,
     "significant": true,
-    "threshold": 2.498
+    "threshold": 2.576
    },
    "mde": 0.0057,
    "measure": "stall, 2 in a row",
@@ -1540,9 +1535,9 @@
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 4,
+    "rank": 5,
     "significant": true,
-    "threshold": 2.69
+    "threshold": 2.638
    },
    "mde": 0.0131,
    "measure": "extra cards by T8",
@@ -1596,9 +1591,9 @@
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 3,
+    "rank": 4,
     "significant": true,
-    "threshold": 2.734
+    "threshold": 2.69
    },
    "mde": 0.0034,
    "measure": "hand can act by T3",

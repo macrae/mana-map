@@ -165,7 +165,9 @@ def channels_for(profile):
             # a Zada deck can run at exactly zero, indistinguishable from a card
             # that does not help. Seven passes of that sweep built a branch
             # around "lean into Zada" without one of them.
-            "spell_token_copy")):
+            "spell_token_copy",
+            # A static lord or anthem (2026-10-05), listed with the channel.
+            "static_lord")):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
@@ -268,7 +270,10 @@ def never_cast(profile, flags):
                 cb.get("mass_animate_threshold"), cb.get("attack_ping_per_attacker"),
                 # a haste enabler is cast by the combat-payoff loop
                 cb.get("team_haste"), cb.get("cast_damage"),
-                cb.get("spell_damage_greatest_power"))):
+                cb.get("spell_damage_greatest_power"),
+                # a noncreature anthem is cast by its own loop once there is a
+                # board (2026-10-05); a creature lord is a body and cast anyway
+                cb.get("static_lord"))):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
             return False

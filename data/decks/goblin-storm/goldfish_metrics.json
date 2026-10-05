@@ -95,7 +95,7 @@
       "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a Treasure per opponent draw unless that opponent pays {2}; how often a table pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each draw. Every Tithe figure is conditional on it, and `try` says so when a list relies on it.",
       "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
     ],
-    "model_version": "9b63d7778a83",
+    "model_version": "e10c672a7a65",
     "restricted_mana_counted_as_free": [
       "Throne of Eldraine (4)"
     ],
@@ -112,48 +112,49 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.746,
+        "10": 0.775,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
-        "6": 0.006,
-        "7": 0.075,
-        "8": 0.282,
-        "9": 0.548
+        "6": 0.013,
+        "7": 0.111,
+        "8": 0.339,
+        "9": 0.595
       },
       "kill_turn_histogram": {
-        "10": 1979,
-        "6": 56,
-        "7": 693,
-        "8": 2068,
-        "9": 2667
+        "10": 1799,
+        "5": 3,
+        "6": 130,
+        "7": 979,
+        "8": 2277,
+        "9": 2559
       },
       "mean_board_power_by_turn": {
         "1": 0.164,
-        "10": 12.473,
-        "2": 0.886,
-        "3": 2.021,
-        "4": 4.476,
-        "5": 4.802,
-        "6": 6.976,
-        "7": 8.967,
-        "8": 9.607,
-        "9": 11.097
+        "10": 14.291,
+        "2": 0.89,
+        "3": 2.065,
+        "4": 4.626,
+        "5": 5.003,
+        "6": 7.473,
+        "7": 9.846,
+        "8": 10.588,
+        "9": 12.465
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 12.655,
-        "2": 0.295,
-        "3": 1.292,
-        "4": 2.447,
-        "5": 3.822,
-        "6": 6.026,
-        "7": 8.287,
-        "8": 9.197,
-        "9": 11.015
+        "10": 14.402,
+        "2": 0.299,
+        "3": 1.323,
+        "4": 2.545,
+        "5": 3.994,
+        "6": 6.468,
+        "7": 9.099,
+        "8": 10.124,
+        "9": 12.324
       },
-      "mean_kill_turn": 8.78,
+      "mean_kill_turn": 8.634,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -167,7 +168,7 @@
         "9": 0.0
       },
       "median_kill_turn": 9,
-      "no_kill_by_max_turn_rate": 0.254
+      "no_kill_by_max_turn_rate": 0.225
     },
     "commander": {
       "cast_by_turn_6_rate": 0.944,

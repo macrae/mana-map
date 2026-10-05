@@ -1711,7 +1711,13 @@ runs are quiet.
 
 If that queued job did not run, this is the command, and the tests above are how you know.
 
-## 22. The goldfish does not read a static lord or anthem
+## 22. ~~The goldfish does not read a static lord or anthem~~ — FIXED 2026-10-05
+
+**Fixed the same day** (`goldfish_profiles.static_lord`, `_lord_bonuses` in the turn loop,
+`tests/test_pilot_goldfish_static_lord.py`): 218 corpus cards read after a sweep; Legion
+Lieutenant -> Vampire Interloper reads -1.088 damage@T10 where it read +0.022. The fleet
+was regenerated. The entry as written:
+
 
 *Found 2026-10-05 by the deck-skeptic, round 3 of edgar-vampires' re-diagnosis.*
 

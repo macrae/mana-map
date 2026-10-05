@@ -37,22 +37,18 @@ rule, module headers and file maps, three finished records archived.
 
 ## Next, in order
 
-1. **The goldfish does not read a static lord** (`docs/known-issues.md` §22). "Other
-   Vampires you control get +1/+1" is a vanilla body to the model, so every Edgar cut of a
-   lord is understated by the pump. It is a model change: a corpus sweep of static
-   "get +N/+N" lines (tribal scoping included), then `manamap pilot regen --jobs 8 && make
-   manuals`. Then re-run edgar's diagnosis — its open findings rest on this.
-2. **edgar-vampires' open findings.** After (1): the win-rate pool that mixes two AI
-   profiles, and what fills Legion Lieutenant's slot (Phyrexian Arena screens −0.414 and the
-   goldfish cannot see it).
-3. **The goldfish file maps.** `goldfish_turn.py` (a phase map of `simulate_once`) and
-   `goldfish_profiles.py` (an index of its readers) still lack one. Their bytes are the
-   `model_version` stamp, so do it in the same commit as (1) and regenerate once.
-4. **sharknado's piloting in Forge** — the AI mis-plays its wheels, so its Forge rates are
+1. **Re-run edgar-vampires' diagnosis** now that the goldfish reads static lords (fixed
+   2026-10-05, `docs/known-issues.md` §22; the file maps landed in the same model change).
+   Its open findings rest on it: Legion Lieutenant -> Vampire Interloper reads −1.088
+   damage@T10 where it read +0.022, so the lord cuts it proposed now cost something.
+   That is in tension with the pilot's rule that a flat anthem is too slow — the model
+   says the lord earns damage; whether it earns the SLOT is the pilot's call. Also open:
+   the win-rate pool that mixed two AI profiles, and what fills a cut lord's slot.
+2. **sharknado's piloting in Forge** — the AI mis-plays its wheels, so its Forge rates are
    floors. A piloting item (hints, `forge-cast-check`), not a deck change.
-5. **The axis catalog** (`docs/known-issues.md` 9b): hoard_6 and hoard_10 are one
+3. **The axis catalog** (`docs/known-issues.md` 9b): hoard_6 and hoard_10 are one
    measurement (r=+0.93). Which axis a branch may aim at is the pilot's call.
-6. **Games at a table, logged.** All nineteen logged games predate this month's model work.
+4. **Games at a table, logged.** All nineteen logged games predate this month's model work.
 
 ## Open questions held for the pilot
 

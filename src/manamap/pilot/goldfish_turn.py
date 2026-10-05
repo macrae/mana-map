@@ -17,6 +17,38 @@ cast only if some casting loop SELECTS it, and a card matching no channel sits
 in hand for ten turns while its profile says exactly what it would have done.
 That failure was found five times in one session and only caught as a class on
 the fourth — see `model_coverage.never_cast` and `docs/gotchas-bench.md`.
+
+MAP OF `simulate_once` (in order; search for the quoted comment):
+  setup              the opening seven, the mulligan, the per-game state — every
+                     list that must stay index-aligned with `battlefield`
+                     (`creature_types`, `creature_flying`), `team_anthem`,
+                     `static_anthems` and `_lord_bonuses`
+  each turn:
+    untap/upkeep     "THE UNTAP STEP"; opponents' draws ("THE OPPONENT'S DRAWS",
+                     three seats for what WE gain); upkeep and landfall triggers;
+                     recurring draw engines
+    closures         `draw_n`, `discard_n`, `creature_entered` (THE ONE DOOR onto
+                     the battlefield — every payoff fires here), `spend`,
+                     `_commander_arrives`, `_note_cast` (EVERY cast goes through
+                     it, or storm undercounts), `_free_creature_enters`
+    rituals          "RITUALS (2026-10-05)" — cast only when they are the difference
+    commander        the commander, then the partner, then the declared attack tutor
+    casting loops    reducers -> ETB payoffs -> rocks -> tutors -> Treasure -> the
+                     activated wheel -> Blood -> draw spells -> storm -> combat
+                     payoffs -> engine permanents (`_engine_permanent`, the
+                     predicate a new channel must be taught) -> noncreature
+                     anthems -> bodies ("Spend what's left on bodies") -> X spells
+                     -> Blood and the draws you buy
+    combat           "Combat step": `_may_attack` (the attack gate, field 10),
+                     attackers with `team_anthem` + `_lord_bonuses` + pumps,
+                     extra combats, commander damage, poison
+    after combat     commander animate, Rooms, mass animation, deaths, the drain
+                     pillar, the per-turn series
+  return             the per-game result `goldfish.aggregate` reads
+
+THE BATTLEFIELD ENTRY is an 11-tuple: power, arrived, haste, mult, is_token,
+(infect, toxic), toughness, tapped, temporary, attack_gate, static lord. A
+rewrite of an entry keeps `_e[8:]`, so a new field rides through every site.
 """
 
 import contextlib
@@ -44,6 +76,7 @@ from manamap.pilot.common import (
     deck_dir, deck_file, front_field, load_deck_cards)
 
 from manamap.pilot.goldfish_profiles import (
+    lord_applies,
     ETB_CHAIN_LIMIT,
     GOLDFISH_MAX_MULLIGANS,
     GOLDFISH_OPPONENT_LIFE,
@@ -370,6 +403,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # Temple: one more counter on everything each time another Shrine lands.
     team_anthem = 0
     team_anthem_on_type = []
+    # A STATIC LORD OR ANTHEM (2026-10-05) — `goldfish_profiles.static_lord`.
+    # Unlike `team_anthem` it is NOT a counter: it lasts exactly as long as its
+    # source does. A creature lord rides in its own battlefield entry (field 11),
+    # so a lord that dies takes its pump with it; a noncreature anthem (Glorious
+    # Anthem, Crucible of Fire) sits here, because nothing here removes one.
+    static_anthems = []
+
+    def _lord_bonuses():
+        """Each creature's power from static lords, INDEX-ALIGNED with
+        `battlefield`. "Other" spares the lord itself; a typed lord pumps only
+        what `lord_applies` matches. Zero-cost when no lord is in play."""
+        lords = [(j, e[10]) for j, e in enumerate(battlefield)
+                 if len(e) > 10 and e[10]]
+        if not lords and not static_anthems:
+            return [0] * len(battlefield)
+        out = []
+        for i, tl_ in enumerate(creature_types):
+            b = sum(L["n"] for L in static_anthems if lord_applies(L, tl_))
+            b += sum(L["n"] for j, L in lords
+                     if not (L["other"] and j == i) and lord_applies(L, tl_))
+            out.append(b)
+        return out
     # Who has been granted haste by permanents in play: "all", "nontoken",
     # "flying" or a creature type. Read at the attack step only.
     haste_grants = []
@@ -553,7 +608,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                              toughness=1,
                              is_token=False, is_legendary=False, type_line="",
                              infect=False, toxic=0, flying=False,
-                             temporary=False, attack_gate=None):
+                             temporary=False, attack_gate=None, lord=None):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -595,9 +650,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # truncate this field instead.
             # THE TENTH FIELD IS THE ATTACK GATE (`goldfish_profiles.attack_gate`):
             # Defender, "can't attack", or a condition. Read by `_may_attack`.
+            # THE ELEVENTH FIELD IS A STATIC LORD (`static_lord`) or None, in the
+            # tuple for the reason the tenth is: a pop cannot desynchronise it.
             battlefield.append((power, arrived, haste, mult, is_token,
                                 (infect, toxic), toughness, False, temporary,
-                                attack_gate))
+                                attack_gate, lord))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -719,7 +776,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                  flying=cprof["flying"],
                                  infect=cprof["infect"], toxic=cprof["toxic"],
                                  toughness=cprof["toughness"],
-                                 attack_gate=cprof.get("attack_gate"))
+                                 attack_gate=cprof.get("attack_gate"),
+                                 lord=cprof.get("static_lord"))
                 if cprof["team_damage_multiplier"] > 1:
                     team_damage_multiplier *= cprof["team_damage_multiplier"]
                 if any((cprof["attack_mana"], cprof["attack_damage"],
@@ -841,7 +899,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      infect=combat["infect"], toxic=combat["toxic"],
                                      flying=combat["flying"],
                                      toughness=combat["toughness"],
-                                     attack_gate=combat.get("attack_gate"))
+                                     attack_gate=combat.get("attack_gate"),
+                            lord=combat.get("static_lord"))
             if combat["token_bodies"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
@@ -1130,7 +1189,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if card["combat"]["spell_damage_greatest_power"]:
                         # THE BIGGEST BODY'S POWER, once, to the one opponent;
                         # the wipe half has nothing to hit here.
-                        etb_damage += max((p + team_anthem for p, *_ in battlefield), default=0)
+                        etb_damage += max((p + team_anthem + lb_ for (p, *_), lb_
+                                           in zip(battlefield, _lord_bonuses())), default=0)
                     if card["combat"]["team_damage_multiplier"] > 1:
                         team_damage_multiplier *= card["combat"]["team_damage_multiplier"]
                     _note_cast(card)
@@ -1474,7 +1534,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["draw"]["spell_draw_greatest_power"]:
                     # Resolved against the board at cast; the anthem rides on
                     # every body the way it does at the attack step.
-                    draw_n(max((p + team_anthem for p, *_ in battlefield), default=0))
+                    draw_n(max((p + team_anthem + lb_ for (p, *_), lb_
+                                in zip(battlefield, _lord_bonuses())), default=0))
                 if model_discard and card["draw"]["spell_discard"]:
                     discard_n(card["draw"]["spell_discard"])
                 if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
@@ -1516,7 +1577,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # short entry that every `e[8]` read would raise on. The
                     # tenth, the attack gate, is None: a Goblin token attacks.
                     battlefield.append((each, turn, False, 1, True, (0, 0), 1,
-                                        False, False, None))
+                                        False, False, None, None))
                     creature_types.append("Creature — Goblin")
                     creature_flying.append(False)
                     bodies_cum += 1
@@ -1676,9 +1737,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # Every creature deals its own power to each opponent. This
                     # model tracks ONE seat, so one seat's worth is the sum of the
                     # board's power — once if uncopied, once per creature if not.
-                    _base = sum(_c[0] + team_anthem for _c in battlefield)
+                    _lbs = _lord_bonuses()
+                    _base = sum(_c[0] + team_anthem + lb_ for _c, lb_ in zip(battlefield, _lbs))
                     spell_each_opponent += _base if _copied else (
-                        battlefield[0][0] + team_anthem if battlefield else 0)
+                        battlefield[0][0] + team_anthem + _lbs[0] if battlefield else 0)
                 # THE UNTAP, and copied it is an UNTAP-ALL — which is the whole
                 # reason an additional combat phase is worth casting. Seize the
                 # Day queues the phases; this spends them.
@@ -1957,6 +2019,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
                         team_anthem += per_
 
+        # A NONCREATURE ANTHEM IS CAST WHEN THERE IS A BOARD FOR IT, taught in the
+        # same commit as the channel (the never-cast class, a ninth time): it
+        # matches no other loop, so without this Glorious Anthem sits in hand.
+        # Two bodies is the bar — below it the mana buys more on a body.
+        if model_combat and len(battlefield) >= 2:
+            for card in sorted((c for c in hand if not c["is_land"]
+                                and not c["combat"]["is_creature"]
+                                and c["combat"]["static_lord"]),
+                               key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    continue
+                _note_cast(card)
+                battlefield_pips.append(card["pips"])
+                battlefield_types.append(card.get("type_line") or "")
+                battlefield_mv.append(card["cmc"])
+                battlefield_rooms.append(None)
+                if "Enchantment" in (card.get("type_line") or ""):
+                    enchantments_entered += 1
+                static_anthems.append(card["combat"]["static_lord"])
+
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
                            key=lambda c: reduced_cost(c, reductions, chosen_type)):
@@ -2086,7 +2168,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             type_line=card.get("type_line") or "",
                             infect=combat["infect"], toxic=combat["toxic"],
                             flying=combat["flying"],
-                            attack_gate=combat.get("attack_gate"))
+                            attack_gate=combat.get("attack_gate"),
+                            lord=combat.get("static_lord"))
                         creatures_entered_this_turn += 1
                 # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
                 # whether or not the commander has ever been cast. "Another"
@@ -2428,7 +2511,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                      if not tapped and _may_attack(battlefield[i])
                      and (haste or arrived < turn
                           or (haste_grants and _granted(tl_, fl_, _tok)))]
-            attackers = [(((battlefield[i][0] + team_anthem + turn_pump) * turn_power_mult)
+            _lbs = _lord_bonuses()
+            attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * turn_power_mult)
                           * (battlefield[i][3] if battlefield[i][3] > 1
                              else (2 if turn_double_strike else 1)), battlefield[i][5])
                          for i in _able]
@@ -2489,7 +2573,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                        if not tp_ and _may_attack(battlefield[i])
                        and (hs_ or arr_ < turn
                             or (haste_grants and _granted(tl_, fl_, tok_)))]
-                _at = [(((battlefield[i][0] + team_anthem + turn_pump) * turn_power_mult)
+                _lbs = _lord_bonuses()
+                _at = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * turn_power_mult)
                         * (battlefield[i][3] if battlefield[i][3] > 1
                            else (2 if turn_double_strike else 1)), battlefield[i][5])
                        for i in _ab]
@@ -2711,7 +2796,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
             board_power_by_turn.append(
                 sum(p for p, *_ in battlefield)
-                + team_anthem * len(battlefield))
+                + team_anthem * len(battlefield)
+                + sum(_lord_bonuses()))
             if kill_turn is None and (opponent_life <= 0
                                       or opponent_poison >= GOLDFISH_POISON_TO_LOSE):
                 kill_turn = turn

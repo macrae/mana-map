@@ -1577,7 +1577,7 @@
    "reads_as": "every add the branch stages was played in its arms"
   },
   "iterations": 10000,
-  "model_version": "9b63d7778a83",
+  "model_version": "e10c672a7a65",
   "seed": 20260826
  },
  "limits": [
@@ -1750,7 +1750,7 @@
   "state": "not met"
  },
  "recommendation": {
-  "because": "The objective is not met. Damage @t10, killed by t6, killed by t10 and hand can act by t3 improved anyway, which is a different branch's case.",
+  "because": "The objective is not met. Killed by t6, killed by t10 and hand can act by t3 improved anyway, which is a different branch's case.",
   "bill": {
    "box": 0,
    "buy": 2,
@@ -1786,10 +1786,11 @@
    "total": 96
   },
   "fell": [
+   "board power @T6",
    "extra cards by T8"
   ],
   "no_call": [
-   "board power @T6",
+   "damage @T10",
    "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
@@ -1800,13 +1801,8 @@
   ],
   "reward": [
    {
-    "measure": "damage @T10",
-    "reads_as": "19.23 -> 19.56, a change of +0.33 (+2%)",
-    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
     "measure": "killed by T6",
-    "reads_as": "4 games in 100 -> 6 in 100, a swing of 2 games per 100",
+    "reads_as": "9 games in 100 -> 10 in 100, a swing of 2 games per 100",
     "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
@@ -1821,6 +1817,12 @@
    }
   ],
   "risk": [
+   {
+    "detail": "12.04 -> 11.97, a change of -0.07 (-1%)",
+    "kind": "paid",
+    "what": "board power @T6",
+    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+   },
    {
     "detail": "1.08 -> 0.92, a change of -0.16 (-15%)",
     "kind": "paid",
@@ -1860,7 +1862,6 @@
    }
   ],
   "rose": [
-   "damage @T10",
    "killed by T6",
    "killed by T10",
    "hand can act by T3"
@@ -1872,13 +1873,41 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 19.5619,
-   "champion": 19.2322,
+   "branch": 22.5198,
+   "champion": 22.5201,
    "ci95_diff": [
-    0.2523,
-    0.4071
+    -0.0908,
+    0.0902
    ],
-   "delta": 0.3297,
+   "delta": -0.0003,
+   "excludes_zero": false,
+   "holm": {
+    "family": 10,
+    "rank": 9,
+    "significant": false,
+    "threshold": 2.241
+   },
+   "mde": 0.1293,
+   "measure": "damage @T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.129 this run can resolve",
+   "role": "exploratory",
+   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
+   "unit": "mean",
+   "verdict": "noise",
+   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
+   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
+   "z": -0.006
+  },
+  {
+   "better_is": "higher",
+   "branch": 11.969,
+   "champion": 12.0362,
+   "ci95_diff": [
+    -0.1065,
+    -0.0279
+   ],
+   "delta": -0.0672,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1886,55 +1915,27 @@
     "significant": true,
     "threshold": 2.638
    },
-   "mde": 0.1107,
-   "measure": "damage @T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "19.23 -> 19.56, a change of +0.33 (+2%)",
-   "role": "exploratory",
-   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
-   "unit": "mean",
-   "verdict": "better",
-   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
-   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": 8.344
-  },
-  {
-   "better_is": "higher",
-   "branch": 10.9175,
-   "champion": 10.9385,
-   "ci95_diff": [
-    -0.0565,
-    0.0145
-   ],
-   "delta": -0.021,
-   "excludes_zero": false,
-   "holm": {
-    "family": 10,
-    "rank": 8,
-    "significant": false,
-    "threshold": 2.394
-   },
-   "mde": 0.0508,
+   "mde": 0.0561,
    "measure": "board power @T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.021 is smaller than the 0.051 this run can resolve",
+   "reads_as": "12.04 -> 11.97, a change of -0.07 (-1%)",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": -1.159
+   "z": -3.353
   },
   {
    "better_is": "higher",
-   "branch": 0.0591,
-   "champion": 0.0415,
+   "branch": 0.1049,
+   "champion": 0.0858,
    "ci95_diff": [
-    0.0146,
-    0.0206
+    0.0157,
+    0.0225
    ],
-   "delta": 0.0176,
+   "delta": 0.0191,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1942,27 +1943,27 @@
     "significant": true,
     "threshold": 2.773
    },
-   "mde": 0.0043,
+   "mde": 0.0048,
    "measure": "killed by T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "4 games in 100 -> 6 in 100, a swing of 2 games per 100",
+   "reads_as": "9 games in 100 -> 10 in 100, a swing of 2 games per 100",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 11.582
+   "z": 11.039
   },
   {
    "better_is": "higher",
-   "branch": 0.9787,
-   "champion": 0.9683,
+   "branch": 0.9815,
+   "champion": 0.9737,
    "ci95_diff": [
-    0.0081,
-    0.0127
+    0.0057,
+    0.0099
    ],
-   "delta": 0.0104,
+   "delta": 0.0078,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1970,7 +1971,7 @@
     "significant": true,
     "threshold": 2.69
    },
-   "mde": 0.0033,
+   "mde": 0.003,
    "measure": "killed by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
    "reads_as": "97 games in 100 -> 98 in 100, a swing of 1 games per 100",
@@ -1980,7 +1981,7 @@
    "verdict": "better",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 8.888
+   "z": 7.261
   },
   {
    "better_is": "lower",
@@ -2106,9 +2107,9 @@
    "excludes_zero": false,
    "holm": {
     "family": 10,
-    "rank": 9,
+    "rank": 8,
     "significant": false,
-    "threshold": 2.241
+    "threshold": 2.394
    },
    "mde": 0.0192,
    "measure": "interaction affordable @T6",

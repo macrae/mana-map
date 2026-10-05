@@ -55,6 +55,10 @@ it refuses a ritual with an additional cost or restricted mana rather than readi
 free. A ritual is cast in the main phase only when the mana it adds reaches a spell, or the
 commander, that the turn could not otherwise cast; its mana is gone at end of turn.
 
+**It reads static lords and anthems** (2026-10-05): "Other Vampires you control get
++1/+1" pumps what it names while the lord lives; Glorious Anthem is cast once there is a
+board for it.
+
 **What it still cannot see** is in the channel table's named gaps below, and the largest is
 structural: no blockers, no removal, no interaction. Its verdict on board QUALITY is not
 evidence — a go-wide refactor it preferred lost 31/400 to 50/400 in Forge because 1/1
@@ -506,12 +510,12 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
   board to resolve, the same refusal `land_colors` makes for a fetchland without a pool.
 - **A ritual with an additional cost or restricted mana is refused**, not read as free
   mana (Infernal Plunge, Geosurge); the unconditional shapes are read (see the top).
-- **A static lord or anthem is not read** (found 2026-10-05 by the edgar skeptic).
-  `team_anthem` is fed only by +1/+1 COUNTERS put on the team; "Other Vampires you control
-  get +1/+1" (Legion Lieutenant, Stromkirk Captain) adds nothing, so cutting a lord for a
-  cheap Vampire reads as a gain (+0.022 / +0.070 damage@T10). A cut that removes a lord is
-  understated by exactly the pump. Not fixed: it is a model change, so it needs a corpus
-  sweep of the static "get +N/+N" lines and a fleet regen.
+- ~~A static lord or anthem is not read~~ — **read since 2026-10-05** (`static_lord`).
+  "Other Vampires you control get +1/+1" pumps the creatures it names for as long as the
+  lord is on the battlefield (it rides in the creature's entry, so it dies with it); a
+  noncreature anthem is cast once there are two bodies and stays. Swept: 218 corpus cards
+  read, refused when scoped by colour, tokens, commander or a condition. Legion Lieutenant
+  -> Vampire Interloper went from +0.022 damage@T10 (a phantom gain) to -1.088.
 - **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
   your own board and cashes the deaths; that channel is not built.
 
