@@ -1,28 +1,74 @@
-# Simulation — the centre of the workbench
+# Simulation — both engines
 
-*What this subsystem is for, what was measured before building it, the verdict, and how it
-grew. The `game_state` v2 schema it consumes is in `docs/pilot.md`. Last revised
-2026-09-12.*
+*Two engines, two jobs. The **goldfish** (`src/manamap/pilot/goldfish*.py`) is the
+decision instrument: seeded, paired, about ten seconds a question. **Forge** is the probe:
+real rules and a real AI, asked narrow questions. The `game_state` v2 schema is in
+`docs/pilot.md`. Rewritten at the top 2026-10-05; everything from "The 2026-09-02 audit"
+down is the Forge record, still how a probe works.*
 
-> **2026-10-04 — the decision loop moved.** The pilot ruled overnight pod runs out of it:
-> a day per answer, runs killed by a sleeping laptop and the two-hour background cap, an
-> MDE of ~0.14 at 200 games, and Forge's AI mis-piloting sharknado's wheels so its rates
-> are floors. A swap is now answered by `try` in seconds — the goldfish with a seed per
-> game, lists aligned slot for slot and PAIRED intervals (`net_change._paired`), Defender
-> and attack restrictions read, three seats for what we gain off opponents' draws, and
-> Smothering Tithe's Treasure at a stated pay rate. Forge is a TARGETED PROBE:
-> `forge-cast-check` asks whether the AI plays a card (~1 min); a pod run is optional and
-> its result is a warning beside the verdict, never a gate. What follows is the record of
-> how the Forge harness was built, and it is still how a probe works.
+## The goldfish is the decision instrument (2026-10-04)
 
-**This is the thing the rest of the bench serves.** A claim about a deck is worth what the
-experiment behind it is worth, and this is where experiments run: `simulate` for a deck
-against a real pod, `experiment` for two versions of a deck against the same pod, and the
-seeded goldfish for the questions that are about a curve rather than a table. Everything
-downstream — the audit's targets, the doctor's prescriptions, the deck page's figures —
-either feeds an experiment or reads one.
+The pilot ruled overnight pod runs out of the decision loop: a day per answer, runs killed
+by a sleeping laptop and the two-hour background cap, an MDE of ~0.14 at 200 games, and a
+Forge AI that mis-pilots some decks so their rates are floors. A swap is now answered by
+`manamap pilot try <slug> --out A --in B` in about ten seconds, and a branch is graded by
+`net-change`. What makes the goldfish fit for that job:
 
+**It is PAIRED.** Every game takes its own seed, `random.Random(f"{seed}:{i}")`
+(`diagnostic.HARNESS` version 2), and `diagnostic.align` lines two lists up slot for slot,
+so game *i* of the champion and game *i* of the candidate deal the same shuffle wherever
+the lists agree. `net_change._paired` takes the per-game differences (`keep_games=True`)
+and reports a paired t interval, MDE = 2.8016 × se, a call only when the ROUNDED bounds
+exclude zero. Pairing roughly halved interval widths; a list against itself reads exactly
+zero and makes no call.
 
+**It reads what it claims to.** `model-coverage <slug>` names per card the channel it feeds
+and whether that channel is on — seen, DARK (its channel is off) or invisible. `try` prints
+it for every card in and out. A card the model cannot read looks exactly like a card that
+does not help, so read that line before believing a null.
+
+**It obeys attack restrictions.** `goldfish_profiles.attack_gate` reads Defender (never
+attacks), "can't attack unless …" (held back, with the reason) and the two hand conditions
+it can evaluate (Kefnet the Mindful, seven or more cards; Hazoret, one or fewer). Before
+this, Kefnet was a free 5/5 flyer every turn.
+
+**It seats three opponents for what WE gain off them, and one for damage.**
+`GOLDFISH_OPPONENTS = 3` multiplies triggers on opponents' draws — Faerie Mastermind's card,
+Smothering Tithe's Treasure — because a four-player table has three opponents
+drawing. Damage is still measured against one seat at 40 life: the clock is "how fast does
+this kill one player", and nobody blocks or removes anything.
+
+**Its authored rates are stated, in `config.py`, and `try` names them** when a card on
+either side depends on one:
+
+| constant | value | what it stands in for |
+|---|---:|---|
+| `GOLDFISH_OPPONENTS` | 3 | opponents whose draws trigger our payoffs |
+| `TITHE_PAY_RATE` | 0.5 | share of opponents who pay {2} to Smothering Tithe rather than give a Treasure |
+| `GEYSER_TAPPED_SHARE` | 0.5 | share of an opponent's lands tapped when Mana Geyser resolves |
+| `OPPONENT_HAND` | 4 | cards in a target opponent's hand (Jeska's Will) |
+
+**Rituals are cast when they are the difference** (2026-10-05). `ritual_profile` reads a
+fixed ritual (Dark Ritual), per-creature (Battle Hymn), per-type (Brightstone Ritual),
+per-opponent-hand (Jeska's Will, with its impulse mode) and per-tapped-land (Mana Geyser);
+it refuses a ritual with an additional cost or restricted mana rather than reading it as
+free. A ritual is cast in the main phase only when the mana it adds reaches a spell, or the
+commander, that the turn could not otherwise cast; its mana is gone at end of turn.
+
+**What it still cannot see** is in the channel table's named gaps below, and the largest is
+structural: no blockers, no removal, no interaction. Its verdict on board QUALITY is not
+evidence — a go-wide refactor it preferred lost 31/400 to 50/400 in Forge because 1/1
+tokens do not connect. That is what a Forge probe is for.
+
+## Forge is the probe
+
+`forge-cast-check <slug> --card "<name>"` asks the one question Forge answers better than
+anything: **does the AI play this card?** A two-seat shell, about a minute. Every add that
+must be cast or activated for a branch's objective is proven this way before it enters an
+arm (`--branch B --adds --write`). A pod run (`simulate`, `experiment`) is optional
+evidence; in `net-change` a Forge loss whose interval excludes zero is a `forge_warning`
+beside the verdict, never a block. Read `engine_casts` and HELD-WHILE-CASTABLE before any
+Forge rate, and no Forge rate is graded without an A/A at the same N.
 
 > **2026-09-03 — A COMMANDER-DAMAGE KILL IS A GO-WIDE KILL WEARING A CROWN, and
 > the goldfish cannot judge either.** Zur's V6 engine is *"Zur attacks, fetches
@@ -393,7 +439,7 @@ a card that does not help**, and that confusion has cost this project a whole br
 |---|---|
 | `model_draw` | a card's own ETB draw, a spell's draw, a recurring draw, an arrival draw, the draw you buy, draw doublers. `meta.card_advantage.draw_not_modelled` names what is still unread, and is **absent** rather than empty when nothing is |
 | `model_combat` | attacks, board power, the damage clock, tokens as attackers |
-| `model_treasures` | Treasure creation and spending |
+| `model_treasures` | Treasure creation and spending, including Treasure off opponents' draws (Smothering Tithe at `TITHE_PAY_RATE`) |
 | `model_sacrifice` / `model_deaths` / `model_drain` | outlets, deaths and the damage they convert into |
 | `model_discard` | wheels, loots, and the discard half of a draw you pay for |
 | `model_colors` | on by default; a colourless mana model is simply wrong |
@@ -458,7 +504,8 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
   make every extra-combat card live again.
 - **X-based pumps and X-based counters are not read** — X is a count this reader has no
   board to resolve, the same refusal `land_colors` makes for a fetchland without a pool.
-- **Rituals are not modelled** (conservative): a spell that adds mana produces 0 here.
+- **A ritual with an additional cost or restricted mana is refused**, not read as free
+  mana (Infernal Plunge, Geosurge); the unconditional shapes are read (see the top).
 - **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
   your own board and cashes the deaths; that channel is not built.
 
@@ -632,9 +679,10 @@ report whether the two arms' MARGINAL intervals overlapped; that key is deleted 
 deprecated, because non-overlap implies a difference while overlap implies nothing at all.
 Arms run under their own Forge meta names and never touch the deck directory; each arm's
 decklist text rides IN the artifact, so the gitignored logs are exactly regenerable.
-**Same seeds are not paired games** — a changed list changes every shuffle; the control
-is same table, same N, same profile, same engine, and the assumptions say so. An A/A is
-refused with the reason (it measures the noise floor; pass different lists knowingly).
+**In Forge, same seeds are not paired games** — a changed list changes every shuffle (the
+goldfish pairs; Forge cannot); the control is same table, same N, same profile, same
+engine, and the assumptions say so. `--aa` runs one list against itself on purpose: it
+measures the noise floor, and no Forge rate is graded without one at the same N.
 
 **Looks (2026-09-29): a group-sequential A/B, so an overnight queue can stop early
 honestly.** `experiment … --looks K` (K ≤ 4, O'Brien–Fleming by default, `--boundary

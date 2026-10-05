@@ -8,12 +8,14 @@
 It is built around one idea: **a claim about a deck is worth what the experiment behind it
 is worth.** `docs/vision.md` is the page everything else is written against.
 
-At the centre is **simulation** — two engines answering different questions:
+At the centre is **the swap loop**, on two engines with different jobs:
 
-- **Forge**, the real rules engine, run headless and **seeded**, playing your list against
-  your pod's actual decks. Same inputs, same games, byte for byte.
-- **A seeded Monte Carlo goldfish** — 10,000 games of resource development against nobody,
-  for the questions that are about a curve rather than a table.
+- **A seeded, PAIRED Monte Carlo goldfish** — the decision instrument. `try` plays the
+  current list and a candidate through the same games, seed for seed, and answers with an
+  interval on the difference in about ten seconds.
+- **Forge**, the real rules engine, run headless and seeded — a **targeted probe** since
+  2026-10-04. It answers what the goldfish cannot: does the AI actually play this card,
+  and what happens against blockers and removal.
 
 Around them sit the things that make an experiment mean something: a deterministic builder,
 a rules-citation loop for lines that must be *proven* rather than measured, dated web
@@ -27,7 +29,8 @@ anyone else is supported.
 
 ```
   a question                     →  an experiment              →  a result you can cite
-  "does it want more lands?"        experiment --a V1 --b V2      +0.27 mana on t5
+  "is this swap better?"            try --out A --in B            damage@T10 +0.83 [+0.68, +0.98], paired
+  "does the AI play this card?"     forge-cast-check --card X     drawn 28, cast 0 — held
   "is this line lethal?"            /resolve-stack                ✓ or refuted, with CR cites
   "how fast does it go off?"        goldfish                      mean t4.19, 89% by t6
   "what do strong lists run?"       deck-recon, /prescribe        ranked, cited, skeptic-checked
@@ -35,14 +38,15 @@ anyone else is supported.
   "is this change worth buying?"    net-change, then propose      a trade, priced, with a bill
 ```
 
-**`experiment` is the flagship.** Two versions of a deck, the same table, the same N, the
-same seeds, one artifact carrying both arms, and — the part that decides everything — an
-interval on **the difference** of every figure: Newcombe for proportions, Welch plus a
-permutation p for means, a bootstrap on the median for the skewed ones, with a `power` block
-giving the minimum detectable difference at that N. It used to report whether the two arms'
-*marginal* intervals overlapped, which implies nothing at all; that key is **removed, not
-deprecated**. Same seeds are **not** paired games (a changed list changes every shuffle), so
-seeds buy per-arm replayability and the control is N. An A/A is refused with the reason.
+**`try` is the flagship.** `manamap pilot try <slug> --out "A" --in "B"` — about ten
+seconds, nothing written: every card in and out with its roles and what the goldfish can
+see of it, the pilot's keep list (`protected.json`), colour sources before and after, and
+the `net-change` rows with a **paired** interval on the difference. Every goldfish game
+takes its own seed and the two lists are aligned slot for slot, so the noise of two
+independent samples cancels — a list against itself reads exactly zero. A swap that
+survives becomes a branch (`--stage NAME`), and `net-change` grades it on one
+pre-registered objective plus twelve Holm-corrected rows. Never a comparison of two
+marginal intervals: that is the overlap fallacy, and the key that reported it was removed.
 
 ## Six pages over one data layer
 
@@ -87,16 +91,19 @@ returns arbitrary same-colour cards. Linked from the shared nav on every page.
 
 ## The commands behind it
 
-- `simulate <slug> --vs <pod> --games N` — N seeded Forge games: win rate with its interval,
-  who kills you and how, the kill curve, **commander damage per defender**, token pay-off.
-- `experiment <slug> --a <ref> --b <ref> --vs <pod>` — the controlled A/B.
+- `try <slug> --out A --in B` — the swap loop: a paired goldfish screen in ~10 s.
+- `net-change <slug> --branch B` — a candidate 99 graded: one primary, twelve exploratory
+  rows, Holm-corrected, paired per game. A Forge loss beside it is a warning, not a block.
 - `goldfish` — seeded Monte Carlo resource development, 10,000 games in seconds. Every channel
   it models is **opt-in per deck**, so what it can see is a thing you declare and can check.
+- `forge-cast-check <slug> --card X` — the Forge probe: does the AI play this card?
+- `simulate` / `experiment` — Forge games against a named pod, when a question needs a
+  table; every rate with its interval, graded only beside an A/A at the same N.
 - `build <slug> --commander "<name>"` — **the one command**: a brief becomes a legal,
   bracket-gated, *measured* 99 on the bench in six stages, about ten seconds, no agents.
   Omit `--commander` and it proposes three and halts. The dev batch is the **goldfish**, not
   Forge — a twelve-minute Forge batch is ~20 games, whose minimum detectable difference is 42
-  points; `simulate` against a pod is the staging gate. (`build-deck` is the underlying
+  points. (`build-deck` is the underlying
   scoring step and is still callable on its own.)
 - `deck-audit` — 16 axes, each carrying the verbatim `strategy.md` quote that sets its target.
 - `card-search` — deterministic mining over the corpus: identity, oracle/name regex, role,
@@ -133,16 +140,18 @@ the same code.
 
 **Four things this is honest about.** Forge's AI pilots every seat *including yours*, and
 rates itself "poor to ok in control, pretty bad for combo" — a sentence quoted verbatim in
-every run record, which makes a control deck's win rate a lower bound on the pilot. **Five
-decks carry a captain's log — 17 games, every entry debriefed** (Ur-Dragon 6 at 2W-4L,
-Edgar 5, Gishath 2, Goblin Storm 2, Heliod 2) — which is seventeen, not a sample: the log,
+every run record, which makes a control deck's win rate a lower bound on the pilot; that is
+why Forge is a probe. **Five decks carry a captain's log — 19 games, every entry debriefed**
+(Ur-Dragon 7, Edgar 6, Gishath 2, Goblin Storm 2, Heliod 2, as of 2026-10-05) — which is
+nineteen, not a sample: the log,
 debrief and prescription surfaces are built and tested, and barely used. **Six of fourteen
 decks are marked as built in paper** (Edgar, Gishath, Goblin Storm, Heliod, Sharknado,
 Ur-Dragon); whether a deck exists as cardboard is an assertion only the pilot can make, so
 an unlocked deck says it is unlocked rather than being assumed playable — and that one
 authored flag is what decides whether the whole chain runs for it automatically.
 
-And **the goldfish only models what a deck declares.** Every channel — draw, combat,
+And **the goldfish has no blockers and only models what a deck declares.** It cannot price
+a lord's static pump or a blocker's worth, so its verdict on board quality is not evidence. Every channel — draw, combat,
 Treasure, sacrifice, the copy commander, the spell count — is off until that deck's
 `goldfish_targets.json` switches it on, so a card feeding an off channel measures as exactly
 nothing and looks identical to a card that does not help. `model-coverage <slug>` is the
@@ -395,10 +404,16 @@ dependency: the protocol is JSON-RPC over stdio and the subset a tool server nee
 lines, the same reasoning that keeps scipy out of `sim/stats.py`. **It cannot write**, and the
 gate is `serve._cli` imported rather than restated, so the two surfaces cannot drift apart.
 
-## Forge — the rules engine, and the centre of the bench
+## Forge — the rules engine, as a probe
 
 *Code: `src/manamap/sim/{forge,parse,experiment,bridge,opponents,validate_sim,engine_casts}.py`.
 Design, the spike and the verdict: `docs/simulation.md`.*
+
+**Since 2026-10-04 Forge answers narrow questions; it does not decide.** Overnight pod runs
+left the decision loop — a day per answer, an MDE of ~0.14 at 200 games, and an AI that
+mis-pilots some decks into floors — so a swap is screened by `try` on the paired goldfish,
+and Forge's first job is `forge-cast-check`: does the AI play this card at all. What
+follows is how the harness works, which is still how every probe works.
 
 **Forge was chosen by measurement, not preference.** Three things were checked before
 committing to it: every log line parses, 4-seat Commander runs headless, and `-s` makes a
@@ -767,88 +782,36 @@ cache-busters stripped.
 ## Testing
 
 ```bash
-make test          # the inner loop: non-browser, non-forge, parallel, cached
-make test-fresh    # same, nothing served from the cache
-make test-browser  # the playwright suite
+make test          # the fast tier — what you run all day
+make test-fleet    # the slow tier: every producer re-run per deck, fleet constants
+make prepush       # both; before a push. CI runs both.
+make test-browser  # the playwright suite, local only
 pytest -m forge    # one real Forge game; needs ~/.mana-map/forge
-pytest -m ""       # literally everything, browser included
 ```
 
-**Runtimes are stated in `docs/testing.md` and nowhere else, this file included.** They
-belong on one page because they drift: this README carried *~2.5 min* for the cached suite
-for weeks against `docs/testing.md`'s measured ~5 min, and `CLAUDE.md` carried a third,
-differently wrong pair at the same time — it said ~22s/~29s while the real figure was 772s.
-One page that gets re-measured beats three that get copied.
-
-A bare `pytest` is `make test`. Six test files recompute an artifact and compare it to the
-tracked copy — **36 goldfish targets at 10,000 seeded games each**, decks and branches
-together, among them — so those are cached on a hash of their inputs *and* of the code that
-produces them, recorded only on a pass, and kept in gitignored `.pytest_cache/` where they
-cannot reach another machine or CI. The run prints how many it skipped. `make test-fresh`
-is the one to trust before a PR.
-
-A fresh clone skips the cases that gate on gitignored artifacts built locally, and each
-one says which command would enable it — so a clone runs green and faster than a developed
-checkout. Current counts and the measured timings live in `docs/testing.md`.
-
-Counts and the per-file inventory live in `docs/testing.md` for the same reason the
-runtimes do — they move on almost every commit. **Seven skip markers** in
-`tests/conftest.py` (`requires_data`, `requires_rules`, `requires_deck`,
-`requires_strategy`, `requires_roles`, `requires_rulings`, `requires_branch`) gate on the
-last artifact of each stage, so **skips on a fresh clone are expected and correct**. Unit
-tests build inline fixtures — no fixture files. Paths always come from `manamap.config`, so
-the suite is CWD-independent and honours `MANAMAP_DATA_DIR`.
+**Counts and runtimes live in `docs/testing.md` and nowhere else**, with the markers, the
+eight skip conditions, the regenerate-and-compare cache and the rules for writing a test.
+A fresh clone skips what it cannot build and says which command would enable it, so skips
+there are expected; `make test-fresh` is the one to trust before a PR.
 
 ## Landmines
 
+The ones that cost the most; `CLAUDE.md` has one line per rule and the gotchas pages under
+`docs/` hold the measurements.
+
 - **`python -m manamap.pipeline` starts the full 40–60 minute run** with no arguments and
   no confirmation, overwriting trained models. Use the `manamap` CLI.
-- **Never put `data/` on Git LFS.** GitHub Pages serves LFS pointer files, not content —
-  it would silently break every fetch on the deployed site. The 250 MB of tracked data
-  is deliberate.
-- **Index alignment**: `projection[i]` ≡ `cards.csv[i]` ≡ `embeddings[i]`, positionally
-  (card names duplicate). Never partially regenerate after a card-count change.
-- **Cache ordering**: check → spawn → write → validate → **record last**. Recording before
-  validating poisons the cache.
-- **A cache MISS is information, not a bug.** `cache-status` reports MISS for a routine
-  that has never run as well as one whose inputs moved, and the two need opposite
-  responses. Check the `changed` list before spawning: an empty one means the routine was
-  never recorded and there is nothing to re-bless. Never `cache-record` to make the board
-  green — the record is the claim that a human read the artifact and agreed it holds.
+- **Never put `data/` on Git LFS** — GitHub Pages serves pointer files, not content.
+- **Index alignment**: `projection[i]` ≡ `cards.csv[i]` ≡ `embeddings[i]`, positionally.
+  Never partially regenerate after a card-count change.
+- **An edit to any of the four goldfish files is a model change** — its bytes are the
+  `model_version` stamp — so it means `manamap pilot regen --jobs 8 && make manuals`.
+- **`manamap serve` holds the old modules.** Restart it after editing Python.
 - **Bump `?v=N`** on the script and CSS tags in `viz/index.html` after any frontend edit.
-- **The combo graph is format-agnostic.** Commander Spellbook lines may quietly assume a
-  card is *your commander* — `"Infinite commander casts"` in `produces` is the tell.
-  Verify with a stack before stating it as a line; goblin-storm stack 004 is the cautionary tale.
-- **Rebuild the strategy DB after editing `strategy.md`** — the loader hard-errors on a
-  sha256 mismatch.
-- **A mean is not a result.** Report the median and the interval beside it or the number
-  lies on a skewed sample. `mean_ci` emits all of them; do not unpack only `mean`.
-- **Scryfall leaves `mana_cost` EMPTY on transform and MDFC layouts** and puts the cost on
-  each face — and holds *both halves* on adventure and split layouts. Read
-  `common.front_field(card, "mana_cost")`, never `card["mana_cost"]`, or you under-count
-  one class of card and double-count another.
-- **`--identity` takes letters, and `parse_color_identity` splits on commas.** It is right
-  for `cards.csv`'s `"G, U"` and returns `{"GU"}` — one token nothing can be a subset of —
-  for the compact form a human types. `card_search.parse_identity_arg` is the CLI parser.
-- **Ownership means a BOX.** `data/decks/` holds build plans as well as sleeved decks and
-  nothing tells them apart, so `collection.owned_names()` deliberately does not count deck
-  membership.
-- **`VALIDATED` and `STAGES` are different lists.** An artifact with a gate but no
-  lifecycle stage still has to be reported, or `deck-status` says green while the gate is
-  red — which it did, fleet-wide, for three artifacts.
-- **`manamap serve` holds the old modules.** Restart it after editing Python, or set
-  `MANAMAP_NO_DAEMON=1`, or you will carefully measure the code you just replaced.
-- **A branched write needs a branched read.** Three instances now, the third committed inside
-  the commit that fixed the class: a measurement ran on the champion's list and was filed
-  under the branch. Every branch measurement records the branch's own `decklist_sha256`.
-- **Absent means absent, never zero.** A figure nobody measured is a missing key with a stated
-  reason. `0.0` is a measurement and a reader cannot tell it from one.
-- **A validator that fires on correct data is worse than no validator**, and the only way to
-  know is to measure the proposed check against the whole fleet *first*. Six have been
-  prototyped and rejected on that ground; one fired on 27% of correct authored data.
-- **Widening a matcher needs a corpus sweep in the same commit** — newly matched, newly
-  dropped, and the extreme tail read card by card. Skipped once, it billed Jeweled Lotus three
-  mana every turn forever.
+- **Cache ordering for agents**: check → spawn → write → validate → **record last**.
+- **Scryfall leaves `mana_cost` empty on transform and MDFC layouts** — read
+  `common.front_field(card, "mana_cost")`, never `card["mana_cost"]`.
+- **Ownership means a BOX**, never deck membership (`collection.owned_names()`).
 
 ## Deployment
 
