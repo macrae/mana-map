@@ -35,6 +35,7 @@ from manamap.config import (
     GOLDFISH_OPPONENTS,
     GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
+    TITHE_PAY_RATE,
 )
 from manamap.pilot import manabase
 from manamap.pilot.common import (
@@ -863,7 +864,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if card["token_doubler"]:
                 token_multiplier *= 2
             if model_treasures:
-                if card["treasure_trigger"] in ("upkeep", "landfall"):
+                if card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
+                                                "opponent_second_draw"):
                     treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
                 elif card["treasure_trigger"] == "etb":
                     treasures += (card["treasure_n"] + treasure_bonus) * treasure_multiplier
@@ -2150,7 +2152,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     treasure_multiplier *= 2
                 if not model_treasures:
                     pass
-                elif card["treasure_trigger"] in ("upkeep", "landfall"):
+                elif card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
+                                                  "opponent_second_draw"):
                     treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
                 elif card["treasure_trigger"] in ("etb", "cast"):
                     treasures += ((card["treasure_n"] + treasure_bonus)
@@ -2251,6 +2254,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 counter_power += _a["per_artifact_sac_counter"] * artifact_sacs_this_turn
                 if _a["per_artifact_sac_draw"]:
                     draw_n(_a["per_artifact_sac_draw"] * artifact_sacs_this_turn)
+        # TREASURE OFF THEIR DRAWS (Smothering Tithe, Gleaming Splendor), from
+        # every opponent at the table. Each tax is decided per draw on this game's
+        # own stream against TITHE_PAY_RATE — an AUTHORED assumption, said so in
+        # MODEL_ASSUMPTIONS — so a wheel that hands three opponents seven cards
+        # is up to 21 Treasure, about half of it at the stated rate.
+        if model_treasures and treasure_engines:
+            for per_event, trigger in treasure_engines:
+                if trigger == "opponent_draw_tax":
+                    made = sum(1 for _ in range(opponent_draws_this_turn * GOLDFISH_OPPONENTS)
+                               if rng.random() >= TITHE_PAY_RATE)
+                elif trigger == "opponent_second_draw" and opponent_draws_this_turn >= 2:
+                    made = GOLDFISH_OPPONENTS
+                else:
+                    continue
+                treasures += made * (per_event + treasure_bonus) * treasure_multiplier
         if model_discard and event_payoff_permanents:
             _disc_t = discarded - (discarded_by_turn[-1] if discarded_by_turn else 0)
             for _e in event_payoff_permanents:

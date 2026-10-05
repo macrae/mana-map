@@ -236,6 +236,14 @@ def run(slug, swaps, branch=None, iterations=None, seed=None, each=False):
     cards, forge_run = card_rows(slug, branch, base_doc, doc, rows)
     blind = {c["name"] for c in cards if c["state"] != "seen"}
     call, better, worse, trust = verdict(table, blind)
+    # A FIGURE RESTING ON AN AUTHORED RATE SAYS SO. Tithe's Treasure is decided by
+    # TITHE_PAY_RATE, which nothing here measures.
+    from manamap.pilot import goldfish_profiles as _gp
+    from manamap.config import TITHE_PAY_RATE
+    if any(_gp.treasure_profile(c)[1] == "opponent_draw_tax"
+           for c in (base_doc.get("cards") or []) + (doc.get("cards") or [])):
+        trust += (f"; Smothering Tithe's Treasure assumes opponents pay its tax "
+                  f"{TITHE_PAY_RATE:.0%} of the time (an authored rate)")
     per_swap = []
     if each and len(rows) > 1:
         for (o, i) in swaps:

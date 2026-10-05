@@ -1712,6 +1712,17 @@ _TREASURE_N_RE = re.compile(
     re.IGNORECASE)
 # Recurring, and free at the point of use.
 _TRE_UPKEEP_RE   = re.compile(r"at the beginning of your upkeep", re.IGNORECASE)
+#: TREASURE OFF AN OPPONENT'S DRAW (2026-10-04). Swept on the dump: Smothering
+#: Tithe (a tax the drawer may pay) and Gleaming Splendor (each opponent's second
+#: draw) are the two worded plainly. Hullbreacher REPLACES the draw, Tataru Taru
+#: fires only off-turn and a Consecrated Sphinx variant chooses a mode — those
+#: three stay `unmodelled` and named.
+_TRE_OPP_DRAW_TAX_RE = re.compile(
+    r"whenever an opponent draws a card, that player may pay \{\d+\}\. "
+    r"if the player doesn't, you create (?:a|one) treasure", re.IGNORECASE)
+_TRE_OPP_SECOND_RE = re.compile(
+    r"whenever an opponent draws their second card each turn, you create (?:a|one) treasure",
+    re.IGNORECASE)
 _TRE_LANDFALL_RE = re.compile(r"whenever a land you control enters|landfall", re.IGNORECASE)
 _TRE_CAST_RE     = re.compile(r"whenever you cast", re.IGNORECASE)
 # A Saga adds a lore counter "after your draw step" every turn, so a Saga whose
@@ -1756,7 +1767,9 @@ def treasure_profile(card):
     """How this card makes Treasures, and whether a goldfish can see it.
 
     Returns `(per_event, trigger)` where trigger is one of `upkeep`,
-    `landfall`, `cast` (recurring), `etb` (once), or `unmodelled`.
+    `landfall`, `cast` (recurring), `etb` (once), `opponent_draw_tax` (each
+    opponent draw, unless they pay — Smothering Tithe), `opponent_second_draw`,
+    or `unmodelled`.
     A card with no Treasure text returns `(0, None)`.
     """
     text = card.get("oracle_text") or ""
@@ -1770,6 +1783,10 @@ def treasure_profile(card):
     saga = _TRE_SAGA_RE.search(card.get("type_line", "") or "") or _TRE_SAGA_RE.search(text)
     if saga:
         return count, "upkeep"
+    if _TRE_OPP_DRAW_TAX_RE.search(text):
+        return 1, "opponent_draw_tax"
+    if _TRE_OPP_SECOND_RE.search(text):
+        return 1, "opponent_second_draw"
     for trigger, pattern in (("upkeep", _TRE_UPKEEP_RE),
                              ("landfall", _TRE_LANDFALL_RE),
                              ("cast", _TRE_CAST_RE),

@@ -103,7 +103,9 @@ NOT_A_CHANNEL = {
 #: `unmodelled` are READ and not acted on -- a Blood made by connecting is
 #: one a blocker can prevent, and this model has no blockers.
 _MODELLED_BLOOD_TRIGGERS = ("etb", "per_opponent", "spell")
-_MODELLED_TREASURE_TRIGGERS = frozenset({"upkeep", "landfall", "etb", "cast"})
+_MODELLED_TREASURE_TRIGGERS = frozenset({"upkeep", "landfall", "etb", "cast",
+                                         # 2026-10-04: Smothering Tithe, Gleaming Splendor
+                                         "opponent_draw_tax", "opponent_second_draw"})
 
 def _nonzero(profile, keys):
     return any((profile or {}).get(k) for k in keys)

@@ -347,9 +347,11 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
     exactly that number: anything else means the delta is coming from somewhere
     other than the cards this commit taught the model to see.
 
-    RE-BASELINED EIGHT TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14,
-    15.482 on 2026-09-21, 15.517 on 2026-09-22, 15.239 on 2026-10-02, 15.434 and
-    15.43 on 2026-10-04. The eighth is the ATTACK GATE: Kefnet the Mindful no longer
+    RE-BASELINED NINE TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14,
+    15.482 on 2026-09-21, 15.517 on 2026-09-22, 15.239 on 2026-10-02, 15.434,
+    15.43 and 16.289 on 2026-10-04. The ninth is TREASURE: sharknado now opts into
+    model_treasures (Smothering Tithe readable), and more mana casts more of the
+    draw the floor counts. The eighth is the ATTACK GATE: Kefnet the Mindful no longer
     swings without seven cards in hand, which moves the combat that feeds this
     floor. The seventh is the SEED, not the deck or the model: every game
     now takes its own seed (`goldfish.run`, harness v2) so two lists pair game by
@@ -412,7 +414,7 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
             card["oracle_text"] = "Flying"      # the bug, re-introduced
             checked += 1
     assert checked == 4, f"sharknado should hold four activated wheels, not {checked}"
-    assert t10(blind) == 15.43, "the pre-change figure is not being recovered"
+    assert t10(blind) == 16.289, "the pre-change figure is not being recovered"
     assert with_wheels > 22, (
         f"the activated wheels are worth ~7.9 cards by turn ten; got {with_wheels}")
 

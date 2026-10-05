@@ -567,6 +567,11 @@ DISCARD_ASSUMPTIONS = [
     "interaction. So the tax is priced and the risk it offsets is not. A "
     "trigger on an opponent CASTING (Rhystic Study) is a different family and "
     "stays unread.",
+    "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a "
+    "Treasure per opponent draw unless that opponent pays {2}; how often a table "
+    "pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each "
+    "draw. Every Tithe figure is conditional on it, and `try` says so when a list "
+    "relies on it.",
     "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER "
     "DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no "
     "opponents holding cards, so Jace's Archivist and Windfall draw what OUR "

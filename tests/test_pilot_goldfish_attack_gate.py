@@ -102,3 +102,34 @@ def test_what_we_draw_off_opponents_scales_with_the_seats(monkeypatch):
     monkeypatch.setattr(goldfish_turn, "GOLDFISH_OPPONENTS", 1)
     one = gain()
     assert three > one, (three, one)
+
+
+# ── Treasure off the opponents' draws (2026-10-04) ────────────────────────
+
+def test_the_tithe_and_the_splendor_are_read_and_the_replacement_is_not():
+    tithe = {"oracle_text": "Whenever an opponent draws a card, that player may pay {2}. "
+                            "If the player doesn't, you create a Treasure token.",
+             "type_line": "Enchantment"}
+    assert gp.treasure_profile(tithe) == (1, "opponent_draw_tax")
+    splendor = {"oracle_text": "Whenever an opponent draws their second card each turn, "
+                               "you create a Treasure token.", "type_line": "Enchantment"}
+    assert gp.treasure_profile(splendor) == (1, "opponent_second_draw")
+    hull = {"oracle_text": "Flash\nIf an opponent would draw a card except the first one they draw "
+                           "in each of their draw steps, instead you create a Treasure token.",
+            "type_line": "Creature — Human Pirate"}
+    assert gp.treasure_profile(hull)[1] == "unmodelled"
+
+
+@requires_data
+@requires_deck
+def test_an_opponent_who_always_pays_the_tithe_costs_the_deck_its_mana(monkeypatch):
+    """BLINDING BY THE ASSUMPTION ITSELF: at a pay rate of 1.0 every opponent pays
+    {2} and Smothering Tithe makes nothing, so sharknado (model_treasures on since
+    2026-10-04) must read lower than at the stated 0.5."""
+    from manamap.pilot import diagnostic, goldfish_turn
+    stated = diagnostic.run("sharknado", iterations=1500, seed=5, quiet=True)
+    monkeypatch.setattr(goldfish_turn, "TITHE_PAY_RATE", 1.0)
+    always = diagnostic.run("sharknado", iterations=1500, seed=5, quiet=True)
+    a = stated["output"]["damage_by_turn"]["10"]["rate"]
+    b = always["output"]["damage_by_turn"]["10"]["rate"]
+    assert a > b, f"Tithe's Treasure should be worth damage by turn ten ({a} vs {b})"

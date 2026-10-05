@@ -1251,6 +1251,11 @@ GOLDFISH_OPPONENT_LIFE = 40
 #: Consecrated Sphinx, a Blood made per opponent) fires for every opponent at a
 #: Commander table, and counting one seat undercounted it threefold.
 GOLDFISH_OPPONENTS = 3
+#: SMOTHERING TITHE'S TAX, AN AUTHORED ASSUMPTION — labelled as one, never a
+#: measurement. "That player may pay {2}": how often an opponent pays depends on the
+#: table, and nothing here can measure it. Half is the stated middle; `try` and
+#: MODEL_ASSUMPTIONS print it, so any figure resting on it says so.
+TITHE_PAY_RATE = 0.5
 #: Ten poison counters lose the game (CR 704.5c); the goldfish's second clock.
 GOLDFISH_POISON_TO_LOSE = 10
 
