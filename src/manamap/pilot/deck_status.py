@@ -80,11 +80,12 @@ STAGES = [
      "/write-manual {slug}"),
     ("log",        "log.jsonl",              None,  False, "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
      "manamap pilot deck-notes {slug} add \"<what happened>\" --result win|loss --opponents 3"),
-    ("issue",      "issue.json",             None,  False, "authored identity: name, commander, status (volume/price are legacy fields)",
-     'AUTHORED: data/decks/{slug}/issue.json — three keys matter now: '
-     '{{"deck_name": "…", "commander": "…"}} plus "status" once the deck stops '
-     'being sleeved (broken-down | superseded | retired). The cover/volume '
-     'fields are the frozen magazine renderer\'s and no live surface reads them.'),
+    ("issue",      "issue.json",             None,  False, "authored identity: name and commander (volume/price are legacy fields)",
+     'AUTHORED: data/decks/{slug}/issue.json — two keys matter now: '
+     '{{"deck_name": "…", "commander": "…"}}. A deck that stops being sleeved '
+     'is marked with `manamap pilot deck-state {slug} archive|retire|supersede`, '
+     'never with a status key here. The cover/volume fields were the magazine '
+     'renderer\'s (deleted 2026-09-13) and no live surface reads them.'),
     # ── ADDED 2026-09-13: two artifacts the GATE refused on and this board
     # could not see ──────────────────────────────────────────────────────────
     #
@@ -120,8 +121,8 @@ ADDED_2026_08 = {"map", "engine", "log"}
 # published decks are frozen legacy inputs until the manual is simplified).
 # `shortlist` and `shortlist-art` followed on the same day: The Short List's rule
 # (ten ranked cards worth knowing about, ownership not a criterion) lives in the
-# doctor's prescriptions now; the surviving considering.json files are frozen
-# legacy the renderer still reads and `validate-considering` still gates.
+# doctor's prescriptions now. The renderer that read the surviving
+# considering.json files, and `validate-considering`, were deleted 2026-09-13.
 # A stage whose artifact exists for another reason cannot be checked by file
 # presence — `panel` was checked by KEY for that reason, and the mechanism went
 # with the stage; bring it back with the first such stage, not before.

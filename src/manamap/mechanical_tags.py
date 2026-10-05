@@ -1,4 +1,14 @@
-"""Mechanical tag extraction from MTG oracle text via regex patterns."""
+"""Mechanical tags: regex patterns over oracle text -> a fixed retrieval vocabulary.
+
+`MECHANICAL_TAGS` (config.py) maps a tag to a pattern; `tag_oracle_text` returns the
+tags a text matches and `encode_tags_multihot` makes the model input. Shared by step 2
+(extract) and the analysis steps, so a card is tagged one way everywhere.
+
+FROZEN. The tag list is model-facing — the ability model's input width is the tag
+count — so editing `MECHANICAL_TAGS` invalidates `model_ability.pt` (retrain steps
+3-5). What job a card does in a 99 is `ROLE_PATTERNS`, a separate dict, because roles
+change often and tags must not.
+"""
 
 import re
 

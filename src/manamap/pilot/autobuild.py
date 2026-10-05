@@ -30,9 +30,11 @@ n=20 (`sim.stats.mde_proportion`, at the 0.18 baseline the fleet actually reads)
 A dev-stage Forge batch cannot resolve any change a build would ever make. The
 goldfish runs 10,000 seeded games in about four seconds and is byte-deterministic,
 and `benchmark` adds ~2.3s under a frozen harness. So the dev batch is those two,
-it costs about six seconds, and Forge belongs at the staging gate where 400 games
-gives an MDE of 8.5. The report says so out loud rather than leaving a reader to
-assume a win rate was measured.
+and it costs about six seconds. Since 2026-10-04 Forge is not a gate at any stage:
+the decision loop is `try` and `net-change` (paired goldfish intervals), and Forge
+answers narrow questions as a probe (`forge-cast-check` — does the AI play this
+card). The report says so out loud rather than leaving a reader to assume a win
+rate was measured.
 
 A BRIEF'S FREE TEXT DRIVES TWO THINGS AND IS OTHERWISE INERT — see `_read_brief`.
 Saying which two is the whole point; a description that silently changes nothing
@@ -540,8 +542,8 @@ def format_report(record):
         "  Measured by the goldfish and the benchmark — 10,000 seeded solitaire",
         "  games and a frozen four-measure harness. NO POD AND NO INTERACTION, so",
         "  no win rate: a dev-budget Forge batch is ~20 games, which resolves",
-        "  nothing (MDE 42 points against this fleet's baseline). The pod is the",
-        "  staging gate — `manamap pilot simulate`.",
+        "  nothing (MDE 42 points against this fleet's baseline). Screen a swap",
+        "  with `manamap pilot try`; Forge is a probe, never a gate.",
         "",
         "  A brief's prose is stored, not read. The builder consumes commander,",
         "  bracket, must_include/exclude, pool and theme; everything else in",

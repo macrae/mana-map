@@ -17,6 +17,27 @@ Every slot keeps its runners-up. A build plan is a strong starting point, not a
 verdict, and a slot whose second choice was 0.01 behind should say so.
 
 Deterministic: same brief, same artifacts, same plan, byte for byte.
+
+MAP OF THIS FILE (in order):
+  BriefError / scaffold_brief / load_brief  write and sanity-check `brief.json`.
+  deck_printings / resolve_pool  the owned printing per name; the names a build
+                    may draw from (a named pool, or None for the whole format).
+  commander_identity / resolve_partner  the identity licensed, and a Partner pair.
+  role_group / candidate_pool  the budget line a card fills; the HARD filters
+                    (legal, in identity, bracket-safe) applied before scoring.
+  synergy_affinity / edhrec_component / castability / curve_fit /
+  score_candidates  the scoring factors, then every candidate scored.
+  CURVE_SHARE / curve_targets / curve_bucket  how many cards per mana value.
+  role_budget_for   the budget to fill to, and where it came from.
+  legal_must_includes / fill_slots  must-includes split by legality; each budget
+                    line filled best-first, runners-up kept.
+  complete_combos   swap in the one missing card of a half-held combo.
+  enforce_bracket   swap out cards until the computed floor fits the target.
+  build             PUBLIC ENTRY: brief -> plan dict, in the order above.
+  decklist_name / decklist_text  render the plan as a `decklist.txt`.
+  AGENT_PLAN_KEYS / merge_agent_keys  carry agent-merged keys into a fresh build.
+  main              `build-deck <slug>`: writes `build_plan.json`, and
+                    `decklist.txt` with `--write-decklist`.
 """
 
 import json

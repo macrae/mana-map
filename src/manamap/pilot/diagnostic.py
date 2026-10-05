@@ -2,6 +2,25 @@
 
     manamap pilot diagnose <slug> [--branch NAME] [--vs main] [--json]
 
+MAP OF THIS FILE (in order):
+  ARTIFACT / HARNESS / FLEET ..  `diagnostic.json`, the frozen seed + iterations,
+                    fleet context bands, and the thresholds with their reasons.
+  _place / _rate    a reading against the fleet; a rate with its Wilson interval.
+  commanders / stall / declaration_fits / engine / mana / _late / steam / output
+                    the axes, each read from the goldfish's per-game rows:
+                    command zone, P(no legal play), engine online by when, land
+                    drops and mana, late-game steam, and the magnitude series.
+  PER_GAME / per_game  per-game values per row, kept for paired comparison.
+  align             a branch's cards placed in the champion's slots.
+  run / run_on      PUBLIC ENTRY: one reading of a list on disk / held in memory;
+                    `keep_games` and `align` are what let two readings pair.
+  ── Comparison ──   `ablate` (cut a set, with a same-size placebo), `compare`
+                    (two readings, Newcombe on each difference), `mde` / `_mde`.
+  ── Reading the numbers ──  `as_frequency` / `_pair` / `interpret`: what moved,
+                    what it cost, what still limits it.
+  ── CLI ──          `_print` / `_print_compare`; `main` runs one reading, or two
+                    with `--vs`, and `--write` saves `diagnostic.json`.
+
 THE LOOP THIS CLOSES is measure -> change -> re-measure. Everything here already
 had a home; what was missing was a single reading that can be taken before and
 after a change and compared honestly. The whole existing stack costs 12.6s on one
@@ -807,9 +826,11 @@ def ablate(doc, slug, names, axis_block, axis_key, axis_turn, branch=None,
 def compare(a, b):
     """Two readings, and the difference with an interval on the DIFFERENCE.
 
-    UNPAIRED, and that is not a shortcut. A changed decklist changes every
-    shuffle, so a shared seed buys replayability and never pairing — the fact
-    `experiment`'s assumptions block already states. Newcombe for rates.
+    UNPAIRED, for readings that carry only their summaries — a candidate sweep.
+    Pairing needs per-game values: since harness v2 every game has its own seed
+    (`f"{seed}:{i}"`) and `run(..., keep_games=True, align=True)` keeps them, and
+    `net_change.compare_readings` pairs those game by game. That is what `try`
+    and `net-change` read. Newcombe for rates here.
 
     `intervals_overlap` is deliberately not reported. Non-overlap implies a
     difference; overlap implies nothing at all, because two marginal intervals

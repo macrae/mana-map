@@ -1,10 +1,10 @@
 """The compact deck page: nine sections, and nothing else.
 
-WHY THIS IS A SEPARATE MODULE. `issue_spec.py` is the magazine's spec — seventeen
-departments, five acts, rhythm tags, bylines, columnists, packaging copy — and it
-is frozen, with a deletion scheduled (`docs/history/manual-v5-spec.md` phase 4). A live
-registry inside a file waiting to be deleted is a merge conflict with a date on
-it. This module survives that deletion; that one does not.
+WHY THIS IS A SEPARATE MODULE. `issue_spec.py` was the magazine's spec — seventeen
+departments, five acts, rhythm tags, bylines, columnists, packaging copy — frozen and
+then deleted with the renderer on 2026-09-13 (`docs/history/manual-v5-spec.md`
+phase 4). A live registry inside a file waiting to be deleted was a merge conflict
+with a date on it, so this one was kept apart and survived.
 
 IT IS DELIBERATELY SMALL. The point of the replacement is that the single source
 of truth shrinks: no ACTS, no INTENSITY, no MODE, no ACCENT, no

@@ -1,7 +1,23 @@
-"""Pilot subcommand registry and argparse wiring.
+"""Pilot subcommand registry and argparse wiring — every `manamap pilot <cmd>` is here.
 
 Unlike the pipeline STEPS, pilot commands are standalone and per-deck
 parameterized. Modules import lazily at dispatch so `manamap --help` stays fast.
+
+MAP OF THIS FILE (in order):
+  PILOT_STEPS       (name, module, help) for every subcommand — the ONE table.
+                    `docs/pilot.md` must list every name (a test checks), and the
+                    count in CLAUDE.md is asserted against its length.
+  _DECK_COMMANDS    the commands that take a positional `slug` (everything that
+                    works on one deck); a command not named here takes none.
+  add_pilot_parser  one subparser per row, then each command's own flags in a long
+                    `if name == ...` run — find a command's flags by searching
+                    for its name in quotes.
+  run_pilot_step    dispatch to `module.main(args)`; a malformed goldfish
+                    declaration becomes a refusal (SystemExit), not a traceback.
+
+Adding a command: a row in PILOT_STEPS, the name in _DECK_COMMANDS if it takes a
+deck, its flags in add_pilot_parser, a line in docs/pilot.md, and — if it is
+read-only and should run warm — `serve.CLI_READONLY`.
 """
 
 import importlib

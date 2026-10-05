@@ -1,4 +1,10 @@
-"""Step 9: Convert embeddings.npy to raw Float32 binary for JS consumption."""
+"""Step 9: both embedding matrices -> raw little-endian Float32 `.bin` files the browser can fetch.
+
+`embeddings.bin` and `embeddings_ability.bin`, row-major, `N x 128`, native byte order
+(little-endian on every machine this runs on), no header — the
+viz reads them as one `Float32Array` and indexes by card row. Tracked, and served by
+GitHub Pages, which is why `data/` has no LFS.
+"""
 
 import numpy as np
 

@@ -1,4 +1,12 @@
-"""Step 1: Download Scryfall Oracle Cards bulk data."""
+"""Step 1: download Scryfall's bulk data — oracle cards, plus the first printing of each.
+
+Writes `oracle-cards.json.gz` and `first_printings.json` (oracle id -> first release,
+reduced from the much larger all-printings bulk file), and `.download-meta.json` so a
+re-run skips an up-to-date dump. Needs the network; everything after it does not.
+
+Scryfall's bulk is gzipped JSONL now, and is stored as it arrives. The first-printing
+table exists for power creep (step 11), which asks whether a card is NEWER.
+"""
 
 import json
 

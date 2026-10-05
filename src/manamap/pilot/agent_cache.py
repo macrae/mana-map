@@ -18,6 +18,24 @@ be recorded, so the next run re-spawns it. `record()` enforces that in code.
 The cache never writes to or deletes an artifact. It only ever writes its own
 sidecar, `data/decks/<slug>/.agent-cache.json` (tracked — a `git pull` should
 transfer someone else's regeneration as a cache hit).
+
+MAP OF THIS FILE (in order):
+  UnknownRoutine / MissingInput  the two refusals a caller must fix, not spawn past.
+  ── Digests ──       `cached_file_sha256`, `artifact_digest` (only the keys a
+                    routine owns), `file_digest_excluding`, `cards_semantic_*`
+                    (card facts, not looks), `agent_prompt_sha256`,
+                    `scenario_block_digest`, `rules_version`, rulings, strategy.
+  ── Routine specs ──  `routine_spec` (registry entry, or a synthesised
+                    stack: / decision: / prescription: spec), `discover_routines`,
+                    `resolve_inputs` (input tokens -> path + sha), `key_fingerprints`
+                    (per prose key), `fingerprint` (the routine's digest).
+  ── Sidecar ──      `load_cache` / `save_cache` on `.agent-cache.json`,
+                    `diff_inputs` (name what moved), the N/A applicability checks,
+                    then the verbs: `status` (HIT / EDITED / MISS, read-only),
+                    `record` (after validation only), `clear`, `rebless`
+                    (STALE_OK), `snapshot` / `rerecord` (a cache-format change).
+  ── CLI ──          `format_status`; `main` serves cache-status / -record / -clear /
+                    -rebless / -snapshot / -rerecord.
 """
 
 import hashlib

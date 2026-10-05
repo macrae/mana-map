@@ -4,6 +4,27 @@
                                      | stage | unstage | commit | log
                                      | propose | withdraw | merge | delete
 
+MAP OF THIS FILE (in order):
+  BRANCH_FILE / FREE / SOURCED  the on-disk names and the four sourcing states.
+  names / meta / diff  the branch's list read in the deck's vocabulary (DFC faces
+                    canonicalised); `diff` is `add` / `out` against the deck.
+  _deck_holders / source / report  where every card would come from — in deck,
+                    in a box, sleeved elsewhere (locked or not), or a purchase.
+  recorded_proxy / one  the proposal's proxied cards; one branch summarised for
+                    `list`, `info.json` and the web roster.
+  parse_objective / grade_objective  `"kill_by_8 >= 0.30"` or `forge.<axis> … @<pod>`
+                    into {axis, op, value}; met / not met / not resolvable.
+  champion_reading / _band_caveat  the anchor printed when a line is chosen.
+  new / swap_entries / stage / unstage / commit / log  open a branch, stage one
+                    swap at a time (keep list honoured), freeze a list.
+  _validate_after_merge  what no longer validates once the list changed.
+  BRANCH_STATES / branch_state  six derived states (OPEN .. REJECTED), never stored.
+  pull_list / propose / withdraw / reject / delete / merge  the merge-request
+                    stage, the ledger verbs, and the write of `decklist.txt`.
+  ── CLI ──          `_dispatch` parses the action; `main` runs it and, for the
+                    verbs in MUTATES_THE_DOSSIER, rewrites `info.json` on a
+                    SLEEVED deck (`_refresh_dossier`).
+
 THE GAP THIS FILLS. A deck had exactly two states: the list in `decklist.txt`,
 and nothing. `decklist.txt` is tracked, so writing it MINTS A VERSION, and the
 captain's log stamps games against versions — which makes a version you cannot

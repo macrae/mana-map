@@ -1,4 +1,13 @@
-"""CardEmbeddingModel: lightweight fusion MLP that produces 128-dim embeddings."""
+"""`CardEmbeddingModel`: the fusion MLP both trained spaces use, 128-d out.
+
+Inputs are a frozen sentence embedding of the oracle text plus learned embedding
+tables for supertype, rarity, colour identity and layout, a keyword multi-hot (or a
+learned projection of it), and optionally mechanical tags and a structured block
+(power/toughness, mana pips, colour features). One class, two configurations: the
+layout model (step 4a) and the ability model (4b, with tags, structure and a
+text passthrough half). Input widths come from config.py — changing one there
+invalidates every checkpoint.
+"""
 
 import torch
 import torch.nn as nn

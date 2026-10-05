@@ -1,9 +1,9 @@
 """The handbook's stylesheet. Print-first, because a POH is a binder.
 
-WHAT MAKES THIS DIFFERENT FROM THE PAGE IT REPLACES. `page_design.PAGE_CSS` is a
-web page that prints acceptably: it opens the folds and hides the nav, and that
-is the whole of its `@media print`. There is no `@page` rule anywhere in the
-repo, no page size, no margins, no running heads, no page numbers, and no
+WHAT MAKES THIS DIFFERENT FROM THE PAGE IT REPLACED. `page_design.PAGE_CSS` (deleted
+since) was a web page that printed acceptably: it opened the folds and hid the nav,
+and that was the whole of its `@media print`. There was no `@page` rule anywhere in
+the repo, no page size, no margins, no running heads, no page numbers, and no
 control over where a procedure breaks.
 
 A handbook is read under pressure by somebody who needs one page, so the page is

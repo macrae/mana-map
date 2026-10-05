@@ -6,6 +6,25 @@ who has them (`validate-sim` does exactly that). What it reads is the log's own
 vocabulary — every line a stable prefix — and what it refuses to do is infer what the
 log does not say.
 
+MAP OF THIS FILE (in order):
+  RX / _TOKEN / _CREATE ..  the log-line regexes, one per stable prefix.
+  parse_games       one JVM log -> games, each an event list + outcome (`_event`
+                    reads a line; `_settle_outcome` keeps one winner or none).
+  ── Per-game facts ──
+    hand_facts      per-seat hand facts from owner-bearing zone events (the
+                    telemetry jar's); {} on a shipped-formatter log.
+    game_facts      one game's per-seat facts: damage, life, tokens, attacks,
+                    casts, eliminations, commander damage when commanders are given.
+    engine_casts    per-card cast / activated / discarded for OUR seat over a run.
+  ── Board wipes and what happens after one ──
+    wipes / wipe_recovery  each wipe in a game and what the seat got paid on it;
+                    aggregated over a run, absent when none were seen.
+  ── Aggregates over a run ──
+    wilson / mean_ci  interval helpers; a mean never travels without median/min/max.
+    aggregate       a run's facts -> the record's `analysis` block, per seat.
+    compact         a per-game row small enough to track.
+    analyze_logs    PUBLIC ENTRY: all of a run's logs -> (facts, aggregate).
+
 TOKENS ARE THE HONEST CASE OF THAT. A token enters the log on first USE: Forge names it
 (`Cat Token (414)`) when it attacks, blocks, deals or takes damage, dies, or is targeted,
 and a creation resolution (`…create a 1/1 white Cat creature token.`) states neither

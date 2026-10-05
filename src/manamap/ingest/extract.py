@@ -1,4 +1,16 @@
-"""Step 2: Parse Scryfall JSON into a clean CSV with derived columns."""
+"""Step 2: the Scryfall oracle dump -> `cards.csv`, one row per card, the row order every array follows.
+
+Reads `oracle-cards.json.gz` (step 1) and `first_printings.json`; writes `cards.csv`.
+
+How: drop layouts that are not cards (`EXCLUDED_LAYOUTS`: tokens, art series...),
+join the faces of a multi-face card into one row (`MULTI_FACE_LAYOUTS`, " // "
+between faces — the graph-key convention), and derive the columns the rest of the
+pipeline reads: primary colour, supertype by `SUPERTYPE_PRIORITY`, legalities,
+mechanical tags (`mechanical_tags.tag_oracle_text`) and the embedding text.
+
+INDEX ALIGNMENT STARTS HERE. `cards.csv[i]`, `embeddings[i]` and `projection[i]` are
+one card; if this step changes the row count, re-run everything after it.
+"""
 
 import json
 

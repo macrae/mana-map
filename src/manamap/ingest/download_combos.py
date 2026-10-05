@@ -1,4 +1,9 @@
-"""Step 7: Download Commander Spellbook combo data."""
+"""Step 7: download every combo from Commander Spellbook's API.
+
+Writes `combos_raw.json.gz` (paged, politely, with `USER_AGENT`) and a meta file so a
+re-run skips a fresh dump. Step 8 (`process_combos`) turns it into `combo_graph.json`.
+Needs the network.
+"""
 
 import json
 import time

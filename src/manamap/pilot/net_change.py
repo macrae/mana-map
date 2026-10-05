@@ -1,14 +1,35 @@
 """The net change: what a branch would cost, what it would buy, and whether it met
 what it set out to do.
 
+MAP OF THIS FILE (in order):
+  ROWS / METRICS / DERIVED   the twelve goldfish rows with direction, each row's
+                    definition, and the non-row figures — the registry.
+  _null_block .. champion_at  one Forge arm's endpoints and the pod's null;
+                    `champion_at` is the anchor `deck-branch new` prints.
+  mana / card_diff / changes  the colour half (mana_analysis on both lists), the
+                    merge-request diff, and the staged swaps with their `why`.
+  BLIND / blind_spots / reads_as  which swaps land in a hole in the model, and a
+                    row restated as a sentence.
+  forge / _forge    the real table: pooled within one pod over decided games,
+                    flagging runs whose `decklist_sha256` is not the list on disk.
+  measured_list_is_current  refuse when `cards.json` is not built from the list.
+  _paired / compare_readings  the exploratory family: per-row interval (paired
+                    game by game when both readings kept games), MDE, Holm.
+  build / main      `net-change <slug> --branch B [--write]`: two seeded
+                    diagnostic runs, then objective, table, bill, forge.
+  STATES / recommend / reward / risk / cost  the stated rule and five words; a
+                    Forge loss is a `forge_warning` beside it, never a gate.
+  _print*           the terminal report, sections split out so tests can drive them.
+
 THIS IS THE DOCUMENT A SPENDING DECISION RESTS ON. It was assembled by hand once —
 eight commands and a page of HTML — to decide whether to buy 21 cards for the
 Ur-Dragon treasure refactor. The answer was no, and the report is why the money
 stayed in the bank. Doing that by hand again is how the next one gets skipped.
 
 IT COMPOSES AND IT MEASURES NOTHING OF ITS OWN. Every figure here comes from a
-command that already owns it — `diagnostic.compare` for the delta table with its
-intervals and per-row MDE, `mana_analysis` for the colour half, `deck_branch.source`
+command that already owns it — `compare_readings` here, over `diagnostic` readings
+taken with `keep_games=True`, for the delta table with its PAIRED intervals and
+per-row MDE (`_paired`, game by game on the same seeds), `mana_analysis` for the colour half, `deck_branch.source`
 for the bill, the tracked `sim/*.json` for the real table.
 
 THE ENGINE LIFT WAS HERE AND WAS DELETED 2026-08-28, and the reason is the only
@@ -1822,7 +1843,9 @@ def risk(doc):
                  if not f.get("available") else "Forge is a weak pilot"),
         "detail": (f.get("why") or f.get("caveat") or ""),
         "why_it_matters": "every figure above is a goldfish: no blockers, no "
-                          "removal, one opponent at 40 life who does nothing"})
+                          "removal, damage measured against one seat at 40 life "
+                          "who does nothing (three seats only for what we gain "
+                          "off their draws)"})
     return out
 
 

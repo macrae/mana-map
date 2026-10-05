@@ -1,4 +1,11 @@
-"""Shared analysis utilities: tag parsing, similarity search, embedding loading."""
+"""Shared helpers for the analysis steps (10-13): tag sets, colour identity, similarity.
+
+`parse_tag_set` reads the `mechanical_tags` column; `color_identity_mask` and
+`parse_color_identity` answer "may this card sit in that deck"; `top_k_similar`
+is a cosine top-K over a normalised embedding matrix; `load_first_embeddings`
+loads the ability space aligned to `cards.csv` (the index-alignment invariant:
+row i is the same card in every array). No I/O beyond loading.
+"""
 
 import numpy as np
 import pandas as pd

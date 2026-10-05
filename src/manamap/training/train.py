@@ -1,4 +1,16 @@
-"""Step 4a: Train the CardEmbeddingModel with triplet margin loss."""
+"""Step 4a: train the LAYOUT model — the colour/type space the default map is drawn from.
+
+Reads `text_embeddings.npy` and `card_features.npz` (step 3) and `cards.csv`; writes
+`model.pt`. Step 5 turns it into `embeddings.npy`, which feeds `projection_2d.json` only.
+
+How: `CardEmbeddingModel` trained with a triplet margin loss; positives share a
+supertype and primary colour, negatives do not (`TripletMiningDataset`). Fixed 42 split,
+early stopping on validation loss. Converges in minutes.
+
+What it is NOT: the similarity space. This model knows colour and type; asking it for
+neighbours returns arbitrary same-colour cards. Function similarity is step 4b
+(`train_ability.py`) and `embeddings_ability.npy`.
+"""
 
 import random
 from collections import defaultdict

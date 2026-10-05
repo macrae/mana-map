@@ -25,6 +25,33 @@ Sections, in file order:
                      construction, DECK_AXIS_TARGETS (the diagnosis substrate),
                      goldfish, strategy KB, AGENT_ROUTINES (the cache registry)
 
+MAP OF THIS FILE (in order, by `# ──` banner):
+  (top, no banner)  DATA_DIR, Scryfall dump paths + BULK_* types, first printings,
+                    EXCLUDED_LAYOUTS / MULTI_FACE_LAYOUTS, SUPERTYPE_PRIORITY.
+  Embedding Pipeline Paths / Discovery artifacts  model + projection paths;
+                    VIZ_INDEX_PATH, NEIGHBOURS_* (the neighbours.bin format + K's).
+  Embedding Quality Evaluation  EVAL_* (golden set, pools, bootstrap, seed).
+  Combo / Deck Builder Data  COMBOS_*, COMBO_BRACKET_TAGS, COMBO_BANNED_TAG.
+  FROZEN, model-facing: Text Encoder, Vocab Sizes, Embedding Dims, Feature Dims,
+                    output split (TEXT_PASSTHROUGH_WEIGHT), Fusion MLP, Training
+                    Hyperparameters, Mechanical Tags (MECHANICAL_TAGS), Ability
+                    Model, the objective (INFONCE_TEMPERATURE, positive mining).
+  Synergy Rules     SYNERGY_RULES.
+  Deckbuilding Roles  ROLE_PATTERNS + ROLE_* fallbacks, mana, land, coverage floors.
+  Power Creep / Obsolescence  OBSOLESCENCE_*, RESTRICTION_PATTERNS, TAG_VALENCE.
+  Region Clustering  REGION_L0/L1/L2_* sizes, naming dominance + display names.
+  Pilot: Comprehensive Rules / Scryfall rulings  CR_RULES_URL, RULES_*, RULINGS_*.
+  Pilot: Decks & Manuals  DECKS_DIR, COLLECTION_DIR, SCRYFALL_* fetch, RESOLVE_*.
+  Pilot: Commander Brackets / Deck Construction  BRACKETS, DECK_ROLE_BUDGET.
+  Pilot: Deck Audit  DECK_AXIS_TARGETS, archetype budgets, ENGINE_*, DECK_BUILD_*.
+  Pilot: Goldfish Simulation  GOLDFISH_* (seed, iterations, mulligans,
+                    GOLDFISH_OPPONENTS), TITHE_PAY_RATE, OPPONENT_HAND.
+  Pilot: Strategy KB / prose corpora  STRATEGY_*, DOCS_*, CODE_*, CORPUS_*.
+  Pilot: Agent Invocation Cache  AGENT_CACHE_*, AGENT_PROMPTS_DIR.
+  Simulation        FORGE_*, SIM_* (default pod and games, clock), then the
+                    cache's code inputs (DECK_AUDIT_PATH ..), AGENT_ROUTINES,
+                    the stack/decision/prescription routines, PROSE_KEY_INPUTS.
+
 Three source files and every agent charter are declared cache inputs
 (`repo:DECK_AUDIT_PATH`). This
 file is NOT one of them — editing it invalidates nothing by itself, but changing

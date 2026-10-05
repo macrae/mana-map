@@ -1,4 +1,10 @@
-"""Step 5: Generate final 128-dim embeddings and card metadata CSV."""
+"""Step 5: run both trained models over every card -> `embeddings.npy` and `embeddings_ability.npy`.
+
+Reads `model.pt`, `model_ability.pt`, `text_embeddings.npy`, `card_features.npz` and
+`mechanical_tags.npy`; writes the two 128-d matrices (row i = `cards.csv` row i) and
+`card_metadata.csv`. `run_embed`'s flags must match how each checkpoint was trained —
+the input width is baked into the first layer.
+"""
 
 import numpy as np
 import pandas as pd

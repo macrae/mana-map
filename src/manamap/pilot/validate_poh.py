@@ -1,12 +1,12 @@
 """The gate on a rendered handbook.
 
 WHAT IT CHECKS IS THE RENDERED HTML, not a JSON artifact — which is unusual here
-and is the point. `manuals/p/` has never had a gate: `make manuals` renders the
-magazine and has never called the compact-page renderer, so CI's
+and is the point. `manuals/p/` had no gate when this was written: `make manuals`
+rendered the magazine and never called the compact-page renderer, so CI's
 `git diff --exit-code -- manuals/` could not fail on it because nothing
-regenerated it. And no test imported `build_page` at all, while `build_page.py`
+regenerated it. And no test imported `build_page` (deleted since) at all, while it
 claimed in a comment that "a test asserts exactly that" about a rule nothing
-asserted.
+asserted. `make manuals` renders the handbook now.
 
 So the checks here are the ones that are decidable from the output and that
 would have caught something real:

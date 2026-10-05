@@ -1,4 +1,18 @@
-"""Step 11: Detect power creep / obsolescence — find strictly-better printings."""
+"""Step 11: the obsolescence index — for each card, the printings that may do its job better.
+
+Reads `cards.csv` and `embeddings_ability.npy`; writes `obsolescence_index.json`:
+card -> `compare_with[]`, each with a `strength` from 0.0 to 1.0.
+
+How: retrieve candidates by ability-space similarity (a tiered gate: 0.98 for a
+one-tag card, 0.75 for two or more), keep those with the same supertype, a superset
+of the tags, no higher mana value, no wider colour requirement and no worse stats,
+then price the differences (`obsolescence_strength`) — costs, restrictions and tribal
+gates multiply, so two problems compound.
+
+A MEASURE, NOT A VERDICT. It shipped as "Obsoleted By" with 36.5% of pairs failing a
+mechanical check; the pilot sets the line now. `manamap eval-obsolescence` is the
+harness, and docs/gotchas-analysis.md has the record.
+"""
 
 import json
 import re

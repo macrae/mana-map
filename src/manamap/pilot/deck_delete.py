@@ -1,6 +1,7 @@
 """Pilot: remove a deck that was never anything — the only destructive fleet verb.
 
-THE DOCTRINE IT WORKS AGAINST. `issue_spec.py:288-292` says a published deck is a
+THE DOCTRINE IT WORKS AGAINST. `issue_spec.py:288-292` (deleted 2026-09-13 with the
+magazine renderer) said a published deck is a
 record and the honest move is to MARK it, never to delete it. That rule is right
 and this does not overturn it — it draws the line the rule always implied. A deck
 that was **never sleeved, never played and never published** is not a record of

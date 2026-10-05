@@ -80,8 +80,8 @@
       },
       {
         "stage": "issue",
-        "what": "authored identity: name, commander, status (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/emiel-blink/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
+        "what": "authored identity: name and commander (volume/price are legacy fields)",
+        "how": "AUTHORED: data/decks/emiel-blink/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state emiel-blink archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
       },
       {
         "stage": "sim",

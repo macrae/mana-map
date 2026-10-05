@@ -1,4 +1,18 @@
-"""Step 10: Build synergy graph from mechanical tags and synergy rules."""
+"""Step 10: the synergy graph — which cards PLAY WELL with which, from tags and rules.
+
+Reads `cards.csv` (its `mechanical_tags` column) and `combo_graph.json`; writes
+`synergy_graph.json`: card -> up to `SYNERGY_MAX_PARTNERS` partners, each with the
+rule labels that connected them.
+
+How: `SYNERGY_RULES` in config.py pairs a tag on one card with a COMPLEMENTARY tag
+on another (blink -> ETB, sacrifice outlet -> death trigger, ...). A partner's score
+counts its (rule, direction) hits; ties break on playability (EDHREC rank), never on
+embedding similarity — see `build_synergy_graph`. Vectorised (~33 s; it was 9 h).
+
+What it is NOT: similarity. Two cards that do the same thing are neighbours in the
+ability space (`embeddings_ability.npy`), not synergy partners. Known combo partners
+are excluded here because `combo_graph.json` already carries them.
+"""
 
 import json
 

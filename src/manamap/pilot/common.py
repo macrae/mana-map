@@ -1,4 +1,29 @@
-"""Shared pilot helpers: rule-ID validation, deck paths, rules/strategy-DB loading."""
+"""Shared pilot helpers — the small answers every bench command needs the same way.
+
+Nothing here computes a measurement. It holds the conventions that would drift if
+each module restated them: where a deck's files live (and a BRANCH's copy of them),
+how a decklist is hashed, what a lifecycle status means, how a multi-face card is
+read, how a rule or strategy citation is spelled.
+
+MAP OF THIS FILE (in order):
+  ids and markers     RULE_ID_RE, STRATEGY_ID_RE, the decklist section markers
+  memoized loading    load_json_memo / mtime_memo / clear_memo; load_card_roles,
+                      load_combo_details, load_synergy_graph; load_json; canonical_json
+  multi-face cards    front_face, front_field, expand_faces (" // " is the key convention)
+  opened lines        UNVERIFIED_STATUS / VERIFIED_STATUS, check_verified_line
+  output paths        resolve_out_path — `--out` is SLUG-SCOPED (agents overwrote each
+                      other seven times before it was)
+  copies, not entries expand_copies, count_copies (basics are one entry with `quantity`)
+  cards and stacks    is_land, commander_rejection, checker_passed, withheld, presentable
+  CLI tail            try_load_rules_db, report_errors (the validator exit convention)
+  lifecycle           DECK_STATUSES, deck_status_of, deck_lifecycle, deck_is_apart —
+                      ONE predicate for "is this deck a pile of cards"
+  hashing             list_sha256, decklist_sha256, measured_sha, sha_matches
+  paths               decks_root, deck_dir, deck_file (prefers a branch's copy),
+                      load_deck_cards
+  databases           load_rules_db, strategy_doc_sha256, load_strategy_db
+  scenarios           scenario_game_state (v1 or v2 stack scenarios)
+"""
 
 import atexit
 import hashlib
@@ -481,16 +506,13 @@ def report_errors(fail_label, errors, ok_line=None):
 # ── A deck's LIFECYCLE status ────────────────────────────────────────────
 #
 # Whether a deck still EXISTS is a fact about cardboard, not about a renderer.
-# It is authored on `issue.json` (the deck's authored identity file) and it is
-# optional: absent means the deck is live, which keeps every existing file
-# byte-identical.
+# It is authored in `deck_versions.json` (`LIFECYCLE_FILE`, written only by
+# `deck-state`) and it is optional: absent means the deck is live.
 #
-# The vocabulary lives HERE rather than in `issue_spec` — where it started —
-# because the workbench has to read it and `issue_spec` is the frozen magazine
-# renderer, deleted in one commit when the compact page lands
-# (`docs/history/manual-v5-spec.md` §"What gets unfrozen"). A live command importing a
-# module scheduled for deletion is a break with a date on it. `issue_spec`
-# re-exports these two names, so the legacy banner keeps rendering unchanged.
+# The vocabulary lives HERE rather than in `issue_spec`, where it started, because
+# the workbench had to read it and `issue_spec` belonged to the magazine renderer,
+# which was deleted on 2026-09-13. The status itself moved out of `issue.json` in
+# the same migration; `validate-issue` reports a leftover rather than obeying it.
 #
 # `deck-info` is the reason this moved: it told the pilot to go and play
 # `hapatra`, which had been broken down for parts and sleeved into
@@ -537,9 +559,9 @@ def deck_status_of(issue):
 #: WHERE THE STATUS LIVES, and it is not `issue.json` any more.
 #:
 #: It was a key on the deck's magazine identity file, which has two problems and
-#: the second is fatal. `issue.json` belongs to the FROZEN renderer, deleted in
-#: one commit when the compact page lands — a live predicate reading a file
-#: scheduled for deletion is a break with a date on it. And it REQUIRES a
+#: the second is fatal. `issue.json` belonged to the magazine renderer (deleted
+#: 2026-09-13) — a live predicate reading a file scheduled for deletion was a
+#: break with a date on it. And it REQUIRED a
 #: positive-integer `volume`, so four of thirteen decks never had one: marking
 #: `zur-enchantress` broken down meant inventing a volume number for a magazine
 #: that is dead.

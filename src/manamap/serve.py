@@ -4,6 +4,27 @@
       viz  http://localhost:8000/viz/workbench.html
       api  http://localhost:8000/api/   (local only)
 
+MAP OF THIS FILE (in order):
+  HOST / DEFAULT_PORT  127.0.0.1, 8000.
+  ── The allow-list ──  argument coercers (`_str`, `_int` ..) and the deterministic
+                    Build endpoints: `_card_search`, `_commanders`, `_pool_save`,
+                    `_build_save` / `_build_run` / `_build_finish` (draft -> 99 -> deck).
+  ── Agent jobs ──   JOBS + `_spawn` (`claude -p` in a thread), `_ask` starts one,
+                    `_job` is polled, `_agents` lists the charters with their cost.
+  ── The branch ──   `_branch_new` / `_branch_objective` / `_branch_upgrades` /
+                    `_branch_stage`, and `_branch_net_change` as a polled `_local_job`.
+  ── Measuring a deck from the page ──  MEASURES / SCAFFOLDS, `_measure` and
+                    `_scaffold` (each refreshes the dossier); then the warm worker:
+                    CLI_READONLY + `_CLI_WRITE_ATTRS` gate `_cli`, which runs one
+                    read-only pilot command in-process; `_sven_*` hold Sven's
+                    session and its two slots.
+  ── The fleet ──    `_deck_state` / `_deck_delete`.
+  GETTABLE / ENDPOINTS  the allow-list itself: name -> (function, arg coercers).
+  call              run one allow-listed command (KeyError for an unknown name).
+  Handler           static files, plus `/api/<command>` on GET and POST, and
+                    `/api/ask/stream` (Sven, which `mm ask` routes to).
+  serve / main      build the server on 127.0.0.1 at the repo root; run it.
+
 THIS REVERSES A DECISION, AND THE REVERSAL IS DELIBERATE. `CLAUDE.md` recorded,
 on 2026-08-01: *"The frontend never calls an LLM, and deployed == local … there
 is no local-only bridge — because a local bridge means the deployed site and

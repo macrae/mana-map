@@ -1,5 +1,24 @@
 """Pilot: the workbench view — one deck, one screen, and what to do next.
 
+MAP OF THIS FILE (in order):
+  _goldfish_block / _goldfish  the goldfish as a model block, intervals attached.
+  _binding_axes / _open_questions / _branches  the audit's binding axes, open
+                    questions, and each open branch's state, bill and pull list.
+  ── The engine, said in one word ──  ENGINE_HEALTH_BANDS, `engine_health`: the
+                    cover sheet's word, or None with a reason.
+  compose           PUBLIC ENTRY: the whole view as one dict; `verify=True` runs
+                    the validators (off means unknown, never clean).
+  _simulation / _stale_words  the latest Forge run and whether it measured THIS
+                    list ("measured on V3; deck is V5").
+  _decisions / _engine_casts / _piloting / _experiments  the ledger, did the AI
+                    cast the engine, was it holding the deck, the A/B records.
+  _gates / _next    the next rung's gates, and the derived NEXT suggestions.
+  STATE_* / deck_state  sleeved / on the bench / retired, with a reason.
+  drift_lines       what to move from the sleeved list to the one on disk.
+  _print            the human screen.
+  fetchable / main  `--write` saves `fetchable(info)` as `info.json` (verified,
+                    no version block); `--json`, or the screen.
+
 WHY THIS EXISTS. Seven commands each answer a piece of "where is this deck":
 `deck-status` (is it finished, is it stale), `deck-version` (which list is this),
 `deck-notes` (what happened at the table), `prescribe --list` (what was asked and

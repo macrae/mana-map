@@ -1,6 +1,27 @@
 """Simulation S1: the Forge harness — run N Commander games of one deck against
 opponents, headless, across JVMs, and record the run.
 
+MAP OF THIS FILE (in order):
+  FORGE_AI_CAVEAT / SEEDED_NOTE / ASSUMPTIONS  the caveats a record carries.
+  split_seat / seat_dir / seat_home  a seat is an opponent, one of our decks, or
+                    `<slug>@<branch>`; where its list and its records live.
+  _commanders_by_slug / record_commanders  commander names, from the record only.
+  dck_from_text / to_dck / install_named / install_deck  decklist -> Forge `.dck`
+                    through the repo's own parser, written where sim mode looks.
+  seat_sha / config_digest / default_seed  the digest the run id and seed derive from.
+  per_job_cap / profile_tag / clock_tag / ai_profile_tag / telemetry_tag /
+  overrides_tag / run_id / run_id_for  every harness axis that names a run.
+  keyword_map / cmc_map  our deck's keywords and mana values, for the parser.
+  default_jobs / split_games / card_overrides / command  JVM count, the split,
+                    the override fingerprint, and the exact argv one JVM runs.
+  ── Outcome parsing ──  parse_outcomes / _settle: winner, turn, ms, how each seat
+                    lost; a clock-out has no winner. _seat_label maps labels to slugs.
+  pod_profile / _profiles_for  per-seat AI profiles in the rotated seat order.
+  run               PUBLIC ENTRY: play the games, parse them, write the record.
+  analyze           re-derive a run's analysis from its kept logs.
+  list_runs / resolve_table  every run oldest first; `--vs` / `--pod` -> seats.
+  main              `simulate`: `--analyze`, `--list`, or a run.
+
 Forge is the rules engine (docs/simulation.md records the spike and the verdict). This
 module owns everything around it: converting `decklist.txt` to Forge's `.dck` through
 the repo's own parser (so a seat can never disagree with `fetch-deck`), placing decks

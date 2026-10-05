@@ -1,4 +1,19 @@
-"""Step 12: Cluster 2D projections into named regions using HDBSCAN."""
+"""Step 12: named regions on both 2D maps — HDBSCAN clusters, then names a person can read.
+
+Reads `cards.csv`, `projection_2d.json` and `projection_2d_ability.json` (plus the
+authored overrides in `region_names.json`); writes `regions_default.json` and
+`regions_ability.json`, which the atlas draws as labels at each zoom level.
+
+How: cluster each projection at three levels (L0 continents, L1 regions, L2
+neighbourhoods; sizes in config.py's `REGION_*`), give unclustered points to their
+nearest cluster, then name each one — by colour/type/guild on the layout map, by
+TF-IDF over mechanical tags (at least `REGION_MIN_TAG_PRESENCE`) on the ability map —
+and de-duplicate labels by tag suffix, then by compass direction.
+
+Clustering is on the 2D projection, not the 128-d space: regions are a property of
+the map a reader sees. A new PaCMAP run moves them, which is why names are re-applied
+from `region_names.json` rather than kept by index.
+"""
 
 import json
 from collections import Counter

@@ -1,4 +1,10 @@
-"""Step 6: Reduce 128-dim embeddings to 2D with PaCMAP and export JSON for visualization."""
+"""Step 6: PaCMAP both 128-d spaces down to 2D -> the two maps the atlas draws.
+
+Reads `embeddings.npy` and `embeddings_ability.npy` with `cards.csv`; writes
+`projection_2d.json` (the default, colour/type map) and `projection_2d_ability.json`,
+each a list of viz records (coordinates plus the card fields the frontend shows).
+A new run moves every point, so regions (step 12) are re-clustered after it.
+"""
 
 import json
 

@@ -1,4 +1,5 @@
-"""Shared training utilities: device selection, triplet collation, epoch loop."""
+"""Shared training helpers: a flushed `say`, device choice (MPS -> CUDA -> CPU),
+triplet batch collation and the one epoch loop both trainers use."""
 
 import numpy as np
 import torch

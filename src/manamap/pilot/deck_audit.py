@@ -6,6 +6,26 @@ Five commands already measure a deck and none of them joins the answers.
 draw enough" and nothing answers; ask "what is missing that would make the engine
 go" and nothing even represents the question.
 
+MAP OF THIS FILE (in order):
+  AXIS_ROLES / SUITE_ROLES  which classifier roles each axis counts (overlapping).
+  _CLASS_PATTERNS / PERMANENT_CLASSES  oracle heuristics for interaction breadth,
+                    and the catch-all gap found 2026-09-02, measured, not patched.
+  _count_copies / _verdict / _axis  copies not entries; one axis row with its gap.
+  ── Archetype ──    `detect_archetype` (caller override or the strategic frame,
+                    never the cards), `archetype_overrides` (budget + citation).
+  ── Axes ──         `_dead_searches` (a search with nothing to find),
+                    `_interaction_breadth`, `build_axes`: one row per
+                    DECK_AXIS_TARGETS entry plus the conditional ones.
+  ── Engine activation ──  `_component` prices one `any_of` group,
+                    `_closers` finds pool cards that would join it,
+                    `engine_activation` is the whole declaration priced.
+  ── Freshness ──    `freshness`: which artifacts match the current decklist.
+  ── Notes ──        `build_notes`: stale or missing inputs, under / over axes,
+                    uncovered classes, dead searches, the engine's weak point.
+  ── Entry point ──  `analyze` (PUBLIC ENTRY: the audit dict), `format_report`;
+                    `main` prints it, `--write` saves the stamped `audit.json`,
+                    `--out` writes a view.
+
 This module is the join. Two blocks:
 
   **axes** — one measurement per row of `config.DECK_AXIS_TARGETS`, each against a
@@ -25,10 +45,12 @@ This module is the join. Two blocks:
   point of failure. "What would activate the engine" then has a deterministic
   answer: which cards in the pool would join that group.
 
-**Computed on demand, never committed.** Same rule as `deck-facts` and
-`artist_credits`, and for a sharper reason here: this file embeds goldfish and
-bracket figures, so a committed copy would be a second source of truth that goes
-stale the moment the decklist moves.
+**Computed on demand; one stamped copy is committed, and only by `--write`.** It
+was never committed at first, for a sharp reason: it embeds goldfish and bracket
+figures, so a copy is a second source of truth that goes stale the moment the
+decklist moves. The handbook then needed the sixteen axes and may not compute at
+render time, so `--write` saves `audit.json` stamped with the decklist sha (tracked
+on four decks); `--out` still writes a VIEW anywhere and is never tracked.
 
 **Deterministic — it never reads the clock.** `deck_recon.json`'s `as_of` is
 reported verbatim and the SKILL judges its age against RECON_MAX_AGE_DAYS. An
