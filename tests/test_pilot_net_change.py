@@ -1659,7 +1659,7 @@ def test_a_row_over_the_mde_but_not_holm_significant_is_noise(monkeypatch):
         cells_b.append({"rate": round(5.0 + z * se * (1 if want > 0 else -1), 6), "sd": sd, "n": n})
     a, b = _fake_diag(cells_a), _fake_diag(cells_b)
     monkeypatch.setattr(diagnostic, "run",
-                        lambda slug, branch=None, iterations=None, seed=None, quiet=True: b if branch else a)
+                        lambda slug, branch=None, iterations=None, seed=None, quiet=True, **kw: b if branch else a)
     monkeypatch.setattr(net_change, "_refuse_a_stale_measurement", lambda s, b: None)
     monkeypatch.setattr(net_change.deck_branch, "meta", lambda s, b: {"objective": None, "staged": []})
     monkeypatch.setattr(net_change, "changes", lambda s, b: {})
@@ -1820,7 +1820,7 @@ def test_a_forge_objective_is_graded_at_its_own_pod_with_the_interval_on_the_dif
     _stamped_record(tmp_path, "data/decks/x/branches/b/sim/w.json", "vito-era", seat, "c" * 64, 40, 300, 400)
     one_cell = {"decklist_sha256": "c" * 64,
                 "output": {"damage_by_turn": {"10": {"rate": 10.0, "sd": 1.0, "n": 10000}}}}
-    monkeypatch.setattr(diagnostic, "run", lambda slug, branch=None, iterations=None, seed=None, quiet=True: one_cell)
+    monkeypatch.setattr(diagnostic, "run", lambda slug, branch=None, iterations=None, seed=None, quiet=True, **kw: one_cell)
     monkeypatch.setattr(net_change, "_refuse_a_stale_measurement", lambda s, b: None)
     objective = {"axis": "forge.win_rate", "op": ">=", "value": 0.2, "pod": "standard-v3"}
     monkeypatch.setattr(net_change.deck_branch, "meta", lambda s, b: {"objective": objective, "staged": []})

@@ -41,7 +41,8 @@ ARTIFACT = "diagnostic.json"
 #: versioned independently — a benchmark comparable across decks, a diagnostic
 #: comparable across VERSIONS of one deck.
 HARNESS = {
-    "version": 1,
+    # 2: a seed per game, so readings pair game by game (2026-10-04).
+    "version": 2,
     "iterations": 10000,
     "seed": 20260826,
     "max_turn": 10,
@@ -578,14 +579,90 @@ def output(got):
     return out
 
 
-def run(slug, branch=None, iterations=None, seed=None, quiet=False):
+def _at(field, t):
+    def f(r):
+        xs = r.get(field) or []
+        return xs[t] if len(xs) > t else None
+    return f
+
+
+def _two_stalls(r):
+    xs = r.get("stall_by_turn") or []
+    i0 = STALL_FROM_TURN - 1
+    return 1 if any(xs[i] and xs[i + 1] for i in range(i0, len(xs) - 1)) else 0
+
+
+#: ONE VALUE PER GAME for each row `net_change.ROWS` reads, keyed by its
+#: (block, key, turn). With a seed per game (`goldfish.run`), game i of two lists
+#: deals the same shuffle, so the difference can be read GAME BY GAME — a paired
+#: interval, far tighter than two independent ones at the same n. A row whose
+#: denominator is itself conditional (interaction affordable, given one in hand)
+#: has no clean per-game pairing and is left out, so it keeps the unpaired reading.
+PER_GAME = {
+    ("output", "hoard_by_turn", "10"): _at("treasures_by_turn", 9),
+    ("output", "hoard_by_turn", "6"): _at("treasures_by_turn", 5),
+    ("output", "damage_by_turn", "10"): _at("damage_by_turn", 9),
+    ("output", "board_power_by_turn", "6"): _at("board_power_by_turn", 5),
+    ("output", "kill_by_turn", "6"):
+        lambda r: 1 if r.get("kill_turn") is not None and r["kill_turn"] <= 6 else 0,
+    ("output", "kill_by_turn", "10"):
+        lambda r: 1 if r.get("kill_turn") is not None and r["kill_turn"] <= 10 else 0,
+    ("stall", "two_in_a_row", None): _two_stalls,
+    ("mana", "missed_land_drop_by_five", None):
+        lambda r: 0 if all((r.get("land_hits") or [])[:5]) else 1,
+    ("mana", "mulliganed", None): lambda r: 1 if r.get("mulligans") else 0,
+    ("steam", "extra_cards_by_turn", "8"): _at("drawn_extra_by_turn", 7),
+    ("steam", "keep_can_act_by_t3", None): lambda r: 1 if r.get("keep_can_act_by_t3") else 0,
+}
+
+
+def per_game(rows):
+    """{"block|key|turn": [value or None per game]} for every PER_GAME row."""
+    return {f"{b}|{k}|{t}": [fn(r) for r in rows] for (b, k, t), fn in PER_GAME.items()}
+
+
+def align(base_cards, cards):
+    """`cards` reordered to `base_cards`' SLOTS: a card both lists hold keeps its
+    slot, and the cards only `cards` holds fill the slots of the ones it dropped
+    (by name, so the order is the same whoever builds the list).
+
+    WHY: the goldfish shuffles the list it is given, and a seed per game fixes the
+    shuffle of SLOTS, not of cards. A new card appended at the end shifts every
+    slot after the one it replaced, and two lists that differ by one card then
+    play different games — the pairing is lost. Aligned, game i of the two lists
+    differs only where the swapped card sits."""
+    def k(c):
+        return str(c.get("name") or "").split(" // ")[0].strip().lower()
+    pool = {k(c): c for c in cards}
+    base_keys = {k(c) for c in base_cards}
+    extras = sorted((c for c in cards if k(c) not in base_keys), key=lambda c: k(c))
+    out = []
+    for c in base_cards:
+        hit = pool.pop(k(c), None)
+        if hit is not None:
+            out.append(hit)
+        elif extras:
+            out.append(extras.pop(0))
+    taken = {id(c) for c in out}
+    return out + [c for c in extras if id(c) not in taken] + [
+        c for c in pool.values() if id(c) not in taken and k(c) in base_keys]
+
+
+def run(slug, branch=None, iterations=None, seed=None, quiet=False, keep_games=False,
+        align=False):
+    """`align=True` measures a branch in the CHAMPION's slots (`align`), which is
+    what makes its games pair with the champion's game by game."""
     from manamap.pilot.common import load_deck_cards
-    return run_on(load_deck_cards(slug, branch), slug, branch=branch,
-                  iterations=iterations, seed=seed, quiet=quiet)
+    doc = load_deck_cards(slug, branch)
+    if align and branch:
+        doc = dict(doc)
+        doc["cards"] = globals()["align"](load_deck_cards(slug)["cards"], doc["cards"])
+    return run_on(doc, slug, branch=branch,
+                  iterations=iterations, seed=seed, quiet=quiet, keep_games=keep_games)
 
 
 def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
-           targets=None):
+           targets=None, keep_games=False):
     """The same reading, taken on a list that need not be on disk.
 
     This is what lets a candidate be judged by SUBSTITUTION — put the card in,
@@ -629,6 +706,9 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         "mana": mana(rows),
         "steam": steam(rows, got),
         "output": output(got),
+        # Per-game values for paired comparison — only on request, so the
+        # tracked diagnostic.json never carries ten thousand numbers per row.
+        **({"_games": per_game(rows)} if keep_games else {}),
         "limits": [
             "No pod, no opponent and no interaction: this measures a DECK, not "
             "a table. It is not a win rate.",

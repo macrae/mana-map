@@ -15,7 +15,9 @@
     "complete": 17,
     "of": 18,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "diagnosis.json"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -1395,7 +1397,7 @@
   ],
   "diagnostic": {
     "harness": {
-      "version": 1,
+      "version": 2,
       "iterations": 10000,
       "seed": 20260826,
       "max_turn": 10
@@ -1408,22 +1410,62 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.4769,
+          "rate": 0.4716,
           "ci95": [
-            0.4671,
-            0.4867
+            0.4618,
+            0.4814
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.1443,
+          "rate": 0.1439,
           "ci95": [
-            0.1375,
-            0.1513
+            0.1372,
+            0.1509
           ],
           "n": 10000
         },
         "3": {
+          "rate": 0.0603,
+          "ci95": [
+            0.0558,
+            0.0651
+          ],
+          "n": 10000
+        },
+        "4": {
+          "rate": 0.017,
+          "ci95": [
+            0.0146,
+            0.0197
+          ],
+          "n": 10000
+        },
+        "5": {
+          "rate": 0.0214,
+          "ci95": [
+            0.0187,
+            0.0244
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.0416,
+          "ci95": [
+            0.0379,
+            0.0457
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.0552,
+          "ci95": [
+            0.0509,
+            0.0598
+          ],
+          "n": 10000
+        },
+        "8": {
           "rate": 0.0589,
           "ci95": [
             0.0545,
@@ -1431,83 +1473,43 @@
           ],
           "n": 10000
         },
-        "4": {
-          "rate": 0.0181,
-          "ci95": [
-            0.0157,
-            0.0209
-          ],
-          "n": 10000
-        },
-        "5": {
-          "rate": 0.0222,
-          "ci95": [
-            0.0195,
-            0.0253
-          ],
-          "n": 10000
-        },
-        "6": {
-          "rate": 0.0413,
-          "ci95": [
-            0.0376,
-            0.0454
-          ],
-          "n": 10000
-        },
-        "7": {
-          "rate": 0.0542,
-          "ci95": [
-            0.0499,
-            0.0588
-          ],
-          "n": 10000
-        },
-        "8": {
-          "rate": 0.0573,
-          "ci95": [
-            0.0529,
-            0.062
-          ],
-          "n": 10000
-        },
         "9": {
-          "rate": 0.0509,
+          "rate": 0.0504,
           "ci95": [
-            0.0468,
-            0.0554
+            0.0463,
+            0.0549
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0455,
+          "rate": 0.0433,
           "ci95": [
-            0.0416,
-            0.0498
+            0.0395,
+            0.0475
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1043,
+        "rate": 0.1064,
         "ci95": [
-          0.0985,
-          0.1104
+          0.1005,
+          0.1126
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 4927,
-        "hand_empty": 1430,
-        "mana_short": 3497
+        "stall_turns": 4920,
+        "hand_empty": 1526,
+        "mana_short": 3394
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 2079,
-        "hand_empty": 1301,
-        "mana_short": 778,
+        "stall_turns": 2078,
+        "hand_empty": 1377,
+        "mana_short": 701,
         "stall_rate": {
           "rate": 0.052,
           "ci95": [
@@ -1518,49 +1520,49 @@
         },
         "vs_floor": {
           "from_turn": 4,
-          "floor_rate": 0.0181,
-          "diff": 0.0339,
+          "floor_rate": 0.017,
+          "diff": 0.035,
           "ci95": [
-            0.0304,
-            0.0372
+            0.0315,
+            0.0382
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 3.4506,
+            "rate": 3.4319,
             "ci95": [
-              3.4115,
-              3.4897
+              3.3923,
+              3.4715
             ],
-            "sd": 1.9939,
+            "sd": 2.0213,
             "n": 10000
           },
           "8": {
-            "rate": 3.3533,
+            "rate": 3.3531,
             "ci95": [
-              3.3118,
-              3.3948
+              3.3102,
+              3.396
             ],
-            "sd": 2.1154,
+            "sd": 2.1899,
             "n": 10000
           },
           "9": {
-            "rate": 3.41,
+            "rate": 3.4132,
             "ci95": [
-              3.3651,
-              3.4549
+              3.367,
+              3.4594
             ],
-            "sd": 2.2933,
+            "sd": 2.3582,
             "n": 10000
           },
           "10": {
-            "rate": 3.5877,
+            "rate": 3.5738,
             "ci95": [
-              3.5374,
-              3.638
+              3.5221,
+              3.6255
             ],
-            "sd": 2.5648,
+            "sd": 2.6363,
             "n": 10000
           }
         },
@@ -1570,37 +1572,37 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4098,
+        "rate": 0.423,
         "ci95": [
-          0.4002,
-          0.4195
+          0.4133,
+          0.4327
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2937,
+      "missed_land_drop_rate": 0.2932,
       "mulliganed": {
-        "rate": 0.2093,
+        "rate": 0.2197,
         "ci95": [
-          0.2014,
-          0.2174
+          0.2117,
+          0.2279
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.145,
-        "3": 3.077,
-        "4": 4.01,
-        "5": 4.733,
-        "6": 5.63,
-        "7": 6.323,
-        "8": 6.964,
-        "9": 7.607,
-        "10": 8.228
+        "2": 2.149,
+        "3": 3.079,
+        "4": 4.011,
+        "5": 4.722,
+        "6": 5.62,
+        "7": 6.319,
+        "8": 6.962,
+        "9": 7.588,
+        "10": 8.209
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.1569
+      "mana_stdev_turn_five": 1.1432
     },
     "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354"
   },
@@ -1658,7 +1660,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.248,
+          "value": 4.24,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1666,7 +1668,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Zada online with a cantrip drawn": {
-          "value": 55,
+          "value": 54,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Zada online with a cantrip drawn' by turn six",
@@ -1674,7 +1676,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Early token maker drawn": {
-          "value": 53,
+          "value": 54,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Early token maker drawn' by turn six",
@@ -1752,15 +1754,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.206,
-            "2": 2.139,
-            "3": 3.072,
-            "4": 4.003,
-            "5": 4.711,
-            "6": 5.613,
-            "7": 6.297,
-            "8": 6.952,
-            "9": 7.591
+            "10": 8.212,
+            "2": 2.151,
+            "3": 3.091,
+            "4": 4.028,
+            "5": 4.748,
+            "6": 5.641,
+            "7": 6.325,
+            "8": 6.967,
+            "9": 7.599
           },
           "tier": "data",
           "weight": "detail",
@@ -1771,15 +1773,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.489,
+            "10": 0.494,
             "2": 0.997,
-            "3": 0.909,
+            "3": 0.916,
             "4": 0.802,
-            "5": 0.68,
-            "6": 0.614,
-            "7": 0.545,
-            "8": 0.518,
-            "9": 0.499
+            "5": 0.69,
+            "6": 0.605,
+            "7": 0.548,
+            "8": 0.517,
+            "9": 0.505
           },
           "tier": "data",
           "weight": "detail",
@@ -1789,16 +1791,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.199,
-            "10": 7.376,
-            "2": 0.721,
-            "3": 1.569,
-            "4": 1.906,
-            "5": 2.437,
-            "6": 3.88,
-            "7": 5.163,
-            "8": 5.313,
-            "9": 6.371
+            "1": 0.204,
+            "10": 7.352,
+            "2": 0.727,
+            "3": 1.587,
+            "4": 1.932,
+            "5": 2.467,
+            "6": 3.926,
+            "7": 5.204,
+            "8": 5.336,
+            "9": 6.361
           },
           "tier": "data",
           "weight": "detail",
@@ -1808,13 +1810,13 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 369,
-            "1": 1642,
-            "2": 3003,
-            "3": 2820,
-            "4": 1563,
-            "5": 521,
-            "6": 76,
+            "0": 379,
+            "1": 1602,
+            "2": 2998,
+            "3": 2799,
+            "4": 1609,
+            "5": 525,
+            "6": 82,
             "7": 6
           },
           "tier": "data",
@@ -1824,12 +1826,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2097,
-            "5": 2,
-            "6": 48,
-            "7": 600,
-            "8": 1900,
-            "9": 2766
+            "10": 1993,
+            "6": 55,
+            "7": 644,
+            "8": 1971,
+            "9": 2685
           },
           "tier": "data",
           "weight": "detail",
@@ -1845,16 +1846,16 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.248,
+    "commander_mean_cast_turn": 4.24,
     "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
         "label": "Zada online with a cantrip drawn",
-        "by_turn_6_pct": 55
+        "by_turn_6_pct": 54
       },
       {
         "label": "Early token maker drawn",
-        "by_turn_6_pct": 53
+        "by_turn_6_pct": 54
       },
       {
         "label": "Storm payoff plus ritual drawn",
@@ -1862,19 +1863,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.844,
+      "mean_kill_turn": 8.805,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 0,
-      "kill_by_turn_8_pct": 26,
+      "kill_by_turn_8_pct": 27,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 26,
       "kill_turn_histogram": {
-        "10": 2097,
-        "5": 2,
-        "6": 48,
-        "7": 600,
-        "8": 1900,
-        "9": 2766
+        "10": 1993,
+        "6": 55,
+        "7": 644,
+        "8": 1971,
+        "9": 2685
       }
     }
   },
@@ -2024,6 +2024,7 @@
   "experiments": null,
   "decisions": null,
   "next": [
+    "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "branch `zada-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check goblin-storm --branch zada-v1 --adds --write` before `simulate goblin-storm@zada-v1` (which refuses them)",
     "branch `zada-v1` needs 15 card(s) sourced — `manamap pilot deck-branch goblin-storm source zada-v1`",
     "open questions routed: diagnose ×1, goldfish ×3, research-strategy ×2, resolve-stack ×6"

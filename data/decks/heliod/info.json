@@ -3363,7 +3363,7 @@
   ],
   "diagnostic": {
     "harness": {
-      "version": 1,
+      "version": 2,
       "iterations": 10000,
       "seed": 20260826,
       "max_turn": 10
@@ -3376,18 +3376,18 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.4533,
+          "rate": 0.4643,
           "ci95": [
-            0.4436,
-            0.4631
+            0.4545,
+            0.4741
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0524,
+          "rate": 0.0551,
           "ci95": [
-            0.0482,
-            0.0569
+            0.0508,
+            0.0597
           ],
           "n": 10000
         },
@@ -3400,50 +3400,50 @@
           "n": 10000
         },
         "4": {
-          "rate": 0.0028,
+          "rate": 0.0033,
           "ci95": [
-            0.0019,
-            0.004
+            0.0024,
+            0.0046
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0029,
+          "rate": 0.0025,
           "ci95": [
-            0.002,
-            0.0042
+            0.0017,
+            0.0037
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0023,
+          "rate": 0.0017,
           "ci95": [
-            0.0015,
-            0.0034
+            0.0011,
+            0.0027
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0013,
+          "rate": 0.0006,
           "ci95": [
-            0.0008,
-            0.0022
+            0.0003,
+            0.0013
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0009,
+          "rate": 0.0004,
           "ci95": [
-            0.0005,
-            0.0017
+            0.0002,
+            0.001
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0003,
+          "rate": 0.0002,
           "ci95": [
             0.0001,
-            0.0009
+            0.0007
           ],
           "n": 10000
         },
@@ -3457,78 +3457,78 @@
         }
       },
       "two_in_a_row": {
-        "rate": 0.0073,
+        "rate": 0.0072,
         "ci95": [
-          0.0058,
-          0.0092
+          0.0057,
+          0.0091
         ],
         "n": 10000
       },
       "fleet": "better than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 697,
-        "hand_empty": 14,
-        "mana_short": 683
+        "stall_turns": 706,
+        "hand_empty": 17,
+        "mana_short": 689
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 27,
-        "hand_empty": 10,
-        "mana_short": 17,
+        "stall_turns": 14,
+        "hand_empty": 12,
+        "mana_short": 2,
         "stall_rate": {
-          "rate": 0.0007,
+          "rate": 0.0003,
           "ci95": [
-            0.0005,
-            0.001
+            0.0002,
+            0.0006
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 6,
-          "floor_rate": 0.0023,
-          "diff": -0.0016,
+          "floor_rate": 0.0017,
+          "diff": -0.0013,
           "ci95": [
-            -0.0028,
-            -0.0008
+            -0.0024,
+            -0.0007
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 5.9559,
+            "rate": 5.9471,
             "ci95": [
-              5.9124,
-              5.9994
+              5.9045,
+              5.9897
             ],
-            "sd": 2.2174,
+            "sd": 2.1726,
             "n": 10000
           },
           "8": {
-            "rate": 6.3345,
+            "rate": 6.3183,
             "ci95": [
-              6.288,
-              6.381
+              6.2724,
+              6.3642
             ],
-            "sd": 2.3744,
+            "sd": 2.3422,
             "n": 10000
           },
           "9": {
-            "rate": 6.7932,
+            "rate": 6.7646,
             "ci95": [
-              6.7426,
-              6.8438
+              6.7146,
+              6.8146
             ],
-            "sd": 2.5824,
+            "sd": 2.5535,
             "n": 10000
           },
           "10": {
-            "rate": 7.2609,
+            "rate": 7.2864,
             "ci95": [
-              7.2059,
-              7.3159
+              7.2312,
+              7.3416
             ],
-            "sd": 2.8074,
+            "sd": 2.815,
             "n": 10000
           }
         },
@@ -3538,37 +3538,37 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.5126,
+        "rate": 0.5193,
         "ci95": [
-          0.5028,
-          0.5224
+          0.5095,
+          0.5291
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.3225,
+      "missed_land_drop_rate": 0.3279,
       "mulliganed": {
-        "rate": 0.26,
+        "rate": 0.2569,
         "ci95": [
-          0.2515,
-          0.2687
+          0.2484,
+          0.2656
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
-        "1": 0.997,
-        "2": 2.137,
-        "3": 3.447,
-        "4": 4.338,
-        "5": 5.091,
-        "6": 5.779,
-        "7": 6.423,
-        "8": 7.079,
-        "9": 7.735,
-        "10": 8.393
+        "1": 0.998,
+        "2": 2.128,
+        "3": 3.438,
+        "4": 4.316,
+        "5": 5.068,
+        "6": 5.744,
+        "7": 6.389,
+        "8": 7.035,
+        "9": 7.687,
+        "10": 8.326
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.3322
+      "mana_stdev_turn_five": 1.3086
     },
     "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad"
   },
@@ -3626,7 +3626,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.244,
+          "value": 4.242,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -3634,7 +3634,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine online (opponents are drawing)": {
-          "value": 83,
+          "value": 82,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
@@ -3650,7 +3650,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)": {
-          "value": 25,
+          "value": 26,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)' by turn six",
@@ -3666,7 +3666,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod down with an asymmetric card engine": {
-          "value": 57,
+          "value": 58,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod down with an asymmetric card engine' by turn six",
@@ -3714,7 +3714,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A taxer down (attackers pay, flying or not)": {
-          "value": 37,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A taxer down (attackers pay, flying or not)' by turn six",
@@ -3765,7 +3765,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 74,
+          "value": 75,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -3776,15 +3776,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 8.376,
-            "2": 2.139,
-            "3": 3.454,
+            "10": 8.35,
+            "2": 2.133,
+            "3": 3.448,
             "4": 4.344,
-            "5": 5.089,
-            "6": 5.764,
-            "7": 6.409,
-            "8": 7.057,
-            "9": 7.722
+            "5": 5.092,
+            "6": 5.774,
+            "7": 6.415,
+            "8": 7.056,
+            "9": 7.697
           },
           "tier": "data",
           "weight": "detail",
@@ -3795,15 +3795,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 0.51,
-            "2": 0.992,
-            "3": 0.875,
+            "10": 0.5,
+            "2": 0.991,
+            "3": 0.871,
             "4": 0.727,
-            "5": 0.6,
-            "6": 0.535,
-            "7": 0.515,
-            "8": 0.504,
-            "9": 0.514
+            "5": 0.599,
+            "6": 0.53,
+            "7": 0.508,
+            "8": 0.497,
+            "9": 0.495
           },
           "tier": "data",
           "weight": "detail",
@@ -3813,16 +3813,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.222,
-            "10": 2.903,
-            "2": 0.385,
-            "3": 0.615,
-            "4": 0.872,
-            "5": 1.288,
-            "6": 1.665,
-            "7": 2.007,
-            "8": 2.324,
-            "9": 2.619
+            "1": 0.22,
+            "10": 2.881,
+            "2": 0.384,
+            "3": 0.608,
+            "4": 0.859,
+            "5": 1.268,
+            "6": 1.642,
+            "7": 1.986,
+            "8": 2.298,
+            "9": 2.586
           },
           "tier": "data",
           "weight": "detail",
@@ -3832,13 +3832,13 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 580,
-            "1": 1998,
-            "2": 3140,
-            "3": 2635,
-            "4": 1267,
-            "5": 332,
-            "6": 46,
+            "0": 523,
+            "1": 1956,
+            "2": 3130,
+            "3": 2740,
+            "4": 1230,
+            "5": 359,
+            "6": 60,
             "7": 2
           },
           "tier": "data",
@@ -3848,10 +3848,10 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 839,
-            "7": 12,
-            "8": 83,
-            "9": 429
+            "10": 797,
+            "7": 4,
+            "8": 92,
+            "9": 424
           },
           "tier": "data",
           "weight": "detail",
@@ -3867,12 +3867,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.244,
+    "commander_mean_cast_turn": 4.242,
     "commander_cast_by_turn_6_pct": 89,
     "targets": [
       {
         "label": "Table draw engine online (opponents are drawing)",
-        "by_turn_6_pct": 83
+        "by_turn_6_pct": 82
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
@@ -3880,7 +3880,7 @@
       },
       {
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 26
       },
       {
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
@@ -3888,7 +3888,7 @@
       },
       {
         "label": "Heliod down with an asymmetric card engine",
-        "by_turn_6_pct": 57
+        "by_turn_6_pct": 58
       },
       {
         "label": "Free or cheap interaction held",
@@ -3912,21 +3912,21 @@
       },
       {
         "label": "A taxer down (attackers pay, flying or not)",
-        "by_turn_6_pct": 37
+        "by_turn_6_pct": 36
       }
     ],
     "combat": {
-      "mean_kill_turn": 9.537,
+      "mean_kill_turn": 9.529,
       "median_kill_turn": 10,
       "kill_by_turn_6_pct": 0,
       "kill_by_turn_8_pct": 1,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 86,
+      "no_kill_by_max_turn_pct": 87,
       "kill_turn_histogram": {
-        "10": 839,
-        "7": 12,
-        "8": 83,
-        "9": 429
+        "10": 797,
+        "7": 4,
+        "8": 92,
+        "9": 424
       }
     }
   },

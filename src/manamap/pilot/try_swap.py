@@ -117,14 +117,12 @@ def apply_swaps(slug, branch, swaps):
     checked = check_in.analyze(slug, check_in.render_decklist(entries))
     if checked["blocking"]:
         raise SystemExit("Refusing that swap set:\n  - " + "\n  - ".join(checked["blocking"]))
-    # DECKLIST ORDER, as `fetch-deck` writes it. The goldfish shuffles the list it
-    # is given, so on one seed a card appended at the end plays different games
-    # than the same card in its decklist slot — and `try` would disagree with
-    # `net-change` on the identical swaps for no reason but the order.
-    order = {_key(e["name"]): i for i, e in enumerate(checked["entries"])}
-    cards.sort(key=lambda c: (not c.get("is_commander"), order.get(_key(c["name"]), len(order))))
+    # THE BASE LIST'S SLOTS (`diagnostic.align`), the same order `net-change` gives
+    # a branch: the goldfish shuffles slots, so a new card in the replaced card's
+    # slot keeps every other game identical — and `try` and `net-change` agree.
+    from manamap.pilot import diagnostic
     doc = dict(base) if isinstance(base, dict) else {"cards": base}
-    doc["cards"] = cards
+    doc["cards"] = diagnostic.align(base["cards"] if isinstance(base, dict) else base, cards)
     return doc, entries, rows, checked.get("warnings") or []
 
 
@@ -148,7 +146,8 @@ def champion_reading(slug, branch, iterations, seed):
     path = CACHE / f"{slug}-{_champion_key(slug, branch, iterations, seed)}.json"
     if path.exists():
         return json.loads(path.read_text()), True
-    got = diagnostic.run(slug, branch=branch, iterations=iterations, seed=seed, quiet=True)
+    got = diagnostic.run(slug, branch=branch, iterations=iterations, seed=seed, quiet=True,
+                         keep_games=True)
     CACHE.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(got, default=str))
     return got, False
@@ -231,7 +230,8 @@ def run(slug, swaps, branch=None, iterations=None, seed=None, each=False):
     doc, entries, rows, warnings = apply_swaps(slug, branch, swaps)
     base_doc = load_deck_cards(slug, branch)
     a, cached = champion_reading(slug, branch, it, sd)
-    b = diagnostic.run_on(doc, slug, branch=branch, iterations=it, seed=sd, quiet=True)
+    b = diagnostic.run_on(doc, slug, branch=branch, iterations=it, seed=sd, quiet=True,
+                          keep_games=True)
     table = net_change.compare_readings(a, b)
     cards, forge_run = card_rows(slug, branch, base_doc, doc, rows)
     blind = {c["name"] for c in cards if c["state"] != "seen"}
@@ -240,7 +240,8 @@ def run(slug, swaps, branch=None, iterations=None, seed=None, each=False):
     if each and len(rows) > 1:
         for (o, i) in swaps:
             d1, _, _, _ = apply_swaps(slug, branch, [(o, i)])
-            r1 = diagnostic.run_on(d1, slug, branch=branch, iterations=it, seed=sd, quiet=True)
+            r1 = diagnostic.run_on(d1, slug, branch=branch, iterations=it, seed=sd, quiet=True,
+                                   keep_games=True)
             t1 = net_change.compare_readings(a, r1)
             per_swap.append({"out": o, "in": i,
                              "moved": [(r["measure"], r["verdict"], r["delta"]) for r in t1

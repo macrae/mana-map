@@ -185,6 +185,13 @@ KNOWN_UNCAST = {
     # same three v1.3.0 arrivals. Every ur-dragon record predating 2026-09-20
     # flags this way, which is the tell that it is the JOIN and not the AI.
     "abaddon-vs-nekusar-discard-vs-muldrotha-value-n60-acc77874-s898753652-podExperimental-c600.json",
+    # 2026-10-03/04, sharknado's champion (V6) and momentum-v1, 200 games each at
+    # standard-v3 under ov8c347642 / tl9473cf35: Winds of Change cast 0 in either
+    # arm (castable and held on 106 own turns in the champion's), Whirlpool Warrior
+    # likewise. The AI holds the deck's wheels; fixing that is the PLAN item
+    # 1409d752, and until then both records are floors and say so.
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-a0874c33-s693221427-podExperimental-c600-ov8c347642-tl9473cf35.json",
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-62a3b245-s1654895173-podExperimental-c600-ov8c347642-tl9473cf35.json",
     # (sharknado@recon-v1's 60-game record, the one that made this block exist —
     # Wheel of Fortune cast once, Windfall / Magus / Jace's Archivist / Faithless
     # Looting never — left the tree with the branch on 2026-10-03; it reads out of

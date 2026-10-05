@@ -29,7 +29,10 @@ def _key(name):
 
 def load(slug):
     """[{name, why, at}], or [] when the deck has no protected.json."""
-    path = deck_dir(slug) / ARTIFACT
+    try:
+        path = deck_dir(slug) / ARTIFACT
+    except FileNotFoundError:        # no deck directory at all: nothing protected
+        return []
     if not path.is_file():
         return []
     doc = load_json(path) or {}

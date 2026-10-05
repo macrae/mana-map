@@ -1323,6 +1323,39 @@ def _death_limit(slug, branch):
             f"once — a sacrifice burst is still understated."]
 
 
+def _paired(a, b, block, key, turn):
+    """`(diff, z, mde)` from GAME-BY-GAME differences, or None.
+
+    Needs both readings taken with `keep_games` on the same seed and game count,
+    so game i of each list dealt the same shuffle (`goldfish.run` seeds every game
+    on its own). The interval is then on the mean of the per-game differences — the
+    noise the two lists SHARE cancels, which an unpaired interval at the same n
+    cannot do. Games where either side has no value (a series that ended) drop out
+    of both."""
+    ga, gb = (a.get("_games") or {}), (b.get("_games") or {})
+    k = f"{block}|{key}|{turn}"
+    xa, xb = ga.get(k), gb.get(k)
+    if not xa or not xb or len(xa) != len(xb):
+        return None
+    d = [y - x for x, y in zip(xa, xb) if x is not None and y is not None]
+    if len(d) < 30 or len(d) < 0.95 * len(xa):
+        return None
+    n = len(d)
+    mean = sum(d) / n
+    var = sum((v - mean) ** 2 for v in d) / (n - 1)
+    se = math.sqrt(var / n)
+    half = stats.t_crit(n - 1) * se if se else 0.0
+    # Decided on the ROUNDED bounds, the ones a reader sees: a bound of -0.00002
+    # prints as -0.0, and `validate_net_change` rightly calls "[-0.02, -0.0]
+    # excludes zero" a contradiction (gishath@lands-v1, 2026-10-04).
+    lo, hi = round(mean - half, 4), round(mean + half, 4)
+    diff = {"diff": round(mean, 4), "ci95": [lo, hi],
+            "excludes_zero": bool(lo > 0 or hi < 0),
+            "method": f"paired t interval on {n:,} game-by-game differences (same seed per game)"}
+    z = (mean / se) if se > 0 else (0.0 if mean == 0 else float("inf"))
+    return diff, z, round(2.8016 * se, 4)
+
+
 def compare_readings(a, b):
     """The exploratory family: every ROW read on two diagnostic readings, each with
     the interval on its own difference, its MDE, Holm across the family, and a
@@ -1336,10 +1369,14 @@ def compare_readings(a, b):
         if not (ca and cb):
             continue
         delta = round(cb["rate"] - ca["rate"], 4)
-        mde = max(diagnostic.mde(ca), diagnostic.mde(cb))
         good = (delta > 0) == (want > 0)
         spec = METRICS.get(label) or {}
-        diff, z = _row_difference(ca, cb)
+        pr = _paired(a, b, blk, key, turn)
+        if pr:
+            diff, z, mde = pr
+        else:
+            mde = max(diagnostic.mde(ca), diagnostic.mde(cb))
+            diff, z = _row_difference(ca, cb)
         row = {
             "measure": label, "champion": ca["rate"], "branch": cb["rate"],
             "delta": delta, "mde": round(mde, 4),
@@ -1390,9 +1427,12 @@ def build(slug, branch, iterations=None, seed=None):
     # `console.py`'s third rule, never fake a percentage.
     with console.task(f"Measuring {slug} vs {branch}", total=2, unit="arms") as bar:
         bar.state("champion")
-        a = diagnostic.run(slug, iterations=it, seed=sd, quiet=True)
+        a = diagnostic.run(slug, iterations=it, seed=sd, quiet=True, keep_games=True)
         bar.advance(1, state="branch")
-        b = diagnostic.run(slug, branch=branch, iterations=it, seed=sd, quiet=True)
+        # PAIRED: the branch in the champion's slots, one seed per game, so each
+        # row's interval is on game-by-game differences (`_paired`).
+        b = diagnostic.run(slug, branch=branch, iterations=it, seed=sd, quiet=True,
+                           keep_games=True, align=True)
         bar.advance(1)
 
     # ONE PRIMARY, TWELVE EXPLORATORY. Twelve rows each given an independent

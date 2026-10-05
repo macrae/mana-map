@@ -1616,7 +1616,7 @@
    "reads_as": "every branch figure on this page is a FLOOR:  never played; Dark Prophecy cast late"
   },
   "iterations": 10000,
-  "model_version": "0eaf7530e24d",
+  "model_version": "72d097c4af39",
   "seed": 20260826
  },
  "limits": [
@@ -1827,13 +1827,9 @@
   },
   "fell": [],
   "no_call": [
-   "damage @T10",
    "killed by T6",
-   "killed by T10",
-   "stall, 2 in a row",
    "missed drop by T5",
    "mulliganed",
-   "extra cards by T8",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
@@ -1842,16 +1838,36 @@
   ],
   "reward": [
    {
+    "measure": "damage @T10",
+    "reads_as": "19.23 -> 19.39, a change of +0.16 (+1%)",
+    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
+   {
     "measure": "board power @T6",
-    "reads_as": "10.91 -> 11.19, a change of +0.29 (+3%)",
+    "reads_as": "10.94 -> 11.16, a change of +0.22 (+2%)",
     "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+   },
+   {
+    "measure": "killed by T10",
+    "reads_as": "97 games in 100 -> 97 in 100, a swing of 0 games per 100",
+    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "measure": "stall, 2 in a row",
+    "reads_as": "11 games in 100 -> 10 in 100, a swing of 2 games per 100",
+    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+   },
+   {
+    "measure": "extra cards by T8",
+    "reads_as": "1.08 -> 1.13, a change of +0.05 (+5%)",
+    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
   "risk": [
    {
-    "detail": "the largest is killed by T10 at +0.007 against an MDE of 0.007. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at -0.001 against an MDE of 0.001. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "9 row(s) returned no call",
+    "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1884,7 +1900,11 @@
    }
   ],
   "rose": [
-   "board power @T6"
+   "damage @T10",
+   "board power @T6",
+   "killed by T10",
+   "stall, 2 in a row",
+   "extra cards by T8"
   ],
   "state": "inconclusive"
  },
@@ -1893,41 +1913,41 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 19.4911,
-   "champion": 19.3106,
+   "branch": 19.3934,
+   "champion": 19.2322,
    "ci95_diff": [
-    -0.0009,
-    0.3619
+    0.0961,
+    0.2263
    ],
-   "delta": 0.1805,
-   "excludes_zero": false,
+   "delta": 0.1612,
+   "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 4,
-    "significant": false,
-    "threshold": 2.69
+    "rank": 3,
+    "significant": true,
+    "threshold": 2.734
    },
-   "mde": 0.2633,
+   "mde": 0.093,
    "measure": "damage @T10",
-   "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.180 is smaller than the 0.263 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "19.23 -> 19.39, a change of +0.16 (+1%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": 1.95
+   "z": 4.854
   },
   {
    "better_is": "higher",
-   "branch": 11.1922,
-   "champion": 10.9063,
+   "branch": 11.1624,
+   "champion": 10.9385,
    "ci95_diff": [
-    0.1716,
-    0.4002
+    0.1924,
+    0.2554
    ],
-   "delta": 0.2859,
+   "delta": 0.2239,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1935,139 +1955,27 @@
     "significant": true,
     "threshold": 2.807
    },
-   "mde": 0.1649,
+   "mde": 0.045,
    "measure": "board power @T6",
-   "method": "Welch t interval on the difference of means",
-   "reads_as": "10.91 -> 11.19, a change of +0.29 (+3%)",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "10.94 -> 11.16, a change of +0.22 (+2%)",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
    "what": "Total power on the battlefield at the end of turn 6.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": 4.903
+   "z": 13.939
   },
   {
    "better_is": "higher",
-   "branch": 0.0414,
-   "champion": 0.0408,
+   "branch": 0.0429,
+   "champion": 0.0415,
    "ci95_diff": [
-    -0.0049,
-    0.0061
+    -0.0005,
+    0.0033
    ],
-   "delta": 0.0006,
-   "excludes_zero": false,
-   "holm": {
-    "family": 10,
-    "rank": 9,
-    "significant": false,
-    "threshold": 2.241
-   },
-   "mde": 0.0079,
-   "measure": "killed by T6",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
-   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 0.214
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.9704,
-   "champion": 0.9632,
-   "ci95_diff": [
-    0.0022,
-    0.0122
-   ],
-   "delta": 0.0072,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 2,
-    "significant": true,
-    "threshold": 2.773
-   },
-   "mde": 0.0075,
-   "measure": "killed by T10",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.007 this run can resolve",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
-   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 2.842
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.1006,
-   "champion": 0.1124,
-   "ci95_diff": [
-    -0.0204,
-    -0.0032
-   ],
-   "delta": -0.0118,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 3,
-    "significant": false,
-    "threshold": 2.734
-   },
-   "mde": 0.0125,
-   "measure": "stall, 2 in a row",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.012 is smaller than the 0.013 this run can resolve",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
-   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": -2.705
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.4017,
-   "champion": 0.399,
-   "ci95_diff": [
-    -0.0109,
-    0.0163
-   ],
-   "delta": 0.0027,
-   "excludes_zero": false,
-   "holm": {
-    "family": 10,
-    "rank": 8,
-    "significant": false,
-    "threshold": 2.394
-   },
-   "mde": 0.0194,
-   "measure": "missed drop by T5",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.019 this run can resolve",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The share of games that miss at least one land drop across turns 1 to 5.",
-   "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": 0.39
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.1859,
-   "champion": 0.1892,
-   "ci95_diff": [
-    -0.0141,
-    0.0075
-   ],
-   "delta": -0.0033,
+   "delta": 0.0014,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -2075,83 +1983,111 @@
     "significant": false,
     "threshold": 2.498
    },
-   "mde": 0.0155,
-   "measure": "mulliganed",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.015 this run can resolve",
+   "mde": 0.0027,
+   "measure": "killed by T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.003 this run can resolve",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
+   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
+   "z": 1.46
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.973,
+   "champion": 0.9683,
+   "ci95_diff": [
+    0.0026,
+    0.0068
+   ],
+   "delta": 0.0047,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 4,
+    "significant": true,
+    "threshold": 2.69
+   },
+   "mde": 0.003,
+   "measure": "killed by T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "97 games in 100 -> 97 in 100, a swing of 0 games per 100",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "better",
+   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
+   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
+   "z": 4.425
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.0955,
+   "champion": 0.1122,
+   "ci95_diff": [
+    -0.02,
+    -0.0134
+   ],
+   "delta": -0.0167,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 2,
+    "significant": true,
+    "threshold": 2.773
+   },
+   "mde": 0.0047,
+   "measure": "stall, 2 in a row",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "11 games in 100 -> 10 in 100, a swing of 2 games per 100",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "rate",
+   "verdict": "better",
+   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
+   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
+   "z": -9.94
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.4054,
+   "champion": 0.4065,
+   "ci95_diff": [
+    -0.0019,
+    -0.0003
+   ],
+   "delta": -0.0011,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 6,
+    "significant": true,
+    "threshold": 2.576
+   },
+   "mde": 0.0012,
+   "measure": "missed drop by T5",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.001 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
-   "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
-   "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
-   "z": -0.598
+   "what": "The share of games that miss at least one land drop across turns 1 to 5.",
+   "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
+   "z": -2.669
   },
   {
-   "better_is": "higher",
-   "branch": 1.1301,
-   "champion": 1.0805,
+   "better_is": "lower",
+   "branch": 0.1947,
+   "champion": 0.1947,
    "ci95_diff": [
-    -0.0012,
-    0.1004
+    0.0,
+    0.0
    ],
-   "delta": 0.0496,
-   "excludes_zero": false,
-   "holm": {
-    "family": 10,
-    "rank": 5,
-    "significant": false,
-    "threshold": 2.638
-   },
-   "mde": 0.0736,
-   "measure": "extra cards by T8",
-   "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.050 is smaller than the 0.074 this run can resolve",
-   "role": "exploratory",
-   "scale": "against the 8 cards every deck draws for free by then",
-   "unit": "mean",
-   "verdict": "noise",
-   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
-   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": 1.914
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.2701,
-   "champion": 0.2768,
-   "ci95_diff": [
-    -0.0201,
-    0.0067
-   ],
-   "delta": -0.0067,
-   "excludes_zero": false,
-   "holm": {
-    "family": 10,
-    "rank": 6,
-    "significant": false,
-    "threshold": 2.576
-   },
-   "mde": 0.0192,
-   "measure": "interaction affordable @T6",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.007 is smaller than the 0.019 this run can resolve",
-   "role": "exploratory",
-   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
-   "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": -0.982
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.9639,
-   "champion": 0.9638,
-   "ci95_diff": [
-    -0.0051,
-    0.0053
-   ],
-   "delta": 0.0001,
+   "delta": 0.0,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -2159,17 +2095,101 @@
     "significant": false,
     "threshold": 1.96
    },
-   "mde": 0.0074,
-   "measure": "hand can act by T3",
+   "mde": 0.0,
+   "measure": "mulliganed",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
+   "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
+   "z": 0.0
+  },
+  {
+   "better_is": "higher",
+   "branch": 1.1279,
+   "champion": 1.0766,
+   "ci95_diff": [
+    0.0274,
+    0.0752
+   ],
+   "delta": 0.0513,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 5,
+    "significant": true,
+    "threshold": 2.638
+   },
+   "mde": 0.0341,
+   "measure": "extra cards by T8",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "1.08 -> 1.13, a change of +0.05 (+5%)",
+   "role": "exploratory",
+   "scale": "against the 8 cards every deck draws for free by then",
+   "unit": "mean",
+   "verdict": "better",
+   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
+   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
+   "z": 4.214
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.2717,
+   "champion": 0.2782,
+   "ci95_diff": [
+    -0.0199,
+    0.0069
+   ],
+   "delta": -0.0065,
+   "excludes_zero": false,
+   "holm": {
+    "family": 10,
+    "rank": 8,
+    "significant": false,
+    "threshold": 2.394
+   },
+   "mde": 0.0192,
+   "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.007 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.006 is smaller than the 0.019 this run can resolve",
+   "role": "exploratory",
+   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
+   "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
+   "z": -0.951
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.9639,
+   "champion": 0.9646,
+   "ci95_diff": [
+    -0.0024,
+    0.001
+   ],
+   "delta": -0.0007,
+   "excludes_zero": false,
+   "holm": {
+    "family": 10,
+    "rank": 9,
+    "significant": false,
+    "threshold": 2.241
+   },
+   "mde": 0.0024,
+   "measure": "hand can act by T3",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.002 this run can resolve",
    "role": "exploratory",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
-   "z": 0.038
+   "z": -0.831
   }
  ]
 }

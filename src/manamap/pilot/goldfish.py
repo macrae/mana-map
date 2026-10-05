@@ -1387,7 +1387,13 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                                    or c["death"]["gain_on_opponent_death"]))
     }) if model_drain else []
 
-    rng = random.Random(seed)
+    # A SEED PER GAME (2026-10-04). One shared stream meant two lists played the
+    # same first game and then diverged for ever: after the first card that
+    # differed, every later draw consumed a different random number, so the two
+    # arms of a comparison were effectively independent samples. Seeding game i on
+    # its own makes game i of any two lists deal the same shuffle of their slots,
+    # and a comparison can be read game by game (`net_change._paired`). A string
+    # seed hashes the same way in every process.
     # The loop is a list comprehension no longer, because 10,000 silent
     # simulations look identical to a hang. The comprehension is otherwise
     # unchanged — same rng, same order, same seed, so the RESULT is
@@ -1399,7 +1405,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     ctx = (contextlib.nullcontext(_Silent()) if quiet
            else console.task(f"Goldfishing {slug}", total=iterations, unit="sims"))
     with ctx as t:
-        for _ in range(iterations):
+        for i in range(iterations):
+            rng = random.Random(f"{seed}:{i}")
             results.append(
                 simulate_once(rng, library, commander_cmc, targets, max_turn,
                               commander_combat=commander_combat,

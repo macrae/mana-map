@@ -143,12 +143,14 @@ def test_try_measures_exactly_what_a_staged_and_fetched_branch_measures():
     if found is None:
         pytest.skip("no live branch with a fresh cards.json and a one-for-one diff")
     slug, branch, swaps = found
+    from manamap.pilot.common import load_deck_cards
     doc, _, _, _ = try_swap.apply_swaps(slug, None, swaps)
-    staged = diagnostic.run(slug, branch=branch, iterations=1500, quiet=True)
+    # net-change measures the branch in the champion's slots (`diagnostic.align`).
+    cand = dict(load_deck_cards(slug, branch))
+    cand["cards"] = diagnostic.align(load_deck_cards(slug)["cards"], cand["cards"])
+    staged = diagnostic.run_on(cand, slug, branch=branch, iterations=1500, quiet=True)
     held = diagnostic.run_on(doc, slug, iterations=1500, quiet=True)
-    assert [c["name"] for c in doc["cards"]] == [
-        c["name"] for c in json.loads((config.DECKS_DIR / slug / "branches" / branch / "cards.json")
-                                      .read_text())["cards"]]
+    assert [c["name"] for c in doc["cards"]] == [c["name"] for c in cand["cards"]]
     assert held["output"] == staged["output"]
     assert held["steam"] == staged["steam"]
     assert held["mana"] == staged["mana"]
@@ -162,3 +164,28 @@ def test_a_new_card_is_shaped_exactly_like_a_fetched_one():
     assert "\n" in rec["oracle_text"], "line breaks are how an ability window ends"
     assert rec["power"] == "3" and rec["toughness"] == "2"
     assert try_swap.corpus_card("Definitely Not A Card Name") is None
+
+
+@requires_data
+@requires_deck
+def test_a_list_against_itself_pairs_to_exactly_zero_and_two_seeds_make_no_call():
+    """THE PAIRING, PROVEN. Same list, same seed: every game identical, so every
+    paired difference is exactly zero. Same list, two seeds: no row may earn a
+    verdict (the A/A). Before 2026-10-04 one shared random stream made the arms of
+    any comparison effectively independent after their first differing card."""
+    from manamap.pilot import diagnostic, net_change
+    a = diagnostic.run("goblin-storm", iterations=1500, seed=7, quiet=True, keep_games=True)
+    same = diagnostic.run("goblin-storm", iterations=1500, seed=7, quiet=True, keep_games=True)
+    assert a["_games"] == same["_games"]
+    for row in net_change.compare_readings(a, same):
+        if "paired" in (row.get("method") or ""):
+            assert row["ci95_diff"] == [0.0, 0.0], row["measure"]
+    other = diagnostic.run("goblin-storm", iterations=1500, seed=8, quiet=True, keep_games=True)
+    assert all(r["verdict"] == "noise" for r in net_change.compare_readings(a, other))
+
+
+def test_align_keeps_shared_cards_in_their_slots():
+    from manamap.pilot import diagnostic
+    base = [{"name": n} for n in ("A", "B", "C", "D")]
+    cand = [{"name": n} for n in ("A", "C", "D", "Z")]       # B out, Z in
+    assert [c["name"] for c in diagnostic.align(base, cand)] == ["A", "Z", "C", "D"]

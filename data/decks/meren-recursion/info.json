@@ -913,7 +913,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.108,
+          "value": 4.138,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -945,7 +945,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss": {
-          "value": 5,
+          "value": 6,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss' by turn six",
@@ -977,7 +977,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 58,
+          "value": 59,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -985,7 +985,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 70,
+          "value": 69,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -1001,7 +1001,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 14,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -1052,7 +1052,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 80,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -1063,15 +1063,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.622,
-            "2": 2.233,
-            "3": 3.249,
-            "4": 4.07,
-            "5": 4.764,
-            "6": 5.402,
-            "7": 5.982,
-            "8": 6.536,
-            "9": 7.084
+            "10": 7.603,
+            "2": 2.219,
+            "3": 3.228,
+            "4": 4.045,
+            "5": 4.734,
+            "6": 5.376,
+            "7": 5.959,
+            "8": 6.514,
+            "9": 7.058
           },
           "tier": "data",
           "weight": "detail",
@@ -1082,15 +1082,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.487,
+            "10": 0.489,
             "2": 0.997,
             "3": 0.902,
-            "4": 0.775,
-            "5": 0.664,
+            "4": 0.777,
+            "5": 0.657,
             "6": 0.577,
             "7": 0.531,
-            "8": 0.507,
-            "9": 0.499
+            "8": 0.508,
+            "9": 0.49
           },
           "tier": "data",
           "weight": "detail",
@@ -1100,16 +1100,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.348,
-            "10": 7.472,
-            "2": 0.887,
-            "3": 1.588,
-            "4": 2.033,
-            "5": 3.047,
-            "6": 4.072,
-            "7": 5.008,
-            "8": 5.889,
-            "9": 6.695
+            "1": 0.33,
+            "10": 7.455,
+            "2": 0.885,
+            "3": 1.587,
+            "4": 2.02,
+            "5": 3.034,
+            "6": 4.073,
+            "7": 5.0,
+            "8": 5.865,
+            "9": 6.682
           },
           "tier": "data",
           "weight": "detail",
@@ -1119,14 +1119,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 352,
-            "1": 1569,
-            "2": 2994,
-            "3": 2897,
-            "4": 1629,
-            "5": 471,
-            "6": 84,
-            "7": 4
+            "0": 370,
+            "1": 1625,
+            "2": 3050,
+            "3": 2802,
+            "4": 1573,
+            "5": 486,
+            "6": 88,
+            "7": 6
           },
           "tier": "data",
           "weight": "detail",
@@ -1135,11 +1135,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2224,
-            "6": 18,
-            "7": 429,
-            "8": 2209,
-            "9": 3262
+            "10": 2177,
+            "6": 10,
+            "7": 409,
+            "8": 2235,
+            "9": 3290
           },
           "tier": "data",
           "weight": "detail",
@@ -1155,7 +1155,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.108,
+    "commander_mean_cast_turn": 4.138,
     "commander_cast_by_turn_6_pct": 92,
     "targets": [
       {
@@ -1172,7 +1172,7 @@
       },
       {
         "label": "STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss",
-        "by_turn_6_pct": 5
+        "by_turn_6_pct": 6
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
@@ -1188,11 +1188,11 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 59
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 70
+        "by_turn_6_pct": 69
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
@@ -1200,22 +1200,22 @@
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 13
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.89,
+      "mean_kill_turn": 8.888,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 0,
-      "kill_by_turn_8_pct": 27,
+      "kill_by_turn_8_pct": 26,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 19,
       "kill_turn_histogram": {
-        "10": 2224,
-        "6": 18,
-        "7": 429,
-        "8": 2209,
-        "9": 3262
+        "10": 2177,
+        "6": 10,
+        "7": 409,
+        "8": 2235,
+        "9": 3290
       }
     }
   },

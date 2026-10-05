@@ -656,9 +656,10 @@ def new(slug, branch, text, why=None, at=None, objective=None):
     # A WHOLE LIST SKIPS `stage`, so the keep list is checked here too: every card
     # the champion runs that this list does not.
     from manamap.pilot import protected
-    kept = {e["name"] for e in checked["entries"]}
-    protected.refuse(slug, [n for n in _entries(_list_text(slug)) if n not in kept],
-                     "to open the branch")
+    if protected.names(slug):
+        kept = {e["name"] for e in checked["entries"]}
+        protected.refuse(slug, [n for n in _entries(_list_text(slug)) if n not in kept],
+                         "to open the branch")
     path.mkdir(parents=True)
     (path / "decklist.txt").write_text(
         check_in.render_decklist(checked["entries"]), encoding="utf-8")
@@ -1169,7 +1170,8 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
             f"{slug}/{branch} is already merged ({doc['merged'].get('at')}). "
             f"There is nothing left to propose.")
     from manamap.pilot import protected
-    protected.refuse(slug, diff(slug, branch).get("out") or [], f"to propose {branch}")
+    if protected.names(slug):
+        protected.refuse(slug, diff(slug, branch).get("out") or [], f"to propose {branch}")
     # SAME VERSION AMENDS; A DIFFERENT ONE STILL REFUSES.
     #
     # This refused any second proposal, so the way back from `PROPOSED · STALE`
@@ -1407,7 +1409,8 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     # The keep list is not a sourcing question, so `--force` does not reach it:
     # the pilot releases a card by editing protected.json, never by a flag.
     from manamap.pilot import protected
-    blocking += protected.refusals(slug, diff(slug, branch).get("out") or [])
+    if protected.names(slug):
+        blocking += protected.refusals(slug, diff(slug, branch).get("out") or [])
     if s["unsourced"] and not force:
         held = {r["name"]: r for r in s["cards"]}
         detail = []

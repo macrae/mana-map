@@ -347,8 +347,11 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
     exactly that number: anything else means the delta is coming from somewhere
     other than the cards this commit taught the model to see.
 
-    RE-BASELINED SIX TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14,
-    15.482 on 2026-09-21, 15.517 on 2026-09-22, and 15.239 on 2026-10-02. The
+    RE-BASELINED SEVEN TIMES — 10.317, 12.020, 14.320, 14.625 on 2026-09-14,
+    15.482 on 2026-09-21, 15.517 on 2026-09-22, 15.239 on 2026-10-02 and 15.434
+    on 2026-10-04. The seventh is the SEED, not the deck or the model: every game
+    now takes its own seed (`goldfish.run`, harness v2) so two lists pair game by
+    game, which deals different games than the old single stream did. The
     sixth was the deck: the swords-v1 merge (6f6b9b32, 2026-10-01) cut Decree of
     Silence, Gossip's Talent, Marketback Walker and Stromkirk Noble for Marauding
     Mako, Mask of Memory, Negate and Swords to Plowshares, and did not move this
@@ -407,7 +410,7 @@ def test_the_archivist_wheels_every_turn_and_the_model_measures_it():
             card["oracle_text"] = "Flying"      # the bug, re-introduced
             checked += 1
     assert checked == 4, f"sharknado should hold four activated wheels, not {checked}"
-    assert t10(blind) == 15.239, "the pre-change figure is not being recovered"
+    assert t10(blind) == 15.434, "the pre-change figure is not being recovered"
     assert with_wheels > 22, (
         f"the activated wheels are worth ~7.9 cards by turn ten; got {with_wheels}")
 

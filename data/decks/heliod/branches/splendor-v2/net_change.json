@@ -880,7 +880,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "0eaf7530e24d",
+  "model_version": "72d097c4af39",
   "seed": 20260826
  },
  "limits": [
@@ -1022,8 +1022,8 @@
   "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made \u2014 it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot \u2014 it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
  },
  "objective_grade": {
-  "reading": 0.6578,
-  "shortfall": 0.0222,
+  "reading": 0.6592,
+  "shortfall": 0.0208,
   "state": "not met"
  },
  "recommendation": {
@@ -1071,7 +1071,7 @@
   "reward": [],
   "risk": [
    {
-    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.136. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is damage @T10 at +0.000 against an MDE of 0.000. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "10 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1120,11 +1120,11 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 5.1431,
-   "champion": 5.1431,
+   "branch": 5.0934,
+   "champion": 5.0934,
    "ci95_diff": [
-    -0.095,
-    0.095
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1134,10 +1134,10 @@
     "significant": false,
     "threshold": 2.807
    },
-   "mde": 0.1358,
+   "mde": 0.0,
    "measure": "damage @T10",
-   "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.136 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
@@ -1148,11 +1148,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 3.1394,
-   "champion": 3.1394,
+   "branch": 3.1182,
+   "champion": 3.1182,
    "ci95_diff": [
-    -0.0718,
-    0.0718
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1162,10 +1162,10 @@
     "significant": false,
     "threshold": 2.773
    },
-   "mde": 0.1026,
+   "mde": 0.0,
    "measure": "board power @T6",
-   "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.103 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
@@ -1179,8 +1179,8 @@
    "branch": 0.0,
    "champion": 0.0,
    "ci95_diff": [
-    -0.0004,
-    0.0004
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1192,7 +1192,7 @@
    },
    "mde": 0.0,
    "measure": "killed by T6",
-   "method": "Newcombe score interval on the difference of proportions",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1204,11 +1204,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.1293,
-   "champion": 0.1293,
+   "branch": 0.13,
+   "champion": 0.13,
    "ci95_diff": [
-    -0.0093,
-    0.0093
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1218,10 +1218,10 @@
     "significant": false,
     "threshold": 2.69
    },
-   "mde": 0.0133,
+   "mde": 0.0,
    "measure": "killed by T10",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.013 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
@@ -1232,11 +1232,11 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.0073,
-   "champion": 0.0073,
+   "branch": 0.0072,
+   "champion": 0.0072,
    "ci95_diff": [
-    -0.0024,
-    0.0024
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1246,10 +1246,10 @@
     "significant": false,
     "threshold": 2.638
    },
-   "mde": 0.0034,
+   "mde": 0.0,
    "measure": "stall, 2 in a row",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.003 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
@@ -1260,11 +1260,11 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.5126,
-   "champion": 0.5126,
+   "branch": 0.5193,
+   "champion": 0.5193,
    "ci95_diff": [
-    -0.0139,
-    0.0139
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1274,10 +1274,10 @@
     "significant": false,
     "threshold": 2.576
    },
-   "mde": 0.0198,
+   "mde": 0.0,
    "measure": "missed drop by T5",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
@@ -1288,11 +1288,11 @@
   },
   {
    "better_is": "lower",
-   "branch": 0.26,
-   "champion": 0.26,
+   "branch": 0.2569,
+   "champion": 0.2569,
    "ci95_diff": [
-    -0.0122,
-    0.0122
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1302,10 +1302,10 @@
     "significant": false,
     "threshold": 2.498
    },
-   "mde": 0.0174,
+   "mde": 0.0,
    "measure": "mulliganed",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.017 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
@@ -1316,11 +1316,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.3392,
-   "champion": 2.3392,
+   "branch": 2.2603,
+   "champion": 2.2603,
    "ci95_diff": [
-    -0.0842,
-    0.0842
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1330,10 +1330,10 @@
     "significant": false,
     "threshold": 2.394
    },
-   "mde": 0.1203,
+   "mde": 0.0,
    "measure": "extra cards by T8",
-   "method": "Welch t interval on the difference of means",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.120 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
@@ -1344,11 +1344,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.6578,
-   "champion": 0.6578,
+   "branch": 0.6592,
+   "champion": 0.6592,
    "ci95_diff": [
-    -0.0138,
-    0.0138
+    -0.0137,
+    0.0137
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1358,7 +1358,7 @@
     "significant": false,
     "threshold": 2.241
    },
-   "mde": 0.0197,
+   "mde": 0.0196,
    "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
    "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.020 this run can resolve",
@@ -1372,11 +1372,11 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.9838,
-   "champion": 0.9838,
+   "branch": 0.9824,
+   "champion": 0.9824,
    "ci95_diff": [
-    -0.0035,
-    0.0035
+    0.0,
+    0.0
    ],
    "delta": 0.0,
    "excludes_zero": false,
@@ -1386,10 +1386,10 @@
     "significant": false,
     "threshold": 1.96
    },
-   "mde": 0.005,
+   "mde": 0.0,
    "measure": "hand can act by T3",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.005 this run can resolve",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.000 is smaller than the 0.000 this run can resolve",
    "role": "exploratory",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
