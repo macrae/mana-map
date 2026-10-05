@@ -506,6 +506,12 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
   board to resolve, the same refusal `land_colors` makes for a fetchland without a pool.
 - **A ritual with an additional cost or restricted mana is refused**, not read as free
   mana (Infernal Plunge, Geosurge); the unconditional shapes are read (see the top).
+- **A static lord or anthem is not read** (found 2026-10-05 by the edgar skeptic).
+  `team_anthem` is fed only by +1/+1 COUNTERS put on the team; "Other Vampires you control
+  get +1/+1" (Legion Lieutenant, Stromkirk Captain) adds nothing, so cutting a lord for a
+  cheap Vampire reads as a gain (+0.022 / +0.070 damage@T10). A cut that removes a lord is
+  understated by exactly the pump. Not fixed: it is a model change, so it needs a corpus
+  sweep of the static "get +N/+N" lines and a fleet regen.
 - **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
   your own board and cashes the deaths; that channel is not built.
 

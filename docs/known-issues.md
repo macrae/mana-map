@@ -1693,3 +1693,22 @@ CPU-heavy regen running alongside the measurement could have silently cost the b
 runs are quiet.
 
 If that queued job did not run, this is the command, and the tests above are how you know.
+
+## 9d. The goldfish does not read a static lord or anthem
+
+*Found 2026-10-05 by the deck-skeptic, round 3 of edgar-vampires' re-diagnosis.*
+
+`goldfish_turn`'s `team_anthem` is fed by +1/+1 counters placed on the team
+(`team_counters_etb`) and by nothing else. A static line — *"Other Vampires you control
+get +1/+1"* on Legion Lieutenant, *"…get +1/+1 and have first strike"* on Stromkirk
+Captain — is not parsed, so the lord is a vanilla body to the model. Measured with `try`:
+Legion Lieutenant -> Vampire Interloper +0.022 damage@T10, Stromkirk Captain -> Vampire
+Interloper +0.070. A diagnosis that credits a lord's pump from the goldfish is wrong, and
+one that cuts a lord is understated by exactly the pump.
+
+**Not fixed, on purpose, today.** It is a model change: the four goldfish files are the
+`model_version` stamp, so a fix needs the corpus sweep CLAUDE.md requires (newly matched,
+newly dropped, the tail read card by card — tribal "other X" scoping included) and then
+`manamap pilot regen --jobs 8 && make manuals`. The pilot's own rule (flat anthems are
+too slow) makes this matter less for adds, not for cuts already in the 99.
+
