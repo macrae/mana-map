@@ -17,9 +17,7 @@
     "complete": 17,
     "of": 18,
     "stale": [],
-    "invalid": [
-      "diagnosis.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -9560,8 +9558,8 @@
     "verified_lines": 5
   },
   "diagnosis": {
-    "verdict": "It develops as well as any deck in the quiver and closes worse than its board deserves. A castable Vampire in 95.0% of goldfish games at mean turn 2.22, a turn-three land drop 91.9% of the time, a draw engine in 83.5%, and both games logged on the current shape (004, 005) reached a dominant board and lost at the close — to a tutored infinite and to Purphoros pings. The two verified kill lines each rest on one named card and assemble in 7.8% and 4.1% of goldfish games (mean turns 6.4 and 6.7) — a ceiling by construction, not a defect — while the plan's payoff drain is a two-card pair at 37.2% and the sweeper count is zero by role in a deck whose best logged turn was an opponent's wipe with a drain online. Colour is the cheap fix on paper (black four sources short with a triple-pip card in the 99), though mana_analysis and the oracle text disagree on whether the land swap moves it; the drain-and-sweeper layer is what the losses point at, and the Purphoros answer the pilot asked white for is a class (exile) the deck holds two of, plus — pending a stack — the Conqueror his direction marked as out.",
-    "skeptic": "pass",
+    "verdict": "It develops: a castable Vampire is drawn in 95.3% of goldfish games and the turn-3 land drop lands at 0.917. On standard-v3 this list read 48/155 (0.31), 40/176 (0.227) and 48/171 (0.281) across one 200-game run and the two arms of the 2026-10-03 A/A, pooled 136/502 = 0.271; the table's 0.233 null is plain-harness and is not compared. What limits it is input AND refuel, and neither is ranked above the other: ramp is 8 against 10 and black 32 against 36, the pilot reports running out of both cards and mana at T7/T8, and no Forge arm has isolated either.",
+    "skeptic": "fail",
     "stale": false
   },
   "audit": {
@@ -9615,38 +9613,18 @@
     },
     {
       "from": "diagnosis",
-      "question": "Bloodthirsty Conqueror, Vito (or Sanguine Bond) and Cruel Celebrant on the battlefield; one creature dies. Is the loop (stacks 004/006) already running, and can the pilot decline it? Same question with any lifelink hit or a Meathook trigger as the seed.",
+      "question": "With a free outlet and Liliana or Crossway Troublemakers on board, does sacrificing in response to a wrath turn the board into cards, and does Crossway's trigger see Vampires that die alongside it?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "Tom's Purphoros triggers ('deals 2 damage to each opponent') with Bloodthirsty Conqueror on our battlefield: do Alex's and Oliver's life losses each fire Conqueror for us (net +2 per trigger), and with Vito or Sanguine Bond also out does each trigger drain Tom and start the loop?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Boros Charm's 'permanents you control gain indestructible' with Elspeth, Storm Slayer attacked for lethal loyalty: does she survive? Which of the seven protection cards keep a planeswalker alive through (a) a destroy spell, (b) an exile spell, (c) combat damage?",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Re-run the goldfish with Ancient Tomb replaced by a Swamp (and Survivors' Encampment by Dragonskull Summit): commander mean cast turn (now 6.318, 60.3% by turn six), kill-by-turn-8 (now 0.704) and mean available mana by turn.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Add the third death drain (Bastion of Remembrance, Zulaport Cutthroat or Vindictive Vampire) to the goldfish group 'A drain that fires when a creature DIES' and re-measure; add Viscera Seer ({B}, Vampire Wizard) to the castable-Vampire group, which declares thirteen where cards.json holds fourteen; and declare an outlet-AND-drain pair so the conversion layer has a rate at all.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "How does a mid-range aristocrats deck sequence against an each-opponent ETB-drain deck (Purphoros): attack it first, answer the enchantment, race on drain, or hold blockers? Is 'the natural predator for mid-range aggro' (log 005) a known matchup reading in the corpus?",
+      "question": "Does the AI cast Olivia's Wrath, and is it worth a slot against a pod with a Vampire deck in it?",
       "settled_by": "research-strategy"
     },
     {
       "from": "diagnosis",
-      "question": "With Elenda at power X fed to a free outlet under two doublers, how many lifelink tokens enter, and do Cordial Vampire and Blade trigger for their later deaths? (carried from strategic_frame candidate lines)",
-      "settled_by": "resolve-stack"
+      "question": "What fills Legion Lieutenant's slot: a steady draw source such as Phyrexian Arena (invisible to the goldfish, not cast-checked), or a card that closes black sources?",
+      "settled_by": "research-strategy"
     },
     {
       "from": "log:001",
@@ -9839,7 +9817,6 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "branch `boss-v1`: 10 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch boss-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `boss-v1` needs 6 card(s) sourced — `manamap pilot deck-branch edgar-vampires source boss-v1`",
     "branch `distance-v1`: 1 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch distance-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
@@ -9851,7 +9828,7 @@
     "branch `entry-v1` needs 3 card(s) sourced — `manamap pilot deck-branch edgar-vampires source entry-v1`",
     "branch `treasury-v1`: 4 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch treasury-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `treasury-v1` needs 7 card(s) sourced — `manamap pilot deck-branch edgar-vampires source treasury-v1`",
-    "open questions routed: diagnose ×10, goldfish ×5, research-strategy ×6, resolve-stack ×8",
+    "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×5",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
