@@ -80,7 +80,7 @@ testpaths = ["tests"]
 #   pytest -m browser -n 4          the viz suite
 #   pytest -m ""                    literally everything, the old default
 #   pytest --no-test-cache          nothing served from the cache (see conftest)
-addopts = "-q -m 'not browser and not forge and not fleet' -n auto"
+addopts = "-q -m 'not browser and not forge and not fleet and not slow' -n auto"
 markers = [
     # Browser tests. They boot a real Chromium against a real server and assert on what
     # rendered — the only tests here that can catch a viz regression. Excluded from the
@@ -101,4 +101,9 @@ markers = [
     # the evidence it came from, and far too slow for the inner loop. Run with
     # `pytest -m fleet`.
     "fleet: re-derives a calibrated constant across every tracked deck (slow)",
+    # THE FLEET TIER (2026-10-05). A test that re-runs a 10,000-game producer and
+    # compares it byte for byte with the tracked artifact, per deck and per branch,
+    # or a goldfish feature test at thousands of games. They were most of a 17-minute
+    # `make test`; they now run in `make test-fleet` (before a push, and in CI).
+    "slow: re-runs a 10,000-game producer or thousands of goldfish games; the fleet tier",
 ]

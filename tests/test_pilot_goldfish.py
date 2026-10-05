@@ -187,28 +187,6 @@ def test_first_seven_histogram_keeps_the_unkeepable_hands():
     assert outside > 0
 
 
-# ── data-gated: real metrics artifact ──
-
-
-@requires_data
-@requires_deck
-def test_real_metrics_artifact_consistency():
-    import json
-
-    from manamap.config import DECKS_DIR
-    from manamap.pilot import goldfish
-
-    path = DECKS_DIR / "goblin-storm" / "goldfish_metrics.json"
-    if not path.exists():
-        pytest.skip("goldfish_metrics.json not generated yet")
-    doc = json.loads(path.read_text())
-    assert doc["meta"]["seed"] == 42
-    assert doc["metrics"]["iterations"] == doc["meta"]["iterations"]
-    # Regenerating with the same seed must reproduce the committed artifact.
-    regenerated = goldfish.run("goblin-storm")
-    assert regenerated == doc
-
-
 # ── the commander's attack tutor ────────────────────────────────────────────
 
 def test_the_attack_tutor_is_absent_unless_declared():

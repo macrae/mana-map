@@ -85,6 +85,7 @@ def test_the_validator_refuses_what_cannot_be_run():
     assert any("no hypothesis" in e for e in cp.validate({"name": "x", "entries": base["entries"]}))
 
 
+@pytest.mark.slow
 def test_plan_pins_working_to_a_sha_and_the_entry_becomes_a_run_id(repo):
     doc, lines = cp.plan("t")
     ab = next(e for e in doc["entries"] if e["id"] == "ab")
@@ -103,6 +104,7 @@ def test_plan_pins_working_to_a_sha_and_the_entry_becomes_a_run_id(repo):
     assert "state" not in on_disk["entries"][1], "state is derived, never stored"
 
 
+@pytest.mark.slow
 def test_an_entry_whose_list_moved_is_stale_and_is_not_run(repo, monkeypatch):
     cp.plan("t")
     (repo / "data" / "decks" / SLUG / "decklist.txt").write_text(V2 + "1 Sol Ring\n")
@@ -114,6 +116,7 @@ def test_an_entry_whose_list_moved_is_stale_and_is_not_run(repo, monkeypatch):
     assert ran == [] and started == [], "a stale entry measures a list nobody holds"
 
 
+@pytest.mark.slow
 def test_run_skips_done_and_resumes_running(repo, monkeypatch):
     doc, _ = cp.plan("t")
     ab = next(e for e in doc["entries"] if e["id"] == "ab")
@@ -141,6 +144,7 @@ def test_run_skips_done_and_resumes_running(repo, monkeypatch):
     assert not cp.live_for(SLUG), "the state file is idle after the run"
 
 
+@pytest.mark.slow
 def test_a_harness_that_changed_since_planning_is_refused(repo, monkeypatch):
     cp.plan("t")
     monkeypatch.setattr(cp, "harness_fingerprint",

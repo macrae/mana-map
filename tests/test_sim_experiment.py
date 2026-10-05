@@ -390,6 +390,7 @@ def _sequential(repo, monkeypatch, wins, **kw):
     return ex.run(SLUG, "V1", "working", ["rival"], seed=7, **kw)
 
 
+@pytest.mark.slow
 def test_a_look_is_whole_jobs_from_both_arms_never_a_partial_job(repo, monkeypatch):
     """Four looks over 80 games at 2 jobs: waves of 20, each wave two whole jobs
     per arm, the schedule 20/40/60/80, and a design that would cut a job in two
@@ -437,6 +438,7 @@ def test_the_experiment_rotates_seats_per_job_like_simulate(tmp_path, monkeypatc
     assert label["Ai(1)-mm-x-xdeck-a"] == SLUG and label["Ai(2)-mm-x-xdeck-a"] == SLUG
 
 
+@pytest.mark.slow
 def test_a_moderate_effect_waits_for_a_later_look(repo, monkeypatch):
     """THE BUG: a fixed 1.96 at every look. 4/20 against 12/20 excludes zero at
     1.96 and NOT at the first OBF boundary (4.049); the same arms at 40 games
@@ -460,6 +462,7 @@ def test_an_early_look_that_excludes_zero_at_its_boundary_stops_the_run(repo, mo
     assert not ex.validate(doc)
 
 
+@pytest.mark.slow
 def test_futility_stops_only_when_the_asked_for_effect_is_excluded(repo, monkeypatch):
     """Non-binding futility: with `until_mde` the run stops when the boundary
     interval already excludes +X on the favourable side, and never without it."""
@@ -474,6 +477,7 @@ def test_futility_stops_only_when_the_asked_for_effect_is_excluded(repo, monkeyp
     assert "futility" in fut["delta"]["reading"]
 
 
+@pytest.mark.slow
 def test_a_killed_wave_resumes_at_the_same_look_with_the_same_seeds(repo, monkeypatch):
     """The record is rewritten after every wave. Kill the run after look 2,
     resume the same command line, and looks 3–4 run on the seeds and job
@@ -562,6 +566,7 @@ def test_every_tracked_experiment_passes_the_form_check():
         assert ex.validate(doc) == [], (path.name, ex.validate(doc))
 
 
+@pytest.mark.slow
 def test_the_win_rate_interval_divides_by_decided_games():
     """THE BUG: `delta` divided wins by every game PLAYED, clock-outs included,
     while the rate beside it divided by decided games."""

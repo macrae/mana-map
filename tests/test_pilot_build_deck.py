@@ -374,25 +374,6 @@ def test_role_budget_sums_to_the_deck_size():
     assert sum(DECK_ROLE_BUDGET.values()) == formats.DEFAULT.library_size
 
 
-# ── Sideboard preservation ───────────────────────────────────────────────
-#
-# decklist_text() renders commander + slots + lands from the plan, so rewriting
-# decklist.txt used to erase any hand-authored sideboard. Harmless while no built
-# deck had one; a live hazard the moment one does.
-
-SIDEBOARD_BLOCK = (
-    "SIDEBOARD:\n"
-    "1 Sazacap's Brew (PLST) BLB-151\n"
-    "1 Red Mana (SLD) 7082 *F*"
-)
-
-TOY_PLAN = {
-    "commander": "Zada, Hedron Grinder",
-    "slots": [{"name": "Sol Ring"}],
-    "land_counts": {"Mountain": 2},
-}
-
-
 # ── Building from a physical collection, not the format ─────────────────
 
 

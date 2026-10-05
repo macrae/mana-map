@@ -149,6 +149,7 @@ def test_a_real_deck_composes_every_panel():
     assert info["status"]["invalid"] is not None, "verify=True did not run the gates"
 
 
+@pytest.mark.slow
 @requires_deck
 def test_every_sleeved_deck_has_a_criticised_engine():
     """THE CONTENT CLAIM, moved out of the composition test and widened.
@@ -362,6 +363,7 @@ def test_the_header_names_the_deck_not_the_landing_page(bare_deck, capsys):
     assert "WORKBENCH" not in first
 
 
+@pytest.mark.slow
 def test_the_stage_count_excludes_gate_rows_and_matches_deck_status():
     """TWO COMMANDS PRINTED DIFFERENT FRACTIONS FOR ONE DECK.
 

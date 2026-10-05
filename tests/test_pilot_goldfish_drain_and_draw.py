@@ -398,20 +398,6 @@ def test_the_arrival_channel_does_not_secretly_require_the_combat_model():
 
 @requires_data
 @requires_deck
-def test_turning_the_draw_model_on_does_not_move_a_combat_deck():
-    """THE OPT-IN CONTRACT, held on the deck that would break it. The arrival
-    fix reordered statements inside the cast loop, and a reorder that changed a
-    figure would restate every published number on ur-dragon."""
-    import json
-    on_disk = json.loads(
-        (DATA_DIR / "decks" / "ur-dragon" / "goldfish_metrics.json").read_text())
-    fresh = goldfish.run("ur-dragon", quiet=True)
-    assert json.dumps(fresh["metrics"], sort_keys=True) == json.dumps(
-        on_disk["metrics"], sort_keys=True), "ur-dragon moved"
-
-
-@requires_data
-@requires_deck
 def test_the_held_up_series_names_the_moment_it_is_measured_at():
     """Extra combats are PAID FOR after this measurement and attack triggers add
     mana after it, so the figure is end-of-main-phase float and not what

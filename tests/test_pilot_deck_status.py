@@ -47,6 +47,7 @@ def test_a_gate_row_is_not_counted_as_a_lifecycle_stage():
     assert all(r["state"] in ("gate", "INVALID") for r in gates)
 
 
+@pytest.mark.slow
 @requires_deck
 def test_a_failing_gate_names_the_artifact_not_a_dash():
     """A gate row has no stage, so the fleet view reported "FAILS ITS GATE: —",

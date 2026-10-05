@@ -15,11 +15,12 @@ Stingerquill and swept:
     MANA and Ingris's "{4}: Create a 2/2 … Cadet" as a token per attack.
 """
 
+import pytest
 import csv
 
 from manamap.config import OUTPUT_CSV_PATH
 from manamap.pilot import goldfish
-from conftest import requires_data
+from conftest import assert_corpus_count, requires_data
 
 
 def _p(text, type_line="Creature — Vampire", power="3", name="a card"):
@@ -53,6 +54,7 @@ def test_the_attack_window_stops_at_the_next_ability():
     assert den["attack_token_bodies"] == 1
 
 
+@pytest.mark.slow
 @requires_data
 def test_the_corpus_sweep_is_locked():
     """1,994 corpus cards keep a cast/ETB token credit after the bound; 399
@@ -78,7 +80,7 @@ def test_the_corpus_sweep_is_locked():
     # spell face: Fatehold Chronologist, Semester Foreseer, Prudent Fateseer, Campus
     # Composer, Lluwen, Eccentric Pestfinder and Strife Scholar each make a token
     # there = 1995. Pestfinder's copy is gated on lifegain, which the credit ignores.
-    assert credited == 1995, credited
+    assert_corpus_count(credited, 1995, "cast/ETB token credits")
 
 
 def test_a_granted_bracketed_loyalty_ability_is_not_a_free_body():

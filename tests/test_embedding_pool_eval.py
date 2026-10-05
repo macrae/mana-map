@@ -162,6 +162,7 @@ def test_unranked_cards_sort_last():
 # ── the real corpus ──
 
 
+@pytest.mark.slow
 @requires_data
 def test_the_report_carries_an_interval_on_every_gap():
     """The instrument, not the reading: whatever the numbers say, each row must
@@ -178,6 +179,7 @@ def test_the_report_carries_an_interval_on_every_gap():
         assert stat["lo"] <= stat["gap"] <= stat["hi"]
 
 
+@pytest.mark.slow
 @requires_data
 def test_the_verdict_never_calls_an_overlapping_interval_a_finding():
     """Re-introducing the bug: the old code printed "Training is destroying
@@ -275,6 +277,7 @@ def test_centroid_collapse_detects_a_narrow_cone():
     assert E.centroid_collapse(cone)["centroid"] > 0.9
 
 
+@pytest.mark.slow
 @requires_data
 def test_both_relations_are_reported_and_they_disagree():
     """THE POINT OF THE SECOND ARM. The function space WINS on 'same job' and

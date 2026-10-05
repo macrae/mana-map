@@ -160,6 +160,7 @@ def test_the_tool_list_offers_no_way_to_write():
 
 # ── the payloads are data, not prose ──────────────────────────────────────
 
+@pytest.mark.slow
 @requires_deck
 def test_deck_state_returns_structure_rather_than_a_rendered_table():
     """The point of the whole server: an agent should not parse a column to

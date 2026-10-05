@@ -306,6 +306,7 @@ def test_immediate_action_must_be_ordered():
     assert not [e for e in errors if "numbered" in e], errors
 
 
+@pytest.mark.slow
 @requires_deck
 def test_a_procedure_page_names_only_cards_the_deck_runs():
     """A PROCEDURE THAT NAMES A CUT CARD FAILS AT THE TABLE.

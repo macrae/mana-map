@@ -50,6 +50,7 @@ def test_a_broken_read_degrades_to_a_note(monkeypatch):
     assert len(lines) == 1 and "unanchored" in lines[0]
 
 
+@pytest.mark.slow
 def test_a_line_inside_the_noise_is_called_out(monkeypatch):
     """THE CHECK THAT EARNS ITS PLACE. A threshold closer to the control than
     the run can resolve cannot come back MET or NOT MET on evidence — it comes
@@ -70,6 +71,7 @@ def test_a_line_inside_the_noise_is_called_out(monkeypatch):
     assert any("+0.3336" in l for l in wide), wide
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 def test_the_anchor_uses_the_SAME_harness_that_will_grade_it(monkeypatch):

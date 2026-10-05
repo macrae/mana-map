@@ -176,134 +176,37 @@ def test_board_power_is_not_body_count():
         metrics["mean_bodies_by_turn"]["10"]
 
 
-@requires_data
-@requires_deck
-def test_every_tracked_deck_is_byte_identical_with_the_flag_absent():
-    """The gate. Nine decks, none opted in, none may move.
+def test_the_opted_in_set_is_named_not_counted():
+    """THE OPT-IN CONTRACT, as a LEDGER. A channel switched on for one deck must not
+    move a deck that did not ask; that half is `test_goldfish_metrics_match_a_fresh_run`
+    in `test_pilot_artifact_freshness.py`, which re-runs EVERY tracked deck, opted in
+    or not. This test used to re-run the un-opted ones a second time and was cut down
+    (2026-10-05) to the part freshness cannot say: WHICH decks opted in. A named set
+    makes adding one an edit somebody has to justify.
 
-    This is the check that lets the model ship at all: `model_treasures` set the
-    precedent, and the reason is the same. A figure quoted in a critic-verdicted
-    artifact cannot be changed by a tool upgrade nobody asked for.
+    Each was re-baselined deliberately — ur-dragon with its two-engine rebuild;
+    edgar-vampires with the drain refactor; heliod 2026-09-07 at its paper check-in
+    (DARK 12 -> 0); sharknado 2026-09-10 with the discard channel; gishath 2026-09-11
+    (33 cards had been DARK); meren-recursion 2026-09-17 with its first declaration;
+    goblin-storm 2026-09-27/28, the largest (damage@10 27.7 -> 21.0 once deaths were
+    modelled). A retired deck is out of the walk, whatever it declared.
     """
     from manamap.config import DATA_DIR
-    decks = sorted(p.parent.name for p in (DATA_DIR / "decks").glob("*/goldfish_metrics.json"))
-    assert decks, "no tracked goldfish metrics found"
-    # A RETIRED DECK IS OUT OF SCOPE AND OUT OF THE DENOMINATOR. Its metrics are
-    # history: nothing plays the list, so a model correction leaves them behind
-    # for good and regenerating them measures a deck nobody will shuffle. The
-    # pilot's rule, 2026-08-27. Counting them in `decks` would then make the
-    # coverage guard below unsatisfiable.
-    def _retired(slug):
-        info = DATA_DIR / "decks" / slug / "info.json"
-        if not info.exists():
-            return False
-        try:
-            return bool((json.loads(info.read_text()) or {}).get("lifecycle"))
-        except Exception:                        # pragma: no cover - defensive
-            return False
+    from manamap.pilot.regen import is_retired
 
-    decks = [d for d in decks if not _retired(d)]
-    assert decks, "every tracked deck is retired"
-    checked, opted = 0, []
-    for slug in decks:
-        targets = DATA_DIR / "decks" / slug / "goldfish_targets.json"
-        # EVERY `model_*` FLAG, not just `model_combat`. The first version of
-        # this named one flag, and `model_draw` — which moves land drops, bodies
-        # and every assembly rate — would have tripped the byte-identical
-        # assertion with a message blaming the deck instead of the opt-in.
+    opted = []
+    for metrics in sorted((DATA_DIR / "decks").glob("*/goldfish_metrics.json")):
+        slug = metrics.parent.name
+        if is_retired(slug):
+            continue
+        targets = metrics.parent / "goldfish_targets.json"
         declared = json.loads(targets.read_text()) if targets.exists() else {}
         if any(v for k, v in declared.items() if k.startswith("model_")):
-            # An opted-in deck is not evidence against the invariant — the
-            # invariant is about decks that did NOT ask. Its own figures are
-            # gated by test_pilot_artifact_freshness instead.
             opted.append(slug)
-            continue
-        on_disk = json.loads((DATA_DIR / "decks" / slug / "goldfish_metrics.json").read_text())
-        fresh = goldfish.run(slug)
-        assert json.dumps(fresh, sort_keys=True) == json.dumps(on_disk, sort_keys=True), (
-            f"{slug} moved without opting in")
-        checked += 1
-
-    # NAMED, NOT COUNTED. The count this replaced (`checked >= len(decks) - 1`)
-    # allowed exactly one opt-in and said so as arithmetic, so the second deck
-    # to re-baseline read as a broken invariant rather than as a decision. A
-    # named set makes adding the third an edit somebody has to justify, which is
-    # the whole point of "retire this deliberately rather than letting it
-    # quietly stop checking anything".
-    # 2026-09-10: zur-enchantress ARCHIVED (a failed experiment, four lists at
-    # 0.09-0.18 against a fleet at 0.28-0.41) and no longer walked here;
-    # ingris-infect opted in on the day it was built, because a deck that wins
-    # on poison counters has nothing to measure without the combat model.
-    # sharknado opted in on 2026-09-10 with the discard channel: a wheel deck
-    # whose clock is Shabraz growing on every draw measures nothing without
-    # `model_combat`, and its wheels were invisible before `model_discard`.
-    # gishath opted in on 2026-09-11 with combat, Treasure, draw and the
-    # declared combat-damage reveal: 33 of its cards had been DARK.
-    # 2026-09-14: ingris-infect BROKEN DOWN FOR PARTS by the pilot — "you need
-    # infect which is a green thing" — so it leaves this list the way
-    # zur-enchantress did, by being retired rather than by changing its mind
-    # about a flag. It opted in on the day it was built and that is still true;
-    # it is simply no longer walked here.
-    # meren-recursion added 2026-09-17 with its first declaration: `model_combat`
-    # because the deck has a real creature curve and five free sacrifice outlets,
-    # and `model_drain` because the whole win condition is death-triggered. The
-    # drain flag is declared HONESTLY rather than usefully — nothing dies in a
-    # goldfish, so it moves kill-by-t8 from 0.265 to 0.270 and no configuration
-    # of this harness can price the deck's actual kill. `model_deaths` is
-    # deliberately absent: it requires a `source` naming the run its rate came
-    # from, and this deck has never been simulated.
-    # goblin-storm added 2026-09-27/28, and it is the largest re-baseline on this
-    # list. It had declared NOTHING since the goldfish shipped in July — so the
-    # deck built on "whenever you cast an instant or sorcery that targets only
-    # Zada, copy it for each other creature you control" was measured with that
-    # ability, combat and card draw all switched OFF, while its own BRANCH had
-    # declared three of them. Every comparison between the two was therefore two
-    # models rather than two lists, and `net_change` silently dropped seven of its
-    # twelve rows because the champion arm could produce no `output` block at all.
-    #
-    # It now declares all eight channels its cards feed — draw, combat, the
-    # commander copy, Treasure, sacrifice, discard, drain, and `model_deaths` with
-    # a rate MEASURED off a named Forge run (own 0.3529 / opponent 0.7894 per own
-    # turn, from 253 and 566 deaths over 717 own turns). DARK went 7 -> 0.
-    #
-    # THE RE-BASELINE IS LARGE AND IN BOTH DIRECTIONS, which is why it is spelled
-    # out: damage@10 FELL 27.7 -> 21.0 once deaths were modelled, because the deck
-    # now loses creatures; and the same change compressed the commander-copy draw
-    # lift from 1.71x to 1.43x, which broke a threshold calibrated on a model
-    # where nothing ever died (see `test_the_copies_multiply_the_draw...`).
     assert sorted(opted) == ["edgar-vampires", "gishath", "goblin-storm", "heliod",
                              "meren-recursion", "sharknado", "ur-dragon"], (
-        f"the opted-in set changed to {sorted(opted)}. Every one was "
-        "re-baselined deliberately — ur-dragon with its two-engine rebuild, "
-        "edgar-vampires with the drain refactor, which needed `model_combat` "
-        "for a clock and `model_draw` for the card advantage its log kept "
-        "running out of, zur-enchantress on 2026-09-04, which abandoned "
-        "commander damage after Forge returned 0 of 39 games reaching 21 and "
-        "now kills with a BOARD — a clock that does not exist at all with the "
-        "flag off — and heliod on 2026-09-07, whose paper check-in replaced "
-        "the Aetherflux kill with bodies and X-spell tokens and took its DARK "
-        "count from 12 to 0. Add a deck here only with its re-baseline.")
-    assert checked >= len(decks) - len(opted), "the loop stopped checking"
-    # THE UN-OPTED POOL SHRINKS AS DECKS OPT IN, and that is not a defect —
-    # it is the fleet adopting the model. heliod opted in on 2026-09-07 and
-    # took the pool from three to two. The floor moves with it rather than the
-    # invariant being abandoned: two decks still prove it ACROSS decks, which
-    # is the whole point of the guard, and one would not.
-    # THREE, NOT FIVE. The floor exists so an empty or near-empty loop cannot
-    # pass by iterating nothing — the guard this repo added after fourteen tests
-    # were found doing exactly that. It is NOT a claim about how big the fleet
-    # is, and it was written as one: `>= 5` failed the day the fleet went from
-    # thirteen decks to ten (three never-built baselines deleted, yawgmoth-swarm
-    # archived), reporting a shrunken bench as a broken model invariant.
-    #
-    # The real coverage assertion is the line above — every un-opted deck is
-    # checked, whatever the count. This is only the floor under it.
-    # One is the floor since 2026-09-11: gishath opted in, and the bench's other
-    # flagless lists (hapatra, radagast, sisay) are retired and excluded by
-    # design, which leaves goblin-storm to carry the invariant.
-    assert checked >= 1, (
-        f"only {checked} un-opted deck(s) left with goldfish metrics — too few "
-        f"to prove the invariant across decks")
+        f"the opted-in set changed to {sorted(opted)}. Add a deck here only with "
+        f"its re-baseline, and say which in the docstring.")
 
 
 def _profile(name, text, type_line="Creature"):
@@ -526,6 +429,7 @@ def test_a_landfall_payoff_is_not_a_creature_payoff():
     assert omnath["etb_damage_count"] is False
 
 
+@pytest.mark.slow
 @requires_data
 def test_the_etb_sweep_is_scoped():
     """A PATTERN SHIPS WITH ITS SWEEP. If this moves, something else matches and

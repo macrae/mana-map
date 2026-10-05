@@ -237,6 +237,7 @@ def test_the_name_is_not_a_field():
 # ── the real corpus ──
 
 
+@pytest.mark.slow
 def test_every_field_is_populated_somewhere_and_absent_somewhere():
     """Presence and absence, asserted against a DECLARED set, in both directions.
 
@@ -307,6 +308,7 @@ def test_a_card_with_no_mana_cost_is_absent_not_zero():
     assert list(costless_row[lo:hi]) == [0.0, 0.0, 0.0, 0.0]   # value, is_var, ABSENT, unmasked
     assert list(free_row[lo:hi]) == [0.0, 0.0, 1.0, 0.0]       # a measured zero, PRESENT
 
+@pytest.mark.slow
 def test_the_real_corpus_encodes_without_a_single_non_finite_value():
     import pandas as pd
 

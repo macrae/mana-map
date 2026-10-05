@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test test-all test-browser test-fresh serve manuals clean check demo docs-sizes
+.PHONY: help setup test test-fleet prepush test-all test-browser test-fresh serve manuals clean check demo docs-sizes
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -67,11 +67,22 @@ setup: $(VENV)  ## Create .venv and install everything, in the order that works
 # did not check.
 PYTEST_ARGS ?=
 
-test:  ## The inner loop: non-browser, parallel, cached (~20s)
+# TWO TIERS (2026-10-05). The fast tier is what you run all day; the fleet tier
+# re-runs every 10,000-game producer per deck and branch (`slow`) and re-derives
+# calibrated constants across the fleet (`fleet`), and is what runs before a push
+# and in CI. Runtimes are MEASURED in docs/testing.md, not restated here — this
+# line said ~20s for weeks while the real figure was 772s.
+test:  ## The inner loop: non-browser, parallel, cached (see docs/testing.md)
 	$(PYTEST) $(PYTEST_ARGS)
 
-test-fresh:  ## Same, but nothing served from the cache — trust this one
+test-fleet:  ## The slow tier: every producer re-run per deck + fleet constants
+	$(PYTEST) -m "slow or fleet" $(PYTEST_ARGS)
+
+prepush: test test-fleet  ## Both tiers — run before every push
+
+test-fresh:  ## Both tiers with nothing served from the cache — trust this one
 	$(PYTEST) --no-test-cache
+	$(PYTEST) --no-test-cache -m "slow or fleet"
 
 test-browser:  ## The playwright suite (~4 min; needs `make setup`)
 	$(PYTEST) -m "browser and not serial_only" -n 4
@@ -84,7 +95,7 @@ test-browser:  ## The playwright suite (~4 min; needs `make setup`)
 
 test-all: test-fresh test-browser  ## Everything, uncached. What CI would run if it ran it all.
 
-check: test  ## Alias for `make test` — what to run before opening a PR
+check: prepush  ## Alias for `make prepush` — what to run before opening a PR
 
 serve:  ## Serve the map, the deck pages and the handbooks (PORT=8000 by default)
 	@echo "  bench     http://localhost:$(PORT)/viz/workbench.html   <- start here"

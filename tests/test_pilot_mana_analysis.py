@@ -116,37 +116,6 @@ def test_tapped_ratio_uses_copies_in_the_denominator(tmp_path, monkeypatch):
     assert not [n for n in result["notes"] if "enter tapped" in n]
 
 
-@requires_deck
-def test_tracked_mana_analysis_artifacts_are_current():
-    """Every committed mana_analysis.json must match a fresh computation.
-
-    The published-18-lands bug shipped because nothing compared the artifact to
-    the code that makes it. This is that comparison.
-    """
-    import json
-    from pathlib import Path
-    from manamap.pilot.mana_analysis import analyze
-
-    checked = 0
-    for path in sorted((ROOT / "data/decks").glob("*/mana_analysis.json")):
-        info = path.parent / "info.json"
-        if info.exists():
-            try:
-                if (json.loads(info.read_text()) or {}).get("lifecycle"):
-                    # RETIRED: history, not a claim. A model correction leaves
-                    # these stale forever and regenerating them means measuring
-                    # a deck nobody plays (the pilot's rule, 2026-08-27).
-                    continue
-            except Exception:                    # pragma: no cover - defensive
-                pass
-        tracked = json.loads(path.read_text())
-        assert tracked == analyze(path.parent.name), (
-            f"{path} is stale — re-run `manamap pilot mana-analysis "
-            f"{path.parent.name}`")
-        checked += 1
-    assert checked >= 5, "no live deck was checked; the glob or the skip is wrong"
-
-
 # ── what the base charges in life ──
 
 

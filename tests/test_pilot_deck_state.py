@@ -198,9 +198,9 @@ def test_delete_refuses_every_deck_that_is_a_record():
 
 
 def test_the_refusal_is_not_keyed_on_the_magazine_renderer_alone():
-    """`published` means "the FROZEN renderer ran", and manual-v5 retires it —
-    a destructive gate keyed only on that inverts silently. Two of the three
-    questions must survive the unfreeze."""
+    """`published` once meant "the magazine renderer ran", and that renderer was
+    deleted 2026-09-13 — a destructive gate keyed only on it would have inverted
+    silently. The other two questions (logged, sleeved) must refuse on their own."""
     why = deck_delete.blockers("gishath")
     assert any("logged game" in w or "SLEEVED" in w for w in why), why
 

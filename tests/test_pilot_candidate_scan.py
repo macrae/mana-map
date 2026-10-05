@@ -119,6 +119,7 @@ def test_the_validator_passes_the_real_scan_and_fails_the_broken_shapes(doc):
     assert any("ISO date" in e for e in errs2) and any("not a known dimension" in e for e in errs2)
 
 
+@pytest.mark.slow
 def test_the_shortlist_joins_every_source_and_predicts_a_direction_not_a_number():
     """The Phase 3 join: scan dimensions + flags, the prescription's rank, the recon
     findings naming the card, the EDHREC page, assess's read, and a predicted direction

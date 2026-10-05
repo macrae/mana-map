@@ -80,6 +80,7 @@ def test_a_trigger_window_ends_at_a_face_boundary():
     assert m["opponent_second_draw_our_draw"] == 1
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 def test_what_we_draw_off_opponents_scales_with_the_seats(monkeypatch):

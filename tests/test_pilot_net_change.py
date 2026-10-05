@@ -1191,6 +1191,7 @@ def _branches():
             yield slug, branch
 
 
+@pytest.mark.slow
 @requires_deck
 def test_every_forge_record_is_either_counted_or_named_as_superseded():
     """MEASURED, on goblin-storm/zada-v1: 120 games were reported as the branch's
@@ -1232,6 +1233,7 @@ def test_every_forge_record_is_either_counted_or_named_as_superseded():
         "test proved nothing — it needs one to stay honest")
 
 
+@pytest.mark.slow
 @requires_deck
 def test_a_never_cast_claim_names_a_run_that_played_the_current_list():
     """"Held and never cast" and "not in the deck" are different facts.
@@ -1361,6 +1363,7 @@ def test_a_branch_never_declares_a_model_channel_its_deck_does_not():
         "proved nothing")
 
 
+@pytest.mark.slow
 def test_harness_stamps_the_model_a_report_was_measured_under():
     """A SEED WITHOUT A MODEL VERSION REPRODUCES NOTHING.
 

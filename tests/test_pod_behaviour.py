@@ -49,6 +49,7 @@ def test_an_ungated_card_gets_no_estimate():
     assert pb.rate_for(None) is None
 
 
+@pytest.mark.slow
 def test_the_constants_cannot_outlive_their_evidence():
     """Re-derived from the logs where they exist, so a corpus of new runs that
     moved the pod's behaviour fails here rather than sitting behind a stale

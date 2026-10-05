@@ -81,6 +81,7 @@ def branch_artifacts_restored():
                 path.unlink()
 
 
+@pytest.mark.slow
 @requires_data
 @needs_branch
 def test_a_branch_run_never_touches_the_decks_own_artifacts(branch_artifacts_restored):
@@ -123,6 +124,7 @@ def test_a_branch_run_never_touches_the_decks_own_artifacts(branch_artifacts_res
     assert not added, f"a branch run created file(s) in the deck's directory: {added}"
 
 
+@pytest.mark.slow
 @needs_branch
 def test_a_branch_run_measured_the_branch_and_not_the_deck(branch_artifacts_restored):
     """THE OTHER HALF OF THE CONTROL, AND IT WAS MISSING FOR AS LONG AS
@@ -596,6 +598,7 @@ def test_a_live_branch_still_reaches_the_next_line():
         f"broad: {info['next']}")
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 def test_a_closed_deck_offers_no_branch_action_at_all():

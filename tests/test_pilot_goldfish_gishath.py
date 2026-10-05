@@ -20,7 +20,7 @@ import pytest
 
 from manamap.pilot import goldfish
 
-from conftest import requires_data, requires_deck
+from conftest import assert_corpus_count, requires_data, requires_deck
 
 
 def _card(name, text, cmc=3, type_line="Creature — Dinosaur", power="4",
@@ -79,6 +79,7 @@ def test_ghaltas_token_scales_and_utvaras_does_not():
     assert utvara["attack_token_scales"] is False and utvara["attack_token_power"] == 6
 
 
+@pytest.mark.slow
 @requires_data
 def test_the_four_sweeps_are_locked():
     from manamap.pilot import card_pool
@@ -109,7 +110,9 @@ def test_the_four_sweeps_are_locked():
     # 2026-10-02 refresh (34,955 rows): g 7 -> 8, +Rise of the Deathbringer (FRA,
     # "Draw cards equal to the greatest power among creatures you control" — a
     # modal instant, the same shape as Return of the Wildspeaker). Nothing left.
-    assert (g, p, s, b) == (8, 10, 1, 4), (g, p, s, b)
+    for what, got, expected in (("greatest-power draws", g, 8), ("ETB draw per type", p, 10),
+                                ("attack tokens that scale", s, 1), ("land mana bonuses", b, 4)):
+        assert_corpus_count(got, expected, what)
 
 
 # ── 2. The declared reveal ────────────────────────────────────────────────
@@ -255,6 +258,7 @@ def test_the_cast_shapes_are_read():
     assert order["tutor"] and order["tutor_to_battlefield"] == "Dinosaur" and order["tutor_needs_body"]
 
 
+@pytest.mark.slow
 @requires_data
 def test_the_second_batch_sweeps_are_locked():
     from manamap.pilot import card_pool

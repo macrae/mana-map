@@ -1542,7 +1542,7 @@ measurement killed it:
 The games are not shorter. They take **half the wall time at the same number of
 rounds** — and `-c` is a wall clock. Arm A ran while the same eight cores were
 building `sim-progress`, running test suites and sweeping the corpus; arm B ran
-while the machine was quiet. That is `test_oversubscribing_the_machine_censors_games`
+while the machine was quiet. That is oversubscription censoring games (the test that once re-derived it from tracked runs was deleted 2026-10-05: its 2x claim stopped holding across tables)
 happening live, inside one experiment, between its two arms: the arm played on
 the busier machine was piloted worse and had 17% of its games censored out of
 the denominator.

@@ -359,6 +359,38 @@ def simulator_source():
                       for name in sorted(goldfish._MODEL_FILES))
 
 
+def is_retired(deck):
+    """Broken down, superseded or retired: OUT OF SCOPE for every fleet gate.
+
+    The pilot's rule, 2026-08-27: "if a deck is deprecated, broken down, exclude it
+    from these downstream tasks." A retired deck's figures are history — a model
+    change leaves them stale for good, and regenerating them measures a list nobody
+    shuffles. ONE PREDICATE, ONE HOME: this is `regen.is_retired`, which reads the
+    authored lifecycle in `deck_versions.json`; four tests used to carry their own
+    copy reading `info.json`. Takes a slug or a deck directory.
+    """
+    from manamap.pilot.regen import is_retired as _is_retired
+    return _is_retired(getattr(deck, "name", deck))
+
+
+def assert_corpus_count(got, expected, what):
+    """A CORPUS SWEEP'S COUNT, held to a BAND rather than an exact figure.
+
+    The locks this replaces moved for two reasons the failure message could not
+    tell apart: a PATTERN changed (what the lock exists for) or a SET was released
+    (a few new cards, every few weeks, and a red suite blaming code that did not
+    change). The band is the larger of 2 cards and 3%: a set release adds a handful,
+    a widened or broken pattern moves dozens. Inside the band, the exact newly
+    matched and dropped cards are read card by card IN THE COMMIT that moves a
+    pattern (CLAUDE.md, "Widening a pattern needs a CORPUS SWEEP") — not here.
+    """
+    tol = max(2, round(0.03 * expected))
+    assert abs(got - expected) <= tol, (
+        f"{what}: {got} against {expected} ±{tol}. Outside the band a set release "
+        f"cannot explain — a pattern moved. Read the newly matched and dropped "
+        f"cards, then re-centre `expected` in the same commit.")
+
+
 def patch_model(monkeypatch, name, value):
     """Patch a simulator name EVERYWHERE it is bound, and assert it landed.
 

@@ -58,6 +58,7 @@ def test_the_per_attacker_ping_is_read_once_and_the_activation_is_not_a_trigger(
     assert p["unreadable"] is None
 
 
+@pytest.mark.slow
 @requires_data
 def test_the_corpus_sweep_is_locked():
     """46 infect creatures, 46 toxic cards, ZERO per-attacker pings in the

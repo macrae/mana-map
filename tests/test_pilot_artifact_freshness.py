@@ -26,7 +26,7 @@ from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
 from manamap.pilot import (
     bracket, deck_info, diagnostic, goldfish, mana_analysis, net_change)
 
-from conftest import module_closure, requires_deck, requires_data
+from conftest import is_retired, module_closure, requires_deck, requires_data
 
 # ── The code half of the key: DERIVED, never hand-traced ────────────────────
 #
@@ -68,18 +68,6 @@ CODE = module_closure(bracket, deck_info, diagnostic, goldfish,
 CROSS_DECK = (DECKS_DIR,)
 
 
-def _is_retired(deck_dir):
-    """Broken-down, superseded or retired — `deck_info.STATE_RETIRED`'s bucket."""
-    import json as _json
-    info = deck_dir / "info.json"
-    if not info.exists():
-        return False
-    try:
-        return bool((_json.loads(info.read_text()) or {}).get("lifecycle"))
-    except Exception:                            # pragma: no cover - defensive
-        return False
-
-
 def _slugs(artifact):
     """Every place this artifact is tracked — DECKS AND THEIR BRANCHES.
 
@@ -99,7 +87,7 @@ def _slugs(artifact):
     for d in sorted(DECKS_DIR.iterdir()):
         if not d.is_dir():
             continue
-        if _is_retired(d):
+        if is_retired(d):
             # A RETIRED DECK'S ARTIFACTS ARE HISTORY, NOT CLAIMS. Nothing plays
             # the list, so a model correction leaves them "stale" forever and
             # the only way to green the gate is regenerating a document about a
@@ -166,6 +154,7 @@ def test_bracket_report_matches_a_fresh_run(target, tmp_path, unchanged):
         f"{f' --target {bracket_target}' if bracket_target else ''}` and commit it.")
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("goldfish_metrics.json"), ids=_id)
@@ -228,6 +217,7 @@ def test_the_net_change_gate_says_so_when_it_has_nothing_to_gate():
         "something wrote one where it does not belong")
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("net_change.json"), ids=_id)
@@ -251,6 +241,7 @@ def test_net_change_matches_a_fresh_run(target, tmp_path, unchanged):
         f"net-change {slug} --branch {branch} --write` and commit it.")
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("diagnostic.json"), ids=_id)
@@ -325,6 +316,7 @@ def test_info_json_never_carries_a_version_block(target):
     assert "_note" in doc and "one commit behind" in doc["_note"]
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 @pytest.mark.parametrize("target", _slugs("benchmark.json"), ids=_id)

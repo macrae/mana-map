@@ -149,6 +149,7 @@ def test_clear_memo_resets_the_sentinel_caches_too():
 
 # ── The import closure: the two controls that make it safe to narrow ────────
 
+@pytest.mark.slow
 def test_the_closure_covers_every_module_a_real_producer_imports():
     """CONTROL 1, AND THE ONE THAT DECIDES WHETHER NARROWING IS SAFE AT ALL.
 

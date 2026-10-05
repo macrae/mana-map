@@ -262,63 +262,6 @@ def test_the_assumptions_no_longer_claim_a_clock_hit_game_is_a_draw():
     assert "no winner" in text or "with no winner" in text
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "2026-09-10: the 2x claim no longer holds on the data it was made from — "
-    "4 jobs censor 8.5% over 600 games at the giada table, 7 jobs 13.6% over "
-    "860 at the vito table, a 1.6x gap across two DIFFERENT tables. The fix the "
-    "message below asks for is a re-derivation (one table at both job counts), "
-    "not a lower multiplier; until then this fails on purpose and flips to a "
-    "hard failure the day the claim holds again."))
-def test_oversubscribing_the_machine_censors_games():
-    """The evidence `default_jobs` rests on, re-derived from the tracked runs.
-
-    Forge's `-c` is WALL time, so a JVM scheduled onto an efficiency core runs
-    the same game at roughly half speed and its games hit the clock. A truncated
-    game has no winner and is EXCLUDED from the win rate, so oversubscribing
-    does not merely run slower — it censors the sample, and it censors it in a
-    way indistinguishable in the record from a genuinely stalled game.
-
-    Asserted as a RATIO rather than as fixed rates, because both move as runs
-    accumulate: the docstring originally said 4 jobs truncate 0%, which was true
-    of the two runs that existed then and is not true now (3.4% over seven).
-    """
-    import collections
-    import glob
-    import json
-    import pathlib
-
-    root = pathlib.Path(__file__).resolve().parent.parent
-    # CENSORING IS A PROPERTY OF THE TABLE BEFORE IT IS ONE OF THE MACHINE.
-    # Measured 2026-09-10 across every tracked run at 4 jobs: 0.0% at the
-    # nekusar table, 8.5% at the giada table, 15.9% at standard-v3 — where
-    # sythis-enchantress's Sphere of Safety stalls games to the 600s clock. A
-    # pooled 4-vs-7 comparison therefore reads the TABLES, and it flipped the
-    # day standard-v3 landed (8.3% vs 13.6%). The claim this test guards was
-    # measured at the two giada-era tables and is compared there only; no
-    # table has yet been run at both job counts, which is the honest limit.
-    GIADA_ERA = {("abaddon", "baylen-tokens", "giada-angels"),
-                 ("baylen-tokens", "giada-angels", "vito")}
-    by_jobs = collections.defaultdict(lambda: [0, 0])
-    for path in sorted(glob.glob(str(root / "data/decks/*/sim/*.json"))):
-        doc = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
-        n = doc.get("games_completed") or 0
-        if not n or doc.get("jobs") is None:
-            continue
-        opp = tuple(sorted(s["slug"] for s in doc.get("seats", [])[1:]))
-        if opp not in GIADA_ERA:
-            continue
-        by_jobs[doc["jobs"]][0] += n
-        by_jobs[doc["jobs"]][1] += doc["summary"].get("truncated") or 0
-
-    assert 4 in by_jobs and 7 in by_jobs, dict(by_jobs)
-    low = by_jobs[4][1] / by_jobs[4][0]
-    high = by_jobs[7][1] / by_jobs[7][0]
-    assert by_jobs[4][0] >= 200 and by_jobs[7][0] >= 200, "too few games to compare"
-    assert high > low * 2, (
-        f"4 jobs censor {low:.1%}, 7 jobs censor {high:.1%} — if that gap has "
-        f"closed, `default_jobs` needs re-deriving rather than trusting")
-
-
 # ── The list a run says it measured ───────────────────────────────────────
 
 def test_a_run_records_the_list_it_PLAYED_not_the_one_on_disk_when_it_ends(

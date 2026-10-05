@@ -235,6 +235,7 @@ def test_more_games_detect_smaller_differences():
     assert a > b > c
 
 
+@pytest.mark.slow
 def test_games_for_difference_lands_on_the_exact_boundary():
     """Not an approximation: power must cross the target between n-1 and n."""
     n = stats.games_for_difference(0.25, 0.10)
@@ -248,6 +249,7 @@ def test_an_undetectable_difference_reports_none_rather_than_a_number():
     assert stats.games_for_difference(0.25, 0.0001, max_n=64) is None
 
 
+@pytest.mark.slow
 def test_the_mde_switches_to_the_normal_approximation_above_the_cap(monkeypatch):
     """The exact grid is O(n^2) and overflows a double near 4,000; above
     `EXACT_MDE_MAX_N` the normal approximation answers, and says so. Bug:

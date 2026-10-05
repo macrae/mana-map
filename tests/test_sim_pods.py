@@ -393,6 +393,7 @@ def test_the_table_that_replaced_the_unfair_one_is_also_uneven():
         assert "baylen-tokens" in cal["balance"]["floor"], name
 
 
+@pytest.mark.slow
 def test_an_unplayed_table_says_it_has_no_null_rather_than_assuming_one():
     """Absent means absent. A pod nobody has run has no baseline at all.
 

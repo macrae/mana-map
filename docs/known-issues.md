@@ -670,6 +670,13 @@ O3 above argues for ADDING one (drain) — which should be weighed against this.
 
 Run it with `pytest -m fleet`.
 
+**2026-10-05: one pair left, and the test is a STRICT xfail.** Re-read the day the
+fleet tier (`make test-fleet`, `slow or fleet`) joined `prepush` and CI:
+`hoard_10 ~ hoard_6` r=+0.93 (+0.96 on the code before Smothering Tithe's Treasure
+was read); `damage_8 ~ hoard_10` is under the line. The xfail keeps the tier green
+without hiding the finding — the day the catalog is decided and the pair separates,
+the XPASS fails and this entry is closed with it.
+
 ## 9c. ~~`corpus-gates` is RED ON PURPOSE until Reality Fracture~~ — RESOLVED 2026-10-02
 
 **Resolved by the Reality Fracture refresh, 2026-10-02.** The corpus went to

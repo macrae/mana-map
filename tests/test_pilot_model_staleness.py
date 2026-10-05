@@ -11,7 +11,7 @@ import json
 
 import pytest
 
-from conftest import requires_data, requires_deck
+from conftest import is_retired, requires_data, requires_deck
 from manamap.pilot import goldfish, model_staleness
 from manamap.config import DECKS_DIR
 
@@ -76,23 +76,10 @@ def test_every_tracked_goldfish_carries_the_stamp():
 def test_the_fleet_is_stamped_with_the_model_that_is_running():
     """If this fails the fleet needs regenerating — which is the whole point of
     having the stamp, and was undecidable before it."""
-    def retired(deck_dir):
-        # A RETIRED DECK IS NOT REGENERATED. Its metrics are history — nothing
-        # plays the list, so every model change would leave it "stale" forever
-        # and the only way to green this gate is measuring a deck nobody will
-        # shuffle. The pilot's rule, 2026-08-27.
-        info = deck_dir / "info.json"
-        if not info.exists():
-            return False
-        try:
-            return bool((json.loads(info.read_text()) or {}).get("lifecycle"))
-        except Exception:                        # pragma: no cover - defensive
-            return False
-
     current = goldfish.model_version()
     checked, stale = 0, []
     for path in sorted(DECKS_DIR.glob("*/goldfish_metrics.json")):
-        if retired(path.parent):
+        if is_retired(path.parent):
             continue
         checked += 1
         if json.loads(path.read_text())["meta"].get("model_version") != current:

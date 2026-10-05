@@ -17,7 +17,7 @@ from manamap.pilot.manabase import (
 )
 
 
-from conftest import requires_data
+from conftest import assert_corpus_count, requires_data
 
 
 def _spell(name, mana_cost, cmc, type_line="Instant"):
@@ -574,8 +574,8 @@ def test_the_basic_gate_fires_on_exactly_the_cycle_across_the_corpus():
             gated += 1
             gated_names.append(name)
     assert lands >= 1000, f"only {lands} lands swept"
-    assert mentions == 10, f"{mentions} lands mention controlling a basic land, expected 10"
-    assert sorted(gated_names) == sorted([
-        "Dark Fortress", "Gathering Place", "Gleaming Bastion",
-        "Hidden Lair", "Training Compound",
-    ]), gated_names
+    assert_corpus_count(mentions, 10, "lands that mention controlling a basic land")
+    # NAMED, and a SUBSET: these five are the rule (each is gated on a basic), and a
+    # new set may add a sixth without anything being wrong.
+    assert {"Dark Fortress", "Gathering Place", "Gleaming Bastion",
+            "Hidden Lair", "Training Compound"} <= set(gated_names), gated_names

@@ -114,6 +114,7 @@ def test_merge_recomputes_the_skeleton_and_takes_prose_only(deck, monkeypatch):
     assert json.loads(path.read_text())["runs"]["run-one-aaaaaaaa"]["prose"]["reading"].startswith("47%")
 
 
+@pytest.mark.slow
 def test_every_tracked_findings_file_passes_its_gate_and_matches_a_fresh_skeleton():
     files = sorted((ROOT / "data" / "decks").glob("*/sim_findings.json"))
     assert files, "no tracked sim_findings.json — the registry would name an artifact nothing writes"

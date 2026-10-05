@@ -42,7 +42,7 @@ from manamap.pilot import (
     validate_edhrec_cards,
 )
 
-from conftest import module_closure, requires_branch, requires_deck
+from conftest import is_retired, module_closure, requires_branch, requires_deck
 
 # Everything a validator in GATED can read. The CODE half is DERIVED from the
 # validators themselves — `module_closure` walks their syntax trees, so a change
@@ -53,14 +53,17 @@ from conftest import module_closure, requires_branch, requires_deck
 # The rest is the tracked global artifacts the deck validators reach for — role
 # tags, the two graphs, the combo records, the corpus and the strategy doc. Listed
 # rather than digesting `data/`, which is 326 MB and mostly irrelevant.
-#: The twelve validators this file drives, as MODULES — the closure's roots.
-#: `GATED` below maps artifact -> module by importing from `deck_status.VALIDATED`,
-#: which is the registry; these are the same modules, named here because the key
-#: has to be computable before the first test runs.
-_VALIDATORS = (validate_build, validate_candidate_scan, validate_cast_proofs, validate_deck,
-               validate_deck_map, validate_diagnosis, validate_edhrec_cards, validate_engine,
-               validate_goldfish_targets, validate_prescription,
-               validate_stack, validate_strategic_frame, validate_tutor_guide)
+#: EVERY validator this file drives, as MODULES — the closure's roots, DERIVED from
+#: `deck_status.VALIDATED`, the registry `GATED` below is built from too.
+#:
+#: It was a hand-written tuple of thirteen, and the registry held twenty-five: the
+#: other twelve (validate_branch, brief, captains_log, debrief, decisions,
+#: deck_versions, diagnostic, log_causes, net_change, poh_procedures, protected,
+#: recon, sim_findings) were outside the key, so an edit to one of them was served
+#: a cached PASS it never earned (found 2026-10-05). Derived, the two cannot drift.
+#: `validate_prescription` is a driver of diagnosis checks with no artifact row.
+_VALIDATORS = tuple(sorted({importlib.import_module(dotted) for dotted in VALIDATED.values()}
+                           | {validate_prescription}, key=lambda m: m.__name__))
 
 INPUTS = (*module_closure(*_VALIDATORS), CARD_ROLES_PATH, COMBO_DETAILS_PATH,
           OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH, STRATEGY_DOC_PATH,
@@ -84,6 +87,15 @@ INPUTS = (*module_closure(*_VALIDATORS), CARD_ROLES_PATH, COMBO_DETAILS_PATH,
 # no `STAGES` row for `deck-status` to hang a verdict on.
 GATED = {name: importlib.import_module(dotted)
          for name, dotted in VALIDATED.items()}
+
+
+def test_the_cache_key_covers_every_registered_validator():
+    """THE KEY IS THE REGISTRY. A validator module outside `INPUTS` is a cached pass
+    the test never earned — twelve were, until 2026-10-05."""
+    roots = {m.__file__ for m in _VALIDATORS}
+    for dotted in VALIDATED.values():
+        path = importlib.import_module(dotted).__file__
+        assert path in roots and any(str(i) == path for i in INPUTS), dotted
 
 
 def test_the_test_does_not_know_about_a_gate_the_status_command_lacks():
@@ -119,30 +131,6 @@ BRANCH_AWARE = {"cards.json", "deck_map.json", "goldfish_targets.json",
                 "net_change.json", "branch.json", "cast_proofs.json"}
 
 
-def _is_retired(deck_dir):
-    """Broken-down, superseded or retired — one bucket, `deck_info.STATE_RETIRED`.
-
-    A RETIRED DECK'S ARTIFACTS ARE HISTORY, NOT CLAIMS. Nothing plays it and
-    nothing derives from it, so holding its documents to today's model is the
-    "gate that reddens history" that `validate_prescription` already refused to
-    be. Measured the day it bit: a correctness fix to `manabase.land_colors`
-    moved the colour-source count on six decks, and three of them — hapatra,
-    radagast, sisay — were broken down or belong to someone else. Regenerating
-    those meant re-running an agent over a deck nobody will play.
-
-    The pilot's rule, 2026-08-27: "if a deck is deprecated, broken down, exclude
-    it from these downstream tasks."
-    """
-    import json as _json
-    info = deck_dir / "info.json"
-    if not info.exists():
-        return False
-    try:
-        return bool((_json.loads(info.read_text()) or {}).get("lifecycle"))
-    except Exception:                            # pragma: no cover - defensive
-        return False
-
-
 def _cases():
     """(slug, branch, artifact) for every tracked copy — DECKS AND BRANCHES.
 
@@ -158,7 +146,7 @@ def _cases():
     for d in sorted(DECKS_DIR.iterdir()):
         if not d.is_dir():
             continue
-        if _is_retired(d):
+        if is_retired(d):
             continue
         for art in sorted(GATED):
             if (d / art).exists():

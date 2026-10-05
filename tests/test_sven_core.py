@@ -247,6 +247,7 @@ def test_an_unknown_frame_kind_is_refused_at_the_encoder():
 
 # ── what the first four real turns taught ─────────────────────────────────
 
+@pytest.mark.slow
 @requires_data
 def test_every_advertised_tool_can_actually_be_called():
     """SVEN'S FIRST WRONG ANSWER WAS THIS BUG. Three lists disagreed: the tool

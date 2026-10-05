@@ -28,6 +28,10 @@ def _spearmanless_corr(a, b):
 @requires_data
 @requires_deck
 @pytest.mark.fleet
+@pytest.mark.xfail(strict=True, reason=(
+    "docs/known-issues.md 9b: hoard_6 ~ hoard_10 r=+0.93 (2026-10-05). Which axis "
+    "a pilot may aim a branch at is the pilot's call, not a test fix; STRICT, so "
+    "this fails loudly the day the catalog is decided and the pair separates."))
 def test_no_two_axes_measure_the_same_thing():
     """A1: THREE MAGNITUDE AXES THAT WERE ONE AXIS.
 

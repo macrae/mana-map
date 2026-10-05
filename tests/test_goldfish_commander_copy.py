@@ -386,6 +386,7 @@ def test_the_pump_lasts_one_turn_and_never_joins_the_permanent_anthem():
         "a one-turn pump must never join the permanent anthem"
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 def test_the_pump_moves_damage_and_the_copy_flag_is_what_multiplies_it():
@@ -413,6 +414,7 @@ def test_the_pump_moves_damage_and_the_copy_flag_is_what_multiplies_it():
         f"{off} -> {on}")
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 def test_a_pump_spell_is_actually_cast():
@@ -513,6 +515,7 @@ def test_per_cast_damage_and_magecraft_are_separate_because_copies_differ():
     assert fa["per_cast_damage_gate"] == "a noncreature"
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 def test_each_of_the_three_channels_actually_fires():
@@ -616,6 +619,7 @@ def test_an_extra_combat_is_NOT_multiplied_by_the_copy_count():
         f"board size — it read 74.01 damage@10 against a 21.36 baseline.")
 
 
+@pytest.mark.slow
 @requires_data
 @requires_deck
 def test_each_of_the_four_combat_channels_actually_fires():

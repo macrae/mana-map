@@ -29,6 +29,7 @@ def test_no_baseline_is_absent_rather_than_assumed():
     assert len(lines) == 1 and "no measured baseline" in lines[0]
 
 
+@pytest.mark.slow
 def test_the_underpowered_case_is_named_as_such():
     """THE CASE THAT COST FOUR HOURS. 0.244 baseline, 100 per arm, looking for
     +0.10 — the exact configuration that was launched."""
@@ -38,6 +39,7 @@ def test_the_underpowered_case_is_named_as_such():
     assert "330" in lines or "324" in lines, "it must say how many games WOULD do it"
 
 
+@pytest.mark.slow
 def test_an_adequate_run_is_not_scolded():
     """A validator that fires on correct use is worse than none. Detecting a
     +0.20 change at 100 per arm is a properly powered experiment and must read
@@ -46,6 +48,7 @@ def test_an_adequate_run_is_not_scolded():
     assert "adequate" in lines and "UNDERPOWERED" not in lines
 
 
+@pytest.mark.slow
 def test_the_thin_middle_is_distinguished_from_the_hopeless(monkeypatch):
     """Three verdicts, not two: 0.63 power is a real experiment with a real risk
     of missing, and calling it UNDERPOWERED alongside 0.12 would flatten a
@@ -100,6 +103,7 @@ def test_a_detect_the_run_cannot_see_is_refused_unless_anyway():
     assert power.refuse_if_underpowered(0.244, 100, 0.20) >= 0.8
 
 
+@pytest.mark.slow
 def test_a_one_arm_preflight_quotes_one_arm_of_hours():
     """`simulate` plays ONE arm — its comparison is the pod's null, already
     paid for. The hours line hardcoded `2 * games` for every caller, so a
@@ -110,6 +114,7 @@ def test_a_one_arm_preflight_quotes_one_arm_of_hours():
     assert "games/arm" not in one and "about 2.4 h" in one
 
 
+@pytest.mark.slow
 def test_the_comparison_arm_can_be_the_null_with_its_own_size():
     """A run compared against a 400-game null has more power than one against
     an equal 100-game arm, and the preflight must compute the test that will

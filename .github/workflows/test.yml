@@ -109,6 +109,13 @@ jobs:
         # cannot check, it must at least NAME — see the scheduled job below.
         run: make test PYTEST_ARGS=-rs
 
+      - name: Test (fleet tier)
+        # The `slow` and `fleet` markers, excluded from `make test` since
+        # 2026-10-05: every 10,000-game producer re-run per deck and branch, and
+        # the constants calibrated across the fleet. Most need the corpus and
+        # skip here (`-rs` names them); the weekly job below runs them for real.
+        run: make test-fleet PYTEST_ARGS=-rs
+
       - name: The manuals and version lists must still rebuild byte-identically
         # Cheap (9 s) and it is the project's central determinism claim, so it
         # is worth asserting outside the suite that also asserts it.
@@ -168,4 +175,6 @@ jobs:
           manamap download
           manamap extract
       - name: Every gate, including the ones a push cannot reach
-        run: make test PYTEST_ARGS=-rs
+        run: |
+          make test PYTEST_ARGS=-rs
+          make test-fleet PYTEST_ARGS=-rs
