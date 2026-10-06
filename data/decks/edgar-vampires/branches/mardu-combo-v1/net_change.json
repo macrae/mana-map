@@ -239,12 +239,6 @@
    },
    {
     "free": false,
-    "name": "Drana, Liberator of Malakir",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Edgar Markov",
     "state": "in_deck",
     "where": []
@@ -357,6 +351,20 @@
     "name": "Herald's Horn",
     "state": "in_deck",
     "where": []
+   },
+   {
+    "free": true,
+    "name": "Ingris Stingerquill",
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "ingris-infect",
+      "status": "broken-down"
+     }
+    ]
    },
    {
     "free": false,
@@ -742,8 +750,8 @@
    "box": 6,
    "buy": 13,
    "elsewhere": 3,
-   "free": 4,
-   "in_deck": 71
+   "free": 5,
+   "in_deck": 70
   },
   "counts_are": "distinct names",
   "diff": {
@@ -759,6 +767,7 @@
     "Erebos, Bleak-Hearted",
     "Exquisite Blood",
     "Falkenrath Aristocrat",
+    "Ingris Stingerquill",
     "Kirol, Attentive First-Year",
     "Marauding Blight-Priest",
     "Olivia Voldaren",
@@ -775,7 +784,7 @@
     "Wispdrinker Vampire",
     "Wooded Foothills"
    ],
-   "add_copies": 26,
+   "add_copies": 27,
    "base_names": 96,
    "base_size": 100,
    "names": 97,
@@ -787,6 +796,7 @@
     "Champion of Dusk",
     "Charismatic Conqueror",
     "Cordial Vampire",
+    "Drana, Liberator of Malakir",
     "High-Society Hunter",
     "Indulgent Aristocrat",
     "Legion Lieutenant",
@@ -806,11 +816,11 @@
     "Vampire of the Dire Moon",
     "Voldaren Epicure"
    ],
-   "out_copies": 26,
+   "out_copies": 27,
    "quantity": [],
    "size": 100
   },
-  "free": 4,
+  "free": 5,
   "mergeable": false,
   "owned_but_elsewhere": 3,
   "proxy": false,
@@ -867,12 +877,13 @@
    "cards": [
     "Altar of Dementia",
     "Erebos, Bleak-Hearted",
+    "Ingris Stingerquill",
     "Olivia's Wrath",
     "Stroke of Midnight",
     "Voldaren Epicure"
    ],
    "class": "removal",
-   "headline": "5 card(s) carrying a removal effect",
+   "headline": "6 card(s) carrying a removal effect",
    "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
   },
   {
@@ -893,25 +904,25 @@
  ],
  "branch": "mardu-combo-v1",
  "changes": {
-  "count": 47,
+  "count": 48,
   "counts": {
-   "in": 26,
-   "out": 25,
-   "rows": 47
+   "in": 27,
+   "out": 26,
+   "rows": 48
   },
   "diff": {
    "base_names": 96,
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 26,
-    "in_copies": 26,
+    "in": 27,
+    "in_copies": 27,
     "lands_in": 4,
     "lands_out": 4,
-    "out": 25,
-    "out_copies": 26,
-    "spells_in": 22,
-    "spells_out": 21
+    "out": 26,
+    "out_copies": 27,
+    "spells_in": 23,
+    "spells_out": 22
    },
    "in": [
     {
@@ -993,6 +1004,16 @@
      "state": "buy",
      "type_line": "Creature \u2014 Vampire",
      "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Ingris Stingerquill",
+     "pair": "Drana, Liberator of Malakir",
+     "state": "elsewhere",
+     "type_line": "Legendary Creature \u2014 Elder Sphinx",
+     "why": "Pilot-approved 2026-10-06: Ingris pings each opponent per attacker (scales with eminence bodies; action at a distance, Edgar's weakest axis; each ping starts the drain loop with Conqueror/Exquisite Blood). Sequencing caveat: Olivia's Wrath kills it (not a Vampire). Same mana value as Drana, whose attack value it subsumes."
     },
     {
      "cmc": 3,
@@ -1298,6 +1319,15 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
+     "name": "Drana, Liberator of Malakir",
+     "pair": "Ingris Stingerquill",
+     "type_line": "Legendary Creature \u2014 Vampire Ally",
+     "why": "Pilot-approved 2026-10-06: Ingris pings each opponent per attacker (scales with eminence bodies; action at a distance, Edgar's weakest axis; each ping starts the drain loop with Conqueror/Exquisite Blood). Sequencing caveat: Olivia's Wrath kills it (not a Vampire). Same mana value as Drana, whose attack value it subsumes."
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
      "name": "Mavren Fein, Dusk Apostle",
      "pair": null,
      "type_line": "Legendary Creature \u2014 Vampire Cleric",
@@ -1523,6 +1553,12 @@
    },
    {
     "at": "2026-10-06",
+    "in": "Ingris Stingerquill",
+    "out": "Drana, Liberator of Malakir",
+    "why": "Pilot-approved 2026-10-06: Ingris pings each opponent per attacker (scales with eminence bodies; action at a distance, Edgar's weakest axis; each ping starts the drain loop with Conqueror/Exquisite Blood). Sequencing caveat: Olivia's Wrath kills it (not a Vampire). Same mana value as Drana, whose attack value it subsumes."
+   },
+   {
+    "at": "2026-10-06",
     "in": "Kirol, Attentive First-Year",
     "out": "Indulgent Aristocrat",
     "why": "Pilot-approved 2026-10-06, slot by slot (cards in hand while gathering): Kirol, Attentive First-Year for Indulgent Aristocrat"
@@ -1696,10 +1732,10 @@
     "why": null
    }
   ],
-  "staged_count": 4,
+  "staged_count": 5,
   "why": "The pilot's direction, decided card by card in discussion on 2026-10-05: steam after T7-8 (logs 001/003/006: out of gas, wipe after wipe, rebuilding small blockers) is the objective; full Mardu leaning RED; life gain as strong as the drain; BRACKET 4 BUILT FOR the Conqueror+Vito loop (Exquisite Blood as the second, wipe-proof Conqueror-half; Marauding Blight-Priest; Demonic/Enlightened/Diabolic Intent). Draw split per strategy:card-advantage.plan-draw: steady (Phyrexian Arena, Cosmos Elixir) + on-plan wipe insurance (Erebos, Bleak-Hearted). Starters: Tithe Drinker, Wispdrinker Vampire, Edgar Ancient Bloodlord. Red tier: Bloodtithe Harvester, Olivia Voldaren, Falkenrath Aristocrat, Olivia Crimson Bride, Strefan. Mana: four fetches into Blood Crypt/Godless Shrine + Rakdos/Orzhov Signet (mana-fit: B 31->35+, R 19->21+). 1-drops trimmed, flat lords cut (pilot's rule). Keeper and Vish Kal stay. Objective is draw-v1's line so the two are comparable; Forge is a probe, not a gate."
  },
- "decklist_sha256": "2608cb2103ee2b2edf42e8650374917f26244bfc2654851fad978d60441a6eae",
+ "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
  "definitions": {
   "derived": [
    {
@@ -2136,8 +2172,8 @@
    "box": 6,
    "buy": 13,
    "elsewhere": 3,
-   "free": 4,
-   "in_deck": 71
+   "free": 5,
+   "in_deck": 70
   },
   "cost": {
    "buy": 13,
@@ -2160,8 +2196,8 @@
     "box": 6,
     "buy": 13,
     "elsewhere": 3,
-    "free": 4,
-    "in_deck": 71
+    "free": 5,
+    "in_deck": 70
    },
    "free_to_raid": [
     {
@@ -2169,6 +2205,12 @@
       "yawgmoth-swarm"
      ],
      "name": "Exquisite Blood"
+    },
+    {
+     "decks": [
+      "ingris-infect"
+     ],
+     "name": "Ingris Stingerquill"
     },
     {
      "decks": [
@@ -2217,7 +2259,7 @@
     }
    ],
    "owned": 84,
-   "reads_as": "13 to buy; 3 to pull out of a deck that is still together; 4 sitting in a retired or broken-down deck, which cost nothing; 84 of 97 already owned",
+   "reads_as": "13 to buy; 3 to pull out of a deck that is still together; 5 sitting in a retired or broken-down deck, which cost nothing; 84 of 97 already owned",
    "total": 97
   },
   "fell": [
@@ -2237,31 +2279,31 @@
   "reward": [
    {
     "measure": "extra cards by T8",
-    "reads_as": "0.94 -> 1.67, a change of +0.73 (+78%)",
+    "reads_as": "0.94 -> 1.68, a change of +0.74 (+79%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
   "risk": [
    {
-    "detail": "21.99 -> 20.07, a change of -1.92 (-9%)",
+    "detail": "21.99 -> 21.64, a change of -0.35 (-2%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "11.90 -> 10.67, a change of -1.23 (-10%)",
+    "detail": "11.90 -> 10.45, a change of -1.45 (-12%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "8 games in 100 -> 3 in 100, a swing of 5 games per 100",
+    "detail": "8 games in 100 -> 4 in 100, a swing of 4 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "97 games in 100 -> 95 in 100, a swing of 1 games per 100",
+    "detail": "97 games in 100 -> 96 in 100, a swing of 1 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
@@ -2279,7 +2321,7 @@
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "the largest is missed drop by T5 at +0.011 against an MDE of 0.017. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is missed drop by T5 at +0.010 against an MDE of 0.017. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "3 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -2319,13 +2361,14 @@
     "cards": [
      "Altar of Dementia",
      "Erebos, Bleak-Hearted",
+     "Ingris Stingerquill",
      "Olivia's Wrath",
      "Stroke of Midnight",
      "Voldaren Epicure"
     ],
     "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
-    "what": "5 card(s) carrying a removal effect",
+    "what": "6 card(s) carrying a removal effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -2363,101 +2406,17 @@
   "state": "inconclusive"
  },
  "slug": "edgar-vampires",
- "staged": 4,
+ "staged": 5,
  "table": [
   {
    "better_is": "higher",
-   "branch": 20.0707,
+   "branch": 21.6401,
    "champion": 21.9933,
    "ci95_diff": [
-    -2.1241,
-    -1.7211
+    -0.5727,
+    -0.1337
    ],
-   "delta": -1.9226,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 3,
-    "significant": true,
-    "threshold": 2.734
-   },
-   "mde": 0.288,
-   "measure": "damage @T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "21.99 -> 20.07, a change of -1.92 (-9%)",
-   "role": "exploratory",
-   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
-   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -18.7
-  },
-  {
-   "better_is": "higher",
-   "branch": 10.6731,
-   "champion": 11.8989,
-   "ci95_diff": [
-    -1.3512,
-    -1.1004
-   ],
-   "delta": -1.2258,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 2,
-    "significant": true,
-    "threshold": 2.773
-   },
-   "mde": 0.1793,
-   "measure": "board power @T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "11.90 -> 10.67, a change of -1.23 (-10%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "Total power on the battlefield at the end of turn 6.",
-   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": -19.154
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.0324,
-   "champion": 0.0839,
-   "ci95_diff": [
-    -0.0579,
-    -0.0451
-   ],
-   "delta": -0.0515,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 4,
-    "significant": true,
-    "threshold": 2.69
-   },
-   "mde": 0.0092,
-   "measure": "killed by T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "8 games in 100 -> 3 in 100, a swing of 5 games per 100",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
-   "verdict": "worse",
-   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
-   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": -15.74
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.9546,
-   "champion": 0.9687,
-   "ci95_diff": [
-    -0.0192,
-    -0.009
-   ],
-   "delta": -0.0141,
+   "delta": -0.3532,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -2465,27 +2424,83 @@
     "significant": true,
     "threshold": 2.498
    },
-   "mde": 0.0073,
-   "measure": "killed by T10",
+   "mde": 0.3137,
+   "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "97 games in 100 -> 95 in 100, a swing of 1 games per 100",
+   "reads_as": "21.99 -> 21.64, a change of -0.35 (-2%)",
+   "role": "exploratory",
+   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
+   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
+   "z": -3.154
+  },
+  {
+   "better_is": "higher",
+   "branch": 10.4519,
+   "champion": 11.8989,
+   "ci95_diff": [
+    -1.5697,
+    -1.3243
+   ],
+   "delta": -1.447,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 2,
+    "significant": true,
+    "threshold": 2.773
+   },
+   "mde": 0.1753,
+   "measure": "board power @T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "11.90 -> 10.45, a change of -1.45 (-12%)",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Total power on the battlefield at the end of turn 6.",
+   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
+   "z": -23.123
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.0424,
+   "champion": 0.0839,
+   "ci95_diff": [
+    -0.0481,
+    -0.0349
+   ],
+   "delta": -0.0415,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 3,
+    "significant": true,
+    "threshold": 2.734
+   },
+   "mde": 0.0095,
+   "measure": "killed by T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "8 games in 100 -> 4 in 100, a swing of 4 games per 100",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
-   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
-   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": -5.387
+   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
+   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
+   "z": -12.281
   },
   {
-   "better_is": "lower",
-   "branch": 0.1406,
-   "champion": 0.0977,
+   "better_is": "higher",
+   "branch": 0.9565,
+   "champion": 0.9687,
    "ci95_diff": [
-    0.0345,
-    0.0513
+    -0.0173,
+    -0.0071
    ],
-   "delta": 0.0429,
+   "delta": -0.0122,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -2493,7 +2508,35 @@
     "significant": true,
     "threshold": 2.576
    },
-   "mde": 0.012,
+   "mde": 0.0073,
+   "measure": "killed by T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "97 games in 100 -> 96 in 100, a swing of 1 games per 100",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
+   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
+   "z": -4.711
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.1369,
+   "champion": 0.0977,
+   "ci95_diff": [
+    0.0309,
+    0.0475
+   ],
+   "delta": 0.0392,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 5,
+    "significant": true,
+    "threshold": 2.638
+   },
+   "mde": 0.0119,
    "measure": "stall, 2 in a row",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
    "reads_as": "10 games in 100 -> 14 in 100, a swing of 4 games per 100",
@@ -2503,17 +2546,17 @@
    "verdict": "worse",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": 9.977
+   "z": 9.237
   },
   {
    "better_is": "lower",
-   "branch": 0.4408,
+   "branch": 0.4406,
    "champion": 0.4303,
    "ci95_diff": [
-    -0.0011,
-    0.0221
+    -0.0013,
+    0.0219
    ],
-   "delta": 0.0105,
+   "delta": 0.0103,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -2524,14 +2567,14 @@
    "mde": 0.0165,
    "measure": "missed drop by T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.017 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.010 is smaller than the 0.017 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": 1.778
+   "z": 1.745
   },
   {
    "better_is": "lower",
@@ -2563,13 +2606,13 @@
   },
   {
    "better_is": "higher",
-   "branch": 1.6738,
+   "branch": 1.684,
    "champion": 0.9413,
    "ci95_diff": [
-    0.6821,
-    0.7829
+    0.692,
+    0.7934
    ],
-   "delta": 0.7325,
+   "delta": 0.7427,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -2577,27 +2620,27 @@
     "significant": true,
     "threshold": 2.807
    },
-   "mde": 0.0721,
+   "mde": 0.0724,
    "measure": "extra cards by T8",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "0.94 -> 1.67, a change of +0.73 (+78%)",
+   "reads_as": "0.94 -> 1.68, a change of +0.74 (+79%)",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": 28.476
+   "z": 28.733
   },
   {
    "better_is": "higher",
-   "branch": 0.2795,
+   "branch": 0.2757,
    "champion": 0.2837,
    "ci95_diff": [
-    -0.0176,
-    0.0092
+    -0.0213,
+    0.0054
    ],
-   "delta": -0.0042,
+   "delta": -0.008,
    "excludes_zero": false,
    "holm": {
     "family": 10,
@@ -2608,30 +2651,30 @@
    "mde": 0.0193,
    "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.019 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.019 this run can resolve",
    "role": "exploratory",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": -0.615
+   "z": -1.175
   },
   {
    "better_is": "higher",
-   "branch": 0.9364,
+   "branch": 0.9375,
    "champion": 0.9654,
    "ci95_diff": [
-    -0.0347,
-    -0.0233
+    -0.0335,
+    -0.0223
    ],
-   "delta": -0.029,
+   "delta": -0.0279,
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 5,
+    "rank": 4,
     "significant": true,
-    "threshold": 2.638
+    "threshold": 2.69
    },
    "mde": 0.0081,
    "measure": "hand can act by T3",
@@ -2643,7 +2686,7 @@
    "verdict": "worse",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
-   "z": -10.032
+   "z": -9.688
   }
  ]
 }
