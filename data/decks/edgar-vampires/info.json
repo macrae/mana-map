@@ -5957,6 +5957,9 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anje, Maid of Dishonor"
+          },
+          {
             "name": "Cosmos Elixir"
           },
           {
@@ -5969,7 +5972,13 @@
             "name": "Falkenrath Aristocrat"
           },
           {
+            "name": "Kirol, Attentive First-Year"
+          },
+          {
             "name": "Olivia Voldaren"
+          },
+          {
+            "name": "Olivia's Wrath"
           },
           {
             "name": "Olivia, Crimson Bride"
@@ -5979,6 +5988,9 @@
           },
           {
             "name": "Tithe Drinker"
+          },
+          {
+            "name": "Twilight Prophet"
           },
           {
             "name": "Wispdrinker Vampire"
@@ -6076,31 +6088,35 @@
             ]
           }
         ],
-        "blocking": 12,
+        "blocking": 16,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 22,
-      "out": 22,
+      "add": 26,
+      "out": 26,
       "counts": {
-        "in_deck": 75,
+        "in_deck": 71,
         "box": 6,
         "elsewhere": 3,
-        "buy": 9,
+        "buy": 13,
         "free": 4
       },
       "unsourced": [
+        "Anje, Maid of Dishonor",
         "Arid Mesa",
         "Cosmos Elixir",
         "Edgar, Ancient Bloodlord",
         "Enlightened Tutor",
         "Erebos, Bleak-Hearted",
         "Falkenrath Aristocrat",
+        "Kirol, Attentive First-Year",
         "Olivia Voldaren",
+        "Olivia's Wrath",
         "Olivia, Crimson Bride",
         "Orzhov Signet",
         "Tithe Drinker",
+        "Twilight Prophet",
         "Wispdrinker Vampire",
         "Wooded Foothills"
       ],
@@ -6127,6 +6143,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Anje, Maid of Dishonor",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Anointed Procession",
@@ -6283,13 +6306,6 @@
         },
         {
           "name": "Caves of Koilos",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Champion of Dusk",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -6511,18 +6527,11 @@
           "is_new": false
         },
         {
-          "name": "High-Society Hunter",
-          "state": "in_deck",
+          "name": "Kirol, Attentive First-Year",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Indulgent Aristocrat",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Knight of the Ebon Legion",
@@ -6618,6 +6627,13 @@
         },
         {
           "name": "Olivia Voldaren",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Olivia's Wrath",
           "state": "buy",
           "where": [],
           "free": false,
@@ -6776,13 +6792,6 @@
           "is_new": true
         },
         {
-          "name": "Stroke of Midnight",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Sulfurous Springs",
           "state": "in_deck",
           "where": [],
@@ -6826,6 +6835,13 @@
         },
         {
           "name": "Tithe Drinker",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Twilight Prophet",
           "state": "buy",
           "where": [],
           "free": false,
@@ -10824,6 +10840,7 @@
     "branch `draw-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source draw-v1`",
     "branch `entry-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch entry-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `entry-v1` needs 3 card(s) sourced — `manamap pilot deck-branch edgar-vampires source entry-v1`",
+    "branch `mardu-combo-v1` needs 16 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mardu-combo-v1`",
     "branch `treasury-v1`: 4 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch treasury-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `treasury-v1` needs 7 card(s) sourced — `manamap pilot deck-branch edgar-vampires source treasury-v1`",
     "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×5",
