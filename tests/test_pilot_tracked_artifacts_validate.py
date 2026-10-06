@@ -206,6 +206,19 @@ STALE_XFAIL = {
         "stale since the 2026-10-05 transform-land model fix (consistency "
         "0.917 -> 0.908); re-run /diagnose-deck edgar-vampires after "
         "mardu-combo-v1 settles"),
+    # STALE BY A MERGE, NOT BY A DEFECT (2026-10-06). The pilot sleeved edgar
+    # v2.0.0 (mardu-combo-v1, 27 swaps) and sharknado v1.2.0 (momentum-v1); the
+    # agent artifacts below were written against the previous lists and name
+    # cards that left. They are re-run by their agents, never hand-patched.
+    "edgar-vampires/engine.json": (
+        "written for v1.1.1 (stages name a cut Plains); re-run /analyze-engine "
+        "edgar-vampires against v2.0.0"),
+    "edgar-vampires/tutor_guide.json": (
+        "written for v1.1.1 (no entry for Demonic Tutor, added in v2.0.0); "
+        "re-run /write-manual edgar-vampires"),
+    "sharknado/engine.json": (
+        "written for v1.1.0 (stages name the cut Treasure Map); re-run "
+        "/analyze-engine sharknado against v1.2.0"),
     # It was EMPTY before, and that was the point. Its one entry was
     # `heliod/considering.json` — the retired Short List, an artifact of
     # the frozen magazine renderer with no author left to re-run it. The

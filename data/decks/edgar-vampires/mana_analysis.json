@@ -1,23 +1,23 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+  "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
   "lands": {
     "total": 36,
-    "entries": 32,
+    "entries": 33,
     "life": {
       "recurring_per_tap_cycle": 8,
-      "one_time_on_entry": 6
+      "one_time_on_entry": 10
     },
-    "enters_tapped": 15,
+    "enters_tapped": 13,
     "enters_tapped_always": 3,
     "classes": {
-      "basic": 6,
-      "fetch": 2,
+      "basic": 4,
+      "fetch": 6,
       "fixing": 5,
       "mdfc": 1,
-      "tapped": 15,
+      "tapped": 13,
       "untapped-dual": 10,
-      "utility": 14
+      "utility": 18
     },
     "list": [
       {
@@ -27,6 +27,19 @@
           "utility"
         ],
         "produces": []
+      },
+      {
+        "name": "Arid Mesa",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
       },
       {
         "name": "Battlefield Forge",
@@ -242,12 +255,15 @@
         ]
       },
       {
-        "name": "Plains",
-        "copies": 2,
+        "name": "Polluted Delta",
+        "copies": 1,
         "classes": [
-          "basic"
+          "fetch",
+          "utility"
         ],
         "produces": [
+          "B",
+          "R",
           "W"
         ]
       },
@@ -307,17 +323,6 @@
         ]
       },
       {
-        "name": "Spectator Seating",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "W"
-        ]
-      },
-      {
         "name": "Sulfurous Springs",
         "copies": 1,
         "classes": [
@@ -327,17 +332,6 @@
         "produces": [
           "B",
           "R"
-        ]
-      },
-      {
-        "name": "Sundown Pass",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "W"
         ]
       },
       {
@@ -384,6 +378,32 @@
           "B",
           "W"
         ]
+      },
+      {
+        "name": "Verdant Catacombs",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Wooded Foothills",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
       }
     ]
   },
@@ -391,22 +411,22 @@
     "lands": {
       "W": 21,
       "U": 0,
-      "B": 28,
-      "R": 17,
+      "B": 32,
+      "R": 19,
       "G": 0
     },
     "nonland": {
-      "W": 3,
+      "W": 2,
       "U": 0,
-      "B": 4,
+      "B": 5,
       "R": 3,
       "G": 0
     },
     "total": {
-      "W": 24,
+      "W": 23,
       "U": 0,
-      "B": 32,
-      "R": 20,
+      "B": 37,
+      "R": 22,
       "G": 0
     },
     "gated": {
@@ -432,14 +452,6 @@
         "produces": []
       },
       {
-        "name": "Legion's Landing // Adanto, the First Fort",
-        "kind": "ramp:rock",
-        "cmc": 1.0,
-        "produces": [
-          "W"
-        ]
-      },
-      {
         "name": "Master of Dark Rites",
         "kind": "ramp:dork",
         "cmc": 1.0,
@@ -448,13 +460,21 @@
         ]
       },
       {
-        "name": "Patchwork Banner",
+        "name": "Orzhov Signet",
         "kind": "ramp:rock",
-        "cmc": 3.0,
+        "cmc": 2.0,
         "produces": [
           "B",
-          "R",
           "W"
+        ]
+      },
+      {
+        "name": "Rakdos Signet",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "B",
+          "R"
         ]
       },
       {
@@ -478,37 +498,37 @@
     "B": {
       "total_pips": 54.0,
       "max_pips": 3,
-      "cards": 38,
+      "cards": 42,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "R": {
-      "total_pips": 6.0,
-      "max_pips": 1,
-      "cards": 6,
-      "earliest_turn": 1,
+      "total_pips": 12.0,
+      "max_pips": 2,
+      "cards": 11,
+      "earliest_turn": 2,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 24.0,
+      "total_pips": 22.0,
       "max_pips": 2,
-      "cards": 22,
+      "cards": 21,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.643,
-      "source_share": 0.424
+      "pip_share": 0.614,
+      "source_share": 0.444
     },
     "R": {
-      "pip_share": 0.071,
-      "source_share": 0.258
+      "pip_share": 0.136,
+      "source_share": 0.264
     },
     "W": {
-      "pip_share": 0.286,
-      "source_share": 0.318
+      "pip_share": 0.25,
+      "source_share": 0.292
     }
   },
   "source_targets": {
@@ -519,18 +539,18 @@
   "on_curve_probability": {
     "lands_only": {
       "W": 0.895,
-      "B": 0.785,
-      "R": 0.831
+      "B": 0.855,
+      "R": 0.866
     },
     "with_rocks_and_dorks": {
-      "W": 0.927,
-      "B": 0.855,
-      "R": 0.881
+      "W": 0.918,
+      "B": 0.916,
+      "R": 0.907
     },
     "lands_only_ungated": {
       "W": 0.895,
-      "B": 0.785,
-      "R": 0.831
+      "B": 0.855,
+      "R": 0.866
     }
   },
   "ramp": {
@@ -540,28 +560,28 @@
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.998,
-      "10": 0.51,
+      "1": 0.999,
+      "10": 0.548,
       "2": 0.996,
-      "3": 0.908,
-      "4": 0.792,
-      "5": 0.673,
-      "6": 0.564,
-      "7": 0.521,
-      "8": 0.502,
-      "9": 0.499
+      "3": 0.906,
+      "4": 0.78,
+      "5": 0.669,
+      "6": 0.598,
+      "7": 0.549,
+      "8": 0.545,
+      "9": 0.539
     },
     "mean_available_mana_by_turn": {
-      "1": 0.998,
-      "10": 7.785,
-      "2": 2.143,
-      "3": 3.232,
-      "4": 4.145,
-      "5": 4.887,
-      "6": 5.497,
-      "7": 6.068,
-      "8": 6.642,
-      "9": 7.203
+      "1": 0.999,
+      "10": 8.524,
+      "2": 2.141,
+      "3": 3.511,
+      "4": 4.412,
+      "5": 5.171,
+      "6": 5.867,
+      "7": 6.504,
+      "8": 7.176,
+      "9": 7.841
     }
   },
   "assumptions": [
@@ -571,9 +591,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 32.",
-    "R: 17 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20.",
-    "W: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 24.",
-    "15 of 36 lands enter tapped (42%) — over the one-in-three budget the deck builder allows itself."
+    "B: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 37.",
+    "R: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
+    "W: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
+    "13 of 36 lands enter tapped (36%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
