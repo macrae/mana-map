@@ -512,14 +512,12 @@ def clock_tag(clock=None):
     return f"-c{int(clock)}" if clock and int(clock) != SIM_CLOCK_ID_BASELINE else ""
 
 
-def keyword_map(slug):
+def keyword_map(slug, doc=None):
     """Our deck's card name -> its `keywords` list (front face), for the combat damage
-    split. `{}` for a seat with no cards.json — the split is then absent, never zero."""
-    base, branch = split_seat(slug)
-    try:
-        from manamap.pilot.common import load_deck_cards
-        doc = load_deck_cards(base, branch)
-    except (FileNotFoundError, OSError, ValueError):
+    split. `{}` for a seat with no cards.json — the split is then absent, never zero.
+    `doc`: the cards of the list a record PLAYED (`played_doc`)."""
+    doc = _deck_doc(slug, doc)
+    if doc is None:
         return {}
     out = {}
     for c in doc.get("cards", []):
@@ -531,16 +529,74 @@ def keyword_map(slug):
     return out
 
 
-def cmc_map(slug):
-    """Our deck's card name -> mana value, front face, from cards.json — the input
-    `parse.hand_facts` needs to say whether a held card was castable. `{}` for a seat
-    with no cards.json (an opponent), which turns the measurement off rather than
-    guessing."""
+def _deck_doc(slug, doc=None):
+    if doc is not None:
+        return doc
     base, branch = split_seat(slug)
     try:
         from manamap.pilot.common import load_deck_cards
-        doc = load_deck_cards(base, branch)
+        return load_deck_cards(base, branch)
     except (FileNotFoundError, OSError, ValueError):
+        return None
+
+
+_PLAYED_DOCS = {}
+
+
+def played_doc(slug, rec):
+    """`cards.json` AS COMMITTED WITH THE LIST A RECORD PLAYED, or None when that
+    list is the one on disk (or cannot be found in git).
+
+    A RECORD DESCRIBES THE LIST IT PLAYED. Re-deriving an old run's analysis
+    from TODAY's cards.json made every Forge record of a deck "disagree with its
+    logs" the moment the list changed — 30 records the day edgar went to v2.0.0
+    (2026-10-06) — because hand castability and the keyword split read mana
+    values and keywords of cards the games never had. The played list's sha is in
+    the record (`seats[].decklist_sha256`); its cards.json is in git beside it,
+    which CI has too (full history)."""
+    import subprocess
+    from manamap.pilot.common import decklist_sha256, list_sha256
+    played = next((s.get("decklist_sha256") for s in rec.get("seats", [])
+                   if s.get("slug") == slug), None)
+    base, branch = split_seat(slug)
+    try:
+        current = decklist_sha256(base, branch)
+    except (FileNotFoundError, OSError):
+        current = None
+    # No deck on disk (an opponent seat, or an isolated data dir): nothing to
+    # recover, and git must not be asked — the data dir is the whole world here.
+    if not played or current is None or played == current:
+        return None
+    rel = f"data/decks/{base}" + (f"/branches/{branch}" if branch else "")
+    key = (rel, played)
+    if key in _PLAYED_DOCS:
+        return _PLAYED_DOCS[key]
+    root = pathlib.Path(__file__).resolve().parents[3]  # the repo: git paths are repo-relative
+    commits = subprocess.run(["git", "log", "--format=%H", "--", f"{rel}/decklist.txt"],
+                             cwd=root, capture_output=True, text=True).stdout.split()
+    doc = None
+    for c in commits:
+        text = subprocess.run(["git", "show", f"{c}:{rel}/decklist.txt"], cwd=root,
+                              capture_output=True, text=True).stdout
+        if text and list_sha256(text) == played:
+            raw = subprocess.run(["git", "show", f"{c}:{rel}/cards.json"], cwd=root,
+                                 capture_output=True, text=True).stdout
+            try:
+                doc = json.loads(raw) if raw else None
+            except ValueError:
+                doc = None
+            break
+    _PLAYED_DOCS[key] = doc
+    return doc
+
+
+def cmc_map(slug, doc=None):
+    """Our deck's card name -> mana value, front face, from cards.json — the input
+    `parse.hand_facts` needs to say whether a held card was castable. `{}` for a seat
+    with no cards.json (an opponent), which turns the measurement off rather than
+    guessing. `doc`: the cards of the list a record PLAYED (`played_doc`)."""
+    doc = _deck_doc(slug, doc)
+    if doc is None:
         return {}
     out = {}
     for c in doc.get("cards", []):
@@ -1280,7 +1336,8 @@ def analyze(slug, run_id_or_path):
             seat["commander"] = sorted(set(upgraded))
     facts, analysis = sim_parse.analyze_logs(
         [l.read_text(encoding="utf-8", errors="replace") for l in logs], label,
-        record_commanders(rec), cmc_map(slug), keyword_map(slug))
+        record_commanders(rec), cmc_map(slug, played_doc(slug, rec)),
+        keyword_map(slug, played_doc(slug, rec)))
     rec["analysis"] = analysis
     rec["engine_casts"] = sim_parse.engine_casts(facts, label, deck_meta_name(slug))
     rec["board_series"] = _board_series().from_logs(

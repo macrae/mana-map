@@ -21,7 +21,9 @@
       "tutors",
       "prose"
     ],
-    "invalid": [],
+    "invalid": [
+      "build_plan.json"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -4545,8 +4547,8 @@
     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
   },
   "bracket": {
-    "floor": 3,
-    "floor_name": "Upgraded",
+    "floor": 4,
+    "floor_name": "Optimized",
     "target": null,
     "within_target": null
   },
@@ -5192,6 +5194,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",

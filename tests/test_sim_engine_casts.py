@@ -306,6 +306,15 @@ def test_no_kept_record_has_an_uncast_engine_by_accident():
             names = ec.nonland_names(load_deck_cards(base, branch))
         except FileNotFoundError:
             continue
+        # A RECORD DESCRIBES THE LIST IT PLAYED (CLAUDE.md: forge.list_mismatch).
+        # Judging a v1.1.1 run against v2.0.0's engine set called Exquisite Blood
+        # "never cast" in games where it was not in the deck (2026-10-06, the
+        # stale-join shape). A run of another list says nothing about this one.
+        from manamap.pilot.common import decklist_sha256
+        played = next((x.get("decklist_sha256") for x in rec.get("seats", [])
+                       if x.get("slug") == slug), None)
+        if played and played != decklist_sha256(base, branch):
+            continue
         q = ec.from_record(rec, names, ec.engine_set(base, branch))
         checked += 1
         if q and q["covered"] is False and p.split("/")[-1] not in KNOWN_UNCAST:

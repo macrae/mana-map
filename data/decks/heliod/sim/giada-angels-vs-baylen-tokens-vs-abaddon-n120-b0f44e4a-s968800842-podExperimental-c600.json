@@ -5655,48 +5655,48 @@
         },
         "combat_damage_by_keyword": {
           "evasive": {
-            "mean": 3.94,
-            "median": 3,
+            "mean": 3.87,
+            "median": 3.0,
             "min": 0,
             "max": 15,
-            "n": 51,
+            "n": 52,
             "ci95": [
-              2.91,
-              4.97
+              2.84,
+              4.89
             ]
           },
           "flying": {
-            "mean": 3.94,
-            "median": 3,
+            "mean": 3.87,
+            "median": 3.0,
             "min": 0,
             "max": 15,
-            "n": 51,
+            "n": 52,
             "ci95": [
-              2.91,
-              4.97
+              2.84,
+              4.89
             ]
           },
           "ground": {
-            "mean": 1.22,
-            "median": 0,
+            "mean": 1.33,
+            "median": 0.5,
             "min": 0,
             "max": 7,
-            "n": 51,
+            "n": 52,
             "ci95": [
-              0.78,
-              1.66
+              0.85,
+              1.81
             ]
           }
         },
         "evasive_damage_share": {
-          "mean": 0.57,
-          "median": 0.67,
+          "mean": 0.56,
+          "median": 0.65,
           "min": 0.0,
           "max": 1.0,
-          "n": 51,
+          "n": 52,
           "ci95": [
-            0.45,
-            0.69
+            0.44,
+            0.67
           ]
         },
         "tokens": {
@@ -9681,6 +9681,7 @@
           "combat_damage_by_keyword": {
             "evasive": 12,
             "flying": 12,
+            "ground": 1,
             "evasive_share": 0.923
           },
           "biggest_hit": {
@@ -19084,7 +19085,10 @@
             "trigger": 0,
             "other": 0
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 2,
             "source": "Human Token"
@@ -33443,7 +33447,7 @@
             "other": 0
           },
           "combat_damage_by_keyword": {
-            "ground": 2,
+            "ground": 7,
             "evasive_share": 0.0
           },
           "biggest_hit": {

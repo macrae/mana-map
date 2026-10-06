@@ -53,11 +53,14 @@ def test_a_transformed_back_face_is_not_the_creature_that_entered():
 def test_switching_the_gate_off_gives_back_kefnets_phantom_swings(monkeypatch):
     """DRIVEN THROUGH THE SIMULATOR and proved by RE-INTRODUCING THE BUG: with the gate
     blinded, sharknado's champion deals MORE damage by turn ten, because Kefnet swings
-    again without seven cards in hand. Measured 2026-10-04: 60.879 gated, 61.408 not."""
-    from manamap.pilot import diagnostic
-    on = diagnostic.run("sharknado", iterations=1500, seed=5, quiet=True)
+    again without seven cards in hand. Measured 2026-10-04: 60.879 gated, 61.408 not.
+    Kefnet left the list in v1.2.0 (2026-10-06), so it is swapped back in for an
+    Island here — the gate is the claim, not the decklist."""
+    from manamap.pilot import diagnostic, try_swap
+    doc, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Island", "Kefnet the Mindful")])
+    on = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=5, quiet=True)
     monkeypatch.setattr(gp, "attack_gate", lambda card: None)
-    off = diagnostic.run("sharknado", iterations=1500, seed=5, quiet=True)
+    off = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=5, quiet=True)
     a = on["output"]["damage_by_turn"]["10"]["rate"]
     b = off["output"]["damage_by_turn"]["10"]["rate"]
     assert b > a, f"blinding the gate should restore Kefnet's free swings ({a} vs {b})"
@@ -88,16 +91,17 @@ def test_what_we_draw_off_opponents_scales_with_the_seats(monkeypatch):
     four-player table that is three opponents. Proved by setting the seats to one:
     the swap that adds Mastermind must then be worth fewer cards. Measured
     2026-10-04: Hallcreeper -> Mastermind +0.62 extra cards by T8 at three seats,
-    -0.17 at one."""
+    -0.17 at one. Since v1.2.0 (2026-10-06) the deck RUNS Mastermind, so its worth
+    is measured by taking it OUT for the Hallcreeper it replaced."""
     from manamap.pilot import diagnostic, goldfish_turn, try_swap
-    swap = [("Silent Hallcreeper", "Faerie Mastermind")]
+    swap = [("Faerie Mastermind", "Silent Hallcreeper")]
 
     def gain():
         a = diagnostic.run("sharknado", iterations=1500, seed=5, quiet=True)
         doc, _, _, _ = try_swap.apply_swaps("sharknado", None, swap)
         b = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=5, quiet=True)
-        return (b["steam"]["extra_cards_by_turn"]["8"]["rate"]
-                - a["steam"]["extra_cards_by_turn"]["8"]["rate"])
+        return (a["steam"]["extra_cards_by_turn"]["8"]["rate"]
+                - b["steam"]["extra_cards_by_turn"]["8"]["rate"])
 
     three = gain()
     monkeypatch.setattr(goldfish_turn, "GOLDFISH_OPPONENTS", 1)
@@ -165,12 +169,11 @@ def test_the_rituals_are_read_and_the_costly_ones_refused():
 def test_a_ritual_is_cast_when_it_is_the_difference(monkeypatch):
     """PROVED BY BLINDING: sharknado with Mana Geyser and Jeska's Will in the list
     reads more damage by turn ten when the rituals are read than when they are not.
-    Measured 2026-10-05: 64.19 against 63.70 at 3,000 games, seed 9."""
-    from manamap.pilot import diagnostic, goldfish_library, try_swap
-    doc, _, _, _ = try_swap.apply_swaps("sharknado", None, [
-        ("Generous Plunderer", "Mana Geyser"), ("Treasure Map // Treasure Cove", "Jeska's Will")])
-    on = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
+    Measured 2026-10-05: 64.19 against 63.70 at 3,000 games, seed 9. Since v1.2.0
+    (2026-10-06) both rituals are in the list itself."""
+    from manamap.pilot import diagnostic, goldfish_library
+    on = diagnostic.run("sharknado", iterations=1500, seed=9, quiet=True)
     monkeypatch.setattr(goldfish_library, "ritual_profile", lambda card: None)
-    off = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
+    off = diagnostic.run("sharknado", iterations=1500, seed=9, quiet=True)
     assert (on["output"]["damage_by_turn"]["10"]["rate"]
             > off["output"]["damage_by_turn"]["10"]["rate"])

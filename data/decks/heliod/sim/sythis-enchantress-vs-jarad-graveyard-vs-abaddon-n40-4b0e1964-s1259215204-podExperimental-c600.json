@@ -2247,48 +2247,48 @@
         },
         "combat_damage_by_keyword": {
           "evasive": {
-            "mean": 4.0,
-            "median": 2.5,
+            "mean": 3.83,
+            "median": 2,
             "min": 0,
             "max": 14,
-            "n": 22,
+            "n": 23,
             "ci95": [
-              1.91,
-              6.09
+              1.8,
+              5.85
             ]
           },
           "flying": {
-            "mean": 4.0,
-            "median": 2.5,
+            "mean": 3.83,
+            "median": 2,
             "min": 0,
             "max": 14,
-            "n": 22,
+            "n": 23,
             "ci95": [
-              1.91,
-              6.09
+              1.8,
+              5.85
             ]
           },
           "ground": {
-            "mean": 2.14,
-            "median": 2.0,
+            "mean": 2.09,
+            "median": 2,
             "min": 0,
             "max": 9,
-            "n": 22,
+            "n": 23,
             "ci95": [
-              1.06,
-              3.22
+              1.05,
+              3.12
             ]
           }
         },
         "evasive_damage_share": {
-          "mean": 0.47,
-          "median": 0.35,
+          "mean": 0.45,
+          "median": 0.33,
           "min": 0.0,
           "max": 1.0,
-          "n": 22,
+          "n": 23,
           "ci95": [
-            0.27,
-            0.66
+            0.25,
+            0.64
           ]
         },
         "tokens": {
@@ -6142,7 +6142,10 @@
             "trigger": 0,
             "other": 4
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 1,
             "source": "Mikaeus, the Lunarch"

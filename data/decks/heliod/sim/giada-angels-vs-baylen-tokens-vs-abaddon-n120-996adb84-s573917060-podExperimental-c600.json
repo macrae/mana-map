@@ -4886,41 +4886,6 @@
             "Serra the Benevolent": 2
           }
         },
-        "combat_damage_by_keyword": {
-          "evasive": {
-            "mean": 7.64,
-            "median": 4.0,
-            "min": 3,
-            "max": 26,
-            "n": 14,
-            "ci95": [
-              3.87,
-              11.41
-            ]
-          },
-          "flying": {
-            "mean": 7.64,
-            "median": 4.0,
-            "min": 3,
-            "max": 26,
-            "n": 14,
-            "ci95": [
-              3.87,
-              11.41
-            ]
-          }
-        },
-        "evasive_damage_share": {
-          "mean": 0.14,
-          "median": 0.1,
-          "min": 0.03,
-          "max": 0.33,
-          "n": 14,
-          "ci95": [
-            0.08,
-            0.19
-          ]
-        },
         "tokens": {
           "token_resolutions": {
             "mean": 6.72,
@@ -5736,48 +5701,48 @@
         },
         "combat_damage_by_keyword": {
           "evasive": {
-            "mean": 1.16,
-            "median": 0,
+            "mean": 0.98,
+            "median": 0.0,
             "min": 0,
             "max": 8,
-            "n": 37,
+            "n": 44,
             "ci95": [
-              0.56,
-              1.77
+              0.45,
+              1.5
             ]
           },
           "flying": {
-            "mean": 1.16,
-            "median": 0,
+            "mean": 0.98,
+            "median": 0.0,
             "min": 0,
             "max": 8,
-            "n": 37,
+            "n": 44,
             "ci95": [
-              0.56,
-              1.77
+              0.45,
+              1.5
             ]
           },
           "ground": {
-            "mean": 2.22,
-            "median": 2,
+            "mean": 2.82,
+            "median": 2.0,
             "min": 0,
-            "max": 10,
-            "n": 37,
+            "max": 17,
+            "n": 44,
             "ci95": [
-              1.48,
-              2.95
+              1.85,
+              3.79
             ]
           }
         },
         "evasive_damage_share": {
-          "mean": 0.3,
+          "mean": 0.25,
           "median": 0.0,
           "min": 0.0,
           "max": 1.0,
-          "n": 37,
+          "n": 44,
           "ci95": [
-            0.16,
-            0.44
+            0.13,
+            0.37
           ]
         },
         "tokens": {
@@ -6755,7 +6720,10 @@
             "trigger": 0,
             "other": 0
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 7,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 7,
             "source": "Mikaeus, the Lunarch"
@@ -6907,11 +6875,7 @@
             "trigger": 91,
             "other": 2
           },
-          "combat_damage_by_keyword": {
-            "evasive": 8,
-            "flying": 8,
-            "evasive_share": 0.058
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 11,
             "source": "Serra's Emissary"
@@ -8597,7 +8561,10 @@
             "trigger": 0,
             "other": 3
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 1,
             "source": "Tireless Tribe"
@@ -9227,11 +9194,7 @@
             "trigger": 94,
             "other": 0
           },
-          "combat_damage_by_keyword": {
-            "evasive": 8,
-            "flying": 8,
-            "evasive_share": 0.103
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 8,
             "source": "Archangel of Tithes"
@@ -9521,7 +9484,10 @@
             "trigger": 0,
             "other": 0
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 2,
             "source": "Viseling"
@@ -10014,11 +9980,7 @@
             "trigger": 0,
             "other": 2
           },
-          "combat_damage_by_keyword": {
-            "evasive": 3,
-            "flying": 3,
-            "evasive_share": 0.057
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 10,
             "source": "Avacyn, Angel of Hope"
@@ -11482,7 +11444,7 @@
             "other": 0
           },
           "combat_damage_by_keyword": {
-            "ground": 3,
+            "ground": 7,
             "evasive_share": 0.0
           },
           "biggest_hit": {
@@ -14881,11 +14843,7 @@
             "trigger": 7,
             "other": 2
           },
-          "combat_damage_by_keyword": {
-            "evasive": 3,
-            "flying": 3,
-            "evasive_share": 0.081
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 6,
             "source": "Thraben Watcher"
@@ -16821,11 +16779,7 @@
             "trigger": 25,
             "other": 10
           },
-          "combat_damage_by_keyword": {
-            "evasive": 3,
-            "flying": 3,
-            "evasive_share": 0.071
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 8,
             "source": "Angel Token"
@@ -17702,11 +17656,7 @@
             "trigger": 0,
             "other": 2
           },
-          "combat_damage_by_keyword": {
-            "evasive": 4,
-            "flying": 4,
-            "evasive_share": 0.333
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 8,
             "source": "Angelic Field Marshal"
@@ -18296,11 +18246,7 @@
             "trigger": 33,
             "other": 0
           },
-          "combat_damage_by_keyword": {
-            "evasive": 17,
-            "flying": 17,
-            "evasive_share": 0.153
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 14,
             "source": "Exemplar of Light"
@@ -19928,7 +19874,7 @@
             "other": 7
           },
           "combat_damage_by_keyword": {
-            "ground": 2,
+            "ground": 4,
             "evasive_share": 0.0
           },
           "biggest_hit": {
@@ -20113,11 +20059,7 @@
             "trigger": 9,
             "other": 0
           },
-          "combat_damage_by_keyword": {
-            "evasive": 3,
-            "flying": 3,
-            "evasive_share": 0.097
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 7,
             "source": "Emeria Shepherd"
@@ -21173,7 +21115,7 @@
             "other": 0
           },
           "combat_damage_by_keyword": {
-            "ground": 1,
+            "ground": 2,
             "evasive_share": 0.0
           },
           "biggest_hit": {
@@ -21844,11 +21786,7 @@
             "trigger": 0,
             "other": 9
           },
-          "combat_damage_by_keyword": {
-            "evasive": 4,
-            "flying": 4,
-            "evasive_share": 0.114
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 9,
             "source": "Avacyn, Angel of Hope"
@@ -23958,7 +23896,10 @@
             "trigger": 0,
             "other": 0
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 3,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 1,
             "source": "Tireless Tribe"
@@ -24717,7 +24658,10 @@
             "trigger": 0,
             "other": 7
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 4,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 4,
             "source": "Mikaeus, the Lunarch"
@@ -25451,7 +25395,7 @@
             "other": 14
           },
           "combat_damage_by_keyword": {
-            "ground": 7,
+            "ground": 17,
             "evasive_share": 0.0
           },
           "biggest_hit": {
@@ -25627,11 +25571,7 @@
             "trigger": 38,
             "other": 8
           },
-          "combat_damage_by_keyword": {
-            "evasive": 4,
-            "flying": 4,
-            "evasive_share": 0.034
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 7,
             "source": "Angel of Finality"
@@ -26373,7 +26313,10 @@
             "trigger": 0,
             "other": 35
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 2,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 1,
             "source": "Mikaeus, the Lunarch"
@@ -26639,7 +26582,10 @@
             "trigger": 0,
             "other": 0
           },
-          "combat_damage_by_keyword": null,
+          "combat_damage_by_keyword": {
+            "ground": 1,
+            "evasive_share": 0.0
+          },
           "biggest_hit": {
             "amount": 1,
             "source": "Mikaeus, the Lunarch"
@@ -27552,11 +27498,7 @@
             "trigger": 0,
             "other": 36
           },
-          "combat_damage_by_keyword": {
-            "evasive": 26,
-            "flying": 26,
-            "evasive_share": 0.211
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 13,
             "source": "Avacyn, Angel of Hope"
@@ -29184,11 +29126,7 @@
             "trigger": 7,
             "other": 0
           },
-          "combat_damage_by_keyword": {
-            "evasive": 3,
-            "flying": 3,
-            "evasive_share": 0.333
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 4,
             "source": "Battle Angels of Tyr"
@@ -34065,7 +34003,7 @@
             "other": 0
           },
           "combat_damage_by_keyword": {
-            "ground": 5,
+            "ground": 7,
             "evasive_share": 0.0
           },
           "biggest_hit": {
@@ -34286,11 +34224,7 @@
             "trigger": 2,
             "other": 0
           },
-          "combat_damage_by_keyword": {
-            "evasive": 4,
-            "flying": 4,
-            "evasive_share": 0.043
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 9,
             "source": "Avacyn, Angel of Hope"
@@ -37529,7 +37463,7 @@
             "other": 7
           },
           "combat_damage_by_keyword": {
-            "ground": 5,
+            "ground": 8,
             "evasive_share": 0.0
           },
           "biggest_hit": {
@@ -40802,11 +40736,7 @@
             "trigger": 42,
             "other": 0
           },
-          "combat_damage_by_keyword": {
-            "evasive": 17,
-            "flying": 17,
-            "evasive_share": 0.215
-          },
+          "combat_damage_by_keyword": null,
           "biggest_hit": {
             "amount": 10,
             "source": "Youthful Valkyrie"

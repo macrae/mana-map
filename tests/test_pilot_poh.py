@@ -38,6 +38,15 @@ def _rendered(slug=SLUG):
 
 # ── the registry ─────────────────────────────────────────────────────────
 
+
+#: A SLEEVED LIST CHANGED UNDER ITS PROCEDURES (2026-10-06). edgar v2.0.0 cut
+#: cards the authored procedures still name; the pilot chose to re-run
+#: /poh-procedures after playing v2. Agent prose is re-run, never hand-edited.
+#: Strict: current procedures fail until the entry is removed.
+PROCEDURES_AWAITING_RERUN = {
+    "edgar-vampires": "written for v1.1.1; re-run /poh-procedures edgar-vampires on v2.0.0",
+}
+
 def test_the_stage_vocabulary_is_the_engines_and_not_a_second_one():
     """THE BRIEF NAMED FOUR STAGES AND THE REPO HAS EIGHT.
 
@@ -375,6 +384,10 @@ def test_a_procedure_page_names_only_cards_the_deck_runs():
                    for real in (corpus[h] for h in have if v.lower() in h)):
                 continue
             named.add(v)
+        if base.name in PROCEDURES_AWAITING_RERUN:
+            assert named, (f"{base.name}'s procedures are current again — remove "
+                           f"it from PROCEDURES_AWAITING_RERUN")
+            continue
         assert not named, (
             f"{base.name}'s procedures name card(s) not in the 99: "
             f"{sorted(named)}")

@@ -195,17 +195,6 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 #: is wrong and the test says so rather than going quiet" is for. A non-strict
 #: xfail would have swallowed both and left two rebuilt artifacts ungated.
 STALE_XFAIL = {
-    # STALE BY A MODEL FIX, NOT BY A DEFECT (2026-10-05). The goldfish stopped
-    # playing Legion's Landing as a land drop (a transforming card is its front
-    # face), which moved Edgar's consistency 0.917 -> 0.908; the diagnosis
-    # carries the old audit figure, so its validator correctly refuses it. It is
-    # an AGENT artifact, so it is not hand-patched: it is re-diagnosed once the
-    # pilot's mardu-combo-v1 discussion settles the list it should describe.
-    # Strict, so the re-run's pass turns this red and the entry comes off.
-    "edgar-vampires/diagnosis.json": (
-        "stale since the 2026-10-05 transform-land model fix (consistency "
-        "0.917 -> 0.908); re-run /diagnose-deck edgar-vampires after "
-        "mardu-combo-v1 settles"),
     # STALE BY A MERGE, NOT BY A DEFECT (2026-10-06). The pilot sleeved edgar
     # v2.0.0 (mardu-combo-v1, 27 swaps) and sharknado v1.2.0 (momentum-v1); the
     # agent artifacts below were written against the previous lists and name
@@ -216,6 +205,10 @@ STALE_XFAIL = {
     "edgar-vampires/tutor_guide.json": (
         "written for v1.1.1 (no entry for Demonic Tutor, added in v2.0.0); "
         "re-run /write-manual edgar-vampires"),
+    "sharknado/build_plan.json": (
+        "the deck-architect's plan for v1.1.0 (bracket floor 3); v1.2.0 measures 4 "
+        "(Jeska's Will / Teferi's Protection) — a new plan comes from /build-deck, "
+        "not a hand edit"),
     "sharknado/engine.json": (
         "written for v1.1.0 (stages name the cut Treasure Map); re-run "
         "/analyze-engine sharknado against v1.2.0"),

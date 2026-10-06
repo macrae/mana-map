@@ -43,6 +43,17 @@ from conftest import requires_deck, requires_rules
 STAMP_CHECKED = {name: sha for _k, name, sha, _r, _w, _h in STAGES if sha}
 
 
+
+#: SLEEVED DECKS WHOSE ENGINE MODEL IS WAITING ON ITS AGENT (2026-10-06). The
+#: pilot sleeved edgar v2.0.0 (27 swaps) and sharknado v1.2.0 (6) and chose to
+#: re-run /analyze-engine after playing the new lists rather than before. An
+#: engine model is an agent artifact: it is re-run, never hand-patched. Strict —
+#: an entry whose model is current again fails until it is removed.
+ENGINE_AWAITING_RERUN = {
+    "edgar-vampires": "v2.0.0 (mardu-combo-v1): re-run /analyze-engine edgar-vampires",
+    "sharknado": "v1.2.0 (momentum-v1): re-run /analyze-engine sharknado",
+}
+
 def test_every_stamp_checked_artifact_has_a_way_to_be_stamped():
     """A DECLARED CHECK WITH NO PRODUCER IS A CHECK THAT CANNOT FIRE.
 
@@ -152,6 +163,11 @@ def test_no_agent_artifact_names_a_card_the_deck_does_not_run():
         gone = sorted({n for s in eng.get("stages", [])
                        for n in (s.get("cards") or []) if n not in have})
         checked += 1
+        if deck.name in ENGINE_AWAITING_RERUN:
+            # STRICT: the day the re-run lands, the allowance must come off.
+            assert gone, (f"{deck.name}'s engine model is current again — remove it "
+                          f"from ENGINE_AWAITING_RERUN")
+            continue
         if gone:
             bad.append(f"{deck.name}: {len(gone)} card(s) not in the 99 — "
                        f"{', '.join(gone[:5])}{'…' if len(gone) > 5 else ''}")
@@ -197,12 +213,14 @@ def test_a_finished_stack_is_checked_against_the_deck_it_claims_to_be_from(tmp_p
     # green suite. A test must not need a live deck to stay wrong.
     scenario = {"id": "001", "slug": "edgar-vampires", "deck": "Edgar",
                 "title": "t", "scenario": {
-                    "board": {"you": ["Exquisite Blood"],
+                    "board": {"you": ["Llanowar Elves"],
                               "opponents": [{"life": 40, "board": []}]},
                     "hand": [], "mana_available": "{0}", "stack": [],
                     "question": "?"}}
     _errs, warns = validate_stack.unknown_cards(scenario, "edgar-vampires")
-    assert any("Exquisite Blood" in w for w in warns), (
+    # A GREEN card: outside Edgar's colours, so no list change can make this
+    # deck run it (Exquisite Blood was the example until v2.0.0 added it).
+    assert any("Llanowar Elves" in w for w in warns), (
         "unknown_cards no longer detects a card the deck does not run")
 
     # THE REGRESSION THAT ACTUALLY BIT: the command must SURFACE it. Re-introduce

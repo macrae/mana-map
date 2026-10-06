@@ -361,7 +361,7 @@
             }
           },
           "n": 120,
-          "played_share": 0.97,
+          "played_share": 0.971,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -388,6 +388,378 @@
             0.409
           ],
           "n": 30,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        }
+      ],
+      "prose": {}
+    },
+    "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-a0874c33-s693221427-podExperimental-c600-ov8c347642-tl9473cf35": {
+      "run": {
+        "id": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-a0874c33-s693221427-podExperimental-c600-ov8c347642-tl9473cf35",
+        "at": "2026-10-03",
+        "pod": "standard-v3",
+        "games": 200,
+        "decided": 154,
+        "harness": {
+          "card_overrides": "8c347642bcf0",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
+        "version": 6,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-699bdfac-01",
+          "kind": "rate_vs_null",
+          "text": "15 of 154 decided games (0.097, ci95 [0.06, 0.154]) against a null of 0.233 at standard-v3 — 42% of par",
+          "figure": 0.097,
+          "ci95": [
+            0.06,
+            0.154
+          ],
+          "n": 154,
+          "null": {
+            "rate": 0.233,
+            "games": 412,
+            "pod": "standard-v3"
+          },
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(standard-v3)"
+        },
+        {
+          "id": "F-699bdfac-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 0.909,
+          "verdict": true,
+          "n": 200,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-699bdfac-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 124 of 200 games: sythis-enchantress ×73, abaddon ×31, jarad-graveyard ×20; how: {\"damage\": 120, \"life loss\": 4}",
+          "eliminated_by": {
+            "sythis-enchantress": 73,
+            "jarad-graveyard": 20,
+            "abaddon": 31
+          },
+          "eliminated_how": {
+            "damage": 120,
+            "life loss": 4
+          },
+          "n": 200,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-699bdfac-04",
+          "kind": "held",
+          "text": "33 card(s) never cast over 200 games (32 seen discarded, 1 inferred): Winds of Change, Whirlpool Warrior, Skycloud Expanse, Mana Confluence, Mystic Monastery, Seachrome Coast",
+          "cards": [
+            "Winds of Change",
+            "Whirlpool Warrior",
+            "Skycloud Expanse",
+            "Mana Confluence",
+            "Mystic Monastery",
+            "Seachrome Coast",
+            "Thundering Falls",
+            "Exotic Orchard",
+            "Glacial Fortress",
+            "Hengegate Pathway",
+            "Adarkar Wastes",
+            "Steam Vents",
+            "Calciform Pools",
+            "Sacred Foundry",
+            "Floodfarm Verge",
+            "Hallowed Fountain",
+            "Island",
+            "Mystic Gate",
+            "Spirebluff Canal",
+            "Sulfur Falls",
+            "City of Brass",
+            "Command Tower",
+            "Ferrous Lake",
+            "Reliquary Tower",
+            "Riverpyre Verge",
+            "Rugged Prairie",
+            "Opal Palace",
+            "Sea of Clouds",
+            "Gemstone Caverns",
+            "Shivan Reef",
+            "Spire of Industry",
+            "Cascade Bluffs",
+            "Nimbus Maze"
+          ],
+          "measured": [
+            "Winds of Change",
+            "Whirlpool Warrior",
+            "Skycloud Expanse",
+            "Mana Confluence",
+            "Mystic Monastery",
+            "Seachrome Coast",
+            "Thundering Falls",
+            "Exotic Orchard",
+            "Glacial Fortress",
+            "Hengegate Pathway",
+            "Adarkar Wastes",
+            "Steam Vents",
+            "Calciform Pools",
+            "Sacred Foundry",
+            "Floodfarm Verge",
+            "Hallowed Fountain",
+            "Island",
+            "Mystic Gate",
+            "Spirebluff Canal",
+            "Sulfur Falls",
+            "City of Brass",
+            "Command Tower",
+            "Ferrous Lake",
+            "Reliquary Tower",
+            "Riverpyre Verge",
+            "Rugged Prairie",
+            "Opal Palace",
+            "Sea of Clouds",
+            "Gemstone Caverns",
+            "Shivan Reef",
+            "Spire of Industry",
+            "Cascade Bluffs"
+          ],
+          "modelled": [
+            "Nimbus Maze"
+          ],
+          "counts": {
+            "Winds of Change": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 17
+            },
+            "Whirlpool Warrior": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 16
+            },
+            "Skycloud Expanse": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 14
+            },
+            "Mana Confluence": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 13
+            },
+            "Mystic Monastery": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 13
+            },
+            "Seachrome Coast": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 13
+            },
+            "Thundering Falls": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 13
+            },
+            "Exotic Orchard": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 12
+            },
+            "Glacial Fortress": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 11
+            },
+            "Hengegate Pathway": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 11
+            },
+            "Adarkar Wastes": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 9
+            },
+            "Steam Vents": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 9
+            },
+            "Calciform Pools": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 8
+            },
+            "Sacred Foundry": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 8
+            },
+            "Floodfarm Verge": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 7
+            },
+            "Hallowed Fountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 7
+            },
+            "Island": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 7
+            },
+            "Mystic Gate": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 7
+            },
+            "Spirebluff Canal": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 7
+            },
+            "Sulfur Falls": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 7
+            },
+            "City of Brass": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Command Tower": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Ferrous Lake": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Reliquary Tower": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Riverpyre Verge": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Rugged Prairie": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Opal Palace": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 5
+            },
+            "Sea of Clouds": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 5
+            },
+            "Gemstone Caverns": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Shivan Reef": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Spire of Industry": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Cascade Bluffs": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Nimbus Maze": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 2
+            }
+          },
+          "n": 200,
+          "played_share": 1.127,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-699bdfac-05",
+          "kind": "held_castable",
+          "text": "3 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Winds of Change x106, Whirlpool Warrior x89, Commit x4",
+          "cards": [
+            "Winds of Change",
+            "Whirlpool Warrior",
+            "Commit"
+          ],
+          "counts": {
+            "Winds of Change": {
+              "castable_uncast": 106,
+              "cast": 0,
+              "in_hand_games": 32
+            },
+            "Whirlpool Warrior": {
+              "castable_uncast": 89,
+              "cast": 0,
+              "in_hand_games": 34
+            },
+            "Commit": {
+              "castable_uncast": 4,
+              "cast": 0,
+              "in_hand_games": 15
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-699bdfac-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 18.52 (median 18.0, n 180 of 200 games — games with no attack are absent)",
+          "figure": 18.52,
+          "ci95": [
+            17.5,
+            19.54
+          ],
+          "n": 180,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-699bdfac-07",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.74 of games (ci95 [0.604, 0.841]); damage on the wipe turn 0.09",
+          "figure": 0.74,
+          "ci95": [
+            0.604,
+            0.841
+          ],
+          "n": 50,
           "source": "analysis.wipe_recovery",
           "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
         }

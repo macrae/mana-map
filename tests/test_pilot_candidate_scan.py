@@ -47,11 +47,13 @@ def test_converters_are_admitted_flagged_and_sorted_last_not_ranked_or_dropped(d
     sits near the top of every drain list and is the one card bracket 3 forbids here."""
     drain = doc["dimensions"]["drain"]["candidates"]
     by = {r["name"]: r for r in drain}
-    eb = by["Exquisite Blood"]
-    assert eb["flags"]["converter"] == "converter_loss_to_gain"
-    assert set(eb["combos"]["infinite_with"]) >= {"Sanguine Bond", "Vito, Thorn of the Dusk Rose"}
+    # Exquisite Blood was this test's subject until edgar v2.0.0 (2026-10-06) put it
+    # in the 99, where a candidate scan must never surface it.
+    assert "Exquisite Blood" not in by
     cliff = by["Cliffhaven Vampire"]
-    assert cliff["flags"]["converter"] == "converter_gain_to_loss" and cliff["combos"]["infinite_with"] == ["Bloodthirsty Conqueror"]
+    assert cliff["flags"]["converter"] == "converter_gain_to_loss"
+    # v2 runs BOTH loss-to-gain halves, and the scan sees each as a loop partner.
+    assert cliff["combos"]["infinite_with"] == ["Bloodthirsty Conqueror", "Exquisite Blood"]
     first_flagged = next(i for i, r in enumerate(drain) if r["combos"]["infinite_with"])
     assert all(not r["combos"]["infinite_with"] for r in drain[:first_flagged])
     assert all(r["combos"]["infinite_with"] for r in drain[first_flagged:])
@@ -70,8 +72,9 @@ def test_death_draw_splits_on_the_word_nontoken(doc):
     assert draw["Species Specialist"]["flags"] == {"trigger": "death", "nontoken": False, "costs_life": False}
     assert draw["Liliana's Standard Bearer"]["flags"]["trigger"] == "death"
     assert draw["Dawn of Hope"]["flags"]["trigger"] == "gain" and draw["Well of Lost Dreams"]["flags"]["trigger"] == "gain"
-    assert draw["Phyrexian Arena"]["flags"] == {"trigger": "plain", "nontoken": False, "costs_life": True}
-    assert "draw.put_into_hand" in draw["Twilight Prophet"]["matched"]["oracle"]
+    # (Phyrexian Arena and Twilight Prophet were these rows until edgar v2.0.0 ran them.)
+    assert draw["Read the Bones"]["flags"] == {"trigger": "plain", "nontoken": False, "costs_life": True}
+    assert "draw.put_into_hand" in draw["Dark Confidant"]["matched"]["oracle"]
     # admission by TAG alone (Midnight Reaper has no draw role) and by ORACLE alone (Standard Bearer has neither)
     assert draw["Midnight Reaper"]["matched"]["roles"] == [] and draw["Midnight Reaper"]["matched"]["tags"] == ["draw"]
     assert draw["Liliana's Standard Bearer"]["matched"] == {"oracle": ["draw.cards"], "roles": [], "tags": [], "keywords": []}
@@ -127,17 +130,21 @@ def test_the_shortlist_joins_every_source_and_predicts_a_direction_not_a_number(
     score. Twilight Prophet is the row that found the bug: in the tracked scan's top
     forty of drain and past the cut of draw, so a join over the tracked file read it as
     'not a draw card'; the join scans live."""
-    doc = cs.shortlist("edgar-vampires", ["Twilight Prophet", "Exquisite Blood", "Not A Card"])
+    # Twilight Prophet was this test's subject until edgar v2.0.0 (2026-10-06)
+    # sleeved it: a card IN the 99 keeps its joined evidence but is scanned on no
+    # dimension and predicts nothing — it is not a candidate any more.
+    doc = cs.shortlist("edgar-vampires", ["Cliffhaven Vampire", "Twilight Prophet", "Not A Card"])
     rows = {r["name"]: r for r in doc["rows"]}
+    cv = rows["Cliffhaven Vampire"]
+    assert cv["dimensions"]["drain"]["converter"] == "converter_gain_to_loss"
+    assert cv["infinite_with"] == ["Bloodthirsty Conqueror", "Exquisite Blood"]
+    assert cv["predicted"]["forge.drain_dealt"] == "up" and cv["predicted"]["forge.life_gained"] == "up"
+    assert cv["prescription"] and cv["prescription"]["as"] == "add"
+    assert any(f["dimension"] == "drain" for f in cv["recon"])
+    assert cv["assess"] and cv["assess"]["job"]
     tp = rows["Twilight Prophet"]
-    assert set(tp["dimensions"]) >= {"drain", "draw"} and "draw.put_into_hand" in tp["matched"]["draw"]["oracle"]
-    assert tp["predicted"]["forge.extra_draw_per_turn"] == "up" and tp["predicted"]["forge.drain_dealt"] == "up"
-    assert tp["prescription"] and tp["prescription"]["as"] == "add"
-    assert any(f["dimension"] == "draw" for f in tp["recon"])
-    assert tp["edhrec"] and tp["edhrec"]["num_decks"] > 1000
-    assert tp["assess"] and tp["assess"]["job"]
-    eb = rows["Exquisite Blood"]
-    assert "Sanguine Bond" in eb["infinite_with"] and eb["dimensions"]["drain"]["converter"] == "converter_loss_to_gain"
+    assert tp["dimensions"] == {} and tp["predicted"] == {}
+    assert tp["prescription"] and tp["edhrec"] and tp["edhrec"]["num_decks"] > 1000
     assert rows["Not A Card"]["in_scan"] is False and rows["Not A Card"]["predicted"] == {}
     assert doc["sources"]["assess"] == "ok" and doc["sources"]["recon"] and doc["sources"]["prescription"]
     assert all(v in ("up", "down") or v.startswith(("up", "down")) for r in doc["rows"] for v in r["predicted"].values())

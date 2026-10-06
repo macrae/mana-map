@@ -26,18 +26,6 @@
       ]
     },
     {
-      "card": "Bloodflow Connoisseur",
-      "ability": "AB$ PutCounter",
-      "ai_logic": "AristocratCounters",
-      "ai_preference": {
-        "SacCost": "Creature.token,Creature.Other+cmcLE2"
-      },
-      "why": "Held castable on 32 own turns before the unflag; the same ability shape as Vish Kal with the same missing logic.",
-      "cites": [
-        "log 006"
-      ]
-    },
-    {
       "card": "Viscera Seer",
       "ability": "AB$ Scry",
       "ai_logic": "AtOppEOT",
@@ -45,15 +33,6 @@
         "SacCost": "Creature.token,Creature.Other+cmcLE1"
       },
       "why": "woe_strider.txt is Forge's shape for a sacrifice-to-scry outlet: fire it at an opponent's end step, feeding it tokens and one-drops so the drain triggers (Blood Artist, Cruel Celebrant) see the deaths.",
-      "cites": [
-        "log 006"
-      ]
-    },
-    {
-      "card": "Altar of Dementia",
-      "ability": "AB$ Mill",
-      "ai_logic": "SacOutlet",
-      "why": "A free outlet: the shipped mill logic computes X from the sacrificed creature's power before any creature is chosen, reads 0 and refuses every target — 32 of our own permanents died while it sat on the battlefield across six games, activated 0 times. SacOutlet (data/forge_patches/MillAi.java) fires when a creature of ours is about to die anyway (the engine's shouldSacrificeThreatenedCard) or is SacMe, aimed at the thinnest library. No AIPreference on purpose: the SacCost path then prefers the THREATENED creature before the profile's default fodder.",
       "cites": [
         "log 006"
       ]

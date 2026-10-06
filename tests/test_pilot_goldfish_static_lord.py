@@ -59,11 +59,16 @@ def test_a_type_matches_its_plural_and_a_phrase_matches_whole():
 @requires_deck
 def test_blinding_the_lords_gives_back_the_phantom_gain(monkeypatch):
     """DRIVEN THROUGH `try`, PROVED BY RE-INTRODUCING THE BUG. With lords read,
-    cutting Legion Lieutenant for a vanilla Vampire must COST damage by turn ten;
-    with the reader blinded it reads as no loss, which is the bug."""
+    ADDING Legion Lieutenant must earn clearly more damage by turn ten than with
+    the reader blinded, which credits the lord as a vanilla 2/2 (the bug).
+
+    It used to CUT Legion Lieutenant, which tied the test to a card edgar v2.0.0
+    dropped (2026-10-06). Adding it for a Swamp keeps the claim and survives list
+    changes; comparing against the blinded run separates the lord's pump from
+    the cost of the land."""
     from manamap.pilot import diagnostic, goldfish_library, try_swap
 
-    swap = [("Legion Lieutenant", "Vampire Interloper")]
+    swap = [("Swamp", "Legion Lieutenant")]
 
     def delta():
         a = diagnostic.run("edgar-vampires", iterations=1500, seed=5, quiet=True)
@@ -81,5 +86,5 @@ def test_blinding_the_lords_gives_back_the_phantom_gain(monkeypatch):
         return p
     monkeypatch.setattr(goldfish_library, "combat_profile", blind)
     blinded = delta()
-    assert read < blinded, (read, blinded)
-    assert read < -0.5, f"cutting a +1/+1 Vampire lord should cost damage, read {read}"
+    assert read > blinded + 0.5, (
+        f"adding a +1/+1 Vampire lord should earn its pump: read {read}, blinded {blinded}")

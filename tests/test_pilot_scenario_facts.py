@@ -193,7 +193,11 @@ def test_a_god_is_not_promoted_on_its_type_line_alone():
     boards, so it is not hypothetical."""
     from manamap.pilot.scenario_facts import unconditional_creatures
     cr = unconditional_creatures("edgar-vampires")
-    assert "Mondrak, Glory Dominus" in cr
+    # Vish Kal is on the pilot's keep list, so no list change removes it (the
+    # example was Mondrak until v2.0.0 cut it). And v2.0.0 runs a god of its own:
+    # Erebos is "not a creature" below five devotion to black.
+    assert "Vish Kal, Blood Arbiter" in cr
+    assert "Erebos, Bleak-Hearted" not in cr
     assert "Purphoros, God of the Forge" not in cr
 
 
