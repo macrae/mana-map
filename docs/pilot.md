@@ -58,6 +58,10 @@ manamap pilot validate-brief <slug> [--themes]  # the gate brief.json never had:
                                         #   pools on disk. Inert keys REPORTED, never failed
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
+manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--card NAME]… [--paper letter|a4] [--dest PDF] [--no-open] [--dry-run]
+                                        # a PRINT-READY PROXY SHEET (63x88 mm, 3x3, crop marks) of a branch's adds minus
+                                        #   what you hold; both faces of a DFC; PNG renders cached in data/cache/proxies/;
+                                        #   lands on ~/Desktop and opens. Print at 100%. Skill: /print-proxies
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out
 manamap pilot archetypes "<commander>" [--theme SLUG]   # how it is actually built, and that style's role template

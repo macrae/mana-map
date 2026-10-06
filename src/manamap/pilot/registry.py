@@ -46,6 +46,8 @@ PILOT_STEPS = [
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
     ("validate-recon", "manamap.pilot.validate_recon",
      "Form-check deck_recon.json: cards real, legal, in identity; ownership falsified"),
+    ("proxies", "manamap.pilot.proxies",
+     "Print-ready proxy sheet (63x88 mm, 3x3, crop marks) for cards waiting on cardboard: a branch's adds minus what you have"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("scan-candidates", "manamap.pilot.candidate_scan",
@@ -1208,6 +1210,24 @@ def add_pilot_parser(subparsers):
             # slug to scope the filename to. A collection is not a deck.
             cmd.add_argument("--out", default=None,
                              help="Write JSON here as well (a view, never tracked)")
+        if name == "proxies":
+            # NOT slug-guarded and not `--out`: a print sheet is no deck artifact
+            # (it lands on the Desktop), and `--out` means a swap-out elsewhere.
+            cmd.add_argument("targets", nargs="*", metavar="SLUG@BRANCH",
+                             help="branches whose ADDS to print (several -> one PDF)")
+            cmd.add_argument("--have", action="append", default=[], metavar="NAME",
+                             help="a card you already hold — not printed (repeatable)")
+            cmd.add_argument("--have-file", dest="have_file", default=None, metavar="PATH",
+                             help="cards you hold, one per line ('1 Name' is fine)")
+            cmd.add_argument("--card", action="append", default=[], metavar="NAME",
+                             help="a one-off card to print, from the corpus (repeatable)")
+            cmd.add_argument("--paper", choices=("letter", "a4"), default="letter")
+            cmd.add_argument("--dest", default=None, metavar="PATH",
+                             help="where the PDF goes (default ~/Desktop/<slugs>-proxies.pdf)")
+            cmd.add_argument("--no-open", dest="no_open", action="store_true",
+                             help="do not open the PDF when it is written")
+            cmd.add_argument("--dry-run", dest="dry_run", action="store_true",
+                             help="list what would print; download and write nothing")
         if name == "diagnosis-report":
             cmd.add_argument("--out", default=None,
                              help="Write markdown here instead of stdout (a view, never tracked)")

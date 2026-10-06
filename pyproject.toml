@@ -28,6 +28,13 @@ dependencies = [
     # importing. `console.py` still degrades to plain lines if it is missing,
     # which is a safety net rather than a licence to leave it undeclared.
     "rich>=13",
+    # `manamap pilot proxies` (print-ready proxy sheets). Pillow was present
+    # only because sentence-transformers pulls it in — the `rich` lesson again,
+    # so it is declared. img2pdf writes the PDF: this Pillow build has no JPEG
+    # encoder, so `Image.save("x.pdf")` fails, and img2pdf embeds PNG pages
+    # losslessly instead.
+    "pillow",
+    "img2pdf",
 ]
 
 [project.optional-dependencies]

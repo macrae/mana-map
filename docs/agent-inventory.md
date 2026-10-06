@@ -62,7 +62,7 @@ and D-2 is explicit that "nothing gets deleted before its useful capability has
 a new home". They are recorded here as *never spawned by a skill* and left in
 place; retiring them is a decision, not a cleanup.
 
-## Skills — 23 in `.claude/skills/`
+## Skills — 24 in `.claude/skills/`
 
 Deck-facing, and the ones a consolidation has to re-home:
 
@@ -81,7 +81,7 @@ Deck-facing, and the ones a consolidation has to re-home:
 
 Infrastructure, not deck-facing and not part of the consolidation:
 `run-pipeline`, `run-tests`, `retrain`, `refresh-corpus`, `regen-analysis`,
-`serve-viz`, and `test-report` (added 2026-10-05), which spawns `test-preflight` →
+`serve-viz`, `print-proxies` (added 2026-10-06: a proxy sheet for a branch's adds minus what the pilot holds, via `manamap pilot proxies`), and `test-report` (added 2026-10-05), which spawns `test-preflight` →
 `make test-report` → `test-debrief` over the findings `manamap.suite_report` computes.
 
 ## Front-end surfaces that depend on the harness
