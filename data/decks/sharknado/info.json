@@ -4551,12 +4551,12 @@
     "within_target": null
   },
   "paper": {
-    "version": 6,
-    "sha": "6f6b9b32cc04",
-    "decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
-    "built_at": "2026-10-01",
-    "note": "Sleeved as of 2026-10-01, before the pilot's game that night: the four swaps (Negate, Mask of Memory, Marauding Mako, Swords to Plowshares) were made in cardboard by hand, and this lock records that V6 / v1.1.0 is the physical deck. CARRIED FORWARD from the pilot's own observation the same day: the tracked list and the paper list may still differ elsewhere. The pilot said Goblin Engineer is not in the sleeved deck; it is not in the tracked list either, so that one resolved, but a full `check-in` against the real paper list has never been run on this deck and is the only way to settle the rest.",
-    "release": "v1.1.0"
+    "version": 7,
+    "sha": "9139ee31d670",
+    "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+    "built_at": "2026-10-06",
+    "note": "sleeved 2026-10-06: real cards + proxies for the ordered rest",
+    "release": "v1.2.0"
   },
   "record": {
     "games": 0,
@@ -5029,7 +5029,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
     "ran_on_version": 6,
-    "current_version": null,
+    "current_version": 7,
     "runs_on_current_list": 0,
     "games": 200,
     "wins": 15,
@@ -5193,7 +5193,6 @@
   },
   "next": [
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
