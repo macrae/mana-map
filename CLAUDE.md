@@ -69,6 +69,8 @@ data/                 # artifacts; mostly gitignored, viz-served files tracked
   decks/<slug>/       #   one deck: decklist, cards.json, measurements, branches/, log
   pods/ opponents/    #   the named Forge tables and their seats (standard-v3 default)
   collection/         #   the PHYSICAL boxes (MANAMAP_COLLECTION_DIR overrides)
+tools/claude-plugins/ # the job-band Claude Code plugin (live progress above the prompt), installed
+                      #   from this folder at project scope; reads .progress/ (manamap.progress)
 viz/                  # static frontend: the six pages above, d3 from CDN, window.MM;
                       #   index.html has three modes — discover / explore / build
                       #   (docs/viz.md)

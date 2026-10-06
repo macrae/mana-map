@@ -108,7 +108,7 @@ Coverage costs time, so these walls compare only with each other.
 `.progress/pytest-<pid>.json` (done/total, failures, a 5-second heartbeat) through
 `manamap.progress` — as do `manamap pilot regen` (targets) and `simulate` (games,
 counted from the Forge logs as they grow) — which the
-`job-band` Claude Code mod draws above the prompt (finished rows clear after a minute, a dead run's row as soon as its process is gone, and `/jobs clear` empties it): a bar, elapsed, an ETA, and a
+`job-band` Claude Code plugin (`tools/claude-plugins/job-band`, installed at project scope from the local `mana-map` marketplace in `.claude/settings.json`; `/reload-plugins` picks up an edit) draws above the prompt (finished rows clear after a minute, a dead run's row as soon as its process is gone, and `/jobs clear` empties it): a bar, elapsed, an ETA, and a
 yellow NO HEARTBEAT when the run died or the machine slept. `MANAMAP_NO_PROGRESS=1`
 turns the writer off.
 
