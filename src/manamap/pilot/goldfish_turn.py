@@ -2707,6 +2707,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         continue
                     n_sac += 1
                     for eng in death_engines:
+                        if eng.get("nontoken_only"):
+                            continue  # a TOKEN died; "nontoken" payoffs do not see it
                         # Life loss is damage here for the same reason the
                         # arrival channel says so: one opponent, 40 life.
                         etb_damage += eng["death_drain"]

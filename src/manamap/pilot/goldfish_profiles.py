@@ -1193,7 +1193,8 @@ def death_profile(card):
     text = card.get("oracle_text", "") or ""
     out = {"death_drain": 0, "death_draw": 0, "death_treasure": 0,
            "death_damage": 0,
-           "gain_on_opponent_death": 0, "unreadable": None}
+           "gain_on_opponent_death": 0, "unreadable": None,
+           "nontoken_only": False}
     # THE OTHER HALF OF THE MEATHOOK. "Whenever a creature an OPPONENT controls
     # dies, you gain 1 life" is a separate trigger from the one above, and in a
     # deck that turns life gained into life lost it means every removal spell
@@ -1209,6 +1210,13 @@ def death_profile(card):
     # and this model's death events are all creatures. See the sweep above.
     if not _subject_is_a_creature(m.group(0)):
         return out
+    # "Whenever a NONTOKEN creature you control dies" (Midnight Reaper,
+    # High-Society Hunter). The sacrifice sweep converts TOKENS only, so a
+    # payoff scoped like this must never fire there — it did, and credited
+    # Reaper with +0.14 to +0.21 extra cards its text rules out (found by the
+    # edgar skeptic, 2026-10-05). It still fires on the measured own-death
+    # rate, where the creature that dies to removal is a real one.
+    out["nontoken_only"] = bool(re.search(r"\bnontoken\b", m.group(0), re.I))
     clause = text[m.start():m.start() + 170]
     drain = _DEATH_DRAIN_RE.search(clause)
     if drain:

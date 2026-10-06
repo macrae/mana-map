@@ -210,8 +210,10 @@ def test_the_model_version_covers_every_file_the_simulator_is_made_of():
     for name in goldfish._MODEL_FILES:
         assert (here / name).is_file(), f"{name} is stamped and does not exist"
 
-    before = goldfish.model_version()
-    assert len(before) == 12
+    # The hash the version is stamped from (once, at import — see
+    # tests/test_pilot_try_cache_honesty.py); re-hashed here after each touch.
+    before = goldfish._hash_sources()
+    assert len(before) == 12 and before == goldfish.model_version()
 
     # Every stamped file must MOVE the version. This is the assertion, not the
     # file list: a module added to the simulator and left out of `_MODEL_FILES`
@@ -221,12 +223,12 @@ def test_the_model_version_covers_every_file_the_simulator_is_made_of():
         original = path.read_bytes()
         try:
             path.write_bytes(original + b"\n# touched by a test\n")
-            assert goldfish.model_version() != before, (
+            assert goldfish._hash_sources() != before, (
                 f"editing {name} does not move the model version — every "
                 f"artifact derived from it would read as current")
         finally:
             path.write_bytes(original)
-    assert goldfish.model_version() == before, "a probe did not restore its file"
+    assert goldfish._hash_sources() == before, "a probe did not restore its file"
 
 
 def test_every_simulator_module_is_stamped():

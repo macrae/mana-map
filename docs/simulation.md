@@ -55,6 +55,26 @@ it refuses a ritual with an additional cost or restricted mana rather than readi
 free. A ritual is cast in the main phase only when the mana it adds reaches a spell, or the
 commander, that the turn could not otherwise cast; its mana is gone at end of turn.
 
+**A transforming card is its front face** (2026-10-05). The land test read the whole
+type line, so Legion's Landing ("Legendary Enchantment // Legendary Land") was played as a
+land drop — a phantom 37th land in Edgar, Treasure Map in sharknado, Profane Procession in
+zur-enchantress. `transform`, `flip` and `meld` layouts now read the front face; a modal
+DFC's land face is still a land drop. 32 corpus cards.
+
+**`try` screens what it names** (2026-10-05). `goldfish.model_version()` is stamped once
+at import, so `manamap serve`'s warm worker can no longer cache a pre-edit champion under a
+post-edit key (it had: Edgar's draw read +0.031 against a true +0.151). And the bulk-dump
+lookup skips art-series cards, tokens and emblems, which carry a real card's name and no
+text (Phyrexian Arena and Yawgmoth had screened as blank).
+
+**A "nontoken" death payoff never fires on a sacrificed token** (2026-10-05). The
+sacrifice sweep converts tokens only; it fired every death engine on each, so Midnight
+Reaper ("Whenever a nontoken creature you control dies … draw a card") read +0.14
+extra cards by T8 in Edgar on deaths its text rules out. `death_profile` now carries
+`nontoken_only` (13 corpus cards: Reaper, High-Society Hunter, Grim Haruspex, Judith,
+Life Insurance, …) and the sweep skips them; they still fire on the measured
+own-death rate. Found by the edgar skeptic.
+
 **It reads static lords and anthems** (2026-10-05): "Other Vampires you control get
 +1/+1" pumps what it names while the lord lives; Glorious Anthem is cast once there is a
 board for it.

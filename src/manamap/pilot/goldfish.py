@@ -334,15 +334,7 @@ _MODEL_FILES = ("goldfish.py", "goldfish_profiles.py", "goldfish_library.py",
                 "goldfish_turn.py", "pilot_policy.py")
 
 
-def model_version():
-    """First 12 hex of a sha256 over the simulator's source — ALL of it.
-
-    Coarse on purpose: a comment edit bumps it, which costs a regeneration
-    nobody needed. The alternative is a curated list of "model-facing" lines,
-    which is exactly the judgement call that goes wrong silently.
-
-    Sorted by filename so the stamp does not depend on directory order.
-    """
+def _hash_sources():
     import hashlib
 
     here = pathlib.Path(__file__).parent
@@ -351,6 +343,32 @@ def model_version():
         sha.update(name.encode())
         sha.update((here / name).read_bytes())
     return sha.hexdigest()[:12]
+
+
+def model_version():
+    """First 12 hex of a sha256 over the simulator's source — ALL of it.
+
+    Coarse on purpose: a comment edit bumps it, which costs a regeneration
+    nobody needed. The alternative is a curated list of "model-facing" lines,
+    which is exactly the judgement call that goes wrong silently.
+
+    Sorted by filename so the stamp does not depend on directory order.
+
+    THE SOURCE THIS PROCESS LOADED, NOT THE SOURCE ON DISK NOW (2026-10-05).
+    It re-read the files on every call, so a long-lived process — `manamap
+    serve`'s warm worker — running code from before an edit stamped its
+    results with the AFTER version: `try` cached a pre-fix champion under the
+    post-fix key, and every screen after it subtracted the wrong baseline
+    (Edgar's draw read +0.031 against a true +0.151). Hashed once, at import,
+    after the three simulator modules above have loaded. `pilot_policy.py` is
+    imported lazily inside `run`, so an edit to it between this module's import
+    and the first run is the one window left; it is hashed here anyway, so the
+    stamp still moves for any process started after the edit.
+    """
+    return _LOADED_VERSION
+
+
+_LOADED_VERSION = _hash_sources()
 
 
 

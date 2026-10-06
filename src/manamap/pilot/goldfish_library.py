@@ -93,6 +93,15 @@ def classify(card, pool=None):
     type_line = card.get("type_line", "")
     text = card.get("oracle_text") or ""
     is_land = "Land" in type_line and "Creature" not in type_line.split("//")[0]
+    # A TRANSFORMING CARD IS ITS FRONT FACE until it flips (2026-10-05). Legion's
+    # Landing reads "Legendary Enchantment // Legendary Land", so the whole-line
+    # test PLAYED IT AS A LAND DROP: the champion had a phantom 37th land, and
+    # cutting it read as +2.5 points of missed drops by T5. A modal DFC is
+    # different — its land face really is a land drop — so only these layouts
+    # narrow. Swept: 32 corpus cards; fleet: edgar (Legion's Landing), sharknado
+    # (Treasure Map), zur-enchantress (Profane Procession).
+    if card.get("layout") in ("transform", "flip", "meld"):
+        is_land = "Land" in type_line.split("//")[0]
     is_tutor_card = bool(not is_land and is_tutor(card))
     mode_cost = _TUTOR_MODE_COST_RE.search(text) if is_tutor_card else None
     # None for every card that is not a Room, so this is a pure widening: a deck

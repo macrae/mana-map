@@ -60,7 +60,7 @@ Until #49 is fixed, a warm run cannot establish this page.
 |---|---|
 | ur-dragon's three artifacts describing a list nobody checked in (§1) | the pilot checked the paper list in; V6 is sleeved as v1.3.0 and `validate-engine ur-dragon` is OK |
 | the arrival channel depending on `model_combat` (§3b) | re-derived 2026-09-10 — the remaining gap is the cast-token channel and is legitimate; the threshold moved 0.7 → 0.4 |
-| two artifacts held by retired agents (§11) | the magazine renderer was deleted 2026-09-13, so nothing gates them; `STALE_XFAIL` is now empty and `ISSUE_XFAIL` does not exist |
+| two artifacts held by retired agents (§11) | the magazine renderer was deleted 2026-09-13, so nothing gates them; `ISSUE_XFAIL` does not exist, and `STALE_XFAIL` holds one entry since 2026-10-05 — edgar's `diagnosis.json`, staled by the transform-land model fix and awaiting a re-diagnosis |
 | `model_colors` conflating a constraint with a bonus (#35) | fixed 2026-09-13 — see §3c, which is kept for the mechanism |
 | the sacrifice runaway guard firing on edgar (#34) | fixed 2026-09-13 — see §3a |
 
@@ -986,7 +986,7 @@ that exists to say what a change was measured against.
 
 ## 11. Two artifacts are held by retired agents — **RESOLVED 2026-09-13**
 
-*`STALE_XFAIL` is now EMPTY and `ISSUE_XFAIL` does not exist. The magazine
+*`ISSUE_XFAIL` does not exist; `STALE_XFAIL` was EMPTY until 2026-10-05 and now holds edgar's `diagnosis.json` (stale by a model fix, not a defect). The magazine
 renderer and its validators were deleted on 2026-09-13, so `considering.json`
 and `issue.json` are no longer gated by anything and an xfail has nothing to
 attach to. The permanent-xfail question this section posed — "a decision

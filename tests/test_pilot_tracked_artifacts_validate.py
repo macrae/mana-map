@@ -195,7 +195,18 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 #: is wrong and the test says so rather than going quiet" is for. A non-strict
 #: xfail would have swallowed both and left two rebuilt artifacts ungated.
 STALE_XFAIL = {
-    # EMPTY, and that is the point. Its one entry was
+    # STALE BY A MODEL FIX, NOT BY A DEFECT (2026-10-05). The goldfish stopped
+    # playing Legion's Landing as a land drop (a transforming card is its front
+    # face), which moved Edgar's consistency 0.917 -> 0.908; the diagnosis
+    # carries the old audit figure, so its validator correctly refuses it. It is
+    # an AGENT artifact, so it is not hand-patched: it is re-diagnosed once the
+    # pilot's mardu-combo-v1 discussion settles the list it should describe.
+    # Strict, so the re-run's pass turns this red and the entry comes off.
+    "edgar-vampires/diagnosis.json": (
+        "stale since the 2026-10-05 transform-land model fix (consistency "
+        "0.917 -> 0.908); re-run /diagnose-deck edgar-vampires after "
+        "mardu-combo-v1 settles"),
+    # It was EMPTY before, and that was the point. Its one entry was
     # `heliod/considering.json` — the retired Short List, an artifact of
     # the frozen magazine renderer with no author left to re-run it. The
     # renderer and its validator were deleted on 2026-09-13, so the

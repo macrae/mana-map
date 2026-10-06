@@ -48,6 +48,9 @@ def _key(name):
 _SCRYFALL = {}
 
 
+_NOT_A_CARD = {"art_series", "token", "double_faced_token", "emblem"}
+
+
 def _scryfall_objects(names):
     """name-key -> the Scryfall oracle object, from the local bulk dump.
 
@@ -65,6 +68,13 @@ def _scryfall_objects(names):
             fh.seek(0)
             rows = json.load(fh) if head == "[" else (json.loads(line) for line in fh if line.strip())
             for obj in rows:
+                # NOT A CARD, though it carries the card's name: an art-series
+                # card has no oracle text, so the first one in the dump made
+                # Phyrexian Arena, Yawgmoth and Sorin screen as BLANK cards
+                # (found by the edgar doctor, 2026-10-05). Tokens and emblems
+                # share names the same way.
+                if obj.get("layout") in _NOT_A_CARD:
+                    continue
                 k = _key(obj.get("name"))
                 if k in want:
                     _SCRYFALL[k] = obj

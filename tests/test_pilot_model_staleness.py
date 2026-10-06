@@ -40,14 +40,19 @@ def test_the_stamp_moves_when_the_simulator_moves(tmp_path, monkeypatch):
     for name in goldfish._MODEL_FILES:
         (fake_dir / name).write_bytes((here / name).read_bytes())
 
-    before = goldfish.model_version()
+    # `_hash_sources`, not `model_version`: since 2026-10-05 the version is
+    # stamped ONCE at import (a long-lived worker must report the code it
+    # loaded, not the disk now — tests/test_pilot_try_cache_honesty.py), so the
+    # property "the hash covers the simulator" lives in the function it stamps.
+    before = goldfish._hash_sources()
+    assert before == goldfish.model_version()
     monkeypatch.setattr(goldfish, "__file__", str(fake_dir / "goldfish.py"))
-    assert goldfish.model_version() == before, (
+    assert goldfish._hash_sources() == before, (
         "a byte-identical copy of the simulator must stamp identically")
 
     (fake_dir / "goldfish_profiles.py").write_bytes(
         (here / "goldfish_profiles.py").read_bytes() + b"\n# a comment\n")
-    assert goldfish.model_version() != before, (
+    assert goldfish._hash_sources() != before, (
         "editing a CARD READER did not move the version — the stamp is not "
         "derived from what it claims to describe, and after the split that is "
         "two thirds of the simulator")
