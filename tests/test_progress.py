@@ -70,3 +70,20 @@ def test_the_off_switch_writes_nothing(tmp_path, monkeypatch):
     with progress.Progress("regen", total=1, directory=tmp_path) as p:
         p.advance()
     assert not list(tmp_path.iterdir())
+
+
+def test_a_dead_runs_file_is_pruned_and_a_live_ones_kept(tmp_path):
+    """A killed run left NO HEARTBEAT on the band for half an hour; a live
+    process with a stale heartbeat (a machine that slept) must still show."""
+    import json as _json
+    import os
+    dead = tmp_path / "simulate-999999.json"            # no such pid
+    dead.write_text(_json.dumps({"state": "running", "started_at": 0, "updated_at": 0}))
+    alive = tmp_path / f"pytest-{os.getpid()}9.json"    # unlikely pid, but finished
+    alive.write_text(_json.dumps({"state": "passed", "started_at": 0, "updated_at": 0}))
+    me = tmp_path / f"regen-{os.getppid()}.json"         # running, process alive
+    me.write_text(_json.dumps({"state": "running", "started_at": 0, "updated_at": 0}))
+    progress.Progress("regen", directory=tmp_path, name="new").start().finish()
+    assert not dead.exists()
+    assert me.exists()
+    assert alive.exists(), "a FRESH finished file stays until it is ten minutes old"

@@ -5,7 +5,9 @@ make test                 # UNIT: no tracked data — the inner loop          ~1
 make test-unit-isolated   # the unit tier against an EMPTY data dir — proves it
 make regression           # REGRESSION: the tracked fleet + corpus, then the fleet regen alone
 make integration          # INTEGRATION: browser, Forge, pages byte-identical
-make prepush              # unit + isolation + regression — before every push (CI runs it)
+make prepush              # before every push: SCOPED BY THE DIFF (full if any code changed)
+make prepush-full         # unit + isolation + regression, unconditionally
+make check-deck SLUG=x    # one deck's own checks while iterating on its list   ~1 min
 make test-fresh           # unit + regression, nothing served from the cache
 make test-report          # measure the unit tier: counts, time, coverage   ~2 min
 make test-report FULL=1   # + regression — the baseline, run in the background
@@ -24,6 +26,22 @@ a busy one, so a file of heavy tests no longer strands two workers with the tail
 almost every commit; README and CLAUDE.md point here instead. The dated record of
 how the suite got here — every earlier measurement, every lesson in full, the
 2026-09-21 adversarial audit — is [`history/testing-log.md`](history/testing-log.md).
+
+## Before a push: the scope follows the diff (2026-10-06)
+
+`make prepush` runs `python -m manamap.check_scope prepush`, which reads what the
+push carries (commits ahead of the upstream plus the working tree) and picks:
+
+| the push carries | it runs | about |
+|---|---|---|
+| any code: `src/`, `tests/`, config, CI, `viz/`, `.claude/`, fleet-wide data | `make prepush-full` — both tiers and the isolation proof | 15 min |
+| only `data/decks/<slug>/` and `manuals/p/<slug>.html` | that deck's artifact tests (`check_scope.DECK_TESTS`, other decks deselected, the fleet regen excluded) + the doc guards | 1 min |
+| only docs | the doc guards | 5 s |
+
+A path it does not recognise counts as code; no upstream means full; CI runs the
+whole suite on every push regardless. A DECKLIST IS PACKAGING: a branch edit with
+no code change waited fifteen minutes for 2,500 unit tests it could not break.
+`python -m manamap.check_scope plan` prints the choice and why.
 
 ## The three tiers (2026-10-05, 8-core Mac, `-n auto`)
 
@@ -90,7 +108,7 @@ Coverage costs time, so these walls compare only with each other.
 `.progress/pytest-<pid>.json` (done/total, failures, a 5-second heartbeat) through
 `manamap.progress` — as do `manamap pilot regen` (targets) and `simulate` (games,
 counted from the Forge logs as they grow) — which the
-`job-band` Claude Code mod draws above the prompt: a bar, elapsed, an ETA, and a
+`job-band` Claude Code mod draws above the prompt (finished rows clear after a minute, a dead run's row as soon as its process is gone, and `/jobs clear` empties it): a bar, elapsed, an ETA, and a
 yellow NO HEARTBEAT when the run died or the machine slept. `MANAMAP_NO_PROGRESS=1`
 turns the writer off.
 

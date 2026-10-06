@@ -32,7 +32,10 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 DIR = REPO / ".progress"
 HEARTBEAT_S = 5.0
-PRUNE_AFTER_S = 86400
+#: A finished job's file is pruned this long after it last wrote (the band
+#: hides it after two minutes; the file only feeds the band). It was a day, and
+#: a day of pytest runs piled up as cruft on the band (2026-10-06).
+PRUNE_AFTER_S = 600
 
 
 def enabled():
@@ -134,10 +137,40 @@ class Progress:
     def _prune(self):
         for old in self.dir.glob("*.json"):
             try:
-                if time.time() - old.stat().st_mtime > PRUNE_AFTER_S:
+                if old.resolve() == self.path.resolve():
+                    continue
+                if time.time() - old.stat().st_mtime > PRUNE_AFTER_S or _dead(old):
                     old.unlink()
             except OSError:
                 pass
+
+
+def _pid_of(path):
+    """`<name>-<pid>.json` -> pid, or None."""
+    tail = path.stem.rsplit("-", 1)[-1]
+    return int(tail) if tail.isdigit() else None
+
+
+def _dead(path):
+    """A file that still says RUNNING but whose process is gone: a killed run,
+    or a crash. It would otherwise sit on the band as NO HEARTBEAT for half an
+    hour. A live process with a stale heartbeat (a machine that slept) is NOT
+    dead and stays — that is the warning the band exists to give."""
+    try:
+        if json.loads(path.read_text()).get("state") != "running":
+            return False
+    except (OSError, ValueError):
+        return False
+    pid = _pid_of(path)
+    if pid is None:
+        return False
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return True
+    except PermissionError:
+        return False          # alive, someone else's
+    return False
 
 
 class LogCounter:

@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test test-unit-isolated regression integration prepush test-all test-browser test-fresh test-report serve manuals clean check demo docs-sizes
+.PHONY: help setup test test-unit-isolated regression integration prepush prepush-full check-deck test-all test-browser test-fresh test-report serve manuals clean check demo docs-sizes
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -95,7 +95,18 @@ integration:  ## THE INTEGRATION TIER: browser + Forge + the pages rebuild byte-
 	$(MAKE) manuals
 	git diff --exit-code -- manuals/ data/decks/
 
-prepush: test test-unit-isolated regression  ## unit + its isolation proof + regression — before every push
+# SCOPED BY THE DIFF (src/manamap/check_scope.py): code changed -> prepush-full;
+# only deck data -> that deck's checks + every check naming no deck; only docs ->
+# the doc guards. CI runs the full suite on every push either way.
+prepush:  ## Before every push — the suite the diff needs (full if any code changed)
+	$(PY) -m manamap.check_scope prepush
+
+prepush-full: test test-unit-isolated regression  ## unit + its isolation proof + regression, unconditionally
+
+SLUG ?=
+check-deck:  ## A deck's own checks while iterating on a list: make check-deck SLUG=edgar-vampires
+	@test -n "$(SLUG)" || { echo "usage: make check-deck SLUG=<deck>"; exit 2; }
+	$(PY) -m manamap.check_scope deck $(SLUG)
 
 test-fresh:  ## unit + regression with nothing served from the cache — trust this one
 	$(PYTEST) --no-test-cache

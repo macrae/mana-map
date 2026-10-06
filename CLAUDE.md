@@ -142,7 +142,8 @@ manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board ->
 make test                     # the UNIT tier: no tracked data, ~1 min (runtimes: docs/testing.md)
 make regression               # the tracked fleet + corpus, every producer re-run
 make integration              # browser + Forge + the pages rebuilt byte-identically
-make prepush                  # unit + its isolation proof + regression; before every push
+make prepush                  # before every push, SCOPED BY THE DIFF (deck-only: ~1 min; code: full)
+make check-deck SLUG=<slug>   # a deck's own checks while iterating on its list (~1 min)
 make test-browser             # playwright; local only
 make test-report              # unit tier + coverage, ~2 min -> data/test_reports/ (FULL=1: + regression)
 .venv/bin/pytest -n0 -k NAME  # one test
