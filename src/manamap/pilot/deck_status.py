@@ -423,6 +423,10 @@ VALIDATED = {
     # door filters on. It earned a gate when it grew `lifecycle`, whose new
     # invariant is that the two cannot both be set.
     "deck_versions.json": "manamap.pilot.validate_deck_versions",
+    # THE DECK CONTEXT (PRD v2, 2026-10-07): the document Jarvis reads first.
+    # A gate row, not a stage, while the engine/handbook stages still stand;
+    # it becomes the deck's one prose stage when they are deleted (Phase 4).
+    "CONTEXT.md": "manamap.pilot.validate_context",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
     # NOT a lifecycle stage, and that is exactly why it was missing: the test

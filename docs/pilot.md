@@ -80,6 +80,10 @@ manamap pilot deck-notes <slug> list [--since D] | show <id>
 manamap pilot model-coverage <slug> [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
 manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD THE FLEET after a model change, in dependency order, parallel across targets
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
+manamap pilot context <slug> [--slice SECTION…|--check|--scaffold|--refresh [--all]|--install DRAFT --note "…"]
+                                                              # THE DECK CONTEXT (CONTEXT.md, PRD v2): the document /jarvis reads first
+manamap pilot validate-context <slug>                         # its gate: blocks current, cards in the 99, stamp, sections
+manamap pilot sla-report                                      # sub-agents against their response-time targets (the band's log)
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J] [--detect X] [--anyway]
                                         #   N seeded Commander games in Forge, headless; a ◆ run record.
                                         #   The POWER PREFLIGHT prints first (the pod's null, the MDE at N);

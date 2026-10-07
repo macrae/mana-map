@@ -159,11 +159,27 @@ export function summarize(e: Record<string, unknown>): string {
   return text.length > 70 ? text.slice(0, 69) + '…' : text
 }
 
+/** `sla_s: 120` from a charter's YAML frontmatter, or null when it declares none. */
+export function parseSla(charter: string): number | null {
+  const head = /^---\n([\s\S]*?)\n---/.exec(charter)
+  const m = head ? /^sla_s:\s*(\d+(?:\.\d+)?)\s*$/m.exec(head[1]!) : null
+  return m ? Number(m[1]) : null
+}
+
+/** Over its response-time target? Floors (a late row) are never judged. */
+export function overSla(a: AgentRow, now: number): boolean {
+  return a.sla !== null && !a.late && (a.endedAt ?? now) - a.startedAt > a.sla
+}
+
 export function agentTail(a: AgentRow, now: number): string {
   const end = a.endedAt ?? now
   const elapsed = (a.late ? '≥' : '') + duration(end - a.startedAt)
   const tools = `${a.late ? '≥' : ''}${a.tools} tool call${a.tools === 1 ? '' : 's'}`
-  if (a.endedAt !== null) return `${a.status} in ${elapsed} · ${tools}`
+  const target = a.sla === null || a.late ? ''
+    : overSla(a, now) ? ` · OVER its ${duration(a.sla)} target by ${duration(end - a.startedAt - a.sla)}`
+    : ` · target ${duration(a.sla)}`
+  if (a.endedAt !== null) return `${a.status} in ${elapsed} · ${tools}${target}`
+  if (target) return `${elapsed} elapsed · ${tools}${target}`
   let usual = ''
   if (a.typical !== null && !a.late) {
     const left = a.typical - (now - a.startedAt)
@@ -219,7 +235,36 @@ async function readJobs($: EngineInterface, root: string, all = false): Promise<
 
 type Seen = { startedAt: number; endedAt: number | null; status: string; tools: number; last: string; late: boolean }
 
-async function readAgents($: EngineInterface, seen: Map<string, Seen>, now: number, first: boolean): Promise<AgentRow[]> {
+/** Each agent type's target, read once a session from `.claude/agents/<type>.md`. */
+const slas = new Map<string, number | null>()
+
+async function slaOf($: EngineInterface, root: string, type: string): Promise<number | null> {
+  if (!slas.has(type)) {
+    let sla: number | null = null
+    try {
+      sla = parseSla(await $.fs.read(`${root}/.claude/agents/${type}.md`))
+    } catch {
+      // a built-in agent type has no charter here, and so no target
+    }
+    slas.set(type, sla)
+  }
+  return slas.get(type) ?? null
+}
+
+/** One line per finished run with a target, so a missed target is on the record
+ * (`manamap pilot sla-report` reads it). Kept to the last 500 runs. */
+async function logRun($: EngineInterface, root: string, row: Record<string, unknown>): Promise<void> {
+  const path = `${root}/.progress/sla-log.jsonl`
+  try {
+    const old = (await $.fs.exists(path)) ? await $.fs.read(path) : ''
+    const lines = old.split('\n').filter(l => l.trim()).slice(-499)
+    await $.fs.write(path, [...lines, JSON.stringify(row)].join('\n') + '\n')
+  } catch {
+    // the log is a record, never a reason to break the band
+  }
+}
+
+async function readAgents($: EngineInterface, root: string, seen: Map<string, Seen>, now: number, first: boolean): Promise<AgentRow[]> {
   const rows: AgentRow[] = []
   for (const a of await $.agent.list()) {
     const live = LIVE.has(a.status)
@@ -233,10 +278,16 @@ async function readAgents($: EngineInterface, seen: Map<string, Seen>, now: numb
     }
     const key = `durations:${a.type}`
     const past = ((await $.store.get(key)) as number[] | undefined) ?? []
+    const sla = await slaOf($, root, a.type)
     if (!live && s.endedAt === null) {
       s.endedAt = now
       if (a.status === 'completed' && !s.late) {
         await $.store.set(key, [...past, now - s.startedAt].slice(-KEEP_RUNS))
+      }
+      if (sla !== null && !s.late) {
+        const elapsed = Math.round((now - s.startedAt) * 10) / 10
+        await logRun($, root, { type: a.type, status: a.status, elapsed_s: elapsed, sla_s: sla,
+          missed: elapsed > sla, at: new Date(now * 1000).toISOString(), description: a.description })
       }
     }
     s.status = a.status
@@ -244,7 +295,7 @@ async function readAgents($: EngineInterface, seen: Map<string, Seen>, now: numb
     rows.push({
       id: a.id, type: a.type, description: a.description, status: a.status,
       startedAt: s.startedAt, endedAt: s.endedAt, tools: s.tools, last: s.last,
-      typical: median(past), runs: past.length, late: s.late,
+      typical: median(past), runs: past.length, late: s.late, sla,
     })
   }
   return rows
@@ -276,7 +327,7 @@ export const register: Register = on => {
       const now = (await $.clock.now()) / 1000
       if (ticks++ % READ_EVERY === 0) {
         const jobs = await readJobs($, root)
-        const agents = await readAgents($, seen, now, ticks === 1)
+        const agents = await readAgents($, root, seen, now, ticks === 1)
         await update($, snapshot, () => ({ now, jobs, agents }))
       } else {
         // a frame of the spinner only: the same rows, a new clock
@@ -331,7 +382,8 @@ export const register: Register = on => {
         })}
         {agents.map(a => {
           const done = a.endedAt !== null
-          const colour = !done ? 'magenta' : a.status === 'completed' ? 'green' : 'red'
+          const late = overSla(a, now)
+          const colour = !done ? (late ? 'yellow' : 'magenta') : a.status === 'completed' ? (late ? 'yellow' : 'green') : 'red'
           const icon = !done ? frame : a.status === 'completed' ? '✔' : '✘'
           return (
             <Box key={a.id} flexDirection="column">
@@ -339,7 +391,7 @@ export const register: Register = on => {
                 <Text color={colour}>{icon} </Text>
                 <Text bold>{a.type} </Text>
                 <Text>{a.description} </Text>
-                <Text dimColor>{agentTail(a, now)}</Text>
+                <Text color={late ? 'yellow' : undefined} dimColor={!late}>{agentTail(a, now)}</Text>
               </Box>
               {!done && a.last ? (
                 <Box>

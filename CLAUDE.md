@@ -18,6 +18,12 @@ deterministic builder, `deck-audit`'s 16 cited axes, `card-search` over the corp
 `deck-recon`, versions from git, a captain's log, the pilot's keep list
 (`protected.json`), and agents that turn a question into a priced, checked answer.
 
+**PRD v2 (2026-10-07) is replacing the engine model, the handbook and the dossier** with one
+living **Deck Context** per deck (`data/decks/<slug>/CONTEXT.md`, `docs/deck-context.md`) and
+**Jarvis** (`/jarvis`), the one entry point that answers from it or routes to a small roster of
+sub-agents with response-time targets. **Deck questions go through `/jarvis`.** Phase 1 is in;
+nothing old is deleted until every deck's context is approved.
+
 **Six pages over one data layer**: the landing page (`viz/workbench.html`), the card
 atlas (`viz/index.html`), the deck page (`viz/deck.html?deck=<slug>`), the branch workbench
 (`viz/branch.html`), Curate (`viz/library.html`) and the embedding-space appendix
@@ -90,7 +96,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 124 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 127 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -136,10 +142,11 @@ manamap pilot simulate <slug> --pod standard-v3 --games N   # optional; prints i
 manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--looks K] [--aa]
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board -> /resolve-stack
 
-# ── AGENTS (Claude Code skills, 24 in .claude/skills/, 20 charters in .claude/agents/) ──
+# ── AGENTS (Claude Code skills, 25 in .claude/skills/, 22 charters in .claude/agents/) ──
 # /publish-deck sequences the lifecycle; /diagnose-deck /prescribe /resolve-stack
 # /analyze-engine /build-deck /debrief /captains-log /sim-debrief /poh-procedures
 # /write-manual /research-strategy /refresh-corpus /test-report (pre/post-test agents) /print-proxies
+# /jarvis — THE ENTRY POINT (PRD v2): context-keeper writes CONTEXT.md, data-analyst computes (<30 s)
 
 make test                     # the UNIT tier: no tracked data, ~1 min (runtimes: docs/testing.md)
 make regression               # the tracked fleet + corpus, every producer re-run

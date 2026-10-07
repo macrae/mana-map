@@ -57,6 +57,10 @@ STAGES = (
     ("diagnose", "diagnostic.json", "manamap.pilot.diagnostic", {"write": True}, False),
     ("benchmark", "benchmark.json", "manamap.pilot.benchmark", {}, False),
     ("deck-info", "info.json", "manamap.pilot.deck_info", {"write": True}, False),
+    # LAST, after everything it quotes: the Deck Context's generated blocks are
+    # rendered from compose() and the version report. Refresh only — a missing
+    # CONTEXT.md is the Keeper's to seed, never the regen's to invent.
+    ("context", "CONTEXT.md", "manamap.pilot.deck_context", {"refresh": True}, False),
 )
 
 STAGE_NAMES = tuple(s[0] for s in STAGES)

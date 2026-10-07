@@ -75,6 +75,13 @@ PILOT_STEPS = [
      "Install the tracked card-script overrides into Forge and VERIFY the engine carries them — the provenance a run record stamps"),
     ("validate-forge-hints", "manamap.pilot.validate_forge_hints",
      "Form-check forge_hints.json: every hinted card is in the 99, says why, and carries a logic or a preference"),
+    ("context", "manamap.pilot.deck_context",
+     "The Deck Context (CONTEXT.md): print it, --slice SECTION…, --check, --scaffold, "
+     "--refresh [--all] the generated blocks, --install the Context Keeper's draft"),
+    ("validate-context", "manamap.pilot.validate_context",
+     "Gate CONTEXT.md: generated blocks current, every card it describes in the 99, stamp, sections"),
+    ("sla-report", "manamap.pilot.sla_report",
+     "Sub-agents against their response-time targets: runs, median, slowest, missed (from the job band's log)"),
     ("validate-protected", "manamap.pilot.validate_protected",
      "Form-check protected.json: the pilot's keep list — every card in the 99, not the commander, with a why"),
     ("forge-cast-check", "manamap.sim.cast_check",
@@ -259,6 +266,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
+    "context", "validate-context",
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints", "validate-protected",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
     "forge-cast-check", "validate-cast-proofs",
@@ -306,7 +314,7 @@ def add_pilot_parser(subparsers):
             # `deck-status --all` is the fleet view, so its slug is optional.
             # Every other per-deck command still requires one — an optional slug
             # elsewhere is how a command silently operates on the wrong deck.
-            nargs = "?" if name == "deck-status" else None
+            nargs = "?" if name in ("deck-status", "context") else None
             cmd.add_argument("slug", nargs=nargs,
                              help="Deck slug (kebab-case, e.g. goblin-storm)")
         if name == "deck-map":
@@ -764,6 +772,24 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="delete anyway. A deck that was sleeved, "
                                   "played or published is a record — archive it")
+        if name == "context":
+            cmd.add_argument("--slice", nargs="+", default=None, metavar="SECTION",
+                             help="print only these sections (summary plays cards numbers "
+                                  "pilot history questions changelog) — what an agent is sent")
+            cmd.add_argument("--check", action="store_true", help="the gate; exit 1 on an error")
+            cmd.add_argument("--scaffold", action="store_true",
+                             help="write a fresh CONTEXT.md: generated blocks, prose placeholders")
+            cmd.add_argument("--force", action="store_true", help="with --scaffold: overwrite")
+            cmd.add_argument("--refresh", action="store_true",
+                             help="rewrite the generated blocks only; prose kept byte for byte")
+            cmd.add_argument("--all", action="store_true",
+                             help="with --refresh/--check: every live deck that has a CONTEXT.md")
+            cmd.add_argument("--install", default=None, metavar="DRAFT",
+                             help="install the Context Keeper's draft through the strict gate")
+            cmd.add_argument("--note", default=None,
+                             help="with --install: one line for the Context changelog")
+            cmd.add_argument("--who", default=None,
+                             help="with --install: who wrote the pass (default Keeper)")
         if name == "deck-version":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "show", "tag", "restore", "paper", "baseline"],

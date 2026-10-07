@@ -59,7 +59,7 @@ import type { AgentRow } from '../types'
 function agent(over: Partial<AgentRow> = {}): AgentRow {
   return { id: 'a1', type: 'deck-doctor', description: 'Diagnose edgar-vampires',
     status: 'running', startedAt: T0, endedAt: null, tools: 12, last: '',
-    typical: null, runs: 0, late: false, ...over }
+    typical: null, runs: 0, late: false, sla: null, ...over }
 }
 
 group('job-band agents', () => {
@@ -99,6 +99,39 @@ group('job-band agents', () => {
     expect(summarize({ tool: 'Read', file_path: '/a/b.json' })).toBe('Read: /a/b.json')
     expect(summarize({ tool: 'Bash', command: 'a\n   b' })).toBe('Bash: a b')
     expect(summarize({ tool: 'Bash', command: 'x'.repeat(200) }).length).toBe(70)
+  })
+})
+
+import { overSla, parseSla } from '../hooks/register'
+
+group('job-band SLA targets', () => {
+  test('the target is read from the charter frontmatter, and only from there', async () => {
+    expect(parseSla('---\nname: data-analyst\nmodel: haiku\nsla_s: 30\n---\nbody sla_s: 9')).toBe(30)
+    expect(parseSla('---\nname: x\n---\nsla_s: 30')).toBe(null)
+    expect(parseSla('no frontmatter')).toBe(null)
+  })
+
+  test('a running agent shows elapsed against its target instead of its history', async () => {
+    expect(agentTail(agent({ sla: 120, typical: 600, runs: 3 }), T0 + 45))
+      .toBe('45s elapsed · 12 tool calls · target 2m00s')
+  })
+
+  test('over its target it says so, by how much', async () => {
+    const a = agent({ sla: 30 })
+    expect(overSla(a, T0 + 50)).toBe(true)
+    expect(agentTail(a, T0 + 50)).toBe('50s elapsed · 12 tool calls · OVER its 30s target by 20s')
+  })
+
+  test('a finished run is judged on its own duration', async () => {
+    const a = agent({ sla: 120, status: 'completed', endedAt: T0 + 100, tools: 4 })
+    expect(overSla(a, T0 + 900)).toBe(false)
+    expect(agentTail(a, T0 + 900)).toBe('completed in 1m40s · 4 tool calls · target 2m00s')
+  })
+
+  test('a row the band saw late is a floor and is never judged against a target', async () => {
+    const a = agent({ sla: 30, late: true })
+    expect(overSla(a, T0 + 500)).toBe(false)
+    expect(agentTail(a, T0 + 500)).toBe('≥8m20s elapsed · ≥12 tool calls')
   })
 })
 

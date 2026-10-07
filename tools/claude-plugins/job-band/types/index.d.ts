@@ -29,6 +29,8 @@ export type AgentRow = {
   runs: number
   /** Already running when the band loaded: start and tool count are floors. */
   late: boolean
+  /** The response-time target in seconds, from `sla_s:` in the charter's frontmatter. */
+  sla: number | null
 }
 
 export type Snapshot = { now: number; jobs: Job[]; agents: AgentRow[] }

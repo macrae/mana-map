@@ -22,7 +22,7 @@ manifest half of `build_index.py` lives on as `deck_manifest.py`, which writes t
 
 So Epic D was a **re-grouping of 18 charters**, not an excavation.
 
-## Agents — 20 charters in `.claude/agents/`
+## Agents — 22 charters in `.claude/agents/`
 
 Every one opens by reading `.claude/agents-common.md` (the shared contract);
 `pipeline-runner` and `viz-dev` are exempt there by name.
@@ -47,6 +47,8 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 | `deck-cartographer` | city names on `deck_map.json`, names only | `publish-deck` | ambiguous — demoted to OPTIONAL by the 2026-08-19 audit; not a `deck_status.STAGES` row |
 | `pipeline-runner` | runs pipeline steps via the CLI | **no skill spawns it** | see below |
 | `viz-dev` | frontend work under `viz/` | **no skill spawns it** | see below |
+| `context-keeper` | the prose of `CONTEXT.md` — Summary, How it plays, Cards by role, Pilot notes, Open questions — through `context --install`'s strict gate; never a number, never a generated block. Modes seed / log / deck-change. `sla_s: 120`, Sonnet (PRD v2, 2026-10-07) | `jarvis` | **PRD v2 roster: Context Keeper** — will absorb `captains-log` and `debrief` |
+| `data-analyst` | nothing — filters, sorts and computes over the 99, the goldfish, the logs with read-only commands; answers in ≤10 lines plus the commands it ran. `sla_s: 30`, Haiku (PRD v2) | `jarvis` | **PRD v2 roster: Data Analyst** |
 | `test-preflight` | nothing — a GO / WAIT / FIX verdict over `suite_report preflight` (collisions, plugins, dirty source, harness changes since the last report); exempt from `agents-common.md` (added 2026-10-05) | `test-report` | infrastructure |
 | `test-debrief` | nothing tracked — a reading of `suite_report diff` that may cite only finding ids and quote only their figures, plus a proposed diff to docs/testing.md's hand-written table; the generated block is code's (added 2026-10-05) | `test-report` | infrastructure (the test-suite counterpart of `sim-debrief`) |
 
@@ -62,7 +64,7 @@ and D-2 is explicit that "nothing gets deleted before its useful capability has
 a new home". They are recorded here as *never spawned by a skill* and left in
 place; retiring them is a decision, not a cleanup.
 
-## Skills — 24 in `.claude/skills/`
+## Skills — 25 in `.claude/skills/`
 
 Deck-facing, and the ones a consolidation has to re-home:
 
@@ -83,6 +85,17 @@ Infrastructure, not deck-facing and not part of the consolidation:
 `run-pipeline`, `run-tests`, `retrain`, `refresh-corpus`, `regen-analysis`,
 `serve-viz`, `print-proxies` (added 2026-10-06: a proxy sheet for a branch's adds minus what the pilot holds, via `manamap pilot proxies`), and `test-report` (added 2026-10-05), which spawns `test-preflight` →
 `make test-report` → `test-debrief` over the findings `manamap.suite_report` computes.
+
+## PRD v2 (2026-10-07): Jarvis and the roster
+
+`/jarvis` (`.claude/skills/jarvis/SKILL.md`) is the one entry point: it reads the deck's
+`CONTEXT.md` first (`docs/deck-context.md`), answers from it, and routes the rest. The PRD's
+seven sub-agents each have one job and a response-time target (`sla_s:` in the charter, shown
+live by the job band, logged to `.progress/sla-log.jsonl`, read by `manamap pilot sla-report`).
+Phase 1 shipped two: `data-analyst` and `context-keeper`. Card Scout (from `deck-analyst`),
+Strategist (from `deck-doctor` + `strategy-researcher`), Rules Checker (single question, from
+`rules-lookup`) and the Incubation Pod + Challenger are Phase 2; Scenario Sim is Phase 3.
+Nothing in the tables above is deleted until every deck's context is approved.
 
 ## Front-end surfaces that depend on the harness
 
