@@ -15,7 +15,7 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 12,
+    "complete": 13,
     "of": 18,
     "stale": [
       "tutors",
@@ -27,7 +27,6 @@
     "verified": true,
     "missing": [
       "frame",
-      "log",
       "issue"
     ],
     "todo": [
@@ -35,11 +34,6 @@
         "stage": "frame",
         "what": "the strategist's read — `research-strategy` consult",
         "how": "/research-strategy — MODE consult, on sharknado"
-      },
-      {
-        "stage": "log",
-        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
-        "how": "manamap pilot deck-notes sharknado add \"<what happened>\" --result win|loss --opponents 3"
       },
       {
         "stage": "issue",
@@ -4561,15 +4555,21 @@
     "release": "v1.2.0"
   },
   "record": {
-    "games": 0,
+    "games": 1,
     "win": 0,
     "loss": 0,
     "draw": 0,
-    "last_played": null,
-    "first_played": null,
-    "undebriefed": [],
-    "causes": {},
-    "cause_counts": {}
+    "last_played": "2026-10-06",
+    "first_played": "2026-10-06",
+    "undebriefed": [
+      "001"
+    ],
+    "causes": {
+      "001": "won"
+    },
+    "cause_counts": {
+      "won": 1
+    }
   },
   "model": {
     "goldfish": {
@@ -5196,7 +5196,7 @@
   "next": [
     "1 artifact(s) fail their own gate (build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "nothing in the captain's log — play it, then `deck-notes sharknado add \"…\" --result win|loss --opponents N`",
+    "1 logged game(s) not yet debriefed (001) — `/debrief sharknado`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
