@@ -334,7 +334,7 @@ def engine_health(vitals):
             "basis": "diagnostic.json"}
 
 
-def compose(slug, verify=False):
+def compose(slug, verify=False, ladder=True):
     """The workbench view. `verify` RUNS THE GATES, and costs about two seconds.
 
     `deck_status.status(validate=True)` imports and executes all fourteen
@@ -419,7 +419,10 @@ def compose(slug, verify=False):
         # frontend inventing a second definition of "ready" is the mistake
         # `stage` above was added to undo, and doing it again one field later
         # would be worse for having known.
-        "gates": _gates(slug, promote_mod),
+        # `ladder=False` skips it: on a bench deck `promote.gate` measures, and
+        # it took 88 of compose's 89 seconds on emiel-blink (2026-10-07). The
+        # Deck Context renders from compose and never reads the ladder.
+        "gates": _gates(slug, promote_mod) if ladder else None,
         "colour_identity": identity,
         "size": counts.get("copies"), "lands": counts.get("land_copies"),
         "version": {"current": vdoc["current_version"], "of": len(vdoc["versions"]),

@@ -303,7 +303,7 @@ def render_generated(slug):
     """`{block: text}` — every generated block, from the artifacts that own it."""
     from manamap.pilot import deck_info, deck_versions
 
-    info = deck_info.compose(slug)
+    info = deck_info.compose(slug, ladder=False)
     report = deck_versions.report(slug)
     return {
         "summary": _block_summary(slug, info),
@@ -445,10 +445,13 @@ def check_text(slug, text, blocks=None, strict=False):
 
     placed = {deck[n.lower()] for n in _named_in(secs.get("cards", "")) if n.lower() in deck}
     unplaced = sorted(set(deck.values()) - placed)
-    if st is not None and unplaced:
+    # `strict` looks whatever the stamp says: a Keeper's draft carries no stamp
+    # until install writes one, and a self-check that skipped this read two
+    # drafts clean that the install then refused (2026-10-07).
+    if (st is not None or strict) and unplaced:
         warnings.append(f"{len(unplaced)} card(s) in the 99 under no role: "
                         f"{', '.join(unplaced[:12])}{' …' if len(unplaced) > 12 else ''}")
-    if st is not None and PLACEHOLDER in prose:
+    if (st is not None or strict) and PLACEHOLDER in prose:
         warnings.append("a section still reads " + PLACEHOLDER)
     n_lines = text.count("\n")
     if n_lines > MAX_LINES:
@@ -520,7 +523,7 @@ def install(slug, draft_path, note, who="Keeper"):
         raise SystemExit("FAIL the draft's generated-block markers are broken: "
                          + "; ".join(check_markers(text)))
     text = replace_blocks(text, blocks)
-    info = deck_info.compose(slug)
+    info = deck_info.compose(slug, ladder=False)
     sha = (common.decklist_sha256(slug) or "")[:12]
     header = (f"<!-- ctx:written-for version={_version_label(info).split(' ')[0]} "
               f"sha={sha} at={date.today().isoformat()} -->")

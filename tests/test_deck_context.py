@@ -99,6 +99,14 @@ def test_the_install_gate_wants_every_card_placed_and_no_placeholder(fake_deck):
     assert dc.check_text("sharknado", written(ALL_PLACED), BLOCKS, strict=True)[0] == []
 
 
+def test_the_strict_check_finds_an_unplaced_card_before_the_draft_is_stamped(fake_deck):
+    """The Keeper self-checks an UNSTAMPED draft. Gating the unplaced-card check on
+    the stamp let two drafts read clean that the install then refused."""
+    draft = written("### Turn a wheel into damage\n- [[Windfall]]", stamp="none")
+    errors, _ = dc.check_text("sharknado", draft, BLOCKS, strict=True)
+    assert any("under no role" in e for e in errors)
+
+
 def test_a_double_faced_card_answers_to_its_front_face(fake_deck):
     errors, _ = dc.check_text("sharknado", written(ALL_PLACED), BLOCKS, strict=True)
     assert not any("Treasure" in e for e in errors)
