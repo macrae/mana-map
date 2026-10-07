@@ -87,4 +87,7 @@ and it runs on Sonnet.
 Every PRD sub-agent declares `sla_s:` in its charter frontmatter (`context-keeper`
 120, `data-analyst` 30). The job band shows each running agent's elapsed time against
 its target, and turns yellow when it goes over. Each finished run is appended to
-`.progress/sla-log.jsonl`, and `manamap pilot sla-report` summarises the log.
+`.progress/sla-log.jsonl`, and `manamap pilot sla-report` summarises the log. The band also times every prompt from submit to the first piece of the response
+(`.progress/latency-log.jsonl`; the PRD's "under 2 s"), and `sla-report` prints its median, p90
+and misses. It warns when the band Claude Code is running is not the repo's (a plugin edit
+needs a version bump and `claude plugin update`).

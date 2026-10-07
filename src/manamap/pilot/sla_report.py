@@ -6,6 +6,7 @@ median, slowest, and how many missed, per agent. A repeat miss is the PRD's sign
 to trim or split the agent. Gitignored and local, like the rest of `.progress/`.
 """
 import json
+import pathlib
 import statistics
 
 from manamap import config
@@ -39,7 +40,60 @@ def summary(runs):
     return out
 
 
+BAND = config.DATA_DIR.parent / "tools" / "claude-plugins" / "job-band"
+INSTALLED = pathlib.Path.home() / ".claude" / "plugins" / "installed_plugins.json"
+
+
+def band_drift(installed=INSTALLED, repo=BAND):
+    """Why the running band may not be the repo's, or None when they match.
+
+    Claude Code runs a CACHED copy of a plugin, keyed on its version: an edit to
+    `register.tsx` without a version bump never reaches the band that is running.
+    That is how the SLA log stayed empty through a day of agent runs (2026-10-07):
+    the code that writes it was in the repo and not in the cache.
+    """
+    try:
+        doc = json.loads(installed.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None                       # not installed here: nothing to compare
+    rows = (doc.get("plugins") or doc).get("job-band@mana-map") or []
+    if not rows:
+        return None
+    cached = pathlib.Path(rows[-1].get("installPath", "")) / "hooks" / "register.tsx"
+    mine = repo / "hooks" / "register.tsx"
+    if not cached.exists() or not mine.exists():
+        return None
+    if cached.read_bytes() != mine.read_bytes():
+        return (f"the job band running ({rows[-1].get('version')}) is not the repo's — bump "
+                "`version` in tools/claude-plugins/job-band/.claude-plugin/plugin.json, then "
+                "`claude plugin marketplace update mana-map && claude plugin update "
+                "job-band@mana-map` and restart Claude Code")
+    return None
+
+
+LATENCY = LOG.with_name("latency-log.jsonl")
+#: The PRD's "time to first response from Jarvis".
+FIRST_RESPONSE_TARGET_S = 2.0
+
+
+def latency(path=LATENCY):
+    """`{n, median_s, p90_s, over}` of submit-to-first-chunk times, or None."""
+    secs = sorted(float(r["first_response_s"]) for r in rows(path) if "first_response_s" in r)
+    if not secs:
+        return None
+    return {"n": len(secs), "median_s": round(statistics.median(secs), 2),
+            "p90_s": secs[min(len(secs) - 1, int(0.9 * len(secs)))],
+            "over": sum(1 for s in secs if s > FIRST_RESPONSE_TARGET_S)}
+
+
 def main(args=None):
+    drift = band_drift()
+    if drift:
+        print(f"WARNING: {drift}")
+    lat = latency()
+    if lat:
+        print(f"first response: median {lat['median_s']}s, p90 {lat['p90_s']}s over {lat['n']} prompt(s); "
+              f"{lat['over']} over the {FIRST_RESPONSE_TARGET_S:g}s target")
     runs = rows()
     if not runs:
         print(f"no agent runs logged yet — the job band writes {LOG.name} when an agent "

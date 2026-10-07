@@ -301,10 +301,52 @@ async function readAgents($: EngineInterface, root: string, seen: Map<string, Se
   return rows
 }
 
+/** One line per prompt: seconds from submit to the first piece of the response —
+ * the PRD's "time to first response" (target under 2 s). Kept to the last 500. */
+async function logLatency($: EngineInterface, root: string, row: Record<string, unknown>): Promise<void> {
+  const path = `${root}/.progress/latency-log.jsonl`
+  try {
+    const old = (await $.fs.exists(path)) ? await $.fs.read(path) : ''
+    const lines = old.split('\n').filter(l => l.trim()).slice(-499)
+    await $.fs.write(path, [...lines, JSON.stringify(row)].join('\n') + '\n')
+  } catch {
+    // a record, never a reason to break the band
+  }
+}
+
 export const register: Register = on => {
   let root = ''
   let ticks = 0
   const seen = new Map<string, Seen>()
+  // When the last prompt was submitted, until its first response chunk arrives.
+  let submittedAt: number | null = null
+
+  // Never in the prompt's way: a timer that fails must not hold up what Sean typed.
+  on('prompt.submit', async ($, e, next) => {
+    try {
+      if (!e.turnId) submittedAt = (await $.clock.now()) / 1000   // a new prompt, not one typed into a running turn
+    } catch {
+      submittedAt = null
+    }
+    return next(e)
+  })
+
+  // The first chunk of the model's response after a submit stamps the latency.
+  // Every chunk is passed on untouched; only the first one is timed.
+  on('turn.step', async function* ($, e, next) {
+    const it = next(e)
+    while (true) {
+      const step = await it.next()
+      if (step.done) return step.value
+      if (submittedAt !== null && root) {
+        const now = (await $.clock.now()) / 1000
+        const first = Math.round((now - submittedAt) * 100) / 100
+        submittedAt = null
+        await logLatency($, root, { at: new Date(now * 1000).toISOString(), first_response_s: first })
+      }
+      yield step.value
+    }
+  })
 
   // Every tool call inside a subagent's loop carries its id: count them, and
   // keep the latest as "what it is doing now".
