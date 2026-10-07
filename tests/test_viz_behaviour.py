@@ -9042,6 +9042,19 @@ def test_the_review_grid_shows_a_watch_set_read_only_without_the_server(page):
     assert r["tiles"] >= 20, "the unreviewed cards are not in the grid"
     assert r["buttons"] == 0, "a write button rendered with no API to take it"
     assert "manamap serve" in r["keys"]
+    layout = page.evaluate("""() => {
+        const plot = document.getElementById('plot').getBoundingClientRect();
+        const grid = document.getElementById('candGrid');
+        const g = grid.getBoundingClientRect();
+        // What is actually under a point in the middle of the grid?
+        const hit = document.elementFromPoint(g.left + g.width / 2, g.top + 40);
+        return {inside: document.getElementById('plot').contains(grid),
+                overlap: plot.bottom - g.top, hitInGrid: grid.contains(hit)};
+    }""")
+    assert not layout["inside"], "the grid is inside #plot, under the graph canvas"
+    assert layout["overlap"] <= 1, "the map and the grid overlap"
+    assert layout["hitInGrid"], "something covers the grid — its clicks go elsewhere"
+
     rings = page.evaluate("""async () => {
         Build.setView('map');
         await new Promise(r => setTimeout(r, 2500));
@@ -9073,13 +9086,15 @@ def test_watch_moves_a_card_out_of_unreviewed_through_the_endpoint(page):
     page.evaluate("() => Api.refresh()")
     before = _open_watch(page)
     assert before["buttons"] > 0, "the write buttons did not appear with the API up"
-    after = page.evaluate("""async () => {
-        const tile = document.querySelector('#candGrid .cg-tile');
-        const name = tile.getAttribute('data-card');
-        tile.querySelector('[data-verdict="watching"]').click();
-        await new Promise(r => setTimeout(r, 800));
-        return {name, left: Build.__gridCards(), tiles: document.querySelectorAll('#candGrid .cg-tile').length};
-    }""")
+    name = page.evaluate("() => document.querySelector('#candGrid .cg-tile').getAttribute('data-card')")
+    # A REAL click, through hit-testing. `el.click()` in script reached the button while
+    # the graph canvas (z-index 10) sat over the grid and ate every click Sean made —
+    # this test passed against a grid nobody could use (2026-10-07).
+    page.locator('#candGrid .cg-tile').first.locator('[data-verdict="watching"]').click(timeout=3000)
+    page.wait_for_timeout(800)
+    after = page.evaluate("""() => ({left: Build.__gridCards(),
+        tiles: document.querySelectorAll('#candGrid .cg-tile').length})""")
+    after["name"] = name
     assert page.js_errors == []
     assert posted and posted[0]["verdict"] == "watching" and posted[0]["set"] == "wheel-interaction"
     assert after["name"] not in after["left"], "a watched card stayed in Unreviewed"

@@ -434,28 +434,83 @@
     return cards.sort(by[gridSort] || by.set);
   }
 
+  /* The grid lives UNDER the map in `#plotCol`, never over it: the graph's canvas is
+   * at z-index 10 and took every click on a drawer laid across it. As a sibling the
+   * map shrinks to make room (the renderers' ResizeObservers follow #plot), so the
+   * graph is never hidden behind the grid either. `#cgSplit` is the divider. */
+  const GRID_HEIGHT_KEY = 'manamap-cand-grid-height';
+
   function gridEl(create) {
     let el = document.getElementById('candGrid');
     if (!el && create) {
-      const plot = document.getElementById('plot');
-      if (!plot) return null;
+      const col = document.getElementById('plotCol') ||
+        (document.getElementById('plot') || {}).parentNode;
+      if (!col) return null;
+      const split = document.createElement('div');
+      split.id = 'cgSplit';
+      split.className = 'cg-split';
+      split.setAttribute('role', 'separator');
+      split.setAttribute('aria-orientation', 'horizontal');
+      split.title = 'Drag to resize the map and the review grid';
       el = document.createElement('section');
       el.id = 'candGrid';
       el.className = 'cand-grid';
       el.setAttribute('aria-label', 'Candidate review');
       el.tabIndex = -1;
-      plot.appendChild(el);
+      try {
+        const h = parseInt(localStorage.getItem(GRID_HEIGHT_KEY), 10);
+        if (h > 0) el.style.setProperty('--cg-height', h + 'px');
+      } catch (e) { /* storage unavailable: the default height */ }
+      col.appendChild(split);
+      col.appendChild(el);
       el.addEventListener('click', onGridClick);
       el.addEventListener('keydown', onGridKey);
+      bindSplit(split, el);
+      settleMap();
     }
     return el;
+  }
+
+  function bindSplit(split, grid) {
+    split.addEventListener('pointerdown', function (ev) {
+      ev.preventDefault();
+      split.setPointerCapture(ev.pointerId);
+      split.classList.add('is-drag');
+      const startY = ev.clientY, startH = grid.getBoundingClientRect().height;
+      function move(e) {
+        const h = Math.max(160, Math.min(window.innerHeight * 0.75, startH + (startY - e.clientY)));
+        grid.style.setProperty('--cg-height', Math.round(h) + 'px');
+      }
+      function up() {
+        split.classList.remove('is-drag');
+        split.removeEventListener('pointermove', move);
+        split.removeEventListener('pointerup', up);
+        try { localStorage.setItem(GRID_HEIGHT_KEY, String(Math.round(grid.getBoundingClientRect().height))); }
+        catch (e) { /* not remembered */ }
+        settleMap();
+      }
+      split.addEventListener('pointermove', move);
+      split.addEventListener('pointerup', up);
+    });
+  }
+
+  function removeGrid() {
+    const el = document.getElementById('candGrid');
+    const split = document.getElementById('cgSplit');
+    if (split) split.remove();
+    if (el) { el.remove(); settleMap(); }
+  }
+
+  /* After the map's box changes, refit the deck once the renderers have resized. */
+  function settleMap() {
+    clearTimeout(settleMap._t);
+    settleMap._t = setTimeout(function () { if (active) fitDeck(); }, 320);
   }
 
   function renderGrid() {
     const set = active && watchSet();
     if (!set || !gridOpen || !(window.MM && MM.mode === 'build')) {
-      const el = gridEl(false);
-      if (el) el.remove();
+      removeGrid();
       return;
     }
     const el = gridEl(true);
@@ -550,7 +605,10 @@
     const v = t.closest('[data-verdict]');
     if (v) { markCard(name, v.getAttribute('data-verdict'), null); return; }
     if (t.closest('[data-noteopen]')) { gridNote = name; renderGrid(); return; }
-    if (t.closest('[data-select]')) { MM.selectByName(name); return; }
+    if (t.closest('[data-select]')) { MM.selectByName(name); }
+    // Any click on a tile makes it the keyboard's tile, so j k w p n act on it.
+    tiles.forEach((el, i) => el.classList.toggle('is-focus', i === gridFocus));
+    if (!t.closest('details, textarea, button')) tile.focus();
   }
 
   function onGridKey(ev) {
@@ -1992,8 +2050,7 @@
   }
 
   function exit() {
-    const grid = document.getElementById('candGrid');
-    if (grid) grid.remove();
+    removeGrid();
     const plot = document.getElementById('plot');
     if (plot) plot.classList.remove('force-mode');
     // `Force.newWalk` below clears the graph's half of this; the index is ours.

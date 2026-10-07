@@ -13,7 +13,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Mana Map</title>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=228">
+<link rel="stylesheet" href="css/mana-map.css?v=229">
 </head>
 <body>
 
@@ -105,6 +105,10 @@
 </div>
 
 <div class="main-area">
+  <!-- The map column: the canvas, and under it Build's candidate review grid when one
+       is open. A COLUMN rather than an overlay, because the graph's canvas sits at
+       z-index 10 and swallowed every click on a drawer laid over it (2026-10-07). -->
+  <div class="plot-col" id="plotCol">
   <div id="plot">
     <div id="drillBar" class="drill-bar" style="display:none"></div>
     <!-- Fit and Reheat act on the CANVAS, so they live on the canvas. They spent
@@ -116,6 +120,7 @@
          exactly as it hides `.force-canvas`, so leaving the mode takes the bar
          with the graph and nothing has to remember to. -->
     <div id="graphBar" class="graph-bar" hidden></div>
+  </div>
   </div>
   <div class="detail-panel" id="detailPanel">
     <div class="detail-inner" id="detailInner"></div>
@@ -131,16 +136,16 @@
      even if the atlas never loads. -->
 <!-- Probes for a local `manamap serve`. Dependency-free and early, because
      every agent affordance is gated on the answer. -->
-<script src="js/api.js?v=228"></script>
-<script src="js/shell.js?v=228"></script>
-<script src="js/stage.js?v=228"></script>
-<script src="js/session.js?v=228"></script>
-<script src="js/decklist.js?v=228"></script>
-<script src="js/discovery.js?v=228"></script>
-<script src="js/render/canvas.js?v=228"></script>
-<script src="js/mana-map.js?v=228"></script>
-<script src="js/drill.js?v=228"></script>
-<script src="js/force.js?v=228"></script>
-<script src="js/build.js?v=228"></script>
+<script src="js/api.js?v=229"></script>
+<script src="js/shell.js?v=229"></script>
+<script src="js/stage.js?v=229"></script>
+<script src="js/session.js?v=229"></script>
+<script src="js/decklist.js?v=229"></script>
+<script src="js/discovery.js?v=229"></script>
+<script src="js/render/canvas.js?v=229"></script>
+<script src="js/mana-map.js?v=229"></script>
+<script src="js/drill.js?v=229"></script>
+<script src="js/force.js?v=229"></script>
+<script src="js/build.js?v=229"></script>
 </body>
 </html>
