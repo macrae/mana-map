@@ -87,6 +87,9 @@ manamap pilot sla-report                                      # sub-agents again
 manamap pilot queue [list [--all] [--deck S]|show Q###|apply DRAFT|rank Q…|kill Q### --reason|decide Q### stage|drop|watch|more]
                                                               # THE HYPOTHESIS QUEUE (data/queue.jsonl, docs/queue.md), state derived from its lines
 manamap pilot validate-queue                                  # its gate: every line replayed through the transition check
+manamap pilot watch <slug> [list|mark SET "Card" watching|pass|unreviewed [--note …]|note SET "Card" "…"]
+                                                              # CANDIDATE WATCH LISTS (watchlist.json), reviewed in the Atlas's Build mode
+manamap pilot validate-watchlist <slug>                       # its gate: real, legal, in-identity cards; closed vocabularies
 manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J] [--detect X] [--anyway]
                                         #   N seeded Commander games in Forge, headless; a ◆ run record.
                                         #   The POWER PREFLIGHT prints first (the pod's null, the MDE at N);

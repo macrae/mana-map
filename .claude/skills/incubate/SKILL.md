@@ -55,6 +55,14 @@ Then tell Sean **what you found and what it means**, and ask for his call:
 .venv/bin/manamap pilot queue decide Q007 stage|drop|watch|more --note "…"
 ```
 
+`watch` on a result that is a LIST OF CARDS means: write it as a set in the deck's
+watch list, so he can review it in the Atlas's Build mode (pick the deck, then the set;
+the review grid under the map has Watch / Pass / Note):
+
+```bash
+.venv/bin/python -c "from manamap.pilot import watchlist as wl; wl.add_set('<slug>', '<set-id>', '<title>', [{'name': …, 'pays': 'both|brallin|shabraz|none|n/a', 'axis': 'interaction|momentum|ramp|protection|other', 'why': '…'}, …], source='Q007', query='<the command>')"
+```
+
 `stage` means he wants the swap staged. That is a separate step, taken only with his
 go-ahead. **Never move on to the next item unasked.**
 

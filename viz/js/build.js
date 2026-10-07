@@ -81,6 +81,15 @@
 
   let showEdges = true;
   let showCandidates = true;
+  // CANDIDATE WATCH LISTS (2026-10-07): `watchlist.json` holds named sets of cards
+  // Sean is reviewing for a deck. The chosen set feeds the map's candidate rings and
+  // the review grid under the map; `null` falls back to the legacy Short List.
+  let watchSetId = null;
+  let gridFilter = 'unreviewed';   // unreviewed | watching | pass | all
+  let gridSort = 'set';            // set | mv | pays | axis
+  let gridOpen = true;
+  let gridFocus = 0;
+  let gridNote = null;             // the card whose note editor is open
   let dimOthers = true;
   // Build opens on the GRAPH. The map is still one click away and is what Deck Lens
   // always was — position, roles and verified lines drawn where the cards actually live.
@@ -292,9 +301,18 @@
 
     const deckDoc = await getJSON(DECK_BASE + slug + '/cards.json');
 
-    // considering.json is optional in principle; every published deck has one today.
+    // considering.json (the legacy Short List) is gated on `has.considering` now, so a
+    // deck without one costs no 404. A manifest from before the flag existed has no
+    // key at all, and gets the old optimistic fetch.
     let considering = null;
-    try { considering = await getJSON(DECK_BASE + slug + '/considering.json'); } catch (e) { /* absent */ }
+    const hasKey = entry.has && Object.prototype.hasOwnProperty.call(entry.has, 'considering');
+    if (!hasKey || entry.has.considering) {
+      try { considering = await getJSON(DECK_BASE + slug + '/considering.json'); } catch (e) { /* absent */ }
+    }
+    let watch = null;
+    if (entry.has && entry.has.watchlist) {
+      try { watch = await getJSON(DECK_BASE + slug + '/watchlist.json'); } catch (e) { /* absent */ }
+    }
 
     /* `engine.json` is the ONLY place direction lives.
      *
@@ -339,7 +357,262 @@
         stacks.push(doc);
       } catch (e) { /* skip */ }
     }
-    return buildActive(entry, deckDoc, considering, stacks, engine, prose);
+    const built = buildActive(entry, deckDoc, considering, stacks, engine, prose);
+    built.watch = watch && Array.isArray(watch.sets) ? watch : null;
+    built.shortList = built.candidates;
+    watchSetId = built.watch && built.watch.sets.length ? built.watch.sets[0].id : null;
+    gridFocus = 0;
+    gridNote = null;
+    built.candidates = currentCandidates(built);
+    return built;
+  }
+
+  // ── Candidate watch lists ───────────────────────────────────────────────
+
+  function watchSet(a) {
+    a = a || active;
+    if (!a || !a.watch || !watchSetId) return null;
+    return a.watch.sets.find(s => s.id === watchSetId) || null;
+  }
+
+  /* What the map rings: the chosen set's cards that are not passed, or the Short List. */
+  function currentCandidates(a) {
+    a = a || active;
+    const set = watchSet(a);
+    if (!set) return a.shortList || [];
+    const mainNames = new Set(a.main.map(s => s.name));
+    return set.cards
+      .filter(c => c.verdict !== 'pass')
+      .map(c => ({ name: c.name, idx: nameToIdx.has(c.name) ? nameToIdx.get(c.name) : null,
+                   source: c.verdict === 'watching' ? 'watching' : 'watch', role: c.axis }))
+      .filter(c => c.idx !== null && !mainNames.has(c.name));
+  }
+
+  function watchCounts(set) {
+    const n = { unreviewed: 0, watching: 0, pass: 0 };
+    set.cards.forEach(c => { n[c.verdict] = (n[c.verdict] || 0) + 1; });
+    return n;
+  }
+
+  function candSectionHtml() {
+    const sets = (active.watch && active.watch.sets) || [];
+    if (!sets.length) return '';
+    const set = watchSet();
+    const opts = sets.map(s => '<option value="' + esc(s.id) + '"' + (s.id === watchSetId ? ' selected' : '') +
+      '>' + esc(s.title) + ' (' + s.cards.length + ')</option>').join('') +
+      (active.shortList && active.shortList.length
+        ? '<option value=""' + (watchSetId ? '' : ' selected') + '>The Short List (' + active.shortList.length + ')</option>' : '');
+    let line = '';
+    if (set) {
+      const n = watchCounts(set);
+      line = '<div class="lens-note" id="candCounts">' + set.cards.length + ' · ' + n.watching + ' watching · ' +
+        n.pass + ' passed · ' + n.unreviewed + ' unreviewed' + (set.source ? ' · from ' + esc(set.source) : '') + '</div>';
+    }
+    return '<div class="deck-section">' +
+      '<div class="deck-section-title">Candidates <span>on watch</span></div>' +
+      '<div class="deck-format-row"><label for="candSetSelect">Set</label>' +
+        '<select id="candSetSelect" onchange="Build.chooseSet(this.value)">' + opts + '</select></div>' +
+      line +
+      (set ? '<button class="lens-btn" onclick="Build.toggleGrid()">' +
+        (gridOpen ? 'Hide the review grid' : 'Review these cards') + '</button>' : '') +
+      '</div>';
+  }
+
+  const PAYS_LABEL = { both: 'pays both', brallin: 'pays Brallin', shabraz: 'pays Shabraz',
+                       none: 'pays neither', 'n/a': '' };
+
+  function gridCards(set) {
+    let cards = set.cards.map((c, i) => Object.assign({ order: i }, c));
+    if (gridFilter !== 'all') cards = cards.filter(c => c.verdict === gridFilter);
+    const rec = c => (nameToIdx.has(c.name) ? MM.cardRecord(nameToIdx.get(c.name)) : null) || {};
+    const by = {
+      set: (a, b) => a.order - b.order,
+      mv: (a, b) => ((rec(a).m || 0) - (rec(b).m || 0)) || a.order - b.order,
+      pays: (a, b) => (Object.keys(PAYS_LABEL).indexOf(a.pays) - Object.keys(PAYS_LABEL).indexOf(b.pays)) || a.order - b.order,
+      axis: (a, b) => String(a.axis).localeCompare(String(b.axis)) || a.order - b.order,
+    };
+    return cards.sort(by[gridSort] || by.set);
+  }
+
+  function gridEl(create) {
+    let el = document.getElementById('candGrid');
+    if (!el && create) {
+      const plot = document.getElementById('plot');
+      if (!plot) return null;
+      el = document.createElement('section');
+      el.id = 'candGrid';
+      el.className = 'cand-grid';
+      el.setAttribute('aria-label', 'Candidate review');
+      el.tabIndex = -1;
+      plot.appendChild(el);
+      el.addEventListener('click', onGridClick);
+      el.addEventListener('keydown', onGridKey);
+    }
+    return el;
+  }
+
+  function renderGrid() {
+    const set = active && watchSet();
+    if (!set || !gridOpen || !(window.MM && MM.mode === 'build')) {
+      const el = gridEl(false);
+      if (el) el.remove();
+      return;
+    }
+    const el = gridEl(true);
+    const n = watchCounts(set);
+    const cards = gridCards(set);
+    if (gridFocus >= cards.length) gridFocus = Math.max(0, cards.length - 1);
+    const canWrite = !!(window.Api && Api.ready);
+    const filters = [['unreviewed', 'Unreviewed', n.unreviewed], ['watching', 'Watching', n.watching],
+                     ['pass', 'Passed', n.pass], ['all', 'All', set.cards.length]];
+    const sorts = [['set', 'Set order'], ['mv', 'Mana value'], ['pays', 'Pays'], ['axis', 'Axis']];
+    let html =
+      '<header class="cg-header">' +
+        '<div class="cg-title"><strong>' + esc(set.title) + '</strong>' +
+          (set.source ? '<span class="cg-src">from queue ' + esc(set.source) + '</span>' : '') + '</div>' +
+        '<div class="cg-filters" role="tablist">' + filters.map(f =>
+          '<button class="cg-filter' + (gridFilter === f[0] ? ' is-on' : '') + '" data-filter="' + f[0] + '">' +
+            f[1] + ' <span>' + f[2] + '</span></button>').join('') + '</div>' +
+        '<label class="cg-sort">Sort <select data-sort="1">' + sorts.map(o =>
+          '<option value="' + o[0] + '"' + (gridSort === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') +
+        '</select></label>' +
+        '<button class="cg-close" data-close="1" title="Hide the review grid">×</button>' +
+      '</header>' +
+      (canWrite ? '<div class="cg-keys">j / k move · w watch · p pass · n note</div>'
+                : '<div class="cg-keys">Read-only here — run <code>manamap serve</code> to mark cards</div>');
+    if (!cards.length) {
+      html += '<div class="cg-empty">Nothing ' + (gridFilter === 'all' ? 'in this set' : 'here') +
+        (gridFilter === 'unreviewed' ? ' — every card has a verdict' : '') + '.</div>';
+    }
+    html += '<div class="cg-tiles">' + cards.map((c, i) => {
+      const idx = nameToIdx.has(c.name) ? nameToIdx.get(c.name) : null;
+      const r = (idx !== null ? MM.cardRecord(idx) : null) || {};
+      const editing = gridNote === c.name;
+      return '<article class="cg-tile v-' + esc(c.verdict) + (i === gridFocus ? ' is-focus' : '') +
+          '" data-card="' + esc(c.name) + '" tabindex="0">' +
+        '<button class="cg-art-btn" data-select="1" title="Show on the map">' +
+          '<img class="cg-art" alt="' + esc(c.name) + '" data-src="' +
+          esc(MM.cardImageUrl ? MM.cardImageUrl(c.name.split(' // ')[0], 'normal') : '') + '"></button>' +
+        '<div class="cg-body">' +
+          '<div class="cg-head"><span class="cg-name">' + esc(c.name) + '</span>' +
+            (r.m != null ? '<span class="cg-mv" title="mana value">' + esc(r.m) + '</span>' : '') + '</div>' +
+          (r.t ? '<div class="cg-type">' + esc(r.t) + '</div>' : '') +
+          '<div class="cg-chips">' +
+            (PAYS_LABEL[c.pays] ? '<span class="cg-pays cg-pays-' + esc(c.pays.replace('/', '')) + '">' + PAYS_LABEL[c.pays] + '</span>' : '') +
+            '<span class="cg-axis">' + esc(c.axis) + '</span>' +
+            (c.verdict !== 'unreviewed' ? '<span class="cg-verdict">' + (c.verdict === 'watching' ? '★ watching' : 'passed') + '</span>' : '') +
+          '</div>' +
+          '<p class="cg-why">' + esc(c.why) + '</p>' +
+          (r.o ? '<details class="cg-oracle"><summary>Oracle text</summary><p>' +
+            esc(r.o).replace(/\n/g, '<br>') + '</p></details>' : '') +
+          (editing
+            ? '<textarea class="cg-note-edit" data-note="1" rows="2" placeholder="A note on this card…">' +
+                esc(c.note || '') + '</textarea>'
+            : (c.note ? '<p class="cg-note">' + esc(c.note) + '</p>' : '')) +
+          (canWrite ? '<div class="cg-actions">' +
+            '<button class="cg-act' + (c.verdict === 'watching' ? ' is-on' : '') + '" data-verdict="watching">Watch</button>' +
+            '<button class="cg-act' + (c.verdict === 'pass' ? ' is-on' : '') + '" data-verdict="pass">Pass</button>' +
+            '<button class="cg-act" data-noteopen="1">' + (c.note ? 'Edit note' : 'Note') + '</button>' +
+            (c.verdict !== 'unreviewed' ? '<button class="cg-act cg-undo" data-verdict="unreviewed">Undo</button>' : '') +
+          '</div>' : '') +
+        '</div></article>';
+    }).join('') + '</div>';
+    el.innerHTML = html;
+    const sortSel = el.querySelector('select[data-sort]');
+    if (sortSel) sortSel.addEventListener('change', function () { gridSort = this.value; renderGrid(); });
+    const ta = el.querySelector('textarea[data-note]');
+    if (ta) {
+      ta.focus();
+      ta.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); ta.blur(); }
+        if (ev.key === 'Escape') { gridNote = null; renderGrid(); }
+      });
+      ta.addEventListener('blur', function () {
+        const card = gridNote;
+        gridNote = null;
+        if (card !== null) markCard(card, null, ta.value);
+      });
+    }
+    if (window.Shell && Shell.queueArt) Shell.queueArt(el);
+    else el.querySelectorAll('img[data-src]').forEach(im => { im.src = im.getAttribute('data-src'); });
+  }
+
+  function onGridClick(ev) {
+    const t = ev.target;
+    const f = t.closest('[data-filter]');
+    if (f) { gridFilter = f.getAttribute('data-filter'); gridFocus = 0; renderGrid(); return; }
+    if (t.closest('[data-close]')) { gridOpen = false; renderGrid(); renderPanel(); return; }
+    const tile = t.closest('[data-card]');
+    if (!tile) return;
+    const name = tile.getAttribute('data-card');
+    const tiles = Array.prototype.slice.call(gridEl(false).querySelectorAll('.cg-tile'));
+    gridFocus = Math.max(0, tiles.indexOf(tile));
+    const v = t.closest('[data-verdict]');
+    if (v) { markCard(name, v.getAttribute('data-verdict'), null); return; }
+    if (t.closest('[data-noteopen]')) { gridNote = name; renderGrid(); return; }
+    if (t.closest('[data-select]')) { MM.selectByName(name); return; }
+  }
+
+  function onGridKey(ev) {
+    if (ev.target && ev.target.tagName === 'TEXTAREA') return;
+    if (ev.target && ev.target.tagName === 'SELECT') return;
+    const set = watchSet();
+    if (!set) return;
+    const cards = gridCards(set);
+    const k = ev.key;
+    if (k === 'j' || k === 'k') {
+      gridFocus = Math.max(0, Math.min(cards.length - 1, gridFocus + (k === 'j' ? 1 : -1)));
+      renderGrid();
+      const cur = gridEl(false).querySelector('.cg-tile.is-focus');
+      if (cur) { cur.focus(); cur.scrollIntoView({ block: 'nearest' }); }
+      ev.preventDefault();
+      return;
+    }
+    const c = cards[gridFocus];
+    if (!c || !(window.Api && Api.ready)) return;
+    if (k === 'w') { markCard(c.name, 'watching', null); ev.preventDefault(); }
+    else if (k === 'p') { markCard(c.name, 'pass', null); ev.preventDefault(); }
+    else if (k === 'n') { gridNote = c.name; renderGrid(); ev.preventDefault(); }
+  }
+
+  /* One verdict or note, through `serve`'s `watch/mark`, which writes through the
+   * gate. The page's copy changes only after the server says it wrote. */
+  async function markCard(name, verdict, note) {
+    const set = watchSet();
+    if (!set || !(window.Api && Api.ready)) return;
+    const payload = { slug: active.slug, set: set.id, card: name };
+    if (verdict) payload.verdict = verdict;
+    if (note !== null && note !== undefined) payload.note = note;
+    try {
+      const res = await Api.call('watch/mark', payload);
+      const row = set.cards.find(c => c.name === name);
+      if (row && res && res.card) Object.assign(row, res.card);
+      active.candidates = currentCandidates();
+      MM.setStatus(name + (verdict ? ' — ' + (verdict === 'pass' ? 'passed' : verdict) : ' — note saved'));
+    } catch (err) {
+      MM.setStatus('Could not mark ' + name + ': ' + err.message);
+    }
+    renderGrid();
+    renderPanel();
+    MM.render();
+    const g = gridEl(false);
+    if (g) g.focus();
+  }
+
+  function chooseSet(id) {
+    watchSetId = id || null;
+    gridFocus = 0;
+    gridNote = null;
+    if (active) active.candidates = currentCandidates();
+    renderPanel();
+    renderGrid();
+    MM.render();
+  }
+
+  function toggleGrid() {
+    gridOpen = !gridOpen;
+    renderPanel();
+    renderGrid();
   }
 
   function buildActive(entry, deckDoc, considering, stacks, engine, prose) {
@@ -569,7 +842,7 @@
       traces.push({
         type: 'scattergl',
         mode: 'markers',
-        name: 'Short List (' + active.candidates.length + ')',
+        name: (watchSet() ? 'Candidates' : 'Short List') + ' (' + active.candidates.length + ')',
         x: active.candidates.map(c => all[c.idx].x),
         y: active.candidates.map(c => all[c.idx].y),
         customdata: active.candidates.map(c => c.idx),
@@ -1146,10 +1419,11 @@
         '<div class="lens-stats">' +
           statBox(active.copies, 'cards') +
           statBox(e.verified, 'verified') +
-          statBox(active.candidates.length, 'short list') +
+          statBox(active.candidates.length, watchSet() ? 'on watch' : 'short list') +
         '</div>' +
         '<button class="lens-btn" onclick="Build.fitDeck()">Zoom to the deck</button>' +
       '</div>' +
+      candSectionHtml() +
 
       '<div class="deck-section">' +
         '<div class="deck-section-title">View</div>' +
@@ -1166,7 +1440,8 @@
         '<div class="deck-section-title">Show</div>' +
         toggleRow('dimOthers', dimOthers, 'Dim the other cards') +
         toggleRow('showEdges', showEdges, 'Verified lines (' + drawnEdges().length + ' drawn)') +
-        toggleRow('showCandidates', showCandidates, 'Short List (' + active.candidates.length + ')') +
+        toggleRow('showCandidates', showCandidates,
+                  (watchSet() ? 'Candidates' : 'Short List') + ' (' + active.candidates.length + ')') +
         toggleRow('showIllegal', showIllegal, 'Grey out what you cannot play') +
       '</div>';
 
@@ -1240,7 +1515,7 @@
 
     html += askSectionHtml();
 
-    if (active.candidates.length) {
+    if (active.candidates.length && !watchSet()) {
       html +=
         '<div class="deck-section">' +
           '<div class="deck-section-title">The Short List <span>◆ data-derived</span></div>' +
@@ -1322,6 +1597,7 @@
     loading = false;
     renderPanel();
     applyView();
+    renderGrid();
   }
 
   function toggle(key, value) {
@@ -1716,6 +1992,8 @@
   }
 
   function exit() {
+    const grid = document.getElementById('candGrid');
+    if (grid) grid.remove();
     const plot = document.getElementById('plot');
     if (plot) plot.classList.remove('force-mode');
     // `Force.newWalk` below clears the graph's half of this; the index is ours.
@@ -1814,5 +2092,11 @@
     getOverlayTraces,
     getDimmedIndices,
     dimsAll,
+    chooseSet,
+    toggleGrid,
+    renderGrid,
+    // Read-only probes for the browser suite.
+    get watchSetId() { return watchSetId; },
+    __gridCards: () => { const s = watchSet(); return s ? gridCards(s).map(c => c.name) : []; },
   };
 })();

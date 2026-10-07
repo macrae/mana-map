@@ -9010,3 +9010,77 @@ def test_the_real_index_offers_reality_fracture_newest_first(browser, viz_server
         assert page.evaluate(_ATLAS_INK)["total"] == before["total"]
     finally:
         page.close()
+
+
+# ── Build: candidate watch lists and the review grid (2026-10-07) ─────────────
+
+
+def _open_watch(page):
+    return page.evaluate("""async () => {
+        document.getElementById('modeSelect').value = 'build';
+        MM.setMode('build');
+        await new Promise(r => setTimeout(r, 4000));
+        await Build.select('sharknado');
+        await new Promise(r => setTimeout(r, 4000));
+        const g = document.getElementById('candGrid');
+        return {
+            set: Build.watchSetId,
+            grid: !!g,
+            tiles: g ? g.querySelectorAll('.cg-tile').length : 0,
+            buttons: g ? g.querySelectorAll('.cg-act').length : 0,
+            keys: g ? g.querySelector('.cg-keys').textContent : '',
+            picker: !!document.getElementById('candSetSelect'),
+        };
+    }""")
+
+
+def test_the_review_grid_shows_a_watch_set_read_only_without_the_server(page):
+    """The static site: the set is reviewable, its cards are ringed, nothing writes."""
+    r = _open_watch(page)
+    assert page.js_errors == []
+    assert r["set"] == "wheel-interaction" and r["picker"] and r["grid"]
+    assert r["tiles"] >= 20, "the unreviewed cards are not in the grid"
+    assert r["buttons"] == 0, "a write button rendered with no API to take it"
+    assert "manamap serve" in r["keys"]
+    rings = page.evaluate("""async () => {
+        Build.setView('map');
+        await new Promise(r => setTimeout(r, 2500));
+        const t = MM.mapRenderer.layers.find(t => /^Candidates/.test(t.name || ''));
+        return t ? t.x.length : 0;
+    }""")
+    assert rings >= 20, "the watch set's cards are not ringed on the map"
+
+
+def test_watch_moves_a_card_out_of_unreviewed_through_the_endpoint(page):
+    """With the API mocked, Watch posts `watch/mark` and the tile leaves Unreviewed.
+    The mock never writes, so the tracked watchlist.json is untouched."""
+    import json as _json
+    posted = []
+
+    def mark(route):
+        body = _json.loads(route.request.post_data or "{}")
+        posted.append(body)
+        route.fulfill(status=200, content_type="application/json", body=_json.dumps({"result": {
+            "slug": body["slug"], "set": body["set"],
+            "card": {"name": body["card"], "verdict": body.get("verdict", "unreviewed"),
+                     "note": body.get("note"), "at": "2026-10-07T12:00:00-07:00"}}}))
+
+    page.route("**/api/health", lambda route: route.fulfill(
+        status=200, content_type="application/json", body='{"result": {"ok": true}}'))
+    page.route("**/api/", lambda route: route.fulfill(
+        status=200, content_type="application/json", body='{"commands": ["watch/mark"]}'))
+    page.route("**/api/watch/mark", mark)
+    page.evaluate("() => Api.refresh()")
+    before = _open_watch(page)
+    assert before["buttons"] > 0, "the write buttons did not appear with the API up"
+    after = page.evaluate("""async () => {
+        const tile = document.querySelector('#candGrid .cg-tile');
+        const name = tile.getAttribute('data-card');
+        tile.querySelector('[data-verdict="watching"]').click();
+        await new Promise(r => setTimeout(r, 800));
+        return {name, left: Build.__gridCards(), tiles: document.querySelectorAll('#candGrid .cg-tile').length};
+    }""")
+    assert page.js_errors == []
+    assert posted and posted[0]["verdict"] == "watching" and posted[0]["set"] == "wheel-interaction"
+    assert after["name"] not in after["left"], "a watched card stayed in Unreviewed"
+    assert after["tiles"] == before["tiles"] - 1

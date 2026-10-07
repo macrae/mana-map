@@ -427,6 +427,8 @@ VALIDATED = {
     # A gate row, not a stage, while the engine/handbook stages still stand;
     # it becomes the deck's one prose stage when they are deleted (Phase 4).
     "CONTEXT.md": "manamap.pilot.validate_context",
+    # Candidate watch lists (2026-10-07): sets Sean reviews before anything is staged.
+    "watchlist.json": "manamap.pilot.validate_watchlist",
     "engine.json": "manamap.pilot.validate_engine",
     "goldfish_targets.json": "manamap.pilot.validate_goldfish_targets",
     # NOT a lifecycle stage, and that is exactly why it was missing: the test
@@ -487,7 +489,7 @@ VALIDATED = {
 # they report `unverified` rather than failing — the same distinction
 # `tests/conftest.py`'s markers make.
 _NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
-_NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "candidate_scan.json", "edhrec_cards.json"}
+_NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "candidate_scan.json", "edhrec_cards.json", "watchlist.json"}
 
 
 def _validity(slug, artifact):

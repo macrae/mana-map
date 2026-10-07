@@ -65,3 +65,10 @@ manamap pilot validate-queue
 Every write refreshes the affected deck's `CONTEXT.md`. Its `## Open questions`
 section carries a generated `queue` block that lists the deck's live items. The block
 does not apply expiry, so the rendering cannot change by itself overnight.
+
+## Watch
+
+A `data` result that is a list of cards, decided `watch`, becomes a set in that deck's
+`watchlist.json` (`watchlist.add_set`), with the queue id as its `source`. Sean reviews it in
+the Atlas's Build mode: pick the deck, pick the set, and a review grid under the map gives
+Watch / Pass / Note per card (`manamap pilot watch <slug> list` is the terminal view).

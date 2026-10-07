@@ -52,6 +52,7 @@ sentence will do.
 | **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays; `manamap pilot try <slug> --out "A" --in "B"` (~10 s, paired goldfish); `/rules-lookup` for an interaction; `forge-cast-check` only for "will the AI cast it". Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
 | **Strategy research** ("how do strong Edgar lists handle wipes?") | Phase 2 brings the Strategist. Until then: `/strategy-lookup`, or `/research-strategy` (slow, it goes to the web, so ask first). |
 | **A queue check** ("what's in the queue? what did you find?") | `manamap pilot queue list` (fleet) or `--deck <slug>`, summarised in a sentence or two: what is promoted, what has a result waiting for his call. Testing an item is `/incubate`'s "work an item". |
+| **What he's watching** ("show me the candidates") | `manamap pilot watch <slug> list`, plus the review grid: `viz/index.html?mode=build&deck=<slug>`, then pick the set. Marks made there land in `watchlist.json`. |
 | **A deck edit** ("make the swap") | Story 6 below. Go-ahead first. |
 
 ## Story 2: a pilot log

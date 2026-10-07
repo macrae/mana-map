@@ -1556,6 +1556,22 @@ only those comments. **Build mode is a LENS over a deck or pool loaded from the 
 (`window.Build`), not a place to score and assemble one — building is
 `manamap pilot build`, where the scorer can cite a strategy section and a bracket gate.
 
+## Build mode: candidate watch lists and the review grid (2026-10-07)
+
+When a deck's manifest entry has `has.watchlist`, Build fetches `watchlist.json` and the panel
+gains a **Candidates** section: a set picker (each set, plus the legacy Short List when the deck
+has a `considering.json`) and its counts. The chosen set's un-passed cards feed
+`active.candidates`, so the existing blue candidate rings mark them on the map with no new
+trace. **The review grid** (`#candGrid`, a drawer across the bottom of `#plot`) shows each card's
+art, mana value, type, a *pays* chip (both / Brallin / Shabraz / neither), its axis, the `why`,
+the oracle text and any note, filtered Unreviewed / Watching / Passed / All and sortable.
+**Watch / Pass / Note / Undo** call `serve`'s `watch/mark`, which writes through
+`validate-watchlist`; the page changes its copy only after the server says it wrote. Keys:
+j / k move, w watch, p pass, n note. Without `manamap serve` the grid is read-only and says so
+(`Api.ready`, re-rendered when the probe lands). Mana value and oracle text come from
+`MM.cardRecord`, never from the file. `has.considering` now gates the Short List fetch, so a deck
+without one costs no 404; `MANIFEST_VERSION` is 4.
+
 ## Future options (deliberately not done)
 
 ES-module migration / splitting the IIFEs, moving the ~17 inline styles in generated HTML into CSS, content-hash cache busting. Lint and format are deliberately absent; CI does exist (`.github/workflows/test.yml`) and deliberately does NOT run the browser suite.

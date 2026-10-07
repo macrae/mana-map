@@ -40,7 +40,7 @@
  *           stamps no version on any unsleeved deck's art — and the stamp is
  *           how the workbench says which list a deck is.
  */
-window.MANIFEST_VERSION = 3;
+window.MANIFEST_VERSION = 4;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 window.Api = (function () {

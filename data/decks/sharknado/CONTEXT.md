@@ -15,7 +15,7 @@ This is the Sharknado: [Shabraz, the Skyshark](https://manamap.seanmacrae.com/vi
 
 Nothing in the deck starts itself. The wheels are the ignition. Everything else either makes a wheel hit harder, finds one sooner, or keeps the two commanders alive long enough to cash in. The win is mostly in the air: the sharks and the flyers the draws build, with the pings as the tax along the way.
 
-Sean's own words after the most recent game are in Pilot notes: it wants removal for a threat it could not answer, and it wants more wheels, faster, off bigger mana. He likes the two commanders even though they cost a lot to get going.
+Sean played it once, at home (game 001). It was fun and did what it should. He wants removal, more ramp and wheels that lead into wheels. He is not changing the list yet: he wants a couple more games first. Pilot notes has the detail.
 
 ## How it plays
 
@@ -32,6 +32,12 @@ Sean's own words after the most recent game are in Pilot notes: it wants removal
 **No maximum hand size.** A wheel hands you seven cards and the cleanup step can take them back. [Library of Leng](https://manamap.seanmacrae.com/viz/index.html?cards=Library+of+Leng), [Reliquary Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Reliquary+Tower) and [Nezahal, Primal Tide](https://manamap.seanmacrae.com/viz/index.html?cards=Nezahal%2C+Primal+Tide) let you keep them (Leng also lets a discard go back on top of the library).
 
 **Proved lines.** Stack 001: Windfall with both commanders out. Stack 002: a discard under Library of Leng is still a discard. Stack 003: cycling under Leng pays Brallin as a cost. Stack 004: [Artist's Talent](https://manamap.seanmacrae.com/viz/index.html?cards=Artist%27s+Talent) at its top level adds to every ping.
+
+**One commander first, the second later.** Sean's piloting pattern after game 001: one commander can do the work alone. Land whichever one the hand suits, grow it with the draws and discards, bring the second out later, and save the big wheel for when both are on the table. That is a plan the pilot is forming, not yet a rule.
+
+**The nine-mana unit.** Played together, the two commanders are a four-drop and a five-drop. Brallin was removed more than once and the commander tax came on, so the pair felt like a nine-mana unit, a lot like the Ur-Dragon problem. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) carried the protection in that game and were the best cards in it.
+
+**Wheeling your own good cards.** A wheel throws away your hand too. Sean discarded useful cards just to fire one. Check what you are giving up before you fire.
 
 **What the table misreads.** They see a draw deck and two creatures and rank you low. The wheel turn is the correction.
 
@@ -131,22 +137,28 @@ Goldfish, 10,000 seeded games, measured on v1.2.0 (V7), 2026-10-06. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- No games logged yet (`manamap pilot deck-notes sharknado add …`).
+- **1 game(s):** 0 won, 0 lost · 2026-10-06 to 2026-10-06
+- **Not yet read:** 001
 <!-- /ctx:gen record -->
 
-No game is logged yet; his notes are coming. After the most recent game, in his own words:
+**001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
 
-> "that mfer needs removal!"
->
-> "I don't feel like I hit enough wheels!!!! I need to get big mana, ramp fast, and wheel into wheels"
+- **Fast start from [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring).** It was in the opening hand. Sean says the speed came from that.
+- **Short on wheels early,** and light on ramp. He never drew [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will) or [Mana Geyser](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Geyser). He wants more of that kind of card, or mana creatures.
+- **Two commanders, twice the management.** [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) was removed a couple of times and the tax came on. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) protected them and were "really good".
+- **The payoff.** Once the discards and draws started, both commanders grew fast. Sean gave one flying, or trample, to get through. [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons) made everyone discard and draw seven, made Shabraz huge, and nearly killed Stuart on commander damage.
+- **No removal.** At times he needed creature or enchantment removal and had none, so he could not prune the boards. Steven's counterspells made the end grindy.
+- **Discarding useful cards** to fire a wheel hurt him.
+- **Idea he likes:** wheels that also do something else, like counter a spell and wheel, or clear creatures and wheel. He wants more wheels that chain into wheels.
 
-He likes the two commanders even though they cost a lot. This is a pilot note, not a logged game: it is not a result and no cause is assigned to it yet.
+His words: "it's fun, it's doing what it's supposed to do, but it definitely needs some finesse." He is not itching to change anything. Many cards have not been played yet, and he wants a couple more games before locking anything. He asked for hypotheses to test, not swaps.
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v1.2.0 · V7** (2026-10-06) — in: Faerie Mastermind, Jeska's Will, Mana Geyser, Razorkin Needlehead, Scrawling Crawler, Teferi's Protection; out: Enduring Curiosity, Generous Plunderer, Kefnet the Mindful, Silent Hallcreeper, Treasure Map, Waterbender Ascension. _merged and sleeved 2026-10-06_
   - merge `momentum-v1`: objective forge.win_rate read **not resolvable** — Sleeved in paper 2026-10-06 by the pilot: Mana Geyser in hand; the other five ordered (ManaPool, 2026-10-06) and played as proxies until they arrive.
+  - played 1: 0W 0L
 - **v1.1.0 · V6** (2026-10-01) — in: Marauding Mako, Mask of Memory, Negate, Swords to Plowshares; out: Decree of Silence, Gossip's Talent, Marketback Walker, Stromkirk Noble. _The four swaps the pilot made in cardboard on 2026-10-01: Negate, Mask of Memory, Marauding Mako and Swords to Plowshares for Decree of Silence, Gossip's Talent, Marketback Walker and Stromkirk Noble._
   - merge `swords-v1` — The four swaps were MADE IN CARDBOARD by the pilot on 2026-10-01 before this merge — the sourcing gate predicts whether the cards can be got, and that question 
 - **v1.0.2 · V5** (2026-09-22) — in: Island; out: Gleaming Bastion. _Astral Drift -> Shelter and Gleaming Bastion -> a basic Island, both made in cardboard. The Island is the deck's first basic: Gleaming Bastion's W/U mode is gated on controlling one, so at zero basics_
@@ -163,15 +175,21 @@ The generated list above has every version. The story in short: the first list w
 ## Open questions
 
 <!-- ctx:gen queue -->
-- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+- **Q002** decided — What a Jeskai-identity (W/U/R) card-search returns for cards that discard the whole hand and also counter, bounce, destroy or exile, split by whether they discard (pay Brallin) or shuffle/bottom (pay only Shabraz). The output is the list; no premise about its length. → _supported: 25 WUR cards outside the 99 wheel AND interact; the best fits for both commanders (YOUR discard pays Brallin, YOUR draw pays Shabraz) are Fateful Showdown, Collective Defiance, Incendiary Command and The Elder Dragon War; Rites of Refusal and Null Brooch are discard-as-counter (Brallin only); Snort and Moonveil Regent are wheel momentum, not answers_
+- **Q004** promoted — Break-even: a protection piece (Greaves 2, Boots 2 + equip, Teferi's Protection one-shot) beats a ramp piece only if P(removal lands on a commander by T6) exceeds a threshold set by the recast tax (CR 903.8: Brallin 4 then 6 then 8; Shabraz 5 then 7 then 9) over the protection piece's own deploy cost, and Greaves/Boots-style permanent protection is the case where it does.
+- 4 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-- Which creature was "that mfer", and was it something Swords or a counter could have answered, or something the deck has no answer to? Waiting on the game notes.
-- Wheels: was it too few wheels in hand, or wheels stuck behind mana? The Numbers section shows a wheel is usually drawn by turn six, so the felt gap may be mana, not card count. Testable once the log lands.
-- Ramp: the goldfish does not read the Treasure makers as mana, so its ramp figure understates them. How much does reading them change the picture?
-- Removal: more answers cost slots from the wheel engine. Which slots, and does the pilot want to trade engine for answers? Needs a conversation before any swap.
+The list stays as it is until Sean has seen more games. These are things to test, not swaps.
+
+- Ramp: does adding a few more cheap mana sources make the commanders arrive and the first wheel fire sooner? Needs the goldfish to read Treasure makers and burst mana, which it does not yet. Note it before trusting any ramp figure.
+- Removal: game 001 had no answer to a board it needed to prune. Which engine slots would an answer cost, and is a wheel that also removes or counters (wheel plus effect) a way to pay for it?
+- One commander first: does leading with a single commander and holding the other for the wheel beat casting both as soon as possible? Open, and the goldfish cannot see the table's removal.
+- Wheels stuck behind mana or too few in hand? The Numbers section shows a wheel is usually drawn on time, so the early shortage may be mana. More games will say.
+- Which good cards are being discarded to fire a wheel, and is there a way to play them out first?
 
 ## Context changelog
 
 - 2026-10-07 · scaffolded by `manamap pilot context`
-- 2026-10-07 · Keeper · seed: first context, from the pilot's notes, the brief, recon and the older agent prose
+- 2026-10-07 · Keeper · log: folded game 001 into Pilot notes and How it plays; replaced the pre-log quote; reset Open questions
+- 2026-10-07 · Keeper · pilot log 001 (2026-10-06, first game): piloting pattern, ramp, removal, wheel momentum; no list changes yet

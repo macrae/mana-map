@@ -2564,6 +2564,8 @@
     Api.probe().then(function (ready) {
       if (ready && window.Build && Build.renderPanel && MM.mode === 'build') {
         Build.renderPanel();
+        // The review grid's buttons are gated on the API too.
+        if (Build.renderGrid) Build.renderGrid();
       }
     });
   }

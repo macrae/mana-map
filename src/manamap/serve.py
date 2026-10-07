@@ -58,7 +58,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 129 pilot subcommands answer in JSON, instantly, for free.
+  design: 131 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -307,6 +307,25 @@ def _pool_save(slug=None, cards=()):
     path.write_text("\n".join(dict.fromkeys(names)) + "\n", encoding="utf-8")
     return {"slug": slug, "path": str(path), "cards": len(set(names)),
             "next": f"manamap pilot candidates {slug} --pool library --axis stall"}
+
+
+def _watch_mark(slug=None, set=None, card=None, verdict=None, note=None):
+    """Sean's verdict or note on one candidate, from the Atlas's review grid.
+
+    Same deck, same set, one card: it never creates a set and never touches the
+    99. `watchlist.mark` writes through `validate_watchlist`, so a bad write is
+    refused with nothing written; its SystemExit becomes the endpoint's error.
+    """
+    from manamap.pilot import watchlist
+    if not (slug and set and card):
+        raise ValueError("watch/mark needs slug, set and card")
+    if verdict is None and note is None:
+        raise ValueError("watch/mark needs a verdict or a note")
+    try:
+        row = watchlist.mark(slug, set, card, verdict=verdict, note=note)
+    except SystemExit as exc:
+        raise ValueError(str(exc)) from None
+    return {"slug": slug, "set": set, "card": row}
 
 
 def _build_save(slug=None, commander=None, theme=None, bracket=None,
@@ -1214,6 +1233,9 @@ ENDPOINTS = {
         "slug": _str, "commander": _str, "theme": _str, "bracket": _int,
         "library": _strlist, "fmt": _str}),
     "pool/save": (_pool_save, {"slug": _str, "cards": _strlist}),
+    # Candidate watch lists: one verdict or note at a time, POST-only.
+    "watch/mark": (_watch_mark, {"slug": _str, "set": _str, "card": _str,
+                                 "verdict": _str, "note": _str}),
     # The branch: open it, read what to swap, stage a swap, measure the result.
     # `merge` and `delete` are absent on purpose — see the note above.
     "branch/new": (_branch_new, {"slug": _str, "name": _str, "objective": _str,

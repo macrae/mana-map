@@ -828,3 +828,72 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   background: none; border: 1px solid #3a3a5a; color: #8a8aa0; }
 .search-add:hover { color: #c4a747; border-color: #c4a747; }
 .search-none { margin: 0; padding: 6px 8px; font-size: 0.75rem; color: #8a8aa0; }
+
+/* ── Candidate review grid (Build mode, 2026-10-07) ─────────────────────────
+ * A drawer across the bottom of the canvas: the map stays live above it, and
+ * the set's cards stay ringed on it. Its own scroll, so a long set never pushes
+ * the page. Brallin's red and Shabraz's blue mark which trigger a card feeds. */
+.cand-grid { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; min-height: 220px;
+  z-index: 6; display: flex; flex-direction: column; background: rgba(14, 14, 30, 0.97);
+  border-top: 1px solid #2f2f55; box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45); outline: none; }
+.cg-header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  padding: 10px 16px 6px; border-bottom: 1px solid #23233f; }
+.cg-title { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.cg-title strong { font-size: 0.92rem; color: #eee; letter-spacing: 0.2px; }
+.cg-src { font-size: 0.68rem; color: #7a7aa0; text-transform: uppercase; letter-spacing: 0.6px; }
+.cg-filters { display: flex; gap: 4px; flex-wrap: wrap; }
+.cg-filter { font: inherit; font-size: 0.72rem; color: #aaa; background: #1a1a2e;
+  border: 1px solid #2f2f55; border-radius: 12px; padding: 3px 10px; cursor: pointer; }
+.cg-filter span { color: #777; margin-left: 2px; font-variant-numeric: tabular-nums; }
+.cg-filter.is-on { color: #fff; background: #2a2a55; border-color: #4A7BFF; }
+.cg-filter.is-on span { color: #9fb6ff; }
+.cg-sort { font-size: 0.72rem; color: #888; display: flex; align-items: center; gap: 6px; }
+.cg-sort select { font: inherit; font-size: 0.72rem; background: #1a1a2e; color: #ddd;
+  border: 1px solid #2f2f55; border-radius: 3px; padding: 2px 4px; }
+.cg-close { margin-left: auto; font-size: 1.1rem; line-height: 1; color: #888; background: none;
+  border: 0; cursor: pointer; padding: 2px 6px; }
+.cg-close:hover { color: #fff; }
+.cg-keys { font-size: 0.66rem; color: #666; padding: 4px 16px 0; }
+.cg-keys code { color: #9fb6ff; }
+.cg-empty { padding: 24px 16px; color: #777; font-size: 0.8rem; }
+.cg-tiles { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 16px 16px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px;
+  align-content: start; }
+.cg-tile { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; padding: 10px;
+  background: #16162b; border: 1px solid #26264a; border-radius: 6px; outline: none; position: relative; }
+.cg-tile.is-focus { border-color: #4A7BFF; box-shadow: 0 0 0 1px #4A7BFF inset; }
+.cg-tile:focus-visible { box-shadow: 0 0 0 2px #9fb6ff; }
+.cg-tile.v-watching { border-color: #c9a227; }
+.cg-tile.v-watching::before { content: '★'; position: absolute; top: 6px; right: 8px; color: #e0b830; font-size: 0.85rem; }
+.cg-tile.v-pass { opacity: 0.5; }
+.cg-art-btn { padding: 0; border: 0; background: none; cursor: zoom-in; align-self: start; }
+.cg-art { display: block; width: 112px; aspect-ratio: 488 / 680; border-radius: 5px; background: #222240;
+  max-width: 100%; }
+.cg-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.cg-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; padding-right: 14px; }
+.cg-name { font-size: 0.84rem; color: #f0f0f0; font-weight: 600; }
+.cg-mv { flex-shrink: 0; font-size: 0.72rem; color: #ccc; background: #2a2a4a; border-radius: 10px;
+  padding: 1px 7px; font-variant-numeric: tabular-nums; }
+.cg-type { font-size: 0.68rem; color: #8a8aa0; }
+.cg-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.cg-pays, .cg-axis, .cg-verdict { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 2px 6px; border-radius: 2px; border: 1px solid #3a3a5a; color: #999; }
+.cg-pays-both { color: #ffd2e0; border-color: #a0587a; background: #3a1f33; }
+.cg-pays-brallin { color: #ffb4a0; border-color: #b0503a; background: #3a1d17; }
+.cg-pays-shabraz { color: #a8c8ff; border-color: #3f6fb8; background: #172540; }
+.cg-pays-none { color: #888; }
+.cg-verdict { color: #e0b830; border-color: #6a5a20; }
+.cg-why { margin: 2px 0 0; font-size: 0.76rem; color: #d0d0dc; line-height: 1.4; }
+.cg-oracle summary { font-size: 0.66rem; color: #7a7aa0; cursor: pointer; }
+.cg-oracle p { margin: 4px 0 0; font-size: 0.7rem; color: #aaa; line-height: 1.4; }
+.cg-note { margin: 2px 0 0; font-size: 0.72rem; color: #e8dca8; border-left: 2px solid #c9a227; padding-left: 6px; }
+.cg-note-edit { font: inherit; font-size: 0.74rem; width: 100%; box-sizing: border-box; background: #10101f;
+  color: #eee; border: 1px solid #4A7BFF; border-radius: 3px; padding: 4px 6px; resize: vertical; }
+.cg-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 4px; flex-wrap: wrap; }
+.cg-act { font: inherit; font-size: 0.7rem; color: #ccc; background: #20203a; border: 1px solid #34345a;
+  border-radius: 3px; padding: 3px 10px; cursor: pointer; }
+.cg-act:hover { border-color: #4A7BFF; color: #fff; }
+.cg-act.is-on { background: #2a2a55; border-color: #4A7BFF; color: #fff; }
+.cg-act[data-verdict="watching"].is-on { border-color: #c9a227; color: #ffe08a; }
+.cg-undo { color: #888; }
+@media (prefers-reduced-motion: no-preference) { .cg-tile { transition: border-color 0.12s, opacity 0.12s; } }

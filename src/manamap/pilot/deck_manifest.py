@@ -289,7 +289,7 @@ def gather_entries():
                for name in ("engine", "diagnosis", "deck_recon", "deck_map",
                             "build_plan", "manual_prose", "pending",
                             "log_annotations", "deck_versions",
-                            "captains_log")}
+                            "captains_log", "watchlist", "considering")}
         has["log"] = (deck_path / "log.jsonl").exists()
         # The rendered page under `manuals/p/` — since 2026-09-02 the Pilot's
         # OPERATING HANDBOOK, which superseded the compact page and took its

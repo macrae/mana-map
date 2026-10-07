@@ -85,6 +85,11 @@ PILOT_STEPS = [
      "apply DRAFT, rank Q… , kill Q### --reason, decide Q### stage|drop|watch|more"),
     ("validate-queue", "manamap.pilot.validate_queue",
      "Gate data/queue.jsonl: every line replayed through the queue's transition check"),
+    ("watch", "manamap.pilot.watchlist",
+     "Candidate watch lists (watchlist.json): list, mark SET \"Card\" watching|pass|unreviewed [--note], "
+     "note SET \"Card\" \"…\" — reviewed in the Atlas's Build mode"),
+    ("validate-watchlist", "manamap.pilot.validate_watchlist",
+     "Gate watchlist.json: real, legal, in-identity cards; closed vocabularies; sources that exist"),
     ("sla-report", "manamap.pilot.sla_report",
      "Sub-agents against their response-time targets: runs, median, slowest, missed (from the job band's log)"),
     ("validate-protected", "manamap.pilot.validate_protected",
@@ -271,7 +276,7 @@ PILOT_STEPS = [
 ]
 
 _DECK_COMMANDS = {
-    "context", "validate-context",
+    "context", "validate-context", "watch", "validate-watchlist",
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints", "validate-protected",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
     "forge-cast-check", "validate-cast-proofs",
@@ -777,6 +782,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="delete anyway. A deck that was sleeved, "
                                   "played or published is a record — archive it")
+        if name == "watch":
+            cmd.add_argument("verb", nargs="?", default="list", choices=["list", "mark", "note"])
+            cmd.add_argument("rest", nargs="*", help="SET \"Card\" verdict, or SET \"Card\" \"note\"")
+            cmd.add_argument("--note", default=None, help="mark: a note alongside the verdict")
         if name == "queue":
             cmd.add_argument("verb", nargs="?", default="list",
                              choices=["list", "show", "apply", "rank", "kill", "decide"])
