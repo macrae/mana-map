@@ -225,7 +225,7 @@ that AI agents drive from the outside, and most of the bench (`deck-info`, `deck
 The agent routines are what cost tokens — the doctor and its skeptic, the resolver and its
 checker, the engineer and its critic, the strategy researcher, the notes writer, the handbook's
 procedures author, the debrief, the captain's log and the cartographer — and an invocation
-cache is what makes iterating on them affordable. Twenty-two agent charters live in
+cache is what makes iterating on them affordable. Twenty-four agent charters live in
 `.claude/agents/`, twenty-four skills in `.claude/skills/`. `docs/agent-cost.md` has the
 breakdown; **two deliberate opt-in exceptions** are the only LLM calls reachable from Python
 itself: `serve.py`'s `ask` bridge, which shells out to `claude -p` as a polled job, and
@@ -379,7 +379,7 @@ Surface     artifacts → deck-info --write → info.json ─┐
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (**127 pilot subcommands** against 28 top-level ones).
+`manamap pilot <cmd>` drives the rest (**129 pilot subcommands** against 28 top-level ones).
 All constants live in `src/manamap/config.py`; both CLIs are registry-driven with lazy
 imports.
 

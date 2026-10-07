@@ -145,6 +145,10 @@ The generated list above is the record. The story in one breath: v1.0.0 was a wi
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 - **Does the new list stop running dry?** Test: play v2.0.0 for a few games and log the cards in hand at turns eight to ten. Expect more than in 001, 002, 003 and 006.
 - **How often is the infinite actually reachable?** The Numbers block gives the draw rate of the pieces; it does not say how often the tutors close the gap. Not yet measured.
 - **Can the deck survive a wipe?** The Numbers block shows how often protection is drawn by turn six. Whether that is enough against the table's wipes is unanswered.

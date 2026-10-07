@@ -96,7 +96,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 127 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 129 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -142,11 +142,12 @@ manamap pilot simulate <slug> --pod standard-v3 --games N   # optional; prints i
 manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--looks K] [--aa]
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board -> /resolve-stack
 
-# ── AGENTS (Claude Code skills, 25 in .claude/skills/, 22 charters in .claude/agents/) ──
+# ── AGENTS (Claude Code skills, 26 in .claude/skills/, 24 charters in .claude/agents/) ──
 # /publish-deck sequences the lifecycle; /diagnose-deck /prescribe /resolve-stack
 # /analyze-engine /build-deck /debrief /captains-log /sim-debrief /poh-procedures
 # /write-manual /research-strategy /refresh-corpus /test-report (pre/post-test agents) /print-proxies
 # /jarvis — THE ENTRY POINT (PRD v2): context-keeper writes CONTEXT.md, data-analyst computes (<30 s)
+# /incubate — feedback -> incubation-pod proposes, challenger argues once -> data/queue.jsonl (`manamap pilot queue`)
 
 make test                     # the UNIT tier: no tracked data, ~1 min (runtimes: docs/testing.md)
 make regression               # the tracked fleet + corpus, every producer re-run

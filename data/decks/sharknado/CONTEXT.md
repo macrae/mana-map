@@ -162,6 +162,10 @@ The generated list above has every version. The story in short: the first list w
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 - Which creature was "that mfer", and was it something Swords or a counter could have answered, or something the deck has no answer to? Waiting on the game notes.
 - Wheels: was it too few wheels in hand, or wheels stuck behind mana? The Numbers section shows a wheel is usually drawn by turn six, so the felt gap may be mana, not card count. Testable once the log lands.
 - Ramp: the goldfish does not read the Treasure makers as mana, so its ramp figure understates them. How much does reading them change the picture?

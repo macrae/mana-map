@@ -134,6 +134,10 @@ Before that, v1.0.0 (11 Sep) was the pilot's sleeved paper list, six swaps off t
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 - **Does v1.1.0 fix the green problem?** Testable: with the new fetches and Bloom Tender, hands with double-green dinosaurs get cast on time. The Numbers section's colour-on-curve line is where to read it. Needs real games on v1.1.0.
 - **Is the enrage package worth its slots?** The pilot says it idles for lack of pingers. [Trapjaw Tyrant](https://manamap.seanmacrae.com/viz/index.html?cards=Trapjaw+Tyrant) and [Wrathful Raptors](https://manamap.seanmacrae.com/viz/index.html?cards=Wrathful+Raptors) are the test cases. The Numbers section's enrage line shows how rarely it is drawn.
 - **Marauding Raptor plus Polyraptor** was refuted as an infinite: it is a draw machine for the whole table. Neither card is in the 99 now. Only revisit if someone proposes a way to stop the table drawing.

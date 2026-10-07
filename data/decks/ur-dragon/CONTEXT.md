@@ -152,6 +152,10 @@ The deck began as the pilot's 100. The land count went up after game 002. v1.2.0
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 1. **Is the pod's table-reading the real limit?** Claim: holding the loudest pieces (Gadrak, Twinflame Tyrant) until the Dragons are down should win more games than changing cards. Effect to look for: fewer losses coded politics in the record. This needs more games, not the goldfish.
 2. **Does a no-green hand deserve a mulligan?** Claim: shipping a hand with no green source and green cards in it beats keeping. The Numbers section has no figure for it; it would need a paired goldfish test.
 3. **Can the goldfish see the Treasure plan?** The Numbers section says it spends two of the six Treasure sources. Until that is modelled, Smaug, Old Gnawbone and Goldspan look weaker than they play.

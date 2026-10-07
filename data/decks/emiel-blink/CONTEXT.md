@@ -95,6 +95,10 @@ V2 traded four cards out for five new ones (see the list above). Stoneforge Myst
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 - Will Emiel survive long enough? A removal spell on her turns the whole deck into a pile of one-shot triggers. Claim to test: with [Restoration Angel](https://manamap.seanmacrae.com/viz/index.html?cards=Restoration+Angel), [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara) and the blinkers as protection, games with Emiel removed early still end with a board. Needs real games.
 - How many of the counter creatures actually earn a slot? The deck has a lot of small bodies doing the same job. Claim to test: cutting the weakest counter-givers for more draw or protection makes the deck steadier. Run `manamap pilot try`.
 - Does [Caradora, Heart of Alacria](https://manamap.seanmacrae.com/viz/index.html?cards=Caradora%2C+Heart+of+Alacria) earn its slot beyond the counter bonus? Its search needs a Mount or Vehicle and [Recon Craft Theta](https://manamap.seanmacrae.com/viz/index.html?cards=Recon+Craft+Theta) is the only target in the list.

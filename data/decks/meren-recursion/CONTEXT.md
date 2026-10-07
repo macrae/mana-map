@@ -116,6 +116,10 @@ The only version is the first list. The builder was told to leave out [Chain of 
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 - Does the pool's list of excluded cards still hold? The bracket report shows four three-card lines this list sits one swap away from. Re-run the bracket check after any change.
 - The trio of outlet, table-wide drain and fodder together is rare in the Numbers. Test whether swapping a single-target drain for another way to find the missing piece raises that, and expected effect is a better chance of the full board by turn six.
 - The goldfish has no blockers and no removal, so the median kill turn in Numbers is a floor. A Forge probe could show whether the AI ever plays the sacrifice engine (no cast check has been run).

@@ -11,7 +11,7 @@ deck's context is approved (Phase 4 deletes them).
 | | Who writes it | Goes stale how |
 |---|---|---|
 | **Prose**: Summary, How it plays, Cards by role, Pilot notes, Open questions, notes under Change history | the `context-keeper` agent, installed through a code gate | stamped `<!-- ctx:written-for version=… sha=… at=… -->`; STALE once the 99 moves past that sha |
-| **Generated blocks**: `<!-- ctx:gen summary\|numbers\|record\|history -->` … `<!-- /ctx:gen NAME -->` | `src/manamap/pilot/deck_context.py`, from `deck_info.compose`, `deck_versions.report` and `decisions.jsonl` | never: `regen`'s last stage (`context`) re-renders them, and a test compares them to a fresh render |
+| **Generated blocks**: `<!-- ctx:gen summary\|numbers\|record\|history\|queue -->` … `<!-- /ctx:gen NAME -->` | `src/manamap/pilot/deck_context.py`, from `deck_info.compose`, `deck_versions.report` and `decisions.jsonl` | never: `regen`'s last stage (`context`) re-renders them, and a test compares them to a fresh render |
 
 **A figure lives only in a generated block.** The Keeper's charter forbids it from
 writing a number. Prose points at the Numbers section instead, so a model change or a
@@ -26,7 +26,7 @@ The template, in order:
 5. `## Numbers` (block);
 6. `## Pilot notes` (block plus prose);
 7. `## Change history` (block plus notes);
-8. `## Open questions`;
+8. `## Open questions` (the `queue` block, then prose citing items by id);
 9. `## Context changelog`.
 
 `deck_context.SECTIONS` is the one statement of it.

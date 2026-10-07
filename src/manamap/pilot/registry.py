@@ -80,6 +80,11 @@ PILOT_STEPS = [
      "--refresh [--all] the generated blocks, --install the Context Keeper's draft"),
     ("validate-context", "manamap.pilot.validate_context",
      "Gate CONTEXT.md: generated blocks current, every card it describes in the 99, stamp, sections"),
+    ("queue", "manamap.pilot.queue",
+     "The fleet hypothesis queue (data/queue.jsonl): list [--all] [--deck S], show Q###, "
+     "apply DRAFT, rank Q… , kill Q### --reason, decide Q### stage|drop|watch|more"),
+    ("validate-queue", "manamap.pilot.validate_queue",
+     "Gate data/queue.jsonl: every line replayed through the queue's transition check"),
     ("sla-report", "manamap.pilot.sla_report",
      "Sub-agents against their response-time targets: runs, median, slowest, missed (from the job band's log)"),
     ("validate-protected", "manamap.pilot.validate_protected",
@@ -772,6 +777,15 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="delete anyway. A deck that was sleeved, "
                                   "played or published is a record — archive it")
+        if name == "queue":
+            cmd.add_argument("verb", nargs="?", default="list",
+                             choices=["list", "show", "apply", "rank", "kill", "decide"])
+            cmd.add_argument("rest", nargs="*", help="item ids, a draft path, or a decision")
+            cmd.add_argument("--all", action="store_true", help="list: include closed and expired items")
+            cmd.add_argument("--deck", default=None, help="list: one deck only")
+            cmd.add_argument("--json", action="store_true")
+            cmd.add_argument("--reason", default=None, help="kill: why")
+            cmd.add_argument("--note", default=None, help="decide: a note on the call")
         if name == "context":
             cmd.add_argument("--slice", nargs="+", default=None, metavar="SECTION",
                              help="print only these sections (summary plays cards numbers "

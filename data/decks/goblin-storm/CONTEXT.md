@@ -115,6 +115,10 @@ Nothing has changed. The list is the build as sleeved. Earlier agent notes from 
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 - If we mulligan any seven without a cheap goblin body, does the model's keep rate in the Numbers section stay workable? The keep share there counts a different rule, so the goldfish needs to be asked with goblin presence as the gate.
 - Stack 004 settled Krenko as not infinite. Is there another loop worth proving, such as [Past in Flames](https://manamap.seanmacrae.com/viz/index.html?cards=Past+in+Flames) into the Haze of Rage loop?
 

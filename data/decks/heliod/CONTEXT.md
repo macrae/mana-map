@@ -124,6 +124,10 @@ The big turns: v1.0.0 was the pilot's own sleeved list. v1.1.0 and v1.2.0 added 
 
 ## Open questions
 
+<!-- ctx:gen queue -->
+- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+<!-- /ctx:gen queue -->
+
 - Does protection now hold up when Heliod gets targeted in a counter war? Game 001 was the test and it predates the fix.
 - Win condition access in the Numbers section is the thinnest line. Is one more way to find [Approach of the Second Sun](https://manamap.seanmacrae.com/viz/index.html?cards=Approach+of+the+Second+Sun) worth a slot, or is the tutor package enough?
 - The latest merge (Gleaming Splendor, Greater Auramancy) did not meet its goal in the measured read, though the pilot made the swap anyway. What does it do at the table?

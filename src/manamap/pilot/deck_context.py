@@ -62,12 +62,13 @@ SECTIONS = (
      "A compact summary of the games: recurring patterns, links to log ids."),
     ("history", "Change history", "history",
      "What we tried, what happened, and why we think so — the history worth keeping."),
-    ("questions", "Open questions", None,
-     "Live hypotheses, each with its status in the queue."),
+    ("questions", "Open questions", "queue",
+     "What is still unsettled about this deck, in plain words. The block above is the "
+     "queue's view of it; cite an item by its id (Q007)."),
     ("changelog", "Context changelog", None, None),
 )
 SECTION_KEYS = tuple(s[0] for s in SECTIONS)
-GEN_BLOCKS = ("summary", "numbers", "record", "history")
+GEN_BLOCKS = ("summary", "numbers", "record", "history", "queue")
 PLACEHOLDER = "_(to be written)_"
 
 #: The sections that describe the list on disk, so every card they name must be in
@@ -301,7 +302,7 @@ def _block_history(slug, report, limit=8):
 
 def render_generated(slug):
     """`{block: text}` — every generated block, from the artifacts that own it."""
-    from manamap.pilot import deck_info, deck_versions
+    from manamap.pilot import deck_info, deck_versions, queue
 
     info = deck_info.compose(slug, ladder=False)
     report = deck_versions.report(slug)
@@ -310,6 +311,7 @@ def render_generated(slug):
         "numbers": _block_numbers(slug, info, report),
         "record": _block_record(info),
         "history": _block_history(slug, report),
+        "queue": queue.deck_block(slug),
     }
 
 
@@ -367,11 +369,22 @@ def check_markers(text):
 
 
 def replace_blocks(text, blocks):
-    """Swap every generated block's body; everything else is kept byte for byte."""
+    """Swap every generated block's body; everything else is kept byte for byte.
+
+    A block the template gained after a file was written (`queue`, 2026-10-07) is
+    inserted under its section's heading, so a refresh migrates the fleet rather
+    than leaving old files a block short forever."""
     errors = check_markers(text)
     if errors:
         raise ValueError("; ".join(errors))
-    return _GEN_RE.sub(lambda m: _gen(m.group(1), blocks.get(m.group(1), m.group(2))), text)
+    text = _GEN_RE.sub(lambda m: _gen(m.group(1), blocks.get(m.group(1), m.group(2))), text)
+    present = {m.group(1) for m in _GEN_RE.finditer(text)}
+    for _key, heading, block, _p in SECTIONS:
+        if block and block in blocks and block not in present:
+            marker = f"\n## {heading}\n"
+            if marker in text:
+                text = text.replace(marker, f"{marker}\n{_gen(block, blocks[block])}\n", 1)
+    return text
 
 
 def sections(text):

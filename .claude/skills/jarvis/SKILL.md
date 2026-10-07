@@ -51,7 +51,7 @@ sentence will do.
 | **Card search** ("find me cards that do X") | Phase 2 brings the Card Scout. Until then: `manamap pilot card-search --deck <slug> --oracle REGEX` (or `scan-candidates`), or the `deck-analyst` agent for a wider pool. Return a short ranked list with reasons and ManaMap links. |
 | **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays; `manamap pilot try <slug> --out "A" --in "B"` (~10 s, paired goldfish); `/rules-lookup` for an interaction; `forge-cast-check` only for "will the AI cast it". Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
 | **Strategy research** ("how do strong Edgar lists handle wipes?") | Phase 2 brings the Strategist. Until then: `/strategy-lookup`, or `/research-strategy` (slow, it goes to the web, so ask first). |
-| **A queue check** ("what's in the queue? what did you find?") | Phase 2 brings the queue. Until then: the context's Open questions, plus `manamap pilot deck-info <slug>` (branches, decisions awaiting an outcome). |
+| **A queue check** ("what's in the queue? what did you find?") | `manamap pilot queue list` (fleet) or `--deck <slug>`, summarised in a sentence or two: what is promoted, what has a result waiting for his call. Testing an item is `/incubate`'s "work an item". |
 | **A deck edit** ("make the swap") | Story 6 below. Go-ahead first. |
 
 ## Story 2: a pilot log
@@ -75,8 +75,9 @@ sentence will do.
    A refused install prints why. Send the errors back to the Keeper once. Never
    hand-patch the draft.
 3. **Tell him in two or three lines what changed**, then **offer** to incubate the
-   open questions the Keeper returned ("Want me to look into these three?"). Never
-   start that work unasked.
+   open questions the Keeper returned ("Want me to look into these three?"). On a
+   yes, run `/incubate` with the log ids and those questions. Never start it
+   unasked.
 
 ## Story 6: make the swap
 
@@ -104,7 +105,8 @@ slice it needs.
 | Strategist | deck theory, matchups, how others play the commander | < 2 min | phase 2 (today: `/strategy-lookup`, `/research-strategy`) |
 | Rules Checker | one rules or interaction question, with the cited rule | < 1 min | phase 2 (today: `/rules-lookup`) |
 | Scenario Sim | a Forge scenario slice: one board, one decision | < 5 min | phase 3 |
-| Incubation Pod (+ Challenger) | feedback into tested hypotheses for the queue | background | phase 2 |
+| `incubation-pod` | feedback into at most three testable hypotheses (`/incubate`) | < 3 min | live |
+| `challenger` | argues once against each hypothesis before it reaches the queue | < 90 s | live |
 
 A miss against a target is logged by the band to `.progress/sla-log.jsonl`;
 `manamap pilot sla-report` summarises it.

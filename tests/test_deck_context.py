@@ -12,7 +12,8 @@ SHA = "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
 DECK = ["Shabraz, the Skyshark", "Brallin, Skyshark Rider", "Windfall",
         "Treasure Map // Treasure Cove", "Island"]
 BLOCKS = {"summary": "- v1.2.0", "numbers": "- wheel by T6: **94%**",
-          "record": "- No games logged yet.", "history": "- **v1.2.0 · V7**"}
+          "record": "- No games logged yet.", "history": "- **v1.2.0 · V7**",
+          "queue": "- Nothing queued for this deck yet."}
 
 
 @pytest.fixture
@@ -59,6 +60,17 @@ def test_refresh_rewrites_only_the_generated_blocks_byte_for_byte(fake_deck):
     assert "**96%**" in out and "**94%**" not in out
     assert dc.authored(out) == dc.authored(text)            # the Keeper's prose, untouched
     assert dc.replace_blocks(out, newer) == out             # idempotent
+
+
+def test_a_block_the_template_gained_later_is_inserted_by_refresh(fake_deck):
+    """The `queue` block arrived after eight files were written; refresh migrates them."""
+    text = written(ALL_PLACED)
+    old = dc._GEN_RE.sub(lambda m: "" if m.group(1) == "queue" else m.group(0), text)
+    assert "ctx:gen queue" not in old
+    out = dc.replace_blocks(old, BLOCKS)
+    assert "<!-- ctx:gen queue -->\n- Nothing queued" in out
+    assert out.index("## Open questions") < out.index("ctx:gen queue")
+    assert dc.replace_blocks(out, BLOCKS) == out
 
 
 def test_a_stale_generated_block_is_an_error(fake_deck):
