@@ -153,9 +153,8 @@ def test_the_charters_declare_their_targets():
     """The band reads `sla_s:` from the frontmatter; a charter without one shows none."""
     from pathlib import Path
 
-    from manamap import config
-
-    agents = config.DATA_DIR.parent / ".claude" / "agents"
+    # The charters live in the repo, not under DATA_DIR (which the isolated tier moves).
+    agents = Path(__file__).resolve().parent.parent / ".claude" / "agents"
     for name, sla in (("context-keeper", 120), ("data-analyst", 30)):
         head = (agents / f"{name}.md").read_text().split("---")[1]
         assert f"sla_s: {sla}" in head, name
