@@ -48,7 +48,7 @@ sentence will do.
 |---|---|
 | **A question about a deck** ("how's Ur-Dragon on mana?") | Answer from the context. A figure the context lacks goes to the **Data Analyst**. |
 | **A pilot log** ("I played Sharknado, here's my log") | Story 2 below. |
-| **Card search** ("find me cards that do X") | Phase 2 brings the Card Scout. Until then: `manamap pilot card-search --deck <slug> --oracle REGEX` (or `scan-candidates`), or the `deck-analyst` agent for a wider pool. Return a short ranked list with reasons and ManaMap links. |
+| **Card search** ("find me cards that do X", "cards like Y") | Spawn `card-scout` with the slug and his words. It returns at most 8 cards, each with a reason and an Atlas link. Relay it, then **offer** to put the list on a watch list (`watchlist.add_set`, as `/incubate` does); never add it unasked. |
 | **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays; `manamap pilot try <slug> --out "A" --in "B"` (~10 s, paired goldfish); `/rules-lookup` for an interaction; `forge-cast-check` only for "will the AI cast it". Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
 | **Strategy research** ("how do strong Edgar lists handle wipes?") | Phase 2 brings the Strategist. Until then: `/strategy-lookup`, or `/research-strategy` (slow, it goes to the web, so ask first). |
 | **A queue check** ("what's in the queue? what did you find?") | `manamap pilot queue list` (fleet) or `--deck <slug>`, summarised in a sentence or two: what is promoted, what has a result waiting for his call. Testing an item is `/incubate`'s "work an item". |
@@ -102,7 +102,7 @@ slice it needs.
 |---|---|---|---|
 | `data-analyst` | filter, sort, aggregate and compute over decklists, card data, goldfish runs and logs | < 30 s | live |
 | `context-keeper` | write and prune the Deck Context's prose (`seed` / `log` / `deck-change`) | < 2 min | live |
-| Card Scout | find cards that fit a role, using the embedding, ManaMap and card data | < 1 min | phase 2 (today: `card-search`, `deck-analyst`) |
+| `card-scout` | find cards that fit a role or a profile: `card-search` (text, roles) and `similar-cards` (the ability embedding) | < 1 min | live |
 | Strategist | deck theory, matchups, how others play the commander | < 2 min | phase 2 (today: `/strategy-lookup`, `/research-strategy`) |
 | Rules Checker | one rules or interaction question, with the cited rule | < 1 min | phase 2 (today: `/rules-lookup`) |
 | Scenario Sim | a Forge scenario slice: one board, one decision | < 5 min | phase 3 |
