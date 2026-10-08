@@ -62,10 +62,36 @@ def test_a_revise_gets_one_rebuttal_and_then_it_is_settled(qfile):
         {"of": "Q001", "action": "revise", "claim": "Rhystic Study in for Windfall draws more by T8",
          "why": "named the cards"},
         {"of": "Q002", "action": "withdraw", "why": "it is a duplicate"}]})
-    assert state("Q001") == "PROMOTED" and state("Q002") == "DROPPED"
+    assert state("Q001") == "CHALLENGED" and state("Q002") == "DROPPED"   # Q001 awaits the second look
     assert q.current("Q001", q.read())["claim"].startswith("Rhystic Study")
+    q.apply({"kind": "recheck", "items": [{"of": "Q001", "verdict": "yes"}]})
+    assert state("Q001") == "PROMOTED"
     drop = next(e for e in q.read() if e["kind"] == "drop")
     assert "withdrawn" in drop["reason"]
+
+
+def test_the_second_look_is_yes_or_no_once_and_a_no_drops_with_its_reason(qfile):
+    """Sean's call (2026-10-07): a revision is not promoted on the pod's word. The
+    Challenger glances once — yes promotes, no drops — and cannot ask again."""
+    incubate(n=2)
+    for qid in ("Q001", "Q002"):
+        challenge(qid, "revise", "say which cards")
+    with pytest.raises(SystemExit, match="only a revised hypothesis"):     # before the rebuttal
+        q.apply({"kind": "recheck", "items": [{"of": "Q001", "verdict": "yes"}]})
+    q.apply({"kind": "rebuttal", "items": [{"of": "Q001", "action": "revise", "why": "named them"},
+                                           {"of": "Q002", "action": "revise", "why": "named them"}]})
+    with pytest.raises(SystemExit, match="yes or no"):                       # not another round
+        q.apply({"kind": "recheck", "items": [{"of": "Q001", "verdict": "revise"}]})
+    with pytest.raises(SystemExit, match="needs a reason"):
+        q.apply({"kind": "recheck", "items": [{"of": "Q001", "verdict": "no"}]})
+    q.apply({"kind": "recheck", "items": [{"of": "Q001", "verdict": "no",
+                                           "reason": "the revision still tests a goldfish-blind effect"}]})
+    q.apply({"kind": "recheck", "items": [{"of": "Q002", "verdict": "yes"}]})
+    assert state("Q001") == "DROPPED" and state("Q002") == "PROMOTED"
+    drop = next(e for e in q.read() if e["kind"] == "drop")
+    assert drop["reason"].startswith("challenger's second look: the revision")
+    with pytest.raises(SystemExit):                                          # once
+        q.apply({"kind": "recheck", "items": [{"of": "Q002", "verdict": "no", "reason": "x"}]})
 
 
 def test_one_round_only(qfile):

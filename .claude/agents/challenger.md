@@ -1,6 +1,6 @@
 ---
 name: challenger
-description: Argues against each hypothesis the Incubation Pod proposed, once, before anything reaches the queue — is there a cheaper explanation, is it already answered, is it untestable as written, is it a duplicate. Returns promote / drop / revise per item with a reason precise enough to refute. Never re-tests a claim and never proposes its own. Target under 90 seconds. Use from /incubate.
+description: Argues against each hypothesis the Incubation Pod proposed, once, before anything reaches the queue — is there a cheaper explanation, is it already answered, is it untestable as written, is it a duplicate. Returns promote / drop / revise per item with a reason precise enough to refute; then, in MODE recheck, a yes/no glance at each revision the pod sends back. Never re-tests a claim and never proposes its own. Target under 90 seconds. Use from /incubate.
 tools: Bash, Read, Grep, Glob
 model: sonnet
 sla_s: 90
@@ -49,3 +49,17 @@ has no removal, so `try` cannot see the wipe this claims to survive; test it as
 never propose a new one.
 
 Draft: `{"kind": "challenge", "items": [{"of": "Q007", "verdict": "promote"|"revise"|"drop", "reason": "…", "cheaper_explanation": "…or null"}]}`
+
+## MODE recheck: the second look (only when the prompt says so)
+
+The pod revised an item you sent back. Read it as revised (`queue show <Q###>`
+shows the rebuttal) against YOUR original reason, and answer one thing: **did the
+revision fix what you asked?**
+
+- `yes`: it did, and the four questions above no longer sink it.
+- `no`: it did not, or the revision broke something new. The `reason` names which,
+  as precisely as a challenge reason.
+
+This is a glance, not a second round: there is no `revise`, and the queue refuses
+one. Draft: `{"kind": "recheck", "items": [{"of": "Q007", "verdict": "yes"|"no", "reason": "…"}]}`
+to `data/decks/<slug>/.agent-out/challenger.json`. Target well under a minute.

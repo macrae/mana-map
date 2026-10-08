@@ -20,9 +20,11 @@ transition and refuses an illegal one with nothing written.
 2. **Challenge, one round.** Spawn `challenger` with the new ids, then apply its draft.
    `apply` settles each item by itself: a `promote` verdict promotes it and a `drop`
    drops it with the reason.
-3. **One rebuttal.** If any item came back `revise`, spawn `incubation-pod` with
-   `MODE rebut` and those findings, then apply its draft. A revision promotes; a
-   withdrawal drops. There is no second round, and the queue refuses one.
+3. **One rebuttal, then the second look.** If any item came back `revise`, spawn
+   `incubation-pod` with `MODE rebut` and those findings, then apply its draft. A
+   withdrawal drops. A revision waits: spawn `challenger` with `MODE recheck` and
+   the revised ids, then apply its draft. `yes` promotes, `no` drops with its
+   reason. There is no second round, and the queue refuses one.
 4. **Report** in a few lines: what was promoted (id and claim), what was dropped and
    why. Then ask Sean which, if any, to test.
 5. **Refresh the deck's context block:** `manamap pilot context <slug> --refresh`.
@@ -38,7 +40,7 @@ if anything is a guess — and add it:
 ```
 
 It is INCUBATING, not promoted: run step 2 above (the Challenger, one round) on the
-new id, and step 3 if it comes back `revise`. His claim skips the pod, never the round.
+new id, and step 3 (rebuttal, then the second look) if it comes back `revise`. His claim skips the pod, never the round.
 
 ## Work an item (Sean named it, or said "the top one")
 

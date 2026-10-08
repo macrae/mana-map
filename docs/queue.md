@@ -20,9 +20,10 @@ promoted ──► Jarvis tests it with the lightest method ──► result ─
   until Phase 3 builds Forge scenario slices.
 - **The Challenger argues once.** It asks four questions: is there a cheaper
   explanation, is it already answered, can the named test settle it, is it a
-  duplicate. A `revise` gets one rebuttal from the pod. `queue apply` writes the
-  promote or drop that follows from those lines itself, so the single round cannot be
-  stretched.
+  duplicate. A `revise` gets one rebuttal from the pod, and a revision gets the
+  Challenger's **second look**: `recheck` yes or no, once (Sean's call, 2026-10-07; it
+  cannot ask for another revision). `queue apply` writes the promote or drop that
+  follows from those lines itself, so the single round cannot be stretched.
 - **Sean can add his own** (`queue add`): it enters as a hypothesis `by: sean`, held to
   the same rule as the pod's (a claim, its expected effect, the lightest test), and it
   still faces the Challenger. It skips the pod, never the round.
@@ -35,7 +36,7 @@ promoted ──► Jarvis tests it with the lightest method ──► result ─
 | State | From the lines |
 |---|---|
 | INCUBATING | a hypothesis and nothing else |
-| CHALLENGED | challenged, not yet settled (waiting for the rebuttal) |
+| CHALLENGED | challenged, not yet settled (waiting for the rebuttal or the second look) |
 | PROMOTED | promoted, untested; or `decide more` sent it back |
 | DROPPED | dropped, with a reason (the Challenger's, or the pod withdrew it) |
 | TESTED | a result, waiting for Sean |

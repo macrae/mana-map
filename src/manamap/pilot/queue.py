@@ -10,8 +10,11 @@ lines add up to.
 
 THE LOOP. The Incubation Pod proposes (`hypothesis`) → the Challenger argues
 against each one, ONE ROUND (`challenge`: promote / drop / revise) → a `revise`
-gets one rebuttal from the pod (`rebut`: revise or withdraw) → it is promoted or
-dropped. `apply` writes the promote / drop that follows from those lines, so the
+gets one rebuttal from the pod (`rebut`: revise or withdraw) → a revision gets the
+Challenger's SECOND LOOK (`recheck`: yes / no, 2026-10-07 — Sean's call; until then
+a revision promoted on the pod's word alone, and two of the first four were later
+killed) → it is promoted or dropped. The recheck is a glance, not a second round:
+it cannot ask for another revision. `apply` writes the promote / drop that follows from those lines, so the
 single round cannot be stretched by hand. Jarvis then tests a promoted item with
 the lightest method that settles it (`result`) and Sean makes the call
 (`decide`). Sean can reorder (`rank`) or remove (`kill`) anything at any time, and
@@ -34,13 +37,14 @@ from manamap import config
 from manamap.pilot.common import deck_dir
 
 PATH = config.DATA_DIR / "queue.jsonl"
-KINDS = ("hypothesis", "challenge", "rebut", "promote", "drop", "result",
+KINDS = ("hypothesis", "challenge", "rebut", "recheck", "promote", "drop", "result",
          "decide", "rank", "kill")
 #: How a hypothesis says it would be settled — the PRD's "lightest method".
 METHODS = ("context", "argument", "data", "try", "rules", "strategy", "scenario")
 #: Not yet buildable: Forge scenario slices are Phase 3.
 METHODS_NOT_YET = {"scenario": "Forge scenario slices are Phase 3 — pick the lightest method that runs today"}
 VERDICTS = ("promote", "drop", "revise")
+RECHECK = ("yes", "no")
 RESULT_VERDICTS = ("supported", "refuted", "inconclusive")
 DECISIONS = ("stage", "drop", "watch", "more")
 STATES = ("INCUBATING", "CHALLENGED", "PROMOTED", "DROPPED", "TESTED", "DECIDED",
@@ -251,6 +255,17 @@ def check(line, lines):
             if t.get("method") in METHODS_NOT_YET:
                 return METHODS_NOT_YET[t["method"]]
         return None if str(line.get("why") or "").strip() else "a rebuttal needs a why"
+    if kind == "recheck":
+        rb = next((e for e in hist if e["kind"] == "rebut"), None)
+        if rb is None or rb.get("action") != "revise":
+            return f"{qid}: only a revised hypothesis gets the second look"
+        if "recheck" in kinds:
+            return f"{qid} has had its second look — yes or no, once"
+        if line.get("verdict") not in RECHECK:
+            return "a recheck's verdict is yes or no — a glance, not another round"
+        if line["verdict"] == "no" and not str(line.get("reason") or "").strip():
+            return "a recheck that says no needs a reason"
+        return None
     if kind in ("promote", "drop"):
         if state != "CHALLENGED":
             return f"{qid} is {state}: promote and drop follow the challenge round"
@@ -302,7 +317,14 @@ def settle(qid, lines):
         return None                                     # waiting for the pod's one reply
     if rb["action"] == "withdraw":
         return {"kind": "drop", "of": qid, "by": "jarvis", "reason": f"withdrawn by the pod: {rb['why']}"}
-    return {"kind": "promote", "of": qid, "by": "jarvis", "why": "revised once after the challenge"}
+    rc = next((e for e in hist if e["kind"] == "recheck"), None)
+    if rc is None:
+        return None                                     # waiting for the second look
+    if rc["verdict"] == "no":
+        return {"kind": "drop", "of": qid, "by": "jarvis",
+                "reason": f"challenger's second look: {rc['reason']}"}
+    return {"kind": "promote", "of": qid, "by": "jarvis",
+            "why": "revised once after the challenge; the challenger's second look accepted it"}
 
 
 def apply(draft, path=None):
@@ -319,16 +341,16 @@ def apply(draft, path=None):
                                                            "ruled_out") if h.get(k) is not None}}
             new.append(line)
             staged.append(line)
-    elif kind in ("challenge", "rebuttal"):
-        k = "challenge" if kind == "challenge" else "rebut"
+    elif kind in ("challenge", "rebuttal", "recheck"):
+        k = {"challenge": "challenge", "rebuttal": "rebut", "recheck": "recheck"}[kind]
         for it in draft.get("items") or []:
-            new.append({"kind": k, "by": draft.get("by", "challenger" if k == "challenge" else "incubation-pod"),
+            new.append({"kind": k, "by": draft.get("by", "incubation-pod" if k == "rebut" else "challenger"),
                         **{x: v for x, v in it.items() if v is not None}})
     elif kind == "result":
         new.append({"kind": "result", "by": draft.get("by", "jarvis"),
                     **{x: draft.get(x) for x in ("of", "method", "answer", "evidence", "verdict")}})
     else:
-        raise SystemExit("a draft's kind is incubation, challenge, rebuttal or result")
+        raise SystemExit("a draft's kind is incubation, challenge, rebuttal, recheck or result")
     if not new:
         raise SystemExit("the draft holds nothing to apply")
     written = append(new, lines, path)
