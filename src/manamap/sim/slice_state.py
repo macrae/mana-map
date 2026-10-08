@@ -6,7 +6,8 @@ are Sean's (2026-10-07, PRD v2 Step 5 scoping):
   * **Seats.** `you` is p0; the opponents follow in the order the scenario lists them.
     The caller names the deck each seat plays (`seat_slugs`), because a slice is played
     by AI decks and the hidden cards come from them.
-  * **Hidden cards come from the seat's own decklist, shuffled per seed.** A hand given
+  * **Hidden cards come from the seat's own decklist, dealt per seed** by a KEYED
+    shuffle (`keyed_order`), so two arms that differ by one card deal alike. A hand given
     as names is used as given; `{"unknown": n}` (or `{"known": [...], "unknown": n}`)
     draws n from what the deck has left; a library is everything left, shuffled, with
     any named `library.top` cards first (the override). "What is left" removes, copy by
@@ -20,7 +21,7 @@ are Sean's (2026-10-07, PRD v2 Step 5 scoping):
 `to_forge_state(scenario, seat_slugs, seed)` -> `(text, notes)`.
 """
 
-import random
+import hashlib
 
 from manamap.pilot import game_state as gs
 
@@ -41,6 +42,20 @@ PHASE = {
 #: Forge applies a board mid-combat only between two players (GameState.handleCombat).
 COMBAT_1V1 = {"COMBAT_DECLARE_ATTACKERS", "COMBAT_DECLARE_BLOCKERS"}
 DEFAULT_LIFE = 40
+
+
+def keyed_order(cards, seed):
+    """The pile in a seed's order, where a card's place depends only on the seed, its
+    name and which copy it is — NOT on what else is in the pile. So two arms whose piles
+    differ by the card being tested deal the same order for everything else: seed k of
+    arm A and seed k of arm B are the same draws. A plain shuffle of two different lists
+    deals two unrelated libraries and throws the pairing away."""
+    seen, keyed = {}, []
+    for c in cards:
+        k = seen.get(c, 0)
+        seen[c] = k + 1
+        keyed.append((hashlib.sha256(f"{seed}:{c}:{k}".encode()).hexdigest(), c))
+    return [c for _, c in sorted(keyed)]
 
 
 class StateError(ValueError):
@@ -116,7 +131,6 @@ def to_forge_state(scenario, seat_slugs, seed, known_names=None):
         known_names = corpus_names() or set()
 
     notes, lines, unknown = [], [], []
-    rng = random.Random(f"{seed}:slice")
     pid = {s["seat"]: f"p{i}" for i, s in enumerate(seats)}
 
     phase = PHASE.get((scenario.get("phase") or "precombat main", scenario.get("step")))
@@ -168,7 +182,7 @@ def to_forge_state(scenario, seat_slugs, seed, known_names=None):
         placed += known
         for n in placed:
             take(n)
-        rng.shuffle(left)
+        left = keyed_order(left, seed)
         n_unknown = int((hand or {}).get("unknown") or 0) if isinstance(hand, dict) else 0
         if hand is None:
             n_unknown = 0

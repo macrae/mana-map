@@ -580,8 +580,23 @@ game log.
   goes to Forge by its FRONT face, which loads split, transform and modal cards alike.
   A token without a `forge_token` script, a stack, a missing hand: each is a NOTE the
   caller shows, never an omission.
-- **Not yet:** the paired A/B wrapper, the `scenario-sim` agent, and `scenario` as a legal
-  queue method.
+- **The A/B** (`manamap.sim.slice_ab.compare(base, seat_slugs, {A: board, B: board},
+  seeds, primary)`) plays both arms on every seed in one JVM and reads the difference
+  SEED BY SEED (paired t interval) on ONE primary measure named before the run, the rest
+  exploratory and Holm-corrected — the `net-change` contract. The hidden cards are dealt
+  by a KEYED shuffle (a card's place depends on the seed, the card and its copy number,
+  not on the rest of the pile), so arms that differ by the card under test deal the same
+  draws; a plain shuffle of two different piles would deal two unrelated libraries. The
+  runner's log starts AT the board (the seats' opening-hand draws come before it and
+  would be counted otherwise). Measures: `opp_life_lost`, `your_life_change`,
+  `your_board_change`, `your_hand_end`, `commander_out`, `you_lost`, `cards_drawn`, each
+  printed with its definition.
+- **The misplay flag.** A card the arms differ on that starts in your hand and the AI
+  leaves uncast in at least half the replicates puts `DISCOUNT <arm>` in the answer line.
+  The first real run (Q004's board, Greaves vs Arcane Signet, 10 paired seeds, 21 s)
+  fired it: the AI held the Signet in 9 of 10, so that arm measured a dead card.
+- **Not yet:** the `scenario-sim` agent (plain-language board, shown back for OK before
+  every run) and `scenario` as a legal queue method.
 
 ## The spike: wrap Forge, or build our own?
 

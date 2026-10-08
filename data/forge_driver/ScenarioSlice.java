@@ -186,8 +186,13 @@ public class ScenarioSlice {
         Stopper stop = new Stopper(g, decks.size(), rounds);
         g.subscribeToEvents(stop);
         Snapshot[] start = new Snapshot[1];
+        int[] logCut = {0};
         long t0 = System.currentTimeMillis();
         mc.startGame(g, () -> {
+            // THE LOG BEGINS AT THE BOARD. Each seat's normal opening hand was drawn
+            // before the hook, and counting those draws or casts would measure a
+            // game that never happened on this board.
+            logCut[0] = g.getGameLog().getLogEntries(null).size();
             state.applyNow(g);
             stop.start(g.getPhaseHandler().getTurn());
             start[0] = Snapshot.of(g);
@@ -200,6 +205,7 @@ public class ScenarioSlice {
         }
         List<GameLogEntry> log = new ArrayList<>(g.getGameLog().getLogEntries(null));
         Collections.reverse(log);                     // Forge stores newest first
+        log = new ArrayList<>(log.subList(Math.min(logCut[0], log.size()), log.size()));
         StringBuilder sb = new StringBuilder("{");
         sb.append("\"label\":").append(q(label)).append(",\"seed\":").append(seed)
           .append(",\"rounds\":").append(rounds)
