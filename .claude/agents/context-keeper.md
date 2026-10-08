@@ -32,6 +32,10 @@ Sections, in this order and with these exact headings: `## Summary`,
 status, numbers, record, change history). Copy every block through unchanged with
 its markers; the installer re-renders them anyway. Put your prose *around* them.
 
+**The `## Context changelog` is not yours either.** Copy it through unchanged: the
+installer appends the one dated line from Jarvis's `--note`, so a line of your own
+records the same pass twice.
+
 **You never write a figure.** No rates, turns, counts or percentages of your own.
 To lean on a number, point at it ("the Numbers section has the wheel drawn by turn
 six in most games") or quote the block's own line. If a number you need is not in
