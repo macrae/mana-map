@@ -50,6 +50,9 @@ PILOT_STEPS = [
      "Print-ready proxy sheet (63x88 mm, 3x3, crop marks) for cards waiting on cardboard: a branch's adds minus what you have"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
+    ("similar-cards", "manamap.pilot.similar_cards",
+     "Cards that DO what a named card does: nearest neighbours in the ability space, "
+     "identity-derived from --deck, the 99 and illegal cards excluded"),
     ("scan-candidates", "manamap.pilot.candidate_scan",
      "One pass over the corpus along a deck's DIMENSIONS (drain, gain, threat, outlet, sweeper, draw): "
      "every row says which predicate found it; converters and two-card infinites FLAGGED, never ranked"),
@@ -1205,6 +1208,24 @@ def add_pilot_parser(subparsers):
             # even when --deck scoped the query.
             cmd.add_argument("--out", default=None,
                              help="Write JSON here as well (a view, never tracked)")
+        if name == "similar-cards":
+            # NO slug positional, like card-search: the positionals are the SEED cards,
+            # and --deck only scopes the corpus (identity derived, the 99 excluded).
+            cmd.add_argument("cards", nargs="*", metavar="CARD",
+                             help="one or more seed cards; several rank against their centroid")
+            cmd.add_argument("--deck", default=None,
+                             help="scope to a deck: identity derived from its commander, "
+                                  "and its own 99 excluded from the results")
+            cmd.add_argument("--identity", default=None,
+                             help="colour identity to stay within (e.g. URW); mutually "
+                                  "exclusive with --deck, whose identity is derived")
+            cmd.add_argument("--include-deck", action="store_true", dest="include_deck",
+                             help="--deck: do NOT exclude cards already in the deck")
+            cmd.add_argument("--no-game-changers", action="store_true", dest="no_game_changers",
+                             help="drop Game Changers (they force bracket 4)")
+            cmd.add_argument("--limit", type=int, default=None,
+                             help="max results (default 15, at most 100)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "scan-candidates":
             from manamap.pilot.candidate_scan import DEFAULT_LIMIT, DIMENSIONS
             cmd.add_argument("--dimension", default="all", choices=(*DIMENSIONS, "all"),

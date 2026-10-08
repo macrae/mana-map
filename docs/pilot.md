@@ -63,6 +63,7 @@ manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--car
                                         #   what you hold; both faces of a DFC; PNG renders cached in data/cache/proxies/;
                                         #   lands on ~/Desktop and opens. Print at 100%. Skill: /print-proxies
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
+manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out
 manamap pilot archetypes "<commander>" [--theme SLUG]   # how it is actually built, and that style's role template
 manamap pilot brew <slug> --commander "<name>" [--theme SLUG] [--from FILE] [--build]  # the cards you kept -> a deck on the bench
@@ -728,6 +729,26 @@ It does **not** score fit. The repo has one scorer (`build_deck`) and one retrie
 function"); a second opinion here would be a third answer to "is this card good" that
 nothing reconciles. Results rank by EDHREC rank, unranked last — a card with no rank is
 usually just new, and a new set's answer to a problem is exactly what this should surface.
+
+## Cards like this one (`similar-cards`, tier ◆, computed on demand) — 2026-10-07
+
+`card-search` needs the question phrased as a regex; a pilot holding a card they like
+has the card. `similar-cards` ranks the corpus by cosine to it in the **ability space**
+(`embeddings_ability.npy`, FUNCTION — never the layout space, which would return cards of
+the same colour and type). Several seeds rank against their centroid.
+
+```bash
+manamap pilot similar-cards "Windfall" --deck sharknado
+manamap pilot similar-cards "Windfall" "Counterspell" --identity URW --limit 10
+```
+
+The same three rules as `card-search`: identity DERIVED from `--deck` (or stated with
+`--identity`), the deck's 99 excluded (`--include-deck` keeps them), Commander-illegal
+cards never ranked. A seed resolves by exact name, a DFC face, or a prefix that names
+exactly one card; anything else is a refusal listing the candidates. Every row carries
+its score, its roles (`shares …` when it holds a seed's role), what the goldfish can
+price (`model:`), its text and an Atlas link. Read-only, so it runs warm under `serve`.
+**Proximity is a discovery aid, not a verdict** — the score says the text reads alike.
 
 ## Scanning along the deck's dimensions (`scan-candidates`, ◆; `fetch-edhrec`, ★) — 2026-09-30
 
