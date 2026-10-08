@@ -265,6 +265,8 @@
       IDLE_MS: 50,       // ~20 fps for the ambient sway alone — see the pacing note in tick()
       BINS: 96,          // radial bins for the rotation table (see below)
       GAIN_MS: 700,      // how long motion takes to arrive or leave when toggled
+      REST_MS: 10000,    // no pointer, wheel or key for this long and the sway settles
+      SETTLE_MS: 2500,   // ...over this long: a slow exhale, not the toggle's snap
     };
 
     // Reduced motion is a system-level request not to animate, and an ambient drift is
@@ -276,6 +278,16 @@
     let clock = 0;                   // accumulated ANIMATED ms — not wall time, so pausing
     let lastTick = 0;                // in a hidden tab resumes in phase instead of jumping
     let gain = 0, gainTarget = motionEnabled ? 1 : 0;
+    /* AT REST THE MAP STOPS (2026-10-08). The sway redraws every card ~20 times a second
+     * for as long as the page is open, and a page left open on a second monitor was a
+     * page burning a core forever — measured headless at ~1 s of main-thread work per
+     * second, still at 30 s, and the reason a screenshot of the Atlas timed out. So the
+     * sway is a response to someone being THERE: ten seconds with no pointer, wheel or
+     * key and it eases to the stored positions and the ticker stops; the next input
+     * brings it back, in phase (`clock` only advances while `gain > 0`). Turning motion
+     * off is still the button; this is about rest, not preference. */
+    let lastInput = performance.now();
+    let resting = false;
     let ticking = false, lastDraw = 0;
     let hoverRow = null, hoverAt = 0;
     let ripples = [];                // {x, y, t} in base-fit space
@@ -383,6 +395,17 @@
       return (gainTarget > 0 && ambient() > 0.002) || hoverRow != null || ripples.length > 0;
     }
 
+    function wake() {
+      lastInput = performance.now();
+      if (!resting) return;
+      resting = false;
+      gainTarget = motionEnabled ? 1 : 0;
+      startTicking();
+    }
+    ['pointermove', 'pointerdown', 'wheel', 'keydown'].forEach(function (ev) {
+      window.addEventListener(ev, wake, { passive: true });
+    });
+
     function startTicking() {
       if (ticking || !wantsFrames()) return;
       ticking = true;
@@ -400,8 +423,12 @@
        * bounds the return-from-hidden jump to something invisible. */
       const dt = Math.min(200, now - lastTick);
       lastTick = now;
+      if (motionEnabled && !resting && now - lastInput > MOTION.REST_MS) {
+        resting = true;
+        gainTarget = 0;
+      }
       if (gain !== gainTarget) {
-        const step = dt / MOTION.GAIN_MS;
+        const step = dt / (resting ? MOTION.SETTLE_MS : MOTION.GAIN_MS);
         gain = gainTarget > gain ? Math.min(gainTarget, gain + step)
                                  : Math.max(gainTarget, gain - step);
       }
@@ -1089,10 +1116,19 @@
        * what is currently on screen, which is also zero when you are zoomed in. */
       setMotion: function (on) {
         motionEnabled = !!on;
+        lastInput = performance.now();
+        resting = false;
         gainTarget = motionEnabled ? 1 : 0;
         if (motionEnabled) startTicking(); else schedule();
       },
       get motion() { return motionEnabled; },
+      // True while the sway has settled for lack of input (motion still ON).
+      get resting() { return resting; },
+      // Someone is here: wake a settled sway (pointer, wheel and key already do).
+      wake: wake,
+      // How long without input before the sway settles; tests shorten it.
+      get restMs() { return MOTION.REST_MS; },
+      set restMs(ms) { MOTION.REST_MS = +ms; },
       // "Is the map moving right now" — which is false when it is zoomed in, switched off,
       // in a background tab, or hidden behind the graph modes. Deliberately not just
       // `ambient()`: a level of 1 on a canvas nobody is drawing to is not a true answer.

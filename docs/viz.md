@@ -797,6 +797,14 @@ rather than the markup's), and when the canvas is off screen. That last check re
 graph and stays visible in Discover and Build, so asking the host animated 34,890 points
 into a surface nobody could see.
 
+**At rest it stops** (2026-10-08). Ten seconds with no pointer, wheel or key
+(`MOTION.REST_MS`) and the sway eases home over 2.5 s and the ticker stops; the next
+input brings it back in phase. Before, an open Explore tab redrew every card ~20 times a
+second forever — measured headless at ~1 s of main-thread work per second, still going
+at 30 s, and the reason a screenshot of the Atlas timed out. After: no long task once it
+settles. Settling is not switching off — `motion` stays true, `resting` says which; tests
+shorten the wait with `mapRenderer.restMs`.
+
 Cost control, since this is the first continuously-animating thing in the app:
 
 | what | value | why |

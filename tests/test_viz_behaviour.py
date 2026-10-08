@@ -4486,6 +4486,33 @@ def test_motion_stops_when_the_map_is_not_the_thing_on_screen(page):
     assert page.js_errors == []
 
 
+def test_the_map_settles_when_nobody_is_there_and_wakes_on_input(page):
+    """AT REST THE MAP STOPS. The sway redrew every card ~20 times a second for as long
+    as the page was open — measured headless at ~1 s of main-thread work per second,
+    still going at 30 s (2026-10-08). With no input it settles and the ticker STOPS
+    (no frames at all, not slow ones); a real pointer move brings it back."""
+    page.evaluate("() => { MM.mapRenderer.restMs = 800; MM.mapRenderer.wake(); }")
+    r = page.evaluate(
+        """async () => {
+            const R = MM.mapRenderer;
+            const moving = R.motionLevel;
+            await new Promise(r => setTimeout(r, 800 + 2500 + 1200));
+            return {moving, resting: R.resting, level: R.motionLevel, motion: R.motion};
+        }"""
+    )
+    assert r["moving"] > 0, "the map was not moving before the rest"
+    assert r["resting"] and r["level"] == 0, f"the map never settled: {r}"
+    assert r["motion"], "settling must not switch motion OFF — that is the button's job"
+    page.evaluate("() => { MM.mapRenderer.restMs = 1e9; }")   # stay awake once woken
+    box = page.locator(".map-canvas").bounding_box()
+    page.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
+    page.mouse.move(box["x"] + box["width"] / 2 + 40, box["y"] + box["height"] / 2 + 10)
+    page.wait_for_timeout(1000)
+    woke = page.evaluate("() => ({resting: MM.mapRenderer.resting, level: MM.mapRenderer.motionLevel})")
+    assert not woke["resting"] and woke["level"] > 0, f"input did not wake the map: {woke}"
+    assert page.js_errors == []
+
+
 def test_the_motion_toggle_reports_the_renderer_not_the_markup(page):
     r = page.evaluate(
         """async () => {
