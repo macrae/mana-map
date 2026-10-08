@@ -155,3 +155,48 @@ group('job-band cruft', () => {
     expect(isCruft(done, T0 + 601, true)).toBe(true)
   })
 })
+
+import { indent, tree } from '../hooks/register'
+
+function at(file: string, over: Record<string, unknown>) {
+  const j = parseJob(file, JSON.stringify({ label: file, state: 'running', started_at: T0,
+                                             updated_at: T0, ...over }))
+  if (!j) throw new Error('fixture did not parse')
+  return j
+}
+
+group('job-band graph', () => {
+  test('a file with no graph fields is its own root, id from the file name', async () => {
+    const j = at('regen-77.json', {})
+    expect([j.id, j.parent, j.feeds]).toEqual(['regen-77', null, []])
+  })
+
+  test('children nest under their parent by start time; a root list stays flat', async () => {
+    const prepush = at('prepush-1.json', { id: 'prepush-1', started_at: T0 })
+    const unit = at('pytest-2.json', { parent: 'prepush-1', started_at: T0 + 1 })
+    const regr = at('pytest-3.json', { parent: 'prepush-1', started_at: T0 + 60 })
+    const sim = at('simulate-4.json', { started_at: T0 + 5 })
+    const rows = tree([regr, sim, unit, prepush])
+    expect(rows.map(r => [r.job.id, r.depth, r.last])).toEqual([
+      ['prepush-1', 0, true], ['pytest-2', 1, false], ['pytest-3', 1, true], ['simulate-4', 0, true]])
+    expect(indent(1, false)).toBe(' ├ ')
+    expect(indent(2, true)).toBe('    └ ')
+  })
+
+  test('a parent the band cannot see never hides a running child', async () => {
+    const orphan = at('pytest-9.json', { parent: 'prepush-gone' })
+    expect(tree([orphan]).map(r => [r.job.id, r.depth])).toEqual([['pytest-9', 0]])
+  })
+
+  test('feeds resolve an id to its label and keep a plain label as written', async () => {
+    const regen = at('regen-5.json', { label: 'regen', feeds: ['manuals-6', 'the dossier'] })
+    const manuals = at('manuals-6.json', { label: 'make manuals', started_at: T0 + 9 })
+    expect(tree([regen, manuals])[0]!.feeds).toBe('→ make manuals, the dossier')
+  })
+
+  test('a cycle draws every job once', async () => {
+    const a = at('a-1.json', { parent: 'b-2' })
+    const b = at('b-2.json', { parent: 'a-1' })
+    expect(tree([a, b]).map(r => r.job.id).sort()).toEqual(['a-1', 'b-2'])
+  })
+})

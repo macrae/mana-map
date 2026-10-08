@@ -133,7 +133,46 @@ def commands(plan):
             [py, "-m", "pytest", "-o", "addopts=", "-n0", "-q", *DOC_GUARDS]]
 
 
+#: The pytest runs `make prepush-full` makes: unit, its isolation proof, and the
+#: regression tier's parallel and serial halves (Makefile `prepush-full`).
+FULL_TIERS = 4
+
+
+def _finished_children(job_id, seen=None):
+    """The band's count for prepush: its child pytest runs that have finished.
+
+    `seen` carries the ids already counted, because a finished row does not stay on
+    disk: a new job prunes finished files older than ten minutes (`progress`), and
+    a full prepush's regression half outlives its unit runs by more than that. The
+    first live run counted 2 of 4 for exactly that reason (2026-10-08)."""
+    from manamap import progress
+    seen = set() if seen is None else seen
+    for f in progress.DIR.glob("*.json"):
+        try:
+            doc = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        if doc.get("parent") == job_id and doc.get("state") != "running":
+            seen.add(doc.get("id") or f.stem)
+    return len(seen)
+
+
 def run(plan):
+    """Run the plan's commands as one `prepush` row on the job band, its pytest runs
+    nested under it (they inherit `MANAMAP_JOB_PARENT`, `manamap.progress`)."""
+    from manamap.progress import Progress
+    total = FULL_TIERS if plan["scope"] == "full" else len(commands(plan))
+    with Progress(f"prepush {plan['scope']}", total=total or None, unit="runs",
+                  name="prepush") as p:
+        done = set()
+        p.counter = lambda: _finished_children(p.id, done)
+        rc = _run(plan)
+        if rc:
+            p.advance(failed=1)
+        return rc
+
+
+def _run(plan):
     print(f"CHECK SCOPE — {plan['scope'].upper()}: {plan['why']}")
     if plan["scope"] == "decks":
         print("  (CI runs the full suite on every push; this is what blocks locally)")

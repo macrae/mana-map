@@ -19,6 +19,17 @@ heartbeat. Written atomically (temp file + rename); a write that fails (a
 read-only checkout) is dropped, never raised — progress must not break a run.
 `MANAMAP_NO_PROGRESS=1` turns every writer off.
 
+THE JOB GRAPH (PRD v2, the last step). A job has an `id` (its file's stem, `<name>-<pid>`), an
+optional `parent` and optional `feeds`, so the band draws a tree rather than a list:
+
+  * `parent` is the job that STARTED this one. It defaults to `MANAMAP_JOB_PARENT`,
+    which every running job exports for its lifetime — so a pytest tier launched by
+    `prepush`, or anything a running `regen` shells out to, nests under it with no
+    wiring at the call site. Restored when the job finishes, so siblings started
+    one after another in the same process are siblings, not a chain.
+  * `feeds` names jobs WAITING on this one's output (ids or plain labels), drawn as
+    `→ label`. A pointer for the eye, never a scheduler: nothing waits on it.
+
 Never part of a result: nothing reads these files but the band, they are
 gitignored, and a finished job's file is pruned after a day.
 """
@@ -32,6 +43,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 DIR = REPO / ".progress"
 HEARTBEAT_S = 5.0
+#: The environment variable a running job exports so its children name it as parent.
+PARENT_ENV = "MANAMAP_JOB_PARENT"
 #: A finished job's file is pruned this long after it last wrote (the band
 #: hides it after two minutes; the file only feeds the band). It was a day, and
 #: a day of pytest runs piled up as cruft on the band (2026-10-06).
@@ -44,7 +57,7 @@ def enabled():
 
 class Progress:
     def __init__(self, label, total=None, unit="", name=None, counter=None,
-                 heartbeat=HEARTBEAT_S, directory=None):
+                 heartbeat=HEARTBEAT_S, directory=None, parent=None, feeds=()):
         self.label = label
         self.total = total
         self.unit = unit
@@ -52,6 +65,11 @@ class Progress:
         self.heartbeat = heartbeat
         self.dir = Path(directory) if directory else DIR
         self.path = self.dir / f"{name or label.split()[0]}-{os.getpid()}.json"
+        self.id = self.path.stem
+        inherited = os.environ.get(PARENT_ENV)
+        self.parent = parent or (inherited if inherited != self.id else None)
+        self.feeds = [str(f) for f in (feeds or ())]
+        self._env_before = None
         self.done = 0
         self.failed = 0
         self.detail = ""
@@ -84,6 +102,8 @@ class Progress:
             return self
         self._prune()
         self.write()
+        self._env_before = os.environ.get(PARENT_ENV)
+        os.environ[PARENT_ENV] = self.id
         self._thread = threading.Thread(target=self._beat, daemon=True,
                                         name=f"progress-{self.label}")
         self._thread.start()
@@ -91,6 +111,11 @@ class Progress:
 
     def finish(self, ok=True):
         self._stop.set()
+        if os.environ.get(PARENT_ENV) == self.id:
+            if self._env_before is None:
+                os.environ.pop(PARENT_ENV, None)
+            else:
+                os.environ[PARENT_ENV] = self._env_before
         if self.counter is not None:
             self._poll()
         self.state = "passed" if ok and not self.failed else "failed"
@@ -108,7 +133,12 @@ class Progress:
 
     def payload(self):
         with self._lock:
-            return {"label": self.label, "done": self.done, "total": self.total,
+            graph = {"id": self.id}
+            if self.parent:
+                graph["parent"] = self.parent
+            if self.feeds:
+                graph["feeds"] = list(self.feeds)
+            return {**graph, "label": self.label, "done": self.done, "total": self.total,
                     "unit": self.unit, "failed": self.failed, "state": self.state,
                     "started_at": self.started, "updated_at": time.time(),
                     "detail": self.detail or f"pid {os.getpid()}"}

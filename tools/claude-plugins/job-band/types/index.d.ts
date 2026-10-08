@@ -12,7 +12,16 @@ export type Job = {
   detail: string
   /** From the file name `<name>-<pid>.json`; how a dead run is told from a stalled one. */
   pid: number | null
+  /** THE JOB GRAPH: this job's id (the file stem unless stated), the job that started
+   *  it, and the jobs waiting on its output (ids or plain labels). */
+  id: string
+  parent: string | null
+  feeds: string[]
 }
+
+/** One row of the band in tree order: the job, how deep it nests, and the arrow text
+ *  for what it feeds (ids resolved to labels). */
+export type TreeRow = { job: Job; depth: number; last: boolean; feeds: string }
 
 /** One subagent, as `$.agent.list()` and its own tool calls show it. */
 export type AgentRow = {

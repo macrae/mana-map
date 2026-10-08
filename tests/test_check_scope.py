@@ -54,3 +54,43 @@ def test_the_deck_scope_drops_only_the_other_decks():
 
 def test_full_scope_is_the_unconditional_target():
     assert cs.commands({"scope": "full", "decks": [], "why": ""}) == [["make", "prepush-full"]]
+
+
+def test_prepush_is_one_band_row_and_its_pytest_runs_nest_under_it(monkeypatch, capsys):
+    """THE JOB GRAPH: prepush writes its own row, and each command it runs inherits
+    MANAMAP_JOB_PARENT — so the band draws the tiers under it, and prepush's count is
+    its finished children. A failing command fails the row."""
+    import json
+    import os
+    from manamap import progress
+
+    def fake(cmd, cwd=None):
+        child = progress.Progress("pytest x", name=f"pytest{len(ran)}")
+        ran.append(child.parent)
+        child.start().finish()
+        return type("R", (), {"returncode": 1 if len(ran) == 2 else 0})()
+
+    ran = []
+    monkeypatch.delenv(progress.PARENT_ENV, raising=False)
+    monkeypatch.setattr(cs.subprocess, "run", fake)
+    assert cs.run({"scope": "decks", "decks": ["heliod"], "why": "t"}) == 1
+    row = json.loads((progress.DIR / f"prepush-{os.getpid()}.json").read_text())
+    assert ran == [row["id"], row["id"]] and row["label"] == "prepush decks"
+    assert (row["done"], row["total"], row["state"]) == (2, 2, "failed")
+    assert cs._finished_children(row["id"]) == 2
+
+
+def test_prepush_keeps_counting_a_child_whose_file_was_pruned():
+    """A full prepush outlives its unit runs by more than the ten minutes a finished
+    row stays on disk; the first live run read 2 of 4 because of it."""
+    import json
+    from manamap import progress
+    progress.DIR.mkdir(parents=True, exist_ok=True)
+    f = progress.DIR / "pytest-1.json"
+    f.write_text(json.dumps({"id": "pytest-1", "parent": "prepush-9", "state": "passed"}))
+    seen = set()
+    assert cs._finished_children("prepush-9", seen) == 1
+    f.unlink()
+    (progress.DIR / "pytest-2.json").write_text(
+        json.dumps({"id": "pytest-2", "parent": "prepush-9", "state": "passed"}))
+    assert cs._finished_children("prepush-9", seen) == 2

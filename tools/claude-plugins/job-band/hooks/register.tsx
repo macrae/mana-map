@@ -5,7 +5,13 @@
 //
 //   { "label": "pytest regression", "done": 812, "total": 1664, "unit": "tests",
 //     "failed": 0, "state": "running" | "passed" | "failed",
-//     "started_at": <epoch s>, "updated_at": <epoch s>, "detail": "..." }
+//     "started_at": <epoch s>, "updated_at": <epoch s>, "detail": "...",
+//     "id": "regen-4242", "parent": "prepush-4100", "feeds": ["manuals"] }   // optional
+//
+// THE GRAPH: `parent` nests a job under the one that started it (`manamap.progress`
+// fills it from MANAMAP_JOB_PARENT, so a pytest tier under prepush nests on its
+// own); `feeds` is drawn as `→ label`. A parent the band cannot see makes its child a
+// root, so a missing or pruned parent never hides a running job.
 //
 // `updated_at` is a HEARTBEAT, not the last progress: a writer refreshes it every
 // few seconds even while one long test runs, so a heartbeat that stops means the
@@ -14,7 +20,7 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { AgentRow, Job, Snapshot } from '../types'
+import type { AgentRow, Job, Snapshot, TreeRow } from '../types'
 
 const snapshot = atom({ plugin: 'job-band', key: 'snapshot' } as const, { now: 0, jobs: [], agents: [] } as Snapshot)
 const isHidden = atom({ plugin: 'job-band', key: 'isHidden' } as const, false)
@@ -72,7 +78,43 @@ export function parseJob(file: string, text: string): Job | null {
     updatedAt: updated,
     detail: typeof raw.detail === 'string' ? raw.detail : '',
     pid: pidOf(file),
+    id: typeof raw.id === 'string' && raw.id ? raw.id : file.replace(/\.json$/, ''),
+    parent: typeof raw.parent === 'string' && raw.parent ? raw.parent : null,
+    feeds: Array.isArray(raw.feeds) ? raw.feeds.filter((f): f is string => typeof f === 'string') : [],
   }
+}
+
+/** The jobs in tree order: each root by start time, its children under it (depth-first,
+ *  by start time). A job whose parent is not among `jobs` is a root; a cycle (which
+ *  no writer makes, but a hand-edited file could) is broken by drawing each job once. */
+export function tree(jobs: Job[]): TreeRow[] {
+  const byId = new Map(jobs.map(j => [j.id, j]))
+  const kids = new Map<string, Job[]>()
+  const roots: Job[] = []
+  for (const j of jobs) {
+    if (j.parent && j.parent !== j.id && byId.has(j.parent)) {
+      kids.set(j.parent, [...(kids.get(j.parent) ?? []), j])
+    } else roots.push(j)
+  }
+  const label = (f: string) => byId.get(f)?.label ?? f
+  const rows: TreeRow[] = []
+  const seen = new Set<string>()
+  const walk = (j: Job, depth: number, last: boolean) => {
+    if (seen.has(j.id)) return
+    seen.add(j.id)
+    rows.push({ job: j, depth, last, feeds: j.feeds.length ? `→ ${j.feeds.map(label).join(', ')}` : '' })
+    const cs = (kids.get(j.id) ?? []).sort((a, b) => a.startedAt - b.startedAt)
+    cs.forEach((c, i) => walk(c, depth + 1, i === cs.length - 1))
+  }
+  const byStart = (a: Job, b: Job) => a.startedAt - b.startedAt
+  roots.sort(byStart).forEach(r => walk(r, 0, true))
+  for (const j of [...jobs].sort(byStart)) walk(j, 0, true) // whatever a cycle left out
+  return rows
+}
+
+/** The indent before a row's icon: nothing for a root, `└ ` / `├ ` under a parent. */
+export function indent(depth: number, last: boolean): string {
+  return depth === 0 ? '' : '   '.repeat(depth - 1) + (last ? ' └ ' : ' ├ ')
 }
 
 /** `<name>-<pid>.json` -> pid, or null. */
@@ -402,7 +444,7 @@ export const register: Register = on => {
 
     return (
       <Box flexDirection="column">
-        {shown.map(job => {
+        {tree(shown).map(({ job, depth, last, feeds }) => {
           const d = describe(job, now)
           const stalled = isStalled(job, now)
           const colour =
@@ -410,6 +452,7 @@ export const register: Register = on => {
           const icon = job.state === 'passed' ? '✔' : job.state === 'failed' ? '✘' : stalled ? '⏸' : frame
           return (
             <Box key={job.file}>
+              {depth ? <Text dimColor>{indent(depth, last)}</Text> : null}
               <Text color={colour}>{icon} </Text>
               <Text bold>{job.label} </Text>
               {d.bar ? <Text color={colour}>{d.bar} </Text> : null}
@@ -419,6 +462,7 @@ export const register: Register = on => {
               <Text color={stalled ? 'yellow' : undefined} dimColor={!stalled}>
                 {d.tail}
               </Text>
+              {feeds ? <Text color="blue"> {feeds}</Text> : null}
             </Box>
           )
         })}

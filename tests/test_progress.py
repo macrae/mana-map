@@ -87,3 +87,33 @@ def test_a_dead_runs_file_is_pruned_and_a_live_ones_kept(tmp_path):
     assert not dead.exists()
     assert me.exists()
     assert alive.exists(), "a FRESH finished file stays until it is ten minutes old"
+
+
+def test_a_running_job_is_the_parent_of_whatever_starts_under_it(tmp_path, monkeypatch):
+    """THE JOB GRAPH: a job exports its id while it runs, so a child — in this process
+    or a subprocess it launches — names it as parent with no wiring at the call site.
+    Siblings started one after another are siblings, not a chain."""
+    import os
+    import subprocess
+    import sys
+    monkeypatch.delenv(progress.PARENT_ENV, raising=False)
+    with progress.Progress("prepush full", directory=tmp_path, name="prepush") as top:
+        with progress.Progress("pytest unit", directory=tmp_path, name="unit") as a:
+            pass
+        with progress.Progress("pytest regression", directory=tmp_path, name="regr",
+                               feeds=["make manuals"]) as b:
+            seen = subprocess.run([sys.executable, "-c",
+                                   f"import os; print(os.environ['{progress.PARENT_ENV}'])"],
+                                  capture_output=True, text=True).stdout.strip()
+    assert "parent" not in _read(top) and _read(top)["id"] == top.id == f"prepush-{os.getpid()}"
+    assert _read(a)["parent"] == top.id and _read(b)["parent"] == top.id
+    assert _read(b)["feeds"] == ["make manuals"] and seen == b.id
+    assert progress.PARENT_ENV not in os.environ
+
+
+def test_a_stated_parent_wins_over_the_inherited_one(tmp_path, monkeypatch):
+    monkeypatch.setenv(progress.PARENT_ENV, "regen-1")
+    p = progress.Progress("simulate x", directory=tmp_path, parent="experiment-9").start()
+    p.finish()
+    assert _read(p)["parent"] == "experiment-9"
+    assert progress.os.environ[progress.PARENT_ENV] == "regen-1"   # restored, not cleared
