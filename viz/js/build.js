@@ -167,12 +167,17 @@
   /* A Commander deck's colour identity is its COMMANDER's, not the union of what is in
    * it — that is the rule, and it is why an off-colour card is a violation rather than a
    * widening. With no commander set there is no restriction at all. */
+  /* EVERY commander, not the first. Partners are two commanders and the identity is
+   * their union — sharknado is Shabraz (WU) AND Brallin (R), and reading only the
+   * manifest's one `commander` called every red card in that deck off-colour. */
   function deckColorIdentity() {
     const ci = new Set();
-    if (!active) return ci;
-    const cmdIdx = active.commanderName && nameToIdx ? nameToIdx.get(active.commanderName) : null;
-    if (cmdIdx != null && MM.allData[cmdIdx]) {
-      parseColorIdentity(MM.allData[cmdIdx].ci).forEach(function (c) { ci.add(c); });
+    if (!active || !nameToIdx) return ci;
+    for (const name of active.commanderNames) {
+      const cmdIdx = nameToIdx.get(name);
+      if (cmdIdx != null && MM.allData[cmdIdx]) {
+        parseColorIdentity(MM.allData[cmdIdx].ci).forEach(function (c) { ci.add(c); });
+      }
     }
     return ci;
   }
@@ -829,13 +834,70 @@
         return ok;
       });
     };
-    gridChain = gridChain.then(run, run);
+    gridChain = gridChain.then(run, run).then(function (ok) {
+      // The card panel's deck block reads the same row: repaint it when the write lands
+      // (and below, when it is queued), whichever control sent it.
+      if (MM.refreshDeckContext) MM.refreshDeckContext(name);
+      return ok;
+    });
+    if (MM.refreshDeckContext) MM.refreshDeckContext(name);
     return gridChain;
   }
 
   /* A verdict from a button or a key — the one path both use (Undo included). */
   function gridAct(name, verdict) {
     return markCard(name, verdict, null, { advance: verdict !== 'unreviewed' });
+  }
+
+  /* A verdict from the CARD PANEL's Watch / Pass. The same `markCard` — its one-write-
+   * per-card guard, its chain, its tile redraw — so there is no second write path. It
+   * does not advance the grid's focus: the pilot is reading this card in the panel,
+   * not working down the grid. */
+  function markFromPanel(nameOrRow, verdict) {
+    const name = typeof nameOrRow === 'number' ? (MM.cardRecord(nameOrRow) || {}).n : nameOrRow;
+    if (!name || !cardRow(name)) return Promise.resolve(false);
+    return markCard(name, verdict, null, { advance: false });
+  }
+
+  /* What the card panel says about a card against the deck Build has open, or null with
+   * no deck. Read-only, and every fact comes from where the rest of Build gets it: the
+   * 99 from `active.main`, roles from `card_roles.json` through the role grouping's
+   * family order (`primaryFamily` is the bar the card counts in), identity from the
+   * commanders, the watch row from the set the grid is showing. */
+  function cardContext(row) {
+    if (!active || !nameToIdx || typeof row !== 'number' || row < 0) return null;
+    const d = MM.cardRecord(row);
+    if (!d) return null;
+    const name = d.n;
+    const slot = active.main.find(s => s.name === name) || null;
+    const prio = familyPriority();
+    const rank = f => { const i = prio.indexOf(f); return i === -1 ? 99 : i; };
+    const family = primaryFamily(name, row);
+    const roles = ((rolesByName && rolesByName[name]) || []).map(function (r) {
+      const at = r.indexOf(':');
+      const fam = at === -1 ? r : r.slice(0, at);
+      return { role: r, family: fam, sub: at === -1 ? '' : r.slice(at + 1),
+               colour: familyColour(fam), primary: fam === family };
+    }).sort((a, b) => (rank(a.family) - rank(b.family)) || a.role.localeCompare(b.role));
+    const deckCI = deckColorIdentity();
+    const wubrg = s => 'WUBRG'.split('').filter(c => s.has(c));
+    const cardCI = parseColorIdentity(d.ci);
+    const set = watchSet();
+    const w = cardRow(name);
+    return {
+      slug: active.slug,
+      deckName: (active.entry && active.entry.deck_name) || active.slug,
+      inDeck: !!slot,
+      qty: slot ? slot.qty : 0,
+      isCommander: active.commanderNames.indexOf(name) !== -1,
+      family: family,
+      roles: roles,
+      colour: { checked: deckCI.size > 0, deck: wubrg(deckCI), card: wubrg(cardCI),
+                off: wubrg(cardCI).filter(c => !deckCI.has(c)) },
+      watch: w ? { set: set.title, axis: w.axis, pays: PAYS_LABEL[w.pays] || '', why: w.why,
+                   verdict: w.verdict, note: w.note, pending: !!gridPending.get(name) } : null,
+      canWrite: canWriteGrid(),
+    };
   }
 
   function showOnMap(name) {
@@ -1067,6 +1129,9 @@
 
     const main = cards.map(toSlot);
     const unmapped = main.filter(s => s.idx === null).map(s => s.name);
+    // Every card the list flags `is_commander` (partners are two), else the one name.
+    const flagged = cards.filter(c => c.is_commander).map(c => c.name);
+    const commanderNames = flagged.length ? flagged : (commanderName ? [commanderName] : []);
 
     // The Short List: ten cards the pilot might sleeve. Pool picks are the interesting
     // ones on a map — they are, literally, elsewhere.
@@ -1084,6 +1149,7 @@
       slug: entry.slug,
       entry,
       commanderName,
+      commanderNames,
       main,
       candidates,
       unmapped,
@@ -1924,7 +1990,7 @@
     const selected = window.Session ? Session.focus : -1;
     if (selected >= 0 && MM.buildCardDetailHtml) {
       html += '<div class="deck-section">' +
-        MM.buildCardDetailHtml(MM.cardRecord(selected), selected) + '</div>';
+        MM.buildCardDetailHtml(MM.cardRecord(selected), selected, { title: true, stats: true }) + '</div>';
     }
 
     if (active.edges.length) {
@@ -2524,6 +2590,8 @@
     dimsAll,
     chooseSet,
     toggleGrid,
+    cardContext,
+    markFromPanel,
     renderGrid,
     // Read-only probes for the browser suite.
     get watchSetId() { return watchSetId; },

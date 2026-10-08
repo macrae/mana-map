@@ -427,7 +427,9 @@ window.Discovery = (function () {
     // unification rather than the removal of a feature.
     // The Keep button is part of the shared card HTML now (MM.buildRelationHtml), so
     // every panel that shows a card can put it in the library.
-      html += MM.buildCardDetailHtml(MM.cardRecord(current), current);
+      // `stats`: the landing's name is the `.lens-title` above, but its cost, P/T and
+      // rarity were only legible on the image, which now follows the text.
+      html += MM.buildCardDetailHtml(MM.cardRecord(current), current, { stats: true });
     }
 
     /* Everything below is a way of choosing a DIFFERENT card, which is a

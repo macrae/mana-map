@@ -1396,6 +1396,56 @@ change them together.
 A deck map position is **LOCAL** — the deck re-laid-out from its own cards — and is not an
 atlas position. The panel says so in its own body copy, for the same reason drill does.
 
+## The card panel: text first (2026-10-08)
+
+`buildCardDetailHtml(d, row, opts)` is the ONE card body — the selected stack and its
+accordion, the browse panel, Discover's landing and Build's selected card all render it, and
+its markup order is the only ordering rule (`#deckInner`'s flex `order` re-sort is deleted).
+An audit at 1440x900 measured the old panel: a 443px image first, so on a long card the
+oracle started at the fold, while the image only repeats what the panel prints. Now, top to
+bottom:
+
+| block | what it carries |
+|---|---|
+| header | `cardHeaderHtml`: name, cost, P/T (or loyalty / defense), rarity, `+ Deck` / `✓ In Deck`, close. `#deckInner` has no header, so `opts.title` / `opts.stats` draw the same `quickStatsHtml` line (Discover keeps its `.lens-title` for the name) |
+| deck context | **Build only, with a deck loaded** (`Build.cardContext(row)`; below) |
+| type + oracle | a multi-face card (`A // B`, 891 in the corpus) gets one block per face, labelled **Front — name** / **Back — name**, each with its own type and text. 17 cards have a face with no rules text, so their oracle cannot be assigned to a face — the headings stay and the text prints once, unassigned, with a note |
+| relations | Similar / Synergy / Outclassed by, counts stated before the click; the synergy caveat is the button's `title` |
+| the comparison | `buildObsolescenceHtml`: a CLOSED `<details>` directly under the relation row — strength, gains, costs and "played less" for each card that outclasses this one. It was a separate "Compare with" box above the oracle reading the same index as the button; obsolescence now has one place |
+| Keep, Set as commander | one row (`.detail-actions`) |
+| the image | 240px, the box reserved at 488:680; a click toggles full width. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once |
+| facts | `EDHREC #n · Commander: legal / not legal · Identity …`; every other format inside a closed `<details>` |
+
+**Dropped**: the CMC row (the cost is in the header) and the Keywords section (it repeats the
+oracle) — `d.k` is still searched. **"Banned" cannot be shown**: the projection's `f` lists
+LEGAL formats only (`reduce._legal_formats`), so banned and not-legal both read "not legal" and
+the line's title says why; telling them apart needs an export change and a regenerated
+projection. **`f` means something else in a slim record**: `viz_index.json`'s `f` is the
+first-printed DATE, so Discover's pre-projection record would read as "legal nowhere" — the
+legality line is omitted until the projection's record (it has `x`) is the one in hand.
+**The landing upgrades in place**: the slim record has no type or oracle either, and with the
+image no longer leading, a landing painted before the projection showed a name, the relations
+and an image until something re-rendered — so when the projection lands, Discover's panel
+re-renders once (skipped while the pilot is typing into it).
+
+**The deck block** (`.deck-ctx`) appears only when `MM.mode === 'build'` and Build has a deck
+open, in whichever panel shows the card. `Build.cardContext(row)` returns data and mana-map
+renders it; every fact has its existing home. **In the 99 / not / ★ Commander** from
+`active.main`. **Roles** from `card_roles.json`, one chip per role in `MM.GROUPINGS.role`'s
+family order, with the bar the card counts in (`primaryFamily`) marked. **Colour identity**
+against the union of EVERY `is_commander` card — partners are two (sharknado is Shabraz WU +
+Brallin R), and `deckColorIdentity` had read only the manifest's one commander, so *show
+illegal* called every red card in that deck off-colour. And, when the card is in the watch set
+the grid is showing, its **axis, pays, verdict, why and note** with **Watch / Pass / Undo**.
+Those call `Build.markFromPanel(name, verdict)`, which is the grid's own `markCard` — its
+one-write-per-card guard, its promise chain, its tile redraw — so there is no second write
+path; it does not advance the grid's focus. `markCard` calls `MM.refreshDeckContext(name)` when
+a write is queued ("saving…") and when it lands, patching every `.deck-ctx` for that card in
+place (a re-render would reset `#detailInner`'s scroll), so the panel and the tile cannot
+disagree. Outside Build, or with no deck, there is no block. `tests/test_viz_card_panel.py`
+drives all of it with real clicks; `watch/mark` is mocked by the review grid's `_mock_api`
+and Scryfall is routed, so nothing reaches the network or the tracked `watchlist.json`.
+
 ## Explore mode highlights
 
 - **Three maps** (`#mapSelect`, `MAP_CONFIGS`): Color+Type, Abilities, CardBERT —
@@ -1617,7 +1667,8 @@ on the map.
 
 `tests/test_viz_review_grid.py` drives all of it with real keys and clicks against a MOCKED
 `watch/mark` (a catch-all refuses any other `/api/` call), so the tracked `watchlist.json` is
-never written.
+never written. The card panel's **Watch / Pass** (its Build deck block — see "The card panel:
+text first") is a third caller of the same `markCard`, not a second write path.
 
 ## Future options (deliberately not done)
 

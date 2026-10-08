@@ -39,8 +39,67 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .detail-close { background: none; border: 1px solid #3a3a5a; color: #aaa; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .detail-close:hover { border-color: #c4a747; color: #e0e0e0; }
 
-.detail-card-image { margin-bottom: 12px; border-radius: 12px; overflow: hidden; background: #2a2a4a; min-height: 200px; }
-.detail-card-image img { width: 100%; display: block; border-radius: 12px; }
+/* The card image FOLLOWS the text (see `buildCardDetailHtml`): 240px, the box reserved
+   at the card's 488:680 so nothing below it jumps when Scryfall answers; a click toggles
+   full panel width. No art-crop window — the old 200px `overflow:hidden` frame sliced the
+   card through its rules text. */
+.detail-card-image { margin: 4px 0 10px; display: flex; flex-direction: column;
+  align-items: center; gap: 6px; }
+.detail-card-image img { width: 240px; max-width: 100%; height: auto; aspect-ratio: 488 / 680;
+  display: block; border-radius: 10px; background: #2a2a4a; cursor: zoom-in; }
+.detail-card-image.is-full img { width: 100%; cursor: zoom-out; }
+.detail-card-image .detail-image-fallback { width: 240px; max-width: 100%; }
+.detail-flip { font-size: 0.72rem; }
+.detail-flip:disabled { opacity: 0.55; cursor: default; }
+/* A panel with no `.viewer-header` (Discover's landing, Build's selected card). */
+.detail-head { margin-bottom: 6px; }
+.detail-name { font-size: 1.05rem; color: #c4a747; font-weight: 600; line-height: 1.3; }
+.detail-head .viewer-quickstats { margin-bottom: 2px; }
+/* DFC faces, each labelled. */
+.detail-face { margin-bottom: 8px; }
+.detail-face:last-child { margin-bottom: 0; }
+.detail-face-label { font-size: 0.78rem; color: #c4a747; margin-bottom: 2px;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.detail-face-cost .mana-sym { width: 16px; height: 16px; font-size: 0.55rem; }
+.detail-face .detail-type { margin-bottom: 4px; }
+/* Keep and Set as commander, on one row under the relations. */
+.detail-actions { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 10px; }
+.detail-actions .discover-keep { width: auto; flex: 1; margin: 0; }
+/* EDHREC · Commander · identity on one line; the other formats folded. */
+.detail-facts { font-size: 0.78rem; color: #aaa; margin: 2px 0 4px; }
+.detail-facts .legal-yes { color: #4ade80; }
+.detail-facts .legal-no { color: #F87171; cursor: help; }
+.detail-formats-more { margin-bottom: 8px; }
+.detail-formats-more > summary { cursor: pointer; font-size: 0.7rem; color: #6f6f8a;
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 0; }
+.detail-formats-more > summary:hover { color: #c4a747; }
+.detail-formats-more .detail-formats { margin-top: 4px; }
+/* ── The card in the deck Build has open ─────────────────────────────── */
+.deck-ctx { margin: 0 0 10px; padding: 8px 10px; background: #1a1a2e;
+  border: 1px solid #3a3a2a; border-left: 3px solid #c4a747; border-radius: 6px; font-size: 0.78rem; }
+.deck-ctx-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.deck-ctx-deck { color: #c4a747; text-transform: uppercase; letter-spacing: 0.06em;
+  font-size: 0.7rem; font-weight: 600; }
+.deck-ctx-status { color: #aaa; }
+.deck-ctx-status.is-in { color: #4ade80; }
+.deck-ctx-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 2px 0; color: #ccc; }
+.deck-ctx-k { color: #6f6f8a; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.deck-ctx-role { display: inline-flex; align-items: center; gap: 4px; }
+.deck-ctx-role.is-primary { font-weight: 600; color: #e8e8f0; }
+.deck-ctx-sub { color: #8a8aa0; font-weight: 400; }
+.deck-ctx-none { color: #6f6f8a; }
+.deck-ctx-ok { color: #4ade80; }
+.deck-ctx-bad { color: #F87171; }
+.deck-ctx-watch { margin-top: 6px; padding-top: 6px; border-top: 1px solid #2a2a4a; }
+.deck-ctx-axis { color: #e8e8f0; text-transform: uppercase; font-weight: 600; font-size: 0.72rem; }
+.deck-ctx-pays { color: #D9B44A; }
+.deck-ctx-verdict { color: #8a8aa0; margin-left: auto; }
+.deck-ctx-watch.v-watching .deck-ctx-verdict { color: #c4a747; }
+.deck-ctx-why { margin: 4px 0; color: #ddd; line-height: 1.4; }
+.deck-ctx-note { margin: 4px 0; color: #aaa; font-style: italic; }
+.deck-ctx-actions { display: flex; gap: 6px; margin-top: 4px; }
+.deck-ctx-act { flex: 1; font-size: 0.75rem; }
+.deck-ctx-act.is-on { border-color: #c4a747; color: #c4a747; }
 
 .detail-type { color: #aaa; font-size: 0.85rem; margin-bottom: 8px; }
 
@@ -49,15 +108,11 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 
 .detail-oracle { font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; color: #ddd; background: #1a1a2e; padding: 10px; border-radius: 6px; border: 1px solid #2a2a4a; }
 
-.detail-meta { font-size: 0.8rem; color: #bbb; }
-.detail-meta span { display: block; margin-bottom: 2px; }
 
 .detail-formats { display: flex; flex-wrap: wrap; gap: 4px; }
 .format-badge { background: #2a2a4a; color: #aaa; border: 1px solid #3a3a5a; border-radius: 3px; padding: 2px 6px; font-size: 0.7rem; }
 .format-badge.legal { background: #1a3a2a; color: #4ade80; border-color: #2a5a3a; }
 
-.detail-keywords { display: flex; flex-wrap: wrap; gap: 4px; }
-.keyword-badge { background: #2a2a4a; color: #ccc; border-radius: 3px; padding: 2px 6px; font-size: 0.7rem; }
 
 
 /* ── Mana Symbols ─────────────────────────────────────────────────────── */
@@ -146,8 +201,9 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
                  padding: 1px 6px; border-radius: 3px; flex-shrink: 0; margin-left: 4px; }
 
 /* ── Obsolescence ─────────────────────────────────────────────────────── */
-.obsolescence-section { margin-top: 8px; padding: 8px; background: #1a1a2e; border: 1px solid #5a2a2a; border-radius: 6px; }
-.obsolescence-title { font-size: 0.7rem; text-transform: uppercase; color: #DC2626; letter-spacing: 0.5px; margin-bottom: 6px; }
+.obsolescence-section { margin: 0 0 8px; padding: 6px 8px; background: #1a1a2e; border: 1px solid #5a2a2a; border-radius: 6px; }
+.obsolescence-title { font-size: 0.7rem; text-transform: uppercase; color: #DC2626; letter-spacing: 0.5px; cursor: pointer; }
+.obsolescence-section[open] > .obsolescence-title { margin-bottom: 6px; }
 .obsolescence-item { margin-bottom: 6px; }
 .obsolescence-item:last-child { margin-bottom: 0; }
 .obsolescence-name { font-size: 0.85rem; color: #e0e0e0; font-weight: 600; }
@@ -630,56 +686,14 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 /* The card leads, so its name gets display weight rather than section weight. */
 .lens-title { font-size: 1.15rem; letter-spacing: 0.01em; }
 
-/* The card leads — but the RELATIONS are the action, and the first cut put them
-   below the fold. Measured: a 749px viewport, a 532px card image, and
-   Similar/Synergy/Outclassed starting at 824px. Leading with the card is only
-   an improvement if what you do with it is still reachable, so the art is
-   capped at a size that keeps the three relations and Keep on screen. */
-/* `.detail-card-image` is a 200px ART-CROP window with `overflow:hidden` — the
-   right shape for a hover preview, and the wrong one for a landing that leads
-   with the card. Capping the IMG alone at 300px just overflowed that window and
-   sliced the card through its rules text, which reads as broken rather than as
-   cropped. In the Discover panel the frame sizes to the card instead. */
-#deckInner .detail-card-image { height: auto; max-height: none; overflow: visible;
-  display: flex; justify-content: center; background: none; padding: 0;
-  /* BOTH of these, and the second is the one that was actually binding.
-     `.detail-card-image` carries `min-height: 200px` (a floor for the art-crop
-     window), and a flex container's default `align-items: stretch` stretches
-     the image to that floor — overriding the image's own `height: auto`, which
-     is why raising `max-height` to 420 changed nothing at all. */
-  min-height: 0; align-items: flex-start; }
-/* Sized against the fold, not by eye. At 420px the card was a proper hero and
-   pushed Keep off a 749px viewport; at 380 the name, the card, all three
-   relations AND Keep sit above it together, which is the whole group a landing
-   needs to offer at once. Anything taller trades the action for the picture. */
-#deckInner .detail-card-image img { max-height: 380px; max-width: 100%;
-  width: auto; height: auto; display: block; border-radius: 10px; }
+/* ONE ORDERING RULE: the markup's. `#deckInner` used to be a column flex container
+   whose children were re-ordered with `order: 0..3` so the card's relations came
+   before its oracle — a second ordering on top of `buildCardDetailHtml`'s own. The
+   builder now emits the text, the relations and Keep before the image in every
+   panel, so the reordering, the `flex: none` it forced on every child and the
+   380px image cap that fought the art-crop frame are all gone. */
 .discover-relations { display: flex; gap: 6px; margin: 10px 0 6px; }
 .discover-relations .lens-btn { flex: 1; }
-.discover-keep { width: 100%; }
-
-/* THE ACTION FOLLOWS THE CARD, and the reading matter follows the action.
-   `buildCardDetailHtml` emits the oracle text, keywords and details between the
-   image and the relations — 304px of it, measured — which put Similar/Synergy/
-   Outclassed at 850px in a 749px viewport. Every word of that block is already
-   legible on the card image above it, so it is not hidden (nothing is lost);
-   it is ORDERED after the buttons, which is where a reader wants it anyway.
-   Presentation only: one flex order, no markup moved, and `buildCardDetailHtml`
-   stays the shared thing every panel renders. */
-#deckInner { display: flex; flex-direction: column; }
-/* `flex: none` on every child, because making `#deckInner` a column flex
-   container to reorder it also made every child SHRINKABLE — and the card
-   wrapper, once its `min-height` floor was removed, collapsed to nothing while
-   the image kept its size and drew over the buttons below. Reordering should
-   not change anyone's height. */
-#deckInner > * { order: 3; flex: none; }
-#deckInner > .deck-header { order: 0; }
-#deckInner > .lens-title { order: 1; }
-#deckInner > .detail-card-image { order: 1; }
-#deckInner > .detail-type { order: 1; }
-#deckInner > .discover-relations { order: 2; }
-#deckInner > .discover-keep { order: 2; }
-#deckInner > .lens-note { order: 2; }
 
 /* The commander picker: type, choose. No invalid state to report. */
 .nd-chosen { display: flex; align-items: baseline; gap: 10px; margin: 8px 0;

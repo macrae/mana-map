@@ -1153,61 +1153,258 @@
     }
   }
 
-  // `row` is required for the relation buttons: the old pair took no argument at all and
-  // leaned on `selectedCards`, which is exactly why they did nothing in three of the five
-  // panels that render this HTML.
-  function buildCardDetailHtml(d, row) {
+  /* THE CARD BODY, TEXT FIRST. One builder for every panel that shows a card (the
+   * selected stack, the browse panel, Discover's landing and Build's selected card).
+   *
+   * Audit 2026-10-08 at 1440x900: the image came first at 443px, so on a long card the
+   * oracle started at the fold — and the image only repeats the name, cost, type and
+   * text the panel prints anyway. Keywords repeated the oracle, CMC repeated the cost in
+   * the header, every format got a badge, and obsolescence was shown twice ("Compare
+   * with" and "Outclassed by" read the same index). The order is now the markup's, in
+   * every panel — `#deckInner` no longer reorders it with flex `order`:
+   *
+   *   [title/stats when the panel has no header] · deck context (Build only) ·
+   *   type + oracle (DFC faces labelled) · relations, the outclassed-by comparison and
+   *   Keep · the image (240px, click to enlarge, flip for a DFC) · EDHREC, Commander
+   *   legality and identity, with every other format in a closed <details>.
+   *
+   * `row` is required for the relation buttons: the old pair took no argument at all and
+   * leaned on `selectedCards`, which is exactly why they did nothing in three of the five
+   * panels that render this HTML. `opts.title` / `opts.stats` are for the two `#deckInner`
+   * panels, which draw no `.viewer-header`: Build names the card here, Discover already
+   * has its `.lens-title`. */
+  function buildCardDetailHtml(d, row, opts) {
+    opts = opts || {};
     let html = '';
-
-    // No `loading="lazy"`: the only card image we ever render is the open one, and it is
-    // scrolled into view the moment it appears — deferring it just adds a beat of grey.
-    html += '<div class="detail-card-image">';
-    html += '<img src="' + cardImageUrl(d.n) + '" alt="' + escHtml(d.n) + '"';
-    html += ' onerror="this.onerror=null;this.parentElement.style.minHeight=\'auto\';this.parentElement.innerHTML=\'<div class=\\\'detail-image-fallback\\\'>Image not available</div>\'">';
-    html += '</div>';
-
-    if (d.t) html += '<div class="detail-type">' + escHtml(d.t) + '</div>';
-
+    if (opts.title || opts.stats) {
+      html += '<div class="detail-head">' +
+        (opts.title ? '<div class="detail-name">' + escHtml(d.n) + '</div>' : '') +
+        '<div class="viewer-quickstats">' + quickStatsHtml(d) + '</div></div>';
+    }
+    html += deckContextHtml(d, row);
+    html += cardTextHtml(d);
+    html += buildRelationHtml(row);
+    // Not inside buildRelationHtml: that returns nothing until the neighbour table is in,
+    // and the comparison must not wait on it. It still renders directly under the
+    // relation buttons, so obsolescence has ONE place in the panel.
     html += buildObsolescenceHtml(d.n);
+    html += cardActionsHtml(row);
+    html += cardImageHtml(d);
+    html += cardFactsHtml(d);
+    return html;
+  }
 
-    if (d.o) {
-      html += '<div class="detail-section">';
-      html += '<div class="detail-section-title">Oracle Text</div>';
-      html += '<div class="detail-oracle">' + escHtml(d.o).replace(/ \/\/ /g, '<br><br>') + '</div>';
+  /* Type and oracle. A multi-face card (`A // B`, 891 in the corpus) gets one block per
+   * face, labelled — they used to be joined with an unlabelled <br><br>. Faces are
+   * aligned by ` // ` in name, type and oracle; 17 cards have a face with no rules text,
+   * so the oracle has fewer parts than the name and cannot be assigned to a face — those
+   * keep their face headings and print the text once, unassigned, rather than guess. */
+  function cardTextHtml(d) {
+    const faces = String(d.n || '').split(' // ');
+    if (faces.length < 2) {
+      let html = d.t ? '<div class="detail-type">' + escHtml(d.t) + '</div>' : '';
+      if (d.o) {
+        html += '<div class="detail-section detail-text">' +
+          '<div class="detail-section-title">Oracle Text</div>' +
+          '<div class="detail-oracle">' + escHtml(d.o) + '</div></div>';
+      }
+      return html;
+    }
+    const types = String(d.t || '').split(' // ');
+    const texts = d.o ? String(d.o).split(' // ') : [];
+    const costs = String(d.mc || '').split(' // ');
+    const aligned = texts.length === faces.length;
+    let html = '<div class="detail-section detail-text detail-faces">' +
+      '<div class="detail-section-title">Oracle Text</div>';
+    faces.forEach(function (face, i) {
+      const label = i === 0 ? 'Front' : i === 1 ? 'Back' : 'Face ' + (i + 1);
+      html += '<div class="detail-face">' +
+        '<div class="detail-face-label">' + label + ' — ' + escHtml(face) +
+        (costs.length === faces.length && costs[i]
+          ? ' <span class="detail-face-cost">' + renderManaSymbols(costs[i]) + '</span>' : '') +
+        '</div>';
+      if (types[i]) html += '<div class="detail-type">' + escHtml(types[i]) + '</div>';
+      if (aligned && texts[i]) html += '<div class="detail-oracle">' + escHtml(texts[i]) + '</div>';
+      html += '</div>';
+    });
+    if (!aligned && d.o) {
+      html += '<div class="detail-oracle">' + escHtml(d.o) + '</div>' +
+        '<div class="lens-note">One face has no rules text; the export does not say which.</div>';
+    }
+    return html + '</div>';
+  }
+
+  /* The image, AFTER the text and the actions: 240px, click to see it full width. A
+   * multi-face card gets a flip: Scryfall's `named` endpoint takes `face=back` for a card
+   * with a printed back. The projection carries no `layout`, so whether one exists is
+   * learned by asking — a split, adventure or flip card prints both halves on ONE face,
+   * Scryfall refuses `face=back`, and `cardImageError` puts the front back and says so.
+   * Never lazy-loaded: the only card image we render is the open one. */
+  function cardImageHtml(d) {
+    const faces = String(d.n || '').split(' // ');
+    const front = cardImageUrl(d.n);
+    let html = '<div class="detail-card-image">';
+    html += '<img src="' + escHtml(front) + '" alt="' + escHtml(d.n) + '"' +
+      ' data-front="' + escHtml(front) + '"' +
+      (faces.length > 1 ? ' data-retry="' + escHtml(cardImageUrl(faces[0])) + '"' : '') +
+      ' title="Click to enlarge" onclick="MM.toggleCardImage(this)" onerror="MM.cardImageError(this)">';
+    if (faces.length > 1) {
+      html += '<button class="lens-btn detail-flip" data-back="' +
+        escHtml(cardImageUrl(faces[0]) + '&face=back') + '" onclick="MM.flipCard(this)"' +
+        ' title="Show the other face">⇄ Back — ' + escHtml(faces[1]) + '</button>';
+    }
+    return html + '</div>';
+  }
+
+  function toggleCardImage(img) {
+    const box = img && img.closest('.detail-card-image');
+    if (!box) return;
+    const full = box.classList.toggle('is-full');
+    img.title = full ? 'Click to shrink' : 'Click to enlarge';
+  }
+
+  function flipCard(btn) {
+    const box = btn && btn.closest('.detail-card-image');
+    const img = box && box.querySelector('img');
+    if (!img) return;
+    const name = img.getAttribute('alt') || '';
+    const faces = name.split(' // ');
+    const toBack = img.getAttribute('data-face') !== 'back';
+    img.setAttribute('data-face', toBack ? 'back' : 'front');
+    img.src = toBack ? btn.getAttribute('data-back') : img.getAttribute('data-front');
+    btn.textContent = '⇄ ' + (toBack ? 'Front — ' + faces[0] : 'Back — ' + (faces[1] || ''));
+  }
+
+  /* Three failures, three answers. The back face refused: this card has no separate
+   * back image, so show the front and retire the flip. The full `A // B` name 404s for
+   * some DFCs (see `Shell.cardImageUrl`): retry the front face once. Anything else is a
+   * missing image, said in words. */
+  function cardImageError(img) {
+    const box = img && img.closest('.detail-card-image');
+    if (!box) return;
+    const flip = box.querySelector('.detail-flip');
+    if (img.getAttribute('data-face') === 'back') {
+      img.setAttribute('data-face', 'front');
+      img.src = img.getAttribute('data-front');
+      if (flip) {
+        flip.disabled = true;
+        flip.textContent = 'both faces are on this image';
+        flip.title = 'Scryfall has no separate back image for this card';
+      }
+      return;
+    }
+    const retry = img.getAttribute('data-retry');
+    if (retry && img.getAttribute('data-retried') !== '1') {
+      img.setAttribute('data-retried', '1');
+      img.setAttribute('data-front', retry);
+      img.src = retry;
+      return;
+    }
+    img.onerror = null;
+    box.innerHTML = '<div class="detail-image-fallback">Image not available</div>';
+  }
+
+  /* EDHREC, Commander and identity on one line; every other format collapsed.
+   *
+   * `d.f` is the list of LEGAL formats in the projection record, and something else
+   * entirely in the slim `viz_index` record Discover paints from before the projection
+   * lands — there it is the first-printed DATE. Reading a date as a format list would
+   * call every card "not legal", so the legality is omitted until the projection's
+   * record is the one in hand (`x` is the projection's own field). The export keeps
+   * legal formats only, so "banned" and "not legal" cannot be told apart here — the
+   * line says "not legal" for both and its title says why. */
+  function cardFactsHtml(d) {
+    const full = d.x != null;
+    const parts = [];
+    if (d.er != null) parts.push('EDHREC #' + Number(d.er).toLocaleString());
+    let formats = '';
+    if (full) {
+      const legal = new Set(d.f ? String(d.f).split(',') : []);
+      parts.push(legal.has('commander')
+        ? '<span class="legal-yes">Commander: legal</span>'
+        : '<span class="legal-no" title="Banned or not legal — the exported data lists ' +
+          'legal formats only">Commander: not legal</span>');
+      formats = '<details class="detail-formats-more"><summary>Other formats</summary>' +
+        '<div class="detail-formats">' + ALL_FORMATS.filter(f => f !== 'commander').map(fmt =>
+          '<span class="format-badge' + (legal.has(fmt) ? ' legal' : '') + '">' + fmt + '</span>'
+        ).join('') + '</div></details>';
+    }
+    if (d.ci) parts.push('Identity ' + escHtml(String(d.ci).replace(/,\s*/g, '')));
+    if (!parts.length && !formats) return '';
+    return '<div class="detail-facts">' + parts.join(' · ') + '</div>' + formats;
+  }
+
+  /* THE CARD IN THE DECK BUILD HAS OPEN — Build only, and only with a deck loaded.
+   *
+   * Before this, Build with a deck loaded said nothing about the deck in the card panel
+   * except "+ Deck" / "In Deck" (which also counts the library). The facts come from
+   * `Build.cardContext`, which reads the same role table, commander identity and watch
+   * set the rest of Build draws from; Watch / Pass go through `Build.markFromPanel`,
+   * which is the review grid's own guarded write queue — there is no second write path. */
+  function deckContextHtml(d, row) {
+    if (currentMode !== 'build' || !window.Build || !Build.cardContext) return '';
+    if (typeof row !== 'number' || row < 0) return '';
+    const c = Build.cardContext(row);
+    if (!c) return '';
+    let html = '<div class="deck-ctx" data-row="' + row + '" data-card="' + escHtml(d.n) + '">';
+    html += '<div class="deck-ctx-head"><span class="deck-ctx-deck" title="' + escHtml(c.deckName) +
+      '">In ' + escHtml(c.slug) + '</span><span class="deck-ctx-status' +
+      (c.inDeck ? ' is-in' : '') + '">' +
+      (c.isCommander ? '★ Commander' : c.inDeck ? 'In the 99' + (c.qty > 1 ? ' ×' + c.qty : '')
+                                               : 'Not in the 99') + '</span></div>';
+    html += '<div class="deck-ctx-row"><span class="deck-ctx-k">roles</span>' +
+      (c.roles.length
+        ? c.roles.map(r => '<span class="deck-ctx-role' + (r.primary ? ' is-primary' : '') + '"' +
+            (r.primary ? ' title="counted in the role budget as ' + escHtml(r.family) + '"' : '') +
+            '><span class="lens-swatch" style="background:' + escHtml(r.colour) + '"></span>' +
+            escHtml(r.family) + (r.sub ? '<span class="deck-ctx-sub">: ' + escHtml(r.sub) + '</span>' : '') +
+            '</span>').join('')
+        : '<span class="deck-ctx-none">' + escHtml(c.family === 'land' ? 'land' : 'no role pattern matches') +
+          '</span>') + '</div>';
+    const col = c.colour;
+    html += '<div class="deck-ctx-row"><span class="deck-ctx-k">colour identity</span>' +
+      (!col.checked ? '<span class="deck-ctx-none">no commander to check against</span>'
+        : col.off.length
+          ? '<span class="deck-ctx-bad">off-colour: ' + escHtml(col.off.join('')) + ' outside ' +
+            escHtml(col.deck.join('')) + '</span>'
+          : '<span class="deck-ctx-ok">fits ' + escHtml(col.deck.join('')) + '</span>') + '</div>';
+    const w = c.watch;
+    if (w) {
+      const nameArg = escHtml(JSON.stringify(d.n));
+      const verdict = w.verdict === 'watching' ? '★ watching' : w.verdict === 'pass' ? 'passed' : 'unreviewed';
+      html += '<div class="deck-ctx-watch v-' + escHtml(w.verdict) + '">' +
+        '<div class="deck-ctx-row"><span class="deck-ctx-k" title="' + escHtml(w.set) + '">on watch</span>' +
+          '<span class="deck-ctx-axis">' + escHtml(w.axis) + '</span>' +
+          (w.pays ? '<span class="deck-ctx-pays">' + escHtml(w.pays) + '</span>' : '') +
+          '<span class="deck-ctx-verdict">' + (w.pending ? 'saving…' : verdict) + '</span></div>' +
+        '<p class="deck-ctx-why">' + escHtml(w.why) + '</p>' +
+        (w.note ? '<p class="deck-ctx-note">' + escHtml(w.note) + '</p>' : '');
+      if (c.canWrite) {
+        const act = (v, label) => '<button class="lens-btn deck-ctx-act' + (w.verdict === v ? ' is-on' : '') +
+          '" data-verdict="' + v + '" onclick="Build.markFromPanel(' + nameArg + ',\'' + v + '\')">' +
+          label + '</button>';
+        html += '<div class="deck-ctx-actions">' + act('watching', 'Watch') + act('pass', 'Pass') +
+          (w.verdict !== 'unreviewed' ? act('unreviewed', 'Undo') : '') + '</div>';
+      } else {
+        html += '<div class="lens-note">Read-only here — run <code>manamap serve</code> to mark cards</div>';
+      }
       html += '</div>';
     }
+    return html + '</div>';
+  }
 
-    if (d.k) {
-      html += '<div class="detail-section">';
-      html += '<div class="detail-section-title">Keywords</div>';
-      html += '<div class="detail-keywords">';
-      d.k.split(', ').forEach(kw => {
-        html += '<span class="keyword-badge">' + escHtml(kw) + '</span>';
-      });
-      html += '</div></div>';
-    }
-
-    html += '<div class="detail-section">';
-    html += '<div class="detail-section-title">Details</div>';
-    html += '<div class="detail-meta">';
-    if (d.ci) html += '<span>Color Identity: ' + escHtml(d.ci) + '</span>';
-    html += '<span>CMC: ' + d.m + '</span>';
-    if (d.er != null) html += '<span>EDHREC Rank: #' + d.er.toLocaleString() + '</span>';
-    html += '</div></div>';
-
-    html += '<div class="detail-section">';
-    html += '<div class="detail-section-title">Format Legality</div>';
-    html += '<div class="detail-formats">';
-    const legalSet = d.f ? new Set(d.f.split(',')) : new Set();
-    ALL_FORMATS.forEach(fmt => {
-      const isLegal = legalSet.has(fmt);
-      html += '<span class="format-badge' + (isLegal ? ' legal' : '') + '">' + fmt + '</span>';
+  /* Repaint every deck-context block for one card, wherever it is drawn. Build calls
+   * this when a mark is queued and when it lands, so the panel and the grid's tile can
+   * never disagree about a verdict — and `#detailInner`, which Build does not own, is
+   * patched in place rather than re-rendered (a re-render would reset its scroll). */
+  function refreshDeckContext(name) {
+    document.querySelectorAll('.deck-ctx[data-row]').forEach(function (el) {
+      if (name && el.getAttribute('data-card') !== name) return;
+      const row = Number(el.getAttribute('data-row'));
+      const d = cardRecord(row);
+      const html = d ? deckContextHtml(d, row) : '';
+      el.outerHTML = html;
     });
-    html += '</div></div>';
-
-    html += buildRelationHtml(row);
-
-    return html;
   }
 
   /* ONE card header, for both panels that draw one.
@@ -1241,22 +1438,30 @@
       }
     }
     html += '<button class="detail-close" onclick="MM.closeDetail()" title="Close (ESC)">\u00d7</button>';
-    html += '<div class="viewer-quickstats">';
-    if (d.mc) html += renderManaSymbols(d.mc);
+    html += '<div class="viewer-quickstats">' + quickStatsHtml(d) + '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  /* Cost \u00b7 P/T (or loyalty, or defense) \u00b7 rarity. The header's line, and the
+   * `#deckInner` panels' too, so the two cannot drift the way the two headers did. */
+  function quickStatsHtml(d) {
+    // Joined, not prefixed: a land or a slim record has no cost, and a line that opens
+    // on its own divider reads as something missing.
+    const parts = [];
+    if (d.mc) parts.push(renderManaSymbols(d.mc));
     if (d.p != null && d.th != null) {
-      html += '<span class="stat-divider">\u00b7</span><strong>' + escHtml(d.p) + '/' + escHtml(d.th) + '</strong>';
+      parts.push('<strong>' + escHtml(d.p) + '/' + escHtml(d.th) + '</strong>');
     } else if (d.l != null) {
-      html += '<span class="stat-divider">\u00b7</span><strong>Loyalty: ' + escHtml(String(d.l)) + '</strong>';
+      parts.push('<strong>Loyalty: ' + escHtml(String(d.l)) + '</strong>');
     } else if (d.d != null) {
-      html += '<span class="stat-divider">\u00b7</span><strong>Defense: ' + escHtml(String(d.d)) + '</strong>';
+      parts.push('<strong>Defense: ' + escHtml(String(d.d)) + '</strong>');
     }
     if (d.r) {
       const rc = ['mythic', 'rare', 'uncommon', 'common'].indexOf(d.r) !== -1 ? d.r : '';
-      html += '<span class="stat-divider">\u00b7</span><span class="rarity-pill ' + rc + '">' +
-              escHtml(d.r) + '</span>';
+      parts.push('<span class="rarity-pill ' + rc + '">' + escHtml(d.r) + '</span>');
     }
-    html += '</div></div>';
-    return html;
+    return parts.join('<span class="stat-divider">\u00b7</span>');
   }
 
   function updateViewerPanel() {
@@ -1796,23 +2001,32 @@
     if (typeof row !== 'number' || row < 0) return '';
     if (!window.Discovery || !Discovery.isReady()) return '';
     const c = Discovery.counts(row);
-    const btn = (rel, label, n) =>
+    const btn = (rel, label, n, title) =>
       '<button class="lens-btn discover-rel' + (n ? '' : ' is-empty') + '"'
       + (n ? ' onclick="MM.relate(' + row + ',\'' + rel + '\')"' : ' disabled')
+      + (title ? ' title="' + title + '"' : '')
       + '>' + label + ' <span class="discover-count">' + n + '</span></button>';
-    let html = '<div class="discover-relations">'
+    // The synergy caveat rides on its button: as a paragraph under the row it cost a
+    // line on every card, for a sentence that is about one of the three buttons.
+    return '<div class="discover-relations">'
       + btn('similar', 'Similar', c.similar)
-      + btn('synergy', 'Synergy', c.synergy)
+      + btn('synergy', 'Synergy', c.synergy, 'Synergy is a rule-based list of ten, not a '
+            + 'ranking — partners are ordered by how played they are.')
       + btn('obsolete', 'Outclassed by', c.obsolete)
       + '</div>';
-    if (c.synergy) {
-      html += '<p class="lens-note">Synergy is a rule-based list of ten, not a ranking — '
-            + 'partners are ordered by how played they are.</p>';
-    }
+  }
+
+  /* Keep and Set as commander: what you DO with the card, on one row under its
+   * relations. Split from `buildRelationHtml` so the outclassed-by comparison can sit
+   * directly under the button it explains. */
+  function cardActionsHtml(row) {
+    if (typeof row !== 'number' || row < 0) return '';
+    if (!window.Discovery || !Discovery.isReady()) return '';
     // The library follows the card, not the mode. Keeping something you found in the atlas
     // is the same act as keeping something you walked to, so the control lives here
     // rather than only in the Discover panel.
     const kept = Session.library.has(row);
+    let html = '<div class="detail-actions">';
     html += '<button class="lens-btn discover-keep" onclick="MM.keep(' + row + ')">'
           + (kept ? '✓ In library' : '+ Keep this card') + '</button>';
     // One card is the commander, and everything reads it from Session: the gold ring on
@@ -1826,7 +2040,7 @@
         (isCmd ? -1 : row) + ')">' +
         (isCmd ? '★ Commander' : 'Set as commander') + '</button>';
     }
-    return html;
+    return html + '</div>';
   }
 
   // Toggle a card in the library from any panel, then repaint whichever one is showing.
@@ -1904,9 +2118,15 @@
     // users on data where 36.5% of pairs failed a purely mechanical check —
     // costs counted as advantages, restrictions unread, illegal cards offered.
     // The data supports a COMPARISON and the pilot supplies the context.
-    let html = '<div class="obsolescence-section">';
-    html += '<div class="obsolescence-title">Compare with</div>';
-    for (const rep of rows.slice(0, 3)) {
+    //
+    // ONE PLACE. This was a separate "Compare with" box above the oracle while the
+    // "Outclassed by" button below read the same index — two answers to one question,
+    // 115px apart. It is now the button's own detail: collapsed under the relation row,
+    // carrying what only it shows (the strength, gains and costs of each).
+    let html = '<details class="obsolescence-section">';
+    html += '<summary class="obsolescence-title">Compare the ' + rows.length +
+            ' that outclass it</summary>';
+    for (const rep of rows) {
       html += '<div class="obsolescence-item">';
       html += '<span class="obsolescence-name clickable" onclick="MM.selectByName(\'' + escHtml(rep.name).replace(/'/g, "\\'") + '\')">' + escHtml(rep.name) + '</span>';
       // THE STRENGTH LEADS. 0.0 is "these two cards merely sort near each
@@ -1939,7 +2159,7 @@
       html += '</div>';
       html += '</div>';
     }
-    html += '</div>';
+    html += '</details>';
     return html;
   }
 
@@ -2373,6 +2593,19 @@
       if (currentMode === 'explore') {
         render();
         setStatus(`${allData.length.toLocaleString()} cards loaded`);
+      }
+      // THE LANDING UPGRADES IN PLACE. Discover painted its card from the slim
+      // viz_index record, which has no type, oracle, cost or legality — and the card
+      // panel is text-first now, so until something re-rendered, the landing showed a
+      // name, the relations and an image. `cardRecord` prefers this row from here on.
+      // Not while the pilot is typing into the panel (the seed or paste box): a
+      // re-render would throw the text away.
+      const typing = document.activeElement && document.activeElement.closest &&
+        document.activeElement.closest('#deckInner') &&
+        /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+      if (currentMode === 'discover' && window.Discovery && Discovery.isReady() &&
+          Discovery.current >= 0 && !typing) {
+        Discovery.render();
       }
       // ?deck=<slug> is the map's first inbound deep link — the dossier and the
       // magazine's Back Page both use it. Honour it by entering the Lens, not by
@@ -3459,6 +3692,12 @@
     cardRecord,
     cardImageUrl,
     buildCardDetailHtml,
+    // The card body's own inline handlers (image enlarge, DFC flip, image retry) and
+    // the repaint Build calls when a watch verdict is queued or lands.
+    toggleCardImage,
+    flipCard,
+    cardImageError,
+    refreshDeckContext,
     showCardPopup,
     hideCardPopup,
     get browseSet() { return browseSet; },

@@ -5892,24 +5892,39 @@ def test_the_landing_leads_with_the_card_and_its_relations(discover_page):
 
     The landing is a card and what you can do with it; everything else is a way
     of choosing a different card, which is a smaller question and now looks
-    like one. Asserted by ORDER on screen, not by DOM order — the fix is a flex
-    `order`, so reading the markup would pass while the page looked unchanged.
+    like one. Asserted by ORDER on screen, not by DOM order.
+
+    REWRITTEN 2026-10-08 with the card-panel rework (Sean approved the order):
+    this used to assert image < relations < oracle, the order a flex `order`
+    rule imposed on `#deckInner` alone. The panel is text-first everywhere now —
+    type and oracle, then the relations and Keep, then the image — because the
+    image only repeats the text, and at 443px it pushed a long card's oracle to
+    the fold. What this test protected is kept: the relations and Keep still
+    come before the image and the "start elsewhere" block, and they are still
+    above the fold.
+
+    The landing paints from the slim viz_index record, which has no type or
+    oracle; the projection's record replaces it in place when it lands (the
+    landing re-renders then — before the rework nothing did, because the image
+    carried the text). So this waits for the projection and then for the text,
+    rather than for a timer.
     """
     page = discover_page
+    await_projection(page)
+    page.wait_for_selector("#deckInner .detail-type", timeout=10000)
     pos = page.evaluate("""() => {
         const y = s => { const e = document.querySelector(s);
                          return e ? e.getBoundingClientRect().top : null; };
-        return {card: y('#deckInner .detail-card-image'),
+        return {text: y('#deckInner .detail-type'),
+                card: y('#deckInner .detail-card-image'),
                 relations: y('.discover-relations'),
                 keep: y('.discover-keep'),
-                details: y('#deckInner .detail-section'),
-                more: y('#deckInner details.discover-more')};
+                more: y('#deckInner details.discover-more'),
+                fold: window.innerHeight};
     }""")
     assert pos["card"] is not None and pos["relations"] is not None
-    assert pos["card"] < pos["relations"] < pos["keep"], pos
-    assert pos["relations"] < pos["details"], (
-        "the oracle text is between the card and the action again — every word "
-        "of it is already legible on the card image above")
+    assert pos["text"] < pos["relations"] < pos["keep"] < pos["card"], pos
+    assert pos["keep"] < pos["fold"], f"Keep is below the fold again: {pos}"
     assert pos["keep"] < pos["more"], "the ways to start elsewhere outrank Keep"
     assert page.js_errors == []
 
