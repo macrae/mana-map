@@ -15,12 +15,13 @@ v2`, 2026-10-07.)
 
 1. **Acknowledge in one line, naming the deck.** "On it — checking the Sharknado
    context."
-2. **Classify the intent** as one of the seven below.
+2. **Classify the intent** as one of the eight below.
 3. **Read the Deck Context first**, every time a deck is involved:
 
    ```bash
    .venv/bin/manamap pilot context <slug> --slice <sections…>   # just what you need
    .venv/bin/manamap pilot context <slug> --check               # STALE? say so
+   .venv/bin/manamap pilot queue waiting --deck <slug>          # needs Sean? (prints nothing if not)
    ```
 
    The file is `data/decks/<slug>/CONTEXT.md`. Its sections are `summary`, `plays`,
@@ -28,6 +29,10 @@ v2`, 2026-10-07.)
    warning means the prose was written for an older list. **Say that out loud**
    when you answer from it, and offer a Keeper `deck-change` pass. A deck with no
    context gets `--scaffold` plus a Keeper `seed` pass, but ask first.
+   If `queue waiting` prints a line (a result waiting for his call, or an item
+   untouched for 14 days), pass it on **as one line at the end of your answer**, at
+   the first request about that deck in a conversation, not on every turn. Never
+   expand it into a report unless he asks.
 4. **Answer from the context when it covers the question.** Say which section it
    came from ("from the Numbers section, measured on v1.2.0").
 5. **Otherwise delegate.** Say in one line which agent and why. Run independent

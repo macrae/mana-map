@@ -791,10 +791,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--note", default=None, help="mark: a note alongside the verdict")
         if name == "queue":
             cmd.add_argument("verb", nargs="?", default="list",
-                             choices=["list", "show", "add", "apply", "rank", "kill", "decide"])
+                             choices=["list", "waiting", "show", "add", "apply", "rank", "kill", "decide"])
             cmd.add_argument("rest", nargs="*", help="item ids, a draft path, or a decision")
             cmd.add_argument("--all", action="store_true", help="list: include closed and expired items")
-            cmd.add_argument("--deck", default=None, help="list: one deck only; add: the deck it is about")
+            cmd.add_argument("--deck", default=None, help="list/waiting: one deck only; add: the deck it is about")
             cmd.add_argument("--json", action="store_true")
             # add: Sean's own claim. The same fields a pod hypothesis needs, so `check`
             # can hold it to the same rule; it still faces the Challenger.

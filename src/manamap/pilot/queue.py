@@ -379,6 +379,41 @@ def rows(lines, today=None, deck=None, everything=False):
     return out
 
 
+#: What Jarvis flags at the start of a deck conversation: a result waiting for
+#: Sean's call, or an item gone quiet. Everything else waits until he asks.
+WAITING = ("TESTED", "EXPIRED")
+
+
+def waiting(lines, deck=None, today=None):
+    """`[(qid, state, claim)]` for the items that need Sean, in queue order."""
+    today = today or datetime.date.today()
+    its = items(lines)
+    out = []
+    for qid in ordered(lines):
+        if deck and its[qid]["deck"] != deck:
+            continue
+        st = state_of(qid, lines, today)
+        if st in WAITING:
+            out.append((qid, st, current(qid, lines)["claim"]))
+    return out
+
+
+def waiting_line(rows):
+    """ONE line, or "" — the PRD's idle check is a nudge, never a report."""
+    if not rows:
+        return ""
+    tested = [q for q, st, _ in rows if st == "TESTED"]
+    expired = [q for q, st, _ in rows if st == "EXPIRED"]
+    parts = []
+    if tested:
+        parts.append(f"{', '.join(tested)} tested, waiting for your call")
+    if expired:
+        parts.append(f"{', '.join(expired)} expired ({EXPIRE_DAYS} days untouched)")
+    first = rows[0]
+    hint = f' — {first[0]}: "{first[2][:80]}"' if len(rows) == 1 else ""
+    return "queue: " + "; ".join(parts) + hint
+
+
 def deck_block(slug, path=None):
     """The Deck Context's `queue` block: this deck's items, without expiry so the
     rendering does not change by itself overnight."""
@@ -439,6 +474,11 @@ def main(args):
         rs = rows(lines, deck=getattr(args, "deck", None), everything=getattr(args, "all", False))
         print(json.dumps(rs, indent=2)) if getattr(args, "json", False) else _print(rs)
         return
+    if verb == "waiting":
+        line = waiting_line(waiting(lines, deck=getattr(args, "deck", None)))
+        if line:
+            print(line)
+        return
     if verb == "show":
         if not rest or rest[0] not in items(lines):
             raise SystemExit("show Q### — an item id")
@@ -485,4 +525,4 @@ def main(args):
         print(f"{rest[0]}: {rest[1]}")
         _refresh_contexts({rest[0]})
         return
-    raise SystemExit("verbs: list, show, add, apply, rank, kill, decide")
+    raise SystemExit("verbs: list, waiting, show, add, apply, rank, kill, decide")

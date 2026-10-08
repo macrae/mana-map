@@ -57,6 +57,7 @@ at most ten promoted ones.
 
 ```bash
 manamap pilot queue list [--all] [--deck S] [--json]
+manamap pilot queue waiting [--deck S]     # one line when a result waits for Sean or an item expired; else nothing
 manamap pilot queue show Q007
 manamap pilot queue add --deck <slug> --claim "…" --expect "…" --method try --how "…" [--why "…"]
 manamap pilot queue apply data/decks/<slug>/.agent-out/<incubation-pod|challenger>.json

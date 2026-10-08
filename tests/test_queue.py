@@ -163,6 +163,25 @@ def test_list_json_is_the_live_queue(qfile, capsys):
     assert [r["id"] for r in rows] == ["Q001"] and rows[0]["state"] == "INCUBATING"
 
 
+def test_waiting_flags_only_a_result_awaiting_sean_or_an_expired_item(qfile):
+    """The PRD's idle check: one line when something needs Sean, nothing otherwise.
+    A promoted, untested item does not need him — it waits until he asks."""
+    incubate(n=3)
+    for qid in ("Q001", "Q002", "Q003"):
+        challenge(qid, "promote")
+    assert q.waiting_line(q.waiting(q.read())) == ""              # all promoted, fresh
+    q.apply({"kind": "result", "of": "Q001", "method": "try", "verdict": "supported",
+             "answer": "+0.4 cards", "evidence": ["try"]})
+    line = q.waiting_line(q.waiting(q.read()))
+    assert line.startswith("queue: Q001 tested, waiting for your call") and "\n" not in line
+    later = datetime.date.today() + datetime.timedelta(days=q.EXPIRE_DAYS)
+    rows = q.waiting(q.read(), today=later)
+    assert [(r[0], r[1]) for r in rows] == [("Q001", "EXPIRED"), ("Q002", "EXPIRED"), ("Q003", "EXPIRED")]
+    assert q.waiting(q.read(), deck="edgar-vampires") == []
+    q.append([{"kind": "decide", "of": "Q001", "by": "sean", "decision": "drop"}])
+    assert "Q001" not in q.waiting_line(q.waiting(q.read()))     # decided: no longer his
+
+
 def test_seans_own_claim_enters_as_a_hypothesis_and_still_faces_the_challenger(qfile):
     """`add` skips the pod, never the round: a claim of Sean's is INCUBATING until
     the Challenger has argued once, exactly like one the pod proposed."""
