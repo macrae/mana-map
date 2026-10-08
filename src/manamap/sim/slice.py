@@ -89,17 +89,18 @@ def ensure_built(home=None):
     return jar_path(home)
 
 
-def command(decks, states, seeds, rounds=1, timeout=DEFAULT_TIMEOUT_S, jar=None, home=None):
-    """The exact argv. `decks` are Forge deck FILE names (`<meta>.dck`), `states` are
-    `(label, path)` pairs. A pure function given its jars, so a test can read it."""
+def command(decks, cases, rounds=1, timeout=DEFAULT_TIMEOUT_S, jar=None, home=None):
+    """The exact argv. `decks` are Forge deck FILE names (`<meta>.dck`), `cases` are
+    `(label, seed, path)` triples — ONE BOARD PER (ARM, SEED), because the hidden cards
+    are dealt per seed. A pure function given its jars, so a test can read it."""
     from manamap.sim import telemetry
 
     base = jar or telemetry.jar_for_run(home)[0]
     argv = ["java", *config.FORGE_JVM_ARGS, "-cp", f"{base}:{jar_path(home)}", MAIN,
-            "--decks", ",".join(decks), "--seeds", ",".join(str(int(s)) for s in seeds),
+            "--decks", ",".join(decks),
             "--rounds", str(int(rounds)), "--timeout", str(int(timeout))]
-    for label, path in states:
-        argv += ["--state", f"{label}={path}"]
+    for label, seed, path in cases:
+        argv += ["--case", f"{label}:{int(seed)}={path}"]
     return argv
 
 
@@ -112,27 +113,28 @@ def parse_output(text):
     return out
 
 
-def run(seats, states, seeds, rounds=1, timeout=DEFAULT_TIMEOUT_S, home=None):
-    """Play every state on every seed. `seats` are bench slugs (decks or opponents), in
-    seat order p0, p1, …; `states` maps a label to its `[state]` text. Returns the
-    replicate records, in state order then seed order, each `{label, seed, start, end,
-    stopped, winner, start_turn, stop_turn, ended_at_turn, elapsed_ms, log}` or
-    `{label, seed, error}`."""
+def run(seats, cases, rounds=1, timeout=DEFAULT_TIMEOUT_S, home=None):
+    """Play every case. `seats` are bench slugs (decks or opponents) in seat order p0, p1,
+    …; `cases` are `(label, seed, state_text)` — one board per arm and seed, as
+    `slice_state.to_forge_state` deals it. Returns the replicate records in case order,
+    each `{label, seed, start, end, stopped, winner, start_turn, stop_turn,
+    ended_at_turn, elapsed_ms, log}` or `{label, seed, error}`."""
     from manamap.sim import forge
 
-    if not states:
-        raise ValueError("no state to play")
+    cases = list(cases)
+    if not cases:
+        raise ValueError("no case to play")
     ensure_built(home)
     decks = [forge.install_deck(s) + ".dck" for s in seats]
     home_dir = Path(home or config.FORGE_HOME)
     with tempfile.TemporaryDirectory() as tmp:
-        pairs = []
-        for label, text in states.items():
-            p = Path(tmp) / f"{label}.state"
+        triples = []
+        for i, (label, seed, text) in enumerate(cases):
+            p = Path(tmp) / f"{i:04d}.state"
             p.write_text(text, encoding="utf-8")
-            pairs.append((label, p))
-        argv = command(decks, pairs, seeds, rounds=rounds, timeout=timeout, home=home)
-        budget = timeout * len(seeds) * len(pairs) + 120      # boot plus every replicate
+            triples.append((label, seed, p))
+        argv = command(decks, triples, rounds=rounds, timeout=timeout, home=home)
+        budget = timeout * len(triples) + 120                 # boot plus every replicate
         got = subprocess.run(argv, cwd=home_dir, capture_output=True, text=True, timeout=budget)
     records = parse_output(got.stdout)
     fatal = [r for r in records if "label" not in r and r.get("error")]

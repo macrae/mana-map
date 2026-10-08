@@ -565,10 +565,23 @@ game log.
   `Match.startGame`'s start hook, which runs on the thread that then runs the game.
 - **Cost, measured:** about 12 s of JVM boot, then 0.4–0.8 s of play per two-seat
   replicate and about 4 s for four seats. Every replicate runs in ONE JVM, so 2 arms x 4
-  seeds took 12 s end to end.
-- **Not yet:** the converter from `game_state` v2 (hidden hands and libraries filled from
-  each seat's decklist), the paired A/B wrapper, the `scenario-sim` agent, and
-  `scenario` as a legal queue method.
+  seeds took 12 s end to end; a lifted four-seat board, 4 seeds, 34 s.
+- **The converter** (`manamap.sim.slice_state.to_forge_state(scenario, seat_slugs,
+  seed)`) turns a `game_state` v2 board into that text: `you` is p0, opponents follow in
+  order, each seat played by a named deck. Tapped / summoning-sick / counters / face-down
+  carry over; a commander not on the board goes to the command zone. **Hidden cards are
+  dealt from the seat's own decklist per seed** (`{"unknown": n}` hands, the rest of the
+  list as the library, `library.top` names the override), never a card twice. **One
+  board per (arm, seed)**: dealt once and replayed, three seeds of a lifted board played
+  the identical game, so the runner takes `--case LABEL:SEED=path`.
+- **Nothing is silently dropped.** Forge skips a card name it does not know with one
+  stderr line and plays on (measured: a modal DFC given as "A // B" vanished), so every
+  name is checked against the corpus first and an unknown one is a refusal; every card
+  goes to Forge by its FRONT face, which loads split, transform and modal cards alike.
+  A token without a `forge_token` script, a stack, a missing hand: each is a NOTE the
+  caller shows, never an omission.
+- **Not yet:** the paired A/B wrapper, the `scenario-sim` agent, and `scenario` as a legal
+  queue method.
 
 ## The spike: wrap Forge, or build our own?
 

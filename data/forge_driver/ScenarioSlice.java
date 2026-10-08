@@ -5,11 +5,15 @@
 // as they were: this class never executes in a `sim` game.
 //
 //   java -cp <forge jar>:mm-scenario-slice.jar mm.ScenarioSlice \
-//        --decks a.dck,b.dck[,…] --state A=a.state [--state B=b.state] \
-//        --seeds 1,2,3 [--rounds 1] [--timeout 120]
+//        --decks a.dck,b.dck[,…] --case A:1=a1.state --case A:2=a2.state [--case B:1=…] \
+//        [--rounds 1] [--timeout 120]
 //
 // A state file is Forge's puzzle `[state]` block (p0..pN keys; GameState.parseLine).
-// For each state, for each seed: a fresh Commander match of AI players from the decks,
+// ONE BOARD PER (ARM, SEED): the converter draws each seat's hidden hand and library
+// from its decklist per seed, so a replicate is a different deal, not the same board
+// replayed — with the deal fixed, Forge played three seeds of a lifted board as the
+// identical game (2026-10-08).
+// For each case: a fresh Commander match of AI players from the decks,
 // the state applied at the first priority, played until the turn AFTER the current turn
 // plus `rounds` full rounds begins, then snapshotted. One line per replicate on stdout:
 // `MMSLICE {json}`. Everything else Forge prints is noise to the reader.
@@ -97,7 +101,9 @@ public class ScenarioSlice {
         static Snapshot of(Game g) {
             Snapshot s = new Snapshot();
             int i = 0;
-            for (Player p : g.getPlayers()) {
+            // REGISTERED players: getPlayers() drops a seat once it has lost, and a
+            // four-seat snapshot came back with three.
+            for (Player p : g.getRegisteredPlayers()) {
                 Map<String, Object> m = new LinkedHashMap<>();
                 m.put("seat", "p" + i++);
                 m.put("name", p.getName());
@@ -124,8 +130,6 @@ public class ScenarioSlice {
     public static void main(String[] argv) throws Exception {
         Map<String, List<String>> a = parse(argv);
         List<String> decks = split(one(a, "decks"));
-        List<Long> seeds = new ArrayList<>();
-        for (String s : split(one(a, "seeds"))) seeds.add(Long.parseLong(s));
         int rounds = Integer.parseInt(a.containsKey("rounds") ? one(a, "rounds") : "1");
         int timeout = Integer.parseInt(a.containsKey("timeout") ? one(a, "timeout") : "120");
 
@@ -141,11 +145,13 @@ public class ScenarioSlice {
         ExecutorService pool = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r, "slice"); t.setDaemon(true); return t;
         });
-        for (String spec : a.get("state")) {
-            int eq = spec.indexOf('=');
-            String label = eq > 0 ? spec.substring(0, eq) : spec;
-            List<String> lines = Files.readAllLines(Paths.get(eq > 0 ? spec.substring(eq + 1) : spec));
-            for (long seed : seeds) {
+        for (String spec : a.get("case")) {
+            int eq = spec.indexOf('='), colon = spec.lastIndexOf(':', eq);
+            if (eq < 0 || colon < 0) { fail("a --case is LABEL:SEED=path, got " + spec); return; }
+            String label = spec.substring(0, colon);
+            long seed = Long.parseLong(spec.substring(colon + 1, eq));
+            List<String> lines = Files.readAllLines(Paths.get(spec.substring(eq + 1)));
+            {
                 Future<String> f = pool.submit(() -> replicate(label, lines, seed, loaded, rounds));
                 String out;
                 try {
@@ -221,7 +227,7 @@ public class ScenarioSlice {
         for (int i = 0; i + 1 < argv.length; i += 2) {
             m.computeIfAbsent(argv[i].replaceFirst("^--", ""), k -> new ArrayList<>()).add(argv[i + 1]);
         }
-        for (String need : new String[]{"decks", "state", "seeds"}) {
+        for (String need : new String[]{"decks", "case"}) {
             if (!m.containsKey(need)) { fail("missing --" + need); }
         }
         return m;

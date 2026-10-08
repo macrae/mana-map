@@ -21,17 +21,16 @@ def test_the_runner_is_not_part_of_the_pod_fingerprint():
     assert all("ScenarioSlice" not in p["entry"] for p in telemetry.PATCHES.values())
 
 
-def test_the_argv_puts_the_runner_beside_the_forge_jar_and_names_every_state(tmp_path):
-    argv = sl.command(["a.dck", "b.dck"], [("A", tmp_path / "a.state"), ("B", tmp_path / "b.state")],
-                      seeds=[3, 1], rounds=2, timeout=60, jar="/x/forge.jar", home=tmp_path)
+def test_the_argv_puts_the_runner_beside_the_forge_jar_and_names_every_case(tmp_path):
+    argv = sl.command(["a.dck", "b.dck"], [("A", 3, tmp_path / "a3"), ("B", 1, tmp_path / "b1")],
+                      rounds=2, timeout=60, jar="/x/forge.jar", home=tmp_path)
     cp = argv[argv.index("-cp") + 1]
     assert cp == f"/x/forge.jar:{tmp_path / sl.JAR_NAME}"
     assert argv[argv.index(cp) + 1] == sl.MAIN
     assert argv[argv.index("--decks") + 1] == "a.dck,b.dck"
-    assert argv[argv.index("--seeds") + 1] == "3,1"
     assert argv[argv.index("--rounds") + 1] == "2"
-    states = [argv[i + 1] for i, a in enumerate(argv) if a == "--state"]
-    assert states == [f"A={tmp_path / 'a.state'}", f"B={tmp_path / 'b.state'}"]
+    cases = [argv[i + 1] for i, a in enumerate(argv) if a == "--case"]
+    assert cases == [f"A:3={tmp_path / 'a3'}", f"B:1={tmp_path / 'b1'}"]
 
 
 def test_only_marked_lines_are_records_and_forge_noise_is_ignored():
@@ -68,10 +67,11 @@ def test_one_real_slice_applies_the_board_and_stops_after_one_round():
         "p1library=" + ";".join(["Plains"] * 15),
         "p1battlefield=Plains;Plains;Grizzly Bears",
     ])
-    recs = sl.run(["sharknado", "giada-angels"], {"A": state}, seeds=[1, 2], rounds=1)
+    recs = sl.run(["sharknado", "giada-angels"], [("A", 1, state), ("A", 2, state)], rounds=1)
     assert [r["seed"] for r in recs] == [1, 2] and all("error" not in r for r in recs)
     for r in recs:
         assert r["start"][0]["life"] == 40 and r["start"][1]["life"] == 33   # the board applied
         assert r["start_turn"] == 6 and r["stop_turn"] == 8                   # 2 seats, 1 round
         assert r["stopped"] is True and r["ended_at_turn"] == 8
         assert r["log"], "the game log came back"
+        assert len(r["end"]) == 2, "every seat reports, lost or not"
