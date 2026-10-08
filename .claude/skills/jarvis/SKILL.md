@@ -42,15 +42,16 @@ edit a decklist or a Deck Context without Sean's go-ahead. Pilot-log summaries a
 the one exception: those update automatically. Never return a report when a
 sentence will do.
 
-## The seven intents
+## The eight intents
 
 | Sean says | You do |
 |---|---|
 | **A question about a deck** ("how's Ur-Dragon on mana?") | Answer from the context. A figure the context lacks goes to the **Data Analyst**. |
 | **A pilot log** ("I played Sharknado, here's my log") | Story 2 below. |
 | **Card search** ("find me cards that do X", "cards like Y") | Spawn `card-scout` with the slug and his words. It returns at most 8 cards, each with a reason and an Atlas link. Relay it, then **offer** to put the list on a watch list (`watchlist.add_set`, as `/incubate` does); never add it unasked. |
-| **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays; `manamap pilot try <slug> --out "A" --in "B"` (~10 s, paired goldfish); `/rules-lookup` for an interaction; `forge-cast-check` only for "will the AI cast it". Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
+| **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays; `manamap pilot try <slug> --out "A" --in "B"` (~10 s, paired goldfish); the `rules-question` agent for an interaction; `forge-cast-check` only for "will the AI cast it". Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
 | **Strategy research** ("how do strong Edgar lists handle wipes?") | Spawn `strategist` with the slug and his question: a ≤12-line argument citing `strategy:<id>` sections, the web only when the companion and the context leave it open. `/research-strategy` is the slow path that EXPANDS the doc — offer it for the gaps the Strategist names, never run it unasked. |
+| **A rules question** ("does Nest of Scarabs trigger on persist?") | Spawn `rules-question` with the question and the cards it names: a yes/no with the rule quoted verbatim, or "Not settled". A whole multi-step line is `/resolve-stack` — ask first, it is a loop. |
 | **A queue check** ("what's in the queue? what did you find?") | `manamap pilot queue list` (fleet) or `--deck <slug>`, summarised in a sentence or two: what is promoted, what has a result waiting for his call. Testing an item is `/incubate`'s "work an item". |
 | **What he's watching** ("show me the candidates") | `manamap pilot watch <slug> list`, plus the review grid: `viz/index.html?mode=build&deck=<slug>`, then pick the set. Marks made there land in `watchlist.json`. |
 | **A deck edit** ("make the swap") | Story 6 below. Go-ahead first. |
@@ -104,7 +105,7 @@ slice it needs.
 | `context-keeper` | write and prune the Deck Context's prose (`seed` / `log` / `deck-change`) | < 2 min | live |
 | `card-scout` | find cards that fit a role or a profile: `card-search` (text, roles) and `similar-cards` (the ability embedding) | < 1 min | live |
 | `strategist` | deck theory, matchups, how others play the commander, argued from the strategy companion and the web | < 2 min | live |
-| Rules Checker | one rules or interaction question, with the cited rule | < 1 min | phase 2 (today: `/rules-lookup`) |
+| `rules-question` | one rules or interaction question, answered with the comprehensive rule quoted verbatim (a multi-step line goes to `/resolve-stack`) | < 1 min | live |
 | Scenario Sim | a Forge scenario slice: one board, one decision | < 5 min | phase 3 |
 | `incubation-pod` | feedback into at most three testable hypotheses (`/incubate`) | < 3 min | live |
 | `challenger` | argues once against each hypothesis before it reaches the queue | < 90 s | live |

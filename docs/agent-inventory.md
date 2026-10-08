@@ -22,7 +22,7 @@ manifest half of `build_index.py` lives on as `deck_manifest.py`, which writes t
 
 So Epic D was a **re-grouping of 18 charters**, not an excavation.
 
-## Agents — 26 charters in `.claude/agents/`
+## Agents — 27 charters in `.claude/agents/`
 
 Every one opens by reading `.claude/agents-common.md` (the shared contract);
 `pipeline-runner` and `viz-dev` are exempt there by name.
@@ -51,6 +51,7 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 | `data-analyst` | nothing — filters, sorts and computes over the 99, the goldfish, the logs with read-only commands; answers in ≤10 lines plus the commands it ran. `sla_s: 30`, Haiku (PRD v2) | `jarvis` | **PRD v2 roster: Data Analyst** |
 | `card-scout` | nothing — mines the corpus with `card-search` and `similar-cards` and returns at most 8 cards, each with a reason from its text and an Atlas link, plus the commands it ran. `sla_s: 60`, Sonnet (PRD v2) | `jarvis` | **PRD v2 roster: Card Scout** |
 | `strategist` | nothing — one strategy question argued in ≤12 lines from the Deck Context, `query-strategy`/`lookup-strategy` (every claim a fetched `strategy:<id>`) and, only if those leave it open, the web (≤2 searches, ≤3 fetches). `sla_s: 120`, Sonnet (PRD v2; the read-only, inline cousin of `strategy-researcher` MODE consult) | `jarvis` | **PRD v2 roster: Strategist** |
+| `rules-question` | nothing — one rules question answered from the cards' oracle text and rulings plus `query-rules`, every cited rule fetched with `lookup-rule` and quoted verbatim; "Not settled" rather than a guess; a multi-step line goes to `/resolve-stack`. `sla_s: 60`, Haiku (PRD v2 Rules Checker; named apart from the stack loop's `rules-checker`) | `jarvis` | **PRD v2 roster: Rules Checker** |
 | `incubation-pod` | nothing tracked — at most three testable hypotheses per run, applied to `data/queue.jsonl` by `queue apply`; modes incubate / rebut. `sla_s: 180`, Sonnet, web (PRD v2 Phase 2) | `incubate` | **PRD v2 roster: Incubation Pod** |
 | `challenger` | nothing tracked — one round of promote / revise / drop per hypothesis, settled by `queue apply`. `sla_s: 90`, Sonnet (PRD v2 Phase 2) | `incubate` | **PRD v2 roster: Challenger** |
 | `test-preflight` | nothing — a GO / WAIT / FIX verdict over `suite_report preflight` (collisions, plugins, dirty source, harness changes since the last report); exempt from `agents-common.md` (added 2026-10-05) | `test-report` | infrastructure |
@@ -96,9 +97,8 @@ Infrastructure, not deck-facing and not part of the consolidation:
 `CONTEXT.md` first (`docs/deck-context.md`), answers from it, and routes the rest. The PRD's
 seven sub-agents each have one job and a response-time target (`sla_s:` in the charter, shown
 live by the job band, logged to `.progress/sla-log.jsonl`, read by `manamap pilot sla-report`).
-Phase 1 shipped `data-analyst` and `context-keeper`; Phase 2 added `incubation-pod` and `challenger` with the queue (`docs/queue.md`), then `card-scout` (over `card-search` and `similar-cards`) and `strategist`.
-Rules Checker (single question, from
-`rules-lookup`) and the Incubation Pod + Challenger are Phase 2; Scenario Sim is Phase 3.
+Phase 1 shipped `data-analyst` and `context-keeper`; Phase 2 added `incubation-pod` and `challenger` with the queue (`docs/queue.md`), then `card-scout` (over `card-search` and `similar-cards`), `strategist` and
+`rules-question` (the PRD's Rules Checker, one question, from `rules-lookup`); Scenario Sim is Phase 3.
 Nothing in the tables above is deleted until every deck's context is approved.
 
 ## Front-end surfaces that depend on the harness
