@@ -82,6 +82,13 @@ and it runs on Sonnet.
 - **`deck-change`**: after a merge. It re-places cards and **prunes** the prose a swap
   made false, rather than appending to it.
 
+**The hook.** `deck-branch merge --write` and `check-in --write` call
+`deck_context.list_change` the moment the list is written. It refreshes the generated
+blocks, reads the copies that moved from the `.txt.bak` the command just left, and
+prints `CONTEXT STALE` with the Keeper's `deck-change` spawn (ins and outs named) and the
+`--install` line. A command cannot spawn an agent, so the PRD's "updates automatically"
+means Jarvis runs that pass as its next step, and says so.
+
 ## Response-time targets
 
 Every PRD sub-agent declares `sla_s:` in its charter frontmatter (`context-keeper`

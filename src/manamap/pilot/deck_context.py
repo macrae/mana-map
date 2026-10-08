@@ -502,6 +502,66 @@ def refresh(slug):
     return after != before
 
 
+def list_change(slug):
+    """What a merge or check-in owes the Deck Context, right after it wrote the list.
+
+    THE HOOK (PRD v2 Step 2). The context's prose is stamped with the sha it was
+    written for, so it reads STALE the moment `decklist.txt` moves — that much was
+    always derived. What was missing is anyone SAYING so at the moment it happens:
+    the generated blocks lagged until the next regen, and the Keeper's `deck-change`
+    pass ran only if somebody remembered. A command cannot spawn an agent, so this
+    refreshes what is deterministic and hands back the one step Jarvis runs next.
+
+    Returns None when the deck has no context. The ins and outs are read from the
+    `.txt.bak` both writers leave (copies, not entries), so the Keeper is told
+    exactly what moved.
+    """
+    from collections import Counter
+
+    from manamap.pilot import common
+    from manamap.pilot.fetch_deck import parse_decklist
+
+    p = path(slug)
+    if not p.exists():
+        return None
+    try:
+        refresh(slug)
+        refreshed = True
+    except Exception as exc:                            # pragma: no cover - env
+        refreshed = f"blocks not refreshed: {exc}"
+
+    def copies(f):
+        if not f.exists():
+            return Counter()
+        return Counter({e["name"]: e["quantity"] for e in parse_decklist(f.read_text(encoding="utf-8"))})
+
+    lst = deck_dir(slug) / "decklist.txt"
+    before, after = copies(lst.with_suffix(".txt.bak")), copies(lst)
+    outs, ins = sorted((before - after).elements()), sorted((after - before).elements())
+    st = stamp(p.read_text())
+    truth = common.decklist_sha256(slug)
+    stale = not (st and truth and common.sha_matches(st.get("sha", ""), truth))
+    keeper = (f"spawn context-keeper MODE deck-change for {slug}"
+              f" — out: {', '.join(outs) or 'nothing'}; in: {', '.join(ins) or 'nothing'}")
+    install = (f"manamap pilot context {slug} --install "
+               f"data/decks/{slug}/.agent-out/context-keeper.md --note \"deck change: …\"")
+    return {"stale": stale, "written_for": (st or {}).get("version"), "outs": outs,
+            "ins": ins, "refreshed": refreshed, "keeper": keeper, "install": install}
+
+
+def print_list_change(change):
+    """The lines a merge or check-in prints. One home, so the two cannot drift."""
+    if not change:
+        return
+    if not change["stale"]:
+        print("\n  CONTEXT current — CONTEXT.md was already written for this list")
+        return
+    print(f"\n  CONTEXT STALE — the prose was written for {change['written_for'] or 'an older list'}; "
+          f"the list moved under it" + ("" if change["refreshed"] is True else f" ({change['refreshed']})"))
+    print(f"    next (Jarvis): {change['keeper']}")
+    print(f"    then:          {change['install']}")
+
+
 def scaffold(slug, force=False):
     p = path(slug)
     if p.exists() and not force:

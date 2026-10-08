@@ -134,6 +134,47 @@ def test_slice_returns_the_header_and_only_the_sections_asked_for(fake_deck, tmp
         dc.slice_text("sharknado", ["engine"])
 
 
+def _moved_deck(tmp_path, monkeypatch, written_sha):
+    """A deck dir whose list just moved: `.txt.bak` is the old list, the context is
+    stamped for `written_sha`, and the blocks render from BLOCKS."""
+    monkeypatch.setattr(dc, "deck_dir", lambda slug, branch=None: tmp_path)
+    monkeypatch.setattr(dc, "render_generated", lambda slug: dict(BLOCKS, numbers="- wheel by T6: **97%**"))
+    (tmp_path / "decklist.txt.bak").write_text("1 Windfall\n2 Island\n1 Kefnet the Mindful\n")
+    (tmp_path / "decklist.txt").write_text("1 Windfall\n1 Island\n1 Jeska's Will\n")
+    stamp = f"version=v1.2.0 sha={written_sha[:12]} at=2026-10-07"
+    (tmp_path / dc.ARTIFACT).write_text(written(ALL_PLACED, stamp=stamp))
+
+
+def test_after_a_list_change_the_hook_refreshes_blocks_and_names_the_keeper_pass(
+        fake_deck, tmp_path, monkeypatch, capsys):
+    """THE MERGE/CHECK-IN HOOK. The prose is stamped for the old list, so it is
+    STALE; the generated blocks are rewritten now, not at the next regen; and the
+    Keeper's `deck-change` pass is named with the copies that moved."""
+    _moved_deck(tmp_path, monkeypatch, written_sha="0" * 64)
+    change = dc.list_change("sharknado")
+    assert change["stale"] is True and change["written_for"] == "v1.2.0"
+    assert change["outs"] == ["Island", "Kefnet the Mindful"] and change["ins"] == ["Jeska's Will"]
+    assert "**97%**" in (tmp_path / dc.ARTIFACT).read_text()
+    assert "MODE deck-change for sharknado" in change["keeper"]
+    dc.print_list_change(change)
+    printed = capsys.readouterr().out
+    assert "CONTEXT STALE" in printed and "--install" in printed
+
+
+def test_the_hook_says_current_when_the_prose_was_written_for_this_list(
+        fake_deck, tmp_path, monkeypatch, capsys):
+    _moved_deck(tmp_path, monkeypatch, written_sha=SHA)
+    change = dc.list_change("sharknado")
+    assert change["stale"] is False
+    dc.print_list_change(change)
+    assert "CONTEXT current" in capsys.readouterr().out
+
+
+def test_no_context_no_hook(tmp_path, monkeypatch):
+    monkeypatch.setattr(dc, "deck_dir", lambda slug, branch=None: tmp_path)
+    assert dc.list_change("sharknado") is None
+
+
 def test_broken_markers_refuse_rather_than_rewrite():
     for bad, why in (("<!-- ctx:gen numbers -->\nx\n", "never closed"),
                      ("x\n<!-- /ctx:gen numbers -->\n", "closes without opening"),

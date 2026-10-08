@@ -245,6 +245,8 @@ def main(args):
         raise SystemExit(1)
     ran = apply(args.slug, d["entries"], run_chain=not getattr(args, "no_chain", False))
     print(f"\n  WROTE decklist.txt" + (f" · ran {' → '.join(ran)}" if ran else ""))
+    from manamap.pilot import deck_context
+    deck_context.print_list_change(deck_context.list_change(args.slug))
     print(f"  next: commit it — that is what makes it a version the log can stamp:")
     print(f"    git add data/decks/{args.slug} && git commit")
     print(f"    manamap pilot deck-version {args.slug} paper   # mark it as sleeved")

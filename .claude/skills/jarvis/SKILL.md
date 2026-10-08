@@ -88,8 +88,9 @@ With Sean's go-ahead:
    - `deck-branch <slug> stage …` then `merge`, for a branch;
    - `check-in --from <file>`, for a paper list.
 2. Commit it.
-3. Spawn `context-keeper` `MODE deck-change` with the version and the ins and outs,
-   then `--install`.
+3. The merge or check-in prints `CONTEXT STALE` with the Keeper spawn already
+   written (the ins and outs named). Run it as your next step, without asking: spawn
+   `context-keeper` `MODE deck-change` with that line, then the `--install` it printed.
 4. Run `manamap pilot context <slug> --refresh` and `manamap pilot build-index`.
 5. Report what changed in one short paragraph.
 

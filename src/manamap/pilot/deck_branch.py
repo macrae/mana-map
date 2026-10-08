@@ -1541,6 +1541,11 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
         # what it could not fix is the other half.
         out["invalid"] = _validate_after_merge(slug)
 
+    # THE DECK CONTEXT, which no rebuild can rewrite: its blocks are refreshed and
+    # the Keeper's `deck-change` pass is named for Jarvis to run next.
+    from manamap.pilot import deck_context
+    out["context"] = deck_context.list_change(slug)
+
     # THE BRANCH RECORDS THAT IT LANDED. Without this the branch survives
     # untouched, `diff` reads +0 -0 forever, and nothing links the resulting
     # version back to the work that produced it.
@@ -1929,6 +1934,8 @@ def _dispatch(args):
                   f"these need you or an agent, not a rebuild:")
             for artifact, why in invalid:
                 print(f"    {artifact:24} {why}")
+        from manamap.pilot import deck_context
+        deck_context.print_list_change(got.get("context"))
         print("\n  NOT COMMITTED — the commit is what `deck-version` numbers and what the")
         print("  captain's log stamps games against, so it stays yours:")
         print(f"      git add data/decks/{slug} && \\")
