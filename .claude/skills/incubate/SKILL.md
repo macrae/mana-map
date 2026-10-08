@@ -27,6 +27,19 @@ transition and refuses an illegal one with nothing written.
    why. Then ask Sean which, if any, to test.
 5. **Refresh the deck's context block:** `manamap pilot context <slug> --refresh`.
 
+## Sean adds his own (he said "add this to the queue" or "look into X later")
+
+Turn his words into the fields a hypothesis needs — confirm them with him in one line
+if anything is a guess — and add it:
+
+```bash
+.venv/bin/manamap pilot queue add --deck <slug> --claim "…" --expect "…" \
+    --method context|argument|data|try|rules|strategy --how "…" --why "Sean, <date>"
+```
+
+It is INCUBATING, not promoted: run step 2 above (the Challenger, one round) on the
+new id, and step 3 if it comes back `revise`. His claim skips the pod, never the round.
+
 ## Work an item (Sean named it, or said "the top one")
 
 `manamap pilot queue list` gives the order: Sean's ranking, then decks by how
@@ -39,8 +52,8 @@ check that settles the claim:
 | `argument` | reason it out from How it plays and the cards; the reasoning *is* the answer |
 | `data` | the `data-analyst` agent |
 | `try` | `manamap pilot try <slug> --out "A" --in "B"`: read the paired row the claim names, with its interval |
-| `rules` | the `rules-question` agent (until it lands: `/rules-lookup`) |
-| `strategy` | the `strategist` agent (until it lands: `/strategy-lookup`) |
+| `rules` | the `rules-question` agent |
+| `strategy` | the `strategist` agent |
 
 Write a result draft and apply it:
 

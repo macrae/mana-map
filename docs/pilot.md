@@ -85,7 +85,7 @@ manamap pilot context <slug> [--slice SECTION…|--check|--scaffold|--refresh [-
                                                               # THE DECK CONTEXT (CONTEXT.md, PRD v2): the document /jarvis reads first
 manamap pilot validate-context <slug>                         # its gate: blocks current, cards in the 99, stamp, sections
 manamap pilot sla-report                                      # sub-agents against their response-time targets (the band's log)
-manamap pilot queue [list [--all] [--deck S]|show Q###|apply DRAFT|rank Q…|kill Q### --reason|decide Q### stage|drop|watch|more]
+manamap pilot queue [list [--all] [--deck S]|show Q###|add --deck S --claim … --expect … --method M --how …|apply DRAFT|rank Q…|kill Q### --reason|decide Q### stage|drop|watch|more]
                                                               # THE HYPOTHESIS QUEUE (data/queue.jsonl, docs/queue.md), state derived from its lines
 manamap pilot validate-queue                                  # its gate: every line replayed through the transition check
 manamap pilot watch <slug> [list|mark SET "Card" watching|pass|unreviewed [--note …]|note SET "Card" "…"]

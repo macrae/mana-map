@@ -14,7 +14,9 @@ gets one rebuttal from the pod (`rebut`: revise or withdraw) → it is promoted 
 dropped. `apply` writes the promote / drop that follows from those lines, so the
 single round cannot be stretched by hand. Jarvis then tests a promoted item with
 the lightest method that settles it (`result`) and Sean makes the call
-(`decide`). Sean can reorder (`rank`) or remove (`kill`) anything at any time.
+(`decide`). Sean can reorder (`rank`) or remove (`kill`) anything at any time, and
+add a claim of his own (`add`): it enters as a hypothesis `by: sean` and still
+faces the Challenger — an item does not skip the round because of who wrote it.
 
 Agents never write this file: they write a draft under `.agent-out/`, and
 `queue apply <draft>` checks every transition before a line is appended.
@@ -340,6 +342,21 @@ def apply(draft, path=None):
     return written + settled
 
 
+def add(deck, claim, expected_effect, method, how, why=None, path=None):
+    """Sean's own claim, straight into the queue as a hypothesis (INCUBATING).
+
+    It goes through `check` like every other line, so it needs what a pod's
+    hypothesis needs — a claim, its expected effect and the lightest test — and
+    then waits for the Challenger like any other item."""
+    lines = read(path)
+    line = {"id": next_id(lines), "kind": "hypothesis", "deck": deck, "by": "sean",
+            "source": "sean", "claim": claim, "expected_effect": expected_effect,
+            "test": {"method": method, "how": how}}
+    if why:
+        line["why"] = why
+    return append([line], lines, path)[0]
+
+
 # ── reading it out ────────────────────────────────────────────────────────────
 
 def rows(lines, today=None, deck=None, everything=False):
@@ -441,6 +458,14 @@ def main(args):
                   + (f": {e.get('verdict') or e.get('reason') or e.get('claim') or ''}"[:100]))
         _refresh_contexts({e.get("id") or e.get("of") for e in written})
         return
+    if verb == "add":
+        e = add(getattr(args, "deck", None), getattr(args, "claim", None),
+                getattr(args, "expect", None), getattr(args, "method", None),
+                getattr(args, "how", None), why=getattr(args, "why", None))
+        print(f"{e['id']}  added for {e['deck']} (INCUBATING): {e['claim']}")
+        print(f"  next: the Challenger argues once — `/incubate` step 2 with {e['id']}")
+        _refresh_contexts({e["id"]})
+        return
     if verb == "rank":
         append([{"kind": "rank", "by": "sean", "order": rest}], lines)
         print("ranked: " + " ".join(rest))
@@ -460,4 +485,4 @@ def main(args):
         print(f"{rest[0]}: {rest[1]}")
         _refresh_contexts({rest[0]})
         return
-    raise SystemExit("verbs: list, show, apply, rank, kill, decide")
+    raise SystemExit("verbs: list, show, add, apply, rank, kill, decide")

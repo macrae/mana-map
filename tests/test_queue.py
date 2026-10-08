@@ -163,6 +163,28 @@ def test_list_json_is_the_live_queue(qfile, capsys):
     assert [r["id"] for r in rows] == ["Q001"] and rows[0]["state"] == "INCUBATING"
 
 
+def test_seans_own_claim_enters_as_a_hypothesis_and_still_faces_the_challenger(qfile):
+    """`add` skips the pod, never the round: a claim of Sean's is INCUBATING until
+    the Challenger has argued once, exactly like one the pod proposed."""
+    e = q.add("sharknado", "Brallin dies before T6 in most games", "protection beats ramp",
+              "argument", "break-even on the recast tax", why="game 001")
+    assert e["id"] == "Q001" and e["by"] == "sean" and state("Q001") == "INCUBATING"
+    with pytest.raises(SystemExit):        # no result before the round
+        q.apply({"kind": "result", "of": "Q001", "method": "argument", "verdict": "supported",
+                 "answer": "yes"})
+    challenge("Q001", "promote")
+    assert state("Q001") == "PROMOTED"
+
+
+def test_add_is_held_to_the_hypothesis_rule_and_writes_nothing_when_refused(qfile):
+    for bad in (dict(expected_effect=""), dict(method="scenario"), dict(method="vibes"),
+                dict(how=" "), dict(deck="no-such-deck")):
+        kw = dict(deck="sharknado", claim="c", expected_effect="e", method="try", how="h") | bad
+        with pytest.raises(SystemExit):
+            q.add(**kw)
+    assert q.read() == []
+
+
 @pytest.mark.regression
 def test_the_tracked_queue_passes_its_gate():
     if not q.PATH.exists():

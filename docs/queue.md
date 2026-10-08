@@ -23,6 +23,9 @@ promoted ──► Jarvis tests it with the lightest method ──► result ─
   duplicate. A `revise` gets one rebuttal from the pod. `queue apply` writes the
   promote or drop that follows from those lines itself, so the single round cannot be
   stretched.
+- **Sean can add his own** (`queue add`): it enters as a hypothesis `by: sean`, held to
+  the same rule as the pod's (a claim, its expected effect, the lightest test), and it
+  still faces the Challenger. It skips the pod, never the round.
 - **Jarvis tests a promoted item** only when Sean asks, writes a `result` (with its
   verdict, a one-line answer and the evidence), and hands Sean the call: `stage`,
   `drop`, `watch` or `more`.
@@ -55,6 +58,7 @@ at most ten promoted ones.
 ```bash
 manamap pilot queue list [--all] [--deck S] [--json]
 manamap pilot queue show Q007
+manamap pilot queue add --deck <slug> --claim "…" --expect "…" --method try --how "…" [--why "…"]
 manamap pilot queue apply data/decks/<slug>/.agent-out/<incubation-pod|challenger>.json
 manamap pilot queue rank Q004 Q002
 manamap pilot queue kill Q003 --reason "…"

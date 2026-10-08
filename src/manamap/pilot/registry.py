@@ -791,11 +791,19 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--note", default=None, help="mark: a note alongside the verdict")
         if name == "queue":
             cmd.add_argument("verb", nargs="?", default="list",
-                             choices=["list", "show", "apply", "rank", "kill", "decide"])
+                             choices=["list", "show", "add", "apply", "rank", "kill", "decide"])
             cmd.add_argument("rest", nargs="*", help="item ids, a draft path, or a decision")
             cmd.add_argument("--all", action="store_true", help="list: include closed and expired items")
-            cmd.add_argument("--deck", default=None, help="list: one deck only")
+            cmd.add_argument("--deck", default=None, help="list: one deck only; add: the deck it is about")
             cmd.add_argument("--json", action="store_true")
+            # add: Sean's own claim. The same fields a pod hypothesis needs, so `check`
+            # can hold it to the same rule; it still faces the Challenger.
+            cmd.add_argument("--claim", default=None, help="add: the claim, specific enough to be wrong")
+            cmd.add_argument("--expect", default=None, help="add: its expected effect")
+            cmd.add_argument("--method", default=None,
+                             help="add: the lightest test — context, argument, data, try, rules or strategy")
+            cmd.add_argument("--how", default=None, help="add: how that method would settle it")
+            cmd.add_argument("--why", default=None, help="add: where it came from (optional)")
             cmd.add_argument("--reason", default=None, help="kill: why")
             cmd.add_argument("--note", default=None, help="decide: a note on the call")
         if name == "context":
