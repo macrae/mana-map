@@ -1576,11 +1576,48 @@ trace. **The review grid** (`#candGrid`, a drawer across the bottom of `#plot`) 
 art, mana value, type, a *pays* chip (both / Brallin / Shabraz / neither), its axis, the `why`,
 the oracle text and any note, filtered Unreviewed / Watching / Passed / All and sortable.
 **Watch / Pass / Note / Undo** call `serve`'s `watch/mark`, which writes through
-`validate-watchlist`; the page changes its copy only after the server says it wrote. Keys:
-j / k move, w watch, p pass, n note. Without `manamap serve` the grid is read-only and says so
-(`Api.ready`, re-rendered when the probe lands). Mana value and oracle text come from
-`MM.cardRecord`, never from the file. `has.considering` now gates the Short List fetch, so a deck
-without one costs no 404; `MANIFEST_VERSION` is 4.
+`validate-watchlist`; the page changes its copy only after the server says it wrote. Without
+`manamap serve` the grid is read-only and says so (`Api.ready`, re-rendered when the probe
+lands). Mana value and oracle text come from `MM.cardRecord`, never from the file.
+`has.considering` now gates the Short List fetch, so a deck without one costs no 404;
+`MANIFEST_VERSION` is 4.
+
+**The grid is a write loop, and four rules keep it safe (audit 2026-10-08).** The audit found
+Cmd+W posting `verdict: watching` before the tab closed, a double `w` posting twice, j/k
+rebuilding the grid through `innerHTML` (every image blanked and re-queued, open Oracle text
+closed), every verdict scrolling the tiles to the top, and the keys going deaf after one click
+on the map.
+
+- **Keys** (`onGridKey`, a document-level CAPTURE listener gated on "the grid is open in Build"):
+  `j` / `k` next / previous in screen order; `h` / `l` and ← → across the RENDERED columns
+  (`auto-fill`, measured from tile tops); ↑ ↓ one row; `w` watch, `p` pass, `n` note
+  (⌘/Ctrl+Enter or *Save note* saves, Escape cancels and does not also peel the map), `u` undo
+  (the Undo button's path), `o` — or Enter on a focused tile — shows the card on the map
+  (`MM.selectByName`, the art button's action), `?` toggles the one-line legend in
+  `.cg-header`. The header carries **"N / M reviewed · card i of K here"**.
+- **A key with Cmd, Ctrl or Alt is never the grid's, nor is one typed into a text field**; a held
+  key (`repeat`) never writes. **Conflicts, and how they resolve**: the map's document handler owns
+  ← → ↑ ↓ (browse cursor) and Enter (re-anchor), so the grid takes those ONLY while focus is inside
+  it and stops them there; with focus elsewhere only the letters and `?` are the grid's, and none
+  of them is bound anywhere else (`/` stays search, Escape stays `Build.handleEscape`, Shift stays
+  the marquee).
+- **One write per card, every write in order.** A verdict on a card with a write queued or in
+  flight is DROPPED and the status line says so — the first press is what was meant. A NOTE is
+  never dropped: explicit saves queue; blur saves only when that card has no write pending,
+  otherwise the editor stays open with the text in it; text typed while a save is on the wire
+  stays in the editor. All writes go through one promise chain, so `serve` never sees two at once.
+- **Navigation never re-renders, and a verdict redraws one tile.** j/k toggle `.is-focus`; a
+  landed write redraws (or, if it left the filter, removes) its own tile, moving the very `<img>`
+  across and keeping an open `<details>` open. A whole re-render (filter, sort, set, API probe)
+  keeps `.cg-tiles`' scroll unless the view itself changed.
+- **After a verdict, focus ADVANCES** to the next card still unreviewed, in screen order and
+  wrapping, under every filter, scrolled into view (`block: 'nearest'`). Undo does not advance.
+  DOM focus moves only from `<body>` or a non-text element inside the grid — never out of the
+  search box or a note.
+
+`tests/test_viz_review_grid.py` drives all of it with real keys and clicks against a MOCKED
+`watch/mark` (a catch-all refuses any other `/api/` call), so the tracked `watchlist.json` is
+never written.
 
 ## Future options (deliberately not done)
 

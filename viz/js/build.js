@@ -90,6 +90,8 @@
   let gridOpen = true;
   let gridFocus = 0;
   let gridNote = null;             // the card whose note editor is open
+  let gridNoteDraft = '';          // its text, kept OUTSIDE the DOM so no re-render loses it
+  let gridLegend = false;          // the one-line key legend, toggled by `?`
   let dimOthers = true;
   // Build opens on the GRAPH. The map is still one click away and is what Deck Lens
   // always was — position, roles and verified lines drawn where the cards actually live.
@@ -464,7 +466,9 @@
       col.appendChild(split);
       col.appendChild(el);
       el.addEventListener('click', onGridClick);
-      el.addEventListener('keydown', onGridKey);
+      el.addEventListener('change', onGridChange);
+      // Keys are NOT bound here: they live on the document (`onGridKey`, below), so
+      // j/k/w/p keep working after a click on the map leaves focus on <body>.
       bindSplit(split, el);
       settleMap();
     }
@@ -507,155 +511,527 @@
     settleMap._t = setTimeout(function () { if (active) fitDeck(); }, 320);
   }
 
-  function renderGrid() {
+  /* ── The review grid: a write loop, so it is held safe by four rules ──────
+   *
+   * Audit 2026-10-08 (Playwright, sharknado): Cmd+W posted `verdict: watching` before
+   * the tab closed, a double `w` posted twice, j/k rebuilt the grid through innerHTML
+   * (every image blanked and re-queued, any open Oracle text closed), and after a
+   * verdict the tiles scrolled to the top with focus on the section, not a card.
+   *
+   *  1. A KEY WITH Cmd/Ctrl/Alt IS NEVER OURS, and neither is a key typed into a text
+   *     field. The browser's shortcuts win; the grid never writes on the way out.
+   *  2. ONE WRITE PER CARD, ALL WRITES IN ORDER. A verdict on a card that already has a
+   *     write queued or in flight is DROPPED and the status line says so — the first
+   *     press is what was meant, and a double `w` meant once. A NOTE is never dropped:
+   *     Cmd/Ctrl+Enter and Save queue it; blur saves only when that card has no write
+   *     pending, and otherwise leaves the editor open with the text in it. Every write
+   *     goes through one chain, so `serve` never sees two at once.
+   *  3. NAVIGATION NEVER RE-RENDERS. j/k toggle `.is-focus`; a verdict redraws its ONE
+   *     tile (the <img> element is moved across, not re-created) and a whole re-render
+   *     (filter, sort, set, the API probe) keeps `.cg-tiles` scrolled where it was.
+   *  4. AFTER A VERDICT, FOCUS ADVANCES to the next card that is still unreviewed, in
+   *     the order on screen, wrapping — under every filter — and is scrolled into view.
+   *     Undo does not advance: it is a correction to the card you are on.
+   *
+   * Keys live on the DOCUMENT (capture phase), gated on "the grid is open in Build" —
+   * so they still work after a click on the map leaves focus on <body>. Letters only,
+   * there; the arrows and Enter belong to the map's browse cursor and are the grid's
+   * only while focus is inside it (and then are not passed on, so one key never moves
+   * two cursors). */
+  const gridPending = new Map();       // card name -> writes queued or in flight
+  const gridPendingNote = new Map();   // card name -> the note text on its way
+  let gridChain = Promise.resolve();
+  let gridRebuilding = false;          // a blur fired by our own DOM swap is not the pilot's
+  let pointerDown = false;
+
+  const GRID_LEGEND = 'j / k next · previous   ← → ↑ ↓ move   w watch   p pass   ' +
+    'n note (⌘/Ctrl+↩ save · Esc cancel)   u undo   o / ↩ show on the map   ? keys';
+
+  function canWriteGrid() { return !!(window.Api && Api.ready); }
+
+  function cardRow(name) {
     const set = active && watchSet();
-    if (!set || !gridOpen || !(window.MM && MM.mode === 'build')) {
-      removeGrid();
-      return;
-    }
-    const el = gridEl(true);
+    return set ? set.cards.find(c => c.name === name) || null : null;
+  }
+
+  function progressText(set, shown) {
     const n = watchCounts(set);
-    const cards = gridCards(set);
-    if (gridFocus >= cards.length) gridFocus = Math.max(0, cards.length - 1);
-    const canWrite = !!(window.Api && Api.ready);
+    return (n.watching + n.pass) + ' / ' + set.cards.length + ' reviewed' +
+      (shown ? ' · card ' + (Math.min(gridFocus, shown - 1) + 1) + ' of ' + shown + ' here' : '');
+  }
+
+  function headerHtml(set, cards, canWrite) {
+    const n = watchCounts(set);
     const filters = [['unreviewed', 'Unreviewed', n.unreviewed], ['watching', 'Watching', n.watching],
                      ['pass', 'Passed', n.pass], ['all', 'All', set.cards.length]];
     const sorts = [['set', 'Set order'], ['mv', 'Mana value'], ['pays', 'Pays'], ['axis', 'Axis']];
-    let html =
-      '<header class="cg-header">' +
+    return '<header class="cg-header">' +
         '<div class="cg-title"><strong>' + esc(set.title) + '</strong>' +
           (set.source ? '<span class="cg-src">from queue ' + esc(set.source) + '</span>' : '') + '</div>' +
+        '<span class="cg-progress" aria-live="polite">' + progressText(set, cards.length) + '</span>' +
         '<div class="cg-filters" role="tablist">' + filters.map(f =>
           '<button class="cg-filter' + (gridFilter === f[0] ? ' is-on' : '') + '" data-filter="' + f[0] + '">' +
             f[1] + ' <span>' + f[2] + '</span></button>').join('') + '</div>' +
         '<label class="cg-sort">Sort <select data-sort="1">' + sorts.map(o =>
           '<option value="' + o[0] + '"' + (gridSort === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') +
         '</select></label>' +
+        '<button class="cg-help" data-legend="1" title="Keyboard shortcuts (?)" aria-expanded="' +
+          (gridLegend ? 'true' : 'false') + '">?</button>' +
         '<button class="cg-close" data-close="1" title="Hide the review grid">×</button>' +
-      '</header>' +
-      (canWrite ? '<div class="cg-keys">j / k move · w watch · p pass · n note</div>'
-                : '<div class="cg-keys">Read-only here — run <code>manamap serve</code> to mark cards</div>');
+        (canWrite
+          ? '<div class="cg-keys"' + (gridLegend ? '' : ' hidden') + '>' + GRID_LEGEND + '</div>'
+          : '<div class="cg-keys">Read-only here — run <code>manamap serve</code> to mark cards' +
+              (gridLegend ? ' · j / k move · o show on the map' : '') + '</div>') +
+      '</header>';
+  }
+
+  function tileHtml(c, i, canWrite) {
+    const idx = nameToIdx.has(c.name) ? nameToIdx.get(c.name) : null;
+    const r = (idx !== null ? MM.cardRecord(idx) : null) || {};
+    const editing = gridNote === c.name;
+    return '<article class="cg-tile v-' + esc(c.verdict) + (i === gridFocus ? ' is-focus' : '') +
+        '" data-card="' + esc(c.name) + '" tabindex="0">' +
+      '<button class="cg-art-btn" data-select="1" title="Show on the map">' +
+        '<img class="cg-art" alt="' + esc(c.name) + '" data-src="' +
+        esc(MM.cardImageUrl ? MM.cardImageUrl(c.name.split(' // ')[0], 'normal') : '') + '"></button>' +
+      '<div class="cg-body">' +
+        '<div class="cg-head"><span class="cg-name">' + esc(c.name) + '</span>' +
+          (r.m != null ? '<span class="cg-mv" title="mana value">' + esc(r.m) + '</span>' : '') + '</div>' +
+        (r.t ? '<div class="cg-type">' + esc(r.t) + '</div>' : '') +
+        '<div class="cg-chips">' +
+          (PAYS_LABEL[c.pays] ? '<span class="cg-pays cg-pays-' + esc(c.pays.replace('/', '')) + '">' + PAYS_LABEL[c.pays] + '</span>' : '') +
+          '<span class="cg-axis">' + esc(c.axis) + '</span>' +
+          (c.verdict !== 'unreviewed' ? '<span class="cg-verdict">' + (c.verdict === 'watching' ? '★ watching' : 'passed') + '</span>' : '') +
+        '</div>' +
+        '<p class="cg-why">' + esc(c.why) + '</p>' +
+        (r.o ? '<details class="cg-oracle"><summary>Oracle text</summary><p>' +
+          esc(r.o).replace(/\n/g, '<br>') + '</p></details>' : '') +
+        (editing
+          ? '<textarea class="cg-note-edit" data-note="1" rows="2" placeholder="A note on this card…">' +
+              esc(gridNoteDraft) + '</textarea>'
+          : (c.note ? '<p class="cg-note">' + esc(c.note) + '</p>' : '')) +
+        (canWrite ? '<div class="cg-actions">' +
+          '<button class="cg-act' + (c.verdict === 'watching' ? ' is-on' : '') + '" data-verdict="watching">Watch</button>' +
+          '<button class="cg-act' + (c.verdict === 'pass' ? ' is-on' : '') + '" data-verdict="pass">Pass</button>' +
+          (editing
+            ? '<button class="cg-act" data-notesave="1">Save note</button>'
+            : '<button class="cg-act" data-noteopen="1">' + (c.note ? 'Edit note' : 'Note') + '</button>') +
+          (c.verdict !== 'unreviewed' ? '<button class="cg-act cg-undo" data-verdict="unreviewed">Undo</button>' : '') +
+        '</div>' : '') +
+      '</div></article>';
+  }
+
+  function gridTiles() {
+    const g = gridEl(false);
+    return g ? Array.prototype.slice.call(g.querySelectorAll('.cg-tile')) : [];
+  }
+
+  function tileFor(name) {
+    return gridTiles().find(t => t.getAttribute('data-card') === name) || null;
+  }
+
+  function queueGridArt(root) {
+    if (window.Shell && Shell.queueArt) Shell.queueArt(root);
+    else root.querySelectorAll('img[data-src]').forEach(im => { im.src = im.getAttribute('data-src'); });
+  }
+
+  /* The whole grid. Only for a change of VIEW (filter, sort, set, open, the API probe) or
+   * the empty state — never for navigation or a verdict. */
+  function renderGrid(opts) {
+    const set = active && watchSet();
+    if (!set || !gridOpen || !(window.MM && MM.mode === 'build')) {
+      removeGrid();
+      return;
+    }
+    const el = gridEl(true);
+    const oldTiles = el.querySelector('.cg-tiles');
+    const scroll = oldTiles && !(opts && opts.resetScroll) ? oldTiles.scrollTop : 0;
+    const hadFocus = el.contains(document.activeElement);
+    const cards = gridCards(set);
+    if (gridFocus >= cards.length) gridFocus = Math.max(0, cards.length - 1);
+    const canWrite = canWriteGrid();
+    let html = headerHtml(set, cards, canWrite);
     if (!cards.length) {
       html += '<div class="cg-empty">Nothing ' + (gridFilter === 'all' ? 'in this set' : 'here') +
         (gridFilter === 'unreviewed' ? ' — every card has a verdict' : '') + '.</div>';
     }
-    html += '<div class="cg-tiles">' + cards.map((c, i) => {
-      const idx = nameToIdx.has(c.name) ? nameToIdx.get(c.name) : null;
-      const r = (idx !== null ? MM.cardRecord(idx) : null) || {};
-      const editing = gridNote === c.name;
-      return '<article class="cg-tile v-' + esc(c.verdict) + (i === gridFocus ? ' is-focus' : '') +
-          '" data-card="' + esc(c.name) + '" tabindex="0">' +
-        '<button class="cg-art-btn" data-select="1" title="Show on the map">' +
-          '<img class="cg-art" alt="' + esc(c.name) + '" data-src="' +
-          esc(MM.cardImageUrl ? MM.cardImageUrl(c.name.split(' // ')[0], 'normal') : '') + '"></button>' +
-        '<div class="cg-body">' +
-          '<div class="cg-head"><span class="cg-name">' + esc(c.name) + '</span>' +
-            (r.m != null ? '<span class="cg-mv" title="mana value">' + esc(r.m) + '</span>' : '') + '</div>' +
-          (r.t ? '<div class="cg-type">' + esc(r.t) + '</div>' : '') +
-          '<div class="cg-chips">' +
-            (PAYS_LABEL[c.pays] ? '<span class="cg-pays cg-pays-' + esc(c.pays.replace('/', '')) + '">' + PAYS_LABEL[c.pays] + '</span>' : '') +
-            '<span class="cg-axis">' + esc(c.axis) + '</span>' +
-            (c.verdict !== 'unreviewed' ? '<span class="cg-verdict">' + (c.verdict === 'watching' ? '★ watching' : 'passed') + '</span>' : '') +
-          '</div>' +
-          '<p class="cg-why">' + esc(c.why) + '</p>' +
-          (r.o ? '<details class="cg-oracle"><summary>Oracle text</summary><p>' +
-            esc(r.o).replace(/\n/g, '<br>') + '</p></details>' : '') +
-          (editing
-            ? '<textarea class="cg-note-edit" data-note="1" rows="2" placeholder="A note on this card…">' +
-                esc(c.note || '') + '</textarea>'
-            : (c.note ? '<p class="cg-note">' + esc(c.note) + '</p>' : '')) +
-          (canWrite ? '<div class="cg-actions">' +
-            '<button class="cg-act' + (c.verdict === 'watching' ? ' is-on' : '') + '" data-verdict="watching">Watch</button>' +
-            '<button class="cg-act' + (c.verdict === 'pass' ? ' is-on' : '') + '" data-verdict="pass">Pass</button>' +
-            '<button class="cg-act" data-noteopen="1">' + (c.note ? 'Edit note' : 'Note') + '</button>' +
-            (c.verdict !== 'unreviewed' ? '<button class="cg-act cg-undo" data-verdict="unreviewed">Undo</button>' : '') +
-          '</div>' : '') +
-        '</div></article>';
-    }).join('') + '</div>';
-    el.innerHTML = html;
-    const sortSel = el.querySelector('select[data-sort]');
-    if (sortSel) sortSel.addEventListener('change', function () { gridSort = this.value; renderGrid(); });
+    html += '<div class="cg-tiles">' + cards.map((c, i) => tileHtml(c, i, canWrite)).join('') + '</div>';
+    gridRebuilding = true;
+    try { el.innerHTML = html; } finally { gridRebuilding = false; }
+    const tiles = el.querySelector('.cg-tiles');
+    if (tiles) tiles.scrollTop = scroll;
     const ta = el.querySelector('textarea[data-note]');
-    if (ta) {
-      ta.focus();
-      ta.addEventListener('keydown', function (ev) {
-        if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); ta.blur(); }
-        if (ev.key === 'Escape') { gridNote = null; renderGrid(); }
-      });
-      ta.addEventListener('blur', function () {
-        const card = gridNote;
-        gridNote = null;
-        if (card !== null) markCard(card, null, ta.value);
-      });
+    if (ta) bindNoteEditor(ta, true);
+    else if (hadFocus) {
+      const cur = el.querySelector('.cg-tile.is-focus');
+      (cur || el).focus({ preventScroll: true });
     }
-    if (window.Shell && Shell.queueArt) Shell.queueArt(el);
-    else el.querySelectorAll('img[data-src]').forEach(im => { im.src = im.getAttribute('data-src'); });
+    queueGridArt(el);
   }
+
+  /* One tile, in place. The art BUTTON (and so the very <img>, loaded or still queued)
+   * is moved into the new tile, and an open Oracle <details> stays open. */
+  function redrawTile(tile, c, i) {
+    const tpl = document.createElement('template');
+    tpl.innerHTML = tileHtml(c, i, canWriteGrid());
+    const fresh = tpl.content.firstElementChild;
+    const oldArt = tile.querySelector('.cg-art-btn'), newArt = fresh.querySelector('.cg-art-btn');
+    if (oldArt && newArt) newArt.replaceWith(oldArt);
+    const od = tile.querySelector('details.cg-oracle'), nd = fresh.querySelector('details.cg-oracle');
+    if (od && nd) nd.open = od.open;
+    const ae = document.activeElement;
+    const hadFocus = tile.contains(ae);
+    const oldTa = tile.querySelector('textarea[data-note]');
+    const inTa = !!oldTa && ae === oldTa;
+    const sel = inTa ? [oldTa.selectionStart, oldTa.selectionEnd] : null;
+    gridRebuilding = true;
+    try { tile.replaceWith(fresh); } finally { gridRebuilding = false; }
+    const ta = fresh.querySelector('textarea[data-note]');
+    if (ta) {
+      // A freshly opened editor takes focus; one that was already open keeps whatever
+      // focus it had, caret included.
+      bindNoteEditor(ta, inTa || !oldTa);
+      if (sel) ta.setSelectionRange(sel[0], sel[1]);
+    } else if (hadFocus) {
+      fresh.focus({ preventScroll: true });
+    }
+    return fresh;
+  }
+
+  function updateGridHeader() {
+    const g = gridEl(false), set = active && watchSet();
+    if (!g || !set) return;
+    const n = watchCounts(set);
+    const counts = { unreviewed: n.unreviewed, watching: n.watching, pass: n.pass, all: set.cards.length };
+    g.querySelectorAll('.cg-filter').forEach(b => {
+      const s = b.querySelector('span');
+      if (s) s.textContent = counts[b.getAttribute('data-filter')];
+    });
+    const p = g.querySelector('.cg-progress');
+    if (p) p.textContent = progressText(set, gridTiles().length);
+  }
+
+  /* Move the keyboard's tile WITHOUT re-rendering anything. */
+  function setGridFocus(i, o) {
+    o = o || {};
+    const tiles = gridTiles();
+    if (!tiles.length) { gridFocus = 0; updateGridHeader(); return null; }
+    gridFocus = Math.max(0, Math.min(tiles.length - 1, i));
+    tiles.forEach((t, k) => t.classList.toggle('is-focus', k === gridFocus));
+    const cur = tiles[gridFocus];
+    if (o.dom) cur.focus({ preventScroll: true });
+    if (o.scroll !== false) cur.scrollIntoView({ block: 'nearest' });
+    updateGridHeader();
+    return cur;
+  }
+
+  /* Columns as RENDERED (`auto-fill`, so it follows the grid's width): tiles sharing
+   * the first tile's top edge. */
+  function gridColumns(tiles) {
+    if (!tiles.length) return 1;
+    const top = Math.round(tiles[0].getBoundingClientRect().top);
+    let n = 0;
+    while (n < tiles.length && Math.abs(Math.round(tiles[n].getBoundingClientRect().top) - top) <= 2) n++;
+    return Math.max(1, n);
+  }
+
+  function focusableAway(ae) {
+    // Move DOM focus only from somewhere the pilot is not working: <body>, or the grid
+    // itself outside a text field. Never out of the search box or a note being typed.
+    if (!ae || ae === document.body || ae === document.documentElement) return true;
+    const g = gridEl(false);
+    return !!(g && g.contains(ae) && !isTextField(ae));
+  }
+
+  function isTextField(el) {
+    if (!el || el.nodeType !== 1) return false;
+    const tag = (el.tagName || '').toLowerCase();
+    return tag === 'input' || tag === 'textarea' || tag === 'select' || !!el.isContentEditable;
+  }
+
+  /* After a write lands: redraw (or remove) its tile, update the header, and move the
+   * keyboard's tile — forward to the next unreviewed card when `advance`. */
+  function afterMark(name, advance, focusTile) {
+    const set = active && watchSet();
+    const g = gridEl(false);
+    if (!set || !g || !gridOpen) return;
+    const before = gridTiles().map(t => t.getAttribute('data-card'));
+    const focusedName = before[gridFocus];
+    const cards = gridCards(set);
+    if (!cards.length || !g.querySelector('.cg-tile')) { renderGrid(); return; }
+    const at = new Map(cards.map((c, i) => [c.name, i]));
+    const tile = tileFor(name);
+    if (tile) {
+      if (at.has(name)) redrawTile(tile, cards[at.get(name)], at.get(name));
+      else tile.remove();
+    } else if (at.has(name)) {
+      renderGrid();            // a card arrived in this view: rare, and the scroll is kept
+    }
+    const pos = before.indexOf(focusedName);
+    let target = at.has(focusedName) ? focusedName : null;
+    if (advance && focusedName === name) {
+      target = null;
+      for (let k = 1; k <= before.length && target === null; k++) {
+        const nm = before[(pos + k) % before.length];
+        const row = set.cards.find(c => c.name === nm);
+        if (nm !== name && at.has(nm) && row && row.verdict === 'unreviewed') target = nm;
+      }
+      if (target === null && at.has(name)) target = name;   // nothing left to review
+    }
+    let idx;
+    if (target !== null) idx = at.get(target);
+    else idx = Math.min(Math.max(0, pos), cards.length - 1);   // the tile that took its place
+    setGridFocus(idx, { dom: focusTile || focusableAway(document.activeElement) });
+  }
+
+  /* One verdict or note, through `serve`'s `watch/mark`, which writes through the
+   * gate. The page's copy changes only after the server says it wrote. Returns a
+   * promise of whether this call wrote. */
+  function markCard(name, verdict, note, opts) {
+    opts = opts || {};
+    const set = watchSet();
+    if (!set || !canWriteGrid()) return Promise.resolve(false);
+    const isNote = !verdict;
+    if (!isNote && gridPending.get(name)) {
+      MM.setStatus(name + ' — still saving the last mark; that one was not sent');
+      return Promise.resolve(false);
+    }
+    const payload = { slug: active.slug, set: set.id, card: name };
+    if (verdict) payload.verdict = verdict;
+    if (isNote) { payload.note = note; gridPendingNote.set(name, note); }
+    gridPending.set(name, (gridPending.get(name) || 0) + 1);
+    const slug = active.slug, setId = set.id;
+    const run = function () {
+      return Api.call('watch/mark', payload).then(function (res) {
+        // The deck or set may have changed while this was on the wire: write into the
+        // set it was sent for, never into whichever is open now.
+        const s = active && active.slug === slug && active.watch
+          ? active.watch.sets.find(x => x.id === setId) : null;
+        const row = s && s.cards.find(c => c.name === name);
+        if (row && res && res.card) Object.assign(row, res.card);
+        if (active) active.candidates = currentCandidates();
+        MM.setStatus(name + (verdict ? ' — ' + (verdict === 'pass' ? 'passed' : verdict) : ' — note saved'));
+        return true;
+      }, function (err) {
+        MM.setStatus('Could not mark ' + name + ': ' + err.message);
+        return false;
+      }).then(function (ok) {
+        const left = (gridPending.get(name) || 1) - 1;
+        if (left > 0) gridPending.set(name, left); else gridPending.delete(name);
+        if (isNote && gridPendingNote.get(name) === note) gridPendingNote.delete(name);
+        // Close the editor only if what is in it is what was saved: text typed while
+        // the write was on the wire stays in the editor, unsaved and visible.
+        if (ok && isNote && gridNote === name && gridNoteDraft === note) gridNote = null;
+        afterMark(name, ok && !!verdict && verdict !== 'unreviewed' && opts.advance !== false,
+                  !!opts.focusTile);
+        renderPanel();
+        MM.render();
+        return ok;
+      });
+    };
+    gridChain = gridChain.then(run, run);
+    return gridChain;
+  }
+
+  /* A verdict from a button or a key — the one path both use (Undo included). */
+  function gridAct(name, verdict) {
+    return markCard(name, verdict, null, { advance: verdict !== 'unreviewed' });
+  }
+
+  function showOnMap(name) {
+    if (window.MM && MM.selectByName) MM.selectByName(name);
+  }
+
+  // ── the note editor ──
+
+  function bindNoteEditor(ta, focus) {
+    const tile = ta.closest('.cg-tile');
+    const name = tile && tile.getAttribute('data-card');
+    ta.addEventListener('input', function () { if (gridNote === name) gridNoteDraft = ta.value; });
+    ta.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); saveNote(name, true); }
+      else if (ev.key === 'Escape') {
+        // Cancel the note, and only that: the map's Escape chain must not also peel.
+        ev.preventDefault();
+        ev.stopPropagation();
+        cancelNote(name);
+      }
+    });
+    ta.addEventListener('blur', function () {
+      if (gridRebuilding || gridNote !== name) return;
+      const row = cardRow(name);
+      if (ta.value === ((row && row.note) || '')) {
+        // Nothing typed: just close — after any click in progress, so the tile does not
+        // shrink between mousedown and mouseup and move the button being clicked.
+        afterPointer(function () { if (gridNote === name && gridNoteDraft === ((cardRow(name) || {}).note || '')) closeNote(name); });
+        return;
+      }
+      if (gridPending.get(name)) {
+        MM.setStatus('A mark for ' + name + ' is still saving — your note is kept; save it with ' +
+                     '⌘/Ctrl+Enter or Save note');
+        return;
+      }
+      saveNote(name, false);
+    });
+    if (focus) {
+      ta.focus({ preventScroll: true });
+      ta.setSelectionRange(ta.value.length, ta.value.length);
+    }
+  }
+
+  function afterPointer(fn) {
+    if (!pointerDown) { fn(); return; }
+    window.addEventListener('pointerup', function () { setTimeout(fn, 0); }, { once: true, capture: true });
+  }
+
+  function saveNote(name, explicit) {
+    if (gridNote !== name) return Promise.resolve(false);
+    const text = gridNoteDraft;
+    if (gridPendingNote.get(name) === text) return Promise.resolve(false);   // already on its way
+    if (!explicit && gridPending.get(name)) return Promise.resolve(false);
+    return markCard(name, null, text, { focusTile: explicit });
+  }
+
+  function openNote(name) {
+    if (gridNote === name) {
+      const t = tileFor(name), ta = t && t.querySelector('textarea[data-note]');
+      if (ta) ta.focus();
+      return;
+    }
+    const prev = gridNote;
+    if (prev !== null) {
+      // One editor at a time, and switching never drops what was typed in the last.
+      const row = cardRow(prev);
+      if (gridNoteDraft !== ((row && row.note) || '')) saveNote(prev, true);
+    }
+    const row = cardRow(name);
+    gridNote = name;
+    gridNoteDraft = (row && row.note) || '';
+    if (prev !== null) redrawPlaced(prev);
+    redrawPlaced(name);
+  }
+
+  function redrawPlaced(name) {
+    const set = active && watchSet();
+    const tile = tileFor(name);
+    if (!set || !tile) return null;
+    const cards = gridCards(set);
+    const i = cards.findIndex(c => c.name === name);
+    return i === -1 ? null : redrawTile(tile, cards[i], i);
+  }
+
+  function closeNote(name) {
+    if (gridNote !== name) return;
+    gridNote = null;
+    redrawPlaced(name);
+  }
+
+  function cancelNote(name) {
+    if (gridNote !== name) return;
+    gridNote = null;
+    const t = redrawPlaced(name);
+    if (t) t.focus({ preventScroll: true });
+  }
+
+  // ── events ──
 
   function onGridClick(ev) {
     const t = ev.target;
     const f = t.closest('[data-filter]');
-    if (f) { gridFilter = f.getAttribute('data-filter'); gridFocus = 0; renderGrid(); return; }
+    if (f) { gridFilter = f.getAttribute('data-filter'); gridFocus = 0; renderGrid({ resetScroll: true }); return; }
     if (t.closest('[data-close]')) { gridOpen = false; renderGrid(); renderPanel(); return; }
+    if (t.closest('[data-legend]')) { toggleLegend(); return; }
     const tile = t.closest('[data-card]');
     if (!tile) return;
     const name = tile.getAttribute('data-card');
-    const tiles = Array.prototype.slice.call(gridEl(false).querySelectorAll('.cg-tile'));
-    gridFocus = Math.max(0, tiles.indexOf(tile));
-    const v = t.closest('[data-verdict]');
-    if (v) { markCard(name, v.getAttribute('data-verdict'), null); return; }
-    if (t.closest('[data-noteopen]')) { gridNote = name; renderGrid(); return; }
-    if (t.closest('[data-select]')) { MM.selectByName(name); }
     // Any click on a tile makes it the keyboard's tile, so j k w p n act on it.
-    tiles.forEach((el, i) => el.classList.toggle('is-focus', i === gridFocus));
-    if (!t.closest('details, textarea, button')) tile.focus();
+    setGridFocus(Math.max(0, gridTiles().indexOf(tile)),
+                 { dom: !t.closest('details, textarea, button'), scroll: false });
+    const v = t.closest('[data-verdict]');
+    if (v) { gridAct(name, v.getAttribute('data-verdict')); return; }
+    if (t.closest('[data-noteopen]')) { openNote(name); return; }
+    if (t.closest('[data-notesave]')) { saveNote(name, true); return; }
+    if (t.closest('[data-select]')) showOnMap(name);
+  }
+
+  function onGridChange(ev) {
+    const s = ev.target.closest && ev.target.closest('select[data-sort]');
+    if (!s) return;
+    gridSort = s.value;
+    gridFocus = 0;
+    renderGrid({ resetScroll: true });
+  }
+
+  function toggleLegend() {
+    gridLegend = !gridLegend;
+    const g = gridEl(false), set = active && watchSet();
+    if (!g || !set) return;
+    const k = g.querySelector('.cg-keys');
+    if (canWriteGrid()) { if (k) k.hidden = !gridLegend; }
+    else if (k) k.innerHTML = 'Read-only here — run <code>manamap serve</code> to mark cards' +
+      (gridLegend ? ' · j / k move · o show on the map' : '');
+    const b = g.querySelector('[data-legend]');
+    if (b) b.setAttribute('aria-expanded', gridLegend ? 'true' : 'false');
+  }
+
+  function gridLive() {
+    return !!(gridOpen && active && window.MM && MM.mode === 'build' && watchSet() && gridEl(false));
   }
 
   function onGridKey(ev) {
-    if (ev.target && ev.target.tagName === 'TEXTAREA') return;
-    if (ev.target && ev.target.tagName === 'SELECT') return;
-    const set = watchSet();
-    if (!set) return;
-    const cards = gridCards(set);
+    if (ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.altKey || ev.isComposing) return;
+    if (!gridLive()) return;
+    const ae = document.activeElement;
+    if (isTextField(ev.target) || isTextField(ae)) return;   // the note's own keys are its own
+    const g = gridEl(false);
+    const inGrid = !!(ae && g.contains(ae));
     const k = ev.key;
-    if (k === 'j' || k === 'k') {
-      gridFocus = Math.max(0, Math.min(cards.length - 1, gridFocus + (k === 'j' ? 1 : -1)));
-      renderGrid();
-      const cur = gridEl(false).querySelector('.cg-tile.is-focus');
-      if (cur) { cur.focus(); cur.scrollIntoView({ block: 'nearest' }); }
-      ev.preventDefault();
+    const tiles = gridTiles();
+    // The card is read off the TILE, so the key acts on exactly what is highlighted.
+    const cur = tiles[Math.min(gridFocus, tiles.length - 1)];
+    const c = cur ? cardRow(cur.getAttribute('data-card')) : null;
+    const consume = function (own) { ev.preventDefault(); if (own) ev.stopPropagation(); };
+
+    if (k === '?') { consume(false); toggleLegend(); return; }
+    if (!tiles.length) return;
+    let step = null;
+    if (k === 'j' || k === 'k') step = k === 'j' ? 1 : -1;
+    else if (k === 'h' || k === 'l' || (inGrid && (k === 'ArrowLeft' || k === 'ArrowRight'))) {
+      const cols = gridColumns(tiles), col = gridFocus % cols;
+      const right = k === 'l' || k === 'ArrowRight';
+      step = right ? (col < cols - 1 ? 1 : 0) : (col > 0 ? -1 : 0);
+    } else if (inGrid && (k === 'ArrowDown' || k === 'ArrowUp')) {
+      const cols = gridColumns(tiles);
+      step = k === 'ArrowDown' ? cols : -cols;
+      if (gridFocus + step > tiles.length - 1 || gridFocus + step < 0) step = 0;
+    }
+    if (step !== null) {
+      consume(k.indexOf('Arrow') === 0);
+      setGridFocus(gridFocus + step, { dom: true });
       return;
     }
-    const c = cards[gridFocus];
-    if (!c || !(window.Api && Api.ready)) return;
-    if (k === 'w') { markCard(c.name, 'watching', null); ev.preventDefault(); }
-    else if (k === 'p') { markCard(c.name, 'pass', null); ev.preventDefault(); }
-    else if (k === 'n') { gridNote = c.name; renderGrid(); ev.preventDefault(); }
+    if (!c) return;
+    if (k === 'o' || (k === 'Enter' && inGrid && ae && ae.classList && ae.classList.contains('cg-tile'))) {
+      if (ev.repeat) return;
+      consume(k === 'Enter');
+      showOnMap(c.name);
+      return;
+    }
+    if (!canWriteGrid() || ev.repeat) return;   // a held key never writes twice
+    if (k === 'w') { consume(false); gridAct(c.name, 'watching'); }
+    else if (k === 'p') { consume(false); gridAct(c.name, 'pass'); }
+    else if (k === 'u') {
+      consume(false);
+      if (c.verdict !== 'unreviewed') gridAct(c.name, 'unreviewed');
+    } else if (k === 'n') { consume(false); openNote(c.name); }
   }
 
-  /* One verdict or note, through `serve`'s `watch/mark`, which writes through the
-   * gate. The page's copy changes only after the server says it wrote. */
-  async function markCard(name, verdict, note) {
-    const set = watchSet();
-    if (!set || !(window.Api && Api.ready)) return;
-    const payload = { slug: active.slug, set: set.id, card: name };
-    if (verdict) payload.verdict = verdict;
-    if (note !== null && note !== undefined) payload.note = note;
-    try {
-      const res = await Api.call('watch/mark', payload);
-      const row = set.cards.find(c => c.name === name);
-      if (row && res && res.card) Object.assign(row, res.card);
-      active.candidates = currentCandidates();
-      MM.setStatus(name + (verdict ? ' — ' + (verdict === 'pass' ? 'passed' : verdict) : ' — note saved'));
-    } catch (err) {
-      MM.setStatus('Could not mark ' + name + ': ' + err.message);
-    }
-    renderGrid();
-    renderPanel();
-    MM.render();
-    const g = gridEl(false);
-    if (g) g.focus();
-  }
+  // Capture phase, so the grid's arrows are handled (and stopped) before the map's
+  // document-level handler would also move its browse cursor.
+  document.addEventListener('keydown', onGridKey, true);
+  document.addEventListener('pointerdown', function () { pointerDown = true; }, true);
+  window.addEventListener('pointerup', function () { pointerDown = false; }, true);
+  window.addEventListener('pointercancel', function () { pointerDown = false; }, true);
 
   function chooseSet(id) {
     watchSetId = id || null;
@@ -663,7 +1039,7 @@
     gridNote = null;
     if (active) active.candidates = currentCandidates();
     renderPanel();
-    renderGrid();
+    renderGrid({ resetScroll: true });
     MM.render();
   }
 
