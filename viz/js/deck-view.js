@@ -27,6 +27,11 @@
    * used to be an anonymous array literal down in `render()` with no statement
    * of it anywhere. */
   var DOSSIER = [
+    // THE DECK CONTEXT LEADS (PRD v2, 2026-10-07): the one living document per
+    // deck, the thing Jarvis reads first. Everything below it is the evidence.
+    ['context', 'Deck Context',
+     'What the deck is, how it plays, every card by its job. Prose by the Context Keeper; figures generated.',
+     ['coach', 'data']],
     ['cover', 'Cover sheet',
      'Who, what state, and the three numbers. Thirty seconds.', ['data']],
     ['rap-sheet', 'Rap sheet',
@@ -98,6 +103,13 @@
   function num(x, digits) {
     return typeof x === 'number' ? x.toFixed(digits === undefined ? 0 : digits) : '—';
   }
+  /* A difference with its sign. The decision ledger's rows called this since
+   * 2026-09-29 and only branch-view.js defined it, so every deck whose ledger held
+   * a Forge prediction threw `signed is not defined` and rendered NOTHING. */
+  function signed(x, digits) {
+    if (typeof x !== 'number') return '—';
+    return (x > 0 ? '+' : '') + x.toFixed(digits === undefined ? 3 : digits);
+  }
 
   /* `cache: 'no-cache'` forces revalidation on every artifact fetch, and it is
    * load-bearing rather than defensive. These files are NOT content-addressed the
@@ -138,7 +150,7 @@
    * rendered its card names one per line down a 250px column and read as a
    * wall. Membership is a property of the content, not of the id, but the id is
    * what the caller has. */
-  var WIDE = { kill: 1, ten: 1, cover: 1, 'rap-sheet': 1, priors: 1 };
+  var WIDE = { context: 1, kill: 1, ten: 1, cover: 1, 'rap-sheet': 1, priors: 1 };
 
   function panel(id, title, promise, tiers, accent, body) {
     return '<section class="panel' + (WIDE[id] ? ' wide' : '') +
@@ -474,6 +486,34 @@
   document.addEventListener('focusin', hoverArt, { passive: true });
   // `error` does not bubble, so the retry listens in the capture phase.
   if (window.Shell && Shell.wireCardArt) Shell.wireCardArt(document.body);
+
+  /* THE DECK CONTEXT. `context-md.js` renders the markdown (escaped; card links
+   * become `a.cardref` with the page's hover art), then `wireContext` adds the
+   * Cards-by-role filter once the panel is in the DOM. Absent says how to make one. */
+  function contextPanel(d) {
+    if (!d.context || !window.ContextMD) {
+      return section('context', '#c4a747',
+        '<p class="ctx-absent">No Deck Context yet — <code>manamap pilot context ' +
+        esc(d.slug) + ' --scaffold</code>, then a Context Keeper <code>seed</code> pass (ask Jarvis).</p>');
+    }
+    var body = ContextMD.render(d.context, {
+      skipTitle: true,
+      cardImageUrl: function (n) {
+        return (window.Shell && Shell.cardImageUrl) ? Shell.cardImageUrl(n, 'normal') : null;
+      }
+    });
+    return section('context', '#c4a747', '<div class="ctx-body">' + body + '</div>');
+  }
+
+  function wireContext(d) {
+    var root = document.getElementById('panel-context');
+    if (!root || !window.ContextMD || !d.cards) return;
+    var cards = {};
+    ((d.cards || {}).cards || []).forEach(function (c) {
+      cards[c.name] = { colors: c.colors || [], type_line: c.type_line || '', cmc: c.cmc };
+    });
+    ContextMD.wireFilters(root, cards);
+  }
 
   function rosterPanel(d) {
     var got = rosterFor(d);
@@ -1964,6 +2004,7 @@
   }
 
   function render(slug, d) {
+    d.slug = slug;
     var issue = d.issue || {};
     document.title = (issue.deck_name || slug) + ' — Deck Dossier';
     document.getElementById('deckName').textContent = issue.deck_name || slug;
@@ -2043,6 +2084,7 @@
      * lost and nothing is half-converted, which is the only way to move a page
      * this size without a window where it renders neither shape. */
     var html = [
+      contextPanel(d),
       coverPanel(d),
       rapSheetPanel(d),
       rosterPanel(d),
@@ -2061,6 +2103,7 @@
       branchPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
+    wireContext(d);
     var bits = [d.stacks.length + ' verified line(s)'];
     if ((d.sims || []).length) bits.push(d.sims.length + ' sim run(s)');
     if ((d.experiments || []).length) bits.push(d.experiments.length + ' experiment(s)');
@@ -2127,16 +2170,29 @@
       // GATED ON THE MANIFEST, not fetched unconditionally like FILES: a deck
       // with no logged games has no artifact, and a 404 read as "absent" is the
       // ambiguity the `has` map exists to resolve.
+      // THE DECK CONTEXT and, only beside it, the 99's cards.json (cost, colour,
+      // type) for its filter. Gated on the manifest like the log: no context, no
+      // fetch, no 404 read as "absent".
+      var contextJob = (entry.has || {}).context
+        ? fetch(BASE + entry.slug + '/CONTEXT.md', { cache: 'no-cache' }).then(function (r) {
+            return r.ok ? r.text() : '';
+          }).catch(function () { return ''; })
+        : Promise.resolve('');
+      var cardsJob = (entry.has || {}).context
+        ? getJSON(BASE + entry.slug + '/cards.json') : Promise.resolve(null);
       var picardJob = (entry.has || {}).captains_log
         ? getJSON(BASE + entry.slug + '/captains_log.json') : Promise.resolve(null);
 
       return Promise.all([Promise.all(jobs), Promise.all(stackJobs),
                           Promise.all(simJobs), Promise.all(expJobs),
-                          Promise.all(rxJobs), logJob, debriefJob, picardJob])
+                          Promise.all(rxJobs), logJob, debriefJob, picardJob,
+                          contextJob, cardsJob])
         .then(function (both) {
           var d = { stacks: both[1].filter(Boolean) };
           both[0].forEach(function (p) { d[p[0]] = p[1]; });
           d.sims = both[2].filter(Boolean);
+          d.context = both[8] || '';
+          d.cards = both[9];
           d.experiments = both[3].filter(Boolean);
           d.prescriptions = both[4].filter(Boolean);
           // JSONL, one game per line — the log is append-only and authored.

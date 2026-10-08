@@ -210,7 +210,8 @@ def test_deck_html_busts_its_own_assets():
     # `api` joined when the dossier gained the Measure buttons: a local server
     # can RUN the deterministic measurements, and a static host cannot — the
     # page has to know which one it is being.
-    assert set(busts) == {"deck-view", "tokens", "shell", "session", "api"}, busts
+    # `context-md` joined with the Deck Context panel (PRD v2), which renders through it.
+    assert set(busts) == {"deck-view", "context-md", "tokens", "shell", "session", "api"}, busts
     assert all(int(v) > 0 for v in busts.values())
 
 
@@ -274,7 +275,8 @@ def test_the_cover_sheet_is_first_and_the_assessment_is_last():
     """
     from manamap.pilot.page_spec import DOSSIER_IDS
 
-    assert DOSSIER_IDS[0] == "cover"
+    # PRD v2: the Deck Context leads, then the cover sheet.
+    assert DOSSIER_IDS[:2] == ["context", "cover"]
     assert DOSSIER_IDS[-1] == "assessment"
     assert DOSSIER_IDS.index("priors") < DOSSIER_IDS.index("logs"), (
         "the coded table reads before the prose it summarises")

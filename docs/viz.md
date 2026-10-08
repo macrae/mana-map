@@ -9,7 +9,7 @@ directory and, between the families, nothing else:
 - **`workbench.html` — the landing page.** Every deck, racked by whether it is sleeved,
   waiting on cardboard, on the bench or history; or one fleet table with five sorts. Reads
   every deck's `info.json`.
-- **`deck.html` — the deck dossier.** One deck, one screen.
+- **`deck.html` — the deck dossier.** One deck, one screen. The Deck Context leads it (`context-md.js`).
 - **`branch.html` — the branch workbench.** One candidate 99: the proposal, the verdict,
   the measured table with each row's definition, reward/risk/cost, the bill.
 - **`library.html` — Curate.** The library across every pile at a size you can read, with
@@ -174,7 +174,8 @@ python -m http.server 8000
 | `viz/js/build.js` | Build (~1,818 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
 | `viz/css/tokens.css` | The design tokens (ported from the magazine renderer before it was deleted) in a dark register (1,230 lines). Shared by `deck.html`, `workbench.html`, `branch.html` AND `spaces.html` |
-| `viz/js/deck-view.js` | The dossier (~2,243 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
+| `viz/js/deck-view.js` | The dossier (~2,300 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
+| `viz/js/context-md.js` | The Deck Context renderer (PRD v2): CONTEXT.md's markdown subset, escaped, card links as `a.cardref`, and the Cards-by-role filter. `window.ContextMD`; loaded before `deck-view.js` |
 | `viz/workbench.html` | **The landing page**: racks + fleet table over every deck's `info.json` |
 | `viz/js/workbench.js` | The landing page (~807 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
 | `viz/branch.html` | Branch shell: the objective mount and the panel grid |

@@ -291,6 +291,9 @@ def gather_entries():
                             "log_annotations", "deck_versions",
                             "captains_log", "watchlist", "considering")}
         has["log"] = (deck_path / "log.jsonl").exists()
+        # The Deck Context (PRD v2): the deck page renders it first, and fetches
+        # cards.json beside it for the Cards-by-role filter only when it exists.
+        has["context"] = (deck_path / "CONTEXT.md").exists()
         # The rendered page under `manuals/p/` — since 2026-09-02 the Pilot's
         # OPERATING HANDBOOK, which superseded the compact page and took its
         # path. The key keeps its name because it is a wire format the four viz

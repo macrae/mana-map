@@ -100,6 +100,8 @@ def test_presence_flags_match_the_files_on_disk():
                 path = MANUALS_DIR / "p" / f"{slug}.html"
             elif name == "log":
                 path = base / "log.jsonl"
+            elif name == "context":
+                path = base / "CONTEXT.md"
             else:
                 path = base / f"{name}.json"
             assert flag == path.exists(), f"{slug}.has[{name}] vs {path}"

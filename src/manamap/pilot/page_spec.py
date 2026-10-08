@@ -112,7 +112,14 @@ FROM_DEPARTMENT = {
 # pilot's own test of whether this works: pull the file for a deck you have not
 # played in two months and, from the cover sheet and the rap sheet ALONE, say
 # what it does, whether it is healthy, and what you were about to try next.
+#
+# PRD v2 (2026-10-07) PUTS THE DECK CONTEXT ABOVE THE COVER SHEET. The context is
+# the one living document per deck — what Jarvis reads first and what Sean reads
+# himself — so it leads, and the file below it becomes its evidence.
 DOSSIER_SECTIONS = [
+    ("context", "Deck Context",
+     "What the deck is, how it plays, every card by its job. Prose by the Context Keeper; figures generated.",
+     ("coach", "data")),
     ("cover", "Cover sheet",
      "Who, what state, and the three numbers. Thirty seconds.",
      ("data",)),

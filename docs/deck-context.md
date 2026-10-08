@@ -67,6 +67,15 @@ manamap pilot context --refresh --all                # re-render the blocks on e
 manamap pilot context <slug> --install data/decks/<slug>/.agent-out/context-keeper.md --note "…"
 ```
 
+## On the deck page
+
+`viz/deck.html` renders the context as the dossier's **first panel** (`has.context` in
+the manifest, `MANIFEST_VERSION` 5) through `viz/js/context-md.js`: a small, escaped
+renderer for exactly the subset the Keeper writes. Card links become hoverable
+`a.cardref`s that open the Atlas. **Cards by role** gets a filter bar (name, colour,
+type, mana value) over the deck's `cards.json`, fetched only when a context exists; a
+role written as a paragraph of names filters like a list.
+
 ## The Keeper's three modes
 
 The full charter is `.claude/agents/context-keeper.md`. Its target is under 2 minutes,
