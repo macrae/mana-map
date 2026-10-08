@@ -3531,7 +3531,7 @@ def test_no_live_surface_links_into_the_magazine(browser, viz_server):
         assert page.query_selector("#issueLink") is None
         hrefs = page.eval_on_selector_all(
             ".head-links a", "els => els.map(e => e.getAttribute('href'))")
-        assert not [h for h in hrefs if h and "manuals/" in h and "manuals/p/" not in h], hrefs
+        assert not [h for h in hrefs if h and "manuals/" in h], hrefs
     finally:
         page.close()
 
@@ -3541,47 +3541,29 @@ def test_no_live_surface_links_into_the_magazine(browser, viz_server):
     try:
         hrefs = page.eval_on_selector_all(
             "a", "els => els.map(e => e.getAttribute('href'))")
-        assert not [h for h in hrefs if h and "manuals/" in h and "manuals/p/" not in h], hrefs
+        assert not [h for h in hrefs if h and "manuals/" in h], hrefs
     finally:
         page.close()
 
 
-def test_the_dossier_hides_a_manual_link_it_cannot_serve(browser, viz_server):
-    """A link that 404s is worse than a link that is not there.
-
-    The rule the deleted issue-link tests existed for, moved to the artifact it
-    now governs. A deck is loadable as soon as it has a `cards.json`; its
-    Pilot's Manual comes later, and `has.page` on the manifest entry is what
-    says whether one exists. Reading `d.has` instead of `d.entry.has` once hid
-    this link on every deck that had a manual — silently, since a hidden link
-    raises nothing.
-    """
+def test_the_dossier_offers_no_manual_link(browser, viz_server):
+    """PRD v2 Step 3 (2026-10-07): the Deck Context leads the dossier and replaces
+    the Pilot's Manual as the thing a pilot reads, so no surface links to
+    `manuals/p/` any more — even for a deck whose handbook is still on disk."""
     import json
     from manamap.config import DECKS_DIR
 
     manifest = json.loads((DECKS_DIR / "index.json").read_text())
-    with_page = [d for d in manifest["decks"]
-                 if (d.get("has") or {}).get("page")]
-    without = [d for d in manifest["decks"]
-               if not (d.get("has") or {}).get("page")]
+    with_page = [d for d in manifest["decks"] if (d.get("has") or {}).get("page")]
     if not with_page:
-        pytest.skip("no deck in the manifest has a compact page")
-
-    slug = with_page[0]["slug"]
-    page = _dossier(browser, viz_server, slug)
+        pytest.skip("no deck in the manifest has a rendered handbook")
+    page = _dossier(browser, viz_server, with_page[0]["slug"])
     try:
-        assert page.is_visible("#manualLink") is True
-        assert page.get_attribute("#manualLink", "href") == f"../manuals/p/{slug}.html"
+        assert page.query_selector("#manualLink") is None
+        hrefs = page.eval_on_selector_all("a", "els => els.map(e => e.getAttribute('href'))")
+        assert not [h for h in hrefs if h and "manuals/" in h], hrefs
     finally:
         page.close()
-
-    if without:
-        page = _dossier(browser, viz_server, without[0]["slug"])
-        try:
-            assert page.is_visible("#manualLink") is False
-            assert page.get_attribute("#manualLink", "href") is None
-        finally:
-            page.close()
 
 
 # ── The verified-line spotlight ──────────────────────────────────────────
@@ -4948,23 +4930,19 @@ def test_every_card_offers_all_three_destinations_by_name(browser, viz_server):
     try:
         hrefs = page.eval_on_selector_all(
             ".wb-links a", "els => els.map(e => e.getAttribute('href'))")
-        assert hrefs == ["../manuals/p/alpha.html",
-                         "deck.html?deck=alpha",
-                         "index.html?deck=alpha"], hrefs
-        # The title is the manual, because that is what a pilot opens a deck to
-        # read — but it is a LABELLED link, not a hidden hit area.
-        assert page.get_attribute(".wb-title", "href") == "../manuals/p/alpha.html"
+        assert hrefs == ["deck.html?deck=alpha", "index.html?deck=alpha"], hrefs
+        # The title is the deck page (PRD v2: the Deck Context leads it; it was the
+        # Pilot's Manual until 2026-10-07) — a LABELLED link, not a hidden hit area.
+        assert page.get_attribute(".wb-title", "href") == "deck.html?deck=alpha"
         assert page.query_selector_all(".wb-hit") == []
     finally:
         page.close()
 
 
-def test_the_manual_link_appears_only_when_there_is_a_manual(browser, viz_server):
-    """A card is ONE hit area to the deck page, with the manual as its own small
-    link inside it. A card that opens two different things depending on where you
-    click is the interaction bug the atlas already fixed once. And a link to a
-    page that does not exist is worse than no link, so it is hidden rather than
-    dead — the same rule the dossier's issue link follows."""
+def test_no_card_links_to_a_manual_even_when_one_is_on_disk(browser, viz_server):
+    """PRD v2 Step 3 (2026-10-07): the manual links are gone. Every card gets the
+    same two links and a title to the deck page, whether or not a handbook was
+    ever rendered for it."""
     page = _workbench(browser, viz_server, [
         _deck("withpage", has={"page": True}),
         _deck("nopage", has={"page": False}),
@@ -4972,15 +4950,11 @@ def test_the_manual_link_appears_only_when_there_is_a_manual(browser, viz_server
     try:
         links = page.eval_on_selector_all(
             ".wb-links a", "els => els.map(e => e.getAttribute('href'))")
-        # withpage gets three; nopage gets two, and the missing one is the
-        # manual rather than a dead link to a page that is not there.
-        assert links == ["../manuals/p/withpage.html",
-                         "deck.html?deck=withpage",
-                         "index.html?deck=withpage",
-                         "deck.html?deck=nopage",
-                         "index.html?deck=nopage"], links
-        # A deck with no manual does not get its title linked either.
-        assert page.eval_on_selector_all(".wb-title", "els => els.length") == 1
+        assert links == ["deck.html?deck=withpage", "index.html?deck=withpage",
+                         "deck.html?deck=nopage", "index.html?deck=nopage"], links
+        assert page.eval_on_selector_all(
+            ".wb-title", "els => els.map(e => e.getAttribute('href'))") == [
+            "deck.html?deck=withpage", "deck.html?deck=nopage"]
     finally:
         page.close()
 

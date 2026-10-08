@@ -281,20 +281,14 @@
     // stop anything being implicit. Every destination is a labelled link, so
     // there is no invisible target left to be surprised by.
     //
-    // The title goes to the MANUAL because that is what a pilot opens a deck to
-    // read. The map link carries `?deck=`, the documented inbound contract that
-    // lands in Build with the deck loaded rather than on an unfiltered atlas.
+    // The title goes to the DECK PAGE, which the Deck Context now leads — that is
+    // what a pilot opens a deck to read (PRD v2 Step 3; it went to the Pilot's
+    // Manual until 2026-10-07). The map link carries `?deck=`, the documented
+    // inbound contract that lands in Build with the deck loaded.
     var slug = encodeURIComponent(e.slug);
-    var hasPage = !!(e.has && e.has.page);
     var title = esc(e.deck_name || e.slug);
-    var heading = hasPage
-      ? '<h3><a class="wb-title" href="../manuals/p/' + slug + '.html">' + title + '</a></h3>'
-      : '<h3>' + title + '</h3>';
-    // A link to a page that does not exist is worse than no link, so the manual
-    // is omitted rather than dead when a deck has none — the same rule the
-    // dossier's own manual link follows.
+    var heading = '<h3><a class="wb-title" href="deck.html?deck=' + slug + '">' + title + '</a></h3>';
     var links = '<nav class="wb-links">'
-      + (hasPage ? '<a href="../manuals/p/' + slug + '.html">Manual</a>' : '')
       + '<a href="deck.html?deck=' + slug + '">Dossier</a>'
       + '<a href="index.html?deck=' + slug + '">On the map</a>'
       + actions(e)
@@ -467,8 +461,7 @@
     var dead = e.status ? ' is-dead' : '';
 
     return '<tr class="t-head' + dead + '">'
-      + '<th scope="row"><a href="' + (e.has && e.has.page
-            ? '../manuals/p/' + slug + '.html' : 'deck.html?deck=' + slug) + '">'
+      + '<th scope="row"><a href="deck.html?deck=' + slug + '">'
         + esc(e.deck_name || e.slug) + '</a>'
         + '<span class="t-sub">' + esc(e.commander || '') + '</span></th>'
       + '<td>' + lock + '</td>'

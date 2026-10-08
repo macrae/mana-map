@@ -2042,22 +2042,9 @@
     // `deck_lifecycle` reads. What goes is the invitation, not the archive.
     var link = document.getElementById('issueLink');
     if (link) link.remove();
-    // The compact Pilot's Manual lives under manuals/p/. Hidden rather than dead
-    // when a deck has none, because a link that 404s is worse than a link that is
-    // not there.
-    var manual = document.getElementById('manualLink');
-    if (manual) {
-      // `has` rides on the MANIFEST entry, not on the artifacts object —
-      // `d` is keyed by artifact name. Reading `d.has` was always undefined,
-      // so the link silently hid itself on every deck that had a manual.
-      if (d.entry && d.entry.has && d.entry.has.page) {
-        manual.hidden = false;
-        manual.href = '../manuals/p/' + slug + '.html';
-      } else {
-        manual.hidden = true;
-        manual.removeAttribute('href');
-      }
-    }
+    // NO PILOT'S MANUAL LINK (PRD v2 Step 3, 2026-10-07). The Deck Context now
+    // leads this page and replaces the handbook as the thing a pilot reads; the
+    // pages under manuals/p/ stay on disk until Step 6's deletions, unlinked.
     // The map's Deck Lens reads ?deck=<slug> on entry, so this deep-links straight
     // into the overlay rather than dropping the reader on an unfiltered map.
     document.getElementById('lensLink').href = 'index.html?deck=' + encodeURIComponent(slug);

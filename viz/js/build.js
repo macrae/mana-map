@@ -1463,12 +1463,9 @@
         // into it. This link survived the removal on the other three surfaces
         // because it lives in a panel that only renders with a deck loaded —
         // a grep for the string found it, a click-through never would have.
-        // `has.page` gates the manual for the same reason it does everywhere
-        // else: a link that 404s is worse than a link that is not there.
+        // No Pilot's Manual link either (PRD v2 Step 3, 2026-10-07): the dossier,
+        // which the Deck Context now leads, is the one place a deck is read.
         '<div class="lens-links">' +
-          ((e.has && e.has.page)
-            ? '<a href="../manuals/p/' + esc(active.slug) + '.html">Pilot\'s Manual →</a>'
-            : '') +
           '<a href="deck.html?deck=' + esc(active.slug) + '">Dossier →</a>' +
         '</div>' +
       '</div>' +
