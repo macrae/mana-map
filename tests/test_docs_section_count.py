@@ -14,7 +14,7 @@ from manamap.pilot.page_spec import SECTION_IDS
 from manamap.pilot.poh_spec import SECTIONS as POH_SECTIONS
 # One pruned walk shared with `test_docs_counts.py`, instead of a full-tree glob
 # per reference. `tests/repo_tree.py` records what that cost.
-from repo_tree import exists_anywhere
+from repo_tree import claude_md, exists_anywhere
 
 ROOT = Path(__file__).resolve().parent.parent
 # Every surface that tells an agent or a human how many sections there are.
@@ -35,7 +35,7 @@ SURFACES = [
     ROOT / "CLAUDE.md",
     ROOT / "PLAN.md",
     ROOT / "README.md",
-    *sorted((ROOT / ".claude").rglob("*.md")),
+    *claude_md(),
     *[p for p in sorted((ROOT / "docs").glob("*.md"))
       if p.name not in DESIGN_RECORDS],
     *sorted((ROOT / "src" / "manamap" / "pilot").glob("*.py")),

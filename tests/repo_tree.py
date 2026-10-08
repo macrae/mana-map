@@ -37,14 +37,34 @@ ROOT = Path(__file__).resolve().parent.parent
 PRUNED = {".venv", ".git", "node_modules", "__pycache__", ".pytest_cache",
           ".ruff_cache", ".mypy_cache", "data", "venv", "env", ".tox"}
 
+#: An agent's git worktree (`.claude/worktrees/<id>/`) is a WHOLE SECOND CHECKOUT
+#: inside this one. Every scan below that walks `.claude/` or the tree read its
+#: copies of the docs too — under paths no exemption list names — and failed a
+#: prepush on files that are not this checkout's (2026-10-08). Never scanned.
+WORKTREES = ROOT / ".claude" / "worktrees"
+
+
+def in_worktree(path):
+    """Is `path` inside an agent's worktree (another checkout, not this one)?"""
+    try:
+        Path(path).resolve().relative_to(WORKTREES.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def claude_md():
+    """`.claude/**/*.md` of THIS checkout, agent worktrees excluded."""
+    return [p for p in sorted((ROOT / ".claude").rglob("*.md")) if not in_worktree(p)]
+
 
 @functools.lru_cache(maxsize=1)
 def _index():
     """`{basename: (relative paths,)}` for every file outside PRUNED."""
     found = {}
     for dirpath, dirnames, filenames in os.walk(ROOT):
-        dirnames[:] = [d for d in dirnames if d not in PRUNED]
         base = Path(dirpath)
+        dirnames[:] = [d for d in dirnames if d not in PRUNED and not in_worktree(base / d)]
         for name in filenames:
             found.setdefault(name, []).append(
                 (base / name).relative_to(ROOT).as_posix())

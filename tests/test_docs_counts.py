@@ -33,7 +33,7 @@ import pytest
 
 # Shared with `test_docs_section_count.py`: one pruned walk instead of a
 # full-tree `rglob` per name. See `tests/repo_tree.py`.
-from repo_tree import exists_anywhere
+from repo_tree import claude_md, exists_anywhere, in_worktree
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # `prd.md` is deliberately NOT excluded — it is live, and its intake notes are
@@ -45,7 +45,7 @@ SURFACES = [
     ROOT / "CLAUDE.md",
     ROOT / "PLAN.md",
     ROOT / "README.md",
-    *sorted((ROOT / ".claude").rglob("*.md")),
+    *claude_md(),
     *[p for p in sorted((ROOT / "docs").glob("*.md"))
       if p.name not in DESIGN_RECORDS],
     # THE COUNTS ALSO LIVE IN SOURCE, and three of them were wrong.
@@ -381,7 +381,7 @@ def test_no_doc_tells_you_to_run_a_subcommand_that_does_not_exist():
     offenders, checked = [], 0
     for path in sorted(ROOT.glob("**/*.md")) + [ROOT / "Makefile"]:
         rel = str(path.relative_to(ROOT))
-        if not path.exists() or ".venv" in rel or "node_modules" in rel:
+        if not path.exists() or ".venv" in rel or "node_modules" in rel or in_worktree(path):
             continue
         if "history" in path.parts or rel in exempt:
             continue
