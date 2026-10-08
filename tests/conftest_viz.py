@@ -127,6 +127,34 @@ def await_projection(page):
                    "the projection to arrive behind the landing")
 
 
+def _card_png(w=488, h=680):
+    """A real, decodable PNG the shape of a Scryfall `normal` card image (488x680).
+
+    THE LANDING'S ART CAME FROM SCRYFALL, LIVE. `discover_page` tests that wait on
+    the image (`naturalHeight > 0`) then waited on the network: the art-crop test
+    timed out at 120 s once a run whenever Scryfall was slow, and passed in 2 s
+    alone (2026-10-08). The page code is unchanged — only the bytes come from here."""
+    import struct
+    import zlib
+    raw = b"".join(b"\x00" + b"\x80\x80\x80" * w for _ in range(h))
+    def chunk(kind, data):
+        body = kind + data
+        return struct.pack(">I", len(data)) + body + struct.pack(">I", zlib.crc32(body) & 0xFFFFFFFF)
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
+
+
+CARD_PNG = _card_png()
+
+
+def serve_card_images_locally(page):
+    """Route Scryfall's image endpoint to `CARD_PNG`. A test that needs another answer
+    (a 404 for a DFC's full name, say) registers its own route afterwards, which wins."""
+    page.route("https://api.scryfall.com/cards/named*",
+               lambda route: route.fulfill(status=200, content_type="image/png", body=CARD_PNG)
+               if "format=image" in route.request.url else route.continue_())
+
+
 @pytest.fixture
 def discover_page(browser, viz_server):
     """The landing, on a card chosen by deep link so the test is not random.
@@ -140,6 +168,7 @@ def discover_page(browser, viz_server):
     _add = _record(errors)
     page.on("pageerror", lambda e: _add(e))
     page.on("console", lambda m: _add(m.text) if m.type == "error" else None)
+    serve_card_images_locally(page)
     page.goto(f"{viz_server}/viz/index.html?card=Craterhoof%20Behemoth")
     page.add_style_tag(content="*, *::before, *::after {"
                                " transition: none !important; animation: none !important; }")
