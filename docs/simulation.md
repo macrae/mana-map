@@ -539,6 +539,37 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
 - **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
   your own board and cashes the deaths; that channel is not built.
 
+## Scenario slices: one board, a few turns (2026-10-08, PRD v2)
+
+A pod run asks "who wins this table", a 400-game question. A **slice** asks "on THIS
+board, what happens next": a board is applied at the first priority, every seat is the
+Forge AI, and play stops when the turn after the current turn plus `rounds` full rounds
+begins. What comes back per seed is the board left behind (life, hand, battlefield,
+graveyard, exile, command, library count, per seat), the board it started from, and the
+game log.
+
+- **The runner** is `data/forge_driver/ScenarioSlice.java`, built by
+  `manamap.sim.slice` into its own `mm-scenario-slice.jar` beside Forge's and put on the
+  classpath next to the jar a pod run would use (`telemetry.jar_for_run`, so our log
+  formatter and AI patches apply). It is NOT one of `data/forge_patches/`: that set is
+  the `-tl<sha8>` fingerprint every pod run records, and a class that never runs in a
+  `sim` game must not split them from their history. The jar records the source sha it
+  was built from and rebuilds when the source moves.
+- **The state** is Forge's puzzle `[state]` block (`p0life=40`, `p0hand=A;B`,
+  `p1battlefield=…`, `activeplayer=p0`, `activephase=MAIN1`, `turn=6`), one `pN` per
+  seat in deck order. Any seat count works; starting **mid-combat is 1-vs-1 only**
+  (Forge's limit).
+- **The trap the spike found.** `GameState.applyToGame` queues onto Forge's game-thread
+  executor when called from a sim thread, and the state half-applied: zones cleared,
+  never filled. The runner calls the protected `applyGameOnThread` inside
+  `Match.startGame`'s start hook, which runs on the thread that then runs the game.
+- **Cost, measured:** about 12 s of JVM boot, then 0.4–0.8 s of play per two-seat
+  replicate and about 4 s for four seats. Every replicate runs in ONE JVM, so 2 arms x 4
+  seeds took 12 s end to end.
+- **Not yet:** the converter from `game_state` v2 (hidden hands and libraries filled from
+  each seat's decklist), the paired A/B wrapper, the `scenario-sim` agent, and
+  `scenario` as a legal queue method.
+
 ## The spike: wrap Forge, or build our own?
 
 "Full and complete interaction" is a rules engine, and Magic's rules are not a weekend.
