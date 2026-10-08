@@ -209,9 +209,11 @@ def test_deck_html_busts_its_own_assets():
     # only Session may write. Both are dependency-free and carry no data.
     # `api` joined when the dossier gained the Measure buttons: a local server
     # can RUN the deterministic measurements, and a static host cannot — the
-    # page has to know which one it is being.
+    # page has to know which one it is being. `page-state` joined with the beacon
+    # that tells Jarvis which deck is open (PRD v2 Step 7).
     # `context-md` joined with the Deck Context panel (PRD v2), which renders through it.
-    assert set(busts) == {"deck-view", "context-md", "tokens", "shell", "session", "api"}, busts
+    assert set(busts) == {"deck-view", "context-md", "tokens", "shell", "session", "api",
+                          "page-state"}, busts
     assert all(int(v) > 0 for v in busts.values())
 
 

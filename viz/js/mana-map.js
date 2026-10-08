@@ -3602,4 +3602,59 @@
       return types;
     },
   };
+
+  /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`).
+   *
+   * Registered HERE, after `window.MM` exists, and never earlier: everything above
+   * runs inside the IIFE that defines MM (see the queueMicrotask note at boot). The
+   * describer only READS — closure state and the getters Build and Session already
+   * export — and is polled every 1.5 s, so it must stay cheap: the selection is
+   * sliced to 40 BEFORE names are looked up (a browse set can hold 2,000 rows).
+   *
+   * FOCUS, the one card "this card" means, in order:
+   *   1. Build's review-grid tile, while the keyboard is in the grid (j/k move it);
+   *   2. the map viewer's card — the browse cursor, else the top of the 8-stack;
+   *   3. Session's focus — the landing card, or the node pinned in the graph. */
+  if (window.PageState) PageState.register(function () {
+    const nameAt = function (row) {
+      const r = (typeof row === 'number' && row >= 0) ? cardRecord(row) : null;
+      return r ? r.n : null;
+    };
+    const build = currentMode === 'build' && window.Build ? window.Build : null;
+    const s = { mode: currentMode };
+
+    const ae = document.activeElement;
+    const inGrid = !!(build && ae && ae.closest && ae.closest('#candGrid'));
+    const viewerRow = browseSet ? browseSet.indices[browseSet.pos]
+      : (selectedCards[topCardIndex] || selectedCards[0] || {}).idx;
+    s.focus = (inGrid && build.gridCard) || nameAt(viewerRow)
+      || (window.Session ? nameAt(Session.focus) : null) || undefined;
+
+    const rows = browseSet ? browseSet.indices.slice(0, 40) : selectedCards.map(c => c.idx);
+    s.selected = rows.map(nameAt).filter(Boolean);
+    if (window.Session && Session.library) s.library = Session.library.names;
+
+    if (build) {
+      if (build.deckSlug) s.deck = build.deckSlug;
+      s.view = build.view;
+    } else if (currentMode === 'explore') {
+      s.view = currentMap;
+    }
+
+    const f = {};
+    if (searchTerm && currentMode !== 'discover') f.search = searchTerm;
+    if (regionFocus) f.region = regionFocus.label;
+    if (legendKeys.size) { f.groups = Array.from(legendKeys).join(' + '); f.colour_by = currentColorBy; }
+    if (activeSupertypes.size < SUPERTYPES.length) f.types = Array.from(activeSupertypes).join(' + ');
+    if (printFocus) {
+      if (printFocus.set) f.set = printFocus.set;
+      if (printFocus.after) f.first_after = printFocus.after;
+      if (printFocus.before) f.first_before = printFocus.before;
+    }
+    if (browseSet && browseSet.label) f.browse = browseSet.label + ' (' + browseSet.indices.length + ')';
+    if (window.Drill && Drill.isActive && Drill.isActive()) f.drill = true;
+    if (build && build.watchSetId) { f.watch_set = build.watchSetId; f.grid = build.gridFilter; }
+    s.filters = f;
+    return s;
+  });
 })();

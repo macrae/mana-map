@@ -2151,6 +2151,18 @@
     renderGrid,
     // Read-only probes for the browser suite.
     get watchSetId() { return watchSetId; },
-    __gridCards: () => { const s = watchSet(); return s ? gridCards(s).map(c => c.name) : []; },
+    /* For the page-state beacon (Jarvis's "this deck" / "this card"): reads only. */
+    get deckSlug() { return active ? active.slug : null; },
+    get gridFilter() { return gridFilter; },
+    /* The review grid's current tile, or null when no grid is on screen. The same
+     * `gridCards` order the grid drew, so j/k and this agree on which card it is. */
+    get gridCard() {
+      const set = active && watchSet();
+      if (!set || !gridOpen || !nameToIdx || !gridEl(false)) return null;
+      const cards = gridCards(set);
+      const c = cards[Math.min(gridFocus, cards.length - 1)];
+      return c ? c.name : null;
+    },
+    __gridCards:() => { const s = watchSet(); return s ? gridCards(s).map(c => c.name) : []; },
   };
 })();

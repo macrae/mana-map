@@ -56,6 +56,9 @@ PILOT_STEPS = [
     ("similar-cards", "manamap.pilot.similar_cards",
      "Cards that DO what a named card does: nearest neighbours in the ability space, "
      "identity-derived from --deck, the 99 and illegal cards excluded"),
+    ("page-state", "manamap.pilot.page_state",
+     "What Sean has open in the browser (page, deck, mode, focused card, selection), "
+     "latest per tab, as reported to `manamap serve`; for resolving \"this card\""),
     ("scan-candidates", "manamap.pilot.candidate_scan",
      "One pass over the corpus along a deck's DIMENSIONS (drain, gain, threat, outlet, sweeper, draw): "
      "every row says which predicate found it; converters and two-card infinites FLAGGED, never ranked"),
@@ -1225,6 +1228,8 @@ def add_pilot_parser(subparsers):
                              help="the scenario spec JSON (the scenario-sim agent writes it)")
             cmd.add_argument("--check", action="store_true",
                              help="convert and show each arm's board per seat; play nothing")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "page-state":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "similar-cards":
             # NO slug positional, like card-search: the positionals are the SEED cards,

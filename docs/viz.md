@@ -182,6 +182,7 @@ python -m http.server 8000
 | `viz/js/branch-view.js` | The branch workbench (~856 lines). IIFE; exposes `window.Branch` for the browser suite |
 | `viz/js/shell.js` | The library drawer (~905 lines), mounted on every page; `Shell.cardImageUrl` is the name-only art helper |
 | `viz/js/api.js` | The local-server probe (~126 lines). `Api.ready` is false on a static host and every verb degrades to a named command |
+| `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all six pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
 | `viz/library.html` | **Curate** shell: pile rail, grid, pinned pane |
 | `viz/js/library-view.js` | Curate (774 lines). IIFE; multi-select, bulk move/remove, the sorts and filters over `viz_index.json` |
 | `viz/css/library.css` | Curate's own styles (185 lines), on top of `tokens.css` |
@@ -1175,11 +1176,11 @@ was right and the bytes were old.
 ## Cache busting
 
 Manual `?v=N` query strings, on **every script and stylesheet tag of the page you
-touched** — not just two pages. `index.html` carries **eleven** script busts plus
-`mana-map.css`; `deck.html`, `branch.html`, `workbench.html`, `library.html` and
-`spaces.html` carry **four** each plus their stylesheets. Every bust in the repo currently
-moves together at `?v=223`. **Bump before pushing** — Pages/browser caches are aggressive.
-On `index.html` all eleven script busts must move together and a test asserts it, because
+touched** — not just two pages. `index.html` carries **twelve** script busts plus
+`mana-map.css`; `deck.html` carries **six**, and `branch.html`, `workbench.html`,
+`library.html` and `spaces.html` **five** each, plus their stylesheets. Every bust in the
+repo currently moves together at `?v=232`. **Bump before pushing** — Pages/browser caches are aggressive.
+On `index.html` all twelve script busts must move together and a test asserts it, because
 a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`. The trap the
 two-page framing created: `shell.js` is shared by five pages, so bumping only `deck.html`
 ships it stale on four.

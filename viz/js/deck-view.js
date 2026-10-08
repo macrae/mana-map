@@ -2003,8 +2003,13 @@
     return section('assessment', 'var(--tier-coach)', head + meta + note);
   }
 
+  /* The deck on screen, for the page-state beacon: `?deck=` may be absent (the page
+   * then shows the manifest's first deck), so the URL alone cannot answer it. */
+  var shownSlug = null;
+
   function render(slug, d) {
     d.slug = slug;
+    shownSlug = slug;
     var issue = d.issue || {};
     document.title = (issue.deck_name || slug) + ' — Deck Dossier';
     document.getElementById('deckName').textContent = issue.deck_name || slug;
@@ -2312,6 +2317,24 @@
     }
     boot();
   }
+
+  /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`). A pure
+   * read, polled every 1.5 s: the deck on screen, the card link under keyboard
+   * focus or the pointer (the card being read), and the Cards-by-role filter's
+   * non-empty controls. Before the dossier renders, `?deck=` is the best answer. */
+  if (window.PageState) PageState.register(function () {
+    var s = { deck: shownSlug || new URLSearchParams(location.search).get('deck') || undefined };
+    var ae = document.activeElement;
+    var held = (ae && ae.closest && ae.closest('a.cardref, a.cardname'))
+      || document.querySelector('a.cardref:hover, a.cardname:hover');
+    if (held) s.focus = held.getAttribute('data-card') || undefined;
+    var f = {};
+    Array.prototype.forEach.call(document.querySelectorAll('.ctx-filter [data-f]'), function (el) {
+      if (el.value) f[el.getAttribute('data-f')] = el.value;
+    });
+    s.filters = f;
+    return s;
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot_);

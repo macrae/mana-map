@@ -58,7 +58,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 133 pilot subcommands answer in JSON, instantly, for free.
+  design: 134 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -113,6 +113,14 @@ def _float(v):
 
 def _bool(v):
     return bool(v) and str(v).lower() not in ("false", "0", "no")
+
+
+def _dict(v):
+    if v is None:
+        return None
+    if not isinstance(v, dict):
+        raise ValueError("expected an object")
+    return v
 
 
 def _strlist(v):
@@ -326,6 +334,16 @@ def _watch_mark(slug=None, set=None, card=None, verdict=None, note=None):
     except SystemExit as exc:
         raise ValueError(str(exc)) from None
     return {"slug": slug, "set": set, "card": row}
+
+
+def _page_state(tab=None, state=None):
+    """What one browser tab has open, for Jarvis (`manamap pilot page-state`).
+
+    Every page served from here reports its snapshot when it changes; the latest per
+    tab is kept and nothing else. Never read by anything measured.
+    """
+    from manamap.pilot import page_state
+    return page_state.record(tab, state)
 
 
 def _build_save(slug=None, commander=None, theme=None, bracket=None,
@@ -953,7 +971,7 @@ CLI_READONLY = frozenset({
     "card-rulings",
     # Composition and lookup.
     "deck-info", "deck-facts", "deck-audit", "engine-facts", "scenario-facts",
-    "deck-status", "mana-fit", "card-search", "similar-cards", "pool-facts", "deck-history",
+    "deck-status", "mana-fit", "card-search", "similar-cards", "page-state", "pool-facts", "deck-history",
     "deck-version", "impact", "cache-status", "bracket-check", "validate-context",
     # A RUNNING BATCH, read out of its logs' mtimes — it writes nothing (grep it:
     # no open-for-write, no json.dump, no mkdir). It is here because "how is that
@@ -1236,6 +1254,8 @@ ENDPOINTS = {
     # Candidate watch lists: one verdict or note at a time, POST-only.
     "watch/mark": (_watch_mark, {"slug": _str, "set": _str, "card": _str,
                                  "verdict": _str, "note": _str}),
+    # What the browser has open, for Jarvis: the latest snapshot per tab, POST-only.
+    "page/state": (_page_state, {"tab": _str, "state": _dict}),
     # The branch: open it, read what to swap, stage a swap, measure the result.
     # `merge` and `delete` are absent on purpose — see the note above.
     "branch/new": (_branch_new, {"slug": _str, "name": _str, "objective": _str,

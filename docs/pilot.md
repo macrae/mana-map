@@ -65,6 +65,7 @@ manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--car
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed
+manamap pilot page-state [--json]       # what Sean has open in the browser, focused tab first (Jarvis resolves "this card")
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out
 manamap pilot archetypes "<commander>" [--theme SLUG]   # how it is actually built, and that style's role template
 manamap pilot brew <slug> --commander "<name>" [--theme SLUG] [--from FILE] [--build]  # the cards you kept -> a deck on the bench
@@ -750,6 +751,29 @@ exactly one card; anything else is a refusal listing the candidates. Every row c
 its score, its roles (`shares …` when it holds a seed's role), what the goldfish can
 price (`model:`), its text and an Atlas link. Read-only, so it runs warm under `serve`.
 **Proximity is a discovery aid, not a verdict** — the score says the text reads alike.
+
+## What is open in the browser (`page-state`, never a result) — 2026-10-08
+
+"Is this card any good here?" names neither the card nor the deck; the page Sean is
+looking at does. Every page loads `viz/js/page-state.js` and registers one function that
+describes itself (page, deck, branch, Atlas mode, the focused card, the selection, the
+library, active filters). The module polls it and POSTs to `serve`'s `page/state` only
+when the snapshot changes or the tab gains or loses focus; `pilot/page_state.py` keeps
+the LATEST per tab in `.progress/page/state.json` (a subdirectory, so the job band never
+reads it as a job) and drops a tab not heard from in six hours.
+
+```bash
+manamap pilot page-state
+# FOCUSED  atlas · mode build · deck sharknado · focus Windfall · library 3 cards  (12s ago)
+#   also   deck · deck edgar-vampires  (4m ago)
+```
+
+`/jarvis` reads it when a request names no deck or says "this". Local only: the deployed
+site has no `/api` and a plain static server has no `page/state`, so neither reports
+anything, and "nothing open" is an answer. A tab older than 15 minutes prints STALE (a
+snapshot is re-sent only when it changes). Fields outside `page_state.FIELDS` are dropped
+and lists are capped, so a page cannot grow it into a second store. Nothing measured or
+tracked reads it.
 
 ## Scanning along the deck's dimensions (`scan-candidates`, ◆; `fetch-edhrec`, ★) — 2026-09-30
 

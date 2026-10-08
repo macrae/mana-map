@@ -171,4 +171,12 @@
   wire('#controls button[data-k]', function (b) { key = b.dataset.k; });
   wire('#controls button[data-s]', function (b) { dot = +b.dataset.s; });
   window.addEventListener('resize', redraw);
+
+  /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`): which fact
+   * the six spaces are coloured by — the page's one control that is a choice. */
+  if (window.PageState) PageState.register(function () {
+    var s = { view: key };
+    if (window.Session && Session.library) s.library = Session.library.names;
+    return s;
+  });
 })();

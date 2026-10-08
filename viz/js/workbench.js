@@ -600,6 +600,15 @@
     return { view: view, sort: sort };
   }
 
+  /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`): the view
+   * and sort `readState` already reads off the URL — the same answer the page draws. */
+  if (window.PageState) PageState.register(function () {
+    var st = readState();
+    var s = { view: st.view, filters: st.view === 'table' ? { sort: st.sort } : {} };
+    if (window.Session && Session.library) s.library = Session.library.names;
+    return s;
+  });
+
   function writeState(s) {
     var p = new URLSearchParams(window.location.search);
     if (s.view === 'table') { p.set('view', 'table'); p.set('sort', s.sort); }

@@ -14,7 +14,16 @@ v2`, 2026-10-07.)
 ## Every request
 
 1. **Acknowledge in one line, naming the deck.** "On it — checking the Sharknado
-   context."
+   context." No deck named, or "this card", "this deck", "here"? Read what he has
+   open first, and say what you took from it ("you're on Sharknado's page, Atlas
+   focused on Windfall"):
+
+   ```bash
+   .venv/bin/manamap pilot page-state      # FOCUSED tab first: page, deck, mode, focus, selection
+   ```
+
+   It is filled only while `manamap serve` is running and the page was opened
+   through it. "nothing open" or a STALE tab means ask him, never guess.
 2. **Classify the intent** as one of the eight below.
 3. **Read the Deck Context first**, every time a deck is involved:
 

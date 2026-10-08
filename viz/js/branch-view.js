@@ -891,6 +891,15 @@
     __swapsPanel: swapsPanel
   };
 
+  /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`): the
+   * deck and the branch, both read from the URL the page itself renders from. */
+  if (window.PageState) PageState.register(function () {
+    var q = new URLSearchParams(location.search);
+    var s = { deck: q.get('deck') || undefined, branch: q.get('branch') || undefined };
+    if (window.Session && Session.library) s.library = Session.library.names;
+    return s;
+  });
+
   if (window.Shell && Shell.mount) Shell.mount();
   wire();
   // Probe WITHOUT blocking the first paint — the artifacts render either way.
