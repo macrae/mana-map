@@ -41,8 +41,9 @@ KINDS = ("hypothesis", "challenge", "rebut", "recheck", "promote", "drop", "resu
          "decide", "rank", "kill")
 #: How a hypothesis says it would be settled — the PRD's "lightest method".
 METHODS = ("context", "argument", "data", "try", "rules", "strategy", "scenario")
-#: Not yet buildable: Forge scenario slices are Phase 3.
-METHODS_NOT_YET = {"scenario": "Forge scenario slices are Phase 3 — pick the lightest method that runs today"}
+#: Methods that cannot run yet. `scenario` left it on 2026-10-08, when scenario slices
+#: (`manamap pilot scenario-ab`, the `scenario-sim` agent) became buildable.
+METHODS_NOT_YET = {}
 VERDICTS = ("promote", "drop", "revise")
 RECHECK = ("yes", "no")
 RESULT_VERDICTS = ("supported", "refuted", "inconclusive")

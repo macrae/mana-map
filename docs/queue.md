@@ -16,8 +16,9 @@ promoted ──► Jarvis tests it with the lightest method ──► result ─
 
 - **The pod proposes** at most three claims per run. Each is specific enough to be
   wrong, carries its expected effect, and names the lightest test that settles it:
-  `context`, `argument`, `data`, `try`, `rules` or `strategy`. `scenario` is refused
-  until Phase 3 builds Forge scenario slices.
+  `context`, `argument`, `data`, `try`, `rules`, `strategy` or `scenario` (a Forge
+  scenario slice: the `scenario-sim` agent builds the board, Sean OKs it, then
+  `manamap pilot scenario-ab`; legal since 2026-10-08).
 - **The Challenger argues once.** It asks four questions: is there a cheaper
   explanation, is it already answered, can the named test settle it, is it a
   duplicate. A `revise` gets one rebuttal from the pod, and a revision gets the

@@ -595,8 +595,14 @@ game log.
   leaves uncast in at least half the replicates puts `DISCOUNT <arm>` in the answer line.
   The first real run (Q004's board, Greaves vs Arcane Signet, 10 paired seeds, 21 s)
   fired it: the AI held the Signet in 9 of 10, so that arm measured a dead card.
-- **Not yet:** the `scenario-sim` agent (plain-language board, shown back for OK before
-  every run) and `scenario` as a legal queue method.
+- **End to end** (2026-10-08): the `scenario-sim` agent turns Sean's words into a spec
+  (`.agent-out/scenario.json`: seats, a v2 board, two arms as EDITS, one primary) and
+  returns `manamap pilot scenario-ab --spec FILE --check`, the board per seat as Forge will
+  get it, with every guess named. Sean OKs it (every time, his call); Jarvis then runs
+  `scenario-ab --spec FILE`. `scenario` is a legal queue method. Trial: a plain-language
+  board (Shabraz out, Boots vs Mana Geyser, Swords in the angels' hand) became a correct
+  spec in 37 s and played in 20 s; the flag fired again (the AI held Mana Geyser in 9 of
+  10), which is the AI-and-rituals limit `forge-cast-check` already knew.
 
 ## The spike: wrap Forge, or build our own?
 

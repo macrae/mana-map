@@ -112,14 +112,18 @@ def test_a_result_before_a_promote_is_refused_and_nothing_is_written(qfile):
     assert qfile.read_text() == before
 
 
-def test_apply_refuses_unknown_ids_unknown_decks_and_phase_3_methods(qfile):
+def test_apply_refuses_unknown_ids_and_unknown_decks(qfile):
     with pytest.raises(SystemExit, match="names no item"):
         challenge("Q009", "promote")
     with pytest.raises(SystemExit, match="no deck"):
         incubate(deck="not-a-deck")
-    with pytest.raises(SystemExit, match="Phase 3"):
-        incubate(method="scenario")
     assert not qfile.exists() or qfile.read_text() == ""
+
+
+def test_scenario_is_a_legal_method_since_slices_run(qfile):
+    """It was refused until Forge scenario slices existed (2026-10-08: `scenario-ab`)."""
+    incubate(method="scenario")
+    assert q.items(q.read())["Q001"]["test"]["method"] == "scenario"
 
 
 def test_expiry_is_derived_from_dates_never_written(qfile):
@@ -222,7 +226,7 @@ def test_seans_own_claim_enters_as_a_hypothesis_and_still_faces_the_challenger(q
 
 
 def test_add_is_held_to_the_hypothesis_rule_and_writes_nothing_when_refused(qfile):
-    for bad in (dict(expected_effect=""), dict(method="scenario"), dict(method="vibes"),
+    for bad in (dict(expected_effect=""), dict(method="vibes"),
                 dict(how=" "), dict(deck="no-such-deck")):
         kw = dict(deck="sharknado", claim="c", expected_effect="e", method="try", how="h") | bad
         with pytest.raises(SystemExit):

@@ -50,6 +50,9 @@ PILOT_STEPS = [
      "Print-ready proxy sheet (63x88 mm, 3x3, crop marks) for cards waiting on cardboard: a branch's adds minus what you have"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
+    ("scenario-ab", "manamap.pilot.scenario_ab",
+     "A Forge scenario slice A/B from one spec: two arms of one board, paired seed by seed "
+     "on one primary measure; --check shows the board for an OK without playing"),
     ("similar-cards", "manamap.pilot.similar_cards",
      "Cards that DO what a named card does: nearest neighbours in the ability space, "
      "identity-derived from --deck, the 99 and illegal cards excluded"),
@@ -1216,6 +1219,13 @@ def add_pilot_parser(subparsers):
             # even when --deck scoped the query.
             cmd.add_argument("--out", default=None,
                              help="Write JSON here as well (a view, never tracked)")
+        if name == "scenario-ab":
+            # NO slug positional: the spec names every seat's deck, ours included.
+            cmd.add_argument("--spec", required=True,
+                             help="the scenario spec JSON (the scenario-sim agent writes it)")
+            cmd.add_argument("--check", action="store_true",
+                             help="convert and show each arm's board per seat; play nothing")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "similar-cards":
             # NO slug positional, like card-search: the positionals are the SEED cards,
             # and --deck only scopes the corpus (identity derived, the 99 excluded).

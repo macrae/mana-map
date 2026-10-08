@@ -96,7 +96,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 132 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 133 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -142,7 +142,7 @@ manamap pilot simulate <slug> --pod standard-v3 --games N   # optional; prints i
 manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--looks K] [--aa]
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board -> /resolve-stack
 
-# ── AGENTS (Claude Code skills, 26 in .claude/skills/, 27 charters in .claude/agents/) ──
+# ── AGENTS (Claude Code skills, 26 in .claude/skills/, 28 charters in .claude/agents/) ──
 # /publish-deck sequences the lifecycle; /diagnose-deck /prescribe /resolve-stack
 # /analyze-engine /build-deck /debrief /captains-log /sim-debrief /poh-procedures
 # /write-manual /research-strategy /refresh-corpus /test-report (pre/post-test agents) /print-proxies

@@ -56,6 +56,7 @@ check that settles the claim:
 | `try` | `manamap pilot try <slug> --out "A" --in "B"`: read the paired row the claim names, with its interval |
 | `rules` | the `rules-question` agent |
 | `strategy` | the `strategist` agent |
+| `scenario` | the `scenario-sim` agent writes the spec and returns the board; show it to Sean, and on his OK run `manamap pilot scenario-ab --spec <path>` (about 20 s for 10 seeds); the answer line is the result, `DISCOUNT` included |
 
 Write a result draft and apply it:
 
