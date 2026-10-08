@@ -1709,7 +1709,16 @@ def _dispatch(args):
                 "wrote down.")
         objective = parse_objective(raw)
         objective["why"] = getattr(args, "why", None) or ""
-        got = new(slug, branch, check_in.read_list(args.source),
+        # NO --from MEANS THE DECK'S OWN LIST. It used to reach `read_list(None)`
+        # and die in a TypeError traceback (the Story 6 trial, 2026-10-07); the
+        # list a branch usually starts from is the one the deck runs today.
+        source = getattr(args, "source", None)
+        if not source:
+            source = deck_dir(slug) / "decklist.txt"
+            if not source.exists():
+                raise SystemExit(f"{slug} has no decklist.txt to branch from — pass --from <file>")
+            print(f"  (no --from: starting from {slug}'s own decklist.txt)")
+        got = new(slug, branch, check_in.read_list(source),
                   why=getattr(args, "why", None), objective=objective)
         print(f"Opened {got['path']}  ({got['size']} cards)")
         print(f"  objective: {objective['axis']} {objective['op']} {objective['value']}"

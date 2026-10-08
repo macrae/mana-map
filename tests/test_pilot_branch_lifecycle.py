@@ -988,3 +988,25 @@ def test_a_forge_objective_names_its_pod_or_is_refused():
         assert axis.startswith("forge.") and spec["kind"] in ("proportion", "mean")
         assert isinstance(spec["lower_is_better"], bool) and isinstance(spec["conditional"], bool)
         assert spec["what"] and spec["why"]
+
+
+def test_new_without_from_starts_from_the_decks_own_list(tmp_path, monkeypatch, capsys):
+    """It used to hand `None` to `read_list` and die in a TypeError traceback (the
+    Story 6 trial, 2026-10-07). No `--from` means the list the deck runs today."""
+    from types import SimpleNamespace
+
+    (tmp_path / "decklist.txt").write_text("1 Sol Ring\n")
+    got = {}
+    monkeypatch.setattr(deck_branch, "deck_dir", lambda slug, branch=None: tmp_path)
+    monkeypatch.setattr(deck_branch, "new", lambda slug, branch, text, **kw:
+                        got.update(text=text) or {"path": "x", "size": 1, "warnings": []})
+    monkeypatch.setattr(deck_branch, "champion_reading", lambda slug, objective: [])
+    deck_branch._dispatch(SimpleNamespace(slug="any", action="new", name="b1", source=None,
+                                          objective="kill_by_8 >= 0.30", why="w"))
+    assert got["text"] == "1 Sol Ring\n"
+    assert "own decklist.txt" in capsys.readouterr().out
+
+    (tmp_path / "decklist.txt").unlink()
+    with pytest.raises(SystemExit, match="pass --from"):
+        deck_branch._dispatch(SimpleNamespace(slug="any", action="new", name="b1", source=None,
+                                              objective="kill_by_8 >= 0.30", why="w"))

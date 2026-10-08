@@ -722,7 +722,7 @@ def add_pilot_parser(subparsers):
                                   "merge it into decklist.txt")
             cmd.add_argument("name", nargs="?", default=None, help="the branch name")
             cmd.add_argument("--from", dest="source", default=None,
-                             help="new: the candidate list (a file, or `-` for stdin)")
+                             help="new: the candidate list (a file, or `-` for stdin); default: the deck's own decklist.txt")
             cmd.add_argument("--why", default=None,
                              help="new: why this branch exists; stage: why this swap")
             # THE SWAP IS THE UNIT. `--out` and `--in` are one edit that already
