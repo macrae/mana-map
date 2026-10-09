@@ -1541,6 +1541,241 @@ Sources:
 - Kristen Gregory, "5 Ways to Cut Cards Easier in Commander" — https://blog.cardkingdom.com/5-ways-to-cut-cards-easier-in-commander/
 - Mike Carrozza, "Am I The Bolas? – Moving to EDHREC (A Last One about Proxies and Power Level)" — https://commandersherald.com/am-i-the-bolas-moving-to-edhrec-a-last-one-about-proxies-and-power-level/
 
+## strategy:sixty-card — Sixty-Card Constructed: The 1v1 Baseline
+
+The pod sections above are corrections to this baseline, which is what a
+Standard deck is audited against. The shape: one opponent at 20 life, a
+seven-card hand, four copies of a card, best-of-three with fifteen cards that
+change the deck after game one, and a play/draw choice where playing first is
+correct "in such an overwhelming majority of cases" (Duke). The clock is Zvi's
+Fundamental Turn: "For beatdown or combination decks, the FT is the turn you
+kill your opponent"; for control, the turn "the deck's strategy begins to work
+and you make up for any early disadvantage" — he put Standard's at four in
+2000. Every count below follows: fewer turns, a lower curve; one opponent,
+answers without breadth; 20 life, a tapped land is a real tax; a sideboard,
+the sixty need not answer everything. Quotable target: a 60-card deck is built
+for one opponent at 20 life, on a fundamental turn of three to five, with four
+copies of its best cards and fifteen sideboard slots to change shape after
+game one. The mana maths are not restated: Karsten's regression and source
+counts and Duke's per-colour bands live in strategy:deckbuilding.mana-base and
+strategy:deckbuilding.mana-base.color-sources.
+
+Sources:
+- Zvi Mowshowitz, "Clear The Land And The Fundamental Turn" — https://articles.starcitygames.com/articles/clear-the-land-and-the-fundamental-turn/
+- Reid Duke, "Play or Draw" — https://magic.wizards.com/en/articles/archive/level-one/play-or-draw-2015-03-16
+- Reid Duke, "The Sideboard" — https://magic.wizards.com/en/articles/archive/level-one/sideboard-2015-08-10
+- Reid Duke, "Building a Mana Base" — https://magic.wizards.com/en/articles/archive/level-one/building-mana-base-2014-11-24
+
+### strategy:sixty-card.interaction — Interaction by Archetype
+
+Count lists, not slogans. Duke's Level One examples: the W/B aggro list runs
+six instant removal spells and four Thoughtseize among 39 nonland cards, his
+mono-red ten burn spells; the Abzan midrange list thirteen (four Thoughtseize,
+four Abzan Charm, three Hero's Downfall, two Utter End) among 36; the W/U
+control list is "a mix of permission spells and removal spells" over two
+creatures. Soorani's control rule: "8-10 interactive spells early on to set up
+for our big haymakers", and the "six to seven removal spells" era is over;
+Walser likes "10-12 counterspells in most of my 60-card control decks".
+Vrooman's midrange read: "8-10 pieces of spell-based creature removal main
+deck". Why lower than Commander's 10-15 removal plus 3-4 wipes
+(strategy:deckbuilding.ratios): one opponent is one board, so Duke's rule
+holds — "For every job that needs to be done, choose the cheapest (in terms of
+mana) option available" — and breadth is bought in the sideboard. Quotable
+target (judgement from the lists above): an aggressive 60-card deck runs 8 to
+12 cheap interactive spells, a midrange deck 10 to 14, and a control deck 16
+to 22 counting counterspells, removal and sweepers together.
+
+Sources:
+- Reid Duke, "Aggro Decks" — https://magic.wizards.com/en/articles/archive/lo/aggro-decks-2014-09-29
+- Reid Duke, "Midrange Decks" — https://magic.wizards.com/en/articles/archive/lo/midrange-decks-2014-10-27
+- Reid Duke, "Control Decks" — https://magic.wizards.com/en/articles/archive/lo/control-decks-2014-10-06
+- Shaheen Soorani, "How To Build A Control Deck" — https://articles.starcitygames.com/articles/how-to-build-a-control-deck/
+- A.L. Walser, "The Complete Guide to Control Decks in Magic: the Gathering" — https://draftsim.com/mtg-control-deck/
+- Steve Vrooman, "The Complete Guide to Midrange Decks in Magic: the Gathering" — https://draftsim.com/mtg-midrange/
+
+### strategy:sixty-card.creatures — Creature Count by Archetype
+
+Duke's W/B aggro list runs 29 creatures with "a full 22 spells" at one mana
+and nothing above three; Bartholdi's rule is "An aggro deck usually needs 8–12
+one-drops and 8–12 two-drops"; Royale's sample is 28 creatures; Lax notes "Tom
+Ross was successful with Boss Sligh by playing almost all one-drops" and asks
+for threats that are "sticky or redundant" rather than ones that trade
+one-for-one into a midrange deck drawing the same number of cards. Midrange
+halves it — Duke's Abzan list has 16 creatures beside 7 planeswalkers — and
+control nearly zeroes it: two creatures in Duke's W/U list, and Soorani's "Win
+conditions cannot be a huge portion of the deck." The count does not define
+the archetype: PVDDR's 31-creature mono-white is, in his words, "not a
+traditional aggro deck, it's a midrange deck." What the count buys is in
+strategy:sixty-card.threat-density. Quotable target (judgement from the lists
+above): an aggressive 60-card deck runs 24 to 30 creatures, 16 to 24 of them
+at one or two mana; a midrange deck 12 to 18 creatures plus noncreature
+threats; a control deck 0 to 4.
+
+Sources:
+- Reid Duke, "Aggro Decks" — https://magic.wizards.com/en/articles/archive/lo/aggro-decks-2014-09-29
+- Maria Bartholdi, "How to Build: Aggro" — https://magic.wizards.com/en/news/feature/how-build-aggro-2017-02-02
+- David Royale, "The Ultimate Guide to Aggro Decks in Magic: The Gathering" — https://draftsim.com/mtg-aggro-deck/
+- Ari Lax, "Building Good Aggro Decks" — https://articles.starcitygames.com/articles/building-good-aggro-decks/
+- Reid Duke, "Midrange Decks" — https://magic.wizards.com/en/articles/archive/lo/midrange-decks-2014-10-27
+- Reid Duke, "Control Decks" — https://magic.wizards.com/en/articles/archive/lo/control-decks-2014-10-06
+- Shaheen Soorani, "How To Build A Control Deck" — https://articles.starcitygames.com/articles/how-to-build-a-control-deck/
+- Paulo Vitor Damo da Rosa, "Mono-White Aggro Deck Guide (Alchemy)" — https://pvddr.substack.com/p/mono-white-aggro-deck-guide-alchemy
+
+### strategy:sixty-card.threat-density — Threat Density: The Second Wave After a Sweeper
+
+The threat count is set by the sweeper, not the curve. In-game, commit no more
+than wins before the wrath — Mullen: "you don't want to expose more than one
+resilient threat at a time to a Settle the Wreckage"; Royale: "apply steady
+pressure with just a couple of high-damage creatures and keep the rest of your
+hand safe in case someone plays a sweeper" — and Duke's sweeper article has
+Whisperwood Elemental "as insurance" and threats diversified into
+"Planeswalkers, dash creatures". The construction consequence (the doc's
+reading): if you deploy two or three, eat the wrath, and must redeploy two or
+three to keep the clock, the second wave must be *in hand*, and only density
+puts it there — 24+ bodies in sixty, where 12 leaves the rebuild in the
+library. Spend the slots on "sticky or redundant" threats (Lax), and hold the
+best threat for the second sweeper (strategy:resource-hedging.wrath-math).
+Commander buys the rebuild with draw instead
+(strategy:aristocrats.wipe-insurance). Quotable target: an aggressive 60-card
+deck must keep a clock after one sweeper — enough creatures that two waves of
+two or three threats are in hand by the midgame, a count in the mid-twenties,
+not the teens.
+
+Sources:
+- Collins Mullen, "The Guide To W/B Aggro" — https://articles.starcitygames.com/articles/the-guide-to-w-b-aggro/
+- David Royale, "The Ultimate Guide to Aggro Decks in Magic: The Gathering" — https://draftsim.com/mtg-aggro-deck/
+- Reid Duke, "Board Sweepers" — https://magic.wizards.com/en/articles/archive/level-one/board-sweepers-2015-06-22
+- Ari Lax, "Building Good Aggro Decks" — https://articles.starcitygames.com/articles/building-good-aggro-decks/
+
+### strategy:sixty-card.curve — The Curve for a Twenty-Life, Seven-Card Game
+
+Build the curve to the Fundamental Turn, then count lands back
+(strategy:sixty-card.curve.lands). Shvartsman's original Sligh breakdown: 9-13
+one-drops, 6-8 two-drops, 3-5 threes, 1-3 fours, 2-3 X spells, 8-10 burn —
+every mana spent from turn one, because a 20-life opponent dies by turn five
+if it is. Duke on play/draw: play first "in such an overwhelming majority of
+cases", and on the draw "you're drawing *first,* not necessarily drawing
+*extra*" — so the seven-card hand must hold the turn-one and turn-two plays,
+which is why aggro stacks one- and two-drops (strategy:sixty-card.creatures)
+and caps at three. Midrange centres on two to four, topping at five or six;
+control inverts it, Soorani's "big haymakers" sitting above "8-10 interactive
+spells early on". Duke's "no 'master formula'" holds
+(strategy:deckbuilding.curve); the 60-card difference is that every slot above
+the FT must win on its own. Quotable target (judgement): an aggressive 60-card
+deck puts 16 to 24 cards at one or two mana and nothing above four; a midrange
+deck centres on two to four with a top end of five or six; a control deck runs
+its interaction at one to three and its finishers above its opponent's FT.
+
+Sources:
+- Alex Shvartsman, "Famous Red Decks in Magic History" — https://magic.wizards.com/en/articles/archive/feature/famous-red-decks-magic-history-2004-07-22-0
+- Zvi Mowshowitz, "Clear The Land And The Fundamental Turn" — https://articles.starcitygames.com/articles/clear-the-land-and-the-fundamental-turn/
+- Reid Duke, "Play or Draw" — https://magic.wizards.com/en/articles/archive/level-one/play-or-draw-2015-03-16
+- Reid Duke, "Aggro Decks" — https://magic.wizards.com/en/articles/archive/lo/aggro-decks-2014-09-29
+- Shaheen Soorani, "How To Build A Control Deck" — https://articles.starcitygames.com/articles/how-to-build-a-control-deck/
+- Reid Duke, "The Basics of Mana" — https://magic.wizards.com/en/articles/archive/level-one/basics-mana-2015-07-06
+
+### strategy:sixty-card.curve.lands — Land Count by Archetype
+
+Lands follow the turn you must hit on time, Lax's rule: "If you are going to
+hit your fourth land on time for some big whammy ... you are going to want 23
+or 24 lands"; capping at three mana, "20 to 22"; a deck that "can run off one
+mana sometimes" sits in "the seventeen to nineteen range". The bands agree:
+Bartholdi, "An aggro deck usually plays between 20–23 lands"; Royale's
+Standard read, "Aggressive decks tend to run from 23 to 24 lands, midrange
+decks run from 24 to 25 lands and control decks run at least 26", with Pioneer
+a land lighter (tempo ~18, aggro 22-23, midrange ~24, control 26-27); Duke's
+control list "26!"; Soorani, "All control decks operate on 26-27 lands";
+Vrooman's midrange "25-26 lands in slower 60-card formats"; Walser's 27-29 is
+the high outlier. Karsten's regression (strategy:deckbuilding.mana-base) is
+the check on the band, not the start — his 2017 fit gives 24 at a 2.4-2.7
+average cost and 26 at 3.0-3.4. Quotable target (judgement from the sources
+above): an aggressive 60-card deck runs 20 to 24 lands, a midrange deck 24 to
+26, a control deck 26 to 28, and the count is set by the turn the deck must
+hit on time, not by the average mana value alone.
+
+Sources:
+- Ari Lax, "Building Good Aggro Decks" — https://articles.starcitygames.com/articles/building-good-aggro-decks/
+- Maria Bartholdi, "How to Build: Aggro" — https://magic.wizards.com/en/news/feature/how-build-aggro-2017-02-02
+- David Royale, "How Many Lands Should You Really Play in Magic?" — https://draftsim.com/mtg-how-many-lands/
+- Reid Duke, "Control Decks" — https://magic.wizards.com/en/articles/archive/lo/control-decks-2014-10-06
+- Shaheen Soorani, "How To Build A Control Deck" — https://articles.starcitygames.com/articles/how-to-build-a-control-deck/
+- Steve Vrooman, "The Complete Guide to Midrange Decks in Magic: the Gathering" — https://draftsim.com/mtg-midrange/
+- A.L. Walser, "The Complete Guide to Control Decks in Magic: the Gathering" — https://draftsim.com/mtg-control-deck/
+- Frank Karsten, "How Many Lands Do You Need to Consistently Hit Your Land Drops?" (mirror of the 2017 ChannelFireball article) — https://orkerhulen.dk/onewebmedia/How%20Many%20Lands%20Do%20You%20Need%20to%20Consistently%20Hit%20Your%20Land%20Drops.pdf
+
+### strategy:sixty-card.taplands — Taplands at Twenty Life
+
+A tapped land costs a turn's mana once; on a fundamental turn of four that is
+a quarter of the game, so the 60-card band sits far below Commander's. Duke
+draws it by archetype: "In a super-aggressive Red-White Weenie deck in
+Standard, you'd hope to play with no lands that enter the battlefield tapped
+(or at least a very small number)", while "a slow Abzan deck in Standard ...
+can play eight tapped lands pretty comfortably (and ten or twelve a little
+uncomfortably)". Karsten caps pure taplands at about four before you rethink
+the deck or add lands (strategy:deckbuilding.mana-base.color-sources). The
+dodge is the untapped land with upside — PVDDR runs three Eiganjo because "the
+second and third copies of Eiganjo rarely hurt you" — so audit the class, not
+the count. Commander's "around eight taplands is comfortable in a slow deck"
+(strategy:deckbuilding.mana-base) is 40 life and a 7-10 turn game refunding
+the tempo. Quotable target (judgement from Duke and Karsten): an aggressive
+60-card deck runs zero to four lands that enter tapped, a midrange deck four
+to eight, a control deck eight to twelve, and each one is a turn of the
+opponent's clock that twenty life does not refund.
+
+Sources:
+- Reid Duke, "Building a Mana Base" — https://magic.wizards.com/en/articles/archive/level-one/building-mana-base-2014-11-24
+- Frank Karsten, "How Many Colored Mana Sources Do You Need to Consistently Cast Your Spells? A Guilds of Ravnica Update" (ChannelFireball, archived) — https://web.archive.org/web/20230331165535/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/how-many-colored-mana-sources-do-you-need-to-consistently-cast-your-spells-a-guilds-of-ravnica-update/
+- Paulo Vitor Damo da Rosa, "Mono-White Aggro Deck Guide (Alchemy)" — https://pvddr.substack.com/p/mono-white-aggro-deck-guide-alchemy
+- Zvi Mowshowitz, "Clear The Land And The Fundamental Turn" — https://articles.starcitygames.com/articles/clear-the-land-and-the-fundamental-turn/
+
+### strategy:sixty-card.sideboard — The Fifteen: Answers to the Metagame
+
+The sideboard is "at most fifteen cards" brought in "to tailor their deck
+toward winning the next game" (Duke) — answers to the metagame, not more
+maindeck. Sam Black's taxonomy: hate cards, "generally narrow but highly
+effective bullets"; efficient answers, cheap and against classes that recur;
+tuning and juking cards. His frequencies are the ratio: "If you expect to
+bring hate cards in around 10% of the time, you can often expect to bring
+efficient answers in 30% of the time." Duke's split is "versatile" cards that
+are "minor upgrades in a lot of matchups" against "hate cards—single cards
+that are extremely effective at beating a particular deck, color, or
+strategy". Black's 2009 warning stands: trimming the maindeck is not a plan,
+because in games two and three "you're presenting a deck". Build it as 75
+(Duke): ideal lists for every matchup, then make the unique cards add up. Per
+matchup: strategy:sixty-card.sideboard.plan. Quotable target (judgement from
+Black's frequencies): most of a 15-card sideboard is cheap answers that come
+in about a third of matches, a minority is hate cards that come in about a
+tenth, and every card has a named matchup and a named cut.
+
+Sources:
+- Reid Duke, "The Sideboard" — https://magic.wizards.com/en/articles/archive/level-one/sideboard-2015-08-10
+- Sam Black, "The Art Of Sideboarding" — https://articles.starcitygames.com/articles/the-art-of-sideboarding/
+- Sam Black, "Black Magic – Sideboarding" — https://articles.starcitygames.com/articles/black-magic-sideboarding/
+
+### strategy:sixty-card.sideboard.plan — The Plan per Matchup
+
+A sideboard plan is written in advance and sized by the maindeck's weak cards,
+not the sideboard's strong ones. Duke's count: "go through your main deck and
+count the number of cards that are dispensable and that you're unhappy with.
+This is a good target for how many sideboard cards you ought to have" — per
+matchup, so three dead cards against aggro means three removal spells, not
+six. What comes out: "Cut the weakest cards or the cards that most depend on
+synergy with other cards" (Black), because "sideboarded games are slower, more
+interactive" and a card that "only really does something if the rest of what
+you're doing is working perfectly" is a liability. What stays: "your creature
+count, your mana curve" (Duke) — boarding out the curve changes the deck's
+role (strategy:whos-the-beatdown). Then "reevaluate your sideboarding between
+Games 2 and 3" (Duke): beat their post-board deck, not their game-one list.
+Quotable target: every sideboard card names the matchup it comes in for and
+the maindeck card it replaces, the count per matchup equals the maindeck's
+dispensable cards in that matchup, and the swap preserves the creature count
+and curve.
+
+Sources:
+- Reid Duke, "Sideboard Plans" — https://magic.wizards.com/en/articles/archive/level-one/sideboard-plans-2015-03-09
+- Reid Duke, "The Sideboard" — https://magic.wizards.com/en/articles/archive/level-one/sideboard-2015-08-10
+- Sam Black, "The Art Of Sideboarding" — https://articles.starcitygames.com/articles/the-art-of-sideboarding/
+
 ## strategy:schools — Schools of Thought & Canonical Literature
 
 The canon this document synthesizes. Mike Flores' "Who's the

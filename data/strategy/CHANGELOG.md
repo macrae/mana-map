@@ -298,3 +298,44 @@ bullet above. Five sections changed in whitespace only, from re-wrapping around
 the repaired ids and nothing else: strategy:multiplayer,
 strategy:conversion.entries-vs-deaths, strategy:conversion.combat-channel,
 strategy:conversion.kill-pattern and strategy:multiplayer.zonal-commander.
+
+## 2026-10-09 — the 60-card constructed baseline, for the deck audit's Standard axes
+
+The doc carried the 60-card mana maths (Karsten's regression and source
+tables, Duke's per-colour bands) but no 60-card counts for anything above the
+lands, so a Standard deck audited against it was audited against Commander
+targets. This pass adds one pillar with eight children, every sub-section
+ending in a sentence written to be quoted verbatim as an audit target, each
+labelled judgement where the range is the doc's synthesis of named lists
+rather than a figure any one author printed. Nothing already in the doc is
+restated: the mana sections are cross-referenced, not duplicated.
+
+- added strategy:sixty-card — the baseline the pod corrections were made from: one opponent at 20 life, seven cards, four-ofs, fifteen sideboard slots, play first (Duke, "Play or Draw"), and Zvi Mowshowitz's Fundamental Turn from the 2000 StarCityGames article ("For beatdown or combination decks, the FT is the turn you kill your opponent"; Standard's was four)
+- added strategy:sixty-card.interaction — interaction by archetype from published lists, not slogans: Duke's Level One W/B aggro (six removal + four Thoughtseize of 39 nonland), mono-red (ten burn), Abzan midrange (thirteen of 36), W/U control ("a mix of permission spells and removal spells"); Soorani's "8-10 interactive spells early on"; Walser's "10-12 counterspells"; Vrooman's Pro Tour midrange "8-10 pieces of spell-based creature removal". Why lower than Commander's 10-15 + 3-4 wipes: one board to answer, Duke's cheapest-option rule, breadth bought in the sideboard. Target band 8-12 / 10-14 / 16-22 is judgement and says so
+- added strategy:sixty-card.creatures — creature counts: Duke's 29 (22 one-mana spells, nothing above three), Bartholdi's "8–12 one-drops and 8–12 two-drops", Royale's 28, Lax's Boss Sligh "almost all one-drops" and "sticky or redundant"; midrange 16 + 7 planeswalkers (Duke); control two (Duke), "Win conditions cannot be a huge portion of the deck" (Soorani); PVDDR's 31-creature list that "is a midrange deck" as the warning that the count does not define the archetype. Band 24-30 / 12-18 / 0-4 is judgement
+- added strategy:sixty-card.threat-density — the "keep the clock after one sweeper" argument: Mullen's one-resilient-threat-at-a-time, Royale's "steady pressure with just a couple", Duke's "Board Sweepers" (Whisperwood "as insurance", "Planeswalkers, dash creatures"); the second-wave-in-hand consequence is labelled the doc's reading. Cross-refs to strategy:resource-hedging.wrath-math and strategy:aristocrats.wipe-insurance
+- added strategy:sixty-card.curve — the curve for a 20-life seven-card game: Shvartsman's original Sligh breakdown (9-13 / 6-8 / 3-5 / 1-3 / 2-3 X / 8-10 burn), Duke's play/draw frame ("drawing first, not necessarily drawing extra"), Soorani's haymakers-over-cheap-interaction shape for control; Duke's "no master formula" carried over from strategy:deckbuilding.curve
+- added strategy:sixty-card.curve.lands — land count by archetype: Lax's hit-the-turn rule (23-24 / 20-22 / 17-19), Bartholdi 20-23, Royale's Standard and Pioneer bands, Duke's "26!", Soorani's "26-27", Vrooman's 25-26, Walser's 27-29 named as the outlier; Karsten's regression positioned as the check. Band 20-24 / 24-26 / 26-28 is judgement
+- added strategy:sixty-card.taplands — Duke's archetype quotes verbatim (R/W Weenie "no lands that enter the battlefield tapped", slow Abzan "eight tapped lands pretty comfortably (and ten or twelve a little uncomfortably)"), Karsten's four-tapland cap by cross-reference, PVDDR's Eiganjo note for the untapped-with-upside class, and the Commander band for contrast. Band 0-4 / 4-8 / 8-12 is judgement from Duke and Karsten
+- added strategy:sixty-card.sideboard — Duke's "at most fifteen cards" and versatile-vs-hate split; Sam Black's four classes with the ratio stated as his own frequencies ("hate cards in around 10% of the time ... efficient answers in 30% of the time"); Black's 2009 "you're presenting a deck" against trimming; Duke's build-it-as-75 method
+- added strategy:sixty-card.sideboard.plan — the per-matchup plan: Duke's count-the-dispensable-cards sizing, Black's cut-the-synergy-dependent rule and "sideboarded games are slower, more interactive", Duke's keep-the-creature-count-and-curve, and re-evaluating between games two and three
+
+Verification note: every URL above was fetched this pass and each quoted
+phrase re-checked against the fetched text; the three draftsim page titles
+were first written from memory, found wrong on a title-only re-fetch, and
+corrected before the splice. Reached and DROPPED: PVDDR's "5 Traps to Avoid
+When Building a Sideboard" (mtgazone, paywalled — title page only, so
+nothing quotable), mtg.wiki's Sideboard and Fundamental turn pages (403),
+Card Kingdom's "Playing Tap Lands in Aggro Decks" (fetched, carries no
+number), Sam Black's "Building B/W Aggro for Pro Tour Magic 2015" (fetched,
+no construction rule in it). NOT REACHED after the retry cap: Frank
+Karsten's 2022 "How Many Lands Do You Need in Your Deck: An Updated Analysis"
+(TCGplayer renders it client-side and returns an empty page to a plain
+fetch; the Wayback Machine is blocked from here) — its cheap-card-draw and
+MDFC adjustments to the land count are the one figure this pass wanted and
+could not cite, recorded as an open question rather than paraphrased from
+secondary pages. Patrick Chapin's "Next Level Deckbuilding" is print and was
+not consulted; it is not cited. The mirror PDF of Karsten's 2017 article is
+cited only for the figures the doc already carried from it
+(strategy:deckbuilding.mana-base), since no PDF text extractor is installed
+in this environment to re-verify it.
