@@ -297,14 +297,84 @@
     var elsewhere = (bill.cards || []).filter(function (r) {
       return r.state === 'elsewhere' && !r.free;
     });
+    var cost = nc.recommendation && nc.recommendation.cost;
     return '<section class="panel"><h2>The bill</h2>' +
       '<div class="tiles">' + tiles + '</div>' +
       '<p class="lede">You already own <b>' + owned + ' of ' + total + '</b>.</p>' +
-      '<p class="ev">Prices are stripped from the card corpus by design, so this ' +
-      'page cannot give you a figure. It can tell you exactly what to price.</p>' +
+      (buy.length
+        ? '<p class="ev bill-price" id="billPrice">' +
+          (cost && typeof cost.buy_cents === 'number' ? pricedLine(cost) : 'pricing…') +
+          '</p>'
+        : '') +
       cardList('To buy', buy) + buyListBlock(buy) +
       cardList('To unsleeve from other decks', elsewhere) +
       '</section>';
+  }
+
+  /* THE BILL IN DOLLARS (2026-10-09). This paragraph used to say "Prices are
+   * stripped from the card corpus by design, so this page cannot give you a
+   * figure" — true of cards.csv, and it stayed true of the page after
+   * `manamap pilot prices` started writing a dated `prices.json` beside each
+   * list. The figure is that file's and nothing else's: dated evidence quoted
+   * with its date and source, never a live lookup, never a graded row.
+   *
+   * Two readers of one file, same arithmetic as `net_change._priced_bill`:
+   * `nm_cents × quantity` over the BUY rows, and a card the file does not
+   * price is NAMED, never counted as zero. `net_change.json` carries the
+   * figure in `recommendation.cost` when `net-change --write` ran after the
+   * prices were written, and that paints first so the line is there without
+   * a fetch; then `wireBillPrice` reads the branch's own `prices.json` and
+   * repaints from it, because the file can be younger than the report (the
+   * usual case the day prices land) or gone since. No file: the command that
+   * writes one. Nothing to buy: no line at all — "≈ $0" is not a figure. */
+  function dollars(cents) {
+    var s = (cents / 100).toFixed(2);
+    return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function pricedLine(p) {
+    var unpriced = p.buy_unpriced || [];
+    return '<b>≈ $' + dollars(p.buy_cents) + ' to buy</b> (as of ' +
+      esc(p.prices_as_of) + ', ' + esc(p.prices_source) +
+      (unpriced.length
+        ? '; ' + unpriced.length + ' unpriced: ' + esc(unpriced.join(', '))
+        : '') + ')';
+  }
+
+  function noPricesLine(slug, branch) {
+    return 'No prices for this branch yet — ' +
+      '<button class="todo-cmd" data-act="copy-cmd" title="Copy"><code>' +
+      esc('manamap pilot prices ' + slug + ' --branch ' + branch + ' --write') +
+      '</code><span class="todo-copy">copy</span></button> ' +
+      '(Scryfall’s daily USD, or Mana Pool with a token).';
+  }
+
+  /* Mirrors `net_change._priced_bill` — keep the two in step. */
+  function priceBill(prices, buy) {
+    var cents = 0, unpriced = [];
+    buy.map(function (r) { return r.name; }).sort().forEach(function (name) {
+      var row = prices.cards[name] || {};
+      var nm = row.nm_cents;
+      if (typeof nm === 'number' && isFinite(nm)) {
+        cents += nm * (parseInt(row.quantity, 10) || 1);
+      } else {
+        unpriced.push(name);
+      }
+    });
+    return { buy_cents: cents, buy_unpriced: unpriced,
+             prices_as_of: prices.as_of, prices_source: prices.source };
+  }
+
+  function wireBillPrice(slug, branch, buy) {
+    var host = document.getElementById('billPrice');
+    if (!host || !buy.length) return;
+    var base = DATA + 'decks/' + encodeURIComponent(slug) + '/branches/' +
+               encodeURIComponent(branch) + '/';
+    getJSON(base + 'prices.json').then(function (doc) {
+      var priced = doc && doc.cards && typeof doc.cards === 'object';
+      host.innerHTML = priced ? pricedLine(priceBill(doc, buy))
+                              : noPricesLine(slug, branch);
+    });
   }
 
   /* THE BILL AS A PASTE (Area B4, 2026-10-09). Mana Pool's mass entry
@@ -891,9 +961,11 @@
               'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write')));
         wireViewToggle();
         if (nc && nc.bill) {
-          wireBuyList(slug, name, (nc.bill.cards || []).filter(function (r) {
+          var buy = (nc.bill.cards || []).filter(function (r) {
             return r.state === 'buy';
-          }));
+          });
+          wireBuyList(slug, name, buy);
+          wireBillPrice(slug, name, buy);
         }
         loadSwaps(slug, name);
       });
@@ -983,6 +1055,18 @@
   /* Delegated, because `swapsPanel` replaces the whole subtree. */
   function wire() {
     document.addEventListener('click', function (ev) {
+      // A COMMAND IS HANDED TO YOU, not run for you (`deck-view.js`'s `command`
+      // idiom): the button copies its <code> and says so.
+      var cmd = ev.target.closest && ev.target.closest('[data-act="copy-cmd"]');
+      if (cmd) {
+        var code = cmd.querySelector('code'), say = cmd.querySelector('.todo-copy');
+        copyText(code ? code.textContent : '').then(function (ok) {
+          if (!say) return;
+          say.textContent = ok ? 'copied' : 'could not copy';
+          setTimeout(function () { say.textContent = 'copy'; }, 2400);
+        });
+        return;
+      }
       var btn = ev.target.closest && ev.target.closest('[data-act="stage"]');
       if (!btn) return;
       var q = new URLSearchParams(location.search);
@@ -1014,7 +1098,8 @@
     __objectivePanel: objectivePanel,
     __verdictPanel: verdictPanel,
     __swapsPanel: swapsPanel,
-    __buyLine: buyLine
+    __buyLine: buyLine,
+    __priceBill: priceBill
   };
 
   /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`): the

@@ -17,7 +17,14 @@ directory and, between the families, nothing else:
   same function as `manamap pilot buy-list --json`), copies the text and opens the shop;
   on the static site the list is rendered in a `<pre>` from the bill's rows plus the
   branch's `cards.json` with a plain Copy. An "exact printings" checkbox switches
-  `N Name` to `N Name (SET) CN`, the form `check_in.decklist_line` writes.
+  `N Name` to `N Name (SET) CN`, the form `check_in.decklist_line` writes. Above the
+  BUY rows, the bill in dollars: `≈ $N to buy (as of <date>, <source>; k unpriced: …)`,
+  the same arithmetic as `net_change._priced_bill` (`nm_cents × quantity` over the
+  BUY rows, an unpriced card named, never counted as zero) read from the branch's own
+  `prices.json` — `net_change.json`'s `recommendation.cost` copy paints first, the file
+  repaints it, because the file is usually younger than the report. No file: "No
+  prices for this branch yet —" and the `manamap pilot prices <slug> --branch <branch>
+  --write` line in a copy button. Nothing to buy: no line.
 - **`library.html` — Curate.** The library across every pile at a size you can read, with
   sort, colour/type/role filters, multi-select and bulk move/remove. See its own section
   below.
