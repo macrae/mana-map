@@ -10,12 +10,12 @@
       "signal": "game_changers"
     },
     {
-      "detail": "highest-bracket line present: Najeela, the Blade-Blossom + Derevi, Empyrial Tactician",
+      "detail": "highest-bracket line present: Selvala, Heart of the Wilds + Emiel the Blessed + Samut, Voice of Dissent",
       "forces": 3,
       "signal": "combo_content"
     },
     {
-      "detail": "4 two-card infinite(s); 4 assemble at mana value <= 6. e.g. Najeela, the Blade-Blossom + Derevi, Empyrial Tactician",
+      "detail": "4 two-card infinite(s); 4 assemble at mana value <= 6. e.g. Najeela, the Blade-Blossom + Selvala, Heart of the Wilds",
       "forces": 4,
       "signal": "two_card_infinite"
     }
@@ -43,14 +43,43 @@
       "bracket": 3,
       "cards": [
         "Najeela, the Blade-Blossom",
-        "Derevi, Empyrial Tactician"
+        "Selvala, Heart of the Wilds"
+      ],
+      "mana_value_needed": 1,
+      "produces": [
+        "Infinite creature tokens with haste",
+        "Infinite colored mana",
+        "Infinite combat phases"
+      ]
+    },
+    {
+      "bracket": 3,
+      "cards": [
+        "Najeela, the Blade-Blossom",
+        "Esika, God of the Tree // The Prismatic Bridge"
       ],
       "mana_value_needed": 0,
       "produces": [
         "Infinite colored mana",
+        "Infinite creature tokens with haste",
         "Infinite combat phases",
-        "Infinite creature tokens",
-        "Infinite ETB",
+        "Infinite creature ETB",
+        "Infinite lifegain",
+        "Infinite lifegain triggers"
+      ]
+    },
+    {
+      "bracket": 3,
+      "cards": [
+        "Najeela, the Blade-Blossom",
+        "Derevi, Empyrial Tactician"
+      ],
+      "mana_value_needed": 0,
+      "produces": [
+        "Infinite creature tokens with haste",
+        "Infinite colored mana",
+        "Infinite combat phases",
+        "Infinite creature ETB",
         "Infinite mana permanents you control can produce"
       ]
     },
@@ -62,38 +91,11 @@
       ],
       "mana_value_needed": 0,
       "produces": [
+        "Infinite creature tokens with haste",
         "Infinite combat phases",
-        "Infinite creature tokens",
-        "Infinite ETB",
+        "Infinite creature ETB",
         "Infinite lifegain",
         "Infinite lifegain triggers"
-      ]
-    },
-    {
-      "bracket": 3,
-      "cards": [
-        "Najeela, the Blade-Blossom",
-        "Esika, God of the Tree // The Prismatic Bridge"
-      ],
-      "mana_value_needed": 0,
-      "produces": [
-        "Infinite combat phases",
-        "Infinite creature tokens",
-        "Infinite ETB",
-        "Infinite lifegain",
-        "Infinite lifegain triggers"
-      ]
-    },
-    {
-      "bracket": 3,
-      "cards": [
-        "Najeela, the Blade-Blossom",
-        "Selvala, Heart of the Wilds"
-      ],
-      "mana_value_needed": 1,
-      "produces": [
-        "Infinite colored mana",
-        "Infinite combat phases"
       ]
     }
   ],
