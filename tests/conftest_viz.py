@@ -16,6 +16,8 @@ the server root, which is the same constraint GitHub Pages imposes.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 # Card art comes from Scryfall over the public internet. A failed image fetch surfaces as
@@ -145,6 +147,19 @@ def _card_png(w=488, h=680):
 
 
 CARD_PNG = _card_png()
+
+
+WATCHLIST_FIXTURE = Path(__file__).parent / "fixtures" / "viz" / "watchlist.sharknado.json"
+
+
+def serve_watchlist_fixture(page):
+    """Route sharknado's `watchlist.json` to a frozen copy. The tracked file is the
+    pilot's live review ledger — nine verdicts landed in it the first evening the grid
+    was used, and every test that assumed "0 reviewed" fell over. The fixture is the
+    pre-review snapshot; the ledger can change freely."""
+    body = WATCHLIST_FIXTURE.read_text(encoding="utf-8")
+    page.route("**/data/decks/sharknado/watchlist.json*",
+               lambda route: route.fulfill(status=200, content_type="application/json", body=body))
 
 
 def serve_card_images_locally(page):

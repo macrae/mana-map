@@ -18,7 +18,7 @@ import json
 
 import pytest
 
-from conftest_viz import page  # noqa: F401  (fixture)
+from conftest_viz import page, serve_watchlist_fixture  # noqa: F401  (fixture)
 
 pytestmark = pytest.mark.browser
 
@@ -70,6 +70,7 @@ def _release(held):
 
 
 def _open_grid(page):
+    serve_watchlist_fixture(page)
     page.evaluate("""() => {
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');

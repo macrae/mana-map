@@ -22,7 +22,7 @@ import json
 
 import pytest
 
-from conftest_viz import page  # noqa: F401  (fixture)
+from conftest_viz import WATCHLIST_FIXTURE, page  # noqa: F401  (fixture)
 from manamap.config import DATA_DIR
 from test_viz_review_grid import _mock_api, _open_grid, _release
 
@@ -202,7 +202,7 @@ def test_a_card_with_no_back_image_says_so(page):
 
 
 def _watch_row(name):
-    doc = json.loads((DATA_DIR / "decks" / "sharknado" / "watchlist.json").read_text())
+    doc = json.loads(WATCHLIST_FIXTURE.read_text(encoding="utf-8"))
     for s in doc["sets"]:
         for c in s["cards"]:
             if c["name"] == name:

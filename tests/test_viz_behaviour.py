@@ -34,7 +34,7 @@ from conftest import A_BRANCH, requires_branch
 from conftest_viz import await_projection  # noqa: F401
 from conftest_viz import (  # noqa: F401
     BOOT_TIMEOUT_MS, _record, canvas_page, corpus_count, discover_page, page,
-    still_page,
+    serve_watchlist_fixture, still_page,
 )
 
 pytestmark = pytest.mark.browser
@@ -9032,6 +9032,7 @@ def test_the_real_index_offers_reality_fracture_newest_first(browser, viz_server
 
 
 def _open_watch(page):
+    serve_watchlist_fixture(page)
     return page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');

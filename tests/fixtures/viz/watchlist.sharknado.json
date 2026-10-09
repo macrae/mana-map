@@ -1,0 +1,239 @@
+{
+  "slug": "sharknado",
+  "sets": [
+    {
+      "id": "wheel-interaction",
+      "title": "Wheels that also interact",
+      "source": "Q002",
+      "query": "manamap pilot card-search --deck sharknado --all --oracle '(discards? (their|your) hand|discard any number|shuffles? (their|your) hand|puts? (their|your) hand on the bottom|each player (discards|shuffles)|then draws? (that many|seven|cards equal))' --oracle '(counter target|destroy (target|all|each)|exile (target|all|each)|return (target|all|each).{0,40}(owner|hand)|deals? \\d+ damage to (target|each|any)|damage to any target)' --limit 60",
+      "created": "2026-10-07",
+      "cards": [
+        {
+          "name": "Fateful Showdown",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "instant: damage equal to your hand size to any target, then discard the hand and draw that many",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Collective Defiance",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "escalate: wheel yourself (discard all, draw that many) plus 4 to a creature and 3 to an opponent",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Incendiary Command",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "choose two: everyone wheels, 2 to each creature, 4 to a player — a wheel with a small sweeper",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "The Elder Dragon War",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "saga: 2 to each creature and opponent, then discard any and draw that many, then a 4/4 flying Dragon",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Rites of Refusal",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "instant: discard any number to counter a spell unless they pay 3 per card — the discard IS the counter",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Null Brooch",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "discard your hand: counter a noncreature spell, every turn — a counterspell on a stick, no draw",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Snort",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "each player may wheel to five; every opponent who does takes 5; flashback wheels again",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Moonveil Regent",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "flyer: on every spell you may discard your hand and draw one per colour of that spell — a repeatable wheel",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Jace, the Mind Sculptor",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "0: draw three, put two back every turn; −1 bounces a creature — a Game Changer",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Joshua, Phoenix's Dominant // Phoenix, Warden of Fire",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "enters: discard two, draw two; flips into a saga that burns each opponent and returns creatures",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Cathartic Pyre",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "instant, choose one: 3 to a creature or planeswalker, OR discard two and draw two — not both",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Day's Undoing",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "everyone shuffles hand and graveyard back and draws seven; ends your turn; no interaction",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Hex Magic",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "exile your hand and draw that many, playable next turn — exile is not discard, so no Brallin",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Into the Fire",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "choose one: 2 to every creature, OR bottom any number and draw that many plus one — a bottom, so no Brallin",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Invasion of Kaldheim // Pyre of the World Tree",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "enters: exile hand, draw that many (Shabraz); flipped, each land you discard pings any target for 2 (Brallin)",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Chandra, Heart of Fire",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "+1 discard your hand and impulse three; +1 2 damage to any target — a discard with no draw",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Chandra, Flame's Catalyst",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "+1 3 to each opponent every turn; −8 discard your hand, draw seven and cast them free",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Umaro, Raging Yeti",
+          "pays": "both",
+          "axis": "other",
+          "why": "each combat, at random: team pump, discard your hand and draw four, or 5 to any target — random",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Ajani Unrelenting",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "−2 discard your hand, draw one per creature; −3 4 to each creature but your tokens",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Chandra Ablaze",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "+1 discard a red card for 4 to any target; −2 everyone discards their hand and draws three",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Sarkhan, the Dragonspeaker",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "−3 4 to a creature; +1 a 4/4 flying haste Dragon; ultimate draws two and discards the hand each turn",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Serum Powder",
+          "pays": "none",
+          "axis": "ramp",
+          "why": "a mana rock; its hand reset works only at mulligan, so it pays neither commander",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Apocalypse",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "exile ALL permanents (yours too) and discard your hand — a total reset",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Colossus of the Blood Age",
+          "pays": "both",
+          "axis": "other",
+          "why": "enters: 3 to each opponent, gain 3; dies: discard any number, draw that many plus one",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Turtles in Time",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "bounce every creature, then everyone may shuffle hand and graveyard back and draw seven — a 7-mana reset",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
+    }
+  ]
+}

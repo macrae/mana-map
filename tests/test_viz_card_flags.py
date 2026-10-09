@@ -16,6 +16,7 @@ panel tests route Scryfall. Every interaction is a real click or a real selectio
 
 from __future__ import annotations
 
+import functools
 import json
 
 import pytest
@@ -27,10 +28,25 @@ from test_viz_review_grid import _mock_api, _open_grid
 
 pytestmark = pytest.mark.browser
 
-_FLAGS = json.loads((DATA_DIR / "card_flags.json").read_text(encoding="utf-8"))
-_INDEX = json.loads((DATA_DIR / "combo_index.json").read_text(encoding="utf-8"))
-_SHARK = [c["name"] for c in json.loads(
-    (DATA_DIR / "decks" / "sharknado" / "cards.json").read_text(encoding="utf-8"))["cards"]]
+
+
+# Read lazily, inside the tests: the unit tier's isolation run collects this file
+# against an EMPTY data dir, and a module-level read there is a collection error
+# that fails the whole tier before a single browser test is deselected.
+@functools.lru_cache(maxsize=None)
+def _flags():
+    return json.loads((DATA_DIR / "card_flags.json").read_text(encoding="utf-8"))
+
+
+@functools.lru_cache(maxsize=None)
+def _index():
+    return json.loads((DATA_DIR / "combo_index.json").read_text(encoding="utf-8"))
+
+
+@functools.lru_cache(maxsize=None)
+def _shark():
+    doc = json.loads((DATA_DIR / "decks" / "sharknado" / "cards.json").read_text(encoding="utf-8"))
+    return [c["name"] for c in doc["cards"]]
 
 
 def _first_on_map(page, names):
@@ -57,9 +73,9 @@ def test_a_banned_card_reads_banned_and_a_game_changer_gets_its_pill(page):
     with no pill. Fails on the pre-flags `mana-map.js`, which has no `.legal-banned`."""
     _route_scryfall(page)
     _wait_flags(page)
-    banned = _first_on_map(page, _FLAGS["banned"]["commander"])
-    gc = _first_on_map(page, [n for n in _FLAGS["game_changers"]
-                              if n not in _FLAGS["banned"]["commander"]])
+    banned = _first_on_map(page, _flags()["banned"]["commander"])
+    gc = _first_on_map(page, [n for n in _flags()["game_changers"]
+                              if n not in _flags()["banned"]["commander"]])
 
     _open(page, banned)
     r = page.evaluate("""() => {
@@ -69,7 +85,7 @@ def test_a_banned_card_reads_banned_and_a_game_changer_gets_its_pill(page):
                 legalYes: !!inner.querySelector('.detail-facts .legal-yes'),
                 legalNo: !!inner.querySelector('.detail-facts .legal-no')}; }""")
     assert r["banned"] == "Commander: BANNED", r
-    assert _FLAGS["as_of"] in r["title"], r
+    assert _flags()["as_of"] in r["title"], r
     assert not r["legalYes"] and not r["legalNo"], r
 
     _open(page, gc)
@@ -99,7 +115,7 @@ def test_a_card_with_no_flags_and_no_combos_shows_no_combo_block(page):
     _route_scryfall(page)
     _wait_flags(page)
     name = "The Elder Dragon War"
-    assert name not in _INDEX["by_card"]
+    assert name not in _index()["by_card"]
     _open(page, name)
     page.wait_for_function("() => !document.querySelector('#detailInner .combo-index-slot')",
                            timeout=30000)
@@ -114,8 +130,8 @@ def test_outside_build_the_index_lines_appear_and_nobody_is_in_a_deck(page):
     is unlit, the count line quotes `by_card`, and the title says to open a deck."""
     _route_scryfall(page)
     _wait_flags(page)
-    name = _first_on_map(page, [n for n in _SHARK if n in _INDEX["by_card"]])
-    entry = _INDEX["by_card"][name]
+    name = _first_on_map(page, [n for n in _shark() if n in _index()["by_card"]])
+    entry = _index()["by_card"][name]
     _open(page, name)
     page.wait_for_selector("#detailInner .combo-block .combo-line.is-index", timeout=30000)
     r = page.evaluate("""() => {
@@ -142,9 +158,9 @@ def test_build_combo_lines_light_the_partners_you_run(page):
     _route_scryfall(page)
     _mock_api(page)
     _wait_flags(page)
-    name = _first_on_map(page, [n for n in _SHARK if n in _INDEX["by_card"]])
-    partner = _first_on_map(page, [n for n in _SHARK if n != name])
-    top_id = _INDEX["combos"][_INDEX["by_card"][name]["top"][0]][0]
+    name = _first_on_map(page, [n for n in _shark() if n in _index()["by_card"]])
+    partner = _first_on_map(page, [n for n in _shark() if n != name])
+    top_id = _index()["combos"][_index()["by_card"][name]["top"][0]][0]
     combos = {
         "summary": {"included": 1, "near": 1},
         "included": [{"id": top_id, "cards": [name, partner], "produces": ["Infinite mana"],
@@ -187,7 +203,7 @@ def test_build_combo_lines_light_the_partners_you_run(page):
     ids = page.eval_on_selector_all("#detailInner .combo-line",
                                     "els => els.map(e => e.getAttribute('data-id'))")
     assert ids.count(top_id) == 1, f"the deck's id was drawn again by the index: {ids}"
-    assert len(ids) == 2 + len(_INDEX["by_card"][name]["top"]) - 1, ids
+    assert len(ids) == 2 + len(_index()["by_card"][name]["top"]) - 1, ids
     assert page.js_errors == []
 
 
@@ -199,9 +215,9 @@ def test_build_deck_block_says_where_a_game_changer_stands(page):
     _mock_api(page)
     _wait_flags(page)
     report = json.loads((DATA_DIR / "decks" / "sharknado" / "bracket_report.json").read_text())
-    in_deck = _first_on_map(page, [n for n in _SHARK if n in _FLAGS["game_changers"]])
-    outside = _first_on_map(page, [n for n in _FLAGS["game_changers"] if n not in _SHARK
-                                   and n not in _FLAGS["banned"]["commander"]])
+    in_deck = _first_on_map(page, [n for n in _shark() if n in _flags()["game_changers"]])
+    outside = _first_on_map(page, [n for n in _flags()["game_changers"] if n not in _shark()
+                                   and n not in _flags()["banned"]["commander"]])
     _open_grid(page)
     _open(page, in_deck)
     row = "#detailInner .deck-ctx .deck-ctx-gc"
