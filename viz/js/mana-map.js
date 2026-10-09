@@ -1615,13 +1615,13 @@
     // bench carries one, sits above it with the identity rows). Only for a card in the
     // list: a card not in the deck has no sleeved printing. "change" needs the local
     // server's `printing/set`; on a static host the row states and cannot write.
-    const pr = c.printing;
-    if (pr) {
+    const pt = c.printing;
+    if (pt) {
       const nameArg = escHtml(JSON.stringify(d.n));
-      const label = '(' + String(pr.set || '').toUpperCase() + ') ' + (pr.collector_number || '') +
-        (pr.set_name ? ' · ' + pr.set_name : '') + (pr.foil ? ' · foil' : '');
+      const label = '(' + String(pt.set || '').toUpperCase() + ') ' + (pt.collector_number || '') +
+        (pt.set_name ? ' · ' + pt.set_name : '') + (pt.foil ? ' · foil' : '');
       html += '<div class="deck-ctx-row deck-ctx-printing"><span class="deck-ctx-k">printing</span>' +
-        '<span class="deck-ctx-print" title="' + escHtml(pr.artist ? 'art by ' + pr.artist : '') + '">' +
+        '<span class="deck-ctx-print" title="' + escHtml(pt.artist ? 'art by ' + pt.artist : '') + '">' +
           escHtml(label) + '</span>' +
         (window.Api && Api.has('printing/set')
           ? '<button class="lens-btn lens-btn-inline deck-ctx-change" onclick="Build.changePrinting(' +
