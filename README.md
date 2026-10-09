@@ -785,7 +785,7 @@ cache-busters stripped.
 make test          # UNIT: no tracked data, ~1 min — what you run all day
 make regression    # REGRESSION: the tracked fleet + corpus, every producer re-run
 make integration   # INTEGRATION: a real browser, Forge, the pages rebuilt byte-identically
-make prepush       # unit (+ its isolation proof) + regression; before a push. CI runs it.
+make prepush       # before a push: the tiers the diff can break, by area (docs/testing.md). CI runs it all.
 make test-report   # measure the unit tier: counts, time, coverage (FULL=1 adds regression)
 ```
 

@@ -67,7 +67,7 @@ harness, the renderer and the tests, which is nearly all of the code.
 make test           # the unit tier: no tracked data, ~1 min, cached
 make regression     # the tracked fleet + corpus, every producer re-run
 make integration    # a real browser, Forge, the pages rebuilt byte-identically
-make prepush        # before a push — scoped by the diff (full when code changed)
+make prepush        # before a push — the tiers the diff can break, by area (docs/testing.md)
 make test-fresh     # unit + regression with nothing cached — trust this
 make test-all       # every tier, uncached
 pytest -m forge     # one real Forge game; needs ~/.mana-map/forge

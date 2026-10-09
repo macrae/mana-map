@@ -5,8 +5,8 @@ make test                 # UNIT: no tracked data — the inner loop          ~1
 make test-unit-isolated   # the unit tier against an EMPTY data dir — proves it
 make regression           # REGRESSION: the tracked fleet + corpus, then the fleet regen alone
 make integration          # INTEGRATION: browser, Forge, pages byte-identical
-make prepush              # before every push: SCOPED BY THE DIFF (full if any code changed)
-make prepush-full         # unit + isolation + regression, unconditionally
+make prepush              # before every push: the tiers the diff can break, BY AREA (below)
+make prepush-full         # unit + isolation + regression ∥ browser, unconditionally  ~15 min
 make check-deck SLUG=x    # one deck's own checks while iterating on its list   ~1 min
 make test-fresh           # unit + regression, nothing served from the cache
 make test-report          # measure the unit tier: counts, time, coverage   ~2 min
@@ -27,21 +27,55 @@ almost every commit; README and CLAUDE.md point here instead. The dated record o
 how the suite got here — every earlier measurement, every lesson in full, the
 2026-09-21 adversarial audit — is [`history/testing-log.md`](history/testing-log.md).
 
-## Before a push: the scope follows the diff (2026-10-06)
+## Before a push: the scope follows the diff, by area (2026-10-09)
 
 `make prepush` runs `python -m manamap.check_scope prepush`, which reads what the
-push carries (commits ahead of the upstream plus the working tree) and picks:
+push would carry, puts every changed path in an AREA, and runs the union of the
+tiers those areas can break:
 
-| the push carries | it runs | about |
-|---|---|---|
-| any code: `src/`, `tests/`, config, CI, `viz/`, `.claude/`, fleet-wide data | `make prepush-full` — both tiers and the isolation proof | 15 min |
-| only `data/decks/<slug>/` and `manuals/p/<slug>.html` | that deck's artifact tests (`check_scope.DECK_TESTS`, other decks deselected, the fleet regen excluded) + the doc guards | 1 min |
-| only docs | the doc guards | 5 s |
+| area | the push carries | it runs | about |
+|---|---|---|---|
+| **docs** | `docs/**`, `README.md`, `CLAUDE.md`, any `*.md` | the doc guards (`test_docs_counts`, `test_docs_section_count`) | 10 s |
+| **decks** | `data/decks/<slug>/**`, `manuals/p/<slug>.html`, the manifest | that deck's artifact tests (`check_scope.DECK_TESTS`, other decks deselected, the fleet regen excluded) + the doc guards | 1 min |
+| **data** | the rest of `data/` — corpus artifacts, pods, overrides | the regression tier | 7 min |
+| **viz** | `viz/**`, `tests/test_viz_*.py`, `tests/conftest_viz.py` | the unit tier (the JS parse and cache-bust tests live there) + `make test-browser`; never regression or the regen | 8 min |
+| **agents** | `.claude/**` — charters, skills, settings | the unit tier + the doc guards | 1 min |
+| **plugin** | `tools/claude-plugins/**` | `claude plugin test tools/claude-plugins/job-band` (26 tests) | 5 s |
+| **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + its isolation proof + regression | 10 min |
+| **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | everything: unit, isolated, regression ∥ browser | 15 min |
 
-A path it does not recognise counts as code; no upstream means full; CI runs the
-whole suite on every push regardless. A DECKLIST IS PACKAGING: a branch edit with
-no code change waited fifteen minutes for 2,500 unit tests it could not break.
-`python -m manamap.check_scope plan` prints the choice and why.
+A mixed diff is the union (`python+viz` is the full set; a decklist beside a pilot
+edit is `python`, since the regression tier already holds the deck checks). The
+table was measured on 2026-10-09 on an 8-core Mac: a push cycle had been ~25 min
+— unit twice (1.5), regression's two halves (7 + 6), the browser suite (7), one
+after another — and ran eight times in a day.
+
+**Only tracked changes count**: the commits ahead of the push base (the upstream,
+or `origin/main` for a branch that has none yet), the index, and tracked files
+modified in the tree. An untracked file is not something a push carries — the day's
+handoff note (`NEXT_SESSION.md`, untracked) had forced the full suite onto a
+data-only commit. No push base at all means full.
+
+**The regression tier and the browser suite run concurrently** whenever both are
+in the plan (full, `python+viz`). Each one's output is captured to a file and
+printed whole, in order, once both finish, under a header with its exit status;
+either failing fails the push. The browser suite runs at `-n 2` in the pair
+(`make test-browser BROWSER_WORKERS=2`): regression's `-n auto` already takes
+every core, and four Chromiums beside it oversubscribe an 8-core machine. Alone,
+`make test-browser` keeps its four. On the job band both sit under the one
+`prepush` row (two children at once; `MANAMAP_JOB_PARENT` is inherited by both).
+
+**The fleet regen (`test_the_fleet_regenerates_byte_identically`, ~6 min) stays
+in `REGRESSION_SERIAL`** and is served from the `unchanged` cache whenever its key
+has not moved: `module_closure(regen, benchmark)` + the producers' closure (`CODE`)
++ the whole `data/decks/` tree. A pilot edit (`net_change.py` is in the closure)
+re-runs it, which is right; an edit to `check_scope.py`, to `progress.py`'s
+callers or to a test file is not in the key and skips it, which is also right.
+Check what a change would do with `python -m manamap.check_scope plan`
+(`--base REV` plans the push from another base; `--base HEAD` is the working
+tree alone). `make prepush-full` is the unconditional escape hatch and uses the
+same runner, so its pair is concurrent too. CI runs the whole suite on every push
+regardless; this only decides what blocks the pilot locally.
 
 ## The three tiers (2026-10-05, 8-core Mac, `-n auto`)
 
@@ -69,7 +103,7 @@ assigns every test exactly one, before `-m` deselects anything:
 
 **The unit tier is proven, not assumed.** `make test-unit-isolated` runs it against an
 empty data dir; a failure or a skip there is a test that reads tracked data and must
-be marked `regression`. `prepush` and CI run it, and `tests/test_tiers.py` holds the
+be marked `regression`. A python or full `prepush` and CI run it, and `tests/test_tiers.py` holds the
 classifier to its rules through a real inner pytest. What the isolation run cannot
 see is a test that reads `ROOT / "data"` directly rather than through `config` —
 it still passes against an empty `MANAMAP_DATA_DIR`. Route data reads through

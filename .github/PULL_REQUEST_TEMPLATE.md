@@ -13,7 +13,7 @@
 
 ---
 
-- [ ] `make prepush` passes (unit + its isolation proof + regression; CI runs it too)
+- [ ] `make prepush` passes (the tiers the diff can break, by area; CI runs them all)
 - [ ] `make test-fresh` passes, if you touched anything the test cache covers
       (the artifact/manual freshness tests, the tracked-artifact validators)
 

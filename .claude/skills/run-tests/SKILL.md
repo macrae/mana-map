@@ -10,9 +10,9 @@ make test                 # THE UNIT TIER: no tracked data, ~1 min (runtimes: do
 make test-unit-isolated   # the unit tier against an EMPTY data dir — proves it reads none
 make regression           # the tracked fleet + corpus: validators, producers re-run per deck
 make integration          # browser + Forge + the pages rebuilt byte-identically
-make prepush              # before every push: scoped by the diff (deck-only ~1 min, code -> full)
+make prepush              # before every push: by area (docs 10 s, deck ~1 min, viz ~8, python ~10, full ~15)
 make check-deck SLUG=x    # one deck's checks while iterating on a list
-make prepush-full         # unit + isolation + regression, unconditionally
+make prepush-full         # unit + isolation + regression ∥ browser, unconditionally (~15 min)
 make test-fresh           # unit + regression with nothing served from the cache
 make test-browser         # the playwright suite (-n 4, plus the serial_only tests)
 make test-report          # unit tier uncached + coverage, ~2 min (FULL=1: + regression) -> /test-report

@@ -70,7 +70,7 @@ PYTEST_ARGS ?=
 # ── THE THREE TIERS (docs/testing.md; `tests/conftest.py` assigns them) ─────────
 # unit: no tracked data, ~1 min, the inner loop. regression: the tracked fleet and
 # corpus, every producer re-run. integration: a real browser, Forge, and the pages
-# rebuilding byte-identically. `prepush` is unit (+ its isolation proof) + regression.
+# rebuilding byte-identically. `prepush` runs the tiers the diff can break (below).
 test:  ## THE UNIT TIER: no tracked data, ~1 min — the inner loop (a bare pytest)
 	$(PYTEST) $(PYTEST_ARGS)
 
@@ -95,13 +95,20 @@ integration:  ## THE INTEGRATION TIER: browser + Forge + the pages rebuild byte-
 	$(MAKE) manuals
 	git diff --exit-code -- manuals/ data/decks/
 
-# SCOPED BY THE DIFF (src/manamap/check_scope.py): code changed -> prepush-full;
-# only deck data -> that deck's checks + every check naming no deck; only docs ->
-# the doc guards. CI runs the full suite on every push either way.
-prepush:  ## Before every push — the suite the diff needs (full if any code changed)
+# SCOPED BY THE DIFF (src/manamap/check_scope.py): every TRACKED changed path lands
+# in an area — docs, decks, data, viz, agents, plugin, python — and the plan is the
+# union of the tiers those areas can break: docs -> the doc guards; a deck -> its
+# own checks; viz -> unit + browser; python -> unit + isolated + regression; the
+# harness itself (this file, pyproject, conftest, config.py, CI) or an unrecognised
+# path -> everything. Regression and browser run side by side when both are in.
+# An untracked file is never a reason. CI runs the full suite on every push.
+prepush:  ## Before every push — the tiers the diff can break, by area (docs/testing.md)
 	$(PY) -m manamap.check_scope prepush
 
-prepush-full: test test-unit-isolated regression  ## unit + its isolation proof + regression, unconditionally
+# The escape hatch: everything, whatever the diff says. The same runner as `prepush`
+# so the regression tier and the browser suite still share the wall clock.
+prepush-full:  ## unit + its isolation proof + regression + browser, unconditionally
+	$(PY) -m manamap.check_scope full
 
 SLUG ?=
 check-deck:  ## A deck's own checks while iterating on a list: make check-deck SLUG=edgar-vampires
@@ -141,8 +148,11 @@ ifdef FULL
 endif
 	$(PY) -m manamap.suite_report record $(REPORT_RAW)
 
-test-browser:  ## The playwright suite (~4 min; needs `make setup`)
-	$(PYTEST) -m "browser and not serial_only" -n 4
+# BROWSER_WORKERS: four Chromiums alone; `prepush` passes 2 when the suite shares
+# the machine with the regression tier's `-n auto` (src/manamap/check_scope.py).
+BROWSER_WORKERS ?= 4
+test-browser:  ## The playwright suite (~7 min; needs `make setup`)
+	$(PYTEST) -m "browser and not serial_only" -n $(BROWSER_WORKERS)
 	# `-n0` IS LOAD-BEARING. `addopts` carries `-n auto`, so this line was never
 	# actually serial — it only looked it, because `serial_only` held exactly ONE
 	# test and xdist ran the one alone. The moment a second joined, the phase
