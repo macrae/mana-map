@@ -1,11 +1,13 @@
 """Step 8: Process raw Commander Spellbook data into the combo artifacts.
 
-Two files, because they have two different audiences:
+Three files, because they have three different audiences:
 
-- `combo_graph.json` — the partner adjacency map. It was the only thing the viz
-  deck builder read (`graph.partners[name]`); that builder is deleted, so today
-  it is read by nothing but `config.py`, which uses it as the invalidation proxy
-  for its larger sibling. Kept small on the old grounds anyway.
+- `combo_graph.json` — `{"partners": {name: [names]}, "meta": {"source_timestamp"}}`,
+  the partner adjacency map. It was the only thing the viz deck builder read
+  (`graph.partners[name]`); that builder is deleted, so today it is read by
+  `analysis/synergy.py` (to exclude known partners) and by `config.py`, which
+  uses it as the invalidation proxy for its larger sibling. Kept small on the
+  old grounds anyway.
 
   MEASURED AND NOT KEPT (2026-08-24): Spellbook carries a `description` on
   **every** variant — 83,261 of 83,261 — a numbered walk-through of how the
@@ -24,14 +26,31 @@ Two files, because they have two different audiences:
 - `combo_details.json` — the full combo records plus a card→combo index. Read
   by Python and by agents, never by the browser. This is where the power-level
   signal lives: Spellbook tags every variant with a bracket letter, which is
-  what lets `pilot/bracket.py` compute a deck's bracket floor.
+  what lets `pilot/bracket.py` compute a deck's bracket floor. Every record
+  carries Spellbook's `id` (2026-10-08), so a sidecar or a page can name a
+  combo without naming its position; `meta.source` is the dump's own
+  `{timestamp, version}` from `.combos-meta.json`, None when the sidecar
+  predates the bulk route.
+- `combo_index.json` — the browser-sized cut (`build_combo_index`): per card,
+  the TRUE totals (`n`, `inf`) and the top `COMBO_INDEX_PER_CARD` combos by
+  popularity, pointing into a compact row list that holds only the combos some
+  card's top list names. A card page can say "in 212 combos, 180 of them
+  infinite, here are the twelve people run" without the 25 MB file.
+
+The raw dump is read through `raw_variants`, which takes BOTH shapes step 7 has
+written: the bulk file's `{timestamp, version, variants, aliases}` (the default
+since 2026-10-08) and the paged route's bare list. Neither is migrated.
 
 The graph stays format-agnostic by design — Commander-banned combos are kept
 and flagged (`banned: true`), not dropped. Filtering happens at consumption.
+Spellbook's `status` is NOT filtered on either: the 2026-04 dump is 83,261 of
+83,261 `OK`, and the 1,375 commander-illegal variants are exactly the `B`
+bracket tag, which already carries its flag. Any other status is counted and
+printed so a bulk file that starts carrying drafts is seen, not silently kept.
 """
 
 import json
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 import pandas as pd
 
@@ -41,9 +60,49 @@ from manamap.config import (
     COMBO_BRACKET_TAGS,
     COMBO_DETAILS_PATH,
     COMBO_GRAPH_PATH,
+    COMBO_INDEX_PATH,
+    COMBO_INDEX_PER_CARD,
+    COMBOS_META_PATH,
     COMBOS_RAW_PATH,
     OUTPUT_CSV_PATH,
 )
+
+#: Spellbook's "this variant is live" status; anything else is reported, not dropped.
+STATUS_OK = "OK"
+#: Same predicate as `pilot.bracket.is_infinite` (prefix `pilot.bracket.INFINITE_PREFIX`),
+#: copied rather than imported because `ingest/` sits below `pilot/` — a test
+#: holds the two to the same answer.
+INFINITE_PREFIX = "infinite"
+
+
+def raw_variants(doc):
+    """The variant list out of whichever dump shape step 7 wrote.
+
+    The bulk file is `{timestamp, version, variants, aliases}`; the paged route
+    writes the list itself. Anything else is a malformed dump, and says so.
+    """
+    if isinstance(doc, list):
+        return doc
+    if isinstance(doc, dict) and isinstance(doc.get("variants"), list):
+        return doc["variants"]
+    raise ValueError("combos dump is neither a variant list nor {variants: [...]}")
+
+
+def load_source_meta(path=None):
+    """`{timestamp, version}` of the dump, from the step-7 sidecar; None when unknown."""
+    path = COMBOS_META_PATH if path is None else path
+    try:
+        raw = json.loads(path.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        raw = {}
+    if not isinstance(raw, dict):
+        raw = {}
+    return {"timestamp": raw.get("timestamp"), "version": raw.get("version")}
+
+
+def status_counts(combos):
+    """How many variants carry each `status` — printed by step 8, never filtered on."""
+    return Counter(combo.get("status") for combo in combos)
 
 
 def load_known_cards(csv_path):
@@ -97,6 +156,11 @@ def extract_bracket(combo):
     return COMBO_BRACKET_TAGS.get(tag), False
 
 
+def is_infinite(record):
+    """Does a processed combo record produce an unbounded loop? (`pilot.bracket.is_infinite`)"""
+    return any(str(p).lower().startswith(INFINITE_PREFIX) for p in record.get("produces", []))
+
+
 def build_combo_graph(combos, known_cards):
     """Build partners adjacency map and combo detail list.
 
@@ -126,6 +190,7 @@ def build_combo_graph(combos, known_cards):
         bracket, banned = extract_bracket(combo)
 
         record = {
+            "id": combo.get("id"),
             "cards": card_names,
             "produces": produces,
             "ci": ci,
@@ -165,11 +230,84 @@ def bracket_summary(combo_list):
     return dict(sorted(counts.items()))
 
 
+def _popularity_rank(record):
+    """Most popular first, Spellbook id as the tiebreak: two runs, one order."""
+    return (-(record.get("popularity") or 0), str(record.get("id") or ""))
+
+
+def build_combo_index(combos, per_card=COMBO_INDEX_PER_CARD, source_timestamp=None):
+    """The browser-sized index over processed combo records.
+
+    `combos` is `build_combo_graph`'s detail list. Per card: `n` and `inf` are
+    the TRUE totals over every combo it is in; `top` is at most `per_card`
+    positions into the returned `combos` rows, ordered by (popularity desc, id
+    asc). The rows hold only combos some `top` names, sorted by id, as
+    `[id, [names], infinite 0/1, bracket | null, mana_value_needed]`. A banned
+    combo keeps its null bracket; the flag lives in `combo_details.json`.
+    """
+    memberships = defaultdict(list)  # name -> positions in `combos`, each once
+    for pos, record in enumerate(combos):
+        for name in dict.fromkeys(record["cards"]):
+            memberships[name].append(pos)
+
+    tops = {}
+    selected = set()
+    for name, positions in memberships.items():
+        top = sorted(positions, key=lambda pos: _popularity_rank(combos[pos]))[:per_card]
+        tops[name] = top
+        selected.update(top)
+
+    ordered = sorted(selected, key=lambda pos: (str(combos[pos].get("id") or ""), pos))
+    row_of = {pos: row for row, pos in enumerate(ordered)}
+    rows = [
+        [
+            combos[pos].get("id"),
+            list(combos[pos]["cards"]),
+            1 if is_infinite(combos[pos]) else 0,
+            combos[pos].get("bracket"),
+            combos[pos].get("mana_value_needed"),
+        ]
+        for pos in ordered
+    ]
+    by_card = {
+        name: {
+            "n": len(positions),
+            "inf": sum(1 for pos in positions if is_infinite(combos[pos])),
+            "top": [row_of[pos] for pos in tops[name]],
+        }
+        for name, positions in sorted(memberships.items())
+    }
+    return {
+        "meta": {
+            "source_timestamp": source_timestamp,
+            "per_card": per_card,
+            "combos": len(rows),
+            "indexed": len(by_card),
+        },
+        "combos": rows,
+        "by_card": by_card,
+    }
+
+
+def _write_json(path, doc):
+    with open(path, "w") as f:
+        json.dump(doc, f, separators=(",", ":"))
+    size_mb = path.stat().st_size / (1024 * 1024)
+    print(f"  Wrote {path} ({size_mb:.1f} MB)")
+
+
 def main():
     print("Loading raw combos...")
     with open_dump(COMBOS_RAW_PATH, "rt") as f:
-        combos = json.load(f)
-    print(f"  {len(combos):,} raw combo variants")
+        combos = raw_variants(json.load(f))
+    source = load_source_meta()
+    print(f"  {len(combos):,} raw combo variants "
+          f"(source timestamp {source['timestamp']}, version {source['version']})")
+    statuses = status_counts(combos)
+    not_ok = {k: v for k, v in statuses.items() if k != STATUS_OK}
+    if not_ok:
+        print(f"  WARNING: {sum(not_ok.values()):,} variants are not status {STATUS_OK!r}: "
+              f"{dict(sorted(not_ok.items(), key=str))} — kept, not filtered (see module doc)")
 
     print("Loading known cards from cards.csv...")
     known_cards = load_known_cards(OUTPUT_CSV_PATH)
@@ -184,20 +322,22 @@ def main():
     print(f"  {len(combo_list):,} valid combos (all cards in dataset)")
     print(f"  bracket distribution: {summary}")
 
-    with open(COMBO_GRAPH_PATH, "w") as f:
-        json.dump({"partners": partners}, f, separators=(",", ":"))
-    size_mb = COMBO_GRAPH_PATH.stat().st_size / (1024 * 1024)
-    print(f"  Wrote {COMBO_GRAPH_PATH} ({size_mb:.1f} MB)")
+    _write_json(COMBO_GRAPH_PATH, {
+        "partners": partners,
+        "meta": {"source_timestamp": source["timestamp"]},
+    })
 
-    details = {
+    _write_json(COMBO_DETAILS_PATH, {
         "combos": combo_list,
         "by_card": by_card,
-        "meta": {"combo_count": len(combo_list), "brackets": summary},
-    }
-    with open(COMBO_DETAILS_PATH, "w") as f:
-        json.dump(details, f, separators=(",", ":"))
-    size_mb = COMBO_DETAILS_PATH.stat().st_size / (1024 * 1024)
-    print(f"  Wrote {COMBO_DETAILS_PATH} ({size_mb:.1f} MB)")
+        "meta": {"combo_count": len(combo_list), "brackets": summary, "source": source},
+    })
+
+    print("Building combo index...")
+    index = build_combo_index(combo_list, source_timestamp=source["timestamp"])
+    print(f"  {index['meta']['indexed']:,} cards indexed over {index['meta']['combos']:,} combos "
+          f"(top {index['meta']['per_card']} per card)")
+    _write_json(COMBO_INDEX_PATH, index)
 
 
 if __name__ == "__main__":

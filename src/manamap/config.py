@@ -278,11 +278,18 @@ EVAL_SEED = 42
 VIZ_DIR = Path(os.environ.get("MANAMAP_VIZ_DIR", _REPO_ROOT / "viz"))
 
 # ── Combo / Deck Builder Data ────────────────────────────────────────────
-COMBOS_API_URL = "https://backend.commanderspellbook.com/variants/"
+COMBOS_API_URL = "https://backend.commanderspellbook.com/variants/"   # paged fallback
+# The whole variant set in one gzipped file (`{timestamp, version, variants, aliases}`),
+# the default since 2026-10-08; its ETag / Last-Modified is what makes step 7 idempotent.
+COMBOS_BULK_URL = "https://json.commanderspellbook.com/variants.json.gz"
 COMBOS_RAW_PATH = DATA_DIR / "combos_raw.json.gz"
 COMBOS_META_PATH = DATA_DIR / ".combos-meta.json"
 COMBO_GRAPH_PATH = DATA_DIR / "combo_graph.json"
 COMBO_DETAILS_PATH = DATA_DIR / "combo_details.json"
+# The browser-sized combo index: per card, the top COMBO_INDEX_PER_CARD combos by
+# popularity, plus the true totals. `combo_details.json` stays Python-only.
+COMBO_INDEX_PATH = DATA_DIR / "combo_index.json"
+COMBO_INDEX_PER_CARD = 12
 EMBEDDINGS_BIN_PATH = DATA_DIR / "embeddings.bin"
 
 # Commander Spellbook classifies every combo variant by power, stored as a

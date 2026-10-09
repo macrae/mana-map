@@ -15,7 +15,9 @@ from manamap.config import (
     ABILITY_PROJECTION_PATH,
     CARD_FEATURES_PATH,
     CARD_METADATA_PATH,
+    COMBO_DETAILS_PATH,
     COMBO_GRAPH_PATH,
+    COMBO_INDEX_PATH,
     COLOR_VECTORS_PATH,
     EMBEDDINGS_BIN_PATH,
     EMBEDDINGS_PATH,
@@ -258,6 +260,60 @@ class TestComboGraph:
         assert "partners" in graph
         assert "combos" not in graph
         assert len(graph["partners"]) > 0
+
+
+@requires_file(COMBO_INDEX_PATH)
+@requires_file(COMBO_DETAILS_PATH)
+class TestComboIndex:
+    """The browser-sized cut against the details it was cut from (step 8, 2026-10-08).
+
+    Skips until step 8 is re-run: the index did not exist before and the tracked
+    details carried no `id`, so the three artifacts only agree once regenerated
+    together. A build that writes one without the others fails here.
+    """
+
+    @functools.cached_property
+    def index(self):
+        with open(COMBO_INDEX_PATH, "r") as f:
+            return json.load(f)
+
+    @functools.cached_property
+    def details(self):
+        with open(COMBO_DETAILS_PATH, "r") as f:
+            return json.load(f)
+
+    def test_every_index_id_resolves_in_details(self):
+        detail_ids = {record.get("id") for record in self.details["combos"]}
+        assert None not in detail_ids, "details predate the id-carrying step 8"
+        index_ids = [row[0] for row in self.index["combos"]]
+        assert len(index_ids) == len(set(index_ids))
+        missing = [cid for cid in index_ids if cid not in detail_ids]
+        assert not missing, missing[:10]
+
+    def test_totals_are_the_details_totals_and_top_is_capped(self):
+        per_card = self.index["meta"]["per_card"]
+        assert per_card >= 1
+        details_by_card = self.details["by_card"]
+        checked = 0
+        for name, entry in self.index["by_card"].items():
+            assert entry["n"] == len(details_by_card[name]), name
+            assert len(entry["top"]) <= per_card, name
+            assert len(entry["top"]) <= entry["n"], name
+            assert entry["inf"] <= entry["n"], name
+            for row in entry["top"]:
+                assert name in self.index["combos"][row][1], (name, row)
+            checked += 1
+        assert checked == len(details_by_card)
+        assert self.index["meta"]["indexed"] == checked
+        assert self.index["meta"]["combos"] == len(self.index["combos"])
+
+    def test_source_meta_is_carried_by_all_three(self):
+        with open(COMBO_GRAPH_PATH, "r") as f:
+            graph = json.load(f)
+        source = self.details["meta"]["source"]
+        assert set(source) == {"timestamp", "version"}
+        assert graph["meta"]["source_timestamp"] == source["timestamp"]
+        assert self.index["meta"]["source_timestamp"] == source["timestamp"]
 
 
 # ── All existing tests still pass ──

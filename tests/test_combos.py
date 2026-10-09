@@ -1,21 +1,30 @@
-"""Tests for combo data processing (process_combos.py)."""
+"""Tests for the combo steps: download_combos.py (stubbed session) and process_combos.py."""
 
+import gzip
 import json
+import sys
 import tempfile
 from pathlib import Path
 
 import pandas as pd
 import pytest
+import requests
 
+from manamap.ingest import download_combos as dc
 from manamap.ingest.process_combos import (
     bracket_summary,
     build_card_index,
     build_combo_graph,
+    build_combo_index,
     extract_bracket,
     extract_card_names,
     extract_color_identity,
     extract_produces,
+    is_infinite,
     load_known_cards,
+    load_source_meta,
+    raw_variants,
+    status_counts,
 )
 
 
@@ -282,3 +291,349 @@ def test_bracket_summary_counts_by_bracket_and_banned():
     _, combo_list = build_combo_graph(combos, known)
 
     assert bracket_summary(combo_list) == {"1": 2, "4": 1, "banned": 1}
+
+
+# ── ids, source meta, the two dump shapes ──
+
+
+def test_build_combo_graph_carries_spellbook_id():
+    known = {"A", "B"}
+    combo = make_combo(["A", "B"])
+    combo["id"] = "513-5034--46"
+    _, combo_list = build_combo_graph([combo], known)
+    assert combo_list[0]["id"] == "513-5034--46"
+
+
+def test_raw_variants_reads_both_dump_shapes():
+    variants = [make_combo(["A", "B"])]
+    assert raw_variants(variants) is variants
+    assert raw_variants({"timestamp": "t", "version": 3, "variants": variants, "aliases": []}) is variants
+    with pytest.raises(ValueError):
+        raw_variants({"timestamp": "t"})
+    with pytest.raises(ValueError):
+        raw_variants("nonsense")
+
+
+def test_load_source_meta_absent_or_old_shape_is_none_values(tmp_path):
+    missing = tmp_path / "nope.json"
+    assert load_source_meta(missing) == {"timestamp": None, "version": None}
+    old = tmp_path / "old.json"
+    old.write_text('{"count": 83261}')
+    assert load_source_meta(old) == {"timestamp": None, "version": None}
+    broken = tmp_path / "broken.json"
+    broken.write_text("{")
+    assert load_source_meta(broken) == {"timestamp": None, "version": None}
+    new = tmp_path / "new.json"
+    new.write_text(json.dumps({"timestamp": "2026-10-08T00:00:00Z", "version": 7, "etag": "x"}))
+    assert load_source_meta(new) == {"timestamp": "2026-10-08T00:00:00Z", "version": 7}
+
+
+def test_status_counts_reports_without_filtering():
+    combos = [make_combo(["A", "B"]), make_combo(["A", "B"]), make_combo(["A", "B"])]
+    combos[0]["status"] = "OK"
+    combos[1]["status"] = "OK"
+    combos[2]["status"] = "D"
+    assert status_counts(combos) == {"OK": 2, "D": 1}
+    # Status never decides membership: the graph keeps all three.
+    _, combo_list = build_combo_graph(combos, {"A", "B"})
+    assert len(combo_list) == 3
+
+
+def test_is_infinite_agrees_with_the_bracket_engine():
+    """The copied one-liner must answer exactly as `pilot.bracket.is_infinite`."""
+    from manamap.pilot.bracket import is_infinite as bracket_is_infinite
+
+    cases = [
+        {"produces": ["Infinite colorless mana"]},
+        {"produces": ["Near-infinite damage"]},
+        {"produces": ["Win the game", "infinite storm count"]},
+        {"produces": []},
+        {},
+    ]
+    for record in cases:
+        assert is_infinite(record) == bracket_is_infinite(record), record
+
+
+# ── build_combo_index ──
+
+
+def indexed(card_specs):
+    """(name list, popularity, produces, bracket_tag, id) rows -> processed records."""
+    combos = []
+    known = set()
+    for names, popularity, produces, tag, cid in card_specs:
+        combo = make_combo(names, produces=produces, bracket_tag=tag, popularity=popularity,
+                           mana_value_needed=len(names))
+        combo["id"] = cid
+        combos.append(combo)
+        known.update(names)
+    _, combo_list = build_combo_graph(combos, known)
+    return combo_list
+
+
+def test_build_combo_index_caps_top_and_keeps_true_totals():
+    # A and B share all twenty combos; with per_card=5 the fifteen least popular
+    # are in nobody's top, so they stay out of the rows while the totals count them.
+    specs = [(["A", "B"], 100 - i, ["Infinite mana"] if i % 2 == 0 else ["Win"], "E", f"c{i:02d}")
+             for i in range(20)]
+    combo_list = indexed(specs)
+    index = build_combo_index(combo_list, per_card=5)
+
+    for name in ("A", "B"):
+        entry = index["by_card"][name]
+        assert entry["n"] == 20
+        assert entry["inf"] == 10
+        assert len(entry["top"]) == 5
+        assert [index["combos"][row][0] for row in entry["top"]] == ["c00", "c01", "c02", "c03", "c04"]
+    assert index["meta"] == {"source_timestamp": None, "per_card": 5, "combos": 5, "indexed": 2}
+    assert len(index["combos"]) == 5
+
+
+def test_build_combo_index_rows_hold_every_combo_some_top_names():
+    # Twenty partners, each in one combo with A: A's top is capped at five, but
+    # every partner's own top names its one combo, so all twenty rows are kept.
+    specs = [(["A", f"P{i:02d}"], 100 - i, ["Win"], "E", f"c{i:02d}") for i in range(20)]
+    index = build_combo_index(indexed(specs), per_card=5)
+    assert len(index["by_card"]["A"]["top"]) == 5
+    assert index["by_card"]["A"]["n"] == 20
+    assert len(index["combos"]) == 20
+    for i in range(20):
+        entry = index["by_card"][f"P{i:02d}"]
+        assert entry == {"n": 1, "inf": 0, "top": [i]}  # rows are id-sorted: c00..c19
+
+
+def test_build_combo_index_top_is_popularity_desc_then_id_asc():
+    specs = [
+        (["A", "B"], 5, ["Win"], "E", "z-later"),
+        (["A", "B"], 9, ["Win"], "E", "m"),
+        (["A", "B"], 5, ["Win"], "E", "a-first"),
+        (["A", "B"], None, ["Win"], "E", "none-pop"),
+    ]
+    index = build_combo_index(indexed(specs), per_card=3)
+    top_ids = [index["combos"][row][0] for row in index["by_card"]["A"]["top"]]
+    assert top_ids == ["m", "a-first", "z-later"]
+    assert index["by_card"]["B"]["top"] == index["by_card"]["A"]["top"]
+    # The rows themselves are sorted by id, independent of popularity; the
+    # unreferenced fourth combo is counted in `n` and absent from the rows.
+    assert [row[0] for row in index["combos"]] == ["a-first", "m", "z-later"]
+    assert index["by_card"]["A"]["n"] == 4
+
+
+def test_build_combo_index_is_deterministic_under_input_order():
+    specs = [(["A", f"P{i}"], i % 4, ["Win"], "E", f"id{i}") for i in range(12)]
+    forward = build_combo_index(indexed(specs), per_card=4)
+    backward = build_combo_index(indexed(list(reversed(specs))), per_card=4)
+    assert json.dumps(forward, sort_keys=True) == json.dumps(backward, sort_keys=True)
+
+
+def test_build_combo_index_banned_keeps_null_bracket_and_rows_resolve():
+    specs = [
+        (["A", "B"], 10, ["Infinite damage"], "B", "banned-1"),
+        (["A", "C"], 3, ["Win"], "R", "ruthless-1"),
+    ]
+    combo_list = indexed(specs)
+    index = build_combo_index(combo_list, per_card=12)
+    rows = index["combos"]
+    by_id = {row[0]: row for row in rows}
+    assert by_id["banned-1"] == ["banned-1", ["A", "B"], 1, None, 2]
+    assert by_id["ruthless-1"] == ["ruthless-1", ["A", "C"], 0, 4, 2]
+    for name, entry in index["by_card"].items():
+        assert len(entry["top"]) <= 12
+        for row in entry["top"]:
+            assert name in rows[row][1]
+    # Every index id resolves in the details list it was cut from.
+    detail_ids = {record["id"] for record in combo_list}
+    assert {row[0] for row in rows} <= detail_ids
+
+
+def test_build_combo_index_dedupes_a_repeated_name_within_one_combo():
+    combo_list = [{"id": "x", "cards": ["A", "A", "B"], "produces": [], "bracket": 1,
+                   "mana_value_needed": 0, "popularity": 1}]
+    index = build_combo_index(combo_list)
+    assert index["by_card"]["A"] == {"n": 1, "inf": 0, "top": [0]}
+
+
+def test_build_combo_index_empty():
+    index = build_combo_index([], per_card=3)
+    assert index == {"meta": {"source_timestamp": None, "per_card": 3, "combos": 0, "indexed": 0},
+                     "combos": [], "by_card": {}}
+
+
+def test_combo_index_is_compact_json():
+    index = build_combo_index(indexed([(["A", "B"], 1, ["Win"], "E", "i")]))
+    text = json.dumps(index, separators=(",", ":"))
+    assert " " not in text.replace('"A"', "").replace('"B"', "")
+
+
+# ── download_combos: the sidecar and the bulk route ──
+
+
+class StubResponse:
+    def __init__(self, headers=None, body=b"", status=200):
+        self.headers = dict(headers or {})
+        self._body = body
+        self.status_code = status
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise requests.HTTPError(f"{self.status_code}")
+
+    def iter_content(self, chunk_size):
+        for start in range(0, len(self._body), chunk_size):
+            yield self._body[start:start + chunk_size]
+
+
+class StubSession:
+    """A `requests.Session` stand-in: one HEAD answer, one GET body, or one error."""
+
+    def __init__(self, headers=None, body=b"", error=None, status=200):
+        self.headers = dict(headers or {})
+        self.body = body
+        self.error = error
+        self.status = status
+        self.calls = []
+
+    def head(self, url, **kwargs):
+        self.calls.append(("HEAD", url))
+        if self.error:
+            raise self.error
+        return StubResponse(self.headers, status=self.status)
+
+    def get(self, url, **kwargs):
+        self.calls.append(("GET", url))
+        if self.error:
+            raise self.error
+        return StubResponse(self.headers, self.body, status=self.status)
+
+
+@pytest.fixture
+def combos_dir(tmp_path, monkeypatch):
+    """Point the downloader at a scratch data dir and seed a dump + a bulk-shape sidecar."""
+    raw = tmp_path / "combos_raw.json.gz"
+    meta = tmp_path / ".combos-meta.json"
+    monkeypatch.setattr(dc, "COMBOS_RAW_PATH", raw)
+    monkeypatch.setattr(dc, "COMBOS_META_PATH", meta)
+    monkeypatch.setattr(dc, "DATA_DIR", tmp_path)
+    with gzip.open(raw, "wt") as f:
+        json.dump({"timestamp": "2026-10-01T00:00:00Z", "version": 1, "variants": [], "aliases": []}, f)
+    dc.save_meta({"etag": '"abc"', "last_modified": "Wed, 01 Oct 2026 00:00:00 GMT",
+                  "timestamp": "2026-10-01T00:00:00Z", "version": 1, "count": 0,
+                  "downloaded_at": "2026-10-01T00:00:01+00:00"})
+    return tmp_path
+
+
+def test_is_up_to_date_false_without_dump_or_meta(combos_dir):
+    session = StubSession({"ETag": '"abc"'})
+    (combos_dir / "combos_raw.json.gz").unlink()
+    assert dc.is_up_to_date(session) is False
+    assert session.calls == []  # nothing to compare, nothing asked
+
+
+def test_is_up_to_date_old_shape_meta_refreshes(combos_dir):
+    (combos_dir / ".combos-meta.json").write_text('{"count": 83261}')
+    session = StubSession({"ETag": '"abc"'})
+    assert dc.is_up_to_date(session) is False
+    assert session.calls == []
+
+
+def test_is_up_to_date_same_etag(combos_dir):
+    session = StubSession({"ETag": '"abc"', "Last-Modified": "Thu, 08 Oct 2026 00:00:00 GMT"})
+    assert dc.is_up_to_date(session) is True
+    assert session.calls == [("HEAD", dc.COMBOS_BULK_URL)]
+
+
+def test_is_up_to_date_changed_etag_is_stale(combos_dir):
+    session = StubSession({"ETag": '"def"'})
+    assert dc.is_up_to_date(session) is False
+
+
+def test_is_up_to_date_falls_back_to_last_modified(combos_dir):
+    same = StubSession({"Last-Modified": "Wed, 01 Oct 2026 00:00:00 GMT"})
+    assert dc.is_up_to_date(same) is True
+    moved = StubSession({"Last-Modified": "Thu, 08 Oct 2026 00:00:00 GMT"})
+    assert dc.is_up_to_date(moved) is False
+    silent = StubSession({})  # no validator at all: cannot tell, so refresh
+    assert dc.is_up_to_date(silent) is False
+
+
+@pytest.mark.parametrize("error", [
+    requests.ConnectionError("dns"),
+    requests.Timeout("slow"),
+    requests.HTTPError("503"),
+])
+def test_is_up_to_date_offline_keeps_the_dump_with_a_warning(combos_dir, capsys, error):
+    session = StubSession(error=error)
+    assert dc.is_up_to_date(session) is True
+    out = capsys.readouterr().out
+    assert "WARNING" in out and type(error).__name__ in out
+    assert out.count("\n") == 1
+
+
+def test_download_bulk_writes_dump_and_meta(combos_dir):
+    variants = [{"id": "1-2", "uses": [], "status": "OK"}, {"id": "3-4", "uses": [], "status": "OK"}]
+    doc = {"timestamp": "2026-10-08T12:00:00Z", "version": 9, "variants": variants, "aliases": []}
+    body = gzip.compress(json.dumps(doc).encode())
+    session = StubSession({"ETag": '"new"', "Last-Modified": "Thu, 08 Oct 2026 12:00:00 GMT"}, body=body)
+    legacy = combos_dir / "combos_raw.json"
+    legacy.write_text("[]")  # the stale uncompressed sibling must not linger
+
+    meta = dc.download_bulk(session)
+
+    assert session.calls == [("GET", dc.COMBOS_BULK_URL)]
+    assert not legacy.exists()
+    with gzip.open(combos_dir / "combos_raw.json.gz", "rt") as f:
+        assert json.load(f) == doc
+    on_disk = json.loads((combos_dir / ".combos-meta.json").read_text())
+    assert on_disk == meta
+    assert set(on_disk) == set(dc.META_KEYS)
+    assert on_disk["etag"] == '"new"'
+    assert on_disk["last_modified"] == "Thu, 08 Oct 2026 12:00:00 GMT"
+    assert on_disk["timestamp"] == "2026-10-08T12:00:00Z"
+    assert on_disk["version"] == 9
+    assert on_disk["count"] == 2
+    assert on_disk["downloaded_at"]
+    # And the round trip: the file just written is now current.
+    assert dc.is_up_to_date(StubSession({"ETag": '"new"'})) is True
+
+
+def test_download_bulk_regzips_an_inflated_body(combos_dir):
+    """A CDN that inflates in flight still leaves a real .gz on disk."""
+    doc = {"timestamp": "t", "version": 1, "variants": [{"id": "a", "uses": []}], "aliases": []}
+    session = StubSession({"ETag": '"x"'}, body=json.dumps(doc).encode())
+    meta = dc.download_bulk(session)
+    raw = combos_dir / "combos_raw.json.gz"
+    assert raw.read_bytes()[:2] == dc.GZIP_MAGIC
+    with gzip.open(raw, "rt") as f:
+        assert json.load(f) == doc
+    assert meta["count"] == 1
+
+
+def test_download_bulk_http_error_leaves_the_old_dump(combos_dir):
+    session = StubSession({}, status=503)
+    before = (combos_dir / "combos_raw.json.gz").read_bytes()
+    with pytest.raises(requests.HTTPError):
+        dc.download_bulk(session)
+    assert (combos_dir / "combos_raw.json.gz").read_bytes() == before
+    assert not list(combos_dir.glob("*.part"))
+
+
+def test_main_skips_when_current_and_force_overrides(combos_dir, monkeypatch, capsys):
+    calls = []
+    monkeypatch.setattr(dc, "is_up_to_date", lambda session=None: True)
+    monkeypatch.setattr(dc, "download_bulk", lambda: calls.append("bulk") or
+                        {"count": 0, "timestamp": None, "version": None})
+    monkeypatch.setattr(dc, "download_paged", lambda: calls.append("paged") or {"count": 0})
+    dc.main()
+    assert calls == []
+    assert "skipping" in capsys.readouterr().out
+    dc.main(["--force"])
+    assert calls == ["bulk"]
+    dc.main(["--force", "--paged"])
+    assert calls == ["bulk", "paged"]
+
+
+def test_main_default_argv_is_empty_not_sys_argv(combos_dir, monkeypatch):
+    """The pipeline calls `main()` under `manamap run …`; sys.argv must not leak in."""
+    monkeypatch.setattr(sys, "argv", ["manamap", "run", "--from", "download-combos"])
+    monkeypatch.setattr(dc, "is_up_to_date", lambda session=None: True)
+    dc.main()  # would SystemExit(2) on the unknown args if argv leaked
