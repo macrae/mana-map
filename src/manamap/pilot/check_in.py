@@ -108,8 +108,11 @@ def render_decklist(entries):
     """
     line = render_line
 
-    cmds = [e for e in entries if e.get("is_commander")]
-    deck = sorted((e for e in entries if not e.get("is_commander")),
+    main = [e for e in entries if e.get("board", "main") == "main"]
+    side = sorted((e for e in entries if e.get("board", "main") == "side"),
+                  key=lambda e: e["name"])
+    cmds = [e for e in main if e.get("is_commander")]
+    deck = sorted((e for e in main if not e.get("is_commander")),
                   key=lambda e: e["name"])
     out = []
     if cmds:
@@ -118,6 +121,14 @@ def render_decklist(entries):
         out.append("")
     out.append("Deck:")
     out.extend(line(e) for e in deck)
+    if side:
+        # Written only when there is one, so a Commander list renders exactly
+        # as it did before sideboards were read. A `*CMDR*` on a sideboard
+        # line is carried through rather than dropped: the file keeps saying
+        # what was pasted, and `validate_deck` is where it is called wrong.
+        out.append("")
+        out.append("Sideboard:")
+        out.extend(line(e, cmdr_marker=bool(e.get("is_commander"))) for e in side)
     return "\n".join(out) + "\n"
 
 
@@ -366,12 +377,50 @@ def _main_set_printing(args):
     print(f"  next: git add data/decks/{args.slug} && git commit")
 
 
+def set_brief_format(slug, name):
+    """Record the deck's format in `brief.json`, creating a minimal brief if
+    there is none. Returns the brief written.
+
+    THE FORMAT'S HOME IS THE BRIEF, and `fetch-deck` reads it from there, so a
+    `check-in --format standard --write` is one declaration followed by the
+    ordinary chain rather than a flag that has to be repeated on every later
+    fetch. A brief with no commander is a legal brief for a format with none
+    (`validate_brief` reads the same spec). `format_key` keeps a Commander
+    declaration out of the file for the same reason it keeps it out of
+    `cards.json`: absent is the default, and the fourteen tracked briefs must
+    not change for having been checked in again.
+    """
+    import json
+    spec = formats.get(name)
+    path = deck_dir(slug) / "brief.json"
+    brief = _common.load_json(path, None)
+    key = formats.format_key(spec)
+    if not isinstance(brief, dict):
+        # A NEW brief says what the pilot said, the default included — there
+        # is no tracked file to keep identical. Only an existing brief is left
+        # alone when the declaration is the default it already implies.
+        brief = {"slug": slug, "format": spec.name.lower()}
+    elif key:
+        brief["format"] = key
+    elif brief.get("format") and formats.get(brief["format"]) is not formats.DEFAULT:
+        # A declared non-default format being moved back to the default is
+        # written explicitly (the Atlas's `brew` writes `"commander"` too); a
+        # brief that already says the default, or says nothing, is left as is.
+        brief["format"] = spec.name.lower()
+    path.write_text(json.dumps(brief, indent=2, ensure_ascii=False) + "\n",
+                    encoding="utf-8")
+    return brief
+
+
 def main(args):
     if getattr(args, "set_printing", None):
         return _main_set_printing(args)
     if not getattr(args, "source", None):
         raise SystemExit("check-in needs --from <file> (a paper list) or "
                          "--set-printing \"Name\" \"(SET) CN\"")
+    fmt = getattr(args, "format", None)
+    if fmt:
+        formats.get(fmt)                     # refuse an unknown name before any read
     text = read_list(args.source)
     d = analyze(args.slug, text)
     if getattr(args, "as_json", False):
@@ -381,10 +430,18 @@ def main(args):
         return
     write = getattr(args, "write", False)
     _print(d, write)
+    if fmt and not write:
+        print(f"  format: {formats.get(fmt).name} — recorded in brief.json on --write")
     if not write:
         return
     if d["blocking"] and not getattr(args, "force", False):
         raise SystemExit(1)
+    if fmt:
+        # BEFORE the list and the chain: `fetch-deck` resolves the format from
+        # the brief, so the brief has to say it first or cards.json is written
+        # as the default and the flag did nothing.
+        set_brief_format(args.slug, fmt)
+        print(f"  WROTE brief.json: format {formats.get(fmt).name}")
     ran = apply(args.slug, d["entries"], run_chain=not getattr(args, "no_chain", False))
     print(f"\n  WROTE decklist.txt" + (f" · ran {' → '.join(ran)}" if ran else ""))
     from manamap.pilot import deck_context

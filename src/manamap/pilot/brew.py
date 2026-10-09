@@ -44,9 +44,9 @@ def _library_from_file(path):
         doc = json.loads(text)
         return list(doc.get("must_include") or []), doc.get("commander")
 
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
 
-    entries = parse_decklist(text)
+    entries = parse_mainboard(text)
     commander = next((e["name"] for e in entries if e.get("is_commander")), None)
     return [e["name"] for e in entries if not e.get("is_commander")], commander
 

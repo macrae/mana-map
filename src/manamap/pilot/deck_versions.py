@@ -66,9 +66,9 @@ def _version_key(blob):
     different commander is a different deck rather than a comment edit.
     Measured on the fleet before it was adopted: it renumbers nothing.
     """
-    from manamap.pilot.fetch_deck import parse_decklist   # as `dh._entries` does
+    from manamap.pilot.fetch_deck import parse_mainboard   # as `dh._entries` does
     out = {}
-    for e in parse_decklist(blob):
+    for e in parse_mainboard(blob):
         k = (e["name"], bool(e.get("is_commander")))
         out[k] = out.get(k, 0) + int(e.get("quantity") or 1)
     return out

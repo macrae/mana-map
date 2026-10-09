@@ -332,8 +332,8 @@ def read_pool(spec, slug=None):
                 f"{path} not found — open the Atlas library, pick a pile and "
                 f"press 'consider these', or pass a file to --pool.")
         text = path.read_text(encoding="utf-8")
-        from manamap.pilot.fetch_deck import parse_decklist
-        got = [e["name"] for e in parse_decklist(text)]
+        from manamap.pilot.fetch_deck import parse_mainboard
+        got = [e["name"] for e in parse_mainboard(text)]
         return got or [l.strip() for l in text.splitlines() if l.strip()]
     if spec == "-":
         import sys
@@ -343,8 +343,8 @@ def read_pool(spec, slug=None):
         text = Path(spec).read_text(encoding="utf-8")
     # The same reader the rest of the bench uses, so a pool pasted from the Atlas
     # and a pool exported as a decklist cannot disagree about what is in it.
-    from manamap.pilot.fetch_deck import parse_decklist
-    names = [e["name"] for e in parse_decklist(text)]
+    from manamap.pilot.fetch_deck import parse_mainboard
+    names = [e["name"] for e in parse_mainboard(text)]
     if not names:
         names = [l.strip() for l in text.splitlines()
                  if l.strip() and not l.strip().startswith("#")]

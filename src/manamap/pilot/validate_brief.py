@@ -47,6 +47,7 @@ import pathlib
 
 from manamap import config
 from manamap.config import BRACKET_MAX
+from manamap.pilot import formats
 from manamap.pilot.common import commander_rejection, deck_dir, report_errors
 
 #: Keys the BUILDER actually reads. Derived from `build_deck.load_brief` +
@@ -117,24 +118,36 @@ def validate(doc, slug, rows=None, names=None, check_themes=False):
                 errors.append(f"{key} names {raw!r}, which is not on disk — "
                               f"`resolve_pool` raises on it at build time")
 
+    # THE FORMAT DECIDES WHETHER A COMMANDER IS REQUIRED. An unknown name is an
+    # error STRING here rather than `formats.get`'s SystemExit: this is a gate,
+    # and a gate that exits mid-report leaves every later check unreported.
+    fmt = doc.get("format")
+    if fmt is not None and str(fmt).strip().lower() not in formats.FORMATS:
+        errors.append(f"format {fmt!r} is not one of "
+                      f"{', '.join(sorted(formats.FORMATS))}")
+        spec = formats.DEFAULT
+    else:
+        spec = formats.get(fmt)
+
     commander = doc.get("commander")
-    if not commander:
+    if not commander and spec.commanders:
         errors.append("no commander — the builder cannot start without one")
         return errors, notes
 
     rows = rows if rows is not None else _rows()
     names = names if names is not None else _names()
 
-    row = rows.get(commander)
-    if row is None:
-        errors.append(f"commander {commander!r} is not in the corpus — check the "
-                      f"spelling, and use the full ' // ' form for a DFC")
-        identity = set()
-    else:
-        rejection = commander_rejection(row)
-        if rejection:
-            errors.append(f"commander {commander!r} cannot be a commander: {rejection}")
-        identity = parse_color_identity(row.get("color_identity", ""))
+    row, identity = None, set()
+    if commander:
+        row = rows.get(commander)
+        if row is None:
+            errors.append(f"commander {commander!r} is not in the corpus — check the "
+                          f"spelling, and use the full ' // ' form for a DFC")
+        else:
+            rejection = commander_rejection(row)
+            if rejection:
+                errors.append(f"commander {commander!r} cannot be a commander: {rejection}")
+            identity = parse_color_identity(row.get("color_identity", ""))
 
     # A PARTNER PAIR: the identity the deck may use is the UNION. Checked
     # against one commander this refused every red land in sharknado's brief
@@ -231,7 +244,7 @@ def main(args):
 
     errors, notes = validate(doc, args.slug,
                              check_themes=getattr(args, "themes", False))
-    ok = (f"OK   {path.name} — {doc.get('commander')}, bracket "
+    ok = (f"OK   {path.name} — {doc.get('commander') or formats.get(doc.get('format')).name}, bracket "
           f"{doc.get('bracket')}, {len(doc.get('must_include') or [])} "
           f"must-include, {len(doc.get('must_exclude') or [])} must-exclude")
     for note in notes:

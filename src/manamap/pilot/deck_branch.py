@@ -716,8 +716,8 @@ def _parsed(slug, branch=None):
     longer be a Commander deck — and would silently re-resolve a Secret Lair to
     its cheapest reprint on the next `fetch-deck`.
     """
-    from manamap.pilot.fetch_deck import parse_decklist
-    return parse_decklist(_list_text(slug, branch))
+    from manamap.pilot.fetch_deck import parse_mainboard
+    return parse_mainboard(_list_text(slug, branch))
 
 
 def _resolve_in_list(entries, name):

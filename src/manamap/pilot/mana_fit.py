@@ -87,7 +87,7 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
     """Lands, rocks and dorks that close the gap — ranked by colours covered."""
     from manamap.pilot import card_pool, collection, mana_analysis, manabase
     from manamap.pilot.common import deck_dir
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
 
     facts = shortfall(slug, branch)
     short = {c: -v["short"] for c, v in facts["colours"].items() if v["short"] < 0}
@@ -95,10 +95,10 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
 
     pool = card_pool.load_pool()
     oracle = card_pool.corpus_oracle()
-    held = {e["name"] for e in parse_decklist(
+    held = {e["name"] for e in parse_mainboard(
         (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8"))}
     identity = set()
-    for e in parse_decklist((deck_dir(slug, branch) / "decklist.txt").read_text()):
+    for e in parse_mainboard((deck_dir(slug, branch) / "decklist.txt").read_text()):
         if e.get("is_commander"):
             identity |= set((pool.get(e["name"]) or {}).get("color_identity") or set())
     owned = collection.owned_names()

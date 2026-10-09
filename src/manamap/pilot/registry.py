@@ -535,6 +535,15 @@ def add_pilot_parser(subparsers):
         if name == "fetch-deck":
             cmd.add_argument("--force", action="store_true",
                              help="Re-fetch from Scryfall even if the decklist is unchanged")
+        if name in ("fetch-deck", "check-in"):
+            # The format's home is `brief.json` (check-in writes it there on
+            # --write; fetch-deck reads it from there), so the flag is a
+            # declaration made once, not one repeated on every fetch. Absent
+            # means Commander, and a Commander deck's cards.json carries no key.
+            from manamap.pilot.formats import FORMATS
+            cmd.add_argument("--format", default=None, choices=sorted(FORMATS),
+                             help="the deck's format (default: what brief.json / "
+                                  "cards.json already say, else commander)")
         if name == "deck-notes":
             cmd.add_argument("action", choices=["add", "list", "show", "cause"],
                              help="add a note / list the log / show one entry / "

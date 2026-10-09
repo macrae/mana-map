@@ -65,11 +65,11 @@ class StateError(ValueError):
 def _deck_copies(slug):
     """Every copy in the seat's list, commanders included, by name."""
     from manamap.pilot.common import expand_copies
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
     from manamap.sim import forge
 
     text = (forge.seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
-    entries = parse_decklist(text)
+    entries = parse_mainboard(text)
     commanders = [e["name"] for e in entries if e.get("is_commander")]
     return [e["name"] for e in expand_copies(entries)], commanders
 

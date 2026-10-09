@@ -34,7 +34,7 @@ of them, and it is not decoration.
 
 Composes primitives that already exist; no new analysis lives here:
 
-    parsing        pilot/fetch_deck.py     parse_decklist   (quantities, *F*, *CMDR*)
+    parsing        pilot/fetch_deck.py     parse_mainboard   (quantities, *F*, *CMDR*)
     commanders     pilot/common.py         commander_rejection
     identity       analysis/common.py      parse_color_identity, parse_tag_set
     sources        pilot/manabase.py       land_colors      (restriction-aware)
@@ -66,7 +66,7 @@ from manamap.pilot.common import (
     load_json_memo,
     mtime_memo,
 )
-from manamap.pilot.fetch_deck import parse_decklist
+from manamap.pilot.fetch_deck import parse_mainboard
 from manamap.pilot.manabase import land_colors
 
 # Columns the analysis actually reads. cards.csv is 24.7 MB across 35 columns and
@@ -125,7 +125,7 @@ def read_sources(paths, cards):
     unresolved = defaultdict(list)
     for path in paths:
         counts = Counter()
-        for entry in parse_decklist(Path(path).read_text()):
+        for entry in parse_mainboard(Path(path).read_text()):
             name = entry["name"]
             resolved = name if name in cards else front.get(name)
             if resolved is None:
@@ -139,7 +139,7 @@ def read_sources(paths, cards):
 def pool_printings(paths, cards):
     """{name: {set, collector_number, foil}} — the PRINTING you actually own.
 
-    `parse_decklist` already captures set, collector number and foil from a
+    `parse_mainboard` already captures set, collector number and foil from a
     decklist's `(SET) 123 *F*` suffix; `read_sources` deliberately drops all of it
     because counting copies does not care. Building a deck from a physical
     collection does care, and dropping it here is how a 100-card list of cards you
@@ -153,7 +153,7 @@ def pool_printings(paths, cards):
     front = front_face_map(cards)
     out = {}
     for path in paths:
-        for entry in parse_decklist(Path(path).read_text()):
+        for entry in parse_mainboard(Path(path).read_text()):
             name = entry["name"]
             resolved = name if name in cards else front.get(name)
             if resolved is None or resolved in out:

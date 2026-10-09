@@ -298,10 +298,10 @@ def staged_names(slug, branch):
     """The 99 the scan excludes against — the deck's, or a branch's decklist."""
     if not branch:
         return deck_names(slug)
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
     text = (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8")
     out = set()
-    for e in parse_decklist(text):
+    for e in parse_mainboard(text):
         out |= expand_faces(e["name"])
     return out
 

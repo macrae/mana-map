@@ -25,6 +25,7 @@ from manamap.config import (
 )
 from manamap.ingest.extract import get_colors
 from manamap.pilot import common as _common
+from manamap.pilot import formats
 from manamap.pilot.common import (
     COMMANDER_SECTION_MARKERS,
     MAIN_SECTION_MARKERS,
@@ -76,9 +77,10 @@ def _comment_marker(line):
 def parse_decklist(text):
     """Parse a decklist into entries, order preserved.
 
-    Entry: {"name", "quantity", "is_commander", "foil"} plus
+    Entry: {"name", "quantity", "is_commander", "foil", "board"} plus
     optional "set"/"collector_number" when a Moxfield printing annotation is
-    present.
+    present. `board` is `"main"` or `"side"`; a commander is `main` with
+    `is_commander` set.
 
     Marker-stripping order is load-bearing: `*CMDR*` and `*F*` come off the end
     of the line *before* `_PRINTING_RE` runs, because that pattern is anchored
@@ -86,8 +88,18 @@ def parse_decklist(text):
 
     Supports: `1 Card Name`, `1x Card Name`, bare `Card Name` (quantity 1),
     Moxfield `(SET) COLLECTOR` printing suffixes and `*F*`/`*E*` foil markers,
-    `Commander:`/`Commanders:` and `Sideboard:` section headers, a trailing
-    `*CMDR*` marker, `#` and `//` comment lines, blank lines.
+    `Commander:`/`Commanders:`, `Deck:` and `Sideboard:` section headers (bare
+    or as `// SIDEBOARD`-style comment headers), a trailing `*CMDR*` marker,
+    `#` and `//` comment lines, blank lines.
+
+    THE SIDEBOARD IS READ, NOT SKIPPED (2026-10-09). This used to `break` at a
+    `Sideboard:` line — right for a bench that modelled no sideboard, and the
+    reason a 60-card list could never be checked in whole. Now the section
+    switches, a `Deck:` after it returns to the mainboard, and every entry
+    says which board it sits on. Nothing here interprets a `*CMDR*` in the
+    sideboard: the entry is recorded `board: side` with the flag set, and
+    `validate_deck` is the place that says it is wrong. A reader that wants
+    the library and nothing else calls `parse_mainboard`.
     """
     entries = []
     section = "deck"
@@ -103,7 +115,13 @@ def parse_decklist(text):
             # the blank IS the terminator. Everywhere else a blank line stays what
             # it has always been — nothing — which is what keeps `basic.txt` and
             # `comments_and_aliases.txt` parsing exactly as before.
-            if from_comment:
+            #
+            # EXCEPT A COMMENT-ENTERED SIDEBOARD, which a blank line does not
+            # close: a sideboard is the last section of every export there is,
+            # so nothing after it is mainboard, and a blank line inside it
+            # (Moxfield groups the section by type) would otherwise file the
+            # rest of the fifteen as library cards.
+            if from_comment and section != "side":
                 section, from_comment = "deck", False
             continue
         marker = _comment_marker(line)
@@ -119,11 +137,9 @@ def parse_decklist(text):
             from_comment = marker is not None
             continue
         if lowered in SIDEBOARD_SECTION_MARKERS:
-            # There is no sideboard any more, but the MARKER still has to be
-            # consumed: a pasted list that carries one would otherwise file every
-            # card after it as maindeck and break the 100-card invariant. Stop
-            # reading — everything below the line is out of the deck.
-            break
+            section = "side"
+            from_comment = marker is not None
+            continue
 
         is_commander = section == "commander"
         if line.upper().endswith("*CMDR*"):
@@ -150,6 +166,7 @@ def parse_decklist(text):
             "quantity": quantity,
             "is_commander": is_commander,
             "foil": foil,
+            "board": "side" if section == "side" else "main",
         }
         printing = _PRINTING_RE.search(name)
         if printing:
@@ -160,18 +177,41 @@ def parse_decklist(text):
     return entries
 
 
-def is_up_to_date(cards_path, decklist_sha256):
-    """True if cards.json was already built from this exact decklist.
+def parse_mainboard(text):
+    """The entries that start the game in the library or the command zone.
+
+    THE READER FOR EVERY MEASUREMENT. A sideboard card is not in the deck: it
+    is not drawn, not counted toward the hundred, not a swap's `in` or `out`,
+    not a version, not a box's holding. Before the parser read sideboards at
+    all, `parse_decklist` stopped at the marker and every caller got this for
+    free; now that the section is kept, a caller that wants the deck says so by
+    calling this, and `tests/test_pilot_fetch_deck.py` holds every other
+    `parse_decklist` caller to an allow-list with its reason.
+    """
+    return [e for e in parse_decklist(text) if e["board"] == "main"]
+
+
+def is_up_to_date(cards_path, decklist_sha256, format_key=None):
+    """True if cards.json was already built from this exact decklist, for this
+    format.
 
     Mirrors download_rules.is_up_to_date. This matters beyond the saved
     Scryfall round trips: a no-op re-fetch that rewrites cards.json would
     invalidate every downstream agent routine that reads it (see
     docs/agent-cost.md), silently costing a full regeneration.
+
+    `format_key` is what `main` would write under `format` — None for the
+    default, by `formats.format_key` — and it is part of "up to date": a
+    `fetch-deck --format standard` on a deck whose cards.json was resolved as
+    Commander must re-resolve, or the flag is a no-op that prints "already up
+    to date" and leaves the file saying the wrong thing.
     """
     if not cards_path.exists():
         return False
     with open(cards_path) as f:
-        return json.load(f).get("decklist_sha256") == decklist_sha256
+        doc = json.load(f)
+    return (doc.get("decklist_sha256") == decklist_sha256
+            and doc.get("format") == format_key)
 
 
 def _post_collection(identifiers):
@@ -339,15 +379,22 @@ def shape_card(sc, quantity, is_commander, foil=False):
     }
 
 
-def resolve_entries(entries, by_name, by_printing=None):
-    """Match decklist entries to fetched cards. Entry names may be a single face
-    of a multi-face card (Scryfall resolves them; response name is the full
-    ' // ' name); entries with a printing annotation fall back to (set, cn)
-    lookup when the name misses. Duplicate names (e.g. several basic-land
-    printings) merge into one entry, quantities summed, first position kept —
-    note that means the *first* printing's artist, set and art represent every
-    copy, so a deck with four different basic-land arts credits only one.
-    Returns (cards, unmatched_names)."""
+def resolve_entries(entries, by_name, by_printing=None, board="main"):
+    """Match ONE BOARD's decklist entries to fetched cards. Entry names may be a
+    single face of a multi-face card (Scryfall resolves them; response name is
+    the full ' // ' name); entries with a printing annotation fall back to
+    (set, cn) lookup when the name misses. Duplicate names (e.g. several
+    basic-land printings) merge into one entry, quantities summed, first
+    position kept — note that means the *first* printing's artist, set and art
+    represent every copy, so a deck with four different basic-land arts credits
+    only one. Returns (cards, unmatched_names).
+
+    `board` scopes it: only entries on that board are resolved, so the merge
+    key is `(name, board)` by construction — two copies of a card in the
+    library and one in the sideboard are two entries in two lists, never a
+    quantity of three. An entry with no `board` key (every caller that built
+    entries by hand before the key existed) is mainboard.
+    """
     by_printing = by_printing or {}
     # Secondary index: front-face name -> full card.
     by_face = {}
@@ -358,6 +405,8 @@ def resolve_entries(entries, by_name, by_printing=None):
     cards, unmatched = [], []
     merged = {}  # name_lower -> shaped card
     for entry in entries:
+        if entry.get("board", "main") != board:
+            continue
         key = entry["name"].lower()
         # The decklist's own printing annotation wins: it names the physical
         # card the pilot owns. Name lookup is the fallback for unannotated
@@ -396,7 +445,10 @@ def main(args):
     text = path.read_text()
     decklist_sha256 = _common.list_sha256(text)
     out = deck_dir(args.slug, branch) / "cards.json"
-    if not getattr(args, "force", False) and is_up_to_date(out, decklist_sha256):
+    spec = resolve_format(args.slug, branch, getattr(args, "format", None))
+    format_key = formats.format_key(spec)
+    if not getattr(args, "force", False) and is_up_to_date(out, decklist_sha256,
+                                                             format_key):
         print(f"  Already up to date — skipping Scryfall fetch ({out}).")
         print("  (The hash covers the decklist, not Scryfall's data — use "
               "--force after an oracle update.)")
@@ -405,7 +457,10 @@ def main(args):
     entries = parse_decklist(text)
     if not entries:
         raise SystemExit(f"{path} parsed to zero cards — is it empty?")
-    print(f"Parsed {len(entries)} decklist entries ({sum(e['quantity'] for e in entries)} cards)")
+    main_total = sum(e["quantity"] for e in entries if e["board"] == "main")
+    side_total = sum(e["quantity"] for e in entries if e["board"] == "side")
+    print(f"Parsed {len(entries)} decklist entries ({main_total} cards"
+          + (f" + {side_total} sideboard" if side_total else "") + ")")
 
     # Printings first — a Moxfield export names the exact card the pilot owns,
     # and resolving by name alone would silently substitute a default reprint.
@@ -424,7 +479,9 @@ def main(args):
     })
     by_name, not_found = fetch_collection(unique_names) if unique_names else ({}, [])
 
-    cards, unmatched = resolve_entries(entries, by_name, by_printing)
+    cards, unmatched = resolve_entries(entries, by_name, by_printing, board="main")
+    side, unmatched_side = resolve_entries(entries, by_name, by_printing, board="side")
+    unmatched += unmatched_side
     if unmatched:
         raise SystemExit(
             "Scryfall could not resolve these card names (fix the decklist):\n  - "
@@ -436,15 +493,43 @@ def main(args):
         "decklist_sha256": decklist_sha256,
         "cards": cards,
     }
+    # BOTH KEYS ARE OMITTED WHEN THEY WOULD SAY THE DEFAULT, so the fourteen
+    # Commander decks' tracked cards.json are byte-identical before and after
+    # the keys existed: no sideboard, no `sideboard`; the default format, no
+    # `format`. `formats.for_doc` reads the absences back as the defaults.
+    if side:
+        doc["sideboard"] = side
+    if format_key:
+        doc["format"] = format_key
     with open(out, "w") as f:
         json.dump(doc, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")
     total = sum(c["quantity"] for c in cards)
-    commanders = [c["name"] for c in cards if c["is_commander"]]
-    print(
-        f"Wrote {out}: {total} cards, "
-        f"commander: {', '.join(commanders) or 'NONE FLAGGED'}"
-    )
+    line = f"Wrote {out}: {total} cards"
+    if side:
+        line += f" + {sum(c['quantity'] for c in side)} sideboard"
+    if format_key:
+        line += f" ({spec.name})"
+    if spec.commanders:
+        commanders = [c["name"] for c in cards if c["is_commander"]]
+        line += f", commander: {', '.join(commanders) or 'NONE FLAGGED'}"
+    print(line)
+
+
+def resolve_format(slug, branch, explicit=None):
+    """The spec a fetch resolves against: `--format`, else what the deck already
+    is. The deck's own `cards.json` is consulted only for a BRANCH (a branch
+    inherits; the deck's file is the one about to be written), then the brief —
+    the same chain `formats.for_deck` reads, minus the file this run replaces.
+    """
+    if explicit:
+        return formats.get(explicit)
+    if branch:
+        deck_doc = _common.load_json(deck_dir(slug) / "cards.json", {}) or {}
+        if deck_doc.get("format"):
+            return formats.get(deck_doc["format"])
+    brief = _common.load_json(deck_dir(slug) / "brief.json", {}) or {}
+    return formats.get(brief.get("format"))
 
 
 if __name__ == "__main__":

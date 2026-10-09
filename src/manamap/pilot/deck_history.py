@@ -90,9 +90,11 @@ def _entries(text):
     Reuses the one parser both the CLI and the browser are fixture-locked to,
     so a history entry can never disagree with what `fetch-deck` read.
     """
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
     out = {}
-    for e in parse_decklist(text):
+    # `parse_mainboard`, not `parse_decklist`: a sideboard edit is not a swap
+    # and must never read as a version.
+    for e in parse_mainboard(text):
         out[e["name"]] = out.get(e["name"], 0) + int(e.get("quantity") or 1)
     return out
 

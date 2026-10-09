@@ -7,12 +7,17 @@
  * `tests/test_decklist_parity.py` runs both against the same hand-authored fixtures in
  * `tests/fixtures/decklists/`.
  *
- * **The contract is a projection.** Only `{name, quantity, is_commander}`
+ * **The contract is a projection.** Only `{name, quantity, is_commander, board}`
  * has to match. Python additionally resolves printings against Scryfall and tracks
  * `foil`; the viz has no use for any of it, so this strips the annotation and throws it
  * away. That is deliberate risk reduction rather than laziness — the printing regex is
  * exactly where the one real hazard lives, and the safest way to not reimplement a
  * hazard is to not reimplement the feature.
+ *
+ * `board` is `'main'` or `'side'` (2026-10-09). Both parsers used to stop reading at a
+ * `Sideboard:` line; now the section switches and every entry says where it sits, so a
+ * 60-card list with its fifteen imports whole. A caller that wants the deck filters on
+ * `board === 'main'`, as Python's `parse_mainboard` does.
  *
  * The hazard, for the record: Python's `_PRINTING_RE` is anchored to `$`, so `*F*` and
  * `*CMDR*` must be stripped from the end of the line BEFORE it runs. Reverse those two
@@ -62,8 +67,10 @@ window.Decklist = (function () {
         // A blank line closes a comment-entered section and nothing else. Exports
         // that write `// COMMANDER` do not write a matching `// DECK`; the blank
         // IS the terminator. Everywhere else a blank line stays what it has always
-        // been — nothing.
-        if (fromComment) { section = 'deck'; fromComment = false; }
+        // been — nothing. EXCEPT a comment-entered sideboard: a sideboard is the
+        // last section of every export, so nothing after it is mainboard, and a
+        // blank inside it (Moxfield groups by type) must not refile the rest.
+        if (fromComment && section !== 'side') { section = 'deck'; fromComment = false; }
         continue;
       }
       const marker = commentMarker(line);
@@ -75,10 +82,9 @@ window.Decklist = (function () {
       const lowered = marker !== null ? marker : line.toLowerCase().replace(/:+$/, '');
       if (COMMANDER.has(lowered)) { section = 'commander'; fromComment = marker !== null; continue; }
       if (MAIN.has(lowered)) { section = 'deck'; fromComment = marker !== null; continue; }
-      // There is no sideboard any more, but the MARKER still has to be consumed:
-      // a pasted list carrying one would otherwise file every card after it as
-      // mainboard. Stop reading — everything below the line is out of the deck.
-      if (SIDEBOARD.has(lowered)) break;
+      // The sideboard is READ, not skipped: the section switches, a `Deck:` after it
+      // returns to the mainboard, and every entry below carries `board: 'side'`.
+      if (SIDEBOARD.has(lowered)) { section = 'side'; fromComment = marker !== null; continue; }
 
       let isCommander = section === 'commander';
       const cmdr = stripSuffix(line, '*CMDR*');
@@ -105,6 +111,7 @@ window.Decklist = (function () {
         name: name,
         quantity: quantity,
         is_commander: isCommander,
+        board: section === 'side' ? 'side' : 'main',
       });
     }
     return entries;

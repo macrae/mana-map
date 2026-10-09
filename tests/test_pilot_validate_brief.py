@@ -228,3 +228,35 @@ def test_consumed_names_exactly_what_the_builder_reads():
 
 def test_consumed_and_inert_do_not_overlap():
     assert not (CONSUMED & INERT)
+
+
+# ── A format with no commander (Area C1, 2026-10-09) ─────────────────────────
+
+def test_a_standard_brief_without_a_commander_passes():
+    """`commanders == 0` on the spec, so "no commander" is not a defect — and the
+    rest of the brief is still checked: a must_include that is not in the corpus
+    is still named, and the identity check is simply not applied."""
+    doc = {"slug": "zur", "format": "standard", "must_include": ["Sol Ring"],
+           "must_exclude": []}
+    errors, _ = _check(doc)
+    assert errors == []
+    errors, _ = _check(dict(doc, must_include=["Not A Real Card"]))
+    assert any("not in the corpus" in e for e in errors)
+    # Sterling Grove is G/W and there is no commander to be outside of.
+    errors, _ = _check(dict(doc, must_include=["Sterling Grove"]))
+    assert errors == []
+
+
+def test_a_commander_brief_without_a_commander_still_fails():
+    errors, _ = _check(_brief(commander=None, format="commander"))
+    assert errors == ["no commander — the builder cannot start without one"]
+
+
+def test_an_unknown_format_is_an_error_string_not_an_exit():
+    """`formats.get` raises SystemExit; a GATE reports, so every later check is
+    still printed. The brief is then checked as Commander."""
+    errors, _ = _check(_brief(format="pendragon"))
+    assert any("format 'pendragon' is not one of" in e for e in errors)
+    assert len(errors) == 1, errors
+    errors, _ = _check(_brief(commander=None, format="pendragon"))
+    assert any("no commander" in e for e in errors)

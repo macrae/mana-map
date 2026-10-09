@@ -94,10 +94,10 @@ def test_parse_decklist_formats():
         "// comment\n"
     )
     assert entries[0] == {"name": "Wort, Boggart Auntie", "quantity": 1,
-                          "is_commander": True, "foil": False}
+                          "is_commander": True, "foil": False, "board": "main"}
     assert entries[1]["name"] == "Skirk Prospector"
     assert entries[2] == {"name": "Mountain", "quantity": 10,
-                          "is_commander": False, "foil": False}
+                          "is_commander": False, "foil": False, "board": "main"}
     assert entries[3]["name"] == "Empty the Warrens"
 
 
@@ -139,7 +139,7 @@ def test_parse_decklist_moxfield_annotations():
         "7 Mountain (SLD) 2418 *F*\n"
     )
     assert entries[0] == {"name": "Zada, Hedron Grinder", "quantity": 1,
-                          "is_commander": False,
+                          "is_commander": False, "board": "main",
                           "set": "sld", "collector_number": "2406", "foil": True}
     assert entries[1]["name"] == "Arena of Glory"
     assert entries[1]["set"] == "plst"
@@ -694,3 +694,200 @@ def test_a_genuine_typo_containing_the_separator_still_fails(monkeypatch):
     by_name, not_found = fetch_deck.fetch_collection(["Bottomlesss Pool // Locker Room"])
     assert by_name == {}
     assert not_found == ["Bottomlesss Pool // Locker Room"]
+
+
+# ── The sideboard is read, not skipped (Area C2, 2026-10-09) ─────────────────
+
+
+def test_a_sideboard_section_switches_the_board_and_deck_returns_to_main():
+    """It used to `break` at the marker. Re-introduce that and the side entries
+    below vanish — and so does `D`, which a `Deck:` after the sideboard files
+    back on the mainboard."""
+    entries = parse_decklist("Commander:\n1 A\n\nDeck:\n2 B\nSideboard:\n1 C\n"
+                             "Deck:\n1 D\n")
+    assert [(e["name"], e["board"], e["is_commander"]) for e in entries] == [
+        ("A", "main", True), ("B", "main", False), ("C", "side", False),
+        ("D", "main", False)]
+
+
+def test_every_entry_carries_a_board_and_a_bare_list_is_all_mainboard():
+    for e in parse_decklist("1 Sol Ring\n1 Mountain *CMDR*\n"):
+        assert e["board"] == "main"
+
+
+def test_a_blank_line_does_not_close_a_comment_entered_sideboard():
+    """A blank closes a `// COMMANDER` section (no export writes `// DECK`), and
+    must NOT close a `// SIDEBOARD`: a sideboard is the last section of every
+    export, so a blank inside it would refile the rest as library cards."""
+    entries = parse_decklist("1 A\n\n// SIDEBOARD\n1 C\n\n1 D\n")
+    assert [(e["name"], e["board"]) for e in entries] == [
+        ("A", "main"), ("C", "side"), ("D", "side")]
+    # …while the commander rule is untouched.
+    entries = parse_decklist("// COMMANDER\n1 A\n\n1 B\n")
+    assert [(e["name"], e["board"], e["is_commander"]) for e in entries] == [
+        ("A", "main", True), ("B", "main", False)]
+
+
+def test_a_cmdr_marker_in_the_sideboard_is_recorded_not_interpreted():
+    """The parser says what the file says; `validate_deck` says it is wrong."""
+    e = parse_decklist("Sideboard:\n1 Edgar Markov *CMDR*\n")[0]
+    assert e["board"] == "side" and e["is_commander"] is True
+
+
+def test_parse_mainboard_is_the_projection_every_measurement_reads():
+    text = "1 A\nSideboard:\n1 C\n"
+    assert [e["name"] for e in fetch_deck.parse_mainboard(text)] == ["A"]
+    assert [e["name"] for e in parse_decklist(text)] == ["A", "C"]
+
+
+def test_resolve_entries_is_scoped_to_one_board():
+    """A card on both boards is two entries in two lists, never a quantity of
+    three — the merge key is `(name, board)` by construction."""
+    by_name = {"sol ring": scryfall_card("Sol Ring")}
+    entries = parse_decklist("2 Sol Ring\nSideboard:\n1 Sol Ring\n")
+    main, un = resolve_entries(entries, by_name)               # default: main
+    side, un2 = resolve_entries(entries, by_name, board="side")
+    assert un == un2 == []
+    assert [(c["name"], c["quantity"]) for c in main] == [("Sol Ring", 2)]
+    assert [(c["name"], c["quantity"]) for c in side] == [("Sol Ring", 1)]
+    # An entry built by hand without the key (every pre-2026-10-09 caller) is main.
+    legacy, _ = resolve_entries([{"name": "Sol Ring", "quantity": 1,
+                                  "is_commander": False}], by_name)
+    assert len(legacy) == 1
+
+
+def _deck_with(tmp_path, monkeypatch, decklist, brief=None):
+    decks = tmp_path / "decks"
+    base = decks / "d"
+    base.mkdir(parents=True)
+    (base / "decklist.txt").write_text(decklist)
+    if brief is not None:
+        (base / "brief.json").write_text(json.dumps(brief))
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+
+    def fake_fetch(names):
+        return {n.lower(): scryfall_card(n) for n in names}, []
+
+    monkeypatch.setattr(fetch_deck, "fetch_collection", fake_fetch)
+    return base
+
+
+def _run(slug="d", **kw):
+    args = argparse.Namespace(slug=slug, force=False, format=None, branch=None)
+    for k, v in kw.items():
+        setattr(args, k, v)
+    fetch_deck.main(args)
+
+
+def test_main_writes_sideboard_only_when_there_is_one(tmp_path, monkeypatch):
+    """BYTE IDENTITY FOR COMMANDER: no sideboard, no key; no explicit format,
+    no key. The fourteen tracked cards.json must not change for the keys
+    having been invented."""
+    base = _deck_with(tmp_path, monkeypatch, "1 Sol Ring\n")
+    _run()
+    doc = json.loads((base / "cards.json").read_text())
+    assert set(doc) == {"deck", "decklist_sha256", "cards"}
+
+    (base / "decklist.txt").write_text("1 Sol Ring\nSideboard:\n2 Rest in Peace\n")
+    _run()
+    doc = json.loads((base / "cards.json").read_text())
+    assert [c["name"] for c in doc["cards"]] == ["Sol Ring"]
+    assert [(c["name"], c["quantity"]) for c in doc["sideboard"]] == [("Rest in Peace", 2)]
+    assert set(doc["sideboard"][0]) == set(doc["cards"][0]), "same card shape on both boards"
+    assert "format" not in doc
+
+
+def test_main_writes_the_format_only_when_it_is_not_the_default(tmp_path, monkeypatch):
+    base = _deck_with(tmp_path, monkeypatch, "4 Lightning Bolt\n")
+    _run(format="standard")
+    assert json.loads((base / "cards.json").read_text())["format"] == "standard"
+    # An explicit Commander is the default and writes no key either.
+    _run(format="commander")
+    assert "format" not in json.loads((base / "cards.json").read_text())
+
+
+def test_main_reads_the_format_from_the_brief(tmp_path, monkeypatch):
+    base = _deck_with(tmp_path, monkeypatch, "4 Lightning Bolt\n",
+                      brief={"slug": "d", "format": "modern"})
+    _run()
+    assert json.loads((base / "cards.json").read_text())["format"] == "modern"
+    # …and zur's shape: a brief that SAYS commander still writes no key.
+    (base / "brief.json").write_text(json.dumps({"slug": "d", "format": "commander"}))
+    _run(force=True)
+    assert "format" not in json.loads((base / "cards.json").read_text())
+
+
+def test_a_format_change_is_not_up_to_date(tmp_path, monkeypatch):
+    """`fetch-deck --format standard` on a deck resolved as Commander must
+    re-resolve; a flag that prints "already up to date" did nothing."""
+    base = _deck_with(tmp_path, monkeypatch, "4 Lightning Bolt\n")
+    _run()
+    sha = json.loads((base / "cards.json").read_text())["decklist_sha256"]
+    assert fetch_deck.is_up_to_date(base / "cards.json", sha)
+    assert fetch_deck.is_up_to_date(base / "cards.json", sha, None)
+    assert not fetch_deck.is_up_to_date(base / "cards.json", sha, "standard")
+    _run(format="standard")
+    assert json.loads((base / "cards.json").read_text())["format"] == "standard"
+    assert fetch_deck.is_up_to_date(base / "cards.json", sha, "standard")
+    assert not fetch_deck.is_up_to_date(base / "cards.json", sha), \
+        "a Standard cards.json is not up to date for a Commander resolution"
+
+
+def test_a_branch_inherits_the_decks_format(tmp_path, monkeypatch):
+    base = _deck_with(tmp_path, monkeypatch, "4 Lightning Bolt\n")
+    _run(format="standard")
+    b = base / "branches" / "b"
+    b.mkdir(parents=True)
+    (b / "decklist.txt").write_text("4 Lightning Bolt\n")
+    _run(branch="b")
+    assert json.loads((b / "cards.json").read_text())["format"] == "standard"
+
+
+def test_validate_deck_main_resolves_the_format_from_the_deck(tmp_path, monkeypatch, capsys):
+    """The `deck_status` gate runs `validate-deck` without `--format`; before
+    the resolver it validated every deck as Commander."""
+    from manamap.pilot import validate_deck
+
+    base = _deck_with(tmp_path, monkeypatch, "4 Lightning Bolt\n")
+    cards = [{"name": f"Card {i}", "quantity": 4, "is_commander": False,
+              "type_line": "Instant", "color_identity": ["R"]} for i in range(15)]
+    (base / "cards.json").write_text(json.dumps(
+        {"deck": "d", "decklist_sha256": "x", "cards": cards, "format": "standard"}))
+    validate_deck.main(argparse.Namespace(slug="d", format=None, branch=None))
+    out = capsys.readouterr().out
+    assert "OK: 60 cards (Standard)" in out
+    assert "commander" not in out
+    with pytest.raises(SystemExit):
+        validate_deck.main(argparse.Namespace(slug="d", format="commander", branch=None))
+
+
+def test_every_parse_decklist_caller_is_allow_listed_with_its_reason():
+    """`parse_decklist` now returns the sideboard too, so a caller that reads
+    it raw and counts, sums, swaps or versions what it gets is reading fifteen
+    cards that are not in the deck. Every reader of the DECK goes through
+    `parse_mainboard`; the raw calls that remain are named here with why, the
+    way `count_copies` collected its fourteen sum sites. A new raw call fails
+    this until it is argued onto the list."""
+    import re
+    from pathlib import Path
+
+    src = Path(__file__).resolve().parents[1] / "src" / "manamap"
+    allowed = {
+        "pilot/fetch_deck.py": "defines it; `main` files both boards, and "
+                               "`parse_mainboard` is the projection",
+        "pilot/check_in.py": "`analyze` must SEE the sideboard to report it "
+                             "(C3 holds it to the spec) and `render_decklist` "
+                             "must write it back; `set_printing` parses one "
+                             "line, which has no section",
+    }
+    found = {}
+    for path in sorted(src.rglob("*.py")):
+        text = path.read_text(encoding="utf-8")
+        n = len(re.findall(r"(?<!def )\bparse_decklist\(", text))
+        if n:
+            found[path.relative_to(src).as_posix()] = n
+    assert set(found) == set(allowed), (
+        f"raw parse_decklist callers {sorted(set(found) - set(allowed))} are not "
+        f"allow-listed — read `cards.json['cards']` or call `parse_mainboard`, "
+        f"or add the file here with its reason")
+    assert sum(found.values()) >= 3, "the allow-listed sites have moved; re-check"

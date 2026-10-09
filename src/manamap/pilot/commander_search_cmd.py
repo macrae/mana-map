@@ -25,15 +25,15 @@ from manamap.pilot.common import deck_dir, load_json
 def _names_from_file(path):
     """Seed names out of a file or stdin, through the repo's ONE decklist parser.
 
-    `fetch_deck.parse_decklist` is fixture-locked in parity with the browser's
-    reader, and it already handles quantity prefixes, `*CMDR*`, printing
+    `fetch_deck.parse_mainboard` projects `parse_decklist`, which is fixture-locked
+    in parity with the browser's reader, and it already handles quantity prefixes, `*CMDR*`, printing
     suffixes and section markers. A bare list of names parses through it
     unchanged, so there is no second code path for "just names".
     """
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
 
     text = sys.stdin.read() if path == "-" else open(path, encoding="utf-8").read()
-    return [e["name"] for e in parse_decklist(text)]
+    return [e["name"] for e in parse_mainboard(text)]
 
 
 def _names_from_deck(slug):

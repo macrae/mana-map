@@ -535,7 +535,7 @@ def list_change(slug):
     from collections import Counter
 
     from manamap.pilot import common
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
 
     p = path(slug)
     if not p.exists():
@@ -549,7 +549,7 @@ def list_change(slug):
     def copies(f):
         if not f.exists():
             return Counter()
-        return Counter({e["name"]: e["quantity"] for e in parse_decklist(f.read_text(encoding="utf-8"))})
+        return Counter({e["name"]: e["quantity"] for e in parse_mainboard(f.read_text(encoding="utf-8"))})
 
     lst = deck_dir(slug) / "decklist.txt"
     before, after = copies(lst.with_suffix(".txt.bak")), copies(lst)

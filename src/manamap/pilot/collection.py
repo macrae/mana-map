@@ -79,12 +79,12 @@ def _memo(key, build):
 
 
 def _build_index():
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
 
     index = {}
     for path in _files():
         try:
-            entries = parse_decklist(path.read_text())
+            entries = parse_mainboard(path.read_text())
         except (OSError, ValueError):
             continue
         for entry in entries:

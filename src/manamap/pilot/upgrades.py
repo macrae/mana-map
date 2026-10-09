@@ -131,8 +131,8 @@ def propose(slug, branch=None, pool=None, min_strength=DEFAULT_MIN_STRENGTH,
     # `fetch-deck` against Scryfall, and a branch one swap old would answer from
     # a resolution of the list before the swap. Names are what changed; names
     # are what this reads.
-    from manamap.pilot.fetch_deck import parse_decklist
-    entries = parse_decklist(
+    from manamap.pilot.fetch_deck import parse_mainboard
+    entries = parse_mainboard(
         (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8"))
     held = {e["name"] for e in entries}
     by_name = {e["name"]: e for e in entries if not e.get("is_commander")}

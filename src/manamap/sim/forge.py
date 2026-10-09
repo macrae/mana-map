@@ -215,8 +215,8 @@ def commanders_from_text(decklist_text):
     that arm's own text rather than from disk — two arms may legitimately be two
     versions with different commanders, and each must be scored against its own.
     """
-    from manamap.pilot.fetch_deck import parse_decklist
-    return {e["name"] for e in parse_decklist(decklist_text) if e.get("is_commander")}
+    from manamap.pilot.fetch_deck import parse_mainboard
+    return {e["name"] for e in parse_mainboard(decklist_text) if e.get("is_commander")}
 
 
 def _joined_name(slug, name):
@@ -246,12 +246,12 @@ def _commanders_by_slug(seats):
     written into the record (see `record_commanders`). A seat whose decklist cannot be
     read is omitted, which makes its commander-damage block absent rather than zero.
     """
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
     out = {}
     for slug in seats:
         try:
             text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
-            cmd = {e["name"] for e in parse_decklist(text) if e.get("is_commander")}
+            cmd = {e["name"] for e in parse_mainboard(text) if e.get("is_commander")}
         except (SystemExit, OSError):
             continue
         # BOTH FACES, OR THE BACK ONE IS INVISIBLE. A decklist names a
@@ -304,8 +304,8 @@ def record_commanders(rec):
 def dck_from_text(meta_name, decklist_text, who="the list"):
     """Forge .dck text from a decklist TEXT, through the repo's own parser — so an
     experiment arm's historical list converts exactly the way a live seat's does."""
-    from manamap.pilot.fetch_deck import parse_decklist
-    entries = parse_decklist(decklist_text)
+    from manamap.pilot.fetch_deck import parse_mainboard
+    entries = parse_mainboard(decklist_text)
     cmd = [e for e in entries if e.get("is_commander")]
     main = [e for e in entries if not e.get("is_commander")]
     if not cmd:

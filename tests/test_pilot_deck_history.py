@@ -13,8 +13,9 @@ from manamap.pilot import deck_history as dh
 from conftest import requires_deck
 
 
-def test_entries_ignores_a_discarded_sideboard_section():
-    """History is about the 99. A bench edit is not a swap."""
+def test_entries_reads_the_mainboard_only():
+    """History is about the 99. A sideboard edit is not a swap, so the sideboard
+    section is parsed (since 2026-10-09) and left out of the history."""
     text = ("Commander:\n1 Edgar Markov\n\nDeck:\n1 Sol Ring\n2 Swamp\n"
             "Sideboard:\n1 Bitterblossom\n")
     assert dh._entries(text) == {"Edgar Markov": 1, "Sol Ring": 1, "Swamp": 2}

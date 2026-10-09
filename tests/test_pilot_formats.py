@@ -269,3 +269,92 @@ def test_buildable_is_not_the_same_question_as_legal():
     assert modern.buildable is False
     assert modern.legality_column == "legal_modern"
     assert modern.deck_size == 60 and modern.max_copies == 4
+
+
+# ── Sideboards, and the one resolver (Area C1, 2026-10-09) ─────────────────
+
+
+def test_commander_has_no_sideboard_and_constructed_has_fifteen():
+    """CR 100.4a: fifteen for constructed; Commander has none, and the bench's
+    own "bench" of candidates stays deleted — this is the rules' sideboard."""
+    assert formats.COMMANDER.sideboard_size == 0
+    assert formats.COMMANDER.multiplayer is True
+    for key in ("standard", "modern", "pioneer", "pauper"):
+        spec = formats.FORMATS[key]
+        assert spec.sideboard_size == 15, key
+        assert spec.multiplayer is False, key
+
+
+def test_the_format_key_is_absent_for_the_default():
+    """THE BYTE-IDENTITY HELPER. zur-enchantress's brief says `"commander"`;
+    had `fetch-deck` written that into cards.json, a tracked artifact would
+    have changed for saying what absence already said."""
+    assert formats.format_key(formats.DEFAULT) is None
+    assert formats.format_key(formats.COMMANDER) is None
+    assert formats.format_key(formats.STANDARD) == "standard"
+    assert formats.for_doc({}) is formats.DEFAULT
+    assert formats.for_doc(None) is formats.DEFAULT
+    assert formats.for_doc({"format": "standard"}) is formats.STANDARD
+    assert formats.for_doc({"format": "Commander"}) is formats.COMMANDER
+    with pytest.raises(SystemExit):
+        formats.for_doc({"format": "pendragon"})
+
+
+@pytest.fixture
+def decks(tmp_path, monkeypatch):
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path)
+    (tmp_path / "d").mkdir()
+    return tmp_path
+
+
+def _write(path, doc):
+    import json
+    path.write_text(json.dumps(doc), encoding="utf-8")
+
+
+def test_for_deck_is_the_default_when_nothing_says_otherwise(decks):
+    assert formats.for_deck("d") is formats.DEFAULT
+    _write(decks / "d" / "cards.json", {"cards": []})
+    _write(decks / "d" / "brief.json", {"slug": "d"})
+    assert formats.for_deck("d") is formats.DEFAULT
+    # A resolver, not a gate: a missing deck is the default, the gates say why.
+    assert formats.for_deck("no-such-deck") is formats.DEFAULT
+
+
+def test_for_deck_reads_the_brief_when_cards_json_says_nothing(decks):
+    _write(decks / "d" / "brief.json", {"slug": "d", "format": "standard"})
+    assert formats.for_deck("d") is formats.STANDARD
+    _write(decks / "d" / "cards.json", {"cards": []})          # no key: still the brief
+    assert formats.for_deck("d") is formats.STANDARD
+
+
+def test_for_deck_prefers_cards_json_over_the_brief(decks):
+    """cards.json is the RESOLVED answer; the brief is intent before a fetch."""
+    _write(decks / "d" / "brief.json", {"slug": "d", "format": "standard"})
+    _write(decks / "d" / "cards.json", {"cards": [], "format": "modern"})
+    assert formats.for_deck("d") is formats.MODERN
+
+
+def test_a_branch_inherits_from_its_deck(decks):
+    """A branch has no brief of its own: its cards.json, then the deck's, then
+    the deck's brief."""
+    b = decks / "d" / "branches" / "b"
+    b.mkdir(parents=True)
+    _write(decks / "d" / "brief.json", {"slug": "d", "format": "standard"})
+    assert formats.for_deck("d", "b") is formats.STANDARD
+    _write(decks / "d" / "cards.json", {"cards": [], "format": "modern"})
+    assert formats.for_deck("d", "b") is formats.MODERN
+    _write(b / "cards.json", {"cards": [], "format": "pioneer"})
+    assert formats.for_deck("d", "b") is formats.PIONEER
+
+
+def test_common_does_not_import_formats():
+    """`for_deck` imports `common` lazily so the dependency runs one way. If
+    `common` ever imports `formats` at module scope, that is a cycle."""
+    tree = ast.parse((SRC / "pilot" / "common.py").read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom):
+            assert "formats" not in (node.module or ""), ast.dump(node)
+            assert not any(a.name == "formats" for a in node.names), ast.dump(node)
+        if isinstance(node, ast.Import):
+            assert not any("formats" in a.name for a in node.names), ast.dump(node)

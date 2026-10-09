@@ -552,8 +552,8 @@ def build_scenario(slug, rec, game_index, turn, step_text, game, label):
     commanders, archetypes = {}, {}
     for fl, s in zip(forge_labels, seats_in_order):
         d = seat_dir(s["slug"])
-        from manamap.pilot.fetch_deck import parse_decklist
-        entries = parse_decklist((d / "decklist.txt").read_text(encoding="utf-8"))
+        from manamap.pilot.fetch_deck import parse_mainboard
+        entries = parse_mainboard((d / "decklist.txt").read_text(encoding="utf-8"))
         commanders[fl] = next((e["name"] for e in entries if e.get("is_commander")), None)
         frame = load_json(d / "strategic_frame.json") or {}
         archetypes[fl] = frame.get("archetype")

@@ -88,6 +88,18 @@ class FormatSpec:
     #: nothing happened" is what that costs. A format the tool cannot build is
     #: now something the tool SAYS it cannot build.
     buildable: bool = False
+    #: How many cards may sit outside the deck between games. 0 for Commander —
+    #: the rules have no sideboard and the bench deleted its own "bench" concept
+    #: deliberately — and 15 for the 60-card formats (CR 100.4a). Read by the
+    #: parser's consumers: `fetch_deck` files a `Sideboard:` section under
+    #: `cards.json["sideboard"]`, and the size here is what `validate_deck` and
+    #: `check_in` hold that section to.
+    sideboard_size: int = 0
+    #: Whether a game of this format has more than one opponent. It changes
+    #: what a card IS, not only how it is scored: a land that "enters tapped
+    #: unless you have two or more opponents" is an untapped source at a
+    #: Commander table and a tapland in a 1v1 match. `manabase` reads it.
+    multiplayer: bool = True
 
     @property
     def library_size(self):
@@ -143,7 +155,7 @@ def _constructed(name, key):
     """
     return FormatSpec(name=name, deck_size=60, exact_size=False, singleton=False,
                       commanders=0, colour_identity=False, basics_exempt=True,
-                      legality_key=key)
+                      legality_key=key, sideboard_size=15, multiplayer=False)
 
 
 STANDARD = _constructed("Standard", "standard")
@@ -155,10 +167,16 @@ PAUPER = _constructed("Pauper", "pauper")
 #: filter. Default rather than only, and every caller reads this rather than a
 #: literal, so a 60-card deck is a parameter away rather than a rewrite.
 #:
-#: Sideboards are not modelled. Constructed allows fifteen and the bench has no
-#: concept of one — the sideboard was deleted from this repo deliberately. A
-#: `sideboard_size` here would be a field nothing reads, which is the kind of
-#: speculative completeness this module is trying to avoid.
+#: Sideboards ARE modelled, since 2026-10-09, and the earlier note here said
+#: they would not be until something read the field. Something does now: a
+#: pasted 60-card list carries fifteen cards under `Sideboard:`, and the parser
+#: used to stop reading at that line — so the only way to check a Standard deck
+#: in was to lose its sideboard on the way. `parse_decklist` files every entry
+#: under a `board`, `cards.json` keeps the mainboard in `cards` and the rest in
+#: `sideboard` (absent when empty, so a Commander file is byte-identical), and
+#: `sideboard_size` is what the validators hold that section to. The bench's own
+#: "sideboard" — a per-deck bench of candidates — stays deleted; this is the
+#: rules' sideboard, the one CR 100.4 describes.
 DEFAULT = COMMANDER
 
 FORMATS = {
@@ -180,3 +198,59 @@ def get(name=None):
     if key not in FORMATS:
         raise SystemExit(f"unknown format {name!r} — known: {', '.join(sorted(FORMATS))}")
     return FORMATS[key]
+
+
+def format_key(spec):
+    """The value `cards.json["format"]` carries for this spec — None for the default.
+
+    ONE HELPER, because the invariant it protects is byte identity: the
+    fourteen Commander decks' tracked `cards.json` carry no `format` key, and a
+    writer that wrote `"commander"` into one of them (zur-enchantress's brief
+    says exactly that) would rewrite a tracked artifact and invalidate every
+    routine that hashes it. Absent means the default; a key is written only when
+    the format is NOT the default, and `for_doc` reads absent back as DEFAULT.
+    """
+    return None if spec is DEFAULT else spec.name.lower()
+
+
+def for_doc(doc):
+    """The format a `cards.json` (or any doc with a `format` key) was built for.
+
+    Absent means the default, by the `format_key` contract above. An unknown
+    name is an error through `get`, because a tracked file naming a format this
+    module does not know is a defect in the file, not a reason to validate it
+    as Commander.
+    """
+    return get((doc or {}).get("format"))
+
+
+def for_deck(slug, branch=None):
+    """THE resolver: which format a deck on disk is.
+
+    `cards.json["format"]` first (the resolved, tracked answer), then
+    `brief.json["format"]` (the pilot's declared intent, before any fetch), then
+    DEFAULT. A branch inherits from its deck: its own `cards.json` wins if it
+    carries the key, then the deck's, then the deck's brief — a branch has no
+    brief of its own. A deck that does not exist on disk resolves to DEFAULT
+    rather than raising, because this is a resolver and not a gate; the gates
+    (`validate_deck`, `load_deck_cards`) say the directory is missing.
+
+    `common` is imported here rather than at module scope: `common` is imported
+    by nearly everything and must stay free of this module, so the dependency
+    runs one way only and lazily.
+    """
+    from manamap.pilot import common
+
+    try:
+        root = common.deck_dir(slug)
+        dirs = [common.deck_dir(slug, branch), root] if branch else [root]
+    except FileNotFoundError:
+        return DEFAULT
+    for d in dirs:
+        doc = common.load_json(d / "cards.json", {}) or {}
+        if doc.get("format"):
+            return get(doc["format"])
+    brief = common.load_json(root / "brief.json", {}) or {}
+    if brief.get("format"):
+        return get(brief["format"])
+    return DEFAULT

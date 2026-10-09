@@ -985,7 +985,10 @@ window.Discovery = (function () {
       .join('\n');
     if (!normalised) return { rows: [], missing: [], entries: [] };
 
-    const entries = window.Decklist ? Decklist.parse(normalised)
+    // MAINBOARD ONLY, which is what both parsers returned before they read
+    // sideboards at all (2026-10-09): a seed list's `Sideboard:` is not a
+    // request to walk from the sideboard.
+    const entries = window.Decklist ? Decklist.parse(normalised).filter(e => e.board !== 'side')
                                     : normalised.split('\n').map(n => ({ name: n }));
     const rows = [];
     const missing = [];
@@ -1001,7 +1004,12 @@ window.Discovery = (function () {
 
   function importText(text) {
     if (!index) return { resolved: 0, missing: [], total: 0 };
-    const entries = Decklist.parse(text);
+    // The deck is the mainboard. A pasted Commander list with a Moxfield
+    // maybeboard under it used to stop at the marker; now the parser reads the
+    // section and this leaves it out, so the pool does not grow by the
+    // cards the pilot was merely considering. Area C7 gives the sideboard a
+    // home of its own on the Build page.
+    const entries = Decklist.parse(text).filter(e => e.board !== 'side');
     const rows = [];
     const missing = [];
     let commanderRow = -1;

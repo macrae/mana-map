@@ -89,6 +89,13 @@ def illegal_cards(cards, spec):
                 f"cards.csv (re-run `manamap extract`)"]
     except Exception:
         return []                      # no corpus at all — structure still checks
+    if status is None:
+        # `card_pool.legality` answers None (its memo's `absent`) rather than
+        # raising when cards.csv is missing. Found 2026-10-09 by the first test
+        # to validate a deck without a corpus: `validate-deck` crashed on a
+        # fresh clone instead of checking structure, which is what the docstring
+        # above promises and what every `@requires_data` test never exercised.
+        return []
 
     out = []
     for c in cards:
@@ -101,11 +108,18 @@ def illegal_cards(cards, spec):
 
 
 def main(args):
-    spec = formats.get(getattr(args, "format", None))
-    doc = load_deck_cards(args.slug, getattr(args, "branch", None))
+    branch = getattr(args, "branch", None)
+    # `--format` overrides; otherwise THE DECK SAYS WHAT IT IS, through the one
+    # resolver. Before this the default was Commander whenever the flag was
+    # absent — which is how `deck_status` ran the gate, so a Standard deck's
+    # cards.json would have been failed for not being a hundred cards.
+    explicit = getattr(args, "format", None)
+    spec = formats.get(explicit) if explicit else formats.for_deck(args.slug, branch)
+    doc = load_deck_cards(args.slug, branch)
     errors = validate(doc, spec)
-    report_errors(args.slug + (f"@{args.branch}"
-                               if getattr(args, "branch", None) else ""),
-                  errors)
-    commanders = [c["name"] for c in doc["cards"] if c["is_commander"]]
-    print(f"OK: {spec.deck_size} cards ({spec.name}), commander: {', '.join(commanders)}")
+    report_errors(args.slug + (f"@{branch}" if branch else ""), errors)
+    line = f"OK: {count_copies(doc['cards'])} cards ({spec.name})"
+    if spec.commanders:
+        commanders = [c["name"] for c in doc["cards"] if c["is_commander"]]
+        line += f", commander: {', '.join(commanders)}"
+    print(line)

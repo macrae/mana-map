@@ -17,6 +17,7 @@ below is ours, uses real card names so the corpus check is exercised honestly,
 and cannot be edited out from under us.
 """
 
+import argparse
 import shutil
 
 import pytest
@@ -318,3 +319,101 @@ def test_a_name_the_deck_already_holds_is_known_even_outside_the_corpus(tmp_path
     assert not any("corpus" in b for b in same["blocking"]), same["blocking"]
     typo = check_in.analyze("ghost", "1 Ghost Commander *CMDR*\n97 Plains\n1 Sol Ring\n1 Sol Rong\n")
     assert any("Sol Rong" in b for b in typo["blocking"]), "a real typo is still refused"
+
+
+# ── The sideboard round-trips (Area C2, 2026-10-09) ──────────────────────────
+
+SIXTY = ("4 Lightning Bolt\n4 Monastery Swiftspear (2X2) 117 *F*\n52 Mountain\n"
+         "Sideboard:\n3 Rending Flame\n2 Lightning Bolt\n")
+
+
+def test_render_decklist_round_trips_every_board():
+    """parse(render(entries)) == entries, boards included — and a list with no
+    commander renders no `Commander:` header."""
+    entries = parse_decklist(SIXTY)
+    text = check_in.render_decklist(entries)
+    assert not text.startswith("Commander:")
+    assert "\nSideboard:\n" in text
+    assert parse_decklist(text) == sorted(
+        entries, key=lambda e: (e["board"], e["name"]))
+    # Idempotent: rendering the rendered form changes nothing.
+    assert check_in.render_decklist(parse_decklist(text)) == text
+    # A Commander list with no sideboard renders exactly as it always did.
+    plain = check_in.render_decklist(parse_decklist(
+        "Commander:\n1 Edgar Markov\n\nDeck:\n1 Sol Ring\n"))
+    assert plain == "Commander:\n1 Edgar Markov\n\nDeck:\n1 Sol Ring\n"
+
+
+def test_a_cmdr_marker_in_the_sideboard_survives_the_round_trip():
+    """The file keeps saying what was pasted; `validate_deck` is where it is
+    called wrong."""
+    entries = parse_decklist("1 Sol Ring\nSideboard:\n1 Edgar Markov *CMDR*\n")
+    again = parse_decklist(check_in.render_decklist(entries))
+    assert again == entries
+
+
+@pytest.fixture
+def brief_dir(tmp_path, monkeypatch):
+    monkeypatch.setattr(check_in, "deck_dir", lambda slug, branch=None: tmp_path)
+    return tmp_path
+
+
+def test_set_brief_format_creates_a_minimal_brief(brief_dir):
+    import json
+    check_in.set_brief_format("cdeck", "standard")
+    assert json.loads((brief_dir / "brief.json").read_text()) == {
+        "slug": "cdeck", "format": "standard"}
+
+
+def test_set_brief_format_leaves_an_existing_default_brief_alone(brief_dir):
+    """zur-enchantress's brief says `"commander"` and the fourteen tracked
+    briefs must not change for a check-in that declares the default."""
+    import json
+    (brief_dir / "brief.json").write_text(json.dumps({"slug": "cdeck", "commander": "X"}))
+    check_in.set_brief_format("cdeck", "commander")
+    assert json.loads((brief_dir / "brief.json").read_text()) == {
+        "slug": "cdeck", "commander": "X"}
+    check_in.set_brief_format("cdeck", "standard")
+    assert json.loads((brief_dir / "brief.json").read_text())["format"] == "standard"
+    # …and back: a declared Standard moved to Commander is written explicitly.
+    check_in.set_brief_format("cdeck", "commander")
+    assert json.loads((brief_dir / "brief.json").read_text())["format"] == "commander"
+
+
+def test_set_brief_format_refuses_an_unknown_name(brief_dir):
+    with pytest.raises(SystemExit):
+        check_in.set_brief_format("cdeck", "pendragon")
+    assert not (brief_dir / "brief.json").exists()
+
+
+def test_a_dry_run_with_a_format_names_it_and_writes_no_brief(brief_dir, capsys):
+    (brief_dir / "decklist.txt").write_text("1 Sol Ring\n")
+    (brief_dir / "paper.txt").write_text(SIXTY)
+    args = argparse.Namespace(slug="cdeck", source=str(brief_dir / "paper.txt"),
+                              set_printing=None, as_json=False, write=False,
+                              force=False, no_chain=True, format="standard")
+    check_in.main(args)
+    out = capsys.readouterr().out
+    assert "format: Standard" in out and "on --write" in out
+    assert not (brief_dir / "brief.json").exists()
+    assert (brief_dir / "decklist.txt").read_text() == "1 Sol Ring\n"
+
+
+def test_fetch_deck_and_check_in_take_the_same_format_choices():
+    """The registry row, not a test re-deriving it: both commands accept every
+    name in `formats.FORMATS` and nothing else, default None (the resolver)."""
+    from manamap.pilot import formats
+    from manamap.pilot.registry import add_pilot_parser
+
+    parser = argparse.ArgumentParser()
+    add_pilot_parser(parser.add_subparsers(dest="command"))
+    for cmd in ("fetch-deck", "check-in"):
+        ns = parser.parse_args(["pilot", cmd, "x", "--format", "standard"])
+        assert ns.format == "standard"
+        assert parser.parse_args(["pilot", cmd, "x"]).format is None
+        with pytest.raises(SystemExit):
+            parser.parse_args(["pilot", cmd, "x", "--format", "pendragon"])
+    # validate-deck's pre-existing flag still lists the same names.
+    for name in formats.FORMATS:
+        for cmd in ("fetch-deck", "check-in", "validate-deck"):
+            assert parser.parse_args(["pilot", cmd, "x", "--format", name]).format == name
