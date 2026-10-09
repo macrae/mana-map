@@ -84,6 +84,12 @@ FIRST_PRINTINGS_PATH = DATA_DIR / "first_printings.json"
 # Written by `viz-index`: {set code: {name, released_at, count}} over the corpus's
 # OWN printings, so the set picker has labels and can sort newest-first.
 SETS_PATH = DATA_DIR / "sets.json"
+# Written by `viz-index` beside `sets.json`: the browser-side legality flags —
+# every Game Changer and every banned card per format in LEGALITY_FORMATS, by
+# full "A // B" name, with counts and the dump date they were read from. Small
+# enough (~10 KB) to fetch whole; the truthiness of `game_changer` mirrors
+# `pilot/card_pool.card_flags` so Python and the page agree card for card.
+CARD_FLAGS_PATH = DATA_DIR / "card_flags.json"
 
 EXCLUDED_LAYOUTS = {
     "token",

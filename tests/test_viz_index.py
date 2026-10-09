@@ -23,11 +23,13 @@ import struct
 
 import numpy as np
 import pytest
-from conftest import requires_data
+from conftest import assert_corpus_count, requires_data
 
 from manamap.analysis.common import top_k_similar
 from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
+    CARD_FLAGS_PATH,
+    LEGALITY_FORMATS,
     NEIGHBOURS_BIN_PATH,
     NEIGHBOURS_FORMAT_VERSION,
     NEIGHBOURS_HEADER_BYTES,
@@ -326,6 +328,58 @@ def test_sets_are_listed_newest_first(sets):
     dates = [v["released_at"] for v in sets.values()]
     assert dates == sorted(dates, reverse=True)
     assert all(v["name"] for v in sets.values())
+
+
+@pytest.fixture(scope="module")
+def flags():
+    assert CARD_FLAGS_PATH.exists(), "run `manamap viz-index` — card_flags.json is written with sets.json"
+    with open(CARD_FLAGS_PATH, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def test_game_changers_agree_with_the_pilots_reading(flags):
+    """The browser's list and `card_pool.card_flags()` must name the SAME cards:
+    the bracket engine and the page read one `game_changer` column two ways, and
+    this is where a drift between the two truthinesses would surface."""
+    from manamap.pilot import card_pool
+
+    pilot = {n for n, v in card_pool.card_flags().items() if v["game_changer"]}
+    assert set(flags["game_changers"]) == pilot
+    assert flags["game_changers"] == sorted(pilot)
+    assert flags["counts"]["game_changers"] == len(pilot)
+    assert_corpus_count(len(pilot), 53, "game changers")
+
+
+def test_banned_lists_agree_with_the_pilots_legality(flags):
+    """`card_pool.legality` keys front faces too (decklists carry them), so the
+    comparison is on the full-name keys the corpus itself carries — the form
+    `viz_index.json`'s `n` uses, which is what the page resolves against."""
+    from manamap.pilot import card_pool
+
+    full_names = set(card_pool.card_flags())
+    checked = 0
+    for fmt in LEGALITY_FORMATS:
+        pilot = {n for n, v in card_pool.legality(f"legal_{fmt}").items()
+                 if v == "banned" and n in full_names}
+        if not pilot:
+            assert fmt not in flags["banned"], f"{fmt}: an empty list, not an absent key"
+            continue
+        checked += 1
+        assert flags["banned"][fmt] == sorted(pilot), fmt
+        assert flags["counts"]["banned"][fmt] == len(pilot), fmt
+    assert checked >= 4
+    assert set(flags["banned"]) == set(flags["counts"]["banned"])
+    assert_corpus_count(flags["counts"]["banned"]["commander"], 83, "banned in Commander")
+
+
+def test_flags_describe_this_corpus(flags):
+    """`counts.cards` is the row count of `cards.csv`, so a stale file — one
+    built before a corpus refresh — reads as stale rather than as fewer bans."""
+    import pandas as pd
+
+    assert flags["counts"]["cards"] == len(pd.read_csv(OUTPUT_CSV_PATH, usecols=["name"]))
+    assert len(flags["as_of"]) == 10 and flags["as_of"][4] == "-"
+    assert set(flags) == {"as_of", "game_changers", "banned", "counts"}
 
 
 def test_boot_payload_stays_small():

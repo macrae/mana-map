@@ -31,6 +31,7 @@ roughly two thirds of cards, which would look like a model regression rather tha
 a precision artefact. Order is the payload; the values are for edge length only.
 """
 
+import datetime
 import hashlib
 import json
 import struct
@@ -41,7 +42,10 @@ import pandas as pd
 from manamap.analysis.common import top_k_similar
 from manamap.config import (
     ABILITY_EMBEDDINGS_PATH,
+    CARD_FLAGS_PATH,
     CARD_ROLES_PATH,
+    DOWNLOAD_META_PATH,
+    LEGALITY_FORMATS,
     NEIGHBOURS_BIN_PATH,
     NEIGHBOURS_FORMAT_VERSION,
     NEIGHBOURS_HEADER_BYTES,
@@ -130,6 +134,80 @@ def build_sets(df):
         entry["count"] += 1
     return dict(sorted(sets.items(), key=lambda kv: (kv[1]["released_at"], kv[0]),
                        reverse=True))
+
+
+def _is_game_changer(value):
+    """The ONE truthiness for the `game_changer` cell, shared with the pilot.
+
+    pandas reads the column as bool when every cell is True/False, and as object
+    when a blank slips in; `pilot/card_pool.load_pool` reads it as
+    `_text(cell).lower() == "true"`, which this mirrors exactly, so the browser's
+    list and `card_pool.card_flags()` name the same cards. A bare `bool(cell)`
+    would read the STRING "False" as True.
+    """
+    if value is None or value != value:             # NaN is the pandas empty cell
+        return False
+    return str(value).lower() == "true"
+
+
+def flags_as_of(meta_path=DOWNLOAD_META_PATH, csv_path=OUTPUT_CSV_PATH):
+    """The date the flags describe, as ISO `YYYY-MM-DD`.
+
+    The Scryfall dump's own `updated_at` from `.download-meta.json` (written by
+    `ingest/download.save_meta`) when it is there — that is the day the bans and
+    the Game Changer list were read. The sidecar is gitignored, so on a clone
+    without it the date of `cards.csv` itself is the honest fallback: it was
+    written minutes after the download and is never older than the dump.
+    """
+    if meta_path.exists():
+        try:
+            updated = json.loads(meta_path.read_text(encoding="utf-8")).get("updated_at")
+        except (OSError, ValueError):
+            updated = None
+        if isinstance(updated, str) and len(updated) >= 10:
+            return updated[:10]
+    return datetime.date.fromtimestamp(csv_path.stat().st_mtime).isoformat()
+
+
+def build_card_flags(df, as_of=None):
+    """The browser-side legality flags: Game Changers and the banned list per format.
+
+    Names are the full `"A // B"` form, exactly as `viz_index.json`'s `n` carries
+    them, deduplicated and sorted so the file is byte-stable across runs. A
+    format with no banned card is ABSENT from `banned`, not an empty list — the
+    page reads "no key" as "nothing to flag", the same way an unmeasured figure is
+    a missing key everywhere else here. `counts` carries the unique-name totals
+    so a reader can state them without walking the lists.
+    """
+    names = df["name"]
+    game_changers = sorted({n for n, gc in zip(names, df["game_changer"])
+                            if _is_game_changer(gc)})
+    banned = {}
+    for fmt in LEGALITY_FORMATS:
+        column = f"legal_{fmt}"
+        if column not in df.columns:
+            continue
+        hits = sorted({n for n, v in zip(names, df[column]) if v == "banned"})
+        if hits:
+            banned[fmt] = hits
+    return {
+        "as_of": as_of if as_of is not None else flags_as_of(),
+        "game_changers": game_changers,
+        "banned": banned,
+        "counts": {
+            "cards": int(len(df)),
+            "game_changers": len(game_changers),
+            "banned": {fmt: len(hits) for fmt, hits in banned.items()},
+        },
+    }
+
+
+def write_card_flags(df, path=CARD_FLAGS_PATH, as_of=None):
+    """Compact, key-sorted JSON — the same bytes for the same corpus."""
+    flags = build_card_flags(df, as_of=as_of)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(flags, fh, separators=(",", ":"), sort_keys=True, ensure_ascii=False)
+    return flags
 
 
 def _pad(rows, k):
@@ -321,6 +399,11 @@ def main(space=None):
             json.dump(sets, fh, separators=(",", ":"), ensure_ascii=False)
         print(f"  {SETS_PATH} — {len(sets):,} sets, "
               f"{SETS_PATH.stat().st_size / 1024:.1f} KB")
+        flags = write_card_flags(df)
+        print(f"  {CARD_FLAGS_PATH} — as of {flags['as_of']}, "
+              f"{flags['counts']['game_changers']} game changers, "
+              f"{flags['counts']['banned'].get('commander', 0)} banned in Commander, "
+              f"{CARD_FLAGS_PATH.stat().st_size / 1024:.1f} KB")
 
     print("\nBuilding neighbour tables...")
     # Unpacked by name, not by index. This was `counts = tables[4]` with a `*tables`
