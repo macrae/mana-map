@@ -30,6 +30,7 @@ from datetime import datetime, timezone
 
 import requests
 
+from manamap import net
 from manamap.ingest.common import dump_exists, dump_paths, dump_size_mb, open_dump
 from manamap.config import (
     COMBOS_API_URL,
@@ -37,11 +38,11 @@ from manamap.config import (
     COMBOS_META_PATH,
     COMBOS_RAW_PATH,
     DATA_DIR,
-    USER_AGENT,
 )
 
-SESSION = requests.Session()
-SESSION.headers["User-Agent"] = USER_AGENT
+#: The package's one session (`manamap.net`). Every function here takes
+#: `session=` so a test hands in a stub instead.
+SESSION = net.SESSION
 
 PAGE_LIMIT = 100
 REQUEST_DELAY = 0.2  # 200ms between requests
@@ -52,7 +53,9 @@ GZIP_MAGIC = b"\x1f\x8b"
 
 META_KEYS = ("etag", "last_modified", "timestamp", "version", "count", "downloaded_at")
 #: The failures that mean "could not ask", as opposed to "asked and it changed".
-NETWORK_ERRORS = (requests.ConnectionError, requests.Timeout, requests.HTTPError)
+#: `net.Offline` is the switch (`MANAMAP_NET_OFFLINE=1`) and the exhausted retry.
+NETWORK_ERRORS = (requests.ConnectionError, requests.Timeout, requests.HTTPError,
+                  net.Offline)
 
 
 # ── the sidecar ──
@@ -84,7 +87,12 @@ def save_meta(meta, path=None):
 
 
 def remote_signature(session=SESSION, url=None):
-    """`(etag, last_modified)` of the bulk file, from one HEAD. Raises on failure."""
+    """`(etag, last_modified)` of the bulk file, from one HEAD. Raises on failure.
+
+    ONE attempt, no retry: this is a liveness probe whose failure fails open
+    (`is_up_to_date` keeps the dump), so waiting through four backoffs to learn
+    the same thing would only delay the pipeline. The download itself retries.
+    """
     url = COMBOS_BULK_URL if url is None else url
     resp = session.head(url, allow_redirects=True, timeout=HEAD_TIMEOUT)
     resp.raise_for_status()
@@ -169,8 +177,7 @@ def download_bulk(session=SESSION, url=None):
     from manamap.ingest.process_combos import raw_variants  # the reader owns the shape
 
     url = COMBOS_BULK_URL if url is None else url
-    resp = session.get(url, stream=True, timeout=STREAM_TIMEOUT)
-    resp.raise_for_status()
+    resp = net.get_stream(url, session=session, timeout=STREAM_TIMEOUT)
     gz, legacy = dump_paths(COMBOS_RAW_PATH)
     if legacy.exists():
         legacy.unlink()  # the same rule `open_dump` keeps: the two never both linger
@@ -202,9 +209,7 @@ def download_all_combos(session=SESSION):
     page = 0
 
     while url:
-        resp = session.get(url, params=params)
-        resp.raise_for_status()
-        data = resp.json()
+        data = net.get_json(url, params=params, session=session)
         results = data.get("results", [])
         all_results.extend(results)
 

@@ -10,12 +10,10 @@ import hashlib
 import json
 import re
 
-import requests
+from manamap import net
+from manamap.config import CR_RULES_META_PATH, CR_RULES_PATH, CR_RULES_URL, RULES_DIR
 
-from manamap.config import CR_RULES_META_PATH, CR_RULES_PATH, CR_RULES_URL, RULES_DIR, USER_AGENT
-
-SESSION = requests.Session()
-SESSION.headers["User-Agent"] = USER_AGENT
+SESSION = net.SESSION
 
 EFFECTIVE_DATE_RE = re.compile(r"effective as of (\w+ \d{1,2}, \d{4})", re.IGNORECASE)
 
@@ -48,7 +46,9 @@ def main(args=None):
     RULES_DIR.mkdir(parents=True, exist_ok=True)
 
     print(f"Downloading Comprehensive Rules from {CR_RULES_URL} ...")
-    resp = SESSION.get(CR_RULES_URL, timeout=60)
+    # `net.request`, not `get_bytes`: a 404 here has its own meaning and must be
+    # read before `raise_for_status` turns it into a traceback.
+    resp = net.request("get", CR_RULES_URL, session=SESSION, timeout=60)
     if resp.status_code == 404:
         raise SystemExit(
             "CR_RULES_URL is stale (404). Get the current TXT link from "

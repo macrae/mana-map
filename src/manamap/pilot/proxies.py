@@ -131,11 +131,10 @@ def print_url(url):
 
 
 def _requests_get(url):
-    import requests
-    r = requests.get(url, headers={"User-Agent": config.USER_AGENT, "Accept": "image/png"},
-                     timeout=30)
-    r.raise_for_status()
-    return r.content
+    """The package's one session (`manamap.net`): retried, offline-aware, and
+    carrying `config.USER_AGENT`. The PNG cache below is this module's own."""
+    from manamap import net
+    return net.get_bytes(url, headers={"Accept": "image/png"}, timeout=30)
 
 
 def fetch(url, cache_dir=None, get=_requests_get):

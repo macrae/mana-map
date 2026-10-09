@@ -10,8 +10,7 @@ table exists for power creep (step 11), which asks whether a card is NEWER.
 
 import json
 
-import requests
-
+from manamap import net
 from manamap.ingest.common import dump_exists, dump_paths, open_dump
 from manamap.config import (
     BULK_DATA_TYPE,
@@ -21,11 +20,11 @@ from manamap.config import (
     DOWNLOAD_META_PATH,
     FIRST_PRINTINGS_PATH,
     RAW_JSON_PATH,
-    USER_AGENT,
 )
 
-SESSION = requests.Session()
-SESSION.headers["User-Agent"] = USER_AGENT
+#: The package's one session (`manamap.net`), retried and offline-aware. A module
+#: attribute because `pilot/download_rulings` and its tests patch `SESSION.get`.
+SESSION = net.SESSION
 
 
 def get_bulk_data_info(bulk_type=BULK_DATA_TYPE):
@@ -43,9 +42,7 @@ def get_bulk_data_info(bulk_type=BULK_DATA_TYPE):
     ever returns; otherwise take the JSONL one. `extract` sniffs the on-disk
     format, so either shape parses downstream.
     """
-    resp = SESSION.get(BULK_DATA_URL)
-    resp.raise_for_status()
-    for entry in resp.json()["data"]:
+    for entry in net.get_json(BULK_DATA_URL, session=SESSION)["data"]:
         if entry["type"] == bulk_type:
             uri = entry.get("download_uri") or entry.get("jsonl_download_uri")
             if not uri:
@@ -75,8 +72,7 @@ def download_file(url, path=RAW_JSON_PATH):
     locally. Either way exactly one dump file exists afterwards: the verbatim
     path replicates `open_dump`'s delete-the-sibling rule.
     """
-    resp = SESSION.get(url, stream=True)
-    resp.raise_for_status()
+    resp = net.get_stream(url, session=SESSION)
     total = int(resp.headers.get("content-length", 0))
     downloaded = 0
     chunk_size = 1024 * 1024  # 1 MB
@@ -142,8 +138,7 @@ def stream_jsonl_gz(url):
     import gzip
     import io
 
-    resp = SESSION.get(url, stream=True)
-    resp.raise_for_status()
+    resp = net.get_stream(url, session=SESSION)
     resp.raw.decode_content = False
     with gzip.GzipFile(fileobj=resp.raw) as gz:
         for n, line in enumerate(io.TextIOWrapper(gz, encoding="utf-8"), 1):

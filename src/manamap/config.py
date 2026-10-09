@@ -918,10 +918,15 @@ COLLECTION_DIR = Path(os.environ.get("MANAMAP_COLLECTION_DIR",
 SCRYFALL_COLLECTION_URL = "https://api.scryfall.com/cards/collection"
 SCRYFALL_BATCH_SIZE = 75
 SCRYFALL_REQUEST_DELAY_S = 0.1
-# Transient 429/5xx retries. A fetch is all-or-nothing across batches, so one 503
-# on batch 2 of 3 used to discard the two that succeeded.
-SCRYFALL_MAX_RETRIES = 4
-SCRYFALL_RETRY_BACKOFF_S = 1.0
+# Transient 429/5xx/dropped-socket retries, linear backoff (`net.request`, the one
+# HTTP client since 2026-10-09; docs/integrations.md). Read at CALL time, so the
+# unit tier can zero the wait. The Scryfall names are the values' first home —
+# a fetch is all-or-nothing across batches, so one 503 on batch 2 of 3 used to
+# discard the two that succeeded — and stay as aliases.
+NET_MAX_RETRIES = 4
+NET_BACKOFF_S = 1.0
+SCRYFALL_MAX_RETRIES = NET_MAX_RETRIES
+SCRYFALL_RETRY_BACKOFF_S = NET_BACKOFF_S
 RESOLVE_MAX_ITERATIONS = 3
 
 # Scope budget for one stack artifact — advisory, and unlike the bound above it is

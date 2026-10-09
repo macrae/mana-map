@@ -90,9 +90,12 @@ only home of the `game_changer` column (WotC's Game Changers list, via Scryfall)
 
 The `.gitignore` mechanics matter here: `data/*` blanket-ignores, `!data/decks/` and `!data/strategy/` re-include those directories (trailing slash load-bearing), and then two sets are re-ignored individually — the three derived strategy-DB files, and the transient per-deck dirs: `data/decks/*/.agent-out/` (agent scratchpads), `sim/logs/` (raw Forge games, exactly regenerable when seeded) and `sim/scenarios/` (lifted boards awaiting a question). `!data/opponents/` re-includes the pod.
 
-## Proxy images (`data/cache/proxies/`, untracked)
+## Caches (`data/cache/`, untracked)
 
-Scryfall's 745x1040 PNG render of each card `manamap pilot proxies` has printed, keyed by URL hash. A cache, never read by anything else; delete it freely. The PDFs themselves land on the Desktop, never in the repo.
+| dir | producer | consumers |
+|---|---|---|
+| `data/cache/<service>/<key>.json` | `net.get_json` / `net.post_json` when a caller names a `service` and a `ttl_s` (`docs/integrations.md`) | the same call on the next run, while the entry is younger than that caller's TTL; `MANAMAP_NET_OFFLINE=1` serves a hit and raises `net.Offline` on a miss. `{"fetched_at", "url", "body"}`; the key hashes method, URL, params or body and header NAMES only — a token is never in it. `net.purge(service, older_than_s)` prunes; deleting the directory is always safe |
+| `data/cache/proxies/` | `manamap pilot proxies` — Scryfall's 745x1040 PNG render of each card it has printed, keyed by URL hash | nothing else; delete it freely. The PDFs themselves land on the Desktop, never in the repo |
 
 ## The suite's reports (`data/test_reports/`, tracked)
 

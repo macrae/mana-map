@@ -136,6 +136,30 @@ def _progress_stays_off_the_band(tmp_path_factory):
     progress.DIR = tmp_path_factory.mktemp("progress")
 
 
+@pytest.fixture(autouse=True)
+def _unit_tier_runs_offline(request, monkeypatch):
+    """The unit tier cannot reach the network, and never waits on a retry.
+
+    `MANAMAP_NET_OFFLINE=1` makes `manamap.net` raise `Offline` on any request
+    that is not answered from its cache, so a unit test that forgot to patch its
+    seam fails with a sentence naming the URL instead of reaching Scryfall. The
+    seams themselves are untouched: a monkeypatched `net.SESSION.post` or a
+    `session=` stand-in never reaches the switch. `NET_BACKOFF_S` is zeroed for
+    the same tier so a scripted 503 costs no wall clock; a test about the
+    schedule itself passes `sleep=` and `backoff_s=` explicitly.
+
+    SCOPED TO THE UNIT TIER by the marker `tier_of` assigns at collection. The
+    regression and integration tiers are left as they are — `network` IS the
+    integration tier's business, and a regression test that needs the switch
+    sets it itself.
+    """
+    if request.node.get_closest_marker("unit") is None:
+        return
+    from manamap import net
+    monkeypatch.setenv(net.OFFLINE_ENV, "1")
+    monkeypatch.setattr(config, "NET_BACKOFF_S", 0.0)
+
+
 @pytest.fixture(scope="session")
 def data_dir():
     """The resolved data directory (honors MANAMAP_DATA_DIR)."""

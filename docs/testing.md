@@ -75,6 +75,14 @@ see is a test that reads `ROOT / "data"` directly rather than through `config` �
 it still passes against an empty `MANAMAP_DATA_DIR`. Route data reads through
 `config`.
 
+**The unit tier runs offline** (2026-10-09). An autouse fixture
+(`_unit_tier_runs_offline`) sets `MANAMAP_NET_OFFLINE=1` and zeroes the retry backoff
+for every test the classifier puts in the tier, so a request through `manamap.net`
+that is not answered from its cache raises `net.Offline` naming the URL — a forgotten
+patch is a failure with a sentence, never a call to Scryfall. The seams are untouched:
+a monkeypatched `net.SESSION.post` or a `session=` stand-in never reaches the switch.
+The regression and integration tiers are not forced offline (`docs/integrations.md`).
+
 To print today's numbers rather than trust these:
 
 ```bash
@@ -144,7 +152,7 @@ Registered in `pyproject.toml`:
 | `browser` | drives a real Chromium via playwright | integration — `make test-browser` |
 | `serial_only` | asserts a wall-clock budget; run alone, `-n0` | integration, with `browser` |
 | `forge` | runs the Forge engine headless | integration — opt in |
-| `network` | reaches an outside service (Scryfall, EDHREC); none yet — every such test mocks it, and the weekly `corpus-gates` CI job is the real network leg | integration |
+| `network` | reaches an outside service (Scryfall, EDHREC); none yet — every such test mocks it, the unit tier is forced offline (`MANAMAP_NET_OFFLINE=1`), and the weekly `corpus-gates` CI job is the real network leg | integration |
 
 ## Skip conditions (`tests/conftest.py`)
 

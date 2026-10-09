@@ -17,15 +17,11 @@ import json
 import re
 import time
 
-import requests
-
+from manamap import net
 from manamap.config import (
     SCRYFALL_BATCH_SIZE,
     SCRYFALL_COLLECTION_URL,
-    SCRYFALL_MAX_RETRIES,
     SCRYFALL_REQUEST_DELAY_S,
-    SCRYFALL_RETRY_BACKOFF_S,
-    USER_AGENT,
 )
 from manamap.ingest.extract import get_colors
 from manamap.pilot import common as _common
@@ -36,8 +32,10 @@ from manamap.pilot.common import (
     deck_dir,
 )
 
-SESSION = requests.Session()
-SESSION.headers["User-Agent"] = USER_AGENT
+#: The package's one session (`manamap.net`). Kept as a module attribute because
+#: every test of the fetch patches `fetch_deck.SESSION.post`, and `_post_collection`
+#: passes it through by name so that seam keeps intercepting.
+SESSION = net.SESSION
 
 
 # The premium-finish markers a pasted list can end with. `*E*` is Moxfield's
@@ -184,43 +182,20 @@ def _post_collection(identifiers):
         if start > 0:
             time.sleep(SCRYFALL_REQUEST_DELAY_S)
         payload = {"identifiers": batch}
-        # Retry 429 (rate limit), 5xx (transient outage) AND a dropped
-        # connection, with linear backoff. A single 503 used to abort the whole
-        # fetch mid-batch, losing every batch already retrieved; observed live
-        # against /cards/collection.
-        #
-        # THE TRANSPORT HALF IS NOT A STATUS CODE, WHICH IS WHY IT WAS MISSING.
-        # This loop inspected `resp.status_code`, so it could only ever see a
-        # failure the server was well enough to describe. A keep-alive socket
-        # closed between requests raises inside `SESSION.post` — there is no
-        # response to inspect — so `RemoteDisconnected` sailed straight past
-        # four retries written to survive exactly this kind of blip and out to
-        # the caller. It reached a browser as
-        # `ConnectionError: ('Connection aborted.', RemoteDisconnected(...))`,
-        # on a deck whose 99 cards take two round trips.
-        resp = None
-        for attempt in range(SCRYFALL_MAX_RETRIES):
-            last = attempt == SCRYFALL_MAX_RETRIES - 1
-            try:
-                resp = SESSION.post(SCRYFALL_COLLECTION_URL, json=payload, timeout=60)
-            except requests.exceptions.RequestException as exc:
-                if last:
-                    raise RuntimeError(
-                        f"Scryfall did not answer after {SCRYFALL_MAX_RETRIES} "
-                        f"attempts ({exc.__class__.__name__}). The deck is "
-                        f"unchanged — run the same command again."
-                    ) from exc
-                # A dropped keep-alive socket stays in the pool and the next
-                # request reuses it, so the retry fails identically. Close it.
-                SESSION.close()
-                time.sleep(SCRYFALL_RETRY_BACKOFF_S * (attempt + 1))
-                continue
-            if resp.status_code != 429 and resp.status_code < 500:
-                break
-            if not last:
-                time.sleep(SCRYFALL_RETRY_BACKOFF_S * (attempt + 1))
-        resp.raise_for_status()
-        doc = resp.json()
+        # The retry loop — 429, 5xx AND a dropped keep-alive socket, with linear
+        # backoff — was written here (a single 503 used to abort the whole fetch
+        # mid-batch, losing every batch already retrieved, observed live against
+        # /cards/collection; then `RemoteDisconnected` sailed past four retries
+        # that only inspected `status_code`). It is `net.request` now, for every
+        # caller. What stays here is the sentence the pilot reads when it gives
+        # up: the deck is untouched, so "run it again" is the entire remedy.
+        try:
+            doc = net.post_json(SCRYFALL_COLLECTION_URL, payload, session=SESSION,
+                                timeout=60)
+        except net.Offline as exc:
+            raise RuntimeError(
+                f"Scryfall did not answer: {exc} The deck is unchanged — run the "
+                f"same command again.") from exc
         cards.extend(doc.get("data", []))
         not_found.extend(doc.get("not_found", []))
     return cards, not_found
