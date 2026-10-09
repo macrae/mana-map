@@ -57,6 +57,11 @@ manamap pilot validate-brief <slug> [--themes]  # the gate brief.json never had:
                                         #   legal, every named card in the corpus and in identity,
                                         #   pools on disk. Inert keys REPORTED, never failed
 manamap pilot bracket-check <slug> [--target N] [--json]  # bracket floor → bracket_report.json
+manamap pilot deck-combos <slug> [--branch N] [--json] [--write]  # the Spellbook lines IN the list and the
+                                        #   one-card near misses (legal, in identity, not banned;
+                                        #   capped, with the uncapped total) → combos.json
+manamap pilot validate-deck-combos <slug> [--branch N]  # its gate: sha current, lines inside the list,
+                                        #   near misses real/legal/in identity, summary recomputed
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--card NAME]… [--paper letter|a4] [--dest PDF] [--no-open] [--dry-run]
                                         # a PRINT-READY PROXY SHEET (63x88 mm, 3x3, crop marks) of a branch's adds minus
@@ -206,7 +211,7 @@ manamap pilot deck-branch <slug> show <name> | diff <name> | source <name>
 manamap pilot deck-branch <slug> merge <name> [--write] [--proxy] [--force --reason …]
                                         #   a candidate 99 you cannot yet sleeve: diff it,
                                         #   price it against your boxes, MEASURE it
-                                        #   (`--branch` on fetch-deck / bracket-check /
+                                        #   (`--branch` on fetch-deck / bracket-check / deck-combos /
                                         #   mana-analysis / goldfish / deck-facts /
                                         #   deck-audit / deck-map), and merge only when
                                         #   every added card is sourced
@@ -495,6 +500,7 @@ data/decks/<slug>/             all tracked:
                                candidate_pool.json   deck-analyst
                                build_plan.json       build-deck (deterministic) + deck-architect ⇄ deck-critic merge
                                bracket_report.json   bracket-check (◆)
+                               combos.json           deck-combos --write (◆): known lines + near misses
                                decklist.txt          authored, OR build-deck --write-decklist
                                cards.json            fetch-deck
                                goldfish_targets.json authored

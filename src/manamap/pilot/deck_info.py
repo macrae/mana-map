@@ -334,6 +334,28 @@ def engine_health(vitals):
             "basis": "diagnostic.json"}
 
 
+#: How many included lines `info.json` carries. The full list is in
+#: `combos.json`; the page fetches that when a reader wants all of them.
+COMBOS_TOP = 5
+
+
+def _combos_block(doc):
+    """`summary` plus the top lines, or an absence with its reason.
+
+    `combos.json`'s `included` is already ranked (bracket desc, popularity desc,
+    id — `deck_combos._rank`), so the top five are its first five; re-sorting
+    here would be a second statement of that order.
+    """
+    if not doc:
+        return dm.absent("no combos.json — run `manamap pilot deck-combos <slug> --write`")
+    keep = ("id", "cards", "produces", "infinite", "bracket", "popularity",
+            "assumes_other_commander")
+    return {"summary": doc.get("summary") or {},
+            "source_timestamp": (doc.get("combo_data") or {}).get("source_timestamp"),
+            "top": [{k: c.get(k) for k in keep}
+                    for c in (doc.get("included") or [])[:COMBOS_TOP]]}
+
+
 def compose(slug, verify=False, ladder=True):
     """The workbench view. `verify` RUNS THE GATES, and costs about two seconds.
 
@@ -363,6 +385,7 @@ def compose(slug, verify=False, ladder=True):
     branches = _branches(slug)
     vitals = load_json(base / "diagnostic.json") or {}
     bracket = load_json(base / "bracket_report.json") or {}
+    combos = load_json(base / "combos.json")
     engine = load_json(base / "engine.json") or {}
     diag = load_json(base / "diagnosis.json") or {}
 
@@ -504,6 +527,10 @@ def compose(slug, verify=False, ladder=True):
         "bracket": {"floor": bracket.get("floor"), "floor_name": bracket.get("floor_name"),
                     "target": bracket.get("target"),
                     "within_target": bracket.get("within_target")} if bracket else None,
+        # THE KNOWN LINES, composed from `deck-combos --write`: the summary and
+        # the top five included lines. An absent report is a stated absence
+        # with its reason, not a null the page would read as "no combos".
+        "combos": _combos_block(combos),
         # WHETHER THIS DECK EXISTS IN PAPER, as the pilot asserted it.
         #
         # The AUTHORED half only — version, when, and the note. `paper_state`'s
@@ -1032,6 +1059,11 @@ def _print(info):
                   + (f" · target {b['target']} {'✓' if b.get('within_target') else '✗'}"
                      if b.get("target") else ""))
     print(f"  status     {sline}")
+    cb = info.get("combos") or {}
+    if not dm.is_absent(cb):
+        cs = cb["summary"]
+        print(f"  combos     {cs['included']} known line(s) · {cs['infinite']} infinite "
+              f"({cs['two_card_infinite']} two-card) · {cs['near_total']} one card short")
     r = info["record"]
     rline = (f"{r['games']} game(s) · {r['win']}W {r['loss']}L" + (f" {r['draw']}D" if r["draw"] else "")
              + (f" · last {r['last_played']}" if r["last_played"] else "")

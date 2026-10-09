@@ -35,6 +35,7 @@ from datetime import date
 
 from manamap.pilot.card_pool import card_keywords, corpus_oracle, load_frame, load_pool
 from manamap.pilot.card_search import UNRANKED, commander_identity, deck_names
+from manamap.pilot.deck_combos import is_infinite
 from manamap.pilot.common import (
     deck_dir,
     decklist_sha256,
@@ -326,7 +327,7 @@ def _two_card_lines(name, present, details):
         lines += 1
         if c.get("bracket") is not None:
             brackets.append(c["bracket"])
-        if any(str(p).lower().startswith("infinite") for p in c.get("produces", [])):
+        if is_infinite(c):
             inf.append(other)
     return sorted(set(inf)), lines, (max(brackets) if brackets else None)
 

@@ -982,6 +982,11 @@ BRACKET_MAX = 5
 # "if a combo could frequently come up, it's not the best fit for that bracket."
 BRACKET_EARLY_COMBO_MANA = 6
 
+# `deck-combos`: how many one-card-short lines the report keeps. The uncapped
+# total rides beside them (`summary.near_total`), so a reader can tell "50
+# shown" from "50 exist" — a cap that hid its own size would read as a count.
+DECK_COMBOS_NEAR_LIMIT = 50
+
 # Curated and deliberately conservative — this is the one bracket signal that
 # isn't derived from data, so it is incomplete by construction and bracket.py
 # says so in its report rather than implying the check is exhaustive.

@@ -120,7 +120,7 @@ def test_the_test_does_not_know_about_a_gate_the_status_command_lacks():
 # attribute 'get'`, which is a FAILURE, not a skip. A gate that cannot run must
 # say so; crashing is the one thing it must not do.
 NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "cards.json", "brief.json",
-                "candidate_scan.json", "edhrec_cards.json"}
+                "candidate_scan.json", "edhrec_cards.json", "combos.json"}
 
 
 #: Validators that can be pointed at a branch. The rest take a slug only, so a
@@ -128,7 +128,7 @@ NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "cards.json", "brief.json"
 #: named here rather than skipped silently, because "no case" and "no gate" look
 #: identical from the outside.
 BRANCH_AWARE = {"cards.json", "deck_map.json", "goldfish_targets.json",
-                "net_change.json", "branch.json", "cast_proofs.json"}
+                "net_change.json", "branch.json", "cast_proofs.json", "combos.json"}
 
 
 def _cases():

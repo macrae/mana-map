@@ -18,16 +18,22 @@
   "lands": 36,
   "status": {
     "complete": 17,
-    "of": 18,
+    "of": 19,
     "stale": [],
     "invalid": [
       "diagnosis.json"
     ],
     "verified": true,
     "missing": [
+      "combos",
       "log"
     ],
     "todo": [
+      {
+        "stage": "combos",
+        "what": "known lines and near misses — `deck-combos --write`",
+        "how": "manamap pilot deck-combos hapatra --write"
+      },
       {
         "stage": "log",
         "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
@@ -53,6 +59,10 @@
     "floor_name": "Optimized",
     "target": 4,
     "within_target": true
+  },
+  "combos": {
+    "absent_because": "no combos.json — run `manamap pilot deck-combos <slug> --write`",
+    "weight": "body"
   },
   "paper": null,
   "record": {

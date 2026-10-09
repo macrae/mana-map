@@ -71,7 +71,7 @@ def test_every_stamp_checked_artifact_has_a_way_to_be_stamped():
             producers.add(spec["artifact"])   # install-agent stamps
     # Artifacts produced deterministically by Python stamp themselves.
     deterministic = {"deck_map.json", "goldfish_metrics.json", "mana_analysis.json",
-                     "bracket_report.json", "benchmark.json", "diagnostic.json",
+                     "bracket_report.json", "combos.json", "benchmark.json", "diagnostic.json",
                      "cards.json", "info.json", "versions.json", "log.jsonl",
                      "issue.json", "deck_versions.json", "pending.json"}
     orphans = sorted(a for a in STAMP_CHECKED

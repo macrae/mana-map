@@ -15,6 +15,7 @@ from datetime import date
 
 from manamap.pilot.card_pool import load_pool
 from manamap.pilot.card_search import commander_identity, deck_names
+from manamap.pilot.deck_combos import is_infinite
 from manamap.pilot.common import (
     deck_dir,
     decklist_sha256,
@@ -94,7 +95,7 @@ def validate(slug, doc):
                     errors.append(f"{where}: infinite_with names {other!r}, not in the corpus")
                     continue
                 ok = any(len(combos[j]["cards"]) == 2 and other in combos[j]["cards"]
-                         and any(str(p).lower().startswith("infinite") for p in combos[j].get("produces", []))
+                         and is_infinite(combos[j])
                          for j in details["by_card"].get(name, []))
                 if not ok:
                     errors.append(f"{where}: {name} + {other} is not a two-card infinite in combo_details")

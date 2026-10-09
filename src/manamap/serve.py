@@ -58,7 +58,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 134 pilot subcommands answer in JSON, instantly, for free.
+  design: 136 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -973,6 +973,8 @@ CLI_READONLY = frozenset({
     "deck-info", "deck-facts", "deck-audit", "engine-facts", "scenario-facts",
     "deck-status", "mana-fit", "card-search", "similar-cards", "page-state", "pool-facts", "deck-history",
     "deck-version", "impact", "cache-status", "bracket-check", "validate-context",
+    # The combo report, read-only without `--write` (which `_CLI_WRITE_ATTRS` refuses).
+    "deck-combos",
     # A RUNNING BATCH, read out of its logs' mtimes — it writes nothing (grep it:
     # no open-for-write, no json.dump, no mkdir). It is here because "how is that
     # run going" is a question worth answering without a cold start, and because

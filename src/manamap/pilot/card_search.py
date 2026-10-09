@@ -132,16 +132,23 @@ def parse_identity_arg(value):
     return {c for c in letters if c != "C"}
 
 
-def commander_identity(slug):
+def commander_identity(slug, branch=None):
     """The colour identity of a deck, derived from its commander(s).
 
     Never read from a brief or a config: `build_deck` derives it the same way,
-    and two derivations of one fact are two chances to disagree.
+    and two derivations of one fact are two chances to disagree. `branch` reads
+    the branch's own cards.json, so a candidate list with a different commander
+    answers for itself.
     """
     # load_deck_cards returns the whole cards.json document, not the list.
-    cards = load_deck_cards(slug).get("cards") or []
+    return deck_identity(load_deck_cards(slug, branch))
+
+
+def deck_identity(doc):
+    """The identity a cards.json DOCUMENT licenses — the one derivation
+    `commander_identity` and `deck_combos` both read."""
     ident = set()
-    for c in cards:
+    for c in doc.get("cards") or []:
         if c.get("is_commander"):
             ident |= set(c.get("color_identity") or [])
     return ident

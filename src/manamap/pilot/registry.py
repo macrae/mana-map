@@ -43,6 +43,10 @@ PILOT_STEPS = [
     ("scaffold-targets", "manamap.pilot.scaffold_targets",
      "A STARTING goldfish_targets.json, derived and marked as a draft to edit"),
     ("bracket-check", "manamap.pilot.bracket", "Computed bracket floor and its evidence"),
+    ("deck-combos", "manamap.pilot.deck_combos",
+     "Known Spellbook lines in the list and the one-card near misses (legal, in identity, not banned) — `--write` -> combos.json"),
+    ("validate-deck-combos", "manamap.pilot.validate_deck_combos",
+     "Form-check combos.json: sha current, every line inside the list, every near miss real/legal/in identity, summary recomputed"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
     ("validate-recon", "manamap.pilot.validate_recon",
      "Form-check deck_recon.json: cards real, legal, in identity; ownership falsified"),
@@ -295,7 +299,7 @@ _DECK_COMMANDS = {
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
     "model-coverage",
-    "bracket-check", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
+    "bracket-check", "deck-combos", "validate-deck-combos", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
     "mana-analysis", "validate-strategic-frame", "scaffold-targets",
     "validate-diagnosis", "validate-goldfish-targets",
     "validate-recon",
@@ -430,6 +434,10 @@ def add_pilot_parser(subparsers):
         if name == "build-deck":
             cmd.add_argument("--write-decklist", action="store_true", dest="write_decklist",
                              help="Also write decklist.txt for fetch-deck")
+        if name == "deck-combos":
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--write", action="store_true",
+                             help="write combos.json beside the list (the deck's, or the branch's)")
         if name == "bracket-check":
             cmd.add_argument("--target", type=int, default=None,
                              help="Target bracket 1-5; exits 1 if the floor exceeds it")
@@ -621,7 +629,7 @@ def add_pilot_parser(subparsers):
         # artifacts. Scoping is structural rather than per-command — `deck_dir`
         # resolves the branch directory, so a branch run writes beside the
         # branch's own decklist and cannot overwrite the tracked one.
-        if name in ('fetch-deck', 'bracket-check', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close', 'upgrades', 'mana-fit',
+        if name in ('fetch-deck', 'bracket-check', 'deck-combos', 'validate-deck-combos', 'mana-analysis', 'goldfish', 'deck-facts', 'deck-audit', 'deck-map', 'diagnose', 'candidates', 'assess', 'close', 'upgrades', 'mana-fit',
                     # The validators too: a branch's artifacts were gated by
                     # NOTHING, because no validator could be pointed at one.
                     'validate-deck', 'validate-deck-map',

@@ -49,6 +49,8 @@ STAGES = [
      "manamap pilot fetch-deck {slug}"),
     ("bracket",    "bracket_report.json",    None,  False, "computed power floor — `bracket-check`",
      "manamap pilot bracket-check {slug}"),
+    ("combos",     "combos.json",            "decklist_sha256",      False, "known lines and near misses — `deck-combos --write`",
+     "manamap pilot deck-combos {slug} --write"),
     ("targets",    "goldfish_targets.json",  None,  False, "the engine DECLARATION: any_of groups, size = redundancy",
      "manamap pilot scaffold-targets {slug}   # a DRAFT to edit — the groups are "
      "yours to name; `validate-goldfish-targets {slug}` checks it"),
@@ -399,6 +401,9 @@ VALIDATED = {
     # scan a staging --why cites, and EDHREC's commander-page figures it reads.
     "candidate_scan.json": "manamap.pilot.validate_candidate_scan",
     "edhrec_cards.json": "manamap.pilot.validate_edhrec_cards",
+    # The combo report (2026-10-09): the lines a list contains and the ones it is
+    # a card short of, both recomputable — gated the day it shipped.
+    "combos.json": "manamap.pilot.validate_deck_combos",
     "diagnosis.json": "manamap.pilot.validate_diagnosis",
     # `diagnostic.json` — the vitals — was tracked, written by `diagnose
     # --write`, and reported by nothing: no validator, no freshness test, no row

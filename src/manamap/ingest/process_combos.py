@@ -69,7 +69,7 @@ from manamap.config import (
 
 #: Spellbook's "this variant is live" status; anything else is reported, not dropped.
 STATUS_OK = "OK"
-#: Same predicate as `pilot.bracket.is_infinite` (prefix `pilot.bracket.INFINITE_PREFIX`),
+#: Same predicate as `pilot.deck_combos.is_infinite` (prefix `pilot.deck_combos.INFINITE_PREFIX`),
 #: copied rather than imported because `ingest/` sits below `pilot/` — a test
 #: holds the two to the same answer.
 INFINITE_PREFIX = "infinite"
@@ -157,7 +157,7 @@ def extract_bracket(combo):
 
 
 def is_infinite(record):
-    """Does a processed combo record produce an unbounded loop? (`pilot.bracket.is_infinite`)"""
+    """Does a processed combo record produce an unbounded loop? (`pilot.deck_combos.is_infinite`)"""
     return any(str(p).lower().startswith(INFINITE_PREFIX) for p in record.get("produces", []))
 
 

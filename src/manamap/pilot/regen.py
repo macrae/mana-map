@@ -53,6 +53,7 @@ class _Args:
 STAGES = (
     ("goldfish", "goldfish_metrics.json", "manamap.pilot.goldfish", {}, False),
     ("mana-analysis", "mana_analysis.json", "manamap.pilot.mana_analysis", {}, False),
+    ("deck-combos", "combos.json", "manamap.pilot.deck_combos", {"write": True}, False),
     ("net-change", "net_change.json", "manamap.pilot.net_change", {"write": True}, True),
     ("diagnose", "diagnostic.json", "manamap.pilot.diagnostic", {"write": True}, False),
     ("benchmark", "benchmark.json", "manamap.pilot.benchmark", {}, False),
@@ -105,7 +106,10 @@ def is_retired(slug):
 #:
 #: REFRESHING AN ARTIFACT THAT ALREADY EXISTS IS A DIFFERENT QUESTION, and
 #: conflating the two cost three red cases on 2026-09-26. See `targets()`.
-BOOTSTRAP = {"diagnostic.json": "goldfish_metrics.json"}
+BOOTSTRAP = {"diagnostic.json": "goldfish_metrics.json",
+             # A Commander list with a cards.json has lines in it or it does not;
+             # the report is a pure function of the list and the combo file.
+             "combos.json": "cards.json"}
 
 
 def is_pinned(slug):

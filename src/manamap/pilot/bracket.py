@@ -42,16 +42,19 @@ from manamap.pilot.common import (
     load_deck_cards,
 )
 
-INFINITE_PREFIX = "infinite"
-
-# Commander Spellbook is format-agnostic about *which* card sits in the command
-# zone: a line can quietly assume one of its pieces is your commander, and
-# "commander" in `produces` is the tell. goblin-storm stack 004 is the cautionary
-# tale — the combo graph promised goblin-storm an infinite off Krenko, but CR
-# 903.9a scopes the graveyard-to-command-zone action to *a commander*, and Zada
-# holds that seat. Counting those lines toward a bracket floor would inflate
-# every deck that happens to run a popular legendary creature in the 99.
-COMMANDER_TELL = "commander"
+# The combo predicates and the included-line rows live in `deck_combos` now —
+# the bracket is a floor over the lines a deck CONTAINS, and the module that
+# also knows about near misses owns the containment. The names stay importable
+# from here for every caller that learned them here (`deck_facts`,
+# `pool_facts`, the tests).
+from manamap.pilot.deck_combos import (  # noqa: F401 - re-exported
+    COMMANDER_TELL,
+    INFINITE_PREFIX,
+    assumes_other_commander,
+    combos_in_deck,
+    included_combos,
+    is_infinite,
+)
 
 
 def load_reference():
@@ -80,54 +83,24 @@ def _card_flags():
     return card_flags()
 
 
-def combos_in_deck(names, details):
-    """Indices of every combo whose cards are all present in `names`.
-
-    Uses the by_card index rather than scanning 83K combos — the candidate set
-    is the union of combos touching any deck card, which is a few thousand.
-    """
-    present = set(names)
-    candidates = set()
-    for name in present:
-        candidates.update(details["by_card"].get(name, []))
-    combos = details["combos"]
-    return sorted(i for i in candidates if all(c in present for c in combos[i]["cards"]))
-
-
-def is_infinite(combo):
-    """Does this combo produce an unbounded loop?"""
-    return any(str(p).lower().startswith(INFINITE_PREFIX) for p in combo.get("produces", []))
-
-
-def assumes_other_commander(combo, commanders):
-    """Does this line only work if one of its pieces is your commander?
-
-    True when `produces` mentions the command zone but none of the combo's
-    cards actually holds that seat in this deck. Such a line is not available
-    to the pilot and must not raise their bracket floor.
-    """
-    if not any(COMMANDER_TELL in str(p).lower() for p in combo.get("produces", [])):
-        return False
-    return not any(card in commanders for card in combo["cards"])
-
-
 def assess(names, card_flags, roles, details, commanders=()):
     """Compute a bracket floor and the evidence for it. Returns a report dict."""
     names = sorted(set(names))
     commanders = set(commanders)
-    combos = details["combos"]
-    indices = combos_in_deck(names, details)
-    all_contained = [combos[i] for i in indices]
+    # FILE ORDER, not ranked: the first highest-bracket line is the named driver
+    # and the two-card list is written in this order, so every tracked report
+    # depends on it (`included_combos`' docstring).
+    all_contained = included_combos(names, commanders, details, ranked=False)
 
-    excluded = [c for c in all_contained if assumes_other_commander(c, commanders)]
-    contained = [c for c in all_contained if c not in excluded]
+    excluded = [c for c in all_contained if c["assumes_other_commander"]]
+    contained = [c for c in all_contained if not c["assumes_other_commander"]]
 
     game_changers = sorted(n for n in names if card_flags.get(n, {}).get("game_changer"))
     banned = sorted(n for n in names if card_flags.get(n, {}).get("legal_commander") == "banned")
     denial = sorted(n for n in names if n in MASS_LAND_DENIAL)
     tutors = sorted(n for n in names if "tutor:unrestricted" in roles.get(n, []))
 
-    infinites = [c for c in contained if is_infinite(c)]
+    infinites = [c for c in contained if c["infinite"]]
     two_card = [c for c in infinites if len(c["cards"]) == 2]
     early = [
         c for c in two_card

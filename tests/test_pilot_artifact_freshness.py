@@ -24,7 +24,8 @@ import pytest
 from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             OUTPUT_CSV_PATH)
 from manamap.pilot import (
-    bracket, deck_info, diagnostic, goldfish, mana_analysis, net_change)
+    bracket, deck_combos, deck_info, diagnostic, goldfish, mana_analysis,
+    net_change)
 
 from conftest import is_retired, module_closure, requires_deck, requires_data
 
@@ -50,7 +51,7 @@ from conftest import is_retired, module_closure, requires_deck, requires_data
 # Measured 2026-09-12: 60 of 182 files, so `sven/`, `training/`, `export/`,
 # `cli.py`, the eval harnesses and the frozen magazine renderer no longer
 # invalidate a goldfish run.
-CODE = module_closure(bracket, deck_info, diagnostic, goldfish,
+CODE = module_closure(bracket, deck_combos, deck_info, diagnostic, goldfish,
                       mana_analysis, net_change)
 
 # ── The data half: WIDER for the two artifacts that read OTHER DECKS ─────────
@@ -152,6 +153,48 @@ def test_bracket_report_matches_a_fresh_run(target, tmp_path, unchanged):
         f"{_id(target)}/bracket_report.json is stale — rerun "
         f"`manamap pilot bracket-check {slug}"
         f"{f' --target {bracket_target}' if bracket_target else ''}` and commit it.")
+
+
+@requires_deck
+@requires_data
+@pytest.mark.parametrize("target", _slugs("combos.json"), ids=_id)
+def test_combos_matches_a_fresh_run(target, tmp_path, unchanged):
+    """The combo report stamps its list, but a stamp cannot see a change to
+    `deck_combos.py` or a Spellbook refresh — only recomputation can. It reads
+    the combo file AND the corpus (legality and identity for the near misses),
+    so both are in the key."""
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    unchanged(*CODE, root, COMBO_DETAILS_PATH, OUTPUT_CSV_PATH)
+
+    def rerun():
+        deck_combos.main(type("Args", (), {"slug": slug, "branch": branch,
+                                           "write": True, "as_json": False})())
+
+    fresh, old = _roundtrip(target, "combos.json", rerun, tmp_path)
+    assert fresh == old, (
+        f"{_id(target)}/combos.json is stale — rerun `manamap pilot deck-combos {slug}"
+        f"{f' --branch {branch}' if branch else ''} --write` and commit it.")
+
+
+@requires_deck
+@pytest.mark.parametrize("target", _slugs("combos.json"), ids=_id)
+def test_the_bracket_report_counts_the_lines_the_combo_report_lists(target):
+    """`bracket.assess` and `deck_combos` read the same rows: `combo_count` is
+    the included lines minus the ones that assume another commander, which is
+    exactly the set `assess` keeps as `contained`. Two files, one answer."""
+    slug, branch = target
+    root = DECKS_DIR / slug / ("branches/" + branch if branch else "")
+    if not (root / "bracket_report.json").exists():
+        pytest.skip(f"{_id(target)} has no bracket_report.json")
+    report = json.loads((root / "bracket_report.json").read_text())
+    combos = json.loads((root / "combos.json").read_text())
+    counted = [c for c in combos["included"] if not c["assumes_other_commander"]]
+    assert report["combo_count"] == len(counted), (
+        f"{_id(target)}: bracket_report.combo_count {report['combo_count']} vs "
+        f"{len(counted)} counted line(s) in combos.json — one of them is stale")
+    assert len(report["excluded_commander_assumption"]) == \
+        combos["summary"]["excluded_commander_assumption"]
 
 
 @pytest.mark.slow

@@ -18,8 +18,8 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
-    "of": 18,
+    "complete": 12,
+    "of": 19,
     "stale": [],
     "invalid": [],
     "verified": true,
@@ -65,8 +65,8 @@
       },
       {
         "stage": "issue",
-        "what": "authored identity: name, commander, status (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/zur-enchantress/issue.json — three keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"} plus \"status\" once the deck stops being sleeved (broken-down | superseded | retired). The cover/volume fields are the frozen magazine renderer's and no live surface reads them."
+        "what": "authored identity: name and commander (volume/price are legacy fields)",
+        "how": "AUTHORED: data/decks/zur-enchantress/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state zur-enchantress archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
       }
     ]
   },
@@ -6396,6 +6396,19 @@
     "floor_name": "Upgraded",
     "target": null,
     "within_target": null
+  },
+  "combos": {
+    "summary": {
+      "excluded_commander_assumption": 0,
+      "highest_bracket": null,
+      "included": 0,
+      "infinite": 0,
+      "near": 50,
+      "near_total": 51,
+      "two_card_infinite": 0
+    },
+    "source_timestamp": "2026-10-09T07:10:08.366325+00:00",
+    "top": []
   },
   "paper": null,
   "record": {
