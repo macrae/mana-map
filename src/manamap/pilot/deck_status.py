@@ -401,6 +401,11 @@ VALIDATED = {
     # scan a staging --why cites, and EDHREC's commander-page figures it reads.
     "candidate_scan.json": "manamap.pilot.validate_candidate_scan",
     "edhrec_cards.json": "manamap.pilot.validate_edhrec_cards",
+    # PRICES AS DATED EVIDENCE (2026-10-09): Mana Pool or Scryfall figures for a list,
+    # stamped `as_of` and `source`. FORM is gated; freshness never is — and there is
+    # no STAGES row and no regen stage, because the file needs the network and "a
+    # gate that fails when the network is down is a gate that gets switched off".
+    "prices.json": "manamap.pilot.validate_prices",
     # The combo report (2026-10-09): the lines a list contains and the ones it is
     # a card short of, both recomputable — gated the day it shipped.
     "combos.json": "manamap.pilot.validate_deck_combos",

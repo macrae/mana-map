@@ -129,6 +129,11 @@ manamap pilot validate-cast-proofs <slug> --branch <b>   # cast_proofs.json: for
 manamap pilot validate-edhrec-cards <slug>               # edhrec_cards.json: the ★ page figures, dated
                                         #   by their own as_of; cards newer than the corpus are listed
                                         #   apart rather than failed
+manamap pilot prices <slug> [--branch B] [--source auto|manapool|scryfall] [--write] [--json]
+                                        # THE LIST'S PRICES AS DATED EVIDENCE: Mana Pool's singles feed
+                                        #   with a token, else Scryfall's prices.usd; `--write` -> prices.json
+manamap pilot validate-prices <slug> [--branch B]        # prices.json: FORM only — names in the list, cents
+                                        #   non-negative ints or null, totals re-add, URLs on an allowed host
 manamap pilot validate-forge-hints <slug>                          # forge_hints.json: per-card AILogic / AIPreference hints, gated
                                         #   AND VERIFIED. `data/forge_overrides/` narrows
                                         #   what the AI may TARGET (`AITgts$`); a per-deck
@@ -826,6 +831,51 @@ WARN, because the list moves under a dated file. `fetch-edhrec` partitions cards
 than the corpus into `not_in_corpus` (three on 2026-09-30) rather than failing on them.
 Keywords and power come from `card_pool.card_keywords()`, the first on-demand view of
 those columns, so `card_pool` stays the only reader of cards.csv.
+
+## Prices (`prices`, ★ dated evidence; `validate-prices`, form) — 2026-10-09
+
+A price is the one figure on the bench nobody measures and everybody quotes. An agent
+that says "about $4" is remembering, and a live lookup in the middle of an answer is a
+number with no date on it. So prices live in ONE artifact beside the list —
+`data/decks/<slug>/prices.json`, or `branches/<name>/prices.json` with `--branch` —
+written only by `prices --write`, stamped `as_of` and `source`, and every reader
+quotes that file with its date or says there is none: `net-change`'s bill line
+(`≈ $N to buy (as of …)`, from `buy_cents` over the branch's buy cards — never a
+graded row), the deck page's cover, the Build card panel's price row, the card-scout
+and Jarvis. Absent means absent, never zero.
+
+```bash
+manamap pilot prices sharknado                       # read it: top 10 by NM price, totals, what has no listing
+manamap pilot prices sharknado --branch wheels-v2 --write    # the branch's own file, beside its list
+manamap pilot validate-prices sharknado --branch wheels-v2
+```
+
+Two sources, one shape. With `MANAPOOL_TOKEN` and `MANAPOOL_EMAIL` set (the Keychain
+recipe in `docs/integrations.md`) the source is **Mana Pool**'s singles feed, joined on
+`scryfall_id` — NM, LP+ and foil cents, a listing URL, `out of stock` noted, and a card
+whose exact printing is not listed priced at the cheapest listing of its name with the
+note saying so. Without a token the source is **Scryfall**: the same `/cards/collection`
+POST `fetch-deck` makes, read for `prices.usd` / `prices.usd_foil`, which is also what
+resolves a `scryfall_id` for a cards.json written before `fetch-deck` carried one
+(2026-10-09; the fleet is NOT re-fetched for it). The feed is cached six hours and the
+collection a day under `data/cache/`; the unit tier runs offline. Per card:
+`scryfall_id`, `printing` (`(SET) CN`), `nm_cents` / `lp_cents` / `foil_cents` (ints or
+null), `url`, `quantity` (from the deck entry) and `note`; `total_cents` is Σ nm_cents ×
+quantity (every copy) and `total_nm_cents` one copy of each; `missing` lists the names
+with no listing.
+
+The gate is FORM ONLY, never freshness: `validate-prices` holds every name to the list's
+cards.json, every cents figure to a non-negative int or null, both totals to their sums,
+`missing` disjoint from `cards`, `source` to the closed vocabulary, and every `url` to
+`manapool.com` / `scryfall.com` hosts with no query string — so a token can never be
+written into a tracked file. `deck_status.VALIDATED` names it; there is deliberately NO
+`STAGES` row and NO `regen` stage, because the command needs the network and "a gate
+that fails when the network is down is a gate that gets switched off". `net.Offline`
+prints one line and exits 1 without writing. The two Mana Pool paths are
+`config.MANAPOOL_PRICES_PATH` / `MANAPOOL_CARD_INFO_PATH`, reconstructed from community
+clients because the official docs are login-gated; a 400/404 on the feed prints one line
+and falls through to Scryfall, and the comment in `config.py` says they are the one thing
+to edit once the docs are read.
 
 ## Deck versions (`deck-version`, derived from git; `deck_versions.json`, authored tags)
 

@@ -54,7 +54,10 @@ v2`, 2026-10-07.)
 **Never:** start a Forge run, a `regen` or anything long without being asked. Never
 edit a decklist or a Deck Context without Sean's go-ahead. Pilot-log summaries are
 the one exception: those update automatically. Never return a report when a
-sentence will do.
+sentence will do. Quote a price or a cost only from the deck's `prices.json`
+(`manamap pilot prices <slug>` writes it, `--branch` for a branch), with its `as_of`
+and source; never a live lookup, never from memory — no file, say "unpriced" and
+offer to fetch it.
 
 ## The eight intents
 

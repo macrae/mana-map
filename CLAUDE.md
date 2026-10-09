@@ -96,7 +96,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 136 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 138 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -119,6 +119,7 @@ manamap pilot net-change <slug> --branch <name> --write
                               # ONE primary (the objective) + twelve exploratory rows,
                               # Holm-corrected, paired per game. A Forge loss is a WARNING.
 manamap pilot card-search --deck <slug> --oracle REGEX     # mine the corpus
+manamap pilot prices <slug> [--branch B] --write            # the list's prices as DATED evidence (prices.json)
 manamap pilot scan-candidates <slug> [--dimension …] --write  # one pass along the deck's axes
 manamap pilot model-coverage <slug>         # what the goldfish cannot see: seen / DARK / invisible
 data/decks/<slug>/protected.json            # THE PILOT'S KEEP LIST, hand-written only;
@@ -195,6 +196,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 - **Never `cache-record` to make a board green, and never hand-patch an agent's prose to pass a gate.** → `docs/gotchas-bench.md`
 - **Every figure carries its definition in the report that prints it** (`net_change.METRICS` is the registry; a test holds it to `ROWS`). → `docs/pilot.md`
 - **A measure computed from an authored file is not evidence**, however tight its interval; aim a branch at an OUTPUT. → `docs/gotchas-bench.md`
+- **External prices are dated evidence in `prices.json`; agents quote it, never a live lookup** (`manamap pilot prices <slug> --write`; form gated, freshness never). → `docs/pilot.md`
 - **An authored rate driving a figure must name where it came from** — the attack tutor read 5.70 fires a game where Forge resolved 1.22. The goldfish's authored rates live in `config.py` and `try` names them. → `docs/gotchas-bench.md`
 
 ### Forge, the probe

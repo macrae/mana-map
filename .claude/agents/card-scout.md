@@ -46,7 +46,9 @@ Read every card's text before you rank it; drop the ones that only look alike.
 - Flag, in the same line, what the reader must know: `★GC` (a Game Changer forces
   bracket 4), `model: —` when the goldfish cannot price it (a `try` on it would read as
   nothing).
-- Never claim a card is good in general, never invent a combo, never quote a price, and
-  never say who owns a card or which deck holds it.
+- Never claim a card is good in general, never invent a combo, and never say who owns a
+  card or which deck holds it. Quote a price only from the deck's `prices.json`
+  (`data/decks/<slug>/prices.json`, when it exists), with its `as_of` and source;
+  never a live lookup, never from memory.
 - If nothing fits, say so in one line and name the query you ran.
 - **End with `ran:`** and the commands, one per line, so Sean can re-run them.

@@ -15,6 +15,8 @@ REQUIRED_FIELDS = {
     "name", "quantity", "is_commander", "mana_cost", "cmc",
     "type_line", "oracle_text", "colors", "color_identity", "keywords", "power",
     "toughness", "loyalty", "layout", "image", "scryfall_uri", "card_faces",
+    # Scryfall's id for the printing — the join key for `prices.json` (2026-10-09).
+    "scryfall_id",
     # Printing identity — which physical card the pilot owns.
     "art_crop", "set", "set_name", "collector_number", "artist",
     "border_color", "frame_effects", "finishes", "foil",

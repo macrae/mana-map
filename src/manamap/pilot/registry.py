@@ -72,6 +72,10 @@ PILOT_STEPS = [
      "EDHREC's commander page (and --theme pages) as dated per-card synergy/inclusion: edhrec_cards.json"),
     ("validate-edhrec-cards", "manamap.pilot.validate_edhrec_cards",
      "Form-check edhrec_cards.json: names resolve, as_of a date, URLs on EDHREC, synergy in [-1, 1]"),
+    ("prices", "manamap.pilot.prices",
+     "A list's card prices as DATED evidence (Mana Pool with a token, else Scryfall): prices.json with --write"),
+    ("validate-prices", "manamap.pilot.validate_prices",
+     "Form-check prices.json: names in the list, cents non-negative ints or null, totals re-add, URLs on manapool/scryfall"),
     ("commander-search", "manamap.pilot.commander_search_cmd",
      "Cards in, commanders out: rank real commanders by proximity to a seed"),
     ("promote", "manamap.pilot.promote",
@@ -292,6 +296,7 @@ _DECK_COMMANDS = {
     "context", "validate-context", "watch", "validate-watchlist",
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints", "validate-protected",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
+    "prices", "validate-prices",
     "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
@@ -1293,6 +1298,18 @@ def add_pilot_parser(subparsers):
         if name == "fetch-edhrec":
             cmd.add_argument("--theme", action="append", default=[], metavar="THEME",
                              help="an EDHREC theme page beside the base page, repeatable (e.g. aristocrats, lifedrain)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name in ("prices", "validate-prices"):
+            # Its own `--branch` rather than a name in the shared tuple above: the
+            # artifact is written beside whichever list it prices.
+            cmd.add_argument("--branch", default=None, metavar="NAME",
+                             help="price a branch's list instead of the deck's")
+        if name == "prices":
+            cmd.add_argument("--source", choices=("auto", "manapool", "scryfall"), default="auto",
+                             help="auto: Mana Pool when MANAPOOL_TOKEN + MANAPOOL_EMAIL are set, "
+                                  "else Scryfall's prices.usd (the default)")
+            cmd.add_argument("--write", action="store_true",
+                             help="write prices.json beside the list (the deck's, or the branch's)")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "pool-facts":
             # Takes paths, not a slug: a collection is not a deck, and forcing it

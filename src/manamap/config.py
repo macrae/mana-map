@@ -927,6 +927,20 @@ NET_MAX_RETRIES = 4
 NET_BACKOFF_S = 1.0
 SCRYFALL_MAX_RETRIES = NET_MAX_RETRIES
 SCRYFALL_RETRY_BACKOFF_S = NET_BACKOFF_S
+# ── Mana Pool, the price source (`pilot/prices.py`, docs/integrations.md) ──
+# THE PATHS ARE THE ONE THING TO EDIT ONCE THE OFFICIAL DOCS ARE READ. They are
+# login-gated; what is below is reconstructed from community clients
+# (2026-10-08): the base, the two auth headers, a singles price feed whose rows
+# carry `scryfall_id` and `price_cents_*`, and a card-info endpoint by name.
+# `prices.py` is written to tolerate a wrong path — a 400/404 on the feed falls
+# back to Scryfall's `prices.usd` with a printed line, never a traceback.
+MANAPOOL_API_BASE = "https://manapool.com/api/v1/"
+MANAPOOL_PRICES_PATH = "prices/singles"      # unverified; see the comment above
+MANAPOOL_CARD_INFO_PATH = "cards/info"       # unverified; unused until a caller needs it
+MANAPOOL_TOKEN_HEADER = "X-ManaPool-Access-Token"
+MANAPOOL_EMAIL_HEADER = "X-ManaPool-Email"
+MANAPOOL_FEED_TTL_S = 6 * 3600               # the feed moves daily; six hours is plenty
+SCRYFALL_PRICES_TTL_S = 24 * 3600            # Scryfall refreshes `prices` once a day
 RESOLVE_MAX_ITERATIONS = 3
 
 # Scope budget for one stack artifact — advisory, and unlike the bound above it is

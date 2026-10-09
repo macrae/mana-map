@@ -128,7 +128,8 @@ NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "cards.json", "brief.json"
 #: named here rather than skipped silently, because "no case" and "no gate" look
 #: identical from the outside.
 BRANCH_AWARE = {"cards.json", "deck_map.json", "goldfish_targets.json",
-                "net_change.json", "branch.json", "cast_proofs.json", "combos.json"}
+                "net_change.json", "branch.json", "cast_proofs.json", "combos.json",
+                "prices.json"}
 
 
 def _cases():

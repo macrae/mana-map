@@ -383,10 +383,14 @@
     };
     const bracketReport = await optional('bracket_report', 'bracket_report.json');
     const combos = await optional('combos', 'combos.json');
+    // Prices as dated evidence (`prices <slug> --write`); the card panel's price
+    // row quotes the file with its date and source, or shows nothing.
+    const prices = await optional('prices', 'prices.json');
 
     const built = buildActive(entry, deckDoc, considering, stacks, engine, prose);
     built.bracketReport = bracketReport && typeof bracketReport === 'object' ? bracketReport : null;
     built.combos = combos && typeof combos === 'object' ? combos : null;
+    built.prices = prices && prices.cards && typeof prices.cards === 'object' ? prices : null;
     built.watch = watch && Array.isArray(watch.sets) ? watch : null;
     built.shortList = built.candidates;
     watchSetId = built.watch && built.watch.sets.length ? built.watch.sets[0].id : null;
@@ -936,6 +940,7 @@
     const cardCI = parseColorIdentity(d.ci);
     const set = watchSet();
     const w = cardRow(name);
+    const pr = active.prices && active.prices.cards[name];
     return {
       slug: active.slug,
       name: name,
@@ -951,6 +956,10 @@
                 off: wubrg(cardCI).filter(c => !deckCI.has(c)) },
       watch: w ? { set: set.title, axis: w.axis, pays: PAYS_LABEL[w.pays] || '', why: w.why,
                    verdict: w.verdict, note: w.note, pending: !!gridPending.get(name) } : null,
+      // From the deck's `prices.json` only — dated, sourced; null when unpriced.
+      price: pr ? { nm_cents: typeof pr.nm_cents === 'number' ? pr.nm_cents : null,
+                    foil_cents: typeof pr.foil_cents === 'number' ? pr.foil_cents : null,
+                    source: active.prices.source, as_of: active.prices.as_of } : null,
       canWrite: canWriteGrid(),
     };
   }

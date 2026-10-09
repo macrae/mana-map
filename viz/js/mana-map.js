@@ -1559,6 +1559,19 @@
           ? '<span class="deck-ctx-bad">off-colour: ' + escHtml(col.off.join('')) + ' outside ' +
             escHtml(col.deck.join('')) + '</span>'
           : '<span class="deck-ctx-ok">fits ' + escHtml(col.deck.join('')) + '</span>') + '</div>';
+    // THE PRICE ROW: the deck's `prices.json` figure with its source and date,
+    // never a live lookup. No file, or the card unpriced, and there is no row.
+    const pr = c.price;
+    if (pr && (pr.nm_cents !== null || pr.foil_cents !== null)) {
+      const dollars = cents => '$' + (cents / 100).toFixed(2);
+      html += '<div class="deck-ctx-row deck-ctx-price"><span class="deck-ctx-k">price</span>' +
+        '<span class="deck-ctx-price-v">' +
+        (pr.nm_cents !== null ? dollars(pr.nm_cents) : 'foil ' + dollars(pr.foil_cents)) +
+        (pr.nm_cents !== null && pr.foil_cents !== null ? ' <span class="deck-ctx-sub">(foil ' +
+          dollars(pr.foil_cents) + ')</span>' : '') +
+        ' <span class="deck-ctx-none">' + escHtml(pr.source === 'manapool' ? 'Manapool' : 'Scryfall') +
+        ', ' + escHtml(pr.as_of) + '</span></span></div>';
+    }
     const gcRow = gameChangerRowHtml(c);
     if (gcRow) html += gcRow;
     const w = c.watch;

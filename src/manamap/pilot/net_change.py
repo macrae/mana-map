@@ -1880,6 +1880,15 @@ def cost(doc):
                  "decks": live or sorted({h["slug"] for h in homes})})
 
     parts = [f"{len(buy)} to buy"]
+    # THE BILL IN DOLLARS, from the branch's own `prices.json` when one has been
+    # written beside it (2026-10-09) — dated evidence, quoted with its date and
+    # source, never a live lookup and never a graded row. Absent means absent.
+    priced = _priced_bill(doc, buy)
+    if priced:
+        unpriced = (f"; {len(priced['buy_unpriced'])} unpriced"
+                    if priced["buy_unpriced"] else "")
+        parts[0] += (f" ≈ ${priced['buy_cents'] / 100:,.2f} to buy (as of "
+                     f"{priced['prices_as_of']}, {priced['prices_source']}{unpriced})")
     if contested:
         parts.append(f"{len(contested)} to pull out of a deck that is still "
                      f"together")
@@ -1891,6 +1900,7 @@ def cost(doc):
     return {
         "counts": c,
         "buy": len(buy), "buy_cards": sorted(buy),
+        **(priced or {}),
         "must_unsleeve": contested,
         "free_to_raid": loose,
         "owned": total - c.get("buy", 0),
@@ -1901,6 +1911,32 @@ def cost(doc):
         "mergeable": bill.get("mergeable"),
         "reads_as": "; ".join(parts),
     }
+
+
+def _priced_bill(doc, buy):
+    """`{buy_cents, buy_unpriced, prices_as_of, prices_source}` from the
+    `prices.json` beside the branch, or None when there is none (or the report
+    carries no slug — a test skeleton). A card the file does not price is named
+    in `buy_unpriced`, not counted as zero."""
+    slug, branch = doc.get("slug"), doc.get("branch")
+    if not slug or not buy:
+        return None
+    try:
+        prices = load_json(deck_dir(slug, branch) / "prices.json")
+    except FileNotFoundError:
+        return None
+    if not prices or not isinstance(prices.get("cards"), dict):
+        return None
+    cents, unpriced = 0, []
+    for name in sorted(buy):
+        row = prices["cards"].get(name) or {}
+        nm = row.get("nm_cents")
+        if isinstance(nm, int):
+            cents += nm * int(row.get("quantity") or 1)
+        else:
+            unpriced.append(name)
+    return {"buy_cents": cents, "buy_unpriced": unpriced,
+            "prices_as_of": prices.get("as_of"), "prices_source": prices.get("source")}
 
 
 def _and(names):

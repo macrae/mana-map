@@ -91,6 +91,10 @@
     // near misses (`deck-combos --write`). The whole file, not `info.combos`'s
     // top five — a reader who opens this panel wants all of them.
     combos: 'combos.json',
+    // PRICES AS DATED EVIDENCE (`prices <slug> --write`): the cover quotes the
+    // total with its source and `as_of`, never a live lookup. Opt-in and
+    // network-bound, so absent is the common case and costs one swallowed 404.
+    prices: 'prices.json',
     // Fixed filename, so no manifest entry is needed — the browser cannot
     // list `threat/` but it does not have to.
     targeting: 'threat/targeting.json'
@@ -1804,13 +1808,23 @@
                  info.size ? info.size + ' cards' : null,
                  info.lands ? info.lands + ' lands' : null]
       .filter(Boolean).join(' · ');
+    /* THE PRICE, from `prices.json` only — dated evidence beside the list, quoted
+     * with its source and `as_of`. No file, no figure: a cover that printed a
+     * live lookup would be the one number on the page with no date on it. */
+    var pr = d.prices && typeof d.prices.total_cents === 'number' ? d.prices : null;
+    var price = pr
+      ? '<dt>Price</dt><dd class="cov-price">≈ $' + esc((pr.total_cents / 100).toFixed(0)) +
+        ' <span class="ev">(' + esc(pr.source === 'manapool' ? 'Manapool' : 'Scryfall') +
+        ', ' + esc(pr.as_of) + (pr.missing && pr.missing.length
+          ? '; ' + esc(pr.missing.length) + ' unpriced' : '') + ')</span></dd>'
+      : '';
 
     var ident = '<div class="cov-id">' +
       '<div class="cov-alias">' + esc(entry.deck_name || info.slug || '') + '</div>' +
       '<div class="cov-sub">' + esc((info.commander || []).join(' // ')) + '</div>' +
       '<dl class="cov-book">' +
         '<dt>Case no.</dt><dd>' + esc(info.slug || '') + '</dd>' +
-        '<dt>Marks</dt><dd>' + esc(marks) + '</dd>' +
+        '<dt>Marks</dt><dd>' + esc(marks) + '</dd>' + price +
         '<dt>First booked</dt><dd>' + (rec.first_played
           ? esc(rec.first_played)
           : '<span class="ev">never played</span>') + '</dd>' +

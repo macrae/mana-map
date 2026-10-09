@@ -73,6 +73,34 @@ export <ENV>=$(security find-generic-password -a $USER -s <name> -w)   # in ~/.z
 The Keychain keeps the token off disk in plaintext; a gitignored `.env` also works. A
 token is never part of a cache key and never written into a cache entry.
 
+## Mana Pool (prices; `pilot/prices.py`, 2026-10-09)
+
+The one service here that needs a token. `manamap pilot prices <slug>` reads the singles
+price feed when both halves of the auth are set — `MANAPOOL_TOKEN` through
+`net.load_token("MANAPOOL_TOKEN", keychain_service="manamap-manapool")` and
+`MANAPOOL_EMAIL` from the environment — and sends them as `X-ManaPool-Access-Token` and
+`X-ManaPool-Email`. Without either it says nothing more than the Keychain hint and
+prices from Scryfall instead (`/cards/collection`'s `prices.usd` / `usd_foil`), so a
+machine with no token still gets a dated figure, labelled `source: "scryfall"`.
+
+```bash
+security add-generic-password -a $USER -s manamap-manapool -w                   # the token, once
+export MANAPOOL_TOKEN=$(security find-generic-password -a $USER -s manamap-manapool -w)
+export MANAPOOL_EMAIL=you@example.com                                           # in ~/.zshrc
+```
+
+**The paths are unverified.** The official API docs are login-gated, so
+`config.MANAPOOL_API_BASE`, `MANAPOOL_PRICES_PATH` (`prices/singles`) and
+`MANAPOOL_CARD_INFO_PATH` (`cards/info`) were reconstructed from community clients
+(2026-10-08) and are the one thing to edit once the docs are read; the client tolerates a
+wrong one — a 400/404 on the feed prints a line and falls through to Scryfall, never a
+traceback. TTLs: the feed is cached six hours (`MANAPOOL_FEED_TTL_S`, service
+`manapool`), the collection answer a day (`SCRYFALL_PRICES_TTL_S`, service `scryfall`).
+The token is never part of a cache key and never written into the artifact:
+`validate-prices` refuses any `url` off `manapool.com` / `scryfall.com` or carrying a
+query string. One `@pytest.mark.network` test prices a card for real and skips without
+the two variables.
+
 ## Nothing here is a gate
 
 A command that needs the network asks for it, says so when it cannot have it, and

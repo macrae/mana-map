@@ -320,6 +320,12 @@ def shape_card(sc, quantity, is_commander, foil=False):
         "image": stable_image_url(image),
         "art_crop": stable_image_url(art_crop),
         "scryfall_uri": sc.get("scryfall_uri"),
+        # Scryfall's id for THIS printing (2026-10-09): the key `prices.py` joins
+        # the Mana Pool feed on. Presentation, not semantics — it stays out of
+        # `agent_cache.CARD_SEMANTIC_FIELDS`, so a cards.json rewritten with it
+        # invalidates no routine. A cards.json from before this field has none,
+        # and `prices` resolves the id from Scryfall's answer instead.
+        "scryfall_id": sc.get("id"),
         "card_faces": [_shape_face(f) for f in faces],
         # Printing identity — which physical card this is.
         "set": sc.get("set"),
