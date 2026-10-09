@@ -628,3 +628,59 @@ def test_a_closed_deck_offers_no_branch_action_at_all():
             assert b["name"] not in " ".join(info["next"]), (
                 f"{slug} is closed and still offers `{b['name']}` as a next action")
     assert checked >= 1, "no closed deck was exercised"
+
+
+# ── A branch of a constructed deck keeps its sideboard (Area C3, 2026-10-09) ──
+#
+# `stage` edits the mainboard through `_parsed` and renders the list back;
+# before `_sideboard` was handed to the renderer, the first swap on a 60-card
+# branch silently dropped its fifteen. The deck here is a scratch Modern deck
+# under a patched `DECKS_DIR`; every measurement still reads the mainboard.
+
+SIXTY_MAIN = "4 Lightning Bolt\n4 Monastery Swiftspear\n52 Mountain\n"
+SIXTY_SIDE = ("Sideboard:\n4 Smash to Smithereens\n4 Rending Volley\n"
+              "4 Blood Moon\n3 Relic of Progenitus\n")
+
+
+@pytest.fixture
+def modern_deck(tmp_path, monkeypatch):
+    from manamap.pilot import check_in
+    from manamap.pilot.fetch_deck import parse_decklist
+    decks = tmp_path / "decks"
+    deck = decks / "md"
+    deck.mkdir(parents=True)
+    (deck / "brief.json").write_text(json.dumps({"slug": "md", "format": "modern"}))
+    (deck / "decklist.txt").write_text(
+        check_in.render_decklist(parse_decklist(SIXTY_MAIN + SIXTY_SIDE)))
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    return deck
+
+
+def _side_block(text):
+    return text[text.index("Sideboard:"):]
+
+
+def test_a_new_branch_of_a_sixty_card_deck_keeps_the_sideboard_byte_for_byte(modern_deck):
+    r = deck_branch.new("md", "b", SIXTY_MAIN.replace("4 Monastery Swiftspear",
+                                                       "4 Goblin Guide") + SIXTY_SIDE)
+    assert r["size"] == 60, "the size is the mainboard, not sixty plus fifteen"
+    branch_list = (modern_deck / "branches" / "b" / "decklist.txt").read_text()
+    deck_list = (modern_deck / "decklist.txt").read_text()
+    assert _side_block(branch_list) == _side_block(deck_list)
+    assert "4 Goblin Guide\n" in branch_list and "Monastery Swiftspear" not in branch_list
+    # The measurement reader sees sixty cards and no sideboard.
+    assert sum(int(e.get("quantity") or 1) for e in deck_branch._parsed("md", "b")) == 60
+
+
+def test_staging_a_swap_on_a_sixty_card_branch_keeps_the_sideboard(modern_deck):
+    deck_branch.new("md", "b", SIXTY_MAIN + SIXTY_SIDE)
+    before = (modern_deck / "branches" / "b" / "decklist.txt").read_text()
+    deck_branch.stage("md", "b", "Monastery Swiftspear", "Goblin Guide")
+    after = (modern_deck / "branches" / "b" / "decklist.txt").read_text()
+    assert _side_block(after) == _side_block(before)
+    main = {e["name"]: e["quantity"] for e in deck_branch._parsed("md", "b")}
+    assert main["Monastery Swiftspear"] == 3 and main["Goblin Guide"] == 1
+    assert sum(main.values()) == 60
+    # …and back.
+    deck_branch.unstage("md", "b")
+    assert (modern_deck / "branches" / "b" / "decklist.txt").read_text() == before

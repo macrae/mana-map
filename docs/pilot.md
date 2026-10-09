@@ -443,7 +443,9 @@ manamap pilot check-in <slug> --set-printing "Name" "(SET) CN" [--foil] [--no-ch
                                         # ONE line → the exact card sleeved; chain, no version, no agents
 manamap pilot targeting <slug>          # who the pod attacks, measured from sim logs
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
-manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
+manamap pilot validate-deck <slug> [--format F]  # cards.json against the DECK'S format: size, copies
+                                        #   (main + side, CR 100.4a), commander, identity, legality,
+                                        #   sideboard (≤15 constructed, none in Commander, no commander in it)
 manamap pilot validate-stack <slug> [--stack NNN]   # citation contract (stacks + decisions)
 manamap pilot validate-stack <slug> --scenario-only # preflight BEFORE spawning a resolver
 manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT — derived from
@@ -1048,15 +1050,26 @@ leaving them behind makes the deck read as stale forever.
 by a human reading sleeves, so it arrives with a card written twice, a name
 misremembered, or ninety-nine cards where there should be a hundred — every one of
 which `fetch-deck` would survive silently, leaving a repo list that is not the deck on
-the table. Blocking: a non-basic card listed more than once (singleton forbids it;
-basics are exempt), a total that is not 100, a name matching nothing in the corpus, no
-commander. Warning-only: a changed commander (that is a different deck, and probably
-wants a new slug) and an absent corpus, which cannot check names but must not stop a
-fresh clone accepting a deck. `--force` overrides; you want it approximately never.
+the table. Every refusal is **per the deck's format** (`formats.for_deck`, or `--format`
+on the command for a deck that has no brief yet). Blocking: a non-basic card over the
+format's copy limit — more than once under singleton, more than four in a 60-card
+format, counted main and sideboard together (CR 100.4a); a mainboard the format's size
+rule rejects (exactly 100 for Commander, at least 60 for constructed); a name matching
+nothing in the corpus; no commander, where the format has one; a sideboard over the
+format's fifteen. Warning-only: a changed commander (that is a different deck, and
+probably wants a new slug), an absent corpus, which cannot check names but must not stop
+a fresh clone accepting a deck, and — on a Commander list — cards under a `Sideboard:`
+or `Maybeboard` header, which are **dropped with a warning** rather than refused, because
+a Moxfield export routinely carries the cards a pilot was only thinking about. `--force`
+overrides; you want it approximately never. The chain `--write` runs is the format's
+too: a 60-card deck gets `fetch-deck` → `mana-analysis`, and the report says
+`skipped goldfish: not modelled for Standard — the goldfish is Commander-only`.
 
-The written file is **canonical**, not verbatim — `Commander:` block, then `Deck:`
-sorted by name, printings and foil markers carried through. Reformatting cannot
-manufacture a version, because `deck-history` and `deck-version` compare parsed entries.
+The written file is **canonical**, not verbatim — `Commander:` block when there is one,
+then `Deck:` sorted by name, then `Sideboard:` when there is one, printings and foil
+markers carried through. Reformatting cannot manufacture a version, because
+`deck-history` and `deck-version` compare parsed mainboard entries; a sideboard edit is
+reported ("only the sideboard moved") and is never a version.
 
 The last step is a commit, and it is not optional bookkeeping: `decklist.txt` is tracked,
 so the commit is what `deck-version` numbers and what the captain's log stamps games

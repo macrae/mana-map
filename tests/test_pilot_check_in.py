@@ -102,7 +102,25 @@ def test_basics_may_repeat(sandbox, paper):
 @requires_deck
 def test_the_wrong_card_count_is_refused(sandbox, paper):
     d = check_in.analyze(SLUG, paper.replace("1 Anguished Unmaking\n", ""))
-    assert any("not 100" in b for b in d["blocking"])
+    assert any("expected exactly 100" in b for b in d["blocking"])
+
+
+@requires_deck
+def test_a_maybeboard_on_a_commander_list_is_dropped_with_a_warning(sandbox, paper):
+    """A Moxfield export of a Commander deck routinely carries a Maybeboard,
+    which the parser files as `side`. Commander has no sideboard, so those
+    cards are DROPPED and said so — not refused, which would block a pilot
+    pasting their real list over cards they were only thinking about."""
+    d = check_in.analyze(SLUG, paper + "Maybeboard:\n1 Vito, Thorn of the Dusk Rose\n"
+                                       "2 Blood Crypt\n")
+    assert not d["blocking"], d["blocking"]
+    assert d["cards"] == 100 and d["sideboard"] == 0
+    assert all(e.get("board", "main") == "main" for e in d["entries"])
+    [w] = [w for w in d["warnings"] if "dropped" in w]
+    assert w.startswith("3 card(s) after Sideboard:/Maybeboard dropped")
+    assert "Commander has no sideboard" in w
+    # …and the dropped cards are not in the diff either.
+    assert d["add"] == {} and d["pull"] == {}
 
 
 @requires_deck
@@ -417,3 +435,148 @@ def test_fetch_deck_and_check_in_take_the_same_format_choices():
     for name in formats.FORMATS:
         for cmd in ("fetch-deck", "check-in", "validate-deck"):
             assert parser.parse_args(["pilot", cmd, "x", "--format", name]).format == name
+
+
+# ── A 60-card deck is checked in per ITS format (Area C3, 2026-10-09) ────────
+#
+# The sandbox is a Modern deck: a brief declaring the format, a canonical
+# 60 + 15 on disk, `config.DECKS_DIR` pointed at it so `formats.for_deck`
+# resolves the spec the way the command does. Real names, so the corpus check
+# is exercised honestly where a corpus exists and warns where it does not.
+
+MODERN_MAIN = ("4 Lightning Bolt\n4 Monastery Swiftspear\n52 Mountain\n")
+MODERN_SIDE = ("Sideboard:\n4 Smash to Smithereens\n4 Rending Volley\n"
+               "4 Blood Moon\n3 Relic of Progenitus\n")
+MODERN = MODERN_MAIN + MODERN_SIDE
+
+
+@pytest.fixture
+def modern(tmp_path, monkeypatch):
+    import json
+    decks = tmp_path / "decks"
+    deck = decks / "md"
+    deck.mkdir(parents=True)
+    (deck / "brief.json").write_text(json.dumps({"slug": "md", "format": "modern"}))
+    (deck / "decklist.txt").write_text(check_in.render_decklist(parse_decklist(MODERN)))
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    return deck
+
+
+def _corpus_free(d):
+    """The refusals that are not about the corpus (absent on a fresh clone)."""
+    return [b for b in d["blocking"] if "corpus" not in b]
+
+
+def test_a_modern_deck_is_sized_and_counted_by_its_own_spec(modern):
+    d = check_in.analyze("md", MODERN)
+    assert d["format"] == "modern"
+    assert d["cards"] == 60 and d["sideboard"] == 15
+    assert _corpus_free(d) == []
+    assert not any("commander" in b for b in d["blocking"]), "no commander is not a defect here"
+    assert d["pull"] == {} and d["add"] == {} and not d["sideboard_changed"]
+
+
+def test_four_copies_pass_and_five_block_counted_across_both_boards(modern):
+    """CR 100.4a: the limit is main and sideboard TOGETHER. Four Bolts in the
+    sixty and one more in the fifteen is five."""
+    four = check_in.analyze("md", MODERN)
+    assert not any("copies" in b for b in four["blocking"])
+    five = check_in.analyze("md", MODERN.replace("3 Relic of Progenitus\n",
+                                                  "2 Relic of Progenitus\n1 Lightning Bolt\n"))
+    [b] = [b for b in five["blocking"] if "more than 4 copies" in b]
+    assert "Lightning Bolt x5" in b and "CR 100.4a" in b
+    assert "singleton" not in b
+
+
+def test_fifty_nine_cards_block_and_sixty_three_do_not(modern):
+    """"At least sixty": a 63-card Modern deck is legal."""
+    short = check_in.analyze("md", MODERN.replace("52 Mountain", "51 Mountain"))
+    [b] = [b for b in short["blocking"] if "at least 60" in b]
+    assert b.startswith("Deck has 59 cards")
+    assert "(Modern)" in b
+    long = check_in.analyze("md", MODERN.replace("52 Mountain", "55 Mountain"))
+    assert not any("at least" in b or "exactly" in b for b in long["blocking"])
+
+
+def test_sixteen_sideboard_cards_block(modern):
+    d = check_in.analyze("md", MODERN.replace("3 Relic of Progenitus", "4 Relic of Progenitus"))
+    [b] = [b for b in d["blocking"] if "sideboard" in b]
+    assert b.startswith("16 sideboard cards") and "at most 15" in b
+    assert d["sideboard"] == 16
+
+
+def test_apply_round_trips_the_sideboard_block(modern):
+    """A check-in that lost the fifteen would be a silent edit of the deck."""
+    text = MODERN.replace("4 Monastery Swiftspear", "4 Goblin Guide")
+    d = check_in.analyze("md", text)
+    assert d["pull"] == {"Monastery Swiftspear": 4} and d["add"] == {"Goblin Guide": 4}
+    r = check_in.apply("md", d["entries"], run_chain=False)
+    written = (modern / "decklist.txt").read_text()
+    block = written[written.index("Sideboard:"):]
+    assert block == check_in.render_decklist(parse_decklist(MODERN_SIDE)).split(
+        "Deck:\n\n", 1)[1]
+    again = check_in.analyze("md", written)
+    assert again["pull"] == {} and again["add"] == {} and not again["sideboard_changed"]
+    assert again["cards"] == 60 and again["sideboard"] == 15
+    # The chain's plan for a format with no goldfish, said rather than implied.
+    assert r["ran"] == []
+    assert set(r["skipped"]) == {"goldfish"}
+    assert "Commander-only" in r["skipped"]["goldfish"] and "Modern" in r["skipped"]["goldfish"]
+
+
+def test_a_sideboard_only_edit_is_reported_and_is_not_a_version(modern):
+    d = check_in.analyze("md", MODERN.replace("4 Blood Moon", "4 Alpine Moon"))
+    assert d["pull"] == {} and d["add"] == {}
+    assert d["sideboard_changed"] is True
+
+
+def test_the_chain_plan_reads_the_spec():
+    from manamap.pilot import formats
+    assert check_in.chain_plan(formats.COMMANDER) == (
+        ["fetch-deck", "goldfish", "mana-analysis"], {})
+    stages, skipped = check_in.chain_plan(formats.STANDARD)
+    assert stages == ["fetch-deck", "mana-analysis"]
+    assert skipped == {"goldfish": "not modelled for Standard — the goldfish is "
+                                   "Commander-only (docs/simulation.md)"}
+
+
+def test_the_chain_runs_the_format_plan(modern, monkeypatch):
+    """`_run_chain` runs what `chain_plan` says, resolved from the deck."""
+    import importlib
+    ran = []
+
+    class _Mod:
+        def __init__(self, name):
+            self.name = name
+
+        def main(self, args):
+            ran.append((self.name, args.slug, args.branch))
+
+    monkeypatch.setattr(importlib, "import_module", lambda dotted: _Mod(dotted.rsplit(".", 1)[1]))
+    assert check_in._run_chain("md") == ["fetch-deck", "mana-analysis"]
+    assert ran == [("fetch_deck", "md", None), ("mana_analysis", "md", None)]
+
+
+def test_the_header_names_the_format_and_the_sideboard(modern, capsys):
+    check_in._print(check_in.analyze("md", MODERN), write=False)
+    out = capsys.readouterr().out
+    assert "CHECK-IN — md  (60 cards + 15 side, Modern)" in out
+    assert "commander" not in out.split("\n")[0]
+
+
+def test_a_new_deck_declared_on_the_command_line_is_analysed_as_that_format(
+        tmp_path, monkeypatch, capsys):
+    """`--format modern` on a deck with no brief: the spec is threaded from
+    `main` so the first check-in is held to Modern, not to a hundred."""
+    decks = tmp_path / "decks"
+    (decks / "fresh").mkdir(parents=True)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    (tmp_path / "paper.txt").write_text(MODERN)
+    args = argparse.Namespace(slug="fresh", source=str(tmp_path / "paper.txt"),
+                              set_printing=None, as_json=False, write=False,
+                              force=False, no_chain=True, format="modern")
+    check_in.main(args)
+    out = capsys.readouterr().out
+    assert "(60 cards + 15 side, Modern)" in out
+    assert "expected exactly 100" not in out and "no commander" not in out
+    assert "format: Modern" in out

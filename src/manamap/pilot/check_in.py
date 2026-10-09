@@ -45,8 +45,10 @@ from manamap.pilot.fetch_deck import parse_decklist
 
 # This module used to declare its own `DECK_SIZE = 100`, shadowing the one in
 # `config.py` — a name that resolved locally to something a reader would swear
-# came from the shared constant. The format spec is the one place now.
-DECK_SIZE = formats.DEFAULT.deck_size
+# came from the shared constant. Then it held `formats.DEFAULT.deck_size` at
+# module scope, which is the same shadow one step removed: a constant bound at
+# import cannot follow the deck. There is no module-level size now; `analyze`
+# asks the deck's own spec (`formats.for_deck`) and nothing else.
 
 
 def _copies(entries):
@@ -132,42 +134,87 @@ def render_decklist(entries):
     return "\n".join(out) + "\n"
 
 
-def analyze(slug, text):
-    """The diff, plus everything wrong with the pasted list.
+def _boards(entries):
+    """(mainboard, sideboard). An entry with no `board` key is mainboard — every
+    caller that built entries by hand before the key existed."""
+    main = [e for e in entries if e.get("board", "main") == "main"]
+    side = [e for e in entries if e.get("board", "main") == "side"]
+    return main, side
+
+
+def analyze(slug, text, spec=None):
+    """The diff, plus everything wrong with the pasted list — PER THE DECK'S FORMAT.
 
     `blocking` is the half that stops `--write`. `warnings` is the half worth
     seeing and not worth refusing over — a check-in that cannot be applied until
     the corpus is rebuilt would make a fresh clone unable to accept a deck.
+
+    `spec` is the format every rule here reads: size (exact or at-least),
+    copies, whether a commander is required, how big a sideboard may be. It
+    defaults to `formats.for_deck(slug)` — the deck says what it is — and
+    `main` passes `--format` through so a NEW deck declared Modern is analysed
+    as Modern before any brief exists to resolve from.
+
+    THE SIDEBOARD IS READ AND HELD TO THE SPEC. A constructed list's fifteen are
+    kept, reported beside the main count, and refused past `sideboard_size`.
+    On a format with none (Commander) the side entries are DROPPED with a
+    warning rather than refused, because a Moxfield export of a Commander deck
+    routinely carries a Maybeboard — which the parser files as `side` — and a
+    pilot pasting their real list should not be blocked by cards they were
+    only thinking about. Copies are counted main and side TOGETHER (CR 100.4a:
+    the limit is across both), and the diff, the size and `cards` are the
+    mainboard alone, since a sideboard card is not in the deck.
     """
+    spec = spec or formats.for_deck(slug)
     entries = parse_decklist(text)
     path = deck_dir(slug) / "decklist.txt"
     before = parse_decklist(path.read_text(encoding="utf-8")) if path.exists() else []
 
-    new, old = _copies(entries), _copies(before)
-    total = sum(new.values())
-    commanders = sorted({e["name"] for e in entries if e.get("is_commander")})
-    was_commander = sorted({e["name"] for e in before if e.get("is_commander")})
-
     blocking, warnings = [], []
+
+    main, side = _boards(entries)
+    was_main, was_side = _boards(before)
+    if side and not spec.sideboard_size:
+        dropped = sum(int(e.get("quantity") or 1) for e in side)
+        warnings.append(f"{dropped} card(s) after Sideboard:/Maybeboard dropped — "
+                        f"{spec.name} has no sideboard")
+        entries, side = main, []
+
+    new, old = _copies(main), _copies(was_main)
+    new_side, old_side = _copies(side), _copies(was_side)
+    total = sum(new.values())
+    side_total = sum(new_side.values())
+    commanders = sorted({e["name"] for e in main if e.get("is_commander")})
+    was_commander = sorted({e["name"] for e in was_main if e.get("is_commander")})
 
     if not entries:
         blocking.append("the pasted list parsed to nothing — wrong file, or a format "
                         "`parse_decklist` does not read")
-    if not commanders:
+    if spec.commanders and not commanders:
         blocking.append("no commander: put it under a `Commander:` header or mark the "
                         "line `*CMDR*`")
-    if total != DECK_SIZE:
-        blocking.append(f"{total} cards, not {DECK_SIZE} — a {formats.DEFAULT.name} deck is the "
-                        f"commander plus 99")
+    size_problem = spec.size_error(total)
+    if size_problem:
+        blocking.append(f"{size_problem} ({spec.name})")
+    if side_total > spec.sideboard_size:
+        blocking.append(f"{side_total} sideboard cards — {spec.name} allows at most "
+                        f"{spec.sideboard_size}")
 
     # A name written twice is the characteristic paper-list error: you read the
     # sleeve, write it down, and meet it again forty cards later. Singleton makes
     # every one of them illegal, and applying it silently would put a card in the
-    # repo that the table cannot legally hold.
-    dupes = sorted(n for n, k in new.items() if k > 1 and not _is_basic(n))
-    if dupes:
-        blocking.append(f"{len(dupes)} non-basic card(s) listed more than once, which "
-                        f"singleton forbids — check the box: {', '.join(dupes)}")
+    # repo that the table cannot legally hold. Where the limit is four, the
+    # count is main and sideboard together — that is the rule's own scope.
+    combined = new + new_side
+    over = sorted(n for n, k in combined.items()
+                  if k > spec.max_copies and not _is_basic(n))
+    if over and spec.singleton:
+        blocking.append(f"{len(over)} non-basic card(s) listed more than once, which "
+                        f"singleton forbids — check the box: {', '.join(over)}")
+    elif over:
+        blocking.append(f"{len(over)} non-basic card(s) with more than {spec.max_copies} "
+                        f"copies, main and sideboard together (CR 100.4a): "
+                        f"{', '.join(f'{n} x{combined[n]}' for n in over)}")
 
     known = corpus_names()
     if known is None:
@@ -178,7 +225,8 @@ def analyze(slug, text):
         # hand around a commander the corpus will not carry until the set
         # releases; every branch of it was refused on its own commander's
         # name, which this list has carried since the deck existed.
-        unknown = sorted(n for n in new if n not in known and n not in old)
+        held = set(old) | set(old_side)
+        unknown = sorted(n for n in combined if n not in known and n not in held)
         if unknown:
             blocking.append(f"{len(unknown)} name(s) match no card in the corpus — a typo "
                             f"here becomes a card the deck does not have: "
@@ -187,7 +235,8 @@ def analyze(slug, text):
     # Only when the new list HAS a commander. With none parsed, the blocking error
     # above already says so, and this rendered as "Edgar Markov -> ." — an empty
     # arrow that reads as a data bug rather than as the missing header it is.
-    if was_commander and commanders and commanders != was_commander:
+    if (spec.commanders and was_commander and commanders
+            and commanders != was_commander):
         warnings.append(f"the commander changed: {', '.join(was_commander)} -> "
                         f"{', '.join(commanders)}. That is a different deck; consider a "
                         f"new slug rather than a new version of this one")
@@ -196,14 +245,19 @@ def analyze(slug, text):
     add = {n: new[n] - old.get(n, 0) for n in new if new[n] > old.get(n, 0)}
     return {
         "slug": slug,
+        "format": spec.name.lower(),
         "entries": entries,
         "cards": total,
+        "sideboard": side_total,
         "commanders": commanders,
         # PULL leaves the sleeves, ADD goes in. Named for the hands, same as the
         # paper-lock drift, because that is what the pilot does with the answer.
+        # Mainboard only: a sideboard edit is not a swap and never a version
+        # (`deck_history._entries` reads the same board), so it is a flag here.
         "pull": dict(sorted(pull.items())),
         "add": dict(sorted(add.items())),
         "unchanged": sum(min(old.get(n, 0), k) for n, k in new.items()),
+        "sideboard_changed": new_side != old_side,
         "blocking": blocking,
         "warnings": warnings,
         # ONE DEFINITION. This was the second `read_bytes` caller, so a CRLF
@@ -214,29 +268,57 @@ def analyze(slug, text):
     }
 
 
-def apply(slug, entries, run_chain=True):
+def chain_plan(spec):
+    """What `apply` re-derives for a deck of this format, and what it skips.
+
+    Returns `(stages, skipped)`: the stage names in order, and `{stage: why}`
+    for each one the format cannot have. The goldfish is Commander-only —
+    its seats, its commander in the command zone, its authored rates all
+    assume the table (docs/simulation.md) — so a Standard deck's chain is
+    `fetch-deck -> mana-analysis` and the report SAYS the goldfish was not
+    run rather than leaving a reader to infer it from a missing file.
+    """
+    if spec.commanders:
+        return ["fetch-deck", "goldfish", "mana-analysis"], {}
+    return (["fetch-deck", "mana-analysis"],
+            {"goldfish": f"not modelled for {spec.name} — the goldfish is Commander-only "
+                         f"(docs/simulation.md)"})
+
+
+def apply(slug, entries, run_chain=True, spec=None):
     """Write the list, then re-derive what depends on it.
 
     The chain is not optional in spirit: `goldfish_metrics.json` and
     `mana_analysis.json` stamp the decklist sha, so leaving them behind makes the
     deck read as stale forever and every downstream figure describe a list that
     is gone. `--no-chain` exists for the case where the corpus is absent.
+
+    Returns `{"ran": [...], "skipped": {stage: why}}` — the stages that ran
+    (none under `run_chain=False`) and the ones the deck's format has no use
+    for, by `chain_plan`.
     """
+    spec = spec or formats.for_deck(slug)
     path = deck_dir(slug) / "decklist.txt"
     if path.exists():
         shutil.copy(path, path.with_suffix(".txt.bak"))
     path.write_text(render_decklist(entries), encoding="utf-8")
-    return _run_chain(slug) if run_chain else []
+    _, skipped = chain_plan(spec)
+    return {"ran": _run_chain(slug) if run_chain else [], "skipped": skipped}
+
+
+_CHAIN_MODULES = {"fetch-deck": "fetch_deck", "goldfish": "goldfish",
+                  "mana-analysis": "mana_analysis"}
 
 
 def _run_chain(slug, branch=None):
-    """fetch-deck -> goldfish -> mana-analysis, in that order, on the deck or on
-    one of its branches. Returns the names it ran. One definition, because
-    `apply` and `set_printing` must re-derive the same artifacts."""
-    from manamap.pilot import fetch_deck, goldfish, mana_analysis
+    """The deck's chain, per `chain_plan` of its format, on the deck or on one
+    of its branches. Returns the names it ran. One definition, because `apply`
+    and `set_printing` must re-derive the same artifacts."""
+    import importlib
+    stages, _ = chain_plan(formats.for_deck(slug, branch))
     ran = []
-    for name, mod in (("fetch-deck", fetch_deck), ("goldfish", goldfish),
-                      ("mana-analysis", mana_analysis)):
+    for name in stages:
+        mod = importlib.import_module(f"manamap.pilot.{_CHAIN_MODULES[name]}")
         mod.main(SimpleNamespace(slug=slug, branch=branch))
         ran.append(name)
     return ran
@@ -334,10 +416,19 @@ def set_printing(slug, name, set_code, collector_number, foil=False, run_chain=T
 
 
 def _print(d, write):
-    print(f"CHECK-IN — {d['slug']}  ({d['cards']} cards, commander: "
-          f"{', '.join(d['commanders']) or 'NONE'})\n")
-    if not d["pull"] and not d["add"]:
+    spec = formats.get(d.get("format"))
+    head = f"{d['cards']} cards"
+    if d.get("sideboard"):
+        head += f" + {d['sideboard']} side"
+    head += f", {spec.name}"
+    if spec.commanders:
+        head += f", commander: {', '.join(d['commanders']) or 'NONE'}"
+    print(f"CHECK-IN — {d['slug']}  ({head})\n")
+    if not d["pull"] and not d["add"] and not d.get("sideboard_changed"):
         print("  the paper list and the repo's already agree — nothing to apply\n")
+    elif not d["pull"] and not d["add"]:
+        print("  the mainboard agrees with the repo's; only the sideboard moved "
+              "(not a version)\n")
     else:
         print(f"  PULL {sum(d['pull'].values())} · ADD {sum(d['add'].values())} · "
               f"unchanged {d['unchanged']}\n")
@@ -419,10 +510,12 @@ def main(args):
         raise SystemExit("check-in needs --from <file> (a paper list) or "
                          "--set-printing \"Name\" \"(SET) CN\"")
     fmt = getattr(args, "format", None)
-    if fmt:
-        formats.get(fmt)                     # refuse an unknown name before any read
+    # Refuse an unknown name before any read. The spec is threaded from here so
+    # a NEW deck declared `--format modern` is analysed as Modern now, before
+    # any brief exists for the resolver to read it from.
+    spec = formats.get(fmt) if fmt else None
     text = read_list(args.source)
-    d = analyze(args.slug, text)
+    d = analyze(args.slug, text, spec=spec)
     if getattr(args, "as_json", False):
         import json
         print(json.dumps({k: v for k, v in d.items() if k != "entries"},
@@ -442,8 +535,12 @@ def main(args):
         # as the default and the flag did nothing.
         set_brief_format(args.slug, fmt)
         print(f"  WROTE brief.json: format {formats.get(fmt).name}")
-    ran = apply(args.slug, d["entries"], run_chain=not getattr(args, "no_chain", False))
+    r = apply(args.slug, d["entries"], run_chain=not getattr(args, "no_chain", False),
+              spec=spec)
+    ran = r["ran"]
     print(f"\n  WROTE decklist.txt" + (f" · ran {' → '.join(ran)}" if ran else ""))
+    for stage, why in r["skipped"].items():
+        print(f"  skipped {stage}: {why}")
     from manamap.pilot import deck_context
     deck_context.print_list_change(deck_context.list_change(args.slug))
     print(f"  next: commit it — that is what makes it a version the log can stamp:")

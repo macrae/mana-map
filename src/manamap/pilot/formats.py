@@ -122,13 +122,18 @@ class FormatSpec:
         """The `cards.csv` column carrying this format's legality."""
         return f"legal_{self.legality_key}"
 
-    def size_error(self, total):
-        """Why `total` cards is illegal, or None."""
+    def size_error(self, total, what="Deck"):
+        """Why `total` cards is illegal, or None.
+
+        `what` names the thing counted ("Deck", "plan"), so every size refusal
+        in the package — `validate_deck`, `check_in`, `validate_build` — is this
+        one sentence rather than three re-derivations of exact-versus-minimum.
+        """
         if self.exact_size:
             return (None if total == self.deck_size
-                    else f"Deck has {total} cards, expected exactly {self.deck_size}")
+                    else f"{what} has {total} cards, expected exactly {self.deck_size}")
         return (None if total >= self.deck_size
-                else f"Deck has {total} cards, expected at least {self.deck_size}")
+                else f"{what} has {total} cards, expected at least {self.deck_size}")
 
 
 COMMANDER = FormatSpec(

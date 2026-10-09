@@ -678,10 +678,16 @@ def new(slug, branch, text, why=None, at=None, objective=None):
     # the champion runs that this list does not.
     from manamap.pilot import protected
     if protected.names(slug):
-        kept = {e["name"] for e in checked["entries"]}
+        # The MAINBOARD keeps a card; a protected card moved to the sideboard
+        # has left the deck.
+        kept = {e["name"] for e in checked["entries"]
+                if e.get("board", "main") == "main"}
         protected.refuse(slug, [n for n in _entries(_list_text(slug)) if n not in kept],
                          "to open the branch")
     path.mkdir(parents=True)
+    # `checked["entries"]` carries the sideboard too (a constructed deck's
+    # fifteen; nothing on a Commander list, where `analyze` drops a pasted
+    # maybeboard with a warning), so the branch's file keeps the whole list.
     (path / "decklist.txt").write_text(
         check_in.render_decklist(checked["entries"]), encoding="utf-8")
     from manamap.pilot import deck_versions
@@ -698,7 +704,9 @@ def new(slug, branch, text, why=None, at=None, objective=None):
            "base_version": deck_versions.report(slug).get("current_version")}
     (path / BRANCH_FILE).write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
     return {"path": str(path), "warnings": checked["warnings"],
-            "size": _common.count_copies(checked["entries"])}
+            # `cards` is the mainboard count; `count_copies(entries)` would
+            # add the sideboard to the size of the deck.
+            "size": checked["cards"]}
 
 
 def _write_meta(slug, branch, doc):
@@ -718,6 +726,18 @@ def _parsed(slug, branch=None):
     """
     from manamap.pilot.fetch_deck import parse_mainboard
     return parse_mainboard(_list_text(slug, branch))
+
+
+def _sideboard(slug, branch=None):
+    """The list's sideboard entries, for the RENDER path only.
+
+    `stage` and `unstage` edit the mainboard (`_parsed`) and write the whole
+    list back through `render_decklist`; a constructed deck's fifteen would
+    vanish on the first swap unless the renderer is handed them. Every
+    measurement still reads the mainboard. Empty on a Commander list.
+    """
+    from manamap.pilot.fetch_deck import parse_sideboard
+    return parse_sideboard(_list_text(slug, branch))
 
 
 def _resolve_in_list(entries, name):
@@ -836,7 +856,8 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
         raise SystemExit(f"No branch '{branch}' on {slug}.")
     entries = _parsed(slug, branch)
     staged_entries, out_e, in_e = swap_entries(slug, branch, entries, out_name, in_name)
-    text = check_in.render_decklist(staged_entries)
+    # The sideboard rides through untouched: a swap is a mainboard edit.
+    text = check_in.render_decklist(staged_entries + _sideboard(slug, branch))
     checked = check_in.analyze(slug, text)
     if checked["blocking"]:
         raise SystemExit("Refusing to stage that swap:\n  - "
@@ -912,7 +933,8 @@ def unstage(slug, branch, out_name=None, in_name=None):
     else:
         rebuilt.append({"name": row["out"], "quantity": 1})
 
-    checked = check_in.analyze(slug, check_in.render_decklist(rebuilt))
+    checked = check_in.analyze(
+        slug, check_in.render_decklist(rebuilt + _sideboard(slug, branch)))
     if checked["blocking"]:
         raise SystemExit("Refusing to unstage that swap:\n  - "
                          + "\n  - ".join(checked["blocking"]))

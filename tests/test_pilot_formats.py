@@ -43,8 +43,16 @@ def test_the_library_size_is_derived_not_stored():
 
 def test_every_consumer_reads_the_same_number():
     """The whole point. Four places used to say 100 (or 99) independently, and
-    one of them — `check_in` — shadowed `config` with its own constant."""
-    assert check_in.DECK_SIZE == formats.DEFAULT.deck_size
+    one of them — `check_in` — shadowed `config` with its own constant.
+
+    Then it held `formats.DEFAULT.deck_size` at module scope, which is the
+    same shadow one step removed: bound at import, it could not follow the
+    deck. There is NO module-level size in `check_in` now (C3): `analyze`
+    reads the deck's own spec, and a 60-card list is sized by it.
+    """
+    assert not hasattr(check_in, "DECK_SIZE"), (
+        "check_in.DECK_SIZE is back — a module constant cannot follow the deck's format")
+    # The 60-card behaviour itself is driven in `test_pilot_check_in.py`.
     assert manabase.DECK_SIZE_AFTER_COMMANDER == formats.DEFAULT.library_size
 
 

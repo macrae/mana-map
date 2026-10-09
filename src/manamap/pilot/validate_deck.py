@@ -13,12 +13,17 @@ from manamap.pilot.common import load_deck_cards, report_errors
 def validate(doc, spec=None):
     """Return a list of human-readable error strings (empty = valid).
 
-    Sideboard entries (tokens, art cards, spare copies) are excluded from the
-    size, singleton and colour-identity checks.
+    `doc["cards"]` is the mainboard and `doc["sideboard"]` (absent on every
+    Commander file) the sideboard. The sideboard is outside the size and the
+    colour-identity checks — a sideboard card is not in the deck — and inside
+    the copies check, because CR 100.4a counts the limit across both: four
+    Lightning Bolt main and one more in the side is five. It is held to
+    `spec.sideboard_size` and may not hold a commander.
     """
     spec = spec or formats.DEFAULT
     errors = []
     cards = doc.get("cards", [])
+    side = doc.get("sideboard") or []
     # `count_copies`, and note the DEFAULT: this summed with a default
     # of 0 while every other site used 1, so an entry written without
     # the key would make a 100-card deck read as 99 and fail the size
@@ -40,13 +45,34 @@ def validate(doc, spec=None):
                 f"({', '.join(c['name'] for c in commanders) or 'none'})"
             )
 
-    if spec.singleton:
-        for c in cards:
-            is_basic = spec.basics_exempt and "Basic" in c.get("type_line", "")
-            # PER ENTRY, on purpose: the singleton rule is about one
-            # entry's copies, not the deck's total.
-            if c.get("quantity", 0) > spec.max_copies and not is_basic:
-                errors.append(f"Singleton violation: {c['name']} x{c['quantity']}")
+    side_total = count_copies(side)
+    if side_total > spec.sideboard_size:
+        errors.append(
+            f"Sideboard has {side_total} cards, "
+            + (f"{spec.name} allows at most {spec.sideboard_size}"
+               if spec.sideboard_size else f"{spec.name} has no sideboard"))
+    for c in side:
+        if c.get("is_commander"):
+            errors.append(f"Commander in the sideboard: {c['name']} — a commander starts "
+                          f"in the command zone, not outside the deck")
+
+    # COPIES BY NAME, MAIN AND SIDE TOGETHER. `fetch_deck.resolve_entries`
+    # merges on `(name, board)`, so one name is one entry per board and, for a
+    # Commander file with no sideboard, this is exactly the per-entry check it
+    # replaces — same names flagged, same message. Where the limit is four,
+    # the rule's own scope is both boards (CR 100.4a).
+    copies, basic = {}, {}
+    for c in list(cards) + list(side):
+        copies[c["name"]] = copies.get(c["name"], 0) + int(c.get("quantity", 0))
+        basic.setdefault(c["name"], spec.basics_exempt
+                         and "Basic" in c.get("type_line", ""))
+    for name, k in copies.items():
+        if k > spec.max_copies and not basic[name]:
+            if spec.singleton:
+                errors.append(f"Singleton violation: {name} x{k}")
+            else:
+                errors.append(f"Copies violation: {name} x{k} across main and sideboard, "
+                              f"{spec.name} allows at most {spec.max_copies} (CR 100.4a)")
 
     if spec.colour_identity and commanders:
         identity = set()
@@ -59,7 +85,9 @@ def validate(doc, spec=None):
                     f"Color identity violation: {c['name']} is {sorted(outside)} "
                     f"outside commander identity {sorted(identity) or ['C']}"
                 )
-    errors.extend(illegal_cards(cards, spec))
+    # The sideboard is part of the format's pool too: a banned card is banned
+    # from the fifteen as much as from the sixty.
+    errors.extend(illegal_cards(list(cards) + list(side), spec))
     return errors
 
 

@@ -22,13 +22,16 @@ from manamap.config import (
     OUTPUT_CSV_PATH,
 )
 from manamap.analysis.common import parse_color_identity
-from manamap.pilot import formats
+from manamap.pilot import card_pool, formats
 from manamap.pilot.card_pool import load_frame
 from manamap.pilot.common import (
     deck_dir, mtime_memo, report_errors, try_load_rules_db)
 from manamap.pilot.validate_stack import load_strategy_sections, validate_citations
 
 REQUIRED_TOP_KEYS = {"slug", "commander", "color_identity", "bracket", "slots", "land_counts"}
+#: The keys a format with no commander has no use for. A 60-card plan has no
+#: commander and, with no commander, no colour identity to stay inside.
+COMMANDER_KEYS = {"commander", "color_identity"}
 CRITIC_STATUSES = {
     "supported", "unjustified", "miscounted", "off-bracket", "off-identity", "unverified-line",
 }
@@ -45,46 +48,78 @@ def deck_card_names(plan):
     return names
 
 
-def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_report=None):
+def _legality_status(spec):
+    """name -> legal | banned | not_legal for this format, from the corpus's
+    own column — or None when there is no corpus to ask, in which case the
+    `cards` reference's own `legal_<key>` entry is what the caller reads
+    (the Commander-shaped callers build it with `legal_commander`)."""
+    try:
+        return card_pool.legality(spec.legality_column)
+    except Exception:                       # no corpus, or a column it lacks
+        return None
+
+
+def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_report=None,
+             spec=None):
     """Return a list of human-readable error strings (empty = the form holds).
 
     `cards` maps name -> {color_identity, legal_commander, type_line}. None
     means "skip the card-reality checks" — not "the deck has no cards".
+
+    `spec` is the format the plan is held to: `plan["format"]` when the plan
+    says, else the default. A format with no commander drops `commander` and
+    `color_identity` from the required keys, reads its own size rule (at
+    least sixty rather than exactly a hundred), its own copies limit, its own
+    legality column, and skips the identity check that has nothing to be
+    inside of.
     """
     errors = []
+    spec = spec or formats.get(plan.get("format"))
 
-    missing = REQUIRED_TOP_KEYS - set(plan)
+    required = REQUIRED_TOP_KEYS - (set() if spec.commanders else COMMANDER_KEYS)
+    missing = required - set(plan)
     if missing:
         errors.append(f"missing required key(s): {', '.join(sorted(missing))}")
         return errors
 
     names = deck_card_names(plan)
     # Legality, so it reads the format rather than a build constant.
-    spec = formats.DEFAULT
-    if len(names) != spec.deck_size:
-        errors.append(f"plan has {len(names)} cards, expected exactly {spec.deck_size}")
+    size_problem = spec.size_error(len(names), what="plan")
+    if size_problem:
+        errors.append(size_problem)
 
-    # Singleton, basics excepted.
+    # Copies, basics excepted: one in a singleton format, four elsewhere.
     seen = {}
     for name in names:
         seen[name] = seen.get(name, 0) + 1
     for name, count in sorted(seen.items()):
-        if count > 1 and cards is not None:
+        if count > spec.max_copies and cards is not None:
             type_line = cards.get(name, {}).get("type_line", "")
             if "Basic" not in type_line:
-                errors.append(f"singleton violation: {name} x{count}")
+                if spec.singleton:
+                    errors.append(f"singleton violation: {name} x{count}")
+                else:
+                    errors.append(f"copies violation: {name} x{count}, {spec.name} "
+                                  f"allows at most {spec.max_copies}")
 
     identity = set(plan.get("color_identity") or [])
 
     if cards is not None:
+        status = _legality_status(spec)
         for name in sorted(set(names)):
             card = cards.get(name)
             if card is None:
                 errors.append(f"unknown card: {name!r} is not in cards.csv")
                 continue
-            if card.get("legal_commander") != "legal":
-                errors.append(f"{name} is not legal in Commander "
-                              f"({card.get('legal_commander')})")
+            # The corpus's column for THIS format first; the reference's own
+            # entry when there is no corpus (or the name is not in it).
+            state = (status or {}).get(name)
+            if state is None:
+                state = card.get(spec.legality_column)
+            if state != "legal":
+                errors.append(f"{name} is not legal in {spec.name} ({state})")
+            if not spec.colour_identity:
+                continue
             outside = parse_color_identity(card.get("color_identity", "")) - identity
             if outside:
                 errors.append(
@@ -342,11 +377,13 @@ def main(args):
     bracket_path = deck_dir(args.slug) / "bracket_report.json"
     bracket_report = json.loads(bracket_path.read_text()) if bracket_path.exists() else None
 
-    errors = validate(plan, cards, rules, strategy_sections, bracket_report)
+    spec = formats.get(plan.get("format"))
+    errors = validate(plan, cards, rules, strategy_sections, bracket_report, spec=spec)
     report_errors(path.name, errors)
     block = plan["bracket"]
     print(
-        f"OK   {path.name} — {plan['commander']}, {formats.DEFAULT.deck_size} cards, "
+        f"OK   {path.name} — {plan.get('commander') or spec.name}, "
+        f"{len(deck_card_names(plan))} cards ({spec.name}), "
         f"bracket {block['target']} ({BRACKETS[block['target']]['name']}), "
         f"floor {block.get('computed_floor')}"
     )

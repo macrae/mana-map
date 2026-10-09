@@ -1,5 +1,6 @@
 """Tests for the build-plan form gate (pilot/validate_build.py)."""
 
+import pytest
 
 from manamap.pilot import validate_build
 from manamap.pilot.validate_build import deck_card_names, validate
@@ -365,3 +366,89 @@ def test_no_declared_pool_means_no_pool_check(tmp_path):
     plan = _pool_plan(["Black Lotus"], [])
     plan["pool"] = None
     assert validate_build._validate_pool(plan, {}) == []
+
+
+# ── A plan for a 60-card format is held to ITS spec (Area C3, 2026-10-09) ────
+#
+# `build_deck` cannot build one (`buildable=False`), but a plan that names a
+# format is validated by that format's rules: no commander key, at least sixty,
+# four copies, the format's own legality column.
+
+
+def _modern_plan(bolts=4, mountains=56, **overrides):
+    plan = {
+        "slug": "burn", "format": "modern",
+        "bracket": {"target": 3, "computed_floor": 1},
+        "role_budget": {"lands": mountains, "flex": bolts},
+        "slots": [{"name": "Lightning Bolt", "role": "flex"}] * bolts,
+        "land_counts": {"Mountain": mountains},
+    }
+    plan.update(overrides)
+    return plan
+
+
+MODERN_CARDS = {
+    "Lightning Bolt": {"color_identity": "R", "legal_modern": "legal",
+                       "legal_commander": "legal", "type_line": "Instant"},
+    "Mountain": {"color_identity": "R", "legal_modern": "legal",
+                 "legal_commander": "legal", "type_line": "Basic Land — Mountain"},
+}
+
+
+@pytest.fixture
+def modern_corpus(monkeypatch):
+    """`card_pool.legality` recorded and answered here, so the unit tier needs
+    no cards.csv and the test can prove WHICH column was asked for."""
+    asked, answer = [], {}
+    monkeypatch.setattr(validate_build.card_pool, "legality",
+                        lambda column: asked.append(column) or answer)
+    return asked, answer
+
+
+def test_a_modern_plan_needs_no_commander_and_sixty_cards_with_four_ofs(modern_corpus):
+    asked, _ = modern_corpus
+    assert validate(_modern_plan(), MODERN_CARDS) == []
+    assert asked == ["legal_modern"], "legality is the format's column, not legal_commander"
+
+
+def test_a_fifth_copy_fails_a_modern_plan(modern_corpus):
+    errors = validate(_modern_plan(bolts=5, mountains=55), MODERN_CARDS)
+    assert any("copies violation: Lightning Bolt x5" in e and "at most 4" in e
+               for e in errors), errors
+    assert not any("singleton" in e for e in errors)
+
+
+def test_fifty_nine_fails_and_sixty_three_passes_a_modern_plan(modern_corpus):
+    errors = validate(_modern_plan(mountains=55), MODERN_CARDS)
+    assert any("plan has 59 cards, expected at least 60" in e for e in errors), errors
+    assert validate(_modern_plan(mountains=59), MODERN_CARDS) == []
+
+
+def test_the_format_column_is_what_decides_legality(modern_corpus):
+    asked, answer = modern_corpus
+    answer["Lightning Bolt"] = "banned"
+    errors = validate(_modern_plan(), MODERN_CARDS)
+    assert errors == ["Lightning Bolt is not legal in Modern (banned)"]
+
+
+def test_a_modern_plan_has_no_identity_to_stay_inside(modern_corpus):
+    """A blue card in a red deck is a mana-base question, not a legality one."""
+    cards = dict(MODERN_CARDS, **{"Counterspell": {
+        "color_identity": "U", "legal_modern": "legal", "type_line": "Instant"}})
+    plan = _modern_plan(bolts=3, mountains=56,
+                        slots=[{"name": "Lightning Bolt", "role": "flex"}] * 3
+                        + [{"name": "Counterspell", "role": "flex"}],
+                        role_budget={"lands": 56, "flex": 4})
+    assert not any("identity" in e for e in validate(plan, cards))
+
+
+def test_a_commander_plan_still_requires_its_commander_keys():
+    errors = validate({"slug": "x", "bracket": {}, "slots": [], "land_counts": {}})
+    assert errors == ["missing required key(s): color_identity, commander"]
+
+
+def test_an_explicit_spec_overrides_the_plan(modern_corpus):
+    from manamap.pilot import formats
+    plan = _modern_plan()
+    errors = validate(plan, MODERN_CARDS, spec=formats.COMMANDER)
+    assert any("missing required key" in e for e in errors)

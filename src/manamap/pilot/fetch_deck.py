@@ -191,6 +191,18 @@ def parse_mainboard(text):
     return [e for e in parse_decklist(text) if e["board"] == "main"]
 
 
+def parse_sideboard(text):
+    """The other projection: the entries that sit OUTSIDE the deck between games.
+
+    For a writer, not a measurement. `deck_branch` edits the mainboard through
+    `parse_mainboard` and renders the list back, and a constructed deck's
+    branch would lose its fifteen on the first `stage` unless the renderer is
+    handed them too — this is how it gets them without reading the whole list
+    raw. Empty for every Commander deck, so their branches render as before.
+    """
+    return [e for e in parse_decklist(text) if e["board"] == "side"]
+
+
 def is_up_to_date(cards_path, decklist_sha256, format_key=None):
     """True if cards.json was already built from this exact decklist, for this
     format.
