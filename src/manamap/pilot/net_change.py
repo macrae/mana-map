@@ -1880,15 +1880,12 @@ def cost(doc):
                  "decks": live or sorted({h["slug"] for h in homes})})
 
     parts = [f"{len(buy)} to buy"]
-    # THE BILL IN DOLLARS, from the branch's own `prices.json` when one has been
-    # written beside it (2026-10-09) — dated evidence, quoted with its date and
-    # source, never a live lookup and never a graded row. Absent means absent.
-    priced = _priced_bill(doc, buy)
-    if priced:
-        unpriced = (f"; {len(priced['buy_unpriced'])} unpriced"
-                    if priced["buy_unpriced"] else "")
-        parts[0] += (f" ≈ ${priced['buy_cents'] / 100:,.2f} to buy (as of "
-                     f"{priced['prices_as_of']}, {priced['prices_source']}{unpriced})")
+    # NO DOLLARS HERE. The bill in money lives in the branch's `prices.json`
+    # (dated evidence) and is said by `priced_bill_line` at print time and by
+    # the branch page from the file. It was embedded here for one afternoon
+    # (2026-10-09): every price refresh then made five tracked net_change.json
+    # files stale and the regen gate asked for a measurement re-run over a
+    # price. A measurement does not carry the day's prices.
     if contested:
         parts.append(f"{len(contested)} to pull out of a deck that is still "
                      f"together")
@@ -1900,7 +1897,6 @@ def cost(doc):
     return {
         "counts": c,
         "buy": len(buy), "buy_cards": sorted(buy),
-        **(priced or {}),
         "must_unsleeve": contested,
         "free_to_raid": loose,
         "owned": total - c.get("buy", 0),
@@ -1911,6 +1907,21 @@ def cost(doc):
         "mergeable": bill.get("mergeable"),
         "reads_as": "; ".join(parts),
     }
+
+
+def priced_bill_line(doc):
+    """The bill in dollars for the terminal — "≈ $N to buy (as of DATE, SOURCE;
+    k unpriced: …)" from the branch's own `prices.json`, or None when there is no
+    file or nothing to buy. Display only: never written into the report."""
+    priced = _priced_bill(doc, (cost(doc) or {}).get("buy_cards") or [])
+    if not priced:
+        return None
+    unpriced = ""
+    if priced["buy_unpriced"]:
+        unpriced = (f"; {len(priced['buy_unpriced'])} unpriced: "
+                    + ", ".join(priced["buy_unpriced"]))
+    return (f"≈ ${priced['buy_cents'] / 100:,.2f} to buy (as of "
+            f"{priced['prices_as_of']}, {priced['prices_source']}{unpriced})")
 
 
 def _priced_bill(doc, buy):
@@ -2298,6 +2309,9 @@ def _print(doc):
     cst = rec.get("cost") or {}
     print("\n  THE COST   " + "   ".join(f"{k}={v}" for k, v in c.items()))
     print(_wrap(cst.get("reads_as", ""), indent="    "))
+    _priced = priced_bill_line(doc)
+    if _priced:
+        print(_wrap(_priced, indent="    "))
     if cst.get("buy_cards"):
         print(f"\n    BUY ({len(cst['buy_cards'])})")
         print(_wrap(", ".join(cst["buy_cards"]), indent="      "))

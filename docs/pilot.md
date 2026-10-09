@@ -860,9 +860,11 @@ that says "about $4" is remembering, and a live lookup in the middle of an answe
 number with no date on it. So prices live in ONE artifact beside the list —
 `data/decks/<slug>/prices.json`, or `branches/<name>/prices.json` with `--branch` —
 written only by `prices --write`, stamped `as_of` and `source`, and every reader
-quotes that file with its date or says there is none: `net-change`'s bill line
-(`≈ $N to buy (as of …)`, from `buy_cents` over the branch's buy cards — never a
-graded row), the deck page's cover, the Build card panel's price row, the card-scout
+quotes that file with its date or says there is none: `net-change`'s printed bill
+line (`≈ $N to buy (as of …)`, said at print time by `priced_bill_line` and never
+written into `net_change.json` — a measurement does not carry the day's prices, and
+embedding them made five tracked reports stale on the first refresh), the branch
+page's bill, the deck page's cover, the Build card panel's price row, the card-scout
 and Jarvis. Absent means absent, never zero.
 
 ```bash

@@ -345,35 +345,39 @@ def test_scryfall_id_is_shaped_in_and_is_not_agent_semantic(tmp_path):
 
 # ── net-change's bill ────────────────────────────────────────────────────
 
-def test_the_bill_is_said_in_dollars_from_the_branch_prices_file(fake_deck):
+def test_the_bill_in_dollars_is_said_at_print_time_never_written_into_the_report(fake_deck):
     bill = {"counts": {"buy": 2, "in_deck": 1},
             "cards": [{"name": "Sol Ring", "state": "buy", "where": [], "free": False},
                       {"name": "Island", "state": "buy", "where": [], "free": False},
                       {"name": "Windfall", "state": "in_deck", "where": [], "free": False}]}
     doc = {"slug": "fixture", "branch": "b1", "bill": bill}
-    # No prices file: no dollar figure, no key — absent means absent.
-    got = net_change.cost(doc)
-    assert "buy_cents" not in got and "≈ $" not in got["reads_as"]
+    # No prices file: no line. Absent means absent.
+    assert net_change.priced_bill_line(doc) is None
     priced = _good()
     priced["branch"] = "b1"
     (fake_deck / "fixture" / "branches" / "b1" / "prices.json").write_text(json.dumps(priced))
+    assert net_change.priced_bill_line(doc) == "≈ $4.74 to buy (as of 2026-10-09, scryfall)"
+    # THE REPORT NEVER CARRIES IT: `cost()` is a measurement of the list, and a
+    # price refresh must not make a tracked net_change.json stale (the regen gate
+    # caught exactly that on 2026-10-09).
     got = net_change.cost(doc)
-    assert got["buy_cents"] == 199 + 25 * 11 and got["buy_unpriced"] == []
-    assert got["prices_as_of"] == "2026-10-09" and got["prices_source"] == "scryfall"
-    assert "≈ $4.74 to buy (as of 2026-10-09, scryfall)" in got["reads_as"]
+    for key in ("buy_cents", "buy_unpriced", "prices_as_of", "prices_source"):
+        assert key not in got, key
+    assert "$" not in got["reads_as"]
     # A buy card the file does not price is NAMED, never counted as zero.
     bill["cards"].append({"name": "Windfall", "state": "buy", "where": [], "free": False})
-    got = net_change.cost(doc)
-    assert got["buy_unpriced"] == ["Windfall"] and "1 unpriced" in got["reads_as"]
-    assert got["buy_cents"] == 199 + 25 * 11
+    line = net_change.priced_bill_line(doc)
+    assert line.startswith("≈ $4.74 to buy") and "1 unpriced: Windfall" in line
     # The deck's own prices file is not the branch's.
     (fake_deck / "fixture" / "branches" / "b1" / "prices.json").unlink()
     (fake_deck / "fixture" / "prices.json").write_text(json.dumps(_good()))
-    assert "buy_cents" not in net_change.cost(doc)
+    assert net_change.priced_bill_line(doc) is None
 
 
 def test_a_test_skeleton_with_no_slug_still_costs_out():
-    assert "buy_cents" not in net_change.cost({"bill": {"counts": {}, "cards": []}})
+    doc = {"bill": {"counts": {}, "cards": []}}
+    assert "buy_cents" not in net_change.cost(doc)
+    assert net_change.priced_bill_line(doc) is None
 
 
 # ── the one real call ────────────────────────────────────────────────────
