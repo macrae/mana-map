@@ -146,11 +146,27 @@ def commander_identity(slug, branch=None):
 
 def deck_identity(doc):
     """The identity a cards.json DOCUMENT licenses — the one derivation
-    `commander_identity` and `deck_combos` both read."""
+    `commander_identity`, `deck_combos`, `mana_analysis` and `mana_fit` read.
+
+    With a commander (every format where `FormatSpec.commanders` is non-zero)
+    it is the commanders' identity, as it always was. Without one — a 60-card
+    deck, read off the document's own `format` — it is the UNION of the main
+    cards' colour identities, and never WUBRG: a mono-green Modern deck is a
+    green deck, and defaulting it to five colours would count every Command
+    Tower in the pool as a source it can use. `doc["cards"]` is the mainboard;
+    a sideboard lives under its own key and licenses nothing.
+    """
+    from manamap.pilot import formats
+
+    cards = doc.get("cards") or []
     ident = set()
-    for c in doc.get("cards") or []:
-        if c.get("is_commander"):
-            ident |= set(c.get("color_identity") or [])
+    if formats.for_doc(doc).commanders:
+        for c in cards:
+            if c.get("is_commander"):
+                ident |= set(c.get("color_identity") or [])
+        return ident
+    for c in cards:
+        ident |= set(c.get("color_identity") or [])
     return ident
 
 

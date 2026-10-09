@@ -285,3 +285,24 @@ def test_the_channel_filter_and_the_unmodelled_filter_are_complements():
     # And every row carries the annotation whether or not it was filtered on.
     plain, _ = search(identity=set("R"), cmc_max=1, limit=10)
     assert all("channels" in r for r in plain)
+
+
+def test_deck_identity_comes_from_the_commander_or_from_the_cards():
+    """ONE DERIVATION OF A DECK'S IDENTITY, read by `mana_analysis`, `mana_fit`
+    and `deck_combos`. With a commander it is the commanders' (a Commander doc
+    with none flagged licenses nothing, as before). Without one — a 60-card
+    format, by the doc's own `format` — it is the union of the main cards',
+    and never WUBRG; the sideboard licenses nothing."""
+    commander_doc = {"cards": [
+        {"name": "Cmd", "is_commander": True, "color_identity": ["B", "G"]},
+        {"name": "Forest", "color_identity": ["G"]},
+        {"name": "Island", "color_identity": ["U"]},
+    ]}
+    assert card_search.deck_identity(commander_doc) == {"B", "G"}
+    assert card_search.deck_identity({"cards": [{"name": "Island", "color_identity": ["U"]}]}) == set()
+
+    modern_doc = {"format": "modern", "cards": [
+        {"name": "Llanowar Elves", "color_identity": ["G"]},
+        {"name": "Forest", "color_identity": []},
+    ], "sideboard": [{"name": "Rest in Peace", "color_identity": ["W"]}]}
+    assert card_search.deck_identity(modern_doc) == {"G"}

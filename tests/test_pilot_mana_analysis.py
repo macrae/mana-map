@@ -320,3 +320,90 @@ def test_the_floor_and_the_headline_are_both_reported():
     for c in ("W", "U", "B"):
         assert p["lands_only_ungated"][c] <= p["lands_only"][c], (
             f"{c}: the floor must not exceed the headline")
+
+
+# ── the maths runs on the deck's FormatSpec ─────────────────────────────────
+
+def _sixty_card_doc(tmp_path, monkeypatch, fmt="modern"):
+    """A mono-green 60-card list: no commander, four-ofs, a format key."""
+    import json
+    decks = tmp_path / "decks"
+    base = decks / "test-deck"
+    base.mkdir(parents=True)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    spell = {"type_line": "Creature — Elf", "oracle_text": "", "is_commander": False,
+             "color_identity": ["G"], "mana_cost": "{G}", "cmc": 1.0, "quantity": 4}
+    doc = {"deck": "test-deck", "decklist_sha256": "abc", "cards": [
+        dict(spell, name="Llanowar Elves"),
+        dict(spell, name="Elvish Mystic"),
+        dict(spell, name="Steel Leaf Champion", mana_cost="{G}{G}{G}", cmc=3.0),
+        _land("Forest", "({T}: Add {G}.)", quantity=20,
+              type_line="Basic Land — Forest"),
+        _land("Spire Garden", "This land enters tapped unless you have two or "
+                              "more opponents. {T}: Add {R} or {G}.",
+              quantity=4, type_line="Land"),
+    ]}
+    if fmt:
+        doc["format"] = fmt
+    (base / "cards.json").write_text(json.dumps(doc))
+    return base
+
+
+def test_a_sixty_card_deck_is_measured_as_sixty_cards(tmp_path, monkeypatch):
+    """Identity from the deck's own cards, the library size in the maths and
+    the assumptions, the format named, and the goldfish declined by name."""
+    from manamap.pilot import common
+    from manamap.pilot.manabase import sources_needed
+    from manamap.pilot.mana_analysis import analyze
+
+    _sixty_card_doc(tmp_path, monkeypatch)
+    common.clear_memo()
+    result = analyze("test-deck")
+
+    assert result["format"] == "modern"
+    assert any("60-card library" in a for a in result["assumptions"])
+    assert not any("99-card" in a for a in result["assumptions"])
+    # Mono-green by its own cards, never WUBRG: Spire Garden's red is not a
+    # source this deck can use, so it is not counted.
+    assert result["sources"]["lands"] == {"W": 0, "U": 0, "B": 0, "R": 0, "G": 24}
+    assert [r["produces"] for r in result["lands"]["list"]
+            if r["name"] == "Spire Garden"] == [["G"]]
+    # The Karsten target is the 60-card one, through the real function.
+    assert result["source_targets"]["G"] == sources_needed(
+        result["pips"]["G"]["effective_pips"], 3, deck_size=60)
+    assert result["source_targets"]["G"] < sources_needed(
+        result["pips"]["G"]["effective_pips"], 3)
+    # In a 1v1 format the Battlebond land enters tapped every time.
+    assert result["lands"]["enters_tapped"] == 4
+    assert result["lands"]["enters_tapped_always"] == 4
+    # The goldfish blocks stay empty maps and the reason is written down.
+    assert result["goldfish"] == {"land_drop_hit_rate_by_turn": {},
+                                  "mean_available_mana_by_turn": {}}
+    assert "the goldfish is Commander-only; not run for Modern" in result["notes"]
+
+
+def test_a_commander_deck_carries_no_format_key_and_reads_the_table(tmp_path, monkeypatch):
+    """The byte-identity contract for the fourteen tracked files, in miniature:
+    absent `format` is Commander, no `format` key is written back, the library
+    is 99, and the same Battlebond land is an untapped dual."""
+    from manamap.pilot import common
+    from manamap.pilot.mana_analysis import analyze
+
+    _deck(tmp_path, monkeypatch, [
+        {"name": "Cmd", "type_line": "Legendary Creature", "oracle_text": "",
+         "quantity": 1, "is_commander": True,
+         "color_identity": ["G"], "mana_cost": "{1}{G}", "cmc": 2.0},
+        _land("Forest", "({T}: Add {G}.)", quantity=30,
+              type_line="Basic Land — Forest"),
+        _land("Spire Garden", "This land enters tapped unless you have two or "
+                              "more opponents. {T}: Add {R} or {G}.",
+              type_line="Land"),
+    ])
+    common.clear_memo()
+    result = analyze("test-deck")
+
+    assert "format" not in result
+    assert any("99-card library" in a for a in result["assumptions"])
+    assert result["lands"]["enters_tapped"] == 1
+    assert result["lands"]["enters_tapped_always"] == 0
+    assert not any("Commander-only" in n for n in result["notes"])

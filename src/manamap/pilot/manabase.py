@@ -79,20 +79,25 @@ def hypergeometric_at_least(successes_in_deck, draws, wanted, deck_size=DECK_SIZ
     return 1.0 - misses / total
 
 
-def sources_needed(pips, turn, target=SOURCE_TARGET_PROBABILITY, on_the_play=True):
+def sources_needed(pips, turn, target=SOURCE_TARGET_PROBABILITY, on_the_play=True,
+                   deck_size=DECK_SIZE_AFTER_COMMANDER):
     """Fewest sources that hit `target` probability of `pips` by `turn`.
 
     Returns the deck size if even a full deck of sources can't get there, which
     only happens for absurd requirements and is reported rather than silently
     clamped.
+
+    `deck_size` is the library the shuffler sees — `FormatSpec.library_size`,
+    99 for Commander and 60 for a constructed deck. The same arithmetic gives
+    Karsten's two tables: it is the deck size that changes, not the maths.
     """
     if pips <= 0:
         return 0
     draws = cards_seen(turn, on_the_play)
-    for k in range(pips, DECK_SIZE_AFTER_COMMANDER + 1):
-        if hypergeometric_at_least(k, draws, pips) >= target:
+    for k in range(pips, deck_size + 1):
+        if hypergeometric_at_least(k, draws, pips, deck_size) >= target:
             return k
-    return DECK_SIZE_AFTER_COMMANDER
+    return deck_size
 
 
 def count_pips(mana_cost):
@@ -167,7 +172,7 @@ def effective_pips(weights):
     return min(weights)
 
 
-def source_targets(requirements):
+def source_targets(requirements, deck_size=DECK_SIZE_AFTER_COMMANDER):
     """Sources needed per colour, from the deck's own requirements."""
     targets = {}
     for colour, req in requirements.items():
@@ -176,11 +181,12 @@ def source_targets(requirements):
         # spell of that weight can be cast, and never inside the planning
         # horizon — see MIN_PLANNING_TURN.
         turn = max(turn, req["effective_pips"], MIN_PLANNING_TURN)
-        targets[colour] = sources_needed(req["effective_pips"], turn)
+        targets[colour] = sources_needed(req["effective_pips"], turn,
+                                         deck_size=deck_size)
     return targets
 
 
-def achieved_probability(requirements, sources):
+def achieved_probability(requirements, sources, deck_size=DECK_SIZE_AFTER_COMMANDER):
     """Actual on-curve probability per colour for the base we built.
 
     A shortfall against the target is information, not a failure — this is the
@@ -191,7 +197,8 @@ def achieved_probability(requirements, sources):
         turn = max(req["earliest_turn"] or MAX_CASTING_TURN, req["max_pips"], MIN_PLANNING_TURN)
         result[colour] = round(
             hypergeometric_at_least(
-                sources.get(colour, 0), cards_seen(turn), req["effective_pips"]), 3
+                sources.get(colour, 0), cards_seen(turn), req["effective_pips"],
+                deck_size), 3
         )
     return result
 
@@ -523,8 +530,16 @@ def enters_tapped(card):
 _SAC_UNLESS_RE = re.compile(
     r"sacrifice (?:it|this land|[^,.\n]{0,40}?) unless [^.\n]*")
 
+#: THE ONE CONDITION A FORMAT DECIDES. "Enters tapped unless you have two or
+#: more opponents" (the Battlebond cycle — Spire Garden, Sea of Clouds, Morphic
+#: Pool and seven more) is always satisfied at a Commander table and never in
+#: a 1v1 match, so the same card is an untapped dual in one format and a
+#: tapland in the other. `FormatSpec.multiplayer` says which; the clause is
+#: struck before the "unless" test only when it cannot be met.
+_MULTIPLAYER_UNLESS_RE = re.compile(r"unless you have two or more opponents")
 
-def enters_tapped_unconditionally(card):
+
+def enters_tapped_unconditionally(card, multiplayer=True):
     """Does it ALWAYS enter tapped, with no escape and no condition?
 
     The substring test above is a superset and reading it as a tempo cost
@@ -534,6 +549,11 @@ def enters_tapped_unconditionally(card):
     "unless you have two or more opponents", which in Commander is ALWAYS true,
     so they are untapped duals being counted as taplands.
 
+    `multiplayer` is the format's `FormatSpec.multiplayer`. In a 1v1 format
+    that same clause is NEVER true — one opponent is not two — so the land
+    enters tapped every time and is counted here. Default True, so every
+    Commander reading is byte-identical.
+
     `strategy:deckbuilding.mana-base` prices taplands as a real drawback
     ("around eight is comfortable in a slow deck, near zero in an aggressive
     one"), and that clearly means lands that actually enter tapped. Sixteen
@@ -542,6 +562,8 @@ def enters_tapped_unconditionally(card):
     text = str(card.get("oracle_text", "") or "").lower()
     if not enters_tapped(card):
         return False
+    if not multiplayer:
+        text = _MULTIPLAYER_UNLESS_RE.sub(" ", text)
     # AN "UNLESS" ATTACHED TO A SACRIFICE IS A COST TO KEEP THE LAND, NOT A WAY
     # TO HAVE IT ENTER UNTAPPED. Archway Commons reads "This land enters tapped.
     # When this land enters, sacrifice it unless you pay {1}" — it ALWAYS enters
@@ -652,7 +674,7 @@ def count_sources(lands, colours):
     return counts
 
 
-def build(spells, pool, slots, basics=None, keep=()):
+def build(spells, pool, slots, basics=None, keep=(), deck_size=DECK_SIZE_AFTER_COMMANDER):
     """Build a mana base. Returns (lands, diagnostics).
 
     `spells` are the non-land cards, `pool` the legal nonbasic lands, `basics`
@@ -661,9 +683,12 @@ def build(spells, pool, slots, basics=None, keep=()):
     2026-09-10 a land in `must_include` fell into the SPELL slots (sharknado's
     plan came to 118 cards) and this chooser never saw it — so a Jeskai deck
     got Gond Gate and Rumble Arena over the Steam Vents the pilot had typed.
+    `deck_size` is the library the targets are sized against
+    (`FormatSpec.library_size`); the builder only builds Commander today, so
+    the default is what every caller passes.
     """
     requirements = pip_requirements(spells)
-    targets = source_targets(requirements)
+    targets = source_targets(requirements, deck_size=deck_size)
 
     keep = [dict(card) for card in keep]
     kept_names = {card["name"] for card in keep}
@@ -694,11 +719,12 @@ def build(spells, pool, slots, basics=None, keep=()):
         "source_targets": targets,
         "sources": sources,
         "shortfalls": shortfalls,
-        "on_curve_probability": achieved_probability(requirements, sources),
+        "on_curve_probability": achieved_probability(requirements, sources,
+                                                     deck_size=deck_size),
         "enters_tapped": tapped_used,
         "method": (
             f"hypergeometric, P(pips by earliest castable turn) >= "
-            f"{SOURCE_TARGET_PROBABILITY:.0%} over {DECK_SIZE_AFTER_COMMANDER} cards"
+            f"{SOURCE_TARGET_PROBABILITY:.0%} over {deck_size} cards"
         ),
     }
     return chosen, diagnostics

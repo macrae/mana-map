@@ -80,6 +80,7 @@ from manamap.config import (
     ENGINE_THIN_GROUP,
 )
 from manamap.pilot import deck_facts as deck_facts_mod
+from manamap.pilot import formats
 from manamap.pilot.common import (
     front_face,
     resolve_out_path,
@@ -448,10 +449,15 @@ def _interaction_breadth(cards, roles):
     return {cls: sorted(names) for cls, names in answered.items()}
 
 
-def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides):
+def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
+               spec=formats.DEFAULT):
     """One row per `DECK_AXIS_TARGETS` entry, plus the conditional ones
     (`colour-sources`, `consistency`, `power`) when their artifact exists. Every
     measurement traces to an artifact or to `roles`.
+
+    `spec` is the deck's `FormatSpec`; today it decides one thing here, whether
+    a "two or more opponents" land is a tapland (`multiplayer`). Default
+    Commander, so every tracked audit is byte-identical.
 
     The count is deliberately NOT stated here. Both this docstring and the module
     header said "thirteen" while `DECK_AXIS_TARGETS` held sixteen — the same
@@ -494,9 +500,11 @@ def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides):
     # cycle, which in Commander is always true. Reading that as tempo cost
     # overstates it by a factor of five on a three-colour deck.
     lands = [c for c in expand_copies(cards) if is_land(c)]
-    always = [c["name"] for c in lands if enters_tapped_unconditionally(c)]
+    always = [c["name"] for c in lands
+              if enters_tapped_unconditionally(c, multiplayer=spec.multiplayer)]
     conditional = [c["name"] for c in lands
-                   if enters_tapped(c) and not enters_tapped_unconditionally(c)]
+                   if enters_tapped(c)
+                   and not enters_tapped_unconditionally(c, multiplayer=spec.multiplayer)]
     axes.append(_axis(
         "taplands", len(always), "copies", sorted(set(always)),
         "land copies that enter tapped with no condition and no pay-life escape",
@@ -991,7 +999,8 @@ def analyze(slug, archetype=None, load_pool_fn=None, branch=None):
         "counts": facts["counts"],
         "roles": {"coverage": facts["roles"].get("coverage", 0.0),
                   "no_role": facts["roles"].get("no_role", [])},
-        "axes": build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides),
+        "axes": build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
+                           spec=formats.for_doc(doc)),
         "engine": engine_activation(slug, cards, roles, identity, load_pool_fn, branch),
         # Computed here rather than inside an axis: it answers "does this card do
         # anything at all in this list", which is not a ratio and has no target.

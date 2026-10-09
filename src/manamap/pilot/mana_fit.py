@@ -30,9 +30,11 @@ time ends up with a land base that cannot cast its own spells.
 import json
 
 #: A land that always enters tapped costs a turn. It is not disqualifying — the
-#: repo's own `enters_tapped_unconditionally` exists because "unless you control
-#: two or more opponents" is always true in Commander and must NOT count — but
-#: it ranks below an untapped source that fixes the same colours.
+#: repo's own `enters_tapped_unconditionally` exists because "unless you have
+#: two or more opponents" is always true in Commander and must NOT count, and
+#: never true in a 1v1 format and MUST (the deck's `FormatSpec.multiplayer`
+#: says which) — but it ranks below an untapped source that fixes the same
+#: colours.
 TAPPED_PENALTY = 0.5
 
 #: How many proposals to show per bucket before saying how many were dropped.
@@ -85,8 +87,9 @@ def shortfall(slug, branch=None, deck_doc=None):
 
 def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
     """Lands, rocks and dorks that close the gap — ranked by colours covered."""
-    from manamap.pilot import card_pool, collection, mana_analysis, manabase
-    from manamap.pilot.common import deck_dir
+    from manamap.pilot import card_pool, collection, formats, mana_analysis, manabase
+    from manamap.pilot.card_search import deck_identity
+    from manamap.pilot.common import deck_dir, load_deck_cards
     from manamap.pilot.fetch_deck import parse_mainboard
 
     facts = shortfall(slug, branch)
@@ -97,10 +100,13 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
     oracle = card_pool.corpus_oracle()
     held = {e["name"] for e in parse_mainboard(
         (deck_dir(slug, branch) / "decklist.txt").read_text(encoding="utf-8"))}
-    identity = set()
-    for e in parse_mainboard((deck_dir(slug, branch) / "decklist.txt").read_text()):
-        if e.get("is_commander"):
-            identity |= set((pool.get(e["name"]) or {}).get("color_identity") or set())
+    # THE IDENTITY AND THE FORMAT COME FROM cards.json, through the one
+    # derivation `mana_analysis` itself reads — the commanders' identity where
+    # the format has one, the union of the main cards' where it does not. The
+    # pool filter below is unchanged: a candidate's identity must sit inside it.
+    deck_doc = load_deck_cards(slug, branch)
+    spec = formats.for_doc(deck_doc)
+    identity = set(deck_identity(deck_doc))
     owned = collection.owned_names()
     # THE DECK'S OWN LANDS, so a CANDIDATE fetchland is scored on what it could
     # actually go and get in this list. Without it every fetch covers nothing
@@ -139,7 +145,8 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
                 kind = "rock"
             else:
                 continue
-        tapped = bool(is_land and manabase.enters_tapped_unconditionally(card))
+        tapped = bool(is_land and manabase.enters_tapped_unconditionally(
+            card, multiplayer=spec.multiplayer))
         # THE SCORE IS COVERAGE, NOT QUALITY. How many colours this list is
         # actually short of does this one card answer — a five-colour land is
         # five fixes in one slot. Ties break on the tempo tax, then on how

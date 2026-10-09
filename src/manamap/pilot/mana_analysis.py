@@ -30,7 +30,8 @@ from manamap.pilot.common import (
     load_deck_cards,
     load_json,
 )
-from manamap.pilot import manabase
+from manamap.pilot import formats, manabase
+from manamap.pilot.card_search import deck_identity
 from manamap.pilot.manabase import (
     WUBRG,
     achieved_probability,
@@ -173,11 +174,14 @@ def analyze(slug, branch=None, deck_doc=None):
     # here understates the mana base by every duplicated basic — the honest
     # number is the whole point of this analysis.
     cards = expand_copies(entries)
-    identity = {
-        c
-        for card in cards if card.get("is_commander")
-        for c in card.get("color_identity", []) if c in WUBRG
-    }
+    # THE FORMAT IS A PARAMETER OF THE MATHS. The library the hypergeometric
+    # draws from, whether a "two or more opponents" land is a tapland, and
+    # where the deck's identity comes from all read off the deck's own spec:
+    # absent `format` is Commander, so the fourteen tracked decks are
+    # byte-identical. `deck_identity` is the one derivation — the commanders'
+    # when the format has one, the union of the main cards' when it does not.
+    spec = formats.for_doc(deck_doc)
+    identity = {c for c in deck_identity(deck_doc) if c in WUBRG}
 
     lands = sorted((c for c in cards if is_land(c)), key=lambda c: c["name"])
     land_entries = sorted((c for c in entries if is_land(c)),
@@ -194,7 +198,7 @@ def analyze(slug, branch=None, deck_doc=None):
             class_counts[cls] = class_counts.get(cls, 0) + 1
         if enters_tapped(card):
             tapped += 1
-        if enters_tapped_unconditionally(card):
+        if enters_tapped_unconditionally(card, multiplayer=spec.multiplayer):
             always_tapped += 1
         for colour in land_colors(card, pool=lands) & (identity or set(WUBRG)):
             land_sources[colour] += 1
@@ -228,11 +232,12 @@ def analyze(slug, branch=None, deck_doc=None):
                 "ramp:cost-reduction", 0) + copies
 
     requirements = pip_requirements(cards)
-    targets = source_targets(requirements)
+    library = spec.library_size
+    targets = source_targets(requirements, deck_size=library)
     total_sources = {c: land_sources[c] + nonland_sources[c] for c in WUBRG}
-    p_lands = achieved_probability(requirements, land_sources)
-    p_all = achieved_probability(requirements, total_sources)
-    p_ungated = achieved_probability(requirements, ungated_sources)
+    p_lands = achieved_probability(requirements, land_sources, deck_size=library)
+    p_all = achieved_probability(requirements, total_sources, deck_size=library)
+    p_ungated = achieved_probability(requirements, ungated_sources, deck_size=library)
 
     # Pip share vs source share — the intuitive check: a colour demanding 40%
     # of the pips wants roughly 40% of the sources.
@@ -262,12 +267,26 @@ def analyze(slug, branch=None, deck_doc=None):
             f"({tapped / len(lands):.0%}) — over the one-in-three budget the "
             f"deck builder allows itself.")
 
-    goldfish = load_json(deck_file(slug, "goldfish_metrics.json", branch)) or {}
-    metrics = goldfish.get("metrics", {})
+    # THE GOLDFISH IS COMMANDER-ONLY. For a format without a commander the two
+    # per-turn blocks below stay as empty maps — their readers (`deck_audit`,
+    # `deck_info`) already treat an empty map as "not measured" — and the
+    # reason is written down rather than left to be inferred from an absence.
+    if spec.commanders:
+        goldfish = load_json(deck_file(slug, "goldfish_metrics.json", branch)) or {}
+        metrics = goldfish.get("metrics", {})
+    else:
+        metrics = {}
+        notes.append(f"the goldfish is Commander-only; not run for {spec.name}")
+
+    head = {"slug": slug, "decklist_sha256": deck_doc.get("decklist_sha256")}
+    # `format` only when it is not the default, by `formats.format_key`'s
+    # contract: the tracked Commander files carry no such key and must not
+    # grow one.
+    if formats.format_key(spec):
+        head["format"] = formats.format_key(spec)
 
     return {
-        "slug": slug,
-        "decklist_sha256": deck_doc.get("decklist_sha256"),
+        **head,
         "lands": {
             # `total` is copies — the answer to "how many lands does this deck
             # run". `entries` is distinct cards, kept beside it so the two can
@@ -336,7 +355,7 @@ def analyze(slug, branch=None, deck_doc=None):
                 "mean_available_mana_by_turn", {}),
         },
         "assumptions": [
-            "Colour probabilities are hypergeometric draws from a 99-card "
+            f"Colour probabilities are hypergeometric draws from a {library}-card "
             "library — no mulligans, no card selection, no fetching decisions.",
             "A source counts only for mana it produces unconditionally; "
             "restricted mana (“spend this mana only…”) counts "

@@ -17,6 +17,8 @@ from manamap.pilot.manabase import (
 )
 
 
+import pytest
+
 from conftest import assert_corpus_count, requires_data
 
 
@@ -579,3 +581,112 @@ def test_the_basic_gate_fires_on_exactly_the_cycle_across_the_corpus():
     # new set may add a sixth without anything being wrong.
     assert {"Dark Fortress", "Gathering Place", "Gleaming Bastion",
             "Hidden Lair", "Training Compound"} <= set(gated_names), gated_names
+
+
+# ── the library size is the format's, not a constant ──
+
+
+def _p_at_least_independent(successes, draws, wanted, deck_size):
+    """P(X >= wanted), hypergeometric, written WITHOUT the production formula.
+
+    Production takes `1 - P(misses)` over `math.comb`; this sums the pmf of the
+    successes directly, over factorials, so the two agree only if both are the
+    hypergeometric and not because one copied the other.
+    """
+    from math import factorial as f
+
+    def choose(n, k):
+        return 0 if k < 0 or k > n else f(n) // (f(k) * f(n - k))
+
+    total = choose(deck_size, draws)
+    return sum(choose(successes, i) * choose(deck_size - successes, draws - i)
+               for i in range(wanted, min(successes, draws) + 1)) / total
+
+
+def test_hypergeometric_takes_the_library_size_it_is_given():
+    """`deck_size=60` is a constructed library; the default stays 99."""
+    from manamap.pilot.manabase import DECK_SIZE_AFTER_COMMANDER
+
+    assert DECK_SIZE_AFTER_COMMANDER == 99
+    checked = 0
+    for successes, draws, wanted in ((13, 9, 1), (22, 9, 2), (24, 8, 2), (16, 7, 1)):
+        ours = hypergeometric_at_least(successes, draws, wanted, 60)
+        assert ours == pytest.approx(_p_at_least_independent(successes, draws, wanted, 60))
+        # A smaller library with the same sources is the better draw.
+        assert ours > hypergeometric_at_least(successes, draws, wanted)
+        checked += 1
+    assert checked == 4
+
+
+def test_sources_needed_in_a_sixty_card_library():
+    """THE 60-CARD FIGURE, DRIVEN THROUGH THE REAL FUNCTION AND VERIFIED BY HAND.
+
+    One pip by turn 3 on the play is 9 cards seen. In 60 cards, twelve sources
+    give P(at least one) = 1 - C(48,9)/C(60,9) = 0.8866 and thirteen give
+    1 - C(47,9)/C(60,9) = 0.9078, so the first count at or over 90% is 13.
+    (Karsten's published table says 12 for this cell; it models mulligans and
+    a coin-flip on the draw, which this arithmetic deliberately does not —
+    the assumptions string says so — so his figure is NOT what is pinned.)
+    The same call without `deck_size` is the Commander answer, 22.
+    """
+    assert sources_needed(1, 3, deck_size=60) == 13
+    assert hypergeometric_at_least(12, 9, 1, 60) < 0.9 < hypergeometric_at_least(13, 9, 1, 60)
+    assert sources_needed(1, 3) == 22
+    # Every cell is the first k whose independently computed probability
+    # clears the target, in both libraries.
+    checked = 0
+    for pips, turn in ((1, 3), (2, 3), (2, 4), (1, 5)):
+        for size in (60, 99):
+            k = sources_needed(pips, turn, deck_size=size)
+            draws = cards_seen(turn)
+            assert _p_at_least_independent(k, draws, pips, size) >= 0.9
+            assert _p_at_least_independent(k - 1, draws, pips, size) < 0.9
+            checked += 1
+    assert checked == 8
+
+
+def test_targets_and_achieved_probability_carry_the_library_size():
+    from manamap.pilot.manabase import achieved_probability
+
+    reqs = pip_requirements([_spell("A", "{G}", 1)] * 10 + [_spell("B", "{G}{G}", 3)] * 3)
+    sixty, commander = source_targets(reqs, deck_size=60), source_targets(reqs)
+    assert sixty["G"] == sources_needed(reqs["G"]["effective_pips"], 3, deck_size=60)
+    assert sixty["G"] < commander["G"], "a smaller library wants fewer sources"
+    # Hitting the 60-card target reads at or over 90% ONLY against 60 cards.
+    sources = {"G": sixty["G"]}
+    assert achieved_probability(reqs, sources, deck_size=60)["G"] >= 0.9
+    assert achieved_probability(reqs, sources)["G"] < 0.9
+
+
+def test_build_states_the_library_it_was_sized_against():
+    spells = [_spell(f"s{i}", "{R}", 2) for i in range(20)]
+    _, diag = build(spells, [], 24, {"R": _basic("R", "Mountain")}, deck_size=60)
+    assert "over 60 cards" in diag["method"]
+    _, default = build(spells, [], 36, {"R": _basic("R", "Mountain")})
+    assert "over 99 cards" in default["method"]
+
+
+# ── a "two or more opponents" land is a tapland in exactly one format ──
+
+
+def test_two_or_more_opponents_reads_by_the_number_of_opponents():
+    """The Battlebond cycle: an untapped dual at a Commander table, a tapland
+    in a 1v1 match, because one opponent is not two. The predicate's default
+    is the Commander reading, so every tracked figure is unchanged."""
+    from manamap.pilot.manabase import enters_tapped_unconditionally
+
+    spire = _land("Spire Garden", "This land enters tapped unless you have two "
+                                  "or more opponents. {T}: Add {R} or {G}.")
+    assert not enters_tapped_unconditionally(spire)
+    assert not enters_tapped_unconditionally(spire, multiplayer=True)
+    assert enters_tapped_unconditionally(spire, multiplayer=False)
+    # Lands whose condition is NOT about opponents read the same in both.
+    guildgate = _land("Guildgate", "This land enters tapped. {T}: Add {R} or {G}.")
+    check = _land("Clifftop Retreat", "This land enters tapped unless you control "
+                                      "a Mountain or a Plains. {T}: Add {R} or {W}.")
+    shock = _land("Blood Crypt", "As this land enters, you may pay 2 life. If you "
+                                 "don't, it enters tapped. {T}: Add {B} or {R}.")
+    for multiplayer in (True, False):
+        assert enters_tapped_unconditionally(guildgate, multiplayer=multiplayer)
+        assert not enters_tapped_unconditionally(check, multiplayer=multiplayer)
+        assert not enters_tapped_unconditionally(shock, multiplayer=multiplayer)
