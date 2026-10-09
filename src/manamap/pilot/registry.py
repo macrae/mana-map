@@ -511,8 +511,19 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json",
                              help="print instead of writing threat/targeting.json")
         if name == "check-in":
-            cmd.add_argument("--from", dest="source", required=True,
+            # `--from` is optional only because `--set-printing` is the other
+            # way in; `check_in.main` refuses a call that gives neither.
+            cmd.add_argument("--from", dest="source", default=None,
                              help="the paper decklist: a file, or - for stdin")
+            cmd.add_argument("--set-printing", nargs=2, metavar=("NAME", "PRINTING"),
+                             dest="set_printing", default=None,
+                             help="point ONE line at an exact printing: "
+                                  "--set-printing \"Sol Ring\" \"(SLD) 1234\"; writes the "
+                                  "line and runs the chain, no new version, no agents")
+            cmd.add_argument("--foil", action="store_true",
+                             help="with --set-printing: the pilot's copy is foil (*F*)")
+            cmd.add_argument("--branch", default=None, metavar="NAME",
+                             help="with --set-printing: write the branch's list, not the deck's")
             cmd.add_argument("--write", action="store_true",
                              help="apply it, then run fetch-deck -> goldfish -> mana-analysis "
                                   "(default is a dry-run diff)")

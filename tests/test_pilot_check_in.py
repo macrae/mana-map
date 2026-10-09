@@ -177,6 +177,134 @@ def test_reformatting_alone_cannot_manufacture_a_version(sandbox, paper):
     assert key(after) == key(entries)
 
 
+# ── set_printing: one line, the exact card the pilot sleeves ───────────────
+#
+# These touch no corpus and no git: a scratch deck directory and the chain
+# patched out, so they are the unit tier. The one writer rewrites ONE line.
+
+LIST = ("Commander:\n"
+        "1 Edgar Markov (INR) 234\n"
+        "\n"
+        "Deck:\n"
+        "1 Akroma's Will (M3C) 165\n"
+        "1 Anguished Unmaking\n"
+        "1 Blood Artist (C17) 100 *F*\n"
+        "1 Fire // Ice\n"
+        "1 Sol Ring\n"
+        "87 Swamp\n")
+
+
+@pytest.fixture
+def scratch(tmp_path, monkeypatch):
+    """A deck directory of our own, the chain recorded rather than run."""
+    (tmp_path / "decklist.txt").write_text(LIST, encoding="utf-8")
+    monkeypatch.setattr(check_in, "deck_dir", lambda slug, branch=None: tmp_path)
+    ran = []
+    monkeypatch.setattr(check_in, "_run_chain",
+                        lambda slug, branch=None: ran.append((slug, branch)) or ["fetch-deck", "goldfish", "mana-analysis"])
+    return tmp_path, ran
+
+
+def test_set_printing_rewrites_one_line_and_no_other_byte(scratch):
+    deck, ran = scratch
+    r = check_in.set_printing("cdeck", "Sol Ring", "SLD", "1234")
+    assert r == {"changed": True, "line": "1 Sol Ring (SLD) 1234",
+                 "ran": ["fetch-deck", "goldfish", "mana-analysis"]}
+    after = (deck / "decklist.txt").read_text(encoding="utf-8")
+    assert after == LIST.replace("1 Sol Ring\n", "1 Sol Ring (SLD) 1234\n"), (
+        "every other line — the headers, the blank, the other printings — is byte-identical")
+    assert "1 Blood Artist (C17) 100 *F*" in after, "another line's *F* survives"
+    assert ran == [("cdeck", None)], "the chain ran once, on the deck"
+    assert (deck / "decklist.txt.bak").read_text(encoding="utf-8") == LIST
+
+
+def test_set_printing_is_idempotent(scratch):
+    deck, ran = scratch
+    check_in.set_printing("cdeck", "Sol Ring", "sld", "1234")
+    once = (deck / "decklist.txt").read_text(encoding="utf-8")
+    again = check_in.set_printing("cdeck", "Sol Ring", "SLD", "1234")
+    assert again == {"changed": False, "line": "1 Sol Ring (SLD) 1234", "ran": []}
+    assert (deck / "decklist.txt").read_text(encoding="utf-8") == once
+    assert len(ran) == 1, "the same printing twice runs nothing the second time"
+    # A foil flip on the same printing IS a change: the line gains *F*.
+    r = check_in.set_printing("cdeck", "Sol Ring", "sld", "1234", foil=True)
+    assert r["changed"] and r["line"] == "1 Sol Ring (SLD) 1234 *F*"
+    parsed = {e["name"]: e for e in parse_decklist((deck / "decklist.txt").read_text())}
+    assert parsed["Sol Ring"]["foil"] and parsed["Sol Ring"]["set"] == "sld"
+    assert parsed["Blood Artist"]["foil"] and parsed["Blood Artist"]["collector_number"] == "100"
+
+
+def test_set_printing_refuses_a_card_the_list_does_not_hold(scratch):
+    deck, ran = scratch
+    with pytest.raises(SystemExit, match="not in decklist.txt"):
+        check_in.set_printing("cdeck", "Lightning Bolt", "sld", "1")
+    with pytest.raises(SystemExit, match="set code and a collector number"):
+        check_in.set_printing("cdeck", "Sol Ring", "", "1")
+    assert (deck / "decklist.txt").read_text(encoding="utf-8") == LIST and ran == []
+
+
+def test_set_printing_refuses_a_name_on_two_lines(scratch):
+    deck, ran = scratch
+    (deck / "decklist.txt").write_text(LIST.replace("87 Swamp\n", "80 Swamp\n7 Swamp (SLD) 9\n"))
+    with pytest.raises(SystemExit, match="2 lines"):
+        check_in.set_printing("cdeck", "Swamp", "unf", "1")
+    assert ran == []
+
+
+def test_set_printing_matches_a_dfc_by_its_front_face_and_keeps_cmdr(scratch):
+    deck, ran = scratch
+    r = check_in.set_printing("cdeck", "Fire", "apc", "128")
+    assert r["line"] == "1 Fire // Ice (APC) 128"
+    assert "1 Fire // Ice (APC) 128\n" in (deck / "decklist.txt").read_text()
+    # A `*CMDR*`-marked line keeps its marker after the printing and the foil.
+    (deck / "decklist.txt").write_text("1 Zur the Enchanter *CMDR*\n99 Plains\n")
+    r = check_in.set_printing("cdeck", "Zur the Enchanter", "sld", "77", foil=True)
+    assert r["line"] == "1 Zur the Enchanter (SLD) 77 *F* *CMDR*"
+    [cmdr] = [e for e in parse_decklist((deck / "decklist.txt").read_text()) if e["is_commander"]]
+    assert cmdr["name"] == "Zur the Enchanter" and cmdr["set"] == "sld" and cmdr["foil"]
+
+
+def test_set_printing_no_chain_writes_the_line_and_runs_nothing(scratch):
+    deck, ran = scratch
+    r = check_in.set_printing("cdeck", "Sol Ring", "sld", "1234", run_chain=False)
+    assert r["changed"] and r["ran"] == [] and ran == []
+    assert "1 Sol Ring (SLD) 1234\n" in (deck / "decklist.txt").read_text()
+
+
+def test_set_printing_on_a_branch_writes_the_branch_and_runs_its_chain(tmp_path, monkeypatch):
+    deck = tmp_path / "d"
+    branch = deck / "branches" / "b"
+    branch.mkdir(parents=True)
+    (deck / "decklist.txt").write_text(LIST)
+    (branch / "decklist.txt").write_text(LIST)
+    monkeypatch.setattr(check_in, "deck_dir", lambda slug, branch=None: branch and (deck / "branches" / branch) or deck)
+    ran = []
+    monkeypatch.setattr(check_in, "_run_chain", lambda slug, branch=None: ran.append(branch) or [])
+    check_in.set_printing("d", "Sol Ring", "sld", "1", branch="b")
+    assert "(SLD) 1" in (branch / "decklist.txt").read_text()
+    assert "(SLD) 1" not in (deck / "decklist.txt").read_text(), "the deck's own list is untouched"
+    assert ran == ["b"]
+
+
+def test_the_cli_twin_takes_name_and_printing_and_needs_no_from(scratch, capsys):
+    from types import SimpleNamespace
+    deck, ran = scratch
+    assert check_in.parse_printing_arg("(SLD) 1234") == ("sld", "1234")
+    assert check_in.parse_printing_arg("sld 1234") == ("sld", "1234")
+    with pytest.raises(SystemExit, match="not a printing"):
+        check_in.parse_printing_arg("SLD1234")
+    check_in.main(SimpleNamespace(slug="cdeck", source=None, set_printing=["Sol Ring", "(SLD) 1234"],
+                                  foil=True, no_chain=True, branch=None))
+    out = capsys.readouterr().out
+    assert "1 Sol Ring (SLD) 1234 *F*" in out and "chain skipped" in out and "not a new version" in out
+    assert ran == []
+    check_in.main(SimpleNamespace(slug="cdeck", source=None, set_printing=["Sol Ring", "(SLD) 1234"],
+                                  foil=True, no_chain=False, branch=None))
+    assert "nothing written, nothing run" in capsys.readouterr().out
+    with pytest.raises(SystemExit, match="--from"):
+        check_in.main(SimpleNamespace(slug="cdeck", source=None, set_printing=None))
+
+
 def test_a_name_the_deck_already_holds_is_known_even_outside_the_corpus(tmp_path, monkeypatch):
     """ingris-infect's commander is not in the corpus until Reality Fracture
     releases; a branch that keeps her must not be refused on her name."""

@@ -381,3 +381,44 @@ def test_re_asserting_a_lock_keeps_the_note_and_the_build_date(tmp_path, monkeyp
     dv.set_paper("goblin-storm", note="a new reason")
     paper = json.loads((deck / dv.TAGS_FILE).read_text())[dv.PAPER_KEY]
     assert paper["note"] == "a new reason"
+
+
+def _root(repo):
+    return repo.parent.parent.parent
+
+
+def test_a_printing_swap_is_not_a_version_but_a_card_change_is(repo):
+    """`check-in --set-printing` rewrites one line's `(SET) CN` and the file's
+    bytes move; the 99 does not. Versions are keyed on (name, copies, commander),
+    so the commit joins V2 as a second byte-sha — exactly as a comment edit does —
+    and a game logged on it still finds its list. Swap a card and V3 appears."""
+    from manamap.pilot import check_in
+
+    assert [v["version"] for v in dv.versions(SLUG)] == [1, 2]
+    r = check_in.set_printing(SLUG, "Craterhoof Behemoth", "sld", "1234", foil=True,
+                              run_chain=False)
+    assert r["changed"] and r["line"] == "1 Craterhoof Behemoth (SLD) 1234 *F*"
+    _git(_root(repo), "add", "."); _git(_root(repo), "commit", "-q", "-m", "the Secret Lair Hoof")
+    vers = dv.versions(SLUG)
+    assert [v["version"] for v in vers] == [1, 2], "a printing swap minted a version"
+    sha = dv.working_sha(SLUG)
+    assert sha in vers[1]["decklist_sha256s"] and len(vers[1]["decklist_sha256s"]) == 2
+    assert dv.report(SLUG)["current_version"] == 2
+    # ...and a card change still is one.
+    text = (repo / "decklist.txt").read_text()
+    (repo / "decklist.txt").write_text(text.replace("1 Heroic Intervention\n", "1 Sol Ring\n"))
+    _git(_root(repo), "add", "."); _git(_root(repo), "commit", "-q", "-m", "a swap")
+    vers = dv.versions(SLUG)
+    assert [v["version"] for v in vers] == [1, 2, 3]
+    assert vers[2]["in"] == ["Sol Ring"] and vers[2]["out"] == ["Heroic Intervention"]
+
+
+def test_the_same_hundred_names_under_another_commander_is_a_version(repo):
+    """The version key carries the commander flag: moving the `*CMDR*` marker to
+    another card changes no name and no count and is still a different deck."""
+    text = (repo / "decklist.txt").read_text()
+    moved = text.replace("1 Radagast of Rhosgobel *CMDR*\n", "1 Radagast of Rhosgobel\n").replace(
+        "1 Craterhoof Behemoth\n", "1 Craterhoof Behemoth *CMDR*\n")
+    (repo / "decklist.txt").write_text(moved)
+    _git(_root(repo), "add", "."); _git(_root(repo), "commit", "-q", "-m", "Hoof takes the helm")
+    assert [v["version"] for v in dv.versions(SLUG)] == [1, 2, 3]

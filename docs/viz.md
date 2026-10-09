@@ -186,7 +186,7 @@ python -m http.server 8000
 | `viz/js/workbench.js` | The landing page (~807 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
 | `viz/branch.html` | Branch shell: the objective mount and the panel grid |
 | `viz/js/branch-view.js` | The branch workbench (~856 lines). IIFE; exposes `window.Branch` for the browser suite |
-| `viz/js/shell.js` | The library drawer (~905 lines), mounted on every page; `Shell.cardImageUrl` is the name-only art helper |
+| `viz/js/shell.js` | The library drawer (~930 lines), mounted on every page; `Shell.cardImageUrl(name, version, entry)` is the art helper — a `cards.json` entry's own image (its face by name for a DFC, `art_crop` when asked) when one is passed, the by-name Scryfall URL otherwise |
 | `viz/js/api.js` | The local-server probe (~126 lines). `Api.ready` is false on a static host and every verb degrades to a named command |
 | `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all six pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
 | `viz/library.html` | **Curate** shell: pile rail, grid, pinned pane |
@@ -1423,7 +1423,7 @@ bottom:
 | relations | Similar / Synergy / Outclassed by, counts stated before the click; the synergy caveat is the button's `title` |
 | the comparison | `buildObsolescenceHtml`: a CLOSED `<details>` directly under the relation row — strength, gains, costs and "played less" for each card that outclasses this one. It was a separate "Compare with" box above the oracle reading the same index as the button; obsolescence now has one place |
 | Keep, Set as commander | one row (`.detail-actions`) |
-| the image | 240px, the box reserved at 488:680; a click toggles full width. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once |
+| the image | 240px, the box reserved at 488:680; a click toggles full width. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once. **In Build with the card in the open deck**, the image is the sleeved printing's (`Build.deckCard(name)` → `Shell.cardImageUrl(name, 'normal', entry)`) and the flip is that printing's own back face; everywhere else it is by name |
 | facts | `cardFactsHtml(d, {format})`: `EDHREC #n · <Format>: legal / BANNED / not legal · Identity …`; every other format inside a closed `<details>` in the same three states. The format is the deck's (`Build.deckFormat()`), commander elsewhere |
 
 **Dropped**: the CMC row (the cost is in the header) and the Keywords section (it repeats the
@@ -1468,6 +1468,33 @@ place (a re-render would reset `#detailInner`'s scroll), so the panel and the ti
 disagree. Outside Build, or with no deck, there is no block. `tests/test_viz_card_panel.py`
 drives all of it with real clicks; `watch/mark` is mocked by the review grid's `_mock_api`
 and Scryfall is routed, so nothing reaches the network or the tracked `watchlist.json`.
+
+**The printing row** (`.deck-ctx-printing`) is the LAST row of the block, and only for a
+card in the list: `(SET) CN · Set Name [· foil]` from `Build.cardContext(row).printing`
+(`{set, set_name, collector_number, foil, artist}`, read off the `cards.json` row each
+slot now carries as `slot.card`). A **change** button appears when `Api.has('printing/set')`
+— a static host states and cannot write. `Build.changePrinting(name)` fetches `printings`
+and fills the row's `.printing-strip`: a foil toggle, then one `.printing-thumb` per
+printing (image, `(SET) CN`, the set name / artist / date / price in its title), the
+sleeved one `.is-current`. Clicking one is `Build.pickPrinting(name, btn)`: the strip says
+"writing…", `printing/set` is POSTed with `{slug, card, set, collector_number, foil}`,
+`Build.reloadCards()` re-reads `cards.json` (`no-store`) into the slots, and
+`MM.refreshDeckContext(name)` repaints the block — `select(slug)` is deliberately not
+re-run, since it reseeds the graph and resets the review grid for a change that moved
+neither. `tests/test_viz_printings.py` drives the strip with real clicks against its own
+`_mock_api` (the grid's advertises only `watch/mark`), asserts the posted body and the
+re-rendered row, and checks the deck page's hover art is the `cards.json` image
+(`cards.scryfall.io/…`) rather than `cards/named?exact=`.
+
+**Art is the entry's when the page has the entry.** `Shell.cardImageUrl(name, version,
+entry)` returns the `cards.json` row's `image` (its face by name for a DFC — a split
+card's faces carry none, so the card's one image stands in — and `art_crop` when asked),
+and only without one the by-name Scryfall URL, which is Scryfall's DEFAULT printing. The
+deck page keeps `deckCards` by name from the `cards.json` it fetches beside the Deck
+Context and passes it to `cardRef`, `atlasRef` and the context renderer; the workbench
+and the dossier cover pass the manifest entry (its `image` is the commander's `art_crop`),
+so a deck with no row yet still gets art by its commander's name. The Atlas drawer and
+Explore stay by name: they have no entry.
 
 ## Explore mode highlights
 

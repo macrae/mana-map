@@ -123,7 +123,31 @@ window.Shell = (function () {
    * library at once. This is the first place in the repo to fire dozens of image
    * requests in a breath, which is also why the tiles are lazy.
    */
-  function cardImageUrl(name, version) {
+  /* THE ENTRY WINS WHEN THERE IS ONE. A `cards.json` card carries the image of
+   * the PRINTING the pilot sleeves (`fetch-deck` resolves `(SET) CN` first),
+   * and a page that has that row in hand must draw it — by name, Scryfall
+   * answers with its default printing, so the deck page showed a reprint of a
+   * card whose Secret Lair art was sitting in the same JSON. `version` picks
+   * `art_crop` when asked and the card image otherwise (a `small`/`normal`
+   * request gets the one `normal` image the entry holds); a DFC's face is
+   * found by `name` among `card_faces`, and a split card's faces carry no
+   * image of their own, so the card's one image stands in. No usable field
+   * on the entry falls back to the by-name URL, never to nothing. */
+  function entryImageUrl(entry, name, version) {
+    if (!entry || typeof entry !== 'object') return null;
+    var want = version === 'art_crop' ? 'art_crop' : 'image';
+    var faces = entry.card_faces || [];
+    if (name && entry.name && name !== entry.name) {
+      for (var i = 0; i < faces.length; i++) {
+        if (faces[i] && faces[i].name === name && faces[i][want]) return faces[i][want];
+      }
+    }
+    return entry[want] || entry.image || null;
+  }
+
+  function cardImageUrl(name, version, entry) {
+    var own = entryImageUrl(entry, name, version);
+    if (own) return own;
     return 'https://api.scryfall.com/cards/named?exact='
       + encodeURIComponent(name) + '&format=image&version=' + (version || 'small');
   }

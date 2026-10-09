@@ -209,6 +209,7 @@
    * press, because that judgement belongs beside the commands. */
   var measures = null;
   var drafts = [];          // authored files the server will DRAFT, never author
+  var deckCards = {};       // name -> the open deck's cards.json row (its sleeved printing)
 
   function runnable(d, stage) {
     if (!measures || !measures[stage] || !window.Api || !Api.ready) return null;
@@ -442,8 +443,10 @@
      * promotes `data-src` on the first mouseover or focus. That is also strictly
      * better than the eager version it replaces — 89 card images were being
      * declared on every dossier load to show at most one. */
+    // THE DECK'S OWN ROW, when the page has cards.json: the pop then shows the
+    // printing the pilot sleeves rather than Scryfall's default for the name.
     var url = (window.Shell && Shell.cardImageUrl)
-      ? Shell.cardImageUrl(name, 'normal') : null;
+      ? Shell.cardImageUrl(name, 'normal', deckCards[name]) : null;
     var pop = url ? '<img class="card-pop" data-src="' + esc(url) + '" alt="' +
       esc(name) + '">' : '';
     var mark = '', tail = '';
@@ -507,7 +510,7 @@
     var body = ContextMD.render(d.context, {
       skipTitle: true,
       cardImageUrl: function (n) {
-        return (window.Shell && Shell.cardImageUrl) ? Shell.cardImageUrl(n, 'normal') : null;
+        return (window.Shell && Shell.cardImageUrl) ? Shell.cardImageUrl(n, 'normal', deckCards[n]) : null;
       }
     });
     return section('context', '#c4a747', '<div class="ctx-body">' + body + '</div>');
@@ -771,7 +774,7 @@
   }
 
   function atlasRef(name) {
-    var url = (window.Shell && Shell.cardImageUrl) ? Shell.cardImageUrl(name, 'normal') : null;
+    var url = (window.Shell && Shell.cardImageUrl) ? Shell.cardImageUrl(name, 'normal', deckCards[name]) : null;
     var pop = url ? '<img class="card-pop" data-src="' + esc(url) + '" alt="' + esc(name) + '">' : '';
     return '<a class="cardref" data-card="' + esc(name) + '" href="index.html?cards=' +
       encodeURIComponent(name) + '" tabindex="0">' + esc(name) + pop + '</a>';
@@ -1800,8 +1803,12 @@
     var g = info.goldfish || {}, rec = info.record || {};
     var stamp = stampOf(info, entry);
 
-    var art = entry.image
-      ? '<img class="cov-shot" src="' + esc(entry.image) + '" alt="" loading="lazy">'
+    // The manifest entry's `image` is the commander's `art_crop` from cards.json;
+    // through `Shell.cardImageUrl` a deck with no row yet still gets art by name.
+    var cover = (window.Shell && Shell.cardImageUrl && (entry.image || entry.commander))
+      ? Shell.cardImageUrl(entry.commander || '', 'art_crop', entry) : (entry.image || null);
+    var art = cover
+      ? '<img class="cov-shot" src="' + esc(cover) + '" alt="" loading="lazy">'
       : '<div class="cov-shot cov-shot-none"></div>';
 
     var marks = [(info.colour_identity || []).join(''),
@@ -2314,6 +2321,10 @@
           d.sims = both[2].filter(Boolean);
           d.context = both[8] || '';
           d.cards = both[9];
+          // By name, for every panel that draws a card's art: the row IS the
+          // sleeved printing. Empty when the page did not fetch cards.json.
+          deckCards = {};
+          (((d.cards || {}).cards) || []).forEach(function (c) { deckCards[c.name] = c; });
           d.experiments = both[3].filter(Boolean);
           d.prescriptions = both[4].filter(Boolean);
           // JSONL, one game per line — the log is append-only and authored.

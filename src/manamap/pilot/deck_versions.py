@@ -54,6 +54,26 @@ def _sha(blob):
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
+def _version_key(blob):
+    """What makes two lists the SAME version: `(name, commander?) -> copies`.
+
+    Never the set, the collector number or the foil marker. A printing swap
+    (`check-in --set-printing`) rewrites one line's annotation and changes the
+    file's bytes — so it adds a byte-sha to the version it belongs to, exactly
+    as a comment edit does, and the games logged on it still find their list.
+    `dh._entries` (name -> copies) stays the projection for `in`/`out`/`size`;
+    this one also carries the commander flag, so the same hundred names with a
+    different commander is a different deck rather than a comment edit.
+    Measured on the fleet before it was adopted: it renumbers nothing.
+    """
+    from manamap.pilot.fetch_deck import parse_decklist   # as `dh._entries` does
+    out = {}
+    for e in parse_decklist(blob):
+        k = (e["name"], bool(e.get("is_commander")))
+        out[k] = out.get(k, 0) + int(e.get("quantity") or 1)
+    return out
+
+
 def versions(slug):
     """Every content-distinct decklist, oldest first, each with the byte-shas that
     map to it (a comment-only edit adds a sha, not a version)."""
@@ -72,14 +92,15 @@ def versions(slug):
             if blob is not None and _sha(blob) == want:
                 revs = revs[i:]
                 break
-    out, previous = [], None
+    out, previous, previous_key = [], None, None
     for rev in revs:
         blob = blobs.get(rev["sha"])
         if blob is None:
             continue
         entries = dh._entries(blob)
+        key = _version_key(blob)
         byte_sha = _sha(blob)
-        if entries == previous:
+        if key == previous_key:
             out[-1]["decklist_sha256s"].append(byte_sha)
             out[-1]["sha"] = rev["sha"][:12]        # latest commit carrying this list
             out[-1]["date"] = rev["date"]
@@ -96,7 +117,7 @@ def versions(slug):
             "size": sum(entries.values()),
             "in": added, "out": removed,
         })
-        previous = entries
+        previous, previous_key = entries, key
     return out
 
 

@@ -1229,6 +1229,115 @@ def _deck_delete(slug=None, confirm=None, force=False):
             "holders": [{"deck": d, "branch": b, "cards": c} for d, b, c in claims]}
 
 
+# ── Printings: every physical card a name has been, and the one the pilot owns ──
+
+SCRYFALL_SEARCH_URL = "https://api.scryfall.com/cards/search"
+#: A card's printings change at set release, not by the hour. A week keeps the
+#: strip instant on the second open and lets Scryfall go down without the page.
+PRINTINGS_TTL_S = 7 * 86400
+#: Basic lands run to hundreds of printings at 175 a page; four pages is the
+#: cap before the strip stops being a strip.
+PRINTINGS_MAX_PAGES = 4
+
+
+def project_printing(sc):
+    """One Scryfall card object -> the printing the strip draws.
+
+    Pure, so the browser suite can project a fixture without a server. The image
+    rules are `fetch_deck.shape_card`'s: a transform / modal DFC carries no
+    top-level `image_uris`, so the front face stands in, and every face keeps its
+    own image under `faces` — a split card's faces have none and fall back to the
+    card's one image at the consumer. Cache-busters stripped the same way, so a
+    strip thumbnail and the `cards.json` image for the same printing are the
+    same URL.
+    """
+    from manamap.pilot.fetch_deck import stable_image_url as stable
+    faces = sc.get("card_faces") or []
+    image_uris = sc.get("image_uris") or {}
+    image, art = stable(image_uris.get("normal")), stable(image_uris.get("art_crop"))
+    if image is None and faces:
+        front = faces[0].get("image_uris") or {}
+        image, art = stable(front.get("normal")), stable(front.get("art_crop"))
+    return {
+        "set": sc.get("set"),
+        "set_name": sc.get("set_name"),
+        "collector_number": sc.get("collector_number"),
+        "finishes": sc.get("finishes") or [],
+        "image": image,
+        "art_crop": art,
+        "faces": [{"name": f.get("name"),
+                   "image": stable((f.get("image_uris") or {}).get("normal")),
+                   "art_crop": stable((f.get("image_uris") or {}).get("art_crop"))}
+                  for f in faces],
+        "artist": sc.get("artist"),
+        "border_color": sc.get("border_color"),
+        "frame_effects": sc.get("frame_effects") or [],
+        "released_at": sc.get("released_at"),
+        "promo": bool(sc.get("promo")),
+        "digital": bool(sc.get("digital")),
+        "prices_usd": (sc.get("prices") or {}).get("usd"),
+    }
+
+
+def project_printings(pages, digital=False):
+    """The `printings` list from one or more Scryfall search pages. Digital-only
+    printings (Arena, MTGO) are dropped unless asked for: nobody sleeves one."""
+    out = []
+    for doc in pages:
+        for sc in doc.get("data", []):
+            p = project_printing(sc)
+            if p["digital"] and not digital:
+                continue
+            out.append(p)
+    return out
+
+
+def _printings(name=None, digital=False):
+    """Every printing of a card, oldest first, from Scryfall's search — cached a
+    week under `net`'s `scryfall` service. `net.Offline` is the endpoint's own
+    error with the sentence `net` wrote (a 502, the page shows it); a name
+    Scryfall has never printed is an empty list, not an error."""
+    import requests
+    from manamap import net
+    if not name:
+        raise ValueError("printings: no name")
+    pages = []
+    url = SCRYFALL_SEARCH_URL
+    params = {"q": f'!"{name}"', "unique": "prints", "order": "released"}
+    try:
+        while url and len(pages) < PRINTINGS_MAX_PAGES:
+            doc = net.get_json(url, params=params, service="scryfall",
+                               ttl_s=PRINTINGS_TTL_S)
+            pages.append(doc)
+            url = doc.get("next_page") if doc.get("has_more") else None
+            params = None            # `next_page` carries its own query string
+    except net.Offline as exc:
+        raise RuntimeError(str(exc)) from None
+    except requests.HTTPError as exc:
+        status = getattr(getattr(exc, "response", None), "status_code", None)
+        if status == 404 and not pages:
+            return {"name": name, "printings": [], "truncated": False}
+        raise RuntimeError(f"Scryfall answered {status} for {name!r}") from None
+    truncated = bool(pages and pages[-1].get("has_more"))
+    return {"name": name, "printings": project_printings(pages, digital=bool(digital)),
+            "truncated": truncated}
+
+
+def _printing_set(slug=None, card=None, set=None, collector_number=None, foil=False):
+    """Write one card's printing through `check_in.set_printing` — the one writer
+    of that line — and run its chain. POST-only: it writes decklist.txt,
+    cards.json and two measurements. A refusal (unknown card, two lines) is the
+    function's own SystemExit, which is a 400 here."""
+    from manamap.pilot import check_in
+    if not (slug and card and set and collector_number):
+        raise ValueError("printing/set needs slug, card, set and collector_number")
+    try:
+        r = check_in.set_printing(slug, card, set, collector_number, foil=bool(foil))
+    except SystemExit as exc:
+        raise ValueError(str(exc)) from None
+    return dict(r, slug=slug, card=card)
+
+
 #: Endpoints a GET may run. Everything else is POST-only.
 #:
 #: AN ALLOW-LIST, NOT A DENY-LIST, for the same reason `ENDPOINTS` and
@@ -1248,12 +1357,13 @@ def _deck_delete(slug=None, confirm=None, force=False):
 GETTABLE = frozenset({
     "health", "cli", "formats", "decks", "commanders", "archetypes",
     "commander-search", "card-search", "branch/upgrades", "branch/buy-list",
-    "agents", "job", "deck/measures",
+    "agents", "job", "deck/measures", "printings",
 })
 # `deck/state` is deliberately NOT here even though its read form mutates
-# nothing: `do_GET` always dispatches with an EMPTY payload, so a GET could
-# never carry the slug it needs. Listing it would put a name in the allow-list
-# that the allow-list cannot serve, which makes the list mean less than it says.
+# nothing: with no `action` it reports, with one it moves the deck, and a verb
+# whose meaning turns on an argument is not a read. `do_GET` passes the query
+# string through (`?name=Sol%20Ring` reaches `printings`), so a GETTABLE name
+# must be one that is safe with ANY arguments, not merely with none.
 
 ENDPOINTS = {
     "health": (lambda: {"ok": True, "api": 1}, {}),
@@ -1310,6 +1420,11 @@ ENDPOINTS = {
     # additionally requires the slug typed back as `confirm`.
     "deck/state": (_deck_state, {"slug": _str, "action": _str, "reason": _str}),
     "deck/delete": (_deck_delete, {"slug": _str, "confirm": _str, "force": _bool}),
+    # A card's printings (a read, cached a week) and the one the pilot sleeves —
+    # a write to decklist.txt and its chain, so POST-only.
+    "printings": (_printings, {"name": _str, "digital": _bool}),
+    "printing/set": (_printing_set, {"slug": _str, "card": _str, "set": _str,
+                                     "collector_number": _str, "foil": _bool}),
 }
 
 
@@ -1346,7 +1461,8 @@ class Handler(SimpleHTTPRequestHandler):
         if self.path.split("?")[0].rstrip("/") == "/api":
             return self._json(200, {"commands": sorted(ENDPOINTS)})
         if self.path.startswith("/api/"):
-            name = self.path[len("/api/"):].split("?")[0].rstrip("/")
+            path, _, query = self.path[len("/api/"):].partition("?")
+            name = path.rstrip("/")
             if name in ENDPOINTS and name not in GETTABLE:
                 # 405, not 400: the METHOD is wrong, and a caller reading it with
                 # `Allow: POST` learns the right thing. An unknown name still
@@ -1354,7 +1470,11 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._json(405, {
                     "error": f"{name} changes something on disk — POST it",
                     "command": name})
-            return self._run(name, {})
+            # The query string IS the payload — `?name=Sol%20Ring` — one value
+            # per key, coerced by the same table a POST body is.
+            from urllib.parse import parse_qs
+            payload = {k: v[0] for k, v in parse_qs(query).items() if v}
+            return self._run(name, payload)
         return super().do_GET()
 
     def do_POST(self):

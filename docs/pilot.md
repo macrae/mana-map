@@ -439,6 +439,8 @@ manamap pilot cache-rebless <slug>             # re-record every STALE_OK routin
 manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
 manamap pilot check-in <slug> --from F  # a PAPER list → decklist.txt: diff, refuse, apply
+manamap pilot check-in <slug> --set-printing "Name" "(SET) CN" [--foil] [--no-chain] [--branch B]
+                                        # ONE line → the exact card sleeved; chain, no version, no agents
 manamap pilot targeting <slug>          # who the pod attacks, measured from sim logs
 manamap pilot fetch-deck <slug>         # decklist.txt → cards.json (Scryfall)
 manamap pilot validate-deck <slug>      # 100/commander/singleton/color identity
@@ -1058,6 +1060,27 @@ The last step is a commit, and it is not optional bookkeeping: `decklist.txt` is
 so the commit is what `deck-version` numbers and what the captain's log stamps games
 against. Check a deck in without committing and tonight's games attach to no version at
 all. Then `deck-version <slug> paper` marks it as sleeved.
+
+**Printings.** `check-in <slug> --set-printing "Sol Ring" "(SLD) 1234" [--foil]` is the
+other way in: it points ONE line of `decklist.txt` at the exact card the pilot sleeves
+(`check_in.set_printing`, the one writer; the deck page's **change** button posts to it
+through serve's `printing/set`). What changes is that line's `(SET) CN` annotation and
+its `*F*` marker, found through the shared parser — by full name or a DFC's front face —
+and every other byte of the file is left alone, so the diff that lands in git is one
+line. A `*CMDR*` marker on the line stays. It refuses a name the list does not hold and
+a name on two lines (basics split across printings). Idempotent: the printing already on
+the line is `changed: false` and runs nothing. Then the same chain `--write` runs —
+`fetch-deck` (which resolves the printing into `cards.json`: image, artist, finishes,
+`foil`), `goldfish`, `mana-analysis` — because those two measurements stamp the decklist
+sha; `--no-chain` skips it, `--branch` scopes everything to a branch's own list. **It is
+not a version**: `deck_versions` keys a version on `(name, copies, commander)`, never on
+the printing, so the commit joins the version it belongs to as a second byte-sha, exactly
+as a comment edit does. **It re-runs no agent**: `agent_cache.CARD_SEMANTIC_FIELDS`
+excludes set, collector number, finishes and image (docs/agent-cost.md — enriching 82 cards
+with Secret Lair printings cost 0 tokens), so the prose about the card is as true after
+the swap as before. `serve`'s `printings` (GETTABLE, `?name=`) lists every printing
+Scryfall knows for a name through `net.get_json` under the `scryfall` cache for a week,
+digital-only printings dropped unless `digital=true`.
 
 ### The handbook — `build-poh` (`build-page` before it was superseded, then deleted)
 

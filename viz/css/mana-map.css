@@ -100,6 +100,23 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .deck-ctx-actions { display: flex; gap: 6px; margin-top: 4px; }
 .deck-ctx-act { flex: 1; font-size: 0.75rem; }
 .deck-ctx-act.is-on { border-color: #c4a747; color: #c4a747; }
+/* The printing row and its strip: every printing Scryfall knows, the sleeved one ringed. */
+.deck-ctx-print { color: #ccc; }
+.deck-ctx-change { width: auto; margin: 0 0 0 auto; padding: 2px 8px; font-size: 0.7rem; }
+.printing-strip { flex-basis: 100%; display: flex; align-items: flex-start; flex-wrap: nowrap;
+  gap: 6px; overflow-x: auto; padding: 6px 0 2px; }
+.printing-strip[hidden] { display: none; }
+.printing-foil { flex: 0 0 auto; align-self: center; color: #aaa; font-size: 0.7rem;
+  display: inline-flex; align-items: center; gap: 4px; padding-right: 4px; }
+.printing-status { flex: 0 0 auto; color: #8a8aa0; font-size: 0.7rem; }
+.printing-thumb { flex: 0 0 auto; width: 64px; background: none; border: 2px solid transparent;
+  border-radius: 5px; padding: 0; cursor: pointer; color: #aaa; font-size: 0.6rem; line-height: 1.2; }
+.printing-thumb img, .printing-thumb .printing-noart { display: block; width: 60px; height: 84px;
+  object-fit: cover; border-radius: 3px; background: #2a2a4a; }
+.printing-thumb-cap { display: block; padding: 2px 0; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; }
+.printing-thumb:hover { border-color: #8a8aa0; }
+.printing-thumb.is-current { border-color: #c4a747; color: #c4a747; }
 
 .detail-type { color: #aaa; font-size: 0.85rem; margin-bottom: 8px; }
 

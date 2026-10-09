@@ -1075,3 +1075,40 @@ def test_exclusion_is_by_omission_so_new_fields_stay_covered(deck):
                     "metrics": {"a": 1}, "brand_new_section": {"x": 1}})
     ac._SHA_MEMO.clear(); common.clear_memo()
     assert fp(SLUG, "pilot-notes") != before
+
+
+def test_a_printing_swap_leaves_the_semantic_digest_unchanged(tmp_path):
+    """`check-in --set-printing` re-runs fetch-deck, which rewrites cards.json with
+    a different set, collector number, finishes, artist and image — and must not
+    cost an agent run. Driven through the real `shape_card` and the real digest:
+    two Scryfall objects that differ ONLY in printing fields digest the same, and
+    one whose rules text moved does not."""
+    from manamap.pilot.fetch_deck import shape_card
+
+    def sc(**printing):
+        base = {"name": "Sol Ring", "mana_cost": "{1}", "cmc": 1.0, "type_line": "Artifact",
+                "oracle_text": "{T}: Add {C}{C}.", "colors": [], "color_identity": [],
+                "keywords": [], "layout": "normal", "set": "c20", "set_name": "Commander 2020",
+                "collector_number": "246", "artist": "Mike Bierek", "finishes": ["nonfoil"],
+                "image_uris": {"normal": "https://cards.scryfall.io/normal/front/a.jpg",
+                               "art_crop": "https://cards.scryfall.io/art_crop/front/a.jpg"}}
+        base.update(printing)
+        return base
+
+    n = [0]
+
+    def digest(card, foil=False):
+        n[0] += 1
+        path = tmp_path / f"cards{n[0]}.json"
+        write_json(path, {"deck": "x", "cards": [shape_card(card, 1, False, foil)]})
+        return ac.cards_semantic_digest(path)
+
+    before = digest(sc())
+    after = digest(sc(set="sld", set_name="Secret Lair Drop", collector_number="1234",
+                      artist="Seb McKinnon", finishes=["nonfoil", "foil"],
+                      border_color="borderless", frame_effects=["inverted"],
+                      image_uris={"normal": "https://cards.scryfall.io/normal/front/b.jpg",
+                                  "art_crop": "https://cards.scryfall.io/art_crop/front/b.jpg"}),
+                   foil=True)
+    assert before == after, "a printing is how the card LOOKS; agents read what it DOES"
+    assert digest(sc(oracle_text="{T}: Add {C}.")) != before, "the digest still sees rules text"

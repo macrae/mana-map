@@ -267,8 +267,13 @@
     // `status` is the lifecycle TRIPLE for a dead deck and null for a live one —
     // [id, headline, blurb]. Only the headline belongs on a card.
     var dead = Array.isArray(e.status) ? e.status : null;
-    var art = e.image
-      ? '<img class="wb-art" src="' + esc(e.image) + '" alt="" loading="lazy">'
+    // `e.image` is the commander's `art_crop` from cards.json, carried by the
+    // manifest; `Shell.cardImageUrl` takes the entry so the sleeved printing
+    // wins and a deck with no row yet still gets art by its commander's name.
+    var cover = (window.Shell && Shell.cardImageUrl && (e.image || e.commander))
+      ? Shell.cardImageUrl(e.commander || '', 'art_crop', e) : (e.image || null);
+    var art = cover
+      ? '<img class="wb-art" src="' + esc(cover) + '" alt="" loading="lazy">'
       : '<div class="wb-art wb-art-none"></div>';
     // THREE DESTINATIONS, ALL NAMED — and no card-sized hit area at all.
     //

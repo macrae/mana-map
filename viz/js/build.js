@@ -961,7 +961,109 @@
                     foil_cents: typeof pr.foil_cents === 'number' ? pr.foil_cents : null,
                     source: active.prices.source, as_of: active.prices.as_of } : null,
       canWrite: canWriteGrid(),
+      // The printing the pilot sleeves, from the cards.json row; null when the card is
+      // not in the deck (a card outside the list has no sleeved printing).
+      printing: slot && slot.card ? {
+        set: slot.card.set || null, set_name: slot.card.set_name || null,
+        collector_number: slot.card.collector_number || null,
+        foil: !!slot.card.foil, artist: slot.card.artist || null,
+      } : null,
     };
+  }
+
+  /* The open deck's cards.json row for a name, or null. The card panel passes it to
+   * `Shell.cardImageUrl` so the image is the sleeved printing's. */
+  function deckCard(name) {
+    if (!active || !name) return null;
+    const slot = active.main.find(s => s.name === name);
+    return (slot && slot.card) || null;
+  }
+
+  /* ── choosing a printing ──────────────────────────────────────────────────
+   *
+   * The strip is a list of thumbnails under the deck block's printing row: every
+   * printing Scryfall knows (`printings`, cached a week server-side), the sleeved one
+   * ringed, a foil toggle. Clicking one POSTs `printing/set` — ONE writer,
+   * `check_in.set_printing`, which rewrites the line and runs fetch-deck → goldfish →
+   * mana-analysis — then `reloadCards` re-reads cards.json and the block re-renders.
+   * Nothing here is written to `active` before the server has said what it wrote. */
+
+  function printingStrips(name) {
+    return Array.from(document.querySelectorAll('.deck-ctx[data-card] .printing-strip'))
+      .filter(el => el.closest('.deck-ctx').getAttribute('data-card') === name);
+  }
+
+  function stripStatus(name, text) {
+    printingStrips(name).forEach(el => {
+      el.hidden = false;
+      el.innerHTML = '<span class="printing-status">' + esc(text) + '</span>';
+    });
+  }
+
+  function changePrinting(name) {
+    const card = deckCard(name);
+    if (!card || !window.Api || !Api.has('printing/set')) return Promise.resolve(false);
+    const open = printingStrips(name).some(el => !el.hidden && el.querySelector('.printing-thumb'));
+    if (open) { printingStrips(name).forEach(el => { el.hidden = true; }); return Promise.resolve(true); }
+    stripStatus(name, 'loading printings…');
+    return Api.call('printings', { name: name }).then(function (res) {
+      const list = (res && res.printings) || [];
+      if (!list.length) { stripStatus(name, 'Scryfall lists no printings for this name'); return false; }
+      const html = '<label class="printing-foil"><input type="checkbox"' + (card.foil ? ' checked' : '') +
+          '> foil</label>' +
+        list.map(function (p) {
+          const cur = p.set === card.set && String(p.collector_number) === String(card.collector_number);
+          const cap = '(' + String(p.set || '').toUpperCase() + ') ' + esc(String(p.collector_number || ''));
+          return '<button class="printing-thumb' + (cur ? ' is-current' : '') + '" type="button"' +
+            ' data-set="' + esc(p.set || '') + '" data-cn="' + esc(String(p.collector_number || '')) + '"' +
+            ' title="' + esc([p.set_name, p.artist ? 'art by ' + p.artist : '', p.released_at,
+                              p.prices_usd ? '$' + p.prices_usd : ''].filter(Boolean).join(' · ')) + '"' +
+            ' onclick="Build.pickPrinting(' + esc(JSON.stringify(name)) + ', this)">' +
+            (p.image ? '<img src="' + esc(p.image) + '" alt="" loading="lazy">' : '<span class="printing-noart"></span>') +
+            '<span class="printing-thumb-cap">' + cap + '</span></button>';
+        }).join('') +
+        (res.truncated ? '<span class="printing-status">more printings than the strip shows</span>' : '');
+      printingStrips(name).forEach(el => { el.hidden = false; el.innerHTML = html; });
+      return true;
+    }).catch(function (err) {
+      stripStatus(name, 'could not list printings: ' + err.message);
+      return false;
+    });
+  }
+
+  function pickPrinting(name, btn) {
+    if (!active || !btn) return Promise.resolve(false);
+    const strip = btn.closest('.printing-strip');
+    const foilBox = strip && strip.querySelector('.printing-foil input');
+    const payload = { slug: active.slug, card: name, set: btn.getAttribute('data-set'),
+                      collector_number: btn.getAttribute('data-cn'), foil: !!(foilBox && foilBox.checked) };
+    stripStatus(name, 'writing…');
+    return Api.call('printing/set', payload).then(function (res) {
+      return reloadCards().then(function () {
+        if (window.MM && MM.refreshDeckContext) MM.refreshDeckContext(name);
+        MM.setStatus(res && res.changed === false
+          ? name + ' already sleeved as ' + res.line
+          : 'Wrote ' + (res && res.line) + (res && res.ran && res.ran.length ? ' · ran ' + res.ran.join(' → ') : ''));
+        return true;
+      });
+    }).catch(function (err) {
+      stripStatus(name, 'not written: ' + err.message);
+      return false;
+    });
+  }
+
+  /* Re-read the open deck's cards.json and refresh each slot's row in place. Not
+   * `select(slug)`: that reseeds the graph and resets the review grid's focus and
+   * note, and a printing swap moved neither. `no-store`, because the file just
+   * changed and the bust on `getJSON` is the manifest's, not this write's. */
+  async function reloadCards() {
+    if (!active) return null;
+    const res = await fetch(DECK_BASE + active.slug + '/cards.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('cards.json -> ' + res.status);
+    const doc = await res.json();
+    const byName = new Map((doc.cards || []).map(c => [c.name, c]));
+    active.main.forEach(s => { if (byName.has(s.name)) s.card = byName.get(s.name); });
+    return doc;
   }
 
   function showOnMap(name) {
@@ -1188,6 +1290,8 @@
         family: primaryFamily(card.name, idx),
         roles: (rolesByName && rolesByName[card.name]) || [],
         isCommander: card.name === commanderName,
+        // The cards.json row itself: the sleeved printing, its image, its faces.
+        card,
       };
     }
 
@@ -2656,6 +2760,10 @@
     chooseSet,
     toggleGrid,
     cardContext,
+    deckCard,
+    changePrinting,
+    pickPrinting,
+    reloadCards,
     markFromPanel,
     renderGrid,
     // For the card panel: the deck's format (its legality line), whether a NAME is in

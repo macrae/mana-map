@@ -306,3 +306,32 @@ def corpus_count():
 
     with open(PROJECTION_PATH) as f:
         return len(json.load(f))
+
+
+SCRYFALL_PRINTS_FIXTURE = Path(__file__).parent / "fixtures" / "scryfall" / "prints_arcane_signet.json"
+
+
+def serve_scryfall_prints_locally(page, fixture=SCRYFALL_PRINTS_FIXTURE):
+    """Route Scryfall's search AND the local `printings` endpoint to one fixture.
+
+    The page asks `/api/printings`; serve would ask `api.scryfall.com/cards/search`.
+    Both are answered here from the same file — the local answer projected through
+    the real `serve.project_printings`, so the strip the test sees is what the
+    server would have sent, with no server and no network. Returns the projected
+    list for the test to assert against."""
+    import json
+
+    from manamap import serve
+
+    doc = json.loads(fixture.read_text(encoding="utf-8"))
+    projected = serve.project_printings([doc])
+    page.route("https://api.scryfall.com/cards/search*",
+               lambda route: route.fulfill(status=200, content_type="application/json",
+                                           body=json.dumps(doc)))
+    page.route("**/api/printings*",
+               lambda route: route.fulfill(
+                   status=200, content_type="application/json",
+                   body=json.dumps({"ok": True, "command": "printings",
+                                    "result": {"name": doc["data"][0]["name"],
+                                               "printings": projected, "truncated": False}})))
+    return projected

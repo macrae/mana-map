@@ -1143,8 +1143,8 @@
    * one module present on all three surfaces — the drawer draws cards on two
    * pages that never load this file. The local form is the fallback for the
    * boot window before `shell.js` has run. */
-  function cardImageUrl(name, version) {
-    if (window.Shell && Shell.cardImageUrl) return Shell.cardImageUrl(name, version || 'normal');
+  function cardImageUrl(name, version, entry) {
+    if (window.Shell && Shell.cardImageUrl) return Shell.cardImageUrl(name, version || 'normal', entry);
     return 'https://api.scryfall.com/cards/named?exact='
       + encodeURIComponent(name) + '&format=image&version=' + (version || 'normal');
   }
@@ -1204,9 +1204,18 @@
     // relation buttons, so obsolescence has ONE place in the panel.
     html += buildObsolescenceHtml(d.n);
     html += cardActionsHtml(row);
-    html += cardImageHtml(d);
+    html += cardImageHtml(d, deckEntry(d, row));
     html += cardFactsHtml(d, { format: opts.format });
     return html;
+  }
+
+  /* The deck's own `cards.json` row for this card — Build only, with a deck loaded
+   * and the card in it — so the panel draws the printing the pilot sleeves. Null
+   * everywhere else, and the image is by name. */
+  function deckEntry(d, row) {
+    if (currentMode !== 'build' || !window.Build || !Build.deckCard) return null;
+    if (typeof row !== 'number' || row < 0) return null;
+    return Build.deckCard(d.n) || null;
   }
 
   /* Type and oracle. A multi-face card (`A // B`, 891 in the corpus) gets one block per
@@ -1255,9 +1264,14 @@
    * learned by asking — a split, adventure or flip card prints both halves on ONE face,
    * Scryfall refuses `face=back`, and `cardImageError` puts the front back and says so.
    * Never lazy-loaded: the only card image we render is the open one. */
-  function cardImageHtml(d) {
+  function cardImageHtml(d, entry) {
     const faces = String(d.n || '').split(' // ');
-    const front = cardImageUrl(d.n);
+    // With the deck's row in hand the front is the sleeved printing and the back
+    // is that printing's own back face (a split card has none: the flip then
+    // asks Scryfall by name, which refuses, and the button retires as before).
+    const front = cardImageUrl(d.n, 'normal', entry);
+    const ownBack = entry && faces.length > 1 ? cardImageUrl(faces[1], 'normal', entry) : null;
+    const back = ownBack && ownBack !== front ? ownBack : cardImageUrl(faces[0]) + '&face=back';
     let html = '<div class="detail-card-image">';
     html += '<img src="' + escHtml(front) + '" alt="' + escHtml(d.n) + '"' +
       ' data-front="' + escHtml(front) + '"' +
@@ -1265,7 +1279,7 @@
       ' title="Click to enlarge" onclick="MM.toggleCardImage(this)" onerror="MM.cardImageError(this)">';
     if (faces.length > 1) {
       html += '<button class="lens-btn detail-flip" data-back="' +
-        escHtml(cardImageUrl(faces[0]) + '&face=back') + '" onclick="MM.flipCard(this)"' +
+        escHtml(back) + '" onclick="MM.flipCard(this)"' +
         ' title="Show the other face">⇄ Back — ' + escHtml(faces[1]) + '</button>';
     }
     return html + '</div>';
@@ -1595,6 +1609,25 @@
         html += '<div class="lens-note">Read-only here — run <code>manamap serve</code> to mark cards</div>';
       }
       html += '</div>';
+    }
+    // THE PRINTING, LAST — after everything about the card's place in the deck, because
+    // it is a fact about cardboard rather than about the 99 (the price row, when the
+    // bench carries one, sits above it with the identity rows). Only for a card in the
+    // list: a card not in the deck has no sleeved printing. "change" needs the local
+    // server's `printing/set`; on a static host the row states and cannot write.
+    const pr = c.printing;
+    if (pr) {
+      const nameArg = escHtml(JSON.stringify(d.n));
+      const label = '(' + String(pr.set || '').toUpperCase() + ') ' + (pr.collector_number || '') +
+        (pr.set_name ? ' · ' + pr.set_name : '') + (pr.foil ? ' · foil' : '');
+      html += '<div class="deck-ctx-row deck-ctx-printing"><span class="deck-ctx-k">printing</span>' +
+        '<span class="deck-ctx-print" title="' + escHtml(pr.artist ? 'art by ' + pr.artist : '') + '">' +
+          escHtml(label) + '</span>' +
+        (window.Api && Api.has('printing/set')
+          ? '<button class="lens-btn lens-btn-inline deck-ctx-change" onclick="Build.changePrinting(' +
+              nameArg + ')">change</button>'
+          : '') +
+        '<div class="printing-strip" hidden></div></div>';
     }
     return html + '</div>';
   }

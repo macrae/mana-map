@@ -31,6 +31,7 @@ documented before: it published "18 lands" for a 33-land deck.
 
 import argparse
 import hashlib
+import re
 import shutil
 import sys
 from collections import Counter
@@ -67,21 +68,29 @@ def read_list(path_or_dash):
         return f.read()
 
 
-def decklist_line(e):
-    """One entry as one line: `N Name`, `N Name (SET) CN`, `… *F*`.
+def render_line(e, cmdr_marker=False):
+    """One entry as one `decklist.txt` line: `N Name [(SET) CN] [*F*] [*CMDR*]`.
 
-    THE ONE FORMATTER for the Moxfield / Mana Pool "exact printings" form, which
-    is also this repo's canonical `decklist.txt` line. It was a closure inside
-    `render_decklist` until `buy_list` needed the same bytes for a paste into
-    Mana Pool's mass entry; a second copy is how the set code ends up upper-cased
-    on one surface and not the other, and the importer accepts one of them.
+    THE ONE WRITER of the line form, shared by `render_decklist`, `set_printing`
+    and `buy_list` (the Moxfield / Mana Pool "exact printings" paste is this same
+    line), so a printing written by any of them parses back through
+    `parse_decklist` to the same entry — `_PRINTING_RE` is `$`-anchored and the
+    markers come off first, which is why the order here is printing, foil,
+    commander and nothing may come after. A second copy is how a set code ends
+    up upper-cased on one surface and not the other.
     """
     s = f"{int(e.get('quantity') or 1)} {e['name']}"
     if e.get("set") and e.get("collector_number"):
         s += f" ({str(e['set']).upper()}) {e['collector_number']}"
     if e.get("foil"):
         s += " *F*"
+    if cmdr_marker:
+        s += " *CMDR*"
     return s
+
+
+# `buy_list`'s name for the same writer.
+decklist_line = render_line
 
 
 def render_decklist(entries):
@@ -97,7 +106,7 @@ def render_decklist(entries):
     dropping them would silently re-resolve a Secret Lair to its cheapest
     reprint.
     """
-    line = decklist_line
+    line = render_line
 
     cmds = [e for e in entries if e.get("is_commander")]
     deck = sorted((e for e in entries if not e.get("is_commander")),
@@ -206,14 +215,111 @@ def apply(slug, entries, run_chain=True):
     if path.exists():
         shutil.copy(path, path.with_suffix(".txt.bak"))
     path.write_text(render_decklist(entries), encoding="utf-8")
+    return _run_chain(slug) if run_chain else []
+
+
+def _run_chain(slug, branch=None):
+    """fetch-deck -> goldfish -> mana-analysis, in that order, on the deck or on
+    one of its branches. Returns the names it ran. One definition, because
+    `apply` and `set_printing` must re-derive the same artifacts."""
+    from manamap.pilot import fetch_deck, goldfish, mana_analysis
     ran = []
-    if run_chain:
-        from manamap.pilot import fetch_deck, goldfish, mana_analysis
-        for name, mod in (("fetch-deck", fetch_deck), ("goldfish", goldfish),
-                          ("mana-analysis", mana_analysis)):
-            mod.main(SimpleNamespace(slug=slug))
-            ran.append(name)
+    for name, mod in (("fetch-deck", fetch_deck), ("goldfish", goldfish),
+                      ("mana-analysis", mana_analysis)):
+        mod.main(SimpleNamespace(slug=slug, branch=branch))
+        ran.append(name)
     return ran
+
+
+# `(SET) CN` as the CLI takes it — the parens optional, the set 2-6 letters or
+# digits, the collector number anything `_PRINTING_RE` accepts (`123`, `123a`,
+# `A-123`).
+_PRINTING_ARG_RE = re.compile(r"^\(?\s*([A-Za-z0-9]{2,6})\s*\)?\s+([\w-]+)$")
+
+
+def parse_printing_arg(text):
+    """`"(SLD) 1234"` (or `"sld 1234"`) -> `("sld", "1234")`; SystemExit otherwise."""
+    m = _PRINTING_ARG_RE.match(str(text or "").strip())
+    if not m:
+        raise SystemExit(f"{text!r} is not a printing — write it as `(SET) CN`, "
+                         f"e.g. `(SLD) 1234`")
+    return m.group(1).lower(), m.group(2)
+
+
+def _matches(entry, name):
+    """The entry IS this card: the full name, or the front face of a DFC — the
+    corpus and `cards.json` key `A // B`, a pasted list often carries `A`."""
+    want = str(name or "").strip().lower()
+    have = entry["name"].lower()
+    if want == have:
+        return True
+    return want.split(" // ")[0] == have.split(" // ")[0]
+
+
+def set_printing(slug, name, set_code, collector_number, foil=False, run_chain=True,
+                 branch=None):
+    """Point ONE line of `decklist.txt` at an exact printing, and re-derive.
+
+    The pilot sleeves a particular card — the borderless Secret Lair, the foil
+    from the precon — and `cards.json` is supposed to show it (`fetch-deck`
+    resolves `(SET) CN` first, by name only as the fallback). Until now the only
+    way to say which one was to re-paste the whole list through `check-in`.
+    This writes the annotation on the one line and leaves every other byte of
+    the file alone, so the diff that lands in git is one line, and then runs
+    the same chain `apply` runs: fetch-deck resolves the printing into
+    cards.json, goldfish and mana-analysis re-stamp the new decklist sha.
+
+    WHAT IT DOES NOT DO. It is not a new deck version — `deck_versions` keys a
+    version on `(name, copies, commander)`, never on the printing — and it
+    re-runs no agent: `agent_cache.CARD_SEMANTIC_FIELDS` excludes set, collector
+    number and image on purpose (docs/agent-cost.md), so the prose about the
+    card is as true after the swap as before. Idempotent: the printing already
+    on the line is `changed: False` and runs nothing.
+
+    `branch` scopes it to `branches/<name>/decklist.txt`, which is its own file
+    with its own chain. Refuses a name the list does not hold, and a name it
+    holds on more than one line (basics split across printings): say which
+    line by naming the one you mean.
+    """
+    set_code = str(set_code or "").strip().lower()
+    collector_number = str(collector_number or "").strip()
+    if not set_code or not collector_number:
+        raise SystemExit("a printing is a set code and a collector number: `(SLD) 1234`")
+    path = (deck_dir(slug, branch) if branch else deck_dir(slug)) / "decklist.txt"
+    if not path.exists():
+        raise SystemExit(f"{path} not found")
+    text = path.read_text(encoding="utf-8")
+    lines = text.split("\n")
+    # LINE BY LINE THROUGH THE SHARED PARSER. A header line parses to nothing; a
+    # card line parses to one entry; the section it sits in is irrelevant to
+    # whether it names this card. `*CMDR*` on the line itself is the one thing a
+    # lone-line parse keeps that the rewrite must put back.
+    hits = []
+    for i, raw in enumerate(lines):
+        parsed = parse_decklist(raw)
+        if len(parsed) == 1 and _matches(parsed[0], name):
+            hits.append((i, parsed[0], raw.strip().upper().endswith("*CMDR*")))
+    if not hits:
+        raise SystemExit(f"{slug}{' @' + branch if branch else ''}: {name!r} is not in "
+                         f"decklist.txt — a printing is set on a card the list holds")
+    if len(hits) > 1:
+        raise SystemExit(f"{slug}: {name!r} is on {len(hits)} lines (lines "
+                         f"{', '.join(str(i + 1) for i, _, _ in hits)}) — merge them, "
+                         f"or edit the file: this sets one line")
+    i, entry, cmdr_marker = hits[0]
+    same = (entry.get("set") == set_code
+            and entry.get("collector_number") == collector_number
+            and bool(entry.get("foil")) == bool(foil))
+    entry["set"], entry["collector_number"], entry["foil"] = (
+        set_code, collector_number, bool(foil))
+    line = render_line(entry, cmdr_marker=cmdr_marker)
+    if same:
+        return {"changed": False, "line": line, "ran": []}
+    shutil.copy(path, path.with_suffix(".txt.bak"))
+    lines[i] = line
+    path.write_text("\n".join(lines), encoding="utf-8")
+    ran = _run_chain(slug, branch) if run_chain else []
+    return {"changed": True, "line": line, "ran": ran}
 
 
 def _print(d, write):
@@ -240,7 +346,32 @@ def _print(d, write):
         print("  dry run — add --write to apply, run the chain, and make it a version.")
 
 
+def _main_set_printing(args):
+    name, printing = args.set_printing
+    set_code, cn = parse_printing_arg(printing)
+    r = set_printing(args.slug, name, set_code, cn, foil=getattr(args, "foil", False),
+                     run_chain=not getattr(args, "no_chain", False),
+                     branch=getattr(args, "branch", None))
+    if getattr(args, "as_json", False):
+        import json
+        print(json.dumps(r, indent=2, ensure_ascii=False))
+        return
+    if not r["changed"]:
+        print(f"  {args.slug}: already `{r['line']}` — nothing written, nothing run")
+        return
+    print(f"  WROTE decklist.txt: `{r['line']}`"
+          + (f" · ran {' → '.join(r['ran'])}" if r["ran"] else " · chain skipped"))
+    print(f"  not a new version (the 99 did not move) and no agent re-runs "
+          f"(cards.json is hashed on its rules text, not its art)")
+    print(f"  next: git add data/decks/{args.slug} && git commit")
+
+
 def main(args):
+    if getattr(args, "set_printing", None):
+        return _main_set_printing(args)
+    if not getattr(args, "source", None):
+        raise SystemExit("check-in needs --from <file> (a paper list) or "
+                         "--set-printing \"Name\" \"(SET) CN\"")
     text = read_list(args.source)
     d = analyze(args.slug, text)
     if getattr(args, "as_json", False):
