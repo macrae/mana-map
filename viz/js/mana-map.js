@@ -93,7 +93,9 @@
   // bug: cut cards keep drawing and the panel counts a sideboard that no longer exists.
   // 9: 2026-09-01 a SECOND similarity space: the toggle changes which .bin answers 'what is
   // like this card' — same shape, different meaning.
-  const DATA_VERSION = 10;  // 2026-10-02 Reality Fracture: 34,955 cards and EVERY space retrained, so every row index and every neighbour means something new
+  // 10: 2026-10-02 Reality Fracture: 34,955 cards and EVERY space retrained, so every row
+  // index and every neighbour means something new.
+  const DATA_VERSION = 11;  // 2026-10-09 card_flags.json (bans, Game Changers) and combo_index.json join the registry; the panel now says BANNED
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to
@@ -133,6 +135,16 @@
     // Explore is reached. ~15 KB, and the filter works without it — the codes
     // themselves ride in `viz_index.json` as `e`.
     sets: v(DATA_BASE + 'sets.json'),
+    // Fetched at boot beside `viz_index.json`: 12 KB, and it is what lets the panel say
+    // BANNED rather than "not legal" — the projection's `f` lists LEGAL formats only, so
+    // the two states were indistinguishable until this file existed. Also the WotC Game
+    // Changer list, which `quickStatsHtml` pins on every card that carries it.
+    cardFlags: v(DATA_BASE + 'card_flags.json'),
+    // Lazy, like `cardRoles`: ~1 MB gzipped, fetched by the first card panel that opens
+    // and resolved once (`comboIndex()`). The per-deck `combos.json` is Build's and is
+    // fetched with the deck; this is the corpus-wide "what does this card go infinite
+    // with", capped at `meta.per_card` lines per card.
+    comboIndex: v(DATA_BASE + 'combo_index.json'),
   };
   const MAP_CONFIGS = {
     default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
@@ -1183,6 +1195,9 @@
     }
     html += deckContextHtml(d, row);
     html += cardTextHtml(d);
+    // After the rules text, before the relations: what the card goes infinite with is a
+    // fact about the card, read before "what is like it".
+    html += comboLinesHtml(d, row);
     html += buildRelationHtml(row);
     // Not inside buildRelationHtml: that returns nothing until the neighbour table is in,
     // and the comparison must not wait on it. It still renders directly under the
@@ -1190,7 +1205,7 @@
     html += buildObsolescenceHtml(d.n);
     html += cardActionsHtml(row);
     html += cardImageHtml(d);
-    html += cardFactsHtml(d);
+    html += cardFactsHtml(d, { format: opts.format });
     return html;
   }
 
@@ -1304,30 +1319,206 @@
     box.innerHTML = '<div class="detail-image-fallback">Image not available</div>';
   }
 
-  /* EDHREC, Commander and identity on one line; every other format collapsed.
+  /* ── Card flags: bans per format and the Game Changer list ──────────────
    *
-   * `d.f` is the list of LEGAL formats in the projection record, and something else
-   * entirely in the slim `viz_index` record Discover paints from before the projection
-   * lands — there it is the first-printed DATE. Reading a date as a format list would
-   * call every card "not legal", so the legality is omitted until the projection's
-   * record is the one in hand (`x` is the projection's own field). The export keeps
-   * legal formats only, so "banned" and "not legal" cannot be told apart here — the
-   * line says "not legal" for both and its title says why. */
-  function cardFactsHtml(d) {
+   * `card_flags.json` is `{as_of, game_changers:[names], banned:{fmt:[names]}, counts}`,
+   * 12 KB, fetched at boot (`loadCardFlags`, below the projection fetch). Held as Sets
+   * keyed by the full `A // B` name, which is `viz_index`'s `n`. A failed fetch leaves
+   * the sets EMPTY and `as_of` null — the feature is silently off and every card reads as
+   * it did before the file existed, which is the right failure for a 12 KB nicety. */
+  const EMPTY_FLAGS = { gc: new Set(), banned: {}, as_of: null };
+  let cardFlagsDoc = EMPTY_FLAGS;
+
+  function cardFlags() { return cardFlagsDoc; }
+
+  function loadCardFlags() {
+    return fetch(DATA.cardFlags)
+      .then(r => (r.ok ? r.json() : null))
+      .then(function (doc) {
+        if (!doc) return;
+        const banned = {};
+        Object.keys(doc.banned || {}).forEach(f => { banned[f] = new Set(doc.banned[f] || []); });
+        cardFlagsDoc = { gc: new Set(doc.game_changers || []), banned, as_of: doc.as_of || null };
+      })
+      .catch(function () { /* feature off */ });
+  }
+
+  /* ── The combo index, lazy ────────────────────────────────────────────────
+   *
+   * `combo_index.json`: `{meta:{per_card, combos, indexed}, combos:[[id, [names], infinite,
+   * bracket|null, mana_value_needed], …], by_card:{name:{n, inf, top:[indices]}}}`. ~1 MB
+   * gzipped, so it waits for the first panel that needs it and is fetched ONCE: the
+   * promise is kept, not the fact of having asked, so a second panel opening during the
+   * fetch shares it. Resolves to null on any failure — the block simply never appears. */
+  let comboIndexPromise = null;
+  let comboIndexDoc = null;
+
+  function comboIndex() {
+    if (!comboIndexPromise) {
+      comboIndexPromise = fetch(DATA.comboIndex)
+        .then(r => (r.ok ? r.json() : null))
+        .then(function (doc) { comboIndexDoc = doc || null; return comboIndexDoc; })
+        .catch(function () { return null; });
+    }
+    return comboIndexPromise;
+  }
+
+  /* WHAT THIS CARD GOES INFINITE WITH — two sources, one block, deck first.
+   *
+   * (a) The open deck's `combos.json` (Build fetches it with the deck): every `included`
+   * or `near` entry naming this card, labelled "in this deck" or "one card short: X".
+   * Synchronous, so the deck's own lines never wait on the 1 MB index. (b) The corpus
+   * index's `by_card[name].top`, deduped against (a) by combo id, appended when the
+   * promise resolves. THE PANEL MAY HAVE MOVED ON by then: the slot is found by
+   * `data-card` in the live DOM, so a panel now showing another card gets nothing
+   * appended and a re-render of the same card gets its fresh slot filled.
+   *
+   * A partner chip is `.is-in-deck` when `Build.hasCard` says so; outside Build nothing
+   * is in any deck and the block says why instead of lighting nothing. Renders NOTHING —
+   * no header — for a card with no lines in either source. */
+  function comboLinesHtml(d, row) {
+    const name = d && d.n;
+    if (!name) return '';
+    const deckDoc = (window.Build && Build.deckCombos) ? Build.deckCombos() : null;
+    const deckLines = [];
+    const seen = new Set();
+    const forRows = (rows, kind) => (rows || []).forEach(function (e) {
+      const cards = e.cards || [];
+      if (cards.indexOf(name) === -1 || seen.has(e.id)) return;
+      seen.add(e.id);
+      deckLines.push(comboLineHtml(name, {
+        id: e.id, cards, infinite: !!e.infinite, bracket: e.bracket,
+        banned: !!e.banned || e.bracket == null,
+        assumes: !!e.assumes_other_commander,
+        kind, missing: [].concat(e.missing || []),
+      }));
+    });
+    if (deckDoc) { forRows(deckDoc.included, 'deck'); forRows(deckDoc.near, 'near'); }
+
+    let indexHtml;
+    if (comboIndexDoc) {
+      indexHtml = comboIndexLinesHtml(name, comboIndexDoc, seen);
+    } else {
+      // Not loaded yet (or never will be): leave a slot and ask for the index.
+      indexHtml = '<span class="combo-index-slot" data-card="' + escHtml(name) + '"></span>';
+      comboIndex().then(function (doc) {
+        if (!doc) return;
+        document.querySelectorAll('.combo-index-slot[data-card]').forEach(function (slot) {
+          const n = slot.getAttribute('data-card');
+          const block = slot.closest('.combo-block');
+          const ids = new Set(block ? Array.from(block.querySelectorAll('.combo-line[data-id]'))
+            .map(el => el.getAttribute('data-id')) : []);
+          const html = comboIndexLinesHtml(n, doc, ids);
+          if (block) { slot.outerHTML = html; return; }
+          // A placeholder with no block: the deck had nothing, so the block is born here —
+          // or not at all, when the index has nothing either.
+          slot.outerHTML = html ? comboBlockHtml(n, '', html) : '';
+        });
+      });
+    }
+    if (!deckLines.length && !indexHtml) return '';
+    if (!deckLines.length && comboIndexDoc == null) return indexHtml;   // the bare slot
+    return comboBlockHtml(name, deckLines.join(''), indexHtml);
+  }
+
+  function comboBlockHtml(name, deckHtml, indexHtml) {
+    const inBuild = currentMode === 'build' && window.Build && Build.deckSlug;
+    return '<div class="combo-block" data-card="' + escHtml(name) + '">' +
+      '<div class="detail-section-title combo-title" title="' + (inBuild
+        ? 'Partners you run are lit'
+        : 'open a deck in Build to see which partners you run') + '">Combos' +
+      (inBuild ? '' : ' <span class="combo-hint">open a deck in Build to see which partners you run</span>') +
+      '</div>' + deckHtml + indexHtml + '</div>';
+  }
+
+  /* The index's lines for one card, skipping ids the deck already drew, plus the count
+   * line. '' when the index does not know the card. */
+  function comboIndexLinesHtml(name, doc, skipIds) {
+    const entry = doc && doc.by_card && doc.by_card[name];
+    if (!entry) return '';
+    let html = '';
+    let shown = 0;
+    (entry.top || []).forEach(function (i) {
+      const c = doc.combos[i];
+      if (!c || skipIds.has(c[0])) return;
+      shown += 1;
+      html += comboLineHtml(name, { id: c[0], cards: c[1], infinite: !!c[2], bracket: c[3],
+                                    banned: c[3] == null, kind: 'index' });
+    });
+    const total = entry.n || 0;
+    html += '<div class="combo-count">in ' + total.toLocaleString() + ' known combo' +
+      (total === 1 ? '' : 's') + ' (' + (entry.inf || 0).toLocaleString() + ' infinite) — ' +
+      (shown + skipIds.size) + ' shown</div>';
+    return html;
+  }
+
+  function comboLineHtml(name, c) {
+    const has = (window.Build && Build.hasCard) ? n => Build.hasCard(n) : () => false;
+    const partners = (c.cards || []).filter(n => n !== name);
+    let html = '<div class="combo-line is-' + c.kind + '" data-id="' + escHtml(String(c.id)) + '">';
+    if (c.kind === 'deck') html += '<span class="combo-tag">in this deck</span>';
+    if (c.kind === 'near') {
+      html += '<span class="combo-tag combo-near">one card short: ' +
+        escHtml(c.missing.join(', ') || '?') + '</span>';
+    }
+    html += partners.map(n => '<span class="combo-partner' + (has(n) ? ' is-in-deck' : '') +
+      '" title="' + escHtml(n) + '">' + escHtml(n) + '</span>').join('');
+    if (c.infinite) html += '<span class="inf-badge" title="infinite">∞</span>';
+    if (c.banned) {
+      html += '<span class="bracket-pill banned" title="uses a banned card">banned</span>';
+    } else if (c.bracket != null) {
+      html += '<span class="bracket-pill" title="Spellbook bracket ' + escHtml(String(c.bracket)) +
+        '">B' + escHtml(String(c.bracket)) + '</span>';
+    }
+    if (c.assumes) html += '<span class="combo-note">assumes its own commander</span>';
+    html += '<a class="combo-link" href="https://commanderspellbook.com/combo/' +
+      encodeURIComponent(String(c.id)) + '/" target="_blank" rel="noopener" title="Commander Spellbook">↗</a>';
+    return html + '</div>';
+  }
+
+  /* EDHREC, the deck's format and identity on one line; every other format collapsed.
+   *
+   * Three states per format, from two sources. `card_flags.json` says BANNED — it is
+   * keyed by name and lands at boot, so a ban shows even on the slim `viz_index` record
+   * Discover paints from before the projection arrives. `d.f` says LEGAL — but only in
+   * the projection record; in the slim record `f` is the first-printed DATE, and reading
+   * a date as a format list would call every card "not legal". So the legal / not-legal
+   * half waits for the projection's record (`x` is its own field) while the ban does
+   * not. "Not legal" is the quiet grey remainder: not on the ban list and not on the
+   * legal list, which for a Commander deck is mostly cards from the wrong era.
+   *
+   * `opts.format` is the deck's format (Build passes `Build.deckFormat()`); the atlas
+   * and Discover default to commander. */
+  function cardFactsHtml(d, opts) {
+    opts = opts || {};
+    const fmt = opts.format || 'commander';
     const full = d.x != null;
+    const flags = cardFlags();
+    const legal = full ? new Set(d.f ? String(d.f).split(',') : []) : null;
+    const stateOf = f => (flags.banned[f] && flags.banned[f].has(d.n)) ? 'banned'
+                       : !legal ? null : legal.has(f) ? 'legal' : 'not';
+    const label = f => f.charAt(0).toUpperCase() + f.slice(1);
     const parts = [];
     if (d.er != null) parts.push('EDHREC #' + Number(d.er).toLocaleString());
+    const lead = stateOf(fmt);
+    if (lead === 'banned') {
+      parts.push('<span class="legal-banned" title="On the ' + escHtml(label(fmt)) +
+        ' ban list' + (flags.as_of ? ' as of ' + escHtml(flags.as_of) : '') + '">' +
+        escHtml(label(fmt)) + ': BANNED</span>');
+    } else if (lead === 'legal') {
+      parts.push('<span class="legal-yes">' + escHtml(label(fmt)) + ': legal</span>');
+    } else if (lead === 'not') {
+      parts.push('<span class="legal-not">' + escHtml(label(fmt)) + ': not legal</span>');
+    }
     let formats = '';
-    if (full) {
-      const legal = new Set(d.f ? String(d.f).split(',') : []);
-      parts.push(legal.has('commander')
-        ? '<span class="legal-yes">Commander: legal</span>'
-        : '<span class="legal-no" title="Banned or not legal — the exported data lists ' +
-          'legal formats only">Commander: not legal</span>');
+    if (legal) {
       formats = '<details class="detail-formats-more"><summary>Other formats</summary>' +
-        '<div class="detail-formats">' + ALL_FORMATS.filter(f => f !== 'commander').map(fmt =>
-          '<span class="format-badge' + (legal.has(fmt) ? ' legal' : '') + '">' + fmt + '</span>'
-        ).join('') + '</div></details>';
+        '<div class="detail-formats">' + ALL_FORMATS.filter(f => f !== fmt).map(function (f) {
+          const s = stateOf(f);
+          return '<span class="format-badge' + (s === 'legal' ? ' legal' : s === 'banned' ? ' banned' : '') +
+            '" title="' + escHtml(label(f)) + ': ' + (s === 'not' ? 'not legal' : s) + '">' +
+            escHtml(f) + '</span>';
+        }).join('') + '</div></details>';
     }
     if (d.ci) parts.push('Identity ' + escHtml(String(d.ci).replace(/,\s*/g, '')));
     if (!parts.length && !formats) return '';
@@ -1368,6 +1559,8 @@
           ? '<span class="deck-ctx-bad">off-colour: ' + escHtml(col.off.join('')) + ' outside ' +
             escHtml(col.deck.join('')) + '</span>'
           : '<span class="deck-ctx-ok">fits ' + escHtml(col.deck.join('')) + '</span>') + '</div>';
+    const gcRow = gameChangerRowHtml(c);
+    if (gcRow) html += gcRow;
     const w = c.watch;
     if (w) {
       const nameArg = escHtml(JSON.stringify(d.n));
@@ -1391,6 +1584,33 @@
       html += '</div>';
     }
     return html + '</div>';
+  }
+
+  /* The Game Changer row of the deck block. Nothing for a card that is not one; for a
+   * GC, where the deck stands against its bracket's allowance — the count and floor are
+   * `bracket_report.json`'s (Build reads it), the limit per bracket is Build's mirror of
+   * `config.BRACKETS`. With no report there is still the fact that it IS one. */
+  function gameChangerRowHtml(c) {
+    if (!c.gameChanger) return '';
+    const b = c.bracket;
+    const ord = n => n + (n % 100 >= 11 && n % 100 <= 13 ? 'th'
+      : n % 10 === 1 ? 'st' : n % 10 === 2 ? 'nd' : n % 10 === 3 ? 'rd' : 'th');
+    let text;
+    if (!b) {
+      text = 'no bracket report for this deck';
+    } else if (c.inDeck) {
+      text = b.gcLimit == null
+        ? 'this deck runs ' + b.gcCount + '; no limit at bracket ' + b.floor
+        : 'this deck runs ' + b.gcCount + ' of ' + b.gcLimit + ' allowed at bracket ' + b.floor;
+    } else if (b.gcLimit == null) {
+      text = 'no limit at bracket ' + b.floor;
+    } else if (b.gcCount + 1 > b.gcLimit) {
+      text = 'would be the ' + ord(b.gcCount + 1) + ': floor moves to ' + b.floorIfAdded;
+    } else {
+      text = 'would be the ' + ord(b.gcCount + 1) + ' of ' + b.gcLimit + ' allowed at bracket ' + b.floor;
+    }
+    return '<div class="deck-ctx-row deck-ctx-gc"><span class="deck-ctx-k">bracket</span>' +
+      gcPillHtml(c.name) + '<span class="deck-ctx-gc-text">Game Changer · ' + escHtml(text) + '</span></div>';
   }
 
   /* Repaint every deck-context block for one card, wherever it is drawn. Build calls
@@ -1461,7 +1681,17 @@
       const rc = ['mythic', 'rare', 'uncommon', 'common'].indexOf(d.r) !== -1 ? d.r : '';
       parts.push('<span class="rarity-pill ' + rc + '">' + escHtml(d.r) + '</span>');
     }
+    // The Game Changer pill rides this line because this line is drawn everywhere a
+    // card is named: the atlas header, Discover's stats and Build's selected card.
+    const gc = gcPillHtml(d.n);
+    if (gc) parts.push(gc);
     return parts.join('<span class="stat-divider">\u00b7</span>');
+  }
+
+  /* The WotC Game Changer pill, or '' \u2014 Build's review tiles draw the same one. */
+  function gcPillHtml(name) {
+    if (!cardFlags().gc.has(name)) return '';
+    return '<span class="gc-pill" title="WotC Game Changer \u2014 bracket 3 allows three">GC</span>';
   }
 
   function updateViewerPanel() {
@@ -2553,6 +2783,10 @@
       if (currentMode === 'explore') preparePrintControls();
     })
     .catch(err => setStatus('Discovery unavailable: ' + err.message));
+
+  // Bans and Game Changers ride beside `viz_index.json`: 12 KB, and the landing card
+  // may be banned. Nothing here touches `MM.*` — the loader writes a module variable.
+  loadCardFlags();
 
   // Boot the map the app actually opens on. This was hardcoded to `default`, so flipping
   // the default to Abilities would have left `currentMap` saying one thing while
@@ -3698,6 +3932,12 @@
     flipCard,
     cardImageError,
     refreshDeckContext,
+    // Bans and Game Changers (`{gc: Set, banned: {fmt: Set}, as_of}`, empty sets until
+    // `card_flags.json` lands or if it never does), the pill Build's tiles share, and
+    // the lazy combo index — a promise, resolved once, null on failure.
+    cardFlags,
+    gcPillHtml,
+    comboIndex,
     showCardPopup,
     hideCardPopup,
     get browseSet() { return browseSet; },

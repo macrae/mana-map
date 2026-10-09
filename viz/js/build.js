@@ -103,7 +103,13 @@
   let focusedLine = -1;
   // Off-limits highlighting is opt-in: it costs the per-point opacity array.
   let showIllegal = false;
+  // The deck's format. `Build.deckFormat()` hands it to the card panel's legality line;
+  // a later change populates it per deck, so today every deck reads as commander.
   let format = 'commander';
+  // Game Changers allowed per bracket — mirrors `config.BRACKETS[n]["game_changers"]`
+  // (0, 0, 3, None, None); null is "no limit". Only the GC column is mirrored: the deck
+  // block says where a GC stands against its bracket, and nothing else here brackets.
+  const GC_LIMIT = { 1: 0, 2: 0, 3: 3, 4: null, 5: null };
 
   // ── Helpers ──
 
@@ -364,7 +370,23 @@
         stacks.push(doc);
       } catch (e) { /* skip */ }
     }
+    /* The bracket report and the deck's combos, for the card panel's deck block and
+     * its combo lines. Gated on `has.bracket_report` / `has.combos` like `engine` —
+     * but the manifest may predate those flags, so a manifest with NO such key gets
+     * the optimistic fetch and a 404 is swallowed (the `considering` rule). A manifest
+     * that says `false` is believed. Nothing here logs: an absent file is a feature
+     * that is off, not an error. */
+    const optional = async function (flag, file) {
+      const known = entry.has && Object.prototype.hasOwnProperty.call(entry.has, flag);
+      if (known && !entry.has[flag]) return null;
+      try { return await getJSON(DECK_BASE + slug + '/' + file); } catch (e) { return null; }
+    };
+    const bracketReport = await optional('bracket_report', 'bracket_report.json');
+    const combos = await optional('combos', 'combos.json');
+
     const built = buildActive(entry, deckDoc, considering, stacks, engine, prose);
+    built.bracketReport = bracketReport && typeof bracketReport === 'object' ? bracketReport : null;
+    built.combos = combos && typeof combos === 'object' ? combos : null;
     built.watch = watch && Array.isArray(watch.sets) ? watch : null;
     built.shortList = built.candidates;
     watchSetId = built.watch && built.watch.sets.length ? built.watch.sets[0].id : null;
@@ -607,6 +629,7 @@
           (PAYS_LABEL[c.pays] ? '<span class="cg-pays cg-pays-' + esc(c.pays.replace('/', '')) + '">' + PAYS_LABEL[c.pays] + '</span>' : '') +
           '<span class="cg-axis">' + esc(c.axis) + '</span>' +
           (c.verdict !== 'unreviewed' ? '<span class="cg-verdict">' + (c.verdict === 'watching' ? '★ watching' : 'passed') + '</span>' : '') +
+          (MM.gcPillHtml ? MM.gcPillHtml(c.name) : '') +
         '</div>' +
         '<p class="cg-why">' + esc(c.why) + '</p>' +
         (r.o ? '<details class="cg-oracle"><summary>Oracle text</summary><p>' +
@@ -859,6 +882,35 @@
     return markCard(name, verdict, null, { advance: false });
   }
 
+  /* Where the open deck stands on Game Changers, from `bracket_report.json`: its floor,
+   * how many GCs the report counted, that bracket's allowance (`GC_LIMIT`), and the
+   * floor the deck would move to with one more. Null without a report. */
+  function bracketStanding() {
+    const r = active && active.bracketReport;
+    if (!r || r.floor == null) return null;
+    const floor = Number(r.floor);
+    const gcCount = Array.isArray(r.game_changers) ? r.game_changers.length : 0;
+    const gcLimit = Object.prototype.hasOwnProperty.call(GC_LIMIT, floor) ? GC_LIMIT[floor] : null;
+    let floorIfAdded = floor;
+    if (gcLimit != null && gcCount + 1 > gcLimit) {
+      floorIfAdded = [1, 2, 3, 4, 5].find(b => b > floor && (GC_LIMIT[b] == null || GC_LIMIT[b] >= gcCount + 1)) || 5;
+    }
+    return { floor, floorName: r.floor_name || null, gcCount, gcLimit, floorIfAdded };
+  }
+
+  /* Is this NAME in the open deck — the 99 or a commander. Read by the card panel's
+   * combo lines to light the partners you run; false with no deck, never a throw. */
+  function hasCard(name) {
+    if (!active || !name) return false;
+    if (active.commanderNames.indexOf(name) !== -1) return true;
+    return active.main.some(function (slot) { return slot.name === name; });
+  }
+
+  /* The open deck's `combos.json` (`{summary, included, near}`), or null. */
+  function deckCombos() {
+    return (active && active.combos) || null;
+  }
+
   /* What the card panel says about a card against the deck Build has open, or null with
    * no deck. Read-only, and every fact comes from where the rest of Build gets it: the
    * 99 from `active.main`, roles from `card_roles.json` through the role grouping's
@@ -886,7 +938,10 @@
     const w = cardRow(name);
     return {
       slug: active.slug,
+      name: name,
       deckName: (active.entry && active.entry.deck_name) || active.slug,
+      gameChanger: !!(MM.cardFlags && MM.cardFlags().gc.has(name)),
+      bracket: bracketStanding(),
       inDeck: !!slot,
       qty: slot ? slot.qty : 0,
       isCommander: active.commanderNames.indexOf(name) !== -1,
@@ -1990,7 +2045,8 @@
     const selected = window.Session ? Session.focus : -1;
     if (selected >= 0 && MM.buildCardDetailHtml) {
       html += '<div class="deck-section">' +
-        MM.buildCardDetailHtml(MM.cardRecord(selected), selected, { title: true, stats: true }) + '</div>';
+        MM.buildCardDetailHtml(MM.cardRecord(selected), selected,
+                               { title: true, stats: true, format: format }) + '</div>';
     }
 
     if (active.edges.length) {
@@ -2593,6 +2649,11 @@
     cardContext,
     markFromPanel,
     renderGrid,
+    // For the card panel: the deck's format (its legality line), whether a NAME is in
+    // the open deck (combo partner chips), and the deck's `combos.json` or null.
+    deckFormat: function () { return format; },
+    hasCard,
+    deckCombos,
     // Read-only probes for the browser suite.
     get watchSetId() { return watchSetId; },
     /* For the page-state beacon (Jarvis's "this deck" / "this card"): reads only. */

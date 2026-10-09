@@ -1187,7 +1187,7 @@ Manual `?v=N` query strings, on **every script and stylesheet tag of the page yo
 touched** — not just two pages. `index.html` carries **twelve** script busts plus
 `mana-map.css`; `deck.html` carries **six**, and `branch.html`, `workbench.html`,
 `library.html` and `spaces.html` **five** each, plus their stylesheets. Every bust in the
-repo currently moves together at `?v=232`. **Bump before pushing** — Pages/browser caches are aggressive.
+repo currently moves together at `?v=236`. **Bump before pushing** — Pages/browser caches are aggressive.
 On `index.html` all twelve script busts must move together and a test asserts it, because
 a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`. The trap the
 two-page framing created: `shell.js` is shared by five pages, so bumping only `deck.html`
@@ -1199,7 +1199,7 @@ For contrast, the handbook's stylesheet is **content-addressed** (`?v=<sha8>` fr
 
 **Two registries, one per page** — the map's and the dossier's, deliberately disjoint:
 
-- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all fifteen card-map entries. `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; `build.js` and `discovery.js` consume `MM.DATA.*`. Add new card-map files there, never as inline literals.
+- **Map** (`mana-map.js`): the `DATA` map at the top (built on `DATA_BASE = '../data/'`) holds all seventeen card-map entries (`cardFlags` at boot, `comboIndex` lazy). `MAP_CONFIGS` (per-map projection/embeddings/regions) and every fetch reference it; `build.js` and `discovery.js` consume `MM.DATA.*`. Add new card-map files there, never as inline literals.
 - **Dossier** (`deck-view.js`): `BASE = '../data/decks/'` plus a `FILES` map of per-deck artifact names. It fetches `data/decks/index.json` first — the manifest written by `manamap pilot build-index`, carrying the deck list and each deck's **passing** stack filenames, because a browser can list neither the deck directory nor `stacks/`. Never hardcode a deck list; add a deck and re-run `build-index`.
 
 ## window.MM API surface
@@ -1410,19 +1410,26 @@ bottom:
 | header | `cardHeaderHtml`: name, cost, P/T (or loyalty / defense), rarity, `+ Deck` / `✓ In Deck`, close. `#deckInner` has no header, so `opts.title` / `opts.stats` draw the same `quickStatsHtml` line (Discover keeps its `.lens-title` for the name) |
 | deck context | **Build only, with a deck loaded** (`Build.cardContext(row)`; below) |
 | type + oracle | a multi-face card (`A // B`, 891 in the corpus) gets one block per face, labelled **Front — name** / **Back — name**, each with its own type and text. 17 cards have a face with no rules text, so their oracle cannot be assigned to a face — the headings stay and the text prints once, unassigned, with a note |
+| combos | `comboLinesHtml`: what the card goes infinite with, deck first. (a) the open deck's `combos.json` entries naming it — "in this deck" (`included`) or "one card short: X" (`near`), synchronous; then (b) `combo_index.json`'s `by_card[name].top`, deduped by id, appended when the lazy index resolves (`MM.comboIndex()`, fetched once; the slot is found by `data-card` in the live DOM, so a panel that moved on gets nothing). Each line: partner chips (`.is-in-deck` via `Build.hasCard`; outside Build the title says to open a deck), `∞`, a bracket pill or `banned`, "assumes its own commander", a Spellbook link, and a count line from `by_card[name].n/inf`. No lines, no header |
 | relations | Similar / Synergy / Outclassed by, counts stated before the click; the synergy caveat is the button's `title` |
 | the comparison | `buildObsolescenceHtml`: a CLOSED `<details>` directly under the relation row — strength, gains, costs and "played less" for each card that outclasses this one. It was a separate "Compare with" box above the oracle reading the same index as the button; obsolescence now has one place |
 | Keep, Set as commander | one row (`.detail-actions`) |
 | the image | 240px, the box reserved at 488:680; a click toggles full width. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once |
-| facts | `EDHREC #n · Commander: legal / not legal · Identity …`; every other format inside a closed `<details>` |
+| facts | `cardFactsHtml(d, {format})`: `EDHREC #n · <Format>: legal / BANNED / not legal · Identity …`; every other format inside a closed `<details>` in the same three states. The format is the deck's (`Build.deckFormat()`), commander elsewhere |
 
 **Dropped**: the CMC row (the cost is in the header) and the Keywords section (it repeats the
-oracle) — `d.k` is still searched. **"Banned" cannot be shown**: the projection's `f` lists
-LEGAL formats only (`reduce._legal_formats`), so banned and not-legal both read "not legal" and
-the line's title says why; telling them apart needs an export change and a regenerated
-projection. **`f` means something else in a slim record**: `viz_index.json`'s `f` is the
-first-printed DATE, so Discover's pre-projection record would read as "legal nowhere" — the
-legality line is omitted until the projection's record (it has `x`) is the one in hand.
+oracle) — `d.k` is still searched. **Three legality states, two sources.** The projection's
+`f` lists LEGAL formats only (`reduce._legal_formats`), so for a year banned and not-legal
+both read "not legal". `data/card_flags.json` (`{as_of, game_changers, banned:{fmt:[names]}}`,
+12 KB, fetched at boot beside `viz_index.json`, surfaced as `MM.cardFlags()` → `{gc: Set,
+banned: {fmt: Set}, as_of}`) now says **BANNED** (`.legal-banned`); the legal list says
+**legal** (`.legal-yes`); the remainder is **not legal** in quiet grey (`.legal-not`), with no
+scary title. A failed fetch leaves the sets empty and the panel reads as before. **`f` means
+something else in a slim record**: `viz_index.json`'s `f` is the first-printed DATE, so the
+legal / not-legal half waits for the projection's record (it has `x`) — but a ban is keyed
+by name and shows on the slim record too. The **Game Changer pill** (`.gc-pill`,
+`MM.gcPillHtml`) rides `quickStatsHtml`, so it appears wherever a card is named — the atlas
+header, Discover's stats line, Build's selected card — and on Build's review tiles.
 **The landing upgrades in place**: the slim record has no type or oracle either, and with the
 image no longer leading, a landing painted before the projection showed a name, the relations
 and an image until something re-rendered — so when the projection lands, Discover's panel
@@ -1435,7 +1442,14 @@ renders it; every fact has its existing home. **In the 99 / not / ★ Commander*
 family order, with the bar the card counts in (`primaryFamily`) marked. **Colour identity**
 against the union of EVERY `is_commander` card — partners are two (sharknado is Shabraz WU +
 Brallin R), and `deckColorIdentity` had read only the manifest's one commander, so *show
-illegal* called every red card in that deck off-colour. And, when the card is in the watch set
+illegal* called every red card in that deck off-colour. **Game Changer**, for a GC only, from
+`bracket_report.json` (`Build.cardContext` gains `gameChanger` and `bracket: {floor,
+gcCount, gcLimit, floorIfAdded}`; the per-bracket limit is `build.js`'s `GC_LIMIT`, a mirror
+of `config.BRACKETS`): in the deck, "this deck runs 2 of 3 allowed at bracket 3"; not in the
+deck and over the allowance, "would be the 4th: floor moves to 4"; at bracket 4 and 5, "no
+limit". `loadDeck` fetches `bracket_report.json` and `combos.json` gated on `has.bracket_report`
+/ `has.combos`, with the optimistic fetch and a swallowed 404 while the manifest predates the
+flags. And, when the card is in the watch set
 the grid is showing, its **axis, pays, verdict, why and note** with **Watch / Pass / Undo**.
 Those call `Build.markFromPanel(name, verdict)`, which is the grid's own `markCard` — its
 one-write-per-card guard, its promise chain, its tile redraw — so there is no second write
