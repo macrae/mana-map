@@ -67,6 +67,9 @@ manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--car
                                         # a PRINT-READY PROXY SHEET (63x88 mm, 3x3, crop marks) of a branch's adds minus
                                         #   what you hold; both faces of a DFC; PNG renders cached in data/cache/proxies/;
                                         #   lands on ~/Desktop and opens. Print at 100%. Skill: /print-proxies
+manamap pilot buy-list <slug> --branch N [--exact] [--out F] [--json]  # the bill's BUY rows as the paste Mana Pool's
+                                        #   mass entry takes (manapool.com/add-deck): `N Name`, or --exact `N Name (SET) CN`;
+                                        #   footer `N cards to buy` + a figure only when prices.json sits beside the branch
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed
@@ -688,6 +691,22 @@ build's must-include set, the `candidates` auto-cut and the diagnosis/prescripti
 gates all refuse to cut a card it names; `merge` folds the refusal into `blocking`, so
 `--force` cannot reach it. `validate-protected <slug>` is the gate: every card in the 99,
 not the commander, with a why. Born of edgar-vampires/draw-v1 cutting Vish Kal unread.
+
+## Buy list (`buy-list`, 2026-10-09)
+
+`manamap pilot buy-list <slug> --branch <name>` prints the branch's purchases — every card
+whose `deck_branch.source` state is `buy`, nothing else — as the text Mana Pool's mass
+entry (https://manapool.com/add-deck, paste only, no URL prefill) accepts: one `N Name`
+per line, or with `--exact` the Moxfield / Mana Pool exact-printings form `N Name (SET)
+CN` (`*F*` rides along), through `check_in.decklist_line`, the one formatter `check-in`
+writes `decklist.txt` with. Printings come from the branch's `cards.json`; a branch
+without one is refused, naming `fetch-deck`. The footer says `N cards to buy` and adds
+`≈ $X.XX (source, as_of)` only when a `prices.json` (`{cards: {name: {nm_cents, …}},
+as_of, source}`, written by another area) sits beside the branch and prices every row — a
+partial sum is not a figure. `--json` is `{text, count, buy_cents|null, as_of|null}`,
+which `serve`'s `branch/buy-list` returns from the same function for the branch page's
+"Copy for Mana Pool"; `--out` is slug-scoped. It never opens the collection boxes and
+never says which deck holds a card.
 
 ## Mining the corpus (`card-search`, tier ◆, computed on demand)
 

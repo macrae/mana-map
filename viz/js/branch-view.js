@@ -302,8 +302,128 @@
       '<p class="lede">You already own <b>' + owned + ' of ' + total + '</b>.</p>' +
       '<p class="ev">Prices are stripped from the card corpus by design, so this ' +
       'page cannot give you a figure. It can tell you exactly what to price.</p>' +
-      cardList('To buy', buy) + cardList('To unsleeve from other decks', elsewhere) +
+      cardList('To buy', buy) + buyListBlock(buy) +
+      cardList('To unsleeve from other decks', elsewhere) +
       '</section>';
+  }
+
+  /* THE BILL AS A PASTE (Area B4, 2026-10-09). Mana Pool's mass entry
+   * (manapool.com/add-deck) takes a pasted decklist and nothing else — no URL
+   * prefill — so the most this page can do is put the text on the clipboard and
+   * open the page. With a local server the text is the server's
+   * (`branch/buy-list`, the same function `manamap pilot buy-list --json`
+   * prints); on the static site it is computed here from the bill's BUY rows
+   * plus the branch's cards.json for the printings, and shown in a <pre> with a
+   * plain Copy. Both forms go through the same line shape as
+   * `check_in.decklist_line`: `N Name`, or `N Name (SET) CN`, `*F*` riding along. */
+  var MANAPOOL_URL = 'https://manapool.com/add-deck';
+
+  function buyListBlock(buy) {
+    if (!buy.length) return '';
+    return '<div class="buylist" id="buyList">' +
+      '<h3>Buy list <span class="ev">(for Mana Pool)</span></h3>' +
+      '<p class="ev"><label><input type="checkbox" id="buyExact"> exact printings ' +
+      '<code>N Name (SET) CN</code></label></p>' +
+      '<p class="ev buylist-hint">paste there, choose exact printings</p>' +
+      '<div class="buylist-body"><p class="ev">preparing…</p></div>' +
+      '</div>';
+  }
+
+  function buyLine(r, exact) {
+    var s = (r.quantity || 1) + ' ' + r.name;
+    if (exact && r.set && r.collector_number) {
+      s += ' (' + String(r.set).toUpperCase() + ') ' + r.collector_number;
+    }
+    if (r.foil) s += ' *F*';
+    return s;
+  }
+
+  /* The deck page's copy idiom (`Deck.copy`): `navigator.clipboard` needs a
+   * secure context, and the failure is reported rather than looking like a
+   * button that does nothing. Resolves to whether it copied. */
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; },
+                                                      function () { return false; });
+    }
+    return Promise.resolve(false);
+  }
+
+  function wireBuyList(slug, branch, buy) {
+    var host = document.getElementById('buyList');
+    if (!host) return;
+    var body = host.querySelector('.buylist-body');
+    var exactBox = document.getElementById('buyExact');
+    function exact() { return !!(exactBox && exactBox.checked); }
+    function say(btn, ok) {
+      var s = host.querySelector('.buylist-say');
+      if (!s) return;
+      s.textContent = ok ? 'copied' : 'could not copy — select and copy';
+      setTimeout(function () { s.textContent = ''; }, 2400);
+    }
+
+    if (window.Api && Api.ready && Api.has('branch/buy-list')) {
+      body.innerHTML =
+        '<button class="todo-cmd" data-act="buy-copy">' +
+        '<code>Copy for Mana Pool</code><span class="todo-copy buylist-say"></span></button>';
+      host.addEventListener('click', function (ev) {
+        var btn = ev.target.closest && ev.target.closest('[data-act="buy-copy"]');
+        if (!btn) return;
+        btn.disabled = true;
+        Api.call('branch/buy-list', { slug: slug, branch: branch, exact: exact() })
+          .then(function (doc) {
+            return copyText(doc.text || '').then(function (ok) {
+              say(btn, ok);
+              // `noopener`: the shop's tab must not get a handle on this page.
+              window.open(MANAPOOL_URL, '_blank', 'noopener');
+            });
+          })
+          .catch(function (e) {
+            btn.insertAdjacentHTML('afterend',
+              '<p class="ev todo-blocked">' + esc(e.message) + '</p>');
+          })
+          .then(function () { btn.disabled = false; });
+      });
+      return;
+    }
+
+    // THE STATIC SITE: no server, so the printings come from the branch's own
+    // cards.json and the list is shown rather than only copied.
+    var base = DATA + 'decks/' + encodeURIComponent(slug) + '/branches/' +
+               encodeURIComponent(branch) + '/';
+    getJSON(base + 'cards.json').then(function (doc) {
+      var byName = {};
+      ((doc && doc.cards) || []).forEach(function (c) {
+        if (!c || !c.name) return;
+        byName[c.name] = c;
+        String(c.name).split(' // ').forEach(function (f) {
+          if (!byName[f]) byName[f] = c;
+        });
+      });
+      var rows = buy.map(function (r) {
+        var c = byName[r.name] || {};
+        return { name: r.name, quantity: c.quantity || 1, set: c.set,
+                 collector_number: c.collector_number, foil: !!c.foil };
+      });
+      function text() {
+        return rows.map(function (r) { return buyLine(r, exact()); }).join('\n');
+      }
+      function paint() {
+        body.innerHTML =
+          '<button class="todo-cmd" data-act="buy-copy"><code>Copy</code>' +
+          '<span class="todo-copy buylist-say"></span></button>' +
+          '<pre class="cmd buylist-text">' + esc(text()) + '</pre>' +
+          (doc ? '' : '<p class="ev">No cards.json on this branch, so no printings: ' +
+                      'the plain form only.</p>');
+      }
+      paint();
+      if (exactBox) exactBox.addEventListener('change', paint);
+      host.addEventListener('click', function (ev) {
+        var btn = ev.target.closest && ev.target.closest('[data-act="buy-copy"]');
+        if (!btn) return;
+        copyText(text()).then(function (ok) { say(btn, ok); });
+      });
+    });
   }
 
   /* Names through `card()`, which is `Shell.cardLink`. This list used to build
@@ -770,6 +890,11 @@
               'is, there is nothing here to decide on.',
               'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write')));
         wireViewToggle();
+        if (nc && nc.bill) {
+          wireBuyList(slug, name, (nc.bill.cards || []).filter(function (r) {
+            return r.state === 'buy';
+          }));
+        }
         loadSwaps(slug, name);
       });
   }
@@ -888,7 +1013,8 @@
     __proposalPanel: proposalPanel,
     __objectivePanel: objectivePanel,
     __verdictPanel: verdictPanel,
-    __swapsPanel: swapsPanel
+    __swapsPanel: swapsPanel,
+    __buyLine: buyLine
   };
 
   /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`): the

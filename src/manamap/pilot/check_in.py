@@ -67,6 +67,23 @@ def read_list(path_or_dash):
         return f.read()
 
 
+def decklist_line(e):
+    """One entry as one line: `N Name`, `N Name (SET) CN`, `… *F*`.
+
+    THE ONE FORMATTER for the Moxfield / Mana Pool "exact printings" form, which
+    is also this repo's canonical `decklist.txt` line. It was a closure inside
+    `render_decklist` until `buy_list` needed the same bytes for a paste into
+    Mana Pool's mass entry; a second copy is how the set code ends up upper-cased
+    on one surface and not the other, and the importer accepts one of them.
+    """
+    s = f"{int(e.get('quantity') or 1)} {e['name']}"
+    if e.get("set") and e.get("collector_number"):
+        s += f" ({str(e['set']).upper()}) {e['collector_number']}"
+    if e.get("foil"):
+        s += " *F*"
+    return s
+
+
 def render_decklist(entries):
     """Entries back to the repo's canonical `decklist.txt` form.
 
@@ -80,13 +97,7 @@ def render_decklist(entries):
     dropping them would silently re-resolve a Secret Lair to its cheapest
     reprint.
     """
-    def line(e):
-        s = f"{int(e.get('quantity') or 1)} {e['name']}"
-        if e.get("set") and e.get("collector_number"):
-            s += f" ({str(e['set']).upper()}) {e['collector_number']}"
-        if e.get("foil"):
-            s += " *F*"
-        return s
+    line = decklist_line
 
     cmds = [e for e in entries if e.get("is_commander")]
     deck = sorted((e for e in entries if not e.get("is_commander")),

@@ -52,6 +52,9 @@ PILOT_STEPS = [
      "Form-check deck_recon.json: cards real, legal, in identity; ownership falsified"),
     ("proxies", "manamap.pilot.proxies",
      "Print-ready proxy sheet (63x88 mm, 3x3, crop marks) for cards waiting on cardboard: a branch's adds minus what you have"),
+    ("buy-list", "manamap.pilot.buy_list",
+     "A branch's purchases (the bill's BUY rows) as one list Mana Pool's mass entry takes — "
+     "paste at manapool.com/add-deck; --exact pins printings `N Name (SET) CN`"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("scenario-ab", "manamap.pilot.scenario_ab",
@@ -317,7 +320,7 @@ _DECK_COMMANDS = {
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
     "validate-log-causes",
     "build", "validate-brief", "promote", "demote",
-    "deck-branch", "diagnose", "assess", "candidates", "close",
+    "deck-branch", "buy-list", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "try", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
     "sim-boards", "validate-lift", "sim-findings", "validate-sim-findings", "merge-sim-findings",
@@ -1346,6 +1349,18 @@ def add_pilot_parser(subparsers):
                              help="do not open the PDF when it is written")
             cmd.add_argument("--dry-run", dest="dry_run", action="store_true",
                              help="list what would print; download and write nothing")
+        if name == "buy-list":
+            # `--branch` IS REQUIRED: a deck's own list has no "adds", so there
+            # is nothing to buy for it — the bill is a property of a branch.
+            cmd.add_argument("--branch", required=True, metavar="NAME",
+                             help="the branch whose BUY rows to list")
+            cmd.add_argument("--exact", action="store_true",
+                             help="pin printings: `N Name (SET) CN` (Moxfield / Mana Pool "
+                                  "exact-printings form) instead of `N Name`")
+            cmd.add_argument("--json", action="store_true", dest="as_json",
+                             help="{text, count, buy_cents|null, as_of|null}")
+            cmd.add_argument("--out", default=None,
+                             help="Write the list here (slug-scoped; a view, never tracked)")
         if name == "diagnosis-report":
             cmd.add_argument("--out", default=None,
                              help="Write markdown here instead of stdout (a view, never tracked)")

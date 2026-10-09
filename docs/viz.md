@@ -11,7 +11,13 @@ directory and, between the families, nothing else:
   every deck's `info.json`.
 - **`deck.html` — the deck dossier.** One deck, one screen. The Deck Context leads it (`context-md.js`).
 - **`branch.html` — the branch workbench.** One candidate 99: the proposal, the verdict,
-  the measured table with each row's definition, reward/risk/cost, the bill.
+  the measured table with each row's definition, reward/risk/cost, the bill — and under
+  the bill's BUY rows a buy list for Mana Pool's mass entry (`manapool.com/add-deck`,
+  paste only): with a local server, "Copy for Mana Pool" calls `branch/buy-list` (the
+  same function as `manamap pilot buy-list --json`), copies the text and opens the shop;
+  on the static site the list is rendered in a `<pre>` from the bill's rows plus the
+  branch's `cards.json` with a plain Copy. An "exact printings" checkbox switches
+  `N Name` to `N Name (SET) CN`, the form `check_in.decklist_line` writes.
 - **`library.html` — Curate.** The library across every pile at a size you can read, with
   sort, colour/type/role filters, multi-select and bulk move/remove. See its own section
   below.
