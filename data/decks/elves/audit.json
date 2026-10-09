@@ -1,0 +1,264 @@
+{
+  "archetype": {
+    "archetype": null,
+    "note": "DECK_ARCHETYPE_BUDGETS is Commander-only; a 60-card deck is read against the midrange band of strategy:sixty-card, and each axis's quote carries the aggro and control bands beside it",
+    "overrides": {},
+    "source": "none — base targets apply"
+  },
+  "axes": [
+    {
+      "axis": "mana-base",
+      "gap": 8,
+      "measured": {
+        "cards": [],
+        "how": "land copies from deck-facts (copies, not entries)",
+        "land_entries": 1,
+        "unit": "copies",
+        "value": 16
+      },
+      "target": {
+        "high": 26,
+        "low": 24,
+        "quote": "an aggressive 60-card deck runs 20 to 24 lands, a midrange deck 24 to 26, a control deck 26 to 28, and the count is set by the turn the deck must hit on time, not by the average mana value alone",
+        "source": "strategy:sixty-card.curve.lands"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "taplands",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "conditional_cards": [],
+        "conditional_or_shock": 0,
+        "how": "land copies that enter tapped with no condition and no pay-life escape",
+        "note": "mana_analysis.lands.enters_tapped is a substring superset and counts both groups together",
+        "unit": "copies",
+        "value": 0
+      },
+      "target": {
+        "high": 8,
+        "low": null,
+        "quote": "an aggressive 60-card deck runs zero to four lands that enter tapped, a midrange deck four to eight, a control deck eight to twelve, and each one is a turn of the opponent's clock that twenty life does not refund",
+        "source": "strategy:sixty-card.taplands"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "colour-sources",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
+        "per_colour": {
+          "G": {
+            "have": 24,
+            "target": 22
+          }
+        },
+        "short": {},
+        "unit": "sources above target (worst colour)",
+        "value": 2
+      },
+      "target": {
+        "deck_size": 60,
+        "formula": "karsten",
+        "high": null,
+        "low": 0,
+        "quote": "60-card equivalents for {C} / {C}{C} / {C}{C}{C}: 14 / 20 / 23",
+        "source": "strategy:deckbuilding.mana-base.color-sources"
+      },
+      "verdict": "at"
+    },
+    {
+      "axis": "interaction",
+      "gap": 10,
+      "measured": {
+        "cards": [],
+        "how": "copies carrying any of removal:spot, removal:damage, removal:edict, removal:fight, removal:debuff, removal:bounce, removal:tax, counterspell, hate:graveyard, removal:sweeper",
+        "interactive_suite_copies": 0,
+        "unit": "copies",
+        "value": 0
+      },
+      "target": {
+        "high": 14,
+        "low": 10,
+        "quote": "an aggressive 60-card deck runs 8 to 12 cheap interactive spells, a midrange deck 10 to 14, and a control deck 16 to 22 counting counterspells, removal and sweepers together",
+        "source": "strategy:sixty-card.interaction"
+      },
+      "verdict": "under"
+    },
+    {
+      "axis": "creatures",
+      "gap": -16,
+      "measured": {
+        "cards": [],
+        "how": "front-face creature copies",
+        "unit": "copies",
+        "value": 34
+      },
+      "target": {
+        "high": 18,
+        "low": 12,
+        "quote": "an aggressive 60-card deck runs 24 to 30 creatures, 16 to 24 of them at one or two mana; a midrange deck 12 to 18 creatures plus noncreature threats; a control deck 0 to 4",
+        "source": "strategy:sixty-card.creatures"
+      },
+      "verdict": "over"
+    },
+    {
+      "axis": "threat-density",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "how": "front-face creature copies — the section counts bodies for the second wave after a sweeper, not wincon roles",
+        "unit": "copies",
+        "value": 34
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "an aggressive 60-card deck must keep a clock after one sweeper — enough creatures that two waves of two or three threats are in hand by the midgame, a count in the mid-twenties, not the teens",
+        "source": "strategy:sixty-card.threat-density"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "interaction-breadth",
+      "gap": 0,
+      "measured": {
+        "by_class": {
+          "artifact": 0,
+          "creature": 0,
+          "enchantment": 0,
+          "graveyard": 0,
+          "land": 0
+        },
+        "cards": [],
+        "how": "oracle-text heuristic over interactive cards; counterspells deliberately excluded — a counter answers a permanent only on the way in",
+        "uncovered": [
+          "artifact",
+          "creature",
+          "enchantment",
+          "graveyard",
+          "land"
+        ],
+        "unit": "classes answered",
+        "value": 0
+      },
+      "target": {
+        "high": null,
+        "low": null,
+        "quote": "one opponent, answers without breadth; 20 life, a tapped land is a real tax; a sideboard, the sixty need not answer everything",
+        "source": "strategy:sixty-card"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "curve",
+      "gap": 0,
+      "measured": {
+        "above_four": 1,
+        "cards": [],
+        "how": "nonland copies by mana value (copies, not entries)",
+        "nonland_copies": 44,
+        "one_and_two_drops": 35,
+        "top_end": 8,
+        "unit": "modal mana value",
+        "value": 1
+      },
+      "target": {
+        "formula": "fundamental-turn",
+        "high": null,
+        "low": null,
+        "quote": "an aggressive 60-card deck puts 16 to 24 cards at one or two mana and nothing above four; a midrange deck centres on two to four with a top end of five or six; a control deck runs its interaction at one to three and its finishers above its opponent's FT",
+        "source": "strategy:sixty-card.curve"
+      },
+      "verdict": "informational"
+    },
+    {
+      "axis": "sideboard",
+      "gap": 0,
+      "measured": {
+        "cards": [],
+        "declared": false,
+        "how": "cards.json sideboard copies (absent when the list declared none)",
+        "note": "a sideboard is optional by the rules; zero means the list has not declared its fifteen, not that it has none to declare",
+        "unit": "copies",
+        "value": 0
+      },
+      "target": {
+        "high": 15,
+        "low": 0,
+        "quote": "The sideboard is \"at most fifteen cards\" brought in \"to tailor their deck toward winning the next game\" (Duke) — answers to the metagame, not more maindeck",
+        "source": "strategy:sixty-card.sideboard"
+      },
+      "verdict": "at"
+    }
+  ],
+  "commander": [],
+  "counts": {
+    "copies": 60,
+    "entries": 15,
+    "land_copies": 16,
+    "lands": 1,
+    "legendary": 0,
+    "legendary_lands": 0,
+    "legendary_permanents": 0,
+    "nonland": 14,
+    "nonlegendary": 15
+  },
+  "dead_searches": [],
+  "decklist_sha256_prefix": "85fbc7a45d33",
+  "engine": {
+    "available": false,
+    "reason": "no goldfish_targets.json — the deck has not declared what it is trying to assemble"
+  },
+  "format": "modern",
+  "freshness": {
+    "artifacts": {
+      "bracket_report.json": {
+        "present": false,
+        "why": "the bracket is a Commander construct"
+      },
+      "goldfish_metrics.json": {
+        "present": false,
+        "why": "the goldfish is Commander-only"
+      },
+      "mana_analysis.json": {
+        "current": true,
+        "decklist_sha256": "85fbc7a45d33825c165c91f4465a24d9c79bca4f951673865b9a4aa2ce41f15d",
+        "present": true
+      }
+    },
+    "decklist_sha256": "85fbc7a45d33825c165c91f4465a24d9c79bca4f951673865b9a4aa2ce41f15d",
+    "recon": {
+      "as_of": null,
+      "present": false
+    }
+  },
+  "not_measured": {
+    "card-advantage": "the corpus states no card-draw count for a 60-card deck",
+    "consistency": "the goldfish is Commander-only",
+    "mana-sources": "Burgess's formula budgets a commander's mana value against a 99-card base",
+    "power": "the bracket is a Commander construct",
+    "protection": "the corpus states no protection count for a 60-card deck; Zupke's 5-7 slots are a Commander structure",
+    "ramp": "the 60-card corpus sets the land count by the turn the deck must hit on time and states no ramp count",
+    "sweepers": "the 60-card corpus counts sweepers inside the interaction total, counterspells, removal and sweepers together, and states no separate wipe count",
+    "tutors": "the corpus gives a tutor count only inside Commander's combo archetype"
+  },
+  "notes": [
+    "A modern deck: the targets are the 60-card table (strategy:sixty-card), read against its MIDRANGE band whatever the frame says — no archetype override table exists for a 60-card deck, and each axis's quote carries the aggro and control bands beside it. The axes under `not measured` are absent with a reason, not zero.",
+    "Under target: mana-base, interaction.",
+    "Over target: creatures.",
+    "Permanent class(es) with no answer detected: artifact, creature, enchantment, graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
+    "No engine block: no goldfish_targets.json — the deck has not declared what it is trying to assemble. Authoring goldfish_targets.json is what makes the engine questions answerable at all.",
+    "Roles come from card_roles.json, which classifies 93.3% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
+  ],
+  "roles": {
+    "coverage": 0.9333,
+    "no_role": [
+      "Utopia Sprawl"
+    ]
+  },
+  "slug": "elves"
+}
