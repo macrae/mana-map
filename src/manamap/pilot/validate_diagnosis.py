@@ -36,7 +36,7 @@ clone): skipped, never failed.
 import pathlib
 import json
 
-from manamap.config import DECK_AXIS_TARGETS
+from manamap.pilot import formats
 from manamap.pilot import bracket as bracket_mod
 from manamap.pilot import deck_audit as audit_mod
 from manamap.pilot.common import (
@@ -262,10 +262,13 @@ def _computable_axes():
     return set(audit_mod.AXIS_ROLES) | {_BREADTH_AXIS}
 
 
-def _axis_value(axis, cards, roles):
-    """Recompute one axis from (cards, roles), or None if it needs more."""
+def _axis_value(axis, cards, roles, spec=formats.DEFAULT):
+    """Recompute one axis from (cards, roles), or None if it needs more.
+
+    `spec` is the deck's format: the roles an axis counts are the format's
+    (`deck_audit.axis_roles` — a 60-card interaction count folds sweepers in)."""
     if axis in audit_mod.AXIS_ROLES:
-        copies, _ = audit_mod._count_copies(cards, roles, audit_mod.AXIS_ROLES[axis])
+        copies, _ = audit_mod._count_copies(cards, roles, audit_mod.axis_roles(axis, spec))
         return copies
     if axis == _BREADTH_AXIS:
         breadth = audit_mod._interaction_breadth(cards, roles)
@@ -310,6 +313,8 @@ def _validate_prescription_moves(doc, deck_doc, roles):
     if not roles or not _corpus_oracle():
         return []                          # no roles or no corpus: skip, never fail
     errors = []
+    spec = formats.for_doc(deck_doc)
+    targets = audit_mod.axis_targets(spec)
     main_cards = list(deck_doc.get("cards", []))
     adds = [a for a in doc.get("add_candidates") or [] if isinstance(a, dict)]
 
@@ -330,12 +335,12 @@ def _validate_prescription_moves(doc, deck_doc, roles):
         if not axis or name not in records:
             continue                       # prose `closes`, or unknown to the corpus
         others = [r for n, r in records.items() if n != name]
-        without = _axis_value(axis, main_cards + others, roles)
-        with_it = _axis_value(axis, main_cards + others + [records[name]], roles)
+        without = _axis_value(axis, main_cards + others, roles, spec)
+        with_it = _axis_value(axis, main_cards + others + [records[name]], roles, spec)
         if without is None or with_it is None or with_it != without:
             continue
-        alone = _axis_value(axis, main_cards + [records[name]], roles)
-        base = _axis_value(axis, main_cards, roles)
+        alone = _axis_value(axis, main_cards + [records[name]], roles, spec)
+        base = _axis_value(axis, main_cards, roles, spec)
         detail = (f" (it moves the axis {base} -> {alone} on its own, so the "
                   f"other adds in this prescription already cover what it covers)"
                   if others and alone != base else "")
@@ -366,11 +371,13 @@ def _validate_prescription_moves(doc, deck_doc, roles):
             swapped.append(record)
     cited = {a.get("axis") for a in doc.get("axes") or [] if isinstance(a, dict)}
     for axis in sorted(cited & _computable_axes()):
-        low = (DECK_AXIS_TARGETS.get(axis) or {}).get("low")
+        # The FORMAT'S table: a 60-card deck's floors are the constructed ones,
+        # and an axis that format does not measure has no floor to clear.
+        low = (targets.get(axis) or {}).get("low")
         if low is None:
             continue
-        before = _axis_value(axis, main_cards, roles)
-        after = _axis_value(axis, swapped, roles)
+        before = _axis_value(axis, main_cards, roles, spec)
+        after = _axis_value(axis, swapped, roles, spec)
         if before is None or after is None:
             continue
         if after < low <= before:

@@ -1213,6 +1213,131 @@ DECK_AXIS_TARGETS = {
     },
 }
 
+# ── The 60-card constructed targets (2026-10-09) ──────────────────────────
+# One table for Standard, Modern, Pioneer and Pauper: the four share a shape
+# (one opponent at 20 life, four-ofs, a fifteen-card sideboard) and the corpus
+# — `strategy:sixty-card` and its children — writes its targets for that
+# shape, not per format. Every `quote` is VERBATIM from the section's
+# "Quotable target" sentence, held by the same test as the Commander table.
+#
+# THE TABLE HOLDS ONLY WHAT THE CORPUS CAN CITE. A Commander axis with no
+# 60-card sentence behind it is not here, and `deck-audit` reports it under
+# `not_measured` with the reason below — absent with a reason, never zero.
+#
+# The base band is MIDRANGE where the sentence gives three (aggro / midrange /
+# control). `DECK_ARCHETYPE_BUDGETS` stays Commander-only, so a 60-card deck
+# is read against the midrange band and the audit says so; the aggro and
+# control bands travel inside each quote for the reader.
+DECK_AXIS_TARGETS_CONSTRUCTED = {
+    "mana-base": {
+        "low": 24, "high": 26,
+        "source": "strategy:sixty-card.curve.lands",
+        "quote": ("an aggressive 60-card deck runs 20 to 24 lands, a midrange "
+                  "deck 24 to 26, a control deck 26 to 28, and the count is set "
+                  "by the turn the deck must hit on time, not by the average "
+                  "mana value alone"),
+    },
+    "colour-sources": {
+        # Per colour, computed by manabase.source_targets over a 60-card
+        # library (`mana_analysis.analyze` passes `spec.library_size`). The
+        # quote is the 60-card column of the same yardstick.
+        "low": None, "high": None, "formula": "karsten", "deck_size": 60,
+        "source": "strategy:deckbuilding.mana-base.color-sources",
+        "quote": ("60-card equivalents for {C} / {C}{C} / {C}{C}{C}: 14 / 20 / 23"),
+    },
+    "interaction": {
+        "low": 10, "high": 14,
+        "source": "strategy:sixty-card.interaction",
+        "quote": ("an aggressive 60-card deck runs 8 to 12 cheap interactive "
+                  "spells, a midrange deck 10 to 14, and a control deck 16 to 22 "
+                  "counting counterspells, removal and sweepers together"),
+    },
+    "creatures": {
+        "low": 12, "high": 18,
+        "source": "strategy:sixty-card.creatures",
+        "quote": ("an aggressive 60-card deck runs 24 to 30 creatures, 16 to 24 "
+                  "of them at one or two mana; a midrange deck 12 to 18 creatures "
+                  "plus noncreature threats; a control deck 0 to 4"),
+    },
+    "threat-density": {
+        # The section's unit is BODIES — the second wave after a sweeper — and
+        # its only count is aggro's, so the base row reports and does not judge.
+        "low": None, "high": None,
+        "source": "strategy:sixty-card.threat-density",
+        "quote": ("an aggressive 60-card deck must keep a clock after one "
+                  "sweeper — enough creatures that two waves of two or three "
+                  "threats are in hand by the midgame, a count in the "
+                  "mid-twenties, not the teens"),
+    },
+    "curve": {
+        "low": None, "high": None, "formula": "fundamental-turn",
+        "source": "strategy:sixty-card.curve",
+        "quote": ("an aggressive 60-card deck puts 16 to 24 cards at one or two "
+                  "mana and nothing above four; a midrange deck centres on two "
+                  "to four with a top end of five or six; a control deck runs "
+                  "its interaction at one to three and its finishers above its "
+                  "opponent's FT"),
+    },
+    "taplands": {
+        "low": None, "high": 8,
+        "source": "strategy:sixty-card.taplands",
+        "quote": ("an aggressive 60-card deck runs zero to four lands that enter "
+                  "tapped, a midrange deck four to eight, a control deck eight "
+                  "to twelve, and each one is a turn of the opponent's clock "
+                  "that twenty life does not refund"),
+    },
+    "interaction-breadth": {
+        # Reported, never scored: one opponent is one board, and the fifteen
+        # buy the breadth the sixty do not carry.
+        "low": None, "high": None,
+        "source": "strategy:sixty-card",
+        "quote": ("one opponent, answers without breadth; 20 life, a tapped "
+                  "land is a real tax; a sideboard, the sixty need not answer "
+                  "everything"),
+    },
+    "sideboard": {
+        "low": 0, "high": 15,
+        "source": "strategy:sixty-card.sideboard",
+        "quote": ('The sideboard is "at most fifteen cards" brought in "to '
+                  'tailor their deck toward winning the next game" (Duke) — '
+                  "answers to the metagame, not more maindeck"),
+    },
+}
+
+_CONSTRUCTED_FORMAT_KEYS = ("standard", "modern", "pioneer", "pauper")
+
+# The table per format, keyed the way `formats.format_key` spells a format:
+# `None` is the default (Commander) and "commander" maps to the same table so a
+# caller holding either spelling lands in the same place.
+DECK_AXIS_TARGETS_BY_FORMAT = {
+    None: DECK_AXIS_TARGETS,
+    "commander": DECK_AXIS_TARGETS,
+    **{key: DECK_AXIS_TARGETS_CONSTRUCTED for key in _CONSTRUCTED_FORMAT_KEYS},
+}
+
+# Commander axes a 60-card audit does NOT emit, each with the one honest reason.
+# A key here must be absent from that format's table and present in
+# Commander's (a test holds both); `deck-audit` prints the map under the axes.
+_NOT_MEASURED_CONSTRUCTED = {
+    "mana-sources": ("Burgess's formula budgets a commander's mana value against "
+                     "a 99-card base"),
+    "ramp": ("the 60-card corpus sets the land count by the turn the deck must "
+             "hit on time and states no ramp count"),
+    "sweepers": ("the 60-card corpus counts sweepers inside the interaction "
+                 "total, counterspells, removal and sweepers together, and "
+                 "states no separate wipe count"),
+    "power": "the bracket is a Commander construct",
+    "consistency": "the goldfish is Commander-only",
+    "tutors": ("the corpus gives a tutor count only inside Commander's combo "
+               "archetype"),
+    "card-advantage": "the corpus states no card-draw count for a 60-card deck",
+    "protection": ("the corpus states no protection count for a 60-card deck; "
+                   "Zupke's 5-7 slots are a Commander structure"),
+}
+DECK_AXIS_NOT_MEASURED = {
+    key: _NOT_MEASURED_CONSTRUCTED for key in _CONSTRUCTED_FORMAT_KEYS
+}
+
 # Per-archetype overrides on the axis targets above. `strategy:deckbuilding.ratios`
 # ends by saying templates are "counts of *functions*, not cards" and that the
 # right move is to "derive the counts from the deck's actual failure modes";

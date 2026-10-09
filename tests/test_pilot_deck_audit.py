@@ -13,7 +13,10 @@ import pytest
 from manamap.config import (
     DECK_ARCHETYPE_BUDGETS,
     DECK_ARCHETYPE_BUDGET_CITATION,
+    DECK_AXIS_NOT_MEASURED,
     DECK_AXIS_TARGETS,
+    DECK_AXIS_TARGETS_BY_FORMAT,
+    DECK_AXIS_TARGETS_CONSTRUCTED,
     ENGINE_REDUNDANCY_CITATION,
 )
 from manamap.pilot import deck_audit
@@ -43,14 +46,42 @@ def _card(name, oracle="", type_line="Creature — Human", quantity=1, **kw):
 
 @requires_strategy
 def test_every_axis_quote_is_verbatim():
+    """Every table a format can be audited against, not only Commander's."""
     sections, _, _ = load_strategy_db()
-    for axis, spec in DECK_AXIS_TARGETS.items():
-        assert spec["source"] in sections, f"{axis} cites a section that does not exist"
-        body = _ws(sections[spec["source"]]["text"])
-        assert _ws(spec["quote"]) in body, (
-            f"{axis}: quote is not verbatim text of {spec['source']} — "
-            f"strategy.md drifted, or the quote was retyped"
-        )
+    tables = {id(t): t for t in DECK_AXIS_TARGETS_BY_FORMAT.values()}
+    checked = 0
+    for table in tables.values():
+        checked += 1
+        for axis, spec in table.items():
+            assert spec["source"] in sections, f"{axis} cites a section that does not exist"
+            body = _ws(sections[spec["source"]]["text"])
+            assert _ws(spec["quote"]) in body, (
+                f"{axis}: quote is not verbatim text of {spec['source']} — "
+                f"strategy.md drifted, or the quote was retyped"
+            )
+    assert checked >= 2, "the constructed table was not swept"
+
+
+def test_not_measured_axes_are_absent_from_the_format_and_present_in_commanders():
+    """An axis a format cannot cite is ABSENT with a reason, never zero — and
+    the reason must be about a real Commander axis, not a name nothing measures."""
+    checked = 0
+    for key, absent in DECK_AXIS_NOT_MEASURED.items():
+        table = DECK_AXIS_TARGETS_BY_FORMAT[key]
+        for axis, why in absent.items():
+            checked += 1
+            assert axis not in table, f"{key}: {axis} is both measured and not measured"
+            assert axis in DECK_AXIS_TARGETS, f"{key}: {axis} is not a Commander axis"
+            assert why.strip(), f"{key}: {axis} carries no reason"
+    assert checked >= 8
+
+
+def test_the_by_format_table_covers_every_known_format():
+    from manamap.pilot import formats
+    for name, spec in formats.FORMATS.items():
+        assert formats.format_key(spec) in DECK_AXIS_TARGETS_BY_FORMAT, name
+    assert DECK_AXIS_TARGETS_BY_FORMAT[None] is DECK_AXIS_TARGETS
+    assert DECK_AXIS_TARGETS_BY_FORMAT["commander"] is DECK_AXIS_TARGETS
 
 
 @requires_strategy
@@ -518,3 +549,159 @@ def test_the_dead_search_check_stays_quiet_across_the_fleet():
     assert set(fired) <= allowed, (
         f"the check fired on {sorted(set(fired) - allowed)}; read those cards "
         f"before widening it — {fired}")
+
+
+# ── The audit per format (C5, 2026-10-09) ────────────────────────────────
+
+def _synthetic_deck(tmp_path, monkeypatch, fmt="modern", sideboard=True):
+    """A mono-green 60-card list on disk: no commander, four-ofs, a format key,
+    and fifteen sideboard cards. `fmt=None` writes a Commander-shaped doc."""
+    import json
+    decks = tmp_path / "decks"
+    base = decks / "test-deck"
+    base.mkdir(parents=True)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    spell = {"type_line": "Creature — Elf", "oracle_text": "", "is_commander": False,
+             "color_identity": ["G"], "mana_cost": "{G}", "cmc": 1.0, "quantity": 4}
+    land = {"type_line": "Basic Land — Forest", "oracle_text": "({T}: Add {G}.)",
+            "is_commander": False, "color_identity": [], "quantity": 24}
+    doc = {"deck": "test-deck", "decklist_sha256": "abc", "cards": [
+        dict(spell, name="Llanowar Elves"),
+        dict(spell, name="Elvish Mystic"),
+        dict(spell, name="Steel Leaf Champion", mana_cost="{G}{G}{G}", cmc=3.0),
+        dict(land, name="Forest"),
+    ]}
+    if fmt:
+        doc["format"] = fmt
+        if sideboard:
+            doc["sideboard"] = [
+                dict(spell, name="Weather the Storm", type_line="Instant", quantity=4),
+                dict(spell, name="Veil of Summer", type_line="Instant", quantity=4),
+                dict(spell, name="Collector Ouphe", quantity=4),
+                dict(spell, name="Scavenging Ooze", quantity=3),
+            ]
+    else:
+        doc["cards"].append(dict(spell, name="Ezuri, Renegade Leader", quantity=1,
+                                 is_commander=True, cmc=3.0,
+                                 type_line="Legendary Creature — Elf Warrior"))
+    (base / "cards.json").write_text(json.dumps(doc))
+    return base
+
+
+def test_a_sixty_card_audit_reads_the_constructed_table(tmp_path, monkeypatch):
+    from manamap.pilot import common
+    _synthetic_deck(tmp_path, monkeypatch)
+    common.clear_memo()
+    audit = deck_audit.analyze("test-deck", load_pool_fn=lambda: {})
+
+    assert audit["format"] == "modern"
+    assert audit["not_measured"] == DECK_AXIS_NOT_MEASURED["modern"]
+    axes = {a["axis"]: a for a in audit["axes"]}
+    for absent in audit["not_measured"]:
+        assert absent not in axes, f"{absent} was emitted AND listed as not measured"
+    assert set(axes) == set(DECK_AXIS_TARGETS_CONSTRUCTED) - {"colour-sources"}, (
+        "every constructed axis but the one whose artifact is absent")
+    # The land band is the constructed one, through the real row.
+    mb = axes["mana-base"]
+    assert (mb["target"]["low"], mb["target"]["high"]) == (24, 26)
+    assert mb["target"]["source"] == "strategy:sixty-card.curve.lands"
+    assert mb["measured"]["value"] == 24 and mb["verdict"] == "at"
+    # Fifteen, counted in copies, inside the 0-15 band.
+    sb = axes["sideboard"]
+    assert sb["measured"]["value"] == 15 and sb["verdict"] == "at"
+    assert sb["target"]["high"] == 15
+    assert sb["measured"]["declared"] is True
+    # The 60-card curve is counted in copies, not entries: 8 one-drops.
+    assert axes["curve"]["measured"]["one_and_two_drops"] == 8
+    assert axes["curve"]["measured"]["nonland_copies"] == 12
+    assert axes["curve"]["target"]["formula"] == "fundamental-turn"
+    # Bodies, for the second wave; the same count as creatures, reported.
+    assert axes["threat-density"]["measured"]["value"] == 12
+    assert axes["threat-density"]["verdict"] == "informational"
+    # No archetype override, and the audit says why.
+    assert audit["archetype"]["overrides"] == {}
+    assert audit["archetype"]["note"] == deck_audit.NO_CONSTRUCTED_BUDGETS
+    # The artifacts a format cannot have say why, and are not "missing".
+    fresh = audit["freshness"]["artifacts"]
+    assert fresh["bracket_report.json"] == {"present": False, "why": deck_audit.NO_BRACKET}
+    assert fresh["goldfish_metrics.json"] == {"present": False, "why": deck_audit.NO_GOLDFISH}
+    assert not any("bracket_report.json" in n for n in audit["notes"])
+    assert any("MIDRANGE band" in n for n in audit["notes"])
+    # And the report prints the map under the axes.
+    report = deck_audit.format_report(audit)
+    assert "not measured for modern" in report
+    assert "the bracket is a Commander construct" in report
+
+
+def test_a_sixty_card_audit_with_no_sideboard_reads_zero_and_says_so(tmp_path, monkeypatch):
+    from manamap.pilot import common
+    _synthetic_deck(tmp_path, monkeypatch, sideboard=False)
+    common.clear_memo()
+    audit = deck_audit.analyze("test-deck", load_pool_fn=lambda: {})
+    sb = next(a for a in audit["axes"] if a["axis"] == "sideboard")
+    assert sb["measured"]["value"] == 0
+    assert sb["measured"]["declared"] is False
+    assert "optional" in sb["measured"]["note"]
+
+
+def test_a_commander_audit_carries_no_format_and_no_not_measured(tmp_path, monkeypatch):
+    """The byte-identity invariant for the fourteen tracked decks, in miniature:
+    the two keys are written only off the default."""
+    from manamap.pilot import common
+    _synthetic_deck(tmp_path, monkeypatch, fmt=None)
+    common.clear_memo()
+    audit = deck_audit.analyze("test-deck", load_pool_fn=lambda: {})
+    assert "format" not in audit
+    assert "not_measured" not in audit
+    assert "note" not in audit["archetype"]
+    axes = {a["axis"]: a for a in audit["axes"]}
+    assert "sideboard" not in axes
+    assert "mana-sources" in axes and "tutors" in axes
+    assert axes["mana-base"]["target"]["source"] == "strategy:deckbuilding.ratios"
+    assert audit["freshness"]["artifacts"]["bracket_report.json"]["present"] is False
+    assert "why" not in audit["freshness"]["artifacts"]["bracket_report.json"]
+
+
+def test_axis_targets_and_not_measured_follow_the_spec():
+    from manamap.pilot import formats
+    assert deck_audit.axis_targets(formats.COMMANDER) is DECK_AXIS_TARGETS
+    assert deck_audit.axis_targets(formats.STANDARD) is DECK_AXIS_TARGETS_CONSTRUCTED
+    assert deck_audit.axis_targets(formats.PAUPER) is DECK_AXIS_TARGETS_CONSTRUCTED
+    assert deck_audit.not_measured(formats.COMMANDER) == {}
+    assert "power" in deck_audit.not_measured(formats.PIONEER)
+
+
+def test_sixty_card_interaction_counts_sweepers_in():
+    """Walser's 60-card target is "counting counterspells, removal and sweepers
+    together"; comparing a count without sweepers against it is the wrong unit."""
+    from manamap.pilot import formats
+    assert "removal:sweeper" not in deck_audit.axis_roles("interaction", formats.COMMANDER)
+    assert "removal:sweeper" in deck_audit.axis_roles("interaction", formats.MODERN)
+    assert deck_audit.axis_roles("ramp", formats.MODERN) == deck_audit.AXIS_ROLES["ramp"]
+
+
+def test_archetype_overrides_are_commander_only():
+    from manamap.pilot import formats
+    assert deck_audit.archetype_overrides("control", formats.MODERN) == ({}, None)
+    overrides, citation = deck_audit.archetype_overrides("control", formats.COMMANDER)
+    assert overrides["sweepers"] == (5, 7) and citation
+
+
+def test_engine_odds_are_priced_over_the_format_library():
+    """A named card is 7.1% of an opener in 99 cards and 11.7% in 60."""
+    ninety_nine = deck_audit._component({"any_of": ["A"]}, {"A"}, {})
+    sixty = deck_audit._component({"any_of": ["A"]}, {"A"}, {}, library_size=60)
+    assert ninety_nine["odds"]["opening_seven"] == pytest.approx(0.071, abs=0.001)
+    assert sixty["odds"]["opening_seven"] == pytest.approx(0.117, abs=0.001)
+
+
+def test_axis_takes_its_table_as_a_parameter():
+    row = deck_audit._axis("sideboard", 15, "copies", [], "how",
+                           table=DECK_AXIS_TARGETS_CONSTRUCTED)
+    assert row["target"]["source"] == "strategy:sixty-card.sideboard"
+    with pytest.raises(KeyError):
+        deck_audit._axis("sideboard", 15, "copies", [], "how")   # not a Commander axis
+    karsten = deck_audit._axis("colour-sources", 0, "x", [], "how",
+                               table=DECK_AXIS_TARGETS_CONSTRUCTED)
+    assert karsten["target"]["deck_size"] == 60
+    assert "deck_size" not in deck_audit._axis("colour-sources", 0, "x", [], "how")["target"]

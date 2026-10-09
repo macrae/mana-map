@@ -74,13 +74,16 @@ from manamap.config import (
     CARD_ROLES_PATH,
     DECK_ARCHETYPE_BUDGETS,
     DECK_ARCHETYPE_BUDGET_CITATION,
+    DECK_AXIS_NOT_MEASURED,
     DECK_AXIS_TARGETS,
+    DECK_AXIS_TARGETS_BY_FORMAT,
     ENGINE_MAX_CLOSERS,
     ENGINE_REDUNDANCY_CITATION,
     ENGINE_THIN_GROUP,
 )
 from manamap.pilot import deck_facts as deck_facts_mod
 from manamap.pilot import formats
+from manamap.pilot.card_search import deck_identity
 from manamap.pilot.common import (
     front_face,
     resolve_out_path,
@@ -264,10 +267,41 @@ def _verdict(value, low, high):
     return "at"
 
 
+def axis_targets(spec=formats.DEFAULT):
+    """The axis table a format is audited against — `config.DECK_AXIS_TARGETS`
+    for Commander, the shared constructed table for the 60-card formats."""
+    return DECK_AXIS_TARGETS_BY_FORMAT[formats.format_key(spec)]
+
+
+def not_measured(spec=formats.DEFAULT):
+    """{axis: reason} for the Commander axes this format's audit does not emit.
+    Empty for Commander. An axis the corpus cannot cite for a format is ABSENT
+    with a reason, never a zero against a Commander target."""
+    return dict(DECK_AXIS_NOT_MEASURED.get(formats.format_key(spec), {}))
+
+
+def axis_roles(name, spec=formats.DEFAULT):
+    """The classifier roles an axis counts IN THIS FORMAT.
+
+    One difference: the 60-card interaction target is Walser's "counting
+    counterspells, removal and sweepers together", so where a format's table has
+    no `sweepers` row of its own they fold into `interaction` — comparing a
+    count without sweepers against a target that includes them is the same
+    wrong-unit mistake as reading aggro's creature count onto threat-density.
+    """
+    roles = AXIS_ROLES[name]
+    if name == "interaction" and "sweepers" not in axis_targets(spec):
+        roles = roles + AXIS_ROLES["sweepers"]
+    return roles
+
+
 def _axis(name, value, unit, cards, how, low=None, high=None, extra=None,
-          target_override=None):
-    """One axis row: what was measured, what the corpus says, and the gap."""
-    spec = DECK_AXIS_TARGETS[name]
+          target_override=None, table=DECK_AXIS_TARGETS):
+    """One axis row: what was measured, what the corpus says, and the gap.
+
+    `table` is the format's axis table (`axis_targets(spec)`); the default is
+    Commander's so every existing caller reads as it always did."""
+    spec = table[name]
     low = spec.get("low") if low is None else low
     high = spec.get("high") if high is None else high
     if target_override:
@@ -276,6 +310,8 @@ def _axis(name, value, unit, cards, how, low=None, high=None, extra=None,
               "source": spec["source"], "quote": spec["quote"]}
     if spec.get("formula"):
         target["formula"] = spec["formula"]
+    if spec.get("deck_size"):
+        target["deck_size"] = spec["deck_size"]
     verdict = _verdict(value, low, high)
     row = {
         "axis": name,
@@ -350,8 +386,22 @@ def detect_archetype(slug, override=None, branch=None):
     return {"archetype": None, "source": "none — base targets apply"}
 
 
-def archetype_overrides(archetype):
-    """{axis: (low, high)} for this archetype, plus the citation that backs it."""
+#: Why a 60-card deck gets no archetype override, written into the audit.
+NO_CONSTRUCTED_BUDGETS = (
+    "DECK_ARCHETYPE_BUDGETS is Commander-only; a 60-card deck is read against "
+    "the midrange band of strategy:sixty-card, and each axis's quote carries the "
+    "aggro and control bands beside it"
+)
+
+
+def archetype_overrides(archetype, spec=formats.DEFAULT):
+    """{axis: (low, high)} for this archetype, plus the citation that backs it.
+
+    Commander-only: `DECK_ARCHETYPE_BUDGETS` quotes `.archetype-selection`,
+    which is a Commander section, so a 60-card deck gets `{}` whatever its
+    frame says and `analyze` writes `NO_CONSTRUCTED_BUDGETS` beside it."""
+    if formats.format_key(spec) is not None:
+        return {}, None
     if not archetype or archetype not in DECK_ARCHETYPE_BUDGETS:
         return {}, None
     return dict(DECK_ARCHETYPE_BUDGETS[archetype]), dict(DECK_ARCHETYPE_BUDGET_CITATION)
@@ -450,19 +500,24 @@ def _interaction_breadth(cards, roles):
 
 
 def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
-               spec=formats.DEFAULT):
-    """One row per `DECK_AXIS_TARGETS` entry, plus the conditional ones
-    (`colour-sources`, `consistency`, `power`) when their artifact exists. Every
-    measurement traces to an artifact or to `roles`.
+               spec=formats.DEFAULT, sideboard=()):
+    """One row per entry of the FORMAT'S axis table (`axis_targets(spec)`), plus
+    the conditional ones (`colour-sources`, `consistency`, `power`) when their
+    artifact exists. Every measurement traces to an artifact or to `roles`.
 
-    `spec` is the deck's `FormatSpec`; today it decides one thing here, whether
-    a "two or more opponents" land is a tapland (`multiplayer`). Default
-    Commander, so every tracked audit is byte-identical.
+    `spec` is the deck's `FormatSpec`. It chooses the table — every block below
+    is gated on `name in targets`, so a 60-card deck emits no `power`, no
+    `consistency`, no Burgess row and no tutor count, and `analyze` lists those
+    under `not_measured` with their reasons — and it decides whether a "two or
+    more opponents" land is a tapland (`multiplayer`). Default Commander, so
+    every tracked audit is byte-identical. `sideboard` is the document's
+    sideboard entries, read only by the `sideboard` axis (a 60-card row).
 
     The count is deliberately NOT stated here. Both this docstring and the module
     header said "thirteen" while `DECK_AXIS_TARGETS` held sixteen — the same
     transcribed-registry-count failure `test_docs_section_count` exists to catch,
     living inside the module that owns the registry."""
+    targets = axis_targets(spec)
     axes = []
     commanders = [c for c in cards if c.get("is_commander")]
     identity = sorted({col for c in commanders for col in (c.get("color_identity") or [])})
@@ -470,27 +525,34 @@ def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
     land_copies = facts["counts"]["land_copies"]
 
     # 1. Land count, against the format's conventional band.
-    low, high = overrides.get("mana-base", (None, None))
-    axes.append(_axis(
-        "mana-base", land_copies, "copies", [],
-        "land copies from deck-facts (copies, not entries)",
-        low=low, high=high, extra={"land_entries": facts["counts"]["lands"]}))
+    if "mana-base" in targets:
+        low, high = overrides.get("mana-base", (None, None))
+        axes.append(_axis(
+            "mana-base", land_copies, "copies", [],
+            "land copies from deck-facts (copies, not entries)",
+            low=low, high=high, extra={"land_entries": facts["counts"]["lands"]},
+            table=targets))
 
     # 1b. Mana SOURCES — the instruction the section actually opens with.
-    persistent = ("ramp:rock", "ramp:dork", "ramp:land")
-    ramp_sources, ramp_names = _count_copies(cards, roles, persistent)
-    burgess = 31 + len(identity) + commander_cmc
-    axes.append(_axis(
-        "mana-sources", land_copies + ramp_sources, "copies", ramp_names,
-        f"land copies plus persistent producers ({', '.join(persistent)}); "
-        f"target 31 + {len(identity)} colour(s) + commander mana value "
-        f"{commander_cmc} = {burgess}",
-        low=burgess, high=None,
-        extra={"burgess_target": burgess, "colour_identity": identity,
-               "commander_mana_value": commander_cmc,
-               "persistent_producers": ramp_sources,
-               "note": "rituals and Treasure makers are one-shot and are not "
-                       "counted as sources"}))
+    # Burgess budgets a COMMANDER'S mana value against a 99-card base, so the
+    # row exists only in a table that cites him, and only with a commander to
+    # read: no commander, no Burgess.
+    if "mana-sources" in targets and commanders:
+        persistent = ("ramp:rock", "ramp:dork", "ramp:land")
+        ramp_sources, ramp_names = _count_copies(cards, roles, persistent)
+        burgess = 31 + len(identity) + commander_cmc
+        axes.append(_axis(
+            "mana-sources", land_copies + ramp_sources, "copies", ramp_names,
+            f"land copies plus persistent producers ({', '.join(persistent)}); "
+            f"target 31 + {len(identity)} colour(s) + commander mana value "
+            f"{commander_cmc} = {burgess}",
+            low=burgess, high=None,
+            extra={"burgess_target": burgess, "colour_identity": identity,
+                   "commander_mana_value": commander_cmc,
+                   "persistent_producers": ramp_sources,
+                   "note": "rituals and Treasure makers are one-shot and are not "
+                           "counted as sources"},
+            table=targets))
 
     # 2. Taplands — the ones that ALWAYS enter tapped.
     #
@@ -499,49 +561,59 @@ def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
     # unless…" land, including the "unless you have two or more opponents"
     # cycle, which in Commander is always true. Reading that as tempo cost
     # overstates it by a factor of five on a three-colour deck.
-    lands = [c for c in expand_copies(cards) if is_land(c)]
-    always = [c["name"] for c in lands
-              if enters_tapped_unconditionally(c, multiplayer=spec.multiplayer)]
-    conditional = [c["name"] for c in lands
-                   if enters_tapped(c)
-                   and not enters_tapped_unconditionally(c, multiplayer=spec.multiplayer)]
-    axes.append(_axis(
-        "taplands", len(always), "copies", sorted(set(always)),
-        "land copies that enter tapped with no condition and no pay-life escape",
-        extra={"conditional_or_shock": len(conditional),
-               "conditional_cards": sorted(set(conditional)),
-               "note": "mana_analysis.lands.enters_tapped is a substring superset "
-                       "and counts both groups together"}))
+    if "taplands" in targets:
+        lands = [c for c in expand_copies(cards) if is_land(c)]
+        always = [c["name"] for c in lands
+                  if enters_tapped_unconditionally(c, multiplayer=spec.multiplayer)]
+        conditional = [c["name"] for c in lands
+                       if enters_tapped(c)
+                       and not enters_tapped_unconditionally(c, multiplayer=spec.multiplayer)]
+        axes.append(_axis(
+            "taplands", len(always), "copies", sorted(set(always)),
+            "land copies that enter tapped with no condition and no pay-life escape",
+            extra={"conditional_or_shock": len(conditional),
+                   "conditional_cards": sorted(set(conditional)),
+                   "note": "mana_analysis.lands.enters_tapped is a substring superset "
+                           "and counts both groups together"},
+            table=targets))
 
     # 3. Colour sources — per colour, against the deck's own computed target.
-    if mana:
-        targets = mana.get("source_targets") or {}
+    if "colour-sources" in targets and mana:
+        colour_targets = mana.get("source_targets") or {}
         totals = (mana.get("sources") or {}).get("total") or {}
-        short = {c: targets[c] - totals.get(c, 0)
-                 for c in targets if totals.get(c, 0) < targets[c]}
+        short = {c: colour_targets[c] - totals.get(c, 0)
+                 for c in colour_targets if totals.get(c, 0) < colour_targets[c]}
         # The value is the WORST colour's surplus, so one starved colour cannot
         # hide behind four comfortable ones — which is how a five-colour pile
         # reads as fine while its splash is uncastable.
-        surplus = min((totals.get(c, 0) - targets[c] for c in targets), default=0)
+        surplus = min((totals.get(c, 0) - colour_targets[c] for c in colour_targets),
+                      default=0)
         axes.append(_axis(
             "colour-sources", surplus, "sources above target (worst colour)", [],
             "mana_analysis.sources.total against source_targets (Karsten, 90%)",
             low=0, high=None,
-            extra={"per_colour": {c: {"have": totals.get(c, 0), "target": targets[c]}
-                                  for c in sorted(targets)},
-                   "short": short}))
+            extra={"per_colour": {c: {"have": totals.get(c, 0), "target": colour_targets[c]}
+                                  for c in sorted(colour_targets)},
+                   "short": short},
+            table=targets))
 
     # 4-8. Role-counted axes.
     for name in ("ramp", "card-advantage", "interaction", "sweepers",
                  "protection", "threat-density"):
-        copies, names = _count_copies(cards, roles, AXIS_ROLES[name])
+        if name not in targets:
+            continue
+        if name == "threat-density" and "sweepers" not in targets:
+            continue                       # the 60-card row is bodies: 8c below
+        wanted = axis_roles(name, spec)
+        copies, names = _count_copies(cards, roles, wanted)
         low, high = overrides.get(name, (None, None))
         probed = _probe_uncounted(name, cards, roles, names)
         axes.append(_axis(
             name, copies, "copies", names,
-            f"copies carrying any of {', '.join(AXIS_ROLES[name])}",
+            f"copies carrying any of {', '.join(wanted)}",
             low=low, high=high,
-            extra={"possible_uncounted": probed} if probed else None))
+            extra={"possible_uncounted": probed} if probed else None,
+            table=targets))
         if name == "interaction":
             suite, _ = _count_copies(cards, roles, SUITE_ROLES)
             axes[-1]["measured"]["interactive_suite_copies"] = suite
@@ -549,22 +621,38 @@ def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
     # 8b. Creature count — the aggro budget's actual unit.
     creature_copies = sum(1 for c in expand_copies(cards)
                           if "Creature" in front_face(c.get("type_line", "")))
-    low, high = overrides.get("creatures", (None, None))
-    axes.append(_axis("creatures", creature_copies, "copies", [],
-                      "front-face creature copies", low=low, high=high))
+    if "creatures" in targets:
+        low, high = overrides.get("creatures", (None, None))
+        axes.append(_axis("creatures", creature_copies, "copies", [],
+                          "front-face creature copies", low=low, high=high,
+                          table=targets))
+
+    # 8c. Threat density, the 60-card reading: the section's unit is BODIES —
+    # "24+ bodies in sixty, where 12 leaves the rebuild in the library" — not
+    # wincon roles, which a 60-card deck barely carries. Same count as 8b, a
+    # different question: not "how many creatures" but "is the second wave in
+    # hand after the sweeper", and the only bound the corpus states is aggro's.
+    if "threat-density" in targets and "sweepers" not in targets:
+        axes.append(_axis(
+            "threat-density", creature_copies, "copies", [],
+            "front-face creature copies — the section counts bodies for the "
+            "second wave after a sweeper, not wincon roles",
+            table=targets))
 
     # 9. Breadth.
-    breadth = _interaction_breadth(cards, roles)
-    covered = [cls for cls, names in breadth.items() if names]
-    axes.append(_axis(
-        "interaction-breadth", len(covered), "classes answered", sorted(covered),
-        "oracle-text heuristic over interactive cards; counterspells deliberately "
-        "excluded — a counter answers a permanent only on the way in",
-        extra={"by_class": {cls: len(names) for cls, names in breadth.items()},
-               "uncovered": sorted(cls for cls in PERMANENT_CLASSES if not breadth[cls])}))
+    if "interaction-breadth" in targets:
+        breadth = _interaction_breadth(cards, roles)
+        covered = [cls for cls, names in breadth.items() if names]
+        axes.append(_axis(
+            "interaction-breadth", len(covered), "classes answered", sorted(covered),
+            "oracle-text heuristic over interactive cards; counterspells deliberately "
+            "excluded — a counter answers a permanent only on the way in",
+            extra={"by_class": {cls: len(names) for cls, names in breadth.items()},
+                   "uncovered": sorted(cls for cls in PERMANENT_CLASSES if not breadth[cls])},
+            table=targets))
 
     # 10. Consistency — the turn-3 land drop, the one bound the corpus states.
-    if goldfish:
+    if "consistency" in targets and goldfish:
         hit3 = (goldfish.get("metrics", {}).get("land_drop_hit_rate_by_turn") or {}).get("3")
         if hit3 is not None:
             keep = (goldfish.get("metrics", {}).get("opening_hand") or {}).get(
@@ -572,34 +660,67 @@ def build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
             axes.append(_axis(
                 "consistency", hit3, "rate", [],
                 "goldfish land_drop_hit_rate_by_turn['3']",
-                extra={"keep_first_seven_rate": keep}))
+                extra={"keep_first_seven_rate": keep},
+                table=targets))
 
-    # 11. Curve — reported against the measured Commander shape, not scored.
-    curve = facts["curve"]
-    nonland = sum(curve.values())
-    mode = max(curve, key=lambda k: (curve[k], -int(k))) if curve else None
-    axes.append(_axis(
-        "curve", int(mode) if mode is not None else 0, "modal mana value", [],
-        "deck-facts curve (nonland entries)",
-        extra={"two_drops": curve.get("2", 0), "three_drops": curve.get("3", 0),
-               "mana_value_8_plus": sum(v for k, v in curve.items() if int(k) >= 8),
-               "nonland_entries": nonland}))
+    # 11. Curve — reported against the cited shape, not scored.
+    if "curve" in targets and targets["curve"].get("formula") == "fundamental-turn":
+        # The 60-card shape is counted in COPIES, because four-ofs make an
+        # entry histogram meaningless there ("16 to 24 cards at one or two mana"
+        # is 16 to 24 copies); deck-facts' curve is per entry.
+        mvs = [int(c.get("cmc") or 0) for c in expand_copies(cards) if not is_land(c)]
+        hist = Counter(mvs)
+        mode = max(hist, key=lambda k: (hist[k], -k)) if hist else 0
+        axes.append(_axis(
+            "curve", mode, "modal mana value", [],
+            "nonland copies by mana value (copies, not entries)",
+            extra={"one_and_two_drops": hist.get(1, 0) + hist.get(2, 0),
+                   "above_four": sum(v for k, v in hist.items() if k > 4),
+                   "top_end": max(hist) if hist else 0,
+                   "nonland_copies": len(mvs)},
+            table=targets))
+    elif "curve" in targets:
+        curve = facts["curve"]
+        nonland = sum(curve.values())
+        mode = max(curve, key=lambda k: (curve[k], -int(k))) if curve else None
+        axes.append(_axis(
+            "curve", int(mode) if mode is not None else 0, "modal mana value", [],
+            "deck-facts curve (nonland entries)",
+            extra={"two_drops": curve.get("2", 0), "three_drops": curve.get("3", 0),
+                   "mana_value_8_plus": sum(v for k, v in curve.items() if int(k) >= 8),
+                   "nonland_entries": nonland},
+            table=targets))
 
     # 12. Power — a floor, reported, never scored.
-    if bracket:
+    if "power" in targets and bracket:
         axes.append(_axis(
             "power", bracket.get("floor") or 0, "bracket floor", [],
             "bracket_report.json",
             extra={"floor_name": bracket.get("floor_name"),
                    "game_changers": bracket.get("game_changers", []),
-                   "drivers": [d.get("signal") for d in bracket.get("drivers", [])]}))
+                   "drivers": [d.get("signal") for d in bracket.get("drivers", [])]},
+            table=targets))
 
     # 13. Tutors — bounded only inside the combo archetype; otherwise reported.
-    tutor_copies, tutor_names = _count_copies(cards, roles, AXIS_ROLES["tutors"])
-    low, high = overrides.get("tutors", (None, None))
-    axes.append(_axis("tutors", tutor_copies, "copies", tutor_names,
-                      "copies carrying tutor:unrestricted or tutor:narrow",
-                      low=low, high=high))
+    if "tutors" in targets:
+        tutor_copies, tutor_names = _count_copies(cards, roles, AXIS_ROLES["tutors"])
+        low, high = overrides.get("tutors", (None, None))
+        axes.append(_axis("tutors", tutor_copies, "copies", tutor_names,
+                          "copies carrying tutor:unrestricted or tutor:narrow",
+                          low=low, high=high, table=targets))
+
+    # 14. The sideboard — the fifteen, a 60-card row. Copies, not entries, and
+    # the names so the reader can see which answers were declared.
+    if "sideboard" in targets:
+        side = list(expand_copies(list(sideboard or [])))
+        axes.append(_axis(
+            "sideboard", len(side), "copies", sorted({c["name"] for c in side}),
+            "cards.json sideboard copies (absent when the list declared none)",
+            extra={"declared": bool(sideboard),
+                   "note": "a sideboard is optional by the rules; zero means the "
+                           "list has not declared its fifteen, not that it has none "
+                           "to declare"},
+            table=targets))
     return axes
 
 
@@ -655,12 +776,14 @@ def _probe_uncounted(axis, cards, roles, counted_names):
     return sorted(out)
 
 
-def _component(group, deck_names, roles):
+def _component(group, deck_names, roles, library_size=DECK_SIZE_AFTER_COMMANDER):
     """One `any_of` group, priced.
 
     `size` counts only members actually in the 99 — goldfish already warns about
     ghosts, and a component's redundancy is what the shuffler can find, not what
-    the target file remembers.
+    the target file remembers. `library_size` is the format's
+    (`FormatSpec.library_size`): the odds of a named card in an opener are 7.1%
+    of 99 cards and 11.7% of 60.
     """
     members = list(group.get("any_of") or [])
     present = [n for n in members if n in deck_names]
@@ -671,10 +794,14 @@ def _component(group, deck_names, roles):
     # ramp:rock and Dark Ritual is ramp:ritual, and a group holding both is a
     # ramp group whatever the raw counter says. The axis rollup is the second,
     # coarser signature; the raw role wins when it exists because it is tighter.
+    # SORTED, because `most_common` breaks ties by insertion order and a set's
+    # iteration order follows the process hash seed: heliod's `shared_axes`
+    # read ["threat-density", "card-advantage"] in one process and the reverse
+    # in the next, and the in-process determinism test could never see it.
     axis_counts = Counter()
     for name in present:
-        for axis in {_ROLE_TO_AXIS[r] for r in roles.get(name, [])
-                     if r in _ROLE_TO_AXIS}:
+        for axis in sorted({_ROLE_TO_AXIS[r] for r in roles.get(name, [])
+                            if r in _ROLE_TO_AXIS}):
             axis_counts[axis] += 1
     return {
         "cards": present,
@@ -682,9 +809,9 @@ def _component(group, deck_names, roles):
         "size": size,
         "odds": {
             "opening_seven": round(hypergeometric_at_least(
-                size, cards_seen(1), 1, DECK_SIZE_AFTER_COMMANDER), 3),
+                size, cards_seen(1), 1, library_size), 3),
             "by_turn_three": round(hypergeometric_at_least(
-                size, cards_seen(3), 1, DECK_SIZE_AFTER_COMMANDER), 3),
+                size, cards_seen(3), 1, library_size), 3),
         },
         "shared_roles": [r for r, n in role_counts.most_common(3) if n > 1],
         "shared_axes": [a for a, n in axis_counts.most_common(3) if n > 1],
@@ -772,12 +899,14 @@ def _closers(component, siblings, deck_names, identity, pool, roles, details):
     }
 
 
-def engine_activation(slug, cards, roles, identity, load_pool_fn, branch=None):
+def engine_activation(slug, cards, roles, identity, load_pool_fn, branch=None,
+                      spec=formats.DEFAULT):
     """The deck's own engine declaration, priced and measured.
 
     `goldfish_targets.json` is hand-authored and already says what the deck is
     trying to assemble; `goldfish_metrics.json` already says how often it does.
-    Joining them by label is the whole trick.
+    Joining them by label is the whole trick. The odds are priced over
+    `spec.library_size`.
     """
     targets_doc = load_json(deck_file(slug, "goldfish_targets.json", branch), default=None)
     if not targets_doc:
@@ -791,7 +920,8 @@ def engine_activation(slug, cards, roles, identity, load_pool_fn, branch=None):
     pool = details = None
     out = []
     for target in targets_doc.get("targets", []):
-        comps = [_component(g, deck_names, roles) for g in target.get("need", [])]
+        comps = [_component(g, deck_names, roles, spec.library_size)
+                 for g in target.get("need", [])]
         if not comps:
             continue
         thinnest = min(range(len(comps)), key=lambda i: comps[i]["size"])
@@ -839,11 +969,20 @@ def engine_activation(slug, cards, roles, identity, load_pool_fn, branch=None):
 
 # ── Freshness ────────────────────────────────────────────────────────────
 
-def freshness(slug, doc, branch=None):
+#: Why a 60-card deck has no bracket report and no goldfish run, written into
+#: `freshness` beside the artifact that is absent. The same sentences sit under
+#: `not_measured` on the `power` and `consistency` axes.
+NO_BRACKET = "the bracket is a Commander construct"
+NO_GOLDFISH = "the goldfish is Commander-only"
+
+
+def freshness(slug, doc, branch=None, spec=formats.DEFAULT):
     """Which derived artifacts were computed against the current decklist.
 
     A diagnosis of stale numbers is worse than none, and every artifact here
     stamps the decklist it was built from — so this is a comparison, not a guess.
+    For a format with no bracket the `bracket_report.json` entry says WHY it is
+    absent rather than reporting a file nobody could have written.
     """
     current = doc.get("decklist_sha256")
     out = {"decklist_sha256": current, "artifacts": {}}
@@ -852,6 +991,9 @@ def freshness(slug, doc, branch=None):
         "mana_analysis.json": (None, "decklist_sha256"),
     }
     for filename, (block, key) in checks.items():
+        if filename == "goldfish_metrics.json" and formats.format_key(spec) is not None:
+            out["artifacts"][filename] = {"present": False, "why": NO_GOLDFISH}
+            continue
         art = load_json(deck_file(slug, filename, branch), default=None)
         if art is None:
             out["artifacts"][filename] = {"present": False}
@@ -863,10 +1005,13 @@ def freshness(slug, doc, branch=None):
         }
     # bracket_report.json carries no stamp; report its presence so the caller
     # knows the power axis is answerable at all.
-    out["artifacts"]["bracket_report.json"] = {
-        "present": deck_file(slug, "bracket_report.json", branch).exists(),
-        "decklist_sha256": None, "current": None,
-    }
+    if formats.format_key(spec) is None:
+        out["artifacts"]["bracket_report.json"] = {
+            "present": deck_file(slug, "bracket_report.json", branch).exists(),
+            "decklist_sha256": None, "current": None,
+        }
+    else:
+        out["artifacts"]["bracket_report.json"] = {"present": False, "why": NO_BRACKET}
     recon = load_json(deck_dir(slug) / "deck_recon.json", default=None)
     out["recon"] = ({"present": True, "as_of": recon.get("as_of")} if recon
                     else {"present": False, "as_of": None})
@@ -886,14 +1031,24 @@ def build_notes(audit):
             + ". Every figure sourced from those is stale — re-run them before "
               "quoting anything here."
         )
+    # An artifact absent WITH a reason (`why`) is not missing; it is a thing the
+    # format does not have, and `not_measured` already carries the reason.
     missing = [name for name, a in audit["freshness"]["artifacts"].items()
-               if not a.get("present")]
+               if not a.get("present") and not a.get("why")]
     if missing:
         notes.append(
             "Absent, so the axes that read them are omitted rather than defaulted: "
             + ", ".join(sorted(missing)) + "."
         )
-    if audit["archetype"]["archetype"] is None:
+    if audit.get("format"):
+        notes.append(
+            f"A {audit['format']} deck: the targets are the 60-card table "
+            "(strategy:sixty-card), read against its MIDRANGE band whatever the "
+            "frame says — no archetype override table exists for a 60-card deck, "
+            "and each axis's quote carries the aggro and control bands beside it. "
+            "The axes under `not measured` are absent with a reason, not zero."
+        )
+    elif audit["archetype"]["archetype"] is None:
         notes.append(
             "No archetype was established, so the BASE targets apply and no "
             "archetype override was used. strategy:deckbuilding.ratios is explicit "
@@ -975,6 +1130,7 @@ def analyze(slug, archetype=None, load_pool_fn=None, branch=None):
         from manamap.pilot.card_pool import load_pool as load_pool_fn
 
     doc = load_deck_cards(slug, branch)
+    spec = formats.for_doc(doc)
     cards = doc.get("cards", [])
     facts = deck_facts_mod.analyze(slug, branch)
     roles = load_card_roles() if CARD_ROLES_PATH.exists() else {}
@@ -983,29 +1139,41 @@ def analyze(slug, archetype=None, load_pool_fn=None, branch=None):
     bracket = load_json(deck_file(slug, "bracket_report.json", branch), default=None)
 
     detected = detect_archetype(slug, archetype, branch)
-    overrides, citation = archetype_overrides(detected["archetype"])
+    overrides, citation = archetype_overrides(detected["archetype"], spec)
     detected["overrides"] = {k: list(v) for k, v in overrides.items()}
     if citation:
         detected["citation"] = citation
+    if formats.format_key(spec) is not None:
+        detected["note"] = NO_CONSTRUCTED_BUDGETS
 
-    identity = {col for c in cards if c.get("is_commander")
-                for col in (c.get("color_identity") or [])}
+    # The identity the document licenses: the commanders' in Commander, the
+    # union of the main cards' in a format with none (never WUBRG).
+    identity = deck_identity(doc)
 
     audit = {
         "slug": slug,
         "commander": facts["commander"],
         "archetype": detected,
-        "freshness": freshness(slug, doc, branch),
+        "freshness": freshness(slug, doc, branch, spec),
         "counts": facts["counts"],
         "roles": {"coverage": facts["roles"].get("coverage", 0.0),
                   "no_role": facts["roles"].get("no_role", [])},
         "axes": build_axes(slug, cards, roles, facts, mana, goldfish, bracket, overrides,
-                           spec=formats.for_doc(doc)),
-        "engine": engine_activation(slug, cards, roles, identity, load_pool_fn, branch),
+                           spec=spec, sideboard=doc.get("sideboard") or []),
+        "engine": engine_activation(slug, cards, roles, identity, load_pool_fn, branch,
+                                    spec=spec),
         # Computed here rather than inside an axis: it answers "does this card do
         # anything at all in this list", which is not a ratio and has no target.
         "dead_searches": _dead_searches(cards),
     }
+    # `format` and `not_measured` are written ONLY off the default, by the same
+    # rule as `cards.json["format"]`: a Commander audit carries neither key and
+    # its bytes do not move.
+    if formats.format_key(spec) is not None:
+        audit["format"] = formats.format_key(spec)
+    absent = not_measured(spec)
+    if absent:
+        audit["not_measured"] = absent
     audit["notes"] = build_notes(audit)
     return audit
 
@@ -1029,6 +1197,11 @@ def format_report(audit):
                 bound = f" (target <= {hi})"
         flag = {"under": "UNDER", "over": "OVER "}.get(axis["verdict"], "     ")
         lines.append(f"  {flag} {axis['axis']:<20} {m['value']!s:>7} {m['unit']}{bound}")
+    if audit.get("not_measured"):
+        lines.append(f"  not measured for {audit.get('format', 'this format')} "
+                     "(absent with a reason, never zero):")
+        for name, why in sorted(audit["not_measured"].items()):
+            lines.append(f"        {name:<20} {why}")
     engine = audit["engine"]
     if engine.get("available"):
         lines.append("  engine (declared targets, thinnest component first):")
@@ -1068,12 +1241,16 @@ def main(args):
     # render time. `info.json` keeps only {archetype, under[], over[], stale[]},
     # which is the roll-up, not the measurement.
     if getattr(args, "write", False):
-        path = deck_dir(args.slug) / AUDIT_ARTIFACT
+        # BRANCH-SCOPED. `--branch B --write` used to resolve `deck_dir(slug)`
+        # and wrote the branch's audit over the deck's tracked one — the exact
+        # silent-overwrite `deck_dir(slug, branch)` exists to make structural.
+        branch = getattr(args, "branch", None)
+        path = deck_dir(args.slug, branch) / AUDIT_ARTIFACT
         # STAMPED, like every other derived artifact. The audit is a pure
         # function of the 99, so a stamp is honest here in a way it is not for
         # an agent's prose: this file IS current as of that sha by construction.
         audit["decklist_sha256_prefix"] = (
-            (load_json(deck_dir(args.slug) / "cards.json") or {})
+            (load_json(deck_dir(args.slug, branch) / "cards.json") or {})
             .get("decklist_sha256") or "")[:12] or None
         with open(path, "w") as f:
             json.dump(audit, f, indent=2, sort_keys=True, ensure_ascii=False)
