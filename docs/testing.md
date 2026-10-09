@@ -6,7 +6,7 @@ make test-unit-isolated   # the unit tier against an EMPTY data dir — proves i
 make regression           # REGRESSION: the tracked fleet + corpus, then the fleet regen alone
 make integration          # INTEGRATION: browser, Forge, pages byte-identical
 make prepush              # before every push: the tiers the diff can break, BY AREA (below)
-make prepush-full         # unit + isolation + regression ∥ browser, unconditionally  ~15 min
+make prepush-full         # unit + isolation + regression, browser, unconditionally  ~20 min
 make check-deck SLUG=x    # one deck's own checks while iterating on its list   ~1 min
 make test-fresh           # unit + regression, nothing served from the cache
 make test-report          # measure the unit tier: counts, time, coverage   ~2 min
@@ -56,14 +56,16 @@ modified in the tree. An untracked file is not something a push carries — the 
 handoff note (`NEXT_SESSION.md`, untracked) had forced the full suite onto a
 data-only commit. No push base at all means full.
 
-**The regression tier and the browser suite run concurrently** whenever both are
-in the plan (full, `python+viz`). Each one's output is captured to a file and
-printed whole, in order, once both finish, under a header with its exit status;
-either failing fails the push. The browser suite runs at `-n 2` in the pair
-(`make test-browser BROWSER_WORKERS=2`): regression's `-n auto` already takes
-every core, and four Chromiums beside it oversubscribe an 8-core machine. Alone,
-`make test-browser` keeps its four. On the job band both sit under the one
-`prepush` row (two children at once; `MANAMAP_JOB_PARENT` is inherited by both).
+**The regression tier and the browser suite run one after the other by default.**
+They CAN run side by side (`MANAMAP_PREPUSH_PAIR=1`): each output captured to a
+file and printed whole, in order, under a header with its exit status, the
+browser suite at `-n 2` so four Chromiums do not sit on regression's `-n auto`.
+Measured once on 2026-10-09 (8-core Mac): paired, the browser suite took 15 min
+beside regression (7 min alone at four workers), regression slowed from 7 to
+9.4, and the contention flaked `test_canvas_redraws_when_the_filter_changes`
+(10 s in isolation) — 16.6 min wall against ~21 serial, bought with a flake. So
+serial is the default and the pair waits for a machine with cores to spare. On
+the job band the children sit under the one `prepush` row either way.
 
 **The fleet regen (`test_the_fleet_regenerates_byte_identically`, ~6 min) stays
 in `REGRESSION_SERIAL`** and is served from the `unchanged` cache whenever its key
@@ -74,7 +76,7 @@ callers or to a test file is not in the key and skips it, which is also right.
 Check what a change would do with `python -m manamap.check_scope plan`
 (`--base REV` plans the push from another base; `--base HEAD` is the working
 tree alone). `make prepush-full` is the unconditional escape hatch and uses the
-same runner, so its pair is concurrent too. CI runs the whole suite on every push
+same runner. CI runs the whole suite on every push
 regardless; this only decides what blocks the pilot locally.
 
 ## The three tiers (2026-10-05, 8-core Mac, `-n auto`)

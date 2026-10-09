@@ -43,6 +43,7 @@ locally.
     python -m manamap.check_scope deck <slug>...       the deck-scoped check, no git
 """
 import json
+import os
 import re
 import subprocess
 import sys
@@ -100,8 +101,18 @@ AREA_TIERS = {
 FULL_TIERS = ["unit", "unit-isolated", "regression", "browser"]
 #: Cheap and fast-failing first; the two long tiers last, side by side.
 TIER_ORDER = ["docs", "plugin", "unit", "unit-isolated", "decks", "regression", "browser"]
-#: The pair that runs concurrently when both are in a plan.
+#: The pair that CAN run concurrently when both are in a plan — opt-in with
+#: `MANAMAP_PREPUSH_PAIR=1`. Measured 2026-10-09 on the 8-core Mac: paired, the
+#: browser suite at two workers took 15 min beside regression (7 min alone at
+#: four), regression slowed from 7 to 9.4, and the contention flaked a
+#: canvas-timing test — 16.6 min wall against ~21 serial, for a flake. Serial is
+#: the default; the pair stays for a machine with the cores to spare.
 CONCURRENT = ("regression", "browser")
+PAIR_ENV = "MANAMAP_PREPUSH_PAIR"
+
+
+def pair_enabled():
+    return os.environ.get(PAIR_ENV) == "1"
 #: A tier that is a subset of others, dropped when they are all present: the deck
 #: checks and the doc guards are regression- and unit-tier tests of named files.
 _SUBSUMED = {"decks": {"unit", "regression"}, "docs": {"unit", "regression"}}
@@ -274,7 +285,7 @@ def steps(plan):
     """The plan's commands as ordered GROUPS; the commands in one group run at
     the same time. Only the regression/browser pair ever shares a group."""
     tiers = plan_tiers(plan)
-    paired = all(t in tiers for t in CONCURRENT)
+    paired = pair_enabled() and all(t in tiers for t in CONCURRENT)
     out, pair = [], []
     for tier in tiers:
         cmd = tier_command(tier, plan, paired=paired and tier in CONCURRENT)

@@ -108,12 +108,16 @@ def test_the_harness_itself_or_an_unrecognised_path_is_full():
     assert cs.classify([])["scope"] == "none" and cs.commands(cs.classify([])) == []
 
 
-def test_full_is_everything_with_the_pair_concurrent_and_prepush_full_runs_it():
+def test_full_is_everything_serial_by_default_and_prepush_full_runs_it(monkeypatch):
+    monkeypatch.delenv(cs.PAIR_ENV, raising=False)
     plan = cs.classify(["Makefile"])
     assert cs.steps(plan) == [[["make", "test"]], [["make", "test-unit-isolated"]],
-                              [["make", "regression"],
-                               ["make", "test-browser", f"BROWSER_WORKERS={cs.BROWSER_WORKERS_PAIRED}"]]]
+                              [["make", "regression"]], [["make", "test-browser"]]]
     assert cs.pytest_runs(plan) == 6
+    # The pair is opt-in: measured once, it cost a flake for four minutes.
+    monkeypatch.setenv(cs.PAIR_ENV, "1")
+    assert cs.steps(plan)[-1] == [["make", "regression"],
+                                  ["make", "test-browser", f"BROWSER_WORKERS={cs.BROWSER_WORKERS_PAIRED}"]]
     recipe = (cs.REPO / "Makefile").read_text()
     assert re.search(r"^prepush-full:.*\n\t.*manamap\.check_scope full", recipe, re.M)
     assert "BROWSER_WORKERS ?= 4" in recipe and "-n $(BROWSER_WORKERS)" in recipe
@@ -234,7 +238,8 @@ def test_the_concurrent_runner_prints_both_outputs_in_order_and_fails_if_either_
     assert cs.run_concurrently([["make", "regression"], ["make", "test-browser"]]) == 2
 
 
-def test_a_full_run_launches_the_pair_together_and_the_rest_one_at_a_time(monkeypatch):
+def test_a_full_run_launches_the_pair_together_when_asked_and_the_rest_one_at_a_time(monkeypatch):
+    monkeypatch.setenv(cs.PAIR_ENV, "1")
     launched, ran = [], []
     monkeypatch.setattr(cs.subprocess, "Popen",
                         lambda cmd, **kw: (launched.append(cmd),
@@ -304,6 +309,7 @@ def test_the_pair_runs_under_the_prepush_row_two_children_at_once(monkeypatch):
         return _FakeProc(cmd, stdout, 0, "")
 
     monkeypatch.delenv(progress.PARENT_ENV, raising=False)
+    monkeypatch.setenv(cs.PAIR_ENV, "1")
     monkeypatch.setattr(cs.subprocess, "Popen", fake_popen)
     monkeypatch.setattr(cs.subprocess, "run",
                         lambda cmd, cwd=None: type("R", (), {"returncode": 0})())
