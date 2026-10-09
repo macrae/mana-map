@@ -1,0 +1,122 @@
+{
+  "slug": "elves",
+  "decklist_sha256": "85fbc7a45d33825c165c91f4465a24d9c79bca4f951673865b9a4aa2ce41f15d",
+  "format": "modern",
+  "lands": {
+    "total": 16,
+    "entries": 1,
+    "life": {
+      "recurring_per_tap_cycle": 0,
+      "one_time_on_entry": 0
+    },
+    "enters_tapped": 0,
+    "enters_tapped_always": 0,
+    "classes": {
+      "basic": 16
+    },
+    "list": [
+      {
+        "name": "Forest",
+        "copies": 16,
+        "classes": [
+          "basic"
+        ],
+        "produces": [
+          "G"
+        ]
+      }
+    ]
+  },
+  "sources": {
+    "lands": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 16
+    },
+    "nonland": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 8
+    },
+    "total": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 24
+    },
+    "gated": {
+      "count": 0,
+      "names": [],
+      "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
+    },
+    "producers": [
+      {
+        "name": "Heritage Druid",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
+          "G"
+        ]
+      },
+      {
+        "name": "Llanowar Elves",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
+          "G"
+        ]
+      }
+    ]
+  },
+  "pips": {
+    "G": {
+      "total_pips": 60.0,
+      "max_pips": 3,
+      "cards": 42,
+      "earliest_turn": 1,
+      "effective_pips": 2
+    }
+  },
+  "shares": {
+    "G": {
+      "pip_share": 1.0,
+      "source_share": 1.0
+    }
+  },
+  "source_targets": {
+    "G": 22
+  },
+  "on_curve_probability": {
+    "lands_only": {
+      "G": 0.76
+    },
+    "with_rocks_and_dorks": {
+      "G": 0.945
+    },
+    "lands_only_ungated": {
+      "G": 0.76
+    }
+  },
+  "ramp": {
+    "ramp:dork": 8
+  },
+  "goldfish": {
+    "land_drop_hit_rate_by_turn": {},
+    "mean_available_mana_by_turn": {}
+  },
+  "assumptions": [
+    "Colour probabilities are hypergeometric draws from a 60-card library — no mulligans, no card selection, no fetching decisions.",
+    "A source counts only for mana it produces unconditionally; restricted mana (“spend this mana only…”) counts for nothing (the deck-builder's rule).",
+    "Hybrid pips charge half a pip to each side.",
+    "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
+  ],
+  "notes": [
+    "G: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 16-land deck; rocks and dorks lift the count to 24.",
+    "the goldfish is Commander-only; not run for Modern"
+  ]
+}
