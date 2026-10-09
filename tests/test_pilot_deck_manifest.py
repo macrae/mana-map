@@ -50,6 +50,10 @@ MANIFEST_KEYS = {
     # — and the disagreement would only ever surface as a button that offers to
     # delete something and is then refused.
     "deletable", "undeletable_because",
+    # WHICH FORMAT (2026-10-09, the first 60-card deck): "commander" for the
+    # fleet, written out because a generated file owes the browser a key
+    # rather than a convention. `commander` is null when the format has none.
+    "format",
 }
 
 
@@ -148,3 +152,50 @@ def test_tracked_manifest_matches_the_artifacts_on_disk():
             assert checker_passed(load_json(stack_path, {})), (
                 f"{slug}: {name} is in the manifest but is not checker-passed")
         assert len(deck["stack_files"]) == deck["verified"], slug
+
+
+# ── 60-card formats (2026-10-09) ────────────────────────────────────────────
+
+def test_every_entry_carries_its_format_and_a_60_card_deck_has_no_commander(tmp_path, monkeypatch):
+    """`format` on EVERY entry — "commander" for the fleet, since a generated
+    file writes the default out rather than leaving the browser a convention.
+    A deck with no commander says `null` (the slug used to stand in, and a
+    card named "elves" resolves to no art) and its image is the most-copied
+    nonland's art. A brief with a format and no commander is a draft."""
+    decks = tmp_path / "decks"
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    monkeypatch.setattr("manamap.config.MANUALS_DIR", tmp_path / "manuals")
+    cmdr = decks / "cmdr"
+    cmdr.mkdir(parents=True)
+    (cmdr / "decklist.txt").write_text("1 Radagast of Rhosgobel *CMDR*\n1 Forest\n")
+    (cmdr / "cards.json").write_text(json.dumps({"cards": [
+        {"name": "Radagast of Rhosgobel", "is_commander": True, "type_line": "Legendary Creature",
+         "art_crop": "radagast.jpg"},
+        {"name": "Forest", "type_line": "Basic Land — Forest", "art_crop": "forest.jpg"}]}))
+    sixty = decks / "sixty"
+    sixty.mkdir()
+    (sixty / "decklist.txt").write_text("Deck:\n4 Llanowar Elves\n2 Craterhoof Behemoth\n20 Forest\n")
+    (sixty / "cards.json").write_text(json.dumps({"format": "modern", "cards": [
+        {"name": "Forest", "quantity": 20, "type_line": "Basic Land — Forest", "art_crop": "forest.jpg"},
+        {"name": "Craterhoof Behemoth", "quantity": 2, "type_line": "Creature — Beast", "art_crop": "hoof.jpg"},
+        {"name": "Llanowar Elves", "quantity": 4, "type_line": "Creature — Elf Druid", "art_crop": "elves.jpg"}]}))
+    draft = decks / "draft"
+    draft.mkdir()
+    (draft / "brief.json").write_text(json.dumps({"slug": "draft", "format": "pauper"}))
+
+    by = {e["slug"]: e for e in deck_manifest.gather_entries()}
+    assert by["cmdr"]["format"] == "commander" and by["cmdr"]["commander"] == "Radagast of Rhosgobel"
+    assert by["cmdr"]["image"] == "radagast.jpg"
+    assert by["sixty"]["format"] == "modern" and by["sixty"]["commander"] is None
+    assert by["sixty"]["image"] == "elves.jpg", "the most-copied NONLAND, not the 20 Forests"
+    assert by["sixty"]["deck_name"] == "sixty"
+    assert by["draft"]["draft"] is True and by["draft"]["format"] == "pauper"
+    assert by["draft"]["commander"] is None
+
+    # …and `write_manifest` carries the key through to both lists.
+    out = deck_manifest.write_manifest(list(by.values()))
+    doc = json.loads(out.read_text())
+    assert {d["slug"]: d["format"] for d in doc["decks"]} == {"cmdr": "commander", "sixty": "modern"}
+    assert doc["drafts"] == [{"slug": "draft", "format": "pauper", "deck_name": "draft",
+                              "commander": None, "theme": None, "bracket": None, "kept": 0,
+                              "started": by["draft"]["started"]}]

@@ -180,3 +180,79 @@ def test_the_sim_row_counts_runs_on_the_current_list(tmp_path, monkeypatch):
         {"seats": [{"slug": "other", "decklist_sha256": "b" * 64},
                    {"slug": "scratch", "decklist_sha256": "a" * 64}]}, "scratch", "b" * 64) is False
     assert deck_status.sim_run_describes({"seats": [{"slug": "scratch"}]}, "scratch", None) is False
+
+
+# ── 60-card formats (2026-10-09): the stages a Modern deck cannot have read n/a ──
+
+def _format_deck(tmp_path, monkeypatch, fmt=None):
+    decks = tmp_path / "decks"
+    base = decks / "elvesish"
+    base.mkdir(parents=True)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    # Sixty basics: legal in every format (basics are exempt from the copy
+    # limit, and 60 is both Commander-short and constructed-minimum), so the
+    # gate on cards.json has nothing to say and the printed OK line appears.
+    doc = {"decklist_sha256": "b" * 64,
+           "cards": [{"name": "Forest", "quantity": 60, "type_line": "Basic Land — Forest",
+                      "color_identity": [], "colors": [], "mana_cost": "", "cmc": 0,
+                      "oracle_text": "({T}: Add {G}.)", "layout": "normal"}]}
+    if fmt:
+        doc["format"] = fmt
+    (base / "decklist.txt").write_text("60 Forest\n")
+    (base / "cards.json").write_text(json.dumps(doc))
+    return base
+
+
+def test_applies_is_the_one_predicate():
+    from manamap.pilot import deck_status, formats
+
+    for stage in deck_status.COMMANDER_ONLY_STAGES:
+        assert deck_status.applies(stage, formats.COMMANDER)
+        assert not deck_status.applies(stage, formats.MODERN), stage
+    assert deck_status.applies("mana", formats.MODERN) and deck_status.applies("combos", formats.MODERN)
+    # Every name in the set is a real stage, so a typo cannot exempt nothing.
+    assert deck_status.COMMANDER_ONLY_STAGES <= {row[0] for row in STAGES}
+
+
+def test_a_60_card_deck_reads_n_a_for_the_commander_only_stages_and_they_leave_the_denominator(
+        tmp_path, monkeypatch):
+    """`missing` would hold elves to a denominator it can never reach and name
+    commands that refuse (`goldfish`, `bracket-check`). Re-introduce the bug by
+    making `applies` return True and the rows come back as `missing`."""
+    from manamap.pilot import deck_status
+
+    _format_deck(tmp_path, monkeypatch, fmt="modern")
+    rows = deck_status.status("elvesish", validate=False)
+    by = {r["stage"]: r for r in rows}
+    for stage in deck_status.COMMANDER_ONLY_STAGES:
+        assert by[stage]["state"] == "n/a", (stage, by[stage])
+        assert by[stage]["detail"] == "not measured for Modern"
+        assert by[stage]["required"] is False
+    assert by["mana"]["state"] == "missing" and by["combos"]["state"] == "missing"
+    counted = [r for r in rows if r["stage"] != "—" and r["state"] != "n/a"]
+    assert len(counted) == len(STAGES) - len(deck_status.COMMANDER_ONLY_STAGES)
+
+    # The Commander control: the same deck with no `format` is MISSING those
+    # stages, not exempt from them.
+    (tmp_path / "decks" / "elvesish" / "cards.json").write_text(json.dumps(
+        {"decklist_sha256": "b" * 64, "cards": [{"name": "Forest", "quantity": 60}]}))
+    rows = deck_status.status("elvesish", validate=False)
+    assert all(r["state"] != "n/a" for r in rows)
+    assert {r["stage"]: r["state"] for r in rows}["goldfish"] == "missing"
+
+
+def test_the_printed_count_and_the_fleet_count_leave_the_n_a_rows_out(tmp_path, monkeypatch, capsys):
+    from manamap.pilot import deck_status
+
+    _format_deck(tmp_path, monkeypatch, fmt="modern")
+    deck_status.main(type("A", (), {"slug": "elvesish", "as_json": False, "all_decks": False})())
+    out = capsys.readouterr().out
+    expected = len(STAGES) - len(deck_status.COMMANDER_ONLY_STAGES)
+    assert f"/{expected} stages complete · {len(deck_status.COMMANDER_ONLY_STAGES)} not measured for this format" in out
+    assert "  n/a    goldfish" in out and "not measured for Modern" in out
+    assert f"/{expected} lifecycle stages present" in out
+
+    monkeypatch.setattr("manamap.pilot.validate_pending.summarise",
+                        lambda slug: {"open": 0, "applied": 0, "partial": 0})
+    fleet = {r["slug"]: r for r in deck_status.fleet()}
+    assert fleet["elvesish"]["total"] == expected

@@ -386,7 +386,10 @@ def test_the_stage_count_excludes_gate_rows_and_matches_deck_status():
     for path in sorted(DECKS_DIR.glob("*/cards.json")):
         slug = path.parent.name
         checked += 1
-        stages = [r for r in deck_status.status(slug) if r["stage"] != "—"]
+        # Neither a gate row nor a stage the deck's format cannot have (`n/a`,
+        # `deck_status.applies`) is in the denominator — on either side.
+        stages = [r for r in deck_status.status(slug)
+                  if r["stage"] != "—" and r["state"] != "n/a"]
         info = deck_info.compose(slug)
         assert info["status"]["of"] == len(stages), (
             f"{slug}: deck-info says of={info['status']['of']}, "
@@ -464,3 +467,66 @@ def test_the_simulation_panel_names_the_version_it_measured(monkeypatch):
     sm2 = deck_info._simulation("x", None)
     assert sm2["stale"] is True and sm2["ran_on_version"] is None
     assert "no longer holds" in deck_info._stale_words(sm2)
+
+
+# ── 60-card formats (2026-10-09) ────────────────────────────────────────────
+
+SIXTY = "elvesish"
+
+
+@pytest.fixture
+def sixty_deck(tmp_path, monkeypatch):
+    """A Modern list: no commander, four-ofs, `format` on the document."""
+    decks = tmp_path / "decks"
+    base = decks / SIXTY
+    base.mkdir(parents=True)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    (base / "decklist.txt").write_text("Deck:\n4 Llanowar Elves\n20 Forest\n")
+    (base / "cards.json").write_text(json.dumps({
+        "deck": SIXTY, "decklist_sha256": "x", "format": "modern",
+        "cards": [{"name": "Llanowar Elves", "quantity": 4, "type_line": "Creature — Elf Druid",
+                   "mana_cost": "{G}", "cmc": 1, "colors": ["G"], "color_identity": ["G"],
+                   "oracle_text": "{T}: Add {G}.", "layout": "normal"},
+                  {"name": "Forest", "quantity": 20, "type_line": "Basic Land — Forest",
+                   "mana_cost": "", "cmc": 0, "colors": [], "color_identity": [],
+                   "oracle_text": "({T}: Add {G}.)", "layout": "normal"}]}))
+    return base
+
+
+def test_a_60_card_deck_composes_with_its_format_no_commander_and_a_goldfish_reason(sixty_deck, capsys):
+    """`format` only when it is not the default (the fourteen tracked
+    Commander info.json files carry no key); the goldfish block is the SAME
+    absent shape with the format as its reason; the commander-only stages are
+    neither counted nor todo; `try` and the Forge probe are withheld with the
+    reason said."""
+    from manamap.pilot import deck_status
+
+    info = deck_info.compose(SIXTY)
+    assert info["format"] == "modern"
+    assert list(info)[:3] == ["slug", "format", "commander"]
+    assert info["commander"] == [] and info["colour_identity"] == ["G"]
+    assert info["size"] == 24 and info["lands"] == 20
+    run = info["model"]["goldfish"]["facts"]["run"]
+    assert run["absent_because"] == "not modelled for Modern — the goldfish is Commander-only"
+    assert info["goldfish"] is None
+    stages = deck_status.status(SIXTY, validate=False)
+    assert info["status"]["of"] == sum(1 for r in stages if r["stage"] != "—" and r["state"] != "n/a")
+    assert not (set(info["status"]["missing"]) & deck_status.COMMANDER_ONLY_STAGES)
+    assert "sim" not in {t["stage"] for t in info["status"]["todo"]}
+    assert not any("try a swap" in n for n in info["next"])
+    assert any("Commander-only — not offered for Modern" in n for n in info["next"])
+
+    deck_info._print(info)
+    head = capsys.readouterr().out.splitlines()[0]
+    assert head == "ELVESISH — Modern · G · 24 cards (20 lands)"
+
+
+def test_a_commander_deck_carries_no_format_key_and_still_offers_try(bare_deck, capsys):
+    """The control: the default format is ABSENT, never written — byte identity
+    on every tracked info.json depends on it."""
+    info = deck_info.compose(SLUG)
+    assert "format" not in info
+    assert any("try a swap" in n for n in info["next"])
+    assert "sim" in {t["stage"] for t in info["status"]["todo"]}
+    deck_info._print(info)
+    assert capsys.readouterr().out.splitlines()[0].startswith("INFODECK — Radagast of Rhosgobel · G ·")

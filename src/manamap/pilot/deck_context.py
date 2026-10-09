@@ -164,8 +164,18 @@ def _block_summary(slug, info):
     else:
         status = f"on the bench ({stage})"
     br = info.get("bracket") or {}
+    if commanders:
+        head = f"- **Commander:** {' + '.join(card_link(c) for c in commanders)}"
+    else:
+        # A 60-card deck (PRD Area C): no command zone, so the first line names
+        # the FORMAT, the colours and the size — what a Modern pilot would say.
+        from manamap.pilot import formats
+
+        head = (f"- **Format:** {formats.get(info.get('format')).name} · "
+                f"{''.join(info.get('colour_identity') or []) or 'colourless'} · "
+                f"{info.get('size')} cards")
     lines = [
-        f"- **Commander:** {' + '.join(card_link(c) for c in commanders)}",
+        head,
         f"- **Version:** {_version_label(info)} · **status:** {status}",
         f"- **Colours:** {''.join(info.get('colour_identity') or []) or 'colourless'}"
         f" · **lands:** {info.get('lands')} · **bracket floor:** "
@@ -198,7 +208,14 @@ def _block_numbers(slug, info, report):
     gm = load_json(base / "goldfish_metrics.json") or {}
     meta = gm.get("meta") or {}
     out = []
-    if not gm:
+    if info.get("format"):
+        # Commander-only, and the reason is the model block's own — see
+        # `deck_info._goldfish_block`. "Run goldfish" would refuse here.
+        from manamap.pilot import formats
+
+        out.append(f"- Goldfish: not modelled for {formats.get(info['format']).name} — "
+                   "the goldfish is Commander-only (docs/simulation.md).")
+    elif not gm:
         out.append("- No goldfish run yet (`manamap pilot goldfish " + slug + "`).")
     else:
         out.append(f"Goldfish, {meta.get('iterations', '?'):,} seeded games, measured on "

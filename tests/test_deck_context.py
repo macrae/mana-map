@@ -241,3 +241,51 @@ def test_every_tracked_deck_context_passes_its_gate():
         assert errors == [], f"{slug}: {errors}"
         checked += 1
     assert checked >= 1
+
+
+# ── 60-card formats (2026-10-09) ────────────────────────────────────────────
+
+def test_the_summary_block_names_the_format_when_the_deck_has_no_commander():
+    """`- **Format:** Modern · G · 60 cards` in the slot the Commander line
+    holds for the fleet — never an empty `**Commander:**`."""
+    block = dc._block_summary("elves", _info(slug="elves", commander=[], format="modern",
+                                             colour_identity=["G"], size=60, lands=16, bracket=None))
+    assert block.splitlines()[0] == "- **Format:** Modern · G · 60 cards"
+    assert "**Commander:**" not in block
+    assert "**bracket floor:** not checked" in block
+    # The control: a commander keeps its line, byte for byte.
+    assert dc._block_summary("sharknado", _info()).startswith("- **Commander:** [Shabraz")
+
+
+def test_the_numbers_block_says_the_goldfish_is_commander_only_for_a_60_card_deck(tmp_path, monkeypatch):
+    base = tmp_path / "decks" / "elves"
+    base.mkdir(parents=True)
+    monkeypatch.setattr(dc, "deck_dir", lambda slug, branch=None: base)
+    block = dc._block_numbers("elves", _info(slug="elves", commander=[], format="modern"), {})
+    assert block.splitlines()[0] == ("- Goldfish: not modelled for Modern — the goldfish is "
+                                     "Commander-only (docs/simulation.md).")
+    assert "manamap pilot goldfish" not in block
+
+
+def test_a_context_for_a_deck_with_no_commander_passes_the_gate(monkeypatch):
+    """What `context --refresh` / `validate-context` would accept once the
+    Keeper has seeded elves: every main card placed, no commander anywhere."""
+    sixty = ["Llanowar Elves", "Craterhoof Behemoth", "Forest"]
+    monkeypatch.setattr(dc, "_deck_names", lambda slug: {n.lower(): n for n in sixty})
+    from manamap.pilot import common
+    monkeypatch.setattr(common, "decklist_sha256", lambda slug, branch=None: SHA)
+    monkeypatch.setattr(dc, "_title", lambda slug: "# elves — Deck Context")
+    blocks = dict(BLOCKS, summary="- **Format:** Modern · G · 60 cards")
+    text = dc.scaffold_text("elves", blocks)
+    assert text.startswith("# elves — Deck Context")
+    text = text.replace("<!-- ctx:written-for none -->",
+                        f"<!-- ctx:written-for version=v1.0.0 sha={SHA[:12]} at=2026-10-09 -->")
+    text = text.replace("## Summary\n\n" + dc.PLACEHOLDER, "## Summary\n\nMono-green Elves: dorks into [[Craterhoof Behemoth]].")
+    text = text.replace("## How it plays\n\n" + dc.PLACEHOLDER, "## How it plays\n\nTurn one [[Llanowar Elves]], then go wide.")
+    text = text.replace("## Cards by role\n\n" + dc.PLACEHOLDER,
+                        "## Cards by role\n\n### Mana\n- [[Llanowar Elves]]\n- [[Forest]]\n### Finish\n- [[Craterhoof Behemoth]]")
+    text = text.replace(dc.PLACEHOLDER, "Nothing yet.")
+    text = dc.expand_links(text)
+    errors, warnings = dc.check_text("elves", text, blocks, strict=True)
+    assert errors == [] and warnings == [], (errors, warnings)
+    assert dc.replace_blocks(text, blocks) == text

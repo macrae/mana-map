@@ -14,6 +14,8 @@ and `git status data/` was EMPTY after each — the tracked artifacts were alrea
 current, so byte-identical output is the bit-identity proof.
 """
 
+import json
+
 import pytest
 
 from manamap.pilot import regen
@@ -38,7 +40,7 @@ def test_every_stage_names_a_real_module_with_a_main():
     import importlib
 
     checked = 0
-    for _stage, _artifact, module, _kwargs, _branch_only in regen.STAGES:
+    for _stage, _artifact, module, _kwargs, _branch_only, _commander_only in regen.STAGES:
         assert callable(getattr(importlib.import_module(module), "main", None)), module
         checked += 1
     assert checked >= 6
@@ -354,3 +356,71 @@ def test_an_archived_deck_is_never_swept_or_named_into_a_rebuild():
         assert not regen.targets("goldfish_metrics.json", slug=deck.name), (
             f"{deck.name} is archived and regen would still rebuild it")
     assert checked >= 2
+
+
+# ── 60-card formats (2026-10-09): the commander-only stages are skipped and SAID ──
+
+def _deck(decks, slug, fmt=None, artifacts=()):
+    base = decks / slug
+    base.mkdir(parents=True)
+    doc = {"deck": slug, "decklist_sha256": "a" * 64,
+           "cards": [{"name": "Forest", "quantity": 4, "type_line": "Basic Land — Forest"}]}
+    if fmt:
+        doc["format"] = fmt
+    (base / "decklist.txt").write_text("4 Forest\n")
+    (base / "cards.json").write_text(json.dumps(doc))
+    for name in artifacts:
+        (base / name).write_text("{}")
+    return base
+
+
+def test_the_plan_drops_the_commander_only_stages_for_a_60_card_deck_and_keeps_them_for_commander(
+        tmp_path, monkeypatch):
+    """The goldfish seats a commander and deals against a table, and `diagnose`,
+    `benchmark` and `net-change` are readings of it. A Modern deck holding one of
+    those files (a defect — nothing writes it) is dropped from the plan rather
+    than regenerated; the Commander control with the same files keeps every
+    stage. Re-introduce the bug by ignoring `commander_only` in `_plan` and the
+    Modern deck comes back into the goldfish stage."""
+    decks = tmp_path / "decks"
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    both = ("goldfish_metrics.json", "mana_analysis.json", "combos.json", "info.json")
+    _deck(decks, "cmdr", artifacts=both)
+    _deck(decks, "elvesish", fmt="modern", artifacts=both)
+
+    planned = {stage: {s for s, _b in found} for stage, _m, _k, found in regen.plan()}
+    assert planned["goldfish"] == {"cmdr"}, planned
+    for stage in ("mana-analysis", "deck-combos", "deck-info"):
+        assert planned[stage] == {"cmdr", "elvesish"}, (stage, planned)
+    assert regen.COMMANDER_ONLY_STAGES == {"goldfish", "net-change", "diagnose", "benchmark"}
+
+    # The skips are NAMED, per stage, with the format — never inferred from a
+    # stage that is quietly absent from the plan.
+    skips = regen.skipped()
+    assert ("goldfish", "elvesish", "Modern") in skips
+    assert all(s == "elvesish" for _st, s, _f in skips), skips
+    assert {st for st, _s, _f in skips} == regen.COMMANDER_ONLY_STAGES
+    # …and `--slug` scopes the skips the way it scopes the plan.
+    assert regen.skipped(slug="cmdr") == []
+
+
+def test_a_dry_run_echoes_the_skip_with_the_format_named(tmp_path, monkeypatch):
+    decks = tmp_path / "decks"
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    _deck(decks, "elvesish", fmt="modern", artifacts=("mana_analysis.json",))
+    lines = []
+    result = regen.run(slug="elvesish", dry_run=True, echo=lines.append)
+    assert "  SKIPPED goldfish elvesish — not modelled for Modern" in lines
+    assert "  SKIPPED net-change elvesish — not modelled for Modern" in lines
+    assert any(line.strip() == "mana-analysis  (1)" for line in lines), lines
+    assert result["ran"] == 0 and len(result["skipped"]) == len(regen.COMMANDER_ONLY_STAGES)
+
+
+def test_regen_and_deck_status_agree_the_goldfish_is_commander_only():
+    """Two registries — regen names PRODUCERS, deck_status names LIFECYCLE
+    STEPS — so the one stage they both carry must sit in both sets."""
+    from manamap.pilot import deck_status
+
+    assert "goldfish" in regen.COMMANDER_ONLY_STAGES
+    assert "goldfish" in deck_status.COMMANDER_ONLY_STAGES
+    assert "benchmark" in regen.COMMANDER_ONLY_STAGES and "benchmark" in deck_status.COMMANDER_ONLY_STAGES

@@ -114,6 +114,43 @@ STAGES = [
 # exact way a new capability fails to propagate.
 ADDED_2026_08 = {"map", "engine", "log"}
 
+# THE STAGES ONLY A COMMANDER DECK CAN HAVE (2026-10-09, the first 60-card deck).
+#
+# The goldfish seats a commander in the command zone and deals against a table
+# at 40 life with authored rates for that table; the bracket engine reads the
+# Commander Bracket system; Forge's pods are four-seat Commander tables; the
+# benchmark is a goldfish run under a frozen harness; the targets file is the
+# goldfish's own declaration. None of those has a meaning for a Modern deck,
+# and reporting them as `missing` would hold elves to a denominator it can
+# never reach while suggesting commands that refuse. So `applies` is ONE
+# predicate, read by `status()` here and by `deck_info.compose` through the
+# rows it returns: a stage that does not apply reads `n/a` with the format
+# named, is not counted in the denominator, and is not a todo.
+#
+# `regen.COMMANDER_ONLY_STAGES` is the same idea over regen's stage names
+# (goldfish, net-change, diagnose, benchmark) — different registries, because
+# regen names PRODUCERS and this names LIFECYCLE STEPS, and a test holds the
+# goldfish to both.
+COMMANDER_ONLY_STAGES = frozenset({"bracket", "targets", "goldfish", "sim", "benchmark"})
+
+
+def applies(stage, spec):
+    """Does this lifecycle stage exist for a deck of this `FormatSpec`?
+
+    True for every stage of a Commander deck, and for every stage a 60-card
+    deck can have. The one predicate, so `deck-status`, `deck-info` and the
+    denominator cannot disagree about what a Modern deck is missing.
+    """
+    return stage not in COMMANDER_ONLY_STAGES or bool(spec.commanders)
+
+
+def _not_applicable(key, name, what, how, slug, spec):
+    """The row a stage that does not apply reads. `n/a`, never `missing`."""
+    return {"stage": key, "artifact": name, "what": what,
+            "how": how.format(slug=slug), "state": "n/a",
+            "detail": f"not measured for {spec.name}",
+            "required": False, "new": False}
+
 # RETIRED 2026-08-19 with the workbench pivot (docs/history/agent-audit-2026-08-19.md):
 # `map-names` (the cartographer is optional now — the deterministic fallback
 # names are honest, and a gate on wit is a gate nobody should have to pass),
@@ -222,13 +259,21 @@ def status(slug, validate=True):
     own validators, and it did it again live on ur-dragon mid-swap. The gates
     existed; nothing in the command ran them.
     """
+    from manamap.pilot import formats
+
     base = deck_dir(slug)
     cards = load_json(base / "cards.json") or {}
     truth = cards.get("decklist_sha256")
+    # THE resolver, not `for_doc(cards)`: a deck whose `cards.json` is not
+    # written yet still declares its format in `brief.json`.
+    spec = formats.for_deck(slug)
 
     rows = []
     for key, name, sha_path, required, what, how in STAGES:
         path = base / name
+        if not applies(key, spec):
+            rows.append(_not_applicable(key, name, what, how, slug, spec))
+            continue
         if name.endswith("/"):
             files = sorted(path.glob("*.json")) if path.is_dir() else []
             # A STACK IS PASSING OR IT IS NOTHING; A RUN IS JUST A RUN.
@@ -552,8 +597,9 @@ def fleet():
         stale = [_name(r) for r in rows if r["state"] == "STALE"]
         invalid = [_name(r) for r in rows if r["state"] == "INVALID"]
         # Gates are not stages — counting them makes a deck with MORE evidence look
-        # less finished. Same rule the single-deck view follows.
-        stage_rows = [r for r in rows if r["stage"] != "—"]
+        # less finished. Same rule the single-deck view follows. A stage the
+        # deck's format cannot have (`n/a`) is not in the denominator either.
+        stage_rows = [r for r in rows if r["stage"] != "—" and r["state"] != "n/a"]
         try:
             pend = summarise(slug)
         except Exception:
@@ -615,7 +661,10 @@ def main(args):
             "INVALID": "FAIL", "unverified": " ?  ",
             # A gated artifact that is not a lifecycle stage — it passed its gate
             # but is not a step in building a deck, so it must not read as one.
-            "gate": "GATE"}
+            "gate": "GATE",
+            # A stage the deck's FORMAT cannot have — see `applies`. Not missing:
+            # a Modern deck is not incomplete for lacking a goldfish.
+            "n/a": "n/a "}
     print(f"DECK STATUS — {args.slug}")
     # Which list this is. Derived from git on demand; a deck outside a repo
     # reports nothing rather than guessing.
@@ -653,9 +702,13 @@ def main(args):
     # Gate rows are NOT stages — they are artifacts that have a validator but no
     # step in building a deck. Counting them would make "13/15" become "13/17" and
     # a deck look less finished for having MORE evidence, which is backwards.
-    stages = [r for r in rows if r["stage"] != "—"]
+    # An `n/a` row leaves the denominator too: elves reads N/14, not N/19 with
+    # five stages it can never have.
+    stages = [r for r in rows if r["stage"] != "—" and r["state"] != "n/a"]
     done = sum(1 for r in stages if r["state"] == "present")
-    print(f"\n  {done}/{len(stages)} stages complete")
+    na = [r["stage"] for r in rows if r["state"] == "n/a"]
+    print(f"\n  {done}/{len(stages)} stages complete"
+          + (f" · {len(na)} not measured for this format ({', '.join(na)})" if na else ""))
 
     # Deliberately NOT a STAGES row: a queued change is intent, not a lifecycle
     # stage, and must not move the completeness count. An APPLIED entry is the
@@ -683,7 +736,7 @@ def main(args):
     errors += [f"{s} is required and absent" for s in missing_required]
     report_errors(f"deck status for {args.slug}", errors,
                   f"OK   {args.slug} — nothing stale, "
-                  f"{done}/{len(rows)} lifecycle stages present")
+                  f"{done}/{len(stages)} lifecycle stages present")
 
 
 if __name__ == "__main__":

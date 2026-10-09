@@ -8,6 +8,14 @@ down is the Forge record, still how a probe works.*
 
 ## The goldfish is the decision instrument (2026-10-04)
 
+**The goldfish and Forge are Commander-only; a 60-card deck records the reason.** Both seat a
+commander and deal against a table — the goldfish at one seat of 40 life with the authored
+rates in `config.py`, Forge in a four-seat pod — so a Modern or Standard deck
+(`formats.for_deck(slug).commanders == 0`) gets neither: `regen` and `check-in` skip the
+stages and say `not modelled for Modern`, `deck-status` reads them `n/a`, and `deck-info`'s
+goldfish block is the same absent shape with the format as its reason (`docs/pilot.md`,
+"60-card formats").
+
 The pilot ruled overnight pod runs out of the decision loop: a day per answer, runs killed
 by a sleeping laptop and the two-hour background cap, an MDE of ~0.14 at 200 games, and a
 Forge AI that mis-pilots some decks so their rates are floors. A swap is now answered by

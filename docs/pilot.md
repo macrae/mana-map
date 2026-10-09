@@ -1097,6 +1097,58 @@ the swap as before. `serve`'s `printings` (GETTABLE, `?name=`) lists every print
 Scryfall knows for a name through `net.get_json` under the `scryfall` cache for a week,
 digital-only printings dropped unless `digital=true`.
 
+### 60-card formats — what runs, what is skipped, and why (2026-10-09)
+
+A deck is Commander unless it says otherwise. `formats.for_deck(slug)` is THE resolver —
+`cards.json["format"]` first, then `brief.json["format"]`, then the default — and
+`--format {standard,modern,pioneer,pauper}` on `fetch-deck` or `check-in` is how a deck says
+so (it writes `brief.json` first, so the next command resolves the same answer). A 60-card
+`cards.json` carries `format` and, when the list has one, `sideboard` (the entries under a
+`Sideboard:` header, CR 100.4a, at most fifteen; `cards` is the mainboard and licenses the
+identity). A Commander file carries neither key — absent is the default, which is what keeps
+the fourteen tracked decks byte-identical. The first such deck is `elves` (Modern, mono-green).
+
+**What runs.** The format-agnostic chain, with the deck's own `FormatSpec` threaded through
+it: `fetch-deck` → `validate-deck` (size as a minimum, four-ofs, the sideboard) →
+`mana-analysis` (a 60-card library, identity as the union of the main cards, 1v1 taplands)
+→ `deck-combos --write` (Spellbook's lines are still Commander's; the NEAR MISSES are
+filtered on the deck's own legality column, so an Ashaya is one card short of a Modern
+Elves deck and a Commander-only card is not) → `deck-audit --write` (its own target table;
+the axes it cannot cite for the format sit in `not_measured`) → `deck-info --write` →
+`build-index` → `context --refresh`.
+
+**What is skipped, and it is SAID.** The goldfish seats a commander in the command zone,
+deals against a table at 40 life and reads authored rates for that table (docs/simulation.md);
+the bracket engine reads the Commander Bracket system; Forge's pods are four-seat Commander
+tables; the benchmark is a goldfish run under a frozen harness; `diagnose`, `net-change` and
+`try` are readings of a goldfish run. None of those means anything for a Modern deck, so:
+
+- `regen` drops the commander-only stages (`regen.COMMANDER_ONLY_STAGES` — goldfish,
+  net-change, diagnose, benchmark) for a deck whose format seats no commander and echoes
+  `SKIPPED goldfish elves — not modelled for Modern`; `mana-analysis`, `deck-combos`,
+  `deck-info` and the Deck Context still run.
+- `deck-status` reads those lifecycle rows (`deck_status.COMMANDER_ONLY_STAGES` — bracket,
+  targets, goldfish, sim, benchmark) as `n/a · not measured for Modern`, and they leave the
+  denominator: elves reads `6/14`, not `6/19` with five stages it can never have.
+  `deck_status.applies(stage, spec)` is the one predicate; `deck-info` reads the rows.
+- `deck-info` carries `format` only when it is not the default, `commander: []`, the identity
+  the document licenses, the goldfish block as the same ABSENT shape with the format as its
+  reason, a header reading `ELVES — Modern · G · 60 cards (16 lands)`, and a NEXT that
+  withholds `try`, the Forge probe and the `sim` todo with the reason said.
+- `check-in --write` and the chain it runs report `skipped goldfish: not modelled for
+  Modern — the goldfish is Commander-only` rather than leaving a reader to infer it from a
+  missing file.
+- `index.json` carries `format` on EVERY entry (`"commander"` for the fleet — a generated
+  file writes the default out), `commander: null` and the most-copied nonland's art for a
+  deck with none; a brief with a format and no commander is a draft.
+- The Deck Context's summary block opens `**Format:** Modern · G · 60 cards` where the
+  fleet's opens `**Commander:**`; its numbers block says the goldfish is Commander-only.
+  Seeding the prose is the Context Keeper's pass, as for any deck.
+
+**Untouched, deliberately:** `build` (`buildable=False` refuses — the builder is anchored on
+a commander at every step), `goldfish*`, `bracket-check`, `benchmark`, `try` / `net-change`,
+`sim/`, `build-poh`.
+
 ### The handbook — `build-poh` (`build-page` before it was superseded, then deleted)
 
 **The live renderer is `build-poh`** (`pilot/poh.py`, the Pilot's Operating Handbook,

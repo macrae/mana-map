@@ -183,6 +183,29 @@ def _draft_started(deck_path):
     return datetime.date.fromtimestamp(ts).isoformat()
 
 
+def _format_name(doc):
+    """`"commander"`, `"modern"`, … for a `cards.json` or a `brief.json`.
+
+    `formats.for_doc` reads the same `format` key both files carry, and absent
+    means the default. Lower-cased name rather than `format_key`, because that
+    helper returns None for the default and this manifest writes every key.
+    """
+    from manamap.pilot import formats
+
+    return formats.for_doc(doc).name.lower()
+
+
+def _face_card(cards):
+    """The most-copied nonland in the main list, or its first card, or `{}`."""
+    from manamap.pilot.common import is_land
+
+    nonland = [c for c in cards if not is_land(c)]
+    pool = nonland or cards
+    if not pool:
+        return {}
+    return max(pool, key=lambda c: (int(c.get("quantity") or 1), -cards.index(c)))
+
+
 def gather_entries():
     """One scan, two questions — and they are not the same question.
 
@@ -217,11 +240,14 @@ def gather_entries():
             # carries only what a "resume this" tile needs, and `draft: true`
             # is what every consumer filters on.
             brief = load_json(deck_path / "brief.json", {})
-            if brief.get("commander"):
+            # A 60-card brief names a FORMAT and no commander (`formats.for_deck`
+            # reads the same key); either one makes a brief a deck being started.
+            if brief.get("commander") or brief.get("format"):
                 entries.append({
                     "slug": slug, "draft": True,
+                    "format": _format_name(brief),
                     "deck_name": brief.get("deck_name") or slug,
-                    "commander": brief["commander"],
+                    "commander": brief.get("commander"),
                     "theme": brief.get("theme"),
                     "bracket": brief.get("bracket"),
                     "kept": len(brief.get("must_include") or []),
@@ -233,6 +259,11 @@ def gather_entries():
         doc = load_json(cards_path)
         commanders = [c for c in doc["cards"] if c.get("is_commander")]
         commander = commanders[0] if commanders else {}
+        # THE FACE OF A DECK WITH NO COMMANDER: its most-played nonland — the
+        # card a Modern pilot would name the deck by — or the first card when
+        # the list is all lands. A Commander deck keeps its commander's art;
+        # the key is read by the rack, which cannot draw a null.
+        face = commander or _face_card(doc["cards"])
 
         issue = load_json(deck_path / "issue.json", {})
 
@@ -361,9 +392,16 @@ def gather_entries():
             # `volume`, `issue_date` and `coverline` went with the magazine
             # (2026-09-13). `deck_name` STAYS: it is the deck's authored
             # display name, and `issue.json` is still where the pilot writes it.
+            # WHICH FORMAT, on every entry — "commander" for the fleet. A
+            # generated file, so the default is written out rather than
+            # omitted: the browser reads one key, not a convention.
+            "format": _format_name(doc),
             "deck_name": issue.get("deck_name") or commander.get("name", slug),
-            "commander": commander.get("name", slug),
-            "image": commander.get("art_crop") or commander.get("image"),
+            # None, not the slug, when the format has no commander: the page
+            # used to fall back to the slug here, and a card named "elves"
+            # resolves to no art and no identity.
+            "commander": commander.get("name") if commander else None,
+            "image": face.get("art_crop") or face.get("image"),
             "verified": verified,
             "decisions": decisions,
             "mean_cast": mean_cast,
@@ -406,12 +444,12 @@ def write_manifest(entries):
     # there.
     manifest = {
         "drafts": [
-            {k: e.get(k) for k in ("slug", "deck_name", "commander", "theme",
+            {k: e.get(k) for k in ("slug", "format", "deck_name", "commander", "theme",
                                    "bracket", "kept", "started")}
             for e in entries if e.get("draft")
         ],
         "decks": [
-            {k: e[k] for k in ("slug", "deck_name", "commander",
+            {k: e[k] for k in ("slug", "format", "deck_name", "commander",
                                "verified", "decisions", "stack_files",
                                "stack_cards", "published", "status",
                                "sim_runs", "experiments", "prescriptions",

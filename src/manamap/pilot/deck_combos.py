@@ -11,8 +11,9 @@ nothing else:
   floor logic on top of them, so the bracket report and this one cannot
   disagree about which lines a deck contains.
 - **Near misses** — every line with exactly ONE card absent, where that card is
-  Commander-legal and inside the deck's colour identity and the line is not
-  banned. A near miss is a question for the pilot ("would this card close a
+  legal in the DECK'S FORMAT (`formats.for_doc` → the `legal_<format>` column;
+  Commander for the fleet), inside the deck's colour identity, and the line is
+  not banned. A near miss is a question for the pilot ("would this card close a
   line?"), never a recommendation: the goldfish cannot see most of them and
   Spellbook's popularity is a deck count, not a verdict.
 
@@ -30,7 +31,8 @@ legality and identity, which the bracket engine never needed.
 import json
 
 from manamap.config import COMBO_DETAILS_PATH, DECK_COMBOS_NEAR_LIMIT, OUTPUT_CSV_PATH
-from manamap.pilot.card_pool import load_pool
+from manamap.pilot import formats
+from manamap.pilot.card_pool import legality, load_pool
 from manamap.pilot.card_search import deck_identity
 from manamap.pilot.common import (
     deck_dir,
@@ -131,12 +133,19 @@ def included_combos(names, commanders, details, ranked=True):
     return rows
 
 
-def near_misses(names, commanders, identity, details, pool, limit=DECK_COMBOS_NEAR_LIMIT):
+def near_misses(names, commanders, identity, details, pool, limit=DECK_COMBOS_NEAR_LIMIT,
+                legal=None):
     """Lines one card short, where that card is legal and in identity.
 
     Returns `(rows, total)` — the rows capped at `limit` after sorting
     `(popularity desc, id)`, and the UNCAPPED count, so a reader can tell "50
     shown" from "50 exist".
+
+    `legal` is `{name: "legal" | "banned" | "not_legal"}` for the deck's format
+    column (`card_pool.legality`). None — the fleet's path — reads the pool's
+    own `legal` flag, which IS the Commander column: `build_report` passes a
+    map only for a non-default format, so the fourteen tracked reports did not
+    move when the parameter arrived (2026-10-09).
 
     A line whose `produces` assumes its own commander and whose pieces do not
     include this deck's is left out too: adding the missing card to the 99
@@ -158,7 +167,9 @@ def near_misses(names, commanders, identity, details, pool, limit=DECK_COMBOS_NE
         if len(missing) != 1:
             continue
         rec = pool.get(missing[0])
-        if rec is None or not rec.get("legal"):
+        if rec is None:
+            continue
+        if (legal.get(missing[0]) != "legal") if legal is not None else not rec.get("legal"):
             continue
         if not set(rec.get("color_identity") or ()) <= identity:
             continue
@@ -212,7 +223,13 @@ def build_report(slug, branch=None):
     meta = details.get("meta") or {}
 
     included = included_combos(names, commanders, details)
-    near, near_total = near_misses(names, commanders, deck_identity(doc), details, pool)
+    # The deck's format decides which card is a legal add. Spellbook's lines are
+    # Commander's and stay so (`included` is a pure intersection); only the
+    # near-miss filter — "could this card go in THIS deck" — reads the column.
+    spec = formats.for_doc(doc)
+    legal = None if spec is formats.DEFAULT else legality(spec.legality_column)
+    near, near_total = near_misses(names, commanders, deck_identity(doc), details, pool,
+                                   legal=legal)
     return {
         "slug": slug,
         "branch": branch,

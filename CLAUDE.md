@@ -276,7 +276,9 @@ artifacts, then the handbook, then the dossier, in that order. A deck **on the b
 changes daily and its stages run when the pilot asks; the dossier says per section what
 is missing. `regen.is_pinned()` is the predicate. REFRESH is every live deck (an artifact
 that exists is rebuilt wherever it lives); BOOTSTRAP — creating a missing one — is
-sleeved decks only.
+sleeved decks only. **A 60-card deck (`formats.for_deck`, no commander) skips the goldfish
+stages — goldfish, net-change, diagnose, benchmark — and `regen`, `deck-status` and
+`deck-info` say `not modelled for Modern` rather than reporting them missing.**
 
 ## Data artifacts
 

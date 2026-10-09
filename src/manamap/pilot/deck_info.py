@@ -66,7 +66,7 @@ def _pct(x):
     return None if x is None else round(100 * float(x))
 
 
-def _goldfish_block(base):
+def _goldfish_block(base, spec=None):
     """The goldfish, as a MODEL BLOCK — weighted, defined, intervals attached.
 
     THE PANEL THIS FEEDS WAS 3,833 PIXELS TALL AND CLAIMED NO HEADLINE. It
@@ -78,7 +78,16 @@ def _goldfish_block(base):
 
     Runs beside the legacy `_goldfish()` roll-up, which `info.json` keeps until
     every panel reads the model.
+
+    A deck whose format seats no commander (`spec.commanders == 0`) gets the
+    SAME absent shape with a different reason: the goldfish is Commander-only
+    (docs/simulation.md), so "run goldfish" would be an instruction that
+    refuses. The page renders an absence with its reason either way.
     """
+    if spec is not None and not spec.commanders:
+        return dm.block("Goldfish", {"run": dm.absent(
+            f"not modelled for {spec.name} — the goldfish is Commander-only")},
+            tier="data", source="goldfish_metrics.json")
     doc = load_json(base / "goldfish_metrics.json")
     if not doc:
         return dm.block("Goldfish", {"run": dm.absent(
@@ -371,11 +380,21 @@ def compose(slug, verify=False, ladder=True):
     "nothing was checked" and this repo has paid for that confusion elsewhere
     (`absent means ABSENT, never zero`). Every consumer must handle None.
     """
+    from manamap.pilot import formats
+    from manamap.pilot.card_search import deck_identity
+
     base = deck_dir(slug)
     facts = facts_mod.analyze(slug)
     counts = facts.get("counts") or {}
-    identity = sorted({c for v in (facts.get("colours") or {}).values()
-                       for c in (v.get("card") or [])}, key="WUBRG".index)
+    # WHICH FORMAT, through the one resolver. Everything format-shaped below —
+    # the goldfish block, the header, the `format` key, NEXT — reads this.
+    spec = formats.for_deck(slug)
+    # The identity the DOCUMENT licenses (`card_search.deck_identity`): the
+    # commanders' identity where the format has one, the union of the main
+    # cards' identities where it does not — and never WUBRG by default. Measured
+    # equal to the old per-card-colours union on all fourteen Commander decks
+    # before the switch (2026-10-09), so the tracked info.json did not move.
+    identity = sorted(deck_identity(load_deck_cards(slug)), key="WUBRG".index)
     rows = status_mod.status(slug, validate=verify)
     vdoc = versions_mod.report(slug)
     log = read_log(slug)
@@ -392,7 +411,7 @@ def compose(slug, verify=False, ladder=True):
     # THE MODEL. One composed structure both surfaces read; no renderer touches a
     # raw artifact. Built beside the legacy roll-ups until every panel is
     # converted, so the page never renders half-shaped.
-    model = {"goldfish": _goldfish_block(base)}
+    model = {"goldfish": _goldfish_block(base, spec)}
 
     cur = next((v for v in vdoc["versions"] if v["version"] == vdoc["current_version"]), None)
     record = {"games": len(log),
@@ -415,15 +434,22 @@ def compose(slug, verify=False, ladder=True):
         c: sum(1 for v in record["causes"].values() if v == c)
         for c in sorted(set(record["causes"].values()))}
     lines = engine.get("lines") or []
-    # A GATE ROW IS NOT A STAGE, and its `stage` is the literal "—".
-    stage_rows = [r for r in rows if r["stage"] != "—"]
+    # A GATE ROW IS NOT A STAGE, and its `stage` is the literal "—". A stage the
+    # deck's format cannot have reads `n/a` (`deck_status.applies`) and is not
+    # a stage for THIS deck either: not in the denominator, never a todo.
+    stage_rows = [r for r in rows if r["stage"] != "—" and r["state"] != "n/a"]
 
     def _name(r):
         return r["stage"] if r["stage"] != "—" else r["artifact"]
 
     life = deck_lifecycle(slug)
+    # `format` ONLY WHEN IT IS NOT THE DEFAULT (`formats.format_key`): the
+    # fourteen tracked Commander info.json files carry no key, and writing
+    # "commander" into them would move every one of them for nothing.
+    format_key = formats.format_key(spec)
     info = {
         "slug": slug,
+        **({"format": format_key} if format_key else {}),
         "commander": facts.get("commander"),
         "lifecycle": ({"status": life[0], "headline": life[1], "body": life[2]}
                       if life else None),
@@ -939,7 +965,17 @@ def _next(info):
     # NEXT used to send every deck to an overnight pod run; a swap is now
     # answered in seconds by `try`, and Forge is asked a narrow question — does
     # the AI play this card — by `forge-cast-check`.
-    if info["simulation"] is None and not closed:
+    # THE GOLDFISH LOOP AND THE FORGE PROBE ARE COMMANDER-ONLY. `try` pairs two
+    # goldfish runs and `forge-cast-check` seats a Commander table, so on a
+    # 60-card deck both are instructions that refuse. Withheld with the reason
+    # said, same as a closed deck: a silently shorter list reads as "nothing
+    # to do here", which is a different claim.
+    if info.get("format"):
+        from manamap.pilot import formats as _formats
+        nxt.append(f"the goldfish loop (`try`, `net-change`) and the Forge probe are "
+                   f"Commander-only — not offered for {_formats.get(info['format']).name}; "
+                   f"`mana-analysis`, `deck-combos` and `deck-audit` are the measures here")
+    if info["simulation"] is None and not closed and not info.get("format"):
         # SIMULATION IS NOT A LIFECYCLE STAGE and is not being made one here.
         # Adding it to `STAGES` would change the denominator for all eleven decks
         # in one commit and mark nine of them newly incomplete for a measurement
@@ -949,7 +985,7 @@ def _next(info):
         info["status"]["todo"].append({
             "stage": "sim", "what": "optional: a Forge probe on a card the goldfish cannot see",
             "how": f"manamap pilot forge-cast-check {slug} --card \"<name>\""})
-    if not closed:
+    if not closed and not info.get("format"):
         nxt.append(f"try a swap in seconds — `try {slug} --out \"A\" --in \"B\"`")
     if info["bracket"] and info["bracket"].get("within_target") is False:
         nxt.append(f"bracket floor {info['bracket']['floor']} exceeds target "
@@ -1019,7 +1055,15 @@ def _print(info):
     # The deck names itself. This line used to read "WORKBENCH — <slug>", which
     # named the LANDING PAGE at the top of a per-deck command — harmless while
     # "workbench" meant the whole bench, wrong once it became one surface.
-    print(f"{info['slug'].upper()} — {' / '.join(info['commander'] or [])} · {ci} · "
+    # A Commander deck names its commander(s); a 60-card deck has none, and the
+    # slot carries the FORMAT instead — "ELVES — Modern · G · 60 cards" — so the
+    # header never prints an empty slash-list for a deck that is whole.
+    if info.get("commander"):
+        who = " / ".join(info["commander"])
+    else:
+        from manamap.pilot import formats as _formats
+        who = _formats.get(info.get("format")).name
+    print(f"{info['slug'].upper()} — {who} · {ci} · "
           f"{info['size']} cards ({info['lands']} lands)")
     print(f"  {state} · {why}")
     if info["lifecycle"]:

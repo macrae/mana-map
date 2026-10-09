@@ -22,6 +22,12 @@ for, so each stage completes before the next begins.
 RETIRED DECKS ARE SKIPPED, matching the freshness gates: their artifacts are
 history, not claims, and regenerating a document about a deck nobody will
 shuffle only churns the tree.
+
+A 60-CARD DECK SKIPS THE GOLDFISH STAGES AND SAYS SO (2026-10-09). The goldfish
+and everything read off it are Commander-only (`COMMANDER_ONLY_STAGES`); a
+Modern deck still gets `mana-analysis`, `deck-combos`, `deck-info` and its Deck
+Context, and the plan prints `SKIPPED goldfish elves — not modelled for Modern`
+for the rest.
 """
 
 import concurrent.futures
@@ -46,25 +52,45 @@ class _Args:
         return None
 
 
-#: (stage, artifact, module, extra kwargs for main's Args), in DEPENDENCY ORDER.
+#: (stage, artifact, module, extra kwargs for main's Args, branch_only,
+#: commander_only), in DEPENDENCY ORDER.
 #: `branch_only` marks a stage that exists for candidate lists and not for the
 #: deck itself — `net-change` compares a branch AGAINST the deck, so there is
 #: nothing for it to say about the deck alone.
+#: `commander_only` marks a stage the goldfish underwrites. The goldfish seats a
+#: commander in the command zone, deals against a table and reads authored rates
+#: for that table (docs/simulation.md), so a 60-card deck — `formats.for_deck`
+#: says `commanders == 0` — has nothing for it to measure, and `diagnose`,
+#: `benchmark` and `net-change` are all readings OF a goldfish run. `plan()`
+#: drops those targets and `run()` SAYS it did: "not modelled for Modern" in the
+#: echo, rather than a stage that silently never arrives — absent means absent.
 STAGES = (
-    ("goldfish", "goldfish_metrics.json", "manamap.pilot.goldfish", {}, False),
-    ("mana-analysis", "mana_analysis.json", "manamap.pilot.mana_analysis", {}, False),
-    ("deck-combos", "combos.json", "manamap.pilot.deck_combos", {"write": True}, False),
-    ("net-change", "net_change.json", "manamap.pilot.net_change", {"write": True}, True),
-    ("diagnose", "diagnostic.json", "manamap.pilot.diagnostic", {"write": True}, False),
-    ("benchmark", "benchmark.json", "manamap.pilot.benchmark", {}, False),
-    ("deck-info", "info.json", "manamap.pilot.deck_info", {"write": True}, False),
+    ("goldfish", "goldfish_metrics.json", "manamap.pilot.goldfish", {}, False, True),
+    ("mana-analysis", "mana_analysis.json", "manamap.pilot.mana_analysis", {}, False, False),
+    ("deck-combos", "combos.json", "manamap.pilot.deck_combos", {"write": True}, False, False),
+    ("net-change", "net_change.json", "manamap.pilot.net_change", {"write": True}, True, True),
+    ("diagnose", "diagnostic.json", "manamap.pilot.diagnostic", {"write": True}, False, True),
+    ("benchmark", "benchmark.json", "manamap.pilot.benchmark", {}, False, True),
+    ("deck-info", "info.json", "manamap.pilot.deck_info", {"write": True}, False, False),
     # LAST, after everything it quotes: the Deck Context's generated blocks are
     # rendered from compose() and the version report. Refresh only — a missing
     # CONTEXT.md is the Keeper's to seed, never the regen's to invent.
-    ("context", "CONTEXT.md", "manamap.pilot.deck_context", {"refresh": True}, False),
+    ("context", "CONTEXT.md", "manamap.pilot.deck_context", {"refresh": True}, False, False),
 )
 
 STAGE_NAMES = tuple(s[0] for s in STAGES)
+COMMANDER_ONLY_STAGES = frozenset(s[0] for s in STAGES if s[5])
+
+
+def deck_format(slug):
+    """The deck's `FormatSpec`, through THE resolver (`formats.for_deck`).
+
+    A branch inherits its deck's format, so the deck-level answer is the only
+    one `plan()` needs. Imported lazily for the same reason `is_pinned` is.
+    """
+    from manamap.pilot import formats
+
+    return formats.for_deck(slug)
 
 
 def is_retired(slug):
@@ -190,15 +216,55 @@ def plan(only=None, slug=None):
     `regen --slug heliod` return nothing at all on a bench deck, which is the
     opposite of what naming a deck means.
     """
-    rows = []
-    for stage, artifact, module, kwargs, branch_only in STAGES:
+    return _plan(only, slug)[0]
+
+
+def skipped(only=None, slug=None):
+    """`[(stage, slug, format name), …]` — the commander-only stages a 60-card
+    deck in scope will never get, so a reader of the plan sees the gap named
+    rather than inferring it from a stage that is not listed."""
+    return _plan(only, slug)[1]
+
+
+def _plan(only, slug):
+    """`(rows, skipped)`. One walk, because the skips are the rows' complement.
+
+    A commander-only stage is SKIPPED for every live deck in scope whose format
+    seats no commander — whether or not it holds the artifact. Holding one would
+    be a defect (nothing writes a goldfish for a Modern deck) and is dropped
+    from the plan the same way, rather than regenerated into a figure the
+    format cannot mean.
+    """
+    rows, skips = [], []
+    no_commander = {}
+    for stage, artifact, module, kwargs, branch_only, commander_only in STAGES:
         if only and stage not in only:
             continue
         found = [t for t in targets(artifact, slug=slug)
                  if not (branch_only and t[1] is None)]
+        if commander_only:
+            for deck_slug in _live_decks(slug):
+                if deck_slug not in no_commander:
+                    spec = deck_format(deck_slug)
+                    no_commander[deck_slug] = spec.name if not spec.commanders else None
+                if no_commander[deck_slug]:
+                    skips.append((stage, deck_slug, no_commander[deck_slug]))
+            found = [t for t in found if not no_commander.get(t[0])]
         if found:
             rows.append((stage, module, kwargs, found))
-    return rows
+    return rows, skips
+
+
+def _live_decks(slug=None):
+    """Every deck `targets()` would consider — a `cards.json`, not retired — or
+    the one named. The same gate as `targets`, so a skip is reported for exactly
+    the decks a stage could otherwise have run on."""
+    if not config.DECKS_DIR.is_dir():
+        return []
+    return [d.name for d in sorted(config.DECKS_DIR.iterdir())
+            if d.is_dir() and (d / "cards.json").exists()
+            and not is_retired(d.name)
+            and (slug is None or d.name == slug)]
 
 
 def _one(job):
@@ -217,10 +283,14 @@ def _one(job):
 
 def run(only=None, slug=None, jobs=None, dry_run=False, echo=print):
     """Regenerate, stage by stage. Returns `{"failures": [...], "seconds": n}`."""
-    rows = plan(only, slug)
+    rows, skips = _plan(only, slug)
+    # A stage a deck's format cannot have, said out loud. Not a failure and not
+    # a target: a 60-card deck is not incomplete for lacking a goldfish.
+    for stage, s, fmt in skips:
+        echo(f"  SKIPPED {stage} {s} — not modelled for {fmt}")
     if not rows:
         echo("  nothing to regenerate — no tracked artifacts matched")
-        return {"failures": [], "seconds": 0.0, "ran": 0}
+        return {"failures": [], "seconds": 0.0, "ran": 0, "skipped": skips}
 
     total = sum(len(t) for _s, _m, _k, t in rows)
     echo(f"REGEN — {total} target(s) across {len(rows)} stage(s)"
@@ -232,7 +302,7 @@ def run(only=None, slug=None, jobs=None, dry_run=False, echo=print):
             for s, b in found:
                 echo(f"    {s}" + (f"@{b}" if b else ""))
         echo("\n  --dry-run: nothing was written")
-        return {"failures": [], "seconds": 0.0, "ran": 0}
+        return {"failures": [], "seconds": 0.0, "ran": 0, "skipped": skips}
 
     failures, began = [], time.time()
     progress = Progress("regen" + (f" {slug}" if slug else ""), total=total,
@@ -275,7 +345,7 @@ def run(only=None, slug=None, jobs=None, dry_run=False, echo=print):
         echo("\n  FAILURES")
         for stage, name, error in failures:
             echo(f"    {stage:16} {name:28} {error}")
-    return {"failures": failures, "seconds": seconds, "ran": total}
+    return {"failures": failures, "seconds": seconds, "ran": total, "skipped": skips}
 
 
 def main(args):

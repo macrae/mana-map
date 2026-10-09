@@ -190,3 +190,23 @@ def test_each_broken_form_is_named():
     doc, kw = _good()
     del doc["near"]
     _fails_with(doc, kw, "missing required key 'near'")
+
+
+def test_near_misses_read_legality_from_the_decks_format_column_when_given_one():
+    """`legal` is the deck's own column (`card_pool.legality(spec.legality_column)`).
+    Given, it decides and the pool's Commander flag does not; absent — the
+    fleet's path — the pool's flag decides as it always has, so the fourteen
+    tracked reports did not move."""
+    details = _details([
+        _combo("modern-ok", ["A", "N1"], popularity=10),     # Commander-illegal, Modern-legal
+        _combo("cmdr-only", ["A", "N2"], popularity=20),     # Commander-legal, not Modern
+        _combo("both", ["B", "N3"], popularity=5),
+    ])
+    pool = _pool(N1=(False, ""), N2=(True, ""), N3=(True, ""))
+    by_commander, _ = dc.near_misses(DECK, CMDR, set(), details, pool)
+    assert [r["id"] for r in by_commander] == ["cmdr-only", "both"]
+    modern = {"N1": "legal", "N2": "not_legal", "N3": "legal"}
+    by_modern, total = dc.near_misses(DECK, CMDR, set(), details, pool, legal=modern)
+    assert [r["id"] for r in by_modern] == ["modern-ok", "both"] and total == 2
+    # A name the column has never heard of is not legal; a banned one is not either.
+    assert dc.near_misses(DECK, CMDR, set(), details, pool, legal={"N3": "banned"})[1] == 0
