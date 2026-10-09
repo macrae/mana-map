@@ -6,6 +6,7 @@
 - **Commander:** [Gishath, Sun's Avatar](https://manamap.seanmacrae.com/viz/index.html?cards=Gishath%2C+Sun%27s+Avatar)
 - **Version:** v1.1.0 (V5) · **status:** sleeved since 2026-09-20
 - **Colours:** WRG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
+- **Combos:** 0 known lines (0 infinite, 0 two-card) · 41 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=gishath) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=gishath)
 <!-- /ctx:gen summary -->
 

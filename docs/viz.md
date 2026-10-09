@@ -1338,7 +1338,8 @@ re-deriving anything, so it cannot disagree with the command that owns each figu
 | The captain's log (+ the debrief beside each entry) | `log.jsonl`, `log_annotations.json` | ★ |
 | Open questions, and the loop that would settle each | `info.json` | ★ |
 | **The Constellation** (below) | `deck_map.json` | ◆ |
-| Bracket Floor + its named driver | `bracket_report.json` | ◆ |
+| Bracket Floor + its named driver, and the Game Changers BY NAME (`.gc-pill`, the card panel's pill) — a floor driven by "4 Game Changers" is a count you cannot act on | `bracket_report.json` | ◆ |
+| Known combos (`combosPanel`): every Spellbook line inside the list, then One card short — each line the card panel's `.combo-line` (card chips, `∞`, a bracket pill or `banned`, "assumes its own commander", what it produces, the Spellbook link); the missing card is an `a.cardref` to `index.html?cards=` with hover art; the near list is capped upstream so the heading says "showing 50 of 312" (`summary.near_total`); the source timestamp closes it. Absent is the `deck-combos <slug> --write` call-to-action | `combos.json` | ◆ |
 | Sources Say (pips vs sources, land classes, on-curve) | `mana_analysis.json` | ◆ |
 | By the Numbers (meters, turn table, assumptions) | `goldfish_metrics.json` | ◆ |
 | The Short List (ten) | `considering.json` | ◆★ |

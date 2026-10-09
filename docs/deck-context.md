@@ -13,6 +13,13 @@ deck's context is approved (Phase 4 deletes them).
 | **Prose**: Summary, How it plays, Cards by role, Pilot notes, Open questions, notes under Change history | the `context-keeper` agent, installed through a code gate | stamped `<!-- ctx:written-for version=… sha=… at=… -->`; STALE once the 99 moves past that sha |
 | **Generated blocks**: `<!-- ctx:gen summary\|numbers\|record\|history\|queue -->` … `<!-- /ctx:gen NAME -->` | `src/manamap/pilot/deck_context.py`, from `deck_info.compose`, `deck_versions.report` and `decisions.jsonl` | never: `regen`'s last stage (`context`) re-renders them, and a test compares them to a fresh render |
 
+The `summary` block is the header: commander, version and status, colours, lands and the
+bracket floor, then one **Combos** line from `info.combos` (`deck-combos --write`'s summary)
+— `7 known lines (5 infinite, 1 two-card) · 312 one card short`, or `not computed` naming the
+command, the same word the bracket floor uses when its artifact is missing. It is the line
+`/jarvis` answers "what combos does it have" from; the lines themselves are
+`deck-combos <slug> --json`.
+
 **A figure lives only in a generated block.** The Keeper's charter forbids it from
 writing a number. Prose points at the Numbers section instead, so a model change or a
 swap can never leave a stale figure in a sentence.

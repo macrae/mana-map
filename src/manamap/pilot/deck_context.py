@@ -170,10 +170,26 @@ def _block_summary(slug, info):
         f"- **Colours:** {''.join(info.get('colour_identity') or []) or 'colourless'}"
         f" · **lands:** {info.get('lands')} · **bracket floor:** "
         + (f"{br.get('floor')} ({br.get('floor_name')})" if br.get("floor") else "not checked"),
+        f"- **Combos:** {_combos_line(slug, info)}",
         f"- **Links:** [deck page]({DECK_HREF}{slug}) · "
         f"[on the map]({SITE}/viz/index.html?deck={slug})",
     ]
     return "\n".join(lines)
+
+
+def _combos_line(slug, info):
+    """`'7 known lines (5 infinite, 1 two-card) · 312 one card short'`, from
+    `info.combos` (`deck-combos --write`'s summary), or `not computed` — the
+    same word the bracket floor uses when its artifact is missing, so Jarvis
+    can answer "what combos does it have" from this line or say what to run."""
+    cb = info.get("combos") or {}
+    s = cb.get("summary") if isinstance(cb, dict) else None
+    if not isinstance(s, dict):
+        return f"not computed (`manamap pilot deck-combos {slug} --write`)"
+    n, inf, two = s.get("included", 0), s.get("infinite", 0), s.get("two_card_infinite", 0)
+    near = s.get("near_total", s.get("near", 0))
+    return (f"{n} known line{'' if n == 1 else 's'} ({inf} infinite, {two} two-card)"
+            f" · {near} one card short")
 
 
 def _block_numbers(slug, info, report):

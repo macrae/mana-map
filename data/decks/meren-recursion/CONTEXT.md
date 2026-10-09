@@ -6,6 +6,7 @@
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
 - **Version:** v0.1.0 (V1) · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 36 · **bracket floor:** 3 (Upgraded)
+- **Combos:** 5 known lines (5 infinite, 0 two-card) · 293 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
 <!-- /ctx:gen summary -->
 

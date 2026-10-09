@@ -87,6 +87,10 @@
     // Separate from `log.jsonl` because that file is append-only and eleven
     // games were logged before the field existed.
     causes: 'log_causes.json',
+    // THE KNOWN LINES: every Spellbook combo inside the list and the capped
+    // near misses (`deck-combos --write`). The whole file, not `info.combos`'s
+    // top five — a reader who opens this panel wants all of them.
+    combos: 'combos.json',
     // Fixed filename, so no manifest entry is needed — the browser cannot
     // list `threat/` but it does not have to.
     targeting: 'threat/targeting.json'
@@ -714,6 +718,12 @@
       return '<li><b>Forces ' + esc(dr.forces) + '</b> — <span class="chip">' +
         esc(dr.signal) + '</span><span class="ev">' + esc(dr.detail) + '</span></li>';
     }).join('');
+    /* THE NAMES, not only the count. A floor driven by "4 Game Changers" is a
+     * number you cannot act on; the four cards are what a pilot cuts or keeps.
+     * Same pill the card panel pins to a Game Changer's stats line. */
+    var gcs = (b.game_changers || []).map(function (n) {
+      return '<span class="gc-pill" title="WotC Game Changer">' + esc(n) + '</span>';
+    }).join(' ');
     var body =
       '<div style="font-family:var(--display);font-size:2.6em;line-height:1">' +
         esc(b.floor) + ' <span style="font-size:.4em;color:var(--ink-soft)">' +
@@ -727,10 +737,115 @@
         ['Mass land denial', (b.mass_land_denial || []).length],
         ['Combos contained', b.combo_count]
       ]) +
+      (gcs ? '<p class="gc-list">' + gcs + '</p>' : '') +
       (drivers ? '<h3 class="promise" style="margin-top:14px">What drives it</h3>' +
         '<ul class="stack-list">' + drivers + '</ul>' : '');
     return panel('bracket', 'Bracket Floor', 'What table is this deck for?',
                  ['data'], 'var(--stamp-red)', body);
+  }
+
+  /* ── KNOWN COMBOS: the Spellbook lines the list contains, and one card short ──
+   *
+   * `combos.json` is the registry's answer, never the page's: `deck-combos`
+   * decides what "inside the list" means (the command zone counts, a line that
+   * assumes a different commander is flagged rather than dropped) and ranks
+   * the lines; the page draws them in file order. The classes are the card
+   * panel's (`comboLineHtml` in mana-map.js) so a line reads the same on both
+   * surfaces, with one difference: the card panel is about ONE card and lists
+   * its partners, this panel is about the deck and lists every card.
+   *
+   * The near misses are CAPPED upstream (`summary.near_total` is the uncapped
+   * count), so the heading says "showing 50 of 312" rather than letting fifty
+   * rows read as the whole answer. The missing card links to the Atlas by the
+   * same `?cards=` form the Deck Context uses, with the hover art. */
+  function comboCardsHtml(cards, lit) {
+    return (cards || []).map(function (n) {
+      var on = lit && lit[n];
+      return '<span class="combo-partner' + (on ? ' is-missing' : '') +
+        '" title="' + esc(n) + '">' + (on ? atlasRef(n) : esc(n)) + '</span>';
+    }).join('');
+  }
+
+  function atlasRef(name) {
+    var url = (window.Shell && Shell.cardImageUrl) ? Shell.cardImageUrl(name, 'normal') : null;
+    var pop = url ? '<img class="card-pop" data-src="' + esc(url) + '" alt="' + esc(name) + '">' : '';
+    return '<a class="cardref" data-card="' + esc(name) + '" href="index.html?cards=' +
+      encodeURIComponent(name) + '" tabindex="0">' + esc(name) + pop + '</a>';
+  }
+
+  function comboLine(c, kind) {
+    var banned = !!c.banned || c.bracket == null;
+    var missing = [].concat(c.missing || []);
+    var lit = {};
+    missing.forEach(function (n) { lit[n] = true; });
+    var html = '<div class="combo-line is-' + kind + '" data-id="' + esc(String(c.id)) + '">';
+    if (kind === 'near') {
+      html += '<span class="combo-tag combo-near">one card short</span>';
+    }
+    html += comboCardsHtml(c.cards, kind === 'near' ? lit : null);
+    if (c.infinite) html += '<span class="inf-badge" title="infinite">∞</span>';
+    if (banned) {
+      html += '<span class="bracket-pill banned" title="uses a banned card">banned</span>';
+    } else {
+      html += '<span class="bracket-pill" title="Spellbook bracket ' + esc(String(c.bracket)) +
+        '">B' + esc(String(c.bracket)) + '</span>';
+    }
+    if (c.assumes_other_commander) {
+      html += '<span class="combo-note">assumes its own commander</span>';
+    }
+    if ((c.produces || []).length) {
+      html += '<span class="combo-produces">' + esc(c.produces.join(' · ')) + '</span>';
+    }
+    html += '<a class="combo-link" href="https://commanderspellbook.com/combo/' +
+      encodeURIComponent(String(c.id)) + '/" target="_blank" rel="noopener" ' +
+      'title="Commander Spellbook">↗</a>';
+    return html + '</div>';
+  }
+
+  function combosPanel(d) {
+    var c = d.combos;
+    if (!c) return absent('combos', 'Known combos', 'Every Spellbook line the list contains.',
+      'var(--tier-data)', 'combos', d, 'the known lines inside the 99, and what is one card short');
+    var s = c.summary || {};
+    var included = c.included || [], near = c.near || [];
+    var out = '';
+    var head = included.length + ' known line' + (included.length === 1 ? '' : 's');
+    if (included.length) {
+      head += ' — ' + (s.infinite || 0) + ' infinite, ' + (s.two_card_infinite || 0) + ' two-card';
+    }
+    out += '<h3 class="promise combo-head">' + esc(head) + '</h3>';
+    if (included.length) {
+      out += '<div class="combo-block">' + included.map(function (x) {
+        return comboLine(x, 'deck');
+      }).join('') + '</div>';
+    } else {
+      out += '<p class="ev">No known line is inside this list.</p>';
+    }
+    if (s.excluded_commander_assumption) {
+      out += '<p class="ev combo-count">' + esc(s.excluded_commander_assumption) +
+        ' line(s) assume a commander this deck does not run, and are counted apart.</p>';
+    }
+    var total = typeof s.near_total === 'number' ? s.near_total : near.length;
+    var nearHead = 'One card short — ' + (near.length < total
+      ? 'showing ' + near.length + ' of ' + total
+      : total + (total === 1 ? ' line' : ' lines'));
+    out += '<h3 class="promise combo-head" style="margin-top:14px">' + esc(nearHead) + '</h3>';
+    if (near.length) {
+      out += '<div class="combo-block">' + near.map(function (x) {
+        return comboLine(x, 'near');
+      }).join('') + '</div>';
+    } else {
+      out += '<p class="ev">Nothing is one card away.</p>';
+    }
+    var when = (c.combo_data || {}).source_timestamp;
+    out += '<p class="ev combo-count">From Commander Spellbook' +
+      (when ? ', as of ' + esc(String(when).slice(0, 10)) : '') +
+      ((c.combo_data || {}).combo_count ? ' (' + esc(c.combo_data.combo_count.toLocaleString()) +
+        ' variants)' : '') +
+      '. A line is a Spellbook claim about the cards, not a proof this deck assembles it: ' +
+      'the goldfish and The Kill say that.</p>';
+    return panel('combos', 'Known combos', 'Every Spellbook line the list contains, and one card short.',
+                 ['data'], 'var(--tier-data)', out);
   }
 
   function manaPanel(d) {
@@ -2090,7 +2205,7 @@
       nextPanel(d), statusPanel(d), auditPanel(d),
       enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d),
       briefPanel(d), constellationPanel(d),
-      bracketPanel(d), manaPanel(d), goldfishPanel(d),
+      bracketPanel(d), combosPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d),
       branchPanel(d)
     ].filter(Boolean).join('');

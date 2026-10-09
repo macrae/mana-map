@@ -6,6 +6,7 @@
 - **Commander:** [Emiel the Blessed](https://manamap.seanmacrae.com/viz/index.html?cards=Emiel+the+Blessed)
 - **Version:** V2 · **status:** on the bench (dev)
 - **Colours:** WG · **lands:** 36 · **bracket floor:** 3 (Upgraded)
+- **Combos:** 10 known lines (9 infinite, 0 two-card) · 99 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=emiel-blink) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=emiel-blink)
 <!-- /ctx:gen summary -->
 

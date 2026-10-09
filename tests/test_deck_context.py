@@ -190,6 +190,34 @@ def test_wiki_links_become_mana_map_links_and_read_back():
     assert dc.named_cards(text) == ["Commit // Memory", "Sol Ring"]
 
 
+def _info(**extra):
+    base = {"slug": "sharknado", "commander": ["Shabraz, the Skyshark"], "stage": "bench",
+            "version": {"current": 7, "tags": ["v1.2.0"]}, "colour_identity": ["W", "U", "R"],
+            "lands": 36, "bracket": {"floor": 4, "floor_name": "Optimized"}}
+    base.update(extra)
+    return base
+
+
+def test_the_summary_block_carries_the_combos_line_from_info():
+    """One line Jarvis answers "what combos does it have" from: the counts out of
+    `deck-combos --write`'s summary, the UNCAPPED near total, singular at one."""
+    summary = {"included": 7, "infinite": 5, "two_card_infinite": 1, "near": 50, "near_total": 312}
+    block = dc._block_summary("sharknado", _info(combos={"summary": summary, "top": []}))
+    assert "- **Combos:** 7 known lines (5 infinite, 1 two-card) · 312 one card short" in block
+    one = dict(summary, included=1, near_total=1)
+    assert "1 known line (5 infinite" in dc._block_summary("sharknado", _info(combos={"summary": one}))
+
+
+def test_the_combos_line_says_not_computed_and_names_the_command_when_absent():
+    """`deck_info` writes `dm.absent(...)` for a deck with no combos.json — never a
+    zero, which would read as "no combos". The same word the bracket floor uses."""
+    for combos in (None, {"absent_because": "no combos.json — run it", "weight": "body"}):
+        block = dc._block_summary("sharknado", _info(combos=combos))
+        assert "- **Combos:** not computed (`manamap pilot deck-combos sharknado --write`)" in block
+        assert "0 known" not in block
+    assert "**bracket floor:** not checked" in dc._block_summary("sharknado", _info(bracket={}))
+
+
 def test_the_charters_declare_their_targets():
     """The band reads `sla_s:` from the frontmatter; a charter without one shows none."""
     from pathlib import Path

@@ -6,6 +6,7 @@
 - **Commander:** [Heliod, the Radiant Dawn // Heliod, the Warped Eclipse](https://manamap.seanmacrae.com/viz/index.html?cards=Heliod%2C+the+Radiant+Dawn+%2F%2F+Heliod%2C+the+Warped+Eclipse)
 - **Version:** v1.4.0 (V12) · **status:** sleeved since 2026-09-20
 - **Colours:** WU · **lands:** 33 · **bracket floor:** 4 (Optimized)
+- **Combos:** 1 known line (0 infinite, 0 two-card) · 72 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=heliod) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=heliod)
 <!-- /ctx:gen summary -->
 

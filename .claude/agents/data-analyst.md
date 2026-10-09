@@ -26,6 +26,7 @@ Jarvis asks Sean before anything slow runs.
 | per-turn engine assembly | `data/decks/<slug>/diagnostic.json` → `engine.online_by_turn`, `any_route_by_turn` |
 | mana and colours | `data/decks/<slug>/mana_analysis.json` (sources, on-curve rates); `manamap pilot mana-fit <slug>` for a land question |
 | how the deck is doing on axes | `manamap pilot deck-audit <slug>` |
+| the combos it contains, and what is one card short | `manamap pilot deck-combos <slug> --json` (read-only, deterministic, < 1 s): `included` (cards, `produces`, `infinite`, `bracket`, `assumes_other_commander`), `near` (the `missing` card; capped, `summary.near_total` is the whole count) |
 | versions, what changed when | `manamap pilot deck-version <slug> list`, `… show <ref>` |
 | games and how they ended | `data/decks/<slug>/log.jsonl`, `log_causes.json` |
 | a quick A/B of a swap | `manamap pilot try <slug> --out "A" --in "B"` (~10 s, writes nothing) |

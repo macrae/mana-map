@@ -6,6 +6,7 @@
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
 - **Version:** v1.2.0 (V7) · **status:** sleeved since 2026-10-06
 - **Colours:** WUR · **lands:** 36 · **bracket floor:** 4 (Optimized)
+- **Combos:** 1 known line (0 infinite, 0 two-card) · 75 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
 <!-- /ctx:gen summary -->
 
