@@ -682,7 +682,26 @@ def _branch_new(slug=None, name=None, objective=None, why=None, cards=()):
         pool = _pool_save(slug=slug, cards=cards)
     return {"slug": slug, "branch": name, "objective": parsed,
             "size": got["size"], "warnings": got["warnings"], "pool": pool,
+            "dossier": _refresh_dossier(slug),
             "url": f"branch.html?deck={slug}&branch={name}"}
+
+
+def _refresh_dossier(slug):
+    """The deck's `info.json` after a branch write from the page — what
+    `deck-branch`'s CLI `main` already did, and the workbench skipped, so a
+    bench deck's tracked dossier went stale on every branch opened or swap
+    staged here. The branch write has already happened, so a failure here is
+    REPORTED in the result rather than turned into an error for work that
+    succeeded."""
+    from manamap.pilot import deck_branch
+    try:
+        # No `redirect_stdout`: it is process-global and this server is threaded
+        # (test_serve_cli_threads). Its one line lands in the server's terminal.
+        deck_branch.refresh_dossier(slug)
+        return "refreshed"
+    except Exception as exc:                   # noqa: BLE001 - reported, not raised
+        console.err(traceback.format_exc())
+        return f"not refreshed — {type(exc).__name__}: {exc}"
 
 
 #: MODE objective reads `deck-info` and `diagnose --json` and writes one small
@@ -744,12 +763,17 @@ def _branch_stage(slug=None, branch=None, out=None, card=None, strength=None,
     if not (slug and branch):
         raise ValueError("branch/stage needs a slug and a branch")
     if undo:
-        return deck_branch.unstage(slug, branch, out, card)
-    if not (out and card):
-        raise ValueError(
-            "a swap is one card out and one card in — `out` and `card`")
-    return deck_branch.stage(slug, branch, out, card, strength=strength,
-                             why="staged from the branch workbench")
+        got = deck_branch.unstage(slug, branch, out, card)
+    else:
+        if not (out and card):
+            raise ValueError(
+                "a swap is one card out and one card in — `out` and `card`")
+        got = deck_branch.stage(slug, branch, out, card, strength=strength,
+                                why="staged from the branch workbench")
+    dossier = _refresh_dossier(slug)
+    if isinstance(got, dict):
+        got = dict(got, dossier=dossier)
+    return got
 
 
 #: What a LOCAL job costs, in the currency that matters for one: wall clock.

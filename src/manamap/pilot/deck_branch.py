@@ -22,8 +22,8 @@ MAP OF THIS FILE (in order):
   pull_list / propose / withdraw / reject / delete / merge  the merge-request
                     stage, the ledger verbs, and the write of `decklist.txt`.
   ── CLI ──          `_dispatch` parses the action; `main` runs it and, for the
-                    verbs in MUTATES_THE_DOSSIER, rewrites `info.json` on a
-                    SLEEVED deck (`_refresh_dossier`).
+                    verbs in MUTATES_THE_DOSSIER, rewrites `info.json` on any
+                    live deck that has one (`refresh_dossier`).
 
 THE GAP THIS FILLS. A deck had exactly two states: the list in `decklist.txt`,
 and nothing. `decklist.txt` is tracked, so writing it MINTS A VERSION, and the
@@ -1980,8 +1980,8 @@ MUTATES_THE_DOSSIER = frozenset(
     {"new", "stage", "unstage", "commit", "propose", "withdraw", "reject", "delete"})
 
 
-def _refresh_dossier(slug):
-    """Rewrite `info.json` after a branch write, on a SLEEVED deck only.
+def refresh_dossier(slug):
+    """Rewrite `info.json` after a branch write, on any live deck that has one.
 
     A branch is a directory, and `deck_info.compose` reads every one of them:
     the `branches` block and the derived `next` line both move when a branch is
@@ -2001,26 +2001,38 @@ def _refresh_dossier(slug):
     reproduce identical bytes. `deck_info.compose` is 2.4s cold and 0.8s warm,
     measured, which is the whole added cost.
 
-    AND ONLY ON A PINNED DECK, via `regen.is_pinned` rather than a second
-    predicate. A paper-locked deck is one the pilot plays and its chain is kept
-    complete without being asked; a bench deck is malleable and is allowed to be
-    incomplete, so refreshing there would put a freshness gate on work in
-    progress. Same split, same reason, as `regen.BOOTSTRAP`.
+    WHEREVER `info.json` ALREADY EXISTS AND THE DECK IS NOT RETIRED — the rule
+    `regen.targets` has applied since 2026-09-26 (REFRESH every live deck whose
+    artifact exists; BOOTSTRAP only a sleeved one). This used to gate on
+    `regen.is_pinned`, which left a BENCH deck's tracked, freshness-gated
+    dossier stale after every branch opened or swap staged from the page —
+    exactly the case the split was meant to stop. A missing `info.json` is still
+    not created here: bootstrapping is regen's job, for sleeved decks.
+
+    Public because `serve`'s `branch/new` and `branch/stage` call it too: the
+    workbench writes branches without going through `main`.
     """
     import argparse
 
     from manamap.pilot import deck_info, regen
 
-    if not regen.is_pinned(slug):
+    try:
+        base = deck_dir(slug)
+    except FileNotFoundError:
         return
-    if not (deck_dir(slug) / "cards.json").exists():
+    if not (base / "info.json").exists() or not (base / "cards.json").exists():
+        return
+    if regen.is_retired(slug):
         return
     deck_info.main(argparse.Namespace(slug=slug, write=True, as_json=False,
                                       verify=False, branch=None))
     print(f"  rewrote data/decks/{slug}/info.json (the branch set changed)")
 
 
+_refresh_dossier = refresh_dossier     # the old private name, kept for callers
+
+
 def main(args):
     _dispatch(args)
     if getattr(args, "action", None) in MUTATES_THE_DOSSIER:
-        _refresh_dossier(args.slug)
+        refresh_dossier(args.slug)
