@@ -129,8 +129,12 @@ slice it needs.
 | `incubation-pod` | feedback into at most three testable hypotheses (`/incubate`) | < 3 min | live |
 | `challenger` | argues once against each hypothesis before it reaches the queue | < 90 s | live |
 
-A miss against a target is logged by the band to `.progress/sla-log.jsonl`;
-`manamap pilot sla-report` summarises it.
+Every finished run of these agents is logged by the band to `.progress/sla-log.jsonl`;
+`manamap pilot sla-report` summarises it. **Only a spawn BY ITS TYPE is timed**: spawn
+each one with its own `subagent_type` (`card-scout`, never `general-purpose` with the
+charter pasted in). The band keys the target on the type the agent was spawned as, so a
+pasted charter is an untimed run. A charter added this session is not a spawnable type
+until Claude Code restarts. Restart before timing it, and never time it as a pasted run.
 
 ## Right-sized evidence
 

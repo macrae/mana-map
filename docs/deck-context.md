@@ -110,7 +110,12 @@ means Jarvis runs that pass as its next step, and says so.
 Every PRD sub-agent declares `sla_s:` in its charter frontmatter (`context-keeper`
 120, `data-analyst` 30). The job band shows each running agent's elapsed time against
 its target, and turns yellow when it goes over. Each finished run is appended to
-`.progress/sla-log.jsonl`, and `manamap pilot sla-report` summarises the log. The band also times every prompt from submit to the first piece of the response
+`.progress/sla-log.jsonl`, and `manamap pilot sla-report` summarises the log. Only a run
+spawned BY ITS TYPE is logged: the band reads the target from `.claude/agents/<type>.md`
+for the `subagent_type` the agent was spawned as. A charter pasted into a
+`general-purpose` agent is untimed. That is why the log held one row on 2026-10-09: the
+timed trials of card-scout, strategist, rules-question and scenario-sim ran that way,
+because their charters were added mid-session and are not spawnable until a restart. The band also times every prompt from submit to the first piece of the response
 (`.progress/latency-log.jsonl`; the PRD's "under 2 s"), and `sla-report` prints its median, p90
 and misses. It warns when the band Claude Code is running is not the repo's (a plugin edit
 needs a version bump and `claude plugin update`).

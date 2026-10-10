@@ -40,7 +40,7 @@ tiers those areas can break:
 | **data** | the rest of `data/` — corpus artifacts, pods, overrides | the regression tier, without the fleet regen | 7 min |
 | **viz** | `viz/**`, `tests/test_viz_*.py`, `tests/conftest_viz.py` | the unit tier (the JS parse and cache-bust tests live there) + `make test-browser`; never regression or the regen | 8 min |
 | **agents** | `.claude/**` — charters, skills, settings | the unit tier + the doc guards | 1 min |
-| **plugin** | `tools/claude-plugins/**` | `claude plugin test tools/claude-plugins/job-band` (26 tests) | 5 s |
+| **plugin** | `tools/claude-plugins/**` | `claude plugin test tools/claude-plugins/job-band` (30 tests) | 5 s |
 | **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + its isolation proof + regression, without the fleet regen | 10 min |
 | **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | unit, isolated, regression without the fleet regen, browser | 15 min |
 

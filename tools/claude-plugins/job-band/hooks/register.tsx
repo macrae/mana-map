@@ -306,6 +306,26 @@ async function logRun($: EngineInterface, root: string, row: Record<string, unkn
   }
 }
 
+/** The sla-log row for a run that just ended, or null when it is not recorded.
+ *
+ * Recorded: a run of an agent TYPE whose charter declares `sla_s`, seen from its
+ * start — completed, failed or killed, foreground or background alike (the band
+ * polls `$.agent.list()`, so how the run was spawned does not matter, only its type).
+ * Not recorded: a late row (its start is a floor), and any type without a target —
+ * which includes a charter pasted into a `general-purpose` agent: `a.type` is the
+ * `subagent_type` it was SPAWNED as, so such a run is untimed by construction. */
+export function finishedRun(
+  a: { type: string; status: string; description: string },
+  s: { startedAt: number; late: boolean },
+  sla: number | null,
+  now: number,
+): Record<string, unknown> | null {
+  if (sla === null || s.late) return null
+  const elapsed = Math.round((now - s.startedAt) * 10) / 10
+  return { type: a.type, status: a.status, elapsed_s: elapsed, sla_s: sla,
+    missed: elapsed > sla, at: new Date(now * 1000).toISOString(), description: a.description }
+}
+
 async function readAgents($: EngineInterface, root: string, seen: Map<string, Seen>, now: number, first: boolean): Promise<AgentRow[]> {
   const rows: AgentRow[] = []
   for (const a of await $.agent.list()) {
@@ -326,11 +346,8 @@ async function readAgents($: EngineInterface, root: string, seen: Map<string, Se
       if (a.status === 'completed' && !s.late) {
         await $.store.set(key, [...past, now - s.startedAt].slice(-KEEP_RUNS))
       }
-      if (sla !== null && !s.late) {
-        const elapsed = Math.round((now - s.startedAt) * 10) / 10
-        await logRun($, root, { type: a.type, status: a.status, elapsed_s: elapsed, sla_s: sla,
-          missed: elapsed > sla, at: new Date(now * 1000).toISOString(), description: a.description })
-      }
+      const row = finishedRun(a, s, sla, now)
+      if (row) await logRun($, root, row)
     }
     s.status = a.status
     if (s.endedAt !== null && now - s.endedAt > KEEP_FINISHED_S) continue

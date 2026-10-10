@@ -86,6 +86,12 @@ def latency(path=LATENCY):
             "over": sum(1 for s in secs if s > FIRST_RESPONSE_TARGET_S)}
 
 
+#: What the log cannot hold, said where its rows are read (found 2026-10-09: one row
+#: after two days of trials, every one of them a charter pasted into general-purpose).
+UNTIMED = ("only a run spawned BY ITS TYPE is timed — a charter pasted into a general-purpose "
+           "agent is not, and a charter added this session needs a restart to be spawnable")
+
+
 def main(args=None):
     drift = band_drift()
     if drift:
@@ -98,8 +104,10 @@ def main(args=None):
     if not runs:
         print(f"no agent runs logged yet — the job band writes {LOG.name} when an agent "
               "with an sla_s target finishes")
+        print(UNTIMED)
         return
     print(f"{'agent':18} {'runs':>4} {'target':>7} {'median':>7} {'slowest':>8} {'missed':>7}")
     for s in summary(runs):
         print(f"{s['agent']:18} {s['runs']:>4} {str(s['sla_s']) + 's':>7} {str(s['median_s']) + 's':>7} "
               f"{str(s['max_s']) + 's':>8} {s['missed']:>3}/{s['runs']:<3}")
+    print(UNTIMED)

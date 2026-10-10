@@ -200,3 +200,34 @@ group('job-band graph', () => {
     expect(tree([a, b]).map(r => r.job.id).sort()).toEqual(['a-1', 'b-2'])
   })
 })
+
+import { finishedRun } from '../hooks/register'
+
+// What reaches .progress/sla-log.jsonl when a run ends. 2026-10-09: the log held one
+// row after two days, and every SLA-typed run since logging went live WAS logged; the
+// rest were charters pasted into general-purpose agents, which this pins as untimed.
+group('job-band SLA log', () => {
+  const run = (over: Record<string, unknown> = {}) =>
+    ({ type: 'card-scout', status: 'completed', description: 'find sac outlets', ...over })
+
+  test('a run of an SLA-typed agent seen from its start writes one row', async () => {
+    const row = finishedRun(run(), { startedAt: T0, late: false }, 60, T0 + 42.04)
+    expect(row).toEqual({ type: 'card-scout', status: 'completed', elapsed_s: 42, sla_s: 60,
+      missed: false, at: new Date((T0 + 42.04) * 1000).toISOString(), description: 'find sac outlets' })
+  })
+
+  test('a miss, a failure and a kill are on the record too', async () => {
+    expect(finishedRun(run(), { startedAt: T0, late: false }, 60, T0 + 61)?.missed).toBe(true)
+    expect(finishedRun(run({ status: 'failed' }), { startedAt: T0, late: false }, 60, T0 + 5)?.status).toBe('failed')
+    expect(finishedRun(run({ status: 'killed' }), { startedAt: T0, late: false }, 60, T0 + 5)?.status).toBe('killed')
+  })
+
+  test('a late row is a floor and is never logged', async () => {
+    expect(finishedRun(run(), { startedAt: T0, late: true }, 60, T0 + 5)).toBe(null)
+  })
+
+  test('a charter pasted into general-purpose is untimed: the type is what it was spawned as', async () => {
+    const pasted = run({ type: 'general-purpose', description: 'card-scout timed trial run' })
+    expect(finishedRun(pasted, { startedAt: T0, late: false }, null, T0 + 30)).toBe(null)
+  })
+})
