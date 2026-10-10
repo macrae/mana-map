@@ -29,7 +29,7 @@ different jobs:
 Around that sit the things that make an experiment mean something: a deterministic
 builder, a rules-citation loop for lines that must be *proven* rather than measured, web
 reconnaissance for what the wider field actually plays, deterministic card mining over
-34,955 cards, and a frontend that surfaces the results.
+34,964 cards, and a frontend that surfaces the results.
 
 It is optimised for one player and open-sourced so anyone can stand up their own bench —
 not so anyone else is supported.

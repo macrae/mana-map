@@ -19,7 +19,7 @@ At the centre is **the swap loop**, on two engines with different jobs:
 
 Around them sit the things that make an experiment mean something: a deterministic builder,
 a rules-citation loop for lines that must be *proven* rather than measured, dated web
-reconnaissance, deterministic card mining over 34,955 cards, and a frontend that surfaces
+reconnaissance, deterministic card mining over 34,964 cards, and a frontend that surfaces
 the results.
 
 Optimised for one player; open-sourced so anyone can stand up their own bench, not so
@@ -60,7 +60,7 @@ Pilot's Operating Handbook, its dossier, and where it sits on the map.
 **The card atlas** — every Magic oracle card (~35,000) embedded by two small neural nets.
 It opens on **one card**: hover it, click a relation, and its neighbours join a
 force-directed graph you grow by clicking. Load one of your own decks and it lights up with
-its commander ringed. The 34,955-point atlas is one click away, and drifts slowly at
+its commander ringed. The 34,964-point atlas is one click away, and drifts slowly at
 altitude, settling as you zoom in to read. Three relations, each precomputed so a click is
 instant: **similar** (embedding neighbours), **synergy** (rule-based complements, each edge
 labelled with its rule), **outclassed by** (strictly-better replacements). Boot costs 1.9 MB.

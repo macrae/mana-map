@@ -101,7 +101,9 @@
   // registry; the panel now says BANNED.
   // 12: 2026-10-10 the pages answer out of CardBERT alone — every neighbour, every
   // position and every region name a cached page holds came from the function space.
-  const DATA_VERSION = 12;
+  // 13: 2026-10-10 corpus refresh: 34,964 cards and EVERY space retrained (CardBERT to
+  // its 40-epoch cap), so every row index, position and neighbour means something new.
+  const DATA_VERSION = 13;
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to

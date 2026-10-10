@@ -372,7 +372,11 @@ class TestRegions:
 
     def test_l1_count_reasonable(self):
         l1 = self.default["meta"]["l1_count"]
-        assert 20 <= l1 <= 120, f"L1 count {l1} outside expected range 20-120"
+        # A sanity band against a degenerate clustering, not a pin: set in July at
+        # ~33.7k cards, it read 119 at 34,955 (2026-10-02) and 127 at 34,964
+        # (2026-10-10) — HDBSCAN on the colour+type layout, no longer a map the pages
+        # show. A broken run reads a handful or thousands.
+        assert 20 <= l1 <= 150, f"L1 count {l1} outside expected range 20-150"
 
     def test_required_fields(self):
         required = {"id", "level", "label", "short", "cx", "cy", "span", "count", "top_tags"}
