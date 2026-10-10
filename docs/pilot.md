@@ -568,7 +568,9 @@ data/decks/<slug>/             all tracked:
                                                        the commit trail, the PROPOSAL (the
                                                        version it means to become, the report
                                                        it was accepted on, the cards you will
-                                                       proxy) and `merged` once it lands.
+                                                       proxy), `merged` once it lands, and
+                                                       `base_sha256` — the deck's list when it
+                                                       was cut, read by `base_moved`.
                                                        Gated by `validate-branch` — it was the
                                                        last tracked pilot artifact with none
                                  net_change.json       THE REPORT A PURCHASE RESTS ON — the branch
@@ -816,6 +818,14 @@ THE DECK: `manamap pilot edit <slug> --swap "A=B" --add C --cut D --set "Forest=
   staged stays staged and out. The message is `<deck name>: <note>` with `+in … / −out …`
   against HEAD, and carries no attribution trailer. It returns the version
   (`deck_versions.report`), the paths and the Keeper line, and journals a `save`.
+- **Edits between saves are visible elsewhere.** `deck-notes <slug> add` warns (one
+  line, never a block) when the working list differs from the last save — the game is
+  stamped with a list no version names yet. A branch records the deck's list when it is
+  cut (`branch.json` `base_sha256`); `deck_branch.base_moved` — derived on every read,
+  like `branch_state`, and None once a branch is merged or rejected — says `base moved
+  since <sha12>` when the deck has been edited under it, on `deck-branch <slug> list`,
+  in the branch row of `info.json`, and as one line on the branch page. A branch cut
+  before 2026-10-10 has no recorded base and says nothing.
 
 ## Buy list (`buy-list`, 2026-10-09)
 
@@ -1493,6 +1503,10 @@ What happened when the deck was PLAYED — the one thing no other artifact recor
 [--tag T]` appends one JSON line (`id`, `at`, `decklist_sha256` of `decklist.txt` as it
 stood, `result`, `opponents`, `tags`, `text`) and nothing ever rewrites it; `list
 [--since]` and `show <id>` read it back, marking which entries the debrief has read.
+When the deck has edits no saved version holds (`deck_edit.unsaved`: the working list
+against the last `save-version`, else git HEAD), `add` prints one warning line — the
+game attaches to the WORKING list, which is not a version yet; `save-version <slug>
+--note …` first ties it to one. It never blocks.
 Light structure on purpose: the point is that a note costs one sentence.
 
 The `debrief` agent (`/debrief`, cheapest agent in the set) reads the un-debriefed ids

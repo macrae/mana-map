@@ -216,7 +216,8 @@ python -m http.server 8000
 
 `#modeSelect` switches between them and `MM.setMode` owns the transition. **Discover is
 the front door** — `viz/index.html` opens on one random card, not the 34K scatter;
-`?mode=explore` asks for the atlas and `?deck=<slug>` lands in Build.
+`?mode=explore` asks for the atlas, `?mode=build` opens Build with the deck picker
+showing, and `?deck=<slug>` lands in Build on that deck.
 
 | Mode | Panel | Surface |
 |---|---|---|
@@ -1916,7 +1917,10 @@ read-only. `window.DeckEdit` is the page half of `manamap pilot edit` (`docs/pil
   1-for-1 pair, and links to `branch.html`. An unbalanced tray is refused with the reason.
 - **The branch page** gained the two verbs it lacked: **Measure** (`branch/net-change`, polled,
   then the page re-renders from the artifact it wrote) and a per-staged-row **Unstage**
-  (`branch/stage {undo: true, out, card}`). Both are gated on `Api.ready`.
+  (`branch/stage {undo: true, out, card}`). Both are gated on `Api.ready`. When the deck
+  was edited after the branch was cut, the page shows `deck_branch.base_moved`'s one line
+  ("base moved since <sha12> …") from the branch's row in the deck's `info.json` — the page
+  reads it, never derives it.
 
 `tests/test_viz_deck_edit.py` drives all of it against a fake `/api/**` and a routed manifest;
 `tests/test_serve_deck_edit.py` holds the endpoints.
