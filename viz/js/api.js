@@ -46,8 +46,9 @@
  *   7 -> 8: an entry carries `links` (`{moxfield: {url, id, as_of}}`) when the
  *           deck has a `links.json`. The workbench card and the deck page's
  *           cover READ it, and a cached manifest would hide a recorded link.
+ *   8 -> 9: entries carry `stage`; the Build/Discover pickers filter on it.
  */
-window.MANIFEST_VERSION = 8;
+window.MANIFEST_VERSION = 9;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── What a legal deck IS, per format — mirrors `pilot/formats.py:FORMATS` ────
@@ -79,6 +80,23 @@ Object.freeze(window.FORMAT_SPECS);
  * (`formats.get`); the browser only ever reads names Python already accepted. */
 window.formatSpec = function (key) {
   return window.FORMAT_SPECS[String(key || '').toLowerCase()] || window.FORMAT_SPECS.commander;
+};
+
+/* ── Which decks you can WORK ON — the ladder rung, `promote.stage` ───────────
+ *
+ * The manifest's `stage` is "dev" | "bench" | "sleeved", or null for a deck in
+ * a pile (broken down, retired, superseded). ONE predicate for every picker, so
+ * Build and Discover can never disagree about which decks are on offer. A
+ * manifest older than `stage` falls back to the old reading — any lifecycle
+ * status is no rung, a lock is sleeved, everything else the bench — never to
+ * "show everything", which is the bug this exists to end. */
+window.DECK_RUNGS = {dev: 'Brewing', bench: 'On the bench', sleeved: 'Sleeved'};
+window.deckRung = function (e) {
+  if (!e) return null;
+  return 'stage' in e ? e.stage : (e.status ? null : (e.locked ? 'sleeved' : 'bench'));
+};
+window.isWorkableDeck = function (e) {
+  return !!window.DECK_RUNGS[window.deckRung(e)];
 };
 
 /* `<option>`s for a format picker — ONE renderer for both pickers (Build's new-deck

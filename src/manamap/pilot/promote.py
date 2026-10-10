@@ -377,6 +377,11 @@ def main(args):
             f"lock: `manamap pilot deck-version {slug} paper --clear`.")
 
     print(f"\n{slug}: {now} → {set_stage(slug, target)}")
+    # THE MANIFEST CARRIES `stage`, and the Build/Discover deck pickers filter
+    # on it — a promotion the manifest does not hear about leaves the deck on
+    # the wrong rung of every picker until somebody runs build-index.
+    from manamap.pilot import deck_manifest
+    deck_manifest.main()
 
 
 if __name__ == "__main__":

@@ -1720,6 +1720,30 @@
    */
   let newDeck = null;      // {slug, fmt, commander, theme, open}
 
+  /* The deck picker lists the decks you can WORK ON — Brewing, On the bench,
+   * Sleeved, in ladder order — and nothing in a pile. `isWorkableDeck` (api.js)
+   * is the one predicate; Discover's picker reads it too. An archived deck still
+   * OPENS by link (`?deck=<slug>` is an inbound contract from every published
+   * page, so `enter` is unchanged): it shows as one selected, disabled option
+   * that says so, rather than a blank select over a loaded deck. */
+  function deckPickerOptions() {
+    if (!manifest) return '';
+    const sel = d => (active && active.slug === d.slug ? ' selected' : '');
+    let html = Object.keys(DECK_RUNGS).map(rung => {
+      const decks = manifest.decks.filter(d => isWorkableDeck(d) && deckRung(d) === rung);
+      if (!decks.length) return '';
+      return '<optgroup label="' + esc(DECK_RUNGS[rung]) + '">' + decks.map(d =>
+        '<option value="' + esc(d.slug) + '"' + sel(d) + '>' + esc(d.deck_name) + '</option>'
+      ).join('') + '</optgroup>';
+    }).join('');
+    const held = active && manifest.decks.find(d => d.slug === active.slug);
+    if (held && !isWorkableDeck(held)) {
+      html = '<option value="' + esc(held.slug) + '" selected disabled>' +
+        esc(held.deck_name || held.slug) + ' — archived, read only</option>' + html;
+    }
+    return html;
+  }
+
   function draftOptions() {
     const drafts = (manifest && manifest.drafts) || [];
     if (!drafts.length) return '';
@@ -2073,9 +2097,7 @@
     const el = panelEl();
     if (!el) return;
 
-    const picker = manifest ? manifest.decks.map(d =>
-      '<option value="' + esc(d.slug) + '"' + (active && active.slug === d.slug ? ' selected' : '') + '>' +
-      esc(d.deck_name) + '</option>').join('') : '';
+    const picker = deckPickerOptions();
 
     let html =
       '<div class="deck-header">' +

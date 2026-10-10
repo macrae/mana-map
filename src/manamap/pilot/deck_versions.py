@@ -673,7 +673,13 @@ def _refresh_dossiers_the_lock_changed(slug):
     also touched are NAMED, with the command, instead of being left to redden a
     test hours later.
     """
-    from manamap.pilot import regen
+    from manamap.pilot import deck_manifest, regen
+
+    # THE MANIFEST FIRST, unconditionally: it carries `locked`, `paper` and
+    # `stage`, and the Build/Discover deck pickers file a deck by `stage`. It
+    # was not refreshed here at all — a lock left the workbench and the pickers
+    # reading the old rung until somebody ran build-index.
+    deck_manifest.main()
 
     # BOTH ARTIFACTS THAT CARRY THE SOURCING, not just the dossier. The first
     # version of this refreshed `info.json` alone and the uncached suite found

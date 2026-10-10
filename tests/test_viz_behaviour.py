@@ -571,13 +571,16 @@ def test_the_panel_always_offers_somewhere_to_go(page):
     # Derived from the manifest, never hardcoded: this asserted a literal 7 and broke
     # the moment an eighth deck was built. A count of a growing artifact is a
     # maintenance tax that teaches nothing — what matters is that the picker offers
-    # EVERY loadable deck, published or not.
+    # EVERY deck you can work on, published or not. Since 2026-10-09 that is the
+    # three live rungs (`stage` non-null); a deck in a pile is not offered
+    # (tests/test_viz_deck_picker.py owns that filter).
     import json
     from manamap.config import DECKS_DIR
-    expected = len(json.loads((DECKS_DIR / "index.json").read_text())["decks"])
+    expected = sum(1 for d in json.loads((DECKS_DIR / "index.json").read_text())["decks"]
+                   if d.get("stage"))
 
     assert page.js_errors == []
-    assert r["decks"] == expected, "every loadable deck should be one click from a graph"
+    assert r["decks"] == expected, "every workable deck should be one click from a graph"
     assert r["regions"] > 0, "regions come from the HDBSCAN membership"
     assert not r["saysZeroCards"], "an empty graph rendered the dead-end scoreboard"
 

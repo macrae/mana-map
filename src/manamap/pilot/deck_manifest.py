@@ -368,7 +368,7 @@ def gather_entries():
                                            deck_versions._tag_key(kv[0])))
                 version = {"release": last[0], "version": last[1].get("version")}
 
-        from manamap.pilot import deck_delete
+        from manamap.pilot import deck_delete, promote
         # The path we are already walking, not a lookup — see `blockers`.
         blocked = deck_delete.blockers(slug, base=deck_path)
 
@@ -417,6 +417,12 @@ def gather_entries():
             # `common.DECK_STATUSES` was moved out of `issue_spec` to prevent,
             # one surface later.
             "status": deck_lifecycle(slug),
+            # WHICH RUNG OF THE LADDER — "dev" | "bench" | "sleeved", or None
+            # for a deck in a pile (any lifecycle status). `promote.stage` is the
+            # one predicate; the Build and Discover deck pickers filter on it
+            # rather than re-deriving it from `status` and `locked`, which would
+            # be a second ladder free to disagree with `manamap pilot promote`.
+            "stage": promote.stage(slug),
             "stack_files": stack_files,
             "stack_cards": stack_cards,
         })
@@ -464,7 +470,9 @@ def write_manifest(entries):
                                   # The workbench landing: art for the rack, and the
                                   # one predicate it filters on.
                                   "image", "paper", "locked", "version",
-                                  "deletable", "undeletable_because")},
+                                  "deletable", "undeletable_because",
+                                  # The ladder rung: the pickers' one predicate.
+                                  "stage")},
              # Only when the deck has any (`deck-link`): absent means absent.
              **({"links": e["links"]} if e.get("links") else {})}
             for e in entries if not e.get("draft")

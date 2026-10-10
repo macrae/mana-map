@@ -669,8 +669,13 @@
      * The old expression is kept as the FALLBACK, because `info.json` is
      * regenerated per deck and a page must not empty a rack while one deck is
      * mid-refresh. A deck whose info has not caught up reads as bench, which is
-     * exactly what it read as before. */
+     * exactly what it read as before.
+     *
+     * The MANIFEST'S `stage` comes first (manifest v9): it is the same
+     * `promote.stage`, written by the command that moves a deck, so it is
+     * current before any one deck's `info.json` is. */
     var stageOf = function (e) {
+      if (e.stage) return e.stage;
       var info = infos[e.slug];
       return (info && info.stage) || (e.locked ? 'sleeved' : 'bench');
     };

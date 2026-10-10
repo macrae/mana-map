@@ -1048,6 +1048,15 @@ resolves that deck's `cards.json` against `viz_index` — so it needs neither th
 Build's deck picker. It differs from a pasted import in the way that matters: the manifest carries a
 **known** commander, so it is ringed and centred rather than inferred from a `*CMDR*` marker.
 
+**Both deck pickers offer only decks you can work on** (2026-10-09). Build's `#deckLensSelect`
+and Discover's "Load one of my decks…" list the manifest's live rungs only, grouped
+**Brewing / On the bench / Sleeved** — a broken-down, retired or superseded deck is not
+offered. One predicate, `isWorkableDeck(entry)` in `api.js`, over the manifest's `stage`
+(`promote.stage`; null for any lifecycle status), so the two pickers cannot disagree. An
+archived deck still **opens by link**: `index.html?deck=<archived>` is an inbound contract
+from every published page, so `Build.enter` is unchanged and the picker shows it as one
+selected, disabled option, "<name> — archived, read only".
+
 **Brought versus found is the visual language.** Nodes carry `deck` and `commander` flags set
 at `enter({deck: {rows, commander}})`; anything `branchFrom` adds is by construction neither.
 

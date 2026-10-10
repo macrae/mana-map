@@ -442,8 +442,16 @@ window.Discovery = (function () {
     html += '<div class="discover-decks">' +
       '<select id="dcDeck" onchange="Discovery.onDeckPick(this.value)">' +
       '<option value="">Load one of my decks…</option>' +
-      (manifest || []).map(d => '<option value="' + d.slug + '">' + d.deck_name +
-        ' — ' + (d.commander || formatSpec(d.format).name) + '</option>').join('') +
+      // Only the decks you can work on, grouped by rung — the same predicate as
+      // Build's picker (`isWorkableDeck`, api.js). A deck in a pile is history.
+      Object.keys(DECK_RUNGS).map(rung => {
+        const decks = (manifest || []).filter(d => isWorkableDeck(d) && deckRung(d) === rung);
+        if (!decks.length) return '';
+        return '<optgroup label="' + DECK_RUNGS[rung] + '">' +
+          decks.map(d => '<option value="' + d.slug + '">' + d.deck_name +
+            ' — ' + (d.commander || formatSpec(d.format).name) + '</option>').join('') +
+          '</optgroup>';
+      }).join('') +
       '</select></div>';
 
     /* THE LIBRARY'S CONTROLS LIVE IN THE DRAWER, not here. They used to sit

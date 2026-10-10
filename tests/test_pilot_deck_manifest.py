@@ -54,6 +54,10 @@ MANIFEST_KEYS = {
     # fleet, written out because a generated file owes the browser a key
     # rather than a convention. `commander` is null when the format has none.
     "format",
+    # THE LADDER RUNG (2026-10-09): `promote.stage(slug)` — "dev", "bench",
+    # "sleeved", or null for a deck in a pile. The Build and Discover deck
+    # pickers list only the three live rungs and filter on this one key.
+    "stage",
 }
 
 
@@ -152,6 +156,27 @@ def test_tracked_manifest_matches_the_artifacts_on_disk():
             assert checker_passed(load_json(stack_path, {})), (
                 f"{slug}: {name} is in the manifest but is not checker-passed")
         assert len(deck["stack_files"]) == deck["verified"], slug
+
+
+@requires_deck
+def test_every_entry_carries_the_stage_promote_reports():
+    """The pickers file a deck by `stage` and never re-derive it, so the tracked
+    value must be `promote.stage` exactly — a `bench` on a broken-down deck
+    would put a pile of cards back in the Build picker, and a stale `bench` on
+    a deck since sleeved would file it under the wrong rung."""
+    from manamap.pilot import promote
+
+    decks = json.loads((DECKS_DIR / "index.json").read_text())["decks"]
+    checked = 0
+    for deck in decks:
+        assert deck["stage"] == promote.stage(deck["slug"]), (
+            f"{deck['slug']}: manifest stage {deck['stage']!r} vs promote "
+            f"{promote.stage(deck['slug'])!r} — re-run `manamap pilot build-index`")
+        # A deck in a pile has no rung, whatever its lock says.
+        if deck["status"]:
+            assert deck["stage"] is None, deck["slug"]
+        checked += 1
+    assert checked >= 5
 
 
 # ── 60-card formats (2026-10-09) ────────────────────────────────────────────
