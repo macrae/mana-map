@@ -661,8 +661,9 @@ def restore(slug, version, write=False, run_chain=True):
             raise SystemExit(f"Refusing to restore {slug} to V{version['version']}:\n  - "
                              + "\n  - ".join(d["refused"]))
         from manamap.pilot import check_in
-        from manamap.pilot.fetch_deck import parse_decklist
-        d["applied"] = check_in.apply(slug, parse_decklist(blob), run_chain=run_chain,
+        # `text=blob` is what is written; the entries are only apply's contract.
+        from manamap.pilot.fetch_deck import parse_mainboard
+        d["applied"] = check_in.apply(slug, parse_mainboard(blob), run_chain=run_chain,
                                       text=blob)
     return d
 
