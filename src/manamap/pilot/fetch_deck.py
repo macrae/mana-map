@@ -226,8 +226,79 @@ def is_up_to_date(cards_path, decklist_sha256, format_key=None):
             and doc.get("format") == format_key)
 
 
-def _post_collection(identifiers):
-    """POST identifier batches to /cards/collection. Returns (cards, not_found_ids)."""
+#: THE INCREMENTAL FETCH (2026-10-10). An in-place edit swaps one card and the
+#: rebuild re-POSTed all hundred: 2.0-2.4 s of an edit's rebuild, on every edit.
+#: With `cached=True` each identifier's answer — the RAW Scryfall object, before
+#: `shape_card` — is kept under `data/cache/scryfall-cards/` and only the
+#: identifiers with no fresh answer are POSTed. The shaping and the resolution
+#: run on the same objects either way, so the cards.json is the full fetch's,
+#: byte for byte (`test_an_incremental_fetch_writes_the_full_fetchs_bytes`).
+#: Opt-in: `deck_edit.rebuild` asks for it; `fetch-deck` on the command line
+#: and every other caller still ask Scryfall for everything.
+#:
+#: The TTL is what "unchanged" means. A cached answer is a day old at most, the
+#: same bargain `is_up_to_date` already strikes for a whole list ("the hash
+#: covers the decklist, not Scryfall's data") at a finer grain; `--force` after
+#: oracle errata still re-fetches every card.
+COLLECTION_CACHE = "scryfall-cards"
+COLLECTION_TTL_S = 24 * 3600
+
+
+def _ident_path(ident):
+    return net.cache_path(COLLECTION_CACHE, net.cache_key(
+        "POST", SCRYFALL_COLLECTION_URL, body={"identifier": ident}))
+
+
+def _answers(ident, card):
+    """Is `card` Scryfall's answer to `ident`? A name may be the card's full name
+    or one face's (a DFC asked by its front face answers with `A // B`)."""
+    if "name" in ident:
+        want = ident["name"].lower()
+        return (card.get("name", "").lower() == want
+                or any((f.get("name") or "").lower() == want
+                       for f in card.get("card_faces") or []))
+    return (str(card.get("set", "")).lower() == str(ident.get("set", "")).lower()
+            and str(card.get("collector_number", "")) == str(ident.get("collector_number", "")))
+
+
+def remember(ident, card):
+    """Keep `card` as the answer to `ident` (see COLLECTION_CACHE)."""
+    net._write_cache(_ident_path(ident), SCRYFALL_COLLECTION_URL, card)
+
+
+def _post_collection(identifiers, cached=False):
+    """POST identifier batches to /cards/collection. Returns (cards, not_found_ids).
+
+    `cached=True` answers each identifier from its cached object when one is
+    fresh and POSTs only the rest; the cards come back in identifier order, as
+    Scryfall returns them."""
+    if not cached:
+        return _post_all(identifiers)
+    answered, misses = {}, []
+    for i, ident in enumerate(identifiers):
+        hit = net._read_cache(_ident_path(ident), COLLECTION_TTL_S)
+        if hit is not None:
+            answered[i] = hit
+        else:
+            misses.append(i)
+    fetched, not_found = _post_all([identifiers[i] for i in misses]) if misses else ([], [])
+    used = set()
+    for i in misses:
+        k = next((k for k, card in enumerate(fetched)
+                  if k not in used and _answers(identifiers[i], card)), None)
+        if k is not None:
+            used.add(k)
+            answered[i] = fetched[k]
+            remember(identifiers[i], fetched[k])
+    cards = [answered[i] for i in range(len(identifiers)) if i in answered]
+    # An answer this cannot pin to its identifier is still an answer: kept,
+    # never cached, so the next fetch asks for it again.
+    cards += [card for k, card in enumerate(fetched) if k not in used]
+    return cards, not_found
+
+
+def _post_all(identifiers):
+    """POST every identifier, in batches. Returns (cards, not_found_ids)."""
     cards, not_found = [], []
     for start in range(0, len(identifiers), SCRYFALL_BATCH_SIZE):
         batch = identifiers[start : start + SCRYFALL_BATCH_SIZE]
@@ -253,7 +324,7 @@ def _post_collection(identifiers):
     return cards, not_found
 
 
-def fetch_collection(names):
+def fetch_collection(names, cached=False):
     """Fetch by name. Returns (by_name_lower, not_found_names).
 
     A NAME /cards/collection REJECTS IS NOT NECESSARILY A NAME SCRYFALL REJECTS.
@@ -270,21 +341,27 @@ def fetch_collection(names):
     containing the separator are retried, and only after the first pass has
     already failed on them, so a real typo still surfaces as not-found.
     """
-    cards, not_found = _post_collection([{"name": n} for n in names])
+    cards, not_found = _post_collection([{"name": n} for n in names], cached=cached)
     missing = [nf.get("name", "?") for nf in not_found]
     halves = [n.split(" // ")[0] for n in missing if " // " in n]
     if halves:
-        retry, _ = _post_collection([{"name": h} for h in halves])
+        retry, _ = _post_collection([{"name": h} for h in halves], cached=cached)
         cards.extend(retry)
         # Scryfall answers the half with the card's FULL `A // B` name, which is
         # the form `missing` holds, so this subtraction needs no bookkeeping.
         found = {card["name"] for card in retry}
+        if cached:
+            # The full name is the identifier the NEXT fetch asks first; answering
+            # it from here spares a POST that is refused every time.
+            for card in retry:
+                if card["name"] in missing:
+                    remember({"name": card["name"]}, card)
         missing = [n for n in missing if n not in found]
     by_name = {card["name"].lower(): card for card in cards}
     return by_name, missing
 
 
-def fetch_printings(printings):
+def fetch_printings(printings, cached=False):
     """Fetch by (set, collector_number). Returns {(set, cn): card}.
 
     The **primary** resolution path: a Moxfield export names the exact card the
@@ -294,7 +371,7 @@ def fetch_printings(printings):
     printings are simply absent from the result.
     """
     identifiers = [{"set": s, "collector_number": cn} for s, cn in printings]
-    cards, _ = _post_collection(identifiers)
+    cards, _ = _post_collection(identifiers, cached=cached)
     return {(card.get("set", ""), card.get("collector_number", "")): card for card in cards}
 
 
@@ -479,7 +556,13 @@ def main(args):
     wanted_printings = sorted({
         (e["set"], e["collector_number"]) for e in entries if "set" in e
     })
-    by_printing = fetch_printings(wanted_printings) if wanted_printings else {}
+    # `incremental` (deck_edit.rebuild): answer what is cached, POST the rest —
+    # `--force` always asks Scryfall for everything.
+    # (The keyword is passed only when set, so a stand-in for either fetch keeps
+    # its one-argument shape.)
+    cached = {"cached": True} if (getattr(args, "incremental", False)
+                                  and not getattr(args, "force", False)) else {}
+    by_printing = fetch_printings(wanted_printings, **cached) if wanted_printings else {}
     if wanted_printings:
         print(f"  Resolved {len(by_printing)}/{len(wanted_printings)} exact printing(s)")
 
@@ -489,7 +572,8 @@ def main(args):
         e["name"] for e in entries
         if "set" not in e or (e["set"], e["collector_number"]) not in by_printing
     })
-    by_name, not_found = fetch_collection(unique_names) if unique_names else ({}, [])
+    by_name, not_found = (fetch_collection(unique_names, **cached) if unique_names
+                          else ({}, []))
 
     cards, unmatched = resolve_entries(entries, by_name, by_printing, board="main")
     side, unmatched_side = resolve_entries(entries, by_name, by_printing, board="side")

@@ -909,9 +909,10 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
         for _pass in range(3):
             sha = common.decklist_sha256(slug)
             ran = []
-            # 1. fetch-deck, alone.
+            # 1. fetch-deck, alone, INCREMENTAL: only the identifiers Scryfall has
+            # not answered in the last day are POSTed (`fetch_deck.COLLECTION_CACHE`).
             try:
-                _producer(stages[0])(SimpleNamespace(slug=slug, branch=None))
+                _producer(stages[0])(SimpleNamespace(slug=slug, branch=None, incremental=True))
                 ran.append(stages[0])
             except Exception as exc:                       # noqa: BLE001 - reported
                 out["ran"] = ran

@@ -894,3 +894,107 @@ def test_every_parse_decklist_caller_is_allow_listed_with_its_reason():
         f"allow-listed — read `cards.json['cards']` or call `parse_mainboard`, "
         f"or add the file here with its reason")
     assert sum(found.values()) >= 3, "the allow-listed sites have moved; re-check"
+
+
+# ── The incremental fetch (deck_edit.rebuild, 2026-10-10) ────────────────────
+
+class _FakeScryfall:
+    """/cards/collection over a fixed card set, with the endpoint's real
+    asymmetries: a name answers by its full or front-face name, a printing by
+    (set, collector number), and a Room's joined name is REFUSED (its half is
+    not). Records every identifier it was asked."""
+
+    def __init__(self, cards):
+        self.cards, self.asked = cards, []
+
+    def _find(self, ident):
+        for c in self.cards:
+            if "name" in ident:
+                n = ident["name"].lower()
+                if c["name"].lower() == n and c.get("layout") != "room":
+                    return c
+                if any(f["name"].lower() == n for f in c.get("card_faces") or []):
+                    return c
+            elif (c.get("set"), c.get("collector_number")) == (ident["set"],
+                                                               ident["collector_number"]):
+                return c
+        return None
+
+    def post(self, url, json=None, timeout=None):
+        idents = json["identifiers"]
+        self.asked += idents
+        found = [(i, self._find(i)) for i in idents]
+        body = {"data": [c for _i, c in found if c],
+                "not_found": [i for i, c in found if not c]}
+
+        class R:
+            status_code = 200
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return body
+        return R()
+
+
+def _incremental_world(monkeypatch, tmp_path):
+    room = scryfall_card("Bottomless Pool // Locker Room", layout="room", card_faces=[
+        {"name": "Bottomless Pool", "mana_cost": "{U}", "type_line": "Enchantment — Room"},
+        {"name": "Locker Room", "mana_cost": "{4}{U}", "type_line": "Enchantment — Room"}])
+    cards = [scryfall_card("Krenko, Mob Boss"), scryfall_card("Skirk Prospector"),
+             scryfall_card("Goblin Guide"), ADVENTURE_CARD, room, SECRET_LAIR,
+             DEFAULT_PRINTING, scryfall_card("Mountain", type_line="Basic Land — Mountain")]
+    fake = _FakeScryfall(cards)
+    monkeypatch.setattr(fetch_deck.SESSION, "post", fake.post)
+    data = tmp_path / "data"
+    monkeypatch.setattr("manamap.config.DATA_DIR", data)          # net.cache_root()
+    monkeypatch.setattr("manamap.config.DECKS_DIR", data / "decks")
+    (data / "decks" / "d").mkdir(parents=True)
+    return fake, data / "decks" / "d"
+
+
+def _fetch(base, text, incremental):
+    (base / "decklist.txt").write_text(text)
+    (base / "cards.json").unlink(missing_ok=True)
+    fetch_deck.main(argparse.Namespace(slug="d", force=False, incremental=incremental))
+    return (base / "cards.json").read_bytes()
+
+
+LIST_A = ("1 Krenko, Mob Boss *CMDR*\n1 Skirk Prospector\n1 Bonecrusher Giant\n"
+          "1 Bottomless Pool // Locker Room\n1 Zada, Hedron Grinder (SLD) 2406 *F*\n"
+          "10 Mountain\n")
+
+
+def test_an_incremental_fetch_writes_the_full_fetchs_bytes(monkeypatch, tmp_path):
+    """The rebuild after an edit re-POSTed all hundred identifiers (2.0-2.4 s of every
+    rebuild). Incremental, it POSTs only what it has no fresh answer for — and the
+    cards.json is the full fetch's byte for byte, because the shaping runs on the
+    same raw objects. Covered: a front-face name (the Adventure), a printing
+    annotation with a foil, a Room (whose joined name the endpoint refuses), basics."""
+    fake, base = _incremental_world(monkeypatch, tmp_path)
+    full_a = _fetch(base, LIST_A, incremental=False)
+    cold = _fetch(base, LIST_A, incremental=True)
+    assert cold == full_a, "a cold cache must still write the full fetch's bytes"
+
+    list_b = LIST_A.replace("Skirk Prospector", "Goblin Guide")
+    fake.asked.clear()
+    inc_b = _fetch(base, list_b, incremental=True)
+    assert fake.asked == [{"name": "Goblin Guide"}], (
+        f"only the new card may be POSTed — the Room's joined name too is answered "
+        f"from the cache; asked {fake.asked}")
+    assert inc_b == _fetch(base, list_b, incremental=False)
+
+
+def test_an_incremental_fetch_needs_no_network_for_a_list_it_has_seen(monkeypatch, tmp_path):
+    """Every identifier cached: a reordered list re-resolves with no POST at all —
+    so an edit among known cards rebuilds offline. `--force` still asks for all."""
+    fake, base = _incremental_world(monkeypatch, tmp_path)
+    _fetch(base, LIST_A, incremental=True)
+    fake.asked.clear()
+    lines = LIST_A.splitlines(keepends=True)
+    _fetch(base, "".join([lines[0]] + lines[:0:-1]), incremental=True)
+    assert fake.asked == []
+    (base / "decklist.txt").write_text(LIST_A)
+    fetch_deck.main(argparse.Namespace(slug="d", force=True, incremental=True))
+    assert len(fake.asked) >= 6, "--force must re-fetch every card"
