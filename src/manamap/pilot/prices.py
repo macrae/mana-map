@@ -10,15 +10,17 @@ is none. Absent means absent, never zero (`docs/gotchas-bench.md`).
 
 Two sources, one shape:
 
-- **Mana Pool** (`source: "manapool"`) when `MANAPOOL_TOKEN` and `MANAPOOL_EMAIL`
-  are set: the singles price feed, keyed by `scryfall_id`, with NM / LP+ / foil
-  cents and a listing URL. The feed's path is `config.MANAPOOL_PRICES_PATH` and
-  it is UNVERIFIED (the docs are login-gated); a 400/404 on it prints one line
-  and falls through to Scryfall rather than failing the command.
-- **Scryfall** (`source: "scryfall"`) otherwise: the same `/cards/collection`
-  POST `fetch-deck` makes, read for `prices.usd` / `prices.usd_foil` — the
-  no-token path, and the one that resolves a `scryfall_id` for a cards.json
-  written before that field existed.
+- **Mana Pool** (`source: "manapool"`, the default): the PUBLIC singles price
+  feed (`config.MANAPOOL_PRICES_PATH`, verified against the OpenAPI spec
+  2026-10-09 — no token needed), keyed by `scryfall_id`, with NM / LP+ / foil
+  cents and a listing URL; the feed's own timestamp is kept as `feed_as_of`. A
+  token, when `MANAPOOL_TOKEN` and `MANAPOOL_EMAIL` are set, rides along in the
+  headers and changes nothing. A 400/404 on the feed prints one line and falls
+  through to Scryfall rather than failing the command.
+- **Scryfall** (`source: "scryfall"`): the same `/cards/collection` POST
+  `fetch-deck` makes, read for `prices.usd` / `prices.usd_foil` — the fallback,
+  and the one that resolves a `scryfall_id` for a cards.json written before that
+  field existed.
 
 Both go through `manamap.net`, so the feed is cached six hours and the collection
 answer a day (`data/cache/manapool/`, `data/cache/scryfall/`), the unit tier runs
@@ -57,8 +59,8 @@ def manapool_headers():
 
     The token comes through `net.load_token` (environment, with the Keychain
     recipe on stderr once per process); the email is plain environment, since
-    it is not a secret. Both are required by the API, so one without the other
-    is "no token" — the Scryfall source, not an error.
+    it is not a secret. The price feed is public, so neither is required; one
+    without the other sends neither.
     """
     token = net.load_token(TOKEN_ENV, keychain_service=KEYCHAIN_SERVICE)
     email = os.environ.get(EMAIL_ENV)
@@ -78,18 +80,15 @@ def _feed_rows(doc):
     return []
 
 
-def manapool_feed(session=None):
+def manapool_feed(session=None, meta=None):
     """The singles price feed as `{scryfall_id: row}`, or None.
 
-    None means "no Mana Pool source": no token, or the feed path answered 400/404
-    (the path is reconstructed, not read from the docs — `config.py` says where
-    to fix it). Either way the caller falls through to Scryfall and the printed
-    line says why. Any other HTTP failure, and `net.Offline`, propagate: a 503
-    after four retries is not a wrong path.
+    None means "no Mana Pool source": the feed path answered 400/404. The caller
+    falls through to Scryfall and the printed line says why. Any other HTTP
+    failure, and `net.Offline`, propagate: a 503 after four retries is not a
+    wrong path. `meta`, when a dict, receives the feed's own `as_of`.
     """
-    headers = manapool_headers()
-    if headers is None:
-        return None
+    headers = manapool_headers() or {}
     url = config.MANAPOOL_API_BASE + config.MANAPOOL_PRICES_PATH
     try:
         doc = net.get_json(url, headers=headers, service="manapool",
@@ -97,11 +96,13 @@ def manapool_feed(session=None):
     except requests.HTTPError as exc:
         status = getattr(getattr(exc, "response", None), "status_code", None)
         if status in (400, 404):
-            print(f"  Mana Pool answered {status} on {url} — the feed path in "
-                  f"config.py (MANAPOOL_PRICES_PATH) is unverified; using Scryfall "
-                  f"prices instead.")
+            print(f"  Mana Pool answered {status} on {url} — check "
+                  f"config.py (MANAPOOL_PRICES_PATH) against the API docs; using "
+                  f"Scryfall prices instead.")
             return None
         raise
+    if isinstance(meta, dict) and isinstance(doc, dict):
+        meta["as_of"] = (doc.get("meta") or {}).get("as_of")
     feed = {}
     for row in _feed_rows(doc):
         sid = (row or {}).get("scryfall_id")
@@ -241,9 +242,9 @@ def _manapool_row(card, sid, feed, by_name):
 def build(slug, branch=None, source="auto", session=None):
     """The artifact for a deck or a branch — see the module docstring for the shape.
 
-    `source`: `auto` tries Mana Pool and falls through to Scryfall; `manapool`
-    insists (and raises when there is no token); `scryfall` never touches the
-    feed. The Scryfall collection is fetched whenever any card lacks a
+    `source`: `auto` tries Mana Pool's public feed and falls through to
+    Scryfall on a 400/404; `manapool` insists (and raises on one); `scryfall`
+    never touches the feed. The Scryfall collection is fetched whenever any card lacks a
     `scryfall_id` (every cards.json written before 2026-10-09) or when it is the
     price source — one cached POST either way.
     """
@@ -252,13 +253,13 @@ def build(slug, branch=None, source="auto", session=None):
     doc = load_deck_cards(slug, branch)
     cards = doc.get("cards") or []
 
-    feed = None
+    feed, feed_meta = None, {}
     if source in ("auto", "manapool"):
-        feed = manapool_feed(session=session)
+        feed = manapool_feed(session=session, meta=feed_meta)
         if feed is None and source == "manapool":
             raise SystemExit(
-                f"no Mana Pool source: set {TOKEN_ENV} and {EMAIL_ENV} (docs/"
-                f"integrations.md), or run with --source scryfall.")
+                "no Mana Pool source: the price feed answered 400/404 (see the line "
+                "above); run with --source scryfall.")
     used = "manapool" if feed is not None else "scryfall"
 
     need_scryfall = used == "scryfall" or any(not c.get("scryfall_id") for c in cards)
@@ -290,6 +291,7 @@ def build(slug, branch=None, source="auto", session=None):
             out_cards[card["name"]] = row
 
     priced = [r for r in out_cards.values() if r["nm_cents"] is not None]
+    extra = {"feed_as_of": feed_meta["as_of"]} if used == "manapool" and feed_meta.get("as_of") else {}
     return {
         "slug": slug,
         "branch": branch,
@@ -304,6 +306,8 @@ def build(slug, branch=None, source="auto", session=None):
         # Islands count once.
         "total_nm_cents": sum(r["nm_cents"] for r in priced),
         "missing": sorted(missing),
+        # When the SOURCE's figures were taken, beside the day we read them.
+        **extra,
     }
 
 
@@ -315,7 +319,8 @@ def print_report(doc):
     rows = sorted(((r.get("nm_cents") or 0) * r.get("quantity", 1), name, r)
                   for name, r in doc["cards"].items())
     print(f"{doc['slug']}{'@' + doc['branch'] if doc.get('branch') else ''} — prices "
-          f"from {doc['source']} as of {doc['as_of']} ({doc['currency']})")
+          f"from {doc['source']} as of {doc['as_of']} ({doc['currency']})"
+          + (f"; feed taken {doc['feed_as_of']}" if doc.get("feed_as_of") else ""))
     print(f"  {len(doc['cards'])} priced, {len(doc['missing'])} missing; total at NM "
           f"{_dollars(doc['total_cents'])} (every copy), {_dollars(doc['total_nm_cents'])} "
           f"(one of each)")

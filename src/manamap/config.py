@@ -928,15 +928,17 @@ NET_BACKOFF_S = 1.0
 SCRYFALL_MAX_RETRIES = NET_MAX_RETRIES
 SCRYFALL_RETRY_BACKOFF_S = NET_BACKOFF_S
 # ── Mana Pool, the price source (`pilot/prices.py`, docs/integrations.md) ──
-# THE PATHS ARE THE ONE THING TO EDIT ONCE THE OFFICIAL DOCS ARE READ. They are
-# login-gated; what is below is reconstructed from community clients
-# (2026-10-08): the base, the two auth headers, a singles price feed whose rows
-# carry `scryfall_id` and `price_cents_*`, and a card-info endpoint by name.
-# `prices.py` is written to tolerate a wrong path — a 400/404 on the feed falls
-# back to Scryfall's `prices.usd` with a printed line, never a traceback.
+# VERIFIED 2026-10-09 against the official OpenAPI spec
+# (https://manapool.com/api/docs/v1/openapi.json). `GET prices/singles` is PUBLIC —
+# no security on the operation, and it answered 200 without a token: every in-stock
+# single (~104k rows, ~52 MB, `{meta: {as_of}, data: [...]}`), each row carrying
+# `scryfall_id`, `set_code`, `number`, `price_cents_nm` / `_lp_plus` / `_nm_foil`,
+# `url` and `available_quantity`. The token is needed only for accounts, orders,
+# `POST deck` and seller inventory, none of which the bench calls. A 400/404 on
+# the feed still falls back to Scryfall's `prices.usd` with a printed line.
 MANAPOOL_API_BASE = "https://manapool.com/api/v1/"
-MANAPOOL_PRICES_PATH = "prices/singles"      # unverified; see the comment above
-MANAPOOL_CARD_INFO_PATH = "cards/info"       # unverified; unused until a caller needs it
+MANAPOOL_PRICES_PATH = "prices/singles"      # GET, public
+MANAPOOL_CARD_INFO_PATH = "card_info"        # POST, public; unused until a caller needs it
 MANAPOOL_TOKEN_HEADER = "X-ManaPool-Access-Token"
 MANAPOOL_EMAIL_HEADER = "X-ManaPool-Email"
 MANAPOOL_FEED_TTL_S = 6 * 3600               # the feed moves daily; six hours is plenty

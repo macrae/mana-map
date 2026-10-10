@@ -902,11 +902,11 @@ manamap pilot prices sharknado --branch wheels-v2 --write    # the branch's own 
 manamap pilot validate-prices sharknado --branch wheels-v2
 ```
 
-Two sources, one shape. With `MANAPOOL_TOKEN` and `MANAPOOL_EMAIL` set (the Keychain
-recipe in `docs/integrations.md`) the source is **Mana Pool**'s singles feed, joined on
+Two sources, one shape. By default the source is **Mana Pool**'s public singles feed
+(no token — `docs/integrations.md`; its own stamp kept as `feed_as_of`), joined on
 `scryfall_id` — NM, LP+ and foil cents, a listing URL, `out of stock` noted, and a card
 whose exact printing is not listed priced at the cheapest listing of its name with the
-note saying so. Without a token the source is **Scryfall**: the same `/cards/collection`
+note saying so. On a 400/404 from the feed, or `--source scryfall`, the source is **Scryfall**: the same `/cards/collection`
 POST `fetch-deck` makes, read for `prices.usd` / `prices.usd_foil`, which is also what
 resolves a `scryfall_id` for a cards.json written before `fetch-deck` carried one
 (2026-10-09; the fleet is NOT re-fetched for it). The feed is cached six hours and the

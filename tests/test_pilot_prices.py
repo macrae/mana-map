@@ -7,7 +7,6 @@ without the two environment variables.
 """
 
 import json
-import os
 from datetime import date
 
 import pytest
@@ -162,11 +161,36 @@ def test_the_manapool_document_has_the_shape_the_readers_quote(fake_deck, monkey
                                         {c["name"] for c in CARDS["cards"]})
 
 
-def test_no_token_means_scryfall_and_says_so_in_the_document(fake_deck):
+def test_the_feed_is_public_so_no_token_still_reads_mana_pool(fake_deck):
+    """Verified against the OpenAPI spec 2026-10-09: `GET prices/singles` carries
+    no security. No token means no auth headers, not no Mana Pool."""
     s = FakeSession()
     doc = prices.build("fixture", session=s)
-    assert doc["source"] == "scryfall"
-    assert [c[0] for c in s.calls] == ["post"], "no feed GET without a token"
+    assert doc["source"] == "manapool"
+    get = [c for c in s.calls if c[0] == "get"]
+    assert len(get) == 1 and get[0][2]["headers"] == {}
+    assert doc["cards"]["Sol Ring"]["nm_cents"] == 199
+
+
+def test_the_documented_envelope_is_read_and_its_stamp_kept(fake_deck):
+    """The spec's shape: `{meta: {as_of, base_url}, data: [...]}`. The feed's own
+    timestamp is kept beside the day we read it; the validator form-checks it."""
+    stamp = "2026-10-10T01:21:13.523Z"
+    s = FakeSession(feed={"meta": {"as_of": stamp, "base_url": "https://manapool.com"},
+                          "data": FEED})
+    doc = prices.build("fixture", session=s)
+    assert doc["source"] == "manapool" and doc["feed_as_of"] == stamp
+    names = {c["name"] for c in CARDS["cards"]}
+    assert not validate_prices.validate("fixture", None, doc, names)
+    assert validate_prices.validate("fixture", None, dict(doc, feed_as_of="yesterday"), names)
+    assert validate_prices.validate("fixture", None, dict(doc, source="scryfall"), names)
+
+
+def test_scryfall_is_the_fallback_and_says_so_in_the_document(fake_deck):
+    s = FakeSession()
+    doc = prices.build("fixture", source="scryfall", session=s)
+    assert doc["source"] == "scryfall" and "feed_as_of" not in doc
+    assert [c[0] for c in s.calls] == ["post"]
     assert doc["cards"]["Sol Ring"]["nm_cents"] == 199
     assert doc["cards"]["Sol Ring"]["foil_cents"] == 1200
     assert doc["cards"]["Sol Ring"]["lp_cents"] is None
@@ -201,9 +225,9 @@ def test_a_server_error_on_the_feed_is_not_a_wrong_path(fake_deck, monkeypatch):
         prices.build("fixture", session=FakeSession(feed_status=503))
 
 
-def test_source_manapool_refuses_without_a_token(fake_deck):
-    with pytest.raises(SystemExit, match="MANAPOOL_TOKEN"):
-        prices.build("fixture", source="manapool", session=FakeSession())
+def test_source_manapool_refuses_when_the_feed_path_is_wrong(fake_deck):
+    with pytest.raises(SystemExit, match="400/404"):
+        prices.build("fixture", source="manapool", session=FakeSession(feed_status=404))
 
 
 def test_source_scryfall_never_touches_the_feed(fake_deck, monkeypatch):
@@ -240,7 +264,7 @@ def test_the_report_names_the_source_the_date_and_the_missing(fake_deck, capsys)
     doc = prices.build("fixture", session=FakeSession())
     prices.print_report(doc)
     out = capsys.readouterr().out
-    assert f"from scryfall as of {doc['as_of']}" in out
+    assert f"from manapool as of {doc['as_of']}" in out
     assert "1 missing" in out and "Obscure Promo" in out
     assert "Sol Ring" in out and "$1.99" in out
 
@@ -383,8 +407,6 @@ def test_a_test_skeleton_with_no_slug_still_costs_out():
 # ── the one real call ────────────────────────────────────────────────────
 
 @pytest.mark.network
-@pytest.mark.skipif(not (os.environ.get(prices.TOKEN_ENV) and os.environ.get(prices.EMAIL_ENV)),
-                    reason="MANAPOOL_TOKEN and MANAPOOL_EMAIL are not both set")
 def test_mana_pool_prices_one_card_for_real(monkeypatch, tmp_path):
     """Integration: the reconstructed feed path against the live API. A 400/404 here
     is the signal to edit `config.MANAPOOL_PRICES_PATH` — the test then reads the

@@ -10,7 +10,7 @@ the reader's; a gate that failed on a stale price would fail on every deck the
 morning after it was written, and a gate that fails when the network is down is a
 gate that gets switched off (`registry.py`, `validate-brief --themes`).
 """
-from datetime import date
+from datetime import date, datetime
 from urllib.parse import urlsplit
 
 from manamap.pilot.common import deck_dir, load_json, report_errors
@@ -99,6 +99,16 @@ def validate(slug, branch, doc, deck_names=None):
     if doc["total_nm_cents"] != total_nm:
         errors.append(f"total_nm_cents {doc['total_nm_cents']!r} != sum of nm_cents "
                       f"({total_nm})")
+    if "feed_as_of" in doc:
+        # Optional: the Mana Pool feed's own timestamp (ISO, `Z`-suffixed).
+        stamp = str(doc["feed_as_of"] or "")
+        try:
+            datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+        except ValueError:
+            errors.append(f"feed_as_of {doc['feed_as_of']!r} is not an ISO timestamp")
+        if doc["source"] != "manapool":
+            errors.append("feed_as_of is the Mana Pool feed's stamp, but source is "
+                          f"{doc['source']!r}")
     return errors
 
 

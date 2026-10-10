@@ -1339,8 +1339,8 @@ def add_pilot_parser(subparsers):
                              help="price a branch's list instead of the deck's")
         if name == "prices":
             cmd.add_argument("--source", choices=("auto", "manapool", "scryfall"), default="auto",
-                             help="auto: Mana Pool when MANAPOOL_TOKEN + MANAPOOL_EMAIL are set, "
-                                  "else Scryfall's prices.usd (the default)")
+                             help="auto: Mana Pool's public price feed (no token needed), "
+                                  "falling back to Scryfall's prices.usd (the default)")
             cmd.add_argument("--write", action="store_true",
                              help="write prices.json beside the list (the deck's, or the branch's)")
             cmd.add_argument("--json", action="store_true", dest="as_json")

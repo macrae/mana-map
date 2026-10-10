@@ -75,13 +75,21 @@ token is never part of a cache key and never written into a cache entry.
 
 ## Mana Pool (prices; `pilot/prices.py`, 2026-10-09)
 
-The one service here that needs a token. `manamap pilot prices <slug>` reads the singles
-price feed when both halves of the auth are set — `MANAPOOL_TOKEN` through
-`net.load_token("MANAPOOL_TOKEN", keychain_service="manamap-manapool")` and
-`MANAPOOL_EMAIL` from the environment — and sends them as `X-ManaPool-Access-Token` and
-`X-ManaPool-Email`. Without either it says nothing more than the Keychain hint and
-prices from Scryfall instead (`/cards/collection`'s `prices.usd` / `usd_foil`), so a
-machine with no token still gets a dated figure, labelled `source: "scryfall"`.
+**The price feed is public — no token.** Verified 2026-10-09 against the official
+OpenAPI spec (`https://manapool.com/api/docs/v1/openapi.json`, linked from
+`manapool.com/api/docs/v1`): `GET https://manapool.com/api/v1/prices/singles` carries no
+security and answered 200 without one. It is every in-stock single, ~104k rows and ~52 MB,
+`{meta: {as_of, base_url}, data: [...]}`; each row has `scryfall_id`, `set_code`,
+`number`, `price_cents_nm` / `_lp_plus` / `_nm_foil` (and etched, market), `url` and
+`available_quantity`. `manamap pilot prices <slug>` reads it by default and keeps the
+feed's `meta.as_of` as `feed_as_of` beside the day it was read. A 400/404 on the feed
+prints a line and falls through to Scryfall (`/cards/collection`'s `prices.usd` /
+`usd_foil`, `source: "scryfall"`), never a traceback; `--source scryfall` asks for that
+directly.
+
+The token (`X-ManaPool-Access-Token` + `X-ManaPool-Email`) is needed only for accounts,
+orders, `POST /deck` validation and seller inventory — none of which the bench calls. If
+both halves are set they ride along on the feed request and change nothing:
 
 ```bash
 security add-generic-password -a $USER -s manamap-manapool -w                   # the token, once
@@ -89,17 +97,13 @@ export MANAPOOL_TOKEN=$(security find-generic-password -a $USER -s manamap-manap
 export MANAPOOL_EMAIL=you@example.com                                           # in ~/.zshrc
 ```
 
-**The paths are unverified.** The official API docs are login-gated, so
-`config.MANAPOOL_API_BASE`, `MANAPOOL_PRICES_PATH` (`prices/singles`) and
-`MANAPOOL_CARD_INFO_PATH` (`cards/info`) were reconstructed from community clients
-(2026-10-08) and are the one thing to edit once the docs are read; the client tolerates a
-wrong one — a 400/404 on the feed prints a line and falls through to Scryfall, never a
-traceback. TTLs: the feed is cached six hours (`MANAPOOL_FEED_TTL_S`, service
-`manapool`), the collection answer a day (`SCRYFALL_PRICES_TTL_S`, service `scryfall`).
-The token is never part of a cache key and never written into the artifact:
-`validate-prices` refuses any `url` off `manapool.com` / `scryfall.com` or carrying a
-query string. One `@pytest.mark.network` test prices a card for real and skips without
-the two variables.
+Paths live in `config.py`: `MANAPOOL_API_BASE`, `MANAPOOL_PRICES_PATH` (`prices/singles`,
+GET) and `MANAPOOL_CARD_INFO_PATH` (`card_info`, POST, unused so far). TTLs: the feed is
+cached six hours (`MANAPOOL_FEED_TTL_S`, service `manapool`), the collection answer a day
+(`SCRYFALL_PRICES_TTL_S`, service `scryfall`). A token is never part of a cache key and
+never written into the artifact: `validate-prices` refuses any `url` off `manapool.com` /
+`scryfall.com` or carrying a query string. One `@pytest.mark.network` test reads the live
+feed.
 
 ## Moxfield (export + paste; 2026-10-09) — nothing on this client
 
