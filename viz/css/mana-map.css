@@ -48,7 +48,9 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
    rules text. */
 .detail-card-image { margin: 4px 0 10px; display: flex; flex-direction: column;
   align-items: center; gap: 6px; }
-.detail-card-image img { width: 100%; height: auto; aspect-ratio: 488 / 680;
+/* Capped at 58vh tall so the combo lines and relations under it start on the first
+   screen; the click-through magnifier is the full-size view. */
+.detail-card-image img { width: min(100%, calc(58vh * 488 / 680)); height: auto; aspect-ratio: 488 / 680;
   display: block; border-radius: 4.75% / 3.5%; background: #2a2a4a; cursor: zoom-in; }
 .detail-card-image img:focus-visible { outline: 2px solid #c4a747; outline-offset: 2px; }
 .detail-card-image .detail-image-fallback { width: 100%; }

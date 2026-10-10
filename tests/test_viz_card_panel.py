@@ -87,16 +87,22 @@ def test_the_card_comes_first_and_large(page):
     _open(page, "The Elder Dragon War")
     g = _geometry(page)
     assert g["oracle"] is not None and g["image"] is not None, g
-    assert g["image"] < g["oracle"] < g["relations"] < g["facts"], f"the card does not lead: {g}"
+    # The card, then where to go (relations), then the rules text it already prints.
+    assert g["image"] < g["relations"] < g["oracle"] < g["facts"], f"the card does not lead: {g}"
     r = page.evaluate("""() => {
         const img = document.querySelector('#detailInner .detail-card-image img');
         const inner = document.getElementById('detailInner');
         const cs = getComputedStyle(inner);
-        return {w: img.getBoundingClientRect().width, src: img.src,
+        const box = img.getBoundingClientRect();
+        return {w: box.width, h: box.height, src: img.src, vh: innerHeight,
                 content: inner.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)};
     }""")
     assert r["w"] >= 1.5 * _OLD_IMAGE_PX, f"the card is {r['w']}px wide: {r}"
-    assert abs(r["w"] - r["content"]) <= 2, f"the card does not fill the panel: {r}"
+    # The panel's width, or 58vh tall — whichever binds first — so what sits under
+    # it starts on the first screen.
+    fills = abs(r["w"] - r["content"]) <= 2
+    capped = abs(r["h"] - 0.58 * r["vh"]) <= 2
+    assert fills or capped, f"the card neither fills the panel nor sits at its height cap: {r}"
     assert "version=large" in r["src"], r["src"]
     assert any("version=large" in u for u in seen), seen
     text = page.inner_text("#detailInner")

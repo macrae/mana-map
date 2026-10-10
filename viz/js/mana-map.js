@@ -1175,10 +1175,10 @@
    * `order`:
    *
    *   [title/stats when the panel has no header] · deck context (Build only) ·
-   *   THE IMAGE (full panel width, click to magnify, flip for a DFC) · type + oracle
-   *   (DFC faces labelled) · combo lines · relations, the outclassed-by comparison and
-   *   Keep · EDHREC, Commander legality and identity, every other format in a closed
-   *   <details>.
+   *   THE IMAGE (panel width, at most 58vh tall; click to magnify, flip for a DFC) ·
+   *   combo lines · relations, the outclassed-by comparison and Keep · type + oracle
+   *   (DFC faces labelled; the card prints it, so it sits below what it cannot show) ·
+   *   EDHREC, Commander legality and identity, every other format in a closed <details>.
    *
    * `row` is required for the relation buttons: the old pair took no argument at all and
    * leaned on `selectedCards`, which is exactly why they did nothing in three of the five
@@ -1195,9 +1195,9 @@
     }
     html += deckContextHtml(d, row);
     html += cardImageHtml(d, deckEntry(d, row));
-    html += cardTextHtml(d);
-    // After the rules text, before the relations: what the card goes infinite with is a
-    // fact about the card, read before "what is like it".
+    // Directly under the card: what it goes infinite with, then where to go next. The
+    // rules text the card already PRINTS moved below them (2026-10-10): with the card
+    // first and large, the combo lines had slid under the fold, a screen and a half down.
     html += comboLinesHtml(d, row);
     html += buildRelationHtml(row);
     // Not inside buildRelationHtml: that returns nothing until the neighbour table is in,
@@ -1205,6 +1205,7 @@
     // relation buttons, so obsolescence has ONE place in the panel.
     html += buildObsolescenceHtml(d.n);
     html += cardActionsHtml(row);
+    html += cardTextHtml(d);
     // The legality line leads with the DECK's format in Build — every panel, not only
     // Build's own (which passes it): the atlas detail panel passed nothing, so a Modern
     // deck's card read "Commander: legal" there. Elsewhere, Commander.

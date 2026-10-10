@@ -5904,9 +5904,29 @@ def test_the_landing_leads_with_the_card_and_its_relations(discover_page):
                 fold: window.innerHeight};
     }""")
     assert pos["card"] is not None and pos["relations"] is not None
-    assert pos["card"] < pos["text"] < pos["relations"] < pos["keep"], pos
+    # 2026-10-10, second pass: the combo lines and relations sit directly under the
+    # card, and the rules text the card already prints moved below them — with the
+    # text in between, the pilot's combo lines had slid a screen and a half down.
+    assert pos["card"] < pos["relations"] < pos["keep"] < pos["text"], pos
     assert pos["card"] < pos["fold"] / 4, f"the card does not lead the panel: {pos}"
+    assert pos["relations"] < pos["fold"], f"the relations start below the first screen: {pos}"
     assert pos["keep"] < pos["more"], "the ways to start elsewhere outrank Keep"
+    assert page.js_errors == []
+
+
+def test_a_combo_cards_lines_start_on_the_first_screen(page, viz_server):
+    """"Where'd my combo lines go?" — the pilot, 2026-10-10, the hour the card
+    went first and full-width: Thassa's Oracle's twelve combo lines began 1,019px
+    down a 900px window, under the card and the oracle text it already prints.
+    The card is capped at 58vh and the lines follow it directly."""
+    page.goto(f"{viz_server}/viz/index.html?card=Thassa%27s+Oracle")
+    page.wait_for_selector("#deckInner .combo-line", timeout=30000)
+    r = page.evaluate("""() => ({
+        top: document.querySelector('#deckInner .combo-block').getBoundingClientRect().top,
+        lines: document.querySelectorAll('#deckInner .combo-line').length,
+        fold: innerHeight})""")
+    assert r["lines"] > 0, r
+    assert r["top"] < r["fold"], f"the combo lines start below the first screen: {r}"
     assert page.js_errors == []
 
 
