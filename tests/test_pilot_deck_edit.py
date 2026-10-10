@@ -442,10 +442,10 @@ def test_the_rebuild_runs_in_order_goldfish_once_and_no_branch(decks, recorder):
                    "info.json", "combos.json"])
     r = deck_edit.rebuild("cmdr", before_text=_text(decks))
     # fetch-deck alone; then the independent middle (in parallel outside a test,
-    # here in job order); then what composes it.
+    # here in job order); then the context refresh, and deck-info ONCE, after it.
     assert [c[0] for c in recorder] == [
         "fetch-deck", "goldfish", "mana-analysis", "deck-combos", "diagnose",
-        "benchmark", "warm", "deck-info", "context-change", "deck-info"]
+        "benchmark", "warm", "context-change", "deck-info"]
     assert [c[0] for c in recorder].count("goldfish") == 1
     assert all(c[2] in (None, True) for c in recorder), "no branch may be touched"
     assert r["failures"] == [] and r["ran"] == ["fetch-deck", "goldfish", "mana-analysis"]
@@ -456,8 +456,8 @@ def test_a_sixty_card_rebuild_skips_the_goldfish_stages_and_says_why(decks, reco
     _artifacts(d, ["mana_analysis.json", "combos.json", "info.json"])
     r = deck_edit.rebuild("md")
     stages = [c[0] for c in recorder]
-    # deck-info runs again after the context refresh: each validates the other.
-    assert stages == ["fetch-deck", "mana-analysis", "deck-combos", "deck-info",
+    # deck-info runs once, AFTER the context refresh: it validates the context.
+    assert stages == ["fetch-deck", "mana-analysis", "deck-combos",
                       "context-change", "deck-info"]
     for s in ("goldfish", "diagnose", "benchmark"):
         assert "not modelled for Modern" in r["skipped"][s], s

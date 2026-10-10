@@ -904,6 +904,7 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
     directory = deck_dir(slug)
     out = {"slug": slug, "ran": [], "skipped": dict(skipped), "failures": []}
     began = time.time()
+    info_planned = False
     with locked(directory, f"rebuilding {slug}", name=REBUILD_LOCK, timeout=REBUILD_TIMEOUT):
         for _pass in range(3):
             sha = common.decklist_sha256(slug)
@@ -957,23 +958,26 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
                     out["failures"].append(f"{label} {slug}: {r['error']}")
             echo(f"    {'':34} parallel {time.time() - t_mid:5.1f}s")
             out["ran"] = ran
-            # 3. what composes them.
-            late = tuple(st for st in stages_run if st not in PARALLEL_STAGES)
+            # 3. anything else planned (nothing today: `net-change` is branch-only).
+            # `deck-info` is NOT run here — see step 4.
+            late = tuple(st for st in stages_run
+                         if st not in PARALLEL_STAGES and st != "deck-info")
             got = regen.run(echo=echo, only=late, **kw) if late else {}
-            out["regen"] = {"stages": stages_run,
-                            "ran": sum(1 for st in stages_run if st in PARALLEL_STAGES)
-                            + got.get("ran", 0)}
+            info_planned = "deck-info" in stages_run
+            out["regen"] = {"stages": stages_run, "ran": len(stages_run)}
             out["failures"] += [f"{st} {n}: {e}" for st, n, e in got.get("failures") or []]
             if common.decklist_sha256(slug) == sha:
                 break
         if before_text is None:
             before_text = saved_text(slug)
         context = deck_context.list_change(slug, before_text=before_text)
-        # `info.json` validates the context and the context reads `info.json`, so
-        # the regen above wrote an info that judged the PRE-refresh context (it read
-        # "CONTEXT.md fails its gate" after an edit and an undo, 2026-10-10). One
-        # more deck-info pass, ~1 s, on decks that have one.
-        if "behind" not in out and (deck_dir(slug) / "info.json").exists():
+        # 4. `deck-info` ONCE, after the context refresh. `info.json` validates the
+        # Deck Context, so an info written before the refresh judged the OLD context
+        # (it read "CONTEXT.md fails its gate" after an edit and an undo,
+        # 2026-10-10). The refresh does not read `info.json` — its blocks come from
+        # `deck_info.compose` directly — so the info the rebuild used to write
+        # before it (and then overwrite) was 3.8 s of work no byte depended on.
+        if "behind" not in out and (info_planned or (deck_dir(slug) / "info.json").exists()):
             regen.run(echo=echo, slug=slug, include_branches=False, only=("deck-info",))
     out["context"] = context
     out["keeper"] = (context or {}).get("keeper") if (context or {}).get("stale") else None
