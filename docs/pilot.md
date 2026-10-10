@@ -51,7 +51,11 @@ manamap pilot query-rules "…" --json    # semantic top-k (resolver's discovery
 manamap pilot lookup-rule 702.40a --json  # exact fetch (checker's verification path)
 manamap pilot download-rulings          # Scryfall's card-rulings dump (5 MB; idempotent on content)
 manamap pilot card-rulings "<name>" […] [--json]  # official WotC rulings for a card — INPUT, never a citation
-manamap pilot build-deck <slug> [--write-decklist]  # brief.json → build_plan.json (no agents)
+manamap pilot build-deck <slug> [--write-decklist] [--overwrite]  # brief.json → build_plan.json (no agents)
+                                        #   --write-decklist on a slug that already has cards.json is
+                                        #   REFUSED before anything is written; --overwrite rebuilds a
+                                        #   bench deck's list (old one kept as decklist.txt.bak) and is
+                                        #   still refused for a sleeved or archived deck
 manamap pilot validate-build <slug>     # form gate over a build plan
 manamap pilot validate-brief <slug> [--themes]  # the gate brief.json never had: commander real and
                                         #   legal, every named card in the corpus and in identity,
@@ -82,7 +86,9 @@ manamap pilot page-state [--json]       # what Sean has open in the browser, foc
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out
 manamap pilot archetypes "<commander>" [--theme SLUG]   # how it is actually built, and that style's role template
 manamap pilot brew <slug> --commander "<name>" [--theme SLUG] [--from FILE] [--build]  # the cards you kept -> a deck on the bench
-manamap pilot build <slug> [--brief "…"] [--commander "<name>"] [--theme SLUG] [--from FILE] [--bracket N]
+manamap pilot build <slug> [--brief "…"] [--commander "<name>"] [--theme SLUG] [--from FILE] [--bracket N] [--overwrite]
+                                        #   an existing deck (cards.json) is refused unless --overwrite,
+                                        #   and never rebuilt when sleeved or archived (`build_deck.guard_overwrite`)
                                         #   THE ONE COMMAND: brief -> a legal, measured 99 on the bench.
                                         #   Six stages — intent, anchor, build, resolve, measure, land —
                                         #   in ~10s. Omit --commander and it proposes three and halts.
@@ -203,7 +209,12 @@ manamap pilot validate-lift <slug> [--stack NNN]   # a committed lifted board ag
 manamap pilot sim-scenario <slug> <run> --game G --turn T [--step "declare blockers"] [--stack]
                                         #   lift one board into a game_state v2 scenario (question left to you)
 manamap pilot deck-version <slug> [list] [--json]   # every list this deck has been, from git; games per version
-manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write]
+manamap pilot deck-version <slug> show V4 [--full] | tag <name> [--at V4] [--note …] | restore V4 [--write] [--no-chain]
+                                        #   restore --write goes through check_in.apply (the
+                                        #   version's own bytes, .txt.bak, the chain). Refused:
+                                        #   a keep-list card on the cut side, an archived deck,
+                                        #   and a SLEEVED deck unless V4 IS its paper version
+                                        #   (that re-syncs with cardboard; anything else is a branch)
 manamap pilot promote <slug> [--to bench|sleeved] [--show] [--force --reason "…"]
 manamap pilot demote  <slug> [--to dev|bench]
                                         #   THE ENVIRONMENT LADDER (PRD §3): dev / bench /
@@ -836,6 +847,35 @@ snapshot is re-sent only when it changes). Fields outside `page_state.FIELDS` ar
 and lists are capped, so a page cannot grow it into a second store. Nothing measured or
 tracked reads it.
 
+## `serve`'s local API — the origin gate and the new-deck guard (2026-10-09)
+
+`manamap serve` answers `/api/<command>` on 127.0.0.1 with no authentication, so the
+browser's same-origin policy is the only wall between a web page and `deck/delete`. A
+`text/plain` POST crosses origins without a preflight, and `do_POST` used to parse any
+body as JSON — so any page the pilot had open could reach the write endpoints.
+`Handler._foreign` now refuses, on every `/api` request (GET and POST):
+
+- **403** when an `Origin` header is present and is not `http://127.0.0.1:<port>` or
+  `http://localhost:<port>`;
+- **403** when `Host` is not `127.0.0.1:<port>` / `localhost:<port>` — the DNS-rebinding
+  case, where a hostile name re-pointed at loopback is same-origin to the browser;
+- **415** for a POST whose `Content-Type` is not `application/json` (a charset suffix is
+  fine). JSON is not a CORS-safelisted type, so a foreign page cannot send it unpreflighted.
+
+Every in-repo client already passes: `viz/js/api.js` (`Api.call`, which `page-state.js`
+also uses), the CLI's warm-worker routing and `mm ask`'s stream (`cli._daemon_run`,
+`cli._sven_frames` — JSON, no `Origin`). `tests/test_serve_origin.py` holds all of it
+against a real server on an ephemeral port.
+
+**Build never overwrites a deck.** `build/save` and `build/run` refuse a slug that already
+has `cards.json` — "`<slug>` is already a deck (<rung>) — open it in Build to edit it, or
+give the new deck another name." A decklist with no `cards.json` is an unfinished draft
+and stays writable. The page never sends `--overwrite`; the new-deck form warns as soon as
+the typed slug matches a deck in the manifest. **Branch writes refresh the dossier**:
+`branch/new` and `branch/stage` (and its undo) call `deck_branch.refresh_dossier`, which
+rewrites `info.json` wherever it exists and the deck is not retired — `regen.targets`'
+rule — and report the outcome as `dossier` in the result.
+
 ## Scanning along the deck's dimensions (`scan-candidates`, ◆; `fetch-edhrec`, ★) — 2026-09-30
 
 `card-search` answers one question at a time and reaches each of a deck's goals through a
@@ -1088,7 +1128,15 @@ probably wants a new slug), an absent corpus, which cannot check names but must 
 a fresh clone accepting a deck, and — on a Commander list — cards under a `Sideboard:`
 or `Maybeboard` header, which are **dropped with a warning** rather than refused, because
 a Moxfield export routinely carries the cards a pilot was only thinking about. `--force`
-overrides; you want it approximately never. The chain `--write` runs is the format's
+overrides; you want it approximately never.
+
+**Two refusals `--force` does not reach** (2026-10-09, `check_in.hard_refusals`): a card
+on the **PULL** side that the deck's keep list (`protected.json`) names — the same rule
+`deck-branch merge` applies, released only by editing the file — and an **archived** deck
+(broken down or retired), refused with `manamap pilot deck-state <slug> revive`. A
+**sleeved** deck still checks in, because a check-in records what is physically in the
+sleeves; after the write it prints one line saying the paper lock is now behind until
+`deck-version <slug> paper`. The chain `--write` runs is the format's
 too: a 60-card deck gets `fetch-deck` → `mana-analysis`, and the report says
 `skipped goldfish: not modelled for Standard — the goldfish is Commander-only`.
 
