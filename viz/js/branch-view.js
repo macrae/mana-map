@@ -915,6 +915,88 @@
     return out + '</section>';
   }
 
+  /* THE TWO VERBS THE PAGE WAS MISSING (2026-10-10): Measure and Unstage.
+   * Both endpoints shipped with the branch workbench (`branch/net-change`,
+   * `branch/stage {undo}`) and nothing here called them, so a branch started
+   * from Build's tray had to go back to the terminal to be measured. Gated on
+   * `Api.ready`: the deployed page has no server, and the panels above already
+   * print the command for that case. */
+  function benchPanel(meta, slug, branch) {
+    if (!window.Api || !Api.ready) return '';
+    var staged = (meta && meta.staged) || [];
+    var rows = staged.map(function (r) {
+      return '<li class="staged-row"><span class="pair"><span class="out">− ' + card(r.out) +
+             '</span><span class="in">+ ' + card(r['in']) + '</span></span>' +
+             '<button type="button" data-act="unstage" data-out="' + esc(r.out) +
+             '" data-in="' + esc(r['in']) + '">unstage</button></li>';
+    }).join('');
+    return '<section class="panel bench-actions" id="benchActions"><h2>On the bench</h2>' +
+      '<p class="ev">Measure runs the paired net change for this list as it stands ' +
+      '(~15s, no model call) and writes <code>net_change.json</code>.</p>' +
+      '<div class="swap-act"><button type="button" data-act="measure">Measure</button>' +
+      ' <span class="ev" id="measureState"></span></div>' +
+      (rows ? '<h3>Staged swaps <span class="ev">(' + staged.length + ')</span></h3>' +
+              '<ul class="swaplist">' + rows + '</ul>'
+            : '<p class="ev">Nothing staged.</p>') +
+      '</section>';
+  }
+
+  function pollJob(id, done) {
+    (function tick() {
+      Api.call('job', { id: id }).then(function (row) {
+        if (row.state === 'running') { setTimeout(tick, 1000); return; }
+        done(row);
+      }).catch(function (e) { done({ state: 'failed', error: e.message }); });
+    })();
+  }
+
+  function measure(btn) {
+    var q = new URLSearchParams(location.search);
+    var say = document.getElementById('measureState');
+    var started = Date.now();
+    var tick = setInterval(function () {
+      if (say) say.textContent = 'measuring… ' + Math.round((Date.now() - started) / 1000) + ' s';
+    }, 1000);
+    btn.disabled = true;
+    if (say) say.textContent = 'measuring…';
+    Api.call('branch/net-change', { slug: q.get('deck'), branch: q.get('branch') })
+      .then(function (job) {
+        pollJob(job.id, function (row) {
+          clearInterval(tick);
+          btn.disabled = false;
+          if (row.state !== 'done') {
+            if (say) say.textContent = 'failed: ' + (row.error || 'unknown');
+            return;
+          }
+          // Re-render from the artifact the job just wrote — the page renders
+          // committed files and nothing else, so it reads the new one.
+          main();
+        });
+      })
+      .catch(function (e) {
+        clearInterval(tick);
+        btn.disabled = false;
+        if (say) say.textContent = e.message;
+      });
+  }
+
+  function unstage(btn) {
+    var q = new URLSearchParams(location.search);
+    btn.disabled = true;
+    btn.textContent = 'unstaging…';
+    // `card` rather than `in`, which is a keyword — `serve._branch_stage`.
+    Api.call('branch/stage', {
+      slug: q.get('deck'), branch: q.get('branch'), undo: true,
+      out: btn.getAttribute('data-out'), card: btn.getAttribute('data-in')
+    }).then(function () {
+      main();
+    }).catch(function (e) {
+      btn.disabled = false;
+      btn.textContent = 'unstage';
+      btn.insertAdjacentHTML('afterend', '<p class="ev todo-blocked">' + esc(e.message) + '</p>');
+    });
+  }
+
   /* ── boot ───────────────────────────────────────────────────────────── */
 
   function main() {
@@ -959,6 +1041,8 @@
               'This branch has not been measured against the deck yet. Until it ' +
               'is, there is nothing here to decide on.',
               'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write')));
+        document.getElementById('panels').insertAdjacentHTML('afterbegin',
+          benchPanel(meta, slug, name));
         wireViewToggle();
         if (nc && nc.bill) {
           var buy = (nc.bill.cards || []).filter(function (r) {
@@ -1065,6 +1149,11 @@
           say.textContent = ok ? 'copied' : 'could not copy';
           setTimeout(function () { say.textContent = 'copy'; }, 2400);
         });
+        return;
+      }
+      var verb = ev.target.closest && ev.target.closest('[data-act="measure"], [data-act="unstage"]');
+      if (verb && !verb.disabled) {
+        if (verb.getAttribute('data-act') === 'measure') measure(verb); else unstage(verb);
         return;
       }
       var btn = ev.target.closest && ev.target.closest('[data-act="stage"]');

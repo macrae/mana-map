@@ -1194,6 +1194,10 @@
         '<div class="viewer-quickstats">' + quickStatsHtml(d) + '</div></div>';
     }
     html += deckContextHtml(d, row);
+    // Build's edit tray: Add to deck / Cut / Swap for… (deck-edit.js). Empty unless an
+    // editable or sleeved deck is open in Build with the local bench behind the page.
+    // Read at RENDER time behind a guard — `DeckEdit` loads after this file.
+    if (window.DeckEdit && DeckEdit.cardButtons) html += DeckEdit.cardButtons(row);
     html += cardImageHtml(d, deckEntry(d, row));
     // Directly under the card: what it goes infinite with, then where to go next. The
     // rules text the card already PRINTS moved below them (2026-10-10): with the card
@@ -1777,9 +1781,13 @@
     }
     if (extra) html += extra;
     if (typeof row === 'number' && typeof window.Build !== 'undefined' && Build.isInDeck) {
-      if (Build.isInDeck(row)) {
+      // In edit mode the card body carries "Add to deck", which writes the LIST; the
+      // library's "+ Deck" beside it would read as the same act and is not.
+      const editMode = window.DeckEdit && (DeckEdit.mode === 'edit' || DeckEdit.mode === 'branch');
+      // (`isInDeck` also counts the library; in edit mode the badge means the LIST.)
+      if (editMode ? Build.hasCard(d.n) : Build.isInDeck(row)) {
         html += '<span class="in-deck-badge">\u2713 In Deck</span>';
-      } else {
+      } else if (!editMode) {
         html += '<button class="btn-add-deck" onclick="Build.addCard(' + row +
                 '); MM.render()">+ Deck</button>';
       }

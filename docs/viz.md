@@ -190,6 +190,7 @@ python -m http.server 8000
 | `viz/js/render/canvas.js` | The map renderer (~1,147 lines). The ONLY renderer; owns the aura + ambient drift |
 | `viz/js/decklist.js` | Moxfield paste parser (~114 lines). Fixture-locked to the Python parser |
 | `viz/js/build.js` | Build (~1,818 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
+| `viz/js/deck-edit.js` | Build's edit tray (~880 lines, 2026-10-10). Exposes `window.DeckEdit`; loaded LAST, read only at render time behind a guard. See "Build mode: editing a deck in place" |
 | `viz/deck.html` | Dossier shell: masthead, deck picker, panel grid |
 | `viz/css/tokens.css` | The design tokens (ported from the magazine renderer before it was deleted) in a dark register (1,230 lines). Shared by `deck.html`, `workbench.html`, `branch.html` AND `spaces.html` |
 | `viz/js/deck-view.js` | The dossier (~2,300 lines). IIFE; exposes `window.Deck` for the server verbs, no `MM` dependency |
@@ -1237,7 +1238,7 @@ touched** — not just two pages. `index.html` carries **twelve** script busts p
 `mana-map.css`; `deck.html` carries **six**, and `branch.html`, `workbench.html`,
 `library.html` and `spaces.html` **five** each, plus their stylesheets. Every bust in the
 repo currently moves together at `?v=241`. **Bump before pushing** — Pages/browser caches are aggressive.
-On `index.html` all twelve script busts must move together and a test asserts it, because
+On `index.html` all thirteen script busts must move together and a test asserts it, because
 a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`. The trap the
 two-page framing created: `shell.js` is shared by five pages, so bumping only `deck.html`
 ships it stale on four.
@@ -1865,6 +1866,60 @@ on the map.
 `watch/mark` (a catch-all refuses any other `/api/` call), so the tracked `watchlist.json` is
 never written. The card panel's **Watch / Pass** (its Build deck block — see "The card panel:
 text first") is a third caller of the same `markCard`, not a second write path.
+
+## Build mode: editing a deck in place (`deck-edit.js`, 2026-10-10)
+
+The pilot's ruling: a deck **brewing or on the bench** is edited STRAIGHT ON THE DECK from
+Build, with live before/after numbers, undo/redo and **Save version**; a **sleeved** deck's
+list is cardboard, so the same tray offers **Start a branch** instead; an **archived** deck is
+read-only. `window.DeckEdit` is the page half of `manamap pilot edit` (`docs/pilot.md`,
+"Editing a bench deck in place") and decides NOTHING about legality — every refusal is
+`deck_edit.plan`'s sentence, shown verbatim, so the tray, `try` and the CLI cannot disagree.
+
+- **The mode** is read from `deckRung` / `isWorkableDeck` (api.js) and `Api.ready` when Build
+  loads a deck (`Build.select` → `DeckEdit.attach(entry, active)`): `dev` / `bench` → EDIT;
+  `sleeved` → BRANCH; no rung → read-only, one line naming the status and the `deck-state
+  <slug> revive` command, and no tray (the `?deck=<archived>` deep link still opens the deck).
+  **On a static host** (GitHub Pages) there is no API, and the panel says one sentence:
+  "Editing needs the local bench — run `manamap serve` and open this page from it." A server
+  that answers `/api` without `deck/edit` (started before this sprint) is told to restart.
+- **The card panel** (`buildCardDetailHtml`, under the deck block) carries `DeckEdit.cardButtons`
+  in EDIT and BRANCH mode only: a card not in the deck gets **Add to deck**; one in it gets
+  **Cut** and **Swap for…** (which holds the card OUT; the next Add pairs with it as a swap).
+  The header's library "+ Deck" is hidden in those modes — it reads as the same act and is not.
+  Outside them the library behaviour is unchanged.
+- **The tray** (`DeckEdit.trayHtml()`, rendered by `Build.renderPanel` under the stats) lists
+  `− A / + B` rows (a copy count is editable on a 60-card deck), a balance line ("2 out, 1 in —
+  Commander needs 100"), then `deck/edit/preview` **600 ms after the last change** — a newer tray
+  replaces an older request, on the page (a sequence number) and on the server (only the newest
+  preview per deck comes back; an older job returns `superseded`). The INSTANT tier: blocking
+  sentences, warnings, size, colour sources against target, the curve buckets that moved, combos
+  gained and lost, the keep list, roles, and the price delta from the dated `prices.json` with its
+  `as_of` (or "unpriced"). The GOLDFISH tier (a job): measure, champion → after, Δ, the 95%
+  interval ON THE DIFFERENCE, the verdict, the trust line and the board-quality caveat. The tray
+  is kept in `sessionStorage` under slug + the list's sha and dropped when the sha moves.
+- **Apply / Undo / Redo** post `deck/edit` / `deck/edit/undo|redo` with `expect_sha` (the sha
+  `deck/edit/history` reported), so a tab left open across a CLI edit is refused ("the list moved
+  since this page loaded"). Apply is disabled, with the sentences shown, while the preview for
+  THIS tray blocks. Each returns the coalesced rebuild job (one per deck; an edit during a rebuild
+  joins it and the job loops once more): the status reads **"measuring… N s"** until it lands,
+  then `Build.reloadDeck()` re-reads every artifact with `cache: 'no-store'` (`reloadCards` cannot:
+  an edit adds and removes slots). A figure is current only when `cards.json`'s
+  `decklist_sha256` matches the list; otherwise the panel says it is for an earlier list.
+- **Save version** needs a note, shows "+N −M since V<n>" (`since_save` against the last save, or
+  git HEAD; absent when there is neither), and posts `deck/save-version` with `confirm` = the
+  slug, as a job. The **history drawer** lists the edits since the last save, with the save marker.
+- **BRANCH mode** (sleeved): the same tray; the action is **Start a branch** — a name, a sentence,
+  and an objective picked from `branch/axes` (`candidates.OBJECTIVE_AXES` less the membership axes
+  `parse_objective` refuses, each with the deck's current reading from `try`'s cached champion;
+  Forge axes need a pod and are not offered). It posts `branch/new`, then `branch/stage` for each
+  1-for-1 pair, and links to `branch.html`. An unbalanced tray is refused with the reason.
+- **The branch page** gained the two verbs it lacked: **Measure** (`branch/net-change`, polled,
+  then the page re-renders from the artifact it wrote) and a per-staged-row **Unstage**
+  (`branch/stage {undo: true, out, card}`). Both are gated on `Api.ready`.
+
+`tests/test_viz_deck_edit.py` drives all of it against a fake `/api/**` and a routed manifest;
+`tests/test_serve_deck_edit.py` holds the endpoints.
 
 ## Future options (deliberately not done)
 

@@ -154,8 +154,13 @@
     return url + (url.indexOf('?') === -1 ? '?v=' : '&v=') + version;
   }
 
+  // True while `reloadDeck` re-reads a deck an edit just rewrote: the bust above is
+  // the card map's version, which an edit does not move, so the HTTP cache would
+  // hand back the list from before the edit.
+  let fresh = false;
+
   async function getJSON(url) {
-    const res = await fetch(bust(url));
+    const res = await fetch(bust(url), fresh ? { cache: 'no-store' } : undefined);
     if (!res.ok) throw new Error(url + ' -> ' + res.status);
     return res.json();
   }
@@ -407,6 +412,9 @@
     built.combos = combos && typeof combos === 'object' ? combos : null;
     built.prices = prices && prices.cards && typeof prices.cards === 'object' ? prices : null;
     built.watch = watch && Array.isArray(watch.sets) ? watch : null;
+    // What `cards.json` was built FROM. The edit tray reads it as the stamp: a
+    // figure on this panel is current only when this matches the list on disk.
+    built.listSha = deckDoc.decklist_sha256 || null;
     built.shortList = built.candidates;
     watchSetId = built.watch && built.watch.sets.length ? built.watch.sets[0].id : null;
     gridFocus = 0;
@@ -1086,6 +1094,21 @@
     const byName = new Map((doc.cards || []).map(c => [c.name, c]));
     active.main.forEach(s => { if (byName.has(s.name)) s.card = byName.get(s.name); });
     return doc;
+  }
+
+  /* Re-read the open deck WHOLE, after an edit rewrote its list. `reloadCards`
+   * cannot do this — it refreshes the rows of slots that exist, and an edit adds
+   * and removes slots. Every fetch skips the HTTP cache (`fresh`), because the
+   * bust on `getJSON` is the card map's and an edit does not move it. */
+  async function reloadDeck() {
+    if (!active) return null;
+    fresh = true;
+    try {
+      await select(active.slug);
+    } finally {
+      fresh = false;
+    }
+    return active;
   }
 
   function showOnMap(name) {
@@ -2175,6 +2198,8 @@
         '</div>' +
         '<button class="lens-btn" onclick="Build.fitDeck()">Zoom to the deck</button>' +
       '</div>' +
+      // The edit tray, or the one line saying why there is none (deck-edit.js).
+      (window.DeckEdit ? DeckEdit.trayHtml() : '') +
       candSectionHtml() +
 
       '<div class="deck-section">' +
@@ -2353,7 +2378,11 @@
   // ── Actions ──
 
   async function select(slug) {
-    if (!slug) { active = null; renderPanel(); MM.render(); return; }
+    if (!slug) {
+      active = null;
+      if (window.DeckEdit) DeckEdit.detach();
+      renderPanel(); MM.render(); return;
+    }
     // A DRAFT has no 99 to load, so `loadDeck` would 404 on its `cards.json`.
     // Picking one reopens the new-deck form on it instead — which is what
     // "pick up where you left it" means for a deck that is still a brief.
@@ -2369,8 +2398,11 @@
       if (window.Session && Session.setFormat) Session.setFormat(active.format);
       MM.setStatus(active.entry.deck_name + ' — ' + active.copies + ' cards lit, ' +
                    active.entry.verified + ' verified line(s)');
+      // The edit tray (deck-edit.js): edit, branch or read-only, from the rung.
+      if (window.DeckEdit) DeckEdit.attach(active.entry, active);
     } catch (err) {
       active = null;
+      if (window.DeckEdit) DeckEdit.detach();
       MM.setStatus('Could not load deck: ' + err.message);
     }
     loading = false;
@@ -2849,6 +2881,7 @@
     changePrinting,
     pickPrinting,
     reloadCards,
+    reloadDeck,
     markFromPanel,
     renderGrid,
     // For the card panel: the deck's format (its legality line), whether a NAME is in

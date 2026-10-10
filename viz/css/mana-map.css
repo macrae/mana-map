@@ -1005,3 +1005,52 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .cg-act[data-verdict="watching"].is-on { border-color: #c9a227; color: #ffe08a; }
 .cg-undo { color: #888; }
 @media (prefers-reduced-motion: no-preference) { .cg-tile { transition: border-color 0.12s, opacity 0.12s; } }
+
+/* ── Build's edit tray (deck-edit.js) ─────────────────────────────────────
+ * A bench deck edited in place, or a sleeved one changed through a branch.
+ * Gold is the action; red is a refusal the server wrote, shown verbatim. */
+.de-tray input, .de-tray select { background: #1a1a2e; color: #e0e0e0; border: 1px solid #3a3a5a;
+  border-radius: 4px; padding: 4px 6px; font-size: 0.78rem; }
+.de-tray input:focus, .de-tray select:focus { outline: none; border-color: #c4a747; }
+.de-rows { list-style: none; margin: 4px 0; padding: 0; }
+.de-row { display: flex; align-items: center; gap: 6px; padding: 4px 8px; margin: 3px 0;
+  background: #1a1a2e; border-radius: 3px; font-size: 0.78rem; }
+.de-out { color: #e08a8a; }
+.de-in { color: #8ad08a; }
+.de-qty { width: 3.2em; }
+.de-btn { width: auto; margin: 6px 6px 0 0; padding: 5px 10px; }
+.de-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.de-x { margin: 0 0 0 auto; padding: 1px 7px; color: #888; }
+.de-balance { font-size: 0.75rem; color: #c4a747; margin: 4px 0 8px; }
+.de-actions { display: flex; flex-wrap: wrap; }
+.de-instant { list-style: none; margin: 6px 0; padding: 0; font-size: 0.74rem; color: #bbb; }
+.de-instant li { margin: 2px 0; }
+.de-k { color: #777; display: inline-block; min-width: 7.5em; }
+.de-absent, .de-asof { color: #777; }
+.de-col.is-short { color: #e0a060; }
+.de-preview.is-stale { opacity: 0.55; }
+.de-gf { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin: 6px 0; }
+.de-gf th { color: #777; font-weight: normal; text-align: left; border-bottom: 1px solid #3a3a5a; padding: 2px 3px; }
+.de-gf td { padding: 2px 3px; color: #ccc; white-space: nowrap; }
+.de-gf .de-v-better td { color: #8ad08a; }
+.de-gf .de-v-worse td { color: #e08a8a; }
+.de-call { font-size: 0.76rem; color: #c4a747; margin: 4px 0; }
+.de-blocking, .de-error { color: #e08a8a; font-size: 0.75rem; margin: 4px 0; }
+.de-blocking ul { margin: 2px 0 0 1em; padding: 0; }
+.de-warnings { color: #e0a060; font-size: 0.72rem; margin: 4px 0; padding-left: 1em; }
+.de-notice { color: #8ad08a; font-size: 0.75rem; margin: 4px 0; }
+.de-measuring, .de-stale { color: #c4a747; font-size: 0.75rem; margin: 4px 0; }
+.de-form { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 0.75rem; color: #aaa; }
+.de-form label { display: flex; flex-direction: column; gap: 3px; }
+.de-objective { display: flex; gap: 4px; }
+.de-objective select:first-child { flex: 1; min-width: 0; }
+.de-since { text-transform: none; color: #888; }
+.de-history { margin-top: 10px; font-size: 0.72rem; color: #aaa; }
+.de-history summary { cursor: pointer; color: #888; }
+.de-history ul { list-style: none; padding: 0; margin: 4px 0; }
+.de-history li { margin: 2px 0; }
+.de-h-save { color: #c4a747; }
+.de-h-at { color: #666; }
+.de-card { margin: 6px 0; }
+.de-card-row { display: flex; flex-wrap: wrap; align-items: center; }
+.de-pending { font-size: 0.75rem; color: #c4a747; }

@@ -91,3 +91,25 @@ def test_the_manifest_version_is_not_the_card_map_version():
         "api.js must not reach for the card map's version in code")
     assert re.search(r"const DATA_VERSION\s*=\s*\d+", mm), (
         "mana-map.js no longer declares DATA_VERSION")
+
+
+_WORDS = {"one": 1, "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+          "fifteen": 15, "sixteen": 16, "seventeen": 17}
+
+
+def test_claude_md_counts_index_htmls_busts():
+    """CLAUDE.md names how many busts `index.html` carries ("fourteen busts
+    (thirteen scripts, one stylesheet)"), so a script added without its bust —
+    or a count left behind when one is added — fails here rather than in a
+    reader's head. `deck-edit.js` (2026-10-10) took it from thirteen to fourteen."""
+    page = (VIZ / "index.html").read_text(encoding="utf-8")
+    scripts = re.findall(r'<script src="js/[^"]+\?v=\d+"', page)
+    sheets = re.findall(r'<link rel="stylesheet" href="css/[^"]+\?v=\d+"', page)
+    assert len(_busts(VIZ / "index.html")) == len(scripts) + len(sheets)
+    claude = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+    m = re.search(r"`index\.html`'s (\w+) busts \((\w+) scripts, (\w+) stylesheet\)", claude)
+    assert m, "CLAUDE.md no longer states index.html's bust count"
+    said = tuple(_WORDS.get(w) for w in m.groups())
+    assert said == (len(scripts) + len(sheets), len(scripts), len(sheets)), (
+        f"CLAUDE.md says {m.group(0)!r}; index.html has {len(scripts)} script and "
+        f"{len(sheets)} stylesheet busts")

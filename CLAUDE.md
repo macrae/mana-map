@@ -260,7 +260,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 
 ### The frontend
 
-- **Cache-bust `?v=N` on every script and CSS tag in `viz/index.html` AND `viz/deck.html` after any JS/CSS change**; `index.html`'s thirteen busts (twelve scripts, one stylesheet) move together. Bump `DATA_VERSION` when a consumer would draw a DIFFERENT CONCLUSION from the bytes.
+- **Cache-bust `?v=N` on every script and CSS tag in `viz/index.html` AND `viz/deck.html` after any JS/CSS change**; `index.html`'s fourteen busts (thirteen scripts, one stylesheet) move together. Bump `DATA_VERSION` when a consumer would draw a DIFFERENT CONCLUSION from the bytes.
 - **`viz/` and `data/` must stay top-level siblings**; every fetch is `../data/<file>`. Serve from the repo root.
 - **A renderer kept behind a flag is a renderer nobody is testing.** → `docs/gotchas-viz.md`
 - **Claude Code runs a CACHED copy of the job band, keyed on its version** — an edit to `tools/claude-plugins/job-band` without a `version` bump never runs (the SLA log stayed empty all of 2026-10-07). Bump it, `claude plugin marketplace update mana-map && claude plugin update job-band@mana-map`, restart; `manamap pilot sla-report` warns when the running band is stale.
