@@ -108,10 +108,33 @@ def declared():
             "cards": sorted(pathlib.PurePosixPath(n).stem for n, _ in files)}
 
 
+#: (str(zip path), names) -> ((mtime_ns, size, inode), result). The cardsfolder zip is
+#: ~30k scripts, so an open is the cost; `installed()` runs under every
+#: `cast_check.harness`, three times per `deck-info` (0.8 s of it, 2026-10-10). Keyed
+#: on the file's signature, so an install (`install`) is read fresh.
+_ENGINE_MEMO = {}
+
+
 def _engine_bytes(zip_path, names):
     """The engine's bytes for each declared basename, or None when unreadable."""
+    try:
+        st = zip_path.stat()
+    except OSError:
+        return None
     if not zip_path.is_file():
         return None
+    key = (str(zip_path), tuple(names))
+    sig = (st.st_mtime_ns, st.st_size, st.st_ino)
+    hit = _ENGINE_MEMO.get(key)
+    if hit is not None and hit[0] == sig:
+        return hit[1]
+    got = _engine_bytes_read(zip_path, names)
+    if got is not None:
+        _ENGINE_MEMO[key] = (sig, got)
+    return got
+
+
+def _engine_bytes_read(zip_path, names):
     try:
         zf = zipfile.ZipFile(zip_path)
     except (zipfile.BadZipFile, OSError):
@@ -278,6 +301,7 @@ def install():
                 blob = replace.get(info.filename)
                 out.writestr(info, blob if blob is not None else src.read(info.filename))
     shutil.move(str(tmp), str(CARDSFOLDER))
+    _ENGINE_MEMO.clear()                # the signature moves too; say it outright
     return len(replace)
 
 
@@ -286,6 +310,7 @@ def uninstall():
     if not PRISTINE.is_file():
         return 0
     shutil.copy2(PRISTINE, CARDSFOLDER)
+    _ENGINE_MEMO.clear()                # copy2 keeps PRISTINE's mtime: never trust a sig here
     return 0
 
 

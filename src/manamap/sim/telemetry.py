@@ -97,16 +97,41 @@ def sources():
     return [n for n in PATCHES if (PATCH_DIR / n).is_file()]
 
 
+#: str(jar path) -> ((mtime_ns, size, inode), {entry: sha or None}).
+#: OPENING THE JAR IS THE COST, NOT HASHING A CLASS. Forge's jar holds ~25k entries,
+#: and `ZipFile()` parses the whole central directory before it can read one: 0.19 s
+#: an open. `installed()` asks for seven classes in two jars, `cast_check.harness`
+#: asks for it three times per `deck-info`, and a `deck-info` ran 45 opens — 8.4 of
+#: its 14 s (measured on meren-recursion, 2026-10-10). One open per jar per process,
+#: every registered entry read in it, keyed on the file's signature so a rebuilt jar
+#: (`build`) is re-read rather than answered from the old copy.
+_JAR_MEMO = {}
+
+
 def class_sha(jar_path, entry=CLASS_ENTRY):
     """A class's sha inside a jar, or None when the jar or entry is absent."""
     jar_path = pathlib.Path(jar_path)
+    try:
+        st = jar_path.stat()
+    except OSError:
+        return None
     if not jar_path.is_file():
         return None
+    sig = (st.st_mtime_ns, st.st_size, st.st_ino)
+    hit = _JAR_MEMO.get(str(jar_path))
+    shas = hit[1] if hit is not None and hit[0] == sig else {}
+    if entry in shas:
+        return shas[entry]
+    wanted = {entry, CLASS_ENTRY, *(spec["entry"] for spec in PATCHES.values())} - set(shas)
     try:
         with zipfile.ZipFile(jar_path) as zf:
-            return _sha(zf.read(entry))
+            present = set(zf.namelist())
+            for e in wanted:
+                shas[e] = _sha(zf.read(e)) if e in present else None
     except (zipfile.BadZipFile, KeyError, OSError):
         return None
+    _JAR_MEMO[str(jar_path)] = (sig, shas)
+    return shas[entry]
 
 
 def set_sha(pairs):
@@ -218,6 +243,7 @@ def build(home=None, javac="javac"):
     # primary entries; the siblings ride along.
     subprocess.run(["jar", "uf", str(tmp), "-C", str(work), "."], check=True, capture_output=True, text=True)
     tmp.replace(out)
+    _JAR_MEMO.pop(str(out), None)
     shutil.rmtree(work)
     man = manifest() or {}
     man.setdefault("forge", None)

@@ -174,3 +174,31 @@ def test_the_tracked_manifest_registers_the_source_it_ships_with():
             f"edit {name} -> forge-telemetry --build -> commit the manifest"
         assert reg["patched_shas"] and all(len(x) == 12 for x in reg["patched_shas"])
         assert reg["kind"] == tl.PATCHES[name]["kind"]
+
+
+def test_the_jar_is_opened_once_and_reread_when_it_changes(jars, monkeypatch):
+    """`deck-info` asked for the fingerprint three times and opened Forge's ~25k-entry
+    jar 45 times doing it — 8.4 of its 14 s (2026-10-10). One open per jar per process;
+    a rebuilt jar (a new signature) is read again, never answered from the old copy."""
+    import os
+    home, _ = jars
+    out = _write_patched(home, b"patched bytes")
+    opens = []
+    real = zipfile.ZipFile
+
+    def counting(path, *a, **k):
+        opens.append(str(path))
+        return real(path, *a, **k)
+
+    monkeypatch.setattr(tl.zipfile, "ZipFile", counting)
+    first = tl.installed(home)
+    for _ in range(3):
+        assert tl.installed(home) == first
+    assert opens.count(str(out)) == 1, opens
+    with real(out, "w") as z:
+        z.writestr(tl.CLASS_ENTRY, b"somebody else's bytes, longer")
+    st = out.stat()
+    os.utime(out, ns=(st.st_atime_ns, st.st_mtime_ns + 10**9))
+    with pytest.raises(tl.EngineMismatch):
+        tl.installed(home)
+    assert opens.count(str(out)) == 2
