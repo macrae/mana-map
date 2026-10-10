@@ -1460,7 +1460,39 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(blob)
 
+    def _foreign(self):
+        """A refusal sentence when this request did not come from this machine.
+
+        THE API IS UNAUTHENTICATED, so the browser is the only thing between a
+        web page on the internet and `deck/delete`. A `text/plain` POST is a
+        "simple" request — the browser sends it cross-origin WITHOUT a preflight
+        — and before this gate `do_POST` parsed any body as JSON, so any page
+        the pilot had open could delete a deck. Two checks close it:
+
+        - `Origin`, when present, must be this server. A browser sends it on
+          every cross-origin request; the CLI daemon client sends none.
+        - `Host` must be loopback with our port: the DNS-rebinding case.
+          `evil.example` re-pointed at 127.0.0.1 is same-origin to the browser,
+          but its requests still carry `Host: evil.example:<port>`.
+        """
+        port = self.server.server_address[1]
+        hosts = {f"127.0.0.1:{port}", f"localhost:{port}"}
+        host = (self.headers.get("Host") or "").strip().lower()
+        if host not in hosts:
+            return (f"Host {host or '(none)'!r} is not this server — "
+                    f"the API answers 127.0.0.1:{port} and localhost:{port} only")
+        origin = self.headers.get("Origin")
+        if origin is not None and origin.strip().lower() not in {
+                f"http://{h}" for h in hosts}:
+            return (f"Origin {origin!r} may not call this API — open the page "
+                    f"from http://127.0.0.1:{port} or http://localhost:{port}")
+        return None
+
     def do_GET(self):
+        if self.path.split("?")[0].rstrip("/") == "/api" or self.path.startswith("/api/"):
+            refused = self._foreign()
+            if refused:
+                return self._json(403, {"error": refused})
         if self.path.split("?")[0].rstrip("/") == "/api":
             return self._json(200, {"commands": sorted(ENDPOINTS)})
         if self.path.startswith("/api/"):
@@ -1483,6 +1515,17 @@ class Handler(SimpleHTTPRequestHandler):
     def do_POST(self):
         if not self.path.startswith("/api/"):
             return self.send_error(404)
+        refused = self._foreign()
+        if refused:
+            return self._json(403, {"error": refused})
+        # JSON ONLY. `application/json` is not a CORS-safelisted type, so a
+        # cross-origin page cannot send it without a preflight this server never
+        # answers — the second wall behind `_foreign`.
+        ctype = (self.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+        if ctype != "application/json":
+            return self._json(415, {
+                "error": "POST a JSON body with Content-Type: application/json "
+                         f"(got {ctype or 'none'!r})"})
         name = self.path[len("/api/"):].split("?")[0].rstrip("/")
         if name == "ask/stream":
             return self._ask_stream()
