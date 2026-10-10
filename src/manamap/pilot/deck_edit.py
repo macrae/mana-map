@@ -859,6 +859,12 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
         if before_text is None:
             before_text = saved_text(slug)
         context = deck_context.list_change(slug, before_text=before_text)
+        # `info.json` validates the context and the context reads `info.json`, so
+        # the regen above wrote an info that judged the PRE-refresh context (it read
+        # "CONTEXT.md fails its gate" after an edit and an undo, 2026-10-10). One
+        # more deck-info pass, ~1 s, on decks that have one.
+        if "behind" not in out and (deck_dir(slug) / "info.json").exists():
+            regen.run(echo=echo, slug=slug, include_branches=False, only=("deck-info",))
     out["context"] = context
     out["keeper"] = (context or {}).get("keeper") if (context or {}).get("stale") else None
     out["seconds"] = round(time.time() - began, 1)
