@@ -66,6 +66,8 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #           and strategy DBs, game_state.py, scenario_facts.py
                       # DIAGNOSE: deck_audit.py, deck_status.py, engine_facts.py,
                       #           validate_diagnosis.py, prescribe.py
+                      # EDIT:     deck_edit.py (`edit`, `save-version`: THE ONE writer of a
+                      #           deck's decklist.txt, the undo journal, the rebuild)
                       # LOG:      deck_notes.py (append-only), deck_versions.py,
                       #           deck_state.py (THE ONE lifecycle writer), deck_delete.py
                       # PAGE:     deck_info.py (`--write` -> info.json), poh*.py,
@@ -96,7 +98,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 142 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 144 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -112,6 +114,13 @@ manamap pilot try <slug> --out "A" --in "B" [--out C --in D …] [--each] [--sta
                               # goldfish can SEE of it, what Forge's AI did with it — never a
                               # reason to cut), the keep list, colour sources before/after, the
                               # paired net-change rows, one line. `--stage` writes a branch.
+manamap pilot edit <slug> --swap "A=B" [--add N] [--cut N] [--set N=Q] [--side] [--dry-run]
+                              # a BENCH or BREWING deck, edited in place: one validator (`plan`,
+                              # the same one `try` reads), the final list judged, journalled,
+                              # rebuilt in seconds. `edit <slug> undo|redo|history`. A SLEEVED
+                              # deck is refused with the branch path; archived -> revive.
+manamap pilot save-version <slug> --note "…"   # the edits so far -> ONE git version, only
+                              # the deck's own paths (`git commit --only`), after merge's pass
 manamap pilot deck-branch <slug> new|stage|propose|withdraw|reject|merge …
                               # a candidate 99; `propose <name> --as v1.2.0` accepts it and
                               # waits for cardboard. Decisions go in the append-only ledger.

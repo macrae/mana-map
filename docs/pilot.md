@@ -249,6 +249,13 @@ manamap pilot validate-diagnostic <slug> [--branch N]
                                         #   rather than zeroed
 manamap pilot try <slug> --out A --in B [--out C --in D …] [--branch N] [--each] [--stage NAME] [--json]
                                                                # THE SWAP LOOP: one screen, nothing written; --stage after
+                                        #   also --add N / --cut N / --set N=Q [--side]: the
+                                        #   same validator `edit` uses (`deck_edit.plan`)
+manamap pilot edit <slug> [--add N]… [--cut N]… [--swap OUT=IN]… [--set N=Q]… [--side] [--note …]
+                          [--dry-run] [--no-chain] [--rebuild] [--json]
+                                        #   a BENCH or BREWING deck edited IN PLACE, rebuilt
+manamap pilot edit <slug> undo|redo|history [--json]           # the journal, replayed
+manamap pilot save-version <slug> --note "…" [--json]          # the edits -> ONE git version
 manamap pilot validate-protected <slug>                        # protected.json: the pilot's keep list, gated
 manamap pilot net-change <slug> --branch N [--write] [--json]
                                         #   THE REPORT A PURCHASE RESTS ON: THE CHANGE
@@ -711,6 +718,72 @@ build's must-include set, the `candidates` auto-cut and the diagnosis/prescripti
 gates all refuse to cut a card it names; `merge` folds the refusal into `blocking`, so
 `--force` cannot reach it. `validate-protected <slug>` is the gate: every card in the 99,
 not the commander, with a why. Born of edgar-vampires/draw-v1 cutting Vish Kal unread.
+
+`try` also takes `--add N`, `--cut N` and `--set NAME=COPIES` (`--side` for a 60-card
+sideboard) beside its swap pairs. All of them go through `deck_edit.plan`, so `try`, the
+preview and `edit` refuse exactly the same things; `--stage` still writes swaps only.
+`try_swap.preview(slug, ops)` is the JSON form the Build tray reads: an instant tier
+(blocking, warnings, keep-list hits, size and curve before and after, colour sources
+from `mana_fit.shortfall`, combos gained and lost, role counts that moved, the price
+delta from the deck's dated `prices.json` with its `as_of`, never a live lookup) and, on
+a Commander deck only, the goldfish tier: the paired rows with `ci95_diff` and Holm, the
+trust line and the board-quality caveat. A 60-card deck reads `{"absent": "not modelled
+for Modern"}`. The candidate's rows are cached in `data/cache/try/` on the champion's
+key (cards.json bytes, the targets' bytes, `goldfish.model_version()`, the harness,
+iterations, seed), the edit's copy diff and the Scryfall dump's size and mtime.
+
+## Editing a bench deck in place (`edit`, `save-version`, 2026-10-10)
+
+Bench and brewing decks are where the pilot experiments, so an edit lands STRAIGHT ON
+THE DECK: `manamap pilot edit <slug> --swap "A=B" --add C --cut D --set "Forest=12"`.
+
+- **The guard** is `promote.stage`: `dev` and `bench` pass. A SLEEVED deck is refused
+  with the branch path (`deck-branch <slug> new`, or `try … --stage`) — its list is
+  cardboard. An archived deck (broken down, retired, superseded) is refused with
+  `deck-state <slug> revive`.
+- **One validator.** `deck_edit.plan` folds every op into one change and judges the FINAL
+  list, so two cuts and two adds are one legal edit. Names resolve through `deck_branch`
+  (either DFC face, any case, to the corpus spelling); the commander cannot be cut;
+  size, copies, sideboard and unknown names are `check_in.analyze` per the deck's
+  `FormatSpec`; the keep list reads the COPY diff (a `set X=0` is a cut); identity and
+  legality are `validate_deck.validate` — blocking for a card the edit adds, a warning
+  for one already in the list. `--side` exists only where `sideboard_size > 0`.
+  Changing the commander is not an edit: that is a new deck.
+- **One writer.** `deck_edit.write_list` is the only code that writes a deck's main
+  `decklist.txt`: an fcntl lock on `.edits.lock`, an atomic temp-then-replace, the
+  `.txt.bak` `deck_context.list_change` reads, and a journal line. `check-in`,
+  `--set-printing` (main list), `deck-version restore`, `deck-branch merge` and
+  `build --overwrite` all write through it with their own guards — so each can be undone.
+- **The journal** is `data/decks/<slug>/edits.jsonl` (gitignored; git holds the
+  versions): `{v, id, kind: edit|undo|redo|external|save, at, source, note, ops, diff,
+  before_sha, after_sha, before, after, of?, commit?, version?}`. Undo and redo REPLAY the
+  file under the lock on every call, so the CLI, `serve` and Jarvis agree. A new edit
+  clears redo; undo may go past a save. A list that moved outside the editor gets an
+  `external` barrier that undo stops at ("history before that is in git"); an
+  `expect_sha` that no longer matches is refused ("the list moved since this page
+  loaded — reload"). At 500 lines the journal is compacted to the same stacks (undo
+  capped at 250), the old file kept as `edits.jsonl.1`.
+- **The rebuild** (`deck_edit.rebuild`, skipped by `--no-chain`, re-run alone by
+  `--rebuild`): `fetch-deck` → `goldfish` + `mana-analysis` (`check_in.chain_plan`; a
+  60-card deck skips the goldfish and says why) → `regen.run(slug=…,
+  include_branches=False, skip=("goldfish", "mana-analysis", "context"))`, refreshing
+  only artifacts that exist → `try`'s champion reading warmed → `deck_context.list_change(
+  before_text=<the last save, else git HEAD>)`, which refreshes the context's generated
+  blocks and returns the Keeper line without running it. It holds `.rebuild.lock`, and
+  runs again if an edit landed while it ran. Offline, the edit stays written and the
+  result says `cards.json is behind the list — manamap pilot edit <slug> --rebuild when
+  online`. `deck-branch merge` now passes the same `skip`, so it no longer runs the
+  goldfish twice.
+- **`save-version <slug> --note "…"`** refuses while `.rebuild.lock` is held or git is
+  mid-merge/rebase/cherry-pick; runs merge's consistency tail without the decisions
+  ledger (regen with branches, `deck-map` and `build-poh` where they exist,
+  `build-index`, the post-merge validators); refreshes `net_change.json` and `info.json`
+  on other decks whose branches want a card that moved; then commits exactly
+  `git ls-files -m -o -d` of the deck's directory, `index.json`, its handbook and those
+  decks — `git add -A -- <paths>` and `git commit --only -- <paths>`, so anything else
+  staged stays staged and out. The message is `<deck name>: <note>` with `+in … / −out …`
+  against HEAD, and carries no attribution trailer. It returns the version
+  (`deck_versions.report`), the paths and the Keeper line, and journals a `save`.
 
 ## Buy list (`buy-list`, 2026-10-09)
 

@@ -220,6 +220,12 @@ PILOT_STEPS = [
     ("try", "manamap.pilot.try_swap",
      "A swap idea to an answer in under two minutes: the cards, the keep list, the mana, "
      "the goldfish rows and one line — nothing written unless --stage"),
+    ("edit", "manamap.pilot.deck_edit",
+     "Edit a bench or brewing deck IN PLACE: --add/--cut/--swap OUT=IN/--set N=Q, validated as one "
+     "change, journalled for undo|redo|history, then rebuilt (a sleeved deck is refused: branch it)"),
+    ("save-version", "manamap.pilot.deck_edit",
+     "Commit a bench deck's accumulated edits as ONE git version with a note — only the deck's "
+     "own paths (git commit --only), after merge's consistency pass"),
     ("net-change", "manamap.pilot.net_change",
      "What a branch costs, what it buys, and whether it met its objective"),
     ("calibrate", "manamap.pilot.calibrate",
@@ -332,7 +338,7 @@ _DECK_COMMANDS = {
     "build", "validate-brief", "promote", "demote",
     "deck-branch", "buy-list", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
-    "validate-diagnostic", "try", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
+    "validate-diagnostic", "try", "edit", "save-version", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
     "sim-boards", "validate-lift", "sim-findings", "validate-sim-findings", "merge-sim-findings",
 }
 
@@ -693,8 +699,43 @@ def add_pilot_parser(subparsers):
                              help="also measure every swap alone, to see which one moves what")
             cmd.add_argument("--stage", default=None, metavar="NAME",
                              help="after the screen, write the swaps to this branch (opened if new)")
+            cmd.add_argument("--add", action="append", metavar="CARD",
+                             help="a card going in with nothing coming out (repeat) — the same "
+                                  "rules `edit` applies, so a lone add to a Commander 100 is refused")
+            cmd.add_argument("--cut", action="append", metavar="CARD",
+                             help="a card coming out with nothing going in (repeat)")
+            cmd.add_argument("--set", action="append", metavar="NAME=COPIES",
+                             help="set a card's copy count (0 cuts it)")
+            cmd.add_argument("--side", action="store_true",
+                             help="--add/--cut/--set act on the sideboard (60-card formats)")
             cmd.add_argument("--iterations", type=int, default=None)
             cmd.add_argument("--seed", type=int, default=None)
+            cmd.add_argument("--json", action="store_true")
+        if name == "edit":
+            cmd.add_argument("action", nargs="?", default=None,
+                             choices=("undo", "redo", "history"),
+                             help="undo / redo the last change, or list the journal")
+            cmd.add_argument("--add", action="append", metavar="CARD",
+                             help="one copy in (repeat)")
+            cmd.add_argument("--cut", action="append", metavar="CARD",
+                             help="one copy out (repeat)")
+            cmd.add_argument("--swap", action="append", metavar="OUT=IN",
+                             help="one copy of OUT out, one of IN in (repeat)")
+            cmd.add_argument("--set", action="append", metavar="NAME=COPIES",
+                             help="a card's copy count (0 cuts it)")
+            cmd.add_argument("--side", action="store_true",
+                             help="the ops act on the sideboard (60-card formats only)")
+            cmd.add_argument("--note", default=None, help="why — kept in the journal")
+            cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
+                             help="validate and show the change; write nothing")
+            cmd.add_argument("--no-chain", action="store_true", dest="no_chain",
+                             help="write the list only; skip the rebuild")
+            cmd.add_argument("--rebuild", action="store_true",
+                             help="re-run the rebuild (alone: after an offline edit)")
+            cmd.add_argument("--json", action="store_true")
+        if name == "save-version":
+            cmd.add_argument("--note", required=True,
+                             help="the version's subject line: what changed and why")
             cmd.add_argument("--json", action="store_true")
         if name == "net-change":
             cmd.add_argument("--iterations", type=int, default=None)
