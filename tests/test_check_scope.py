@@ -74,7 +74,24 @@ def test_python_runs_unit_isolated_and_regression_and_no_browser():
     assert plan["scope"] == "python"
     assert plan["tiers"] == ["unit", "unit-isolated", "regression"]
     assert cs.commands(plan) == [["make", "test"], ["make", "test-unit-isolated"],
-                                 ["make", "regression"]]
+                                 ["make", "regression-prepush"]]
+
+
+def test_prepush_leaves_the_fleet_regen_to_ci_and_prepush_full_runs_it():
+    """The fleet regen is CI's rebuild-and-compare run a second time, serial, for
+    7-15 minutes; a scoped push skips it. Asking for everything still runs it."""
+    plan = cs.classify(["src/manamap/pilot/net_change.py"])
+    assert ["make", "regression-prepush"] in cs.commands(plan)
+    assert cs.pytest_runs(plan) == 3
+    everything = {**plan, "everything": True}
+    assert ["make", "regression"] in cs.commands(everything)
+    assert cs.pytest_runs(everything) == 4
+    recipe = (cs.REPO / "Makefile").read_text()
+    target = re.search(r"^regression-prepush:.*\n((?:\t.*\n)+)", recipe, re.M)
+    assert target and "REGRESSION_PARALLEL" in target.group(1)
+    assert "REGRESSION_SERIAL" not in target.group(1)
+    ci = (cs.REPO / ".github" / "workflows" / "test.yml").read_text()
+    assert "make regression " in ci or "make regression\n" in ci, "CI must still run the regen"
 
 
 def test_fleet_data_runs_the_regression_tier():
@@ -112,11 +129,11 @@ def test_full_is_everything_serial_by_default_and_prepush_full_runs_it(monkeypat
     monkeypatch.delenv(cs.PAIR_ENV, raising=False)
     plan = cs.classify(["Makefile"])
     assert cs.steps(plan) == [[["make", "test"]], [["make", "test-unit-isolated"]],
-                              [["make", "regression"]], [["make", "test-browser"]]]
-    assert cs.pytest_runs(plan) == 6
+                              [["make", "regression-prepush"]], [["make", "test-browser"]]]
+    assert cs.pytest_runs(plan) == 5
     # The pair is opt-in: measured once, it cost a flake for four minutes.
     monkeypatch.setenv(cs.PAIR_ENV, "1")
-    assert cs.steps(plan)[-1] == [["make", "regression"],
+    assert cs.steps(plan)[-1] == [["make", "regression-prepush"],
                                   ["make", "test-browser", f"BROWSER_WORKERS={cs.BROWSER_WORKERS_PAIRED}"]]
     recipe = (cs.REPO / "Makefile").read_text()
     assert re.search(r"^prepush-full:.*\n\t.*manamap\.check_scope full", recipe, re.M)
@@ -248,7 +265,8 @@ def test_a_full_run_launches_the_pair_together_when_asked_and_the_rest_one_at_a_
                         lambda cmd, cwd=None: (ran.append(cmd), type("R", (), {"returncode": 0}))[1])
     assert cs._run(cs.classify(["Makefile"])) == 0
     assert ran == [["make", "test"], ["make", "test-unit-isolated"]]
-    assert launched == [["make", "regression"], ["make", "test-browser", "BROWSER_WORKERS=2"]]
+    assert launched == [["make", "regression-prepush"],
+                        ["make", "test-browser", "BROWSER_WORKERS=2"]]
 
 
 def test_a_missing_executable_fails_with_a_sentence(monkeypatch, capsys):

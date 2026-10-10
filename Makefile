@@ -89,6 +89,13 @@ regression:  ## THE REGRESSION TIER: the tracked fleet + corpus, every producer 
 	$(PYTEST) $(REGRESSION_PARALLEL) $(PYTEST_ARGS)
 	$(PYTEST) $(REGRESSION_SERIAL) $(PYTEST_ARGS)
 
+# What `make prepush` runs: the parallel half alone. The fleet regen (~7-15 min,
+# serial) is the same rebuild-and-compare CI runs on every push (`make regression`,
+# then `make manuals` + `git diff --exit-code`), so a local push no longer waits on
+# it (2026-10-09, cycle time). `make regression` and `prepush-full` still run it.
+regression-prepush:  ## the regression tier WITHOUT the fleet regen (CI runs that on every push)
+	$(PYTEST) $(REGRESSION_PARALLEL) $(PYTEST_ARGS)
+
 integration:  ## THE INTEGRATION TIER: browser + Forge + the pages rebuild byte-identically
 	$(MAKE) test-browser
 	$(PYTEST) -m "integration and not browser" -n0 $(PYTEST_ARGS)

@@ -264,7 +264,8 @@ def tier_command(tier, plan, paired=False):
     if tier == "unit-isolated":
         return ["make", "test-unit-isolated"]
     if tier == "regression":
-        return ["make", "regression"]
+        # The fleet regen is left to CI unless everything was asked for.
+        return ["make", "regression" if plan.get("everything") else "regression-prepush"]
     if tier == "browser":
         return ["make", "test-browser"] + (
             [f"BROWSER_WORKERS={BROWSER_WORKERS_PAIRED}"] if paired else [])
@@ -304,7 +305,10 @@ def commands(plan):
 
 
 def pytest_runs(plan):
-    return sum(PYTEST_RUNS[t] for t in plan_tiers(plan))
+    tiers = plan_tiers(plan)
+    # `regression-prepush` is one pytest run; `make regression` is two.
+    skipped_regen = "regression" in tiers and not plan.get("everything")
+    return sum(PYTEST_RUNS[t] for t in tiers) - skipped_regen
 
 
 def _finished_children(job_id, seen=None):
@@ -419,7 +423,8 @@ def main(argv=None):
             raise SystemExit(f"check-deck needs deck slugs; unknown: {unknown or '(none given)'}")
         return run({"scope": "decks", "decks": slugs, "why": f"asked for {', '.join(slugs)}"})
     if cmd == "full":
-        return run(_plan("full", {}, [], "asked for everything (make prepush-full)"))
+        return run({**_plan("full", {}, [], "asked for everything (make prepush-full)"),
+                    "everything": True})
     plan = classify(changed_paths(base))
     if cmd == "plan":
         print(json.dumps(_printable(plan), indent=1))

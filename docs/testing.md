@@ -37,12 +37,18 @@ tiers those areas can break:
 |---|---|---|---|
 | **docs** | `docs/**`, `README.md`, `CLAUDE.md`, any `*.md` | the doc guards (`test_docs_counts`, `test_docs_section_count`) | 10 s |
 | **decks** | `data/decks/<slug>/**`, `manuals/p/<slug>.html`, the manifest | that deck's artifact tests (`check_scope.DECK_TESTS`, other decks deselected, the fleet regen excluded) + the doc guards | 1 min |
-| **data** | the rest of `data/` — corpus artifacts, pods, overrides | the regression tier | 7 min |
+| **data** | the rest of `data/` — corpus artifacts, pods, overrides | the regression tier, without the fleet regen | 7 min |
 | **viz** | `viz/**`, `tests/test_viz_*.py`, `tests/conftest_viz.py` | the unit tier (the JS parse and cache-bust tests live there) + `make test-browser`; never regression or the regen | 8 min |
 | **agents** | `.claude/**` — charters, skills, settings | the unit tier + the doc guards | 1 min |
 | **plugin** | `tools/claude-plugins/**` | `claude plugin test tools/claude-plugins/job-band` (26 tests) | 5 s |
-| **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + its isolation proof + regression | 10 min |
-| **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | everything: unit, isolated, regression ∥ browser | 15 min |
+| **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + its isolation proof + regression, without the fleet regen | 10 min |
+| **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | unit, isolated, regression without the fleet regen, browser | 15 min |
+
+**The fleet regen is CI's, not the push's** (2026-10-09). Every scope runs
+`make regression-prepush` — the regression tier's parallel half — and leaves
+`test_the_fleet_regenerates_byte_identically` (marker `regen`, 7-15 min serial) to CI,
+which runs it on every push beside `make manuals` and `git diff --exit-code`. A local
+push paid for that check twice. `make regression` and `make prepush-full` still run it.
 
 A mixed diff is the union (`python+viz` is the full set; a decklist beside a pilot
 edit is `python`, since the regression tier already holds the deck checks). The
