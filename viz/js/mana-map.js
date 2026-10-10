@@ -2887,7 +2887,10 @@
       // ?deck=<slug> is the map's first inbound deep link — the dossier and the
       // magazine's Back Page both use it. Honour it by entering the Lens, not by
       // dropping the reader on an unfiltered map with a query string they can't see.
-      if (wantedDeck || wantedDraft) {
+      // `?mode=build` alone opens Build with the deck picker showing. It set
+      // `currentMode` above, but nothing else called `setMode('build')`, so the
+      // page sat in Build's name with no Build chrome and no picker.
+      if (wantedDeck || wantedDraft || currentMode === 'build') {
         // `?deck=<slug>` is an inbound contract: the dossier and every published manual
         // link to it. Deck Lens and Build Deck are one mode now, so it lands in Build.
         document.getElementById('modeSelect').value = 'build';

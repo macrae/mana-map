@@ -89,17 +89,17 @@ def _deck_groups(got):
 
 
 def test_build_lists_only_workable_decks_grouped_by_rung(browser, viz_server):
-    # Entered the way the mode select does — `?mode=build` alone sets the mode
-    # without entering it (only `?deck=`/`?draft=` call `setMode('build')`).
-    page = _open(browser, viz_server, "?mode=explore")
+    # `?mode=build` ALONE enters Build with the picker showing (2026-10-10).
+    # It used to set the mode's name without entering it — only `?deck=` and
+    # `?draft=` called `setMode('build')` — so this test entered by hand.
+    page = _open(browser, viz_server, "?mode=build")
     try:
-        page.wait_for_function("() => window.MM && MM.allData && MM.allData.length > 0",
-                               timeout=BOOT_TIMEOUT_MS)
-        page.evaluate("""() => { document.getElementById('modeSelect').value = 'build';
-                                 MM.setMode('build'); }""")
         page.wait_for_function(
-            "() => document.querySelector('#deckLensSelect optgroup')",
+            "() => document.querySelector('#deckPanel.open #deckLensSelect optgroup')",
             timeout=BOOT_TIMEOUT_MS)
+        assert page.evaluate("() => [MM.mode, document.getElementById('modeSelect').value]") \
+            == ["build", "build"]
+        assert page.evaluate("() => document.getElementById('deckLensSelect').value") == ""
         got = _groups(page, "#deckLensSelect")
         assert _deck_groups(got) == WORKABLE, got
         assert [g for g in got["order"] if g in WORKABLE] == list(WORKABLE), got["order"]
