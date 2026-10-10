@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import base64
 import json
+import re
 
 import pytest
 
@@ -166,7 +167,9 @@ def test_legality_is_one_commander_line(page):
     }""")
     assert r["facts"] is not None
     assert r["facts"].count("Commander:") == 1 and "Commander: legal" in r["facts"], r["facts"]
-    assert "EDHREC #9,493" in r["facts"], r["facts"]
+    # The rank itself moves with every EDHREC refresh (#9,493 -> #9,437, 2026-10-10);
+    # the line's SHAPE is what this panel promises.
+    assert re.search(r"EDHREC #[\d,]+", r["facts"]), r["facts"]
     assert "Identity R" in r["facts"], r["facts"]
     assert r["moreOpen"] is False, "the other formats are not collapsed"
     assert r["badges"] == 7 and r["badgesFolded"], r
@@ -203,14 +206,24 @@ def test_obsolescence_appears_once_under_its_button(page):
     }""")
     assert r["n"] == 1 and r["tag"] == "DETAILS" and r["open"] is False, r
     assert r["follows"], "the comparison is not directly under the relation buttons"
-    assert r["button"] == "2" and r["items"] == 2, r
-    assert "Compare the 2" in r["summary"]
+    # The count is the index's, not a constant: it read 2 until the 2026-10-10
+    # refresh re-scored the corpus and left 1. The browser's table caps at
+    # NEIGHBOURS_K_OBSOLETE.
+    from manamap import config
+    entry = json.loads((config.DATA_DIR / "obsolescence_index.json").read_text())[
+        "The Elder Dragon War"]
+    n = min(len(entry["compare_with"]), config.NEIGHBOURS_K_OBSOLETE)
+    assert n >= 1, "the fixture card has no outclassed-by entry left to test"
+    assert r["button"] == str(n) and r["items"] == n, (n, r)
+    assert f"Compare the {n}" in r["summary"] or (n == 1 and "Compare" in r["summary"]), r["summary"]
     assert r["strength"], "the strength the comparison uniquely carries is gone"
     assert "Compare with" not in r["html"], "the separate Compare-with box is back"
     # It opens with a real click on its summary.
     page.click("#detailInner .obsolescence-section > summary")
     assert page.evaluate("() => document.querySelector('#detailInner .obsolescence-section').open")
-    assert "The Misty Mountains Cold" in page.inner_text("#detailInner .obsolescence-section")
+    first = entry["compare_with"][0]
+    first = first["name"] if isinstance(first, dict) else first
+    assert first in page.inner_text("#detailInner .obsolescence-section"), first
     assert page.js_errors == []
 
 

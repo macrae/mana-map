@@ -8922,15 +8922,22 @@ def test_the_curate_set_picker_survives_a_missing_set_catalogue(browser, viz_ser
         page.close()
 
 
-def test_the_real_index_offers_reality_fracture_newest_first(browser, viz_server):
+def test_the_real_index_offers_the_newest_set_first(browser, viz_server):
     """AGAINST THE REAL ARTIFACTS, so it waits on the refresh that writes them.
-    Skips until `data/sets.json` exists; after it, FRA must be offered by name
-    near the top of the atlas picker, and highlighting it must leave the point
-    count alone."""
+    The newest sizeable set in `sets.json` must be offered by name near the top of
+    the atlas picker, and highlighting it must leave the point count alone.
+
+    It named Reality Fracture until the 2026-10-10 refresh brought in Star Trek and
+    Darkhold Destiny previews; the newest set is read from the data now, so a
+    refresh moves the expectation with it."""
+    import json
+
     from manamap.config import DATA_DIR
 
     if not (DATA_DIR / "sets.json").exists():
         pytest.skip("data/sets.json not built yet — run `manamap viz-index`")
+    sets = json.loads((DATA_DIR / "sets.json").read_text())
+    code, newest = next((c, s) for c, s in sets.items() if s["count"] >= 50)
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     try:
         page.goto(f"{viz_server}/viz/index.html?mode=explore")
@@ -8939,11 +8946,12 @@ def test_the_real_index_offers_reality_fracture_newest_first(browser, viz_server
             "      && MM.mapRenderer && MM.mapRenderer.getCamera() !== null",
             timeout=BOOT_TIMEOUT_MS)
         before = page.evaluate(_ATLAS_INK)
-        focus = page.evaluate("() => MM.setPrintFocus('fra', '', '')")
-        assert focus and focus["count"] > 100, focus
+        focus = page.evaluate(f"() => MM.setPrintFocus({code!r}, '', '')")
+        assert focus and focus["count"] >= 50, focus
         options = page.eval_on_selector_all(
             "#setSelect option", "os => os.slice(0, 8).map(o => o.textContent)")
-        assert any(o.startswith("Reality Fracture (FRA)") for o in options), options
+        label = f"{newest['name']} ({code.upper()})"
+        assert any(o.startswith(label) for o in options), (label, options)
         assert page.evaluate(_ATLAS_INK)["total"] == before["total"]
     finally:
         page.close()
