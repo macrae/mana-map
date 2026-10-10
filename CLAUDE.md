@@ -21,8 +21,8 @@ deterministic builder, `deck-audit`'s 16 cited axes, `card-search` over the corp
 **PRD v2 (2026-10-07) is replacing the engine model, the handbook and the dossier** with one
 living **Deck Context** per deck (`data/decks/<slug>/CONTEXT.md`, `docs/deck-context.md`) and
 **Jarvis** (`/jarvis`), the one entry point that answers from it or routes to a small roster of
-sub-agents with response-time targets. **Deck questions go through `/jarvis`.** Phase 1 is in;
-nothing old is deleted until every deck's context is approved.
+sub-agents with response-time targets. **Deck questions go through `/jarvis`.** Everything but
+the deletions is in (2026-10-09); nothing old is deleted until every deck's context is approved.
 
 **Six pages over one data layer**: the landing page (`viz/workbench.html`), the card
 atlas (`viz/index.html`), the deck page (`viz/deck.html?deck=<slug>`), the branch workbench
