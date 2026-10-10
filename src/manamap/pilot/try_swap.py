@@ -33,7 +33,7 @@ import hashlib
 import json
 
 from manamap import config
-from manamap.pilot import deck_branch, check_in, protected
+from manamap.pilot import deck_branch, protected
 from manamap.pilot.common import deck_dir, deck_file, load_deck_cards, load_json
 
 CACHE = config.DATA_DIR / "cache" / "try"
@@ -397,6 +397,8 @@ def run(slug, swaps=None, branch=None, iterations=None, seed=None, each=False, o
         trust += f"; {note}"
     per_swap = []
     if each and len(rows) > 1 and swaps:
+        # The champion's reading, from the same cache `compare` filled.
+        a, _ = champion_reading(slug, branch, it, sd)
         for (o, i) in swaps:
             d1, _, _, _ = apply_swaps(slug, branch, [(o, i)])
             r1 = diagnostic.run_on(d1, slug, branch=branch, iterations=it, seed=sd, quiet=True,

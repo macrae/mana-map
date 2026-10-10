@@ -274,7 +274,7 @@ def plan(slug, ops, branch=None):
     the same error on a card already in the list is a warning — a ban
     announced last week should not make every edit to the deck impossible.
     """
-    from manamap.pilot import check_in, deck_branch, protected, validate_deck
+    from manamap.pilot import check_in, deck_branch, protected
 
     ops = [normalize_op(o) for o in ops]
     spec = formats.for_deck(slug, branch)

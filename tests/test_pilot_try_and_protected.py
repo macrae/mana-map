@@ -189,3 +189,20 @@ def test_align_keeps_shared_cards_in_their_slots():
     base = [{"name": n} for n in ("A", "B", "C", "D")]
     cand = [{"name": n} for n in ("A", "C", "D", "Z")]       # B out, Z in
     assert [c["name"] for c in diagnostic.align(base, cand)] == ["A", "Z", "C", "D"]
+
+
+@pytest.mark.skipif(not (config.DECKS_DIR / "meren-recursion" / "cards.json").exists(),
+                    reason="requires meren-recursion")
+@requires_data
+def test_each_reads_every_swap_against_the_champion(tmp_path, monkeypatch):
+    """`try --each` measures each swap alone against the champion. The Phase 2
+    refactor renamed the champion's reading and left this path pointing at a
+    name that no longer existed (NameError on the first `--each`); nothing ran it."""
+    from manamap.pilot import try_swap as ts
+    monkeypatch.setattr(ts, "CACHE", tmp_path)
+    out = ts.run("meren-recursion",
+                 [("Deadly Rollick", "Putrefy"), ("Dose of Dawnglow", "Victimize")],
+                 iterations=200, each=True)
+    per = out["per_swap"]
+    assert [(p["out"], p["in"]) for p in per] == [("Deadly Rollick", "Putrefy"),
+                                                  ("Dose of Dawnglow", "Victimize")]
