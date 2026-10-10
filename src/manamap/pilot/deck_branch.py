@@ -258,7 +258,11 @@ def _deck_holders(name, skip):
     for d in sorted(_common.decks_root().iterdir()):
         if not d.is_dir() or d.name == skip:
             continue
-        doc = load_json(d / "cards.json")
+        # Memoized on the file's signature: `deck-info` asks this once per card
+        # that moved, and re-parsed every deck's cards.json each time (29 x 16
+        # parses in one compose, 2026-10-10). Read-only here.
+        p = d / "cards.json"
+        doc = _common.load_json_memo(p) if p.exists() else None
         if not doc:
             continue
         # Either face, for the same reason `_canonical` exists: the holder's

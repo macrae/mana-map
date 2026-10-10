@@ -81,12 +81,19 @@ def _rows():
     and a promo `not_legal` row sorting first once failed two decks on their own
     tracked lists.
     """
+    from manamap.config import OUTPUT_CSV_PATH
     from manamap.pilot.build_deck import load_frame
+    from manamap.pilot.common import mtime_memo
 
-    rows = {}
-    for rec in load_frame().to_dict("records"):
-        rows.setdefault(rec["name"], rec)
-    return rows
+    # ONCE PER CORPUS, like the frame it is read from: `deck-info` validates the
+    # brief twice per compose and `to_dict` over 35k rows is 0.24 s a time
+    # (2026-10-10). Read-only, like every corpus view.
+    def build():
+        rows = {}
+        for rec in load_frame().to_dict("records"):
+            rows.setdefault(rec["name"], rec)
+        return rows
+    return mtime_memo(OUTPUT_CSV_PATH, "corpus:first-printing-rows", build)
 
 
 def validate(doc, slug, rows=None, names=None, check_themes=False):

@@ -872,6 +872,25 @@ def _run_tasks(jobs, workers):
         return [_task(j) for j in jobs]
 
 
+def _prewarm():
+    """Load the CORPUS-level views the tail of a rebuild composes from, in this
+    process, while the pool works — the parent is otherwise idle for ~9 s, and
+    the context refresh paid ~1.5 s of cold imports and corpus parses after it
+    (2026-10-10). Only files no rebuild stage writes: cards.csv and the global
+    graphs, each behind its `mtime_memo` / `load_json_memo`. A failure here is
+    a cold cache, never an error."""
+    try:
+        from manamap.pilot import (card_pool, common as _c, deck_context,  # noqa: F401
+                                   deck_info, deck_status, validate_brief)
+        card_pool.load_pool()
+        validate_brief._rows()
+        _c.load_card_roles()
+        _c.load_combo_details()
+        _c.load_synergy_graph()
+    except Exception:                                      # noqa: BLE001 - optional
+        pass
+
+
 def rebuild(slug, *, before_text=None, warm=True, echo=None):
     """Re-derive what an edit made stale, in dependency order, this deck only.
 
@@ -941,7 +960,15 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
             progress = Progress(f"rebuild {slug}", total=len(jobs), unit="stages").start()
             progress.set(detail=", ".join(labels))
             t_mid = time.time()
+            warmer = None
+            if REBUILD_JOBS > 1 and len(jobs) > 1:
+                import threading
+                warmer = threading.Thread(target=_prewarm, name="rebuild-prewarm",
+                                          daemon=True)
+                warmer.start()
             results = _run_tasks(jobs, REBUILD_JOBS)
+            if warmer is not None:
+                warmer.join()
             progress.advance(len(jobs), failed=sum(r["error"] is not None for r in results))
             progress.finish(ok=all(r["error"] is None for r in results))
             for label, r in zip(labels, results):
