@@ -222,8 +222,10 @@ def test_deck_html_busts_its_own_assets():
     # page has to know which one it is being. `page-state` joined with the beacon
     # that tells Jarvis which deck is open (PRD v2 Step 7).
     # `context-md` joined with the Deck Context panel (PRD v2), which renders through it.
+    # `decklist` joined with "Copy for Moxfield": on a static host the page parses
+    # `decklist.txt` and renders it as `deck-export` would.
     assert set(busts) == {"deck-view", "context-md", "tokens", "shell", "session", "api",
-                          "page-state"}, busts
+                          "page-state", "decklist"}, busts
     assert all(int(v) > 0 for v in busts.values())
 
 
