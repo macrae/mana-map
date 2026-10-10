@@ -417,6 +417,7 @@ def unflag_candidates():
     """Every `RemoveDeck:All` non-land card in a LIVE deck that `unflag.txt` does not
     name — the sweep behind the list. `[(slug, card name, stem)]`."""
     import json
+    from manamap.pilot import formats
     from manamap.pilot.common import deck_is_apart
     from manamap.sim import forge_cards
     listed = set(unflag_list())
@@ -425,7 +426,10 @@ def unflag_candidates():
         cj = d / "cards.json"
         if not cj.is_file() or deck_is_apart(d.name):
             continue
-        for c in json.loads(cj.read_text(encoding="utf-8")).get("cards", []):
+        doc = json.loads(cj.read_text(encoding="utf-8"))
+        if not formats.for_doc(doc).commanders:
+            continue        # Forge is Commander-only: a 60-card deck is never seated
+        for c in doc.get("cards", []):
             if forge_cards.ai_flag(c["name"]) != "All" or "Land" in (c.get("type_line") or ""):
                 continue
             stem = forge_cards.stem(c["name"])

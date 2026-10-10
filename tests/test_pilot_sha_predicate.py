@@ -262,6 +262,11 @@ _NOT_A_DECK_FILE = {
     "manuals/p/<slug>.html",
 }
 
+#: Written only when the pilot acts — `deck-link` records where a deck was
+#: published — so a fleet with no linked deck is correct, not a dead registry
+#: row. Its writer is proven in `tests/test_pilot_deck_link.py`.
+_WRITTEN_ONLY_ON_REQUEST = {"links.json"}
+
 
 def test_every_artifact_the_gate_refuses_on_is_one_the_status_board_shows():
     """A DASHBOARD THAT IS GREEN WHILE THE GATE IS RED IS WORSE THAN NO
@@ -327,7 +332,7 @@ def test_the_registries_name_artifacts_that_exist_on_a_real_deck():
              | set(deck_status.VALIDATED)
              | {row[1] for row in regen.STAGES}
              | {a for rows in promote.GATES.values() for (_l, a, _w) in rows})
-    named -= _NOT_A_DECK_FILE
+    named -= _NOT_A_DECK_FILE | _WRITTEN_ONLY_ON_REQUEST
 
     # BRANCHES COUNT. `branch.json` and `net_change.json` live only under
     # `branches/<name>/`, never at the deck root — the first draft of this
