@@ -2803,12 +2803,24 @@ def test_the_cardbert_map_draws_no_similarity_arcs(page):
         const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
         const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
         const held = Session.size();
+        // WATCH the status rather than read it once at 1.5 s: the drill hint and the
+        // walk's own "N cards from your walk" line share it, and under a loaded
+        // prepush the walk's line landed second (2026-10-10).
+        const status = document.getElementById('status');
+        const seen = [];
+        const watch = new MutationObserver(() => seen.push(status.textContent));
+        watch.observe(status, {childList: true, characterData: true, subtree: true});
         MM.relate(row, 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        for (let i = 0; i < 160 && !seen.concat(status.textContent).some(t => /drill/i.test(t)); i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
+        await new Promise(r => setTimeout(r, 300));     // let arcs, if any, be drawn
+        watch.disconnect();
         const el = edgeLayer();
         return {arcs: el ? el.edges.filter(e => e.rel === 'similar').length : 0,
                 held: held, grown: Session.size(),
-                status: document.getElementById('status').textContent};
+                status: seen.concat(status.textContent).find(t => /drill/i.test(t))
+                        || status.textContent};
     }""")
     assert page.js_errors == []
     assert r["arcs"] == 0, f"the CardBERT map drew {r['arcs']} similarity arcs"
