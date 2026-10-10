@@ -75,6 +75,14 @@ def validate(doc, slug=None, branch=None):
     if branch and doc.get("branch") not in (None, branch):
         errors.append(f"branch is {doc.get('branch')!r}, but the directory is {branch!r}")
 
+    # `base_sha256` (2026-10-10): the deck's list when the branch was cut, which
+    # `deck_branch.base_moved` compares to the list on every read. Written by
+    # `new()` only; absent on older branches, and that is allowed.
+    base = doc.get("base_sha256")
+    if base is not None and not (isinstance(base, str) and len(base) == 64
+                                 and all(c in "0123456789abcdef" for c in base)):
+        errors.append(f"base_sha256 is {base!r}, not a decklist sha256")
+
     # ── the objective ────────────────────────────────────────────────────
     o = doc.get("objective")
     version = int(doc.get("v") or 1)

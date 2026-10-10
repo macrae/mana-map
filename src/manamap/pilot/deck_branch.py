@@ -392,8 +392,12 @@ def one(slug, branch):
     # deck's cards.json, and `list` renders a row per branch — passing it through
     # rather than letting each helper fetch its own keeps that cost at one.
     state, state_why = branch_state(slug, branch, doc=m, src=s)
+    # Present only on a branch that recorded its base list (opened since
+    # 2026-10-10): absent is "not recorded", None is "not moved".
+    moved = ({"base_moved": base_moved(slug, branch, doc=m, state=state)}
+             if m.get("base_sha256") else {})
     return {"name": branch, "opened": m.get("opened"), "why": m.get("why"),
-            "state": state, "state_why": state_why,
+            "state": state, "state_why": state_why, **moved,
             "proposal": m.get("proposal"),
             "pull_list": pull_list(slug, branch, doc=m, src=s),
             "base_version": m.get("base_version"),
@@ -705,7 +709,11 @@ def new(slug, branch, text, why=None, at=None, objective=None):
            "objective": objective,
            "commits": [],
            # What it was branched FROM, so a stale branch is visible as one.
-           "base_version": deck_versions.report(slug).get("current_version")}
+           "base_version": deck_versions.report(slug).get("current_version"),
+           # ...and the deck's LIST at that moment. A bench deck is edited in
+           # place between saves, so the version alone cannot see that the deck
+           # moved under the branch; `base_moved` compares this to the list.
+           "base_sha256": _common.decklist_sha256(slug)}
     (path / BRANCH_FILE).write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
     return {"path": str(path), "warnings": checked["warnings"],
             # `cards` is the mainboard count; `count_copies(entries)` would
@@ -1132,6 +1140,32 @@ def branch_state(slug, branch, doc=None, src=None):
                 f"{len(src['unsourced'])} card(s) still to find")
     return (PROPOSED_READY,
             f"every card is sourced — `deck-branch {slug} merge {branch} --write`")
+
+
+def base_moved(slug, branch, doc=None, state=None):
+    """One line when the deck's list has moved since the branch was cut, else None.
+
+    DERIVED, never stored, like `branch_state`. `new()` records the deck's
+    `decklist_sha256` as `base_sha256`; a bench deck is edited IN PLACE between
+    saves (`deck_edit`), so `base_version` alone cannot see the deck move under
+    a branch, and the branch's diff and net change are then against a list the
+    deck no longer runs. None for a branch that recorded no base (opened before
+    2026-10-10), and for one already decided — a merge or a rejection is the
+    end of the comparison, not a stale one.
+    """
+    doc = meta(slug, branch) if doc is None else doc
+    base = (doc or {}).get("base_sha256")
+    if not base:
+        return None
+    if state is None:
+        state = branch_state(slug, branch, doc=doc)[0]
+    if state in (MERGED, REJECTED):
+        return None
+    live = _common.decklist_sha256(slug)
+    if not live or live == base:
+        return None
+    return (f"base moved since {base[:12]} — the deck's list changed after this "
+            f"branch was cut, so its comparison is against an older deck")
 
 
 def _sha_of_list(slug, branch):
@@ -1732,6 +1766,8 @@ def _dispatch(args):
                   f"[{b['size']:>3}]  {mark}")
             if b["why"]:
                 print(f"      {b['why'][:96]}")
+            if b.get("base_moved"):
+                print(f"      {b['base_moved']}")
         return
     if not branch:
         raise SystemExit(f"`deck-branch {slug} {action}` needs a branch name.")

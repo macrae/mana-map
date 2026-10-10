@@ -33,6 +33,13 @@ def test_a_well_formed_branch_passes():
     assert validate_branch.validate(_doc(proposal=_proposal())) == []
 
 
+def test_the_base_list_sha_is_optional_but_must_be_a_sha():
+    """`base_sha256` arrives from `new()` only (2026-10-10); older branches lack it."""
+    assert validate_branch.validate(_doc(base_sha256="c" * 64)) == []
+    for bad in ("c" * 12, 7, "Z" * 64):
+        assert any("base_sha256" in e for e in validate_branch.validate(_doc(base_sha256=bad)))
+
+
 def test_a_v2_branch_owes_an_objective():
     doc = _doc()
     doc.pop("objective")

@@ -540,6 +540,26 @@
     return out + '</section>';
   }
 
+  /* BASE MOVED. A bench deck is edited in place between saves, so the deck can
+   * move under a branch without its version changing, and the branch's
+   * comparison is then against a list the deck no longer runs. Whether it moved
+   * is `deck_branch.base_moved`'s sentence (derived when `deck-info` writes the
+   * branch row into info.json); this page shows it, one line, and decides
+   * nothing. Absent key, absent line: a branch cut before 2026-10-10 recorded
+   * no base list. */
+  function wireBaseMoved(slug, name) {
+    getJSON(DATA + 'decks/' + encodeURIComponent(slug) + '/info.json').then(function (info) {
+      var row = ((info && info.branches) || []).filter(function (b) {
+        return b && b.name === name;
+      })[0];
+      if (!row || !row.base_moved) return;
+      var mount = document.getElementById('objective');
+      if (!mount || document.getElementById('baseMoved')) return;
+      mount.insertAdjacentHTML('afterbegin',
+        '<p class="ev warn" id="baseMoved">' + esc(row.base_moved) + '</p>');
+    });
+  }
+
   function limitsPanel(nc) {
     if (!nc || !nc.limits || !nc.limits.length) return '';
     return '<section class="panel limits"><h2>What this cannot tell you</h2><ul>' +
@@ -1044,6 +1064,7 @@
         document.getElementById('panels').insertAdjacentHTML('afterbegin',
           benchPanel(meta, slug, name));
         wireViewToggle();
+        wireBaseMoved(slug, name);
         if (nc && nc.bill) {
           var buy = (nc.bill.cards || []).filter(function (r) {
             return r.state === 'buy';

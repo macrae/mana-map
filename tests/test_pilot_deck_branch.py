@@ -8,6 +8,7 @@ level up, and the only control that catches a `deck_dir(slug)` call that never
 got its `branch=`.
 """
 
+import argparse
 import hashlib
 import json
 
@@ -684,3 +685,34 @@ def test_staging_a_swap_on_a_sixty_card_branch_keeps_the_sideboard(modern_deck):
     # …and back.
     deck_branch.unstage("md", "b")
     assert (modern_deck / "branches" / "b" / "decklist.txt").read_text() == before
+
+
+def test_a_branch_says_when_the_deck_moved_under_it(modern_deck, capsys):
+    """A bench deck is edited in place between saves, so `base_version` cannot
+    see the deck move under a branch; the recorded list sha can. Derived on
+    read: nothing is written back to branch.json."""
+    from manamap.pilot.common import decklist_sha256
+    deck_branch.new("md", "b", SIXTY_MAIN + SIXTY_SIDE)
+    meta_file = modern_deck / "branches" / "b" / "branch.json"
+    base = json.loads(meta_file.read_text())["base_sha256"]
+    assert base == decklist_sha256("md")
+    assert deck_branch.base_moved("md", "b") is None
+    assert deck_branch.one("md", "b")["base_moved"] is None
+
+    deck_list = modern_deck / "decklist.txt"
+    deck_list.write_text(deck_list.read_text().replace("52 Mountain", "51 Mountain\n1 Goblin Guide"))
+    stored = meta_file.read_text()
+    line = deck_branch.base_moved("md", "b")
+    assert line.startswith(f"base moved since {base[:12]}"), line
+    assert deck_branch.one("md", "b")["base_moved"] == line
+    assert meta_file.read_text() == stored, "derived, never stored"
+
+    deck_branch.main(argparse.Namespace(slug="md", action="list", name=None, json=False))
+    assert f"base moved since {base[:12]}" in capsys.readouterr().out
+
+    # A branch from before the base was recorded: ABSENT, not "not moved".
+    doc = json.loads(stored)
+    del doc["base_sha256"]
+    meta_file.write_text(json.dumps(doc))
+    assert deck_branch.base_moved("md", "b") is None
+    assert "base_moved" not in deck_branch.one("md", "b")
