@@ -274,3 +274,40 @@ def test_debrief_is_not_applicable_until_something_is_logged(deck):
     assert not _debrief_applicable(SLUG)
     _add("one")
     assert _debrief_applicable(SLUG)
+
+
+# ── A game logged on a list no version names ─────────────────────────────
+
+
+def _saved_as(deck, version):
+    """Journal a `save` of the list as it stands, the way `save_version` does."""
+    from manamap.pilot import deck_edit
+    text = (deck / "decklist.txt").read_text()
+    deck_edit._append(deck, deck_edit._entry("save", source="cli", note="saved",
+                                              before=text, after=text, version=version))
+
+
+@pytest.mark.unit
+def test_add_warns_once_when_the_working_list_has_unsaved_edits(deck, capsys):
+    _saved_as(deck, 3)
+    deck_notes.main(_args(action="add", text="on the saved list", cause=None))
+    assert "warning" not in capsys.readouterr().err
+
+    (deck / "decklist.txt").write_text(
+        "1 Radagast of Rhosgobel *CMDR*\n1 Forest\n1 Llanowar Elves\n")
+    deck_notes.main(_args(action="add", text="after an unsaved swap", cause=None))
+    got = capsys.readouterr()
+    warn = [ln for ln in got.err.splitlines() if "warning" in ln]
+    assert len(warn) == 1, got.err
+    assert "+1 −1 since V3" in warn[0] and "WORKING list" in warn[0], warn[0]
+    assert f"save-version {SLUG} --note" in warn[0]
+    # A warning, never a block: both games are logged.
+    assert [e["id"] for e in deck_notes.read_log(SLUG)] == ["001", "002"]
+
+
+@pytest.mark.unit
+def test_add_says_nothing_without_a_baseline(deck, capsys):
+    """No save and no commit (the tmp deck is in no repo): there is nothing the
+    list could be "edited since", so no warning rather than a false one."""
+    deck_notes.main(_args(action="add", text="a brew nobody saved", cause=None))
+    assert "warning" not in capsys.readouterr().err

@@ -130,6 +130,26 @@ def append_entry(slug, text, result=None, opponents=None, tags=(), at=None):
     return entry
 
 
+def unsaved_warning(slug):
+    """One line when the deck has edits no saved version holds, else None.
+
+    The entry is stamped with the WORKING list's sha (`decklist_sha256`), and a
+    list that moved since the last `save-version` is not a version yet — the
+    game joins to no version until one is saved. A warning, never a block: the
+    note is the pilot's and is written either way."""
+    from manamap.pilot import deck_edit
+    try:
+        u = deck_edit.unsaved(slug)
+    except (Exception, SystemExit):                        # noqa: BLE001 - a hint, never fatal
+        return None
+    if not u:
+        return None
+    ins, outs = sum(u["in"].values()), sum(u["out"].values())
+    return (f"  warning: {slug} has unsaved edits (+{ins} −{outs} since {u['since']}) — "
+            f"this game attaches to the WORKING list, which is not a saved version yet; "
+            f"`manamap pilot save-version {slug} --note \"…\"` first to tie it to one")
+
+
 def annotations(slug):
     doc = load_json(deck_dir(slug) / ANNOTATIONS_FILE) or {}
     return doc.get("entries") or {}
@@ -206,6 +226,9 @@ def main(args):
                              tags=args.tag, at=args.at)
         print(f"{slug}: logged entry {entry['id']} at {entry['at']} "
               f"(deck {str(entry['decklist_sha256'])[:12]}…)")
+        warn = unsaved_warning(slug)
+        if warn:
+            print(warn, file=sys.stderr)
         # ONE WRITER. `--cause` goes through `set_cause`, exactly as the
         # standalone verb does, so the two can never disagree about the shape of
         # the sidecar or skip its vocabulary check.

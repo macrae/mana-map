@@ -762,12 +762,44 @@ def history(slug, limit=30):
 def saved_text(slug):
     """The list as of the last save — the journal's last `save`, else git HEAD's
     blob, else None. What the Deck Context's ins and outs are measured from."""
+    return _saved(slug)[0]
+
+
+def _saved(slug):
+    """`(text, label)`: the last save's list and "V<n>", else git HEAD's blob and
+    "git HEAD", else `(None, None)` — no save, no commit, or no repo at all."""
     for e in reversed(read_journal(deck_dir(slug))):
         if e.get("kind") == "save" and e.get("after") is not None:
-            return e["after"]
-    rel = _rel(deck_dir(slug) / "decklist.txt")
-    r = _git("show", f"HEAD:{rel}", check=False)
-    return r.stdout if r.returncode == 0 else None
+            v = e.get("version")
+            return e["after"], (f"V{v}" if v is not None else "the last save")
+    try:
+        rel = _rel(deck_dir(slug) / "decklist.txt")
+        r = _git("show", f"HEAD:{rel}", check=False)
+    except (ValueError, OSError):                          # outside the repo, no git
+        return None, None
+    return (r.stdout, "git HEAD") if r.returncode == 0 else (None, None)
+
+
+def unsaved(slug):
+    """What the working list holds that no saved version does, or None.
+
+    `{"since": "V3" | "the last save" | "git HEAD", "out": {…}, "in": {…}}` when
+    `decklist.txt` differs (by copies, not bytes) from the last save — the
+    journal's, else git HEAD's. None when it matches, and None when there is no
+    baseline to compare with (a list never committed is not "edited since").
+    `deck-notes add` reads it: a game logged now attaches to a list no version
+    names yet.
+    """
+    path = deck_dir(slug) / "decklist.txt"
+    if not path.exists():
+        return None
+    base, label = _saved(slug)
+    if base is None:
+        return None
+    d = _text_diff(base, path.read_text(encoding="utf-8"))
+    if not d["out"] and not d["in"]:
+        return None
+    return {"since": label, **d}
 
 
 # ── the rebuild ──────────────────────────────────────────────────────────
