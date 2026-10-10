@@ -31,7 +31,7 @@ import json
 import re
 from pathlib import Path
 
-from manamap.pilot import collection
+from manamap.pilot import card_pool, collection, formats
 from manamap.pilot.card_pool import corpus_oracle, load_pool
 from manamap.pilot.common import (
     deck_dir,
@@ -156,7 +156,6 @@ def deck_identity(doc):
     Tower in the pool as a source it can use. `doc["cards"]` is the mainboard;
     a sideboard lives under its own key and licenses nothing.
     """
-    from manamap.pilot import formats
 
     cards = doc.get("cards") or []
     ident = set()
@@ -197,7 +196,7 @@ def date_bound(text, end):
 def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_max=None,
            cmc_min=None, exclude=(), limit=MAX_RESULTS, allow_game_changers=True,
            require_all=False, owned=None, channels=None, unmodelled=None,
-           sets=None, released_after=None, released_before=None):
+           sets=None, released_after=None, released_before=None, spec=None):
     """Filter the corpus. Returns (rows, meta) — rows already ranked and capped.
 
     `oracle` is a list of regexes: a card matches when ANY of them hits, or ALL
@@ -238,11 +237,15 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
     # Boxes only — deck membership is not ownership; see `pilot.collection`.
     have = collection.owned_names() if owned is not None else set()
 
+    # A deck's FORMAT decides legality (`--deck elves` is Modern). The pool's
+    # `legal` flag is Commander's, so another format reads its own column.
+    other = spec is not None and spec.legality_key != "commander"
+    legal_in = card_pool.legality(spec.legality_column) if other else None
     rows, skipped_illegal = [], 0
     for name, rec in pool.items():
         if name in exclude:
             continue
-        if not rec["legal"]:
+        if not (legal_in.get(name) == "legal" if other else rec["legal"]):
             skipped_illegal += 1
             continue
         if identity is not None and not rec["color_identity"] <= ident:
@@ -312,6 +315,10 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
                              r["name"]))
     meta = {"matched": len(rows), "returned": min(len(rows), limit),
             "commander_illegal_skipped": skipped_illegal}
+    if other:
+        # Same count, named for the format it was checked against.
+        meta["illegal_skipped"] = meta.pop("commander_illegal_skipped")
+        meta["format"] = spec.legality_key
     if owned is not None:
         meta["ownership_filter"] = "owned" if owned else "unowned"
         meta["collection"] = collection.summary()["distinct_in_boxes"]
@@ -361,6 +368,7 @@ def analyze(args):
         sets=getattr(args, "set", None) or [],
         released_after=after,
         released_before=before,
+        spec=formats.for_deck(args.deck) if getattr(args, "deck", None) else None,
     )
     return {
         "identity": sorted(identity) if identity is not None else None,

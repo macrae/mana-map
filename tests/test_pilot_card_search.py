@@ -46,6 +46,22 @@ def test_commander_illegal_cards_are_dropped_and_counted():
 
 
 @requires_data
+def test_a_60_card_deck_searches_its_own_format_not_commander():
+    """`--deck elves` is a Modern deck. Selvala, Heart of the Wilds is legal in
+    Commander and not in Modern; the card-scout's first Elves answer had to say
+    "check Modern legality yourself" because the filter read Commander's."""
+    from manamap.pilot import formats
+
+    names = [r"^Selvala, Heart of the Wilds$", r"^Priest of Titania$"]
+    commander, cmeta = card_search.search(names=names, limit=10)
+    assert {r["name"] for r in commander} >= {"Selvala, Heart of the Wilds", "Priest of Titania"}
+    assert "commander_illegal_skipped" in cmeta
+    modern, mmeta = card_search.search(names=names, limit=10, spec=formats.get("modern"))
+    assert [r["name"] for r in modern] == ["Priest of Titania"]
+    assert mmeta["format"] == "modern" and mmeta["illegal_skipped"] > 0
+
+
+@requires_data
 def test_truncation_is_stated_never_silent():
     """A silently cut list reads as 'that is all of them', which is the one claim
     this tool must never make by accident."""
