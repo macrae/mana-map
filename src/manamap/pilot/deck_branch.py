@@ -781,6 +781,12 @@ def warn_if_proposed(slug, branch, verb, doc=None):
           f"--as {version} --why \"…\"` (which AMENDS rather than refusing).")
 
 
+#: The commander-cut refusal, one wording for `stage`, `try` and the in-place
+#: editor (`deck_edit.plan`).
+COMMANDER_REFUSAL = ("{name} is the COMMANDER. Changing it is a different deck, "
+                     "not a swap — open a new branch from a new list.")
+
+
 def swap_entries(slug, branch, entries, out_name, in_name):
     """One copy of OUT out, one of IN in, on parsed decklist ENTRIES — in memory.
 
@@ -797,9 +803,7 @@ def swap_entries(slug, branch, entries, out_name, in_name):
             f"{out_name!r} is not in {where} — nothing to swap out. "
             f"`deck-branch {slug} diff {branch}` shows what is.")
     if out_e.get("is_commander"):
-        raise SystemExit(
-            f"{out_e['name']} is the COMMANDER. Changing it is a different deck, "
-            f"not a swap — open a new branch from a new list.")
+        raise SystemExit(COMMANDER_REFUSAL.format(name=out_e["name"]))
     # THE PILOT'S KEEP LIST, before anything is written (draw-v1 cut Vish Kal).
     from manamap.pilot import protected
     protected.refuse(slug, [out_e["name"]], "that swap")
@@ -1479,10 +1483,15 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     # A BACKUP FIRST, the way `check_in.apply` does. Merge overwrites the deck's
     # tracked list; check-in has made a `.txt.bak` since it shipped and merge
     # never did, which is the more destructive of the two.
+    #
+    # THROUGH THE ONE WRITER (`deck_edit.write_list`): the lock, the atomic
+    # replace, the `.txt.bak` and a journal line, so a merge can be undone on a
+    # bench deck like any edit. On a sleeved deck this IS the publish path, so
+    # no edit guard is applied — merge's own gates above are the guard.
+    from manamap.pilot import deck_edit
     target = deck_dir(slug) / "decklist.txt"
-    if target.exists():
-        shutil.copy(target, target.with_suffix(".txt.bak"))
-    target.write_text(check_in.render_decklist(checked["entries"]), encoding="utf-8")
+    deck_edit.replace_list(slug, check_in.render_decklist(checked["entries"]),
+                           source="merge", note=f"merge {branch}", path=target)
     out["written"] = True
 
     # THE CHAIN, because a merge that leaves the figures behind makes the deck
@@ -1517,7 +1526,10 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
                 # just moved underneath every open branch, so each one's diff and
                 # net_change describe a base that no longer exists. Doing this by
                 # hand after the last two merges is what this line replaces.
-                regen.run(slug=slug, jobs=None, echo=lambda *a, **k: None)
+                # `skip`: the chain above just ran the goldfish and
+                # mana-analysis on the deck; regen ran them a second time.
+                regen.run(slug=slug, jobs=None, echo=lambda *a, **k: None,
+                          skip=("goldfish", "mana-analysis"))
                 ran.extend(n for n in regen.STAGE_NAMES if n not in ran)
             except Exception as exc:                    # pragma: no cover - env
                 out.setdefault("chain_failed", []).append(f"regen: {exc}")

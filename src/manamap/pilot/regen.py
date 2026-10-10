@@ -150,8 +150,12 @@ def is_pinned(slug):
     return bool(deck_versions.paper(slug))
 
 
-def targets(artifact, slug=None):
+def targets(artifact, slug=None, include_branches=True):
     """`(slug, branch)` for every place this artifact is tracked, branches too.
+
+    `include_branches=False` leaves the branches out — the in-place edit's
+    rebuild (`deck_edit.rebuild`), where the deck's own list moved and its
+    branches' measurements are the save's job, not every edit's.
 
     EVERY LIVE DECK IS REFRESHED; ONLY A SLEEVED ONE IS BOOTSTRAPPED. Those are
     two questions and this function used to answer them with one gate:
@@ -198,7 +202,7 @@ def targets(artifact, slug=None):
         bootstrappable = needs and (deck / needs).exists() and is_pinned(deck.name)
         if (deck / artifact).exists() or bootstrappable:
             out.append((deck.name, None))
-        for branch in sorted((deck / "branches").glob("*")):
+        for branch in (sorted((deck / "branches").glob("*")) if include_branches else ()):
             # NOT bootstrapped on a branch. A branch is a candidate list, and
             # creating a measurement it never asked for is work nobody ordered.
             if branch.is_dir() and (branch / artifact).exists():
@@ -206,7 +210,7 @@ def targets(artifact, slug=None):
     return out
 
 
-def plan(only=None, slug=None):
+def plan(only=None, slug=None, include_branches=True, skip=()):
     """`[(stage, module, kwargs, [(slug, branch), …]), …]` — what would run.
 
     `slug` is passed THROUGH to `targets`, not just used to filter its result.
@@ -216,7 +220,7 @@ def plan(only=None, slug=None):
     `regen --slug heliod` return nothing at all on a bench deck, which is the
     opposite of what naming a deck means.
     """
-    return _plan(only, slug)[0]
+    return _plan(only, slug, include_branches, tuple(skip))[0]
 
 
 def skipped(only=None, slug=None):
@@ -226,7 +230,7 @@ def skipped(only=None, slug=None):
     return _plan(only, slug)[1]
 
 
-def _plan(only, slug):
+def _plan(only, slug, include_branches=True, skip=()):
     """`(rows, skipped)`. One walk, because the skips are the rows' complement.
 
     A commander-only stage is SKIPPED for every live deck in scope whose format
@@ -240,7 +244,12 @@ def _plan(only, slug):
     for stage, artifact, module, kwargs, branch_only, commander_only in STAGES:
         if only and stage not in only:
             continue
-        found = [t for t in targets(artifact, slug=slug)
+        # `skip` names stages the caller has ALREADY run, or runs itself:
+        # `deck_edit.rebuild` runs the goldfish and mana-analysis in its chain
+        # and the Deck Context last; `deck-branch merge` runs its chain first.
+        if stage in skip:
+            continue
+        found = [t for t in targets(artifact, slug=slug, include_branches=include_branches)
                  if not (branch_only and t[1] is None)]
         if commander_only:
             for deck_slug in _live_decks(slug):
@@ -281,9 +290,17 @@ def _one(job):
         return (slug, branch, f"{type(exc).__name__}: {exc}", time.time() - started)
 
 
-def run(only=None, slug=None, jobs=None, dry_run=False, echo=print):
-    """Regenerate, stage by stage. Returns `{"failures": [...], "seconds": n}`."""
-    rows, skips = _plan(only, slug)
+def run(only=None, slug=None, jobs=None, dry_run=False, echo=print,
+        include_branches=True, skip=()):
+    """Regenerate, stage by stage. Returns `{"failures": [...], "seconds": n}`.
+
+    `include_branches=False` refreshes the deck alone, never its branches;
+    `skip` leaves out stages the caller runs itself. Both refresh only
+    artifacts that already exist, like every slug-scoped run (`targets`)."""
+    unknown = sorted(set(skip) - set(STAGE_NAMES))
+    if unknown:
+        raise ValueError(f"skip: unknown stage(s) {', '.join(unknown)}")
+    rows, skips = _plan(only, slug, include_branches, tuple(skip))
     # A stage a deck's format cannot have, said out loud. Not a failure and not
     # a target: a 60-card deck is not incomplete for lacking a goldfish.
     for stage, s, fmt in skips:

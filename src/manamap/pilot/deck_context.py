@@ -543,8 +543,14 @@ def refresh(slug):
     return after != before
 
 
-def list_change(slug):
+def list_change(slug, before_text=None):
     """What a merge or check-in owes the Deck Context, right after it wrote the list.
+
+    `before_text` is the list to measure the ins and outs FROM. Absent, it is
+    the `.txt.bak` the writer left — one step back. The in-place editor passes
+    the list as of the last save (`deck_edit.saved_text`), because after five
+    edits and an undo the Keeper wants what moved since the version it wrote
+    for, not since the last keystroke.
 
     THE HOOK (PRD v2 Step 2). The context's prose is stamped with the sha it was
     written for, so it reads STALE the moment `decklist.txt` moves — that much was
@@ -577,7 +583,11 @@ def list_change(slug):
         return Counter({e["name"]: e["quantity"] for e in parse_mainboard(f.read_text(encoding="utf-8"))})
 
     lst = deck_dir(slug) / "decklist.txt"
-    before, after = copies(lst.with_suffix(".txt.bak")), copies(lst)
+    if before_text is not None:
+        before = Counter({e["name"]: e["quantity"] for e in parse_mainboard(before_text)})
+    else:
+        before = copies(lst.with_suffix(".txt.bak"))
+    after = copies(lst)
     outs, ins = sorted((before - after).elements()), sorted((after - before).elements())
     st = stamp(p.read_text())
     truth = common.decklist_sha256(slug)

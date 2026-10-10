@@ -295,7 +295,7 @@ def chain_plan(spec):
                          f"(docs/simulation.md)"})
 
 
-def apply(slug, entries, run_chain=True, spec=None, text=None):
+def apply(slug, entries, run_chain=True, spec=None, text=None, source="check-in", note=None):
     """Write the list, then re-derive what depends on it.
 
     The chain is not optional in spirit: `goldfish_metrics.json` and
@@ -309,14 +309,18 @@ def apply(slug, entries, run_chain=True, spec=None, text=None):
     """
     spec = spec or formats.for_deck(slug)
     path = deck_dir(slug) / "decklist.txt"
-    if path.exists():
-        shutil.copy(path, path.with_suffix(".txt.bak"))
     # `text`, when given, is written VERBATIM instead of rendering `entries`:
     # `deck-version restore` writes a committed version's own bytes, so the
     # working sha IS that version's sha and the paper lock reads in sync at
     # once, rather than after a commit of a re-rendered twin.
-    path.write_text(text if text is not None else render_decklist(entries),
-                    encoding="utf-8")
+    #
+    # THROUGH THE ONE WRITER (`deck_edit.write_list`): lock, atomic replace, the
+    # `.txt.bak`, and a journal line `source` names — so a check-in or a
+    # restore can be undone like an edit. No edit guard: a check-in records
+    # what is sleeved, and stays allowed on a sleeved deck.
+    from manamap.pilot import deck_edit
+    deck_edit.replace_list(slug, text if text is not None else render_decklist(entries),
+                           source=source, note=note, path=path)
     _, skipped = chain_plan(spec)
     return {"ran": _run_chain(slug) if run_chain else [], "skipped": skipped}
 
@@ -423,9 +427,17 @@ def set_printing(slug, name, set_code, collector_number, foil=False, run_chain=T
     line = render_line(entry, cmdr_marker=cmdr_marker)
     if same:
         return {"changed": False, "line": line, "ran": []}
-    shutil.copy(path, path.with_suffix(".txt.bak"))
     lines[i] = line
-    path.write_text("\n".join(lines), encoding="utf-8")
+    if branch:
+        # A branch's list is its own file with its own history (`deck-branch
+        # log`); the journal is the deck's main list only.
+        shutil.copy(path, path.with_suffix(".txt.bak"))
+        path.write_text("\n".join(lines), encoding="utf-8")
+    else:
+        from manamap.pilot import deck_edit
+        deck_edit.replace_list(slug, "\n".join(lines), source="printing",
+                               note=f"{entry['name']} -> ({set_code.upper()}) {collector_number}",
+                               path=path)
     ran = _run_chain(slug, branch) if run_chain else []
     return {"changed": True, "line": line, "ran": ran}
 

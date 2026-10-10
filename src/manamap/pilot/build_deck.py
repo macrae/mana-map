@@ -1105,11 +1105,18 @@ def main(args):
         layouts = dict(zip(frame["name"], frame["layout"]))
         path = base / "decklist.txt"
         if backup and path.exists():
-            import shutil
-            bak = path.with_suffix(".txt.bak")
-            shutil.copy(path, bak)
-            print(f"  Kept the old list as {bak}")
-        path.write_text(decklist_text(plan, layouts), encoding="utf-8")
+            # `--overwrite` on a bench deck goes through the ONE writer
+            # (`deck_edit.write_list`): the `.txt.bak`, a lock, an atomic
+            # replace and a journal line, so a rebuild-from-brief can be undone
+            # with `manamap pilot edit <slug> undo`. `guard_overwrite` above is
+            # this caller's guard (sleeved and archived refused).
+            from manamap.pilot import deck_edit
+            deck_edit.replace_list(args.slug, decklist_text(plan, layouts), source="build",
+                                   note="build --overwrite", path=path)
+            print(f"  Kept the old list as {path.with_suffix('.txt.bak')} "
+                  f"(`manamap pilot edit {args.slug} undo` puts it back)")
+        else:
+            path.write_text(decklist_text(plan, layouts), encoding="utf-8")
         print(f"  Wrote {path}")
 
 

@@ -664,7 +664,8 @@ def restore(slug, version, write=False, run_chain=True):
         # `text=blob` is what is written; the entries are only apply's contract.
         from manamap.pilot.fetch_deck import parse_mainboard
         d["applied"] = check_in.apply(slug, parse_mainboard(blob), run_chain=run_chain,
-                                      text=blob)
+                                      text=blob, source="restore",
+                                      note=f"restore V{version['version']}")
     return d
 
 

@@ -162,6 +162,10 @@ def clear_memo():
     from manamap.pilot import card_refs
     card_refs.ambiguous_tokens.cache_clear()
 
+    # The editor's name indexes, keyed on the corpus object they were built from.
+    from manamap.pilot import deck_edit
+    deck_edit._NAME_MEMO.clear()
+
     # A sentinel rather than a dict: `_UNSET` means "not looked up yet", which
     # is what a cleared state has to be — `None` is a real answer here (no
     # corpus), and setting it would pin the fallback for the rest of the run.

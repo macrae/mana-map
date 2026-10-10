@@ -135,6 +135,13 @@ data/decks/*/pool.txt
 # `git add -A` and became a tracked stray the docs gate then flagged. The gate
 # was right; the file should never have been committable.
 data/decks/*/decklist.txt.bak
+# The in-place editor's undo journal (and its rotated copy) and its two locks
+# (`pilot/deck_edit.py`). Local state: git holds the versions, the journal holds
+# the steps between them on this machine.
+data/decks/*/edits.jsonl
+data/decks/*/edits.jsonl.1
+data/decks/*/.edits.lock
+data/decks/*/.rebuild.lock
 
 # A campaign's in-flight marker (pid, the entry running) — for `sim-progress`;
 # the campaign file beside it is TRACKED, because a pre-registration that is
