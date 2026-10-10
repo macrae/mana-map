@@ -910,7 +910,13 @@ def add_pilot_parser(subparsers):
                              help="tag: move a name that already points at another version")
             cmd.add_argument("--full", action="store_true", help="show: print the whole decklist")
             cmd.add_argument("--write", action="store_true",
-                             help="restore: actually write decklist.txt (default is a dry run)")
+                             help="restore: actually write decklist.txt (default is a dry "
+                                  "run), keeping decklist.txt.bak and running the check-in "
+                                  "chain. Refused for an archived deck, a protected cut, or "
+                                  "a sleeved deck unless the target is its paper version")
+            cmd.add_argument("--no-chain", action="store_true", dest="no_chain",
+                             help="restore: write the list but skip fetch-deck / goldfish "
+                                  "/ mana-analysis (no corpus on this machine)")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "prescribe":
             cmd.add_argument("prompt", nargs="?", default=None,

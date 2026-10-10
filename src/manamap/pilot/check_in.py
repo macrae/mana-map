@@ -295,7 +295,7 @@ def chain_plan(spec):
                          f"(docs/simulation.md)"})
 
 
-def apply(slug, entries, run_chain=True, spec=None):
+def apply(slug, entries, run_chain=True, spec=None, text=None):
     """Write the list, then re-derive what depends on it.
 
     The chain is not optional in spirit: `goldfish_metrics.json` and
@@ -311,7 +311,12 @@ def apply(slug, entries, run_chain=True, spec=None):
     path = deck_dir(slug) / "decklist.txt"
     if path.exists():
         shutil.copy(path, path.with_suffix(".txt.bak"))
-    path.write_text(render_decklist(entries), encoding="utf-8")
+    # `text`, when given, is written VERBATIM instead of rendering `entries`:
+    # `deck-version restore` writes a committed version's own bytes, so the
+    # working sha IS that version's sha and the paper lock reads in sync at
+    # once, rather than after a commit of a re-rendered twin.
+    path.write_text(text if text is not None else render_decklist(entries),
+                    encoding="utf-8")
     _, skipped = chain_plan(spec)
     return {"ran": _run_chain(slug) if run_chain else [], "skipped": skipped}
 

@@ -608,13 +608,62 @@ def diff_vs_working(slug, version):
             "add_copies": sum(c for _, c in add)}
 
 
-def restore(slug, version, write=False):
+def _is_paper_version(lock, version):
+    return bool(lock) and (
+        lock.get("version") == version.get("version")
+        or (lock.get("decklist_sha256") and lock.get("decklist_sha256")
+            in (version.get("decklist_sha256s") or [])))
+
+
+def restore_refusals(slug, version):
+    """Why this restore may not be written; [] when it may.
+
+    A RESTORE IS A CUT like any other, so the keep list reads the cards the
+    working list has and the target does not. An archived deck is revived
+    first. A SLEEVED deck may only be restored TO its paper version — that
+    re-syncs the repo with the cardboard; any other target is a change to a
+    sleeved list, and that is what a branch is for.
+    """
+    from manamap.pilot import protected
+    lines = []
+    if common.deck_is_apart(slug):
+        lines.append(f"{slug} is archived — revive it first: "
+                     f"`manamap pilot deck-state {slug} revive`")
+    lock = paper(slug)
+    if lock and not _is_paper_version(lock, version):
+        lines.append(
+            f"{slug} is SLEEVED as {lock.get('release') or 'V' + str(lock.get('version'))} "
+            f"— restoring V{version['version']} would change a list that is in "
+            f"cardboard. Only the paper version restores here; open a branch for "
+            f"anything else: `manamap pilot deck-branch {slug} new <name>`")
+    then = dh._entries(blob_at(slug, version) or "")
+    now = dh._entries((deck_dir(slug) / "decklist.txt").read_text(encoding="utf-8"))
+    cut = [n for n in now if now[n] > then.get(n, 0)]
+    lines += protected.refusals(slug, cut)
+    return lines
+
+
+def restore(slug, version, write=False, run_chain=True):
+    """The diff against a committed version; with `write`, that version's list.
+
+    WRITES THROUGH `check_in.apply`, so a restore gets the same `.bak` and the
+    same rebuild chain a check-in does — it is the same act, a list arriving.
+    Refused (`restore_refusals`) on the write, never on the dry run, which still
+    prints the diff and the refusal so the pilot sees both.
+    """
     blob = blob_at(slug, version)
     if blob is None:
         raise SystemExit(f"{slug}: cannot read V{version['version']} from git")
     d = diff_vs_working(slug, version)
+    d["refused"] = restore_refusals(slug, version)
     if write:
-        (deck_dir(slug) / "decklist.txt").write_text(blob, encoding="utf-8")
+        if d["refused"]:
+            raise SystemExit(f"Refusing to restore {slug} to V{version['version']}:\n  - "
+                             + "\n  - ".join(d["refused"]))
+        from manamap.pilot import check_in
+        from manamap.pilot.fetch_deck import parse_decklist
+        d["applied"] = check_in.apply(slug, parse_decklist(blob), run_chain=run_chain,
+                                      text=blob)
     return d
 
 
@@ -793,16 +842,22 @@ def main(args):
         return
     if action == "restore":
         write = getattr(args, "write", False)
-        d = restore(slug, v, write=write)
+        d = restore(slug, v, write=write, run_chain=not getattr(args, "no_chain", False))
         verb = "RESTORED" if write else "would restore (dry run; add --write)"
         print(f"{slug}: {verb} decklist.txt to V{v['version']} ({v['first_sha']})")
         for n in d["in_now_not_then"]:
             print(f"    - {n}")
         for n in d["in_then_not_now"]:
             print(f"    + {n}")
+        for line in d["refused"]:
+            print(f"  REFUSED: {line}")
         if write:
-            print(f"  next: `manamap pilot fetch-deck {slug}`, then goldfish → mana-analysis; "
-                  f"commit the decklist so the log can stamp it as a version")
+            ran = d["applied"]["ran"]
+            print("  kept the old list as decklist.txt.bak"
+                  + (f" · ran {' → '.join(ran)}" if ran else
+                     f" · chain skipped: run `manamap pilot fetch-deck {slug}`, then "
+                     f"goldfish → mana-analysis"))
+            print("  next: commit the decklist so the log can stamp it as a version")
         return
     raise SystemExit(f"unknown action {action!r}")
 

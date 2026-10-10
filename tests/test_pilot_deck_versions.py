@@ -108,9 +108,51 @@ def test_restore_is_a_dry_run_unless_asked_to_write(repo):
     d = dv.restore(SLUG, v1, write=False)
     assert d["in_then_not_now"] == ["Llanowar Elves"] and d["in_now_not_then"] == ["Heroic Intervention"]
     assert (repo / "decklist.txt").read_text() == V2, "a dry run writes nothing"
-    dv.restore(SLUG, v1, write=True)
+    dv.restore(SLUG, v1, write=True, run_chain=False)
     assert (repo / "decklist.txt").read_text() == V1
     assert dv.report(SLUG)["current_version"] == 1, "the restored list IS V1 again"
+
+
+# ── restore is a list arriving: the check-in's guards, .bak and chain ────────
+
+def test_restore_writes_through_check_in_with_a_backup_and_the_chain(repo, monkeypatch):
+    from manamap.pilot import check_in
+    ran = []
+    monkeypatch.setattr(check_in, "_run_chain", lambda slug, branch=None: ran.append(slug) or ["fetch-deck"])
+    d = dv.restore(SLUG, dv.resolve(SLUG, "V1"), write=True)
+    assert (repo / "decklist.txt").read_text() == V1, "the version's own bytes, verbatim"
+    assert (repo / "decklist.txt.bak").read_text() == V2
+    assert ran == [SLUG] and d["applied"]["ran"] == ["fetch-deck"]
+
+
+def test_restore_refuses_to_cut_a_protected_card(repo):
+    (repo / "protected.json").write_text(json.dumps(
+        {"cards": [{"name": "Heroic Intervention", "why": "keeps the board"}]}))
+    v1 = dv.resolve(SLUG, "V1")
+    d = dv.restore(SLUG, v1, write=False)
+    assert any("Heroic Intervention is PROTECTED" in r for r in d["refused"])
+    with pytest.raises(SystemExit, match="Heroic Intervention is PROTECTED"):
+        dv.restore(SLUG, v1, write=True, run_chain=False)
+    assert (repo / "decklist.txt").read_text() == V2
+
+
+def test_restore_refuses_an_archived_deck(repo):
+    (repo / dv.TAGS_FILE).write_text(json.dumps(
+        {"slug": SLUG, "lifecycle": {"status": "retired"}}))
+    with pytest.raises(SystemExit, match="revive it first"):
+        dv.restore(SLUG, dv.resolve(SLUG, "V1"), write=True, run_chain=False)
+    assert (repo / "decklist.txt").read_text() == V2
+
+
+def test_a_sleeved_deck_restores_only_to_its_paper_version(repo):
+    dv.set_paper(SLUG, ref="V1")
+    # The lock says V1 is in cardboard; the repo moved on. Restoring V1 re-syncs.
+    (repo / "decklist.txt").write_text(V2 + "1 Sol Ring\n")
+    with pytest.raises(SystemExit, match="SLEEVED.*open a branch"):
+        dv.restore(SLUG, dv.resolve(SLUG, "V2"), write=True, run_chain=False)
+    dv.restore(SLUG, dv.resolve(SLUG, "V1"), write=True, run_chain=False)
+    assert (repo / "decklist.txt").read_text() == V1
+    assert dv.report(SLUG)["paper"]["in_sync"] is True
 
 
 def test_no_git_history_is_an_empty_list_not_an_error(tmp_path, monkeypatch):
