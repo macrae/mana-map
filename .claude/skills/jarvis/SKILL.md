@@ -67,7 +67,7 @@ offer to fetch it.
 | **A combo question** ("what combos does Edgar have?", "is there an infinite in this deck?", "what's one card away from a combo?") | The context's summary block carries a **Combos** line (`--slice summary`: known lines, how many infinite and two-card, how many one card short). Answer the count from it. For the lines themselves — which cards, what they produce, the missing card — send the **Data Analyst** to `manamap pilot deck-combos <slug> --json` (< 1 s, writes nothing). "Not computed" means `deck-combos <slug> --write` has not run; offer it. A line is Spellbook's claim about the cards, never a proof the deck assembles it — that is The Kill and the goldfish. |
 | **A pilot log** ("I played Sharknado, here's my log") | Story 2 below. |
 | **Card search** ("find me cards that do X", "cards like Y") | Spawn `card-scout` with the slug and his words. It returns at most 8 cards, each with a reason and an Atlas link. Relay it, then **offer** to put the list on a watch list (`watchlist.add_set`, as `/incubate` does); never add it unasked. |
-| **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays; `manamap pilot try <slug> --out "A" --in "B"` (~10 s, paired goldfish); the `rules-question` agent for an interaction; `forge-cast-check` only for "will the AI cast it"; a **scenario slice** when it turns on a board the goldfish cannot see (removal, blockers, an opponent's answer): spawn `scenario-sim`, show Sean the board it returns, and on his OK run `manamap pilot scenario-ab --spec <path>`. Never run a slice he has not OKed. Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
+| **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays; `manamap pilot try <slug> --out "A" --in "B"` (read-only, ~10 s, paired goldfish; `--add` / `--cut` / `--set` for a change that is not a one-for-one, the same preview Build's tray shows); the `rules-question` agent for an interaction; `forge-cast-check` only for "will the AI cast it"; a **scenario slice** when it turns on a board the goldfish cannot see (removal, blockers, an opponent's answer): spawn `scenario-sim`, show Sean the board it returns, and on his OK run `manamap pilot scenario-ab --spec <path>`. Never run a slice he has not OKed. Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
 | **Strategy research** ("how do strong Edgar lists handle wipes?") | Spawn `strategist` with the slug and his question: a ≤12-line argument citing `strategy:<id>` sections, the web only when the companion and the context leave it open. `/research-strategy` is the slow path that EXPANDS the doc — offer it for the gaps the Strategist names, never run it unasked. |
 | **A rules question** ("does Nest of Scarabs trigger on persist?") | Spawn `rules-question` with the question and the cards it names: a yes/no with the rule quoted verbatim, or "Not settled". A whole multi-step line is `/resolve-stack` — ask first, it is a loop. |
 | **A queue check** ("what's in the queue? what did you find?") | `manamap pilot queue list` (fleet) or `--deck <slug>`, summarised in a sentence or two: what is promoted, what has a result waiting for his call. Testing an item is `/incubate`'s "work an item"; "add this to the queue" is its "Sean adds his own" (`queue add`, then the Challenger). |
@@ -101,16 +101,34 @@ offer to fetch it.
 
 ## Story 6: make the swap
 
-With Sean's go-ahead:
-1. Apply it through the existing path:
-   - `deck-branch <slug> stage …` then `merge`, for a branch;
-   - `check-in --from <file>`, for a paper list.
-2. Commit it.
-3. The merge or check-in prints `CONTEXT STALE` with the Keeper spawn already
-   written (the ins and outs named). Run it as your next step, without asking: spawn
-   `context-keeper` `MODE deck-change` with that line, then the `--install` it printed.
-4. Run `manamap pilot context <slug> --refresh` and `manamap pilot build-index`.
-5. Report what changed in one short paragraph.
+With Sean's go-ahead. First read the deck's rung: `manamap pilot deck-info <slug> --json`,
+key `stage` (`promote.stage`). The rung decides the path; never pick another.
+
+- **`dev` (brewing) or `bench`: edit in place.**
+  1. `manamap pilot edit <slug> --swap "A=B" --note "<his words>" --json`
+     (`--add` / `--cut` / `--set` likewise). A refusal prints why; relay it.
+  2. Only once it succeeds, say in two or three lines what moved: the instant checks
+     (size, keep list, warnings) and, if he has not seen a preview, the goldfish rows
+     from `try <slug> --out A --in B` with their intervals. Say it is undoable
+     (`edit <slug> undo`) and **not yet a version**.
+  3. `manamap pilot save-version <slug> --note "…"` **only when he says to save**.
+     After a save, run the Keeper line it prints (`next (Jarvis): …`) without asking:
+     spawn `context-keeper` `MODE deck-change` with it, install its draft
+     (`context <slug> --install data/decks/<slug>/.agent-out/context-keeper.md --note
+     "deck change: …"`; `--json` carries it as `context.install`), then
+     `manamap pilot context <slug> --refresh`.
+- **`sleeved`: never `edit`** (it refuses). Offer the branch path:
+  `try <slug> --out A --in B --stage <branch>`, then
+  `net-change <slug> --branch <branch> --write`. Merge (`deck-branch <slug> merge`) only
+  on his word that the cards are in the sleeves, and commit it (the merge prints the
+  commit line). It also prints `CONTEXT STALE` with the Keeper spawn and the `--install`
+  line — run both as above, then `context <slug> --refresh` and `build-index`.
+- **Archived** (`stage` is null, `lifecycle` set: broken down, retired, superseded):
+  read-only. Say so, and that `manamap pilot deck-state <slug> revive --reason "…"` brings it back.
+- A **paper list** for any rung is `check-in <slug> --from <file>`, then the same Keeper
+  step.
+
+Never say a change was made before the command that makes it has succeeded.
 
 ## The roster
 

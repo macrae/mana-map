@@ -288,6 +288,10 @@ that exists is rebuilt wherever it lives); BOOTSTRAP — creating a missing one 
 sleeved decks only. **A 60-card deck (`formats.for_deck`, no commander) skips the goldfish
 stages — goldfish, net-change, diagnose, benchmark — and `regen`, `deck-status` and
 `deck-info` say `not modelled for Modern` rather than reporting them missing.**
+**Bench and brewing decks are edited in place** (`edit` / `undo` / `save-version`, or
+Build's tray: Apply / Undo / Save version); **a sleeved deck's list changes only through a
+branch** (`try … --stage` → `net-change` → merge once the cards are sleeved), and an
+archived deck is read-only until `deck-state revive`.
 
 ## Data artifacts
 

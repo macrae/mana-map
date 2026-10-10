@@ -1735,3 +1735,16 @@ newly dropped, the tail read card by card — tribal "other X" scoping included)
 `manamap pilot regen --jobs 8 && make manuals`. The pilot's own rule (flat anthems are
 too slow) makes this matter less for adds, not for cuts already in the 99.
 
+
+## 23. Editing in place: two limits of `save-version` and the rebuild (2026-10-10)
+
+- **The cross-deck refresh is name-scoped.** `save-version` re-runs `net_change.json` and
+  `info.json` on every other live deck with a branch whose ADDS name a card that moved in
+  or out of this deck (`deck_edit._refresh_wanting_decks`, matched by name). It does not
+  ask whether that branch actually sources the card from this deck, so it can refresh a
+  deck that did not need it, and it adds that deck's paths to the save's commit.
+- **The rebuild after an edit is fetch-bound.** `deck_edit.rebuild` starts with
+  `fetch-deck`, which POSTs every identifier in the list to Scryfall's
+  `/cards/collection`, not just the card that changed. A one-card edit waits on the
+  network; offline the edit stays written and the result says to run
+  `manamap pilot edit <slug> --rebuild` when online.

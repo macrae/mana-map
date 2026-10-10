@@ -95,7 +95,7 @@ and it runs on Sonnet.
 - **`log`**: after `deck-notes add`. It folds the games into Pilot notes and returns
   1–3 open questions for Jarvis to *offer* Sean. Incubation asks first; it never
   starts unasked.
-- **`deck-change`**: after a merge. It re-places cards and **prunes** the prose a swap
+- **`deck-change`**: after a merge, a check-in or a `save-version`. It re-places cards and **prunes** the prose a swap
   made false, rather than appending to it.
 
 **The hook.** `deck-branch merge --write` and `check-in --write` call
@@ -104,6 +104,9 @@ blocks, reads the copies that moved from the `.txt.bak` the command just left, a
 prints `CONTEXT STALE` with the Keeper's `deck-change` spawn (ins and outs named) and the
 `--install` line. A command cannot spawn an agent, so the PRD's "updates automatically"
 means Jarvis runs that pass as its next step, and says so.
+On a bench or brewing deck, `edit` refreshes the generated blocks after each edit and
+says the prose is behind the list, offering the Keeper at save; `save-version` prints the line
+(`next (Jarvis): …`), and Jarvis runs the pass only after a save.
 
 ## Response-time targets
 
