@@ -137,6 +137,9 @@ def test_full_is_everything_serial_by_default_and_prepush_full_runs_it(monkeypat
                                   ["make", "test-browser", f"BROWSER_WORKERS={cs.BROWSER_WORKERS_PAIRED}"]]
     recipe = (cs.REPO / "Makefile").read_text()
     assert re.search(r"^prepush-full:.*\n\t.*manamap\.check_scope full", recipe, re.M)
+    # A slept laptop stalls a prepush mid-browser-tier: both are held awake.
+    for target in ("prepush", "prepush-full"):
+        assert re.search(rf"^{target}:.*\n\t\$\(KEEPAWAKE\) ", recipe, re.M), target
     assert "BROWSER_WORKERS ?= 4" in recipe and "-n $(BROWSER_WORKERS)" in recipe
 
 

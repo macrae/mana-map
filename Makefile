@@ -109,13 +109,15 @@ integration:  ## THE INTEGRATION TIER: browser + Forge + the pages rebuild byte-
 # harness itself (this file, pyproject, conftest, config.py, CI) or an unrecognised
 # path -> everything. Regression and browser run side by side when both are in.
 # An untracked file is never a reason. CI runs the full suite on every push.
+# Both held awake (`KEEPAWAKE`, below): a laptop that slept mid-browser-tier
+# stalled a prepush at 21% and failed it on timeouts (2026-10-10).
 prepush:  ## Before every push — the tiers the diff can break, by area (docs/testing.md)
-	$(PY) -m manamap.check_scope prepush
+	$(KEEPAWAKE) $(PY) -m manamap.check_scope prepush
 
 # The escape hatch: everything, whatever the diff says. The same runner as `prepush`
 # so the regression tier and the browser suite still share the wall clock.
 prepush-full:  ## unit + its isolation proof + regression + browser, unconditionally
-	$(PY) -m manamap.check_scope full
+	$(KEEPAWAKE) $(PY) -m manamap.check_scope full
 
 SLUG ?=
 check-deck:  ## A deck's own checks while iterating on a list: make check-deck SLUG=edgar-vampires
