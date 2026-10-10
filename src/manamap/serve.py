@@ -58,7 +58,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 139 pilot subcommands answer in JSON, instantly, for free.
+  design: 142 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -1014,6 +1014,9 @@ CLI_READONLY = frozenset({
     # mass-entry form. Reads `source()` and the branch's cards.json; `--out` is
     # a slug-scoped view like `deck-facts`'s.
     "buy-list",
+    # A LIST AS IMPORT TEXT (2026-10-09): Moxfield / Arena / plain. Reads one
+    # decklist (or a version's out of git) and prints it; `--out` is slug-scoped.
+    "deck-export",
 })
 
 #: Any of these on the parsed namespace means the command intends to WRITE.

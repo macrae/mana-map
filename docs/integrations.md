@@ -101,6 +101,21 @@ The token is never part of a cache key and never written into the artifact:
 query string. One `@pytest.mark.network` test prices a card for real and skips without
 the two variables.
 
+## Moxfield (export + paste; 2026-10-09) — nothing on this client
+
+Moxfield is the one service the bench publishes to, and nothing in Python talks to it.
+There is no public API and no write API; the endpoints its own site calls sit behind
+Cloudflare, which answers server and datacenter traffic with a 403 whatever the headers
+say, so a fetch from `net.py` — or from `serve.py` — fails before Moxfield sees it. The
+sanctioned path to programmatic access is to email support@moxfield.com and ask for a
+custom User-Agent to be allow-listed; we have not asked, and nothing here assumes we will.
+So the flow is the pilot's own browser both ways: `manamap pilot deck-export <slug>
+--format moxfield` prints text Moxfield's import box takes as it stands, the pilot pastes
+and saves it, and `deck-link <slug> moxfield <url>` records where it landed in
+`links.json`, form-checked by `validate-links` and never fetched. Into the repo, `check-in
+--from <url>` refuses any URL with one sentence — export on Moxfield, copy, `check-in
+--from -`, paste. `docs/pilot.md` ("Moxfield") has the commands and the three export forms.
+
 ## Nothing here is a gate
 
 A command that needs the network asks for it, says so when it cannot have it, and

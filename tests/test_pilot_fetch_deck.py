@@ -879,6 +879,9 @@ def test_every_parse_decklist_caller_is_allow_listed_with_its_reason():
                              "(C3 holds it to the spec) and `render_decklist` "
                              "must write it back; `set_printing` parses one "
                              "line, which has no section",
+        "pilot/deck_export.py": "an export is the WHOLE list — Moxfield's and "
+                                "Arena's import take the sideboard, and a 60-card "
+                                "deck's fifteen must ride along",
     }
     found = {}
     for path in sorted(src.rglob("*.py")):

@@ -451,6 +451,11 @@ VALIDATED = {
     # no STAGES row and no regen stage, because the file needs the network and "a
     # gate that fails when the network is down is a gate that gets switched off".
     "prices.json": "manamap.pilot.validate_prices",
+    # WHERE THE DECK LIVES ELSEWHERE (2026-10-09): Moxfield URLs recorded by hand
+    # with `deck-link`. Form only — Moxfield 403s every server-side request, so
+    # nothing could check reachability — and no STAGES row: optional, hand-written,
+    # and absent means the deck is published nowhere.
+    "links.json": "manamap.pilot.validate_links",
     # The combo report (2026-10-09): the lines a list contains and the ones it is
     # a card short of, both recomputable — gated the day it shipped.
     "combos.json": "manamap.pilot.validate_deck_combos",

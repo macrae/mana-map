@@ -70,6 +70,11 @@ manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--car
 manamap pilot buy-list <slug> --branch N [--exact] [--out F] [--json]  # the bill's BUY rows as the paste Mana Pool's
                                         #   mass entry takes (manapool.com/add-deck): `N Name`, or --exact `N Name (SET) CN`;
                                         #   footer `N cards to buy` + a figure only when prices.json sits beside the branch
+manamap pilot deck-export <slug> [--version V] [--branch B] [--format moxfield|arena|plain] [--out F]  # the list as import
+                                        #   text: moxfield = decklist.txt's form (paste into Moxfield), arena, or plain `N Name`
+manamap pilot deck-link <slug> moxfield <url> [--note "…"] | moxfield --remove | list  # record by hand where the deck
+                                        #   lives on Moxfield -> links.json (form-checked; the manifest carries it)
+manamap pilot validate-links <slug>                      # links.json: known service, https on its hosts, id = url's, as_of a date
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed
@@ -711,6 +716,28 @@ partial sum is not a figure. `--json` is `{text, count, buy_cents|null, as_of|nu
 which `serve`'s `branch/buy-list` returns from the same function for the branch page's
 "Copy for Mana Pool"; `--out` is slug-scoped. It never opens the collection boxes and
 never says which deck holds a card.
+
+## Moxfield (`deck-export`, `deck-link`, `validate-links`, 2026-10-09)
+
+Moxfield has no public API and no write API, and its Cloudflare front 403s every
+server-side request, so nothing in this package talks to it (`docs/integrations.md`).
+Publishing is a paste: `manamap pilot deck-export <slug> --format moxfield` prints
+`check_in.render_decklist`'s form — `Commander:` / `Deck:` / `Sideboard:`, `N Name (SET)
+CN`, `*F*` — which Moxfield's import box takes without edits and which `check-in --from -`
+reads back to the same entries. `--format arena` is MTG Arena's import (`N Name (SET) CN`,
+no headers, the commander first, a blank line before the sideboard, no foil markers);
+`--format plain` is `N Name` with the sections kept, for a message or an importer that
+rejects printings. `--version V` exports a past version out of git (`deck_versions.blob_at`),
+`--branch B` a branch's list, never both; `--out` is slug-scoped. Once the deck is saved on
+Moxfield the pilot records its URL by hand: `deck-link <slug> moxfield <url> [--note]`
+writes `links.json` (`{moxfield: {url, id, as_of, note?}}`, keyed by service), `deck-link
+<slug> list` shows it, `--remove` drops it and the file goes with the last link.
+`validate-links` checks form only — https on `moxfield.com`, the id parsed from the URL,
+`as_of` an ISO date — because reachability cannot be checked from here. Optional and
+hand-written, so not a lifecycle stage: absent means the deck is published nowhere, and
+`build-index` adds `links` to the deck's manifest entry only when the file exists. The other
+direction is the same paste: `check-in --from <url>` is refused with the sentence that says
+to export on Moxfield and paste into `--from -`.
 
 ## Mining the corpus (`card-search`, tier ◆, computed on demand)
 

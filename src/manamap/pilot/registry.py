@@ -56,6 +56,14 @@ PILOT_STEPS = [
     ("buy-list", "manamap.pilot.buy_list",
      "A branch's purchases (the bill's BUY rows) as one list Mana Pool's mass entry takes — "
      "paste at manapool.com/add-deck; --exact pins printings `N Name (SET) CN`"),
+    ("deck-export", "manamap.pilot.deck_export",
+     "A deck's list as import text: --format moxfield (Commander:/Deck:/Sideboard:, `(SET) CN`, "
+     "`*F*` — paste into Moxfield's import box), arena (no headers, blank line, sideboard) or plain"),
+    ("deck-link", "manamap.pilot.deck_link",
+     "Record where a deck lives on another site, by hand: `moxfield <url> [--note]`, "
+     "`moxfield --remove`, `list` -> links.json"),
+    ("validate-links", "manamap.pilot.validate_links",
+     "Form-check links.json: known service, https on its host allow-list, id parsed from the url, as_of a date"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("scenario-ab", "manamap.pilot.scenario_ab",
@@ -301,6 +309,7 @@ _DECK_COMMANDS = {
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints", "validate-protected",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
     "prices", "validate-prices",
+    "deck-export", "deck-link", "validate-links",
     "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
@@ -1370,6 +1379,27 @@ def add_pilot_parser(subparsers):
                              help="do not open the PDF when it is written")
             cmd.add_argument("--dry-run", dest="dry_run", action="store_true",
                              help="list what would print; download and write nothing")
+        if name == "deck-export":
+            # Its own `--branch`/`--version`: a version is the deck's history out of
+            # git, a branch its working list — `deck_export.source_text` refuses both.
+            cmd.add_argument("--format", choices=("moxfield", "arena", "plain"),
+                             default="moxfield",
+                             help="moxfield: Moxfield's import box (the decklist.txt form); "
+                                  "arena: MTG Arena's import; plain: `N Name`, sections kept")
+            cmd.add_argument("--version", default=None, metavar="V",
+                             help="a past version (number, tag or sha prefix) read out of git")
+            cmd.add_argument("--branch", default=None, metavar="NAME",
+                             help="export a branch's list instead of the deck's")
+            cmd.add_argument("--out", default=None,
+                             help="Write the text here (slug-scoped; a view, never tracked)")
+        if name == "deck-link":
+            cmd.add_argument("action", metavar="SERVICE|list",
+                             help="`moxfield` to set or --remove its link; `list` to show them")
+            cmd.add_argument("url", nargs="?", default=None,
+                             help="the deck's URL, e.g. https://moxfield.com/decks/<id>")
+            cmd.add_argument("--note", default=None, help="a line kept beside the link")
+            cmd.add_argument("--remove", action="store_true",
+                             help="drop this service's link (the file goes with the last)")
         if name == "buy-list":
             # `--branch` IS REQUIRED: a deck's own list has no "adds", so there
             # is nothing to buy for it — the bill is a property of a branch.

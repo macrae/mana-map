@@ -63,7 +63,17 @@ def _is_basic(name):
     return name in {"Plains", "Island", "Swamp", "Mountain", "Forest", "Wastes"}
 
 
+#: What a URL passed as `--from` gets. Moxfield has no public API and its
+#: Cloudflare front 403s every server-side request (docs/integrations.md), so the
+#: only way in is the pilot's own browser: export, copy, paste on stdin. The same
+#: sentence for any host — a URL is never fetched here.
+URL_REFUSAL = ("Moxfield blocks server-side access; open the deck on Moxfield, Export → "
+               "copy, then `manamap pilot check-in <slug> --from -` and paste")
+
+
 def read_list(path_or_dash):
+    if str(path_or_dash).strip().lower().startswith(("http://", "https://")):
+        raise SystemExit(URL_REFUSAL)
     if str(path_or_dash) == "-":
         return sys.stdin.read()
     with open(path_or_dash, encoding="utf-8") as f:

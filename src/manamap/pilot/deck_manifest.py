@@ -420,6 +420,13 @@ def gather_entries():
             "stack_files": stack_files,
             "stack_cards": stack_cards,
         })
+        # WHERE THE DECK LIVES ELSEWHERE — `links.json` as written by `deck-link`,
+        # or NO KEY AT ALL. Omitted rather than null so a deck with no links
+        # renders the bytes it rendered before the key existed, and so "absent"
+        # stays absent: the page links out only when there is a link.
+        links = load_json(deck_path / "links.json", None)
+        if links:
+            entries[-1]["links"] = links
     # Sorted by SLUG. It was  — the magazine's issue number,
     # with 999 as the sentinel for a deck that never had one — so the frontend's
     # deck order was decided by a field no live surface reads.
@@ -449,15 +456,17 @@ def write_manifest(entries):
             for e in entries if e.get("draft")
         ],
         "decks": [
-            {k: e[k] for k in ("slug", "format", "deck_name", "commander",
-                               "verified", "decisions", "stack_files",
-                               "stack_cards", "published", "status",
-                               "sim_runs", "experiments", "prescriptions",
-                               "decision_files", "has",
-                               # The workbench landing: art for the rack, and the
-                               # one predicate it filters on.
-                               "image", "paper", "locked", "version",
-                               "deletable", "undeletable_because")}
+            {**{k: e[k] for k in ("slug", "format", "deck_name", "commander",
+                                  "verified", "decisions", "stack_files",
+                                  "stack_cards", "published", "status",
+                                  "sim_runs", "experiments", "prescriptions",
+                                  "decision_files", "has",
+                                  # The workbench landing: art for the rack, and the
+                                  # one predicate it filters on.
+                                  "image", "paper", "locked", "version",
+                                  "deletable", "undeletable_because")},
+             # Only when the deck has any (`deck-link`): absent means absent.
+             **({"links": e["links"]} if e.get("links") else {})}
             for e in entries if not e.get("draft")
         ]
     }
