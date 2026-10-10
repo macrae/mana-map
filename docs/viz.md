@@ -1291,6 +1291,44 @@ Where the deck's format comes from: the manifest entry's `format` (on every entr
 - **The workbench** subtitle (card and fleet table) is `Modern · G · 60 cards` for a deck
   with no commander; the art is the entry's `image`, as for every deck.
 
+## Moxfield: out by paste, a link by hand, in by paste (Area D, 2026-10-09)
+
+Moxfield has no public API and no write API, and its Cloudflare front 403s every
+server-side request (`docs/integrations.md`, "Moxfield"), so the pages never talk to it
+except once, from the pilot's own browser, in Discover. Three surfaces:
+
+- **The deck page's "Copy for Moxfield"** (cover sheet, `deck-view.js`) puts the list on
+  the clipboard and opens `links.moxfield.url`, or `moxfield.com/decks/personal` when no
+  link is recorded, in a new `noopener` tab, with the hint "paste into Moxfield's import
+  box". The text is `manamap pilot deck-export <slug> --format moxfield`'s, byte for
+  byte. With a local server the page runs that command through the read-only `cli`
+  endpoint (`Api.call('cli', {argv: ['deck-export', slug, '--format', 'moxfield']})`).
+  **On the static site it reads the deck's `decklist.txt`**, not `cards.json`, and
+  renders it through `Decklist.parse(text, {printings: true})` + `Decklist.render`
+  (`decklist.js`, now also loaded by `deck.html`), the browser mirror of
+  `check_in.render_decklist`/`render_line`. `cards.json` carries the RESOLVED printing of
+  every row (sharknado's list names no printing and its `cards.json` names a hundred), so
+  exporting it would pin Moxfield to printings the pilot never chose and disagree with
+  the CLI. The `printings` option is opt-in: the default parse is still the parity
+  contract's `{name, quantity, is_commander, board}`. `tests/test_viz_moxfield.py` holds
+  parse→render to `deck_export.export` on every tracked deck. With no clipboard, the text
+  is shown in a `<pre>` instead and no tab opens.
+- **A recorded link** (`deck-link` → `links.json` → the manifest's `links`, present only
+  when the file exists; `MANIFEST_VERSION` 8) shows as a small "Moxfield ↗" on the
+  deck page's cover (`a.cov-moxfield`) and on the workbench card (`a.wb-moxfield`).
+  Both pages check the URL against `deck_link`'s pattern themselves before writing an
+  href, because an href is where a bad string becomes a live `javascript:` link.
+- **Discover's import box** (`#dcImport`): a pasted `https://(www.)moxfield.com/decks/<id>`
+  tries ONE browser-side `fetch('https://api2.moxfield.com/v2/decks/all/<id>')` with a
+  5 s `AbortController` timeout. Success maps `commanders`/`mainboard`/`sideboard` (v2's
+  name-keyed boards, or v3's `boards.<b>.cards`) to `N Name` lines and hands them to the
+  ordinary `importText`; the printing is dropped, since a lower-case set code would not
+  match the parser's pattern and would stay inside the name. ANY failure (CORS, 403,
+  timeout, a non-JSON challenge page, no cards) shows one sentence in `#dcImportNote`:
+  "Moxfield blocks direct reads. Open the deck on Moxfield, Export → Copy for Moxfield,
+  and paste the text here." No retry, and never through `manamap serve`: a server-side
+  request is exactly what Moxfield refuses, and only the pilot's browser has a chance.
+
 ## The workbench (`workbench.html`) — the landing page
 
 The front door for a **pilot**, as `index.html` is the front door for the corpus. It

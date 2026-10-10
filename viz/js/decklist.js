@@ -14,6 +14,12 @@
  * exactly where the one real hazard lives, and the safest way to not reimplement a
  * hazard is to not reimplement the feature.
  *
+ * ONE EXCEPTION, opt-in (2026-10-09): `parse(text, {printings: true})` keeps `foil`,
+ * `set` and `collector_number`, and `render(entries)` writes them back as
+ * `check_in.render_decklist` does — for the deck page's static "Copy for Moxfield",
+ * which has no server to run `deck-export`. That path is held to the CLI's bytes on
+ * every tracked deck by `tests/test_viz_moxfield.py`, not by the parity fixtures.
+ *
  * `board` is `'main'` or `'side'` (2026-10-09). Both parsers used to stop reading at a
  * `Sideboard:` line; now the section switches and every entry says where it sits, so a
  * 60-card list with its fifteen imports whole. A caller that wants the deck filters on
@@ -34,6 +40,8 @@ window.Decklist = (function () {
   const SIDEBOARD = new Set(['sideboard', 'side', 'maybeboard', 'considering']);
 
   const PRINTING = /\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$/;
+  // Mirrors `_FOIL_MARKERS` in pilot/fetch_deck.py (`*E*` is etched).
+  const FOIL_MARKERS = ['*F*', '*E*'];
 
   function stripSuffix(line, marker) {
     const upper = line.toUpperCase();
@@ -54,7 +62,16 @@ window.Decklist = (function () {
     return (COMMANDER.has(body) || MAIN.has(body) || SIDEBOARD.has(body)) ? body : null;
   }
 
-  function parse(text) {
+  /* `opts.printings` keeps what the default parse throws away — `foil`, and `set`
+   * (lower-cased, as Python stores it) plus `collector_number` when the line carries
+   * a printing — so `render` below can write the list back the way
+   * `check_in.render_decklist` does. OFF by default: the parity contract and every
+   * import caller see exactly the entries they always did. The deck page's static
+   * "Copy for Moxfield" is the one caller that asks, and
+   * `tests/test_viz_moxfield.py` holds parse→render to `deck-export --format
+   * moxfield` on every tracked deck. */
+  function parse(text, opts) {
+    const keep = !!(opts && opts.printings);
     const entries = [];
     let section = 'deck';
     // Whether the current section was entered through a comment header. It is the
@@ -89,9 +106,14 @@ window.Decklist = (function () {
       let isCommander = section === 'commander';
       const cmdr = stripSuffix(line, '*CMDR*');
       if (cmdr.found) { isCommander = true; line = cmdr.line; }
-      // Foil is stripped and discarded — but it MUST be stripped here, before the
-      // printing suffix is removed below, or the `$` anchor never matches.
-      line = stripSuffix(line, '*F*').line;
+      // Foil is stripped (and discarded unless `keep`) — but it MUST be stripped
+      // here, before the printing suffix is removed below, or the `$` anchor never
+      // matches. Both of Python's `_FOIL_MARKERS`, first match wins, as there.
+      let foil = false;
+      for (const fm of FOIL_MARKERS) {
+        const f = stripSuffix(line, fm);
+        if (f.found) { foil = true; line = f.line; break; }
+      }
 
       let quantity = 1;
       let name = line;
@@ -107,15 +129,67 @@ window.Decklist = (function () {
       const printing = name.match(PRINTING);
       if (printing) name = name.slice(0, name.length - printing[0].length).trim();
 
-      entries.push({
+      const entry = {
         name: name,
         quantity: quantity,
         is_commander: isCommander,
         board: section === 'side' ? 'side' : 'main',
-      });
+      };
+      if (keep) {
+        entry.foil = foil;
+        if (printing) {
+          entry.set = printing[1].toLowerCase();
+          entry.collector_number = printing[2];
+        }
+      }
+      entries.push(entry);
     }
     return entries;
   }
 
-  return { parse: parse };
+  /* One entry as one line — MIRRORS `pilot/check_in.py:render_line`:
+   * `N Name [(SET) CN] [*F*] [*CMDR*]`, in that order and nothing after. */
+  function renderLine(e, cmdrMarker) {
+    let s = (parseInt(e.quantity, 10) || 1) + ' ' + e.name;
+    if (e.set && e.collector_number) {
+      s += ' (' + String(e.set).toUpperCase() + ') ' + e.collector_number;
+    }
+    if (e.foil) s += ' *F*';
+    if (cmdrMarker) s += ' *CMDR*';
+    return s;
+  }
+
+  // Python's `sorted(key=name)`: code-point order, never `localeCompare`, which
+  // would put "Æther Vial" somewhere a Python sort does not.
+  function byName(a, b) { return a.name < b.name ? -1 : a.name > b.name ? 1 : 0; }
+
+  /* Entries back to text — MIRRORS `pilot/check_in.py:render_decklist`, which is
+   * what `manamap pilot deck-export --format moxfield` prints and what Moxfield's
+   * import box takes: `Commander:` block and a blank line when there is one,
+   * `Deck:` sorted by name, then `Sideboard:` only when there is one. One
+   * trailing newline. A stable sort keeps duplicate names in list order, as
+   * Python's does. */
+  function render(entries) {
+    const board = e => e.board || 'main';
+    const main = entries.filter(e => board(e) === 'main');
+    const side = entries.filter(e => board(e) === 'side').slice().sort(byName);
+    const cmds = main.filter(e => e.is_commander);
+    const deck = main.filter(e => !e.is_commander).slice().sort(byName);
+    const out = [];
+    if (cmds.length) {
+      out.push('Commander:');
+      cmds.forEach(e => out.push(renderLine(e)));
+      out.push('');
+    }
+    out.push('Deck:');
+    deck.forEach(e => out.push(renderLine(e)));
+    if (side.length) {
+      out.push('');
+      out.push('Sideboard:');
+      side.forEach(e => out.push(renderLine(e, !!e.is_commander)));
+    }
+    return out.join('\n') + '\n';
+  }
+
+  return { parse: parse, render: render, renderLine: renderLine };
 })();

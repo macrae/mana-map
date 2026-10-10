@@ -43,8 +43,11 @@
  *           The pages now READ it — Build's legality lens, the deck page's n/a
  *           panels, the workbench subtitle — and a cached manifest without the
  *           key would read a Modern deck as Commander.
+ *   7 -> 8: an entry carries `links` (`{moxfield: {url, id, as_of}}`) when the
+ *           deck has a `links.json`. The workbench card and the deck page's
+ *           cover READ it, and a cached manifest would hide a recorded link.
  */
-window.MANIFEST_VERSION = 7;
+window.MANIFEST_VERSION = 8;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── What a legal deck IS, per format — mirrors `pilot/formats.py:FORMATS` ────

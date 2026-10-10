@@ -269,6 +269,20 @@
     return '<span class="wb-acts">' + out + '</span>';
   }
 
+  /* Where the deck lives on Moxfield, when the pilot recorded it (`deck-link`
+   * writes `links.json`; the manifest carries `links` only when that file
+   * exists). Never fetched — Moxfield 403s server traffic and has no API — only
+   * linked. The host is checked here too: an href is where a bad string becomes
+   * a live link, and `validate-links` is not the browser. The pattern MIRRORS
+   * `deck_link.SERVICES["moxfield"]["url_re"]`. */
+  function moxfieldLink(e) {
+    var m = e && e.links && e.links.moxfield;
+    var url = m && typeof m.url === 'string' ? m.url : '';
+    if (!/^https:\/\/(www\.)?moxfield\.com\/decks\/[A-Za-z0-9_-]+\/?$/.test(url)) return '';
+    return '<a class="wb-moxfield" href="' + esc(url) + '" target="_blank" rel="noopener"'
+      + ' title="This deck on Moxfield">Moxfield ↗</a>';
+  }
+
   function card(e, info) {
     // `status` is the lifecycle TRIPLE for a dead deck and null for a live one —
     // [id, headline, blurb]. Only the headline belongs on a card.
@@ -302,6 +316,7 @@
     var links = '<nav class="wb-links">'
       + '<a href="deck.html?deck=' + slug + '">Dossier</a>'
       + '<a href="index.html?deck=' + slug + '">On the map</a>'
+      + moxfieldLink(e)
       + actions(e)
       + '</nav>';
     /* A DECK WITH NO AUTHORED NAME PRINTS ITS COMMANDER TWICE.

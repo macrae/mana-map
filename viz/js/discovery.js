@@ -487,6 +487,7 @@ window.Discovery = (function () {
       '<textarea id="dcImport" class="discover-import" rows="5" ' +
       'placeholder="1 Sol Ring&#10;1 Edgar Markov *CMDR*&#10;&#10;Moxfield exports work as-is."></textarea>' +
       '<button class="lens-btn" onclick="Discovery.onImport()">Load deck as a graph</button>' +
+      '<p id="dcImportNote" class="lens-note discover-import-note" role="status"></p>' +
       '<p class="lens-note">Resolved against the card index, not the published decks — ' +
       'any list works, it does not have to be one of the seven.</p></div>';
 
@@ -1190,12 +1191,94 @@ window.Discovery = (function () {
     loadManifest().then(() => loadDeck(slug));
   }
 
+  /* ── A PASTED MOXFIELD URL: one browser-side try, then the paste ────────────
+   *
+   * Moxfield has no public API, and its Cloudflare front 403s server and
+   * datacenter traffic — so this is NEVER proxied through `manamap serve` (that
+   * request would fail before Moxfield saw it, docs/integrations.md). The pilot's
+   * own browser is the only client with a chance, and only a chance: the
+   * endpoint Moxfield's site calls may refuse a cross-origin read at any time.
+   * So ONE fetch, a 5 s timeout, no retry, and any failure at all — CORS, 403,
+   * timeout, a shape this does not know — becomes the same sentence telling the
+   * pilot how to paste the list instead. */
+  const MOXFIELD_DECK_URL = /^https:\/\/(?:www\.)?moxfield\.com\/decks\/([A-Za-z0-9_-]+)\/?(?:[?#]\S*)?$/;
+  const MOXFIELD_API = 'https://api2.moxfield.com/v2/decks/all/';
+  const MOXFIELD_TIMEOUT_MS = 5000;
+  const MOXFIELD_BLOCKED = 'Moxfield blocks direct reads. Open the deck on Moxfield, '
+    + 'Export → Copy for Moxfield, and paste the text here.';
+
+  /* One board of a Moxfield deck document as `N Name` lines. Tolerant of shape:
+   * v2 keys a board by card name (`{name: {quantity, card: {name, set, cn}}}`),
+   * v3 nests it (`boards.mainboard.cards`, keyed by id). The printing is left
+   * off on purpose — the import resolves names, and a lower-case set code would
+   * not match the parser's printing pattern and would stay inside the name. */
+  function moxfieldBoardLines(board) {
+    if (!board || typeof board !== 'object') return [];
+    const cards = board.cards && typeof board.cards === 'object' ? board.cards : board;
+    const out = [];
+    for (const key of Object.keys(cards)) {
+      const v = cards[key];
+      if (!v || typeof v !== 'object') continue;
+      const name = (v.card && typeof v.card.name === 'string' && v.card.name) || key;
+      const qty = parseInt(v.quantity, 10) || 1;
+      if (name) out.push(qty + ' ' + name);
+    }
+    return out;
+  }
+
+  /* A Moxfield deck document as decklist text, or null if it holds no cards. */
+  function moxfieldToText(doc) {
+    if (!doc || typeof doc !== 'object') return null;
+    const boards = doc.boards && typeof doc.boards === 'object' ? doc.boards : doc;
+    const cmd = moxfieldBoardLines(boards.commanders);
+    const main = moxfieldBoardLines(boards.mainboard);
+    const side = moxfieldBoardLines(boards.sideboard);
+    if (!cmd.length && !main.length) return null;
+    const out = [];
+    if (cmd.length) out.push('Commander:', ...cmd, '');
+    out.push('Deck:', ...main);
+    if (side.length) out.push('', 'Sideboard:', ...side);
+    return out.join('\n') + '\n';
+  }
+
+  function importNote(text) {
+    const el = document.getElementById('dcImportNote');
+    if (el) el.textContent = text || '';
+  }
+
+  /* Resolves to the deck's text, or rejects. Exactly one request. */
+  function fetchMoxfield(id) {
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = setTimeout(() => { if (ctl) ctl.abort(); }, MOXFIELD_TIMEOUT_MS);
+    return fetch(MOXFIELD_API + encodeURIComponent(id),
+                 { signal: ctl ? ctl.signal : undefined, credentials: 'omit', cache: 'no-store' })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(doc => {
+        const text = moxfieldToText(doc);
+        if (!text) throw new Error('no cards in that document');
+        return text;
+      })
+      .finally(() => clearTimeout(timer));
+  }
+
   function onImport() {
     const box = document.getElementById('dcImport');
     if (!box) return;
     const text = box.value.trim();
+    importNote('');
     if (!text) { MM.setStatus('Paste a decklist first.'); return; }
-    importText(text);
+    const mox = text.match(MOXFIELD_DECK_URL);
+    if (mox) {
+      MM.setStatus('Asking Moxfield for that deck…');
+      return fetchMoxfield(mox[1])
+        .then(deck => importText(deck))
+        .catch(() => {
+          importNote(MOXFIELD_BLOCKED);
+          MM.setStatus(MOXFIELD_BLOCKED);
+          return null;
+        });
+    }
+    return importText(text);
   }
 
   function toggleImport() {

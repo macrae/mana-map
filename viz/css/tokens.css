@@ -936,6 +936,11 @@ li.swap { padding: .6rem 0; border-top: 1px solid var(--rule); }
   color: var(--burst-yellow); font-variant-numeric: tabular-nums; }
 .cov-v .ev { font-family: var(--body); font-size: 13px; color: var(--ink-soft); }
 .cov-note { font-size: 11px; color: var(--ink-soft); }
+/* Copy for Moxfield — the deck out by paste (docs/viz.md, "Moxfield"). */
+.cov-export { margin-top: 14px; max-width: 360px; }
+.cov-export .moxfield-hint { margin: 4px 0 0; font-size: 12px; }
+.cov-export pre.moxfield-text { max-height: 220px; overflow: auto; }
+.cov-moxfield, .wb-links a.wb-moxfield { white-space: nowrap; }
 @media (max-width: 720px) {
   .cov { grid-template-columns: 1fr; }
   .cov-shot { max-width: 260px; }

@@ -1860,6 +1860,100 @@
     return { games: games, win: r.win || 0, loss: r.loss || 0 };
   }
 
+  /* ── MOXFIELD: export by paste, a link by hand (docs/viz.md, "Moxfield") ──
+   *
+   * Moxfield has no API and 403s every server-side request, so nothing here
+   * talks to it. "Copy for Moxfield" puts the list on the clipboard in the
+   * form its import box takes and opens Moxfield in a new tab for the paste.
+   *
+   * THE TEXT IS `deck-export <slug> --format moxfield`'S, BYTE FOR BYTE. With a
+   * local server the page runs that command through the read-only `cli`
+   * endpoint. On the static site it reads the deck's own `decklist.txt` and
+   * renders it through `Decklist.parse(…, {printings: true})` + `Decklist.render`,
+   * the browser mirror of `check_in.render_decklist`. NOT `cards.json`: that file
+   * carries the RESOLVED printing of every row — sharknado's list names no
+   * printing at all and its cards.json names a hundred — so exporting it would
+   * pin Moxfield to printings the pilot never chose, and disagree with the CLI. */
+  var MOXFIELD_NEW = 'https://moxfield.com/decks/personal';
+
+  /* The deck's recorded Moxfield URL, or null. Checked against the host here as
+   * well as by `validate-links`: an href is the one place a bad string becomes a
+   * live `javascript:` link, and the page should not have to trust a file for it.
+   * The pattern MIRRORS `deck_link.SERVICES["moxfield"]["url_re"]`. */
+  function moxfieldUrl(entry) {
+    var m = entry && entry.links && entry.links.moxfield;
+    var url = m && typeof m.url === 'string' ? m.url : null;
+    return url && /^https:\/\/(www\.)?moxfield\.com\/decks\/[A-Za-z0-9_-]+\/?$/.test(url)
+      ? url : null;
+  }
+
+  function moxfieldExport() {
+    return '<div class="cov-export">' +
+      '<button class="todo-cmd" data-act="moxfield-copy"><code>Copy for Moxfield</code>' +
+      '<span class="todo-copy moxfield-say"></span></button>' +
+      '<p class="ev moxfield-hint">Copies the list and opens Moxfield — paste into ' +
+      'Moxfield’s import box.</p></div>';
+  }
+
+  /* The export text: the CLI's stdout through the local API, else the static
+   * mirror over `decklist.txt`. Rejects with a sentence. */
+  function moxfieldText(slug) {
+    if (window.Api && Api.ready && Api.has('cli')) {
+      return Api.call('cli', { argv: ['deck-export', slug, '--format', 'moxfield'] })
+        .then(function (r) {
+          if (!r || r.exit) throw new Error((r && r.stdout) || 'deck-export failed');
+          return r.stdout;
+        });
+    }
+    return fetch(BASE + encodeURIComponent(slug) + '/decklist.txt', { cache: 'no-cache' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('no decklist.txt for ' + slug);
+        return r.text();
+      })
+      .then(function (text) {
+        if (!window.Decklist) throw new Error('decklist.js did not load');
+        var entries = Decklist.parse(text, { printings: true });
+        if (!entries.length) throw new Error(slug + ': the decklist parsed to nothing');
+        return Decklist.render(entries);
+      });
+  }
+
+  function wireMoxfield(d) {
+    var btn = document.querySelector('[data-act="moxfield-copy"]');
+    if (!btn) return;
+    var target = moxfieldUrl(d.entry) || MOXFIELD_NEW;
+    btn.addEventListener('click', function () {
+      if (btn.disabled) return;
+      btn.disabled = true;
+      var say = btn.querySelector('.moxfield-say');
+      moxfieldText(d.slug).then(function (text) {
+        var copied = navigator.clipboard && navigator.clipboard.writeText
+          ? navigator.clipboard.writeText(text).then(function () { return true; },
+                                                     function () { return false; })
+          : Promise.resolve(false);
+        return copied.then(function (ok) {
+          if (say) say.textContent = ok ? 'copied' : 'could not copy — select it below';
+          // `noopener`: Moxfield's tab must not get a handle on this page.
+          if (ok) { window.open(target, '_blank', 'noopener'); return; }
+          // No clipboard (an insecure origin): show the text rather than a
+          // button that appears to do nothing.
+          var pre = btn.parentElement.querySelector('pre.moxfield-text');
+          if (!pre) {
+            pre = document.createElement('pre');
+            pre.className = 'cmd moxfield-text';
+            btn.parentElement.appendChild(pre);
+          }
+          pre.textContent = text;
+        });
+      }).catch(function (e) {
+        var p = document.createElement('p');
+        p.className = 'ev todo-blocked';
+        p.textContent = String(e && e.message ? e.message : e);
+        btn.parentElement.insertBefore(p, btn.nextSibling);
+      }).then(function () { btn.disabled = false; });
+    });
+  }
+
   function coverPanel(d) {
     var info = d.info || {}, entry = d.entry || {};
     var g = info.goldfish || {}, rec = info.record || {};
@@ -1888,6 +1982,7 @@
           ? '; ' + esc(pr.missing.length) + ' unpriced' : '') + ')</span></dd>'
       : '';
 
+    var moxUrl = moxfieldUrl(entry);
     var ident = '<div class="cov-id">' +
       '<div class="cov-alias">' + esc(entry.deck_name || info.slug || '') + '</div>' +
       '<div class="cov-sub">' + esc(specOf(d).commanders
@@ -1895,6 +1990,8 @@
       '<dl class="cov-book">' +
         '<dt>Case no.</dt><dd>' + esc(info.slug || '') + '</dd>' +
         '<dt>Marks</dt><dd>' + esc(marks) + '</dd>' + price +
+        (moxUrl ? '<dt>Published</dt><dd><a class="cov-moxfield" href="' + esc(moxUrl) +
+          '" target="_blank" rel="noopener">Moxfield ↗</a></dd>' : '') +
         '<dt>First booked</dt><dd>' + (rec.first_played
           ? esc(rec.first_played)
           : '<span class="ev">never played</span>') + '</dd>' +
@@ -1966,7 +2063,7 @@
         '<div class="cov-stamp is-' + stamp.kind + '" title="' + esc(stamp.why || '') + '">' +
           (stamp.pin ? '<span class="wb-pin" aria-hidden="true">📌</span>' : '') +
           esc(stamp.word) + '</div>' +
-        ident + mo + briefless + health + nums +
+        ident + mo + briefless + health + nums + moxfieldExport() +
       '</div></div>';
     return section('cover', 'var(--tier-data)', body);
   }
@@ -2301,6 +2398,7 @@
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
     wireContext(d);
+    wireMoxfield(d);
     var bits = [d.stacks.length + ' verified line(s)'];
     if ((d.sims || []).length) bits.push(d.sims.length + ' sim run(s)');
     if ((d.experiments || []).length) bits.push(d.experiments.length + ' experiment(s)');
