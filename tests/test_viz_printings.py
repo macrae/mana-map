@@ -105,9 +105,10 @@ def test_the_strip_renders_a_click_posts_and_the_row_follows_the_reload(page):
     text = page.inner_text(row)
     assert f"({before['set'].upper()}) {before['collector_number']}" in text, text
     assert before["set_name"] in text
-    # The panel's image is the sleeved printing's, not Scryfall's default by name.
+    # The panel's image is the sleeved printing's, not Scryfall's default by name —
+    # at the panel's `large` version (2026-10-10), the same CDN path one size up.
     src = page.get_attribute("#detailInner .detail-card-image img", "src")
-    assert src == before["image"], src
+    assert src == before["image"].replace("/normal/", "/large/"), src
 
     page.click(f"{row} .deck-ctx-change")
     page.wait_for_selector(f"{row} .printing-thumb", timeout=5000)
@@ -171,6 +172,34 @@ def test_card_image_url_prefers_the_entry_and_falls_back_by_name(page):
     assert r["empty"] == "https://api.scryfall.com/cards/named?exact=Sol%20Ring&format=image&version=normal", (
         "an entry with no image falls back by name, never to nothing")
     assert r["viaMM"] == r["plain"]
+    assert page.js_errors == []
+
+
+def test_a_larger_version_upsizes_the_sleeved_printing(page):
+    """The card panel asks for `large` and the magnifier for `png` (2026-10-10). The
+    entry holds Scryfall's `normal`; the version is a PATH segment on Scryfall's
+    CDN, so the sleeved printing must upsize in place — not fall back to the
+    by-name default printing, and not stay at `normal` under a `large` label."""
+    r = page.evaluate("""() => {
+      const dfc = {name: 'A // B', image: 'https://cards.scryfall.io/normal/front/x.jpg?1700',
+                   card_faces: [{name: 'A', image: 'https://cards.scryfall.io/normal/front/x.jpg?1700'},
+                                {name: 'B', image: 'https://cards.scryfall.io/normal/back/x.jpg?1700'}]};
+      const odd = {name: 'C', image: 'https://example.org/c.jpg'};
+      return {
+        large: Shell.cardImageUrl('A // B', 'large', dfc),
+        back: Shell.cardImageUrl('B', 'large', dfc),
+        png: Shell.cardImageUrl('A // B', 'png', dfc),
+        normal: Shell.cardImageUrl('A // B', 'normal', dfc),
+        odd: Shell.cardImageUrl('C', 'large', odd),
+        byName: Shell.cardImageUrl('Sol Ring', 'large'),
+      };
+    }""")
+    assert r["large"] == "https://cards.scryfall.io/large/front/x.jpg?1700"
+    assert r["back"] == "https://cards.scryfall.io/large/back/x.jpg?1700", "the back face upsizes too"
+    assert r["png"] == "https://cards.scryfall.io/png/front/x.png?1700"
+    assert r["normal"] == "https://cards.scryfall.io/normal/front/x.jpg?1700", "normal is untouched"
+    assert r["odd"] == "https://example.org/c.jpg", "a non-Scryfall URL is never rewritten"
+    assert r["byName"].endswith("&version=large")
     assert page.js_errors == []
 
 

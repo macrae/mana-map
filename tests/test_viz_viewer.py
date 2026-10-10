@@ -356,15 +356,18 @@ def test_the_embedding_cache_is_keyed_per_space():
     assert "embeddingsCache[key]" in src
 
 
-def test_switching_space_resets_the_neighbour_table():
-    """`Discovery.configure` only swaps a URL; the decoded table and its memoised
-    promise still hold the old space's arrays and `loadNeighbours` returns that
-    promise without re-reading the URL."""
+def test_one_space_supplies_the_map_and_the_neighbours():
+    """ONE SPACE SINCE 2026-10-10 (the pilot's choice): the pages draw CardBERT
+    and answer similarity out of it, and there is no picker. The neighbour table
+    Discover branches from and the matrix `nearestTo` scans must both come from
+    that one registered space — a hardcoded `DATA.neighbours` beside a CardBERT
+    map would be two models on one screen again, which is what the picker era
+    spent three commits keeping apart."""
     src = _mana_map_src()
-    assert "Discovery.resetNeighbours()" in src
-    assert "await Discovery.loadNeighbours()" in src, (
-        "cleared but never re-fetched — Discovery.isReady() stays false forever"
-    )
+    assert "neighbours: SPACES[currentSpace].neighbours" in src
+    assert "const currentSpace = 'cardbert'" in src
+    assert "setSpace" not in src, "a space switch is back with nothing to switch to"
+    assert "DATA.neighbours," not in src and "DATA.neighbours }" not in src
 
 
 def test_only_one_knn_implementation_remains():
@@ -378,6 +381,7 @@ def test_only_one_knn_implementation_remains():
 
 def test_nearest_excludes_duplicate_names():
     """cards.csv carries 51 duplicate names, so self-exclusion alone let a card return
-    its own twin at cosine 1.0 — true, and useless."""
+    its own twin at cosine 1.0 — true, and useless. Read through `nameAt`, which
+    falls back to the slim index when Discover scans before the projection lands."""
     src = _mana_map_src()
-    assert "allData[j].n === selfName" in src
+    assert "nameAt(j) === selfName" in src

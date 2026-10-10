@@ -57,14 +57,18 @@ def test_the_page_busts_all_of_its_own_assets():
     assert len(versions) == 1, f"spaces.html busts inconsistently: {versions}"
 
 
-def test_the_default_it_documents_is_the_default_in_code():
-    """The page tells a reader `function` is the default and nothing is cut over.
-    If that ever stops being true the page becomes confidently wrong, which is
-    worse than absent."""
+def test_the_split_it_documents_is_the_split_in_code():
+    """The page tells a reader the pages use CardBERT (the pilot's choice,
+    2026-10-10) while the bench keeps `function`. If either half stops being
+    true the page becomes confidently wrong, which is worse than absent."""
     from manamap import spaces
 
+    text = PAGE.read_text()
     assert spaces.DEFAULT == "function"
-    assert "Nothing has been cut over" in PAGE.read_text()
+    assert spaces.UI == "cardbert"
+    assert "The pages use CardBERT since 2026-10-10" in text
+    assert "keep <code>function</code>" in text
+    assert "Nothing has been cut over" not in text, "the old claim is back"
 
 
 def test_it_names_the_command_that_reproduces_its_numbers():

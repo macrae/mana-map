@@ -34,6 +34,14 @@ size measured (−0.275 at pool 500, interval excluding zero) while winning them
 (+0.151) and centroid headroom (0.976 against 0.019). It is a trade, so it is
 offered rather than imposed.
 
+## THE PAGES ARE NOT THE BENCH (2026-10-10)
+
+The pilot chose CardBERT for the pages — the Atlas, Discover and Build draw its
+map and answer "similar" out of it, with no picker — knowing the trade above.
+That is `UI`, and it is a separate constant on purpose: `DEFAULT` is what every
+`manamap pilot` command, the pipeline's `--space` and the bench's agents read,
+and it stays `function`. Moving the UI moved nothing on the Python side.
+
 ## OBSOLESCENCE IS DELIBERATELY NOT SELECTABLE
 
 `power_creep` gates on `OBSOLESCENCE_SIMILARITY_THRESHOLD = 0.75`, and that
@@ -57,6 +65,11 @@ from manamap import config
 #: here rather than naming a string, so this is the one line that moves if the
 #: measurement ever justifies moving it.
 DEFAULT = "function"
+
+#: The ONE space the pages use (`viz/js/mana-map.js` SPACES / MAP_CONFIGS mirror
+#: it). The pilot's decision, 2026-10-10: the pages read a card by theme, the
+#: bench reads it by function. Not a default — the pages offer no other space.
+UI = "cardbert"
 
 
 @dataclass(frozen=True)
@@ -122,12 +135,13 @@ SPACES = {
              "dims would misparse against the frontend's hardcoded 128."),
 }
 
-#: Spaces a browser may be pointed at. `text` is 384-d and the frontend's
-#: `EMBED_DIM` is a hardcoded 128 (`viz/js/mana-map.js:63`) with NO validation on
-#: a headerless .bin — a 384-d file would parse as plausible garbage rather than
-#: fail. `layout` is excluded for a different reason: it knows only colour and
-#: type, so asking it for neighbours returns arbitrary same-colour cards.
-BROWSABLE = ("function", "cardbert")
+#: Spaces a browser is pointed at — since 2026-10-10 exactly one, `UI`. The
+#: function space's browser files stay tracked (nothing deletes them) but no page
+#: fetches them. `text` could never be here: it is 384-d and the frontend's
+#: `EMBED_DIM` is a hardcoded 128 with NO validation on a headerless .bin — a
+#: 384-d file would parse as plausible garbage rather than fail. `layout` neither:
+#: it knows only colour and type, so its neighbours are arbitrary same-colour cards.
+BROWSABLE = (UI,)
 
 
 def get(slug=None):

@@ -1,13 +1,15 @@
-"""The Atlas's CARD DETAIL PANEL: text first, one place per fact, and the deck in Build.
+"""The Atlas's CARD DETAIL PANEL: the card first, one place per fact, and the deck in Build.
 
 An audit on 2026-10-08 (1440x900) measured the panel: header 81px, then a 443px card
 image, so on a long card the oracle began at the fold — while the image only repeated
 the name, cost, type and text. Keywords repeated the oracle, CMC repeated the header,
 every format had its own badge, obsolescence appeared twice ("Compare with" and
 "Outclassed by" read the same index), a DFC's faces were joined unlabelled, and Build
-with a deck loaded said nothing about the deck. `buildCardDetailHtml` now emits:
-deck context (Build only) · type + oracle · relations + the comparison + Keep · the
-image · one facts line.
+with a deck loaded said nothing about the deck. That audit moved the image to eighth
+place at 240px; on 2026-10-10 the pilot reversed that half of it ("the card is the
+thing"), and `buildCardDetailHtml` now emits: deck context (Build only) · THE IMAGE,
+full panel width at Scryfall `large`, click to magnify at `png` · type + oracle ·
+relations + the comparison + Keep · one facts line.
 
 Every interaction here is a REAL click. **Nothing may reach a real `serve`**: the
 Build tests install the review grid's own `_mock_api` (`watch/mark` mocked, every other
@@ -71,19 +73,71 @@ def _geometry(page):
     }""")
 
 
-def test_the_oracle_comes_before_the_image(page):
-    """On a long card the oracle used to start at the fold, under a 443px image.
-    It must lead now: above the image and within the panel's first ~250px.
-    Fails on the pre-rework `mana-map.js`, where the image is the first thing drawn."""
-    _route_scryfall(page)
+# The 2026-10-08 audit's image width, which the reversal must clearly beat.
+_OLD_IMAGE_PX = 240
+
+
+def test_the_card_comes_first_and_large(page):
+    """THE CARD IS THE THING (2026-10-10, the pilot's call, reversing dcaafb6a).
+    The image leads the panel — above the oracle, the relations and the facts —
+    at the panel's full width, at least 1.5x the 240px it was demoted to, and it
+    asks Scryfall for `large` rather than `normal`. Fails on the text-first
+    `mana-map.js`, where the oracle leads and the image is eighth at 240px."""
+    seen = _route_scryfall(page)
     _open(page, "The Elder Dragon War")
     g = _geometry(page)
     assert g["oracle"] is not None and g["image"] is not None, g
-    assert g["oracle"] < g["image"], f"the image leads the text again: {g}"
-    assert g["oracle"] <= 250, f"the oracle starts {g['oracle']}px down the panel: {g}"
-    assert g["oracle"] < g["relations"] < g["image"] < g["facts"], g
+    assert g["image"] < g["oracle"] < g["relations"] < g["facts"], f"the card does not lead: {g}"
+    r = page.evaluate("""() => {
+        const img = document.querySelector('#detailInner .detail-card-image img');
+        const inner = document.getElementById('detailInner');
+        const cs = getComputedStyle(inner);
+        return {w: img.getBoundingClientRect().width, src: img.src,
+                content: inner.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)};
+    }""")
+    assert r["w"] >= 1.5 * _OLD_IMAGE_PX, f"the card is {r['w']}px wide: {r}"
+    assert abs(r["w"] - r["content"]) <= 2, f"the card does not fill the panel: {r}"
+    assert "version=large" in r["src"], r["src"]
+    assert any("version=large" in u for u in seen), seen
     text = page.inner_text("#detailInner")
     assert "Read ahead" in text, "the oracle is not the card's"
+    assert page.js_errors == []
+
+
+def test_clicking_the_card_magnifies_it_and_escape_returns_focus(page):
+    """The magnifier replaced click-to-panel-width (the panel IS the card's width
+    now). A real click opens a fullscreen overlay holding Scryfall's `png`;
+    Escape closes it WITHOUT also peeling the selection (the page's own Escape
+    handler clears it), and focus comes back to the image that opened it."""
+    seen = _route_scryfall(page)
+    _open(page, "The Elder Dragon War")
+    page.click("#detailInner .detail-card-image img")
+    page.wait_for_selector(".card-magnifier .card-magnifier-img", timeout=5000)
+    r = page.evaluate("""() => {
+        const m = document.querySelector('.card-magnifier');
+        const big = m.querySelector('img');
+        const box = m.getBoundingClientRect();
+        return {src: big.src, role: m.getAttribute('role'), modal: m.getAttribute('aria-modal'),
+                covers: box.width >= innerWidth - 1 && box.height >= innerHeight - 1,
+                focus: document.activeElement.className, open: MM.magnifierOpen};
+    }""")
+    assert "version=png" in r["src"], r
+    assert any("version=png" in u for u in seen), seen
+    assert r["role"] == "dialog" and r["modal"] == "true", r
+    assert r["covers"], "the magnifier is not fullscreen"
+    assert r["focus"] == "card-magnifier-close", "focus did not move into the dialog"
+    page.keyboard.press("Escape")
+    page.wait_for_function("() => !document.querySelector('.card-magnifier')", timeout=5000)
+    after = page.evaluate("""() => ({
+        focusIsImage: document.activeElement === document.querySelector('#detailInner .detail-card-image img'),
+        title: (document.querySelector('#detailInner h2') || {}).textContent})""")
+    assert after["focusIsImage"], "focus did not return to the image"
+    assert after["title"] == "The Elder Dragon War", "Escape also cleared the selection"
+    # A click on the scrim dismisses it too.
+    page.click("#detailInner .detail-card-image img")
+    page.wait_for_selector(".card-magnifier", timeout=5000)
+    page.mouse.click(10, 450)
+    page.wait_for_function("() => !document.querySelector('.card-magnifier')", timeout=5000)
     assert page.js_errors == []
 
 
@@ -155,7 +209,9 @@ def test_obsolescence_appears_once_under_its_button(page):
 
 
 def test_a_dfc_labels_both_faces_and_flips(page):
-    """Faces were joined with an unlabelled <br><br> and only the front was drawn."""
+    """Faces were joined with an unlabelled <br><br> and only the front was drawn.
+    The flip keeps the panel's `large` version, and the magnifier shows the face
+    the panel is showing."""
     seen = _route_scryfall(page)
     _open(page, "Delver of Secrets // Insectile Aberration")
     faces = page.eval_on_selector_all(
@@ -173,13 +229,15 @@ def test_a_dfc_labels_both_faces_and_flips(page):
     page.wait_for_function(
         "() => document.querySelector('#detailInner .detail-card-image img').src.includes('face=back')",
         timeout=5000)
-    assert any("face=back" in u and "Delver%20of%20Secrets" in u for u in seen), seen
+    assert any("face=back" in u and "Delver%20of%20Secrets" in u and "version=large" in u
+               for u in seen), seen
     assert "Front — Delver of Secrets" in page.inner_text("#detailInner .detail-flip")
-    # Click the image: it toggles full width, and back.
-    w0 = page.evaluate("() => document.querySelector('#detailInner .detail-card-image img').getBoundingClientRect().width")
     page.click("#detailInner .detail-card-image img")
-    w1 = page.evaluate("() => document.querySelector('#detailInner .detail-card-image img').getBoundingClientRect().width")
-    assert 235 <= w0 <= 245 and w1 > w0 + 40, (w0, w1)
+    page.wait_for_selector(".card-magnifier img", timeout=5000)
+    big = page.evaluate("() => document.querySelector('.card-magnifier img').src")
+    assert "face=back" in big and "version=png" in big, big
+    page.keyboard.press("Escape")
+    page.wait_for_function("() => !document.querySelector('.card-magnifier')", timeout=5000)
     assert page.js_errors == []
 
 

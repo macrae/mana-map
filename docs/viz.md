@@ -158,6 +158,11 @@ a test asserts the page names the command.
 No `window.MM`: no atlas, no card index, no deck file, the same way
 `workbench.js` and `deck-view.js` stand alone.
 
+**A READ-ONLY reference since 2026-10-10.** The pages use CardBERT, by the pilot's
+choice, with no picker anywhere; the bench's agents and every `manamap pilot` command
+keep the function space (`spaces.UI` vs `spaces.DEFAULT`). The page states that split,
+and a test holds its prose to the two constants.
+
 ## Serving
 
 ```bash
@@ -490,14 +495,31 @@ already had to undo twice.
 | artifact | gzipped | needed for |
 |---|---|---|
 | `viz_index.json` | 0.56 MB | pick a card, filter, resolve a name |
-| `neighbours.bin` | 1.27 MB | branch — synchronously, with reasons |
-| `projection_2d.json` | 2.90 MB | the atlas; upgrades card records behind the landing |
-| `embeddings_ability.bin` | 15.54 MB | **not fetched on the discovery path at all** |
+| `neighbours_cardbert.bin` | 1.27 MB | branch — synchronously, with reasons |
+| `projection_2d_cardbert.json` | 2.90 MB | the atlas; upgrades card records behind the landing |
+| `embeddings_cardbert.bin` | 17.9 MB raw | **only when one card's table runs low** (below) |
 
-Nothing in discovery reads the embedding matrix, so it is never requested there — a
-speculative prefetch was tried and removed, both because it was 16.8 MB spent on nothing
-and because it showed up as contention that made two browser tests pass alone and fail in
-the full run. A **seeded** walk (deck or region) still awaits it: `linkWithinFromTable`
+(Sizes were measured on the function-space files, which the CardBERT ones match in shape;
+since 2026-10-10 the pages fetch only the CardBERT set — see *One space* under Explore.)
+
+The landing never reads the embedding matrix, so it is not requested there — a speculative
+prefetch at landing was tried and removed, both because it was 16.8 MB spent on nothing and
+because it showed up as contention that made two browser tests pass alone and fail in the
+full run.
+
+**Expansion is by threes, uncapped (2026-10-10).** `BRANCH_K = 3`: each click on the same
+card adds the next three nearest not already on the graph — 3, 6, 9, 12 out of the table
+(12 similar per card), then 15, 18, 21… from `MM.nearestLoaded(row, k, {exclude})`, a cosine
+scan over the CardBERT matrix the table was built from, so the order continues rather than
+jumping spaces. It stops only at `MAX_NODES` (500), and the status says so. It was 6, and the
+third click on a card added nothing. The matrix is prefetched in the background once that
+card's table has `2 * BRANCH_K` or fewer unseen neighbours left — normally its second click,
+deliberately not its first, since most walks never click a card three times and the landing
+prefetch above was measured as contention. When the click that exhausts the table finds the
+matrix still downloading, the three join when it lands and the status reads "fetching more
+neighbours…" meanwhile; when it is in hand the branch stays synchronous. Only `similar`
+continues past its list: synergy and outclassed-by are rule-based lists, and a list that has
+run out has run out. A **seeded** walk (deck or region) still awaits it: `linkWithinFromTable`
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
 
@@ -640,23 +662,25 @@ This control has now been written three times and the history is the reasoning:
 3. **Grow in place** — the constellation appears on the map.
 
 **Which relations earn an arc is measured, not chosen.** Median edge length as a multiple of
-a random pair on the same map:
+a random pair on the same map (re-measured 2026-10-10 on the tracked projections and
+neighbour tables; only the CardBERT map is served now, the other two columns are where the
+rule was learned):
 
-| relation | default (colour/type) | ability (function) |
-|---|---|---|
-| outclassed-by | 7.4u — **0.29×** | 0.82u — 0.04× |
-| similar | 15.2u — **0.60×** | 0.27u — 0.01× |
-| synergy | 24.0u — **0.95×** | 19.3u — **1.04×** |
+| relation | default (colour/type) | ability (function) | **cardbert (the map)** |
+|---|---|---|---|
+| outclassed-by | 7.19u — **0.29×** | 1.33u — 0.07× | 8.81u — **0.39×** |
+| similar | 14.25u — **0.57×** | 0.28u — 0.02× | 0.21u — 0.01× |
+| synergy | 25.17u — **1.00×** | 22.67u — **1.24×** | 22.89u — **1.01×** |
 
-`MAP_ARC_RELATIONS` encodes exactly that:
+`MAP_ARC_RELATIONS` holds one entry, `cardbert`, and encodes exactly that:
 
-- **default map** — similar and outclassed-by are real structure: long enough to see, short
-  enough to mean something. This is where the constellation earns its keep.
-- **ability map** — those same relations are already stacked (0.27u apart on a 71u map, 97%
-  inside 5% of the atlas). An arc is a pixel pretending to be information, so none is drawn
-  and the status points at **drill**, which already exists and is the honest answer to
-  "these are all on top of each other".
-- **synergy, either map** — indistinguishable from random, and that is *correct*: synergy is
+- **outclassed-by** is real structure on CardBERT — long enough to see, short enough to
+  mean something — so it is drawn.
+- **similar** is stacked (0.21u apart on a 54u map), because the map and the neighbours come
+  from the same model: distance on the map already IS similarity. An arc is a pixel
+  pretending to be information, so none is drawn and the status points at **drill**, which
+  already exists and is the honest answer to "these are all on top of each other".
+- **synergy, every map** — indistinguishable from random, and that is *correct*: synergy is
   complementary, so partners belong in different regions by construction (blink finds an ETB
   creature). It is orthogonal to every 2-D projection here, so it is **never** drawn as an
   atlas arc. The partners still join the graph and the status points at the force layout,
@@ -879,15 +903,18 @@ Two things fell out of it:
 
 ### The boot map is `currentMap`, in both places
 
-Explore opens on the **ability** map. Two literals had the boot map hardcoded —
+Explore opens on the **CardBERT** map — the only map since 2026-10-10. Two literals once had
+the boot map hardcoded —
 `fetch(MAP_CONFIGS.default.projection)` and `loadRegionData('default')` — so changing the
 default left `currentMap` saying one thing while the coordinates, and then the region names,
 came from the other. Neither errors: the projection silently draws the wrong positions, and
 the label pass silently finds no data and emits an empty list. Both read `currentMap` now,
-and both `<select>` elements are pinned from the JS defaults at boot rather than from markup
-order.
+and the colour `<select>` is pinned from its JS default at boot rather than from markup
+order. **The CardBERT map's region names are machine-generated**: `data/region_names.json`
+holds no curated names for it yet (issue #38), so its labels are the colour/type/tag
+labels `cluster-regions` derives.
 
-A map switch must also `reindex()` the quadtree, **after** the render that installs the new
+There is no map switch any more. If one comes back: it must `reindex()` the quadtree, **after** the render that installs the new
 layers. `buildTree` copies coordinates out of the *layer* arrays and `render()` rebuilds
 those arrays, so reindexing first rebuilds from the outgoing layers and `setLayers` then
 skips its own rebuild against an unchanged signature — the stale positions survive the very
@@ -1505,26 +1532,30 @@ change them together.
 A deck map position is **LOCAL** — the deck re-laid-out from its own cards — and is not an
 atlas position. The panel says so in its own body copy, for the same reason drill does.
 
-## The card panel: text first (2026-10-08)
+## The card panel: the card first (2026-10-10; text-first 2026-10-08 → 10-10)
 
 `buildCardDetailHtml(d, row, opts)` is the ONE card body — the selected stack and its
 accordion, the browse panel, Discover's landing and Build's selected card all render it, and
 its markup order is the only ordering rule (`#deckInner`'s flex `order` re-sort is deleted).
-An audit at 1440x900 measured the old panel: a 443px image first, so on a long card the
-oracle started at the fold, while the image only repeats what the panel prints. Now, top to
-bottom:
+An audit at 1440x900 (2026-10-08, `dcaafb6a`) measured a 443px image first, so on a long card
+the oracle started at the fold, and moved the image to eighth place at 240px on the argument
+that it only repeats what the panel prints. **On 2026-10-10 the pilot reversed that**: the
+card is the thing, and a LARGE image carries its own text. The image leads at the panel's
+full width (Scryfall `large`, 672x936; the Explore panel went 350 → 440px and Discover/Build's
+420 → 460px so it draws at ~400px), and a click opens a fullscreen **magnifier** at `png`
+(745x1040). Everything else the audit fixed stays fixed. Now, top to bottom:
 
 | block | what it carries |
 |---|---|
 | header | `cardHeaderHtml`: name, cost, P/T (or loyalty / defense), rarity, `+ Deck` / `✓ In Deck`, close. `#deckInner` has no header, so `opts.title` / `opts.stats` draw the same `quickStatsHtml` line (Discover keeps its `.lens-title` for the name) |
 | deck context | **Build only, with a deck loaded** (`Build.cardContext(row)`; below) |
+| the image | full panel width, `large`, the box reserved at 488:680. **Click (or Enter) magnifies**: `MM.magnifyCard` opens a `role=dialog` overlay on a dark scrim with the face the panel is showing at `png`, centred, max-height 92vh; Escape (caught in the capture phase so it does not also peel the selection), a click anywhere, or the close button dismiss it, focus returns to the image, and the fade-in only runs under `prefers-reduced-motion: no-preference`. A png that refuses falls back to what the panel drew. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once — at `large` too. **In Build with the card in the open deck**, the image is the sleeved printing's (`Build.deckCard(name)` → `Shell.cardImageUrl(name, 'large', entry)`, which rewrites the entry's `cards.scryfall.io/normal/…` to `/large/…`, `/png/….png` for the magnifier) and the flip is that printing's own back face; everywhere else it is by name. `preloadNeighbourImages` warms the SAME version, or the cache misses. The map's hover popup stays `normal` |
 | price (inside the deck context) | one `.deck-ctx-row.deck-ctx-price` directly after the roles and colour-identity rows, from `cardContext(row).price` — `{nm_cents, foil_cents, source, as_of}` off the deck's `prices.json`, loaded by `loadDeck` through the same `optional()` helper as `combos.json`; `$4.20 (foil $9.00) Scryfall, 2026-10-09`. Unpriced card or no file: no row |
 | type + oracle | a multi-face card (`A // B`, 891 in the corpus) gets one block per face, labelled **Front — name** / **Back — name**, each with its own type and text. 17 cards have a face with no rules text, so their oracle cannot be assigned to a face — the headings stay and the text prints once, unassigned, with a note |
 | combos | `comboLinesHtml`: what the card goes infinite with, deck first. (a) the open deck's `combos.json` entries naming it — "in this deck" (`included`) or "one card short: X" (`near`), synchronous; then (b) `combo_index.json`'s `by_card[name].top`, deduped by id, appended when the lazy index resolves (`MM.comboIndex()`, fetched once; the slot is found by `data-card` in the live DOM, so a panel that moved on gets nothing). Each line: partner chips (`.is-in-deck` via `Build.hasCard`; outside Build the title says to open a deck), `∞`, a bracket pill or `banned`, "assumes its own commander", a Spellbook link, and a count line from `by_card[name].n/inf`. No lines, no header |
 | relations | Similar / Synergy / Outclassed by, counts stated before the click; the synergy caveat is the button's `title` |
 | the comparison | `buildObsolescenceHtml`: a CLOSED `<details>` directly under the relation row — strength, gains, costs and "played less" for each card that outclasses this one. It was a separate "Compare with" box above the oracle reading the same index as the button; obsolescence now has one place |
 | Keep, Set as commander | one row (`.detail-actions`) |
-| the image | 240px, the box reserved at 488:680; a click toggles full width. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once. **In Build with the card in the open deck**, the image is the sleeved printing's (`Build.deckCard(name)` → `Shell.cardImageUrl(name, 'normal', entry)`) and the flip is that printing's own back face; everywhere else it is by name |
 | facts | `cardFactsHtml(d, {format})`: `EDHREC #n · <Format>: legal / BANNED / not legal · Identity …`; every other format inside a closed `<details>` in the same three states. The format is the deck's (`Build.deckFormat()`) in EVERY panel while Build has a deck open — the atlas detail panel passed none until C7, so a Modern card read "Commander: legal" there — and commander elsewhere |
 
 **Dropped**: the CMC row (the cost is in the header) and the Keywords section (it repeats the
@@ -1599,9 +1630,13 @@ Explore stay by name: they have no entry.
 
 ## Explore mode highlights
 
-- **Three maps** (`#mapSelect`, `MAP_CONFIGS`): Color+Type, Abilities, CardBERT —
-  projections + embeddings cached for instant switching. **A separate `#spaceSelect`**
-  picks the SIMILARITY space, which is a different question from which map is drawn
+- **One space, CardBERT (2026-10-10, the pilot's choice)** — the map, Find Similar, the walk,
+  drill and every relation answer out of it, and there is **no Map or Similarity picker**
+  (`#mapSelect` / `#spaceSelect`, `setSpace`, `switchMap` and `Build.reseedGraph` are
+  deleted). `MAP_CONFIGS` and `SPACES` hold one entry each, mirroring `spaces.UI`. The trade
+  is known and is on `spaces.html`: CardBERT loses functional similarity (−0.205 at a
+  100-card pool, −0.275 at 500) and wins theme. The function space's browser files stay
+  tracked and unfetched; the bench's agents and `manamap pilot` keep the function space
 - Color by primary color / supertype / rarity; supertype filter toggles
 - **Search UNIONS across name / type / keyword / oracle text** (`computeQuery`), with an
   exact name match winning alone because typing a whole card name is unambiguous. There is
@@ -1643,13 +1678,14 @@ own blue ring on the map, because otherwise nothing says whose neighbourhood you
 furthest-from-centroid ("least typical first"); a neighbourhood is nearest-first from its
 anchor, and shows the cosine as you step.
 
-**Similarity is not the displayed map.** `loadEmbeddings` reads `similarityEmbeddings()`,
-never `MAP_CONFIGS[currentMap].embeddings`. Reading the displayed map makes "similar" mean
+**Similarity is not the displayed map** — a rule from the three-map era that a single map
+satisfies trivially and a second map would need again. `loadEmbeddings` reads
+`similarityEmbeddings()` (`SPACES[currentSpace]`), never `MAP_CONFIGS[currentMap].embeddings`. Reading the displayed map makes "similar" mean
 "same colour and type" on the default map — a space measured at 3.05 of its 128 effective
 dimensions and 0.090 recall@10
 against known functional equivalents, which is why *Doubling Season* returned arbitrary green
-enchantments. Find Similar, the walk and drill now all read `similarityEmbeddings()` (the
-function space) whichever projection is on screen. The projection is a picture; similarity is
+enchantments. Find Similar, the walk and drill all read `similarityEmbeddings()` (CardBERT
+since 2026-10-10) whichever projection is on screen. The projection is a picture; similarity is
 a question. Switching maps no longer drops the loaded array either — the old per-map keying
 re-fetched 17 MB and gave the same card different answers depending on the view.
 

@@ -14,7 +14,7 @@
 (function () {
   'use strict';
 
-  var DATA_VERSION = 11;                      // mirrors mana-map.js
+  var DATA_VERSION = 12;                      // mirrors mana-map.js
   var URL = '../data/eval/space_projections.json?v=' + DATA_VERSION;
 
   /* Measured 2026-09-01 by `manamap eval-embeddings`, held-out test split.

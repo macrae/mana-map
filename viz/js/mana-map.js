@@ -61,13 +61,15 @@
   let currentMode = 'discover';
   let embeddings = null; // Float32Array, loaded lazily for Find Similar
   const EMBED_DIM = 128; // mirrors FINAL_EMBEDDING_DIM in config.py
-  // The ABILITY map is the default. It is the space that answers "what does this card
-  // DO" — the same embedding Find Similar, the walk and drill all read regardless of
-  // which map is displayed. Colour+Type is a projection of information already on the
-  // card face; abilities is the one you cannot get by reading the card.
-  let currentMap = 'ability'; // 'ability' or 'default'
-  const projectionCache = {}; // { default: [...], ability: [...] }
-  const embeddingsCache = {}; // { function: Float32Array } — one space, not one per map
+  // ONE MAP, ONE SPACE: CardBERT, since 2026-10-10 by the pilot's choice. The pages
+  // used to boot on the ability (function) map with a Map picker (Abilities / CardBERT /
+  // Colour+Type) and a Similarity picker beside it; both are gone. The eval says what
+  // that costs (CardBERT loses functional similarity, -0.205 at pool 100, and wins
+  // theme/tribe) and the pilot chose the theme reading for the pages. The bench's agents
+  // keep the function space — `spaces.py` UI vs DEFAULT. Never a hardcoded literal at a
+  // fetch site: the two boot reads below go through `currentMap`.
+  let currentMap = 'cardbert';
+  const embeddingsCache = {}; // { cardbert: Float32Array } — keyed by space
   // All data files the viz fetches, relative to viz/index.html. The server
   // must be rooted at the repo top so '../data/' resolves (GitHub Pages layout).
   const DATA_BASE = '../data/';
@@ -95,19 +97,17 @@
   // like this card' — same shape, different meaning.
   // 10: 2026-10-02 Reality Fracture: 34,955 cards and EVERY space retrained, so every row
   // index and every neighbour means something new.
-  const DATA_VERSION = 11;  // 2026-10-09 card_flags.json (bans, Game Changers) and combo_index.json join the registry; the panel now says BANNED
+  // 11: 2026-10-09 card_flags.json (bans, Game Changers) and combo_index.json join the
+  // registry; the panel now says BANNED.
+  // 12: 2026-10-10 the pages answer out of CardBERT alone — every neighbour, every
+  // position and every region name a cached page holds came from the function space.
+  const DATA_VERSION = 12;
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to
   // `index.json` served the old copy and every verified line silently drew nothing.
   // Same class as the `membership` incident: a schema change, politely stale.
   const DATA = {
-    projection: v(DATA_BASE + 'projection_2d.json'),
-    projectionAbility: v(DATA_BASE + 'projection_2d_ability.json'),
-    embeddings: v(DATA_BASE + 'embeddings.bin'),
-    embeddingsAbility: v(DATA_BASE + 'embeddings_ability.bin'),
-    regionsDefault: v(DATA_BASE + 'regions_default.json'),
-    regionsAbility: v(DATA_BASE + 'regions_ability.json'),
     obsolescence: v(DATA_BASE + 'obsolescence_index.json'),
     synergyGraph: v(DATA_BASE + 'synergy_graph.json'),
     // `combo_graph.json` was registered here and fetched by NOTHING. The deck
@@ -119,11 +119,12 @@
     // for `combo_details.json`, which several Python consumers do read.
     // The discovery front door — small enough to land on before anything else arrives.
     vizIndex: v(DATA_BASE + 'viz_index.json'),
-    neighbours: v(DATA_BASE + 'neighbours.bin'),
-    // The SECOND similarity space. Same four artifacts as the function space,
-    // built by `manamap <step> --space cardbert`. `viz_index.json` is NOT
-    // duplicated — it carries no embedding-derived field, so one copy serves
-    // every space and cannot disagree with itself.
+    // THE space the pages use (2026-10-10), built by `manamap <step> --space cardbert`.
+    // The function space's browser files (`projection_2d.json`,
+    // `projection_2d_ability.json`, `embeddings_ability.bin`, `regions_*.json`,
+    // `neighbours.bin`) stay tracked and are deliberately NOT registered here: a URL
+    // nobody requests reads as a live dependency (see `combo_graph.json` above).
+    // `viz_index.json` carries no embedding-derived field, so it serves any space.
     projectionCardbert: v(DATA_BASE + 'projection_2d_cardbert.json'),
     embeddingsCardbert: v(DATA_BASE + 'embeddings_cardbert.bin'),
     regionsCardbert: v(DATA_BASE + 'regions_cardbert.json'),
@@ -147,31 +148,21 @@
     comboIndex: v(DATA_BASE + 'combo_index.json'),
   };
   const MAP_CONFIGS = {
-    default: { projection: DATA.projection, embeddings: DATA.embeddings, regions: DATA.regionsDefault },
-    ability: { projection: DATA.projectionAbility, embeddings: DATA.embeddingsAbility, regions: DATA.regionsAbility },
     cardbert: { projection: DATA.projectionCardbert, embeddings: DATA.embeddingsCardbert, regions: DATA.regionsCardbert },
   };
 
-  // THE SIMILARITY SPACES, mirroring `src/manamap/spaces.py`. Only 128-d spaces
-  // appear here: `EMBED_DIM` below is a hardcoded 128 and the .bin is
-  // HEADERLESS, so a 384-d file would parse as plausible garbage rather than
-  // fail. The `map` field is which projection this space laid out, so switching
-  // space can move the picture with it.
+  // THE SIMILARITY SPACE, mirroring `src/manamap/spaces.py` (`UI = "cardbert"`). Only
+  // 128-d spaces may appear here: `EMBED_DIM` is a hardcoded 128 and the .bin is
+  // HEADERLESS, so a 384-d file would parse as plausible garbage rather than fail.
   //
   // WHAT THE CHOICE COSTS, measured (`manamap eval-embeddings`, intervals on the
-  // difference, 95%): cardbert LOSES functional similarity at every candidate
-  // pool size — -0.205 at pool 100, which is the size Find Similar actually
-  // ranks against — and WINS theme/tribe at every size, +0.094 at pool 100. It
-  // also separates hard negatives 2.8x better (0.0377 against 0.0133). It is a
-  // trade, so it is offered rather than defaulted to.
+  // difference, 95%): cardbert LOSES functional similarity at every candidate pool
+  // size — -0.205 at pool 100, which is the size Find Similar ranks against, -0.275
+  // at 500 — and WINS theme/tribe at every size, +0.094 at pool 100. It also separates
+  // hard negatives 2.8x better (0.0377 against 0.0133). It was offered as a toggle
+  // while that trade was being judged; on 2026-10-10 the pilot chose it for the pages
+  // outright, and the toggle went with the choice. `spaces.html` keeps the comparison.
   const SPACES = {
-    function: {
-      label: 'function',
-      embeddings: DATA.embeddingsAbility,
-      neighbours: DATA.neighbours,
-      map: 'ability',
-      note: 'what a card DOES. Trained on role and tag positives.',
-    },
     cardbert: {
       label: 'cardbert',
       embeddings: DATA.embeddingsCardbert,
@@ -180,20 +171,16 @@
       note: 'masked-field imputation. Better at tribe, worse at function.',
     },
   };
-  let currentSpace = 'function';
+  const currentSpace = 'cardbert';
 
-  // Similarity is NOT the displayed map. The default map is laid out by colour and type,
-  // which is a good picture and a terrible answer to "what is like this card" — measured,
-  // that space used 3.05 of its 128 dimensions and scored 0.044 recall@10 against known
-  // functional equivalents, which is why Doubling Season's neighbours came back as
-  // arbitrary green enchantments. Find Similar, the walk and drill all ask a question
-  // about function, so they all read the function space regardless of which projection is
-  // on screen. `MAP_CONFIGS[*].embeddings` survives only because each projection is still
-  // built from its own space.
-  // Was a `const` pointing at one file. It is a LOOKUP now, because the space is
-  // selectable — but the rule above is unchanged: similarity never follows the
-  // displayed MAP, it follows the chosen SPACE. Switching to the colour+type map
-  // still asks the function space for neighbours.
+  // Similarity is NOT a picture. The colour+type map (no longer served) was laid out by
+  // colour and type — 3.05 of its 128 dimensions, 0.044 recall@10 — and asking it for
+  // neighbours returned arbitrary same-colour cards. That rule still holds for anyone
+  // re-adding a map: similarity follows the SPACE, never the displayed projection.
+  // A LOOKUP rather than a literal so the space has one name (`currentSpace`) that the
+  // embeddings cache, `MM.space` and force.js's stamp all agree on. With one space the
+  // map and the similarity come from the same model, which is the pilot's choice
+  // (2026-10-10) — not the old defect of a colour+type PICTURE answering similarity.
   const similarityEmbeddings = () => SPACES[currentSpace].embeddings;
 
   // ── Region/Topo state ──
@@ -880,33 +867,33 @@
 
   // WHICH RELATIONS EARN AN ARC ON WHICH MAP — measured, not chosen.
   //
-  // Median edge length as a multiple of a random pair on the same map:
+  // Median edge length as a multiple of a random pair on the same map (2026-10-10, the
+  // tracked projections and neighbour tables; the colour/type and ability columns are
+  // the maps the pages no longer show, kept because they are what the rule was learned on):
   //
-  //                     default (colour/type)     ability (function)
-  //   outclassed-by     7.4u   0.29x              0.82u  0.04x
-  //   similar          15.2u   0.60x              0.27u  0.01x
-  //   synergy          24.0u   0.95x             19.3u   1.04x
+  //                 default (colour/type)   ability (function)    cardbert (THE map)
+  //   outclassed-by   7.19u  0.29x            1.33u  0.07x          8.81u  0.39x
+  //   similar        14.25u  0.57x            0.28u  0.02x          0.21u  0.01x
+  //   synergy        25.17u  1.00x           22.67u  1.24x         22.89u  1.01x
   //
   // Three consequences, each of which decides something:
   //
-  // 1. On the DEFAULT map, similar and outclassed-by are real structure — long enough to
-  //    see, short enough to mean something. This is where the constellation earns its keep.
-  // 2. On the ABILITY map those same relations are already stacked (0.27u apart, 97% of
-  //    them inside 5% of the atlas). An arc there is a single pixel pretending to be
-  //    information. Drill already exists and is the honest answer to "these are all on top
-  //    of each other".
-  // 3. SYNERGY is indistinguishable from random on BOTH maps, and that is correct rather
+  // 1. SIMILAR is stacked on the CardBERT map (0.21u on a 54u map) because the map and
+  //    the neighbours come from the same model. An arc there is a single pixel
+  //    pretending to be information; distance on the map already says it, and drill is
+  //    the honest answer to "these are all on top of each other".
+  // 2. OUTCLASSED-BY is real structure on CardBERT (0.39x) — long enough to see, short
+  //    enough to mean something — so it is drawn.
+  // 3. SYNERGY is indistinguishable from random on EVERY map, and that is correct rather
   //    than broken: synergy is complementary, so partners belong in different regions by
-  //    construction (blink finds an ETB creature). It is orthogonal to every 2-D
-  //    projection we have, so it is NEVER drawn as an atlas arc — no amount of curving or
-  //    fading makes a random-length line informative. Its partners light up in place and
-  //    the affordance is the graph, one click away, where adjacency IS the geometry.
+  //    construction (blink finds an ETB creature). It is NEVER drawn as an atlas arc — no
+  //    amount of curving or fading makes a random-length line informative. Its partners
+  //    light up in place and the affordance is the graph, one click away.
   const MAP_ARC_RELATIONS = {
-    default: { similar: true, obsolete: true, deck: true, synergy: false },
-    ability: { similar: false, obsolete: false, deck: true, synergy: false },
+    cardbert: { similar: false, obsolete: true, deck: true, synergy: false },
   };
 
-  function arcsAllowedOn(map) { return MAP_ARC_RELATIONS[map] || MAP_ARC_RELATIONS.default; }
+  function arcsAllowedOn(map) { return MAP_ARC_RELATIONS[map] || MAP_ARC_RELATIONS.cardbert; }
 
   // Same two-method contract as Deck Lens and the deck builder — see docs/viz.md.
   const OrientationOverlay = {
@@ -991,8 +978,8 @@
       const added = Session.size() - before;
       const name = (cardRecord(row) || {}).n || 'that card';
       if (!arcsAllowedOn(currentMap)[rel]) {
-        // Synergy is ~random in world space on both maps, and similarity is already
-        // stacked on the ability map — so say what happened and where to see it, rather
+        // Synergy is ~random in world space on every map, and similarity is already
+        // stacked on the CardBERT map — so say what happened and where to see it, rather
         // than drawing a line that means nothing. See MAP_ARC_RELATIONS.
         const why = rel === 'synergy'
           ? 'synergy partners sit all over the map — see them in the graph'
@@ -1161,24 +1148,37 @@
     for (const delta of [-1, 1]) {
       const i = ((at + delta) % n + n) % n;
       const d = browseSet ? allData[browseSet.indices[i]] : selectedCards[i].data;
-      if (d) new Image().src = cardImageUrl(d.n);
+      // THE SAME VERSION the panel draws (`PANEL_IMAGE`), or the warm cache misses.
+      if (d) new Image().src = cardImageUrl(d.n, PANEL_IMAGE);
     }
   }
 
-  /* THE CARD BODY, TEXT FIRST. One builder for every panel that shows a card (the
+  // The card panel's image version. `large` is 672x936 — the panel draws it at the
+  // panel's full width (~400px, 2x on a retina screen), where `normal` (488x680) went
+  // soft. The magnifier asks for `png` (745x1040), Scryfall's largest. The map's hover
+  // popup stays at `normal`: it is a glance, drawn at 240px.
+  const PANEL_IMAGE = 'large';
+  const ZOOM_IMAGE = 'png';
+
+  /* THE CARD BODY, CARD FIRST. One builder for every panel that shows a card (the
    * selected stack, the browse panel, Discover's landing and Build's selected card).
    *
-   * Audit 2026-10-08 at 1440x900: the image came first at 443px, so on a long card the
-   * oracle started at the fold — and the image only repeats the name, cost, type and
-   * text the panel prints anyway. Keywords repeated the oracle, CMC repeated the cost in
-   * the header, every format got a badge, and obsolescence was shown twice ("Compare
-   * with" and "Outclassed by" read the same index). The order is now the markup's, in
-   * every panel — `#deckInner` no longer reorders it with flex `order`:
+   * REVERSED 2026-10-10, the pilot's call: the card is the thing. The 2026-10-08 audit
+   * (dcaafb6a, "card panel text-first") had moved the image to eighth place at 240px,
+   * on the argument that it only repeats the name, cost, type and text the panel
+   * prints anyway — true of the words, and it threw away the reason a Magic player
+   * looks at a card at all. A LARGE image carries its own text, so the image now
+   * leads at the panel's full width (`large`, 672x936), and clicking it opens the
+   * `png` in a fullscreen magnifier. What the audit got right stays: keywords do not
+   * repeat the oracle, CMC lives in the header, obsolescence has one place, and the
+   * order is the markup's in every panel — `#deckInner` does not reorder it with flex
+   * `order`:
    *
    *   [title/stats when the panel has no header] · deck context (Build only) ·
-   *   type + oracle (DFC faces labelled) · relations, the outclassed-by comparison and
-   *   Keep · the image (240px, click to enlarge, flip for a DFC) · EDHREC, Commander
-   *   legality and identity, with every other format in a closed <details>.
+   *   THE IMAGE (full panel width, click to magnify, flip for a DFC) · type + oracle
+   *   (DFC faces labelled) · combo lines · relations, the outclassed-by comparison and
+   *   Keep · EDHREC, Commander legality and identity, every other format in a closed
+   *   <details>.
    *
    * `row` is required for the relation buttons: the old pair took no argument at all and
    * leaned on `selectedCards`, which is exactly why they did nothing in three of the five
@@ -1194,6 +1194,7 @@
         '<div class="viewer-quickstats">' + quickStatsHtml(d) + '</div></div>';
     }
     html += deckContextHtml(d, row);
+    html += cardImageHtml(d, deckEntry(d, row));
     html += cardTextHtml(d);
     // After the rules text, before the relations: what the card goes infinite with is a
     // fact about the card, read before "what is like it".
@@ -1204,7 +1205,6 @@
     // relation buttons, so obsolescence has ONE place in the panel.
     html += buildObsolescenceHtml(d.n);
     html += cardActionsHtml(row);
-    html += cardImageHtml(d, deckEntry(d, row));
     // The legality line leads with the DECK's format in Build — every panel, not only
     // Build's own (which passes it): the atlas detail panel passed nothing, so a Modern
     // deck's card read "Commander: legal" there. Elsewhere, Commander.
@@ -1263,25 +1263,38 @@
     return html + '</div>';
   }
 
-  /* The image, AFTER the text and the actions: 240px, click to see it full width. A
-   * multi-face card gets a flip: Scryfall's `named` endpoint takes `face=back` for a card
-   * with a printed back. The projection carries no `layout`, so whether one exists is
-   * learned by asking — a split, adventure or flip card prints both halves on ONE face,
-   * Scryfall refuses `face=back`, and `cardImageError` puts the front back and says so.
-   * Never lazy-loaded: the only card image we render is the open one. */
+  /* The image, FIRST and at the panel's full width (`large`). Click it — or Enter on
+   * it — to magnify. A multi-face card gets a flip: Scryfall's `named` endpoint takes
+   * `face=back` for a card with a printed back. The projection carries no `layout`, so
+   * whether one exists is learned by asking — a split, adventure or flip card prints
+   * both halves on ONE face, Scryfall refuses `face=back`, and `cardImageError` puts the
+   * front back and says so. Never lazy-loaded: the only card image we render is the
+   * open one. Every URL carries the SAME version, the retry and the back face included,
+   * so a flip or a retry never drops the panel to a smaller image. */
   function cardImageHtml(d, entry) {
     const faces = String(d.n || '').split(' // ');
     // With the deck's row in hand the front is the sleeved printing and the back
     // is that printing's own back face (a split card has none: the flip then
     // asks Scryfall by name, which refuses, and the button retires as before).
-    const front = cardImageUrl(d.n, 'normal', entry);
-    const ownBack = entry && faces.length > 1 ? cardImageUrl(faces[1], 'normal', entry) : null;
-    const back = ownBack && ownBack !== front ? ownBack : cardImageUrl(faces[0]) + '&face=back';
+    const front = cardImageUrl(d.n, PANEL_IMAGE, entry);
+    const ownBack = entry && faces.length > 1 ? cardImageUrl(faces[1], PANEL_IMAGE, entry) : null;
+    const back = ownBack && ownBack !== front ? ownBack
+      : cardImageUrl(faces[0], PANEL_IMAGE) + '&face=back';
+    // The magnifier's two faces, resolved the same way at `png`.
+    const zoomFront = cardImageUrl(d.n, ZOOM_IMAGE, entry);
+    const zoomOwnBack = entry && faces.length > 1 ? cardImageUrl(faces[1], ZOOM_IMAGE, entry) : null;
+    const zoomBack = zoomOwnBack && zoomOwnBack !== zoomFront ? zoomOwnBack
+      : cardImageUrl(faces[0], ZOOM_IMAGE) + '&face=back';
     let html = '<div class="detail-card-image">';
     html += '<img src="' + escHtml(front) + '" alt="' + escHtml(d.n) + '"' +
       ' data-front="' + escHtml(front) + '"' +
-      (faces.length > 1 ? ' data-retry="' + escHtml(cardImageUrl(faces[0])) + '"' : '') +
-      ' title="Click to enlarge" onclick="MM.toggleCardImage(this)" onerror="MM.cardImageError(this)">';
+      ' data-zoom="' + escHtml(zoomFront) + '"' +
+      (faces.length > 1 ? ' data-zoom-back="' + escHtml(zoomBack) + '"' +
+        ' data-retry="' + escHtml(cardImageUrl(faces[0], PANEL_IMAGE)) + '"' : '') +
+      ' tabindex="0" role="button" title="Click to magnify"' +
+      ' onclick="MM.magnifyCard(this)"' +
+      ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();MM.magnifyCard(this);}"' +
+      ' onerror="MM.cardImageError(this)">';
     if (faces.length > 1) {
       html += '<button class="lens-btn detail-flip" data-back="' +
         escHtml(back) + '" onclick="MM.flipCard(this)"' +
@@ -1290,11 +1303,64 @@
     return html + '</div>';
   }
 
-  function toggleCardImage(img) {
-    const box = img && img.closest('.detail-card-image');
-    if (!box) return;
-    const full = box.classList.toggle('is-full');
-    img.title = full ? 'Click to shrink' : 'Click to enlarge';
+  /* THE MAGNIFIER. It replaced `toggleCardImage`, which grew the image to the panel's
+   * width — the panel's width IS the image's width now, so there was nothing left to
+   * grow into. A fullscreen overlay on a dark scrim, the card at Scryfall's `png`
+   * (745x1040) centred and capped at 92vh. Escape, a click anywhere, or the close
+   * button dismiss it, and focus goes BACK to the image that opened it: a dialog that
+   * drops focus on <body> strands a keyboard user at the top of the page.
+   *
+   * Escape is caught in the CAPTURE phase and stopped there, because the page's own
+   * Escape handler peels the region focus, the lens and the selection — closing the
+   * magnifier must not also clear the card you were magnifying. It shows the face
+   * the panel is showing; if the png refuses (the `A // B` 404 `cardImageError`
+   * retries in the panel), it falls back to what the panel already drew. */
+  let magnifier = null;
+  function magnifyCard(img) {
+    if (!img) return;
+    closeMagnifier(false);
+    const back = img.getAttribute('data-face') === 'back';
+    const src = (back && img.getAttribute('data-zoom-back')) || img.getAttribute('data-zoom') ||
+      img.currentSrc || img.src;
+    const el = document.createElement('div');
+    el.className = 'card-magnifier';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('aria-label', (img.getAttribute('alt') || 'Card') + ', magnified');
+    el.innerHTML = '<button type="button" class="card-magnifier-close" aria-label="Close">×</button>' +
+      '<img class="card-magnifier-img" alt="' + escHtml(img.getAttribute('alt') || '') + '">';
+    const big = el.querySelector('img');
+    big.addEventListener('error', function () {
+      big.onerror = null;
+      const fallback = img.currentSrc || img.src;
+      if (big.src !== fallback) big.src = fallback;
+    }, { once: true });
+    big.src = src;
+    el.addEventListener('click', function () { closeMagnifier(true); });
+    const onKey = function (e) {
+      // Spelled differently from the page's own Escape test on purpose: a source test
+      // finds the PAGE's Escape chain by its exact text and asserts drill pops first.
+      if (magnifier && e.key === 'Escape') {
+        e.preventDefault(); e.stopImmediatePropagation(); closeMagnifier(true);
+      } else if (e.key === 'Tab') {
+        // One control in the dialog; keep focus on it rather than letting Tab walk
+        // the page underneath.
+        e.preventDefault(); el.querySelector('.card-magnifier-close').focus();
+      }
+    };
+    window.addEventListener('keydown', onKey, true);
+    document.body.appendChild(el);
+    magnifier = { el: el, from: img, onKey: onKey };
+    el.querySelector('.card-magnifier-close').focus();
+  }
+
+  function closeMagnifier(restoreFocus) {
+    if (!magnifier) return;
+    const m = magnifier;
+    magnifier = null;
+    window.removeEventListener('keydown', m.onKey, true);
+    if (m.el.parentNode) m.el.parentNode.removeChild(m.el);
+    if (restoreFocus && m.from && m.from.isConnected) m.from.focus();
   }
 
   function flipCard(btn) {
@@ -2131,13 +2197,26 @@
   // One space, fetched once. This used to key on `currentMap` and re-fetch on every map
   // toggle, so the same card had different "nearest" answers depending on which picture
   // you happened to be looking at.
-  async function loadEmbeddings() {
-    // THE CACHE KEY IS THE SPACE. It was the literal string 'function' for one
-    // space; with two, a fixed key hands the toggle the previous space's matrix
-    // out of cache and every "different" neighbour is the same neighbour. The
-    // bare `embeddings` variable is the hot path, so it has to be invalidated on
-    // switch too — see `setSpace`.
-    if (embeddings) return true;
+  //
+  // ONE IN-FLIGHT FETCH. Discover's neighbour expansion prefetches this matrix in the
+  // background (17.9 MB) while a click may ask for it too; two callers awaiting two
+  // fetches of the same bytes is pure waste, so they share the promise.
+  let embeddingsPromise = null;
+  function loadEmbeddings() {
+    if (embeddings) return Promise.resolve(true);
+    if (!embeddingsPromise) {
+      embeddingsPromise = fetchEmbeddings().then(ok => {
+        if (!ok) embeddingsPromise = null;   // a failure may be retried
+        return ok;
+      });
+    }
+    return embeddingsPromise;
+  }
+
+  async function fetchEmbeddings() {
+    // THE CACHE KEY IS THE SPACE. It was the literal string 'function' when there was
+    // one space and a toggle made it two; a fixed key handed the toggle the previous
+    // space's matrix out of cache. One space again (2026-10-10), keyed the same way.
     const key = currentSpace;
     if (embeddingsCache[key]) {
       embeddings = embeddingsCache[key];
@@ -2149,11 +2228,14 @@
       const buf = await r.arrayBuffer();
       // The .bin is headerless: nothing in it says how many rows or dims it
       // holds, so a truncated or wrong-dimension file parses fine and every
-      // offset is silently wrong. This is the only place that can notice.
-      if (allData && allData.length && buf.byteLength !== allData.length * EMBED_DIM * 4) {
+      // offset is silently wrong. This is the only place that can notice. Discover
+      // can get here before the projection lands, so the slim index is the count then.
+      const rows = (allData && allData.length) ? allData.length
+        : (window.Discovery && Discovery.index ? Discovery.index.length : 0);
+      if (rows && buf.byteLength !== rows * EMBED_DIM * 4) {
         console.error('[MM] ' + key + ' embeddings are ' + buf.byteLength +
-          ' bytes, expected ' + (allData.length * EMBED_DIM * 4) +
-          ' (' + allData.length + ' cards x ' + EMBED_DIM + ' dims x 4). Refusing it.');
+          ' bytes, expected ' + (rows * EMBED_DIM * 4) +
+          ' (' + rows + ' cards x ' + EMBED_DIM + ' dims x 4). Refusing it.');
         return false;
       }
       embeddings = new Float32Array(buf);
@@ -2162,44 +2244,6 @@
     } catch (e) {
       return false;
     }
-  }
-
-  // Switch similarity space. Everything downstream reads through
-  // `getEmbeddings()` / `nearestTo()` / `Discovery.neighbours()`, so this is the
-  // whole of it — plus the two caches that would otherwise answer out of the old
-  // space, which is the failure that makes a toggle look cosmetic.
-  async function setSpace(name) {
-    if (!SPACES[name] || name === currentSpace) return false;
-    currentSpace = name;
-    embeddings = null;                       // the hot path, not just the cache
-    Discovery.configure({ vizIndex: DATA.vizIndex, neighbours: SPACES[name].neighbours });
-    Discovery.resetNeighbours();
-    // AND RE-FETCH. Clearing alone leaves `Discovery.isReady()` false forever —
-    // nothing re-requests on its own, so the panel goes permanently empty rather
-    // than answering out of the old space. Caught by
-    // `test_switching_space_changes_the_answer`, which waits for ready.
-    await Discovery.loadNeighbours();
-
-    // AND MOVE THE PICTURE WITH IT.
-    //
-    // Each space carries the projection it laid out, and for one commit NOTHING
-    // READ THAT FIELD — the repo's own "a flag the model sets is a claim the
-    // model must ACT ON", in JavaScript. The toggle changed every answer and
-    // moved nothing on screen, so it read as broken: the atlas stayed on the
-    // `ability` projection while cardbert quietly supplied the neighbours.
-    //
-    // This does NOT reintroduce the defect the split exists to prevent. That one
-    // is the MAP driving SIMILARITY — pick the colour+type picture and get
-    // same-colour "neighbours". The dependency here runs the other way: the
-    // chosen space moves its own picture, and `switchMap` still never touches
-    // which space answers.
-    const wantedMap = SPACES[name].map;
-    if (wantedMap && MAP_CONFIGS[wantedMap] && wantedMap !== currentMap) {
-      const sel = document.getElementById('mapSelect');
-      if (sel) sel.value = wantedMap;
-      await switchMap(wantedMap);
-    }
-    return true;
   }
 
   // THE k-nearest primitive, and now genuinely the only one. The header used to claim
@@ -2212,29 +2256,46 @@
   // walk you into one. `force.js` passes false, because a graph you are branching through
   // should not silently change shape when a toolbar toggle flips.
   async function nearestTo(row, k, opts) {
-    const o = opts || {};
     if (!(await loadEmbeddings())) return [];
+    return nearestLoaded(row, k, opts);
+  }
+
+  // The same scan, SYNCHRONOUS, for a caller that already knows the matrix is in hand
+  // (`embeddingsReady()`): Discover's expansion past the precomputed table must not put
+  // an await inside a click when it does not have to. Returns [] when nothing is loaded.
+  //
+  // Names come from `cardRecord`, not `allData`: Discover can branch this far before the
+  // projection has landed, and an empty `allData` made the scan silently find nothing.
+  function nearestLoaded(row, k, opts) {
+    if (!embeddings) return [];
+    const o = opts || {};
     const dim = EMBED_DIM;
+    const n = Math.floor(embeddings.length / dim);
     const base = row * dim;
     const exclude = o.exclude || null;
-    const respectFilters = o.respectFilters !== false;
+    const haveData = allData.length === n;
+    const respectFilters = o.respectFilters !== false && haveData;
+    const nameAt = j => haveData ? allData[j].n : ((cardRecord(j) || {}).n);
     // Exclude by NAME, not just by row. cards.csv carries 51 duplicate names (Un-set
     // reprints and the like), so self-exclusion alone let a card return its own twin at
     // cosine 1.0 as its most similar card — a true statement and a useless answer.
-    const selfName = allData[row] && allData[row].n;
+    const selfName = nameAt(row);
     const best = [];                       // ascending by sim; best[0] is the weakest kept
-    for (let j = 0; j < allData.length; j++) {
+    for (let j = 0; j < n; j++) {
       if (j === row) continue;
-      if (allData[j].n === selfName) continue;
       if (exclude && exclude.has(j)) continue;
       if (respectFilters && !activeSupertypes.has(allData[j].s)) continue;
       const oj = j * dim;
       let dot = 0;
       for (let i = 0; i < dim; i++) dot += embeddings[base + i] * embeddings[oj + i];
+      if (best.length === k && dot <= best[0].sim) continue;
+      // The name check is AFTER the cheap rejection: it costs a record lookup, and only
+      // a candidate that would make the cut needs one.
+      if (selfName && nameAt(j) === selfName) continue;
       if (best.length < k) {
         best.push({ i: j, sim: dot });
         if (best.length === k) best.sort((a, b) => a.sim - b.sim);
-      } else if (dot > best[0].sim) {
+      } else {
         best[0] = { i: j, sim: dot };
         best.sort((a, b) => a.sim - b.sim);
       }
@@ -2459,94 +2520,14 @@
     return html;
   }
 
-  // ── Map switching ──
-
-  async function loadProjection(mapName) {
-    if (projectionCache[mapName]) {
-      applyProjection(projectionCache[mapName]);
-      return;
-    }
-
-    const config = MAP_CONFIGS[mapName];
-    if (!config) return;
-
-    setStatus('Loading ' + mapName + ' map...');
-    try {
-      const r = await fetch(config.projection);
-      if (!r.ok) throw new Error('Projection file not found \u2014 run pipeline');
-      const data = await r.json();
-      // Not copied, and that is not an oversight: this array is freshly parsed
-      // and never becomes `allData`, so nothing mutates it. The BOOT path is the
-      // one that aliased.
-      projectionCache[mapName] = data;
-      applyProjection(data);
-    } catch (e) {
-      setStatus('Error loading ' + mapName + ' map: ' + e.message);
-    }
-  }
-
-  function applyProjection(data) {
-    // Update x/y on allData from the new projection
-    for (let i = 0; i < allData.length && i < data.length; i++) {
-      allData[i].x = data[i].x;
-      allData[i].y = data[i].y;
-    }
-    // Embeddings are deliberately untouched: the projection changed, the space did not.
-    // These used to be re-keyed per map, which both dropped a 17 MB array that was still
-    // correct and made "similar" mean something different on each picture.
-    // The coordinates themselves changed, so this is the one case that must forget the
-    // camera rather than preserve it — holding the old range would frame the wrong part
-    // of a different map. Plotly expressed this by clearing `plotInitialized` so the next
-    // `react` autoranged; the canvas needs it said out loud, because its camera is a
-    // persistent d3 transform that survives `setLayers` by design.
-    plotInitialized = false;
-    render();
-    if (mapCanvas) mapCanvas.fitToData();
-    setMapStatus();
-  }
-
-  // Changing the MAP never changes the SPACE. That asymmetry is the whole point
-  // of the split: the projection is a picture, similarity is a question, and
-  // reading neighbours out of the colour+type space returned arbitrary
-  // same-colour cards (3.05 of 128 effective dimensions, 0.044 recall@10).
-  async function switchMap(mapName) {
-    if (mapName === currentMap) return;
-    currentMap = mapName;
-    // Pre-load region data so it's ready when render() builds annotations
-    if (showRegionLabels) await loadRegionData(mapName);
-    await loadProjection(mapName);
-    // Re-apply selection highlight after map switch (positions changed). This is also
-    // what re-runs `render()`, and therefore what installs layers holding the NEW
-    // coordinates — which is why the reindex below has to come after it.
-    updateSelectionHighlight();
-
-    // THE POSITIONS ALL MOVED, SO THE QUADTREE IS NOW WRONG.
-    //
-    // `applyProjection` mutates x/y on the existing `allData` in place. The tree's
-    // signature is layer lengths plus endpoint ids — all identical across a map switch,
-    // same 34,322 cards in the same groups in the same order — so it never rebuilds and
-    // keeps answering with where the cards were on the OTHER map. Every hover and click
-    // on the Abilities map missed, which read as "the card images are broken" because the
-    // popup simply never opened.
-    //
-    // ORDER IS THE WHOLE FIX. `buildTree` copies coordinates out of the LAYER arrays, and
-    // `render()` rebuilds those arrays from scratch. Reindexing before the render rebuilds
-    // the tree from the outgoing layers, and then `setLayers` computes that same unchanged
-    // signature and skips its own rebuild — so the stale positions survive a call whose
-    // entire purpose was to remove them. It looks fixed and measures broken.
-    //
-    // Deliberately NOT solved by making `treeSignature()` position-aware: drill mutates
-    // coordinates in place for 90 frames with the endpoints unchanged, so that would
-    // rebuild the tree every frame at 23.5 ms a go — the exact cost the cheap signature
-    // exists to avoid.
-    if (mapCanvas) mapCanvas.reindex();
-
-    // ...and restate which map you are on, because the highlight now goes through
-    // `render()`, which writes its own status line and would otherwise leave you looking
-    // at the Abilities map being told how many cards are shown. Under Plotly this was an
-    // addTraces/deleteTraces pair that touched no status.
-    setMapStatus();
-  }
+  // ── The map ──
+  //
+  // There is no map switching any more (2026-10-10: one map, CardBERT). `switchMap`,
+  // `loadProjection` and `applyProjection` went with the Map picker. If a second map
+  // ever comes back, two things it learned the hard way: the projection cache must not
+  // alias `allData` (an in-place x/y write overwrote the boot map's own cache), and the
+  // quadtree must be re-indexed AFTER the render that installs the new coordinates —
+  // its signature is blind to positions by design (see `updateLayerBy` in docs).
 
   /* Changing the grouping changes a LANGUAGE, not just the map's colours.
    *
@@ -2570,8 +2551,9 @@
   }
 
   function setMapStatus() {
-    setStatus(`${allData.length.toLocaleString()} cards loaded — ` +
-              `${currentMap === 'ability' ? 'Abilities' : 'Color + Type'} map`);
+    // It said "Color + Type map" for any map that was not 'ability' — including the
+    // CardBERT one, which is the only one there is now.
+    setStatus(`${allData.length.toLocaleString()} cards loaded — CardBERT map`);
   }
 
   // ── Find Synergies ──
@@ -2862,23 +2844,9 @@
     .then(r => r.json())
     .then(data => {
       allData = data;
-      // THE CACHE MUST NOT ALIAS `allData`. `applyProjection` writes
-      // `allData[i].x = data[i].x`, so caching the same objects meant switching
-      // away from the boot map OVERWROTE that map's own cached coordinates —
-      // and switching back re-applied them, leaving every card where the other
-      // map had put it. `currentMap` said "ability" while the points sat on the
-      // cardbert (or colour+type) layout, which is the exact class the comment
-      // above this fetch was written about.
-      //
-      // A COORDINATE-ONLY SNAPSHOT, not a deep clone: `applyProjection` reads
-      // nothing but x and y, and copying all 34,890 full records to guard two
-      // numbers each would cost megabytes for nothing.
-      projectionCache[currentMap] = data.map(d => ({ x: d.x, y: d.y }));
-      const sel = document.getElementById('mapSelect');
-      if (sel) sel.value = currentMap;
-      // Same for the colour mode. Both selects are pinned from the JS defaults rather than
-      // left to option order: markup order and a `let` default are two places deciding one
-      // thing, and they drift the moment someone reorders the list for readability.
+      // The colour mode is pinned from the JS default rather than left to option order:
+      // markup order and a `let` default are two places deciding one thing, and they
+      // drift the moment someone reorders the list for readability.
       const colourSel = document.getElementById('colorBy');
       if (colourSel) colourSel.value = currentColorBy;
       // Explore does not get `setMode` at boot — only Discover has its chrome
@@ -3035,39 +3003,6 @@
     render();
   });
 
-  document.getElementById('mapSelect').addEventListener('change', e => {
-    switchMap(e.target.value);
-  });
-
-  document.getElementById('spaceSelect').addEventListener('change', async e => {
-    const name = e.target.value;
-    const info = SPACES[name];
-    if (!(await setSpace(name))) return;
-    setStatus('Similarity: ' + info.label + ' — ' + info.note);
-    // A GROWN GRAPH IS AN ANSWER FROM THE OLD SPACE. The nodes were chosen by
-    // neighbours that no longer apply, so the walk is left standing rather than
-    // silently re-rooted: the user asked to change the question, not to lose
-    // their work. What is dropped is the CACHED matrix, not the session.
-    if (currentMode === 'explore') {
-      await loadEmbeddings();
-      render();
-      return;
-    }
-    /* BUILD IS THE CASE THE GUARD ABOVE FORGOT. The reasoning behind leaving a
-     * grown graph standing is that its NODES were chosen by the old space, and
-     * re-rooting would throw away a walk the user built. Build's node set is not
-     * grown — it IS the deck, fixed by the decklist — and only the EDGES come
-     * from the space. So there is nothing to protect and everything to redraw,
-     * and the control did nothing at all here: same dots, same lines, new label.
-     * `Build.reseedGraph` carries the explored cards across, so the walk-shaped
-     * half of the worry does not apply either. */
-    if (currentMode === 'build' && window.Build && Build.reseedGraph) {
-      await loadEmbeddings();
-      if (Build.reseedGraph()) {
-        setStatus('Similarity: ' + info.label + ' — graph re-linked in the new space');
-      }
-    }
-  });
 
   // ── Topo toggle handlers ──
   document.getElementById('toggleContours').addEventListener('click', function () {
@@ -3992,12 +3927,17 @@
     // rather than at a guessed pixel.
     get mapRenderer() { return mapCanvas; },
     nearestTo,
+    nearestLoaded,
+    // Is the matrix in hand? Lets Discover expand past the table without an await.
+    embeddingsReady() { return !!embeddings; },
     cardRecord,
     cardImageUrl,
     buildCardDetailHtml,
     // The card body's own inline handlers (image enlarge, DFC flip, image retry) and
     // the repaint Build calls when a watch verdict is queued or lands.
-    toggleCardImage,
+    magnifyCard,
+    closeMagnifier,
+    get magnifierOpen() { return !!magnifier; },
     flipCard,
     cardImageError,
     refreshDeckContext,
@@ -4116,7 +4056,6 @@
     MAP_CONFIGS,
     SPACES,
     get space() { return currentSpace; },
-    setSpace,
     DATA,
     DATA_VERSION,
     EMBED_DIM,

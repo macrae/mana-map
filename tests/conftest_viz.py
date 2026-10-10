@@ -208,16 +208,12 @@ def canvas_page(browser, viz_server):
     page = _boot(browser, viz_server, "?renderer=canvas&mode=explore")
     _wait_for_boot(page, "() => !!document.querySelector('.map-canvas')",
                    "the canvas renderer to attach")
-    # PIN THE MAP. Every test on this fixture was written against the colour+type map —
-    # its contour density, its region label layout, and the fact that it is the one map
-    # that draws similarity arcs (`MAP_ARC_RELATIONS`; the ability map deliberately draws
-    # none). Inheriting the map from the boot default made all of that implicit, so
-    # flipping the app's default to Abilities silently repointed ten tests at a map whose
-    # answers are different by design — they failed as if the renderer had broken.
-    # A test that cares which map it is on has to say so.
-    page.select_option("#mapSelect", "default")
-    _wait_for_boot(page, "() => window.MM && MM.currentMap === 'default' && MM.allData.length",
-                   "the colour+type map to load")
+    # ONE MAP SINCE 2026-10-10 (CardBERT, the pilot's choice). This fixture used to pin
+    # the colour+type map through `#mapSelect`, because its tests were written against
+    # that map's contours, labels and similarity arcs; the picker is gone, so the wait
+    # names the one map there is — a test that cares which map it is on still says so.
+    _wait_for_boot(page, "() => window.MM && MM.currentMap === 'cardbert' && MM.allData.length",
+                   "the CardBERT map to load")
     # WAIT FOR THE RENDERER, not just for its canvas element and its data.
     #
     # `baseFit` is computed on the first `setLayers`, and until it exists `setCamera`

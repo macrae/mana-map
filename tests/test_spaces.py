@@ -53,6 +53,29 @@ def test_the_default_is_the_incumbent():
     assert spaces.get(None) is spaces.get("function")
 
 
+def test_the_pages_use_cardbert_and_the_bench_keeps_function():
+    """THE PILOT'S DECISION, 2026-10-10: the pages draw CardBERT and answer
+    similarity out of it, with no picker; the bench's default does not move.
+    Two constants because they are two decisions — collapsing them would move
+    every `manamap pilot` command along with the Atlas."""
+    assert spaces.UI == "cardbert"
+    assert spaces.BROWSABLE == (spaces.UI,)
+    assert spaces.DEFAULT == "function"
+    assert spaces.UI != spaces.DEFAULT
+
+
+def test_the_frontend_mirrors_the_ui_space():
+    """`mana-map.js` holds a JS copy of the registry; a silent duplicate is how
+    the two sides drift. The one space and the one map it boots must be `UI`."""
+    import re
+
+    from manamap import config
+
+    src = (config.VIZ_DIR / "js" / "mana-map.js").read_text()
+    assert re.search(r"const currentSpace = '" + spaces.UI + "'", src)
+    assert re.search(r"let currentMap = '" + spaces.UI + "'", src)
+
+
 def test_only_128_dimension_spaces_are_browsable():
     """`viz/js/mana-map.js:63` hardcodes `EMBED_DIM = 128` and the .bin is
     HEADERLESS with no validation, so a 384-d file parses as plausible garbage
@@ -171,3 +194,50 @@ def test_neighbours_carry_the_digest_of_their_own_matrix(slug):
     assert magic == b"MMNB"
     assert digest == embeddings_digest(space.npy), (
         f"{slug}/neighbours was built from a different matrix than {space.npy.name}")
+
+
+@pytest.mark.parametrize("slug", sorted(spaces.BROWSABLE))
+def test_the_served_outclassed_by_block_matches_the_obsolescence_index(slug):
+    """THE BUTTON'S COUNT AND THE LIST UNDER IT MUST BE ONE ANSWER.
+
+    The card panel's "Outclassed by N" count and Discover's obsolete branch read
+    the served neighbour table; the comparison list under the button reads
+    `obsolescence_index.json`. Obsolescence is not space-dependent (see this
+    module's docstring), so every browsable space's table must carry exactly the
+    index's `compare_with` rows. Found when the pages moved to CardBERT
+    (2026-10-10): `neighbours_cardbert.bin` had been built from an older index and
+    disagreed on 2,157 cards — The Elder Dragon War's button said 1 over a list of 2.
+    The fix is a rebuild (`manamap viz-index --space cardbert`), never a looser test.
+    """
+    import json
+    import struct
+
+    from manamap.config import OBSOLESCENCE_INDEX_PATH, VIZ_INDEX_PATH
+    from manamap.export.viz_index import build_name_index
+
+    space = spaces.get(slug)
+    buf = space.neighbours.read_bytes()
+    n, = struct.unpack_from("<I", buf, 8)
+    ks, ky, ko = struct.unpack_from("<HHH", buf, 12)
+    off = 64 + n * ks * 2 + n * ky * 2
+    obs = np.frombuffer(buf, np.uint16, n * ko, off).reshape(n, ko)
+
+    names = [r["n"] for r in json.loads(VIZ_INDEX_PATH.read_text(encoding="utf-8"))]
+    assert len(names) == n
+    name_index = build_name_index(names)
+    index = json.loads(OBSOLESCENCE_INDEX_PATH.read_text(encoding="utf-8"))
+    wrong = []
+    checked = 0
+    for row, name in enumerate(names):
+        entry = index.get(name) or {}
+        better = entry.get("compare_with") or entry.get("obsoleted_by") or []
+        want = [name_index[b["name"]] for b in better if b.get("name") in name_index][:ko]
+        got = [int(r) for r in obs[row] if r != 0xFFFF]
+        checked += bool(want)
+        if got != want:
+            wrong.append(name)
+    assert checked >= 5000, f"only {checked} cards carry an outclassed-by entry"
+    assert not wrong, (
+        f"{slug}: {len(wrong):,} cards' outclassed-by rows disagree with "
+        f"obsolescence_index.json (e.g. {wrong[:3]}) — rebuild with "
+        f"`manamap viz-index --space {slug}`")

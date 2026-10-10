@@ -292,28 +292,6 @@ def test_filtering_does_not_reset_the_zoom(page):
         f"Escape left the camera at the query's framing: {result}")
 
 
-def test_map_switch_refits_the_camera(page):
-    """The one case that SHOULD autorange — the coordinates themselves change."""
-    result = page.evaluate("""async () => {
-        const span = () => { const c = MM.mapRenderer.getCamera();
-                             return Math.abs(c.x[1] - c.x[0]); };
-        // Start on the OTHER map: the app boots on Abilities, so switching to Abilities
-        // is a no-op that returns before doing anything and refits nothing.
-        const ms = document.getElementById('mapSelect');
-        ms.value = 'default'; ms.dispatchEvent(new Event('change'));
-        await new Promise(r => setTimeout(r, 8000));
-        MM.mapRenderer.setCamera({x: [-5, 5], y: [-5, 5]});
-        await new Promise(r => setTimeout(r, 300));
-        const zoomed = span();
-        ms.value = 'ability'; ms.dispatchEvent(new Event('change'));
-        await new Promise(r => setTimeout(r, 12000));
-        return {zoomed, after: span(), status: document.getElementById('status').textContent};
-    }""")
-    assert page.js_errors == []
-    assert result["after"] > result["zoomed"] * 2, "the map switch kept a stale camera"
-    assert "Abilities" in result["status"]
-
-
 # ── Modes ───────────────────────────────────────────────────────────────
 
 
@@ -535,7 +513,7 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
     }""")
     assert page.js_errors == []
     assert r["walk"] == 3, "the deck must supply three distinct cards to walk"
-    assert r["steps"][0] == r["before"] + 6, "a branch should pull in BRANCH_K neighbours"
+    assert r["steps"][0] == r["before"] + 3, "a branch should pull in BRANCH_K (3) neighbours"
     assert r["steps"][2] > r["steps"][0], "the graph must keep growing as you walk"
     assert r["trail"] == 3, "each distinct card visited should be recorded on the trail"
     assert r["afterAbsent"] == r["steps"][2], (
@@ -1407,6 +1385,49 @@ def test_branching_is_synchronous(discover_page):
     assert discover_page.js_errors == []
     assert r["after"] > r["before"], "branch did not add nodes synchronously"
     assert r["ms"] < 100, f"a branch took {r['ms']:.0f} ms — is something awaiting?"
+
+
+def test_one_card_expands_by_threes_past_the_table(discover_page):
+    """THE PILOT'S ASK, 2026-10-10: each click on the same card adds the NEXT three
+    nearest — 3, 6, 9, 12, 15… with no cap but MAX_NODES. With `BRANCH_K = 6` and a
+    12-entry table the third click added nothing at all.
+
+    Clicks 1-4 come out of the precomputed table; the fifth runs past it, so its three
+    must come from the full CardBERT matrix (`MM.nearestLoaded`) and must be the next
+    three in the same order — the 13th-15th nearest by a cosine scan, none of them in
+    the table. Waits on the node count, not a clock: the fifth click may have to wait
+    for the 17.9 MB matrix, and the status says so while it does."""
+    page = discover_page
+    r = page.evaluate("""async () => {
+        const row = Discovery.current;
+        const table = Discovery.neighbours(row, 'similar').map(n => n.row);
+        const grown = [];
+        let sawFetching = false;
+        for (let click = 1; click <= 5; click++) {
+            Force.branchByRow(row, 'similar');
+            const want = 1 + 3 * click;
+            const t0 = performance.now();
+            while (Force.nodeCount < want && performance.now() - t0 < 90000) {
+                if (/fetching more neighbours/.test(document.getElementById('status').textContent))
+                    sawFetching = true;
+                await new Promise(r => setTimeout(r, 50));
+            }
+            grown.push(Force.nodeCount - 1);
+        }
+        const onGraph = Force.rows().filter(r => r !== row);
+        const past = onGraph.filter(r => table.indexOf(r) < 0);
+        const scan = (await MM.nearestTo(row, 15, {respectFilters: false})).map(h => h.i);
+        return {grown, table: table.length, past: past.sort((a, b) => a - b),
+                scanNext: scan.filter(r => table.indexOf(r) < 0).slice(0, 3).sort((a, b) => a - b),
+                status: document.getElementById('status').textContent, sawFetching};
+    }""")
+    assert page.js_errors == []
+    assert r["table"] == 12, f"the precomputed table holds {r['table']}, not 12"
+    assert r["grown"] == [3, 6, 9, 12, 15], f"the expansion went {r['grown']}"
+    assert len(r["past"]) == 3, f"{len(r['past'])} cards came from past the table"
+    assert r["past"] == r["scanNext"], (
+        f"the 13th-15th are not the next three nearest: {r['past']} vs {r['scanNext']}")
+    assert "3 new" in r["status"], r["status"]
 
 
 def test_the_graph_is_not_a_pure_tree(discover_page):
@@ -2354,14 +2375,15 @@ def test_the_library_follows_the_card_not_the_mode(discover_page):
 
 def test_relations_survive_the_canvas_renderer(canvas_page):
     """The old path threw here: `Plotly.addTraces` on a div with no `.data`, swallowed as
-    an unhandled rejection so nothing drew and nothing complained."""
+    an unhandled rejection so nothing drew and nothing complained. Outclassed-by, because
+    it is the relation the CardBERT map draws an arc for (`MAP_ARC_RELATIONS`)."""
     r = canvas_page.evaluate("""async () => {
         await new Promise(r => setTimeout(r, 500));
-        const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
-        MM.selectByName("Ashnod's Altar");
+        const row = MM.allData.findIndex(d => d.n === "Palinchron");
+        MM.selectByName("Palinchron");
         await new Promise(r => setTimeout(r, 800));
         const before = Session.size();
-        MM.relate(row, 'similar');
+        MM.relate(row, 'obsolete');
         await new Promise(r => setTimeout(r, 1800));
         return {mode: document.getElementById('modeSelect').value,
                 grew: Session.size() > before, seeded: Session.has(row),
@@ -2692,21 +2714,18 @@ def test_explore_grows_in_place_and_draws_the_arcs(page):
     respond to you. Now the card and its relations join the graph and the edges are drawn
     where those cards actually live, so you see reach and position at once — the one thing
     the force layout structurally cannot show.
+
+    On the CardBERT map (the only map since 2026-10-10) the relation that earns an arc is
+    OUTCLASSED-BY: 0.39x a random pair, real structure (`MAP_ARC_RELATIONS`). Palinchron
+    has five outclassed-by partners in every table this repo has shipped.
     """
     r = page.evaluate("""async () => {
-        // Pinned to the colour+type map. Which relations earn an arc is per-map and
-        // MEASURED (`MAP_ARC_RELATIONS`): this map draws similarity, the ability map
-        // deliberately draws none. Inheriting the map from the boot default made that
-        // implicit, so changing the default turned a correct renderer into a red test.
-        const pinSel = document.getElementById('mapSelect');
-        pinSel.value = 'default'; pinSel.dispatchEvent(new Event('change'));
-        await new Promise(r => setTimeout(r, 9000));
         const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
-        const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
-        MM.selectByName("Ashnod's Altar");
+        const row = MM.allData.findIndex(d => d.n === "Palinchron");
+        MM.selectByName("Palinchron");
         await new Promise(r => setTimeout(r, 700));
         const before = Session.size();
-        MM.relate(row, 'similar');
+        MM.relate(row, 'obsolete');
         await new Promise(r => setTimeout(r, 1500));
         const el = edgeLayer();
         return {
@@ -2727,7 +2746,7 @@ def test_explore_grows_in_place_and_draws_the_arcs(page):
     assert r["mode"] == "explore", "growing from the atlas left the atlas"
     assert r["grew"], "the graph did not grow"
     assert r["arcs"] > 0, "no relation arcs were drawn on the map"
-    assert r["rels"] == ["similar"]
+    assert r["rels"] == ["obsolete"]
     assert r["anchored"], "an arc did not end at a real card position"
 
 
@@ -2767,40 +2786,27 @@ def test_synergy_is_never_drawn_as_an_atlas_arc(page):
     assert "graph" in r["status"], f"the status did not point at the graph: {r['status']}"
 
 
-def test_the_ability_map_draws_no_similarity_arcs(page):
-    """On the ability map a card's similar neighbours are 0.27u apart on a 71u map — 97% of
-    them inside 5% of the atlas. An arc there is a single pixel pretending to be
-    information, so none is drawn and the status points at drill, which already exists and
-    is the honest answer to "these are all on top of each other"."""
+def test_the_cardbert_map_draws_no_similarity_arcs(page):
+    """On the CardBERT map a card's similar neighbours are 0.21u apart on a 54u map
+    (0.01x a random pair) — the map and the neighbours come from the same model, so
+    distance on the map already IS similarity. An arc there is a single pixel
+    pretending to be information, so none is drawn and the status points at drill,
+    which already exists and is the honest answer to "these are all on top of each
+    other". The cards still join the graph."""
     r = page.evaluate("""async () => {
-        // Pinned to the colour+type map. Which relations earn an arc is per-map and
-        // MEASURED (`MAP_ARC_RELATIONS`): this map draws similarity, the ability map
-        // deliberately draws none. Inheriting the map from the boot default made that
-        // implicit, so changing the default turned a correct renderer into a red test.
-        const pinSel = document.getElementById('mapSelect');
-        pinSel.value = 'default'; pinSel.dispatchEvent(new Event('change'));
-        await new Promise(r => setTimeout(r, 9000));
         const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
         const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
-        MM.relate(row, 'similar');
-        await new Promise(r => setTimeout(r, 1200));
-        const onDefault = edgeLayer() ? edgeLayer().edges.length : 0;
-
-        const ms = document.getElementById('mapSelect');
-        ms.value = 'ability'; ms.dispatchEvent(new Event('change'));
-        await new Promise(r => setTimeout(r, 15000));
         const held = Session.size();
         MM.relate(row, 'similar');
         await new Promise(r => setTimeout(r, 1500));
         const el = edgeLayer();
-        return {onDefault: onDefault, onAbility: el ? el.edges.length : 0,
-                held: held, stillHeld: Session.size(),
+        return {arcs: el ? el.edges.filter(e => e.rel === 'similar').length : 0,
+                held: held, grown: Session.size(),
                 status: document.getElementById('status').textContent};
     }""")
     assert page.js_errors == []
-    assert r["onDefault"] > 0, "the default map drew no arcs to compare against"
-    assert r["onAbility"] == 0, f"the ability map drew {r['onAbility']} similarity arcs"
-    assert r["stillHeld"] >= r["held"], "the map switch lost the graph"
+    assert r["arcs"] == 0, f"the CardBERT map drew {r['arcs']} similarity arcs"
+    assert r["grown"] > r["held"], "the similar cards did not join the graph"
     assert "drill" in r["status"].lower(), f"no drill affordance offered: {r['status']}"
 
 
@@ -4102,83 +4108,26 @@ def test_regions_are_named_three_levels_deep(browser, viz_server):
 
 
 @pytest.mark.browser
-def test_explore_boots_on_the_ability_map(page):
-    """The shipping default is the ability map, and `currentMap` alone does not deliver it.
+def test_explore_boots_on_the_cardbert_map(page):
+    """ONE MAP SINCE 2026-10-10, and `currentMap` alone does not deliver it.
 
-    The boot fetch was hardcoded to `MAP_CONFIGS.default.projection`, so flipping the
-    default would have left `currentMap` reporting 'ability' while `allData` held the
-    colour+type coordinates — every position wrong, nothing on screen to say so, and the
-    selector still reading Abilities.
+    The boot fetch was once hardcoded to `MAP_CONFIGS.default.projection`, so changing
+    the default left `currentMap` reporting one map while `allData` held another's
+    coordinates — every position wrong and nothing on screen to say so. Asserted on the
+    COORDINATES against the CardBERT projection itself, because the name was never the
+    thing that was wrong.
     """
-    assert page.evaluate("() => MM.currentMap") == "ability"
-    assert page.evaluate("() => document.getElementById('mapSelect').value") == "ability"
-    # The projection actually loaded is the ability one. Compared against the OTHER map's
-    # coordinates for the same row: identical values would mean the wrong file was fetched.
-    same = page.evaluate("""async () => {
-      const before = MM.allData.slice(0, 40).map(d => [d.x, d.y]);
-      document.getElementById('mapSelect').value = 'default';
-      document.getElementById('mapSelect').dispatchEvent(new Event('change'));
-      await new Promise(r => setTimeout(r, 2500));
-      const after = MM.allData.slice(0, 40).map(d => [d.x, d.y]);
-      return before.filter((p, i) => p[0] === after[i][0] && p[1] === after[i][1]).length;
+    r = page.evaluate("""async () => {
+      const proj = await (await fetch(MM.MAP_CONFIGS.cardbert.projection)).json();
+      const same = MM.allData.slice(0, 40).filter((d, i) =>
+        d.x === proj[i].x && d.y === proj[i].y).length;
+      return {map: MM.currentMap, same: same, n: proj.length, rows: MM.allData.length,
+              url: MM.MAP_CONFIGS.cardbert.projection};
     }""")
-    assert same < 5, f"{same}/40 points identical across maps — the boot fetched one map twice"
-
-
-@pytest.mark.browser
-def test_switching_maps_reindexes_the_hit_test(page):
-    """`applyProjection` moves every point in place, and the quadtree cannot tell.
-
-    Its signature is layer lengths plus endpoint ids — all identical across a map switch,
-    the same 34,322 cards in the same groups — so it never rebuilds on its own. The rebuild
-    also has to happen AFTER `render()` installs the new layers: `buildTree` copies
-    coordinates out of the layer arrays, so reindexing first rebuilds from the outgoing
-    ones and `setLayers` then skips its own rebuild against that unchanged signature. The
-    stale positions survive the very call meant to remove them.
-
-    Asserted through `pick` directly rather than through a hover, because the hover path
-    adds interference this invariant has nothing to do with: at the whole-map fit
-    neighbouring cards are sub-pixel apart (measured: `pick(845.1, 653.7)` and
-    `pick(845, 654)` return different rows), and region labels are real DOM buttons layered
-    over the canvas, so a card under one cannot be hovered at all. Framing each card first
-    removes the density ambiguity; `test_hovering_names_the_card_under_the_cursor` covers
-    the hover pipeline itself.
-    """
-    rows = [100, 9000, 20000, 31000]
-
-    def picks_itself():
-        return page.evaluate(
-            """(rows) => rows.map(row => {
-                const d = MM.allData[row];
-                // Frame the card so it owns its pixels — otherwise the answer is a
-                // statement about point density, not about the index.
-                MM.mapRenderer.setCamera({x: [d.x - 1.2, d.x + 1.2], y: [d.y - 0.8, d.y + 0.8]});
-                const px = MM.mapRenderer.dataToPixel(d.x, d.y);
-                return [row, MM.mapRenderer.pick(px[0], px[1])];
-            })""",
-            rows,
-        )
-
-    assert [r for r, got in picks_itself() if r != got] == [], "hit test wrong before any switch"
-
-    # ability -> default -> ability. Switching to the map you are already on is a no-op and
-    # proves nothing; the bug needs the coordinates to actually change.
-    for target in ("default", "ability"):
-        page.evaluate(
-            """(m) => {
-                const s = document.getElementById('mapSelect');
-                s.value = m;
-                s.dispatchEvent(new Event('change'));
-            }""",
-            target,
-        )
-        page.wait_for_timeout(3000)
-        assert page.evaluate("() => MM.currentMap") == target
-        wrong = [(r, got) for r, got in picks_itself() if r != got]
-        assert not wrong, (
-            f"after switching to the {target} map, rows {wrong} no longer hit-test to "
-            "themselves — the quadtree still holds the previous map's positions"
-        )
+    assert r["map"] == "cardbert"
+    assert "projection_2d_cardbert.json" in r["url"]
+    assert r["n"] == r["rows"]
+    assert r["same"] == 40, f"{r['same']}/40 points sit on the CardBERT layout — wrong file booted"
     assert page.js_errors == []
 
 
@@ -4211,10 +4160,38 @@ def test_hovering_names_the_card_under_the_cursor(page):
             return {l: r.left, t: r.top, w: r.width, h: r.height};
         }"""
     )
+    # SAMPLE WHERE THERE ARE CARDS. Three fixed fractions of the canvas were chosen on
+    # the colour+type map; on the CardBERT map (2026-10-10) all three fell on region
+    # labels or empty space and the test checked nothing. Scan a coarse grid for points
+    # the canvas itself owns (no label on top) that `pick` resolves to a card.
+    samples = page.evaluate(
+        """() => {
+            const c = document.querySelector('.map-canvas');
+            const r = c.getBoundingClientRect();
+            const out = [];
+            for (let fy = 0.2; fy <= 0.8 && out.length < 3; fy += 0.05) {
+                for (let fx = 0.2; fx <= 0.8 && out.length < 3; fx += 0.05) {
+                    const gx = r.width * fx, gy = r.height * fy;
+                    const hit = MM.mapRenderer.pick(gx, gy);
+                    if (hit == null) continue;
+                    // Re-aim at the card's OWN pixel: a grid point at the rim of the
+                    // pick radius is a statement about the radius, not the hover (one
+                    // run in three missed that way).
+                    const d = MM.allData[hit];
+                    const px = MM.mapRenderer.dataToPixel(d.x, d.y);
+                    const x = Math.round(r.left + px[0]), y = Math.round(r.top + px[1]);
+                    if (document.elementFromPoint(x, y) !== c) continue;
+                    if (MM.mapRenderer.pick(x - r.left, y - r.top) !== hit) continue;
+                    if (out.some(p => Math.abs(p[0] - x) < 60 && Math.abs(p[1] - y) < 60)) continue;
+                    out.push([x, y]);
+                }
+            }
+            return out;
+        }"""
+    )
+    assert len(samples) == 3, f"found only {len(samples)} card pixels clear of a label: {samples}"
     checked = 0
-    for fx, fy in ((0.42, 0.45), (0.55, 0.60), (0.62, 0.38)):
-        x = round(box["l"] + box["w"] * fx)
-        y = round(box["t"] + box["h"] * fy)
+    for x, y in samples:
         # Park in the corner first so the hover genuinely re-fires rather than being
         # deduped by `hoverRow === row`.
         page.mouse.move(round(box["l"] + 6), round(box["t"] + 6))
@@ -5899,14 +5876,13 @@ def test_the_landing_leads_with_the_card_and_its_relations(discover_page):
     of choosing a different card, which is a smaller question and now looks
     like one. Asserted by ORDER on screen, not by DOM order.
 
-    REWRITTEN 2026-10-08 with the card-panel rework (Sean approved the order):
-    this used to assert image < relations < oracle, the order a flex `order`
-    rule imposed on `#deckInner` alone. The panel is text-first everywhere now —
-    type and oracle, then the relations and Keep, then the image — because the
-    image only repeats the text, and at 443px it pushed a long card's oracle to
-    the fold. What this test protected is kept: the relations and Keep still
-    come before the image and the "start elsewhere" block, and they are still
-    above the fold.
+    REWRITTEN 2026-10-08 with the card-panel rework, which made the panel
+    text-first (type and oracle, relations and Keep, then a 240px image), and
+    REVERSED 2026-10-10 by the pilot: the card is the thing. The image leads at
+    the panel's full width again, then the text, then the relations and Keep,
+    and the "start elsewhere" block stays last. The old "Keep above the fold"
+    assertion went with it, knowingly: a full-width card is ~600px tall, and the
+    pilot chose the card over the fold.
 
     The landing paints from the slim viz_index record, which has no type or
     oracle; the projection's record replaces it in place when it lands (the
@@ -5928,8 +5904,8 @@ def test_the_landing_leads_with_the_card_and_its_relations(discover_page):
                 fold: window.innerHeight};
     }""")
     assert pos["card"] is not None and pos["relations"] is not None
-    assert pos["text"] < pos["relations"] < pos["keep"] < pos["card"], pos
-    assert pos["keep"] < pos["fold"], f"Keep is below the fold again: {pos}"
+    assert pos["card"] < pos["text"] < pos["relations"] < pos["keep"], pos
+    assert pos["card"] < pos["fold"] / 4, f"the card does not lead the panel: {pos}"
     assert pos["keep"] < pos["more"], "the ways to start elsewhere outrank Keep"
     assert page.js_errors == []
 
@@ -7733,161 +7709,54 @@ def test_a_proposed_objective_is_confirmed_before_it_is_used(browser, viz_server
     page.close()
 
 
-# ── The similarity-space toggle ─────────────────────────────────────────
+# ── One space: CardBERT (2026-10-10) ─────────────────────────────────────
 
 
-def test_both_similarity_spaces_are_registered(page):
-    """Only 128-d spaces may reach the browser: `EMBED_DIM` is a hardcoded 128 and
-    the .bin is headerless, so a 384-d file parses as plausible garbage."""
-    spaces = page.evaluate("Object.keys(MM.SPACES)")
-    assert sorted(spaces) == ["cardbert", "function"]
-    assert page.evaluate("MM.space") == "function", "the default must not move"
-
-
-def test_switching_space_changes_the_answer(page):
-    """THE CONTROL THAT MATTERS. `Discovery.configure` only swaps a URL — the
-    decoded table and its memoised promise still hold the previous space's arrays,
-    and `loadNeighbours` returns that promise without re-reading the URL. Without
-    `resetNeighbours` the toggle changes which file WOULD be fetched and nothing
-    ever fetches it, so every 'different' neighbour is the same neighbour.
-
-    Asserted on real neighbour ids rather than on a flag, because a flag would
-    pass in exactly the broken case.
-    """
+def test_the_pages_use_one_space_with_no_pickers(page):
+    """THE PILOT'S CHOICE, 2026-10-10: CardBERT is the single embedding and the
+    single similarity in the UI. The Map and Similarity pickers are gone from the
+    DOM, the registry holds one space, and nothing the page fetched came from the
+    function space — a stray `neighbours.bin` beside a CardBERT map would be two
+    models on one screen, which is what the picker era spent three commits keeping
+    apart. Read from the resource timeline, so it covers fetches made at boot,
+    before any test hook could listen."""
     page.wait_for_function("window.Discovery && Discovery.isReady()")
-    before = page.evaluate(
-        "Discovery.neighbours(0, 'similar').map(n => n.row)")
-    assert before, "no similar neighbours at all — the fixture is wrong"
+    r = page.evaluate("""() => ({
+        spaces: Object.keys(MM.SPACES), maps: Object.keys(MM.MAP_CONFIGS),
+        space: MM.space, map: MM.currentMap,
+        mapSelect: !!document.getElementById('mapSelect'),
+        spaceSelect: !!document.getElementById('spaceSelect'),
+        setSpace: typeof MM.setSpace,
+        fetched: performance.getEntriesByType('resource').map(e => e.name)
+                   .filter(u => u.includes('/data/')).map(u => u.split('/data/')[1].split('?')[0]),
+    })""")
+    assert r["spaces"] == ["cardbert"] and r["maps"] == ["cardbert"], r
+    assert r["space"] == "cardbert" and r["map"] == "cardbert", r
+    assert not r["mapSelect"] and not r["spaceSelect"], "a picker is back in the DOM"
+    assert r["setSpace"] == "undefined", "a space switch is exported with nothing to switch to"
+    assert "neighbours_cardbert.bin" in r["fetched"], r["fetched"]
+    assert "projection_2d_cardbert.json" in r["fetched"], r["fetched"]
+    stray = [u for u in r["fetched"] if u in (
+        "neighbours.bin", "projection_2d.json", "projection_2d_ability.json",
+        "embeddings.bin", "embeddings_ability.bin", "regions_default.json",
+        "regions_ability.json")]
+    assert stray == [], f"the page fetched function-space artifacts: {stray}"
+    assert page.js_errors == []
 
-    page.evaluate("MM.setSpace('cardbert')")
-    page.wait_for_function("MM.space === 'cardbert'")
+
+def test_the_neighbours_are_cardberts(page):
+    """Asserted on real neighbour ids against the matrix itself, because a flag
+    would pass in exactly the broken case: Discover's precomputed top-3 for a card
+    must be the top-3 of a cosine scan over `embeddings_cardbert.bin`."""
     page.wait_for_function("window.Discovery && Discovery.isReady()")
-    after = page.evaluate("Discovery.neighbours(0, 'similar').map(n => n.row)")
-
-    assert after, "cardbert returned no neighbours — was the .bin built?"
-    assert after != before, (
-        "the toggle is cosmetic: both spaces returned the same neighbour rows")
-
-
-def test_switching_space_drops_the_cached_matrix(page):
-    """The bare `embeddings` variable is the hot path and is checked before the
-    cache, so clearing only the cache would keep serving the old matrix."""
-    page.evaluate("MM.getEmbeddings()")
-    page.wait_for_function("MM.getEmbeddings() !== null")
-    page.evaluate("MM.setSpace('cardbert')")
-    assert page.evaluate("MM.space") == "cardbert"
-    # Re-fetching under the new space must succeed and must be a real matrix.
-    length = page.evaluate(
-        "MM.getEmbeddings().then(e => e ? e.length : 0)")
-    assert length is None or length != 0
-
-
-def test_the_space_selector_is_visible_in_every_mode(page):
-    """The space drives SIMILARITY and every mode asks a similarity question —
-    Discover walks neighbours, Explore runs Find Similar, Build ranks relations.
-    Scoping it to one mode would leave the other two answering out of a space the
-    user cannot see."""
-    assert page.evaluate(
-        "!document.getElementById('spaceSelect').closest('[data-modes]')"), \
-        "spaceSelect is scoped to a mode"
-
-
-# ── `serial_only`: these two switch MAPS, and a map switch fetches a ~13 MB
-# projection. Run in the `-n 4` pool they add enough network contention to time
-# out `test_canvas_redraws_when_the_filter_changes`, whose own comment records
-# that it already "timed out one run in two under -n 4" before its budget was
-# raised to 30 s. Neither of these asserts on timing, so serialising them costs a
-# little wall clock and stops them interfering with a test that does.
-@pytest.mark.serial_only
-def test_switching_space_moves_the_picture(page):
-    """THE BUG THE PILOT HIT. Each space carries the projection it laid out, and
-    for one commit NOTHING READ THAT FIELD — the repo's own "a flag the model sets
-    is a claim the model must ACT ON", in JavaScript. Every answer changed and
-    nothing on screen did, so the toggle read as broken.
-
-    Asserted on real coordinates, because "the map name changed" would pass with
-    the projection never fetched.
-    """
-    page.evaluate("MM.setMode('explore')")
-    page.wait_for_function("MM.allData && MM.allData.length > 0")
-    before = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
-
-    page.evaluate("MM.setSpace('cardbert')")
-    page.wait_for_function("MM.space === 'cardbert' && MM.currentMap === 'cardbert'")
-    after = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
-
-    assert before != after, "the space changed and the coordinates did not"
-    assert page.eval_on_selector("#mapSelect", "el => el.value") == "cardbert", (
-        "the map selector still shows the old map")
-
-
-def test_changing_the_map_never_changes_the_space(page):
-    """The asymmetry is the whole point of the split. A space may move its own
-    picture; a picture may NOT choose which space answers — that is the original
-    defect, where the colour+type map returned arbitrary same-colour neighbours
-    (3.05 of 128 effective dimensions, 0.044 recall@10).
-
-    THE FIRST VERSION OF THIS TEST WAS VACUOUS. It called
-    `MM.switchMap ? MM.switchMap('default') : null`, and `switchMap` is NOT
-    exported on `MM` — so the guard evaluated to null, no map switch ever
-    happened, and the assertion passed without testing anything. It drives the
-    real `<select>` now, which is the user's path regardless.
-    """
-    page.evaluate("MM.setMode('explore')")
-    page.select_option("#spaceSelect", "cardbert")
-    page.wait_for_function("MM.space === 'cardbert' && MM.currentMap === 'cardbert'")
-
-    page.select_option("#mapSelect", "default")
-    page.wait_for_function("MM.currentMap === 'default'")   # the switch REALLY happened
-    assert page.evaluate("MM.space") == "cardbert", (
-        "switching the displayed map dragged the similarity space with it")
-
-
-@pytest.mark.serial_only
-def test_returning_to_the_boot_map_restores_its_coordinates(page):
-    """THE BOOT MAP'S CACHE ALIASED `allData`.
-
-    Boot did `allData = data; projectionCache[currentMap] = data` — the same
-    objects — and `applyProjection` writes `allData[i].x = data[i].x`. So
-    switching AWAY from the boot map overwrote that map's own cached coordinates,
-    and switching back re-applied them: `currentMap` said "ability" while every
-    point sat where the other map had put it.
-
-    Pre-existing, and invisible while the round trip was rarely made. Asserted as
-    a ROUND TRIP on real coordinates, because `currentMap` was already correct in
-    the broken case — the name was never the thing that was wrong.
-    """
-    page.evaluate("MM.setMode('explore')")
-    page.wait_for_function("MM.allData && MM.allData.length > 0")
-    boot = page.evaluate("MM.currentMap")
-    home = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
-
-    # WAIT ON THE CONDITION, NOT A CLOCK. A fixed `wait_for_timeout` passed
-    # alone and failed under `-n 4`, which is how every historical flake in this
-    # file was born: the projection fetch takes longer when four browsers
-    # compete, and the assertion fired before it landed.
-    # ONE ROUND TRIP, NOT TWO. Each switch fetches a ~13 MB projection and the
-    # bug is symmetric, so a second non-boot map buys nothing for the I/O.
-    #
-    # (I first blamed this for failing `test_canvas_render_beats_the_plotly_budget`
-    # under contention. That was wrong: the budget test is marked `serial_only`
-    # and `make test-browser` never runs it in parallel — I had invoked
-    # `-m browser -n 4` by hand and included a test that documents it cannot be
-    # asserted that way. Use the Makefile.)
-    first_x = home[0][0]
-    for other in ("cardbert",):
-        page.select_option("#mapSelect", other)
-        page.wait_for_function(
-            f"MM.currentMap === '{other}' && MM.allData[0].x !== {first_x!r}")
-        away = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
-        assert away != home, f"switching to {other} did not move the points"
-
-        page.select_option("#mapSelect", boot)
-        page.wait_for_function(
-            f"MM.currentMap === '{boot}' && MM.allData[0].x === {first_x!r}")
-        back = page.evaluate("MM.allData.slice(0,3).map(d => [d.x, d.y])")
-        assert back == home, (
-            f"returning from {other} to {boot} left the points on {other}'s layout")
+    r = page.evaluate("""async () => {
+        const row = MM.allData.findIndex(d => d.n === 'Sol Ring');
+        const table = Discovery.neighbours(row, 'similar').slice(0, 3).map(n => n.row);
+        const scan = (await MM.nearestTo(row, 3, {respectFilters: false})).map(h => h.i);
+        return {table, scan};
+    }""")
+    assert r["table"] and r["table"] == r["scan"], r
+    assert page.js_errors == []
 
 
 # ---------------------------------------------------------------------------

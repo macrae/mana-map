@@ -182,7 +182,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 - **Roles ≠ mechanical tags**: tags say what a card is LIKE; roles say what JOB it does in a 99 (one `ramp` tag, five `ramp:*` roles — a Signet is not a Dark Ritual).
 - **Index alignment**: `projection[i]` == `cards.csv[i]` == `embeddings[i]`. After the card count changes, re-run from the changed step onward, never partially.
 - **No Git LFS on `data/`**: GitHub Pages serves LFS pointers, which would break the viz.
-- **Two embedding spaces, two jobs**: `embeddings.npy` is LAYOUT (colour/type) and feeds the default map only; `embeddings_ability.npy` is FUNCTION and is the sole source of similarity, whichever map is shown.
+- **Two embedding spaces, two jobs**: `embeddings.npy` is LAYOUT (colour/type), never a similarity source; `embeddings_ability.npy` is FUNCTION and is the bench's similarity (`spaces.DEFAULT`). The pages use CardBERT alone since 2026-10-10, by the pilot's choice (`spaces.UI`).
 - **The obsolescence index publishes a measure, not a verdict** (`strength` 0–1; it shipped as "Obsoleted By" with 36.5% of pairs failing). → `docs/gotchas-analysis.md`
 - **A trigger pattern's `.*` sits where the subject noun lives** — "a Goblin you control dies" and "another creature dies" read the same. → `docs/gotchas-analysis.md`
 

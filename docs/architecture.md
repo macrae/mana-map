@@ -699,6 +699,23 @@ so that difference is the draw, and frozen text still wins outright.
 **Nothing is cut over.** It is complementary, and strongest exactly where the
 incumbent is weakest.
 
+#### DECISION 2026-10-10 — the pages use CardBERT; the bench keeps function
+
+The pilot chose CardBERT as the single embedding and similarity of the pages — the
+Atlas, Discover and Build draw its map and answer "similar" out of it, with no Map
+or Similarity picker left anywhere. It is a choice with its cost on the table, not
+a reversal of the measurement above: CardBERT still loses function (−0.205 at a
+100-card pool, −0.275 at 500, intervals on the difference excluding zero) and still
+wins theme. **Similarity on the bench stays function**: `spaces.DEFAULT` is
+unchanged, so every `manamap pilot` command, the pipeline's `--space` default and
+the agents read the function space as before; `spaces.UI = "cardbert"` is the new,
+separate constant the frontend mirrors, and `BROWSABLE = (UI,)`. The function
+space's browser files stay tracked and unfetched. `viz/spaces.html` stays as the
+read-only comparison. Two known gaps the switch exposed: the CardBERT map's region
+names are machine-generated (no curated names, issue #38), and
+`neighbours_cardbert.bin`'s outclassed-by block had been built from an older
+`obsolescence_index.json` (a test now holds every browsable table to the index).
+
 #### RULE — visual inspection is part of evaluation
 
 Set by the pilot, 2026-09-01. `eval-embeddings` asks one question — are the k

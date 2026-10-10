@@ -32,7 +32,17 @@
   // wherever a drag could; anything less makes the button refuse to do its job.
   const MAX_FIT_SCALE = 12;
   const LINKS_PER_NODE = 3;      // k-nearest within the graph, so structure is visible
-  const BRANCH_K = 6;            // neighbours pulled in when you branch from a card
+  // Neighbours pulled in per click on a card, and the expansion is BY THREES, UNCAPPED
+  // (2026-10-10, the pilot's ask): clicking the same card again adds the next three
+  // nearest — 3, 6, 9, 12 out of the precomputed table (12 similar per card), then 15,
+  // 18, 21… out of the full embedding matrix, until MAX_NODES. It was 6, and the third
+  // click on a card added nothing because the table had run out.
+  const BRANCH_K = 3;
+  // When a card's table has this few unseen neighbours left, start the 17.9 MB matrix
+  // download in the background so the click that exhausts it rarely waits. Not on the
+  // FIRST branch: most walks never click a card three times, and a speculative 17.9 MB
+  // on every landing was measured as contention before (see `enter`).
+  const PREFETCH_WHEN_LEFT = 2 * BRANCH_K;
   const TRAIL_MAX = 40;
   // Persistent name labels: how many at most, and how much clear space each needs. 14 is
   // about what a 1440px canvas holds before names start reading as texture rather than
@@ -119,10 +129,11 @@
    * min 0.0727 / mean 0.3675 / max 0.6522 before and after the switch, to the
    * last digit, while the status line claimed a new space.
    *
-   * Stamped rather than cleared by the caller: `setSpace` lives in mana-map.js
+   * Stamped rather than cleared by the caller: `setSpace` lived in mana-map.js
    * and had no idea this cache existed, and a second module that must remember
    * to invalidate someone else's cache is the same bug waiting for its next
-   * caller. This one notices on its own. */
+   * caller. One space since 2026-10-10, and the stamp stays: it costs a compare
+   * and it is what makes a second space safe to add back. */
   let embSpace = null;
   let active = false;
   let hovered = null, pinned = null;
@@ -956,20 +967,49 @@
       return;
     }
 
+    const want = Math.min(BRANCH_K, room);
     let grown = 0;
     for (const nb of found) {
-      if (grown >= Math.min(BRANCH_K, room)) break;
+      if (grown >= want) break;
       if (byIdx.has(nb.row)) continue;
-      const n = makeNode(nb.row, false);
-      // Born beside their parent, not at their world position — a new node should appear
-      // to come *out of* the card you clicked.
-      n.x = node.x + (Math.random() - 0.5) * 40;
-      n.y = node.y + (Math.random() - 0.5) * 40;
-      nodes.push(n);
-      byIdx.set(nb.row, n);
-      links.push({ source: node, target: n, d: edgeLength(nb), rel: nb.relation,
-                   reason: nb.reason || null });
+      growChild(node, nb.row, nb);
       grown++;
+    }
+
+    /* PAST THE TABLE. The precomputed table holds 12 similar per card, so the fifth
+     * click on one card used to find nothing new. Similarity is a ranking over the
+     * whole corpus, so the next three are simply the next three nearest NOT already
+     * on the graph — `MM.nearestLoaded`, cosine over the same CardBERT matrix the table
+     * was built from, so the order continues rather than jumping spaces.
+     *
+     * Synchronous when the matrix is in hand (a click must not await when it need
+     * not); otherwise the status says so and they arrive when it lands. Only for
+     * `similar`: synergy and outclassed-by are rule-based lists, and a list that has
+     * run out has run out. */
+    let pending = false;
+    if (rel === 'similar') {
+      let left = 0;
+      for (const nb of found) if (!byIdx.has(nb.row)) left++;
+      if (left <= PREFETCH_WHEN_LEFT && !MM.embeddingsReady()) MM.getEmbeddings();
+      if (grown < want) {
+        if (MM.embeddingsReady()) {
+          grown += growFromCorpus(node, want - grown);
+        } else {
+          pending = true;
+          const need = want - grown;
+          MM.getEmbeddings().then(function (ready) {
+            // The walk may have moved on while 17.9 MB downloaded: a new walk, this
+            // card trimmed away, or the cap reached. Each is a reason to add nothing.
+            if (!ready) { MM.setStatus('Could not load the embeddings — no more neighbours for ' + node.name + '.'); return; }
+            if (!active || byIdx.get(node.row) !== node) return;
+            const more = growFromCorpus(node, Math.min(need, Math.max(0, MAX_NODES - nodes.length)));
+            if (more) restart(0.6);
+            renderPanel();
+            MM.setStatus(branchStatus(node, rel, more, 0) +
+                         (more ? '' : ' — nothing left to add'));
+          });
+        }
+      }
     }
 
     /* THE FIRST EXPANSION FRAMES ITSELF.
@@ -985,12 +1025,45 @@
     if (firstGrowth) { expanded = true; userAdjusted = false; }
     restart(firstGrowth ? 0.9 : 0.6);
     renderPanel();
+    if (pending) {
+      MM.setStatus(branchStatus(node, rel, grown, added) + ' · fetching more neighbours…');
+    } else {
+      MM.setStatus(branchStatus(node, rel, grown, added) +
+                   (nodes.length >= MAX_NODES ? ' · at the ' + MAX_NODES + '-card cap' : ''));
+    }
+  }
+
+  // One status sentence for a branch, whichever path grew it.
+  function branchStatus(node, rel, grown, added) {
     const bits = [];
     if (grown) bits.push(grown + ' new');
     if (added) bits.push(added + ' link' + (added === 1 ? '' : 's') + ' to cards already here');
-    MM.setStatus('Branched from ' + node.name + ' by ' + rel +
-                 (bits.length ? ' — ' + bits.join(', ') : '') +
-                 ' · ' + nodes.length + ' cards');
+    return 'Branched from ' + node.name + ' by ' + rel +
+           (bits.length ? ' — ' + bits.join(', ') : '') + ' · ' + nodes.length + ' cards';
+  }
+
+  // A new card, born beside its parent rather than at its world position — a new node
+  // should appear to come *out of* the card you clicked.
+  function growChild(node, row, nb) {
+    const n = makeNode(row, false);
+    n.x = node.x + (Math.random() - 0.5) * 40;
+    n.y = node.y + (Math.random() - 0.5) * 40;
+    nodes.push(n);
+    byIdx.set(row, n);
+    links.push({ source: node, target: n, d: edgeLength(nb), rel: nb.relation || 'similar',
+                 reason: nb.reason || null });
+    return n;
+  }
+
+  // The next `k` nearest to `node` that are not on the graph, from the full matrix. The
+  // edge is sized by the REAL cosine, exactly as a table edge is by its decoded one.
+  // `respectFilters: false` for the reason `nearestInCorpus` gives.
+  function growFromCorpus(node, k) {
+    if (k <= 0) return 0;
+    const hits = MM.nearestLoaded(node.row, k,
+      { exclude: new Set(byIdx.keys()), respectFilters: false });
+    for (const h of hits) growChild(node, h.i, { sim: h.sim, relation: 'similar' });
+    return hits.length;
   }
 
   function hasLink(a, b) {

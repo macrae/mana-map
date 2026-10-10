@@ -29,26 +29,47 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 
 /* ── Detail Panel ─────────────────────────────────────────────────────── */
 .detail-panel { width: 0; overflow: hidden; background: #16213e; border-left: 1px solid #2a2a4a; transition: width 0.25s ease; flex-shrink: 0; }
-.detail-panel.open { width: 350px; }
+/* 440px since 2026-10-10 (was 350): the card leads the panel at full width, and at 350
+ * a `large` image drew at 318px — barely bigger than the 240px it replaced. */
+.detail-panel.open { width: 440px; }
 /* `position: relative` makes .acc-row offsetTop measurable against this container,
  * which is what scrollActiveRowIntoView() does its arithmetic in. */
-.detail-inner { width: 350px; height: 100%; overflow-y: auto; padding: 16px; position: relative; }
+.detail-inner { width: 440px; height: 100%; overflow-y: auto; padding: 16px; position: relative; }
 .detail-inner::-webkit-scrollbar { width: 6px; }
 .detail-inner::-webkit-scrollbar-track { background: #16213e; }
 .detail-inner::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 3px; }
 .detail-close { background: none; border: 1px solid #3a3a5a; color: #aaa; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .detail-close:hover { border-color: #c4a747; color: #e0e0e0; }
 
-/* The card image FOLLOWS the text (see `buildCardDetailHtml`): 240px, the box reserved
-   at the card's 488:680 so nothing below it jumps when Scryfall answers; a click toggles
-   full panel width. No art-crop window — the old 200px `overflow:hidden` frame sliced the
-   card through its rules text. */
+/* The card image LEADS the panel at its full width (see `buildCardDetailHtml`; reversed
+   2026-10-10, the pilot's call), Scryfall `large`, the box reserved at the card's 488:680
+   so nothing below it jumps when Scryfall answers. A click opens the magnifier. No
+   art-crop window — the old 200px `overflow:hidden` frame sliced the card through its
+   rules text. */
 .detail-card-image { margin: 4px 0 10px; display: flex; flex-direction: column;
   align-items: center; gap: 6px; }
-.detail-card-image img { width: 240px; max-width: 100%; height: auto; aspect-ratio: 488 / 680;
-  display: block; border-radius: 10px; background: #2a2a4a; cursor: zoom-in; }
-.detail-card-image.is-full img { width: 100%; cursor: zoom-out; }
-.detail-card-image .detail-image-fallback { width: 240px; max-width: 100%; }
+.detail-card-image img { width: 100%; height: auto; aspect-ratio: 488 / 680;
+  display: block; border-radius: 4.75% / 3.5%; background: #2a2a4a; cursor: zoom-in; }
+.detail-card-image img:focus-visible { outline: 2px solid #c4a747; outline-offset: 2px; }
+.detail-card-image .detail-image-fallback { width: 100%; }
+
+/* THE MAGNIFIER: Scryfall `png` (745x1040) on a dark scrim, centred, capped at 92vh. A
+   click anywhere dismisses it, so the whole layer reads as zoom-out. Above the mobile
+   panel (z-index 1000) and the shell. */
+.card-magnifier { position: fixed; inset: 0; z-index: 3000; background: rgba(10, 10, 22, 0.92);
+  display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
+.card-magnifier-img { max-height: 92vh; max-width: 94vw; width: auto; height: auto;
+  aspect-ratio: 745 / 1040; border-radius: 4.75% / 3.5%; background: #2a2a4a;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6); }
+.card-magnifier-close { position: absolute; top: 14px; right: 18px; width: 40px; height: 40px;
+  border-radius: 50%; border: 1px solid #3a3a5a; background: #16213e; color: #e0e0e0;
+  font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.card-magnifier-close:hover, .card-magnifier-close:focus-visible { border-color: #c4a747; color: #c4a747;
+  outline: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .card-magnifier { animation: card-magnifier-in 0.14s ease-out; }
+}
+@keyframes card-magnifier-in { from { opacity: 0; } to { opacity: 1; } }
 .detail-flip { font-size: 0.72rem; }
 .detail-flip:disabled { opacity: 0.55; cursor: default; }
 /* A panel with no `.viewer-header` (Discover's landing, Build's selected card). */
@@ -285,8 +306,9 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 
 /* ── Deck Builder Panel ───────────────────────────────────────────────── */
 .deck-panel { width: 0; overflow: hidden; background: #16213e; border-left: 1px solid #2a2a4a; transition: width 0.25s ease; flex-shrink: 0; }
-.deck-panel.open { width: 420px; }
-.deck-inner { width: 420px; height: 100%; overflow-y: auto; padding: 16px; }
+/* 460px since 2026-10-10 (was 420): the card leads this panel too. */
+.deck-panel.open { width: 460px; }
+.deck-inner { width: 460px; height: 100%; overflow-y: auto; padding: 16px; }
 .deck-inner::-webkit-scrollbar { width: 6px; }
 .deck-inner::-webkit-scrollbar-track { background: #16213e; }
 .deck-inner::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 3px; }
@@ -315,6 +337,15 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 /* Mode select styling */
 #modeSelect { font-weight: 600; }
 #modeSelect option[value="build"] { color: #c4a747; }
+
+/* ── Narrow desktop ───────────────────────────────────────────────────────
+ * Build opens BOTH panels beside the graph. At 440 + 460 a 1024px window left the
+ * graph 124px wide (measured; it was 254px at the old 350 + 420), so below 1200px
+ * both step down to 400 — the card still draws at 368px, over 1.5x the old 240. */
+@media (max-width: 1200px) and (min-width: 769px) {
+  .detail-panel.open, .detail-inner { width: 400px; }
+  .deck-panel.open, .deck-inner { width: 400px; }
+}
 
 /* ── Mobile ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -376,7 +407,7 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
   border: 1px solid #3a3a5a; border-radius: 2px; color: #888; flex-shrink: 0; }
 .lens-note { font-size: 0.66rem; color: #666; margin: -2px 0 7px; }
 /* A <select> takes its intrinsic width from the longest option, which overflows the
- * 420px panel once deck names are in it. flex:1 alone will not shrink it. */
+ * 460px panel once deck names are in it. flex:1 alone will not shrink it. */
 #deckLensSelect { min-width: 0; }
 /* A verified line the map cannot draw (fewer than two of its cards are in the deck)
  * still belongs in the list — greyed, not hidden. */

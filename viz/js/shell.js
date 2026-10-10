@@ -133,16 +133,31 @@ window.Shell = (function () {
    * found by `name` among `card_faces`, and a split card's faces carry no
    * image of their own, so the card's one image stands in. No usable field
    * on the entry falls back to the by-name URL, never to nothing. */
+  /* A LARGER VERSION IS A PATH SEGMENT AWAY. The entry holds Scryfall's
+   * `normal` (488x680) image; the card panel asks for `large` (672x936) and the
+   * magnifier for `png` (745x1040) since 2026-10-10. Scryfall's CDN keys the
+   * version in the path — cards.scryfall.io/normal/front/… → /large/front/… —
+   * so the sleeved printing upgrades in place rather than falling back to the
+   * by-name default printing. `png` also changes the extension. Anything that
+   * is not a Scryfall `normal` URL is returned untouched. */
+  var BIGGER = { large: 'large', png: 'png' };
+  function upsize(url, version) {
+    if (!url || !BIGGER[version]) return url;
+    var m = /^(https:\/\/cards\.scryfall\.io\/)normal(\/.+?)\.jpg(\?.*)?$/.exec(url);
+    if (!m) return url;
+    return m[1] + version + m[2] + (version === 'png' ? '.png' : '.jpg') + (m[3] || '');
+  }
+
   function entryImageUrl(entry, name, version) {
     if (!entry || typeof entry !== 'object') return null;
     var want = version === 'art_crop' ? 'art_crop' : 'image';
     var faces = entry.card_faces || [];
     if (name && entry.name && name !== entry.name) {
       for (var i = 0; i < faces.length; i++) {
-        if (faces[i] && faces[i].name === name && faces[i][want]) return faces[i][want];
+        if (faces[i] && faces[i].name === name && faces[i][want]) return upsize(faces[i][want], version);
       }
     }
-    return entry[want] || entry.image || null;
+    return upsize(entry[want] || entry.image || null, version);
   }
 
   function cardImageUrl(name, version, entry) {

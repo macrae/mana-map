@@ -205,7 +205,7 @@ def test_data_urls_are_versioned():
     """
     src = _map()
     assert "const DATA_VERSION" in src
-    assert re.search(r"regionsDefault: v\(", src), "region URLs are not versioned"
+    assert re.search(r"regionsCardbert: v\(", src), "region URLs are not versioned"
 
 
 def test_escape_pops_the_drill_before_anything_else():
