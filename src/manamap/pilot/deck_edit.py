@@ -41,6 +41,7 @@ import os
 import secrets
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 from collections import Counter
@@ -792,25 +793,111 @@ def _offline(exc):
 #: and the Deck Context, which `list_change` refreshes as the last step.
 REGEN_SKIP = ("goldfish", "mana-analysis", "context")
 
+#: The regen stages that read nothing another rebuild stage writes, so they run
+#: BESIDE the goldfish rather than after it. Proved from the code, 2026-10-10:
+#:   deck-combos  reads cards.json + the corpus combo graph        -> combos.json
+#:   diagnose     reads cards.json + goldfish_targets.json          -> diagnostic.json
+#:                (`diagnostic.run_on`: its own goldfish, seed 20260826, never
+#:                goldfish_metrics.json)
+#:   benchmark    reads cards.json + card_roles.json (its own frozen-harness
+#:                goldfish, seed 42; the module docstring says why it must not
+#:                read goldfish_metrics.json)                       -> benchmark.json
+#: and the goldfish chain reads cards.json + goldfish_targets.json, the try
+#: warm the same plus the model version. Each writes only its own file, and
+#: each constructs its own seeded generator, so running them side by side
+#: moves no byte — the same argument as `regen`'s parallel-across-targets.
+#: `mana-analysis` READS goldfish_metrics.json, so it stays chained behind the
+#: goldfish in one worker; `deck-info` composes everything and runs after.
+PARALLEL_STAGES = ("deck-combos", "diagnose", "benchmark")
+
+#: Worker processes for the rebuild's middle phase: the goldfish chain, the
+#: stages above and the try warm, ~8 s of CPU each on a Commander deck. Four is
+#: the number of tasks there can be, and the performance cores of the machine
+#: this was measured on. 1 runs them in order in this process (the tests).
+REBUILD_JOBS = 4
+
+
+def _task(job):
+    """One producer of the middle phase. Module-level and picklable, for the pool.
+
+    Returns `{"name", "ran", "error", "seconds", "stdout"}` and never raises:
+    a failure is a result the parent reports, the way `regen._one` does.
+    """
+    import contextlib
+    import io
+    kind, slug, payload = job
+    buf, ran, error = io.StringIO(), [], None
+    started = time.time()
+    with contextlib.redirect_stdout(buf):
+        try:
+            if kind == "chain":
+                for name in payload:
+                    _producer(name)(SimpleNamespace(slug=slug, branch=None))
+                    ran.append(name)
+            elif kind == "regen":
+                from manamap.pilot import regen
+                module, kwargs = payload
+                got = regen._one((module, kwargs, slug, None))
+                error = got[2]
+            elif kind == "warm":
+                from manamap.pilot import diagnostic, try_swap
+                try_swap.champion_reading(slug, None, diagnostic.HARNESS["iterations"],
+                                          diagnostic.HARNESS["seed"])
+        except BaseException as exc:                       # noqa: BLE001 - reported
+            error = f"{(payload[len(ran)] + ': ') if kind == 'chain' else ''}" \
+                    f"{type(exc).__name__}: {exc}"
+    return {"kind": kind, "ran": ran, "error": error,
+            "seconds": time.time() - started, "stdout": buf.getvalue(), "pid": os.getpid()}
+
+
+def _run_tasks(jobs, workers):
+    """Every task's result, IN JOB ORDER whatever order they finish in.
+
+    Spawned, not forked: `serve` runs a rebuild on a thread, and forking a
+    threaded process can copy a held lock into the child. If the pool cannot
+    start or dies, the tasks run here in order and stderr says so — slower,
+    never wrong (each task rewrites its whole file, so a re-run is safe)."""
+    if workers <= 1 or len(jobs) <= 1:
+        return [_task(j) for j in jobs]
+    import concurrent.futures
+    import multiprocessing
+    try:
+        ctx = multiprocessing.get_context("spawn")
+        with concurrent.futures.ProcessPoolExecutor(max_workers=min(workers, len(jobs)),
+                                                    mp_context=ctx) as pool:
+            return list(pool.map(_task, jobs))
+    except (OSError, concurrent.futures.process.BrokenProcessPool) as exc:
+        print(f"  rebuild: the process pool failed ({type(exc).__name__}: {exc}) — "
+              f"running the {len(jobs)} task(s) in order instead", file=sys.stderr)
+        return [_task(j) for j in jobs]
+
 
 def rebuild(slug, *, before_text=None, warm=True, echo=None):
     """Re-derive what an edit made stale, in dependency order, this deck only.
 
-    1. `fetch-deck` → `goldfish` + `mana-analysis` (`check_in.chain_plan`: a
-       60-card deck skips the goldfish and says why);
-    2. `regen.run(slug=…, include_branches=False, skip=…)` — the rest of the
-       deck's EXISTING artifacts (combos, diagnose, benchmark, info); the
-       goldfish and mana-analysis just ran, and the Deck Context is step 4;
-    3. warm `try`'s champion reading, so the next preview starts cached;
+    1. `fetch-deck` (`check_in.chain_plan`), alone: everything reads cards.json;
+    2. IN PARALLEL (`REBUILD_JOBS` processes), each writing only its own file:
+       `goldfish` → `mana-analysis` chained in one worker (a 60-card deck skips
+       the goldfish and says why); the deck's EXISTING `deck-combos`,
+       `diagnose` and `benchmark` (`PARALLEL_STAGES` says why each is
+       independent); and `try`'s champion reading, so the next preview starts
+       cached;
+    3. `regen.run(slug=…, include_branches=False, only=…)` for the rest of the
+       deck's existing artifacts (`deck-info`), which compose all of the above;
     4. `deck_context.list_change(before_text=<the last save>)`, which refreshes
        the context's generated blocks and returns the Keeper line — the
-       Keeper itself is offered at save, never run here.
+       Keeper itself is offered at save, never run here — then `deck-info`
+       once more, because each of the two validates the other.
 
     Holds `.rebuild.lock`, so a second rebuild waits and `save-version`
     refuses. If the list moved while it ran (an edit landed meanwhile), it
     runs again on the new list, at most twice more.
+
+    MEASURED on meren-recursion, one swap (docs/pilot.md has the table): 44.4 s
+    before this sprint, every output byte-identical after.
     """
     from manamap.pilot import check_in, deck_context, regen
+    from manamap.progress import Progress
     echo = echo or (lambda *a, **k: None)
     spec = formats.for_deck(slug)
     stages, skipped = check_in.chain_plan(spec)
@@ -821,41 +908,64 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
         for _pass in range(3):
             sha = common.decklist_sha256(slug)
             ran = []
-            for name in stages:
-                try:
-                    _producer(name)(SimpleNamespace(slug=slug, branch=None))
-                    ran.append(name)
-                except Exception as exc:                   # noqa: BLE001 - reported
-                    if name == "fetch-deck":
-                        out["behind"] = (
-                            f"cards.json is behind the list — `manamap pilot edit {slug} "
-                            f"--rebuild` when online"
-                            + ("" if _offline(exc) else f" ({type(exc).__name__}: {exc})"))
-                    else:
-                        out["failures"].append(f"{name}: {type(exc).__name__}: {exc}")
-                    break
-            out["ran"] = ran
-            if "behind" in out:
+            # 1. fetch-deck, alone.
+            try:
+                _producer(stages[0])(SimpleNamespace(slug=slug, branch=None))
+                ran.append(stages[0])
+            except Exception as exc:                       # noqa: BLE001 - reported
+                out["ran"] = ran
+                out["behind"] = (
+                    f"cards.json is behind the list — `manamap pilot edit {slug} "
+                    f"--rebuild` when online"
+                    + ("" if _offline(exc) else f" ({type(exc).__name__}: {exc})"))
                 break
             # The Deck Context is skipped here because step 4 refreshes it
             # (`list_change` calls `refresh`) — once, not twice.
             kw = dict(slug=slug, include_branches=False, skip=REGEN_SKIP)
-            stages_run = [row[0] for row in regen.plan(**kw)]
-            got = regen.run(echo=echo, **kw)
-            out["regen"] = {"stages": stages_run, "ran": got.get("ran", 0)}
+            rows = regen.plan(**kw)
+            stages_run = [row[0] for row in rows]
+            for st, _s, fmt in regen.skipped(slug=slug):
+                if st not in REGEN_SKIP:
+                    out["skipped"].setdefault(st, f"not modelled for {fmt}")
+            # 2. the independent producers, side by side.
+            jobs = [("chain", slug, tuple(stages[1:]))] if stages[1:] else []
+            jobs += [("regen", slug, (module, kwargs))
+                     for st, module, kwargs, _t in rows if st in PARALLEL_STAGES]
+            labels = [" → ".join(stages[1:])] * bool(stages[1:]) + [
+                st for st, *_ in rows if st in PARALLEL_STAGES]
+            if warm and spec.commanders:
+                jobs.append(("warm", slug, None))
+                labels.append("try warm")
+            progress = Progress(f"rebuild {slug}", total=len(jobs), unit="stages").start()
+            progress.set(detail=", ".join(labels))
+            t_mid = time.time()
+            results = _run_tasks(jobs, REBUILD_JOBS)
+            progress.advance(len(jobs), failed=sum(r["error"] is not None for r in results))
+            progress.finish(ok=all(r["error"] is None for r in results))
+            for label, r in zip(labels, results):
+                if r["stdout"] and r["kind"] == "chain":
+                    sys.stdout.write(r["stdout"])
+                echo(f"    {label:34} {'FAILED  ' + r['error'] if r['error'] else 'ok'}"
+                     f"      {r['seconds']:5.1f}s")
+                if r["kind"] == "chain":
+                    ran += r["ran"]
+                    if r["error"]:
+                        out["failures"].append(r["error"])
+                elif r["kind"] == "warm":
+                    out["warmed"] = True if r["error"] is None else r["error"]
+                elif r["error"]:
+                    out["failures"].append(f"{label} {slug}: {r['error']}")
+            echo(f"    {'':34} parallel {time.time() - t_mid:5.1f}s")
+            out["ran"] = ran
+            # 3. what composes them.
+            late = tuple(st for st in stages_run if st not in PARALLEL_STAGES)
+            got = regen.run(echo=echo, only=late, **kw) if late else {}
+            out["regen"] = {"stages": stages_run,
+                            "ran": sum(1 for st in stages_run if st in PARALLEL_STAGES)
+                            + got.get("ran", 0)}
             out["failures"] += [f"{st} {n}: {e}" for st, n, e in got.get("failures") or []]
-            for st, _s, fmt in got.get("skipped") or []:
-                out["skipped"].setdefault(st, f"not modelled for {fmt}")
             if common.decklist_sha256(slug) == sha:
                 break
-        if warm and spec.commanders and "behind" not in out:
-            try:
-                from manamap.pilot import diagnostic, try_swap
-                try_swap.champion_reading(slug, None, diagnostic.HARNESS["iterations"],
-                                          diagnostic.HARNESS["seed"])
-                out["warmed"] = True
-            except Exception as exc:                       # noqa: BLE001 - a warm cache is optional
-                out["warmed"] = f"{type(exc).__name__}: {exc}"
         if before_text is None:
             before_text = saved_text(slug)
         context = deck_context.list_change(slug, before_text=before_text)

@@ -406,6 +406,9 @@ def recorder(monkeypatch, tmp_path):
     import importlib
     from manamap import progress
     monkeypatch.setattr(progress, "DIR", tmp_path / ".progress")
+    # In order, in this process: a stub set here does not reach a spawned worker.
+    # The pool itself is `test_the_rebuild_pool_*` below.
+    monkeypatch.setattr(deck_edit, "REBUILD_JOBS", 1)
     calls = []
     for stage, dotted in (("fetch-deck", "manamap.pilot.fetch_deck"),
                           ("goldfish", "manamap.pilot.goldfish"),
@@ -438,9 +441,11 @@ def test_the_rebuild_runs_in_order_goldfish_once_and_no_branch(decks, recorder):
     _artifacts(b, ["goldfish_metrics.json", "mana_analysis.json", "net_change.json",
                    "info.json", "combos.json"])
     r = deck_edit.rebuild("cmdr", before_text=_text(decks))
+    # fetch-deck alone; then the independent middle (in parallel outside a test,
+    # here in job order); then what composes it.
     assert [c[0] for c in recorder] == [
         "fetch-deck", "goldfish", "mana-analysis", "deck-combos", "diagnose",
-        "benchmark", "deck-info", "warm", "context-change", "deck-info"]
+        "benchmark", "warm", "deck-info", "context-change", "deck-info"]
     assert [c[0] for c in recorder].count("goldfish") == 1
     assert all(c[2] in (None, True) for c in recorder), "no branch may be touched"
     assert r["failures"] == [] and r["ran"] == ["fetch-deck", "goldfish", "mana-analysis"]
@@ -652,3 +657,33 @@ def test_the_preview_prices_from_the_dated_file(decks):
     assert pv["price"]["as_of"] == "2026-10-01"
     assert pv["price"]["out_cents"] == 150 and pv["price"]["unpriced"] == ["Necromancy"]
     assert pv["price"]["delta_cents"] == -150
+
+
+def test_the_rebuild_pool_returns_every_result_in_job_order_and_matches_serial(
+        tmp_path, monkeypatch):
+    """The middle of `rebuild` runs in spawned processes. Its contract: results come
+    back in JOB order whatever order they finish in (the last job here finishes
+    first), a failure is a result rather than a raise, and the bytes written are the
+    serial run's. Driven through `_run_tasks` with a real spawn pool and a producer
+    importable by name (tests/rebuild_probe.py), since a stub cannot cross a spawn."""
+    data = tmp_path / "data"
+    for side in ("serial", "pool"):
+        (data / side / "decks" / "d").mkdir(parents=True)
+    jobs = [("regen", "d", ("rebuild_probe", {"n": n})) for n in (0, 1, -1, 3)]
+
+    def run(side, workers):
+        monkeypatch.setenv("MANAMAP_DATA_DIR", str(data / side))   # what a worker reads
+        monkeypatch.setattr(config, "DECKS_DIR", data / side / "decks")
+        got = deck_edit._run_tasks(jobs, workers)
+        pids.append({r["pid"] for r in got})
+        files = {p.name: p.read_bytes() for p in sorted((data / side / "decks" / "d").iterdir())}
+        return [(r["kind"], r["error"]) for r in got], files
+
+    pids = []
+    serial = run("serial", 1)
+    pool = run("pool", 4)
+    assert pids[0] == {os.getpid()} and os.getpid() not in pids[1], \
+        "the pool must really run elsewhere — a silent fallback would pass the rest"
+    assert pool == serial
+    assert [e for _k, e in pool[0]] == [None, None, "ValueError: probe -1 refuses", None]
+    assert sorted(pool[1]) == ["probe-0.txt", "probe-1.txt", "probe-3.txt"]
