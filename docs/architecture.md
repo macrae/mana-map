@@ -716,6 +716,23 @@ names are machine-generated (no curated names, issue #38), and
 `neighbours_cardbert.bin`'s outclassed-by block had been built from an older
 `obsolescence_index.json` (a test now holds every browsable table to the index).
 
+**Re-measured the same day after the corpus refresh (34,964 cards).** The retrain ran
+to its 40-epoch cap still improving (best val 19.49; the 10-02 model had stopped early),
+and the gap moved a long way — test split, intervals on the difference:
+
+| CardBERT vs function | before (34,955, 10-02 model) | after (34,964, 40 epochs) |
+|---|---|---|
+| FUNCTION @100 / @500 | −0.353 / −0.472 | **−0.158 / −0.271** |
+| FUNCTION @corpus | −0.146 | −0.107 |
+| THEME @100 / @500 | −0.088 / +0.029 (spans 0) | **+0.083 / +0.171** |
+| THEME @corpus | −0.004 (spans 0) | +0.006 |
+| recall@10 / @50, median rank | 0.073 / 0.184, 720 | **0.125 / 0.283, 278** |
+
+CardBERT still loses function at every pool size, by about half as much, and now wins
+theme at every size. The split stands; the space the pages use is markedly better.
+The 40-epoch cap (`train_cardbert.EPOCHS`) bound this run — a longer cap is an open
+experiment, not a change made mid-refresh.
+
 #### RULE — visual inspection is part of evaluation
 
 Set by the pilot, 2026-09-01. `eval-embeddings` asks one question — are the k

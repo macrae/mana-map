@@ -5,7 +5,17 @@ description: Pull a fresh Scryfall dump and regenerate the whole corpus — the 
 
 # Refresh the corpus (the full-pipeline runbook)
 
-> **Last run: 2026-10-02, Reality Fracture** — 34,890 → 34,955 (+281: FRA 249,
+> **Last run: 2026-10-10** — 34,955 → 34,964. `manamap run` 35 min; the CardBERT
+> retrain ran its full 40 epochs still improving (2 h 9 min; best val 19.49) and moved
+> the eval a long way (`docs/architecture.md`, DECISION 2026-10-10). Three lessons:
+> run it DETACHED and held awake (`caffeinate -i`, `os.setsid`); give it memory — the
+> first attempt died at step 3 (exit 120) with Chrome open on the 13 MB Atlas beside
+> the MPS training, and Claude Code reaps idle background shells under pressure; and
+> the CardBERT map's L0/L1 regions need authored names too (81 named that day — it is
+> the only map the pages show). Then 133 region names, `regen --jobs 8` (6 min),
+> `make manuals` (1 min), the cache pass.
+>
+> **Previous: 2026-10-02, Reality Fracture** — 34,890 → 34,955 (+281: FRA 249,
 > FRC 17, other 15; −216 Alchemy `A-` rebalances Scryfall dropped from its oracle
 > bulk). That closed the dated red on `corpus-gates` (`docs/known-issues.md` §9c).
 > Three things it found that this runbook now says: step 2b (CardBERT is not part of
