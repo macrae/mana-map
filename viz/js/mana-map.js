@@ -1205,7 +1205,12 @@
     html += buildObsolescenceHtml(d.n);
     html += cardActionsHtml(row);
     html += cardImageHtml(d, deckEntry(d, row));
-    html += cardFactsHtml(d, { format: opts.format });
+    // The legality line leads with the DECK's format in Build — every panel, not only
+    // Build's own (which passes it): the atlas detail panel passed nothing, so a Modern
+    // deck's card read "Commander: legal" there. Elsewhere, Commander.
+    const deckFmt = currentMode === 'build' && window.Build && Build.deckSlug && Build.deckFormat
+      ? Build.deckFormat() : null;
+    html += cardFactsHtml(d, { format: opts.format || deckFmt || undefined });
     return html;
   }
 
@@ -1555,8 +1560,8 @@
     html += '<div class="deck-ctx-head"><span class="deck-ctx-deck" title="' + escHtml(c.deckName) +
       '">In ' + escHtml(c.slug) + '</span><span class="deck-ctx-status' +
       (c.inDeck ? ' is-in' : '') + '">' +
-      (c.isCommander ? '★ Commander' : c.inDeck ? 'In the 99' + (c.qty > 1 ? ' ×' + c.qty : '')
-                                               : 'Not in the 99') + '</span></div>';
+      (c.isCommander ? '★ Commander' : c.inDeck ? 'In ' + escHtml(c.listName || 'the 99') + (c.qty > 1 ? ' ×' + c.qty : '')
+                                               : 'Not in ' + escHtml(c.listName || 'the 99')) + '</span></div>';
     html += '<div class="deck-ctx-row"><span class="deck-ctx-k">roles</span>' +
       (c.roles.length
         ? c.roles.map(r => '<span class="deck-ctx-role' + (r.primary ? ' is-primary' : '') + '"' +
@@ -1567,6 +1572,15 @@
         : '<span class="deck-ctx-none">' + escHtml(c.family === 'land' ? 'land' : 'no role pattern matches') +
           '</span>') + '</div>';
     const col = c.colour;
+    // A 60-card format has no identity RULE: the colours are what the list runs, and a
+    // card outside them widens the deck legally — said plainly, never as a violation.
+    if (col.binding === false) {
+      html += '<div class="deck-ctx-row"><span class="deck-ctx-k">colours</span>' +
+        '<span class="deck-ctx-none">' + (col.off.length
+          ? 'adds ' + escHtml(col.off.join('')) + ' to the deck\'s ' + escHtml(col.deck.join('') || 'colourless')
+          : 'within the deck\'s ' + escHtml(col.deck.join('') || 'colourless')) +
+        ' — ' + escHtml(c.formatName || '') + ' has no identity rule</span></div>';
+    } else
     html += '<div class="deck-ctx-row"><span class="deck-ctx-k">colour identity</span>' +
       (!col.checked ? '<span class="deck-ctx-none">no commander to check against</span>'
         : col.off.length
@@ -2307,10 +2321,15 @@
           + (kept ? '✓ In library' : '+ Keep this card') + '</button>';
     // One card is the commander, and everything reads it from Session: the gold ring on
     // the graph, the colour identity that decides what is legal, the exported brief.
-    // Offered on legendary creatures only — the rule, not a preference.
+    // Offered on legendary creatures only — the rule, not a preference — and only
+    // where the format HAS a commander slot. `Session.format` is the one answer (Build
+    // writes it when a deck loads, Discover when a list is pasted or picked), so a
+    // Modern deck's Llanowar elf never offers to become something Modern has no
+    // zone for; `Session.setCommander` refuses it too, this just stops offering.
     const rec = cardRecord(row);
     const legendary = rec && /legendary/i.test(rec.t || '') && /creature/i.test(rec.t || '');
-    if (legendary) {
+    const hasSlot = !!(Session.formatSpec && Session.formatSpec.commanders);
+    if (legendary && hasSlot) {
       const isCmd = Session.commander === row;
       html += '<button class="lens-btn discover-keep" onclick="MM.setCommander(' +
         (isCmd ? -1 : row) + ')">' +
@@ -2324,7 +2343,8 @@
    * moves — `Force.setCommander` is a redraw, not a reseed, because changing your mind
    * about the commander must not cost you the graph. */
   function setCommander(row) {
-    Session.setCommander(row);
+    // Refused when the format has no commander slot; Session has said why.
+    if (Session.setCommander(row) === false) return;
     if (window.Force && Force.setCommander) Force.setCommander(Session.commander);
     if (window.Build && Build.onCommanderChange) Build.onCommanderChange();
     updateViewerPanel();
@@ -3949,6 +3969,9 @@
   // handlers, or index.html) are exported — see docs/viz.md for the contract.
   window.MM = {
     get allData() { return allData; },
+    // The format table, which lives in api.js because four pages have no `MM`.
+    // Mirrors `pilot/formats.py:FORMATS` (tests/test_viz_format_specs.py).
+    FORMAT_SPECS: window.FORMAT_SPECS,
     get currentMap() { return currentMap; },
     escHtml,
     openCard,

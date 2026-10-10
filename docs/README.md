@@ -47,7 +47,7 @@ these hold the evidence.
 | | | |
 |---|---:|---|
 | [architecture.md](architecture.md) | 756 | The two embedding models, how a card is decomposed, tag and role taxonomies, synergy rules, power-creep criteria, region clustering. |
-| [viz.md](viz.md) | 1817 | The frontend: the six PAGES (workbench, atlas, dossier, branch, Curate, spaces), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
+| [viz.md](viz.md) | 1873 | The frontend: the six PAGES (workbench, atlas, dossier, branch, Curate, spaces), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
 | [agent-cost.md](agent-cost.md) | 308 | Where LLM spend lives, per-routine token sizing (current first, legacy measurements after), and how the invocation cache decides what to re-run. |
 | [integrations.md](integrations.md) | 128 | **The one HTTP client** (`manamap.net`, 2026-10-09): the retry loop every outside call shares, the JSON cache under `data/cache/<service>/`, `MANAMAP_NET_OFFLINE=1` (the unit tier sets it), tokens via the environment and the Keychain recipe, and the rule that nothing on the network is a gate. |
 | [agent-inventory.md](agent-inventory.md) | 145 | **The harness as it stands** — every agent and skill with its path, what it owns, which skill spawns it and how a five-specialist consolidation would re-home it, plus the front-end surfaces that depend on each. PRD §8 D-1 asks for this as a CHECKED-IN artifact rather than a report. Read before touching a charter. |

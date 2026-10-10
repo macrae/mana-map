@@ -432,6 +432,8 @@ window.Discovery = (function () {
       html += MM.buildCardDetailHtml(MM.cardRecord(current), current, { stats: true });
     }
 
+    html += formatRowHtml();
+
     /* Everything below is a way of choosing a DIFFERENT card, which is a
      * smaller question than the card itself — so it is one collapsed block
      * rather than nine buttons competing with the thing you came for. */
@@ -441,7 +443,7 @@ window.Discovery = (function () {
       '<select id="dcDeck" onchange="Discovery.onDeckPick(this.value)">' +
       '<option value="">Load one of my decks…</option>' +
       (manifest || []).map(d => '<option value="' + d.slug + '">' + d.deck_name +
-        ' — ' + d.commander + '</option>').join('') +
+        ' — ' + (d.commander || formatSpec(d.format).name) + '</option>').join('') +
       '</select></div>';
 
     /* THE LIBRARY'S CONTROLS LIVE IN THE DRAWER, not here. They used to sit
@@ -750,7 +752,7 @@ window.Discovery = (function () {
     if (subscribed || !window.Session || !Session.on) return;
     subscribed = true;
     Session.on(function (what) {
-      if (what !== 'library') return;
+      if (what !== 'library' && what !== 'format') return;
       if (MM.mode === 'discover' && isReady()) render();
       if (window.Force && Force.isActive()) Force.renderPanel();
     });
@@ -785,7 +787,12 @@ window.Discovery = (function () {
    * pool is context for the analyst; the library is a claim that these belong in the 99.
    */
   const BRACKET_DEFAULT = 3;      // mirrors config.py:BRACKET_DEFAULT
-  const COMMANDER_SLOTS = 99;
+
+  /* The slots `must_include` may fill: the deck's size less its commanders — 99 for
+   * Commander, 60 for a constructed format (a minimum there, so 60 is the floor the
+   * builder must reach, not a cap the pilot may not exceed). DERIVED from the format
+   * table, like `FormatSpec.library_size`, rather than a second literal 99. */
+  function slotCount(spec) { return spec.size - spec.commanders; }
 
   function slugify(name) {
     return String(name || 'untitled').toLowerCase()
@@ -794,7 +801,10 @@ window.Discovery = (function () {
   }
 
   function brief() {
-    const cmdRow = Session.commander;
+    const fmt = Session.format;
+    const spec = Session.formatSpec;
+    const SLOTS = slotCount(spec);
+    const cmdRow = spec.commanders ? Session.commander : -1;
     const cmd = cmdRow >= 0 && index[cmdRow] ? index[cmdRow].n : null;
 
     // What you brought vs what you found. The graph knows; the agent should not have to
@@ -825,10 +835,11 @@ window.Discovery = (function () {
 
     const doc = {
       // ── what build_deck.py reads ──
-      slug: slugify(cmd || 'untitled'),
+      slug: slugify(cmd || (spec.commanders ? 'untitled' : fmt + '-deck')),
+      format: fmt,
       commander: cmd,
       bracket: BRACKET_DEFAULT,
-      must_include: must.slice(0, COMMANDER_SLOTS),
+      must_include: must.slice(0, SLOTS),
       must_exclude: [],
 
       // ── what the agents can use, and the builder ignores ──
@@ -843,7 +854,13 @@ window.Discovery = (function () {
       },
     };
 
-    if (!cmd) {
+    // A format with no commander slot has no `commander` key at all — `null` would
+    // read as "not chosen yet", which is the blocked state below, and it is not.
+    if (!spec.commanders) delete doc.commander;
+    if (!spec.commanders) {
+      doc._manamap.note_format = spec.name + ' has no commander; the bracket is a '
+        + 'Commander construct and is carried only because the brief schema has it.';
+    } else if (!cmd) {
       doc._manamap.blocked = 'No commander set. `build-deck` requires one — open a '
         + 'legendary creature and choose "Set as commander".';
       // Keep the old heuristic as a suggestion, clearly labelled as a guess.
@@ -851,21 +868,26 @@ window.Discovery = (function () {
         .filter(function (r) { return index[r] && index[r].s === 'Creature'; })
         .slice(0, 8).map(function (r) { return index[r].n; });
     }
-    if (must.length > COMMANDER_SLOTS) {
+    if (must.length > SLOTS) {
       doc._manamap.truncated_must_include = must.length;
     }
     // Loading a deck puts all 99 in the library, so a rebuild can arrive with `must_include`
     // pinning almost every slot and the builder left with nothing to decide. Say so rather
     // than letting the loop discover it: the fix is to Clear the library and keep only what
     // you actually insist on.
-    if (must.length >= COMMANDER_SLOTS - 10) {
-      doc._manamap.note = must.length + ' of ' + COMMANDER_SLOTS + ' slots are pinned by '
-        + 'must_include, leaving ' + Math.max(0, COMMANDER_SLOTS - must.length)
+    if (must.length >= SLOTS - 10) {
+      doc._manamap.note = must.length + ' of ' + SLOTS + ' slots are pinned by '
+        + 'must_include, leaving ' + Math.max(0, SLOTS - must.length)
         + ' for the builder. Clear the library and keep only what you insist on if you want '
         + 'it to actually build.';
     }
 
-    doc.next_step = cmd
+    doc.next_step = !spec.commanders
+      ? 'Save as data/decks/' + doc.slug + '/brief.json. The builder cannot build '
+        + spec.name + ' yet — it is anchored on a commander at every step — so check the '
+        + 'list in with `manamap pilot check-in` instead; validation and card-search '
+        + 'already know the format.'
+      : cmd
       ? 'Save as data/decks/' + doc.slug + '/brief.json, then run /build-deck in Claude '
         + 'Code. Check `bracket` first — the browser cannot know your target. The pilot '
         + 'subsystem is 6-10 serial subagent spawns and cannot run in a browser.'
@@ -883,11 +905,55 @@ window.Discovery = (function () {
     a.click();
     URL.revokeObjectURL(a.href);
     if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
-    MM.setStatus(doc.commander
+    MM.setStatus(!Session.formatSpec.commanders
+      ? doc.must_include.length + ' cards, ' + Session.formatSpec.name + ' — saved as '
+        + doc.slug + '-brief.json'
+      : doc.commander
       ? doc.must_include.length + ' cards for ' + doc.commander + ' — save as data/decks/'
         + doc.slug + '/brief.json and run /build-deck'
       : 'Exported, but no commander is set — build-deck needs one.');
     return doc;
+  }
+
+  // ── format ─────────────────────────────────────────────────────────────
+
+  /* `window.formatSpec` (api.js), read at call time like every other global here. */
+  function formatSpec(key) {
+    return window.formatSpec ? window.formatSpec(key) : { name: 'Commander', size: 100, commanders: 1 };
+  }
+
+  // Set by `importText` when a pasted list looks constructed and the format is still
+  // Commander; cleared when the pilot picks, or a deck with a known format loads.
+  let formatHint = null;
+
+  /* The format row: shown when there is something to say — a hint after a list that
+   * could be constructed, or a format that is not the default (so there is always a
+   * way back to Commander). The <option>s are `formatOptionsHtml`, the same renderer
+   * Build's new-deck form uses, so the two pickers cannot read differently. */
+  function formatRowHtml() {
+    const fmt = Session.format;
+    if (!formatHint && fmt === 'commander') return '';
+    const hint = formatHint && fmt === 'commander'
+      ? '<p class="lens-note discover-format-hint">' + formatHint.copies
+        + ' cards and no commander — pick a format</p>'
+      : '';
+    return '<div class="deck-section discover-format">' + hint
+      + '<div class="deck-format-row"><label for="dcFmt">Format</label>'
+      + '<select id="dcFmt" onchange="Discovery.setFormat(this.value)">'
+      + (window.formatOptionsHtml ? window.formatOptionsHtml(null, fmt) : '')
+      + '</select></div></div>';
+  }
+
+  function setFormat(key) {
+    const k = Session.setFormat(key);
+    formatHint = null;
+    // The ring follows Session (a format with no slot has just cleared it).
+    if (window.Force && Force.setCommander) Force.setCommander(Session.commander);
+    MM.setStatus('Format: ' + formatSpec(k).name + ' — '
+      + (formatSpec(k).commanders ? 'one commander, ' : 'no commander, ')
+      + formatSpec(k).size + (formatSpec(k).exact ? '' : '+') + ' cards');
+    render();
+    return k;
   }
 
   // ── import ─────────────────────────────────────────────────────────────
@@ -1024,6 +1090,25 @@ window.Discovery = (function () {
       return { resolved: 0, missing: missing, total: entries.length };
     }
 
+    /* WHICH FORMAT IS THIS LIST? Asked, never guessed.
+     *
+     * A `*CMDR*` marker is evidence of Commander, so it puts the format back there.
+     * The other direction is not decidable from the text: sixty cards with no
+     * commander is Modern, Pioneer, Standard or Pauper — or half a Commander deck —
+     * and picking one would be a guess the page then acts on (the illegal lens, the
+     * brief's slot count). So the format stays where it is and the panel shows a
+     * one-line hint with the format picker; choosing is the pilot's act. */
+    const hasSide = Decklist.parse(text).some(e => e.board === 'side');
+    const mainCopies = entries.reduce((n, e) => n + (e.quantity || 1), 0);
+    if (commanderRow >= 0) {
+      Session.setFormat('commander');
+      formatHint = null;
+    } else if (Session.formatSpec.commanders && (hasSide || mainCopies <= 75)) {
+      formatHint = { copies: mainCopies, side: hasSide };
+    } else {
+      formatHint = null;
+    }
+
     for (const r of rows) Session.library.add(r);
 
     if (window.Force) {
@@ -1065,6 +1150,9 @@ window.Discovery = (function () {
 
   function loadDeck(slug) {
     const entry = (manifest || []).find(d => d.slug === slug);
+    // A checked-in deck KNOWS its format; the commander ring below follows it.
+    Session.setFormat((entry && entry.format) || 'commander');
+    formatHint = null;
     return fetch(urls.deckBase + slug + '/cards.json?v=' + ((window.MM && MM.DATA_VERSION) || 0))
       .then(r => { if (!r.ok) throw new Error(slug + ' ' + r.status); return r.json(); })
       .then(doc => {
@@ -1199,7 +1287,8 @@ window.Discovery = (function () {
             // from the console and from any future panel, is how the careful
             // version gets bypassed by the convenient one.
             names: libraryNames },
-    brief, exportBrief, importText, onImport, toggleImport, rowByName,
+    brief, exportBrief, importText, onImport, toggleImport, rowByName, setFormat,
+    get formatHint() { return formatHint; },
     seedFromRows, parseSeedNames, onSeedCards, toggleSeed,
     get current() { return current; },
     record, neighbours, counts,

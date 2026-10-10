@@ -262,6 +262,39 @@
       esc(what || t.what) + '</p>' + action + command(t.how) + '</div>');
   }
 
+  /* ── THE FORMAT: what kind of deck this page is about ──────────────────
+   *
+   * From `info.json`'s `format` (deck-info writes it), then the manifest entry's,
+   * then Commander — every deck that predates the field is one. The spec is
+   * `window.FORMAT_SPECS` (api.js), which mirrors `pilot/formats.py` under a test.
+   */
+  function formatKey(d) {
+    return String(((d && d.info) || {}).format || ((d && d.entry) || {}).format || 'commander')
+      .toLowerCase();
+  }
+  function specOf(d) { return window.formatSpec(formatKey(d)); }
+
+  /* "The 99" / "The 60" — the main deck less its commanders, never a literal. */
+  function theN(d) {
+    var s = specOf(d);
+    return 'The ' + (s.size - s.commanders);
+  }
+
+  /* ── NOT APPLICABLE, as opposed to NOT YET ─────────────────────────────
+   *
+   * `absent()` is a call to action: it names the command that would fill the
+   * panel. On a 60-card deck the goldfish, Forge and the bracket are not missing —
+   * they are Commander-only, and the command `absent()` would hand over is one the
+   * bench REFUSES for this format. So these panels say what is true instead: not
+   * measured for this format, and why. No command, no button, no todo styling —
+   * nothing to do here is the answer. */
+  function na(id, title, promise, accent, d, why) {
+    var s = specOf(d);
+    return panel(id, title, promise, [], accent,
+      '<p class="ev na-line">Not measured for ' + esc(s.name) + ': ' +
+      esc(why || 'the goldfish and Forge are Commander-only.') + '</p>');
+  }
+
   /* ── THE BRIEF: what the deck is TRYING to be ──────────────────────────
    *
    * A staged, tracked artifact that had no surface anywhere. `deck_status`
@@ -530,8 +563,8 @@
     var got = rosterFor(d);
     var map = got.map;
     if (!map || !map.cards || !map.regions)
-      return absent('associates', sect('associates')[1], sect('associates')[2],
-                    '#8a7fd0', 'map', d);
+      return absent('associates', sect('associates')[1],
+                    sect('associates')[2].replace('The 99', theN(d)), '#8a7fd0', 'map', d);
     var prov = {};
     (got.branch ? got.branch.cards : []).forEach(function (r) { prov[r.name] = r; });
     // The cities, by their trailing index — `map.cards[].city` is that index,
@@ -560,7 +593,8 @@
      * carried is kept and the nesting that broke the previews is not. Sorted by
      * name because a flat list is something you look a card UP in.
      */
-    var rows = map.cards.filter(function (c) { return !c.commander; })
+    var split = !!specOf(d).commanders;
+    var rows = map.cards.filter(function (c) { return !split || !c.commander; })
       .slice().sort(function (a, b) { return a.name < b.name ? -1 : 1; });
     var body = '<ul class="rost-list rost-flat">' + rows.map(function (c) {
       var r = cityById[c.city];
@@ -572,7 +606,7 @@
       return cardRef(c.name, prov[c.name], tag);
     }).join('') + '</ul>';
 
-    var cmdr = map.cards.filter(function (c) { return c.commander; });
+    var cmdr = specOf(d).commanders ? map.cards.filter(function (c) { return c.commander; }) : [];
     if (cmdr.length)
       body = '<p class="rost-cmdr">' + cmdr.map(function (c) {
         return cardRef(c.name, prov[c.name]);
@@ -583,7 +617,7 @@
       : 'Every card, with the part of the deck it belongs to. Hover a name for the card.';
     // Title still carries the branch name when one is being viewed; the
     // registry supplies the promise and the tier.
-    return panel('associates', title, sect('associates')[2],
+    return panel('associates', title, sect('associates')[2].replace('The 99', theN(d)),
                  sect('associates')[3], '#8a7fd0', body);
   }
 
@@ -620,6 +654,10 @@
 
   function vitalsPanel(d) {
     var v = (d.info || {}).diagnostic;
+    // The diagnostic IS the goldfish, read per declared engine — Commander-only.
+    if (!v && !specOf(d).commanders) {
+      return na('vitals', sect('vitals')[1], sect('vitals')[2], '#4c8fbd', d);
+    }
     /* `diagnostic.json` IS NOT A LIFECYCLE STAGE — it is a gated artifact with
      * no `STAGES` row, so `absent()` finds no todo for it and returns ''. That
      * made the vitals tab vanish on NINE OF TEN decks: only ur-dragon has been
@@ -689,7 +727,7 @@
                           '#c4a747', 'brief', d);
     var out = '';
     if (b.playstyle) out += '<p class="brief-lede">' + esc(b.playstyle) + '</p>';
-    if (b.commander_rationale)
+    if (b.commander_rationale && specOf(d).commanders)
       out += '<h3>Why this commander</h3><p>' + esc(b.commander_rationale) + '</p>';
     if (b.mana) out += '<h3>Mana</h3><p>' + esc(b.mana) + '</p>';
     if (b.win_conditions) out += '<h3>How it wins</h3><p>' + esc(b.win_conditions) + '</p>';
@@ -712,13 +750,16 @@
       out += '<h3>Must exclude <span class="ev">' + b.must_exclude.length + '</span></h3>' +
         list(b.must_exclude.map(esc), 'brief-out');
     if (b.notes) out += '<h3>Notes</h3><p class="ev">' + esc(b.notes) + '</p>';
-    out += '<p class="ev brief-caveat">Authored intent, not a measurement. The 99 and the ' +
-           'brief may disagree — during a rebuild they will.</p>';
+    out += '<p class="ev brief-caveat">Authored intent, not a measurement. ' + theN(d) +
+           ' and the brief may disagree — during a rebuild they will.</p>';
     return panel('brief', 'The brief', 'What this deck is trying to be.', [], '#c4a747', out);
   }
 
   function bracketPanel(d) {
     var b = d.bracket;
+    if (!b && !specOf(d).commanders)
+      return na('bracket', 'Bracket', 'The power floor the contents are consistent with.',
+        'var(--tier-data)', d, 'the bracket is a Commander construct.');
     if (!b) return absent('bracket', 'Bracket', 'The power floor the contents are consistent with.',
       'var(--tier-data)', 'bracket', d, 'the computed power floor, and what drives it');
     var drivers = (b.drivers || []).map(function (dr) {
@@ -812,7 +853,7 @@
   function combosPanel(d) {
     var c = d.combos;
     if (!c) return absent('combos', 'Known combos', 'Every Spellbook line the list contains.',
-      'var(--tier-data)', 'combos', d, 'the known lines inside the 99, and what is one card short');
+      'var(--tier-data)', 'combos', d, 'the known lines inside ' + theN(d).toLowerCase() + ', and what is one card short');
     var s = c.summary || {};
     var included = c.included || [], near = c.near || [];
     var out = '';
@@ -994,6 +1035,11 @@
      * inline — 3,833 pixels, with nothing marked as mattering more than
      * anything else. */
     var blk = ((d.info || {}).model || {}).goldfish;
+    // Before the model block: on a 60-card deck that block is one `absent_because`
+    // fact, and the honest panel is the n/a line, not a model with nothing in it.
+    if (!specOf(d).commanders)
+      return na('goldfish', 'The goldfish', 'Seeded Monte Carlo over resource development.',
+        'var(--tier-data)', d);
     if (!blk) return absent('goldfish', 'The goldfish', 'Seeded Monte Carlo over resource development.',
       'var(--tier-data)', 'goldfish', d, 'how fast it develops, over 10,000 seeded games');
     return panel('goldfish', 'By the Numbers', 'What can I expect, turn by turn?',
@@ -1293,6 +1339,19 @@
     if (a.over && a.over.length) rows.push(['Over', a.over.join(', ')]);
     var diag = (d.info || {}).diagnosis;
     var body = facts(rows);
+    /* THE AXES THE AUDIT DID NOT GRADE, each with its reason — from `audit.json`
+     * itself, because `info.audit` carries only the verdicts. On a 60-card deck
+     * half the sixteen axes have no cited target (the corpus states them for
+     * Commander), and an Under/Over list that silently omitted them would read as
+     * "these are fine". */
+    var nm = (d.audit || {}).not_measured || {};
+    var nmKeys = Object.keys(nm).sort();
+    if (nmKeys.length) {
+      body += '<h3>Not measured <span class="ev">' + nmKeys.length + '</span></h3>' +
+        '<ul class="audit-nm">' + nmKeys.map(function (k) {
+          return '<li><b>' + esc(k) + '</b> — <span class="ev">' + esc(nm[k]) + '</span></li>';
+        }).join('') + '</ul>';
+    }
     if (diag) {
       body += '<p class="ev"><b>Diagnosis</b> (skeptic ' + esc(diag.skeptic) +
         (diag.stale ? ', STALE' : '') + '): ' + esc(diag.verdict || '') + '</p>';
@@ -1333,6 +1392,9 @@
     // `stale · V3` beside a deck at V5 says what `stale` alone could not.
     var simVer = ((d.info || {}).simulation || {}).ran_on_version;
     var expStale = (((d.info || {}).experiments || {}).latest || {}).stale;
+    if (!runs.length && !exps.length && !specOf(d).commanders)
+      return na('table', 'At the table', 'Forge, seeded, against your own pod.',
+        'var(--tier-data)', d);
     if (!runs.length && !exps.length)
       return absent('table', 'At the table', 'Forge, seeded, against your own pod.',
         'var(--tier-data)', 'sim', d);
@@ -1828,7 +1890,8 @@
 
     var ident = '<div class="cov-id">' +
       '<div class="cov-alias">' + esc(entry.deck_name || info.slug || '') + '</div>' +
-      '<div class="cov-sub">' + esc((info.commander || []).join(' // ')) + '</div>' +
+      '<div class="cov-sub">' + esc(specOf(d).commanders
+        ? (info.commander || []).join(' // ') : specOf(d).name) + '</div>' +
       '<dl class="cov-book">' +
         '<dt>Case no.</dt><dd>' + esc(info.slug || '') + '</dd>' +
         '<dt>Marks</dt><dd>' + esc(marks) + '</dd>' + price +
@@ -1882,11 +1945,16 @@
     var cur = currentVersion(d);
     var vrec = versionRecord(cur);
     var nums = '<div class="cov-nums">' +
-      head('Commander by T6',
+      (specOf(d).commanders
+        ? head('Commander by T6',
            (g.commander_cast_by_turn_6_pct === undefined ||
             g.commander_cast_by_turn_6_pct === null)
              ? null : g.commander_cast_by_turn_6_pct + '%',
-           'seeded goldfish') +
+           'seeded goldfish')
+        // No commander to cast: the slot says what the deck IS instead.
+        : head('Format', specOf(d).name,
+               specOf(d).size + (specOf(d).exact ? '' : '+') + ' cards, ' +
+               specOf(d).copies + '-of, no commander')) +
       head('Keepable sevens', keepRate(d), 'can act by turn three') +
       head('Record, ' + (cur ? versionName(cur) : 'this version'),
            vrec ? (vrec.games + ' · ' + vrec.win + '–' + vrec.loss) : null,
@@ -2158,7 +2226,8 @@
     // the list the games attach to.
     var paper = (d.entry || {}).paper;
     document.getElementById('commanderLine').textContent =
-      (issue.commander || '') + (paper ? ' \u00b7 sleeved V' + paper.version : '');
+      (issue.commander || (specOf(d).commanders ? '' : specOf(d).name)) +
+      (paper ? ' \u00b7 sleeved V' + paper.version : '');
     // A deck is loadable here as soon as it has a cards.json; a magazine issue is a
     // separate, later, expensive step. Linking to `../manuals/<slug>.html`
     // unconditionally sent every unpublished deck to a 404 — the manifest carries
@@ -2310,17 +2379,22 @@
         ? getJSON(BASE + entry.slug + '/cards.json') : Promise.resolve(null);
       var picardJob = (entry.has || {}).captains_log
         ? getJSON(BASE + entry.slug + '/captains_log.json') : Promise.resolve(null);
+      // `audit.json` for its `not_measured` map, which `info.audit` does not carry.
+      // Only a non-Commander deck has one, so only that deck pays the fetch.
+      var auditJob = (entry.format && entry.format !== 'commander')
+        ? getJSON(BASE + entry.slug + '/audit.json') : Promise.resolve(null);
 
       return Promise.all([Promise.all(jobs), Promise.all(stackJobs),
                           Promise.all(simJobs), Promise.all(expJobs),
                           Promise.all(rxJobs), logJob, debriefJob, picardJob,
-                          contextJob, cardsJob])
+                          contextJob, cardsJob, auditJob])
         .then(function (both) {
           var d = { stacks: both[1].filter(Boolean) };
           both[0].forEach(function (p) { d[p[0]] = p[1]; });
           d.sims = both[2].filter(Boolean);
           d.context = both[8] || '';
           d.cards = both[9];
+          d.audit = both[10];
           // By name, for every panel that draws a card's art: the row IS the
           // sleeved printing. Empty when the page did not fetch cards.json.
           deckCards = {};

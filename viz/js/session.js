@@ -116,9 +116,60 @@ window.Session = (function () {
 
   let commanderRow = -1;
 
+  /* THE FORMAT, beside the commander because it decides whether there IS one.
+   *
+   * A Modern deck has no commander slot, so naming one is not a choice the page
+   * should accept: `setCommander` refuses a real row while the format has none,
+   * says why on the status line, and returns false so a caller can tell. Clearing
+   * (-1) is always allowed. Specs come from `window.FORMAT_SPECS` (api.js), read at
+   * CALL time — this file loads on every page and must not depend on `MM`.
+   *
+   * PERSISTED, like the library, under its own key: a format is a one-word choice
+   * the pilot made, and a reload that silently put them back in Commander would
+   * reopen every question the choice settled. A key that is not a known format
+   * reads as Commander rather than throwing. */
+  const FORMAT_KEY = 'manamap-format';
+
+  function specOf(key) {
+    return window.formatSpec ? window.formatSpec(key) : { commanders: 1, name: 'Commander' };
+  }
+
+  function knownFormat(key) {
+    const k = String(key || '').toLowerCase();
+    return window.FORMAT_SPECS && window.FORMAT_SPECS[k] ? k : 'commander';
+  }
+
+  let formatKey = 'commander';
+  try {
+    formatKey = knownFormat(typeof localStorage === 'undefined' ? null
+                                                            : localStorage.getItem(FORMAT_KEY));
+  } catch (e) { formatKey = 'commander'; }
+
+  function setFormat(key) {
+    const k = knownFormat(key);
+    if (k === formatKey) return k;
+    formatKey = k;
+    try {
+      if (typeof localStorage !== 'undefined') localStorage.setItem(FORMAT_KEY, k);
+    } catch (e) { /* a full store must not break a click */ }
+    // A format with no commander slot cannot hold the one you had.
+    if (!specOf(k).commanders && commanderRow >= 0) { commanderRow = -1; emit('commander'); }
+    emit('format');
+    return k;
+  }
+
   function setCommander(row) {
-    commanderRow = (typeof row === 'number' && row >= 0) ? row : -1;
+    const want = (typeof row === 'number' && row >= 0) ? row : -1;
+    if (want >= 0 && !specOf(formatKey).commanders) {
+      if (window.MM && MM.setStatus) {
+        MM.setStatus(specOf(formatKey).name + ' has no commander slot — '
+          + 'switch the format to Commander to name one.');
+      }
+      return false;
+    }
+    commanderRow = want;
     emit('commander');
+    return true;
   }
 
   /* ── PERSISTENCE ────────────────────────────────────────────────────────
@@ -553,6 +604,10 @@ window.Session = (function () {
     // commander
     get commander() { return commanderRow; },
     setCommander: setCommander,
+    // format — a key of `window.FORMAT_SPECS`; `formatSpec` is its spec
+    get format() { return formatKey; },
+    get formatSpec() { return specOf(formatKey); },
+    setFormat: setFormat,
     // the library
     library: {
       /* `names` is THE list and THE count — one question, one answer, on every

@@ -147,12 +147,22 @@ def test_every_deck_names_a_commander_the_map_knows():
     if not manifest_path.exists():
         pytest.skip("no deck manifest (run `manamap pilot build-index`)")
 
+    from manamap.pilot import formats
+
+    checked = 0
     for deck in json.loads(manifest_path.read_text(encoding="utf-8"))["decks"]:
         if deck["slug"] in NOT_YET_IN_CORPUS:
             continue
+        # A 60-card format has no commander (`commander: null` in the manifest), and
+        # Build draws no star for it — there is nothing to anchor, by the rules.
+        if not formats.get(deck.get("format")).commanders:
+            assert deck["commander"] is None, deck["slug"]
+            continue
+        checked += 1
         assert deck["commander"] in known, (
             f"{deck['slug']}: commander {deck['commander']!r} is not on the map"
         )
+    assert checked >= 1
 
 
 def test_build_picks_the_cheap_dimming_path_when_it_can():

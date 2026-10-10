@@ -39,9 +39,60 @@
  *           rather than only the sleeved ones. A browser holding the old shape
  *           stamps no version on any unsleeved deck's art — and the stamp is
  *           how the workbench says which list a deck is.
+ *   6 -> 7: every entry carries `format` (and a 60-card deck `commander: null`).
+ *           The pages now READ it — Build's legality lens, the deck page's n/a
+ *           panels, the workbench subtitle — and a cached manifest without the
+ *           key would read a Modern deck as Commander.
  */
-window.MANIFEST_VERSION = 6;
+window.MANIFEST_VERSION = 7;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
+
+/* ── What a legal deck IS, per format — mirrors `pilot/formats.py:FORMATS` ────
+ *
+ * MIRRORS PYTHON, and `tests/test_viz_format_specs.py` reads this literal as JSON
+ * and holds every format and every field to `formats.FORMATS`: `size` is
+ * `deck_size`, `exact` is `exact_size`, `copies` is `max_copies`, `sideboard` is
+ * `sideboard_size`. A silent duplicate of a config table is how the two sides
+ * drift, so the literal stays strict JSON (quoted keys, one format per line) for
+ * the test to parse, and nothing else in `viz/` may hard-code a 99 or a 60.
+ *
+ * Here rather than in `mana-map.js` because all six pages need it and only one of
+ * them has an `MM`: the deck page and the workbench load `api.js` and never
+ * `mana-map.js`. `MM.FORMAT_SPECS` is the same object, aliased at export.
+ */
+window.FORMAT_SPECS = {
+  "commander": {"name": "Commander", "size": 100, "exact": true, "copies": 1, "commanders": 1, "sideboard": 0},
+  "standard": {"name": "Standard", "size": 60, "exact": false, "copies": 4, "commanders": 0, "sideboard": 15},
+  "modern": {"name": "Modern", "size": 60, "exact": false, "copies": 4, "commanders": 0, "sideboard": 15},
+  "pioneer": {"name": "Pioneer", "size": 60, "exact": false, "copies": 4, "commanders": 0, "sideboard": 15},
+  "pauper": {"name": "Pauper", "size": 60, "exact": false, "copies": 4, "commanders": 0, "sideboard": 15}
+};
+Object.keys(window.FORMAT_SPECS).forEach(function (k) { Object.freeze(window.FORMAT_SPECS[k]); });
+Object.freeze(window.FORMAT_SPECS);
+
+/* A format's spec by key. No key means Commander — every deck that predates the
+ * field is one — and so does a key this table does not know, because a page that
+ * threw on it would render nothing at all. Python refuses unknown names
+ * (`formats.get`); the browser only ever reads names Python already accepted. */
+window.formatSpec = function (key) {
+  return window.FORMAT_SPECS[String(key || '').toLowerCase()] || window.FORMAT_SPECS.commander;
+};
+
+/* `<option>`s for a format picker — ONE renderer for both pickers (Build's new-deck
+ * form and Discover's "60 cards and no commander" hint), so a format reads the
+ * same wherever it is chosen: "Modern — 60+, 4-of". `keys` defaults to all five. */
+window.formatOptionsHtml = function (keys, selected) {
+  var esc = function (s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  };
+  return (keys || Object.keys(window.FORMAT_SPECS)).map(function (k) {
+    var s = window.FORMAT_SPECS[k];
+    if (!s) return '';
+    return '<option value="' + esc(k) + '"' + (k === selected ? ' selected' : '') + '>' +
+      esc(s.name) + ' — ' + s.size + (s.exact ? '' : '+') +
+      (s.copies === 1 ? ', singleton' : ', ' + s.copies + '-of') + '</option>';
+  }).join('');
+};
 
 window.Api = (function () {
   'use strict';

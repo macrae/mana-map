@@ -181,7 +181,7 @@ python -m http.server 8000
 | `viz/js/stage.js` | Shared canvas primitives (~285 lines). Surface, camera, labels, typed edges |
 | `viz/js/session.js` | Focus, **library**, commander (~605 lines). One answer each; force registers as its graph provider |
 | `viz/js/force.js` | The graph engine (~1,534 lines). Canvas + d3-force; exposes `window.Force` |
-| `viz/js/discovery.js` | Discover — the front door (~1,201 lines). Landing card, relations, library, import, seeding from named cards, `brief()` |
+| `viz/js/discovery.js` | Discover — the front door (~1,300 lines). Landing card, relations, library, import, seeding from named cards, `brief()` |
 | `viz/js/render/canvas.js` | The map renderer (~1,147 lines). The ONLY renderer; owns the aura + ambient drift |
 | `viz/js/decklist.js` | Moxfield paste parser (~114 lines). Fixture-locked to the Python parser |
 | `viz/js/build.js` | Build (~1,818 lines). Deck Lens + Build Deck merged; exposes `window.Build` |
@@ -194,7 +194,7 @@ python -m http.server 8000
 | `viz/branch.html` | Branch shell: the objective mount and the panel grid |
 | `viz/js/branch-view.js` | The branch workbench (~856 lines). IIFE; exposes `window.Branch` for the browser suite |
 | `viz/js/shell.js` | The library drawer (~930 lines), mounted on every page; `Shell.cardImageUrl(name, version, entry)` is the art helper — a `cards.json` entry's own image (its face by name for a DFC, `art_crop` when asked) when one is passed, the by-name Scryfall URL otherwise |
-| `viz/js/api.js` | The local-server probe (~126 lines). `Api.ready` is false on a static host and every verb degrades to a named command |
+| `viz/js/api.js` | The local-server probe (~177 lines). `Api.ready` is false on a static host and every verb degrades to a named command. Also the shared constants every page needs: `MANIFEST_VERSION`, and `FORMAT_SPECS` / `formatSpec()` / `formatOptionsHtml()` (see *Formats* below) |
 | `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all six pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
 | `viz/library.html` | **Curate** shell: pile rail, grid, pinned pane |
 | `viz/js/library-view.js` | Curate (774 lines). IIFE; multi-select, bulk move/remove, the sorts and filters over `viz_index.json` |
@@ -1200,7 +1200,7 @@ Manual `?v=N` query strings, on **every script and stylesheet tag of the page yo
 touched** — not just two pages. `index.html` carries **twelve** script busts plus
 `mana-map.css`; `deck.html` carries **six**, and `branch.html`, `workbench.html`,
 `library.html` and `spaces.html` **five** each, plus their stylesheets. Every bust in the
-repo currently moves together at `?v=236`. **Bump before pushing** — Pages/browser caches are aggressive.
+repo currently moves together at `?v=241`. **Bump before pushing** — Pages/browser caches are aggressive.
 On `index.html` all twelve script busts must move together and a test asserts it, because
 a mismatched pair is how `build.js` ends up talking to a stale `mana-map.js`. The trap the
 two-page framing created: `shell.js` is shared by five pages, so bumping only `deck.html`
@@ -1234,6 +1234,62 @@ What is worth stating and cannot be read off the block:
   looks live to every reader.
 - **`getEmbeddings()` resolves to the shared cached instance**, so a consumer awaits it
   rather than downloading its own copy of a ~17 MB payload.
+
+## Formats: a 60-card deck is not a Commander deck (C7, 2026-10-09)
+
+`pilot/formats.py:FORMATS` is the source of truth; the pages read a mirror of it,
+**`window.FORMAT_SPECS`** in `api.js` (aliased `MM.FORMAT_SPECS`), because all six pages
+need it and only `index.html` has an `MM`. One entry per format —
+`{name, size, exact, copies, commanders, sideboard}` (`size` is `deck_size`, `exact` is
+`exact_size`, `copies` is `max_copies`, `sideboard` is `sideboard_size`) — kept as strict
+JSON so `tests/test_viz_format_specs.py` can parse the literal and hold every format and
+every field to Python, both directions. `formatSpec(key)` returns a spec (no key, or an
+unknown one, is Commander); `formatOptionsHtml(keys, selected)` renders the `<option>`s
+for **both** format pickers — Build's new-deck form (fed the server's buildable keys) and
+Discover's hint — so a format reads `Modern — 60+, 4-of` wherever it is chosen. Nothing in
+`viz/` may hard-code a 99 or a 60: "the 99" is `size - commanders`.
+
+Where the deck's format comes from: the manifest entry's `format` (on every entry since
+`MANIFEST_VERSION` 7), then `cards.json`'s, then Commander. The fixture is `elves`.
+
+- **Session** holds `format` beside `commander` (`Session.format`, `.formatSpec`,
+  `.setFormat`), persisted under `localStorage['manamap-format']`. `setCommander(row)`
+  returns `false` and says why on the status line when the format has no commander slot;
+  `setFormat` to such a format clears a commander already held. Build writes the format
+  when a deck loads, Discover when it loads a manifest deck or the pilot picks one, and a
+  pasted list with a `*CMDR*` marker puts it back to Commander.
+- **Build** keeps it on `active.format` / `active.spec` (`Build.deckFormat()` reads it —
+  the old module-level `format` was never reassigned). The header stat is `N / 60+`
+  (`+` when the size is a minimum); the subtitle is `Modern · 60+ cards` where there is no
+  commander; `isCommander` and the gold ring exist only when `spec.commanders`. The "grey
+  out what you cannot play" lens dims by `isLegalInFormat(d, active.format)`, and by colour
+  **only where the format has an identity rule** — a red card is legal in a green Modern
+  deck. `deckColorIdentity()` unions `ci` over the main rows when there is no commander;
+  the card panel reports it as `colours … has no identity rule`, never as off-colour, and
+  says "In the 60". Game Changers are not flagged outside Commander. `cards.json`'s
+  `sideboard` renders as **Sideboard (N)** below the role budget — not on the map, not in
+  the graph, not in the copy count.
+- **"Set as commander"** is offered only on a legendary creature AND when
+  `Session.formatSpec.commanders`.
+- **Discover's brief** sizes `must_include` by `size - commanders` (99 / 60), exports
+  `format`, and in a format with no commander omits the `commander` key and the "blocked"
+  note (the next step says the builder is Commander-only and to `check-in` instead).
+  **A pasted list never has its format guessed**: with no commander and either a sideboard
+  or ≤ 75 main copies, the format stays where it is and a one-line hint — "N cards and no
+  commander — pick a format" — appears with the picker (`#dcFmt`). Choosing is the pilot's
+  act; sixty cards is Modern, Pioneer, Standard, Pauper or half a Commander deck.
+- **The deck page** reads `info.format`: `theN(d)` gives "The 99" / "The 60" (the roster's
+  promise, the brief caveat, the combos todo); the roster's commander split and the brief's
+  "Why this commander" render only with a commander; the cover's `Commander by T6` becomes
+  a Format head. The goldfish, vitals, bracket and table panels render **`na(...)`**, not
+  `absent(...)`: `absent()` is a call to action that names the command which would fill the
+  panel, and on a Modern deck that command is one the bench refuses. `na()` says "Not
+  measured for Modern: the goldfish and Forge are Commander-only." (the bracket: "the
+  bracket is a Commander construct.") with no command and no button. The audit panel
+  lists `audit.json`'s `not_measured` axes, one line each with its reason — fetched only
+  for a non-Commander deck, since `info.audit` carries only the verdicts.
+- **The workbench** subtitle (card and fleet table) is `Modern · G · 60 cards` for a deck
+  with no commander; the art is the entry's `image`, as for every deck.
 
 ## The workbench (`workbench.html`) — the landing page
 
@@ -1431,7 +1487,7 @@ bottom:
 | the comparison | `buildObsolescenceHtml`: a CLOSED `<details>` directly under the relation row — strength, gains, costs and "played less" for each card that outclasses this one. It was a separate "Compare with" box above the oracle reading the same index as the button; obsolescence now has one place |
 | Keep, Set as commander | one row (`.detail-actions`) |
 | the image | 240px, the box reserved at 488:680; a click toggles full width. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once. **In Build with the card in the open deck**, the image is the sleeved printing's (`Build.deckCard(name)` → `Shell.cardImageUrl(name, 'normal', entry)`) and the flip is that printing's own back face; everywhere else it is by name |
-| facts | `cardFactsHtml(d, {format})`: `EDHREC #n · <Format>: legal / BANNED / not legal · Identity …`; every other format inside a closed `<details>` in the same three states. The format is the deck's (`Build.deckFormat()`), commander elsewhere |
+| facts | `cardFactsHtml(d, {format})`: `EDHREC #n · <Format>: legal / BANNED / not legal · Identity …`; every other format inside a closed `<details>` in the same three states. The format is the deck's (`Build.deckFormat()`) in EVERY panel while Build has a deck open — the atlas detail panel passed none until C7, so a Modern card read "Commander: legal" there — and commander elsewhere |
 
 **Dropped**: the CMC row (the cost is in the header) and the Keywords section (it repeats the
 oracle) — `d.k` is still searched. **Three legality states, two sources.** The projection's
@@ -1687,7 +1743,7 @@ the oracle text and any note, filtered Unreviewed / Watching / Passed / All and 
 `manamap serve` the grid is read-only and says so (`Api.ready`, re-rendered when the probe
 lands). Mana value and oracle text come from `MM.cardRecord`, never from the file.
 `has.considering` now gates the Short List fetch, so a deck without one costs no 404;
-`MANIFEST_VERSION` is 4.
+`MANIFEST_VERSION` went to 4 for it (7 since the manifest's `format` key, C7).
 
 **The grid is a write loop, and four rules keep it safe (audit 2026-10-08).** The audit found
 Cmd+W posting `verdict: watching` before the tab closed, a double `w` posting twice, j/k

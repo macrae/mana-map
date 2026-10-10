@@ -126,10 +126,16 @@
    * `deck-info` derives both from `cards.json` — so this cannot be the empty
    * string on a deck that has a list. On a deck that has none it is, and an
    * empty subtitle is the correct answer to "what else is there to say". */
-  function identityLine(info) {
+  /* A DECK WITH NO COMMANDER LEADS WITH ITS FORMAT — `Modern · G · 60 cards` —
+   * because that is what identifies a 60-card list, the way a commander identifies
+   * a Commander one. `e` is the manifest entry, whose `format` is on every deck;
+   * a Commander deck's line is unchanged. */
+  function identityLine(info, e) {
     var id = (info && info.colour_identity) || [];
     var size = info && info.size;
     var bits = [];
+    var fmt = (e && e.format) || (info && info.format) || 'commander';
+    if (fmt !== 'commander' && window.formatSpec) bits.push(window.formatSpec(fmt).name);
     if (id.length) bits.push(id.join(''));
     if (size) bits.push(size + ' cards');
     return esc(bits.join(' \u00b7 '));
@@ -306,7 +312,7 @@
      * the size are facts the title does not already state. */
     var sub = (e.commander && e.commander !== (e.deck_name || ''))
       ? esc(e.commander)
-      : identityLine(info);
+      : identityLine(info, e);
     return '<div class="wb-card' + (dead ? ' is-dead' : '') + '">'
       + '<div class="wb-artwrap">' + art + versionStamp(e) + '</div>'
       + '<div class="wb-body">'
@@ -468,7 +474,7 @@
     return '<tr class="t-head' + dead + '">'
       + '<th scope="row"><a href="deck.html?deck=' + slug + '">'
         + esc(e.deck_name || e.slug) + '</a>'
-        + '<span class="t-sub">' + esc(e.commander || '') + '</span></th>'
+        + '<span class="t-sub">' + (e.commander ? esc(e.commander) : identityLine(i, e)) + '</span></th>'
       + '<td>' + lock + '</td>'
       + '<td>' + record + (when ? '<span class="t-sub">' + esc(when) + '</span>' : '') + '</td>'
       + '<td>' + num(st.complete, '—') + (st.of ? '/' + st.of : '') + '</td>'

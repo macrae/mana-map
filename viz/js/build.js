@@ -103,9 +103,12 @@
   let focusedLine = -1;
   // Off-limits highlighting is opt-in: it costs the per-point opacity array.
   let showIllegal = false;
-  // The deck's format. `Build.deckFormat()` hands it to the card panel's legality line;
-  // a later change populates it per deck, so today every deck reads as commander.
-  let format = 'commander';
+  // The deck's format lives on `active.format` (from the manifest entry, then
+  // `cards.json`, then Commander), so it cannot outlive the deck it describes.
+  // `Build.deckFormat()` hands it to the card panel's legality line.
+  function deckFormat() { return (active && active.format) || 'commander'; }
+  // The open deck's spec from `window.FORMAT_SPECS` (api.js, mirrors formats.py).
+  function deckSpec() { return window.formatSpec(deckFormat()); }
   // Game Changers allowed per bracket — mirrors `config.BRACKETS[n]["game_changers"]`
   // (0, 0, 3, None, None); null is "no limit". Only the GC column is mirrored: the deck
   // block says where a GC stands against its bracket, and nothing else here brackets.
@@ -176,9 +179,21 @@
   /* EVERY commander, not the first. Partners are two commanders and the identity is
    * their union — sharknado is Shabraz (WU) AND Brallin (R), and reading only the
    * manifest's one `commander` called every red card in that deck off-colour. */
+  /* A FORMAT WITH NO COMMANDER has no identity rule, so the deck's colours are
+   * simply what its main deck contains (the sideboard is not in it). Informational
+   * there — `getDimmedIndices` does not dim by it, because a red card is legal in
+   * a mono-green Modern deck; it is a widening, not a violation. */
   function deckColorIdentity() {
     const ci = new Set();
     if (!active || !nameToIdx) return ci;
+    if (!active.spec.commanders) {
+      for (const slot of active.main) {
+        if (slot.idx != null && MM.allData[slot.idx]) {
+          parseColorIdentity(MM.allData[slot.idx].ci).forEach(function (c) { ci.add(c); });
+        }
+      }
+      return ci;
+    }
     for (const name of active.commanderNames) {
       const cmdIdx = nameToIdx.get(name);
       if (cmdIdx != null && MM.allData[cmdIdx]) {
@@ -945,15 +960,22 @@
       slug: active.slug,
       name: name,
       deckName: (active.entry && active.entry.deck_name) || active.slug,
-      gameChanger: !!(MM.cardFlags && MM.cardFlags().gc.has(name)),
+      // Game Changers are a Commander bracket list; they mean nothing in Modern.
+      gameChanger: !!(active.spec.commanders && MM.cardFlags && MM.cardFlags().gc.has(name)),
       bracket: bracketStanding(),
       inDeck: !!slot,
       qty: slot ? slot.qty : 0,
       isCommander: active.commanderNames.indexOf(name) !== -1,
       family: family,
       roles: roles,
+      // `binding`: an identity RULE (a commander's) rather than the colours the
+      // list happens to run, which a constructed card may widen legally.
       colour: { checked: deckCI.size > 0, deck: wubrg(deckCI), card: wubrg(cardCI),
-                off: wubrg(cardCI).filter(c => !deckCI.has(c)) },
+                off: wubrg(cardCI).filter(c => !deckCI.has(c)),
+                binding: !!active.spec.commanders },
+      // "the 99" / "the 60": what the card panel calls the main deck.
+      listName: theN(),
+      formatName: active.spec.name,
       watch: w ? { set: set.title, axis: w.axis, pays: PAYS_LABEL[w.pays] || '', why: w.why,
                    verdict: w.verdict, note: w.note, pending: !!gridPending.get(name) } : null,
       // From the deck's `prices.json` only — dated, sourced; null when unpriced.
@@ -1279,7 +1301,13 @@
 
   function buildActive(entry, deckDoc, considering, stacks, engine, prose) {
     const cards = deckDoc.cards || [];
-    const commanderName = (deckDoc.commander && deckDoc.commander.name) || entry.commander;
+    // THE FORMAT FIRST, because it decides whether there is a commander to look for.
+    // The manifest is the bench's answer; `cards.json` carries it too for a page that
+    // reads the file alone; no key at all is a deck that predates formats.
+    const format = String(entry.format || deckDoc.format || 'commander').toLowerCase();
+    const spec = window.formatSpec(format);
+    const commanderName = spec.commanders
+      ? ((deckDoc.commander && deckDoc.commander.name) || entry.commander || null) : null;
 
     function toSlot(card) {
       const idx = nameToIdx.has(card.name) ? nameToIdx.get(card.name) : null;
@@ -1298,8 +1326,18 @@
     const main = cards.map(toSlot);
     const unmapped = main.filter(s => s.idx === null).map(s => s.name);
     // Every card the list flags `is_commander` (partners are two), else the one name.
-    const flagged = cards.filter(c => c.is_commander).map(c => c.name);
+    // None at all where the format has no commander slot, whatever a row says.
+    const flagged = spec.commanders ? cards.filter(c => c.is_commander).map(c => c.name) : [];
     const commanderNames = flagged.length ? flagged : (commanderName ? [commanderName] : []);
+    if (!spec.commanders) main.forEach(function (s) { s.isCommander = false; });
+    /* THE RULES' SIDEBOARD (CR 100.4), filed by `fetch_deck` under
+     * `cards.json["sideboard"]` and absent when empty. Listed in the panel and
+     * nowhere else: not on the map, not in the graph, not in the copy count — it
+     * is not in the deck, it is beside it. */
+    const sideboard = (deckDoc.sideboard || []).map(function (card) {
+      return { name: card.name, qty: qty(card),
+               idx: nameToIdx.has(card.name) ? nameToIdx.get(card.name) : null };
+    });
 
     // The Short List: ten cards the pilot might sleeve. Pool picks are the interesting
     // ones on a map — they are, literally, elsewhere.
@@ -1316,9 +1354,13 @@
     return {
       slug: entry.slug,
       entry,
+      format,
+      spec,
       commanderName,
       commanderNames,
       main,
+      sideboard,
+      sideCopies: sideboard.reduce((n, s) => n + s.qty, 0),
       candidates,
       unmapped,
       edges: buildEdges(stacks, main, entry, engine, prose),
@@ -1556,11 +1598,14 @@
     // Everything you could not legally put in this deck: wrong format, or outside the
     // commander's colour identity. The builder computed this; the Lens never did, so a
     // published deck could not show you what was off-limits.
-    const ci = deckColorIdentity();
+    // The colour half applies only where the format has an identity RULE: in a
+    // 60-card format every colour is playable, so only the legality column dims.
+    const ci = active.spec.commanders ? deckColorIdentity() : new Set();
+    const fmt = active.format;
     const out = new Set();
     for (let i = 0; i < MM.allData.length; i++) {
       const d = MM.allData[i];
-      if (!isLegalInFormat(d, format) || !isColorIdentitySubset(d.ci, ci)) out.add(i);
+      if (!isLegalInFormat(d, fmt) || !isColorIdentitySubset(d.ci, ci)) out.add(i);
     }
     return out;
   }
@@ -1701,10 +1746,9 @@
      * names what is missing instead of hiding it. */
     const buildable = (newDeck.formats || []).filter(f => f.buildable !== false);
     const notYet = (newDeck.formats || []).filter(f => f.buildable === false);
-    const fmts = buildable.map(f =>
-      '<option value="' + esc(f.key) + '"' + (f.key === newDeck.fmt ? ' selected' : '') +
-      '>' + esc(f.name) + ' — ' + f.deck_size + (f.exact_size ? '' : '+') +
-      (f.singleton ? ', singleton' : ', 4-of') + '</option>').join('');
+    // The <option>s are `formatOptionsHtml` (api.js) — the one renderer Discover's
+    // format hint uses too — fed the keys the SERVER says it can build.
+    const fmts = window.formatOptionsHtml(buildable.map(f => f.key), newDeck.fmt);
     let h = '<div class="deck-section"><div class="deck-section-title">New deck</div>'
       + '<div class="deck-format-row"><label for="ndFmt">Format</label>'
       + '<select id="ndFmt" onchange="Build.newDeckField(\'fmt\', this.value)">'
@@ -2057,7 +2101,7 @@
     if (!active) {
       html +=
         '<div class="deck-section">' +
-          '<div class="deck-empty">Pick a published deck to light up its 99 on the map. ' +
+          '<div class="deck-empty">Pick a published deck to light up its list on the map. ' +
           'Everything else dims, so the deck’s footprint in card space becomes visible.</div>' +
         '</div>';
       el.innerHTML = html;
@@ -2065,10 +2109,15 @@
     }
 
     const e = active.entry;
+    const spec = active.spec;
     html +=
       '<div class="deck-section">' +
         '<div class="lens-title">' + esc(e.deck_name) + '</div>' +
-        '<div class="lens-sub">' + esc(e.commander) + '</div>' +
+        // A commander where there is one; otherwise the format, which is the
+        // thing a 60-card deck is identified by.
+        '<div class="lens-sub">' + esc(spec.commanders ? (e.commander || '')
+                                                      : spec.name + ' · ' + spec.size + (spec.exact ? '' : '+') + ' cards') +
+        '</div>' +
         // The magazine is not a product any more, so nothing invites a pilot
         // into it. This link survived the removal on the other three surfaces
         // because it lives in a panel that only renders with a deck loaded —
@@ -2082,7 +2131,9 @@
 
       '<div class="deck-section">' +
         '<div class="lens-stats">' +
-          statBox(active.copies, 'cards') +
+          // Against the format's size: "60 / 60+" says the count AND the rule
+          // (a minimum), where a bare 60 said neither. Copies, main deck only.
+          statBox(active.copies + ' / ' + spec.size + (spec.exact ? '' : '+'), 'cards') +
           statBox(e.verified, 'verified') +
           statBox(active.candidates.length, watchSet() ? 'on watch' : 'short list') +
         '</div>' +
@@ -2144,6 +2195,7 @@
             '<span class="lens-bar-n">' + c.n + '</span>' +
           '</div>').join('') +
       '</div>';
+    html += sideboardHtml();
 
     /* THE SELECTED CARD.
      *
@@ -2159,7 +2211,7 @@
     if (selected >= 0 && MM.buildCardDetailHtml) {
       html += '<div class="deck-section">' +
         MM.buildCardDetailHtml(MM.cardRecord(selected), selected,
-                               { title: true, stats: true, format: format }) + '</div>';
+                               { title: true, stats: true, format: active.format }) + '</div>';
     }
 
     if (active.edges.length) {
@@ -2229,6 +2281,28 @@
     if (pr) pr.classList.toggle('is-end', pr.scrollHeight <= pr.clientHeight + 2);
   }
 
+  /* The sideboard as a list, below the role budget. Off the map and out of every
+   * count above — a sideboard card is not in the deck. Clicking a name opens it. */
+  function sideboardHtml() {
+    if (!active || !active.sideboard.length) return '';
+    return '<div class="deck-section deck-sideboard">' +
+      '<div class="deck-section-title">Sideboard (' + active.sideCopies + ')' +
+        (active.spec.sideboard ? ' <span>of ' + active.spec.sideboard + '</span>' : '') + '</div>' +
+      '<div class="lens-note">Beside the deck, not in it: not on the map and not counted above</div>' +
+      active.sideboard.map(function (s) {
+        return '<div class="lens-cand"' + (s.idx !== null
+          ? ' onclick="MM.selectByName(' + JSON.stringify(s.name).replace(/"/g, '&quot;') + ')"' : '') + '>' +
+          '<span class="lens-cand-name">' + (s.qty > 1 ? s.qty + ' ' : '') + esc(s.name) + '</span></div>';
+      }).join('') +
+      '</div>';
+  }
+
+  /* "The 99" / "The 60": the main deck less its commanders, from the format. */
+  function theN() {
+    const spec = active ? active.spec : window.formatSpec('commander');
+    return 'the ' + (spec.size - spec.commanders);
+  }
+
   function statBox(n, label) {
     return '<div class="lens-stat"><div class="lens-stat-n">' + esc(n) + '</div>' +
            '<div class="lens-stat-l">' + esc(label) + '</div></div>';
@@ -2254,6 +2328,9 @@
     renderPanel();
     try {
       active = await loadDeck(slug);
+      // One answer to "which format": the brief, the "Set as commander" button and
+      // Discover all read Session, so the deck you open writes it there.
+      if (window.Session && Session.setFormat) Session.setFormat(active.format);
       MM.setStatus(active.entry.deck_name + ' — ' + active.copies + ' cards lit, ' +
                    active.entry.verified + ' verified line(s)');
     } catch (err) {
@@ -2556,6 +2633,9 @@
       Force.enter(null, null, { chrome: 'discovery' });   // restore, do not rebuild
       return;
     }
+    // The format before the commander: Session refuses a commander in a format
+    // with no slot, and the "Set as commander" button reads the format from here.
+    Session.setFormat(active.format);
     const cmd = active.commanderName && nameToIdx ? nameToIdx.get(active.commanderName) : null;
     const cmdIdx = typeof cmd === 'number' ? cmd : -1;
     const seeds = cmdIdx >= 0
@@ -2768,7 +2848,7 @@
     renderGrid,
     // For the card panel: the deck's format (its legality line), whether a NAME is in
     // the open deck (combo partner chips), and the deck's `combos.json` or null.
-    deckFormat: function () { return format; },
+    deckFormat: deckFormat,
     hasCard,
     deckCombos,
     // Read-only probes for the browser suite.
