@@ -1020,7 +1020,61 @@ def merge_agent_keys(plan, existing):
     return plan
 
 
+def deck_rung(slug):
+    """`dev` / `bench` / `sleeved`, or `archived` for a deck in pieces."""
+    from manamap.pilot import promote
+    return promote.stage(slug) or "archived"
+
+
+def existing_deck_refusal(slug):
+    """The sentence a NEW-deck path refuses with when `slug` is already a deck.
+
+    A deck is one with `cards.json`; a `decklist.txt` alone is an unfinished
+    draft and stays writable. None when nothing is there to lose.
+    """
+    from manamap.pilot.common import decks_root
+    # `decks_root`, not `deck_dir`: the latter raises for a slug with no folder,
+    # and a brand-new deck is exactly that.
+    if not (decks_root() / slug / "cards.json").exists():
+        return None
+    return (f"`{slug}` is already a deck ({deck_rung(slug)}) — open it in Build "
+            f"to edit it, or give the new deck another name.")
+
+
+def guard_overwrite(slug, overwrite=False):
+    """Refuse to rebuild a finished deck's list unless asked; never a sleeved
+    or archived one. Raises SystemExit; returns True when a backup is owed.
+
+    THE BUILDER REWRITES `decklist.txt` WHOLESALE. Before this, `build` on an
+    existing slug silently replaced a sleeved list with a fresh deterministic 99
+    — the one file no command can rebuild. `--overwrite` exists for a bench deck
+    being rebuilt from its brief; a sleeved list changes through a branch, and an
+    archived one is revived first.
+    """
+    from manamap.pilot import common, deck_versions
+    refusal = existing_deck_refusal(slug)
+    if refusal is None:
+        return False
+    if not overwrite:
+        raise SystemExit(refusal + " (`--overwrite` rebuilds a bench deck's list, "
+                         "keeping the old one as decklist.txt.bak)")
+    if deck_versions.paper(slug):
+        raise SystemExit(
+            f"`{slug}` is SLEEVED ({deck_versions.paper(slug)}) — the builder will "
+            f"not overwrite a list that is in cardboard, even with --overwrite. "
+            f"Open a branch instead: `manamap pilot deck-branch {slug} new <name>`.")
+    if common.deck_is_apart(slug):
+        raise SystemExit(
+            f"`{slug}` is archived — revive it first: "
+            f"`manamap pilot deck-state {slug} revive --reason \"…\"`.")
+    return True
+
+
 def main(args):
+    write_list = getattr(args, "write_decklist", False)
+    # BEFORE build(): a refusal must leave nothing written, build_plan.json included.
+    backup = guard_overwrite(args.slug, getattr(args, "overwrite", False)) \
+        if write_list else False
     plan = build(args.slug)
     base = deck_dir(args.slug)
 
@@ -1046,10 +1100,15 @@ def main(args):
     if short:
         print(f"  mana base shortfalls: {short}")
 
-    if getattr(args, "write_decklist", False):
+    if write_list:
         frame = load_frame()          # already parsed by build(); free here
         layouts = dict(zip(frame["name"], frame["layout"]))
         path = base / "decklist.txt"
+        if backup and path.exists():
+            import shutil
+            bak = path.with_suffix(".txt.bak")
+            shutil.copy(path, bak)
+            print(f"  Kept the old list as {bak}")
         path.write_text(decklist_text(plan, layouts), encoding="utf-8")
         print(f"  Wrote {path}")
 

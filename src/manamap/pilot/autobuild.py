@@ -382,6 +382,11 @@ def build(args, quiet=False):
     import io
 
     slug = args.slug
+    # First, before stage 1 writes a brief: a finished deck is not rebuilt
+    # unless `--overwrite` says so, and a sleeved or archived one never is.
+    from manamap.pilot.build_deck import guard_overwrite
+    overwrite = bool(getattr(args, "overwrite", False))
+    guard_overwrite(slug, overwrite)
     started = time.time()
     record = {"slug": slug, "stages": [], "flagged": []}
 
@@ -421,7 +426,7 @@ def build(args, quiet=False):
         # reader to notice.
         with contextlib.redirect_stdout(said):
             _run("manamap.pilot.build_deck", slug=slug, write_decklist=True,
-                 space=getattr(args, "space", None))
+                 overwrite=overwrite, space=getattr(args, "space", None))
         plan = json.loads((deck_dir(slug) / "build_plan.json")
                           .read_text(encoding="utf-8"))
         record["plan"] = {k: plan[k] for k in

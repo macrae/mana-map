@@ -452,6 +452,12 @@ def add_pilot_parser(subparsers):
         if name == "build-deck":
             cmd.add_argument("--write-decklist", action="store_true", dest="write_decklist",
                              help="Also write decklist.txt for fetch-deck")
+        if name in ("build-deck", "build"):
+            cmd.add_argument("--overwrite", action="store_true",
+                             help="rebuild the list of a deck that already has "
+                                  "cards.json, keeping the old one as "
+                                  "decklist.txt.bak. Refused for a SLEEVED or "
+                                  "archived deck regardless")
         if name == "deck-combos":
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--write", action="store_true",

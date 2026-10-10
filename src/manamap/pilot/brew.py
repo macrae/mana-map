@@ -52,6 +52,10 @@ def _library_from_file(path):
 
 
 def main(args):
+    if getattr(args, "build", False):
+        # Before the brief is written: `--build` rewrites decklist.txt, and an
+        # existing deck is rebuilt with `build --overwrite`, never by a brew.
+        build_deck.guard_overwrite(args.slug, False)
     library = list(args.library)
     from_commander = None
     if args.from_file:
@@ -78,7 +82,8 @@ def main(args):
         print(f"\n  next: manamap pilot build-deck {args.slug} --write-decklist")
         return
 
-    build_deck.main(type("A", (), {"slug": args.slug, "write_decklist": True})())
+    build_deck.main(type("A", (), {"slug": args.slug, "write_decklist": True,
+                                   "overwrite": False})())
     print(f"\n  ON THE BENCH — not sleeved. Commit decklist.txt to make it V1, then:")
     print(f"      manamap pilot deck-version {args.slug} tag v0.1.0 --at V1 "
           f"--note \"first build\"")

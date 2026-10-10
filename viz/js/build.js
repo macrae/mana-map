@@ -1784,7 +1784,7 @@
        * draft that already exists; this one decides which draft that is, so it
        * commits when you finish typing. */
       + '<input id="ndSlug" class="discover-import" placeholder="a slug, e.g. zur-voltron" '
-      + 'value="' + esc(newDeck.slug || '') + '" '
+      + 'value="' + esc(newDeck.slug || newDeck.slugDraft || '') + '" '
       + 'oninput="Build.newDeckField(\'slugDraft\', this.value)" '
       + 'onchange="Build.newDeckField(\'slug\', this.value)">';
     // A commander is asked for only where the format requires one — the spec
@@ -1949,7 +1949,21 @@
     // `slugDraft` is what you are typing; `slug` is what you settled on. Only
     // the settled one reaches disk, because it names a directory.
     if (key === 'slugDraft') { newDeck.slugDraft = value; return; }
-    if (key === 'slug') newDeck.slugDraft = value;
+    if (key === 'slug') {
+      newDeck.slugDraft = value;
+      // A NEW deck may not take a finished deck's name: `build/save` refuses it
+      // server-side; this says so before the round trip, naming the deck.
+      const norm = String(value || '').trim().toLowerCase().replace(/ /g, '-');
+      const taken = ((manifest && manifest.decks) || []).find(d => d.slug === norm);
+      if (taken) {
+        newDeck.slug = null; newDeck.saved = null;
+        newDeck.built = '`' + norm + '` is already a deck (' + (taken.deck_name || norm)
+          + ') — open it in Build to edit it, or give the new deck another name.';
+        renderPanel();
+        return;
+      }
+      if (newDeck.built && newDeck.built.indexOf('is already a deck') !== -1) newDeck.built = null;
+    }
     newDeck[key] = value;
     if (key === 'fmt' || key === 'theme') renderPanel();
     saveDraft();

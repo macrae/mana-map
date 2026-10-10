@@ -367,6 +367,14 @@ def _build_save(slug=None, commander=None, theme=None, bracket=None,
     if not slug or not str(slug).strip():
         raise ValueError("a draft needs a slug")
     slug = str(slug).strip().lower().replace(" ", "-")
+    # A DRAFT IS A NEW DECK. Saving one over a finished deck's slug rewrote its
+    # brief, and the `build/run` after it rewrote its list — a sleeved deck
+    # included. A decklist with no cards.json is an unfinished draft and stays
+    # writable; a deck with cards.json is edited in Build, not re-drafted.
+    from manamap.pilot.build_deck import existing_deck_refusal
+    refusal = existing_deck_refusal(slug)
+    if refusal:
+        raise ValueError(refusal)
     base = DECKS_DIR / slug
     base.mkdir(parents=True, exist_ok=True)
     path = base / "brief.json"
@@ -446,9 +454,21 @@ def _build_run(slug=None):
     # page and the CLI produce byte-identical artifacts: `main` also merges the
     # agent-authored keys an existing `build_plan.json` carries, and a second
     # writer would drop them.
-    build_deck.main(type("A", (), {"slug": slug, "write_decklist": True})())
+    #
+    # NEVER `overwrite`: the page builds NEW decks. `main` refuses a slug that
+    # already has cards.json, and the page cannot ask it not to; the sentence
+    # is raised here first so the browser is not told about a CLI flag.
+    from manamap.pilot.build_deck import existing_deck_refusal
+    refusal = existing_deck_refusal(slug)
+    if refusal:
+        raise ValueError(refusal)
+    try:
+        build_deck.main(type("A", (), {"slug": slug, "write_decklist": True,
+                                       "overwrite": False})())
+    except SystemExit as exc:
+        raise ValueError(str(exc)) from None
 
-    plan = _json.loads((DECKS_DIR / slug / "build_plan.json").read_text(encoding="utf-8"))
+    plan =_json.loads((DECKS_DIR / slug / "build_plan.json").read_text(encoding="utf-8"))
     written = [p.name for p in sorted((DECKS_DIR / slug).iterdir())]
     return {"slug": slug, "commander": plan["commander"],
             "cards": len(plan["slots"]) + sum(plan["land_counts"].values()) + 1,
