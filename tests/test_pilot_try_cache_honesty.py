@@ -44,3 +44,23 @@ def test_an_art_series_card_is_never_screened_as_the_card(tmp_path, monkeypatch)
     monkeypatch.setattr(try_swap, "_SCRYFALL", {})
     got = try_swap._scryfall_objects(["Phyrexian Arena"])["phyrexian arena"]
     assert got["layout"] == "normal" and "draw a card" in got["oracle_text"]
+
+
+def test_the_fast_dump_scan_and_the_full_parse_agree(tmp_path, monkeypatch):
+    """The substring pre-filter (`"name":"<as typed>`) must find what the full
+    parse finds, and a name typed in another case falls through to the full
+    parse rather than coming back empty (drop the fall-through and the
+    lower-case lookup below returns None)."""
+    dump = tmp_path / "dump.jsonl"
+    rows = [{"name": "Necromancy Plus", "layout": "normal", "oracle_text": "not it"},
+            {"name": "Delver of Secrets // Insectile Aberration", "layout": "transform",
+             "oracle_text": "front"},
+            {"name": "Necromancy", "layout": "normal", "oracle_text": "the card"}]
+    dump.write_text("\n".join(json.dumps(o, separators=(",", ":")) for o in rows) + "\n")
+    monkeypatch.setattr(config, "RAW_JSON_PATH", dump)
+    monkeypatch.setattr(try_swap, "_SCRYFALL", {})
+    got = try_swap._scryfall_objects(["Necromancy", "Delver of Secrets"])
+    assert got["necromancy"]["oracle_text"] == "the card"
+    assert got["delver of secrets"]["layout"] == "transform"
+    monkeypatch.setattr(try_swap, "_SCRYFALL", {})
+    assert try_swap._scryfall_objects(["necromancy"])["necromancy"]["oracle_text"] == "the card"

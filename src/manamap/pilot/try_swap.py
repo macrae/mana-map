@@ -60,28 +60,49 @@ def _scryfall_objects(names):
     card built from it measured differently from the same card fetched: try's
     damage@T10 read 56.2 where net-change read 57.7 on the identical six swaps
     (2026-10-04). The bulk dump holds the very objects `fetch-deck` shapes."""
-    from manamap.ingest.common import open_dump
     want = {_key(n) for n in names} - set(_SCRYFALL)
     if want:
-        with open_dump(config.RAW_JSON_PATH) as fh:
-            head = fh.read(1)
-            fh.seek(0)
-            rows = json.load(fh) if head == "[" else (json.loads(line) for line in fh if line.strip())
-            for obj in rows:
-                # NOT A CARD, though it carries the card's name: an art-series
-                # card has no oracle text, so the first one in the dump made
-                # Phyrexian Arena, Yawgmoth and Sorin screen as BLANK cards
-                # (found by the edgar doctor, 2026-10-05). Tokens and emblems
-                # share names the same way.
-                if obj.get("layout") in _NOT_A_CARD:
-                    continue
-                k = _key(obj.get("name"))
-                if k in want:
-                    _SCRYFALL[k] = obj
-                    want.discard(k)
-                    if not want:
-                        break
+        # FAST PATH FIRST: parse only the lines that carry `"name":"<the name>`
+        # as typed — a C-level substring test instead of a json.loads per card,
+        # which made a never-seen card cost ~1.5 s in a warm preview. A name
+        # typed in another case is not matched there and falls through to the
+        # full parse below, so the answer never depends on which path found it.
+        needles = {json.dumps(str(n).split(" // ")[0].strip(), ensure_ascii=False)[:-1]: _key(n)
+                   for n in names if _key(n) in want}
+        _scan_dump(want, needles)
+        if want - set(_SCRYFALL):
+            _scan_dump(want - set(_SCRYFALL), None)
     return {_key(n): _SCRYFALL.get(_key(n)) for n in names}
+
+
+def _scan_dump(want, needles):
+    """Fill `_SCRYFALL` for the name-keys in `want`. With `needles`
+    (`'"Name'` -> key), a line is parsed only if it holds `"name":<needle>`."""
+    from manamap.ingest.common import open_dump
+    want = set(want)
+    marks = [f'"name":{n}' for n in needles] if needles is not None else None
+    with open_dump(config.RAW_JSON_PATH) as fh:
+        head = fh.read(1)
+        fh.seek(0)
+        if head == "[":
+            rows = json.load(fh)
+        else:
+            rows = (json.loads(line) for line in fh
+                    if line.strip() and (marks is None or any(m in line for m in marks)))
+        for obj in rows:
+            # NOT A CARD, though it carries the card's name: an art-series
+            # card has no oracle text, so the first one in the dump made
+            # Phyrexian Arena, Yawgmoth and Sorin screen as BLANK cards
+            # (found by the edgar doctor, 2026-10-05). Tokens and emblems
+            # share names the same way.
+            if obj.get("layout") in _NOT_A_CARD:
+                continue
+            k = _key(obj.get("name"))
+            if k in want:
+                _SCRYFALL[k] = obj
+                want.discard(k)
+                if not want:
+                    break
 
 
 def corpus_card(name):
