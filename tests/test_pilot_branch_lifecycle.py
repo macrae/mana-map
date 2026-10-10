@@ -83,8 +83,13 @@ def sandbox(tmp_path, monkeypatch):
     if not (real / "decklist.txt").exists():
         pytest.skip(f"no {SLUG} fixture")
     decks = tmp_path / "decks"
+    # Gitignored leftovers stay behind too, so the sandbox is what a fresh checkout
+    # (CI) holds: a stray September `decklist.txt.bak` made a backup assertion pass
+    # here and fail there (2026-10-10).
     shutil.copytree(real, decks / SLUG,
-                    ignore=shutil.ignore_patterns("branches", "sim"))
+                    ignore=shutil.ignore_patterns("branches", "sim", "*.bak",
+                                                  "edits.jsonl*", ".edits.lock",
+                                                  ".rebuild.lock"))
     # ONE PATCH POINT. This looped over four modules patching whichever had
     # taken a copy of the deck root, which is the workaround #31 describes —
     # and which module has a copy depends on import order. `config` is the home
@@ -154,9 +159,10 @@ def test_merging_an_identical_list_leaves_the_deck_byte_identical(probe, sandbox
     before = path.read_bytes()
     deck_branch.merge(SLUG, probe, write=True, run_chain=False)
     assert path.read_bytes() == before
-    assert path.with_suffix(".txt.bak").exists(), (
-        "merge overwrote the deck's tracked list with no backup — check-in has "
-        "made one since it shipped and merge never did")
+    # Since every list write goes through `deck_edit.write_list`, an identical
+    # list is not written at all — so there is nothing to back up. The backup on
+    # a REAL overwrite is `test_pilot_deck_edit`'s, through the same writer.
+    assert not path.with_suffix(".txt.bak").exists(), "an identical merge rewrote the list"
 
 
 @requires_deck
