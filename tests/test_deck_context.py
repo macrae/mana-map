@@ -252,9 +252,18 @@ def test_the_summary_block_names_the_format_when_the_deck_has_no_commander():
                                              colour_identity=["G"], size=60, lands=16, bracket=None))
     assert block.splitlines()[0] == "- **Format:** Modern · G · 60 cards"
     assert "**Commander:**" not in block
-    assert "**bracket floor:** not checked" in block
-    # The control: a commander keeps its line, byte for byte.
-    assert dc._block_summary("sharknado", _info()).startswith("- **Commander:** [Shabraz")
+    # The bracket is Commander's scale: a 60-card deck reports none.
+    assert "bracket floor" not in block
+    # The control: a commander keeps its line, byte for byte, bracket included.
+    commander = dc._block_summary("sharknado", _info())
+    assert commander.startswith("- **Commander:** [Shabraz")
+    assert "**bracket floor:**" in commander
+
+
+def test_a_60_card_deck_is_titled_by_its_name_and_format(monkeypatch):
+    monkeypatch.setattr(dc, "load_deck_cards", lambda slug: {"format": "modern", "cards": [
+        {"name": "Llanowar Elves", "quantity": 4}]})
+    assert dc._title("elves") == "# Elves (Modern) — Deck Context"
 
 
 def test_the_numbers_block_says_the_goldfish_is_commander_only_for_a_60_card_deck(tmp_path, monkeypatch):

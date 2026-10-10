@@ -174,12 +174,14 @@ def _block_summary(slug, info):
         head = (f"- **Format:** {formats.get(info.get('format')).name} · "
                 f"{''.join(info.get('colour_identity') or []) or 'colourless'} · "
                 f"{info.get('size')} cards")
+    # The bracket is Commander's scale; a 60-card deck has none to report.
+    bracket = ("" if not commanders else " · **bracket floor:** "
+               + (f"{br.get('floor')} ({br.get('floor_name')})" if br.get("floor") else "not checked"))
     lines = [
         head,
         f"- **Version:** {_version_label(info)} · **status:** {status}",
         f"- **Colours:** {''.join(info.get('colour_identity') or []) or 'colourless'}"
-        f" · **lands:** {info.get('lands')} · **bracket floor:** "
-        + (f"{br.get('floor')} ({br.get('floor_name')})" if br.get("floor") else "not checked"),
+        f" · **lands:** {info.get('lands')}" + bracket,
         f"- **Combos:** {_combos_line(slug, info)}",
         f"- **Links:** [deck page]({DECK_HREF}{slug}) · "
         f"[on the map]({SITE}/viz/index.html?deck={slug})",
@@ -360,8 +362,14 @@ def _title(slug):
         rows = (doc.get("cards") if isinstance(doc, dict) else doc) or []
         names = [c["name"] for c in rows if c.get("is_commander")]
     except FileNotFoundError:
-        names = []
-    return f"# {' + '.join(names) or slug} — Deck Context"
+        doc, names = {}, []
+    if not names:
+        # A 60-card deck names itself by its slug and format: "Elves (Modern)".
+        from manamap.pilot import formats
+
+        spec = formats.for_doc(doc if isinstance(doc, dict) else {})
+        names = [f"{slug.replace('-', ' ').title()} ({spec.name})"]
+    return f"# {' + '.join(names)} — Deck Context"
 
 
 def scaffold_text(slug, blocks):
