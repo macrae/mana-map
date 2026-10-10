@@ -782,6 +782,14 @@ LOCAL_COSTS = {
     "net-change": "~15s — two 10,000-game diagnostic runs, no model call. "
                   "Resolves the branch against Scryfall first if a staged swap "
                   "left it stale.",
+    # The three edit-mode jobs (`deck/edit`, `deck/edit/preview`,
+    # `deck/save-version`), measured by Phase 2 on a 100-card deck.
+    "rebuild": "~12-14s Commander, ~4s 60-card — fetch-deck, goldfish, "
+               "mana-analysis and the deck's existing artifacts, this deck only",
+    "preview": "~4s — the paired 10,000-game goldfish on both lists; instant when "
+               "the champion and the candidate are cached",
+    "save-version": "~30-60s — the consistency pass (regen with branches, "
+                    "deck-map, the handbook, build-index), then one git commit",
 }
 
 
@@ -868,6 +876,289 @@ def _branch_net_change(slug=None, branch=None):
                 "objective_grade": doc.get("objective_grade")}
 
     return _local_job("net-change", run)
+
+
+# ── Editing a bench deck in place, from Build ─────────────────────────────
+#
+# EVERY GUARD LIVES IN `deck_edit`. A sleeved deck, an archived one, a stale page,
+# the keep list, the format's rules — each is a `SystemExit` with a sentence, and
+# `_run` turns that into a 400 carrying the sentence. Nothing here re-decides
+# what is legal; this layer coerces the payload, starts the jobs and keeps two
+# small pieces of process state: ONE rebuild per deck (coalesced) and the
+# NEWEST preview per deck.
+
+#: The keys an edit op may carry, and nothing else. `card` is the page's word
+#: for `deck_edit`'s `name` (the same rename `branch/stage` makes for `in`).
+_OP_KEYS = ("op", "card", "qty", "board", "out", "in")
+#: A tray past this many ops is not a tray — refuse it rather than plan it.
+_OP_MAX = 200
+
+
+def _oplist(v):
+    """A list of edit ops, strictly: objects only, whitelisted keys, scalar values.
+
+    Anything else is a ValueError, which `_run` answers with a 400 — an unknown
+    key is refused rather than dropped, because a page that sent `name` where it
+    meant `card` should hear about it, not have its op silently emptied."""
+    if not isinstance(v, list) or not v:
+        raise ValueError("ops is a non-empty list of edit ops")
+    if len(v) > _OP_MAX:
+        raise ValueError(f"ops: {len(v)} ops is more than one edit ({_OP_MAX} at most)")
+    out = []
+    for o in v:
+        if not isinstance(o, dict):
+            raise ValueError(f"an edit op is an object, not {type(o).__name__}")
+        extra = sorted(set(o) - set(_OP_KEYS))
+        if extra:
+            raise ValueError(f"an edit op takes only {', '.join(_OP_KEYS)}; "
+                             f"unknown: {', '.join(map(str, extra))}")
+        row = {}
+        for k in ("op", "card", "board", "out", "in"):
+            val = o.get(k)
+            if val is None:
+                continue
+            if isinstance(val, (dict, list, bool)):
+                raise ValueError(f"an edit op's {k} is a string")
+            row["name" if k == "card" else k] = str(val).strip()
+        if o.get("qty") is not None:
+            q = o["qty"]
+            if isinstance(q, bool) or (isinstance(q, float) and not q.is_integer()):
+                raise ValueError(f"an edit op's qty is a whole number, not {q!r}")
+            row["qty"] = int(q)
+        out.append(row)
+    return out
+
+
+def _slim(entry):
+    """A journal entry without its two full list texts — the page needs the
+    diff, never 100 lines twice."""
+    if not entry:
+        return None
+    return {k: v for k, v in entry.items() if k not in ("before", "after")}
+
+
+_REBUILD_LOCK = threading.Lock()
+#: slug -> {"job": id, "running": bool, "dirty": bool}
+_REBUILDS = {}
+
+
+def _start_rebuild(slug):
+    """ONE rebuild job per deck. An edit that lands while one runs marks it
+    dirty and gets the SAME job back; the job loops once more when it finishes,
+    so three quick edits cost two rebuilds, not three, and the last one always
+    measures the list as it stands. (`deck_edit.rebuild` also re-runs if the
+    list moved under it; this covers the edit that lands after its last check.)
+
+    Everything happens under `_REBUILD_LOCK`, including `_local_job`, so the
+    worker cannot read the state before it is registered."""
+    from manamap.pilot import common, deck_edit
+
+    with _REBUILD_LOCK:
+        cur = _REBUILDS.get(slug)
+        if cur and cur["running"]:
+            cur["dirty"] = True
+            with _JOB_LOCK:
+                return dict(JOBS[cur["job"]])
+        state = {"job": None, "running": True, "dirty": False}
+        _REBUILDS[slug] = state
+
+        def run():
+            passes = 0
+            try:
+                while True:
+                    with _REBUILD_LOCK:
+                        state["dirty"] = False
+                    got = deck_edit.rebuild(slug)
+                    passes += 1
+                    with _REBUILD_LOCK:
+                        if not state["dirty"]:
+                            state["running"] = False
+                            got = dict(got, passes=passes,
+                                       decklist_sha256=common.decklist_sha256(slug))
+                            got.pop("context", None)
+                            return got
+            except BaseException:
+                with _REBUILD_LOCK:
+                    state["running"] = False
+                raise
+
+        job = _local_job("rebuild", run)
+        state["job"] = job["id"]
+        return job
+
+
+def _deck_edit(slug=None, ops=None, note=None, expect_sha=None):
+    """Apply one tray to a bench or brewing deck, then rebuild in the background.
+
+    `expect_sha` is REQUIRED here: the page must say which list it was looking
+    at, so an edit made from a tab that sat open across a CLI edit is refused
+    ("the list moved since this page loaded") rather than applied to a list the
+    pilot never saw."""
+    from manamap.pilot import deck_edit
+    if not slug:
+        raise ValueError("deck/edit needs a slug")
+    if not ops:
+        raise ValueError("deck/edit needs ops — at least one add, cut, swap or set")
+    if not expect_sha:
+        raise ValueError("deck/edit needs expect_sha — the list's sha this page loaded")
+    got = deck_edit.edit(slug, ops, source="ui", note=note, expect_sha=expect_sha)
+    p, entry = got["plan"], got["entry"]
+    return {"slug": slug, "written": got["written"], "entry": _slim(entry),
+            "after_sha": entry["after_sha"] if entry else p["base_sha"],
+            "diff": p["diff"], "size": p["size"], "warnings": p["warnings"],
+            "job": _start_rebuild(slug) if got["written"] else None}
+
+
+def _deck_edit_step(kind):
+    def step(slug=None, expect_sha=None):
+        from manamap.pilot import deck_edit
+        if not slug:
+            raise ValueError(f"deck/edit/{kind} needs a slug")
+        if not expect_sha:
+            raise ValueError(f"deck/edit/{kind} needs expect_sha — the list's sha "
+                             f"this page loaded")
+        rec = (deck_edit.undo if kind == "undo" else deck_edit.redo)(
+            slug, source="ui", expect_sha=expect_sha)
+        return {"slug": slug, "entry": _slim(rec), "after_sha": rec["after_sha"],
+                "diff": rec.get("diff"), "job": _start_rebuild(slug)}
+    step.__name__ = f"_deck_edit_{kind}"
+    return step
+
+
+def _deck_edit_history(slug=None, limit=None):
+    """The journal, newest first, where the stacks stand, and what moved since
+    the last save — the tray's Undo/Redo/Save state in one read."""
+    from manamap.pilot import common, deck_edit
+    if not slug:
+        raise ValueError("deck/edit/history needs a slug")
+    h = deck_edit.history(slug, limit=limit or 30)
+    path = common.deck_dir(slug) / "decklist.txt"
+    now = path.read_text(encoding="utf-8") if path.exists() else None
+    saved = deck_edit.saved_text(slug)
+    # No save and no committed list: there is no baseline, which is ABSENT, not
+    # "nothing moved".
+    since = deck_edit._text_diff(saved, now) if saved is not None else None
+    version = next((e.get("version") for e in h["entries"] if e.get("kind") == "save"),
+                   None)
+    if version is None:
+        try:
+            from manamap.pilot import deck_versions
+            vers = deck_versions.versions(slug)
+            version = vers[-1]["version"] if vers else None
+        except (Exception, SystemExit):            # noqa: BLE001 - no git, no version
+            version = None
+    rebuilding = deck_edit.is_locked(common.deck_dir(slug), deck_edit.REBUILD_LOCK)
+    return dict(h, since_save=since, saved_version=version, rebuilding=rebuilding)
+
+
+_PREVIEW_LOCK = threading.Lock()
+#: slug -> the token of the newest preview asked for. An older job's result
+#: comes back `superseded` rather than racing the newer one onto the page.
+_PREVIEWS = {}
+
+
+def _deck_edit_preview(slug=None, ops=None):
+    """The tray's numbers: the INSTANT tier now, the GOLDFISH tier as a job.
+
+    Only the newest preview per deck is live. A newer request replaces the
+    token; an older job that has not started measuring skips the work, and one
+    that has finishes and comes back `{"superseded": true}` with no figures, so
+    the page can never paint an older tray's reading over a newer one."""
+    import uuid
+
+    from manamap.pilot import try_swap
+    if not slug:
+        raise ValueError("deck/edit/preview needs a slug")
+    if not ops:
+        raise ValueError("deck/edit/preview needs ops")
+    token = uuid.uuid4().hex[:12]
+    with _PREVIEW_LOCK:
+        _PREVIEWS[slug] = token
+    out = try_swap.preview(slug, ops, goldfish=False)
+    out["token"] = token
+    gf = out.get("goldfish") or {}
+    # `goldfish=False` reads "not asked for"; any OTHER absence (not modelled for
+    # Modern, the edit is refused) is the answer and there is nothing to run.
+    if "absent" in gf and not str(gf["absent"]).startswith("not asked for"):
+        out["job"] = None
+        return out
+
+    def run():
+        with _PREVIEW_LOCK:
+            if _PREVIEWS.get(slug) != token:
+                return {"superseded": True, "token": token}
+        got = try_swap.preview(slug, ops, goldfish=True)
+        with _PREVIEW_LOCK:
+            if _PREVIEWS.get(slug) != token:
+                return {"superseded": True, "token": token}
+        return {"superseded": False, "token": token, "base_sha": got["base_sha"],
+                "goldfish": got["goldfish"]}
+
+    job = _local_job("preview", run)
+    out["goldfish"] = {"pending": job["id"]}
+    out["job"] = job
+    return out
+
+
+def _deck_save_version(slug=None, note=None, confirm=None):
+    """Commit the deck's edits as one version. The slug typed back, like
+    `deck/delete`: a commit is the one thing in edit mode that is not undone
+    by Undo. The guard and the note are checked BEFORE the job starts, so a
+    refusal is a 400 with its sentence rather than a failed job."""
+    from manamap.pilot import deck_edit
+    if not slug:
+        raise ValueError("deck/save-version needs a slug")
+    if confirm != slug:
+        raise ValueError(f"deck/save-version: confirm must be {slug!r}, got {confirm!r}")
+    note = " ".join(str(note or "").split())
+    if not note:
+        raise ValueError("deck/save-version needs a note — it is the version's subject")
+    deck_edit.guard(slug)
+    return _local_job("save-version", lambda: _slim_save(deck_edit.save_version(slug, note)))
+
+
+def _slim_save(r):
+    return {k: v for k, v in r.items() if k != "context"}
+
+
+def _branch_axes(slug=None):
+    """What a branch may be aimed at, with the deck's CURRENT reading beside each.
+
+    The axes are `candidates.OBJECTIVE_AXES` less the membership axes
+    `parse_objective` refuses — the one vocabulary, read rather than
+    transcribed. The reading comes from `try`'s cached champion (written by
+    every rebuild and preview); with no cache it is null, never computed here —
+    a select box must not cost ten thousand games. Forge axes are left out:
+    they need a pod, and Build has no table to offer."""
+    import json as _json
+
+    from manamap.pilot import candidates, deck_branch, diagnostic, try_swap
+    if not slug:
+        raise ValueError("branch/axes needs a slug")
+    reading = None
+    try:
+        key = try_swap._champion_key(slug, None, diagnostic.HARNESS["iterations"],
+                                     diagnostic.HARNESS["seed"])
+        path = try_swap.CACHE / f"{slug}-{key}.json"
+        if path.exists():
+            reading = _json.loads(path.read_text())
+    except (Exception, SystemExit):                # noqa: BLE001 - no reading, no number
+        reading = None
+    rows = []
+    for axis, (block, k, sub) in sorted(candidates.OBJECTIVE_AXES.items()):
+        if axis in deck_branch.MEMBERSHIP_AXES:
+            continue
+        cur = None
+        if reading:
+            got = ((reading.get(block) or {}).get(k)) or {}
+            if sub and isinstance(got, dict):
+                got = got.get(sub) or {}
+            if isinstance(got, dict) and isinstance(got.get("rate"), (int, float)):
+                cur = got["rate"]
+        rows.append({"axis": axis, "current": cur,
+                     "lower_is_better": axis in candidates.LOWER_IS_BETTER,
+                     "needs": candidates.AXIS_NEEDS.get(axis)})
+    return {"slug": slug, "axes": rows, "read": bool(reading)}
 
 
 #: name -> (function, {argument: coercion})#: name -> (function, {argument: coercion})
@@ -1404,7 +1695,8 @@ def _printing_set(slug=None, card=None, set=None, collector_number=None, foil=Fa
 GETTABLE = frozenset({
     "health", "cli", "formats", "decks", "commanders", "archetypes",
     "commander-search", "card-search", "branch/upgrades", "branch/buy-list",
-    "agents", "job", "deck/measures", "printings",
+    "agents", "job", "deck/measures", "printings", "deck/edit/history",
+    "branch/axes",
 })
 # `deck/state` is deliberately NOT here even though its read form mutates
 # nothing: with no `action` it reports, with one it moves the deck, and a verb
@@ -1472,6 +1764,18 @@ ENDPOINTS = {
     "printings": (_printings, {"name": _str, "digital": _bool}),
     "printing/set": (_printing_set, {"slug": _str, "card": _str, "set": _str,
                                      "collector_number": _str, "foil": _bool}),
+    # Editing a bench deck in place (Build's tray). Every guard is `deck_edit`'s;
+    # all POST-only but the history read. See `_deck_edit`.
+    "deck/edit": (_deck_edit, {"slug": _str, "ops": _oplist, "note": _str,
+                               "expect_sha": _str}),
+    "deck/edit/preview": (_deck_edit_preview, {"slug": _str, "ops": _oplist}),
+    "deck/edit/undo": (_deck_edit_step("undo"), {"slug": _str, "expect_sha": _str}),
+    "deck/edit/redo": (_deck_edit_step("redo"), {"slug": _str, "expect_sha": _str}),
+    "deck/edit/history": (_deck_edit_history, {"slug": _str, "limit": _int}),
+    "deck/save-version": (_deck_save_version, {"slug": _str, "note": _str,
+                                               "confirm": _str}),
+    # What a branch started from Build may aim at, with the deck's current reading.
+    "branch/axes": (_branch_axes, {"slug": _str}),
 }
 
 
