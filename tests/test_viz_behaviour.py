@@ -2895,6 +2895,12 @@ def test_clicking_a_cluster_label_zooms_and_filters(page):
         for (let i = 0; i < 80 && !MM.regionFocus; i++) {
             await new Promise(r => setTimeout(r, 50));
         }
+        // Wait for the CONDITION, not for two equal readings: a camera that has
+        // not started moving yet also reads "stable" 50 ms apart, and on a hosted
+        // runner it often had not (CI, 2026-10-06..10, 5 of 21 pushes).
+        for (let i = 0; i < 160 && span() >= before.span / 2; i++) {
+            await new Promise(r => setTimeout(r, 50));
+        }
         let last = -1;
         for (let i = 0; i < 80 && Math.abs(span() - last) > 0.01; i++) {
             last = span();
@@ -2916,9 +2922,8 @@ def test_clicking_a_cluster_label_zooms_and_filters(page):
         for (let i = 0; i < 60 && MM.regionFocus; i++) {
             await new Promise(r => setTimeout(r, 50));
         }
-        last = -1;
-        for (let i = 0; i < 60 && Math.abs(span() - last) > 0.01; i++) {
-            last = span();
+        // The same race on the way out: wait until the camera is back, up to 8 s.
+        for (let i = 0; i < 160 && Math.abs(span() - before.span) >= 1; i++) {
             await new Promise(r => setTimeout(r, 50));
         }
         return {before: before, after: after,
