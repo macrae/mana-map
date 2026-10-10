@@ -425,6 +425,28 @@ def set_printing(slug, name, set_code, collector_number, foil=False, run_chain=T
     return {"changed": True, "line": line, "ran": ran}
 
 
+def hard_refusals(slug, pull):
+    """What `--force` does NOT reach: the keep list, and a deck in pieces.
+
+    THE KEEP LIST IS NOT A LIST-QUALITY QUESTION, so the flag that overrides a
+    list-quality refusal does not reach it — the same rule `deck-branch merge`
+    applies: the pilot releases a card by editing protected.json, never by a
+    flag. An ARCHIVED deck (broken down or retired) has no cardboard to check
+    in; reviving it is the act that says it does again.
+
+    Not in `analyze`, deliberately: `try`, `deck-branch new/stage/merge` all
+    call `analyze` and apply the keep list themselves, with their own sentences.
+    """
+    from manamap.pilot import protected
+    lines = []
+    if _common.deck_is_apart(slug):
+        lines.append(f"{slug} is archived ({_common.deck_lifecycle(slug)[0]}) — "
+                     f"revive it first: `manamap pilot deck-state {slug} revive`")
+    if protected.names(slug):
+        lines += protected.refusals(slug, list(pull or {}))
+    return lines
+
+
 def _print(d, write):
     spec = formats.get(d.get("format"))
     head = f"{d['cards']} cards"
@@ -451,7 +473,10 @@ def _print(d, write):
         print(f"  warning: {w}")
     for b in d["blocking"]:
         print(f"  REFUSED: {b}")
-    if d["blocking"]:
+    if d.get("hard"):
+        print("\n  nothing was written. --force does not reach these: the keep list "
+              "is released by editing protected.json, an archived deck by reviving it.")
+    elif d["blocking"]:
         print("\n  nothing was written. Fix the list and run it again; --force applies "
               "anyway, which you want approximately never.")
     elif not write:
@@ -526,6 +551,8 @@ def main(args):
     spec = formats.get(fmt) if fmt else None
     text = read_list(args.source)
     d = analyze(args.slug, text, spec=spec)
+    d["hard"] = hard_refusals(args.slug, d["pull"])
+    d["blocking"] = d["blocking"] + d["hard"]
     if getattr(args, "as_json", False):
         import json
         print(json.dumps({k: v for k, v in d.items() if k != "entries"},
@@ -537,7 +564,7 @@ def main(args):
         print(f"  format: {formats.get(fmt).name} — recorded in brief.json on --write")
     if not write:
         return
-    if d["blocking"] and not getattr(args, "force", False):
+    if d["hard"] or (d["blocking"] and not getattr(args, "force", False)):
         raise SystemExit(1)
     if fmt:
         # BEFORE the list and the chain: `fetch-deck` resolves the format from
@@ -553,6 +580,14 @@ def main(args):
         print(f"  skipped {stage}: {why}")
     from manamap.pilot import deck_context
     deck_context.print_list_change(deck_context.list_change(args.slug))
+    # SLEEVED STAYS ALLOWED: a check-in records what is physically in the
+    # sleeves. But the lock still names the old version until it is moved.
+    from manamap.pilot import deck_versions
+    locked = deck_versions.paper(args.slug)
+    if locked:
+        print(f"  the paper lock ({locked.get('release') or locked.get('version')}) "
+              f"is now behind this list until `manamap pilot deck-version "
+              f"{args.slug} paper`")
     print(f"  next: commit it — that is what makes it a version the log can stamp:")
     print(f"    git add data/decks/{args.slug} && git commit")
     print(f"    manamap pilot deck-version {args.slug} paper   # mark it as sleeved")

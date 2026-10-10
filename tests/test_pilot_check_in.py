@@ -580,3 +580,67 @@ def test_a_new_deck_declared_on_the_command_line_is_analysed_as_that_format(
     assert "(60 cards + 15 side, Modern)" in out
     assert "expected exactly 100" not in out and "no commander" not in out
     assert "format: Modern" in out
+
+
+# ── What --force does not reach: the keep list and an archived deck ──────────
+#
+# A check-in is a cut like any other: a protected card on the PULL side is
+# refused, and `--force` (which overrides list-quality refusals) does not
+# reach it — the same rule `deck-branch merge` applies. An archived deck has no
+# cardboard to check in. A SLEEVED deck stays allowed: check-in records what
+# is physically in the sleeves, and says the paper lock is now behind.
+
+def _main_args(deck, text, write=True, force=True):
+    (deck / "paper.txt").write_text(text)
+    return argparse.Namespace(slug="md", source=str(deck / "paper.txt"),
+                              set_printing=None, as_json=False, write=write,
+                              force=force, no_chain=True, format=None)
+
+
+def _versions(deck, doc):
+    import json
+    (deck / "deck_versions.json").write_text(json.dumps(doc))
+
+
+SWAPPED = MODERN.replace("4 Monastery Swiftspear", "4 Goblin Guide")
+
+
+def test_a_protected_card_on_the_pull_side_is_refused_even_with_force(modern, capsys):
+    import json
+    (modern / "protected.json").write_text(json.dumps(
+        {"cards": [{"name": "Monastery Swiftspear", "why": "the pilot's favourite"}]}))
+    before = (modern / "decklist.txt").read_text()
+    with pytest.raises(SystemExit):
+        check_in.main(_main_args(modern, SWAPPED, force=True))
+    out = capsys.readouterr().out
+    assert "Monastery Swiftspear is PROTECTED on md" in out
+    assert "--force does not reach" in out
+    assert (modern / "decklist.txt").read_text() == before
+
+
+def test_a_protected_card_that_stays_is_no_refusal(modern):
+    import json
+    (modern / "protected.json").write_text(json.dumps(
+        {"cards": [{"name": "Lightning Bolt"}]}))
+    check_in.main(_main_args(modern, SWAPPED))
+    assert "Goblin Guide" in (modern / "decklist.txt").read_text()
+
+
+def test_an_archived_deck_is_refused_with_the_revive_command(modern, capsys):
+    _versions(modern, {"lifecycle": {"status": "broken-down"}})
+    before = (modern / "decklist.txt").read_text()
+    with pytest.raises(SystemExit):
+        check_in.main(_main_args(modern, SWAPPED, force=True))
+    out = capsys.readouterr().out
+    assert "md is archived (broken-down)" in out
+    assert "manamap pilot deck-state md revive" in out
+    assert (modern / "decklist.txt").read_text() == before
+
+
+def test_a_sleeved_deck_checks_in_and_says_the_lock_is_behind(modern, capsys):
+    _versions(modern, {"paper": {"version": "V2", "decklist_sha256": "x"}})
+    check_in.main(_main_args(modern, SWAPPED))
+    out = capsys.readouterr().out
+    assert "Goblin Guide" in (modern / "decklist.txt").read_text()
+    assert ("paper lock (V2) is now behind this list until "
+            "`manamap pilot deck-version md paper`") in out
