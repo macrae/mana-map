@@ -163,13 +163,13 @@ def _fake_api(page, slug):
     return st
 
 
-def _open(browser, viz_server, query, api_slug=None, path="index.html"):
+def _open(browser, viz_server, query, api_slug=None, path="index.html", stages=None):
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     errors: list[str] = []
     add = _record(errors)
     page.on("pageerror", lambda e: add(e))
     page.on("console", lambda m: add(m.text) if m.type == "error" else None)
-    body = _manifest(STAGES)
+    body = _manifest(stages or STAGES)
     page.route("**/data/decks/index.json*",
                lambda route: route.fulfill(status=200, content_type="application/json",
                                            body=body))
@@ -337,6 +337,125 @@ def test_the_branch_page_measures_and_unstages(browser, viz_server):
             " const s = document.getElementById('measureState');"
             " return b && !b.disabled && s && s.textContent === ''; }", timeout=10000)
         assert st["posted"]["branch/net-change"] == [{"slug": BENCH, "branch": BRANCH}]
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+# ── the tray across a reload, a 60-card list, a superseded deck ──────────
+
+SIXTY, SIXTY_CUT = "elves", "Llanowar Elves"
+SUPERSEDED = "gishath"
+
+
+def _stored(page):
+    return page.evaluate("""() => Object.keys(sessionStorage)
+        .filter(k => k.indexOf('mm.deckEdit.') === 0).sort()""")
+
+
+def test_the_tray_survives_a_reload_until_the_list_moves(browser, viz_server):
+    """sessionStorage under slug + the list's sha: the same list gets its tray
+    back after a reload; a list that moved (an edit in another tab, the CLI)
+    drops it, because a tray built against one list means nothing on another."""
+    page, st = _open(browser, viz_server, f"?mode=build&deck={BENCH}", api_slug=BENCH)
+    try:
+        _wait_mode(page, BENCH, "edit")
+        page.wait_for_function("() => DeckEdit.baseSha", timeout=10000)
+        _card(page, CUT)
+        page.click("#detailInner .de-card [data-de-act='cut']")
+        tray = [{"op": "cut", "card": CUT, "qty": 1}]
+        assert page.evaluate("() => DeckEdit.tray") == tray
+        assert _stored(page) == [f"mm.deckEdit.{BENCH}.{st['sha']}"]
+
+        page.reload()
+        _wait_mode(page, BENCH, "edit")
+        page.wait_for_function("() => DeckEdit.baseSha && DeckEdit.tray.length === 1",
+                               timeout=10000)
+        assert page.evaluate("() => DeckEdit.tray") == tray
+        assert f"− {CUT}" in page.inner_text("#deRows")
+
+        old = st["sha"]
+        st["sha"] = "sha-moved-elsewhere"            # the next history read says so
+        page.reload()
+        _wait_mode(page, BENCH, "edit")
+        page.wait_for_function("s => DeckEdit.baseSha === s", arg=st["sha"], timeout=10000)
+        assert page.evaluate("() => DeckEdit.tray") == []
+        assert f"mm.deckEdit.{BENCH}.{old}" not in _stored(page)
+        assert page.query_selector("#deRows .de-empty") is not None
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_sixty_card_deck_edits_copy_counts(browser, viz_server):
+    """Modern is `exact: false` with four copies: every cut/add row carries a
+    copy-count input, and the typed count is the `qty` the preview and Apply post
+    (on the cut/add op — the tray does not send `set`)."""
+    stages = dict(STAGES, **{SIXTY: ("bench", None)})
+    page, st = _open(browser, viz_server, f"?mode=build&deck={SIXTY}", api_slug=SIXTY,
+                     stages=stages)
+    try:
+        _wait_mode(page, SIXTY, "edit")
+        page.wait_for_function("() => DeckEdit.baseSha", timeout=10000)
+        _card(page, SIXTY_CUT)
+        page.click("#detailInner .de-card [data-de-act='cut']")
+        qty = page.wait_for_selector("#deRows input.de-qty[data-de-qty='0']", timeout=5000)
+        assert qty.input_value() == "1"
+        qty.fill("3")
+        qty.dispatch_event("change")
+        want = [{"op": "cut", "card": SIXTY_CUT, "qty": 3}]
+        page.wait_for_function("() => DeckEdit.tray[0].qty === 3", timeout=5000)
+        assert "3 out, 0 in" in page.inner_text("#deRows")
+        _until(page, lambda: (st["posted"].get("deck/edit/preview") or [{}])[-1].get("ops") == want)
+        page.click("#deActions .de-apply")
+        _until(page, lambda: st["posted"].get("deck/edit"))
+        assert st["posted"]["deck/edit"] == [{"slug": SIXTY, "expect_sha": _sha(SIXTY),
+                                             "ops": want}]
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_a_superseded_deep_link_is_read_only(browser, viz_server):
+    """Superseded is not "apart" (`common.deck_is_apart`), but it is off every
+    rung, so it is not a deck to edit: no tray, the read-only line, and not one
+    call to the edit verbs."""
+    stages = dict(STAGES, **{SUPERSEDED: (None, ["superseded", "SUPERSEDED",
+                                                 "Replaced by a newer build."])})
+    page, st = _open(browser, viz_server, f"?mode=build&deck={SUPERSEDED}",
+                     api_slug=SUPERSEDED, stages=stages)
+    try:
+        _wait_mode(page, SUPERSEDED, "readonly")
+        page.wait_for_selector("#deckEditReadonly", timeout=10000)
+        text = page.inner_text("#deckEditReadonly")
+        assert "archived (superseded)" in text and "read only" in text, text
+        assert f"deck-state {SUPERSEDED} revive" in text, text
+        assert page.query_selector("#deckEditTray") is None
+        assert not any(k.startswith("deck/edit") for k in st["posted"]), st["posted"]
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
+def test_the_branch_page_says_when_the_base_moved(browser, viz_server):
+    """`deck_branch.base_moved`'s sentence travels on info.json's branch row; the
+    page shows it as one line and computes nothing."""
+    info = json.loads((DECKS_DIR / BENCH / "info.json").read_text())
+    line = ("base moved since 0123456789ab — the deck's list changed after this "
+            "branch was cut, so its comparison is against an older deck")
+    for b in info.get("branches") or []:
+        if b.get("name") == BRANCH:
+            b["base_moved"] = line
+    assert any(b.get("base_moved") for b in info.get("branches") or []), "no branch row"
+    body = json.dumps(info)
+    page, _ = _open(browser, viz_server, f"?deck={BENCH}&branch={BRANCH}", path="branch.html")
+    try:
+        page.route(f"**/data/decks/{BENCH}/info.json*", lambda route: route.fulfill(
+            status=200, content_type="application/json", body=body))
+        page.reload()
+        page.wait_for_selector("#baseMoved", timeout=30000)
+        assert page.inner_text("#baseMoved") == line
+        assert len(page.query_selector_all("#baseMoved")) == 1
         assert page.js_errors == []
     finally:
         page.close()
