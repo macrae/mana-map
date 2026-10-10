@@ -764,16 +764,48 @@ THE DECK: `manamap pilot edit <slug> --swap "A=B" --add C --cut D --set "Forest=
   loaded — reload"). At 500 lines the journal is compacted to the same stacks (undo
   capped at 250), the old file kept as `edits.jsonl.1`.
 - **The rebuild** (`deck_edit.rebuild`, skipped by `--no-chain`, re-run alone by
-  `--rebuild`): `fetch-deck` → `goldfish` + `mana-analysis` (`check_in.chain_plan`; a
-  60-card deck skips the goldfish and says why) → `regen.run(slug=…,
-  include_branches=False, skip=("goldfish", "mana-analysis", "context"))`, refreshing
-  only artifacts that exist → `try`'s champion reading warmed → `deck_context.list_change(
-  before_text=<the last save, else git HEAD>)`, which refreshes the context's generated
-  blocks and returns the Keeper line without running it. It holds `.rebuild.lock`, and
-  runs again if an edit landed while it ran. Offline, the edit stays written and the
-  result says `cards.json is behind the list — manamap pilot edit <slug> --rebuild when
-  online`. `deck-branch merge` now passes the same `skip`, so it no longer runs the
-  goldfish twice.
+  `--rebuild`), in four steps:
+  1. `fetch-deck`, alone and INCREMENTAL: each identifier's raw Scryfall answer is
+     kept a day under `data/cache/scryfall-cards/` and only the misses are POSTed;
+     shaping runs on the same objects, so `cards.json` is the full fetch's byte for
+     byte. Opt-in (the CLI `fetch-deck`, `check-in` and `merge` still fetch all);
+     `--force` always fetches all.
+  2. In a spawn pool of `REBUILD_JOBS` (4): the `goldfish` → `mana-analysis` chain
+     (`check_in.chain_plan`; a 60-card deck skips the goldfish and says why), the
+     deck's existing `deck-combos`, `diagnose` and `benchmark` (`PARALLEL_STAGES`
+     names what each reads — none reads another's output), and `try`'s champion
+     warm. Results come back in job order; a pool that cannot start runs them in
+     order and says so on stderr. Meanwhile the parent prewarms the corpus views
+     the tail composes from.
+  3. `deck_context.list_change(before_text=<the last save, else git HEAD>)`, which
+     refreshes the context's generated blocks and returns the Keeper line without
+     running it;
+  4. `deck-info` ONCE, after the refresh, because `info.json` validates the context
+     (the refresh reads `compose`, never `info.json`, so the info the rebuild used
+     to write before it was overwritten unread).
+
+  It holds `.rebuild.lock`, and runs again if an edit landed while it ran. Offline,
+  the edit stays written and the result says `cards.json is behind the list —
+  manamap pilot edit <slug> --rebuild when online` (an edit among cached cards needs
+  no network). `deck-branch merge` passes `skip=("goldfish", "mana-analysis",
+  "context")`, so it no longer runs the goldfish twice.
+
+  **Measured** (2026-10-10, meren-recursion copied to a tmp data dir, one swap, the
+  M-series Mac, each row after the change above it; every file in the deck and the
+  `try` cache byte-identical to the first row's):
+
+  | change | rebuild |
+  |---|---|
+  | before (fetch 2.0, goldfish 7.4, combos 0.5, benchmark 7.9, deck-info 8.6, try warm 8.0, context 2.5, deck-info 7.4) | 44.4 s |
+  | Forge jar fingerprints read once per process (`deck-info` opened the jar 45 times) | 32.9 s |
+  | goldfish chain, combos, benchmark, try warm in a pool of 4 (10.1 s wall) | 18.6 s |
+  | `deck-info` once, after the context refresh | 16.9 s |
+  | incremental `fetch-deck` (2.4 s → 0.1 s; 15.2 s on a cold cache) | 14.3 s |
+  | prewarmed tail, memoized first-printing rows and deck holders (tail 4.4 → 2.4 s) | 12.9 s |
+
+  The floor is one 10,000-game goldfish in a cold worker (~9.5 s): the pool is as slow
+  as its slowest task, so the ≤7 s target would need a faster goldfish, which moves
+  bytes and is not a speed change.
 - **`save-version <slug> --note "…"`** refuses while `.rebuild.lock` is held or git is
   mid-merge/rebase/cherry-pick; runs merge's consistency tail without the decisions
   ledger (regen with branches, `deck-map` and `build-poh` where they exist,
