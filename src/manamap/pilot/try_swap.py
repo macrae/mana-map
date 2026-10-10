@@ -93,47 +93,106 @@ def corpus_card(name):
     return shape_card(obj, 1, False) if obj else None
 
 
-def apply_swaps(slug, branch, swaps):
-    """`(doc, entries, rows)` — the cards doc and decklist entries with every swap
-    applied, through the SAME arithmetic and refusals `stage` uses. Raises
-    SystemExit on anything `stage` would refuse, and on a protected cut."""
-    protected.refuse(slug, [o for o, _ in swaps], "that swap")
-    _scryfall_objects([i for _, i in swaps])     # one pass over the dump for every IN card
-    entries = deck_branch._parsed(slug, branch)
-    base = load_deck_cards(slug, branch)
-    cards = [dict(c) for c in (base["cards"] if isinstance(base, dict) else base)]
-    rows = []
-    for out_name, in_name in swaps:
-        entries, out_e, _in_e = deck_branch.swap_entries(slug, branch, entries, out_name, in_name)
-        rec = corpus_card(in_name)
-        if rec is None:
-            raise SystemExit(f"{in_name!r} is not in the corpus — check the spelling, "
-                             f"or `manamap pilot card-search --name {in_name!r}`.")
-        # One COPY of the OUT card leaves cards.json (basics carry a quantity).
-        for i, c in enumerate(cards):
-            if _key(c["name"]) == _key(out_e["name"]):
-                left = int(c.get("quantity") or 1) - 1
-                if left > 0:
-                    cards[i] = dict(c, quantity=left)
-                else:
-                    cards.pop(i)
-                break
-        hit = next((i for i, c in enumerate(cards) if _key(c["name"]) == _key(rec["name"])), None)
-        if hit is not None:      # a basic already present: one more copy
-            cards[hit] = dict(cards[hit], quantity=int(cards[hit].get("quantity") or 1) + 1)
-        else:
-            cards.append(rec)
-        rows.append({"out": out_e["name"], "in": rec["name"]})
-    checked = check_in.analyze(slug, check_in.render_decklist(entries))
-    if checked["blocking"]:
-        raise SystemExit("Refusing that swap set:\n  - " + "\n  - ".join(checked["blocking"]))
-    # THE BASE LIST'S SLOTS (`diagnostic.align`), the same order `net-change` gives
-    # a branch: the goldfish shuffles slots, so a new card in the replaced card's
-    # slot keeps every other game identical — and `try` and `net-change` agree.
+def swap_ops(swaps):
+    """`[(out, in), …]` as `deck_edit` ops."""
+    return [{"op": "swap", "out": o, "in": i} for o, i in swaps]
+
+
+def build_doc(slug, branch, p):
+    """The cards doc for a `deck_edit.plan` result, held in memory.
+
+    Every card the base `cards.json` holds keeps its record and gets the
+    plan's copy count (0 drops it); a card it does not hold is shaped from the
+    Scryfall dump (`corpus_card`) exactly as `fetch-deck` would shape it. Then
+    the BASE LIST'S SLOTS (`diagnostic.align`), the order `net-change` gives a
+    branch: the goldfish shuffles slots, so a new card in the replaced card's
+    slot keeps every other game identical — and `try` and `net-change` agree.
+    Raises SystemExit for a new name the dump does not hold.
+    """
     from manamap.pilot import diagnostic
+    from manamap.pilot.fetch_deck import parse_mainboard, parse_sideboard
+    base = load_deck_cards(slug, branch)
+    base_cards = base["cards"] if isinstance(base, dict) else base
     doc = dict(base) if isinstance(base, dict) else {"cards": base}
-    doc["cards"] = diagnostic.align(base["cards"] if isinstance(base, dict) else base, cards)
-    return doc, entries, rows, checked.get("warnings") or []
+
+    def board(base_list, after_entries):
+        want = {}
+        for e in after_entries:
+            want[_key(e["name"])] = want.get(_key(e["name"]), 0) + int(e.get("quantity") or 1)
+        held = {_key(c["name"]) for c in base_list}
+        new = [e["name"] for e in after_entries if _key(e["name"]) not in held]
+        _scryfall_objects(new)              # one pass over the dump for every new card
+        out = []
+        for c in base_list:
+            q = want.get(_key(c["name"]), 0)
+            if q:
+                out.append(dict(c, quantity=q))
+        for e in after_entries:
+            if _key(e["name"]) in held:
+                continue
+            rec = corpus_card(e["name"])
+            if rec is None:
+                raise SystemExit(f"{e['name']!r} is not in the corpus — check the spelling, "
+                                 f"or `manamap pilot card-search --name {e['name']!r}`.")
+            out.append(dict(rec, quantity=int(e.get("quantity") or 1)))
+            held.add(_key(e["name"]))
+        return out
+
+    text = p["text_after"]
+    cards = board(base_cards, parse_mainboard(text))
+    doc["cards"] = diagnostic.align(base_cards, cards)
+    side = parse_sideboard(text)
+    if side or doc.get("sideboard"):
+        doc["sideboard"] = board(doc.get("sideboard") or [], side)
+        if not doc["sideboard"]:
+            doc.pop("sideboard")
+    return doc
+
+
+def _rows(p):
+    """The plan's ops as the swap table's rows: `{out, in}` per swap, a lone
+    side for an add, a cut or a set."""
+    rows = []
+    for op in p["ops"]:
+        if op["op"] == "swap":
+            rows.append({"out": op["out"], "in": op["in"]})
+        elif op["op"] == "cut":
+            rows.append({"out": op["name"], "in": None})
+        elif op["op"] == "add":
+            rows.append({"out": None, "in": op["name"]})
+        else:
+            moved = (op["name"] in p["diff"]["in"], op["name"] in p["diff"]["out"])
+            rows.append({"out": op["name"] if moved[1] else None,
+                         "in": op["name"] if moved[0] else None})
+    return rows
+
+
+def apply_ops(slug, branch, ops):
+    """`(doc, entries, rows, warnings, plan)` for any edit ops — through
+    `deck_edit.plan`, THE ONE VALIDATOR, so `try`, the preview and `edit` can
+    never disagree about what is legal. Raises SystemExit on any refusal (the
+    keep list included) BEFORE anything is measured."""
+    from manamap.pilot import deck_edit
+    p = deck_edit.plan(slug, ops, branch=branch)
+    if p["blocking"]:
+        raise SystemExit("Refusing that swap set:\n  - " + "\n  - ".join(p["blocking"]))
+    doc = build_doc(slug, branch, p)
+    rows = _rows(p)
+    # The IN side of each row names the record the doc carries (`A // B`), the
+    # name every other artifact uses.
+    by_key = {_key(c["name"]): c["name"] for c in doc["cards"]}
+    for r in rows:
+        if r.get("in"):
+            r["in"] = by_key.get(_key(r["in"]), r["in"])
+    entries = [e for e in p["entries_after"] if e.get("board", "main") == "main"]
+    return doc, entries, rows, p["warnings"], p
+
+
+def apply_swaps(slug, branch, swaps):
+    """`(doc, entries, rows, warnings)` — the cards doc and decklist entries with
+    every swap applied. A thin wrapper over `apply_ops` (and so `deck_edit.plan`)."""
+    doc, entries, rows, warnings, _ = apply_ops(slug, branch, swap_ops(swaps))
+    return doc, entries, rows, warnings
 
 
 # ── the readings ─────────────────────────────────────────────────────────
@@ -205,7 +264,9 @@ def card_rows(slug, branch, base_doc, swapped_doc, swaps):
     out = []
     for s in swaps:
         for side in ("out", "in"):
-            name = s[side]
+            name = s.get(side)
+            if not name:
+                continue
             card = by_key.get(_key(name)) or corpus_card(name) or {"name": name}
             st = model_coverage.card_state(card, flags, named)
             f = forge_by.get(_key(name))
@@ -233,38 +294,88 @@ def verdict(table, blind):
     return call, better, worse, trust
 
 
-def run(slug, swaps, branch=None, iterations=None, seed=None, each=False):
+def _dump_stamp():
+    """The Scryfall dump's size and mtime: a new card's record comes from it,
+    so a refreshed dump must not serve a figure measured on the old one."""
+    try:
+        st = config.RAW_JSON_PATH.stat()
+        return f"{st.st_size}:{int(st.st_mtime)}"
+    except OSError:
+        return ""
+
+
+def canonical_ops(p):
+    """The edit as the cache sees it: the plan's copy diff, sorted. Two op
+    sequences that produce the same list are the same candidate."""
+    return json.dumps(p["diff"], sort_keys=True)
+
+
+def candidate_key(slug, branch, iterations, seed, p):
+    """THE PREVIEW CACHE KEY: everything that could move the candidate's rows —
+    the champion's own key (cards.json bytes, the targets' bytes,
+    `goldfish.model_version()`, the harness, iterations and seed), the
+    canonical edit, and the dump the new cards are shaped from."""
+    parts = [_champion_key(slug, branch, iterations, seed), canonical_ops(p), _dump_stamp()]
+    return hashlib.sha256("\n".join(parts).encode()).hexdigest()[:16]
+
+
+def compare(slug, branch, doc, p, iterations, seed):
+    """`(table, champion_cached, candidate_cached)` — the paired rows, the
+    candidate's cached in `data/cache/try/` on `candidate_key`."""
+    from manamap.pilot import diagnostic, net_change
+    a, cached = champion_reading(slug, branch, iterations, seed)
+    path = CACHE / f"{slug}-edit-{candidate_key(slug, branch, iterations, seed, p)}.json"
+    if path.exists():
+        return json.loads(path.read_text()), cached, True
+    b = diagnostic.run_on(doc, slug, branch=branch, iterations=iterations, seed=seed,
+                          quiet=True, keep_games=True)
+    table = net_change.compare_readings(a, b)
+    CACHE.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(table, default=str))
+    return json.loads(json.dumps(table, default=str)), cached, False
+
+
+def authored_rate_notes(base_doc, doc):
+    """A FIGURE RESTING ON AN AUTHORED RATE SAYS SO — one clause per rate."""
+    from manamap.pilot import goldfish_profiles as _gp
+    from manamap.config import (GEYSER_TAPPED_SHARE, OPPONENT_HAND, TITHE_PAY_RATE)
+    both = (base_doc.get("cards") or []) + (doc.get("cards") or [])
+    notes = []
+    if any(_gp.treasure_profile(c)[1] == "opponent_draw_tax" for c in both):
+        notes.append(f"Smothering Tithe's Treasure assumes opponents pay its tax "
+                     f"{TITHE_PAY_RATE:.0%} of the time (an authored rate)")
+    _rk = {(_gp.ritual_profile(c) or {}).get("kind") for c in both}
+    if "opp_tapped_lands" in _rk:
+        notes.append(f"Mana Geyser assumes {GEYSER_TAPPED_SHARE:.0%} of opponents' lands "
+                     f"are still tapped on your turn (an authored rate)")
+    if "opp_hand" in _rk:
+        notes.append(f"Jeska's Will assumes an opponent holds {OPPONENT_HAND} cards, "
+                     f"7 after a wheel (an authored rate)")
+    return notes
+
+
+#: Said beside every goldfish figure a preview shows (CLAUDE.md, the goldfish).
+BOARD_QUALITY_CAVEAT = ("the goldfish has no blockers and no removal, so it says nothing "
+                        "about board QUALITY — Forge is the probe for that")
+
+
+def run(slug, swaps=None, branch=None, iterations=None, seed=None, each=False, ops=None):
     from manamap.pilot import diagnostic, mana_fit, net_change
     it = iterations or diagnostic.HARNESS["iterations"]
     sd = seed if seed is not None else diagnostic.HARNESS["seed"]
-    doc, entries, rows, warnings = apply_swaps(slug, branch, swaps)
+    ops = list(ops or []) + swap_ops(swaps or [])
+    doc, entries, rows, warnings, p = apply_ops(slug, branch, ops)
     base_doc = load_deck_cards(slug, branch)
-    a, cached = champion_reading(slug, branch, it, sd)
-    b = diagnostic.run_on(doc, slug, branch=branch, iterations=it, seed=sd, quiet=True,
-                          keep_games=True)
-    table = net_change.compare_readings(a, b)
+    table, cached, _cand_cached = compare(slug, branch, doc, p, it, sd)
     cards, forge_run = card_rows(slug, branch, base_doc, doc, rows)
     blind = {c["name"] for c in cards if c["state"] != "seen"}
     call, better, worse, trust = verdict(table, blind)
     # A FIGURE RESTING ON AN AUTHORED RATE SAYS SO. Tithe's Treasure is decided by
     # TITHE_PAY_RATE, which nothing here measures.
-    from manamap.pilot import goldfish_profiles as _gp
-    from manamap.config import TITHE_PAY_RATE
-    if any(_gp.treasure_profile(c)[1] == "opponent_draw_tax"
-           for c in (base_doc.get("cards") or []) + (doc.get("cards") or [])):
-        trust += (f"; Smothering Tithe's Treasure assumes opponents pay its tax "
-                  f"{TITHE_PAY_RATE:.0%} of the time (an authored rate)")
-    from manamap.config import GEYSER_TAPPED_SHARE, OPPONENT_HAND
-    _rk = {(_gp.ritual_profile(c) or {}).get("kind")
-           for c in (base_doc.get("cards") or []) + (doc.get("cards") or [])}
-    if "opp_tapped_lands" in _rk:
-        trust += (f"; Mana Geyser assumes {GEYSER_TAPPED_SHARE:.0%} of opponents' lands "
-                  f"are still tapped on your turn (an authored rate)")
-    if "opp_hand" in _rk:
-        trust += (f"; Jeska's Will assumes an opponent holds {OPPONENT_HAND} cards, "
-                  f"7 after a wheel (an authored rate)")
+    for note in authored_rate_notes(base_doc, doc):
+        trust += f"; {note}"
     per_swap = []
-    if each and len(rows) > 1:
+    if each and len(rows) > 1 and swaps:
         for (o, i) in swaps:
             d1, _, _, _ = apply_swaps(slug, branch, [(o, i)])
             r1 = diagnostic.run_on(d1, slug, branch=branch, iterations=it, seed=sd, quiet=True,
@@ -289,6 +400,183 @@ def run(slug, swaps, branch=None, iterations=None, seed=None, each=False):
             "verdict": {"call": call, "better": better, "worse": worse, "trust": trust,
                         "raise": raise_trust},
             "harness": {"iterations": it, "seed": sd, "champion_cached": cached}}
+
+
+# ── the preview: what an in-place edit would do, before it is applied ────
+
+def _facts_by_key(names):
+    from manamap.pilot import deck_edit
+    return {_key(n): f for n, f in deck_edit.card_facts(names).items()}
+
+
+def _curve(copies, facts):
+    """mana value -> nonland copies (7 is 7+), from the corpus pool. A card the
+    pool does not hold is counted under `unknown`, never guessed."""
+    out = {str(i): 0 for i in range(8)}
+    unknown = 0
+    for name, k in copies.items():
+        f = facts.get(_key(name))
+        if not f:
+            unknown += k
+            continue
+        if "Land" in (f.get("type_line") or "").split("//")[0]:
+            continue
+        out[str(min(int(float(f.get("cmc") or 0)), 7))] += k
+    if unknown:
+        out["unknown"] = unknown
+    return out
+
+
+def _roles(copies, facts):
+    from manamap.pilot.common import load_card_roles
+    try:
+        roles = load_card_roles()
+    except Exception:                               # noqa: BLE001 - no roles file, no figure
+        return None
+    c = {}
+    for name, k in copies.items():
+        full = (facts.get(_key(name)) or {}).get("name") or name
+        for r in roles.get(full) or roles.get(name) or []:
+            c[r] = c.get(r, 0) + k
+    return c
+
+
+def _combos(copies, commanders, facts):
+    from manamap.pilot import deck_combos
+    from manamap.pilot.common import load_combo_details
+    details = load_combo_details()
+    names = {(facts.get(_key(n)) or {}).get("name") or n for n in copies}
+    cmd = {(facts.get(_key(n)) or {}).get("name") or n for n in commanders}
+    return {r["id"]: r for r in deck_combos.included_combos(names, cmd, details, ranked=False)}
+
+
+def _price(slug, branch, diff):
+    """The price delta from the deck's DATED `prices.json` (and its branches',
+    for cards only a branch priced) — never a live lookup. Absent without one."""
+    base = deck_dir(slug)
+    doc = load_json(deck_dir(slug, branch) / "prices.json") or load_json(base / "prices.json")
+    if not doc or not isinstance(doc.get("cards"), dict):
+        return {"absent": f"no prices.json — `manamap pilot prices {slug} --write` records one"}
+    table = {_key(n): (r, doc.get("as_of")) for n, r in doc["cards"].items()}
+    for p in sorted((base / "branches").glob("*/prices.json")):
+        bdoc = load_json(p) or {}
+        for n, r in (bdoc.get("cards") or {}).items():
+            table.setdefault(_key(n), (r, bdoc.get("as_of")))
+    out_c = in_c = 0
+    unpriced, dates = [], {doc.get("as_of")}
+    for side, sign in (("out", -1), ("in", 1)):
+        for n, k in (diff.get(side) or {}).items():
+            row, as_of = table.get(_key(n), (None, None))
+            cents = (row or {}).get("nm_cents")
+            if cents is None:
+                unpriced.append(n)
+                continue
+            dates.add(as_of)
+            if sign < 0:
+                out_c += cents * k
+            else:
+                in_c += cents * k
+    return {"as_of": doc.get("as_of"), "source": doc.get("source"),
+            "dates": sorted(d for d in dates if d), "out_cents": out_c, "in_cents": in_c,
+            "delta_cents": in_c - out_c, "unpriced": sorted(unpriced)}
+
+
+def preview(slug, ops, branch=None, goldfish=True, iterations=None, seed=None):
+    """A JSON-able reading of an edit before it is applied — Phase 3's tray.
+
+    THE INSTANT TIER (no simulation): what blocks it, the warnings and the keep
+    list hits; size and curve before and after; colour sources against target
+    (`mana_fit.shortfall`); combos gained and lost (`deck_combos`); the role
+    counts that moved; the price delta from the deck's dated `prices.json`.
+
+    THE GOLDFISH TIER (Commander only, skipped when the edit is refused): the
+    paired diagnostic, `net_change.compare_readings` rows with `ci95_diff` and
+    Holm, the trust line and the board-quality caveat. Cached in
+    `data/cache/try/` on `candidate_key`. A 60-card deck reads
+    `{"absent": "not modelled for <format>"}`.
+    """
+    import time as _time
+    from manamap.pilot import deck_edit, diagnostic, formats, mana_fit
+    t0 = _time.perf_counter()
+    spec = formats.for_deck(slug, branch)
+    p = deck_edit.plan(slug, ops, branch=branch)
+    out = {"slug": slug, "branch": branch, "format": p["format"], "base_sha": p["base_sha"],
+           "ops": p["ops"], "diff": p["diff"], "size": p["size"],
+           "blocking": p["blocking"], "warnings": p["warnings"],
+           "keep_list_hits": p["keep_list_hits"]}
+    before_entries = deck_branch._parsed(slug, branch)
+    after_entries = [e for e in p["entries_after"] if e.get("board", "main") == "main"]
+    cb, ca = {}, {}
+    for e in before_entries:
+        cb[e["name"]] = cb.get(e["name"], 0) + int(e.get("quantity") or 1)
+    for e in after_entries:
+        ca[e["name"]] = ca.get(e["name"], 0) + int(e.get("quantity") or 1)
+    facts = _facts_by_key(set(cb) | set(ca))
+    if facts:
+        out["curve"] = {"before": _curve(cb, facts), "after": _curve(ca, facts)}
+        rb, ra = _roles(cb, facts), _roles(ca, facts)
+        if rb is not None:
+            out["roles"] = {r: ra.get(r, 0) - rb.get(r, 0) for r in sorted(set(rb) | set(ra))
+                            if ra.get(r, 0) != rb.get(r, 0)}
+        else:
+            out["roles"] = {"absent": "no card_roles.json on this machine"}
+    else:
+        out["curve"] = out["roles"] = {"absent": "no corpus on this machine (cards.csv)"}
+    try:
+        cmd_b = [e["name"] for e in before_entries if e.get("is_commander")]
+        cmd_a = [e["name"] for e in after_entries if e.get("is_commander")]
+        kb, ka = _combos(cb, cmd_b, facts), _combos(ca, cmd_a, facts)
+        out["combos"] = {"gained": [ka[i] for i in sorted(set(ka) - set(kb))],
+                         "lost": [kb[i] for i in sorted(set(kb) - set(ka))],
+                         "before": len(kb), "after": len(ka)}
+    except Exception as exc:                        # noqa: BLE001 - no combo file, no figure
+        out["combos"] = {"absent": f"combos not read: {type(exc).__name__}: {exc}"}
+    out["price"] = _price(slug, branch, p["diff"])
+    doc = None
+    if not p["blocking"]:
+        try:
+            doc = build_doc(slug, branch, p)
+        except (Exception, SystemExit) as exc:      # noqa: BLE001 - reported, not raised
+            out["colour_sources"] = {"absent": f"the new list could not be built: {exc}"}
+    if doc is not None:
+        try:
+            before = mana_fit.shortfall(slug, branch)["colours"]
+            after = mana_fit.shortfall(slug, branch, deck_doc=doc)["colours"]
+            out["colour_sources"] = {c: {"before": before[c]["have"], "after": after[c]["have"],
+                                         "target": after[c]["target"],
+                                         "short_after": after[c]["short"]}
+                                     for c in "WUBRG" if after[c]["target"] or before[c]["have"]
+                                     or after[c]["have"]}
+        except Exception as exc:                    # noqa: BLE001 - absent, with its reason
+            out["colour_sources"] = {"absent": f"mana_fit: {type(exc).__name__}: {exc}"}
+    elif "colour_sources" not in out:
+        out["colour_sources"] = {"absent": "the edit is refused — nothing to measure"}
+    out["timing"] = {"instant_ms": round((_time.perf_counter() - t0) * 1000)}
+
+    if not spec.commanders:
+        out["goldfish"] = {"absent": f"not modelled for {spec.name}"}
+    elif p["blocking"] or doc is None:
+        out["goldfish"] = {"absent": "the edit is refused — nothing to measure"}
+    elif not goldfish:
+        out["goldfish"] = {"absent": "not asked for (goldfish=False)"}
+    else:
+        t1 = _time.perf_counter()
+        it = iterations or diagnostic.HARNESS["iterations"]
+        sd = seed if seed is not None else diagnostic.HARNESS["seed"]
+        base_doc = load_deck_cards(slug, branch)
+        table, champ_cached, cand_cached = compare(slug, branch, doc, p, it, sd)
+        cards, _forge_run = card_rows(slug, branch, base_doc, doc, _rows(p))
+        blind = {c["name"] for c in cards if c["state"] != "seen"}
+        call, better, worse, trust = verdict(table, blind)
+        notes = authored_rate_notes(base_doc, doc)
+        out["goldfish"] = {
+            "table": table, "call": call, "better": better, "worse": worse,
+            "trust": "; ".join([trust] + notes), "caveat": BOARD_QUALITY_CAVEAT,
+            "cards": cards,
+            "harness": {"iterations": it, "seed": sd, "champion_cached": champ_cached,
+                        "candidate_cached": cand_cached},
+            "ms": round((_time.perf_counter() - t1) * 1000)}
+    return out
 
 
 def render(r):
@@ -366,21 +654,32 @@ def stage(slug, name, swaps, why, base_branch=None):
 
 
 def main(args):
+    from manamap.pilot import deck_edit
     outs, ins = list(args.out or []), list(getattr(args, "in_") or [])
-    if not outs or len(outs) != len(ins):
-        raise SystemExit("give the swaps as pairs: --out A --in B [--out C --in D ...]")
+    adds, cuts = list(getattr(args, "add", None) or []), list(getattr(args, "cut", None) or [])
+    sets = list(getattr(args, "set", None) or [])
+    if len(outs) != len(ins) or not (outs or adds or cuts or sets):
+        raise SystemExit("give the swaps as pairs: --out A --in B [--out C --in D ...], "
+                         "and/or --add N, --cut N, --set NAME=COPIES")
     swaps = list(zip(outs, ins))
+    ops = deck_edit.ops_from_args(add=adds, cut=cuts, set_=sets,
+                                  side=getattr(args, "side", False))
+    name = getattr(args, "stage", None)
+    if name and ops:
+        raise SystemExit("--stage writes SWAPS to a branch; an --add, --cut or --set changes "
+                         "the list's size or counts — open a branch with the whole list "
+                         "(`deck-branch new`) instead")
     from manamap import console
-    with console.task(f"Trying {len(swaps)} swap(s) on {args.slug}", total=1, unit="run") as bar:
+    n = len(swaps) + len(ops)
+    with console.task(f"Trying {n} change(s) on {args.slug}", total=1, unit="run") as bar:
         r = run(args.slug, swaps, branch=getattr(args, "branch", None),
                 iterations=getattr(args, "iterations", None), seed=getattr(args, "seed", None),
-                each=getattr(args, "each", False))
+                each=getattr(args, "each", False), ops=ops)
         bar.advance(1)
     if getattr(args, "json", False):
         print(json.dumps(r, indent=1, default=str))
     else:
         print(render(r))
-    name = getattr(args, "stage", None)
     if name:
         line = f"try: {r['verdict']['call']} — {r['verdict']['trust']}"
         stage(args.slug, name, swaps, line, base_branch=getattr(args, "branch", None))
