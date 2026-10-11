@@ -1338,6 +1338,42 @@ _COPY_FODDER_PLURAL_RE = re.compile(
     r"target player|target opponent|any target|target permanent|"
     r"creature an opponent controls|creature you don't control|"
     r"creature an opponent|target attacking|target blocking", re.I)
+#: A TOKEN COPY IN STRIVE'S WORDING — Twinflame, "Choose any number of target
+#: creatures you control. For each of them, create a token that's a copy of
+#: that creature, except it has haste." The single-target clause
+#: ("…a copy of target creature") cannot see it, because the target is named a
+#: sentence earlier, so Twinflame read as a DEAD card: -0.14 damage@T10 swapped
+#: in for Howlsquad Heavy on goblin-storm, while its single-target cousins
+#: priced +0.11..+0.15.
+#:
+#: HOW STRIVE IS MODELLED: cast for its BASE cost with ONE target. That is the
+#: line a Zada pilot plays — one target is Zada alone, which is what lets the
+#: commander copy it once per other creature, so the breadth comes from the
+#: copies and never from strive's {2}{R} per extra target. Uncopied it is the
+#: same one hasty token as Heat Shimmer, which UNDERSTATES a deck without a copy
+#: commander that could pay for a second target. That direction is deliberate.
+#:
+#: "YOU CONTROL" IS REQUIRED, and it is the guard that matters: Hate Mirage
+#: ("Choose up to two target creatures you don't control. For each of those
+#: creatures…") copies an opponent's board, and Hunted by The Family hands the
+#: copy to a villainous choice. Neither matches.
+#:
+#: CORPUS SWEEP 2026-10-10 (34,964 cards), old vs new, BOTH predicates:
+#:   spell_token_copy  newly matched: Twinflame. Newly dropped: none.
+#:   copy_fodder       newly matched: Twinflame. Newly dropped: none.
+#: The near-misses read and deliberately NOT widened to, each a different card:
+#:   Kindred Charge      no target at all ("Choose a creature type"); a Zada-
+#:                       style ability never copies it — the existing exclusion.
+#:   Tempt with Reflections  "Choose target creature you control. Create a token
+#:                       that's a copy of that creature." — single-target and
+#:                       real, but opponents may copy too; a separate decision.
+#:   March of Progress   artifact creatures only, with an overload mode.
+#:   Hate Mirage, Hunted by The Family  creatures you DON'T control.
+_STRIVE_TOKEN_COPY = (
+    r"choose any number of target creatures you control\. for each of them, "
+    r"create a token that.s a copy of that creature")
+
+
 #: The effect has to be one you want on THIRTY bodies, not one body. A pump, an
 #: evasion grant, haste, an untap, a counter — and the draw, which is the whole
 #: reason the archetype exists. "Destroy", "exile" and "sacrifice" are the
@@ -1352,7 +1388,12 @@ _COPY_FODDER_EFFECT_RE = re.compile(
     # ability fires at all, so a whitelist that omits the effect leaves the
     # channel switched on and unreachable — a flag the model sets and never acts
     # on, which `test_metric_hygiene` exists to catch.
-    r"create a token that.s a copy of target",
+    r"create a token that.s a copy of target|"
+    # THE STRIVE WORDING OF THE SAME EFFECT — Twinflame. It names the target in
+    # the sentence before ("Choose any number of target creatures you
+    # control.") and copies "that creature", so the clause above never saw it.
+    # Shared with `_SPELL_TOKEN_COPY_RE`; see `_STRIVE_TOKEN_COPY` for the sweep.
+    + _STRIVE_TOKEN_COPY,
     re.I)
 
 
@@ -2772,7 +2813,10 @@ def spell_combat_effects(card):
 #:     commander-copy trigger sees it and this model's spell channels never fire.
 _SPELL_TOKEN_COPY_RE = re.compile(
     r"create(?:s)? a token that.s a copy of target (?:artifact or )?creature"
-    r"(?! card in your graveyard)", re.I)
+    r"(?! card in your graveyard)"
+    # Twinflame's strive wording; modelled as ONE target at the base cost — see
+    # `_STRIVE_TOKEN_COPY` for why, and for its corpus sweep.
+    r"|" + _STRIVE_TOKEN_COPY, re.I)
 
 
 def spell_token_copy(card):
@@ -2789,6 +2833,9 @@ def spell_token_copy(card):
     so every one of them measured as a dead card, which is why seven passes of
     `candidates` sweeps on a Zada deck never promoted one: the instrument
     ranked the deck's best card at zero.
+
+    RE-SWEPT 2026-10-10 (34,964 cards) for the strive widening: 24 -> 25, the
+    one card gained Twinflame, nothing dropped. See `_STRIVE_TOKEN_COPY`.
     """
     type_line = str(card.get("type_line", "") or "")
     if "Instant" not in type_line and "Sorcery" not in type_line:

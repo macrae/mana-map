@@ -23,6 +23,7 @@ These tests pin the three properties that keep the model honest:
 """
 
 import json
+import re
 import random
 
 import pytest
@@ -850,6 +851,98 @@ def test_the_profile_reads_a_token_copy_spell_and_not_an_activated_one():
     assert goldfish_profiles.copy_fodder(shimmer), (
         "a Zada-style ability cannot copy a token-copy spell, so the channel is "
         "set and never multiplied")
+
+
+TWINFLAME_TEXT = ("Strive — This spell costs {2}{R} more to cast for each "
+                  "target beyond the first. Choose any number of target "
+                  "creatures you control. For each of them, create a token "
+                  "that’s a copy of that creature, except it has haste. Exile "
+                  "those tokens at the beginning of the next end step.")
+
+
+def test_twinflame_strive_wording_is_the_same_token_copy():
+    """Twinflame names its target a sentence BEFORE the copy ("Choose any number
+    of target creatures you control. For each of them, create a token that's a
+    copy of that creature"), so the single-target clause never saw it and it read
+    as a dead card (-0.14 damage@T10 on goblin-storm). It is modelled as ONE
+    target at the base cost — Zada supplies the breadth — so it must read as one
+    token per resolution AND as copy fodder, or the channel is set and never
+    multiplied. The curly apostrophe is the corpus's; the pattern wildcards it."""
+    from manamap.pilot import goldfish_profiles
+    twin = _card("Twinflame", TWINFLAME_TEXT, cmc=2, type_line="Sorcery",
+                 power=None, toughness=None)
+    assert goldfish.classify(twin)["combat"]["spell_token_copy"] == 1
+    assert goldfish_profiles.copy_fodder(twin)
+
+    # THE GUARD THAT MATTERS: the same shape aimed at creatures you DON'T
+    # control copies an opponent's board, and must stay out.
+    hate = _card("Hate Mirage", "Choose up to two target creatures you don't "
+                 "control. For each of those creatures, create a token that’s "
+                 "a copy of that creature. Those tokens gain haste. Exile them "
+                 "at the beginning of the next end step.",
+                 cmc=4, type_line="Sorcery", power=None, toughness=None)
+    assert goldfish.classify(hate)["combat"]["spell_token_copy"] == 0
+    # (Hate Mirage DOES read as `copy_fodder`, on "gain haste", before and after
+    # this widening — `_COPY_FODDER_PLURAL_RE` says "creature you don't control"
+    # and the card says "creatures". Pre-existing and unchanged by the sweep;
+    # left for its own fix rather than folded in here.)
+    assert not re.search(goldfish_profiles._STRIVE_TOKEN_COPY,
+                         hate["oracle_text"], re.I)
+
+
+def test_twinflame_is_cast_and_multiplied_under_zada():
+    """THE CASTING PREDICATE, DRIVEN. Read correctly and never cast is the
+    failure this file keeps documenting; under a Zada-style commander the same
+    list with Twinflame in the Molten Duplication slots must out-damage the
+    list without it."""
+    def _run(with_spell):
+        deck = _copy_deck(with_spell=False)
+        if with_spell:
+            deck["cards"].append(dict(_card("Twinflame", TWINFLAME_TEXT, cmc=2,
+                                            type_line="Sorcery", power=None,
+                                            toughness=None), quantity=6))
+        library, _ = goldfish.build_library(deck)
+        rng = random.Random(11)
+        res = [goldfish.simulate_once(rng, library, 3, [], 10, model_combat=True,
+                                      commander_copy=True) for _ in range(200)]
+        return goldfish.aggregate(res, [], 10, False, True)[
+            "combat"]["mean_damage_by_turn"]["10"]
+    with_it, without = _run(True), _run(False)
+    assert with_it > without, (with_it, without)
+
+
+def test_kindred_charge_stays_excluded():
+    """KEPT, AND NOT THE SAME WORDING PROBLEM. Kindred Charge targets nothing —
+    "Choose a creature type. For each creature you control of the chosen
+    type…" — so a Zada-style ability (which needs a spell that targets only
+    Zada) never copies it, and its effect is a whole-board copy this channel
+    does not model. Twinflame's widening must not reach it."""
+    from manamap.pilot import goldfish_profiles
+    charge = _card("Kindred Charge", "Choose a creature type. For each "
+                   "creature you control of the chosen type, create a token "
+                   "that’s a copy of that creature. Those tokens gain haste. "
+                   "Exile them at the beginning of the next end step.",
+                   cmc=6, type_line="Sorcery", power=None, toughness=None)
+    assert goldfish.classify(charge)["combat"]["spell_token_copy"] == 0
+    assert not goldfish_profiles.copy_fodder(charge)
+
+
+@requires_data
+def test_the_strive_widening_caught_twinflame_and_not_a_family():
+    """THE SWEEP, PINNED. Old vs new over the 2026-10-10 corpus (34,964 cards):
+    `spell_token_copy` 24 -> 25 and `copy_fodder` 901 -> 902, Twinflame the only
+    card gained by either and nothing dropped. The strive clause on its own must
+    match exactly Twinflame; if a set adds another, read it before believing it."""
+    from manamap.pilot import card_pool, goldfish_profiles
+    o, pool = card_pool.corpus_oracle(), card_pool.load_pool()
+    strive = re.compile(goldfish_profiles._STRIVE_TOKEN_COPY, re.I)
+    hits = sorted(n for n in pool if strive.search(o.get(n) or ""))
+    assert hits == ["Twinflame"], hits
+    from conftest import assert_corpus_count
+    n = sum(1 for name, row in pool.items()
+            if goldfish_profiles.spell_token_copy(
+                {"type_line": row.get("type_line"), "oracle_text": o.get(name)}))
+    assert_corpus_count(n, 25, "spell_token_copy matches")
 
 
 def test_a_token_copy_spell_moves_damage_and_is_actually_cast():
