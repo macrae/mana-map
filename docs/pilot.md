@@ -255,7 +255,7 @@ manamap pilot edit <slug> [--add N]… [--cut N]… [--swap OUT=IN]… [--set N=
                           [--dry-run] [--no-chain] [--rebuild] [--json]
                                         #   a BENCH or BREWING deck edited IN PLACE, rebuilt
 manamap pilot edit <slug> undo|redo|history [--json]           # the journal, replayed
-manamap pilot save-version <slug> --note "…" [--json]          # the edits -> ONE git version
+manamap pilot save-version <slug> --note "…" [--json]          # the edits -> a git version, then its version list
 manamap pilot validate-protected <slug>                        # protected.json: the pilot's keep list, gated
 manamap pilot net-change <slug> --branch N [--write] [--json]
                                         #   THE REPORT A PURCHASE RESTS ON: THE CHANGE
@@ -771,7 +771,10 @@ THE DECK: `manamap pilot edit <slug> --swap "A=B" --add C --cut D --set "Forest=
      kept a day under `data/cache/scryfall-cards/` and only the misses are POSTed;
      shaping runs on the same objects, so `cards.json` is the full fetch's byte for
      byte. Opt-in (the CLI `fetch-deck`, `check-in` and `merge` still fetch all);
-     `--force` always fetches all.
+     `--force` always fetches all. Then `prices.prune`, offline: an existing
+     `prices.json` keeps only the rows still in `cards.json`, refreshes quantities and
+     re-adds its totals, keeping `as_of`, `source` and `decklist_sha256` — it never
+     prices, so an add is named as unpriced rather than counted as zero.
   2. In a spawn pool of `REBUILD_JOBS` (4): the `goldfish` → `mana-analysis` chain
      (`check_in.chain_plan`; a 60-card deck skips the goldfish and says why), the
      deck's existing `deck-combos`, `diagnose` and `benchmark` (`PARALLEL_STAGES`
@@ -809,7 +812,7 @@ THE DECK: `manamap pilot edit <slug> --swap "A=B" --add C --cut D --set "Forest=
   as its slowest task, so the ≤7 s target would need a faster goldfish, which moves
   bytes and is not a speed change.
 - **`save-version <slug> --note "…"`** refuses while `.rebuild.lock` is held or git is
-  mid-merge/rebase/cherry-pick; runs merge's consistency tail without the decisions
+  mid-merge/rebase/cherry-pick; prunes `prices.json` (above); runs merge's consistency tail without the decisions
   ledger (regen with branches, `deck-map` and `build-poh` where they exist,
   `build-index`, the post-merge validators); refreshes `net_change.json` and `info.json`
   on other decks whose branches want a card that moved; then commits exactly
@@ -818,6 +821,14 @@ THE DECK: `manamap pilot edit <slug> --swap "A=B" --add C --cut D --set "Forest=
   staged stays staged and out. The message is `<deck name>: <note>` with `+in … / −out …`
   against HEAD, and carries no attribution trailer. It returns the version
   (`deck_versions.report`), the paths and the Keeper line, and journals a `save`.
+  **Two commits, complete in one step (2026-10-11).** Commit 1 never carries the deck's
+  `versions.json` (a version's sha is not knowable inside the commit that makes it —
+  `tests/test_pilot_commit_protocol.py`). When the deck tracks one, `deck-version
+  <slug> list --write` then re-derives it, `build-poh` re-renders the handbook where it
+  exists (it reads versions.json), and both are committed `--only` as `<deck name>:
+  V<n> version list`. `commit` and the journal keep commit 1's sha; `versions_commit`
+  is the second. If the dated prices miss an add, the output names it and
+  `manamap pilot prices <slug> --write`.
 - **Edits between saves are visible elsewhere.** `deck-notes <slug> add` warns (one
   line, never a block) when the working list differs from the last save — the game is
   stamped with a list no version names yet. A branch records the deck's list when it is

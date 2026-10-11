@@ -54,6 +54,9 @@ def repo(tmp_path, monkeypatch):
     if poh.exists():
         (root / "manuals" / "p").mkdir(parents=True)
         shutil.copy2(poh, root / "manuals" / "p" / poh.name)
+        css = poh.parent / "poh.css"          # tracked beside it; build-poh rewrites it
+        if css.exists():
+            shutil.copy2(css, root / "manuals" / "p" / css.name)
     (root / "docs").mkdir()
     (root / "docs" / "notes.md").write_text("tracked, unrelated\n")
     _git(root, "init", "-q")
@@ -62,8 +65,10 @@ def repo(tmp_path, monkeypatch):
     _git(root, "add", "-A")
     _git(root, "commit", "-q", "-m", "a prior commit")
 
-    from manamap.pilot import deck_context, deck_history
+    from manamap.pilot import deck_context, deck_history, poh
     monkeypatch.setattr(config, "DECKS_DIR", decks)
+    # Commit 2 re-renders the handbook: into THIS repo, never the checkout's.
+    monkeypatch.setattr(poh, "MANUALS_DIR", root / "manuals")
     monkeypatch.setattr(deck_history, "_REPO_ROOT", root)
     monkeypatch.setattr(deck_edit, "_NAME_MEMO", {})
 
@@ -78,7 +83,7 @@ def repo(tmp_path, monkeypatch):
     return root
 
 
-def test_save_version_is_one_commit_of_the_decks_paths(repo):
+def test_save_version_is_the_list_then_its_version_list(repo):
     from manamap.pilot import deck_versions
     before_versions = len(deck_versions.versions(SLUG))
     head = _git(repo, "rev-parse", "HEAD").strip()
@@ -89,20 +94,35 @@ def test_save_version_is_one_commit_of_the_decks_paths(repo):
 
     r = deck_edit.save_version(SLUG, "a reanimation slot for the rock")
 
-    assert _git(repo, "rev-list", "--count", f"{head}..HEAD").strip() == "1"
-    committed = _git(repo, "show", "--name-only", "--format=", "HEAD").split()
-    allowed = (f"data/decks/{SLUG}/", "data/decks/index.json")
+    # Two commits: the list, then the version list that can only name it after.
+    assert _git(repo, "rev-list", "--count", f"{head}..HEAD").strip() == "2"
+    versions_json = f"data/decks/{SLUG}/versions.json"
+    committed = _git(repo, "show", "--name-only", "--format=", "HEAD~1").split()
+    allowed = (f"data/decks/{SLUG}/", "data/decks/index.json", "manuals/p/")
     assert committed and all(p.startswith(allowed) for p in committed), committed
     assert f"data/decks/{SLUG}/decklist.txt" in committed
     assert "data/decks/index.json" in committed
+    assert versions_json not in committed
     assert not any("edits.jsonl" in p or p.endswith((".lock", ".bak")) for p in committed)
+    second = _git(repo, "show", "--name-only", "--format=", "HEAD").split()
+    assert versions_json in second and f"data/decks/{SLUG}/decklist.txt" not in second
+    assert set(second) <= {versions_json, f"manuals/p/{SLUG}.html"}, second
+    assert r["commit"] == _git(repo, "rev-parse", "HEAD~1").strip()
+    assert r["versions_commit"] == _git(repo, "rev-parse", "HEAD").strip()
 
-    msg = _git(repo, "log", "-1", "--format=%B")
+    msg = _git(repo, "log", "-1", "--format=%B", "HEAD~1")
     assert "a reanimation slot for the rock" in msg.splitlines()[0]
     assert f"+in {IN} / −out {OUT}" in msg, msg
+    assert _git(repo, "log", "-1", "--format=%s").strip().endswith(
+        f": V{r['version']} version list")
 
     assert len(deck_versions.versions(SLUG)) == before_versions + 1
     assert r["version"] == deck_versions.report(SLUG)["current_version"]
+    committed_list = json.loads(_git(repo, "show", f"HEAD:{versions_json}"))
+    assert committed_list["current_version"] == r["version"]
+    # No figure was left behind: the deck's tree is clean after the save.
+    assert _git(repo, "status", "--porcelain", "--", f"data/decks/{SLUG}",
+                "manuals") == ""
     assert deck_edit.unsaved(SLUG) is None
 
     # The pilot's unrelated edit is still modified and still uncommitted.

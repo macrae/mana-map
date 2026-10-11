@@ -4,7 +4,8 @@ A price is the one figure on this bench that nobody here measures and everybody
 quotes: an agent that says "about $4" from memory is guessing, and a live lookup in
 the middle of an answer is a number with no date on it. So prices live in one
 artifact beside the list, stamped `as_of` and `source`, written only by this
-command, and every reader — `net-change`'s bill, the deck page's cover, the Build
+module (`--write`, and `prune` after an edit drops the cards that left — it never
+prices), and every reader — `net-change`'s bill, the deck page's cover, the Build
 panel, the card-scout and Jarvis — quotes THAT file, with its date, or says there
 is none. Absent means absent, never zero (`docs/gotchas-bench.md`).
 
@@ -239,6 +240,19 @@ def _manapool_row(card, sid, feed, by_name):
     }
 
 
+def _totals(cards):
+    """The document's two totals over its priced rows — `build` and `prune` both
+    say them through here, so a pruned file re-adds exactly as a fresh one."""
+    priced = [r for r in cards.values() if r.get("nm_cents") is not None]
+    return {
+        # Every copy, at NM: what buying the list as sleeved would cost.
+        "total_cents": sum(r["nm_cents"] * r["quantity"] for r in priced),
+        # ONE copy of each priced card — the "singles" figure, where eleven
+        # Islands count once.
+        "total_nm_cents": sum(r["nm_cents"] for r in priced),
+    }
+
+
 def build(slug, branch=None, source="auto", session=None):
     """The artifact for a deck or a branch — see the module docstring for the shape.
 
@@ -290,7 +304,6 @@ def build(slug, branch=None, source="auto", session=None):
         else:
             out_cards[card["name"]] = row
 
-    priced = [r for r in out_cards.values() if r["nm_cents"] is not None]
     extra = {"feed_as_of": feed_meta["as_of"]} if used == "manapool" and feed_meta.get("as_of") else {}
     return {
         "slug": slug,
@@ -300,14 +313,54 @@ def build(slug, branch=None, source="auto", session=None):
         "currency": "USD",
         "decklist_sha256": doc.get("decklist_sha256"),
         "cards": out_cards,
-        # Every copy, at NM: what buying the list as sleeved would cost.
-        "total_cents": sum(r["nm_cents"] * r["quantity"] for r in priced),
-        # ONE copy of each priced card — the "singles" figure, where eleven
-        # Islands count once.
-        "total_nm_cents": sum(r["nm_cents"] for r in priced),
+        **_totals(out_cards),
         "missing": sorted(missing),
         # When the SOURCE's figures were taken, beside the day we read them.
         **extra,
+    }
+
+
+def _write(path, doc):
+    path.write_text(json.dumps(doc, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def prune(slug, branch=None):
+    """Bring an EXISTING `prices.json` back in line with the list beside it, offline.
+
+    An edit moves `cards.json` and leaves the dated file naming cards that left —
+    which `validate-prices` rightly fails, and `info.json` then reads as a broken
+    gate until somebody re-prices by hand (Elves V2, 2026-10-11). Pruning is not
+    re-pricing: it keeps only the `cards` rows and `missing` names still in
+    cards.json, refreshes each row's `quantity`, re-adds the totals through
+    `_totals` exactly as `build` does, and keeps `as_of`, `source` and
+    `decklist_sha256` — the date says when the figures were TAKEN, and nothing
+    here takes one. A card that came in has no row; it is named in `unpriced`,
+    never priced as zero (absent means absent). No network, so an offline save
+    never breaks; absent file (or no cards.json) means nothing to do.
+
+    Returns None when there is no file to prune, else
+    `{path, dropped, unpriced, changed}`; writes only when a byte would move.
+    """
+    path = deck_dir(slug, branch) / ARTIFACT
+    cards_path = deck_dir(slug, branch) / "cards.json"
+    if not path.is_file() or not cards_path.is_file():
+        return None
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    qty = {c["name"]: int(c.get("quantity") or 1)
+           for c in load_deck_cards(slug, branch).get("cards") or []}
+    old_cards = doc.get("cards") or {}
+    old_missing = doc.get("missing") or []
+    cards = {n: {**row, "quantity": qty[n]} for n, row in old_cards.items() if n in qty}
+    missing = sorted(n for n in old_missing if n in qty)
+    new = {**doc, "cards": cards, "missing": missing, **_totals(cards)}
+    changed = new != doc
+    if changed:
+        _write(path, new)
+    return {
+        "path": str(path),
+        "dropped": sorted({n for n in list(old_cards) + list(old_missing) if n not in qty}),
+        "unpriced": sorted(n for n in qty if n not in cards and n not in missing),
+        "changed": changed,
     }
 
 
@@ -349,5 +402,5 @@ def main(args):
         print_report(doc)
     if getattr(args, "write", False):
         path = deck_dir(args.slug, branch) / ARTIFACT
-        path.write_text(json.dumps(doc, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        _write(path, doc)
         print(f"  wrote {path}")

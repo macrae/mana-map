@@ -927,6 +927,8 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
     """Re-derive what an edit made stale, in dependency order, this deck only.
 
     1. `fetch-deck` (`check_in.chain_plan`), alone: everything reads cards.json;
+       then `prices.prune`, offline, so a dated prices.json drops the cards
+       that left and `deck-info` does not read it as a failed gate;
     2. IN PARALLEL (`REBUILD_JOBS` processes), each writing only its own file:
        `goldfish` → `mana-analysis` chained in one worker (a 60-card deck skips
        the goldfish and says why); the deck's EXISTING `deck-combos`,
@@ -965,6 +967,9 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
             try:
                 _producer(stages[0])(SimpleNamespace(slug=slug, branch=None, incremental=True))
                 ran.append(stages[0])
+                # cards.json moved, so the dated prices.json drops the cards that
+                # left — offline, before `deck-info` gates it (`prices.prune`).
+                out["prices"] = _prune_prices(slug, out["failures"])
             except Exception as exc:                       # noqa: BLE001 - reported
                 out["ran"] = ran
                 out["behind"] = (
@@ -1043,6 +1048,27 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
     out["keeper"] = (context or {}).get("keeper") if (context or {}).get("stale") else None
     out["seconds"] = round(time.time() - began, 1)
     return out
+
+
+def _prune_prices(slug, failures):
+    """`prices.prune` for the deck root; a failure is reported, never raised —
+    a corrupt price file must not stop an edit's rebuild or a save."""
+    from manamap.pilot import prices
+    try:
+        return prices.prune(slug)
+    except Exception as exc:                               # noqa: BLE001 - reported
+        failures.append(f"prices prune {slug}: {type(exc).__name__}: {exc}")
+        return None
+
+
+def prices_line(slug, pruned):
+    """The one line a save or rebuild prints when the dated prices miss an add."""
+    if not pruned or not pruned.get("unpriced"):
+        return None
+    names = pruned["unpriced"]
+    return (f"prices: {len(names)} card(s) not priced yet — "
+            f"{', '.join(names[:8])}{' …' if len(names) > 8 else ''}: "
+            f"`manamap pilot prices {slug} --write`")
 
 
 # ── save a version ───────────────────────────────────────────────────────
@@ -1146,6 +1172,45 @@ def _refresh_wanting_decks(slug, moved, echo):
     return touched
 
 
+def _commit_version_list(slug, version, consistency):
+    """Commit 2 of a save: the deck's `versions.json`, AFTER the list's commit.
+
+    Only when the deck tracks one (a deck without it is not asked to start).
+    `deck-version <slug> list --write` re-derives it from git — now including
+    commit 1 — and `build-poh` re-renders the handbook where it exists, because
+    the handbook reads versions.json (`poh.load`). Both are committed with
+    `git commit --only`, so anything the pilot has staged stays out. Returns
+    `(sha or None, paths)`; a failure lands in `consistency["failures"]` and
+    never undoes commit 1."""
+    import importlib
+    import io
+    directory = deck_dir(slug)
+    if not (directory / "versions.json").exists():
+        return None, []
+    poh = _repo_root() / "manuals" / "p" / f"{slug}.html"
+    steps = [("deck-version list", "manamap.pilot.deck_versions",
+              {"slug": slug, "action": "list", "write": True})]
+    if poh.exists():
+        steps.append(("build-poh", "manamap.pilot.poh", {"slug": slug}))
+    for name, dotted, kwargs in steps:
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                importlib.import_module(dotted).main(SimpleNamespace(**kwargs))
+        except Exception as exc:                            # noqa: BLE001 - reported
+            consistency.setdefault("failures", []).append(
+                f"{name} (version list): {type(exc).__name__}: {exc}")
+    specs = [_rel(directory / "versions.json")]
+    if poh.exists():
+        specs.append(str(poh.relative_to(_repo_root())))
+    paths = _changed_paths(*specs)
+    if not paths:
+        return None, []
+    message = f"{_deck_name(slug)}: V{version} version list\n"
+    _git("add", "-A", "--", *paths)
+    _git("commit", "--only", "-q", "-m", message, "--", *paths)
+    return _git("rev-parse", "HEAD").stdout.strip(), paths
+
+
 def save_version(slug, note, *, echo=None):
     """Commit the deck's accumulated edits as ONE git version with a note.
 
@@ -1158,7 +1223,16 @@ def save_version(slug, note, *, echo=None):
     anything else the pilot has staged stays staged and out of this commit.
     The product's own commits carry no attribution trailer.
 
-    Returns `{commit, version, paths, keeper, consistency, refreshed}`.
+    Complete in one step (2026-10-11): `prices.prune` first, so a dated
+    prices.json never names a card that left; commit 1 is the list and its
+    artifacts and NEVER the deck's `versions.json`; then, where the deck tracks
+    one, commit 2 (`_commit_version_list`) re-derives it — and the handbook that
+    reads it — as "<deck>: V<n> version list". A decklist and its own
+    versions.json are never in one commit (tests/test_pilot_commit_protocol.py).
+
+    Returns `{commit, version, paths, versions_commit, versions_paths, prices,
+    prices_line, keeper, consistency, refreshed}` — `commit` is commit 1, the
+    one the journal records.
     """
     from manamap.pilot import deck_context, deck_versions
     echo = echo or (lambda *a, **k: None)
@@ -1177,7 +1251,10 @@ def save_version(slug, note, *, echo=None):
         if is_locked(directory, REBUILD_LOCK):
             raise SystemExit(f"{slug} is rebuilding — save when it finishes")
         before_text = saved_text(slug)
+        price_failures = []
+        pruned = _prune_prices(slug, price_failures)
         consistency = _consistency(slug, echo)
+        consistency.setdefault("failures", []).extend(price_failures)
         list_path = directory / "decklist.txt"
         now = list_path.read_text(encoding="utf-8")
         since = _text_diff(before_text, now)
@@ -1188,7 +1265,10 @@ def save_version(slug, note, *, echo=None):
         poh = _repo_root() / "manuals" / "p" / f"{slug}.html"
         specs.append(str(poh.relative_to(_repo_root())))
         specs += [_rel(config.DECKS_DIR / s) for s in refreshed]
-        paths = _changed_paths(*specs)
+        # Commit 1 NEVER carries the deck's own versions.json: a version's sha is
+        # not knowable inside the commit that creates it (commit protocol).
+        versions_rel = _rel(directory / "versions.json")
+        paths = [p for p in _changed_paths(*specs) if p != versions_rel]
         if not paths:
             raise SystemExit(f"nothing to save on {slug} — the list and its artifacts "
                              f"match the last commit")
@@ -1207,7 +1287,10 @@ def save_version(slug, note, *, echo=None):
         rec = _entry("save", source="cli", note=note, before=before_text, after=now,
                      commit=commit, version=version)
         _append(directory, rec)
+        versions_commit, versions_paths = _commit_version_list(slug, version, consistency)
     return {"slug": slug, "commit": commit, "version": version, "paths": paths,
+            "versions_commit": versions_commit, "versions_paths": versions_paths,
+            "prices": pruned, "prices_line": prices_line(slug, pruned),
             "message": message, "consistency": consistency, "refreshed": refreshed,
             "keeper": (context or {}).get("keeper") if (context or {}).get("stale") else None,
             "context": context}
@@ -1241,6 +1324,9 @@ def _print_rebuild(r):
         print(f"  skipped {st}: {why}")
     if r.get("behind"):
         print(f"  {r['behind']}")
+    line = prices_line(r.get("slug"), r.get("prices"))
+    if line:
+        print(f"  {line}")
     for f in r.get("failures") or []:
         print(f"  FAILED {f}")
     if r.get("keeper"):
@@ -1261,6 +1347,11 @@ def _main_save(args):
         print(f"SAVED {args.slug} as V{r['version']} — {r['commit'][:12]}")
         print(f"  {r['message'].splitlines()[0]}")
         print(f"  {len(r['paths'])} path(s) committed, nothing else staged was touched")
+        if r.get("versions_commit"):
+            print(f"  version list: {r['versions_commit'][:12]} "
+                  f"({', '.join(r['versions_paths'])})")
+        if r.get("prices_line"):
+            print(f"  {r['prices_line']}")
         for f in r["consistency"].get("failures") or []:
             print(f"  FAILED {f}")
         for a, why in r["consistency"].get("invalid") or []:

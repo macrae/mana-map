@@ -479,6 +479,46 @@ def test_an_offline_fetch_leaves_the_edit_and_says_cards_json_is_behind(decks, r
     assert not any(c[0] == "goldfish" for c in recorder)
 
 
+def _price_row(nm, qty=1):
+    return {"scryfall_id": None, "printing": None, "nm_cents": nm, "lp_cents": None,
+            "foil_cents": None, "url": None, "quantity": qty, "note": None}
+
+
+def _fetch_from_list(decks):
+    """fetch-deck's effect on the toy deck: cards.json follows decklist.txt."""
+    def fetch(args):
+        entries = parse_decklist(_text(decks, args.slug))
+        doc = json.loads((decks / args.slug / "cards.json").read_text())
+        doc["cards"] = [_card(e["name"], e["quantity"], e.get("is_commander"))
+                        for e in entries if e["board"] == "main"]
+        (decks / args.slug / "cards.json").write_text(json.dumps(doc))
+    return fetch
+
+
+def test_a_cut_and_its_rebuild_leave_a_valid_pruned_prices_file(decks, recorder,
+                                                                monkeypatch, capsys):
+    from manamap.pilot import fetch_deck, validate_prices
+    monkeypatch.setattr(fetch_deck, "main", _fetch_from_list(decks))
+    path = decks / "cmdr" / "prices.json"
+    path.write_text(json.dumps({
+        "slug": "cmdr", "branch": None, "as_of": "2026-10-01", "source": "scryfall",
+        "currency": "USD", "decklist_sha256": "x",
+        "cards": {"Sol Ring": _price_row(150), "Blood Artist": _price_row(100),
+                  "Forest": _price_row(5, 47)},
+        "total_cents": 150 + 100 + 5 * 47, "total_nm_cents": 255, "missing": []}))
+    deck_edit.edit("cmdr", [swap("Sol Ring", "Necromancy"), setq("Forest", 46),
+                            add("Swamp")])
+    r = deck_edit.rebuild("cmdr")
+    doc = json.loads(path.read_text())
+    names = {c["name"] for c in json.loads((decks / "cmdr" / "cards.json").read_text())["cards"]}
+    assert validate_prices.validate("cmdr", None, doc, names) == []
+    assert "Sol Ring" not in doc["cards"] and doc["cards"]["Forest"]["quantity"] == 46
+    assert doc["total_cents"] == 100 + 5 * 46 and doc["as_of"] == "2026-10-01"
+    assert r["prices"]["unpriced"] == sorted(names - {"Blood Artist", "Forest"})
+    deck_edit._print_rebuild(r)
+    assert "`manamap pilot prices cmdr --write`" in capsys.readouterr().out
+
+
 def test_regen_skip_and_include_branches_scope_the_plan(decks):
     from manamap.pilot import regen
     d = decks / "cmdr"
@@ -550,6 +590,60 @@ def test_save_version_commits_only_the_decks_paths(repo, decks):
     # Undo may go past a save.
     deck_edit.undo("cmdr")
     assert "Viscera Seer" in _text(decks)
+
+
+def test_save_version_commits_the_version_list_second_never_with_the_list(
+        repo, decks, monkeypatch):
+    """Commit 1 is the list; commit 2 is its versions.json, which can only name
+    commit 1's sha once commit 1 exists (tests/test_pilot_commit_protocol.py)."""
+    from manamap.pilot import deck_versions
+    write_list = argparse.Namespace(slug="cmdr", action="list", write=True)
+    deck_versions.main(write_list)
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-q", "-m", "the version list as it stood")
+    head = _git(repo, "rev-parse", "HEAD").strip()
+
+    def tail(slug, echo):
+        # A consistency tail that rewrites versions.json BEFORE commit 1 (as a
+        # `make manuals` in it would) — still not commit 1's to carry.
+        (decks / "cmdr" / "versions.json").write_text("{}\n")
+        return {"ran": [], "failures": [], "invalid": []}
+    monkeypatch.setattr(deck_edit, "_consistency", tail)
+    deck_edit.edit("cmdr", [swap("Sol Ring", "Necromancy")])
+    r = deck_edit.save_version("cmdr", "a reanimation slot")
+
+    assert _git(repo, "rev-list", "--count", f"{head}..HEAD").strip() == "2"
+    first = _git(repo, "show", "--name-only", "--format=", "HEAD~1").split()
+    second = _git(repo, "show", "--name-only", "--format=", "HEAD").split()
+    assert "data/decks/cmdr/decklist.txt" in first
+    assert "data/decks/cmdr/versions.json" not in first
+    assert second == ["data/decks/cmdr/versions.json"]
+    assert _git(repo, "log", "-1", "--format=%s") == \
+        "Meren of Clan Nel Toth: V2 version list\n"
+    assert r["commit"] == _git(repo, "rev-parse", "HEAD~1").strip()
+    assert r["versions_commit"] == _git(repo, "rev-parse", "HEAD").strip()
+    assert deck_edit.read_journal(decks / "cmdr")[-1]["commit"] == r["commit"]
+    # The committed list is CURRENT: it names the version commit 1 created.
+    doc = json.loads(_git(repo, "show", "HEAD:data/decks/cmdr/versions.json"))
+    assert doc == deck_versions.report("cmdr") and doc["current_version"] == 2
+    assert _git(repo, "status", "--porcelain", "--", "data/decks/cmdr") == ""
+
+
+def test_save_version_prunes_prices_and_names_the_unpriced_add(repo, decks, capsys):
+    (decks / "cmdr" / "prices.json").write_text(json.dumps({
+        "slug": "cmdr", "branch": None, "as_of": "2026-10-01", "source": "scryfall",
+        "currency": "USD", "decklist_sha256": "x",
+        "cards": {"Sol Ring": _price_row(150), "Blood Artist": _price_row(100)},
+        "total_cents": 250, "total_nm_cents": 250, "missing": []}))
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-q", "-m", "priced")
+    deck_edit.edit("cmdr", [swap("Sol Ring", "Necromancy")])
+    _fetch_from_list(decks)(argparse.Namespace(slug="cmdr"))   # what the rebuild does
+    deck_edit._main_save(argparse.Namespace(slug="cmdr", note="a swap", json=False))
+    doc = json.loads(_git(repo, "show", "HEAD:data/decks/cmdr/prices.json"))
+    assert set(doc["cards"]) == {"Blood Artist"} and doc["total_cents"] == 100
+    out = capsys.readouterr().out
+    assert "Necromancy" in out and "`manamap pilot prices cmdr --write`" in out
 
 
 def test_save_version_refuses_while_rebuilding_and_when_git_is_busy(repo, decks):

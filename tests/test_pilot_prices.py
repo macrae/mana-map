@@ -404,6 +404,45 @@ def test_a_test_skeleton_with_no_slug_still_costs_out():
     assert net_change.priced_bill_line(doc) is None
 
 
+# ── prune: an edit leaves the dated file valid, offline ──────────────────
+
+def test_prune_drops_the_cards_that_left_and_re_adds_as_build_does(fake_deck, monkeypatch):
+    path = fake_deck / "fixture" / "prices.json"
+    assert prices.prune("fixture") is None, "no file, nothing to prune"
+    assert not path.exists()
+    built = prices.build("fixture", session=FakeSession())
+    built["as_of"] = "2026-10-01"           # a dated file, priced days ago
+    path.write_text(json.dumps(built))
+
+    # The edit: Sol Ring and Obscure Promo out, two Islands cut, Brainstorm in.
+    edited = dict(CARDS, cards=[
+        dict(CARDS["cards"][1], quantity=9), CARDS["cards"][2],
+        {"name": "Brainstorm", "quantity": 1, "set": "c20", "collector_number": "1"}])
+    (fake_deck / "fixture" / "cards.json").write_text(json.dumps(edited))
+    monkeypatch.setenv(net.OFFLINE_ENV, "1")    # pruning never reaches the network
+
+    got = prices.prune("fixture")
+    doc = json.loads(path.read_text())
+    assert got["changed"] and got["dropped"] == ["Obscure Promo", "Sol Ring"]
+    assert got["unpriced"] == ["Brainstorm"], "an add is named, never priced as zero"
+    assert set(doc["cards"]) == {"Island", "Windfall"} and doc["missing"] == []
+    assert doc["cards"]["Island"]["quantity"] == 9
+    # Dated evidence keeps its date, source and the list it was taken against.
+    for k in ("as_of", "source", "decklist_sha256"):
+        assert doc[k] == built[k], k
+    # The totals are the ones a fresh build of the edited list says.
+    monkeypatch.setenv(net.OFFLINE_ENV, "0")
+    fresh = prices.build("fixture", session=FakeSession())
+    assert (doc["total_cents"], doc["total_nm_cents"]) == (
+        fresh["total_cents"], fresh["total_nm_cents"])
+    names = {c["name"] for c in edited["cards"]}
+    assert validate_prices.validate("fixture", None, doc, names) == []
+
+    before = path.read_bytes()
+    again = prices.prune("fixture")
+    assert again["changed"] is False and path.read_bytes() == before
+
+
 # ── the one real call ────────────────────────────────────────────────────
 
 @pytest.mark.network
