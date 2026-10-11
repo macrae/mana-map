@@ -55,6 +55,10 @@ CHANNELS = {
     "drain": "model_drain",
     "attack_enabler": "model_commander_attack_tutor",
     "discard": "model_discard",
+    # DISCOVER N, read on an instant or sorcery and ALWAYS ON, like `tutor`
+    # beside it: it is card selection, it needs no authored rate, and a deck
+    # without the keyword never reaches the branch, so nothing else moves.
+    "discover": None,
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -167,7 +171,14 @@ def channels_for(profile):
             # around "lean into Zada" without one of them.
             "spell_token_copy",
             # A static lord or anthem (2026-10-05), listed with the channel.
-            "static_lord")):
+            "static_lord",
+            # THE PUMP LOOP'S KEYS, 2026-10-11. goldfish_turn's pump loop casts
+            # on every one of these and `_try_untap` on the last; only the
+            # token copy had been listed, so Haze of Rage read as invisible.
+            "spell_pump_single", "spell_pump_team", "spell_counters",
+            "spell_double_strike", "spell_power_to_each_opponent",
+            "spell_extra_combat", "spell_untap")) \
+            or ((profile.get("combat") or {}).get("spell_power_multiplier") or 1) > 1:
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
@@ -232,6 +243,8 @@ def channels_for(profile):
             # guard, not against the mirror.
             "drain_etb", "gain_etb", "drain_per_type", "gain_per_type", "lifelink")):
         found.add("drain")
+    if profile.get("discover_n"):
+        found.add("discover")
     return found
 
 
@@ -256,7 +269,8 @@ def never_cast(profile, flags):
     if profile["is_land"] or profile["bodies"] > 0 or profile["produces"] > 0 \
             or profile.get("land_mana_bonus") \
             or profile["tutor"] or profile["reduces"] \
-            or profile.get("ritual"):            # the ritual step casts it (2026-10-05)
+            or profile.get("ritual") \
+            or profile.get("discover_n"):        # the discover loop casts it (2026-10-11)
         return False
     cb = profile.get("combat") or {}
     if flags.get("model_combat"):
@@ -273,7 +287,18 @@ def never_cast(profile, flags):
                 cb.get("spell_damage_greatest_power"),
                 # a noncreature anthem is cast by its own loop once there is a
                 # board (2026-10-05); a creature lord is a body and cast anyway
-                cb.get("static_lord"))):
+                cb.get("static_lord"),
+                # THE PUMP LOOP, mirrored key for key (goldfish_turn's
+                # `if model_combat and battlefield:` pump loop), and the
+                # untapper `_try_untap` casts between combats. Only the token
+                # copy had been listed, so every pump in the fleet read as
+                # never cast while the loop cast it (2026-10-11).
+                cb.get("spell_pump_single"), cb.get("spell_pump_team"),
+                cb.get("spell_counters"), cb.get("spell_double_strike"),
+                (cb.get("spell_power_multiplier") or 1) > 1,
+                cb.get("spell_power_to_each_opponent"),
+                cb.get("spell_extra_combat"), cb.get("spell_token_copy"),
+                cb.get("spell_untap"))):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
             return False

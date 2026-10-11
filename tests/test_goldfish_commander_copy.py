@@ -103,6 +103,44 @@ def test_copy_fodder_rejects_a_spell_you_would_not_want_copied():
     assert not copy_fodder(_spell("Exile", "Exile target creature."))
 
 
+HATE_MIRAGE_TEXT = (
+    "Choose up to two target creatures you don't control. For each of those "
+    "creatures, create a token that's a copy of that creature. Those tokens gain "
+    "haste. Exile them at the beginning of the next end step.")
+
+
+def test_a_plural_target_you_dont_control_is_not_fodder():
+    """HATE MIRAGE WAS ZADA FODDER, and the comment beside the exclusion said it
+    was not. The exclusion read "creature you don't control" in the singular;
+    "up to two target creatureS you don't control" slipped past it, the
+    choosable count was stripped, and "gain haste" whitelisted it — a spell that
+    can never name your own commander. Re-introduce the bug by putting the
+    singular back in `_COPY_FODDER_PLURAL_RE`."""
+    assert not copy_fodder(_spell("Hate Mirage", HATE_MIRAGE_TEXT, "Sorcery"))
+    # The singular, which was always caught, still is.
+    assert not copy_fodder(_spell(
+        "Singular", "Target creature you don't control gains haste. Draw a card."))
+
+
+@requires_data
+def test_the_hate_mirage_sweep_is_pinned():
+    """THE SWEEP, PINNED. Old vs new over the 2026-10-11 corpus (34,888 names):
+    `copy_fodder` 899 -> 898, Hate Mirage the only card dropped and nothing
+    gained. Read the cards before re-centring."""
+    from conftest import assert_corpus_count
+    from manamap.pilot import card_pool
+    frame = card_pool.load_frame()
+    hits = set()
+    for name, type_line, text in zip(frame["name"], frame["type_line"],
+                                     frame["oracle_text"]):
+        if copy_fodder({"name": name, "type_line": type_line,
+                        "oracle_text": text if isinstance(text, str) else ""}):
+            hits.add(name)
+    assert "Hate Mirage" not in hits
+    assert "Twinflame" in hits and "Daring Discovery" in hits, "the control"
+    assert_corpus_count(len(hits), 898, "copy_fodder matches")
+
+
 # ── the fleet-wide draw fix this channel needed first ──
 
 

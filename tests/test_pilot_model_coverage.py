@@ -389,3 +389,91 @@ def test_a_channel_the_model_reads_is_reported_as_read():
 
     # The control: a vanilla rock still reads as mana and nothing else.
     assert probe(produces=2) == {"mana"}
+
+
+# ── the pump loop, mirrored (2026-10-11) ────────────────────────────────────
+
+#: Every key goldfish_turn's pump loop casts on, plus the untapper
+#: `_try_untap` casts between combats. A value that reads as "set" for each.
+_PUMP_KEYS = {
+    "spell_pump_single": 3, "spell_pump_team": 1, "spell_counters": 1,
+    "spell_double_strike": True, "spell_power_multiplier": 2,
+    "spell_power_to_each_opponent": True, "spell_extra_combat": 1,
+    "spell_token_copy": 1, "spell_untap": True,
+}
+
+
+def _bare_profile(**over):
+    from manamap.pilot.goldfish_profiles import draw_profile
+    base = {"is_land": False, "produces": 0, "reduces": 0,
+            "scales_with_colors": 0, "land_mana_bonus": 0, "ritual": None,
+            "creature_bodies": 0, "bodies": 0, "tutor": False,
+            "treasure_trigger": None, "treasure_bonus": 0,
+            "treasure_doubler": False, "token_doubler": False,
+            "sac_outlet": None, "attack_enabler": None, "discover_n": 0,
+            "combat": {}, "death": {}, "drain": {}, "event": {},
+            "blood": (0, None), "artifact_sac": {},
+            "draw": draw_profile({"name": "x", "oracle_text": "",
+                                  "type_line": "", "cmc": 0})}
+    base.update(over)
+    return base
+
+
+@pytest.mark.parametrize("key,value", sorted(_PUMP_KEYS.items()))
+def test_every_pump_key_is_read_and_cast_under_model_combat(key, value):
+    """THE PUMP LOOP CASTS ON NINE KEYS AND THE MIRRORS KNEW ONE.
+
+    `channels_for` listed `spell_token_copy` and `never_cast` none of them, so
+    Haze of Rage, Wild Ride, Boros Charm and Seize the Day read as INVISIBLE
+    while the loop cast them — and the fleet test could not see it, because a
+    card that feeds no channel is never a silent loss. Adding the keys to
+    `channels_for` alone flagged seven decks; adding them to `never_cast` too
+    is what makes that green honestly. Re-introduce the bug by dropping any key
+    from either mirror."""
+    p = _bare_profile(combat={key: value})
+    assert "combat" in mc.channels_for(p), f"{key} is cast and reported unread"
+    assert not mc.never_cast(p, {"model_combat": True}), (
+        f"{key}: the pump loop casts it and `never_cast` says nothing does")
+    # The control: the loop is gated on the flag, so is the mirror.
+    assert mc.never_cast(p, {}), f"{key} is cast with model_combat OFF"
+
+
+def test_a_multiplier_of_one_is_not_a_pump():
+    """`spell_power_multiplier` is a factor; 1 doubles nothing and the loop's
+    own predicate is `> 1`."""
+    p = _bare_profile(combat={"spell_power_multiplier": 1})
+    assert "combat" not in mc.channels_for(p)
+    assert mc.never_cast(p, {"model_combat": True})
+
+
+@pytest.mark.regression
+def test_goblin_storm_pumps_are_cast():
+    """The cards that exposed it, on the deck that runs them."""
+    from manamap.pilot import goldfish
+    try:
+        cards = {c["name"]: c for c in mc.load_deck_cards("goblin-storm")["cards"]}
+    except FileNotFoundError:
+        pytest.skip("goblin-storm has no cards.json")
+    flags, _named = mc.declaration("goblin-storm")
+    assert flags.get("model_combat"), "goblin-storm no longer declares combat"
+    checked = 0
+    for name in ("Haze of Rage", "Wild Ride"):
+        if name not in cards:
+            continue
+        checked += 1
+        p = goldfish.classify(cards[name])
+        assert "combat" in mc.channels_for(p), name
+        assert not mc.never_cast(p, flags), name
+    assert checked >= 1, "neither pump is on goblin-storm any more"
+
+
+# ── discover, the floor (2026-10-11) ────────────────────────────────────────
+
+def test_a_discover_spell_is_read_always_and_cast():
+    """Discover is card selection with no authored rate: ALWAYS ON, like
+    `tutor`, and the discover loop casts it whatever the deck declares."""
+    assert mc.CHANNELS["discover"] is None
+    p = _bare_profile(discover_n=4)
+    assert "discover" in mc.channels_for(p)
+    assert not mc.never_cast(p, {})
+    assert "discover" not in mc.channels_for(_bare_profile())

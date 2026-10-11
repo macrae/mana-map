@@ -565,6 +565,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 drawn_extra += 1
                 drawn_this_turn += 1
 
+        def _discover(n):
+            """DISCOVER N, THE FLOOR READING (CR 701.57): exile from the top
+            until a nonland card with mana value N or less, put it into your
+            HAND, the rest to the bottom in a random order.
+
+            NOT `draw_n`: a discovered card is not drawn, so a draw doubler
+            does not touch it and it is not `drawn_extra`. It IS in `seen`,
+            because assembly is "reached by", and it was. The free cast the
+            card offers is not taken — the hit waits in hand and is cast at
+            full cost, so this errs LOW. The bottom shuffle follows the
+            declared reveal's, and is the only place this reading touches the
+            rng: a deck without Discover never gets here.
+            """
+            skipped = []
+            hit = None
+            while deck:
+                c = deck.pop(0)
+                if not c["is_land"] and c["cmc"] <= n:
+                    hit = c
+                    break
+                skipped.append(c)
+            if hit is not None:
+                hand.append(hit)
+                seen.add(hit["name"])
+            rng.shuffle(skipped)
+            deck.extend(skipped)
+            return hit
+
         def discard_n(n, everything=False, shuffled=False):
             """Put n cards from hand into the yard. AUTHORED POLICY, stated in
             MODEL_ASSUMPTIONS: a wheel discards the whole hand, lands included;
@@ -1542,6 +1570,35 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         or card["draw"]["cast_draw"]):
                     draw_engines.append(card["draw"])
                 _register_wheel(card)
+
+        # DISCOVER, THE FLOOR. A discover spell is not a body, a draw, a pump or
+        # a storm card, so until this loop it fell through every loop above and
+        # sat in hand: Daring Discovery read as a dead card on the deck it was
+        # printed for. THE CASTING PREDICATE SHIPS WITH THE CHANNEL.
+        #
+        # Cast BEFORE the storm loop, through `spend` -> `_note_cast`, so it is a
+        # spell for storm, per-cast damage and magecraft like any other. Each
+        # resolution puts one card into hand (`_discover`); a Zada-style copy
+        # resolves once more per other creature, under the same predicate every
+        # other copy site uses, and each copy is a magecraft event (cast OR
+        # copy). The hit is NOT cast free — it waits in hand for the loops to
+        # pick it up at full cost, on a later pass or a later turn — so this is
+        # a floor, and labelled one in docs/simulation.md.
+        for card in sorted((c for c in hand if c["discover_n"]),
+                           key=lambda c: -reduced_cost(c, reductions, chosen_type)):
+            if card not in hand:
+                continue
+            if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                continue
+            _note_cast(card)
+            _resolutions = 1
+            if (commander_copy and commander_turn is not None
+                    and card["copy_fodder"] and len(battlefield) > 1):
+                _copies = len(battlefield) - 1
+                _resolutions += _copies
+                _magecraft(_copies)
+            for _ in range(_resolutions):
+                _discover(card["discover_n"])
 
         # STORM. A copy for each spell cast BEFORE it this turn — so the spell
         # count IS the card, and until this commit there was no count to read.

@@ -34,6 +34,7 @@ from manamap.pilot.common import (
 
 from manamap.pilot.goldfish_profiles import (
     copy_fodder,
+    discover_n,
     spell_count_profile,
     GOLDFISH_MULLIGAN_MAX_LANDS,
     GOLDFISH_MULLIGAN_MIN_LANDS,
@@ -233,6 +234,10 @@ def classify(card, pool=None):
         # WHETHER A ZADA-STYLE ABILITY CAN MULTIPLY THIS SPELL. Read here so the
         # casting loop can see it; the ability itself is declared per deck.
         "copy_fodder": copy_fodder(card),
+        # DISCOVER N on an instant or sorcery, else 0. ALWAYS READ — the cast
+        # and the walk happen only when a card carries it, so a deck without
+        # one never reaches the branch and stays bit-identical.
+        "discover_n": discover_n(card),
         # THE SPELL-COUNT CHANNELS: storm, per-cast damage, magecraft.
         "spell_count": spell_count_profile(card),
         # THE PIPS MUST COME FROM THE DOOR THE COST CAME FROM. `front_field`

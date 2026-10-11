@@ -463,7 +463,7 @@ pull one board out and ask the resolver about it.**
 
 Every channel below is **OFF unless its flag is set** in the deck's
 `goldfish_targets.json`, and the default figures on a deck that declares nothing are
-mana, bodies and land drops. `model-coverage <slug>` names, per card, which channel it
+mana, bodies, land drops, tutors and Discover (the last row, always on). `model-coverage <slug>` names, per card, which channel it
 feeds and whether that channel is on — **a card the model cannot read looks exactly like
 a card that does not help**, and that confusion has cost this project a whole branch.
 
@@ -476,6 +476,7 @@ a card that does not help**, and that confusion has cost this project a whole br
 | `model_discard` | wheels, loots, and the discard half of a draw you pay for |
 | `model_colors` | on by default; a colourless mana model is simply wrong |
 | `model_commander_animate`, `model_commander_attack_tutor`, `model_commander_combat_reveal`, `model_commander_copy` | commander abilities only one corpus card has, declared per deck |
+| *(always on)* Discover — **a FLOOR** | an instant or sorcery with "Discover N" is cast through the normal cast path (it counts for storm, magecraft and per-cast damage) and each resolution, plus one per Zada copy, walks the library to the first nonland card with mana value N or less and puts it into HAND; the rest go to the bottom in a random order. The hit is cast later at full cost rather than free now, so every figure it moves **errs low** (2026-10-11) |
 
 **The copy channel is the one that needs no authored rate**, and that is why it can be
 trusted more than its neighbours. `model_commander_attack_tutor` reported 5.70 fires a
@@ -544,6 +545,13 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
   noncreature anthem is cast once there are two bodies and stays. Swept: 218 corpus cards
   read, refused when scoped by colour, tokens, commander or a condition. Legion Lieutenant
   -> Vampire Interloper went from +0.022 damage@T10 (a phantom gain) to -1.088.
+- **Discover is read on an instant or sorcery with a fixed N only** (Daring Discovery,
+  Hit the Mother Lode, Walk with the Ancestors — three cards of the 21 that say
+  "discover N"), and as a floor: the free cast is not taken. NOT read: the five Hidden
+  lands' sacrifice ability (Hidden Volcano's "Discover 4"), a permanent that discovers on
+  entry, death, attack or activation (Geological Appraiser, Trumpeting Carnosaur, Etali's
+  Favor, Chimil, …), "discover X", and the riders beside it (Hit the Mother Lode's
+  Treasures, Walk with the Ancestors' return).
 - **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
   your own board and cashes the deaths; that channel is not built.
 

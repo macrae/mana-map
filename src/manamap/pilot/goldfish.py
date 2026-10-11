@@ -449,6 +449,13 @@ MODEL_ASSUMPTIONS = [
     "a land fetch, which is ramp and has no channel here yet. Reported as the "
     "*_assisted figures; the unassisted figures beside them exclude tutors "
     "entirely.",
+    "DISCOVER IS A FLOOR, and always on. An instant or sorcery with 'Discover "
+    "N' is cast like any spell (storm, magecraft and per-cast damage see it), "
+    "and each resolution — plus one per Zada copy — puts the first nonland "
+    "card with mana value N or less into HAND, the rest to the bottom in a "
+    "random order. The free cast is not taken: the hit is cast later at full "
+    "cost, so the figure errs low. A permanent's discover (the Hidden lands, "
+    "an ETB, a death) and discover X are not read.",
     "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering "
     "creature's power (Terror of the Peaks), X damage where X counts your board "
     "(Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY "

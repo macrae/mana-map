@@ -1336,7 +1336,7 @@ _COPY_FODDER_PLURAL_RE = re.compile(
     # target creature gets +1/+1": two independent targets, so never "only".
     r"other target|another target|second target|"
     r"target player|target opponent|any target|target permanent|"
-    r"creature an opponent controls|creature you don't control|"
+    r"creature an opponent controls|creatures? you don't control|"
     r"creature an opponent|target attacking|target blocking", re.I)
 #: A TOKEN COPY IN STRIVE'S WORDING — Twinflame, "Choose any number of target
 #: creatures you control. For each of them, create a token that's a copy of
@@ -1356,7 +1356,15 @@ _COPY_FODDER_PLURAL_RE = re.compile(
 #: "YOU CONTROL" IS REQUIRED, and it is the guard that matters: Hate Mirage
 #: ("Choose up to two target creatures you don't control. For each of those
 #: creatures…") copies an opponent's board, and Hunted by The Family hands the
-#: copy to a villainous choice. Neither matches.
+#: copy to a villainous choice. Neither matches `spell_token_copy`.
+#:
+#: THIS PARAGRAPH USED TO SAY THE SAME OF `copy_fodder`, AND IT WAS FALSE. The
+#: plural exclusion read "creature you don't control" in the singular, so "target
+#: creatureS you don't control" slipped past it, the choosable count stripped the
+#: plural, and Hate Mirage's "can't block" whitelisted it: an opponent-targeting
+#: spell scored as Zada fodder. The exclusion is `creatures?` since 2026-10-11.
+#: SWEEP (34,888 corpus names): copy_fodder 899 -> 898, Hate Mirage the only card
+#: dropped, nothing gained.
 #:
 #: CORPUS SWEEP 2026-10-10 (34,964 cards), old vs new, BOTH predicates:
 #:   spell_token_copy  newly matched: Twinflame. Newly dropped: none.
@@ -1474,6 +1482,46 @@ def copy_fodder(card):
     if _MANDATORY_PLURAL_RE.search(_CHOOSABLE_TARGETS_RE.sub(" ", text)):
         return False
     return bool(_COPY_FODDER_EFFECT_RE.search(text))
+
+
+#: DISCOVER N (CR 701.57): exile from the top until a nonland card with mana
+#: value N or less, cast it free OR PUT IT INTO YOUR HAND, the rest to the
+#: bottom in a random order. THE FLOOR READING takes the hand half: the hit is
+#: cast later at full cost, so the channel errs LOW, the documented safe
+#: direction. The free cast is the follow-up, not this commit.
+#:
+#: A FIXED N ONLY, AND ONLY ON AN INSTANT OR SORCERY — the spell resolves when it
+#: is cast, which is the one door this reading wires. The reminder text is
+#: stripped first so Hit the Mother Lode's "(To discover 10, …" cannot count.
+#:
+#: CORPUS SWEEP 2026-10-11 (34,888 names). 35 cards say "discover" at all; 21 say
+#: "discover <N>"; THREE are instants or sorceries and are read here:
+#:   Daring Discovery        discover 4; "up to three target creatures can't
+#:                           block" — copy_fodder, so a Zada copy discovers too.
+#:                           The only discover card that is.
+#:   Hit the Mother Lode     discover 10; its Treasure for the difference is not
+#:                           read (a floor).
+#:   Walk with the Ancestors discover 4; its graveyard return is not read.
+#: NAMED AND OUT OF SCOPE, each a door this reading does not open:
+#:   the five Hidden lands (Hidden Volcano et al.) — a sacrifice ability;
+#:   permanents that discover on entry, death, attack or an activation —
+#:   Geological Appraiser, Trumpeting Carnosaur, Etali's Favor, Primordial
+#:   Gnawer, Digsite Conservator, Zoetic Glyph, Caparocti Sunborn, Chimil,
+#:   Franklin Richards, Quintorius Kand, Long-Range Sensor, Swashbuckler's
+#:   Whip, Buried Treasure;
+#:   "discover X" (14 cards: Ashaya's Enduring Bond, Contest of Claws, Hurl into
+#:   History, Pantlaza, Monstrous Vortex, …) — X is a count this reader has no
+#:   board to resolve, the refusal it makes for X pumps.
+_DISCOVER_RE = re.compile(r"\bdiscover (\d+)\b", re.I)
+
+
+def discover_n(card):
+    """N for an instant or sorcery that says "Discover N", else 0."""
+    type_line = str(card.get("type_line", "") or "")
+    if "Instant" not in type_line and "Sorcery" not in type_line:
+        return 0
+    m = _DISCOVER_RE.search(_REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or "")))
+    return int(m.group(1)) if m else 0
 
 
 def draw_profile(card):
