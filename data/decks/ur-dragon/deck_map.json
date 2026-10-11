@@ -2,19 +2,29 @@
   "slug": "ur-dragon",
   "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
   "meta": {
-    "space": "embeddings_ability.npy",
-    "space_digest": "4773335227f46499",
+    "space": "embeddings_cardbert.npy",
+    "space_digest": "1c7fb3995420711c",
     "projection": "classical MDS + SMACOF, canonically oriented",
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 97,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "city-0 is 27 cards, the deck's mass, and holds 5 of the deck's verified-line cards (Ancient Gold Dragon, Drakuseth, Lathliss, Miirym, Terror of the Peaks); with Dragon Tempest and Sneak Attack (city-1) and Panharmonicon (city-5) that is the engine on the record.",
+      "city-0-hood-0 reads half-arbitrary: Dragonlord's Servant, Dragonspeaker Shaman and Whirlwing Stormbrood enable Dragon casting (discount, flash grant), but Glorybringer (exert removal) and Twinflame Tyrant (damage doubler) do a different job; CardBERT likely grouped them on shared 'Dragon spells / Dragon' wording. Named for the three that fit.",
+      "city-0-hood-1 is ten legendary Dragons plus Goldspan; six of eleven make treasure. The split from hood-3 looks thematic (legendary vs not) more than functional.",
+      "city-5 and city-6 each have a single neighbourhood identical to the city; both left unnamed so they fall back, since a narrower name is impossible.",
+      "city-2-hood-1 puts Desolation of Smaug (a sorcery: sweeper plus four Dragon-only mana) beside two red-white lands; it belongs in the mana city on its ritual half but is the odd member of that hood.",
+      "city-3-hood-1 is all black-red producers (Blood Crypt, Dragonskull Summit, Smoldering Marsh); the split from hood-0 is by colour pair, which reads clean. Dragonskull Summit has no basic type, so the city name FETCH TARGETS is true for 14 of 15.",
+      "city-1-hood-0 includes Chaos Warp, which is removal, not a tutor; CardBERT grouped it on library-reveal wording. Membership left as measured."
+    ]
   },
   "cards": [
     {
       "name": "The Ur-Dragon",
-      "x": 0.88042,
-      "y": 0.17319,
+      "x": -0.12891,
+      "y": -0.59707,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -26,10 +36,10 @@
     },
     {
       "name": "Ancient Gold Dragon",
-      "x": 0.28005,
-      "y": -0.34645,
-      "city": 2,
-      "hood": 0,
+      "x": -0.37359,
+      "y": -0.44463,
+      "city": 0,
+      "hood": 3,
       "roles": [
         "threat:body",
         "threat:tokens"
@@ -39,9 +49,9 @@
     },
     {
       "name": "Arcane Signet",
-      "x": -0.1326,
-      "y": -0.64837,
-      "city": 5,
+      "x": 0.13672,
+      "y": 0.345,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -52,10 +62,10 @@
     },
     {
       "name": "Arid Mesa",
-      "x": -0.65291,
-      "y": 0.51352,
-      "city": 3,
-      "hood": 1,
+      "x": 0.53685,
+      "y": 0.15269,
+      "city": 2,
+      "hood": 2,
       "roles": [
         "land:fetch",
         "land:utility"
@@ -65,10 +75,10 @@
     },
     {
       "name": "Asceticism",
-      "x": 0.42697,
-      "y": 0.32994,
-      "city": 0,
-      "hood": 0,
+      "x": -0.37239,
+      "y": 0.82851,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "protection:granted",
         "protection:self"
@@ -78,10 +88,10 @@
     },
     {
       "name": "Atarka, World Render",
-      "x": 0.5271,
-      "y": -0.10694,
-      "city": 2,
-      "hood": 0,
+      "x": -0.2169,
+      "y": -0.51756,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "threat:body",
         "wincon:combat"
@@ -91,10 +101,10 @@
     },
     {
       "name": "Atsushi, the Blazing Sky",
-      "x": 0.18964,
-      "y": -0.64092,
-      "city": 1,
-      "hood": 0,
+      "x": -0.00592,
+      "y": -0.56779,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "draw:impulse",
         "ramp:treasure",
@@ -105,10 +115,10 @@
     },
     {
       "name": "Battlefield Forge",
-      "x": -0.47635,
-      "y": 0.0577,
-      "city": 3,
-      "hood": 0,
+      "x": 0.39553,
+      "y": 0.05163,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "land:untapped-dual",
         "land:utility"
@@ -118,10 +128,10 @@
     },
     {
       "name": "Birds of Paradise",
-      "x": -0.38858,
-      "y": -0.49166,
-      "city": 1,
-      "hood": 1,
+      "x": 0.01322,
+      "y": -0.21767,
+      "city": 6,
+      "hood": 0,
       "roles": [
         "ramp:dork",
         "threat:body",
@@ -132,10 +142,10 @@
     },
     {
       "name": "Blood Crypt",
-      "x": -0.60245,
-      "y": -0.00991,
-      "city": 6,
-      "hood": 0,
+      "x": 0.64339,
+      "y": -0.15789,
+      "city": 3,
+      "hood": 1,
       "roles": [
         "land:tapped"
       ],
@@ -144,10 +154,10 @@
     },
     {
       "name": "Bloodstained Mire",
-      "x": -0.6536,
-      "y": 0.50661,
-      "city": 3,
-      "hood": 1,
+      "x": 0.54375,
+      "y": 0.21115,
+      "city": 2,
+      "hood": 2,
       "roles": [
         "land:fetch",
         "land:utility"
@@ -157,10 +167,10 @@
     },
     {
       "name": "Bloom Tender",
-      "x": -0.31203,
-      "y": -0.47074,
-      "city": 1,
-      "hood": 1,
+      "x": 0.29785,
+      "y": 0.66635,
+      "city": 6,
+      "hood": 0,
       "roles": [
         "ramp:dork",
         "threat:body",
@@ -171,10 +181,10 @@
     },
     {
       "name": "Boros Charm",
-      "x": 0.63463,
-      "y": 0.25456,
-      "city": 0,
-      "hood": 0,
+      "x": -0.70826,
+      "y": 0.35781,
+      "city": 4,
+      "hood": 1,
       "roles": [
         "protection:self",
         "removal:damage",
@@ -185,10 +195,10 @@
     },
     {
       "name": "Breaching Dragonstorm",
-      "x": 0.2597,
-      "y": -0.06604,
-      "city": 2,
-      "hood": 0,
+      "x": -0.42741,
+      "y": -0.00338,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "value:etb"
       ],
@@ -197,9 +207,9 @@
     },
     {
       "name": "Breeding Pool",
-      "x": -0.63453,
-      "y": -0.02139,
-      "city": 6,
+      "x": 0.6095,
+      "y": -0.19268,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -209,9 +219,9 @@
     },
     {
       "name": "Canopy Vista",
-      "x": -0.61515,
-      "y": -0.02862,
-      "city": 6,
+      "x": 0.59467,
+      "y": -0.07385,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -221,10 +231,10 @@
     },
     {
       "name": "Cavern of Souls",
-      "x": -0.65652,
-      "y": 0.15076,
-      "city": 3,
-      "hood": 2,
+      "x": 0.47503,
+      "y": 0.26625,
+      "city": 2,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -234,9 +244,9 @@
     },
     {
       "name": "Chaos Warp",
-      "x": -0.01203,
-      "y": 0.22751,
-      "city": 2,
+      "x": -0.71834,
+      "y": -0.10435,
+      "city": 1,
       "hood": 0,
       "roles": [],
       "verified": false,
@@ -244,9 +254,9 @@
     },
     {
       "name": "Chromatic Lantern",
-      "x": -0.13776,
-      "y": -0.65607,
-      "city": 5,
+      "x": 0.19168,
+      "y": 0.23814,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -257,9 +267,9 @@
     },
     {
       "name": "Cinder Glade",
-      "x": -0.62363,
-      "y": -0.03026,
-      "city": 6,
+      "x": 0.52803,
+      "y": -0.17916,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -269,9 +279,9 @@
     },
     {
       "name": "City of Brass",
-      "x": -0.54363,
-      "y": 0.12475,
-      "city": 3,
+      "x": 0.27431,
+      "y": 0.07553,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -283,9 +293,9 @@
     },
     {
       "name": "Command Tower",
-      "x": -0.57008,
-      "y": 0.0978,
-      "city": 3,
+      "x": 0.38833,
+      "y": 0.19615,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -296,10 +306,10 @@
     },
     {
       "name": "Crux of Fate",
-      "x": 0.89799,
-      "y": -0.32084,
-      "city": 2,
-      "hood": 1,
+      "x": 0.02814,
+      "y": 0.71768,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "removal:sweeper"
       ],
@@ -308,10 +318,10 @@
     },
     {
       "name": "Deflecting Swat",
-      "x": 0.02231,
-      "y": 0.1396,
-      "city": 2,
-      "hood": 0,
+      "x": -0.78692,
+      "y": 0.23078,
+      "city": 4,
+      "hood": 1,
       "roles": [
         "protection:redirect"
       ],
@@ -320,10 +330,10 @@
     },
     {
       "name": "Delighted Halfling",
-      "x": -0.41181,
-      "y": -0.49752,
-      "city": 1,
-      "hood": 1,
+      "x": 0.51616,
+      "y": 0.53081,
+      "city": 6,
+      "hood": 0,
       "roles": [
         "ramp:dork",
         "threat:body",
@@ -334,10 +344,10 @@
     },
     {
       "name": "Desolation of Smaug",
-      "x": 0.33647,
-      "y": -0.69619,
+      "x": 0.05277,
+      "y": -0.10252,
       "city": 2,
-      "hood": 2,
+      "hood": 1,
       "roles": [
         "removal:damage"
       ],
@@ -346,10 +356,10 @@
     },
     {
       "name": "Dragon Tempest",
-      "x": 0.18391,
-      "y": -0.00501,
-      "city": 2,
-      "hood": 2,
+      "x": -0.58125,
+      "y": 0.0172,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "removal:damage",
         "value:etb"
@@ -359,9 +369,9 @@
     },
     {
       "name": "Dragon's Hoard",
-      "x": -0.08781,
-      "y": -0.68849,
-      "city": 5,
+      "x": -0.00313,
+      "y": 0.40891,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -373,10 +383,10 @@
     },
     {
       "name": "Dragonlord's Servant",
-      "x": 0.98794,
-      "y": 0.17907,
+      "x": -0.61366,
+      "y": -0.17911,
       "city": 0,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "ramp:cost-reduction",
         "threat:body"
@@ -386,10 +396,10 @@
     },
     {
       "name": "Dragonskull Summit",
-      "x": -0.61656,
-      "y": -0.03329,
-      "city": 6,
-      "hood": 0,
+      "x": 0.50735,
+      "y": -0.03999,
+      "city": 3,
+      "hood": 1,
       "roles": [
         "land:tapped"
       ],
@@ -398,10 +408,10 @@
     },
     {
       "name": "Dragonspeaker Shaman",
-      "x": 0.98179,
-      "y": 0.19521,
+      "x": -0.62431,
+      "y": -0.10254,
       "city": 0,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "ramp:cost-reduction",
         "threat:body"
@@ -411,10 +421,10 @@
     },
     {
       "name": "Drakuseth, Maw of Flames",
-      "x": 0.39115,
-      "y": -0.31316,
-      "city": 2,
-      "hood": 2,
+      "x": -0.25111,
+      "y": -0.58532,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "removal:damage",
         "threat:body"
@@ -424,9 +434,9 @@
     },
     {
       "name": "Enlightened Tutor",
-      "x": -0.00214,
-      "y": 0.67921,
-      "city": 4,
+      "x": -0.37015,
+      "y": 0.27408,
+      "city": 1,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -436,9 +446,9 @@
     },
     {
       "name": "Exotic Orchard",
-      "x": -0.58672,
-      "y": 0.12071,
-      "city": 3,
+      "x": 0.34974,
+      "y": 0.18702,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -449,10 +459,10 @@
     },
     {
       "name": "Faeburrow Elder",
-      "x": -0.30131,
-      "y": -0.45752,
-      "city": 1,
-      "hood": 1,
+      "x": 0.20415,
+      "y": 0.55374,
+      "city": 6,
+      "hood": 0,
       "roles": [
         "ramp:dork",
         "threat:body",
@@ -463,9 +473,9 @@
     },
     {
       "name": "Farseek",
-      "x": -0.07455,
-      "y": 0.74573,
-      "city": 4,
+      "x": 0.4759,
+      "y": -0.44838,
+      "city": 1,
       "hood": 0,
       "roles": [
         "ramp:land"
@@ -475,10 +485,10 @@
     },
     {
       "name": "Firespitter Whelp",
-      "x": 0.31891,
-      "y": -0.20209,
-      "city": 2,
-      "hood": 2,
+      "x": -0.43842,
+      "y": -0.51515,
+      "city": 0,
+      "hood": 3,
       "roles": [
         "removal:damage",
         "threat:body"
@@ -488,9 +498,9 @@
     },
     {
       "name": "Flawless Maneuver",
-      "x": 0.45453,
-      "y": 0.29078,
-      "city": 0,
+      "x": -0.7437,
+      "y": 0.48287,
+      "city": 4,
       "hood": 0,
       "roles": [
         "protection:granted",
@@ -501,10 +511,10 @@
     },
     {
       "name": "Forest",
-      "x": -0.48462,
-      "y": -0.08543,
-      "city": 6,
-      "hood": 1,
+      "x": 0.67626,
+      "y": -0.16572,
+      "city": 3,
+      "hood": 0,
       "roles": [
         "land:basic"
       ],
@@ -513,10 +523,10 @@
     },
     {
       "name": "Gadrak, the Crown-Scourge",
-      "x": 0.02031,
-      "y": -0.49098,
-      "city": 1,
-      "hood": 0,
+      "x": -0.01164,
+      "y": -0.38344,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "ramp:dork",
         "ramp:treasure",
@@ -528,10 +538,10 @@
     },
     {
       "name": "Ganax, Astral Hunter",
-      "x": -0.01629,
-      "y": -0.54863,
-      "city": 1,
-      "hood": 0,
+      "x": -0.0362,
+      "y": -0.34927,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "ramp:dork",
         "ramp:treasure",
@@ -543,10 +553,10 @@
     },
     {
       "name": "Garruk's Uprising",
-      "x": 0.5996,
-      "y": -0.37316,
-      "city": 2,
-      "hood": 0,
+      "x": -0.25505,
+      "y": 0.31536,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "draw:engine",
         "value:etb"
@@ -556,9 +566,9 @@
     },
     {
       "name": "Gemstone Mine",
-      "x": -0.54842,
-      "y": 0.11396,
-      "city": 3,
+      "x": 0.45148,
+      "y": 0.09431,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -570,10 +580,10 @@
     },
     {
       "name": "Generous Gift",
-      "x": 0.73671,
-      "y": -0.12983,
-      "city": 2,
-      "hood": 1,
+      "x": -0.03004,
+      "y": 0.80951,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "removal:spot",
         "threat:tokens"
@@ -583,10 +593,10 @@
     },
     {
       "name": "Glorybringer",
-      "x": 0.16832,
-      "y": -0.06889,
-      "city": 2,
-      "hood": 2,
+      "x": -0.39332,
+      "y": -0.40876,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "removal:damage",
         "threat:body"
@@ -596,10 +606,10 @@
     },
     {
       "name": "Goldspan Dragon",
-      "x": -0.02153,
-      "y": -0.5399,
-      "city": 1,
-      "hood": 0,
+      "x": -0.07583,
+      "y": -0.33369,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "ramp:dork",
         "ramp:treasure",
@@ -611,10 +621,10 @@
     },
     {
       "name": "Hellkite Courser",
-      "x": 0.34817,
-      "y": 0.00276,
-      "city": 2,
-      "hood": 0,
+      "x": -0.25235,
+      "y": -0.42595,
+      "city": 0,
+      "hood": 3,
       "roles": [
         "threat:body",
         "value:etb"
@@ -624,10 +634,10 @@
     },
     {
       "name": "Herald's Horn",
-      "x": 0.86783,
-      "y": 0.31405,
-      "city": 0,
-      "hood": 1,
+      "x": -0.29806,
+      "y": 0.55637,
+      "city": 5,
+      "hood": 0,
       "roles": [
         "payoff:typal",
         "ramp:cost-reduction"
@@ -637,9 +647,9 @@
     },
     {
       "name": "Heroic Intervention",
-      "x": 0.49047,
-      "y": 0.32941,
-      "city": 0,
+      "x": -0.62815,
+      "y": 0.62816,
+      "city": 4,
       "hood": 0,
       "roles": [
         "protection:self"
@@ -649,10 +659,10 @@
     },
     {
       "name": "Ignoble Hierarch",
-      "x": -0.33934,
-      "y": -0.62167,
-      "city": 1,
-      "hood": 1,
+      "x": 0.23785,
+      "y": 0.6495,
+      "city": 6,
+      "hood": 0,
       "roles": [
         "buff:pump",
         "ramp:dork",
@@ -664,10 +674,10 @@
     },
     {
       "name": "Island",
-      "x": -0.48635,
-      "y": -0.10057,
-      "city": 6,
-      "hood": 1,
+      "x": 0.66572,
+      "y": -0.24886,
+      "city": 3,
+      "hood": 0,
       "roles": [
         "land:basic"
       ],
@@ -676,10 +686,10 @@
     },
     {
       "name": "Lathliss, Dragon Queen",
-      "x": 0.53783,
-      "y": -0.20571,
-      "city": 2,
-      "hood": 0,
+      "x": -0.2935,
+      "y": -0.5804,
+      "city": 0,
+      "hood": 2,
       "roles": [
         "buff:pump",
         "threat:body",
@@ -690,9 +700,9 @@
     },
     {
       "name": "Lightning Greaves",
-      "x": 0.64569,
-      "y": 0.42267,
-      "city": 0,
+      "x": -0.47281,
+      "y": 0.71054,
+      "city": 5,
       "hood": 0,
       "roles": [
         "buff:attached",
@@ -703,9 +713,9 @@
     },
     {
       "name": "Maelstrom of the Spirit Dragon",
-      "x": -0.56529,
-      "y": 0.29146,
-      "city": 3,
+      "x": 0.35981,
+      "y": 0.16809,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -717,9 +727,9 @@
     },
     {
       "name": "Mana Confluence",
-      "x": -0.63198,
-      "y": 0.15672,
-      "city": 3,
+      "x": 0.34385,
+      "y": 0.19846,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -731,10 +741,10 @@
     },
     {
       "name": "Miirym, Sentinel Wyrm",
-      "x": 0.53981,
-      "y": 0.3754,
+      "x": -0.16793,
+      "y": -0.53846,
       "city": 0,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "protection:self",
         "threat:body"
@@ -744,9 +754,9 @@
     },
     {
       "name": "Mithril Coat",
-      "x": 0.67662,
-      "y": 0.48752,
-      "city": 0,
+      "x": -0.50093,
+      "y": 0.68947,
+      "city": 5,
       "hood": 0,
       "roles": [
         "buff:attached",
@@ -758,10 +768,10 @@
     },
     {
       "name": "Mountain",
-      "x": -0.43243,
-      "y": -0.13123,
-      "city": 6,
-      "hood": 1,
+      "x": 0.55777,
+      "y": -0.24051,
+      "city": 3,
+      "hood": 0,
       "roles": [
         "land:basic"
       ],
@@ -770,9 +780,9 @@
     },
     {
       "name": "Nature's Lore",
-      "x": -0.05982,
-      "y": 0.73087,
-      "city": 4,
+      "x": 0.44325,
+      "y": -0.43981,
+      "city": 1,
       "hood": 0,
       "roles": [
         "ramp:land",
@@ -783,10 +793,10 @@
     },
     {
       "name": "Old Gnawbone",
-      "x": 0.19958,
-      "y": -0.7,
-      "city": 1,
-      "hood": 0,
+      "x": -0.08479,
+      "y": -0.49431,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "ramp:treasure",
         "threat:body"
@@ -796,9 +806,9 @@
     },
     {
       "name": "Overgrown Tomb",
-      "x": -0.6629,
-      "y": -0.01408,
-      "city": 6,
+      "x": 0.7419,
+      "y": -0.03855,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -808,9 +818,9 @@
     },
     {
       "name": "Panharmonicon",
-      "x": 0.31799,
-      "y": 0.41022,
-      "city": 2,
+      "x": -0.25447,
+      "y": 0.5039,
+      "city": 5,
       "hood": 0,
       "roles": [
         "doubler:triggers"
@@ -820,9 +830,9 @@
     },
     {
       "name": "Path of Ancestry",
-      "x": -0.58609,
-      "y": 0.17298,
-      "city": 3,
+      "x": 0.47943,
+      "y": 0.2256,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -833,10 +843,10 @@
     },
     {
       "name": "Plains",
-      "x": -0.47684,
-      "y": -0.09911,
-      "city": 6,
-      "hood": 1,
+      "x": 0.65938,
+      "y": -0.08709,
+      "city": 3,
+      "hood": 0,
       "roles": [
         "land:basic"
       ],
@@ -845,9 +855,9 @@
     },
     {
       "name": "Reflecting Pool",
-      "x": -0.59271,
-      "y": 0.1225,
-      "city": 3,
+      "x": 0.3766,
+      "y": 0.21153,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing"
@@ -857,10 +867,10 @@
     },
     {
       "name": "Roiling Dragonstorm",
-      "x": 0.56841,
-      "y": -0.49468,
-      "city": 2,
-      "hood": 0,
+      "x": -0.77228,
+      "y": 0.02639,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "draw:burst",
         "value:etb"
@@ -870,9 +880,9 @@
     },
     {
       "name": "Sacred Foundry",
-      "x": -0.61593,
-      "y": -0.02185,
-      "city": 6,
+      "x": 0.50169,
+      "y": -0.13089,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -882,9 +892,9 @@
     },
     {
       "name": "Sarkhan's Triumph",
-      "x": 0.06189,
-      "y": 0.69868,
-      "city": 4,
+      "x": -0.37232,
+      "y": -0.13235,
+      "city": 1,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -894,10 +904,10 @@
     },
     {
       "name": "Scalding Tarn",
-      "x": -0.64469,
-      "y": 0.50731,
-      "city": 3,
-      "hood": 1,
+      "x": 0.53995,
+      "y": 0.18566,
+      "city": 2,
+      "hood": 2,
       "roles": [
         "land:fetch",
         "land:utility"
@@ -907,9 +917,9 @@
     },
     {
       "name": "Scourge of Valkas",
-      "x": 0.16918,
-      "y": -0.02494,
-      "city": 2,
+      "x": -0.44393,
+      "y": -0.57491,
+      "city": 0,
       "hood": 2,
       "roles": [
         "buff:pump",
@@ -921,10 +931,10 @@
     },
     {
       "name": "Scourge of the Throne",
-      "x": 0.43572,
-      "y": -0.4211,
-      "city": 2,
-      "hood": 0,
+      "x": -0.46777,
+      "y": -0.50098,
+      "city": 0,
+      "hood": 3,
       "roles": [
         "buff:counters",
         "threat:body"
@@ -934,9 +944,9 @@
     },
     {
       "name": "Skyshroud Claim",
-      "x": -0.03543,
-      "y": 0.70457,
-      "city": 4,
+      "x": 0.41574,
+      "y": -0.49375,
+      "city": 1,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -946,10 +956,10 @@
     },
     {
       "name": "Smaug the Magnificent",
-      "x": 0.16189,
-      "y": -0.53072,
-      "city": 1,
-      "hood": 0,
+      "x": -0.1118,
+      "y": -0.45619,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "ramp:treasure",
         "threat:body"
@@ -959,10 +969,10 @@
     },
     {
       "name": "Smoldering Marsh",
-      "x": -0.59196,
-      "y": -0.0244,
-      "city": 6,
-      "hood": 0,
+      "x": 0.60636,
+      "y": -0.10998,
+      "city": 3,
+      "hood": 1,
       "roles": [
         "land:tapped"
       ],
@@ -971,19 +981,19 @@
     },
     {
       "name": "Sneak Attack",
-      "x": 0.07345,
-      "y": 0.13213,
-      "city": 2,
-      "hood": 0,
+      "x": -0.45695,
+      "y": 0.13125,
+      "city": 1,
+      "hood": 1,
       "roles": [],
       "verified": true,
       "commander": false
     },
     {
       "name": "Sol Ring",
-      "x": -0.12933,
-      "y": -0.72759,
-      "city": 5,
+      "x": 0.26972,
+      "y": 0.43202,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -994,10 +1004,10 @@
     },
     {
       "name": "Solphim, Mayhem Dominus",
-      "x": 0.60436,
-      "y": 0.14698,
+      "x": -0.70785,
+      "y": -0.36583,
       "city": 0,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "protection:self",
         "threat:body",
@@ -1008,9 +1018,9 @@
     },
     {
       "name": "Spire of Industry",
-      "x": -0.58823,
-      "y": 0.1224,
-      "city": 3,
+      "x": 0.40025,
+      "y": 0.22342,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:fixing",
@@ -1022,9 +1032,9 @@
     },
     {
       "name": "Steam Vents",
-      "x": -0.65214,
-      "y": -0.02688,
-      "city": 6,
+      "x": 0.44696,
+      "y": -0.25938,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -1034,10 +1044,10 @@
     },
     {
       "name": "Steel Hellkite",
-      "x": 0.74642,
-      "y": -0.29375,
-      "city": 2,
-      "hood": 1,
+      "x": -0.50702,
+      "y": -0.37088,
+      "city": 0,
+      "hood": 2,
       "roles": [
         "buff:pump",
         "removal:sweeper",
@@ -1048,9 +1058,9 @@
     },
     {
       "name": "Stomping Ground",
-      "x": -0.62188,
-      "y": -0.01497,
-      "city": 6,
+      "x": 0.54124,
+      "y": -0.1993,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -1060,10 +1070,10 @@
     },
     {
       "name": "Stubborn Denial",
-      "x": 0.29094,
-      "y": 0.85207,
-      "city": 2,
-      "hood": 3,
+      "x": -1.0,
+      "y": 0.42951,
+      "city": 4,
+      "hood": 1,
       "roles": [
         "counterspell"
       ],
@@ -1072,10 +1082,10 @@
     },
     {
       "name": "Sunbaked Canyon",
-      "x": -0.56466,
-      "y": 0.17949,
-      "city": 3,
-      "hood": 0,
+      "x": 0.39305,
+      "y": 0.07453,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "land:untapped-dual",
         "land:utility"
@@ -1085,10 +1095,10 @@
     },
     {
       "name": "Swords to Plowshares",
-      "x": 0.23142,
-      "y": 0.5802,
-      "city": 2,
-      "hood": 1,
+      "x": -0.77227,
+      "y": 0.61651,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "removal:spot"
       ],
@@ -1097,9 +1107,9 @@
     },
     {
       "name": "Talisman of Dominance",
-      "x": -0.05399,
-      "y": -0.69125,
-      "city": 5,
+      "x": 0.42898,
+      "y": 0.57201,
+      "city": 2,
       "hood": 0,
       "roles": [
         "ramp:rock",
@@ -1110,9 +1120,9 @@
     },
     {
       "name": "Teferi's Protection",
-      "x": 0.54227,
-      "y": 0.46168,
-      "city": 0,
+      "x": -0.69222,
+      "y": 0.52279,
+      "city": 4,
       "hood": 0,
       "roles": [
         "protection:self"
@@ -1122,10 +1132,10 @@
     },
     {
       "name": "Temur Ascendancy",
-      "x": 0.59667,
-      "y": -0.47059,
-      "city": 2,
-      "hood": 0,
+      "x": -0.16568,
+      "y": 0.01246,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "draw:engine"
       ],
@@ -1134,10 +1144,10 @@
     },
     {
       "name": "Terror of the Peaks",
-      "x": 0.34308,
-      "y": -0.23436,
-      "city": 2,
-      "hood": 0,
+      "x": -0.44752,
+      "y": -0.55149,
+      "city": 0,
+      "hood": 3,
       "roles": [
         "threat:body",
         "value:etb"
@@ -1147,10 +1157,10 @@
     },
     {
       "name": "Thrakkus the Butcher",
-      "x": 0.36355,
-      "y": -0.50133,
-      "city": 2,
-      "hood": 0,
+      "x": -0.17198,
+      "y": -0.60399,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "threat:body"
       ],
@@ -1159,10 +1169,10 @@
     },
     {
       "name": "Thunderbreak Regent",
-      "x": 0.1729,
-      "y": -0.08928,
-      "city": 2,
-      "hood": 2,
+      "x": -0.42544,
+      "y": -0.50947,
+      "city": 0,
+      "hood": 3,
       "roles": [
         "threat:body"
       ],
@@ -1171,9 +1181,9 @@
     },
     {
       "name": "Transcendent Dragon",
-      "x": 0.3057,
-      "y": 0.82534,
-      "city": 2,
+      "x": -0.53718,
+      "y": -0.50729,
+      "city": 0,
       "hood": 3,
       "roles": [
         "counterspell",
@@ -1185,9 +1195,9 @@
     },
     {
       "name": "Turbulent Springs",
-      "x": -0.64307,
-      "y": -0.02088,
-      "city": 6,
+      "x": 0.45527,
+      "y": -0.22574,
+      "city": 3,
       "hood": 0,
       "roles": [
         "land:tapped"
@@ -1197,8 +1207,8 @@
     },
     {
       "name": "Twinflame Tyrant",
-      "x": 0.52247,
-      "y": 0.03291,
+      "x": -0.3577,
+      "y": -0.38576,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -1210,10 +1220,10 @@
     },
     {
       "name": "Unclaimed Territory",
-      "x": -0.67267,
-      "y": 0.15705,
-      "city": 3,
-      "hood": 2,
+      "x": 0.49833,
+      "y": 0.24994,
+      "city": 2,
+      "hood": 0,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -1223,10 +1233,10 @@
     },
     {
       "name": "Urza's Incubator",
-      "x": 1.0,
-      "y": 0.30558,
-      "city": 0,
-      "hood": 1,
+      "x": -0.22835,
+      "y": 0.62748,
+      "city": 5,
+      "hood": 0,
       "roles": [
         "payoff:typal",
         "ramp:cost-reduction"
@@ -1236,9 +1246,9 @@
     },
     {
       "name": "Whirlwing Stormbrood // Dynamic Soar",
-      "x": 0.35002,
-      "y": 0.49523,
-      "city": 2,
+      "x": -0.04806,
+      "y": -0.65111,
+      "city": 0,
       "hood": 0,
       "roles": [
         "buff:counters",
@@ -1249,10 +1259,10 @@
     },
     {
       "name": "Wooded Foothills",
-      "x": -0.65146,
-      "y": 0.51047,
-      "city": 3,
-      "hood": 1,
+      "x": 0.55184,
+      "y": 0.13605,
+      "city": 2,
+      "hood": 2,
       "roles": [
         "land:fetch",
         "land:utility"
@@ -1265,314 +1275,284 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
-      "fallback": "Insurance",
-      "cx": 0.68372,
-      "cy": 0.2866,
-      "count": 15,
+      "label": "THE AIR FORCE",
+      "fallback": "Bodies",
+      "cx": -0.3035,
+      "cy": -0.46301,
+      "count": 27,
       "cards": [
-        "Asceticism",
-        "Boros Charm",
+        "Ancient Gold Dragon",
+        "Atarka, World Render",
+        "Atsushi, the Blazing Sky",
         "Dragonlord's Servant",
         "Dragonspeaker Shaman",
-        "Flawless Maneuver",
-        "Herald's Horn",
-        "Heroic Intervention",
-        "Lightning Greaves",
+        "Drakuseth, Maw of Flames",
+        "Firespitter Whelp",
+        "Gadrak, the Crown-Scourge",
+        "Ganax, Astral Hunter",
+        "Glorybringer",
+        "Goldspan Dragon",
+        "Hellkite Courser",
+        "Lathliss, Dragon Queen",
         "Miirym, Sentinel Wyrm",
-        "Mithril Coat",
+        "Old Gnawbone",
+        "Scourge of Valkas",
+        "Scourge of the Throne",
+        "Smaug the Magnificent",
         "Solphim, Mayhem Dominus",
-        "Teferi's Protection",
+        "Steel Hellkite",
+        "Terror of the Peaks",
         "The Ur-Dragon",
+        "Thrakkus the Butcher",
+        "Thunderbreak Regent",
+        "Transcendent Dragon",
         "Twinflame Tyrant",
-        "Urza's Incubator"
+        "Whirlwing Stormbrood // Dynamic Soar"
       ],
-      "verified_count": 1
+      "verified_count": 5,
+      "gloss": "The deck's mass and its clock: every arrival here discounts the next under eminence and turns into damage, treasure or reach."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
-      "fallback": "Insurance",
-      "cx": 0.55378,
-      "cy": 0.31318,
-      "count": 10,
+      "label": "THE ENABLERS",
+      "fallback": "Ramp",
+      "cx": -0.40741,
+      "cy": -0.34545,
+      "count": 5,
       "cards": [
-        "Asceticism",
-        "Boros Charm",
-        "Flawless Maneuver",
-        "Heroic Intervention",
-        "Lightning Greaves",
-        "Miirym, Sentinel Wyrm",
-        "Mithril Coat",
-        "Solphim, Mayhem Dominus",
-        "Teferi's Protection",
-        "Twinflame Tyrant"
+        "Dragonlord's Servant",
+        "Dragonspeaker Shaman",
+        "Glorybringer",
+        "Twinflame Tyrant",
+        "Whirlwing Stormbrood // Dynamic Soar"
       ],
-      "verified_count": 1
+      "verified_count": 0,
+      "gloss": "Make the next Dragon cheaper or instant-speed; Glorybringer and Twinflame Tyrant ride along on wording, not job."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
-      "fallback": "Payoffs",
-      "cx": 0.9436,
-      "cy": 0.23342,
-      "count": 5,
+      "label": "THE HOARDING LEGENDS",
+      "fallback": "Bodies",
+      "cx": -0.11482,
+      "cy": -0.49337,
+      "count": 11,
       "cards": [
-        "Dragonlord's Servant",
-        "Dragonspeaker Shaman",
-        "Herald's Horn",
+        "Atarka, World Render",
+        "Atsushi, the Blazing Sky",
+        "Drakuseth, Maw of Flames",
+        "Gadrak, the Crown-Scourge",
+        "Ganax, Astral Hunter",
+        "Goldspan Dragon",
+        "Miirym, Sentinel Wyrm",
+        "Old Gnawbone",
+        "Smaug the Magnificent",
         "The Ur-Dragon",
-        "Urza's Incubator"
+        "Thrakkus the Butcher"
       ],
-      "verified_count": 0
+      "verified_count": 2,
+      "gloss": "The named Dragons, half of them treasure makers: they pay for the next threat while they hit."
+    },
+    {
+      "id": "city-0-hood-2",
+      "level": 1,
+      "parent": "city-0",
+      "label": "THE FIREBREATHERS",
+      "fallback": "Interaction",
+      "cx": -0.48807,
+      "cy": -0.47301,
+      "count": 4,
+      "cards": [
+        "Lathliss, Dragon Queen",
+        "Scourge of Valkas",
+        "Solphim, Mayhem Dominus",
+        "Steel Hellkite"
+      ],
+      "verified_count": 1,
+      "gloss": "Spare mana becomes power or burn; late game, every untapped land here is damage."
+    },
+    {
+      "id": "city-0-hood-3",
+      "level": 1,
+      "parent": "city-0",
+      "label": "THE TRIGGERS",
+      "fallback": "Value",
+      "cx": -0.42033,
+      "cy": -0.49357,
+      "count": 7,
+      "cards": [
+        "Ancient Gold Dragon",
+        "Firespitter Whelp",
+        "Hellkite Courser",
+        "Scourge of the Throne",
+        "Terror of the Peaks",
+        "Thunderbreak Regent",
+        "Transcendent Dragon"
+      ],
+      "verified_count": 2,
+      "gloss": "Each punishes something happening: a Dragon landing, a spell cast, a Dragon targeted, an attack declared."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
-      "fallback": "Ramp",
-      "cx": -0.11086,
-      "cy": -0.54457,
-      "count": 11,
+      "label": "THE SETUP",
+      "fallback": "Tutors",
+      "cx": -0.24284,
+      "cy": -0.00129,
+      "count": 13,
       "cards": [
-        "Atsushi, the Blazing Sky",
-        "Birds of Paradise",
-        "Bloom Tender",
-        "Delighted Halfling",
-        "Faeburrow Elder",
-        "Gadrak, the Crown-Scourge",
-        "Ganax, Astral Hunter",
-        "Goldspan Dragon",
-        "Ignoble Hierarch",
-        "Old Gnawbone",
-        "Smaug the Magnificent"
+        "Asceticism",
+        "Breaching Dragonstorm",
+        "Chaos Warp",
+        "Dragon Tempest",
+        "Enlightened Tutor",
+        "Farseek",
+        "Garruk's Uprising",
+        "Nature's Lore",
+        "Roiling Dragonstorm",
+        "Sarkhan's Triumph",
+        "Skyshroud Claim",
+        "Sneak Attack",
+        "Temur Ascendancy"
       ],
-      "verified_count": 0
+      "verified_count": 2,
+      "gloss": "Noncreature spells that find the piece you need, then make every Dragon that lands draw, burn or hit sooner."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
-      "fallback": "Ramp",
-      "cx": 0.08893,
-      "cy": -0.57519,
+      "label": "THE LIBRARY RUN",
+      "fallback": "Tutors",
+      "cx": -0.02099,
+      "cy": -0.22409,
       "count": 6,
       "cards": [
-        "Atsushi, the Blazing Sky",
-        "Gadrak, the Crown-Scourge",
-        "Ganax, Astral Hunter",
-        "Goldspan Dragon",
-        "Old Gnawbone",
-        "Smaug the Magnificent"
+        "Chaos Warp",
+        "Enlightened Tutor",
+        "Farseek",
+        "Nature's Lore",
+        "Sarkhan's Triumph",
+        "Skyshroud Claim"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Searchers for lands, enchantments and Dragons; Chaos Warp is the answer that reads like a search."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
-      "fallback": "Bodies II",
-      "cx": -0.35062,
-      "cy": -0.50782,
-      "count": 5,
+      "label": "WHEN DRAGONS LAND",
+      "fallback": "Card Flow",
+      "cx": -0.433,
+      "cy": 0.18968,
+      "count": 7,
       "cards": [
-        "Birds of Paradise",
-        "Bloom Tender",
-        "Delighted Halfling",
-        "Faeburrow Elder",
-        "Ignoble Hierarch"
+        "Asceticism",
+        "Breaching Dragonstorm",
+        "Dragon Tempest",
+        "Garruk's Uprising",
+        "Roiling Dragonstorm",
+        "Sneak Attack",
+        "Temur Ascendancy"
       ],
-      "verified_count": 0
+      "verified_count": 2,
+      "gloss": "Enchantments that sit on the table and pay off every big creature entering or cheat one in."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
-      "fallback": "Bodies",
-      "cx": 0.3642,
-      "cy": -0.0586,
-      "count": 29,
+      "label": "THE FIXING",
+      "fallback": "Mana",
+      "cx": 0.36673,
+      "cy": 0.20876,
+      "count": 23,
       "cards": [
-        "Ancient Gold Dragon",
-        "Atarka, World Render",
-        "Breaching Dragonstorm",
-        "Chaos Warp",
-        "Crux of Fate",
-        "Deflecting Swat",
+        "Arcane Signet",
+        "Arid Mesa",
+        "Battlefield Forge",
+        "Bloodstained Mire",
+        "Cavern of Souls",
+        "Chromatic Lantern",
+        "City of Brass",
+        "Command Tower",
         "Desolation of Smaug",
-        "Dragon Tempest",
-        "Drakuseth, Maw of Flames",
-        "Firespitter Whelp",
-        "Garruk's Uprising",
-        "Generous Gift",
-        "Glorybringer",
-        "Hellkite Courser",
-        "Lathliss, Dragon Queen",
-        "Panharmonicon",
-        "Roiling Dragonstorm",
-        "Scourge of Valkas",
-        "Scourge of the Throne",
-        "Sneak Attack",
-        "Steel Hellkite",
-        "Stubborn Denial",
-        "Swords to Plowshares",
-        "Temur Ascendancy",
-        "Terror of the Peaks",
-        "Thrakkus the Butcher",
-        "Thunderbreak Regent",
-        "Transcendent Dragon",
-        "Whirlwing Stormbrood // Dynamic Soar"
+        "Dragon's Hoard",
+        "Exotic Orchard",
+        "Gemstone Mine",
+        "Maelstrom of the Spirit Dragon",
+        "Mana Confluence",
+        "Path of Ancestry",
+        "Reflecting Pool",
+        "Scalding Tarn",
+        "Sol Ring",
+        "Spire of Industry",
+        "Sunbaked Canyon",
+        "Talisman of Dominance",
+        "Unclaimed Territory",
+        "Wooded Foothills"
       ],
-      "verified_count": 7
+      "verified_count": 0,
+      "gloss": "Five colours on curve: lands and rocks that make any colour, and the fetches that dig for the right dual."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
-      "fallback": "Bodies",
-      "cx": 0.35073,
-      "cy": -0.11331,
+      "label": "ANY COLOUR",
+      "fallback": "Mana",
+      "cx": 0.33882,
+      "cy": 0.25577,
       "count": 16,
       "cards": [
-        "Ancient Gold Dragon",
-        "Atarka, World Render",
-        "Breaching Dragonstorm",
-        "Chaos Warp",
-        "Deflecting Swat",
-        "Garruk's Uprising",
-        "Hellkite Courser",
-        "Lathliss, Dragon Queen",
-        "Panharmonicon",
-        "Roiling Dragonstorm",
-        "Scourge of the Throne",
-        "Sneak Attack",
-        "Temur Ascendancy",
-        "Terror of the Peaks",
-        "Thrakkus the Butcher",
-        "Whirlwing Stormbrood // Dynamic Soar"
+        "Arcane Signet",
+        "Cavern of Souls",
+        "Chromatic Lantern",
+        "City of Brass",
+        "Command Tower",
+        "Dragon's Hoard",
+        "Exotic Orchard",
+        "Gemstone Mine",
+        "Maelstrom of the Spirit Dragon",
+        "Mana Confluence",
+        "Path of Ancestry",
+        "Reflecting Pool",
+        "Sol Ring",
+        "Spire of Industry",
+        "Talisman of Dominance",
+        "Unclaimed Territory"
       ],
-      "verified_count": 5
+      "verified_count": 0,
+      "gloss": "One permanent, every colour: rainbow lands and rocks that never ask which pip you need."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
-      "fallback": "Interaction II",
-      "cx": 0.65314,
-      "cy": -0.04105,
-      "count": 4,
+      "label": "RED-WHITE, PLUS A RITUAL",
+      "fallback": "Mana IIII",
+      "cx": 0.28045,
+      "cy": 0.00788,
+      "count": 3,
       "cards": [
-        "Crux of Fate",
-        "Generous Gift",
-        "Steel Hellkite",
-        "Swords to Plowshares"
+        "Battlefield Forge",
+        "Desolation of Smaug",
+        "Sunbaked Canyon"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-2-hood-2",
       "level": 1,
       "parent": "city-2",
-      "label": null,
-      "fallback": "Interaction",
-      "cx": 0.24869,
-      "cy": -0.19994,
-      "count": 7,
-      "cards": [
-        "Desolation of Smaug",
-        "Dragon Tempest",
-        "Drakuseth, Maw of Flames",
-        "Firespitter Whelp",
-        "Glorybringer",
-        "Scourge of Valkas",
-        "Thunderbreak Regent"
-      ],
-      "verified_count": 2
-    },
-    {
-      "id": "city-2-hood-3",
-      "level": 1,
-      "parent": "city-2",
-      "label": null,
-      "fallback": "Bodies III",
-      "cx": 0.29832,
-      "cy": 0.8387,
-      "count": 2,
-      "cards": [
-        "Stubborn Denial",
-        "Transcendent Dragon"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-3",
-      "level": 0,
-      "label": null,
-      "fallback": "Mana",
-      "cx": -0.59918,
-      "cy": 0.22978,
-      "count": 17,
-      "cards": [
-        "Arid Mesa",
-        "Battlefield Forge",
-        "Bloodstained Mire",
-        "Cavern of Souls",
-        "City of Brass",
-        "Command Tower",
-        "Exotic Orchard",
-        "Gemstone Mine",
-        "Maelstrom of the Spirit Dragon",
-        "Mana Confluence",
-        "Path of Ancestry",
-        "Reflecting Pool",
-        "Scalding Tarn",
-        "Spire of Industry",
-        "Sunbaked Canyon",
-        "Unclaimed Territory",
-        "Wooded Foothills"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-3-hood-0",
-      "level": 1,
-      "parent": "city-3",
-      "label": null,
-      "fallback": "Mana",
-      "cx": -0.56856,
-      "cy": 0.14186,
-      "count": 11,
-      "cards": [
-        "Battlefield Forge",
-        "City of Brass",
-        "Command Tower",
-        "Exotic Orchard",
-        "Gemstone Mine",
-        "Maelstrom of the Spirit Dragon",
-        "Mana Confluence",
-        "Path of Ancestry",
-        "Reflecting Pool",
-        "Spire of Industry",
-        "Sunbaked Canyon"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-3-hood-1",
-      "level": 1,
-      "parent": "city-3",
-      "label": null,
+      "label": "THE FETCHES",
       "fallback": "Mana III",
-      "cx": -0.65067,
-      "cy": 0.50948,
+      "cx": 0.5431,
+      "cy": 0.17139,
       "count": 4,
       "cards": [
         "Arid Mesa",
@@ -1580,100 +1560,16 @@
         "Scalding Tarn",
         "Wooded Foothills"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
-      "id": "city-3-hood-2",
-      "level": 1,
-      "parent": "city-3",
-      "label": null,
-      "fallback": "Mana IIIII",
-      "cx": -0.66459,
-      "cy": 0.1539,
-      "count": 2,
-      "cards": [
-        "Cavern of Souls",
-        "Unclaimed Territory"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-4",
+      "id": "city-3",
       "level": 0,
-      "label": null,
-      "fallback": "Tutors",
-      "cx": -0.02201,
-      "cy": 0.71181,
-      "count": 5,
-      "cards": [
-        "Enlightened Tutor",
-        "Farseek",
-        "Nature's Lore",
-        "Sarkhan's Triumph",
-        "Skyshroud Claim"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-4-hood-0",
-      "level": 1,
-      "parent": "city-4",
-      "label": null,
-      "fallback": "Tutors",
-      "cx": -0.02201,
-      "cy": 0.71181,
-      "count": 5,
-      "cards": [
-        "Enlightened Tutor",
-        "Farseek",
-        "Nature's Lore",
-        "Sarkhan's Triumph",
-        "Skyshroud Claim"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-5",
-      "level": 0,
-      "label": null,
-      "fallback": "Value",
-      "cx": -0.1083,
-      "cy": -0.68235,
-      "count": 5,
-      "cards": [
-        "Arcane Signet",
-        "Chromatic Lantern",
-        "Dragon's Hoard",
-        "Sol Ring",
-        "Talisman of Dominance"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-5-hood-0",
-      "level": 1,
-      "parent": "city-5",
-      "label": null,
-      "fallback": "Value",
-      "cx": -0.1083,
-      "cy": -0.68235,
-      "count": 5,
-      "cards": [
-        "Arcane Signet",
-        "Chromatic Lantern",
-        "Dragon's Hoard",
-        "Sol Ring",
-        "Talisman of Dominance"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-6",
-      "level": 0,
-      "label": null,
+      "label": "FETCH TARGETS",
       "fallback": "Mana II",
-      "cx": -0.58403,
-      "cy": -0.04419,
+      "cx": 0.58237,
+      "cy": -0.15664,
       "count": 15,
       "cards": [
         "Blood Crypt",
@@ -1692,46 +1588,180 @@
         "Stomping Ground",
         "Turbulent Springs"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The typed duals and basics the fetches and land searchers go and get; the base the fixing stands on."
+    },
+    {
+      "id": "city-3-hood-0",
+      "level": 1,
+      "parent": "city-3",
+      "label": "SHOCKS AND BASICS",
+      "fallback": "Mana II",
+      "cx": 0.58153,
+      "cy": -0.17014,
+      "count": 12,
+      "cards": [
+        "Breeding Pool",
+        "Canopy Vista",
+        "Cinder Glade",
+        "Forest",
+        "Island",
+        "Mountain",
+        "Overgrown Tomb",
+        "Plains",
+        "Sacred Foundry",
+        "Steam Vents",
+        "Stomping Ground",
+        "Turbulent Springs"
+      ],
+      "verified_count": 0,
+      "gloss": null
+    },
+    {
+      "id": "city-3-hood-1",
+      "level": 1,
+      "parent": "city-3",
+      "label": "THE BLACK-RED LANDS",
+      "fallback": "Mana IIIII",
+      "cx": 0.5857,
+      "cy": -0.10262,
+      "count": 3,
+      "cards": [
+        "Blood Crypt",
+        "Dragonskull Summit",
+        "Smoldering Marsh"
+      ],
+      "verified_count": 0,
+      "gloss": null
+    },
+    {
+      "id": "city-4",
+      "level": 0,
+      "label": "THE INSURANCE",
+      "fallback": "Insurance",
+      "cx": -0.5926,
+      "cy": 0.53285,
+      "count": 9,
+      "cards": [
+        "Boros Charm",
+        "Crux of Fate",
+        "Deflecting Swat",
+        "Flawless Maneuver",
+        "Generous Gift",
+        "Heroic Intervention",
+        "Stubborn Denial",
+        "Swords to Plowshares",
+        "Teferi's Protection"
+      ],
+      "verified_count": 0,
+      "gloss": "Held up, not cast: answers and shields that keep the Dragons alive through the turn you commit."
+    },
+    {
+      "id": "city-4-hood-0",
+      "level": 1,
+      "parent": "city-4",
+      "label": "WHITE SHIELDS AND SWORDS",
+      "fallback": "Insurance",
+      "cx": -0.47304,
+      "cy": 0.62959,
+      "count": 6,
+      "cards": [
+        "Crux of Fate",
+        "Flawless Maneuver",
+        "Generous Gift",
+        "Heroic Intervention",
+        "Swords to Plowshares",
+        "Teferi's Protection"
+      ],
+      "verified_count": 0,
+      "gloss": "The white half: protect the board wholesale or remove the one thing pointed at you."
+    },
+    {
+      "id": "city-4-hood-1",
+      "level": 1,
+      "parent": "city-4",
+      "label": "THE STACK TRICKS",
+      "fallback": "Finishers",
+      "cx": -0.83173,
+      "cy": 0.33937,
+      "count": 3,
+      "cards": [
+        "Boros Charm",
+        "Deflecting Swat",
+        "Stubborn Denial"
+      ],
+      "verified_count": 0,
+      "gloss": "Cheap or free responses that win a single exchange on the stack."
+    },
+    {
+      "id": "city-5",
+      "level": 0,
+      "label": "THE GEAR",
+      "fallback": "Payoffs",
+      "cx": -0.35092,
+      "cy": 0.61755,
+      "count": 5,
+      "cards": [
+        "Herald's Horn",
+        "Lightning Greaves",
+        "Mithril Coat",
+        "Panharmonicon",
+        "Urza's Incubator"
+      ],
+      "verified_count": 1,
+      "gloss": "Artifacts that make each Dragon cheaper, faster, harder to kill, or trigger twice on arrival."
+    },
+    {
+      "id": "city-5-hood-0",
+      "level": 1,
+      "parent": "city-5",
+      "label": null,
+      "fallback": "Payoffs",
+      "cx": -0.35092,
+      "cy": 0.61755,
+      "count": 5,
+      "cards": [
+        "Herald's Horn",
+        "Lightning Greaves",
+        "Mithril Coat",
+        "Panharmonicon",
+        "Urza's Incubator"
+      ],
+      "verified_count": 1
+    },
+    {
+      "id": "city-6",
+      "level": 0,
+      "label": "MANA ON LEGS",
+      "fallback": "Ramp",
+      "cx": 0.25385,
+      "cy": 0.43655,
+      "count": 5,
+      "cards": [
+        "Birds of Paradise",
+        "Bloom Tender",
+        "Delighted Halfling",
+        "Faeburrow Elder",
+        "Ignoble Hierarch"
+      ],
+      "verified_count": 0,
+      "gloss": "Creatures that tap for colour early so the first Dragon arrives a turn ahead of schedule."
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
       "label": null,
-      "fallback": "Mana II",
-      "cx": -0.62547,
-      "cy": -0.02241,
-      "count": 11,
+      "fallback": "Bodies II",
+      "cx": 0.25385,
+      "cy": 0.43655,
+      "count": 5,
       "cards": [
-        "Blood Crypt",
-        "Breeding Pool",
-        "Canopy Vista",
-        "Cinder Glade",
-        "Dragonskull Summit",
-        "Overgrown Tomb",
-        "Sacred Foundry",
-        "Smoldering Marsh",
-        "Steam Vents",
-        "Stomping Ground",
-        "Turbulent Springs"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-6-hood-1",
-      "level": 1,
-      "parent": "city-6",
-      "label": null,
-      "fallback": "Mana IIII",
-      "cx": -0.47006,
-      "cy": -0.10408,
-      "count": 4,
-      "cards": [
-        "Forest",
-        "Island",
-        "Mountain",
-        "Plains"
+        "Birds of Paradise",
+        "Bloom Tender",
+        "Delighted Halfling",
+        "Faeburrow Elder",
+        "Ignoble Hierarch"
       ],
       "verified_count": 0
     }
@@ -1739,673 +1769,703 @@
   "edges": [
     {
       "a": 0,
-      "b": 28,
-      "d": 0.0362
+      "b": 6,
+      "d": 0.1143
     },
     {
       "a": 0,
-      "b": 30,
-      "d": 0.0379
+      "b": 55,
+      "d": 0.1289
     },
     {
       "a": 1,
-      "b": 87,
-      "d": 0.1388
+      "b": 46,
+      "d": 0.1318
     },
     {
       "a": 1,
-      "b": 72,
-      "d": 0.1771
+      "b": 89,
+      "d": 0.1567
     },
     {
       "a": 2,
       "b": 18,
-      "d": 0.0125
+      "d": 0.0421
     },
     {
       "a": 2,
-      "b": 75,
-      "d": 0.0246
+      "b": 27,
+      "d": 0.1205
     },
     {
       "a": 3,
       "b": 96,
-      "d": 0.0007
+      "d": 0.0046
     },
     {
       "a": 3,
       "b": 10,
-      "d": 0.0009
+      "d": 0.0133
     },
     {
       "a": 4,
-      "b": 37,
-      "d": 0.0608
+      "b": 41,
+      "d": 0.5445
     },
     {
       "a": 4,
-      "b": 48,
-      "d": 0.0619
+      "b": 74,
+      "d": 0.6043
     },
     {
       "a": 5,
-      "b": 88,
-      "d": 0.0926
+      "b": 31,
+      "d": 0.0863
     },
     {
       "a": 5,
-      "b": 92,
-      "d": 0.1201
+      "b": 55,
+      "d": 0.0932
     },
     {
       "a": 6,
-      "b": 59,
-      "d": 0.0768
-    },
-    {
-      "a": 6,
-      "b": 72,
-      "d": 0.0793
+      "b": 39,
+      "d": 0.1747
     },
     {
       "a": 7,
-      "b": 20,
-      "d": 0.021
+      "b": 82,
+      "d": 0.091
     },
     {
       "a": 7,
-      "b": 21,
-      "d": 0.0356
+      "b": 29,
+      "d": 0.1543
     },
     {
       "a": 8,
-      "b": 11,
-      "d": 0.0283
+      "b": 40,
+      "d": 0.2682
     },
     {
       "a": 8,
       "b": 34,
-      "d": 0.0491
+      "d": 0.2811
     },
     {
       "a": 9,
-      "b": 66,
-      "d": 0.0083
+      "b": 73,
+      "d": 0.0236
     },
     {
       "a": 9,
-      "b": 60,
-      "d": 0.0087
+      "b": 80,
+      "d": 0.144
     },
     {
       "a": 10,
-      "b": 96,
-      "d": 0.0012
+      "b": 68,
+      "d": 0.012
+    },
+    {
+      "a": 11,
+      "b": 24,
+      "d": 0.1777
     },
     {
       "a": 11,
       "b": 34,
-      "d": 0.0463
+      "d": 0.2114
     },
     {
       "a": 12,
-      "b": 48,
-      "d": 0.0863
+      "b": 37,
+      "d": 0.2727
     },
     {
       "a": 12,
-      "b": 76,
-      "d": 0.0887
-    },
-    {
-      "a": 13,
-      "b": 46,
-      "d": 0.0883
+      "b": 85,
+      "d": 0.3147
     },
     {
       "a": 13,
       "b": 26,
-      "d": 0.1425
+      "d": 0.1524
+    },
+    {
+      "a": 13,
+      "b": 65,
+      "d": 0.1961
     },
     {
       "a": 14,
-      "b": 80,
-      "d": 0.0064
+      "b": 15,
+      "d": 0.0786
     },
     {
       "a": 14,
-      "b": 78,
-      "d": 0.007
+      "b": 38,
+      "d": 0.0908
     },
     {
       "a": 15,
-      "b": 19,
-      "d": 0.0054
-    },
-    {
-      "a": 15,
-      "b": 29,
-      "d": 0.0095
+      "b": 38,
+      "d": 0.0742
     },
     {
       "a": 16,
       "b": 93,
-      "d": 0.0168
+      "d": 0.0113
     },
     {
       "a": 16,
-      "b": 64,
-      "d": 0.0489
+      "b": 62,
+      "d": 0.1217
+    },
+    {
+      "a": 17,
+      "b": 67,
+      "d": 0.2973
     },
     {
       "a": 17,
       "b": 23,
-      "d": 0.0785
-    },
-    {
-      "a": 17,
-      "b": 74,
-      "d": 0.0904
+      "d": 0.3815
     },
     {
       "a": 18,
-      "b": 75,
-      "d": 0.0141
+      "b": 54,
+      "d": 0.0876
     },
     {
       "a": 19,
-      "b": 29,
-      "d": 0.007
+      "b": 80,
+      "d": 0.014
+    },
+    {
+      "a": 15,
+      "b": 19,
+      "d": 0.083
     },
     {
       "a": 20,
       "b": 21,
-      "d": 0.03
+      "d": 0.1339
+    },
+    {
+      "a": 20,
+      "b": 33,
+      "d": 0.1587
+    },
+    {
+      "a": 21,
+      "b": 54,
+      "d": 0.0418
     },
     {
       "a": 21,
       "b": 33,
-      "d": 0.0056
-    },
-    {
-      "a": 21,
-      "b": 77,
-      "d": 0.0111
+      "d": 0.0438
     },
     {
       "a": 22,
-      "b": 79,
-      "d": 0.0971
+      "b": 43,
+      "d": 0.3688
     },
     {
       "a": 22,
-      "b": 83,
-      "d": 0.2223
+      "b": 85,
+      "d": 0.5163
+    },
+    {
+      "a": 12,
+      "b": 23,
+      "d": 0.3389
     },
     {
       "a": 23,
-      "b": 74,
-      "d": 0.0995
-    },
-    {
-      "a": 8,
-      "b": 24,
-      "d": 0.0662
+      "b": 85,
+      "d": 0.3802
     },
     {
       "a": 24,
       "b": 34,
-      "d": 0.0709
+      "d": 0.2798
+    },
+    {
+      "a": 7,
+      "b": 25,
+      "d": 0.3944
     },
     {
       "a": 25,
-      "b": 36,
-      "d": 0.1842
-    },
-    {
-      "a": 25,
-      "b": 89,
-      "d": 0.1982
+      "b": 78,
+      "d": 0.5054
     },
     {
       "a": 26,
-      "b": 44,
-      "d": 0.0629
-    },
-    {
-      "a": 26,
-      "b": 89,
-      "d": 0.0642
-    },
-    {
-      "a": 2,
-      "b": 27,
-      "d": 0.0287
+      "b": 65,
+      "d": 0.3113
     },
     {
       "a": 18,
       "b": 27,
-      "d": 0.0302
+      "d": 0.1898
     },
     {
       "a": 28,
       "b": 30,
-      "d": 0.007
+      "d": 0.0379
+    },
+    {
+      "a": 28,
+      "b": 92,
+      "d": 0.3294
     },
     {
       "a": 29,
       "b": 73,
-      "d": 0.0082
+      "d": 0.1341
+    },
+    {
+      "a": 30,
+      "b": 92,
+      "d": 0.3977
     },
     {
       "a": 31,
-      "b": 36,
-      "d": 0.0448
-    },
-    {
-      "a": 31,
-      "b": 89,
-      "d": 0.0527
+      "b": 55,
+      "d": 0.1351
     },
     {
       "a": 32,
       "b": 67,
-      "d": 0.03
+      "d": 0.3908
     },
     {
       "a": 32,
-      "b": 58,
-      "d": 0.0531
-    },
-    {
-      "a": 33,
-      "b": 77,
-      "d": 0.0063
-    },
-    {
-      "a": 35,
-      "b": 58,
-      "d": 0.0064
-    },
-    {
-      "a": 35,
       "b": 71,
-      "d": 0.01
-    },
-    {
-      "a": 36,
-      "b": 89,
-      "d": 0.0256
-    },
-    {
-      "a": 37,
-      "b": 48,
-      "d": 0.035
-    },
-    {
-      "a": 38,
-      "b": 63,
-      "d": 0.0114
-    },
-    {
-      "a": 38,
-      "b": 50,
-      "d": 0.0144
-    },
-    {
-      "a": 39,
-      "b": 45,
-      "d": 0.0369
-    },
-    {
-      "a": 39,
-      "b": 40,
-      "d": 0.0399
-    },
-    {
-      "a": 40,
-      "b": 45,
-      "d": 0.0195
-    },
-    {
-      "a": 41,
-      "b": 86,
-      "d": 0.048
-    },
-    {
-      "a": 41,
-      "b": 65,
-      "d": 0.1003
-    },
-    {
-      "a": 42,
-      "b": 82,
-      "d": 0.0285
-    },
-    {
-      "a": 21,
-      "b": 42,
-      "d": 0.0323
-    },
-    {
-      "a": 43,
-      "b": 83,
-      "d": 0.0905
-    },
-    {
-      "a": 43,
-      "b": 79,
-      "d": 0.1617
-    },
-    {
-      "a": 44,
-      "b": 89,
-      "d": 0.0407
-    },
-    {
-      "a": 36,
-      "b": 44,
-      "d": 0.0537
-    },
-    {
-      "a": 26,
-      "b": 46,
-      "d": 0.1458
-    },
-    {
-      "a": 47,
-      "b": 94,
-      "d": 0.0345
-    },
-    {
-      "a": 0,
-      "b": 47,
-      "d": 0.1063
-    },
-    {
-      "a": 34,
-      "b": 49,
-      "d": 0.0759
-    },
-    {
-      "a": 8,
-      "b": 49,
-      "d": 0.0982
-    },
-    {
-      "a": 50,
-      "b": 63,
-      "d": 0.0148
-    },
-    {
-      "a": 51,
-      "b": 69,
-      "d": 0.1354
-    },
-    {
-      "a": 51,
-      "b": 74,
-      "d": 0.1982
-    },
-    {
-      "a": 52,
-      "b": 56,
-      "d": 0.0438
-    },
-    {
-      "a": 48,
-      "b": 52,
-      "d": 0.0771
-    },
-    {
-      "a": 53,
-      "b": 82,
-      "d": 0.0271
-    },
-    {
-      "a": 53,
-      "b": 68,
-      "d": 0.0515
+      "d": 0.5838
     },
     {
       "a": 33,
       "b": 54,
-      "d": 0.0091
-    },
-    {
-      "a": 54,
-      "b": 77,
-      "d": 0.0108
-    },
-    {
-      "a": 48,
-      "b": 55,
-      "d": 0.0814
-    },
-    {
-      "a": 37,
-      "b": 55,
-      "d": 0.0874
-    },
-    {
-      "a": 48,
-      "b": 56,
-      "d": 0.0726
-    },
-    {
-      "a": 57,
-      "b": 63,
-      "d": 0.0169
-    },
-    {
-      "a": 38,
-      "b": 57,
-      "d": 0.0188
-    },
-    {
-      "a": 58,
-      "b": 71,
-      "d": 0.0074
-    },
-    {
-      "a": 45,
-      "b": 59,
-      "d": 0.0479
-    },
-    {
-      "a": 59,
-      "b": 72,
-      "d": 0.0507
-    },
-    {
-      "a": 14,
-      "b": 60,
-      "d": 0.0072
-    },
-    {
-      "a": 60,
-      "b": 80,
       "d": 0.0079
-    },
-    {
-      "a": 23,
-      "b": 61,
-      "d": 0.1428
-    },
-    {
-      "a": 61,
-      "b": 74,
-      "d": 0.1695
-    },
-    {
-      "a": 20,
-      "b": 62,
-      "d": 0.0347
-    },
-    {
-      "a": 62,
-      "b": 82,
-      "d": 0.0404
     },
     {
       "a": 33,
       "b": 64,
-      "d": 0.0138
+      "d": 0.0238
     },
     {
-      "a": 21,
-      "b": 64,
-      "d": 0.0188
+      "a": 35,
+      "b": 71,
+      "d": 0.0379
     },
     {
-      "a": 65,
-      "b": 86,
-      "d": 0.1262
+      "a": 35,
+      "b": 58,
+      "d": 0.0595
     },
     {
-      "a": 66,
-      "b": 78,
-      "d": 0.007
-    },
-    {
-      "a": 66,
-      "b": 80,
-      "d": 0.0074
-    },
-    {
-      "a": 58,
-      "b": 67,
-      "d": 0.0733
-    },
-    {
-      "a": 68,
-      "b": 96,
-      "d": 0.0006
-    },
-    {
-      "a": 3,
-      "b": 68,
-      "d": 0.001
-    },
-    {
-      "a": 69,
+      "a": 36,
       "b": 89,
-      "d": 0.088
+      "d": 0.0336
     },
     {
-      "a": 26,
+      "a": 36,
       "b": 69,
-      "d": 0.0893
-    },
-    {
-      "a": 70,
-      "b": 95,
-      "d": 0.2026
-    },
-    {
-      "a": 70,
-      "b": 87,
-      "d": 0.2065
-    },
-    {
-      "a": 45,
-      "b": 72,
-      "d": 0.0717
-    },
-    {
-      "a": 19,
-      "b": 73,
-      "d": 0.0084
-    },
-    {
-      "a": 48,
-      "b": 76,
-      "d": 0.1214
-    },
-    {
-      "a": 79,
-      "b": 83,
-      "d": 0.1613
-    },
-    {
-      "a": 81,
-      "b": 90,
-      "d": 0.041
-    },
-    {
-      "a": 17,
-      "b": 81,
-      "d": 0.2263
-    },
-    {
-      "a": 2,
-      "b": 84,
-      "d": 0.0383
-    },
-    {
-      "a": 75,
-      "b": 84,
-      "d": 0.0437
-    },
-    {
-      "a": 48,
-      "b": 85,
-      "d": 0.0684
+      "d": 0.1292
     },
     {
       "a": 37,
       "b": 85,
-      "d": 0.0705
+      "d": 0.1273
+    },
+    {
+      "a": 37,
+      "b": 83,
+      "d": 0.1756
+    },
+    {
+      "a": 38,
+      "b": 63,
+      "d": 0.0896
+    },
+    {
+      "a": 39,
+      "b": 40,
+      "d": 0.0665
+    },
+    {
+      "a": 39,
+      "b": 72,
+      "d": 0.1127
+    },
+    {
+      "a": 40,
+      "b": 72,
+      "d": 0.0955
+    },
+    {
+      "a": 41,
+      "b": 86,
+      "d": 0.1507
+    },
+    {
+      "a": 26,
+      "b": 41,
+      "d": 0.4387
+    },
+    {
+      "a": 42,
+      "b": 54,
+      "d": 0.1354
+    },
+    {
+      "a": 21,
+      "b": 42,
+      "d": 0.145
+    },
+    {
+      "a": 43,
+      "b": 85,
+      "d": 0.3243
+    },
+    {
+      "a": 43,
+      "b": 83,
+      "d": 0.3267
+    },
+    {
+      "a": 44,
+      "b": 92,
+      "d": 0.0662
+    },
+    {
+      "a": 44,
+      "b": 87,
+      "d": 0.1544
+    },
+    {
+      "a": 39,
+      "b": 45,
+      "d": 0.1368
+    },
+    {
+      "a": 40,
+      "b": 45,
+      "d": 0.1587
+    },
+    {
+      "a": 46,
+      "b": 89,
+      "d": 0.1072
+    },
+    {
+      "a": 47,
+      "b": 94,
+      "d": 0.2069
+    },
+    {
+      "a": 47,
+      "b": 61,
+      "d": 0.3666
+    },
+    {
+      "a": 37,
+      "b": 48,
+      "d": 0.2045
+    },
+    {
+      "a": 48,
+      "b": 85,
+      "d": 0.3489
+    },
+    {
+      "a": 11,
+      "b": 49,
+      "d": 0.3298
+    },
+    {
+      "a": 24,
+      "b": 49,
+      "d": 0.3889
+    },
+    {
+      "a": 50,
+      "b": 57,
+      "d": 0.1194
+    },
+    {
+      "a": 50,
+      "b": 63,
+      "d": 0.1288
+    },
+    {
+      "a": 5,
+      "b": 51,
+      "d": 0.129
+    },
+    {
+      "a": 51,
+      "b": 69,
+      "d": 0.1348
+    },
+    {
+      "a": 52,
+      "b": 94,
+      "d": 0.2251
+    },
+    {
+      "a": 52,
+      "b": 56,
+      "d": 0.2752
+    },
+    {
+      "a": 53,
+      "b": 77,
+      "d": 0.0535
+    },
+    {
+      "a": 53,
+      "b": 64,
+      "d": 0.0697
+    },
+    {
+      "a": 54,
+      "b": 64,
+      "d": 0.0279
+    },
+    {
+      "a": 47,
+      "b": 56,
+      "d": 0.3956
+    },
+    {
+      "a": 57,
+      "b": 80,
+      "d": 0.0982
+    },
+    {
+      "a": 57,
+      "b": 91,
+      "d": 0.1103
+    },
+    {
+      "a": 58,
+      "b": 71,
+      "d": 0.0357
+    },
+    {
+      "a": 59,
+      "b": 88,
+      "d": 0.1456
+    },
+    {
+      "a": 59,
+      "b": 72,
+      "d": 0.1614
+    },
+    {
+      "a": 38,
+      "b": 60,
+      "d": 0.1329
+    },
+    {
+      "a": 14,
+      "b": 60,
+      "d": 0.137
+    },
+    {
+      "a": 61,
+      "b": 94,
+      "d": 0.2204
+    },
+    {
+      "a": 52,
+      "b": 61,
+      "d": 0.3168
+    },
+    {
+      "a": 62,
+      "b": 93,
+      "d": 0.0912
+    },
+    {
+      "a": 15,
+      "b": 63,
+      "d": 0.1093
+    },
+    {
+      "a": 15,
+      "b": 66,
+      "d": 0.0974
+    },
+    {
+      "a": 19,
+      "b": 66,
+      "d": 0.1007
+    },
+    {
+      "a": 3,
+      "b": 68,
+      "d": 0.0201
+    },
+    {
+      "a": 69,
+      "b": 89,
+      "d": 0.1186
+    },
+    {
+      "a": 70,
+      "b": 87,
+      "d": 0.1896
+    },
+    {
+      "a": 36,
+      "b": 70,
+      "d": 0.2034
+    },
+    {
+      "a": 73,
+      "b": 80,
+      "d": 0.1154
+    },
+    {
+      "a": 26,
+      "b": 74,
+      "d": 0.3955
+    },
+    {
+      "a": 13,
+      "b": 74,
+      "d": 0.429
+    },
+    {
+      "a": 75,
+      "b": 77,
+      "d": 0.2302
+    },
+    {
+      "a": 10,
+      "b": 75,
+      "d": 0.2882
+    },
+    {
+      "a": 76,
+      "b": 79,
+      "d": 0.4814
+    },
+    {
+      "a": 44,
+      "b": 76,
+      "d": 0.5201
+    },
+    {
+      "a": 64,
+      "b": 77,
+      "d": 0.0291
+    },
+    {
+      "a": 78,
+      "b": 91,
+      "d": 0.0085
+    },
+    {
+      "a": 57,
+      "b": 78,
+      "d": 0.1272
+    },
+    {
+      "a": 44,
+      "b": 79,
+      "d": 0.3068
+    },
+    {
+      "a": 69,
+      "b": 79,
+      "d": 0.3099
+    },
+    {
+      "a": 23,
+      "b": 81,
+      "d": 0.4398
+    },
+    {
+      "a": 37,
+      "b": 81,
+      "d": 0.549
+    },
+    {
+      "a": 29,
+      "b": 82,
+      "d": 0.2137
+    },
+    {
+      "a": 83,
+      "b": 85,
+      "d": 0.1661
+    },
+    {
+      "a": 75,
+      "b": 84,
+      "d": 0.3784
+    },
+    {
+      "a": 53,
+      "b": 84,
+      "d": 0.445
+    },
+    {
+      "a": 26,
+      "b": 86,
+      "d": 0.362
     },
     {
       "a": 87,
       "b": 89,
-      "d": 0.101
+      "d": 0.1046
     },
     {
-      "a": 31,
+      "a": 69,
       "b": 87,
-      "d": 0.1137
+      "d": 0.1415
+    },
+    {
+      "a": 5,
+      "b": 88,
+      "d": 0.1292
+    },
+    {
+      "a": 89,
+      "b": 90,
+      "d": 0.2106
+    },
+    {
+      "a": 36,
+      "b": 90,
+      "d": 0.2314
     },
     {
       "a": 87,
-      "b": 88,
-      "d": 0.179
-    },
-    {
-      "a": 23,
-      "b": 90,
-      "d": 0.217
-    },
-    {
-      "a": 19,
-      "b": 91,
-      "d": 0.0094
-    },
-    {
-      "a": 73,
-      "b": 91,
-      "d": 0.0108
-    },
-    {
-      "a": 76,
       "b": 92,
-      "d": 0.1489
+      "d": 0.1804
     },
     {
-      "a": 64,
-      "b": 93,
-      "d": 0.0355
-    },
-    {
-      "a": 30,
-      "b": 94,
-      "d": 0.0737
-    },
-    {
-      "a": 23,
+      "a": 44,
       "b": 95,
-      "d": 0.2051
+      "d": 0.2139
+    },
+    {
+      "a": 92,
+      "b": 95,
+      "d": 0.2162
+    },
+    {
+      "a": 68,
+      "b": 96,
+      "d": 0.0271
     }
   ]
 }

@@ -1,0 +1,2336 @@
+{
+  "slug": "emiel-blink",
+  "decklist_sha256": "fc108f78135a73a561fc4672bd8e4ddfd8ae4e3171bd0bb75735455bdc9986a4",
+  "meta": {
+    "space": "embeddings_cardbert.npy",
+    "space_digest": "1c7fb3995420711c",
+    "projection": "classical MDS + SMACOF, canonically oriented",
+    "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
+    "cards": 88,
+    "unresolved": [],
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "No strategic_frame.json exists for this deck; names were read against CONTEXT.md (Selesnya blink plus counters, Emiel as the engine) and every cluster's card list. No cluster has a verified_count, because the deck has no passing stack yet.",
+      "Veldt sits in city-3-hood-0 among counters spells. It is a land and belongs with city-0; CardBERT likely read the counters it stores. It looks misplaced, not unusual.",
+      "city-4 groups by theme (flying creatures) more than by job. Restoration Angel, Karmic Guide, Nurturing Pixie and Sun Titan share the rebuy/blink job; Hanged Executioner fits loosely; Gilded Goose is the odd member, a mana creature pulled in by being a flyer, and its 'Ramp' fallback comes from that one card.",
+      "city-5 reads clean as multipliers (Doubling Season, Hardened Scales, Branching Evolution, Pir, Panharmonicon, Seedborn Muse). Archaeomancer's Map is the odd member: land ramp and catch-up, not a doubler.",
+      "city-4 and city-5 each have a single neighbourhood identical to the city, so those neighbourhoods are left unnamed and the renderer falls back.",
+      "city-1 and city-2 split partly by colour and supertype (green value creatures vs white counters creatures, with the legends grouped together), as you would expect from the CardBERT space. The split between them is real but is not purely a split by job: many cards on both sides put counters on things when they enter.",
+      "city-0-hood-2 (Forest, Plains, Savannah) is grouped by basic land types. Savannah fits there because it has both types, and the split reads clean."
+    ]
+  },
+  "cards": [
+    {
+      "name": "Emiel the Blessed",
+      "x": 0.23382,
+      "y": 0.48006,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": true
+    },
+    {
+      "name": "Alharu, Solemn Ritualist",
+      "x": 0.7873,
+      "y": 0.10965,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Archaeomancer's Map",
+      "x": -0.26281,
+      "y": -0.10404,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "tutor:narrow",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Avenger of Zendikar",
+      "x": -0.02095,
+      "y": -0.02727,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Badgermole Cub",
+      "x": -0.00205,
+      "y": -0.14111,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Basri's Lieutenant",
+      "x": 0.69857,
+      "y": 0.39003,
+      "city": 2,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Branching Evolution",
+      "x": -0.40607,
+      "y": 0.67507,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "payoff:counters"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Builder's Talent",
+      "x": 0.3884,
+      "y": 0.65276,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Bumbleflower's Sharepot",
+      "x": 0.37972,
+      "y": -0.561,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "removal:spot",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Caradora, Heart of Alacria",
+      "x": 0.16884,
+      "y": 0.38572,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "payoff:counters",
+        "threat:body",
+        "tutor:narrow",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Cenote Scout",
+      "x": 0.09234,
+      "y": -0.42702,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Dion, Bahamut's Dominant // Bahamut, Warden of Light",
+      "x": 0.55349,
+      "y": 0.6297,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "removal:spot",
+        "threat:body",
+        "threat:tokens",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Doubling Season",
+      "x": -0.4803,
+      "y": 0.70824,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "doubler:counters",
+        "doubler:tokens"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Enduring Bondwarden",
+      "x": 0.74334,
+      "y": 0.23675,
+      "city": 2,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Eternal Witness",
+      "x": 0.06903,
+      "y": -0.91725,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "recursion",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Fanatic of Rhonas",
+      "x": -0.31203,
+      "y": -0.66188,
+      "city": 1,
+      "hood": 2,
+      "roles": [
+        "ramp:dork",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Forerunner of the Heralds",
+      "x": 0.10881,
+      "y": -0.2666,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "tutor:narrow",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Fortress Kin-Guard",
+      "x": 0.56648,
+      "y": -0.26566,
+      "city": 2,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Generous Patron",
+      "x": 0.41109,
+      "y": -0.11516,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "draw:engine",
+        "payoff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gilded Goose",
+      "x": -0.08035,
+      "y": -0.63882,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "ramp:dork",
+        "sac-cost",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gourmand's Talent",
+      "x": 0.17036,
+      "y": 0.7012,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "threat:tokens",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gyre Sage",
+      "x": 0.04771,
+      "y": -0.54337,
+      "city": 1,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "ramp:dork",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Hanged Executioner",
+      "x": 0.85504,
+      "y": -0.48555,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "removal:spot",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Hardened Scales",
+      "x": -0.38766,
+      "y": 0.77043,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "payoff:counters"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Incubation Druid",
+      "x": 0.00485,
+      "y": -0.45867,
+      "city": 1,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "ramp:dork",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Innkeeper's Talent",
+      "x": 0.18075,
+      "y": 0.80256,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "doubler:counters",
+        "protection:self"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Jadelight Spelunker",
+      "x": 0.12803,
+      "y": -0.40847,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Jewel Thief",
+      "x": -0.23158,
+      "y": -0.59165,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "ramp:dork",
+        "ramp:treasure",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Karmic Guide",
+      "x": 0.62647,
+      "y": -0.69143,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "recursion",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Kinsbaile Courier",
+      "x": 0.81119,
+      "y": -0.08631,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Knight of Autumn",
+      "x": 0.22267,
+      "y": 0.2129,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "removal:spot",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Lieutenants of the Guard",
+      "x": 0.5388,
+      "y": -0.1232,
+      "city": 2,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Michelangelo, Weirdness to 11",
+      "x": 0.2529,
+      "y": 0.70567,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Norn's Inquisitor",
+      "x": 0.69674,
+      "y": -0.2489,
+      "city": 2,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Nurturing Pixie",
+      "x": 0.83747,
+      "y": -0.62753,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Ozolith, the Shattered Spire",
+      "x": 0.09333,
+      "y": 0.87092,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Panharmonicon",
+      "x": -0.52945,
+      "y": 0.86328,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "doubler:triggers"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Pawpatch Recruit",
+      "x": 0.65325,
+      "y": 0.19874,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Perilous Snare",
+      "x": 0.56742,
+      "y": 0.56212,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "removal:spot",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Pir, Imaginative Rascal",
+      "x": -0.28027,
+      "y": 0.80361,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Prized Statue",
+      "x": -0.38574,
+      "y": -0.54338,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "ramp:rock",
+        "ramp:treasure",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Prosperous Innkeeper",
+      "x": -0.11997,
+      "y": -0.40987,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "ramp:dork",
+        "ramp:treasure",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Reclamation Sage",
+      "x": 0.13721,
+      "y": -0.7625,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "removal:spot",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Recon Craft Theta",
+      "x": 0.70211,
+      "y": 0.52454,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Recruiter of the Guard",
+      "x": 0.45565,
+      "y": -0.38711,
+      "city": 2,
+      "hood": 2,
+      "roles": [
+        "threat:body",
+        "tutor:narrow",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Restoration Angel",
+      "x": 0.98865,
+      "y": -0.41197,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Rishkar, Peema Renegade",
+      "x": -0.04123,
+      "y": 0.33183,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "ramp:dork",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Rite of Passage",
+      "x": -0.04525,
+      "y": 0.88694,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "buff:counters"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Rosie Cotton of South Lane",
+      "x": 0.2898,
+      "y": -0.10033,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Saurian Symbiote",
+      "x": 0.3332,
+      "y": 0.36418,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Securitron Squadron",
+      "x": 0.73789,
+      "y": 0.04772,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Seedborn Muse",
+      "x": -0.68335,
+      "y": 0.64346,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Simian Simulacrum",
+      "x": 0.7682,
+      "y": 0.05035,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "recursion",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Solid Ground",
+      "x": -0.03776,
+      "y": 0.41844,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Sun Titan",
+      "x": 0.38539,
+      "y": -0.79642,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Sunshower Druid",
+      "x": 0.2191,
+      "y": -0.60052,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Supply Runners",
+      "x": 0.64085,
+      "y": -0.09268,
+      "city": 2,
+      "hood": 2,
+      "roles": [
+        "buff:counters",
+        "payoff:counters",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Tataru Taru",
+      "x": 0.24612,
+      "y": -0.16604,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "draw:engine",
+        "ramp:treasure",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Tezzeret, Cruel Captain",
+      "x": 0.31633,
+      "y": 1.0,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "tutor:narrow",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Tireless Provisioner",
+      "x": -0.19611,
+      "y": -0.33507,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "ramp:dork",
+        "ramp:treasure",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Treebeard, Gracious Host",
+      "x": 0.21037,
+      "y": 0.05827,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "protection:self",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Unlucky Cabbage Merchant",
+      "x": 0.17181,
+      "y": -0.39046,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "ramp:land",
+        "sac-cost",
+        "threat:body",
+        "tutor:narrow",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Walking Ballista",
+      "x": 0.62671,
+      "y": 0.8855,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "removal:damage",
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Wall of Omens",
+      "x": -0.13503,
+      "y": -0.88495,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Branchloft Pathway // Boulderloft Pathway",
+      "x": -0.62773,
+      "y": -0.02204,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:mdfc"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Brushland",
+      "x": -0.64562,
+      "y": 0.00629,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "City of Brass",
+      "x": -0.54683,
+      "y": -0.28778,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Command Tower",
+      "x": -0.60079,
+      "y": -0.34297,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Exotic Orchard",
+      "x": -0.6259,
+      "y": -0.31465,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Forbidden Orchard",
+      "x": -0.55885,
+      "y": -0.31671,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Forest",
+      "x": -0.59944,
+      "y": 0.2746,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "land:basic"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gathering Place",
+      "x": -0.62528,
+      "y": 0.02146,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gemstone Caverns",
+      "x": -0.64078,
+      "y": -0.29012,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Horizon Canopy",
+      "x": -0.53491,
+      "y": -0.0482,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Hushwood Verge",
+      "x": -0.62604,
+      "y": -0.01608,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Mana Confluence",
+      "x": -0.62464,
+      "y": -0.34318,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Opal Palace",
+      "x": -0.69637,
+      "y": -0.25403,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Plains",
+      "x": -0.65812,
+      "y": 0.2042,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "land:basic"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Riftstone Portal",
+      "x": -0.6041,
+      "y": 0.06038,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Saltcrusted Steppe",
+      "x": -0.64291,
+      "y": -0.00785,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Savannah",
+      "x": -0.57153,
+      "y": 0.20446,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Spire of Industry",
+      "x": -0.67986,
+      "y": -0.26871,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Sungrass Prairie",
+      "x": -0.54437,
+      "y": -0.0055,
+      "city": 0,
+      "hood": 1,
+      "roles": [],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Talon Gates of Madara",
+      "x": -0.52948,
+      "y": -0.23922,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Tranquil Garden",
+      "x": -0.66625,
+      "y": 0.03512,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Vec Townships",
+      "x": -0.662,
+      "y": 0.0313,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Veldt",
+      "x": -0.35953,
+      "y": 0.21054,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Wooded Bastion",
+      "x": -0.60833,
+      "y": 0.01024,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    }
+  ],
+  "regions": [
+    {
+      "id": "city-0",
+      "level": 0,
+      "label": "THE GROUND FLOOR",
+      "fallback": "Mana",
+      "cx": -0.61392,
+      "cy": -0.083,
+      "count": 23,
+      "cards": [
+        "Branchloft Pathway // Boulderloft Pathway",
+        "Brushland",
+        "City of Brass",
+        "Command Tower",
+        "Exotic Orchard",
+        "Forbidden Orchard",
+        "Forest",
+        "Gathering Place",
+        "Gemstone Caverns",
+        "Horizon Canopy",
+        "Hushwood Verge",
+        "Mana Confluence",
+        "Opal Palace",
+        "Plains",
+        "Riftstone Portal",
+        "Saltcrusted Steppe",
+        "Savannah",
+        "Spire of Industry",
+        "Sungrass Prairie",
+        "Talon Gates of Madara",
+        "Tranquil Garden",
+        "Vec Townships",
+        "Wooded Bastion"
+      ],
+      "verified_count": 0,
+      "gloss": "Twenty-three lands that put both colours on the table untapped, so Emiel's three-mana blink is affordable every turn."
+    },
+    {
+      "id": "city-0-hood-0",
+      "level": 1,
+      "parent": "city-0",
+      "label": "ANY COLOUR",
+      "fallback": "Mana II",
+      "cx": -0.6115,
+      "cy": -0.29526,
+      "count": 9,
+      "cards": [
+        "City of Brass",
+        "Command Tower",
+        "Exotic Orchard",
+        "Forbidden Orchard",
+        "Gemstone Caverns",
+        "Mana Confluence",
+        "Opal Palace",
+        "Spire of Industry",
+        "Talon Gates of Madara"
+      ],
+      "verified_count": 0,
+      "gloss": "Rainbow lands in a two-colour deck: pure fixing, some of it paid for in life."
+    },
+    {
+      "id": "city-0-hood-1",
+      "level": 1,
+      "parent": "city-0",
+      "label": "THE DUALS",
+      "fallback": "Mana",
+      "cx": -0.61705,
+      "cy": 0.00592,
+      "count": 11,
+      "cards": [
+        "Branchloft Pathway // Boulderloft Pathway",
+        "Brushland",
+        "Gathering Place",
+        "Horizon Canopy",
+        "Hushwood Verge",
+        "Riftstone Portal",
+        "Saltcrusted Steppe",
+        "Sungrass Prairie",
+        "Tranquil Garden",
+        "Vec Townships",
+        "Wooded Bastion"
+      ],
+      "verified_count": 0,
+      "gloss": null
+    },
+    {
+      "id": "city-0-hood-2",
+      "level": 1,
+      "parent": "city-0",
+      "label": "BASIC TYPES",
+      "fallback": "Mana III",
+      "cx": -0.60969,
+      "cy": 0.22775,
+      "count": 3,
+      "cards": [
+        "Forest",
+        "Plains",
+        "Savannah"
+      ],
+      "verified_count": 0,
+      "gloss": null
+    },
+    {
+      "id": "city-1",
+      "level": 0,
+      "label": "PAID ON ARRIVAL",
+      "fallback": "Value",
+      "cx": 0.02785,
+      "cy": -0.4534,
+      "count": 18,
+      "cards": [
+        "Avenger of Zendikar",
+        "Badgermole Cub",
+        "Bumbleflower's Sharepot",
+        "Cenote Scout",
+        "Eternal Witness",
+        "Fanatic of Rhonas",
+        "Forerunner of the Heralds",
+        "Generous Patron",
+        "Gyre Sage",
+        "Incubation Druid",
+        "Jadelight Spelunker",
+        "Jewel Thief",
+        "Prized Statue",
+        "Prosperous Innkeeper",
+        "Reclamation Sage",
+        "Sunshower Druid",
+        "Tireless Provisioner",
+        "Unlucky Cabbage Merchant"
+      ],
+      "verified_count": 0,
+      "gloss": "Green bodies whose entry hands you cards, lands, mana or treasure; each blink cashes the cheque again."
+    },
+    {
+      "id": "city-1-hood-0",
+      "level": 1,
+      "parent": "city-1",
+      "label": "THE REPEAT OFFENDERS",
+      "fallback": "Bodies",
+      "cx": 0.13144,
+      "cy": -0.40564,
+      "count": 10,
+      "cards": [
+        "Avenger of Zendikar",
+        "Badgermole Cub",
+        "Cenote Scout",
+        "Eternal Witness",
+        "Forerunner of the Heralds",
+        "Generous Patron",
+        "Jadelight Spelunker",
+        "Reclamation Sage",
+        "Sunshower Druid",
+        "Unlucky Cabbage Merchant"
+      ],
+      "verified_count": 0,
+      "gloss": "The enter-the-battlefield payloads worth replaying: a card back, a land, an answer, a token army."
+    },
+    {
+      "id": "city-1-hood-1",
+      "level": 1,
+      "parent": "city-1",
+      "label": "THE TREASURE",
+      "fallback": "Ramp II",
+      "cx": -0.11074,
+      "cy": -0.4882,
+      "count": 5,
+      "cards": [
+        "Bumbleflower's Sharepot",
+        "Jewel Thief",
+        "Prized Statue",
+        "Prosperous Innkeeper",
+        "Tireless Provisioner"
+      ],
+      "verified_count": 0,
+      "gloss": null
+    },
+    {
+      "id": "city-1-hood-2",
+      "level": 1,
+      "parent": "city-1",
+      "label": "DORKS THAT GROW",
+      "fallback": "Bodies II",
+      "cx": -0.08649,
+      "cy": -0.55464,
+      "count": 3,
+      "cards": [
+        "Fanatic of Rhonas",
+        "Gyre Sage",
+        "Incubation Druid"
+      ],
+      "verified_count": 0,
+      "gloss": "Mana creatures that get better with a counter on them, which Emiel supplies."
+    },
+    {
+      "id": "city-2",
+      "level": 0,
+      "label": "THE COUNTER CREW",
+      "fallback": "Bodies",
+      "cx": 0.45906,
+      "cy": 0.07808,
+      "count": 21,
+      "cards": [
+        "Alharu, Solemn Ritualist",
+        "Basri's Lieutenant",
+        "Caradora, Heart of Alacria",
+        "Emiel the Blessed",
+        "Enduring Bondwarden",
+        "Fortress Kin-Guard",
+        "Kinsbaile Courier",
+        "Lieutenants of the Guard",
+        "Michelangelo, Weirdness to 11",
+        "Norn's Inquisitor",
+        "Pawpatch Recruit",
+        "Recruiter of the Guard",
+        "Rishkar, Peema Renegade",
+        "Rosie Cotton of South Lane",
+        "Securitron Squadron",
+        "Simian Simulacrum",
+        "Supply Runners",
+        "Tataru Taru",
+        "Tezzeret, Cruel Captain",
+        "Treebeard, Gracious Host",
+        "Wall of Omens"
+      ],
+      "verified_count": 0,
+      "gloss": "White creatures that arrive carrying counters, so the board grows every time Emiel resets one."
+    },
+    {
+      "id": "city-2-hood-0",
+      "level": 1,
+      "parent": "city-2",
+      "label": "THE HIGH TABLE",
+      "fallback": "Value",
+      "cx": 0.2738,
+      "cy": 0.31165,
+      "count": 9,
+      "cards": [
+        "Alharu, Solemn Ritualist",
+        "Caradora, Heart of Alacria",
+        "Emiel the Blessed",
+        "Michelangelo, Weirdness to 11",
+        "Rishkar, Peema Renegade",
+        "Rosie Cotton of South Lane",
+        "Tataru Taru",
+        "Tezzeret, Cruel Captain",
+        "Treebeard, Gracious Host"
+      ],
+      "verified_count": 0,
+      "gloss": "The legendary engines, Emiel among them, that turn counters into cards, mana and pressure."
+    },
+    {
+      "id": "city-2-hood-1",
+      "level": 1,
+      "parent": "city-2",
+      "label": "CHEAP REPEATS",
+      "fallback": "Recursion",
+      "cx": 0.5671,
+      "cy": -0.13489,
+      "count": 5,
+      "cards": [
+        "Kinsbaile Courier",
+        "Pawpatch Recruit",
+        "Securitron Squadron",
+        "Simian Simulacrum",
+        "Wall of Omens"
+      ],
+      "verified_count": 0,
+      "gloss": null
+    },
+    {
+      "id": "city-2-hood-2",
+      "level": 1,
+      "parent": "city-2",
+      "label": "THE GARRISON",
+      "fallback": "Payoffs",
+      "cx": 0.62006,
+      "cy": -0.07011,
+      "count": 7,
+      "cards": [
+        "Basri's Lieutenant",
+        "Enduring Bondwarden",
+        "Fortress Kin-Guard",
+        "Lieutenants of the Guard",
+        "Norn's Inquisitor",
+        "Recruiter of the Guard",
+        "Supply Runners"
+      ],
+      "verified_count": 0,
+      "gloss": "Soldiers that bring tokens or counters with them, plus the recruiter who finds them."
+    },
+    {
+      "id": "city-3",
+      "level": 0,
+      "label": "THE TOOLKIT",
+      "fallback": "Interaction",
+      "cx": 0.26122,
+      "cy": 0.59402,
+      "count": 13,
+      "cards": [
+        "Builder's Talent",
+        "Dion, Bahamut's Dominant // Bahamut, Warden of Light",
+        "Gourmand's Talent",
+        "Innkeeper's Talent",
+        "Knight of Autumn",
+        "Ozolith, the Shattered Spire",
+        "Perilous Snare",
+        "Recon Craft Theta",
+        "Rite of Passage",
+        "Saurian Symbiote",
+        "Solid Ground",
+        "Veldt",
+        "Walking Ballista"
+      ],
+      "verified_count": 0,
+      "gloss": "Mostly non-creature counters pieces, and the removal that rides on them, so the plan is not only bodies."
+    },
+    {
+      "id": "city-3-hood-0",
+      "level": 1,
+      "parent": "city-3",
+      "label": "COUNTERS WITH TEETH",
+      "fallback": "Interaction",
+      "cx": 0.33297,
+      "cy": 0.49563,
+      "count": 9,
+      "cards": [
+        "Builder's Talent",
+        "Dion, Bahamut's Dominant // Bahamut, Warden of Light",
+        "Knight of Autumn",
+        "Perilous Snare",
+        "Recon Craft Theta",
+        "Saurian Symbiote",
+        "Solid Ground",
+        "Veldt",
+        "Walking Ballista"
+      ],
+      "verified_count": 0,
+      "gloss": "Counters cards that also kill something or make something."
+    },
+    {
+      "id": "city-3-hood-1",
+      "level": 1,
+      "parent": "city-3",
+      "label": "THE LONG GAME",
+      "fallback": "Insurance",
+      "cx": 0.09979,
+      "cy": 0.81541,
+      "count": 4,
+      "cards": [
+        "Gourmand's Talent",
+        "Innkeeper's Talent",
+        "Ozolith, the Shattered Spire",
+        "Rite of Passage"
+      ],
+      "verified_count": 0,
+      "gloss": "Permanents that keep the counters coming, and keep them when a creature dies."
+    },
+    {
+      "id": "city-4",
+      "level": 0,
+      "label": "THE REWIND",
+      "fallback": "Ramp",
+      "cx": 0.60211,
+      "cy": -0.60862,
+      "count": 6,
+      "cards": [
+        "Gilded Goose",
+        "Hanged Executioner",
+        "Karmic Guide",
+        "Nurturing Pixie",
+        "Restoration Angel",
+        "Sun Titan"
+      ],
+      "verified_count": 0,
+      "gloss": "Flyers that blink, bounce or rebuy, doing Emiel's job when she is gone or tapped out."
+    },
+    {
+      "id": "city-4-hood-0",
+      "level": 1,
+      "parent": "city-4",
+      "label": null,
+      "fallback": "Ramp",
+      "cx": 0.60211,
+      "cy": -0.60862,
+      "count": 6,
+      "cards": [
+        "Gilded Goose",
+        "Hanged Executioner",
+        "Karmic Guide",
+        "Nurturing Pixie",
+        "Restoration Angel",
+        "Sun Titan"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-5",
+      "level": 0,
+      "label": "EVERYTHING TWICE",
+      "fallback": "Payoffs",
+      "cx": -0.43284,
+      "cy": 0.62287,
+      "count": 7,
+      "cards": [
+        "Archaeomancer's Map",
+        "Branching Evolution",
+        "Doubling Season",
+        "Hardened Scales",
+        "Panharmonicon",
+        "Pir, Imaginative Rascal",
+        "Seedborn Muse"
+      ],
+      "verified_count": 0,
+      "gloss": "The multipliers: more counters per counter, more triggers per arrival, more untaps per turn cycle."
+    },
+    {
+      "id": "city-5-hood-0",
+      "level": 1,
+      "parent": "city-5",
+      "label": null,
+      "fallback": "Tutors",
+      "cx": -0.43284,
+      "cy": 0.62287,
+      "count": 7,
+      "cards": [
+        "Archaeomancer's Map",
+        "Branching Evolution",
+        "Doubling Season",
+        "Hardened Scales",
+        "Panharmonicon",
+        "Pir, Imaginative Rascal",
+        "Seedborn Muse"
+      ],
+      "verified_count": 0
+    }
+  ],
+  "edges": [
+    {
+      "a": 0,
+      "b": 9,
+      "d": 0.3918
+    },
+    {
+      "a": 0,
+      "b": 46,
+      "d": 0.4614
+    },
+    {
+      "a": 1,
+      "b": 50,
+      "d": 0.236
+    },
+    {
+      "a": 1,
+      "b": 60,
+      "d": 0.322
+    },
+    {
+      "a": 2,
+      "b": 69,
+      "d": 0.364
+    },
+    {
+      "a": 2,
+      "b": 66,
+      "d": 0.3744
+    },
+    {
+      "a": 3,
+      "b": 4,
+      "d": 0.1016
+    },
+    {
+      "a": 3,
+      "b": 59,
+      "d": 0.2787
+    },
+    {
+      "a": 4,
+      "b": 59,
+      "d": 0.2495
+    },
+    {
+      "a": 5,
+      "b": 13,
+      "d": 0.179
+    },
+    {
+      "a": 5,
+      "b": 56,
+      "d": 0.3216
+    },
+    {
+      "a": 6,
+      "b": 12,
+      "d": 0.0159
+    },
+    {
+      "a": 6,
+      "b": 23,
+      "d": 0.0241
+    },
+    {
+      "a": 7,
+      "b": 38,
+      "d": 0.1444
+    },
+    {
+      "a": 7,
+      "b": 20,
+      "d": 0.1909
+    },
+    {
+      "a": 8,
+      "b": 40,
+      "d": 0.2914
+    },
+    {
+      "a": 8,
+      "b": 38,
+      "d": 0.3152
+    },
+    {
+      "a": 9,
+      "b": 46,
+      "d": 0.2635
+    },
+    {
+      "a": 5,
+      "b": 9,
+      "d": 0.3262
+    },
+    {
+      "a": 10,
+      "b": 26,
+      "d": 0.0178
+    },
+    {
+      "a": 10,
+      "b": 16,
+      "d": 0.1877
+    },
+    {
+      "a": 7,
+      "b": 11,
+      "d": 0.3816
+    },
+    {
+      "a": 9,
+      "b": 11,
+      "d": 0.4327
+    },
+    {
+      "a": 12,
+      "b": 23,
+      "d": 0.0504
+    },
+    {
+      "a": 13,
+      "b": 33,
+      "d": 0.2725
+    },
+    {
+      "a": 14,
+      "b": 42,
+      "d": 0.286
+    },
+    {
+      "a": 14,
+      "b": 55,
+      "d": 0.3176
+    },
+    {
+      "a": 15,
+      "b": 21,
+      "d": 0.0748
+    },
+    {
+      "a": 15,
+      "b": 24,
+      "d": 0.2224
+    },
+    {
+      "a": 16,
+      "b": 26,
+      "d": 0.1828
+    },
+    {
+      "a": 17,
+      "b": 31,
+      "d": 0.0904
+    },
+    {
+      "a": 17,
+      "b": 33,
+      "d": 0.2029
+    },
+    {
+      "a": 18,
+      "b": 61,
+      "d": 0.179
+    },
+    {
+      "a": 18,
+      "b": 48,
+      "d": 0.2281
+    },
+    {
+      "a": 19,
+      "b": 27,
+      "d": 0.3429
+    },
+    {
+      "a": 19,
+      "b": 41,
+      "d": 0.3626
+    },
+    {
+      "a": 20,
+      "b": 25,
+      "d": 0.0882
+    },
+    {
+      "a": 21,
+      "b": 24,
+      "d": 0.1809
+    },
+    {
+      "a": 22,
+      "b": 45,
+      "d": 0.2795
+    },
+    {
+      "a": 22,
+      "b": 34,
+      "d": 0.3705
+    },
+    {
+      "a": 7,
+      "b": 25,
+      "d": 0.2847
+    },
+    {
+      "a": 26,
+      "b": 61,
+      "d": 0.1777
+    },
+    {
+      "a": 27,
+      "b": 41,
+      "d": 0.1842
+    },
+    {
+      "a": 27,
+      "b": 59,
+      "d": 0.1858
+    },
+    {
+      "a": 28,
+      "b": 45,
+      "d": 0.3752
+    },
+    {
+      "a": 22,
+      "b": 28,
+      "d": 0.4047
+    },
+    {
+      "a": 29,
+      "b": 50,
+      "d": 0.2044
+    },
+    {
+      "a": 29,
+      "b": 52,
+      "d": 0.2574
+    },
+    {
+      "a": 13,
+      "b": 30,
+      "d": 0.3475
+    },
+    {
+      "a": 9,
+      "b": 30,
+      "d": 0.3597
+    },
+    {
+      "a": 31,
+      "b": 33,
+      "d": 0.2677
+    },
+    {
+      "a": 32,
+      "b": 46,
+      "d": 0.192
+    },
+    {
+      "a": 9,
+      "b": 32,
+      "d": 0.3394
+    },
+    {
+      "a": 34,
+      "b": 45,
+      "d": 0.1215
+    },
+    {
+      "a": 25,
+      "b": 35,
+      "d": 0.3751
+    },
+    {
+      "a": 20,
+      "b": 35,
+      "d": 0.4082
+    },
+    {
+      "a": 23,
+      "b": 36,
+      "d": 0.4515
+    },
+    {
+      "a": 6,
+      "b": 36,
+      "d": 0.5035
+    },
+    {
+      "a": 37,
+      "b": 52,
+      "d": 0.1279
+    },
+    {
+      "a": 37,
+      "b": 50,
+      "d": 0.2251
+    },
+    {
+      "a": 39,
+      "b": 51,
+      "d": 0.4047
+    },
+    {
+      "a": 39,
+      "b": 46,
+      "d": 0.4547
+    },
+    {
+      "a": 40,
+      "b": 67,
+      "d": 0.2129
+    },
+    {
+      "a": 40,
+      "b": 69,
+      "d": 0.232
+    },
+    {
+      "a": 41,
+      "b": 59,
+      "d": 0.0861
+    },
+    {
+      "a": 41,
+      "b": 61,
+      "d": 0.1341
+    },
+    {
+      "a": 42,
+      "b": 55,
+      "d": 0.2666
+    },
+    {
+      "a": 16,
+      "b": 42,
+      "d": 0.2772
+    },
+    {
+      "a": 38,
+      "b": 43,
+      "d": 0.3983
+    },
+    {
+      "a": 43,
+      "b": 49,
+      "d": 0.455
+    },
+    {
+      "a": 44,
+      "b": 56,
+      "d": 0.2674
+    },
+    {
+      "a": 31,
+      "b": 44,
+      "d": 0.2965
+    },
+    {
+      "a": 25,
+      "b": 47,
+      "d": 0.3912
+    },
+    {
+      "a": 23,
+      "b": 47,
+      "d": 0.4024
+    },
+    {
+      "a": 48,
+      "b": 57,
+      "d": 0.2213
+    },
+    {
+      "a": 30,
+      "b": 49,
+      "d": 0.4488
+    },
+    {
+      "a": 12,
+      "b": 51,
+      "d": 0.3998
+    },
+    {
+      "a": 50,
+      "b": 52,
+      "d": 0.2512
+    },
+    {
+      "a": 53,
+      "b": 86,
+      "d": 0.3118
+    },
+    {
+      "a": 30,
+      "b": 53,
+      "d": 0.3981
+    },
+    {
+      "a": 28,
+      "b": 54,
+      "d": 0.4911
+    },
+    {
+      "a": 34,
+      "b": 54,
+      "d": 0.5059
+    },
+    {
+      "a": 16,
+      "b": 55,
+      "d": 0.2874
+    },
+    {
+      "a": 31,
+      "b": 56,
+      "d": 0.2696
+    },
+    {
+      "a": 31,
+      "b": 57,
+      "d": 0.3408
+    },
+    {
+      "a": 32,
+      "b": 58,
+      "d": 0.4736
+    },
+    {
+      "a": 0,
+      "b": 58,
+      "d": 0.4935
+    },
+    {
+      "a": 37,
+      "b": 60,
+      "d": 0.2781
+    },
+    {
+      "a": 43,
+      "b": 62,
+      "d": 0.5115
+    },
+    {
+      "a": 38,
+      "b": 62,
+      "d": 0.5502
+    },
+    {
+      "a": 10,
+      "b": 63,
+      "d": 0.5954
+    },
+    {
+      "a": 50,
+      "b": 63,
+      "d": 0.5995
+    },
+    {
+      "a": 64,
+      "b": 74,
+      "d": 0.0053
+    },
+    {
+      "a": 64,
+      "b": 87,
+      "d": 0.0226
+    },
+    {
+      "a": 65,
+      "b": 85,
+      "d": 0.0065
+    },
+    {
+      "a": 65,
+      "b": 87,
+      "d": 0.0103
+    },
+    {
+      "a": 66,
+      "b": 69,
+      "d": 0.03
+    },
+    {
+      "a": 66,
+      "b": 83,
+      "d": 0.1044
+    },
+    {
+      "a": 67,
+      "b": 75,
+      "d": 0.0418
+    },
+    {
+      "a": 67,
+      "b": 68,
+      "d": 0.0438
+    },
+    {
+      "a": 68,
+      "b": 75,
+      "d": 0.0079
+    },
+    {
+      "a": 67,
+      "b": 69,
+      "d": 0.0627
+    },
+    {
+      "a": 70,
+      "b": 80,
+      "d": 0.0575
+    },
+    {
+      "a": 70,
+      "b": 77,
+      "d": 0.0896
+    },
+    {
+      "a": 71,
+      "b": 84,
+      "d": 0.0121
+    },
+    {
+      "a": 65,
+      "b": 71,
+      "d": 0.0123
+    },
+    {
+      "a": 72,
+      "b": 75,
+      "d": 0.1193
+    },
+    {
+      "a": 72,
+      "b": 81,
+      "d": 0.1414
+    },
+    {
+      "a": 73,
+      "b": 82,
+      "d": 0.0404
+    },
+    {
+      "a": 73,
+      "b": 74,
+      "d": 0.0587
+    },
+    {
+      "a": 74,
+      "b": 87,
+      "d": 0.0263
+    },
+    {
+      "a": 76,
+      "b": 81,
+      "d": 0.0393
+    },
+    {
+      "a": 75,
+      "b": 76,
+      "d": 0.1102
+    },
+    {
+      "a": 77,
+      "b": 80,
+      "d": 0.09
+    },
+    {
+      "a": 71,
+      "b": 78,
+      "d": 0.0606
+    },
+    {
+      "a": 65,
+      "b": 78,
+      "d": 0.081
+    },
+    {
+      "a": 79,
+      "b": 85,
+      "d": 0.0236
+    },
+    {
+      "a": 65,
+      "b": 79,
+      "d": 0.026
+    },
+    {
+      "a": 78,
+      "b": 80,
+      "d": 0.0895
+    },
+    {
+      "a": 75,
+      "b": 81,
+      "d": 0.0665
+    },
+    {
+      "a": 74,
+      "b": 82,
+      "d": 0.033
+    },
+    {
+      "a": 64,
+      "b": 82,
+      "d": 0.0342
+    },
+    {
+      "a": 69,
+      "b": 83,
+      "d": 0.1075
+    },
+    {
+      "a": 84,
+      "b": 85,
+      "d": 0.0027
+    },
+    {
+      "a": 65,
+      "b": 84,
+      "d": 0.0104
+    },
+    {
+      "a": 79,
+      "b": 86,
+      "d": 0.244
+    },
+    {
+      "a": 73,
+      "b": 86,
+      "d": 0.2722
+    },
+    {
+      "a": 84,
+      "b": 87,
+      "d": 0.0163
+    }
+  ]
+}

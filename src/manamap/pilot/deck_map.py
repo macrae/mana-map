@@ -11,7 +11,10 @@ clusters the result into cities and neighbourhoods. It is `viz/js/drill.js`'s
 argument applied to a decklist, and it produces the picture a deck page can open
 on: the engine, visible before a word of prose.
 
-WHICH EMBEDDING SPACE, AND WHY THE DEFAULT DOES NOT MOVE. `embeddings_ability
+WHICH EMBEDDING SPACE. Since 2026-10-10 the default is `spaces.UI` — CardBERT,
+the one space the pages use (the pilot's call), so a deck page's constellation
+agrees with the Atlas it links to. The history below is why it was the FUNCTION
+space until then, and why `--space function` remains: `embeddings_ability
 .npy` — the FUNCTION space. `embeddings.npy` is the layout space and knows only
 colour and type, so clustering a mono-green deck in it produces one green blob
 and a land pile, which is a true statement about nothing.
@@ -360,7 +363,10 @@ def build(slug, branch=None, space=None):
     from manamap import spaces as space_registry
     from manamap.export.viz_index import embeddings_digest
 
-    target = space_registry.get(space)
+    # The constellation is drawn on the DECK PAGE, so it reads the space the pages
+    # read (`spaces.UI`, CardBERT since 2026-10-10 — the pilot's call), not the
+    # bench's default. `--space function` still gives the functional reading.
+    target = space_registry.get(space or space_registry.UI)
     if not target.exists():
         raise SystemExit(
             f"{target.npy} not found (it is gitignored) — run the pipeline")

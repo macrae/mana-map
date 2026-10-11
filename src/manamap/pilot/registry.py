@@ -379,7 +379,10 @@ def add_pilot_parser(subparsers):
             from manamap import spaces as _spaces
             cmd.add_argument(
                 "--space", default=None, choices=_spaces.choices(),
-                help=f"which embedding to read (default {_spaces.DEFAULT}). "
+                help=(f"which embedding to read (default {_spaces.UI}, the space the "
+                      f"deck page draws; `function` gives the functional reading)")
+                if name == "deck-map" else
+                f"which embedding to read (default {_spaces.DEFAULT}). "
                      "cardbert clusters by TRIBE rather than by function — a "
                      "different question, and it loses functional similarity at "
                      "every pool size measured")
