@@ -960,6 +960,504 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 elif card["treasure_trigger"] == "etb":
                     treasures += (card["treasure_n"] + treasure_bonus) * treasure_multiplier
 
+        def _resolve_draw(card):
+            """THE DRAW LOOP'S RESOLUTION, after the cast. One body for the
+            loop and the free cast, so a discovered or cascaded cantrip resolves
+            exactly as a paid one does — Zada's copies included."""
+            nonlocal opponent_draws_this_turn
+            if card["draw"]["wheel_draws"]:
+                held = len(hand)
+                discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
+                _n = held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"]
+                draw_n(_n)
+                # A WHEEL IS SYMMETRICAL AND THIS IS THE HALF THE MODEL
+                # NEVER SAW. "Each player draws seven" refills the opponent
+                # too, which is the cost of every wheel in this deck and
+                # the reason the tax cards exist. A "that many" wheel draws
+                # each player their OWN discard count and this model does
+                # not track the opponent's hand, so ours stands in for it.
+                opponent_draws_this_turn += _n
+                return
+            draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
+            # THE COMMANDER COPIES IT FOR EACH OTHER CREATURE YOU CONTROL.
+            # Zada, Hedron Grinder's whole deck: a {R} cantrip targeting
+            # only her draws ONE card, and with six other bodies out it
+            # draws SEVEN. `battlefield` includes the commander herself, so
+            # the copy count is len(battlefield) - 1 and a lone commander
+            # multiplies by nothing, which is correct.
+            #
+            # WHAT THIS DOES NOT MODEL, named rather than left implied:
+            # the model has no removal, so once cast she stays, and the real
+            # card is a 3-mana 3/3 that dies to everything. Every figure
+            # this channel moves is therefore a CEILING on the games where
+            # she survives, not a forecast. `model_combat` carries the pump
+            # and evasion halves of the same copies; this arm is the draw.
+            if (commander_copy and commander_turn is not None
+                    and card["copy_fodder"]
+                    and card["draw"]["spell_draw"]):
+                others = max(len(battlefield) - 1, 0)
+                if others:
+                    draw_n(card["draw"]["spell_draw"] * others)
+            if card["draw"]["spell_draw_greatest_power"]:
+                # Resolved against the board at cast; the anthem rides on
+                # every body the way it does at the attack step.
+                draw_n(max((p + team_anthem + lb_ for (p, *_), lb_
+                            in zip(battlefield, _lord_bonuses())), default=0))
+            if model_discard and card["draw"]["spell_discard"]:
+                discard_n(card["draw"]["spell_discard"])
+            if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
+                    or card["draw"]["cast_draw"]):
+                draw_engines.append(card["draw"])
+            _register_wheel(card)
+
+        def _resolve_discover(card):
+            """THE DISCOVER LOOP'S RESOLUTION: one walk, plus one per Zada copy."""
+            _resolutions = 1
+            if (commander_copy and commander_turn is not None
+                    and card["copy_fodder"] and len(battlefield) > 1):
+                _copies = len(battlefield) - 1
+                _resolutions += _copies
+                _magecraft(_copies)
+            for _ in range(_resolutions):
+                _discover(card["discover_n"])
+
+        def _resolve_storm(card, copies):
+            """THE STORM LOOP'S RESOLUTION. `copies` is the spell count taken
+            BEFORE the cast, which the caller must read before `_note_cast`."""
+            nonlocal bodies_cum, etb_damage
+            total = 1 + copies
+            if model_combat and sc["storm_damage"]:
+                etb_damage += sc["storm_damage"] * total
+            if sc["storm_token_bodies"]:
+                each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
+                for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
+                    # TEN FIELDS, like the one door above — this append
+                    # bypasses `creature_entered` and would otherwise build a
+                    # short entry that every `e[8]` read would raise on. The
+                    # tenth, the attack gate, is None: a Goblin token attacks.
+                    battlefield.append((each, turn, False, 1, True, (0, 0), 1,
+                                        False, False, None, None))
+                    creature_types.append("Creature — Goblin")
+                    creature_flying.append(False)
+                    bodies_cum += 1
+            _magecraft(copies)                  # the cast itself fired already
+
+        def _resolve_pump(card):
+            """THE PUMP LOOP'S RESOLUTION, after the cast."""
+            nonlocal bodies_cum, extra_combat_free, flat_pump, spell_each_opponent
+            nonlocal treasures, turn_double_strike, turn_power_mult, turn_pump
+            team = card["combat"]["spell_pump_team"]
+            single = card["combat"]["spell_pump_single"]
+            # THE TREASURES THE SPELL MAKES, credited on exactly the same
+            # multiplication as the pump. Reckless Ransacking is {1}{R} for
+            # +3/+2 AND a Treasure; copied across eight creatures that is
+            # eight Treasures, which is what pays for the follow-up. Gated on
+            # `model_treasures` like every other token of its kind.
+            if model_treasures and card["combat"]["spell_treasure"]:
+                _tre = card["combat"]["spell_treasure"]
+                _mult = 1
+                if (commander_copy and commander_turn is not None
+                        and card["copy_fodder"] and len(battlefield) > 1):
+                    _mult = len(battlefield)      # the original plus one per other
+                treasures += _tre * _mult
+            # A TOKEN COPY OF A TARGET CREATURE — the highest-ceiling card
+            # a Zada-style commander can be handed, and the reason this
+            # channel exists. Uncopied it is one extra body for one turn;
+            # copied, each copy targets a DIFFERENT creature, so a board of
+            # N gets N token copies of ITSELF, every one with haste, and
+            # every arrival payoff in the deck fires once per token.
+            #
+            # IT GOES THROUGH `creature_entered`, THE ONE DOOR, so Impact
+            # Tremors, Terror of the Peaks and the arrival-draw engines all
+            # fire without this site knowing they exist. That is the whole
+            # value of the door: goblin-storm runs Impact Tremors, and eight
+            # tokens entering is eight damage nobody had to wire up here.
+            #
+            # THE COPIES ARE TEMPORARY. Both real cards end with "sacrifice
+            # it at the beginning of the next end step" or "exile this
+            # token", so they are marked and removed after combat — see the
+            # cleanup below `damage_by_turn`. Leaving them would double the
+            # board permanently every cast, which is not the card.
+            #
+            # WHAT THIS DELIBERATELY DOES NOT CLAIM, so the figure is a
+            # FLOOR rather than a forecast: the tokens die at end of turn,
+            # and goblin-storm runs Boggart Shenanigans and Pashalik Mons,
+            # which turn each of those deaths into damage. That is a real
+            # second half of the line and it is NOT credited here — wiring
+            # deaths through this site needs the death channel and its own
+            # sweep. Stated, not silently omitted.
+            # THE PILOT'S POLICY, CONSULTED. Stack 011 proved with CR
+            # citations that Zada copies NOTHING with no other creature out,
+            # and that no single card fixes it — the trigger resolves before
+            # the spell that caused it (603.3/603.3b) — so a token-copy spell
+            # into a thin board is two mana for one token. A deck may declare
+            # a threshold to hold it; with no policy this is `0` and the
+            # behaviour is exactly what it was before the module existed.
+            _hold_copy = ((hold_until or {}).get("spell_token_copy") or {}
+                          ).get("other_creatures", 0)
+            if (card["combat"]["spell_token_copy"] and battlefield
+                    and len(battlefield) - 1 >= _hold_copy):
+                _n_tok = card["combat"]["spell_token_copy"]
+                # Copied: one token per creature in play (the original
+                # targets the commander, each copy a different other
+                # creature). Uncopied: one token, of the biggest body.
+                if (commander_copy and commander_turn is not None
+                        and card["copy_fodder"] and len(battlefield) > 1):
+                    _sources = list(range(len(battlefield)))
+                else:
+                    _sources = [max(range(len(battlefield)),
+                                    key=lambda i: battlefield[i][0])]
+                # SNAPSHOT FIRST. `creature_entered` appends, and copying a
+                # token that this same spell just made would compound a
+                # board doubling into a loop — the bug the Miirym brake in
+                # this file exists to stop.
+                _snap = [(battlefield[i], creature_types[i],
+                          creature_flying[i]) for i in _sources]
+                for _ in range(_n_tok):
+                    for _e, _ty, _fl in _snap:
+                        creature_entered(
+                            _e[0], turn, True, _e[3],
+                            toughness=_e[6], is_token=True,
+                            type_line=_ty,
+                            infect=_e[5][0], toxic=_e[5][1], flying=_fl,
+                            temporary=True)
+                        bodies_cum += 1
+            # PERMANENT +1/+1 COUNTERS, applied to the board itself rather
+            # than to `turn_pump`, because they do not expire. Copied by a
+            # Zada-style ability every creature gets its own counter — which
+            # is why the smaller permanent number beats the bigger temporary
+            # one over ten turns.
+            if card["combat"]["spell_counters"]:
+                _n = card["combat"]["spell_counters"]
+                if (commander_copy and commander_turn is not None
+                        and card["copy_fodder"] and len(battlefield) > 1):
+                    for _i, _c in enumerate(battlefield):
+                        battlefield[_i] = (_c[0] + _n,) + _c[1:]
+                elif battlefield:
+                    battlefield[0] = (battlefield[0][0] + _n,) + battlefield[0][1:]
+            # THE FOUR THAT ACTUALLY KILL. Each is ONE TURN and each is
+            # multiplied by the copy ability — which for double strike and
+            # power doubling means the whole BOARD, not one creature.
+            _cbt = card["combat"]
+            _copied = (commander_copy and commander_turn is not None
+                       and card["copy_fodder"] and len(battlefield) > 1)
+            if _cbt["spell_double_strike"] and (_copied or battlefield):
+                # Board-wide only when copied; on one creature it is already
+                # inside that creature's own `mult`, which this model applies
+                # per-attacker — so the uncopied case is deliberately not
+                # credited rather than credited to everybody.
+                if _copied:
+                    turn_double_strike = True
+            if _cbt["spell_power_multiplier"] > 1 and _copied:
+                turn_power_mult = max(turn_power_mult,
+                                      _cbt["spell_power_multiplier"])
+            if _cbt["spell_power_to_each_opponent"]:
+                # Every creature deals its own power to each opponent. This
+                # model tracks ONE seat, so one seat's worth is the sum of the
+                # board's power — once if uncopied, once per creature if not.
+                _lbs = _lord_bonuses()
+                _base = sum(_c[0] + team_anthem + lb_ for _c, lb_ in zip(battlefield, _lbs))
+                spell_each_opponent += _base if _copied else (
+                    battlefield[0][0] + team_anthem + _lbs[0] if battlefield else 0)
+            # THE UNTAP, and copied it is an UNTAP-ALL — which is the whole
+            # reason an additional combat phase is worth casting. Seize the
+            # Day queues the phases; this spends them.
+            if _cbt["spell_untap"]:
+                if _copied:
+                    for _i in range(len(battlefield)):
+                        _e = battlefield[_i]
+                        if _e[7]:
+                            battlefield[_i] = _e[:7] + (False,) + _e[8:]
+                elif battlefield and battlefield[0][7]:
+                    battlefield[0] = battlefield[0][:7] + (False,) + battlefield[0][8:]
+            if _cbt["spell_extra_combat"]:
+                # NOT MULTIPLIED BY THE COPY COUNT, and the first version was.
+                # This model has NO TAPPED STATE: attackers are chosen by
+                # `haste or arrived < turn`, so every combat phase swings the
+                # FULL board. Seize the Day untaps ONE creature per copy, so
+                # eight copies are eight extra combats of one attacker each —
+                # crediting eight full-board swings read 74.01 damage @10
+                # against a baseline of 21.36, a 3.5x that is the model's
+                # missing untap rule and not the card. One extra combat is the
+                # same generous-but-bounded convention `extra_combat_free`
+                # already uses for Aggravated Assault.
+                extra_combat_free += _cbt["spell_extra_combat"]
+            if team:
+                turn_pump += team
+            elif single:
+                # COPIED, IT IS A TEAM PUMP FOR THE TURN. Zada targets only
+                # herself, the copies target every other creature, so every
+                # body gets +N — which is how a go-wide cantrip deck kills.
+                # Uncopied it pumps exactly one creature, and that is a flat
+                # addition to the swing rather than a board-wide bonus.
+                if (commander_copy and commander_turn is not None
+                        and card["copy_fodder"] and len(battlefield) > 1):
+                    turn_pump += single
+                else:
+                    flat_pump += single
+
+        def _resolve_body(card):
+            """THE BODIES LOOP'S RESOLUTION, after the cast: every registration
+            a cast permanent makes. The free cast enters through here rather than
+            `_free_creature_enters`, because a CAST fires what a put-onto does
+            not (eminence, cast-token engines) and registers the spell-count
+            engines — Storm-Kiln Artist discovered is a Storm-Kiln Artist."""
+            nonlocal attack_enabler_out, bodies_cum, creatures_entered_this_turn
+            nonlocal enchantments_entered, etb_drained, etb_gained, extra_combat_free
+            nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem
+            nonlocal team_damage_multiplier, token_multiplier, treasure_bonus
+            nonlocal treasure_multiplier, treasures
+            # A BODY THAT ALSO DRAWS is the shape the pilot's Edgar refactor
+            # is built on: "a vampire that draws is better than a sorcery
+            # that draws — same effect, plus a body, plus an eminence
+            # trigger".
+            #
+            # THE ENGINE IS REGISTERED AFTER ITS OWN ARRIVAL, and the first
+            # cut of this registered it before. Welcoming Vampire is a 2/3
+            # that draws "whenever one or more OTHER creatures you control
+            # with power 2 or less enter" — its own power is 2, so it passed
+            # its own gate and drew a card it does not draw. Deferred, and
+            # appended below once `creature_entered` has fired.
+            #
+            # It is deferred for EVERY card and not only the ones worded
+            # "other", which understates Tocasia's Welcome and its two
+            # relatives by one draw apiece on the turn they land. That is
+            # the direction every other choice in this file takes.
+            pending_draw_engine = None
+            if model_draw:
+                draw_n(card["draw"]["etb_draw"])
+                if card["draw"]["etb_draw_per_type"]:
+                    # "for each OTHER Dinosaur": counted on the board it joins.
+                    draw_n(sum(1 for tl_ in battlefield_types
+                               if card["draw"]["etb_draw_per_type"] in tl_))
+                if (card["draw"]["recurring_draw"]
+                        or card["draw"]["arrival_draw"]
+                        or card["draw"]["cast_draw"]):
+                    pending_draw_engine = card["draw"]
+            # Dragonlord's Servant and Dragonspeaker Shaman are bodies that
+            # also reduce; from here on they pay for every Dragon behind them.
+            if card["reduces"]:
+                reductions.append(card["reduces"])
+            combat = card["combat"]
+            # THE DOOR OPENS FOR EITHER MODEL, and it used to open only for
+            # combat. `creature_entered` is where the arrival-draw channel
+            # lives (Welcoming Vampire, Caretaker's Talent, Tocasia's
+            # Welcome), and every call to it sat inside `if model_combat:` —
+            # so a deck opting into `model_draw` ALONE lost three quarters
+            # of its arrival draws and reported the smaller number without
+            # saying anything. Measured on edgar-vampires: 1.264 extra cards
+            # by turn ten with both flags, 0.323 with draw alone.
+            #
+            # A deck with `model_combat` on is byte-identical either way —
+            # the disjunction is already true — and a deck with neither flag
+            # never reaches here at all.
+            arrivals_matter = model_combat or model_draw
+            if not card["is_land"]:
+                battlefield_pips.append(card["pips"])
+                battlefield_types.append(card.get("type_line") or "")
+                battlefield_mv.append(card["cmc"])
+                battlefield_rooms.append(dict(card["room"], open=False)
+                                         if card["room"] else None)
+                if "Enchantment" in (card.get("type_line") or ""):
+                    enchantments_entered += 1
+                # CAST-TRIGGERED BODIES, same door and the same rule: engines
+                # already in play only. `gate_kind` decides what is matched —
+                # a CARD TYPE against the type line (Sigil: any enchantment) or
+                # a creature SUBTYPE against the card's subtypes (eminence:
+                # Vampire). Matching a card type against subtypes is what made
+                # this channel invisible.
+                if arrivals_matter:
+                    _tl2 = card.get("type_line") or ""
+                    for _eng in cast_token_engines:
+                        if (_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"
+                                else _eng["subtype"] in card["subtypes"]):
+                            _n = _eng["bodies"] * token_multiplier
+                            for _ in range(_n):
+                                creature_entered(_eng["power"], turn, False, 1,
+                                                 is_token=True)
+                            bodies_cum += _n
+                if card["cast_token"]:
+                    cast_token_engines.append(card["cast_token"])
+                # CAST-TRIGGERED DRAW fires here because in this model a
+                # permanent spell is CAST and ENTERS in the same step, so
+                # this door is every cast of one. Engines already in play
+                # only — a card does not trigger itself, and the registration
+                # below happens after this loop for exactly that reason.
+                if model_draw:
+                    _tl = card.get("type_line") or ""
+                    for _eng in draw_engines:
+                        # gate first: a mana-value gate has no type gate
+                        if (_eng["cast_draw_gate"] and not _eng["cast_draw_cost"]
+                                and _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl):
+                            draw_n(_eng["cast_draw"])
+                _cast_triggers(card["cmc"], card.get("type_line") or "",
+                               combat["power"] if combat["is_creature"] else 0,
+                               combat["is_creature"])
+                if any(card["drain"][k] for k in
+                       ("payoff_equal", "payoff_fixed", "gain_recurring",
+                        "gain_per_enchantment", "gain_per_creature",
+                        "drain_recurring", "drain_per_enchantment")):
+                    drain_permanents.append(card["drain"])
+                if model_discard and has_event_payoff(card.get("event")):
+                    event_payoff_permanents.append(card["event"])
+                if card["drain"]["lifelink"] and combat["is_creature"]:
+                    lifelink_power += combat["power"]
+                if card["drain"]["grants_lifelink_to"]:
+                    lifelink_granted_types.add(
+                        card["drain"]["grants_lifelink_to"])
+            if model_combat and combat["enchantment_token_bodies"]:
+                enchantment_token_engines.append(combat)
+            if model_combat:
+                # REGISTERED BEFORE IT ENTERS, and that is correct for the
+                # printed wording: Scourge of Valkas says "whenever THIS
+                # CREATURE or another Dragon you control enters", so it does
+                # see itself. Terror of the Peaks says "another", and its
+                # own entry deals nothing because the damage is the
+                # ENTERING creature's power and it is not another creature.
+                if is_etb_engine(combat):
+                    etb_engines.append(combat)
+            if arrivals_matter and combat["is_creature"]:
+                # A GOD RESOLVES AS AN ENCHANTMENT. It is held here and
+                # joins the battlefield on the turn its devotion is met,
+                # which may be this turn (its own pips count) or never.
+                if card["devotion_gate"]:
+                    pending_gods.append((card, combat))
+                else:
+                    creature_entered(
+                        combat["power"], turn, combat["haste"],
+                        2 if combat["double_strike"] else 1,
+                        is_legendary="Legendary" in (card.get("type_line") or ""),
+                        type_line=card.get("type_line") or "",
+                        infect=combat["infect"], toxic=combat["toxic"],
+                        flying=combat["flying"],
+                        attack_gate=combat.get("attack_gate"),
+                        lord=combat.get("static_lord"))
+                    creatures_entered_this_turn += 1
+            # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
+            # whether or not the commander has ever been cast. "Another"
+            # is why the commander's own arrival does not trigger it — it
+            # is not in this loop.
+            if (arrivals_matter and commander_cast_token
+                    and commander_cast_token["subtype"] in card["subtypes"]):
+                minted = commander_cast_token["bodies"] * token_multiplier
+                for _ in range(minted):
+                    creature_entered(commander_cast_token["power"], turn,
+                                     False, 1, is_token=True)
+                bodies_cum += minted
+            # Creature tokens arrive with summoning sickness too, and they
+            # arrive on the turn their maker resolved.
+            if arrivals_matter and combat["token_bodies"]:
+                each = combat["token_power"] // max(combat["token_bodies"], 1)
+                for _ in range(combat["token_bodies"] * token_multiplier):
+                    creature_entered(each, turn, False, 1, is_token=True)
+            if model_combat:
+                if combat["team_damage_multiplier"] > 1:
+                    team_damage_multiplier *= combat["team_damage_multiplier"]
+                if combat["extra_combat_free"]:
+                    extra_combat_free += 1
+                if combat["extra_combat_cost"] is not None:
+                    extra_combat_costs.append(combat["extra_combat_cost"])
+                if any((combat["attack_mana"], combat["attack_treasure"],
+                        combat["attack_draw"], combat["damage_scales_with_treasure"],
+                        combat["attack_damage"], combat["attack_token_bodies"],
+                        combat["attack_ping_per_attacker"])):
+                    combat_engines.append(combat)
+            if pending_draw_engine is not None:
+                draw_engines.append(pending_draw_engine)
+            _register_wheel(card)
+            if card["token_doubler"]:
+                token_multiplier *= 2
+            if model_sacrifice:
+                if is_death_engine(card["death"]):
+                    death_engines.append(card["death"])
+                if card["sac_outlet"] == "free":
+                    free_sac_outlet = True
+            if model_deaths:
+                # DAMAGE AND LIFE LOSS BOTH BELONG HERE. `death_damage` is
+                # the "deals N damage to any target" idiom that
+                # `death_drain` does not read; a card can carry either or
+                # both, so the list is joined on `or`.
+                if (card["death"]["death_drain"]
+                        or card["death"]["death_damage"]):
+                    death_drains.append(card["death"])
+                if card["death"]["gain_on_opponent_death"]:
+                    opponent_death_gains.append(card["death"])
+            if card["attack_enabler"]:
+                attack_enabler_out = True
+            if card["combat"]["mass_animate_threshold"]:
+                # THE EASIEST THRESHOLD WINS, not the last one drawn. Two
+                # cards in the corpus mass-animate and they do it
+                # independently: Opalescence at 1 (unconditional) and
+                # Starfield of Nyx at 5. Either one being satisfied stands
+                # the board up, so holding both must not be WORSE than
+                # holding the unconditional one alone — which is exactly
+                # what a plain assignment did, silently, whenever Starfield
+                # happened to resolve second.
+                _mat = card["combat"]["mass_animate_threshold"]
+                mass_animate_threshold = (
+                    _mat if not mass_animate_threshold
+                    else min(mass_animate_threshold, _mat))
+            if model_drain:
+                d_ = card["drain"]
+                # PAYS ONCE, ON ENTRY — scaled by its own named type if it
+                # names one, counted on the board it is joining.
+                if d_["drain_etb"] or d_["gain_etb"]:
+                    x_ = 1
+                    if d_["scales_with"]:
+                        x_ = max(1, sum(1 for tl_ in battlefield_types
+                                        if d_["scales_with"] in tl_))
+                    etb_drained += d_["drain_etb"] * x_
+                    etb_gained += d_["gain_etb"] * x_
+                # And every permanent of a named type that lands afterwards
+                # pays the ones already out.
+                for prof_ in per_type_watchers:
+                    if prof_["per_type"] in (card.get("type_line") or ""):
+                        etb_drained += prof_["drain_per_type"]
+                        etb_gained += prof_["gain_per_type"]
+                if d_["per_type"]:
+                    per_type_watchers.append(d_)
+            # THE SPELL-COUNT ENGINES, registered where every other engine is.
+            # A card read perfectly and never registered is this file's
+            # documented failure; both registries are populated here.
+            sc_ = card["spell_count"]
+            if sc_["per_cast_damage"]:
+                per_cast_engines.append(sc_)
+            if sc_["magecraft_treasure"]:
+                magecraft_engines.append(sc_)
+            cb_ = card["combat"]
+            if model_combat and cb_["team_haste"]:
+                haste_grants.append(cb_["team_haste"])
+            if cb_["team_counters_etb"]:
+                n_ = cb_["team_counters_etb"]
+                if n_ < 0:            # X = the count of its own named type
+                    ty_ = cb_["team_counters_scale_type"] or ""
+                    n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
+                team_anthem += n_
+            if cb_["team_counters_scale_type"]:
+                team_anthem_on_type.append(
+                    (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
+            for ty_, per_ in team_anthem_on_type:
+                if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
+                    team_anthem += per_
+            # Casting it turns its Treasure engine on for later turns, and
+            # an ETB or cast trigger pays out immediately.
+            if not model_treasures:
+                pass
+            elif card["treasure_bonus"]:
+                treasure_bonus += 1
+            if model_treasures and card["treasure_doubler"]:
+                # Two doublers is x4, not x3 — each replaces the other's
+                # output, which is why this compounds rather than sums.
+                treasure_multiplier *= 2
+            if not model_treasures:
+                pass
+            elif card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
+                                              "opponent_second_draw"):
+                treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
+            elif card["treasure_trigger"] in ("etb", "cast"):
+                treasures += ((card["treasure_n"] + treasure_bonus)
+                              * treasure_multiplier)
+
         # ── RITUALS (2026-10-05) ────────────────────────────────────────────
         # A ritual is cast only when it is the difference: its NET mana (what it
         # adds minus what it costs) must make a card in hand — or the commander —
@@ -1526,50 +2024,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 _note_cast(card)
-                if card["draw"]["wheel_draws"]:
-                    held = len(hand)
-                    discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
-                    _n = held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"]
-                    draw_n(_n)
-                    # A WHEEL IS SYMMETRICAL AND THIS IS THE HALF THE MODEL
-                    # NEVER SAW. "Each player draws seven" refills the opponent
-                    # too, which is the cost of every wheel in this deck and
-                    # the reason the tax cards exist. A "that many" wheel draws
-                    # each player their OWN discard count and this model does
-                    # not track the opponent's hand, so ours stands in for it.
-                    opponent_draws_this_turn += _n
-                    continue
-                draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
-                # THE COMMANDER COPIES IT FOR EACH OTHER CREATURE YOU CONTROL.
-                # Zada, Hedron Grinder's whole deck: a {R} cantrip targeting
-                # only her draws ONE card, and with six other bodies out it
-                # draws SEVEN. `battlefield` includes the commander herself, so
-                # the copy count is len(battlefield) - 1 and a lone commander
-                # multiplies by nothing, which is correct.
-                #
-                # WHAT THIS DOES NOT MODEL, named rather than left implied:
-                # the model has no removal, so once cast she stays, and the real
-                # card is a 3-mana 3/3 that dies to everything. Every figure
-                # this channel moves is therefore a CEILING on the games where
-                # she survives, not a forecast. `model_combat` carries the pump
-                # and evasion halves of the same copies; this arm is the draw.
-                if (commander_copy and commander_turn is not None
-                        and card["copy_fodder"]
-                        and card["draw"]["spell_draw"]):
-                    others = max(len(battlefield) - 1, 0)
-                    if others:
-                        draw_n(card["draw"]["spell_draw"] * others)
-                if card["draw"]["spell_draw_greatest_power"]:
-                    # Resolved against the board at cast; the anthem rides on
-                    # every body the way it does at the attack step.
-                    draw_n(max((p + team_anthem + lb_ for (p, *_), lb_
-                                in zip(battlefield, _lord_bonuses())), default=0))
-                if model_discard and card["draw"]["spell_discard"]:
-                    discard_n(card["draw"]["spell_discard"])
-                if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
-                        or card["draw"]["cast_draw"]):
-                    draw_engines.append(card["draw"])
-                _register_wheel(card)
+                _resolve_draw(card)
 
         # DISCOVER, THE FLOOR. A discover spell is not a body, a draw, a pump or
         # a storm card, so until this loop it fell through every loop above and
@@ -1591,14 +2046,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 continue
             _note_cast(card)
-            _resolutions = 1
-            if (commander_copy and commander_turn is not None
-                    and card["copy_fodder"] and len(battlefield) > 1):
-                _copies = len(battlefield) - 1
-                _resolutions += _copies
-                _magecraft(_copies)
-            for _ in range(_resolutions):
-                _discover(card["discover_n"])
+            _resolve_discover(card)
 
         # STORM. A copy for each spell cast BEFORE it this turn — so the spell
         # count IS the card, and until this commit there was no count to read.
@@ -1623,22 +2071,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 continue
             copies = spells_cast_this_turn      # the count BEFORE this cast
             _note_cast(card)                    # ...which this then increments
-            total = 1 + copies
-            if model_combat and sc["storm_damage"]:
-                etb_damage += sc["storm_damage"] * total
-            if sc["storm_token_bodies"]:
-                each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
-                for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
-                    # TEN FIELDS, like the one door above — this append
-                    # bypasses `creature_entered` and would otherwise build a
-                    # short entry that every `e[8]` read would raise on. The
-                    # tenth, the attack gate, is None: a Goblin token attacks.
-                    battlefield.append((each, turn, False, 1, True, (0, 0), 1,
-                                        False, False, None, None))
-                    creature_types.append("Creature — Goblin")
-                    creature_flying.append(False)
-                    bodies_cum += 1
-            _magecraft(copies)                  # the cast itself fired already
+            _resolve_storm(card, copies)
 
         # A PUMP SPELL IS NOT A BODY, A DRAW, A TUTOR OR A ROCK — so it fell
         # through every loop above, which is why Haze of Rage and every other
@@ -1685,155 +2118,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 _note_cast(card)
-                team = card["combat"]["spell_pump_team"]
-                single = card["combat"]["spell_pump_single"]
-                # THE TREASURES THE SPELL MAKES, credited on exactly the same
-                # multiplication as the pump. Reckless Ransacking is {1}{R} for
-                # +3/+2 AND a Treasure; copied across eight creatures that is
-                # eight Treasures, which is what pays for the follow-up. Gated on
-                # `model_treasures` like every other token of its kind.
-                if model_treasures and card["combat"]["spell_treasure"]:
-                    _tre = card["combat"]["spell_treasure"]
-                    _mult = 1
-                    if (commander_copy and commander_turn is not None
-                            and card["copy_fodder"] and len(battlefield) > 1):
-                        _mult = len(battlefield)      # the original plus one per other
-                    treasures += _tre * _mult
-                # A TOKEN COPY OF A TARGET CREATURE — the highest-ceiling card
-                # a Zada-style commander can be handed, and the reason this
-                # channel exists. Uncopied it is one extra body for one turn;
-                # copied, each copy targets a DIFFERENT creature, so a board of
-                # N gets N token copies of ITSELF, every one with haste, and
-                # every arrival payoff in the deck fires once per token.
-                #
-                # IT GOES THROUGH `creature_entered`, THE ONE DOOR, so Impact
-                # Tremors, Terror of the Peaks and the arrival-draw engines all
-                # fire without this site knowing they exist. That is the whole
-                # value of the door: goblin-storm runs Impact Tremors, and eight
-                # tokens entering is eight damage nobody had to wire up here.
-                #
-                # THE COPIES ARE TEMPORARY. Both real cards end with "sacrifice
-                # it at the beginning of the next end step" or "exile this
-                # token", so they are marked and removed after combat — see the
-                # cleanup below `damage_by_turn`. Leaving them would double the
-                # board permanently every cast, which is not the card.
-                #
-                # WHAT THIS DELIBERATELY DOES NOT CLAIM, so the figure is a
-                # FLOOR rather than a forecast: the tokens die at end of turn,
-                # and goblin-storm runs Boggart Shenanigans and Pashalik Mons,
-                # which turn each of those deaths into damage. That is a real
-                # second half of the line and it is NOT credited here — wiring
-                # deaths through this site needs the death channel and its own
-                # sweep. Stated, not silently omitted.
-                # THE PILOT'S POLICY, CONSULTED. Stack 011 proved with CR
-                # citations that Zada copies NOTHING with no other creature out,
-                # and that no single card fixes it — the trigger resolves before
-                # the spell that caused it (603.3/603.3b) — so a token-copy spell
-                # into a thin board is two mana for one token. A deck may declare
-                # a threshold to hold it; with no policy this is `0` and the
-                # behaviour is exactly what it was before the module existed.
-                _hold_copy = ((hold_until or {}).get("spell_token_copy") or {}
-                              ).get("other_creatures", 0)
-                if (card["combat"]["spell_token_copy"] and battlefield
-                        and len(battlefield) - 1 >= _hold_copy):
-                    _n_tok = card["combat"]["spell_token_copy"]
-                    # Copied: one token per creature in play (the original
-                    # targets the commander, each copy a different other
-                    # creature). Uncopied: one token, of the biggest body.
-                    if (commander_copy and commander_turn is not None
-                            and card["copy_fodder"] and len(battlefield) > 1):
-                        _sources = list(range(len(battlefield)))
-                    else:
-                        _sources = [max(range(len(battlefield)),
-                                        key=lambda i: battlefield[i][0])]
-                    # SNAPSHOT FIRST. `creature_entered` appends, and copying a
-                    # token that this same spell just made would compound a
-                    # board doubling into a loop — the bug the Miirym brake in
-                    # this file exists to stop.
-                    _snap = [(battlefield[i], creature_types[i],
-                              creature_flying[i]) for i in _sources]
-                    for _ in range(_n_tok):
-                        for _e, _ty, _fl in _snap:
-                            creature_entered(
-                                _e[0], turn, True, _e[3],
-                                toughness=_e[6], is_token=True,
-                                type_line=_ty,
-                                infect=_e[5][0], toxic=_e[5][1], flying=_fl,
-                                temporary=True)
-                            bodies_cum += 1
-                # PERMANENT +1/+1 COUNTERS, applied to the board itself rather
-                # than to `turn_pump`, because they do not expire. Copied by a
-                # Zada-style ability every creature gets its own counter — which
-                # is why the smaller permanent number beats the bigger temporary
-                # one over ten turns.
-                if card["combat"]["spell_counters"]:
-                    _n = card["combat"]["spell_counters"]
-                    if (commander_copy and commander_turn is not None
-                            and card["copy_fodder"] and len(battlefield) > 1):
-                        for _i, _c in enumerate(battlefield):
-                            battlefield[_i] = (_c[0] + _n,) + _c[1:]
-                    elif battlefield:
-                        battlefield[0] = (battlefield[0][0] + _n,) + battlefield[0][1:]
-                # THE FOUR THAT ACTUALLY KILL. Each is ONE TURN and each is
-                # multiplied by the copy ability — which for double strike and
-                # power doubling means the whole BOARD, not one creature.
-                _cbt = card["combat"]
-                _copied = (commander_copy and commander_turn is not None
-                           and card["copy_fodder"] and len(battlefield) > 1)
-                if _cbt["spell_double_strike"] and (_copied or battlefield):
-                    # Board-wide only when copied; on one creature it is already
-                    # inside that creature's own `mult`, which this model applies
-                    # per-attacker — so the uncopied case is deliberately not
-                    # credited rather than credited to everybody.
-                    if _copied:
-                        turn_double_strike = True
-                if _cbt["spell_power_multiplier"] > 1 and _copied:
-                    turn_power_mult = max(turn_power_mult,
-                                          _cbt["spell_power_multiplier"])
-                if _cbt["spell_power_to_each_opponent"]:
-                    # Every creature deals its own power to each opponent. This
-                    # model tracks ONE seat, so one seat's worth is the sum of the
-                    # board's power — once if uncopied, once per creature if not.
-                    _lbs = _lord_bonuses()
-                    _base = sum(_c[0] + team_anthem + lb_ for _c, lb_ in zip(battlefield, _lbs))
-                    spell_each_opponent += _base if _copied else (
-                        battlefield[0][0] + team_anthem + _lbs[0] if battlefield else 0)
-                # THE UNTAP, and copied it is an UNTAP-ALL — which is the whole
-                # reason an additional combat phase is worth casting. Seize the
-                # Day queues the phases; this spends them.
-                if _cbt["spell_untap"]:
-                    if _copied:
-                        for _i in range(len(battlefield)):
-                            _e = battlefield[_i]
-                            if _e[7]:
-                                battlefield[_i] = _e[:7] + (False,) + _e[8:]
-                    elif battlefield and battlefield[0][7]:
-                        battlefield[0] = battlefield[0][:7] + (False,) + battlefield[0][8:]
-                if _cbt["spell_extra_combat"]:
-                    # NOT MULTIPLIED BY THE COPY COUNT, and the first version was.
-                    # This model has NO TAPPED STATE: attackers are chosen by
-                    # `haste or arrived < turn`, so every combat phase swings the
-                    # FULL board. Seize the Day untaps ONE creature per copy, so
-                    # eight copies are eight extra combats of one attacker each —
-                    # crediting eight full-board swings read 74.01 damage @10
-                    # against a baseline of 21.36, a 3.5x that is the model's
-                    # missing untap rule and not the card. One extra combat is the
-                    # same generous-but-bounded convention `extra_combat_free`
-                    # already uses for Aggravated Assault.
-                    extra_combat_free += _cbt["spell_extra_combat"]
-                if team:
-                    turn_pump += team
-                elif single:
-                    # COPIED, IT IS A TEAM PUMP FOR THE TURN. Zada targets only
-                    # herself, the copies target every other creature, so every
-                    # body gets +N — which is how a go-wide cantrip deck kills.
-                    # Uncopied it pumps exactly one creature, and that is a flat
-                    # addition to the swing rather than a board-wide bonus.
-                    if (commander_copy and commander_turn is not None
-                            and card["copy_fodder"] and len(battlefield) > 1):
-                        turn_pump += single
-                    else:
-                        flat_pump += single
+                _resolve_pump(card)
 
         # A PERMANENT THAT ONLY DRAINS WAS NEVER CAST AT ALL.
         #
@@ -2102,256 +2387,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                 _note_cast(card)
-                # A BODY THAT ALSO DRAWS is the shape the pilot's Edgar refactor
-                # is built on: "a vampire that draws is better than a sorcery
-                # that draws — same effect, plus a body, plus an eminence
-                # trigger".
-                #
-                # THE ENGINE IS REGISTERED AFTER ITS OWN ARRIVAL, and the first
-                # cut of this registered it before. Welcoming Vampire is a 2/3
-                # that draws "whenever one or more OTHER creatures you control
-                # with power 2 or less enter" — its own power is 2, so it passed
-                # its own gate and drew a card it does not draw. Deferred, and
-                # appended below once `creature_entered` has fired.
-                #
-                # It is deferred for EVERY card and not only the ones worded
-                # "other", which understates Tocasia's Welcome and its two
-                # relatives by one draw apiece on the turn they land. That is
-                # the direction every other choice in this file takes.
-                pending_draw_engine = None
-                if model_draw:
-                    draw_n(card["draw"]["etb_draw"])
-                    if card["draw"]["etb_draw_per_type"]:
-                        # "for each OTHER Dinosaur": counted on the board it joins.
-                        draw_n(sum(1 for tl_ in battlefield_types
-                                   if card["draw"]["etb_draw_per_type"] in tl_))
-                    if (card["draw"]["recurring_draw"]
-                            or card["draw"]["arrival_draw"]
-                            or card["draw"]["cast_draw"]):
-                        pending_draw_engine = card["draw"]
-                # Dragonlord's Servant and Dragonspeaker Shaman are bodies that
-                # also reduce; from here on they pay for every Dragon behind them.
-                if card["reduces"]:
-                    reductions.append(card["reduces"])
-                combat = card["combat"]
-                # THE DOOR OPENS FOR EITHER MODEL, and it used to open only for
-                # combat. `creature_entered` is where the arrival-draw channel
-                # lives (Welcoming Vampire, Caretaker's Talent, Tocasia's
-                # Welcome), and every call to it sat inside `if model_combat:` —
-                # so a deck opting into `model_draw` ALONE lost three quarters
-                # of its arrival draws and reported the smaller number without
-                # saying anything. Measured on edgar-vampires: 1.264 extra cards
-                # by turn ten with both flags, 0.323 with draw alone.
-                #
-                # A deck with `model_combat` on is byte-identical either way —
-                # the disjunction is already true — and a deck with neither flag
-                # never reaches here at all.
-                arrivals_matter = model_combat or model_draw
-                if not card["is_land"]:
-                    battlefield_pips.append(card["pips"])
-                    battlefield_types.append(card.get("type_line") or "")
-                    battlefield_mv.append(card["cmc"])
-                    battlefield_rooms.append(dict(card["room"], open=False)
-                                             if card["room"] else None)
-                    if "Enchantment" in (card.get("type_line") or ""):
-                        enchantments_entered += 1
-                    # CAST-TRIGGERED BODIES, same door and the same rule: engines
-                    # already in play only. `gate_kind` decides what is matched —
-                    # a CARD TYPE against the type line (Sigil: any enchantment) or
-                    # a creature SUBTYPE against the card's subtypes (eminence:
-                    # Vampire). Matching a card type against subtypes is what made
-                    # this channel invisible.
-                    if arrivals_matter:
-                        _tl2 = card.get("type_line") or ""
-                        for _eng in cast_token_engines:
-                            if (_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"
-                                    else _eng["subtype"] in card["subtypes"]):
-                                _n = _eng["bodies"] * token_multiplier
-                                for _ in range(_n):
-                                    creature_entered(_eng["power"], turn, False, 1,
-                                                     is_token=True)
-                                bodies_cum += _n
-                    if card["cast_token"]:
-                        cast_token_engines.append(card["cast_token"])
-                    # CAST-TRIGGERED DRAW fires here because in this model a
-                    # permanent spell is CAST and ENTERS in the same step, so
-                    # this door is every cast of one. Engines already in play
-                    # only — a card does not trigger itself, and the registration
-                    # below happens after this loop for exactly that reason.
-                    if model_draw:
-                        _tl = card.get("type_line") or ""
-                        for _eng in draw_engines:
-                            # gate first: a mana-value gate has no type gate
-                            if (_eng["cast_draw_gate"] and not _eng["cast_draw_cost"]
-                                    and _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl):
-                                draw_n(_eng["cast_draw"])
-                    _cast_triggers(card["cmc"], card.get("type_line") or "",
-                                   combat["power"] if combat["is_creature"] else 0,
-                                   combat["is_creature"])
-                    if any(card["drain"][k] for k in
-                           ("payoff_equal", "payoff_fixed", "gain_recurring",
-                            "gain_per_enchantment", "gain_per_creature",
-                            "drain_recurring", "drain_per_enchantment")):
-                        drain_permanents.append(card["drain"])
-                    if model_discard and has_event_payoff(card.get("event")):
-                        event_payoff_permanents.append(card["event"])
-                    if card["drain"]["lifelink"] and combat["is_creature"]:
-                        lifelink_power += combat["power"]
-                    if card["drain"]["grants_lifelink_to"]:
-                        lifelink_granted_types.add(
-                            card["drain"]["grants_lifelink_to"])
-                if model_combat and combat["enchantment_token_bodies"]:
-                    enchantment_token_engines.append(combat)
-                if model_combat:
-                    # REGISTERED BEFORE IT ENTERS, and that is correct for the
-                    # printed wording: Scourge of Valkas says "whenever THIS
-                    # CREATURE or another Dragon you control enters", so it does
-                    # see itself. Terror of the Peaks says "another", and its
-                    # own entry deals nothing because the damage is the
-                    # ENTERING creature's power and it is not another creature.
-                    if is_etb_engine(combat):
-                        etb_engines.append(combat)
-                if arrivals_matter and combat["is_creature"]:
-                    # A GOD RESOLVES AS AN ENCHANTMENT. It is held here and
-                    # joins the battlefield on the turn its devotion is met,
-                    # which may be this turn (its own pips count) or never.
-                    if card["devotion_gate"]:
-                        pending_gods.append((card, combat))
-                    else:
-                        creature_entered(
-                            combat["power"], turn, combat["haste"],
-                            2 if combat["double_strike"] else 1,
-                            is_legendary="Legendary" in (card.get("type_line") or ""),
-                            type_line=card.get("type_line") or "",
-                            infect=combat["infect"], toxic=combat["toxic"],
-                            flying=combat["flying"],
-                            attack_gate=combat.get("attack_gate"),
-                            lord=combat.get("static_lord"))
-                        creatures_entered_this_turn += 1
-                # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
-                # whether or not the commander has ever been cast. "Another"
-                # is why the commander's own arrival does not trigger it — it
-                # is not in this loop.
-                if (arrivals_matter and commander_cast_token
-                        and commander_cast_token["subtype"] in card["subtypes"]):
-                    minted = commander_cast_token["bodies"] * token_multiplier
-                    for _ in range(minted):
-                        creature_entered(commander_cast_token["power"], turn,
-                                         False, 1, is_token=True)
-                    bodies_cum += minted
-                # Creature tokens arrive with summoning sickness too, and they
-                # arrive on the turn their maker resolved.
-                if arrivals_matter and combat["token_bodies"]:
-                    each = combat["token_power"] // max(combat["token_bodies"], 1)
-                    for _ in range(combat["token_bodies"] * token_multiplier):
-                        creature_entered(each, turn, False, 1, is_token=True)
-                if model_combat:
-                    if combat["team_damage_multiplier"] > 1:
-                        team_damage_multiplier *= combat["team_damage_multiplier"]
-                    if combat["extra_combat_free"]:
-                        extra_combat_free += 1
-                    if combat["extra_combat_cost"] is not None:
-                        extra_combat_costs.append(combat["extra_combat_cost"])
-                    if any((combat["attack_mana"], combat["attack_treasure"],
-                            combat["attack_draw"], combat["damage_scales_with_treasure"],
-                            combat["attack_damage"], combat["attack_token_bodies"],
-                            combat["attack_ping_per_attacker"])):
-                        combat_engines.append(combat)
-                if pending_draw_engine is not None:
-                    draw_engines.append(pending_draw_engine)
-                _register_wheel(card)
-                if card["token_doubler"]:
-                    token_multiplier *= 2
-                if model_sacrifice:
-                    if is_death_engine(card["death"]):
-                        death_engines.append(card["death"])
-                    if card["sac_outlet"] == "free":
-                        free_sac_outlet = True
-                if model_deaths:
-                    # DAMAGE AND LIFE LOSS BOTH BELONG HERE. `death_damage` is
-                    # the "deals N damage to any target" idiom that
-                    # `death_drain` does not read; a card can carry either or
-                    # both, so the list is joined on `or`.
-                    if (card["death"]["death_drain"]
-                            or card["death"]["death_damage"]):
-                        death_drains.append(card["death"])
-                    if card["death"]["gain_on_opponent_death"]:
-                        opponent_death_gains.append(card["death"])
-                if card["attack_enabler"]:
-                    attack_enabler_out = True
-                if card["combat"]["mass_animate_threshold"]:
-                    # THE EASIEST THRESHOLD WINS, not the last one drawn. Two
-                    # cards in the corpus mass-animate and they do it
-                    # independently: Opalescence at 1 (unconditional) and
-                    # Starfield of Nyx at 5. Either one being satisfied stands
-                    # the board up, so holding both must not be WORSE than
-                    # holding the unconditional one alone — which is exactly
-                    # what a plain assignment did, silently, whenever Starfield
-                    # happened to resolve second.
-                    _mat = card["combat"]["mass_animate_threshold"]
-                    mass_animate_threshold = (
-                        _mat if not mass_animate_threshold
-                        else min(mass_animate_threshold, _mat))
-                if model_drain:
-                    d_ = card["drain"]
-                    # PAYS ONCE, ON ENTRY — scaled by its own named type if it
-                    # names one, counted on the board it is joining.
-                    if d_["drain_etb"] or d_["gain_etb"]:
-                        x_ = 1
-                        if d_["scales_with"]:
-                            x_ = max(1, sum(1 for tl_ in battlefield_types
-                                            if d_["scales_with"] in tl_))
-                        etb_drained += d_["drain_etb"] * x_
-                        etb_gained += d_["gain_etb"] * x_
-                    # And every permanent of a named type that lands afterwards
-                    # pays the ones already out.
-                    for prof_ in per_type_watchers:
-                        if prof_["per_type"] in (card.get("type_line") or ""):
-                            etb_drained += prof_["drain_per_type"]
-                            etb_gained += prof_["gain_per_type"]
-                    if d_["per_type"]:
-                        per_type_watchers.append(d_)
-                # THE SPELL-COUNT ENGINES, registered where every other engine is.
-                # A card read perfectly and never registered is this file's
-                # documented failure; both registries are populated here.
-                sc_ = card["spell_count"]
-                if sc_["per_cast_damage"]:
-                    per_cast_engines.append(sc_)
-                if sc_["magecraft_treasure"]:
-                    magecraft_engines.append(sc_)
-                cb_ = card["combat"]
-                if model_combat and cb_["team_haste"]:
-                    haste_grants.append(cb_["team_haste"])
-                if cb_["team_counters_etb"]:
-                    n_ = cb_["team_counters_etb"]
-                    if n_ < 0:            # X = the count of its own named type
-                        ty_ = cb_["team_counters_scale_type"] or ""
-                        n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
-                    team_anthem += n_
-                if cb_["team_counters_scale_type"]:
-                    team_anthem_on_type.append(
-                        (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
-                for ty_, per_ in team_anthem_on_type:
-                    if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
-                        team_anthem += per_
-                # Casting it turns its Treasure engine on for later turns, and
-                # an ETB or cast trigger pays out immediately.
-                if not model_treasures:
-                    pass
-                elif card["treasure_bonus"]:
-                    treasure_bonus += 1
-                if model_treasures and card["treasure_doubler"]:
-                    # Two doublers is x4, not x3 — each replaces the other's
-                    # output, which is why this compounds rather than sums.
-                    treasure_multiplier *= 2
-                if not model_treasures:
-                    pass
-                elif card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
-                                                  "opponent_second_draw"):
-                    treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
-                elif card["treasure_trigger"] in ("etb", "cast"):
-                    treasures += ((card["treasure_n"] + treasure_bonus)
-                                  * treasure_multiplier)
+                _resolve_body(card)
         # ── X SPELLS: the mana sink, cast LAST with whatever is left ─────
         #
         # Deliberately after every other loop, because that is how the card is
