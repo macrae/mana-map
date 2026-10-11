@@ -932,8 +932,9 @@ manamap pilot similar-cards "Windfall" "Counterspell" --identity URW --limit 10
 ```
 
 The same three rules as `card-search`: identity DERIVED from `--deck` (or stated with
-`--identity`), the deck's 99 excluded (`--include-deck` keeps them), Commander-illegal
-cards never ranked. A seed resolves by exact name, a DFC face, or a prefix that names
+`--identity`), the deck's own list excluded (`--include-deck` keeps it), and a card
+illegal in the deck's FORMAT never ranked (Commander without `--deck`; `--deck elves`
+reads Modern, and the meta says `format` and `illegal_skipped`). A seed resolves by exact name, a DFC face, or a prefix that names
 exactly one card; anything else is a refusal listing the candidates. Every row carries
 its score, its roles (`shares …` when it holds a seed's role), what the goldfish can
 price (`model:`), its text and an Atlas link. Read-only, so it runs warm under `serve`.

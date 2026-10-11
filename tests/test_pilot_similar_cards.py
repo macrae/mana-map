@@ -58,6 +58,32 @@ def test_illegal_cards_never_rank_and_are_counted(tiny_corpus):
     assert meta["commander_illegal_skipped"] == 1
 
 
+def test_a_60_card_deck_ranks_only_its_own_formats_cards(tiny_corpus, monkeypatch):
+    """`--deck elves` is a Modern deck; the pool's `legal` flag is Commander's, and
+    Selvala, Gilanra and Wirewood Channeler ranked for it because the filter read it.
+    `Twin` is Commander-legal and not Modern-legal here: Modern drops it, Commander
+    keeps it."""
+    from manamap.pilot import card_pool, formats
+
+    modern = {n: "legal" for n in tiny_corpus}
+    modern["Twin"] = "not_legal"
+    monkeypatch.setattr(card_pool, "legality", lambda column: modern)
+
+    rows, meta = sc.similar(["Wheel"], limit=10)
+    assert "Twin" in [r["name"] for r in rows]
+    assert "commander_illegal_skipped" in meta and "format" not in meta
+
+    rows, meta = sc.similar(["Wheel"], limit=10, spec=formats.get("modern"))
+    got = [r["name"] for r in rows]
+    assert "Twin" not in got and "Redwheel" in got
+    assert meta["format"] == "modern"
+    assert meta["illegal_skipped"] == 1
+    assert "commander_illegal_skipped" not in meta
+
+    rows, _ = sc.similar(["Wheel"], limit=10, spec=formats.get("commander"))
+    assert "Twin" in [r["name"] for r in rows]
+
+
 def test_identity_is_a_subset_filter(tiny_corpus):
     rows, _ = sc.similar(["Wheel"], identity={"U"}, limit=10)
     assert "Redwheel" not in [r["name"] for r in rows]

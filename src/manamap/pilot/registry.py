@@ -71,7 +71,7 @@ PILOT_STEPS = [
      "on one primary measure; --check shows the board for an OK without playing"),
     ("similar-cards", "manamap.pilot.similar_cards",
      "Cards that DO what a named card does: nearest neighbours in the ability space, "
-     "identity-derived from --deck, the 99 and illegal cards excluded"),
+     "identity-derived from --deck, the deck's own list and cards illegal in its format excluded"),
     ("page-state", "manamap.pilot.page_state",
      "What Sean has open in the browser (page, deck, mode, focused card, selection), "
      "latest per tab, as reported to `manamap serve`; for resolving \"this card\""),
@@ -1335,12 +1335,12 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "similar-cards":
             # NO slug positional, like card-search: the positionals are the SEED cards,
-            # and --deck only scopes the corpus (identity derived, the 99 excluded).
+            # and --deck only scopes the corpus (identity, the list excluded, its format).
             cmd.add_argument("cards", nargs="*", metavar="CARD",
                              help="one or more seed cards; several rank against their centroid")
             cmd.add_argument("--deck", default=None,
-                             help="scope to a deck: identity derived from its commander, "
-                                  "and its own 99 excluded from the results")
+                             help="scope to a deck: identity derived from its commander, its own "
+                                  "list excluded, and legality read from the deck's format")
             cmd.add_argument("--identity", default=None,
                              help="colour identity to stay within (e.g. URW); mutually "
                                   "exclusive with --deck, whose identity is derived")

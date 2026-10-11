@@ -8,8 +8,9 @@ enforces so callers cannot get them wrong:
 
   * **Colour identity is DERIVED** — `--deck <slug>` takes it from the commander;
     `--identity` is the hand-stated form for exploring without a deck.
-  * **A candidate is a card you do NOT already have** — `--deck` excludes the 99.
-  * **Legality is a filter, not a note** — Commander-illegal cards never rank.
+  * **A candidate is a card you do NOT already have** — `--deck` excludes the list.
+  * **Legality is a filter, not a note** — a card illegal in the deck's FORMAT never
+    ranks (Commander without a deck; `--deck elves` reads Modern's column).
 
 Several seeds rank against their CENTROID (`commander_search.centroid`), so
 "cards like Windfall and Wheel of Fortune" asks for the shared function, not
@@ -34,6 +35,7 @@ import urllib.parse
 import numpy as np
 
 from manamap import config
+from manamap.pilot import card_pool, formats
 from manamap.pilot.card_pool import corpus_oracle, load_frame, load_pool
 from manamap.pilot.card_search import (
     channels_for,
@@ -112,7 +114,7 @@ def resolve_seeds(seeds, names):
 
 
 def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
-            allow_game_changers=True):
+            allow_game_changers=True, spec=None):
     """Rank the corpus by ability-space proximity to the seeds. Returns (rows, meta)."""
     from manamap.analysis.common import top_k_similar
     from manamap.analysis.commander_search import centroid
@@ -132,6 +134,10 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
     seed_rows = resolve_seeds(seeds, names)
     exclude = set(exclude or [])
     ident = set(identity or [])
+    # A deck's FORMAT decides legality, exactly as card-search reads it: the pool's
+    # `legal` flag is Commander's, so another format reads its own column.
+    other = spec is not None and spec.legality_key != "commander"
+    legal_in = card_pool.legality(spec.legality_column) if other else None
 
     # One eligible row per name (first printing), legal, in identity, not excluded,
     # not a seed. Built as a mask so the ranking is one matrix product.
@@ -145,7 +151,7 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
         rec = pool.get(n)
         if rec is None or n in exclude or n in seed_names:
             continue
-        if not rec["legal"]:
+        if not (legal_in.get(n) == "legal" if other else rec["legal"]):
             skipped_illegal += 1
             continue
         if identity is not None and not rec["color_identity"] <= ident:
@@ -205,6 +211,10 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
             "seeds": [names[r] for r in seed_rows],
             "seed_roles": sorted(seed_roles),
             "ranked_against": "the seed" if len(seed_rows) == 1 else "the seeds' centroid"}
+    if other:
+        # Same count, named for the format it was checked against.
+        meta["illegal_skipped"] = meta.pop("commander_illegal_skipped")
+        meta["format"] = spec.legality_key
     return rows, meta
 
 
@@ -227,7 +237,8 @@ def analyze(args):
     rows, meta = similar(
         args.cards, identity=identity, exclude=exclude,
         limit=getattr(args, "limit", None) or DEFAULT_LIMIT,
-        allow_game_changers=not getattr(args, "no_game_changers", False))
+        allow_game_changers=not getattr(args, "no_game_changers", False),
+        spec=formats.for_deck(args.deck) if getattr(args, "deck", None) else None)
     return {
         "identity": sorted(identity) if identity is not None else None,
         "identity_derived_from": derived_from,
