@@ -4,9 +4,9 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · G · 60 cards
-- **Version:** V1 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** G · **lands:** 16
-- **Combos:** 0 known lines (0 infinite, 0 two-card) · 3 one card short
+- **Combos:** 0 known lines (0 infinite, 0 two-card) · 6 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=elves) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=elves)
 <!-- /ctx:gen summary -->
 
@@ -88,7 +88,7 @@ Sixteen basic Forests. None enter tapped. Quirion Ranger and Utopia Sprawl both 
 
 <!-- ctx:gen numbers -->
 - Goldfish: not modelled for Modern — the goldfish is Commander-only (docs/simulation.md).
-- Colour on curve (lands + rocks): G 94%
+- Colour on curve (lands + rocks): G 96%
 <!-- /ctx:gen numbers -->
 
 ## Pilot notes

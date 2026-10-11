@@ -1,6 +1,6 @@
 {
   "slug": "elves",
-  "decklist_sha256": "85fbc7a45d33825c165c91f4465a24d9c79bca4f951673865b9a4aa2ce41f15d",
+  "decklist_sha256": "e953cadc4ac661134b9b6b72a3efc69f0f17c1c2fe63697b107d8c6f7b32123c",
   "format": "modern",
   "lands": {
     "total": 16,
@@ -40,14 +40,14 @@
       "U": 0,
       "B": 0,
       "R": 0,
-      "G": 8
+      "G": 10
     },
     "total": {
       "W": 0,
       "U": 0,
       "B": 0,
       "R": 0,
-      "G": 24
+      "G": 26
     },
     "gated": {
       "count": 0,
@@ -55,6 +55,14 @@
       "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
     },
     "producers": [
+      {
+        "name": "Elvish Archdruid",
+        "kind": "ramp:dork",
+        "cmc": 3.0,
+        "produces": [
+          "G"
+        ]
+      },
       {
         "name": "Heritage Druid",
         "kind": "ramp:dork",
@@ -75,9 +83,9 @@
   },
   "pips": {
     "G": {
-      "total_pips": 60.0,
+      "total_pips": 58.0,
       "max_pips": 3,
-      "cards": 42,
+      "cards": 43,
       "earliest_turn": 1,
       "effective_pips": 2
     }
@@ -96,14 +104,14 @@
       "G": 0.76
     },
     "with_rocks_and_dorks": {
-      "G": 0.945
+      "G": 0.965
     },
     "lands_only_ungated": {
       "G": 0.76
     }
   },
   "ramp": {
-    "ramp:dork": 8
+    "ramp:dork": 10
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {},
@@ -116,7 +124,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "G: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 16-land deck; rocks and dorks lift the count to 24.",
+    "G: 16 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 16-land deck; rocks and dorks lift the count to 26.",
     "the goldfish is Commander-only; not run for Modern"
   ]
 }

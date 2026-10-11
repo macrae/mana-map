@@ -1,30 +1,21 @@
 {
   "slug": "elves",
-  "decklist_sha256": "85fbc7a45d33825c165c91f4465a24d9c79bca4f951673865b9a4aa2ce41f15d",
+  "decklist_sha256": "e953cadc4ac661134b9b6b72a3efc69f0f17c1c2fe63697b107d8c6f7b32123c",
   "meta": {
     "space": "embeddings_cardbert.npy",
     "space_digest": "1c7fb3995420711c",
     "projection": "classical MDS + SMACOF, canonically oriented",
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
-    "cards": 15,
+    "cards": 20,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
-    "named_by": "deck-cartographer",
-    "cartographer_notes": [
-      "Every neighbourhood (city-N-hood-0) is identical to its parent city, so no neighbourhood split exists to name; all seven are omitted and fall back to the deterministic word.",
-      "The clustering found one real city (city-0, 8 of 15 distinct cards, 32 of 60 copies) and six singletons or pairs. The singletons read as one card's worth of job each and are named for that job, not as clusters.",
-      "city-2 (Nettle Sentinel) looks misplaced rather than unusual: by job it is part of the untap engine in city-0 alongside Quirion Ranger, Wirewood Symbiote and Heritage Druid. CardBERT likely split it on its 'doesn't untap during your untap step' wording; membership left as measured.",
-      "city-1 groups Utopia Sprawl and Vines of Vastwood, which do different jobs (mana vs protection); what they share is being the only noncreature green spells cast onto your own permanents. The pair is honest as 'the non-body spells' but is not one job.",
-      "city-6 gloss says 'one maindeck answer to a noncreature artifact or enchantment': enumerated against the 15 distinct cards, Haywire Mite is the only card whose oracle text removes one (Vines only counters targeting); the deck has no sideboard.",
-      "No strategic_frame.json exists for elves; names were checked against CONTEXT.md's How it plays section instead. No region has a verified_count above 0."
-    ]
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
   },
   "cards": [
     {
       "name": "Arbor Elf",
-      "x": -0.35467,
-      "y": 0.02491,
-      "city": 0,
+      "x": -0.51446,
+      "y": -0.19546,
+      "city": 1,
       "hood": 0,
       "roles": [
         "threat:body",
@@ -35,9 +26,9 @@
     },
     {
       "name": "Beast Whisperer",
-      "x": -0.12263,
-      "y": -0.64874,
-      "city": 0,
+      "x": -0.05328,
+      "y": 0.12857,
+      "city": 3,
       "hood": 0,
       "roles": [
         "draw:engine",
@@ -48,9 +39,9 @@
     },
     {
       "name": "Chord of Calling",
-      "x": 0.33549,
-      "y": -0.73421,
-      "city": 4,
+      "x": 0.25995,
+      "y": -0.70753,
+      "city": 0,
       "hood": 0,
       "roles": [
         "tutor:narrow"
@@ -59,10 +50,20 @@
       "commander": false
     },
     {
+      "name": "Collected Company",
+      "x": 0.35669,
+      "y": -0.37767,
+      "city": 0,
+      "hood": 0,
+      "roles": [],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Craterhoof Behemoth",
-      "x": 0.88864,
-      "y": -0.40706,
-      "city": 5,
+      "x": 0.86258,
+      "y": -0.46168,
+      "city": 0,
       "hood": 0,
       "roles": [
         "threat:body",
@@ -72,25 +73,38 @@
       "commander": false
     },
     {
-      "name": "Elvish Clancaller",
-      "x": -0.37472,
-      "y": -0.36689,
-      "city": 0,
+      "name": "Elvish Archdruid",
+      "x": -0.29343,
+      "y": -0.10982,
+      "city": 3,
       "hood": 0,
       "roles": [
         "buff:pump",
+        "ramp:dork",
         "threat:body",
-        "tutor:unrestricted",
         "utility:activated"
       ],
       "verified": false,
       "commander": false
     },
     {
+      "name": "Elvish Visionary",
+      "x": -0.13581,
+      "y": 0.57403,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Elvish Warmaster",
-      "x": 0.0518,
-      "y": -0.29157,
-      "city": 0,
+      "x": -0.0934,
+      "y": -0.48767,
+      "city": 1,
       "hood": 0,
       "roles": [
         "buff:pump",
@@ -102,9 +116,9 @@
     },
     {
       "name": "Forest",
-      "x": 0.42317,
-      "y": 1.0,
-      "city": 3,
+      "x": 0.296,
+      "y": 0.98794,
+      "city": 2,
       "hood": 0,
       "roles": [
         "land:basic"
@@ -114,9 +128,9 @@
     },
     {
       "name": "Haywire Mite",
-      "x": -0.80215,
-      "y": 0.37038,
-      "city": 6,
+      "x": -1.0,
+      "y": -0.00506,
+      "city": 1,
       "hood": 0,
       "roles": [
         "threat:body"
@@ -126,9 +140,9 @@
     },
     {
       "name": "Heritage Druid",
-      "x": -0.17206,
-      "y": -0.17713,
-      "city": 0,
+      "x": -0.29674,
+      "y": -0.21419,
+      "city": 1,
       "hood": 0,
       "roles": [
         "ramp:dork",
@@ -138,10 +152,24 @@
       "commander": false
     },
     {
+      "name": "Leaf-Crowned Visionary",
+      "x": -0.1619,
+      "y": 0.30663,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "buff:pump",
+        "draw:engine",
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Llanowar Elves",
-      "x": -0.10156,
-      "y": 0.12575,
-      "city": 0,
+      "x": -0.40189,
+      "y": 0.03153,
+      "city": 1,
       "hood": 0,
       "roles": [
         "ramp:dork",
@@ -153,8 +181,8 @@
     },
     {
       "name": "Nettle Sentinel",
-      "x": -0.29655,
-      "y": 0.91426,
+      "x": -0.60869,
+      "y": 0.81386,
       "city": 2,
       "hood": 0,
       "roles": [
@@ -164,10 +192,22 @@
       "commander": false
     },
     {
-      "name": "Quirion Ranger",
-      "x": -0.35157,
-      "y": -0.17017,
+      "name": "Overrun",
+      "x": 0.79916,
+      "y": -0.03961,
       "city": 0,
+      "hood": 0,
+      "roles": [
+        "buff:pump"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Quirion Ranger",
+      "x": -0.34395,
+      "y": -0.4204,
+      "city": 1,
       "hood": 0,
       "roles": [
         "threat:body"
@@ -176,10 +216,23 @@
       "commander": false
     },
     {
+      "name": "Triumph of the Hordes",
+      "x": 0.66149,
+      "y": -0.18285,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "buff:pump",
+        "wincon:combat"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Utopia Sprawl",
-      "x": 0.86314,
-      "y": 0.17202,
-      "city": 1,
+      "x": 0.59861,
+      "y": 0.57729,
+      "city": 0,
       "hood": 0,
       "roles": [],
       "verified": false,
@@ -187,9 +240,9 @@
     },
     {
       "name": "Vines of Vastwood",
-      "x": 0.6417,
-      "y": 0.35626,
-      "city": 1,
+      "x": 0.65318,
+      "y": 0.28706,
+      "city": 0,
       "hood": 0,
       "roles": [
         "buff:pump"
@@ -199,9 +252,9 @@
     },
     {
       "name": "Wirewood Symbiote",
-      "x": -0.62802,
-      "y": -0.16781,
-      "city": 0,
+      "x": -0.58411,
+      "y": -0.50496,
+      "city": 1,
       "hood": 0,
       "roles": [
         "threat:body"
@@ -214,23 +267,21 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": "THE ELF ENGINE",
+      "label": null,
       "fallback": "Bodies",
-      "cx": -0.25668,
-      "cy": -0.20896,
-      "count": 8,
+      "cx": 0.59881,
+      "cy": -0.12929,
+      "count": 7,
       "cards": [
-        "Arbor Elf",
-        "Beast Whisperer",
-        "Elvish Clancaller",
-        "Elvish Warmaster",
-        "Heritage Druid",
-        "Llanowar Elves",
-        "Quirion Ranger",
-        "Wirewood Symbiote"
+        "Chord of Calling",
+        "Collected Company",
+        "Craterhoof Behemoth",
+        "Overrun",
+        "Triumph of the Hordes",
+        "Utopia Sprawl",
+        "Vines of Vastwood"
       ],
-      "verified_count": 0,
-      "gloss": "The mass of the deck: elves that make mana, untap each other, draw cards and grow into the army."
+      "verified_count": 0
     },
     {
       "id": "city-0-hood-0",
@@ -238,14 +289,32 @@
       "parent": "city-0",
       "label": null,
       "fallback": "Bodies",
-      "cx": -0.25668,
-      "cy": -0.20896,
-      "count": 8,
+      "cx": 0.59881,
+      "cy": -0.12929,
+      "count": 7,
+      "cards": [
+        "Chord of Calling",
+        "Collected Company",
+        "Craterhoof Behemoth",
+        "Overrun",
+        "Triumph of the Hordes",
+        "Utopia Sprawl",
+        "Vines of Vastwood"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-1",
+      "level": 0,
+      "label": null,
+      "fallback": "Ramp",
+      "cx": -0.46208,
+      "cy": -0.2566,
+      "count": 7,
       "cards": [
         "Arbor Elf",
-        "Beast Whisperer",
-        "Elvish Clancaller",
         "Elvish Warmaster",
+        "Haywire Mite",
         "Heritage Druid",
         "Llanowar Elves",
         "Quirion Ranger",
@@ -254,59 +323,50 @@
       "verified_count": 0
     },
     {
-      "id": "city-1",
-      "level": 0,
-      "label": "SPELLS, NOT BODIES",
-      "fallback": "Mixed",
-      "cx": 0.75242,
-      "cy": 0.26414,
-      "count": 2,
-      "cards": [
-        "Utopia Sprawl",
-        "Vines of Vastwood"
-      ],
-      "verified_count": 0,
-      "gloss": "The green help that dodges a sweeper: Sprawl makes mana without a creature, Vines keeps the key elf alive."
-    },
-    {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
       "label": null,
-      "fallback": "Mixed",
-      "cx": 0.75242,
-      "cy": 0.26414,
-      "count": 2,
+      "fallback": "Ramp",
+      "cx": -0.46208,
+      "cy": -0.2566,
+      "count": 7,
       "cards": [
-        "Utopia Sprawl",
-        "Vines of Vastwood"
+        "Arbor Elf",
+        "Elvish Warmaster",
+        "Haywire Mite",
+        "Heritage Druid",
+        "Llanowar Elves",
+        "Quirion Ranger",
+        "Wirewood Symbiote"
       ],
       "verified_count": 0
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": "UNTAPS ON CAST",
-      "fallback": "Bodies II",
-      "cx": -0.29655,
-      "cy": 0.91426,
-      "count": 1,
+      "label": null,
+      "fallback": "Mana",
+      "cx": -0.15634,
+      "cy": 0.9009,
+      "count": 2,
       "cards": [
+        "Forest",
         "Nettle Sentinel"
       ],
-      "verified_count": 0,
-      "gloss": "A body that readies itself whenever you cast green, so it taps for Druid and convoke twice a turn."
+      "verified_count": 0
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
       "label": null,
-      "fallback": "Bodies II",
-      "cx": -0.29655,
-      "cy": 0.91426,
-      "count": 1,
+      "fallback": "Mana",
+      "cx": -0.15634,
+      "cy": 0.9009,
+      "count": 2,
       "cards": [
+        "Forest",
         "Nettle Sentinel"
       ],
       "verified_count": 0
@@ -314,112 +374,33 @@
     {
       "id": "city-3",
       "level": 0,
-      "label": "THE MANA FLOOR",
-      "fallback": "Mana",
-      "cx": 0.42317,
-      "cy": 1.0,
-      "count": 1,
+      "label": null,
+      "fallback": "Card Flow",
+      "cx": -0.1611,
+      "cy": 0.22485,
+      "count": 4,
       "cards": [
-        "Forest"
+        "Beast Whisperer",
+        "Elvish Archdruid",
+        "Elvish Visionary",
+        "Leaf-Crowned Visionary"
       ],
-      "verified_count": 0,
-      "gloss": "The only mana that survives a sweeper, and the land drop Quirion Ranger hands back to replay."
+      "verified_count": 0
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
       "label": null,
-      "fallback": "Mana",
-      "cx": 0.42317,
-      "cy": 1.0,
-      "count": 1,
+      "fallback": "Card Flow",
+      "cx": -0.1611,
+      "cy": 0.22485,
+      "count": 4,
       "cards": [
-        "Forest"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-4",
-      "level": 0,
-      "label": "THE CONVOKE TUTOR",
-      "fallback": "Tutors",
-      "cx": 0.33549,
-      "cy": -0.73421,
-      "count": 1,
-      "cards": [
-        "Chord of Calling"
-      ],
-      "verified_count": 0,
-      "gloss": "The board pays for it by tapping, and it fetches whichever creature this turn needs, usually the finisher."
-    },
-    {
-      "id": "city-4-hood-0",
-      "level": 1,
-      "parent": "city-4",
-      "label": null,
-      "fallback": "Tutors",
-      "cx": 0.33549,
-      "cy": -0.73421,
-      "count": 1,
-      "cards": [
-        "Chord of Calling"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-5",
-      "level": 0,
-      "label": "THE ALPHA STRIKE",
-      "fallback": "Value",
-      "cx": 0.88864,
-      "cy": -0.40706,
-      "count": 1,
-      "cards": [
-        "Craterhoof Behemoth"
-      ],
-      "verified_count": 0,
-      "gloss": "Everything the deck builds is cashed in here: one turn, every creature trampling over for the game."
-    },
-    {
-      "id": "city-5-hood-0",
-      "level": 1,
-      "parent": "city-5",
-      "label": null,
-      "fallback": "Value",
-      "cx": 0.88864,
-      "cy": -0.40706,
-      "count": 1,
-      "cards": [
-        "Craterhoof Behemoth"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-6",
-      "level": 0,
-      "label": "THE HATE-BREAKER",
-      "fallback": "Bodies III",
-      "cx": -0.80215,
-      "cy": 0.37038,
-      "count": 1,
-      "cards": [
-        "Haywire Mite"
-      ],
-      "verified_count": 0,
-      "gloss": "Your one maindeck answer to a noncreature artifact or enchantment, and a creature Chord can find."
-    },
-    {
-      "id": "city-6-hood-0",
-      "level": 1,
-      "parent": "city-6",
-      "label": null,
-      "fallback": "Bodies III",
-      "cx": -0.80215,
-      "cy": 0.37038,
-      "count": 1,
-      "cards": [
-        "Haywire Mite"
+        "Beast Whisperer",
+        "Elvish Archdruid",
+        "Elvish Visionary",
+        "Leaf-Crowned Visionary"
       ],
       "verified_count": 0
     }
@@ -427,132 +408,147 @@
   "edges": [
     {
       "a": 0,
-      "b": 11,
+      "b": 15,
       "d": 0.1055
     },
     {
       "a": 0,
-      "b": 8,
+      "b": 10,
       "d": 0.1479
     },
     {
       "a": 1,
-      "b": 8,
-      "d": 0.3283
+      "b": 11,
+      "d": 0.241
     },
     {
       "a": 1,
-      "b": 11,
-      "d": 0.4511
+      "b": 6,
+      "d": 0.3131
     },
     {
       "a": 2,
-      "b": 8,
-      "d": 0.491
+      "b": 3,
+      "d": 0.2381
     },
     {
       "a": 2,
-      "b": 4,
-      "d": 0.5098
+      "b": 5,
+      "d": 0.4718
     },
     {
       "a": 3,
-      "b": 5,
-      "d": 0.6044
-    },
-    {
-      "a": 1,
-      "b": 3,
-      "d": 0.6515
+      "b": 16,
+      "d": 0.3711
     },
     {
       "a": 4,
-      "b": 8,
-      "d": 0.1864
+      "b": 16,
+      "d": 0.4672
     },
     {
       "a": 4,
-      "b": 11,
-      "d": 0.3218
+      "b": 14,
+      "d": 0.5011
     },
     {
       "a": 5,
-      "b": 11,
-      "d": 0.2195
-    },
-    {
-      "a": 5,
-      "b": 8,
-      "d": 0.308
-    },
-    {
-      "a": 6,
-      "b": 9,
-      "d": 0.6488
-    },
-    {
-      "a": 6,
       "b": 10,
-      "d": 0.7068
+      "d": 0.1435
+    },
+    {
+      "a": 5,
+      "b": 11,
+      "d": 0.2086
+    },
+    {
+      "a": 6,
+      "b": 12,
+      "d": 0.4675
     },
     {
       "a": 7,
+      "b": 15,
+      "d": 0.2195
+    },
+    {
+      "a": 7,
+      "b": 10,
+      "d": 0.308
+    },
+    {
+      "a": 8,
       "b": 14,
+      "d": 0.5805
+    },
+    {
+      "a": 6,
+      "b": 8,
+      "d": 0.643
+    },
+    {
+      "a": 9,
+      "b": 19,
       "d": 0.3749
     },
     {
       "a": 0,
-      "b": 7,
+      "b": 9,
       "d": 0.4995
     },
     {
-      "a": 8,
-      "b": 9,
+      "a": 10,
+      "b": 12,
       "d": 0.1352
     },
     {
       "a": 0,
-      "b": 9,
+      "b": 12,
       "d": 0.162
     },
     {
-      "a": 7,
-      "b": 10,
+      "a": 11,
+      "b": 13,
+      "d": 0.5316
+    },
+    {
+      "a": 9,
+      "b": 13,
       "d": 0.6727
     },
     {
-      "a": 9,
-      "b": 10,
-      "d": 0.7002
+      "a": 14,
+      "b": 16,
+      "d": 0.0637
     },
     {
-      "a": 8,
-      "b": 11,
+      "a": 14,
+      "b": 18,
+      "d": 0.4046
+    },
+    {
+      "a": 10,
+      "b": 15,
       "d": 0.1897
     },
     {
-      "a": 12,
-      "b": 13,
+      "a": 17,
+      "b": 18,
       "d": 0.4637
     },
     {
-      "a": 9,
-      "b": 12,
+      "a": 12,
+      "b": 17,
       "d": 0.5811
     },
     {
-      "a": 3,
-      "b": 13,
-      "d": 0.6572
-    },
-    {
-      "a": 11,
-      "b": 14,
+      "a": 15,
+      "b": 19,
       "d": 0.2301
     },
     {
       "a": 0,
-      "b": 14,
+      "b": 19,
       "d": 0.2363
     }
   ]
