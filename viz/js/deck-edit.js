@@ -266,6 +266,25 @@ window.DeckEdit = (function () {
     return { outs: outs, ins: ins, after: after };
   }
 
+  /* The deck's copies after the tray's edits, or null when the tray is empty
+   * (Build's header then shows the list on disk). */
+  function pendingCopies() {
+    return S.tray.length ? balance().after : null;
+  }
+
+  /* Build's header count (#buildDeckCount), repainted in place as the tray
+   * changes, so the count follows a cut without a full panel re-render. The
+   * text and the off-size rule are Build.deckCount's; this only feeds it. */
+  function paintCount() {
+    var el = document.getElementById('buildDeckCount');
+    if (!el || !S.active || !window.Build || !Build.deckCount) return;
+    var after = pendingCopies();
+    var c = typeof after === 'number' ? Build.deckCount(after, spec(), S.tray.length)
+                                      : Build.deckCount(S.active.copies, spec(), 0);
+    el.textContent = c.text;
+    el.classList.toggle('is-off', c.off);
+  }
+
   function balanceLine() {
     var b = balance(), sp = spec();
     var head = b.outs + ' out, ' + b.ins + ' in';
@@ -584,12 +603,14 @@ window.DeckEdit = (function () {
     var p = PARTS[part];
     var el = p && document.getElementById(p[0]);
     if (el) el.innerHTML = p[1]();
+    paintCount();
   }
 
   function paintAll() {
     if (!document.getElementById('deckEditTray')) { repaintPanel(); return; }
     Object.keys(PARTS).forEach(paint);
     paintCards();
+    paintCount();
   }
 
   function statusInner() {
@@ -873,6 +894,10 @@ window.DeckEdit = (function () {
     detach: detach,
     cardButtons: cardButtons,
     trayHtml: trayHtml,
+    // Build's header count: copies after the tray's edits (null when it has
+    // none) and how many edits are pending.
+    pendingCopies: pendingCopies,
+    pendingEdits: function () { return S.tray.length; },
     get mode() { return S.mode; },
     // Read-only probes for the browser suite.
     get tray() { return JSON.parse(JSON.stringify(S.tray)); },

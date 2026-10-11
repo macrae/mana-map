@@ -1297,9 +1297,16 @@ Where the deck's format comes from: the manifest entry's `format` (on every entr
   when a deck loads, Discover when it loads a manifest deck or the pilot picks one, and a
   pasted list with a `*CMDR*` marker puts it back to Commander.
 - **Build** keeps it on `active.format` / `active.spec` (`Build.deckFormat()` reads it —
-  the old module-level `format` was never reassigned). The header stat is `N / 60+`
-  (`+` when the size is a minimum); the subtitle is `Modern · 60+ cards` where there is no
-  commander; `isCommander` and the gold ring exist only when `spec.commanders`. The "grey
+  the old module-level `format` was never reassigned). The stats tile is `N / 60+`
+  (`+` when the size is a minimum) and counts the list on disk. The subtitle LEADS with the
+  deck's count for every format — `#buildDeckCount`, `60 / 60 cards · Modern`, `100 / 100
+  cards · <commander>` — then the format where there is no commander. It read `Modern · 60+
+  cards` until 2026-10-11, the format's RULE, which read as the count, and a pilot opening
+  Elves could not see how many cards it held. `Build.deckCount(copies, spec, pending)` is
+  the one home of its text and its `.is-off` rule (short of the size, or anything but the
+  size in an exact format; drawn in `--stamp-red`); while the tray has edits it shows
+  `DeckEdit.pendingCopies()` with a trailing `· N pending`, and `deck-edit.js` repaints it
+  in place at the end of `paint`/`paintAll` — no panel re-render; `isCommander` and the gold ring exist only when `spec.commanders`. The "grey
   out what you cannot play" lens dims by `isLegalInFormat(d, active.format)`, and by colour
   **only where the format has an identity rule** — a red card is legal in a green Modern
   deck. `deckColorIdentity()` unions `ci` over the main rows when there is no commander;

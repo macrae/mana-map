@@ -2130,6 +2130,18 @@
     }).catch(function (e) { newDeck.built = e.message; renderPanel(); });
   }
 
+  /* The header's count: "60 / 60 cards", "99 / 100 cards · 1 pending". OFF when
+   * the deck is short of its size, or when an exact format (Commander) is anything
+   * but its size. One home for the rule: deck-edit.js calls this to repaint the
+   * count in place as the tray changes, rather than re-deriving it. */
+  function deckCount(copies, spec, pending) {
+    const off = spec.exact ? copies !== spec.size : copies < spec.size;
+    return {
+      text: copies + ' / ' + spec.size + ' cards' + (pending ? ' · ' + pending + ' pending' : ''),
+      off: off,
+    };
+  }
+
   function renderPanel() {
     const el = panelEl();
     if (!el) return;
@@ -2169,13 +2181,24 @@
 
     const e = active.entry;
     const spec = active.spec;
+    // What the deck holds AFTER the tray's edits, while it has any; the list on
+    // disk otherwise. The stats tile below stays the list on disk.
+    const pendingAfter = window.DeckEdit && DeckEdit.pendingCopies ? DeckEdit.pendingCopies() : null;
+    const count = typeof pendingAfter === 'number'
+      ? deckCount(pendingAfter, spec, DeckEdit.pendingEdits())
+      : deckCount(active.copies, spec, 0);
     html +=
       '<div class="deck-section">' +
         '<div class="lens-title">' + esc(e.deck_name) + '</div>' +
-        // A commander where there is one; otherwise the format, which is the
-        // thing a 60-card deck is identified by.
-        '<div class="lens-sub">' + esc(spec.commanders ? (e.commander || '')
-                                                      : spec.name + ' · ' + spec.size + (spec.exact ? '' : '+') + ' cards') +
+        // The deck's COUNT leads, for every format, then a commander where there
+        // is one, otherwise the format, which is what a 60-card deck is identified
+        // by. This line used to read "Modern · 60+ cards": the format's RULE, which
+        // read as the count and left a pilot asking how many cards the deck had.
+        // The tray's pending edits move it live (deck-edit.js paints it in place).
+        '<div class="lens-sub">' +
+          '<span id="buildDeckCount" class="lens-count' + (count.off ? ' is-off' : '') + '">' +
+            esc(count.text) + '</span>' +
+          esc(' · ' + (spec.commanders ? (e.commander || '') : spec.name)) +
         '</div>' +
         // The magazine is not a product any more, so nothing invites a pilot
         // into it. This link survived the removal on the other three surfaces
@@ -2887,6 +2910,7 @@
     // For the card panel: the deck's format (its legality line), whether a NAME is in
     // the open deck (combo partner chips), and the deck's `combos.json` or null.
     deckFormat: deckFormat,
+    deckCount,
     hasCard,
     deckCombos,
     // Read-only probes for the browser suite.

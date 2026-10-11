@@ -256,6 +256,31 @@ def test_a_bench_edit_previews_applies_and_undoes(browser, viz_server):
         page.close()
 
 
+def _count(page):
+    el = page.locator("#deckInner #buildDeckCount")
+    return el.inner_text(), "is-off" in (el.get_attribute("class") or "")
+
+
+def test_the_header_count_follows_the_tray(browser, viz_server):
+    """Build's header count moves with the tray's pending edits, painted in place:
+    a cut reads short and off-size, the add that rebalances it reads whole again."""
+    page, _ = _open(browser, viz_server, f"?mode=build&deck={BENCH}", api_slug=BENCH)
+    try:
+        _wait_mode(page, BENCH, "edit")
+        page.wait_for_function("() => DeckEdit.baseSha", timeout=10000)
+        assert _count(page) == ("100 / 100 cards", False)
+        _card(page, CUT)
+        page.click("#detailInner .de-card [data-de-act='cut']")
+        assert _count(page) == ("99 / 100 cards · 1 pending", True)
+        _card(page, ADD)
+        page.click("#detailInner .de-card [data-de-act='add']")
+        text, off = _count(page)
+        assert text.startswith("100 / 100 cards") and off is False, (text, off)
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
 def test_a_sleeved_deck_offers_a_branch_and_no_apply(browser, viz_server):
     page, st = _open(browser, viz_server, f"?mode=build&deck={SLEEVED}", api_slug=SLEEVED)
     try:
@@ -399,6 +424,8 @@ def test_a_sixty_card_deck_edits_copy_counts(browser, viz_server):
         page.wait_for_function("() => DeckEdit.baseSha", timeout=10000)
         _card(page, SIXTY_CUT)
         page.click("#detailInner .de-card [data-de-act='cut']")
+        # The header count follows the tray: one copy out of a 60-card deck.
+        assert _count(page) == ("59 / 60 cards · 1 pending", True)
         qty = page.wait_for_selector("#deRows input.de-qty[data-de-qty='0']", timeout=5000)
         assert qty.input_value() == "1"
         qty.fill("3")

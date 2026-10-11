@@ -86,6 +86,39 @@ def test_build_reads_the_format_from_the_deck(page):
     assert page.js_errors == []
 
 
+def test_the_build_header_leads_with_the_decks_count(page):
+    """The sub-line under the deck name is the deck's COUNT, then the format.
+
+    It read "Modern · 60+ cards" — the format's rule, which reads as the count — and a
+    pilot opening Elves could not see how many cards the deck held."""
+    _open_build(page)
+    n = _main_copies()
+    count = page.locator("#deckInner #buildDeckCount")
+    assert count.count() == 1
+    assert count.inner_text() == f"{n} / 60 cards"
+    off = "is-off" in (count.get_attribute("class") or "")
+    assert off is (n < 60), (n, count.get_attribute("class"))
+    sub = page.inner_text("#deckInner .lens-sub")
+    assert sub.startswith(f"{n} / 60 cards") and "Modern" in sub and "60+" not in sub, sub
+    assert page.js_errors == []
+
+
+def test_a_commander_deck_header_reads_its_count_and_commander(page):
+    doc = json.loads((DECKS_DIR / "index.json").read_text(encoding="utf-8"))
+    entry = next(d for d in doc["decks"]
+                 if d.get("commander") and (d.get("format") or "commander") == "commander"
+                 and (DECKS_DIR / d["slug"] / "cards.json").exists())
+    cards = json.loads((DECKS_DIR / entry["slug"] / "cards.json").read_text(encoding="utf-8"))
+    n = sum(c.get("quantity", 1) for c in cards["cards"])
+    _open_build(page, entry["slug"])
+    count = page.locator("#deckInner #buildDeckCount")
+    assert count.inner_text() == f"{n} / 100 cards"
+    assert ("is-off" in (count.get_attribute("class") or "")) is (n != 100)
+    sub = page.inner_text("#deckInner .lens-sub")
+    assert entry["commander"] in sub, sub
+    assert page.js_errors == []
+
+
 def test_the_illegal_lens_dims_by_modern_legality_not_by_colour(page):
     _open_build(page)
     page.evaluate("() => Build.toggle('showIllegal', true)")

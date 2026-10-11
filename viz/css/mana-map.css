@@ -372,6 +372,10 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 
 .lens-title { font-size: 1.05rem; color: #e0e0e0; font-weight: 600; }
 .lens-sub { font-size: 0.8rem; color: #999; margin-top: 2px; }
+/* The deck's count, leading the sub-line: the one figure a pilot looks for first.
+ * Off-size (short, or not exactly 100 in Commander) reads in the stamp red. */
+.lens-count { font-size: 1rem; color: #e8e8f0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.lens-count.is-off { color: var(--stamp-red, #c41e1e); }
 .lens-links { display: flex; gap: 14px; margin-top: 10px; }
 .lens-links a { color: #4A7BFF; font-size: 0.78rem; text-decoration: none; }
 .lens-links a:hover { text-decoration: underline; }
