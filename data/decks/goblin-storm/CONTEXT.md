@@ -83,9 +83,9 @@ Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-08-05. Each group b
 - share of seeded games where the commander was CAST by turn six: **94%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
 - mean turn the commander is first cast: **turn 4.076**
-- Zada online with a cantrip drawn: **55%**
-- Early token maker drawn: **54%**
-- Storm payoff plus ritual drawn: **20%**
+- Zada online with a cantrip drawn: **56%**
+- Early token maker drawn: **55%**
+- Storm payoff plus ritual drawn: **21%**
 - share of opening sevens the model would keep: **79%**
 - Colour on curve (lands + rocks): R 92%
 - Forge (an optional probe, not a gate): last run 2026-09-29, 6/100 won (7% (95% CI 3%–15%)) on V1
