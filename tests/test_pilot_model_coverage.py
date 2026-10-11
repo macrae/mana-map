@@ -477,3 +477,18 @@ def test_a_discover_spell_is_read_always_and_cast():
     assert "discover" in mc.channels_for(p)
     assert not mc.never_cast(p, {})
     assert "discover" not in mc.channels_for(_bare_profile())
+
+
+# ── cascade (2026-10-11) ─────────────────────────────────────────────────────
+
+def test_a_cascade_card_is_read_always_and_cast():
+    """Cascade, the card's own keyword: ALWAYS ON like discover, and the
+    cascade loop casts a cascade card no other loop selects — so a sorcery
+    whose only readable text is cascade is neither invisible nor never cast.
+    Re-introduce the gap by deleting the `cascade` line in `never_cast`."""
+    assert mc.CHANNELS["cascade"] is None
+    p = _bare_profile(cascade=1)
+    assert "cascade" in mc.channels_for(p)
+    assert not mc.never_cast(p, {})
+    assert "cascade" not in mc.channels_for(_bare_profile())
+    assert mc.never_cast(_bare_profile(), {})

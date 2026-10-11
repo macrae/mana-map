@@ -78,6 +78,7 @@ from manamap.pilot.common import (
 from manamap.pilot.goldfish_profiles import (
     lord_applies,
     ETB_CHAIN_LIMIT,
+    FREE_CAST_DEPTH_LIMIT,
     GOLDFISH_MAX_MULLIGANS,
     GOLDFISH_OPPONENT_LIFE,
     GOLDFISH_POISON_TO_LOSE,
@@ -326,6 +327,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     arrival_draw_used = set()     # ids of `once each turn` engines, per turn
     etb_damage = 0                # noncombat damage dealt this turn by those
     etb_chain_hits = 0            # times the chain guard stopped a cascade
+    # THE FREE CAST (Discover's hit, Cascade's hit), 2026-10-11. Counted per
+    # game, the depth reached and the times the guard stopped a chain reported
+    # beside it, because a chain that terminates silently cannot be told from
+    # one that never ran (the `etb_chain_hits` rule).
+    free_casts = 0                # hits cast without paying
+    free_cast_depth = 0           # how deep the current chain is (0 = none)
+    free_cast_depth_max = 0       # the deepest it got this game
+    free_cast_depth_hits = 0      # hits the depth guard refused
+    discover_to_hand = 0          # discover hits this model cannot resolve now
+    cascades = 0                  # cascade triggers resolved
     bodies_cum_bump = [0]         # tokens spawned by an ETB payoff, counted once
     commander_card = {"is_commander": True, "is_creature": True,
                       "subtypes": commander_subtypes, "cmc": commander_cmc,
@@ -566,18 +577,23 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 drawn_this_turn += 1
 
         def _discover(n):
-            """DISCOVER N, THE FLOOR READING (CR 701.57): exile from the top
-            until a nonland card with mana value N or less, put it into your
-            HAND, the rest to the bottom in a random order.
+            """DISCOVER N (CR 701.57a): exile from the top until a nonland card
+            with mana value N or less; CAST IT WITHOUT PAYING when the free-cast
+            dispatcher can resolve it (`_free_cast_route`), otherwise put it
+            into your HAND; the rest to the bottom in a random order.
+
+            THE FREE CAST SINCE 2026-10-11; C1 took the hand half only, a
+            floor. The rest go to the bottom BEFORE the hit resolves, as the
+            rule orders it — the cast puts the spell on the stack and the
+            discover finishes first.
 
             NOT `draw_n`: a discovered card is not drawn, so a draw doubler
             does not touch it and it is not `drawn_extra`. It IS in `seen`,
-            because assembly is "reached by", and it was. The free cast the
-            card offers is not taken — the hit waits in hand and is cast at
-            full cost, so this errs LOW. The bottom shuffle follows the
-            declared reveal's, and is the only place this reading touches the
-            rng: a deck without Discover never gets here.
+            because assembly is "reached by", and it was. The bottom shuffle
+            follows the declared reveal's, and is the only place this reading
+            touches the rng: a deck without Discover never gets here.
             """
+            nonlocal discover_to_hand
             skipped = []
             hit = None
             while deck:
@@ -586,11 +602,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     hit = c
                     break
                 skipped.append(c)
-            if hit is not None:
+            route = _free_cast_route(hit) if hit is not None else None
+            if hit is not None and route is None:
                 hand.append(hit)
                 seen.add(hit["name"])
+                discover_to_hand += 1
             rng.shuffle(skipped)
             deck.extend(skipped)
+            if route is not None:
+                _free_cast(hit, route)
             return hit
 
         def discard_n(n, everything=False, shuffled=False):
@@ -888,6 +908,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     etb_damage += _eng["per_cast_damage"]
             if is_spell:
                 _magecraft(1)
+            # CASCADE TRIGGERS ON THE CAST, so it lives here and nowhere else:
+            # every cast — paid, free, or a cascade hit with cascade of its
+            # own — comes through this helper, and a COPY never does (Zada's
+            # copies are resolved by the sites, not cast), which is the rule:
+            # copies don't cascade (CR 702.85, a cast trigger). One walk per
+            # instance; mana value strictly falls, so a chain ends.
+            for _ in range(card["cascade"]):
+                _cascade(card["cmc"])
 
         def _free_creature_enters(card):
             """A CREATURE PUT ONTO THE BATTLEFIELD WITHOUT BEING CAST (the
@@ -998,6 +1026,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 others = max(len(battlefield) - 1, 0)
                 if others:
                     draw_n(card["draw"]["spell_draw"] * others)
+                    # Each copy is a magecraft event (cast OR copy) — fired
+                    # here since 2026-10-11, as the storm and discover sites
+                    # already did. Storm-Kiln Artist makes a Treasure per copy.
+                    _magecraft(others)
             if card["draw"]["spell_draw_greatest_power"]:
                 # Resolved against the board at cast; the anthem rides on
                 # every body the way it does at the attack step.
@@ -1025,6 +1057,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             """THE STORM LOOP'S RESOLUTION. `copies` is the spell count taken
             BEFORE the cast, which the caller must read before `_note_cast`."""
             nonlocal bodies_cum, etb_damage
+            sc = card["spell_count"]
             total = 1 + copies
             if model_combat and sc["storm_damage"]:
                 etb_damage += sc["storm_damage"] * total
@@ -1042,10 +1075,52 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     bodies_cum += 1
             _magecraft(copies)                  # the cast itself fired already
 
+        def _pump_castable(c):
+            """THE PUMP LOOP'S PREDICATE (the board-and-flag gate is the
+            caller's: `model_combat and battlefield`)."""
+            return (not c["is_land"]
+                    and (c["combat"]["spell_pump_single"]
+                         or c["combat"]["spell_pump_team"]
+                         or c["combat"]["spell_counters"]
+                         or c["combat"]["spell_double_strike"]
+                         or c["combat"]["spell_power_multiplier"] > 1
+                         or c["combat"]["spell_power_to_each_opponent"]
+                         or c["combat"]["spell_extra_combat"]
+                         # THE CASTING PREDICATE SHIPS IN THE SAME
+                         # COMMIT AS THE CHANNEL, which is the rule
+                         # the pump loop's comment states and the reason
+                         # six cards were read perfectly and never
+                         # played. A token-copy spell belongs in
+                         # exactly this loop: it wants attackers
+                         # already out and it wants to be cast
+                         # before the swing, because the copies have
+                         # haste and attack the turn they arrive.
+                         or c["combat"]["spell_token_copy"])
+                    # AN UNTAPPER IS HELD, NOT CAST ON CURVE. Cast in
+                    # the precombat main it untaps creatures that are
+                    # already untapped and does nothing — which is the
+                    # same mistake a bad pilot makes with Seize the
+                    # Day. `_try_untap` spends it BETWEEN combats,
+                    # which is the only window where it buys an
+                    # attack. A card that only untaps is therefore
+                    # never cast in the main phase at all.
+                    and not (c["combat"]["spell_untap"]
+                             and not c["combat"]["spell_extra_combat"]))
+
         def _resolve_pump(card):
             """THE PUMP LOOP'S RESOLUTION, after the cast."""
             nonlocal bodies_cum, extra_combat_free, flat_pump, spell_each_opponent
             nonlocal treasures, turn_double_strike, turn_power_mult, turn_pump
+            # MAGECRAFT ON THE COPIES. `_magecraft` reads "cast OR copy", and
+            # until 2026-10-11 only the storm and discover sites fired it for a
+            # copy: a Zada-copied pump made N Treasures off its own text and
+            # none off Storm-Kiln Artist. ONE event per copy, counted once per
+            # spell — the Treasure, token-copy, counters and pump arms below
+            # are the same N copies resolving, not N copies each. Counted on
+            # the board as the spell is cast, which is when Zada triggers.
+            if (commander_copy and commander_turn is not None
+                    and card["copy_fodder"] and len(battlefield) > 1):
+                _magecraft(len(battlefield) - 1)
             team = card["combat"]["spell_pump_team"]
             single = card["combat"]["spell_pump_single"]
             # THE TREASURES THE SPELL MAKES, credited on exactly the same
@@ -1458,6 +1533,124 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 treasures += ((card["treasure_n"] + treasure_bonus)
                               * treasure_multiplier)
 
+        # ── THE FREE CAST (2026-10-11) ──────────────────────────────────────
+        # "Cast it without paying its mana cost" — Discover's hit (CR 701.57a)
+        # and Cascade's (702.85a). The hit is ROUTED BY ITS PROFILE through the
+        # resolution a paid cast of it would get, after `_note_cast`, so storm,
+        # magecraft, per-cast damage and cascade all see it as the cast it is:
+        #
+        #   ritual    its yield joins the pool (free, so the whole yield is net)
+        #   draw      `_resolve_draw` — an instant or sorcery that draws, under
+        #             model_draw, wheels excluded; Zada's copies draw too
+        #   discover  `_resolve_discover` — and the chain is why the guard exists
+        #   storm     `_resolve_storm`, with the count read before the cast
+        #   pump      `_resolve_pump`, under model_combat with a board; a token
+        #             copy rides this route, an untap-only card does not
+        #   body      `_resolve_body` — every registration a cast permanent
+        #             makes, which `_free_creature_enters` (a put-onto, not a
+        #             cast) does not: eminence, cast-token engines, Storm-Kiln
+        #             Artist's own magecraft
+        #
+        # ANYTHING ELSE IS NOT CAST: a rock, a reducer, an engine permanent, an
+        # interaction spell, a wheel — the model has a loop for some of them
+        # but not a free door, and the safe direction is not to invent one.
+        # Discover then puts the hit into HAND (its other option); Cascade puts
+        # it on the bottom with the rest, which is what the rule does with a
+        # hit you decline. Both are floors, and named as such in simulation.md.
+        #
+        # THE DEPTH GUARD. A free-cast discover spell discovers again, a Zada
+        # copy of it does too, and a cascade hit with cascade cascades. Cascade
+        # terminates on its own (mana value strictly falls); a discover chain
+        # need not, so `FREE_CAST_DEPTH_LIMIT` stops it deterministically — the
+        # hit it refuses takes the not-cast path above — and both the depth
+        # reached and the refusals are reported.
+        def _free_cast_route(card):
+            """Which resolution a free cast of `card` would take, or None."""
+            nonlocal free_cast_depth_hits
+            tl = card.get("type_line") or ""
+            is_spell = "Instant" in tl or "Sorcery" in tl
+            route = None
+            if is_spell and card.get("ritual") and _ritual_yield(card["ritual"]) > 0:
+                route = "ritual"
+            elif (model_draw and is_spell and card["bodies"] == 0
+                  and card["produces"] == 0 and not card["tutor"]
+                  and card["draw"]["spell_draw"] and not card["draw"]["wheel_draws"]):
+                route = "draw"
+            elif card["discover_n"]:
+                route = "discover"
+            elif (card["spell_count"]["storm"]
+                  and (card["spell_count"]["storm_damage"]
+                       or card["spell_count"]["storm_token_bodies"])):
+                route = "storm"
+            elif model_combat and battlefield and _pump_castable(card):
+                route = "pump"
+            elif card["bodies"] > 0:
+                route = "body"
+            if route is not None and free_cast_depth >= FREE_CAST_DEPTH_LIMIT:
+                free_cast_depth_hits += 1
+                return None
+            return route
+
+        def _free_cast(card, route):
+            """Cast `card` without paying, through `route`. The card is put in
+            hand first so `_note_cast` — the ONE place a card leaves hand on a
+            cast — removes it, counts it and fires what a cast fires."""
+            nonlocal free_casts, free_cast_depth, free_cast_depth_max
+            nonlocal bodies_cum, pool
+            free_casts += 1
+            free_cast_depth += 1
+            free_cast_depth_max = max(free_cast_depth_max, free_cast_depth)
+            seen.add(card["name"])
+            if route == "body":
+                bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
+            hand.append(card)
+            copies = spells_cast_this_turn      # storm's count, BEFORE the cast
+            _note_cast(card)
+            if route == "ritual":
+                _y = _ritual_yield(card["ritual"])
+                pool += _y
+                if card["ritual"]["colors"]:
+                    _add = [frozenset(card["ritual"]["colors"])] * _y
+                    sources.extend(_add)
+                    ritual_sources.extend(_add)
+                if card["ritual"]["impulse"] and commander_turn is not None:
+                    draw_n(card["ritual"]["impulse"])
+            elif route == "draw":
+                _resolve_draw(card)
+            elif route == "discover":
+                _resolve_discover(card)
+            elif route == "storm":
+                _resolve_storm(card, copies)
+            elif route == "pump":
+                _resolve_pump(card)
+            else:
+                _resolve_body(card)
+            free_cast_depth -= 1
+
+        def _cascade(mv):
+            """CASCADE (CR 702.85a): exile from the top until a nonland card
+            with mana value STRICTLY LESS than `mv`; cast it free if this model
+            can resolve it; every exiled card not cast goes to the bottom in a
+            random order. The shuffle is the only rng use, and only a card
+            with cascade gets here."""
+            nonlocal cascades
+            cascades += 1
+            skipped = []
+            hit = None
+            while deck:
+                c = deck.pop(0)
+                if not c["is_land"] and c["cmc"] < mv:
+                    hit = c
+                    break
+                skipped.append(c)
+            route = _free_cast_route(hit) if hit is not None else None
+            if hit is not None and route is None:
+                skipped.append(hit)
+            rng.shuffle(skipped)
+            deck.extend(skipped)
+            if route is not None:
+                _free_cast(hit, route)
+
         # ── RITUALS (2026-10-05) ────────────────────────────────────────────
         # A ritual is cast only when it is the difference: its NET mana (what it
         # adds minus what it costs) must make a card in hand — or the commander —
@@ -1672,6 +1865,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         for card in sorted((c for c in hand if c["reduces"] and c["bodies"] == 0
                             and c["produces"] == 0),
                            key=lambda c: c["cmc"]):
+            if card not in hand:      # a free cast's discard took it
+                continue
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 reductions.append(card["reduces"])
                 _note_cast(card)
@@ -1705,6 +1900,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          # Chandra's Ignition needs a body to aim.
                                          c["combat"]["spell_damage_greatest_power"] and battlefield))),
                                key=lambda c: c["cmc"]):
+                if card not in hand:      # a free cast's discard took it
+                    continue
                 if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     if is_etb_engine(card["combat"]):
                         etb_engines.append(card["combat"])
@@ -1724,6 +1921,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # Cast rocks cheapest-first; they produce starting next turn.
         for card in sorted((c for c in hand if c["produces"] > 0 or c["land_mana_bonus"]),
                            key=lambda c: c["cmc"]):
+            if card not in hand:      # a free cast's discard took it
+                continue
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 if card["reduces"]:
                     reductions.append(card["reduces"])
@@ -1764,6 +1963,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # for the same mana. Previously tutors had bodies=0 and produces=0, so
         # they were never cast at all and their mana silently went to creatures.
         for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
+            if card not in hand:      # a free cast's discard took it
+                continue
             if card["tutor_needs_body"] and bodies_cum < 1:
                 continue
             if card["tutor_to_battlefield"] is not None and (model_combat or model_draw):
@@ -1807,6 +2008,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                 and (c["combat"]["extra_combat_cost"] is not None
                                      or c["combat"]["extra_combat_free"])),
                                key=lambda c: c["cmc"]):
+                if card not in hand:      # a free cast's discard took it
+                    continue
                 if spend(card["cmc"], card["pips"]):
                     _note_cast(card)
                     if card["combat"]["extra_combat_cost"] is not None:
@@ -1829,6 +2032,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                 and not c["tutor"]
                                 and (c["treasure_doubler"] or c["treasure_bonus"])),
                                key=lambda c: c["cmc"]):
+                if card not in hand:      # a free cast's discard took it
+                    continue
                 if not spend(card["cmc"], card["pips"]):
                     continue
                 _note_cast(card)
@@ -2084,34 +2289,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # swing. Most expensive first, because the biggest pump is the one you
         # want when the mana is there.
         if model_combat and battlefield:
-            for card in sorted((c for c in hand if not c["is_land"]
-                                and (c["combat"]["spell_pump_single"]
-                                     or c["combat"]["spell_pump_team"]
-                                     or c["combat"]["spell_counters"]
-                                     or c["combat"]["spell_double_strike"]
-                                     or c["combat"]["spell_power_multiplier"] > 1
-                                     or c["combat"]["spell_power_to_each_opponent"]
-                                     or c["combat"]["spell_extra_combat"]
-                                     # THE CASTING PREDICATE SHIPS IN THE SAME
-                                     # COMMIT AS THE CHANNEL, which is the rule
-                                     # the comment above states and the reason
-                                     # six cards were read perfectly and never
-                                     # played. A token-copy spell belongs in
-                                     # exactly this loop: it wants attackers
-                                     # already out and it wants to be cast
-                                     # before the swing, because the copies have
-                                     # haste and attack the turn they arrive.
-                                     or c["combat"]["spell_token_copy"])
-                                # AN UNTAPPER IS HELD, NOT CAST ON CURVE. Cast in
-                                # the precombat main it untaps creatures that are
-                                # already untapped and does nothing — which is the
-                                # same mistake a bad pilot makes with Seize the
-                                # Day. `_try_untap` spends it BETWEEN combats,
-                                # which is the only window where it buys an
-                                # attack. A card that only untaps is therefore
-                                # never cast in the main phase at all.
-                                and not (c["combat"]["spell_untap"]
-                                         and not c["combat"]["spell_extra_combat"])),
+            for card in sorted((c for c in hand if _pump_castable(c)),
                                key=lambda c: -reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:
                     continue
@@ -2218,6 +2396,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if model_drain or model_sacrifice or model_deaths or attack_tutor:
             for card in sorted((c for c in hand if _engine_permanent(c)),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                if card not in hand:      # a free cast's discard took it
+                    continue
                 if not spend(reduced_cost(card, reductions, chosen_type),
                              card["pips"]):
                     continue
@@ -2370,6 +2550,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                 and not c["combat"]["is_creature"]
                                 and c["combat"]["static_lord"]),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                if card not in hand:      # a free cast's discard took it
+                    continue
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 _note_cast(card)
@@ -2384,10 +2566,49 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # Spend what's left on bodies, cheapest-first.
         for card in sorted((c for c in hand if c["bodies"] > 0),
                            key=lambda c: reduced_cost(c, reductions, chosen_type)):
+            if card not in hand:      # a free cast's discard took it
+                continue
             if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                 bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                 _note_cast(card)
                 _resolve_body(card)
+
+        # CASCADE, CAST FOR THE CASCADE. A cascade card that is a body, a pump
+        # or anything else a loop above selects was cast there, and its
+        # cascade fired in `_note_cast`. What is LEFT is a card whose only
+        # effect this model can price IS the cascade — Demonic Dread, Captured
+        # Sunlight, Ardent Plea, Bituminous Blast — and without this loop it
+        # would be read and never cast, the failure this file has documented
+        # nine times. THE CASTING PREDICATE SHIPS WITH THE CHANNEL.
+        #
+        # Last, on what is left, most expensive first (a bigger spell cascades
+        # into a bigger hit), and after the storm loop, so it adds nothing to
+        # this turn's storm count — understated, the safe direction. An
+        # interaction spell is cast too: at a real table its target exists
+        # (a goldfish has no opponent's creature to Blast), and the cascade is
+        # what it is played for. A noncreature permanent joins the
+        # battlefield's parallel lists like the anthem loop's.
+        for card in sorted((c for c in hand if c["cascade"] and not c["is_land"]),
+                           key=lambda c: -reduced_cost(c, reductions, chosen_type)):
+            if card not in hand:
+                continue
+            if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                continue
+            if card["bodies"] > 0:
+                bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
+                _note_cast(card)
+                _resolve_body(card)
+                continue
+            _note_cast(card)
+            _tl = card.get("type_line") or ""
+            if "Instant" not in _tl and "Sorcery" not in _tl:
+                battlefield_pips.append(card["pips"])
+                battlefield_types.append(_tl)
+                battlefield_mv.append(card["cmc"])
+                battlefield_rooms.append(None)
+                if "Enchantment" in _tl:
+                    enchantments_entered += 1
+
         # ── X SPELLS: the mana sink, cast LAST with whatever is left ─────
         #
         # Deliberately after every other loop, because that is how the card is
@@ -2684,6 +2905,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _note_cast(c)
                     _all = (commander_copy and commander_turn is not None
                             and c["copy_fodder"] and len(battlefield) > 1)
+                    if _all:
+                        _magecraft(len(battlefield) - 1)   # cast OR copy
                     for _i in range(len(battlefield)):
                         _e = battlefield[_i]
                         if _e[7] and (_all or _i == 0):
@@ -3179,6 +3402,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "keep_can_act_by_t3": keep_can_act_by_t3,
         "mulligans": mulligans,
         "attack_tutor_fired": attack_tutor_fired,
+        "free_casts": free_casts,
+        "free_cast_depth_max": free_cast_depth_max,
+        "free_cast_depth_hits": free_cast_depth_hits,
+        "discover_to_hand": discover_to_hand,
+        "cascades": cascades,
         "reveal_fired": reveal_fired,
         "reveal_bodies": reveal_bodies,
         "tutor_enabled_turns": tutor_enabled_turns,

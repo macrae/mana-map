@@ -1524,6 +1524,57 @@ def discover_n(card):
     return int(m.group(1)) if m else 0
 
 
+#: CASCADE (CR 702.85): "When you cast this spell, exile cards from the top of
+#: your library until you exile a nonland card whose mana value is LESS than
+#: this spell's. You may cast it without paying its mana cost. Put the exiled
+#: cards on the bottom of your library in a random order." Multiple instances
+#: trigger separately, so the count is returned: Maelstrom Wanderer is 2,
+#: Apex Devastator 4.
+#:
+#: THE CARD'S OWN KEYWORD ONLY. The corpus frame flattens line breaks to
+#: spaces, so a "keyword line" cannot be read; instead each occurrence of the
+#: word in the reminder-stripped text is tested on both sides:
+#:   BEFORE it, back to the last sentence boundary (. : ; — or a line break),
+#:   no "have/has/gain(s)/with/you/your" — the words a GRANT ("spells you cast
+#:   ... have cascade"), a condition ("this spell has cascade as long as") or a
+#:   rider ("As you cascade") is spelled with;
+#:   AFTER it, no lowercase word — a NAME ("Plasma Cascade deals 3 damage")
+#:   and "has cascade as long as" both continue the sentence.
+#: A keyword is followed by the end, a comma, a brace or the next ability's
+#: capital letter, and preceded only by other keywords.
+#:
+#: CORPUS SWEEP 2026-10-11 (34,888 names): 56 cards contain the word "cascade";
+#: 38 carry the keyword themselves and are read here (Bloodbraid Elf, Shardless
+#: Agent, Violent Outburst, Maelstrom Wanderer x2, Apex Devastator x4, ...; the
+#: list is pinned in tests/test_goldfish_free_cast.py). NAMED AND OUT OF SCOPE:
+#:   GRANTS (14) — Abaddon the Despoiler, Bigger on the Inside, Dark Apostle,
+#:   Flamekin Herald, Maelstrom Nexus, Rain of Riches, Sloppity Bilepiper,
+#:   Smoldering Stagecoach, TARDIS, Wild-Magic Sorcerer, Wildsear, Yidris,
+#:   Zhulodok, and the grant halves of Imoti / Quandrix / The First Sliver
+#:   (their own cascade IS read);
+#:   CONDITIONAL — Bloodbraid Marauder (delirium);
+#:   ABOUT cascade, not having it — Averna, Aurora Phoenix's recursion, The
+#:   First Doctor, Myntasha; and Plasma Cascade, a name.
+_CASCADE_WORD_RE = re.compile(r"\bcascade\b", re.I)
+_CASCADE_BOUNDARY_RE = re.compile(r"[.:;\n—]")
+_CASCADE_GRANT_RE = re.compile(r"\b(?:have|has|gains?|with|you|your)\b", re.I)
+_CASCADE_CONTINUES_RE = re.compile(r"\s*[a-z]")
+
+
+def cascade_n(card):
+    """How many instances of cascade this card has itself (0 if none)."""
+    text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
+    n = 0
+    for m in _CASCADE_WORD_RE.finditer(text):
+        before = _CASCADE_BOUNDARY_RE.split(text[:m.start()])[-1]
+        if _CASCADE_GRANT_RE.search(before):
+            continue
+        if _CASCADE_CONTINUES_RE.match(text, m.end()):
+            continue
+        n += 1
+    return n
+
+
 def draw_profile(card):
     """How many cards this card draws, and through which channel.
 
@@ -2336,6 +2387,14 @@ _ETB_COPY_RE = re.compile(r"token that'?s? a copy of", re.IGNORECASE)
 #: guard has to be a stated depth rather than a silent one. Same shape as the
 #: `phases > 20` runaway guard on extra combats.
 ETB_CHAIN_LIMIT = 12
+
+#: THE FREE-CAST CHAIN GUARD (Discover / Cascade hits cast without paying,
+#: 2026-10-11). A free-cast discover spell discovers again, and each Zada copy
+#: of it does too; nothing in the rules ends that chain short of the library.
+#: Cascade ends on its own (mana value strictly falls), so this binds discover
+#: only in practice. Eight nested free casts is past any line a real deck plays;
+#: the hit it refuses takes the not-cast path, and refusals are reported.
+FREE_CAST_DEPTH_LIMIT = 8
 
 #: DAMAGE MULTIPLICATION, WHICH THIS MODEL COULD NOT SEE AT ALL. Three different
 #: rules produce one measured effect, and every one of them was landing in

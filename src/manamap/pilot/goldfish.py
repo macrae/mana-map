@@ -52,6 +52,7 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     CHOSEN_TYPE,
     commander_copies_spells,
     ETB_CHAIN_LIMIT,
+    FREE_CAST_DEPTH_LIMIT,
     GOLDFISH_ITERATIONS,
     GOLDFISH_MAX_MULLIGANS,
     GOLDFISH_MAX_TURN,
@@ -449,13 +450,28 @@ MODEL_ASSUMPTIONS = [
     "a land fetch, which is ramp and has no channel here yet. Reported as the "
     "*_assisted figures; the unassisted figures beside them exclude tutors "
     "entirely.",
-    "DISCOVER IS A FLOOR, and always on. An instant or sorcery with 'Discover "
-    "N' is cast like any spell (storm, magecraft and per-cast damage see it), "
-    "and each resolution — plus one per Zada copy — puts the first nonland "
-    "card with mana value N or less into HAND, the rest to the bottom in a "
-    "random order. The free cast is not taken: the hit is cast later at full "
-    "cost, so the figure errs low. A permanent's discover (the Hidden lands, "
-    "an ETB, a death) and discover X are not read.",
+    "DISCOVER, always on. An instant or sorcery with 'Discover N' is cast "
+    "like any spell (storm, magecraft and per-cast damage see it), and each "
+    "resolution — plus one per Zada copy — walks to the first nonland card "
+    "with mana value N or less and CASTS IT FREE when it has a free door: a "
+    "ritual, a draw spell, a discover spell, a storm spell, a pump or token "
+    "copy (with a board, under model_combat), or a body. Any other hit goes "
+    "to HAND and is cast later at full cost — a floor. The rest go to the "
+    "bottom in a random order. A permanent's discover (the Hidden lands, an "
+    "ETB, a death) and discover X are not read.",
+    "CASCADE, always on, the card's OWN keyword only (grants are not read). "
+    "Every cast — paid, free or a cascade hit's own — walks to the first "
+    "nonland card with mana value STRICTLY LESS and casts it free through the "
+    "same doors as Discover; a hit with no free door goes to the bottom with "
+    "the rest, in a random order (a floor). Copies never cascade. A cascade "
+    "card no other loop casts is cast late in the main phase for the cascade "
+    "alone, so it adds nothing to that turn's storm count.",
+    "A FREE-CAST CHAIN IS CAPPED at FREE_CAST_DEPTH_LIMIT nested free casts "
+    "(8); a hit past it takes the not-cast path. The depth reached and the "
+    "refusals are reported in metrics.free_cast.",
+    "MAGECRAFT FIRES ON EVERY COPY ('cast or copy'): one event per Zada copy "
+    "of a spell, at every copy site (draw, pump, untap, storm, discover), "
+    "counted once per spell however many arms the spell has.",
     "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering "
     "creature's power (Terror of the Peaks), X damage where X counts your board "
     "(Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY "
@@ -794,6 +810,27 @@ def aggregate(results, targets, max_turn, model_treasures=False,
                 sum(1 for r in results if r["keep_can_act_by_t3"]) / n),
             "mean_mulligans": _round(sum(r["mulligans"] for r in results) / n),
         },
+        # THE FREE CAST — Discover's and Cascade's hits (2026-10-11). Absent
+        # unless something in the list discovered or cascaded at least once,
+        # so a deck without either keeps an artifact with no key about it.
+        # The depth guard's reach and refusals travel with the figure, the
+        # `etb_chain_hits` rule: a chain that stops silently cannot be told
+        # from one that never ran.
+        **({"free_cast": {
+            "mean_free_casts": _round(sum(r.get("free_casts", 0) for r in results) / n),
+            "games_with_a_free_cast": sum(1 for r in results if r.get("free_casts")),
+            "mean_cascades": _round(sum(r.get("cascades", 0) for r in results) / n),
+            "mean_discover_to_hand": _round(
+                sum(r.get("discover_to_hand", 0) for r in results) / n),
+            "max_depth": max(r.get("free_cast_depth_max", 0) for r in results),
+            "depth_limit": FREE_CAST_DEPTH_LIMIT,
+            "depth_guard_hits": sum(r.get("free_cast_depth_hits", 0) for r in results),
+            "basis": ("a hit is cast without paying through the resolution a "
+                      "paid cast of it gets (ritual, draw, discover, storm, "
+                      "pump, body); anything else goes to hand (discover) or "
+                      "the bottom (cascade) — see MODEL_ASSUMPTIONS"),
+        }} if any(r.get("free_casts") or r.get("cascades") or r.get("discover_to_hand")
+                  for r in results) else {}),
         # THE COMMANDER'S ATTACK TUTOR. It is a CEILING (see the model note
         # where it fires): a goldfish commander always attacks, a real one
         # attacks when it is safe to.

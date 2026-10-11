@@ -33,6 +33,7 @@ from manamap.pilot.common import (
     deck_dir, deck_file, front_field, load_deck_cards)
 
 from manamap.pilot.goldfish_profiles import (
+    cascade_n,
     copy_fodder,
     discover_n,
     spell_count_profile,
@@ -238,6 +239,10 @@ def classify(card, pool=None):
         # and the walk happen only when a card carries it, so a deck without
         # one never reaches the branch and stays bit-identical.
         "discover_n": discover_n(card),
+        # CASCADE, the card's OWN keyword, counted (Maelstrom Wanderer is 2).
+        # Always read, like discover: it fires in `_note_cast` only when a
+        # card carries it, so a deck without one stays bit-identical.
+        "cascade": cascade_n(card),
         # THE SPELL-COUNT CHANNELS: storm, per-cast damage, magecraft.
         "spell_count": spell_count_profile(card),
         # THE PIPS MUST COME FROM THE DOOR THE COST CAME FROM. `front_field`

@@ -59,6 +59,10 @@ CHANNELS = {
     # beside it: it is card selection, it needs no authored rate, and a deck
     # without the keyword never reaches the branch, so nothing else moves.
     "discover": None,
+    # CASCADE, the card's own keyword (2026-10-11). Always on for the reason
+    # discover is: card selection with no authored rate, and a deck without
+    # the keyword never reaches `_cascade`. Grants are not read.
+    "cascade": None,
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -245,6 +249,8 @@ def channels_for(profile):
         found.add("drain")
     if profile.get("discover_n"):
         found.add("discover")
+    if profile.get("cascade"):
+        found.add("cascade")
     return found
 
 
@@ -270,7 +276,8 @@ def never_cast(profile, flags):
             or profile.get("land_mana_bonus") \
             or profile["tutor"] or profile["reduces"] \
             or profile.get("ritual") \
-            or profile.get("discover_n"):        # the discover loop casts it (2026-10-11)
+            or profile.get("discover_n") \
+            or profile.get("cascade"):           # the discover / cascade loops cast it (2026-10-11)
         return False
     cb = profile.get("combat") or {}
     if flags.get("model_combat"):

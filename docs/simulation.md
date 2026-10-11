@@ -463,7 +463,7 @@ pull one board out and ask the resolver about it.**
 
 Every channel below is **OFF unless its flag is set** in the deck's
 `goldfish_targets.json`, and the default figures on a deck that declares nothing are
-mana, bodies, land drops, tutors and Discover (the last row, always on). `model-coverage <slug>` names, per card, which channel it
+mana, bodies, land drops, tutors, Discover and Cascade (the last two rows, always on). `model-coverage <slug>` names, per card, which channel it
 feeds and whether that channel is on — **a card the model cannot read looks exactly like
 a card that does not help**, and that confusion has cost this project a whole branch.
 
@@ -476,7 +476,8 @@ a card that does not help**, and that confusion has cost this project a whole br
 | `model_discard` | wheels, loots, and the discard half of a draw you pay for |
 | `model_colors` | on by default; a colourless mana model is simply wrong |
 | `model_commander_animate`, `model_commander_attack_tutor`, `model_commander_combat_reveal`, `model_commander_copy` | commander abilities only one corpus card has, declared per deck |
-| *(always on)* Discover — **a FLOOR** | an instant or sorcery with "Discover N" is cast through the normal cast path (it counts for storm, magecraft and per-cast damage) and each resolution, plus one per Zada copy, walks the library to the first nonland card with mana value N or less and puts it into HAND; the rest go to the bottom in a random order. The hit is cast later at full cost rather than free now, so every figure it moves **errs low** (2026-10-11) |
+| *(always on)* Discover | an instant or sorcery with "Discover N" is cast through the normal cast path (it counts for storm, magecraft and per-cast damage) and each resolution, plus one per Zada copy, walks the library to the first nonland card with mana value N or less and **casts it free** through the resolution a paid cast of it gets — ritual, draw spell (Zada's copies included), discover, storm, pump / token copy, or a body (every registration a cast permanent makes). A hit with no free door (a rock, a reducer, an engine permanent, a wheel, an untap-only card, interaction) goes to HAND, its other option; the rest go to the bottom in a random order. A chain stops at `FREE_CAST_DEPTH_LIMIT` (8), reported in `metrics.free_cast` (2026-10-11; a floor since C1, the hand half only) |
+| *(always on)* Cascade | the card's OWN keyword, counted (Maelstrom Wanderer 2, Apex Devastator 4): on every CAST — paid, free, or a cascade hit's own — walk to the first nonland card with mana value STRICTLY LESS, cast it free through the same dispatcher, and put every card not cast on the bottom in a random order. Copies do not cascade (a copy is never cast). A cascade card no other loop selects is cast late in the main phase for its cascade (2026-10-11) |
 
 **The copy channel is the one that needs no authored rate**, and that is why it can be
 trusted more than its neighbours. `model_commander_attack_tutor` reported 5.70 fires a
@@ -547,11 +548,25 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
   -> Vampire Interloper went from +0.022 damage@T10 (a phantom gain) to -1.088.
 - **Discover is read on an instant or sorcery with a fixed N only** (Daring Discovery,
   Hit the Mother Lode, Walk with the Ancestors — three cards of the 21 that say
-  "discover N"), and as a floor: the free cast is not taken. NOT read: the five Hidden
-  lands' sacrifice ability (Hidden Volcano's "Discover 4"), a permanent that discovers on
-  entry, death, attack or activation (Geological Appraiser, Trumpeting Carnosaur, Etali's
-  Favor, Chimil, …), "discover X", and the riders beside it (Hit the Mother Lode's
-  Treasures, Walk with the Ancestors' return).
+  "discover N"). The free cast is TAKEN since 2026-10-11 when the hit has a free door;
+  what is still a FLOOR: a hit with no free door goes to hand and waits for full cost
+  (rocks, reducers, engine permanents, wheels, interaction); a free-cast creature does
+  not see the X-spell or Blood sinks. NOT read at all: the five Hidden lands' sacrifice
+  ability (Hidden Volcano's "Discover 4"), a permanent that discovers on entry, death,
+  attack or activation (Geological Appraiser, Trumpeting Carnosaur, Etali's Favor,
+  Chimil, …), "discover X", and the riders beside it (Hit the Mother Lode's Treasures,
+  Walk with the Ancestors' return).
+- **Cascade is read as the card's own keyword only** (38 of the 56 corpus cards that
+  say "cascade"). NOT read: GRANTS — Maelstrom Nexus, Flamekin Herald, Wildsear,
+  Yidris, Zhulodok, Abaddon, Rain of Riches, Bigger on the Inside, Dark Apostle,
+  Sloppity Bilepiper, Smoldering Stagecoach, TARDIS, Wild-Magic Sorcerer, and the grant
+  halves of Imoti, Quandrix and The First Sliver; the conditional Bloodbraid Marauder;
+  Averna's land rider and Aurora Phoenix's recursion. A cascade hit with no free door
+  goes to the BOTTOM (what the rule does with a declined hit) — a floor.
+- **Magecraft fires on every Zada copy** (cast OR copy) at every copy site — draw, pump
+  (one event per copy, whatever the spell's arms), untap, storm, discover — since
+  2026-10-11; before it, only storm and discover did, so Storm-Kiln Artist made no
+  Treasure off a copied cantrip.
 - **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
   your own board and cashes the deaths; that channel is not built.
 

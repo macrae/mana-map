@@ -319,7 +319,10 @@ def test_the_wheel_fires_before_anything_joins_the_battlefield():
     src = simulator_source()
     fires = src.index("if model_draw and model_discard and wheel_engines:")
     draw_loop = src.index("# A DRAW SPELL IS NEITHER A ROCK")
-    bodies_loop = src.index("pending_draw_engine = None")
+    # The bodies LOOP, not its resolution: `_resolve_body` (where
+    # `pending_draw_engine` lives since 2026-10-11) is a helper defined above
+    # the casting loops, and its position says nothing about when it runs.
+    bodies_loop = src.index("# Spend what's left on bodies, cheapest-first.")
     assert fires < draw_loop < bodies_loop, (
         "the fire site has moved below a casting loop — a wheel now fires on "
         "the turn it lands, which is a tap ability with no summoning sickness")
