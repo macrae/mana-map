@@ -19,7 +19,7 @@ had already been hit the expensive way and the flags turned on.
 
 import pytest
 
-from conftest import simulator_source
+from conftest import requires_data, simulator_source
 
 from manamap.pilot import model_coverage as mc
 
@@ -116,7 +116,7 @@ def test_states_are_exhaustive_and_exclusive():
     report = _report()
     counts = report["counts"]
     assert sum(counts.values()) == report["distinct"] == len(report["cards"])
-    assert set(counts) == {"seen", "dark", "invisible"}
+    assert set(counts) == {"seen", "partial", "dark", "invisible"}
 
 
 def test_the_headline_is_empty_when_nothing_is_dark_and_names_the_branch():
@@ -492,3 +492,27 @@ def test_a_cascade_card_is_read_always_and_cast():
     assert not mc.never_cast(p, {})
     assert "cascade" not in mc.channels_for(_bare_profile())
     assert mc.never_cast(_bare_profile(), {})
+
+
+@requires_data
+def test_an_unread_replacement_on_a_counted_resource_is_partial():
+    """Torbran and Lae'zel read SEEN for months while the line that was the
+    whole card went unread (2026-10-11). A replacement on damage, life,
+    counters, tokens or draws that no reader consumed is now PARTIAL; a
+    graveyard or ETB redirect touches nothing counted and stays SEEN.
+    Re-introduce the gap by returning None from `unread_replacement` and the
+    first assert fails."""
+    from manamap.pilot import card_pool
+    oracle = card_pool.corpus_oracle()
+
+    def state(name, type_line="Creature — Vampire"):
+        card = {"name": name, "oracle_text": oracle[name], "type_line": type_line,
+                "power": "2", "toughness": "2", "mana_cost": "{2}{B}", "cmc": 3}
+        return mc.card_state(card, {"model_combat": True, "model_draw": True})
+
+    assert state("Bloodletter of Aclazotz")["state"] == "partial"
+    # Read now, so no longer partial.
+    assert state("Torbran, Thane of Red Fell")["state"] == "seen"
+    assert state("Lae'zel, Vlaakith's Champion")["state"] == "seen"
+    # A redirect of a non-counted thing is not a gap in this model.
+    assert state("Goblin Dark-Dwellers")["state"] == "seen"

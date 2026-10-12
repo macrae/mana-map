@@ -36,6 +36,7 @@ correctly invisible. A large DARK count is the thing that invalidates a run.
 """
 
 import json
+import re
 
 from manamap.pilot.common import deck_file, expand_copies, load_deck_cards
 from manamap.pilot.goldfish_profiles import is_death_engine
@@ -429,13 +430,43 @@ def declaration(slug, branch=None):
     return flags, named
 
 
+#: A REPLACEMENT ON A RESOURCE THE MODEL COUNTS — damage, life, counters, tokens,
+#: draws — that no reader consumed (2026-10-11). Torbran and Lae'zel both read
+#: as SEEN for months while the line that was the whole card went unread: the
+#: body put them in the `bodies` channel and nothing asked about the rest. A
+#: graveyard or enter-the-battlefield redirect (Goblin Dark-Dwellers, Mox
+#: Diamond) touches nothing counted and is left alone; on the 2026-10-11 fleet
+#: this flags exactly Bloodletter of Aclazotz, whose life-loss doubler is real
+#: and unread.
+_UNREAD_REPLACEMENT_RE = re.compile(
+    r"[^.\n]*\bwould\b[^.\n]*\b(?:damage|life|counters?|tokens?|draws?)\b"
+    r"[^.\n]*\binstead\b[^.\n]*|[^.\n]*\b(?:damage|life|counters?|tokens?|draws?)\b"
+    r"[^.\n]*\bwould\b[^.\n]*\binstead\b[^.\n]*", re.I)
+
+
+def unread_replacement(card, profile):
+    """The replacement sentence no reader consumed, or None."""
+    text = re.sub(r"\([^)]*\)", " ", card.get("oracle_text") or "")
+    m = _UNREAD_REPLACEMENT_RE.search(text)
+    if not m:
+        return None
+    read = (profile["counter_mod"]["plus"] or profile["counter_mod"]["times"] > 1
+            or profile["damage_bonus"]["amount"] or profile["token_doubler"]
+            or profile["draw"]["draw_multiplier"] > 1
+            or profile["combat"]["team_damage_multiplier"] > 1
+            or profile["treasure_bonus"] or profile["treasure_doubler"])
+    return None if read else m.group(0).strip()
+
+
 def card_state(card, flags, named=()):
     """One card: which channels could read it, which are on, and its state —
-    `seen`, `dark` (something about it feeds a channel that is OFF) or
+    `seen`, `partial` (seen, but a replacement on a counted resource went
+    unread), `dark` (something about it feeds a channel that is OFF) or
     `invisible` (no channel reads it at all). Shared by the coverage report and
     `try`, so a swap screen and this report can never disagree about a card."""
     from manamap.pilot import goldfish
-    possible = channels_for(goldfish.classify(card))
+    profile = goldfish.classify(card)
+    possible = channels_for(profile)
     if card["name"] in named:
         possible.add("target")
     active = {c for c in possible
@@ -445,13 +476,18 @@ def card_state(card, flags, named=()):
     # which is always on, so "seen if anything is active" reported gishath —
     # a deck that opts into NOTHING — as 0 dark. A card is dark when
     # ANYTHING about it is not being read, whatever else is.
+    state = ("dark" if possible - active
+             else "seen" if active else "invisible")
+    unread = unread_replacement(card, profile)
+    if state == "seen" and unread:
+        state = "partial"
     return {
         "name": card["name"],
         "possible": sorted(possible),
         "active": sorted(active),
         "dark_channels": sorted(possible - active),
-        "state": ("dark" if possible - active
-                  else "seen" if active else "invisible"),
+        "state": state,
+        "unread": unread,
     }
 
 
@@ -477,7 +513,7 @@ def analyze(slug, branch=None):
 
     rows.sort(key=lambda r: (r["state"] != "dark", r["name"]))
     counts = {state: sum(1 for r in rows if r["state"] == state)
-              for state in ("seen", "dark", "invisible")}
+              for state in ("seen", "partial", "dark", "invisible")}
     # Which OFF channel is costing the most cards — the thing to switch on first.
     by_channel = {}
     for row in rows:
@@ -519,6 +555,11 @@ def _print(report):
     print(f"\n  {'seen':10} {c['seen']:>4}   every channel it feeds is switched on")
     print(f"  {'DARK':10} {c['dark']:>4}   it feeds a channel that is OFF — whatever else is on")
     print(f"  {'invisible':10} {c['invisible']:>4}   no channel reads it; only its mana cost is known")
+    print(f"  {'PARTIAL':10} {c['partial']:>4}   seen, but a replacement on damage, life, "
+          f"counters, tokens or draws is unread")
+    for row in report["cards"]:
+        if row["state"] == "partial":
+            print(f"      {row['name']}: \"{row['unread'][:90]}\"")
 
     if report["dark_by_channel"]:
         print("\n  DARK, BY CHANNEL — this is what would change if you switched it on")

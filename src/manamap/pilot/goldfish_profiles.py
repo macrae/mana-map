@@ -1145,6 +1145,11 @@ def counter_mod(card):
     """
     text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
     out = {"plus": 0, "times": 1}
+    # A CLASS OR A ROOM IS REFUSED, as in `damage_bonus`: Innkeeper's Talent
+    # doubles counters on its LEVEL 3, and nothing here buys a level, so the
+    # first sweep read it as a doubler the turn its level 1 resolved.
+    if re.search(r"\b(?:Class|Room)\b", card.get("type_line") or ""):
+        return out
     for m in _COUNTER_MOD_SENTENCE_RE.finditer(text):
         s = m.group(0)
         # Zabaz, the Glimmerwasp scopes its +1 to "a modular triggered ability";
