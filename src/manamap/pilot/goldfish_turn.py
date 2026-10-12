@@ -89,6 +89,7 @@ from manamap.pilot.goldfish_profiles import (
     is_death_engine,
     is_etb_engine,
     reduced_cost,
+    apply_counter_mod,
 )
 from manamap.pilot.goldfish_library import X_DRAW_MIN, _target_met, keepable
 
@@ -217,6 +218,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # for the Treasure side. Three doublers is x8, which is what this deck's
     # engine brief means by "the doublers turn one mint into four".
     token_multiplier = 1
+    # COUNTER REPLACEMENTS (2026-10-11): Hardened Scales and Lae'zel ADD to
+    # every counter event on a creature you control, Doubling Season DOUBLES
+    # it. Kept as (plus, times) and applied per EVENT through
+    # `apply_counter_mod` — adding before multiplying, the order a pilot picks
+    # (CR 616.1). Two +1s are +2; two doublers are x4.
+    counter_plus = 0
+    counter_times = 1
     death_engines = []
     free_sac_outlet = False
     sacrifices = 0
@@ -924,6 +932,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             cast-draw, no spend. Devotion-gated gods are held like any other."""
             nonlocal bodies_cum, team_damage_multiplier, extra_combat_free
             nonlocal lifelink_power, token_multiplier, treasures
+            nonlocal counter_plus, counter_times
             combat = card["combat"]
             seen.add(card["name"])
             bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
@@ -981,6 +990,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             _register_wheel(card)
             if card["token_doubler"]:
                 token_multiplier *= 2
+            counter_plus += card["counter_mod"]["plus"]
+            counter_times *= card["counter_mod"]["times"]
             if model_treasures:
                 if card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
                                                 "opponent_second_draw"):
@@ -1203,7 +1214,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # is why the smaller permanent number beats the bigger temporary
             # one over ten turns.
             if card["combat"]["spell_counters"]:
-                _n = card["combat"]["spell_counters"]
+                _n = apply_counter_mod(card["combat"]["spell_counters"],
+                                       counter_plus, counter_times)
                 if (commander_copy and commander_turn is not None
                         and card["copy_fodder"] and len(battlefield) > 1):
                     for _i, _c in enumerate(battlefield):
@@ -1281,6 +1293,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal enchantments_entered, etb_drained, etb_gained, extra_combat_free
             nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem
             nonlocal team_damage_multiplier, token_multiplier, treasure_bonus
+            nonlocal counter_plus, counter_times
             nonlocal treasure_multiplier, treasures
             # A BODY THAT ALSO DRAWS is the shape the pilot's Edgar refactor
             # is built on: "a vampire that draws is better than a sorcery
@@ -1442,6 +1455,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             _register_wheel(card)
             if card["token_doubler"]:
                 token_multiplier *= 2
+            counter_plus += card["counter_mod"]["plus"]
+            counter_times *= card["counter_mod"]["times"]
             if model_sacrifice:
                 if is_death_engine(card["death"]):
                     death_engines.append(card["death"])
@@ -1507,13 +1522,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if n_ < 0:            # X = the count of its own named type
                     ty_ = cb_["team_counters_scale_type"] or ""
                     n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
-                team_anthem += n_
+                team_anthem += apply_counter_mod(n_, counter_plus, counter_times)
             if cb_["team_counters_scale_type"]:
                 team_anthem_on_type.append(
                     (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
             for ty_, per_ in team_anthem_on_type:
                 if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
-                    team_anthem += per_
+                    team_anthem += apply_counter_mod(per_, counter_plus, counter_times)
             # Casting it turns its Treasure engine on for later turns, and
             # an ETB or cast trigger pays out immediately.
             if not model_treasures:
@@ -2378,6 +2393,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # have minted — the seventh time this class has bitten.
             if model_combat and c["cast_token"]:
                 return True
+            # A COUNTER REPLACEMENT IS A PERMANENT TOO (2026-10-11), taught in
+            # the same commit as the channel: Hardened Scales has no body, no
+            # mana and no draw, and without this it reads perfectly and sits in
+            # hand — the class this predicate has now caught nine times.
+            if model_combat and (c["counter_mod"]["plus"] or c["counter_mod"]["times"] > 1):
+                return True
             # A PERMANENT WHOSE VALUE IS BEING COUNTED BY SOMETHING ELSE.
             # Sanctum of Tranquil Light does almost nothing on its own — its job
             # is to be a SHRINE, so that the two cards reading "X is the number
@@ -2533,13 +2554,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if n_ < 0:            # X = the count of its own named type
                         ty_ = cb_["team_counters_scale_type"] or ""
                         n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
-                    team_anthem += n_
+                    team_anthem += apply_counter_mod(n_, counter_plus, counter_times)
                 if cb_["team_counters_scale_type"]:
                     team_anthem_on_type.append(
                         (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
                 for ty_, per_ in team_anthem_on_type:
                     if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
-                        team_anthem += per_
+                        team_anthem += apply_counter_mod(per_, counter_plus, counter_times)
 
         # A NONCREATURE ANTHEM IS CAST WHEN THERE IS A BOARD FOR IT, taught in the
         # same commit as the channel (the never-cast class, a ninth time): it
@@ -2702,7 +2723,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 and artifact_sacs_this_turn:
             for _a in artifact_sac_payoff_permanents:
                 _evt_dmg += _a["per_artifact_sac_damage"] * artifact_sacs_this_turn
-                counter_power += _a["per_artifact_sac_counter"] * artifact_sacs_this_turn
+                counter_power += apply_counter_mod(_a["per_artifact_sac_counter"],
+                                                   counter_plus, counter_times) \
+                    * artifact_sacs_this_turn
                 if _a["per_artifact_sac_draw"]:
                     draw_n(_a["per_artifact_sac_draw"] * artifact_sacs_this_turn)
         # TREASURE OFF THEIR DRAWS (Smothering Tithe, Gleaming Splendor), from
@@ -2740,8 +2763,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _evt_dmg += _e["opponent_second_draw_damage"]
                     if _e["opponent_second_draw_our_draw"]:
                         draw_n(_e["opponent_second_draw_our_draw"] * GOLDFISH_OPPONENTS)
-                _ctr = (_e["per_discard_counter"] * _disc_t
-                        + _e["per_draw_counter"] * drawn_this_turn)
+                # EACH TRIGGER IS ITS OWN COUNTER EVENT — Shabraz is paid once
+                # per card drawn — so a +1 replacement adds per card, not once.
+                _ctr = (apply_counter_mod(_e["per_discard_counter"], counter_plus,
+                                          counter_times) * _disc_t
+                        + apply_counter_mod(_e["per_draw_counter"], counter_plus,
+                                            counter_times) * drawn_this_turn)
                 counter_power += _ctr
                 if any(_e is _c for _c in commander_event_objs):
                     commander_counters += _ctr

@@ -72,6 +72,7 @@ from manamap.pilot.goldfish_profiles import (
     sac_outlet_profile,
     subtypes_of,
     token_doubler,
+    counter_mod,
     treasure_profile,
 )
 
@@ -189,6 +190,9 @@ def classify(card, pool=None):
         "event": event_payoffs(card),
         "death": death_profile(card),
         "token_doubler": token_doubler(card),
+        # Hardened Scales / Lae'zel (+N) and Doubling Season (xN) on every
+        # counter event on a creature you control (2026-10-11).
+        "counter_mod": counter_mod(card),
         "sac_outlet": sac_outlet_profile(card),
         "tutor": is_tutor_card,
         # A top-of-library tutor delivers on the next draw step, not this turn.

@@ -182,7 +182,9 @@ def channels_for(profile):
             "spell_pump_single", "spell_pump_team", "spell_counters",
             "spell_double_strike", "spell_power_to_each_opponent",
             "spell_extra_combat", "spell_untap")) \
-            or ((profile.get("combat") or {}).get("spell_power_multiplier") or 1) > 1:
+            or ((profile.get("combat") or {}).get("spell_power_multiplier") or 1) > 1 \
+            or (profile.get("counter_mod") or {}).get("plus") \
+            or ((profile.get("counter_mod") or {}).get("times") or 1) > 1:
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
@@ -308,6 +310,10 @@ def never_cast(profile, flags):
                 cb.get("spell_untap"))):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
+            return False
+        # Mirrors goldfish_turn's `_engine_permanent` (2026-10-11).
+        cm = profile.get("counter_mod") or {}
+        if cm.get("plus") or (cm.get("times") or 1) > 1:
             return False
     if flags.get("model_treasures") and (profile["treasure_doubler"]
                                          or profile["treasure_bonus"]):

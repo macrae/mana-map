@@ -1079,6 +1079,61 @@ def token_doubler(card):
     return not _TEMPORARY_EFFECT_RE.search(window)
 
 
+#: A COUNTER REPLACEMENT (2026-10-11). Lae'zel, Vlaakith's Champion read as a
+#: vanilla 3/3: "If you would put one or more counters on a creature or
+#: planeswalker you control or on yourself, put that many plus one … instead".
+#: On sharknado every Shabraz draw and Brallin discard is its own counter event,
+#: so the card doubles the pair's growth and the model priced it at nothing.
+#: Two shapes, and conflating them is wrong the way it is for Treasure: Hardened
+#: Scales and Lae'zel ADD one per event; Doubling Season, Corpsejack Menace and
+#: Branching Evolution DOUBLE it. Read per SENTENCE, scoped to permanents YOU
+#: control, so a doubler of an opponent's counters is not ours.
+_COUNTER_MOD_SENTENCE_RE = re.compile(r"[^.\n]*counters?[^.\n]*would[^.\n]*|"
+                                      r"[^.\n]*would[^.\n]*counters?[^.\n]*", re.I)
+#: Symmetric wordings count: Primal Vigor ("on a creature") and Vorinclex ("on a
+#: permanent or player") double OUR counters too. A sentence naming an opponent
+#: is refused in `counter_mod`, since that is the half that is not ours.
+_COUNTER_MOD_SCOPE_RE = re.compile(
+    r"on (?:a|an|each|one or more) (?:creature|permanent|artifact or creature|"
+    r"creature or planeswalker|nonland permanent)s?\b", re.I)
+_COUNTER_PLUS_RE = re.compile(r"that many plus (one|two)", re.I)
+_COUNTER_TIMES_RE = re.compile(r"(twice|three times) that many[^.\n]{0,40}?counters", re.I)
+
+
+def counter_mod(card):
+    """`{"plus": N, "times": M}` — what a permanent does to every counter event
+    on a creature you control. Identity is `{"plus": 0, "times": 1}`.
+
+    The player orders replacement effects (CR 616.1), so where both apply the
+    turn loop adds before it multiplies: (n + plus) × times, the larger result.
+    """
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
+    out = {"plus": 0, "times": 1}
+    for m in _COUNTER_MOD_SENTENCE_RE.finditer(text):
+        s = m.group(0)
+        # Zabaz, the Glimmerwasp scopes its +1 to "a modular triggered ability";
+        # a replacement bound to one SOURCE is not a replacement on every event.
+        if not _COUNTER_MOD_SCOPE_RE.search(s) or _TEMPORARY_EFFECT_RE.search(s) \
+                or "opponent" in s.lower() \
+                or re.search(r"\bif an? [^,]*?(?:ability|spell) would", s, re.I):
+            continue
+        if "token" in s.lower() and "counter" not in s.lower().split("token")[0]:
+            continue
+        p = _COUNTER_PLUS_RE.search(s)
+        if p:
+            out["plus"] += 1 if p.group(1).lower() == "one" else 2
+        t = _COUNTER_TIMES_RE.search(s)
+        if t:
+            out["times"] *= 2 if t.group(1).lower() == "twice" else 3
+    return out
+
+
+def apply_counter_mod(n, plus, times):
+    """Counters one event places once every replacement has applied. Zero stays
+    zero: a replacement modifies an event, it does not create one."""
+    return (n + plus) * times if n > 0 else 0
+
+
 #: Gates that name a CARD TYPE rather than a creature subtype. Same four as
 #: `_CAST_DRAW_GATES`, for the same reason: a cast trigger fires in this model at
 #: the two doors a non-land PERMANENT joins the battlefield, so a permanent-type

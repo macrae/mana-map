@@ -265,6 +265,8 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     subtypes_of,
     team_haste_grant,
     token_doubler,
+    counter_mod,
+    apply_counter_mod,
     treasure_profile,
 )
 
