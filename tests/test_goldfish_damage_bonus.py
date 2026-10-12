@@ -88,3 +88,36 @@ def test_torbran_turns_brallins_ping_into_three():
                            "or a permanent an opponent controls, it deals that much damage "
                            "plus 2 instead.")
     assert torbran > vanilla * 1.05, (vanilla, torbran)
+
+
+@requires_data
+@requires_deck
+def test_torbran_boosts_red_attackers_too():
+    """Combat damage from a red source is +2 per attacker per strike (the
+    battlefield entry carries its colours since 2026-10-11). The combat block's
+    own damage series excludes the discard pings, so it can only rise through
+    red attackers. Re-introduce the gap (return 0 from `_combat_bonus`) and the
+    arms read identical."""
+    from manamap.pilot.common import load_deck_cards
+
+    doc = load_deck_cards("sharknado")
+    target = next(c for c in doc["cards"]
+                  if "Creature" in (c.get("type_line") or "")
+                  and "R" in (c.get("colors") or [])
+                  and c.get("name") not in ("Shabraz, the Skyshark", "Brallin, Skyshark Rider")
+                  and (c.get("cmc") or 0) <= 4)
+
+    def combat_damage(text):
+        d = copy.deepcopy(doc)
+        for c in d["cards"]:
+            if c["name"] == target["name"]:
+                c["oracle_text"] = text
+        m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7,
+                         quiet=True, _band=False)["metrics"]
+        return m["combat"]["mean_damage_by_turn"]["10"]
+
+    vanilla = combat_damage("Trample")
+    torbran = combat_damage("If a red source you control would deal damage to an opponent "
+                            "or a permanent an opponent controls, it deals that much damage "
+                            "plus 2 instead.")
+    assert torbran > vanilla * 1.02, (vanilla, torbran)

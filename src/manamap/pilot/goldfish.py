@@ -555,8 +555,11 @@ MODEL_ASSUMPTIONS = [
     "there was no spells-cast-this-turn variable at all and storm was unreadable.",
     "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season "
     "x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) "
-    "per damage INSTANCE, each added before any multiplier. Torbran does NOT yet "
-    "boost combat damage from red attackers; a stated gap.",
+    "per damage INSTANCE, each added before any multiplier: each ping, each storm "
+    "copy, each attacker per strike. An attacker's colours ride on its battlefield "
+    "entry (cast creatures, commanders, and draw/discard-made tokens such as The "
+    "Locust God's blue-red Insects); a token from any other maker is colourless "
+    "here, an understatement.",
     "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, "
     "MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax "
     "is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left "

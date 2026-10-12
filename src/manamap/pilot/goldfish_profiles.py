@@ -853,7 +853,7 @@ def event_payoffs(card):
            "per_opponent_draw_damage": 0, "per_opponent_draw_our_draw": 0,
            "opponent_second_draw_damage": 0, "opponent_second_draw_our_draw": 0,
            "per_discard_batch": False,
-           "per_draw_gain": 0, "per_discard_gain": 0,
+           "per_draw_gain": 0, "per_discard_gain": 0, "token_colors": [],
            "per_opponent_draw_paid_draw": 0, "per_opponent_draw_paid_cost": 0,
            "per_opponent_cast_draw": 0, "per_opponent_cast_taxed": False,
            "unmodelled": None}
@@ -909,6 +909,10 @@ def event_payoffs(card):
         tok = _EVENT_TOKEN_RE.search(effect)
         if tok:
             out[prefix + "_token_power"] += int(tok.group(1))
+            # THE TOKEN'S COLOURS, for a damage replacement that asks (The
+            # Locust God's Insects are blue AND red, so Torbran boosts them).
+            out["token_colors"] = sorted(_COLOUR_WORD[w] for w in _COLOUR_WORD
+                                         if re.search(rf"\b{w}\b", tok.group(0), re.I))
     oc = _OPP_CAST_DRAW_RE.search(text)
     if oc:
         out["per_opponent_cast_draw"] += _DRAW_WORDS[oc.group(1).lower()]

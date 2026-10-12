@@ -691,7 +691,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                              toughness=1,
                              is_token=False, is_legendary=False, type_line="",
                              infect=False, toxic=0, flying=False,
-                             temporary=False, attack_gate=None, lord=None):
+                             temporary=False, attack_gate=None, lord=None, colors=()):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -735,9 +735,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # Defender, "can't attack", or a condition. Read by `_may_attack`.
             # THE ELEVENTH FIELD IS A STATIC LORD (`static_lord`) or None, in the
             # tuple for the reason the tenth is: a pop cannot desynchronise it.
+            # THE TWELFTH IS ITS COLOURS (2026-10-11), for a damage replacement
+            # that asks what colour the attacker is (Torbran: red sources +2).
             battlefield.append((power, arrived, haste, mult, is_token,
                                 (infect, toxic), toughness, False, temporary,
-                                attack_gate, lord))
+                                attack_gate, lord, frozenset(colors)))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -868,7 +870,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                  infect=cprof["infect"], toxic=cprof["toxic"],
                                  toughness=cprof["toughness"],
                                  attack_gate=cprof.get("attack_gate"),
-                                 lord=cprof.get("static_lord"))
+                                 lord=cprof.get("static_lord"),
+                                 colors=(cdamage["source"]["colors"] if cdamage else ()))
                 if cprof["team_damage_multiplier"] > 1:
                     team_damage_multiplier *= cprof["team_damage_multiplier"]
                 if any((cprof["attack_mana"], cprof["attack_damage"],
@@ -1130,7 +1133,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             sc = card["spell_count"]
             total = 1 + copies
             if model_combat and sc["storm_damage"]:
-                etb_damage += sc["storm_damage"] * total
+                # Each copy is its own damage instance, so a +N replacement
+                # (Torbran on a red Grapeshot) applies per copy.
+                etb_damage += (sc["storm_damage"]
+                               + bonus_for(card["damage_source"], damage_bonuses)) * total
             if sc["storm_token_bodies"]:
                 each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
                 for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
@@ -1139,7 +1145,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # short entry that every `e[8]` read would raise on. The
                     # tenth, the attack gate, is None: a Goblin token attacks.
                     battlefield.append((each, turn, False, 1, True, (0, 0), 1,
-                                        False, False, None, None))
+                                        False, False, None, None, frozenset("R")))
                     creature_types.append("Creature — Goblin")
                     creature_flying.append(False)
                     bodies_cum += 1
@@ -1505,7 +1511,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         infect=combat["infect"], toxic=combat["toxic"],
                         flying=combat["flying"],
                         attack_gate=combat.get("attack_gate"),
-                        lord=combat.get("static_lord"))
+                        lord=combat.get("static_lord"),
+                        colors=card["damage_source"]["colors"])
                     creatures_entered_this_turn += 1
             # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
             # whether or not the commander has ever been cast. "Another"
@@ -2934,12 +2941,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if _e["second_draw_damage"]:
                         _evt_dmg += _e["second_draw_damage"] + _b
                     if _e["second_draw_token_power"]:
-                        creature_entered(_e["second_draw_token_power"], turn, False, 1, is_token=True)
+                        creature_entered(_e["second_draw_token_power"], turn, False, 1,
+                                         is_token=True, colors=_e["token_colors"])
                         bodies_cum += 1
                 for _pw, _n in ((_e["per_discard_token_power"], _disc_t),
                                 (_e["per_draw_token_power"], drawn_this_turn)):
                     for _ in range(_n if _pw else 0):
-                        creature_entered(_pw, turn, False, 1, is_token=True)
+                        creature_entered(_pw, turn, False, 1, is_token=True,
+                                         colors=_e["token_colors"])
                         bodies_cum += 1
                 if _e["per_discard_draw"] and _disc_t:
                     draw_n(_e["per_discard_draw"] * _disc_t)
@@ -2994,6 +3003,22 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # door says every unpack takes it; these two combat unpacks did not,
             # so the ninth field raised `too many values to unpack (expected 8)`
             # here rather than anywhere near the field that was added.
+            def _combat_bonus(idx):
+                """+N per COMBAT damage instance from a qualifying attacker
+                (Torbran: a red source), per strike, before the multiplier. An
+                infect attacker's damage is poison and is not counted here."""
+                if not damage_bonuses:
+                    return 0
+                total = 0
+                for i in idx:
+                    e = battlefield[i]
+                    if e[5][0]:
+                        continue
+                    strikes = e[3] if e[3] > 1 else (2 if turn_double_strike else 1)
+                    total += strikes * bonus_for({"colors": e[11], "deals": True},
+                                                 damage_bonuses, combat=True)
+                return total
+
             def _may_attack(entry):
                 """The attack gate (field 10): Defender and "can't attack" never;
                 a hand-size condition against the hand right now; any other
@@ -3021,7 +3046,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # deals its damage AND adds N counters on connecting, which with
             # no blockers is every attack. Double strike rides in `mult` for
             # both, as printed.
-            swing = sum(d for d, pz in attackers if not pz[0])
+            swing = sum(d for d, pz in attackers if not pz[0]) + _combat_bonus(_able)
             # An uncopied single-target pump landed on ONE attacker.
             if flat_pump and any(not pz[0] for _d, pz in attackers):
                 swing += flat_pump
@@ -3111,7 +3136,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 bonus = treasures if any(
                     e["damage_scales_with_treasure"] for e in combat_engines) else 0
                 if _phase:
-                    swing = sum(d for d, pz in attackers if not pz[0])
+                    swing = sum(d for d, pz in attackers if not pz[0]) + _combat_bonus(_able)
                     swing_poison = (sum(d for d, pz in attackers if pz[0])
                                     + sum(pz[1] for _d, pz in attackers))
                     ping_life = ping * sum(1 for _d, pz in attackers if not pz[0])
