@@ -1447,6 +1447,12 @@ GOLDFISH_OPPONENTS = 3
 #: table, and nothing here can measure it. Half is the stated middle; `try` and
 #: MODEL_ASSUMPTIONS print it, so any figure resting on it says so.
 TITHE_PAY_RATE = 0.5
+#: HOW MANY SPELLS AN OPPONENT CASTS ON THEIR TURN — MEASURED, not authored
+#: (2026-10-11). `sim/pod_behaviour.POD["casts_per_turn"]`, read from 137,717
+#: logged opponent turns at the standard tables; a test holds the two equal so
+#: this moves with its evidence. It drives "whenever an opponent casts a spell"
+#: (Rhystic Study), whose tax is then decided at TITHE_PAY_RATE above.
+OPPONENT_CASTS_PER_TURN = 1.264
 #: TWO MORE AUTHORED RATES, for the rituals that read the OPPONENTS' state, which
 #: this model does not have (2026-10-05, the pilot's call). Labelled like the
 #: Tithe rate: stated here, in MODEL_ASSUMPTIONS, and by `try`.

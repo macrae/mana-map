@@ -372,6 +372,15 @@ def authored_rate_notes(base_doc, doc):
     if "opp_hand" in _rk:
         notes.append(f"Jeska's Will assumes an opponent holds {OPPONENT_HAND} cards, "
                      f"7 after a wheel (an authored rate)")
+    _ev = [_gp.event_payoffs(c) for c in both]
+    if any(e["per_opponent_cast_draw"] for e in _ev):
+        from manamap.config import OPPONENT_CASTS_PER_TURN
+        notes.append(f"Rhystic Study assumes each opponent casts {OPPONENT_CASTS_PER_TURN} "
+                     f"spells a turn (measured in Forge) and pays its tax "
+                     f"{TITHE_PAY_RATE:.0%} of the time (an authored rate)")
+    if any(e["per_opponent_draw_paid_draw"] for e in _ev):
+        notes.append("Mind's Eye pays only from mana left untapped at the end of your "
+                     "turn (a floor)")
     return notes
 
 

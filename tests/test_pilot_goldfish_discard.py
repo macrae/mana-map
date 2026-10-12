@@ -514,7 +514,13 @@ def test_the_opponent_draw_sweep_is_locked():
     for must in ("Razorkin Needlehead", "Scrawling Crawler", "Underworld Dreams",
                  "Nekusar, the Mindrazer", "Consecrated Sphinx"):
         assert must in read, must
-    for must_not in ("Mind's Eye", "Smothering Tithe", "Rhystic Study"):
+    # Mind's Eye JOINED on 2026-10-11, as a BUDGETED paid draw: the turn loop now
+    # pays its {1} from mana left at the end of the turn, which is the refusal's
+    # reason gone. The sweep found it alone in that shape. Smothering Tithe's
+    # tax lives in the Treasure channel; Rhystic Study is a CAST trigger, read
+    # into `per_opponent_cast_draw` (with White Rhystic Study, the whole sweep).
+    assert "Mind's Eye" in read, "Mind's Eye is read as a budgeted paid draw"
+    for must_not in ("Smothering Tithe", "Rhystic Study"):
         assert must_not not in read, f"{must_not} is gated or a cast trigger"
 
 

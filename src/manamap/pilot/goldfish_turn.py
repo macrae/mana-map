@@ -69,6 +69,7 @@ from manamap.config import (
     GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
     OPPONENT_HAND,
+    OPPONENT_CASTS_PER_TURN,
     TITHE_PAY_RATE,
 )
 from manamap.pilot import manabase
@@ -2447,7 +2448,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     return True
             return bool(model_sacrifice and c["sac_outlet"])
 
-        if model_drain or model_sacrifice or model_deaths or attack_tutor:
+        # THE LOOP'S OWN GATE HAD DRIFTED FROM ITS PREDICATE (2026-10-11).
+        # `_engine_permanent` answers True for a discard payoff under
+        # model_discard and for cast-token, mass-animate, counter and damage
+        # replacements under model_combat, but this loop only ran under the four
+        # channels below — so on sharknado (combat + discard + draw, none of the
+        # four) Rhystic Study and Mind's Eye were read, called castable by
+        # `model_coverage`, and never cast. Fleet check: those two were the only
+        # cards it held back.
+        if model_drain or model_sacrifice or model_deaths or attack_tutor \
+                or model_discard or model_combat:
             for card in sorted((c for c in hand if _engine_permanent(c)),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:      # a free cast's discard took it
@@ -2777,6 +2787,32 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 else:
                     continue
                 treasures += made * (per_event + treasure_bonus) * treasure_multiplier
+        # OUR DRAWS ON THEIR TURNS (2026-10-11), drawn BEFORE the payoffs read
+        # this turn's draws, so Shabraz and every per-draw payoff are paid for
+        # them. Rhystic Study: each opponent casts OPPONENT_CASTS_PER_TURN
+        # spells (MEASURED, sim/pod_behaviour) and each pays the tax at
+        # TITHE_PAY_RATE (AUTHORED). Mind's Eye: one paid draw per opponent draw,
+        # paid from the mana left untapped at the end of our turn — a floor,
+        # since Treasure could pay too.
+        if model_discard and event_payoff_permanents:
+            for _e in list(event_payoff_permanents):
+                if _e["per_opponent_cast_draw"]:
+                    _whole = int(OPPONENT_CASTS_PER_TURN)
+                    _frac = OPPONENT_CASTS_PER_TURN - _whole
+                    _casts = sum(_whole + (rng.random() < _frac)
+                                 for _ in range(GOLDFISH_OPPONENTS))
+                    _drawn = sum(1 for _ in range(_casts)
+                                 if not _e["per_opponent_cast_taxed"]
+                                 or rng.random() >= TITHE_PAY_RATE)
+                    if _drawn:
+                        draw_n(_drawn * _e["per_opponent_cast_draw"])
+                if _e["per_opponent_draw_paid_draw"] and opponent_draws_this_turn:
+                    _cost = max(_e["per_opponent_draw_paid_cost"], 1)
+                    _paid = min(opponent_draws_this_turn * GOLDFISH_OPPONENTS,
+                                pool // _cost)
+                    if _paid > 0:
+                        pool -= _paid * _cost
+                        draw_n(_paid * _e["per_opponent_draw_paid_draw"])
         if model_discard and event_payoff_permanents:
             _disc_t = discarded - (discarded_by_turn[-1] if discarded_by_turn else 0)
             for _e in event_payoff_permanents:

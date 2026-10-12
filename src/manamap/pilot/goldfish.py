@@ -552,6 +552,14 @@ MODEL_ASSUMPTIONS = [
     "fires on a cast OR a copy) and per-cast damage (which fires on a cast "
     "only — that difference is a rules fact, not a simplification). Before this "
     "there was no spells-cast-this-turn variable at all and storm was unreadable.",
+    "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season "
+    "x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) "
+    "per damage INSTANCE, each added before any multiplier. Torbran does NOT yet "
+    "boost combat damage from red attackers; a stated gap.",
+    "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, "
+    "MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax "
+    "is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left "
+    "untapped at the end of our turn, a floor.",
 ]
 
 # Appended only for a deck that opts in. Stating "Treasures are modelled" on a

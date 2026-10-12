@@ -322,6 +322,17 @@ _EVENT_TRIGGER_RE = re.compile(
 #: makes for a coloured mode that costs extra mana. Refused whole and NAMED,
 #: never half-read.
 _EVENT_PAID_RE = re.compile(r"\bpay \{", re.I)
+#: A PAID DRAW OFF THEIR DRAW, BUDGETED (2026-10-11): Mind's Eye, "you may pay
+#: {1}. If you do, draw a card". Refused whole until the turn loop could pay it;
+#: it now pays from the mana left untapped at the end of OUR turn, a floor.
+_EVENT_PAID_DRAW_RE = re.compile(
+    r"you may pay \{(\d+)\}\. if you do, draw (a|two) cards?", re.I)
+#: THEIR CASTS: Rhystic Study, "whenever an opponent casts a spell, you may draw
+#: a card unless that player pays {1}". The cast count is MEASURED
+#: (`config.OPPONENT_CASTS_PER_TURN`); the tax is TITHE_PAY_RATE, authored.
+_OPP_CAST_DRAW_RE = re.compile(
+    r"whenever an opponent casts a spell, (?:you may )?draw (a|two) cards?"
+    r"(?P<tax> unless that player pays \{\d+\})?", re.I)
 _EVENT_OPP_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:them|that player|that opponent)"
     r"|that (?:player|opponent) loses (\d+) life", re.I)
@@ -822,6 +833,8 @@ def event_payoffs(card):
            "per_opponent_draw_damage": 0, "per_opponent_draw_our_draw": 0,
            "opponent_second_draw_damage": 0, "opponent_second_draw_our_draw": 0,
            "per_discard_batch": False,
+           "per_opponent_draw_paid_draw": 0, "per_opponent_draw_paid_cost": 0,
+           "per_opponent_cast_draw": 0, "per_opponent_cast_taxed": False,
            "unmodelled": None}
     hit = False
     for m in _EVENT_TRIGGER_RE.finditer(text):
@@ -832,7 +845,11 @@ def event_payoffs(card):
             prefix = ("opponent_second_draw" if "second" in kind
                       else "per_opponent_draw")
             if _EVENT_PAID_RE.search(effect):
-                continue        # gated on mana; falls through to `unmodelled`
+                pd = _EVENT_PAID_DRAW_RE.search(effect)
+                if pd and prefix == "per_opponent_draw":
+                    out["per_opponent_draw_paid_draw"] += _DRAW_WORDS[pd.group(2).lower()]
+                    out["per_opponent_draw_paid_cost"] = int(pd.group(1))
+                continue        # any other paid shape falls through to `unmodelled`
             odmg = _EVENT_OPP_DAMAGE_RE.search(effect)
             if odmg:
                 out[prefix + "_damage"] += int(odmg.group(1) or odmg.group(2))
@@ -866,6 +883,10 @@ def event_payoffs(card):
         tok = _EVENT_TOKEN_RE.search(effect)
         if tok:
             out[prefix + "_token_power"] += int(tok.group(1))
+    oc = _OPP_CAST_DRAW_RE.search(text)
+    if oc:
+        out["per_opponent_cast_draw"] += _DRAW_WORDS[oc.group(1).lower()]
+        out["per_opponent_cast_taxed"] = bool(oc.group("tax"))
     if hit and not any(v for k, v in out.items() if k != "unmodelled"):
         out["unmodelled"] = card.get("name")
     return out
