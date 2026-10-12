@@ -344,6 +344,11 @@ _EVENT_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:each opponent|any target|each opponent and each)"
     r"|each opponent loses (\d+) life", re.I)
 _EVENT_COUNTER_RE = re.compile(r"put a \+1/\+1 counter on", re.I)
+#: A GAIN ON A DRAW OR A DISCARD (2026-10-11). "you gain N life" was refused here
+#: because nothing could use it: there is no own life total. The drain pillar
+#: counts GAIN EVENTS, though, and Shabraz gains one on every draw — so each card
+#: drawn is a gain event for Archangel of Thune and Marauding Blight-Priest.
+_EVENT_GAIN_RE = re.compile(r"\byou gain (\d+|one|two|three) life", re.I)
 #: "deals that much damage to each opponent" on a "one or more cards" trigger:
 #: Magmakin Artillerist. That much IS the number of cards, so the total is the
 #: per-card figure exactly; what differs is that it is ONE damage instance per
@@ -833,6 +838,7 @@ def event_payoffs(card):
            "per_opponent_draw_damage": 0, "per_opponent_draw_our_draw": 0,
            "opponent_second_draw_damage": 0, "opponent_second_draw_our_draw": 0,
            "per_discard_batch": False,
+           "per_draw_gain": 0, "per_discard_gain": 0,
            "per_opponent_draw_paid_draw": 0, "per_opponent_draw_paid_cost": 0,
            "per_opponent_cast_draw": 0, "per_opponent_cast_taxed": False,
            "unmodelled": None}
@@ -874,9 +880,14 @@ def event_payoffs(card):
         if prefix != "second_draw":
             if _EVENT_COUNTER_RE.search(effect):
                 out[prefix + "_counter"] += 1
-            # "you gain N life" is NOT read: this model has no own life total,
-            # and a field nothing applies is the silent zero this file exists
-            # to avoid.
+            # "you gain N life" IS read since 2026-10-11, as GAIN EVENTS the
+            # drain pillar counts (it has no own life total, and needs none).
+            g = _EVENT_GAIN_RE.search(effect)
+            # An intervening "if" (Starving Revenant's descend 8) is a
+            # condition this model cannot check; read it and it fires always.
+            if g and not re.match(r"\s*if\b", effect, re.I):
+                w = g.group(1).lower()
+                out[prefix + "_gain"] += int(w) if w.isdigit() else _DRAW_WORDS[w]
             drw = _EVENT_DRAW_RE.search(effect)
             if drw and prefix == "per_discard":
                 out["per_discard_draw"] += _DRAW_WORDS[drw.group(1).lower()]
@@ -2652,6 +2663,23 @@ _DRAIN_EQUAL_RE = re.compile(
     r"whenever you gain life[^.]*?, (?:target|each) opponent loses that much life", re.I)
 _DRAIN_FIXED_RE = re.compile(
     r"whenever you gain life[^.]*?, each opponent loses (\w+) life", re.I)
+#: COUNTERS ON A GAIN EVENT (2026-10-11). Archangel of Thune: "Whenever you gain
+#: life, put a +1/+1 counter on each creature you control." Shabraz gains a life
+#: on every draw, so on sharknado each card drawn grows the whole board. Per
+#: EVENT, like `payoff_fixed`. The self-only shape (Ajani's Pridemate, Exemplar
+#: of Light) puts it on the card itself. NAMED, not read: Nykthos Paragon's
+#: "that many … once each turn" and Dawn of Hope's paid draw.
+_GAIN_TEAM_COUNTER_RE = re.compile(
+    r"whenever you gain life[^.]*?, put an? \+1/\+1 counter on each creature you control",
+    re.I)
+#: The self shape names its own card ("on this creature", "on it", "on Tigra");
+#: the target is captured and checked against the card's NAME, because a
+#: case-insensitive name pattern matched "each Angel you control" (Lyra) and
+#: "target creature" (Spider-Man) in the first sweep. Type-scoped team counters
+#: (Lyra's Angels, Minwu's Clerics, Citizen V's Villains) and one-target shapes
+#: are named by the sweep and left unread.
+_GAIN_SELF_COUNTER_RE = re.compile(
+    r"whenever you gain life[^.]*?, put an? \+1/\+1 counter on ([^.]+?)\.", re.I)
 
 #: Constellation and its plain-language twin. In a deck of forty enchantments
 #: with a commander that puts one onto the battlefield on every attack, this is
@@ -2864,10 +2892,24 @@ def drain_profile(card):
            "drain_etb": 0, "gain_etb": 0,
            "drain_per_type": 0, "gain_per_type": 0, "per_type": None,
            "lifelink": False, "grants_lifelink_to": None,
+           "gain_team_counters": 0, "gain_self_counter": 0,
            "scales_with": None, "unmodelled": None}
     if not re.search(r"gain .*life|loses? .*life|lifelink", text, re.I):
         return out
 
+    # A CLASS buys its levels; Gourmand's Talent and Cleric Class print these
+    # lines on levels nothing here purchases.
+    _levelled = bool(re.search(r"\bClass\b", card.get("type_line") or "")) or \
+        bool(re.search(r"\{[^}]+\}: Level \d", text))
+    _sm = _GAIN_SELF_COUNTER_RE.search(text)
+    _own = (card.get("name") or "").split(" // ")[0]
+    if _levelled:
+        pass
+    elif _GAIN_TEAM_COUNTER_RE.search(text):
+        out["gain_team_counters"] = 1
+    elif _sm and (_sm.group(1).lower() in ("this creature", "it")
+                  or (_own and _own.lower().startswith(_sm.group(1).lower()))):
+        out["gain_self_counter"] = 1
     if _DRAIN_EQUAL_RE.search(text):
         out["payoff_equal"] = True
     m = _DRAIN_FIXED_RE.search(text)
@@ -2922,7 +2964,8 @@ def drain_profile(card):
     if not any((out["payoff_equal"], out["payoff_fixed"], out["gain_recurring"],
                 out["gain_per_enchantment"], out["gain_per_creature"],
                 out["drain_recurring"], out["drain_per_enchantment"],
-                out["drain_etb"], out["drain_per_type"], out["lifelink"])):
+                out["drain_etb"], out["drain_per_type"], out["lifelink"],
+                out["gain_team_counters"], out["gain_self_counter"])):
         # A card that plainly drains but through an event this model has none
         # of. Death triggers are the big class: nothing dies here.
         if re.search(r"each opponent loses|target opponent loses", text, re.I):

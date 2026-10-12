@@ -545,6 +545,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         deaths_gained = 0       # life from THEIRS dying, this turn
         etb_drained = 0         # one-shot and per-type drain, this turn
         etb_gained = 0
+        # LIFE GAINED ON OUR DRAWS AND DISCARDS (Shabraz: one a card drawn),
+        # as EVENTS and as a total, for the drain pillar (2026-10-11).
+        event_gain_events = 0
+        event_gain_total = 0
         drawn_this_turn = 0
         # THE OPPONENT'S DRAWS, so the tax on them has an event to fire on.
         # ONE SEAT, the same convention the damage pillar already uses: Brallin
@@ -1415,7 +1419,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if any(card["drain"][k] for k in
                        ("payoff_equal", "payoff_fixed", "gain_recurring",
                         "gain_per_enchantment", "gain_per_creature",
-                        "drain_recurring", "drain_per_enchantment")):
+                        "drain_recurring", "drain_per_enchantment",
+                        "gain_team_counters", "gain_self_counter")):
                     drain_permanents.append(card["drain"])
                 if model_discard and has_event_payoff(card.get("event")):
                     event_payoff_permanents.append(card["event"])
@@ -2378,7 +2383,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_drain and (any(c["drain"][k] for k in (
                     "payoff_equal", "payoff_fixed", "gain_recurring",
                     "gain_per_enchantment", "gain_per_creature",
-                    "drain_recurring", "drain_per_enchantment"))
+                    "drain_recurring", "drain_per_enchantment",
+                        "gain_team_counters", "gain_self_counter"))
                     or c["drain"]["lifelink"]):
                 return True
             # A DEATH ENGINE IS A PERMANENT TOO, and this is the third time
@@ -2522,7 +2528,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if any(card["drain"][k] for k in (
                             "payoff_equal", "payoff_fixed", "gain_recurring",
                             "gain_per_enchantment", "gain_per_creature",
-                            "drain_recurring", "drain_per_enchantment")):
+                            "drain_recurring", "drain_per_enchantment",
+                        "gain_team_counters", "gain_self_counter")):
                         drain_permanents.append(card["drain"])
                     # AN AURA GRANTS LIFELINK TO ONE CREATURE, so it is worth
                     # the power of the body you would put it on — the biggest
@@ -2822,6 +2829,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # instance per batch; a turn's discards are taken as one batch,
                 # a floor where a turn holds a loot and a wheel.
                 _b = bonus_for(damage_sources.get(id(_e)), damage_bonuses)
+                if _e["per_draw_gain"] and drawn_this_turn:
+                    event_gain_events += drawn_this_turn
+                    event_gain_total += _e["per_draw_gain"] * drawn_this_turn
+                if _e["per_discard_gain"] and _disc_t:
+                    event_gain_events += _disc_t
+                    event_gain_total += _e["per_discard_gain"] * _disc_t
                 if _e["per_discard_damage"] and _disc_t:
                     _evt_dmg += _e["per_discard_damage"] * _disc_t \
                         + (_b if _e["per_discard_batch"] else _b * _disc_t)
@@ -3286,7 +3299,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _ud[k] for k in ("payoff_equal", "payoff_fixed",
                                      "gain_recurring", "gain_per_enchantment",
                                      "gain_per_creature", "drain_recurring",
-                                     "drain_per_enchantment")):
+                                     "drain_per_enchantment", "gain_team_counters",
+                                     "gain_self_counter")):
                 drain_permanents.append(_ud)
             _udr = _on.get("draw") or {}
             if model_draw and _udr.get("etb_draw"):
@@ -3440,6 +3454,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if etb_gained:
                 gain_total += etb_gained
                 gain_events += 1
+            # EACH TRIGGER IS ITS OWN GAIN EVENT: Shabraz's life on a
+            # seven-card wheel is seven events, which is what Archangel of
+            # Thune and Marauding Blight-Priest are paid on.
+            gain_total += event_gain_total
+            gain_events += event_gain_events
             # A GRANT COVERS THE WHOLE TYPE, and it is worth far more than any
             # one lifelink creature: Zur, Eternal Schemer gives it to EVERY
             # enchantment creature, and this deck runs twenty-odd. Summed over
@@ -3461,6 +3480,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if linked > 0:
                     gain_total += linked; gain_events += 1
 
+            # COUNTERS ON A GAIN EVENT (Archangel of Thune, Ajani's Pridemate),
+            # through the counter replacements like every other counter event.
+            # Applied here, after combat, so this turn's gains grow next turn's
+            # swing — a floor where a wheel resolved before combat.
+            _cmd_out = (commander_turn is not None) + (partner_turn is not None)
+            for d in drain_permanents:
+                if d["gain_team_counters"] and gain_events:
+                    _k = apply_counter_mod(d["gain_team_counters"], counter_plus,
+                                           counter_times) * gain_events
+                    for _i, _c in enumerate(battlefield):
+                        battlefield[_i] = (_c[0] + _k,) + _c[1:]
+                    commander_counters += _k * _cmd_out
+                if d["gain_self_counter"] and gain_events:
+                    counter_power += apply_counter_mod(d["gain_self_counter"], counter_plus,
+                                                       counter_times) * gain_events
             drained = deaths_drained + deaths_damaged + etb_drained
             for d in drain_permanents:
                 drained += d["drain_recurring"] * _x_for(d)

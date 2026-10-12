@@ -244,6 +244,7 @@ def channels_for(profile):
             "payoff_equal", "payoff_fixed", "gain_recurring",
             "gain_per_enchantment", "gain_per_creature",
             "drain_recurring", "drain_per_enchantment",
+                        "gain_team_counters", "gain_self_counter",
             # ADDED WITH THE FIELDS THEMSELVES, and only because the fleet
             # test failed first. This mirror has now drifted twice — once
             # for `model_deaths`, once here — and both times the guard
@@ -358,6 +359,7 @@ def never_cast(profile, flags):
             "payoff_equal", "payoff_fixed", "gain_recurring",
             "gain_per_enchantment", "gain_per_creature",
             "drain_recurring", "drain_per_enchantment",
+                        "gain_team_counters", "gain_self_counter",
             # ADDED WITH THE FIELDS THEMSELVES, and only because the fleet
             # test failed first. This mirror has now drifted twice — once
             # for `model_deaths`, once here — and both times the guard
