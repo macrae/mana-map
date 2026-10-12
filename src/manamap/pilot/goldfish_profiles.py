@@ -333,6 +333,12 @@ _EVENT_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:each opponent|any target|each opponent and each)"
     r"|each opponent loses (\d+) life", re.I)
 _EVENT_COUNTER_RE = re.compile(r"put a \+1/\+1 counter on", re.I)
+#: "deals that much damage to each opponent" on a "one or more cards" trigger:
+#: Magmakin Artillerist. That much IS the number of cards, so the total is the
+#: per-card figure exactly; what differs is that it is ONE damage instance per
+#: batch, which matters only to a +N replacement (Torbran). `per_discard_batch`
+#: carries that, and is set only where the damage is (2026-10-11).
+_EVENT_THAT_MUCH_RE = re.compile(r"deals that much damage to each opponent", re.I)
 _EVENT_DRAW_RE = re.compile(r"\bdraw (a|two) cards?", re.I)
 _EVENT_TOKEN_RE = re.compile(r"create an? (\d+)/(\d+) [^.]*?creature token", re.I)
 #: Conditional and self-damaging: the lowest chooser does not wheel at all.
@@ -815,6 +821,7 @@ def event_payoffs(card):
            # so it terminates by construction.
            "per_opponent_draw_damage": 0, "per_opponent_draw_our_draw": 0,
            "opponent_second_draw_damage": 0, "opponent_second_draw_our_draw": 0,
+           "per_discard_batch": False,
            "unmodelled": None}
     hit = False
     for m in _EVENT_TRIGGER_RE.finditer(text):
@@ -837,7 +844,15 @@ def event_payoffs(card):
         prefix = ("per_discard" if kind.startswith("discard")
                   else "second_draw" if "second" in kind else "per_draw")
         dmg = _EVENT_DAMAGE_RE.search(effect)
-        if dmg:
+        # "THAT MUCH" FIRST: in the flattened corpus text Magmakin's effect
+        # window runs on into its cycling sentence ("it deals 1 damage to each
+        # opponent"), so a numbered match there would read the right total by
+        # accident and the wrong instance count. Both text forms read the same.
+        if prefix == "per_discard" and kind.startswith("discard one or more") \
+                and _EVENT_THAT_MUCH_RE.search(effect):
+            out["per_discard_damage"] += 1
+            out["per_discard_batch"] = True
+        elif dmg:
             out[prefix + "_damage"] += int(dmg.group(1) or dmg.group(2))
         if prefix != "second_draw":
             if _EVENT_COUNTER_RE.search(effect):
@@ -1126,6 +1141,74 @@ def counter_mod(card):
         if t:
             out["times"] *= 2 if t.group(1).lower() == "twice" else 3
     return out
+
+
+#: A DAMAGE REPLACEMENT THAT ADDS (2026-10-11). Torbran, Thane of Red Fell read
+#: as a vanilla 2/4: "If a red source you control would deal damage to an
+#: opponent or a permanent an opponent controls, it deals that much damage plus
+#: 2 instead." It is +N per damage INSTANCE, not on a total — Brallin's one-a-
+#: discard ping becomes three a discard — so it is applied where each instance
+#: is counted, before any multiplier (CR 616.1, the controller's best order).
+#: Sweep 2026-10-11 (oracle cards with "would … plus … damage"): Torbran,
+#: Jaya, Embermaw Hellion and Mechanized Warfare (red; Warfare's "or artifact"
+#: half is not read), Thor and Far Fortune (any), Tor Wauki, Aether Revolt and
+#: Spiked Corridor (noncombat). Refused and named: Pyromancer's Gauntlet and
+#: Sulfuric Vapors (red SPELLS only), Fated Firepower and Hawkeye (plus X),
+#: Valley Flamecaller (creature types), Akki Lavarunner (any player's red
+#: source), Goblin Bowling Team (a die roll), and Artist's Talent (a Class).
+_DAMAGE_BONUS_RE = re.compile(
+    r"if (?:an?|another) (red |black |white |blue |green )?(?:or artifact )?source you "
+    r"control would deal (noncombat )?damage to (?:an opponent|a permanent or player)"
+    r"[^.\n]*?that much damage plus (\d+|one|two|three)\b", re.I)
+
+
+def damage_bonus(card):
+    """`{"amount": N, "scope": "red" | "noncombat" | "any"}`, or amount 0.
+
+    A CLASS IS REFUSED, and named: Artist's Talent prints the same sentence on
+    its level 3, and nothing here buys a level, so reading it would grant the
+    bonus the turn a two-mana level 1 resolves.
+    """
+    out = {"amount": 0, "scope": None}
+    # A ROOM is refused for the same reason: Spiked Corridor's +2 is printed on
+    # the Torture Pit door, and an unopened door grants nothing.
+    if re.search(r"\b(?:Class|Room)\b", card.get("type_line") or ""):
+        return out
+    m = _DAMAGE_BONUS_RE.search(card.get("oracle_text", "") or "")
+    if not m or _TEMPORARY_EFFECT_RE.search(m.group(0)):
+        return out
+    colour, noncombat, n = m.group(1), m.group(2), m.group(3).lower()
+    out["amount"] = int(n) if n.isdigit() else _NUMBER_WORDS[n]
+    out["scope"] = (colour.strip().lower() if colour
+                    else "noncombat" if noncombat else "any")
+    return out
+
+
+def damage_source(card):
+    """What a damage-dealing permanent IS, for a damage replacement to ask:
+    its colours, and whether its text DEALS damage (a life loss is not damage,
+    and the event fields fold "each opponent loses N life" in beside it)."""
+    text = card.get("oracle_text", "") or ""
+    colours = card.get("colors") or []
+    return {"colors": sorted(colours),
+            "deals": bool(re.search(r"\bdeals? (?:\d+|that much|X) damage", text, re.I))}
+
+
+def bonus_for(source, bonuses, combat=False):
+    """The +N a damage instance from `source` gets under `bonuses`
+    (`[(amount, scope), …]`). A source that does not DEAL damage gets none."""
+    if not source or not source.get("deals"):
+        return 0
+    total = 0
+    for amount, scope in bonuses:
+        if scope == "any" or (scope == "noncombat" and not combat):
+            total += amount
+        elif scope in _COLOUR_WORD and _COLOUR_WORD[scope] in source.get("colors", ()):
+            total += amount
+    return total
+
+
+_COLOUR_WORD = {"white": "W", "blue": "U", "black": "B", "red": "R", "green": "G"}
 
 
 def apply_counter_mod(n, plus, times):

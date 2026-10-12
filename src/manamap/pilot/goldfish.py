@@ -267,6 +267,9 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     token_doubler,
     counter_mod,
     apply_counter_mod,
+    bonus_for,
+    damage_bonus,
+    damage_source,
     treasure_profile,
 )
 
@@ -1296,6 +1299,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     commander_grants_lifelink_to = (
         drain_profile(commanders[0])["grants_lifelink_to"] if commanders else None)
     commander_event = event_payoffs(commanders[0]) if commanders else None
+    commander_damage = ({"bonus": damage_bonus(commanders[0]),
+                         "source": damage_source(commanders[0])} if commanders else None)
     # THE SECOND COMMANDER OF A PARTNER PAIR, as its own bundle. Everything
     # below this line that says `commanders[0]` is the first commander on
     # purpose: `commander_mean_cast_turn` stays the first's for every reader.
@@ -1307,6 +1312,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                    "type_line": _p.get("type_line") or "",
                    "subtypes": subtypes_of(_p.get("type_line") or "", _p.get("oracle_text") or ""),
                    "combat": combat_profile(_p), "event": event_payoffs(_p),
+                   "damage": {"bonus": damage_bonus(_p), "source": damage_source(_p)},
                    "grants_lifelink_to": drain_profile(_p)["grants_lifelink_to"]}
     # DECLARED, and required to name a cost and a scope. A commander ability
     # that only one card in the corpus has cannot be pattern-matched honestly;
@@ -1510,7 +1516,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_colors=model_colors,
                               commander_pips=commander_pips,
                               model_discard=model_discard, partner=partner,
-                              commander_event=commander_event))
+                              commander_event=commander_event,
+                              commander_damage=commander_damage))
             t.advance()
 
     _metrics = aggregate(results, targets, max_turn, model_treasures,

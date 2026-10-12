@@ -90,6 +90,7 @@ from manamap.pilot.goldfish_profiles import (
     is_etb_engine,
     reduced_cost,
     apply_counter_mod,
+    bonus_for,
 )
 from manamap.pilot.goldfish_library import X_DRAW_MIN, _target_met, keepable
 
@@ -105,6 +106,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_cast_token=None, interaction_names=frozenset(),
                   attack_tutor=None, model_discard=False, partner=None,
                   commander_event=None, commander_reveal=None,
+                  commander_damage=None,
                   commander_copy=False, hold_until=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
@@ -225,6 +227,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # (CR 616.1). Two +1s are +2; two doublers are x4.
     counter_plus = 0
     counter_times = 1
+    # DAMAGE REPLACEMENTS THAT ADD (Torbran, 2026-10-11): `(amount, scope)` per
+    # permanent in play, applied per damage INSTANCE through `bonus_for`.
+    # `damage_sources` maps a registered payoff profile (by identity) to what
+    # its card is as a source — red or not, damage or life loss — because the
+    # payoff dicts are shared shapes that carry no colour of their own.
+    damage_bonuses = []
+    damage_sources = {}
     death_engines = []
     free_sac_outlet = False
     sacrifices = 0
@@ -266,6 +275,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # the way the damage multiplier is, because the rules are: two Teferi's
     # Ageless Insights really do draw four.
     draw_multiplier = 1
+
+    def _register_statics(card):
+        """ONE DOOR FOR A STATIC REPLACEMENT ARRIVING: counter replacements
+        (Lae'zel, Doubling Season) and damage replacements (Torbran). Called at
+        every door a permanent enters by, the lesson `_register_wheel` records."""
+        nonlocal counter_plus, counter_times
+        counter_plus += card["counter_mod"]["plus"]
+        counter_times *= card["counter_mod"]["times"]
+        if card["damage_bonus"]["amount"]:
+            damage_bonuses.append((card["damage_bonus"]["amount"],
+                                   card["damage_bonus"]["scope"]))
+        for _prof in (card["event"], card["spell_count"], card["combat"]):
+            damage_sources[id(_prof)] = card["damage_source"]
 
     def _register_wheel(card):
         """ONE DOOR FOR A WHEEL ARRIVING ON THE BATTLEFIELD.
@@ -820,9 +842,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pool = 0
             return True
 
-        def _commander_arrives(cprof, cevent):
-            """ONE DOOR FOR A COMMANDER'S ARRIVAL, used by both of a pair."""
+        def _commander_arrives(cprof, cevent, cdamage=None):
+            """ONE DOOR FOR A COMMANDER'S ARRIVAL, used by both of a pair.
+            `cdamage` is `{"bonus", "source"}`: a Torbran in the command zone,
+            and what this commander is as a damage source (Brallin is red)."""
             nonlocal team_damage_multiplier, extra_combat_free
+            if cdamage:
+                if cdamage["bonus"]["amount"]:
+                    damage_bonuses.append((cdamage["bonus"]["amount"],
+                                           cdamage["bonus"]["scope"]))
+                if cevent is not None:
+                    damage_sources[id(cevent)] = cdamage["source"]
             if model_combat and cprof and cprof["team_haste"]:
                 haste_grants.append(cprof["team_haste"])
             if model_combat and cprof and cprof["is_creature"]:
@@ -872,7 +902,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_combat and is_creature:
                 for _eng in cast_damage_engines:
                     if power >= _eng["cast_damage_power_min"]:
-                        etb_damage += _eng["cast_damage"]
+                        etb_damage += _eng["cast_damage"] + bonus_for(
+                            damage_sources.get(id(_eng)), damage_bonuses)
 
         def _magecraft(events):
             """Fire magecraft `events` times. CAST OR COPY — that wording is the
@@ -913,7 +944,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         continue
                     if gate == "a noncreature" and is_creature:
                         continue
-                    etb_damage += _eng["per_cast_damage"]
+                    etb_damage += _eng["per_cast_damage"] + bonus_for(
+                        damage_sources.get(id(_eng)), damage_bonuses)
             if is_spell:
                 _magecraft(1)
             # CASCADE TRIGGERS ON THE CAST, so it lives here and nowhere else:
@@ -932,7 +964,6 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             cast-draw, no spend. Devotion-gated gods are held like any other."""
             nonlocal bodies_cum, team_damage_multiplier, extra_combat_free
             nonlocal lifelink_power, token_multiplier, treasures
-            nonlocal counter_plus, counter_times
             combat = card["combat"]
             seen.add(card["name"])
             bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
@@ -988,10 +1019,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                   ("recurring_draw", "arrival_draw", "cast_draw")):
                 draw_engines.append(card["draw"])
             _register_wheel(card)
+            _register_statics(card)
             if card["token_doubler"]:
                 token_multiplier *= 2
-            counter_plus += card["counter_mod"]["plus"]
-            counter_times *= card["counter_mod"]["times"]
             if model_treasures:
                 if card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
                                                 "opponent_second_draw"):
@@ -1052,6 +1082,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     or card["draw"]["cast_draw"]):
                 draw_engines.append(card["draw"])
             _register_wheel(card)
+            _register_statics(card)
 
         def _resolve_discover(card):
             """THE DISCOVER LOOP'S RESOLUTION: one walk, plus one per Zada copy."""
@@ -1293,7 +1324,6 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal enchantments_entered, etb_drained, etb_gained, extra_combat_free
             nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem
             nonlocal team_damage_multiplier, token_multiplier, treasure_bonus
-            nonlocal counter_plus, counter_times
             nonlocal treasure_multiplier, treasures
             # A BODY THAT ALSO DRAWS is the shape the pilot's Edgar refactor
             # is built on: "a vampire that draws is better than a sorcery
@@ -1453,10 +1483,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if pending_draw_engine is not None:
                 draw_engines.append(pending_draw_engine)
             _register_wheel(card)
+            _register_statics(card)
             if card["token_doubler"]:
                 token_multiplier *= 2
-            counter_plus += card["counter_mod"]["plus"]
-            counter_times *= card["counter_mod"]["times"]
             if model_sacrifice:
                 if is_death_engine(card["death"]):
                     death_engines.append(card["death"])
@@ -1751,7 +1780,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # Commander tax, death and recasting stay out of scope and stay
             # named: it is cast once, it stays, which is the same generous
             # direction the rest of this model takes.
-            _commander_arrives(commander_combat, commander_event)
+            _commander_arrives(commander_combat, commander_event, commander_damage)
 
         # THE PARTNER, cast on its own curve after the first commander and
         # arriving through the same door. Brallin, Skyshark Rider was never
@@ -1772,7 +1801,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             battlefield_rooms.append(None)
             if partner.get("grants_lifelink_to"):
                 lifelink_granted_types.add(partner["grants_lifelink_to"])
-            _commander_arrives(partner["combat"], partner.get("event"))
+            _commander_arrives(partner["combat"], partner.get("event"), partner.get("damage"))
 
         # THE COMMANDER'S OWN ATTACK TUTOR — an APPROXIMATION, declared per deck.
         #
@@ -2399,6 +2428,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # hand — the class this predicate has now caught nine times.
             if model_combat and (c["counter_mod"]["plus"] or c["counter_mod"]["times"] > 1):
                 return True
+            # A DAMAGE REPLACEMENT with no body (Mechanized Warfare, Aether
+            # Revolt) — the same class, the same commit as its channel.
+            if (model_combat or model_discard) and c["damage_bonus"]["amount"]:
+                return True
             # A PERMANENT WHOSE VALUE IS BEING COUNTED BY SOMETHING ELSE.
             # Sanctum of Tranquil Light does almost nothing on its own — its job
             # is to be a SHRINE, so that the two cards reading "X is the number
@@ -2423,6 +2456,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                              card["pips"]):
                     continue
                 _note_cast(card)
+                _register_statics(card)
                 battlefield_pips.append(card["pips"])
                 battlefield_types.append(card.get("type_line") or "")
                 # THREE PARALLEL LISTS AND THIS LOOP FED TWO OF THEM. Every
@@ -2746,8 +2780,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if model_discard and event_payoff_permanents:
             _disc_t = discarded - (discarded_by_turn[-1] if discarded_by_turn else 0)
             for _e in event_payoff_permanents:
-                _evt_dmg += _e["per_discard_damage"] * _disc_t
-                _evt_dmg += _e["per_draw_damage"] * drawn_this_turn
+                # +N PER DAMAGE INSTANCE (Torbran), before the multiplier. One
+                # instance per discard and per draw — each is its own trigger —
+                # except a "one or more cards" payoff (Magmakin), which is ONE
+                # instance per batch; a turn's discards are taken as one batch,
+                # a floor where a turn holds a loot and a wheel.
+                _b = bonus_for(damage_sources.get(id(_e)), damage_bonuses)
+                if _e["per_discard_damage"] and _disc_t:
+                    _evt_dmg += _e["per_discard_damage"] * _disc_t \
+                        + (_b if _e["per_discard_batch"] else _b * _disc_t)
+                if _e["per_draw_damage"]:
+                    _evt_dmg += (_e["per_draw_damage"] + _b) * drawn_this_turn
                 # THE TAX ON THEIR HALF. Their draws are the event; our draw
                 # off it is safe where the same field on our own draws is
                 # refused as a Curiosity loop, because our draws do not cause
@@ -2755,12 +2798,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # DAMAGE stays one seat (the clock is per seat); what WE draw off
                 # their draws is paid by EVERY opponent, so it scales with the
                 # seats at the table (`GOLDFISH_OPPONENTS`, 2026-10-04).
-                _evt_dmg += _e["per_opponent_draw_damage"] * opponent_draws_this_turn
+                if _e["per_opponent_draw_damage"]:
+                    _evt_dmg += (_e["per_opponent_draw_damage"] + _b) * opponent_draws_this_turn
                 if _e["per_opponent_draw_our_draw"] and opponent_draws_this_turn:
                     draw_n(_e["per_opponent_draw_our_draw"] * opponent_draws_this_turn
                            * GOLDFISH_OPPONENTS)
                 if opponent_draws_this_turn >= 2:
-                    _evt_dmg += _e["opponent_second_draw_damage"]
+                    if _e["opponent_second_draw_damage"]:
+                        _evt_dmg += _e["opponent_second_draw_damage"] + _b
                     if _e["opponent_second_draw_our_draw"]:
                         draw_n(_e["opponent_second_draw_our_draw"] * GOLDFISH_OPPONENTS)
                 # EACH TRIGGER IS ITS OWN COUNTER EVENT — Shabraz is paid once
@@ -2773,7 +2818,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if any(_e is _c for _c in commander_event_objs):
                     commander_counters += _ctr
                 if drawn_this_turn >= 2:
-                    _evt_dmg += _e["second_draw_damage"]
+                    if _e["second_draw_damage"]:
+                        _evt_dmg += _e["second_draw_damage"] + _b
                     if _e["second_draw_token_power"]:
                         creature_entered(_e["second_draw_token_power"], turn, False, 1, is_token=True)
                         bodies_cum += 1

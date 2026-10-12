@@ -73,6 +73,8 @@ from manamap.pilot.goldfish_profiles import (
     subtypes_of,
     token_doubler,
     counter_mod,
+    damage_bonus,
+    damage_source,
     treasure_profile,
 )
 
@@ -193,6 +195,10 @@ def classify(card, pool=None):
         # Hardened Scales / Lae'zel (+N) and Doubling Season (xN) on every
         # counter event on a creature you control (2026-10-11).
         "counter_mod": counter_mod(card),
+        # Torbran-class +N per damage instance, and what this card is as a
+        # damage SOURCE for one to ask (colours; deals damage, not life loss).
+        "damage_bonus": damage_bonus(card),
+        "damage_source": damage_source(card),
         "sac_outlet": sac_outlet_profile(card),
         "tutor": is_tutor_card,
         # A top-of-library tutor delivers on the next draw step, not this turn.
