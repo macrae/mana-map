@@ -186,7 +186,8 @@ def channels_for(profile):
             or ((profile.get("combat") or {}).get("spell_power_multiplier") or 1) > 1 \
             or (profile.get("counter_mod") or {}).get("plus") \
             or ((profile.get("counter_mod") or {}).get("times") or 1) > 1 \
-            or (profile.get("damage_bonus") or {}).get("amount"):
+            or (profile.get("damage_bonus") or {}).get("amount") \
+            or (profile.get("face_damage") or {}).get("kind"):
         found.add("combat")
     if _nonzero(profile.get("draw"), (
             "etb_draw", "spell_draw", "recurring_draw", "arrival_draw",
@@ -317,6 +318,9 @@ def never_cast(profile, flags):
         # Mirrors goldfish_turn's `_engine_permanent` (2026-10-11).
         cm = profile.get("counter_mod") or {}
         if cm.get("plus") or (cm.get("times") or 1) > 1:
+            return False
+        # Mirrors goldfish_turn's burn loop (`_is_burn`), 2026-10-11.
+        if (profile.get("face_damage") or {}).get("kind"):
             return False
     # Gated like goldfish_turn's `_engine_permanent`: combat OR discard.
     if (flags.get("model_combat") or flags.get("model_discard")) \

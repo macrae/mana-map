@@ -269,6 +269,14 @@ _DRAW_CONDITIONAL_RE = re.compile(r"\b(?:if|unless|you may|its controller)\b", r
 _DRAW_ADDITIONAL_COST_RE = re.compile(
     r"as an additional cost to cast", re.I)
 _DRAW_WORDS = {"a": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
+#: The one additional cost the draw path can pay: a discard, and nothing else.
+_DISCARD_COST_RE = re.compile(
+    r"as an additional cost to cast this spell, discard (a|one|two|three) cards?\.", re.I)
+_RUMMAGE_RE = re.compile(r"discard up to (two|three) cards, then draw that many cards", re.I)
+#: Burning Inquiry: "Each player draws three cards, then discards three cards at
+#: random." Ours is a draw and a discard; theirs is an opponent draw.
+_EACH_DRAWS_THEN_DISCARDS_RE = re.compile(
+    r"each player draws (two|three) cards, then discards (two|three) cards", re.I)
 
 # ── Discard: wheels, loots, and the triggers that pay on a discard or a draw ──
 #
@@ -280,8 +288,15 @@ _DRAW_WORDS = {"a": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
 # `cards_that_draw: 35, modelled: 2` on a deck whose plan is drawing. Corpus
 # sweep 2026-09-10: 11 "each player discards their hand, then draws"; 24
 # "discard your hand, then draw N".
+#: WIDENED 2026-10-11: "Target player discards all the cards in their hand"
+#: (Collective Defiance's mode, the target being us), "Each friend discards all
+#: cards from their hand" (Khorvath's Fury, us as the only friend), a bullet
+#: opening a mode, and EXILE (Hex Magic), which empties the hand without a
+#: discard exactly as a shuffle does. Group numbers are unchanged; who the wheel
+#: hits is read from the start of the match (`wheel_symmetric`).
 _WHEEL_RE = re.compile(
-    r"(?:each player |you |^|\. )(discards?|shuffles?) (?:all the cards in |the cards from )?(?:their|your) hand"
+    r"(?:each player |you |target player |each friend |^|\. |\u2022 )"
+    r"(discards?|shuffles?|exiles?) (?:all the cards in |all the cards from |all cards from |the cards from )?(?:their|your) hand"
     r"(?: and graveyard)?(?: into (?:their|your) librar(?:y|ies))?, then draws? "
     r"(seven|six|five|four|three|two|a|one|X|that many|cards equal to the greatest number)",
     re.I)
@@ -1248,6 +1263,43 @@ def bonus_for(source, bonuses, combat=False):
 _COLOUR_WORD = {"white": "W", "blue": "U", "black": "B", "red": "R", "green": "G"}
 
 
+#: DAMAGE A SPELL DEALS TO A PLAYER (2026-10-11). There was no such channel: a
+#: Lava Spike read as a blank, and so did the face half of every modal card the
+#: sharknado package added — Collective Defiance's 3, Incendiary Command's 4,
+#: Fateful Showdown's hand-size. In a goldfish the only target is the opponent's
+#: face, so "any target" counts. A CHOOSE-ONE card whose other mode is already
+#: read keeps that mode (Boros Charm stays a double-strike pump); "choose two"
+#: and "one or more" (escalate) add the face mode beside it.
+_FACE_FIXED_RE = re.compile(
+    r"deals (\d+) damage to (?:any target|target player|target opponent|each opponent)"
+    r"(?! and each creature)", re.I)
+_FACE_HAND_RE = re.compile(
+    r"deals damage to any target equal to the number of cards in your hand", re.I)
+_FACE_OPP_HAND_RE = re.compile(
+    r"deals damage to each foe equal to the number of cards in their hand", re.I)
+_CHOOSE_ONE_RE = re.compile(r"\bchoose one\b(?! or more)", re.I)
+
+
+def spell_face_damage(card):
+    """`{"kind": "fixed"|"hand"|"opp_hand"|None, "amount": N}` for an Instant or
+    a Sorcery. `hand` is our hand size at cast (Fateful Showdown, before its
+    own discard); `opp_hand` is the opponent's, the authored OPPONENT_HAND."""
+    out = {"kind": None, "amount": 0, "choose_one": False}
+    tl = card.get("type_line") or ""
+    if "Instant" not in tl and "Sorcery" not in tl:
+        return out
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
+    out["choose_one"] = bool(_CHOOSE_ONE_RE.search(text))
+    m = _FACE_FIXED_RE.search(text)
+    if m:
+        out["kind"], out["amount"] = "fixed", int(m.group(1))
+    elif _FACE_HAND_RE.search(text):
+        out["kind"] = "hand"
+    elif _FACE_OPP_HAND_RE.search(text):
+        out["kind"] = "opp_hand"
+    return out
+
+
 def apply_counter_mod(n, plus, times):
     """Counters one event places once every replacement has applied. Zero stays
     zero: a replacement modifies an event, it does not create one."""
@@ -1788,6 +1840,7 @@ def draw_profile(card):
            # not a doubler, so the turn loop multiplies unconditionally and
            # there is no flag to forget.
            "draw_multiplier": 1,
+           "wheel_symmetric": False, "wheel_plus": 0, "spell_each_player_draws": 0,
            "activated_draw": 0, "activated_draw_cost": 0,
            "activated_draw_pips": [], "activated_draw_once": False,
            "activated_draw_discards": 0, "activated_draw_sacs_self": False,
@@ -1805,7 +1858,15 @@ def draw_profile(card):
                               else _DRAW_WORDS.get(_word, {"seven": 7, "six": 6}.get(_word, 7)))
         # A SHUFFLE WHEEL (Echo of Eons, Time Reversal, Molten Psyche) empties
         # the hand without a discard: no discard trigger fires.
-        out["wheel_shuffles"] = _w.group(1).lower().startswith("shuffle")
+        out["wheel_shuffles"] = _w.group(1).lower().startswith(("shuffle", "exile"))
+        # WHO IT HITS (2026-10-11). Every wheel was counted as refilling the
+        # opponent too, so "Discard your hand, then draw three" paid Smothering
+        # Tithe and Razorkin Needlehead for draws nobody else made. Only "each
+        # player" is symmetric; "you", "target player" (us), "each friend" (us)
+        # and a bare imperative are ours alone.
+        out["wheel_symmetric"] = _w.group(0).lstrip(". \u2022").lower().startswith("each player")
+        # Khorvath's Fury: "draws that many cards plus one".
+        out["wheel_plus"] = 1 if re.match(r" cards? plus one", text[_w.end():], re.I) else 0
     # THE PERMANENT'S COPY OF THE SAME SENTENCE. Deliberately NOT gated on the
     # type line: a Sorcery cannot carry an activated ability, so the two paths
     # are disjoint by construction rather than by an `elif` somebody can break.
@@ -1897,7 +1958,9 @@ def draw_profile(card):
         out["etb_draw_per_type"] = per_type.group(1)
     if (not _DRAW_RE.search(text) and not out["wheel_draws"]
             and not out["activated_wheel"]
-            and not out["recurring_draw"] and not out["spell_draw_greatest_power"]):
+            and not out["recurring_draw"] and not out["spell_draw_greatest_power"]
+            # "Each player draws three cards" never says "draw N card".
+            and not _EACH_DRAWS_THEN_DISCARDS_RE.search(text)):
         return out
 
     m = _ARRIVAL_DRAW_RE.search(text)
@@ -1942,11 +2005,28 @@ def draw_profile(card):
         # changing that globally is a different commit with its own sweep.
         _sentences = _REMINDER_RE.sub(" ", text)
         sp = _SPELL_DRAW_RE.search(_sentences) or _SCRY_THEN_DRAW_RE.search(text)
-        if sp and not _DRAW_ADDITIONAL_COST_RE.search(text):
+        # A DISCARD IS A COST THIS MODEL CAN NOW PAY (2026-10-11): Big Score,
+        # Thrill of Possibility, Cathartic Reunion. The refusal above was for
+        # costs with no event here ("no sacrifice … and no discard"); a discard
+        # has one, and it pays Brallin. Only a cost that is EXACTLY a discard is
+        # read; a sacrifice or anything else keeps the refusal.
+        _dc = _DISCARD_COST_RE.search(text)
+        if sp and (not _DRAW_ADDITIONAL_COST_RE.search(text) or _dc):
             out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
             td = _DRAW_THEN_DISCARD_RE.search(text)
             if td:
                 out["spell_discard"] = _DRAW_WORDS[td.group(1).lower()]
+            elif _dc:
+                out["spell_discard"] = _DRAW_WORDS[_dc.group(1).lower()]
+        # A RUMMAGE MODE: Cathartic Pyre, "Discard up to two cards, then draw
+        # that many cards" — read at its full size, the pilot's choice.
+        _rm = _RUMMAGE_RE.search(_sentences)
+        if _rm and not out["spell_draw"]:
+            out["spell_draw"] = out["spell_discard"] = _DRAW_WORDS[_rm.group(1).lower()]
+        _ed = _EACH_DRAWS_THEN_DISCARDS_RE.search(_sentences)
+        if _ed and not out["spell_draw"]:
+            out["spell_draw"] = out["spell_each_player_draws"] = _DRAW_WORDS[_ed.group(1).lower()]
+            out["spell_discard"] = _DRAW_WORDS[_ed.group(2).lower()]
 
     # EVERY CHANNEL THAT READS A DRAW BELONGS IN THIS TUPLE. It is the guard
     # that decides whether the card gets named as unreadable, so a channel

@@ -46,8 +46,12 @@ def test_a_loot_keeps_its_gross_draw_and_records_its_discard():
     assert (d["spell_draw"], d["spell_discard"]) == (2, 2)
     d = _spell("Draw three cards, then put two cards from your hand on top of your library.")
     assert (d["spell_draw"], d["spell_discard"]) == (3, 0)
-    # An additional-cost discard stays unmodelled, as before.
+    # A DISCARD COST IS PAYABLE since 2026-10-11 (Thrill of Possibility, Big
+    # Score): the refusal was for costs with no event here, and a discard has
+    # one. A sacrifice cost keeps the refusal.
     d = _spell("As an additional cost to cast this spell, discard a card.\nDraw two cards.")
+    assert (d["spell_draw"], d["spell_discard"]) == (2, 1)
+    d = _spell("As an additional cost to cast this spell, sacrifice a creature.\nDraw two cards.")
     assert d["spell_draw"] == 0 and d["unmodelled"]
 
 
@@ -104,7 +108,15 @@ def test_the_corpus_sweep_is_locked():
 # NO oracle text now carry their spell face. Naktamun Lorespinner // Wheel of
 # Fortune is the one wheel among them. Its copy is castable only once it becomes
 # prepared (one or fewer cards in hand), which the per-card profile does not read.
-WHEELS, LOOTS, DISC, DRAW, SECOND = (26, 40, 13, 28, 20)
+#
+# WHEELS 26 -> 30 and LOOTS 40 -> 56 on 2026-10-11, both on purpose. Wheels:
+# "target player" (Collective Defiance, Very Cryptic Command), "each friend"
+# (Khorvath's Fury) and EXILE (Hex Magic) joined `_WHEEL_RE`. Loots: a discard
+# ADDITIONAL COST became payable (Thrill of Possibility, Big Score, Seize the
+# Spoils, Tormenting Voice, Cathartic Reunion and nine more), the rummage mode
+# (Cathartic Pyre) and "each player draws, then discards" (Burning Inquiry,
+# Urza's Guilt). Sixteen in all, every one a draw that does discard.
+WHEELS, LOOTS, DISC, DRAW, SECOND = (30, 56, 13, 28, 20)
 
 
 @requires_data

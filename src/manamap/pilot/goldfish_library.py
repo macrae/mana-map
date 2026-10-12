@@ -75,6 +75,7 @@ from manamap.pilot.goldfish_profiles import (
     counter_mod,
     damage_bonus,
     damage_source,
+    spell_face_damage,
     treasure_profile,
 )
 
@@ -199,6 +200,7 @@ def classify(card, pool=None):
         # damage SOURCE for one to ask (colours; deals damage, not life loss).
         "damage_bonus": damage_bonus(card),
         "damage_source": damage_source(card),
+        "face_damage": spell_face_damage(card),
         "sac_outlet": sac_outlet_profile(card),
         "tutor": is_tutor_card,
         # A top-of-library tutor delivers on the next draw step, not this turn.

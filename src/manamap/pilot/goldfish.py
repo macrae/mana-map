@@ -270,6 +270,7 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     bonus_for,
     damage_bonus,
     damage_source,
+    spell_face_damage,
     treasure_profile,
 )
 
@@ -560,6 +561,12 @@ MODEL_ASSUMPTIONS = [
     "MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax "
     "is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left "
     "untapped at the end of our turn, a floor.",
+    "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against "
+    "the one opponent (\"any target\" included). A spell whose only read effect is "
+    "that damage is cast at the end of the main phase with what is left; a "
+    "choose-ONE card whose other mode is read keeps that mode. Only an \"each "
+    "player\" wheel refills the opponent; \"discard your hand\" and \"target "
+    "player\" (us) do not. A discard additional cost is paid.",
 ]
 
 # Appended only for a deck that opts in. Stating "Treasures are modelled" on a

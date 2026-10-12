@@ -1034,23 +1034,46 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 elif card["treasure_trigger"] == "etb":
                     treasures += (card["treasure_n"] + treasure_bonus) * treasure_multiplier
 
+        def _face_spell(card, hand_size, as_mode=False):
+            """A spell's damage to the opponent's face, through Torbran-class
+            bonuses, into this turn's noncombat damage (folded at the combat
+            step, under the team multiplier)."""
+            nonlocal etb_damage
+            fd = card["face_damage"]
+            if not model_combat or not fd["kind"] or (as_mode and fd["choose_one"]):
+                return
+            amount = (fd["amount"] if fd["kind"] == "fixed"
+                      else hand_size if fd["kind"] == "hand" else OPPONENT_HAND)
+            if amount > 0:
+                etb_damage += amount + bonus_for(card["damage_source"], damage_bonuses)
+
         def _resolve_draw(card):
             """THE DRAW LOOP'S RESOLUTION, after the cast. One body for the
             loop and the free cast, so a discovered or cascaded cantrip resolves
             exactly as a paid one does — Zada's copies included."""
             nonlocal opponent_draws_this_turn
+            # THE FACE HALF OF A MODAL DRAW SPELL, dealt at resolution and
+            # before its own discard (Fateful Showdown counts the hand it is
+            # about to throw away). A choose-ONE card resolved here chose its
+            # draw mode, so its face mode is not also dealt.
+            _face_spell(card, len(hand), as_mode=True)
+            if card["draw"]["spell_each_player_draws"]:
+                opponent_draws_this_turn += card["draw"]["spell_each_player_draws"]
             if card["draw"]["wheel_draws"]:
                 held = len(hand)
                 discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
                 _n = held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"]
-                draw_n(_n)
+                draw_n(_n + card["draw"]["wheel_plus"])
                 # A WHEEL IS SYMMETRICAL AND THIS IS THE HALF THE MODEL
                 # NEVER SAW. "Each player draws seven" refills the opponent
                 # too, which is the cost of every wheel in this deck and
                 # the reason the tax cards exist. A "that many" wheel draws
                 # each player their OWN discard count and this model does
                 # not track the opponent's hand, so ours stands in for it.
-                opponent_draws_this_turn += _n
+                # ONLY "EACH PLAYER" (2026-10-11): a wheel of OUR hand alone
+                # refills nobody else.
+                if card["draw"]["wheel_symmetric"]:
+                    opponent_draws_this_turn += _n
                 return
             draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
             # THE COMMANDER COPIES IT FOR EACH OTHER CREATURE YOU CONTROL.
@@ -1121,6 +1144,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     creature_flying.append(False)
                     bodies_cum += 1
             _magecraft(copies)                  # the cast itself fired already
+
+        def _is_burn(c):
+            """THE BURN LOOP'S PREDICATE: face damage and nothing another loop
+            already casts it for (a draw, a wheel, a pump, storm, a ritual,
+            Treasure, a tutor, a free cast) — so no card is cast twice and no
+            card's other mode is traded away for its face mode."""
+            d = c["draw"]
+            return bool(c["face_damage"]["kind"] and not c["is_land"]
+                        and not (d["spell_draw"] or d["wheel_draws"]
+                                 or d["x_draw_multiplier"] or d["spell_draw_greatest_power"])
+                        and not _pump_castable(c)
+                        and not c["spell_count"]["storm"]
+                        and not c["combat"]["spell_treasure"]
+                        and not c.get("ritual") and not c["tutor"]
+                        and not c.get("discover_n") and not c.get("cascade"))
 
         def _pump_castable(c):
             """THE PUMP LOOP'S PREDICATE (the board-and-flag gate is the
@@ -1330,6 +1368,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem
             nonlocal team_damage_multiplier, token_multiplier, treasure_bonus
             nonlocal treasure_multiplier, treasures
+            # AN INSTANT OR SORCERY THAT MAKES TOKENS reaches this loop because
+            # its tokens count as bodies — and until 2026-10-11 its own spell
+            # text went unresolved here: Big Score made no Treasure and drew no
+            # cards, and its discard paid nobody. The spell half resolves first.
+            _tl0 = card.get("type_line") or ""
+            if "Instant" in _tl0 or "Sorcery" in _tl0:
+                if model_draw and card["draw"]["spell_draw"]:
+                    draw_n(card["draw"]["spell_draw"])
+                if model_discard and card["draw"]["spell_discard"]:
+                    discard_n(card["draw"]["spell_discard"])
+                if model_treasures and card["combat"]["spell_treasure"]:
+                    treasures += card["combat"]["spell_treasure"]
             # A BODY THAT ALSO DRAWS is the shape the pilot's Edgar refactor
             # is built on: "a vampire that draws is better than a sorcery
             # that draws — same effect, plus a body, plus an eminence
@@ -2794,6 +2844,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 else:
                     continue
                 treasures += made * (per_event + treasure_bonus) * treasure_multiplier
+        # BURN, WITH WHAT IS LEFT (2026-10-11). A spell whose only read effect
+        # is damage to the opponent's face (Lava Spike, Boros Charm's other
+        # mode is read and keeps it out) is cast at the end of the main phase,
+        # cheapest first, after everything that develops the board — the same
+        # spend-it-all policy as every loop here.
+        if model_combat:
+            for card in sorted((c for c in hand if _is_burn(c)),
+                               key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                if card not in hand:
+                    continue
+                if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    continue
+                _note_cast(card)
+                _face_spell(card, len(hand))
         # OUR DRAWS ON THEIR TURNS (2026-10-11), drawn BEFORE the payoffs read
         # this turn's draws, so Shabraz and every per-draw payoff are paid for
         # them. Rhystic Study: each opponent casts OPPONENT_CASTS_PER_TURN
