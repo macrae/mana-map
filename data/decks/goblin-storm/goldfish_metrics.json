@@ -78,6 +78,9 @@
       "A COMMANDER THAT COPIES A SINGLE-TARGET SPELL across the board is modelled behind `model_commander_copy`, declared per deck and checked against the commander's own text. Zada, Hedron Grinder is the only card in the corpus with the ability. It needs no authored rate: the copy count IS the number of other creatures you control, which this model already measures.",
       "WHAT A COPIED SPELL DOES is read per effect, and each is one turn unless said otherwise: its draw, a pump (power only — toughness is tracked but no creature blocks here), a PERMANENT +1/+1 counter, a Treasure it creates, double strike, doubled power, damage every creature deals to each opponent, an additional combat phase, and an untap. A spell whose effect is none of these still counts toward the spell count and is otherwise inert.",
       "THE SPELL COUNT IS TRACKED, so STORM is modelled, as are MAGECRAFT (which fires on a cast OR a copy) and per-cast damage (which fires on a cast only — that difference is a rules fact, not a simplification). Before this there was no spells-cast-this-turn variable at all and storm was unreadable.",
+      "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) per damage INSTANCE, each added before any multiplier: each ping, each storm copy, each attacker per strike. An attacker's colours ride on its battlefield entry (cast creatures, commanders, and draw/discard-made tokens such as The Locust God's blue-red Insects); a token from any other maker is colourless here, an understatement.",
+      "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
+      "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid.",
       "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
       "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
       "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
@@ -99,7 +102,7 @@
       "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a Treasure per opponent draw unless that opponent pays {2}; how often a table pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each draw. Every Tithe figure is conditional on it, and `try` says so when a list relies on it.",
       "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
     ],
-    "model_version": "13a266763ee0",
+    "model_version": "1ac6dd5110ba",
     "restricted_mana_counted_as_free": [
       "Throne of Eldraine (4)"
     ],
@@ -116,47 +119,47 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.784,
+        "10": 0.789,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
         "6": 0.017,
-        "7": 0.125,
-        "8": 0.356,
-        "9": 0.608
+        "7": 0.126,
+        "8": 0.358,
+        "9": 0.612
       },
       "kill_turn_histogram": {
-        "10": 1763,
+        "10": 1771,
         "5": 4,
         "6": 163,
-        "7": 1084,
-        "8": 2311,
-        "9": 2516
+        "7": 1093,
+        "8": 2325,
+        "9": 2536
       },
       "mean_board_power_by_turn": {
         "1": 0.164,
-        "10": 15.574,
+        "10": 15.59,
         "2": 0.89,
-        "3": 2.061,
-        "4": 4.625,
-        "5": 5.006,
-        "6": 7.548,
-        "7": 10.114,
-        "8": 11.095,
-        "9": 13.322
+        "3": 2.102,
+        "4": 4.648,
+        "5": 5.04,
+        "6": 7.587,
+        "7": 10.154,
+        "8": 11.128,
+        "9": 13.354
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 16.294,
+        "10": 16.316,
         "2": 0.299,
-        "3": 1.321,
-        "4": 2.541,
-        "5": 4.009,
-        "6": 6.607,
-        "7": 9.39,
-        "8": 10.752,
-        "9": 13.543
+        "3": 1.318,
+        "4": 2.59,
+        "5": 4.037,
+        "6": 6.647,
+        "7": 9.422,
+        "8": 10.795,
+        "9": 13.577
       },
       "mean_kill_turn": 8.589,
       "mean_poison_by_turn": {
@@ -172,23 +175,23 @@
         "9": 0.0
       },
       "median_kill_turn": 9,
-      "no_kill_by_max_turn_rate": 0.216
+      "no_kill_by_max_turn_rate": 0.211
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.944,
+      "cast_by_turn_6_rate": 0.947,
       "cast_turn_histogram": {
-        "10": 39,
+        "10": 36,
         "2": 758,
-        "3": 1068,
-        "4": 6609,
-        "5": 623,
-        "6": 384,
-        "7": 239,
-        "8": 147,
-        "9": 82,
-        "not_by_max_turn": 51
+        "3": 1252,
+        "4": 6471,
+        "5": 611,
+        "6": 373,
+        "7": 232,
+        "8": 136,
+        "9": 83,
+        "not_by_max_turn": 48
       },
-      "mean_cast_turn": 4.076,
+      "mean_cast_turn": 4.046,
       "median_cast_turn": 4
     },
     "discard": {
@@ -244,7 +247,7 @@
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.0,
-        "10": 0.767,
+        "10": 0.768,
         "2": 0.0,
         "3": 0.0,
         "4": 0.089,
@@ -256,7 +259,7 @@
       },
       "mean_drain_by_turn": {
         "1": 0.0,
-        "10": 0.404,
+        "10": 0.405,
         "2": 0.0,
         "3": 0.0,
         "4": 0.089,
@@ -272,34 +275,34 @@
       "basis": "a hit is cast without paying through the resolution a paid cast of it gets (ritual, draw, discover, storm, pump, body); anything else goes to hand (discover) or the bottom (cascade) — see MODEL_ASSUMPTIONS",
       "depth_guard_hits": 0,
       "depth_limit": 8,
-      "games_with_a_free_cast": 1711,
+      "games_with_a_free_cast": 1708,
       "max_depth": 1,
       "mean_cascades": 0.0,
       "mean_discover_to_hand": 0.119,
-      "mean_free_casts": 0.473
+      "mean_free_casts": 0.474
     },
     "interaction_castable_by_turn": {
       "1": 0.042,
-      "10": 0.395,
-      "2": 0.049,
-      "3": 0.075,
-      "4": 0.045,
-      "5": 0.118,
+      "10": 0.396,
+      "2": 0.05,
+      "3": 0.076,
+      "4": 0.046,
+      "5": 0.119,
       "6": 0.181,
-      "7": 0.234,
-      "8": 0.284,
-      "9": 0.341
+      "7": 0.235,
+      "8": 0.285,
+      "9": 0.342
     },
     "interaction_in_hand_by_turn": {
       "1": 0.732,
       "10": 0.548,
       "2": 0.718,
-      "3": 0.698,
+      "3": 0.7,
       "4": 0.72,
-      "5": 0.683,
-      "6": 0.616,
-      "7": 0.564,
-      "8": 0.539,
+      "5": 0.682,
+      "6": 0.615,
+      "7": 0.563,
+      "8": 0.538,
       "9": 0.538
     },
     "iterations": 10000,
@@ -309,7 +312,7 @@
       "2": 0.997,
       "3": 0.916,
       "4": 0.801,
-      "5": 0.691,
+      "5": 0.69,
       "6": 0.607,
       "7": 0.554,
       "8": 0.523,
@@ -317,39 +320,39 @@
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.29,
+      "10": 8.292,
       "2": 2.151,
       "3": 3.091,
-      "4": 4.02,
-      "5": 4.751,
-      "6": 5.649,
-      "7": 6.352,
-      "8": 7.006,
-      "9": 7.656
+      "4": 4.018,
+      "5": 4.752,
+      "6": 5.65,
+      "7": 6.354,
+      "8": 7.008,
+      "9": 7.657
     },
     "mean_bodies_by_turn": {
       "1": 0.204,
-      "10": 8.101,
+      "10": 8.106,
       "2": 0.727,
-      "3": 1.516,
-      "4": 1.936,
-      "5": 2.473,
-      "6": 4.018,
-      "7": 5.419,
-      "8": 5.689,
-      "9": 6.895
+      "3": 1.503,
+      "4": 1.943,
+      "5": 2.485,
+      "6": 4.03,
+      "7": 5.434,
+      "8": 5.701,
+      "9": 6.904
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.277,
-      "10": 3.7,
+      "10": 3.706,
       "2": 0.495,
-      "3": 0.676,
-      "4": 0.809,
-      "5": 1.075,
-      "6": 1.393,
-      "7": 1.816,
-      "8": 2.316,
-      "9": 2.951
+      "3": 0.675,
+      "4": 0.81,
+      "5": 1.076,
+      "6": 1.395,
+      "7": 1.819,
+      "8": 2.324,
+      "9": 2.956
     },
     "mean_sacrifices_by_turn": {
       "1": 0.0,
@@ -357,10 +360,10 @@
       "2": 0.0,
       "3": 0.0,
       "4": 0.001,
-      "5": 0.008,
+      "5": 0.007,
       "6": 0.029,
       "7": 0.061,
-      "8": 0.109,
+      "8": 0.11,
       "9": 0.182
     },
     "opening_hand": {
@@ -391,13 +394,13 @@
     "sac_cap_hit_rate": 0.0,
     "targets": [
       {
-        "assembled_rate": 0.719,
-        "assembled_rate_assisted": 0.719,
-        "by_turn_6_rate": 0.563,
-        "by_turn_6_rate_assisted": 0.563,
+        "assembled_rate": 0.72,
+        "assembled_rate_assisted": 0.72,
+        "by_turn_6_rate": 0.565,
+        "by_turn_6_rate_assisted": 0.565,
         "label": "Zada online with a cantrip drawn",
-        "mean_turn": 5.054,
-        "mean_turn_assisted": 5.054
+        "mean_turn": 5.013,
+        "mean_turn_assisted": 5.013
       },
       {
         "assembled_rate": 0.69,
@@ -405,8 +408,8 @@
         "by_turn_6_rate": 0.547,
         "by_turn_6_rate_assisted": 0.547,
         "label": "Early token maker drawn",
-        "mean_turn": 3.402,
-        "mean_turn_assisted": 3.402
+        "mean_turn": 3.403,
+        "mean_turn_assisted": 3.403
       },
       {
         "assembled_rate": 0.373,
@@ -414,8 +417,8 @@
         "by_turn_6_rate": 0.212,
         "by_turn_6_rate_assisted": 0.212,
         "label": "Storm payoff plus ritual drawn",
-        "mean_turn": 5.467,
-        "mean_turn_assisted": 5.467
+        "mean_turn": 5.47,
+        "mean_turn_assisted": 5.47
       }
     ],
     "treasure": {
@@ -433,15 +436,15 @@
       },
       "mean_treasures_in_hoard_by_turn": {
         "1": 0.0,
-        "10": 0.566,
+        "10": 0.577,
         "2": 0.0,
-        "3": 0.008,
-        "4": 0.015,
-        "5": 0.023,
-        "6": 0.051,
-        "7": 0.12,
-        "8": 0.227,
-        "9": 0.35
+        "3": 0.029,
+        "4": 0.027,
+        "5": 0.032,
+        "6": 0.065,
+        "7": 0.133,
+        "8": 0.238,
+        "9": 0.361
       }
     }
   }

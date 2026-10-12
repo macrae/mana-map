@@ -112,25 +112,25 @@ Colours come from duals, triomes and utility lands. A few are special: [Calcifor
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on v1.2.0 (V7), 2026-10-06. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **84%**
+- share of seeded games where the commander was CAST by turn six: **85%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
-- mean turn the commander is first cast: **turn 5.253**
-- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **94%**
-- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **80%**
-- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **34%**
-- A per-draw DAMAGE source drawn (taxes the refill half): **47%**
-- A discard converted to board or cards (the non-damage half of the tax): **78%**
-- A per-draw BOARD source drawn (the air force the commanders fly with): **72%**
-- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **53%**
-- THE AIR KILL — a wheel plus a flying body that grows on every card: **53%**
-- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **63%**
-- Commander protection drawn — the whole engine is one 4-drop that dies to everything: **34%**
-- A real answer drawn — a counter, a sweeper or a tax: **57%**
-- Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step: **46%**
+- mean turn the commander is first cast: **turn 5.229**
+- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **95%**
+- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **82%**
+- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **36%**
+- A per-draw DAMAGE source drawn (taxes the refill half): **49%**
+- A discard converted to board or cards (the non-damage half of the tax): **80%**
+- A per-draw BOARD source drawn (the air force the commanders fly with): **74%**
+- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **56%**
+- THE AIR KILL — a wheel plus a flying body that grows on every card: **56%**
+- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **66%**
+- Commander protection drawn — the whole engine is one 4-drop that dies to everything: **36%**
+- A real answer drawn — a counter, a sweeper or a tax: **60%**
+- Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step: **49%**
 - share of opening sevens the model would keep: **80%**
-- Engine online by turn 5: **92%** (95% CI 91%–92%) — exceptional
-- A win route assembled by turn 6: **76%** (95% CI 75%–77%)
-- A win route assembled by turn 8: **89%** (95% CI 89%–90%)
+- Engine online by turn 5: **92%** (95% CI 92%–93%) — exceptional
+- A win route assembled by turn 6: **78%** (95% CI 78%–79%)
+- A win route assembled by turn 8: **92%** (95% CI 91%–92%)
 - Colour on curve (lands + rocks): W 94%, U 88%, R 74%
 - Forge (an optional probe, not a gate): last run 2026-10-03, 15/200 won (10% (95% CI 6%–15%)) on V6 — on an older list
 <!-- /ctx:gen numbers -->

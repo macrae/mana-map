@@ -15,7 +15,9 @@
     "complete": 18,
     "of": 19,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -2094,66 +2096,66 @@
           "n": 10000
         },
         "2": {
-          "rate": 0.144,
+          "rate": 0.14,
           "ci95": [
-            0.1373,
-            0.151
+            0.1333,
+            0.1469
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0635,
+          "rate": 0.0621,
           "ci95": [
-            0.0589,
-            0.0684
+            0.0575,
+            0.067
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0224,
+          "rate": 0.0225,
           "ci95": [
-            0.0197,
-            0.0255
+            0.0198,
+            0.0256
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0285,
+          "rate": 0.0288,
           "ci95": [
-            0.0254,
-            0.0319
+            0.0257,
+            0.0323
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0554,
+          "rate": 0.056,
           "ci95": [
-            0.0511,
-            0.0601
+            0.0517,
+            0.0607
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0768,
+          "rate": 0.0772,
           "ci95": [
-            0.0717,
-            0.0822
+            0.0721,
+            0.0826
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0798,
+          "rate": 0.08,
           "ci95": [
-            0.0746,
-            0.0853
+            0.0748,
+            0.0855
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0704,
+          "rate": 0.0706,
           "ci95": [
-            0.0655,
-            0.0756
+            0.0657,
+            0.0758
           ],
           "n": 10000
         },
@@ -2167,78 +2169,78 @@
         }
       },
       "two_in_a_row": {
-        "rate": 0.1343,
+        "rate": 0.1338,
         "ci95": [
-          0.1278,
-          0.1411
+          0.1273,
+          0.1406
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 6043,
-        "hand_empty": 1988,
-        "mana_short": 4055
+        "stall_turns": 6007,
+        "hand_empty": 1991,
+        "mana_short": 4016
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 2905,
+        "stall_turns": 2913,
         "hand_empty": 1794,
-        "mana_short": 1111,
+        "mana_short": 1119,
         "stall_rate": {
-          "rate": 0.0726,
+          "rate": 0.0728,
           "ci95": [
-            0.0701,
-            0.0752
+            0.0703,
+            0.0754
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 4,
-          "floor_rate": 0.0224,
-          "diff": 0.0502,
+          "floor_rate": 0.0225,
+          "diff": 0.0503,
           "ci95": [
-            0.0462,
-            0.054
+            0.0463,
+            0.0541
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 3.2804,
+            "rate": 3.2739,
             "ci95": [
-              3.2388,
-              3.322
+              3.232,
+              3.3158
             ],
-            "sd": 2.1231,
+            "sd": 2.1396,
             "n": 10000
           },
           "8": {
-            "rate": 3.2228,
+            "rate": 3.2203,
             "ci95": [
-              3.1755,
-              3.2701
+              3.1727,
+              3.2679
             ],
-            "sd": 2.4121,
+            "sd": 2.4276,
             "n": 10000
           },
           "9": {
-            "rate": 3.3015,
+            "rate": 3.3062,
             "ci95": [
-              3.2467,
-              3.3563
+              3.2502,
+              3.3622
             ],
-            "sd": 2.7941,
+            "sd": 2.8572,
             "n": 10000
           },
           "10": {
-            "rate": 3.5238,
+            "rate": 3.529,
             "ci95": [
-              3.4589,
-              3.5887
+              3.4633,
+              3.5947
             ],
-            "sd": 3.3131,
+            "sd": 3.3532,
             "n": 10000
           }
         },
@@ -2248,14 +2250,14 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4224,
+        "rate": 0.4223,
         "ci95": [
-          0.4128,
-          0.4321
+          0.4127,
+          0.432
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2898,
+      "missed_land_drop_rate": 0.2897,
       "mulliganed": {
         "rate": 0.2197,
         "ci95": [
@@ -2268,13 +2270,13 @@
         "1": 0.999,
         "2": 2.149,
         "3": 3.079,
-        "4": 4.002,
-        "5": 4.726,
+        "4": 4.0,
+        "5": 4.727,
         "6": 5.628,
-        "7": 6.339,
+        "7": 6.34,
         "8": 6.993,
-        "9": 7.635,
-        "10": 8.273
+        "9": 7.636,
+        "10": 8.274
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
@@ -2420,7 +2422,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 94,
+          "value": 95,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -2438,7 +2440,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.076,
+          "value": 4.046,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2499,6 +2501,9 @@
             "A COMMANDER THAT COPIES A SINGLE-TARGET SPELL across the board is modelled behind `model_commander_copy`, declared per deck and checked against the commander's own text. Zada, Hedron Grinder is the only card in the corpus with the ability. It needs no authored rate: the copy count IS the number of other creatures you control, which this model already measures.",
             "WHAT A COPIED SPELL DOES is read per effect, and each is one turn unless said otherwise: its draw, a pump (power only — toughness is tracked but no creature blocks here), a PERMANENT +1/+1 counter, a Treasure it creates, double strike, doubled power, damage every creature deals to each opponent, an additional combat phase, and an untap. A spell whose effect is none of these still counts toward the spell count and is otherwise inert.",
             "THE SPELL COUNT IS TRACKED, so STORM is modelled, as are MAGECRAFT (which fires on a cast OR a copy) and per-cast damage (which fires on a cast only — that difference is a rules fact, not a simplification). Before this there was no spells-cast-this-turn variable at all and storm was unreadable.",
+            "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) per damage INSTANCE, each added before any multiplier: each ping, each storm copy, each attacker per strike. An attacker's colours ride on its battlefield entry (cast creatures, commanders, and draw/discard-made tokens such as The Locust God's blue-red Insects); a token from any other maker is colourless here, an understatement.",
+            "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
+            "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid.",
             "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
             "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
             "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
@@ -2537,15 +2542,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.29,
+            "10": 8.292,
             "2": 2.151,
             "3": 3.091,
-            "4": 4.02,
-            "5": 4.751,
-            "6": 5.649,
-            "7": 6.352,
-            "8": 7.006,
-            "9": 7.656
+            "4": 4.018,
+            "5": 4.752,
+            "6": 5.65,
+            "7": 6.354,
+            "8": 7.008,
+            "9": 7.657
           },
           "tier": "data",
           "weight": "detail",
@@ -2560,7 +2565,7 @@
             "2": 0.997,
             "3": 0.916,
             "4": 0.801,
-            "5": 0.691,
+            "5": 0.69,
             "6": 0.607,
             "7": 0.554,
             "8": 0.523,
@@ -2575,15 +2580,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.204,
-            "10": 8.101,
+            "10": 8.106,
             "2": 0.727,
-            "3": 1.516,
-            "4": 1.936,
-            "5": 2.473,
-            "6": 4.018,
-            "7": 5.419,
-            "8": 5.689,
-            "9": 6.895
+            "3": 1.503,
+            "4": 1.943,
+            "5": 2.485,
+            "6": 4.03,
+            "7": 5.434,
+            "8": 5.701,
+            "9": 6.904
           },
           "tier": "data",
           "weight": "detail",
@@ -2609,12 +2614,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1763,
+            "10": 1771,
             "5": 4,
             "6": 163,
-            "7": 1084,
-            "8": 2311,
-            "9": 2516
+            "7": 1093,
+            "8": 2325,
+            "9": 2536
           },
           "tier": "data",
           "weight": "detail",
@@ -2630,8 +2635,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.076,
-    "commander_cast_by_turn_6_pct": 94,
+    "commander_mean_cast_turn": 4.046,
+    "commander_cast_by_turn_6_pct": 95,
     "targets": [
       {
         "label": "Zada online with a cantrip drawn",
@@ -2652,14 +2657,14 @@
       "kill_by_turn_6_pct": 2,
       "kill_by_turn_8_pct": 36,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 22,
+      "no_kill_by_max_turn_pct": 21,
       "kill_turn_histogram": {
-        "10": 1763,
+        "10": 1771,
         "5": 4,
         "6": 163,
-        "7": 1084,
-        "8": 2311,
-        "9": 2516
+        "7": 1093,
+        "8": 2325,
+        "9": 2536
       }
     }
   },
@@ -2824,6 +2829,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "`meaner-v1` is PROPOSED as v1.1.0 and waiting on cardboard — 13 card(s) (12 to buy, 1 to unsleeve) — `manamap pilot deck-branch goblin-storm show meaner-v1` has the pull list",
     "branch `zada-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check goblin-storm --branch zada-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `zada-v1` needs 15 card(s) sourced — `manamap pilot deck-branch goblin-storm source zada-v1`",

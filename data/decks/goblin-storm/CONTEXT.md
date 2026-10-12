@@ -80,9 +80,9 @@ Almost all Mountains, so red is never the problem. A few lands do extra work: [C
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-08-05. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **94%**
+- share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 4.076**
+- mean turn the commander is first cast: **turn 4.046**
 - Zada online with a cantrip drawn: **56%**
 - Early token maker drawn: **55%**
 - Storm payoff plus ritual drawn: **21%**
