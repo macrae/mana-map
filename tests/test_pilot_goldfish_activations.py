@@ -80,7 +80,12 @@ def test_the_corpus_sweep_is_locked():
     # spell face: Fatehold Chronologist, Semester Foreseer, Prudent Fateseer, Campus
     # Composer, Lluwen, Eccentric Pestfinder and Strife Scholar each make a token
     # there = 1995. Pestfinder's copy is gated on lifegain, which the credit ignores.
-    assert_corpus_count(credited, 1995, "cast/ETB token credits")
+    # Then −35 (2026-10-11) when a NON-MANA cost joined `_ACTIVATION_COST_RE`:
+    # every Thallid's "Remove three spore counters:", Ominous Seas' foreshadow
+    # counters, Voice of the Woods' "Tap five untapped Elves", Zektar Shrine's
+    # "Sacrifice:", Grove of the Guardian's cost too long for the {…} bound. The
+    # sweep moved 36 oracle cards, every one a body REMOVED, none gained = 1960.
+    assert_corpus_count(credited, 1960, "cast/ETB token credits")
 
 
 def test_a_granted_bracketed_loyalty_ability_is_not_a_free_body():
@@ -94,3 +99,27 @@ def test_a_granted_bracketed_loyalty_ability_is_not_a_free_body():
     # The unbracketed printed form was already handled, and still is.
     printed = dict(kiora, oracle_text="−8: Create an 8/8 blue Leviathan creature token.")
     assert goldfish.combat_profile(printed)["token_bodies"] == 0
+
+
+def test_a_non_mana_cost_is_an_activation_too():
+    """Ominous Seas: "Remove eight foreshadow counters from this enchantment:
+    Create an 8/8 blue Kraken". The cost is a verb, not a symbol, and before
+    2026-10-11 the Kraken was credited the turn the two-mana enchantment was
+    cast. Re-introduce it by dropping the third alternative of
+    `_ACTIVATION_COST_RE` and the first assert fails."""
+    seas = {"oracle_text": "Whenever you draw a card, put a foreshadow counter on this "
+                           "enchantment.\nRemove eight foreshadow counters from this "
+                           "enchantment: Create an 8/8 blue Kraken creature token.\n"
+                           "Cycling {2} ({2}, Discard this card: Draw a card.)",
+            "type_line": "Enchantment", "power": None}
+    assert goldfish.combat_profile(seas)["token_bodies"] == 0
+    for cost in ("Sacrifice this enchantment", "Tap five untapped Elves you control",
+                 "Discard two cards", "Pay 3 life"):
+        card = dict(seas, oracle_text=f"{cost}: Create a 2/2 green Bear creature token.")
+        assert goldfish.combat_profile(card)["token_bodies"] == 0, cost
+    # A triggered token is still a body; the widening must not eat it.
+    etb = dict(seas, oracle_text="When this enchantment enters, create two 1/1 colorless "
+                                 "Thopter artifact creature tokens with flying.\nMax speed — "
+                                 "Sacrifice this enchantment: Create two 1/1 colorless "
+                                 "Thopter artifact creature tokens with flying.")
+    assert goldfish.combat_profile(etb)["token_bodies"] == 2

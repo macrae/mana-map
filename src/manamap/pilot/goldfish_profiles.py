@@ -2154,8 +2154,15 @@ _DMG_EQUAL_TREASURE_RE = re.compile(
 # Talent with free bodies, and those four were the whole corpus sweep's delta.
 # Way of the Deathbringer still reads 1: its token follows a period inside the
 # granted ability, and `_inside_activation` bounds on the sentence.
+# A COST NEED NOT BE MANA (2026-10-11). "Remove eight foreshadow counters from
+# this enchantment: Create an 8/8 blue Kraken" opens on a verb, not a symbol, so
+# Ominous Seas was credited its Kraken the turn the two-mana enchantment was
+# cast \u2014 a free 8/8 on sharknado that read as +1.2 damage@T10 it never earned.
+# The third alternative is a non-mana cost verb opening the ability.
 _ACTIVATION_COST_RE = re.compile(
-    r"(?:\{[^}]+\}[^:.\n]{0,60}|(?:^|[\s\"\u201c])\[?[+\-\u2212]?\d+\]?):")
+    r"(?:\{[^}]+\}[^:.\n]{0,60}|(?:^|[\s\"\u201c])\[?[+\-\u2212]?\d+\]?"
+    r"|(?:^|[\s\"\u201c])(?:Remove|Sacrifice|Discard|Exile|Tap|Untap|Pay|Return"
+    r"|Put|Mill|Reveal|Collect|Forage)\b[^:.\n]{0,100}):")
 
 
 def _inside_activation(text, pos):
