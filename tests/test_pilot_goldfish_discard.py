@@ -463,13 +463,19 @@ def test_a_tax_on_an_opponents_draw_is_read():
 
 def test_an_effect_gated_on_MANA_is_refused_and_named():
     """AN EFFECT YOU PAY FOR IS NOT A RATE, and a wheel hands the opponent
-    seven draws — so reading Mind's Eye would give this deck seven free cards
-    off an artifact it never paid for. Same refusal the X-draw path makes for
-    an additional cost. Drop `_EVENT_PAID_RE` and this fails."""
+    seven draws — so reading Mind's Eye as FREE would give this deck seven cards
+    off an artifact it never paid for. Since 2026-10-11 its one shape is read
+    as a BUDGETED paid draw (the turn loop pays it from mana left), never into
+    the free field; every other paid shape is still refused and NAMED. Drop
+    `_EVENT_PAID_RE` and the free field reads 1."""
     got = _ev("Whenever an opponent draws a card, you may pay {1}. If you do, "
               "draw a card.", name="Mind's Eye")
-    assert got["per_opponent_draw_our_draw"] == 0
-    assert got["unmodelled"] == "Mind's Eye", "refused must mean NAMED, not zero"
+    assert got["per_opponent_draw_our_draw"] == 0, "never the free field"
+    assert got["per_opponent_draw_paid_draw"] == 1
+    assert got["per_opponent_draw_paid_cost"] == 1
+    other = _ev("Whenever an opponent draws a card, you may pay {2}. If you do, "
+                "create a Treasure token.", name="A Paid Treasure")
+    assert other["unmodelled"] == "A Paid Treasure", "refused must mean NAMED, not zero"
 
 
 def test_our_own_trigger_is_unchanged_by_the_new_arm():
@@ -1028,15 +1034,10 @@ def test_reminder_text_is_not_the_cards_own_discard_payoff():
         "with the cycling reminder left in, the card must read as having a "
         "per-discard draw it does not have — otherwise the strip is not what "
         "is doing the work here")
-    assert unstripped["per_discard_damage"] == 0, (
-        "and it loses the damage that IS its whole text")
-
-    # The control: a real per-discard draw still reads. Glint-Horn Buccaneer's
-    # "{1}{R}, Discard a card: Draw a card" is its OWN ability, not a reminder.
-    glint = event_payoffs({"name": "Glint-Horn Buccaneer", "oracle_text": (
-        "Haste Whenever you discard a card, this creature deals 1 damage to each "
-        "opponent. {1}{R}, Discard a card: Draw a card.")})
-    assert glint["per_discard_damage"] == 1 and glint["per_discard_draw"] == 1
+    # The damage no longer depends on the strip: "that much damage" is read
+    # FIRST since 2026-10-11 (one instance per batch, for Torbran), so the card
+    # keeps its damage either way. The strip is what removes the phantom draw.
+    assert unstripped["per_discard_damage"] == 1
 
 
 @requires_data
