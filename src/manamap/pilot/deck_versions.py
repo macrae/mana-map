@@ -815,6 +815,10 @@ def main(args):
                 print(f"    - {n}")
             for n in d["add"]:
                 print(f"    + {n}")
+        # THE LOCK MOVED, so "sleeved" changed — the moment a copy on another
+        # site first becomes behind the list that matters (2026-10-17).
+        from manamap.pilot import deck_link
+        deck_link.print_drift(slug)
         _refresh_dossiers_the_lock_changed(slug)
         return
     if action == "tag":

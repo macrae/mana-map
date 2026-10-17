@@ -1615,8 +1615,10 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
 
     # THE DECK CONTEXT, which no rebuild can rewrite: its blocks are refreshed and
     # the Keeper's `deck-change` pass is named for Jarvis to run next.
-    from manamap.pilot import deck_context
+    from manamap.pilot import deck_context, deck_link
     out["context"] = deck_context.list_change(slug)
+    # The copy on another site is behind the merged list (files only, 2026-10-17).
+    out["link_drift"] = deck_link.drift_lines(slug)
 
     # THE BRANCH RECORDS THAT IT LANDED. Without this the branch survives
     # untouched, `diff` reads +0 -0 forever, and nothing links the resulting
@@ -2019,6 +2021,8 @@ def _dispatch(args):
                 print(f"    {artifact:24} {why}")
         from manamap.pilot import deck_context
         deck_context.print_list_change(got.get("context"))
+        for line in got.get("link_drift") or []:
+            print(f"  {line}")
         print("\n  NOT COMMITTED — the commit is what `deck-version` numbers and what the")
         print("  captain's log stamps games against, so it stays yours:")
         print(f"      git add data/decks/{slug} && \\")

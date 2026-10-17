@@ -827,6 +827,13 @@ def _next(info):
                    f"`deck-version {slug} paper --note \"…\"` locks the list you hold "
                    f"(then drift is computed on every swap); if it is not, it is a build "
                    f"plan and the play/measure suggestions below need cardboard first")
+    # A COPY ON ANOTHER SITE (Moxfield, DeckCheck) BEHIND THE SLEEVED LIST —
+    # files only, so info.json stays network-free: links.json's stamp against
+    # the paper lock, or the working version when unlocked (2026-10-17).
+    if not closed:
+        from manamap.pilot import deck_link
+        nxt.extend(deck_link.drift_lines(slug, paper=info.get("paper"),
+                                         current_version=info["version"]["current"]))
     if info["record"]["games"] == 0 and not closed:
         nxt.append(f"nothing in the captain's log — play it, then "
                    f"`deck-notes {slug} add \"…\" --result win|loss --opponents N`")

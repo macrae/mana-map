@@ -1291,12 +1291,15 @@ def save_version(slug, note, *, echo=None):
                      commit=commit, version=version)
         _append(directory, rec)
         versions_commit, versions_paths = _commit_version_list(slug, version, consistency)
+    from manamap.pilot import deck_link
     return {"slug": slug, "commit": commit, "version": version, "paths": paths,
             "versions_commit": versions_commit, "versions_paths": versions_paths,
             "prices": pruned, "prices_line": prices_line(slug, pruned),
             "message": message, "consistency": consistency, "refreshed": refreshed,
             "keeper": (context or {}).get("keeper") if (context or {}).get("stale") else None,
-            "context": context}
+            "context": context,
+            # The copy on another site is behind this save (files only, 2026-10-17).
+            "link_drift": deck_link.drift_lines(slug, current_version=version)}
 
 
 # ── preview (the instant tier and the goldfish tier live in `try_swap`) ──
@@ -1363,6 +1366,8 @@ def _main_save(args):
             print(f"  refreshed branches that want a moved card: {', '.join(r['refreshed'])}")
         if r["keeper"]:
             print(f"  next (Jarvis): {r['keeper']}")
+        for line in r.get("link_drift") or []:
+            print(f"  {line}")
     _emit(r, getattr(args, "json", False), text)
 
 

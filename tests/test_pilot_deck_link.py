@@ -227,3 +227,76 @@ def test_check_in_still_reads_a_file(tmp_path):
     p = tmp_path / "list.txt"
     p.write_text("1 Sol Ring\n")
     assert check_in.read_list(str(p)) == "1 Sol Ring\n"
+
+
+# ── drift: is the copy over there behind the list that matters? ───────────
+
+def _lock(decks, version, sha):
+    (decks / "ldeck" / "deck_versions.json").write_text(json.dumps(
+        {"slug": "ldeck", "paper": {"version": version, "decklist_sha256": sha,
+                                    "sha": "abc", "built_at": "2026-10-01", "note": ""}}))
+
+
+def _link(decks, **entry):
+    doc = {"deckcheck": {"url": DC_URL, "id": "AbC_12-xyz", "as_of": "2026-10-17", **entry}}
+    (decks / "ldeck" / "links.json").write_text(json.dumps(doc))
+
+
+def test_drift_is_none_without_a_link(decks):
+    assert deck_link.drift("ldeck", "deckcheck") is None
+    assert deck_link.drift_lines("ldeck") == []
+
+
+def test_an_exact_sha_is_in_sync_whatever_the_versions_say(decks):
+    _link(decks, decklist_sha256=SHA, version=3)
+    _lock(decks, 5, SHA)                       # same bytes, a lock that mis-numbers
+    d = deck_link.drift("ldeck", "deckcheck")
+    assert d["exact"] and d["in_sync"] and d["target"] == "sleeved"
+    assert deck_link.drift_lines("ldeck") == []
+
+
+def test_the_same_version_with_different_bytes_is_not_drift(decks):
+    """A re-render or a printing swap stays inside one version."""
+    _link(decks, decklist_sha256="a" * 64, version=5)
+    _lock(decks, 5, "b" * 64)
+    d = deck_link.drift("ldeck", "deckcheck")
+    assert not d["exact"] and d["in_sync"] and d["versions_behind"] == 0
+
+
+def test_a_link_behind_the_sleeved_list_says_so_in_one_sentence(decks):
+    _link(decks, decklist_sha256="a" * 64, version=3)
+    _lock(decks, 5, "b" * 64)
+    d = deck_link.drift("ldeck", "deckcheck")
+    assert d["in_sync"] is False and d["versions_behind"] == 2 and d["unknown"] is False
+    (line,) = deck_link.drift_lines("ldeck")
+    assert line.startswith("DeckCheck copy is V3, sleeved is V5 — ")
+    assert "deck-export ldeck --format moxfield" in line
+    assert "deck-link ldeck deckcheck <url>" in line
+
+
+def test_an_unlocked_deck_drifts_against_the_working_version(decks):
+    _link(decks, decklist_sha256="a" * 64, version=3)
+    d = deck_link.drift("ldeck", "deckcheck", current_version=4)
+    assert d["target"] == "list" and d["versions_behind"] == 1
+    (line,) = deck_link.drift_lines("ldeck", current_version=4)
+    assert "DeckCheck copy is V3, the list is V4" in line
+
+
+def test_an_unstamped_link_is_unknown_and_asks_for_a_relink_not_a_paste(decks):
+    _link(decks)                               # recorded before stamps existed
+    _lock(decks, 5, "b" * 64)
+    d = deck_link.drift("ldeck", "deckcheck")
+    assert d["in_sync"] is False and d["unknown"] is True and d["versions_behind"] == 0
+    (line,) = deck_link.drift_lines("ldeck")
+    assert "no version stamp" in line and "re-link" in line and DC_URL in line
+
+
+def test_drift_never_touches_the_network(decks, monkeypatch):
+    from manamap import net
+
+    def boom(*a, **k):
+        raise AssertionError("drift reached the network")
+    monkeypatch.setattr(net.SESSION, "request", boom, raising=False)
+    _link(decks, decklist_sha256="a" * 64, version=3)
+    _lock(decks, 5, "b" * 64)
+    assert deck_link.drift_lines("ldeck")

@@ -595,8 +595,11 @@ def main(args):
     print(f"\n  WROTE decklist.txt" + (f" · ran {' → '.join(ran)}" if ran else ""))
     for stage, why in r["skipped"].items():
         print(f"  skipped {stage}: {why}")
-    from manamap.pilot import deck_context
+    from manamap.pilot import deck_context, deck_link
     deck_context.print_list_change(deck_context.list_change(args.slug))
+    # A COPY ON ANOTHER SITE IS NOW BEHIND THIS LIST — said here, where the list
+    # moved, by the one helper every list-change site calls (2026-10-17).
+    deck_link.print_drift(args.slug)
     # SLEEVED STAYS ALLOWED: a check-in records what is physically in the
     # sleeves. But the lock still names the old version until it is moved.
     from manamap.pilot import deck_versions

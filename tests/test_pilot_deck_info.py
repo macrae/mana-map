@@ -530,3 +530,18 @@ def test_a_commander_deck_carries_no_format_key_and_still_offers_try(bare_deck, 
     assert "sim" in {t["stage"] for t in info["status"]["todo"]}
     deck_info._print(info)
     assert capsys.readouterr().out.splitlines()[0].startswith("INFODECK — Radagast of Rhosgobel · G ·")
+
+
+def test_next_names_a_copy_on_another_site_that_is_behind_the_sleeved_list(bare_deck):
+    """`links.json`'s stamp against the paper lock, files only — so `info.json`
+    stays network-free. No link, no line (absent means absent)."""
+    info = deck_info.compose(SLUG)
+    assert not any("copy is V" in n for n in info["next"])
+    (bare_deck / "links.json").write_text(json.dumps(
+        {"deckcheck": {"url": "https://deckcheck.co/deck/Q9", "id": "Q9",
+                       "as_of": "2026-10-17", "decklist_sha256": "a" * 64, "version": 3}}))
+    (bare_deck / "deck_versions.json").write_text(json.dumps(
+        {"slug": SLUG, "paper": {"version": 5, "decklist_sha256": "b" * 64, "sha": "abc",
+                                 "built_at": "2026-10-01", "note": ""}}))
+    info = deck_info.compose(SLUG)
+    assert any(n.startswith("DeckCheck copy is V3, sleeved is V5") for n in info["next"]), info["next"]

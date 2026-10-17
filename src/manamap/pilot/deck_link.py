@@ -133,6 +133,80 @@ def set_link(slug, service, url, note=None, today=None):
     return entry
 
 
+def drift(slug, service, *, paper=None, current_version=None):
+    """Is the copy on `service` behind the list that matters? None when no link.
+
+    THE TARGET is the paper lock when the deck is sleeved — the list in the
+    sleeves is the one the other site should show — else the working list.
+    IN SYNC BY VERSION, not by bytes: versions are content-keyed
+    (`deck_versions._version_key`), so a printing swap or a re-render stays
+    inside one version and is never drift. The byte sha is the fast path.
+    UNKNOWN is its own state: a link stamped before stamps existed, or a list
+    nobody has committed, has no version to compare, and that is "re-link",
+    not "behind" — absent means absent.
+
+    Files only (`links.json`, `decklist.txt`, `deck_versions.json`); git is
+    touched only when the deck is unlocked and `current_version` was not
+    supplied. Never the network.
+    """
+    entry = load(slug).get(service)
+    if not entry:
+        return None
+    from manamap.pilot import deck_versions
+    if paper is None:
+        paper = deck_versions.paper(slug)
+    if paper:
+        target, target_version = "sleeved", paper.get("version")
+        target_sha = paper.get("decklist_sha256")
+    else:
+        target, target_sha = "list", decklist_sha256(slug)
+        target_version = (current_version if current_version is not None
+                          else _version_of(slug, target_sha))
+    linked_sha, linked_version = entry.get("decklist_sha256"), entry.get("version")
+    from manamap.pilot.common import sha_matches
+    exact = sha_matches(linked_sha, target_sha)
+    known = linked_version is not None and target_version is not None
+    in_sync = exact or (known and linked_version == target_version)
+    return {"service": service, "label": SERVICES[service]["label"], "url": entry.get("url"),
+            "linked_version": linked_version, "linked_sha": linked_sha,
+            "target": target, "target_version": target_version, "target_sha": target_sha,
+            "exact": exact, "in_sync": in_sync,
+            "unknown": not in_sync and not known,
+            "versions_behind": (max(0, target_version - linked_version)
+                                if known and not in_sync else 0)}
+
+
+def drift_line(d, slug):
+    """One sentence for a drift record, or None when there is nothing to say."""
+    if not d or d["in_sync"]:
+        return None
+    label, service = d["label"], d["service"]
+    fix = (f"`manamap pilot deck-export {slug} --format moxfield`, paste it on {label}, "
+           f"then `manamap pilot deck-link {slug} {service} <url>`")
+    if d["unknown"]:
+        return (f"{label} link carries no version stamp — commit the list, then re-link: "
+                f"`manamap pilot deck-link {slug} {service} {d['url']}`")
+    where = "sleeved is" if d["target"] == "sleeved" else "the list is"
+    return (f"{label} copy is V{d['linked_version']}, {where} V{d['target_version']} — "
+            f"{fix}")
+
+
+def drift_lines(slug, **kw):
+    """Every linked service's drift sentence, sorted by service; [] when none."""
+    out = []
+    for service in sorted(load(slug)):
+        line = drift_line(drift(slug, service, **kw), slug)
+        if line:
+            out.append(line)
+    return out
+
+
+def print_drift(slug, indent="  ", **kw):
+    """Print the drift lines; silent when there is nothing to say."""
+    for line in drift_lines(slug, **kw):
+        print(f"{indent}{line}")
+
+
 def remove_link(slug, service):
     """Drop `service`'s link; True when there was one. The file goes with the last."""
     if service not in SERVICES:
