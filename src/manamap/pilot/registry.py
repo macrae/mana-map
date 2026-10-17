@@ -60,10 +60,11 @@ PILOT_STEPS = [
      "A deck's list as import text: --format moxfield (Commander:/Deck:/Sideboard:, `(SET) CN`, "
      "`*F*` — paste into Moxfield's import box), arena (no headers, blank line, sideboard) or plain"),
     ("deck-link", "manamap.pilot.deck_link",
-     "Record where a deck lives on another site, by hand: `moxfield <url> [--note]`, "
-     "`moxfield --remove`, `list` -> links.json"),
+     "Record where a deck lives on another site, by hand: `moxfield|deckcheck <url> [--note]`, "
+     "`<service> --remove`, `list` -> links.json, stamped with the list as pasted"),
     ("validate-links", "manamap.pilot.validate_links",
-     "Form-check links.json: known service, https on its host allow-list, id parsed from the url, as_of a date"),
+     "Form-check links.json: known service, https on its host allow-list, id parsed from the url, "
+     "as_of a date, the sha/version stamp well-formed"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("scenario-ab", "manamap.pilot.scenario_ab",
@@ -1450,9 +1451,11 @@ def add_pilot_parser(subparsers):
                              help="Write the text here (slug-scoped; a view, never tracked)")
         if name == "deck-link":
             cmd.add_argument("action", metavar="SERVICE|list",
-                             help="`moxfield` to set or --remove its link; `list` to show them")
+                             help="`moxfield` or `deckcheck` to set or --remove its link; "
+                                  "`list` to show them")
             cmd.add_argument("url", nargs="?", default=None,
-                             help="the deck's URL, e.g. https://moxfield.com/decks/<id>")
+                             help="the deck's URL, e.g. https://moxfield.com/decks/<id> "
+                                  "or https://deckcheck.co/deck/<id>")
             cmd.add_argument("--note", default=None, help="a line kept beside the link")
             cmd.add_argument("--remove", action="store_true",
                              help="drop this service's link (the file goes with the last)")

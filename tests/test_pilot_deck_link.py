@@ -13,8 +13,12 @@ from datetime import date
 import pytest
 
 from manamap.pilot import check_in, deck_link, deck_manifest, validate_links
+from manamap.pilot.common import list_sha256
 
 URL = "https://moxfield.com/decks/AbC_12-xyz"
+DC_URL = "https://deckcheck.co/deck/AbC_12-xyz"
+LIST = "1 Radagast of Rhosgobel *CMDR*\n1 Forest\n"
+SHA = list_sha256(LIST)       # the "what I pasted" stamp the fixture list earns
 
 
 @pytest.fixture
@@ -24,7 +28,7 @@ def decks(tmp_path, monkeypatch):
     monkeypatch.setattr("manamap.config.MANUALS_DIR", tmp_path / "manuals")
     d = root / "ldeck"
     d.mkdir(parents=True)
-    (d / "decklist.txt").write_text("1 Radagast of Rhosgobel *CMDR*\n1 Forest\n")
+    (d / "decklist.txt").write_text(LIST)
     (d / "cards.json").write_text(json.dumps({"cards": [
         {"name": "Radagast of Rhosgobel", "is_commander": True,
          "type_line": "Legendary Creature", "art_crop": "r.jpg"},
@@ -42,7 +46,8 @@ def test_write_list_and_remove(decks, capsys):
     e = deck_link.set_link("ldeck", "moxfield", URL + "/", note="the paper list",
                            today=date(2026, 10, 9))
     assert e == {"url": URL, "id": "AbC_12-xyz", "as_of": "2026-10-09",
-                 "note": "the paper list"}
+                 "note": "the paper list", "decklist_sha256": SHA}
+    assert "version" not in e, "no git here, so no version to stamp — absent, not 0"
     doc = json.loads((decks / "ldeck" / "links.json").read_text())
     assert doc == {"moxfield": e}
     assert validate_links.validate(doc) == []
@@ -88,6 +93,56 @@ def test_an_unknown_service_is_refused(decks):
         deck_link.set_link("ldeck", "archidekt", "https://archidekt.com/decks/1")
 
 
+# ── DeckCheck: the second service, through the same door ──────────────────
+
+@pytest.mark.parametrize("good", [DC_URL, DC_URL + "/", "https://www.deckcheck.co/deck/Q9",
+                                  "https://deckcheck.co/decks/Q9"])   # both path forms, until verified
+def test_a_deckcheck_link_is_recorded_like_moxfields(decks, good):
+    e = deck_link.set_link("ldeck", "deckcheck", good, today=date(2026, 10, 17))
+    assert e["id"] in ("AbC_12-xyz", "Q9") and e["decklist_sha256"] == SHA
+    doc = deck_link.load("ldeck")
+    assert set(doc) == {"deckcheck"} and validate_links.validate(doc) == []
+
+
+@pytest.mark.parametrize("bad", [
+    "http://deckcheck.co/deck/abc",               # not https
+    "https://deckcheck.co.evil.io/deck/abc",      # look-alike host
+    "https://deckcheck.co/users/abc",             # not a deck path
+    "https://deckcheck.co/deck/abc?x=1",          # a query string
+    URL,                                          # the OTHER service's URL
+])
+def test_a_bad_deckcheck_url_is_refused(decks, bad):
+    with pytest.raises(SystemExit, match="not a deckcheck deck URL.*deckcheck.co/deck/<id>"):
+        deck_link.set_link("ldeck", "deckcheck", bad)
+    assert not (decks / "ldeck" / "links.json").exists()
+
+
+def test_set_link_stamps_the_version_when_the_list_is_committed(tmp_path, monkeypatch):
+    """The stamp is the claim "this is what I pasted": the list's sha, and the
+    committed version that list IS. Re-introduce the gap by dropping the stamp
+    in `set_link` and `drift` has nothing to compare."""
+    import subprocess
+
+    from manamap.pilot import deck_history as dh
+
+    repo = tmp_path / "repo"
+    decks = repo / "data" / "decks"
+    d = decks / "ldeck"
+    d.mkdir(parents=True)
+    (d / "decklist.txt").write_text(LIST)
+    (d / "cards.json").write_text(json.dumps({"cards": [{"name": "Forest"}]}))
+    env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t",
+           "GIT_COMMITTER_EMAIL": "t@t", "HOME": str(tmp_path), "PATH": __import__("os").environ["PATH"]}
+    for cmd in (["git", "init", "-q"], ["git", "add", "."], ["git", "commit", "-q", "-m", "v1"]):
+        subprocess.run(cmd, cwd=repo, check=True, env=env)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    monkeypatch.setattr(dh, "_REPO_ROOT", repo)
+
+    e = deck_link.set_link("ldeck", "deckcheck", DC_URL, today=date(2026, 10, 17))
+    assert e["decklist_sha256"] == SHA and e["version"] == 1
+    assert validate_links.validate(deck_link.load("ldeck")) == []
+
+
 # ── the validator: one negative per rule ───────────────────────────────────
 
 GOOD = {"moxfield": {"url": URL, "id": "AbC_12-xyz", "as_of": "2026-10-09"}}
@@ -118,6 +173,10 @@ def _with(**kw):
     (_with(id="other"), "is not the id the url carries"),
     (_with(id="ab c"), r"does not match \[A-Za-z0-9_-\]\+"),
     (_with(as_of="9 Oct 2026"), "is not an ISO date"),
+    (_with(decklist_sha256="xyz"), "is not a sha256"),
+    (_with(version="3"), "is not a positive integer"),
+    (_with(version=0), "is not a positive integer"),
+    (_with(version=True), "is not a positive integer"),
 ])
 def test_validator_negatives(doc, needle):
     errors = validate_links.validate(doc)
@@ -144,7 +203,8 @@ def test_manifest_links_present_and_absent(decks):
 
     deck_link.set_link("ldeck", "moxfield", URL, today=date(2026, 10, 9))
     (e,) = deck_manifest.gather_entries()
-    assert e["links"] == {"moxfield": {"url": URL, "id": "AbC_12-xyz", "as_of": "2026-10-09"}}
+    assert e["links"] == {"moxfield": {"url": URL, "id": "AbC_12-xyz", "as_of": "2026-10-09",
+                                       "decklist_sha256": SHA}}
     doc = json.loads(deck_manifest.write_manifest([e]).read_text())
     assert doc["decks"][0]["links"]["moxfield"]["url"] == URL
 

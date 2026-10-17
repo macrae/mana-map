@@ -1,13 +1,16 @@
 """Pilot: form-check `links.json` — where a deck lives on other sites.
 
 FORM ONLY, NEVER REACHABILITY. Each key is a service `deck_link.SERVICES` knows; each
-value carries `url`, `id` and `as_of` (and an optional string `note`); the URL is
-https on the service's host allow-list and in its deck-URL form; the id matches
+value carries `url`, `id` and `as_of` (and an optional string `note`, and the
+optional "what I pasted" stamp `decklist_sha256` / `version`); the URL is https on
+the service's host allow-list and in its deck-URL form; the id matches
 `[A-Za-z0-9_-]+` and is the id the URL carries; `as_of` is an ISO date. Whether the
-deck behind the URL still exists is not checked and cannot be: Moxfield 403s every
-server-side request (docs/integrations.md), and a gate that needs the network is a
-gate that gets switched off.
+deck behind the URL still exists is not checked here and must not be: Moxfield 403s
+every server-side request and DeckCheck's read API is a separate, optional command
+(docs/integrations.md), and a gate that needs the network is a gate that gets
+switched off.
 """
+import re
 from datetime import date
 from urllib.parse import urlsplit
 
@@ -15,7 +18,12 @@ from manamap.pilot.common import deck_dir, load_json, report_errors
 from manamap.pilot.deck_link import ARTIFACT, ID_RE, SERVICES
 
 REQUIRED = ("url", "id", "as_of")
-ALLOWED = set(REQUIRED) | {"note"}
+#: `decklist_sha256` / `version` are the "what I pasted" stamp (2026-10-17):
+#: optional, because a link recorded before the stamp existed, or on an
+#: uncommitted list, carries none — and a missing stamp is reported by `drift`
+#: as "re-link", never invented.
+ALLOWED = set(REQUIRED) | {"note", "decklist_sha256", "version"}
+SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def validate(doc):
@@ -58,6 +66,13 @@ def validate(doc):
                 date.fromisoformat(str(entry["as_of"]))
             except (TypeError, ValueError):
                 errors.append(f"{service}.as_of {entry['as_of']!r} is not an ISO date")
+        if "decklist_sha256" in entry and not SHA_RE.match(str(entry["decklist_sha256"])):
+            errors.append(f"{service}.decklist_sha256 {entry['decklist_sha256']!r} "
+                          f"is not a sha256")
+        if "version" in entry:
+            v = entry["version"]
+            if isinstance(v, bool) or not isinstance(v, int) or v < 1:
+                errors.append(f"{service}.version {v!r} is not a positive integer")
     return errors
 
 

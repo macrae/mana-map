@@ -76,9 +76,10 @@ manamap pilot buy-list <slug> --branch N [--exact] [--out F] [--json]  # the bil
                                         #   footer `N cards to buy` + a figure only when prices.json sits beside the branch
 manamap pilot deck-export <slug> [--version V] [--branch B] [--format moxfield|arena|plain] [--out F]  # the list as import
                                         #   text: moxfield = decklist.txt's form (paste into Moxfield), arena, or plain `N Name`
-manamap pilot deck-link <slug> moxfield <url> [--note "…"] | moxfield --remove | list  # record by hand where the deck
-                                        #   lives on Moxfield -> links.json (form-checked; the manifest carries it)
-manamap pilot validate-links <slug>                      # links.json: known service, https on its hosts, id = url's, as_of a date
+manamap pilot deck-link <slug> moxfield|deckcheck <url> [--note "…"] | <service> --remove | list  # record by hand where
+                                        #   the deck lives -> links.json, STAMPED with the list as pasted (sha + version);
+                                        #   form-checked, never fetched; the manifest carries it; `drift` reads the stamp
+manamap pilot validate-links <slug>                      # links.json: known service, https on its hosts, id = url's, as_of a date, stamp well-formed
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed

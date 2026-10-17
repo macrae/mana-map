@@ -943,6 +943,18 @@ MANAPOOL_TOKEN_HEADER = "X-ManaPool-Access-Token"
 MANAPOOL_EMAIL_HEADER = "X-ManaPool-Email"
 MANAPOOL_FEED_TTL_S = 6 * 3600               # the feed moves daily; six hours is plenty
 SCRYFALL_PRICES_TTL_S = 24 * 3600            # Scryfall refreshes `prices` once a day
+
+# ── DeckCheck (`pilot/deck_link.py`, `pilot/deckcheck.py`; docs/integrations.md) ──
+# A READ-ONLY public API (2026-10-17, https://deckcheck.co/docs/api): `GET deck`
+# by `deck_id` or `deck_url` returns the deck's boards and its Threat Index (DTI)
+# as JSON, no key needed, rate-limited by IP; an optional key raises the limit.
+# There is no write endpoint, so publishing stays a paste (`deck-export`, then
+# `deck-link`), and this client only ever READS a deck back to compare it.
+DECKCHECK_API_BASE = "https://deckcheck.co/api/external/"
+DECKCHECK_DECK_PATH = "deck"                 # GET ?deck_id=<id> | ?deck_url=<url>
+DECKCHECK_TOKEN_ENV = "DECKCHECK_API_KEY"    # optional; `X-Api-Key`, by email from DeckCheck
+DECKCHECK_TOKEN_HEADER = "X-Api-Key"
+DECKCHECK_TTL_S = 15 * 60                    # one deck document; the pilot re-pastes rarely
 RESOLVE_MAX_ITERATIONS = 3
 
 # Scope budget for one stack artifact — advisory, and unlike the bound above it is
@@ -1386,6 +1398,11 @@ ENGINE_MAX_CLOSERS = 8
 # Enforced by the SKILL, not by deck_audit: the audit is deterministic and
 # never reads the clock, so it reports `as_of` verbatim and the caller judges.
 RECON_MAX_AGE_DAYS = 120
+# How old a DeckCheck Threat Index reading may be before the READ path says so
+# (`deck-info`'s next line, the deck page). Thirty, because the free tier is one
+# hand-run scan a day and a sleeved list moves on a merge. Applied by the read
+# path only, never by a gate — the same rule as `RECON_MAX_AGE_DAYS`.
+DECKCHECK_MAX_AGE_DAYS = 30
 
 # The diagnose loop's bound — doctor ⇄ skeptic, mirroring RESOLVE_MAX_ITERATIONS
 # and DECK_BUILD_MAX_ITERATIONS. A diagnosis that cannot satisfy the skeptic in
