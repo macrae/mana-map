@@ -80,6 +80,8 @@ manamap pilot deck-link <slug> moxfield|deckcheck <url> [--note "…"] | <servic
                                         #   the deck lives -> links.json, STAMPED with the list as pasted (sha + version);
                                         #   form-checked, never fetched; the manifest carries it; `drift` reads the stamp
 manamap pilot validate-links <slug>                      # links.json: known service, https on its hosts, id = url's, as_of a date, stamp well-formed
+manamap pilot deckcheck <slug> [--url U] [--text] [--json]  # read the DeckCheck copy back (public API, cached 15 min): is it
+                                        #   the sleeved list, which cards differ; `--text | check-in <slug> --from -` is the pull path
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed
@@ -876,6 +878,25 @@ hand-written, so not a lifecycle stage: absent means the deck is published nowhe
 `build-index` adds `links` to the deck's manifest entry only when the file exists. The other
 direction is the same paste: `check-in --from <url>` is refused with the sentence that says
 to export on Moxfield and paste into `--from -`.
+
+## DeckCheck (`deck-link … deckcheck`, `deckcheck`, 2026-10-17)
+
+DeckCheck (deckcheck.co) takes the same paste — its import box accepts `deck-export
+--format moxfield`'s text — and the pilot records the URL the same way, `deck-link <slug>
+deckcheck <url>`, so `links.json` carries both services. What DeckCheck adds is a public,
+**read-only** API (`docs/integrations.md`, "DeckCheck"), and `manamap pilot deckcheck
+<slug>` is the one command that uses it: it reads the copy back, renders it through
+`check_in.render_decklist`, and says whether it is the sleeved list — naming the cards to
+`pull` and `add` in copies — dated by the cache record the answer came from. Since
+2026-10-17 every link entry is also STAMPED with the list as pasted (`decklist_sha256`
+and the committed `version` it is), and `deck_link.drift` reads the stamp back offline:
+`check-in`, `save-version`, `merge`, `deck-version paper` and `deck-info`'s `next` each say
+"DeckCheck copy is V3, sleeved is V5 — export, paste, re-link" when the list moves, by
+VERSION, so a re-render or a printing swap is never drift, and a link with no stamp asks
+for a re-link rather than a paste. The pull path is a pipe, so nothing fetches inside
+`check-in`: `deckcheck <slug> --text | check-in <slug> --from -`; a DeckCheck URL handed
+to `check-in --from` is refused with that pipe named. Offline, private (403) and missing
+(404) each print one line and exit 1, writing nothing.
 
 ## Mining the corpus (`card-search`, tier ◆, computed on demand)
 

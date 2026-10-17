@@ -105,6 +105,42 @@ never written into the artifact: `validate-prices` refuses any `url` off `manapo
 `scryfall.com` or carrying a query string. One `@pytest.mark.network` test reads the live
 feed.
 
+## DeckCheck (read API + paste; `pilot/deckcheck.py`, 2026-10-17)
+
+**A public, read-only API — no key.** Read 2026-10-17 from `https://deckcheck.co/docs/api`:
+`GET https://deckcheck.co/api/external/deck?deck_id=<id>` (or `?deck_url=<url>`) returns
+the deck as JSON — `boards.commanders` / `boards.mainboard` keyed by `deckCardId`, each
+card with `quantity`, `isFoil` and a `card` carrying `name`, `setCode`, `collectorNumber`
+— beside `name`, `visibility`, `publicUrl`, `updatedAtUtc` and the Threat Index
+(`dti.score` 0–96, `dti.bracket`, twelve S–F `dti.benchmarks`). Rate-limited by IP; an
+optional `X-Api-Key` raises the limit and is handed out by email (`contact@deckcheck.co`).
+`/deck-search` needs a key. There is **no write endpoint**, and the terms forbid
+scraping, bulk download and browser automation beside the API — so publishing is the
+same paste as Moxfield's, and the client here only ever reads a copy back.
+
+`manamap pilot deckcheck <slug>` fetches the deck the recorded link names
+(`links.json`, `deck-link <slug> deckcheck <url>`; `--url` reads another), projects the
+boards to `fetch_deck.parse_decklist` entries, renders them with `check_in.render_decklist`
+and compares them with the working list — `pull` / `add` in copies, whether the copy IS the
+sleeved version — dated by the cache record it came from, never by the read. `--text`
+prints the list and nothing else, so `deckcheck <slug> --text | check-in <slug> --from -`
+is the pull path, every `check_in.analyze` refusal in front of it; `check-in --from <a
+deckcheck URL>` is refused with that pipe named. Config: `DECKCHECK_API_BASE`,
+`DECKCHECK_DECK_PATH`, `DECKCHECK_TTL_S` (15 min; `data/cache/deckcheck/`),
+`DECKCHECK_TOKEN_ENV` / `DECKCHECK_TOKEN_HEADER`. A private deck (403), a missing one
+(404) and `net.Offline` each print one line and exit 1 with nothing written. The URL
+host rule lives in `deck_link.SERVICES["deckcheck"]`; both `/deck/<id>` and `/decks/<id>`
+are accepted until the live `publicUrl` form is verified against one of the pilot's
+decks (the `@pytest.mark.network` test asserts it). The per-user fifteen-minute cache is a
+client's cache, not redistribution; nothing from DeckCheck is served to anyone else.
+
+Optional key, if one is ever issued:
+
+```bash
+security add-generic-password -a $USER -s manamap-deckcheck -w                  # once
+export DECKCHECK_API_KEY=$(security find-generic-password -a $USER -s manamap-deckcheck -w)
+```
+
 ## Moxfield (export + paste; 2026-10-09) — nothing on this client
 
 Moxfield is the one service the bench publishes to, and nothing in Python talks to it.

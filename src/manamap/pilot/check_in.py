@@ -69,10 +69,20 @@ def _is_basic(name):
 #: sentence for any host — a URL is never fetched here.
 URL_REFUSAL = ("Moxfield blocks server-side access; open the deck on Moxfield, Export → "
                "copy, then `manamap pilot check-in <slug> --from -` and paste")
+#: DeckCheck's deck IS readable (a public API) — through the bench's own client,
+#: never from inside check-in, so every refusal above still stands in front of it.
+DECKCHECK_REFUSAL = ("check-in never fetches a URL; DeckCheck's read API goes through the "
+                     "bench: `manamap pilot deckcheck <slug> --text | manamap pilot "
+                     "check-in <slug> --from -`")
 
 
 def read_list(path_or_dash):
-    if str(path_or_dash).strip().lower().startswith(("http://", "https://")):
+    src = str(path_or_dash).strip()
+    if src.lower().startswith(("http://", "https://")):
+        from urllib.parse import urlsplit
+        from manamap.pilot.deck_link import SERVICES
+        if urlsplit(src).hostname in SERVICES["deckcheck"]["hosts"]:
+            raise SystemExit(DECKCHECK_REFUSAL)
         raise SystemExit(URL_REFUSAL)
     if str(path_or_dash) == "-":
         return sys.stdin.read()

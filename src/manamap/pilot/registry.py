@@ -65,6 +65,9 @@ PILOT_STEPS = [
     ("validate-links", "manamap.pilot.validate_links",
      "Form-check links.json: known service, https on its host allow-list, id parsed from the url, "
      "as_of a date, the sha/version stamp well-formed"),
+    ("deckcheck", "manamap.pilot.deckcheck",
+     "Read the deck's DeckCheck copy back (public API, cached 15 min): is it the sleeved list, "
+     "which cards differ; --text prints it for `check-in --from -`"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("scenario-ab", "manamap.pilot.scenario_ab",
@@ -316,7 +319,7 @@ _DECK_COMMANDS = {
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints", "validate-protected",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
     "prices", "validate-prices",
-    "deck-export", "deck-link", "validate-links",
+    "deck-export", "deck-link", "validate-links", "deckcheck",
     "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
@@ -1394,6 +1397,13 @@ def add_pilot_parser(subparsers):
             # artifact is written beside whichever list it prices.
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="price a branch's list instead of the deck's")
+        if name == "deckcheck":
+            cmd.add_argument("--url", default=None,
+                             help="a DeckCheck deck URL to read instead of the recorded link")
+            cmd.add_argument("--text", action="store_true",
+                             help="print the copy as decklist.txt text and nothing else "
+                                  "(pipe into `check-in <slug> --from -`)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "prices":
             cmd.add_argument("--source", choices=("auto", "manapool", "scryfall"), default="auto",
                              help="auto: Mana Pool's public price feed (no token needed), "

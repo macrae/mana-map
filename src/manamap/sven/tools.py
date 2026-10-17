@@ -89,7 +89,9 @@ _DEPS = {
 #: exclusion is exactly what makes its answer uncacheable. Naming them is the
 #: honest resolution — the alternative is a cache that serves "the run is 40%
 #: done" an hour after it finished.
-VOLATILE = frozenset({"sim-progress", "deck-history", "cache-status"})
+VOLATILE = frozenset({"sim-progress", "deck-history", "cache-status",
+                      # true for one TTL of DeckCheck's cache, then not
+                      "deckcheck"})
 
 
 def readonly_commands():
