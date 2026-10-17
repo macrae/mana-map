@@ -22,7 +22,6 @@
       "prose"
     ],
     "invalid": [
-      "CONTEXT.md",
       "build_plan.json"
     ],
     "verified": true,
@@ -4162,9 +4161,6 @@
             "name": "Alhammarret's Archive"
           },
           {
-            "name": "Archangel of Thune"
-          },
-          {
             "name": "Campfire"
           },
           {
@@ -4189,9 +4185,6 @@
             "name": "Stormcarved Coast"
           },
           {
-            "name": "Talisman of Creativity"
-          },
-          {
             "name": "Torbran, Thane of Red Fell"
           },
           {
@@ -4205,12 +4198,6 @@
               "edgar-vampires",
               "gishath",
               "ur-dragon"
-            ]
-          },
-          {
-            "name": "Gleaming Splendor",
-            "where": [
-              "heliod"
             ]
           }
         ],
@@ -4231,34 +4218,31 @@
             ]
           }
         ],
-        "blocking": 15,
+        "blocking": 12,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 17,
-      "out": 17,
+      "add": 14,
+      "out": 14,
       "counts": {
-        "in_deck": 83,
+        "in_deck": 86,
         "box": 1,
-        "elsewhere": 2,
-        "buy": 13,
+        "elsewhere": 1,
+        "buy": 11,
         "free": 1
       },
       "unsourced": [
         "Alhammarret's Archive",
-        "Archangel of Thune",
         "Boros Charm",
         "Campfire",
         "Collective Defiance",
         "Command Beacon",
         "Fateful Showdown",
         "Frostboil Snarl",
-        "Gleaming Splendor",
         "Incendiary Command",
         "Lae'zel, Vlaakith's Champion",
         "Stormcarved Coast",
-        "Talisman of Creativity",
         "Torbran, Thane of Red Fell",
         "Training Center"
       ],
@@ -4285,13 +4269,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Archangel of Thune",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Arjun, the Shifting Flame",
@@ -4385,6 +4362,13 @@
         },
         {
           "name": "Cascade Bluffs",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Chasm Skulker",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -4515,21 +4499,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Gleaming Splendor",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -4679,6 +4648,13 @@
           "is_new": false
         },
         {
+          "name": "Mind's Eye",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Molten Psyche",
           "state": "in_deck",
           "where": [],
@@ -4708,6 +4684,13 @@
         },
         {
           "name": "Nimble Obstructionist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Nimbus Maze",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -4930,13 +4913,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Talisman of Creativity",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Talon Gates of Madara",
@@ -6102,10 +6078,10 @@
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (CONTEXT.md, build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief sharknado`",
-    "branch `torbran-v1` needs 15 card(s) sourced — `manamap pilot deck-branch sharknado source torbran-v1`",
+    "branch `torbran-v1` needs 12 card(s) sourced — `manamap pilot deck-branch sharknado source torbran-v1`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
