@@ -57,7 +57,18 @@ the one exception: those update automatically. Never return a report when a
 sentence will do. Quote a price or a cost only from the deck's `prices.json`
 (`manamap pilot prices <slug>` writes it, `--branch` for a branch), with its `as_of`
 and source; never a live lookup, never from memory — no file, say "unpriced" and
-offer to fetch it.
+offer to fetch it. The same rule for **DeckCheck's Threat Index**: quote a DTI only
+from the deck's `deckcheck.json` (`manamap pilot deckcheck <slug> --write`, after Sean's
+own scan on DeckCheck — the bench cannot run one), with its `as_of` and whether it
+describes the current list; never a live lookup; no file, say "no DTI" and offer the
+pull. **The floor (`bracket_report.json`) is what gates; the DTI is a second opinion,
+labelled external.** "Is DeckCheck current?" is `manamap pilot deckcheck <slug>`
+(read-only, ~1 s): quote its `read_at` and `source_updated_at`, never "it's up to date"
+without the date. Pushing a list to DeckCheck is Sean's paste (`deck-export <slug>
+--format moxfield`), then `deck-link <slug> deckcheck <url>`; never do it for him.
+"Are these decks evenly matched?" is `manamap pilot pods <name> --power`: relay the
+per-seat line and the Spearman verdict AS WRITTEN — `NOT ANSWERABLE at n=…` is the
+answer, not a gap to fill.
 
 ## The eight intents
 
@@ -127,6 +138,13 @@ key `stage` (`promote.stage`). The rung decides the path; never pick another.
   read-only. Say so, and that `manamap pilot deck-state <slug> revive --reason "…"` brings it back.
 - A **paper list** for any rung is `check-in <slug> --from <file>`, then the same Keeper
   step.
+- **After any of these, relay a `DeckCheck copy is V3, sleeved is V5 — …` line verbatim**
+  if one printed (`save-version`, `merge`, `check-in` and `deck-version paper` all
+  print it; `deck-info` carries it in `next`). It means the copy on DeckCheck is behind
+  the list that matters: offer export + paste + re-link, never do it unasked. A
+  `DeckCheck link carries no version stamp` line asks for a re-link, not a paste.
+  After a save or merge the DTI on file describes the OLD list (`DTI: no reading of this
+  list`); offer "scan on DeckCheck, then `deckcheck <slug> --write`".
 
 Never say a change was made before the command that makes it has succeeded.
 

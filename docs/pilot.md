@@ -902,6 +902,22 @@ for a re-link rather than a paste. The pull path is a pipe, so nothing fetches i
 to `check-in --from` is refused with that pipe named. Offline, private (403) and missing
 (404) each print one line and exit 1, writing nothing.
 
+**The Threat Index as evidence.** `deckcheck <slug> --write` records DeckCheck's DTI —
+the 0–96 score, the 1–5 bracket and the twelve S–F benchmark grades — as a dated reading
+in `deckcheck.json` (`docs/data-artifacts.md`), after a scan the pilot ran on DeckCheck
+(the bench cannot run one; the API is read-only). Readings are never edited or deleted:
+the read is an LLM's and moves between scans, so a rescan is a new reading and `omni` is
+the median over readings of the same list, labelled ours because DeckCheck's formula is
+unpublished. `floor_vs_dti` sets our stamped floor against their bracket; `dti_lower`
+reads "their copy is probably an older list", never a lowered floor. `--near K` lists the
+fleet's decks within ±K DTI points (file-only); `--history` prints every reading.
+`validate-deckcheck` gates the form and WARNs when the newest reading describes an older
+list; `deck-info`'s `next` says so from the files, and says "N days old" only on the read
+path (`--write` never reads the clock). The Deck Context's summary line, the deck page's
+panel and the workbench's `Floor · DTI` column quote it with its date. **The floor gates;
+the DTI never does.** `pods <name> --power` reads it per seat for a table
+(`docs/simulation.md`, "Table power").
+
 ## Mining the corpus (`card-search`, tier ◆, computed on demand)
 
 Every other command on the bench measures a deck; this is the only one that answers the

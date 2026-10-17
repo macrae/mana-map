@@ -136,6 +136,15 @@ git add … && git commit                                 # this is what mints t
 manamap pilot deck-version <slug> tag v1.0.2 && … paper # the tag, then the sleeves
 ```
 
+**Then publish the sleeved list** (2026-10-17): `manamap pilot deck-export <slug>
+--format moxfield`, paste it on DeckCheck (and Moxfield if you keep one), then
+`manamap pilot deck-link <slug> deckcheck <url>` — the link is stamped with the list as
+pasted, and from then on every list move prints `DeckCheck copy is V…, sleeved is V…`
+until you paste again. `deck-info <slug> --write && build-index` puts the link on the
+pages. Once you have run a scan on DeckCheck, `manamap pilot deckcheck <slug> --write`
+records its Threat Index as a dated reading beside our floor (`validate-deckcheck`
+gates the form); the floor still gates, the DTI never does.
+
 Then phase 1 again (commit → a new version), phase 2 (re-measure), and the log keeps
 going.
 

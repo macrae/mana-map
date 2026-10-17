@@ -635,6 +635,27 @@ game log.
   spec in 37 s and played in 20 s; the flag fired again (the AI held Mana Geyser in 9 of
   10), which is the AI-and-rituals limit `forge-cast-check` already knew.
 
+## Table power: is this table evenly matched? (`pods <name> --power`, 2026-10-17)
+
+The pod null above says who WINS at a table. `manamap pilot pods <name> --power` sets
+three readings of each seat's POWER side by side and never merges them: the bracket the
+pod file **types** (hand-written, and absent on the real `playgroup` table), our
+deterministic **floor** (`bracket.assess` — the stamped `bracket_report.json` for one of
+our decks, computed from the seat's `decklist.txt` for an opponent stand-in, or from the
+friend's real list when the seat carries a `deckcheck` URL), and **DeckCheck's Threat
+Index** (`deckcheck.json`'s latest reading for ours, dated and with its history; a
+`deckcheck` seat's read live, cached fifteen minutes and kept nowhere) — plus `share_of_fair`
+with its interval from `pods.calibration` where Forge has played the table. Flags name
+every disagreement (a typed bracket off the floor or the DTI; a DTI below the floor, which
+means their copy is probably an older list; a DTI that describes an older list or is past
+`DECKCHECK_MAX_AGE_DAYS`). `matched_within` is max − min DTI over the seats that have one,
+with the count that do not — the "evenly matched" figure, stated as a spread. The honest
+cell is Spearman(DTI, share of fair): reported only from `calibrate.MIN_DECKS` seats with
+both readings and `NOT ANSWERABLE at n=…` otherwise, so the view reports and never claims
+DTI predicts who dominates. First run (2026-10-17): `standard-v3`'s `jarad-graveyard` is
+typed B3 with a computed floor of B1, and no seat had a DTI yet. The floor gates; the DTI
+is dated external evidence and never does (`docs/pilot.md`, "DeckCheck").
+
 ## The spike: wrap Forge, or build our own?
 
 "Full and complete interaction" is a rules engine, and Magic's rules are not a weekend.
