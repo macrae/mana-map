@@ -3,11 +3,10 @@
 `test_pilot_manual_freshness` covers the rendered deck page. This covers the layer
 underneath it — the artifacts the page quotes figures from.
 
-The gap this closes is specific. `goldfish_metrics.json` and
-`mana_analysis.json` stamp the decklist they were built from, so a decklist edit
-is detectable and there are already staleness tests for it. **`bracket_report.json`
-stamps nothing at all** — `deck_audit.freshness` reports `current: null` for it
-for exactly that reason — so a bracket floor could silently outlive its deck.
+The gap this closes is specific. `goldfish_metrics.json`, `mana_analysis.json`
+and (since 2026-10-17) `bracket_report.json` stamp the decklist they were built
+from, so a decklist edit is detectable and there are staleness tests for it.
+Before the bracket stamped its list, a floor could silently outlive its deck.
 And no stamp of any kind catches the other direction: a change to `bracket.py`,
 `goldfish.py` or `mana_analysis.py` leaves every stamp valid while changing what
 the artifact should say. Four published manuals were stale for days on precisely

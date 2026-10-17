@@ -256,3 +256,31 @@ def test_the_printed_count_and_the_fleet_count_leave_the_n_a_rows_out(tmp_path, 
                         lambda slug: {"open": 0, "applied": 0, "partial": 0})
     fleet = {r["slug"]: r for r in deck_status.fleet()}
     assert fleet["elvesish"]["total"] == expected
+
+
+def test_a_bracket_built_against_another_list_reads_stale(tmp_path, monkeypatch):
+    """`bracket_report.json` stamps its list since 2026-10-17 and `STAGES` names
+    the stamp path, so a floor computed against last month's list is STALE and
+    not OK. Re-introduce the gap by setting the bracket row's `sha_path` back to
+    None and the row reads OK with a stamp naming another list."""
+    from manamap.pilot import deck_status
+
+    base = tmp_path / "decks" / "scratch"
+    base.mkdir(parents=True)
+    (base / "decklist.txt").write_text("1 Sol Ring\n")
+    (base / "cards.json").write_text(json.dumps(
+        {"decklist_sha256": "b" * 64, "cards": [{"name": "Sol Ring"}]}))
+    (base / "bracket_report.json").write_text(json.dumps(
+        {"decklist_sha256": "a" * 64, "floor": 1, "floor_name": "Exhibition",
+         "drivers": [], "slug": "scratch"}))
+    monkeypatch.setattr(deck_status, "deck_dir", lambda slug, branch=None: base)
+
+    rows = {r["stage"]: r for r in deck_status.status("scratch", validate=False)}
+    assert rows["bracket"]["state"] == "STALE", rows["bracket"]
+    # An unstamped report (written before the stamp existed) is not called
+    # stale — it says so instead.
+    (base / "bracket_report.json").write_text(json.dumps(
+        {"floor": 1, "floor_name": "Exhibition", "drivers": [], "slug": "scratch"}))
+    rows = {r["stage"]: r for r in deck_status.status("scratch", validate=False)}
+    assert rows["bracket"]["state"] != "STALE"
+    assert "unstamped" in rows["bracket"]["detail"]

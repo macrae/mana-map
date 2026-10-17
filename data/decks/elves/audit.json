@@ -52,13 +52,13 @@
         "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
         "per_colour": {
           "G": {
-            "have": 24,
+            "have": 26,
             "target": 22
           }
         },
         "short": {},
         "unit": "sources above target (worst colour)",
-        "value": 2
+        "value": 4
       },
       "target": {
         "deck_size": 60,
@@ -90,12 +90,12 @@
     },
     {
       "axis": "creatures",
-      "gap": -16,
+      "gap": -12,
       "measured": {
         "cards": [],
         "how": "front-face creature copies",
         "unit": "copies",
-        "value": 34
+        "value": 30
       },
       "target": {
         "high": 18,
@@ -112,7 +112,7 @@
         "cards": [],
         "how": "front-face creature copies — the section counts bodies for the second wave after a sweeper, not wincon roles",
         "unit": "copies",
-        "value": 34
+        "value": 30
       },
       "target": {
         "high": null,
@@ -157,11 +157,11 @@
       "axis": "curve",
       "gap": 0,
       "measured": {
-        "above_four": 1,
+        "above_four": 3,
         "cards": [],
         "how": "nonland copies by mana value (copies, not entries)",
         "nonland_copies": 44,
-        "one_and_two_drops": 35,
+        "one_and_two_drops": 31,
         "top_end": 8,
         "unit": "modal mana value",
         "value": 1
@@ -198,17 +198,17 @@
   "commander": [],
   "counts": {
     "copies": 60,
-    "entries": 15,
+    "entries": 20,
     "land_copies": 16,
     "lands": 1,
     "legendary": 0,
     "legendary_lands": 0,
     "legendary_permanents": 0,
-    "nonland": 14,
-    "nonlegendary": 15
+    "nonland": 19,
+    "nonlegendary": 20
   },
   "dead_searches": [],
-  "decklist_sha256_prefix": "85fbc7a45d33",
+  "decklist_sha256_prefix": "e953cadc4ac6",
   "engine": {
     "available": false,
     "reason": "no goldfish_targets.json — the deck has not declared what it is trying to assemble"
@@ -226,11 +226,11 @@
       },
       "mana_analysis.json": {
         "current": true,
-        "decklist_sha256": "85fbc7a45d33825c165c91f4465a24d9c79bca4f951673865b9a4aa2ce41f15d",
+        "decklist_sha256": "e953cadc4ac661134b9b6b72a3efc69f0f17c1c2fe63697b107d8c6f7b32123c",
         "present": true
       }
     },
-    "decklist_sha256": "85fbc7a45d33825c165c91f4465a24d9c79bca4f951673865b9a4aa2ce41f15d",
+    "decklist_sha256": "e953cadc4ac661134b9b6b72a3efc69f0f17c1c2fe63697b107d8c6f7b32123c",
     "recon": {
       "as_of": null,
       "present": false
@@ -252,11 +252,12 @@
     "Over target: creatures.",
     "Permanent class(es) with no answer detected: artifact, creature, enchantment, graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
     "No engine block: no goldfish_targets.json — the deck has not declared what it is trying to assemble. Authoring goldfish_targets.json is what makes the engine questions answerable at all.",
-    "Roles come from card_roles.json, which classifies 93.3% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
+    "Roles come from card_roles.json, which classifies 90.0% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
   ],
   "roles": {
-    "coverage": 0.9333,
+    "coverage": 0.9,
     "no_role": [
+      "Collected Company",
       "Utopia Sprawl"
     ]
   },

@@ -428,3 +428,27 @@ def test_no_deck_the_pilot_barred_contains_a_two_card_infinite():
             f"rule is that this deck wins without one — see the branch rationale "
             f"and CLAUDE.md. Cut the half that closed it.\n{blob[:400]}")
     assert checked >= 1, "the guard iterated nothing"
+
+
+def test_the_report_stamps_the_list_it_read(tmp_path, monkeypatch):
+    """Since 2026-10-17 the floor carries the measured list's sha, like every
+    other derived artifact, so `deck-status` can call it STALE. Re-introduce the
+    gap by dropping the `decklist_sha256` line in `bracket.main` and the first
+    assert fails. The corpus is stubbed: this proves the stamp, not the floor."""
+    import json
+
+    from manamap.pilot import bracket
+
+    base = tmp_path / "decks" / "scratch"
+    base.mkdir(parents=True)
+    (base / "cards.json").write_text(json.dumps(
+        {"deck": "scratch", "decklist_sha256": "c" * 64,
+         "cards": [{"name": "Sol Ring", "quantity": 1}]}))
+    monkeypatch.setattr("manamap.config.DECKS_DIR", tmp_path / "decks")
+    monkeypatch.setattr(bracket, "load_reference",
+                        lambda: (_flags(["Sol Ring"]), {}, _details(())))
+
+    bracket.main(type("Args", (), {"slug": "scratch", "branch": None})())
+    report = json.loads((base / "bracket_report.json").read_text())
+    assert report["decklist_sha256"] == "c" * 64
+    assert report["floor"] == 1 and report["slug"] == "scratch"

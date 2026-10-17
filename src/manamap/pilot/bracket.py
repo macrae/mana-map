@@ -270,6 +270,12 @@ def main(args):
     target = getattr(args, "target", None)
 
     report["slug"] = args.slug
+    # THE LIST IT READ (2026-10-17). Every other derived artifact stamps the
+    # measured sha so `deck-status` can call it STALE; this one did not, so a
+    # floor computed against last month's list read OK forever, and "our floor
+    # vs DeckCheck's bracket" would have compared a stale-checkable file with
+    # one nothing could check.
+    report["decklist_sha256"] = doc.get("decklist_sha256")
     out = deck_dir(args.slug, branch) / "bracket_report.json"
 
     # A deck's target bracket is a property of the DECK, not of this invocation.

@@ -11,7 +11,7 @@
       "measured": {
         "cards": [],
         "how": "land copies from deck-facts (copies, not entries)",
-        "land_entries": 32,
+        "land_entries": 33,
         "unit": "copies",
         "value": 36
       },
@@ -31,9 +31,9 @@
         "cards": [
           "Arcane Signet",
           "Ashnod's Altar",
-          "Legion's Landing // Adanto, the First Fort",
           "Master of Dark Rites",
-          "Patchwork Banner",
+          "Orzhov Signet",
+          "Rakdos Signet",
           "Sol Ring",
           "Talisman of Indulgence"
         ],
@@ -77,11 +77,9 @@
           "Minas Tirith",
           "Shattered Sanctum",
           "Smoldering Marsh",
-          "Spectator Seating",
-          "Sundown Pass",
           "Vault of Champions"
         ],
-        "conditional_or_shock": 12,
+        "conditional_or_shock": 10,
         "how": "land copies that enter tapped with no condition and no pay-life escape",
         "note": "mana_analysis.lands.enters_tapped is a substring superset and counts both groups together",
         "unit": "copies",
@@ -97,30 +95,27 @@
     },
     {
       "axis": "colour-sources",
-      "gap": 4,
+      "gap": 0,
       "measured": {
         "cards": [],
         "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
         "per_colour": {
           "B": {
-            "have": 32,
+            "have": 37,
             "target": 36
           },
           "R": {
-            "have": 20,
+            "have": 22,
             "target": 22
           },
           "W": {
-            "have": 24,
+            "have": 23,
             "target": 22
           }
         },
-        "short": {
-          "B": 4,
-          "R": 2
-        },
+        "short": {},
         "unit": "sources above target (worst colour)",
-        "value": -4
+        "value": 0
       },
       "target": {
         "formula": "karsten",
@@ -129,7 +124,7 @@
         "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%",
         "source": "strategy:deckbuilding.mana-base.color-sources"
       },
-      "verdict": "under"
+      "verdict": "at"
     },
     {
       "axis": "ramp",
@@ -139,9 +134,9 @@
           "Arcane Signet",
           "Ashnod's Altar",
           "Herald's Horn",
-          "Legion's Landing // Adanto, the First Fort",
           "Master of Dark Rites",
-          "Patchwork Banner",
+          "Orzhov Signet",
+          "Rakdos Signet",
           "Sol Ring",
           "Talisman of Indulgence"
         ],
@@ -159,31 +154,32 @@
     },
     {
       "axis": "card-advantage",
-      "gap": 3,
+      "gap": 2,
       "measured": {
         "cards": [
           "Caretaker's Talent",
+          "Cosmos Elixir",
           "Crossway Troublemakers",
-          "High-Society Hunter",
+          "Erebos, Bleak-Hearted",
           "Liliana, Dreadhorde General",
-          "Night's Whisper",
+          "Phyrexian Arena",
           "Skullclamp",
           "Welcoming Vampire"
         ],
         "how": "copies carrying any of draw:engine, draw:burst, draw:impulse, draw:wheel, draw:cantrip",
         "possible_uncounted": [
+          "Anje, Maid of Dishonor",
+          "Bloodtithe Harvester",
           "Bloodtracker",
           "Castle Locthwain",
-          "Champion of Dusk",
           "Midgar, City of Mako // Reactor Raid",
           "Minas Tirith",
           "Preacher of the Schism",
           "Savai Triome",
-          "Silent Clearing",
-          "Voldaren Epicure"
+          "Silent Clearing"
         ],
         "unit": "copies",
-        "value": 7
+        "value": 8
       },
       "target": {
         "high": null,
@@ -198,22 +194,21 @@
       "gap": 0,
       "measured": {
         "cards": [
-          "Altar of Dementia",
           "Anguished Unmaking",
           "Boros Charm",
           "Despark",
           "Elspeth, Storm Slayer",
+          "Erebos, Bleak-Hearted",
+          "Ingris Stingerquill",
           "Liliana, Dreadhorde General",
           "Path to Exile",
-          "Stroke of Midnight",
           "Vish Kal, Blood Arbiter",
-          "Voldaren Epicure",
           "Winds of Abandon"
         ],
         "how": "copies carrying any of removal:spot, removal:damage, removal:edict, removal:fight, removal:debuff, removal:bounce, removal:tax, counterspell, hate:graveyard",
-        "interactive_suite_copies": 17,
+        "interactive_suite_copies": 18,
         "unit": "copies",
-        "value": 11
+        "value": 10
       },
       "target": {
         "high": null,
@@ -225,12 +220,14 @@
     },
     {
       "axis": "sweepers",
-      "gap": 1,
+      "gap": 0,
       "measured": {
-        "cards": [],
+        "cards": [
+          "Olivia's Wrath"
+        ],
         "how": "copies carrying any of removal:sweeper",
         "unit": "copies",
-        "value": 0
+        "value": 1
       },
       "target": {
         "high": 3,
@@ -238,24 +235,26 @@
         "quote": "wipes \"one or two max\" (Zupke caps at 3)",
         "source": "strategy:deckbuilding.interaction-suite"
       },
-      "verdict": "under"
+      "verdict": "at"
     },
     {
       "axis": "protection",
-      "gap": 0,
+      "gap": -2,
       "measured": {
         "cards": [
           "Akroma's Will",
           "Boros Charm",
           "Deflecting Swat",
+          "Erebos, Bleak-Hearted",
+          "Falkenrath Aristocrat",
           "Flawless Maneuver",
-          "Mondrak, Glory Dominus",
+          "Strefan, Maurer Progenitor",
           "Teferi's Protection",
           "Yahenni, Undying Partisan"
         ],
         "how": "copies carrying any of protection:self, protection:granted, protection:fog, protection:redirect",
         "unit": "copies",
-        "value": 7
+        "value": 9
       },
       "target": {
         "high": 7,
@@ -263,7 +262,7 @@
         "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards",
         "source": "strategy:deckbuilding.threat-density"
       },
-      "verdict": "at"
+      "verdict": "over"
     },
     {
       "axis": "threat-density",
@@ -271,19 +270,24 @@
       "measured": {
         "cards": [
           "Akroma's Will",
+          "Anje, Maid of Dishonor",
           "Blood Artist",
           "Bloodthirsty Conqueror",
           "Boros Charm",
           "Cruel Celebrant",
+          "Edgar, Ancient Bloodlord",
+          "Exquisite Blood",
+          "Marauding Blight-Priest",
           "Sanctum Seeker",
           "Sanguine Bond",
-          "Vampire Cutthroat",
-          "Vampire Socialite",
-          "Vito, Thorn of the Dusk Rose"
+          "Tithe Drinker",
+          "Twilight Prophet",
+          "Vito, Thorn of the Dusk Rose",
+          "Wispdrinker Vampire"
         ],
         "how": "copies carrying any of wincon:alt, wincon:drain, wincon:combat",
         "unit": "copies",
-        "value": 10
+        "value": 15
       },
       "target": {
         "high": null,
@@ -300,7 +304,7 @@
         "cards": [],
         "how": "front-face creature copies",
         "unit": "copies",
-        "value": 37
+        "value": 34
       },
       "target": {
         "high": null,
@@ -315,9 +319,9 @@
       "gap": 2,
       "measured": {
         "by_class": {
-          "artifact": 3,
+          "artifact": 2,
           "creature": 11,
-          "enchantment": 3,
+          "enchantment": 2,
           "graveyard": 0,
           "land": 0
         },
@@ -348,9 +352,9 @@
       "measured": {
         "cards": [],
         "how": "goldfish land_drop_hit_rate_by_turn['3']",
-        "keep_first_seven_rate": 0.811,
+        "keep_first_seven_rate": 0.79,
         "unit": "rate",
-        "value": 0.919
+        "value": 0.906
       },
       "target": {
         "high": null,
@@ -368,8 +372,8 @@
         "how": "deck-facts curve (nonland entries)",
         "mana_value_8_plus": 0,
         "nonland_entries": 64,
-        "three_drops": 19,
-        "two_drops": 14,
+        "three_drops": 16,
+        "two_drops": 15,
         "unit": "modal mana value",
         "value": 3
       },
@@ -395,6 +399,8 @@
         "floor_name": "Optimized",
         "game_changers": [
           "Ancient Tomb",
+          "Demonic Tutor",
+          "Enlightened Tutor",
           "Teferi's Protection",
           "Vampiric Tutor"
         ],
@@ -415,11 +421,14 @@
       "gap": 0,
       "measured": {
         "cards": [
+          "Demonic Tutor",
+          "Diabolic Intent",
+          "Enlightened Tutor",
           "Vampiric Tutor"
         ],
         "how": "copies carrying tutor:unrestricted or tutor:narrow",
         "unit": "copies",
-        "value": 1
+        "value": 4
       },
       "target": {
         "high": null,
@@ -435,17 +444,17 @@
   ],
   "counts": {
     "copies": 100,
-    "entries": 96,
+    "entries": 97,
     "land_copies": 36,
-    "lands": 32,
-    "legendary": 14,
+    "lands": 33,
+    "legendary": 17,
     "legendary_lands": 2,
-    "legendary_permanents": 14,
+    "legendary_permanents": 17,
     "nonland": 64,
-    "nonlegendary": 82
+    "nonlegendary": 80
   },
   "dead_searches": [],
-  "decklist_sha256_prefix": "7be137d0bfeb",
+  "decklist_sha256_prefix": "cbf7fb66030d",
   "engine": {
     "available": true,
     "redundancy_citation": {
@@ -456,104 +465,12 @@
       {
         "component": {
           "cards": [
-            "Bloodthirsty Conqueror"
+            "Sanctum Seeker"
           ],
           "closers": {
             "available": true,
-            "by_combo_line": [
-              {
-                "cards": [
-                  "Exquisite Blood",
-                  "Sanguine Bond"
-                ],
-                "name": "Exquisite Blood",
-                "popularity": 128280,
-                "produces": [
-                  "Infinite lifegain triggers",
-                  "Infinite lifeloss",
-                  "Infinite lifegain"
-                ],
-                "status": "needs a stack scenario"
-              },
-              {
-                "cards": [
-                  "Vito, Thorn of the Dusk Rose",
-                  "Blood Tribute"
-                ],
-                "name": "Blood Tribute",
-                "popularity": 15468,
-                "produces": [
-                  "Target opponent loses the game",
-                  "Infinite lifeloss for target opponent"
-                ],
-                "status": "needs a stack scenario"
-              },
-              {
-                "cards": [
-                  "Beacon of Immortality",
-                  "Sanguine Bond"
-                ],
-                "name": "Beacon of Immortality",
-                "popularity": 15317,
-                "produces": [
-                  "Target opponent loses the game"
-                ],
-                "status": "needs a stack scenario"
-              },
-              {
-                "cards": [
-                  "Vito, Thorn of the Dusk Rose",
-                  "Revival // Revenge"
-                ],
-                "name": "Revival // Revenge",
-                "popularity": 12365,
-                "produces": [
-                  "Near-infinite lifegain",
-                  "Near-infinite lifeloss for up to two target opponents"
-                ],
-                "status": "needs a stack scenario"
-              },
-              {
-                "cards": [
-                  "Vito, Thorn of the Dusk Rose",
-                  "Shard of the Nightbringer"
-                ],
-                "name": "Shard of the Nightbringer",
-                "popularity": 7694,
-                "produces": [
-                  "Infinite lifeloss for target opponent",
-                  "Target opponent loses the game"
-                ],
-                "status": "needs a stack scenario"
-              },
-              {
-                "cards": [
-                  "Enduring Angel // Angelic Enforcer",
-                  "Sanguine Bond"
-                ],
-                "name": "Enduring Angel // Angelic Enforcer",
-                "popularity": 1085,
-                "produces": [
-                  "Near-infinite lifegain",
-                  "Near-infinite lifeloss for target opponent"
-                ],
-                "status": "needs a stack scenario"
-              },
-              {
-                "cards": [
-                  "Volcano Hellion",
-                  "Vito, Thorn of the Dusk Rose"
-                ],
-                "name": "Volcano Hellion",
-                "popularity": 87,
-                "produces": [
-                  "Infinite lifegain",
-                  "Infinite lifeloss for target opponent"
-                ],
-                "status": "needs a stack scenario"
-              }
-            ],
-            "by_combo_line_total": 7,
+            "by_combo_line": [],
+            "by_combo_line_total": 0,
             "by_role": [],
             "by_role_total": 0,
             "note": "No role and no axis is shared by two or more members, so this component has no signature and only the combo route ran. That is the normal case for a named combo half.",
@@ -573,13 +490,13 @@
           "thinnest": true
         },
         "measured": {
-          "assembled_rate": 0.078,
-          "assembled_rate_assisted": 0.151,
-          "by_turn_6_rate": 0.034,
-          "by_turn_6_rate_assisted": 0.069,
-          "mean_turn": 6.385
+          "assembled_rate": 0.203,
+          "assembled_rate_assisted": 0.659,
+          "by_turn_6_rate": 0.132,
+          "by_turn_6_rate_assisted": 0.483,
+          "mean_turn": 4.561
         },
-        "target": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half"
+        "target": "A Vampire lord or anthem drawn (the combat plan)"
       },
       {
         "component": {
@@ -609,11 +526,11 @@
           "thinnest": true
         },
         "measured": {
-          "assembled_rate": 0.041,
-          "assembled_rate_assisted": 0.094,
-          "by_turn_6_rate": 0.016,
-          "by_turn_6_rate_assisted": 0.04,
-          "mean_turn": 6.707
+          "assembled_rate": 0.039,
+          "assembled_rate_assisted": 0.322,
+          "by_turn_6_rate": 0.017,
+          "by_turn_6_rate_assisted": 0.16,
+          "mean_turn": 6.274
         },
         "target": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source"
       }
@@ -634,7 +551,7 @@
               "by_role": [
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 38,
+                  "edhrec_rank": 41,
                   "game_changer": false,
                   "name": "Solemn Simulacrum",
                   "signature": "threat:body",
@@ -642,7 +559,7 @@
                 },
                 {
                   "cmc": 1.0,
-                  "edhrec_rank": 76,
+                  "edhrec_rank": 80,
                   "game_changer": false,
                   "name": "Esper Sentinel",
                   "signature": "threat:body",
@@ -650,7 +567,7 @@
                 },
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 132,
+                  "edhrec_rank": 133,
                   "game_changer": false,
                   "name": "Roaming Throne",
                   "signature": "threat:body",
@@ -658,7 +575,7 @@
                 },
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 205,
+                  "edhrec_rank": 196,
                   "game_changer": false,
                   "name": "Storm-Kiln Artist",
                   "signature": "threat:body",
@@ -666,7 +583,7 @@
                 },
                 {
                   "cmc": 3.0,
-                  "edhrec_rank": 210,
+                  "edhrec_rank": 207,
                   "game_changer": false,
                   "name": "Professional Face-Breaker",
                   "signature": "threat:body",
@@ -674,7 +591,7 @@
                 },
                 {
                   "cmc": 2.0,
-                  "edhrec_rank": 220,
+                  "edhrec_rank": 221,
                   "game_changer": false,
                   "name": "Ornithopter of Paradise",
                   "signature": "threat:body",
@@ -682,7 +599,7 @@
                 },
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 226,
+                  "edhrec_rank": 224,
                   "game_changer": false,
                   "name": "Pitiless Plunderer",
                   "signature": "threat:body",
@@ -690,14 +607,14 @@
                 },
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 228,
+                  "edhrec_rank": 232,
                   "game_changer": false,
                   "name": "Mirkwood Bats",
                   "signature": "threat:body",
                   "type_line": "Creature — Bat"
                 }
               ],
-              "by_role_total": 9682,
+              "by_role_total": 9775,
               "note": null,
               "role_signature": "threat:body",
               "role_signature_kind": "role"
@@ -722,11 +639,11 @@
         ],
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
         "measured": {
-          "assembled_rate": 0.372,
-          "assembled_rate_assisted": 0.482,
-          "by_turn_6_rate": 0.252,
-          "by_turn_6_rate_assisted": 0.343,
-          "mean_turn": 4.305
+          "assembled_rate": 0.367,
+          "assembled_rate_assisted": 0.726,
+          "by_turn_6_rate": 0.253,
+          "by_turn_6_rate_assisted": 0.555,
+          "mean_turn": 4.218
         },
         "thinnest_size": 2
       },
@@ -736,183 +653,79 @@
           {
             "cards": [
               "Anointed Procession",
-              "Mondrak, Glory Dominus",
-              "Elspeth, Storm Slayer",
-              "Mavren Fein, Dusk Apostle",
-              "Charismatic Conqueror"
+              "Elspeth, Storm Slayer"
             ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [],
+              "by_combo_line_total": 0,
+              "by_role": [
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 429,
+                  "game_changer": false,
+                  "name": "Mondrak, Glory Dominus",
+                  "signature": "doubler:tokens",
+                  "type_line": "Legendary Creature — Phyrexian Horror"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 1316,
+                  "game_changer": false,
+                  "name": "Exalted Sunborn",
+                  "signature": "doubler:tokens",
+                  "type_line": "Creature — Angel Wizard"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 4510,
+                  "game_changer": false,
+                  "name": "Kaya, Geist Hunter",
+                  "signature": "doubler:tokens",
+                  "type_line": "Legendary Planeswalker — Kaya"
+                }
+              ],
+              "by_role_total": 3,
+              "note": null,
+              "role_signature": "doubler:tokens",
+              "role_signature_kind": "role"
+            },
             "modal_role": "doubler:tokens",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.386,
-              "opening_seven": 0.312
+              "by_turn_three": 0.174,
+              "opening_seven": 0.137
             },
             "shared_axes": [],
             "shared_roles": [
-              "doubler:tokens",
-              "threat:body",
-              "threat:tokens"
+              "doubler:tokens"
             ],
-            "size": 5,
-            "thin": false,
+            "size": 2,
+            "thin": true,
             "thinnest": true
           }
         ],
         "label": "A token multiplier or extra token-maker drawn",
         "measured": {
-          "assembled_rate": 0.679,
-          "assembled_rate_assisted": 0.739,
-          "by_turn_6_rate": 0.518,
-          "by_turn_6_rate_assisted": 0.579,
-          "mean_turn": 3.601
+          "assembled_rate": 0.368,
+          "assembled_rate_assisted": 0.732,
+          "by_turn_6_rate": 0.255,
+          "by_turn_6_rate_assisted": 0.563,
+          "mean_turn": 4.314
         },
-        "thinnest_size": 5
+        "thinnest_size": 2
       },
       {
         "commander_gated": false,
         "components": [
           {
             "cards": [
-              "Legion Lieutenant",
-              "Stromkirk Captain",
-              "Captivating Vampire",
-              "Sanctum Seeker",
-              "Vampire Socialite",
-              "Cordial Vampire",
-              "Drana, Liberator of Malakir"
-            ],
-            "modal_role": "threat:body",
-            "not_in_deck": [],
-            "odds": {
-              "by_turn_three": 0.498,
-              "opening_seven": 0.412
-            },
-            "shared_axes": [
-              "threat-density"
-            ],
-            "shared_roles": [
-              "threat:body",
-              "buff:pump",
-              "buff:counters"
-            ],
-            "size": 7,
-            "thin": false,
-            "thinnest": true
-          }
-        ],
-        "label": "A Vampire lord or anthem drawn (the combat plan)",
-        "measured": {
-          "assembled_rate": 0.8,
-          "assembled_rate_assisted": 0.84,
-          "by_turn_6_rate": 0.649,
-          "by_turn_6_rate_assisted": 0.697,
-          "mean_turn": 3.167
-        },
-        "thinnest_size": 7
-      },
-      {
-        "commander_gated": false,
-        "components": [
-          {
-            "cards": [
-              "Bloodthirsty Conqueror"
+              "Sanctum Seeker"
             ],
             "closers": {
               "available": true,
-              "by_combo_line": [
-                {
-                  "cards": [
-                    "Exquisite Blood",
-                    "Sanguine Bond"
-                  ],
-                  "name": "Exquisite Blood",
-                  "popularity": 128280,
-                  "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Vito, Thorn of the Dusk Rose",
-                    "Blood Tribute"
-                  ],
-                  "name": "Blood Tribute",
-                  "popularity": 15468,
-                  "produces": [
-                    "Target opponent loses the game",
-                    "Infinite lifeloss for target opponent"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Beacon of Immortality",
-                    "Sanguine Bond"
-                  ],
-                  "name": "Beacon of Immortality",
-                  "popularity": 15317,
-                  "produces": [
-                    "Target opponent loses the game"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Vito, Thorn of the Dusk Rose",
-                    "Revival // Revenge"
-                  ],
-                  "name": "Revival // Revenge",
-                  "popularity": 12365,
-                  "produces": [
-                    "Near-infinite lifegain",
-                    "Near-infinite lifeloss for up to two target opponents"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Vito, Thorn of the Dusk Rose",
-                    "Shard of the Nightbringer"
-                  ],
-                  "name": "Shard of the Nightbringer",
-                  "popularity": 7694,
-                  "produces": [
-                    "Infinite lifeloss for target opponent",
-                    "Target opponent loses the game"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Enduring Angel // Angelic Enforcer",
-                    "Sanguine Bond"
-                  ],
-                  "name": "Enduring Angel // Angelic Enforcer",
-                  "popularity": 1085,
-                  "produces": [
-                    "Near-infinite lifegain",
-                    "Near-infinite lifeloss for target opponent"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Volcano Hellion",
-                    "Vito, Thorn of the Dusk Rose"
-                  ],
-                  "name": "Volcano Hellion",
-                  "popularity": 87,
-                  "produces": [
-                    "Infinite lifegain",
-                    "Infinite lifeloss for target opponent"
-                  ],
-                  "status": "needs a stack scenario"
-                }
-              ],
-              "by_combo_line_total": 7,
+              "by_combo_line": [],
+              "by_combo_line_total": 0,
               "by_role": [],
               "by_role_total": 0,
               "note": "No role and no axis is shared by two or more members, so this component has no signature and only the combo route ran. That is the normal case for a named combo half.",
@@ -930,132 +743,113 @@
             "size": 1,
             "thin": true,
             "thinnest": true
-          },
+          }
+        ],
+        "label": "A Vampire lord or anthem drawn (the combat plan)",
+        "measured": {
+          "assembled_rate": 0.203,
+          "assembled_rate_assisted": 0.659,
+          "by_turn_6_rate": 0.132,
+          "by_turn_6_rate_assisted": 0.483,
+          "mean_turn": 4.561
+        },
+        "thinnest_size": 1
+      },
+      {
+        "commander_gated": false,
+        "components": [
           {
             "cards": [
-              "Vito, Thorn of the Dusk Rose",
-              "Sanguine Bond"
+              "Bloodthirsty Conqueror",
+              "Exquisite Blood"
             ],
             "closers": {
               "available": true,
               "by_combo_line": [
                 {
                   "cards": [
-                    "Bloodthirsty Conqueror",
-                    "Enduring Tenacity"
+                    "Vito, Thorn of the Dusk Rose",
+                    "Beacon of Immortality"
                   ],
-                  "name": "Enduring Tenacity",
-                  "popularity": 43212,
+                  "name": "Beacon of Immortality",
+                  "popularity": 17644,
                   "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
+                    "Near-infinite lifegain",
+                    "Near-infinite lifeloss for target opponent"
                   ],
                   "status": "needs a stack scenario"
                 },
                 {
                   "cards": [
-                    "Bloodthirsty Conqueror",
-                    "Marauding Blight-Priest"
+                    "Vito, Thorn of the Dusk Rose",
+                    "Blood Tribute"
                   ],
-                  "name": "Marauding Blight-Priest",
-                  "popularity": 33935,
+                  "name": "Blood Tribute",
+                  "popularity": 17069,
                   "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
+                    "Target opponent loses the game",
+                    "Infinite lifeloss for target opponent"
                   ],
                   "status": "needs a stack scenario"
                 },
                 {
                   "cards": [
-                    "Aetherflux Reservoir",
-                    "Bloodthirsty Conqueror"
+                    "Sanguine Bond",
+                    "Revival // Revenge"
                   ],
-                  "name": "Aetherflux Reservoir",
-                  "popularity": 25363,
+                  "name": "Revival // Revenge",
+                  "popularity": 13413,
                   "produces": [
-                    "Infinite damage",
-                    "Infinite lifegain triggers"
+                    "Near-infinite lifegain",
+                    "Near-infinite lifeloss for up to two target opponents"
                   ],
                   "status": "needs a stack scenario"
                 },
                 {
                   "cards": [
-                    "Bloodthirsty Conqueror",
-                    "Starscape Cleric"
+                    "Vito, Thorn of the Dusk Rose",
+                    "Shard of the Nightbringer"
                   ],
-                  "name": "Starscape Cleric",
-                  "popularity": 15540,
+                  "name": "Shard of the Nightbringer",
+                  "popularity": 7921,
                   "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
+                    "Infinite lifeloss for target opponent",
+                    "Target opponent loses the game"
                   ],
                   "status": "needs a stack scenario"
                 },
                 {
                   "cards": [
-                    "Bloodthirsty Conqueror",
-                    "Cliffhaven Vampire"
+                    "Enduring Angel // Angelic Enforcer",
+                    "Sanguine Bond"
                   ],
-                  "name": "Cliffhaven Vampire",
-                  "popularity": 7112,
+                  "name": "Enduring Angel // Angelic Enforcer",
+                  "popularity": 1218,
                   "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
+                    "Near-infinite lifegain",
+                    "Near-infinite lifeloss for target opponent"
                   ],
                   "status": "needs a stack scenario"
                 },
                 {
                   "cards": [
-                    "Bloodthirsty Conqueror",
-                    "Defiant Bloodlord"
+                    "Volcano Hellion",
+                    "Vito, Thorn of the Dusk Rose"
                   ],
-                  "name": "Defiant Bloodlord",
-                  "popularity": 6209,
+                  "name": "Volcano Hellion",
+                  "popularity": 112,
                   "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Bloodthirsty Conqueror",
-                    "Vizkopa Guildmage"
-                  ],
-                  "name": "Vizkopa Guildmage",
-                  "popularity": 5530,
-                  "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Bloodthirsty Conqueror",
-                    "Epicure of Blood"
-                  ],
-                  "name": "Epicure of Blood",
-                  "popularity": 4249,
-                  "produces": [
-                    "Infinite lifegain triggers",
-                    "Infinite lifeloss",
-                    "Infinite lifegain"
+                    "Infinite lifegain",
+                    "Infinite lifeloss for target opponent"
                   ],
                   "status": "needs a stack scenario"
                 }
               ],
-              "by_combo_line_total": 9,
+              "by_combo_line_total": 6,
               "by_role": [
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 228,
+                  "edhrec_rank": 232,
                   "game_changer": false,
                   "name": "Mirkwood Bats",
                   "signature": "wincon:drain",
@@ -1063,7 +857,7 @@
                 },
                 {
                   "cmc": 2.0,
-                  "edhrec_rank": 234,
+                  "edhrec_rank": 235,
                   "game_changer": false,
                   "name": "Zulaport Cutthroat",
                   "signature": "wincon:drain",
@@ -1078,24 +872,24 @@
                   "type_line": "Creature — Zombie"
                 },
                 {
-                  "cmc": 6.0,
-                  "edhrec_rank": 265,
-                  "game_changer": true,
-                  "name": "Bolas's Citadel",
-                  "signature": "wincon:drain",
-                  "type_line": "Legendary Artifact"
-                },
-                {
                   "cmc": 2.0,
-                  "edhrec_rank": 282,
+                  "edhrec_rank": 273,
                   "game_changer": false,
                   "name": "Exsanguinate",
                   "signature": "wincon:drain",
                   "type_line": "Sorcery"
                 },
                 {
+                  "cmc": 6.0,
+                  "edhrec_rank": 275,
+                  "game_changer": true,
+                  "name": "Bolas's Citadel",
+                  "signature": "wincon:drain",
+                  "type_line": "Legendary Artifact"
+                },
+                {
                   "cmc": 3.0,
-                  "edhrec_rank": 291,
+                  "edhrec_rank": 298,
                   "game_changer": false,
                   "name": "Braids, Arisen Nightmare",
                   "signature": "wincon:drain",
@@ -1103,7 +897,7 @@
                 },
                 {
                   "cmc": 3.0,
-                  "edhrec_rank": 333,
+                  "edhrec_rank": 331,
                   "game_changer": false,
                   "name": "Bastion of Remembrance",
                   "signature": "wincon:drain",
@@ -1111,14 +905,14 @@
                 },
                 {
                   "cmc": 5.0,
-                  "edhrec_rank": 442,
+                  "edhrec_rank": 431,
                   "game_changer": false,
                   "name": "Psychosis Crawler",
                   "signature": "wincon:drain",
                   "type_line": "Artifact Creature — Phyrexian Horror"
                 }
               ],
-              "by_role_total": 545,
+              "by_role_total": 544,
               "note": null,
               "role_signature": "wincon:drain",
               "role_signature_kind": "role"
@@ -1137,18 +931,228 @@
             ],
             "size": 2,
             "thin": true,
+            "thinnest": true
+          },
+          {
+            "cards": [
+              "Vito, Thorn of the Dusk Rose",
+              "Sanguine Bond",
+              "Marauding Blight-Priest"
+            ],
+            "closers": {
+              "available": true,
+              "by_combo_line": [
+                {
+                  "cards": [
+                    "Enduring Tenacity",
+                    "Bloodthirsty Conqueror"
+                  ],
+                  "name": "Enduring Tenacity",
+                  "popularity": 62151,
+                  "produces": [
+                    "Infinite lifegain triggers",
+                    "Infinite lifeloss",
+                    "Infinite lifegain"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Aetherflux Reservoir",
+                    "Bloodthirsty Conqueror"
+                  ],
+                  "name": "Aetherflux Reservoir",
+                  "popularity": 36673,
+                  "produces": [
+                    "Infinite damage",
+                    "Infinite lifegain triggers"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Starscape Cleric",
+                    "Bloodthirsty Conqueror"
+                  ],
+                  "name": "Starscape Cleric",
+                  "popularity": 22496,
+                  "produces": [
+                    "Infinite lifegain triggers",
+                    "Infinite lifeloss",
+                    "Infinite lifegain"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Cliffhaven Vampire",
+                    "Bloodthirsty Conqueror"
+                  ],
+                  "name": "Cliffhaven Vampire",
+                  "popularity": 9870,
+                  "produces": [
+                    "Infinite lifegain triggers",
+                    "Infinite lifeloss",
+                    "Infinite lifegain"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Defiant Bloodlord",
+                    "Bloodthirsty Conqueror"
+                  ],
+                  "name": "Defiant Bloodlord",
+                  "popularity": 8463,
+                  "produces": [
+                    "Infinite lifegain triggers",
+                    "Infinite lifeloss",
+                    "Infinite lifegain"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Vizkopa Guildmage",
+                    "Bloodthirsty Conqueror"
+                  ],
+                  "name": "Vizkopa Guildmage",
+                  "popularity": 7555,
+                  "produces": [
+                    "Infinite lifegain triggers",
+                    "Infinite lifeloss",
+                    "Infinite lifegain"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Epicure of Blood",
+                    "Bloodthirsty Conqueror"
+                  ],
+                  "name": "Epicure of Blood",
+                  "popularity": 5742,
+                  "produces": [
+                    "Infinite lifegain triggers",
+                    "Infinite lifeloss",
+                    "Infinite lifegain"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Bloodthirsty Conqueror",
+                    "South Wind Avatar"
+                  ],
+                  "name": "South Wind Avatar",
+                  "popularity": 4042,
+                  "produces": [
+                    "Infinite lifegain",
+                    "Infinite lifegain triggers",
+                    "Infinite lifeloss"
+                  ],
+                  "status": "needs a stack scenario"
+                }
+              ],
+              "by_combo_line_total": 8,
+              "by_role": [
+                {
+                  "cmc": 4.0,
+                  "edhrec_rank": 232,
+                  "game_changer": false,
+                  "name": "Mirkwood Bats",
+                  "signature": "wincon:drain",
+                  "type_line": "Creature — Bat"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 235,
+                  "game_changer": false,
+                  "name": "Zulaport Cutthroat",
+                  "signature": "wincon:drain",
+                  "type_line": "Creature — Human Rogue Ally"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 244,
+                  "game_changer": false,
+                  "name": "Gray Merchant of Asphodel",
+                  "signature": "wincon:drain",
+                  "type_line": "Creature — Zombie"
+                },
+                {
+                  "cmc": 2.0,
+                  "edhrec_rank": 273,
+                  "game_changer": false,
+                  "name": "Exsanguinate",
+                  "signature": "wincon:drain",
+                  "type_line": "Sorcery"
+                },
+                {
+                  "cmc": 6.0,
+                  "edhrec_rank": 275,
+                  "game_changer": true,
+                  "name": "Bolas's Citadel",
+                  "signature": "wincon:drain",
+                  "type_line": "Legendary Artifact"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 298,
+                  "game_changer": false,
+                  "name": "Braids, Arisen Nightmare",
+                  "signature": "wincon:drain",
+                  "type_line": "Legendary Creature — Nightmare"
+                },
+                {
+                  "cmc": 3.0,
+                  "edhrec_rank": 331,
+                  "game_changer": false,
+                  "name": "Bastion of Remembrance",
+                  "signature": "wincon:drain",
+                  "type_line": "Enchantment"
+                },
+                {
+                  "cmc": 5.0,
+                  "edhrec_rank": 431,
+                  "game_changer": false,
+                  "name": "Psychosis Crawler",
+                  "signature": "wincon:drain",
+                  "type_line": "Artifact Creature — Phyrexian Horror"
+                }
+              ],
+              "by_role_total": 544,
+              "note": null,
+              "role_signature": "wincon:drain",
+              "role_signature_kind": "role"
+            },
+            "modal_role": "wincon:drain",
+            "not_in_deck": [],
+            "odds": {
+              "by_turn_three": 0.251,
+              "opening_seven": 0.199
+            },
+            "shared_axes": [
+              "threat-density"
+            ],
+            "shared_roles": [
+              "wincon:drain",
+              "threat:body"
+            ],
+            "size": 3,
+            "thin": true,
             "thinnest": false
           }
         ],
-        "label": "THE SURVIVING INFINITE (stacks 004 and 006): Bloodthirsty Conqueror + a lifegain-loss half",
+        "label": "THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
         "measured": {
-          "assembled_rate": 0.078,
-          "assembled_rate_assisted": 0.151,
-          "by_turn_6_rate": 0.034,
-          "by_turn_6_rate_assisted": 0.069,
-          "mean_turn": 6.385
+          "assembled_rate": 0.179,
+          "assembled_rate_assisted": 0.516,
+          "by_turn_6_rate": 0.084,
+          "by_turn_6_rate_assisted": 0.289,
+          "mean_turn": 6.135
         },
-        "thinnest_size": 1
+        "thinnest_size": 2
       },
       {
         "commander_gated": false,
@@ -1158,37 +1162,35 @@
               "Sol Ring",
               "Arcane Signet",
               "Talisman of Indulgence",
-              "Herald's Horn",
-              "Patchwork Banner"
+              "Herald's Horn"
             ],
             "modal_role": "ramp:rock",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.386,
-              "opening_seven": 0.312
+              "by_turn_three": 0.321,
+              "opening_seven": 0.258
             },
             "shared_axes": [
               "ramp"
             ],
             "shared_roles": [
               "ramp:rock",
-              "utility:activated",
-              "payoff:typal"
+              "utility:activated"
             ],
-            "size": 5,
+            "size": 4,
             "thin": false,
             "thinnest": true
           }
         ],
         "label": "Ramp or fixing drawn",
         "measured": {
-          "assembled_rate": 0.675,
-          "assembled_rate_assisted": 0.734,
-          "by_turn_6_rate": 0.516,
-          "by_turn_6_rate_assisted": 0.577,
-          "mean_turn": 3.581
+          "assembled_rate": 0.582,
+          "assembled_rate_assisted": 0.82,
+          "by_turn_6_rate": 0.425,
+          "by_turn_6_rate_assisted": 0.663,
+          "mean_turn": 3.907
         },
-        "thinnest_size": 5
+        "thinnest_size": 4
       },
       {
         "commander_gated": false,
@@ -1197,42 +1199,40 @@
             "cards": [
               "Bloodtracker",
               "Caretaker's Talent",
-              "Champion of Dusk",
               "Crossway Troublemakers",
               "Liliana, Dreadhorde General",
-              "Night's Whisper",
               "Preacher of the Schism",
               "Skullclamp",
               "Welcoming Vampire"
             ],
-            "modal_role": "threat:body",
+            "modal_role": "draw:engine",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.592,
-              "opening_seven": 0.498
+              "by_turn_three": 0.498,
+              "opening_seven": 0.412
             },
             "shared_axes": [
               "card-advantage"
             ],
             "shared_roles": [
-              "threat:body",
               "draw:engine",
+              "threat:body",
               "threat:tokens"
             ],
-            "size": 9,
+            "size": 7,
             "thin": false,
             "thinnest": true
           }
         ],
         "label": "A draw engine drawn",
         "measured": {
-          "assembled_rate": 0.835,
-          "assembled_rate_assisted": 0.864,
-          "by_turn_6_rate": 0.726,
-          "by_turn_6_rate_assisted": 0.761,
-          "mean_turn": 2.621
+          "assembled_rate": 0.775,
+          "assembled_rate_assisted": 0.904,
+          "by_turn_6_rate": 0.638,
+          "by_turn_6_rate_assisted": 0.793,
+          "mean_turn": 3.08
         },
-        "thinnest_size": 9
+        "thinnest_size": 7
       },
       {
         "commander_gated": false,
@@ -1268,10 +1268,10 @@
         "label": "Protection held for the swarm",
         "measured": {
           "assembled_rate": 0.683,
-          "assembled_rate_assisted": 0.741,
-          "by_turn_6_rate": 0.516,
-          "by_turn_6_rate_assisted": 0.576,
-          "mean_turn": 3.633
+          "assembled_rate_assisted": 0.864,
+          "by_turn_6_rate": 0.515,
+          "by_turn_6_rate_assisted": 0.72,
+          "mean_turn": 3.675
         },
         "thinnest_size": 5
       },
@@ -1281,8 +1281,7 @@
           {
             "cards": [
               "Despark",
-              "Anguished Unmaking",
-              "Stroke of Midnight"
+              "Anguished Unmaking"
             ],
             "closers": {
               "available": true,
@@ -1299,7 +1298,7 @@
                 },
                 {
                   "cmc": 3.0,
-                  "edhrec_rank": 59,
+                  "edhrec_rank": 62,
                   "game_changer": false,
                   "name": "Generous Gift",
                   "signature": "removal:spot",
@@ -1307,7 +1306,7 @@
                 },
                 {
                   "cmc": 2.0,
-                  "edhrec_rank": 89,
+                  "edhrec_rank": 92,
                   "game_changer": false,
                   "name": "Feed the Swarm",
                   "signature": "removal:spot",
@@ -1315,7 +1314,7 @@
                 },
                 {
                   "cmc": 1.0,
-                  "edhrec_rank": 100,
+                  "edhrec_rank": 101,
                   "game_changer": false,
                   "name": "Vandalblast",
                   "signature": "removal:spot",
@@ -1323,7 +1322,7 @@
                 },
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 108,
+                  "edhrec_rank": 107,
                   "game_changer": false,
                   "name": "Deadly Rollick",
                   "signature": "removal:spot",
@@ -1339,22 +1338,22 @@
                 },
                 {
                   "cmc": 4.0,
-                  "edhrec_rank": 203,
+                  "edhrec_rank": 198,
                   "game_changer": false,
                   "name": "Fell the Profane // Fell Mire",
                   "signature": "removal:spot",
                   "type_line": "Instant // Land"
                 },
                 {
-                  "cmc": 2.0,
-                  "edhrec_rank": 225,
+                  "cmc": 3.0,
+                  "edhrec_rank": 201,
                   "game_changer": false,
-                  "name": "Terminate",
+                  "name": "Stroke of Midnight",
                   "signature": "removal:spot",
                   "type_line": "Instant"
                 }
               ],
-              "by_role_total": 1096,
+              "by_role_total": 1114,
               "note": null,
               "role_signature": "removal:spot",
               "role_signature_kind": "role"
@@ -1362,8 +1361,8 @@
             "modal_role": "removal:spot",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.251,
-              "opening_seven": 0.199
+              "by_turn_three": 0.174,
+              "opening_seven": 0.137
             },
             "shared_axes": [
               "interaction"
@@ -1371,20 +1370,20 @@
             "shared_roles": [
               "removal:spot"
             ],
-            "size": 3,
+            "size": 2,
             "thin": true,
             "thinnest": true
           }
         ],
         "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
         "measured": {
-          "assembled_rate": 0.493,
-          "assembled_rate_assisted": 0.585,
-          "by_turn_6_rate": 0.348,
-          "by_turn_6_rate_assisted": 0.428,
-          "mean_turn": 4.111
+          "assembled_rate": 0.36,
+          "assembled_rate_assisted": 0.728,
+          "by_turn_6_rate": 0.244,
+          "by_turn_6_rate_assisted": 0.553,
+          "mean_turn": 4.322
         },
-        "thinnest_size": 3
+        "thinnest_size": 2
       },
       {
         "commander_gated": false,
@@ -1428,7 +1427,7 @@
                     "Bloodletter of Aclazotz"
                   ],
                   "name": "Peer into the Abyss",
-                  "popularity": 13724,
+                  "popularity": 16018,
                   "produces": [
                     "Infinite lifeloss for target opponent",
                     "Target opponent loses the game"
@@ -1441,7 +1440,7 @@
                     "Bloodletter of Aclazotz"
                   ],
                   "name": "Unstoppable Slasher",
-                  "popularity": 10694,
+                  "popularity": 14774,
                   "produces": [
                     "Target opponent loses the game",
                     "Infinite lifeloss for target opponent"
@@ -1454,7 +1453,7 @@
                     "Blood Tribute"
                   ],
                   "name": "Blood Tribute",
-                  "popularity": 9300,
+                  "popularity": 10540,
                   "produces": [
                     "Infinite lifeloss for target opponent",
                     "Near-infinite lifegain",
@@ -1468,22 +1467,9 @@
                     "Bloodletter of Aclazotz"
                   ],
                   "name": "Tree of Perdition",
-                  "popularity": 7496,
+                  "popularity": 10107,
                   "produces": [
                     "Near-infinite lifeloss for target opponent"
-                  ],
-                  "status": "needs a stack scenario"
-                },
-                {
-                  "cards": [
-                    "Bloodletter of Aclazotz",
-                    "Rush of Dread"
-                  ],
-                  "name": "Rush of Dread",
-                  "popularity": 6898,
-                  "produces": [
-                    "Infinite lifeloss for target opponent",
-                    "Target opponent loses the game"
                   ],
                   "status": "needs a stack scenario"
                 },
@@ -1493,7 +1479,7 @@
                     "Bloodletter of Aclazotz"
                   ],
                   "name": "Grievous Wound",
-                  "popularity": 6708,
+                  "popularity": 8570,
                   "produces": [
                     "Target opponent loses the game",
                     "Infinite lifeloss for target opponent"
@@ -1503,10 +1489,23 @@
                 {
                   "cards": [
                     "Bloodletter of Aclazotz",
+                    "Rush of Dread"
+                  ],
+                  "name": "Rush of Dread",
+                  "popularity": 6717,
+                  "produces": [
+                    "Infinite lifeloss for target opponent",
+                    "Target opponent loses the game"
+                  ],
+                  "status": "needs a stack scenario"
+                },
+                {
+                  "cards": [
+                    "Bloodletter of Aclazotz",
                     "Shard of the Nightbringer"
                   ],
                   "name": "Shard of the Nightbringer",
-                  "popularity": 5800,
+                  "popularity": 6312,
                   "produces": [
                     "Infinite lifeloss for target opponent",
                     "Near-infinite lifegain",
@@ -1517,19 +1516,18 @@
                 {
                   "cards": [
                     "Bloodletter of Aclazotz",
-                    "Revival // Revenge"
+                    "Quietus Spike"
                   ],
-                  "name": "Revival // Revenge",
-                  "popularity": 4127,
+                  "name": "Quietus Spike",
+                  "popularity": 4935,
                   "produces": [
                     "Infinite lifeloss for target opponent",
-                    "Near-infinite lifegain",
                     "Target opponent loses the game"
                   ],
                   "status": "needs a stack scenario"
                 }
               ],
-              "by_combo_line_total": 18,
+              "by_combo_line_total": 19,
               "by_role": [],
               "by_role_total": 0,
               "note": "No role and no axis is shared by two or more members, so this component has no signature and only the combo route ran. That is the normal case for a named combo half.",
@@ -1551,11 +1549,11 @@
         ],
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
         "measured": {
-          "assembled_rate": 0.041,
-          "assembled_rate_assisted": 0.094,
-          "by_turn_6_rate": 0.016,
-          "by_turn_6_rate_assisted": 0.04,
-          "mean_turn": 6.707
+          "assembled_rate": 0.039,
+          "assembled_rate_assisted": 0.322,
+          "by_turn_6_rate": 0.017,
+          "by_turn_6_rate_assisted": 0.16,
+          "mean_turn": 6.274
         },
         "thinnest_size": 1
       },
@@ -1564,57 +1562,46 @@
         "components": [
           {
             "cards": [
-              "Indulgent Aristocrat",
               "Knight of the Ebon Legion",
               "Master of Dark Rites",
-              "Vampire Cutthroat",
-              "Vampire of the Dire Moon",
-              "Voldaren Epicure",
               "Blood Artist",
-              "Charismatic Conqueror",
-              "Cordial Vampire",
               "Cruel Celebrant",
-              "Gifted Aetherborn",
-              "Legion Lieutenant",
-              "Vampire Socialite"
+              "Gifted Aetherborn"
             ],
             "modal_role": "threat:body",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.734,
-              "opening_seven": 0.639
+              "by_turn_three": 0.386,
+              "opening_seven": 0.312
             },
             "shared_axes": [
               "threat-density"
             ],
             "shared_roles": [
               "threat:body",
-              "buff:counters",
-              "utility:activated"
+              "wincon:drain"
             ],
-            "size": 13,
+            "size": 5,
             "thin": false,
             "thinnest": true
           }
         ],
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
         "measured": {
-          "assembled_rate": 0.95,
-          "assembled_rate_assisted": 0.959,
-          "by_turn_6_rate": 0.863,
-          "by_turn_6_rate_assisted": 0.881,
-          "mean_turn": 2.219
+          "assembled_rate": 0.686,
+          "assembled_rate_assisted": 0.868,
+          "by_turn_6_rate": 0.527,
+          "by_turn_6_rate_assisted": 0.724,
+          "mean_turn": 3.573
         },
-        "thinnest_size": 13
+        "thinnest_size": 5
       },
       {
         "commander_gated": false,
         "components": [
           {
             "cards": [
-              "Altar of Dementia",
               "Ashnod's Altar",
-              "Bloodflow Connoisseur",
               "Viscera Seer",
               "Vish Kal, Blood Arbiter",
               "Yahenni, Undying Partisan"
@@ -1622,65 +1609,64 @@
             "modal_role": "sac-cost",
             "not_in_deck": [],
             "odds": {
-              "by_turn_three": 0.444,
-              "opening_seven": 0.364
+              "by_turn_three": 0.321,
+              "opening_seven": 0.258
             },
-            "shared_axes": [
-              "interaction"
-            ],
+            "shared_axes": [],
             "shared_roles": [
               "sac-cost",
               "sac-outlet",
               "threat:body"
             ],
-            "size": 6,
+            "size": 4,
             "thin": false,
             "thinnest": true
           }
         ],
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
         "measured": {
-          "assembled_rate": 0.723,
-          "assembled_rate_assisted": 0.774,
-          "by_turn_6_rate": 0.593,
-          "by_turn_6_rate_assisted": 0.645,
-          "mean_turn": 3.159
+          "assembled_rate": 0.59,
+          "assembled_rate_assisted": 0.825,
+          "by_turn_6_rate": 0.442,
+          "by_turn_6_rate_assisted": 0.677,
+          "mean_turn": 3.745
         },
-        "thinnest_size": 6
+        "thinnest_size": 4
       }
     ]
   },
   "freshness": {
     "artifacts": {
       "bracket_report.json": {
-        "current": null,
-        "decklist_sha256": null,
+        "current": true,
+        "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
         "present": true
       },
       "goldfish_metrics.json": {
         "current": true,
-        "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+        "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
         "present": true
       },
       "mana_analysis.json": {
         "current": true,
-        "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+        "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
         "present": true
       }
     },
-    "decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
+    "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
     "recon": {
-      "as_of": "2026-08-03",
+      "as_of": "2026-09-30",
       "present": true
     }
   },
   "notes": [
     "No archetype was established, so the BASE targets apply and no archetype override was used. strategy:deckbuilding.ratios is explicit that templates are counts of functions rather than cards and that the counts should come from the deck's actual failure modes — read every target below as a starting point, not a verdict.",
-    "Under target: colour-sources, ramp, card-advantage, sweepers, interaction-breadth.",
+    "Under target: ramp, card-advantage, interaction-breadth.",
+    "Over target: protection.",
     "Permanent class(es) with no answer detected: graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
     "2 declared target(s) rest on a component with one card. A named card is 7.1% of an opening seven; that is the ceiling on those lines, not a defect in the simulation.",
     "Each target is an AND of ORs and the schema cannot express the UNION of several independent kills — a deck with four kills has no single assembled_rate here, and averaging them would be inventing a number the simulation never measured.",
-    "Under target, but the oracle text shows the function on card(s) the taxonomy did not classify that way — check these before calling the axis a weakness: card-advantage — Bloodtracker, Castle Locthwain, Champion of Dusk, Midgar, City of Mako // Reactor Raid, Minas Tirith, Preacher of the Schism …. They are NOT included in the count.",
+    "Under target, but the oracle text shows the function on card(s) the taxonomy did not classify that way — check these before calling the axis a weakness: card-advantage — Anje, Maid of Dishonor, Bloodtithe Harvester, Bloodtracker, Castle Locthwain, Midgar, City of Mako // Reactor Raid, Minas Tirith …. They are NOT included in the count.",
     "Roles come from card_roles.json, which classifies 100.0% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
   ],
   "roles": {

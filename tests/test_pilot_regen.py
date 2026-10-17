@@ -32,7 +32,8 @@ def test_stages_run_in_dependency_order():
                            ("goldfish", "net-change"),
                            ("goldfish", "diagnose"),
                            ("diagnose", "deck-info"),
-                           ("mana-analysis", "deck-info")):
+                           ("mana-analysis", "deck-info"),
+                           ("bracket", "deck-info")):
         assert order.index(earlier) < order.index(later), f"{earlier} after {later}"
 
 
@@ -392,7 +393,7 @@ def test_the_plan_drops_the_commander_only_stages_for_a_60_card_deck_and_keeps_t
     assert planned["goldfish"] == {"cmdr"}, planned
     for stage in ("mana-analysis", "deck-combos", "deck-info"):
         assert planned[stage] == {"cmdr", "elvesish"}, (stage, planned)
-    assert regen.COMMANDER_ONLY_STAGES == {"goldfish", "net-change", "diagnose", "benchmark"}
+    assert regen.COMMANDER_ONLY_STAGES == {"bracket", "goldfish", "net-change", "diagnose", "benchmark"}
 
     # The skips are NAMED, per stage, with the format — never inferred from a
     # stage that is quietly absent from the plan.

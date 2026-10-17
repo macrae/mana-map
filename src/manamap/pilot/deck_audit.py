@@ -989,10 +989,16 @@ def freshness(slug, doc, branch=None, spec=formats.DEFAULT):
     checks = {
         "goldfish_metrics.json": ("meta", "decklist_sha256"),
         "mana_analysis.json": (None, "decklist_sha256"),
+        # Stamped since 2026-10-17; a report written before that reads
+        # `decklist_sha256: null`, `current: false` — unstamped is not current.
+        "bracket_report.json": (None, "decklist_sha256"),
     }
     for filename, (block, key) in checks.items():
         if filename == "goldfish_metrics.json" and formats.format_key(spec) is not None:
             out["artifacts"][filename] = {"present": False, "why": NO_GOLDFISH}
+            continue
+        if filename == "bracket_report.json" and formats.format_key(spec) is not None:
+            out["artifacts"][filename] = {"present": False, "why": NO_BRACKET}
             continue
         art = load_json(deck_file(slug, filename, branch), default=None)
         if art is None:
@@ -1003,15 +1009,6 @@ def freshness(slug, doc, branch=None, spec=formats.DEFAULT):
             "present": True, "decklist_sha256": stamped,
             "current": stamped == current,
         }
-    # bracket_report.json carries no stamp; report its presence so the caller
-    # knows the power axis is answerable at all.
-    if formats.format_key(spec) is None:
-        out["artifacts"]["bracket_report.json"] = {
-            "present": deck_file(slug, "bracket_report.json", branch).exists(),
-            "decklist_sha256": None, "current": None,
-        }
-    else:
-        out["artifacts"]["bracket_report.json"] = {"present": False, "why": NO_BRACKET}
     recon = load_json(deck_dir(slug) / "deck_recon.json", default=None)
     out["recon"] = ({"present": True, "as_of": recon.get("as_of")} if recon
                     else {"present": False, "as_of": None})

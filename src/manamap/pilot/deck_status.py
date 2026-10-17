@@ -47,7 +47,7 @@ STAGES = [
      "manamap pilot check-in {slug} --from <paper-list.txt>"),
     ("cards",      "cards.json",             None,  True,  "Scryfall resolution with printings — `fetch-deck`",
      "manamap pilot fetch-deck {slug}"),
-    ("bracket",    "bracket_report.json",    None,  False, "computed power floor — `bracket-check`",
+    ("bracket",    "bracket_report.json",    "decklist_sha256",      False, "computed power floor — `bracket-check`",
      "manamap pilot bracket-check {slug}"),
     ("combos",     "combos.json",            "decklist_sha256",      False, "known lines and near misses — `deck-combos --write`",
      "manamap pilot deck-combos {slug} --write"),

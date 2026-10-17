@@ -65,6 +65,11 @@ class _Args:
 #: drops those targets and `run()` SAYS it did: "not modelled for Modern" in the
 #: echo, rather than a stage that silently never arrives — absent means absent.
 STAGES = (
+    # FIRST, and a pure function of cards.json plus the corpus: the bracket
+    # floor stamps the list it read since 2026-10-17, so it is stale-checkable
+    # and must be rebuilt like everything else `deck-info` composes. Its
+    # `target` survives a rebuild: `bracket.main` re-reads it from the file.
+    ("bracket", "bracket_report.json", "manamap.pilot.bracket", {}, False, True),
     ("goldfish", "goldfish_metrics.json", "manamap.pilot.goldfish", {}, False, True),
     ("mana-analysis", "mana_analysis.json", "manamap.pilot.mana_analysis", {}, False, False),
     ("deck-combos", "combos.json", "manamap.pilot.deck_combos", {"write": True}, False, False),
@@ -135,7 +140,9 @@ def is_retired(slug):
 BOOTSTRAP = {"diagnostic.json": "goldfish_metrics.json",
              # A Commander list with a cards.json has lines in it or it does not;
              # the report is a pure function of the list and the combo file.
-             "combos.json": "cards.json"}
+             "combos.json": "cards.json",
+             # The floor, likewise: a pure function of the list and the corpus.
+             "bracket_report.json": "cards.json"}
 
 
 def is_pinned(slug):

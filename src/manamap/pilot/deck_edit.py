@@ -840,7 +840,10 @@ REGEN_SKIP = ("goldfish", "mana-analysis", "context")
 #: moves no byte — the same argument as `regen`'s parallel-across-targets.
 #: `mana-analysis` READS goldfish_metrics.json, so it stays chained behind the
 #: goldfish in one worker; `deck-info` composes everything and runs after.
-PARALLEL_STAGES = ("deck-combos", "diagnose", "benchmark")
+#:   bracket      reads cards.json + the corpus flags/combos         -> bracket_report.json
+#:                (2026-10-17, the day it started stamping its list; without
+#:                this line every edit would leave the floor STALE)
+PARALLEL_STAGES = ("bracket", "deck-combos", "diagnose", "benchmark")
 
 #: Worker processes for the rebuild's middle phase: the goldfish chain, the
 #: stages above and the try warm, ~8 s of CPU each on a Commander deck. Four is
