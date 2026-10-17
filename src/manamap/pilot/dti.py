@@ -62,7 +62,12 @@ def path(slug, branch=None):
 
 
 def load(slug, branch=None):
-    doc = load_json(path(slug, branch), None)
+    """The document, or None — for a deck with no file AND for a slug with no
+    deck directory at all (`deck_dir` raises; an absence is not an error here)."""
+    try:
+        doc = load_json(path(slug, branch), None)
+    except FileNotFoundError:
+        return None
     return doc if isinstance(doc, dict) else None
 
 
@@ -183,10 +188,10 @@ def reconcile(slug, branch=None):
     """After the list moved: recompute `omni` and `floor_vs_dti` against the current
     `cards.json` and floor. Readings are untouched; writes only when a byte moves.
     None when there is no file."""
-    p = path(slug, branch)
     doc = load(slug, branch)
     if doc is None:
         return None
+    p = path(slug, branch)
     before = json.dumps(doc, sort_keys=True)
     _derive(doc, slug, branch)
     changed = json.dumps(doc, sort_keys=True) != before
