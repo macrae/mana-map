@@ -1325,6 +1325,8 @@ CLI_READONLY = frozenset({
     # read API, cached under data/cache/deckcheck/ and nothing else written;
     # offline it prints one line and exits 1, which `_cli` carries as exit 1.
     "deckcheck",
+    # The named tables; `--power` may read a `deckcheck` seat live (cached).
+    "pods",
     # Composition and lookup.
     "deck-info", "deck-facts", "deck-audit", "engine-facts", "scenario-facts",
     "deck-status", "mana-fit", "card-search", "similar-cards", "page-state", "pool-facts", "deck-history",

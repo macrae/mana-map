@@ -153,6 +153,11 @@ def _spearman(xs, ys):
     return num / den if den else 0.0
 
 
+#: The public name (2026-10-17): `sim/table_power.py` asks the same question of a
+#: table's seats, and one rank correlation is better than two.
+spearman = _spearman
+
+
 def spearman_cell(name, rho, critical, n):
     """One measure's row: the coefficient, whether it points the declared way,
     whether it clears significance, and the sentence a reader acts on.

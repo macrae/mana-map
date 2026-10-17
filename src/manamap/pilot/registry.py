@@ -1181,6 +1181,11 @@ def add_pilot_parser(subparsers):
                                   "win rate reads against 0.25 unless something "
                                   "says otherwise, and `standard` gives one seat "
                                   "0.572 and another 0.052")
+            cmd.add_argument("--power", action="store_true",
+                             help="is this table evenly matched? per seat: the typed bracket, "
+                                  "our computed floor, DeckCheck's DTI (ours from deckcheck.json, "
+                                  "a `deckcheck` seat's read live), share of fair with its "
+                                  "interval; the DTI spread; Spearman(DTI, share) only at n>=10")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "metrics":
             from manamap.metrics import GROUPS, STATUSES

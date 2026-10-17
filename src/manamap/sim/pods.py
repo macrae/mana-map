@@ -47,7 +47,11 @@ PODS_DIR = DATA_DIR / "pods"
 #: A seat's keys. `slug` resolves through `forge.seat_dir`, so a pod may name an
 #: opponent deck OR one of your own decks — which is what makes a mirror or a
 #: "my three decks against each other" table expressible without new machinery.
-SEAT_KEYS = frozenset({"slug", "archetype", "bracket", "profile", "note"})
+#: `deckcheck` (2026-10-17): a friend's REAL list on DeckCheck, by deck URL, so
+#: `pods <name> --power` reads their actual Threat Index and computes a floor from
+#: their actual cards instead of the EDHREC stand-in under `slug`. Optional, and
+#: used by nothing else — a Forge run still seats the stand-in's decklist.
+SEAT_KEYS = frozenset({"slug", "archetype", "bracket", "profile", "note", "deckcheck"})
 
 
 class PodError(ValueError):
@@ -449,6 +453,9 @@ def format_list():
 
 def main(args):
     name = getattr(args, "name", None)
+    if getattr(args, "power", False):
+        from manamap.sim import table_power
+        return table_power.main(args)
     if getattr(args, "calibration", False):
         names = [name] if name else available()
         if getattr(args, "as_json", False):

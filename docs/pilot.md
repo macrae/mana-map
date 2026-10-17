@@ -482,7 +482,7 @@ manamap pilot scaffold-targets <slug>   # a DRAFT goldfish_targets.json to EDIT 
                                         #   contained combo lines and role axes, marked
                                         #   "scaffolded": true until a person rewrites it
 manamap pilot goldfish <slug>           # seeded Monte Carlo metrics → goldfish_metrics.json
-manamap pilot pods [<name>] [--calibration] [--json]   # THE NAMED TABLES. `simulate <slug> --pod standard-v3`
+manamap pilot pods [<name>] [--calibration] [--power] [--json]   # THE NAMED TABLES. `simulate <slug> --pod standard-v3`
                                         #   expands to the same --vs flags and the SAME RUN ID,
                                         #   and carries each seat's archetype, bracket and AI
                                         #   profile. `vito-era` is kept so a pre-2026-09-02
