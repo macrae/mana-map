@@ -263,9 +263,11 @@ _NOT_A_DECK_FILE = {
 }
 
 #: Written only when the pilot acts — `deck-link` records where a deck was
-#: published — so a fleet with no linked deck is correct, not a dead registry
-#: row. Its writer is proven in `tests/test_pilot_deck_link.py`.
-_WRITTEN_ONLY_ON_REQUEST = {"links.json"}
+#: published; `deckcheck --write` records a Threat Index reading after the
+#: pilot's own scan on DeckCheck — so a fleet with no linked or scanned deck is
+#: correct, not a dead registry row. Writers proven in
+#: `tests/test_pilot_deck_link.py` and `tests/test_pilot_dti.py`.
+_WRITTEN_ONLY_ON_REQUEST = {"links.json", "deckcheck.json"}
 
 
 def test_every_artifact_the_gate_refuses_on_is_one_the_status_board_shows():

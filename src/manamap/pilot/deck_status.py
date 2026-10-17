@@ -451,6 +451,12 @@ VALIDATED = {
     # no STAGES row and no regen stage, because the file needs the network and "a
     # gate that fails when the network is down is a gate that gets switched off".
     "prices.json": "manamap.pilot.validate_prices",
+    # DECKCHECK'S THREAT INDEX AS DATED EVIDENCE (2026-10-17): readings the pilot
+    # pulled after a hand-run scan, by `deckcheck --write`. The same rule as
+    # prices: FORM is gated, freshness never, no STAGES row and no regen stage —
+    # the file needs the network AND a scan only the pilot can run. The floor
+    # (`bracket_report.json`) gates; this never does.
+    "deckcheck.json": "manamap.pilot.validate_deckcheck",
     # WHERE THE DECK LIVES ELSEWHERE (2026-10-09): Moxfield URLs recorded by hand
     # with `deck-link`. Form only — Moxfield 403s every server-side request, so
     # nothing could check reachability — and no STAGES row: optional, hand-written,

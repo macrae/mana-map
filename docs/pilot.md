@@ -80,8 +80,12 @@ manamap pilot deck-link <slug> moxfield|deckcheck <url> [--note "…"] | <servic
                                         #   the deck lives -> links.json, STAMPED with the list as pasted (sha + version);
                                         #   form-checked, never fetched; the manifest carries it; `drift` reads the stamp
 manamap pilot validate-links <slug>                      # links.json: known service, https on its hosts, id = url's, as_of a date, stamp well-formed
-manamap pilot deckcheck <slug> [--url U] [--text] [--json]  # read the DeckCheck copy back (public API, cached 15 min): is it
-                                        #   the sleeved list, which cards differ; `--text | check-in <slug> --from -` is the pull path
+manamap pilot deckcheck <slug> [--url U] [--text] [--write] [--near K] [--history] [--json]  # read the DeckCheck copy
+                                        #   back (public API, cached 15 min): is it the sleeved list, which cards differ, its Threat
+                                        #   Index beside our floor; --write records the DTI as a dated reading -> deckcheck.json;
+                                        #   `--text | check-in <slug> --from -` is the pull path; --near/--history read the file only
+manamap pilot validate-deckcheck <slug>                  # deckcheck.json: the twelve grades, score 0-96, bracket 1-5, dates, hosts,
+                                        #   readings in order and deduped, omni re-adds; WARN when it describes an older list
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed

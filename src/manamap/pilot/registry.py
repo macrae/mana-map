@@ -67,7 +67,11 @@ PILOT_STEPS = [
      "as_of a date, the sha/version stamp well-formed"),
     ("deckcheck", "manamap.pilot.deckcheck",
      "Read the deck's DeckCheck copy back (public API, cached 15 min): is it the sleeved list, "
-     "which cards differ; --text prints it for `check-in --from -`"),
+     "which cards differ, its Threat Index beside our floor; --write records the DTI as a dated "
+     "reading (deckcheck.json); --text prints the list for `check-in --from -`; --near K, --history"),
+    ("validate-deckcheck", "manamap.pilot.validate_deckcheck",
+     "Form-check deckcheck.json: the twelve benchmarks and their grades, score 0-96, bracket 1-5, "
+     "dates, hosts, readings in order and deduped, omni re-adds; WARNs when it describes an older list"),
     ("card-search", "manamap.pilot.card_search",
      "Mine the corpus for candidates: colour identity, oracle regex, role, cmc"),
     ("scenario-ab", "manamap.pilot.scenario_ab",
@@ -319,7 +323,7 @@ _DECK_COMMANDS = {
     "validate-poh-procedures", "validate-pilot-policy", "validate-forge-hints", "validate-protected",
     "scan-candidates", "validate-candidate-scan", "fetch-edhrec", "validate-edhrec-cards",
     "prices", "validate-prices",
-    "deck-export", "deck-link", "validate-links", "deckcheck",
+    "deck-export", "deck-link", "validate-links", "deckcheck", "validate-deckcheck",
     "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
     "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
@@ -1403,6 +1407,13 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--text", action="store_true",
                              help="print the copy as decklist.txt text and nothing else "
                                   "(pipe into `check-in <slug> --from -`)")
+            cmd.add_argument("--write", action="store_true",
+                             help="record the Threat Index as a dated reading in deckcheck.json "
+                                  "(after YOUR scan on DeckCheck; a repeat answer adds nothing)")
+            cmd.add_argument("--near", type=int, default=None, metavar="POINTS",
+                             help="file-only: the fleet's decks within ±POINTS DTI of this one")
+            cmd.add_argument("--history", action="store_true",
+                             help="file-only: every reading on file, and the omni over this list")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "prices":
             cmd.add_argument("--source", choices=("auto", "manapool", "scryfall"), default="auto",

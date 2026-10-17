@@ -208,7 +208,7 @@ def test_the_server_runs_it_read_only(fake_deck, monkeypatch):
     assert got["exit"] == 0 and json.loads(got["stdout"])["in_sync"] is True
     # There is no --write today; when one arrives it is in `_CLI_WRITE_ATTRS`
     # and refused there. Either way the server never writes through this.
-    with pytest.raises(ValueError, match="could not parse|read-only|refus"):
+    with pytest.raises(ValueError, match="not available over the API"):
         serve._cli(["deckcheck", "ldeck", "--write"])
 
 

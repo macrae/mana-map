@@ -781,3 +781,31 @@ def test_the_rebuild_pool_returns_every_result_in_job_order_and_matches_serial(
     assert pool == serial
     assert [e for _k, e in pool[0]] == [None, None, "ValueError: probe -1 refuses", None]
     assert sorted(pool[1]) == ["probe-0.txt", "probe-1.txt", "probe-3.txt"]
+
+
+def test_save_version_reconciles_the_dti_and_names_the_unscanned_list(repo, decks, capsys):
+    """After an edit the DTI readings on file describe the OLD list: `save-version`
+    recomputes the derived blocks (omni n == 0), leaves the readings byte for byte,
+    and says to scan. Re-introduce the gap by dropping `_reconcile_deckcheck` from
+    `save_version` and omni still claims the old list's readings for the new one."""
+    from manamap.pilot import dti
+    reading = {"as_of": "2026-10-01", "source_updated_at": "2026-10-01T00:00:00Z",
+               "decklist_sha256": "x", "deckcheck_id": "Q9",
+               "url": "https://deckcheck.co/deck/Q9", "score": 61, "max_score": 96,
+               "bracket": 4, "benchmarks": {k: "B" for k in sorted(dti.BENCHMARKS)}}
+    (decks / "cmdr" / "deckcheck.json").write_text(json.dumps({
+        "schema_version": 1, "slug": "cmdr", "branch": None, "source": "deckcheck.co",
+        "last_pulled": "2026-10-01", "readings": [reading],
+        "omni": dti.omni([reading], "x"), "floor_vs_dti": {"absent_because": "no floor"}}))
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-q", "-m", "scanned")
+    deck_edit.edit("cmdr", [swap("Sol Ring", "Necromancy")])
+    _fetch_from_list(decks)(argparse.Namespace(slug="cmdr"))
+    # the real fetch-deck stamps the NEW list's sha; the stub above keeps "x"
+    cards = decks / "cmdr" / "cards.json"
+    cards.write_text(json.dumps({**json.loads(cards.read_text()), "decklist_sha256": "y"}))
+    deck_edit._main_save(argparse.Namespace(slug="cmdr", note="a swap", json=False))
+    doc = json.loads(_git(repo, "show", "HEAD:data/decks/cmdr/deckcheck.json"))
+    assert doc["readings"] == [reading], "readings are never edited"
+    assert doc["omni"]["n"] == 0 and "absent_because" in doc["omni"]
+    assert "DTI: no reading of this list" in capsys.readouterr().out

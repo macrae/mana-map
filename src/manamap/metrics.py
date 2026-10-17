@@ -65,8 +65,10 @@ STATUSES = (PUBLISHED, OPT_IN, DERIVABLE, UNAVAILABLE)
 GROUPS = ("mana", "card_flow", "board", "speed", "resilience",
           "interaction", "outcome")
 
-#: The engines. `None` goes with UNAVAILABLE and with nothing else.
-ENGINES = ("forge", "goldfish", "both", None)
+#: The engines. `None` goes with UNAVAILABLE and with nothing else. `external` is
+#: a figure NOBODY HERE COMPUTES — read from another service, stored dated, and
+#: never a gate (DeckCheck's Threat Index, 2026-10-17).
+ENGINES = ("forge", "goldfish", "both", "external", None)
 
 #: THE MEASUREMENT THAT DECIDES HALF THIS FILE, kept as a constant so an entry
 #: citing it cannot drift from the number. From a 100-game pod run.
@@ -487,6 +489,21 @@ CATALOG = {
                "every position is covered once; with fewer jobs than seats they "
                "are not, and games inside a job are a Markov chain rather than "
                "independent draws."),
+
+    # ── external: a figure nobody here computes ─────────────────────────────
+    "deckcheck threat index": _m(
+        "outcome",
+        "DeckCheck's Threat Index for the sleeved list: a 0-96 score and a 1-5 bracket from "
+        "twelve S-F benchmark grades (resources, access, pressure, interaction, resilience), "
+        "read back after the pilot's own scan and stored as dated readings.",
+        OPT_IN, "external",
+        "deckcheck.json → readings[-1].score / bracket / benchmarks; omni (median over readings of the same list)",
+        caveat="DATED EXTERNAL EVIDENCE, NEVER A GATE: the bench's floor (bracket_report.json, "
+               "deterministic, cited) gates and this does not. Opt-in by the pilot's pull, not "
+               "by a model flag — the API is read-only and a scan is run by hand on DeckCheck. "
+               "The read is an LLM's and moves between scans, so every pull is kept and the "
+               "omni is OUR median over readings of one list, not DeckCheck's figure. Quoted "
+               "with its as_of and whether it describes the current list; never looked up live."),
 }
 
 

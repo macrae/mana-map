@@ -973,6 +973,7 @@ def rebuild(slug, *, before_text=None, warm=True, echo=None):
                 # cards.json moved, so the dated prices.json drops the cards that
                 # left — offline, before `deck-info` gates it (`prices.prune`).
                 out["prices"] = _prune_prices(slug, out["failures"])
+                out["deckcheck"] = _reconcile_deckcheck(slug, out["failures"])
             except Exception as exc:                       # noqa: BLE001 - reported
                 out["ran"] = ran
                 out["behind"] = (
@@ -1062,6 +1063,26 @@ def _prune_prices(slug, failures):
     except Exception as exc:                               # noqa: BLE001 - reported
         failures.append(f"prices prune {slug}: {type(exc).__name__}: {exc}")
         return None
+
+
+def _reconcile_deckcheck(slug, failures):
+    """`dti.reconcile` for the deck root: after the list moved, the derived
+    blocks of `deckcheck.json` are recomputed and the readings left alone.
+    A failure is reported, never raised, as with prices (2026-10-17)."""
+    from manamap.pilot import dti
+    try:
+        return dti.reconcile(slug)
+    except Exception as exc:                               # noqa: BLE001 - reported
+        failures.append(f"deckcheck reconcile {slug}: {type(exc).__name__}: {exc}")
+        return None
+
+
+def deckcheck_line(slug, reconciled):
+    """The one line a save prints when the DTI on file describes the old list."""
+    if not reconciled or reconciled.get("readings_on_current_list"):
+        return None
+    return (f"DTI: no reading of this list — scan on DeckCheck, then "
+            f"`manamap pilot deckcheck {slug} --write`")
 
 
 def prices_line(slug, pruned):
@@ -1256,6 +1277,7 @@ def save_version(slug, note, *, echo=None):
         before_text = saved_text(slug)
         price_failures = []
         pruned = _prune_prices(slug, price_failures)
+        reconciled = _reconcile_deckcheck(slug, price_failures)
         consistency = _consistency(slug, echo)
         consistency.setdefault("failures", []).extend(price_failures)
         list_path = directory / "decklist.txt"
@@ -1295,6 +1317,7 @@ def save_version(slug, note, *, echo=None):
     return {"slug": slug, "commit": commit, "version": version, "paths": paths,
             "versions_commit": versions_commit, "versions_paths": versions_paths,
             "prices": pruned, "prices_line": prices_line(slug, pruned),
+            "deckcheck": reconciled, "deckcheck_line": deckcheck_line(slug, reconciled),
             "message": message, "consistency": consistency, "refreshed": refreshed,
             "keeper": (context or {}).get("keeper") if (context or {}).get("stale") else None,
             "context": context,
@@ -1358,6 +1381,8 @@ def _main_save(args):
                   f"({', '.join(r['versions_paths'])})")
         if r.get("prices_line"):
             print(f"  {r['prices_line']}")
+        if r.get("deckcheck_line"):
+            print(f"  {r['deckcheck_line']}")
         for f in r["consistency"].get("failures") or []:
             print(f"  FAILED {f}")
         for a, why in r["consistency"].get("invalid") or []:

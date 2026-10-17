@@ -29,12 +29,13 @@ module ever writes is `net`'s cache under `data/cache/deckcheck/`. Zero LLM call
 import json
 import os
 import sys
+from datetime import date
 
 import requests
 
 from manamap import config, net
-from manamap.pilot import check_in, deck_link
-from manamap.pilot.common import deck_dir, decklist_sha256
+from manamap.pilot import check_in, deck_link, dti
+from manamap.pilot.common import deck_dir, decklist_sha256, load_json, measured_sha
 from manamap.pilot.fetch_deck import parse_mainboard
 
 SERVICE = "deckcheck"
@@ -190,15 +191,36 @@ def report(slug, url=None, session=None):
     cmp = compare(slug, entries, text)
     in_sync = cmp["matches"]["sleeved"] if cmp["matches"]["sleeved"] is not None \
         else cmp["matches"]["working"]
+    # THE THREAT INDEX, as the reading `--write` would record (2026-10-17):
+    # the twelve grades and the three numbers, stamped with OUR list's sha, set
+    # beside our floor. A document with no `dti` (not scanned yet) is said so.
+    public_url = doc.get("publicUrl") or url
+    try:
+        reading = dti.reading_from_payload(doc, deck_id=deck_id, url=public_url,
+                                           as_of=today_iso(), decklist_sha256=measured_sha(slug))
+    except ValueError as exc:
+        reading, dti_absent = None, str(exc)
+    else:
+        dti_absent = None
+    report_doc = load_json(deck_dir(slug) / "bracket_report.json", None)
     return {"service": SERVICE, "slug": slug, "id": deck_id,
-            "url": doc.get("publicUrl") or url,
+            "url": public_url,
             "read_at": read_at(deck_id=deck_id),
             "source_updated_at": doc.get("updatedAtUtc"),
             "source_name": doc.get("name"), "visibility": doc.get("visibility"),
             "cards": sum(e["quantity"] for e in entries if e.get("board", "main") == "main"),
             "pull": cmp["pull"], "add": cmp["add"], "matches": cmp["matches"],
             "version": cmp["version"], "in_sync": in_sync,
-            "linked_version": link.get("version"), "private": False, "text": text}
+            "linked_version": link.get("version"), "private": False, "text": text,
+            "dti": reading, "dti_absent_because": dti_absent,
+            "floor_vs_dti": dti.compare_floor(reading, report_doc if isinstance(report_doc, dict)
+                                              else None)}
+
+
+def today_iso():
+    """Today, as the one place this module reads the clock (tests patch it)."""
+    from datetime import date
+    return date.today().isoformat()
 
 
 def format_report(r):
@@ -226,10 +248,52 @@ def format_report(r):
                      f"--format moxfield`, paste, then `deck-link {r['slug']} deckcheck <url>`")
         lines.append(f"  to take THEIR list instead: `manamap pilot deckcheck {r['slug']} "
                      f"--text | manamap pilot check-in {r['slug']} --from -`")
+    d = r.get("dti")
+    if d:
+        f = r.get("floor_vs_dti") or {}
+        grades = "".join(d["benchmarks"][k] for k in sorted(dti.BENCHMARKS))
+        floor = (f"our floor B{f['floor']} ({f['relation'].replace('_', ' ')})"
+                 if "floor" in f else f.get("absent_because", "no floor"))
+        lines.append(f"  DTI {d['score']}/{d['max_score']} → B{d['bracket']}  {grades}  · {floor}"
+                     + ("" if r["in_sync"] else "  · about THEIR copy, which is not this list"))
+        if f.get("note"):
+            lines.append(f"    {f['note']}")
+        if r.get("written"):
+            w = r["written"]
+            lines.append(f"  wrote {w['path']} — "
+                         + (f"reading {w['readings_n']} added" if w["added"]
+                            else f"same as {w['deduped_against']}, nothing added"))
+        else:
+            lines.append(f"  `manamap pilot deckcheck {r['slug']} --write` records this reading "
+                         f"as dated evidence (deckcheck.json)")
+    elif r.get("dti_absent_because"):
+        lines.append(f"  DTI: {r['dti_absent_because']}")
     return "\n".join(lines)
 
 
+def _file_only(args):
+    """`--near` and `--history` read `deckcheck.json` and never fetch."""
+    slug = args.slug
+    near = getattr(args, "near", None)
+    if near is not None:
+        doc = dti.near(slug, near)
+        print(json.dumps(doc, indent=2) if getattr(args, "as_json", False)
+              else dti.format_near(doc))
+        return True
+    if getattr(args, "history", False):
+        doc = dti.load(slug)
+        if getattr(args, "as_json", False):
+            print(json.dumps(doc, indent=2, sort_keys=True))
+        else:
+            print(dti.format_history(doc, measured_sha(slug)) if doc
+                  else f"{slug}: no deckcheck.json — nothing recorded yet")
+        return True
+    return False
+
+
 def main(args):
+    if _file_only(args):
+        return
     try:
         r = report(args.slug, url=getattr(args, "url", None))
     except net.Offline as exc:
@@ -241,6 +305,17 @@ def main(args):
     if getattr(args, "text", False):
         sys.stdout.write(r["text"])
         return
+    if getattr(args, "write", False):
+        if not r.get("dti"):
+            print(f"  deckcheck: nothing to write — {r.get('dti_absent_because')}")
+            sys.exit(1)
+        if not r["in_sync"] and r["matches"]["sleeved"] is not None:
+            # A reading of THEIR list is still a fact; it is stamped with OUR sha
+            # and `omni` will count it against the list it describes.
+            pass
+        r["written"] = {k: (str(v) if k == "path" else v)
+                        for k, v in dti.append(args.slug, r["dti"],
+                                               today=date.fromisoformat(today_iso())).items()}
     if getattr(args, "as_json", False):
         print(json.dumps(r, indent=2, sort_keys=True))
     else:
