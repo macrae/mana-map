@@ -177,6 +177,14 @@ def _block_summary(slug, info):
     # The bracket is Commander's scale; a 60-card deck has none to report.
     bracket = ("" if not commanders else " · **bracket floor:** "
                + (f"{br.get('floor')} ({br.get('floor_name')})" if br.get("floor") else "not checked"))
+    # DeckCheck's Threat Index beside the floor — dated, and only when there is a
+    # file (an opt-in pull, so "none" is the Jarvis rule's to say, not this line's).
+    dc = info.get("deckcheck") or {}
+    if commanders and dc.get("score") is not None:
+        n = dc.get("readings_n") or 0
+        bracket += (f" · **DTI:** {dc['score']}/{dc['max_score']} → B{dc['bracket']} "
+                    f"(deckcheck.co, {dc['as_of']}, {n} reading{'s' if n != 1 else ''})"
+                    + (" — older list" if dc.get("stale_list") else ""))
     lines = [
         head,
         f"- **Version:** {_version_label(info)} · **status:** {status}",

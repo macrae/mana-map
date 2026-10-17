@@ -275,12 +275,36 @@
    * linked. The host is checked here too: an href is where a bad string becomes
    * a live link, and `validate-links` is not the browser. The pattern MIRRORS
    * `deck_link.SERVICES["moxfield"]["url_re"]`. */
-  function moxfieldLink(e) {
-    var m = e && e.links && e.links.moxfield;
+  var LINK_RE = {
+    moxfield: /^https:\/\/(www\.)?moxfield\.com\/decks\/[A-Za-z0-9_-]+\/?$/,
+    // MIRRORS `deck_link.SERVICES["deckcheck"]["url_re"]` (2026-10-17)
+    deckcheck: /^https:\/\/(www\.)?deckcheck\.co\/decks?\/[A-Za-z0-9_-]+\/?$/
+  };
+  function siteLink(e, service, label, cls) {
+    var m = e && e.links && e.links[service];
     var url = m && typeof m.url === 'string' ? m.url : '';
-    if (!/^https:\/\/(www\.)?moxfield\.com\/decks\/[A-Za-z0-9_-]+\/?$/.test(url)) return '';
-    return '<a class="wb-moxfield" href="' + esc(url) + '" target="_blank" rel="noopener"'
-      + ' title="This deck on Moxfield">Moxfield ↗</a>';
+    if (!LINK_RE[service] || !LINK_RE[service].test(url)) return '';
+    return '<a class="' + cls + '" href="' + esc(url) + '" target="_blank" rel="noopener"'
+      + ' title="This deck on ' + label + '">' + label + ' ↗</a>';
+  }
+  function moxfieldLink(e) { return siteLink(e, 'moxfield', 'Moxfield', 'wb-moxfield'); }
+  function deckcheckLink(e) { return siteLink(e, 'deckcheck', 'DeckCheck', 'wb-deckcheck'); }
+
+  /* THE FLOOR AND THE DTI, side by side: our deterministic floor from
+   * `info.bracket`, DeckCheck's Threat Index from `info.deckcheck` — dated
+   * external evidence, flagged when it describes an older list or is past
+   * `max_age_days` (the constant rides in the block; the page restates nothing). */
+  function floorDti(i) {
+    var b = i.bracket || {}, dc = i.deckcheck;
+    var floor = b.floor ? 'B' + esc(b.floor) : '<span class="t-none">—</span>';
+    if (!dc) return floor + ' · <span class="t-none">—</span>';
+    var dti = esc(dc.score) + '/' + esc(dc.max_score) + ' B' + esc(dc.bracket);
+    if (dc.stale_list) dti += ' <span class="t-warn">older list</span>';
+    else if (dc.as_of && dc.max_age_days) {
+      var days = Math.floor((Date.now() - Date.parse(dc.as_of)) / 86400000);
+      if (days > dc.max_age_days) dti += ' <span class="t-warn">' + days + ' d</span>';
+    }
+    return floor + ' · ' + dti;
   }
 
   function card(e, info) {
@@ -316,7 +340,7 @@
     var links = '<nav class="wb-links">'
       + '<a href="deck.html?deck=' + slug + '">Dossier</a>'
       + '<a href="index.html?deck=' + slug + '">On the map</a>'
-      + moxfieldLink(e)
+      + moxfieldLink(e) + deckcheckLink(e)
       + actions(e)
       + '</nav>';
     /* A DECK WITH NO AUTHORED NAME PRINTS ITS COMMANDER TWICE.
@@ -493,11 +517,12 @@
       + '<td>' + lock + '</td>'
       + '<td>' + record + (when ? '<span class="t-sub">' + esc(when) + '</span>' : '') + '</td>'
       + '<td>' + num(st.complete, '—') + (st.of ? '/' + st.of : '') + '</td>'
+      + '<td class="t-power">' + floorDti(i) + '</td>'
       + '<td>' + evidence + '</td>'
       + '<td>' + table + '</td>'
       + '<td>' + open + '</td>'
       + '</tr>'
-      + (next ? '<tr class="t-nextrow' + dead + '"><td colspan="7" class="t-next">'
+      + (next ? '<tr class="t-nextrow' + dead + '"><td colspan="8" class="t-next">'
                 + '<a href="deck.html?deck=' + slug + '">' + next + '</a></td></tr>'
               : '');
   }
@@ -526,7 +551,7 @@
     return '<tr class="t-total"><th scope="row">' + decks.length + ' decks</th>'
       + '<td></td>'
       + '<td>' + (g ? g + ' · ' + w + '–' + l : '<span class="t-none">none</span>') + '</td>'
-      + '<td></td>'
+      + '<td></td><td></td>'
       + '<td>' + (lines ? v + '/' + lines + ' ✓' : '<span class="t-none">—</span>')
       + '</td><td>' + sims + ' runs</td>'
       + '<td>' + q + 'q</td></tr>';
@@ -545,7 +570,8 @@
     return '<section class="wb-rack"><div class="wb-sorts">' + tabs + '</div>'
       + '<div class="wb-tablewrap"><table class="wb-table"><thead><tr>'
       + '<th scope="col">Deck</th><th scope="col">Paper</th><th scope="col">Record</th>'
-      + '<th scope="col">Stages</th><th scope="col">Evidence</th><th scope="col">Table</th>'
+      + '<th scope="col">Stages</th><th scope="col" title="our bracket floor · DeckCheck Threat Index">Floor · DTI</th>'
+      + '<th scope="col">Evidence</th><th scope="col">Table</th>'
       + '<th scope="col">Open</th>'
       + '</tr></thead><tbody>'
       + sorted.map(function (e) { return row(e, infos[e.slug]); }).join('')

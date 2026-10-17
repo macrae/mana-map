@@ -545,3 +545,60 @@ def test_next_names_a_copy_on_another_site_that_is_behind_the_sleeved_list(bare_
                                  "built_at": "2026-10-01", "note": ""}}))
     info = deck_info.compose(SLUG)
     assert any(n.startswith("DeckCheck copy is V3, sleeved is V5") for n in info["next"]), info["next"]
+
+
+def _dti_file(base, sha="x", as_of="2026-10-17"):
+    from manamap.pilot import dti
+    reading = {"as_of": as_of, "source_updated_at": "2026-10-17T10:05:00Z",
+               "decklist_sha256": sha, "deckcheck_id": "Q9",
+               "url": "https://deckcheck.co/deck/Q9", "score": 61, "max_score": 96,
+               "bracket": 4, "benchmarks": {k: "B" for k in sorted(dti.BENCHMARKS)}}
+    (base / "deckcheck.json").write_text(json.dumps({
+        "schema_version": 1, "slug": SLUG, "branch": None, "source": "deckcheck.co",
+        "last_pulled": as_of, "readings": [reading], "omni": dti.omni([reading], "x"),
+        "floor_vs_dti": {"absent_because": "no floor"}}))
+
+
+def test_the_dti_block_is_absent_without_a_file_and_dated_with_one(bare_deck):
+    from datetime import date
+
+    info = deck_info.compose(SLUG)
+    assert info["deckcheck"] is None and not any("DTI" in n for n in info["next"])
+    _dti_file(bare_deck)
+    info = deck_info.compose(SLUG)
+    dc = info["deckcheck"]
+    assert dc["score"] == 61 and dc["bracket"] == 4 and dc["stale_list"] is False
+    assert dc["readings_n"] == 1 and dc["max_age_days"] > 0
+    assert not any("DTI" in n for n in info["next"]), "current list, no clock: no line"
+    # An older list is said from the files alone.
+    _dti_file(bare_deck, sha="y")
+    assert any("DTI (2026-10-17) describes an older list" in n
+               for n in deck_info.compose(SLUG)["next"])
+    # Age needs a clock, which only the read paths hand in.
+    _dti_file(bare_deck)
+    assert not any("days old" in n for n in deck_info.compose(SLUG)["next"])
+    assert any("DTI is 45 days old" in n
+               for n in deck_info.compose(SLUG, today=date(2026, 12, 1))["next"])
+
+
+def test_write_never_reads_the_clock_but_the_print_path_does(bare_deck, capsys, monkeypatch):
+    """Re-introduce the bug by passing `today` on the write path and the
+    committed info.json gains a line that changes at midnight."""
+    import argparse
+    from datetime import date as _date
+
+    class Fixed(_date):
+        @classmethod
+        def today(cls):
+            return cls(2026, 12, 1)
+    _dti_file(bare_deck)
+    monkeypatch.setattr("datetime.date", Fixed)
+    deck_info.main(argparse.Namespace(slug=SLUG, branch=None, write=True, verify=False,
+                                      as_json=False))
+    written = json.loads((bare_deck / "info.json").read_text())
+    assert not any("days old" in n for n in written["next"])
+    capsys.readouterr()                                     # drop the write's lines
+    deck_info.main(argparse.Namespace(slug=SLUG, branch=None, write=False, verify=False,
+                                      as_json=True))
+    shown = json.loads(capsys.readouterr().out)
+    assert any("DTI is 45 days old" in n for n in shown["next"])

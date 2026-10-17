@@ -60,13 +60,13 @@ def _errors(page):
     return errors
 
 
-def _manifest_with_link(slug, url=MOX_URL):
+def _manifest_with_link(slug, url=MOX_URL, service="moxfield"):
     doc = json.loads((DECKS / "index.json").read_text(encoding="utf-8"))
     hit = 0
     for e in doc["decks"]:
         if e["slug"] == slug:
-            e["links"] = {"moxfield": {"url": url, "id": url.rsplit("/", 1)[-1],
-                                       "as_of": "2026-10-09"}}
+            e["links"] = {service: {"url": url, "id": url.rsplit("/", 1)[-1],
+                                    "as_of": "2026-10-09"}}
             hit += 1
     assert hit == 1, f"{slug} is not in the manifest"
     return doc
@@ -335,3 +335,54 @@ def test_a_plain_list_never_touches_moxfield(discover_page):
     assert seen == []
     assert got["res"]["resolved"] == 2
     assert page.js_errors == [], page.js_errors
+
+
+# ── DeckCheck: the second service, the same two surfaces ─────────────────────
+
+DC_URL = "https://deckcheck.co/deck/AbC_12-xyz"
+
+
+@pytest.mark.browser
+def test_a_deckcheck_link_shows_on_the_cover_beside_moxfields(browser, viz_server):
+    doc = _manifest_with_link("sharknado")
+    for e in doc["decks"]:
+        if e["slug"] == "sharknado":
+            e["links"]["deckcheck"] = {"url": DC_URL, "id": "AbC_12-xyz", "as_of": "2026-10-17"}
+    page = _deck_page(browser, viz_server, "sharknado", manifest=doc)
+    try:
+        a = page.wait_for_selector("#panels a.cov-deckcheck", timeout=BOOT_TIMEOUT_MS)
+        assert a.inner_text() == "DeckCheck ↗" and a.get_attribute("href") == DC_URL
+        assert "noopener" in a.get_attribute("rel")
+        assert page.query_selector("#panels a.cov-moxfield") is not None, "both, one line"
+        assert page.js_errors == [], page.js_errors
+    finally:
+        page.close()
+
+
+@pytest.mark.browser
+def test_the_workbench_card_links_to_deckcheck(browser, viz_server):
+    page = browser.new_page(viewport={"width": 1440, "height": 1200})
+    errors = _errors(page)
+    _route_manifest(page, _manifest_with_link("sharknado", DC_URL, service="deckcheck"))
+    page.goto(f"{viz_server}/viz/workbench.html")
+    try:
+        page.wait_for_selector(".wb-card a.wb-title[href='deck.html?deck=sharknado']",
+                               state="attached", timeout=BOOT_TIMEOUT_MS)
+        got = page.evaluate("""() => {
+            const card = document.querySelector(
+              ".wb-card a.wb-title[href='deck.html?deck=sharknado']").closest('.wb-card');
+            const a = card.querySelector('a.wb-deckcheck');
+            return { text: a && a.textContent, href: a && a.getAttribute('href'),
+                     mox: document.querySelectorAll('a.wb-moxfield').length };
+        }""")
+        assert got == {"text": "DeckCheck ↗", "href": DC_URL, "mox": 0}, got
+        # The fleet table is behind the Racks / Fleet table toggle; its new column.
+        page.click('button.wb-view[data-view="table"]')
+        page.wait_for_selector(".wb-table thead", timeout=BOOT_TIMEOUT_MS)
+        head = page.locator(".wb-table thead").inner_text()     # CSS uppercases it
+        assert "floor · dti" in head.lower(), head
+        cell = page.locator(".wb-table td.t-power").first.inner_text()
+        assert "B" in cell or "—" in cell, cell
+        assert errors == []
+    finally:
+        page.close()

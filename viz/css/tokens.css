@@ -1272,6 +1272,15 @@ details.rost-fold > summary {
   font-weight: 700; letter-spacing: 0.5px; color: #1a1a2e; background: #c4a747;
   border: 1px solid #a88a35; cursor: help; }
 .gc-list { margin: 10px 0 0; line-height: 1.9; }
+/* The DeckCheck Threat Index panel: five rows of the twelve S–F grades. The
+ * grade rides on `data-grade`, and only S and F are coloured — the middle of
+ * the scale is the scale, not a verdict. */
+.dti-grid { margin: 10px 0 4px; display: grid; gap: 4px; }
+.dti-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.dti-group { min-width: 7.5em; font-size: 0.7rem; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--ink-soft); }
+.dti-chip[data-grade="S"] { background: #c4a747; color: #1a1a2e; border-color: #a88a35; }
+.dti-chip[data-grade="F"] { background: var(--stamp-red); color: #fff; border-color: var(--stamp-red); }
 .combo-head { margin-top: 0; }
 .combo-block { margin: 6px 0 4px; }
 .combo-line { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px;

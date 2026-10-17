@@ -95,6 +95,11 @@
     // total with its source and `as_of`, never a live lookup. Opt-in and
     // network-bound, so absent is the common case and costs one swallowed 404.
     prices: 'prices.json',
+    // DECKCHECK'S THREAT INDEX AS DATED EVIDENCE (`deckcheck <slug> --write`):
+    // the panel beside the bracket draws the readings and the twelve grades;
+    // the manifest's `has.deckcheck` says whether to expect it. Opt-in, so
+    // absent is the common case and costs one swallowed 404, like prices.
+    deckcheck: 'deckcheck.json',
     // Fixed filename, so no manifest entry is needed — the browser cannot
     // list `threat/` but it does not have to.
     targeting: 'threat/targeting.json'
@@ -792,6 +797,54 @@
                  ['data'], 'var(--stamp-red)', body);
   }
 
+  /* ── DECKCHECK'S THREAT INDEX: a second opinion, dated, never a gate ──
+   *
+   * `deckcheck.json` (`deckcheck <slug> --write` after the pilot's own scan on
+   * DeckCheck). The newest reading, our floor against their bracket, the twelve
+   * grades in their five groups, and the omni over the readings of THIS list —
+   * labelled ours, because DeckCheck's formula is unpublished. NO PANEL when
+   * there is no file: this is opt-in evidence, not a todo, and `absent()` would
+   * wrongly offer "measure it now" for a scan only the pilot can run. */
+  var DTI_GROUPS = [['R', 'Resources', ['R1', 'R2']], ['A', 'Access', ['A1', 'A2']],
+                    ['P', 'Pressure', ['P1', 'P2', 'P3']], ['I', 'Interaction', ['I1', 'I2']],
+                    ['S', 'Resilience', ['S1', 'S2', 'S3']]];
+  function dtiPanel(d) {
+    var doc = d.deckcheck;
+    var rs = doc && doc.readings;
+    if (!rs || !rs.length) return '';
+    var r = rs[rs.length - 1];
+    var f = doc.floor_vs_dti || {}, o = doc.omni || {};
+    var info = (d.info || {}).deckcheck || {};
+    var relation = f.relation ? ({equal: 'agrees with our floor',
+      dti_higher: 'above our floor', dti_lower: 'below our floor'})[f.relation] : '';
+    var head =
+      '<div style="font-family:var(--display);font-size:2.6em;line-height:1">' +
+        'B' + esc(r.bracket) + ' <span style="font-size:.4em;color:var(--ink-soft)">' +
+        esc(r.score) + '/' + esc(r.max_score) + '</span></div>' +
+      '<p class="ev">DeckCheck’s read of the list, ' + esc(r.as_of) +
+        (info.stale_list ? ' — <b>describes an older list</b>' : '') +
+        (f.floor ? '; our floor is B' + esc(f.floor) + ' (' + esc(relation) + ')' : '') +
+        '. Dated external evidence: the floor gates, this never does.</p>' +
+      (f.note ? '<p class="ev">' + esc(f.note) + '</p>' : '');
+    var grid = '<div class="dti-grid">' + DTI_GROUPS.map(function (g) {
+      return '<div class="dti-row"><span class="dti-group">' + esc(g[1]) + '</span>' +
+        g[2].map(function (k) {
+          return '<span class="chip dti-chip" data-grade="' + esc(r.benchmarks[k]) + '">' +
+            esc(k) + ' ' + esc(r.benchmarks[k]) + '</span>';
+        }).join('') + '</div>';
+    }).join('') + '</div>';
+    var omni = o.n
+      ? facts([['Omni over ' + o.n + ' reading' + (o.n === 1 ? '' : 's') + ' of this list',
+                o.median_score + '/' + r.max_score + ' → B' + o.median_bracket +
+                ' (ours, not DeckCheck’s)']])
+      : '<p class="ev">' + esc(o.absent_because || 'no reading of this list') + '</p>';
+    var link = r.url
+      ? '<p><a href="' + esc(r.url) + '" target="_blank" rel="noopener">On DeckCheck ↗</a></p>'
+      : '';
+    return panel('dti', 'DeckCheck Threat Index', 'What does a second opinion say?',
+                 ['data'], 'var(--tier-data)', head + grid + omni + link);
+  }
+
   /* ── KNOWN COMBOS: the Spellbook lines the list contains, and one card short ──
    *
    * `combos.json` is the registry's answer, never the page's: `deck-combos`
@@ -1323,6 +1376,9 @@
     if (st.missing && st.missing.length) rows.push(['Missing', st.missing.join(', ')]);
     if (b.floor) rows.push(['Bracket floor', b.floor + (b.floor_name ? ' (' + b.floor_name + ')' : '')]);
     if (b.target) rows.push(['Target', b.target + (b.within_target ? ' ✓' : ' ✗')]);
+    var dc = info.deckcheck;
+    if (dc) rows.push(['DeckCheck DTI', dc.score + '/' + dc.max_score + ' → B' + dc.bracket
+      + ' (' + dc.as_of + (dc.stale_list ? ', older list' : '') + ')']);
     var r = info.record || {};
     rows.push(['Games logged', r.games || 0]);
     if (r.games) rows.push(['Record', r.win + 'W ' + r.loss + 'L' + (r.draw ? ' ' + r.draw + 'D' : '')]);
@@ -1880,12 +1936,17 @@
    * well as by `validate-links`: an href is the one place a bad string becomes a
    * live `javascript:` link, and the page should not have to trust a file for it.
    * The pattern MIRRORS `deck_link.SERVICES["moxfield"]["url_re"]`. */
-  function moxfieldUrl(entry) {
-    var m = entry && entry.links && entry.links.moxfield;
+  var LINK_RE = {
+    moxfield: /^https:\/\/(www\.)?moxfield\.com\/decks\/[A-Za-z0-9_-]+\/?$/,
+    // MIRRORS `deck_link.SERVICES["deckcheck"]["url_re"]` (2026-10-17)
+    deckcheck: /^https:\/\/(www\.)?deckcheck\.co\/decks?\/[A-Za-z0-9_-]+\/?$/
+  };
+  function linkUrl(entry, service) {
+    var m = entry && entry.links && entry.links[service];
     var url = m && typeof m.url === 'string' ? m.url : null;
-    return url && /^https:\/\/(www\.)?moxfield\.com\/decks\/[A-Za-z0-9_-]+\/?$/.test(url)
-      ? url : null;
+    return url && LINK_RE[service] && LINK_RE[service].test(url) ? url : null;
   }
+  function moxfieldUrl(entry) { return linkUrl(entry, 'moxfield'); }
 
   function moxfieldExport() {
     return '<div class="cov-export">' +
@@ -1983,6 +2044,14 @@
       : '';
 
     var moxUrl = moxfieldUrl(entry);
+    var dcUrl = linkUrl(entry, 'deckcheck');
+    /* ONE Published line, each site a link, only the sites with a recorded link. */
+    var published = [
+      moxUrl ? '<a class="cov-moxfield" href="' + esc(moxUrl) +
+        '" target="_blank" rel="noopener">Moxfield ↗</a>' : '',
+      dcUrl ? '<a class="cov-deckcheck" href="' + esc(dcUrl) +
+        '" target="_blank" rel="noopener">DeckCheck ↗</a>' : ''
+    ].filter(Boolean).join(' · ');
     var ident = '<div class="cov-id">' +
       '<div class="cov-alias">' + esc(entry.deck_name || info.slug || '') + '</div>' +
       '<div class="cov-sub">' + esc(specOf(d).commanders
@@ -1990,8 +2059,7 @@
       '<dl class="cov-book">' +
         '<dt>Case no.</dt><dd>' + esc(info.slug || '') + '</dd>' +
         '<dt>Marks</dt><dd>' + esc(marks) + '</dd>' + price +
-        (moxUrl ? '<dt>Published</dt><dd><a class="cov-moxfield" href="' + esc(moxUrl) +
-          '" target="_blank" rel="noopener">Moxfield ↗</a></dd>' : '') +
+        (published ? '<dt>Published</dt><dd>' + published + '</dd>' : '') +
         '<dt>First booked</dt><dd>' + (rec.first_played
           ? esc(rec.first_played)
           : '<span class="ev">never played</span>') + '</dd>' +
@@ -2392,7 +2460,7 @@
       nextPanel(d), statusPanel(d), auditPanel(d),
       enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d),
       briefPanel(d), constellationPanel(d),
-      bracketPanel(d), combosPanel(d), manaPanel(d), goldfishPanel(d),
+      bracketPanel(d), dtiPanel(d), combosPanel(d), manaPanel(d), goldfishPanel(d),
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d),
       branchPanel(d)
     ].filter(Boolean).join('');

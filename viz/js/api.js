@@ -47,8 +47,11 @@
  *           deck has a `links.json`. The workbench card and the deck page's
  *           cover READ it, and a cached manifest would hide a recorded link.
  *   8 -> 9: entries carry `stage`; the Build/Discover pickers filter on it.
+ *   9 -> 10: `links` may carry `deckcheck`, each link may carry its
+ *            `decklist_sha256`/`version` stamp, and `has.deckcheck` says whether
+ *            a Threat Index is on file (2026-10-17).
  */
-window.MANIFEST_VERSION = 9;
+window.MANIFEST_VERSION = 10;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── What a legal deck IS, per format — mirrors `pilot/formats.py:FORMATS` ────

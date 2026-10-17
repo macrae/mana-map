@@ -321,7 +321,9 @@ def gather_entries():
                             "build_plan", "manual_prose", "pending",
                             "log_annotations", "deck_versions",
                             "captains_log", "watchlist", "considering",
-                            "combos", "bracket_report")}
+                            "combos", "bracket_report",
+                            # DeckCheck's Threat Index on file (2026-10-17)
+                            "deckcheck")}
         has["log"] = (deck_path / "log.jsonl").exists()
         # The Deck Context (PRD v2): the deck page renders it first, and fetches
         # cards.json beside it for the Cards-by-role filter only when it exists.

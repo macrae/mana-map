@@ -365,7 +365,13 @@ def _combos_block(doc):
                     for c in (doc.get("included") or [])[:COMBOS_TOP]]}
 
 
-def compose(slug, verify=False, ladder=True):
+def _dti_block(slug):
+    from manamap.pilot import dti
+    from manamap.pilot.common import measured_sha
+    return dti.info_block(dti.load(slug), measured_sha(slug))
+
+
+def compose(slug, verify=False, ladder=True, today=None):
     """The workbench view. `verify` RUNS THE GATES, and costs about two seconds.
 
     `deck_status.status(validate=True)` imports and executes all fourteen
@@ -553,6 +559,10 @@ def compose(slug, verify=False, ladder=True):
         "bracket": {"floor": bracket.get("floor"), "floor_name": bracket.get("floor_name"),
                     "target": bracket.get("target"),
                     "within_target": bracket.get("within_target")} if bracket else None,
+        # DECKCHECK'S THREAT INDEX, dated external evidence (2026-10-17): the latest
+        # reading, whether it describes this list, and the derived blocks — from
+        # the file alone. No clock here: the age line is the READ path's.
+        "deckcheck": _dti_block(slug),
         # THE KNOWN LINES, composed from `deck-combos --write`: the summary and
         # the top five included lines. An absent report is a stated absence
         # with its reason, not a null the page would read as "no combos".
@@ -603,7 +613,7 @@ def compose(slug, verify=False, ladder=True):
         "experiments": _experiments(slug),
         "decisions": _decisions(slug),
     }
-    info["next"] = _next(info)
+    info["next"] = _next(info, today=today)
     return info
 
 
@@ -789,7 +799,9 @@ def _gates(slug, promote_mod):
         return None
 
 
-def _next(info):
+def _next(info, today=None):
+    """`today` is handed in by the READ paths only (print, --json) and never by
+    `--write`: a committed info.json must not depend on the day it was written."""
     """Each suggestion is derived from a condition true right now and names the
     command. No judgment about the deck lives here."""
     nxt = []
@@ -831,9 +843,12 @@ def _next(info):
     # files only, so info.json stays network-free: links.json's stamp against
     # the paper lock, or the working version when unlocked (2026-10-17).
     if not closed:
-        from manamap.pilot import deck_link
+        from manamap.pilot import deck_link, dti
         nxt.extend(deck_link.drift_lines(slug, paper=info.get("paper"),
                                          current_version=info["version"]["current"]))
+        # The DTI on file describes an older list (files), or is old (clock,
+        # read path only).
+        nxt.extend(dti.next_lines(info.get("deckcheck"), slug, today=today))
     if info["record"]["games"] == 0 and not closed:
         nxt.append(f"nothing in the captain's log — play it, then "
                    f"`deck-notes {slug} add \"…\" --result win|loss --opponents N`")
@@ -1109,6 +1124,11 @@ def _print(info):
         sline += (f" · bracket floor {b['floor']}" + (f" ({b['floor_name']})" if b.get("floor_name") else "")
                   + (f" · target {b['target']} {'✓' if b.get('within_target') else '✗'}"
                      if b.get("target") else ""))
+    if info.get("deckcheck"):
+        dc = info["deckcheck"]
+        sline += (f" · DTI {dc['score']}/{dc['max_score']} → B{dc['bracket']} "
+                  f"({dc['as_of']}, {dc['readings_n']} reading{'s' if dc['readings_n'] != 1 else ''})"
+                  + (" · OLDER LIST" if dc.get("stale_list") else ""))
     print(f"  status     {sline}")
     cb = info.get("combos") or {}
     if not dm.is_absent(cb):
@@ -1205,8 +1225,12 @@ def fetchable(info):
 def main(args):
     # --write implies --verify: the tracked info.json is read by the deck page
     # and must carry real verdicts rather than "not checked".
+    from datetime import date
     info = compose(args.slug, verify=(getattr(args, "verify", False)
-                                      or getattr(args, "write", False)))
+                                      or getattr(args, "write", False)),
+                   # THE CLOCK ONLY ON THE READ PATHS: the tracked file is the
+                   # same whatever day `--write` runs.
+                   today=None if getattr(args, "write", False) else date.today())
     if getattr(args, "write", False):
         path = deck_dir(args.slug) / "info.json"
         path.write_text(json.dumps(fetchable(info), indent=2, ensure_ascii=False) + "\n")

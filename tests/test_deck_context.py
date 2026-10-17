@@ -298,3 +298,20 @@ def test_a_context_for_a_deck_with_no_commander_passes_the_gate(monkeypatch):
     errors, warnings = dc.check_text("elves", text, blocks, strict=True)
     assert errors == [] and warnings == [], (errors, warnings)
     assert dc.replace_blocks(text, blocks) == text
+
+
+def test_the_summary_block_carries_the_dti_beside_the_floor_only_when_on_file():
+    """DeckCheck's Threat Index is dated external evidence: the line names the
+    score, the bracket, the source, the date and the reading count, and says
+    "older list" when the newest reading describes another list. No file, no
+    fragment — "none" is the Jarvis rule's to say."""
+    from manamap.pilot import deck_context as dc_module
+    dc = {"score": 61, "max_score": 96, "bracket": 4, "as_of": "2026-10-17",
+          "stale_list": False, "readings_n": 3}
+    block = dc_module._block_summary("sharknado", _info(deckcheck=dc))
+    assert "**bracket floor:** 4 (Optimized) · **DTI:** 61/96 → B4 (deckcheck.co, 2026-10-17, 3 readings)" in block
+    assert "older list" not in block
+    stale = dict(dc, stale_list=True, readings_n=1)
+    block = dc_module._block_summary("sharknado", _info(deckcheck=stale))
+    assert "1 reading) — older list" in block
+    assert "DTI" not in dc_module._block_summary("sharknado", _info(deckcheck=None))
