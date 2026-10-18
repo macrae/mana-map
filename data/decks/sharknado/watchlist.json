@@ -234,6 +234,87 @@
           "at": "2026-10-09T22:55:23-07:00"
         }
       ]
+    },
+    {
+      "id": "free-interaction",
+      "title": "Free interaction for the wheel turn (DeckCheck roast, 2026-10-18)",
+      "source": "deckcheck-roast-2026-10-18",
+      "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 (alternative or discounted costs) (counter|destroy|exile|damage); 32 results, 4 kept",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "March of Swirling Mist",
+          "pays": "none",
+          "axis": "protection",
+          "why": "instant, X blue cards from hand pay for it: phase out up to X creatures — both commanders dodge spot removal AND a wrath, paid with the fresh hand the wheel just dealt",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Snapback",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "instant, exile a blue card from hand instead of paying: bounce a creature — a free answer with the mana tapped, or bounce Brallin in response to removal",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Flare of Denial",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "instant, sacrifice a nontoken blue creature instead of paying: counter target spell — a hard counter for zero mana off a spent Archivist or Skulker",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "March of Otherworldly Light",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "instant, exile an artifact, creature or enchantment with mana value X or less; white cards from hand reduce it — a second Swords that also hits Rhystic Study and Smothering Tithe",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
+    },
+    {
+      "id": "wheel-turn-protection",
+      "title": "Protection that also beats a wrath (DeckCheck roast, query 2, 2026-10-18)",
+      "source": "deckcheck-roast-2026-10-18",
+      "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 (phase out|indestructible|hexproof|protection from) -\"you control gain\"; 49 results, 3 kept (+ March of Swirling Mist, already in free-interaction)",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "Blacksmith's Skill",
+          "pays": "none",
+          "axis": "protection",
+          "why": "one white: target PERMANENT gains hexproof and indestructible — a commander against spot removal or a destroy wrath, or Smothering Tithe against the artifact hate; Loran's Escape is the same card with scry 1 on a creature or artifact",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Valorous Stance",
+          "pays": "none",
+          "axis": "protection",
+          "why": "two mana, modal: indestructible on one creature, OR destroy a creature with toughness 4 or more — protection that is removal when nothing needs saving",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Final Showdown",
+          "pays": "none",
+          "axis": "protection",
+          "why": "spree, from one white: +1 one creature indestructible, +1 ALL creatures lose abilities until end of turn (an instant-speed stop on a combo creature), +5 destroy all creatures — a protection spell that is also the deck's only wrath",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     }
   ]
 }
