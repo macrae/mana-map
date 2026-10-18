@@ -1650,9 +1650,16 @@ wrong. Both doctor modes read `log_annotations.json`.
 **Since 2026-10-04 Forge answers narrow questions and never gates a merge.** The
 first is `forge-cast-check <slug> --card X` — does the AI play this card at all, in a
 two-seat shell — and every add a branch needs cast is proven that way before an arm
-(`--branch B --adds --write`). A pod run is optional; in `net-change` its loss is a
-`forge_warning`. Forge is the rules engine; this repo owns the harness, the parser and
-the bridge.
+(`--branch B --adds --write`). **It is live, not blind (2026-10-18):** every shell
+streams its Forge log to a temp dir the job band counts finished games from (one bar,
+`games`, an ETA), and each card's row prints the moment its shell finishes with the
+elapsed time, in completion order — never a silent wait for the last shell. **A land is
+not proven here:** Forge plays a land and never casts it, so the shell's `cast` count
+cannot fire for one and every land drop goes to an untapped basic (torbran-v1's five
+land adds all read HELD, 2026-10-18); land adds are named, left out of the file and out
+of the gate, and `mana-analysis` is the evidence for a land. A pod run is
+optional; in `net-change` its loss is a `forge_warning`. Forge is the rules engine; this
+repo owns the harness, the parser and the bridge.
 `manamap pilot simulate <slug> --vs <opponent>… --games N` runs N seeded Commander games
 headless against seats from `data/opponents/` (your pod, via `fetch-opponent`) or your
 other decks, and writes one tracked run record — win rate with a Wilson interval, who

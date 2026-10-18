@@ -284,3 +284,84 @@ def test_the_post_hoc_reader_labels_an_arm_run_before_the_gate_existed(tmp_path,
     got2 = net_change._cast_proofs_from_runs("d", "x", ["r2"])
     assert got2["floor"] is False and got2["gated_runs"] == ["r2"]
     assert net_change._cast_proofs_from_runs("d", "x", []) is None
+
+
+def test_run_many_reports_each_shell_as_it_finishes_and_counts_games_on_the_band(tmp_path, monkeypatch):
+    """Live, not blind (2026-10-18). Before this, `run_many` buffered every shell and the
+    command printed after the last one — fourteen shells of silence. Now every shell gets
+    its own log file the band counts finished games from, and `on_done` fires per shell in
+    COMPLETION order with its index. Proven by a fake `run` that finishes out of order."""
+    import json as _json
+    import pathlib
+    import time as _time
+    from manamap import progress as _progress
+    monkeypatch.setattr(_progress, "DIR", tmp_path / "band")
+    monkeypatch.setattr(cc, "read_proofs", lambda slug, branch: None)
+    monkeypatch.setattr(cc, "current_harness", lambda slug, branch=None, profile=None: dict(HARNESS))
+    seen_logs = {}
+
+    def fake_run(slug, card, branch=None, log_path=None, games=8, **kw):
+        assert log_path is not None, "a shell must stream its log for the band to count"
+        seen_logs[card] = pathlib.Path(log_path)
+        _time.sleep(0.3 if card == "Alpha" else 0.0)      # Alpha finishes LAST
+        pathlib.Path(log_path).write_text("".join(f"Game Result: Game {g} ended in a win\n" for g in range(1, games + 1)))
+        return {"card": card, "verdict_word": "PLAYED", "counts": {"cast": 1}, "diagnosis": {"classes": []}}, "log"
+    monkeypatch.setattr(cc, "run", fake_run)
+    order = []
+    kept, docs, current = cc.run_many("d", ["Alpha", "Beta"], branch="x", jobs=2, games=8,
+                                      on_done=lambda card, doc, i, n: order.append((card, i, n)))
+    assert order == [("Beta", 1, 2), ("Alpha", 2, 2)], "rows fire as shells finish, not in list order"
+    assert set(docs) == {"Alpha", "Beta"} and kept == {}
+    assert len({p.parent for p in seen_logs.values()}) == 1 and len(set(seen_logs.values())) == 2
+    band = list((tmp_path / "band").glob("cast-check-*.json"))
+    assert len(band) == 1
+    doc = _json.loads(band[0].read_text())
+    assert doc["unit"] == "games" and doc["total"] == 16 and doc["done"] == 16 and doc["state"] == "passed"
+    assert doc["label"] == "forge-cast-check d@x" and "2/2 cards" in doc["detail"]
+
+
+def test_run_many_removes_its_shell_logs_when_done(tmp_path, monkeypatch):
+    """The streamed logs exist for the band; the proof carries the counts. A run that left
+    them would pile up a few hundred KB per card per run under the system temp dir."""
+    import pathlib
+    from manamap import progress as _progress
+    monkeypatch.setattr(_progress, "DIR", tmp_path / "band")
+    monkeypatch.setattr(cc, "read_proofs", lambda slug, branch: None)
+    monkeypatch.setattr(cc, "current_harness", lambda slug, branch=None, profile=None: dict(HARNESS))
+    seen = {}
+
+    def fake_run(slug, card, branch=None, log_path=None, games=8, **kw):
+        seen["dir"] = pathlib.Path(log_path).parent
+        pathlib.Path(log_path).write_text("Game Result: Game 1 ended in a win\n")
+        return {"card": card, "verdict_word": "PLAYED", "counts": {}, "diagnosis": {"classes": []}}, "log"
+    monkeypatch.setattr(cc, "run", fake_run)
+    cc.run_many("d", ["Alpha"], branch="x", jobs=1, games=1)
+    assert seen["dir"].name.startswith("mm-castcheck-") and not seen["dir"].exists()
+
+
+def test_a_land_add_is_listed_and_never_proven_held_or_unproven(tmp_path, monkeypatch, capsys):
+    """2026-10-18, torbran-v1: four lands and Command Beacon read HELD (drawn 12-14 games,
+    cast 0) because Forge PLAYS a land and never casts it — the shell cannot read a land
+    drop, and the gate would have refused the arm over a Verge. Lands are named, left out
+    of the proof set and out of the gate; a branch that adds only lands has nothing to prove."""
+    import json
+    _proofs(tmp_path, monkeypatch, HARNESS, {"Vein Ripper": _proof_row("PLAYED")})
+    b = config.DECKS_DIR / "d" / "branches" / "x"
+    (b / "decklist.txt").write_text("Commander:\n1 Edgar Markov\n\nDeck:\n1 Toxic Deluge\n1 Vein Ripper\n1 Command Beacon\n")
+    (b / "cards.json").write_text(json.dumps({"cards": [
+        {"name": "Edgar Markov", "type_line": "Legendary Creature — Vampire Knight", "is_commander": True},
+        {"name": "Toxic Deluge", "type_line": "Sorcery"}, {"name": "Vein Ripper", "type_line": "Creature — Vampire"},
+        {"name": "Command Beacon", "type_line": "Land"}]}))
+    assert cc.adds("d", "x") == ["Command Beacon", "Toxic Deluge", "Vein Ripper"]
+    assert cc.land_adds("d", "x") == {"Command Beacon"} and cc.spell_adds("d", "x") == ["Toxic Deluge", "Vein Ripper"]
+    s = cc.status("d", "x", HARNESS)
+    assert s["lands"] == ["Command Beacon"]
+    assert "Command Beacon" not in s["proven"] + s["held"] + s["late"] + s["unproven"]
+    assert s["proven"] == ["Vein Ripper"] and s["unproven"] == ["Toxic Deluge"]
+    # only lands -> nothing the shell can prove, said so, no shell started
+    (b / "decklist.txt").write_text("Commander:\n1 Edgar Markov\n\nDeck:\n1 Sol Ring\n1 Swamp\n1 Command Beacon\n")
+    monkeypatch.setattr(cc, "run_many", lambda *a, **k: (_ for _ in ()).throw(AssertionError("a shell ran")))
+    import argparse
+    with pytest.raises(SystemExit) as e:
+        cc.main(argparse.Namespace(slug="d", branch="x", adds=True))
+    assert "only lands" in str(e.value) and "lands not proven here (1): Command Beacon" in capsys.readouterr().out

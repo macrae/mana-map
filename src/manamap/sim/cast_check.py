@@ -25,9 +25,13 @@ play it. A card that passes here can still be bad; a card that fails here is not
 deck's hands at all, and measuring a list with it in is measuring a different list.
 """
 import json
+import os
 import pathlib
 import re
+import shutil
 import subprocess
+import tempfile
+import time
 from datetime import date
 
 from manamap import config
@@ -242,7 +246,11 @@ def verdict_word(c):
 
 
 def run(slug, card, copies=DEFAULT_COPIES, games=DEFAULT_GAMES, vs=DEFAULT_VS, clock=DEFAULT_CLOCK,
-        branch=None, seed=4343, profile=None):
+        branch=None, seed=4343, profile=None, log_path=None):
+    """One shell. With `log_path`, the JVM's stdout streams to that file AS IT PLAYS (stderr
+    to `<log_path>.err`), so a reader — the job band's `LogCounter`, a `tail -f` — can count
+    finished games while the run is live; without it the output is captured in memory, as
+    it was before 2026-10-18. The text that is parsed is the same either way."""
     from manamap.sim import forge_cards
     text, facts = shell_decklist(slug, card, copies, branch)
     meta = forge.install_named(f"mm-castcheck-{forge.deck_meta_name(slug)}-{forge_cards.stem(card)[:24]}", text)
@@ -260,8 +268,7 @@ def run(slug, card, copies=DEFAULT_COPIES, games=DEFAULT_GAMES, vs=DEFAULT_VS, c
     if profile:
         profiles = [profile, forge.STANDARD_POD_PROFILE]
     argv = forge.command([meta, opp], games, clock, jar=jar, seed=seed, profiles=profiles)
-    out = subprocess.run(argv, capture_output=True, text=True, cwd=str(forge.FORGE_HOME))
-    log = out.stdout + out.stderr
+    log = _play(argv, log_path)
     c = count(log, card, meta, facts["cmc"])
     from manamap.sim import forge_pilot as _fpl
     stamp = dict(harness(), profile=profile, profile_sha=_fpl.profile_content_sha(profile) if profile else None)
@@ -274,6 +281,28 @@ def run(slug, card, copies=DEFAULT_COPIES, games=DEFAULT_GAMES, vs=DEFAULT_VS, c
                        "Two seats, short clock: a card that needs a four-player board or a long game can read HELD here and play at the table."]}, log
 
 
+def _play(argv, log_path=None):
+    """Run the JVM; return stdout + stderr as one text, the shape `count` reads."""
+    if not log_path:
+        out = subprocess.run(argv, capture_output=True, text=True, cwd=str(forge.FORGE_HOME))
+        return out.stdout + out.stderr
+    log_path = pathlib.Path(log_path)
+    err_path = log_path.with_suffix(log_path.suffix + ".err")
+    with open(log_path, "w", encoding="utf-8") as out, open(err_path, "w", encoding="utf-8") as err:
+        subprocess.run(argv, stdout=out, stderr=err, text=True, cwd=str(forge.FORGE_HOME))
+    return (log_path.read_text(encoding="utf-8", errors="replace")
+            + err_path.read_text(encoding="utf-8", errors="replace"))
+
+
+def _progress(label, total, log_glob):
+    """The job band's view of a cast check: finished games counted from the shells' logs
+    as they grow, by `sim-progress`'s own "a game ended" pattern. Display only."""
+    from manamap.progress import LogCounter, Progress
+    from manamap.sim.progress import _DONE_RE
+    return Progress(label, total=total, unit="games", name="cast-check",
+                    counter=LogCounter(_DONE_RE, log_glob))
+
+
 PROOFS = "cast_proofs.json"
 
 
@@ -284,6 +313,29 @@ def adds(slug, branch):
     names = list(d.get("add") or [])
     names += [q["name"] for q in (d.get("quantity") or []) if (q.get("to") or 0) > (q.get("from") or 0)]
     return sorted(set(names))
+
+
+def land_adds(slug, branch):
+    """The adds that are LANDS, by the branch's own cards.json (no file -> none known).
+
+    A land is not proven here and never was: Forge PLAYS a land and never casts it, so
+    the telemetry's `cast` line the shell counts cannot fire for one, and against the
+    shell's 36 basics the AI's land ranking takes an untapped basic every drop. Measured
+    2026-10-18 on torbran-v1: five land adds, 13-14 drawn games each, `cast 0` — a HELD
+    that would have refused the arm over a Verge. A land's castability is `mana-analysis`'s
+    question, not this shell's."""
+    try:
+        cards = _deck(slug, branch).get("cards") or []
+    except FileNotFoundError:
+        return set()
+    lands = {c["name"] for c in cards if "Land" in (c.get("type_line") or "")}
+    return {n for n in adds(slug, branch) if n in lands}
+
+
+def spell_adds(slug, branch):
+    """What the shell CAN prove: every add that is not a land."""
+    lands = land_adds(slug, branch)
+    return [n for n in adds(slug, branch) if n not in lands]
 
 
 def proofs_path(slug, branch):
@@ -306,9 +358,9 @@ def status(slug, branch, current):
     doc = read_proofs(slug, branch) or {}
     rows = doc.get("cards") or {}
     fresh = same_harness(doc.get("harness"), current)
-    out = {"proven": [], "held": [], "late": [], "unproven": [], "as_of": doc.get("as_of"),
-           "harness_matches": fresh if doc else None}
-    for card in adds(slug, branch):
+    out = {"proven": [], "held": [], "late": [], "unproven": [], "lands": sorted(land_adds(slug, branch)),
+           "as_of": doc.get("as_of"), "harness_matches": fresh if doc else None}
+    for card in spell_adds(slug, branch):
         r = rows.get(card)
         w = (r or {}).get("verdict_word")
         if not r or not fresh:
@@ -380,10 +432,15 @@ def gate(slug, branch, profile=None, anyway=False):
                      + "\n  --anyway runs the arm with those slots recorded as FLOORS")
 
 
-def run_many(slug, cards, branch=None, jobs=2, force=False, **kw):
+def run_many(slug, cards, branch=None, jobs=2, force=False, on_done=None, **kw):
     """One shell per card, `jobs` at a time; a card already PLAYED under the same harness
-    in the existing proof file is kept rather than re-run unless `force`."""
-    from concurrent.futures import ThreadPoolExecutor
+    in the existing proof file is kept rather than re-run unless `force`.
+
+    Live, not blind (2026-10-18): every shell streams its log to a temp dir the job band
+    counts games from, and `on_done(card, doc, i, n)` fires AS EACH SHELL FINISHES, in
+    completion order — the command prints the card's row then, not after the last shell.
+    The returned docs are keyed by card, so the order a caller reads is its own."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     existing = read_proofs(slug, branch) if branch else None
     current = current_harness(slug, branch)
     kept, todo = {}, []
@@ -397,9 +454,27 @@ def run_many(slug, cards, branch=None, jobs=2, force=False, **kw):
     else:
         todo = list(cards)
     docs = {}
-    with ThreadPoolExecutor(max_workers=max(1, jobs)) as ex:
-        for card, (doc, _log) in zip(todo, ex.map(lambda c: run(slug, c, branch=branch, **kw), todo)):
-            docs[card] = doc
+    if not todo:
+        return kept, docs, current
+    from manamap.sim import forge_cards
+    games = kw.get("games", DEFAULT_GAMES)
+    tmp = pathlib.Path(tempfile.mkdtemp(prefix="mm-castcheck-"))
+    label = f"forge-cast-check {slug}" + (f"@{branch}" if branch else "")
+    try:
+        with _progress(label, len(todo) * games, str(tmp / "*.log")) as prog, \
+                ThreadPoolExecutor(max_workers=max(1, jobs)) as ex:
+            prog.set(detail=f"0/{len(todo)} cards · {jobs} shells at a time")
+            futures = {ex.submit(run, slug, c, branch=branch, log_path=tmp / f"{forge_cards.stem(c)[:40]}.log", **kw): c
+                       for c in todo}
+            for i, fut in enumerate(as_completed(futures), 1):
+                card = futures[fut]
+                doc, _log = fut.result()
+                docs[card] = doc
+                prog.set(detail=f"{i}/{len(todo)} cards · last {card}: {doc['verdict_word']}")
+                if on_done:
+                    on_done(card, doc, i, len(todo))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)       # the logs fed the band; the docs carry the counts
     return kept, docs, current
 
 
@@ -420,7 +495,10 @@ def write_proofs(slug, branch, kept, docs, current, shell=None):
                       "is the deck's cheapest spells against one opposing board, and the AI does not swing. `cast` is the "
                       "verdict this tool owns; a trigger that needs combat is read in the pod arm, where `first_attack_turn` "
                       "says whether the deck attacked at all.",
-                      "A proof is a measurement under one harness (overrides, profile, patch set); a changed harness voids it, like model_version."]}
+                      "A proof is a measurement under one harness (overrides, profile, patch set); a changed harness voids it, like model_version.",
+                      "A LAND IS NOT PROVEN HERE. Forge plays a land and never casts it, so the `cast` line the shell counts cannot "
+                      "fire for one, and the AI takes an untapped basic over a tapland at every drop in a shell of 36 basics. Land "
+                      "adds are listed by the command and left out of the file; `mana-analysis` is the evidence for a land."]}
     p = proofs_path(slug, branch)
     p.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return p, out
@@ -437,14 +515,29 @@ def main(args):
         branch = getattr(args, "branch", None)
         if not branch:
             raise SystemExit("--adds proves a BRANCH's adds — `--branch <name>`")
-        cards = adds(args.slug, branch)
+        cards = spell_adds(args.slug, branch)
+        lands = sorted(land_adds(args.slug, branch))
+        if lands:
+            print(f"  lands not proven here ({len(lands)}): {', '.join(lands)} — Forge plays a land and never casts it; "
+                  f"the shell cannot read a land drop (`mana-analysis` is the land evidence)", flush=True)
         if not cards:
-            raise SystemExit(f"{args.slug}@{branch} adds nothing against the deck — nothing to prove")
+            raise SystemExit(f"{args.slug}@{branch} adds " + ("only lands" if lands else "nothing")
+                             + " against the deck — nothing the shell can prove")
         kw = dict(copies=getattr(args, "copies", None) or DEFAULT_COPIES, games=getattr(args, "games", None) or DEFAULT_GAMES,
                   vs=getattr(args, "vs", None) or DEFAULT_VS, clock=getattr(args, "clock", None) or DEFAULT_CLOCK,
                   seed=getattr(args, "seed", None) or 4343)
-        kept, docs, current = run_many(args.slug, cards, branch=branch, jobs=getattr(args, "jobs", None) or 2,
-                                       force=getattr(args, "force", False), **kw)
+        jobs = getattr(args, "jobs", None) or 2
+        t0 = time.time()
+        print(f"CAST CHECK — {args.slug}@{branch}: {len(cards)} add(s), {kw['games']} games each, {jobs} shells at a time; "
+              f"each card's row prints as its shell finishes (the job band counts the games)", flush=True)
+
+        def _live(card, doc, i, n):
+            m, s_ = divmod(int(time.time() - t0), 60)
+            print(f"  [{i:2d}/{n}  {m:2d}:{s_:02d}]" + render_row(card, {**doc["counts"], "verdict_word": doc["verdict_word"],
+                                                                      "classes": doc["diagnosis"]["classes"]}), flush=True)
+
+        kept, docs, current = run_many(args.slug, cards, branch=branch, jobs=jobs,
+                                       force=getattr(args, "force", False), on_done=_live, **kw)
         shell = {"vs": kw["vs"], "games": kw["games"], "copies": kw["copies"], "clock": kw["clock"], "seed": kw["seed"]}
         print(f"CAST PROOFS — {args.slug}@{branch}: {len(cards)} add(s), {len(docs)} shell(s) run, {len(kept)} kept from the file")
         rows = {**kept, **{c: {**d["counts"], "verdict_word": d["verdict_word"], "classes": d["diagnosis"]["classes"]} for c, d in docs.items()}}
@@ -460,10 +553,16 @@ def main(args):
         return
     if not getattr(args, "card", None):
         raise SystemExit("--card NAME, or --adds with --branch")
-    doc, log = run(args.slug, args.card, copies=getattr(args, "copies", None) or DEFAULT_COPIES,
-                   games=getattr(args, "games", None) or DEFAULT_GAMES, vs=getattr(args, "vs", None) or DEFAULT_VS,
-                   clock=getattr(args, "clock", None) or DEFAULT_CLOCK, branch=getattr(args, "branch", None),
-                   seed=getattr(args, "seed", None) or 4343)
+    games = getattr(args, "games", None) or DEFAULT_GAMES
+    tmp = pathlib.Path(tempfile.mkdtemp(prefix="mm-castcheck-"))
+    try:
+        with _progress(f"forge-cast-check {args.slug}: {args.card}", games, str(tmp / "*.log")):
+            doc, log = run(args.slug, args.card, copies=getattr(args, "copies", None) or DEFAULT_COPIES,
+                           games=games, vs=getattr(args, "vs", None) or DEFAULT_VS,
+                           clock=getattr(args, "clock", None) or DEFAULT_CLOCK, branch=getattr(args, "branch", None),
+                           seed=getattr(args, "seed", None) or 4343, log_path=tmp / "shell.log")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
     if getattr(args, "as_json", False):
         print(json.dumps(doc, indent=2, ensure_ascii=False))
     else:
