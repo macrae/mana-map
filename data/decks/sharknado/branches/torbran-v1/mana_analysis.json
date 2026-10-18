@@ -1,6 +1,6 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "9978638c13b0d05d4e02ca204865b61555c5a02d902db79041401b4976972298",
+  "decklist_sha256": "8cef69371b29ca8fef5bf1babc2be9b9c5ac6e87a556e464b45027319b761747",
   "lands": {
     "total": 36,
     "entries": 36,
@@ -8,29 +8,17 @@
       "recurring_per_tap_cycle": 5,
       "one_time_on_entry": 6
     },
-    "enters_tapped": 16,
-    "enters_tapped_always": 6,
+    "enters_tapped": 17,
+    "enters_tapped_always": 7,
     "classes": {
-      "basic": 1,
+      "basic": 2,
       "fixing": 7,
-      "mdfc": 1,
-      "tapped": 16,
-      "untapped-dual": 17,
-      "utility": 10
+      "mdfc": 2,
+      "tapped": 17,
+      "untapped-dual": 16,
+      "utility": 9
     },
     "list": [
-      {
-        "name": "Calciform Pools",
-        "copies": 1,
-        "classes": [
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "U",
-          "W"
-        ]
-      },
       {
         "name": "Cascade Bluffs",
         "copies": 1,
@@ -218,6 +206,16 @@
         ]
       },
       {
+        "name": "Mountain",
+        "copies": 1,
+        "classes": [
+          "basic"
+        ],
+        "produces": [
+          "R"
+        ]
+      },
+      {
         "name": "Mystic Monastery",
         "copies": 1,
         "classes": [
@@ -225,17 +223,6 @@
         ],
         "produces": [
           "R",
-          "U",
-          "W"
-        ]
-      },
-      {
-        "name": "Nimbus Maze",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
           "U",
           "W"
         ]
@@ -267,10 +254,16 @@
         ]
       },
       {
-        "name": "Reliquary Tower",
+        "name": "Riverglide Pathway // Lavaglide Pathway",
         "copies": 1,
-        "classes": [],
-        "produces": []
+        "classes": [
+          "mdfc",
+          "untapped-dual"
+        ],
+        "produces": [
+          "R",
+          "U"
+        ]
       },
       {
         "name": "Riverpyre Verge",
@@ -411,6 +404,17 @@
         ]
       },
       {
+        "name": "Temple of Epiphany",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "R",
+          "U"
+        ]
+      },
+      {
         "name": "Thundering Falls",
         "copies": 1,
         "classes": [
@@ -436,10 +440,10 @@
   },
   "sources": {
     "lands": {
-      "W": 21,
+      "W": 19,
       "U": 30,
       "B": 0,
-      "R": 25,
+      "R": 28,
       "G": 0
     },
     "nonland": {
@@ -450,10 +454,10 @@
       "G": 0
     },
     "total": {
-      "W": 22,
+      "W": 20,
       "U": 32,
       "B": 0,
-      "R": 28,
+      "R": 31,
       "G": 0
     },
     "gated": {
@@ -510,32 +514,32 @@
       "effective_pips": 2
     },
     "U": {
-      "total_pips": 31.0,
+      "total_pips": 33.0,
       "max_pips": 3,
-      "cards": 23,
-      "earliest_turn": 2,
+      "cards": 25,
+      "earliest_turn": 1,
       "effective_pips": 2
     },
     "W": {
-      "total_pips": 8.0,
+      "total_pips": 7.0,
       "max_pips": 1,
-      "cards": 8,
+      "cards": 7,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "R": {
-      "pip_share": 0.512,
-      "source_share": 0.329
+      "pip_share": 0.506,
+      "source_share": 0.364
     },
     "U": {
-      "pip_share": 0.388,
-      "source_share": 0.395
+      "pip_share": 0.407,
+      "source_share": 0.39
     },
     "W": {
-      "pip_share": 0.1,
-      "source_share": 0.276
+      "pip_share": 0.086,
+      "source_share": 0.247
     }
   },
   "source_targets": {
@@ -545,23 +549,23 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.895,
+      "W": 0.866,
       "U": 0.822,
-      "R": 0.718
-    },
-    "with_rocks_and_dorks": {
-      "W": 0.907,
-      "U": 0.855,
       "R": 0.785
     },
+    "with_rocks_and_dorks": {
+      "W": 0.881,
+      "U": 0.855,
+      "R": 0.839
+    },
     "lands_only_ungated": {
-      "W": 0.866,
+      "W": 0.831,
       "U": 0.764,
-      "R": 0.639
+      "R": 0.718
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 1,
+    "ramp:cost-reduction": 2,
     "ramp:ritual": 1,
     "ramp:rock": 3
   },
@@ -598,9 +602,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 25 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 28.",
+    "R: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 31.",
     "U: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 32.",
-    "W: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
-    "16 of 36 lands enter tapped (44%) — over the one-in-three budget the deck builder allows itself."
+    "W: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20.",
+    "17 of 36 lands enter tapped (47%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
