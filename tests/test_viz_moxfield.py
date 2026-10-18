@@ -339,7 +339,7 @@ def test_a_plain_list_never_touches_moxfield(discover_page):
 
 # ── DeckCheck: the second service, the same two surfaces ─────────────────────
 
-DC_URL = "https://deckcheck.co/deck/AbC_12-xyz"
+DC_URL = "https://deckcheck.co/app/decklist/AbC_12-xyz"
 
 
 @pytest.mark.browser

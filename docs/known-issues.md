@@ -1748,3 +1748,16 @@ too slow) makes this matter less for adds, not for cuts already in the 99.
   `/cards/collection`, not just the card that changed. A one-card edit waits on the
   network; offline the edit stays written and the result says to run
   `manamap pilot edit <slug> --rebuild` when online.
+
+## 24. `check-in` reads a modal DFC's two-face name as a swap (2026-10-17)
+
+DeckCheck, and any export that follows Scryfall, names a modal double-faced card by both
+faces (`Hengegate Pathway // Mistgate Pathway`); the pasted list and `decklist.txt` carry
+the front face. `check_in.analyze` compares names raw, so the pipe
+`deckcheck <slug> --text | check-in <slug> --from -` used to print `PULL 1 · ADD 1` for the
+same card, and a paste of such a list with `--write` would record a new version that
+differs by spelling alone (`deck_versions._version_key` is raw too; it is a fleet-wide
+identity predicate, so it was left alone). `deckcheck.project` now reads their copy in our
+spelling wherever the front faces agree (`deckcheck.spellings`), which settles the DeckCheck
+pipe; a hand-pasted list with two-face names still reads as a swap. Split cards
+(`Commit // Memory`) are spelled the same everywhere and never hit this.

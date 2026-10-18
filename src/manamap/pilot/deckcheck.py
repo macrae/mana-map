@@ -105,9 +105,32 @@ def _cards(board):
     return list(cards.values()) if isinstance(cards, dict) else list(cards)
 
 
-def project(doc):
+def _front(name):
+    """The front face, lower-cased: the one name a card has on every site."""
+    return str(name or "").split(" // ")[0].strip().lower()
+
+
+def spellings(slug):
+    """front face -> the name as OUR working list spells it.
+
+    Phase 0 (2026-10-17) found the first real difference between the two lists:
+    DeckCheck names a modal DFC by both faces (`Hengegate Pathway // Mistgate
+    Pathway`) where the pasted list, and `decklist.txt`, carry the front face —
+    and the bench read that as a one-card swap. Split cards (`Commit // Memory`)
+    are spelled the same on both sides. A name is a card's identity on no site,
+    so their copy is read in our spelling wherever the front faces agree; a card
+    we do not have keeps DeckCheck's spelling, which `fetch-deck` resolves."""
+    path = deck_dir(slug) / "decklist.txt"
+    if not path.exists():
+        return {}
+    return {_front(e["name"]): e["name"]
+            for e in parse_mainboard(path.read_text(encoding="utf-8"))}
+
+
+def project(doc, spellings=None):
     """The document's boards as `fetch_deck.parse_decklist` entries, so
-    `check_in.render_decklist` is the one writer of the list's form."""
+    `check_in.render_decklist` is the one writer of the list's form. With
+    `spellings` (see above) a DFC named by both faces takes our front-face line."""
     entries = []
     for name, board in ((doc or {}).get("boards") or {}).items():
         where, is_cmdr = BOARDS.get(name, ("side", False))
@@ -115,7 +138,8 @@ def project(doc):
             card = e.get("card") or {}
             if not card.get("name"):
                 continue
-            entry = {"name": card["name"], "quantity": int(e.get("quantity") or 1),
+            our = (spellings or {}).get(_front(card["name"]), card["name"])
+            entry = {"name": our, "quantity": int(e.get("quantity") or 1),
                      "board": where, "is_commander": is_cmdr, "foil": bool(e.get("isFoil"))}
             if card.get("setCode") and card.get("collectorNumber"):
                 entry["set"] = str(card["setCode"]).lower()
@@ -186,7 +210,7 @@ def report(slug, url=None, session=None):
         raise SystemExit(f"{slug} has no DeckCheck link — `manamap pilot deck-link {slug} "
                          f"deckcheck <url>` after pasting it, or pass --url")
     doc = fetch(deck_id=deck_id, session=session)
-    entries = project(doc)
+    entries = project(doc, spellings=spellings(slug))
     text = check_in.render_decklist(entries)
     cmp = compare(slug, entries, text)
     in_sync = cmp["matches"]["sleeved"] if cmp["matches"]["sleeved"] is not None \

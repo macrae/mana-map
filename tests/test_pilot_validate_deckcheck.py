@@ -14,7 +14,7 @@ BM = {"R1": "A", "R2": "B", "A1": "S", "A2": "A", "P1": "B", "P2": "C", "P3": "B
 SHA = "a" * 64
 READING = {"as_of": "2026-10-17", "source_updated_at": "2026-10-17T10:05:00Z",
            "decklist_sha256": SHA, "deckcheck_id": "AbC_12-xyz",
-           "url": "https://deckcheck.co/deck/AbC_12-xyz", "score": 61, "max_score": 96,
+           "url": "https://deckcheck.co/app/decklist/AbC_12-xyz", "score": 61, "max_score": 96,
            "bracket": 4, "benchmarks": dict(BM)}
 
 
@@ -55,7 +55,7 @@ def test_a_well_formed_document_passes_with_no_warnings():
     (lambda d: d["readings"][0].update(bracket=6), "not one of"),
     (lambda d: d["readings"][0].update(max_score=95), "max_score 95 is not 96"),
     (lambda d: d["readings"][0].update(url="https://evil.com/deck/AbC"), "is not https on"),
-    (lambda d: d["readings"][0].update(url="https://deckcheck.co/deck/AbC?x=1"), "query string"),
+    (lambda d: d["readings"][0].update(url="https://deckcheck.co/app/decklist/AbC?x=1"), "query string"),
     (lambda d: d["readings"][0].update(as_of="17 Oct 2026"), "not an ISO date"),
     (lambda d: d["readings"][0].update(source_updated_at="yesterday"), "not an ISO timestamp"),
     (lambda d: d["readings"][0].update(decklist_sha256="abc"), "not a sha256"),

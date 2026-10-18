@@ -21,7 +21,7 @@ from manamap.pilot.fetch_deck import parse_decklist
 FIXTURE = Path(__file__).parent / "fixtures" / "deckcheck" / "sample.json"
 DOC = json.loads(FIXTURE.read_text())
 LIST = "1 Radagast of Rhosgobel *CMDR*\n1 Forest\n"
-DC_URL = "https://deckcheck.co/deck/AbC_12-xyz"
+DC_URL = "https://deckcheck.co/app/decklist/AbC_12-xyz"
 
 
 class _Resp:
@@ -116,6 +116,27 @@ def test_a_swapped_card_shows_as_pull_and_add(fake_deck):
     assert "- 1 Island" in out and "+ 1 Forest" in out and "--text | manamap pilot check-in" in out
 
 
+def test_a_dfc_named_by_both_faces_is_our_front_face_line(fake_deck):
+    """Phase 0 (2026-10-17): DeckCheck spells a modal DFC `A // B`; the pasted
+    list and `decklist.txt` carry `A`. Same card, no pull, no add — and the
+    `--text` the pull pipe prints carries OUR spelling, so check-in agrees too."""
+    (fake_deck / "decklist.txt").write_text(
+        "1 Radagast of Rhosgobel *CMDR*\n1 Hengegate Pathway\n")
+    doc = copy.deepcopy(DOC)
+    forest = doc["boards"]["mainboard"]["cards"].pop("m1")
+    forest["card"].update(name="Hengegate Pathway // Mistgate Pathway", setCode="KHM",
+                          collectorNumber="260")
+    doc["boards"]["mainboard"]["cards"]["m1"] = forest
+    r = deckcheck.report("ldeck", session=FakeSession(body=doc))
+    assert r["pull"] == {} and r["add"] == {} and r["matches"]["working"] is True
+    assert "1 Hengegate Pathway (KHM) 260" in r["text"] and " // " not in r["text"]
+    # a card we do not carry keeps DeckCheck's spelling (fetch-deck resolves it)
+    assert deckcheck.project(doc, spellings={})[1]["name"] == "Hengegate Pathway // Mistgate Pathway"
+    # and the bare projection is unchanged — the mapping is the report's, by slug
+    assert deckcheck.spellings("ldeck") == {"radagast of rhosgobel": "Radagast of Rhosgobel",
+                                            "hengegate pathway": "Hengegate Pathway"}
+
+
 def test_a_re_render_is_not_drift(fake_deck):
     """Same cards, a printing dropped: the copies match, nothing to pull or add."""
     (fake_deck / "decklist.txt").write_text("1 Radagast of Rhosgobel *CMDR*\n1 Forest (M21) 1\n")
@@ -135,7 +156,7 @@ def test_url_overrides_the_recorded_link_and_an_unlinked_deck_needs_one(fake_dec
     with pytest.raises(SystemExit, match="no DeckCheck link"):
         deckcheck.report("ldeck", session=FakeSession())
     s = FakeSession()
-    r = deckcheck.report("ldeck", url="https://deckcheck.co/deck/Other1", session=s)
+    r = deckcheck.report("ldeck", url="https://deckcheck.co/app/decklist/Other1", session=s)
     assert s.calls[0][1] == {"deck_id": "Other1"} and r["id"] == "Other1"
 
 
@@ -184,7 +205,7 @@ def test_text_is_exactly_the_rendered_list_and_check_in_accepts_it(fake_deck, mo
     assert parse_decklist(out)[0]["name"] == "Radagast of Rhosgobel"
 
 
-@pytest.mark.parametrize("src", [DC_URL, "https://www.deckcheck.co/decks/Q9/"])
+@pytest.mark.parametrize("src", [DC_URL, "https://www.deckcheck.co/app/decklist/Q9/"])
 def test_check_in_refuses_a_deckcheck_url_naming_the_pipe(src):
     with pytest.raises(SystemExit) as exc:
         check_in.read_list(src)
@@ -210,6 +231,44 @@ def test_the_server_runs_it_read_only(fake_deck, monkeypatch):
     # and refused there. Either way the server never writes through this.
     with pytest.raises(ValueError, match="not available over the API"):
         serve._cli(["deckcheck", "ldeck", "--write"])
+
+
+# ── the recorded document (Phase 0, 2026-10-17) ───────────────────────────
+
+RECORDED = json.loads((FIXTURE.parent / "sharknado.json").read_text())
+
+
+def _shape(doc):
+    """Key sets at every level the bench reads: top, board, card entry, card, dti."""
+    board = doc["boards"]["mainboard"]
+    entry = next(iter(board["cards"].values()))
+    return (set(doc), set(board), set(entry), set(doc["dti"]), set(doc["dti"]["benchmarks"]))
+
+
+def test_the_hand_built_stand_in_has_the_recorded_documents_shape():
+    """`sample.json` drives the small-deck tests; the recorded answer for the
+    pilot's own Sharknado is what DeckCheck actually sends. The stand-in's keys
+    must be a subset at every level (it carries fewer card fields on purpose)."""
+    for ours, theirs in zip(_shape(DOC), _shape(RECORDED)):
+        assert ours <= theirs, sorted(ours - theirs)
+    sample_card = set(next(iter(DOC["boards"]["mainboard"]["cards"].values()))["card"])
+    live_card = set(next(iter(RECORDED["boards"]["mainboard"]["cards"].values()))["card"])
+    assert sample_card <= live_card, sorted(sample_card - live_card)
+    assert RECORDED["fullAnalysis"] is None, "the bench never stores that HTML"
+
+
+def test_the_recorded_document_projects_and_its_dti_reads():
+    from manamap.pilot import dti
+    entries = deckcheck.project(RECORDED)
+    assert sum(e["quantity"] for e in entries) == 100
+    assert sorted(e["name"] for e in entries if e["is_commander"]) == \
+        ["Brallin, Skyshark Rider", "Shabraz, the Skyshark"]
+    assert all(e["board"] == "main" for e in entries)
+    assert deck_link.SERVICES["deckcheck"]["url_re"].match(RECORDED["publicUrl"]).group(1) == "N381DOgjy9ZU"
+    r = dti.reading_from_payload(RECORDED, deck_id="N381DOgjy9ZU", url=RECORDED["publicUrl"],
+                                 as_of="2026-10-17", decklist_sha256=None)
+    assert (r["score"], r["max_score"], r["bracket"]) == (31, 96, 4)
+    assert set(r["benchmarks"]) == dti.BENCHMARKS
 
 
 # ── the live endpoint, opt-in ──────────────────────────────────────────────

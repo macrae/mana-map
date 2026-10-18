@@ -129,9 +129,11 @@ deckcheck URL>` is refused with that pipe named. Config: `DECKCHECK_API_BASE`,
 `DECKCHECK_DECK_PATH`, `DECKCHECK_TTL_S` (15 min; `data/cache/deckcheck/`),
 `DECKCHECK_TOKEN_ENV` / `DECKCHECK_TOKEN_HEADER`. A private deck (403), a missing one
 (404) and `net.Offline` each print one line and exit 1 with nothing written. The URL
-host rule lives in `deck_link.SERVICES["deckcheck"]`; both `/deck/<id>` and `/decks/<id>`
-are accepted until the live `publicUrl` form is verified against one of the pilot's
-decks (the `@pytest.mark.network` test asserts it). The per-user fifteen-minute cache is a
+host rule lives in `deck_link.SERVICES["deckcheck"]`: the API's `publicUrl` is
+`https://deckcheck.co/app/decklist/<id>` (verified 2026-10-17 against the pilot's own
+Sharknado, id `N381DOgjy9ZU`; the editor's `/app/builder/<id>` carries the same id and is
+accepted too). `tests/fixtures/deckcheck/sample.json` is that deck's recorded answer, and
+the `@pytest.mark.network` test re-asserts the form against the live deck. The per-user fifteen-minute cache is a
 client's cache, not redistribution; nothing from DeckCheck is served to anyone else.
 
 Optional key, if one is ever issued:

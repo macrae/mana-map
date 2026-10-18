@@ -16,7 +16,7 @@ from manamap.pilot import check_in, deck_link, deck_manifest, validate_links
 from manamap.pilot.common import list_sha256
 
 URL = "https://moxfield.com/decks/AbC_12-xyz"
-DC_URL = "https://deckcheck.co/deck/AbC_12-xyz"
+DC_URL = "https://deckcheck.co/app/decklist/AbC_12-xyz"
 LIST = "1 Radagast of Rhosgobel *CMDR*\n1 Forest\n"
 SHA = list_sha256(LIST)       # the "what I pasted" stamp the fixture list earns
 
@@ -95,8 +95,8 @@ def test_an_unknown_service_is_refused(decks):
 
 # ── DeckCheck: the second service, through the same door ──────────────────
 
-@pytest.mark.parametrize("good", [DC_URL, DC_URL + "/", "https://www.deckcheck.co/deck/Q9",
-                                  "https://deckcheck.co/decks/Q9"])   # both path forms, until verified
+@pytest.mark.parametrize("good", [DC_URL, DC_URL + "/", "https://www.deckcheck.co/app/decklist/Q9",
+                                  "https://deckcheck.co/app/builder/Q9"])   # the editor's URL carries the same id
 def test_a_deckcheck_link_is_recorded_like_moxfields(decks, good):
     e = deck_link.set_link("ldeck", "deckcheck", good, today=date(2026, 10, 17))
     assert e["id"] in ("AbC_12-xyz", "Q9") and e["decklist_sha256"] == SHA
@@ -105,14 +105,16 @@ def test_a_deckcheck_link_is_recorded_like_moxfields(decks, good):
 
 
 @pytest.mark.parametrize("bad", [
-    "http://deckcheck.co/deck/abc",               # not https
+    "http://deckcheck.co/app/decklist/abc",               # not https
     "https://deckcheck.co.evil.io/deck/abc",      # look-alike host
     "https://deckcheck.co/users/abc",             # not a deck path
-    "https://deckcheck.co/deck/abc?x=1",          # a query string
+    "https://deckcheck.co/deck/abc",              # the form guessed before Phase 0 verified it
+    "https://deckcheck.co/decks/abc",
+    "https://deckcheck.co/app/decklist/abc?x=1",          # a query string
     URL,                                          # the OTHER service's URL
 ])
 def test_a_bad_deckcheck_url_is_refused(decks, bad):
-    with pytest.raises(SystemExit, match="not a deckcheck deck URL.*deckcheck.co/deck/<id>"):
+    with pytest.raises(SystemExit, match="not a deckcheck deck URL.*deckcheck.co/app/decklist/<id>"):
         deck_link.set_link("ldeck", "deckcheck", bad)
     assert not (decks / "ldeck" / "links.json").exists()
 

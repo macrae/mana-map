@@ -18,7 +18,7 @@ BM = {"R1": "A", "R2": "B", "A1": "S", "A2": "A", "P1": "B", "P2": "C", "P3": "B
       "I1": "A", "I2": "B", "S1": "C", "S2": "B", "S3": "F"}
 READING = {"as_of": "2026-10-17", "source_updated_at": "2026-10-17T10:05:00Z",
            "decklist_sha256": "0" * 64, "deckcheck_id": "Q9",
-           "url": "https://deckcheck.co/deck/Q9", "score": 61, "max_score": 96,
+           "url": "https://deckcheck.co/app/decklist/Q9", "score": 61, "max_score": 96,
            "bracket": 4, "benchmarks": BM}
 DOC = {"schema_version": 1, "slug": "sharknado", "branch": None, "source": "deckcheck.co",
        "last_pulled": "2026-10-17", "readings": [READING],
@@ -42,7 +42,7 @@ def test_the_panel_draws_the_reading_the_floor_and_the_twelve_grades(browser, vi
         assert chips.count() == 12
         assert chips.first.get_attribute("data-grade") in set(BM.values())
         assert "ours, not DeckCheck" in text
-        assert panel.locator("a[href='https://deckcheck.co/deck/Q9']").count() == 1
+        assert panel.locator("a[href='https://deckcheck.co/app/decklist/Q9']").count() == 1
     finally:
         page.close()
 

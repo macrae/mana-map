@@ -538,7 +538,7 @@ def test_next_names_a_copy_on_another_site_that_is_behind_the_sleeved_list(bare_
     info = deck_info.compose(SLUG)
     assert not any("copy is V" in n for n in info["next"])
     (bare_deck / "links.json").write_text(json.dumps(
-        {"deckcheck": {"url": "https://deckcheck.co/deck/Q9", "id": "Q9",
+        {"deckcheck": {"url": "https://deckcheck.co/app/decklist/Q9", "id": "Q9",
                        "as_of": "2026-10-17", "decklist_sha256": "a" * 64, "version": 3}}))
     (bare_deck / "deck_versions.json").write_text(json.dumps(
         {"slug": SLUG, "paper": {"version": 5, "decklist_sha256": "b" * 64, "sha": "abc",
@@ -551,7 +551,7 @@ def _dti_file(base, sha="x", as_of="2026-10-17"):
     from manamap.pilot import dti
     reading = {"as_of": as_of, "source_updated_at": "2026-10-17T10:05:00Z",
                "decklist_sha256": sha, "deckcheck_id": "Q9",
-               "url": "https://deckcheck.co/deck/Q9", "score": 61, "max_score": 96,
+               "url": "https://deckcheck.co/app/decklist/Q9", "score": 61, "max_score": 96,
                "bracket": 4, "benchmarks": {k: "B" for k in sorted(dti.BENCHMARKS)}}
     (base / "deckcheck.json").write_text(json.dumps({
         "schema_version": 1, "slug": SLUG, "branch": None, "source": "deckcheck.co",

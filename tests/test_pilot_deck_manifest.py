@@ -26,6 +26,11 @@ from manamap.pilot.common import checker_passed, load_json
 # The dossier destructures exactly these; a rename breaks the page silently,
 # because `getJSON` swallows every failure to null and an absent key reads the
 # same as an absent artifact.
+#: Present only when the deck has the thing: `links` is `links.json` as `deck-link`
+#: wrote it (sharknado's DeckCheck link was the first, 2026-10-17), omitted rather than
+#: null so a deck with no links stays absent (`deck_manifest`).
+OPTIONAL_KEYS = {"links"}
+
 MANIFEST_KEYS = {
     # `volume` and `coverline` went with the magazine (2026-09-13).
     "slug", "deck_name", "commander", "verified",
@@ -67,7 +72,7 @@ def test_manifest_carries_the_fields_the_dossier_reads():
     if not path.exists():
         pytest.skip("no manifest yet — run `manamap pilot build-index`")
     for deck in json.loads(path.read_text())["decks"]:
-        assert set(deck) == MANIFEST_KEYS, deck["slug"]
+        assert MANIFEST_KEYS <= set(deck) <= MANIFEST_KEYS | OPTIONAL_KEYS, deck["slug"]
 
 
 @requires_deck

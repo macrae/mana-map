@@ -1481,7 +1481,7 @@ def add_pilot_parser(subparsers):
                                   "`list` to show them")
             cmd.add_argument("url", nargs="?", default=None,
                              help="the deck's URL, e.g. https://moxfield.com/decks/<id> "
-                                  "or https://deckcheck.co/deck/<id>")
+                                  "or https://deckcheck.co/app/decklist/<id>")
             cmd.add_argument("--note", default=None, help="a line kept beside the link")
             cmd.add_argument("--remove", action="store_true",
                              help="drop this service's link (the file goes with the last)")

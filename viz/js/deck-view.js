@@ -1939,7 +1939,7 @@
   var LINK_RE = {
     moxfield: /^https:\/\/(www\.)?moxfield\.com\/decks\/[A-Za-z0-9_-]+\/?$/,
     // MIRRORS `deck_link.SERVICES["deckcheck"]["url_re"]` (2026-10-17)
-    deckcheck: /^https:\/\/(www\.)?deckcheck\.co\/decks?\/[A-Za-z0-9_-]+\/?$/
+    deckcheck: /^https:\/\/(www\.)?deckcheck\.co\/app\/(decklist|builder)\/[A-Za-z0-9_-]+\/?$/
   };
   function linkUrl(entry, service) {
     var m = entry && entry.links && entry.links[service];

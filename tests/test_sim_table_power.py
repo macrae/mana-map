@@ -14,7 +14,7 @@ BM = {k: "B" for k in sorted(dti.BENCHMARKS)}
 
 
 def _doc(score, bracket, name="x"):
-    return {"id": name, "publicUrl": f"https://deckcheck.co/deck/{name}", "name": name,
+    return {"id": name, "publicUrl": f"https://deckcheck.co/app/decklist/{name}", "name": name,
             "updatedAtUtc": "2026-10-17T00:00:00Z",
             "dti": {"score": score, "maxScore": 96, "bracket": bracket, "benchmarks": dict(BM)},
             "boards": {"commanders": {"cards": [{"quantity": 1, "card": {"name": "Krenko, Mob Boss"}}]},
@@ -68,10 +68,10 @@ def test_zero_partial_and_full_dti_coverage(world, monkeypatch):
     assert "0 of 3 seats have a DTI" in out and "NOT ANSWERABLE at n=0" in out
 
     # partial: ours gets a DTI on file; one friend's real deck by URL, read live
-    dti.append("mine", dti.reading_from_payload(_doc(40, 3), deck_id="m", url="https://deckcheck.co/deck/m",
+    dti.append("mine", dti.reading_from_payload(_doc(40, 3), deck_id="m", url="https://deckcheck.co/app/decklist/m",
                                                 as_of="2026-10-17", decklist_sha256="a" * 64),
                today=date(2026, 10, 17))
-    name = _pod(world, [{"slug": "mine"}, {"slug": "opp-a", "deckcheck": "https://deckcheck.co/deck/A1"},
+    name = _pod(world, [{"slug": "mine"}, {"slug": "opp-a", "deckcheck": "https://deckcheck.co/app/decklist/A1"},
                         {"slug": "opp-b"}])
     doc = table_power.table(name, calibration=NO_CAL, reference=(),
                             fetch=lambda **kw: _doc(55, 4, "A1"))
@@ -85,7 +85,7 @@ def test_zero_partial_and_full_dti_coverage(world, monkeypatch):
 
 def test_the_flags_name_every_disagreement_and_only_with_a_clock_the_age(world, monkeypatch):
     monkeypatch.setattr(table_power, "_floor_of", FLOOR)
-    dti.append("mine", dti.reading_from_payload(_doc(40, 2), deck_id="m", url="https://deckcheck.co/deck/m",
+    dti.append("mine", dti.reading_from_payload(_doc(40, 2), deck_id="m", url="https://deckcheck.co/app/decklist/m",
                                                 as_of="2026-09-01", decklist_sha256="b" * 64),
                today=date(2026, 9, 1))
     name = _pod(world, [{"slug": "mine", "bracket": 4}])
@@ -104,7 +104,7 @@ def test_a_deckcheck_seat_offline_is_an_absence_and_the_table_still_renders(worl
 
     def down(**kw):
         raise net.Offline("no network")
-    name = _pod(world, [{"slug": "opp-a", "deckcheck": "https://deckcheck.co/deck/A1"}])
+    name = _pod(world, [{"slug": "opp-a", "deckcheck": "https://deckcheck.co/app/decklist/A1"}])
     doc = table_power.table(name, calibration=NO_CAL, reference=(), fetch=down)
     row = doc["seats"][0]
     assert "could not reach DeckCheck" in row["floor"]["absent_because"] and row["dti"] is None
@@ -118,7 +118,7 @@ def test_spearman_is_measured_only_from_ten_seats_with_both_readings(world, monk
         slug = f"s{i}"
         (world["opps"] / slug).mkdir()
         (world["opps"] / slug / "decklist.txt").write_text("1 Mountain\n")
-        seats.append({"slug": slug, "deckcheck": f"https://deckcheck.co/deck/{slug}"})
+        seats.append({"slug": slug, "deckcheck": f"https://deckcheck.co/app/decklist/{slug}"})
         cal_rows.append({"seat": slug, "wins": i, "games": 20, "rate": i / 20,
                          "ci95": [0.0, 1.0], "share_of_fair": round((i / 20) / 0.1, 2)})
     name = _pod(world, seats)
@@ -137,7 +137,7 @@ def test_the_public_spearman_is_the_one_calibrate_uses():
 
 
 def test_a_seat_may_carry_a_deckcheck_url_and_nothing_else_reads_it(world):
-    name = _pod(world, [{"slug": "opp-a", "deckcheck": "https://deckcheck.co/deck/A1"}])
+    name = _pod(world, [{"slug": "opp-a", "deckcheck": "https://deckcheck.co/app/decklist/A1"}])
     doc = pods.load(name)
     assert doc["seats"][0]["deckcheck"].startswith("https://deckcheck.co/")
     assert pods.compose(name)["seats"][0]["slug"] == "opp-a"

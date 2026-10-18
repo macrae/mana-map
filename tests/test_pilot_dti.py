@@ -20,7 +20,7 @@ PAYLOAD = {"dti": {"score": 61, "maxScore": 96, "bracket": 4, "benchmarks": dict
            "threatIndex": 61, "bracket": 4, "fullAnalysis": "<p>prose</p>",
            "updatedAtUtc": "2026-10-17T10:05:00Z", "name": "x"}
 SHA = "a" * 64
-URL = "https://deckcheck.co/deck/AbC_12-xyz"
+URL = "https://deckcheck.co/app/decklist/AbC_12-xyz"
 
 
 def _reading(as_of="2026-10-17", sha=SHA, score=61, bracket=4, updated="2026-10-17T10:05:00Z",

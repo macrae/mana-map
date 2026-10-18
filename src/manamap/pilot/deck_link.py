@@ -43,16 +43,17 @@ SERVICES = {
         "example": "https://moxfield.com/decks/AbC123xyz",
         "form": "https://moxfield.com/decks/<id>",
     },
-    # DeckCheck (2026-10-17): a read-only public API (`pilot/deckcheck.py`) and
-    # still a paste to publish, so the link is recorded by hand exactly as
-    # Moxfield's is. Both `/deck/<id>` and `/decks/<id>` are accepted until the
-    # live `publicUrl` form is verified against a real deck (docs/integrations.md).
+    # DeckCheck (verified 2026-10-17 against the pilot's own public deck): the
+    # API's `publicUrl` is `https://deckcheck.co/app/decklist/<id>`; the editor
+    # shows the same id at `/app/builder/<id>`, so both are accepted and the id
+    # is what is stored. A read-only public API (`pilot/deckcheck.py`) and still
+    # a paste to publish, so the link is recorded by hand exactly as Moxfield's is.
     "deckcheck": {
         "label": "DeckCheck",
         "hosts": frozenset({"deckcheck.co", "www.deckcheck.co"}),
-        "url_re": re.compile(r"^https://(?:www\.)?deckcheck\.co/decks?/([A-Za-z0-9_-]+)/?$"),
-        "example": "https://deckcheck.co/deck/AbC123xyz",
-        "form": "https://deckcheck.co/deck/<id>",
+        "url_re": re.compile(r"^https://(?:www\.)?deckcheck\.co/app/(?:decklist|builder)/([A-Za-z0-9_-]+)/?$"),
+        "example": "https://deckcheck.co/app/decklist/N381DOgjy9ZU",
+        "form": "https://deckcheck.co/app/decklist/<id>",
     },
 }
 
