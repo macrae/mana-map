@@ -69,9 +69,11 @@ def test_the_known_combos_panel_lists_the_lines_and_links_the_missing_card(brows
         panel = page.locator("#panel-combos")
         assert panel.count() == 1
         assert errors == []
-        # Order: right after the bracket floor.
+        # Order: right after the bracket floor — or after the DTI panel, which sits
+        # between the two when the deck has a deckcheck.json (sharknado does).
         ids = page.locator("#panels section").evaluate_all("els => els.map(e => e.id)")
-        assert ids.index("panel-combos") == ids.index("panel-bracket") + 1
+        assert ids[ids.index("panel-combos") - 1] in ("panel-dti", "panel-bracket")
+        assert ids.index("panel-bracket") < ids.index("panel-combos")
 
         deck = panel.locator(".combo-line.is-deck")
         assert deck.count() == 2
