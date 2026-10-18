@@ -173,7 +173,11 @@ def test_the_channel_carries_a_deck_that_is_built_out_of_it(monkeypatch):
     off = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
     a = on["mean_extra_cards_drawn_by_turn"]["10"]
     b = off["mean_extra_cards_drawn_by_turn"]["10"]
-    assert a > 3 * b, (
+    # An ABSOLUTE lift, not a multiple: since 2026-10-18 heliod's Kami of the
+    # Crescent Moon, Font of Mythos and Dictate of Kruphix read as recurring
+    # draws, so "blind" is no longer near zero (3.9 against 7.2 with the channel;
+    # the X channel's own lift is the same ~3 cards it always was).
+    assert a > b + 2.0, (
         f"the X channel reads {a} against {b} blind — if these are close it is "
         f"not firing and every other test in this file proves only the parser")
 

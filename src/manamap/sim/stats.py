@@ -82,9 +82,13 @@ def diff_proportions(k_a, n_a, k_b, n_b, z=Z975):
     d = p_b - p_a
     lower = d - math.sqrt((p_b - l2) ** 2 + (u1 - p_a) ** 2)
     upper = d + math.sqrt((u2 - p_b) ** 2 + (p_a - l1) ** 2)
-    return {"diff": round(d, 4), "ci95": [round(max(-1.0, lower), 4),
-                                          round(min(1.0, upper), 4)],
-            "excludes_zero": lower > 0 or upper < 0,
+    # Decided on the ROUNDED bounds, the ones a reader sees and the validator
+    # checks: an upper bound of -0.00004 prints as -0.0, and "[-0.028, -0.0]
+    # excludes zero" is a contradiction (heliod@artifacts-v1, 2026-10-18 — the
+    # paired-t interval in net_change learned this on 2026-10-04; this one had not).
+    lo, hi = round(max(-1.0, lower), 4), round(min(1.0, upper), 4)
+    return {"diff": round(d, 4), "ci95": [lo, hi],
+            "excludes_zero": lo > 0 or hi < 0,
             "method": "Newcombe score interval on the difference of proportions"}
 
 
@@ -132,12 +136,14 @@ def diff_means_summary(ma, sa, na, mb, sb, nb):
         # only one available; saying "no difference detected" would be a claim
         # about power that nothing here supports.
         return {"diff": round(d, 4), "ci95": [round(d, 4), round(d, 4)],
-                "excludes_zero": d != 0, "df": None,
+                "excludes_zero": round(d, 4) != 0, "df": None,
                 "method": "both arms constant; no variance to estimate"}
     df = (va + vb) ** 2 / (va ** 2 / (na - 1) + vb ** 2 / (nb - 1))
     half = t_crit(df) * se
-    return {"diff": round(d, 4), "ci95": [round(d - half, 4), round(d + half, 4)],
-            "excludes_zero": (d - half) > 0 or (d + half) < 0,
+    # On the ROUNDED bounds, like `diff_proportions` — see the note there.
+    lo, hi = round(d - half, 4), round(d + half, 4)
+    return {"diff": round(d, 4), "ci95": [lo, hi],
+            "excludes_zero": lo > 0 or hi < 0,
             "df": round(df, 1),
             "method": "Welch t interval on the difference of means"}
 

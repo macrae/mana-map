@@ -142,10 +142,23 @@ _ETB_DRAW_RE = re.compile(
     r"[A-Z][\w' ,-]{2,30}) enters[^.]{0,60}?,? (?:you )?draw "
     r"(a|one|two|three|four|five) cards?", re.I)
 _RECURRING_DRAW_RE = re.compile(
-    r"at the beginning of your (?:upkeep|draw step|end step)[^.]{0,80}?,? "
-    r"(?:you )?draw (a|one|two|three) cards?", re.I)
-#: Anchored to a SENTENCE START and requiring "draw", never "draws" — otherwise
-#: "target player draws a card" and "each player draws" score as your own draw.
+    r"at the beginning of (?P<whose>your|each player's) (?:upkeep|draw step|end step)[^.]{0,80}?,? "
+    r"(?P<who>you |that player |each player |each opponent )?draws? "
+    r"(?P<n>a|one|two|three|an additional|two additional) cards?", re.I)
+#: Anchored to a SENTENCE START, and the SUBJECT decides whose draw it is
+#: (2026-10-18, corpus sweep of 35 newly matched cards read one by one):
+#:   "your <step>, (you) draw"          -> ours            (Phyrexian Arena, Midnight Oil)
+#:   "your <step>, each player draws"   -> ours AND theirs (Scrawling Crawler, Stormfist Crusader)
+#:   "your <step>, each opponent draws" -> theirs only     (Master of the Feast)
+#:   "each player's <step>, that player draws" -> ours AND theirs (Fevered Visions,
+#:                                        Kami of the Crescent Moon, Font of Mythos)
+#: `recurring_each_player_draw` carries the opponents' half so the taxes on
+#: their draws fire. "target player draws" stays unread (whose hand is a
+#: choice), "may draw" and every "if"/"unless" stay unread, "draws …, then
+#: discards" is a loot this path cannot pay, and a card that discards your hand
+#: at end step (Grafted Skullcap, Avaricious Dragon) is refused whole rather
+#: than read for its draw alone.
+_RECURRING_WORDS = {"an additional": 1, "two additional": 2}
 # DRAW EQUAL TO THE GREATEST POWER (Rishkar's Expertise, Return of the
 # Wildspeaker): seven corpus cards, none of them read until 2026-09-11 because
 # `_DRAW_RE` wants a number word. Resolved at cast against the board.
@@ -359,6 +372,50 @@ _EVENT_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:each opponent|any target|each opponent and each)"
     r"|each opponent loses (\d+) life", re.I)
 _EVENT_COUNTER_RE = re.compile(r"put a \+1/\+1 counter on", re.I)
+#: DAMAGE ON THEIR TURN, FROM A PERMANENT (2026-10-18). "At the beginning of each
+#: player's / each opponent's <step>, ~ deals N damage to that player" — Sulfuric
+#: Vortex, Lavaborn Muse, Ebony Owl Netsuke, and Fevered Visions' second
+#: sentence. Corpus sweep: 19 cards word a step-triggered damage at that player
+#: or each opponent; those that hang on "unless" (Mogis) or an "if" this model
+#: cannot check stay unread and NAMED. The one condition it CAN check is a hand
+#: size — "has four or more cards in hand" — against the authored OPPONENT_HAND
+#: (4; 7 on a turn a wheel refilled them), and `try` says so beside the figure.
+#: One seat, like every damage here: N per turn, not N per opponent.
+_TURN_DAMAGE_STEP_RE = re.compile(
+    r"at the beginning of each (?:player's|opponent's) (?:upkeep|draw step|end step)\b", re.I)
+_TURN_DAMAGE_RE = re.compile(r"deals (\d+) damage to (?:that player|each opponent)", re.I)
+_TURN_DAMAGE_HAND_RE = re.compile(
+    r"\bif (?:that player|the player is your opponent and) has (\w+) or more cards in hand,", re.I)
+_HAND_WORDS = {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+
+
+def _turn_damage(text):
+    """(damage, hand_min) for a step-triggered damage at the opponent, or (0, 0)."""
+    m = _TURN_DAMAGE_STEP_RE.search(text)
+    if not m:
+        return 0, 0
+    rest = text[m.end():]
+    first, _, after = rest.partition(".")
+    window = first
+    nxt = after.lstrip()
+    hand = _TURN_DAMAGE_HAND_RE.match(nxt) or _TURN_DAMAGE_HAND_RE.search(first)
+    if hand and _TURN_DAMAGE_HAND_RE.match(nxt):
+        window += ". " + nxt.partition(".")[0]
+    if re.search(r"\bunless\b", window, re.I):
+        return 0, 0
+    stripped = _TURN_DAMAGE_HAND_RE.sub("", window)
+    if re.search(r"\bif\b", stripped, re.I):
+        return 0, 0
+    d = _TURN_DAMAGE_RE.search(window)
+    if not d:
+        return 0, 0
+    hmin = 0
+    if hand:
+        w = hand.group(1).lower()
+        hmin = int(w) if w.isdigit() else _HAND_WORDS.get(w, 0)
+        if not hmin:
+            return 0, 0
+    return int(d.group(1)), hmin
 #: A GAIN ON A DRAW OR A DISCARD (2026-10-11). "you gain N life" was refused here
 #: because nothing could use it: there is no own life total. The drain pillar
 #: counts GAIN EVENTS, though, and Shabraz gains one on every draw — so each card
@@ -369,7 +426,10 @@ _EVENT_GAIN_RE = re.compile(r"\byou gain (\d+|one|two|three) life", re.I)
 #: per-card figure exactly; what differs is that it is ONE damage instance per
 #: batch, which matters only to a +N replacement (Torbran). `per_discard_batch`
 #: carries that, and is set only where the damage is (2026-10-11).
-_EVENT_THAT_MUCH_RE = re.compile(r"deals that much damage to each opponent", re.I)
+#: "any target" is one opponent, the seat this model tracks (Spider-Man, New
+#: Champion, 2026-10-18 — the one corpus card with that wording; the sweep gained
+#: it and dropped nothing).
+_EVENT_THAT_MUCH_RE = re.compile(r"deals that much damage to (?:each opponent|any target)", re.I)
 _EVENT_DRAW_RE = re.compile(r"\bdraw (a|two) cards?", re.I)
 _EVENT_TOKEN_RE = re.compile(r"create an? (\d+)/(\d+) [^.]*?creature token", re.I)
 #: Conditional and self-damaging: the lowest chooser does not wheel at all.
@@ -856,7 +916,14 @@ def event_payoffs(card):
            "per_draw_gain": 0, "per_discard_gain": 0, "token_colors": [],
            "per_opponent_draw_paid_draw": 0, "per_opponent_draw_paid_cost": 0,
            "per_opponent_cast_draw": 0, "per_opponent_cast_taxed": False,
+           # DAMAGE ON THEIR TURN (Fevered Visions, Sulfuric Vortex): N a turn
+           # against the one seat, when its hand meets `_hand_min` (0 = always).
+           "per_opponent_turn_damage": 0, "per_opponent_turn_damage_hand_min": 0,
            "unmodelled": None}
+    _td, _tmin = _turn_damage(text)
+    if _td:
+        out["per_opponent_turn_damage"] = _td
+        out["per_opponent_turn_damage_hand_min"] = _tmin
     hit = False
     for m in _EVENT_TRIGGER_RE.finditer(text):
         hit = True
@@ -1817,6 +1884,10 @@ def draw_profile(card):
     text = card.get("oracle_text", "") or ""
     type_line = card.get("type_line", "") or ""
     out = {"etb_draw": 0, "spell_draw": 0, "recurring_draw": 0,
+           # THE OPPONENTS' HALF of a symmetric engine ("each player's draw
+           # step, that player draws"): their extra draw a turn, so the taxes
+           # on their draws (Needlehead, Nekusar, Tithe) have the event.
+           "recurring_each_player_draw": 0,
            "spell_draw_greatest_power": False, "etb_draw_per_type": None,
            "arrival_draw": 0, "arrival_draw_once": False,
            "arrival_power_min": None, "arrival_power_max": None,
@@ -1964,7 +2035,11 @@ def draw_profile(card):
             and not out["activated_wheel"]
             and not out["recurring_draw"] and not out["spell_draw_greatest_power"]
             # "Each player draws three cards" never says "draw N card".
-            and not _EACH_DRAWS_THEN_DISCARDS_RE.search(text)):
+            and not _EACH_DRAWS_THEN_DISCARDS_RE.search(text)
+            # "each player's draw step, that player DRAWS" never does either
+            # (2026-10-18): the recurring path below reads it.
+            and not out["recurring_each_player_draw"]
+            and not _RECURRING_DRAW_RE.search(text)):
         return out
 
     m = _ARRIVAL_DRAW_RE.search(text)
@@ -1995,8 +2070,23 @@ def draw_profile(card):
     if etb and not _DRAW_CONDITIONAL_RE.search(etb.group(0)) and not out["etb_draw_per_type"]:
         out["etb_draw"] = _DRAW_WORDS[etb.group(1).lower()]
     rec = _RECURRING_DRAW_RE.search(text)
-    if rec and not _DRAW_CONDITIONAL_RE.search(rec.group(0)):
-        out["recurring_draw"] = _DRAW_WORDS[rec.group(1).lower()]
+    if rec and not _DRAW_CONDITIONAL_RE.search(rec.group(0)) \
+            and not re.search(r"\bmay\b", rec.group(0), re.I) \
+            and not re.match(r"\s*,\s*then discards?\b", text[rec.end():rec.end() + 24], re.I) \
+            and not re.search(r"discard your hand", text, re.I) \
+            and not re.search(r"\bLevel \d\b", text):      # a Class level is bought, never free
+        _w = rec.group("n").lower()
+        _n = _RECURRING_WORDS.get(_w) or _DRAW_WORDS[_w]
+        _whose = rec.group("whose").lower()
+        _who = (rec.group("who") or "").strip().lower()
+        if _whose == "your" and _who in ("", "you"):
+            out["recurring_draw"] = _n
+        elif _whose == "your" and _who == "each player":
+            out["recurring_draw"] = out["recurring_each_player_draw"] = _n
+        elif _whose == "your" and _who == "each opponent":
+            out["recurring_each_player_draw"] = _n
+        elif _whose.startswith("each") and _who == "that player":
+            out["recurring_draw"] = out["recurring_each_player_draw"] = _n
     if ("Instant" in type_line or "Sorcery" in type_line) and not out["etb_draw"]:
         # REMINDER TEXT SITS BETWEEN THE PERIOD AND THE DRAW CLAUSE, and this
         # match is sentence-anchored, so the parenthetical has to go first or

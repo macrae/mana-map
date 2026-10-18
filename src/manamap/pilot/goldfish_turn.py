@@ -678,6 +678,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for eng in draw_engines:
                 if eng["recurring_draw"]:
                     draw_n(eng["recurring_draw"])
+                # A SYMMETRIC ENGINE DRAWS FOR THEM TOO (Fevered Visions, Kami of
+                # the Crescent Moon): the one seat's extra draw, so the taxes on
+                # their draws below have the event (2026-10-18).
+                if eng["recurring_each_player_draw"]:
+                    opponent_draws_this_turn += eng["recurring_each_player_draw"]
 
         pool = lands_in_play * (1 + land_mana_bonus) + rock_production
         # Reported WITHOUT the stockpile, so this series keeps meaning exactly
@@ -1110,7 +1115,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_discard and card["draw"]["spell_discard"]:
                 discard_n(card["draw"]["spell_discard"])
             if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
-                    or card["draw"]["cast_draw"]):
+                    or card["draw"]["cast_draw"] or card["draw"]["recurring_each_player_draw"]):
                 draw_engines.append(card["draw"])
             _register_wheel(card)
             _register_statics(card)
@@ -1411,7 +1416,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                if card["draw"]["etb_draw_per_type"] in tl_))
                 if (card["draw"]["recurring_draw"]
                         or card["draw"]["arrival_draw"]
-                        or card["draw"]["cast_draw"]):
+                        or card["draw"]["cast_draw"]
+                        or card["draw"]["recurring_each_player_draw"]):
                     pending_draw_engine = card["draw"]
             # Dragonlord's Servant and Dragonspeaker Shaman are bodies that
             # also reduce; from here on they pay for every Dragon behind them.
@@ -2909,6 +2915,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if _e["per_discard_damage"] and _disc_t:
                     _evt_dmg += _e["per_discard_damage"] * _disc_t \
                         + (_b if _e["per_discard_batch"] else _b * _disc_t)
+                # DAMAGE ON THEIR TURN (2026-10-18): one instance a turn against
+                # the one seat, when its hand meets the card's condition. The
+                # hand is the authored OPPONENT_HAND, 7 on a turn a wheel
+                # refilled it — the same rule Jeska's Will reads.
+                if _e["per_opponent_turn_damage"]:
+                    _opp_hand = 7 if opponent_draws_this_turn >= 7 else OPPONENT_HAND
+                    if _opp_hand >= _e["per_opponent_turn_damage_hand_min"]:
+                        _evt_dmg += _e["per_opponent_turn_damage"] + _b
                 if _e["per_draw_damage"]:
                     _evt_dmg += (_e["per_draw_damage"] + _b) * drawn_this_turn
                 # THE TAX ON THEIR HALF. Their draws are the event; our draw

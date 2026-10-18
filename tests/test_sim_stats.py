@@ -352,3 +352,18 @@ def test_sequential_power_at_one_look_equals_the_exact_fixed_design():
     assert abs(mc - exact) < 0.03, (mc, exact)
     obf4 = stats.sequential_power(0.25, 0.45, 25, 4, iterations=4000, seed=1)
     assert exact - 0.08 < obf4 <= exact + 0.03, (obf4, exact)
+
+
+def test_excludes_zero_is_decided_on_the_bounds_a_reader_sees():
+    """A bound of -0.00004 prints as -0.0, and "[-0.028, -0.0] excludes zero" is a
+    contradiction `validate_net_change` rightly rejects (heliod@artifacts-v1,
+    2026-10-18). Both interval builders decide the flag on the ROUNDED bounds.
+    Re-introduce the bug (decide on the raw bounds) and the Newcombe case flips."""
+    # 674/1250 against 625/1250: the Newcombe upper bound is a few millionths
+    # below zero at full precision and rounds to -0.0 at four places.
+    d = stats.diff_proportions(674, 1250, 625, 1250)
+    assert d["ci95"][1] == 0.0 and str(d["ci95"][1]).startswith("-"), d
+    assert d["excludes_zero"] is False, d
+    # Welch, the same rule: a tiny difference with a tiny sd rounds to [0.0, 0.0].
+    w = stats.diff_means_summary(1.0, 0.0001, 10000, 1.00001, 0.0001, 10000)
+    assert (w["ci95"][0] > 0 or w["ci95"][1] < 0) == w["excludes_zero"], w

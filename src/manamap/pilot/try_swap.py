@@ -378,6 +378,12 @@ def authored_rate_notes(base_doc, doc):
         notes.append(f"Rhystic Study assumes each opponent casts {OPPONENT_CASTS_PER_TURN} "
                      f"spells a turn (measured in Forge) and pays its tax "
                      f"{TITHE_PAY_RATE:.0%} of the time (an authored rate)")
+    for c, e in zip(both, _ev):
+        if e["per_opponent_turn_damage_hand_min"]:
+            notes.append(f"{c['name']} deals its {e['per_opponent_turn_damage']} on every opponent "
+                         f"turn the authored OPPONENT_HAND ({OPPONENT_HAND}, 7 after a wheel) meets "
+                         f"its {e['per_opponent_turn_damage_hand_min']}-card condition (an authored rate)")
+            break
     if any(e["per_opponent_draw_paid_draw"] for e in _ev):
         notes.append("Mind's Eye pays only from mana left untapped at the end of your "
                      "turn (a floor)")
