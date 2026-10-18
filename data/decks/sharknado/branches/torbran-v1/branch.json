@@ -15,6 +15,11 @@
    "at": "2026-10-18",
    "decklist_sha256": "8cef69371b29ca8fef5bf1babc2be9b9c5ac6e87a556e464b45027319b761747",
    "message": "torbran-v1: the DeckCheck sweep staged \u2014 free interaction, a bracket-3 floor, three cheap lands\n\nIn: March of Swirling Mist, Silence, Snapback, Spider-Man New Champion, Fevered Visions;\nRiverglide Pathway, Mountain, Temple of Epiphany. Out: Teferi's Protection (the fourth\nGame Changer), Shelter, Improbable Alliance, Containment Construct, Marauding Mako;\nCalciform Pools, Reliquary Tower, Nimbus Maze. Queen Kayla and Ivora stay: the roast\ncalled them out, the bench reads each as a repeatable wheel payoff. Four of the five\nspell adds are invisible to the goldfish and were staged on the argument, not the figure.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
+  },
+  {
+   "at": "2026-10-18",
+   "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+   "message": "Marauding Mako stays (a Shark, the pilot's call); Drake Haven takes the cut"
   }
  ],
  "base_version": 7,
@@ -215,6 +220,13 @@
    "in": "Fevered Visions",
    "strength": null,
    "why": "try: trade \u2014 partial \u2014 the model cannot fully see Fevered Visions, March of Swirling Mist, Silence, Snapback, Teferi's Protection, so its rows are silent about them; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate); Mind's Eye pays only from mana left untapped at the end of your turn (a floor)"
+  },
+  {
+   "at": "2026-10-18",
+   "out": "Drake Haven",
+   "in": "Marauding Mako",
+   "strength": null,
+   "why": "try: trade \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate); Fevered Visions deals its 2 on every opponent turn the authored OPPONENT_HAND (4, 7 after a wheel) meets its 4-card condition (an authored rate); Mind's Eye pays only from mana left untapped at the end of your turn (a floor)"
   }
  ]
 }
