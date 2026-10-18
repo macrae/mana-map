@@ -1,0 +1,536 @@
+{
+  "id": "005",
+  "slug": "torbran-spider-man-windfall-kill",
+  "deck": "sharknado",
+  "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Brallin, Skyshark Rider (3/3, no counters yet)",
+        "Torbran, Thane of Red Fell (2/4)",
+        "Spider-Man, New Champion (3/3, reach)",
+        "Command Tower",
+        "Steam Vents",
+        "Sacred Foundry",
+        "Sulfur Falls",
+        "Spirebluff Canal",
+        "Fiery Islet",
+        "Mountain",
+        "Sol Ring"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x4"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x5"
+          ]
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x3"
+          ]
+        }
+      ]
+    },
+    "hand": [
+      "Smothering Tithe",
+      "Rhystic Study",
+      "Arcane Signet",
+      "Negate",
+      "Swiftfoot Boots",
+      "Lightning Greaves",
+      "Faithless Looting"
+    ],
+    "graveyard": [
+      "Windfall"
+    ],
+    "mana_available": "{0} — every land and Sol Ring tapped for Windfall and the board this turn; nothing floating",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Spider-Man, New Champion's triggered ability — 'whenever you discard one or more cards, Spider-Man deals that much damage to any target', seven cards discarded, targeting opponent 1 (the one at pos 0 of `opponents`)",
+        "controller": "you",
+        "note": "put on the stack first, so it resolves last; one trigger for the whole batch of seven"
+      },
+      {
+        "pos": 1,
+        "object": "Brallin, Skyshark Rider's triggered ability (1 of 7) — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'",
+        "controller": "you"
+      },
+      {
+        "pos": 2,
+        "object": "Brallin, Skyshark Rider's triggered ability (2 of 7)",
+        "controller": "you"
+      },
+      {
+        "pos": 3,
+        "object": "Brallin, Skyshark Rider's triggered ability (3 of 7)",
+        "controller": "you"
+      },
+      {
+        "pos": 4,
+        "object": "Brallin, Skyshark Rider's triggered ability (4 of 7)",
+        "controller": "you"
+      },
+      {
+        "pos": 5,
+        "object": "Brallin, Skyshark Rider's triggered ability (5 of 7)",
+        "controller": "you"
+      },
+      {
+        "pos": 6,
+        "object": "Brallin, Skyshark Rider's triggered ability (6 of 7)",
+        "controller": "you"
+      },
+      {
+        "pos": 7,
+        "object": "Brallin, Skyshark Rider's triggered ability (7 of 7)",
+        "controller": "you"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Windfall has already resolved: you discarded exactly seven cards (the seven now in your graveyard beside Windfall are not listed by name; they do not matter to the question) and drew seven, which is the hand shown. Every opponent held seven or fewer, so the draw count is not in question. Brallin's trigger reads 'whenever you discard a card' and triggered once per card discarded; Spider-Man's reads 'whenever you discard one or more cards' and triggered once for the batch. Torbran, Brallin and Spider-Man are all red. No opponent has a response.",
+      "assumptions": [
+        "Torbran, Thane of Red Fell and Spider-Man, New Champion are on the torbran-v1 branch, not the sleeved list — this is a line the branch can run.",
+        "Brallin's +1/+1 counters change its power only; they do not change the damage its ability deals."
+      ],
+      "life_totals": "each opponent starts at 40"
+    },
+    "question": "Resolve the eight triggers on the stack. With Torbran's replacement effect applied, how much damage does EACH opponent take from Brallin's seven triggers, how much does opponent 1 take from Spider-Man's single trigger, and what life total is each of the three opponents left on?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Confirm the stack as given: Windfall has resolved and you discarded seven cards. Brallin's 'whenever you discard a card' triggered seven times (once per card) and Spider-Man's 'whenever you discard one or more cards' triggered once for the batch; all eight were put on the stack the next time you would receive priority, in the order you chose — Spider-Man's at the bottom (pos 0), the seven Brallin triggers above it. No player responds, so all players pass and the top object resolves first.",
+        "effect": "Eight triggered abilities on the stack, all controlled by you: Spider-Man's trigger (7 damage, targeting opponent 1) at pos 0, Brallin triggers 1-7 at pos 1-7. Brallin's trigger 7 of 7 (pos 7, the last added) is the first to resolve. Opponents: 40 / 40 / 40.",
+        "citations": [
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose"
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Brallin, Skyshark Rider's triggered ability (7 of 7) resolves: put a +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+        "effect": "Brallin becomes 4/4 (one +1/+1 counter). The damage is dealt by Brallin, a red source you control, to each opponent; Torbran's 'deals that much damage plus 2 instead' is a replacement effect that modifies each opponent's damage event as it would happen, so Brallin deals 3 damage to each opponent instead of 1. Each opponent loses 3 life. The counter does not change the damage: the ability says 'deals 1 damage', not 'damage equal to its power'. Official rulings agree: Torbran's extra 2 is dealt by the same source as the original damage (here Brallin, not Torbran), and Brallin gets exactly one counter per resolution no matter how many opponents are dealt damage. Opponents: 37 / 37 / 37.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written. However, replacement effects may modify these actions."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+          },
+          {
+            "rule": "120.2b",
+            "quote": "Damage may be dealt as an effect of a spell or ability. The spell or ability will specify which object deals that damage."
+          },
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          },
+          {
+            "rule": "614.1",
+            "quote": "replacement effects apply continuously as events happen—they aren’t locked in ahead of time. Such effects watch for a particular event that would happen and completely or partially replace that event with a different event."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "After each trigger resolves, you (the active player) would receive priority; the game checks state-based actions first. This repeats after every one of the eight resolutions in this scenario.",
+        "effect": "No opponent is at 0 or less life at any point during the seven Brallin triggers (lowest reached is 19), so no player loses the game. No new abilities trigger on the damage. Brallin is one of your commanders, but every point it deals here is noncombat damage from its triggered ability, so the commander-damage state-based action — which counts only combat damage dealt by the same commander — is not met at any point, including when the running total from Brallin reaches 21 per opponent. You receive priority, all players pass again, and the next-topmost Brallin trigger resolves. Steps 4-9 each end with this same check.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.6c",
+            "quote": "a player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Brallin, Skyshark Rider's triggered ability (6 of 7) resolves: put a +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+        "effect": "Same as step 2: Brallin becomes 5/5; Torbran's replacement effect applies again to this separate damage event (it is a continuous effect that watches every such event, not a one-shot), so Brallin deals 3 damage to each opponent instead of 1 and each opponent loses 3 life. Opponents: 34 / 34 / 34.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Brallin, Skyshark Rider's triggered ability (5 of 7) resolves: put a +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+        "effect": "Same as step 2: Brallin becomes 6/6; Torbran's replacement effect applies again to this separate damage event (it is a continuous effect that watches every such event, not a one-shot), so Brallin deals 3 damage to each opponent instead of 1 and each opponent loses 3 life. Opponents: 31 / 31 / 31.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Brallin, Skyshark Rider's triggered ability (4 of 7) resolves: put a +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+        "effect": "Same as step 2: Brallin becomes 7/7; Torbran's replacement effect applies again to this separate damage event (it is a continuous effect that watches every such event, not a one-shot), so Brallin deals 3 damage to each opponent instead of 1 and each opponent loses 3 life. Opponents: 28 / 28 / 28.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Brallin, Skyshark Rider's triggered ability (3 of 7) resolves: put a +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+        "effect": "Same as step 2: Brallin becomes 8/8; Torbran's replacement effect applies again to this separate damage event (it is a continuous effect that watches every such event, not a one-shot), so Brallin deals 3 damage to each opponent instead of 1 and each opponent loses 3 life. Opponents: 25 / 25 / 25.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Brallin, Skyshark Rider's triggered ability (2 of 7) resolves: put a +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+        "effect": "Same as step 2: Brallin becomes 9/9; Torbran's replacement effect applies again to this separate damage event (it is a continuous effect that watches every such event, not a one-shot), so Brallin deals 3 damage to each opponent instead of 1 and each opponent loses 3 life. Opponents: 22 / 22 / 22.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Brallin, Skyshark Rider's triggered ability (1 of 7) resolves: put a +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+        "effect": "Same as step 2: Brallin becomes 10/10; Torbran's replacement effect applies again to this separate damage event (it is a continuous effect that watches every such event, not a one-shot), so Brallin deals 3 damage to each opponent instead of 1 and each opponent loses 3 life. Opponents: 19 / 19 / 19.",
+        "citations": [
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Spider-Man, New Champion's triggered ability resolves (the only object left on the stack): 'Spider-Man deals that much damage to any target' — that much is seven, the number of cards discarded in the one event that triggered it; the target is opponent 1.",
+        "effect": "Opponent 1 is still a legal target (same zone, still an opponent), so the ability resolves. Spider-Man is a red source you control dealing damage to an opponent, so Torbran's replacement effect applies once to this single damage event: Spider-Man deals 7 + 2 = 9 damage to opponent 1 instead of 7, and opponent 1 loses 9 life. Opponents 2 and 3 are not dealt damage by this ability. Opponents: 10 / 19 / 19.",
+        "citations": [
+          {
+            "rule": "608.2b",
+            "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+          },
+          {
+            "rule": "120.2b",
+            "quote": "Damage may be dealt as an effect of a spell or ability. The spell or ability will specify which object deals that damage."
+          },
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 11,
+        "action": "State-based actions are checked and you receive priority with an empty stack.",
+        "effect": "Opponent 1 is at 10, opponents 2 and 3 at 19 and 19: no life total is 0 or less, so no player loses the game. Brallin (a commander) has dealt exactly 21 damage to each opponent, but all of it is noncombat damage from its triggered ability; the commander-damage state-based action counts only combat damage, so it does not apply and no opponent loses the game on that account either. The line is not a kill from this board. Brallin ends at 10/10 with seven +1/+1 counters (the counters changed its power only; it dealt 1-plus-2 each time regardless).",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.6c",
+            "quote": "a player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game"
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Brallin's seven triggers each dealt 1 + 2 = 3 damage to each opponent (Torbran's replacement effect applied to every separate damage event from a red source): 21 damage to EACH opponent, 63 across the pod. Spider-Man's single trigger dealt 7 + 2 = 9 damage to opponent 1 only. Final life totals: opponent 1 at 10 (40 - 21 - 9), opponent 2 at 19 (40 - 21), opponent 3 at 19 (40 - 21). No opponent reaches 0; nobody loses the game. Brallin is 10/10.",
+      "you": {
+        "life": "unchanged (no damage to you)",
+        "board": [
+          "Brallin, Skyshark Rider (10/10, seven +1/+1 counters)",
+          "Torbran, Thane of Red Fell (2/4)",
+          "Spider-Man, New Champion (3/3, reach)",
+          "Command Tower (tapped)",
+          "Steam Vents (tapped)",
+          "Sacred Foundry (tapped)",
+          "Sulfur Falls (tapped)",
+          "Spirebluff Canal (tapped)",
+          "Fiery Islet (tapped)",
+          "Mountain (tapped)",
+          "Sol Ring (tapped)"
+        ],
+        "hand": [
+          "Smothering Tithe",
+          "Rhystic Study",
+          "Arcane Signet",
+          "Negate",
+          "Swiftfoot Boots",
+          "Lightning Greaves",
+          "Faithless Looting"
+        ],
+        "stack": [],
+        "mana_available": "{0}"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 10,
+          "damage_from_brallin": 21,
+          "damage_from_spider_man": 9
+        },
+        {
+          "seat": "opponent_2",
+          "life": 19,
+          "damage_from_brallin": 21,
+          "damage_from_spider_man": 0
+        },
+        {
+          "seat": "opponent_3",
+          "life": 19,
+          "damage_from_brallin": 21,
+          "damage_from_spider_man": 0
+        }
+      ],
+      "per_opponent_vs_pod": {
+        "brallin_per_seat": 21,
+        "brallin_pod_total": 63,
+        "spider_man_per_seat_opponent_1": 9,
+        "spider_man_pod_total": 9
+      }
+    },
+    "scope_notes": [
+      "Scenario-facts agrees with the scenario prose on every figure used: 3 opponents at 40, 3 creature bodies, nothing sacrificed to pay a cost. It flags Torbran and Spider-Man as NOT in the sleeved 99; they are on the torbran-v1 branch (oracle text read from data/decks/sharknado/branches/torbran-v1/cards.json), as the scenario's own assumption states.",
+      "Rulings read as input: Torbran (the extra 2 is dealt by the original source; a damage-modifying effect's order is the damaged player's choice — no other such effect exists here), Brallin (one counter per resolution; damage dealt even if the counter can't be placed). Spider-Man and Windfall have no official rulings. No ruling is cited.",
+      "Out of scope by instruction: Windfall's resolution, combat, counters-as-power, and the draw."
+    ]
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 2,
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Windfall's discard is one event with seven occurrences of 'you discard a card' (the rule's own example: one spell destroying all lands triggers once per land); Spider-Man's 'one or more cards' condition occurs once. Seven Brallin triggers, one Spider-Man trigger."
+      },
+      {
+        "step": 1,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Triggers go on the stack the next time a player would receive priority, i.e. after Windfall finishes resolving. Agrees with the Brallin ruling of 2020-04-17 ('that spell or ability finishes resolving before Brallin's triggered ability does')."
+      },
+      {
+        "step": 1,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "All eight abilities have trigger conditions that are not 'another ability triggering', so all fall in the first part of the two-part process and you order them as you choose. Fragment quote; the surrounding text does not change its meaning here."
+      },
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Top (last-added) object resolves when all pass; pos 7 (Brallin 7 of 7) first, Spider-Man at pos 0 last."
+      },
+      {
+        "step": 2,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Instructions in written order (counter, then damage) and 'replacement effects may modify these actions'."
+      },
+      {
+        "step": 2,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "3/3 -> 4/4 from one +1/+1 counter; the rule's scope (power/toughness only) is what leaves the fixed '1 damage' in the ability text untouched."
+      },
+      {
+        "step": 2,
+        "rule": "120.2b",
+        "status": "supported",
+        "note": "'it deals 1 damage' names Brallin as the source; Brallin is red (cards.json colors ['R']), so Torbran's 'red source you control' condition is met. Agrees with the Torbran ruling of 2019-10-04 that the extra 2 is dealt by the original source."
+      },
+      {
+        "step": 2,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Torbran's text uses 'instead'; it is a replacement effect."
+      },
+      {
+        "step": 2,
+        "rule": "614.1",
+        "status": "supported",
+        "note": "'apply continuously as events happen — they aren't locked in ahead of time' makes Torbran apply to each separate damage event rather than once. Per-opponent application inside one resolution follows from Torbran's own condition ('would deal damage to AN opponent') meeting three separate recipients; agrees with the 2019-10-04 ruling that divided/assigned damage is modified per recipient after division. No second replacement or prevention effect is on this board, so 616.1 ordering never arises."
+      },
+      {
+        "step": 2,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Neither Brallin nor Spider-Man has infect; 3 damage = 3 life lost. 40 -> 37 checks."
+      },
+      {
+        "step": 3,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player receives priority after each ability resolves."
+      },
+      {
+        "step": 3,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA check before priority, repeated after every resolution. With 704.6c now walked, the listed conditions that could bite on this board (704.5a life, 704.6c commander damage; 704.5j legend rule has one copy of each legend) are all accounted for."
+      },
+      {
+        "step": 3,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "No opponent is at 0 or less at any point (minimum 19 during the Brallin triggers)."
+      },
+      {
+        "step": 3,
+        "rule": "704.6c",
+        "status": "supported",
+        "note": "Iteration-1 finding addressed. Full rule: 'In a Commander game, a player who's been dealt 21 or more combat damage by the same commander over the course of the game loses the game.' Brallin is one of sharknado's two commanders (decklist.txt Commander block), its running total reaches exactly 21 per opponent, and every point is noncombat damage from a triggered ability; the prose says so and the quote carries the operative words 'combat damage'. The quote drops the leading 'In a Commander game,' but the prose frames it as the commander-damage SBA, so it is not out of context."
+      },
+      {
+        "step": 4,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "37 -> 34. The 'deals 3 instead of 1' claim in this step is carried by reference to step 2's 614.1, not by 120.3a itself; acceptable since step 2 is explicit."
+      },
+      {
+        "step": 5,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "34 -> 31."
+      },
+      {
+        "step": 6,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "31 -> 28."
+      },
+      {
+        "step": 7,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "28 -> 25."
+      },
+      {
+        "step": 8,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "25 -> 22."
+      },
+      {
+        "step": 9,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "22 -> 19. Brallin 3/3 + seven counters = 10/10 checks."
+      },
+      {
+        "step": 10,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Target legality re-checked on resolution; opponent 1 is in the same zone and still an opponent."
+      },
+      {
+        "step": 10,
+        "rule": "120.2b",
+        "status": "supported",
+        "note": "'Spider-Man deals that much damage' names Spider-Man as the source; Spider-Man is red (torbran-v1 cards.json colors ['R']). 'That much' = 7 is the ability text read against the single trigger event of seven discards (603.2c, step 1)."
+      },
+      {
+        "step": 10,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "One damage event of 7 to one opponent -> 9 instead. Opponents 2 and 3 are not dealt damage by this ability."
+      },
+      {
+        "step": 10,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "19 -> 10 for opponent 1."
+      },
+      {
+        "step": 11,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Final SBA check with an empty stack; 704.5a and 704.6c both walked."
+      },
+      {
+        "step": 11,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "10 / 19 / 19, none at 0 or less; nobody loses on life."
+      },
+      {
+        "step": 11,
+        "rule": "704.6c",
+        "status": "supported",
+        "note": "Same as step 3: exactly 21 from a commander, all noncombat, so the SBA is not met; the prose states the reason with the rule's operative words."
+      }
+    ],
+    "summary": {
+      "iteration_2": "Re-verified all 27 citations against the rules DB (every quote a whitespace-normalised substring; full texts identical to iteration 1). The only prose changes are steps 3 and 11 (704.6c added with reasoning). The iteration-1 missing-step finding is resolved. No new findings.",
+      "arithmetic_recomputed": "7 Brallin triggers x (1+2) = 21 per seat, 63 across the pod (per-seat and pod total stated separately in final_state.per_opponent_vs_pod). Spider-Man 7+2 = 9 to opponent 1 only. 40-21-9 = 10; 40-21 = 19; 40-21 = 19. Per-step totals 40/37/34/31/28/25/22/19 then 10/19/19 re-derived from the step effects.",
+      "rulings_checked": "Torbran (2019-10-04 x3) and Brallin (2020-04-17, the two relevant) agree with the resolution; Spider-Man, New Champion and Windfall have no official rulings (section absent), not held against the artifact.",
+      "oracle_text": "Brallin and Windfall from data/decks/sharknado/cards.json; Torbran and Spider-Man from data/decks/sharknado/branches/torbran-v1/cards.json. All quotations match. Torbran and Spider-Man are not in the sleeved 99 (scenario-facts NOT_IN_THE_DECK; validate-stack warns); presentable only as a torbran-v1 branch line.",
+      "siblings": "scenario-facts marks 001-004 as not like-for-like; the resolution quotes no sibling figure.",
+      "mechanical_gate": "validate-stack: OK, contract holds, two out-of-99 warnings.",
+      "note_for_orchestrator": "The file slug says 'windfall-kill' but the resolution's verified conclusion is that this board is NOT a kill (10 / 19 / 19). Not a rules finding; consider the slug/title when presenting."
+    }
+  }
+}
