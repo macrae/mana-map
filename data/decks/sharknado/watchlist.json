@@ -315,6 +315,69 @@
           "at": null
         }
       ]
+    },
+    {
+      "id": "instant-fuel",
+      "title": "Instant-speed draw and discard that also interacts (DeckCheck roast, query 3, 2026-10-18)",
+      "source": "deckcheck-roast-2026-10-18",
+      "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 o:draw (o:discard or o:\"each player\"); 47 results, 6 kept (Cathartic Pyre already on wheel-interaction, Tolarian Winds already in the deck)",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "Prismari Command",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "three mana, choose two: 2 damage anywhere, a player loots two, a Treasure, destroy an artifact — removal and a loot in one card, Brallin and Shabraz both trigger",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Izzet Charm",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "two mana, choose one: soft-counter a noncreature spell, 2 to a creature, or draw two discard two — the cheapest card here that is interaction on their turn and fuel on ours",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Three Steps Ahead",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "spree from one blue: +{1}{U} counter a spell, +{2} draw two discard one, +{3} copy a creature or artifact — a hard counter that loots when the mana is there, a loot when it is not",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "You Find the Villains' Lair",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "three mana, choose one: hard counter, or draw two discard two — Counterspell with a loot mode; Refute is the same slot with both halves at once",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Frantic Search",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "draw two, discard two, untap three lands: a free instant-speed loot — two Brallin pings and two Shabraz counters on the wheel turn for no net mana",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Dangerous Wager",
+          "pays": "brallin",
+          "axis": "momentum",
+          "why": "two mana instant: discard your hand, draw two — a seven-card hand is 7 damage to each opponent through Brallin at instant speed, and a fresh two after a counterspell fight",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     }
   ]
 }
