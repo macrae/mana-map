@@ -4947,7 +4947,29 @@ def test_open_branches_are_visible_on_the_card(browser, viz_server):
                                {"name": "b", "state": "OPEN"},
                                {"name": "c", "state": "MERGED"}]}})
     try:
-        assert "2 branches" in page.text_content(".wb-chips")
+        assert "2 open branches" in page.text_content(".wb-chips")
+        # AND THE CHIP LEADS SOMEWHERE (2026-10-19): several open → the deck
+        # page's Branches rack.
+        assert page.get_attribute(".wb-chips a.wb-branch", "href") == "deck.html?deck=alpha#branches"
+    finally:
+        page.close()
+
+
+def test_one_open_branch_links_straight_to_its_page_with_its_verdict(browser, viz_server):
+    """The pilot could not find Edgar's mean-v1 from the front door: the chip
+    counted branches and led nowhere. One live branch now links to its page and
+    carries the verdict and the objective's grade the manifest rows hold; a
+    rejected or withdrawn branch is not open work."""
+    page = _workbench(browser, viz_server, [_deck("alpha")], infos={
+        "alpha": {"branches": [{"name": "mean-v1", "state": "OPEN", "verdict": {"state": "a trade"},
+                                "objective_grade": {"state": "met"}},
+                               {"name": "old", "state": "REJECTED"},
+                               {"name": "done", "state": "MERGED"}]}})
+    try:
+        chip = page.locator(".wb-chips a.wb-branch")
+        assert chip.count() == 1
+        assert chip.get_attribute("href") == "branch.html?deck=alpha&branch=mean-v1"
+        assert "mean-v1 · a trade · objective met" in chip.text_content()
     finally:
         page.close()
 
@@ -9212,3 +9234,52 @@ def test_watch_moves_a_card_out_of_unreviewed_through_the_endpoint(page):
     assert posted and posted[0]["verdict"] == "watching" and posted[0]["set"] == "wheel-interaction"
     assert after["name"] not in after["left"], "a watched card stayed in Unreviewed"
     assert after["tiles"] == before["tiles"] - 1
+
+
+@requires_branch
+@pytest.mark.browser
+def test_the_branch_page_says_its_state_and_what_the_instruments_could_not_see(browser, viz_server):
+    """Edgar's mean-v1 is the branch the pilot could not find and could not
+    judge from the page: no state for an open branch, no blind spots, no cast
+    proofs, no stacks, no way to the siblings. All five render from committed
+    artifacts; the page computes nothing."""
+    page = _branch_page(browser, viz_server, "edgar-vampires", "mean-v1")
+    try:
+        assert not page.js_errors, page.js_errors
+        page.wait_for_selector("#branchState", timeout=15000)
+        assert "OPEN" in page.text_content("#branchState")
+        assert "propose" in page.text_content("#branchState")
+        assert page.locator("#blindSpots").count() == 1
+        page.wait_for_selector("#castProofs", timeout=15000)
+        assert "Clever Concealment" in page.text_content("#castProofs")
+        # The card Forge's AI would not play reads as HELD or UNPLAYED, never PLAYED.
+        assert page.locator("#castProofs .br-cast[data-state='played']").count() >= 1
+        assert page.locator("#castProofs .br-cast:not([data-state='played'])").count() >= 1
+        page.wait_for_selector("#branchStacks", timeout=15000)
+        assert "012" in page.text_content("#branchStacks")
+        page.wait_for_selector("#branchSiblings", timeout=15000)
+        assert "mean-v1" not in page.text_content("#branchSiblings")
+        page.wait_for_selector("#profileFigures", timeout=15000)
+        assert "cumulative drain by T10" in page.text_content("#profileFigures")
+    finally:
+        page.close()
+
+
+@pytest.mark.browser
+def test_the_deck_page_puts_branches_right_after_next_with_every_state_badged(browser, viz_server):
+    """"Further explorations" was the last of ~26 panels and showed an open
+    branch as a shopping list. The rack is now "Branches", sits after NEXT, and
+    every row carries its state."""
+    page = _dossier(browser, viz_server, "edgar-vampires")
+    try:
+        page.wait_for_selector("#panel-branches", timeout=25000)
+        order = page.evaluate("Array.from(document.querySelectorAll('section[id^=panel-]')).map(s => s.id)")
+        assert order.index("panel-branches") - order.index("panel-next") == 1, order
+        assert order.index("panel-branches") < len(order) - 5, "no longer the last panel"
+        assert "Branches" in page.text_content("#panel-branches h2")
+        states = page.locator("#panel-branches .br-state[data-state='open']")
+        assert states.count() >= 1
+        assert page.locator("#panel-branches details.branch-decided-fold").count() == 1
+        assert "mean-v1" in page.text_content("#panel-branches .branch:not(.branch-decided) h3")
+    finally:
+        page.close()

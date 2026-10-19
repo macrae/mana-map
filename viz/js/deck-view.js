@@ -374,10 +374,42 @@
         ' to source</span>';
   }
 
+  // EVERY STATE GETS A BADGE (2026-10-19). An OPEN branch used to show only
+  // "N to source", so the one live experiment read like a shopping list and a
+  // rejected one read like an open one. The state is `deck_branch.branch_state`'s
+  // word, derived when info.json was written; this only prints it.
+  function stateBadge(b) {
+    var st = String(b.state || '');
+    var key = /^MERGED/.test(st) ? 'merged' : /^PROPOSED/.test(st) ? 'proposed'
+            : /^REJECT/.test(st) ? 'rejected' : /^WITHDRAW/.test(st) ? 'withdrawn' : 'open';
+    return '<span class="br-state" data-state="' + key + '">' + esc(st || 'OPEN') + '</span>'
+         + (b.base_moved ? ' <span class="br-state" data-state="base-moved" title="' + esc(b.base_moved) + '">base moved</span>' : '');
+  }
+
+  function branchDecided(b) {
+    return /^(MERGED|REJECT|WITHDRAW)/.test(String(b.state || ''));
+  }
+
+  function branchFigures(b) {
+    var o = b.objective || {}, g = b.objective_grade || {}, v = b.verdict || {};
+    var rows = [];
+    if (o.axis) rows.push(['objective', o.axis + ' ' + o.op + ' ' + o.value + (g.state ? ' \u2192 ' + g.state : '')]);
+    if (v.state) rows.push(['net change', v.state + ' (' + (v.rose || 0) + ' rose, ' + (v.fell || 0) + ' fell'
+                                          + (v.no_call ? ', ' + v.no_call + ' no call' : '') + ')'
+                                          + (b.measured === false ? ' \u2014 STALE, the branch list moved' : '')]);
+    else rows.push(['net change', 'not measured']);
+    if (b.cast_proofs) rows.push(['Forge\u2019s AI', b.cast_proofs.played + ' played, ' + b.cast_proofs.held + ' held, '
+                                                   + b.cast_proofs.unplayed + ' unplayed']);
+    if (b.blind_spots && b.blind_spots.length) rows.push(['the goldfish cannot see', b.blind_spots.join(', ')]);
+    if (b.stacks && b.stacks.length) rows.push(['proven on this branch', b.stacks.map(function (h) {
+      return h.id + (h.checker ? ' (' + h.checker + ')' : ''); }).join(', ')]);
+    return rows;
+  }
+
   function branchPanel(d) {
     var bs = ((d.info || {}).branches) || [];
     if (!bs.length) return '';
-    var body = bs.map(function (b) {
+    var row = function (b) {
       if (b.unreadable) {
         return '<div class="branch"><h3>' + esc(b.name) +
                '</h3><p class="ev">This branch\u2019s list will not parse.</p></div>';
@@ -389,11 +421,11 @@
       // growing into the busiest panel here.
       var href = 'branch.html?deck=' + encodeURIComponent(d.slug) +
                  '&branch=' + encodeURIComponent(b.name);
-      var out = '<div class="branch"><h3><a href="' + href + '">' + esc(b.name) +
-        '</a>' +
+      var out = '<div class="branch' + (branchDecided(b) ? ' branch-decided' : '') + '"><h3><a href="' + href + '">' + esc(b.name) +
+        '</a> ' + stateBadge(b) + ' ' +
         branchBadge(b) + '</h3>';
       if (b.why) out += '<p class="branch-why">' + esc(b.why) + '</p>';
-      out += facts([
+      out += facts(branchFigures(b).concat([
         ['opened', b.opened || '\u2014'],
         ['vs the current list', '+' + b.add + ' \u2212' + b.out],
         ['size', String(b.size)],
@@ -404,7 +436,7 @@
         ['sleeved in a deck that is still together', String(c.elsewhere || 0)],
         ['loose — its deck is broken down', String(c.free || 0)],
         ['to buy', String(c.buy || 0)],
-      ]);
+      ]));
       if (b.proposal && b.pull_list) {
         out += pullList(b.pull_list);
       } else if ((b.unsourced || []).length) {
@@ -417,16 +449,25 @@
              '<a href="' + href + '">The net change, and whether it met its ' +
              'objective \u2192</a></p>';
       return out + '</div>';
-    }).join('');
-    // NAMED FOR WHAT THEY ARE. "Branches" reads as part of the deck; these are
-    // proposals that may never be built, and one of them — ur-dragon's treasure
-    // refactor — was measured, found worse and deleted after its design brief
-    // had already spent weeks describing the deck on this very page.
-    return panel('branches',
-                 bs.length === 1 ? 'Further exploration' : 'Further explorations',
-                 'Candidate lists that are NOT this deck. Each links to its own '
-                 + 'net-change report \u2014 what it costs, what it buys, and '
-                 + 'whether it met the objective it declared.',
+    };
+    // LIVE FIRST, DECIDED FOLDED (2026-10-19). info.json's rows arrive newest
+    // first; the merged, rejected and withdrawn ones sit under one disclosure
+    // so the rack is the work in flight, not the ledger.
+    var live = bs.filter(function (b) { return !branchDecided(b); });
+    var decided = bs.filter(branchDecided);
+    var body = live.map(row).join('');
+    if (decided.length) {
+      body += '<details class="branch-decided-fold"><summary>decided (' + decided.length + ')</summary>'
+            + decided.map(row).join('') + '</details>';
+    }
+    if (!live.length && !decided.length) return '';
+    // NAMED FOR WHAT THEY ARE, and named so the pilot can find them: "Branches"
+    // is the word he uses, and the rack sits right after NEXT because a branch
+    // is the deck's next decision.
+    return panel('branches', 'Branches',
+                 'Candidate lists that are NOT this deck \u2014 the work in flight, newest first. '
+                 + 'Each links to its own page: the objective and whether it was met, the paired '
+                 + 'net change, what the goldfish and Forge\u2019s AI could not see, the bill.',
                  [], '#7ba05b', body);
   }
 
@@ -452,7 +493,7 @@
     // A branch roster when there is one, otherwise the deck's own. The branch is
     // the more interesting answer: it is the list you cannot yet sleeve.
     var bs = ((d.info || {}).branches) || [];
-    var b = bs.filter(function (x) { return !x.unreadable && x.cards; })[0];
+    var b = bs.filter(function (x) { return !x.unreadable && x.cards && !branchDecided(x); })[0];
     if (b && d.branchMap) return { map: d.branchMap, branch: b };
     return { map: d.deckMap, branch: null };
   }
@@ -2457,12 +2498,11 @@
       assessmentPanel(d),
 
       // ── the exhibits, not yet numbered ──
-      nextPanel(d), statusPanel(d), auditPanel(d),
+      nextPanel(d), branchPanel(d), statusPanel(d), auditPanel(d),
       enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d),
       briefPanel(d), constellationPanel(d),
       bracketPanel(d), dtiPanel(d), combosPanel(d), manaPanel(d), goldfishPanel(d),
-      tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d),
-      branchPanel(d)
+      tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
     wireContext(d);
@@ -2590,7 +2630,7 @@
           // ever multiply, and overkill for a fetch that only fires on a deck
           // that has one.
           var bs = ((d.info || {}).branches) || [];
-          var b = bs.filter(function (x) { return !x.unreadable; })[0];
+          var b = bs.filter(function (x) { return !x.unreadable && !branchDecided(x); })[0];
           if (!b) { render(entry.slug, d); return; }
           getJSON(BASE + entry.slug + '/branches/' + b.name + '/deck_map.json')
             .then(function (m) { d.branchMap = m; })

@@ -2047,3 +2047,20 @@ hidden element: right node count, right status line, blank screen.
 `MAX_NODES = 500` caps the live graph — the simulation and canvas both scale much further,
 but past a few hundred nodes it is a hairball and the walk stops being legible. The cap is
 announced in the panel, never silent.
+
+
+**How you find a branch (2026-10-19).** The pilot could not reach a branch from the landing
+page. Now: the workbench's branch chip is a link — one open branch links straight to its
+page and carries its verdict and objective grade (`⑂ mean-v1 · a trade · objective met`),
+several link to the deck page's **Branches** rack, which sits right after NEXT (it was the
+last of ~26 panels, alphabetical), newest first, every row badged with its state (open /
+proposed / merged / rejected / withdrawn, base-moved), its objective and grade, the
+net-change verdict with how many rows rose and fell, Forge's cast-proof counts, the goldfish's
+blind spots and the stacks proven on it; decided branches fold under one disclosure. The
+branch page gained the same pieces: a state banner for every branch (OPEN says how to
+propose it), **What the goldfish cannot see** beside the Measured table, **What Forge's AI
+did with each add** (PLAYED / HELD / UNPLAYED from `cast_proofs.json`), **Proven on this
+branch** (stacks naming a card only the branch brings, with the checker's verdict), **The
+deck's own goldfish, beside the branch's** (series the net-change table does not carry,
+printed side by side, never differenced), and the deck's other branches with their states.
+The manifest carries `branches` and `branches_open` per deck (`MANIFEST_VERSION` 11).

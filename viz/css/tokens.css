@@ -1324,6 +1324,27 @@ details.rost-fold > summary {
 .fl-cc[data-level="concordant"] { color: var(--tier-verified); border-color: var(--tier-verified); }
 .fl-cc[data-level="mixed"] { color: var(--ink-2, var(--ink)); }
 .fl-cc[data-level="divergent"] { color: var(--warn, #e0a030); border-color: var(--warn, #e0a030); }
+/* BRANCHES, FINDABLE (2026-10-19): every state gets a badge, on the deck page's
+   rack, the branch page's banner and its siblings; the workbench chip is a link. */
+.br-state { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em;
+  padding: 2px 7px; border: 1px solid currentColor; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+.br-state[data-state="open"] { color: var(--tier-data); }
+.br-state[data-state="proposed"] { color: var(--warn, #e0a030); }
+.br-state[data-state="merged"] { color: var(--tier-verified); }
+.br-state[data-state="rejected"], .br-state[data-state="withdrawn"] { color: var(--ink-2, var(--ink)); opacity: 0.7; }
+.br-state[data-state="base-moved"] { color: var(--warn, #e0a030); border-style: dashed; }
+.wb-chip.wb-branch { text-decoration: none; border-color: var(--tier-data); color: var(--tier-data); cursor: pointer; }
+.wb-chip.wb-branch:hover { background: var(--tier-data); color: var(--bg, #fff); }
+.branch-decided-fold { margin-top: 18px; }
+.branch-decided-fold > summary { cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; opacity: 0.8; }
+.branch-decided { opacity: 0.75; }
+.br-cast { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; padding: 2px 7px;
+  border: 1px solid currentColor; border-radius: 3px; margin-right: 6px; }
+.br-cast[data-state="played"] { color: var(--tier-verified); }
+.br-cast[data-state="held"] { color: var(--warn, #e0a030); }
+.br-cast[data-state="unplayed"] { color: var(--ink-2, var(--ink)); }
+.br-cast-list, .br-siblings { list-style: none; padding: 0; }
+.br-cast-list li, .br-siblings li { margin: 6px 0; }
 .fl-members { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 14px; }
 .fl-member { padding: 10px 12px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; }
 .fl-member a { color: var(--ink); font-weight: 600; text-decoration: none; }

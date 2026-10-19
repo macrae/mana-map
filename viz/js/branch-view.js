@@ -549,14 +549,127 @@
    * no base list. */
   function wireBaseMoved(slug, name) {
     getJSON(DATA + 'decks/' + encodeURIComponent(slug) + '/info.json').then(function (info) {
-      var row = ((info && info.branches) || []).filter(function (b) {
-        return b && b.name === name;
-      })[0];
-      if (!row || !row.base_moved) return;
+      var rows = ((info && info.branches) || []);
+      var row = rows.filter(function (b) { return b && b.name === name; })[0];
       var mount = document.getElementById('objective');
-      if (!mount || document.getElementById('baseMoved')) return;
-      mount.insertAdjacentHTML('afterbegin',
-        '<p class="ev warn" id="baseMoved">' + esc(row.base_moved) + '</p>');
+      if (!mount) return;
+      // THE STATE, FOR EVERY BRANCH (2026-10-19). `proposalPanel` renders only a
+      // proposal, so an open branch never said it was open — the word comes
+      // from `deck_branch.branch_state` on info.json, and this prints it.
+      if (row && row.state && !document.getElementById('branchState')) {
+        var st = String(row.state);
+        var key = /^MERGED/.test(st) ? 'merged' : /^PROPOSED/.test(st) ? 'proposed'
+                : /^REJECT/.test(st) ? 'rejected' : /^WITHDRAW/.test(st) ? 'withdrawn' : 'open';
+        var hint = key === 'open'
+          ? ' \u2014 an experiment, not a decision. <code>manamap pilot deck-branch ' + esc(slug)
+            + ' propose ' + esc(name) + ' --as vX.Y.Z</code> makes it one.'
+          : (row.state_why ? ' \u2014 ' + esc(row.state_why) : '');
+        mount.insertAdjacentHTML('afterbegin',
+          '<p class="ev" id="branchState"><span class="br-state" data-state="' + key + '">' + esc(st) + '</span>' + hint + '</p>');
+      }
+      if (row && row.base_moved && !document.getElementById('baseMoved')) {
+        mount.insertAdjacentHTML('afterbegin',
+          '<p class="ev warn" id="baseMoved">' + esc(row.base_moved) + '</p>');
+      }
+      var panels = document.getElementById('panels');
+      if (!panels) return;
+      // PROVEN ON THIS BRANCH: the stacks whose scenario names a card only the
+      // branch brings (`deck_branch.review`), with the checker's verdict.
+      if (row && row.stacks && row.stacks.length && !document.getElementById('branchStacks')) {
+        panels.insertAdjacentHTML('beforeend',
+          '<section class="panel stacks" id="branchStacks"><h2>Proven on this branch</h2>'
+          + '<p class="lede">Stack scenarios that name a card only this branch brings \u2014 a line the current deck cannot run until the branch merges.</p><ul>'
+          + row.stacks.map(function (h) {
+              return '<li><a href="deck.html?deck=' + encodeURIComponent(slug) + '#panel-stacks"><code>' + esc(h.id) + '</code></a> '
+                   + esc(h.title || '') + ' <span class="br-state" data-state="' + (h.checker === 'pass' ? 'merged' : 'rejected') + '">'
+                   + esc(h.checker || 'unchecked') + '</span> <span class="ev">' + esc((h.names || []).join(', ')) + '</span></li>';
+            }).join('') + '</ul></section>');
+      }
+      // THE SIBLINGS: the deck's other branches, newest first, with their state.
+      var others = rows.filter(function (b) { return b && b.name && b.name !== name && !b.unreadable; });
+      if (others.length && !document.getElementById('branchSiblings')) {
+        panels.insertAdjacentHTML('beforeend',
+          '<section class="panel siblings" id="branchSiblings"><h2>The deck\u2019s other branches</h2><ul class="br-siblings">'
+          + others.map(function (b) {
+              var st = String(b.state || ''), v = b.verdict || {};
+              var key = /^MERGED/.test(st) ? 'merged' : /^PROPOSED/.test(st) ? 'proposed'
+                      : /^REJECT/.test(st) ? 'rejected' : /^WITHDRAW/.test(st) ? 'withdrawn' : 'open';
+              return '<li><a href="branch.html?deck=' + encodeURIComponent(slug) + '&branch=' + encodeURIComponent(b.name) + '">'
+                   + esc(b.name) + '</a> <span class="br-state" data-state="' + key + '">' + esc(st || 'OPEN') + '</span>'
+                   + (v.state ? ' <span class="ev">' + esc(v.state) + '</span>' : '') + '</li>';
+            }).join('')
+          + '</ul><p class="ev"><a href="deck.html?deck=' + encodeURIComponent(slug) + '#panel-branches">\u2190 Branches, on the deck page</a></p></section>');
+      }
+    });
+  }
+
+  // WHAT THE GOLDFISH CANNOT SEE: net-change's own `blind_spots`, rendered
+  // beside the table so a "worse" row is read with the cards it is blind to.
+  function blindSpotsPanel(nc) {
+    var bs = (nc && nc.blind_spots) || [];
+    if (!bs.length) return '';
+    return '<section class="panel blind" id="blindSpots"><h2>What the goldfish cannot see</h2>'
+      + '<p class="lede">Cards in the change whose effect no row above can price \u2014 the figure is a floor for them, not a zero.</p><ul>'
+      + bs.map(function (b) {
+          return '<li><b>' + esc((b.cards || []).join(', ')) + '</b>' + (b.what ? ' \u2014 ' + esc(b.what) : '')
+               + (b.detail ? ' <span class="ev">' + esc(b.detail) + '</span>' : '') + '</li>';
+        }).join('') + '</ul></section>';
+  }
+
+  // WHAT FORGE'S AI DID WITH EACH ADD: `cast_proofs.json`, one row per card,
+  // the CLI's own verdict line. A HELD add is a card the AI will not play —
+  // never a reason to cut, and a hole in any Forge arm.
+  function wireCastProofs(base) {
+    getJSON(base + 'cast_proofs.json').then(function (cp) {
+      var cards = cp && cp.cards;
+      var panels = document.getElementById('panels');
+      if (!cards || !panels || document.getElementById('castProofs')) return;
+      var names = Object.keys(cards).sort();
+      panels.insertAdjacentHTML('beforeend',
+        '<section class="panel cast" id="castProofs"><h2>What Forge\u2019s AI did with each add</h2>'
+        + '<p class="lede">Two-seat shells, ' + esc(cp.harness || '') + (cp.as_of ? ', ' + esc(cp.as_of) : '')
+        + '. PLAYED means cast or activated when drawn; HELD means castable and never cast \u2014 the AI will not play it, a hint or a patch before any Forge arm.</p>'
+        + '<ul class="br-cast-list">' + names.map(function (n) {
+            var r = cards[n] || {}, v = String(r.verdict || '');
+            var key = /^PLAYED/.test(v) ? 'played' : /^HELD/.test(v) ? 'held' : 'unplayed';
+            return '<li><span class="br-cast" data-state="' + key + '">' + esc(key.toUpperCase()) + '</span> <b>' + esc(n) + '</b> '
+                 + '<span class="ev">drawn ' + esc(r.drawn_games != null ? r.drawn_games : '?') + 'g \u00b7 cast ' + esc(r.cast != null ? r.cast : '?')
+                 + ' \u00b7 castable-uncast ' + esc(r.castable_uncast_turns != null ? r.castable_uncast_turns : '?') + 't</span></li>';
+          }).join('') + '</ul></section>');
+    });
+  }
+
+  // THE PROFILE'S OWN FIGURES: the goldfish series the net-change rows do not
+  // carry (cumulative drain, bodies, extra cards), champion beside branch, each
+  // with its model version. Printed, never differenced: the paired interval is
+  // net-change's job and lives in the Measured table where it exists.
+  function wireProfileFigures(slug, name, base) {
+    Promise.all([getJSON(DATA + 'decks/' + encodeURIComponent(slug) + '/goldfish_metrics.json'),
+                 getJSON(base + 'goldfish_metrics.json')]).then(function (got) {
+      var champ = got[0], br = got[1];
+      var panels = document.getElementById('panels');
+      if (!champ || !br || !panels || document.getElementById('profileFigures')) return;
+      var cm = champ.metrics || champ, bm = br.metrics || br;
+      function at(m, path, t) {
+        var o = m; for (var i = 0; i < path.length; i++) { o = o && o[path[i]]; }
+        return o && o[String(t)] != null ? num(o[String(t)], 2) : '\u2014';
+      }
+      var rows = [
+        ['cumulative drain by T8', ['drain', 'mean_cumulative_drain_by_turn'], 8],
+        ['cumulative drain by T10', ['drain', 'mean_cumulative_drain_by_turn'], 10],
+        ['extra cards by T10', ['mean_extra_cards_drawn_by_turn'], 10],
+        ['bodies by T6', ['mean_bodies_by_turn'], 6],
+        ['bodies by T10', ['mean_bodies_by_turn'], 10],
+        ['sacrifices by T10', ['mean_sacrifices_by_turn'], 10]
+      ].filter(function (r) { return at(cm, r[1], r[2]) !== '\u2014' || at(bm, r[1], r[2]) !== '\u2014'; });
+      if (!rows.length) return;
+      var cv = (champ.meta || {}).model_version || '', bv = (br.meta || {}).model_version || '';
+      panels.insertAdjacentHTML('beforeend',
+        '<section class="panel profile" id="profileFigures"><h2>The deck\u2019s own goldfish, beside the branch\u2019s</h2>'
+        + '<p class="lede">Series the net-change table does not carry, read from each list\u2019s goldfish artifact. Two readings side by side, not a difference: the paired interval is the Measured table\u2019s job.</p>'
+        + '<table class="netchange"><thead><tr><th>measure</th><th>champion</th><th>branch</th></tr></thead><tbody>'
+        + rows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + at(cm, r[1], r[2]) + '</td><td>' + at(bm, r[1], r[2]) + '</td></tr>'; }).join('')
+        + '</tbody></table><p class="ev">model ' + esc(String(cv).slice(0, 12)) + (bv && bv !== cv ? ' vs ' + esc(String(bv).slice(0, 12)) + ' \u2014 two models, read with care' : '') + '</p></section>');
     });
   }
 
@@ -1054,7 +1167,7 @@
           proposalPanel(meta, slug, name) + verdictPanel(nc) +
           objectivePanel(meta, nc);
         document.getElementById('panels').innerHTML = netChangePanel(meta, nc) + (nc
-          ? (tablePanel(nc) + ledgerPanel(nc) + forgePanel(nc) +
+          ? (tablePanel(nc) + blindSpotsPanel(nc) + ledgerPanel(nc) + forgePanel(nc) +
              billPanel(nc, meta) + trailPanel(meta) + limitsPanel(nc))
           : (trailPanel(meta) + absent(
               'The net change',
@@ -1065,6 +1178,8 @@
           benchPanel(meta, slug, name));
         wireViewToggle();
         wireBaseMoved(slug, name);
+        wireCastProofs(base);
+        wireProfileFigures(slug, name, base);
         if (nc && nc.bill) {
           var buy = (nc.bill.cards || []).filter(function (r) {
             return r.state === 'buy';

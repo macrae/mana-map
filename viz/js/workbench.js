@@ -194,10 +194,27 @@
      * exactly like one with none. Neutral, deliberately: `proposalChip` is amber
      * or green because it is BLOCKED ON CARDBOARD, and having work open is not
      * being blocked. */
+    /* AND IT LINKS (2026-10-19). The pilot could not find a branch from here:
+     * the chip counted them and led nowhere. One open branch links straight to
+     * its page with its verdict and objective grade (info.json's rows are
+     * newest first, and `review` put the figures on them); several link to the
+     * deck page's Branches rack. A decided branch (merged, rejected,
+     * withdrawn) is not open work. */
     var open = ((info && info.branches) || []).filter(function (b) {
-      return b.state !== 'MERGED' && !b.proposal;
-    }).length;
-    if (open) out += chip('⑂ ' + open + ' branch' + (open === 1 ? '' : 'es'));
+      return b.state !== 'MERGED' && !b.proposal && !/REJECT|WITHDRAW/.test(b.state || '');
+    });
+    if (open.length === 1) {
+      var ob = open[0];
+      out += '<a class="wb-chip wb-branch" href="branch.html?deck=' + encodeURIComponent(e.slug)
+           + '&branch=' + encodeURIComponent(ob.name) + '">'
+           + esc('⑂ ' + ob.name
+                 + (ob.verdict && ob.verdict.state ? ' · ' + ob.verdict.state : '')
+                 + (ob.objective_grade && ob.objective_grade.state ? ' · objective ' + ob.objective_grade.state : ''))
+           + '</a>';
+    } else if (open.length) {
+      out += '<a class="wb-chip wb-branch" href="deck.html?deck=' + encodeURIComponent(e.slug) + '#branches">'
+           + esc('⑂ ' + open.length + ' open branches') + '</a>';
+    }
     if ((e.sim_runs || []).length) out += chip((e.sim_runs || []).length + ' sim');
     if ((e.experiments || []).length) out += chip((e.experiments || []).length + ' experiment');
     if ((e.prescriptions || []).length) out += chip((e.prescriptions || []).length + ' question');

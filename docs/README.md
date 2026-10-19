@@ -36,7 +36,7 @@ these hold the evidence.
 
 | | | |
 |---|---:|---|
-| [gotchas-viz.md](gotchas-viz.md) | 85 | The canvas renderer, the force graph, the three modes, the library and its piles, the shell, the atlas drift. Read before touching `viz/`. |
+| [gotchas-viz.md](gotchas-viz.md) | 97 | The canvas renderer, the force graph, the three modes, the library and its piles, the shell, the atlas drift. Read before touching `viz/`. |
 | [gotchas-bench.md](gotchas-bench.md) | 3888 | Agents and the invocation cache, Forge and the goldfish model, branches, the diagnostic layer, `deck-audit`, versions, the captain's log. Read before touching `src/manamap/pilot/` or `src/manamap/sim/`. |
 | [gotchas-analysis.md](gotchas-analysis.md) | 26 | Synergy, the obsolescence index and its audit, card roles, region clustering. Read before touching `src/manamap/analysis/`. |
 | [gotchas-evidence.md](gotchas-evidence.md) | 50 | Stacks, citations, `engine.json`, the deck map, and every validator's reasoning — **including the checks prototyped and REJECTED for firing on correct data**. Read before adding a validator or a claim. |
@@ -47,7 +47,7 @@ these hold the evidence.
 | | | |
 |---|---:|---|
 | [architecture.md](architecture.md) | 790 | The two embedding models, how a card is decomposed, tag and role taxonomies, synergy rules, power-creep criteria, region clustering. |
-| [viz.md](viz.md) | 2049 | The frontend: the six PAGES (workbench, atlas, dossier, branch, Curate, spaces), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
+| [viz.md](viz.md) | 2066 | The frontend: the six PAGES (workbench, atlas, dossier, branch, Curate, spaces), the three modes, the `window.MM` contract, the canvas renderer, seeding a walk from named cards, and what an open verified line prints. Read before any `viz/` change. |
 | [agent-cost.md](agent-cost.md) | 309 | Where LLM spend lives, per-routine token sizing (current first, legacy measurements after), and how the invocation cache decides what to re-run. |
 | [integrations.md](integrations.md) | 170 | **The one HTTP client** (`manamap.net`, 2026-10-09): the retry loop every outside call shares, the JSON cache under `data/cache/<service>/`, `MANAMAP_NET_OFFLINE=1` (the unit tier sets it), tokens via the environment and the Keychain recipe, and the rule that nothing on the network is a gate. |
 | [agent-inventory.md](agent-inventory.md) | 149 | **The harness as it stands** — every agent and skill with its path, what it owns, which skill spawns it and how a five-specialist consolidation would re-home it, plus the front-end surfaces that depend on each. PRD §8 D-1 asks for this as a CHECKED-IN artifact rather than a report. Read before touching a charter. |
