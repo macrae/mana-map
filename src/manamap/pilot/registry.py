@@ -150,6 +150,9 @@ PILOT_STEPS = [
     ("deck-history", "manamap.pilot.deck_history", "Applied swaps (from git) + the swaps still pending"),
     ("deck-notes", "manamap.pilot.deck_notes",
      "The captain's log: add a note about a game, list them, show one (append-only, authored)"),
+    ("validate-log", "manamap.pilot.validate_log",
+     "Form-check log.jsonl: one object per line, ids in order, result / opponents / tags / "
+     "the optional 1-5 survey (`feel`) from their closed vocabularies; absent is absent"),
     ("validate-debrief", "manamap.pilot.validate_debrief",
      "Form-check the debrief annotations against the log they annotate"),
     ("merge-debrief", "manamap.pilot.merge_debrief",
@@ -338,7 +341,7 @@ _DECK_COMMANDS = {
     "diagnosis-report",
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "card-value", "validate-pending",
-    "deck-notes", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
+    "deck-notes", "validate-log", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
     "captains-log", "merge-captains-log", "validate-captains-log",
     "install-agent", "build-poh", "validate-poh",
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
@@ -356,6 +359,13 @@ def _causes():
     from manamap.pilot.deck_notes import CAUSES
 
     return CAUSES
+
+
+def _feel_keys():
+    """`config.PILOT_FEEL_KEYS`, the survey vocabulary — one home, derived here."""
+    from manamap.config import PILOT_FEEL_KEYS
+
+    return PILOT_FEEL_KEYS
 
 
 def add_pilot_parser(subparsers):
@@ -603,6 +613,13 @@ def add_pilot_parser(subparsers):
                                   "politics | raced | stalled | won")
             cmd.add_argument("--note", default=None,
                              help="cause: one line on why you filed it that way")
+            # THE SURVEY (2026-10-18): five optional 1-5 scores on the entry, keys
+            # from `config.PILOT_FEEL_KEYS` — named in the help, parsed and range-
+            # checked by `deck_notes.parse_feel`, never re-typed here.
+            cmd.add_argument("--feel", action="append", default=[], metavar="KEY=1-5",
+                             help="add: a 1-5 score, repeatable — KEY one of "
+                                  + " | ".join(sorted(_feel_keys()))
+                                  + " (e.g. --feel power=4 --feel fun=5)")
             cmd.add_argument("--since", default=None,
                              help="list: only entries at or after this ISO date")
             cmd.add_argument("--json", action="store_true", dest="as_json")

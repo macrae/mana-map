@@ -60,6 +60,20 @@ def test_a_bare_deck_composes_and_is_told_to_play(bare_deck):
     assert not any("un-debriefed" in n for n in info["next"])
 
 
+def test_the_record_carries_the_survey_means_with_n_and_absent_when_nobody_scored(bare_deck):
+    """`record.feel` is the pilot's own numbers: a mean with n, min and max beside
+    it, per key scored; a key nobody scored is ABSENT, never 0."""
+    assert deck_info.compose(SLUG)["record"]["feel"] == {}
+    append_entry(SLUG, "one", result="win", feel={"power": 4, "fun": 5})
+    append_entry(SLUG, "two", result="loss", feel={"power": 2})
+    append_entry(SLUG, "three")
+    rec = deck_info.compose(SLUG)["record"]
+    assert rec["games"] == 3 and rec["feel_n"] == 2
+    assert rec["feel"] == {"power": {"mean": 3.0, "n": 2, "min": 2, "max": 4},
+                           "fun": {"mean": 5.0, "n": 1, "min": 5, "max": 5}}
+    assert "resilience" not in rec["feel"]
+
+
 def test_next_derives_from_what_is_true(bare_deck):
     append_entry(SLUG, "game one", result="loss")
     info = deck_info.compose(SLUG)

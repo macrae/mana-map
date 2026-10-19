@@ -98,7 +98,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 146 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 147 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -140,7 +140,7 @@ manamap pilot build <slug> --commander "<name>" [--brief "…"]   # brief -> a l
 manamap pilot check-in <slug> --from <file>  # a PAPER list -> decklist.txt; refuses a wrong one
 manamap pilot deck-version <slug> [list|show|tag|restore|paper] # `paper` marks what is SLEEVED
 manamap pilot deck-state <slug> archive|retire|supersede|revive --reason "…"
-manamap pilot deck-notes <slug> add "…" --result win|loss --cause <code>   # the captain's log
+manamap pilot deck-notes <slug> add "…" --result win|loss --cause <code> [--feel power=4 …]   # the captain's log (+ the pilot's 1-5 survey)
 manamap pilot regen [--only STAGE] [--slug S] [--jobs 8]
                               # rebuild the fleet after a MODEL change, in dependency order;
                               # then `make manuals`. Bit-identical across --jobs.

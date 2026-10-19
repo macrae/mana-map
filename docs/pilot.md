@@ -103,9 +103,11 @@ manamap pilot build <slug> [--brief "…"] [--commander "<name>"] [--theme SLUG]
                                         #   is ~20 games, whose MDE is 42 points. `simulate` is the pod.
 manamap pilot validate-recon <slug>                 # form-check deck_recon.json: cards real, legal, in identity
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
-manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T]
-                                        #   the captain's log: AUTHORED, append-only, sha-stamped
+manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T] [--feel KEY=1-5 …]
+                                        #   the captain's log: AUTHORED, append-only, sha-stamped; --feel is the
+                                        #   pilot's own 1-5 survey (power, resilience, consistency, fun, interaction)
 manamap pilot deck-notes <slug> list [--since D] | show <id>
+manamap pilot validate-log <slug>                   # log.jsonl on FORM: ids in order, result/opponents/tags, the survey's vocabulary and range
 manamap pilot model-coverage <slug> [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
 manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD THE FLEET after a model change, in dependency order, parallel across targets
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next

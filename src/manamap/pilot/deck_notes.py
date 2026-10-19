@@ -21,9 +21,14 @@ under-performed, takeaways, and `open_questions` routed to the loops that can
 settle them. It is merged by id (`merge-debrief`), validated against the log it
 annotates (`validate-debrief`), and can be regenerated; the log cannot.
 
-Light structure on the entry itself: `--result win|loss|draw`, `--opponents N`
-and repeatable `--tag`. Everything else is free text — the point is that writing
-a note costs one sentence, not a form.
+Light structure on the entry itself: `--result win|loss|draw`, `--opponents N`,
+repeatable `--tag`, and since 2026-10-18 an OPTIONAL survey — `--feel power=4
+--feel fun=5`, five 1-5 scores from `config.PILOT_FEEL_KEYS`, written on the entry
+as `feel: {key: int}` only when given. Everything else is free text — the point is
+that writing a note costs one sentence, not a form. There is no verb to add a feel
+to an older entry: the log is append-only, and a score given at the table is a
+different thing from one reconstructed a week later. An entry without `feel`
+simply lacks the key — absent, never zero — and every reader treats it so.
 """
 
 import hashlib
@@ -31,12 +36,17 @@ import json
 import sys
 from datetime import datetime
 
+from manamap import config
 from manamap.pilot.common import deck_dir, load_json
 
 LOG_FILE = "log.jsonl"
 ANNOTATIONS_FILE = "log_annotations.json"
 CAUSES_FILE = "log_causes.json"
 RESULTS = ("win", "loss", "draw")
+#: THE SURVEY — `config.PILOT_FEEL_KEYS`, re-exported so the registry derives its
+#: choices from one place (the `CAUSES` discipline).
+FEEL = config.PILOT_FEEL_KEYS
+FEEL_RANGE = config.PILOT_FEEL_RANGE
 
 #: HOW THE GAME ENDED, from a closed vocabulary.
 #:
@@ -105,7 +115,62 @@ def next_id(entries):
     return f"{max((int(e['id']) for e in entries), default=0) + 1:03d}"
 
 
-def append_entry(slug, text, result=None, opponents=None, tags=(), at=None):
+def parse_feel(items):
+    """`["power=4", "fun=5"]` -> `{"power": 4, "fun": 5}`, or a SystemExit naming
+    the first thing wrong: an unknown key, a non-integer, a value outside
+    `FEEL_RANGE`, or a key given twice. `None` or `[]` -> `None` (no survey)."""
+    if not items:
+        return None
+    lo, hi = FEEL_RANGE
+    feel = {}
+    for item in items:
+        key, sep, raw = str(item).partition("=")
+        key = key.strip()
+        if not sep or key not in FEEL:
+            raise SystemExit(
+                f"--feel takes KEY=N with KEY one of: "
+                + ", ".join(sorted(FEEL)) + f" (got {item!r})\n  "
+                + "\n  ".join(f"{k:12s} {v}" for k, v in FEEL.items()))
+        try:
+            val = int(raw.strip())
+        except ValueError:
+            raise SystemExit(f"--feel {key}: N must be a whole number {lo}-{hi} (got {raw!r})")
+        if not lo <= val <= hi:
+            raise SystemExit(f"--feel {key}: N must be {lo}-{hi} (got {val})")
+        if key in feel:
+            raise SystemExit(f"--feel {key} given twice")
+        feel[key] = val
+    return feel
+
+
+def check_feel(feel):
+    """The shape `append_entry` writes and `validate-log` re-checks: a dict of
+    known keys to ints in range. Returns the first problem as a string, or None."""
+    if not isinstance(feel, dict) or not feel:
+        return "feel must be a non-empty object"
+    lo, hi = FEEL_RANGE
+    for k, v in feel.items():
+        if k not in FEEL:
+            return f"feel key {k!r} is not one of {', '.join(sorted(FEEL))}"
+        if isinstance(v, bool) or not isinstance(v, int) or not lo <= v <= hi:
+            return f"feel {k} must be a whole number {lo}-{hi} (got {v!r})"
+    return None
+
+
+def feel_summary(entries):
+    """Per key with at least one score: `{mean, n, min, max}`. A mean is not a
+    result, so n, min and max ride beside it; keys nobody scored are absent."""
+    out = {}
+    for key in FEEL:
+        vals = [e["feel"][key] for e in entries
+                if isinstance(e.get("feel"), dict) and isinstance(e["feel"].get(key), int)]
+        if vals:
+            out[key] = {"mean": round(sum(vals) / len(vals), 2), "n": len(vals),
+                        "min": min(vals), "max": max(vals)}
+    return out
+
+
+def append_entry(slug, text, result=None, opponents=None, tags=(), at=None, feel=None):
     """Append one entry and return it. Appends; never rewrites."""
     text = (text or "").strip()
     if not text:
@@ -115,6 +180,10 @@ def append_entry(slug, text, result=None, opponents=None, tags=(), at=None):
         raise SystemExit(f"--result must be one of {', '.join(RESULTS)}")
     if opponents is not None and not (1 <= int(opponents) <= 7):
         raise SystemExit("--opponents is the number of OTHER players, 1-7")
+    if feel is not None:
+        why = check_feel(feel)
+        if why:
+            raise SystemExit(why)
     entries = read_log(slug)
     entry = {
         "id": next_id(entries),
@@ -125,6 +194,10 @@ def append_entry(slug, text, result=None, opponents=None, tags=(), at=None):
         "tags": sorted(set(tags or ())),
         "text": text,
     }
+    # THE SURVEY RIDES ON THE ENTRY, and only when given: an absent key is how
+    # every reader learns there was no survey, so `None` is never written.
+    if feel:
+        entry["feel"] = {k: feel[k] for k in FEEL if k in feel}
     with open(log_path(slug), "a", encoding="utf-8") as f:
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
     return entry
@@ -208,6 +281,9 @@ def _fmt(entry, annotated, width=72):
             f"{('vs ' + str(entry['opponents'])) if entry.get('opponents') else '':<5}  "
             f"{'✓ debriefed' if annotated else '  —        '}")
     tags = f"  [{', '.join(entry.get('tags') or [])}]" if entry.get("tags") else ""
+    feel = entry.get("feel") or {}
+    if feel:
+        tags += "  " + " ".join(f"{k[:3]}{feel[k]}" for k in FEEL if k in feel)
     body = entry["text"].replace("\n", " ")
     if len(body) > width:
         body = body[: width - 1] + "…"
@@ -223,9 +299,12 @@ def main(args):
             text = (sys.stdin.read() if args.file == "-"
                     else open(args.file, encoding="utf-8").read())
         entry = append_entry(slug, text, result=args.result, opponents=args.opponents,
-                             tags=args.tag, at=args.at)
+                             tags=args.tag, at=args.at,
+                             feel=parse_feel(getattr(args, "feel", None)))
         print(f"{slug}: logged entry {entry['id']} at {entry['at']} "
               f"(deck {str(entry['decklist_sha256'])[:12]}…)")
+        if entry.get("feel"):
+            print("  feel: " + ", ".join(f"{k} {v}" for k, v in entry["feel"].items()))
         warn = unsaved_warning(slug)
         if warn:
             print(warn, file=sys.stderr)
@@ -293,6 +372,10 @@ def main(args):
     losses = sum(1 for e in entries if e.get("result") == "loss")
     if wins or losses:
         print(f"\n  {wins}W {losses}L over {len(entries)} logged")
+    feel = feel_summary(entries)
+    if feel:
+        print("  feel: " + " · ".join(f"{k} {v['mean']:.1f} (n={v['n']})"
+                                      for k, v in feel.items()))
 
 
 if __name__ == "__main__":

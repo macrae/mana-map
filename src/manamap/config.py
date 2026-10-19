@@ -1878,3 +1878,19 @@ PROSE_KEY_INPUTS = {
                  "stacks:passing", "deck:strategic_frame.json?", "deck:engine.json?",
                  "strategy:doc"],
 }
+
+# ── THE PILOT'S SURVEY (2026-10-18) ───────────────────────────────────────
+# Five 1-5 scores the pilot MAY give a logged game (`deck-notes add --feel
+# power=4`), stored on the log entry itself. AUTHORED: a feel is the pilot's own
+# number, never derived, never a band member in the fleet artifact, and never a
+# mood an agent infers from prose (the debrief charter's "No mood field" stands).
+# A closed vocabulary for the same reason `deck_notes.CAUSES` is one: two spellings
+# of a key would split the mean in half while looking fine.
+PILOT_FEEL_KEYS = {
+    "power": "how strong the deck felt at this table, 1 (outclassed) to 5 (dominant)",
+    "resilience": "how it took removal, wipes and counterplay, 1 (folded) to 5 (shrugged)",
+    "consistency": "did it do its thing — mana, engine, draws — 1 (stumbled) to 5 (on rails)",
+    "fun": "how much you enjoyed piloting it tonight, 1 to 5",
+    "interaction": "how much it answered what the table did, 1 (none) to 5 (every threat)",
+}
+PILOT_FEEL_RANGE = (1, 5)

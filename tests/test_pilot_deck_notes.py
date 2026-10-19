@@ -24,7 +24,8 @@ SLUG = "logdeck"
 
 def _args(**kw):
     base = {"slug": SLUG, "action": "list", "text": None, "file": None, "result": None,
-            "opponents": None, "tag": [], "at": None, "since": None, "as_json": False}
+            "opponents": None, "tag": [], "at": None, "since": None, "as_json": False,
+            "feel": []}
     base.update(kw)
     return type("Args", (), base)()
 
@@ -97,6 +98,67 @@ def test_list_and_show_report_debrief_coverage(deck, capsys):
     assert "— debrief —" in capsys.readouterr().out
     with pytest.raises(SystemExit):
         deck_notes.main(_args(action="show", text="009"))
+
+
+# ── The survey ───────────────────────────────────────────────────────────
+
+
+def test_a_feel_rides_on_the_entry_only_when_given(deck):
+    """Absent means absent: an entry logged without a survey has NO `feel` key,
+    so every reader can tell "not asked" from "scored zero"."""
+    a = _add("no survey", result="loss")
+    b = _add("surveyed", result="win", feel={"power": 4, "fun": 5})
+    assert "feel" not in a
+    assert b["feel"] == {"power": 4, "fun": 5}
+    lines = (deck / "log.jsonl").read_text().splitlines()
+    assert "feel" not in json.loads(lines[0]) and json.loads(lines[1])["feel"] == b["feel"]
+
+
+@pytest.mark.parametrize("items", [
+    ["mood=4"],             # not a key in the vocabulary
+    ["power=six"],          # not a whole number
+    ["power=0"], ["power=6"],   # outside 1-5
+    ["power=4", "power=5"],     # given twice
+    ["power"],              # no `=`
+])
+def test_parse_feel_refuses_each_bad_form(deck, items):
+    """Re-introduce any one check in `parse_feel` and its case here passes a
+    bad survey through to the log."""
+    with pytest.raises(SystemExit):
+        deck_notes.parse_feel(items)
+    with pytest.raises(SystemExit):
+        _add("fine", feel=deck_notes.parse_feel(items) if False else {"power": 9})
+    assert not (deck / "log.jsonl").exists(), "a refusal must not have written"
+
+
+def test_parse_feel_reads_the_cli_pairs_and_nothing_means_none():
+    assert deck_notes.parse_feel(["power=4", "fun=5"]) == {"power": 4, "fun": 5}
+    assert deck_notes.parse_feel([]) is None and deck_notes.parse_feel(None) is None
+
+
+def test_the_cli_survey_choices_are_the_config_vocabulary():
+    """The help names the keys and `parse_feel` accepts them: both are derived
+    from `config.PILOT_FEEL_KEYS`, never re-typed (the `CAUSES` discipline)."""
+    from manamap import config
+    from manamap.pilot import registry
+    assert set(registry._feel_keys()) == set(config.PILOT_FEEL_KEYS) == set(deck_notes.FEEL)
+    for k in deck_notes.FEEL:
+        assert deck_notes.parse_feel([f"{k}=3"]) == {k: 3}
+
+
+def test_add_via_the_cli_logs_the_survey_and_list_summarises_it(deck, capsys):
+    deck_notes.main(_args(action="add", text="one", result="win", feel=["power=4", "fun=5"]))
+    deck_notes.main(_args(action="add", text="two", result="loss", feel=["power=2"]))
+    deck_notes.main(_args(action="add", text="three"))
+    out = capsys.readouterr().out
+    assert "feel: power 4, fun 5" in out
+    entries = deck_notes.read_log(SLUG)
+    assert deck_notes.feel_summary(entries) == {
+        "power": {"mean": 3.0, "n": 2, "min": 2, "max": 4},
+        "fun": {"mean": 5.0, "n": 1, "min": 5, "max": 5}}
+    deck_notes.main(_args(action="list"))
+    out = capsys.readouterr().out
+    assert "pow4 fun5" in out and "power 3.0 (n=2)" in out and "fun 5.0 (n=1)" in out
 
 
 def test_a_malformed_log_line_is_an_error_not_a_skip(deck):

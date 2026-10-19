@@ -56,7 +56,7 @@ from manamap.pilot import deck_status as status_mod
 from manamap.pilot import deck_versions as versions_mod
 from manamap.pilot import promote as promote_mod
 from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_dir, deck_lifecycle, load_deck_cards, load_json
-from manamap.pilot.deck_notes import annotations, causes, read_log
+from manamap.pilot.deck_notes import annotations, causes, feel_summary, read_log
 from manamap.pilot.prescribe import list_all as prescriptions_of
 from manamap.sim.experiment import list_all as experiments_of
 from manamap.sim.forge import list_runs as sim_runs
@@ -439,6 +439,11 @@ def compose(slug, verify=False, ladder=True, today=None):
     record["cause_counts"] = {
         c: sum(1 for v in record["causes"].values() if v == c)
         for c in sorted(set(record["causes"].values()))}
+    # THE SURVEY (2026-10-18) — the pilot's own 1-5 scores, summarised per key with
+    # n, min and max beside the mean; keys nobody scored are absent, never zero.
+    # AUTHORED: a figure here is what the pilot said, not a measurement.
+    record["feel"] = feel_summary(log)
+    record["feel_n"] = sum(1 for e in log if e.get("feel"))
     lines = engine.get("lines") or []
     # A GATE ROW IS NOT A STAGE, and its `stage` is the literal "—". A stage the
     # deck's format cannot have reads `n/a` (`deck_status.applies`) and is not

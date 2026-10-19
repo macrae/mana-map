@@ -462,6 +462,10 @@ VALIDATED = {
     # nothing could check reachability — and no STAGES row: optional, hand-written,
     # and absent means the deck is published nowhere.
     "links.json": "manamap.pilot.validate_links",
+    # THE CAPTAIN'S LOG (2026-10-18): authored and append-only, gated on FORM the
+    # day the survey (`feel`) became a field a figure is computed from. A gate row,
+    # never a stage: the log is the pilot's, nothing regenerates it.
+    "log.jsonl": "manamap.pilot.validate_log",
     # The combo report (2026-10-09): the lines a list contains and the ones it is
     # a card short of, both recomputable — gated the day it shipped.
     "combos.json": "manamap.pilot.validate_deck_combos",

@@ -94,7 +94,10 @@ answer, not a gap to fill.
        --result win|loss|draw --opponents N [--cause <code>]
    ```
 
-   Keep his words as written. One entry per game if he describes several.
+   Keep his words as written. One entry per game if he describes several. If he
+   gave 1–5 scores (power, resilience, consistency, fun, interaction), pass them
+   as `--feel power=4 --feel fun=5`; **never infer a score from his prose** — the
+   survey is his own number or nothing.
 2. **Update the context in the background.** Spawn `context-keeper` with
    `MODE log`, the slug and the new log ids. When it returns, install its draft:
 
