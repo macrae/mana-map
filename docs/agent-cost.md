@@ -54,6 +54,7 @@ per-artifact `stack:<NNN>`, `decision:<NNN>` and `prescription:<id>`.
 | `deck-diagnosis` | deck-doctor ⇄ deck-skeptic | 200,000–300,000 (est.) | decklist edit, new verified stack, goldfish re-run, a new sim run (`sim:runs`), a new debrief |
 | `prescription:<id>` | deck-doctor ⇄ deck-skeptic | ≈ one diagnosis pass (est.; unmeasured — none run yet) | the question's own prompt (`prompt:self`); otherwise as `deck-diagnosis` |
 | `deck-recon` | deck-doctor (MODE recon) | 60,000–90,000 (est.) | age, not inputs — see below |
+| `deck-rating` | deck-rater ⇄ rating-skeptic | 40,000–60,000 per rater pass + 40,000–60,000 per skeptic pass (est.; unmeasured — none run yet) | decklist edit, a fleet-artifact rebuild (`global:FLEET_ANALYTICS_PATH`), a scorecard edit (`repo:RATING_PATH`), a new game or survey, a new passing stack, a strategy edit |
 | `debrief` | debrief | **est. 15,000–30,000** per batch of un-debriefed entries (unmeasured — nothing logged yet) | a new `log.jsonl` entry (N/A until one exists) |
 | `pilot-notes` | pilot-notes | unmeasured; its two predecessors cost 54,515 + 47,188 for the same keys (2026-07-25) | frame change, new stack, engine change |
 | `poh-procedures` | poh-procedures | **UNMEASURED** — no spawn has been instrumented. Expect the neighbourhood of `pilot-notes`: it reads `engine.json`, the measured figures and the games that were lost, and writes three authored sections | a decklist edit (a procedure naming a card the deck no longer runs fails at the table), or a new `--cause` in the log |

@@ -84,6 +84,7 @@ answer, not a gap to fill.
 | **A queue check** ("what's in the queue? what did you find?") | `manamap pilot queue list` (fleet) or `--deck <slug>`, summarised in a sentence or two: what is promoted, what has a result waiting for his call. Testing an item is `/incubate`'s "work an item"; "add this to the queue" is its "Sean adds his own" (`queue add`, then the Challenger). |
 | **What he's watching** ("show me the candidates") | `manamap pilot watch <slug> list`, plus the review grid: `viz/index.html?mode=build&deck=<slug>`, then pick the set. Marks made there land in `watchlist.json`. |
 | **A deck edit** ("make the swap") | Story 6 below. Go-ahead first. |
+| **How strong is it / rank my decks** ("how strong is Gishath?", "rank my decks") | From `data/decks/<slug>/rating.json` when `manamap pilot validate-rating <slug>` says it is current: the grade with its group and the no-significance line — "B in Bracket 3, 2 of 5 — ★ coaching, n too small for significance" — plus the top `withheld` reason. Stale or absent → say so and **offer** `/rate-deck` (a loop; never run it unasked). "Rank my decks" → `manamap pilot rating --all`, quoted as printed, skeleton rows named as skeletons. The fleet page (`viz/fleet.html`) is where he looks at all of it. |
 
 ## Story 2: a pilot log
 
@@ -167,6 +168,8 @@ slice it needs.
 | `scenario-sim` | a Forge scenario slice: builds the board and two arms from his words, returns it for his OK; you then run `manamap pilot scenario-ab --spec <path>` | < 5 min | live |
 | `incubation-pod` | feedback into at most three testable hypotheses (`/incubate`) | < 3 min | live |
 | `challenger` | argues once against each hypothesis before it reaches the queue | < 90 s | live |
+| `deck-rater` | the one judgment component of a deck's rating, cited and bounded (`/rate-deck`) | < 3 min | live |
+| `rating-skeptic` | attacks that judgment: re-diffs the scorecard, re-reads every citation, names too-generous or too-harsh with a figure | < 2 min | live |
 
 Every finished run of these agents is logged by the band to `.progress/sla-log.jsonl`;
 `manamap pilot sla-report` summarises it. **Only a spawn BY ITS TYPE is timed**: spawn

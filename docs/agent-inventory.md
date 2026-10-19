@@ -22,7 +22,7 @@ manifest half of `build_index.py` lives on as `deck_manifest.py`, which writes t
 
 So Epic D was a **re-grouping of 18 charters**, not an excavation.
 
-## Agents — 28 charters in `.claude/agents/`
+## Agents — 30 charters in `.claude/agents/`
 
 Every one opens by reading `.claude/agents-common.md` (the shared contract);
 `pipeline-runner` and `viz-dev` are exempt there by name.
@@ -39,6 +39,8 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 | `deck-engineer` | `engine.json` | `analyze-engine`, `publish-deck` | keep → Build |
 | `engine-critic` | adversarial verifier for `engine.json` | `analyze-engine`, `publish-deck` | keep → Build's verify loop |
 | `deck-skeptic` | adversarial verifier for diagnoses and prescriptions | `diagnose-deck`, `prescribe` | keep → Build's verify loop |
+| `deck-rater` | the `judgment` component of `rating.json` — a 0–100 sub-score at a fixed weight, a ≤250-word argument, citations that resolve; never a measured component (added 2026-10-18). `sla_s: 180`, Sonnet | `rate-deck`, `rate-fleet` | keep → Build (★ over ◆) |
+| `rating-skeptic` | adversarial verifier for a rating: re-diffs the scorecard, re-reads every citation against its whole source, names `too-generous` / `too-harsh` with a figure (added 2026-10-18). `sla_s: 120`, Sonnet | `rate-deck`, `rate-fleet` | keep → Build's verify loop |
 | `stack-resolver` | cited stack resolutions | `resolve-stack` | **keep unchanged → Stack** |
 | `rules-checker` | adversarial verifier for resolutions | `resolve-stack`, `rules-lookup` | **keep unchanged → Stack** |
 | `strategy-researcher` | `data/strategy/strategy.md` + `strategic_frame.json`. The ONLY agent with Write/Edit scope | `research-strategy`, `strategy-lookup`, `write-manual` | repurpose → Scout |
@@ -70,7 +72,7 @@ and D-2 is explicit that "nothing gets deleted before its useful capability has
 a new home". They are recorded here as *never spawned by a skill* and left in
 place; retiring them is a decision, not a cleanup.
 
-## Skills — 26 in `.claude/skills/`
+## Skills — 28 in `.claude/skills/`
 
 Deck-facing, and the ones a consolidation has to re-home:
 
@@ -79,6 +81,7 @@ Deck-facing, and the ones a consolidation has to re-home:
 | `publish-deck` | debrief, deck-cartographer, deck-engineer, engine-critic, pilot-notes | **The router that already exists** — 13 ordered phases, and its own text says "None of them knew the sequence, and that is the failure this runbook exists to stop." Its only magazine coupling was phase 9 (`build-manual`), now `build-poh` |
 | `build-deck` | deck-analyst → deck-architect → deck-critic | the agent build loop, gated on `validate-build` / `bracket-check` |
 | `diagnose-deck` | deck-doctor ⇄ deck-skeptic | |
+| `rate-deck` | deck-rater ⇄ rating-skeptic | the rating loop (2026-10-18): the scorecard first, the judgment merged and validated, the skeptic, `cache-record` last; `rate-fleet` runs it over every live Commander deck and settles the ranks |
 | `prescribe` | deck-doctor (MODE prescribe) ⇄ deck-skeptic | |
 | `analyze-engine` | deck-engineer ⇄ engine-critic | |
 | `resolve-stack` | stack-resolver ⇄ rules-checker | max 3 iterations |

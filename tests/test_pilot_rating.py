@@ -234,3 +234,32 @@ def test_the_gate_is_registered_and_the_install_refuses_the_routine():
     from manamap.pilot import deck_status, install_agent
     assert deck_status.VALIDATED["rating.json"] == "manamap.pilot.validate_rating"
     assert "deck-rating" in install_agent.MERGED_ELSEWHERE
+
+
+# ── The cache routine ────────────────────────────────────────────────────
+
+
+def test_the_rating_routine_fingerprints_the_fleet_and_the_scorecard_but_not_the_judgment(fleet, monkeypatch):
+    """A rebuilt fleet artifact or an edited weight must MISS the routine on
+    every deck; a merged judgment must NOT invalidate its own routine (the
+    agent-owned keys are excluded), or the loop could never record a HIT."""
+    from manamap.pilot import agent_cache as ac
+    rating.write("alpha", rating.build("alpha"))
+    spec = config.AGENT_ROUTINES["deck-rating"]
+    base = ac.resolve_inputs("alpha", spec)
+    doc = rating.build("alpha")
+    doc["judgment"] = {"sub_score": 70, "argument": "x", "citations": [],
+                       "against": {"decklist_sha256": doc["decklist_sha256"], "spec_sha": doc["model_version"]}}
+    doc["iterations"] = 1
+    rating.write("alpha", doc)
+    assert ac.resolve_inputs("alpha", spec) == base, "the judgment is excluded from its own fingerprint"
+    fa.ARTIFACT.write_text(fa.ARTIFACT.read_text() + "\n")
+    assert ac.resolve_inputs("alpha", spec) != base, "the fleet artifact is an input"
+
+
+def test_the_routine_is_applicable_only_to_a_bracketed_commander_deck(fleet):
+    from manamap.pilot import agent_cache as ac
+    assert ac._rating_applicable("alpha")
+    (config.DECKS_DIR / "alpha" / "bracket_report.json").unlink()
+    assert not ac._rating_applicable("alpha")
+    assert not ac._rating_applicable("nope")

@@ -538,7 +538,24 @@ def _debrief_applicable(slug):
     return path.exists() and any(line.strip() for line in path.read_text().splitlines())
 
 
+def _rating_applicable(slug):
+    """A rating needs a bracket to compete in: a Commander deck that is not apart
+    and has a bracket_report.json. A 60-card deck or a broken-down one is N/A."""
+    from manamap import config as _config
+    from manamap.pilot.common import deck_is_apart
+    from manamap.pilot.formats import for_deck
+    base = _config.DECKS_DIR / slug
+    if not (base / "cards.json").exists() or not (base / "bracket_report.json").exists():
+        return False
+    return bool(for_deck(slug).commanders) and not deck_is_apart(slug)
+
+
 _APPLICABILITY = {
+    "deck-rating": (
+        _rating_applicable,
+        "no bracket to compete in — a Commander deck that is not apart, with a "
+        "bracket_report.json; nothing to spawn or cache",
+    ),
     "debrief": (
         _debrief_applicable,
         "nothing in the captain's log — `deck-notes <slug> add` a game first; "

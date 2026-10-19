@@ -1783,6 +1783,22 @@ AGENT_ROUTINES = {
         "artifact": "deck_recon.json",
         "inputs": ["deck:brief.json?"],
     },
+    # THE RATING (2026-10-18): the judgment slice of rating.json. rating.json itself
+    # is declared with its agent-owned keys EXCLUDED so a merged judgment does not
+    # invalidate its own routine; the fleet artifact and the scorecard module are
+    # declared so a rebuilt fleet or an edited weight MISSes every deck's rating.
+    "deck-rating": {
+        "agent": "deck-rater+rating-skeptic",
+        "artifact": "rating.json",
+        "artifact_keys": ["judgment", "open_questions", "verifier"],
+        "inputs": ["deck:rating.json!judgment,open_questions,verifier,iterations",
+                   "global:FLEET_ANALYTICS_PATH", "repo:RATING_PATH",
+                   "deck:bracket_report.json", "deck:benchmark.json",
+                   "deck:log.jsonl?", "deck:log_causes.json?", "deck:log_annotations.json?",
+                   "deck:captains_log.json?", "deck:CONTEXT.md?", "deck:engine.json?",
+                   "deck:diagnosis.json?", "deck:diagnostic.json?", "deck:deckcheck.json?",
+                   "deck:decisions.jsonl?", "stacks:passing", "strategy:doc"],
+    },
     "deck-diagnosis": {
         "agent": "deck-doctor+deck-skeptic",
         "artifact": "diagnosis.json",
