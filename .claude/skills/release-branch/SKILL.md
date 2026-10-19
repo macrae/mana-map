@@ -42,7 +42,11 @@ that becomes the proposal's note and the merge's reason.
    sharknado, which silently deflates a group's rate. Repair it by oracle text (remove the
    cuts from every group, place each add in the group its text earns, multipliers in no
    group), add a dated `_note`, then **`regen --slug <slug> --jobs 4`** so every measurement
-   reads the repaired declaration.
+   reads the repaired declaration. Know that regen also re-runs `net-change` on the MERGED
+   branch, now identical to the deck, and overwrites its `net_change.json` with zero deltas;
+   the pre-merge reading survives only in the proposal's and the merge's ledger lines
+   (`decisions.jsonl`) and in your commit message — quote it from there, never from the
+   branch file after the merge (known-issues §28).
 
 4. **The Deck Context.** Spawn `context-keeper` MODE deck-change with the out/in lists the
    merge printed; `context <slug> --install data/decks/<slug>/.agent-out/context-keeper.md

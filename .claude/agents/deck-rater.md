@@ -59,7 +59,9 @@ your number sits at `code_score` for it. Never claim two instruments "cancel" wi
 the sizes from `sensitivity.leave_one_out`.
 `sensitivity.flips` says at what weight share the grade would flip and
 `leave_one_out` what the score is without each component — read them before deciding
-whether the components undersell or oversell. The `dti` component is DeckCheck's read
+whether the components undersell or oversell. **Quote sensitivity figures in words, not
+digits**: they are recomputed once your judgment lands, so the skeleton's 71.4 is not in
+the judged document and the merge refuses the digit. The `dti` component is DeckCheck's read
 (its score placed within the bracket, its twelve rubric grades the anchor); quote its
 figures from the skeleton only.
 

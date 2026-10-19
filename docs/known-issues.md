@@ -1836,4 +1836,13 @@ now sits at or within a point of `code_score`: under the corrected neutral point
 game on a current list, the raters found nothing cited and unmeasured to move a number
 with — which is the honest reading, and the same cure.
 
+## 28. A merged branch's `net_change.json` is overwritten with zeros by the next regen (2026-10-19)
 
+`regen` refreshes `net-change` for every branch that has one, and after a merge the merged
+branch's list IS the deck's list, so the paired run reads every delta as 0.0 and writes it
+over the pre-merge measurement (sharknado torbran-v1: killed by T6 0.212 → 0.280 became
+0.280 → 0.280 within the hour). The reading the decision rested on survives in
+`decisions.jsonl` (the `propose` and `merge` lines carry `prediction`) and in the merge
+commit's message, which is where `/release-branch` says to quote it from. The fix is a
+`regen` rule — skip `net-change` on a branch whose `branch.json` has `merged` — and a
+freshness test that asserts a merged branch's file is left alone; neither exists yet.

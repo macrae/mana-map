@@ -5,8 +5,8 @@
  "bracket": {
   "key": 4,
   "source": "target",
-  "floor": 4,
-  "floor_name": "Optimized",
+  "floor": 3,
+  "floor_name": "Upgraded",
   "within_target": true
  },
  "components": [
@@ -15,36 +15,36 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.15,
-   "sub_score": 61.6,
+   "sub_score": 70.4,
    "sub_ci": [
-    54.11,
-    62.34
+    62.89,
+    71.19
    ],
    "placement": 100.0,
-   "anchor": 42.4,
+   "anchor": 55.6,
    "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of kill_by_turn_8 within bracket 4 (n=3); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
-     "value": 0.889,
+     "value": 0.898,
      "ci95": [
-      0.8827,
-      0.895
+      0.8919,
+      0.9038
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "kill_by_turn_6",
-     "value": 0.212,
+     "value": 0.278,
      "ci95": [
-      0.2041,
-      0.2201
+      0.2693,
+      0.2869
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     }
    ],
    "citations": [
@@ -71,22 +71,22 @@
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
-     "value": 0.1734,
+     "value": 0.1692,
      "ci95": [
-      0.1661,
-      0.1809
+      0.162,
+      0.1767
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "audit.consistency",
-     "value": 0.9,
+     "value": 0.896,
      "ci95": null,
      "n": null,
      "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     }
    ],
    "citations": [
@@ -102,30 +102,30 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.15,
-   "sub_score": 13.33,
+   "sub_score": 40.0,
    "sub_ci": [
-    13.33,
-    20.86
+    40.0,
+    47.52
    ],
    "placement": 0.0,
-   "anchor": 20.0,
+   "anchor": 60.0,
    "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of answer_cards within bracket 4; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
-     "value": 11,
+     "value": 14,
      "ci95": null,
      "n": null,
      "source": "benchmark.json#metrics.response.answer_cards",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "audit.interaction-breadth",
-     "value": 1,
+     "value": 2,
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction-breadth (classes answered of 5)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     }
    ],
    "citations": [
@@ -141,13 +141,13 @@
    "weight": 0.13,
    "weight_validity": 1.0,
    "weight_effective": 0.1625,
-   "sub_score": 78.57,
+   "sub_score": 71.43,
    "sub_ci": [
-    78.57,
-    78.57
+    71.43,
+    71.43
    ],
    "placement": null,
-   "anchor": 78.57,
+   "anchor": 71.43,
    "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
    "inputs": [
     {
@@ -156,31 +156,31 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#mana-base (verdict at)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "audit.ramp",
-     "value": 9,
-     "ci95": null,
-     "n": null,
-     "source": "deck-audit#ramp (verdict under)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
-    },
-    {
-     "figure": "audit.card-advantage",
-     "value": 30,
-     "ci95": null,
-     "n": null,
-     "source": "deck-audit#card-advantage (verdict at)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
-    },
-    {
-     "figure": "audit.interaction",
      "value": 8,
      "ci95": null,
      "n": null,
+     "source": "deck-audit#ramp (verdict under)",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
+    },
+    {
+     "figure": "audit.card-advantage",
+     "value": 29,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#card-advantage (verdict at)",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
+    },
+    {
+     "figure": "audit.interaction",
+     "value": 12,
+     "ci95": null,
+     "n": null,
      "source": "deck-audit#interaction (verdict at)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "audit.sweepers",
@@ -188,7 +188,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#sweepers (verdict under)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "audit.protection",
@@ -196,7 +196,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#protection (verdict under)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "audit.threat-density",
@@ -204,7 +204,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#threat-density (verdict at)",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     }
    ],
    "citations": [
@@ -250,30 +250,30 @@
    "weight": 0.15,
    "weight_validity": 1.0,
    "weight_effective": 0.1875,
-   "sub_score": 54.17,
+   "sub_score": 56.94,
    "sub_ci": [
-    45.18,
-    62.91
+    47.96,
+    65.72
    ],
    "placement": 50.0,
-   "anchor": 56.25,
+   "anchor": 60.42,
    "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of DeckCheck's score (of 96) within bracket 4; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
    "inputs": [
     {
      "figure": "dti.score",
-     "value": 31,
+     "value": 33,
      "ci95": null,
-     "n": 1,
+     "n": 2,
      "source": "deckcheck.json#readings[-1].score",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     },
     {
      "figure": "dti.rubric_mean",
-     "value": 56.25,
+     "value": 60.42,
      "ci95": null,
      "n": 1,
      "source": "deckcheck.json#readings[-1].benchmarks",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     }
    ],
    "citations": [
@@ -313,25 +313,21 @@
  ],
  "context": {
   "dti": {
-   "score": 31,
+   "score": 33,
    "max_score": 96,
-   "bracket": 4,
-   "as_of": "2026-10-17",
+   "bracket": 3,
+   "as_of": "2026-10-19",
    "stale_list": false
   },
-  "floor_vs_target": "floor 4, target 4"
+  "floor_vs_target": "floor 3, target 4"
  },
- "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
- "fleet_sha": "1d045e2c9800",
+ "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+ "fleet_sha": "834ca21df40e",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "Does the benchmark's opening-hand model include Sol Ring openers at a rate that matches real draws, and how much of the clock survives without one?",
-   "settled_by": "goldfish"
-  },
-  {
-   "question": "How often do the two commanders survive removal and counterspells long enough to wheel with both out? A scenario or more logged table games would answer it; the goldfish has no opponent.",
+   "question": "Do Silence, Snapback, March of Swirling Mist and the wheel-plus-removal cards get cast in real games, and does the commanders' arrival slip with no added ramp?",
    "settled_by": "rate"
   }
  ],
@@ -342,64 +338,64 @@
    {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "59 vs code_score 58.9 is rounding; the argument claims no gap and names no unmeasured fact as carrying one. Nothing to attack as too-generous or too-harsh."
+    "note": "65 equals code_score 65.1 (rounded); claims no gap. Scorecard re-run is identical on components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity. Nothing below is claimed, and resilience (40, placement 0, 14 answer cards, 2 classes) is scored once."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "Both outliers (dti, resilience) are addressed: resilience by the capacity-vs-performance split with the log cutting both ways (sized by leave_one_out resilience 67.0 vs 58.9, flips not claimed); dti by a plain statement that the record does not explain its lower read, with the number at code_score. This is the second permitted answer. Rank claims (resilience 3, dti 2, speed/mana/construction 1) match concordance.instruments. No superlatives beyond rank facts."
+    "note": "Checked: no log game on the v1.3.0 sha (log 001 is on ce0ceaa6, the pre-change list); withheld table_record/pilot_feel/forge match 'no game, survey, Forge run'; kill_by_turn_8 0.898 matches the component; torbran-v1 objective kill_by_6>=0.25 graded met (0.2884) in decisions 009; the three open tests (answers cast, commanders on time without ramp, Torbran turning wheels into kills vs removal) are in CONTEXT.md's 'things to test'."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "Both outliers (dti rank 2, resilience rank 3, worse side) are addressed: resilience by 'already carried in full by the components', DTI by 'the record does not explain it', with the number at code_score as the charter requires for that answer. No cancel claimed without sizes, no superlatives."
    },
    {
     "where": "judgment.citations[0]",
     "status": "supported",
-    "note": "log:001 contains 'I also didn't feel like I had enough removal though' and goes on to say no creature or enchantment removal when boards needed pruning; read in context."
+    "note": "skeleton:speed kill_by_turn_8 is a real input (0.898)."
    },
    {
     "where": "judgment.citations[1]",
     "status": "supported",
-    "note": "log:001 'were really good and and protected them' refers to Lightning Greaves and the hexproof/Swiftfoot Boots protecting the commanders; fairly used."
+    "note": "skeleton:resilience answer_cards is a real input (14)."
    },
    {
     "where": "judgment.citations[2]",
     "status": "supported",
-    "note": "strategy:deckbuilding.interaction-suite says 'Breadth before depth' about covering classes; consistent with the 1-of-5 classes figure. It is lightly used in the prose but not misread."
+    "note": "skeleton:dti is a component; the argument uses it only to name the outlier."
    },
    {
     "where": "judgment.citations[3]",
     "status": "supported",
-    "note": "skeleton:speed kill_by_turn_8 = 0.889 matches components[0].inputs; the 'unopposed ceiling' framing matches the limits entry."
+    "note": "context:numbers sentence 'No blockers and no removal: read board quality with care.' is verbatim in the Numbers section and used for its meaning (goldfish is a ceiling)."
    },
    {
-    "where": "components",
+    "where": "open_questions[0]",
     "status": "supported",
-    "note": "validate-rating OK; re-run diff identical for components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity."
-   },
-   {
-    "where": "open_questions",
-    "status": "supported",
-    "note": "Neither is answered by the skeleton or artifacts: the log says Sol Ring was in the opening hand but no rate; removal survival needs a scenario or more table games. settled_by values fit."
+    "note": "Whether the new answers get cast and whether commander arrival slips needs real games (settled_by rate); no artifact answers it (no log game on this list, no Forge run)."
    }
   ],
   "iterations": 2
  },
- "code_score": 58.9,
- "score_point": 58.9,
- "score": 59.0,
+ "code_score": 65.1,
+ "score_point": 65.1,
+ "score": 64.9,
  "score_ci": [
-  48.4,
-  68.1
+  58.3,
+  71.6
  ],
  "grade": "C",
  "grade_range": [
-  "D",
+  "C",
   "B"
  ],
- "grade_display": "D–B",
+ "grade_display": "C–B",
  "grade_probabilities": {
-  "A": 0.0,
-  "B": 0.14,
-  "C": 0.78,
-  "D": 0.08,
+  "A": 0.001,
+  "B": 0.486,
+  "C": 0.513,
+  "D": 0.0,
   "F": 0.0
  },
  "uncertainty": {
@@ -416,54 +412,70 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 58.4,
+    "score": 64.2,
     "grade": "C"
    },
    "mana": {
-    "score": 54.3,
+    "score": 61.2,
     "grade": "C"
    },
    "resilience": {
-    "score": 67.0,
+    "score": 69.5,
     "grade": "B"
    },
    "construction": {
-    "score": 55.1,
+    "score": 63.9,
     "grade": "C"
    },
    "dti": {
-    "score": 60.0,
-    "grade": "C"
+    "score": 67.0,
+    "grade": "B"
    },
    "judgment": {
-    "score": 58.9,
-    "grade": "C"
+    "score": 65.1,
+    "grade": "B"
    }
   },
   "flips": [
    {
-    "component": "resilience",
-    "share_now": 0.15,
-    "share_at_flip": 0.037,
+    "component": "mana",
+    "share_now": 0.1,
+    "share_at_flip": 0.098,
     "boundary": 65,
-    "grade_at_flip": "B",
+    "grade_at_flip": "C",
     "direction": "lower"
    },
    {
-    "component": "mana",
-    "share_now": 0.1,
-    "share_at_flip": 0.233,
+    "component": "resilience",
+    "share_now": 0.15,
+    "share_at_flip": 0.153,
     "boundary": 65,
-    "grade_at_flip": "B",
+    "grade_at_flip": "C",
+    "direction": "raise"
+   },
+   {
+    "component": "dti",
+    "share_now": 0.187,
+    "share_at_flip": 0.197,
+    "boundary": 65,
+    "grade_at_flip": "C",
     "direction": "raise"
    },
    {
     "component": "construction",
     "share_now": 0.163,
-    "share_at_flip": 0.422,
+    "share_at_flip": 0.15,
     "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "raise"
+    "grade_at_flip": "C",
+    "direction": "lower"
+   },
+   {
+    "component": "speed",
+    "share_now": 0.15,
+    "share_at_flip": 0.135,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "lower"
    }
   ]
  },
@@ -472,7 +484,7 @@
   "instruments": {
    "construction": 1.0,
    "dti": 2.0,
-   "judgment": 2.0,
+   "judgment": 1.5,
    "mana": 1.0,
    "resilience": 3.0,
    "speed": 1.0
@@ -492,48 +504,48 @@
    }
   ],
   "group": {
-   "kendall_w": 0.111,
-   "p": 0.5705,
+   "kendall_w": 0.152,
+   "p": 0.4419,
    "p_method": "exact over 7776 relabellings",
    "m": 6,
    "n": 3
   }
  },
- "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance divergent",
+ "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
  "judgment": {
-  "sub_score": 59,
-  "argument": "The measured components miss every opponent's turn. The goldfish has no blockers and no removal, so speed (kill_by_turn_8 of 0.889) is an unopposed ceiling, and the single logged game has no recorded result. I cannot show from the record that these gaps move the deck in either direction, so I sit on code_score 58.9 and round to 59.\n\nResilience ranks last: 11 answer cards and 1 class answered. It counts capacity to answer, and the pilot's own words agree: he had no creature or enchantment removal when the boards needed pruning. It does not count protection performance, and the pilot said Greaves and the Boots protected the commanders. That one game cannot offset a capacity gap, so the component stands and I add nothing either way.\n\nDTI ranks second at 31 of 96. It is one dated LLM read of card quality. The record has no fact that explains why it reads lower than the goldfish does, so I do not argue with it and I do not use it to move the number.\n\nSpeed, mana and construction rank first and agree with each other. The log is the only unmeasured evidence, it is one game, and it points both ways, so this number is the measured score and not above or below it.",
+  "sub_score": 65,
+  "argument": "What the measured components cannot see here is play. No game is logged on this list, no survey, no Forge run on it, and the only game on record was played before the changes that gave the deck its answers, so it speaks to none of them. The goldfish has no blockers or removal, so its speed reading (kill_by_turn_8 0.898) is a ceiling, not a table result. The branch toward Torbran and wheels that also remove met its stated objective and the pilot's notes list what is still to test: whether the new answers get cast, whether the commanders arrive on time without added ramp, and whether Torbran's bonus turns wheels into kills against real removal. Those are open questions, not facts I can score either way. The two outliers are DeckCheck's Threat Index and resilience, both on the worse side. I cannot say which to believe. Resilience is already carried in full by the components (14 answer cards, two classes answered), and the record has no game showing whether the new answers work, so nothing unmeasured justifies moving it. The record also does not explain DeckCheck's reading. For both, my number sits at code_score. It is no higher because nothing has been played on this list, and no lower because every weakness I could name is already a component.",
   "citations": [
-   {
-    "kind": "log",
-    "ref": "log:001",
-    "quote": "I also didn't feel like I had enough removal though"
-   },
-   {
-    "kind": "log",
-    "ref": "log:001",
-    "quote": "were really good and and protected them"
-   },
-   {
-    "kind": "strategy",
-    "ref": "strategy:deckbuilding.interaction-suite",
-    "quote": "Breadth before depth"
-   },
    {
     "kind": "skeleton",
     "ref": "skeleton:speed",
     "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:resilience",
+    "quote": "answer_cards"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:dti",
+    "quote": "DeckCheck Threat Index"
+   },
+   {
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "No blockers and no removal: read board quality with care."
    }
   ],
   "against": {
-   "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+   "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
    "spec_sha": "fd483871b754"
   },
   "weight": 0.2,
   "weight_effective": 0.25,
   "sub_ci": [
-   50.88,
-   67.43
+   56.88,
+   73.43
   ]
  },
  "rank": {
@@ -545,9 +557,9 @@
    "edgar-vampires"
   ],
   "acceptability": {
-   "1": 0.232,
-   "2": 0.636,
-   "3": 0.132
+   "1": 0.515,
+   "2": 0.474,
+   "3": 0.011
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
@@ -556,7 +568,7 @@
   },
   "scores": {
    "heliod": 65.1,
-   "sharknado": 59.0,
+   "sharknado": 64.9,
    "edgar-vampires": 50.6
   }
  }

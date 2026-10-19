@@ -84,6 +84,14 @@ What it says, deck by deck (`sensitivity.leave_one_out` is the figure behind eac
 - **Heliod has the least**: speed is zero and cannot move while Approach is the win, and its
   other components sit near their anchors. Its upside is games, not cards.
 
+**Sharknado released the same day** (`/release-branch`, its first run): torbran-v1 merged as
+**v1.3.0** on printed proxies, the paper lock moved, DeckCheck re-pasted and rescanned
+(31/96 B4 → 33/96 B3 on their read; our floor 3, target 4), the goldfish declaration repaired
+for the new list, the deck re-rated: resilience 13 → 40, score 59.0 → ~65 C–B, a coin flip
+with Heliod for first in Bracket 4 (`rating --all` for the settled figure). The order list is
+the branch's 18 unowned adds (`deck-branch sharknado show torbran-v1`). Known-issues §28:
+regen zeroes a merged branch's `net_change.json`; the pre-merge reading lives in the ledger.
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by
