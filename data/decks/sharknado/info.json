@@ -21,9 +21,7 @@
       "tutors",
       "prose"
     ],
-    "invalid": [
-      "build_plan.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -133,7 +131,19 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Calciform Pools"
+          },
+          {
+            "name": "Containment Construct"
+          },
+          {
+            "name": "Currency Converter"
+          },
+          {
             "name": "Decree of Silence"
+          },
+          {
+            "name": "Drake Haven"
           },
           {
             "name": "Generous Plunderer"
@@ -142,10 +152,28 @@
             "name": "Gossip's Talent"
           },
           {
+            "name": "Improbable Alliance"
+          },
+          {
             "name": "Marketback Walker"
           },
           {
+            "name": "Mindless Automaton"
+          },
+          {
+            "name": "Mystic Gate"
+          },
+          {
+            "name": "Nimbus Maze"
+          },
+          {
+            "name": "Ominous Seas"
+          },
+          {
             "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Sticky Fingers"
           },
           {
             "name": "Stromkirk Noble"
@@ -154,12 +182,40 @@
             "name": "Treasure Map // Treasure Cove"
           },
           {
+            "name": "Vanguard Suppressor"
+          },
+          {
             "name": "Waterbender Ascension"
+          },
+          {
+            "name": "Whirlpool Warrior"
+          },
+          {
+            "name": "Winds of Change"
           }
         ],
         "unsleeve": [
           {
             "name": "Kefnet the Mindful",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Reliquary Tower",
+            "where": [
+              "goblin-storm",
+              "heliod"
+            ]
+          },
+          {
+            "name": "Seachrome Coast",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Skycloud Expanse",
             "where": [
               "heliod"
             ]
@@ -174,41 +230,82 @@
             ]
           }
         ],
-        "box": [],
-        "blocking": 9,
+        "box": [
+          {
+            "name": "Adarkar Wastes",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Exotic Orchard",
+            "where": [
+              "Auntie Ool",
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Shelter",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 10,
-      "out": 10,
+      "add": 29,
+      "out": 29,
       "counts": {
-        "in_deck": 90,
-        "box": 0,
-        "elsewhere": 1,
-        "buy": 8,
+        "in_deck": 71,
+        "box": 3,
+        "elsewhere": 4,
+        "buy": 21,
         "free": 1
       },
       "unsourced": [
+        "Calciform Pools",
+        "Containment Construct",
+        "Currency Converter",
         "Decree of Silence",
+        "Drake Haven",
         "Generous Plunderer",
         "Gossip's Talent",
+        "Improbable Alliance",
         "Kefnet the Mindful",
         "Marketback Walker",
+        "Mindless Automaton",
+        "Mystic Gate",
+        "Nimbus Maze",
+        "Ominous Seas",
+        "Reliquary Tower",
+        "Seachrome Coast",
         "Silent Hallcreeper",
+        "Skycloud Expanse",
+        "Sticky Fingers",
         "Stromkirk Noble",
         "Treasure Map // Treasure Cove",
-        "Waterbender Ascension"
+        "Vanguard Suppressor",
+        "Waterbender Ascension",
+        "Whirlpool Warrior",
+        "Winds of Change"
       ],
       "mergeable": false,
       "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anje's Ravager",
@@ -254,10 +351,10 @@
         },
         {
           "name": "Calciform Pools",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Cascade Bluffs",
@@ -296,10 +393,10 @@
         },
         {
           "name": "Containment Construct",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Curator of Mysteries",
@@ -310,10 +407,10 @@
         },
         {
           "name": "Currency Converter",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Decree of Silence",
@@ -324,10 +421,10 @@
         },
         {
           "name": "Drake Haven",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Echo of Eons",
@@ -353,10 +450,19 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -444,10 +550,10 @@
         },
         {
           "name": "Improbable Alliance",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irencrag Pyromancer",
@@ -564,10 +670,10 @@
         },
         {
           "name": "Mindless Automaton",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Molten Psyche",
@@ -578,10 +684,10 @@
         },
         {
           "name": "Mystic Gate",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Monastery",
@@ -606,10 +712,10 @@
         },
         {
           "name": "Nimbus Maze",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Niv-Mizzet, Parun",
@@ -620,10 +726,10 @@
         },
         {
           "name": "Ominous Seas",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Opal Palace",
@@ -662,10 +768,25 @@
         },
         {
           "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rhystic Study",
@@ -711,10 +832,18 @@
         },
         {
           "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -732,10 +861,15 @@
         },
         {
           "name": "Shelter",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shivan Reef",
@@ -753,10 +887,18 @@
         },
         {
           "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -802,10 +944,10 @@
         },
         {
           "name": "Sticky Fingers",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Stromkirk Noble",
@@ -886,10 +1028,10 @@
         },
         {
           "name": "Vanguard Suppressor",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Waterbender Ascension",
@@ -900,10 +1042,10 @@
         },
         {
           "name": "Whirlpool Warrior",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windfall",
@@ -914,10 +1056,10 @@
         },
         {
           "name": "Winds of Change",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -935,10 +1077,22 @@
             "name": "Astral Drift"
           },
           {
+            "name": "Calciform Pools"
+          },
+          {
             "name": "Clifftop Retreat"
           },
           {
+            "name": "Containment Construct"
+          },
+          {
+            "name": "Currency Converter"
+          },
+          {
             "name": "Decree of Silence"
+          },
+          {
+            "name": "Drake Haven"
           },
           {
             "name": "Generous Plunderer"
@@ -950,13 +1104,31 @@
             "name": "Gossip's Talent"
           },
           {
+            "name": "Improbable Alliance"
+          },
+          {
             "name": "Inspiring Vantage"
           },
           {
             "name": "Marketback Walker"
           },
           {
+            "name": "Mindless Automaton"
+          },
+          {
+            "name": "Mystic Gate"
+          },
+          {
+            "name": "Nimbus Maze"
+          },
+          {
+            "name": "Ominous Seas"
+          },
+          {
             "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Sticky Fingers"
           },
           {
             "name": "Stromkirk Noble"
@@ -965,7 +1137,16 @@
             "name": "Treasure Map // Treasure Cove"
           },
           {
+            "name": "Vanguard Suppressor"
+          },
+          {
             "name": "Waterbender Ascension"
+          },
+          {
+            "name": "Whirlpool Warrior"
+          },
+          {
+            "name": "Winds of Change"
           }
         ],
         "unsleeve": [
@@ -981,6 +1162,25 @@
             "where": [
               "heliod"
             ]
+          },
+          {
+            "name": "Reliquary Tower",
+            "where": [
+              "goblin-storm",
+              "heliod"
+            ]
+          },
+          {
+            "name": "Seachrome Coast",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Skycloud Expanse",
+            "where": [
+              "heliod"
+            ]
           }
         ],
         "proxy": [],
@@ -992,46 +1192,81 @@
             ]
           }
         ],
-        "box": [],
-        "blocking": 14,
+        "box": [
+          {
+            "name": "Adarkar Wastes",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Exotic Orchard",
+            "where": [
+              "Auntie Ool",
+              "Shabraz Parts"
+            ]
+          }
+        ],
+        "blocking": 30,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 15,
-      "out": 15,
+      "add": 33,
+      "out": 33,
       "counts": {
-        "in_deck": 85,
-        "box": 0,
-        "elsewhere": 2,
-        "buy": 12,
+        "in_deck": 67,
+        "box": 2,
+        "elsewhere": 5,
+        "buy": 25,
         "free": 1
       },
       "unsourced": [
         "Astral Drift",
         "Battlefield Forge",
+        "Calciform Pools",
         "Clifftop Retreat",
+        "Containment Construct",
+        "Currency Converter",
         "Decree of Silence",
+        "Drake Haven",
         "Generous Plunderer",
         "Gleaming Bastion",
         "Gossip's Talent",
+        "Improbable Alliance",
         "Inspiring Vantage",
         "Kefnet the Mindful",
         "Marketback Walker",
+        "Mindless Automaton",
+        "Mystic Gate",
+        "Nimbus Maze",
+        "Ominous Seas",
+        "Reliquary Tower",
+        "Seachrome Coast",
         "Silent Hallcreeper",
+        "Skycloud Expanse",
+        "Sticky Fingers",
         "Stromkirk Noble",
         "Treasure Map // Treasure Cove",
-        "Waterbender Ascension"
+        "Vanguard Suppressor",
+        "Waterbender Ascension",
+        "Whirlpool Warrior",
+        "Winds of Change"
       ],
       "mergeable": false,
       "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anje's Ravager",
@@ -1106,10 +1341,10 @@
         },
         {
           "name": "Calciform Pools",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Cascade Bluffs",
@@ -1155,10 +1390,10 @@
         },
         {
           "name": "Containment Construct",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Curator of Mysteries",
@@ -1169,10 +1404,10 @@
         },
         {
           "name": "Currency Converter",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Decree of Silence",
@@ -1183,10 +1418,10 @@
         },
         {
           "name": "Drake Haven",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Echo of Eons",
@@ -1212,10 +1447,19 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -1296,10 +1540,10 @@
         },
         {
           "name": "Improbable Alliance",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Inspiring Vantage",
@@ -1416,10 +1660,10 @@
         },
         {
           "name": "Mindless Automaton",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Molten Psyche",
@@ -1430,10 +1674,10 @@
         },
         {
           "name": "Mystic Gate",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Monastery",
@@ -1458,10 +1702,10 @@
         },
         {
           "name": "Nimbus Maze",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Niv-Mizzet, Parun",
@@ -1472,10 +1716,10 @@
         },
         {
           "name": "Ominous Seas",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Opal Palace",
@@ -1514,10 +1758,25 @@
         },
         {
           "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rhystic Study",
@@ -1556,10 +1815,18 @@
         },
         {
           "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -1591,10 +1858,18 @@
         },
         {
           "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -1640,10 +1915,10 @@
         },
         {
           "name": "Sticky Fingers",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Stromkirk Noble",
@@ -1724,10 +1999,10 @@
         },
         {
           "name": "Vanguard Suppressor",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Waterbender Ascension",
@@ -1738,10 +2013,10 @@
         },
         {
           "name": "Whirlpool Warrior",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windfall",
@@ -1752,10 +2027,10 @@
         },
         {
           "name": "Winds of Change",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -1812,35 +2087,156 @@
         }
       },
       "pull_list": {
-        "buy": [],
-        "unsleeve": [],
+        "buy": [
+          {
+            "name": "Calciform Pools"
+          },
+          {
+            "name": "Containment Construct"
+          },
+          {
+            "name": "Currency Converter"
+          },
+          {
+            "name": "Drake Haven"
+          },
+          {
+            "name": "Improbable Alliance"
+          },
+          {
+            "name": "Mana Geyser"
+          },
+          {
+            "name": "Mindless Automaton"
+          },
+          {
+            "name": "Mystic Gate"
+          },
+          {
+            "name": "Nimbus Maze"
+          },
+          {
+            "name": "Ominous Seas"
+          },
+          {
+            "name": "Sticky Fingers"
+          },
+          {
+            "name": "Vanguard Suppressor"
+          },
+          {
+            "name": "Whirlpool Warrior"
+          },
+          {
+            "name": "Winds of Change"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Reliquary Tower",
+            "where": [
+              "goblin-storm",
+              "heliod"
+            ]
+          },
+          {
+            "name": "Seachrome Coast",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Skycloud Expanse",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Teferi's Protection",
+            "where": [
+              "edgar-vampires",
+              "heliod",
+              "ur-dragon"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 0,
+        "box": [
+          {
+            "name": "Adarkar Wastes",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Exotic Orchard",
+            "where": [
+              "Auntie Ool",
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Mask of Memory",
+            "where": [
+              "Zur Parts"
+            ]
+          },
+          {
+            "name": "Shelter",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 18,
         "procurement": null
       },
       "base_version": 6,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 22,
+      "out": 22,
       "counts": {
-        "in_deck": 100,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 0,
+        "in_deck": 78,
+        "box": 4,
+        "elsewhere": 4,
+        "buy": 14,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Calciform Pools",
+        "Containment Construct",
+        "Currency Converter",
+        "Drake Haven",
+        "Improbable Alliance",
+        "Mana Geyser",
+        "Mindless Automaton",
+        "Mystic Gate",
+        "Nimbus Maze",
+        "Ominous Seas",
+        "Reliquary Tower",
+        "Seachrome Coast",
+        "Skycloud Expanse",
+        "Sticky Fingers",
+        "Teferi's Protection",
+        "Vanguard Suppressor",
+        "Whirlpool Warrior",
+        "Winds of Change"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anje's Ravager",
@@ -1886,10 +2282,10 @@
         },
         {
           "name": "Calciform Pools",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Cascade Bluffs",
@@ -1928,10 +2324,10 @@
         },
         {
           "name": "Containment Construct",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Curator of Mysteries",
@@ -1942,17 +2338,17 @@
         },
         {
           "name": "Currency Converter",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drake Haven",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Echo of Eons",
@@ -1963,10 +2359,19 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
@@ -2047,10 +2452,10 @@
         },
         {
           "name": "Improbable Alliance",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irencrag Pyromancer",
@@ -2145,10 +2550,10 @@
         },
         {
           "name": "Mana Geyser",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Marauding Mako",
@@ -2159,10 +2564,15 @@
         },
         {
           "name": "Mask of Memory",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mind's Eye",
@@ -2173,10 +2583,10 @@
         },
         {
           "name": "Mindless Automaton",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Molten Psyche",
@@ -2187,10 +2597,10 @@
         },
         {
           "name": "Mystic Gate",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Monastery",
@@ -2222,10 +2632,10 @@
         },
         {
           "name": "Nimbus Maze",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Niv-Mizzet, Parun",
@@ -2236,10 +2646,10 @@
         },
         {
           "name": "Ominous Seas",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Opal Palace",
@@ -2285,10 +2695,25 @@
         },
         {
           "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rhystic Study",
@@ -2341,10 +2766,18 @@
         },
         {
           "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -2362,10 +2795,15 @@
         },
         {
           "name": "Shelter",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shivan Reef",
@@ -2376,10 +2814,18 @@
         },
         {
           "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -2425,10 +2871,10 @@
         },
         {
           "name": "Sticky Fingers",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sulfur Falls",
@@ -2467,10 +2913,32 @@
         },
         {
           "name": "Teferi's Protection",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Teferi's Puzzle Box",
@@ -2509,17 +2977,17 @@
         },
         {
           "name": "Vanguard Suppressor",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Whirlpool Warrior",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windfall",
@@ -2530,10 +2998,10 @@
         },
         {
           "name": "Winds of Change",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -2571,7 +3039,19 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Calciform Pools"
+          },
+          {
+            "name": "Containment Construct"
+          },
+          {
+            "name": "Currency Converter"
+          },
+          {
             "name": "Decree of Silence"
+          },
+          {
+            "name": "Drake Haven"
           },
           {
             "name": "Generous Plunderer"
@@ -2583,10 +3063,28 @@
             "name": "Gossip's Talent"
           },
           {
+            "name": "Improbable Alliance"
+          },
+          {
             "name": "Marketback Walker"
           },
           {
+            "name": "Mindless Automaton"
+          },
+          {
+            "name": "Mystic Gate"
+          },
+          {
+            "name": "Nimbus Maze"
+          },
+          {
+            "name": "Ominous Seas"
+          },
+          {
             "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Sticky Fingers"
           },
           {
             "name": "Stromkirk Noble"
@@ -2595,12 +3093,40 @@
             "name": "Treasure Map // Treasure Cove"
           },
           {
+            "name": "Vanguard Suppressor"
+          },
+          {
             "name": "Waterbender Ascension"
+          },
+          {
+            "name": "Whirlpool Warrior"
+          },
+          {
+            "name": "Winds of Change"
           }
         ],
         "unsleeve": [
           {
             "name": "Kefnet the Mindful",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Reliquary Tower",
+            "where": [
+              "goblin-storm",
+              "heliod"
+            ]
+          },
+          {
+            "name": "Seachrome Coast",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Skycloud Expanse",
             "where": [
               "heliod"
             ]
@@ -2615,42 +3141,83 @@
             ]
           }
         ],
-        "box": [],
-        "blocking": 10,
+        "box": [
+          {
+            "name": "Adarkar Wastes",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Exotic Orchard",
+            "where": [
+              "Auntie Ool",
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Shelter",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 26,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 11,
-      "out": 11,
+      "add": 30,
+      "out": 30,
       "counts": {
-        "in_deck": 89,
-        "box": 0,
-        "elsewhere": 1,
-        "buy": 9,
+        "in_deck": 70,
+        "box": 3,
+        "elsewhere": 4,
+        "buy": 22,
         "free": 1
       },
       "unsourced": [
+        "Calciform Pools",
+        "Containment Construct",
+        "Currency Converter",
         "Decree of Silence",
+        "Drake Haven",
         "Generous Plunderer",
         "Gleaming Bastion",
         "Gossip's Talent",
+        "Improbable Alliance",
         "Kefnet the Mindful",
         "Marketback Walker",
+        "Mindless Automaton",
+        "Mystic Gate",
+        "Nimbus Maze",
+        "Ominous Seas",
+        "Reliquary Tower",
+        "Seachrome Coast",
         "Silent Hallcreeper",
+        "Skycloud Expanse",
+        "Sticky Fingers",
         "Stromkirk Noble",
         "Treasure Map // Treasure Cove",
-        "Waterbender Ascension"
+        "Vanguard Suppressor",
+        "Waterbender Ascension",
+        "Whirlpool Warrior",
+        "Winds of Change"
       ],
       "mergeable": false,
       "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anje's Ravager",
@@ -2696,10 +3263,10 @@
         },
         {
           "name": "Calciform Pools",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Cascade Bluffs",
@@ -2738,10 +3305,10 @@
         },
         {
           "name": "Containment Construct",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Curator of Mysteries",
@@ -2752,10 +3319,10 @@
         },
         {
           "name": "Currency Converter",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Decree of Silence",
@@ -2766,10 +3333,10 @@
         },
         {
           "name": "Drake Haven",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Echo of Eons",
@@ -2795,10 +3362,19 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -2893,10 +3469,10 @@
         },
         {
           "name": "Improbable Alliance",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irencrag Pyromancer",
@@ -3006,10 +3582,10 @@
         },
         {
           "name": "Mindless Automaton",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Molten Psyche",
@@ -3020,10 +3596,10 @@
         },
         {
           "name": "Mystic Gate",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Monastery",
@@ -3048,10 +3624,10 @@
         },
         {
           "name": "Nimbus Maze",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Niv-Mizzet, Parun",
@@ -3062,10 +3638,10 @@
         },
         {
           "name": "Ominous Seas",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Opal Palace",
@@ -3104,10 +3680,25 @@
         },
         {
           "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rhystic Study",
@@ -3153,10 +3744,18 @@
         },
         {
           "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -3174,10 +3773,15 @@
         },
         {
           "name": "Shelter",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shivan Reef",
@@ -3195,10 +3799,18 @@
         },
         {
           "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -3244,10 +3856,10 @@
         },
         {
           "name": "Sticky Fingers",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Stromkirk Noble",
@@ -3328,10 +3940,10 @@
         },
         {
           "name": "Vanguard Suppressor",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Waterbender Ascension",
@@ -3342,10 +3954,10 @@
         },
         {
           "name": "Whirlpool Warrior",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windfall",
@@ -3356,10 +3968,10 @@
         },
         {
           "name": "Winds of Change",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         }
       ],
       "has_cards": true
@@ -3374,21 +3986,79 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Calciform Pools"
+          },
+          {
+            "name": "Containment Construct"
+          },
+          {
+            "name": "Currency Converter"
+          },
+          {
+            "name": "Drake Haven"
+          },
+          {
             "name": "Generous Plunderer"
+          },
+          {
+            "name": "Improbable Alliance"
+          },
+          {
+            "name": "Mindless Automaton"
+          },
+          {
+            "name": "Mystic Gate"
+          },
+          {
+            "name": "Nimbus Maze"
+          },
+          {
+            "name": "Ominous Seas"
           },
           {
             "name": "Silent Hallcreeper"
           },
           {
+            "name": "Sticky Fingers"
+          },
+          {
             "name": "Treasure Map"
           },
           {
+            "name": "Vanguard Suppressor"
+          },
+          {
             "name": "Waterbender Ascension"
+          },
+          {
+            "name": "Whirlpool Warrior"
+          },
+          {
+            "name": "Winds of Change"
           }
         ],
         "unsleeve": [
           {
             "name": "Kefnet the Mindful",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Reliquary Tower",
+            "where": [
+              "goblin-storm",
+              "heliod"
+            ]
+          },
+          {
+            "name": "Seachrome Coast",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Skycloud Expanse",
             "where": [
               "heliod"
             ]
@@ -3403,37 +4073,84 @@
             ]
           }
         ],
-        "box": [],
-        "blocking": 5,
+        "box": [
+          {
+            "name": "Adarkar Wastes",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Exotic Orchard",
+            "where": [
+              "Auntie Ool",
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Mask of Memory",
+            "where": [
+              "Zur Parts"
+            ]
+          },
+          {
+            "name": "Shelter",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 21,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 6,
-      "out": 6,
+      "add": 26,
+      "out": 26,
       "counts": {
-        "in_deck": 94,
-        "box": 0,
-        "elsewhere": 1,
-        "buy": 4,
+        "in_deck": 74,
+        "box": 4,
+        "elsewhere": 4,
+        "buy": 17,
         "free": 1
       },
       "unsourced": [
+        "Calciform Pools",
+        "Containment Construct",
+        "Currency Converter",
+        "Drake Haven",
         "Generous Plunderer",
+        "Improbable Alliance",
         "Kefnet the Mindful",
+        "Mindless Automaton",
+        "Mystic Gate",
+        "Nimbus Maze",
+        "Ominous Seas",
+        "Reliquary Tower",
+        "Seachrome Coast",
         "Silent Hallcreeper",
+        "Skycloud Expanse",
+        "Sticky Fingers",
         "Treasure Map",
-        "Waterbender Ascension"
+        "Vanguard Suppressor",
+        "Waterbender Ascension",
+        "Whirlpool Warrior",
+        "Winds of Change"
       ],
       "mergeable": false,
       "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anje's Ravager",
@@ -3479,10 +4196,10 @@
         },
         {
           "name": "Calciform Pools",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Cascade Bluffs",
@@ -3521,10 +4238,10 @@
         },
         {
           "name": "Containment Construct",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Curator of Mysteries",
@@ -3535,17 +4252,17 @@
         },
         {
           "name": "Currency Converter",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drake Haven",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Echo of Eons",
@@ -3571,10 +4288,19 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -3655,10 +4381,10 @@
         },
         {
           "name": "Improbable Alliance",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irencrag Pyromancer",
@@ -3768,10 +4494,15 @@
         },
         {
           "name": "Mask of Memory",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mind's Eye",
@@ -3782,10 +4513,10 @@
         },
         {
           "name": "Mindless Automaton",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Molten Psyche",
@@ -3796,10 +4527,10 @@
         },
         {
           "name": "Mystic Gate",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Monastery",
@@ -3831,10 +4562,10 @@
         },
         {
           "name": "Nimbus Maze",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Niv-Mizzet, Parun",
@@ -3845,10 +4576,10 @@
         },
         {
           "name": "Ominous Seas",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Opal Palace",
@@ -3887,10 +4618,25 @@
         },
         {
           "name": "Reliquary Tower",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rhystic Study",
@@ -3936,10 +4682,18 @@
         },
         {
           "name": "Seachrome Coast",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -3957,10 +4711,15 @@
         },
         {
           "name": "Shelter",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shivan Reef",
@@ -3978,10 +4737,18 @@
         },
         {
           "name": "Skycloud Expanse",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -4027,10 +4794,10 @@
         },
         {
           "name": "Sticky Fingers",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sulfur Falls",
@@ -4111,10 +4878,10 @@
         },
         {
           "name": "Vanguard Suppressor",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Waterbender Ascension",
@@ -4125,10 +4892,10 @@
         },
         {
           "name": "Whirlpool Warrior",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windfall",
@@ -4139,10 +4906,10 @@
         },
         {
           "name": "Winds of Change",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         }
       ],
       "has_cards": false
@@ -4151,147 +4918,67 @@
       "name": "torbran-v1",
       "opened": "2026-10-11",
       "why": "try: trade — partial — the model cannot fully see Collective Defiance, so its rows are silent about it; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Mana Geyser assumes 50% of opponents' lands are still tapped on your turn (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate)",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-10-19 into the list after VNone",
       "base_moved": null,
-      "proposal": null,
+      "proposal": {
+        "at": "2026-10-19",
+        "as_version": "v1.3.0",
+        "why": "the pilot plays it on printed proxies from 2026-10-19 and may order the cards; resilience is the fleet's lowest rating component and this branch carries the answers (Silence, Snapback, March of Swirling Mist) plus Torbran's multiplier",
+        "base_version": 7,
+        "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+        "accepted_on": {
+          "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+          "state": "a trade",
+          "objective": {
+            "axis": "kill_by_6",
+            "op": ">=",
+            "value": 0.25,
+            "why": "Make Brallin's pings lethal and both commanders bigger faster: wheels that also remove (Collective Defiance, Fateful Showdown, Incendiary Command), multipliers (Lae'zel, Torbran, Alhammarret's Archive), recovery (Boros Charm, Campfire, Command Beacon), Big Score, four red-leaning lands. Champion kill_by_6 0.206 (±0.016) on the 2026-10-11 model; the 17-swap screen read 0.261 (pilot, 2026-10-17)."
+          },
+          "grade": "met",
+          "reading": 0.2804,
+          "harness": {
+            "cast_proofs": null,
+            "iterations": 10000,
+            "model_version": "5fad861f02a4",
+            "seed": 20260826
+          }
+        },
+        "proxy": [
+          "Boros Charm"
+        ]
+      },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Alhammarret's Archive"
-          },
-          {
-            "name": "Campfire"
-          },
-          {
-            "name": "Collective Defiance"
-          },
-          {
-            "name": "Command Beacon"
-          },
-          {
-            "name": "Fateful Showdown"
-          },
-          {
-            "name": "Fevered Visions"
-          },
-          {
-            "name": "Frostboil Snarl"
-          },
-          {
-            "name": "Incendiary Command"
-          },
-          {
-            "name": "Lae'zel, Vlaakith's Champion"
-          },
-          {
-            "name": "March of Swirling Mist"
-          },
-          {
-            "name": "Riverglide Pathway // Lavaglide Pathway"
-          },
-          {
-            "name": "Snapback"
-          },
-          {
-            "name": "Spider-Man, New Champion"
-          },
-          {
-            "name": "Stormcarved Coast"
-          },
-          {
-            "name": "Temple of Epiphany"
-          },
-          {
-            "name": "Torbran, Thane of Red Fell"
-          },
-          {
-            "name": "Training Center"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Boros Charm",
-            "where": [
-              "edgar-vampires",
-              "gishath",
-              "ur-dragon"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Silence",
-            "where": [
-              "sisay"
-            ]
-          },
-          {
-            "name": "Spectator Seating",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Big Score",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Mountain",
-            "where": [
-              "Auntie Ool",
-              "Hobbit"
-            ]
-          }
-        ],
-        "blocking": 18,
+        "free": [],
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 22,
-      "out": 22,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 78,
-        "box": 2,
-        "elsewhere": 1,
-        "buy": 17,
-        "free": 2
+        "in_deck": 100,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
       },
-      "unsourced": [
-        "Alhammarret's Archive",
-        "Boros Charm",
-        "Campfire",
-        "Collective Defiance",
-        "Command Beacon",
-        "Fateful Showdown",
-        "Fevered Visions",
-        "Frostboil Snarl",
-        "Incendiary Command",
-        "Lae'zel, Vlaakith's Champion",
-        "March of Swirling Mist",
-        "Riverglide Pathway // Lavaglide Pathway",
-        "Snapback",
-        "Spider-Man, New Champion",
-        "Stormcarved Coast",
-        "Temple of Epiphany",
-        "Torbran, Thane of Red Fell",
-        "Training Center"
-      ],
-      "mergeable": false,
-      "free": 2,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Alhammarret's Archive",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Anje's Ravager",
@@ -4323,51 +5010,17 @@
         },
         {
           "name": "Big Score",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Boros Charm",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Brallin, Skyshark Rider",
@@ -4385,10 +5038,10 @@
         },
         {
           "name": "Campfire",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Cascade Bluffs",
@@ -4413,17 +5066,17 @@
         },
         {
           "name": "Collective Defiance",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Command Beacon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Command Tower",
@@ -4469,10 +5122,10 @@
         },
         {
           "name": "Fateful Showdown",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Ferrous Lake",
@@ -4483,10 +5136,10 @@
         },
         {
           "name": "Fevered Visions",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Islet",
@@ -4504,10 +5157,10 @@
         },
         {
           "name": "Frostboil Snarl",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Gemstone Caverns",
@@ -4553,10 +5206,10 @@
         },
         {
           "name": "Incendiary Command",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Irencrag Pyromancer",
@@ -4616,10 +5269,10 @@
         },
         {
           "name": "Lae'zel, Vlaakith's Champion",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Library of Leng",
@@ -4665,10 +5318,10 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mind's Eye",
@@ -4686,19 +5339,10 @@
         },
         {
           "name": "Mountain",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Hobbit"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mystic Monastery",
@@ -4793,10 +5437,10 @@
         },
         {
           "name": "Riverglide Pathway // Lavaglide Pathway",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Riverpyre Verge",
@@ -4856,18 +5500,10 @@
         },
         {
           "name": "Silence",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Smothering Tithe",
@@ -4878,10 +5514,10 @@
         },
         {
           "name": "Snapback",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sol Ring",
@@ -4899,25 +5535,17 @@
         },
         {
           "name": "Spectator Seating",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Spider-Man, New Champion",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Spire of Industry",
@@ -4942,10 +5570,10 @@
         },
         {
           "name": "Stormcarved Coast",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sulfur Falls",
@@ -4991,10 +5619,10 @@
         },
         {
           "name": "Temple of Epiphany",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "The Locust God",
@@ -5026,17 +5654,17 @@
         },
         {
           "name": "Torbran, Thane of Red Fell",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Training Center",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Windfall",
@@ -5067,164 +5695,164 @@
       ],
       "online_by_turn": {
         "1": {
-          "rate": 0.7865,
+          "rate": 0.8004,
           "ci95": [
-            0.7784,
-            0.7944
+            0.7925,
+            0.8081
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.8345,
+          "rate": 0.8499,
           "ci95": [
-            0.8271,
-            0.8417
+            0.8428,
+            0.8568
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.8735,
+          "rate": 0.8904,
           "ci95": [
-            0.8668,
-            0.8799
+            0.8841,
+            0.8964
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.9033,
+          "rate": 0.9185,
           "ci95": [
-            0.8974,
-            0.9089
+            0.913,
+            0.9237
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.9259,
+          "rate": 0.9406,
           "ci95": [
-            0.9206,
-            0.9309
+            0.9358,
+            0.9451
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.949,
+          "rate": 0.9575,
           "ci95": [
-            0.9445,
-            0.9531
+            0.9534,
+            0.9613
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.969,
+          "rate": 0.9713,
           "ci95": [
-            0.9654,
-            0.9722
+            0.9678,
+            0.9744
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9814,
+          "rate": 0.9826,
           "ci95": [
-            0.9786,
-            0.9839
+            0.9798,
+            0.985
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9885,
+          "rate": 0.9898,
           "ci95": [
-            0.9862,
-            0.9904
+            0.9876,
+            0.9916
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9937,
+          "rate": 0.9938,
           "ci95": [
-            0.9919,
-            0.9951
+            0.9921,
+            0.9952
           ],
           "n": 10000
         }
       },
       "any_route_by_turn": {
         "1": {
-          "rate": 0.3415,
+          "rate": 0.3653,
           "ci95": [
-            0.3323,
-            0.3509
+            0.3559,
+            0.3748
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.4301,
+          "rate": 0.4487,
           "ci95": [
-            0.4204,
-            0.4398
+            0.439,
+            0.4585
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.5184,
+          "rate": 0.5382,
           "ci95": [
-            0.5086,
-            0.5282
+            0.5284,
+            0.548
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.5937,
+          "rate": 0.6189,
           "ci95": [
-            0.584,
-            0.6033
+            0.6093,
+            0.6284
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.672,
+          "rate": 0.7045,
           "ci95": [
-            0.6627,
-            0.6811
+            0.6955,
+            0.7134
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.7884,
+          "rate": 0.8171,
           "ci95": [
-            0.7803,
-            0.7963
+            0.8094,
+            0.8246
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8672,
+          "rate": 0.8906,
           "ci95": [
-            0.8604,
-            0.8737
+            0.8843,
+            0.8966
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9255,
+          "rate": 0.9395,
           "ci95": [
-            0.9202,
-            0.9305
+            0.9347,
+            0.944
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9553,
+          "rate": 0.9651,
           "ci95": [
-            0.9511,
-            0.9592
+            0.9613,
+            0.9685
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9741,
+          "rate": 0.9788,
           "ci95": [
-            0.9708,
-            0.977
+            0.9758,
+            0.9814
           ],
           "n": 10000
         }
@@ -5232,10 +5860,10 @@
       "bottleneck": {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
         "by_turn_three": {
-          "rate": 0.8735,
+          "rate": 0.8904,
           "ci95": [
-            0.8668,
-            0.8799
+            0.8841,
+            0.8964
           ],
           "n": 10000
         }
@@ -5245,159 +5873,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6133,
+          "rate": 0.5607,
           "ci95": [
-            0.6037,
-            0.6228
+            0.551,
+            0.5704
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2211,
+          "rate": 0.2024,
           "ci95": [
-            0.2131,
-            0.2293
+            0.1946,
+            0.2104
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0535,
+          "rate": 0.0429,
           "ci95": [
-            0.0493,
-            0.0581
+            0.0391,
+            0.0471
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0189,
+          "rate": 0.0142,
           "ci95": [
-            0.0164,
-            0.0218
+            0.0121,
+            0.0167
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0151,
+          "rate": 0.0098,
           "ci95": [
-            0.0129,
-            0.0177
+            0.008,
+            0.0119
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0247,
+          "rate": 0.0171,
           "ci95": [
-            0.0218,
-            0.0279
+            0.0147,
+            0.0198
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0518,
+          "rate": 0.0309,
           "ci95": [
-            0.0476,
-            0.0563
+            0.0277,
+            0.0345
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0801,
+          "rate": 0.0509,
           "ci95": [
-            0.0749,
-            0.0856
+            0.0468,
+            0.0554
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.1138,
+          "rate": 0.0901,
           "ci95": [
-            0.1077,
-            0.1202
+            0.0846,
+            0.0959
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1798,
+          "rate": 0.1732,
           "ci95": [
-            0.1724,
-            0.1874
+            0.1659,
+            0.1807
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1446,
+        "rate": 0.1183,
         "ci95": [
-          0.1378,
-          0.1516
+          0.1121,
+          0.1248
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 7588,
-        "hand_empty": 1902,
-        "mana_short": 5686
+        "stall_turns": 6315,
+        "hand_empty": 1732,
+        "mana_short": 4583
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 4255,
-        "hand_empty": 1884,
-        "mana_short": 2371,
+        "stall_turns": 3451,
+        "hand_empty": 1722,
+        "mana_short": 1729,
         "stall_rate": {
-          "rate": 0.1064,
+          "rate": 0.0863,
           "ci95": [
-            0.1034,
-            0.1094
+            0.0836,
+            0.0891
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 5,
-          "floor_rate": 0.0151,
-          "diff": 0.0913,
+          "floor_rate": 0.0098,
+          "diff": 0.0765,
           "ci95": [
-            0.0873,
-            0.095
+            0.073,
+            0.0798
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 6.2633,
+            "rate": 7.1471,
             "ci95": [
-              6.18,
-              6.3466
+              7.0549,
+              7.2393
             ],
-            "sd": 4.2486,
+            "sd": 4.706,
             "n": 10000
           },
           "8": {
-            "rate": 6.9044,
+            "rate": 8.2178,
             "ci95": [
-              6.7911,
-              7.0177
+              8.081,
+              8.3546
             ],
-            "sd": 5.7788,
+            "sd": 6.9801,
             "n": 10000
           },
           "9": {
-            "rate": 7.4741,
+            "rate": 9.1221,
             "ci95": [
-              7.3383,
-              7.6099
+              8.9539,
+              9.2903
             ],
-            "sd": 6.9279,
+            "sd": 8.5811,
             "n": 10000
           },
           "10": {
-            "rate": 7.0666,
+            "rate": 8.4074,
             "ci95": [
-              6.9316,
-              7.2016
+              8.2423,
+              8.5725
             ],
-            "sd": 6.8866,
+            "sd": 8.4219,
             "n": 10000
           }
         },
@@ -5407,43 +6035,43 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4122,
+        "rate": 0.4056,
         "ci95": [
-          0.4026,
-          0.4219
+          0.396,
+          0.4153
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1438,
+      "missed_land_drop_rate": 0.1374,
       "mulliganed": {
-        "rate": 0.2041,
+        "rate": 0.2074,
         "ci95": [
-          0.1963,
-          0.2121
+          0.1996,
+          0.2155
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.145,
-        "3": 3.156,
-        "4": 3.996,
-        "5": 4.747,
-        "6": 5.499,
-        "7": 6.403,
-        "8": 7.409,
-        "9": 8.46,
-        "10": 9.554
+        "2": 2.157,
+        "3": 3.166,
+        "4": 3.991,
+        "5": 4.752,
+        "6": 5.516,
+        "7": 6.438,
+        "8": 7.477,
+        "9": 8.558,
+        "10": 9.695
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.0148
+      "mana_stdev_turn_five": 1.0431
     },
-    "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
+    "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
   },
   "bracket": {
-    "floor": 4,
-    "floor_name": "Optimized",
+    "floor": 3,
+    "floor_name": "Upgraded",
     "target": 4,
     "within_target": true
   },
@@ -5454,7 +6082,7 @@
     "as_of": "2026-10-17",
     "source_updated_at": "2026-10-18T02:57:08.989229+00:00",
     "url": "https://deckcheck.co/app/decklist/N381DOgjy9ZU",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 1,
     "omni": {
       "benchmarks": {
@@ -5491,10 +6119,10 @@
     "summary": {
       "excluded_commander_assumption": 0,
       "highest_bracket": 1,
-      "included": 1,
+      "included": 2,
       "infinite": 0,
       "near": 50,
-      "near_total": 75,
+      "near_total": 58,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -5513,6 +6141,22 @@
         "infinite": false,
         "bracket": 1,
         "popularity": 13198,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "790-2384-4435-6833",
+        "cards": [
+          "Psychosis Crawler",
+          "Scrawling Crawler",
+          "Windfall",
+          "Alhammarret's Archive"
+        ],
+        "produces": [
+          "Near-infinite lifeloss"
+        ],
+        "infinite": false,
+        "bracket": 1,
+        "popularity": 5065,
         "assumes_other_commander": false
       }
     ]
@@ -5549,7 +6193,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 86,
+          "value": 84,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -5567,7 +6211,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.225,
+          "value": 5.308,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -5575,7 +6219,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A WHEEL drawn — the ignition; nothing else in the deck starts itself": {
-          "value": 95,
+          "value": 96,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A WHEEL drawn — the ignition; nothing else in the deck starts itself' by turn six",
@@ -5583,7 +6227,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)": {
-          "value": 82,
+          "value": 89,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)' by turn six",
@@ -5591,7 +6235,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)": {
-          "value": 37,
+          "value": 50,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)\" by turn six",
@@ -5607,7 +6251,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A discard converted to board or cards (the non-damage half of the tax)": {
-          "value": 80,
+          "value": 60,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
@@ -5615,7 +6259,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A per-draw BOARD source drawn (the air force the commanders fly with)": {
-          "value": 75,
+          "value": 60,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A per-draw BOARD source drawn (the air force the commanders fly with)' by turn six",
@@ -5623,7 +6267,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source": {
-          "value": 57,
+          "value": 67,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source' by turn six",
@@ -5631,7 +6275,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE AIR KILL — a wheel plus a flying body that grows on every card": {
-          "value": 57,
+          "value": 48,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE AIR KILL — a wheel plus a flying body that grows on every card' by turn six",
@@ -5639,7 +6283,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading": {
-          "value": 66,
+          "value": 58,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading' by turn six",
@@ -5647,7 +6291,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Commander protection drawn — the whole engine is one 4-drop that dies to everything": {
-          "value": 36,
+          "value": 59,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Commander protection drawn — the whole engine is one 4-drop that dies to everything' by turn six",
@@ -5655,7 +6299,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A real answer drawn — a counter, a sweeper or a tax": {
-          "value": 60,
+          "value": 80,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A real answer drawn — a counter, a sweeper or a tax' by turn six",
@@ -5663,7 +6307,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step": {
-          "value": 49,
+          "value": 37,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step\" by turn six",
@@ -5671,7 +6315,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board": {
-          "value": 58,
+          "value": 66,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board' by turn six",
@@ -5749,15 +6393,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 9.54,
-            "2": 2.142,
-            "3": 3.149,
-            "4": 3.988,
-            "5": 4.736,
-            "6": 5.49,
-            "7": 6.393,
-            "8": 7.401,
-            "9": 8.455
+            "10": 9.681,
+            "2": 2.139,
+            "3": 3.144,
+            "4": 3.977,
+            "5": 4.729,
+            "6": 5.496,
+            "7": 6.412,
+            "8": 7.449,
+            "9": 8.54
           },
           "tier": "data",
           "weight": "detail",
@@ -5768,15 +6412,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.876,
-            "2": 0.996,
-            "3": 0.9,
-            "4": 0.791,
-            "5": 0.725,
-            "6": 0.721,
-            "7": 0.803,
-            "8": 0.858,
-            "9": 0.881
+            "10": 0.886,
+            "2": 0.997,
+            "3": 0.896,
+            "4": 0.793,
+            "5": 0.731,
+            "6": 0.737,
+            "7": 0.821,
+            "8": 0.869,
+            "9": 0.898
           },
           "tier": "data",
           "weight": "detail",
@@ -5786,16 +6430,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.096,
-            "10": 7.401,
-            "2": 0.379,
-            "3": 0.88,
-            "4": 1.068,
-            "5": 1.368,
-            "6": 2.084,
-            "7": 3.07,
-            "8": 4.296,
-            "9": 5.731
+            "1": 0.048,
+            "10": 4.566,
+            "2": 0.23,
+            "3": 0.634,
+            "4": 0.766,
+            "5": 0.945,
+            "6": 1.341,
+            "7": 1.936,
+            "8": 2.674,
+            "9": 3.543
           },
           "tier": "data",
           "weight": "detail",
@@ -5805,14 +6449,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 344,
-            "1": 1577,
-            "2": 3028,
-            "3": 2873,
-            "4": 1566,
-            "5": 518,
-            "6": 87,
-            "7": 7
+            "0": 331,
+            "1": 1612,
+            "2": 2885,
+            "3": 2971,
+            "4": 1631,
+            "5": 492,
+            "6": 73,
+            "7": 5
           },
           "tier": "data",
           "weight": "detail",
@@ -5821,12 +6465,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 218,
-            "5": 330,
-            "6": 1788,
-            "7": 4401,
-            "8": 2367,
-            "9": 726
+            "10": 224,
+            "4": 4,
+            "5": 375,
+            "6": 2401,
+            "7": 4222,
+            "8": 1982,
+            "9": 605
           },
           "tier": "data",
           "weight": "detail",
@@ -5842,20 +6487,20 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.225,
-    "commander_cast_by_turn_6_pct": 86,
+    "commander_mean_cast_turn": 5.308,
+    "commander_cast_by_turn_6_pct": 84,
     "targets": [
       {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-        "by_turn_6_pct": 95
+        "by_turn_6_pct": 96
       },
       {
         "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-        "by_turn_6_pct": 82
+        "by_turn_6_pct": 89
       },
       {
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "by_turn_6_pct": 37
+        "by_turn_6_pct": 50
       },
       {
         "label": "A per-draw DAMAGE source drawn (taxes the refill half)",
@@ -5863,64 +6508,65 @@
       },
       {
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "by_turn_6_pct": 80
-      },
-      {
-        "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
-        "by_turn_6_pct": 75
-      },
-      {
-        "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
-        "by_turn_6_pct": 57
-      },
-      {
-        "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
-        "by_turn_6_pct": 57
-      },
-      {
-        "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
-        "by_turn_6_pct": 66
-      },
-      {
-        "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
-        "by_turn_6_pct": 36
-      },
-      {
-        "label": "A real answer drawn — a counter, a sweeper or a tax",
         "by_turn_6_pct": 60
       },
       {
+        "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
+        "by_turn_6_pct": 60
+      },
+      {
+        "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
+        "by_turn_6_pct": 67
+      },
+      {
+        "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
+        "by_turn_6_pct": 48
+      },
+      {
+        "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
+        "by_turn_6_pct": 58
+      },
+      {
+        "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
+        "by_turn_6_pct": 59
+      },
+      {
+        "label": "A real answer drawn — a counter, a sweeper or a tax",
+        "by_turn_6_pct": 80
+      },
+      {
         "label": "Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step",
-        "by_turn_6_pct": 49
+        "by_turn_6_pct": 37
       },
       {
         "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 66
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.206,
+      "mean_kill_turn": 7.071,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 21,
-      "kill_by_turn_8_pct": 89,
+      "kill_by_turn_6_pct": 28,
+      "kill_by_turn_8_pct": 90,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 218,
-        "5": 330,
-        "6": 1788,
-        "7": 4401,
-        "8": 2367,
-        "9": 726
+        "10": 224,
+        "4": 4,
+        "5": 375,
+        "6": 2401,
+        "7": 4222,
+        "8": 1982,
+        "9": 605
       }
     }
   },
   "engine_health": {
     "word": "EXCEPTIONAL",
-    "rate": 0.9259,
+    "rate": 0.9406,
     "ci95": [
-      0.9206,
-      0.9309
+      0.9358,
+      0.9451
     ],
     "n": 10000,
     "turn": 5,
@@ -5942,7 +6588,7 @@
         "WEAK"
       ]
     ],
-    "why": "the engine is online by turn 5 in 93% of 10,000 seeded games",
+    "why": "the engine is online by turn 5 in 94% of 10,000 seeded games",
     "basis": "diagnostic.json"
   },
   "engine": {
@@ -6023,7 +6669,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
     "ran_on_version": 6,
-    "current_version": 7,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 200,
     "wins": 15,
@@ -6047,16 +6693,16 @@
     "engine_casts": {
       "covered": false,
       "never_cast": [
-        "Winds of Change",
-        "Whirlpool Warrior",
+        "Alhammarret's Archive",
+        "Big Score",
+        "Boros Charm",
+        "Campfire",
+        "Collective Defiance",
         "Faerie Mastermind",
-        "Jeska's Will",
-        "Mana Geyser",
-        "Razorkin Needlehead",
-        "Scrawling Crawler",
-        "Teferi's Protection"
+        "Fateful Showdown",
+        "Fevered Visions"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Winds of Change, Whirlpool Warrior, Faerie Mastermind. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Winds of Change sat castable and uncast on 106 own turns, Whirlpool Warrior sat castable and uncast on 89 own turns — measured from the hand, not inferred."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Big Score, Collective Defiance, Faerie Mastermind, Fateful Showdown, Fevered Visions, Incendiary Command …. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
     },
     "eliminated_by": {
       "sythis-enchantress": 73,
@@ -6069,7 +6715,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 7,
+    "count": 9,
     "awaiting_outcome": [
       {
         "id": "001",
@@ -6105,39 +6751,16 @@
         "pod": "standard-v3",
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "009",
+        "branch": "torbran-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "003",
-        "at": "2026-09-21",
-        "kind": "propose",
-        "branch": "shelter-v1",
-        "as_version": "v1.0.1",
-        "predicted": {
-          "endpoint": "damage_8",
-          "grade": "not met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
-      {
-        "id": "004",
-        "at": "2026-09-21",
-        "kind": "merge",
-        "branch": "shelter-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "damage_8",
-          "grade": "not met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
       {
         "id": "005",
         "at": "2026-10-01T19:18:40-07:00",
@@ -6182,15 +6805,44 @@
           "pod": "standard-v3"
         },
         "realised": null
+      },
+      {
+        "id": "008",
+        "at": "2026-10-19T08:29:41-07:00",
+        "kind": "propose",
+        "branch": "torbran-v1",
+        "as_version": "v1.3.0",
+        "predicted": {
+          "endpoint": "kill_by_6",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "009",
+        "at": "2026-10-19T08:31:48-07:00",
+        "kind": "merge",
+        "branch": "torbran-v1",
+        "as_version": "v1.3.0",
+        "predicted": {
+          "endpoint": "kill_by_6",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-10-17) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "1 logged game(s) not yet debriefed (001) — `/debrief sharknado`",
-    "branch `torbran-v1`: 1 HELD add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch torbran-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `torbran-v1` needs 18 card(s) sourced — `manamap pilot deck-branch sharknado source torbran-v1`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"

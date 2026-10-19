@@ -1,12 +1,12 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=v1.2.0 sha=ce0ceaa6adbe at=2026-10-07 -->
+<!-- ctx:written-for version=VNone sha=fda57c5a3750 at=2026-10-19 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** v1.2.0 (V7) · **status:** sleeved since 2026-10-06
-- **Colours:** WUR · **lands:** 36 · **bracket floor:** 4 (Optimized) · **DTI:** 31/96 → B4 (deckcheck.co, 2026-10-17, 1 reading)
-- **Combos:** 1 known line (0 infinite, 0 two-card) · 75 one card short
+- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-06
+- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 31/96 → B4 (deckcheck.co, 2026-10-17, 1 reading) — older list
+- **Combos:** 2 known lines (0 infinite, 0 two-card) · 58 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
 <!-- /ctx:gen summary -->
 
@@ -16,33 +16,39 @@ This is the Sharknado: [Shabraz, the Skyshark](https://manamap.seanmacrae.com/vi
 
 Nothing in the deck starts itself. The wheels are the ignition. Everything else either makes a wheel hit harder, finds one sooner, or keeps the two commanders alive long enough to cash in. The win is mostly in the air: the sharks and the flyers the draws build, with the pings as the tax along the way.
 
-Sean played it once, at home (game 001). It was fun and did what it should. He wants removal, more ramp and wheels that lead into wheels. He is not changing the list yet: he wants a couple more games first. Pilot notes has the detail.
+On 2026-10-19 the Torbran branch was merged (v1.3.0) and Sean plays it on printed proxies from today. The change makes every ping bigger, adds the answers the deck lacked, and swaps a set of slow lands for faster ones. Change history has the story.
 
 ## How it plays
 
 **The plan.** Get mana down, land one or both commanders, then wheel. Each discard pings the table and grows Brallin, each draw grows Shabraz and gains life. A discard wheel with both commanders out is the big turn: stack 001 proves one [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall) with both out is a ping per card to every opponent, a life per card for you, and two very large flyers. The Numbers section has how often the wheel and the commanders show up on time.
 
-**Two kinds of wheel.** Some wheels make you discard, and those pay Brallin: [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall), [Tolarian Winds](https://manamap.seanmacrae.com/viz/index.html?cards=Tolarian+Winds), [Burning Inquiry](https://manamap.seanmacrae.com/viz/index.html?cards=Burning+Inquiry), [Reforge the Soul](https://manamap.seanmacrae.com/viz/index.html?cards=Reforge+the+Soul), [Khorvath's Fury](https://manamap.seanmacrae.com/viz/index.html?cards=Khorvath%27s+Fury), [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist), [Magus of the Wheel](https://manamap.seanmacrae.com/viz/index.html?cards=Magus+of+the+Wheel), [Anje's Ravager](https://manamap.seanmacrae.com/viz/index.html?cards=Anje%27s+Ravager) and [Queen Kayla bin-Kroog](https://manamap.seanmacrae.com/viz/index.html?cards=Queen+Kayla+bin-Kroog). Others shuffle or bottom your hand instead, which refills you and pays only Shabraz: [Winds of Change](https://manamap.seanmacrae.com/viz/index.html?cards=Winds+of+Change), [Molten Psyche](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Psyche), [Whirlpool Warrior](https://manamap.seanmacrae.com/viz/index.html?cards=Whirlpool+Warrior), [Time Reversal](https://manamap.seanmacrae.com/viz/index.html?cards=Time+Reversal), [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons), [Commit // Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Commit+%2F%2F+Memory). Know which one you are holding before you fire it.
+**Torbran makes every ping count double-plus.** [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell) adds two to every hit from a red source. Brallin pings each opponent once per discarded card, so a wheel of seven becomes seven pings that each hit two harder. [Glint-Horn Buccaneer](https://manamap.seanmacrae.com/viz/index.html?cards=Glint-Horn+Buccaneer), [Magmakin Artillerist](https://manamap.seanmacrae.com/viz/index.html?cards=Magmakin+Artillerist), [Spider-Man, New Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Spider-Man%2C+New+Champion), [Niv-Mizzet, Parun](https://manamap.seanmacrae.com/viz/index.html?cards=Niv-Mizzet%2C+Parun), [Irencrag Pyromancer](https://manamap.seanmacrae.com/viz/index.html?cards=Irencrag+Pyromancer) and the new burn all get the same bonus. That is why the branch was built: the wheel turn finishes people instead of just softening them. The Numbers section has the per-discard damage sources and how often one shows up; it was written for the list before this change, so read it as the floor.
 
-**Where the clock is.** The pings are the tax, not the clock. The damage that ends games is the creatures the draws grew, swinging in the air: the two commanders, [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) sharks, [The Locust God](https://manamap.seanmacrae.com/viz/index.html?cards=The+Locust+God), [Niv-Mizzet, Parun](https://manamap.seanmacrae.com/viz/index.html?cards=Niv-Mizzet%2C+Parun), [Arjun, the Shifting Flame](https://manamap.seanmacrae.com/viz/index.html?cards=Arjun%2C+the+Shifting+Flame). The pings help by making the table's life totals small enough that the air force finishes.
+**Two kinds of wheel.** Some wheels make you discard, and those pay Brallin: [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall), [Tolarian Winds](https://manamap.seanmacrae.com/viz/index.html?cards=Tolarian+Winds), [Burning Inquiry](https://manamap.seanmacrae.com/viz/index.html?cards=Burning+Inquiry), [Reforge the Soul](https://manamap.seanmacrae.com/viz/index.html?cards=Reforge+the+Soul), [Khorvath's Fury](https://manamap.seanmacrae.com/viz/index.html?cards=Khorvath%27s+Fury), [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist), [Magus of the Wheel](https://manamap.seanmacrae.com/viz/index.html?cards=Magus+of+the+Wheel), [Anje's Ravager](https://manamap.seanmacrae.com/viz/index.html?cards=Anje%27s+Ravager) and [Queen Kayla bin-Kroog](https://manamap.seanmacrae.com/viz/index.html?cards=Queen+Kayla+bin-Kroog). Others shuffle or bottom your hand instead, which refills you and pays only Shabraz: [Molten Psyche](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Psyche), [Time Reversal](https://manamap.seanmacrae.com/viz/index.html?cards=Time+Reversal), [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons), [Commit // Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Commit+%2F%2F+Memory). Know which one you are holding before you fire it.
 
-**Protect the shark.** The whole engine is one four-mana creature that dies to anything. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves), [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots), [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter) and [Teferi's Protection](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Protection) keep it standing, and [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) removes the thing aimed at it. The Numbers section has how often protection shows up.
+**Wheels that also do something.** Sean asked for wheels that chain into something else. [Collective Defiance](https://manamap.seanmacrae.com/viz/index.html?cards=Collective+Defiance) (wheel yourself, kill a creature, burn a player), [Incendiary Command](https://manamap.seanmacrae.com/viz/index.html?cards=Incendiary+Command) (wheel and burn, or wheel and sweep the small creatures) and [Fateful Showdown](https://manamap.seanmacrae.com/viz/index.html?cards=Fateful+Showdown) (burn for the cards in hand, then wheel that many) are those cards. All three discard, so all three pay Brallin, and all three are red, so Torbran counts them. [Big Score](https://manamap.seanmacrae.com/viz/index.html?cards=Big+Score) is the small version: a discard, two new cards and two Treasures.
 
-**Mana is the bill.** A five-mana commander and then a three-to-six-mana wheel on top. Blue is the colour that binds, and many of the lands enter tapped or read a basic land type off the board, so the single [Island](https://manamap.seanmacrae.com/viz/index.html?cards=Island) matters more than it looks. [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet), the Treasure makers and [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will) / [Mana Geyser](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Geyser) are there to pay for the second spell.
+**Where the clock is.** The pings are the tax, not the clock. The damage that ends games is the creatures the draws grew, swinging in the air: the two commanders, [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) sharks, [The Locust God](https://manamap.seanmacrae.com/viz/index.html?cards=The+Locust+God), [Niv-Mizzet, Parun](https://manamap.seanmacrae.com/viz/index.html?cards=Niv-Mizzet%2C+Parun), [Arjun, the Shifting Flame](https://manamap.seanmacrae.com/viz/index.html?cards=Arjun%2C+the+Shifting+Flame). The pings help by making the table's life totals small enough that the air force finishes. With Torbran out they do more of that work than they did.
 
-**No maximum hand size.** A wheel hands you seven cards and the cleanup step can take them back. [Library of Leng](https://manamap.seanmacrae.com/viz/index.html?cards=Library+of+Leng), [Reliquary Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Reliquary+Tower) and [Nezahal, Primal Tide](https://manamap.seanmacrae.com/viz/index.html?cards=Nezahal%2C+Primal+Tide) let you keep them (Leng also lets a discard go back on top of the library).
+**Counters and doubling.** [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion) adds a counter every time a counter lands on your creatures, so both commanders and [Chasm Skulker](https://manamap.seanmacrae.com/viz/index.html?cards=Chasm+Skulker) grow faster per draw or discard. [Alhammarret's Archive](https://manamap.seanmacrae.com/viz/index.html?cards=Alhammarret%27s+Archive) doubles extra draws and your life gain, so a wheel's draw half pays Shabraz twice as much. It stacks with [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight).
 
-**Proved lines.** Stack 001: Windfall with both commanders out. Stack 002: a discard under Library of Leng is still a discard. Stack 003: cycling under Leng pays Brallin as a cost. Stack 004: [Artist's Talent](https://manamap.seanmacrae.com/viz/index.html?cards=Artist%27s+Talent) at its top level adds to every ping.
+**Protect the shark, and answer the table.** The whole engine is one four-mana creature that dies to anything. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) keep it standing, and [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) removes the thing aimed at it. The new answers are cheap and mostly free to cast. [Silence](https://manamap.seanmacrae.com/viz/index.html?cards=Silence) stops the table casting anything on the turn you wheel. [Snapback](https://manamap.seanmacrae.com/viz/index.html?cards=Snapback) bounces a creature for no mana (it exiles a blue card) and can save a commander from removal. [March of Swirling Mist](https://manamap.seanmacrae.com/viz/index.html?cards=March+of+Swirling+Mist) phases creatures out, to save your own or dodge a blocker. All three lean on blue cards in hand, which a wheel hands you. [Campfire](https://manamap.seanmacrae.com/viz/index.html?cards=Campfire) and [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon) bring a dead commander back to hand without paying tax twice. The Shelter and Teferi's Protection one-shots are gone, so the protection now leans on permanents, tricks and tools that cost little. The Numbers section has how often protection shows up.
+
+**Mana is the bill.** A five-mana commander and then a three-to-six-mana wheel on top. Blue is the colour that binds, and many of the lands enter tapped or read a basic land type off the board, so the [Island](https://manamap.seanmacrae.com/viz/index.html?cards=Island) and the new [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain) matter more than they look. [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet), [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe), [Big Score](https://manamap.seanmacrae.com/viz/index.html?cards=Big+Score) and [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will) are there to pay for the second spell. The slow tapped duals mostly became untapped ones, which helps the commanders arrive on time. The cost was the hoard: Currency Converter and Sticky Fingers made Treasure and left, so the deck makes fewer Treasures than before. That is a known trade, not a mistake.
+
+**No maximum hand size.** A wheel hands you seven cards and the cleanup step can take them back. [Library of Leng](https://manamap.seanmacrae.com/viz/index.html?cards=Library+of+Leng) and [Nezahal, Primal Tide](https://manamap.seanmacrae.com/viz/index.html?cards=Nezahal%2C+Primal+Tide) let you keep them (Leng also lets a discard go back on top of the library). Reliquary Tower is gone, so there are fewer sources of this than before.
+
+**Proved lines.** Stack 001: Windfall with both commanders out. Stack 002: a discard under Library of Leng is still a discard. Stack 003: cycling under Leng pays Brallin as a cost. Stack 004: [Artist's Talent](https://manamap.seanmacrae.com/viz/index.html?cards=Artist%27s+Talent) at its top level adds to every ping. None of these was proved with Torbran out.
 
 **One commander first, the second later.** Sean's piloting pattern after game 001: one commander can do the work alone. Land whichever one the hand suits, grow it with the draws and discards, bring the second out later, and save the big wheel for when both are on the table. That is a plan the pilot is forming, not yet a rule.
 
-**The nine-mana unit.** Played together, the two commanders are a four-drop and a five-drop. Brallin was removed more than once and the commander tax came on, so the pair felt like a nine-mana unit, a lot like the Ur-Dragon problem. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) carried the protection in that game and were the best cards in it.
+**The nine-mana unit.** Played together, the two commanders are a four-drop and a five-drop. Brallin was removed more than once and the commander tax came on, so the pair felt like a nine-mana unit, a lot like the Ur-Dragon problem. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) carried the protection in that game and were the best cards in it. Campfire and Command Beacon are the new way to buy a commander back.
 
 **Wheeling your own good cards.** A wheel throws away your hand too. Sean discarded useful cards just to fire one. Check what you are giving up before you fire.
 
 **What the table misreads.** They see a draw deck and two creatures and rank you low. The wheel turn is the correction.
 
-**Known holes.** There is no two-card infinite by design: the Curiosity-class enchantments most pair lists use are left out on purpose, by Sean's call. The goldfish has no blockers and no removal, so how it reads the board is not evidence; the Numbers section says what it can and cannot see.
+**Known holes.** There is no two-card infinite by design: the Curiosity-class enchantments most pair lists use are left out on purpose, by Sean's call. The goldfish has no blockers and no removal, so how it reads the board is not evidence; the Numbers section says what it can and cannot see. Torbran is a creature, so he dies like the commanders do.
 
 ## Cards by role
 
@@ -55,84 +61,106 @@ Sean played it once, at home (game 001). It was fun and did what it should. He w
 - [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist), [Magus of the Wheel](https://manamap.seanmacrae.com/viz/index.html?cards=Magus+of+the+Wheel): the wheel on a body, repeatable or sacrificed on demand.
 - [Anje's Ravager](https://manamap.seanmacrae.com/viz/index.html?cards=Anje%27s+Ravager), [Queen Kayla bin-Kroog](https://manamap.seanmacrae.com/viz/index.html?cards=Queen+Kayla+bin-Kroog): a wheel every turn, if they live. Kayla also pulls cheap cards back out.
 
+### wheel and do something else
+- [Collective Defiance](https://manamap.seanmacrae.com/viz/index.html?cards=Collective+Defiance): wheel yourself, kill a creature, burn a player, in any mix you can pay for.
+- [Incendiary Command](https://manamap.seanmacrae.com/viz/index.html?cards=Incendiary+Command): wheel and burn a player, or wheel and sweep the small creatures.
+- [Fateful Showdown](https://manamap.seanmacrae.com/viz/index.html?cards=Fateful+Showdown): a hit for as many cards as you hold, then a wheel of the same size.
+- [Big Score](https://manamap.seanmacrae.com/viz/index.html?cards=Big+Score): a discard that draws two and makes two Treasures.
+
 ### the wheels that refill you (shuffle or bottom)
-- [Winds of Change](https://manamap.seanmacrae.com/viz/index.html?cards=Winds+of+Change), [Molten Psyche](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Psyche), [Whirlpool Warrior](https://manamap.seanmacrae.com/viz/index.html?cards=Whirlpool+Warrior), [Time Reversal](https://manamap.seanmacrae.com/viz/index.html?cards=Time+Reversal), [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons), [Commit // Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Commit+%2F%2F+Memory): Shabraz gets paid, Brallin does not.
+- [Molten Psyche](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Psyche), [Time Reversal](https://manamap.seanmacrae.com/viz/index.html?cards=Time+Reversal), [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons), [Commit // Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Commit+%2F%2F+Memory): Shabraz gets paid, Brallin does not.
 - [Arjun, the Shifting Flame](https://manamap.seanmacrae.com/viz/index.html?cards=Arjun%2C+the+Shifting+Flame): bottoms the hand on every spell you cast and draws it back, so a turn of spells is a chain of draws.
 - [Teferi's Puzzle Box](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Puzzle+Box): wheels everyone's hand each draw step.
+
+### hit harder with every ping (Torbran and counters)
+- [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell): two more on every hit from a red source, Brallin's pings included.
+- [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion): one more counter every time a creature of yours gets any, so the commanders and Skulker grow faster.
+- [Alhammarret's Archive](https://manamap.seanmacrae.com/viz/index.html?cards=Alhammarret%27s+Archive): doubles extra draws and life gain.
 
 ### draw more, so Shabraz grows
 - [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight): doubles every extra draw.
 - [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study), [Mind's Eye](https://manamap.seanmacrae.com/viz/index.html?cards=Mind%27s+Eye): draw off the table's spells and draws.
 - [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind), [Nezahal, Primal Tide](https://manamap.seanmacrae.com/viz/index.html?cards=Nezahal%2C+Primal+Tide): draw when opponents draw or cast.
 - [Scrawling Crawler](https://manamap.seanmacrae.com/viz/index.html?cards=Scrawling+Crawler): everyone draws on your upkeep and opponents lose life for it.
+- [Fevered Visions](https://manamap.seanmacrae.com/viz/index.html?cards=Fevered+Visions): everyone draws at their end step, and an opponent holding a full hand takes damage. Another red source for Torbran to count, and more draws for Shabraz.
 
 ### loot and rummage (small discards, small draws)
-- [Faithless Looting](https://manamap.seanmacrae.com/viz/index.html?cards=Faithless+Looting), [Sorcerer Class](https://manamap.seanmacrae.com/viz/index.html?cards=Sorcerer+Class), [Currency Converter](https://manamap.seanmacrae.com/viz/index.html?cards=Currency+Converter), [Mask of Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Mask+of+Memory), [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter): turn dead cards into new ones, a ping each time.
+- [Faithless Looting](https://manamap.seanmacrae.com/viz/index.html?cards=Faithless+Looting), [Sorcerer Class](https://manamap.seanmacrae.com/viz/index.html?cards=Sorcerer+Class): turn dead cards into new ones, a ping each time.
 - [Artist's Talent](https://manamap.seanmacrae.com/viz/index.html?cards=Artist%27s+Talent): loots on noncreature spells and makes them cheaper.
-- [Mindless Automaton](https://manamap.seanmacrae.com/viz/index.html?cards=Mindless+Automaton), [Jaxis, the Troublemaker](https://manamap.seanmacrae.com/viz/index.html?cards=Jaxis%2C+the+Troublemaker): discard outlets that also do something.
+- [Jaxis, the Troublemaker](https://manamap.seanmacrae.com/viz/index.html?cards=Jaxis%2C+the+Troublemaker): a discard outlet that also copies a creature.
 
 ### cycling (a discard you choose, on your own turn)
-- [Curator of Mysteries](https://manamap.seanmacrae.com/viz/index.html?cards=Curator+of+Mysteries), [Nimble Obstructionist](https://manamap.seanmacrae.com/viz/index.html?cards=Nimble+Obstructionist), [Magmakin Artillerist](https://manamap.seanmacrae.com/viz/index.html?cards=Magmakin+Artillerist), [Marauding Mako](https://manamap.seanmacrae.com/viz/index.html?cards=Marauding+Mako), [Ominous Seas](https://manamap.seanmacrae.com/viz/index.html?cards=Ominous+Seas), [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon): each can be cycled for a ping and a card. Typhoon also makes a shark when cycled.
+- [Curator of Mysteries](https://manamap.seanmacrae.com/viz/index.html?cards=Curator+of+Mysteries), [Nimble Obstructionist](https://manamap.seanmacrae.com/viz/index.html?cards=Nimble+Obstructionist), [Magmakin Artillerist](https://manamap.seanmacrae.com/viz/index.html?cards=Magmakin+Artillerist), [Marauding Mako](https://manamap.seanmacrae.com/viz/index.html?cards=Marauding+Mako), [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon): each can be cycled for a ping and a card. Typhoon also makes a shark when cycled.
 - [Glittering Massif](https://manamap.seanmacrae.com/viz/index.html?cards=Glittering+Massif), [Irrigated Farmland](https://manamap.seanmacrae.com/viz/index.html?cards=Irrigated+Farmland), [Raugrin Triome](https://manamap.seanmacrae.com/viz/index.html?cards=Raugrin+Triome): lands that cycle, listed with the lands below too.
 
 ### damage per discard or per draw (turn a wheel into a hit)
 - [Glint-Horn Buccaneer](https://manamap.seanmacrae.com/viz/index.html?cards=Glint-Horn+Buccaneer), [Magmakin Artillerist](https://manamap.seanmacrae.com/viz/index.html?cards=Magmakin+Artillerist), [Ivora, Insatiable Heir](https://manamap.seanmacrae.com/viz/index.html?cards=Ivora%2C+Insatiable+Heir): extra damage or growth on every discard.
+- [Spider-Man, New Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Spider-Man%2C+New+Champion): hits any target for as much as you discard, and reaches. The newest wheel-to-damage body.
 - [Niv-Mizzet, Parun](https://manamap.seanmacrae.com/viz/index.html?cards=Niv-Mizzet%2C+Parun), [Psychosis Crawler](https://manamap.seanmacrae.com/viz/index.html?cards=Psychosis+Crawler), [Razorkin Needlehead](https://manamap.seanmacrae.com/viz/index.html?cards=Razorkin+Needlehead), [Irencrag Pyromancer](https://manamap.seanmacrae.com/viz/index.html?cards=Irencrag+Pyromancer): damage on draws, so the refill half hurts too.
-- [Rielle, the Everwise](https://manamap.seanmacrae.com/viz/index.html?cards=Rielle%2C+the+Everwise), [Containment Construct](https://manamap.seanmacrae.com/viz/index.html?cards=Containment+Construct): draw or replay off a discard.
-- [Drake Haven](https://manamap.seanmacrae.com/viz/index.html?cards=Drake+Haven), [Improbable Alliance](https://manamap.seanmacrae.com/viz/index.html?cards=Improbable+Alliance): turn discards and extra draws into flying bodies.
+- [Rielle, the Everwise](https://manamap.seanmacrae.com/viz/index.html?cards=Rielle%2C+the+Everwise): draws off a discard.
+- [Boros Charm](https://manamap.seanmacrae.com/viz/index.html?cards=Boros+Charm): burn to the face, and an indestructible save for your board.
 
 ### the air force (bodies that grow with the draws)
-- [Chasm Skulker](https://manamap.seanmacrae.com/viz/index.html?cards=Chasm+Skulker), [The Locust God](https://manamap.seanmacrae.com/viz/index.html?cards=The+Locust+God), [Vanguard Suppressor](https://manamap.seanmacrae.com/viz/index.html?cards=Vanguard+Suppressor): grow or make flyers on every card.
+- [Chasm Skulker](https://manamap.seanmacrae.com/viz/index.html?cards=Chasm+Skulker), [The Locust God](https://manamap.seanmacrae.com/viz/index.html?cards=The+Locust+God): grow or make flyers on every card.
 - [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) again: the sharks.
 
 ### ramp and burst mana
 - [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet): the fast mana.
-- [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe), [Sticky Fingers](https://manamap.seanmacrae.com/viz/index.html?cards=Sticky+Fingers): Treasure when the table draws or the carrier connects.
-- [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will), [Mana Geyser](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Geyser): burst mana for a turn that needs two big spells.
+- [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe): Treasure when the table draws.
+- [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will), [Big Score](https://manamap.seanmacrae.com/viz/index.html?cards=Big+Score): burst mana and Treasure for a turn that needs two big spells.
 
 ### keep the shark alive
 - [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves), [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots): shroud or hexproof, and haste.
-- [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter), [Teferi's Protection](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Protection): a one-shot save.
+- [March of Swirling Mist](https://manamap.seanmacrae.com/viz/index.html?cards=March+of+Swirling+Mist): phases your creatures out of the way, cheaply if you hold blue cards.
+- [Snapback](https://manamap.seanmacrae.com/viz/index.html?cards=Snapback): bounce your own creature out of trouble for free.
+- [Boros Charm](https://manamap.seanmacrae.com/viz/index.html?cards=Boros+Charm): makes your permanents indestructible.
+- [Campfire](https://manamap.seanmacrae.com/viz/index.html?cards=Campfire), [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon): put a dead commander back in hand, so the tax is paid once.
 
 ### answers
 - [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares): the clean removal for one creature.
 - [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate), [Commit // Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Commit+%2F%2F+Memory): stop a spell or put it back.
+- [Silence](https://manamap.seanmacrae.com/viz/index.html?cards=Silence): the table casts nothing on your wheel turn.
+- [Snapback](https://manamap.seanmacrae.com/viz/index.html?cards=Snapback), [March of Swirling Mist](https://manamap.seanmacrae.com/viz/index.html?cards=March+of+Swirling+Mist): free or cheap tempo plays against a blocker or an attacker.
+- [Collective Defiance](https://manamap.seanmacrae.com/viz/index.html?cards=Collective+Defiance), [Incendiary Command](https://manamap.seanmacrae.com/viz/index.html?cards=Incendiary+Command): kill or sweep creatures while wheeling.
 - [Nimble Obstructionist](https://manamap.seanmacrae.com/viz/index.html?cards=Nimble+Obstructionist): counters an ability, with flash, in the air.
 
 ### no maximum hand size
-- [Library of Leng](https://manamap.seanmacrae.com/viz/index.html?cards=Library+of+Leng), [Reliquary Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Reliquary+Tower), [Nezahal, Primal Tide](https://manamap.seanmacrae.com/viz/index.html?cards=Nezahal%2C+Primal+Tide): so seven new cards survive cleanup.
+- [Library of Leng](https://manamap.seanmacrae.com/viz/index.html?cards=Library+of+Leng), [Nezahal, Primal Tide](https://manamap.seanmacrae.com/viz/index.html?cards=Nezahal%2C+Primal+Tide): so seven new cards survive cleanup.
+
+### life gain
+- [Campfire](https://manamap.seanmacrae.com/viz/index.html?cards=Campfire): a slow life-gain engine as well as the commander return.
 
 ### lands
-Colours come from duals, triomes and utility lands. A few are special: [Calciform Pools](https://manamap.seanmacrae.com/viz/index.html?cards=Calciform+Pools) stores mana, [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) is a free land off the opening hand, [Opal Palace](https://manamap.seanmacrae.com/viz/index.html?cards=Opal+Palace) puts counters on a commander, [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara) can phase out a creature, and [Reliquary Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Reliquary+Tower) is also the hand-size card above. Several enter tapped or need a basic type; the single [Island](https://manamap.seanmacrae.com/viz/index.html?cards=Island) is what turns on the Verges, [Glacial Fortress](https://manamap.seanmacrae.com/viz/index.html?cards=Glacial+Fortress) and [Sulfur Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Sulfur+Falls).
+Colours come from duals, triomes and utility lands. A few are special: [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) is a free land off the opening hand, [Opal Palace](https://manamap.seanmacrae.com/viz/index.html?cards=Opal+Palace) puts counters on a commander, [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara) can phase out a creature, [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon) sacrifices to bring a commander to hand, and [Temple of Epiphany](https://manamap.seanmacrae.com/viz/index.html?cards=Temple+of+Epiphany) scries. The new untapped red-blue and red-white lands ([Stormcarved Coast](https://manamap.seanmacrae.com/viz/index.html?cards=Stormcarved+Coast), [Training Center](https://manamap.seanmacrae.com/viz/index.html?cards=Training+Center), [Spectator Seating](https://manamap.seanmacrae.com/viz/index.html?cards=Spectator+Seating), [Frostboil Snarl](https://manamap.seanmacrae.com/viz/index.html?cards=Frostboil+Snarl)) replace slower ones. Several enter tapped or need a basic type; the [Island](https://manamap.seanmacrae.com/viz/index.html?cards=Island) and [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain) turn on the Verges, [Glacial Fortress](https://manamap.seanmacrae.com/viz/index.html?cards=Glacial+Fortress), [Sulfur Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Sulfur+Falls) and [Frostboil Snarl](https://manamap.seanmacrae.com/viz/index.html?cards=Frostboil+Snarl).
 
-[Adarkar Wastes](https://manamap.seanmacrae.com/viz/index.html?cards=Adarkar+Wastes), [Calciform Pools](https://manamap.seanmacrae.com/viz/index.html?cards=Calciform+Pools), [Cascade Bluffs](https://manamap.seanmacrae.com/viz/index.html?cards=Cascade+Bluffs), [City of Brass](https://manamap.seanmacrae.com/viz/index.html?cards=City+of+Brass), [Command Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Tower), [Exotic Orchard](https://manamap.seanmacrae.com/viz/index.html?cards=Exotic+Orchard), [Ferrous Lake](https://manamap.seanmacrae.com/viz/index.html?cards=Ferrous+Lake), [Fiery Islet](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Islet), [Floodfarm Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Floodfarm+Verge), [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns), [Glacial Fortress](https://manamap.seanmacrae.com/viz/index.html?cards=Glacial+Fortress), [Glittering Massif](https://manamap.seanmacrae.com/viz/index.html?cards=Glittering+Massif), [Hallowed Fountain](https://manamap.seanmacrae.com/viz/index.html?cards=Hallowed+Fountain), [Hengegate Pathway // Mistgate Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Hengegate+Pathway+%2F%2F+Mistgate+Pathway), [Irrigated Farmland](https://manamap.seanmacrae.com/viz/index.html?cards=Irrigated+Farmland), [Island](https://manamap.seanmacrae.com/viz/index.html?cards=Island), [Mana Confluence](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Confluence), [Mystic Gate](https://manamap.seanmacrae.com/viz/index.html?cards=Mystic+Gate), [Mystic Monastery](https://manamap.seanmacrae.com/viz/index.html?cards=Mystic+Monastery), [Nimbus Maze](https://manamap.seanmacrae.com/viz/index.html?cards=Nimbus+Maze), [Opal Palace](https://manamap.seanmacrae.com/viz/index.html?cards=Opal+Palace), [Raugrin Triome](https://manamap.seanmacrae.com/viz/index.html?cards=Raugrin+Triome), [Reliquary Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Reliquary+Tower), [Riverpyre Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Riverpyre+Verge), [Rugged Prairie](https://manamap.seanmacrae.com/viz/index.html?cards=Rugged+Prairie), [Sacred Foundry](https://manamap.seanmacrae.com/viz/index.html?cards=Sacred+Foundry), [Sea of Clouds](https://manamap.seanmacrae.com/viz/index.html?cards=Sea+of+Clouds), [Seachrome Coast](https://manamap.seanmacrae.com/viz/index.html?cards=Seachrome+Coast), [Shivan Reef](https://manamap.seanmacrae.com/viz/index.html?cards=Shivan+Reef), [Skycloud Expanse](https://manamap.seanmacrae.com/viz/index.html?cards=Skycloud+Expanse), [Spire of Industry](https://manamap.seanmacrae.com/viz/index.html?cards=Spire+of+Industry), [Spirebluff Canal](https://manamap.seanmacrae.com/viz/index.html?cards=Spirebluff+Canal), [Steam Vents](https://manamap.seanmacrae.com/viz/index.html?cards=Steam+Vents), [Sulfur Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Sulfur+Falls), [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara), [Thundering Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Thundering+Falls)
+[Cascade Bluffs](https://manamap.seanmacrae.com/viz/index.html?cards=Cascade+Bluffs), [City of Brass](https://manamap.seanmacrae.com/viz/index.html?cards=City+of+Brass), [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon), [Command Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Tower), [Ferrous Lake](https://manamap.seanmacrae.com/viz/index.html?cards=Ferrous+Lake), [Fiery Islet](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Islet), [Floodfarm Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Floodfarm+Verge), [Frostboil Snarl](https://manamap.seanmacrae.com/viz/index.html?cards=Frostboil+Snarl), [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns), [Glacial Fortress](https://manamap.seanmacrae.com/viz/index.html?cards=Glacial+Fortress), [Glittering Massif](https://manamap.seanmacrae.com/viz/index.html?cards=Glittering+Massif), [Hallowed Fountain](https://manamap.seanmacrae.com/viz/index.html?cards=Hallowed+Fountain), [Hengegate Pathway // Mistgate Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Hengegate+Pathway+%2F%2F+Mistgate+Pathway), [Irrigated Farmland](https://manamap.seanmacrae.com/viz/index.html?cards=Irrigated+Farmland), [Island](https://manamap.seanmacrae.com/viz/index.html?cards=Island), [Mana Confluence](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Confluence), [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain), [Mystic Monastery](https://manamap.seanmacrae.com/viz/index.html?cards=Mystic+Monastery), [Opal Palace](https://manamap.seanmacrae.com/viz/index.html?cards=Opal+Palace), [Raugrin Triome](https://manamap.seanmacrae.com/viz/index.html?cards=Raugrin+Triome), [Riverglide Pathway // Lavaglide Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Riverglide+Pathway+%2F%2F+Lavaglide+Pathway), [Riverpyre Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Riverpyre+Verge), [Rugged Prairie](https://manamap.seanmacrae.com/viz/index.html?cards=Rugged+Prairie), [Sacred Foundry](https://manamap.seanmacrae.com/viz/index.html?cards=Sacred+Foundry), [Sea of Clouds](https://manamap.seanmacrae.com/viz/index.html?cards=Sea+of+Clouds), [Shivan Reef](https://manamap.seanmacrae.com/viz/index.html?cards=Shivan+Reef), [Spectator Seating](https://manamap.seanmacrae.com/viz/index.html?cards=Spectator+Seating), [Spire of Industry](https://manamap.seanmacrae.com/viz/index.html?cards=Spire+of+Industry), [Spirebluff Canal](https://manamap.seanmacrae.com/viz/index.html?cards=Spirebluff+Canal), [Steam Vents](https://manamap.seanmacrae.com/viz/index.html?cards=Steam+Vents), [Stormcarved Coast](https://manamap.seanmacrae.com/viz/index.html?cards=Stormcarved+Coast), [Sulfur Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Sulfur+Falls), [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara), [Temple of Epiphany](https://manamap.seanmacrae.com/viz/index.html?cards=Temple+of+Epiphany), [Thundering Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Thundering+Falls), [Training Center](https://manamap.seanmacrae.com/viz/index.html?cards=Training+Center)
 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on v1.2.0 (V7), 2026-10-06. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **86%**
+- share of seeded games where the commander was CAST by turn six: **84%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
-- mean turn the commander is first cast: **turn 5.225**
-- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **95%**
-- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **82%**
-- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **37%**
+- mean turn the commander is first cast: **turn 5.308**
+- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **96%**
+- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **89%**
+- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **50%**
 - A per-draw DAMAGE source drawn (taxes the refill half): **50%**
-- A discard converted to board or cards (the non-damage half of the tax): **80%**
-- A per-draw BOARD source drawn (the air force the commanders fly with): **75%**
-- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **57%**
-- THE AIR KILL — a wheel plus a flying body that grows on every card: **57%**
-- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **66%**
-- Commander protection drawn — the whole engine is one 4-drop that dies to everything: **36%**
-- A real answer drawn — a counter, a sweeper or a tax: **60%**
-- Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step: **49%**
-- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **58%**
+- A discard converted to board or cards (the non-damage half of the tax): **60%**
+- A per-draw BOARD source drawn (the air force the commanders fly with): **60%**
+- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **67%**
+- THE AIR KILL — a wheel plus a flying body that grows on every card: **48%**
+- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **58%**
+- Commander protection drawn — the whole engine is one 4-drop that dies to everything: **59%**
+- A real answer drawn — a counter, a sweeper or a tax: **80%**
+- Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step: **37%**
+- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **66%**
 - share of opening sevens the model would keep: **80%**
-- Engine online by turn 5: **93%** (95% CI 92%–93%) — exceptional
-- A win route assembled by turn 6: **79%** (95% CI 78%–80%)
-- A win route assembled by turn 8: **93%** (95% CI 92%–93%)
-- Colour on curve (lands + rocks): W 94%, U 88%, R 74%
+- Engine online by turn 5: **94%** (95% CI 94%–95%) — exceptional
+- A win route assembled by turn 6: **82%** (95% CI 81%–82%)
+- A win route assembled by turn 8: **94%** (95% CI 93%–94%)
+- Colour on curve (lands + rocks): W 88%, U 86%, R 84%
 - Forge (an optional probe, not a gate): last run 2026-10-03, 15/200 won (10% (95% CI 6%–15%)) on V6 — on an older list
 <!-- /ctx:gen numbers -->
 
@@ -156,6 +184,8 @@ Goldfish, 10,000 seeded games, measured on v1.2.0 (V7), 2026-10-06. Each group b
 
 His words: "it's fun, it's doing what it's supposed to do, but it definitely needs some finesse." He is not itching to change anything. Many cards have not been played yet, and he wants a couple more games before locking anything. He asked for hypotheses to test, not swaps.
 
+After the merge: the list in this file's notes (Echo of Eons, Mana Geyser and the rest) is the v1.2.0 list. Game 001 was played on it. No game has been logged on v1.3.0 yet. Of the things Sean said he missed, the branch adds removal and answers, wheels that do something else, and a way to buy a commander back. Ramp is the one it did not add to.
+
 ## Change history
 
 <!-- ctx:gen history -->
@@ -173,7 +203,9 @@ His words: "it's fun, it's doing what it's supposed to do, but it definitely nee
 - **v0.1.0 · V1** (2026-09-10) — first list, 100 cards. _the build: a 44-card Sharknado core and 24 named lands kept, the builder filled 18 spells and 12 lands_
 <!-- /ctx:gen history -->
 
-The generated list above has every version. The story in short: the first list was a Sharknado core plus builder-filled spells. The pilot then made swaps in cardboard (Negate, Swords to Plowshares, Marauding Mako, Mask of Memory), and the latest version added burst mana, a damage-on-draw body, another draw engine, a flash flyer and a whole-board protection spell. The engine model (engine.json) was written for v1.1.0 and still names cards that have left; it needs a refresh.
+**v1.3.0, the Torbran branch (merged 2026-10-19).** Twenty-two cards in, twenty-two out. The aim was to kill by turn six more often, and the measured read in the generated block says it did, with more damage by turn ten and more interaction affordable by turn six. The hoard went the other way, because Currency Converter and Sticky Fingers left. What went out: the slow tapped lands (Adarkar Wastes, Calciform Pools, Exotic Orchard, Mystic Gate, Nimbus Maze, Reliquary Tower, Seachrome Coast, Skycloud Expanse), the protection one-shots (Shelter, Teferi's Protection), burst and loot pieces (Mana Geyser, Mask of Memory, Mindless Automaton, Ominous Seas, Winds of Change, Whirlpool Warrior) and the board pieces that never did enough (Containment Construct, Drake Haven, Improbable Alliance, Vanguard Suppressor). What came in is described in How it plays and Cards by role. The pilot's rule stands: Marauding Mako stays.
+
+The generated list above has every version. The story in short: the first list was a Sharknado core plus builder-filled spells, the pilot made swaps in cardboard (Negate, Swords to Plowshares, Marauding Mako, Mask of Memory), v1.2.0 added burst mana and a draw engine, and v1.3.0 turned the list toward damage and answers. The engine model (engine.json) was written for v1.1.0 and still names cards that have left; it needs a refresh.
 
 ## Open questions
 
@@ -183,12 +215,13 @@ The generated list above has every version. The story in short: the first list w
 - 4 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-The list stays as it is until Sean has seen more games. These are things to test, not swaps.
+The list has just changed, so these are things to test, not swaps.
 
-- Ramp: does adding a few more cheap mana sources make the commanders arrive and the first wheel fire sooner? Needs the goldfish to read Treasure makers and burst mana, which it does not yet. Note it before trusting any ramp figure.
-- Removal: game 001 had no answer to a board it needed to prune. Which engine slots would an answer cost, and is a wheel that also removes or counters (wheel plus effect) a way to pay for it?
+- Torbran: does the bonus on every ping turn the wheel turn into a kill more often in real games than the old list? The goldfish can see it; the table's removal on a four-mana Dwarf it cannot.
+- Answers: do Silence, Snapback and March of Swirling Mist get cast, or do they sit because a blue card is never spare when you want one? Needs real games.
+- Ramp: the branch did not add ramp and the hoard fell. Does the commanders' arrival slip? Needs the goldfish to read Treasure makers and burst mana, which it does not yet.
+- Untapped lands: do the swapped duals make the commanders arrive on time, or did giving up Reliquary Tower's hand-size help hurt the seven-card wheels?
 - One commander first: does leading with a single commander and holding the other for the wheel beat casting both as soon as possible? Open, and the goldfish cannot see the table's removal.
-- Wheels stuck behind mana or too few in hand? The Numbers section shows a wheel is usually drawn on time, so the early shortage may be mana. More games will say.
 - Which good cards are being discarded to fire a wheel, and is there a way to play them out first?
 
 ## Context changelog
@@ -196,3 +229,4 @@ The list stays as it is until Sean has seen more games. These are things to test
 - 2026-10-07 · scaffolded by `manamap pilot context`
 - 2026-10-07 · Keeper · log: folded game 001 into Pilot notes and How it plays; replaced the pre-log quote; reset Open questions
 - 2026-10-07 · Keeper · pilot log 001 (2026-10-06, first game): piloting pattern, ramp, removal, wheel momentum; no list changes yet
+- 2026-10-19 · Keeper · deck change: torbran-v1 merged as v1.3.0 (22 swaps; Torbran, the wheels that do something else, the answers)

@@ -1,7 +1,7 @@
 {
  "slug": "sharknado",
  "branch": "torbran-v1",
- "v": 2,
+ "v": 3,
  "opened": "2026-10-11",
  "why": "try: trade \u2014 partial \u2014 the model cannot fully see Collective Defiance, so its rows are silent about it; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Mana Geyser assumes 50% of opponents' lands are still tapped on your turn (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate)",
  "objective": {
@@ -228,5 +228,39 @@
    "strength": null,
    "why": "try: trade \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate); Fevered Visions deals its 2 on every opponent turn the authored OPPONENT_HAND (4, 7 after a wheel) meets its 4-card condition (an authored rate); Mind's Eye pays only from mana left untapped at the end of your turn (a floor)"
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-10-19",
+  "as_version": "v1.3.0",
+  "why": "the pilot plays it on printed proxies from 2026-10-19 and may order the cards; resilience is the fleet's lowest rating component and this branch carries the answers (Silence, Snapback, March of Swirling Mist) plus Torbran's multiplier",
+  "base_version": 7,
+  "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+  "accepted_on": {
+   "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+   "state": "a trade",
+   "objective": {
+    "axis": "kill_by_6",
+    "op": ">=",
+    "value": 0.25,
+    "why": "Make Brallin's pings lethal and both commanders bigger faster: wheels that also remove (Collective Defiance, Fateful Showdown, Incendiary Command), multipliers (Lae'zel, Torbran, Alhammarret's Archive), recovery (Boros Charm, Campfire, Command Beacon), Big Score, four red-leaning lands. Champion kill_by_6 0.206 (\u00b10.016) on the 2026-10-11 model; the 17-swap screen read 0.261 (pilot, 2026-10-17)."
+   },
+   "grade": "met",
+   "reading": 0.2804,
+   "harness": {
+    "cast_proofs": null,
+    "iterations": 10000,
+    "model_version": "5fad861f02a4",
+    "seed": 20260826
+   }
+  },
+  "proxy": [
+   "Boros Charm"
+  ]
+ },
+ "merged": {
+  "at": "2026-10-19",
+  "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+  "into_version_before": null,
+  "forced_reason": "played on printed proxies from 2026-10-19; the unowned cards are on the order list (the pilot's call)"
+ }
 }

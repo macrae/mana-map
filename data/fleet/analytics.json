@@ -253,7 +253,7 @@
     {
      "as_of": "2026-10-17",
      "bracket": 4,
-     "current_list": true,
+     "current_list": false,
      "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
      "score": 31
     }
@@ -312,11 +312,11 @@
    {
     "dti_bracket": 4,
     "dti_score": 31,
-    "floor": 4,
+    "floor": 3,
     "reading_as_of": "2026-10-17",
-    "relation": "equal",
+    "relation": "dti_higher",
     "slug": "sharknado",
-    "stale_list": false,
+    "stale_list": true,
     "target": 4
    },
    {
@@ -405,15 +405,15 @@
    },
    "sharknado": {
     "1": 0.0,
-    "10": 0.983,
+    "10": 0.981,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
-    "5": 0.033,
-    "6": 0.212,
-    "7": 0.652,
-    "8": 0.889,
-    "9": 0.961
+    "5": 0.038,
+    "6": 0.278,
+    "7": 0.7,
+    "8": 0.898,
+    "9": 0.959
    },
    "ur-dragon": {
     "1": 0.0,
@@ -503,15 +503,15 @@
    },
    "sharknado": {
     "1": 0.999,
-    "10": 0.876,
-    "2": 0.996,
-    "3": 0.9,
-    "4": 0.791,
-    "5": 0.725,
-    "6": 0.721,
-    "7": 0.803,
-    "8": 0.858,
-    "9": 0.881
+    "10": 0.886,
+    "2": 0.997,
+    "3": 0.896,
+    "4": 0.793,
+    "5": 0.731,
+    "6": 0.737,
+    "7": 0.821,
+    "8": 0.869,
+    "9": 0.898
    },
    "ur-dragon": {
     "1": 0.999,
@@ -601,15 +601,15 @@
    },
    "sharknado": {
     "1": 0.999,
-    "10": 9.54,
-    "2": 2.142,
-    "3": 3.149,
-    "4": 3.988,
-    "5": 4.736,
-    "6": 5.49,
-    "7": 6.393,
-    "8": 7.401,
-    "9": 8.455
+    "10": 9.681,
+    "2": 2.139,
+    "3": 3.144,
+    "4": 3.977,
+    "5": 4.729,
+    "6": 5.496,
+    "7": 6.412,
+    "8": 7.449,
+    "9": 8.54
    },
    "ur-dragon": {
     "1": 0.999,
@@ -671,9 +671,9 @@
     "total_cents": 25159
    },
    {
-    "as_of": "2026-10-09",
+    "as_of": "2026-10-19",
     "slug": "sharknado",
-    "total_cents": 65114
+    "total_cents": 70410
    },
    {
     "as_of": "2026-10-09",
@@ -948,7 +948,7 @@
      "missed_land_drop_rate": "below the fleet median",
      "mulligan_rate": "below the fleet median",
      "never_kills_rate": "below the fleet median",
-     "stall_two_in_a_row": "below the fleet median"
+     "stall_two_in_a_row": "above the fleet median"
     },
     "group": {
      "answer_cards": "below the bracket median",
@@ -960,7 +960,7 @@
      "missed_land_drop_rate": "below the bracket median",
      "mulligan_rate": "below the bracket median",
      "never_kills_rate": "below the bracket median",
-     "stall_two_in_a_row": "below the bracket median"
+     "stall_two_in_a_row": "above the bracket median"
     }
    },
    "price": {
@@ -3000,14 +3000,14 @@
    "benchmark": {
     "answer_cards": {
      "basis": "CAPACITY counted from card_roles.json, not a measured response",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "source": "benchmark.json#metrics.response.answer_cards",
      "stale": false,
-     "value": 11
+     "value": 14
     },
     "classes_covered": {
      "basis": "of 15 answer classes; CAPACITY",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "source": "benchmark.json#metrics.response.classes_covered",
      "stale": false,
      "value": 5
@@ -3016,56 +3016,56 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.9803,
-      0.9854
+      0.9781,
+      0.9835
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.983
+     "value": 0.981
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.2041,
-      0.2201
+      0.2693,
+      0.2869
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.212
+     "value": 0.278
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8827,
-      0.895
+      0.8919,
+      0.9038
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.889
+     "value": 0.898
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 4.736
+     "value": 4.729
     },
     "mana_stdev_turn_five": {
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.0219
+     "value": 1.0125
     },
     "median_kill_turn": {
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.median_kill_turn",
      "stale": false,
@@ -3074,14 +3074,14 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.1661,
-      0.1809
+      0.162,
+      0.1767
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.1734
+     "value": 0.1692
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -3089,7 +3089,7 @@
       0.1942,
       0.21
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mulligan_rate",
      "stale": false,
@@ -3098,59 +3098,59 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0146,
-      0.0197
+      0.0165,
+      0.0219
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.017
+     "value": 0.019
     }
    },
    "bracket": {
     "dti_bracket": 4,
-    "floor": 4,
-    "floor_name": "Optimized",
+    "floor": 3,
+    "floor_name": "Upgraded",
     "group": "B4",
     "group_basis": "target",
     "target": 4
    },
-   "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+   "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
    "diagnostic": {
     "harness_version": 2,
     "missed_land_drop_by_five": {
      "ci95": [
-      0.4026,
-      0.4219
+      0.396,
+      0.4153
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "diagnostic.json#mana.missed_land_drop_by_five",
      "stale": false,
-     "value": 0.4122
+     "value": 0.4056
     },
     "mulliganed": {
      "ci95": [
-      0.1963,
-      0.2121
+      0.1996,
+      0.2155
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "diagnostic.json#mana.mulliganed",
      "stale": false,
-     "value": 0.2041
+     "value": 0.2074
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.1378,
-      0.1516
+      0.1121,
+      0.1248
      ],
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.1446
+     "value": 0.1183
     }
    },
    "dti": {
@@ -3171,11 +3171,11 @@
     },
     "bracket": 4,
     "floor_vs_dti": {
-     "floor": 4,
-     "floor_decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
-     "floor_name": "Optimized",
+     "floor": 3,
+     "floor_decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+     "floor_name": "Upgraded",
      "reading_as_of": "2026-10-17",
-     "relation": "equal",
+     "relation": "dti_higher",
      "their_bracket": 4
     },
     "max_score": 96,
@@ -3205,16 +3205,16 @@
      "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
      "n": 1,
      "source": "deckcheck.json#readings[-1].score",
-     "stale": false,
+     "stale": true,
      "value": 31
     },
-    "stale_list": false
+    "stale_list": true
    },
    "format": null,
    "lifecycle": null,
    "member": true,
    "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.855,
+    "commander_cast_by_turn_6_rate": 0.843,
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
@@ -3237,7 +3237,7 @@
      "missed_land_drop_rate": "below the fleet median",
      "mulligan_rate": "below the fleet median",
      "never_kills_rate": "below the fleet median",
-     "stall_two_in_a_row": "above the fleet median"
+     "stall_two_in_a_row": "below the fleet median"
     },
     "group": {
      "answer_cards": "below the bracket median",
@@ -3249,20 +3249,20 @@
      "missed_land_drop_rate": "below the bracket median",
      "mulligan_rate": "below the bracket median",
      "never_kills_rate": "below the bracket median",
-     "stall_two_in_a_row": "above the bracket median"
+     "stall_two_in_a_row": "below the bracket median"
     }
    },
    "price": {
-    "as_of": "2026-10-09",
+    "as_of": "2026-10-19",
     "missing": 0,
     "source": "manapool",
     "total_cents": {
-     "as_of": "2026-10-09",
+     "as_of": "2026-10-19",
      "basis": "manapool; dated",
-     "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
      "source": "prices.json#total_cents",
      "stale": false,
-     "value": 65114
+     "value": 70410
     }
    },
    "rating": null,
@@ -4275,7 +4275,7 @@
   "answer_cards": {
    "max": 22,
    "median": 17.0,
-   "min": 11,
+   "min": 13,
    "n": 6
   },
   "dti_score": {
@@ -4285,13 +4285,13 @@
    "n": 6
   },
   "kill_by_turn_6": {
-   "max": 0.238,
+   "max": 0.278,
    "median": 0.0685,
    "min": 0.0,
    "n": 6
   },
   "kill_by_turn_8": {
-   "max": 0.889,
+   "max": 0.898,
    "median": 0.61,
    "min": 0.003,
    "n": 6
@@ -4311,7 +4311,7 @@
   "missed_land_drop_rate": {
    "max": 0.2466,
    "median": 0.2206,
-   "min": 0.1734,
+   "min": 0.1692,
    "n": 6
   },
   "mulligan_rate": {
@@ -4323,12 +4323,12 @@
   "never_kills_rate": {
    "max": 0.888,
    "median": 0.0735,
-   "min": 0.017,
+   "min": 0.019,
    "n": 6
   },
   "stall_two_in_a_row": {
    "max": 0.1989,
-   "median": 0.1436,
+   "median": 0.1304,
    "min": 0.0072,
    "n": 6
   }
@@ -4409,7 +4409,7 @@
     "answer_cards": {
      "max": 21,
      "median": 18,
-     "min": 11,
+     "min": 14,
      "n": 3
     },
     "dti_score": {
@@ -4419,13 +4419,13 @@
      "n": 3
     },
     "kill_by_turn_6": {
-     "max": 0.212,
+     "max": 0.278,
      "median": 0.04,
      "min": 0.0,
      "n": 3
     },
     "kill_by_turn_8": {
-     "max": 0.889,
+     "max": 0.898,
      "median": 0.648,
      "min": 0.003,
      "n": 3
@@ -4433,19 +4433,19 @@
     "mana_at_turn_five": {
      "max": 5.171,
      "median": 5.114,
-     "min": 4.736,
+     "min": 4.729,
      "n": 3
     },
     "missed_land_drop_by_five": {
      "max": 0.513,
      "median": 0.4431,
-     "min": 0.4122,
+     "min": 0.4056,
      "n": 3
     },
     "missed_land_drop_rate": {
      "max": 0.2466,
      "median": 0.2102,
-     "min": 0.1734,
+     "min": 0.1692,
      "n": 3
     },
     "mulligan_rate": {
@@ -4457,12 +4457,12 @@
     "never_kills_rate": {
      "max": 0.888,
      "median": 0.045,
-     "min": 0.017,
+     "min": 0.019,
      "n": 3
     },
     "stall_two_in_a_row": {
-     "max": 0.1446,
-     "median": 0.1425,
+     "max": 0.1425,
+     "median": 0.1183,
      "min": 0.0072,
      "n": 3
     }
@@ -4549,7 +4549,7 @@
    "ingris-infect": "8fee61eb5aa66f25c6daff09a15d10c45d81add6340af7b3b021386145611f10",
    "meren-recursion": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b",
    "radagast": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2",
-   "sharknado": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+   "sharknado": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
    "sisay": "a4bcbd509313b155837b838367691f794ef8f03f6640e22cc71a7e1164e62f4d",
    "ur-dragon": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
    "yawgmoth-swarm": "3ddfb869fa7b2ae006eeb0771c1ffb95aa9df8149fbc2ba3feae4edd2bcd2a59",
