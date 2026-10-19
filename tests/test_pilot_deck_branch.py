@@ -716,3 +716,16 @@ def test_a_branch_says_when_the_deck_moved_under_it(modern_deck, capsys):
     meta_file.write_text(json.dumps(doc))
     assert deck_branch.base_moved("md", "b") is None
     assert "base_moved" not in deck_branch.one("md", "b")
+
+
+def test_the_source_subcommand_runs_after_the_new_subcommand_defined_a_local(modern_deck, capsys):
+    """`deck-branch <slug> source <name>` died in UnboundLocalError (goblin-storm,
+    2026-10-18): the `new` action bound a local named `source` further up the
+    same dispatcher, which made every `source(...)` call in that function read
+    the unassigned local instead of the module function. Re-introduce the bug
+    (name the `new` action's list variable `source` again) and this raises."""
+    deck_branch.new("md", "b", SIXTY_MAIN + SIXTY_SIDE)
+    deck_branch.main(argparse.Namespace(slug="md", action="source", name="b",
+                                        json=False, proxy=False))
+    out = capsys.readouterr().out
+    assert out.strip(), "the sourcing report printed nothing"

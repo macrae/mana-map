@@ -1788,13 +1788,16 @@ def _dispatch(args):
         # NO --from MEANS THE DECK'S OWN LIST. It used to reach `read_list(None)`
         # and die in a TypeError traceback (the Story 6 trial, 2026-10-07); the
         # list a branch usually starts from is the one the deck runs today.
-        source = getattr(args, "source", None)
-        if not source:
-            source = deck_dir(slug) / "decklist.txt"
-            if not source.exists():
+        # `from_list`, not `source`: a local named `source` here made the whole
+        # function's `source` a local, and `deck-branch <slug> source <name>`
+        # died in UnboundLocalError (found on goblin-storm, 2026-10-18).
+        from_list = getattr(args, "source", None)
+        if not from_list:
+            from_list = deck_dir(slug) / "decklist.txt"
+            if not from_list.exists():
                 raise SystemExit(f"{slug} has no decklist.txt to branch from — pass --from <file>")
             print(f"  (no --from: starting from {slug}'s own decklist.txt)")
-        got = new(slug, branch, check_in.read_list(source),
+        got = new(slug, branch, check_in.read_list(from_list),
                   why=getattr(args, "why", None), objective=objective)
         print(f"Opened {got['path']}  ({got['size']} cards)")
         print(f"  objective: {objective['axis']} {objective['op']} {objective['value']}"
