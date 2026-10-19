@@ -398,6 +398,18 @@
     "8": 0.003,
     "9": 0.029
    },
+   "keen-engineering": {
+    "1": 0.0,
+    "10": 0.511,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.002,
+    "8": 0.04,
+    "9": 0.21
+   },
    "meren-recursion": {
     "1": 0.0,
     "10": 0.813,
@@ -495,6 +507,18 @@
     "7": 0.578,
     "8": 0.604,
     "9": 0.619
+   },
+   "keen-engineering": {
+    "1": 1.0,
+    "10": 0.66,
+    "2": 0.999,
+    "3": 0.937,
+    "4": 0.846,
+    "5": 0.765,
+    "6": 0.704,
+    "7": 0.663,
+    "8": 0.649,
+    "9": 0.656
    },
    "meren-recursion": {
     "1": 0.999,
@@ -594,6 +618,18 @@
     "8": 7.394,
     "9": 8.225
    },
+   "keen-engineering": {
+    "1": 1.0,
+    "10": 10.316,
+    "2": 2.147,
+    "3": 3.439,
+    "4": 4.361,
+    "5": 5.759,
+    "6": 6.778,
+    "7": 7.653,
+    "8": 8.518,
+    "9": 9.411
+   },
    "meren-recursion": {
     "1": 0.999,
     "10": 7.604,
@@ -666,6 +702,11 @@
     "as_of": "2026-10-09",
     "slug": "ingris-infect",
     "total_cents": 72558
+   },
+   {
+    "as_of": "2026-10-19",
+    "slug": "keen-engineering",
+    "total_cents": 7538
    },
    {
     "as_of": "2026-10-09",
@@ -1540,11 +1581,11 @@
      "dti_score": "above the fleet median",
      "kill_by_turn_6": "above the fleet median",
      "kill_by_turn_8": "above the fleet median",
-     "mana_at_turn_five": "above the fleet median",
+     "mana_at_turn_five": "below the fleet median",
      "missed_land_drop_by_five": "above the fleet median",
      "missed_land_drop_rate": "above the fleet median",
      "mulligan_rate": "above the fleet median",
-     "never_kills_rate": "above the fleet median",
+     "never_kills_rate": "below the fleet median",
      "stall_two_in_a_row": "above the fleet median"
     },
     "group": {
@@ -2630,6 +2671,241 @@
    },
    "slug": "ingris-infect",
    "stage": null,
+   "survey": {
+    "absent_because": "no --feel scores logged (`deck-notes add … --feel power=4`)",
+    "source": "log.jsonl#feel"
+   },
+   "table": {
+    "absent_because": "no Forge run on file",
+    "source": "info.json#simulation"
+   }
+  },
+  {
+   "apart": false,
+   "benchmark": {
+    "answer_cards": {
+     "basis": "CAPACITY counted from card_roles.json, not a measured response",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "source": "benchmark.json#metrics.response.answer_cards",
+     "stale": false,
+     "value": 15
+    },
+    "classes_covered": {
+     "basis": "of 15 answer classes; CAPACITY",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "source": "benchmark.json#metrics.response.classes_covered",
+     "stale": false,
+     "value": 8
+    },
+    "harness_version": 1,
+    "kill_by_turn_10": {
+     "basis": "Wilson 95% from k = rate·n at n = 10000",
+     "ci95": [
+      0.5012,
+      0.5208
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.kill_by_turn_10",
+     "stale": false,
+     "value": 0.511
+    },
+    "kill_by_turn_6": {
+     "basis": "Wilson 95% from k = rate·n at n = 10000",
+     "ci95": [
+      0.0,
+      0.0004
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.kill_by_turn_6",
+     "stale": false,
+     "value": 0.0
+    },
+    "kill_by_turn_8": {
+     "basis": "Wilson 95% from k = rate·n at n = 10000",
+     "ci95": [
+      0.0363,
+      0.044
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.kill_by_turn_8",
+     "stale": false,
+     "value": 0.04
+    },
+    "mana_at_turn_five": {
+     "basis": "a mean; no interval is stored",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
+     "stale": false,
+     "value": 5.759
+    },
+    "mana_stdev_turn_five": {
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
+     "stale": false,
+     "value": 1.2942
+    },
+    "median_kill_turn": {
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.median_kill_turn",
+     "stale": false,
+     "value": 10
+    },
+    "missed_land_drop_rate": {
+     "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
+     "ci95": [
+      0.1429,
+      0.1569
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
+     "stale": false,
+     "value": 0.1498
+    },
+    "mulligan_rate": {
+     "basis": "Wilson 95% from k = rate·n at n = 10000",
+     "ci95": [
+      0.152,
+      0.1663
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.mana_screw.mulligan_rate",
+     "stale": false,
+     "value": 0.159
+    },
+    "never_kills_rate": {
+     "basis": "Wilson 95% from k = rate·n at n = 10000",
+     "ci95": [
+      0.4792,
+      0.4988
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.never_kills_rate",
+     "stale": false,
+     "value": 0.489
+    }
+   },
+   "bracket": {
+    "dti_bracket": null,
+    "floor": 1,
+    "floor_name": "Exhibition",
+    "group": "B2",
+    "group_basis": "target",
+    "target": 2
+   },
+   "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+   "diagnostic": {
+    "harness_version": 2,
+    "missed_land_drop_by_five": {
+     "ci95": [
+      0.3058,
+      0.324
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "diagnostic.json#mana.missed_land_drop_by_five",
+     "stale": false,
+     "value": 0.3148
+    },
+    "mulliganed": {
+     "ci95": [
+      0.1589,
+      0.1735
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "diagnostic.json#mana.mulliganed",
+     "stale": false,
+     "value": 0.1661
+    },
+    "stall_two_in_a_row": {
+     "ci95": [
+      0.0867,
+      0.098
+     ],
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 10000,
+     "source": "diagnostic.json#stall.two_in_a_row",
+     "stale": false,
+     "value": 0.0922
+    }
+   },
+   "dti": {
+    "absent_because": "no deckcheck.json — scan on DeckCheck, then `deckcheck <slug> --write`",
+    "source": "deckcheck.json"
+   },
+   "format": null,
+   "lifecycle": null,
+   "member": true,
+   "own_goldfish": {
+    "commander_cast_by_turn_6_rate": 0.997,
+    "comparable": false,
+    "declared_flags": {
+     "model_combat": true,
+     "model_discard": true,
+     "model_draw": true
+    },
+    "model_version": "b025d0102196",
+    "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
+   },
+   "placements": {
+    "fleet": {
+     "answer_cards": "below the fleet median",
+     "kill_by_turn_6": "below the fleet median",
+     "kill_by_turn_8": "below the fleet median",
+     "mana_at_turn_five": "above the fleet median",
+     "missed_land_drop_by_five": "below the fleet median",
+     "missed_land_drop_rate": "below the fleet median",
+     "mulligan_rate": "below the fleet median",
+     "never_kills_rate": "above the fleet median",
+     "stall_two_in_a_row": "below the fleet median"
+    },
+    "group": {
+     "answer_cards": "no band (n=1)",
+     "kill_by_turn_6": "no band (n=1)",
+     "kill_by_turn_8": "no band (n=1)",
+     "mana_at_turn_five": "no band (n=1)",
+     "missed_land_drop_by_five": "no band (n=1)",
+     "missed_land_drop_rate": "no band (n=1)",
+     "mulligan_rate": "no band (n=1)",
+     "never_kills_rate": "no band (n=1)",
+     "stall_two_in_a_row": "no band (n=1)"
+    }
+   },
+   "price": {
+    "as_of": "2026-10-19",
+    "missing": 0,
+    "source": "manapool",
+    "total_cents": {
+     "as_of": "2026-10-19",
+     "basis": "manapool; dated",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "source": "prices.json#total_cents",
+     "stale": false,
+     "value": 7538
+    }
+   },
+   "rating": null,
+   "record": {
+    "by_version": [],
+    "cause_counts": {},
+    "draw": 0,
+    "games": 0,
+    "last_played": null,
+    "loss": 0,
+    "unmatched_games": [],
+    "win": 0
+   },
+   "slug": "keen-engineering",
+   "stage": "sleeved",
    "survey": {
     "absent_because": "no --feel scores logged (`deck-notes add … --feel power=4`)",
     "source": "log.jsonl#feel"
@@ -4286,9 +4562,9 @@
  "fleet_bands": {
   "answer_cards": {
    "max": 22,
-   "median": 17.0,
+   "median": 16,
    "min": 13,
-   "n": 6
+   "n": 7
   },
   "dti_score": {
    "max": 46,
@@ -4298,54 +4574,102 @@
   },
   "kill_by_turn_6": {
    "max": 0.278,
-   "median": 0.0685,
+   "median": 0.059,
    "min": 0.0,
-   "n": 6
+   "n": 7
   },
   "kill_by_turn_8": {
    "max": 0.898,
-   "median": 0.5685,
+   "median": 0.565,
    "min": 0.003,
-   "n": 6
+   "n": 7
   },
   "mana_at_turn_five": {
    "max": 5.944,
-   "median": 5.129,
+   "median": 5.144,
    "min": 4.651,
-   "n": 6
+   "n": 7
   },
   "missed_land_drop_by_five": {
    "max": 0.513,
-   "median": 0.456,
-   "min": 0.3986,
-   "n": 6
+   "median": 0.4431,
+   "min": 0.3148,
+   "n": 7
   },
   "missed_land_drop_rate": {
    "max": 0.2466,
-   "median": 0.2207,
-   "min": 0.1692,
-   "n": 6
+   "median": 0.2104,
+   "min": 0.1498,
+   "n": 7
   },
   "mulligan_rate": {
    "max": 0.254,
-   "median": 0.217,
-   "min": 0.202,
-   "n": 6
+   "median": 0.21,
+   "min": 0.159,
+   "n": 7
   },
   "never_kills_rate": {
    "max": 0.888,
-   "median": 0.1025,
+   "median": 0.11,
    "min": 0.019,
-   "n": 6
+   "n": 7
   },
   "stall_two_in_a_row": {
    "max": 0.1989,
-   "median": 0.1303,
+   "median": 0.1183,
    "min": 0.0072,
-   "n": 6
+   "n": 7
   }
  },
  "groups": {
+  "B2": {
+   "bands": {
+    "answer_cards": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "benchmark.answer_cards"
+    },
+    "dti_score": {
+     "absent_because": "fewer than 3 decks carry it (n=0)",
+     "source": "dti.score"
+    },
+    "kill_by_turn_6": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "benchmark.kill_by_turn_6"
+    },
+    "kill_by_turn_8": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "benchmark.kill_by_turn_8"
+    },
+    "mana_at_turn_five": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "benchmark.mana_at_turn_five"
+    },
+    "missed_land_drop_by_five": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "diagnostic.missed_land_drop_by_five"
+    },
+    "missed_land_drop_rate": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "benchmark.missed_land_drop_rate"
+    },
+    "mulligan_rate": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "benchmark.mulligan_rate"
+    },
+    "never_kills_rate": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "benchmark.never_kills_rate"
+    },
+    "stall_two_in_a_row": {
+     "absent_because": "fewer than 3 decks carry it (n=1)",
+     "source": "diagnostic.stall_two_in_a_row"
+    }
+   },
+   "members": [
+    "keen-engineering"
+   ],
+   "n": 1
+  },
   "B3": {
    "bands": {
     "answer_cards": {
@@ -4476,6 +4800,7 @@
   "The survey is the pilot's own 1-5 scores, authored at log time; it is never a band member and a mean is shown only with its n, min and max.",
   "A bracket group needs 3 members for a band; below that the band is absent and the placement says so.",
   "The fleet is the SLEEVED decks: a bracket group bands and ranks sleeved Commander decks only; a brewing or bench deck keeps its row (`member: false`) and joins no group.",
+  "B2 has 1 member(s): no bands, placements read 'no band'.",
   "B4 has 2 member(s): no bands, placements read 'no band'."
  ],
  "meta": {
@@ -4540,6 +4865,7 @@
    "hapatra": "824c1eebd641e9f210336fc33660ce5665b45905437071e12036849a443f1e2e",
    "heliod": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
    "ingris-infect": "8fee61eb5aa66f25c6daff09a15d10c45d81add6340af7b3b021386145611f10",
+   "keen-engineering": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
    "meren-recursion": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b",
    "radagast": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2",
    "sharknado": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
@@ -4567,6 +4893,7 @@
    "hapatra": "9ea49ecb247d",
    "heliod": "b025d0102196",
    "ingris-infect": "61c2ffdcbefb",
+   "keen-engineering": "b025d0102196",
    "meren-recursion": "b025d0102196",
    "radagast": "9ea49ecb247d",
    "sharknado": "b025d0102196",

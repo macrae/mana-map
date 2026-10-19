@@ -1,0 +1,383 @@
+{
+ "slug": "keen-engineering",
+ "tier": "★",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 1 decks and claims no significance.",
+ "bracket": {
+  "key": 2,
+  "source": "target",
+  "floor": 1,
+  "floor_name": "Exhibition",
+  "within_target": true
+ },
+ "components": [
+  {
+   "name": "speed",
+   "weight": 0.12,
+   "weight_validity": 1.0,
+   "weight_effective": 0.2667,
+   "sub_score": 100.0,
+   "sub_ci": [
+    100.0,
+    100.0
+   ],
+   "placement": null,
+   "anchor": 100.0,
+   "method": "anchor only (placement withheld): placement of kill_by_turn_8 within bracket 2 (n=1); anchor kill_by_turn_10 / 0.5 for a bracket-2 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
+   "inputs": [
+    {
+     "figure": "kill_by_turn_8",
+     "value": 0.04,
+     "ci95": [
+      0.0363,
+      0.044
+     ],
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.kill_by_turn_8",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "kill_by_turn_10",
+     "value": 0.511,
+     "ci95": [
+      0.5012,
+      0.5208
+     ],
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.kill_by_turn_10",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.power-level",
+     "quote": "the sharpest line between them is expected game length"
+    }
+   ]
+  },
+  {
+   "name": "mana",
+   "weight": 0.08,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1778,
+   "sub_score": 100.0,
+   "sub_ci": [
+    100.0,
+    100.0
+   ],
+   "placement": null,
+   "anchor": 100.0,
+   "method": "anchor only (placement withheld): placement of missed_land_drop_rate (lower is better) within bracket 2; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "inputs": [
+    {
+     "figure": "missed_land_drop_rate",
+     "value": 0.1498,
+     "ci95": [
+      0.1429,
+      0.1569
+     ],
+     "n": 10000,
+     "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.consistency",
+     "value": 0.937,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.mana-base",
+     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+    }
+   ]
+  },
+  {
+   "name": "resilience",
+   "weight": 0.12,
+   "weight_validity": 1.0,
+   "weight_effective": 0.2667,
+   "sub_score": 90.0,
+   "sub_ci": [
+    90.0,
+    90.0
+   ],
+   "placement": null,
+   "anchor": 90.0,
+   "method": "anchor only (placement withheld): placement of answer_cards within bracket 2; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "inputs": [
+    {
+     "figure": "answer_cards",
+     "value": 15,
+     "ci95": null,
+     "n": null,
+     "source": "benchmark.json#metrics.response.answer_cards",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.interaction-breadth",
+     "value": 4,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#interaction-breadth (classes answered of 5)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "interactive suite"
+    }
+   ]
+  },
+  {
+   "name": "construction",
+   "weight": 0.13,
+   "weight_validity": 1.0,
+   "weight_effective": 0.2889,
+   "sub_score": 64.29,
+   "sub_ci": [
+    64.29,
+    64.29
+   ],
+   "placement": null,
+   "anchor": 64.29,
+   "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
+   "inputs": [
+    {
+     "figure": "audit.mana-base",
+     "value": 40,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#mana-base (verdict over)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.ramp",
+     "value": 18,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#ramp (verdict over)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.card-advantage",
+     "value": 10,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#card-advantage (verdict at)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.interaction",
+     "value": 9,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#interaction (verdict at)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.sweepers",
+     "value": 2,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#sweepers (verdict at)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.protection",
+     "value": 4,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#protection (verdict under)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "audit.threat-density",
+     "value": 5,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#threat-density (verdict at)",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.threat-density",
+     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+    }
+   ]
+  }
+ ],
+ "withheld": [
+  {
+   "component": "dti",
+   "reason": "no DeckCheck reading (deckcheck.json)"
+  },
+  {
+   "component": "table_record",
+   "reason": "0 game(s) logged; 5 needed"
+  },
+  {
+   "component": "pilot_feel",
+   "reason": "0 surveyed game(s); 3 needed"
+  },
+  {
+   "component": "forge",
+   "reason": "no Forge run on the current list"
+  },
+  {
+   "component": "judgment",
+   "reason": "no deck-rater pass yet"
+  }
+ ],
+ "limits": [
+  "A rating is ★ coaching over ◆ inputs; the score never gates. The floor (bracket_report.json) is the only bracket gate.",
+  "calibrate.py refuses a verdict below 10 decks with 20 games each; no figure here is checked against outcomes yet (`rating --calibrate` reports the refusal with today's n).",
+  "Goldfish kill is one column, never the rule: the benchmark is an unopposed ceiling with no blockers and no removal, and a combo or control deck reads slow for not attacking; a win the goldfish cannot see (`alt_win_cards`) multiplies speed's weight by 0.5.",
+  "Forge is not a power read until the harness work is done (the pilot's rule, 2026-10-18): its component ships at weight 0.00 and is shown only for a run on the current list.",
+  "DeckCheck's Threat Index is a component at prior weight 0.15 (2026-10-19): one LLM's dated read of card quality, withheld when it describes another list; its interval is a declared prior sd of 4.0 on the anchor until three decks carry two readings on one list; its score places within the bracket, its twelve rubric grades anchor.",
+  "Diagnostic engine figures are read against each deck's own declaration and are never ranked across decks; they are evidence for the argument, not a component.",
+  "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
+  "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
+  "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
+  "speed validity unchecked: no engine.json",
+  "rank over n=1 decks; no significance claim"
+ ],
+ "context": {
+  "dti": null,
+  "floor_vs_target": "floor 1, target 2"
+ },
+ "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+ "fleet_sha": "7b9040337361",
+ "model_version": "fd483871b754",
+ "spec_version": 2,
+ "open_questions": [],
+ "iterations": 0,
+ "verifier": null,
+ "code_score": 87.0,
+ "score_point": 87.0,
+ "score": 87.6,
+ "score_ci": [
+  79.1,
+  94.3
+ ],
+ "grade": "A",
+ "grade_range": [
+  "B",
+  "A"
+ ],
+ "grade_display": "A",
+ "grade_probabilities": {
+  "A": 0.929,
+  "B": 0.071,
+  "C": 0.0,
+  "D": 0.0,
+  "F": 0.0
+ },
+ "uncertainty": {
+  "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
+  "k": 2000,
+  "seed": 20261019,
+  "kappa": 20.0,
+  "level": 0.9,
+  "judgment_sd": 5.0,
+  "placement_bin": "uniform over ±50/(n−1) percentile points",
+  "dti_prior_read_sd": 4.0,
+  "priors": "every sd here is declared, not estimated (docs/known-issues.md §27)"
+ },
+ "sensitivity": {
+  "leave_one_out": {
+   "speed": {
+    "score": 82.3,
+    "grade": "A"
+   },
+   "mana": {
+    "score": 84.2,
+    "grade": "A"
+   },
+   "resilience": {
+    "score": 85.9,
+    "grade": "A"
+   },
+   "construction": {
+    "score": 96.2,
+    "grade": "A"
+   }
+  },
+  "flips": [
+   {
+    "component": "construction",
+    "share_now": 0.289,
+    "share_at_flip": 0.508,
+    "boundary": 80,
+    "grade_at_flip": "B",
+    "direction": "raise"
+   }
+  ]
+ },
+ "concordance": {
+  "level": "withheld",
+  "why": "group of 1 below 3",
+  "instruments": {},
+  "of": 1,
+  "spread": null,
+  "outliers": [],
+  "group": null
+ },
+ "resolution": "the 90% interval spans 1 grade boundary (80); concordance withheld",
+ "judgment": null,
+ "rank": {
+  "position": 1,
+  "of": 1,
+  "group": [
+   "keen-engineering"
+  ],
+  "acceptability": {
+   "1": 1.0
+  },
+  "basis": {
+   "keen-engineering": "this document"
+  },
+  "scores": {
+   "keen-engineering": 87.6
+  }
+ }
+}

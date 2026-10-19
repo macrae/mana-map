@@ -979,7 +979,7 @@
         "manual_prose": false,
         "pending": false,
         "log_annotations": false,
-        "deck_versions": false,
+        "deck_versions": true,
         "captains_log": false,
         "watchlist": false,
         "considering": false,
@@ -993,14 +993,27 @@
       "branches": [],
       "branches_open": 0,
       "image": "https://cards.scryfall.io/art_crop/front/a/d/ad0b5c09-5075-408e-84c5-1095354ac53e.jpg",
-      "paper": null,
-      "locked": false,
-      "version": null,
+      "paper": {
+        "version": 1,
+        "release": "v1.0.0",
+        "built_at": "2026-10-19",
+        "note": "sleeved as printed 2026-10-19 — the pilot's bracket-2 power-down deck",
+        "locked": true,
+        "in_sync": true,
+        "versions_behind": 0,
+        "drift": null
+      },
+      "locked": true,
+      "version": {
+        "release": "v1.0.0",
+        "version": 1
+      },
       "deletable": false,
       "undeletable_because": [
-        "it went to press — `manuals/p/keen-engineering.html` is a published record; archive it instead (`deck-state keen-engineering retire`)"
+        "it went to press — `manuals/p/keen-engineering.html` is a published record; archive it instead (`deck-state keen-engineering retire`)",
+        "it is SLEEVED — withdraw the lock and archive it, so `deck_is_apart` can tell the branches its cards are free"
       ],
-      "stage": "bench"
+      "stage": "sleeved"
     },
     {
       "slug": "meren-recursion",
