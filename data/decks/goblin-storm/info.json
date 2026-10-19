@@ -17,7 +17,8 @@
     "stale": [],
     "invalid": [
       "engine",
-      "tutors"
+      "tutors",
+      "CONTEXT.md"
     ],
     "verified": true,
     "missing": [
@@ -2551,12 +2552,12 @@
     ]
   },
   "paper": {
-    "version": 1,
-    "sha": "3c2f476f08b8",
-    "decklist_sha256": "c8c1c7ddaa72bfbcd2c88894246939bd4088f2abcd99ec3324e380d4ef1e57fa",
-    "built_at": "2026-07-24",
-    "note": "confirmed against the sleeves 2026-08-25: the sleeved 99 is the repo's V1",
-    "release": "v1.0.0"
+    "version": 2,
+    "sha": "ad5c564355df",
+    "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+    "built_at": "2026-10-19",
+    "note": "sleeved 2026-10-19: eleven of the thirteen adds in; Purphoros, God of the Forge to be found in the collection, Fable of the Mirror-Breaker in the mail",
+    "release": "v1.1.0"
   },
   "record": {
     "games": 2,
@@ -3018,10 +3019,7 @@
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (engine, tutors) — `deck-status goblin-storm` names them; fix before anything else reads them",
-    "DeckCheck copy is V2, sleeved is V1 — `manamap pilot deck-export goblin-storm --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link goblin-storm deckcheck <url>`",
-    "branch `zada-v1`: 19 unproven add(s) under the current harness — `manamap pilot forge-cast-check goblin-storm --branch zada-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `zada-v1` needs 18 card(s) sourced — `manamap pilot deck-branch goblin-storm source zada-v1`",
+    "3 artifact(s) fail their own gate (engine, tutors, CONTEXT.md) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×1, goldfish ×4, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"
