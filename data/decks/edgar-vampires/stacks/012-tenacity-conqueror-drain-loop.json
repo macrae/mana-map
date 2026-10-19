@@ -1,0 +1,551 @@
+{
+  "id": "012",
+  "slug": "tenacity-conqueror-drain-loop",
+  "deck": "edgar-vampires",
+  "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Bloodthirsty Conqueror",
+        "Enduring Tenacity",
+        "lands"
+      ],
+      "opponents": [
+        {
+          "life": 30,
+          "board": [
+            "no instant-speed interaction held"
+          ]
+        },
+        {
+          "life": 12,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{0}",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Enduring Tenacity's trigger",
+        "controller": "you",
+        "note": "you just gained 2 life (any source); Enduring Tenacity's 'Whenever you gain life, target opponent loses that much life' trigger is on the stack targeting opponent 2 (at 12)"
+      }
+    ],
+    "extras": {
+      "context": "BRANCH VERIFICATION (mean-v1, 2026-10-19): Enduring Tenacity is a staged ADD on branch mean-v1, not yet in the 99 — a card under consideration. The strategist read it beside Bloodthirsty Conqueror as a third two-card drain loop and said the combo count stays at six until a stack proves it. Stacks 001 (Exquisite Blood + Vito) and 004 (Conqueror + Vito) are the template: Conqueror is the gain half ('Whenever an opponent loses life, you gain that much life. (Damage causes loss of life.)'), Tenacity would be the loss half ('Whenever you gain life, target opponent loses that much life'). Tenacity also reads 'When Enduring Tenacity dies, if it was a creature, return it to the battlefield under its owner's control. It's an enchantment.' — and whether that clause keeps the loop alive through a destroy effect is PART of the question (round 2). (Tenacity is an Enchantment Creature 4/3 with no lifelink keyword — an earlier draft of this note said otherwise; the seed here is any 2 life gained.)",
+      "your_life": 22,
+      "note_for_the_resolver": "ONE RULES DOMAIN: triggered abilities, life gain and life loss, targeting, and state-based actions, plus Enduring Tenacity's own death-return clause (widened in round 2 at the checker's finding: it decides whether destroy effects break the loop). Do not resolve combat."
+    },
+    "question": "Resolve the loop from this 2-life seed. Is Enduring Tenacity + Bloodthirsty Conqueror deterministic and unbounded exactly as Exquisite Blood + Vito (stack 001) and Conqueror + Vito (stack 004) are, or does anything differ? Walk the mid-loop death of opponent 2 at 12 (dies on which iteration; does Conqueror still trigger off the killing loss; retarget the next Tenacity trigger at opponent 1) and give the iteration count to kill both opponents from the 2-life seed."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Seed: you gained 2 life from some source (your life 22 as given already includes it). Enduring Tenacity's first ability ('Whenever you gain life, target opponent loses that much life' — word for word Vito's text in stacks 001 and 004) triggered once on that single gain event and is on the stack. Its target — opponent 2, at 12 — was locked in when the trigger was put on the stack; 'that much' is 2 for this instance.",
+        "effect": "One Tenacity trigger on the stack targeting opponent 2 for 2. The target is a per-instance choice made at put-on-stack time, not at resolution; the trigger fired once because the seed was one life-gain event of a nonzero amount.",
+        "citations": [
+          {
+            "rule": "115.1d",
+            "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          },
+          {
+            "rule": "119.9",
+            "quote": "Some triggered abilities are written, “Whenever [a player] gains life, . . . .” Such abilities are treated as though they are written, “Whenever a source causes [a player] to gain life, . . . .” If a player gains 0 life, no life gain event has occurred, and these abilities won’t trigger."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Tenacity's trigger resolves (no responses; opponents hold no instant-speed interaction). Opponent 2 loses 2 life: 12 -> 10. That life loss is Bloodthirsty Conqueror's trigger event ('Whenever an opponent loses life, you gain that much life'). Tenacity's effect is life loss, not damage; Conqueror's '(Damage causes loss of life.)' is reminder text saying damage ALSO counts, not a restriction to damage. Conqueror triggers during resolution — but nothing happens yet.",
+        "effect": "Opponent 2 at 10. Conqueror has triggered and is waiting to be put on the stack.",
+        "citations": [
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          },
+          {
+            "rule": "117.2a",
+            "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving. (See rule 603, “Handling Triggered Abilities.”) However, nothing actually happens at the time an ability triggers."
+          },
+          {
+            "rule": "207.2a",
+            "quote": "Reminder text is italicized text within parentheses that summarizes a rule that applies to that card."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The next time a player would receive priority, state-based actions are checked (none apply — opponent 2 is at 10, Conqueror and Tenacity are undamaged), then Conqueror's trigger is put on the stack. It has no targets. It resolves: you gain 2 (22 -> 24). That single life-gain event triggers Tenacity exactly once.",
+        "effect": "You gain 2 per iteration; each Conqueror resolution re-triggers Tenacity. The engine is self-sustaining — Conqueror's trigger condition is the one stack 001 reads on Exquisite Blood and stack 004 reads on this same card.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "The new Tenacity trigger is put on the stack, and a NEW target is chosen for this new instance. You may keep opponent 2 or switch to opponent 1 — each iteration is an independent targeting decision, because choosing targets is part of putting each triggered ability on the stack. You keep opponent 2 while they live.",
+        "effect": "Retargeting between iterations is legal and free; the amount stays 2 because every Conqueror gain is 'that much' of a 2-point loss.",
+        "citations": [
+          {
+            "rule": "603.3d",
+            "quote": "The remainder of the process for putting a triggered ability on the stack is identical to the process for casting a spell listed in rules 601.2c–d."
+          },
+          {
+            "rule": "115.1d",
+            "quote": "The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Loop legality and determinism: each iteration (Tenacity resolves -> opponent loses 2 -> Conqueror triggers -> resolves -> you gain 2 -> Tenacity triggers -> new target) contains no optional 'may', no conditional branch and no cost; once you name the target the outcome is fully predictable, so the whole sequence may be proposed as a shortcut for a stated number of iterations rather than physically performed. Both triggers are mandatory — they trigger automatically. The constant is fixed at the seed's 2 for every iteration.",
+        "effect": "Deterministic and repeatable indefinitely while both permanents remain and a legal target exists: it transfers exactly 2 life per iteration from the targeted opponent to you. Same structure as stacks 001 and 004 with a different constant. (The official Enduring Tenacity ruling of 2024-09-20 agrees: an ability that triggers whenever an opponent loses life and causes you to gain life 'will loop until either you win the game or a player takes an action to break the loop'.)",
+        "citations": [
+          {
+            "rule": "732.1b",
+            "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+          },
+          {
+            "rule": "732.2a",
+            "quote": "At any point in the game, the player with priority may suggest a shortcut by describing a sequence of game choices, for all players, that may be legally taken based on the current game state and the predictable results of the sequence of choices."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Fragility — where this loop DIFFERS from 004 and 001. Every iteration passes priority while a trigger is on the stack, and any player with priority may cast an instant, so each iteration is a window for instant-speed removal. A trigger already on the stack resolves regardless (abilities exist independently of their sources). Removal on Bloodthirsty Conqueror (a plain 5/5 creature) ends the engine after that trigger, as in 004. Removal on Enduring Tenacity does NOT, for destroy-based or toughness-based removal: Tenacity is an Enchantment Creature (4/3) whose text reads 'When Enduring Tenacity dies, if it was a creature, return it to the battlefield under its owner's control. It's an enchantment.' Destroying it moves it to its owner's graveyard — that is 'dies' — and -X/-X to toughness 0 or less puts it there as a state-based action; either way its leaves-the-battlefield ability looks back in time, sees a creature (the intervening 'if' is true on trigger and on resolution), and triggers. That return trigger is put on the stack ABOVE the pending drain trigger the opponent responded to, so it resolves first: Tenacity returns as a new object with every printed ability including 'Whenever you gain life, target opponent loses that much life', now an enchantment only. The pending trigger then resolves, the gain or loss it causes re-triggers the returned Tenacity, and the loop continues without a pause. Only exile, bounce to hand or library, a replacement that sends it somewhere other than the graveyard (so it never 'dies'), countering the return trigger, or removal on Conqueror breaks it; and once returned as a noncreature enchantment it is removed for good by enchantment removal (the intervening 'if it was a creature' is then false) and is immune to -X/-X. Formally, an opponent responds to a proposed shortcut by shortening it: naming the iteration where they will act differently. Here neither opponent holds instant-speed interaction, so the shortcut stands in full.",
+        "effect": "Tenacity + Conqueror shares 004's exposure on Conqueror but is MORE resilient than both 001 and 004 on the other half: destroy and -X/-X on Tenacity return it as an enchantment with the drain ability intact and do not break the loop; the only ways to stop it are exile/bounce/graveyard-replacement on Tenacity, countering its return trigger, any removal on Conqueror, or, after one return, enchantment removal. In THIS scenario no window is exploitable. The official 2024-09-20 ruling agrees that the returned permanent is an enchantment with no other card types.",
+        "citations": [
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast an instant spell any time they have priority."
+          },
+          {
+            "rule": "113.7a",
+            "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+          },
+          {
+            "rule": "701.8a",
+            "quote": "To destroy a permanent, move it from the battlefield to its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          },
+          {
+            "rule": "704.5f",
+            "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard. Regeneration can’t replace this event."
+          },
+          {
+            "rule": "603.6c",
+            "quote": "Leaves-the-battlefield abilities trigger when a permanent moves from the battlefield to another zone"
+          },
+          {
+            "rule": "603.10a",
+            "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities"
+          },
+          {
+            "rule": "603.4",
+            "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing. If the ability triggers, it checks the stated condition again as it resolves. If the condition isn’t true at that time, the ability is removed from the stack and does nothing."
+          },
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          },
+          {
+            "rule": "400.7",
+            "quote": "An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence."
+          },
+          {
+            "rule": "732.2b",
+            "quote": "may either accept the proposed sequence, or shorten it by naming a place where they will make a game choice that’s different than what’s been proposed."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Killing opponent 2: after 6 Tenacity resolutions targeting them (6 x 2 = 12), opponent 2 hits exactly 0 life on iteration 6 — no overkill, the 2-point granularity divides 12 evenly (12 -> 10 -> 8 -> 6 -> 4 -> 2 -> 0). Before any player next receives priority, state-based actions are performed as a single event: opponent 2 loses the game and leaves it. Their owned objects leave with them (none here); this leaving is not itself a state-based action and happens at once.",
+        "effect": "Opponent 2 dies on iteration 6 (the 6th Tenacity resolution). The state-based check runs BEFORE any waiting trigger is put on the stack.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event. If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "800.4a",
+            "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game and any effects which give that player control of any objects or players end. Then, if that player controlled any objects on the stack not represented by cards, those objects cease to exist."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Does Conqueror trigger off the loss that killed opponent 2? Yes. The life-loss event (2 -> 0) occurred while opponent 2 was still in the game, so Conqueror triggered at that moment (nothing happened yet). After state-based actions remove opponent 2, Conqueror's trigger is put on the stack: it is YOUR creature's ability, it has no target, and the only waiting triggers that are kept off the stack after a player leaves are ones that player would have controlled — so yours goes on and resolves normally and you gain 2 (22 + 6 x 2 = 34 after Conqueror resolution 6). That gain triggers Tenacity again. The new Tenacity trigger is put on the stack and targeted fresh: opponent 2 has left the game and is no longer someone you are playing against, so opponent 1 (30) is the only legal 'target opponent' and is chosen. A Tenacity trigger would be removed from the stack only if NO legal target existed. Note the ordering means no Tenacity trigger is ever aimed at a departed player: the trigger that targeted opponent 2 finished resolving before they died, so the illegal-target fizzle rule is never reached in this sequence.",
+        "effect": "The chain crosses opponent 2's death exactly as stacks 001 and 004 cross it: the killing loss still feeds a gain iteration, and the next Tenacity trigger retargets the survivor.",
+        "citations": [
+          {
+            "rule": "117.2a",
+            "quote": "However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+          },
+          {
+            "rule": "117.5",
+            "quote": "the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+          },
+          {
+            "rule": "800.4d",
+            "quote": "If a triggered ability that would be controlled by a player who has left the game would be put onto the stack, it isn’t put on the stack."
+          },
+          {
+            "rule": "glossary:opponent",
+            "quote": "Someone a player is playing against."
+          },
+          {
+            "rule": "603.3d",
+            "quote": "If a choice is required when the triggered ability goes on the stack but no legal choices can be made for it, or if a rule or a continuous effect otherwise makes the ability illegal, the ability is simply removed from the stack."
+          },
+          {
+            "rule": "608.2b",
+            "quote": "If all its targets, for every instance of the word “target,” are now illegal, the spell or ability doesn’t resolve."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Continue the shortcut against opponent 1: iterations 7 through 21 — fifteen Tenacity resolutions at 2 each (30 -> 0, exactly zero again, no overkill). The 21st and final Tenacity resolution puts opponent 1 at 0. State-based actions: opponent 1 loses and leaves; their permanents leave with them. You are the only player remaining, so you win the game immediately and the game ends — the 21st Conqueror trigger (off opponent 1's killing loss) is never put on the stack and never resolves.",
+        "effect": "GAME OVER: you win. Total: 21 Tenacity resolutions (6 for opponent 2 + 15 for opponent 1). Conqueror resolutions: 20 of 21 (the last is mooted by the win). Your life at game end: 22 + 20 x 2 = 62.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.5",
+            "quote": "If a player loses the game, that player leaves the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+          },
+          {
+            "rule": "104.1",
+            "quote": "A game ends immediately when a player wins, when the game is a draw, or when the game is restarted."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Deterministic table-kill, VERIFIED on this board — Enduring Tenacity + Bloodthirsty Conqueror is the same engine as Exquisite Blood + Vito (001) and Conqueror + Vito (004): Tenacity's first ability is word for word Vito's, Conqueror's is the trigger 001 reads on Exquisite Blood. The drain walk is rules-identical; the constant is 2 (from the seed). What DIFFERS is fragility: destroy or -X/-X on Tenacity fires its death-return trigger, which resolves above the pending drain trigger and brings Tenacity back as an enchantment with the drain ability intact, so the loop does not pause — it is more resilient than 001 and 004 on that half, and is broken only by exile/bounce/graveyard-replacement on Tenacity, countering its return trigger, enchantment removal after one return, or any removal on Conqueror. From the 2-life seed, 21 Tenacity resolutions (6 + 15) drain opponent 2 (12, exact) and opponent 1 (30, exact; the 2-point granularity divides both totals evenly, zero overkill), retargeting each fresh trigger. Opponent 2 dies on iteration 6; their killing loss still triggers Conqueror (the event happened while they were in the game, and the trigger is yours, not theirs), so the chain crosses their death and the next Tenacity trigger is aimed at opponent 1, the only remaining legal target. You win via 104.2a when opponent 1 leaves on iteration 21; the 21st Conqueror trigger never resolves. Inputs noted, not resolved: Enduring Tenacity is NOT in the 99 (a mean-v1 branch add); the corpus oracle text for Tenacity carries no lifelink keyword, so the seed is 'any source' as the stack note says; the official 2024-09-20 Tenacity ruling agrees with the loop conclusion.",
+      "you": {
+        "life": 62,
+        "board": "Bloodthirsty Conqueror, Enduring Tenacity (still a creature; nothing in the loop makes it die), lands — untouched; the loop consumed no cards, mana or creatures",
+        "result": "wins the game"
+      },
+      "opponents": [
+        {
+          "seat": 1,
+          "life_start": 30,
+          "iterations_to_kill": 15,
+          "result": "loses at exactly 0 on Tenacity resolution 21 overall (state-based action, 704.5a); permanents leave with them; you win immediately (104.2a)"
+        },
+        {
+          "seat": 2,
+          "life_start": 12,
+          "iterations_to_kill": 6,
+          "result": "loses first, at exactly 0 on iteration 6; killing loss still triggers Conqueror; the next Tenacity trigger retargets opponent 1"
+        }
+      ],
+      "open_questions": []
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "119.9",
+        "status": "supported",
+        "note": "One nonzero gain event, one trigger."
+      },
+      {
+        "step": 2,
+        "rule": "119.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "207.2a",
+        "status": "supported",
+        "note": "Round-1 note addressed: 120.3a now names the rule the reminder text summarises."
+      },
+      {
+        "step": 2,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "Damage is one cause of life loss; the trigger condition is 'loses life', so Tenacity's effect qualifies. Agrees with the 2024-11-08 Conqueror ruling."
+      },
+      {
+        "step": 3,
+        "rule": "117.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "119.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "115.1d",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "732.1b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": "Per-iteration target choice is a named game choice; the retarget after opponent 2 leaves is predictable, not conditional."
+      },
+      {
+        "step": 5,
+        "rule": "603.2",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "113.7a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "701.8a",
+        "status": "supported",
+        "note": "Destroy = battlefield to owner's graveyard, which is 'dies' under 700.4."
+      },
+      {
+        "step": 6,
+        "rule": "700.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "704.5f",
+        "status": "supported",
+        "note": "-X/-X to toughness 0 or less puts it into the graveyard from the battlefield: it dies."
+      },
+      {
+        "step": 6,
+        "rule": "603.6c",
+        "status": "supported",
+        "note": "Round-1 finding addressed: the death-return clause is now resolved and the fragility claim follows the card text. 'When ~ dies' is a leaves-the-battlefield ability."
+      },
+      {
+        "step": 6,
+        "rule": "603.10a",
+        "status": "supported",
+        "note": "Looks back in time: it sees the creature it was when it died."
+      },
+      {
+        "step": 6,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "'if it was a creature' is an intervening if, checked on trigger and on resolution; refers to the state at death, so true both times after a creature death and false after the returned noncreature enchantment dies — the enchantment-removal breaker is correctly derived."
+      },
+      {
+        "step": 6,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Return trigger goes on top of the pending drain/gain trigger and resolves first. Wording nit, not a rules error: 'the gain or loss it causes re-triggers the returned Tenacity' — a LOSS re-triggers Conqueror, whose gain then re-triggers Tenacity; the chain as described two sentences earlier is right."
+      },
+      {
+        "step": 6,
+        "rule": "400.7",
+        "status": "supported",
+        "note": "Returned Tenacity is a new object with its printed abilities; the 2024-09-20 ruling ('It won't have any card types other than enchantment') confirms only the type changes. Breaker set is enumerated, no superlative remains."
+      },
+      {
+        "step": 6,
+        "rule": "732.2b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "12 / 2 = 6, exact; the pos-0 seed trigger is iteration 1."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "104.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "800.4a",
+        "status": "supported",
+        "note": "Owned objects leave; 'not a state-based action' is in the rule text."
+      },
+      {
+        "step": 8,
+        "rule": "117.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "117.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "800.4d",
+        "status": "supported",
+        "note": "Round-1 finding addressed: the clause governing a WAITING trigger after a player leaves; Conqueror's is yours, so it is put on the stack."
+      },
+      {
+        "step": 8,
+        "rule": "glossary:opponent",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "603.3d",
+        "status": "supported",
+        "note": "Counterfactual used correctly."
+      },
+      {
+        "step": 8,
+        "rule": "608.2b",
+        "status": "supported",
+        "note": "Counterfactual used correctly; never reached. 22 + 6x2 = 34 checks."
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "30 / 2 = 15; 6 + 15 = 21; 20 Conqueror resolutions; 22 + 20x2 = 62 checks."
+      },
+      {
+        "step": 9,
+        "rule": "104.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "104.1",
+        "status": "supported",
+        "note": "Game ends immediately; the 21st Conqueror trigger is never put on the stack."
+      }
+    ],
+    "iterations": 2
+  }
+}
