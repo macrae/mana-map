@@ -496,10 +496,17 @@
     "where": []
    },
    {
-    "free": true,
+    "free": false,
     "name": "Spectator Seating",
     "state": "elsewhere",
     "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "sharknado",
+      "status": null
+     },
      {
       "apart": true,
       "kind": "deck",
@@ -672,8 +679,8 @@
   "counts": {
    "box": 7,
    "buy": 17,
-   "elsewhere": 1,
-   "free": 1,
+   "elsewhere": 2,
+   "free": 0,
    "in_deck": 70
   },
   "counts_are": "distinct names",
@@ -743,9 +750,9 @@
    "quantity": [],
    "size": 100
   },
-  "free": 1,
+  "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 1,
+  "owned_but_elsewhere": 2,
   "proxy": false,
   "slug": "edgar-vampires",
   "unsourced": [
@@ -761,6 +768,7 @@
    "Patchwork Banner",
    "Plains",
    "Species Specialist",
+   "Spectator Seating",
    "Stroke of Midnight",
    "Sundown Pass",
    "Vampire Cutthroat",
@@ -2823,8 +2831,8 @@
   "bill": {
    "box": 7,
    "buy": 17,
-   "elsewhere": 1,
-   "free": 1,
+   "elsewhere": 2,
+   "free": 0,
    "in_deck": 70
   },
   "cost": {
@@ -2851,18 +2859,11 @@
    "counts": {
     "box": 7,
     "buy": 17,
-    "elsewhere": 1,
-    "free": 1,
+    "elsewhere": 2,
+    "free": 0,
     "in_deck": 70
    },
-   "free_to_raid": [
-    {
-     "decks": [
-      "sisay"
-     ],
-     "name": "Spectator Seating"
-    }
-   ],
+   "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [
     {
@@ -2873,10 +2874,16 @@
       "ur-dragon"
      ],
      "name": "Plains"
+    },
+    {
+     "decks": [
+      "sharknado"
+     ],
+     "name": "Spectator Seating"
     }
    ],
    "owned": 79,
-   "reads_as": "17 to buy; 1 to pull out of a deck that is still together; 1 sitting in a retired or broken-down deck, which cost nothing; 79 of 96 already owned",
+   "reads_as": "17 to buy; 2 to pull out of a deck that is still together; 79 of 96 already owned",
    "total": 96
   },
   "fell": [

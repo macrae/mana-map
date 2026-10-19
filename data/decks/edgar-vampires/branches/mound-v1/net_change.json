@@ -497,10 +497,17 @@
     "where": []
    },
    {
-    "free": true,
+    "free": false,
     "name": "Spectator Seating",
     "state": "elsewhere",
     "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "sharknado",
+      "status": null
+     },
      {
       "apart": true,
       "kind": "deck",
@@ -667,8 +674,8 @@
   "counts": {
    "box": 6,
    "buy": 20,
-   "elsewhere": 1,
-   "free": 1,
+   "elsewhere": 2,
+   "free": 0,
    "in_deck": 68
   },
   "counts_are": "distinct names",
@@ -742,9 +749,9 @@
    "quantity": [],
    "size": 100
   },
-  "free": 1,
+  "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 1,
+  "owned_but_elsewhere": 2,
   "proxy": false,
   "slug": "edgar-vampires",
   "unsourced": [
@@ -763,6 +770,7 @@
    "Mondrak, Glory Dominus",
    "Patchwork Banner",
    "Plains",
+   "Spectator Seating",
    "Stroke of Midnight",
    "Stromkirk Captain",
    "Sundown Pass",
@@ -2838,8 +2846,8 @@
   "bill": {
    "box": 6,
    "buy": 20,
-   "elsewhere": 1,
-   "free": 1,
+   "elsewhere": 2,
+   "free": 0,
    "in_deck": 68
   },
   "cost": {
@@ -2869,18 +2877,11 @@
    "counts": {
     "box": 6,
     "buy": 20,
-    "elsewhere": 1,
-    "free": 1,
+    "elsewhere": 2,
+    "free": 0,
     "in_deck": 68
    },
-   "free_to_raid": [
-    {
-     "decks": [
-      "sisay"
-     ],
-     "name": "Spectator Seating"
-    }
-   ],
+   "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [
     {
@@ -2891,10 +2892,16 @@
       "ur-dragon"
      ],
      "name": "Plains"
+    },
+    {
+     "decks": [
+      "sharknado"
+     ],
+     "name": "Spectator Seating"
     }
    ],
    "owned": 76,
-   "reads_as": "20 to buy; 1 to pull out of a deck that is still together; 1 sitting in a retired or broken-down deck, which cost nothing; 76 of 96 already owned",
+   "reads_as": "20 to buy; 2 to pull out of a deck that is still together; 76 of 96 already owned",
    "total": 96
   },
   "fell": [
