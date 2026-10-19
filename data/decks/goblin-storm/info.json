@@ -675,8 +675,8 @@
       "name": "copy-burst-v1",
       "opened": "2026-09-27",
       "why": "THE CULMINATION OF THE ZADA WORK, and the first list aimed at what the deck actually does. It carries zada-v1's whole refactor — fodder 4 -> 10, per-cast damage, three body factories, the rituals, protection for a 3-mana 3/3 the deck depends on — and adds the four cards no sweep could ever have found, because until 2026-09-27 they had no channel: a spell that token-copies a target creature. Zada turns one of those into a copy of EVERY creature you control, with haste. On a board of seven that is seven becomes fourteen for two mana, and Assault Strobe (already in the 99) gives the whole board double strike for one more. The four are paid for with Blasphemous Act, Past in Flames, Witch's Mark and Chaos Warp — deliberately NOT with bodies: an earlier test of this idea sold Krenko and Siege-Gang to buy it and measured +1.5 damage for 4 fewer kills per 100, which is the documented Edgar failure in miniature. Krenko stays.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: September copy-burst package on top of zada-v1, measured against v1.0.0 (a trade",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -1453,8 +1453,8 @@
       "name": "zada-v1",
       "opened": "2026-09-25",
       "why": "Lean into Zada: the deck is built on copying a single-target spell across the board and runs only FOUR drawing fodder cantrips out of the 16 that exist in mono-red. This pass takes fodder from 4 to 10, protection from 2 to 4 (Zada is a 3-mana 3/3 the whole deck depends on), and adds the two storm cards that actually convert. Slots come from the ramp surplus (15 vs target 10-12) and the 4-5 drop Goblin bodies, not from the token makers.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: September lean-into-Zada refactor measured against v1.0.0 (do not merge: objecti",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -2975,7 +2975,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 2,
+    "count": 4,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -3013,6 +3013,42 @@
           "forge_delta": null,
           "forge_ci95": null,
           "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "003",
+        "at": "2026-10-19T16:22:37-07:00",
+        "kind": "reject",
+        "branch": "zada-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "extra_cards_8",
+          "grade": "not met",
+          "forge_delta": -0.031,
+          "forge_ci95": [
+            -0.109,
+            0.0777
+          ],
+          "pod": "standard-v3"
+        },
+        "realised": null
+      },
+      {
+        "id": "004",
+        "at": "2026-10-19T16:22:43-07:00",
+        "kind": "reject",
+        "branch": "copy-burst-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "damage_10",
+          "grade": "met",
+          "forge_delta": 0.0375,
+          "forge_ci95": [
+            -0.0545,
+            0.1317
+          ],
+          "pod": "standard-v3"
         },
         "realised": null
       }
