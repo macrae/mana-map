@@ -76,6 +76,7 @@ tests/                # two tiers; counts and runtimes ONLY in docs/testing.md
 data/                 # artifacts; mostly gitignored, viz-served files tracked
   decks/<slug>/       #   one deck: decklist, cards.json, measurements, branches/, log
   pods/ opponents/    #   the named Forge tables and their seats (standard-v3 default)
+  fleet/              #   analytics.json: the fleet compared — profiles and bands, never a score
   collection/         #   the PHYSICAL boxes (MANAMAP_COLLECTION_DIR overrides)
 tools/claude-plugins/ # the job-band Claude Code plugin (live progress above the prompt), installed
                       #   from this folder at project scope; reads .progress/ (manamap.progress)
@@ -98,7 +99,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 147 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 149 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -297,8 +298,9 @@ archived deck is read-only until `deck-state revive`.
 ## Data artifacts
 
 - **The deck manifest is generated**: `manamap pilot build-index` writes `data/decks/index.json`, which every page fetches; a test asserts it matches the artifacts.
+- **The fleet artifact is generated and carries no score**: `manamap pilot fleet-analytics --write` writes `data/fleet/analytics.json` (the last step of `make manuals` and of `regen`): every live deck's figures with interval, N, source and sha, per-bracket bands at three decks or more, placements, comparisons. `validate-fleet-analytics` refuses a composite number; the rating is ★ and lives per deck.
 - **`mana_analysis.json` is tracked and staleness-tested**: run `manamap pilot mana-analysis <slug>` AFTER `goldfish`, since it embeds goldfish figures.
-- **CI** (`.github/workflows/test.yml`) runs the unit tier, its isolation proof and the regression tier on every push and PR, then `make manuals` and `git diff --exit-code -- manuals/ data/decks/` — the determinism claim asserted from outside the code. An `integration` job runs the browser suite on every push; Forge stays local. A weekly `corpus-gates` job downloads the corpus (the network leg) and runs the gates a push cannot reach.
+- **CI** (`.github/workflows/test.yml`) runs the unit tier, its isolation proof and the regression tier on every push and PR, then `make manuals` and `git diff --exit-code -- manuals/ data/decks/ data/fleet/` — the determinism claim asserted from outside the code. An `integration` job runs the browser suite on every push; Forge stays local. A weekly `corpus-gates` job downloads the corpus (the network leg) and runs the gates a push cannot reach.
 
 ## Pointers
 

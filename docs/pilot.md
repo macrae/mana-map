@@ -118,6 +118,8 @@ manamap pilot sla-report                                      # sub-agents again
 manamap pilot queue [list [--all] [--deck S]|waiting [--deck S]|show Q###|add --deck S --claim … --expect … --method M --how …|apply DRAFT|rank Q…|kill Q### --reason|decide Q### stage|drop|watch|more]
                                                               # THE HYPOTHESIS QUEUE (data/queue.jsonl, docs/queue.md), state derived from its lines
 manamap pilot validate-queue                                  # its gate: every line replayed through the transition check
+manamap pilot fleet-analytics [--write] [--json]              # THE FLEET COMPARED: data/fleet/analytics.json — profiles, bands, placements, comparisons; never a score
+manamap pilot validate-fleet-analytics                        # its gate: form, every number a fig or an absent, bands re-add, no composite key
 manamap pilot watch <slug> [list|mark SET "Card" watching|pass|unreviewed [--note …]|note SET "Card" "…"]
                                                               # CANDIDATE WATCH LISTS (watchlist.json), reviewed in the Atlas's Build mode
 manamap pilot validate-watchlist <slug>                       # its gate: real, legal, in-identity cards; closed vocabularies
@@ -884,6 +886,51 @@ hand-written, so not a lifecycle stage: absent means the deck is published nowhe
 `build-index` adds `links` to the deck's manifest entry only when the file exists. The other
 direction is the same paste: `check-in --from <url>` is refused with the sentence that says
 to export on Moxfield and paste into `--from -`.
+
+## Fleet analytics (`fleet-analytics`, ◆ profiles; `validate-fleet-analytics`, form) — 2026-10-18
+
+`data/fleet/analytics.json` is the fleet side by side: one row per live deck (`cards.json`
+present; a broken-down deck stays, flagged `apart`; a 60-card deck stays with its Commander
+figures absent "not modelled for Modern"), then the bracket GROUPS, then the comparisons a
+page draws. Built by `manamap pilot fleet-analytics --write`, by `make manuals` (last, after
+`build-index`) and by `regen`'s last stage, and byte-diffed by CI with `data/decks/`.
+
+**Every number is a `fig` or an `absent`.** A `fig` is `{value, source, decklist_sha256,
+stale, n, ci95, as_of, basis}` with only what is known; an `absent` is `{absent_because,
+source}`. Benchmark rates get a Wilson interval from `k = rate·n` at the harness's n and
+say so in `basis`. A deck with no file has the absence, never a zero.
+
+**The group key is the pilot's declared target** (`bracket_report.target`), the floor when
+no target is declared, `unbracketed` otherwise; `group_basis` records which. A group's
+**bands** are `{min, median, max, n}` per measure over the members that carry it, computed
+only at `FLEET_MIN_GROUP` (3) or more — below that the band is absent and every member's
+placement reads `no band (n=2)`. Placements use `diagnostic.place_in`, the dossier's own
+four words, with `higher_is_better` per measure and the median named by scope ("bracket"
+or "fleet"). The band measures are the benchmark's uniform figures, the diagnostic vitals
+and the DTI score; nothing authored is ever a band member.
+
+**The comparisons**: floor against DTI per deck (`dti.compare_floor`), the DTI readings
+over time with `current_list` per reading, the twelve DeckCheck grades as rows and a
+per-benchmark distribution, the kill / mana / land curves from `benchmark.json`'s own
+`series` (never the deck's `goldfish_metrics.json`, which is measured under its own opt-in
+channels), prices, and Spearman(DTI, kill by 8) and Spearman(DTI, Forge win rate) — each
+computed only at `calibrate.MIN_DECKS` and otherwise published as the `table_power`
+refusal, `{"verdict": "NOT ANSWERABLE", n, why, what_it_would_take}`. The refusal is the
+finding.
+
+**No composite number, by construction and by gate.** `benchmark.py` keeps `score: None`
+("a formula picked before the distribution is a guess wearing a number"), `diagnostic.py`
+refuses to rank decks against each other, and `calibrate.py` refuses a verdict below ten
+decks; this file carries `meta.no_composite` saying so and a `rating: null` slot per row.
+`validate-fleet-analytics` fails on a bare numeric `score`, `rating`, `index`, `power`,
+`grade` or `rank` on any row or group, on a band that does not re-add from the rows, on a
+rate outside its interval, and on an absent without a reason; it WARNs, never fails, when a
+deck's list has moved since the build. The rating that does exist is ★ coaching, per deck,
+in `rating.json`, and the page reads it from there.
+
+The survey block (`log.jsonl`'s `feel`) is carried `tier: "authored"` with n, min and max
+beside each mean, and `record.by_version` joins the log to `versions.json` by sha so the
+record and the survey read per version.
 
 ## DeckCheck (`deck-link … deckcheck`, `deckcheck`, 2026-10-17)
 

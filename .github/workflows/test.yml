@@ -134,7 +134,7 @@ jobs:
         # `tests/test_pilot_commit_protocol.py` enforces directly.
         run: |
           make manuals
-          git diff --exit-code -- manuals/ data/decks/
+          git diff --exit-code -- manuals/ data/decks/ data/fleet/
 
   # ── THE INTEGRATION TIER: the pages, in a real browser ────────────────────
   #

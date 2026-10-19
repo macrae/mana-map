@@ -23,9 +23,9 @@ import re
 import pytest
 
 from manamap import config
-from manamap.pilot.deck_status import VALIDATED
+from manamap.pilot.deck_status import VALIDATED, FLEET_VALIDATED
 
-VALIDATORS = sorted(set(VALIDATED.values()))
+VALIDATORS = sorted(set(VALIDATED.values()) | set(FLEET_VALIDATED.values()))
 
 
 @pytest.mark.parametrize("dotted", VALIDATORS, ids=lambda d: d.rsplit(".", 1)[-1])

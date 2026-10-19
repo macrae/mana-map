@@ -122,6 +122,13 @@ PILOT_STEPS = [
      "apply DRAFT, rank Q… , kill Q### --reason, decide Q### stage|drop|watch|more"),
     ("validate-queue", "manamap.pilot.validate_queue",
      "Gate data/queue.jsonl: every line replayed through the queue's transition check"),
+    ("fleet-analytics", "manamap.pilot.fleet_analytics",
+     "THE FLEET COMPARED (data/fleet/analytics.json): every live deck's bracket, benchmark, "
+     "vitals, DTI, table record, pilot record and survey, each with interval / n / source; "
+     "bracket bands and placements; floor-vs-DTI, DTI history, grades, curves. Profiles, never a score"),
+    ("validate-fleet-analytics", "manamap.pilot.validate_fleet_analytics",
+     "Gate data/fleet/analytics.json: form, every number a fig or an absent, bands re-add, "
+     "no composite key; WARNs when a deck's list moved since the build"),
     ("watch", "manamap.pilot.watchlist",
      "Candidate watch lists (watchlist.json): list, mark SET \"Card\" watching|pass|unreviewed [--note], "
      "note SET \"Card\" \"…\" — reviewed in the Atlas's Build mode"),
@@ -916,6 +923,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("verb", nargs="?", default="list", choices=["list", "mark", "note"])
             cmd.add_argument("rest", nargs="*", help="SET \"Card\" verdict, or SET \"Card\" \"note\"")
             cmd.add_argument("--note", default=None, help="mark: a note alongside the verdict")
+        if name == "fleet-analytics":
+            cmd.add_argument("--write", action="store_true",
+                             help="write data/fleet/analytics.json (else print a table)")
+            cmd.add_argument("--json", action="store_true", dest="as_json",
+                             help="print the document instead of the table")
         if name == "queue":
             cmd.add_argument("verb", nargs="?", default="list",
                              choices=["list", "waiting", "show", "add", "apply", "rank", "kill", "decide"])

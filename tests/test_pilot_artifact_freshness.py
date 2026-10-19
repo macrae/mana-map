@@ -229,7 +229,9 @@ def test_the_fleet_regenerates_byte_identically(unchanged):
 
     unchanged(*module_closure(regen, benchmark), *CODE, *CROSS_DECK)
     root = DECKS_DIR.parent.parent
-    listed = subprocess.run(["git", "ls-files", "-z", "--", str(DECKS_DIR)],
+    # data/fleet too (2026-10-18): the fleet stage runs last and writes outside
+    # data/decks, so the restore must cover it or a test run leaves it dirty.
+    listed = subprocess.run(["git", "ls-files", "-z", "--", str(DECKS_DIR), str(DECKS_DIR.parent / "fleet")],
                             cwd=root, capture_output=True, check=True).stdout
     tracked = [root / f for f in listed.decode().split("\0") if f]
     assert len(tracked) >= 100, f"only {len(tracked)} tracked deck files to compare"

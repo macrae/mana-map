@@ -594,6 +594,37 @@ def _validity(slug, artifact):
     return True, ""
 
 
+#: FLEET FILES WITH A GATE (2026-10-18). Not per-deck, so not in `VALIDATED` and
+#: not a stage: the queue (`validate-queue`) and the fleet analytics artifact
+#: (`validate-fleet-analytics`). `deck-status --all` runs each, and
+#: `tests/test_validators_actually_fail.py` holds them to the same exit-code
+#: contract as the per-deck validators.
+FLEET_VALIDATED = {
+    "queue.jsonl": "manamap.pilot.validate_queue",
+    "fleet/analytics.json": "manamap.pilot.validate_fleet_analytics",
+}
+
+
+def fleet_files():
+    """`[(artifact, ok, detail), …]` — each fleet-level gate run once."""
+    import contextlib
+    import importlib
+    import io
+
+    out = []
+    for artifact, dotted in FLEET_VALIDATED.items():
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                importlib.import_module(dotted).main(None)
+            ok, detail = True, buf.getvalue().strip().splitlines()[-1:] or [""]
+        except SystemExit as exc:
+            ok = (exc.code in (None, 0))
+            detail = buf.getvalue().strip().splitlines()[:1] or [str(exc)]
+        out.append((artifact, ok, detail[0] if detail else ""))
+    return out
+
+
 def fleet():
     """One row per deck. Nine decks and no way to ask "what is outstanding
     everywhere" is the other half of the problem `pending.json` exists for —
@@ -655,8 +686,13 @@ def _fleet_main(args):
     tot_q = sum(r["pending_open"] + r["pending_partial"] for r in rows)
     print(f"\n  {tot_stale} stale, {tot_bad} failing their own gate, "
           f"{tot_q} queued change(s) across the fleet")
+    files = fleet_files()
+    print("\n  FLEET FILES")
+    for artifact, ok, detail in files:
+        print(f"  {'OK  ' if ok else 'FAIL'} {artifact:24} {detail}")
     errors = [f"{r['slug']}: {st} is STALE" for r in rows for st in r["stale"]]
     errors += [f"{r['slug']}: {bad} FAILS its validator" for r in rows for bad in r["invalid"]]
+    errors += [f"{artifact} FAILS its validator" for artifact, ok, _d in files if not ok]
     report_errors("fleet status", errors,
                   f"OK   {len(rows)} decks, nothing stale, nothing failing a gate, "
                   f"{tot_q} change(s) queued")

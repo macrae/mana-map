@@ -208,6 +208,9 @@ manuals:  ## Re-render every handbook + the version lists (deterministic; should
 	    && echo "    manuals/p/$$slug.html"; \
 	done
 	$(MANAMAP) pilot build-index
+# THE FLEET ARTIFACT (2026-10-18): profiles across every deck, read from the files
+# above, so it is rebuilt LAST and the same byte-diff gate covers data/fleet/.
+	$(MANAMAP) pilot fleet-analytics --write
 
 demo:  ## Rebuild everything the demo shows, then serve it. Run before presenting.
 	@echo "==> the deck manifest (which decks exist, which are locked, what each has)"

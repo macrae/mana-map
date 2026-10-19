@@ -1761,3 +1761,17 @@ identity predicate, so it was left alone). `deckcheck.project` now reads their c
 spelling wherever the front faces agree (`deckcheck.spellings`), which settles the DeckCheck
 pipe; a hand-pasted list with two-face names still reads as a swap. Split cards
 (`Commit // Memory`) are spelled the same everywhere and never hit this.
+
+## 25. Within-bracket bands are n ≤ 5 on every bracket today (2026-10-18)
+
+`data/fleet/analytics.json` bands each bracket group at `FLEET_MIN_GROUP = 3` members or
+more. With the targets declared on 2026-10-18 the groups are B4 = edgar-vampires, heliod,
+sharknado (n=3) and B3 = emiel-blink, gishath, goblin-storm, meren-recursion, ur-dragon
+(n=5, two of them bench decks). A band of three is three numbers — its min and max ARE two
+of the members — so a placement word inside it ("above the bracket median") describes an
+ordering, not a distribution, and the DTI band on B3 is absent because only three of the
+five carry a reading. The Spearman cells publish the `NOT ANSWERABLE` refusal at n=6 and
+n=0 (`calibrate.MIN_DECKS` is 10). What unblocks it: more sleeved decks per bracket, a DTI
+on every Commander deck, Forge runs on current lists. Meanwhile the artifact says "no band
+(n=2)" where it cannot band and never fills the gap with a number.
+

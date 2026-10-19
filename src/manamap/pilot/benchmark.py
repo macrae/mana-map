@@ -236,6 +236,13 @@ def measure(slug):
             "consistency": consistency(metrics, doc["_results"]),
             "response": response(slug),
         },
+        # THE CURVES (2026-10-18): the per-turn series straight out of this same
+        # uniform run, so the fleet page can draw every deck on one axis. The
+        # deck's own goldfish_metrics.json carries the same keys measured under
+        # its OWN opt-in channels, which is exactly the file this benchmark
+        # exists not to compare. Pure addition: HARNESS is unchanged, so the
+        # version stays 1.
+        "series": series(metrics),
         # NO AGGREGATE. §14.1 is open and the formula is chosen against the real
         # spread, not before it.
         "score": None,
@@ -250,6 +257,19 @@ def measure(slug):
             "what makes decks comparable and also what makes these figures "
             "differ from the deck's own tracked goldfish_metrics.json.",
         ],
+    }
+
+
+SERIES_KEYS = ("kill_by_turn_rate", "mean_available_mana_by_turn", "land_drop_hit_rate_by_turn")
+
+
+def series(metrics):
+    """The three by-turn series the fleet page draws, keyed "1".."max_turn"."""
+    combat = metrics.get("combat") or {}
+    return {
+        "kill_by_turn_rate": dict(combat.get("kill_by_turn_rate") or {}),
+        "mean_available_mana_by_turn": dict(metrics.get("mean_available_mana_by_turn") or {}),
+        "land_drop_hit_rate_by_turn": dict(metrics.get("land_drop_hit_rate_by_turn") or {}),
     }
 
 

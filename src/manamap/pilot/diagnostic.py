@@ -142,17 +142,26 @@ MANA_READINGS_ARE_CORRELATED = (
 #: fact restated, which is what `consistency` turned out to be in the benchmark.
 
 
+def place_in(value, band, higher_is_better=False, scope="fleet"):
+    """Where a reading sits against a band `{min, median, max}` — context,
+    never a grade. ONE VOCABULARY: the fleet artifact places every deck in its
+    bracket's bands through this same function, so a placement word means the
+    same thing on the dossier and on the fleet page. `higher_is_better` flips
+    which end is "better"; `scope` names the median ("fleet" or "bracket")."""
+    if band is None or value is None or "min" not in band:
+        return None
+    lo_word, hi_word = ("worse", "better") if higher_is_better else ("better", "worse")
+    if value < band["min"]:
+        return f"{lo_word} than any tracked deck"
+    if value > band["max"]:
+        return f"{hi_word} than any tracked deck"
+    return (f"above the {scope} median" if value > band["median"]
+            else f"below the {scope} median")
+
+
 def _place(value, key):
     """Where a reading sits against the fleet — context, never a grade."""
-    band = FLEET.get(key)
-    if band is None or value is None:
-        return None
-    if value < band["min"]:
-        return "better than any tracked deck"
-    if value > band["max"]:
-        return "worse than any tracked deck"
-    return ("above the fleet median" if value > band["median"]
-            else "below the fleet median")
+    return place_in(value, FLEET.get(key))
 
 
 def _rate(k, n):

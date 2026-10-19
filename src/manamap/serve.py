@@ -58,7 +58,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 146 pilot subcommands answer in JSON, instantly, for free.
+  design: 149 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -1318,6 +1318,9 @@ def _measure(slug=None, stage=None):
 CLI_READONLY = frozenset({
     # The RAG pair — the whole reason this endpoint exists.
     "query-rules", "query-strategy", "lookup-rule", "lookup-strategy",
+    # THE FLEET COMPARED (2026-10-18): a table or JSON of profiles across every
+    # deck, built from tracked files; `--write` is refused by `_CLI_WRITE_ATTRS`.
+    "fleet-analytics",
     # The rulings lookup beside them: an INPUT to the resolve loop, never a
     # citation. Read-only over the gitignored dump; absent dump is a SystemExit.
     "card-rulings",

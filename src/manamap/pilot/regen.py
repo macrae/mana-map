@@ -83,7 +83,15 @@ STAGES = (
     ("context", "CONTEXT.md", "manamap.pilot.deck_context", {"refresh": True}, False, False),
 )
 
-STAGE_NAMES = tuple(s[0] for s in STAGES)
+#: THE FLEET STAGE (2026-10-18): one target, run once, AFTER every per-deck
+#: stage, because it reads what they wrote (info.json, benchmark.json, the
+#: diagnostic, the DTI file, the log). Not a `STAGES` row — those are per-deck
+#: targets — and never skipped by format: the artifact describes the fleet.
+FLEET_STAGES = (
+    ("fleet-analytics", "fleet/analytics.json", "manamap.pilot.fleet_analytics", {"write": True}),
+)
+FLEET_STAGE_NAMES = tuple(s[0] for s in FLEET_STAGES)
+STAGE_NAMES = tuple(s[0] for s in STAGES) + FLEET_STAGE_NAMES
 COMMANDER_ONLY_STAGES = frozenset(s[0] for s in STAGES if s[5])
 
 
@@ -308,15 +316,22 @@ def run(only=None, slug=None, jobs=None, dry_run=False, echo=print,
     if unknown:
         raise ValueError(f"skip: unknown stage(s) {', '.join(unknown)}")
     rows, skips = _plan(only, slug, include_branches, tuple(skip))
+    # THE FLEET STAGE runs when nothing narrowed it out: a bare regen, a --slug
+    # regen (that deck's row moved), or `--only fleet-analytics`. Only when the
+    # tracked artifact already exists — REFRESH, never BOOTSTRAP, like every
+    # other stage — and never from a caller's `skip`.
+    fleet_rows = [(stage, module, kwargs) for stage, _art, module, kwargs in FLEET_STAGES
+                  if (not only or stage in only) and stage not in skip
+                  and config.FLEET_ANALYTICS_PATH.exists()]
     # A stage a deck's format cannot have, said out loud. Not a failure and not
     # a target: a 60-card deck is not incomplete for lacking a goldfish.
     for stage, s, fmt in skips:
         echo(f"  SKIPPED {stage} {s} — not modelled for {fmt}")
-    if not rows:
+    if not rows and not fleet_rows:
         echo("  nothing to regenerate — no tracked artifacts matched")
         return {"failures": [], "seconds": 0.0, "ran": 0, "skipped": skips}
 
-    total = sum(len(t) for _s, _m, _k, t in rows)
+    total = sum(len(t) for _s, _m, _k, t in rows) + len(fleet_rows)
     echo(f"REGEN — {total} target(s) across {len(rows)} stage(s)"
          + (f", deck {slug}" if slug else "")
          + (f", {jobs} job(s)" if jobs and not dry_run else ""))
@@ -325,6 +340,8 @@ def run(only=None, slug=None, jobs=None, dry_run=False, echo=print,
             echo(f"\n  {stage}  ({len(found)})")
             for s, b in found:
                 echo(f"    {s}" + (f"@{b}" if b else ""))
+        for stage, _module, _kwargs in fleet_rows:
+            echo(f"\n  {stage}  (1)\n    fleet")
         echo("\n  --dry-run: nothing was written")
         return {"failures": [], "seconds": 0.0, "ran": 0, "skipped": skips}
 
@@ -360,6 +377,18 @@ def run(only=None, slug=None, jobs=None, dry_run=False, echo=print,
             else:
                 echo(f"    {name:34} ok      {seconds:5.1f}s")
         echo(f"    {'':34} stage    {time.time() - started:5.1f}s")
+
+    for stage, module, kwargs in fleet_rows:
+        echo(f"\n  {stage}  (1)")
+        progress.set(detail=stage)
+        s, b, error, secs = _one((module, kwargs, None, None))
+        progress.advance(failed=int(error is not None))
+        if error:
+            failures.append((stage, "fleet", error))
+            echo(f"    {'fleet':34} FAILED  {error}")
+        else:
+            echo(f"    {'fleet':34} ok      {secs:5.1f}s")
+        echo(f"    {'':34} stage    {secs:5.1f}s")
 
     seconds = time.time() - began
     progress.finish(ok=not failures)

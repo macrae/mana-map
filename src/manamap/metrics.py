@@ -260,6 +260,27 @@ CATALOG = {
                "lifted scenario, and `extras.reconstruction_notes` records it."),
 
     # ── Speed ───────────────────────────────────────────────────────────────
+    # THE BENCHMARK'S CURVES (2026-10-18): the same three by-turn series the
+    # goldfish publishes per deck, re-measured under the FROZEN harness so the
+    # fleet page can draw every deck on one axis. Source: benchmark.json, not the
+    # deck's own file — see fleet_analytics.LIMITS.
+    "kill by turn, uniform harness": _m(
+        "speed",
+        "Share of games with lethal by each turn 1-10, under the frozen benchmark harness.",
+        PUBLISHED, "goldfish",
+        "benchmark.json → series.kill_by_turn_rate",
+        caveat="Unopposed and uniform: comparable across decks, never the deck's own "
+               "declared channels. Goldfish kill is one column, never the rule."),
+    "mana by turn, uniform harness": _m(
+        "mana",
+        "Mean available mana on each turn 1-10, under the frozen benchmark harness.",
+        PUBLISHED, "goldfish",
+        "benchmark.json → series.mean_available_mana_by_turn"),
+    "land drops by turn, uniform harness": _m(
+        "mana",
+        "Share of games that hit the land drop on each turn 1-10, under the frozen benchmark harness.",
+        PUBLISHED, "goldfish",
+        "benchmark.json → series.land_drop_hit_rate_by_turn"),
     "commander resolve turn": _m(
         "speed",
         "Turn the commander first resolves; share resolved by turn 5.",

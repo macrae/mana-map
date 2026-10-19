@@ -1894,3 +1894,12 @@ PILOT_FEEL_KEYS = {
     "interaction": "how much it answered what the table did, 1 (none) to 5 (every threat)",
 }
 PILOT_FEEL_RANGE = (1, 5)
+
+# ── THE FLEET ARTIFACT (2026-10-18) ───────────────────────────────────────
+# `manamap pilot fleet-analytics --write` -> one tracked file of profiles, bands
+# and comparisons across every live deck (never a score; `fleet_analytics.py`).
+# A group of fewer than FLEET_MIN_GROUP decks has no band: three numbers are the
+# smallest set a min / median / max can honestly describe.
+FLEET_DIR = DATA_DIR / "fleet"
+FLEET_ANALYTICS_PATH = FLEET_DIR / "analytics.json"
+FLEET_MIN_GROUP = 3
