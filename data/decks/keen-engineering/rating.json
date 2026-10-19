@@ -14,7 +14,7 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.1846,
    "sub_score": 100.0,
    "sub_ci": [
     100.0,
@@ -59,7 +59,7 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1778,
+   "weight_effective": 0.1231,
    "sub_score": 100.0,
    "sub_ci": [
     100.0,
@@ -101,7 +101,7 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.1846,
    "sub_score": 90.0,
    "sub_ci": [
     90.0,
@@ -140,7 +140,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2889,
+   "weight_effective": 0.2,
    "sub_score": 64.29,
    "sub_ci": [
     64.29,
@@ -262,10 +262,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list"
-  },
-  {
-   "component": "judgment",
-   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -289,25 +285,69 @@
  "fleet_sha": "7b9040337361",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "Diagnostic stalls (turn two stalls on mana, ranked worse than any tracked deck) and engine online by turn five about a third of games: does this lower the deck once Sai's Thopters are modelled? Model the cast trigger and re-read.",
+   "settled_by": "goldfish"
+  },
+  {
+   "question": "Which of the counted interaction cards are real answers at a table? Read the audit's answer list against the context's answer list.",
+   "settled_by": "diagnose"
+  }
+ ],
+ "iterations": 1,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "components",
+    "status": "supported",
+    "note": "validate-rating OK; re-run identical on components, withheld, code_score 87.0, score_point, bracket, limits, uncertainty, sensitivity."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "87 equals code_score, so it claims no gap; the argument says so and names why (two unsizable gaps pointing opposite ways)."
+   },
+   {
+    "where": "judgment.citations",
+    "status": "supported",
+    "note": "power-level quote and context 'floor' quote are verbatim and used as the sources mean; skeleton refs (kill_by_turn_10, audit.ramp, answer_cards) exist in the components."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "15 answer cards and 4 of 5 classes match benchmark and deck-audit; the ramp-is-engine point is backed by the context (each rock is a Thopter on cast). No superlatives; the unmeasured stall/engine-online evidence is parked in open_questions, not used to move the number."
+   },
+   {
+    "where": "open_questions[0]",
+    "status": "supported",
+    "note": "Not answerable from the artifacts until Sai's cast trigger is modelled; goldfish can settle it."
+   },
+   {
+    "where": "open_questions[1]",
+    "status": "supported",
+    "note": "The audit answer list vs the context answer list is a diagnose job; not already answered by the skeleton."
+   }
+  ],
+  "iterations": 1
+ },
  "code_score": 87.0,
  "score_point": 87.0,
- "score": 87.6,
+ "score": 87.1,
  "score_ci": [
-  79.1,
-  94.3
+  80.6,
+  92.7
  ],
  "grade": "A",
  "grade_range": [
-  "B",
+  "A",
   "A"
  ],
  "grade_display": "A",
  "grade_probabilities": {
-  "A": 0.929,
-  "B": 0.071,
+  "A": 0.967,
+  "B": 0.033,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -326,27 +366,31 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 82.3,
+    "score": 84.1,
     "grade": "A"
    },
    "mana": {
-    "score": 84.2,
+    "score": 85.2,
     "grade": "A"
    },
    "resilience": {
-    "score": 85.9,
+    "score": 86.3,
     "grade": "A"
    },
    "construction": {
-    "score": 96.2,
+    "score": 92.7,
+    "grade": "A"
+   },
+   "judgment": {
+    "score": 87.0,
     "grade": "A"
    }
   },
   "flips": [
    {
     "component": "construction",
-    "share_now": 0.289,
-    "share_at_flip": 0.508,
+    "share_now": 0.2,
+    "share_at_flip": 0.447,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -362,8 +406,48 @@
   "outliers": [],
   "group": null
  },
- "resolution": "the 90% interval spans 1 grade boundary (80); concordance withheld",
- "judgment": null,
+ "resolution": "the 90% interval spans 0 grade boundaries; concordance withheld",
+ "judgment": {
+  "sub_score": 87,
+  "argument": "The measured components are all anchor-only: the deck is alone in its bracket, so nothing is placed against another list, and they mostly ask whether a precon sits where a bracket 2 deck should. It does. What they cannot see is Sai himself. The context says the goldfish does not model his Thopters or his sacrifice-draw, so every board and damage figure is a floor, and that argues the engine is under-read, not over-read. Against that, the goldfish has no blockers and no removal, so it cannot show how a wide board of small flyers holds up at a real table, and no game has been logged. Those two gaps point opposite ways and I cannot size either from the record, so I do not move off the measured figure. Construction (64.29) charges the deck for ramp and mana-base counts over their bands, but every rock here is also a Thopter on cast, so that penalty is partly the engine working. Resilience has real capacity, with 15 answer cards across 4 of 5 classes. Speed's kill_by_turn_10 is the clock a gentle bracket 2 deck is meant to have. The number sits at the code score because the record I can cite neither lifts nor lowers it with any size I can defend.",
+  "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_10"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:construction",
+    "quote": "audit.ramp"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:resilience",
+    "quote": "answer_cards"
+   },
+   {
+    "kind": "strategy",
+    "ref": "strategy:deckbuilding.power-level",
+    "quote": "the sharpest line between them is expected game length"
+   },
+   {
+    "kind": "context",
+    "ref": "context:plays",
+    "quote": "Every board and damage figure in Numbers is a floor"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.3077,
+  "sub_ci": [
+   78.64,
+   95.04
+  ]
+ },
  "rank": {
   "position": 1,
   "of": 1,
@@ -377,7 +461,7 @@
    "keen-engineering": "this document"
   },
   "scores": {
-   "keen-engineering": 87.6
+   "keen-engineering": 87.1
   }
  }
 }
