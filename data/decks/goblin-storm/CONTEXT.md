@@ -4,8 +4,8 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-07-24
-- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 36/96 → B3 (deckcheck.co, 2026-10-18, 1 reading) — older list
+- **Version:** V2 · **status:** sleeved since 2026-07-24
+- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 35/96 → B3 (deckcheck.co, 2026-10-18, 2 readings)
 - **Combos:** 2 known lines (0 infinite, 0 two-card) · 35 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
 <!-- /ctx:gen summary -->
@@ -82,7 +82,7 @@ Almost all Mountains, so red is never the problem. Several lands do extra work: 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on V2, 2026-10-18. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
@@ -112,6 +112,8 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 ## Change history
 
 <!-- ctx:gen history -->
+- **V2** (2026-10-18) — in: Beetleback Chief, Electroduplicate, Fable of the Mirror-Breaker, Goblin Instigator, Impolite Entrance, Infuriate, Legion Warboss, Might of the Meek …; out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy …
+  - merge `meaner-v1`: objective kill_by_8 read **met** — the pilot's call 2026-10-18: all thirteen adds ordered, one order arrived, the rest en route within days; the swap list is documented on the Desktop so the card
 - **v1.0.0 · V1** (2026-08-05) — first list, 100 cards. _the list as sleeved; confirmed against the cards 2026-08-25_
   - played 2: 0W 2L
 <!-- /ctx:gen history -->
