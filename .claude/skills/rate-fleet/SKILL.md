@@ -22,8 +22,10 @@ ranks. The leaderboard is `manamap pilot rating --all`; the fleet page draws it.
    `/rate-deck <slug>` steps 0–5 (the cache gate skips the ones whose judgment is
    current). Do not run step 6 per deck; the ranks settle below.
 
-2. **Settle the ranks.** A member's score moves its neighbours' positions, so once every
-   judgment has landed, rewrite each skeleton (judgments carry forward) and re-validate:
+2. **Settle the ranks.** A member's judgment moves its neighbours' simulation — the score,
+   its interval, the rank's acceptability and the concordance are joint over the group —
+   so once every judgment has landed, rewrite each skeleton (judgments carry forward) and
+   re-validate:
 
    ```bash
    for slug in <the decks above>; do
@@ -40,9 +42,9 @@ ranks. The leaderboard is `manamap pilot rating --all`; the fleet page draws it.
    .venv/bin/manamap pilot rating --calibrate        # NOT ANSWERABLE below calibrate.MIN_DECKS; say so
    ```
 
-4. **Report**: the leaderboard by bracket as `rating --all` prints it (grade, score,
-   interval, skeleton or judged, withheld), the calibration verdict verbatim, and the
-   decks whose skeptic verdict is `fail`. Commit `data/decks/*/rating.json`,
+4. **Report**: the leaderboard by bracket as `rating --all` prints it (the grade or its
+   range, score, 90% interval, P(1st), concordance level, skeleton or judged, withheld),
+   the calibration verdict verbatim, and the decks whose skeptic verdict is `fail`. Commit `data/decks/*/rating.json`,
    `data/decks/*/.agent-cache.json`, `data/fleet/analytics.json` and
    `data/decks/index.json` together; the message carries the leaderboard.
 

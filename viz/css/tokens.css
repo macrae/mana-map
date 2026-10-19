@@ -1317,6 +1317,13 @@ details.rost-fold > summary {
 .fl-h3 { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .06em;
   font-size: 12px; color: var(--ink-soft); margin: 18px 0 6px; }
 .fl-star { border-color: var(--tier-coach); color: var(--tier-coach); }
+/* Rating v2 (2026-10-19): the probability of first place, and the concordance
+   level between the deck's instruments — divergent is the anti-signal the pilot
+   asked the rating to measure, so it reads in the warning colour. */
+.fl-acc { border-color: var(--tier-data); color: var(--tier-data); }
+.fl-cc[data-level="concordant"] { color: var(--tier-verified); border-color: var(--tier-verified); }
+.fl-cc[data-level="mixed"] { color: var(--ink-2, var(--ink)); }
+.fl-cc[data-level="divergent"] { color: var(--warn, #e0a030); border-color: var(--warn, #e0a030); }
 .fl-members { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 14px; }
 .fl-member { padding: 10px 12px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; }
 .fl-member a { color: var(--ink); font-weight: 600; text-decoration: none; }

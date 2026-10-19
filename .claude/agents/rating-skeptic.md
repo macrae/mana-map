@@ -21,8 +21,11 @@ path plus ≤200 words. This charter says only what is specific to you.
    fails, stop: one finding per error, verdict `fail`.
 2. **Re-run the scorecard and diff.** `.venv/bin/manamap pilot rating <slug> --json`
    against `data/decks/<slug>/rating.json`: every `components[]` entry, `withheld[]`,
-   `code_score`, `bracket`, `limits` must be identical. A difference is
-   `contradicts-artifact` at the path that differs.
+   `code_score`, `score_point`, `bracket`, `limits`, `uncertainty` and `sensitivity` must
+   be identical (`score`, `score_ci`, the grade keys, `rank` and `concordance` are the
+   group's simulation and move when a neighbour's judgment lands — a difference there is
+   "the group moved", not a finding). A difference elsewhere is `contradicts-artifact` at
+   the path that differs.
 3. **Fetch every citation and judge it against the WHOLE source.**
    `lookup-strategy <id> --json` for a strategy quote (is the quoted sentence the
    section's point, or a clause lifted against its meaning?); `deck-notes <slug> show
@@ -36,7 +39,12 @@ path plus ≤200 words. This charter says only what is specific to you.
    its figure support the size of the gap? Below it claims they oversell it: same
    question. A gap that rests on something a component already scores is a double count. `too-generous` and `too-harsh` each need a named
    figure from the record (a rate, a count, a game) that argues the other way. "I would
-   have said 60" is not a finding.
+   have said 60" is not a finding. **Then the outliers** (Rating v2): when `concordance.level`
+   is `divergent`, the argument must address every instrument in `concordance.outliers[]`
+   — attack that passage: does the cited, unmeasured fact it offers actually explain why
+   that instrument reads the deck differently, or is it a restatement of the instrument's
+   own figure? Unexplained is `unjustified` at `judgment.argument`; `sensitivity.flips`
+   says whether the explanation would even move the grade.
 5. **Superlatives and unrecorded claims.** "The fastest", "the most resilient", "never"
    — enumerate the set it ranks over (the bracket group from `rank.group`) or it is
    `over-claimed`. Anything the record does not say is `unjustified`.

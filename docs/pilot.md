@@ -891,7 +891,7 @@ hand-written, so not a lifecycle stage: absent means the deck is published nowhe
 direction is the same paste: `check-in --from <url>` is refused with the sentence that says
 to export on Moxfield and paste into `--from -`.
 
-## The rating (`rating`, ★ over ◆; `merge-rating`; `validate-rating`) — 2026-10-18
+## The rating (`rating`, ★ over ◆; `merge-rating`; `validate-rating`) — 2026-10-18, spec 2 on 2026-10-19
 
 `rating.json` is a sleeved deck's 0–100 score, letter grade and rank **within its bracket**
 (the fleet is the sleeved decks; `rating` refuses a bench or brewing deck), and it
@@ -902,64 +902,121 @@ anything. The bench has refused a composite score at the ◆ tier three times (`
 `MIN_DECKS`), and the rating does not overturn that: it is a labelled judgment OVER the ◆
 figures, every one of which is traced to its file with its interval and n.
 
-**The scorecard** (`rating.py`, deterministic). Each component maps a ◆ figure to 0–100 by
-its **placement** within the bracket group (a percentile over the members, ties averaged,
-withheld below `RATING_MIN_GROUP` = 3) and by an **absolute anchor** quoted from the
-strategy companion; the sub-score is half of each when both exist, the one present
-otherwise. The anchor is `band_score`: 100 inside the cited band, falling linearly outside
-it, monotone so an input's interval maps by its two ends.
+**Spec 2 (2026-10-19) — why.** The first fleet pass printed heliod as D 49.9 with an interval
+of [49.9, 49.9] while DeckCheck's Threat Index read it the fleet's highest. The pilot called
+that an anti-signal between instruments that the rating should measure, and asked for the
+goldfish's weight to move. Three things had hidden in the number: the weights were one
+vector nobody had estimated; a placement within a group of three was a 0/50/100 scale given
+half of every component; the printed interval summed the inputs' interval ends and so saw
+neither. Spec 2 makes the weights a declared prior with uncertainty, draws every input from
+its posterior, scores the DTI as a component, halves speed's weight for a win the goldfish
+cannot see, and publishes disagreement between instruments as a figure with a display rule.
 
-| component | weight | ◆ inputs | placement | anchor |
-|---|---|---|---|---|
-| speed | 0.15 | benchmark `kill_by_turn_8` (Wilson at the harness's n) | within bracket, higher better | `kill_by_turn_T` / 0.5 for the bracket's clock (B4 → T6, B3 → T8, B1–2 → T10; `strategy:deckbuilding.power-level`) |
-| mana | 0.10 | benchmark `missed_land_drop_rate`; the audit's `consistency` axis | lower better | band(turn-3 land drop, ≥ 0.74; `strategy:deckbuilding.mana-base`) |
-| resilience | 0.15 | benchmark `answer_cards`; the audit's `interaction-breadth` classes | `answer_cards` | mean of band(answer_cards, 15–20) and classes/5 — CAPACITY, not performance |
-| construction | 0.15 | the audit axes with a cited band: mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density | none (an authored target is not a sample) | mean band_score; dropped axes named in `method` |
-| table_record | 0.15 | `log.jsonl`: wins / games, any version, Wilson; par = mean 1/(opponents+1) | on win rate − par | 50 + 100·(win − par); withheld below 5 games |
-| pilot_feel | 0.10 | the survey means of power, resilience, consistency (authored) | within bracket | (mean − 1)/4 · 100; withheld below 3 surveyed games |
-| forge | **0.00** | Forge win rate on the CURRENT list at the standard table | none | 50 + 100·(win − 0.25); weight zero by the pilot's rule (2026-10-18) |
-| judgment | 0.20 | the `deck-rater` agent's 0–100 | — | a weighted component, not a ±adder: bounded by construction, visible beside the rest; its neutral point is `code_score`, not 50 — equal leaves the composite where the components put it, above says they undersell, below oversell |
+**The scorecard** (`rating.py`, deterministic given the seed). Each component maps a ◆ figure
+to 0–100 by its **placement** within the bracket group (a percentile over the members, ties
+averaged, withheld below `RATING_MIN_GROUP` = 3) and by an **absolute anchor** quoted from
+the strategy companion or read from the instrument; the sub-score is `λ·placement +
+(1−λ)·anchor` with `λ(n) = (n−1)/(n−1+PLACEMENT_SHRINK_K)` — a placement is a proportion
+estimated from n−1 pairwise comparisons, shrunk toward the anchor with K = 4
+pseudo-comparisons (the Beta-binomial posterior-mean form): one third at n = 3, one half
+at n = 5, two thirds at n = 9. The anchor is `band_score`: 100 inside the cited band,
+falling linearly outside it.
+
+| component | prior weight | ◆ inputs | placement | anchor | validity |
+|---|---|---|---|---|---|
+| speed | 0.12 | benchmark `kill_by_turn_8` (Beta posterior at the harness's n) | within bracket, higher better | `kill_by_turn_T` / 0.5 for the bracket's clock (B4 → T6, B3 → T8, B1–2 → T10; `strategy:deckbuilding.power-level`) | × `SPEED_VALIDITY_ALT_WIN` = 0.5 when `alt_win_cards` finds a card in the engine's `wincon` stage whose oracle text wins the game without damage (heliod's Approach); a `limits` line names it |
+| mana | 0.08 | benchmark `missed_land_drop_rate`; the audit's `consistency` axis | lower better | band(turn-3 land drop, ≥ 0.74; `strategy:deckbuilding.mana-base`) | — |
+| resilience | 0.12 | benchmark `answer_cards`; the audit's `interaction-breadth` classes | `answer_cards` | mean of band(answer_cards, 15–20) and classes/5 — CAPACITY, not performance | — |
+| construction | 0.13 | the audit axes with a cited band: mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density | none (an authored target is not a sample) | mean band_score; dropped axes named in `method` | — |
+| dti | 0.15 | DeckCheck's latest reading on this list (`deckcheck.json`) | on their headline score | the mean of their twelve rubric grades, S 100 / A 75 / B 50 / C 25 / F 0 (100·score/96 would drag every bracket-3 and -4 deck toward F: their scale tops out for cEDH); withheld when the reading describes another list | — |
+| table_record | 0.12 | `log.jsonl`: wins / games, any version, Beta posterior; par = mean 1/(opponents+1) | on win rate − par | 50 + 100·(win − par); withheld below 5 games | — |
+| pilot_feel | 0.08 | the survey means of power, resilience, consistency (authored) | within bracket | (mean − 1)/4 · 100; withheld below 3 surveyed games | — |
+| forge | **0.00** | Forge win rate on the CURRENT list at the standard table | none | 50 + 100·(win − 0.25); weight zero by the pilot's rule (2026-10-18), a rule not a prior, so outside the draw | — |
+| judgment | 0.20 | the `deck-rater` agent's 0–100 | — | a weighted component, not a ±adder: bounded by construction, visible beside the rest; its neutral point is `code_score`, not 50 — equal leaves the composite where the components put it, above says they undersell, below oversell | — |
+
+**The weights are a prior; the score is drawn** (`rating_mc.py`). `WEIGHTS` is the mean of a
+Dirichlet with concentration `WEIGHT_CONCENTRATION` κ = 20. `simulate` draws K = 2000
+weight vectors per bracket group (`random.Random(RATING_MC_SEED)`, one generator per group,
+a fixed draw order), SHARED across the group's members within a draw so the ranks are
+joint, and renormalises each member's draw over the components it can measure — a Dirichlet
+renormalised over a subset is the Dirichlet over that subset's alphas, so one prior serves
+every withheld pattern, and a deck with more withheld has a flatter prior. Each draw also
+draws the inputs: a rate anchor from `Beta(k+1, n−k+1)`, a placement uniform over its
+percentile bin (±50/(n−1): a rank is interval-censored to its step, ±25 at n = 3), the DTI
+`Normal(anchor, sd)` with the sd from the readings on this list when there are two or
+`DTI_PRIOR_READ_SD` = 4 otherwise, the judgment `Normal(sub, JUDGMENT_SD = 5)`; bands and
+counts are fixed. Out of it: `score` = the median, `score_ci` = the 90% interval
+(`RATING_MC_LEVEL`), `grade_probabilities`, `grade_range` = the grades at the interval's
+ends, `rank.acceptability` = the probability of each position, each component's `sub_ci`,
+and `uncertainty` naming method, K, seed, κ, level and every sd. `score_point` is the
+deterministic weighted mean (spec 1's score) and `code_score` the same without the
+judgment — the judgment's neutral point, kept deterministic because the charters depend on
+it. **Every sd above is a declared prior, not an estimate** (known-issues §27).
+
+**Sensitivity, closed form.** The point score is linear in each component's share u with the
+rest renormalised, `S(u) = u·s_i + (1−u)·S_rest`, so the share at which it meets a grade
+boundary B is `u* = (B − S_rest)/(s_i − S_rest)` — exact. `sensitivity.flips` carries one
+flip per component (the nearest in-range boundary: share now, share at the flip, the grade
+it becomes, raise or lower) and `leave_one_out` the score and grade without each component.
+"Without speed 58.1 C; the grade flips to B at speed share 0.057."
+
+**Concordance — the anti-signal as a figure.** Every instrument carried by at least three
+members ranks the group's members (1 best; speed, mana, resilience, construction, dti,
+table_record and judgment when present). For the deck: `instruments` (its rank under each),
+`spread = (max − min)/(n − 1)`, `level` (concordant below 0.34, divergent from 0.67, mixed
+between), `outliers[]` (the instruments on the smaller side of its median rank, both sides
+on a tie), and `group` — Kendall's W over the instruments, tie-corrected, with a
+permutation p enumerated EXACTLY when `(n!)^(m−1)` fits `KENDALL_EXACT_MAX` (n = 3, m = 6
+is 7776 relabellings) and sampled with the Phipson–Smyth +1 otherwise (`p_method` says
+which). **The display rule:** a divergent deck's `grade_display` is the range from
+`grade_range` ("D–C"), never a letter, and its judgment must address every outlier
+instrument by name — the validator refuses otherwise. Heliod on the first spec-2 skeleton:
+dti and resilience rank 1, speed, mana and construction rank 3, spread 1.0, C–B.
 
 **Absent means withheld.** A component with no usable input is listed in `withheld[]` with its
 reason, never scored zero, and the weights are renormalised over what is present
-(`weight_effective`). The skeleton withholds `judgment` ("no deck-rater pass yet") so a
-skeleton-only file is honest on its own; today `table_record`, `pilot_feel` and `forge` are
-withheld on every deck. `code_score` (measured only) and `score` (with the judgment) are both
-carried; `score_ci` sums the components' interval ends; `resolution` says how many grade
-boundaries the interval spans. Five grade bands — A ≥ 80, B ≥ 65, C ≥ 50, D ≥ 35, F — no
-plus or minus and no S: the inputs' resolution is a handful of points, and DeckCheck's
-S–F scale is a different, unpublished formula. The grade is always printed with its group:
-"B in Bracket 3 (2 of 5)". `rank` orders the group by each member's tracked `rating.json`
-score when it describes the current list, else its skeleton `code_score` (`rank.basis`),
-with `ties_within_ci`.
+(`weight_effective`, after `weight_validity`). The skeleton withholds `judgment` ("no
+deck-rater pass yet") so a skeleton-only file is honest on its own. Five grade bands — A ≥
+80, B ≥ 65, C ≥ 50, D ≥ 35, F — no plus or minus and no S: the inputs' resolution is a
+handful of points, and DeckCheck's S–F scale is a different, unpublished formula. The grade
+is always printed with its group: "C–B in Bracket 4 (1 of 3), P(1st) 72%". `rank` orders
+the group by each member's simulated median; a member's judgment enters the simulation when
+its tracked `rating.json` describes the current list and spec (`rank.basis`).
 
 **The judgment is carried, never re-derived.** `rating <slug> --write` rebuilds every code
 component and keeps an existing judgment, verifier and open questions only when
 `judgment.against` names this list's sha and this spec's sha (`model_version` is the
-scorecard's constants hashed — a weight edit changes it); otherwise the judgment is dropped
-into `withheld[]` with the sha reason. `merge-rating <slug>` takes the `deck-rater`'s hand-off
-(`.agent-out/deck-rater.json`: `judgment{sub_score, argument, citations}`, `open_questions`),
-`--verifier` the `rating-skeptic`'s (`verifier{verdict, findings}`); both recompute the
-skeleton and run `validate-rating` before the write, so a hand-off that invents a figure
-lands nothing. `install-agent` refuses the routine by name.
+scorecard's constants hashed — a weight, a prior or κ changes it); otherwise the judgment is
+dropped into `withheld[]` with the sha reason. `merge-rating <slug>` takes the `deck-rater`'s
+hand-off (`.agent-out/deck-rater.json`: `judgment{sub_score, argument, citations}`,
+`open_questions`), `--verifier` the `rating-skeptic`'s (`verifier{verdict, findings}`); both
+recompute the skeleton and run `validate-rating` before the write, so a hand-off that
+invents a figure lands nothing. `install-agent` refuses the routine by name.
 
 **The gate** (`validate-rating`, `deck_status.VALIDATED`): tier and label; every code component,
-the withheld list, the code score, the bracket, the limits and the context equal a fresh
-computation byte for byte; rank matches the group's current scores; weights are the
-scorecard's and the effective weights sum to 1; the judgment's sub-score is a whole number in
-[0, 100] and `against` names this list and spec; at least two citations of two kinds, each
-resolvable — `log:<id>` in the log with its quote in the text, `strategy:<id>` verbatim
-through the stack validator's contract, `stack:<NNN>` passed its checker, `engine:<stage>`
-and `context:<section>` exist and carry the quote, `skeleton:<component>` present; every
-number in the argument appears in cited material or the skeleton; the argument within 250
-words; the verifier's statuses from the closed set, every finding with `where`, `pass` only
-beside all-`supported` findings. STALE (the list moved, the fleet artifact rebuilt, the spec
-changed) is reported and form-checked, never failed.
+the withheld list, the code and point scores, the bracket, the limits, the context, the
+uncertainty and the sensitivity equal a fresh computation byte for byte; the score, its
+interval, the grade keys, the rank and the concordance match the group's current simulation
+("the group moved" otherwise — `rating <slug> --write`); `uncertainty` names the scorecard's
+seed, K, κ and level; weights are the scorecard's, `weight_validity` is 1.0 or
+`SPEED_VALIDITY_ALT_WIN`, and the effective weights sum to 1; the judgment's sub-score is a
+whole number in [0, 100] and `against` names this list and spec; at least two citations of
+two kinds, each resolvable — `log:<id>` in the log with its quote in the text, `strategy:<id>`
+verbatim through the stack validator's contract, `stack:<NNN>` passed its checker,
+`engine:<stage>` and `context:<section>` exist and carry the quote, `skeleton:<component>`
+present; every number in the argument appears in cited material or the skeleton; a
+divergent deck's argument names every outlier instrument; `grade_display` follows the
+display rule; the argument within 250 words; the verifier's statuses from the closed set,
+every finding with `where`, `pass` only beside all-`supported` findings. STALE (the list
+moved, the fleet artifact rebuilt, the spec changed) is reported and form-checked, never
+failed.
 
-`rating --all` prints the leaderboard by bracket, every row labelled skeleton or judged with
-its withheld list. `rating --calibrate` is the check against outcomes: Spearman of the score
-against the pilot's win rate, the survey's power mean and the DTI, each computed only at
-`calibrate.MIN_DECKS` and otherwise the `NOT ANSWERABLE` refusal with today's n.
+`rating --all` prints the leaderboard by bracket — the grade or its range, the score, the 90%
+interval, P(1st), the concordance level — every row labelled skeleton or judged with its
+withheld list. `rating --calibrate` is the check against outcomes: Spearman of the score
+against the pilot's win rate and the survey's power mean, and of the score WITHOUT the dti
+component against the DTI (it is an input now), each computed only at `calibrate.MIN_DECKS`
+and otherwise the `NOT ANSWERABLE` refusal with today's n.
 
 ## Fleet analytics (`fleet-analytics`, ◆ profiles; `validate-fleet-analytics`, form) — 2026-10-18
 

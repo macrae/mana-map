@@ -131,10 +131,44 @@
     return bits.join(' · ') + ' <span class="ev">n=' + esc(sv.games_surveyed) + '</span>';
   }
 
+  // The grade a reader sees: `grade_display` is the range when the deck's
+  // instruments diverge ("D–C"), the letter otherwise (Rating v2, 2026-10-19).
+  function gradeShown(rt) { return rt.grade_display || rt.grade; }
+
   function ratingCell(rt) {
     if (!rt) return dash('no rating.json — the rating is ★ coaching, written by the rating agent');
-    return '<span class="chip fl-star" title="' + esc(rt.label || '') + '">★ ' + esc(rt.grade) + '</span> '
+    return '<span class="chip fl-star" title="' + esc(rt.label || '') + '">★ ' + esc(gradeShown(rt)) + '</span> '
       + num(rt.score, 1) + (rt.rank ? ' <span class="ev">' + esc(rt.rank.position) + '/' + esc(rt.rank.of) + '</span>' : '');
+  }
+
+  // Rating v2's extra chips: the probability of first place, the concordance
+  // level with every instrument's rank in the tooltip, and the nearest flip.
+  function ratingExtras(rt) {
+    var out = '';
+    var acc = rt.rank && rt.rank.acceptability;
+    if (acc && acc['1'] != null) {
+      out += '<span class="chip fl-acc" title="' + esc(Object.keys(acc).map(function (p) { return 'P(' + p + ') ' + pct(acc[p], 0); }).join(', ')) + '">P(1st) ' + pct(acc['1'], 0) + '</span>';
+    }
+    var cc = rt.concordance;
+    if (cc && cc.level) {
+      var inst = cc.instruments || {};
+      var tip = Object.keys(inst).map(function (i) { return i + ' #' + inst[i]; }).join(', ')
+        + (cc.outliers && cc.outliers.length ? '; outliers: ' + cc.outliers.map(function (o) { return o.instrument; }).join(', ') : '')
+        + (cc.group && cc.group.kendall_w != null ? '; group W ' + cc.group.kendall_w + ' p ' + cc.group.p : '');
+      out += '<span class="chip fl-cc" data-level="' + esc(cc.level) + '" title="' + esc(tip) + '">' + esc(cc.level) + '</span>';
+    }
+    return out;
+  }
+
+  function sensitivityLine(rt) {
+    var s = rt.sensitivity;
+    if (!s || !s.flips || !s.flips.length) return '';
+    var f = s.flips[0];
+    var loo = s.leave_one_out && s.leave_one_out[f.component];
+    return '<div class="fl-words ev">'
+      + (loo ? 'without ' + esc(f.component) + ' ' + num(loo.score, 1) + ' ' + esc(loo.grade) + '; ' : '')
+      + 'grade flips to ' + esc(f.grade_at_flip) + ' at ' + esc(f.component) + ' share ' + num(f.share_at_flip, 2)
+      + ' (now ' + num(f.share_now, 2) + ')</div>';
   }
 
   function tableRow(r, rt) {
@@ -455,12 +489,15 @@
           return '<span class="chip" title="' + esc(c.method || '') + '">' + esc(c.name) + ' ' + num(c.sub_score, 0) + '</span>';
         }).join('');
         var withheld = (rt.withheld || []).map(function (w) { return esc(w.component); }).join(', ');
-        return '<div class="fl-rating-row"><span class="chip fl-star">★ ' + esc(rt.grade) + '</span> '
+        var level = rt.uncertainty && rt.uncertainty.level ? Math.round(rt.uncertainty.level * 100) + '% ' : '';
+        return '<div class="fl-rating-row"><span class="chip fl-star">★ ' + esc(gradeShown(rt)) + '</span> '
           + '<a href="deck.html?deck=' + encodeURIComponent(r.slug) + '">' + esc(r.slug) + '</a> '
           + '<b>' + num(rt.score, 1) + '</b>'
-          + (rt.score_ci ? ' <span class="ev">[' + num(rt.score_ci[0], 1) + ', ' + num(rt.score_ci[1], 1) + ']</span>' : '')
+          + (rt.score_ci ? ' <span class="ev">' + level + '[' + num(rt.score_ci[0], 1) + ', ' + num(rt.score_ci[1], 1) + ']</span>' : '')
           + (rt.rank ? ' <span class="ev">' + esc(rt.rank.position) + ' of ' + esc(rt.rank.of) + '</span>' : '')
-          + '<div class="fl-words">' + comps + (withheld ? '<span class="chip t-none">withheld: ' + withheld + '</span>' : '') + '</div></div>';
+          + ' ' + ratingExtras(rt)
+          + '<div class="fl-words">' + comps + (withheld ? '<span class="chip t-none">withheld: ' + withheld + '</span>' : '') + '</div>'
+          + sensitivityLine(rt) + '</div>';
       }).join('');
     }).join('');
     var label = ratings[rated[0].slug].label || '';

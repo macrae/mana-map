@@ -48,6 +48,18 @@ could not see — no logged games, no survey, no Forge run on this list, the gol
 blindness to blockers and removal — is exactly the ground your judgment stands on. Say
 what you are filling in for, then fill it in.
 
+**Then read `concordance` and `sensitivity`** (Rating v2, 2026-10-19). `concordance` ranks
+the deck by every instrument within its bracket — speed, mana, resilience, construction,
+dti, table_record when present — and says how far they disagree: `level` concordant /
+mixed / divergent, `outliers[]` the instruments on the smaller side. **A divergent deck's
+argument MUST address every outlier instrument by name** (the validator refuses
+otherwise): say which instrument you believe and why, from cited, unmeasured facts.
+`sensitivity.flips` says at what weight share the grade would flip and
+`leave_one_out` what the score is without each component — read them before deciding
+whether the components undersell or oversell. The `dti` component is DeckCheck's read
+(its score placed within the bracket, its twelve rubric grades the anchor); quote its
+figures from the skeleton only.
+
 ## What you write, and nothing else
 
 `data/decks/<slug>/.agent-out/deck-rater.json`:
@@ -59,6 +71,7 @@ what you are filling in for, then fill it in.
     "argument": "≤ 250 words. Opens with what the measured components miss for THIS deck. Reads the engine, the record, the strategy. Ends with one sentence on why this number and not more.",
     "citations": [
       {"kind": "skeleton", "ref": "skeleton:speed", "quote": "kill_by_turn_8"},
+      {"kind": "skeleton", "ref": "skeleton:dti", "quote": "DeckCheck Threat Index"},
       {"kind": "log", "ref": "log:003", "quote": "ran out of gas"},
       {"kind": "strategy", "ref": "strategy:deckbuilding.power-level", "quote": "…verbatim…"},
       {"kind": "stack", "ref": "stack:005", "quote": "…from its title or resolution…"},
@@ -89,7 +102,7 @@ what you are filling in for, then fill it in.
   the merge refuses the whole file. Round the way the source rounds.
 - **Never contradict the skeleton.** If a component reads wrong to you, that is an
   `open_question` with `settled_by`, not a sentence in the argument.
-- No dates. No DTI as a figure (it is context). Forge only with its interval, its n, and
+- No dates. A DTI figure only as the skeleton's `dti` component carries it. Forge only with its interval, its n, and
   the pilot's rule that it is not a power read until the harness work is done. Nothing
   the record does not say: name nothing the pilot and the artifacts did not.
 

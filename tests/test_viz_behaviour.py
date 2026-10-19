@@ -4787,13 +4787,24 @@ def test_a_group_below_the_band_threshold_says_so_and_there_is_no_leaderboard_wi
 def test_a_rating_file_is_drawn_only_with_the_coaching_tier_and_sorted_by_score(browser, viz_server):
     doc = _fleet_doc([_fleet_row("alpha"), _fleet_row("bravo"), _fleet_row("charlie")])
     rating = {"tier": "★", "label": "This rating is ★ coaching.", "score": 66.4, "score_ci": [60.0, 70.0],
-              "grade": "B", "bracket": {"key": 3}, "rank": {"position": 1, "of": 3},
+              "grade": "B", "grade_display": "B", "bracket": {"key": 3},
+              "rank": {"position": 1, "of": 3, "acceptability": {"1": 0.62, "2": 0.3, "3": 0.08}},
+              "uncertainty": {"level": 0.9},
+              "concordance": {"level": "mixed", "instruments": {"speed": 1.0, "mana": 2.0}, "outliers": [], "group": None},
+              "sensitivity": {"leave_one_out": {"speed": {"score": 58.1, "grade": "C"}},
+                              "flips": [{"component": "speed", "share_now": 0.2, "share_at_flip": 0.31,
+                                         "boundary": 65, "grade_at_flip": "C", "direction": "raise"}]},
               "components": [{"name": "speed", "sub_score": 71, "method": "m"}],
               "withheld": [{"component": "forge", "reason": "no run"}]}
+    divergent = dict(rating, score=70.1, grade="B", grade_display="C–B",
+                     rank={"position": 1, "of": 3, "acceptability": {"1": 0.9, "2": 0.1, "3": 0.0}},
+                     concordance={"level": "divergent", "instruments": {"speed": 3.0, "dti": 1.0},
+                                  "outliers": [{"instrument": "dti", "rank": 1.0, "side": "better"}],
+                                  "group": {"kendall_w": 0.12, "p": 0.69}})
     page = _fleet(browser, viz_server, doc, ratings={
         "alpha": rating,
         "bravo": dict(rating, tier="◆", score=99.0),       # not a rating: no ★ tier
-        "charlie": dict(rating, score=70.1, grade="B", rank={"position": 1, "of": 3}),
+        "charlie": divergent,
     })
     try:
         rows = page.query_selector_all("#fleet-rating .fl-rating-row")
@@ -4801,8 +4812,17 @@ def test_a_rating_file_is_drawn_only_with_the_coaching_tier_and_sorted_by_score(
         assert "★ COACHING" in page.text_content("#fleet-rating h2")
         assert "2 of 3 sleeved decks rated" in page.text_content("#fleet-rating")
         assert "withheld: forge" in page.text_content("#fleet-rating")
+        # Rating v2: the divergent deck shows its grade RANGE, every row its P(1st), its
+        # concordance level, the 90% label on the interval and the nearest flip.
+        assert rows[0].text_content().startswith("★ C–B") and rows[1].text_content().startswith("★ B")
+        assert "P(1st) 90%" in rows[0].text_content() and "P(1st) 62%" in rows[1].text_content()
+        assert page.query_selector('#fleet-rating .fl-cc[data-level="divergent"]') is not None
+        assert "dti" in page.query_selector('#fleet-rating .fl-cc[data-level="divergent"]').get_attribute("title")
+        assert "90% [60.0, 70.0]" in rows[1].text_content()
+        assert "without speed 58.1 C" in rows[1].text_content() and "share 0.31" in rows[1].text_content()
         # The table's rating column carries the badge for rated decks and a dash otherwise.
         assert page.query_selector_all("#fleet-table .fl-star").__len__() == 2
+        assert "★ C–B" in page.text_content("#fleet-table")
         assert page.js_errors == []
     finally:
         page.close()

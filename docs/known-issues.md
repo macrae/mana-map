@@ -1800,3 +1800,33 @@ stack 002 closes a turn where the stack proves the storm count and tokens, not a
 more decks per bracket, and a reading of what the raters kept getting wrong (double-counting
 a gap the measured components already carry was the commonest finding).
 
+Later the same day the pilot read heliod's D 49.9 beside DeckCheck's 46/96 — the fleet's
+highest — as an anti-signal the rating should measure rather than a reader notice, and
+Rating v2 replaced the scorecard (§27). The six files are v2 skeletons until `/rate-fleet`
+re-runs under the new spec; every judgment above was written against spec 1 and is withheld
+"(another spec)".
+
+## 27. Rating v2's priors are declared, not estimated, and n = 3 makes every interval wide (2026-10-19)
+
+`rating.py` spec 2 draws the score instead of computing it: the weights are a Dirichlet
+prior around `WEIGHTS` with concentration κ = 20, rate anchors are Beta posteriors, a
+placement is uniform over its percentile bin (±25 points at n = 3), the DTI is Normal
+around its reading with a prior sd of 4, the judgment Normal with sd 5; 2000 seeded draws
+per bracket group give the median, the 90% interval, the grade probabilities and the rank
+acceptability (`rating_mc.py`). Five of those numbers — κ, `JUDGMENT_SD`,
+`DTI_PRIOR_READ_SD`, `PLACEMENT_SHRINK_K` = 4, `SPEED_VALIDITY_ALT_WIN` = 0.5 — and the
+uniform placement bin are PRIORS the pilot and the bench chose, named in every
+`uncertainty` block and hashed into `spec_sha`; nothing has estimated them, and below
+`calibrate.MIN_DECKS` nothing can. Two consequences are visible on the first skeletons:
+four of six sleeved decks read `concordance: divergent` (at n = 3 any deck ranked first by
+one instrument and last by another has a spread of 1.0) and so print a grade RANGE; and
+every 90% interval spans a grade boundary. Both are the honest reading of three decks per
+bracket, not a defect — the fix is decks and games, the same as §26. Two smaller notes:
+`gammavariate` and `gauss` call libm, so a run is byte-identical on one machine and may
+differ by an ulp across platforms (the validator recomputes where it runs; CI does not
+rewrite `rating.json`); and the DTI anchor is DeckCheck's twelve rubric grades mapped S
+100 … F 0, chosen over 100·score/96 because their headline score tops out for cEDH and
+would drag every bracket-3 and -4 deck toward F — a linear map of their rubric, nothing
+more, revisited when more readings land.
+
+
