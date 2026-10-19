@@ -1416,8 +1416,8 @@
       "name": "blue-v1",
       "opened": "2026-09-16",
       "why": "the colour audit (2026-09-16): U is 62% of pips on 51% of sources, with 13 double-pip blue cards against 4 white, on 9 Islands and 8 Plains; one Plains to an Island is the deterministic shift, measured on the mana half — a CONTROL objective, since the goldfish cannot rank two lands",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: absorbed: the colour audit's Plains-to-Island shift merged in splendor-v2 as v1.",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -2124,8 +2124,8 @@
       "name": "splendor-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): Gleaming Splendor for Alhammarret's Archive. a Treasure whenever an opponent draws their second card in a turn, in a deck that makes every opponent draw every turn, plus a group-draw activation; the Archive's lifegain half is off-plan here The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: absorbed: Gleaming Splendor for Alhammarret's Archive merged in splendor-v2 as v",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -4320,7 +4320,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 5,
+    "count": 7,
     "awaiting_outcome": [
       {
         "id": "001",
@@ -4345,36 +4345,6 @@
       }
     ],
     "latest": [
-      {
-        "id": "001",
-        "at": "2026-09-08",
-        "kind": "merge",
-        "branch": "archangel-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "board_power_6",
-          "grade": "met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
-      {
-        "id": "002",
-        "at": "2026-09-16",
-        "kind": "propose",
-        "branch": "artifacts-v1",
-        "as_version": "v1.3.0",
-        "predicted": {
-          "endpoint": "damage_8",
-          "grade": "met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
       {
         "id": "003",
         "at": "2026-09-16",
@@ -4414,6 +4384,39 @@
         "predicted": {
           "endpoint": "interaction_6",
           "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "006",
+        "at": "2026-10-19T16:40:01-07:00",
+        "kind": "reject",
+        "branch": "splendor-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "extra_cards_8",
+          "grade": "met",
+          "forge_delta": -0.0276,
+          "forge_ci95": [
+            -0.2322,
+            0.1854
+          ],
+          "pod": "standard-v3"
+        },
+        "realised": null
+      },
+      {
+        "id": "007",
+        "at": "2026-10-19T16:40:06-07:00",
+        "kind": "reject",
+        "branch": "blue-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "damage_8",
+          "grade": "met",
           "forge_delta": null,
           "forge_ci95": null,
           "pod": null
