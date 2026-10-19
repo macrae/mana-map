@@ -109,7 +109,7 @@ Nothing here needs the page; this is the bench's reason to exist.
 ranked adds that close a named axis, cuts priced, accumulated under `prescriptions/`.
 `/diagnose-deck` is the whole reading when you want all of it rather than an answer.
 
-**13 — Change it, on a branch, and PROPOSE it.** Start with **`try <slug> --out X --in Y
+**13 — Change it, on a branch, and PROPOSE it.** (Once the pilot says the branch goes into the sleeves, the whole release — measure, propose, merge, Keeper, commit, tag + paper, DeckCheck, re-rate — is **`/release-branch`**; this phase is the long form.) Start with **`try <slug> --out X --in Y
 [...]`** — an answer in seconds, nothing written: every card in and out, the keep list
 (`protected.json`), the colour sources, the paired goldfish rows and one line. Read its
 OUT list before anything else. `try … --stage <name>` (or `deck-branch <slug> new …

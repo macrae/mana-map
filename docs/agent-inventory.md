@@ -72,7 +72,7 @@ and D-2 is explicit that "nothing gets deleted before its useful capability has
 a new home". They are recorded here as *never spawned by a skill* and left in
 place; retiring them is a decision, not a cleanup.
 
-## Skills — 28 in `.claude/skills/`
+## Skills — 29 in `.claude/skills/`
 
 Deck-facing, and the ones a consolidation has to re-home:
 
@@ -82,6 +82,7 @@ Deck-facing, and the ones a consolidation has to re-home:
 | `build-deck` | deck-analyst → deck-architect → deck-critic | the agent build loop, gated on `validate-build` / `bracket-check` |
 | `diagnose-deck` | deck-doctor ⇄ deck-skeptic | |
 | `rate-deck` | deck-rater ⇄ rating-skeptic | the rating loop (2026-10-18): the scorecard first, the judgment merged and validated, the skeptic, `cache-record` last; `rate-fleet` runs it over every live Commander deck and settles the ranks |
+| `release-branch` | context-keeper, deck-rater ⇄ rating-skeptic | the release of a SLEEVED deck's branch, end to end (2026-10-19): net-change → propose `--as` → merge (proxies or cardboard; `--force --reason` for unowned cards) → `validate-goldfish-targets` and the repair → regen → the Keeper → prices → check-deck → the merge commit → `deck-version tag` + `paper` → DeckCheck Bulk Edit, rescan, `deckcheck --write` → `/rate-deck` and the bracket settled. Written after goblin-storm's release skipped the tag, the lock and the rating |
 | `prescribe` | deck-doctor (MODE prescribe) ⇄ deck-skeptic | |
 | `analyze-engine` | deck-engineer ⇄ engine-critic | |
 | `resolve-stack` | stack-resolver ⇄ rules-checker | max 3 iterations |

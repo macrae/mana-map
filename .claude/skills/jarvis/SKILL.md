@@ -132,7 +132,7 @@ key `stage` (`promote.stage`). The rung decides the path; never pick another.
      (`context <slug> --install data/decks/<slug>/.agent-out/context-keeper.md --note
      "deck change: …"`; `--json` carries it as `context.install`), then
      `manamap pilot context <slug> --refresh`.
-- **`sleeved`: never `edit`** (it refuses). Offer the branch path:
+- **`sleeved`: never `edit`** (it refuses). Offer the branch path (and when he says the branch goes into the sleeves, cardboard or proxies, the whole release is `/release-branch`):
   `try <slug> --out A --in B --stage <branch>`, then
   `net-change <slug> --branch <branch> --write`. Merge (`deck-branch <slug> merge`) only
   on his word that the cards are in the sleeves, and commit it (the merge prints the
