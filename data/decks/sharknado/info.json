@@ -15,14 +15,14 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 13,
+    "complete": 14,
     "of": 19,
     "stale": [
       "tutors",
       "prose"
     ],
     "invalid": [
-      "targets",
+      "CONTEXT.md",
       "build_plan.json"
     ],
     "verified": true,
@@ -5671,6 +5671,14 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
+        "target:A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board": {
+          "value": 58,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
         "assumptions": {
           "value": [
             "Simulates resource development, not full games (no interaction, no removal).",
@@ -5885,6 +5893,10 @@
       {
         "label": "Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step",
         "by_turn_6_pct": 49
+      },
+      {
+        "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
+        "by_turn_6_pct": 58
       }
     ],
     "combat": {
@@ -6045,7 +6057,7 @@
         "Scrawling Crawler",
         "Teferi's Protection"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Winds of Change, Whirlpool Warrior. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Winds of Change sat castable and uncast on 106 own turns, Whirlpool Warrior sat castable and uncast on 89 own turns — measured from the hand, not inferred."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Winds of Change, Whirlpool Warrior, Faerie Mastermind. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Winds of Change sat castable and uncast on 106 own turns, Whirlpool Warrior sat castable and uncast on 89 own turns — measured from the hand, not inferred."
     },
     "eliminated_by": {
       "sythis-enchantress": 73,
@@ -6175,7 +6187,7 @@
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (targets, build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "2 artifact(s) fail their own gate (CONTEXT.md, build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief sharknado`",
     "branch `torbran-v1`: 1 HELD add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch torbran-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",

@@ -127,6 +127,7 @@ Goldfish, 10,000 seeded games, measured on v1.2.0 (V7), 2026-10-06. Each group b
 - Commander protection drawn — the whole engine is one 4-drop that dies to everything: **36%**
 - A real answer drawn — a counter, a sweeper or a tax: **60%**
 - Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step: **49%**
+- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **58%**
 - share of opening sevens the model would keep: **80%**
 - Engine online by turn 5: **93%** (95% CI 92%–93%) — exceptional
 - A win route assembled by turn 6: **79%** (95% CI 78%–80%)
