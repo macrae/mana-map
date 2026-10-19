@@ -54,6 +54,42 @@
 window.MANIFEST_VERSION = 10;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
+/* ── The shared formatters (2026-10-18) ──────────────────────────────────────
+ *
+ * `esc`, `num`, `pct`, `signed` and `getJSON` were copied into workbench.js,
+ * deck-view.js and branch-view.js with two different `num` signatures between
+ * them. The fleet page is the first to read them from here; the three private
+ * copies stay until each page is moved over on its own (deck-view.js:640 warns
+ * why a second `pct` in scope hoists over the first). Semantics are deck-view's:
+ * `num(x, digits)` fixed decimals, `pct(x, digits)` 0-1 to "x.x%", `signed`
+ * with its sign, `getJSON` revalidating and resolving null on any failure.
+ */
+window.Fmt = {
+  esc: function (v) {
+    return String(v === undefined || v === null ? '' : v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
+  },
+  num: function (x, digits) {
+    if (x === undefined || x === null || isNaN(x)) return '—';
+    return Number(x).toFixed(digits === undefined ? 2 : digits);
+  },
+  pct: function (x, digits) {
+    if (x === undefined || x === null || isNaN(x)) return '—';
+    return (Number(x) * 100).toFixed(digits === undefined ? 1 : digits) + '%';
+  },
+  signed: function (x, digits) {
+    if (x === undefined || x === null || isNaN(x)) return '—';
+    var s = Number(x).toFixed(digits === undefined ? 2 : digits);
+    return (x > 0 ? '+' : '') + s;
+  },
+  getJSON: function (url) {
+    return fetch(url, { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+  }
+};
+
 /* ── What a legal deck IS, per format — mirrors `pilot/formats.py:FORMATS` ────
  *
  * MIRRORS PYTHON, and `tests/test_viz_format_specs.py` reads this literal as JSON
@@ -63,7 +99,7 @@ window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
  * drift, so the literal stays strict JSON (quoted keys, one format per line) for
  * the test to parse, and nothing else in `viz/` may hard-code a 99 or a 60.
  *
- * Here rather than in `mana-map.js` because all six pages need it and only one of
+ * Here rather than in `mana-map.js` because all seven pages need it and only one of
  * them has an `MM`: the deck page and the workbench load `api.js` and never
  * `mana-map.js`. `MM.FORMAT_SPECS` is the same object, aliased at export.
  */

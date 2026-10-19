@@ -1309,3 +1309,41 @@ details.rost-fold > summary {
 .combo-link { margin-left: auto; color: var(--ink-soft); text-decoration: none; font-size: 0.8rem; }
 .combo-link:hover { color: #c4a747; }
 .combo-count { margin: 8px 0 0; }
+
+/* ── The fleet page (2026-10-18) ──────────────────────────────────────────
+ * Hand-written SVG small multiples over the benchmark's series, interval bars
+ * beside the interval printed as text, the grades grid reusing .dti-chip, the
+ * ★ badge for the one ★ thing on the page. */
+.fl-h3 { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .06em;
+  font-size: 12px; color: var(--ink-soft); margin: 18px 0 6px; }
+.fl-star { border-color: var(--tier-coach); color: var(--tier-coach); }
+.fl-members { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 14px; }
+.fl-member { padding: 10px 12px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; }
+.fl-member a { color: var(--ink); font-weight: 600; text-decoration: none; }
+.fl-words { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.fl-words .chip { font-size: 11px; }
+.fl-multiples { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.fl-multiple { margin: 0; }
+.fl-multiple figcaption { font-family: var(--condensed); font-size: 12px; color: var(--ink-soft); margin-bottom: 2px; }
+.fl-multiple figcaption a { color: var(--ink); text-decoration: none; }
+.fl-svg { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; }
+.fl-axis { stroke: var(--rule); stroke-width: 1; }
+.fl-tick { fill: var(--ink-soft); font-size: 9px; text-anchor: end; font-family: var(--type); }
+.fl-tick-x { text-anchor: end; }
+.fl-line { fill: none; stroke: var(--tier-data); stroke-width: 1.8; }
+.fl-svg circle { fill: var(--tier-data); }
+.fl-heat td { text-align: center; }
+.fl-bar-row { display: grid; grid-template-columns: 160px 1fr 220px; gap: 10px; align-items: center; margin: 4px 0; font-size: 13px; }
+.fl-bar-name a { color: var(--ink); text-decoration: none; }
+.fl-bar-fig { font-variant-numeric: tabular-nums; }
+.ci-bar { position: relative; display: block; height: 10px; background: var(--panel-hi); border: 1px solid var(--rule); border-radius: 3px; }
+.ci-bar i { position: absolute; top: 0; bottom: 0; background: var(--tier-data); opacity: .45; }
+.ci-bar b { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--ink); }
+.fl-rating-row { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.fl-rating-row a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.fl-limits { margin: 0 0 10px; padding-left: 18px; color: var(--ink-soft); font-size: 13px; }
+.fl-limits li { margin: 4px 0; }
+@media (max-width: 720px) {
+  .fl-bar-row { grid-template-columns: 1fr; gap: 4px; }
+}
+

@@ -125,6 +125,7 @@ def test_the_deck_page_names_its_deck_and_posts_nothing_without_serve(browser, v
     ("/viz/branch.html?deck=sharknado&branch=nope", {"page": "branch", "deck": "sharknado",
                                                      "branch": "nope"}),
     ("/viz/library.html", {"page": "library"}),
+    ("/viz/fleet.html?sort=dti&bracket=B4", {"page": "fleet", "view": "dti"}),
     ("/viz/spaces.html", {"page": "spaces", "view": "identity"}),
 ])
 def test_every_other_page_registers_a_describer(browser, viz_server, path, expect):

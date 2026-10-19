@@ -1,6 +1,6 @@
 # Visualization
 
-Static frontend in `viz/` — no build tooling. **Six pages in two families**, sharing a
+Static frontend in `viz/` — no build tooling. **Seven pages in two families**, sharing a
 directory and, between the families, nothing else:
 
 - **`index.html` — the card map.** One renderer: `<canvas>` + d3 v7 throughout, the atlas
@@ -9,6 +9,11 @@ directory and, between the families, nothing else:
 - **`workbench.html` — the landing page.** Every deck, racked by whether it is sleeved,
   waiting on cardboard, on the bench or history; or one fleet table with five sorts. Reads
   every deck's `info.json`.
+- **`fleet.html` — the fleet compared** (2026-10-18). One committed artifact,
+  `data/fleet/analytics.json`, drawn seven ways: the table with intervals, the bracket
+  racks with bands and placements, the ★ rating leaderboard (from each deck's
+  `rating.json`), floor against DTI with the Spearman refusal, interval bars, the kill /
+  mana / land curves as hand-written SVG, the twelve DeckCheck grades. It computes nothing.
 - **`deck.html` — the deck dossier.** One deck, one screen. The Deck Context leads it (`context-md.js`).
 - **`branch.html` — the branch workbench.** One candidate 99: the proposal, the verdict,
   the measured table with each row's definition, reward/risk/cost, the bill — and under
@@ -136,9 +141,29 @@ block is byte-identical between `mana-map.css` and `tokens.css` and does NOT sca
 `css/library.css`, so a `.lib-` rule here would pass that test and still restyle the live
 drawer, which `Shell.mount` injects on this page too.
 
+## `fleet.html` — the fleet compared
+
+The seventh page (2026-10-18), and the first drawn from a FLEET artifact rather than a
+deck's. `data/fleet/analytics.json` (`docs/pilot.md` → *Fleet analytics*) is the whole
+input; the page sorts, filters by bracket group, and draws — it computes nothing, which
+`tests/test_viz_fleet_page.py` holds it to (the only arithmetic over a figure is cents to
+dollars). Sections, top to bottom, each a pure function of the artifact: the fleet table
+(sortable; every absence a dash whose `title` is the artifact's `absent_because`), one rack
+per bracket group with its bands and each member's placement words, the ★ rating leaderboard
+(a `rating.json` per deck, fetched directly and drawn only when its `tier` is `★`; "no ratings
+yet" otherwise), our floor against DeckCheck's bracket with the Spearman cells printed as the
+artifact gives them (the `NOT ANSWERABLE` refusal included), interval bars for kill-by-8,
+the Forge win rate and the stall rate (a `.ci-bar` beside the interval printed as text — the
+bar decorates, the text is the figure), kill / mana / land curves as SVG small multiples
+built by string (no d3 on bench pages; `constellationPanel`'s precedent), the twelve
+DeckCheck grades as a grid of `.dti-chip`s, the DTI readings over time, the record by
+version with the survey means, and the artifact's `limits[]` verbatim. State (`?sort=`,
+`?bracket=`) lives in the URL and in `PageState`. Reads the shared formatters from
+`api.js`'s `window.Fmt`.
+
 ## `spaces.html` — the embedding-space reference
 
-The sixth page, and the only one that is a document rather than a tool. It
+The only page that is a document rather than a tool. It
 answers three questions the atlas raises and never explains: **where each
 embedding space comes from**, **what its metrics mean**, and **which one to ask**.
 
@@ -197,11 +222,13 @@ python -m http.server 8000
 | `viz/js/context-md.js` | The Deck Context renderer (PRD v2): CONTEXT.md's markdown subset, escaped, card links as `a.cardref`, and the Cards-by-role filter. `window.ContextMD`; loaded before `deck-view.js` |
 | `viz/workbench.html` | **The landing page**: racks + fleet table over every deck's `info.json` |
 | `viz/js/workbench.js` | The landing page (~807 lines). IIFE; no globals, no `MM` dependency — same shape as `deck-view.js` |
+| `viz/fleet.html` | **The fleet compared**: one artifact, seven sections, a `#fleet` mount |
+| `viz/js/fleet-view.js` | The fleet page (~470 lines). IIFE; reads `window.Fmt` from `api.js`, no `MM`, no d3 — SVG small multiples by string, `.ci-bar` beside the interval printed as text; the only arithmetic on a figure is cents→dollars |
 | `viz/branch.html` | Branch shell: the objective mount and the panel grid |
 | `viz/js/branch-view.js` | The branch workbench (~856 lines). IIFE; exposes `window.Branch` for the browser suite |
 | `viz/js/shell.js` | The library drawer (~930 lines), mounted on every page; `Shell.cardImageUrl(name, version, entry)` is the art helper — a `cards.json` entry's own image (its face by name for a DFC, `art_crop` when asked) when one is passed, the by-name Scryfall URL otherwise |
-| `viz/js/api.js` | The local-server probe (~177 lines). `Api.ready` is false on a static host and every verb degrades to a named command. Also the shared constants every page needs: `MANIFEST_VERSION`, and `FORMAT_SPECS` / `formatSpec()` / `formatOptionsHtml()` (see *Formats* below) |
-| `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all six pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
+| `viz/js/api.js` | The local-server probe (~215 lines). `Api.ready` is false on a static host and every verb degrades to a named command. Also the shared constants every page needs: `MANIFEST_VERSION`, `FORMAT_SPECS` / `formatSpec()` / `formatOptionsHtml()` (see *Formats* below), and since 2026-10-18 `window.Fmt` — `esc`, `num`, `pct`, `signed`, `getJSON` — read by the fleet page; the three private copies in workbench, deck and branch are a later cleanup |
+| `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all seven pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
 | `viz/library.html` | **Curate** shell: pile rail, grid, pinned pane |
 | `viz/js/library-view.js` | Curate (774 lines). IIFE; multi-select, bulk move/remove, the sorts and filters over `viz_index.json` |
 | `viz/css/library.css` | Curate's own styles (185 lines), on top of `tokens.css` |
@@ -1276,7 +1303,7 @@ What is worth stating and cannot be read off the block:
 ## Formats: a 60-card deck is not a Commander deck (C7, 2026-10-09)
 
 `pilot/formats.py:FORMATS` is the source of truth; the pages read a mirror of it,
-**`window.FORMAT_SPECS`** in `api.js` (aliased `MM.FORMAT_SPECS`), because all six pages
+**`window.FORMAT_SPECS`** in `api.js` (aliased `MM.FORMAT_SPECS`), because all seven pages
 need it and only `index.html` has an `MM`. One entry per format —
 `{name, size, exact, copies, commanders, sideboard}` (`size` is `deck_size`, `exact` is
 `exact_size`, `copies` is `max_copies`, `sideboard` is `sideboard_size`) — kept as strict

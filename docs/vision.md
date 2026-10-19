@@ -100,9 +100,9 @@ calls nothing, and your machine runs the same code.
 
 ## The frontend
 
-Six pages over one data layer: the card atlas, the workbench landing page, the deck
-page, the branch workbench, **Curate** (`viz/library.html`) and the embedding-space
-appendix.
+Seven pages over one data layer: the card atlas, the workbench landing page, the fleet
+compared (`viz/fleet.html`), the deck page, the branch workbench, **Curate**
+(`viz/library.html`) and the embedding-space appendix.
 
 **The card atlas** (`viz/index.html`) — 34,890 oracle cards embedded by two small neural
 nets. It opens on **one card**; click a relation and its neighbours join a graph you grow.

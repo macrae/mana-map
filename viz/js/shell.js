@@ -57,6 +57,10 @@ window.Shell = (function () {
   var SURFACES = [
     { id: 'bench', href: 'workbench.html', label: 'Workbench',
       hint: 'your decks, and everything the bench knows about them' },
+    // THE FLEET (2026-10-18): the decks compared — one committed artifact,
+    // profiles and bands, never a score; the rating beside it is ★ coaching.
+    { id: 'fleet', href: 'fleet.html', label: 'Fleet',
+      hint: 'the fleet compared — brackets, floor against DTI, the benchmark, the record' },
     { id: 'atlas', href: 'index.html', label: 'Atlas',
       hint: 'a tool on the workbench: all 34,890 cards in space' },
     // AN APPENDIX, NOT A THIRD PLACE TO WORK. The Atlas offers a similarity
@@ -532,6 +536,7 @@ window.Shell = (function () {
   function currentSurface() {
     var file = (location.pathname.split('/').pop() || 'index.html');
     if (file === 'workbench.html') return 'bench';
+    if (file === 'fleet.html') return 'fleet';
     if (file === 'deck.html') return 'deck';
     if (file === 'spaces.html') return 'spaces';
     if (file === 'library.html') return 'curate';

@@ -24,10 +24,11 @@ living **Deck Context** per deck (`data/decks/<slug>/CONTEXT.md`, `docs/deck-con
 sub-agents with response-time targets. **Deck questions go through `/jarvis`.** Everything but
 the deletions is in (2026-10-09); nothing old is deleted until every deck's context is approved.
 
-**Six pages over one data layer**: the landing page (`viz/workbench.html`), the card
-atlas (`viz/index.html`), the deck page (`viz/deck.html?deck=<slug>`), the branch workbench
-(`viz/branch.html`), Curate (`viz/library.html`) and the embedding-space appendix
-(`viz/spaces.html`) — all rendering committed artifacts, figures with their intervals. The
+**Seven pages over one data layer**: the landing page (`viz/workbench.html`), the fleet
+compared (`viz/fleet.html`, 2026-10-18), the card atlas (`viz/index.html`), the deck page
+(`viz/deck.html?deck=<slug>`), the branch workbench (`viz/branch.html`), Curate
+(`viz/library.html`) and the embedding-space appendix (`viz/spaces.html`) — all rendering
+committed artifacts, figures with their intervals. The
 Pilot's Operating Handbook (`src/manamap/pilot/poh.py`) renders `manuals/p/<slug>.html`; the
 magazine before it was **deleted 2026-09-13** (record: `docs/gotchas-magazine-legacy.md`).
 Runs locally on a Mac. **The pipeline and the pilot commands make zero LLM calls**; two
@@ -80,7 +81,7 @@ data/                 # artifacts; mostly gitignored, viz-served files tracked
   collection/         #   the PHYSICAL boxes (MANAMAP_COLLECTION_DIR overrides)
 tools/claude-plugins/ # the job-band Claude Code plugin (live progress above the prompt), installed
                       #   from this folder at project scope; reads .progress/ (manamap.progress)
-viz/                  # static frontend: the six pages above, d3 from CDN, window.MM;
+viz/                  # static frontend: the seven pages above, d3 from CDN, window.MM;
                       #   index.html has three modes — discover / explore / build
                       #   (docs/viz.md)
 docs/                 # docs/README.md indexes them, with line counts a test asserts
