@@ -13,7 +13,7 @@
   {
    "name": "speed",
    "weight": 0.15,
-   "weight_effective": 0.2727,
+   "weight_effective": 0.2,
    "sub_score": 87.5,
    "sub_ci": [
     87.5,
@@ -46,7 +46,7 @@
   {
    "name": "mana",
    "weight": 0.1,
-   "weight_effective": 0.1818,
+   "weight_effective": 0.1333,
    "sub_score": 62.5,
    "sub_ci": [
     62.5,
@@ -87,7 +87,7 @@
   {
    "name": "resilience",
    "weight": 0.15,
-   "weight_effective": 0.2727,
+   "weight_effective": 0.2,
    "sub_score": 65.0,
    "sub_ci": [
     65.0,
@@ -125,7 +125,7 @@
   {
    "name": "construction",
    "weight": 0.15,
-   "weight_effective": 0.2727,
+   "weight_effective": 0.2,
    "sub_score": 72.86,
    "sub_ci": [
     72.86,
@@ -243,10 +243,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -272,18 +268,142 @@
  "fleet_sha": "c8ff872a33fc",
  "model_version": "23bf4e672931",
  "spec_version": 1,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "On the logged loss's board (8–9 dinos with counters, 30+ power, Alex at 18 and Oliver at 15), was an alpha strike split across both seats lethal on Oliver even after Alex saves himself? No checker-passed stack resolves a lethal swing for this deck.",
+   "settled_by": "resolve-stack"
+  },
+  {
+   "question": "Does a Gishath reveal with Purphoros, God of the Forge on the battlefield deal 2 damage to each opponent per entering Dinosaur, including the Molten Echoes copies and Regisaur Alpha's token? The V5 second route is unverified in situ.",
+   "settled_by": "resolve-stack"
+  },
+  {
+   "question": "Does the v1.1.0 land pass hold at a real table? mana_analysis and the decisions ledger already give the before/after on paper and the stall objective read not met; only logged games on v1.1.0 settle it, and the rating should be redone when they exist.",
+   "settled_by": "rate"
+  }
+ ],
+ "iterations": 3,
+ "verifier": {
+  "verdict": "fail",
+  "findings": [
+   {
+    "where": "judgment.citations[4]",
+    "status": "mis-cited",
+    "note": "log:002 'played at or above the table' is from the note's two-game 'Summary (both games): Both decks did what they were built to do...' line, which the debrief itself says belongs to the Edgar game played the same night and is 'not this deck's'. The argument applies it to Gishath ('a night the decks played at or above the table'), a verbatim sentence misread against its whole source."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "too-harsh",
+    "note": "48 sits 24.8 points under code_score 72.8 (cutting the final score 72.8-ish to 66.2 and a place in rank). The only fact that argues oversell is the commander cast-turn (mean 7.278, 26.7% by T6), but the argument itself concedes every deck in the bracket is scored by the same goldfish, so it 'sits in the anchor, not the rank'. Against it: kill_by_turn_8 = 0.572 CI [0.5623,0.5817] n=10000 vs the 0.5 bracket-3 expectation, missed_land_drop_rate 0.231, audit consistency 0.892, construction 72.86, and the logged record is 1-1 with a commander-damage win. The stall objective 'not met' and a 2-game log on older lists are neutral, not negative, by the argument's own words ('the logs can neither lift this list nor cut it'). Evidence supports ~50-55, not a 25-point dissent."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "unjustified",
+    "note": "'The loss was closing ... not the list' omits that log:002 attributes the same game to a long green screw and lists 'Audit green pip distribution / green sources' as a lesson; the argument later uses that screw to discount mana. Closing and mana both appear in the record."
+   },
+   {
+    "where": "judgment.citations[6]",
+    "status": "over-claimed",
+    "note": "stack:001 is a stipulated scenario (reveal of Regisaur Alpha, Ripjaw Raptor, Carnage Tyrant... chosen in extras), so 'the kill route landing as the passing stack resolves' shows rules legality, not that the deck lands it at a rate; it is not corroboration of the model."
+   },
+   {
+    "where": "components",
+    "status": "supported",
+    "note": "rating gishath --json reproduces components, withheld, code_score, bracket and limits identically; validate-rating OK."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "strategy:deckbuilding.power-level 'sharpest line between them is expected game length' is the section's point (bracket expected length); mana-base '26% miss the turn-3 land drop' also verbatim in its section."
+   },
+   {
+    "where": "judgment.citations[2]",
+    "status": "supported",
+    "note": "log:001 'revealed 7 cards off the trigger, hit FIVE dinosaurs' and log:002 'hit Tom for 16 commander damage on top of his 7 = dead' and 'hesitation cost the game' match their games; context:pilot and context:history quotes (Enlarge cut, neither game on v1.1.0, stall objective not met) match."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "All three are unanswered by artifacts: no stack covers Purphoros/Molten Echoes or the split alpha strike; the v1.1.0 table question needs logged games."
+   }
+  ],
+  "iterations": 3
+ },
  "code_score": 72.8,
- "score": 72.8,
+ "score": 66.2,
  "score_ci": [
-  72.8,
-  72.8
+  66.2,
+  66.2
  ],
  "grade": "B",
  "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
- "judgment": null,
+ "judgment": {
+  "sub_score": 48,
+  "argument": "The withheld components are the table, and the record is two games on older lists — \"neither game has been played on v1.1.0 yet\", and the win's finisher is gone: \"That list had Enlarge; it has since been cut.\" So the logs can neither lift this list nor cut it. What they show is the kill route landing as the passing stack resolves: one connect \"revealed 7 cards off the trigger, hit FIVE dinosaurs\", and Gishath \"hit Tom for 16 commander damage on top of his 7 = dead\" on a night the decks \"played at or above the table\". The loss was closing — \"hesitation cost the game\" — not the list.\n\nSpeed is the component that flatters. kill_by_turn_8 comes from a goldfish with no blockers, and the engine names the pinch: \"the commander's mean cast turn is 7.278, median 7, and only 26.7% of games cast him by turn 6\". A commander-reliant plan pays that blindness most, but every deck in the bracket is scored by the same goldfish, so the oversell sits in the anchor, not the rank. Mana is scored where the pilot felt it, the missed_land_drop_rate, and the land pass answering the green screw merged although \"Its stall objective read \"not met\"\" and is unplayed.\n\nSo: a little below even. Not lower, because speed is one component of modest weight and the logs show the deck doing what the model says; not higher, because the current list's only evidence is the scorecard itself.",
+  "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:mana",
+    "quote": "missed_land_drop_rate"
+   },
+   {
+    "kind": "log",
+    "ref": "log:001",
+    "quote": "revealed 7 cards off the trigger, hit FIVE dinosaurs"
+   },
+   {
+    "kind": "log",
+    "ref": "log:002",
+    "quote": "hit Tom for 16 commander damage on top of his 7 = dead"
+   },
+   {
+    "kind": "log",
+    "ref": "log:002",
+    "quote": "played at or above the table"
+   },
+   {
+    "kind": "log",
+    "ref": "log:002",
+    "quote": "hesitation cost the game"
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:001",
+    "quote": "Gishath connects: what seven damage actually unleashes"
+   },
+   {
+    "kind": "engine",
+    "ref": "engine:ignition",
+    "quote": "the commander's mean cast turn is 7.278, median 7, and only 26.7% of games cast him by turn 6 — this is the pinch in the deck"
+   },
+   {
+    "kind": "context",
+    "ref": "context:pilot",
+    "quote": "neither game has been played on v1.1.0 yet"
+   },
+   {
+    "kind": "context",
+    "ref": "context:pilot",
+    "quote": "That list had Enlarge; it has since been cut."
+   },
+   {
+    "kind": "context",
+    "ref": "context:history",
+    "quote": "Its stall objective read \"not met\" and the merge went ahead anyway because the pilot was buying the cards."
+   }
+  ],
+  "against": {
+   "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
+   "spec_sha": "23bf4e672931"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.2667
+ },
  "rank": {
   "position": 2,
   "of": 5,
@@ -296,17 +416,17 @@
   ],
   "ties_within_ci": false,
   "basis": {
-   "ur-dragon": "skeleton code_score",
+   "ur-dragon": "rating.json",
    "gishath": "this document",
-   "meren-recursion": "skeleton code_score",
-   "goblin-storm": "skeleton code_score",
-   "emiel-blink": "skeleton code_score"
+   "meren-recursion": "rating.json",
+   "goblin-storm": "rating.json",
+   "emiel-blink": "rating.json"
   },
   "scores": {
-   "ur-dragon": 73.2,
-   "gishath": 72.8,
-   "meren-recursion": 66.2,
-   "goblin-storm": 64.8,
+   "ur-dragon": 72.1,
+   "gishath": 66.2,
+   "meren-recursion": 65.1,
+   "goblin-storm": 63.0,
    "emiel-blink": 49.1
   }
  }

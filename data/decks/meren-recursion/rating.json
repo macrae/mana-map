@@ -1,0 +1,409 @@
+{
+ "slug": "meren-recursion",
+ "tier": "★",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 5 decks and claims no significance.",
+ "bracket": {
+  "key": 3,
+  "source": "floor",
+  "floor": 3,
+  "floor_name": "Upgraded",
+  "within_target": true
+ },
+ "components": [
+  {
+   "name": "speed",
+   "weight": 0.15,
+   "weight_effective": 0.2,
+   "sub_score": 26.8,
+   "sub_ci": [
+    25.94,
+    27.68
+   ],
+   "placement": 0.0,
+   "anchor": 53.6,
+   "method": "0.5·placement + 0.5·anchor: placement of kill_by_turn_8 within bracket 3 (n=5); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Wilson 95% from the benchmark's n",
+   "inputs": [
+    {
+     "figure": "kill_by_turn_8",
+     "value": 0.268,
+     "ci95": [
+      0.2594,
+      0.2768
+     ],
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.kill_by_turn_8",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.power-level",
+     "quote": "the sharpest line between them is expected game length"
+    }
+   ]
+  },
+  {
+   "name": "mana",
+   "weight": 0.1,
+   "weight_effective": 0.1333,
+   "sub_score": 87.5,
+   "sub_ci": [
+    87.5,
+    87.5
+   ],
+   "placement": 75.0,
+   "anchor": 100.0,
+   "method": "0.5·placement + 0.5·anchor: placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "inputs": [
+    {
+     "figure": "missed_land_drop_rate",
+     "value": 0.218,
+     "ci95": [
+      0.21,
+      0.2262
+     ],
+     "n": 10000,
+     "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.consistency",
+     "value": 0.902,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.mana-base",
+     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+    }
+   ]
+  },
+  {
+   "name": "resilience",
+   "weight": 0.15,
+   "weight_effective": 0.2,
+   "sub_score": 87.5,
+   "sub_ci": [
+    87.5,
+    87.5
+   ],
+   "placement": 75.0,
+   "anchor": 100.0,
+   "method": "0.5·placement + 0.5·anchor: placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "inputs": [
+    {
+     "figure": "answer_cards",
+     "value": 19,
+     "ci95": null,
+     "n": null,
+     "source": "benchmark.json#metrics.response.answer_cards",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.interaction-breadth",
+     "value": 5,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#interaction-breadth (classes answered of 5)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "interactive suite"
+    }
+   ]
+  },
+  {
+   "name": "construction",
+   "weight": 0.15,
+   "weight_effective": 0.2,
+   "sub_score": 70.0,
+   "sub_ci": [
+    70.0,
+    70.0
+   ],
+   "placement": null,
+   "anchor": 70.0,
+   "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
+   "inputs": [
+    {
+     "figure": "audit.mana-base",
+     "value": 36,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#mana-base (verdict at)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.ramp",
+     "value": 9,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#ramp (verdict under)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.card-advantage",
+     "value": 4,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#card-advantage (verdict under)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.interaction",
+     "value": 17,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#interaction (verdict at)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.sweepers",
+     "value": 1,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#sweepers (verdict at)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.protection",
+     "value": 1,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#protection (verdict under)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    },
+    {
+     "figure": "audit.threat-density",
+     "value": 15,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#threat-density (verdict at)",
+     "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.threat-density",
+     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+    }
+   ]
+  }
+ ],
+ "withheld": [
+  {
+   "component": "table_record",
+   "reason": "0 game(s) logged; 5 needed"
+  },
+  {
+   "component": "pilot_feel",
+   "reason": "0 surveyed game(s); 3 needed"
+  },
+  {
+   "component": "forge",
+   "reason": "no Forge run on the current list"
+  }
+ ],
+ "limits": [
+  "A rating is ★ coaching over ◆ inputs; the score never gates. The floor (bracket_report.json) is the only bracket gate.",
+  "calibrate.py refuses a verdict below 10 decks with 20 games each; no figure here is checked against outcomes yet (`rating --calibrate` reports the refusal with today's n).",
+  "Goldfish kill is one column, never the rule: the benchmark is an unopposed ceiling with no blockers and no removal, and a combo or control deck reads slow for not attacking.",
+  "Forge is not a power read until the harness work is done (the pilot's rule, 2026-10-18): its component ships at weight 0.00 and is shown only for a run on the current list.",
+  "DeckCheck's Threat Index is shown in `context` and never scored.",
+  "Diagnostic engine figures are read against each deck's own declaration and are never ranked across decks; they are evidence for the argument, not a component.",
+  "rank over n=5 decks; no significance claim"
+ ],
+ "context": {
+  "dti": null,
+  "floor_vs_target": "floor 3, target None"
+ },
+ "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b",
+ "fleet_sha": "c8ff872a33fc",
+ "model_version": "23bf4e672931",
+ "spec_version": 1,
+ "open_questions": [
+  {
+   "question": "Does the sacrifice engine get cast and used by Forge's AI? A cast check on this list is needed; diagnosis should name it as the unproven link.",
+   "settled_by": "diagnose"
+  }
+ ],
+ "iterations": 3,
+ "verifier": {
+  "verdict": "fail",
+  "findings": [
+   {
+    "where": "judgment.sub_score",
+    "status": "too-generous",
+    "note": "62 sits 4 under code_score but the cited record argues lower. Meren's kill_by_turn_8 is 0.268 against 0.464-0.774 for the other four decks in rank.group, and never_kills_rate is 0.187. Median kill is turn 9 (tied last with emiel-blink, 48.5). The table-wide drain is drawn by turn six in only 34% of games and the core trio in 11%. The pilot's own bar (context:pilot) is 'lethal, consistent and fast'. goblin-storm (63.0) kills by turn 8 in 0.565 of games, yet this judgment lands within a point of it. 'Do not deduct again' for speed is stated but not shown to be correct: speed's 0.2 weight_effective is the only place slowness enters, and the trio figure is a separate assembly shortfall."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "unjustified",
+    "note": "'many games will find the trio after [the median kill]' is not in the record. context:numbers gives the trio only by turn six (11%); there is no by-turn-nine figure. The argument turns this guess into 'a limit on a mid-game threat rather than proof the deck fails to assemble'. 'The supply of parts is good' also skips the 34% table-wide drain and the 6% Starscape multiplier that the context lists."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "over-claimed",
+    "note": "'The pilot's no-two-card-infinites rule also gives up the fastest lines on purpose' ranks lines by speed without enumerating them. combos.json shows 5 known lines, all infinite, 0 two-card, and the record does not say which is fastest or what they would have added."
+   },
+   {
+    "where": "open_questions[0]",
+    "status": "unjustified",
+    "note": "The question is whether Forge's AI casts the sacrifice engine. settled_by 'diagnose' cannot answer it, because diagnose runs no Forge game. The charter's own answerer is forge-cast-check. No engine.json exists yet, so diagnose has no engine stage to read."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "skeleton:speed kill_by_turn_8 matches benchmark.json (0.268, n=10000)."
+   },
+   {
+    "where": "judgment.citations[1]",
+    "status": "supported",
+    "note": "Median turn 9 matches the context numbers block, and benchmark.json agrees (median_kill_turn 9)."
+   },
+   {
+    "where": "judgment.citations[2..6]",
+    "status": "supported",
+    "note": "92%, 74%, 51%, 80% and 11% are verbatim in the CONTEXT.md numbers block, written for sha 7da890b95460, which matches the decklist."
+   },
+   {
+    "where": "judgment.citations[7]",
+    "status": "supported",
+    "note": "'no two-card infinites, ever' is verbatim in the CONTEXT.md pilot section (line 108)."
+   },
+   {
+    "where": "components[*].citations",
+    "status": "supported",
+    "note": "Each strategy quote is verbatim and read in context. The 26% turn-3 miss belongs to Roach's average EDHREC deck, which is fine as a benchmark. The power-level quote is about expected game length across brackets, which is the claim made. components, withheld, code_score, bracket and limits are identical on re-run (validate-rating OK)."
+   }
+  ],
+  "iterations": 3
+ },
+ "code_score": 66.2,
+ "score": 65.1,
+ "score_ci": [
+  64.9,
+  65.2
+ ],
+ "grade": "B",
+ "resolution": "the interval spans 1 grade boundary (65); measured components carry their inputs' intervals, the judgment none",
+ "judgment": {
+  "sub_score": 62,
+  "argument": "The measured components cannot see a played deck: no games, no survey, no Forge run are withheld and their weight is redistributed, and there is no engine.json or stack. What I fill in is the shape of the engine from the goldfish context. Speed (26.8) already carries the slowness, since the goldfish median kill is turn 9 against an unopposed table, so I do not deduct for it again. The pieces are there: the commander is cast by turn six in 92% of games, recurring fodder is drawn by turn six in 74%, a free sacrifice outlet in 51%, and removal in 80%. The one soft spot is the full trio of outlet, table-wide drain and fodder: only 11% of games have drawn all three by turn six. That is a by-turn-six figure, and since the median kill comes later, many games will find the trio after it, so I read it as a limit on a mid-game threat rather than proof the deck fails to assemble. The pilot's no-two-card-infinites rule also gives up the fastest lines on purpose. Nothing has been played, which keeps me from lifting it far. I sit slightly under the 66.2 the components give: the supply of parts is good, the early assembly is thin, and neither has met a table.",
+  "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "MEDIAN turn the goldfish kills on, not the mean: **turn 9**"
+   },
+   {
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "share of seeded games where the commander was CAST by turn six: **92%**"
+   },
+   {
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **74%**"
+   },
+   {
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **51%**"
+   },
+   {
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "REMOVAL drawn — a spell or ability that answers a permanent: **80%**"
+   },
+   {
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **11%**"
+   },
+   {
+    "kind": "context",
+    "ref": "context:pilot",
+    "quote": "no two-card infinites, ever"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b",
+   "spec_sha": "23bf4e672931"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.2667
+ },
+ "rank": {
+  "position": 3,
+  "of": 5,
+  "group": [
+   "ur-dragon",
+   "gishath",
+   "meren-recursion",
+   "goblin-storm",
+   "emiel-blink"
+  ],
+  "ties_within_ci": false,
+  "basis": {
+   "ur-dragon": "rating.json",
+   "gishath": "rating.json",
+   "meren-recursion": "this document",
+   "goblin-storm": "rating.json",
+   "emiel-blink": "rating.json"
+  },
+  "scores": {
+   "ur-dragon": 72.1,
+   "gishath": 66.2,
+   "meren-recursion": 65.1,
+   "goblin-storm": 63.0,
+   "emiel-blink": 49.1
+  }
+ }
+}

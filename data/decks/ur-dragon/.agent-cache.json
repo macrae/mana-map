@@ -659,6 +659,111 @@
         }
       ]
     },
+    "deck-rating": {
+      "agent": "deck-rater+rating-skeptic",
+      "agent_prompt_sha256": "5e58efbf72900c61d52bfe07c93bfb1d8dc18d9a5b24b7a9dfa9ab1b717b4a67",
+      "artifact": "data/decks/ur-dragon/rating.json",
+      "artifact_keys": [
+        "judgment",
+        "open_questions",
+        "verifier"
+      ],
+      "artifact_sha256": "15995df32c18bcca47336dac2b604804deb803d316c89b054e3883c8f6a4a321",
+      "extra": {
+        "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
+      },
+      "fingerprint": "f4ce1de059c7cc85b4d62360667afba9b648f40d2103566c20362891015dbf8a",
+      "inputs": [
+        {
+          "path": "data/decks/ur-dragon/CONTEXT.md",
+          "sha256": "5ad65283366dc8780d656103f7cca5102c7c5b1ecf450484f8eef53e2fe26ab6"
+        },
+        {
+          "path": "data/decks/ur-dragon/benchmark.json",
+          "sha256": "13141adca1889f2bbf525a8783280698d4bc1ed5dea3ded81fcaeabc477de309"
+        },
+        {
+          "path": "data/decks/ur-dragon/bracket_report.json",
+          "sha256": "3b98728f6f61415ff84b7a788144d57a7a25d9009a78a1a7cbe2a478e92880e6"
+        },
+        {
+          "path": "data/decks/ur-dragon/captains_log.json",
+          "sha256": "dcf7310824fdebf310213c09fff8c76ca15ea1765cc648e9bd017a877f3afb6e"
+        },
+        {
+          "path": "data/decks/ur-dragon/decisions.jsonl",
+          "sha256": "c515caadadfab09344cef390694c068170cd74336533e328e0292982932a803d"
+        },
+        {
+          "path": "data/decks/ur-dragon/deckcheck.json",
+          "sha256": "52e5dfc2df0667beabb19fec4d651531938157dbda80cc3aacebbd55efbd020b"
+        },
+        {
+          "path": "data/decks/ur-dragon/diagnosis.json",
+          "sha256": "08f83975d92e97ecd2e655746bc7bd244a020f1997a478b659a5af3c101810ff"
+        },
+        {
+          "path": "data/decks/ur-dragon/diagnostic.json",
+          "sha256": "68d1e487dad6b984ea1a9ace6c50f1c96a8d868593f9817826a09684de899312"
+        },
+        {
+          "path": "data/decks/ur-dragon/engine.json",
+          "sha256": "c52644bc24c1408c52b75247e31c83c04244f19193655a6192cd3df214d74bfb"
+        },
+        {
+          "path": "data/decks/ur-dragon/log.jsonl",
+          "sha256": "e6849b0d189e31eab90b743c563f2568a03ad31abb62b586824229ab56aca793"
+        },
+        {
+          "path": "data/decks/ur-dragon/log_annotations.json",
+          "sha256": "38e0c5314f85e4597017ef200ca9b8f7b3d57d02097becdef6ccf52a585d1fbd"
+        },
+        {
+          "path": "data/decks/ur-dragon/log_causes.json",
+          "sha256": "05a20ea183ffaad12b56270b130b77ad8a3e77b11cdcc052abe25670e3785e23"
+        },
+        {
+          "path": "data/decks/ur-dragon/rating.json!judgment,open_questions,verifier,iterations",
+          "sha256": "9b3e0343d498da76d7f4ccf443b01a0c2634f6f7d15bd8ff66d55f3f3989ec80"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/001-tempest-gold-dragon-burst.json",
+          "sha256": "08a511ecafb234e59519d72b4d38627fc9767873723ce7dda81b2d1b8e343f14"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/002-miirym-panharmonicon-doubling.json",
+          "sha256": "0af946b95e021827d69fa7bb9863f1e87e8c68b414b2e42d9a56340c6a80c1f3"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/003-ventmaw-aggravated-assault-loop.json",
+          "sha256": "383cb0afb41f1a53a0e93547e1949cf49090d6c0f7074163000e93b952e6aece"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/004-wrathful-blasphemous-redirect.json",
+          "sha256": "d3dfbb3bb079a3e661b544459997de81a4310bfd229ebcd9a7c9a40770082f7e"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/005-sneak-attack-what-it-cheats.json",
+          "sha256": "70a87d9d80e9301e326b3ad12cee649d884cac3a7458ca98049a0aaff20784ac"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/006-gnawbone-assault-treasure-engine.json",
+          "sha256": "034b9a6910a2157258b7370d7a03a899e67fd5767d4e2bfe2fc2cb82ef4081aa"
+        },
+        {
+          "path": "data/decks/ur-dragon/stacks/007-cascade-without-panharmonicon.json",
+          "sha256": "e276e91828911d13d72fa39f3210cec326fed5c4998a87a8872aef248a50dccf"
+        },
+        {
+          "path": "data/fleet/analytics.json",
+          "sha256": "c8ff872a33fc8e29e4366b4ec2d363cbb70fa61a23f79dbf19cae9abee955a13"
+        },
+        {
+          "path": "src/manamap/pilot/rating.py",
+          "sha256": "ad1c5e601268a249ab0d7cdbcd482a7ce7f32a6ce3c9f1e095096cb67a10eaca"
+        }
+      ]
+    },
     "pilot-notes": {
       "agent": "pilot-notes",
       "agent_prompt_sha256": "79517ca85959e354df4e34116c457266d2f75f300d8f286af87ba58b89b56f14",

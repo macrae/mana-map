@@ -1775,3 +1775,23 @@ n=0 (`calibrate.MIN_DECKS` is 10). What unblocks it: more sleeved decks per brac
 on every Commander deck, Forge runs on current lists. Meanwhile the artifact says "no band
 (n=2)" where it cannot band and never fills the gap with a number.
 
+## 26. The deck rating ranks over n ≤ 5 per bracket and is uncalibrated (2026-10-19)
+
+`rating.json` exists on eight live Commander decks after the first `/rate-fleet` pass: B3 =
+ur-dragon, gishath, meren-recursion, goblin-storm, emiel-blink (n=5, two of them bench
+decks); B4 = sharknado, edgar-vampires, heliod (n=3). Every file carries the ★ label and
+"claims no significance", and that is literal: `rating --calibrate` reports `NOT
+ANSWERABLE` on every outcome column (Spearman against the pilot's win rate needs
+`calibrate.MIN_DECKS` = 10 decks with `MIN_GAMES` = 20 logged games each; the fleet has 8
+rated decks and 0 with 20 games). `table_record` is scored on two decks (edgar-vampires,
+ur-dragon), `pilot_feel` on none (no `--feel` survey logged yet), `forge` on none (no run
+on a current list, and weight 0.00 by the pilot's rule). The scorecard is therefore mostly
+benchmark speed, benchmark mana, answer capacity and the audit's construction bands, plus
+one agent judgment — and the first fleet pass showed the loop's seam: seven of eight
+judgments ended at iteration 3 with a skeptic verdict of `fail` (the pendulum between
+too-generous and too-harsh, plus citations the skeptic read against their whole source),
+one passed (ur-dragon). A `fail` is saved and labelled; it is the loop working, not a
+clean bill. What moves this: logged games with `--feel`, a Forge harness the pilot trusts,
+more decks per bracket, and a reading of what the raters kept getting wrong (double-counting
+a gap the measured components already carry was the commonest finding).
+
