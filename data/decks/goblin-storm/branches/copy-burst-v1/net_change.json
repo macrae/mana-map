@@ -35,7 +35,7 @@
    {
     "free": false,
     "name": "Boggart Shenanigans",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -89,7 +89,7 @@
    {
     "free": false,
     "name": "Electroduplicate",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -173,7 +173,7 @@
    {
     "free": false,
     "name": "Goblin Negotiation",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -209,7 +209,7 @@
    {
     "free": false,
     "name": "Haze of Rage",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -227,7 +227,7 @@
    {
     "free": false,
     "name": "Howlsquad Heavy",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -239,7 +239,7 @@
    {
     "free": false,
     "name": "Impolite Entrance",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -287,14 +287,22 @@
    {
     "free": false,
     "name": "Legion Warboss",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
     "name": "Mana Geyser",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "sharknado",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
@@ -343,7 +351,7 @@
    {
     "free": false,
     "name": "Reckless Ransacking",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -444,7 +452,7 @@
    {
     "free": false,
     "name": "Spreading Insurrection",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -462,7 +470,7 @@
    {
     "free": false,
     "name": "Sudden Breakthrough",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -493,89 +501,92 @@
   "counts": {
    "box": 1,
    "buy": 18,
-   "elsewhere": 1,
+   "elsewhere": 2,
    "free": 0,
-   "in_deck": 59
+   "in_deck": 58
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Ancestral Anger",
     "Assault Strobe",
+    "Boggart Shenanigans",
     "Champion's Helm",
-    "Electroduplicate",
     "Firebrand Archer",
+    "Goblin Negotiation",
     "Guttersnipe",
     "Hanweir Garrison",
+    "Haze of Rage",
     "Heat Shimmer",
-    "Impolite Entrance",
+    "Howlsquad Heavy",
     "Kessig Flamebreather",
     "Kindle the Inner Flame",
     "Lavaspur Boots",
-    "Legion Warboss",
+    "Mana Geyser",
     "Mithril Coat",
     "Molten Duplication",
     "Pyretic Ritual",
-    "Reckless Ransacking",
     "Rite of Flame",
-    "Squee, Dubious Monarch",
-    "Sudden Breakthrough"
+    "Spreading Insurrection",
+    "Squee, Dubious Monarch"
    ],
-   "add_copies": 20,
+   "add_copies": 21,
    "base_names": 79,
    "base_size": 100,
    "names": 79,
    "out": [
+    "Beetleback Chief",
     "Blasphemous Act",
-    "Chaos Warp",
     "Conspicuous Snoop",
     "Daring Discovery",
-    "Gempalm Incinerator",
-    "Glimpse the Impossible",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "Goblin Dark-Dwellers",
+    "Goblin Instigator",
     "Goblin Lackey",
-    "Goblin Matron",
     "Goblin Trashmaster",
     "Grenzo, Havoc Raiser",
     "Idol of Oblivion",
-    "Moggcatcher",
+    "Infuriate",
+    "Might of the Meek",
     "Past in Flames",
-    "Quest for the Goblin Lord",
+    "Purphoros, God of the Forge",
     "Ruby Medallion",
     "Rundvelt Hordemaster",
-    "Throne of Eldraine",
+    "Ticked Off",
+    "Twinflame",
     "Vandalblast",
     "Witch's Mark"
    ],
-   "out_copies": 20,
+   "out_copies": 21,
    "quantity": [],
    "size": 100
   },
   "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 1,
+  "owned_but_elsewhere": 2,
   "proxy": false,
   "slug": "goblin-storm",
   "unsourced": [
    "Ancestral Anger",
    "Assault Strobe",
+   "Boggart Shenanigans",
    "Champion's Helm",
-   "Electroduplicate",
    "Firebrand Archer",
+   "Goblin Negotiation",
    "Guttersnipe",
    "Hanweir Garrison",
+   "Haze of Rage",
    "Heat Shimmer",
-   "Impolite Entrance",
+   "Howlsquad Heavy",
    "Kessig Flamebreather",
    "Kindle the Inner Flame",
    "Lavaspur Boots",
-   "Legion Warboss",
+   "Mana Geyser",
    "Mithril Coat",
    "Molten Duplication",
    "Pyretic Ritual",
-   "Reckless Ransacking",
-   "Squee, Dubious Monarch",
-   "Sudden Breakthrough"
+   "Spreading Insurrection",
+   "Squee, Dubious Monarch"
   ]
  },
  "blind_spots": [
@@ -591,48 +602,51 @@
    "cards": [
     "Champion's Helm",
     "Lavaspur Boots",
-    "Mithril Coat"
+    "Mithril Coat",
+    "Purphoros, God of the Forge"
    ],
    "class": "protection",
-   "headline": "3 card(s) carrying a protection effect",
+   "headline": "4 card(s) carrying a protection effect",
    "why": "the goldfish is never attacked or targeted, so protection reads as a dead card"
   },
   {
    "cards": [
     "Blasphemous Act",
+    "Boggart Shenanigans",
     "Firebrand Archer",
-    "Gempalm Incinerator",
+    "Goblin Negotiation",
     "Goblin Trashmaster",
     "Guttersnipe",
     "Kessig Flamebreather",
+    "Purphoros, God of the Forge",
     "Vandalblast"
    ],
    "class": "removal",
-   "headline": "7 card(s) carrying a removal effect",
+   "headline": "9 card(s) carrying a removal effect",
    "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
   }
  ],
  "branch": "copy-burst-v1",
  "changes": {
-  "count": 40,
+  "count": 42,
   "counts": {
-   "in": 20,
-   "out": 20,
-   "rows": 40
+   "in": 21,
+   "out": 21,
+   "rows": 42
   },
   "diff": {
    "base_names": 79,
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 20,
-    "in_copies": 20,
+    "in": 21,
+    "in_copies": 21,
     "lands_in": 0,
     "lands_out": 0,
-    "out": 20,
-    "out_copies": 20,
-    "spells_in": 20,
-    "spells_out": 20
+    "out": 21,
+    "out_copies": 21,
+    "spells_in": 21,
+    "spells_out": 21
    },
    "in": [
     {
@@ -650,16 +664,6 @@
      "copies": 1,
      "kind": "spell",
      "name": "Assault Strobe",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 1,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Impolite Entrance",
      "pair": null,
      "state": "buy",
      "type_line": "Sorcery",
@@ -699,6 +703,26 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
+     "name": "Goblin Negotiation",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Haze of Rage",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
      "name": "Kessig Flamebreather",
      "pair": null,
      "state": "buy",
@@ -726,23 +750,13 @@
      "why": null
     },
     {
-     "cmc": 2,
+     "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Reckless Ransacking",
+     "name": "Boggart Shenanigans",
      "pair": null,
      "state": "buy",
-     "type_line": "Instant",
-     "why": null
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Sudden Breakthrough",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Instant",
+     "type_line": "Kindred Enchantment \u2014 Goblin",
      "why": null
     },
     {
@@ -753,16 +767,6 @@
      "pair": null,
      "state": "buy",
      "type_line": "Artifact \u2014 Equipment",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Electroduplicate",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Sorcery",
      "why": null
     },
     {
@@ -799,10 +803,10 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Legion Warboss",
+     "name": "Howlsquad Heavy",
      "pair": null,
      "state": "buy",
-     "type_line": "Creature \u2014 Goblin Soldier",
+     "type_line": "Creature \u2014 Goblin Mercenary",
      "why": null
     },
     {
@@ -834,6 +838,26 @@
      "state": "buy",
      "type_line": "Kindred Sorcery \u2014 Elemental",
      "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Mana Geyser",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Spreading Insurrection",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Sorcery",
+     "why": null
     }
    ],
    "names": 79,
@@ -851,9 +875,18 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Quest for the Goblin Lord",
+     "name": "Infuriate",
      "pair": null,
-     "type_line": "Enchantment",
+     "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Might of the Meek",
+     "pair": null,
+     "type_line": "Instant",
      "why": null
     },
     {
@@ -870,6 +903,15 @@
      "copies": 1,
      "kind": "spell",
      "name": "Conspicuous Snoop",
+     "pair": null,
+     "type_line": "Creature \u2014 Goblin Rogue",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Goblin Instigator",
      "pair": null,
      "type_line": "Creature \u2014 Goblin Rogue",
      "why": null
@@ -914,6 +956,24 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
+     "name": "Ticked Off",
+     "pair": null,
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Twinflame",
+     "pair": null,
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
      "name": "Witch's Mark",
      "pair": null,
      "type_line": "Sorcery",
@@ -923,36 +983,18 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Chaos Warp",
+     "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
      "pair": null,
-     "type_line": "Instant",
+     "type_line": "Enchantment \u2014 Saga // Enchantment Creature \u2014 Goblin Shaman",
      "why": null
     },
     {
-     "cmc": 3,
+     "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Gempalm Incinerator",
+     "name": "Beetleback Chief",
      "pair": null,
-     "type_line": "Creature \u2014 Goblin",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Glimpse the Impossible",
-     "pair": null,
-     "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Goblin Matron",
-     "pair": null,
-     "type_line": "Creature \u2014 Goblin",
+     "type_line": "Creature \u2014 Goblin Warrior",
      "why": null
     },
     {
@@ -968,18 +1010,18 @@
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Moggcatcher",
+     "name": "Past in Flames",
      "pair": null,
-     "type_line": "Creature \u2014 Human Mercenary",
+     "type_line": "Sorcery",
      "why": null
     },
     {
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Past in Flames",
+     "name": "Purphoros, God of the Forge",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Legendary Enchantment Creature \u2014 God",
      "why": null
     },
     {
@@ -1001,15 +1043,6 @@
      "why": null
     },
     {
-     "cmc": 5,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Throne of Eldraine",
-     "pair": null,
-     "type_line": "Legendary Artifact",
-     "why": null
-    },
-    {
      "cmc": 9,
      "copies": 1,
      "kind": "spell",
@@ -1021,8 +1054,8 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 20,
-    "out": 20
+    "in": 21,
+    "out": 21
    }
   },
   "lands": [],
@@ -1042,19 +1075,25 @@
    },
    {
     "at": null,
+    "in": "Boggart Shenanigans",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
     "in": "Champion's Helm",
     "out": null,
     "why": null
    },
    {
     "at": null,
-    "in": "Electroduplicate",
+    "in": "Firebrand Archer",
     "out": null,
     "why": null
    },
    {
     "at": null,
-    "in": "Firebrand Archer",
+    "in": "Goblin Negotiation",
     "out": null,
     "why": null
    },
@@ -1072,13 +1111,19 @@
    },
    {
     "at": null,
+    "in": "Haze of Rage",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
     "in": "Heat Shimmer",
     "out": null,
     "why": null
    },
    {
     "at": null,
-    "in": "Impolite Entrance",
+    "in": "Howlsquad Heavy",
     "out": null,
     "why": null
    },
@@ -1102,7 +1147,7 @@
    },
    {
     "at": null,
-    "in": "Legion Warboss",
+    "in": "Mana Geyser",
     "out": null,
     "why": null
    },
@@ -1126,13 +1171,13 @@
    },
    {
     "at": null,
-    "in": "Reckless Ransacking",
+    "in": "Rite of Flame",
     "out": null,
     "why": null
    },
    {
     "at": null,
-    "in": "Rite of Flame",
+    "in": "Spreading Insurrection",
     "out": null,
     "why": null
    },
@@ -1144,20 +1189,14 @@
    },
    {
     "at": null,
-    "in": "Sudden Breakthrough",
-    "out": null,
+    "in": null,
+    "out": "Beetleback Chief",
     "why": null
    },
    {
     "at": null,
     "in": null,
     "out": "Blasphemous Act",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
-    "out": "Chaos Warp",
     "why": null
    },
    {
@@ -1175,13 +1214,7 @@
    {
     "at": null,
     "in": null,
-    "out": "Gempalm Incinerator",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
-    "out": "Glimpse the Impossible",
+    "out": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "why": null
    },
    {
@@ -1193,13 +1226,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Goblin Lackey",
+    "out": "Goblin Instigator",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Goblin Matron",
+    "out": "Goblin Lackey",
     "why": null
    },
    {
@@ -1223,7 +1256,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Moggcatcher",
+    "out": "Infuriate",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Might of the Meek",
     "why": null
    },
    {
@@ -1235,7 +1274,7 @@
    {
     "at": null,
     "in": null,
-    "out": "Quest for the Goblin Lord",
+    "out": "Purphoros, God of the Forge",
     "why": null
    },
    {
@@ -1253,7 +1292,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Throne of Eldraine",
+    "out": "Ticked Off",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Twinflame",
     "why": null
    },
    {
@@ -1510,24 +1555,25 @@
    "adds": [
     "Ancestral Anger",
     "Assault Strobe",
+    "Boggart Shenanigans",
     "Champion's Helm",
-    "Electroduplicate",
     "Firebrand Archer",
+    "Goblin Negotiation",
     "Guttersnipe",
     "Hanweir Garrison",
+    "Haze of Rage",
     "Heat Shimmer",
-    "Impolite Entrance",
+    "Howlsquad Heavy",
     "Kessig Flamebreather",
     "Kindle the Inner Flame",
     "Lavaspur Boots",
-    "Legion Warboss",
+    "Mana Geyser",
     "Mithril Coat",
     "Molten Duplication",
     "Pyretic Ritual",
-    "Reckless Ransacking",
     "Rite of Flame",
-    "Squee, Dubious Monarch",
-    "Sudden Breakthrough"
+    "Spreading Insurrection",
+    "Squee, Dubious Monarch"
    ],
    "anyway": false,
    "floor": false,
@@ -1946,15 +1992,23 @@
     "played": "be52f6ca4000838b1de22f73e6edf3f74bf00dce211a82eca6819c913fb22a94",
     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-af01a068-s936119400-podExperimental-c600"
    },
-   "champion": {
-    "covered": true,
-    "never_cast": [],
-    "played": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
-    "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836-s14467126-podExperimental-c600"
-   }
+   "champion": null
   },
   "excludes_zero": false,
-  "list_mismatch": null,
+  "list_mismatch": {
+   "champion": {
+    "games": 435,
+    "on_disk": "5cf31b295d51",
+    "on_disk_version": null,
+    "played": [
+     "c8651652722c"
+    ],
+    "played_versions": [
+     "V1"
+    ],
+    "reads_as": "every Forge run on the champion was made with a different list, so this rate describes that list. A card swap and a cosmetic edit to decklist.txt both land here. Re-run: `manamap pilot simulate goblin-storm --pod <name> --games N`"
+   }
+  },
   "mde": 0.155,
   "null": {
    "basis": "what our decks score in seat 0 at this table, plain harness, deck-level runs",
@@ -1997,31 +2051,71 @@
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s909090-podExperimental-c600-ov60636e9e"
    ]
   },
-  "superseded": {}
+  "superseded": {
+   "champion": [
+    {
+     "games": 100,
+     "played": "c8651652722c",
+     "pod": "standard",
+     "run": "giada-angels-vs-baylen-tokens-vs-abaddon-n100-62a56c7d-s1655008381-podExperimental-c600"
+    },
+    {
+     "games": 100,
+     "played": "c8651652722c",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n100-a209c8f5-s718550261-podExperimental"
+    },
+    {
+     "games": 20,
+     "played": "c8651652722c",
+     "pod": "vito-era",
+     "run": "giada-angels-vs-vito-vs-baylen-tokens-n20-a209c8f5-s718550261"
+    },
+    {
+     "games": 75,
+     "played": "c8651652722c",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600"
+    },
+    {
+     "games": 100,
+     "played": "c8651652722c",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s909090-podExperimental-c600-ov60636e9e"
+    },
+    {
+     "games": 40,
+     "played": "c8651652722c",
+     "pod": "standard-v3",
+     "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-ef47e836-s14467126-podExperimental-c600"
+    }
+   ]
+  }
  },
  "harness": {
   "cast_proofs": {
    "adds": [
     "Ancestral Anger",
     "Assault Strobe",
+    "Boggart Shenanigans",
     "Champion's Helm",
-    "Electroduplicate",
     "Firebrand Archer",
+    "Goblin Negotiation",
     "Guttersnipe",
     "Hanweir Garrison",
+    "Haze of Rage",
     "Heat Shimmer",
-    "Impolite Entrance",
+    "Howlsquad Heavy",
     "Kessig Flamebreather",
     "Kindle the Inner Flame",
     "Lavaspur Boots",
-    "Legion Warboss",
+    "Mana Geyser",
     "Mithril Coat",
     "Molten Duplication",
     "Pyretic Ritual",
-    "Reckless Ransacking",
     "Rite of Flame",
-    "Squee, Dubious Monarch",
-    "Sudden Breakthrough"
+    "Spreading Insurrection",
+    "Squee, Dubious Monarch"
    ],
    "anyway": false,
    "floor": false,
@@ -2093,17 +2187,17 @@
    },
    {
     "colour": "R",
-    "delta": 16,
+    "delta": 4,
     "gap": [
-     1,
+     13,
      17
     ],
     "have": [
-     37,
+     35,
      39
     ],
     "target": [
-     36,
+     22,
      22
     ]
    },
@@ -2153,7 +2247,7 @@
     null
    ],
    "R": [
-    0.916,
+    0.984,
     0.991
    ],
    "U": [
@@ -2173,51 +2267,57 @@
   "why": "THE CULMINATION OF THE ZADA WORK, and the first list aimed at what the deck actually does. It carries zada-v1's whole refactor \u2014 fodder 4 -> 10, per-cast damage, three body factories, the rituals, protection for a 3-mana 3/3 the deck depends on \u2014 and adds the four cards no sweep could ever have found, because until 2026-09-27 they had no channel: a spell that token-copies a target creature. Zada turns one of those into a copy of EVERY creature you control, with haste. On a board of seven that is seven becomes fourteen for two mana, and Assault Strobe (already in the 99) gives the whole board double strike for one more. The four are paid for with Blasphemous Act, Past in Flames, Witch's Mark and Chaos Warp \u2014 deliberately NOT with bodies: an earlier test of this idea sold Krenko and Siege-Gang to buy it and measured +1.5 damage for 4 fewer kills per 100, which is the documented Edgar failure in miniature. Krenko stays."
  },
  "objective_grade": {
-  "reading": 26.9573,
+  "reading": 24.4016,
   "shortfall": null,
   "state": "met"
  },
  "recommendation": {
-  "because": "You buy hoard @T10, hoard @T6, damage @T10, killed by T6, missed drop by T5, interaction affordable @T6 and hand can act by T3 and pay stall, 2 in a row.",
+  "because": "You buy stall, 2 in a row, interaction affordable @T6 and hand can act by T3 and pay hoard @T10, hoard @T6, damage @T10, board power @T6, killed by T6, killed by T10, missed drop by T5 and extra cards by T8.",
   "bill": {
    "box": 1,
    "buy": 18,
-   "elsewhere": 1,
+   "elsewhere": 2,
    "free": 0,
-   "in_deck": 59
+   "in_deck": 58
   },
   "cost": {
    "buy": 18,
    "buy_cards": [
     "Ancestral Anger",
     "Assault Strobe",
+    "Boggart Shenanigans",
     "Champion's Helm",
-    "Electroduplicate",
     "Firebrand Archer",
+    "Goblin Negotiation",
     "Guttersnipe",
     "Hanweir Garrison",
+    "Haze of Rage",
     "Heat Shimmer",
-    "Impolite Entrance",
+    "Howlsquad Heavy",
     "Kessig Flamebreather",
     "Kindle the Inner Flame",
     "Lavaspur Boots",
-    "Legion Warboss",
     "Molten Duplication",
     "Pyretic Ritual",
-    "Reckless Ransacking",
-    "Squee, Dubious Monarch",
-    "Sudden Breakthrough"
+    "Spreading Insurrection",
+    "Squee, Dubious Monarch"
    ],
    "counts": {
     "box": 1,
     "buy": 18,
-    "elsewhere": 1,
+    "elsewhere": 2,
     "free": 0,
-    "in_deck": 59
+    "in_deck": 58
    },
    "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [
+    {
+     "decks": [
+      "sharknado"
+     ],
+     "name": "Mana Geyser"
+    },
     {
      "decks": [
       "ur-dragon"
@@ -2226,69 +2326,95 @@
     }
    ],
    "owned": 61,
-   "reads_as": "18 to buy; 1 to pull out of a deck that is still together; 61 of 79 already owned",
+   "reads_as": "18 to buy; 2 to pull out of a deck that is still together; 61 of 79 already owned",
    "total": 79
   },
   "fell": [
-   "stall, 2 in a row"
+   "hoard @T10",
+   "hoard @T6",
+   "damage @T10",
+   "board power @T6",
+   "killed by T6",
+   "killed by T10",
+   "missed drop by T5",
+   "extra cards by T8"
   ],
   "no_call": [
-   "board power @T6",
-   "killed by T10",
-   "mulliganed",
-   "extra cards by T8"
+   "mulliganed"
   ],
   "notes": [
    "Forge, against a real pod: +0.037 win rate, CI [-0.054, +0.132] \u2014 this run cannot separate the two lists."
   ],
   "reward": [
    {
-    "measure": "hoard @T10",
-    "reads_as": "0.63 -> 2.05, a change of +1.41 (+223%)",
-    "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine."
-   },
-   {
-    "measure": "hoard @T6",
-    "reads_as": "0.07 -> 0.17, a change of +0.10 (+151%)",
-    "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
-   },
-   {
-    "measure": "damage @T10",
-    "reads_as": "16.55 -> 26.96, a change of +10.40 (+63%)",
-    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
-    "measure": "killed by T6",
-    "reads_as": "2 games in 100 -> 4 in 100, a swing of 3 games per 100",
-    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
-   },
-   {
-    "measure": "missed drop by T5",
-    "reads_as": "42 games in 100 -> 41 in 100, a swing of 1 games per 100",
-    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
+    "measure": "stall, 2 in a row",
+    "reads_as": "20 games in 100 -> 14 in 100, a swing of 6 games per 100",
+    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
     "measure": "interaction affordable @T6",
-    "reads_as": "29 games in 100 -> 38 in 100, a swing of 8 games per 100",
+    "reads_as": "29 games in 100 -> 37 in 100, a swing of 9 games per 100",
     "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    },
    {
     "measure": "hand can act by T3",
-    "reads_as": "98 games in 100 -> 99 in 100, a swing of 1 games per 100",
+    "reads_as": "99 games in 100 -> 99 in 100, a swing of 0 games per 100",
     "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
    {
-    "detail": "13 games in 100 -> 15 in 100, a swing of 1 games per 100",
+    "detail": "5.52 -> 1.75, a change of -3.77 (-68%)",
     "kind": "paid",
-    "what": "stall, 2 in a row",
-    "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+    "what": "hoard @T10",
+    "why_it_matters": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine."
    },
    {
-    "detail": "the largest is killed by T10 at +0.011 against an MDE of 0.011. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "0.31 -> 0.17, a change of -0.14 (-46%)",
+    "kind": "paid",
+    "what": "hoard @T6",
+    "why_it_matters": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
+   },
+   {
+    "detail": "57.50 -> 24.40, a change of -33.10 (-58%)",
+    "kind": "paid",
+    "what": "damage @T10",
+    "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
+   {
+    "detail": "8.80 -> 7.58, a change of -1.22 (-14%)",
+    "kind": "paid",
+    "what": "board power @T6",
+    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
+   },
+   {
+    "detail": "6 games in 100 -> 4 in 100, a swing of 1 games per 100",
+    "kind": "paid",
+    "what": "killed by T6",
+    "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
+   },
+   {
+    "detail": "90 games in 100 -> 81 in 100, a swing of 9 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "40 games in 100 -> 41 in 100, a swing of 1 games per 100",
+    "kind": "paid",
+    "what": "missed drop by T5",
+    "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
+   },
+   {
+    "detail": "3.67 -> 2.19, a change of -1.48 (-40%)",
+    "kind": "paid",
+    "what": "extra cards by T8",
+    "why_it_matters": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   {
+    "detail": "the largest is mulliganed at +0.000 against an MDE of 0.000. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "4 row(s) returned no call",
+    "what": "1 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -2304,26 +2430,29 @@
     "cards": [
      "Champion's Helm",
      "Lavaspur Boots",
-     "Mithril Coat"
+     "Mithril Coat",
+     "Purphoros, God of the Forge"
     ],
     "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
     "kind": "unmeasured",
-    "what": "3 card(s) carrying a protection effect",
+    "what": "4 card(s) carrying a protection effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [
      "Blasphemous Act",
+     "Boggart Shenanigans",
      "Firebrand Archer",
-     "Gempalm Incinerator",
+     "Goblin Negotiation",
      "Goblin Trashmaster",
      "Guttersnipe",
      "Kessig Flamebreather",
+     "Purphoros, God of the Forge",
      "Vandalblast"
     ],
     "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
-    "what": "7 card(s) carrying a removal effect",
+    "what": "9 card(s) carrying a removal effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -2334,11 +2463,7 @@
    }
   ],
   "rose": [
-   "hoard @T10",
-   "hoard @T6",
-   "damage @T10",
-   "killed by T6",
-   "missed drop by T5",
+   "stall, 2 in a row",
    "interaction affordable @T6",
    "hand can act by T3"
   ],
@@ -2349,181 +2474,13 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 2.0471,
-   "champion": 0.6331,
+   "branch": 1.7513,
+   "champion": 5.5177,
    "ci95_diff": [
-    1.0143,
-    1.8137
+    -4.4731,
+    -3.0597
    ],
-   "delta": 1.414,
-   "excludes_zero": true,
-   "holm": {
-    "family": 12,
-    "rank": 4,
-    "significant": true,
-    "threshold": 2.773
-   },
-   "mde": 0.5714,
-   "measure": "hoard @T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "0.63 -> 2.05, a change of +1.41 (+223%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "better",
-   "what": "Treasures sitting in the hoard at the end of turn 10, averaged over every game.",
-   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine.",
-   "z": 6.933
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.1658,
-   "champion": 0.066,
-   "ci95_diff": [
-    0.0893,
-    0.1103
-   ],
-   "delta": 0.0998,
-   "excludes_zero": true,
-   "holm": {
-    "family": 12,
-    "rank": 1,
-    "significant": true,
-    "threshold": 2.865
-   },
-   "mde": 0.015,
-   "measure": "hoard @T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "0.07 -> 0.17, a change of +0.10 (+151%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "better",
-   "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
-   "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered.",
-   "z": 18.685
-  },
-  {
-   "better_is": "higher",
-   "branch": 26.9573,
-   "champion": 16.554,
-   "ci95_diff": [
-    6.6729,
-    14.1337
-   ],
-   "delta": 10.4033,
-   "excludes_zero": true,
-   "holm": {
-    "family": 12,
-    "rank": 7,
-    "significant": true,
-    "threshold": 2.638
-   },
-   "mde": 5.3322,
-   "measure": "damage @T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "16.55 -> 26.96, a change of +10.40 (+63%)",
-   "role": "exploratory",
-   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
-   "unit": "mean",
-   "verdict": "better",
-   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
-   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": 5.466
-  },
-  {
-   "better_is": "higher",
-   "branch": 7.4969,
-   "champion": 7.5613,
-   "ci95_diff": [
-    -0.1429,
-    0.0141
-   ],
-   "delta": -0.0644,
-   "excludes_zero": false,
-   "holm": {
-    "family": 12,
-    "rank": 11,
-    "significant": false,
-    "threshold": 2.241
-   },
-   "mde": 0.1123,
-   "measure": "board power @T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.064 is smaller than the 0.112 this run can resolve",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "noise",
-   "what": "Total power on the battlefield at the end of turn 6.",
-   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": -1.607
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.0429,
-   "champion": 0.0173,
-   "ci95_diff": [
-    0.0215,
-    0.0297
-   ],
-   "delta": 0.0256,
-   "excludes_zero": true,
-   "holm": {
-    "family": 12,
-    "rank": 2,
-    "significant": true,
-    "threshold": 2.838
-   },
-   "mde": 0.0059,
-   "measure": "killed by T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "2 games in 100 -> 4 in 100, a swing of 3 games per 100",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
-   "verdict": "better",
-   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
-   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 12.239
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.7977,
-   "champion": 0.7863,
-   "ci95_diff": [
-    0.0034,
-    0.0194
-   ],
-   "delta": 0.0114,
-   "excludes_zero": true,
-   "holm": {
-    "family": 12,
-    "rank": 9,
-    "significant": true,
-    "threshold": 2.498
-   },
-   "mde": 0.0114,
-   "measure": "killed by T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.011 this run can resolve",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
-   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 2.791
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.1472,
-   "champion": 0.1338,
-   "ci95_diff": [
-    0.0058,
-    0.021
-   ],
-   "delta": 0.0134,
+   "delta": -3.7664,
    "excludes_zero": true,
    "holm": {
     "family": 12,
@@ -2531,27 +2488,55 @@
     "significant": true,
     "threshold": 2.576
    },
-   "mde": 0.0109,
-   "measure": "stall, 2 in a row",
+   "mde": 1.0101,
+   "measure": "hoard @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "13 games in 100 -> 15 in 100, a swing of 1 games per 100",
+   "reads_as": "5.52 -> 1.75, a change of -3.77 (-68%)",
    "role": "exploratory",
    "scale": null,
-   "unit": "rate",
+   "unit": "mean",
    "verdict": "worse",
-   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
-   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": 3.455
+   "what": "Treasures sitting in the hoard at the end of turn 10, averaged over every game.",
+   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine.",
+   "z": -10.446
   },
   {
-   "better_is": "lower",
-   "branch": 0.4119,
-   "champion": 0.4223,
+   "better_is": "higher",
+   "branch": 0.1659,
+   "champion": 0.309,
    "ci95_diff": [
-    -0.0139,
-    -0.0069
+    -0.1589,
+    -0.1273
    ],
-   "delta": -0.0104,
+   "delta": -0.1431,
+   "excludes_zero": true,
+   "holm": {
+    "family": 12,
+    "rank": 4,
+    "significant": true,
+    "threshold": 2.773
+   },
+   "mde": 0.0226,
+   "measure": "hoard @T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "0.31 -> 0.17, a change of -0.14 (-46%)",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
+   "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered.",
+   "z": -17.776
+  },
+  {
+   "better_is": "higher",
+   "branch": 24.4016,
+   "champion": 57.4974,
+   "ci95_diff": [
+    -39.0821,
+    -27.1095
+   ],
+   "delta": -33.0958,
    "excludes_zero": true,
    "holm": {
     "family": 12,
@@ -2559,22 +2544,162 @@
     "significant": true,
     "threshold": 2.69
    },
-   "mde": 0.005,
-   "measure": "missed drop by T5",
+   "mde": 8.5567,
+   "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "42 games in 100 -> 41 in 100, a swing of 1 games per 100",
+   "reads_as": "57.50 -> 24.40, a change of -33.10 (-58%)",
+   "role": "exploratory",
+   "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
+   "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
+   "z": -10.836
+  },
+  {
+   "better_is": "higher",
+   "branch": 7.575,
+   "champion": 8.7961,
+   "ci95_diff": [
+    -1.3139,
+    -1.1283
+   ],
+   "delta": -1.2211,
+   "excludes_zero": true,
+   "holm": {
+    "family": 12,
+    "rank": 1,
+    "significant": true,
+    "threshold": 2.865
+   },
+   "mde": 0.1327,
+   "measure": "board power @T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "8.80 -> 7.58, a change of -1.22 (-14%)",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Total power on the battlefield at the end of turn 6.",
+   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
+   "z": -25.787
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.0424,
+   "champion": 0.0571,
+   "ci95_diff": [
+    -0.0198,
+    -0.0096
+   ],
+   "delta": -0.0147,
+   "excludes_zero": true,
+   "holm": {
+    "family": 12,
+    "rank": 10,
+    "significant": true,
+    "threshold": 2.394
+   },
+   "mde": 0.0073,
+   "measure": "killed by T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "6 games in 100 -> 4 in 100, a swing of 1 games per 100",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
+   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
+   "z": -5.617
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.8091,
+   "champion": 0.9024,
+   "ci95_diff": [
+    -0.1011,
+    -0.0855
+   ],
+   "delta": -0.0933,
+   "excludes_zero": true,
+   "holm": {
+    "family": 12,
+    "rank": 3,
+    "significant": true,
+    "threshold": 2.807
+   },
+   "mde": 0.0111,
+   "measure": "killed by T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "90 games in 100 -> 81 in 100, a swing of 9 games per 100",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
+   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
+   "z": -23.457
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.1402,
+   "champion": 0.1989,
+   "ci95_diff": [
+    -0.0662,
+    -0.0512
+   ],
+   "delta": -0.0587,
+   "excludes_zero": true,
+   "holm": {
+    "family": 12,
+    "rank": 5,
+    "significant": true,
+    "threshold": 2.734
+   },
+   "mde": 0.0107,
+   "measure": "stall, 2 in a row",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "20 games in 100 -> 14 in 100, a swing of 6 games per 100",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
-   "what": "The share of games that miss at least one land drop across turns 1 to 5.",
-   "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": -5.787
+   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
+   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
+   "z": -15.412
   },
   {
    "better_is": "lower",
-   "branch": 0.2197,
-   "champion": 0.2197,
+   "branch": 0.4114,
+   "champion": 0.3986,
+   "ci95_diff": [
+    0.0092,
+    0.0164
+   ],
+   "delta": 0.0128,
+   "excludes_zero": true,
+   "holm": {
+    "family": 12,
+    "rank": 9,
+    "significant": true,
+    "threshold": 2.498
+   },
+   "mde": 0.0052,
+   "measure": "missed drop by T5",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "40 games in 100 -> 41 in 100, a swing of 1 games per 100",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The share of games that miss at least one land drop across turns 1 to 5.",
+   "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
+   "z": 6.958
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.2125,
+   "champion": 0.2125,
    "ci95_diff": [
     0.0,
     0.0
@@ -2601,87 +2726,87 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.2299,
-   "champion": 2.3076,
+   "branch": 2.1866,
+   "champion": 3.6686,
    "ci95_diff": [
-    -0.1638,
-    0.0084
+    -1.6035,
+    -1.3605
    ],
-   "delta": -0.0777,
-   "excludes_zero": false,
-   "holm": {
-    "family": 12,
-    "rank": 10,
-    "significant": false,
-    "threshold": 2.394
-   },
-   "mde": 0.123,
-   "measure": "extra cards by T8",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.078 is smaller than the 0.123 this run can resolve",
-   "role": "exploratory",
-   "scale": "against the 8 cards every deck draws for free by then",
-   "unit": "mean",
-   "verdict": "noise",
-   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
-   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": -1.77
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.3758,
-   "champion": 0.2945,
-   "ci95_diff": [
-    0.0648,
-    0.0977
-   ],
-   "delta": 0.0813,
+   "delta": -1.482,
    "excludes_zero": true,
    "holm": {
     "family": 12,
-    "rank": 3,
+    "rank": 2,
     "significant": true,
-    "threshold": 2.807
+    "threshold": 2.838
+   },
+   "mde": 0.1737,
+   "measure": "extra cards by T8",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "3.67 -> 2.19, a change of -1.48 (-40%)",
+   "role": "exploratory",
+   "scale": "against the 8 cards every deck draws for free by then",
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and a trigger that draws when other creatures or tokens enter. Activated, X-based, sacrifice-gated and death-triggered draw are NOT counted and the cards are named in the goldfish artifact.",
+   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
+   "z": -23.902
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.3739,
+   "champion": 0.2854,
+   "ci95_diff": [
+    0.0723,
+    0.1047
+   ],
+   "delta": 0.0885,
+   "excludes_zero": true,
+   "holm": {
+    "family": 12,
+    "rank": 7,
+    "significant": true,
+    "threshold": 2.638
    },
    "mde": 0.0239,
    "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "29 games in 100 -> 38 in 100, a swing of 8 games per 100",
+   "reads_as": "29 games in 100 -> 37 in 100, a swing of 9 games per 100",
    "role": "exploratory",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "better",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": 9.696
+   "z": 10.73
   },
   {
    "better_is": "higher",
-   "branch": 0.9917,
-   "champion": 0.9836,
+   "branch": 0.9933,
+   "champion": 0.9902,
    "ci95_diff": [
-    0.0058,
-    0.0104
+    0.0012,
+    0.005
    ],
-   "delta": 0.0081,
+   "delta": 0.0031,
    "excludes_zero": true,
    "holm": {
     "family": 12,
-    "rank": 5,
+    "rank": 11,
     "significant": true,
-    "threshold": 2.734
+    "threshold": 2.241
    },
-   "mde": 0.0033,
+   "mde": 0.0027,
    "measure": "hand can act by T3",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "98 games in 100 -> 99 in 100, a swing of 1 games per 100",
+   "reads_as": "99 games in 100 -> 99 in 100, a swing of 0 games per 100",
    "role": "exploratory",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "better",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
-   "z": 6.789
+   "z": 3.216
   }
  ]
 }

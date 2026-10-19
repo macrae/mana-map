@@ -1,6 +1,6 @@
 {
   "slug": "goblin-storm",
-  "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+  "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
   "lands": {
     "total": 36,
     "entries": 15,
@@ -174,14 +174,14 @@
       "W": 0,
       "U": 0,
       "B": 0,
-      "R": 6,
+      "R": 4,
       "G": 0
     },
     "total": {
       "W": 0,
       "U": 0,
       "B": 0,
-      "R": 37,
+      "R": 35,
       "G": 0
     },
     "gated": {
@@ -202,28 +202,6 @@
         "name": "Brightstone Ritual",
         "kind": "ramp:ritual",
         "cmc": 1.0,
-        "produces": [
-          "R"
-        ]
-      },
-      {
-        "name": "Glimpse the Impossible",
-        "kind": "ramp:ritual",
-        "cmc": 3.0,
-        "produces": []
-      },
-      {
-        "name": "Howlsquad Heavy",
-        "kind": "ramp:dork",
-        "cmc": 3.0,
-        "produces": [
-          "R"
-        ]
-      },
-      {
-        "name": "Mana Geyser",
-        "kind": "ramp:ritual",
-        "cmc": 5.0,
         "produces": [
           "R"
         ]
@@ -254,11 +232,11 @@
   },
   "pips": {
     "R": {
-      "total_pips": 69.0,
+      "total_pips": 68.0,
       "max_pips": 2,
-      "cards": 57,
+      "cards": 58,
       "earliest_turn": 1,
-      "effective_pips": 2
+      "effective_pips": 1
     }
   },
   "shares": {
@@ -268,49 +246,49 @@
     }
   },
   "source_targets": {
-    "R": 36
+    "R": 22
   },
   "on_curve_probability": {
     "lands_only": {
-      "R": 0.839
+      "R": 0.972
     },
     "with_rocks_and_dorks": {
-      "R": 0.916
+      "R": 0.984
     },
     "lands_only_ungated": {
-      "R": 0.839
+      "R": 0.972
     }
   },
   "ramp": {
     "ramp:cost-reduction": 3,
-    "ramp:dork": 2,
-    "ramp:ritual": 5,
+    "ramp:dork": 1,
+    "ramp:ritual": 3,
     "ramp:rock": 1
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.509,
+      "10": 0.558,
       "2": 0.997,
-      "3": 0.916,
-      "4": 0.801,
-      "5": 0.69,
-      "6": 0.607,
-      "7": 0.554,
-      "8": 0.523,
-      "9": 0.518
+      "3": 0.914,
+      "4": 0.813,
+      "5": 0.708,
+      "6": 0.633,
+      "7": 0.572,
+      "8": 0.569,
+      "9": 0.553
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.292,
-      "2": 2.151,
-      "3": 3.091,
-      "4": 4.018,
-      "5": 4.752,
-      "6": 5.65,
-      "7": 6.354,
-      "8": 7.008,
-      "9": 7.657
+      "10": 7.723,
+      "2": 2.148,
+      "3": 3.086,
+      "4": 3.93,
+      "5": 4.651,
+      "6": 5.32,
+      "7": 5.925,
+      "8": 6.532,
+      "9": 7.125
     }
   },
   "assumptions": [
@@ -319,7 +297,5 @@
     "Hybrid pips charge half a pip to each side.",
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
-  "notes": [
-    "R: 31 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 37."
-  ]
+  "notes": []
 }
