@@ -48,7 +48,12 @@ def merge(slug, verifier=False):
         doc["withheld"] = [w for w in doc["withheld"] if w["component"] != "judgment"]
         doc["open_questions"] = [{"question": q.get("question"), "settled_by": q.get("settled_by")}
                                  for q in handoff.get("open_questions") or []]
-        doc["iterations"] = ((previous or {}).get("iterations") or 0) + 1
+        # A NEW LOOP STARTS AT ONE. `iterations` counts rater passes within one
+        # loop; a judgment merged after a loop already reached the cap (a forced
+        # re-rate, `cache-clear` then a fresh rater) is pass one of a new loop,
+        # not pass four of the old one.
+        prev_iter = (previous or {}).get("iterations") or 0
+        doc["iterations"] = prev_iter + 1 if prev_iter < config.RATING_MAX_ITERATIONS else 1
         doc["verifier"] = None      # a new judgment is unverified until the skeptic looks again
         rating._finish(doc, judgment)
     doc = rating.ranked(doc)

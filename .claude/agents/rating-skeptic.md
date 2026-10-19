@@ -30,10 +30,11 @@ path plus ≤200 words. This charter says only what is specific to you.
    file for `stack:<NNN>` (is it passing, and does the line do what is claimed?);
    `engine.json` for an engine stage; `context <slug> --slice <section>` for a context
    quote. A quote that is verbatim but misread is `mis-cited`.
-4. **Attack the number.** Compare `judgment.sub_score` to `code_score` and to the cited
-   evidence. Above 50 claims the measured components undersell the deck: which cited
-   fact carries that, and does its figure support the size of the gap? Below 50 claims
-   they oversell it: same question. `too-generous` and `too-harsh` each need a named
+4. **Attack the number.** The neutral point is `code_score`, not 50: a judgment equal to
+   `code_score` leaves the composite where the measured components put it. Above it
+   claims they undersell the deck: which cited, UNMEASURED fact carries that, and does
+   its figure support the size of the gap? Below it claims they oversell it: same
+   question. A gap that rests on something a component already scores is a double count. `too-generous` and `too-harsh` each need a named
    figure from the record (a rate, a count, a game) that argues the other way. "I would
    have said 60" is not a finding.
 5. **Superlatives and unrecorded claims.** "The fastest", "the most resilient", "never"

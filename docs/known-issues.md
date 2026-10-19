@@ -1788,10 +1788,15 @@ ur-dragon), `pilot_feel` on none (no `--feel` survey logged yet), `forge` on non
 on a current list, and weight 0.00 by the pilot's rule). The scorecard is therefore mostly
 benchmark speed, benchmark mana, answer capacity and the audit's construction bands, plus
 one agent judgment — and the first fleet pass showed the loop's seam: five of the six
-judgments ended at iteration 3 with a skeptic verdict of `fail` (the pendulum between
-too-generous and too-harsh, plus citations the skeptic read against their whole source),
-one passed (ur-dragon). A `fail` is saved and labelled; it is the loop working, not a
-clean bill. What moves this: logged games with `--feel`, a Forge harness the pilot trusts,
+judgments ended at iteration 3 with a skeptic verdict of `fail`. The commonest finding was a
+double count — the judgment charging a gap a measured component already carried — and under
+it sat a design flaw: the charters named 50 as the judgment's neutral point, so every rater
+"agreeing with the components" dragged a deck above 50 down. The neutral point is now
+`code_score` (charters, `rating.py`, 2026-10-19), and the second pass on the sleeved six
+passed five (ur-dragon, gishath, edgar-vampires, heliod, sharknado; three at iteration 3)
+and failed one (goblin-storm, iteration 3, one wording finding: the argument implies
+stack 002 closes a turn where the stack proves the storm count and tokens, not a kill). A
+`fail` is saved and labelled; it is the loop working, not a clean bill. What moves this: logged games with `--feel`, a Forge harness the pilot trusts,
 more decks per bracket, and a reading of what the raters kept getting wrong (double-counting
 a gap the measured components already carry was the commonest finding).
 

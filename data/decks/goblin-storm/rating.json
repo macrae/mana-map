@@ -270,11 +270,11 @@
  "spec_version": 1,
  "open_questions": [
   {
-   "question": "Does the added body count fix the no-goblins keep in play? No game exists on the new list.",
+   "question": "Does the added body count fix the no-goblins keep on v1.1.0 once played?",
    "settled_by": "rate"
   },
   {
-   "question": "Is the 0-sweeper, 13-answer suite enough against a table that can remove a wide board? The goldfish has no removal and cannot say.",
+   "question": "Is a suite with no sweepers enough against a table that removes a wide board? The goldfish cannot say.",
    "settled_by": "diagnose"
   }
  ],
@@ -283,124 +283,104 @@
   "verdict": "fail",
   "findings": [
    {
-    "where": "(gate)",
+    "where": "gate",
     "status": "supported",
-    "note": "validate-rating OK; rating --json matches components, withheld, code_score, bracket, limits exactly."
-   },
-   {
-    "where": "judgment.sub_score",
-    "status": "too-harsh",
-    "note": "58 claims the measured parts oversell how often the engine switches on, but the speed component already prices assembly: benchmark kill_by_turn_8 is 0.565 (n=10000), kill_by_turn_10 0.905, never_kills_rate 0.095. The cited 73%/58%/10% are drawn-by-turn-6 shares of card groups, not kill rates; the 10% storm-payoff-plus-ritual group is not needed for the 90.5% kill by T10 (combos.json: 0 infinite lines). Deducting for assembly again on top of speed double-counts it. The only non-measured evidence is two losses on an older list (log 002 decklist_sha c8651652... differs from current 5cf3...)."
-   },
-   {
-    "where": "judgment.argument",
-    "status": "supported",
-    "note": "'median over games that assemble': goldfish.py takes the median over games with a kill_turn (never-kill 9.5% excluded), so true in spirit though it says killed, not assembled. Resilience 37.5 is indeed the lowest component. The two log characterisations (001 bad keep, 002 'The engine never assembled.') match the logs."
+    "note": "validate-rating OK; rating --json re-run matches components, withheld, code_score (54.6), bracket, limits exactly."
    },
    {
     "where": "judgment.citations[0]",
     "status": "supported",
-    "note": "answer_cards = 13 in benchmark response; resilience skeleton lowest."
+    "note": "skeleton:speed kill_by_turn_8 = 0.565 (n=10000) matches the speed input."
    },
    {
     "where": "judgment.citations[1]",
     "status": "supported",
-    "note": "log:002 contains the quote verbatim and in context (no small goblins in the keep)."
+    "note": "engine.json thesis contains the quoted clause verbatim and the argument uses it as the thesis."
    },
    {
     "where": "judgment.citations[2]",
     "status": "supported",
-    "note": "CONTEXT numbers: commander cast by turn six 95%, verbatim."
+    "note": "stack 002 checker pass (1 iteration); Empty the Warrens, Grapeshot, Impact Tremors, Battle Hymn, Brightstone Ritual, Dragon Fodder are all in decklist.txt."
    },
    {
     "where": "judgment.citations[3]",
     "status": "supported",
-    "note": "Early token maker drawn 73%, verbatim; it is a drawn-by-T6 share, used correctly as an assembly figure."
+    "note": "stack 003 checker pass (2 iterations); Zada and Fists of Flame are in decklist.txt; ends in lethal (>=30 trample vs 30 life)."
    },
    {
     "where": "judgment.citations[4]",
     "status": "supported",
-    "note": "58% verbatim."
+    "note": "stack 014 checker pass (3 iterations); Zada and Witch's Mark (decklist line 84) are in the list."
    },
    {
     "where": "judgment.citations[5]",
     "status": "supported",
-    "note": "10% verbatim; but see sub_score on its relevance."
+    "note": "strategy:deckbuilding.power-level: the quote is the section's own point (brackets differ by expected game length), used to justify reading kill_by_turn_8 against a bracket clock."
    },
    {
-    "where": "judgment.citations[6]",
-    "status": "supported",
-    "note": "6/100, CI 3%-15%, V1, flagged older list; verbatim and argument says not a power read."
-   },
-   {
-    "where": "judgment.citations[7]",
+    "where": "judgment.argument",
     "status": "over-claimed",
-    "note": "stack:001 passes (checker pass) and the title matches, but it is a rules resolution of a hypothetical board with four Goblins already out; it proves what Wisps does, not that the line is reliably reached. Log 001 shows the Wisps half stranded with zero goblins. 'Backs the design' is carried by the stack only as rules legality."
+    "note": "'the storm turn that Empty the Warrens ends' implies stack 002 closes out a turn. Its final_state leaves opponents at 24 and 20 life (8 Impact Tremors damage each), with Grapeshot still in hand; the stack proves storm count and token/damage arithmetic, not a kill. Reword to what the stack shows (copy count, 8 tokens, 8 damage each, Grapeshot sees storm 4)."
    },
    {
-    "where": "open_questions[0]",
+    "where": "judgment.sub_score",
     "status": "supported",
-    "note": "No game on the new list; rate can settle it."
+    "note": "54 vs code_score 54.6 and the no-gap line of 50: +4 for three checker-passed on-list lines is modest and is not double-counted (stacks feed no component). Offsetting figures (kill_by_turn_8 0.565, resilience 25, no infinite, no games on v1.1.0) are named in the argument. Weighted blend 54.4 recomputes."
    },
    {
-    "where": "open_questions[1]",
+    "where": "judgment.argument",
     "status": "supported",
-    "note": "Goldfish has no removal; diagnose is a plausible settler."
+    "note": "No unrecorded superlatives; 'resilience is already the lowest component' holds (25 vs 50/58.57/100); 2-of-5 games and 'no Forge run' match withheld[]."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Q1 (rate) is not answered by the skeleton: v1.1.0 has no games. Q2 (diagnose) is not settled by audit's sweepers=0, which says count not sufficiency."
    }
   ],
   "iterations": 3
  },
  "code_score": 54.6,
- "score": 55.5,
+ "score": 54.4,
  "score_ci": [
-  55.5,
-  55.5
+  54.4,
+  54.4
  ],
  "grade": "C",
  "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
  "judgment": {
-  "sub_score": 58,
-  "argument": "The measured parts miss assembly. No table record on this list (two games, both on the old one), no survey, no Forge run on it, and the new cards are still arriving, so no game has been played with it. I am filling in for that. What they already carry, and I do not deduct again: resilience (answer capacity, scored lowest) and the sweeper gap in construction. Speed and mana are priced from the goldfish. What they undersell is the design: the commander is cast by turn six in 95% of games and a passing stack backs the Crimson Wisps line. What they oversell is how often the engine switches on. An early token maker is drawn in 73% of games, Zada is online with a cantrip in 58%, and storm payoff plus ritual in 10%. The kill turn is a median over games that assemble. The record points the same way: the pilot's second loss reads \"The engine never assembled.\" and the first was a bad keep. Those are two games on the old list, not a verdict, and Forge's 6/100 (95% CI 3% to 15%) is on that older list and is not a power read until the harness work is done. So 58: the assembly figures and the losses pull under the measured score, the design and commander reliability keep it close.",
+  "sub_score": 54,
+  "argument": "Convention first: this judgment is a weighted component, and 50 is the line where the measured components already say it. The measured components cannot see play: two games are logged where five are needed, nobody has surveyed a game for feel, and no Forge run describes the current list. The v1.1.0 cards are still arriving, so nothing has been played on it. That leaves the engine and the stacks. The thesis is coherent: bodies make the mana, cheap spells aimed at Zada turn each body into a card, and one payoff turn cashes the board in. Several stacks pass their checker with every card on the current list, and they cover the engine's own steps: the storm turn that Empty the Warrens ends, Fists of Flame as the lethal, and Witch's Mark copies at Zada. That is more than a thesis; the lines work as written. The Haze of Rage loop is off this list and I do not count it. Against that, kill_by_turn_8 reads 0.565, no stack proves an infinite, and no game has tested the list. Resilience is already the lowest component as capacity, so I do not deduct it again. A little above the line for the checked lines, no higher because nothing here has been played.",
   "citations": [
    {
     "kind": "skeleton",
-    "ref": "skeleton:resilience",
-    "quote": "answer_cards"
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
    },
    {
-    "kind": "log",
-    "ref": "log:002",
-    "quote": "The engine never assembled."
-   },
-   {
-    "kind": "context",
-    "ref": "context:numbers",
-    "quote": "share of seeded games where the commander was CAST by turn six: **95%**"
-   },
-   {
-    "kind": "context",
-    "ref": "context:numbers",
-    "quote": "Early token maker drawn: **73%**"
-   },
-   {
-    "kind": "context",
-    "ref": "context:numbers",
-    "quote": "Zada online with a cantrip drawn: **58%**"
-   },
-   {
-    "kind": "context",
-    "ref": "context:numbers",
-    "quote": "Storm payoff plus ritual drawn: **10%**"
-   },
-   {
-    "kind": "context",
-    "ref": "context:numbers",
-    "quote": "6/100 won (7% (95% CI 3%–15%)) on V1"
+    "kind": "engine",
+    "ref": "engine:thesis",
+    "quote": "one payoff turn cashes the whole board into damage"
    },
    {
     "kind": "stack",
-    "ref": "stack:001",
-    "quote": "Crimson Wisps on Zada with four Goblins out"
+    "ref": "stack:002",
+    "quote": "Empty the Warrens as the fourth spell with Impact Tremors out"
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:003",
+    "quote": "Fists of Flame on Zada: the sequential-draw lethal"
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:014",
+    "quote": "Witch's Mark cast at Zada with three Goblins out"
+   },
+   {
+    "kind": "strategy",
+    "ref": "strategy:deckbuilding.power-level",
+    "quote": "the sharpest line between them is expected game length"
    }
   ],
   "against": {
@@ -426,8 +406,8 @@
   },
   "scores": {
    "ur-dragon": 72.1,
-   "gishath": 65.4,
-   "goblin-storm": 55.5
+   "gishath": 69.1,
+   "goblin-storm": 54.4
   }
  }
 }

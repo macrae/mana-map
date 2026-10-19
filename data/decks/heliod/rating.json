@@ -281,62 +281,53 @@
  "spec_version": 1,
  "open_questions": [
   {
-   "question": "Does the corrected Approach sequencing (tutor to third-from-top at once) win the games it should? Only more logged games on the current list can say.",
-   "settled_by": "rate"
-  },
-  {
-   "question": "Does the protection added since the first logged game keep the engine online against counter-and-redirect tables? Only games on the current list can say.",
+   "question": "Does table pressure on the Smothering Tithe holder leave time to set up the Approach tutor on the current list, or is the plan too slow against a competitive pod?",
    "settled_by": "rate"
   }
  ],
  "iterations": 3,
  "verifier": {
-  "verdict": "fail",
+  "verdict": "pass",
   "findings": [
    {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "50 vs code_score 49.8 claims no correction. Named figures argue neither way: kill_by_turn_8 0.003 (n=10000) against bracket peers sharknado 0.889 and edgar-vampires 0.648 is already priced at speed 0; answer_cards 21 already priced at resilience 85. Two logged games, both losses on older lists (log 001 sha 2d7f.., log 002 sha 214a.., current f7e2..), are correctly treated as neither credit nor debit."
+    "note": "50 vs code_score 49.8 is a 0.2 gap, effectively neutral. The argument claims neither undersell nor oversell, and the cited facts (kill_by_turn_8 0.003 [0.0021,0.0043] n=10000, answer_cards 21, 2 logged losses) give no figure arguing for a different number. Gap to rank neighbour edgar-vampires (50.5) is within noise and ties_within_ci is false only by the code's own test; not the judgment's claim."
    },
    {
-    "where": "judgment.argument",
+    "where": "judgment.citations[0]",
     "status": "supported",
-    "note": "The discount/credit accounting matches the components; 'older lists' holds by sha for both logs. The rated list is V12; the log-002 debrief's own 'matches current V10' is stale but the rating does not rely on it."
+    "note": "skeleton:speed kill_by_turn_8 exists (0.003, speed sub_score 0.0); argument's 'reads very low' is correct and it takes nothing further off."
+   },
+   {
+    "where": "judgment.citations[1]",
+    "status": "supported",
+    "note": "skeleton:resilience answer_cards = 21 matches 'capacity by count is fine'; resilience 85, interaction-breadth 3 of 5 is not contradicted."
    },
    {
     "where": "judgment.citations[2]",
     "status": "supported",
-    "note": "engine thesis quote is verbatim and is the thesis's own point; the thesis adds that a goldfish reaches T10 without a kill in 86.5% of games, consistent with speed 0.003."
+    "note": "engine.json thesis contains the quoted clause verbatim and in context (the one seven-mana sorcery cast twice; 86.5% no kill by turn ten)."
    },
    {
     "where": "judgment.citations[3]",
     "status": "supported",
-    "note": "log 001 'WHAT IT NEEDS IS PROTECTION.' is the pilot's headline; the game was a stack war losing Heliod to redirected Swords."
+    "note": "Stack 002 passes its checker (validate-stack: contract holds; checker pass). Hypothetical board, and validate-stack warns it names Ancient Tomb, which the 99 does not run: exactly as the argument says. Board is not the list."
    },
    {
     "where": "judgment.citations[4]",
     "status": "supported",
-    "note": "log 002 Tithe optics quote verbatim and used as the pilot's own optics lesson."
+    "note": "Log 002 quote is verbatim; the game also supports the Tithe-attention and three sequencing errors. Log sha 214af30 differs from current f7e21dc6, so 'older lists' is right; log 001 is the V5 sha, 'history about commander removal' is right."
    },
    {
-    "where": "judgment.citations[5]",
+    "where": "judgment.argument",
     "status": "supported",
-    "note": "log 002 'I killed my own commander.' is the Supreme Verdict sequencing error, correctly called a pilot error."
+    "note": "No unrecorded superlatives; 'the only card' is the engine file's own claim, cited. Withheld components (table_record 2 of 5, pilot_feel, forge) match rating.json."
    },
    {
-    "where": "judgment.citations[6]",
-    "status": "over-claimed",
-    "note": "stack:002 passes the checker and the quote is verbatim (step 1), but the argument says it 'shows the Approach line resolves'. The scenario is hypothetical and conditional: board includes Ancient Tomb (validate-stack warns this deck does not run it) and Howling Mine, an opponent is stated to hold an instant, and step 2 is the opponents' window to stop it. It proves the rules timing of a second cast, not that the line resolves in this deck. Soften to 'the rules timing of the second cast is proven on a board that includes a card outside the 99'. Does not move the number."
-   },
-   {
-    "where": "components",
+    "where": "open_questions[0]",
     "status": "supported",
-    "note": "Re-run of rating heliod --json is identical on components, withheld, code_score, bracket, limits. Strategy quotes for power-level, mana-base (26% turn-3 miss vs deck 24.7% missed-land-drop) and interaction-suite are verbatim and on point."
-   },
-   {
-    "where": "open_questions",
-    "status": "supported",
-    "note": "Both are about the current list's play outcomes; no artifact answers them (2 logged games, none on f7e2.., no Forge run on this list), so settled_by rate is right."
+    "note": "Not answered by the skeleton or artifacts: goldfish is unopposed and Forge is withheld, so table pressure vs Approach timing is open. settled_by 'rate' is slightly loose but acceptable."
    }
   ],
   "iterations": 3
@@ -351,7 +342,7 @@
  "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
  "judgment": {
   "sub_score": 50,
-  "argument": "The measured components leave out the play. No table record is scored, there is no pilot survey and no Forge run on this list, and both logged games were played on older lists than the current one. So I am filling in for very little, and I say so: my number is the measured score's neighbourhood, not a correction. What I discount: nothing beyond what speed already prices. Speed reads kill_by_turn_8 of 0.003, and the engine thesis explains why that is real, not noise: 'the only card in the 99 that converts any of that into a win is one seven-mana sorcery cast twice'. The thin conversion is a true weakness and speed already charges for it; mana and construction already charge for the mana base. What I credit: stack 002 shows the Approach line resolves, and the code already credits resilience at 21 answer cards. The two losses I count as absence of evidence, neither credit nor debit. Log 001, on an older list, records losing the commander in a stack war ('WHAT IT NEEDS IS PROTECTION.'). Log 002 records Tithe optics ('Tithe made me the target immediately and I had no creatures out.'), a wipe that hit the pilot's own commander ('I killed my own commander.'), and an opponent assembling a one-card combo while the table pressed him. Those are pilot errors and table conditions alongside a real exposure, so they cannot move the number either way. 50: the measured components already say it.",
+  "argument": "The measured components cannot see how this deck is meant to win. Table record (2 games logged, 5 needed), pilot feel and Forge are withheld, so I am reading two losses and the engine file. Speed scores an unopposed goldfish kill, and Heliod does not win by attacking, so that column reads very low for a plan it does not model; mana separately carries the missed land drops. Both are already in the score and I take nothing further off for either. I give nothing back for the plan either, because the evidence for it is thin. The engine file says the only card in the list that converts the table's draws into a win is one seven-mana sorcery cast twice. Stack 002 passed its checker, but it is a hypothetical board and it names a land this deck does not run, so it shows the rules timing of a second Approach cast and nothing about this list resolving it. Capacity by count is fine: 21 answer cards. The logs are two losses on older lists. Game 002 shows sequencing errors, but also the Tithe drawing the table's attention and an opponent's one-card combo, so it does not show the line is playable. Game 001 was on the V5 list and is history about commander removal. Neither moves me from the measured components, so the number sits at the middle: they already say it, and the record does not yet argue for more or less.",
   "citations": [
    {
     "kind": "skeleton",
@@ -369,24 +360,14 @@
     "quote": "the only card in the 99 that converts any of that into a win is one seven-mana sorcery cast twice"
    },
    {
-    "kind": "log",
-    "ref": "log:001",
-    "quote": "WHAT IT NEEDS IS PROTECTION."
-   },
-   {
-    "kind": "log",
-    "ref": "log:002",
-    "quote": "Tithe made me the target immediately and I had no creatures out."
-   },
-   {
-    "kind": "log",
-    "ref": "log:002",
-    "quote": "I killed my own commander."
-   },
-   {
     "kind": "stack",
     "ref": "stack:002",
-    "quote": "You have cast Approach of the Second Sun from your hand for {6}{W}."
+    "quote": "Approach of the Second Sun, second cast off Mystical Tutor"
+   },
+   {
+    "kind": "log",
+    "ref": "log:002",
+    "quote": "Oliver assembled his one-card Cranko line while the table beat on me."
    }
   ],
   "against": {
@@ -411,7 +392,7 @@
    "heliod": "this document"
   },
   "scores": {
-   "sharknado": 60.0,
+   "sharknado": 61.8,
    "edgar-vampires": 50.5,
    "heliod": 49.9
   }

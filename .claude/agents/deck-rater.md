@@ -73,8 +73,11 @@ what you are filling in for, then fill it in.
 ```
 
 - `sub_score` is a whole number, 0–100. Its weight is fixed by the scorecard (0.20); you
-  do not set it. 50 is "the measured components already say it"; above is what they
-  undersell, below what they oversell. Say which.
+  do not set it. **The neutral point is the skeleton's `code_score`**, not 50: a judgment
+  equal to `code_score` says "the measured components already say it" and leaves the
+  composite where they put it; above says they undersell the deck, below says they
+  oversell it, and the size of the gap is yours to justify with cited, UNMEASURED facts
+  (a gap a component already carries is a double count). Say which way and why.
 - **At least two citations of at least two kinds.** `log:<id>` quotes the entry's own
   text; `strategy:<id>` is verbatim from that section (the validator checks it word
   for word); `stack:<NNN>` must have passed its checker; `engine:<stage>` names a stage

@@ -270,91 +270,72 @@
  "spec_version": 1,
  "open_questions": [
   {
-   "question": "On the logged loss's board (8–9 dinos with counters, 30+ power, Alex at 18 and Oliver at 15), was an alpha strike split across both seats lethal on Oliver even after Alex saves himself? No checker-passed stack resolves a lethal swing for this deck.",
+   "question": "On the logged loss's board (8-9 dinos with counters, 30+ power), was an alpha strike split across both seats lethal on Oliver even after Alex saves himself? No checker-passed stack resolves it.",
    "settled_by": "resolve-stack"
   },
   {
-   "question": "Does a Gishath reveal with Purphoros, God of the Forge on the battlefield deal 2 damage to each opponent per entering Dinosaur, including the Molten Echoes copies and Regisaur Alpha's token? The V5 second route is unverified in situ.",
-   "settled_by": "resolve-stack"
-  },
-  {
-   "question": "Does the v1.1.0 land pass hold at a real table? mana_analysis and the decisions ledger already give the before/after on paper and the stall objective read not met; only logged games on v1.1.0 settle it, and the rating should be redone when they exist.",
+   "question": "Does the v1.1.0 land pass fix the green and red colour-on-curve problem at a real table? Only logged games on v1.1.0 settle it; redo the rating then.",
    "settled_by": "rate"
   }
  ],
  "iterations": 3,
  "verifier": {
-  "verdict": "fail",
+  "verdict": "pass",
   "findings": [
    {
-    "where": "judgment.citations[4]",
-    "status": "mis-cited",
-    "note": "log:002 'played at or above the table' is from the note's two-game 'Summary (both games): Both decks did what they were built to do...' line, which the debrief itself says belongs to the Edgar game played the same night and is 'not this deck's'. The argument applies it to Gishath ('a night the decks played at or above the table'), a verbatim sentence misread against its whole source."
-   },
-   {
-    "where": "judgment.sub_score",
-    "status": "too-harsh",
-    "note": "48 sits 24.8 points under code_score 72.8 (cutting the final score 72.8-ish to 66.2 and a place in rank). The only fact that argues oversell is the commander cast-turn (mean 7.278, 26.7% by T6), but the argument itself concedes every deck in the bracket is scored by the same goldfish, so it 'sits in the anchor, not the rank'. Against it: kill_by_turn_8 = 0.572 CI [0.5623,0.5817] n=10000 vs the 0.5 bracket-3 expectation, missed_land_drop_rate 0.231, audit consistency 0.892, construction 72.86, and the logged record is 1-1 with a commander-damage win. The stall objective 'not met' and a 2-game log on older lists are neutral, not negative, by the argument's own words ('the logs can neither lift this list nor cut it'). Evidence supports ~50-55, not a 25-point dissent."
+    "where": "judgment.citations",
+    "status": "supported",
+    "note": "validate-rating OK; rating --json diff identical on components, withheld, code_score, bracket, limits. All nine quotes verbatim in their sources (log 002 lessons and Game 2 text, context numbers/plays/pilot, skeleton figures kill_by_turn_8 and missed_land_drop_rate are real inputs) and read in sense."
    },
    {
     "where": "judgment.argument",
-    "status": "unjustified",
-    "note": "'The loss was closing ... not the list' omits that log:002 attributes the same game to a long green screw and lists 'Audit green pip distribution / green sources' as a lesson; the argument later uses that screw to discount mana. Closing and mana both appear in the record."
-   },
-   {
-    "where": "judgment.citations[6]",
-    "status": "over-claimed",
-    "note": "stack:001 is a stipulated scenario (reveal of Regisaur Alpha, Ripjaw Raptor, Carnage Tyrant... chosen in extras), so 'the kill route landing as the passing stack resolves' shows rules legality, not that the deck lands it at a rate; it is not corroboration of the model."
-   },
-   {
-    "where": "components",
     "status": "supported",
-    "note": "rating gishath --json reproduces components, withheld, code_score, bracket and limits identically; validate-rating OK."
+    "note": "Green screw placed on v1.0.0 (context: log 002 played on v1.0.0, neither game on v1.1.0); colour line is not an input to the mana component (inputs are missed_land_drop_rate and audit.consistency); red 61% is the thinnest of W87/R61/G82; log 001 and 002 show no red failure; 'surviving wipes' matches both logs (002 survival was partly accidental but the claim is only that logs show it). Wipe-exposure claim dropped."
    },
    {
-    "where": "judgment.citations[0]",
+    "where": "judgment.sub_score",
     "status": "supported",
-    "note": "strategy:deckbuilding.power-level 'sharpest line between them is expected game length' is the section's point (bracket expected length); mana-base '26% miss the turn-3 land drop' also verbatim in its section."
+    "note": "62 vs code_score 71.7 claims modest oversell; backed by named gaps: red 61% on curve untested at a table, 1-1 record on older lists, table_record/pilot_feel/forge withheld. Counter-figures (engine online 79%, win route by T8 86%) are already in the argument's 'why not lower'. Haircut is 9.7 points, not a large claim."
    },
    {
-    "where": "judgment.citations[2]",
+    "where": "judgment.argument",
     "status": "supported",
-    "note": "log:001 'revealed 7 cards off the trigger, hit FIVE dinosaurs' and log:002 'hit Tom for 16 commander damage on top of his 7 = dead' and 'hesitation cost the game' match their games; context:pilot and context:history quotes (Enlarge cut, neither game on v1.1.0, stall objective not met) match."
+    "note": "No unranked superlatives; 'engine demonstrably fires' rests on log 001/002 reveals."
    },
    {
     "where": "open_questions",
     "status": "supported",
-    "note": "All three are unanswered by artifacts: no stack covers Purphoros/Molten Echoes or the split alpha strike; the v1.1.0 table question needs logged games."
+    "note": "Both are unanswered by the artifacts: no stack resolves the split alpha strike (resolve-stack); v1.1.0 land pass needs logged games (rate)."
    }
   ],
   "iterations": 3
  },
  "code_score": 71.7,
- "score": 65.4,
+ "score": 69.1,
  "score_ci": [
-  65.4,
-  65.4
+  69.1,
+  69.1
  ],
  "grade": "B",
  "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
  "judgment": {
-  "sub_score": 48,
-  "argument": "The withheld components are the table, and the record is two games on older lists — \"neither game has been played on v1.1.0 yet\", and the win's finisher is gone: \"That list had Enlarge; it has since been cut.\" So the logs can neither lift this list nor cut it. What they show is the kill route landing as the passing stack resolves: one connect \"revealed 7 cards off the trigger, hit FIVE dinosaurs\", and Gishath \"hit Tom for 16 commander damage on top of his 7 = dead\" on a night the decks \"played at or above the table\". The loss was closing — \"hesitation cost the game\" — not the list.\n\nSpeed is the component that flatters. kill_by_turn_8 comes from a goldfish with no blockers, and the engine names the pinch: \"the commander's mean cast turn is 7.278, median 7, and only 26.7% of games cast him by turn 6\". A commander-reliant plan pays that blindness most, but every deck in the bracket is scored by the same goldfish, so the oversell sits in the anchor, not the rank. Mana is scored where the pilot felt it, the missed_land_drop_rate, and the land pass answering the green screw merged although \"Its stall objective read \"not met\"\" and is unplayed.\n\nSo: a little below even. Not lower, because speed is one component of modest weight and the logs show the deck doing what the model says; not higher, because the current list's only evidence is the scorecard itself.",
+  "sub_score": 62,
+  "argument": "The table record, pilot feel and Forge are withheld, and the two logged games were played on older lists: \"neither game has been played on v1.1.0 yet\". So the measured score is goldfish and audit only. I read it as overselling modestly.\n\nThe mana component reads missed_land_drop_rate, which counts a missed drop of any colour. The colour line is measured, but it is not an input to that component: \"Colour on curve (lands + rocks): W 87%, R 61%, G 82%\". The green screw the pilot lived through in the loss, with a double-green hand stranded and the lesson \"Audit green pip distribution / green sources\", was on the older list, and whether the land pass fixed it is untested. Red is the thin colour, and no logged game shows red failing.\n\nThe goldfish has no blockers and no removal, and the deck's own read is that it \"flatters the board\". I claim no specific exposure from it; the logs show the deck surviving wipes.\n\nFor: the plan works when it connects. \"hit Tom for 16 commander damage on top of his 7 = dead\", and the loss the pilot pins on closing, \"hesitation cost the game\".\n\nWhy this number and not lower: the engine demonstrably fires. Why not higher: the current list has no table evidence, and red is thin and untested.",
   "citations": [
-   {
-    "kind": "skeleton",
-    "ref": "skeleton:speed",
-    "quote": "kill_by_turn_8"
-   },
    {
     "kind": "skeleton",
     "ref": "skeleton:mana",
     "quote": "missed_land_drop_rate"
    },
    {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
     "kind": "log",
-    "ref": "log:001",
-    "quote": "revealed 7 cards off the trigger, hit FIVE dinosaurs"
+    "ref": "log:002",
+    "quote": "Audit green pip distribution / green sources"
    },
    {
     "kind": "log",
@@ -364,37 +345,27 @@
    {
     "kind": "log",
     "ref": "log:002",
-    "quote": "played at or above the table"
-   },
-   {
-    "kind": "log",
-    "ref": "log:002",
     "quote": "hesitation cost the game"
    },
    {
-    "kind": "stack",
-    "ref": "stack:001",
-    "quote": "Gishath connects: what seven damage actually unleashes"
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "Colour on curve (lands + rocks): W 87%, R 61%, G 82%"
    },
    {
-    "kind": "engine",
-    "ref": "engine:ignition",
-    "quote": "the commander's mean cast turn is 7.278, median 7, and only 26.7% of games cast him by turn 6 — this is the pinch in the deck"
+    "kind": "context",
+    "ref": "context:plays",
+    "quote": "Green is the pain."
+   },
+   {
+    "kind": "context",
+    "ref": "context:plays",
+    "quote": "it flatters the board"
    },
    {
     "kind": "context",
     "ref": "context:pilot",
     "quote": "neither game has been played on v1.1.0 yet"
-   },
-   {
-    "kind": "context",
-    "ref": "context:pilot",
-    "quote": "That list had Enlarge; it has since been cut."
-   },
-   {
-    "kind": "context",
-    "ref": "context:history",
-    "quote": "Its stall objective read \"not met\" and the merge went ahead anyway because the pilot was buying the cards."
    }
   ],
   "against": {
@@ -420,8 +391,8 @@
   },
   "scores": {
    "ur-dragon": 72.1,
-   "gishath": 65.4,
-   "goblin-storm": 63.0
+   "gishath": 69.1,
+   "goblin-storm": 54.4
   }
  }
 }

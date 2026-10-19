@@ -285,103 +285,113 @@
    "settled_by": "diagnose"
   },
   {
-   "question": "Do more ramp and removal slots lift the deck once the pilot has logged more games?",
-   "settled_by": "rate"
+   "question": "Does adding ramp and cheap removal lift the list over the current one, paired on the same seeds?",
+   "settled_by": "goldfish"
   }
  ],
  "iterations": 3,
  "verifier": {
-  "verdict": "fail",
+  "verdict": "pass",
   "findings": [
    {
     "where": "components",
     "status": "supported",
-    "note": "Re-run rating diff: components, withheld, code_score, bracket, limits, score, grade identical to rating.json. validate-rating OK."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "skeleton:resilience answer_cards = 11, matches benchmark.json#metrics.response; 1 of 5 classes matches the audit axis."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "skeleton:speed kill_by_turn_8 0.889 matches the component input."
+    "note": "validate-rating OK; rating sharknado --json reproduces components, withheld, code_score (61.8), bracket and limits identically."
    },
    {
     "where": "judgment.citations[2]",
-    "status": "mis-cited",
-    "note": "log 001 reads: 'it started off pretty fast, but that's because I had Sol Ring in my opening hand.' The quote stops before the clause that attributes the speed to an opening-hand Sol Ring, so it is used against its meaning as evidence the deck is fast. The argument never mentions the Sol Ring. The same log also says 'short on wheels', 'grindy at the end', 'messing myself up' by discarding useful cards, and that he never drew Mana Geyser or Jessica's Will; none of this is weighed against the positive reading."
+    "status": "supported",
+    "note": "log:001 'he got removed a couple times and then the tax came on' is verbatim and is the pilot's account of Brallin being removed; it matches the argument."
    },
    {
     "where": "judgment.citations[3]",
     "status": "supported",
-    "note": "stack:003 passes validate-stack (checker: pass); every card in its board and hand is in the 99 (no outside-the-99 warning); title and step 2 say the cost discard is a Brallin trigger but not a Leng effect. The argument limits it to a rules fact, which is right."
+    "note": "log:001 'it's a nine drop' is the pilot's four+five commander unit; used as claimed."
    },
    {
     "where": "judgment.citations[4]",
     "status": "supported",
-    "note": "engine:thesis opens with the quoted sentence verbatim; the argument uses it only for 'hand-refill machine whose output depends on the table'."
+    "note": "log:001 'the first game was good' is the opening of the entry; the entry result is None, so the argument's 'no logged result' is accurate."
+   },
+   {
+    "where": "judgment.citations[5]",
+    "status": "supported",
+    "note": "stack:003 checker verdict is pass; the quote is the stack title and the argument claims only a rules fact about Brallin and cycling discard, not an engine win."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "skeleton:speed kill_by_turn_8 0.889 [0.8827,0.895] n=10000 matches the component input; skeleton:resilience answer_cards=11 matches."
+   },
+   {
+    "where": "components[*].citations",
+    "status": "supported",
+    "note": "Every strategy quote (power-level, mana-base, interaction-suite, ratios, threat-density) is a verbatim substring of its section and is used for what the section says."
    },
    {
     "where": "judgment.argument",
-    "status": "over-claimed",
-    "note": "'the goldfish agrees' counts the speed instrument a second time: speed is already a measured component (71.2) and the argument says it will not double-count resilience complaints. Also 'the deck did what it was built to do' rests on one game with result None, not a logged win."
+    "status": "supported",
+    "note": "'The goldfish never removes a commander' is recorded in goldfish.py model notes: 'Commander tax, death and recasting are still not modelled: it is cast once and it stays.' No unrecorded claim found."
    },
    {
     "where": "judgment.sub_score",
-    "status": "too-generous",
-    "note": "55 claims the first game reads kinder than the measured components. The record behind that is log 001 alone: 1 game, result None, 0 scored games (table_record withheld at 0 of 5), whose speed was credited by the pilot to a Sol Ring opener. Against it stand resilience 10.0 (11 answer cards, 1 of 5 classes), sweepers 0, ramp 9 under band, and the pilot's own 'grindy' ending. The only cited fact above the line is the Sol Ring-assisted start; it does not carry a positive adjustment. Note the 55 still lowers the final score from the code_score 61.8 to 60.0, but 55 sits above the neutral 50 in the prose, which is the unsupported claim."
-   },
-   {
-    "where": "judgment.open_questions / open_questions[0]",
     "status": "supported",
-    "note": "Whether a bracket-4 clock is the right anchor for a wheel deck is a diagnosis question; not answered by the skeleton."
+    "note": "62 vs code_score 61.8 is a claim of no gap; I found no figure in the record (rate, count, game) arguing the number should move. The single logged game has no result, so neither direction has a named figure. Nothing to mark too-generous or too-harsh."
    },
    {
-    "where": "open_questions[1]",
-    "status": "unjustified",
-    "note": "'Do more ramp and removal slots lift the deck' is settled_by 'rate', but a rating cannot answer it: it needs a paired try/net-change on a branch (or logged games). A rate command only reprices the instrument."
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "'Top of bracket 4' for speed and mana is the placement of 100 within n=3 and is stated that way; no unbounded superlative."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Both are unanswered by the skeleton: whether a bracket-4 clock fits a two-commander wheel deck is a diagnose question; whether ramp plus cheap removal lifts the list is a paired goldfish try."
    }
   ],
   "iterations": 3
  },
  "code_score": 61.8,
- "score": 60.0,
+ "score": 61.8,
  "score_ci": [
-  59.8,
-  60.1
+  61.7,
+  62.0
  ],
  "grade": "C",
  "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
  "judgment": {
-  "sub_score": 55,
-  "argument": "The measured components cannot see a played deck: no games are scored, no survey, no Forge run on this list, and the goldfish has no blockers or removal. What fills in is one first game and the engine file. The game's complaints, short on removal and light on ramp, are already priced: resilience reads 10 with 11 answer cards and 1 of 5 classes answered, so I do not take them off a second time. What the game adds is what the instruments cannot hear. The pilot says \"it started off pretty fast\", and the goldfish agrees with a kill_by_turn_8 of 0.889. He found the deck did what it was built to do, giving flying or trample to get over or through, with the commanders growing as the wheels ran. The cost he named is real but belongs to the build: two commanders play as one nine-drop that was removed and taxed. Stack 003 passed its checker on cards the deck runs, so Brallin paying out on a cycling discard is a rules fact, though it shows the rules chain and not that the engine wins games. The deck is a hand-refill machine whose output depends on the table, and one pod cannot test that. I land a little above the line: the first game reads kinder than a thin answer suite suggests, but a single game is too little to move far.",
+  "sub_score": 62,
+  "argument": "The measured components cannot see a played deck: no scored games, no survey, no Forge run on this list, and the goldfish has no blockers or removal. I fill in two things only. One is unmeasured and pulls down: two commanders play as one unit the table can tax, and no instrument models that. The goldfish never removes a commander, so kill_by_turn_8 of 0.889 assumes both arrive and stay. The pilot's account is \"he got removed a couple times and then the tax came on\", and together they are \"a nine drop\". The other is unscored and pulls up: the same log says \"the first game was good\". I do not charge the thin answer suite or the grindy ending again, since resilience already prices them. The speed and mana components sit at the top of bracket 4, and one game with no logged result gives me no ground to say the list is better or worse than they read. Stack 003 passed its checker on cards the list runs: it is a rules fact about Brallin and a cycling discard, not evidence the engine wins. The unmeasured cost and the unscored positive are each real and each lightly recorded, so they cancel and I sit at the measured score of 61.8, rounded to 62: the components already say it, and one game is too little to move me off them.",
   "citations": [
-   {
-    "kind": "skeleton",
-    "ref": "skeleton:resilience",
-    "quote": "answer_cards"
-   },
    {
     "kind": "skeleton",
     "ref": "skeleton:speed",
     "quote": "kill_by_turn_8"
    },
    {
+    "kind": "skeleton",
+    "ref": "skeleton:resilience",
+    "quote": "answer_cards"
+   },
+   {
     "kind": "log",
     "ref": "log:001",
-    "quote": "it started off pretty fast"
+    "quote": "he got removed a couple times and then the tax came on"
+   },
+   {
+    "kind": "log",
+    "ref": "log:001",
+    "quote": "it's a nine drop"
+   },
+   {
+    "kind": "log",
+    "ref": "log:001",
+    "quote": "the first game was good"
    },
    {
     "kind": "stack",
     "ref": "stack:003",
     "quote": "a discard paid as a cost is a discard for Brallin, but not an effect for Leng"
-   },
-   {
-    "kind": "engine",
-    "ref": "engine:thesis",
-    "quote": "Two commanders stand at opposite ends of one door"
    }
   ],
   "against": {
@@ -406,7 +416,7 @@
    "heliod": "rating.json"
   },
   "scores": {
-   "sharknado": 60.0,
+   "sharknado": 61.8,
    "edgar-vampires": 50.5,
    "heliod": 49.9
   }

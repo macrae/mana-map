@@ -28,8 +28,12 @@ games and surveys.
 
 THE JUDGMENT IS A WEIGHTED COMPONENT, NOT A ±ADDER: a 0–100 sub-score at a
 fixed 0.20 weight is bounded by construction (±20 of the composite at most),
-visible beside the measured components, and renormalises with them. The
-skeptic attacks the number against the evidence; the code bounds its reach.
+visible beside the measured components, and renormalises with them. ITS NEUTRAL
+POINT IS `code_score`, NOT 50 (2026-10-19): a judgment equal to the measured
+score leaves the composite where the components put it; 50 would drag every
+deck above 50 down and every deck below it up, which the first fleet pass
+showed. The skeptic attacks the number against the evidence; the code bounds
+its reach.
 
 THE SKELETON IS RECOMPUTED, THE JUDGMENT IS CARRIED. `--write` rebuilds every
 code component and keeps an existing judgment only when it was written

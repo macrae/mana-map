@@ -307,72 +307,72 @@
    "settled_by": "rate"
   }
  ],
- "iterations": 3,
+ "iterations": 1,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
-    "where": "validate-rating",
-    "status": "supported",
-    "note": "OK; B, score 72.1, bracket 3 (1 of 5)."
-   },
-   {
     "where": "components",
     "status": "supported",
-    "note": "Re-run rating --json: components, withheld, code_score, bracket, limits identical to rating.json."
+    "note": "rating --json re-run: components, withheld, code_score 73.2, bracket, limits identical to rating.json."
    },
    {
     "where": "judgment.citations[0]",
     "status": "supported",
-    "note": "skeleton:speed kill_by_turn_8 present (0.774, n=10000)."
+    "note": "skeleton:speed kill_by_turn_8 is the real speed input (0.774, n=10000)."
    },
    {
     "where": "judgment.citations[1]",
     "status": "supported",
-    "note": "3 wins in 7 games matches log.jsonl (wins 002, 006, 007)."
+    "note": "3 wins in 7 games matches log.jsonl: wins 002, 006, 007; losses 001, 003, 004, 005."
    },
    {
     "where": "judgment.citations[2]",
     "status": "supported",
-    "note": "Log 004 quote is verbatim and is the pilot's account; the argument does not attribute it to the current list (the entry's sha is a backfilled stamp, known-issues D1)."
+    "note": "Log 004 quote is verbatim and is the pilot's own account of the loss. The argument uses it as a pattern (optics), and the entry's summary says its sha is backfilled, so the argument correctly attributes nothing to a version."
    },
    {
     "where": "judgment.citations[3]",
     "status": "supported",
-    "note": "Log 007 quote verbatim; the argument flags the figure as the pilot's own."
+    "note": "Log 007 'turn six or seven' is verbatim; the sha 99419d5b equals the current decklist_sha256, so it is the one current-list game."
    },
    {
     "where": "judgment.citations[4]",
     "status": "supported",
-    "note": "'Leave this deck alone.' is verbatim, in the pilot's closing line."
+    "note": "'Leave this deck alone.' is verbatim, the pilot's closing line."
    },
    {
     "where": "judgment.citations[5]",
     "status": "supported",
-    "note": "Whelp arithmetic quote is verbatim and is labelled unverified in the argument; log 007's own debrief says the same and files it under open_questions (resolve-stack)."
+    "note": "Quote verbatim; the argument labels it the pilot's unverified arithmetic, which is what the 007 debrief flags and files as a resolve-stack open question. Not over-read."
    },
    {
     "where": "judgment.citations[6]",
     "status": "supported",
-    "note": "Stack 002 title matches, the checker passes, and it proves Miirym under Panharmonicon on a Lathliss entering. The argument claims only 'that one doubling line', which is accurate. No stack covers the Whelp cast trigger, so the open question is genuine."
+    "note": "stack 002 title verbatim; validate-stack says contract holds, checker: pass. It proves Panharmonicon doubling Miirym on a Lathliss entering, and the argument limits the claim to 'that one doubling line'."
    },
    {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "68 sits 5.2 below code_score 73.2, and the argument says it is only 'a little under'. The downward case rests on one current-list game, 1-0, in a 3-4 record. table_record already scores 3/7 against par 0.2524, and the argument does not double-count land or colour. I found no figure that argues for a different size: the gap is small, and the speed 100 / mana 50 / resilience 85 components are not contradicted by the cited games."
+    "note": "68 vs code 73.2 is a modest downward move. The only figures that argue for lower (mana placement 0.0 at missed_land_drop_rate 0.2436, two mana-screw/drought losses) are already scored in mana and construction and the argument says so; figures for higher (kill_by_turn_8 0.774, speed 100, game 007) are already in speed. The table record's Wilson CI [0.158, 0.750] spans par, so neither direction has a named figure beating the stated hedge. No too-generous or too-harsh case I can name."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "No superlative or 'never' claim. 'Fast on paper and punished for showing it' is labelled as interpretation and is backed by the 004 text. Mana-drought losses are not mentioned, but mana is scored separately."
+    "note": "No unrecorded claims found: 'no pilot-feel survey', 'no Forge run on this list', 'only game 007 on the current list' all match withheld[] and the log shas. No superlatives or rankings over the bracket group; the argument ranks nothing."
    },
    {
-    "where": "open_questions",
+    "where": "open_questions[0]",
     "status": "supported",
-    "note": "Whelp count: no stack in stacks/ covers it, so resolve-stack can settle it. Current-list win rate: needs more games, so 'rate' fits."
+    "note": "Not answered by the artifacts: stacks/ has no Whelp scenario (002 has no cast trigger); resolve-stack can settle it."
+   },
+   {
+    "where": "open_questions[1]",
+    "status": "supported",
+    "note": "Needs more current-list games; only 'rate' can answer, and the skeleton cannot yet."
    }
   ],
-  "iterations": 3
+  "iterations": 1
  },
  "code_score": 73.2,
  "score": 72.1,
@@ -437,7 +437,7 @@
    "gishath",
    "goblin-storm"
   ],
-  "ties_within_ci": false,
+  "ties_within_ci": true,
   "basis": {
    "ur-dragon": "this document",
    "gishath": "rating.json",
@@ -445,8 +445,8 @@
   },
   "scores": {
    "ur-dragon": 72.1,
-   "gishath": 65.4,
-   "goblin-storm": 55.5
+   "gishath": 69.1,
+   "goblin-storm": 54.4
   }
  }
 }

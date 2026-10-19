@@ -310,60 +310,60 @@
  "spec_version": 1,
  "open_questions": [
   {
-   "question": "diagnosis.json and engine.json were written against decklist sha 7be137d0..., not the current cbf7fb66...; do their verdicts on input, refuel and the payoff layer still hold on this list?",
+   "question": "diagnosis.json and engine.json were written against an earlier decklist hash than the current one; do their verdicts on input, refuel and the payoff layer still hold on this list?",
    "settled_by": "diagnose"
   },
   {
-   "question": "Once a game is logged on the current list, does Edgar still end up the only Vampire cast, or does the rebuilt list get past it?",
+   "question": "Once a game is logged on the current list, does Edgar still end up the only Vampire cast, and does the list survive a board wipe?",
    "settled_by": "rate"
   }
  ],
- "iterations": 3,
+ "iterations": 2,
  "verifier": {
-  "verdict": "fail",
+  "verdict": "pass",
   "findings": [
    {
-    "where": "mechanical",
+    "where": "judgment.sub_score",
     "status": "supported",
-    "note": "validate-rating OK; rating --json re-run matches components, withheld, code_score, bracket, limits exactly."
-   },
-   {
-    "where": "judgment.argument",
-    "status": "over-claimed",
-    "note": "Says capacity 'reads sound against its cited bands'. The same cited section (interaction-suite) says 'Breadth before depth ... cover the classes — creature, artifact, enchantment, graveyard, land'; the deck's own input audit.interaction-breadth is 3 of 5 classes, and the argument cites only the count (18 in 15-20) and sweepers. The record in rating.json also shows ramp 8 and card-advantage 8, both 'under' their cited ratios (10-12 ramp, 10 draw). 'Sound' omits the breadth shortfall its own source names."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "'15- to 20-card interactive suite' is verbatim and is the section's count baseline; 18 answer_cards is inside it."
+    "note": "50 vs code_score 50.6: no cited fact on the current list (hash cbf7fb...) argues over or under; the only logged games carry older hashes (88bffd9b, 7ce22fd6, 7be137d0), and the argument explicitly gives them no weight. No named figure argues the other way."
    },
    {
     "where": "judgment.citations[2]",
     "status": "supported",
-    "note": "'one or two max' is the sweeper cap in the section; sweepers=1 satisfies it (the section notes Zupke caps at 3)."
+    "note": "log:006 quote is verbatim; hash 7be137d0 differs from rated list, result is None, as the argument says; the argument uses it only as history of earlier builds."
+   },
+   {
+    "where": "judgment.citations[3]",
+    "status": "supported",
+    "note": "log:003 quote verbatim; hash 88bffd9b is an older list, which the argument says."
+   },
+   {
+    "where": "judgment.citations[4]",
+    "status": "supported",
+    "note": "engine thesis clause 'need no combat damage to land' is verbatim and describes the two checker-passed kill routes; argument correctly calls it declared plan, not credit, since engine.json predates the rebuild (matches the rating's own open question)."
    },
    {
     "where": "judgment.citations[0]",
     "status": "supported",
-    "note": "skeleton:resilience answer_cards is the real input (18)."
+    "note": "skeleton:resilience answer_cards (18) matches the components entry."
    },
    {
-    "where": "judgment.sub_score",
+    "where": "judgment.citations[1]",
     "status": "supported",
-    "note": "50 vs code_score 50.6: claims neither undersell nor oversell; no named figure argues otherwise. Winless 0/5 has Wilson [0,0.4345] spanning par 0.2633, as argued; log hashes 88bffd.../7ce22f.../7be137... all differ from current cbf7fb..., so 'no game logged on it' is true."
+    "note": "audit.protection value 9, verdict over, matches; the claim that thin protection is not borne out by the audit is bounded to the audit."
    },
    {
-    "where": "open_questions[0]",
+    "where": "judgment.argument",
     "status": "supported",
-    "note": "engine/diagnosis sha mismatch is not answerable from the skeleton; diagnose settles it."
+    "note": "No superlatives. Components, withheld, code_score, bracket, limits identical to a fresh rating --json. Rank 3 of 3 flagged ties_within_ci, consistent with a 50 call."
    },
    {
-    "where": "open_questions[1]",
+    "where": "open_questions",
     "status": "supported",
-    "note": "Log 003 tag one-vampire-cast gives the premise; only a game on the current list settles it."
+    "note": "Both are answerable by their settled_by (diagnose for stale engine/diagnosis; rate once a game is logged on this list); neither is answered by existing artifacts."
    }
   ],
-  "iterations": 3
+  "iterations": 2
  },
  "code_score": 50.6,
  "score": 50.5,
@@ -375,7 +375,7 @@
  "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
  "judgment": {
   "sub_score": 50,
-  "argument": "The measured components cannot see how this deck plays. Withheld: no surveyed games and no Forge run on the current list, so nothing has shown how the current list behaves at a table. No game is logged on it. The engine write-up and combo proofs were written against an earlier list hash, so I give them no credit. The clock is already scored in speed and the winless record in table_record; I do not deduct for either a second time, and the record's interval is wide enough to include an average result. What is left is capacity, and it reads sound against its cited bands. The deck holds 18 answer cards inside the cited 15- to 20-card interactive suite, and the audit rates its sweeper count at the band, which the strategy caps at one or two max. Nothing in the record or the engine lets me move the number either way: the engine is stale, the games are on older lists, and the measured components already carry the rest. So I land on the middle, where the measured components say it.",
+  "argument": "Withheld: no surveyed games and no Forge run on the current list, so nothing shows how this rebuilt list plays at a table. No game is logged on it. Every logged game was on an older list: the first debrief I cite and the last both carry a different list hash from the rated one, and the last has no result. They show what the earlier builds suffered, a creature-heavy board eating wipes and running out of cards late, and Edgar the only Vampire cast. They do not describe this list, and the rebuild was made in answer to them, so I give them no weight against it. The clock sits in speed, the winless record in table_record, and ramp and card advantage under their bands in construction; I do not deduct for any of them a second time. On capacity, resilience carries 18 answer cards and protection reads over its band, so the old complaint of thin protection is not borne out on this list by the audit. The engine write-up predates the rebuild, so its two no-combat kill routes are the declared plan, not credit. Nothing recorded on the current list argues the measured components undersell or oversell it, so I land where they say it.",
   "citations": [
    {
     "kind": "skeleton",
@@ -383,14 +383,24 @@
     "quote": "answer_cards"
    },
    {
-    "kind": "strategy",
-    "ref": "strategy:deckbuilding.interaction-suite",
-    "quote": "15- to 20-card interactive suite"
+    "kind": "skeleton",
+    "ref": "skeleton:construction",
+    "quote": "audit.protection"
    },
    {
-    "kind": "strategy",
-    "ref": "strategy:deckbuilding.interaction-suite",
-    "quote": "one or two max"
+    "kind": "log",
+    "ref": "log:006",
+    "quote": "I am eating board wipe after board wipe"
+   },
+   {
+    "kind": "log",
+    "ref": "log:003",
+    "quote": "EDGAR WAS THE ONLY VAMPIRE I CAST ALL GAME"
+   },
+   {
+    "kind": "engine",
+    "ref": "engine:thesis",
+    "quote": "need no combat damage to land"
    }
   ],
   "against": {
@@ -415,7 +425,7 @@
    "heliod": "rating.json"
   },
   "scores": {
-   "sharknado": 60.0,
+   "sharknado": 61.8,
    "edgar-vampires": 50.5,
    "heliod": 49.9
   }

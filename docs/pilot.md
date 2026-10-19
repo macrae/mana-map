@@ -918,7 +918,7 @@ it, monotone so an input's interval maps by its two ends.
 | table_record | 0.15 | `log.jsonl`: wins / games, any version, Wilson; par = mean 1/(opponents+1) | on win rate − par | 50 + 100·(win − par); withheld below 5 games |
 | pilot_feel | 0.10 | the survey means of power, resilience, consistency (authored) | within bracket | (mean − 1)/4 · 100; withheld below 3 surveyed games |
 | forge | **0.00** | Forge win rate on the CURRENT list at the standard table | none | 50 + 100·(win − 0.25); weight zero by the pilot's rule (2026-10-18) |
-| judgment | 0.20 | the `deck-rater` agent's 0–100 | — | a weighted component, not a ±adder: bounded by construction, visible beside the rest |
+| judgment | 0.20 | the `deck-rater` agent's 0–100 | — | a weighted component, not a ±adder: bounded by construction, visible beside the rest; its neutral point is `code_score`, not 50 — equal leaves the composite where the components put it, above says they undersell, below oversell |
 
 **Absent means withheld.** A component with no usable input is listed in `withheld[]` with its
 reason, never scored zero, and the weights are renormalised over what is present
