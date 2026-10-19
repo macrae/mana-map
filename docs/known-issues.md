@@ -1827,6 +1827,13 @@ differ by an ulp across platforms (the validator recomputes where it runs; CI do
 rewrite `rating.json`); and the DTI anchor is DeckCheck's twelve rubric grades mapped S
 100 … F 0, chosen over 100·score/96 because their headline score tops out for cEDH and
 would drag every bracket-3 and -4 deck toward F — a linear map of their rubric, nothing
-more, revisited when more readings land.
+more, revisited when more readings land. The first `/rate-fleet` under spec 2 (the same
+day): four of six passed the skeptic (gishath, goblin-storm, ur-dragon, sharknado), two ended at
+iteration 3 with a `fail` on minor findings — heliod (the resilience outlier left unexplained
+and a "cancel" claimed without sizes) and edgar-vampires (an opening sentence calling the
+measured clock fast, and an open question the audit already half answers). Every judgment
+now sits at or within a point of `code_score`: under the corrected neutral point, with no
+game on a current list, the raters found nothing cited and unmeasured to move a number
+with — which is the honest reading, and the same cure.
 
 

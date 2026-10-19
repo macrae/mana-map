@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.15,
    "sub_score": 61.6,
    "sub_ci": [
-    54.04,
-    62.35
+    54.11,
+    62.34
    ],
    "placement": 100.0,
    "anchor": 42.4,
@@ -59,10 +59,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1333,
+   "weight_effective": 0.1,
    "sub_score": 100.0,
    "sub_ci": [
-    92.52,
+    92.47,
     100.0
    ],
    "placement": 100.0,
@@ -101,11 +101,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.15,
    "sub_score": 13.33,
    "sub_ci": [
     13.33,
-    20.89
+    20.86
    ],
    "placement": 0.0,
    "anchor": 20.0,
@@ -140,7 +140,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2167,
+   "weight_effective": 0.1625,
    "sub_score": 78.57,
    "sub_ci": [
     78.57,
@@ -249,11 +249,11 @@
    "name": "dti",
    "weight": 0.15,
    "weight_validity": 1.0,
-   "weight_effective": 0.25,
+   "weight_effective": 0.1875,
    "sub_score": 54.17,
    "sub_ci": [
-    45.22,
-    63.0
+    45.18,
+    62.91
    ],
    "placement": 50.0,
    "anchor": 56.25,
@@ -297,10 +297,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -329,15 +325,69 @@
  "fleet_sha": "1d045e2c9800",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "Does the benchmark's opening-hand model include Sol Ring openers at a rate that matches real draws, and how much of the clock survives without one?",
+   "settled_by": "goldfish"
+  },
+  {
+   "question": "How often do the two commanders survive removal and counterspells long enough to wheel with both out? A scenario or more logged table games would answer it; the goldfish has no opponent.",
+   "settled_by": "rate"
+  }
+ ],
+ "iterations": 2,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "59 vs code_score 58.9 is rounding; the argument claims no gap and names no unmeasured fact as carrying one. Nothing to attack as too-generous or too-harsh."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "Both outliers (dti, resilience) are addressed: resilience by the capacity-vs-performance split with the log cutting both ways (sized by leave_one_out resilience 67.0 vs 58.9, flips not claimed); dti by a plain statement that the record does not explain its lower read, with the number at code_score. This is the second permitted answer. Rank claims (resilience 3, dti 2, speed/mana/construction 1) match concordance.instruments. No superlatives beyond rank facts."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "log:001 contains 'I also didn't feel like I had enough removal though' and goes on to say no creature or enchantment removal when boards needed pruning; read in context."
+   },
+   {
+    "where": "judgment.citations[1]",
+    "status": "supported",
+    "note": "log:001 'were really good and and protected them' refers to Lightning Greaves and the hexproof/Swiftfoot Boots protecting the commanders; fairly used."
+   },
+   {
+    "where": "judgment.citations[2]",
+    "status": "supported",
+    "note": "strategy:deckbuilding.interaction-suite says 'Breadth before depth' about covering classes; consistent with the 1-of-5 classes figure. It is lightly used in the prose but not misread."
+   },
+   {
+    "where": "judgment.citations[3]",
+    "status": "supported",
+    "note": "skeleton:speed kill_by_turn_8 = 0.889 matches components[0].inputs; the 'unopposed ceiling' framing matches the limits entry."
+   },
+   {
+    "where": "components",
+    "status": "supported",
+    "note": "validate-rating OK; re-run diff identical for components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Neither is answered by the skeleton or artifacts: the log says Sol Ring was in the opening hand but no rate; removal survival needs a scenario or more table games. settled_by values fit."
+   }
+  ],
+  "iterations": 2
+ },
  "code_score": 58.9,
  "score_point": 58.9,
- "score": 58.4,
+ "score": 59.0,
  "score_ci": [
-  45.8,
-  70.1
+  48.4,
+  68.1
  ],
  "grade": "C",
  "grade_range": [
@@ -346,11 +396,11 @@
  ],
  "grade_display": "D–B",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.177,
-  "C": 0.687,
-  "D": 0.133,
-  "F": 0.003
+  "A": 0.0,
+  "B": 0.14,
+  "C": 0.78,
+  "D": 0.08,
+  "F": 0.0
  },
  "uncertainty": {
   "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
@@ -366,47 +416,51 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 58.2,
+    "score": 58.4,
     "grade": "C"
    },
    "mana": {
-    "score": 52.6,
+    "score": 54.3,
     "grade": "C"
    },
    "resilience": {
-    "score": 70.3,
+    "score": 67.0,
     "grade": "B"
    },
    "construction": {
-    "score": 53.4,
+    "score": 55.1,
     "grade": "C"
    },
    "dti": {
-    "score": 60.5,
+    "score": 60.0,
+    "grade": "C"
+   },
+   "judgment": {
+    "score": 58.9,
     "grade": "C"
    }
   },
   "flips": [
    {
     "component": "resilience",
-    "share_now": 0.2,
-    "share_at_flip": 0.093,
+    "share_now": 0.15,
+    "share_at_flip": 0.037,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "lower"
    },
    {
     "component": "mana",
-    "share_now": 0.133,
-    "share_at_flip": 0.262,
+    "share_now": 0.1,
+    "share_at_flip": 0.233,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "construction",
-    "share_now": 0.217,
-    "share_at_flip": 0.46,
+    "share_now": 0.163,
+    "share_at_flip": 0.422,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -418,6 +472,7 @@
   "instruments": {
    "construction": 1.0,
    "dti": 2.0,
+   "judgment": 2.0,
    "mana": 1.0,
    "resilience": 3.0,
    "speed": 1.0
@@ -437,15 +492,50 @@
    }
   ],
   "group": {
-   "kendall_w": 0.12,
-   "p": 0.6914,
-   "p_method": "exact over 1296 relabellings",
-   "m": 5,
+   "kendall_w": 0.111,
+   "p": 0.5705,
+   "p_method": "exact over 7776 relabellings",
+   "m": 6,
    "n": 3
   }
  },
  "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance divergent",
- "judgment": null,
+ "judgment": {
+  "sub_score": 59,
+  "argument": "The measured components miss every opponent's turn. The goldfish has no blockers and no removal, so speed (kill_by_turn_8 of 0.889) is an unopposed ceiling, and the single logged game has no recorded result. I cannot show from the record that these gaps move the deck in either direction, so I sit on code_score 58.9 and round to 59.\n\nResilience ranks last: 11 answer cards and 1 class answered. It counts capacity to answer, and the pilot's own words agree: he had no creature or enchantment removal when the boards needed pruning. It does not count protection performance, and the pilot said Greaves and the Boots protected the commanders. That one game cannot offset a capacity gap, so the component stands and I add nothing either way.\n\nDTI ranks second at 31 of 96. It is one dated LLM read of card quality. The record has no fact that explains why it reads lower than the goldfish does, so I do not argue with it and I do not use it to move the number.\n\nSpeed, mana and construction rank first and agree with each other. The log is the only unmeasured evidence, it is one game, and it points both ways, so this number is the measured score and not above or below it.",
+  "citations": [
+   {
+    "kind": "log",
+    "ref": "log:001",
+    "quote": "I also didn't feel like I had enough removal though"
+   },
+   {
+    "kind": "log",
+    "ref": "log:001",
+    "quote": "were really good and and protected them"
+   },
+   {
+    "kind": "strategy",
+    "ref": "strategy:deckbuilding.interaction-suite",
+    "quote": "Breadth before depth"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.25,
+  "sub_ci": [
+   50.88,
+   67.43
+  ]
+ },
  "rank": {
   "position": 2,
   "of": 3,
@@ -455,19 +545,19 @@
    "edgar-vampires"
   ],
   "acceptability": {
-   "1": 0.281,
-   "2": 0.523,
-   "3": 0.196
+   "1": 0.232,
+   "2": 0.636,
+   "3": 0.132
   },
   "basis": {
-   "edgar-vampires": "skeleton",
-   "heliod": "skeleton",
+   "edgar-vampires": "rating.json judgment",
+   "heliod": "rating.json judgment",
    "sharknado": "this document"
   },
   "scores": {
-   "heliod": 65.2,
-   "sharknado": 58.4,
-   "edgar-vampires": 51.2
+   "heliod": 65.1,
+   "sharknado": 59.0,
+   "edgar-vampires": 50.6
   }
  }
 }

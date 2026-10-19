@@ -43,8 +43,12 @@ path plus ≤200 words. This charter says only what is specific to you.
    is `divergent`, the argument must address every instrument in `concordance.outliers[]`
    — attack that passage: does the cited, unmeasured fact it offers actually explain why
    that instrument reads the deck differently, or is it a restatement of the instrument's
-   own figure? Unexplained is `unjustified` at `judgment.argument`; `sensitivity.flips`
-   says whether the explanation would even move the grade.
+   own figure? Two answers pass: a cited unmeasured fact, or a plain statement that the
+   record does not explain that instrument's reading (in which case the number must sit
+   at `code_score`, since nothing argues a gap). A restatement of the figure, or a
+   "cancel" claimed without sizes, is `unjustified` at `judgment.argument`;
+   `sensitivity.leave_one_out` gives the sizes and `sensitivity.flips` says whether the
+   explanation would even move the grade.
 5. **Superlatives and unrecorded claims.** "The fastest", "the most resilient", "never"
    — enumerate the set it ranks over (the bracket group from `rank.group`) or it is
    `over-claimed`. Anything the record does not say is `unjustified`.

@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1667,
+   "weight_effective": 0.1304,
    "sub_score": 22.0,
    "sub_ci": [
-    14.48,
-    29.34
+    14.42,
+    29.45
    ],
    "placement": 50.0,
    "anchor": 8.0,
@@ -59,11 +59,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1111,
+   "weight_effective": 0.087,
    "sub_score": 83.33,
    "sub_ci": [
-    75.73,
-    90.73
+    75.89,
+    90.79
    ],
    "placement": 50.0,
    "anchor": 100.0,
@@ -101,11 +101,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1667,
+   "weight_effective": 0.1304,
    "sub_score": 70.0,
    "sub_ci": [
-    62.54,
-    77.49
+    62.36,
+    77.51
    ],
    "placement": 50.0,
    "anchor": 80.0,
@@ -140,7 +140,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.1806,
+   "weight_effective": 0.1413,
    "sub_score": 68.57,
    "sub_ci": [
     68.57,
@@ -249,11 +249,11 @@
    "name": "dti",
    "weight": 0.15,
    "weight_validity": 1.0,
-   "weight_effective": 0.2083,
+   "weight_effective": 0.163,
    "sub_score": 36.11,
    "sub_ci": [
-    32.5,
-    45.36
+    32.23,
+    44.91
    ],
    "placement": 0.0,
    "anchor": 54.17,
@@ -288,11 +288,11 @@
    "name": "table_record",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1667,
+   "weight_effective": 0.1304,
    "sub_score": 23.67,
    "sub_ci": [
     24.53,
-    63.99
+    63.24
    ],
    "placement": null,
    "anchor": 23.67,
@@ -327,10 +327,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -359,15 +355,89 @@
  "fleet_sha": "1d045e2c9800",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "Is the run-out-of-steam in game 006, played on an earlier version of the list, still true of the rated list? One game cannot say.",
+   "settled_by": "diagnose"
+  },
+  {
+   "question": "Does the rated list hold enough protection and refuel against wipes? Name the cards in the 99 that answer it.",
+   "settled_by": "rate"
+  }
+ ],
+ "iterations": 3,
+ "verifier": {
+  "verdict": "fail",
+  "findings": [
+   {
+    "where": "validate-rating",
+    "status": "supported",
+    "note": "validate-rating passes (OK, C in Bracket 4, score 50.6)."
+   },
+   {
+    "where": "components",
+    "status": "supported",
+    "note": "Re-run of rating --json matches rating.json on components, withheld, code_score, score_point, bracket, limits, uncertainty and sensitivity."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "contradicts-artifact",
+    "note": "Opens with 'The measured components see a fast board'. The speed component is the deck's lowest measured sub_score (22.0): kill_by_turn_6 is 0.04 (CI 0.0363-0.044) and kill_by_turn_8 is 0.648. The measured read is a slow-to-middling clock, not a fast board, and the sentence frames the whole unmeasured-facts argument."
+   },
+   {
+    "where": "judgment.citations[1]",
+    "status": "supported",
+    "note": "log:004 'on board state Edgar was dominating' is verbatim and the game does say so, followed by the tutored infinite. Played on sha 7ce22fd6, an earlier version, as the argument states."
+   },
+   {
+    "where": "judgment.citations[2]",
+    "status": "supported",
+    "note": "log:005 quote is verbatim; the loss is to Purphoros pings after over-extending Elspeth, consistent with 'held momentum and lost a race'."
+   },
+   {
+    "where": "judgment.citations[3]",
+    "status": "supported",
+    "note": "log:006 'it runs out of steam' is verbatim; the game is on sha 7be137d0, not the rated cbf7fb66, and the argument says so."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "'0 wins in 5 games' agrees with table_record n=5; 006 has no result filed and is not counted."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "48 against code_score 48.4: neutral. The argument declines to claim a gap and says the unmeasured facts pull both ways and none is on the rated list. No double count, no too-generous or too-harsh."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "Concordance is mixed, with dti the only outlier (worse). The argument states that the record does not explain DeckCheck's reading and sits at code_score, one of the two passing answers. The dropped 'generic counter cards' remark is correctly described as about an older list."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "No unenumerated superlatives. 'Dominating' is the pilot's word and quoted as such."
+   },
+   {
+    "where": "open_questions[0]",
+    "status": "supported",
+    "note": "Whether game 006's stall holds on the rated list is not answered by the artifacts; diagnose can settle it."
+   },
+   {
+    "where": "open_questions[1]",
+    "status": "unjustified",
+    "note": "settled_by is 'rate', but the rating cannot supply new evidence; and the audit already answers part of it (protection 9, verdict over; card-advantage 8, verdict under; sweepers 1). 'Name the cards in the 99' is a deck-facts or deck-audit query, not a rating."
+   }
+  ],
+  "iterations": 3
+ },
  "code_score": 48.4,
- "score_point": 48.4,
- "score": 51.2,
+ "score_point": 48.3,
+ "score": 50.6,
  "score_ci": [
-  41.7,
-  60.6
+  42.9,
+  58.4
  ],
  "grade": "C",
  "grade_range": [
@@ -376,11 +446,11 @@
  ],
  "grade_display": "C",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.009,
-  "C": 0.573,
-  "D": 0.415,
-  "F": 0.003
+  "A": 0.0,
+  "B": 0.002,
+  "C": 0.553,
+  "D": 0.446,
+  "F": 0.0
  },
  "uncertainty": {
   "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
@@ -396,75 +466,79 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 53.7,
+    "score": 52.3,
     "grade": "C"
    },
    "mana": {
-    "score": 44.1,
+    "score": 45.0,
     "grade": "D"
    },
    "resilience": {
-    "score": 44.1,
+    "score": 45.1,
     "grade": "D"
    },
    "construction": {
-    "score": 44.0,
+    "score": 45.0,
     "grade": "D"
    },
    "dti": {
-    "score": 51.7,
+    "score": 50.7,
     "grade": "C"
    },
    "table_record": {
-    "score": 53.4,
+    "score": 52.0,
     "grade": "C"
+   },
+   "judgment": {
+    "score": 48.4,
+    "grade": "D"
    }
   },
   "flips": [
    {
     "component": "mana",
-    "share_now": 0.111,
-    "share_at_flip": 0.151,
+    "share_now": 0.087,
+    "share_at_flip": 0.13,
     "boundary": 50,
     "grade_at_flip": "C",
     "direction": "raise"
    },
    {
     "component": "speed",
-    "share_now": 0.167,
-    "share_at_flip": 0.118,
+    "share_now": 0.13,
+    "share_at_flip": 0.076,
     "boundary": 50,
     "grade_at_flip": "C",
     "direction": "lower"
    },
    {
     "component": "table_record",
-    "share_now": 0.167,
-    "share_at_flip": 0.114,
+    "share_now": 0.13,
+    "share_at_flip": 0.072,
     "boundary": 50,
     "grade_at_flip": "C",
     "direction": "lower"
    },
    {
     "component": "resilience",
-    "share_now": 0.167,
-    "share_at_flip": 0.227,
+    "share_now": 0.13,
+    "share_at_flip": 0.197,
     "boundary": 50,
     "grade_at_flip": "C",
     "direction": "raise"
    },
    {
     "component": "construction",
-    "share_now": 0.181,
-    "share_at_flip": 0.244,
+    "share_now": 0.141,
+    "share_at_flip": 0.212,
     "boundary": 50,
     "grade_at_flip": "C",
     "direction": "raise"
    },
    {
     "component": "dti",
-    "share_now": 0.208,
-    "share_at_flip": 0.108,
+    "share_now": 0.163,
+    "share_at_flip": 0.05,
     "boundary": 50,
     "grade_at_flip": "C",
     "direction": "lower"
@@ -476,6 +550,7 @@
   "instruments": {
    "construction": 2.0,
    "dti": 3.0,
+   "judgment": 3.0,
    "mana": 2.0,
    "resilience": 2.0,
    "speed": 2.0
@@ -490,15 +565,55 @@
    }
   ],
   "group": {
-   "kendall_w": 0.12,
-   "p": 0.6914,
-   "p_method": "exact over 1296 relabellings",
-   "m": 5,
+   "kendall_w": 0.111,
+   "p": 0.5705,
+   "p_method": "exact over 7776 relabellings",
+   "m": 6,
    "n": 3
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (50); concordance mixed",
- "judgment": null,
+ "judgment": {
+  "sub_score": 48,
+  "argument": "The measured components see a fast board and a losing record. What they miss is how the deck loses, and no logged game is on the rated list; the three games after the twelve-swap refactor (004 to 006) were played on earlier versions of it. Game 004 shows the draw creatures running off an opponent's removal and the pilot calling Edgar 'dominating' until a tutored infinite ended it. Game 005 held momentum and lost a race. Game 006, a later version, brings the stall back: 'it runs out of steam', rebuilding only 'small blockers', with little protection against wipes. That is one game on an older version, so it is a hint, not a pattern; I no longer cite the games before the refactor. The record of 0 wins in 5 games is already scored by table_record, and I do not count it twice. DeckCheck, the outlier instrument, ranks the deck worse. Its read is of the rated list, and the record does not explain why it reads it where it does: the pilot's remark in 006 about generic counter cards is about an older version, so I do not offer it as agreement. The dti component carries that read. The unmeasured facts pull both ways and none is read on the rated list, so I sit on the code_score of 48.4.",
+  "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:table_record",
+    "quote": "0 wins in 5 games"
+   },
+   {
+    "kind": "log",
+    "ref": "log:004",
+    "quote": "on board state Edgar was dominating"
+   },
+   {
+    "kind": "log",
+    "ref": "log:005",
+    "quote": "Early vampires + Edgar swinging grew the board; held momentum all game."
+   },
+   {
+    "kind": "log",
+    "ref": "log:006",
+    "quote": "it runs out of steam"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:dti",
+    "quote": "DeckCheck Threat Index"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.2174,
+  "sub_ci": [
+   39.89,
+   55.76
+  ]
+ },
  "rank": {
   "position": 3,
   "of": 3,
@@ -508,19 +623,19 @@
    "edgar-vampires"
   ],
   "acceptability": {
-   "1": 0.002,
-   "2": 0.202,
-   "3": 0.797
+   "1": 0.0,
+   "2": 0.134,
+   "3": 0.866
   },
   "basis": {
    "edgar-vampires": "this document",
-   "heliod": "skeleton",
-   "sharknado": "skeleton"
+   "heliod": "rating.json judgment",
+   "sharknado": "rating.json judgment"
   },
   "scores": {
-   "heliod": 65.2,
-   "sharknado": 58.4,
-   "edgar-vampires": 51.2
+   "heliod": 65.1,
+   "sharknado": 59.0,
+   "edgar-vampires": 50.6
   }
  }
 }

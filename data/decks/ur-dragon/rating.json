@@ -14,10 +14,10 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1667,
+   "weight_effective": 0.1304,
    "sub_score": 100.0,
    "sub_ci": [
-    92.39,
+    92.48,
     100.0
    ],
    "placement": 100.0,
@@ -48,11 +48,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1111,
+   "weight_effective": 0.087,
    "sub_score": 66.67,
    "sub_ci": [
     66.67,
-    74.31
+    74.11
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -90,10 +90,10 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1667,
+   "weight_effective": 0.1304,
    "sub_score": 80.0,
    "sub_ci": [
-    72.43,
+    72.63,
     80.0
    ],
    "placement": 100.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.1806,
+   "weight_effective": 0.1413,
    "sub_score": 55.71,
    "sub_ci": [
     55.71,
@@ -238,11 +238,11 @@
    "name": "dti",
    "weight": 0.15,
    "weight_validity": 1.0,
-   "weight_effective": 0.2083,
+   "weight_effective": 0.163,
    "sub_score": 50.0,
    "sub_ci": [
-    40.85,
-    59.06
+    41.1,
+    58.9
    ],
    "placement": 25.0,
    "anchor": 62.5,
@@ -277,11 +277,11 @@
    "name": "table_record",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1667,
+   "weight_effective": 0.1304,
    "sub_score": 67.62,
    "sub_ci": [
-    44.05,
-    95.57
+    44.34,
+    96.08
    ],
    "placement": null,
    "anchor": 67.62,
@@ -316,10 +316,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -348,15 +344,64 @@
  "fleet_sha": "1d045e2c9800",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "How often are a discount and a five-colour dork both in play by turn four, so the commander lands on turn five as in game 007?",
+   "settled_by": "goldfish"
+  },
+  {
+   "question": "Does the response suite change real games, given that no logged game on this list shows it working?",
+   "settled_by": "diagnose"
+  }
+ ],
+ "iterations": 2,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "judgment.citations[2]",
+    "status": "supported",
+    "note": "skeleton:table_record '3 wins in 7 games' resolves: components[table_record].citations quotes it verbatim (ref log.jsonl), and deck-notes list prints '3W 4L over 7 logged'. Only the ref label differs (skeleton: vs log.jsonl); validate-rating accepts it."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "Log 005 says 'No green source all game' and 'That is not a deck defect'; its sha 7095f2d8 differs from the current list 99419d5b, so 'previous list' is correct."
+   },
+   {
+    "where": "judgment.citations[1]",
+    "status": "supported",
+    "note": "Log 007 (current sha) says 'it is definitely a three, optimized' in the same sentence as 'tier-four if consistent'. Equating it with DTI's within-bracket middle rank is loose, but it is offered only as a consistency remark and moves nothing."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "All four outliers are addressed. Speed: game 007 is the only game on the current sha, and it is counted in table_record. Resilience, construction and mana: the argument states that the record does not explain them. 'sub_score lower' for DTI is true (50 vs 69). Matches sensitivity: no flips attributable to the judgment (69.2 leave-one-out)."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "69 vs code_score 69.2 is neutral; no unmeasured fact is claimed to move it, so there is no gap to be too generous or too harsh."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Neither question is answered by the skeleton or artifacts: turn-4 discount plus five-colour dork odds is a goldfish question, and whether the response suite changes real games is a diagnose question. The log has no game showing the suite."
+   },
+   {
+    "where": "code_keys",
+    "status": "supported",
+    "note": "Re-run of rating --json shows no differing top-level key against rating.json, including components, withheld, code_score, score_point, bracket, limits, uncertainty and sensitivity."
+   }
+  ],
+  "iterations": 2
+ },
  "code_score": 69.2,
- "score_point": 69.2,
- "score": 68.4,
+ "score_point": 69.1,
+ "score": 69.0,
  "score_ci": [
-  60.3,
-  77.8
+  62.0,
+  76.4
  ],
  "grade": "B",
  "grade_range": [
@@ -365,9 +410,9 @@
  ],
  "grade_display": "C–B",
  "grade_probabilities": {
-  "A": 0.016,
-  "B": 0.728,
-  "C": 0.256,
+  "A": 0.009,
+  "B": 0.825,
+  "C": 0.166,
   "D": 0.0,
   "F": 0.0
  },
@@ -385,51 +430,55 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 63.0,
+    "score": 64.5,
     "grade": "C"
    },
    "mana": {
-    "score": 69.5,
+    "score": 69.4,
     "grade": "B"
    },
    "resilience": {
-    "score": 67.0,
+    "score": 67.5,
     "grade": "B"
    },
    "construction": {
-    "score": 72.1,
+    "score": 71.3,
     "grade": "B"
    },
    "dti": {
-    "score": 74.2,
+    "score": 72.8,
     "grade": "B"
    },
    "table_record": {
-    "score": 69.5,
+    "score": 69.3,
+    "grade": "B"
+   },
+   "judgment": {
+    "score": 69.2,
     "grade": "B"
    }
   },
   "flips": [
    {
     "component": "speed",
-    "share_now": 0.167,
-    "share_at_flip": 0.054,
+    "share_now": 0.13,
+    "share_at_flip": 0.014,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "lower"
    },
    {
     "component": "dti",
-    "share_now": 0.208,
-    "share_at_flip": 0.38,
+    "share_now": 0.163,
+    "share_at_flip": 0.343,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "raise"
    },
    {
     "component": "construction",
-    "share_now": 0.181,
-    "share_at_flip": 0.434,
+    "share_now": 0.141,
+    "share_at_flip": 0.405,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "raise"
@@ -441,6 +490,7 @@
   "instruments": {
    "construction": 3.0,
    "dti": 2.0,
+   "judgment": 2.0,
    "mana": 3.0,
    "resilience": 1.0,
    "speed": 1.0
@@ -470,15 +520,45 @@
    }
   ],
   "group": {
-   "kendall_w": 0.16,
-   "p": 0.5216,
-   "p_method": "exact over 1296 relabellings",
-   "m": 5,
+   "kendall_w": 0.25,
+   "p": 0.2522,
+   "p_method": "exact over 7776 relabellings",
+   "m": 6,
    "n": 3
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
- "judgment": null,
+ "judgment": {
+  "sub_score": 69,
+  "argument": "The measured components cannot see how this list plays against blockers and removal: the goldfish has neither, there is no pilot survey, and no Forge run describes this list. The instruments disagree on this deck, so each outlier gets its own answer. Mana, ranked worse: the record does touch it, but only on older builds. Game 005's note says \"No green source all game.\" That is a loss on a previous list, and the pilot himself says it is not a deck defect. It does not tell me the current list is worse than the audit says, so I do not move. Construction, ranked worse: the audit's counts against the cited ratios are the whole evidence, and nothing in the record argues for or against them. I do not move. Speed, ranked better: game 007 is the only game on this list and it won quickly, but it is already counted in table_record, so using it again would double count. Resilience, ranked better: no logged game shows the answer suite at work, since game 007 turned on politics, so the record does not explain this ranking. I do not move. The pilot calls it \"definitely a three, optimized\", which matches the middle rank DeckCheck gives it, though its own sub_score is lower. With nothing unmeasured to add, I sit at the code_score of 69.2, rounded.",
+  "citations": [
+   {
+    "kind": "log",
+    "ref": "log:005",
+    "quote": "No green source all game."
+   },
+   {
+    "kind": "log",
+    "ref": "log:007",
+    "quote": "it is definitely a three, optimized"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:table_record",
+    "quote": "3 wins in 7 games"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.2174,
+  "sub_ci": [
+   60.49,
+   77.71
+  ]
+ },
  "rank": {
   "position": 2,
   "of": 3,
@@ -488,19 +568,19 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.079,
-   "2": 0.872,
-   "3": 0.05
+   "1": 0.049,
+   "2": 0.93,
+   "3": 0.021
   },
   "basis": {
-   "gishath": "skeleton",
-   "goblin-storm": "skeleton",
+   "gishath": "rating.json judgment",
+   "goblin-storm": "rating.json judgment",
    "ur-dragon": "this document"
   },
   "scores": {
-   "gishath": 76.4,
-   "ur-dragon": 68.4,
-   "goblin-storm": 56.8
+   "gishath": 76.7,
+   "ur-dragon": 69.0,
+   "goblin-storm": 57.1
   }
  }
 }

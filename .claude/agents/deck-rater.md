@@ -53,7 +53,10 @@ the deck by every instrument within its bracket — speed, mana, resilience, con
 dti, table_record when present — and says how far they disagree: `level` concordant /
 mixed / divergent, `outliers[]` the instruments on the smaller side. **A divergent deck's
 argument MUST address every outlier instrument by name** (the validator refuses
-otherwise): say which instrument you believe and why, from cited, unmeasured facts.
+otherwise): say which instrument you believe and why, from cited, unmeasured facts — or
+say plainly that the record does not explain that instrument's reading, in which case
+your number sits at `code_score` for it. Never claim two instruments "cancel" without
+the sizes from `sensitivity.leave_one_out`.
 `sensitivity.flips` says at what weight share the grade would flip and
 `leave_one_out` what the score is without each component — read them before deciding
 whether the components undersell or oversell. The `dti` component is DeckCheck's read

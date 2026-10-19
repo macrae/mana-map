@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.15,
    "sub_score": 66.67,
    "sub_ci": [
     66.67,
-    74.11
+    74.24
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -48,10 +48,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1333,
+   "weight_effective": 0.1,
    "sub_score": 100.0,
    "sub_ci": [
-    92.46,
+    92.6,
     100.0
    ],
    "placement": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.15,
    "sub_score": 33.33,
    "sub_ci": [
     33.33,
-    40.9
+    40.94
    ],
    "placement": 0.0,
    "anchor": 50.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2167,
+   "weight_effective": 0.1625,
    "sub_score": 58.57,
    "sub_ci": [
     58.57,
@@ -238,11 +238,11 @@
    "name": "dti",
    "weight": 0.15,
    "weight_validity": 1.0,
-   "weight_effective": 0.25,
+   "weight_effective": 0.1875,
    "sub_score": 43.06,
    "sub_ci": [
-    34.04,
-    51.86
+    34.06,
+    51.78
    ],
    "placement": 25.0,
    "anchor": 52.08,
@@ -286,10 +286,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -318,27 +314,86 @@
  "fleet_sha": "1d045e2c9800",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "How many Goblin bodies does this list open with, and does the mulligan rule hold on it? Only games logged on this list can say.",
+   "settled_by": "rate"
+  },
+  {
+   "question": "How much of the storm turn survives opposing removal? The goldfish has none, so a diagnosis of the engine's exposure is needed.",
+   "settled_by": "diagnose"
+  }
+ ],
+ "iterations": 3,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "mechanical",
+    "status": "supported",
+    "note": "validate-rating OK; fresh rating --json matches rating.json on every key including score (no group movement)."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "log:001 quote verbatim; the argument correctly scopes it to an older list (log hash c8651652... differs from the rated 5cf31b29...) and imports nothing."
+   },
+   {
+    "where": "judgment.citations[1]",
+    "status": "supported",
+    "note": "stack:003 passes; title quoted; sequential-draw lethal is its point."
+   },
+   {
+    "where": "judgment.citations[2]",
+    "status": "supported",
+    "note": "stack:002 passes; final_state shows 8 tokens and 8 damage to each of 32 and 28 life: storm count and damage, not a kill, as argued."
+   },
+   {
+    "where": "judgment.citations[3]",
+    "status": "supported",
+    "note": "kill_by_turn_8 0.565 matches the speed component."
+   },
+   {
+    "where": "judgment.citations[4]",
+    "status": "supported",
+    "note": "answer_cards 13; audit interaction 11 against target >=8, sweepers 0 (UNDER) as stated; the claim is worded to those figures."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "57 vs code_score 56.8 is neutral; no unmeasured specific fact is claimed to move it. Outliers construction and mana are addressed honestly (mana already scores 100; no Goblin-count rate on this list), and the flips show neither explanation would change the grade."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "No superlatives; the round-2 over-claim is gone."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Both are unanswered by the skeleton: opening Goblin counts need games on this list; removal exposure needs a diagnosis."
+   }
+  ],
+  "iterations": 3
+ },
  "code_score": 56.8,
  "score_point": 56.8,
- "score": 56.8,
+ "score": 57.1,
  "score_ci": [
-  47.9,
-  67.5
+  49.8,
+  65.0
  ],
  "grade": "C",
  "grade_range": [
   "D",
-  "B"
+  "C"
  ],
- "grade_display": "D–B",
+ "grade_display": "D–C",
  "grade_probabilities": {
-  "A": 0.0,
-  "B": 0.093,
-  "C": 0.801,
-  "D": 0.105,
+  "A": 0.001,
+  "B": 0.049,
+  "C": 0.897,
+  "D": 0.053,
   "F": 0.0
  },
  "uncertainty": {
@@ -355,55 +410,59 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 54.3,
+    "score": 55.1,
     "grade": "C"
    },
    "mana": {
-    "score": 50.1,
+    "score": 52.0,
     "grade": "C"
    },
    "resilience": {
-    "score": 62.7,
+    "score": 61.0,
     "grade": "C"
    },
    "construction": {
-    "score": 56.3,
+    "score": 56.5,
     "grade": "C"
    },
    "dti": {
-    "score": 61.4,
+    "score": 60.0,
+    "grade": "C"
+   },
+   "judgment": {
+    "score": 56.8,
     "grade": "C"
    }
   },
   "flips": [
    {
     "component": "mana",
-    "share_now": 0.133,
-    "share_at_flip": 0.298,
+    "share_now": 0.1,
+    "share_at_flip": 0.27,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "resilience",
-    "share_now": 0.2,
-    "share_at_flip": 0.432,
+    "share_now": 0.15,
+    "share_at_flip": 0.397,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
    },
    {
     "component": "dti",
-    "share_now": 0.25,
-    "share_at_flip": 0.621,
+    "share_now": 0.187,
+    "share_at_flip": 0.591,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
    },
    {
     "component": "speed",
-    "share_now": 0.2,
-    "share_at_flip": 0.865,
+    "share_now": 0.15,
+    "share_at_flip": 0.856,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -415,6 +474,7 @@
   "instruments": {
    "construction": 2.0,
    "dti": 3.0,
+   "judgment": 3.0,
    "mana": 1.0,
    "resilience": 3.0,
    "speed": 3.0
@@ -434,15 +494,55 @@
    }
   ],
   "group": {
-   "kendall_w": 0.16,
-   "p": 0.5216,
-   "p_method": "exact over 1296 relabellings",
-   "m": 5,
+   "kendall_w": 0.25,
+   "p": 0.2522,
+   "p_method": "exact over 7776 relabellings",
+   "m": 6,
    "n": 3
   }
  },
  "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance divergent",
- "judgment": null,
+ "judgment": {
+  "sub_score": 57,
+  "argument": "The measured components miss two things: how this list plays, and whether its engine converts. The table record is withheld, and the two logged games carry a list hash that is not the rated list's, so they say nothing about it. I do not import them; the pilot's own verdict there, \"a bad draw and a bad keep, not a deck problem\", concerns the older list. What I can add is the engine: the passing stacks prove parts of the thesis (Fists of Flame on Zada is a sequential-draw lethal; Empty the Warrens with Impact Tremors proves the storm count and the damage, not a kill). That is a capability the goldfish clock (kill_by_turn_8 0.565) does not name, but it is not a result on this list either, and the goldfish cannot see blockers or removal. Divergent concordance names two outliers. Construction ranks better than the other instruments, but I have no Goblin count or opening-hand rate on this list to say the audit bands undersell it, so I leave it as measured. Mana ranks best, and the component already scores it 100; the record does not explain or dispute that. Resilience reads 13 answer cards and 0 sweepers; the audit's interaction axis, at 11, sits at its band. I leave both as measured. I sit at the measured score: nothing unmeasured and specific to this list moves it.",
+  "citations": [
+   {
+    "kind": "log",
+    "ref": "log:001",
+    "quote": "This was a bad draw and a bad keep, not a deck problem."
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:003",
+    "quote": "Fists of Flame on Zada: the sequential-draw lethal"
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:002",
+    "quote": "Empty the Warrens as the fourth spell with Impact Tremors out"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:resilience",
+    "quote": "answer_cards"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.25,
+  "sub_ci": [
+   48.52,
+   65.15
+  ]
+ },
  "rank": {
   "position": 3,
   "of": 3,
@@ -452,19 +552,19 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.001,
-   "2": 0.049,
-   "3": 0.951
+   "1": 0.0,
+   "2": 0.021,
+   "3": 0.979
   },
   "basis": {
-   "gishath": "skeleton",
+   "gishath": "rating.json judgment",
    "goblin-storm": "this document",
-   "ur-dragon": "skeleton"
+   "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "gishath": 76.4,
-   "ur-dragon": 68.4,
-   "goblin-storm": 56.8
+   "gishath": 76.7,
+   "ur-dragon": 69.0,
+   "goblin-storm": 57.1
   }
  }
 }
