@@ -6,15 +6,14 @@
         "Bloodtracker",
         "Champion of Dusk",
         "Crossway Troublemakers",
-        "Liliana, Dreadhorde General",
         "Midgar, City of Mako // Reactor Raid",
         "Preacher of the Schism",
         "Savai Triome",
         "Skullclamp",
         "Voldaren Epicure"
       ],
-      "modelled": 6,
-      "why": "ETB, spell, upkeep and arrival draw are modelled; activated, X-based, death- and attack-triggered draw are not, and the cards are named in `draw_not_modelled`. Read the two numbers together: a deck whose count is twelve and whose modelled figure is one has almost no UNCONDITIONAL card advantage, which is a finding about the deck."
+      "modelled": 7,
+      "why": "ETB, spell, upkeep, arrival and death-triggered draw are modelled (death draw only on the deaths the sacrifice and death channels produce); activated, X-based and attack-triggered draw are not, and the cards are named in `draw_not_modelled`. Read the two numbers together: a deck whose count is twelve and whose modelled figure is one has almost no UNCONDITIONAL card advantage, which is a finding about the deck."
     },
     "combat_effects_not_modelled": [
       "Drana, Liberator of Malakir",
@@ -63,7 +62,7 @@
       "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
       "Target assembly counts cards DRAWN by a turn (cast cards still count).",
       "X-SPELL DRAW IS PAID FOR OUT OF WHAT IS LEFT. An {X} instant or sorcery that draws X is cast AFTER every other loop has spent what it wanted, with the whole remaining pool, and only when X would be at least 2 — a pilot does not cast Stroke of Genius for one card, and every cheapest-first loop in this module would have, because Scryfall counts {X} as zero and the card's `cmc` is only its fixed part. That floor is the one authored number in this channel. Casting last makes the figure a FLOOR in the other direction too: the spell only ever gets mana nothing else asked for. Corpus sweep: 33 X-cost instants and sorceries that draw X, 28 credited and 5 skipped — a split card whose cmc is both halves, an alternative cost under which X is 0, and three whose X is bounded by a discard or by a graveyard this model does not have.",
-      "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four channels are modelled — a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and an ARRIVAL trigger that draws when other creatures or tokens enter (Welcoming Vampire, Caretaker's Talent), which rides the same single door the ETB damage payoffs use. Activated draw (needs a spending policy this model has no opinion on), X-based draw (board-dependent), and death- or attack-triggered draw (no deaths, and attacks only under `model_combat`) are NOT modelled and the cards are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — 'if you control an artifact', 'you may draw' — is treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus carry one.",
+      "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four channels are modelled — a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and an ARRIVAL trigger that draws when other creatures or tokens enter (Welcoming Vampire, Caretaker's Talent, Tocasia's Welcome with its mana-value gate), which rides the same single door the ETB damage payoffs use. DEATH-TRIGGERED DRAW (Liliana, Dreadhorde General, Morbid Opportunist, Midnight Reaper) fires on every death this model produces — the sacrifice sweep under `model_sacrifice`, the one-turn copies leaving, and the measured rate under `model_deaths` — honouring 'nontoken' and 'once each turn' (2026-10-19); a deck with no death channel on has no deaths, and the payoff is absent. Activated draw (needs a spending policy this model has no opinion on), X-based draw (board-dependent) and attack-triggered draw outside `model_combat` are NOT modelled and the cards are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — 'if you control an artifact', 'you may draw', 'you may pay 2 life' — is treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus carry one, and 15 death triggers.",
       "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a 2/3 that draws 'whenever one or more OTHER creatures you control with power 2 or less enter'; registered before its own entry it passed its own gate and drew a card it does not draw, overstating edgar-vampires by 22% at turn eight. The deferral applies to every card and not only the ones worded 'other', which understates Tocasia's Welcome and two relatives by one draw on the turn they land.",
       "ARRIVAL DRAW IS SMALLER WITHOUT `model_combat`, and legitimately so. The channel rides the one door onto the battlefield, which `model_combat` also uses to spawn token copies and ETB-payoff tokens — those are real additional arrivals that do not exist in the resource-only model. Measured on edgar-vampires: 1.264 extra cards by turn ten with both flags against 1.106 with draw alone. Before 2026-08-28 the gap was 1.264 against 0.323, because every call to that door sat inside `if model_combat:` and a draw-only deck silently lost three quarters of its arrival draws.",
       "HELD-UP INTERACTION is reported as two series and both are FLOORS. This model casts everything it can afford every turn, so `interaction_castable` is what a pilot developing at full speed has left over, not what a pilot choosing to hold up two mana would have. A low figure is therefore a real finding and a high one is unambiguous good news.",
@@ -94,9 +93,9 @@
       "DAMAGE MULTIPLICATION is modelled and stacks MULTIPLICATIVELY as the rules do: doubling the power, swinging twice and doubling the damage dealt is eight times, not four. Three wordings are read — a replacement effect on damage you deal (Twinflame Tyrant), a granted double strike (Atarka) and a power doubling (Thrakkus). A grant worded 'each Dragon you control' is treated as applying to the WHOLE team: exact in a deck whose attackers are Dragons, generous in one where they are not. A creature's own double strike multiplies only itself. Board power is unaffected — a double-striker is not a bigger creature.",
       "Bodies count CREATURES only under this flag. Without it a Treasure token scores as a creature, which inflates `mean_bodies_by_turn` for any deck that makes non-creature tokens.",
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
-      "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance and Elas il-Kor all key on a creature DYING, and nothing dies in this model: no blockers, no removal, no sacrifice outlets. Their contribution is ABSENT, not zero, and a deck whose kill runs through them is understated here by however much that line is worth. `simulate` against a real pod is where that number lives."
+      "DEATH-TRIGGERED DRAIN FIRES ONLY ON THE DEATHS THIS MODEL PRODUCES. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance, Vraan and Vein Ripper key on a creature DYING, and a death happens here in three places and nowhere else: a free sacrifice outlet converting tokens (`model_sacrifice`), a one-turn copy leaving at the end step, and the per-turn rate read off a Forge run (`model_deaths`). No blockers and no removal, so a deck with neither channel on has no deaths and the contribution is ABSENT, not zero; a deck whose kill runs through them is understated by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "5fad861f02a4",
+    "model_version": "b025d0102196",
     "pilot_policy": {
       "rules": [
         "sac-pref"
@@ -124,33 +123,33 @@
         "10": 451,
         "5": 32,
         "6": 937,
-        "7": 3298,
-        "8": 3453,
-        "9": 1588
+        "7": 3299,
+        "8": 3451,
+        "9": 1589
       },
       "mean_board_power_by_turn": {
         "1": 0.551,
-        "10": 23.038,
+        "10": 23.116,
         "2": 1.504,
         "3": 3.199,
         "4": 5.663,
-        "5": 8.449,
-        "6": 11.746,
-        "7": 14.798,
-        "8": 17.671,
-        "9": 20.396
+        "5": 8.451,
+        "6": 11.752,
+        "7": 14.817,
+        "8": 17.726,
+        "9": 20.475
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 22.266,
+        "10": 22.211,
         "2": 0.599,
         "3": 1.848,
         "4": 4.17,
         "5": 7.232,
-        "6": 10.644,
-        "7": 13.329,
-        "8": 16.387,
-        "9": 19.306
+        "6": 10.645,
+        "7": 13.331,
+        "8": 16.393,
+        "9": 19.317
       },
       "mean_kill_turn": 7.715,
       "mean_poison_by_turn": {
@@ -176,125 +175,125 @@
         "4": 702,
         "5": 1883,
         "6": 3013,
-        "7": 1028,
-        "8": 895,
-        "9": 689,
-        "not_by_max_turn": 1101
+        "7": 1027,
+        "8": 894,
+        "9": 688,
+        "not_by_max_turn": 1104
       },
-      "mean_cast_turn": 6.385,
+      "mean_cast_turn": 6.384,
       "median_cast_turn": 6
     },
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.0,
-        "10": 1.855,
+        "10": 1.818,
         "2": 0.0,
         "3": 0.006,
         "4": 0.034,
         "5": 0.102,
         "6": 0.218,
-        "7": 0.414,
-        "8": 0.738,
-        "9": 1.207
+        "7": 0.415,
+        "8": 0.737,
+        "9": 1.193
       },
       "mean_drain_by_turn": {
         "1": 0.0,
-        "10": 0.648,
+        "10": 0.625,
         "2": 0.0,
         "3": 0.006,
         "4": 0.028,
         "5": 0.068,
         "6": 0.117,
-        "7": 0.196,
-        "8": 0.324,
-        "9": 0.469
+        "7": 0.197,
+        "8": 0.322,
+        "9": 0.457
       },
-      "share_of_games_draining_by_turn_10": 0.217
+      "share_of_games_draining_by_turn_10": 0.215
     },
     "interaction_castable_by_turn": {
       "1": 0.071,
-      "10": 0.63,
+      "10": 0.636,
       "2": 0.128,
       "3": 0.146,
       "4": 0.192,
       "5": 0.225,
       "6": 0.245,
       "7": 0.392,
-      "8": 0.48,
-      "9": 0.566
+      "8": 0.481,
+      "9": 0.569
     },
     "interaction_in_hand_by_turn": {
       "1": 0.807,
-      "10": 0.882,
+      "10": 0.879,
       "2": 0.815,
       "3": 0.819,
       "4": 0.825,
       "5": 0.84,
       "6": 0.855,
       "7": 0.859,
-      "8": 0.866,
-      "9": 0.871
+      "8": 0.865,
+      "9": 0.869
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 0.998,
-      "10": 0.474,
+      "10": 0.462,
       "2": 0.996,
       "3": 0.907,
       "4": 0.793,
       "5": 0.673,
       "6": 0.569,
       "7": 0.511,
-      "8": 0.474,
-      "9": 0.478
+      "8": 0.471,
+      "9": 0.471
     },
     "mean_available_mana_by_turn": {
       "1": 0.998,
-      "10": 7.686,
+      "10": 7.656,
       "2": 2.141,
       "3": 3.22,
       "4": 4.136,
       "5": 4.883,
       "6": 5.501,
       "7": 6.064,
-      "8": 6.61,
-      "9": 7.146
+      "8": 6.606,
+      "9": 7.132
     },
     "mean_bodies_by_turn": {
       "1": 0.551,
-      "10": 14.29,
+      "10": 14.145,
       "2": 1.405,
       "3": 2.747,
       "4": 4.425,
       "5": 5.868,
-      "6": 7.285,
-      "7": 9.088,
-      "8": 10.808,
-      "9": 12.514
+      "6": 7.284,
+      "7": 9.081,
+      "8": 10.791,
+      "9": 12.453
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 1.7,
+      "10": 1.629,
       "2": 0.124,
       "3": 0.174,
-      "4": 0.227,
-      "5": 0.318,
-      "6": 0.454,
-      "7": 0.656,
-      "8": 0.906,
-      "9": 1.254
+      "4": 0.229,
+      "5": 0.323,
+      "6": 0.464,
+      "7": 0.673,
+      "8": 0.93,
+      "9": 1.238
     },
     "mean_sacrifices_by_turn": {
       "1": 0.0,
-      "10": 1.725,
+      "10": 1.403,
       "2": 0.006,
       "3": 0.039,
       "4": 0.109,
-      "5": 0.194,
-      "6": 0.306,
-      "7": 0.51,
-      "8": 0.805,
-      "9": 1.174
+      "5": 0.192,
+      "6": 0.297,
+      "7": 0.48,
+      "8": 0.72,
+      "9": 1.002
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -323,49 +322,49 @@
     "sac_cap_hit_rate": 0.0,
     "targets": [
       {
-        "assembled_rate": 0.347,
-        "assembled_rate_assisted": 0.46,
-        "by_turn_6_rate": 0.245,
-        "by_turn_6_rate_assisted": 0.336,
+        "assembled_rate": 0.339,
+        "assembled_rate_assisted": 0.453,
+        "by_turn_6_rate": 0.244,
+        "by_turn_6_rate_assisted": 0.335,
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-        "mean_turn": 4.067,
-        "mean_turn_assisted": 4.041
+        "mean_turn": 3.952,
+        "mean_turn_assisted": 3.961
       },
       {
-        "assembled_rate": 0.337,
-        "assembled_rate_assisted": 0.452,
+        "assembled_rate": 0.331,
+        "assembled_rate_assisted": 0.447,
         "by_turn_6_rate": 0.247,
         "by_turn_6_rate_assisted": 0.339,
         "label": "A token multiplier or extra token-maker drawn",
-        "mean_turn": 4.011,
-        "mean_turn_assisted": 4.007
+        "mean_turn": 3.923,
+        "mean_turn_assisted": 3.947
       },
       {
-        "assembled_rate": 0.19,
-        "assembled_rate_assisted": 0.331,
-        "by_turn_6_rate": 0.129,
+        "assembled_rate": 0.186,
+        "assembled_rate_assisted": 0.326,
+        "by_turn_6_rate": 0.128,
         "by_turn_6_rate_assisted": 0.235,
         "label": "A Vampire lord or anthem drawn (the combat plan)",
-        "mean_turn": 4.332,
-        "mean_turn_assisted": 4.331
+        "mean_turn": 4.214,
+        "mean_turn_assisted": 4.261
       },
       {
-        "assembled_rate": 0.064,
-        "assembled_rate_assisted": 0.128,
+        "assembled_rate": 0.061,
+        "assembled_rate_assisted": 0.124,
         "by_turn_6_rate": 0.032,
         "by_turn_6_rate_assisted": 0.066,
         "label": "THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
-        "mean_turn": 5.945,
-        "mean_turn_assisted": 5.936
+        "mean_turn": 5.792,
+        "mean_turn_assisted": 5.847
       },
       {
-        "assembled_rate": 0.561,
-        "assembled_rate_assisted": 0.638,
+        "assembled_rate": 0.554,
+        "assembled_rate_assisted": 0.632,
         "by_turn_6_rate": 0.429,
         "by_turn_6_rate_assisted": 0.501,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 3.602,
-        "mean_turn_assisted": 3.532
+        "mean_turn": 3.535,
+        "mean_turn_assisted": 3.482
       },
       {
         "assembled_rate": 0.75,
@@ -377,49 +376,49 @@
         "mean_turn_assisted": 2.788
       },
       {
-        "assembled_rate": 0.655,
-        "assembled_rate_assisted": 0.719,
-        "by_turn_6_rate": 0.512,
+        "assembled_rate": 0.648,
+        "assembled_rate_assisted": 0.712,
+        "by_turn_6_rate": 0.511,
         "by_turn_6_rate_assisted": 0.575,
         "label": "Protection held for the swarm",
-        "mean_turn": 3.43,
-        "mean_turn_assisted": 3.354
+        "mean_turn": 3.372,
+        "mean_turn_assisted": 3.305
       },
       {
-        "assembled_rate": 0.334,
-        "assembled_rate_assisted": 0.448,
+        "assembled_rate": 0.328,
+        "assembled_rate_assisted": 0.443,
         "by_turn_6_rate": 0.237,
         "by_turn_6_rate_assisted": 0.331,
         "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
-        "mean_turn": 4.114,
-        "mean_turn_assisted": 4.043
+        "mean_turn": 4.024,
+        "mean_turn_assisted": 3.977
       },
       {
-        "assembled_rate": 0.035,
-        "assembled_rate_assisted": 0.085,
-        "by_turn_6_rate": 0.018,
+        "assembled_rate": 0.033,
+        "assembled_rate_assisted": 0.082,
+        "by_turn_6_rate": 0.017,
         "by_turn_6_rate_assisted": 0.043,
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
-        "mean_turn": 6.088,
-        "mean_turn_assisted": 6.097
+        "mean_turn": 5.812,
+        "mean_turn_assisted": 5.961
       },
       {
-        "assembled_rate": 0.651,
-        "assembled_rate_assisted": 0.715,
-        "by_turn_6_rate": 0.51,
+        "assembled_rate": 0.642,
+        "assembled_rate_assisted": 0.706,
+        "by_turn_6_rate": 0.509,
         "by_turn_6_rate_assisted": 0.572,
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-        "mean_turn": 3.443,
-        "mean_turn_assisted": 3.366
+        "mean_turn": 3.362,
+        "mean_turn_assisted": 3.301
       },
       {
-        "assembled_rate": 0.474,
-        "assembled_rate_assisted": 0.57,
+        "assembled_rate": 0.469,
+        "assembled_rate_assisted": 0.565,
         "by_turn_6_rate": 0.348,
         "by_turn_6_rate_assisted": 0.433,
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
-        "mean_turn": 3.851,
-        "mean_turn_assisted": 3.777
+        "mean_turn": 3.791,
+        "mean_turn_assisted": 3.729
       }
     ]
   }

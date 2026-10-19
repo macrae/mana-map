@@ -163,10 +163,13 @@ def test_the_sweeps_are_locked():
 @requires_data
 @requires_deck
 def test_morbid_opportunist_now_draws_on_edgars_sacrifices():
-    """Before the plural read, this swap measured as nothing for draw. The
-    sweep converts about 1.5 tokens a game by turn ten on edgar, and the cap
-    holds the engine to one draw a turn, so the lift is small and POSITIVE —
-    the claim is the interval's bottom, not a size."""
-    r = try_swap.run("edgar-vampires", [("Swamp", "Morbid Opportunist")], iterations=3000)
+    """Before the plural read, this swap measured as nothing for draw. Body for
+    body (Nighthawk Scavenger out, so the mana does not move), paired on 3,000
+    games: +0.08 extra cards by turn eight [+0.06, +0.10] — small, because the
+    sweep converts about 1.5 tokens a game by turn ten and the cap holds the
+    engine to one draw a turn, and POSITIVE, which is the claim. Re-introduce the
+    bug (drop `die\\b` from the trigger) and the interval spans zero."""
+    r = try_swap.run("edgar-vampires", [("Nighthawk Scavenger", "Morbid Opportunist")], iterations=3000)
     row = next(t for t in r["table"] if t["measure"] == "extra cards by T8")
     assert row["ci95_diff"][0] > 0.0, row
+    assert next(c for c in r["cards"] if c["name"] == "Morbid Opportunist")["state"] == "seen"

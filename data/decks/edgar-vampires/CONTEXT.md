@@ -95,14 +95,14 @@ Goldfish, 10,000 seeded games, measured on v2.0.0 (V4), 2026-10-06. Each group b
 
 - share of seeded games where the commander was CAST by turn six: **65%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 6.016**
+- mean turn the commander is first cast: **turn 6.014**
 - A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **25%**
-- A token multiplier or extra token-maker drawn: **26%**
+- A token multiplier or extra token-maker drawn: **25%**
 - A Vampire lord or anthem drawn (the combat plan): **13%**
 - THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest): **8%**
 - Ramp or fixing drawn: **42%**
 - A draw engine drawn: **64%**
-- Protection held for the swarm: **52%**
+- Protection held for the swarm: **51%**
 - An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight: **24%**
 - THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source: **2%**
 - A castable Vampire drawn — the eminence trigger every kill proof opens on: **53%**

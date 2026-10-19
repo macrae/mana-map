@@ -169,11 +169,20 @@ def test_the_rituals_are_read_and_the_costly_ones_refused():
 def test_a_ritual_is_cast_when_it_is_the_difference(monkeypatch):
     """PROVED BY BLINDING: sharknado with Mana Geyser and Jeska's Will in the list
     reads more damage by turn ten when the rituals are read than when they are not.
-    Measured 2026-10-05: 64.19 against 63.70 at 3,000 games, seed 9. Since v1.2.0
-    (2026-10-06) both rituals are in the list itself."""
-    from manamap.pilot import diagnostic, goldfish_library
-    on = diagnostic.run("sharknado", iterations=1500, seed=9, quiet=True)
+    Measured 2026-10-05: 64.19 against 63.70 at 3,000 games, seed 9. Both rituals
+    were in the list from v1.2.0 (2026-10-06) until v1.3.0 (2026-10-19) cut Mana
+    Geyser, after which one ritual read within noise of none (94.94 against 95.15)
+    — so the test puts Geyser back in a Mountain's slot for the measurement: the
+    claim is about the READER, not about which list is sleeved today."""
+    from manamap.pilot import diagnostic, goldfish_library, try_swap
+    from manamap.pilot.common import load_deck_cards
+    doc = dict(load_deck_cards("sharknado"))
+    cards = list(doc["cards"])
+    slot = next(k for k, c in enumerate(cards) if c["name"] == "Mountain")
+    cards[slot] = try_swap.corpus_card("Mana Geyser")
+    doc["cards"] = cards
+    on = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
     monkeypatch.setattr(goldfish_library, "ritual_profile", lambda card: None)
-    off = diagnostic.run("sharknado", iterations=1500, seed=9, quiet=True)
+    off = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
     assert (on["output"]["damage_by_turn"]["10"]["rate"]
             > off["output"]["damage_by_turn"]["10"]["rate"])

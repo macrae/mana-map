@@ -112,10 +112,12 @@ METRICS = {
         "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the "
                 "end of turn 8, averaged over every game. Counts only draw the "
                 "model can price — a card's own ETB draw, an instant or sorcery "
-                "that draws, an upkeep trigger, and a trigger that draws when "
-                "other creatures or tokens enter. Activated, X-based, "
-                "sacrifice-gated and death-triggered draw are NOT counted and "
-                "the cards are named in the goldfish artifact.",
+                "that draws, an upkeep trigger, a trigger that draws when "
+                "other creatures or tokens enter, and (since 2026-10-19) a "
+                "trigger that draws when a creature dies, on the deaths the "
+                "sacrifice and death channels produce and no others. Activated, "
+                "X-based and priced draw ('you may pay 2 life. If you do') are "
+                "NOT counted and the cards are named in the goldfish artifact.",
         "why": "\"Vampires on board, nothing in hand, no way to rebuild\" is the "
                "most-repeated line in this deck's log, and until 2026-08-28 the "
                "model could not see it: it drew one card a turn whatever the "
@@ -778,7 +780,7 @@ def _draw_is_blind(slug, branch, name):
     draw really is one a turn.
     """
     from manamap.pilot.common import load_deck_cards
-    from manamap.pilot.goldfish_profiles import draw_profile
+    from manamap.pilot.goldfish_profiles import death_profile, draw_profile
 
     try:
         targets = json.loads(deck_file_or_none(slug, branch).read_text())
@@ -786,18 +788,30 @@ def _draw_is_blind(slug, branch, name):
         targets = {}
     if not targets.get("model_draw"):
         return True
+    deaths_on = bool(targets.get("model_sacrifice") or targets.get("model_deaths"))
+
+    def blind(card):
+        # A CARD IS ONLY BLIND IF NO CHANNEL READS IT — the rule
+        # `meta.draw_not_modelled` keeps since 2026-10-19: Morbid Opportunist's
+        # draw is a death trigger, priced on every death the sacrifice sweep or
+        # the death rate produces, and this report called it unmeasured on the
+        # very branch that taught the model to read it.
+        if deaths_on and death_profile(card)["death_draw"]:
+            return False
+        return bool(draw_profile(card)["unmodelled"])
+
     try:
         doc = load_deck_cards(slug, branch)
     except Exception:                                # pragma: no cover - defensive
         return True
     for card in doc.get("cards") or []:
         if card.get("name") == name:
-            return bool(draw_profile(card)["unmodelled"])
+            return blind(card)
     # Not in this list — it is the card leaving, so read it from the champion.
     try:
         for card in load_deck_cards(slug).get("cards") or []:
             if card.get("name") == name:
-                return bool(draw_profile(card)["unmodelled"])
+                return blind(card)
     except Exception:                                # pragma: no cover - defensive
         pass
     return True
