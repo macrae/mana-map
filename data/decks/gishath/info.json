@@ -17,7 +17,9 @@
     "complete": 17,
     "of": 19,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "brief",
@@ -2563,7 +2565,46 @@
     "target": 4,
     "within_target": true
   },
-  "deckcheck": null,
+  "deckcheck": {
+    "score": 40,
+    "max_score": 96,
+    "bracket": 3,
+    "as_of": "2026-10-18",
+    "source_updated_at": "2026-10-19T02:06:22.955428+00:00",
+    "url": "https://deckcheck.co/app/decklist/6nPSAF6BU0-U",
+    "stale_list": false,
+    "readings_n": 1,
+    "omni": {
+      "benchmarks": {
+        "A1": "A",
+        "A2": "B",
+        "I1": "B",
+        "I2": "B",
+        "P1": "A",
+        "P2": "B",
+        "P3": "B",
+        "R1": "A",
+        "R2": "S",
+        "S1": "A",
+        "S2": "A",
+        "S3": "A"
+      },
+      "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
+      "median_bracket": 3,
+      "median_score": 40,
+      "n": 1,
+      "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
+    },
+    "floor_vs_dti": {
+      "floor": 3,
+      "floor_decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
+      "floor_name": "Upgraded",
+      "reading_as_of": "2026-10-18",
+      "relation": "equal",
+      "their_bracket": 3
+    },
+    "max_age_days": 30
+  },
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
@@ -3131,6 +3172,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status gishath` names them; fix before anything else reads them",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
     "try a swap in seconds — `try gishath --out \"A\" --in \"B\"`"

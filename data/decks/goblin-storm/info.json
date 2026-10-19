@@ -15,7 +15,9 @@
     "complete": 18,
     "of": 19,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -2288,7 +2290,47 @@
     "target": 4,
     "within_target": true
   },
-  "deckcheck": null,
+  "deckcheck": {
+    "score": 36,
+    "max_score": 96,
+    "bracket": 3,
+    "as_of": "2026-10-18",
+    "source_updated_at": "2026-10-19T02:08:36.304564+00:00",
+    "url": "https://deckcheck.co/app/decklist/lHEauc76uA6G",
+    "stale_list": false,
+    "readings_n": 1,
+    "omni": {
+      "benchmarks": {
+        "A1": "B",
+        "A2": "B",
+        "I1": "C",
+        "I2": "F",
+        "P1": "A",
+        "P2": "S",
+        "P3": "B",
+        "R1": "B",
+        "R2": "S",
+        "S1": "C",
+        "S2": "A",
+        "S3": "B"
+      },
+      "decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+      "median_bracket": 3,
+      "median_score": 36,
+      "n": 1,
+      "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
+    },
+    "floor_vs_dti": {
+      "floor": 4,
+      "floor_decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+      "floor_name": "Optimized",
+      "note": "DeckCheck can only RAISE its own rules floor, so a bracket below ours means their copy is probably an older list — compare source_updated_at; the floor is not lowered",
+      "reading_as_of": "2026-10-18",
+      "relation": "dti_lower",
+      "their_bracket": 3
+    },
+    "max_age_days": 30
+  },
   "combos": {
     "summary": {
       "excluded_commander_assumption": 3,
@@ -2828,6 +2870,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "`meaner-v1` is PROPOSED as v1.1.0 and waiting on cardboard — 13 card(s) (12 to buy, 1 to unsleeve) — `manamap pilot deck-branch goblin-storm show meaner-v1` has the pull list",
     "branch `zada-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check goblin-storm --branch zada-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `zada-v1` needs 15 card(s) sourced — `manamap pilot deck-branch goblin-storm source zada-v1`",

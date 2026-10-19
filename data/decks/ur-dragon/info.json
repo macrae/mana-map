@@ -19,7 +19,9 @@
     "complete": 17,
     "of": 19,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -7013,7 +7015,46 @@
     "target": 4,
     "within_target": true
   },
-  "deckcheck": null,
+  "deckcheck": {
+    "score": 35,
+    "max_score": 96,
+    "bracket": 3,
+    "as_of": "2026-10-18",
+    "source_updated_at": "2026-10-19T02:12:46.023110+00:00",
+    "url": "https://deckcheck.co/app/decklist/C5AXcb-oAo4K",
+    "stale_list": false,
+    "readings_n": 1,
+    "omni": {
+      "benchmarks": {
+        "A1": "B",
+        "A2": "A",
+        "I1": "B",
+        "I2": "B",
+        "P1": "A",
+        "P2": "B",
+        "P3": "B",
+        "R1": "A",
+        "R2": "B",
+        "S1": "A",
+        "S2": "A",
+        "S3": "A"
+      },
+      "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+      "median_bracket": 3,
+      "median_score": 35,
+      "n": 1,
+      "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
+    },
+    "floor_vs_dti": {
+      "floor": 3,
+      "floor_decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
+      "floor_name": "Upgraded",
+      "reading_as_of": "2026-10-18",
+      "relation": "equal",
+      "their_bracket": 3
+    },
+    "max_age_days": 30
+  },
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
@@ -7719,6 +7760,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
     "open questions routed: diagnose ×6, goldfish ×11, research-strategy ×6, resolve-stack ×9",

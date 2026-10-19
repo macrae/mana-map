@@ -16,7 +16,9 @@
     "complete": 17,
     "of": 19,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -3578,7 +3580,46 @@
     "target": 4,
     "within_target": true
   },
-  "deckcheck": null,
+  "deckcheck": {
+    "score": 46,
+    "max_score": 96,
+    "bracket": 4,
+    "as_of": "2026-10-18",
+    "source_updated_at": "2026-10-19T02:11:10.706506+00:00",
+    "url": "https://deckcheck.co/app/decklist/pojj6SVQK7WJ",
+    "stale_list": false,
+    "readings_n": 1,
+    "omni": {
+      "benchmarks": {
+        "A1": "A",
+        "A2": "B",
+        "I1": "A",
+        "I2": "B",
+        "P1": "B",
+        "P2": "S",
+        "P3": "B",
+        "R1": "A",
+        "R2": "S",
+        "S1": "A",
+        "S2": "A",
+        "S3": "B"
+      },
+      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+      "median_bracket": 4,
+      "median_score": 46,
+      "n": 1,
+      "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
+    },
+    "floor_vs_dti": {
+      "floor": 4,
+      "floor_decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+      "floor_name": "Optimized",
+      "reading_as_of": "2026-10-18",
+      "relation": "equal",
+      "their_bracket": 4
+    },
+    "max_age_days": 30
+  },
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
@@ -4242,6 +4283,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status heliod` names them; fix before anything else reads them",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
