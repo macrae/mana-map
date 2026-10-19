@@ -22,7 +22,8 @@
       "prose"
     ],
     "invalid": [
-      "engine"
+      "engine",
+      "CONTEXT.md"
     ],
     "verified": true,
     "missing": [
@@ -12227,7 +12228,46 @@
     "target": 4,
     "within_target": true
   },
-  "deckcheck": null,
+  "deckcheck": {
+    "score": 28,
+    "max_score": 96,
+    "bracket": 4,
+    "as_of": "2026-10-18",
+    "source_updated_at": "2026-10-19T01:27:53.829231+00:00",
+    "url": "https://deckcheck.co/app/decklist/qb9leISdSZX6",
+    "stale_list": false,
+    "readings_n": 1,
+    "omni": {
+      "benchmarks": {
+        "A1": "A",
+        "A2": "A",
+        "I1": "B",
+        "I2": "F",
+        "P1": "B",
+        "P2": "B",
+        "P3": "B",
+        "R1": "B",
+        "R2": "A",
+        "S1": "B",
+        "S2": "A",
+        "S3": "B"
+      },
+      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
+      "median_bracket": 4,
+      "median_score": 28,
+      "n": 1,
+      "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
+    },
+    "floor_vs_dti": {
+      "floor": 4,
+      "floor_decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
+      "floor_name": "Optimized",
+      "reading_as_of": "2026-10-18",
+      "relation": "equal",
+      "their_bracket": 4
+    },
+    "max_age_days": 30
+  },
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
@@ -13008,7 +13048,7 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "2 artifact(s) fail their own gate (engine, CONTEXT.md) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×5",
