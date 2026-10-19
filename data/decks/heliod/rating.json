@@ -1,7 +1,7 @@
 {
  "slug": "heliod",
  "tier": "★",
- "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 3 decks and claims no significance.",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 2 decks and claims no significance.",
  "bracket": {
   "key": 4,
   "source": "target",
@@ -18,11 +18,11 @@
    "sub_score": 0.0,
    "sub_ci": [
     0.0,
-    7.54
+    0.06
    ],
-   "placement": 0.0,
+   "placement": null,
    "anchor": 0.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of kill_by_turn_8 within bracket 4 (n=3); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n; weight × 0.5 — a win the goldfish cannot see (Approach of the Second Sun)",
+   "method": "anchor only (placement withheld): placement of kill_by_turn_8 within bracket 4 (n=2); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n; weight × 0.5 — a win the goldfish cannot see (Approach of the Second Sun)",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
@@ -60,14 +60,14 @@
    "weight": 0.08,
    "weight_validity": 1.0,
    "weight_effective": 0.1081,
-   "sub_score": 66.67,
+   "sub_score": 100.0,
    "sub_ci": [
-    66.67,
-    74.17
+    100.0,
+    100.0
    ],
-   "placement": 0.0,
+   "placement": null,
    "anchor": 100.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of missed_land_drop_rate (lower is better) within bracket 4; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "anchor only (placement withheld): placement of missed_land_drop_rate (lower is better) within bracket 4; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
@@ -102,14 +102,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.1622,
-   "sub_score": 80.0,
+   "sub_score": 70.0,
    "sub_ci": [
-    72.49,
-    80.0
+    70.0,
+    70.0
    ],
-   "placement": 100.0,
+   "placement": null,
    "anchor": 70.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of answer_cards within bracket 4; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "anchor only (placement withheld): placement of answer_cards within bracket 4; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -250,14 +250,14 @@
    "weight": 0.15,
    "weight_validity": 1.0,
    "weight_effective": 0.2027,
-   "sub_score": 79.17,
+   "sub_score": 68.75,
    "sub_ci": [
-    70.21,
-    83.0
+    62.46,
+    75.23
    ],
-   "placement": 100.0,
+   "placement": null,
    "anchor": 68.75,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of DeckCheck's score (of 96) within bracket 4; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "method": "anchor only (placement withheld): placement of DeckCheck's score (of 96) within bracket 4; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
    "inputs": [
     {
      "figure": "dti.score",
@@ -310,7 +310,7 @@
   "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
   "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
   "speed: the goldfish measures combat damage and cannot see Approach of the Second Sun (engine.json wincon; oracle text wins the game); its prior weight is multiplied by 0.5 (SPEED_VALIDITY_ALT_WIN)",
-  "rank over n=3 decks; no significance claim"
+  "rank over n=2 decks; no significance claim"
  ],
  "context": {
   "dti": {
@@ -323,7 +323,7 @@
   "floor_vs_target": "floor 4, target 4"
  },
  "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
- "fleet_sha": "834ca21df40e",
+ "fleet_sha": "d5d71f90d137",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -383,24 +383,24 @@
   ],
   "iterations": 3
  },
- "code_score": 65.1,
- "score_point": 65.1,
- "score": 65.1,
+ "code_score": 64.9,
+ "score_point": 65.0,
+ "score": 65.0,
  "score_ci": [
-  57.3,
-  70.8
+  56.6,
+  72.3
  ],
  "grade": "B",
  "grade_range": [
   "C",
   "B"
  ],
- "grade_display": "C–B",
+ "grade_display": "B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.517,
-  "C": 0.481,
-  "D": 0.002,
+  "B": 0.501,
+  "C": 0.492,
+  "D": 0.006,
   "F": 0.0
  },
  "uncertainty": {
@@ -417,106 +417,83 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 70.8,
+    "score": 70.7,
     "grade": "B"
    },
    "mana": {
-    "score": 64.9,
+    "score": 60.7,
     "grade": "C"
    },
    "resilience": {
-    "score": 62.2,
+    "score": 64.0,
     "grade": "C"
    },
    "construction": {
-    "score": 65.3,
+    "score": 65.1,
     "grade": "B"
    },
    "dti": {
-    "score": 61.5,
+    "score": 64.0,
     "grade": "C"
    },
    "judgment": {
-    "score": 65.1,
-    "grade": "B"
+    "score": 64.9,
+    "grade": "C"
    }
   },
   "flips": [
    {
     "component": "speed",
     "share_now": 0.081,
-    "share_at_flip": 0.082,
+    "share_at_flip": 0.081,
     "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "raise"
-   },
-   {
-    "component": "dti",
-    "share_now": 0.203,
-    "share_at_flip": 0.198,
-    "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "lower"
-   },
-   {
-    "component": "resilience",
-    "share_now": 0.162,
-    "share_at_flip": 0.157,
-    "boundary": 65,
-    "grade_at_flip": "C",
+    "grade_at_flip": "B",
     "direction": "lower"
    },
    {
     "component": "mana",
     "share_now": 0.108,
-    "share_at_flip": 0.057,
+    "share_at_flip": 0.109,
     "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "lower"
+    "grade_at_flip": "B",
+    "direction": "raise"
+   },
+   {
+    "component": "resilience",
+    "share_now": 0.162,
+    "share_at_flip": 0.169,
+    "boundary": 65,
+    "grade_at_flip": "B",
+    "direction": "raise"
+   },
+   {
+    "component": "dti",
+    "share_now": 0.203,
+    "share_at_flip": 0.211,
+    "boundary": 65,
+    "grade_at_flip": "B",
+    "direction": "raise"
    },
    {
     "component": "construction",
     "share_now": 0.176,
-    "share_at_flip": 0.269,
+    "share_at_flip": 0.126,
     "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "raise"
+    "grade_at_flip": "B",
+    "direction": "lower"
    }
   ]
  },
  "concordance": {
-  "level": "divergent",
-  "instruments": {
-   "construction": 3.0,
-   "dti": 1.0,
-   "judgment": 1.5,
-   "mana": 3.0,
-   "resilience": 1.0,
-   "speed": 3.0
-  },
-  "of": 3,
-  "spread": 1.0,
-  "outliers": [
-   {
-    "instrument": "dti",
-    "rank": 1.0,
-    "side": "better"
-   },
-   {
-    "instrument": "resilience",
-    "rank": 1.0,
-    "side": "better"
-   }
-  ],
-  "group": {
-   "kendall_w": 0.152,
-   "p": 0.4419,
-   "p_method": "exact over 7776 relabellings",
-   "m": 6,
-   "n": 3
-  }
+  "level": "withheld",
+  "why": "group of 2 below 3",
+  "instruments": {},
+  "of": 2,
+  "spread": null,
+  "outliers": [],
+  "group": null
  },
- "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
+ "resolution": "the 90% interval spans 1 grade boundary (65); concordance withheld",
  "judgment": {
   "sub_score": 65,
   "argument": "The measured components cannot see whether this deck's good cards turn into a win, and they disagree: dti and resilience rank Heliod first in its bracket, speed, mana and construction rank it last. Dti is DeckCheck's score of 46 with a rubric mean of 68.75: it grades the cards one by one. The engine's output stage says what the deck produces is the Crawlers, Secure the Wastes, Walking Ballista and Hangarback Walker, and that it is not a clock; the wincon stage says it is one card. So the rubric rewards quality the goldfish never converts into a kill, which is what pulls speed to the bottom. Neither instrument is wrong about its own question. They measure different things, and they cancel. Resilience counts 21 answer cards, and the record does not explain why that count ranks first: both logged games, on earlier lists, were lost, one to a stack war that took Heliod, the other to the pilot's own sequencing, and neither sizes a gap I can cite for the current list. Logged games are withheld, so I do not price them. The judgment sits at code_score 65.1 because the two outliers offset and no unmeasured, cited fact moves it either way.",
@@ -555,31 +532,27 @@
   "weight_effective": 0.2703,
   "sub_ci": [
    56.97,
-   73.31
+   73.19
   ]
  },
  "rank": {
   "position": 1,
-  "of": 3,
+  "of": 2,
   "group": [
    "heliod",
-   "sharknado",
    "edgar-vampires"
   ],
   "acceptability": {
-   "1": 0.484,
-   "2": 0.513,
-   "3": 0.003
+   "1": 0.999,
+   "2": 0.002
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
-   "heliod": "this document",
-   "sharknado": "rating.json judgment"
+   "heliod": "this document"
   },
   "scores": {
-   "heliod": 65.1,
-   "sharknado": 64.9,
-   "edgar-vampires": 50.6
+   "heliod": 65.0,
+   "edgar-vampires": 54.0
   }
  }
 }

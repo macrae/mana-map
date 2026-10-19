@@ -1,7 +1,7 @@
 {
  "slug": "goblin-storm",
  "tier": "★",
- "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 3 decks and claims no significance.",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 4 decks and claims no significance.",
  "bracket": {
   "key": 3,
   "source": "target",
@@ -15,14 +15,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.15,
-   "sub_score": 66.67,
+   "sub_score": 57.14,
    "sub_ci": [
-    66.67,
-    74.24
+    57.14,
+    63.53
    ],
    "placement": 0.0,
    "anchor": 100.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of kill_by_turn_8 within bracket 3 (n=3); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of kill_by_turn_8 within bracket 3 (n=4); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
@@ -49,14 +49,14 @@
    "weight": 0.08,
    "weight_validity": 1.0,
    "weight_effective": 0.1,
-   "sub_score": 100.0,
+   "sub_score": 85.72,
    "sub_ci": [
-    92.6,
-    100.0
+    79.29,
+    92.11
    ],
-   "placement": 100.0,
+   "placement": 66.67,
    "anchor": 100.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
@@ -91,14 +91,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.15,
-   "sub_score": 33.33,
+   "sub_score": 28.57,
    "sub_ci": [
-    33.33,
-    40.94
+    28.57,
+    35.01
    ],
    "placement": 0.0,
    "anchor": 50.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -239,14 +239,14 @@
    "weight": 0.15,
    "weight_validity": 1.0,
    "weight_effective": 0.1875,
-   "sub_score": 43.06,
+   "sub_score": 51.19,
    "sub_ci": [
-    34.06,
-    51.78
+    43.87,
+    58.59
    ],
-   "placement": 25.0,
+   "placement": 50.0,
    "anchor": 52.08,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
    "inputs": [
     {
      "figure": "dti.score",
@@ -298,7 +298,7 @@
   "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
   "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
   "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
-  "rank over n=3 decks; no significance claim"
+  "rank over n=4 decks; no significance claim"
  ],
  "context": {
   "dti": {
@@ -311,7 +311,7 @@
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
- "fleet_sha": "1d045e2c9800",
+ "fleet_sha": "d5d71f90d137",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -376,24 +376,24 @@
   ],
   "iterations": 3
  },
- "code_score": 56.8,
- "score_point": 56.8,
- "score": 57.1,
+ "code_score": 54.1,
+ "score_point": 54.8,
+ "score": 55.3,
  "score_ci": [
-  49.8,
-  65.0
+  49.1,
+  61.6
  ],
  "grade": "C",
  "grade_range": [
   "D",
   "C"
  ],
- "grade_display": "D–C",
+ "grade_display": "C",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.049,
-  "C": 0.897,
-  "D": 0.053,
+  "A": 0.0,
+  "B": 0.008,
+  "C": 0.92,
+  "D": 0.072,
   "F": 0.0
  },
  "uncertainty": {
@@ -410,59 +410,43 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 55.1,
+    "score": 54.4,
     "grade": "C"
    },
    "mana": {
-    "score": 52.0,
+    "score": 51.4,
     "grade": "C"
    },
    "resilience": {
-    "score": 61.0,
+    "score": 59.4,
     "grade": "C"
    },
    "construction": {
-    "score": 56.5,
+    "score": 54.1,
     "grade": "C"
    },
    "dti": {
-    "score": 60.0,
+    "score": 55.6,
     "grade": "C"
    },
    "judgment": {
-    "score": 56.8,
+    "score": 54.1,
     "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "mana",
-    "share_now": 0.1,
-    "share_at_flip": 0.27,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "raise"
-   },
-   {
     "component": "resilience",
     "share_now": 0.15,
+    "share_at_flip": 0.305,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "raise"
+   },
+   {
+    "component": "mana",
+    "share_now": 0.1,
     "share_at_flip": 0.397,
-    "boundary": 50,
-    "grade_at_flip": "D",
-    "direction": "raise"
-   },
-   {
-    "component": "dti",
-    "share_now": 0.187,
-    "share_at_flip": 0.591,
-    "boundary": 50,
-    "grade_at_flip": "D",
-    "direction": "raise"
-   },
-   {
-    "component": "speed",
-    "share_now": 0.15,
-    "share_at_flip": 0.856,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -470,38 +454,33 @@
   ]
  },
  "concordance": {
-  "level": "divergent",
+  "level": "mixed",
   "instruments": {
-   "construction": 2.0,
+   "construction": 3.0,
    "dti": 3.0,
-   "judgment": 3.0,
-   "mana": 1.0,
-   "resilience": 3.0,
-   "speed": 3.0
+   "judgment": 4.0,
+   "mana": 2.0,
+   "resilience": 4.0,
+   "speed": 4.0
   },
-  "of": 3,
-  "spread": 1.0,
+  "of": 4,
+  "spread": 0.667,
   "outliers": [
    {
-    "instrument": "construction",
-    "rank": 2.0,
-    "side": "better"
-   },
-   {
     "instrument": "mana",
-    "rank": 1.0,
+    "rank": 2.0,
     "side": "better"
    }
   ],
   "group": {
-   "kendall_w": 0.25,
-   "p": 0.2522,
-   "p_method": "exact over 7776 relabellings",
+   "kendall_w": 0.233,
+   "p": 0.2631,
+   "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 6,
-   "n": 3
+   "n": 4
   }
  },
- "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance divergent",
+ "resolution": "the 90% interval spans 1 grade boundary (50); concordance mixed",
  "judgment": {
   "sub_score": 57,
   "argument": "The measured components miss two things: how this list plays, and whether its engine converts. The table record is withheld, and the two logged games carry a list hash that is not the rated list's, so they say nothing about it. I do not import them; the pilot's own verdict there, \"a bad draw and a bad keep, not a deck problem\", concerns the older list. What I can add is the engine: the passing stacks prove parts of the thesis (Fists of Flame on Zada is a sequential-draw lethal; Empty the Warrens with Impact Tremors proves the storm count and the damage, not a kill). That is a capability the goldfish clock (kill_by_turn_8 0.565) does not name, but it is not a result on this list either, and the goldfish cannot see blockers or removal. Divergent concordance names two outliers. Construction ranks better than the other instruments, but I have no Goblin count or opening-hand rate on this list to say the audit bands undersell it, so I leave it as measured. Mana ranks best, and the component already scores it 100; the record does not explain or dispute that. Resilience reads 13 answer cards and 0 sweepers; the audit's interaction axis, at 11, sits at its band. I leave both as measured. I sit at the measured score: nothing unmeasured and specific to this list moves it.",
@@ -539,32 +518,36 @@
   "weight": 0.2,
   "weight_effective": 0.25,
   "sub_ci": [
-   48.52,
-   65.15
+   48.87,
+   65.5
   ]
  },
  "rank": {
-  "position": 3,
-  "of": 3,
+  "position": 4,
+  "of": 4,
   "group": [
    "gishath",
    "ur-dragon",
+   "sharknado",
    "goblin-storm"
   ],
   "acceptability": {
    "1": 0.0,
-   "2": 0.021,
-   "3": 0.979
+   "2": 0.001,
+   "3": 0.024,
+   "4": 0.976
   },
   "basis": {
    "gishath": "rating.json judgment",
    "goblin-storm": "this document",
+   "sharknado": "rating.json judgment",
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "gishath": 76.7,
-   "ur-dragon": 69.0,
-   "goblin-storm": 57.1
+   "gishath": 74.9,
+   "ur-dragon": 68.1,
+   "sharknado": 66.8,
+   "goblin-storm": 55.3
   }
  }
 }

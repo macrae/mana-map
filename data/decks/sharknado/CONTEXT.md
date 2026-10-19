@@ -4,8 +4,8 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-06
-- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 31/96 → B4 (deckcheck.co, 2026-10-17, 1 reading) — older list
+- **Version:** v1.3.0 (V8) · **status:** sleeved since 2026-10-19
+- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 33/96 → B3 (deckcheck.co, 2026-10-19, 2 readings)
 - **Combos:** 2 known lines (0 infinite, 0 two-card) · 58 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
 <!-- /ctx:gen summary -->
@@ -138,7 +138,7 @@ Colours come from duals, triomes and utility lands. A few are special: [Gemstone
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v1.3.0 (V8), 2026-10-19. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **84%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
@@ -189,6 +189,8 @@ After the merge: the list in this file's notes (Echo of Eons, Mana Geyser and th
 ## Change history
 
 <!-- ctx:gen history -->
+- **v1.3.0 · V8** (2026-10-19) — in: Alhammarret's Archive, Big Score, Boros Charm, Campfire, Collective Defiance, Command Beacon, Fateful Showdown, Fevered Visions …; out: Adarkar Wastes, Calciform Pools, Containment Construct, Currency Converter, Drake Haven, Exotic Orchard, Improbable Alliance, Mana Geyser …. _torbran-v1 merged 2026-10-19: Torbran, three wheels that do something else (Collective Defiance, Fateful Showdown, Incendiary Command), Spider-Man, Lae'zel, Alhammarret's Archive, the answers (Silence_
+  - merge `torbran-v1`: objective kill_by_6 read **met** — played on printed proxies from 2026-10-19; the unowned cards are on the order list (the pilot's call)
 - **v1.2.0 · V7** (2026-10-06) — in: Faerie Mastermind, Jeska's Will, Mana Geyser, Razorkin Needlehead, Scrawling Crawler, Teferi's Protection; out: Enduring Curiosity, Generous Plunderer, Kefnet the Mindful, Silent Hallcreeper, Treasure Map, Waterbender Ascension. _merged and sleeved 2026-10-06_
   - merge `momentum-v1`: objective forge.win_rate read **not resolvable** — Sleeved in paper 2026-10-06 by the pilot: Mana Geyser in hand; the other five ordered (ManaPool, 2026-10-06) and played as proxies until they arrive.
   - played 1: 0W 0L

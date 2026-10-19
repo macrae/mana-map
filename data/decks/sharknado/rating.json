@@ -1,9 +1,9 @@
 {
  "slug": "sharknado",
  "tier": "★",
- "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 3 decks and claims no significance.",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 4 decks and claims no significance.",
  "bracket": {
-  "key": 4,
+  "key": 3,
   "source": "target",
   "floor": 3,
   "floor_name": "Upgraded",
@@ -15,14 +15,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.15,
-   "sub_score": 70.4,
+   "sub_score": 100.0,
    "sub_ci": [
-    62.89,
-    71.19
+    93.64,
+    100.0
    ],
    "placement": 100.0,
-   "anchor": 55.6,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of kill_by_turn_8 within bracket 4 (n=3); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
+   "anchor": 100.0,
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of kill_by_turn_8 within bracket 3 (n=4); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
@@ -33,17 +33,6 @@
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
-     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
-    },
-    {
-     "figure": "kill_by_turn_6",
-     "value": 0.278,
-     "ci95": [
-      0.2693,
-      0.2869
-     ],
-     "n": 10000,
-     "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
     }
    ],
@@ -62,12 +51,12 @@
    "weight_effective": 0.1,
    "sub_score": 100.0,
    "sub_ci": [
-    92.47,
+    93.55,
     100.0
    ],
    "placement": 100.0,
    "anchor": 100.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of missed_land_drop_rate (lower is better) within bracket 4; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
@@ -102,14 +91,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.15,
-   "sub_score": 40.0,
+   "sub_score": 48.57,
    "sub_ci": [
-    40.0,
-    47.52
+    42.01,
+    55.13
    ],
-   "placement": 0.0,
+   "placement": 33.33,
    "anchor": 60.0,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of answer_cards within bracket 4; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -250,14 +239,14 @@
    "weight": 0.15,
    "weight_validity": 1.0,
    "weight_effective": 0.1875,
-   "sub_score": 56.94,
+   "sub_score": 34.52,
    "sub_ci": [
-    47.96,
-    65.72
+    31.26,
+    42.05
    ],
-   "placement": 50.0,
+   "placement": 0.0,
    "anchor": 60.42,
-   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of DeckCheck's score (of 96) within bracket 4; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
    "inputs": [
     {
      "figure": "dti.score",
@@ -309,7 +298,7 @@
   "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
   "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
   "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
-  "rank over n=3 decks; no significance claim"
+  "rank over n=4 decks; no significance claim"
  ],
  "context": {
   "dti": {
@@ -319,83 +308,68 @@
    "as_of": "2026-10-19",
    "stale_list": false
   },
-  "floor_vs_target": "floor 3, target 4"
+  "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
- "fleet_sha": "834ca21df40e",
+ "fleet_sha": "d5d71f90d137",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "Do Silence, Snapback, March of Swirling Mist and the wheel-plus-removal cards get cast in real games, and does the commanders' arrival slip with no added ramp?",
+   "question": "Do Silence, Snapback, March of Swirling Mist and the wheel-plus-removal cards get cast in real games, and do the swapped duals bring the commanders on time with no added ramp?",
    "settled_by": "rate"
   }
  ],
- "iterations": 2,
+ "iterations": 3,
  "verifier": {
-  "verdict": "pass",
+  "verdict": "fail",
   "findings": [
+   {
+    "where": "rating.json",
+    "status": "supported",
+    "note": "validate-rating OK; rating --json re-run diff: components, withheld, code_score 67.2, score_point, bracket, limits, uncertainty, sensitivity all identical."
+   },
    {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "65 equals code_score 65.1 (rounded); claims no gap. Scorecard re-run is identical on components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity. Nothing below is claimed, and resilience (40, placement 0, 14 answer cards, 2 classes) is scored once."
+    "note": "67 vs code_score 67.2: no gap claimed, so no double count. Plain-statement route for outliers is valid: the argument says the record does not explain mana/speed (better) vs dti/resilience (worse) and does not claim cancellation."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "Checked: no log game on the v1.3.0 sha (log 001 is on ce0ceaa6, the pre-change list); withheld table_record/pilot_feel/forge match 'no game, survey, Forge run'; kill_by_turn_8 0.898 matches the component; torbran-v1 objective kill_by_6>=0.25 graded met (0.2884) in decisions 009; the three open tests (answers cast, commanders on time without ramp, Torbran turning wheels into kills vs removal) are in CONTEXT.md's 'things to test'."
+    "note": "Figures match components: kill_by_turn_8 0.898, missed_land_drop_rate 0.1692, answer_cards 14, 2 classes, DTI 33. Ranks match concordance.instruments over n=4 (speed 1, mana 1, resilience 3, dti 4). The only logged game (001, 2026-10-06) predates v1.3.0 (sleeved 2026-10-19). All four outliers addressed."
    },
    {
-    "where": "judgment.argument",
+    "where": "judgment.citations[4]",
     "status": "supported",
-    "note": "Both outliers (dti rank 2, resilience rank 3, worse side) are addressed: resilience by 'already carried in full by the components', DTI by 'the record does not explain it', with the number at code_score as the charter requires for that answer. No cancel claimed without sizes, no superlatives."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "skeleton:speed kill_by_turn_8 is a real input (0.898)."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "skeleton:resilience answer_cards is a real input (14)."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "skeleton:dti is a component; the argument uses it only to name the outlier."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "context:numbers sentence 'No blockers and no removal: read board quality with care.' is verbatim in the Numbers section and used for its meaning (goldfish is a ceiling)."
+    "note": "context:numbers sentence 'No blockers and no removal: read board quality with care.' is verbatim and used as the goldfish-ceiling caveat, which is its meaning. Skeleton citations 0-3 are bare figure names that match the components."
    },
    {
     "where": "open_questions[0]",
-    "status": "supported",
-    "note": "Whether the new answers get cast and whether commander arrival slips needs real games (settled_by rate); no artifact answers it (no log game on this list, no Forge run)."
+    "status": "unjustified",
+    "note": "Half of this question is already answered by artifacts: the context numbers give commander cast by T6 84%, mean first cast T5.308, colour on curve W88/U86/R84, and audit.consistency 0.896 (turn-3 land drops). 'Bring the commanders on time' is measured; only 'get cast in real games' (cards played) needs a rate. Split it or drop the on-time clause. The argument also calls it 'the pilot's own open question', but it is the rating's."
    }
   ],
-  "iterations": 2
+  "iterations": 3
  },
- "code_score": 65.1,
- "score_point": 65.1,
- "score": 64.9,
+ "code_score": 67.2,
+ "score_point": 67.1,
+ "score": 66.8,
  "score_ci": [
-  58.3,
-  71.6
+  57.7,
+  76.5
  ],
- "grade": "C",
+ "grade": "B",
  "grade_range": [
   "C",
   "B"
  ],
  "grade_display": "C–B",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.486,
-  "C": 0.513,
-  "D": 0.0,
+  "A": 0.01,
+  "B": 0.622,
+  "C": 0.367,
+  "D": 0.001,
   "F": 0.0
  },
  "uncertainty": {
@@ -412,35 +386,51 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 64.2,
+    "score": 61.3,
     "grade": "C"
    },
    "mana": {
-    "score": 61.2,
+    "score": 63.5,
     "grade": "C"
    },
    "resilience": {
-    "score": 69.5,
+    "score": 70.4,
     "grade": "B"
    },
    "construction": {
-    "score": 63.9,
-    "grade": "C"
+    "score": 66.3,
+    "grade": "B"
    },
    "dti": {
-    "score": 67.0,
+    "score": 74.6,
     "grade": "B"
    },
    "judgment": {
-    "score": 65.1,
+    "score": 67.2,
     "grade": "B"
    }
   },
   "flips": [
    {
+    "component": "dti",
+    "share_now": 0.187,
+    "share_at_flip": 0.24,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "raise"
+   },
+   {
+    "component": "speed",
+    "share_now": 0.15,
+    "share_at_flip": 0.095,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "lower"
+   },
+   {
     "component": "mana",
     "share_now": 0.1,
-    "share_at_flip": 0.098,
+    "share_at_flip": 0.042,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "lower"
@@ -448,53 +438,39 @@
    {
     "component": "resilience",
     "share_now": 0.15,
-    "share_at_flip": 0.153,
+    "share_at_flip": 0.247,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "raise"
-   },
-   {
-    "component": "dti",
-    "share_now": 0.187,
-    "share_at_flip": 0.197,
-    "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "raise"
-   },
-   {
-    "component": "construction",
-    "share_now": 0.163,
-    "share_at_flip": 0.15,
-    "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "lower"
-   },
-   {
-    "component": "speed",
-    "share_now": 0.15,
-    "share_at_flip": 0.135,
-    "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "lower"
    }
   ]
  },
  "concordance": {
   "level": "divergent",
   "instruments": {
-   "construction": 1.0,
-   "dti": 2.0,
-   "judgment": 1.5,
+   "construction": 2.0,
+   "dti": 4.0,
+   "judgment": 3.0,
    "mana": 1.0,
    "resilience": 3.0,
    "speed": 1.0
   },
-  "of": 3,
+  "of": 4,
   "spread": 1.0,
   "outliers": [
    {
+    "instrument": "mana",
+    "rank": 1.0,
+    "side": "better"
+   },
+   {
+    "instrument": "speed",
+    "rank": 1.0,
+    "side": "better"
+   },
+   {
     "instrument": "dti",
-    "rank": 2.0,
+    "rank": 4.0,
     "side": "worse"
    },
    {
@@ -504,22 +480,27 @@
    }
   ],
   "group": {
-   "kendall_w": 0.152,
-   "p": 0.4419,
-   "p_method": "exact over 7776 relabellings",
+   "kendall_w": 0.233,
+   "p": 0.2631,
+   "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 6,
-   "n": 3
+   "n": 4
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
  "judgment": {
-  "sub_score": 65,
-  "argument": "What the measured components cannot see here is play. No game is logged on this list, no survey, no Forge run on it, and the only game on record was played before the changes that gave the deck its answers, so it speaks to none of them. The goldfish has no blockers or removal, so its speed reading (kill_by_turn_8 0.898) is a ceiling, not a table result. The branch toward Torbran and wheels that also remove met its stated objective and the pilot's notes list what is still to test: whether the new answers get cast, whether the commanders arrive on time without added ramp, and whether Torbran's bonus turns wheels into kills against real removal. Those are open questions, not facts I can score either way. The two outliers are DeckCheck's Threat Index and resilience, both on the worse side. I cannot say which to believe. Resilience is already carried in full by the components (14 answer cards, two classes answered), and the record has no game showing whether the new answers work, so nothing unmeasured justifies moving it. The record also does not explain DeckCheck's reading. For both, my number sits at code_score. It is no higher because nothing has been played on this list, and no lower because every weakness I could name is already a component.",
+  "sub_score": 67,
+  "argument": "What the measured components cannot see is play. No game is logged on this list, no survey, no Forge run on it, and the only game on record was played before the changes that gave the deck its answers, so it speaks to none of them. Four instruments disagree, and I answer each by name. Speed (kill_by_turn_8 0.898) ranks the deck first in bracket three, but the goldfish has no blockers or removal, so it is a ceiling and I will not lift the number for it. Mana (missed_land_drop_rate 0.1692) also ranks first; the record holds nothing unmeasured about the land pass beyond the pilot's own open question whether the swapped duals bring the commanders on time, so it stays as measured. DeckCheck's Threat Index (33) ranks the deck last and resilience (14 answer cards, two classes answered) ranks it third. Both are already scored in full, and the record has no game showing whether the new answers work, so nothing unmeasured moves either. The record does not explain why the clock and land drops read the deck first while DeckCheck reads it last. I do not claim the instruments cancel. My number therefore sits at code_score. It is no higher because nothing has been played on this list, and no lower because every weakness I can name is already a component.",
   "citations": [
    {
     "kind": "skeleton",
     "ref": "skeleton:speed",
     "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:mana",
+    "quote": "missed_land_drop_rate"
    },
    {
     "kind": "skeleton",
@@ -544,32 +525,36 @@
   "weight": 0.2,
   "weight_effective": 0.25,
   "sub_ci": [
-   56.88,
-   73.43
+   58.7,
+   75.68
   ]
  },
  "rank": {
-  "position": 2,
-  "of": 3,
+  "position": 3,
+  "of": 4,
   "group": [
-   "heliod",
+   "gishath",
+   "ur-dragon",
    "sharknado",
-   "edgar-vampires"
+   "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.515,
-   "2": 0.474,
-   "3": 0.011
+   "1": 0.101,
+   "2": 0.324,
+   "3": 0.567,
+   "4": 0.009
   },
   "basis": {
-   "edgar-vampires": "rating.json judgment",
-   "heliod": "rating.json judgment",
-   "sharknado": "this document"
+   "gishath": "rating.json judgment",
+   "goblin-storm": "rating.json judgment",
+   "sharknado": "this document",
+   "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "heliod": 65.1,
-   "sharknado": 64.9,
-   "edgar-vampires": 50.6
+   "gishath": 74.9,
+   "ur-dragon": 68.1,
+   "sharknado": 66.8,
+   "goblin-storm": 55.3
   }
  }
 }

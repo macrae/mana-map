@@ -86,9 +86,8 @@ What it says, deck by deck (`sensitivity.leave_one_out` is the figure behind eac
 
 **Sharknado released the same day** (`/release-branch`, its first run): torbran-v1 merged as
 **v1.3.0** on printed proxies, the paper lock moved, DeckCheck re-pasted and rescanned
-(31/96 B4 → 33/96 B3 on their read; our floor 3, target 4), the goldfish declaration repaired
-for the new list, the deck re-rated: resilience 13 → 40, score 59.0 → ~65 C–B, a coin flip
-with Heliod for first in Bracket 4 (`rating --all` for the settled figure). The order list is
+(31/96 B4 → 33/96 B3 on their read; our floor 3, and the pilot's TARGET IS 3 — "optimized high bracket 3", corrected 2026-10-19; the earlier 4 was wrong), the goldfish declaration repaired
+for the new list, the deck re-rated: resilience 13 → 40, score 59.0 → ~65 C–B, now ranked in Bracket 3 beside Gishath, Ur-Dragon and Goblin Storm (`rating --all` for the settled figure; Bracket 4 is Edgar and Heliod, n=2, so their placements are withheld). The order list is
 the branch's 18 unowned adds (`deck-branch sharknado show torbran-v1`). Known-issues §28:
 regen zeroes a merged branch's `net_change.json`; the pre-merge reading lives in the ledger.
 
