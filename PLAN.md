@@ -99,6 +99,10 @@ siblings; `deck-info` prints a BRANCHES block; Jarvis has a "Review a branch" in
 `/release-branch` ships one. Edgar's eleven stale experiments are REJECTED on the ledger
 with their reasons; mean-v1 is its one open branch (`viz/branch.html?deck=edgar-vampires&branch=mean-v1`).
 
+**Later the same day.** Sharknado's proxies went in (v1.3.0 in the sleeves). Goblin-storm's v1.1.0 was tagged and locked (eleven of thirteen adds in; Purphoros to find, Fable in the mail). The stale branches across the sleeved fleet were REJECTED with their reasons: goblin-storm's zada-v1 and copy-burst-v1, gishath's cart-v1 (absorbed by mana-v1), ur-dragon's six-branch 2026-09-11 chain (absorbed by final-v2), heliod's splendor-v1 and blue-v1 (absorbed by splendor-v2) — twenty-two in all with Edgar's eleven. Three open branches remain, each a real call of the pilot's: edgar mean-v1 (HALTED — see NEXT_SESSION.md), gishath lands-v1 (Savannah, Taiga, Sacred Foundry for three unfetchable lands), ur-dragon protection-v1 (Radiant Destiny for Whirlwing Stormbrood). Edgar's mean-v1 was restaged as option C: Elspeth, Storm Slayer and Crossway Troublemakers STAY — both had been cut off DeckCheck's list and the instruments' silence, and a card the goldfish cannot read is never a cut on that ground.
+
+**A seventh sleeved deck (2026-10-19): keen-engineering**, the Foundations Commander mono-blue precon (Sai, Master Thopterist) as printed — the pilot's Bracket 2 / low-3 power-down deck, v1.0.0, paper-locked, Context seeded, measured and rated. It is the only Bracket 2 member, so its rating is anchors only with placements withheld until two more decks join the group; Sai's Thopter trigger and sacrifice-draw are not modelled, so its goldfish figures are a floor. No DeckCheck reading yet (the deck has to be created on their site first).
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by
