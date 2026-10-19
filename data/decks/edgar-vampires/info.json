@@ -1691,8 +1691,8 @@
       "name": "distance-v1",
       "opened": "2026-10-02",
       "why": "ACTION AT A DISTANCE is Edgar's weakest identity axis (noncombat damage 4.32/game). Ingris Stingerquill (FRA) pings each opponent for every attacker, so it scales with the 8.04 bodies eminence mints rather than adding a flat payoff. Objective is TOTAL life removed, not noncombat damage alone: entry-v1 raised noncombat 4.32 -> 10.31 and still lost ground on the total. BLOCKED on Forge: the 2026-08-08 build has no Ingris script, so simulate refuses until Forge ships FRA.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: an early-October single-axis experiment never measured; its diff reads against a",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -2669,8 +2669,8 @@
       "name": "draw-v1",
       "opened": "2026-10-02",
       "why": "Turns 7-10 stall on an EMPTY HAND 67.6% of the time (b1aa4db6), which the captain's log says six times. Four swaps of cards the diagnosis argues pay nothing for draw that fires on DEATHS or refills the hand; every add PLAYED in forge-cast-check 2026-10-02. Objective halves the champion's 0.72 empty-hand own turns per game (200 games, ci95 [0.55, 0.90]).",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: an early-October single-axis experiment that cut Vish Kal, which never leaves; i",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -3716,8 +3716,8 @@
       "name": "boss-v1",
       "opened": "2026-10-01",
       "why": "v1.2.0 at BRACKET 4 — the pilot's call, 2026-10-01, after drain-v1's 200-game arm read as an overall downgrade: 'bring back bloodthirsty conqueror... let's go full on Tier 4... I want something that can close or win by T6'. READING B IS REVERSED: Conqueror stays, so Conqueror+Vito and Conqueror+Sanguine Bond are two-card infinites the deck carries by construction and that is accepted. THE LOOP IS NOT THE PLAN: nothing tutors for it, Exquisite Blood stays out. The clock target is stated honestly as T7-T8 — a T6 POD kill needs ~120 life across three opponents and Sanctum Seeker with six attackers doubled by Bloodletter is ~12 to each a combat. WHAT drain-v1 TAUGHT (same harness, 200 games each arm): drain 6.59 -> 10.66, +4.07 [0.45, 7.69] EXCLUDES ZERO, so the five adds that played do raise drain; but life_gained -14.5, biggest_hit -1.95 and combat damage -16.6 mean (median -3.0, tail-driven) all excluded zero, and essentially all of that was Conqueror's departure — he was the gain engine and the deck's biggest body. So: Conqueror in, the five proven adds in, the lords NOT cut as deeply (7 -> 5 plus Shared Animosity, where drain-v1 went 7 -> 4), and bracket-4 mana. THE OBJECTIVE IS DELIBERATELY THE SAME LINE drain-v1 MISSED (10.66 against >= 12), so the two branches are directly comparable and the question is exactly 'does Conqueror's return plus Mirkwood Bats and Indulging Patrician clear it'. Combat damage, biggest hit, life gained and win rate are read as exploratory with their intervals, and the branch is NOT proposable if combat damage or biggest hit falls with an interval excluding zero. Harness PINNED as before: standard-v3 / overrides 8c347642 / mm-edgar-vampires (aif7c3b6a8) / patches c22ecaf3. No pay-X sweeper is staged, so the PumpAllAi patch is deliberately NOT made yet and the champion's 200 games stay the comparison. EVERY ADD IS CAST-CHECKED BEFORE THE ARM (the 2026-10-01 gate).",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a drain-payoff arm of the 2026-10-01 campaign; lost to the champion in Forge, an",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -4771,8 +4771,8 @@
       "name": "drain-v1",
       "opened": "2026-10-01",
       "why": "v1.2.0 MINOR, the 2026-09-29 direction (log 006): life gain / life DRAIN as the engine, big evasive Vampires, true bracket 3 under reading B (Bloodthirsty Conqueror out, zero two-card infinites). Six swaps, decided 2026-09-30 ('five or six, I just want the absolute best deck'). Harness PINNED: standard-v3 / overrides 8c347642 / profile mm-edgar-vampires (aif7c3b6a8) / patch set c22ecaf3 — no forge-install, hint or patch change until this branch decides. Champion baseline 2026-09-30/10-01: 200 games (two runs, seeds 1664213641 + 1664224641), 144 decided, win rate 0.340; drain_dealt mean 6.59, sd 18.0, median 0 -> MDE@200/arm 5.04, so the line sits one MDE above the mean. Exploratory: forge.extra_draw_per_turn (1.46), empty_hand_turns (0.62), biggest_hit (8.40), evasive_damage_share (0.32), life_gained (35.0), kills_by_ability (0.47), combat damage (48.6); win rate is the guard. Evidence: candidate_scan.json + edhrec_cards.json (2026-09-30), deck_recon.json (2026-09-30), prescription 0afff3dd0bc7 (skeptic PASS), strategy:aristocrats, strategy:life-as-resource.lifegain-engine, strategy:deckbuilding.typal-density, strategy:card-advantage.plan-draw.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a drain-payoff arm of the 2026-10-01 campaign; lost to the champion in Forge, an",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -5802,8 +5802,8 @@
       "name": "entry-v1",
       "opened": "2026-10-01",
       "why": "CONVERT ENTRIES, NOT DEATHS. Measured on the champion's own 84-game log set at the pinned harness (2026-10-01): eminence fires 8.04 times a game and 9.64 of our creatures die a game, and the death-drain payoffs trigger 1.90 times — a conversion rate near 20%. Blood Artist is CAST in 17% of games and sits on the battlefield about half a turn per game: the deck has ~4 death payoffs in 99 cards, they are 2-mana creatures, and they die to the same wipes that kill the fodder. Meanwhile the deck declares 5.5 attacks a game across ~10 of its own turns, because 1/1 tokens into three opponents' blockers are never profitable, and its biggest hit is 8.4. THAT is the pilot's 'slower, less scary, runs out of gas' — not a draw problem (1.46 extra cards a turn, 2 in hand) but a CONVERSION problem. WHY THE LAST TWO BRANCHES FAILED THE SAME WAY: both answered it with 4-5 mana payoffs. drain-v1 and boss-v1 each raised drain ~+4.5 and lost ~17 combat damage, taking TOTAL life removed from 59.5 to 47.5 and 47.2 — a 4:1 losing trade that no single old axis could see, which is why forge.life_removed_total was added today. THIS BRANCH converts the 8 entries a game instead, at 2-3 mana, needing no attack step and no blocker maths, and cuts only cards that convert NOTHING — nothing that attacks and no lord, which is the mistake the August go-wide refactor made when it cut every lord and took combat damage 29.07 -> 18.20. Two of the three adds are ENCHANTMENTS, so a creature wipe does not take the payoff with the fodder. Bracket 4 stands (pilot, 2026-10-01); Conqueror and the loop stay, unbuilt-for. Harness PINNED: standard-v3 / ov8c347642 / mm-edgar-vampires (aif7c3b6a8) / tlc22ecaf3 — the champion's 200 games stay the comparison. The line is the champion's total output 59.53 plus the MDE at 200/arm (19.30), rounded: >= 79. Every add is cast-checked before the arm.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a drain-payoff arm of the 2026-10-01 campaign; lost to the champion in Forge, an",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -6845,8 +6845,8 @@
       "name": "treasury-v1",
       "opened": "2026-10-01",
       "why": "THE INPUT THESIS. Three arms in a row added a drain PAYOFF and the total did not move: drain-v1 47.5, boss-v1 47.2, entry-v1 57.9 against a champion 59.5 and an objective of 79. entry-v1 proved the MECHANISM (noncombat damage 4.32 -> 10.31, interval excludes zero) and still lost ground overall, and the fleet control says payoff density is not the lever: yawgmoth carries nine payoffs and fires fewer of them than Edgar does. The deck already converts: eminence mints 8.04 tokens a game and 9.64 creatures die. What it does not do is KEEP GOING -- 5.5 attacks a game, a biggest hit of 8.4, and the pilot's own report of sitting on one or two cards from turn eight. So this branch changes the INPUT side instead of the output side: cost reduction so a turn casts two vampires rather than one, treasure and ritual mana so the curve does not cap the turn, and a graveyard loop so a dead vampire is fuel rather than a loss. Eminence triggers on CAST, which is why recursion must return to HAND or cast from the yard -- a reanimation straight to the battlefield mints nothing.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: the eleven-swap input test of 2026-10-01, never measured; superseded by mean-v1'",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -8939,8 +8939,8 @@
       "name": "fear-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): Crippling Fear for Despark. the one-sided sweeper the audit reads as a zero-card gap: name Vampire, everything else gets -3/-3; Despark is the narrowest removal in the twelve The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a September single-card experiment from before the bracket-4 pivot; its diff rea",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -9963,8 +9963,8 @@
       "name": "march-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): March of the Canonized for Akroma's Will. X lifelink Vampire tokens on entry and a 4/3 each upkeep at devotion seven to white and black; protection reads 8 against 5-7 and Akroma's Will is the fourth protection instant The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a September single-card experiment from before the bracket-4 pivot; its diff rea",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -10986,8 +10986,8 @@
       "name": "mound-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): Blight Mound for Anguished Unmaking. a Pest per nontoken creature death in a deck whose engine dies on purpose; the Pests are not Vampires, so this tests whether an off-type death payoff earns a slot The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a September single-card experiment from before the bracket-4 pivot; its diff rea",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -12009,8 +12009,8 @@
       "name": "newblood-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): New Blood for Boros Charm. steal a creature and make it a Vampire for four: removal, a body and the type, at sorcery speed The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a September single-card experiment from before the bracket-4 pivot; its diff rea",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -13032,8 +13032,8 @@
       "name": "sergeant-v1",
       "opened": "2026-09-11",
       "why": "Single-card patch measured for a yay/nay (2026-09-11): Dusk Legion Sergeant for Stroke of Midnight. a two-mana Vampire (an eminence trigger) whose sacrifice gives every nontoken Vampire persist for the turn -- a second life against the wipe that ends most of the deck's games; interaction reads 12 against a 5-6 target, and Stroke is a three-mana spot removal The goldfish cannot see what this card does, so its objective is a CONTROL; Forge at standard-v3 on the deck's own seeds is the instrument, and its engine-casts block says whether the AI played it.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: a September single-card experiment from before the bracket-4 pivot; its diff rea",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -15002,7 +15002,7 @@
     }
   },
   "decisions": {
-    "count": 4,
+    "count": 15,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -15021,29 +15021,32 @@
     ],
     "latest": [
       {
-        "id": "001",
-        "at": "2026-09-16",
-        "kind": "propose",
-        "branch": "elenda-v1",
-        "as_version": "v1.1.1",
-        "predicted": {
-          "endpoint": "kill_by_8",
-          "grade": "met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
-      {
-        "id": "002",
-        "at": "2026-09-16",
-        "kind": "merge",
-        "branch": "elenda-v1",
+        "id": "011",
+        "at": "2026-10-19T12:10:25-07:00",
+        "kind": "reject",
+        "branch": "fear-v1",
         "as_version": null,
         "predicted": {
           "endpoint": "kill_by_8",
-          "grade": "not resolvable",
+          "grade": "not met",
+          "forge_delta": -0.0971,
+          "forge_ci95": [
+            -0.2646,
+            0.1005
+          ],
+          "pod": "standard-v3"
+        },
+        "realised": null
+      },
+      {
+        "id": "012",
+        "at": "2026-10-19T12:10:34-07:00",
+        "kind": "reject",
+        "branch": "march-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
           "forge_delta": null,
           "forge_ci95": null,
           "pod": null
@@ -15051,14 +15054,32 @@
         "realised": null
       },
       {
-        "id": "003",
-        "at": "2026-10-06T14:51:09-07:00",
-        "kind": "propose",
-        "branch": "mardu-combo-v1",
-        "as_version": "v2.0.0",
+        "id": "013",
+        "at": "2026-10-19T12:10:42-07:00",
+        "kind": "reject",
+        "branch": "mound-v1",
+        "as_version": null,
         "predicted": {
-          "endpoint": "forge.empty_hand_turns",
-          "grade": "not measured",
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": -0.0574,
+          "forge_ci95": [
+            -0.2329,
+            0.1434
+          ],
+          "pod": "standard-v3"
+        },
+        "realised": null
+      },
+      {
+        "id": "014",
+        "at": "2026-10-19T12:10:51-07:00",
+        "kind": "reject",
+        "branch": "newblood-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
           "forge_delta": null,
           "forge_ci95": null,
           "pod": null
@@ -15066,17 +15087,20 @@
         "realised": null
       },
       {
-        "id": "004",
-        "at": "2026-10-06T14:54:35-07:00",
-        "kind": "merge",
-        "branch": "mardu-combo-v1",
-        "as_version": "v2.0.0",
+        "id": "015",
+        "at": "2026-10-19T12:10:59-07:00",
+        "kind": "reject",
+        "branch": "sergeant-v1",
+        "as_version": null,
         "predicted": {
-          "endpoint": "forge.empty_hand_turns",
-          "grade": "not measured",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": -0.188,
+          "forge_ci95": [
+            -0.3374,
+            0.0033
+          ],
+          "pod": "standard-v3"
         },
         "realised": null
       }

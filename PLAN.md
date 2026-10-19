@@ -91,6 +91,14 @@ for the new list, the deck re-rated: resilience 13 → 40, score 59.0 → ~65 C�
 the branch's 18 unowned adds (`deck-branch sharknado show torbran-v1`). Known-issues §28:
 regen zeroes a merged branch's `net_change.json`; the pre-merge reading lives in the ledger.
 
+**Branches are findable (2026-10-19).** The workbench chip links the live branch with its
+verdict; the deck page's Branches rack sits after NEXT, newest first, every state badged;
+the branch page says its state, the goldfish's blind spots, what Forge's AI did with each
+add, the stacks proven on it, the deck's own goldfish beside the branch's, and the
+siblings; `deck-info` prints a BRANCHES block; Jarvis has a "Review a branch" intent;
+`/release-branch` ships one. Edgar's eleven stale experiments are REJECTED on the ledger
+with their reasons; mean-v1 is its one open branch (`viz/branch.html?deck=edgar-vampires&branch=mean-v1`).
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by
