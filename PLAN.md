@@ -5,7 +5,7 @@ rules; this says where things stand and what is open. The plan as it stood until
 2026-10-05 — every dated block, and the pilot's PUNCHLIST of 2026-09-16 — is
 [`docs/history/plan-to-2026-10-05.md`](docs/history/plan-to-2026-10-05.md).*
 
-Last updated **2026-10-09**. Do not quote a figure from here without re-running the
+Last updated **2026-10-19**. Do not quote a figure from here without re-running the
 command beside it.
 
 ## Where things stand
@@ -26,6 +26,16 @@ with Scryfall as the fallback; `docs/integrations.md`); a printings picker and a
 buy list; 60-card formats (`pilot/formats.py`), with the first Modern deck, `elves`;
 Moxfield export, link and import by paste (`deck-export`, `deck-link`).
 
+**The fleet is rated, and the rating is honest about what it cannot see (2026-10-19).**
+Rating v2 (`src/manamap/pilot/rating.py`, `rating_mc.py`; `docs/pilot.md` "The rating";
+known-issues §27): the weights are a Dirichlet prior, the inputs are drawn from their
+posteriors, DeckCheck's read is a component, a win the goldfish cannot see halves speed's
+weight, and `concordance` publishes how far a deck's instruments disagree — a divergent deck
+prints its grade as a range. The fleet analytics artifact (`data/fleet/analytics.json`,
+`viz/fleet.html`) sits under it with profiles and bands and never a score. The pilot's 1–5
+survey rides on `deck-notes add --feel`. Every judgment sits at its measured score today
+because no logged game is on a current list; `rating --calibrate` refuses at six decks.
+
 **The fleet.** Six decks are sleeved — edgar-vampires, gishath, goblin-storm, heliod,
 sharknado, ur-dragon (`deck-version <slug>`); emiel-blink, meren-recursion and elves are
 on the bench; the rest are retired or broken down. Every live deck and branch is priced.
@@ -34,8 +44,59 @@ on the bench; the rest are retired or broken down. Every live deck and branch is
 and leaves the fleet regen to CI. CI's browser job runs two workers (a hosted runner has
 four cores); the corpus job runs weekly or by hand.
 
+## The fleet, rated — the reading and the pilot's calls (2026-10-19)
+
+`manamap pilot rating --all` as it stood after the third `/rate-fleet` pass (★ coaching, 90%
+intervals, within bracket, no significance claim; re-run the command before quoting):
+
+| bracket | deck | grade | score | P(1st) | concordance | skeptic | the low component |
+|---|---|---|---|---|---|---|---|
+| B3 | gishath | B | 76.7 | 95% | mixed | pass | resilience 70 |
+| B3 | ur-dragon | C–B | 69.0 | 5% | divergent | pass | dti 50, construction 56 |
+| B3 | goblin-storm | D–C | 57.1 | 0% | pass | pass | resilience 33 |
+| B4 | heliod | C–B | 65.1 | 77% | divergent | fail at cap | speed 0 (Approach) |
+| B4 | sharknado | D–B | 59.0 | 23% | divergent | pass | resilience 13 |
+| B4 | edgar-vampires | C | 50.6 | 0% | mixed | fail at cap | speed 22, record 24 |
+
+What it says, deck by deck (`sensitivity.leave_one_out` is the figure behind each line):
+
+- **Gishath is the best Bracket 3 deck and the only deck the instruments agree on.** Every
+  instrument ranks it first or second; the low end of its interval is still a B; an A would
+  need speed at over half the weight, which no honest prior gives it. **Play it, don't
+  change it.**
+- **Heliod is the best Bracket 4 deck on paper, Sharknado by the one instrument built for
+  Bracket 4 speed**, and the two are one evening of logged games apart. Heliod's first place
+  rests on DeckCheck's card-quality read and the Approach exception, not on anything measured
+  at a table; its instruments disagree completely (dti and resilience first, the clock,
+  land drops and construction last).
+- **Sharknado has the most upside in the fleet.** One component holds it at D–B: resilience
+  13.3 on eleven answers covering one class. Without it the score is 67, a B; everything
+  else about the deck is at the top of its bracket (kill by turn eight in 89% of goldfish
+  games, mana placed first). The staged **torbran-v1** branch already carries the fix —
+  Silence, Snapback, March of Swirling Mist are what that component counts.
+- **Goblin-storm is second for upside**: resilience 33 (thirteen answers, zero sweepers)
+  and no game yet on v1.1.0. The thirteen cards arriving are bodies, not interaction, so
+  the lift comes from logged games first and a sweeper or two later.
+- **Edgar has the most ground to gain in absolute terms** (speed 22, no wins in five) and
+  needs the mean-v1 rebuild, not a slot or two. Its upside is real and expensive.
+- **Ur-dragon has a land pass in it** (construction and the land-drop miss rate are its low
+  components; the Bracket 3 clock is already there).
+- **Heliod has the least**: speed is zero and cannot move while Approach is the win, and its
+  other components sit near their anchors. Its upside is games, not cards.
+
+**The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
+possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
+arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by
+slot first). Log every game with `--feel`: the survey and the table record are the two
+components withheld on every deck, and the rating cannot move until they land.
+
 ## Next, in order
 
+0. **The fleet's own next moves** (above): sharknado torbran-v1 at the table and, on the
+   pilot's word, `net-change` then merge; goblin-storm `deck-version paper` when all
+   thirteen cards are sleeved, then `/analyze-engine` and pilot-notes to clear its stale
+   `engine.json` / `tutor_guide.json` (the ten red regression tests on main since the v1.1.0
+   merge are these); Edgar's mean-v1 discussion. `/rate-fleet` again once games are logged.
 1. **Finish the context reviews** (the PRD's Step 4). Verdicts go through a review page; a
    context marked for changes goes back to the Context Keeper.
 2. **The deletions** (Step 6): the engine model, the handbook and its agents, the
