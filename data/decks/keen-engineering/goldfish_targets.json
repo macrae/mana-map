@@ -1,0 +1,116 @@
+{
+ "_note": "AUTHORED 2026-10-19 for the Foundations Commander precon as printed. Sai, Master Thopterist is free (command zone) and makes a 1/1 flying Thopter whenever an ARTIFACT SPELL is cast; the deck is 50 artifacts (33 of them creatures or rocks under four mana) so that nearly every cast is a body. Sai's second ability, {1}{U} sacrifice two artifacts: draw a card, turns the Thopters into cards. The win line is the WIDE ARTIFACT BOARD scaled by an artifact-count payoff (Master of Etherium, Chief of the Foundry, Steel Overseer, Nettlecyst) or one big artifact body that ends it alone (Myr Battlesphere, Graaz, Darksteel Juggernaut, Kappa Cannoneer, Broodstar). Whirler Rogue makes one of them unblockable. Names are the cards.json form.",
+ "_model_note": "Channels: draw (the deck's own draw spells and engines), combat (the cast bodies attack) and discard (2026-10-19: Thirst for Knowledge's discard half, and the draw-event payoffs — Psychosis Crawler, Scrawling Crawler, Mind's Eye off opponents' draws, Thopter Fabricator — which the discard channel is the one that reads). Sai's cast trigger and his sacrifice-draw are COMMANDER ABILITIES NO CORPUS CARD SHARES and are NOT modelled (`manamap pilot model-coverage keen-engineering` names what is dark), so every board and damage figure here is a FLOOR: the Thopters the goldfish never makes are the deck's main source of bodies. No sacrifice, treasure or drain channel: the printed list has none of those engines.",
+ "model_draw": true,
+ "model_combat": true,
+ "targets": [
+  {
+   "label": "AN ARTIFACT ACCELERANT drawn — the fuel: a rock, a Myr or a cost reducer, each of them a Thopter on cast",
+   "need": [
+    {
+     "any_of": [
+      "Arcane Signet",
+      "Cultivator's Caravan",
+      "Etherium Sculptor",
+      "Foundry Inspector",
+      "Hedron Archive",
+      "Mind Stone",
+      "Ornithopter of Paradise",
+      "Palladium Myr",
+      "Silver Myr",
+      "Sol Ring",
+      "Thought Vessel"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "AN ARTIFACT-COUNT PAYOFF drawn — the board becomes power or cards: an anthem, a counter engine, or a draw-per-artifact",
+   "need": [
+    {
+     "any_of": [
+      "Chief of the Foundry",
+      "Master of Etherium",
+      "Nettlecyst",
+      "Padeem, Consul of Innovation",
+      "Steel Overseer",
+      "Thopter Spy Network",
+      "Vedalken Archmage"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "A DRAW ENGINE OR REFILL drawn — the deck's own draw: affinity cantrips, Thirst, Pull, the Tome, the Logbook, the Eye, the Crawlers",
+   "need": [
+    {
+     "any_of": [
+      "Ichor Wellspring",
+      "Mazemind Tome",
+      "Mind's Eye",
+      "Psychosis Crawler",
+      "Pull from Tomorrow",
+      "Research Thief",
+      "Scrawling Crawler",
+      "Tamiyo's Logbook",
+      "Thirst for Knowledge",
+      "Thopter Spy Network",
+      "Thought Monitor",
+      "Thoughtcast",
+      "Vedalken Archmage"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable",
+   "required": true,
+   "need": [
+    {
+     "any_of": [
+      "Broodstar",
+      "Darksteel Juggernaut",
+      "Graaz, Unstoppable Juggernaut",
+      "Kappa Cannoneer",
+      "Myr Battlesphere",
+      "Shimmer Dragon",
+      "Skysovereign, Consul Flagship",
+      "Steel Hellkite",
+      "Master Transmuter"
+     ]
+    },
+    {
+     "any_of": [
+      "Chief of the Foundry",
+      "Master of Etherium",
+      "Steel Overseer",
+      "Nettlecyst",
+      "Whirler Rogue"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "AN ANSWER drawn — a counter, a bounce, the Disk, All Is Dust, or a removal body",
+   "need": [
+    {
+     "any_of": [
+      "Aether Spellbomb",
+      "Aetherize",
+      "All Is Dust",
+      "Counterspell",
+      "Duplicant",
+      "Fall from Favor",
+      "Launch Mishap",
+      "Meteor Golem",
+      "Negate",
+      "Nevinyrral's Disk",
+      "Skysovereign, Consul Flagship",
+      "Steel Hellkite"
+     ]
+    }
+   ]
+  }
+ ],
+ "model_discard": true
+}

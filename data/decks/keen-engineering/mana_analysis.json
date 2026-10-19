@@ -1,0 +1,249 @@
+{
+  "slug": "keen-engineering",
+  "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+  "lands": {
+    "total": 40,
+    "entries": 7,
+    "life": {
+      "recurring_per_tap_cycle": 0,
+      "one_time_on_entry": 0
+    },
+    "enters_tapped": 2,
+    "enters_tapped_always": 2,
+    "classes": {
+      "basic": 34,
+      "tapped": 2,
+      "utility": 5
+    },
+    "list": [
+      {
+        "name": "Buried Ruin",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      },
+      {
+        "name": "Darksteel Citadel",
+        "copies": 1,
+        "classes": [],
+        "produces": []
+      },
+      {
+        "name": "Foundry of the Consuls",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      },
+      {
+        "name": "Island",
+        "copies": 34,
+        "classes": [
+          "basic"
+        ],
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "Lonely Sandbar",
+        "copies": 1,
+        "classes": [
+          "tapped",
+          "utility"
+        ],
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "Remote Isle",
+        "copies": 1,
+        "classes": [
+          "tapped",
+          "utility"
+        ],
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "War Room",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      }
+    ]
+  },
+  "sources": {
+    "lands": {
+      "W": 0,
+      "U": 36,
+      "B": 0,
+      "R": 0,
+      "G": 0
+    },
+    "nonland": {
+      "W": 0,
+      "U": 5,
+      "B": 0,
+      "R": 0,
+      "G": 0
+    },
+    "total": {
+      "W": 0,
+      "U": 41,
+      "B": 0,
+      "R": 0,
+      "G": 0
+    },
+    "gated": {
+      "count": 0,
+      "names": [],
+      "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
+    },
+    "producers": [
+      {
+        "name": "Arcane Signet",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "Cultivator's Caravan",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "Hedron Archive",
+        "kind": "ramp:rock",
+        "cmc": 4.0,
+        "produces": []
+      },
+      {
+        "name": "Mind Stone",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": []
+      },
+      {
+        "name": "Misleading Signpost",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "Ornithopter of Paradise",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "Palladium Myr",
+        "kind": "ramp:rock",
+        "cmc": 3.0,
+        "produces": []
+      },
+      {
+        "name": "Silver Myr",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "U"
+        ]
+      },
+      {
+        "name": "Sol Ring",
+        "kind": "ramp:rock",
+        "cmc": 1.0,
+        "produces": []
+      },
+      {
+        "name": "Thought Vessel",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": []
+      }
+    ]
+  },
+  "pips": {
+    "U": {
+      "total_pips": 33.0,
+      "max_pips": 2,
+      "cards": 26,
+      "earliest_turn": 2,
+      "effective_pips": 2
+    }
+  },
+  "shares": {
+    "U": {
+      "pip_share": 1.0,
+      "source_share": 1.0
+    }
+  },
+  "source_targets": {
+    "U": 36
+  },
+  "on_curve_probability": {
+    "lands_only": {
+      "U": 0.906
+    },
+    "with_rocks_and_dorks": {
+      "U": 0.948
+    },
+    "lands_only_ungated": {
+      "U": 0.906
+    }
+  },
+  "ramp": {
+    "ramp:cost-reduction": 8,
+    "ramp:rock": 10
+  },
+  "goldfish": {
+    "land_drop_hit_rate_by_turn": {
+      "1": 1.0,
+      "10": 0.66,
+      "2": 0.999,
+      "3": 0.937,
+      "4": 0.846,
+      "5": 0.765,
+      "6": 0.704,
+      "7": 0.663,
+      "8": 0.649,
+      "9": 0.656
+    },
+    "mean_available_mana_by_turn": {
+      "1": 1.0,
+      "10": 10.316,
+      "2": 2.147,
+      "3": 3.439,
+      "4": 4.361,
+      "5": 5.759,
+      "6": 6.778,
+      "7": 7.653,
+      "8": 8.518,
+      "9": 9.411
+    }
+  },
+  "assumptions": [
+    "Colour probabilities are hypergeometric draws from a 99-card library — no mulligans, no card selection, no fetching decisions.",
+    "A source counts only for mana it produces unconditionally; restricted mana (“spend this mana only…”) counts for nothing (the deck-builder's rule).",
+    "Hybrid pips charge half a pip to each side.",
+    "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
+  ],
+  "notes": []
+}
