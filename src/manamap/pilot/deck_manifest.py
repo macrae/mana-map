@@ -374,11 +374,26 @@ def gather_entries():
         # The path we are already walking, not a lookup — see `blockers`.
         blocked = deck_delete.blockers(slug, base=deck_path)
 
+        # THE BRANCHES (2026-10-19): enough for the landing page to show the live
+        # one and link it — name, state, opened, the copy counts, the verdict and
+        # the objective's grade, the version it was proposed as. Read from
+        # `info.json`'s rows, which `deck_info._branches` derives on write; the
+        # manifest never runs `source()` itself.
+        info_doc = load_json(deck_path / "info.json", {}) or {}
+        branches = [{"name": b.get("name"), "state": b.get("state"), "opened": b.get("opened"),
+                     "add": b.get("add"), "out": b.get("out"),
+                     "verdict": (b.get("verdict") or {}).get("state"),
+                     "objective_grade": (b.get("objective_grade") or {}).get("state"),
+                     "as_version": (b.get("proposal") or {}).get("as_version"),
+                     "measured": b.get("measured")}
+                    for b in (info_doc.get("branches") or []) if isinstance(b, dict) and not b.get("unreadable")]
         entries.append({
             "slug": slug,
             "published": published,
             **instanced,
             "has": has,
+            "branches": branches,
+            "branches_open": sum(1 for b in branches if b.get("state") == "OPEN"),
             "paper": paper,                       # None = not built in paper
             "locked": bool(paper),                # the front door's predicate
             "version": version,                   # latest release tag, sleeved or not
@@ -468,7 +483,7 @@ def write_manifest(entries):
                                   "verified", "decisions", "stack_files",
                                   "stack_cards", "published", "status",
                                   "sim_runs", "experiments", "prescriptions",
-                                  "decision_files", "has",
+                                  "decision_files", "has", "branches", "branches_open",
                                   # The workbench landing: art for the rack, and the
                                   # one predicate it filters on.
                                   "image", "paper", "locked", "version",

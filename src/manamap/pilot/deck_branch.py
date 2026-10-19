@@ -98,6 +98,7 @@ from manamap.pilot import common as _common
 from manamap.pilot.common import (
     BRANCHES_DIR,
     deck_dir,
+    decklist_sha256,
     deck_is_apart,
     deck_lifecycle,
     expand_faces,
@@ -378,6 +379,71 @@ def recorded_proxy(doc):
     return (doc or {}).get("proposal", {}).get("proxy") or False
 
 
+def review(slug, branch, doc=None, src=None):
+    """What a reader needs to CHOOSE a branch to open, read off the branch's own
+    files and never recomputed (2026-10-19): the objective and its grade, the
+    net-change verdict with what rose and fell, whether the report describes the
+    branch's current list, what Forge's AI did with each add, and the stacks
+    whose scenario names an add. Absent files are absent keys, never zero.
+
+    The pilot could not find a branch from the workbench, and the deck page's
+    list showed every branch alike — no state for an open one, no objective, no
+    verdict — so the one live branch sat among eleven stale experiments with
+    nothing to tell them apart. These are the fields that tell them apart.
+    """
+    m = doc if doc is not None else meta(slug, branch)
+    s = src if src is not None else source(slug, branch, proxy=recorded_proxy(m))
+    out = {}
+    obj = m.get("objective") or {}
+    if obj.get("axis"):
+        out["objective"] = {k: obj.get(k) for k in ("axis", "op", "value", "pod") if obj.get(k) is not None}
+    nc = load_json(deck_dir(slug, branch) / "net_change.json")
+    if nc:
+        rec = nc.get("recommendation") or {}
+        out["verdict"] = {"state": rec.get("state"),
+                          "rose": len(rec.get("rose") or []), "fell": len(rec.get("fell") or []),
+                          "no_call": len(rec.get("no_call") or [])}
+        if nc.get("objective_grade"):
+            out["objective_grade"] = {k: nc["objective_grade"].get(k) for k in ("state", "reading", "shortfall")}
+        current = decklist_sha256(slug, branch)
+        out["measured"] = bool(current) and nc.get("decklist_sha256") == current
+        if not out["measured"]:
+            out["measured_why"] = "net_change.json describes an older list of this branch"
+        out["blind_spots"] = sorted({c for b in (nc.get("blind_spots") or []) if isinstance(b, dict)
+                                     for c in (b.get("cards") or [])}) or None
+    cp = load_json(deck_dir(slug, branch) / "cast_proofs.json")
+    if cp and isinstance(cp.get("cards"), dict):
+        counts = {"played": 0, "held": 0, "unplayed": 0}
+        for row in cp["cards"].values():
+            v = str((row or {}).get("verdict") or "").upper()
+            for k in counts:
+                if v.startswith(k.upper()):
+                    counts[k] += 1
+                    break
+        out["cast_proofs"] = {**counts, "as_of": cp.get("as_of"), "harness": cp.get("harness")}
+    # ONLY THE CARDS THE DECK DOES NOT ALREADY RUN. A branch whose base moved
+    # reads half the deck as "added", and every stack the deck owns would then
+    # count for it; a stack is proven ON THIS BRANCH when it names a card only
+    # the branch brings (012 names Enduring Tenacity, a mean-v1 add).
+    try:
+        in_deck = {c.get("name") for c in (load_json(deck_dir(slug) / "cards.json") or {}).get("cards") or []}
+    except Exception:  # noqa: BLE001
+        in_deck = set()
+    adds = set(s["diff"]["add"]) - in_deck
+    if adds:
+        hits = []
+        for path in sorted((deck_dir(slug) / "stacks").glob("*.json")):
+            sd = load_json(path) or {}
+            hay = json.dumps(sd.get("scenario") or {}, ensure_ascii=False)
+            named = sorted(a for a in adds if a in hay)
+            if named:
+                hits.append({"id": sd.get("id") or path.name[:3], "title": sd.get("title"),
+                             "checker": ((sd.get("checker") or {}).get("verdict")), "names": named})
+        if hits:
+            out["stacks"] = hits
+    return out
+
+
 def one(slug, branch):
     """One branch, summarised for `list`, `info.json` and the web roster.
 
@@ -416,7 +482,8 @@ def one(slug, branch):
                        "where": r["where"], "free": r["free"],
                        "is_new": r["name"] in add}
                       for r in s["cards"]],
-            "has_cards": (deck_dir(slug, branch) / "cards.json").exists()}
+            "has_cards": (deck_dir(slug, branch) / "cards.json").exists(),
+            **review(slug, branch, doc=m, src=s)}
 
 
 #: A BRANCH THAT CANNOT BE FALSIFIED GETS GRADED ON WHETHER IT DID WHAT IT DOES.

@@ -55,6 +55,10 @@ MANIFEST_KEYS = {
     # — and the disagreement would only ever surface as a button that offers to
     # delete something and is then refused.
     "deletable", "undeletable_because",
+    # THE BRANCHES SUMMARY (2026-10-19): name, state, opened, copies, verdict,
+    # grade, `as_version`, `measured` per branch, and the open count, so the
+    # landing page can show the live branch and link it.
+    "branches", "branches_open",
     # WHICH FORMAT (2026-10-09, the first 60-card deck): "commander" for the
     # fleet, written out because a generated file owes the browser a key
     # rather than a convention. `commander` is null when the format has none.

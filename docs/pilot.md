@@ -891,6 +891,22 @@ hand-written, so not a lifecycle stage: absent means the deck is published nowhe
 direction is the same paste: `check-in --from <url>` is refused with the sentence that says
 to export on Moxfield and paste into `--from -`.
 
+## Finding a branch (`deck-info`'s BRANCHES block; `deck_branch.review`) — 2026-10-19
+
+The pilot could not find a branch from the workbench, and the deck page listed every branch
+alike. `deck_branch.one()` now carries what a reader chooses a branch by, read off the
+branch's own files and never recomputed: `objective` (axis, op, value), `objective_grade`
+(from `net_change.json`), `verdict` (the recommendation's state with how many rows rose,
+fell and returned no call), `measured` (the report describes the branch's current list;
+`measured_why` when it does not), `blind_spots` (the cards the goldfish cannot see),
+`cast_proofs` (PLAYED / HELD / UNPLAYED counts from `cast_proofs.json`, with the harness),
+and `stacks` (the stacks whose scenario names a card only the branch brings, with their
+checker verdict). `info.json`'s rows are newest first. `deck-info <slug>` prints a BRANCHES
+block before NEXT — one line per branch with all of the above — and names the page:
+`viz/branch.html?deck=<slug>&branch=<name>`. The manifest (`data/decks/index.json`) carries
+a `branches` summary per deck (name, state, opened, copies, verdict, grade, `as_version`,
+`measured`) and `branches_open`, so the landing page can show the live branch and link it.
+
 ## The rating (`rating`, ★ over ◆; `merge-rating`; `validate-rating`) — 2026-10-18, spec 2 on 2026-10-19
 
 `rating.json` is a sleeved deck's 0–100 score, letter grade and rank **within its bracket**

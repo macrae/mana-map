@@ -280,6 +280,12 @@ def _branches(slug):
                 # A branch whose list will not parse is a fact worth showing,
                 # not a reason the whole dossier fails to load.
                 rows.append({"name": name, "unreadable": True})
+        # NEWEST FIRST (2026-10-19): the live branch is the one opened last, and
+        # alphabetical order put edgar's mean-v1 tenth of fourteen behind eleven
+        # stale experiments. A row with no `opened` sorts last.
+        rows.sort(key=lambda r: (r.get("opened") is None, r.get("opened") or "", r.get("name") or ""),
+                  reverse=False)
+        rows.sort(key=lambda r: r.get("opened") or "", reverse=True)
         return rows
     except Exception:
         return []
@@ -1205,6 +1211,21 @@ def _print(info):
         print(f"  questions  {len(info['open_questions'])} open")
         for q in info["open_questions"][:5]:
             print(f"             [{q['from']} → {q['settled_by']}] {str(q['question'])[:80]}")
+    br = [b for b in (info.get("branches") or []) if not b.get("unreadable")]
+    if br:
+        print(f"\n  BRANCHES   {len(br)}, newest first — the page: viz/branch.html?deck={info['slug']}&branch=<name>")
+        for b in br:
+            obj = b.get("objective") or {}
+            og = (b.get("objective_grade") or {}).get("state")
+            vd = b.get("verdict") or {}
+            print(f"   {b['name']:16} {str(b.get('state') or '—'):10} +{b.get('add', 0)} -{b.get('out', 0)}"
+                  + (f"  {obj['axis']} {obj['op']} {obj['value']:g}" if obj.get("axis") else "")
+                  + (f" → {og}" if og else "")
+                  + (f"  · {vd['state']} ({vd['rose']} rose, {vd['fell']} fell)" if vd.get("state") else "  · unmeasured")
+                  + ("" if b.get("measured", True) else "  · STALE report")
+                  + (f"  · Forge {b['cast_proofs']['played']}P/{b['cast_proofs']['held']}H/{b['cast_proofs']['unplayed']}U" if b.get("cast_proofs") else "")
+                  + (f"  · stacks {', '.join(h['id'] for h in b['stacks'])}" if b.get("stacks") else "")
+                  + (f"  · {b['base_moved']}" if b.get("base_moved") else ""))
     print("\n  NEXT")
     for n in info["next"]:
         print(f"   · {n}")

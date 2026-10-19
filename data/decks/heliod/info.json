@@ -32,68 +32,57 @@
   "brief": null,
   "branches": [
     {
-      "name": "archangel-v1",
-      "opened": "2026-09-08",
-      "why": "ONE CARD, ONE SWAP, AND THE PIP LOAD IS UNCHANGED. Archangel of Tithes is {1}{W}{W}{W} and White Sun's Zenith is {X}{W}{W}{W} — the same three white pips, so this tests the CARD and not the mana, which is why it was held out of skies-v1 rather than folded in. Archangel is the only card the flier sweep returned that does both jobs on one body: a 3/5 FLYING blocker against the seat that took 39 of 53 eliminations with nothing but evasive threats, and a taxer whose 'creatures can't attack you unless their controller pays {1}' works whether or not the attacker flies, making it a third Propaganda beside Ghostly Prison. It is the exact card giada-angels beats us with. What it replaces is the deck's most white-intensive card and the one skies-v1's own logic argues against: X 2/2 CATS, on the ground, in a deck that dies to the air, as a one-shot at four-plus mana competing directly with casting Approach of the Second Sun. Secure the Wastes stays as the cheap X mana sink at {X}{W}. THE GOLDFISH CANNOT SEE THE POINT OF THIS CARD — no opponents, nothing attacks it, so flying and taxing are invisible and a 3/5 registers as three power. The objective is a RISK check: swapping a scaling X-spell token maker for one fixed body must not cost the board. THE FIRST LINE SET HERE WAS 2.85 AND THE ANCHOR REFUSED IT — the champion reads 2.9506 and this run resolves 0.1012, so a 0.1006 tolerance was inside the noise and could only have come back as whichever side it landed on. 2.80 is outside it. Reset before any measurement was taken, which is the only time a threshold may move.",
+      "name": "splendor-v2",
+      "opened": "2026-09-20",
+      "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten.",
       "state": "MERGED",
-      "state_why": "merged 2026-09-08 into the list after VNone",
-      "proposal": null,
-      "pull_list": {
-        "buy": [
-          {
-            "name": "Angelic Wall"
+      "state_why": "merged 2026-09-20 into the list after VNone",
+      "proposal": {
+        "at": "2026-09-20",
+        "as_version": "v1.4.0",
+        "why": "The real content of splendor-v1 and blue-v1, rebased onto the sleeved V11 so neither reverts the artifact package merged as v1.3.0. Gleaming Splendor for Alhammarret's Archive: three mana cheaper, and it turns the deck's own symmetry into mana — Heliod makes every player draw, so the second-card trigger fires on three seats a turn and each one is a Treasure. Greater Auramancy for Lightning Greaves: hexproof for every enchantment protects the engine rather than one body, and the commander is an enchantment creature. One Plains to one Island for the 2026-09-16 colour audit, where blue is 61% of the deck's pips. Kefnet the Mindful needs no slot; it is already in the 99 and already declared as a flier blocker.",
+        "base_version": 11,
+        "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+        "accepted_on": {
+          "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+          "state": "inconclusive",
+          "objective": {
+            "axis": "interaction_6",
+            "op": ">=",
+            "value": 0.68,
+            "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
           },
-          {
-            "name": "Forced Fruition"
+          "grade": "not resolvable",
+          "reading": 0.6766,
+          "harness": {
+            "iterations": 10000,
+            "seed": 20260826
           }
-        ],
-        "unsleeve": [
-          {
-            "name": "Alhammarret's Archive",
-            "where": [
-              "sharknado"
-            ]
-          }
-        ],
+        }
+      },
+      "pull_list": {
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Mikaeus, the Lunarch",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Lightning Greaves",
-            "where": [
-              "Mystery Booster 2",
-              "Zur Parts"
-            ]
-          }
-        ],
-        "blocking": 3,
+        "free": [],
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
-      "base_version": 9,
+      "base_version": 11,
       "size": 100,
-      "add": 6,
-      "out": 6,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 80,
-        "box": 1,
-        "elsewhere": 1,
-        "buy": 2,
-        "free": 1
+        "in_deck": 85,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
       },
-      "unsourced": [
-        "Alhammarret's Archive",
-        "Angelic Wall",
-        "Forced Fruition"
-      ],
-      "mergeable": false,
-      "free": 1,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -103,33 +92,11 @@
           "is_new": false
         },
         {
-          "name": "Alhammarret's Archive",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sharknado",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "An Offer You Can't Refuse",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Angelic Wall",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Approach of the Second Sun",
@@ -321,13 +288,6 @@
           "is_new": false
         },
         {
-          "name": "Forced Fruition",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Ghostly Prison",
           "state": "in_deck",
           "where": [],
@@ -336,6 +296,20 @@
         },
         {
           "name": "Glacial Fortress",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Gleaming Splendor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Greater Auramancy",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -370,6 +344,13 @@
           "is_new": false
         },
         {
+          "name": "Horn of Greed",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Howling Mine",
           "state": "in_deck",
           "where": [],
@@ -385,6 +366,13 @@
         },
         {
           "name": "Island",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Isochron Scepter",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -426,22 +414,6 @@
           "is_new": false
         },
         {
-          "name": "Lightning Greaves",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            },
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Long-Term Plans",
           "state": "in_deck",
           "where": [],
@@ -470,22 +442,14 @@
           "is_new": false
         },
         {
-          "name": "Mikaeus, the Lunarch",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "name": "Mikokoro, Center of the Sea",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
-          "name": "Mikokoro, Center of the Sea",
+          "name": "Mind Stone",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -716,7 +680,31 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "interaction_6",
+        "op": ">=",
+        "value": 0.68
+      },
+      "verdict": {
+        "state": "do not merge",
+        "rose": 0,
+        "fell": 0,
+        "no_call": 10
+      },
+      "objective_grade": {
+        "state": "not met",
+        "reading": 0.6272,
+        "shortfall": 0.0528
+      },
+      "measured": true,
+      "blind_spots": [
+        "Alhammarret's Archive",
+        "Greater Auramancy",
+        "Island",
+        "Lightning Greaves",
+        "Plains"
+      ]
     },
     {
       "name": "artifacts-v1",
@@ -1401,7 +1389,28 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "damage_8",
+        "op": ">=",
+        "value": 0.0
+      },
+      "verdict": {
+        "state": "merge",
+        "rose": 0,
+        "fell": 0,
+        "no_call": 10
+      },
+      "objective_grade": {
+        "state": "met",
+        "reading": 3.65,
+        "shortfall": null
+      },
+      "measured": true,
+      "blind_spots": [
+        "Greater Auramancy",
+        "Lightning Greaves"
+      ]
     },
     {
       "name": "blue-v1",
@@ -2088,7 +2097,28 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "damage_8",
+        "op": ">=",
+        "value": 0.0
+      },
+      "verdict": {
+        "state": "a trade",
+        "rose": 0,
+        "fell": 6,
+        "no_call": 4
+      },
+      "objective_grade": {
+        "state": "met",
+        "reading": 3.5293,
+        "shortfall": null
+      },
+      "measured": true,
+      "blind_spots": [
+        "Greater Auramancy",
+        "Lightning Greaves"
+      ]
     },
     {
       "name": "splendor-v1",
@@ -2742,60 +2772,89 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "extra_cards_8",
+        "op": ">=",
+        "value": 2.22
+      },
+      "verdict": {
+        "state": "a trade",
+        "rose": 0,
+        "fell": 2,
+        "no_call": 8
+      },
+      "objective_grade": {
+        "state": "met",
+        "reading": 4.0975,
+        "shortfall": null
+      },
+      "measured": true,
+      "blind_spots": null
     },
     {
-      "name": "splendor-v2",
-      "opened": "2026-09-20",
-      "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten.",
+      "name": "archangel-v1",
+      "opened": "2026-09-08",
+      "why": "ONE CARD, ONE SWAP, AND THE PIP LOAD IS UNCHANGED. Archangel of Tithes is {1}{W}{W}{W} and White Sun's Zenith is {X}{W}{W}{W} — the same three white pips, so this tests the CARD and not the mana, which is why it was held out of skies-v1 rather than folded in. Archangel is the only card the flier sweep returned that does both jobs on one body: a 3/5 FLYING blocker against the seat that took 39 of 53 eliminations with nothing but evasive threats, and a taxer whose 'creatures can't attack you unless their controller pays {1}' works whether or not the attacker flies, making it a third Propaganda beside Ghostly Prison. It is the exact card giada-angels beats us with. What it replaces is the deck's most white-intensive card and the one skies-v1's own logic argues against: X 2/2 CATS, on the ground, in a deck that dies to the air, as a one-shot at four-plus mana competing directly with casting Approach of the Second Sun. Secure the Wastes stays as the cheap X mana sink at {X}{W}. THE GOLDFISH CANNOT SEE THE POINT OF THIS CARD — no opponents, nothing attacks it, so flying and taxing are invisible and a 3/5 registers as three power. The objective is a RISK check: swapping a scaling X-spell token maker for one fixed body must not cost the board. THE FIRST LINE SET HERE WAS 2.85 AND THE ANCHOR REFUSED IT — the champion reads 2.9506 and this run resolves 0.1012, so a 0.1006 tolerance was inside the noise and could only have come back as whichever side it landed on. 2.80 is outside it. Reset before any measurement was taken, which is the only time a threshold may move.",
       "state": "MERGED",
-      "state_why": "merged 2026-09-20 into the list after VNone",
-      "proposal": {
-        "at": "2026-09-20",
-        "as_version": "v1.4.0",
-        "why": "The real content of splendor-v1 and blue-v1, rebased onto the sleeved V11 so neither reverts the artifact package merged as v1.3.0. Gleaming Splendor for Alhammarret's Archive: three mana cheaper, and it turns the deck's own symmetry into mana — Heliod makes every player draw, so the second-card trigger fires on three seats a turn and each one is a Treasure. Greater Auramancy for Lightning Greaves: hexproof for every enchantment protects the engine rather than one body, and the commander is an enchantment creature. One Plains to one Island for the 2026-09-16 colour audit, where blue is 61% of the deck's pips. Kefnet the Mindful needs no slot; it is already in the 99 and already declared as a flier blocker.",
-        "base_version": 11,
-        "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
-        "accepted_on": {
-          "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
-          "state": "inconclusive",
-          "objective": {
-            "axis": "interaction_6",
-            "op": ">=",
-            "value": 0.68,
-            "why": "splendor-v1 and blue-v1 rebased onto V11. Both were authored against V10 and neither is mergeable as written: diffed against the sleeved list they read as cutting Horn of Greed, Isochron Scepter and Mind Stone, which is not a decision either made — it is the artifacts-v1 merge showing through, since V10 held Angelic Wall, Forced Fruition and Mikaeus in those slots. Their real content is three swaps between them: Gleaming Splendor and Greater Auramancy for Alhammarret's Archive and Lightning Greaves, plus the colour audit's one land. Kefnet the Mindful needs no slot — it is already in the 99 and declared as a flier blocker, which matters because 39 of 53 eliminations in the audit came from the air. The objective is interaction affordability at turn six, 0.610 on the sleeved list: Gleaming Splendor's Treasures are mana this deck can hold up, and both colours are double-digits short of Karsten."
-          },
-          "grade": "not resolvable",
-          "reading": 0.6766,
-          "harness": {
-            "iterations": 10000,
-            "seed": 20260826
-          }
-        }
-      },
+      "state_why": "merged 2026-09-08 into the list after VNone",
+      "proposal": null,
       "pull_list": {
-        "buy": [],
-        "unsleeve": [],
+        "buy": [
+          {
+            "name": "Angelic Wall"
+          },
+          {
+            "name": "Forced Fruition"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Alhammarret's Archive",
+            "where": [
+              "sharknado"
+            ]
+          }
+        ],
         "proxy": [],
-        "free": [],
-        "box": [],
-        "blocking": 0,
+        "free": [
+          {
+            "name": "Mikaeus, the Lunarch",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
+        "box": [
+          {
+            "name": "Lightning Greaves",
+            "where": [
+              "Mystery Booster 2",
+              "Zur Parts"
+            ]
+          }
+        ],
+        "blocking": 3,
         "procurement": null
       },
-      "base_version": 11,
+      "base_version": 9,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 6,
+      "out": 6,
       "counts": {
-        "in_deck": 85,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 0,
-        "free": 0
+        "in_deck": 80,
+        "box": 1,
+        "elsewhere": 1,
+        "buy": 2,
+        "free": 1
       },
-      "unsourced": [],
-      "mergeable": true,
-      "free": 0,
+      "unsourced": [
+        "Alhammarret's Archive",
+        "Angelic Wall",
+        "Forced Fruition"
+      ],
+      "mergeable": false,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -2805,11 +2864,33 @@
           "is_new": false
         },
         {
+          "name": "Alhammarret's Archive",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "An Offer You Can't Refuse",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Angelic Wall",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Approach of the Second Sun",
@@ -3001,6 +3082,13 @@
           "is_new": false
         },
         {
+          "name": "Forced Fruition",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Ghostly Prison",
           "state": "in_deck",
           "where": [],
@@ -3009,20 +3097,6 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Gleaming Splendor",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Greater Auramancy",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -3057,13 +3131,6 @@
           "is_new": false
         },
         {
-          "name": "Horn of Greed",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Howling Mine",
           "state": "in_deck",
           "where": [],
@@ -3079,13 +3146,6 @@
         },
         {
           "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Isochron Scepter",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -3127,6 +3187,22 @@
           "is_new": false
         },
         {
+          "name": "Lightning Greaves",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Long-Term Plans",
           "state": "in_deck",
           "where": [],
@@ -3155,14 +3231,22 @@
           "is_new": false
         },
         {
-          "name": "Mikokoro, Center of the Sea",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "name": "Mikaeus, the Lunarch",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
-          "name": "Mind Stone",
+          "name": "Mikokoro, Center of the Sea",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -3393,7 +3477,28 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "board_power_6",
+        "op": ">=",
+        "value": 2.8
+      },
+      "verdict": {
+        "state": "a trade",
+        "rose": 0,
+        "fell": 4,
+        "no_call": 6
+      },
+      "objective_grade": {
+        "state": "met",
+        "reading": 3.0369,
+        "shortfall": null
+      },
+      "measured": true,
+      "blind_spots": [
+        "Greater Auramancy",
+        "Lightning Greaves"
+      ]
     }
   ],
   "diagnostic": {

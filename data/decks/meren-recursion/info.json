@@ -862,7 +862,28 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "kill_by_8",
+        "op": ">=",
+        "value": 0.3
+      },
+      "verdict": {
+        "state": "do not merge",
+        "rose": 2,
+        "fell": 3,
+        "no_call": 5
+      },
+      "objective_grade": {
+        "state": "not met",
+        "reading": 0.2657,
+        "shortfall": 0.0343
+      },
+      "measured": true,
+      "blind_spots": [
+        "Cauldron of Essence",
+        "Dose of Dawnglow"
+      ]
     }
   ],
   "diagnostic": null,

@@ -51,7 +51,7 @@
  *            `decklist_sha256`/`version` stamp, and `has.deckcheck` says whether
  *            a Threat Index is on file (2026-10-17).
  */
-window.MANIFEST_VERSION = 10;
+window.MANIFEST_VERSION = 11;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── The shared formatters (2026-10-18) ──────────────────────────────────────

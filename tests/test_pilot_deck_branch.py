@@ -729,3 +729,63 @@ def test_the_source_subcommand_runs_after_the_new_subcommand_defined_a_local(mod
                                         json=False, proxy=False))
     out = capsys.readouterr().out
     assert out.strip(), "the sourcing report printed nothing"
+
+
+# ── What a reader chooses a branch by (2026-10-19) ──────────────────────────
+
+
+def test_a_branch_row_carries_what_a_reader_chooses_by_and_absent_stays_absent(modern_deck):
+    """`one()` reads the objective, the net-change verdict and grade, whether the
+    report describes the branch's current list, Forge's cast proofs and the
+    stacks naming a card only the branch brings — all off the branch's own
+    files, never recomputed. With none of those files, none of those keys."""
+    from manamap.pilot.common import decklist_sha256
+    deck_branch.new("md", "b", SIXTY_MAIN + SIXTY_SIDE)
+    bare = deck_branch.one("md", "b")
+    for k in ("verdict", "objective_grade", "measured", "cast_proofs", "stacks", "blind_spots"):
+        assert k not in bare, k
+    deck_branch.stage("md", "b", "Monastery Swiftspear", "Goblin Guide")
+    bdir = modern_deck / "branches" / "b"
+    meta_file = bdir / "branch.json"
+    doc = json.loads(meta_file.read_text())
+    doc["objective"] = {"axis": "kill_by_8", "op": ">=", "value": 0.7, "why": "faster"}
+    meta_file.write_text(json.dumps(doc))
+    (bdir / "net_change.json").write_text(json.dumps({
+        "decklist_sha256": decklist_sha256("md", "b"),
+        "objective_grade": {"state": "met", "reading": 0.74, "shortfall": None},
+        "recommendation": {"state": "a trade", "rose": ["damage @T10", "killed by T6"], "fell": ["extra cards by T8"],
+                           "no_call": ["mulliganed"]},
+        "blind_spots": [{"cards": ["Goblin Guide"], "what": "x"}]}))
+    (bdir / "cast_proofs.json").write_text(json.dumps({
+        "as_of": "2026-10-19", "harness": "forge 2.0.14",
+        "cards": {"Goblin Guide": {"verdict": "PLAYED: cast 3"}, "Other": {"verdict": "HELD: in hand"},
+                  "Third": {"verdict": "UNPLAYED: never castable"}}}))
+    (modern_deck / "stacks").mkdir(exist_ok=True)
+    (modern_deck / "stacks" / "001-guide.json").write_text(json.dumps({
+        "id": "001", "title": "Guide attacks", "scenario": {"board": {"you": ["Goblin Guide"]}, "hand": []},
+        "checker": {"verdict": "pass"}}))
+    (modern_deck / "stacks" / "002-swift.json").write_text(json.dumps({
+        "id": "002", "title": "Swiftspear, already in the deck", "scenario": {"board": {"you": ["Monastery Swiftspear"]}},
+        "checker": {"verdict": "pass"}}))
+    row = deck_branch.one("md", "b")
+    assert row["objective"] == {"axis": "kill_by_8", "op": ">=", "value": 0.7}
+    assert row["objective_grade"] == {"state": "met", "reading": 0.74, "shortfall": None}
+    assert row["verdict"] == {"state": "a trade", "rose": 2, "fell": 1, "no_call": 1}
+    assert row["measured"] is True and "measured_why" not in row
+    assert row["blind_spots"] == ["Goblin Guide"]
+    assert row["cast_proofs"]["played"] == 1 and row["cast_proofs"]["held"] == 1 and row["cast_proofs"]["unplayed"] == 1
+    assert [h["id"] for h in row["stacks"]] == ["001"], "only a stack naming a card the deck does not already run"
+    # The report goes stale when the branch's list moves under it.
+    deck_branch.stage("md", "b", "Mountain", "Lava Spike")
+    row = deck_branch.one("md", "b")
+    assert row["measured"] is False and "older list" in row["measured_why"]
+
+
+def test_the_dossier_lists_branches_newest_first(modern_deck):
+    from manamap.pilot import deck_info
+    deck_branch.new("md", "old", SIXTY_MAIN + SIXTY_SIDE)
+    deck_branch.new("md", "new", SIXTY_MAIN + SIXTY_SIDE)
+    for name, opened in (("old", "2026-09-01"), ("new", "2026-10-19")):
+        f = modern_deck / "branches" / name / "branch.json"
+        d = json.loads(f.read_text()); d["opened"] = opened; f.write_text(json.dumps(d))
+    assert [b["name"] for b in deck_info._branches("md")] == ["new", "old"]
