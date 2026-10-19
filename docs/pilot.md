@@ -120,6 +120,10 @@ manamap pilot queue [list [--all] [--deck S]|waiting [--deck S]|show Q###|add --
 manamap pilot validate-queue                                  # its gate: every line replayed through the transition check
 manamap pilot fleet-analytics [--write] [--json]              # THE FLEET COMPARED: data/fleet/analytics.json — profiles, bands, placements, comparisons; never a score
 manamap pilot validate-fleet-analytics                        # its gate: form, every number a fig or an absent, bands re-add, no composite key
+manamap pilot rating <slug> [--write] [--json]                # THE RATING (★ over ◆): the scorecard within its bracket; --write rating.json (the skeleton)
+manamap pilot rating --all | --calibrate                      # the leaderboard by bracket; Spearman against outcomes with calibrate's refusal
+manamap pilot merge-rating <slug> [--verifier]                # the deck-rater's judgment (or the rating-skeptic's verdict) into rating.json, validated first
+manamap pilot validate-rating <slug>                          # its gate: code components recompute, tier ★, judgment bounded and cited; STALE reported
 manamap pilot watch <slug> [list|mark SET "Card" watching|pass|unreviewed [--note …]|note SET "Card" "…"]
                                                               # CANDIDATE WATCH LISTS (watchlist.json), reviewed in the Atlas's Build mode
 manamap pilot validate-watchlist <slug>                       # its gate: real, legal, in-identity cards; closed vocabularies
@@ -886,6 +890,75 @@ hand-written, so not a lifecycle stage: absent means the deck is published nowhe
 `build-index` adds `links` to the deck's manifest entry only when the file exists. The other
 direction is the same paste: `check-in --from <url>` is refused with the sentence that says
 to export on Moxfield and paste into `--from -`.
+
+## The rating (`rating`, ★ over ◆; `merge-rating`; `validate-rating`) — 2026-10-18
+
+`rating.json` is a deck's 0–100 score, letter grade and rank **within its bracket**, and it
+is **★ coaching**: `tier: "★"`, the one-sentence `RATING_LABEL` on the artifact ("…ranks
+within a bracket of N decks and claims no significance"), and a score that never gates
+anything. The bench has refused a composite score at the ◆ tier three times (`benchmark.py`'s
+`score: None`, `diagnostic.py`'s refusal to rank decks against each other, `calibrate.py`'s
+`MIN_DECKS`), and the rating does not overturn that: it is a labelled judgment OVER the ◆
+figures, every one of which is traced to its file with its interval and n.
+
+**The scorecard** (`rating.py`, deterministic). Each component maps a ◆ figure to 0–100 by
+its **placement** within the bracket group (a percentile over the members, ties averaged,
+withheld below `RATING_MIN_GROUP` = 3) and by an **absolute anchor** quoted from the
+strategy companion; the sub-score is half of each when both exist, the one present
+otherwise. The anchor is `band_score`: 100 inside the cited band, falling linearly outside
+it, monotone so an input's interval maps by its two ends.
+
+| component | weight | ◆ inputs | placement | anchor |
+|---|---|---|---|---|
+| speed | 0.15 | benchmark `kill_by_turn_8` (Wilson at the harness's n) | within bracket, higher better | `kill_by_turn_T` / 0.5 for the bracket's clock (B4 → T6, B3 → T8, B1–2 → T10; `strategy:deckbuilding.power-level`) |
+| mana | 0.10 | benchmark `missed_land_drop_rate`; the audit's `consistency` axis | lower better | band(turn-3 land drop, ≥ 0.74; `strategy:deckbuilding.mana-base`) |
+| resilience | 0.15 | benchmark `answer_cards`; the audit's `interaction-breadth` classes | `answer_cards` | mean of band(answer_cards, 15–20) and classes/5 — CAPACITY, not performance |
+| construction | 0.15 | the audit axes with a cited band: mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density | none (an authored target is not a sample) | mean band_score; dropped axes named in `method` |
+| table_record | 0.15 | `log.jsonl`: wins / games, any version, Wilson; par = mean 1/(opponents+1) | on win rate − par | 50 + 100·(win − par); withheld below 5 games |
+| pilot_feel | 0.10 | the survey means of power, resilience, consistency (authored) | within bracket | (mean − 1)/4 · 100; withheld below 3 surveyed games |
+| forge | **0.00** | Forge win rate on the CURRENT list at the standard table | none | 50 + 100·(win − 0.25); weight zero by the pilot's rule (2026-10-18) |
+| judgment | 0.20 | the `deck-rater` agent's 0–100 | — | a weighted component, not a ±adder: bounded by construction, visible beside the rest |
+
+**Absent means withheld.** A component with no usable input is listed in `withheld[]` with its
+reason, never scored zero, and the weights are renormalised over what is present
+(`weight_effective`). The skeleton withholds `judgment` ("no deck-rater pass yet") so a
+skeleton-only file is honest on its own; today `table_record`, `pilot_feel` and `forge` are
+withheld on every deck. `code_score` (measured only) and `score` (with the judgment) are both
+carried; `score_ci` sums the components' interval ends; `resolution` says how many grade
+boundaries the interval spans. Five grade bands — A ≥ 80, B ≥ 65, C ≥ 50, D ≥ 35, F — no
+plus or minus and no S: the inputs' resolution is a handful of points, and DeckCheck's
+S–F scale is a different, unpublished formula. The grade is always printed with its group:
+"B in Bracket 3 (2 of 5)". `rank` orders the group by each member's tracked `rating.json`
+score when it describes the current list, else its skeleton `code_score` (`rank.basis`),
+with `ties_within_ci`.
+
+**The judgment is carried, never re-derived.** `rating <slug> --write` rebuilds every code
+component and keeps an existing judgment, verifier and open questions only when
+`judgment.against` names this list's sha and this spec's sha (`model_version` is the
+scorecard's constants hashed — a weight edit changes it); otherwise the judgment is dropped
+into `withheld[]` with the sha reason. `merge-rating <slug>` takes the `deck-rater`'s hand-off
+(`.agent-out/deck-rater.json`: `judgment{sub_score, argument, citations}`, `open_questions`),
+`--verifier` the `rating-skeptic`'s (`verifier{verdict, findings}`); both recompute the
+skeleton and run `validate-rating` before the write, so a hand-off that invents a figure
+lands nothing. `install-agent` refuses the routine by name.
+
+**The gate** (`validate-rating`, `deck_status.VALIDATED`): tier and label; every code component,
+the withheld list, the code score, the bracket, the limits and the context equal a fresh
+computation byte for byte; rank matches the group's current scores; weights are the
+scorecard's and the effective weights sum to 1; the judgment's sub-score is a whole number in
+[0, 100] and `against` names this list and spec; at least two citations of two kinds, each
+resolvable — `log:<id>` in the log with its quote in the text, `strategy:<id>` verbatim
+through the stack validator's contract, `stack:<NNN>` passed its checker, `engine:<stage>`
+and `context:<section>` exist and carry the quote, `skeleton:<component>` present; every
+number in the argument appears in cited material or the skeleton; the argument within 250
+words; the verifier's statuses from the closed set, every finding with `where`, `pass` only
+beside all-`supported` findings. STALE (the list moved, the fleet artifact rebuilt, the spec
+changed) is reported and form-checked, never failed.
+
+`rating --all` prints the leaderboard by bracket, every row labelled skeleton or judged with
+its withheld list. `rating --calibrate` is the check against outcomes: Spearman of the score
+against the pilot's win rate, the survey's power mean and the DTI, each computed only at
+`calibrate.MIN_DECKS` and otherwise the `NOT ANSWERABLE` refusal with today's n.
 
 ## Fleet analytics (`fleet-analytics`, ◆ profiles; `validate-fleet-analytics`, form) — 2026-10-18
 

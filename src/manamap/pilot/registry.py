@@ -126,6 +126,16 @@ PILOT_STEPS = [
      "THE FLEET COMPARED (data/fleet/analytics.json): every live deck's bracket, benchmark, "
      "vitals, DTI, table record, pilot record and survey, each with interval / n / source; "
      "bracket bands and placements; floor-vs-DTI, DTI history, grades, curves. Profiles, never a score"),
+    ("rating", "manamap.pilot.rating",
+     "THE RATING (★ over ◆): a deck's scorecard within its bracket — every component a measured "
+     "figure with interval and source, withheld when absent; --write rating.json (the skeleton; the "
+     "judgment is the deck-rater's); --all the leaderboard; --calibrate Spearman against outcomes"),
+    ("merge-rating", "manamap.pilot.merge_rating",
+     "Merge the deck-rater's judgment (or, --verifier, the rating-skeptic's verdict) into rating.json; "
+     "the skeleton is recomputed and the validator runs before the write"),
+    ("validate-rating", "manamap.pilot.validate_rating",
+     "Gate rating.json: every code component recomputes byte for byte, tier ★, the judgment in bounds, "
+     "every citation resolvable, every number in the argument cited; STALE is reported, never failed"),
     ("validate-fleet-analytics", "manamap.pilot.validate_fleet_analytics",
      "Gate data/fleet/analytics.json: form, every number a fig or an absent, bands re-add, "
      "no composite key; WARNs when a deck's list moved since the build"),
@@ -349,6 +359,7 @@ _DECK_COMMANDS = {
     "validate-tutor-guide", "impact", "scenario-facts", "merge-prose",
     "card-value", "validate-pending",
     "deck-notes", "validate-log", "validate-debrief", "merge-debrief", "prescribe", "validate-prescription",
+    "merge-rating", "validate-rating",
     "captains-log", "merge-captains-log", "validate-captains-log",
     "install-agent", "build-poh", "validate-poh",
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
@@ -923,6 +934,19 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("verb", nargs="?", default="list", choices=["list", "mark", "note"])
             cmd.add_argument("rest", nargs="*", help="SET \"Card\" verdict, or SET \"Card\" \"note\"")
             cmd.add_argument("--note", default=None, help="mark: a note alongside the verdict")
+        if name == "rating":
+            cmd.add_argument("slug", nargs="?", default=None,
+                             help="One deck; omit (or --all) for the leaderboard")
+            cmd.add_argument("--write", action="store_true",
+                             help="write rating.json (the skeleton, carrying a current judgment forward)")
+            cmd.add_argument("--all", action="store_true", dest="all_decks",
+                             help="every live Commander deck, grouped by bracket")
+            cmd.add_argument("--calibrate", action="store_true",
+                             help="Spearman(score, pilot win rate | survey power | DTI) with calibrate's refusal")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "merge-rating":
+            cmd.add_argument("--verifier", action="store_true",
+                             help="merge the rating-skeptic's verdict instead of the rater's judgment")
         if name == "fleet-analytics":
             cmd.add_argument("--write", action="store_true",
                              help="write data/fleet/analytics.json (else print a table)")

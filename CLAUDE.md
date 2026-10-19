@@ -100,7 +100,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 149 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 152 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -207,6 +207,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 - **Never `cache-record` to make a board green, and never hand-patch an agent's prose to pass a gate.** → `docs/gotchas-bench.md`
 - **Every figure carries its definition in the report that prints it** (`net_change.METRICS` is the registry; a test holds it to `ROWS`). → `docs/pilot.md`
 - **A measure computed from an authored file is not evidence**, however tight its interval; aim a branch at an OUTPUT. → `docs/gotchas-bench.md`
+- **A rating is ★ coaching over ◆ inputs; the score never gates.** `rating.json` (2026-10-18) is a scorecard of traced figures plus one bounded agent judgment, ranked within a bracket with its n and no significance claim; the fleet artifact carries no composite at all. → `docs/pilot.md`
 - **External prices are dated evidence in `prices.json`; agents quote it, never a live lookup** (`manamap pilot prices <slug> --write`; form gated, freshness never). → `docs/pilot.md`
 - **DeckCheck's Threat Index is dated external evidence in `deckcheck.json`; the floor (`bracket_report.json`) gates, the DTI never does** (`deckcheck <slug> --write` after the pilot's own scan; an LLM's read that moves between scans, so every reading is kept and the omni is ours, not theirs). → `docs/pilot.md`
 - **An authored rate driving a figure must name where it came from** — the attack tutor read 5.70 fires a game where Forge resolved 1.22. The goldfish's authored rates live in `config.py` and `try` names them. → `docs/gotchas-bench.md`

@@ -1903,3 +1903,11 @@ PILOT_FEEL_RANGE = (1, 5)
 FLEET_DIR = DATA_DIR / "fleet"
 FLEET_ANALYTICS_PATH = FLEET_DIR / "analytics.json"
 FLEET_MIN_GROUP = 3
+
+# ── THE RATING (2026-10-18) ───────────────────────────────────────────────
+# `rating.py`'s scorecard constants are hashed into its own spec sha; this path
+# is declared as a cache input (`repo:RATING_PATH`) so a weight edit MISSes the
+# `deck-rating` routine on every deck, as a `deck_audit.py` edit does the
+# diagnosis. The loop is capped like the others.
+RATING_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "rating.py"
+RATING_MAX_ITERATIONS = 3

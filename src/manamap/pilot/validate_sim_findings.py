@@ -17,6 +17,12 @@ _NUM = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?)%?(?![\w.])")
 _FID = re.compile(r"\bF-[0-9a-f]{8}-\d{2}\b")
 
 
+def numbers_in(finding):
+    """Public name: the rating validator holds an agent's argument to the same
+    rule — every number in the prose must appear in cited material."""
+    return _numbers_in(finding)
+
+
 def _numbers_in(finding):
     """Every number a finding carries, in the forms prose might quote."""
     vals = set()

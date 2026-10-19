@@ -466,6 +466,10 @@ VALIDATED = {
     # day the survey (`feel`) became a field a figure is computed from. A gate row,
     # never a stage: the log is the pilot's, nothing regenerates it.
     "log.jsonl": "manamap.pilot.validate_log",
+    # THE RATING (2026-10-18): ★ coaching over ◆ inputs. A gate row, not a stage —
+    # the skeleton is code, the judgment is an agent's, and `/rate-deck` is the
+    # loop that writes it. Freshness surfaces through `deck-info`'s next lines.
+    "rating.json": "manamap.pilot.validate_rating",
     # The combo report (2026-10-09): the lines a list contains and the ones it is
     # a card short of, both recomputable — gated the day it shipped.
     "combos.json": "manamap.pilot.validate_deck_combos",

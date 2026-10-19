@@ -1,0 +1,313 @@
+{
+ "slug": "gishath",
+ "tier": "★",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 5 decks and claims no significance.",
+ "bracket": {
+  "key": 3,
+  "source": "target",
+  "floor": 3,
+  "floor_name": "Upgraded",
+  "within_target": true
+ },
+ "components": [
+  {
+   "name": "speed",
+   "weight": 0.15,
+   "weight_effective": 0.2727,
+   "sub_score": 87.5,
+   "sub_ci": [
+    87.5,
+    87.5
+   ],
+   "placement": 75.0,
+   "anchor": 100.0,
+   "method": "0.5·placement + 0.5·anchor: placement of kill_by_turn_8 within bracket 3 (n=5); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Wilson 95% from the benchmark's n",
+   "inputs": [
+    {
+     "figure": "kill_by_turn_8",
+     "value": 0.572,
+     "ci95": [
+      0.5623,
+      0.5817
+     ],
+     "n": 10000,
+     "source": "benchmark.json#metrics.speed.kill_by_turn_8",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.power-level",
+     "quote": "the sharpest line between them is expected game length"
+    }
+   ]
+  },
+  {
+   "name": "mana",
+   "weight": 0.1,
+   "weight_effective": 0.1818,
+   "sub_score": 62.5,
+   "sub_ci": [
+    62.5,
+    62.5
+   ],
+   "placement": 25.0,
+   "anchor": 100.0,
+   "method": "0.5·placement + 0.5·anchor: placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "inputs": [
+    {
+     "figure": "missed_land_drop_rate",
+     "value": 0.231,
+     "ci95": [
+      0.2228,
+      0.2394
+     ],
+     "n": 10000,
+     "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.consistency",
+     "value": 0.892,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.mana-base",
+     "quote": "had 26% miss the turn-3 land drop with no mana source at all"
+    }
+   ]
+  },
+  {
+   "name": "resilience",
+   "weight": 0.15,
+   "weight_effective": 0.2727,
+   "sub_score": 65.0,
+   "sub_ci": [
+    65.0,
+    65.0
+   ],
+   "placement": 50.0,
+   "anchor": 80.0,
+   "method": "0.5·placement + 0.5·anchor: placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "inputs": [
+    {
+     "figure": "answer_cards",
+     "value": 16,
+     "ci95": null,
+     "n": null,
+     "source": "benchmark.json#metrics.response.answer_cards",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.interaction-breadth",
+     "value": 3,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#interaction-breadth (classes answered of 5)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "interactive suite"
+    }
+   ]
+  },
+  {
+   "name": "construction",
+   "weight": 0.15,
+   "weight_effective": 0.2727,
+   "sub_score": 72.86,
+   "sub_ci": [
+    72.86,
+    72.86
+   ],
+   "placement": null,
+   "anchor": 72.86,
+   "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
+   "inputs": [
+    {
+     "figure": "audit.mana-base",
+     "value": 35,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#mana-base (verdict under)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.ramp",
+     "value": 13,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#ramp (verdict over)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.card-advantage",
+     "value": 6,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#card-advantage (verdict under)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.interaction",
+     "value": 9,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#interaction (verdict at)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.sweepers",
+     "value": 1,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#sweepers (verdict at)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.protection",
+     "value": 8,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#protection (verdict over)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "audit.threat-density",
+     "value": 3,
+     "ci95": null,
+     "n": null,
+     "source": "deck-audit#threat-density (verdict at)",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.ratios",
+     "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.interaction-suite",
+     "quote": "wipes \"one or two max\" (Zupke caps at 3)"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.threat-density",
+     "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+    },
+    {
+     "kind": "strategy",
+     "ref": "strategy:deckbuilding.threat-density",
+     "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
+    }
+   ]
+  }
+ ],
+ "withheld": [
+  {
+   "component": "table_record",
+   "reason": "2 game(s) logged; 5 needed"
+  },
+  {
+   "component": "pilot_feel",
+   "reason": "0 surveyed game(s); 3 needed"
+  },
+  {
+   "component": "forge",
+   "reason": "no Forge run on the current list (latest run describes an older list)"
+  },
+  {
+   "component": "judgment",
+   "reason": "no deck-rater pass yet"
+  }
+ ],
+ "limits": [
+  "A rating is ★ coaching over ◆ inputs; the score never gates. The floor (bracket_report.json) is the only bracket gate.",
+  "calibrate.py refuses a verdict below 10 decks with 20 games each; no figure here is checked against outcomes yet (`rating --calibrate` reports the refusal with today's n).",
+  "Goldfish kill is one column, never the rule: the benchmark is an unopposed ceiling with no blockers and no removal, and a combo or control deck reads slow for not attacking.",
+  "Forge is not a power read until the harness work is done (the pilot's rule, 2026-10-18): its component ships at weight 0.00 and is shown only for a run on the current list.",
+  "DeckCheck's Threat Index is shown in `context` and never scored.",
+  "Diagnostic engine figures are read against each deck's own declaration and are never ranked across decks; they are evidence for the argument, not a component.",
+  "rank over n=5 decks; no significance claim"
+ ],
+ "context": {
+  "dti": {
+   "score": 40,
+   "max_score": 96,
+   "bracket": 3,
+   "as_of": "2026-10-18",
+   "stale_list": false
+  },
+  "floor_vs_target": "floor 3, target 3"
+ },
+ "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
+ "fleet_sha": "c8ff872a33fc",
+ "model_version": "23bf4e672931",
+ "spec_version": 1,
+ "open_questions": [],
+ "iterations": 0,
+ "verifier": null,
+ "code_score": 72.8,
+ "score": 72.8,
+ "score_ci": [
+  72.8,
+  72.8
+ ],
+ "grade": "B",
+ "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
+ "judgment": null,
+ "rank": {
+  "position": 2,
+  "of": 5,
+  "group": [
+   "ur-dragon",
+   "gishath",
+   "meren-recursion",
+   "goblin-storm",
+   "emiel-blink"
+  ],
+  "ties_within_ci": false,
+  "basis": {
+   "ur-dragon": "skeleton code_score",
+   "gishath": "this document",
+   "meren-recursion": "skeleton code_score",
+   "goblin-storm": "skeleton code_score",
+   "emiel-blink": "skeleton code_score"
+  },
+  "scores": {
+   "ur-dragon": 73.2,
+   "gishath": 72.8,
+   "meren-recursion": 66.2,
+   "goblin-storm": 64.8,
+   "emiel-blink": 49.1
+  }
+ }
+}
