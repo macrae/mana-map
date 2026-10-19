@@ -214,23 +214,29 @@ def concordance(subs, slug, *, min_group, mixed_at, divergent_at, seed, exact_ma
             continue
         rankings[inst] = stats.rank_with_ties(vals, higher_is_better=True)
     mine = {inst: r[slug] for inst, r in rankings.items() if slug in r}
-    if len(mine) < 2:
+    # The judgment is ranked and shown, and it counts toward the group's W, but
+    # the spread and the outlier sides are over the MEASURED instruments: the
+    # judgment is the thing being asked to explain the disagreement, so it
+    # cannot be its own outlier (and with it in, a three-against-three tie at
+    # n=3 listed every instrument).
+    measured = {i: r for i, r in mine.items() if i != "judgment"}
+    if len(measured) < 2:
         return {"level": "withheld", "why": "fewer than two instruments rank this deck", "instruments": mine,
                 "of": n, "spread": None, "outliers": [], "group": None}
-    spread = (max(mine.values()) - min(mine.values())) / (n - 1)
+    spread = (max(measured.values()) - min(measured.values())) / (n - 1)
     level = "divergent" if spread >= divergent_at else ("mixed" if spread >= mixed_at else "concordant")
     outliers = []
     if level != "concordant":
-        med = statistics.median(mine.values())
-        better = sorted(i for i, r in mine.items() if r < med)
-        worse = sorted(i for i, r in mine.items() if r > med)
+        med = statistics.median(measured.values())
+        better = sorted(i for i, r in measured.items() if r < med)
+        worse = sorted(i for i, r in measured.items() if r > med)
         sides = []
         if better and (not worse or len(better) <= len(worse)):
             sides.append(("better", better))
         if worse and (not better or len(worse) <= len(better)):
             sides.append(("worse", worse))
         for side, names in sides:
-            outliers += [{"instrument": i, "rank": mine[i], "side": side} for i in names]
+            outliers += [{"instrument": i, "rank": measured[i], "side": side} for i in names]
     full = [r for r in rankings.values() if len(r) == n]
     group = None
     if len(full) >= 2:

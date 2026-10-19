@@ -395,6 +395,12 @@ def test_concordance_reads_the_spread_of_a_decks_ranks_and_names_the_outlier_sid
     assert mc.concordance(mixed, "a", **kw)["level"] == "mixed"
     small = mc.concordance({"a": {"speed": 1}, "b": {"speed": 2}}, "a", **kw)
     assert small["level"] == "withheld"
+    # The judgment is ranked and counts toward W, but is never its own outlier: with
+    # it in the sides, a three-against-three tie at n=3 listed every instrument.
+    with_j = {m: dict(v, judgment={"a": 80, "b": 50, "c": 20}[m]) for m, v in subs.items()}
+    cj = mc.concordance(with_j, "a", **kw)
+    assert "judgment" in cj["instruments"] and cj["group"]["m"] == 4
+    assert [o["instrument"] for o in cj["outliers"]] == ["dti"]
 
 
 def test_a_divergent_deck_prints_a_grade_range_and_its_judgment_must_name_the_outlier(fleet):
