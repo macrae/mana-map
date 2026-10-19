@@ -15,13 +15,14 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 13,
     "of": 19,
     "stale": [
       "tutors",
       "prose"
     ],
     "invalid": [
+      "targets",
       "build_plan.json"
     ],
     "verified": true,
@@ -5444,8 +5445,8 @@
   "bracket": {
     "floor": 4,
     "floor_name": "Optimized",
-    "target": null,
-    "within_target": null
+    "target": 4,
+    "within_target": true
   },
   "deckcheck": {
     "score": 31,
@@ -6172,7 +6173,7 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "2 artifact(s) fail their own gate (targets, build_plan.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "1 logged game(s) not yet debriefed (001) — `/debrief sharknado`",
     "branch `torbran-v1`: 1 HELD add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch torbran-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
