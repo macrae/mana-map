@@ -1846,3 +1846,14 @@ over the pre-merge measurement (sharknado torbran-v1: killed by T6 0.212 → 0.2
 commit's message, which is where `/release-branch` says to quote it from. The fix is a
 `regen` rule — skip `net-change` on a branch whose `branch.json` has `merged` — and a
 freshness test that asserts a merged branch's file is left alone; neither exists yet.
+
+## 29. `card_state` reports a card as "seen" while its death payload is unreadable (2026-10-19)
+
+`model_coverage.card_state` has four states — seen, partial, dark, invisible — and
+"partial" means only an unread REPLACEMENT. A creature whose body the combat model reads
+but whose death payoff `death_profile` names in `unreadable` (Erebos, Bleak-Hearted;
+Crossway Troublemakers; Vein Ripper before 2026-10-19) therefore shows as "seen" in
+`try`'s column and in the coverage report, when the thing the pilot bought it for is not
+read. `meta.card_advantage.draw_not_modelled` excludes death-read cards since 2026-10-19;
+the per-card state does not yet consult `draw.unmodelled` or `death.unreadable`. The fix
+is a fifth state or a wider "partial", with the fleet `silent_losses` test extended.

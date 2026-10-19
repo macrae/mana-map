@@ -3539,6 +3539,27 @@ an A/A at the same N and the same harness beneath it. A mechanism endpoint — d
 cast, did the trigger fire, how many times — is still readable, and is usually the cheaper
 question anyway, which the power preflight has been saying all along.
 
+## 2026-10-19 — A death trigger in the plural read as nothing, and the draw axis measured a loss on cards bought for draw
+
+Edgar's mean-v1 package added Morbid Opportunist and Vraan, Executioner Thane — "Whenever
+one or more other creatures DIE … This ability triggers only once each turn" — and the
+paired net-change read the branch as half a card worse by turn eight. `_DEATH_TRIGGER_RE`
+wanted the singular "dies", so both cards were invisible to the death channel (not even
+`unreadable`), while two draw engines the model did read left the list. Three defects under
+one symptom, found in the same sitting: (1) the plural, 19 corpus cards; (2) no once-a-turn
+cap on a death trigger, so a Vraan would have drained per token; (3) a payload behind a
+PRICE was credited free — Erebos and Crossway Troublemakers read a draw per death on "you
+may pay 2 life. If you do, draw", fifteen corpus cards in all. And one timing bug: the draw
+series was appended before combat, so every draw in the sacrifice sweep landed a turn late
+and turn ten's was lost — #34's defect, one series over.
+
+**The pilot's rule that found it: "measure twice, cut once."** The honest move when a
+measured loss rests on cards the model cannot read is to teach the model first, then
+measure again, then cut. The three death paths now fire every payload through one helper,
+`_deaths_after_combat`, honouring "nontoken" and "once each turn"; `try`'s read of Morbid
+Opportunist for a Swamp moved from nothing to a positive interval. The remaining gap is
+named in `docs/simulation.md`: a granted self-death draw (Clavileño) needs a combat death.
+
 ## CLAUDE.md's rule digest, verbatim as of 2026-10-05
 
 > Moved here VERBATIM when CLAUDE.md was compacted on 2026-10-05: CLAUDE.md now carries

@@ -235,7 +235,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 - **A creature that may not attack does not attack** — Defender and "can't attack unless" gate it (`attack_gate`); Kefnet was a free 5/5 flyer every turn. → `docs/simulation.md`
 - **A flag the model sets is a claim the model must ACT ON** (`tests/test_metric_hygiene.py`).
 - **A one-turn grant is not a permanent doubler; a channel placed where it cannot fire is not a channel.** → `docs/gotchas-bench.md`
-- **A model change makes every derived artifact stale.** `meta.model_version` hashes all four goldfish files BYTE FOR BYTE — a comment edit there means `manamap pilot regen --jobs 8 && make manuals`. → `docs/gotchas-bench.md`
+- **A model change makes every derived artifact stale.** `meta.model_version` hashes all five simulator files BYTE FOR BYTE (the four goldfish files and `pilot_policy.py`) — a comment edit there means `manamap pilot regen --jobs 8 && make manuals`. → `docs/gotchas-bench.md`
 - **The goldfish cannot rank two lands that make the same colours**; `mana-analysis` and `mana-fit` are the evidence for a land swap. → `docs/gotchas-bench.md`
 - **Adding a metric requires re-running the independence check** (`pytest -m fleet`; one pair is over the line today — known-issues 9b).
 

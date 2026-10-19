@@ -589,6 +589,47 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         etb_damage = 0
         bodies_cum_bump[0] = 0
         arrival_draw_used = set()
+        # "THIS ABILITY TRIGGERS ONLY ONCE EACH TURN" (Morbid Opportunist, Vraan):
+        # the engines that have fired this turn, by identity, across all three
+        # death paths — the sacrifice sweep, the one-turn copies leaving, and
+        # the measured death rate (2026-10-19).
+        death_once_used = set()
+
+        def _deaths_after_combat(n_died, is_token):
+            """Death payoffs for creatures leaving AFTER the sacrifice step —
+            the one-turn copies at the end step and the measured death rate.
+
+            ONE RULE FOR EVERY DEATH (2026-10-19). Until now only the sacrifice
+            sweep fired `death_draw` and `death_treasure`; the other two paths
+            fired drain and damage alone and ignored the `nontoken` scope, so
+            a Liliana drew off a sacrificed token and nothing else, and a
+            Midnight Reaper never saw the real creature the death rate took.
+            Drain and damage land post-combat here (`deaths_drained`), as they
+            did; draw and Treasure are the sweep's; the once-a-turn cap and the
+            nontoken scope are honoured; a card registered under both flags
+            fires once.
+            """
+            nonlocal deaths_drained, deaths_damaged, treasures
+            fired = set()
+            for eng in list(death_engines) + list(death_drains):
+                if id(eng) in fired:
+                    continue
+                fired.add(id(eng))
+                if is_token and eng.get("nontoken_only"):
+                    continue
+                if eng.get("death_once"):
+                    if id(eng) in death_once_used:
+                        continue
+                    death_once_used.add(id(eng))
+                    reps = 1
+                else:
+                    reps = n_died
+                deaths_drained += eng["death_drain"] * reps
+                deaths_damaged += eng["death_damage"] * reps
+                if eng["death_draw"] * reps:
+                    draw_n(eng["death_draw"] * reps)
+                if model_treasures:
+                    treasures += eng["death_treasure"] * reps
 
         def draw_n(n):
             """Take n off the top. The deck running out is a real outcome and
@@ -696,7 +737,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                              toughness=1,
                              is_token=False, is_legendary=False, type_line="",
                              infect=False, toxic=0, flying=False,
-                             temporary=False, attack_gate=None, lord=None, colors=()):
+                             temporary=False, attack_gate=None, lord=None, colors=(),
+                             mv=None):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -763,6 +805,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         continue
                     if hi is not None and power > hi:
                         continue
+                    # "WITH MANA VALUE 3 OR LESS" (Tocasia's Welcome): a token's
+                    # mana value is 0; a cast body passes its cost; an entry
+                    # whose mana value the caller does not know is NOT counted —
+                    # conservative, and named in the channel table.
+                    mv_max = eng.get("arrival_mv_max")
+                    if mv_max is not None:
+                        _mv = 0 if is_token else mv
+                        if _mv is None or _mv > mv_max:
+                            continue
                     if eng["arrival_draw_once"]:
                         if i in arrival_draw_used:
                             continue
@@ -1518,7 +1569,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         flying=combat["flying"],
                         attack_gate=combat.get("attack_gate"),
                         lord=combat.get("static_lord"),
-                        colors=card["damage_source"]["colors"])
+                        colors=card["damage_source"]["colors"],
+                        mv=card["cmc"])
                     creatures_entered_this_turn += 1
             # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
             # whether or not the commander has ever been cast. "Another"
@@ -1561,12 +1613,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["sac_outlet"] == "free":
                     free_sac_outlet = True
             if model_deaths:
-                # DAMAGE AND LIFE LOSS BOTH BELONG HERE. `death_damage` is
-                # the "deals N damage to any target" idiom that
-                # `death_drain` does not read; a card can carry either or
-                # both, so the list is joined on `or`.
-                if (card["death"]["death_drain"]
-                        or card["death"]["death_damage"]):
+                # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19): drain, damage,
+                # draw and Treasure all fire on the measured death rate now,
+                # not drain and damage alone, through `_deaths_after_combat`.
+                if is_death_engine(card["death"]):
                     death_drains.append(card["death"])
                 if card["death"]["gain_on_opponent_death"]:
                     opponent_death_gains.append(card["death"])
@@ -2609,12 +2659,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if card["sac_outlet"] == "free":
                         free_sac_outlet = True
                 if model_deaths:
-                    # DAMAGE AND LIFE LOSS BOTH BELONG HERE. `death_damage` is
-                    # the "deals N damage to any target" idiom that
-                    # `death_drain` does not read; a card can carry either or
-                    # both, so the list is joined on `or`.
-                    if (card["death"]["death_drain"]
-                            or card["death"]["death_damage"]):
+                    # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19) — see the
+                    # body door above; `_deaths_after_combat` fires them all.
+                    if is_death_engine(card["death"]):
                         death_drains.append(card["death"])
                     if card["death"]["gain_on_opponent_death"]:
                         opponent_death_gains.append(card["death"])
@@ -2982,7 +3029,6 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
         bodies_cum += bodies_cum_bump[0]
         bodies_by_turn.append(bodies_cum)
-        drawn_extra_by_turn.append(drawn_extra)
         held = [c for c in hand if c["name"] in interaction_names]
         interaction_in_hand_by_turn.append(bool(held))
         interaction_castable_by_turn.append(
@@ -3250,6 +3296,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     for eng in death_engines:
                         if eng.get("nontoken_only"):
                             continue  # a TOKEN died; "nontoken" payoffs do not see it
+                        if eng.get("death_once"):
+                            if id(eng) in death_once_used:
+                                continue  # "triggers only once each turn"
+                            death_once_used.add(id(eng))
                         # Life loss is damage here for the same reason the
                         # arrival channel says so: one opponent, 40 life.
                         etb_damage += eng["death_drain"]
@@ -3299,9 +3349,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # same flag, because a deck that has not declared a death rate
                 # has no death payoffs in `death_drains` to fire.
                 _n_died = len(battlefield) - len(_keep)
-                for prof in death_drains:
-                    deaths_drained += prof["death_drain"] * _n_died
-                    deaths_damaged += prof["death_damage"] * _n_died
+                _deaths_after_combat(_n_died, True)      # copies are tokens
                 battlefield[:] = [battlefield[i] for i in _keep]
                 creature_types[:] = [creature_types[i] for i in _keep]
                 creature_flying[:] = [creature_flying[i] for i in _keep]
@@ -3489,19 +3537,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # is what the stable sort-then-pop this replaces removed -- and
                 # the parallel lists lose the same index.
                 weakest = min(range(len(battlefield)), key=lambda k: battlefield[k][0])
-                battlefield.pop(weakest)
+                _died = battlefield.pop(weakest)
                 creature_types.pop(weakest)
                 creature_flying.pop(weakest)
                 bodies_cum = max(0, bodies_cum - 1)
-                for prof in death_drains:
-                    deaths_drained += prof["death_drain"]
-                    # A goldfish has one opponent at 40 life, so damage and life
-                    # loss reduce the same number — but they are counted from
-                    # separate fields because they are NOT the same at a table:
-                    # life loss ignores damage prevention and hits through a
-                    # Platinum Angel. Folding them into one number could not be
-                    # unfolded later without re-reading every card.
-                    deaths_damaged += prof["death_damage"]
+                # A goldfish has one opponent at 40 life, so damage and life
+                # loss reduce the same number — but they are counted from
+                # separate fields because they are NOT the same at a table:
+                # life loss ignores damage prevention and hits through a
+                # Platinum Angel. Folding them into one number could not be
+                # unfolded later without re-reading every card. The body that
+                # died says whether it was a token, so a "nontoken" payoff
+                # sees the real creature and not the token (2026-10-19).
+                _deaths_after_combat(1, bool(_died[4]))
             for _ in range(n_opp):
                 for prof in opponent_death_gains:
                     deaths_gained += prof["gain_on_opponent_death"]
@@ -3633,6 +3681,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # converted on turn ten, and the only field that could have shown it had
         # already been written (#34).
         sacrifices_by_turn.append(sacrifices)
+        # THE SAME FIX FOR THE DRAW SERIES (2026-10-19): it was appended before
+        # combat, so every draw made in the sacrifice sweep, on an attack or on
+        # a death landed one turn late and turn ten's were never recorded —
+        # the defect #34 fixed for `sacrifices_by_turn`, one series over.
+        drawn_extra_by_turn.append(drawn_extra)
 
         tutors = sum(1 for t in tutor_ready_turns if t <= turn)
         for i, target in enumerate(targets):

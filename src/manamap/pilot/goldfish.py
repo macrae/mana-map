@@ -418,15 +418,20 @@ MODEL_ASSUMPTIONS = [
     "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four "
     "channels are modelled — a card's own ETB draw, an instant or sorcery that "
     "draws, an upkeep trigger, and an ARRIVAL trigger that draws when other "
-    "creatures or tokens enter (Welcoming Vampire, Caretaker's Talent), which "
-    "rides the same single door the ETB damage payoffs use. Activated draw "
-    "(needs a spending policy this model has no opinion on), X-based draw "
-    "(board-dependent), and death- or attack-triggered draw (no deaths, and "
-    "attacks only under `model_combat`) are NOT modelled and the cards are "
-    "named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — "
-    "'if you control an artifact', 'you may draw' — is treated as unmodelled "
-    "rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus "
-    "carry one.",
+    "creatures or tokens enter (Welcoming Vampire, Caretaker's Talent, Tocasia's "
+    "Welcome with its mana-value gate), which rides the same single door the ETB "
+    "damage payoffs use. DEATH-TRIGGERED DRAW (Liliana, Dreadhorde General, "
+    "Morbid Opportunist, Midnight Reaper) fires on every death this model "
+    "produces — the sacrifice sweep under `model_sacrifice`, the one-turn copies "
+    "leaving, and the measured rate under `model_deaths` — honouring 'nontoken' "
+    "and 'once each turn' (2026-10-19); a deck with no death channel on has no "
+    "deaths, and the payoff is absent. Activated draw (needs a spending policy "
+    "this model has no opinion on), X-based draw (board-dependent) and "
+    "attack-triggered draw outside `model_combat` are NOT modelled and the cards "
+    "are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger "
+    "— 'if you control an artifact', 'you may draw', 'you may pay 2 life' — is "
+    "treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw "
+    "cards in the corpus carry one, and 15 death triggers.",
     "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a "
     "2/3 that draws 'whenever one or more OTHER creatures you control with "
     "power 2 or less enter'; registered before its own entry it passed its own "
@@ -726,13 +731,16 @@ COMBAT_ASSUMPTIONS = [
     "opponent loses life' all separate them — and this model has none of those. "
     "Nine corpus cards read through this channel, plus Mirkwood Bats through a "
     "token-creation channel of its own.",
-    "DEATH-TRIGGERED DRAIN IS NOT MODELLED AND IS THE LARGEST KNOWN GAP HERE. "
-    "Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance "
-    "and Elas il-Kor all key on a creature DYING, and nothing dies in this "
-    "model: no blockers, no removal, no sacrifice outlets. Their contribution "
-    "is ABSENT, not zero, and a deck whose kill runs through them is understated "
-    "here by however much that line is worth. `simulate` against a real pod is "
-    "where that number lives.",
+    "DEATH-TRIGGERED DRAIN FIRES ONLY ON THE DEATHS THIS MODEL PRODUCES. Blood "
+    "Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance, Vraan "
+    "and Vein Ripper key on a creature DYING, and a death happens here in three "
+    "places and nowhere else: a free sacrifice outlet converting tokens "
+    "(`model_sacrifice`), a one-turn copy leaving at the end step, and the "
+    "per-turn rate read off a Forge run (`model_deaths`). No blockers and no "
+    "removal, so a deck with neither channel on has no deaths and the "
+    "contribution is ABSENT, not zero; a deck whose kill runs through them is "
+    "understated by however much that line is worth. `simulate` against a real "
+    "pod is where that number lives.",
 ]
 
 
@@ -1443,6 +1451,13 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             continue
         d = draw_profile(dict(c, oracle_text=c.get("oracle_text") or ""))
         if d["unmodelled"]:
+            # A CARD IS ONLY UNMODELLED IF NO CHANNEL READS IT — the rule
+            # `drain_unmodelled` below already keeps. Liliana, Dreadhorde
+            # General draws on every death the sacrifice sweep or the death
+            # rate produces, and was listed here as not modelled (2026-10-19).
+            dp = death_profile(dict(c, oracle_text=c.get("oracle_text") or ""))
+            if (model_sacrifice or model_deaths) and dp["death_draw"]:
+                continue
             draw_unmodelled.append(d["unmodelled"])
     restricted = sorted({
         f"{c['name']} ({produced_mana(c.get('oracle_text'), c.get('type_line'))})"
@@ -1582,9 +1597,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             "card_advantage": {
                 "cards_that_draw": draw_cards,
                 "modelled": (draw_cards - len(draw_unmodelled)) if model_draw else 0,
-                "why": ("ETB, spell, upkeep and arrival draw are modelled; "
-                        "activated, X-based, death- and attack-triggered draw "
-                        "are not, and the cards are named in "
+                "why": ("ETB, spell, upkeep, arrival and death-triggered draw are "
+                        "modelled (death draw only on the deaths the sacrifice and "
+                        "death channels produce); activated, X-based and "
+                        "attack-triggered draw are not, and the cards are named in "
                         "`draw_not_modelled`. Read the two numbers together: a "
                         "deck whose count is twelve and whose modelled figure "
                         "is one has almost no UNCONDITIONAL card advantage, "

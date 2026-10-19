@@ -166,11 +166,20 @@ def test_the_power_qualifier_is_honoured_in_BOTH_directions():
 
 def test_a_qualifier_the_model_cannot_evaluate_is_not_guessed_at():
     """"with defender", "of the chosen type", "named Gladewalker Ritualist" —
-    all real cards in the sweep. Firing on them invents an engine."""
-    for q in ("with defender ", "of the chosen type ", "with mana value 3 or less "):
+    all real cards in the sweep. Firing on them invents an engine. "with mana
+    value 3 or less" LEFT this list on 2026-10-19 (Tocasia's Welcome): a token's
+    mana value is 0 and a cast body's is its cost, both known at the door, so the
+    gate is read as `arrival_mv_max` and honoured in `creature_entered`."""
+    for q in ("with defender ", "of the chosen type ", "named Gladewalker Ritualist "):
         p = goldfish.draw_profile(_card(
             "X", f"Whenever a creature you control {q}enters, draw a card."))
         assert p["arrival_draw"] == 0, q
+    toc = goldfish.draw_profile(_card(
+        "Tocasia's Welcome", "Whenever one or more creatures you control with mana value "
+        "3 or less enter, draw a card. This ability triggers only once each turn.",
+        type_line="Enchantment"))
+    assert toc["arrival_draw"] == 1 and toc["arrival_mv_max"] == 3 and toc["arrival_draw_once"]
+    assert goldfish.draw_profile(_card("X", "Whenever a creature you control enters, draw a card."))["arrival_mv_max"] is None
 
 
 # ── 3. The model must ACT on what it reads ────────────────────────────────

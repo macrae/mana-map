@@ -261,8 +261,12 @@ _DRAW_ONCE_RE = re.compile(r"once each turn", re.I)
 #: "of the chosen type", "named Gladewalker Ritualist", "with mana value 3 or
 #: less". Firing on these would invent a draw engine; ignoring them silently
 #: would hide one.
+#: "WITH MANA VALUE 3 OR LESS" joined the readable qualifiers on 2026-10-19
+#: (Tocasia's Welcome): a token's mana value is 0 and a cast body's is its cost,
+#: both known at the one door, so the gate is honoured rather than refused.
 _DRAW_QUALIFIER_OK_RE = re.compile(
-    r"^\s*(?:with power \d+ or (?:less|greater)\s*)?$", re.I)
+    r"^\s*(?:with (?:power \d+ or (?:less|greater)|mana value \d+ or less)\s*)?$", re.I)
+_DRAW_MV_MAX_RE = re.compile(r"mana value (\d+) or less", re.I)
 #: A DRAW THIS MODEL CANNOT PROMISE. 39 of the 348 ETB-draw matches carry a
 #: condition inside the trigger itself — "if you control an artifact", "if
 #: you've cast two or more spells this turn", "you MAY draw" — and Selvala's is
@@ -1048,11 +1052,33 @@ _COSTED_SAC_OUTLET_RE = re.compile(
 #:    (CR 700.4). Boggart Shenanigans spells it out longhand, and so do the older
 #:    cards generally — the short word was introduced later. Reading only "dies"
 #:    made a death trigger's age decide whether the model could see it.
+#: 3. THE PLURAL (2026-10-19). "Whenever one or more other creatures DIE, draw a
+#:    card. This ability triggers only once each turn" — Morbid Opportunist,
+#:    Vraan, Executioner Thane, Scavenger's Talent, Sengir Connoisseur: twenty
+#:    corpus cards word the trigger in the plural, and "dies" cannot reach "die".
+#:    On edgar-vampires' mean-v1 two of the five adds read as NOTHING for it, and
+#:    the pilot's draw axis measured as a loss on cards bought for draw. Sweep:
+#:    +20 triggers, all creatures dying, none a self-death.
 _DEATH_TRIGGER_RE = re.compile(
     r"whenever (?:this creature or another|[A-Z][\w' ,-]{2,30}? or another"
     r"|another|a|one or more)"
     r"[\w' ]{0,26}?(?:you control )?"
-    r"(?:dies|is put into a graveyard from the battlefield)", re.IGNORECASE)
+    r"(?:dies\b|die\b|is put into a graveyard from the battlefield)", re.IGNORECASE)
+#: "THIS ABILITY TRIGGERS ONLY ONCE EACH TURN" is a cap on the whole trigger, so
+#: it is read on the trigger, not per payload: Vraan drains once a turn however
+#: many tokens the sweep converts. The arrival channel keeps its own
+#: `_DRAW_ONCE_RE`; the two idioms differ in wording.
+_DEATH_ONCE_RE = re.compile(r"triggers only once each turn|once each turn", re.IGNORECASE)
+#: A PAYOFF BEHIND A CHOICE OR A PRICE IS NOT A PAYOFF THIS MODEL CAN PROMISE.
+#: Erebos, Bleak-Hearted ("you may pay 2 life. If you do, draw a card"),
+#: Crossway Troublemakers, Harvester of Souls ("you may draw"), Taborax — fifteen
+#: corpus cards were credited a free draw per death on a clause the text gates.
+#: The same contract `_DRAW_CONDITIONAL_RE` keeps for ETB draw, one channel over:
+#: a gated payload is NAMED in `unreadable`, never assumed on. A bare "you may"
+#: is NOT a gate here: "you may have Boggart Shenanigans deal 1 damage to
+#: target player" and Harvester of Souls' "you may draw a card" are free choices
+#: a pilot always takes — the gate is a PRICE ("may pay") or a CONDITION.
+_DEATH_CONDITIONAL_RE = re.compile(r"\b(?:if|unless|may pay)\b", re.IGNORECASE)
 #: A SUBJECT THAT IS NOT A CREATURE. Widening the trigger to read "is put into a
 #: graveyard from the battlefield" (CR 700.4's own words for "dies") also admits
 #: the permanents that are not creatures, and the corpus sweep is what said so:
@@ -1076,8 +1102,11 @@ def _subject_is_a_creature(matched):
     return not _NON_CREATURE_SUBJECT_RE.search(matched)
 
 
+#: "TARGET OPPONENT loses 2 life" (Vein Ripper) is the same drain as "target
+#: player" to a goldfish with one opponent; it was `unreadable` (2026-10-19).
 _DEATH_DRAIN_RE = re.compile(
-    r"each opponent loses (\d+) life|target player loses (\d+) life",
+    r"each opponent loses (\d+) life|target player loses (\d+) life"
+    r"|target opponent loses (\d+) life",
     re.IGNORECASE)
 _DEATH_DRAW_RE = re.compile(r"(?:you )?draw (a|one|two) cards?", re.IGNORECASE)
 _DEATH_TREASURE_RE = re.compile(r"create a treasure token", re.IGNORECASE)
@@ -1492,7 +1521,9 @@ def death_profile(card):
     out = {"death_drain": 0, "death_draw": 0, "death_treasure": 0,
            "death_damage": 0,
            "gain_on_opponent_death": 0, "unreadable": None,
-           "nontoken_only": False}
+           "nontoken_only": False,
+           # "This ability triggers only once each turn" — a cap on the trigger.
+           "death_once": False}
     # THE OTHER HALF OF THE MEATHOOK. "Whenever a creature an OPPONENT controls
     # dies, you gain 1 life" is a separate trigger from the one above, and in a
     # deck that turns life gained into life lost it means every removal spell
@@ -1516,9 +1547,19 @@ def death_profile(card):
     # rate, where the creature that dies to removal is a real one.
     out["nontoken_only"] = bool(re.search(r"\bnontoken\b", m.group(0), re.I))
     clause = text[m.start():m.start() + 170]
+    out["death_once"] = bool(_DEATH_ONCE_RE.search(clause))
+    # THE PAYLOAD IS THE FIRST SENTENCE AFTER THE TRIGGER, and a choice or a
+    # price between the trigger and the payoff gates it: "you may pay 2 life. If
+    # you do, draw a card" is not a draw per death. A gated clause credits
+    # nothing and names the card below, the contract the ETB draw channel keeps.
+    payload = clause[m.end() - m.start():]
+    sentence = payload.split(".")[0]
+    if _DEATH_CONDITIONAL_RE.search(sentence):
+        out["unreadable"] = card.get("name")
+        return out
     drain = _DEATH_DRAIN_RE.search(clause)
     if drain:
-        out["death_drain"] = int(drain.group(1) or drain.group(2))
+        out["death_drain"] = int(next(g for g in drain.groups() if g))
     # DAMAGE, NOT LIFE LOSS. Kept as its own field rather than folded into
     # `death_drain`: they are the same number to a goldfish with one opponent at
     # 40 life, but they are NOT the same to a table — life loss ignores damage
@@ -1891,6 +1932,7 @@ def draw_profile(card):
            "spell_draw_greatest_power": False, "etb_draw_per_type": None,
            "arrival_draw": 0, "arrival_draw_once": False,
            "arrival_power_min": None, "arrival_power_max": None,
+           "arrival_mv_max": None,
            "cast_draw": 0, "cast_draw_gate": None,
            "cast_draw_gate_mv": 0, "cast_draw_cost": 0,
            "x_draw_multiplier": 0, "x_draw_discard": 0,
@@ -2050,6 +2092,8 @@ def draw_profile(card):
         hi = _DRAW_POWER_MAX_RE.search(m.group(2) or "")
         out["arrival_power_min"] = int(lo.group(1)) if lo else None
         out["arrival_power_max"] = int(hi.group(1)) if hi else None
+        mv = _DRAW_MV_MAX_RE.search(m.group(2) or "")
+        out["arrival_mv_max"] = int(mv.group(1)) if mv else None
 
     cast = _CAST_DRAW_RE.search(text)
     if cast:

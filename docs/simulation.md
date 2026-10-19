@@ -472,7 +472,7 @@ a card that does not help**, and that confusion has cost this project a whole br
 | `model_draw` | a card's own ETB draw, a spell's draw, a recurring draw (the SUBJECT decides whose: "your <step>, draw" is yours; "your <step>, each player draws" and "each player's <step>, that player draws" are yours AND the opponents' extra draw a turn, so the taxes on their draws fire; "each opponent draws" is theirs only; "may draw", a Class level and a card that discards your hand at end step stay unread and named — the 35-card sweep of 2026-10-18), an arrival draw, the draw you buy, draw doublers. `meta.card_advantage.draw_not_modelled` names what is still unread, and is **absent** rather than empty when nothing is |
 | `model_combat` | attacks, board power, the damage clock, tokens as attackers |
 | `model_treasures` | Treasure creation and spending, including Treasure off opponents' draws (Smothering Tithe at `TITHE_PAY_RATE`) |
-| `model_sacrifice` / `model_deaths` / `model_drain` | outlets, deaths and the damage they convert into |
+| `model_sacrifice` / `model_deaths` / `model_drain` | outlets, deaths and the damage they convert into — and since 2026-10-19 EVERY death payoff on EVERY death path: drain, damage, draw and Treasure fire in the sacrifice sweep (tokens), when a one-turn copy leaves, and on the measured death rate, honouring "nontoken" and "this ability triggers only once each turn" (Morbid Opportunist, Vraan); the plural "whenever one or more … die" is a trigger (19 corpus cards); a payload behind a price or a condition ("you may pay 2 life. If you do, draw") is NAMED in `unreadable`, never credited — Erebos, Bleak-Hearted and Crossway Troublemakers read a free draw per death for a month |
 | `model_discard` | wheels, loots, the discard half of a draw you pay for, and the event payoffs on discards and draws — including "that much damage to any target" (Spider-Man, one batch per turn) and, since 2026-10-18, **damage at the start of their step** from a permanent (Fevered Visions, Sulfuric Vortex): one instance a turn against the one seat, read only when unconditional or when its only condition is a hand size, checked against the authored `OPPONENT_HAND` (4, 7 on a wheel turn) — `try` says so beside the figure |
 | `model_colors` | on by default; a colourless mana model is simply wrong |
 | `model_commander_animate`, `model_commander_attack_tutor`, `model_commander_combat_reveal`, `model_commander_copy` | commander abilities only one corpus card has, declared per deck |
@@ -533,6 +533,18 @@ with Seize the Day.
 is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a land swap.
 
 ### Named gaps
+
+- **Death-triggered draw fires only on the deaths this model produces** (2026-10-19): a
+  deck with neither `model_sacrifice` nor `model_deaths` on has no deaths, so Liliana,
+  Dreadhorde General and Morbid Opportunist are ABSENT there, not zero. A granted
+  self-death draw (Clavileño's "when this creature dies" on an attacking Vampire) needs a
+  combat death and there are none. The draw series is appended at the END of the turn now,
+  like the sacrifice series since #34 — a draw in the sweep lands on its own turn.
+- **An arrival-draw gate on mana value is read** (Tocasia's Welcome, "with mana value 3
+  or less", the one corpus card): a token enters at mana value 0, a cast body at its cost;
+  an entry whose mana value the caller does not pass (the commander's own arrival, a copy
+  of a cast creature) is NOT counted — conservative. `card_state` still reports a card
+  whose death payload is `unreadable` as "seen" when its body is read (known-issues §29).
 
 - **Vigilance is not modelled.** No deck in the fleet grants it; a deck that did would
   make every extra-combat card live again.
