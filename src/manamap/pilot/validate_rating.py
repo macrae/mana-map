@@ -37,15 +37,25 @@ from manamap.pilot.deck_notes import read_log
 from manamap.pilot.validate_sim_findings import numbers_in
 from manamap.pilot.validate_stack import _normalize_ws, load_strategy_sections, validate_citations
 
-REQUIRED = ("slug", "tier", "label", "bracket", "score", "code_score", "score_ci", "resolution",
-            "grade", "rank", "components", "judgment", "withheld", "limits", "context",
+REQUIRED = ("slug", "tier", "label", "bracket", "score", "score_point", "code_score", "score_ci",
+            "resolution", "grade", "grade_range", "grade_display", "grade_probabilities", "uncertainty",
+            "sensitivity", "concordance", "rank", "components", "judgment", "withheld", "limits", "context",
             "decklist_sha256", "fleet_sha", "model_version", "spec_version", "open_questions",
             "iterations", "verifier")
 CITATION_KINDS = ("log", "strategy", "stack", "engine", "context", "skeleton")
 VERIFIER_STATUSES = ("supported", "unjustified", "miscounted", "mis-cited", "over-claimed",
                      "too-generous", "too-harsh", "contradicts-artifact")
 SETTLED_BY = ("resolve-stack", "research-strategy", "goldfish", "diagnose", "rate")
-CODE_KEYS = ("components", "withheld", "code_score", "bracket", "limits", "context")
+CODE_KEYS = ("components", "withheld", "code_score", "score_point", "bracket", "limits", "context",
+             "uncertainty", "sensitivity")
+#: The keys the GROUP's simulation fills: they move when a neighbour's judgment lands.
+GROUP_KEYS = ("score", "score_ci", "grade", "grade_range", "grade_display", "grade_probabilities",
+              "concordance")
+#: How an argument may name an outlier instrument (lower-cased substrings).
+INSTRUMENT_WORDS = {"speed": ("speed",), "mana": ("mana",), "resilience": ("resilience",),
+                    "construction": ("construction",), "dti": ("dti", "deckcheck", "threat index"),
+                    "table_record": ("table record", "table_record", "record"),
+                    "pilot_feel": ("pilot feel", "pilot_feel", "survey", "feel")}
 _NUM = re.compile(r"-?\d+(?:\.\d+)?")
 
 
@@ -54,7 +64,17 @@ def _strip_code(doc):
     skeleton and a judged document compare on the same keys."""
     out = {k: json.loads(json.dumps(doc.get(k))) for k in CODE_KEYS}
     out["withheld"] = [w for w in out["withheld"] or [] if w.get("component") != "judgment"]
-    out["components"] = [{k: v for k, v in c.items() if k != "weight_effective"} for c in out["components"] or []]
+    # `sub_ci` is the group simulation's and `weight_effective` depends on the
+    # judgment's presence; both are compared under GROUP_KEYS and the weights check.
+    out["components"] = [{k: v for k, v in c.items() if k not in ("weight_effective", "sub_ci")}
+                         for c in out["components"] or []]
+    return out
+
+
+def _group_view(doc):
+    out = {k: json.loads(json.dumps(doc.get(k))) for k in GROUP_KEYS}
+    out["rank"] = {k: v for k, v in (doc.get("rank") or {}).items() if k != "basis"}
+    out["sub_ci"] = {c["name"]: c.get("sub_ci") for c in doc.get("components") or []}
     return out
 
 
@@ -121,6 +141,10 @@ def _check_citation(c, where, slug, errors, strategy_sections, skeleton_names):
             errors.append(f"{where}: cites skeleton component {name!r}, which is withheld or unknown")
 
 
+def cc_level(doc):
+    return (doc.get("concordance") or {}).get("level")
+
+
 def validate(slug, doc, *, fresh=None, strategy_sections=None):
     """`(errors, notes)`. `fresh` is the recomputed skeleton (with rank) or None
     when the document is stale and cannot be compared."""
@@ -139,11 +163,16 @@ def validate(slug, doc, *, fresh=None, strategy_sections=None):
         errors.append(f"spec_version {doc['spec_version']} != {rating.RATING_SPEC_VERSION}")
     if fresh is not None:
         if _strip_code(doc) != _strip_code(fresh):
-            errors.append("a code component, the withheld list, the code score, the bracket, the limits or "
-                          "the context differ from a fresh computation — the agent may not touch them")
-        if (doc.get("rank") or {}).get("group") != (fresh.get("rank") or {}).get("group") \
-                or (doc.get("rank") or {}).get("position") != (fresh.get("rank") or {}).get("position"):
-            errors.append("rank does not match the group's current scores")
+            errors.append("a code component, the withheld list, the code score, the point score, the bracket, "
+                          "the limits, the context, the uncertainty or the sensitivity differ from a fresh "
+                          "computation — the agent may not touch them")
+        if _group_view(doc) != _group_view(fresh):
+            errors.append("the score, its interval, the grade, the rank or the concordance do not match the "
+                          "group's current simulation — the group moved; `rating <slug> --write`")
+    u = doc.get("uncertainty") or {}
+    if u and (u.get("seed") != rating.RATING_MC_SEED or u.get("k") != rating.RATING_MC_K
+              or u.get("kappa") != rating.WEIGHT_CONCENTRATION or u.get("level") != rating.RATING_MC_LEVEL):
+        errors.append("uncertainty names a seed, K, κ or level that is not the scorecard's")
     # Weights and the composite.
     comps = doc["components"] or []
     j = doc["judgment"]
@@ -151,9 +180,16 @@ def validate(slug, doc, *, fresh=None, strategy_sections=None):
     for c in comps:
         if c.get("weight") != rating.WEIGHTS.get(c["name"]):
             errors.append(f"components.{c['name']}: weight {c.get('weight')} != WEIGHTS")
+        if c.get("weight_validity", 1.0) not in (1.0, rating.SPEED_VALIDITY_ALT_WIN):
+            errors.append(f"components.{c['name']}: weight_validity {c.get('weight_validity')!r} is not 1.0 "
+                          f"or SPEED_VALIDITY_ALT_WIN")
         if not (0 <= c.get("sub_score", -1) <= 100):
             errors.append(f"components.{c['name']}: sub_score outside [0, 100]")
-    total = sum(rating.WEIGHTS[x] for x in names if x in rating.WEIGHTS)
+    weighted = {c["name"]: rating.WEIGHTS[c["name"]] * c.get("weight_validity", 1.0) for c in comps
+                if c["name"] in rating.WEIGHTS}
+    if j:
+        weighted["judgment"] = rating.WEIGHTS["judgment"]
+    total = sum(weighted.values())
     eff = sum((c.get("weight_effective") or 0) for c in comps) + ((j or {}).get("weight_effective") or 0)
     if names and abs(eff - 1.0) > 1e-3:
         errors.append(f"effective weights sum to {eff:.4f}, not 1")
@@ -186,23 +222,42 @@ def validate(slug, doc, *, fresh=None, strategy_sections=None):
             allowed = set()
             for c in cites:
                 allowed |= numbers_in({"quote": c.get("quote") or ""})
-            allowed |= numbers_in({"components": comps, "score": doc["code_score"], "bracket": doc["bracket"],
+            allowed |= numbers_in({"components": comps, "score": doc["code_score"], "point": doc.get("score_point"),
+                                   "mc": doc.get("score"), "ci": doc.get("score_ci"), "bracket": doc["bracket"],
                                    "rank": {k: v for k, v in (doc.get("rank") or {}).items() if k != "basis"},
-                                   "context": doc["context"]})
+                                   "context": doc["context"], "grade_probabilities": doc.get("grade_probabilities"),
+                                   "sensitivity": doc.get("sensitivity"), "concordance": doc.get("concordance")})
             allowed |= {0.0, 1.0, float(sub or 0)}
             for m in _NUM.finditer(arg):
                 v = round(float(m.group(0)), 4)
                 if v not in allowed and round(v, 1) not in allowed and round(v) not in allowed:
                     errors.append(f"argument quotes {m.group(0)}, which appears in no cited material and no skeleton figure")
-        # The composite recomputes from the parts.
+            # A divergent deck's argument must address every outlier instrument.
+            cc = doc.get("concordance") or {}
+            if cc.get("level") == "divergent":
+                low = arg.lower()
+                cited = {c.get("ref", "").split(":", 1)[-1] for c in cites if c.get("kind") == "skeleton"}
+                for o in cc.get("outliers") or []:
+                    inst = o.get("instrument")
+                    if inst == "judgment" or inst in cited:
+                        continue
+                    if not any(w in low for w in INSTRUMENT_WORDS.get(inst, (inst,))):
+                        errors.append(f"concordance is divergent and the argument never addresses the outlier "
+                                      f"instrument {inst!r} (rank {o.get('rank')} of {cc.get('of')}, the {o.get('side')} side)")
+        # The point score recomputes from the parts; the MC score is held to the fresh build above.
         if comps or j:
             total = total or 1.0
-            score = (sum(rating.WEIGHTS[c["name"]] * c["sub_score"] for c in comps)
+            point = (sum(weighted[c["name"]] * c["sub_score"] for c in comps if c["name"] in weighted)
                      + (rating.WEIGHTS["judgment"] * j["sub_score"] if isinstance(j, dict) and isinstance(j.get("sub_score"), int) else 0)) / total
-            if doc["score"] is None or abs(doc["score"] - round(score, 1)) > 0.051:
-                errors.append(f"score {doc['score']} does not recompute from the components ({round(score, 1)})")
+            if doc.get("score_point") is None or abs(doc["score_point"] - round(point, 1)) > 0.051:
+                errors.append(f"score_point {doc.get('score_point')} does not recompute from the components ({round(point, 1)})")
             if doc["grade"] != rating.grade_of(doc["score"] if doc["score"] is not None else 0):
                 errors.append(f"grade {doc['grade']} is not the band for {doc['score']}")
+            gr = doc.get("grade_range") or [None, None]
+            want = f"{gr[0]}–{gr[1]}" if (cc_level(doc) == "divergent" and gr[0] != gr[1]) else doc["grade"]
+            if doc.get("grade_display") != want:
+                errors.append(f"grade_display {doc.get('grade_display')!r} should read {want!r} "
+                              f"(concordance {cc_level(doc)}, range {gr})")
     for q in doc.get("open_questions") or []:
         if not isinstance(q, dict) or q.get("settled_by") not in SETTLED_BY:
             errors.append(f"open_questions: settled_by must be one of {', '.join(SETTLED_BY)}")
@@ -260,7 +315,7 @@ def main(args=None):
     report_errors(f"{slug} — {rating.RATING_FILE}", errors)
     j = doc.get("judgment")
     v = doc.get("verifier") or {}
-    print(f"OK   {slug} — {rating.RATING_FILE}: {doc['grade']} in Bracket {doc['bracket']['key']} "
+    print(f"OK   {slug} — {rating.RATING_FILE}: {doc.get('grade_display') or doc['grade']} in Bracket {doc['bracket']['key']} "
           f"({(doc.get('rank') or {}).get('position')} of {(doc.get('rank') or {}).get('of')}), score {doc['score']}; "
           f"{'judged' if j else 'skeleton only'}"
           + (f", verifier {v.get('verdict')}" if v else "") + "; ★ over ◆"

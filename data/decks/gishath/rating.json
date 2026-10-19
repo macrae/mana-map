@@ -12,16 +12,17 @@
  "components": [
   {
    "name": "speed",
-   "weight": 0.15,
+   "weight": 0.12,
+   "weight_validity": 1.0,
    "weight_effective": 0.2,
-   "sub_score": 75.0,
+   "sub_score": 83.33,
    "sub_ci": [
-    75.0,
-    75.0
+    75.8,
+    90.77
    ],
    "placement": 50.0,
    "anchor": 100.0,
-   "method": "0.5·placement + 0.5·anchor: placement of kill_by_turn_8 within bracket 3 (n=3); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Wilson 95% from the benchmark's n",
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of kill_by_turn_8 within bracket 3 (n=3); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
@@ -45,16 +46,17 @@
   },
   {
    "name": "mana",
-   "weight": 0.1,
+   "weight": 0.08,
+   "weight_validity": 1.0,
    "weight_effective": 0.1333,
-   "sub_score": 75.0,
+   "sub_score": 83.33,
    "sub_ci": [
-    75.0,
-    75.0
+    76.05,
+    90.89
    ],
    "placement": 50.0,
    "anchor": 100.0,
-   "method": "0.5·placement + 0.5·anchor: placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
@@ -86,16 +88,17 @@
   },
   {
    "name": "resilience",
-   "weight": 0.15,
+   "weight": 0.12,
+   "weight_validity": 1.0,
    "weight_effective": 0.2,
-   "sub_score": 65.0,
+   "sub_score": 70.0,
    "sub_ci": [
-    65.0,
-    65.0
+    62.38,
+    77.5
    ],
    "placement": 50.0,
    "anchor": 80.0,
-   "method": "0.5·placement + 0.5·anchor: placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -124,8 +127,9 @@
   },
   {
    "name": "construction",
-   "weight": 0.15,
-   "weight_effective": 0.2,
+   "weight": 0.13,
+   "weight_validity": 1.0,
+   "weight_effective": 0.2167,
    "sub_score": 72.86,
    "sub_ci": [
     72.86,
@@ -229,6 +233,45 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "dti",
+   "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.25,
+   "sub_score": 77.78,
+   "sub_ci": [
+    69.01,
+    81.61
+   ],
+   "placement": 100.0,
+   "anchor": 66.67,
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 40,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 66.67,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
   }
  ],
  "withheld": [
@@ -243,15 +286,22 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
+  },
+  {
+   "component": "judgment",
+   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
   "A rating is ★ coaching over ◆ inputs; the score never gates. The floor (bracket_report.json) is the only bracket gate.",
   "calibrate.py refuses a verdict below 10 decks with 20 games each; no figure here is checked against outcomes yet (`rating --calibrate` reports the refusal with today's n).",
-  "Goldfish kill is one column, never the rule: the benchmark is an unopposed ceiling with no blockers and no removal, and a combo or control deck reads slow for not attacking.",
+  "Goldfish kill is one column, never the rule: the benchmark is an unopposed ceiling with no blockers and no removal, and a combo or control deck reads slow for not attacking; a win the goldfish cannot see (`alt_win_cards`) multiplies speed's weight by 0.5.",
   "Forge is not a power read until the harness work is done (the pilot's rule, 2026-10-18): its component ships at weight 0.00 and is shown only for a run on the current list.",
-  "DeckCheck's Threat Index is shown in `context` and never scored.",
+  "DeckCheck's Threat Index is a component at prior weight 0.15 (2026-10-19): one LLM's dated read of card quality, withheld when it describes another list; its interval is a declared prior sd of 4.0 on the anchor until three decks carry two readings on one list; its score places within the bracket, its twelve rubric grades anchor.",
   "Diagnostic engine figures are read against each deck's own declaration and are never ranked across decks; they are evidence for the argument, not a component.",
+  "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
+  "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
+  "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
   "rank over n=3 decks; no significance claim"
  ],
  "context": {
@@ -266,133 +316,139 @@
  },
  "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
  "fleet_sha": "1d045e2c9800",
- "model_version": "23bf4e672931",
- "spec_version": 1,
- "open_questions": [
-  {
-   "question": "On the logged loss's board (8-9 dinos with counters, 30+ power), was an alpha strike split across both seats lethal on Oliver even after Alex saves himself? No checker-passed stack resolves it.",
-   "settled_by": "resolve-stack"
-  },
-  {
-   "question": "Does the v1.1.0 land pass fix the green and red colour-on-curve problem at a real table? Only logged games on v1.1.0 settle it; redo the rating then.",
-   "settled_by": "rate"
-  }
- ],
- "iterations": 3,
- "verifier": {
-  "verdict": "pass",
-  "findings": [
-   {
-    "where": "judgment.citations",
-    "status": "supported",
-    "note": "validate-rating OK; rating --json diff identical on components, withheld, code_score, bracket, limits. All nine quotes verbatim in their sources (log 002 lessons and Game 2 text, context numbers/plays/pilot, skeleton figures kill_by_turn_8 and missed_land_drop_rate are real inputs) and read in sense."
-   },
-   {
-    "where": "judgment.argument",
-    "status": "supported",
-    "note": "Green screw placed on v1.0.0 (context: log 002 played on v1.0.0, neither game on v1.1.0); colour line is not an input to the mana component (inputs are missed_land_drop_rate and audit.consistency); red 61% is the thinnest of W87/R61/G82; log 001 and 002 show no red failure; 'surviving wipes' matches both logs (002 survival was partly accidental but the claim is only that logs show it). Wipe-exposure claim dropped."
-   },
-   {
-    "where": "judgment.sub_score",
-    "status": "supported",
-    "note": "62 vs code_score 71.7 claims modest oversell; backed by named gaps: red 61% on curve untested at a table, 1-1 record on older lists, table_record/pilot_feel/forge withheld. Counter-figures (engine online 79%, win route by T8 86%) are already in the argument's 'why not lower'. Haircut is 9.7 points, not a large claim."
-   },
-   {
-    "where": "judgment.argument",
-    "status": "supported",
-    "note": "No unranked superlatives; 'engine demonstrably fires' rests on log 001/002 reveals."
-   },
-   {
-    "where": "open_questions",
-    "status": "supported",
-    "note": "Both are unanswered by the artifacts: no stack resolves the split alpha strike (resolve-stack); v1.1.0 land pass needs logged games (rate)."
-   }
-  ],
-  "iterations": 3
- },
- "code_score": 71.7,
- "score": 69.1,
+ "model_version": "fd483871b754",
+ "spec_version": 2,
+ "open_questions": [],
+ "iterations": 0,
+ "verifier": null,
+ "code_score": 77.0,
+ "score_point": 77.0,
+ "score": 76.4,
  "score_ci": [
-  69.1,
-  69.1
+  72.3,
+  80.7
  ],
  "grade": "B",
- "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
- "judgment": {
-  "sub_score": 62,
-  "argument": "The table record, pilot feel and Forge are withheld, and the two logged games were played on older lists: \"neither game has been played on v1.1.0 yet\". So the measured score is goldfish and audit only. I read it as overselling modestly.\n\nThe mana component reads missed_land_drop_rate, which counts a missed drop of any colour. The colour line is measured, but it is not an input to that component: \"Colour on curve (lands + rocks): W 87%, R 61%, G 82%\". The green screw the pilot lived through in the loss, with a double-green hand stranded and the lesson \"Audit green pip distribution / green sources\", was on the older list, and whether the land pass fixed it is untested. Red is the thin colour, and no logged game shows red failing.\n\nThe goldfish has no blockers and no removal, and the deck's own read is that it \"flatters the board\". I claim no specific exposure from it; the logs show the deck surviving wipes.\n\nFor: the plan works when it connects. \"hit Tom for 16 commander damage on top of his 7 = dead\", and the loss the pilot pins on closing, \"hesitation cost the game\".\n\nWhy this number and not lower: the engine demonstrably fires. Why not higher: the current list has no table evidence, and red is thin and untested.",
-  "citations": [
+ "grade_range": [
+  "B",
+  "A"
+ ],
+ "grade_display": "B",
+ "grade_probabilities": {
+  "A": 0.088,
+  "B": 0.912,
+  "C": 0.0,
+  "D": 0.0,
+  "F": 0.0
+ },
+ "uncertainty": {
+  "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
+  "k": 2000,
+  "seed": 20261019,
+  "kappa": 20.0,
+  "level": 0.9,
+  "judgment_sd": 5.0,
+  "placement_bin": "uniform over ±50/(n−1) percentile points",
+  "dti_prior_read_sd": 4.0,
+  "priors": "every sd here is declared, not estimated (docs/known-issues.md §27)"
+ },
+ "sensitivity": {
+  "leave_one_out": {
+   "speed": {
+    "score": 75.4,
+    "grade": "B"
+   },
+   "mana": {
+    "score": 76.0,
+    "grade": "B"
+   },
+   "resilience": {
+    "score": 78.8,
+    "grade": "B"
+   },
+   "construction": {
+    "score": 78.2,
+    "grade": "B"
+   },
+   "dti": {
+    "score": 76.8,
+    "grade": "B"
+   }
+  },
+  "flips": [
    {
-    "kind": "skeleton",
-    "ref": "skeleton:mana",
-    "quote": "missed_land_drop_rate"
+    "component": "speed",
+    "share_now": 0.2,
+    "share_at_flip": 0.579,
+    "boundary": 80,
+    "grade_at_flip": "A",
+    "direction": "raise"
    },
    {
-    "kind": "skeleton",
-    "ref": "skeleton:speed",
-    "quote": "kill_by_turn_8"
+    "component": "mana",
+    "share_now": 0.133,
+    "share_at_flip": 0.543,
+    "boundary": 80,
+    "grade_at_flip": "A",
+    "direction": "raise"
+   }
+  ]
+ },
+ "concordance": {
+  "level": "mixed",
+  "instruments": {
+   "construction": 1.0,
+   "dti": 1.0,
+   "mana": 2.0,
+   "resilience": 2.0,
+   "speed": 2.0
+  },
+  "of": 3,
+  "spread": 0.5,
+  "outliers": [
+   {
+    "instrument": "construction",
+    "rank": 1.0,
+    "side": "better"
    },
    {
-    "kind": "log",
-    "ref": "log:002",
-    "quote": "Audit green pip distribution / green sources"
-   },
-   {
-    "kind": "log",
-    "ref": "log:002",
-    "quote": "hit Tom for 16 commander damage on top of his 7 = dead"
-   },
-   {
-    "kind": "log",
-    "ref": "log:002",
-    "quote": "hesitation cost the game"
-   },
-   {
-    "kind": "context",
-    "ref": "context:numbers",
-    "quote": "Colour on curve (lands + rocks): W 87%, R 61%, G 82%"
-   },
-   {
-    "kind": "context",
-    "ref": "context:plays",
-    "quote": "Green is the pain."
-   },
-   {
-    "kind": "context",
-    "ref": "context:plays",
-    "quote": "it flatters the board"
-   },
-   {
-    "kind": "context",
-    "ref": "context:pilot",
-    "quote": "neither game has been played on v1.1.0 yet"
+    "instrument": "dti",
+    "rank": 1.0,
+    "side": "better"
    }
   ],
-  "against": {
-   "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
-   "spec_sha": "23bf4e672931"
-  },
-  "weight": 0.2,
-  "weight_effective": 0.2667
+  "group": {
+   "kendall_w": 0.16,
+   "p": 0.5216,
+   "p_method": "exact over 1296 relabellings",
+   "m": 5,
+   "n": 3
+  }
  },
+ "resolution": "the 90% interval spans 1 grade boundary (80); concordance mixed",
+ "judgment": null,
  "rank": {
-  "position": 2,
+  "position": 1,
   "of": 3,
   "group": [
-   "ur-dragon",
    "gishath",
+   "ur-dragon",
    "goblin-storm"
   ],
-  "ties_within_ci": false,
+  "acceptability": {
+   "1": 0.92,
+   "2": 0.08,
+   "3": 0.0
+  },
   "basis": {
-   "ur-dragon": "rating.json",
    "gishath": "this document",
-   "goblin-storm": "rating.json"
+   "goblin-storm": "skeleton",
+   "ur-dragon": "skeleton"
   },
   "scores": {
-   "ur-dragon": 72.1,
-   "gishath": 69.1,
-   "goblin-storm": 54.4
+   "gishath": 76.4,
+   "ur-dragon": 68.4,
+   "goblin-storm": 56.8
   }
  }
 }

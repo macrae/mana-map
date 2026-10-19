@@ -1792,7 +1792,7 @@ AGENT_ROUTINES = {
         "artifact": "rating.json",
         "artifact_keys": ["judgment", "open_questions", "verifier"],
         "inputs": ["deck:rating.json!judgment,open_questions,verifier,iterations",
-                   "global:FLEET_ANALYTICS_PATH", "repo:RATING_PATH",
+                   "global:FLEET_ANALYTICS_PATH", "repo:RATING_PATH", "repo:RATING_MC_PATH",
                    "deck:bracket_report.json", "deck:benchmark.json",
                    "deck:log.jsonl?", "deck:log_causes.json?", "deck:log_annotations.json?",
                    "deck:captains_log.json?", "deck:CONTEXT.md?", "deck:engine.json?",
@@ -1926,4 +1926,5 @@ FLEET_MIN_GROUP = 3
 # `deck-rating` routine on every deck, as a `deck_audit.py` edit does the
 # diagnosis. The loop is capped like the others.
 RATING_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "rating.py"
+RATING_MC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "rating_mc.py"   # its priors and sampler (v2)
 RATING_MAX_ITERATIONS = 3

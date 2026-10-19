@@ -12,16 +12,17 @@
  "components": [
   {
    "name": "speed",
-   "weight": 0.15,
+   "weight": 0.12,
+   "weight_validity": 1.0,
    "weight_effective": 0.1667,
-   "sub_score": 29.0,
+   "sub_score": 22.0,
    "sub_ci": [
-    28.63,
-    29.4
+    14.48,
+    29.34
    ],
    "placement": 50.0,
    "anchor": 8.0,
-   "method": "0.5·placement + 0.5·anchor: placement of kill_by_turn_8 within bracket 4 (n=3); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Wilson 95% from the benchmark's n",
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of kill_by_turn_8 within bracket 4 (n=3); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
@@ -56,16 +57,17 @@
   },
   {
    "name": "mana",
-   "weight": 0.1,
+   "weight": 0.08,
+   "weight_validity": 1.0,
    "weight_effective": 0.1111,
-   "sub_score": 75.0,
+   "sub_score": 83.33,
    "sub_ci": [
-    75.0,
-    75.0
+    75.73,
+    90.73
    ],
    "placement": 50.0,
    "anchor": 100.0,
-   "method": "0.5·placement + 0.5·anchor: placement of missed_land_drop_rate (lower is better) within bracket 4; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of missed_land_drop_rate (lower is better) within bracket 4; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
@@ -97,16 +99,17 @@
   },
   {
    "name": "resilience",
-   "weight": 0.15,
+   "weight": 0.12,
+   "weight_validity": 1.0,
    "weight_effective": 0.1667,
-   "sub_score": 65.0,
+   "sub_score": 70.0,
    "sub_ci": [
-    65.0,
-    65.0
+    62.54,
+    77.49
    ],
    "placement": 50.0,
    "anchor": 80.0,
-   "method": "0.5·placement + 0.5·anchor: placement of answer_cards within bracket 4; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of answer_cards within bracket 4; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -135,8 +138,9 @@
   },
   {
    "name": "construction",
-   "weight": 0.15,
-   "weight_effective": 0.1667,
+   "weight": 0.13,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1806,
    "sub_score": 68.57,
    "sub_ci": [
     68.57,
@@ -242,17 +246,57 @@
    ]
   },
   {
-   "name": "table_record",
+   "name": "dti",
    "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.2083,
+   "sub_score": 36.11,
+   "sub_ci": [
+    32.5,
+    45.36
+   ],
+   "placement": 0.0,
+   "anchor": 54.17,
+   "method": "0.333·placement + 0.667·anchor (λ at n=3): placement of DeckCheck's score (of 96) within bracket 4; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 28,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 54.17,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
+  },
+  {
+   "name": "table_record",
+   "weight": 0.12,
+   "weight_validity": 1.0,
    "weight_effective": 0.1667,
    "sub_score": 23.67,
    "sub_ci": [
-    23.67,
-    67.12
+    24.53,
+    63.99
    ],
    "placement": null,
    "anchor": 23.67,
-   "method": "anchor only (placement withheld): win rate over par (par = mean 1/(opponents+1) = 0.2633) on every logged game, any version; Wilson 95% at n=5",
+   "method": "anchor only (placement withheld): win rate over par (par = mean 1/(opponents+1) = 0.2633) on every logged game, any version; Beta posterior at n=5",
    "inputs": [
     {
      "figure": "log.win_rate",
@@ -283,15 +327,22 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
+  },
+  {
+   "component": "judgment",
+   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
   "A rating is ★ coaching over ◆ inputs; the score never gates. The floor (bracket_report.json) is the only bracket gate.",
   "calibrate.py refuses a verdict below 10 decks with 20 games each; no figure here is checked against outcomes yet (`rating --calibrate` reports the refusal with today's n).",
-  "Goldfish kill is one column, never the rule: the benchmark is an unopposed ceiling with no blockers and no removal, and a combo or control deck reads slow for not attacking.",
+  "Goldfish kill is one column, never the rule: the benchmark is an unopposed ceiling with no blockers and no removal, and a combo or control deck reads slow for not attacking; a win the goldfish cannot see (`alt_win_cards`) multiplies speed's weight by 0.5.",
   "Forge is not a power read until the harness work is done (the pilot's rule, 2026-10-18): its component ships at weight 0.00 and is shown only for a run on the current list.",
-  "DeckCheck's Threat Index is shown in `context` and never scored.",
+  "DeckCheck's Threat Index is a component at prior weight 0.15 (2026-10-19): one LLM's dated read of card quality, withheld when it describes another list; its interval is a declared prior sd of 4.0 on the anchor until three decks carry two readings on one list; its score places within the bracket, its twelve rubric grades anchor.",
   "Diagnostic engine figures are read against each deck's own declaration and are never ranked across decks; they are evidence for the argument, not a component.",
+  "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
+  "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
+  "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
   "rank over n=3 decks; no significance claim"
  ],
  "context": {
@@ -306,128 +357,170 @@
  },
  "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
  "fleet_sha": "1d045e2c9800",
- "model_version": "23bf4e672931",
- "spec_version": 1,
- "open_questions": [
-  {
-   "question": "diagnosis.json and engine.json were written against an earlier decklist hash than the current one; do their verdicts on input, refuel and the payoff layer still hold on this list?",
-   "settled_by": "diagnose"
-  },
-  {
-   "question": "Once a game is logged on the current list, does Edgar still end up the only Vampire cast, and does the list survive a board wipe?",
-   "settled_by": "rate"
-  }
- ],
- "iterations": 2,
- "verifier": {
-  "verdict": "pass",
-  "findings": [
-   {
-    "where": "judgment.sub_score",
-    "status": "supported",
-    "note": "50 vs code_score 50.6: no cited fact on the current list (hash cbf7fb...) argues over or under; the only logged games carry older hashes (88bffd9b, 7ce22fd6, 7be137d0), and the argument explicitly gives them no weight. No named figure argues the other way."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "log:006 quote is verbatim; hash 7be137d0 differs from rated list, result is None, as the argument says; the argument uses it only as history of earlier builds."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "log:003 quote verbatim; hash 88bffd9b is an older list, which the argument says."
-   },
-   {
-    "where": "judgment.citations[4]",
-    "status": "supported",
-    "note": "engine thesis clause 'need no combat damage to land' is verbatim and describes the two checker-passed kill routes; argument correctly calls it declared plan, not credit, since engine.json predates the rebuild (matches the rating's own open question)."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "skeleton:resilience answer_cards (18) matches the components entry."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "audit.protection value 9, verdict over, matches; the claim that thin protection is not borne out by the audit is bounded to the audit."
-   },
-   {
-    "where": "judgment.argument",
-    "status": "supported",
-    "note": "No superlatives. Components, withheld, code_score, bracket, limits identical to a fresh rating --json. Rank 3 of 3 flagged ties_within_ci, consistent with a 50 call."
-   },
-   {
-    "where": "open_questions",
-    "status": "supported",
-    "note": "Both are answerable by their settled_by (diagnose for stale engine/diagnosis; rate once a game is logged on this list); neither is answered by existing artifacts."
-   }
-  ],
-  "iterations": 2
- },
- "code_score": 50.6,
- "score": 50.5,
+ "model_version": "fd483871b754",
+ "spec_version": 2,
+ "open_questions": [],
+ "iterations": 0,
+ "verifier": null,
+ "code_score": 48.4,
+ "score_point": 48.4,
+ "score": 51.2,
  "score_ci": [
-  50.4,
-  57.8
+  41.7,
+  60.6
  ],
  "grade": "C",
- "resolution": "the interval spans 0 grade boundaries; measured components carry their inputs' intervals, the judgment none",
- "judgment": {
-  "sub_score": 50,
-  "argument": "Withheld: no surveyed games and no Forge run on the current list, so nothing shows how this rebuilt list plays at a table. No game is logged on it. Every logged game was on an older list: the first debrief I cite and the last both carry a different list hash from the rated one, and the last has no result. They show what the earlier builds suffered, a creature-heavy board eating wipes and running out of cards late, and Edgar the only Vampire cast. They do not describe this list, and the rebuild was made in answer to them, so I give them no weight against it. The clock sits in speed, the winless record in table_record, and ramp and card advantage under their bands in construction; I do not deduct for any of them a second time. On capacity, resilience carries 18 answer cards and protection reads over its band, so the old complaint of thin protection is not borne out on this list by the audit. The engine write-up predates the rebuild, so its two no-combat kill routes are the declared plan, not credit. Nothing recorded on the current list argues the measured components undersell or oversell it, so I land where they say it.",
-  "citations": [
+ "grade_range": [
+  "D",
+  "C"
+ ],
+ "grade_display": "C",
+ "grade_probabilities": {
+  "A": 0.001,
+  "B": 0.009,
+  "C": 0.573,
+  "D": 0.415,
+  "F": 0.003
+ },
+ "uncertainty": {
+  "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
+  "k": 2000,
+  "seed": 20261019,
+  "kappa": 20.0,
+  "level": 0.9,
+  "judgment_sd": 5.0,
+  "placement_bin": "uniform over ±50/(n−1) percentile points",
+  "dti_prior_read_sd": 4.0,
+  "priors": "every sd here is declared, not estimated (docs/known-issues.md §27)"
+ },
+ "sensitivity": {
+  "leave_one_out": {
+   "speed": {
+    "score": 53.7,
+    "grade": "C"
+   },
+   "mana": {
+    "score": 44.1,
+    "grade": "D"
+   },
+   "resilience": {
+    "score": 44.1,
+    "grade": "D"
+   },
+   "construction": {
+    "score": 44.0,
+    "grade": "D"
+   },
+   "dti": {
+    "score": 51.7,
+    "grade": "C"
+   },
+   "table_record": {
+    "score": 53.4,
+    "grade": "C"
+   }
+  },
+  "flips": [
    {
-    "kind": "skeleton",
-    "ref": "skeleton:resilience",
-    "quote": "answer_cards"
+    "component": "mana",
+    "share_now": 0.111,
+    "share_at_flip": 0.151,
+    "boundary": 50,
+    "grade_at_flip": "C",
+    "direction": "raise"
    },
    {
-    "kind": "skeleton",
-    "ref": "skeleton:construction",
-    "quote": "audit.protection"
+    "component": "speed",
+    "share_now": 0.167,
+    "share_at_flip": 0.118,
+    "boundary": 50,
+    "grade_at_flip": "C",
+    "direction": "lower"
    },
    {
-    "kind": "log",
-    "ref": "log:006",
-    "quote": "I am eating board wipe after board wipe"
+    "component": "table_record",
+    "share_now": 0.167,
+    "share_at_flip": 0.114,
+    "boundary": 50,
+    "grade_at_flip": "C",
+    "direction": "lower"
    },
    {
-    "kind": "log",
-    "ref": "log:003",
-    "quote": "EDGAR WAS THE ONLY VAMPIRE I CAST ALL GAME"
+    "component": "resilience",
+    "share_now": 0.167,
+    "share_at_flip": 0.227,
+    "boundary": 50,
+    "grade_at_flip": "C",
+    "direction": "raise"
    },
    {
-    "kind": "engine",
-    "ref": "engine:thesis",
-    "quote": "need no combat damage to land"
+    "component": "construction",
+    "share_now": 0.181,
+    "share_at_flip": 0.244,
+    "boundary": 50,
+    "grade_at_flip": "C",
+    "direction": "raise"
+   },
+   {
+    "component": "dti",
+    "share_now": 0.208,
+    "share_at_flip": 0.108,
+    "boundary": 50,
+    "grade_at_flip": "C",
+    "direction": "lower"
+   }
+  ]
+ },
+ "concordance": {
+  "level": "mixed",
+  "instruments": {
+   "construction": 2.0,
+   "dti": 3.0,
+   "mana": 2.0,
+   "resilience": 2.0,
+   "speed": 2.0
+  },
+  "of": 3,
+  "spread": 0.5,
+  "outliers": [
+   {
+    "instrument": "dti",
+    "rank": 3.0,
+    "side": "worse"
    }
   ],
-  "against": {
-   "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
-   "spec_sha": "23bf4e672931"
-  },
-  "weight": 0.2,
-  "weight_effective": 0.2222
+  "group": {
+   "kendall_w": 0.12,
+   "p": 0.6914,
+   "p_method": "exact over 1296 relabellings",
+   "m": 5,
+   "n": 3
+  }
  },
+ "resolution": "the 90% interval spans 1 grade boundary (50); concordance mixed",
+ "judgment": null,
  "rank": {
-  "position": 2,
+  "position": 3,
   "of": 3,
   "group": [
+   "heliod",
    "sharknado",
-   "edgar-vampires",
-   "heliod"
+   "edgar-vampires"
   ],
-  "ties_within_ci": false,
+  "acceptability": {
+   "1": 0.002,
+   "2": 0.202,
+   "3": 0.797
+  },
   "basis": {
-   "sharknado": "rating.json",
    "edgar-vampires": "this document",
-   "heliod": "rating.json"
+   "heliod": "skeleton",
+   "sharknado": "skeleton"
   },
   "scores": {
-   "sharknado": 61.8,
-   "edgar-vampires": 50.5,
-   "heliod": 49.9
+   "heliod": 65.2,
+   "sharknado": 58.4,
+   "edgar-vampires": 51.2
   }
  }
 }
