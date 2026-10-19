@@ -1537,8 +1537,8 @@
       "name": "final-v1",
       "opened": "2026-09-11",
       "why": "mana-v1 with one correction (2026-09-11): Asceticism takes Worldly Tutor's slot and Gadrak stays. Ablation on the champion: Asceticism-for-Gadrak was the only swap in the stack that moved the kill rate (kill-by-T8 -0.030), and the goldfish overstates Gadrak (it attacks with him ignoring the four-artifact clause; his Treasure is unmodelled), while Asceticism-for-Worldly-Tutor reads +0.001 on kill-by-T8 and keeps the Dragon curve at mean MV 5.38 with two three-drops. The pilot's rule: a Dragon earns its slot; a single-job spell is the cut. Control on the clock as before; the log is the instrument for the answers.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: superseded by final-v2 (merged as v1.3.0, 2026-09-20): one link in the 2026-09-1",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -2456,8 +2456,8 @@
       "name": "haste-v1",
       "opened": "2026-09-11",
       "why": "Prescription 0241fb6a70f1 adds 1, 4, 7: a third and fourth board-wide haste grant so a Dragon swings the turn it lands. The goldfish sized a third grant at under a point of kill-by-T8 (0.802 today), so 0.81 is the bar this instrument can falsify; the anti-telegraph claim is Forge's to settle at standard-v3.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: the prescription's third and fourth haste grants, measured against the pre-v1.3.",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -3337,8 +3337,8 @@
       "name": "mana-v1",
       "opened": "2026-09-11",
       "why": "Mana pass on responses-v3 (2026-09-11): blue 16 and black 11 short of Karsten targets (Marang UU, Crux BB), two logged losses to colours. Six lands whose ablation on mana-analysis is neutral or better in EVERY colour out, six fetchlands in: with seven shocks and three battle lands each fetch is an untapped five-colour source. The basics stay, because Prismatic Vista and Fabled Passage fetch basics only and cutting the last Island cost them blue (measured: Island -> Delta read U -2). The goldfish cannot rank lands; mana-analysis is the evidence, and this objective (two dead turns in a row, 0.078) is the one goldfish row a colour screw shows in.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: superseded by final-v2 (merged as v1.3.0, 2026-09-20): one link in the 2026-09-1",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -4267,8 +4267,8 @@
       "name": "responses-v1",
       "opened": "2026-09-11",
       "why": "Prescription 0241fb6a70f1 adds 2, 3, 5: flash for every Dragon, a one-mana counter, and the one Dragon whose ETB counters. The goldfish cannot see any of it (no opponents), so its objective is a CONTROL — the three swaps may not cost more than about two points of unopposed clock (0.802 today). The gate is Forge at standard-v3: MDE 0.195 at 100 games a side against the 0.353 baseline.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: superseded by final-v2 (merged as v1.3.0, 2026-09-20): one link in the 2026-09-1",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -5119,8 +5119,8 @@
       "name": "responses-v2",
       "opened": "2026-09-11",
       "why": "The pilot's pick from prescription 0241fb6a70f1 (2026-09-11): the three responses-v1 swaps plus Mithril Coat and Asceticism, and a basic Forest out for Verdant Catacombs because two of four logged losses are mana and black is 12 sources short. The goldfish cannot see counters or protection, so its objective is a CONTROL on the clock (0.802 today); the captain's log is the instrument that settles this branch.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: superseded by final-v2 (merged as v1.3.0, 2026-09-20): one link in the 2026-09-1",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -5989,8 +5989,8 @@
       "name": "responses-v3",
       "opened": "2026-09-11",
       "why": "responses-v2 plus the pilot's double-duty rule (2026-09-11): a Dragon earns a slot only if it is also a spell the list would play. Marang River Regent carries Return of the Wildspeaker's draw-three a mana cheaper or bounces two permanents on a body; Steel Hellkite is repeatable removal by mana value on a 5/5, replacing the single-job anthem the doctor ranked first to cut. The goldfish sees the bodies and the draw, not the answers, so the objective is a CONTROL on the clock (v2 read 0.776).",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: superseded by final-v2 (merged as v1.3.0, 2026-09-20): one link in the 2026-09-1",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -7948,7 +7948,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 2,
+    "count": 8,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -7960,11 +7960,11 @@
     ],
     "latest": [
       {
-        "id": "001",
-        "at": "2026-09-20",
-        "kind": "propose",
-        "branch": "final-v2",
-        "as_version": "v1.3.0",
+        "id": "004",
+        "at": "2026-10-19T16:37:31-07:00",
+        "kind": "reject",
+        "branch": "responses-v2",
+        "as_version": null,
         "predicted": {
           "endpoint": "kill_by_8",
           "grade": "not met",
@@ -7975,10 +7975,55 @@
         "realised": null
       },
       {
-        "id": "002",
-        "at": "2026-09-20",
-        "kind": "merge",
-        "branch": "final-v2",
+        "id": "005",
+        "at": "2026-10-19T16:37:39-07:00",
+        "kind": "reject",
+        "branch": "responses-v3",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "006",
+        "at": "2026-10-19T16:37:47-07:00",
+        "kind": "reject",
+        "branch": "mana-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "stall",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "007",
+        "at": "2026-10-19T16:37:55-07:00",
+        "kind": "reject",
+        "branch": "final-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "008",
+        "at": "2026-10-19T16:38:02-07:00",
+        "kind": "reject",
+        "branch": "haste-v1",
         "as_version": null,
         "predicted": {
           "endpoint": "kill_by_8",
