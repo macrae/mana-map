@@ -3,14 +3,99 @@
  "branch": "mean-v1",
  "v": 2,
  "opened": "2026-10-18",
- "why": "THE MEANEST BRACKET 4 EDGAR. Opened 2026-10-18 from v2.0.0 after the first DeckCheck scan (DTI 28/96, B4) and roast. Build from the watch set deckcheck-mean-v1: answer exile and bounce wipes (Clever Concealment, the Enduring pair), death-triggered draw for the turn 7-8 empty hand, distance drain, cheaper Vampire casts. Champion kill_by_8 0.648 on the 2026-10-18 model; the objective is ONE column \u2014 resilience, curve shape, late pop-off and play decide with it. Swaps discussed slot by slot before staging.",
+ "why": "THE MEANEST BRACKET 4 EDGAR \u2014 the pilot's profile, in his words (2026-10-19): a vampire deck that feels fast, threatening, bracket 4; life gain + life drain is the core mechanic; ways of transforming vampire tokens into bigger threats; targeted removal; interaction and card draw are critical; once the combo pieces come out the table targets the vamps, so as much protection and interaction as possible. THE PROFILE, not a gate (the pilot: 'we need to stop gating changes on a single metric'): judged on the whole paired net-change table and the rating's component deltas \u2014 damage @T8/@T10 and board power @T6 (fast, threatening, tokens into threats); the goldfish's cumulative drain by T8/T10 and life gained (the core, read from goldfish_metrics branch vs champion until a net-change row carries it); interaction affordable @T6, the audit's interaction (10, at), interaction-breadth (3 of 5, under) and protection (9, over) and the rating's resilience component (targeted removal, protection); extra cards @T8 and the audit's card-advantage (8, under) \u2014 the running-out-of-steam axis. The ONE pre-registered row is a GUARD, not the goal: extra cards by T8 may not fall below the champion's 1.68. Keep list: Vish Kal, Bloodthirsty Conqueror, Vito, Sanguine Bond, Exquisite Blood. Built from the watch sets deckcheck-mean-v1 (eleven) and deckcheck-tune-v1 (five), slot by slot with the pilot before staging. Objective rewritten 2026-10-19 before anything was staged or measured (it read kill_by_8 >= 0.75 when opened on 2026-10-18).",
  "objective": {
-  "axis": "kill_by_8",
+  "axis": "extra_cards_8",
   "op": ">=",
-  "value": 0.75,
-  "why": "THE MEANEST BRACKET 4 EDGAR. Opened 2026-10-18 from v2.0.0 after the first DeckCheck scan (DTI 28/96, B4) and roast. Build from the watch set deckcheck-mean-v1: answer exile and bounce wipes (Clever Concealment, the Enduring pair), death-triggered draw for the turn 7-8 empty hand, distance drain, cheaper Vampire casts. Champion kill_by_8 0.648 on the 2026-10-18 model; the objective is ONE column \u2014 resilience, curve shape, late pop-off and play decide with it. Swaps discussed slot by slot before staging."
+  "value": 1.68,
+  "why": "THE MEANEST BRACKET 4 EDGAR \u2014 the pilot's profile, in his words (2026-10-19): a vampire deck that feels fast, threatening, bracket 4; life gain + life drain is the core mechanic; ways of transforming vampire tokens into bigger threats; targeted removal; interaction and card draw are critical; once the combo pieces come out the table targets the vamps, so as much protection and interaction as possible. THE PROFILE, not a gate (the pilot: 'we need to stop gating changes on a single metric'): judged on the whole paired net-change table and the rating's component deltas \u2014 damage @T8/@T10 and board power @T6 (fast, threatening, tokens into threats); the goldfish's cumulative drain by T8/T10 and life gained (the core, read from goldfish_metrics branch vs champion until a net-change row carries it); interaction affordable @T6, the audit's interaction (10, at), interaction-breadth (3 of 5, under) and protection (9, over) and the rating's resilience component (targeted removal, protection); extra cards @T8 and the audit's card-advantage (8, under) \u2014 the running-out-of-steam axis. The ONE pre-registered row is a GUARD, not the goal: extra cards by T8 may not fall below the champion's 1.68. Keep list: Vish Kal, Bloodthirsty Conqueror, Vito, Sanguine Bond, Exquisite Blood. Built from the watch sets deckcheck-mean-v1 (eleven) and deckcheck-tune-v1 (five), slot by slot with the pilot before staging. Objective rewritten 2026-10-19 before anything was staged or measured (it read kill_by_8 >= 0.75 when opened on 2026-10-18)."
  },
- "commits": [],
+ "commits": [
+  {
+   "at": "2026-10-19",
+   "decklist_sha256": "e7dc66678771170cb36a6a8e7e8782f342c3b2f09ba848304d9f8c823af3413d",
+   "message": "the profile package, eleven of twelve: fuel (Incubator, two Talismans, Tower), draw (Opportunist, Clavile\u00f1o), distance (Vraan, Vein Ripper), wipes (Concealment, Dictate), a seventh combo half (Tenacity); Tocasia's Welcome waits on the pilot's call about Olivia"
+  }
+ ],
  "base_version": 4,
- "base_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee"
+ "base_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
+ "staged": [
+  {
+   "at": "2026-10-19",
+   "out": "Kirol, Attentive First-Year",
+   "in": "Urza's Incubator",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Cosmos Elixir",
+   "in": "Talisman of Hierarchy",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Nighthawk Scavenger",
+   "in": "Talisman of Conviction",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Nomad Outpost",
+   "in": "Phyrexian Tower",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Strefan, Maurer Progenitor",
+   "in": "Morbid Opportunist",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Bloodtracker",
+   "in": "Clavile\u00f1o, First of the Blessed",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Crossway Troublemakers",
+   "in": "Vraan, Executioner Thane",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Despark",
+   "in": "Vein Ripper",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Falkenrath Aristocrat",
+   "in": "Clever Concealment",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Elspeth, Storm Slayer",
+   "in": "Dictate of Erebos",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  },
+  {
+   "at": "2026-10-19",
+   "out": "Winds of Abandon",
+   "in": "Enduring Tenacity",
+   "strength": null,
+   "why": "the pilot's profile package 2026-10-19"
+  }
+ ]
 }
