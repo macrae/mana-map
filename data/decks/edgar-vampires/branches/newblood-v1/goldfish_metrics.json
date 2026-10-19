@@ -22,10 +22,14 @@
     ],
     "commander": "Edgar Markov",
     "commander_cmc": 6,
+    "death_rate": {
+      "opponent_per_turn": 1.3118,
+      "own_per_turn": 0.858,
+      "source": "forge run sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-da677689-s20261001-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tl9473cf35 (standard-v3, 2026-10-01, list 7be137d0 = V3): 200 games, 1728 own creature deaths (1016 of them tokens) and 2642 opponent creature deaths over 2014 own turns, counted from every `Zone Change: … was put into Graveyard from Battlefield` line whose card is a creature or a creature token, seats matched by label suffix across the rotating jobs"
+    },
     "deck": "edgar-vampires",
     "decklist_sha256": "3badc5edcda2f5b79d734f43a439033d028b76b0990e0324271aefed97091e80",
     "drain_not_modelled": [
-      "Cruel Celebrant",
       "Sanctum Seeker"
     ],
     "interaction_suite_counted": [
@@ -107,49 +111,49 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.971,
+        "10": 0.788,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
-        "5": 0.002,
-        "6": 0.086,
-        "7": 0.409,
-        "8": 0.748,
-        "9": 0.917
+        "5": 0.001,
+        "6": 0.033,
+        "7": 0.196,
+        "8": 0.459,
+        "9": 0.652
       },
       "kill_turn_histogram": {
-        "10": 539,
-        "5": 21,
-        "6": 844,
-        "7": 3225,
-        "8": 3385,
-        "9": 1695
+        "10": 1360,
+        "5": 6,
+        "6": 325,
+        "7": 1627,
+        "8": 2631,
+        "9": 1927
       },
       "mean_board_power_by_turn": {
         "1": 0.568,
-        "10": 24.583,
+        "10": 17.366,
         "2": 1.561,
         "3": 3.276,
-        "4": 5.845,
-        "5": 8.745,
-        "6": 12.173,
-        "7": 15.45,
-        "8": 18.584,
-        "9": 21.623
+        "4": 4.984,
+        "5": 6.821,
+        "6": 8.966,
+        "7": 10.872,
+        "8": 12.731,
+        "9": 14.445
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 22.62,
+        "10": 15.237,
         "2": 0.586,
         "3": 1.779,
-        "4": 3.872,
-        "5": 6.966,
-        "6": 10.418,
-        "7": 13.137,
-        "8": 16.371,
-        "9": 19.511
+        "4": 3.007,
+        "5": 5.013,
+        "6": 7.169,
+        "7": 8.475,
+        "8": 10.368,
+        "9": 12.159
       },
-      "mean_kill_turn": 7.773,
+      "mean_kill_turn": 8.299,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -163,135 +167,135 @@
         "9": 0.0
       },
       "median_kill_turn": 8,
-      "no_kill_by_max_turn_rate": 0.029
+      "no_kill_by_max_turn_rate": 0.212
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.577,
+      "cast_by_turn_6_rate": 0.578,
       "cast_turn_histogram": {
-        "10": 513,
+        "10": 505,
         "3": 154,
         "4": 707,
         "5": 1860,
-        "6": 3052,
-        "7": 1136,
-        "8": 904,
-        "9": 689,
-        "not_by_max_turn": 985
+        "6": 3056,
+        "7": 1139,
+        "8": 901,
+        "9": 694,
+        "not_by_max_turn": 984
       },
-      "mean_cast_turn": 6.369,
+      "mean_cast_turn": 6.367,
       "median_cast_turn": 6
     },
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.0,
-        "10": 1.805,
+        "10": 3.477,
         "2": 0.0,
-        "3": 0.009,
-        "4": 0.039,
-        "5": 0.106,
-        "6": 0.211,
-        "7": 0.392,
-        "8": 0.692,
-        "9": 1.151
+        "3": 0.15,
+        "4": 0.373,
+        "5": 0.657,
+        "6": 0.999,
+        "7": 1.437,
+        "8": 2.021,
+        "9": 2.459
       },
       "mean_drain_by_turn": {
         "1": 0.0,
-        "10": 0.654,
+        "10": 1.018,
         "2": 0.0,
-        "3": 0.009,
-        "4": 0.03,
-        "5": 0.067,
-        "6": 0.105,
-        "7": 0.181,
-        "8": 0.3,
-        "9": 0.458
+        "3": 0.15,
+        "4": 0.223,
+        "5": 0.284,
+        "6": 0.343,
+        "7": 0.437,
+        "8": 0.584,
+        "9": 0.439
       },
-      "share_of_games_draining_by_turn_10": 0.211
+      "share_of_games_draining_by_turn_10": 0.489
     },
     "interaction_castable_by_turn": {
       "1": 0.074,
-      "10": 0.63,
+      "10": 0.635,
       "2": 0.108,
       "3": 0.129,
       "4": 0.194,
       "5": 0.221,
       "6": 0.242,
-      "7": 0.389,
+      "7": 0.387,
       "8": 0.473,
-      "9": 0.55
+      "9": 0.549
     },
     "interaction_in_hand_by_turn": {
       "1": 0.763,
-      "10": 0.889,
+      "10": 0.891,
       "2": 0.789,
       "3": 0.812,
       "4": 0.831,
       "5": 0.847,
       "6": 0.861,
       "7": 0.862,
-      "8": 0.867,
-      "9": 0.876
+      "8": 0.869,
+      "9": 0.879
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.499,
+      "10": 0.503,
       "2": 0.996,
       "3": 0.906,
       "4": 0.782,
       "5": 0.665,
-      "6": 0.58,
-      "7": 0.529,
-      "8": 0.5,
-      "9": 0.493
+      "6": 0.581,
+      "7": 0.532,
+      "8": 0.504,
+      "9": 0.506
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.8,
+      "10": 7.829,
       "2": 2.145,
       "3": 3.236,
       "4": 4.14,
       "5": 4.88,
-      "6": 5.514,
-      "7": 6.095,
-      "8": 6.671,
-      "9": 7.229
+      "6": 5.515,
+      "7": 6.098,
+      "8": 6.679,
+      "9": 7.251
     },
     "mean_bodies_by_turn": {
       "1": 0.568,
-      "10": 14.984,
+      "10": 9.511,
       "2": 1.472,
       "3": 2.842,
-      "4": 4.563,
-      "5": 6.038,
-      "6": 7.48,
-      "7": 9.322,
-      "8": 11.156,
-      "9": 13.032
+      "4": 3.754,
+      "5": 4.292,
+      "6": 4.813,
+      "7": 5.704,
+      "8": 6.611,
+      "9": 7.568
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 1.75,
+      "10": 2.012,
       "2": 0.132,
-      "3": 0.178,
-      "4": 0.243,
-      "5": 0.353,
-      "6": 0.505,
-      "7": 0.726,
-      "8": 1.005,
-      "9": 1.339
+      "3": 0.179,
+      "4": 0.245,
+      "5": 0.362,
+      "6": 0.535,
+      "7": 0.797,
+      "8": 1.144,
+      "9": 1.455
     },
     "mean_sacrifices_by_turn": {
       "1": 0.0,
-      "10": 2.264,
+      "10": 1.751,
       "2": 0.006,
       "3": 0.053,
-      "4": 0.151,
-      "5": 0.284,
-      "6": 0.442,
-      "7": 0.708,
-      "8": 1.092,
-      "9": 1.604
+      "4": 0.148,
+      "5": 0.262,
+      "6": 0.386,
+      "7": 0.581,
+      "8": 0.862,
+      "9": 1.24
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -320,103 +324,103 @@
     "sac_cap_hit_rate": 0.0,
     "targets": [
       {
-        "assembled_rate": 0.352,
-        "assembled_rate_assisted": 0.466,
-        "by_turn_6_rate": 0.247,
-        "by_turn_6_rate_assisted": 0.339,
+        "assembled_rate": 0.355,
+        "assembled_rate_assisted": 0.47,
+        "by_turn_6_rate": 0.248,
+        "by_turn_6_rate_assisted": 0.34,
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-        "mean_turn": 4.144,
-        "mean_turn_assisted": 4.112
+        "mean_turn": 4.178,
+        "mean_turn_assisted": 4.145
       },
       {
-        "assembled_rate": 0.342,
-        "assembled_rate_assisted": 0.457,
-        "by_turn_6_rate": 0.246,
-        "by_turn_6_rate_assisted": 0.337,
+        "assembled_rate": 0.346,
+        "assembled_rate_assisted": 0.461,
+        "by_turn_6_rate": 0.247,
+        "by_turn_6_rate_assisted": 0.338,
         "label": "A token multiplier or extra token-maker drawn",
-        "mean_turn": 4.073,
-        "mean_turn_assisted": 4.093
+        "mean_turn": 4.128,
+        "mean_turn_assisted": 4.13
       },
       {
-        "assembled_rate": 0.192,
-        "assembled_rate_assisted": 0.334,
-        "by_turn_6_rate": 0.134,
-        "by_turn_6_rate_assisted": 0.239,
+        "assembled_rate": 0.194,
+        "assembled_rate_assisted": 0.337,
+        "by_turn_6_rate": 0.135,
+        "by_turn_6_rate_assisted": 0.24,
         "label": "A Vampire lord or anthem drawn (the combat plan)",
-        "mean_turn": 4.16,
-        "mean_turn_assisted": 4.309
+        "mean_turn": 4.211,
+        "mean_turn_assisted": 4.345
       },
       {
-        "assembled_rate": 0.061,
-        "assembled_rate_assisted": 0.127,
+        "assembled_rate": 0.062,
+        "assembled_rate_assisted": 0.131,
         "by_turn_6_rate": 0.026,
         "by_turn_6_rate_assisted": 0.06,
         "label": "THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
-        "mean_turn": 6.294,
-        "mean_turn_assisted": 6.242
+        "mean_turn": 6.354,
+        "mean_turn_assisted": 6.326
       },
       {
-        "assembled_rate": 0.574,
-        "assembled_rate_assisted": 0.648,
-        "by_turn_6_rate": 0.441,
+        "assembled_rate": 0.577,
+        "assembled_rate_assisted": 0.651,
+        "by_turn_6_rate": 0.442,
         "by_turn_6_rate_assisted": 0.51,
         "label": "Ramp or fixing drawn",
-        "mean_turn": 3.596,
-        "mean_turn_assisted": 3.549
+        "mean_turn": 3.628,
+        "mean_turn_assisted": 3.571
       },
       {
-        "assembled_rate": 0.744,
-        "assembled_rate_assisted": 0.787,
-        "by_turn_6_rate": 0.623,
-        "by_turn_6_rate_assisted": 0.671,
+        "assembled_rate": 0.747,
+        "assembled_rate_assisted": 0.79,
+        "by_turn_6_rate": 0.624,
+        "by_turn_6_rate_assisted": 0.672,
         "label": "A draw engine drawn",
-        "mean_turn": 2.939,
-        "mean_turn_assisted": 2.877
+        "mean_turn": 2.957,
+        "mean_turn_assisted": 2.891
       },
       {
-        "assembled_rate": 0.582,
-        "assembled_rate_assisted": 0.655,
+        "assembled_rate": 0.587,
+        "assembled_rate_assisted": 0.659,
         "by_turn_6_rate": 0.442,
-        "by_turn_6_rate_assisted": 0.511,
+        "by_turn_6_rate_assisted": 0.512,
         "label": "Protection held for the swarm",
-        "mean_turn": 3.652,
-        "mean_turn_assisted": 3.582
+        "mean_turn": 3.693,
+        "mean_turn_assisted": 3.611
       },
       {
-        "assembled_rate": 0.341,
-        "assembled_rate_assisted": 0.455,
+        "assembled_rate": 0.346,
+        "assembled_rate_assisted": 0.46,
         "by_turn_6_rate": 0.238,
         "by_turn_6_rate_assisted": 0.332,
         "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
-        "mean_turn": 4.118,
-        "mean_turn_assisted": 4.089
+        "mean_turn": 4.187,
+        "mean_turn_assisted": 4.142
       },
       {
-        "assembled_rate": 0.035,
-        "assembled_rate_assisted": 0.086,
+        "assembled_rate": 0.036,
+        "assembled_rate_assisted": 0.087,
         "by_turn_6_rate": 0.018,
         "by_turn_6_rate_assisted": 0.043,
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
-        "mean_turn": 6.006,
-        "mean_turn_assisted": 6.117
+        "mean_turn": 6.036,
+        "mean_turn_assisted": 6.155
       },
       {
-        "assembled_rate": 0.668,
-        "assembled_rate_assisted": 0.727,
-        "by_turn_6_rate": 0.518,
-        "by_turn_6_rate_assisted": 0.579,
+        "assembled_rate": 0.671,
+        "assembled_rate_assisted": 0.73,
+        "by_turn_6_rate": 0.52,
+        "by_turn_6_rate_assisted": 0.58,
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-        "mean_turn": 3.515,
-        "mean_turn_assisted": 3.429
+        "mean_turn": 3.533,
+        "mean_turn_assisted": 3.445
       },
       {
-        "assembled_rate": 0.573,
-        "assembled_rate_assisted": 0.647,
+        "assembled_rate": 0.578,
+        "assembled_rate_assisted": 0.65,
         "by_turn_6_rate": 0.44,
         "by_turn_6_rate_assisted": 0.509,
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
-        "mean_turn": 3.59,
-        "mean_turn_assisted": 3.552
+        "mean_turn": 3.631,
+        "mean_turn_assisted": 3.578
       }
     ]
   }

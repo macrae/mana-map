@@ -94,7 +94,7 @@ Mostly dual and tri colour so all three colours are ready. Fetches, shocks, pain
 Goldfish, 10,000 seeded games, measured on v2.0.0 (V4), 2026-10-06. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **65%**
-- MEDIAN turn the goldfish kills on, not the mean: **turn 8**
+- MEDIAN turn the goldfish kills on, not the mean: **turn 9**
 - mean turn the commander is first cast: **turn 6.014**
 - A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **25%**
 - A token multiplier or extra token-maker drawn: **25%**

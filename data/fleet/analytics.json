@@ -340,15 +340,15 @@
   "kill_curves": {
    "edgar-vampires": {
     "1": 0.0,
-    "10": 0.955,
+    "10": 0.715,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
     "5": 0.0,
-    "6": 0.04,
-    "7": 0.284,
-    "8": 0.649,
-    "9": 0.87
+    "6": 0.014,
+    "7": 0.12,
+    "8": 0.326,
+    "9": 0.532
    },
    "emiel-blink": {
     "1": 0.0,
@@ -438,15 +438,15 @@
   "land_curves": {
    "edgar-vampires": {
     "1": 0.999,
-    "10": 0.527,
+    "10": 0.531,
     "2": 0.996,
     "3": 0.906,
     "4": 0.78,
     "5": 0.669,
     "6": 0.597,
     "7": 0.547,
-    "8": 0.539,
-    "9": 0.527
+    "8": 0.541,
+    "9": 0.534
    },
    "emiel-blink": {
     "1": 0.999,
@@ -536,15 +536,15 @@
   "mana_curves": {
    "edgar-vampires": {
     "1": 0.999,
-    "10": 8.466,
+    "10": 8.485,
     "2": 2.141,
     "3": 3.511,
     "4": 4.412,
     "5": 5.171,
     "6": 5.866,
-    "7": 6.5,
-    "8": 7.164,
-    "9": 7.812
+    "7": 6.501,
+    "8": 7.168,
+    "9": 7.825
    },
    "emiel-blink": {
     "1": 0.999,
@@ -735,38 +735,38 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.9508,
-      0.9589
+      0.7061,
+      0.7238
      ],
      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.955
+     "value": 0.715
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0363,
-      0.044
+      0.0119,
+      0.0165
      ],
      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.04
+     "value": 0.014
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.6396,
-      0.6583
+      0.3169,
+      0.3353
      ],
      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.649
+     "value": 0.326
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -781,14 +781,14 @@
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.316
+     "value": 1.3161
     },
     "median_kill_turn": {
      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.median_kill_turn",
      "stale": false,
-     "value": 8
+     "value": 9
     },
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
@@ -817,14 +817,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0411,
-      0.0492
+      0.2762,
+      0.2939
      ],
      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.045
+     "value": 0.285
     }
    },
    "bracket": {
@@ -862,14 +862,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.1386,
-      0.1524
+      0.1355,
+      0.1492
      ],
      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.1454
+     "value": 0.1422
     }
    },
    "dti": {
@@ -937,6 +937,11 @@
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
+     "model_deaths": {
+      "opponent_per_turn": 1.3118,
+      "own_per_turn": 0.858,
+      "source": "forge run sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-da677689-s20261001-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tl9473cf35 (standard-v3, 2026-10-01, list 7be137d0 = V3): 200 games, 1728 own creature deaths (1016 of them tokens) and 2642 opponent creature deaths over 2014 own turns, counted from every `Zone Change: … was put into Graveyard from Battlefield` line whose card is a creature or a creature token, seats matched by label suffix across the rotating jobs"
+     },
      "model_drain": true,
      "model_draw": true,
      "model_sacrifice": true
@@ -949,12 +954,12 @@
      "answer_cards": "above the fleet median",
      "dti_score": "below the fleet median",
      "kill_by_turn_6": "below the fleet median",
-     "kill_by_turn_8": "above the fleet median",
+     "kill_by_turn_8": "below the fleet median",
      "mana_at_turn_five": "above the fleet median",
      "missed_land_drop_by_five": "below the fleet median",
      "missed_land_drop_rate": "below the fleet median",
      "mulligan_rate": "below the fleet median",
-     "never_kills_rate": "below the fleet median",
+     "never_kills_rate": "above the fleet median",
      "stall_two_in_a_row": "above the fleet median"
     },
     "group": {
@@ -1534,7 +1539,7 @@
      "answer_cards": "below the fleet median",
      "dti_score": "above the fleet median",
      "kill_by_turn_6": "above the fleet median",
-     "kill_by_turn_8": "below the fleet median",
+     "kill_by_turn_8": "above the fleet median",
      "mana_at_turn_five": "above the fleet median",
      "missed_land_drop_by_five": "above the fleet median",
      "missed_land_drop_rate": "above the fleet median",
@@ -1874,7 +1879,7 @@
      "missed_land_drop_by_five": "below the fleet median",
      "missed_land_drop_rate": "below the fleet median",
      "mulligan_rate": "below the fleet median",
-     "never_kills_rate": "above the fleet median",
+     "never_kills_rate": "below the fleet median",
      "stall_two_in_a_row": "above the fleet median"
     },
     "group": {
@@ -4299,7 +4304,7 @@
   },
   "kill_by_turn_8": {
    "max": 0.898,
-   "median": 0.6105,
+   "median": 0.5685,
    "min": 0.003,
    "n": 6
   },
@@ -4329,13 +4334,13 @@
   },
   "never_kills_rate": {
    "max": 0.888,
-   "median": 0.0735,
+   "median": 0.1025,
    "min": 0.019,
    "n": 6
   },
   "stall_two_in_a_row": {
    "max": 0.1989,
-   "median": 0.1318,
+   "median": 0.1303,
    "min": 0.0072,
    "n": 6
   }

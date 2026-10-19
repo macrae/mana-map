@@ -15,21 +15,21 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.1304,
-   "sub_score": 8.0,
+   "sub_score": 2.8,
    "sub_ci": [
-    7.38,
-    8.66
+    2.43,
+    3.22
    ],
    "placement": null,
-   "anchor": 8.0,
+   "anchor": 2.8,
    "method": "anchor only (placement withheld): placement of kill_by_turn_8 within bracket 4 (n=2); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
-     "value": 0.649,
+     "value": 0.326,
      "ci95": [
-      0.6396,
-      0.6583
+      0.3169,
+      0.3353
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
@@ -37,10 +37,10 @@
     },
     {
      "figure": "kill_by_turn_6",
-     "value": 0.04,
+     "value": 0.014,
      "ci95": [
-      0.0363,
-      0.044
+      0.0119,
+      0.0165
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
@@ -252,8 +252,8 @@
    "weight_effective": 0.163,
    "sub_score": 54.17,
    "sub_ci": [
-    47.63,
-    60.77
+    47.56,
+    60.73
    ],
    "placement": null,
    "anchor": 54.17,
@@ -291,8 +291,8 @@
    "weight_effective": 0.1304,
    "sub_score": 23.67,
    "sub_ci": [
-    24.35,
-    63.52
+    24.33,
+    63.57
    ],
    "placement": null,
    "anchor": 23.67,
@@ -352,7 +352,7 @@
   "floor_vs_target": "floor 4, target 4"
  },
  "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
- "fleet_sha": "4a6050e68176",
+ "fleet_sha": "2748e88c6e5c",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -432,12 +432,12 @@
   ],
   "iterations": 3
  },
- "code_score": 53.4,
- "score_point": 52.2,
- "score": 54.0,
+ "code_score": 52.5,
+ "score_point": 51.5,
+ "score": 53.4,
  "score_ci": [
-  44.1,
-  63.7
+  42.9,
+  63.3
  ],
  "grade": "C",
  "grade_range": [
@@ -447,10 +447,10 @@
  "grade_display": "C",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.025,
-  "C": 0.74,
-  "D": 0.235,
-  "F": 0.001
+  "B": 0.021,
+  "C": 0.703,
+  "D": 0.275,
+  "F": 0.002
  },
  "uncertainty": {
   "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
@@ -470,67 +470,67 @@
     "grade": "C"
    },
    "mana": {
-    "score": 47.7,
+    "score": 46.9,
     "grade": "D"
    },
    "resilience": {
-    "score": 48.1,
+    "score": 47.3,
     "grade": "D"
    },
    "construction": {
-    "score": 49.5,
+    "score": 48.7,
     "grade": "D"
    },
    "dti": {
-    "score": 51.8,
+    "score": 51.0,
     "grade": "C"
    },
    "table_record": {
-    "score": 56.5,
+    "score": 55.7,
     "grade": "C"
    },
    "judgment": {
-    "score": 53.4,
+    "score": 52.5,
     "grade": "C"
    }
   },
   "flips": [
    {
+    "component": "speed",
+    "share_now": 0.13,
+    "share_at_flip": 0.158,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "raise"
+   },
+   {
     "component": "mana",
     "share_now": 0.087,
-    "share_at_flip": 0.045,
+    "share_at_flip": 0.058,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "lower"
-   },
-   {
-    "component": "speed",
-    "share_now": 0.13,
-    "share_at_flip": 0.174,
-    "boundary": 50,
-    "grade_at_flip": "D",
-    "direction": "raise"
-   },
-   {
-    "component": "table_record",
-    "share_now": 0.13,
-    "share_at_flip": 0.198,
-    "boundary": 50,
-    "grade_at_flip": "D",
-    "direction": "raise"
    },
    {
     "component": "resilience",
     "share_now": 0.13,
-    "share_at_flip": 0.061,
+    "share_at_flip": 0.083,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "lower"
    },
    {
+    "component": "table_record",
+    "share_now": 0.13,
+    "share_at_flip": 0.178,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "raise"
+   },
+   {
     "component": "construction",
     "share_now": 0.141,
-    "share_at_flip": 0.025,
+    "share_at_flip": 0.064,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "lower"
@@ -538,7 +538,7 @@
    {
     "component": "judgment",
     "share_now": 0.217,
-    "share_at_flip": 0.629,
+    "share_at_flip": 0.558,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
@@ -592,8 +592,8 @@
   "weight": 0.2,
   "weight_effective": 0.2174,
   "sub_ci": [
-   39.9,
-   55.88
+   39.99,
+   56.03
   ]
  },
  "rank": {
@@ -604,7 +604,7 @@
    "edgar-vampires"
   ],
   "acceptability": {
-   "1": 0.002,
+   "1": 0.001,
    "2": 0.999
   },
   "basis": {
@@ -613,7 +613,7 @@
   },
   "scores": {
    "heliod": 65.0,
-   "edgar-vampires": 54.0
+   "edgar-vampires": 53.4
   }
  }
 }
