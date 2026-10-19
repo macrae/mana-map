@@ -790,8 +790,8 @@
       "name": "cart-v1",
       "opened": "2026-09-11",
       "why": "The pilot's cart, reviewed 2026-09-11 against v1.0.0 on the instrument that now reads Gishath's reveal. Seven adds for the audit's ramp surplus (15 vs 10-12) and its weakest interaction: Bloom Tender, Hunting Velociraptor, Savage Order, Up the Beanstalk, Savage Stomp, Molten Echoes, Chandra's Ignition. The goldfish sees Bloom Tender and Beanstalk's entry draw and nothing of prowl, the tutor-to-battlefield, the copies or the one-sided wipe, so its objective is a CONTROL on the clock (0.617 today): the four ramp cuts may not cost more than about two points. Forge at standard-v3 reads all seven and is the gate.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-10-19: absorbed: mana-v1 was built on this cart and merged as v1.1.0 (2026-09-20) carry",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -3217,7 +3217,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 2,
+    "count": 3,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -3255,6 +3255,24 @@
           "forge_delta": null,
           "forge_ci95": null,
           "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "003",
+        "at": "2026-10-19T16:33:54-07:00",
+        "kind": "reject",
+        "branch": "cart-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": -0.0192,
+          "forge_ci95": [
+            -0.1984,
+            0.1743
+          ],
+          "pod": "standard-v3"
         },
         "realised": null
       }
