@@ -4675,12 +4675,12 @@ def _fig(value, **kw):
     return d
 
 
-def _fleet_row(slug, group="B3", basis="target", dti=None, k8=0.5, apart=False):
+def _fleet_row(slug, group="B3", basis="target", dti=None, k8=0.5, apart=False, member=True):
     bench = {"kill_by_turn_8": _fig(k8, ci95=[k8 - 0.02, k8 + 0.02]),
              "kill_by_turn_6": _fig(k8 / 2, ci95=[k8 / 2 - 0.02, k8 / 2 + 0.02]),
              "missed_land_drop_rate": _fig(0.2, ci95=[0.18, 0.22])}
-    return {"slug": slug, "format": None, "stage": "sleeved", "apart": apart, "lifecycle": None,
-            "decklist_sha256": "a" * 64,
+    return {"slug": slug, "format": None, "stage": "sleeved" if member else "bench", "apart": apart,
+            "lifecycle": None, "member": member and not apart, "decklist_sha256": "a" * 64,
             "bracket": {"floor": 3, "floor_name": "Upgraded", "target": 3 if basis == "target" else None,
                         "group": group, "group_basis": basis, "dti_bracket": 3 if dti else None},
             "benchmark": bench,
@@ -4703,7 +4703,7 @@ def _fleet_row(slug, group="B3", basis="target", dti=None, k8=0.5, apart=False):
 def _fleet_doc(rows):
     groups = {}
     for r in rows:
-        if not r["apart"]:
+        if r["member"]:
             groups.setdefault(r["bracket"]["group"], []).append(r["slug"])
     return {"schema_version": 1, "decks": rows,
             "groups": {g: {"members": m, "n": len(m),
@@ -4747,12 +4747,15 @@ def _fleet(browser, viz_server, doc, ratings=None):
 
 
 def test_the_fleet_table_draws_one_row_per_deck_and_an_absence_as_a_dash_with_its_reason(browser, viz_server):
-    doc = _fleet_doc([_fleet_row("alpha", dti=40), _fleet_row("bravo"), _fleet_row("charlie", group="B4", apart=True)])
+    doc = _fleet_doc([_fleet_row("alpha", dti=40), _fleet_row("bravo"), _fleet_row("charlie", group="B4", apart=True),
+                      _fleet_row("delta", member=False, k8=0.95)])
     page = _fleet(browser, viz_server, doc)
     try:
         rows = page.query_selector_all("#fleet-table tbody tr.t-head")
-        assert len(rows) == 3
-        assert page.text_content("#fleet-table tr.t-total th").strip() == "3 decks"
+        assert len(rows) == 2, "the fleet is the sleeved decks: the apart deck and the bench deck are not drawn"
+        assert "delta" not in page.text_content("#fleet-table") and "charlie" not in page.text_content("#fleet-table")
+        assert page.text_content("#fleet-table tr.t-total th").strip() == "2 sleeved"
+        assert len(page.query_selector_all("#fleet-kill .fl-multiple")) == 2
         # bravo has no DTI: a dash whose title is the artifact's reason, never a zero.
         bravo = [r for r in rows if "bravo" in r.text_content()][0]
         dash = bravo.query_selector("td:nth-child(4) .t-none")
@@ -4796,7 +4799,7 @@ def test_a_rating_file_is_drawn_only_with_the_coaching_tier_and_sorted_by_score(
         rows = page.query_selector_all("#fleet-rating .fl-rating-row")
         assert [r.text_content().split()[2] for r in rows] == ["charlie", "alpha"]
         assert "★ COACHING" in page.text_content("#fleet-rating h2")
-        assert "2 of 3 decks rated" in page.text_content("#fleet-rating")
+        assert "2 of 3 sleeved decks rated" in page.text_content("#fleet-rating")
         assert "withheld: forge" in page.text_content("#fleet-rating")
         # The table's rating column carries the badge for rated decks and a dash otherwise.
         assert page.query_selector_all("#fleet-table .fl-star").__len__() == 2

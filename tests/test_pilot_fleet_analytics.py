@@ -14,11 +14,11 @@ import pytest
 from manamap import config
 from manamap.pilot import calibrate, diagnostic, fleet_analytics as fa, validate_fleet_analytics as vfa
 
-SHA = {s: (chr(97 + i) * 64) for i, s in enumerate(("alpha", "bravo", "charlie", "delta", "echo"))}
+SHA = {s: (chr(97 + i) * 64) for i, s in enumerate(("alpha", "bravo", "charlie", "delta", "echo", "foxtrot"))}
 
 
 def _deck(base, slug, *, target=None, floor=3, kill8=0.5, missed=0.2, bench=True, modern=False,
-          dti=None, feel=None, apart=False):
+          dti=None, feel=None, apart=False, stage="sleeved"):
     d = base / slug
     d.mkdir(parents=True)
     cards = {"deck": slug, "decklist_sha256": SHA[slug],
@@ -28,7 +28,7 @@ def _deck(base, slug, *, target=None, floor=3, kill8=0.5, missed=0.2, bench=True
         cards["format"] = "modern"
     (d / "cards.json").write_text(json.dumps(cards))
     (d / "decklist.txt").write_text("1 Zada, Hedron Grinder\n")
-    (d / "info.json").write_text(json.dumps({"stage": "sleeved", "simulation": None}))
+    (d / "info.json").write_text(json.dumps({"stage": stage, "simulation": None}))
     if not modern:
         (d / "bracket_report.json").write_text(json.dumps(
             {"floor": floor, "floor_name": "Upgraded", "target": target, "decklist_sha256": SHA[slug]}))
@@ -83,6 +83,7 @@ def fleet(tmp_path, monkeypatch):
     _deck(decks, "charlie", target=3, floor=1, kill8=0.5, missed=0.2, dti=30)
     _deck(decks, "delta", target=4, floor=4, kill8=0.9, missed=0.15)
     _deck(decks, "echo", modern=True)
+    _deck(decks, "foxtrot", target=3, kill8=0.95, missed=0.05, stage="bench")   # a bench deck: a row, never a member
     return decks
 
 
@@ -99,6 +100,23 @@ def test_the_group_key_is_the_target_then_the_floor_and_a_modern_deck_is_not_mod
     assert by["echo"]["bracket"]["group"] == "unbracketed"
     assert by["echo"]["format"] == "Modern" and fa.is_absent(by["echo"]["benchmark"])
     assert "not modelled for Modern" in by["echo"]["benchmark"]["absent_because"]
+
+
+def test_the_fleet_is_the_sleeved_decks(fleet):
+    """A bench deck keeps its row and its figures, but joins no group, takes no
+    placement, and never moves a sleeved deck's band — even when it is the
+    fastest list on disk."""
+    doc = fa.build()
+    by = {r["slug"]: r for r in doc["decks"]}
+    assert by["foxtrot"]["member"] is False and by["foxtrot"]["placements"] == {}
+    assert by["alpha"]["member"] is True
+    assert "foxtrot" not in doc["groups"]["B3"]["members"]
+    assert doc["groups"]["B3"]["bands"]["kill_by_turn_8"]["max"] == 0.6, "foxtrot's 0.95 is not in the band"
+    assert "sleeved" in " ".join(doc["limits"]).lower()
+    errors, _ = vfa.validate(doc)
+    assert errors == []
+    by["alpha"]["member"] = False
+    assert any("member: true" in e for e in vfa.validate(doc)[0])
 
 
 def test_absent_is_absent_never_zero(fleet):
@@ -183,7 +201,7 @@ def test_spearman_is_refused_below_min_decks_and_measured_above(fleet):
 def test_curves_come_from_the_benchmark_and_the_grade_grid_counts(fleet):
     doc = fa.build()
     c = doc["comparisons"]
-    assert set(c["kill_curves"]) == {"alpha", "bravo", "charlie", "delta"}
+    assert set(c["kill_curves"]) == {"alpha", "bravo", "charlie", "delta", "foxtrot"}
     assert c["kill_curves"]["alpha"]["10"] == 0.6
     assert c["benchmark_grades"]["distribution"]["R1"]["B"] == 2
     assert [x["slug"] for x in c["floor_vs_dti"]] == ["alpha", "charlie"]
@@ -195,7 +213,7 @@ def test_curves_come_from_the_benchmark_and_the_grade_grid_counts(fleet):
 
 def test_build_is_byte_identical_and_order_independent(fleet, monkeypatch):
     a = fa.dumps(fa.build())
-    monkeypatch.setattr(fa, "live_slugs", lambda: sorted(["echo", "alpha", "delta", "bravo", "charlie"]))
+    monkeypatch.setattr(fa, "live_slugs", lambda: sorted(["echo", "alpha", "delta", "bravo", "charlie", "foxtrot"]))
     assert fa.dumps(fa.build()) == a
     p = fa.write()
     assert p.read_text() == a

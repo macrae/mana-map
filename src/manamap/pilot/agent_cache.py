@@ -547,14 +547,15 @@ def _rating_applicable(slug):
     base = _config.DECKS_DIR / slug
     if not (base / "cards.json").exists() or not (base / "bracket_report.json").exists():
         return False
-    return bool(for_deck(slug).commanders) and not deck_is_apart(slug)
+    from manamap.pilot.deck_versions import paper
+    return bool(for_deck(slug).commanders) and not deck_is_apart(slug) and paper(slug) is not None
 
 
 _APPLICABILITY = {
     "deck-rating": (
         _rating_applicable,
-        "no bracket to compete in — a Commander deck that is not apart, with a "
-        "bracket_report.json; nothing to spawn or cache",
+        "no bracket to compete in — the fleet is the SLEEVED decks: a Commander deck with a "
+        "paper lock, not apart, with a bracket_report.json; nothing to spawn or cache",
     ),
     "debrief": (
         _debrief_applicable,

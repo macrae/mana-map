@@ -1762,32 +1762,32 @@ spelling wherever the front faces agree (`deckcheck.spellings`), which settles t
 pipe; a hand-pasted list with two-face names still reads as a swap. Split cards
 (`Commit // Memory`) are spelled the same everywhere and never hit this.
 
-## 25. Within-bracket bands are n ≤ 5 on every bracket today (2026-10-18)
+## 25. Within-bracket bands are n = 3 on both brackets today (2026-10-18, sleeved-only 2026-10-19)
 
 `data/fleet/analytics.json` bands each bracket group at `FLEET_MIN_GROUP = 3` members or
-more. With the targets declared on 2026-10-18 the groups are B4 = edgar-vampires, heliod,
-sharknado (n=3) and B3 = emiel-blink, gishath, goblin-storm, meren-recursion, ur-dragon
-(n=5, two of them bench decks). A band of three is three numbers — its min and max ARE two
-of the members — so a placement word inside it ("above the bracket median") describes an
-ordering, not a distribution, and the DTI band on B3 is absent because only three of the
-five carry a reading. The Spearman cells publish the `NOT ANSWERABLE` refusal at n=6 and
-n=0 (`calibrate.MIN_DECKS` is 10). What unblocks it: more sleeved decks per bracket, a DTI
-on every Commander deck, Forge runs on current lists. Meanwhile the artifact says "no band
-(n=2)" where it cannot band and never fills the gap with a number.
+more, and since 2026-10-19 a group holds SLEEVED decks only. With the targets declared on
+2026-10-18 the groups are B4 = edgar-vampires, heliod, sharknado and B3 = gishath,
+goblin-storm, ur-dragon, n=3 each. A band of three is three numbers — its min and max ARE
+two of the members — so a placement word inside it ("above the bracket median") describes
+an ordering, not a distribution. The Spearman cells publish the `NOT ANSWERABLE` refusal at
+n=6 and n=0 (`calibrate.MIN_DECKS` is 10). What unblocks it: more sleeved decks per bracket,
+a DTI on every Commander deck, Forge runs on current lists. Meanwhile the artifact says "no
+band (n=2)" where it cannot band and never fills the gap with a number.
 
 ## 26. The deck rating ranks over n ≤ 5 per bracket and is uncalibrated (2026-10-19)
 
-`rating.json` exists on eight live Commander decks after the first `/rate-fleet` pass: B3 =
-ur-dragon, gishath, meren-recursion, goblin-storm, emiel-blink (n=5, two of them bench
-decks); B4 = sharknado, edgar-vampires, heliod (n=3). Every file carries the ★ label and
+`rating.json` exists on the six sleeved decks after the first `/rate-fleet` pass (two bench
+decks were rated the same night and dropped when the fleet became sleeved-only): B3 =
+ur-dragon, gishath, goblin-storm; B4 = sharknado, edgar-vampires, heliod; n=3 each. Every
+file carries the ★ label and
 "claims no significance", and that is literal: `rating --calibrate` reports `NOT
 ANSWERABLE` on every outcome column (Spearman against the pilot's win rate needs
-`calibrate.MIN_DECKS` = 10 decks with `MIN_GAMES` = 20 logged games each; the fleet has 8
+`calibrate.MIN_DECKS` = 10 decks with `MIN_GAMES` = 20 logged games each; the fleet has 6
 rated decks and 0 with 20 games). `table_record` is scored on two decks (edgar-vampires,
 ur-dragon), `pilot_feel` on none (no `--feel` survey logged yet), `forge` on none (no run
 on a current list, and weight 0.00 by the pilot's rule). The scorecard is therefore mostly
 benchmark speed, benchmark mana, answer capacity and the audit's construction bands, plus
-one agent judgment — and the first fleet pass showed the loop's seam: seven of eight
+one agent judgment — and the first fleet pass showed the loop's seam: five of the six
 judgments ended at iteration 3 with a skeptic verdict of `fail` (the pendulum between
 too-generous and too-harsh, plus citations the skeptic read against their whole source),
 one passed (ur-dragon). A `fail` is saved and labelled; it is the loop working, not a

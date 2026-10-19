@@ -43,10 +43,11 @@ def fleet(tmp_path, monkeypatch):
     _deck(decks, "bravo", target=3, kill8=0.4, missed=0.3)
     _deck(decks, "charlie", target=3, kill8=0.5, missed=0.2)
     _deck(decks, "delta", target=4, kill8=0.9, missed=0.15)
+    _deck(decks, "foxtrot", target=3, kill8=0.95, missed=0.05, stage="bench")
     audits = {"alpha": _audit_for({"mana-base": 37, "ramp": 11, "consistency": 0.9, "interaction-breadth": 4}),
               "bravo": _audit_for({"mana-base": 33, "ramp": 8, "consistency": 0.6, "interaction-breadth": 2}),
               "charlie": _audit_for({"mana-base": 37, "ramp": 11, "consistency": 0.8, "interaction-breadth": 3}),
-              "delta": _audit_for({"mana-base": 37})}
+              "delta": _audit_for({"mana-base": 37}), "foxtrot": _audit_for({"mana-base": 37})}
     monkeypatch.setattr(rating.deck_audit, "analyze", lambda slug: audits[slug])
     fa.write()
     return decks
@@ -120,6 +121,15 @@ def test_speed_reads_placement_and_the_brackets_anchor_with_its_interval(fleet):
     assert speed["sub_ci"][0] < 40.0 < speed["sub_ci"][1], "the anchor carries the Wilson interval"
     assert speed["inputs"][0]["figure"] == "kill_by_turn_8" and speed["inputs"][0]["n"] == 1000
     assert speed["citations"][0]["ref"] == "strategy:deckbuilding.power-level"
+
+
+def test_a_bench_deck_is_refused_and_never_in_a_group(fleet):
+    """The fleet is the sleeved decks: a bench deck has no rank to hold."""
+    with pytest.raises(SystemExit, match="not a fleet member"):
+        rating.build("foxtrot")
+    assert rating.build("alpha")["rank"]["of"] == 3
+    from manamap.pilot import agent_cache as ac
+    assert not ac._rating_applicable("foxtrot"), "no paper lock, so no routine"
 
 
 def test_a_group_below_three_scores_on_anchors_alone(fleet):
@@ -257,8 +267,12 @@ def test_the_rating_routine_fingerprints_the_fleet_and_the_scorecard_but_not_the
     assert ac.resolve_inputs("alpha", spec) != base, "the fleet artifact is an input"
 
 
-def test_the_routine_is_applicable_only_to_a_bracketed_commander_deck(fleet):
+def test_the_routine_is_applicable_only_to_a_sleeved_bracketed_commander_deck(fleet):
     from manamap.pilot import agent_cache as ac
+    assert not ac._rating_applicable("alpha"), "no paper lock yet: the fleet is the sleeved decks"
+    (config.DECKS_DIR / "alpha" / "deck_versions.json").write_text(json.dumps(
+        {"slug": "alpha", "paper": {"version": 1, "sha": "abc", "decklist_sha256": SHA["alpha"],
+                                    "built_at": "2026-10-01", "note": ""}, "tags": {}}))
     assert ac._rating_applicable("alpha")
     (config.DECKS_DIR / "alpha" / "bracket_report.json").unlink()
     assert not ac._rating_applicable("alpha")

@@ -86,6 +86,8 @@ LIMITS = [
     "band member and a mean is shown only with its n, min and max.",
     f"A bracket group needs {MIN_GROUP} members for a band; below that the band is "
     "absent and the placement says so.",
+    "The fleet is the SLEEVED decks: a bracket group bands and ranks sleeved Commander decks "
+    "only; a brewing or bench deck keeps its row (`member: false`) and joins no group.",
 ]
 
 
@@ -379,6 +381,16 @@ def row(slug):
 # ── Bands and placements ─────────────────────────────────────────────────
 
 
+def is_member(r):
+    """THE FLEET IS THE SLEEVED DECKS (the pilot's rule, 2026-10-19). A bracket
+    group bands and ranks only decks that are sleeved, Commander, not apart and
+    bracketed; a brewing or bench deck keeps its row (its figures are real) but
+    joins no group, and the fleet page draws only members."""
+    return (r.get("stage") == "sleeved" and not r.get("apart") and r.get("format") is None
+            and r["bracket"].get("group") != "unbracketed")
+
+
+
 def _measure_value(r, path):
     block = r.get(path[0])
     if not isinstance(block, dict) or is_absent(block):
@@ -501,7 +513,7 @@ def build():
     rows = [row(s) for s in live_slugs()]
     members_of = {}
     for r in rows:
-        if r["apart"] or r["format"] is not None or r["bracket"]["group"] == "unbracketed":
+        if not is_member(r):
             continue
         members_of.setdefault(r["bracket"]["group"], []).append(r["slug"])
     groups = {g: {"members": m, "n": len(m), "bands": bands(rows, set(m))}
@@ -510,6 +522,7 @@ def build():
     fleet_bands = bands(rows, fleet_members)
     for r in rows:
         g = r["bracket"]["group"]
+        r["member"] = r["slug"] in fleet_members
         if r["slug"] in fleet_members and g in groups:
             r["placements"] = {"group": _placements(r, groups[g]["bands"], "bracket"),
                                "fleet": _placements(r, fleet_bands, "fleet")}

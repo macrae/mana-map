@@ -23,7 +23,7 @@ from manamap.pilot import fleet_analytics as fa
 from manamap.pilot.common import measured_sha, report_errors
 
 REQUIRED = ("schema_version", "decks", "groups", "fleet_bands", "comparisons", "limits", "meta")
-ROW_REQUIRED = ("slug", "format", "stage", "apart", "lifecycle", "decklist_sha256", "bracket",
+ROW_REQUIRED = ("slug", "format", "stage", "apart", "lifecycle", "member", "decklist_sha256", "bracket",
                 "benchmark", "diagnostic", "own_goldfish", "dti", "table", "record", "survey",
                 "price", "placements", "rating")
 RATE_MEASURES = {"missed_land_drop_rate", "mulligan_rate", "kill_by_turn_6", "kill_by_turn_8",
@@ -134,9 +134,11 @@ def validate(doc, *, current_shas=None, deck_dirs=None):
     by_slug = {r["slug"]: r for r in rows if isinstance(r, dict)}
     want_members = {}
     for r in by_slug.values():
-        if r.get("apart") or r.get("format") is not None or r["bracket"].get("group") == "unbracketed":
+        if not fa.is_member(r):
             continue
         want_members.setdefault(r["bracket"]["group"], []).append(r["slug"])
+        if r.get("member") is not True:
+            errors.append(f"{r['slug']}: a sleeved, bracketed Commander deck must carry member: true")
     groups = doc["groups"]
     if set(groups) != set(want_members):
         errors.append(f"groups {sorted(groups)} do not match the rows' groups {sorted(want_members)}")

@@ -893,7 +893,8 @@ to export on Moxfield and paste into `--from -`.
 
 ## The rating (`rating`, ★ over ◆; `merge-rating`; `validate-rating`) — 2026-10-18
 
-`rating.json` is a deck's 0–100 score, letter grade and rank **within its bracket**, and it
+`rating.json` is a sleeved deck's 0–100 score, letter grade and rank **within its bracket**
+(the fleet is the sleeved decks; `rating` refuses a bench or brewing deck), and it
 is **★ coaching**: `tier: "★"`, the one-sentence `RATING_LABEL` on the artifact ("…ranks
 within a bracket of N decks and claims no significance"), and a score that never gates
 anything. The bench has refused a composite score at the ◆ tier three times (`benchmark.py`'s
@@ -973,9 +974,13 @@ stale, n, ci95, as_of, basis}` with only what is known; an `absent` is `{absent_
 source}`. Benchmark rates get a Wilson interval from `k = rate·n` at the harness's n and
 say so in `basis`. A deck with no file has the absence, never a zero.
 
-**The group key is the pilot's declared target** (`bracket_report.target`), the floor when
-no target is declared, `unbracketed` otherwise; `group_basis` records which. A group's
-**bands** are `{min, median, max, n}` per measure over the members that carry it, computed
+**The fleet is the SLEEVED decks** (the pilot's rule, 2026-10-19): a row carries `member:
+true` only when the deck is sleeved (a paper lock), Commander, not apart and bracketed; a
+brewing or bench deck keeps its row and its figures but joins no group, takes no placement,
+and is not drawn on the fleet page. **The group key is the pilot's declared target**
+(`bracket_report.target`), the floor when no target is declared, `unbracketed` otherwise;
+`group_basis` records which. A group's **bands** are `{min, median, max, n}` per measure
+over the members that carry it, computed
 only at `FLEET_MIN_GROUP` (3) or more — below that the band is absent and every member's
 placement reads `no band (n=2)`. Placements use `diagnostic.place_in`, the dossier's own
 four words, with `higher_is_better` per measure and the median named by scope ("bracket"

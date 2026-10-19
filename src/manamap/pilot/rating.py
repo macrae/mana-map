@@ -173,8 +173,12 @@ def _row(fleet, slug):
 
 
 def group_for(fleet, slug):
-    """`(key, source, members)` — the bracket group the deck competes in."""
+    """`(key, source, members)` — the bracket group the deck competes in. The
+    fleet is the SLEEVED decks: a bench or brewing deck is refused here."""
     r = _row(fleet, slug)
+    if not r.get("member"):
+        raise SystemExit(f"{slug} is not a fleet member (sleeved, bracketed, Commander, not apart) — "
+                         f"the rating ranks within the sleeved fleet; sleeve it (`deck-version {slug} paper`) first")
     b = r["bracket"]
     key = None
     if b.get("group") and b["group"] != "unbracketed":

@@ -170,14 +170,21 @@
       g += r.record.games || 0; w += r.record.win || 0; l += r.record.loss || 0;
       if (!isAbsent(r.dti)) dti += 1;
     });
-    return '<tr class="t-total"><th scope="row">' + rows.length + ' decks</th>'
+    return '<tr class="t-total"><th scope="row">' + rows.length + ' sleeved</th>'
       + '<td></td><td></td><td>' + dti + ' with a DTI</td><td></td><td></td><td></td><td></td>'
       + '<td>' + (g ? g + ' · ' + w + '–' + l : '<span class="t-none">none</span>') + '</td>'
       + '<td></td><td></td></tr>';
   }
 
+  /* THE FLEET IS THE SLEEVED DECKS (2026-10-19): the artifact carries a row for
+   * every deck with a cards.json, and marks `member` on the sleeved, bracketed
+   * Commander ones; this page draws members only. A bench deck has its own page. */
+  function members(doc) {
+    return doc.decks.filter(function (r) { return r.member === true; });
+  }
+
   function fleetTable(doc, ratings, state) {
-    var rows = doc.decks.filter(function (r) { return !state.bracket || r.bracket.group === state.bracket; });
+    var rows = members(doc).filter(function (r) { return !state.bracket || r.bracket.group === state.bracket; });
     var s = SORTS[state.sort] || SORTS.bracket;
     rows = rows.slice().sort(function (a, b) {
       return cmpKey(s.key(a), s.key(b)) || (a.slug < b.slug ? -1 : 1);
@@ -193,7 +200,7 @@
     }).join('');
     return '<section class="wb-rack" id="fleet-table"><h2>The fleet'
       + ' <span class="wb-count">' + rows.length + '</span></h2>'
-      + '<p class="wb-blurb">Every figure with its interval where one exists; a dash is an absence with its reason on hover. '
+      + '<p class="wb-blurb">The sleeved decks only. Every figure with its interval where one exists; a dash is an absence with its reason on hover. '
       + 'The rating column is ★ coaching from each deck’s <code>rating.json</code>, never a measurement.</p>'
       + '<div class="wb-views">' + filt + '</div><div class="wb-sorts">' + tabs + '</div>'
       + '<div class="wb-tablewrap"><table class="wb-table"><thead><tr>'
@@ -290,8 +297,8 @@
       + '<path d="' + linePath(series, yMax) + '" class="fl-line"/>' + dots + '</svg></figure>';
   }
 
-  function curvesPanel(id, title, blurb, curves, yMax, fmt) {
-    var slugs = Object.keys(curves);
+  function curvesPanel(id, title, blurb, curves, yMax, fmt, ms) {
+    var slugs = Object.keys(curves).filter(function (s) { return !ms || ms[s]; });
     if (!slugs.length) {
       return '<section class="wb-rack" id="' + id + '"><h2>' + esc(title) + '</h2>'
         + '<p class="wb-blurb t-none">no curves on file — `manamap pilot regen --only benchmark` writes the series</p></section>';
@@ -301,8 +308,15 @@
       + slugs.map(function (s) { return smallMultiple(s, curves[s], yMax, fmt); }).join('') + '</div></section>';
   }
 
+  function memberSet(doc) {
+    var m = {};
+    members(doc).forEach(function (r) { m[r.slug] = true; });
+    return m;
+  }
+
   function gradesHeatmap(doc) {
-    var g = doc.comparisons.benchmark_grades, rows = g.rows || {}, slugs = Object.keys(rows);
+    var ms = memberSet(doc);
+    var g = doc.comparisons.benchmark_grades, rows = g.rows || {}, slugs = Object.keys(rows).filter(function (s) { return ms[s]; });
     if (!slugs.length) return '';
     var keys = DTI_GROUPS.reduce(function (acc, grp) { return acc.concat(g.groups[grp[0]] || []); }, []);
     var head = '<tr><th>Deck</th>' + keys.map(function (k) { return '<th title="' + esc(k) + '">' + esc(k) + '</th>'; }).join('') + '</tr>';
@@ -325,7 +339,8 @@
   }
 
   function floorDtiTable(doc) {
-    var rows = doc.comparisons.floor_vs_dti || [];
+    var ms = memberSet(doc);
+    var rows = (doc.comparisons.floor_vs_dti || []).filter(function (r) { return ms[r.slug]; });
     var sp = doc.comparisons.spearman || {};
     function spearman(name, cell) {
       if (!cell) return '';
@@ -354,7 +369,7 @@
 
   function intervalBars(doc) {
     function block(title, pick, max, what) {
-      var rows = doc.decks.filter(function (r) { return !r.apart && pick(r); }).sort(function (a, b) {
+      var rows = members(doc).filter(function (r) { return pick(r); }).sort(function (a, b) {
         var x = pick(a).value, y = pick(b).value;
         return x === y ? (a.slug < b.slug ? -1 : 1) : (x > y ? -1 : 1);
       });
@@ -380,7 +395,8 @@
   // ── (d) Trends ───────────────────────────────────────────────────────────
 
   function dtiHistory(doc) {
-    var h = doc.comparisons.dti_history || {}, slugs = Object.keys(h);
+    var ms = memberSet(doc);
+    var h = doc.comparisons.dti_history || {}, slugs = Object.keys(h).filter(function (s) { return ms[s]; });
     if (!slugs.length) return '';
     var body = slugs.map(function (s) {
       return h[s].map(function (x, i) {
@@ -397,7 +413,7 @@
 
   function recordByVersion(doc) {
     var rows = [];
-    doc.decks.forEach(function (r) {
+    members(doc).forEach(function (r) {
       (r.record.by_version || []).forEach(function (v) {
         var feel = Object.keys(v.feel || {}).map(function (k) {
           return esc(k.slice(0, 3)) + ' ' + num(v.feel[k].mean, 1) + '<span class="ev">·' + v.feel[k].n + '</span>';
@@ -421,7 +437,7 @@
   // ── (e) The rating leaderboard ───────────────────────────────────────────
 
   function ratingBoard(doc, ratings) {
-    var rated = doc.decks.filter(function (r) { return ratings[r.slug]; });
+    var rated = members(doc).filter(function (r) { return ratings[r.slug]; });
     var head = '<section class="wb-rack" id="fleet-rating"><h2>Rating <span class="chip fl-star">★ COACHING</span></h2>';
     if (!rated.length) {
       return head + '<p class="wb-blurb t-none" id="fleet-no-rating">no ratings yet — the rating is ★ coaching, written by the rating agent (`/rate-deck`), over the ◆ figures above.</p></section>';
@@ -448,7 +464,7 @@
       }).join('');
     }).join('');
     var label = ratings[rated[0].slug].label || '';
-    return head + '<p class="wb-blurb">' + rated.length + ' of ' + doc.decks.length + ' decks rated. ' + esc(label) + '</p>' + html + '</section>';
+    return head + '<p class="wb-blurb">' + rated.length + ' of ' + members(doc).length + ' sleeved decks rated. ' + esc(label) + '</p>' + html + '</section>';
   }
 
   // ── (f) Limits ───────────────────────────────────────────────────────────
@@ -463,7 +479,7 @@
   // ── Render and boot ──────────────────────────────────────────────────────
 
   function render(doc, ratings, state) {
-    var c = doc.comparisons;
+    var c = doc.comparisons, ms = memberSet(doc);
     document.getElementById('fleet').innerHTML =
       fleetTable(doc, ratings, state)
       + bracketPanels(doc)
@@ -471,11 +487,11 @@
       + floorDtiTable(doc)
       + intervalBars(doc)
       + curvesPanel('fleet-kill', 'Kill by turn', 'Share of games with lethal by each turn, unopposed, under the frozen harness.',
-                    c.kill_curves || {}, 1, function (v) { return pct(v, 0); })
+                    c.kill_curves || {}, 1, function (v) { return pct(v, 0); }, ms)
       + curvesPanel('fleet-mana', 'Mana by turn', 'Mean available mana each turn under the frozen harness.',
-                    c.mana_curves || {}, 10, function (v) { return num(v, 1); })
+                    c.mana_curves || {}, 10, function (v) { return num(v, 1); }, ms)
       + curvesPanel('fleet-land', 'Land drops by turn', 'Share of games that hit the land drop each turn.',
-                    c.land_curves || {}, 1, function (v) { return pct(v, 0); })
+                    c.land_curves || {}, 1, function (v) { return pct(v, 0); }, ms)
       + gradesHeatmap(doc)
       + dtiHistory(doc)
       + recordByVersion(doc)
