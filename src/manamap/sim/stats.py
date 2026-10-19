@@ -26,6 +26,7 @@ having won 0 of 12.
 """
 
 import functools
+import itertools
 import math
 import random
 
@@ -453,3 +454,129 @@ def games_for_difference(p_a, difference, target_power=0.8, z=Z975, max_n=5000,
         else:
             lo = mid
     return hi
+
+
+# ── Priors, quantiles, ranks and concordance (the rating, 2026-10-19) ───────
+#
+# The deck rating's weights are a Dirichlet PRIOR rather than a vector, its
+# rate inputs are drawn from their posteriors, and disagreement between its
+# instruments is Kendall's W with a permutation p. Pure python like the rest:
+# `gammavariate` and `betavariate` are the standard library's, seeded by the
+# caller, so a run replays byte for byte on one machine.
+
+
+def dirichlet(rng, alphas):
+    """One draw from Dirichlet(alphas), by normalised gammas. Every alpha > 0.
+
+    Renormalising a draw over a subset of its coordinates is a draw from the
+    Dirichlet over that subset's alphas (the aggregation property), which is
+    what lets the rating keep one prior over the full component set and
+    renormalise over whatever a deck can measure. A test holds the means.
+    """
+    if any(a <= 0 for a in alphas):
+        raise ValueError("Dirichlet needs every alpha > 0")
+    gs = [rng.gammavariate(a, 1.0) for a in alphas]
+    t = sum(gs)
+    return [g / t for g in gs]
+
+
+def beta_rate(rng, k, n):
+    """A posterior draw of a rate seen `k` times in `n`, flat prior: Beta(k+1, n−k+1)."""
+    if n < 0 or k < 0 or k > n:
+        raise ValueError(f"beta_rate needs 0 <= k <= n, got k={k} n={n}")
+    return rng.betavariate(k + 1, n - k + 1)
+
+
+def quantile(sorted_xs, q):
+    """The `q`-quantile of an ASCENDING list, linearly interpolated (R's type 7).
+    None for an empty list."""
+    if not sorted_xs:
+        return None
+    pos = (len(sorted_xs) - 1) * q
+    lo = int(math.floor(pos))
+    hi = min(lo + 1, len(sorted_xs) - 1)
+    return sorted_xs[lo] + (sorted_xs[hi] - sorted_xs[lo]) * (pos - lo)
+
+
+def rank_with_ties(values, higher_is_better=True):
+    """`{key: rank}` with 1 the best; a tie takes the mean of the ranks it
+    spans; a None value is left out."""
+    items = [(k, v) for k, v in values.items() if v is not None]
+    ordered = sorted(items, key=lambda kv: ((-kv[1] if higher_is_better else kv[1]), kv[0]))
+    out = {}
+    i = 0
+    while i < len(ordered):
+        j = i
+        while j + 1 < len(ordered) and ordered[j + 1][1] == ordered[i][1]:
+            j += 1
+        r = (i + 1 + j + 1) / 2.0
+        for k, _v in ordered[i:j + 1]:
+            out[k] = r
+        i = j + 1
+    return out
+
+
+def kendall_w(rankings):
+    """Kendall's coefficient of concordance over `m` rankings of the same `n`
+    objects, tie-corrected: `W = 12S / (m²(n³−n) − mΣT)`, where S is the sum of
+    squared deviations of the rank totals and T = Σ(t³−t) over each ranking's
+    tie groups. 1 is perfect agreement, 0 none. None below two rankings or two
+    objects, or when every ranking is one tie."""
+    m = len(rankings)
+    if m < 2:
+        return None
+    objs = sorted(rankings[0])
+    n = len(objs)
+    if n < 2:
+        return None
+    totals = [sum(r[o] for r in rankings) for o in objs]
+    mean = sum(totals) / n
+    s = sum((t - mean) ** 2 for t in totals)
+    ties = 0.0
+    for r in rankings:
+        counts = {}
+        for o in objs:
+            counts[r[o]] = counts.get(r[o], 0) + 1
+        ties += sum(c ** 3 - c for c in counts.values())
+    denom = m * m * (n ** 3 - n) - m * ties
+    if denom <= 0:
+        return None
+    return 12.0 * s / denom
+
+
+def kendall_w_p(rankings, seed=0, exact_max=50_000, iterations=5000):
+    """`(p, method)` — the share of relabellings at least as concordant as the
+    observed W, under the null that every ranking is an independent shuffle.
+
+    The first ranking is held fixed and the other m−1 are permuted: EXACT by
+    enumeration when `(n!)^(m−1) <= exact_max` (n=3, m=6 is 7776; n=4, m=6 is
+    7.9 million and falls to sampling), else a seeded permutation p with the
+    Phipson–Smyth +1. `method` says which. `(None, None)` when W is undefined.
+    """
+    w = kendall_w(rankings)
+    if w is None:
+        return None, None
+    objs = sorted(rankings[0])
+    n, m = len(objs), len(rankings)
+    first = rankings[0]
+    others = [[r[o] for o in objs] for r in rankings[1:]]
+
+    def w_of(perms):
+        return kendall_w([first] + [dict(zip(objs, p)) for p in perms])
+
+    total = math.factorial(n) ** (m - 1)
+    if total <= exact_max:
+        hits = sum(1 for combo in itertools.product(*(itertools.permutations(o) for o in others))
+                   if w_of(combo) >= w - 1e-12)
+        return hits / total, f"exact over {total} relabellings"
+    rng = random.Random(seed)
+    hits = 0
+    for _ in range(iterations):
+        combo = []
+        for o in others:
+            p = list(o)
+            rng.shuffle(p)
+            combo.append(p)
+        if w_of(combo) >= w - 1e-12:
+            hits += 1
+    return (hits + 1) / (iterations + 1), f"permutation, {iterations} draws, seed {seed}"

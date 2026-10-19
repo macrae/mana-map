@@ -367,3 +367,75 @@ def test_excludes_zero_is_decided_on_the_bounds_a_reader_sees():
     # Welch, the same rule: a tiny difference with a tiny sd rounds to [0.0, 0.0].
     w = stats.diff_means_summary(1.0, 0.0001, 10000, 1.00001, 0.0001, 10000)
     assert (w["ci95"][0] > 0 or w["ci95"][1] < 0) == w["excludes_zero"], w
+
+
+# ── Priors, quantiles, ranks and concordance (the rating) ───────────────────
+
+def test_dirichlet_means_match_the_prior_and_a_subset_renormalises_to_its_own_prior():
+    """E[w] = alpha/Σalpha, and renormalising a draw over two of three
+    coordinates has the mean of Dirichlet over those two — the aggregation
+    property the rating leans on when it renormalises over present components."""
+    rng = random.Random(7)
+    draws = [stats.dirichlet(rng, [2.0, 3.0, 5.0]) for _ in range(6000)]
+    means = [sum(d[i] for d in draws) / len(draws) for i in range(3)]
+    for got, want in zip(means, (0.2, 0.3, 0.5)):
+        assert abs(got - want) < 0.01, (means,)
+    assert all(abs(sum(d) - 1.0) < 1e-9 for d in draws)
+    sub = [d[0] / (d[0] + d[1]) for d in draws]
+    assert abs(sum(sub) / len(sub) - 0.4) < 0.01, "Dirichlet(2, 3) has mean 0.4 on the first"
+    with pytest.raises(ValueError):
+        stats.dirichlet(rng, [1.0, 0.0])
+
+
+def test_beta_rate_is_the_flat_prior_posterior():
+    rng = random.Random(3)
+    xs = [stats.beta_rate(rng, 30, 100) for _ in range(4000)]
+    assert abs(sum(xs) / len(xs) - 31 / 102) < 0.01, "mean (k+1)/(n+2)"
+    assert all(0.0 <= x <= 1.0 for x in xs)
+    with pytest.raises(ValueError):
+        stats.beta_rate(rng, 5, 4)
+
+
+def test_quantile_interpolates_type_seven():
+    xs = [1.0, 2.0, 3.0, 4.0]
+    assert stats.quantile(xs, 0.0) == 1.0 and stats.quantile(xs, 1.0) == 4.0
+    assert stats.quantile(xs, 0.5) == 2.5
+    assert stats.quantile(xs, 0.25) == 1.75
+    assert stats.quantile([], 0.5) is None
+
+
+def test_ranks_with_ties_take_the_mean_rank_and_skip_none():
+    assert stats.rank_with_ties({"a": 0.6, "b": 0.4, "c": 0.5}) == {"a": 1.0, "c": 2.0, "b": 3.0}
+    assert stats.rank_with_ties({"a": 0.6, "b": 0.4, "c": 0.5}, higher_is_better=False) == {"b": 1.0, "c": 2.0, "a": 3.0}
+    assert stats.rank_with_ties({"a": 0.5, "b": 0.5, "c": 0.4}) == {"a": 1.5, "b": 1.5, "c": 3.0}
+    assert stats.rank_with_ties({"a": 0.5, "b": None}) == {"a": 1.0}
+
+
+def test_kendall_w_is_one_for_identical_rankings_and_its_exact_p_is_one_relabelling_in_thirty_six():
+    """Three instruments ranking three decks identically: W = 1, and of the 36
+    ways the other two instruments could have ranked them, exactly one is as
+    concordant — so p = 1/36, enumerated, not approximated."""
+    r = {"a": 1.0, "b": 2.0, "c": 3.0}
+    assert stats.kendall_w([r, dict(r), dict(r)]) == 1.0
+    p, method = stats.kendall_w_p([r, dict(r), dict(r)])
+    assert abs(p - 1 / 36) < 1e-12 and method.startswith("exact over 36")
+    # Total disagreement: W = 0.
+    flip = {"a": 3.0, "b": 2.0, "c": 1.0}
+    assert stats.kendall_w([r, flip]) == 0.0
+    # Ties are corrected: one ranking all tied contributes nothing to S and its T to the denominator.
+    tied = {"a": 2.0, "b": 2.0, "c": 2.0}
+    assert stats.kendall_w([tied, tied]) is None
+    w = stats.kendall_w([r, tied])
+    assert w is not None and 0.0 < w < 1.0
+    assert stats.kendall_w([r]) is None
+
+
+def test_the_permutation_p_agrees_with_the_exact_p_at_n_three():
+    """Force the sampler at a size enumeration covers, and hold it to the
+    enumerated answer within Monte Carlo error."""
+    r = {"a": 1.0, "b": 2.0, "c": 3.0}
+    rankings = [r, dict(r), {"a": 2.0, "b": 1.0, "c": 3.0}]
+    exact, m1 = stats.kendall_w_p(rankings)
+    mc, m2 = stats.kendall_w_p(rankings, seed=5, exact_max=1, iterations=4000)
+    assert m1.startswith("exact") and m2.startswith("permutation")
+    assert abs(mc - exact) < 0.03, (mc, exact)
