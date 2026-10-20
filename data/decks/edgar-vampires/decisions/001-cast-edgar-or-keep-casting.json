@@ -1,93 +1,117 @@
 {
-  "id": "001",
-  "slug": "cast-edgar-or-keep-casting",
-  "deck": "edgar-vampires",
-  "kind": "decision",
-  "title": "Turn 6: cast Edgar into the alpha strike, or keep casting Vampires?",
-  "scenario": {
-    "board": {
-      "you": "Turn 6, precombat main, 34 life, land drop already made. Battlefield: Anointed Procession, Impact Tremors, Sanctum Seeker, Legion Lieutenant, four 1/1 black Vampire tokens banked by eminence over turns 2-5, Arcane Signet, and five lands — Command Tower, Blood Crypt, Godless Shrine, Sacred Foundry, Swamp — all untapped. Six mana available, all three colours live. Edgar Markov is in the command zone and has never been cast.",
-      "table": "Player 2 (Esper draw-go) is at 34 with five untapped lands and has put nothing on the battlefield since turn 3. Stated assumption: a control seat at this bracket that passes with four or more untapped lands is holding a sweeper or a counterspell. Player 3 (Gruul aggro) is at 14, tapped out, with a 4/4 and a 3/3; they spent last turn attacking Player 4. Player 4 (Simic ramp) is at 38 with two untapped lands and is drawing two extra cards a turn."
-    },
-    "hand": [
-      "Knight of the Ebon Legion",
-      "Cordial Vampire",
-      "Vampire Socialite",
-      "Flawless Maneuver"
-    ],
-    "mana_available": "6 (five untapped lands + Arcane Signet)",
-    "stack": [],
-    "extras": "Count entries the way the verified lines count them. One Vampire spell cast with Anointed Procession down turns one eminence token into two, and those two tokens plus the creature itself are three separate creature-entry events. Impact Tremors fires once per entry, so every Vampire you cast is three damage to every seat. Verified stack 009 counted exactly this entry shape with three converters instead of one; verified stack 002 is where the doubling math sits on the record. Sanctum Seeker adds one life loss from every opponent per attacking Vampire at declare attackers, and Legion Lieutenant is handing every other Vampire +1/+1 the whole time. Flawless Maneuver costs {2}{W} while Edgar is in the command zone and {0} the moment he is on the battlefield.",
-    "question": "Edgar is castable for the first time and the table is one turn from learning what your board does. Cast him and alpha-strike behind free protection, leave him in the zone and turn the same six mana into three Vampires and nine damage a seat, or split the difference and keep protection mana up?"
+ "id": "001",
+ "slug": "cast-edgar-or-keep-casting",
+ "deck": "edgar-vampires",
+ "kind": "decision",
+ "title": "Turn 6: cast Edgar through the Incubator, or keep casting Vampires?",
+ "scenario": {
+  "board": {
+   "you": "Turn 6, precombat main, 34 life, land drop already made. Battlefield: Urza's Incubator naming Vampire, Anointed Procession, Sanctum Seeker, Cruel Celebrant, Viscera Seer, three 1/1 black Vampire tokens banked by eminence (Celebrant, Seer and Seeker were the casts; Procession landed last turn and has doubled nothing yet), Arcane Signet, and five lands - Command Tower, Blood Crypt, Godless Shrine, Savai Triome, Swamp - all untapped. Six mana available, all three colours live. Edgar Markov is in the command zone and has never been cast; through the Incubator he costs {1}{R}{W}{B}.",
+   "table": "Player 2 (Esper draw-go) is at 34 with five untapped lands and has put nothing on the battlefield since turn 3. Stated assumption: a control seat at this bracket that passes with four or more untapped lands is holding a sweeper or a counterspell. Player 3 (Gruul aggro) is at 14, tapped out, with a 4/4 and a 3/3; they spent last turn attacking Player 4. Player 4 (Simic ramp) is at 38 with two untapped lands and is drawing two extra cards a turn."
   },
-  "branches": [
-    {
-      "choice": "Cast Edgar and alpha-strike behind a free Flawless Maneuver",
-      "line": "Six mana, all of it, straight into Edgar. He arrives with first strike and haste, so he attacks the turn he lands.\n\nSwing with seven Vampires — Edgar, Sanctum Seeker, Legion Lieutenant and the four banked tokens. Sanctum Seeker asks nothing of blockers: seven attacking Vampires is seven triggers, so every opponent loses seven and you gain seven at declare attackers.\n\nEdgar's attack trigger puts a +1/+1 counter on each Vampire. The tokens swing as 3/3s, Sanctum Seeker as a 5/6, Edgar himself as a 6/6 — twenty-six power at a Player 3 who is now at 7 behind two blockers. They die.\n\nAnd Flawless Maneuver is free from the moment Edgar resolves, so the sweeper you are worried about is covered for nothing.",
-      "signals": "This is the loudest sentence your deck can say, and the table has been waiting six turns to hear it. Expect every threat assessment at the table to re-rank you instantly.\n\nPlayer 2's five open lands are the whole question, and you are answering them with a card that costs zero. That is a genuinely good look: you get to present lethal and hold the answer in the same breath.\n\nWhat the table also sees is that your enchantments did nothing this turn. To an opponent tracking your board, a turn where Anointed Procession and Impact Tremors sit idle is a turn you were not scary.",
-      "coalition_risk": "High and, on its own terms, worth it. You take a player off the table, the remaining game is you against two, and the seat you removed was the one racing you.\n\nThe rebuild is honest too. Eminence keeps minting from the command zone whether Edgar lives or dies, and if he dies he goes back to the zone and simply costs more next time.\n\nThe risk you are actually taking is subtler than the wrath: you spent your biggest turn of the game buying a body, and the two seats you did not kill lost only seven each.",
-      "coaching": "Everything in this branch is true. It is also the smallest turn available to you, and I want you to see why in one line of arithmetic.\n\nCasting your commander is not casting another Vampire spell. Eminence mints nothing. Anointed Procession doubles nothing. Impact Tremors deals zero. Six mana bought one attacker and a counter on each Vampire.\n\nThe free Flawless Maneuver is a real trick and you should keep it in your pocket: your protection gets cheaper the turn your commander lands. But price what it is protecting. It is protecting a board whose value you declined to convert.\n\nTake this branch on the turn the drains are the kill — when a seat is at seven or less and combat is the only road to them, or when the counter on every Vampire is what makes an alpha strike lethal. Turn six, with a converter and a doubler already on the battlefield, is not that turn.\n\nYou are not wrong to want him. You are early. He is the accelerant on a fire you have not lit yet.",
-      "citations": [
-        {
-          "rule": "strategy:multiplayer.pivot-window",
-          "quote": "The window opens when your win attempt either can't be profitably answered — protection up, table tapped out, interaction counted and accounted for"
-        },
-        {
-          "rule": "903.9a",
-          "quote": "If a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone."
-        },
-        {
-          "rule": "903.8",
-          "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
-        }
-      ]
-    },
-    {
-      "choice": "Leave Edgar in the zone and cast all three Vampires",
-      "line": "Five mana, three Vampire spells, in this order: Vampire Socialite, then Knight of the Ebon Legion, then Cordial Vampire.\n\nEminence works from the command zone, so every cast mints a token and Anointed Procession makes it two. Two tokens enter, then the creature enters. Three creature-entry events per cast, three Impact Tremors triggers, three damage to every opponent. Nine damage to all three seats before combat exists.\n\nThen attack with the four banked tokens, Sanctum Seeker and Legion Lieutenant. Six attacking Vampires, six more life from every seat.\n\nFifteen off Player 2, fifteen off Player 4, and Player 3 is dead at declare attackers without one point of combat damage. Everything you cast this turn stays home — it is summoning sick — and that is fine, because you already spent it.",
-      "signals": "Three cheap Vampires read as durdle for about four seconds. Then the table does the arithmetic and you are the archenemy — with the damage already dealt, which is the good version of that job.\n\nSocialite first is not cosmetic. Her own two tokens arrive before anyone has lost life, so they come down bare; then her enters trigger checks after Impact Tremors has fired and hands a +1/+1 counter to every other Vampire you control, those two included. Every token after that enters with a counter of its own.\n\nAnd you are telling Player 2 something useful, whether you mean to or not: your engine is enchantments. A player who wraths you after this turn is spending a card to kill ammunition.",
-      "coalition_risk": "Real, and mostly pre-paid. Fifteen life off two seats gets you named out loud, and you should expect the next removal spell to be pointed at Impact Tremors or Anointed Procession rather than at a creature.\n\nPlayer 3 dies without combat, so there is no fog, no chump block and no trick that saves them. A kill nobody can interact with generates less resentment than one they watched coming through the red zone.\n\nYou end the turn tapped out with thirteen permanents and no protection. Name that out loud and accept it — it is the price of the fifteen.",
-      "coaching": "The engine is enchantments; the creatures are ammunition.\n\nAnointed Procession and Impact Tremors do not die to a creature sweeper. The tokens do — after they have dealt their damage, and damage is not refunded.\n\nA counterspell only shaves a third off. Eminence triggers when you cast, and a trigger on the stack stops caring what happens to the spell under it: counter the Knight and you still take two tokens and two damage a seat.\n\nEdgar loses nothing by waiting: eminence functions from the command zone, where it has been working all game. His median arrival is turn six and he shows up by then in a little over half your games, while a converter plus a multiplier assembles by turn six in more than a quarter — and is already down here.\n\nWhat you give up is Flawless Maneuver at zero. Take that trade: your resilience is a commander who rebuilds one token per cast from a zone nobody can touch.\n\nSeven drains hit each seat for seven. This hits each seat for fifteen and kills one of them. Your cards should be doing something to all three players at once.",
-      "citations": [
-        {
-          "rule": "113.6b",
-          "quote": "An ability that states which zones it functions in functions only from those zones."
-        },
-        {
-          "rule": "113.7a",
-          "quote": "Once activated or triggered, an ability exists on the stack independently of its source."
-        },
-        {
-          "rule": "302.6",
-          "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
-        },
-        {
-          "rule": "strategy:resource-hedging.wrath-math",
-          "quote": "buy resilience instead of restraint where you can — high toughness, indestructible and regeneration, token rebuilders, threats that replace themselves"
-        },
-        {
-          "rule": "strategy:multiplayer.asymmetry",
-          "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
-        }
-      ]
-    },
-    {
-      "choice": "Cast two Vampires and hold Flawless Maneuver mana",
-      "line": "Vampire Socialite and Knight of the Ebon Legion for three, and three left over for a hard-cast Flawless Maneuver.\n\nSix damage to every seat before combat, six more at declare attackers from the same six attacking Vampires. Twelve off every opponent, Player 3 down to two and dead to the swing, and indestructible held up for the sweeper.\n\nYou pass with a board of eleven permanents and one real answer in hand.",
-      "signals": "Passing with three untapped after casting two spells reads as protection held, and that is exactly what it is. Against a competent control player it buys a turn of hesitation.\n\nIt also reads as a player who is afraid of a card they have not seen. Player 2 learns that four open lands are enough to slow you down, and that is a lesson you would rather they never got.",
-      "coalition_risk": "The mildest of the three today. Player 3 still dies, so the aggro clock still comes off the table, and nobody has to watch you deal fifteen.\n\nThe cost is paid to Player 4. The Simic seat drawing two extra cards a turn is the one that wins long games, and this branch donates three mana of tempo to the idea that games should be longer.",
-      "coaching": "This is the disciplined-looking branch, and it is only nearly right.\n\nThe extra three mana buys Flawless Maneuver at full price. It costs Cordial Vampire — three damage to every seat, nine across the table, plus two more bodies.\n\nPrice the insurance honestly. Indestructible answers destruction. It does not answer a minus-X-minus-X sweeper and it does not answer exile, and your own list runs both kinds, which tells you how common the second kind is at this table.\n\nAnd what you are insuring is not the engine: Anointed Procession and Impact Tremors walk through a creature wrath untouched. You are paying nine damage for a policy on the ammunition.\n\nWeigh what you lose if the wrath comes now against what holding costs you in clock. Holding costs three damage on every seat and two bodies; the wrath costs you tokens that have already fired.\n\nTake this branch when the board is the win — a lethal alpha next turn that only has to survive one sweeper. Here your win is already being paid out, three damage at a time.",
-      "citations": [
-        {
-          "rule": "strategy:resource-hedging.wrath-math",
-          "quote": "what you lose if the wrath comes now versus what holding a threat back costs in clock and position"
-        }
-      ]
-    }
+  "hand": [
+   "Charismatic Conqueror",
+   "Cordial Vampire",
+   "Bloodghast",
+   "Flawless Maneuver"
   ],
-  "recommendation": {
-    "choice": "Leave Edgar in the zone and cast all three Vampires",
-    "rationale": "Fifteen life off every seat and a dead player, for five mana, from a hand of two-drops. That is the deck you are holding, and this is the turn it introduces itself.\n\nThe arithmetic is not close. Edgar buys one attacker and a counter on each Vampire, and casting him mints nothing — he is the only Vampire spell in your deck that does not feed eminence. Three cheap Vampires instead turn one converter and one doubler into nine damage a seat before you even declare attackers.\n\nThe wrath objection is the one that talks people out of it, so answer it with the board. Anointed Procession and Impact Tremors are enchantments. A creature sweeper takes the tokens after they have already dealt their damage and leaves the machine that made them. Eminence rebuilds one token per cast from a zone no opponent can reach.\n\nThe free Flawless Maneuver is genuinely elegant and it is still not worth nine damage across the table. Indestructible is insurance on ammunition you have already fired.\n\nSo leave him home this turn. Cast Socialite, then the Knight, then Cordial Vampire, kill Player 3 at declare attackers, and put the other two seats on a two-turn clock. Edgar is your next turn, and he is much better arriving to a board of ten Vampires that all get a counter and first strike than he is arriving alone.\n\nYou are ahead of your own curve here — six bodies on turn six against a mean of four — and the right response to being ahead is to press."
+  "mana_available": "6 (five untapped lands + Arcane Signet)",
+  "stack": [],
+  "extras": "Count what one Vampire cast makes on this board. Eminence mints one 1/1 black Vampire from the command zone; Anointed Procession replaces that with two. The Incubator takes up to {2} of GENERIC cost off a Vampire creature spell: Edgar {3}{R}{W}{B} to {1}{R}{W}{B}, Charismatic Conqueror {1}{W} to {W}, Cordial Vampire {B}{B} and Bloodghast {B}{B} untouched. Sanctum Seeker: each attacking Vampire is 1 life from each opponent and 1 to you - stack 003 counted seven attackers as seven triggers. Viscera Seer sacrifices for no mana; with Cruel Celebrant out each of your creatures' deaths is 1 from each opponent and 1 to you, and Cordial Vampire, once on the battlefield, adds a +1/+1 counter to each Vampire per death. Flawless Maneuver costs {2}{W} while Edgar is in the command zone and {0} once he is on the battlefield. Goldfish: Edgar is cast by turn six in 69.8% of games (mean 5.775, median 6); mean bodies by turn six is 4.343 and you have six. No loop half is on the battlefield or in hand: the kill - Bloodthirsty Conqueror with Vito, Sanguine Bond or Enduring Tenacity (stacks 004, 006, 012) - needs no Edgar.",
+  "question": "Edgar costs four for the first time and the table has not yet seen what your board does. Cast Charismatic Conqueror and then Edgar and alpha-strike behind a free Flawless Maneuver, leave him in the zone and turn the same mana into three Vampire casts and six tokens, or cast two and hold Maneuver at full price?"
+ },
+ "branches": [
+  {
+   "choice": "Cast Charismatic Conqueror, then Edgar, and alpha-strike behind a free Flawless Maneuver",
+   "line": "Conqueror first for {W}: eminence mints one 1/1 from the command zone and Procession makes it two. Then Edgar for {1}{R}{W}{B}. One mana left.\n\nAttack with seven: Edgar, Sanctum Seeker, Cruel Celebrant, Viscera Seer and the three banked tokens. Conqueror and its two tokens stay home, summoning sick. Seven Seeker triggers: each opponent loses 7 and you gain 7 at declare attackers, before a blocker is named.\n\nEdgar's attack trigger puts a +1/+1 counter on every Vampire you control, the sick ones included. Player 3 is at 7 facing 19 power - Edgar 5/5 first strike, Seeker 4/5, three 2/2 tokens, Celebrant 2/3, Seer 2/2 - and two blockers stop at most nine of it. They die.\n\nFlawless Maneuver is free from the moment Edgar resolves. Cordial Vampire and Bloodghast stay in hand.",
+   "signals": "Seven life off every seat at declare attackers is the loudest thing this board has done, and the table re-ranks you on the spot.\n\nPlayer 2's five open lands are answered with a spell that now costs zero; you present lethal on one seat and hold the answer in the same breath.\n\nConqueror's tax goes live the moment he lands: every artifact or creature Player 4 ramps into either enters tapped or hands you a 1/1 lifelink Vampire - a life-gain event for any converter you draw later.\n\nTwo cards stay in hand, where no sweeper reaches them.",
+   "coalition_risk": "High, and paid for. One seat leaves; the two that remain lost seven each and watched a commander with haste do it.\n\nIf Edgar eats the removal that follows, he goes back to the zone and his next cast carries {2} of tax - {3}{R}{W}{B} through the Incubator. Eminence keeps minting from the zone either way.\n\nThe sacrifice fallback is still on the table: Seer and Celebrant turn every body into one life from each seat in response to anything.",
+   "coaching": "The Incubator changed the price, and the price is the decision. Edgar at six was the whole turn; Edgar at four rides beside a Vampire cast, so the mint still happens and the commander arrives with it.\n\nHe earns the cast on two counts at once. He closes: Player 3 dies to the counters and the drain with your board intact, no body fed to Seer. He protects: Flawless Maneuver and Deflecting Swat are free with a commander on the battlefield and Akroma's Will takes both modes. The loop that ends games - Conqueror with Vito, Sanguine Bond or Tenacity, stacks 004, 006, 012 - never needs him, but its commit turn wants those answers held for nothing.\n\nYou are ahead - six bodies on turn six against a mean of 4.343 - and from ahead you hedge: deploy what you need, bank protection. Cordial and Bloodghast in hand are the rebuild if the sweeper comes.\n\nPrice Maneuver honestly. Indestructible answers destroy. Against -X/-X or exile the answer is Seer and Celebrant in response, one life from each seat per body.",
+   "citations": [
+    {
+     "rule": "603.2c",
+     "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+    },
+    {
+     "rule": "702.10b",
+     "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+    },
+    {
+     "rule": "903.8",
+     "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+    },
+    {
+     "rule": "903.9a",
+     "quote": "If a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone."
+    },
+    {
+     "rule": "strategy:multiplayer.zonal-commander",
+     "quote": "Make it a comparison, not a habit — cast it when the body closes or protects, else spend the mana on something nobody can tax"
+    },
+    {
+     "rule": "strategy:resource-hedging",
+     "quote": "When ahead, hedging is correct: deploy only what you need, simplify, bank protection."
+    }
+   ]
   },
-  "presentable": true
+  {
+   "choice": "Leave Edgar in the zone and cast all three Vampires",
+   "line": "Conqueror for {W}, Cordial for {B}{B}, Bloodghast for {B}{B}: five mana, three eminence events, six 1/1 black tokens through Procession, three bodies. One mana floats.\n\nAttack with the six that can: Seeker, Celebrant, Seer and the three banked tokens. Six Seeker triggers: each opponent loses 6, you gain 6.\n\nPlayer 3 is at 8 and blocks two attackers. After blocks, feed the four new tokens that could not attack anyway to Viscera Seer: four Celebrant triggers take 4 more from every seat, and four Cordial counters go on every Vampire you control. Player 3 is at 4 against four unblocked 5-power attackers. Dead.\n\nThe other seats are at 24. You keep Seeker, Celebrant, Seer, Conqueror, Cordial, Bloodghast and five tokens, every one +4/+4. Edgar is home. Maneuver costs three you do not have.",
+   "signals": "Three two-drops read as a durdle for about four seconds, until the table counts six tokens. Bloodghast has haste only once an opponent is at 10 or less; Player 3 is at 14 when you declare, so he stays home.\n\nThen they learn two things. Your engine makes bodies that come back - Bloodghast returns on every land drop. And a counterspell only shaves one cast: eminence triggers on the cast, and the trigger sits on the stack on its own, so countering Cordial still mints two tokens.\n\nTen life off every seat before the turn ends makes you the archenemy, with the damage already dealt - the good version of that job.",
+   "coalition_risk": "Real, and mostly pre-paid. Player 3 dies without one point of combat damage reaching them through a blocker they could choose; nobody fogs a Celebrant trigger.\n\nYou pass tapped out with eleven creatures and no protection spell you can cast. What you have instead is the response that fits this deck: a sweeper on the stack is answered by sacrificing the whole board to Seer, eleven bodies, eleven life from every seat on the way out, and Bloodghast comes back on the next land. Name that out loud and accept the empty board after it.",
+   "coaching": "This was the right branch on v1.1.0, when a converter on the battlefield turned every eminence mint into damage to each seat. It left the 99. On v2.1.0 a mint is a body, and a body is worth what an outlet and a drain make of it - here, one life from each seat through Celebrant.\n\nSo count what the branch buys over casting Edgar: three more life off each seat, four more tokens, Cordial and Bloodghast on the battlefield, four counters on everything. And what it costs: four bodies fed to Seer, a hand of one dead card, and Edgar a full turn later, which is a turn later for the free Maneuver and Swat.\n\nThe kill does not need him - the three verified loops run through Bloodthirsty Conqueror, not the commander. The commit turn does want him, because that is the turn the table's answers come out and yours should cost nothing.\n\nTake this branch when the open mana across the table is a counterspell rather than a sweeper - a counter on a two-drop still mints - or when Cordial's counters are what make next turn lethal. The goldfish does not see Bloodghast's return, so no figure here prices it.",
+   "citations": [
+    {
+     "rule": "113.6b",
+     "quote": "An ability that states which zones it functions in functions only from those zones."
+    },
+    {
+     "rule": "113.7a",
+     "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+    },
+    {
+     "rule": "614.1a",
+     "quote": "Effects that use the word “instead” are replacement effects."
+    },
+    {
+     "rule": "302.6",
+     "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+    },
+    {
+     "rule": "700.4",
+     "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+    },
+    {
+     "rule": "strategy:aristocrats.wipe-insurance",
+     "quote": "a wrath on the stack is answered by sacrificing the whole board in response — each body a card, the drains firing on the way out"
+    },
+    {
+     "rule": "strategy:multiplayer.asymmetry",
+     "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
+    }
+   ]
+  },
+  {
+   "choice": "Cast Conqueror and Cordial, and hold three for a hard-cast Flawless Maneuver",
+   "line": "Three mana: Conqueror for {W}, Cordial for {B}{B}. Two eminence events, four tokens through Procession. Three mana stays up for Maneuver at {2}{W}.\n\nAttack with the same six: Seeker, Celebrant, Seer, three banked tokens. Six Seeker triggers, 6 from every seat, Player 3 to 8. After blocks, feed the four new tokens to Seer: 4 more from every seat through Celebrant, four Cordial counters on every Vampire. Player 3 is dead; the other seats are at 24.\n\nYou pass with Seeker, Celebrant, Seer, Conqueror, Cordial and three tokens, all +4/+4, Bloodghast in hand, indestructible held up, Edgar home.",
+   "signals": "Passing with three untapped after two spells reads as protection held, and it is.\n\nIt also reads as a player who paid three mana to be afraid of a card they have not seen, and Player 2 learns that four open lands slow you down. That is a lesson you would rather they never got.",
+   "coalition_risk": "The mildest of the three. Player 3 still dies, so the aggro clock comes off the table, and ten per seat is what branch two deals anyway.\n\nThe cost goes to Player 4. The Simic seat drawing two extra cards a turn wins long games, and this branch donates a turn of Edgar to the idea that games should be longer.",
+   "coaching": "This is the disciplined-looking branch, and the Incubator made it the wrong one.\n\nIt pays three mana for Flawless Maneuver. One more mana casts Edgar, who makes Maneuver free, makes Deflecting Swat free, adds a 4/4 first-strike haste attacker and a counter on every Vampire, and takes seven per seat instead of six at declare attackers. You are paying three for a thing four would have bought with a commander attached.\n\nPrice the insurance too. Indestructible answers destroy. It does not answer -X/-X and it does not answer exile, and your own 99 runs Olivia's Wrath and Path to Exile, which tells you how common those are at this table. For those, the answer is the same in every branch: Seer and Celebrant in response.\n\nTake this shape only when Edgar is not castable - the Incubator is not out, or he has been cast twice and the tax is real. Here he is four mana and the hold costs you him.",
+   "citations": [
+    {
+     "rule": "strategy:resource-hedging.wrath-math",
+     "quote": "what you lose if the wrath comes now versus what holding a threat back costs in clock and position — and against a control deck, holding back often IS the loss, because buying time is exactly their plan"
+    },
+    {
+     "rule": "strategy:multiplayer.commander-insurance",
+     "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+    }
+   ]
+  }
+ ],
+ "recommendation": {
+  "choice": "Cast Charismatic Conqueror, then Edgar, and alpha-strike behind a free Flawless Maneuver",
+  "rationale": "The arithmetic that kept Edgar home on v1.1.0 was nine damage a seat from an entry converter on three casts. That converter left the 99, and Urza's Incubator put the commander at four. Both halves of the old answer moved, and the answer moves with them.\n\nFive mana now buys Conqueror and Edgar together: the mint happens, seven life leaves every seat at declare attackers, Player 3 dies to counters and a first-strike commander with your board intact, and Flawless Maneuver and Deflecting Swat cost nothing from here on. Cordial Vampire and Bloodghast wait in hand, out of a sweeper's reach.\n\nBranch two takes ten a seat instead of seven. It pays with four bodies fed to Seer, a hand of one spell you cannot cast, and a commander who arrives a turn later - the turn you would rather have the free answers already. From ahead, six bodies on turn six against a goldfish mean of 4.343, that is the wrong trade.\n\nThe kill is unchanged: Bloodthirsty Conqueror with Vito, Sanguine Bond or Enduring Tenacity, stacks 004, 006 and 012, none of which asks for Edgar. He is there so that the turn you assemble one, the table's answers meet a Swat that cost you nothing.\n\nSo: Conqueror first, so his two tokens are on the battlefield for the counter. Then Edgar. Then seven attackers, Maneuver held free, and one mana floating that you did not need."
+ },
+ "presentable": true
 }

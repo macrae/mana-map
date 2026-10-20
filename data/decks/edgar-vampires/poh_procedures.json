@@ -2,280 +2,299 @@
   "emergency": [
     {
       "condition": "wipe",
-      "condition_text": "a sweeper is coming, or is on the stack, and your board is committed",
+      "condition_text": "a sweeper is coming, or is on the stack, and the board is committed",
       "indications": [
-        "A seat has four or more untapped lands, has cast nothing this turn cycle, and passed with the mana up.",
-        "Somebody has named you the problem out loud. Log 001, turn three: five Vampires for three mana spent, 'this is ridiculous', and every answer at the table pointed at Edgar from then on.",
-        "You have more bodies on the battlefield than the other seats combined.",
-        "No death payoff is on the battlefield: no Blood Artist, no Cruel Celebrant, no Cordial Vampire, no Elenda, the Dusk Rose, no Crossway Troublemakers, no Skullclamp, no Liliana, Dreadhorde General.",
-        "Anointed Procession, Caretaker's Talent or Sanguine Bond is on the battlefield. Those are enchantments, and Flawless Maneuver and Akroma's Will name creatures.",
-        "Two of the five logged games are filed under a sweeper, and the deck has no sweeper of its own by role."
+        "A seat has four or more lands untapped, has cast nothing this turn cycle, and passed with the mana up.",
+        "Somebody has named you the problem. Log 001, turn three: five Vampires off three mana spent, 'this is ridiculous', and every answer at the table pointed at Edgar from then on.",
+        "You have more creatures than the other seats combined and no free sacrifice outlet on the battlefield.",
+        "The outlet and the death payoff are in hand rather than on the battlefield. Log 006: Vish Kal went down before the wipes and Blood Artist was not drawn until after them, so neither did its job.",
+        "Three of the six logged games are filed under a sweeper (001, 002, 006), all on earlier lists, and the pilot's read of this pod is 'heavy creature removal and heavy board wipes' (002)."
       ],
       "immediate": [
-        "Count the untapped lands at every seat before you cast your next Vampire, and name the seat that can sweep.",
-        "Put a death payoff on the battlefield ahead of any further body. Cast Cruel Celebrant before Blood Artist: Celebrant bills each opponent, Blood Artist bills one target player.",
-        "Stop deploying at the body that beats the table's board. Keep the next Vampire and the next doubler in hand.",
-        "With a death payoff on the battlefield and the sweeper on the stack, sacrifice Elenda, the Dusk Rose to a free outlet, then let the sweeper resolve. She leaves 1/1 lifelink Vampires equal to her power, and each of them dies to the sweeper and bills the table again.",
-        "Spend Boros Charm or Teferi's Protection only on the enchantments. Those two are the cards in the 99 that save Anointed Procession, Caretaker's Talent and Sanguine Bond; Flawless Maneuver and Akroma's Will leave them to die."
+        "Count the untapped lands at every seat before you cast the next Vampire, and name the seat that can sweep.",
+        "Put a free sacrifice outlet on the battlefield ahead of any further body: Viscera Seer, Phyrexian Tower, Ashnod's Altar, Yahenni, Undying Partisan or Vish Kal, Blood Arbiter. One is in hand in 69.1% of goldfish games, 53.3% by turn six.",
+        "Put a death payoff beside it. Cruel Celebrant and Vraan, Executioner Thane bill each opponent; Blood Artist and Vein Ripper bill one target. Then stop at the body that beats the table's board, and keep the next Vampire and the doubler in hand.",
+        "With the sweeper on the stack and Edgar Markov on the battlefield, cast Flawless Maneuver for nothing if the sweeper destroys. If it exiles, bounces or gives -X/-X, or if Exquisite Blood, Sanguine Bond or Anointed Procession would die with the board, cast Teferi's Protection instead.",
+        "If you cast neither, sacrifice every creature the sweeper would take to the outlet while it is on the stack, Elenda, the Dusk Rose last: each earlier death puts a counter on her, and her lifelink tokens then die to the sweeper for a second round of triggers."
       ],
       "subsequent": [
-        "Cast a Vampire at mana value two or less to restart eminence. Thirteen are declared in the 99 and one is in hand in 95.0% of goldfish games, mean turn 2.22.",
-        "Take Crossway Troublemakers' draw one trigger at a time and decline the 2 life on every trigger past the cards you need.",
-        "Redeploy the worst threat first and keep the best one in hand for the second sweeper.",
-        "Rebuild to the payoff, not to the bodies: a free outlet and a drain beat five 1/1 tokens.",
-        "Cast Edgar Markov the first turn you can pay six. In log 001 he arrived at eight mana, and the turn he landed took a seat to 1 life."
+        "Cast a Vampire at mana value two or less to restart eminence. Eleven are in the 99 and one is in hand in 84.9% of goldfish games, mean turn 3.09.",
+        "Play a land. Bloodghast returns from the graveyard on the land drop and is the first body the outlet eats.",
+        "Rebuild to the pair, not the width: outlet, then payoff, then the doubler. Five 1/1 tokens are what the next sweeper is for; log 006's rebuilds were 'small blockers, nothing threatening'.",
+        "Pay the 2 life per death to Crossway Troublemakers and Erebos, Bleak-Hearted while you are not the lowest-life seat. A card in hand is what the rebuild ran out of in 001, 002 and 006.",
+        "Cast Edgar Markov the first turn you can pay for him; with Urza's Incubator naming Vampire he costs {1}{R}{W}{B}. On the battlefield he makes Flawless Maneuver and Deflecting Swat free for the next sweeper."
       ],
-      "notes": "Teferi's Protection phases your board out, so nothing dies and no death payoff fires. On a board holding Blood Artist, Cruel Celebrant, Elenda, the Dusk Rose, Crossway Troublemakers or Skullclamp it turns the refuel off. Log 002 prices the other choice: a wipe with the drains online killed eleven creatures, took 11 life off every opponent, gained 11, and left the pilot at 50 against a table at 20. Cast Teferi's Protection to save an engine you cannot rebuild, not creatures you can.",
+      "notes": "Teferi's Protection phases out every permanent you control, so nothing dies and no death payoff fires; cast it to keep an enchantment half of the loop or a doubler, never to save tokens. Enduring Tenacity returns as an enchantment if the sweeper destroys it or gives it -X/-X (stack 012); it does not return from exile or bounce. The sacrifice-in-response turn has no checker-passed board on this list and the goldfish's death rate cannot price a burst; what the log prices is 002, where a wipe with Blood Artist and Bloodthirsty Conqueror out took 11 life from every opponent and gained 11. Every wipe game is on an earlier list; this procedure is untested on v2.1.0.",
       "grounded_in": [
         "log:001",
-        "log:002"
+        "log:002",
+        "log:006"
       ]
     },
     {
       "condition": "removal",
-      "condition_text": "one seat is answering your permanents one at a time",
+      "condition_text": "one seat is answering your permanents one at a time, or the commander or a loop half is targeted",
       "indications": [
-        "The same seat has answered a permanent of yours on two consecutive turns. Log 002: Anointed Procession resolved and was removed the following turn, and the card-flow permanents went the same way.",
-        "An opponent is pinging your 1/1 tokens instead of attacking your large bodies. Log 004: Tom's Goblin Sharpshooter did this all game and fed the draw.",
-        "Your own answers have been in hand for two turns. Goldfish holds interaction in 88.3% of games by turn six and can pay for it in 26.9%.",
-        "Your mana is fully spent on bodies every turn. Log 002 names that as the structural half: a deck that cannot afford to hold up interaction does not run interaction.",
-        "The permanent they answered was a doubler or a draw engine, not a body."
+        "The same seat has answered a permanent of yours on two consecutive turns. Log 002: Anointed Procession resolved and was gone the following turn, and the draw permanents went the same way.",
+        "A spell or ability is pointed at Edgar Markov, Bloodthirsty Conqueror, Vito, Thorn of the Dusk Rose or Elspeth, Storm Slayer. Log 001: Elspeth was targeted the turn she landed; log 005: she was taken down with no blocker home.",
+        "A seat is pinging your 1/1 tokens instead of attacking. Log 004: Tom's Goblin Sharpshooter did, and the deaths drew cards.",
+        "Your answers have sat in hand for two turns with the mana spent on Vampires. Goldfish: a piece is in hand in 86.4% of games by turn six and castable in 18.1%.",
+        "The permanent they answered was a doubler, a draw engine or a loop half, not a body."
       ],
       "immediate": [
-        "Name the seat answering you and count its untapped mana.",
-        "Leave one answer's worth of mana unspent from this turn on. Despark costs two, Anguished Unmaking and Stroke of Midnight three, Path to Exile one; Deflecting Swat and Flawless Maneuver cost nothing while Edgar Markov is on the battlefield.",
-        "Spend that answer on the permanent that is answering you, not on the largest board.",
-        "Equip Skullclamp to a 1/1 eminence token for {1} and draw two. Their next removal spell then costs them a card and costs you nothing.",
-        "Redeploy in this order: free outlet, death payoff, doubler. The doubler draws the answer, so it goes last."
+        "Name the seat answering you and count its untapped mana at the end of each of your turns.",
+        "If the spell targets and Edgar Markov is on the battlefield, cast Deflecting Swat for nothing and move it to a permanent of theirs or a token of yours.",
+        "If Bloodthirsty Conqueror or Vito is the target with the other half on the battlefield, and a death drain and a free outlet are out, sacrifice a creature in response: the life gain starts the loop above their spell. Stacks 004, 006 and 012 prove the loop with nothing else on the stack; this response has no stack of its own.",
+        "If the creature cannot be saved, sacrifice it to a free outlet in response. The death pays through Blood Artist, Cruel Celebrant, Vraan, Executioner Thane, Vein Ripper, Morbid Opportunist and Liliana, Dreadhorde General, and their spell does nothing.",
+        "Leave one answer's mana unspent from this turn on: {1}{W}{B} for Anguished Unmaking, {W} for Path to Exile; Deflecting Swat and Flawless Maneuver cost nothing while Edgar Markov is on the battlefield."
       ],
       "subsequent": [
-        "Re-equip Blade of the Bloodchief for {1} on your turn after they kill the body carrying it. The Equipment survives creature removal; the counters on the body do not.",
-        "Cast the doubler on a turn you also cast a Vampire, so the extra bodies arrive before the answer does.",
-        "Deploy the bodies that pay when they die first: Elenda, the Dusk Rose, Bloodtracker, Crossway Troublemakers, Liliana, Dreadhorde General.",
-        "Recount the answering seat's mana each turn and cast into the window where it is tapped out."
+        "Redeploy in this order: free outlet, death payoff, then the doubler or the loop half. The piece that draws the answer goes last, on a turn you hold Deflecting Swat or Flawless Maneuver.",
+        "Land the enchantment half of a loop before the creature half. Sanguine Bond, Exquisite Blood and Enduring Tenacity outlive the creature removal that ends Bloodthirsty Conqueror and Vito (stacks 004, 012).",
+        "Cast Vein Ripper into the removal-heavy seat. Ward makes their spell cost a creature, and that creature's death is a Vein Ripper trigger.",
+        "Play a land every turn. Bloodghast returns on the land drop and is the body you hand to edicts and pings.",
+        "Cast Drana and Linvala when a creature's activated ability is killing your engine rather than feeding it: their creatures' activated abilities cannot be activated while she is on the battlefield, and you may activate them yourself. In log 004 the pings fed the draw, so read which it is before you cast her."
       ],
-      "notes": "Read High-Society Hunter's clause before you count on it as a death payoff: it sees another NONTOKEN creature dying, so it is blind to every eminence token. Two further limits belong on the same page: Deflecting Swat only redirects a spell or ability that targets, and nothing in the 99 answers a land. No logged game is filed under this cause; logs 002 and 004 describe it from inside two games filed elsewhere.",
+      "notes": "Deflecting Swat changes targets; it does nothing against a sweeper or an edict that names no target. Anowon, the Ruin Sage's upkeep edict is yours and hits your own non-Vampires: Enduring Tenacity, Morbid Opportunist, Ingris Stingerquill and an animated Erebos, Bleak-Hearted. Tenacity's return is verified for destroy (stack 012), not for a sacrifice to your own edict. No logged game is filed under this cause; 001, 002, 004 and 005 describe it from inside games filed elsewhere, all on earlier lists.",
       "grounded_in": [
+        "log:001",
         "log:002",
-        "log:004"
-      ]
-    },
-    {
-      "condition": "combo",
-      "condition_text": "an opponent is assembling a two-card kill and you hold no counterspell",
-      "indications": [
-        "A seat has tutored. Log 004: Tom tutored a two-card infinite and closed the game before the pilot's lethal attack resolved.",
-        "A seat has stopped developing and holds no creatures. That is the seat that killed the table in log 004.",
-        "A seat is holding up mana and passing every turn.",
-        "There are no counterspells in the 99. Once a piece resolves, the answers are Despark, Anguished Unmaking and Stroke of Midnight, or nothing."
-      ],
-      "immediate": [
-        "Name the seat that has stopped developing.",
-        "Attack that seat first, ahead of the seat with the biggest board.",
-        "Cast Despark or Anguished Unmaking on a combo piece the turn it resolves. Both are instants, and the piece's resolution is the last profitable moment.",
-        "If the kill spell or ability targets, cast Deflecting Swat and change the target.",
-        "Cast Vampiric Tutor in the end step before your turn for the missing half of your own route: Bloodletter of Aclazotz if Sanctum Seeker is out (stack 003), or Vito, Thorn of the Dusk Rose or Sanguine Bond if Bloodthirsty Conqueror is out (stacks 004 and 006). It puts the card on top, so your draw step is what finds it."
-      ],
-      "subsequent": [
-        "Take the drain window the turn it opens. Both verified loops end a pod turn on their own and need no combat damage; the attack does not.",
-        "Count every opponent's untapped mana before you declare lethal.",
-        "Recast Edgar Markov and rebuild the outlet-and-payoff pair. Eminence mints from a zone no answer reaches."
-      ],
-      "notes": "The infinite is the ceiling, not the plan, and the pilot's stated direction keeps it subordinate rather than cutting it. Bloodthirsty Conqueror with Vito or Sanguine Bond assembles in 7.8% of goldfish games (15.1% with Vampiric Tutor) and 3.4% by turn six; the Bloodletter route assembles in 4.1% (9.4% assisted) and 1.6% by turn six. Both rest on one body each. Play the drain engine underneath them. Log 004's board was winning when the combo landed.",
-      "grounded_in": [
-        "log:004"
-      ]
-    },
-    {
-      "condition": "stalled",
-      "condition_text": "the board is even, you have cast one Vampire this game, and your hand does nothing",
-      "indications": [
-        "You have cast one Vampire this game and Edgar Markov is already on the battlefield. Log 003 is that game exactly, from a turn-one four-mana opener.",
-        "Every opponent has a blocker larger than your largest Vampire.",
-        "No draw engine is on the battlefield. Goldfish draws one in 83.5% of games at mean turn 2.62, so this is the other 16.5%.",
-        "Your hand is lands.",
-        "'Ran out of steam' or 'no card draw' is the cause the pilot names in logs 001, 002 and 003."
-      ],
-      "immediate": [
-        "Cast Reactor Raid for {2}{B}: sacrifice a token or an artifact, draw two, and play Midgar, City of Mako from exile on a later turn.",
-        "Equip Skullclamp to a 1/1 eminence token for {1} and draw two.",
-        "Cast the draw body before the lord: Bloodtracker, Champion of Dusk, Welcoming Vampire, Preacher of the Schism, Crossway Troublemakers.",
-        "Pay {B} and 2 life to Bloodtracker on every turn it is on the battlefield. It draws one card per +1/+1 counter when it leaves. Log 004 names skipping this as the missed line of the night.",
-        "Attack with Crossway Troublemakers on the battlefield. Attacking Vampires have deathtouch and lifelink, so a stalled board trades up."
-      ],
-      "subsequent": [
-        "Equip Blade of the Bloodchief to a lifelink Vampire for {1} and sacrifice tokens to a free outlet. Each death puts two counters on the equipped body, which is how a stalled board produces one Vampire worth attacking with.",
-        "Activate Castle Locthwain for {1}{B}{B} while your hand is empty. It bills life equal to your hand size, which is why it is cheapest here.",
-        "Channel Takenuma, Abandoned Mire for {3}{B}, one less per legendary creature you control, to mill three and return a creature.",
-        "Cast Night's Whisper for two cards and 2 life, and stop paying life once a drain seat is live."
-      ],
-      "notes": "The 28 August pivot asked for a self-mill package as a second way to dig and it was never built. Altar of Dementia and Takenuma, Abandoned Mire are the only cards in the 99 that mill, and Takenuma is the only one that returns anything from your graveyard. Until that changes the dig is card draw and the eminence tokens that feed it, so the outlet goes down before the lord, every time.",
-      "grounded_in": [
-        "log:003"
-      ]
-    },
-    {
-      "condition": "politics",
-      "condition_text": "the table has agreed you are the archenemy and is pointing its answers at you",
-      "indications": [
-        "Somebody said it out loud on turn three. Log 001: five Vampires for three mana spent, 'this is ridiculous', and every answer at the table pointed at Edgar from then on.",
-        "You are the highest-life seat. Lifelink bodies, Elenda, the Dusk Rose and Preacher of the Schism push you there fast; log 002 had you at 50 against a table at 20 with an empty hand.",
-        "Two seats have passed with mana up while a third develops.",
-        "Your board shows a doubler. Anointed Procession, Mondrak, Glory Dominus and Elspeth, Storm Slayer are what a table reads as the threat."
-      ],
-      "immediate": [
-        "Deploy the free outlet and the death drain before the doubler. Tokens and lifelink bodies read as fair.",
-        "Keep Bloodthirsty Conqueror, Bloodletter of Aclazotz and Sanctum Seeker in hand until the turn you use them. In log 001 both cards that would have refuelled the deck were countered on the way down.",
-        "Point Blood Artist's drain at the seat the table has already agreed to kill.",
-        "Attack the seat that is winning and give the reason as board position. Log 004 removed Alex first on exactly that ground.",
-        "Spend your removal on the permanent that is answering you and leave the biggest board for somebody else to handle."
-      ],
-      "subsequent": [
-        "Rebuild after each wipe. The low curve put a real board back in one or two turns, three times, in log 001.",
-        "Recount who has the most life each turn. Preacher of the Schism draws while you are highest and mints a lifelink token while you attack the highest.",
-        "Take the drain window the turn it opens, and expect every held answer to appear the moment you present lethal."
-      ],
-      "notes": "The only measurement the bench holds on who gets attacked is Forge's AI, and its own limits file says it is not human politics: no deals, no grudges, no table talk, no memory of last turn. It attacks the seat that has dealt the most combat damage 69.2% of the time, 95% interval [0.682, 0.702], across 7,949 decisions in 840 games. Read it as a claim about how a board LOOKS, not about your pod. No logged game is filed under this cause; log 001 describes the dynamic and is filed under a sweeper.",
-      "grounded_in": [
-        "log:001"
-      ]
-    },
-    {
-      "condition": "raced",
-      "condition_text": "a seat is killing you with damage you cannot block, and your drain has not closed the table",
-      "indications": [
-        "A seat is dealing damage without attacking. Log 005: Tom's Purphoros pings finished the game while your board was the largest at the table and Oliver was a turn behind all night.",
-        "A planeswalker is on the battlefield and no untapped Vampire is at home. Log 005: Elspeth was exposed while the attack went all-in on Tom, and she was taken down before the pings finished you.",
-        "You are the lowest-life seat and still paying for lands and cards.",
-        "The seat racing you has flyers and your Vampires are on the ground.",
-        "Against a pod holding a Purphoros pinger model, Forge eliminated this seat in 35 of 40 games, 12 of them by that seat, all 21 recorded eliminations by damage (n40, 2026-09-03, on v1.1.0)."
-      ],
-      "immediate": [
-        "Name the seat that is faster and count the damage it deals per permanent it plays, not the power on its board.",
-        "Keep one deathtouch body home before you attack: Gifted Aetherborn, Vampire of the Dire Moon, Nighthawk Scavenger, Vampire Cutthroat. If Edgar Markov is on the battlefield, hold Deflecting Swat instead and attack with everything.",
-        "Spend Anguished Unmaking or Despark on the damage source. Those two are the interaction copies that exile a noncreature permanent; Stroke of Midnight destroys, and Path to Exile, Winds of Abandon, Elspeth's -3 and Vish Kal want a creature.",
-        "Stop paying life. Skip Champion of Dusk, Night's Whisper, Castle Locthwain, Bloodtracker's activation, Crossway Troublemakers' 2 life and Vampiric Tutor until the race is decided. A full tap cycle of this manabase costs 8 life.",
-        "Cast Teferi's Protection on the turn the table can kill you. Until your next turn your life total cannot change, and it is the one card in the 99 whose text stops life loss."
-      ],
-      "subsequent": [
-        "Declare lethal the turn it is on the board. Logs 004 and 005 both reached a dominant board and lost after it.",
-        "Resolve Vito, Thorn of the Dusk Rose or Sanguine Bond before the lifelink attack, so every point you gain is a point an opponent loses.",
-        "Attack with every Vampire while Sanctum Seeker is on the battlefield. Each attacking Vampire bills each opponent for 1 whether or not it connects.",
-        "Cast Akroma's Will with Edgar Markov on the battlefield and choose both modes: flying, vigilance and double strike, plus lifelink, indestructible and protection from each colour.",
-        "Recount your life against the table's before you pay for another card."
-      ],
-      "notes": "Path to Exile and an overloaded Winds of Abandon hand the seat you slowed a basic land, and nothing in the 99 answers a land, so both leave a racing seat with more mana than it started with. Two limits on the figures: Forge's runs read the combat half only, because life loss that is not damage, which is every drain in this deck, never appears in a damage figure; and the Purphoros run above was measured on v1.1.0, one version behind the list you are holding.",
-      "grounded_in": [
+        "log:004",
         "log:005"
       ]
     },
     {
-      "condition": "mana-drought",
-      "condition_text": "you are short of black or short of a land drop, and the board has stalled at two bodies",
+      "condition": "combo",
+      "condition_text": "a seat is assembling a two-card kill and you hold no counterspell",
       "indications": [
-        "Black is the short colour: 32 sources against a 36 target, 78.5% on curve on lands alone and 85.5% with the rocks, across 38 black cards and 54 black pips.",
-        "You are holding Bloodletter of Aclazotz. Its {1}{B}{B}{B} is the only cost in the 99 with three identical coloured pips.",
-        "You missed a land drop. Goldfish hits turn three in 91.9% of games and turn six in 59.8%.",
-        "Your untapped lands are the ones that bill you: City of Brass, Mana Confluence, Caves of Koilos, Sulfurous Springs, Battlefield Forge, Silent Clearing and Ancient Tomb.",
-        "Three lands enter tapped unconditionally (Midgar, City of Mako, Nomad Outpost, Savai Triome) and twelve more enter tapped off curve."
+        "A seat has tutored. Log 004: Tom tutored a two-card infinite and closed the game before your lethal attack resolved.",
+        "A seat has stopped developing and holds no creatures. That is the seat that killed the table in log 004.",
+        "A seat passes every turn with mana up and a full hand.",
+        "No card in the 99 counters a spell. The instants are Anguished Unmaking, Path to Exile, Deflecting Swat, Flawless Maneuver, Akroma's Will, Teferi's Protection, Vampiric Tutor and Enlightened Tutor."
       ],
       "immediate": [
-        "Play the land that makes black.",
-        "Cast the rock before the second body: Sol Ring, Arcane Signet, Talisman of Indulgence, Herald's Horn or Patchwork Banner. One is in hand in 67.5% of games at mean turn 3.58.",
-        "Tap an untapped creature to Survivors' Encampment for the colour you are missing.",
-        "Sacrifice a creature to Master of Dark Rites for {B}{B}{B} and spend it on a Vampire, Cleric or Demon spell. That mana cannot pay an activated ability.",
-        "Stop tapping the painlands once you are the lowest-life seat. A full tap cycle of this manabase costs 8 life."
+        "Name the seat that has stopped developing and count its untapped mana.",
+        "If one loop half is on your battlefield and the other is in hand, cast it and start the loop now: any life gain seeds Bloodthirsty Conqueror with Vito, Sanguine Bond or Enduring Tenacity (stacks 004, 006, 012), and the game ends on your main phase at zero mana.",
+        "If one half is on the battlefield and the other is not in hand, cast Vampiric Tutor in the end step before your turn for the missing half, Demonic Tutor or Diabolic Intent on your turn with the mana to cast it, or Enlightened Tutor for Exquisite Blood, Sanguine Bond or Enduring Tenacity.",
+        "Cast Anguished Unmaking on their first piece the turn it resolves. It exiles any nonland permanent at instant speed; Path to Exile answers a creature piece for {W}.",
+        "If the kill targets, cast Deflecting Swat with Edgar Markov on the battlefield and change the target. If it is life loss or damage, cast Teferi's Protection: your life total cannot change until your next turn."
       ],
       "subsequent": [
-        "Name Vampire on Herald's Horn as it enters and take the free look at the top card each upkeep.",
-        "Cast Night's Whisper or Champion of Dusk to find land, and stop paying life once a drain seat is live.",
-        "Crack Bloodstained Mire or Marsh Flats for the land that makes the colour you are missing, and take an untapped one where there is a choice.",
-        "Hold the doubler until you can cast it and a Vampire in the same turn."
+        "Attack the combo seat ahead of the seat with the biggest board. Sanctum Seeker and Ingris Stingerquill bill it on the attack declaration whether or not anything connects.",
+        "Cast Drana and Linvala when the combo runs through a creature's activated ability; it cannot be activated while she is on the battlefield.",
+        "Cast Anowon, the Ruin Sage against a creature combo: each upkeep that seat sacrifices a non-Vampire creature.",
+        "Count every opponent's untapped mana before you declare lethal, and take the drain window the turn it opens."
       ],
-      "notes": "Nothing in the 99 answers a land: Despark, Anguished Unmaking and Stroke of Midnight are nonland-only, and Path to Exile and Winds of Abandon hit creatures. A land-based lock is raced, not answered. No logged game is filed under this cause, so this page is built from mana_analysis and the goldfish rather than from the table, and the pilot logs a missed land drop rather than a missed pip.",
-      "grounded_in": []
+      "notes": "Your own loop is drawn in 22.1% of goldfish games by turn ten and 10.8% by turn six; 57.3% and 33.3% with a tutor. Stacks 001 and 005 (Exquisite Blood with Vito, Sanguine Bond with Exquisite Blood) passed the checker on a board whose seed creature left the 99 and are withheld; the Marauding Blight-Priest pairings and Exquisite Blood with Enduring Tenacity have no stack. Count those five pairings as the plan only once a stack on this list passes. Log 004 is on v1.1.0; no game on this list has met a combo seat.",
+      "grounded_in": [
+        "log:004"
+      ]
+    },
+    {
+      "condition": "mana-drought",
+      "condition_text": "you are short of a land drop, or of the black for a triple-pip spell",
+      "indications": [
+        "You missed a land drop. Goldfish hits turn three in 88.9% of games, turn four in 76.0%, turn six in 58.2%.",
+        "You are holding Bloodletter of Aclazotz or Vein Ripper. {1}{B}{B}{B} and {3}{B}{B}{B} are the two triple-black costs in the 99.",
+        "Your untapped lands are the ones that bill you: City of Brass, Mana Confluence, Caves of Koilos, Sulfurous Springs, Battlefield Forge, Silent Clearing, Ancient Tomb. A full tap cycle of them costs 8 life, and each Talisman's coloured mode 1 more.",
+        "Twelve of 35 lands enter tapped on some condition; Midgar, City of Mako and Savai Triome always do.",
+        "You kept two lands. Log 002: a two-land keep after one mulligan, which the pilot names as the mistake."
+      ],
+      "immediate": [
+        "Play the land that makes black and enters untapped.",
+        "Cast the rock before the second body: Sol Ring, Arcane Signet, Talisman of Hierarchy, Talisman of Indulgence, Talisman of Conviction, Orzhov Signet, Rakdos Signet. The declared ramp group is in hand in 75.8% of goldfish games, mean turn 3.43.",
+        "Tap an untapped creature to Survivors' Encampment for the colour you are missing, or tap Exotic Orchard for a colour an opponent's land makes.",
+        "Sacrifice a token to Phyrexian Tower for {B}{B}, which pays any cost, or to Master of Dark Rites for {B}{B}{B}, which pays a Vampire spell and nothing else, Bloodletter of Aclazotz and Vein Ripper included.",
+        "Cast Reactor Raid for {2}{B}: sacrifice a token, draw two, and play Midgar, City of Mako from exile as a later land drop."
+      ],
+      "subsequent": [
+        "Crack Arid Mesa, Bloodstained Mire, Marsh Flats, Verdant Catacombs or Wooded Foothills for Blood Crypt, Godless Shrine, Smoldering Marsh, Savai Triome or a Swamp, and take the one that makes the colour you are short.",
+        "Cast Urza's Incubator naming Vampire: nineteen Vampire spells cost {2} less and Edgar Markov costs {1}{R}{W}{B}.",
+        "Stop tapping the painlands once you are the lowest-life seat.",
+        "Hold the doubler until the turn you can cast it and a Vampire together."
+      ],
+      "notes": "No logged game is filed under this cause; log 002's two-land keep is the nearest and is filed under wipe. Colour is not the shortage on this list: black reads 37 sources against a 36 target, red 22 of 22, white 24 of 22 (mana_analysis, this sha). The goldfish's stalls from turn seven are hand-empty 1,911 times and mana-short 944 (diagnostic), so a dry turn eight is a cards problem before it is a mana problem; the stalled page is the one to open.",
+      "grounded_in": [
+        "log:002"
+      ]
+    },
+    {
+      "condition": "stalled",
+      "condition_text": "the board is even, the hand is empty, and the engine has not assembled",
+      "indications": [
+        "You have cast one Vampire this game and Edgar Markov is already on the battlefield. Log 003 is that game, from a four-mana turn one.",
+        "Your hand is lands by turn seven. The goldfish's hand at the end of turn eight is 3.67 cards with everything affordable cast, and its stalls from turn seven are hand-empty twice as often as mana-short (1,911 against 944, diagnostic).",
+        "No draw engine is on the battlefield. One is drawn in 75.2% of games, mean turn 2.90; this is the other quarter.",
+        "Every opponent has a blocker larger than your largest Vampire, and the free outlet has nothing left to eat.",
+        "'Ran out of steam' is the pilot's own phrase in 001, 002, 003 and 006."
+      ],
+      "immediate": [
+        "Cast Reactor Raid for {2}{B}: sacrifice a token, draw two.",
+        "Put a draw body down before a lord: Welcoming Vampire, Morbid Opportunist, Preacher of the Schism, Clavileño, First of the Blessed, Crossway Troublemakers, Twilight Prophet; or Phyrexian Arena, Caretaker's Talent or Liliana, Dreadhorde General.",
+        "Sacrifice a token to the free outlet with Morbid Opportunist, Liliana, Dreadhorde General, Crossway Troublemakers or Erebos, Bleak-Hearted on the battlefield, and pay the 2 life where it is asked. Morbid Opportunist draws once a turn; Liliana on every death.",
+        "Attack the seat with the most life with Preacher of the Schism for a lifelink token, and a card if you are the seat with the most life. Attack with two creatures and pay {1}{W} to Minas Tirith for a card.",
+        "Activate Castle Locthwain for {1}{B}{B} while your hand is empty: it costs 1 life then, and more for every card you are holding."
+      ],
+      "subsequent": [
+        "Cast Diabolic Intent sacrificing a token for the loop half or the draw engine you are missing; the sacrifice is a death trigger.",
+        "Channel Takenuma, Abandoned Mire for {3}{B}, one less per legendary creature you control, to return a creature from the graveyard to hand.",
+        "Attack with Clavileño, First of the Blessed out and name the Vampire you send into the blocker: when it dies it draws a card and leaves a tapped 4/3 flier.",
+        "Sacrifice tokens to Vish Kal, Blood Arbiter when the stall is size: one flying lifelinker attacks past the ground, and the counters come off as -1/-1 on the blocker.",
+        "Cast Edgar Markov. The attack trigger puts a counter on each Vampire, and the haste swing is the turn log 001 took a seat to 1 and log 003 to twelve commander damage."
+      ],
+      "notes": "Draw on this list is a death event before it is a cast: Morbid Opportunist, Liliana, Crossway Troublemakers, Erebos and Clavileño draw when creatures die, Welcoming Vampire and Caretaker's Talent when they enter, so the outlet goes down before the lord every time. The goldfish prices 8 of 16 draw cards and reads 1.81 extra cards by turn eight, a floor. Log 003 is on v1.0.0 and log 006 on v1.1.1; whether v2.1.0 stops running dry is the open question CONTEXT.md names, and no game on this list has answered it.",
+      "grounded_in": [
+        "log:003",
+        "log:006"
+      ]
+    },
+    {
+      "condition": "politics",
+      "condition_text": "the table has agreed you are the problem and its answers are pointed at you",
+      "indications": [
+        "Somebody said it on turn three. Log 001: five Vampires off three mana, 'this is ridiculous', and every answer at the table pointed at Edgar after that.",
+        "You are the highest-life seat. Lifelink and the drains put you there; log 002 had you at 50 against a table at 20 with an empty hand.",
+        "Two seats have passed with mana up while a third develops.",
+        "A loop half or a doubler is on your battlefield: Bloodthirsty Conqueror, Exquisite Blood, Vito, Thorn of the Dusk Rose, Sanguine Bond, Enduring Tenacity, Anointed Procession or Elspeth, Storm Slayer.",
+        "Forge's pod attacks the seat that has dealt the most damage 69% of the time (ci95 [0.682, 0.702], 7,949 decisions, sim_findings). Its AI makes no deals and keeps no memory, so read it as how a board looks, not as your pod."
+      ],
+      "immediate": [
+        "Deploy the free outlet and the death drain before the doubler and before either loop half. Tokens and 1/1 lifelinkers read as fair.",
+        "Keep Bloodthirsty Conqueror, Exquisite Blood and Bloodletter of Aclazotz in hand until the turn you use them, and cast the half that completes a loop with Deflecting Swat or Flawless Maneuver held and Edgar Markov on the battlefield. Log 001 lost Conqueror to a counter on the way down.",
+        "Point Blood Artist's and Vein Ripper's triggers at the seat the table has already agreed to kill. Cruel Celebrant and Vraan, Executioner Thane need no choice.",
+        "Attack the seat that is winning, and give the reason as board position. Log 004 removed Alex on that ground.",
+        "Spend Anguished Unmaking on the permanent that is answering you, and leave the biggest board to the other two seats."
+      ],
+      "subsequent": [
+        "Rebuild after each wipe to the pair, not the width. The low curve put a board back in a turn or two, three times, in log 001.",
+        "Recount who has the most life each turn. Preacher of the Schism draws while you lead and mints a lifelink token when you attack the leader.",
+        "Cast Charismatic Conqueror while the table has a bigger problem than you; its tax reads every seat at once.",
+        "Count the table's open mana before you commit, and expect every held answer the turn you present lethal."
+      ],
+      "notes": "The infinite is welcome at this table by the pilot's own call (CONTEXT.md: bracket 4, 'infinite combos are welcome here'), and his own meta note in 004 is that a tutored two-card kill is what sours a pod. Say the loop out loud before it starts and offer the shortcut. No logged game is filed under this cause; 001, 004 and 006 describe the dynamic from games filed elsewhere, all on earlier lists.",
+      "grounded_in": [
+        "log:001",
+        "log:004",
+        "log:006"
+      ]
+    },
+    {
+      "condition": "raced",
+      "condition_text": "a seat is killing you with damage you cannot block, and the drain has not closed the table",
+      "indications": [
+        "A seat is dealing damage without attacking. Log 005: Tom's Purphoros pings finished the game while your board was the largest at the table and Oliver was a turn behind all night.",
+        "A planeswalker is on the battlefield and no untapped Vampire is home. Log 005: Elspeth exposed, taken down, then the pings.",
+        "You are the lowest-life seat and still paying life for lands, Phyrexian Arena, Crossway Troublemakers and Erebos, Bleak-Hearted.",
+        "The seat racing you has fliers and your blockers are 1/1 tokens.",
+        "Lethal is on your board and you have not declared it. Logs 004 and 005 both reached it and lost after."
+      ],
+      "immediate": [
+        "Name the faster seat and count the damage it deals per permanent it plays, not the power on its board.",
+        "Cast Anguished Unmaking on the damage source. It exiles, so an indestructible enchantment goes with it. Path to Exile answers a creature source; Deflecting Swat with Edgar Markov out answers a ping that targets.",
+        "Keep a deathtouch body home before you attack: Preacher of the Schism, Bloodthirsty Conqueror or Wispdrinker Vampire. If Edgar Markov is on the battlefield, hold Flawless Maneuver instead and attack with everything.",
+        "Stop paying life for cards: Crossway Troublemakers, Erebos, Bleak-Hearted, Castle Locthwain, Vampiric Tutor. A full tap of the painlands and Ancient Tomb costs 8.",
+        "Cast Teferi's Protection the turn the table can kill you: your life total cannot change until your next turn."
+      ],
+      "subsequent": [
+        "Declare lethal the turn it is on the board.",
+        "Resolve Vito, Thorn of the Dusk Rose, Sanguine Bond or Enduring Tenacity before the lifelink attack, so each point you gain is a point the racing seat loses.",
+        "Attack with every Vampire while Sanctum Seeker is on the battlefield: each attacker bills each opponent 1 on declaration, 2 with Bloodletter of Aclazotz out on your turn. Stack 003: seven attackers, 14 a seat before blockers.",
+        "Cast Akroma's Will with Edgar Markov on the battlefield and take both modes: flying, vigilance and double strike, plus lifelink, indestructible and protection from each colour.",
+        "Cast Anowon, the Ruin Sage against a creature-ETB racer: each upkeep that seat sacrifices a non-Vampire creature."
+      ],
+      "notes": "Bloodthirsty Conqueror and Exquisite Blood gain you life when an opponent loses it, so a ping aimed at you refunds nothing; the gain against a racer is lifelink, Cruel Celebrant, Vraan and Vein Ripper. Drana and Linvala stops activated abilities and does not stop a triggered ping. Path to Exile hands the racing seat a basic land. Log 005 is on v1.1.0 and no game on this list has met a racer; the Forge figure the previous page carried was measured on v1.1.0 and is not repeated.",
+      "grounded_in": [
+        "log:004",
+        "log:005"
+      ]
     }
   ],
   "normal": {
     "preflight": {
       "keep": [
-        "A black source among the lands. Black carries 54 of the pips on 32 sources against a 36 target, and the model's keep rule counts lands and never their colours.",
-        "Two or three lands, or two lands plus Sol Ring, Arcane Signet or Talisman of Indulgence.",
-        "One play at mana value two or less: a Vampire, a free sacrifice outlet (Viscera Seer, Ashnod's Altar, Altar of Dementia), or a rock. Log 005 opened on a swamp into a turn-one Viscera Seer and held momentum all game.",
-        "A second spell you can cast by turn four: a draw engine (Bloodtracker, Welcoming Vampire, Preacher of the Schism, Skullclamp, Night's Whisper) or a second Vampire."
+        "Two or three lands with one that makes black, or two lands plus Sol Ring, Arcane Signet or a Talisman. Black carries 62 of the 92 coloured pips in the 99.",
+        "One Vampire at mana value two or less: Viscera Seer, Master of Dark Rites, Tithe Drinker, Cruel Celebrant, Edgar, Ancient Bloodlord, Blood Artist, Vraan, Executioner Thane, Charismatic Conqueror, Bloodghast, Cordial Vampire or Bloodtithe Harvester. Log 005 opened on Viscera Seer off a Swamp and held momentum all game.",
+        "A second spell you can cast by turn four: a free outlet, a draw engine or a second Vampire.",
+        "One loop half with Demonic Tutor or Vampiric Tutor beside it. The tutor is the other half."
       ],
       "ship": [
-        "Two lands with no black source and nothing at mana value one or two.",
-        "A hand whose only action is Edgar Markov.",
+        "Two lands with no black source and nothing at mana value two or less.",
+        "A hand whose only action is Edgar Markov or Vish Kal, Blood Arbiter.",
         "Five or more lands with no Vampire at mana value two or less.",
-        "Answers and no bodies. There are no counterspells here and every drain needs creatures."
+        "Answers and no bodies. Nothing here counters a spell, every death drain needs a death and every converter needs a gain."
       ],
-      "note": "Read the colours by hand. The model's keep rule counts lands, so a two-land hand with no black source passes it and loses the game; log 002 kept that hand knowing better and names the keep as the mistake. On the model's own rule the deck can act by turn three in 96.4% of games at a mean 0.23 mulligans."
+      "note": "Read the colours by hand. The model's keep rule counts lands and not their colours, so a two-land hand with no black passes it; log 002 kept that hand after one mulligan knowing it should go back. On the model's own rule the deck keeps 77.9% of first sevens, 92.9% of kept hands act by turn three, and the mean is 0.277 mulligans."
     },
     "startup": {
       "steps": [
-        "Play the land that makes black.",
-        "Cast the rock before the second body: Sol Ring, Arcane Signet, Talisman of Indulgence.",
-        "Cast a Vampire at mana value one or two every turn you can. Each mints a 1/1 from the command zone whether or not Edgar has been cast (stacks 002 and 010).",
-        "Name Vampire on Herald's Horn or Patchwork Banner as it enters.",
+        "Play the land that makes black. Play Ancient Tomb on turn one when a rock or a two-mana Vampire is in hand.",
+        "Cast the rock on turn one or two: Sol Ring, Arcane Signet, a Talisman, a Signet.",
+        "Cast a Vampire at mana value two or less every turn you can. Each is a 1/1 from the command zone with Edgar Markov uncast; his text reads 'in the command zone or on the battlefield'.",
+        "Cast Urza's Incubator naming Vampire on turn three ahead of a four-mana Vampire; nineteen Vampire spells and Edgar Markov cost {2} less.",
         "Count the table's untapped mana at the end of turn three before you add a fourth body."
       ]
     },
     "assembly": {
       "steps": [
-        "Put a free sacrifice outlet on the battlefield: Viscera Seer, Ashnod's Altar or Altar of Dementia. One is in hand in 72.3% of games at mean turn 3.16.",
-        "Put a death payoff beside it. Cruel Celebrant bills each opponent, Blood Artist bills one target player, Cordial Vampire puts a +1/+1 counter on every Vampire you control each time a creature dies.",
-        "Cast Edgar Markov the first turn you can pay six, and cast him before you commit a planeswalker. Deflecting Swat and Flawless Maneuver cost nothing only while he is on the battlefield.",
-        "Cast the doubler after the outlet and the payoff, not before.",
-        "Equip Skullclamp to a 1/1 eminence token and draw two, or equip Blade of the Bloodchief to a lifelink Vampire and feed the outlet."
+        "Put a free sacrifice outlet on the battlefield: Viscera Seer, Phyrexian Tower, Ashnod's Altar, Yahenni, Undying Partisan or Vish Kal, Blood Arbiter. One is in hand in 69.1% of goldfish games, mean turn 3.55.",
+        "Put a death payoff beside it. Cruel Celebrant and Vraan, Executioner Thane bill each opponent; Blood Artist and Vein Ripper bill one target. One is in hand in 60.4% of games, mean turn 3.88.",
+        "Put the draw engine down before the lord: Morbid Opportunist, Welcoming Vampire, Caretaker's Talent, Liliana, Dreadhorde General, Crossway Troublemakers.",
+        "Cast Edgar Markov the first turn you can pay for him, and before you commit a planeswalker. Flawless Maneuver and Deflecting Swat cost nothing, and Akroma's Will takes both modes, only while he is on the battlefield.",
+        "Land the enchantment half of the loop before the creature half: Sanguine Bond, Exquisite Blood or Enduring Tenacity, then Bloodthirsty Conqueror or Vito, Thorn of the Dusk Rose on a turn you hold Flawless Maneuver or Deflecting Swat.",
+        "Cast the doubler after the outlet and the payoff, not before."
       ]
     },
     "cruise": {
       "steps": [
-        "Sacrifice a token to the free outlet every turn a death payoff is on the battlefield.",
-        "Draw before you deploy: Reactor Raid, Skullclamp, Bloodtracker, Castle Locthwain, Minas Tirith.",
-        "Pay {B} and 2 life to Bloodtracker on every turn it is on the battlefield.",
-        "Attack the seat with the most life with Preacher of the Schism for a 1/1 lifelink Vampire, and draw a card off it on every turn you are the seat with the most life.",
-        "Leave one answer's worth of mana unspent. Goldfish holds interaction in 88.3% of games by turn six and can pay for it in 26.9%."
+        "Play a land. Bloodghast returns from the graveyard and is the body the outlet eats first.",
+        "Sacrifice a token to the free outlet every turn a death payoff or a death-draw is on the battlefield. Morbid Opportunist and Vraan, Executioner Thane fire once a turn; Liliana, Dreadhorde General and Cruel Celebrant on every death.",
+        "Pay the 2 life per death to Crossway Troublemakers and Erebos, Bleak-Hearted while you are not the lowest-life seat.",
+        "Attack the seat with the most life with Preacher of the Schism. Attack with two creatures and pay {1}{W} to Minas Tirith for a card.",
+        "Leave one answer's mana unspent at the end of each turn: {1}{W}{B} for Anguished Unmaking, {W} for Path to Exile, nothing for Deflecting Swat and Flawless Maneuver with Edgar Markov out. Interaction is in hand in 86.4% of goldfish games by turn six and castable in 18.1%.",
+        "Keep Vish Kal, Blood Arbiter in hand until the wipe has passed, then cast him and feed him the tokens. Log 006: 'played it too early'."
       ]
     },
     "closing": {
       "steps": [
-        "Count the damage on the board before anything else: board power, plus 1 per attacking Vampire per opponent from Sanctum Seeker, plus 1 per opponent per death from Cruel Celebrant.",
-        "Name the route if the board is short: Sanctum Seeker attacking with Bloodletter of Aclazotz out (stack 003), or Bloodthirsty Conqueror with Vito, Thorn of the Dusk Rose or Sanguine Bond (stacks 004 and 006).",
-        "Count every opponent's untapped mana and name the answer each seat can be holding.",
-        "Hold Deflecting Swat or Flawless Maneuver up for the turn you commit, not the turn after. Both are free while Edgar Markov is on the battlefield.",
-        "Declare the attack the turn lethal is on the board. Logs 004 and 005 both reached a dominant board and lost after it."
+        "Count the loop first. A loss-to-gain half and a gain-to-loss half on the battlefield plus any life gain ends the game at zero mana (stacks 004, 006, 012). Say the loop out loud and offer the shortcut.",
+        "If one half is missing, cast the tutor: Vampiric Tutor in the end step before your turn, Demonic Tutor or Diabolic Intent on your turn, Enlightened Tutor for an enchantment half.",
+        "Count the drain on the attack: 1 per attacking Vampire per opponent from Sanctum Seeker, 1 per attacker from Ingris Stingerquill, 1 per opponent per death from Cruel Celebrant, 2 from Vraan, Executioner Thane once; all of it doubled with Bloodletter of Aclazotz out on your turn (stack 003).",
+        "Count every opponent's untapped mana and name the answer each seat can hold.",
+        "Hold Deflecting Swat or Flawless Maneuver for the turn you commit, not the turn after. Both are free while Edgar Markov is on the battlefield.",
+        "Declare the attack or start the loop the turn lethal is on the board. Logs 004 and 005 both reached a winning board and lost after it."
       ]
     }
   },
   "handling": {
     "optics": [
-      "A board of 1/1 tokens and lifelink bodies reads as fair. Anointed Procession, Mondrak, Glory Dominus and Elspeth, Storm Slayer are what a table reads as the threat, so they land after the outlet and the payoff.",
-      "Five bodies on turn three off three mana spent is what got this deck named archenemy in log 001. Price the attention in rather than trying to avoid it.",
-      "Lifelink, Elenda, the Dusk Rose and Preacher of the Schism make you the visible leader while your hand empties. Log 002: 50 life against a table at 20, with nothing left to cast.",
-      "Forge's AI attacks the seat that has dealt the most combat damage 69.2% of the time, [0.682, 0.702] over 7,949 decisions. Its own limits file records no deals, no grudges and no memory, so take it as a reading on how a board looks, not on your pod."
+      "A board of 1/1 tokens and lifelink bodies reads as fair. The loop halves, Anointed Procession, Elspeth, Storm Slayer and Bloodletter of Aclazotz are what a table reads as the threat, so they land after the outlet and the payoff.",
+      "Five bodies on turn three off three mana is what made this deck the problem in log 001. Price the attention in rather than trying to avoid it.",
+      "Lifelink and the drains make you the visible leader while the hand empties. Log 002: 50 life against a table at 20 with nothing left to cast. Preacher of the Schism draws while you lead.",
+      "Forge's pod attacks the seat that has dealt the most damage 69% of the time (ci95 [0.682, 0.702], 7,949 decisions). Its AI makes no deals and keeps no memory, so take it as a reading on how a board looks, not on your pod."
     ],
     "reveal": [
-      "Show the tokens. Keep Bloodthirsty Conqueror, Bloodletter of Aclazotz and Sanguine Bond in hand until the turn they close: log 001 lost Bloodthirsty Conqueror to a counterspell on the way down.",
+      "Show the tokens. Keep Bloodthirsty Conqueror, Exquisite Blood and Bloodletter of Aclazotz in hand until the turn they close; log 001 lost Conqueror to a counterspell on the way down.",
+      "Cast the second loop half with Deflecting Swat or Flawless Maneuver held and Edgar Markov on the battlefield.",
       "Cast the doubler on a turn you also cast a Vampire, so the extra bodies arrive before the answer does.",
-      "Cast Edgar Markov the first turn you can pay six and take the heat that comes with him.",
-      "Say the eminence trigger out loud on every Vampire spell, including with Edgar in the command zone and never cast. Stack 010 proves the token is made and that Elspeth, Storm Slayer doubles it.",
-      "Commit a planeswalker only on a turn you can leave a blocker or a free answer up. Log 005: Elspeth came down, the attack went all-in on Tom, and she was taken down before the pings finished you."
+      "Say the eminence trigger out loud on every Vampire spell, Edgar Markov in the command zone included.",
+      "Commit Elspeth, Storm Slayer or Liliana, Dreadhorde General only on a turn you leave a blocker or a free answer up. Log 005: Elspeth came down, the attack went all-in, and she was taken down before the pings finished you.",
+      "Say the loop before it starts and offer the shortcut. Log 004's meta note on tutored two-card kills is the pilot's own."
     ],
     "alliances": [
-      "Point Blood Artist's drain at the seat the table has already agreed to kill; Cruel Celebrant hits everyone and needs no such choice.",
-      "Ask the seat holding counterspells to cover the combo seat. You hold no stack interaction and five spot answers, so trade the jobs rather than duplicating them. Log 005 seated an Azorius counters deck at the same table as the deck that killed you.",
+      "Point Blood Artist and Vein Ripper at the seat the table has already agreed to kill; Cruel Celebrant and Vraan, Executioner Thane hit everyone and need no such choice.",
+      "Ask the seat holding counterspells to cover the combo seat. You hold none; log 005 seated an Azorius counters deck at the same table as the deck that killed you.",
       "Attack the seat that is winning and give the reason as board position. Log 004 removed Alex first on that ground and records it as position, not grudge.",
-      "Name the seat that has answered you twice and ask the table to split its answers. Log 002 lost to one seat picking off the card-flow permanents unopposed."
+      "Name the seat that has answered you twice and ask the table to split its answers. Log 002 lost to one seat picking off the draw permanents unopposed.",
+      "Cast Charismatic Conqueror while the table has a bigger problem than you; its tax reads every seat at once."
     ],
     "targets": [
       "Kill the seat that deals damage without attacking before the seat with the biggest board. In log 005 Tom's board was not the problem and Tom's pings closed the game.",
       "Kill the seat that has stopped developing before the seat with the biggest board. In log 004 the seat holding no creatures is the seat that comboed out.",
-      "Aim removal at the permanent that answers you, not at the largest creature. Despark exiles a permanent at mana value four or greater for two mana, Anguished Unmaking exiles any nonland permanent for three mana and 3 life, Stroke of Midnight destroys a nonland permanent and hands back a 1/1.",
-      "Spend no answer on a land. Nothing in the 99 answers one, so a land-based lock is raced.",
-      "Deploy Cruel Celebrant ahead of Blood Artist when both are castable: each opponent against one target player."
+      "Aim Anguished Unmaking at the permanent that answers you or at the combo piece, not at the largest creature. Path to Exile is for a creature piece and hands its owner a basic land.",
+      "Do not swing the big lifelinker into the indestructible board. Take Vish Kal, Blood Arbiter's counters off as -1/-1 on the blocker first, or attack the seat without one. Log 006.",
+      "Spend no answer on a land; nothing in the 99 reaches one.",
+      "Cast Cruel Celebrant ahead of Blood Artist when both are castable: each opponent against one target player."
     ]
   },
-  "decklist_sha256_prefix": "7be137d0bfeb"
+  "decklist_sha256_prefix": "a872115fe62f"
 }

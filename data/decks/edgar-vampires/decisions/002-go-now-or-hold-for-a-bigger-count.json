@@ -1,92 +1,112 @@
 {
-  "id": "002",
-  "slug": "go-now-or-hold-for-a-bigger-count",
-  "deck": "edgar-vampires",
-  "kind": "decision",
-  "title": "The sweeper is up and lethal is one Vampire away: fire now, or wait for the bigger count?",
-  "scenario": {
-    "board": {
-      "you": "Turn 7, precombat main, 29 life, land drop already made. Battlefield: Corpse Knight, Mondrak, Glory Dominus, Blood Artist, Cruel Celebrant, Legion Lieutenant, and four 1/1 black Vampire tokens — 2/2s under Legion Lieutenant's anthem. Also Arcane Signet and six untapped lands: Command Tower, Godless Shrine, Blood Crypt, Sacred Foundry, Swamp, Plains. Seven mana available. Edgar Markov is in the command zone.",
-      "table": "Player 2 (Azorius control) is at 33 with five untapped lands and nothing on the battlefield. Stated assumption: a control seat at this bracket sitting on five untapped lands after seven turns of doing nothing is holding a sweeper, and that sweeper is sorcery-speed. Player 3 (Rakdos midrange) is at 3, tapped out, with a lone 5/5 — your engine put them there. Player 4 (Simic ramp) is at 38 with two untapped lands and two ground blockers, a 4/4 and a 2/2."
-    },
-    "hand": [
-      "Knight of the Ebon Legion",
-      "Olivia's Wrath",
-      "Night's Whisper"
-    ],
-    "mana_available": "7 (six untapped lands + Arcane Signet)",
-    "stack": [],
-    "extras": "Corpse Knight converts and Mondrak doubles, so one Vampire spell cast is one eminence token doubled to two, then the creature itself — three separate creature entries, three Corpse Knight triggers, three life from every opponent. Verified stack 009 counted this entry shape; verified stack 002 is where the doubling math sits on the record. Corpse Knight causes life loss rather than damage, so nothing about it can be prevented or redirected. Blood Artist and Cruel Celebrant are the mirror image: they pay nothing on the way in and everything on the way out — each of your creatures that dies is one life off the table per drain, and both drains keep firing even in the wipe that kills them. Last, know what your own Olivia's Wrath eats: five of the twenty-nine creatures in your 99 are not Vampires, and two of them — Corpse Knight and Mondrak — are standing on this battlefield right now.",
-    "question": "Player 3 is at three and one Vampire spell kills them outright. Player 2 has held five lands for two turns. Do you cast the Knight now and take the kill on a three-trigger count, hold the card and go bigger next turn, or cast the Knight and clear the ground with your own Olivia's Wrath?"
+ "id": "002",
+ "slug": "go-now-or-hold-for-a-bigger-count",
+ "deck": "edgar-vampires",
+ "kind": "decision",
+ "title": "The sweeper is up and lethal is one Vampire away: fire now, or wait for the bigger count?",
+ "scenario": {
+  "board": {
+   "you": "Turn 7, precombat main, 29 life, land drop already made. Battlefield: Wispdrinker Vampire, Anointed Procession, Cruel Celebrant, Vraan, Executioner Thane, Captivating Vampire, Anowon, the Ruin Sage, and four 1/1 black Vampire tokens — 2/2s under Captivating Vampire's anthem. No sacrifice outlet on the battlefield. Also Arcane Signet and six untapped lands: Command Tower, Godless Shrine, Blood Crypt, Savai Triome, Swamp, Swamp. Seven mana available. Edgar Markov is in the command zone.",
+   "table": "Player 2 (Azorius control) is at 33 with five untapped lands and nothing on the battlefield. Stated assumption: a control seat at this bracket sitting on five untapped lands after seven turns of doing nothing is holding a sweeper, and that sweeper is sorcery-speed. Player 3 (Rakdos midrange) is at 3, tapped out, with a lone 5/5 — your drains put them there. Player 4 (Simic ramp) is at 38 with two untapped lands and two ground blockers, a 4/4 and a 2/2; neither is a Vampire."
   },
-  "branches": [
-    {
-      "choice": "Cast Knight of the Ebon Legion, take the kill, and turn the tokens toward Player 2",
-      "line": "One black mana. The eminence trigger makes a token, Mondrak makes it two, and those two plus the Knight are three creature entries. Corpse Knight fires three times: every opponent loses three, and Player 3 was at three. Gone before you touch combat.\n\nAttack Player 2 with the four 2/2 tokens and Legion Lieutenant. They control no creatures, so that is ten unblocked damage and the seat holding the sweeper goes from thirty to twenty. Leave Blood Artist and Cruel Celebrant home.\n\nSpend two of the remaining six on Night's Whisper, then keep {2}{B} up so the Knight can become a 4/5 with deathtouch on somebody else's turn. Player 2 lost thirteen, so the Knight banks a counter at your end step too. You end with a card in hand, an engine intact, twelve creatures, and one fewer opponent.",
-      "signals": "Killing a player who is at three is the least controversial kill in Commander. Nobody at the table thinks you were unfair; two of them are quietly relieved.\n\nThe tokens pointed at the control seat are the real statement. You are telling Player 2 that their sweeper is now a defensive card.\n\nAnd the two drains standing untapped behind the attack say the rest. A control player who reads boards for a living will count your creatures, look at Blood Artist and Cruel Celebrant, and realize the wipe has a price tag with their name on it.",
-      "coalition_risk": "Moderate and shrinking. You remove a seat, and the two who remain have twenty and thirty-five life — neither of them feels like the game just ended.\n\nThe cost is that Player 2 now has a reason to wrath on their own turn rather than wait for a better one. Accept that — better, welcome it. On this board their sweeper is twelve deaths, and every one of those deaths pays you through both drains.\n\nPlayer 4 stays comfortable and unbothered, which is exactly where you want the ramp deck while you are trading with the control deck.",
-      "coaching": "Take the kill. Always, when it costs one mana.\n\nAttack Player 2, not Player 4. Player 4 has thirty-eight life and two blockers; Player 2 has no creatures and the one card that unmakes your board. Ten across the red zone turns their sweeper from a tempo play into a panic button.\n\nNow do their math. You end on twelve creatures, and Blood Artist and Cruel Celebrant see every death including their own: death triggers look back at the board before the wipe. Twelve deaths is twelve off each opponent from Celebrant, twelve more from Blood Artist pointed anywhere you like, and twenty-four life to you. Aim them all at the caster and a resolved wrath takes Player 2 from twenty to negative four on their own card. Say none of this out loud. Let them count it.\n\nYes, you are feeding a board a sweeper is coming for: one mana of board, and it removes a player. If the wrath comes anyway, Edgar walks in next turn on six of your seven-plus mana, and every cheap Vampire after him is two bodies again.\n\nKeep Olivia's Wrath in hand for whatever Player 2 rebuilds into — worth far more at their board.",
-      "citations": [
-        {
-          "rule": "704.5a",
-          "quote": "If a player has 0 or less life, that player loses the game."
-        },
-        {
-          "rule": "603.10a",
-          "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities"
-        },
-        {
-          "rule": "strategy:resource-hedging.wrath-math",
-          "quote": "buy resilience instead of restraint where you can"
-        }
-      ]
-    },
-    {
-      "choice": "Hold the Knight and pass with seven mana up",
-      "line": "Cast nothing. Keep Knight of the Ebon Legion in hand so a sweeper cannot two-for-one you, leave the board exactly as the table has already priced it, and plan to go next turn with eight mana — the Knight plus Olivia's Wrath in one turn, or whatever the draw step adds to the count.\n\nPlayer 3 survives at three. Player 2 untaps with five lands and a board they have had a full rotation to plan against.",
-      "signals": "Passing with seven untapped is meant to read as held interaction. Now look at your hand: a creature and two sorceries. There is not one instant in it.\n\nA control player who has been counting your mana since turn three reads that bluff correctly, and the read they take away is that you flinched. That is the most expensive free information you can give a draw-go seat.",
-      "coalition_risk": "Lowest this turn and highest across the next one. Player 3 lives at three, and a midrange deck with nothing left to lose spends its turn making somebody else's problem worse — usually yours, because your board is the one that killed them.\n\nAnd you hand Player 2 the cleanest possible wrath window: your board at its current size, your payoff cards unspent, and a full turn to find a second answer for whatever you deploy after.",
-      "coaching": "This is the branch that loses quietly. Exactly how:\n\nHolding is meant to buy insurance against the wipe. It is already in play. Blood Artist and Cruel Celebrant turn every death into drain, and they fire even as they die: death triggers look back at the board before the sweeper. Buy resilience instead of restraint — you already did. Now spend it.\n\nThe insurance you hope to draw is not coming: you hold protection by turn six in half your games, and this hand is the other half. Nothing here answers a wrath, so the extra turn buys a bigger board to lose, not a safer one.\n\nAgainst control, holding back is the loss: buying time is their plan, and every turn you do not convert brings the card that blanks your board.\n\nHand discipline is real here: eminence pays you for emptying your hand, so overcommitting is the failure mode stitched in. But discipline means holding when committing buys nothing. Take this branch the day the extra turn buys a bigger count: a second converter in hand, or a doubler you have not deployed. You have neither. What you have is a one-mana spell that kills a player.",
-      "citations": [
-        {
-          "rule": "603.10a",
-          "quote": "The artifact’s ability triggers twice, even though the artifact goes to its owner’s graveyard at the same time as the creatures."
-        },
-        {
-          "rule": "strategy:resource-hedging.wrath-math",
-          "quote": "against a control deck, holding back often IS the loss, because buying time is exactly their plan"
-        }
-      ]
-    },
-    {
-      "choice": "Cast the Knight, then clear the ground with your own Olivia's Wrath",
-      "line": "Knight for one, Olivia's Wrath for five. Player 3 dies to the Corpse Knight triggers first, so their 5/5 leaves the game with them — leaves, not dies, so your drains see nothing.\n\nThe Wrath resolves with ten Vampires on your side — four old tokens, two new, the Knight, Legion Lieutenant, Blood Artist and Cruel Celebrant — so every non-Vampire takes minus ten minus ten: Player 4's 4/4 and 2/2, and your own Corpse Knight and Mondrak. Four deaths. Cruel Celebrant sees your two and takes two off each opponent, Blood Artist sees all four and sends four more wherever you point; you gain six.\n\nSwing the four tokens, Legion Lieutenant, Blood Artist and Cruel Celebrant into an empty board for thirteen, putting Player 4 near sixteen. You end one mana up, no cards drawn, and a board of Vampires.",
-      "signals": "Firing your own sweeper tells the table you will burn your engine for damage, which is genuinely intimidating and genuinely expensive information to give away.\n\nIt also tells Player 2 that your best rebuild-buster is gone. A control player who was weighing whether to wrath now or later stops weighing.",
-      "coalition_risk": "You point everything at the highest life total at the table and leave that player alive around sixteen. That is the specific shape of threat that gets you focused without getting you a kill.\n\nAnd you do it with no converter, no doubler and no sweeper left, into an untapped control seat. Their wrath still stings them through the drains — but the board it takes is one that can no longer convert a Vampire cast into anything.",
-      "coaching": "This is a trap with excellent manners, and the drains improve them — so see where it lies.\n\nThe seduction is that the Wrath looks free: your own Corpse Knight and Mondrak dying pay you through Blood Artist and Cruel Celebrant. Six drain, six life, feels clever. Count what you bought. Corpse Knight is why Player 3 died this turn and why every future Vampire is three life off every seat. Mondrak is why one token is two. You are selling the conversion layer for six life and thirteen combat damage at a player on thirty-eight.\n\nThat kills nobody. Commit exactly as much as wins before the wrath arrives and no further — this commits everything and wins nothing.\n\nBoard quality beats board quantity in a four-player game. A pile of 2/2 tokens without the converter behind them is a fair board, and a fair board against two remaining opponents is somebody else's job.\n\nSave Olivia's Wrath for the board it was written for: an opponent's creature deck, with your own non-Vampires either uncast or already spent. It is a one-sided sweeper only on the turn you make it one.",
-      "citations": [
-        {
-          "rule": "704.5f",
-          "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
-        },
-        {
-          "rule": "800.4a",
-          "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
-        },
-        {
-          "rule": "strategy:multiplayer.asymmetry",
-          "quote": "board quality beats board quantity (Walser), because a single scaling permanent out-values a fair board against three players"
-        },
-        {
-          "rule": "strategy:resource-hedging.wrath-math",
-          "quote": "commit exactly as much as wins before it arrives, no further"
-        }
-      ]
-    }
+  "hand": [
+   "Viscera Seer",
+   "Vein Ripper",
+   "Olivia's Wrath"
   ],
-  "recommendation": {
-    "choice": "Cast Knight of the Ebon Legion, take the kill, and turn the tokens toward Player 2",
-    "rationale": "One black mana removes a player from the game. There is no version of this turn where that is the wrong first act.\n\nThe sweeper fear is the thing worth arguing with, because on this board it points the other way twice. First: your converter and your doubler are creatures, so waiting does not protect them — it only means they die unspent. A converter that has already killed a player is a card you got full value from. Second: Blood Artist and Cruel Celebrant turn the wipe itself into your play. Twelve creatures after this turn means a resolved wrath drains each opponent for twelve from Cruel Celebrant, hands Blood Artist twelve more triggers to aim, and gains you twenty-four — point the Artist at the caster and their own sweeper can kill them. The wrath is no longer their exit; it is your second engine.\n\nThis is also the assembled game: converter plus multiplier is on the battlefield here, which the record says happens in fifty-seven percent of your games — when the engine shows up, spend it. And nothing in your hand answers a sweeper anyway, so restraint buys you exactly nothing you can name. If the board does go down, Edgar comes off the command zone next turn and rebuilds two bodies at a time.\n\nThe direction of the attack is the other half of the call. Player 2 has no creatures and holds the answer; ten damage puts them at twenty and turns their sweeper into a card they need rather than a card they choose. Player 4 has two blockers, thirty-eight life and no interaction showing — let them stay comfortable.\n\nAnd leave Olivia's Wrath in your hand. Firing it here sells Corpse Knight and Mondrak for six drain and thirteen damage at the wrong seat. That is everything committed for nothing won.\n\nGo now. Take the kill, keep the engine, keep the sweeper — and make the control seat do the arithmetic on a board that charges them by the body."
+  "mana_available": "7 (six untapped lands + Arcane Signet)",
+  "stack": [],
+  "extras": "Count the entries. One Vampire spell cast is one eminence token, Anointed Procession makes it two, and Wispdrinker Vampire reads 'whenever another creature you control with power 2 or less enters' — each 1/1 that enters is a trigger, and so is the cast creature itself when its power is 2 or less. Viscera Seer is a 1/1, so one black mana is three Wispdrinker triggers on the one-trigger-per-occurrence reading (CR 603.2c); no stack has walked a doubled eminence event through Wispdrinker yet (engine.json lists it as an open question), so every count below is also given under the one-trigger-per-event reading, which is one less per doubled event. Cruel Celebrant (each opponent loses 1, your creatures only) and Vraan (each opponent loses 2, your creatures, once each turn) read deaths, their own included: leaves-the-battlefield triggers look back (CR 603.10a). Anowon's upkeep makes each player sacrifice a non-Vampire; every creature you control is a Vampire. Captivating Vampire's steal taps five untapped Vampires, summoning-sick ones included: CR 302.6 restricts only a creature's own tap-symbol abilities. Olivia's Wrath is one-sided here: the 99's non-Vampire creatures are Enduring Tenacity, Erebos, Ingris Stingerquill and Morbid Opportunist, none of them on this board. Vein Ripper drains 2 to a target opponent on ANY creature's death and carries ward — sacrifice a creature; Player 2 controls no creature to pay it with.",
+  "question": "Player 3 is at three and one black mana — Viscera Seer — kills them before combat. Player 2 has held five lands for two turns. Do you cast the Seer now and take the kill, hold the hand and go next turn on eight mana, or cast the Seer and clear Player 4's blockers with your own Olivia's Wrath?"
+ },
+ "branches": [
+  {
+   "choice": "Cast Viscera Seer, take the kill, and turn the tokens toward Player 2",
+   "line": "One black mana. Eminence makes a token, Procession makes it two, and Wispdrinker fires for the Seer and for each token: three triggers, every opponent loses 3, and Player 3 was at three. Gone before you touch combat. If the table reads the doubled event as one trigger, sacrifice one token to the Seer you just cast: Celebrant drains 1, Vraan drains 2, same result.\n\nAttack Player 2 with the four 2/2 tokens, Anowon and Wispdrinker. No blockers, sixteen damage: 33 to 30 on the triggers, 30 to 14 in combat. Celebrant, Vraan, Captivating and the Seer stay home.\n\nPostcombat, cast Vein Ripper with the six you have left: two more tokens, two more Wispdrinker triggers (Player 2 to 12), a 6/5 flyer, and every death from now on bills a target opponent 2. Keep Olivia's Wrath in hand.",
+   "signals": "Killing a player at three is the least controversial kill in Commander. Nobody at the table thinks you were unfair; two of them are quietly relieved.\n\nThe tokens pointed at the control seat are the statement. You are telling Player 2 that their sweeper is now a defensive card.\n\nThe Seer beside Celebrant and Vraan says the rest. A control player who reads boards for a living counts fifteen creatures, a free outlet and two death drains, and prices the wipe before casting it.",
+   "coalition_risk": "Moderate and shrinking. You remove a seat, and the two who remain are at 12 and 33 — Player 4 does not feel the game just ended.\n\nThe cost is that Player 2 now has a reason to wrath on their own turn rather than wait. Welcome it. Fifteen creatures die into Celebrant, Vraan and Vein Ripper, and every one of those deaths pays you.\n\nPlayer 4 stays comfortable and unbothered, which is where you want the ramp deck while you trade with the control deck.",
+   "coaching": "Take the kill. Always, when it costs one mana.\n\nAttack Player 2, not Player 4. Player 4 has 38 life and two blockers; Player 2 has no creatures and the one card that unmakes your board. Sixteen across the red zone turns their sweeper from a tempo play into a panic button.\n\nNow do their math. You end on fifteen creatures. Death triggers look back at the board before the wipe, so Celebrant drains each opponent 15, Vraan 2, and Vein Ripper hands you fifteen triggers of 2 to aim. Player 2 at 12 is dead on Celebrant alone; Player 4 at 33 takes 17 and then whatever of Ripper's 30 you point at them. A resolved sweeper kills the table. If it exiles or bounces instead, sacrifice everything to the Seer in response: a sacrificed creature dies, an exiled one does not. Say none of this out loud. Let them count it.\n\nYes, you are committing into a sweeper. The rebuild is in the command zone, where no wipe reaches: Edgar next turn on six of your eight.\n\nAfter combat you still have six untapped Vampires. At the end of the turn before yours, tap five and take Player 4's 4/4.",
+   "citations": [
+    {
+     "rule": "704.5a",
+     "quote": "If a player has 0 or less life, that player loses the game."
+    },
+    {
+     "rule": "603.2c",
+     "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+    },
+    {
+     "rule": "603.10a",
+     "quote": "Some zone-change triggers look back in time. These are leaves-the-battlefield abilities"
+    },
+    {
+     "rule": "700.4",
+     "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+    },
+    {
+     "rule": "strategy:resource-hedging.wrath-math",
+     "quote": "buy resilience instead of restraint where you can"
+    },
+    {
+     "rule": "strategy:aristocrats.wipe-insurance",
+     "quote": "a wrath on the stack is answered by sacrificing the whole board in response"
+    }
+   ]
   },
-  "presentable": true
+  {
+   "choice": "Hold the hand and pass with seven mana up",
+   "line": "Cast nothing. Keep Viscera Seer and Vein Ripper in hand so a sweeper cannot take them, leave the board exactly as the table has already priced it, and go next turn on eight mana: Ripper and the Seer in one turn, or the Seer and Olivia's Wrath, plus whatever the draw step adds.\n\nAnowon's upkeep fires either way: Player 3 sacrifices the 5/5, Player 4 one of their two blockers, you nothing — every creature you control is a Vampire.\n\nPlayer 3 survives at three. Player 2 untaps with five lands and a board they have had a full rotation to plan against.",
+   "signals": "Passing with seven untapped is meant to read as held interaction. Now look at your hand: two creatures and a sorcery. There is not one instant in it.\n\nA control player who has been counting your mana since turn three reads that bluff correctly, and the read they take away is that you flinched. That is the most expensive free information you can give a draw-go seat.",
+   "coalition_risk": "Lowest this turn and highest across the next one. Player 3 lives at three, and a midrange deck with nothing left to lose spends its turn making somebody else's problem worse — usually yours, because your board is the one that put them there: removal on Wispdrinker or Vraan, or their own sweeper.\n\nAnd you hand Player 2 the cleanest possible wrath window: your board at its current size with no outlet on it, your payoff cards unspent, and a full turn to find a second answer for whatever you deploy after.",
+   "coaching": "This is the branch that loses quietly.\n\nHolding is meant to buy insurance against the wipe. The insurance is the card you are holding. Viscera Seer on the battlefield turns any sweeper — destroy, exile, bounce — into sacrifices, a sacrificed creature dies, and Celebrant and Vraan fire on every one. In your hand it does nothing.\n\nThe instant you hope to draw is not on schedule: you hold protection by turn six in 45.1% of games, and this hand is the other half. Nothing here answers a wrath, so the extra turn buys a bigger board to lose, not a safer one.\n\nAgainst control, holding back is the loss: buying time is their plan, and every turn you do not convert brings the card that blanks your board.\n\nDiscipline means holding when committing buys nothing. Take this branch the day the extra turn buys a table kill rather than a bigger count: a loop half in hand with its partner on the battlefield — Bloodthirsty Conqueror beside Vito, Sanguine Bond or Enduring Tenacity (stacks 004, 006, 012). You have neither. What you have is a one-mana Vampire that kills a player.",
+   "citations": [
+    {
+     "rule": "603.10a",
+     "quote": "The artifact’s ability triggers twice, even though the artifact goes to its owner’s graveyard at the same time as the creatures."
+    },
+    {
+     "rule": "700.4",
+     "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+    },
+    {
+     "rule": "strategy:resource-hedging.wrath-math",
+     "quote": "against a control deck, holding back often IS the loss, because buying time is exactly their plan"
+    }
+   ]
+  },
+  {
+   "choice": "Cast the Seer, then clear Player 4's blockers with your own Olivia's Wrath",
+   "line": "Seer for one, Olivia's Wrath for five, one mana floating. Player 3 dies to the Wispdrinker triggers first, so their 5/5 leaves the game with them — leaves, not dies, so no drain sees it.\n\nThe Wrath resolves with twelve Vampires on your side — four old tokens, two new, the Seer, Wispdrinker, Celebrant, Vraan, Captivating, Anowon — so every non-Vampire gets -12/-12: Player 4's 4/4 and 2/2 die. Nothing of yours is touched. Celebrant and Vraan read only your creatures and Vein Ripper is in hand, so those two deaths pay you nothing.\n\nSwing the four tokens, Anowon and Wispdrinker into two empty boards: sixteen damage, split as you like — Player 2 to 14, or Player 4 to 19. You end with one mana, Vein Ripper uncast, and the Wrath spent.",
+   "signals": "Firing your own sweeper tells the table you will spend a card to clear a path, which is genuinely intimidating and genuinely expensive information to give away.\n\nIt also tells Player 2 that your one answer to a rebuilt board is gone. A control player who was weighing whether to wrath now or later stops weighing.",
+   "coalition_risk": "You point everything at two seats and kill neither, and you do it tapped out with Vein Ripper in hand, into an untapped control seat. Their wrath still pays through Celebrant and Vraan — 12 and 2 — but the 30 Ripper would have aimed is sitting in your hand.\n\nPlayer 4 goes from unbothered to a target at 19 with no board, which is the shape of threat that gets you focused without getting you a kill.",
+   "coaching": "This is a trap with better manners than it used to have, because the Wrath is one-sided now: the 99's non-Vampires are Enduring Tenacity, Erebos, Ingris Stingerquill and Morbid Opportunist, and none is on this board. So count what it buys. Two blockers on a seat at 35, so sixteen damage can split between two seats that are not dying this turn.\n\nNow count what the board already does to those blockers for free. Anowon's upkeep eats one of them next turn. Captivating Vampire's steal takes the other at instant speed — five untapped Vampires, summoning-sick ones included — and makes it a Vampire your Wrath would never have touched.\n\nFive mana here is Vein Ripper not cast, and Ripper is the card that turns Player 2's sweeper into thirty aimed drain. Commit exactly as much as wins before the wrath arrives and no further: the Wrath commits a card and wins nothing. Your cards should do something to all three seats or win the game.\n\nSave Olivia's Wrath for the board it was written for: an opponent's rebuilt creature deck, on a turn your side is still all Vampires.",
+   "citations": [
+    {
+     "rule": "704.5f",
+     "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+    },
+    {
+     "rule": "800.4a",
+     "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+    },
+    {
+     "rule": "302.6",
+     "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+    },
+    {
+     "rule": "strategy:resource-hedging.wrath-math",
+     "quote": "commit exactly as much as wins before it arrives, no further"
+    },
+    {
+     "rule": "strategy:multiplayer.asymmetry",
+     "quote": "Your cards should do something to all three seats or win the game; anything else is someone else's job."
+    }
+   ]
+  }
+ ],
+ "recommendation": {
+  "choice": "Cast Viscera Seer, take the kill, and turn the tokens toward Player 2",
+  "rationale": "One black mana removes a player from the game. There is no version of this turn where that is the wrong first act.\n\nThe sweeper fear is the thing worth arguing with, because on this board it points the other way twice. First: your drains are creatures, so waiting does not protect them — it only means they die unspent, and the outlet that makes their deaths yours to time is the card in your hand, not on the battlefield. Second: once the Seer, Celebrant, Vraan and Vein Ripper are out, the wipe itself is your play. Fifteen deaths is 15 off each opponent from Celebrant, 2 from Vraan, and fifteen Ripper triggers of 2 to aim; Player 2 at 12 dies to Celebrant alone, Player 4 at 33 dies to the rest. The wrath is no longer their exit; it is your second engine, and if it exiles or bounces the Seer makes it a wrath anyway.\n\nThis is also the assembled game. The token multiplier is drawn in 37.1% of games and a death drain in 60.4%, and nothing measures the pair; this board has both, and a Wispdrinker beside them. Unopposed, the goldfish kills a seat by turn seven in 19.0% of games — you are ahead of your own clock. When the engine shows up, spend it. Nothing in your hand answers a sweeper anyway (protection by turn six: 45.1% of games), so restraint buys nothing you can name. If the board does go down, Edgar comes off the command zone next turn on eight mana and rebuilds two bodies at a time.\n\nThe direction of the attack is the other half of the call. Player 2 has no creatures and holds the answer; sixteen damage puts them at 14 and turns their sweeper into a card they need rather than a card they choose. Player 4 has two blockers, 38 life and no interaction showing — let them stay comfortable, and take their 4/4 with Captivating Vampire at the end of the turn before yours.\n\nAnd leave Olivia's Wrath in your hand. Anowon and Captivating already answer the blockers it would kill, and the five mana is Vein Ripper. Go now. Take the kill, keep the engine, keep the sweeper — and make the control seat do the arithmetic on a board that charges them by the body."
+ },
+ "presentable": true
 }
