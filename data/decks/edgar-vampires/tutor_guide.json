@@ -1,84 +1,301 @@
 {
- "slug": "edgar-vampires",
- "decklist_sha256_prefix": "7be137d0",
- "model_version": "5496ad1975b1",
- "assessment": "One wish. Four cards in the 99 carry a library search, enumerated over all 96 entries by oracle text. Bloodstained Mire and Marsh Flats fetch a land, which is mana-analysis's business. Path to Exile hands the search to the creature's controller. Vampiric Tutor is the wish: {B}, instant, any card, on top of your library, two life and your next draw. deck-audit's tutors axis reads 1 copy.\n\nThe top-of-library clause sets the timing. Cast it at the last window before a draw you control: an opponent's end step before your untap, or your own upkeep. Then the card you bought is the card you draw. With Herald's Horn naming Vampire, cast it in your upkeep with the Horn's trigger on the stack: the Tutor resolves first, the Horn's look puts a Vampire creature card into your hand, and your draw step is still yours. Three of the four fetches below are Vampire creatures.\n\nWhere it points. The deck's own components are deep and the wish is not for them: a castable Vampire is drawn in 95.0% of games at mean turn 2.219, a draw engine in 83.5%, a lord or counter payoff in 80.0%, a free sacrifice outlet in 72.3%, a token multiplier in 67.9% (goldfish, seed 42, 10,000 games, model 5496ad1975b1, decklist 7be137d0). Three things are thin, and the assisted figure beside each is this one card and nothing else: a death drain, 37.2% unassisted against 48.2% assisted; Bloodthirsty Conqueror with a lifegain-loss half, 7.8% against 15.1%; Bloodletter of Aclazotz with Sanctum Seeker, 4.1% against 9.4%. engine.json draws the same gap as its fuel-to-wincon arrow and marks it a reading: the routes it points at have passing stacks (003, 004, 006); the act of tutoring into them does not.\n\nTwo things v1.1.1 did not change. Both verified kill routes still rest on one card each, and deck-audit prices Conqueror and Bloodletter as the deck's two single points of failure. The deck still holds one tutor. Elenda, the Dusk Rose and Blade of the Bloodchief came in as death payoffs; neither is in a passing stack, nothing measures either, and neither is a wish here.\n\nOne decision the numbers do not make. The pilot's direction says the lifegain infinite is out and drain is a theme; the 99 still holds Conqueror with Vito and with Sanguine Bond, both checker-passed. Log 004 lost to a tutored two-card infinite and the pilot wants a pod norm against them. Pointing this deck's only search at Conqueror is that move from the other chair. The Conqueror wish below is written for the board where the loop is the correct play. Whether it is the permitted play is a table call.",
- "tutors": [
-  {
-   "card": "Vampiric Tutor",
-   "notes": "{B}, instant, any card, on top, two life and your next draw. It reveals nothing, and there is no counterspell in the 99 to fight over it, so the only protection the wish has is that nobody sees it. Four rules. (1) Cast it at the end step before your untap or in your own upkeep, never earlier: a card on top for a turn is a card in removal range with a turn's warning. (2) Cast it only when you will cast the fetched card the turn it arrives. (3) Never buy a component the deck already finds; the rates above 67% are not what this card is for. (4) Read the black mana before the wish: 32 black sources against a 36 target (deck-audit colour-sources, Karsten 90%), black on curve 0.855 with rocks and 0.785 on lands alone (mana_analysis), and the two casts most worth buying are {1}{B}{B}{B} and {3}{B}{B}. Master of Dark Rites pays either: tap and sacrifice another creature for {B}{B}{B}, spendable on Vampire, Cleric and Demon spells. Bloodletter is a Vampire Demon, Conqueror a Vampire Knight, Celebrant a Vampire, and the token the Rites eats is a death, so Cordial Vampire, Elenda and the Blade are paid on the way. Pay the Tutor's two life without thinking about it early; stop paying life the turn a pinger or a drain seat is in range (log 005). When the read on an opponent is a wipe rather than a race, the behind fetch is Teferi's Protection instead of Despark: it is the only card in the 99 that phases out your permanents and stops your life total changing (enumerated over all 96 entries), and of the five protection cards it and Boros Charm are the two that reach Anointed Procession, Sanguine Bond and Elspeth; Flawless Maneuver and Akroma's Will name creatures only.",
-   "targets": [
+  "slug": "edgar-vampires",
+  "model_version": "b025d0102196",
+  "assessment": "Four wishes. Four cards in the 99 search the library for something other than a land, enumerated over all 98 entries by oracle text: Vampiric Tutor ({B}, instant, any card, on top, you lose 2), Demonic Tutor ({1}{B}, sorcery, any card, to hand), Enlightened Tutor ({W}, instant, an artifact or enchantment card, revealed, on top) and Diabolic Intent ({1}{B}, sorcery, any card, to hand, sacrifice a creature as an additional cost). The five fetch lands search for lands and Path to Exile hands its search to the creature's controller; neither is a wish. deck-audit's tutors axis reads 4.\n\nWhat they are for. The game ends when a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) sits beside a gain-to-loss half (Vito, Thorn of the Dusk Rose; Sanguine Bond; Enduring Tenacity; Marauding Blight-Priest) and anything gains you life. Three pairings are fact and all three run through Conqueror: stack 004 with Vito, 006 with Sanguine Bond, 012 with Tenacity. Each is deterministic, shortcut-legal, costs no mana, kills the table from any nonzero gain and carries on when a seat dies mid-loop. The Exquisite Blood pairings passed the checker on older boards (001 with Vito, 005 with Bond) and engine.json withholds them until a current board is re-run; the Blight-Priest pairings have no stack. A pair is drawn in 22.1% of games unassisted and 10.8% by turn six (mean turn 5.98); with a tutor, 57.3% and 33.3% (mean 5.653) (goldfish, seed 42, 10,000 games, model b025d0102196, decklist a872115f). That 35-point gap is these four cards, and the assisted column credits them together, so no figure here is one tutor's own.\n\nWhere not to point them. Six components are above 60% unassisted: a castable Vampire 84.9%, ramp 75.8%, a draw engine 75.2%, a free outlet 69.1%, protection 60.6%, a death drain 60.4%. Three are not: a token multiplier 37.1%, the noncreature answer 20.3% (one card, Anguished Unmaking, 66.6% assisted, the widest assisted gap in the artifact), Bloodletter with Sanctum Seeker 4.5%. The wishes below point at the loop, at the three thin components, and at four cards for boards where the loop is the wrong card: Anguished Unmaking, Teferi's Protection, Olivia's Wrath, Liliana, Dreadhorde General.\n\nWhich half. With a converter out the fetch is Conqueror; nothing else on the fact tier closes. With Conqueror out, the converter is a choice of three verified cards and the choice is what the table has shown: Vito costs {2}{B} and is a 1/3; Sanguine Bond costs {3}{B}{B} and is never a creature; Enduring Tenacity costs {2}{B}{B} and comes back as an enchantment when it is destroyed or shrunk to death (stack 012). Destroy shown: Tenacity. Exile or bounce shown: Bond. Five mana and a tapped-out table: Vito.\n\nTiming. Vampiric and Enlightened put the card on top, so cast them at the end step of the player to your right or in your own upkeep; the card is then this turn's draw. Demonic and Intent put it in hand on your main phase, and the fetched card can be cast the same turn when the mana is there: Demonic or Intent plus Vito is five, plus Tenacity six, plus Bond or Conqueror seven. Mean available mana reads 5.323 on turn five, 6.045 on six, 6.73 on seven, 7.454 on eight. Intent is also a death: its cost fires Cruel Celebrant, Vraan, Blood Artist and Vein Ripper before the search resolves, and with Conqueror out those drains are gains.\n\nThe life. Vampiric costs 2, Anguished Unmaking 3, and the painlands and Talismans bill you every turn. Pay freely while every seat is above 25. Stop the turn a drain seat or a pinger has you in range: log 005 was lost to pings on an older list.",
+  "tutors": [
     {
-     "scenario": "The end step of the opponent to your right, turn four. Viscera Seer, Cordial Vampire and three eminence tokens are on your battlefield. No card that drains on a death is on the board or in your hand. Every opponent is above 30. The Dimir seat has held four mana open for two turns and cast nothing. You have one black source untapped now and {W}{B} free on your turn.",
-     "fetch": "Cruel Celebrant",
-     "why": "You have the outlet and no bill. The deck holds exactly two cards that turn a death into life loss, Blood Artist and Cruel Celebrant, and they are the whole of the goldfish's death-drain component: one of them is drawn in 37.2% of games, 25.2% by turn six, mean turn 4.305; with the wish, 48.2% and 34.3%. That is the thinnest component in the deck apart from the two one-card kill routes, and unlike the components above 67% it is one this card can replace.\n\nCelebrant over Blood Artist, and the reason is oracle text: Blood Artist drains one target player per death, Celebrant each opponent. Three to one in a pod. Celebrant also gains you one per death, and with Vito or Sanguine Bond out that gain is a second point of loss on a seat you choose.\n\nSay the read. Four open mana in a seat that has cast nothing for two turns is a sweeper in this model, not a fact on the board. If it is a sweeper, Celebrant makes it pay: every creature you lose drains each opponent for one, and Edgar rebuilds from the command zone. If it is a counterspell, the wish was cast at an end step and revealed nothing.\n\nThe limit. engine.json's conversion-to-output arrow (an outlet, Blood Artist, Cruel Celebrant) carries no verified_by, no artifact measures an outlet and a payoff together, and the goldfish does not model a death drain at all. The rates above are for cards being drawn. Needs a stack scenario.",
-     "citations": [
-      {
-       "rule": "strategy:multiplayer.asymmetry",
-       "quote": "Your cards should do something to all three seats or win the game"
-      },
-      {
-       "rule": "strategy:resource-hedging.wrath-math",
-       "quote": "buy resilience instead of restraint where you can"
-      }
-     ]
+      "card": "Vampiric Tutor",
+      "notes": "{B}, instant, any card, on top, 2 life, and your next draw is the card. It reveals nothing. Four rules. (1) Cast it at the end step of the player to your right or in your own upkeep, never earlier: a card on top for a full round is a card the table has a round to answer. (2) Cast it only when you will cast the fetched card the turn it arrives; count that mana now. (3) Never buy what the deck already finds; the six components above 60% are not what this card is for. (4) Read the black. 37 black sources against a Karsten target of 36, black on curve 0.916 with rocks (mana_analysis), and the casts most worth buying are {3}{B}{B} (Conqueror, Bond), {2}{B}{B} (Tenacity) and {1}{B}{B}{B} (Bloodletter). Master of Dark Rites pays the creature ones: tap and sacrifice another creature for {B}{B}{B}, spendable on Vampire, Cleric and Demon spells. Conqueror is a Vampire Knight, Vito a Vampire Cleric, Bloodletter a Vampire Demon; Tenacity is a Snake Glimmer and Bond is an enchantment, and the Rites pay neither. One line nobody measures: with Twilight Prophet out and the city's blessing, the card you put on top is revealed in your upkeep, goes to your hand, and drains each opponent its mana value. Conqueror is 5. goldfish meta lists Prophet under drain_not_modelled and no stack walks it.",
+      "targets": [
+        {
+          "scenario": "End step of the player to your right, turn six. Vito, Thorn of the Dusk Rose has been on your battlefield since turn four. Cruel Celebrant, Viscera Seer and two eminence tokens stand beside him; Edgar is in the command zone. Opponents at 31, 27 and 14. The seat at 27 has passed with four open on each of the last two turns and cast nothing at your end step; the other two tap out every turn. You have six lands and Orzhov Signet: one black source untapped now, {3}{B}{B} plus two free on your turn.",
+          "fetch": "Bloodthirsty Conqueror",
+          "why": "Conqueror is the only loss-to-gain half on the fact tier (004, 006 and 012 all run through him; the Exquisite Blood stacks are withheld), and with Vito out the pair is stack 004: Vito drains, Conqueror gains it back, Vito triggers again, each trigger aimed afresh, and the chain crosses a seat's death. The seed is already on your board. Sacrifice a token to Viscera Seer: Celebrant gains you 1, Vito drains 1 from the seat you name, Conqueror gains 1. The triggers are mandatory, so once Conqueror resolves the next death is the game. From a 1-life seed the seat at 14 takes 14 iterations; the stack proves the walk, not this board's count.\n\nRates: a pair drawn in 22.1% of games unassisted, 57.3% assisted; 10.8% by turn six against 33.3%; mean turn 5.98 against 5.653. The assisted figures credit all four tutors together.\n\nThe price is the seat at 27. Four open for two turns and nothing cast is a held instant in this model, and Conqueror is a 5/5 creature: stack 004 names every iteration's priority window as a window for creature removal. So the fetch is right now and the cast is not yet. Cast him the turn you also hold Deflecting Swat or Flawless Maneuver with Edgar on the battlefield, or the turn that seat taps below two. strategic_frame.json reads the free clause as needing Edgar on the battlefield, not in the command zone, and no stack has settled that; with Edgar in the zone, count both spells at full price. Teferi's Protection is not cover here: it phases out your own loop. The assumption stated: four open twice is removal. If it is a counterspell, a tutor at the end step gave it nothing to see.",
+          "citations": [
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+            },
+            {
+              "rule": "115.1d",
+              "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+            },
+            {
+              "rule": "732.1b",
+              "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+            }
+          ]
+        },
+        {
+          "scenario": "End step of the player to your right, turn seven. Bloodthirsty Conqueror resolved on your turn and survived; no converter is out. Blood Artist and three tokens stand beside him. Opponents at 30, 22 and 18. The seat at 22 is mono-black and has destroyed two of your creatures this game; nobody has shown exile or bounce. You have seven lands: one black source untapped now, {2}{B}{B} plus three free on your turn.",
+          "fetch": "Enduring Tenacity",
+          "why": "Three converters are verified beside Conqueror and this board picks Tenacity. Stack 012 walks it: from a 2-life seed, 6 resolutions kill a seat at 12 and 15 more kill a seat at 30, each trigger aimed afresh, and the difference from Vito (004) and Bond (006) is what happens when the table shoots the converter. Destroy or -X/-X on Tenacity puts it in the graveyard as a creature; its own trigger returns it as an enchantment with the drain sentence intact, and the loop does not pause. The stack lists what does break that half: exile, bounce, a countered return trigger, enchantment removal after the return, or any removal on Conqueror. The mono-black seat's two destroy effects are the signal: against that seat, Tenacity is the converter that does not stay dead.\n\nWhy not Sanguine Bond: {3}{B}{B} against {2}{B}{B}, and against destroy both are safe. Fetch Bond instead when a seat shows exile or bounce, which takes Tenacity for good and Bond only with an enchantment answer. Why not Vito: cheapest at {2}{B}, and a 1/3 that dies to everything this table has shown. Mean mana on turn seven reads 6.73; Tenacity leaves three open, enough for Flawless Maneuver at full price if Edgar is not out.\n\nThe seed: Blood Artist gains you 1 on any creature's death, theirs included, so with Tenacity resolved the next death anywhere starts the loop. Name the seat before the first trigger resolves; the target is chosen per iteration, and a gain of 0 is not a gain.",
+          "citations": [
+            {
+              "rule": "strategy:conversion.durability",
+              "quote": "put the converter on a type the wipe does not read"
+            },
+            {
+              "rule": "119.9",
+              "quote": "If a player gains 0 life, no life gain event has occurred, and these abilities won’t trigger."
+            },
+            {
+              "rule": "115.1d",
+              "quote": "A triggered ability is targeted if it identifies something it will affect by using the phrase “target [something],” where the “something” is a phrase that describes an object and/or player. The target(s) are chosen as the ability is put on the stack; see rule 603.3d."
+            }
+          ]
+        },
+        {
+          "scenario": "End step of the player to your right, turn five. The Dimir seat across from you plays the two-card infinite that closed log 004; one half has been on their battlefield since turn three and they tutored at their own end step last turn. Your hand is two Vampires and a land, no removal. Your board is Tithe Drinker, Viscera Seer and two tokens. Opponents at 36, 33 and 31; you are at 34. You have five lands: one black untapped now, {1}{W}{B} plus two free on your turn.",
+          "fetch": "Anguished Unmaking",
+          "why": "Fetch the answer, not the threat. Anguished Unmaking is the one card in the 99 that exiles any nonland permanent, enumerated over deck-audit's interaction axis: Path to Exile and Elspeth's -3 need a creature, Vish Kal's counters and Erebos's -2/-1 need a creature, Olivia's Wrath reads non-Vampire creatures, Anowon and Liliana are edicts, Deflecting Swat retargets. The noncreature-answer component is 20.3% drawn and 13.3% by turn six; 66.6% and 48.6% assisted, the widest assisted gap the goldfish reports, and it is this one card. A tutor at the end step reveals nothing; Unmaking is drawn on your turn and held as an instant with three open.\n\nAgainst a combo seat the held answer rots. The last profitable moment is the half you can see, before the second one lands: exile it at their upkeep, or in response to the second half's cast if you can see it coming. Life: Unmaking costs 3 and the tutor 2, and at 34 against a table above 30 that is currency.\n\nTeferi's Protection is the other card this tutor could buy: it stops your life total changing until your next turn and does nothing to the piece, so it buys one turn and Unmaking buys the game. The assumption stated: their end-step tutor fetched the second half. If it fetched mana, Unmaking still exiles the half on board and the loop you fear is one card further away.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "against combo, or lethal already on board, the last profitable moment is now"
+            },
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "killing the scariest creature instead of the one that beats you"
+            },
+            {
+              "rule": "117.1a",
+              "quote": "A player may cast an instant spell any time they have priority. A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+            }
+          ]
+        },
+        {
+          "scenario": "End step of the player to your right, turn seven. Bloodthirsty Conqueror was exiled on turn six and Vito is in your graveyard. Sanctum Seeker, Edgar Markov (cast turn five), Cordial Vampire and four tokens: seven Vampires that can attack on your turn. Master of Dark Rites is untapped beside them with a token to feed it. The seat to your left is at 14 with two untapped creatures; the others are at 20 and 24. You have seven lands: one black untapped now, {1}{B}{B}{B} plus three free on your turn.",
+          "fetch": "Bloodletter of Aclazotz",
+          "why": "Stack 003 is this arithmetic. Seven attacking Vampires give seven Sanctum Seeker triggers; on your turn Bloodletter's replacement doubles each opponent's loss, so each seat loses 14 before blockers are declared and the seat at 14 is dead by state-based actions. Your own gain is not doubled: the text replaces an opponent's loss only. Bloodletter flies and has no haste, so he is not the seventh attacker the turn he lands; the seven here are the seven you already have. Count them again without him: six attackers is 12 a seat and the seat at 14 lives on 2.\n\nThe loop is off the table on this board, so this is the route. Its measured component, Bloodletter with Sanctum Seeker, is 4.5% assembled, 1.9% by turn six, mean turn 6.462; 33.0% and 15.9% assisted. The doubler also reads every other loss on your turn: Blood Artist, Celebrant, Vraan, Vein Ripper, Wispdrinker, Ingris, Tithe Drinker's extort. No artifact measures those pairs; engine.json proposes widening the component.\n\n{1}{B}{B}{B} is one of two triple-black costs in the 99 (Vein Ripper is the other) and Master of Dark Rites pays it: tap, sacrifice the token, {B}{B}{B} for Vampire, Cleric and Demon spells, and Bloodletter is a Vampire Demon. The token the Rites eat is a death for Cordial Vampire: a counter on every Vampire before the attack. The assumption stated: the two untapped creatures at the 14 seat block two of your seven. The drain is on attack and does not care.",
+          "citations": [
+            {
+              "rule": "614.1a",
+              "quote": "Effects that use the word “instead” are replacement effects."
+            },
+            {
+              "rule": "strategy:multiplayer.asymmetry",
+              "quote": "each-opponent drains are the payoffs that actually scale"
+            },
+            {
+              "rule": "704.5a",
+              "quote": "If a player has 0 or less life, that player loses the game."
+            }
+          ]
+        }
+      ]
     },
     {
-     "scenario": "The end step of the opponent to your right, turn seven. Vito, Thorn of the Dusk Rose has been on your battlefield since turn four and has not been answered. Cruel Celebrant and Viscera Seer are beside him with two eminence tokens. Opponents are at 30, 26 and 9. You have seven lands, one black source untapped now and {3}{B}{B} free on your turn. No seat has left mana open at your end step since turn four.",
-     "fetch": "Bloodthirsty Conqueror",
-     "why": "This is the fetch that ends the game, and it is checker-passed twice. Stack 004 resolves Conqueror beside Vito as a deterministic, shortcut-legal table kill at zero additional mana from a 3-life seed, and the loop crosses an opponent's death mid-iteration. Stack 006 proves the same loop with Sanguine Bond in Vito's place. Both share one body, which is why Conqueror is the half to fetch: Vito and Sanguine Bond are interchangeable and Conqueror is not. On this board the seed is already there. Sacrifice a token to Viscera Seer: Celebrant gains you 1, Vito drains 1, Conqueror gains 1, and the triggers are mandatory. engine.json files that as a candidate line; whether you can decline it once all three are out needs a stack scenario.\n\nRates: 7.8% of games unassisted, 15.1% with the wish; 3.4% by turn six against 6.9%; mean turn 6.385. Carry the ticket; do not steer the whole game toward it.\n\nThree prices. He lands the turn AFTER the search, so this is a two-turn commitment announced by a card you did not reveal. He is a 5/5 creature, so every iteration's priority window admits instant-speed creature removal; stack 004 names that cost in its own resolution. And {3}{B}{B} on seven lands leaves two, in a deck that has interaction castable at turn six in 26.9% of games.\n\nThe assumption: three end steps with no mana open is read as a table with no instant-speed answer up. That is a model of the table, not a fact about it. The table call in the assessment applies here more than anywhere.",
-     "citations": [
-      {
-       "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-       "quote": "tutor only the irreplaceable"
-      },
-      {
-       "rule": "strategy:multiplayer.pivot-window",
-       "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
-      }
-     ]
+      "card": "Demonic Tutor",
+      "notes": "{1}{B}, sorcery, any card, to hand, no life. The tutor that lets the fetch and the cast share a turn: Vito at five mana, Tenacity at six, Sanguine Bond or Conqueror at seven, Olivia's Wrath at seven. Mean mana reads 5.323 at turn five, 6.045 at six, 6.73 at seven, 7.454 at eight. The cost is information: the table watches a sorcery resolve in your main phase and then watches what you cast. When the fetched card is one you will hold rather than cast, prefer Vampiric at the end step; when it is one you cast this turn into a tapped-out table, this is the card.",
+      "targets": [
+        {
+          "scenario": "Your first main phase, turn five, after the land drop. Bloodthirsty Conqueror has been on your battlefield since turn four and nobody answered him. Cruel Celebrant, Viscera Seer and one eminence token are beside him; Edgar is in the command zone. Opponents at 34, 29 and 20; every seat tapped out on its own turn and nobody has shown an instant this game. Five lands untapped: {1}{B} for the tutor and {2}{B} after it.",
+          "fetch": "Vito, Thorn of the Dusk Rose",
+          "why": "Five mana is the tutor and the cheapest verified converter in one turn. Demonic resolves, Vito resolves, and the seed is on your board: sacrifice the token to Viscera Seer; Celebrant: each opponent loses 1, you gain 1. The gain is Vito's trigger (target opponent loses 1), that loss is Conqueror's (you gain 1), and the loop is stack 004 from a 1-life seed. The three losses to Celebrant are three Conqueror gains, so three Vito triggers, each aimed at a seat of your choosing. Deterministic and shortcut-legal: name the iterations and the seats.\n\nWhy Vito and not Tenacity or Bond: mana. Tenacity needs six and Bond seven; on turn five you have five, and a converter left in hand at end of turn is a card the table gets a whole round to see coming. A tapped-out table is the window, and the scariest piece is the one you cast last, this turn, with the seed ready. The assumption stated: three tapped-out seats hold no free interaction. This deck's own free spells need Edgar on the battlefield by strategic_frame.json's reading; an opponent's commander on their battlefield is the same signal from the other side.\n\nIf the token is your only body, sacrifice it anyway; the loop needs no board once it starts. This turn-five line is inside the 33.3% assisted by turn six; unassisted the pair is drawn by then in 10.8%.",
+          "citations": [
+            {
+              "rule": "strategy:tempo.sequencing",
+              "quote": "strike in the window when opponents are tapped out and cannot respond"
+            },
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "sequence the scariest piece last"
+            },
+            {
+              "rule": "732.1b",
+              "quote": "Occasionally the game gets into a state in which a set of actions could be repeated indefinitely (thus creating a “loop”). In that case, the shortcut rules can be used to determine how many times those actions are repeated without having to actually perform them, and how the loop is broken."
+            }
+          ]
+        },
+        {
+          "scenario": "Your first main phase, turn seven. Sanguine Bond resolved last turn and Bloodthirsty Conqueror is in your hand. On your battlefield: Vito, Blood Artist, Vraan, Viscera Seer and five tokens; Edgar in the command zone. The Azorius seat has four cards in hand, seven lands, and has cast one spell in the last three turns; they swept the board on turn five of the last game you played against them. Opponents at 28, 26 and 25. Seven lands untapped: {1}{B} for the tutor leaves five.",
+          "fetch": "Teferi's Protection",
+          "why": "You are ahead, and the board is what gets wiped: three of five logged losses were wipes, on older lists. Conqueror is castable this turn with Bond and Vito out, and the next gain wins. He is also a 5/5 creature into a seat holding a sweeper in this model, and a wipe in response to the seed takes the loop's body half with the fodder. Teferi's Protection is the one card of the four protection spells that covers the enchantment half: Flawless Maneuver and Akroma's Will read creatures you control, Deflecting Swat retargets one spell or ability. Teferi's phases out every permanent you control and freezes your life total until your next turn; the sweeper resolves against nothing and Bond, Vito and the tokens phase in before your untap.\n\nThe line: Demonic for Teferi's, pass with {2}{W} open and Conqueror still in hand. Next turn, cast Conqueror with the Protection up. If the wipe comes before that, choose: Teferi's, or sacrifice the five tokens to Viscera Seer in response so Vraan drains 2 and Blood Artist 1 per death on the way out, which keeps the converters standing and the hand full. Keep the best threat in hand for their second sweeper; the best threat is the loop half, not a body. Protection is drawn in 60.6% of games, 45.1% by turn six; 83.8% and 68.2% assisted. The assumption stated: four cards and one spell in three turns is a held sweeper. If it is counterspells, the Protection is still the card that makes the commit turn safe.",
+          "citations": [
+            {
+              "rule": "strategy:resource-hedging.wrath-math",
+              "quote": "redeploy worst-first, keeping the best threat in hand for their second sweeper"
+            },
+            {
+              "rule": "strategy:conversion.durability",
+              "quote": "a creature converter dies to the same sweeper that kills the fodder"
+            },
+            {
+              "rule": "strategy:aristocrats.wipe-insurance",
+              "quote": "a wrath on the stack is answered by sacrificing the whole board in response"
+            }
+          ]
+        },
+        {
+          "scenario": "Your first main phase, turn five. The seat to your left resolved an artifact on turn two that makes each spell cost {1} more to cast; the Rakdos seat is racing under it with a 6-power haste commander and has you at 29 from 40. Opponents at 36, 38 and 30. Your hand is Sanctum Seeker, Welcoming Vampire and a land; Edgar in the command zone; Tithe Drinker and one token on your battlefield. Five lands and Sol Ring untapped: seven mana, which under the tax is the tutor at three and four more.",
+          "fetch": "Anguished Unmaking",
+          "why": "The tax is the piece that beats you, not the scariest piece. Twenty-three nonland entries at mana value two or less are this deck's speed, and {1} on each is half their cost; Urza's Incubator counters it for Vampire creature spells only. The outs, enumerated: Anguished Unmaking is the one card in the 99 that exiles a noncreature permanent; Deflecting Swat retargets, Path and the edicts need creatures, Olivia's Wrath reads non-Vampire creatures. deck-audit reads interaction breadth at three of five classes, artifact covered by this one copy; 7.1% of opening sevens hold it; the component is 20.3% drawn, 66.6% assisted.\n\nSeven mana under the tax is Demonic at three and Unmaking at four in one turn: the tax leaves with the spell that paid for it, and the two Vampires in hand cost their printed price next turn. Three life, at 29 against a 6-power clock: the last cheap points. If the tax seat has fewer than two open, cast both now. If they hold two, cast the tutor and keep Unmaking as an instant for their end step: it is the only spell in the line a counter needs to hit.\n\nThe assumption stated: the tax seat is not the beatdown; the Rakdos seat is, and under the tax you are racing them too, which is why the out comes before the Vampires in hand.",
+          "citations": [
+            {
+              "rule": "strategy:threat-assessment.answer-economy",
+              "quote": "killing the scariest creature instead of the one that beats you"
+            },
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "a tutor is an enabler only if you can cast it and still deploy"
+            }
+          ]
+        },
+        {
+          "scenario": "Your first main phase, turn seven. The Boros seat has nine 1/1 tokens and an enchantment that deals 1 damage to each opponent whenever a creature enters under their control; you are at 19 from pings and painlands, the other two seats at 24 and 22, the token seat at 35. Your board: Vito, Blood Artist, Tithe Drinker, Viscera Seer and three tokens, six Vampires; Edgar in the command zone. Seven lands untapped and nothing else.",
+          "fetch": "Olivia's Wrath",
+          "why": "Olivia's Wrath is the one sweeper in the 99 (deck-audit sweepers: 1) and it is one-sided: each non-Vampire creature gets -X/-X where X is the number of Vampires you control. Six Vampires is -6/-6. Nine tokens die, your board stands, and the enchantment that fires on their entries has nothing to fire on until they rebuild. The ping deck is the predator for a deck that pays life, and log 005 was this board on an older list. The switch from spending to defending comes one turn before it matters: at 19 against nine entries a turn, that turn is this one.\n\nThe drain side is a reading from oracle text, not a stack. Blood Artist reads any creature's death: nine deaths are nine drains of 1 to a target player and nine gains of 1, and each gain is a Vito trigger for 1 at a seat you name, 18 life moved off the table before combat. Celebrant and Vraan read your creatures only and add nothing here.\n\nWhy Demonic and not Vampiric: the Wrath is a sorcery at {4}{B}, so the fetch and the cast want the same main phase, and seven mana is both. The enchantment itself stays; it answers to Anguished Unmaking, not to this. The assumption stated: the token seat rebuilds slower than the pings arrive. If they hold a second token-maker in hand, Unmaking on the enchantment is the fetch instead.",
+          "citations": [
+            {
+              "rule": "strategy:life-as-resource",
+              "quote": "switching from spending to defending one turn before it matters, not one after"
+            },
+            {
+              "rule": "strategy:multiplayer.asymmetry",
+              "quote": "each-opponent drains are the payoffs that actually scale"
+            }
+          ]
+        }
+      ]
     },
     {
-     "scenario": "The end step of the opponent to your right, turn six. Sanctum Seeker, Edgar Markov and five other Vampires are on your battlefield, seven attackers on your turn. The seat across from you is at 14, the other two at 21 and 24. Master of Dark Rites is untapped with a token to feed it. You have six lands, one black source untapped now, and {1}{B}{B}{B} on your turn without the Rites.",
-     "fetch": "Bloodletter of Aclazotz",
-     "why": "Stack 003 is checker-passed on exactly this arithmetic. Seven attacking Vampires give seven Sanctum Seeker triggers; on your turn Bloodletter doubles each opponent's loss per trigger, so each seat loses 14, and the seat at 14 is eliminated by state-based actions before blockers are declared. Your own gain is not doubled; Bloodletter replaces only opponents' loss. Stack 003's board seeds the opponents at 21 and 14 and leaves the 21 seat at 7 with combat still to fight.\n\nCount the attackers, then count again without Bloodletter. He has flying and no haste, so he does not attack the turn he lands; the seven in this scenario are seven other Vampires. Six attackers is 12 per seat, and a seat at 14 lives on 2. With six, wait a turn or fetch something else.\n\nRead the mana. {1}{B}{B}{B} is the only cost in the 99 with three identical coloured pips (engine.json, enumerated over every mana cost in cards.json), and black is the deck's shortest colour at 32 sources against a 36 target. Master of Dark Rites changes it: tap and sacrifice another creature for {B}{B}{B}, spendable on Vampire, Cleric and Demon spells, and Bloodletter qualifies twice. The token it eats is a death for Cordial Vampire, Elenda and the Blade. engine.json's mana-to-wincon arrow through the Rites carries no verified_by.\n\nRates: 4.1% unassisted, 9.4% with the wish; 1.6% by turn six against 4.0%; mean turn 6.707, later than the Conqueror route, not faster. No artifact measures kill speed for either route.",
-     "citations": [
-      {
-       "rule": "strategy:multiplayer.asymmetry",
-       "quote": "each-opponent drains are the payoffs that actually scale"
-      }
-     ]
+      "card": "Enlightened Tutor",
+      "notes": "{W}, instant, an artifact or enchantment card, revealed, on top. The reveal is the price: the table sees the card and has one round to answer it. Legal fetches in the 99, enumerated from type lines: nine artifacts (Sol Ring, Arcane Signet, Orzhov Signet, Rakdos Signet, Talisman of Conviction, Talisman of Hierarchy, Talisman of Indulgence, Ashnod's Altar, Urza's Incubator) and seven enchantments (Anointed Procession, Caretaker's Talent, Enduring Tenacity, Erebos, Exquisite Blood, Phyrexian Arena, Sanguine Bond). It does not reach Conqueror, Vito or Blight-Priest. So with Conqueror out it reaches two verified converters; with a converter out it reaches one loss-to-gain half, Exquisite Blood, whose loops passed the checker on older boards and are withheld. Cast it at the end step of the player to your right or in your upkeep; white is 24 sources against a target of 22, on curve 0.927 with rocks.",
+      "targets": [
+        {
+          "scenario": "End step of the player to your right, turn six. Bloodthirsty Conqueror resolved on your turn. Tithe Drinker, Viscera Seer, Morbid Opportunist and two tokens are beside him; Edgar in the command zone. Opponents at 32, 30 and 24; the seat at 24 holds three open and is the seat that has used destroy-based removal twice this game. You have {W} untapped now and six lands on your turn: {2}{B}{B} plus two.",
+          "fetch": "Enduring Tenacity",
+          "why": "The reveal shows the table a 4/3 Snake Glimmer. What it does not show is that destroying it does nothing. Stack 012: beside Conqueror, Tenacity is a verified table kill from any gain, and destroy or -X/-X on Tenacity returns it as an enchantment with the drain sentence intact; the loop does not pause. The seat that has shown destroy twice is the seat this fetch is for. Six mana casts Tenacity with two open.\n\nThe seed: Tithe Drinker's extort pays {W/B} on each spell you cast for a 1-life drain and a 1-life gain, so with Tenacity out the next spell you cast is a seed, no attack and no death required. Compared with Bond: one mana cheaper and the same immunity to destroy; Bond wins when a seat has shown exile or bounce. Compared with Vito: this tutor cannot fetch him.\n\nRates: a pair 22.1% drawn, 57.3% assisted; this fetch is inside the assisted column and no figure isolates it. The assumption stated: three open on a destroy seat is destroy. If it is exile, Tenacity leaves for good and Sanguine Bond is the fetch.",
+          "citations": [
+            {
+              "rule": "strategy:conversion.durability",
+              "quote": "put the converter on a type the wipe does not read"
+            },
+            {
+              "rule": "strategy:tempo.sequencing",
+              "quote": "prefer committing at the end step before your own turn so the table's chances to respond are spent"
+            }
+          ]
+        },
+        {
+          "scenario": "End step of the player to your right, turn seven. Bloodthirsty Conqueror on your battlefield, Flawless Maneuver in hand, Edgar on the battlefield since turn five. The Esper seat exiled Vito on turn five with an instant and holds two open now. Opponents at 30, 28 and 26. You have {W} untapped now and seven lands on your turn: {3}{B}{B} plus two.",
+          "fetch": "Sanguine Bond",
+          "why": "Stack 006: Bond's sentence is Vito's word for word and the walk is the same, deterministic, aimed afresh each iteration, a table kill from any gain. What differs is the type line. Bond is an enchantment and never a creature, so the exile that took Vito, and every creature sweeper, reads Conqueror only, and the deck's free-with-Edgar spells cover Conqueror: Flawless Maneuver gives your creatures indestructible, Deflecting Swat retargets the exile. Bond over Tenacity here because the seat has shown exile: stack 012 lists exile as permanent on Tenacity, and a pure enchantment needs an enchantment answer.\n\nSeven mana is Bond with two open, and Flawless Maneuver is free with Edgar out. After Bond resolves, any gain is the seed: Tithe Drinker's extort, a token into Viscera Seer with Blood Artist out, Edgar, Ancient Bloodlord's 1 life per death.\n\nThe assumption stated: the Esper seat's two open is a second exile aimed at Conqueror. Maneuver answers destroy, not exile, so the cover for the body half against that seat is Swat, free under the same clause. The cost of this fetch is the reveal: the table sees Bond on top with Conqueror on board, and gets one round.",
+          "citations": [
+            {
+              "rule": "strategy:conversion.durability",
+              "quote": "put the converter on a type the wipe does not read"
+            },
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "assume every held answer appears the moment you present lethal, and count the table's open mana before committing"
+            }
+          ]
+        },
+        {
+          "scenario": "End step of the player to your right, turn eight. Vito on your battlefield since turn six; Bloodthirsty Conqueror was exiled on turn seven. Sanguine Bond is in your hand. Blood Artist, Viscera Seer and three tokens on your battlefield; Edgar in the command zone. Opponents at 26, 24 and 22; no seat has shown an enchantment answer. You have {W} untapped now and eight lands on your turn.",
+          "fetch": "Exquisite Blood",
+          "why": "The converter is out and the only loss-to-gain half this tutor reaches is Exquisite Blood; Conqueror is a creature. The pairing is not on the fact tier for this list. Stack 001 passed the checker on Exquisite Blood with Vito (38 iterations from a 2-life seed killed three seats) and stack 005 on Blood with Bond, but the seed creature on those boards was cut, and engine.json withholds both until a current board is re-run. Status: needs a stack scenario. What is fact without one is the oracle text: 'Whenever an opponent loses life, you gain that much life' is Conqueror's sentence on a five-mana enchantment, so with Blood out every point any opponent loses to anyone is a gain for you, and with Vito out every gain is a drain you aim.\n\nThe fetch: Blood at {4}{B} with three open, Bond in hand as a second converter the turn after. Two enchantment halves and a creature converter; no creature answer touches the pair, and a sweeper leaves Blood and Bond standing while the tokens die into Blood Artist.\n\nThe cost is the reveal: the table sees Blood on top with Vito on board and has one round. The assumption stated: a table that exiled Conqueror holds creature answers more often than enchantment answers, and no seat has shown one. If a seat has, hold the tutor and fetch Bloodletter with Vampiric instead.",
+          "citations": [
+            {
+              "rule": "strategy:conversion.durability",
+              "quote": "put the converter on a type the wipe does not read"
+            },
+            {
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "tutor only the irreplaceable"
+            }
+          ]
+        },
+        {
+          "scenario": "End step of the player to your right, turn five. Cruel Celebrant, Vraan, Blood Artist, Cordial Vampire and four eminence tokens: eight bodies and no sacrifice outlet. Morbid Opportunist is in your hand. The Azorius seat has held four open for two turns and cast nothing. Opponents at 33, 31 and 29. You have {W} untapped now and five lands plus Arcane Signet on your turn.",
+          "fetch": "Ashnod's Altar",
+          "why": "A wrath on the stack is answered by sacrificing the board in response, and that needs an outlet that costs nothing. Enumerated: five free outlets in the 99 (Viscera Seer, Ashnod's Altar, Phyrexian Tower, Vish Kal, Yahenni), and this tutor reaches one, the Altar. The component is drawn in 69.1% of games, 53.3% by turn six; 87.4% and 73.0% assisted. With the Altar out the sweeper resolves against nothing: eight sacrifices are eight Celebrant triggers (each opponent loses 1), eight Blood Artist triggers (a target player loses 1), one Vraan trigger of 2 each (once a turn), sixteen colourless mana, and Cordial Vampire's counters land on nothing. That arithmetic is a reading from oracle text; the burst is a candidate line in strategic_frame.json and no stack has priced it, and the goldfish's death channel is an averaged rate that cannot represent it.\n\nThree mana for the Altar leaves three on turn six: Morbid Opportunist, so the rebuild draws too. The Altar is an artifact, so Olivia's Wrath, Anowon and every creature sweeper miss it.\n\nThe assumption stated: four open for two turns on the Azorius seat is a sweeper. If it is a counterspell, the Altar is the spell they counter and the tutor cost you {W} and a draw.",
+          "citations": [
+            {
+              "rule": "strategy:aristocrats.wipe-insurance",
+              "quote": "a wrath on the stack is answered by sacrificing the whole board in response"
+            },
+            {
+              "rule": "strategy:resource-hedging.wrath-math",
+              "quote": "redeploy worst-first, keeping the best threat in hand for their second sweeper"
+            }
+          ]
+        }
+      ]
     },
     {
-     "scenario": "Your upkeep, turn six. The mono-red seat has had Purphoros, God of the Forge on the battlefield since turn three, and it is not a creature. You are at 17 from 40: Night's Whisper, Champion of Dusk, and eight entries' worth of pings. Elspeth, Storm Slayer is at four loyalty with two Soldier tokens beside her. Your hand holds no removal. You have {W}{B} plus one black source untapped, and Herald's Horn is not out.",
-     "fetch": "Despark",
-     "why": "Fetch the answer, not the threat. Purphoros, God of the Forge is {3}{R}, mana value 4, indestructible, and not a creature while its controller's devotion to red is under five. Of the eleven interactive copies deck-audit counts, two exile a noncreature indestructible permanent: Despark (exile target permanent with mana value 4 or greater) and Anguished Unmaking (exile target nonland permanent, you lose 3 life). Stroke of Midnight destroys, and an indestructible permanent cannot be destroyed. Path to Exile, Winds of Abandon, Elspeth's -3 and Vish Kal need a creature. Despark over Anguished Unmaking on this board because it costs {W}{B} and no life, and 3 life at 17 against a pinger is a real price. Anguished Unmaking is the fetch when the piece is under mana value 4.\n\nUpkeep, not end step: this is the last window in which the wish is this turn's draw. Cast it, draw Despark, cast Despark in your first main phase before any Vampire enters and pings you. Every Vampire you cast is two entries, the body and the eminence token, and more under a doubler.\n\nWhy now rather than racing. Log 005 is this board: Elspeth exposed, tempo pushed, Purphoros pings finished the job before lethal landed. strategic_frame.json reports Forge on v1.1.0 against the playgroup pod with a Purphoros seat at 4 of 38 decided games for this deck; no Forge record exists on this sha. An enchantment that pings on every entry has the fastest clock at the table against a deck that pays life for cards.\n\nThe noncreature-answer component is drawn in 49.3% of games, 34.8% by turn six; 58.5% and 42.8% with the wish. That figure counts Stroke of Midnight, which does not answer this target. No stack verifies this line; it rests on oracle text and one rule.",
-     "citations": [
-      {
-       "rule": "702.12b",
-       "quote": "A permanent with indestructible can’t be destroyed."
-      },
-      {
-       "rule": "strategy:life-as-resource",
-       "quote": "switching from spending to defending one turn before it matters, not one after"
-      },
-      {
-       "rule": "strategy:threat-assessment.answer-economy",
-       "quote": "the last profitable moment is now"
-      }
-     ]
+      "card": "Diabolic Intent",
+      "notes": "{1}{B}, sorcery, any card, to hand, and sacrifice a creature as an additional cost. The sacrifice is paid when the spell is cast, so the death triggers go on the stack above the Intent and resolve before the search: Cruel Celebrant, Vraan, Blood Artist and Vein Ripper drain, Morbid Opportunist and Liliana draw, Cordial Vampire grows every Vampire, Edgar, Ancient Bloodlord gains 1. With Conqueror out each of those drains is a gain. A tutor that is also a death, so feed it the cheapest body: an eminence token, or Bloodghast, which returns on your next land drop. Never feed it Conqueror or a converter, with one exception below, which is Tenacity on purpose. No life paid.",
+      "targets": [
+        {
+          "scenario": "Your first main phase, turn five. Bloodthirsty Conqueror resolved on turn four and nobody answered; Cruel Celebrant and one eminence token are beside him; Edgar in the command zone. Opponents at 35, 30 and 28; all three tapped out on their own turns and no instant has been shown this game. Five lands untapped: {1}{B} and then {2}{B}.",
+          "fetch": "Vito, Thorn of the Dusk Rose",
+          "why": "Five mana, one turn, one death. Pay the Intent's cost with the token: Celebrant's trigger, each opponent loses 1 and you gain 1, and each of those three losses is a Conqueror gain. You are up 4 and each seat is down 1 before the search resolves. Fetch Vito, cast him with the remaining {2}{B}, and the next gain is stack 004: a loop from any nonzero gain, aimed afresh each iteration. The seed after Vito is anything: Tithe Drinker's extort on your next spell, a token into Viscera Seer with Celebrant out, an attack by a lifelinker.\n\nWhy Vito and not Tenacity: Intent plus Tenacity is six mana and you have five. Why this and not Demonic Tutor: Demonic is the same five mana without the death. If both are in hand, Intent first, because the drain before the search is free and the token is replaced by your next Vampire cast. Why now: a tapped-out table is the window, and the scariest piece is the one you cast last, this turn.\n\nThe assumption stated: a tapped-out table holds no free interaction. strategic_frame.json reads this deck's own free spells as needing Edgar on the battlefield, which no stack has settled; read an opponent's commander on their battlefield as the same signal.",
+          "citations": [
+            {
+              "rule": "strategy:tempo.sequencing",
+              "quote": "strike in the window when opponents are tapped out and cannot respond"
+            },
+            {
+              "rule": "strategy:multiplayer.pivot-window",
+              "quote": "sequence the scariest piece last"
+            },
+            {
+              "rule": "119.9",
+              "quote": "If a player gains 0 life, no life gain event has occurred, and these abilities won’t trigger."
+            }
+          ]
+        },
+        {
+          "scenario": "Your first main phase, turn eight. The board was swept on turn six and again on turn seven; you have rebuilt with Bloodghast, back on this turn's land drop, and two tokens from two cheap Vampires. Your hand is empty. Edgar in the command zone with {2} of tax. Opponents at 27, 25 and 24 with four, three and five cards in hand. Eight lands untapped: {1}{B} and then six.",
+          "fetch": "Liliana, Dreadhorde General",
+          "why": "Hands empty by turn eight to ten is the failure the captain's log names in four of six games, and the card for an empty hand behind two sweepers is the one that draws on every death of yours and makes its own bodies. Liliana: whenever a creature you control dies, draw a card; +1 makes a 2/2; -4 makes each player sacrifice two. Eight mana is Intent at two and Liliana at six in one turn. Pay the Intent with Bloodghast: it returns on your next land drop, and because Liliana is still in the library when the cost is paid, that death draws nothing. Sequence Intent first, Liliana second, and every later death is a card: tokens into an outlet, Bloodghast every turn, the -4 as four deaths across the table.\n\nDraw engines are drawn in 75.2% of games, 63.6% by turn six, 89.3% assisted; extra cards read 1.81 by turn eight on average, and goldfish meta lists eight of sixteen draw cards as not modelled. Why not a loop half: with no converter and no Conqueror on board, a half in hand is one of two, and payoffs without the enabler are blanks. Redeploy worst-first and keep the best threat in hand for their second sweeper; Liliana is the rebuild, not the threat. The assumption stated: the sweeping seat has a third in a four-card hand. If they show it empty, Vito is the fetch instead.",
+          "citations": [
+            {
+              "rule": "strategy:resource-hedging.wrath-math",
+              "quote": "redeploy worst-first, keeping the best threat in hand for their second sweeper"
+            },
+            {
+              "rule": "strategy:mulligans.engine-hands",
+              "quote": "Payoffs without the enabler are blanks until the engine exists"
+            }
+          ]
+        },
+        {
+          "scenario": "Your first main phase, turn seven. Enduring Tenacity, still a creature, has been on your battlefield since turn five. Blood Artist and three tokens are beside it; Edgar in the command zone. The Azorius seat has cast two creature sweepers this game and holds four open. Opponents at 30, 29 and 23. Seven lands untapped: {1}{B} and then {3}{B}{B}.",
+          "fetch": "Bloodthirsty Conqueror",
+          "why": "Sacrifice Tenacity to pay for the Intent. Dies means put into a graveyard from the battlefield, and Tenacity reads 'When Enduring Tenacity dies, if it was a creature, return it to the battlefield under its owner's control. It's an enchantment.' Stack 012 verified that return for destroy and -X/-X; a sacrifice is the same event by rule 700.4 and no stack has walked it. strategic_frame.json lists it as a candidate line: needs a stack scenario. What you get, on that reading: Tenacity back as a pure enchantment that no creature sweeper reads, and a Blood Artist trigger on the way. Order your own triggers so the return resolves first; then Blood Artist's gain of 1 is a Tenacity trigger, target opponent loses 1, and the sweeper seat has just watched its two sweepers become worthless against the converter.\n\nThen fetch Conqueror and cast him with {3}{B}{B} the same turn: stack 012's pairing, with the converter half already wipe-proof and the sweeper now aimed at Conqueror alone. Flawless Maneuver covers him if Edgar is out; with Edgar in the zone it costs {2}{W} you do not have this turn, so the honest line is Conqueror next turn with three open, or now if the seat taps below two.\n\nWhy do this instead of waiting: a creature converter dies to the same sweeper that kills the fodder, and this seat has shown two. The assumption stated: four open is the third sweeper. If it is a counterspell, Conqueror is the spell it hits, and the tutor and the return still happened.",
+          "citations": [
+            {
+              "rule": "700.4",
+              "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+            },
+            {
+              "rule": "strategy:conversion.durability",
+              "quote": "a creature converter dies to the same sweeper that kills the fodder"
+            },
+            {
+              "rule": "strategy:conversion.durability",
+              "quote": "put the converter on a type the wipe does not read"
+            }
+          ]
+        }
+      ]
     }
-   ]
-  }
- ],
- "gaps": [
-  "All eleven stacks under stacks/ carry checker.verdict pass; five resolve boards that sit entirely inside the current 99 (002, 003, 004, 006, 010) and this guide cites 003, 004 and 006. The other six (001, 005, 007, 008, 009, 011) resolve boards holding Exquisite Blood, Throne of the God-Pharaoh, Purphoros, Impact Tremors, Warleader's Call or Mirkwood Bats, none of which is in the deck. Those proofs are still true about those cards and no longer about this deck.",
-  "The goldfish models a cast tutor as a wildcard that fills ONE missing any_of group, pays its mana and costs a turn when it puts the card on top. It does not model the two life, the lost draw, or the choice between two missing groups. This deck has exactly one tutor, so every *_assisted figure quoted here is Vampiric Tutor and nothing else, which makes the assisted-minus-unassisted gap a clean measure of this one card and still a ceiling on it.",
-  "Nothing measures fetch-versus-hold. No artifact prices the two life, the turn of delay, or the value of revealing nothing against a table's interaction, so every timing call here is coaching sitting on measured assembly rates.",
-  "Death-triggered drain is not modelled (goldfish meta: 'the largest known gap here'), the outlet-and-payoff pair is not measured (engine.json open_questions, settled_by goldfish), and Elenda, the Dusk Rose and Blade of the Bloodchief are dark to the model. Elenda is not a wish here for that reason: her token count under the doublers is engine.json's open question for resolve-stack, and no figure exists to rank her against the four fetches above.",
-  "strategic_frame.json and engine.json disagree on one word. The frame's role_assignment still calls stack 003 'the fastest verified kill in the 99'; engine.json's round-2 revision withdrew 'fastest' because no artifact measures kill speed for any route, and on availability the Bloodletter component assembles later (mean turn 6.707) than the Conqueror component (6.385). This guide follows engine.json. Reported, not edited.",
-  "No graveyard answer exists to fetch: deck-audit interaction-breadth reads graveyard 0 and land 0 among classes answered, and the card that carried graveyard exile (Immersturm Predator) left in v1.1.1. Against a reanimator seat this tutor buys speed and never an answer.",
-  "Purphoros, God of the Forge's oracle text is read from the corpus (cards.csv), not from this deck's artifacts. The stack scenario strategic_frame.json filed for it (which of the 99 removes Purphoros) is still open, and the '4 of 38' figure is Forge on v1.1.0, not on this sha. Despark's legality against it rests on Purphoros's printed mana value and rule 702.12b, not on a passing stack.",
-  "DECISION for the orchestrator, carried from strategic_frame.json: the pilot's direction says the lifegain infinite is out; the sleeved 99 holds two checker-passed two-card loops on Bloodthirsty Conqueror. The Conqueror wish is written and validated. If the direction means no two-card loop, that wish should be removed and the tutor's measured value on this deck falls to the Bloodletter gap (4.1% to 9.4%) plus the death-drain gap (37.2% to 48.2%)."
- ]
+  ],
+  "gaps": [
+    "Stacks 001 (Exquisite Blood + Vito) and 005 (Exquisite Blood + Sanguine Bond) passed the checker and are withheld by engine.json because their seed creature was cut; stack 001's own presentable_note still says Exquisite Blood is not in the 99, which is no longer true on v2.1.0 (decklist a872115f holds it). The Exquisite Blood wish (Enlightened Tutor, third target) is therefore a reading, status needs a stack scenario; engine.json's second open question already routes it to resolve-stack. Reported, not edited.",
+    "The goldfish's assisted column credits all four tutors as one wildcard that fills one missing any_of group, pays its mana and costs a turn when the card goes on top. It does not model the two life, the sacrifice, the reveal, the lost draw, or the choice between two missing groups, and with four tutors in the 99 no assisted figure here is one card's own. The 22.1% to 57.3% spread is the four together and a ceiling on them.",
+    "Nothing measures fetch-versus-hold or the cast-with-protection rate. 'THE SURVIVING INFINITE' counts both halves drawn, not resolved with cover up, so the pivot-window rate every loop wish depends on is unmeasured. Every timing call here is coaching on top of measured draw rates.",
+    "Whether 'if you control a commander' (Flawless Maneuver, Deflecting Swat, Akroma's Will) is met with Edgar in the command zone is unsettled; strategic_frame.json assumes the stricter reading (Edgar on the battlefield) and files the question as a candidate line. Every scenario here follows that reading and says so where it changes the mana.",
+    "Enduring Tenacity's return on a SACRIFICE (Diabolic Intent, third target) rests on rule 700.4 and the card's text; stack 012 verified destroy and -X/-X only. Needs a stack scenario; strategic_frame.json's Anowon candidate line asks the same question for an edict.",
+    "Marauding Blight-Priest's two pairings and Exquisite Blood + Enduring Tenacity have no stack; none is a fetch here. The Blood Artist burst under Ashnod's Altar and the Blood Artist drain under Olivia's Wrath are oracle-text readings; the goldfish's death channel is an averaged Forge rate from the V3 list and cannot represent either.",
+    "No graveyard or land answer exists to fetch: deck-audit interaction-breadth reads three of five classes, graveyard and land uncovered. Against a reanimator seat or a land-based lock these tutors buy speed, never an answer.",
+    "Twilight Prophet's upkeep reveal of a tutored top card (Vampiric or Enlightened) is named in the Vampiric notes as a line nobody measures: Prophet is under drain_not_modelled and no stack walks it.",
+    "v2.1.0 has no logged games. Log 004 (a tutored two-card infinite closed first) and log 005 (pings on an older list) are the two table reads used above; every open-mana read is a model of the table, stated as such in each wish.",
+    "strategic_frame.json's role_assignment and engine.json agree on this list; the one disagreement found is stack 012's own context, which says Tenacity 'is NOT in the 99' (written on branch mean-v1); engine.json notes it as regenerate-not-patch. Reported."
+  ],
+  "decklist_sha256_prefix": "a872115fe62f"
 }

@@ -8,7 +8,20 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 98,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "The map's decklist_sha256 (a872115f...) matches strategic_frame.json's prefix, so these names are read against the v2.1.0 list the frame describes.",
+      "No city is 'the combo'. The drain-loop halves are spread over three cities by theme, not by partner: Vito in city-2-hood-1, Bloodthirsty Conqueror in city-6-hood-0, Exquisite Blood and Sanguine Bond in city-1-hood-1, Enduring Tenacity in city-1-hood-0 (Marauding Blight-Priest, a candidate half, beside it). The verified_count marks (city-1: 3, city-2: 2, city-6: 2) are those pieces plus Sanctum Seeker, Bloodletter and the commander from the attack-math and token-math stacks.",
+      "The four proactive-denial Vampires are likewise split: Anowon in city-1-hood-0, Drana and Linvala and Captivating Vampire in city-2-hood-0, Charismatic Conqueror in city-6-hood-0. The tag-based 'Interaction' fallback never lands on any of them; a reader looking for denial needs the gloss, not a city.",
+      "The sacrifice outlets the role tags mark (eight cards) sit in three cities: Ashnod's Altar in THE ROCKS, Viscera Seer and Master of Dark Rites in THE ARISTOCRATS, Erebos in THE MULTIPLIERS, and Anje, Edgar Ancient Bloodlord, Vish Kal and Yahenni in FED ON THE SWARM. Phyrexian Tower (city-3-hood-2) is a ninth outlet the tags do not mark.",
+      "city-4 has one neighbourhood with exactly the city's eight cards, so city-4-hood-0 is left unnamed and falls back to 'Ramp'. The fallbacks on the two mana cities read backwards to a human: 'Ramp II' (city-4) is the rocks, 'Ramp' (city-5) is twelve lands and Arcane Signet.",
+      "Odd members, by cluster. city-0-hood-0: Anointed Procession, a token doubler among tutors and removal; it belongs with Elspeth in city-2-hood-2 by job. city-1-hood-1: Phyrexian Arena, a draw engine between two loop halves. city-2-hood-0: Bloodghast (the recurring sacrifice fuel, no lord or lock about it) and Erebos. city-3-hood-1: Midgar, City of Mako is a Town, not a basic land type, so the fetches cannot find it despite the hood's name; it is the one member the name does not cover. city-5-hood-0: Ancient Tomb and Survivors' Encampment fetch nothing. city-5-hood-1: Arcane Signet is a rock among rainbow lands but fits the job (any colour, one tap).",
+      "Ingris Stingerquill (city-2-hood-1) is the deck's most unusual card: an Elder Sphinx in a 33-Vampire list, so the eminence never fires on it. It belongs by job (one damage per attacker, haste for the tokens); CardBERT placed it with the legendary attackers, which is defensible.",
+      "city-6-hood-1 is three cards: the commander Edgar Markov with Tithe Drinker and Twilight Prophet. The two drip-drainers are the hood's job; Edgar is the odd member (he mints bodies, drains nothing) and sits there by colour and theme. The split from city-6-hood-0 is real but thin.",
+      "city-2-hood-1 is named for five of its eight cards (Anje, Edgar Ancient Bloodlord, Vish Kal, Yahenni, and Olivia Voldaren who grows by pinging); Olivia Crimson Bride, Vito and Ingris are passengers. The hood-0 / hood-1 split inside city-2 reads as 'multiplies the swarm' versus 'eats the swarm' and is cleaner than the role tags suggest.",
+      "city-3's three neighbourhoods split on how the land enters, not on colour: conditional-untapped (checks, fasts, slows, bonds), typed and fetchable (shocks, Triome, battle land, Swamp), always untapped (pains, verges, Tower, Takenuma). That is the useful reading for a land swap and the names say it."
+    ]
   },
   "cards": [
     {
@@ -1297,7 +1310,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "FIND, KILL, SAVE",
       "fallback": "Insurance",
       "cx": -0.12026,
       "cy": 0.61338,
@@ -1316,13 +1329,14 @@
         "Teferi's Protection",
         "Vampiric Tutor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The spells, not the bodies: tutor the missing loop half, exile what blocks it, and blank the sweeper that answers it."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "SEARCH AND DESTROY",
       "fallback": "Tutors",
       "cx": -0.05968,
       "cy": 0.49397,
@@ -1337,13 +1351,14 @@
         "Path to Exile",
         "Vampiric Tutor"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Four tutors and three removal spells; Anointed Procession is the odd member."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "SWEEP INSURANCE",
       "fallback": "Insurance",
       "cx": -0.24142,
       "cy": 0.85221,
@@ -1354,12 +1369,13 @@
         "Flawless Maneuver",
         "Teferi's Protection"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE DRAIN",
       "fallback": "Finishers",
       "cx": -0.27795,
       "cy": -0.41791,
@@ -1382,13 +1398,14 @@
         "Viscera Seer",
         "Vraan, Executioner Thane"
       ],
-      "verified_count": 3
+      "verified_count": 3,
+      "gloss": "Every death and every point gained leaves the table through here: the drain payoffs, the outlets that feed them, two loop halves."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE ARISTOCRATS",
       "fallback": "Bodies",
       "cx": -0.31362,
       "cy": -0.40679,
@@ -1408,13 +1425,14 @@
         "Viscera Seer",
         "Vraan, Executioner Thane"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": null
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "TWO HALVES, ONE LOOP",
       "fallback": "Finishers II",
       "cx": -0.12339,
       "cy": -0.46607,
@@ -1424,12 +1442,13 @@
         "Phyrexian Arena",
         "Sanguine Bond"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Two enchantment loop halves, verified closing with each other; Phyrexian Arena is the odd member here."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "WHERE THE TOKENS GO",
       "fallback": "Bodies",
       "cx": -0.51423,
       "cy": -0.02437,
@@ -1455,13 +1474,14 @@
         "Vito, Thorn of the Dusk Rose",
         "Yahenni, Undying Partisan"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "The mass of the deck: the bigger Vampires and walkers you feed the eminence tokens to, grow off, or draw off."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE MULTIPLIERS",
       "fallback": "Card Flow",
       "cx": -0.48759,
       "cy": -0.16068,
@@ -1476,13 +1496,14 @@
         "Erebos, Bleak-Hearted",
         "Vein Ripper"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Lords, a doubler and a lock that make the swarm hit harder; Bloodghast and Erebos are odd members."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "FED ON THE SWARM",
       "fallback": "Finishers",
       "cx": -0.55509,
       "cy": -0.01527,
@@ -1497,13 +1518,14 @@
         "Vito, Thorn of the Dusk Rose",
         "Yahenni, Undying Partisan"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": "Mostly the legendary sacrifice outlets that grow on the tokens they eat; Vito is the loop half parked here."
     },
     {
       "id": "city-2-hood-2",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "DOUBLE AND DRAW",
       "fallback": "Interaction",
       "cx": -0.47631,
       "cy": 0.31488,
@@ -1513,12 +1535,13 @@
         "Elspeth, Storm Slayer",
         "Liliana, Dreadhorde General"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE COLOUR PAIRS",
       "fallback": "Mana",
       "cx": 0.45011,
       "cy": -0.19401,
@@ -1546,13 +1569,14 @@
         "Takenuma, Abandoned Mire",
         "Vault of Champions"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The colour-pair lands, with the mono-colour utility lands beside them; what the fetches next door go and find."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "UNTAPPED ON CONDITION",
       "fallback": "Mana II",
       "cx": 0.4757,
       "cy": -0.13987,
@@ -1566,13 +1590,14 @@
         "Shattered Sanctum",
         "Vault of Champions"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "WHAT THE FETCHES FIND",
       "fallback": "Mana IIII",
       "cx": 0.50846,
       "cy": -0.30971,
@@ -1585,13 +1610,14 @@
         "Smoldering Marsh",
         "Swamp"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-3-hood-2",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "ALWAYS UNTAPPED",
       "fallback": "Mana",
       "cx": 0.38394,
       "cy": -0.15462,
@@ -1606,12 +1632,13 @@
         "Sulfurous Springs",
         "Takenuma, Abandoned Mire"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE ROCKS",
       "fallback": "Ramp II",
       "cx": 0.32366,
       "cy": 0.13156,
@@ -1626,7 +1653,8 @@
         "Talisman of Indulgence",
         "Urza's Incubator"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Turn-two and turn-three mana: rocks, the Incubator that makes every Vampire two cheaper, the Altar that turns tokens into colourless."
     },
     {
       "id": "city-4-hood-0",
@@ -1652,7 +1680,7 @@
     {
       "id": "city-5",
       "level": 0,
-      "label": null,
+      "label": "ANY COLOUR YOU NEED",
       "fallback": "Ramp",
       "cx": 0.55358,
       "cy": 0.11946,
@@ -1672,13 +1700,14 @@
         "Verdant Catacombs",
         "Wooded Foothills"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Lands that find or make whichever colour the hand is short of, plus a Tomb for the fast start."
     },
     {
       "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "THE FETCHES",
       "fallback": "Mana III",
       "cx": 0.51556,
       "cy": 0.07096,
@@ -1692,13 +1721,14 @@
         "Verdant Catacombs",
         "Wooded Foothills"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
-      "label": null,
+      "label": "ONE TAP, ANY COLOUR",
       "fallback": "Mana IIIII",
       "cx": 0.59793,
       "cy": 0.17604,
@@ -1711,12 +1741,13 @@
         "Mana Confluence",
         "Reflecting Pool"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": null
     },
     {
       "id": "city-6",
       "level": 0,
-      "label": null,
+      "label": "PAID ON ARRIVAL",
       "fallback": "Payoffs",
       "cx": -0.39747,
       "cy": 0.13976,
@@ -1732,13 +1763,14 @@
         "Welcoming Vampire",
         "Wispdrinker Vampire"
       ],
-      "verified_count": 2
+      "verified_count": 2,
+      "gloss": "The eminence's customers: Vampires that draw, drain or multiply the moment a small body arrives, before anything has to die."
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
-      "label": null,
+      "label": "UNDER TWO POWER",
       "fallback": "Payoffs",
       "cx": -0.45738,
       "cy": 0.07346,
@@ -1751,13 +1783,14 @@
         "Welcoming Vampire",
         "Wispdrinker Vampire"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": null
     },
     {
       "id": "city-6-hood-1",
       "level": 1,
       "parent": "city-6",
-      "label": null,
+      "label": "THE SLOW DRIP",
       "fallback": "Bodies II",
       "cx": -0.27766,
       "cy": 0.27236,
@@ -1767,7 +1800,8 @@
         "Tithe Drinker",
         "Twilight Prophet"
       ],
-      "verified_count": 1
+      "verified_count": 1,
+      "gloss": null
     }
   ],
   "edges": [

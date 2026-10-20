@@ -14,16 +14,14 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 14,
+    "complete": 17,
     "of": 19,
     "stale": [
-      "frame",
-      "tutors",
       "prose"
     ],
     "invalid": [
-      "engine",
-      "CONTEXT.md"
+      "CONTEXT.md",
+      "rating.json"
     ],
     "verified": true,
     "missing": [
@@ -16595,9 +16593,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Edgar mints a free Vampire on every Vampire cast and three replacement doublers turn one mint into eight; v1.1.0 kept the combat plan (a lord or anthem is drawn in 80.0% of games) and added a conversion layer beside it - seven sacrifice outlets feeding ten death payoffs (Blood Artist, Cruel Celebrant, Cordial Vampire, Elenda, Blade of the Bloodchief, Crossway Troublemakers, Liliana, Skullclamp, High-Society Hunter for nontoken deaths, and Reactor Raid) that turn a dying body into cards, counters or life loss - and the two checker-passed kill routes, a doubled attack drain and a two-card lifegain loop, need no combat damage to land.",
+    "thesis": "Edgar mints a 1/1 Vampire from the command zone on every Vampire cast, the sacrifice outlets - six cost no mana - turn those bodies into death events, four death drains and four gain-to-loss converters (three read 'that much', Blight-Priest reads 'each opponent loses 1') bill the table on every one of them without a point of combat damage, and the game ends when a converter meets Bloodthirsty Conqueror - three verified two-card infinites, all through one card, or an attack through Bloodletter that drains fourteen a seat before blockers.",
     "critic": "pass",
-    "lines": 16,
+    "lines": 18,
     "verified_lines": 5
   },
   "diagnosis": {
@@ -16606,13 +16604,15 @@
     "stale": true
   },
   "audit": {
-    "archetype": null,
+    "archetype": "combo",
     "under": [
       "mana-base",
       "card-advantage",
       "interaction-breadth"
     ],
-    "over": [],
+    "over": [
+      "protection"
+    ],
     "stale": []
   },
   "prescriptions": {
@@ -16629,28 +16629,33 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "With a free sacrifice outlet (Viscera Seer or Ashnod's Altar) and Crossway Troublemakers on the battlefield, sacrifice N eminence tokens in one turn: how many cards are drawn, at what life cost? Is a 1/1 black Vampire token 'a Vampire you control' for Crossway Troublemakers, and can the 2-life payment be declined per trigger?",
+      "question": "On a v2.1.0 board - Edgar in the command zone, Anointed Procession and Elspeth, Storm Slayer on the battlefield - cast Tithe Drinker: how many 1/1 Vampire tokens does the single eminence trigger create, and does Elspeth's replacement apply to a trigger resolving from the command zone? (The 002/010 shape, re-run on cards still in the 99.)",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Stack 002 records eminence tokens entering WITH Vampire Socialite's additional +1/+1 counter because an opponent had lost 3 life earlier that turn. What is the practical sequencing rule on this list - cast the Vampire after the turn's first drain, and does an attack-step Sanctum Seeker trigger resolving beat a post-combat cast? (Stack 011 recorded the no-counter case, but its board turns on Mirkwood Bats, cut in v1.1.0, so it does not answer this for this 99.)",
+      "question": "Exquisite Blood + Vito, Thorn of the Dusk Rose and Exquisite Blood + Sanguine Bond on a current board, seeded by a Blood Artist trigger or Tithe Drinker's lifelink: deterministic, shortcut-legal and a table kill on the same terms as 004/006?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Nothing measures whether a body is actually CONVERTED. The declaration prices 'a free sacrifice outlet drawn' at 72.3% and 'a drain that fires when a creature DIES' at 37.2% independently, but not the pair, and Forge cannot help: its evaluator activated Ashnod's Altar 0 times in 59 castings under both AI profiles and cast Viscera Seer 0 times in 500 games (both bench measurements on sacrifice decks, not taken on this list). Can the goldfish measure an outlet AND a death payoff together, and if not, what is the honest statement of what this stage's rate means?",
-      "settled_by": "goldfish"
+      "question": "Marauding Blight-Priest + Bloodthirsty Conqueror with three opponents: Blight-Priest's 'each opponent loses 1 life' makes three separate loss events per gain, so Conqueror triggers three times and you gain 3 - does that loop kill the table, is it shortcut-legal, and what happens when one opponent leaves mid-loop?",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Both verified kill routes rest on a single card each (Bloodletter of Aclazotz 4.1% assembled, Bloodthirsty Conqueror 7.8%), and the deck holds exactly one tutor. Is a two-one-card-route wincon a correct shape for a bracket-4 aggro-ish list that now wins by attrition, or should the kill be an emergent property of the conversion layer with the two named cards demoted to bonuses?",
+      "question": "Wispdrinker Vampire with a doubled eminence event (two 1/1 tokens entering at once): does 'whenever another creature you control with power 2 or less enters' trigger once per token, and does Welcoming Vampire's once-per-turn clause fire on the same event?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "For a two-piece loop whose halves are a creature and an enchantment, under instant-speed removal at a bracket-4 table: which half to land first, and whether to hold protection or a tutor for the second - what does the strategy corpus say about sequencing and protecting a two-card combo?",
       "settled_by": "research-strategy"
     },
     {
       "from": "engine",
-      "question": "Board: Elenda, the Dusk Rose with three +1/+1 counters (a 4/4), Cordial Vampire, Blade of the Bloodchief equipped to Nighthawk Scavenger, Anointed Procession, Mondrak, Viscera Seer, and two eminence tokens. Sacrifice Elenda to Viscera Seer. (a) Is X read from Elenda's last known power, counters included, so four tokens before doubling? (b) Order the triggers: Cordial Vampire and the Blade both trigger on her death alongside her own - do the tokens she leaves get Cordial's counter if her trigger resolves first, and can the pilot choose that order? (c) Two doublers: 4 -> 8 -> 16 lifelink Vampires? (d) Does the Blade put two counters on the Scavenger for Elenda's death, and none for tokens created later?",
-      "settled_by": "resolve-stack"
+      "question": "How much does the free-outlet conversion count (1.41 sacrifices by turn ten) move if a body returns on every land drop - Bloodghast's landfall recursion, which the model does not see?",
+      "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
@@ -16793,7 +16798,7 @@
         "Diabolic Intent",
         "Drana and Linvala"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Bloodghast, Clavileño, First of the Blessed, Enduring Tenacity, Exquisite Blood, Marauding Blight-Priest, Morbid Opportunist …. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Anje, Maid of Dishonor, Anowon, the Ruin Sage, Bloodghast, Bloodtithe Harvester, Clavileño, First of the Blessed, Demonic Tutor …. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
     },
     "eliminated_by": {
       "jarad-graveyard": 16,
@@ -16929,10 +16934,10 @@
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (engine, CONTEXT.md) — `deck-status edgar-vampires` names them; fix before anything else reads them",
-    "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "2 artifact(s) fail their own gate (CONTEXT.md, rating.json) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "stale: prose — regenerate against the current list (`/publish-deck` sequences it)",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×5",
+    "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×6",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
