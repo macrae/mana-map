@@ -73,6 +73,24 @@
     "digest": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061"
   },
   "routines": {
+    "deck-map-names": {
+      "agent": "deck-cartographer",
+      "agent_prompt_sha256": "e6e4a20c6979950397524f31aa41c03e408dfa3c07fa583a59db003619175bb1",
+      "artifact": "data/decks/keen-engineering/deck_map.json",
+      "artifact_sha256": "72c18fd9f06f98824a25bfe21caf581e4829366293cdd4246d5114fc154775a2",
+      "extra": {},
+      "fingerprint": "95e96767e4928d0436a266800690bbe92d9007b50946830ef4995c7404793e92",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/deck_map.json",
+          "sha256": "37168e9ba7d81fa1d430f22976881f12c02891818d48dc4b1913d9d885f0d042"
+        },
+        {
+          "path": "data/decks/keen-engineering/strategic_frame.json",
+          "sha256": null
+        }
+      ]
+    },
     "deck-rating": {
       "agent": "deck-rater+rating-skeptic",
       "agent_prompt_sha256": "133adb3751d1a69a861b188f37868dc1e2244814c338983eb86dd8a539c297f0",
@@ -151,6 +169,174 @@
         {
           "path": "src/manamap/pilot/rating_mc.py",
           "sha256": "a04d36aea76db88b7376917d9b857b445d96ac44e2b58a6335e31a8310914f7a"
+        }
+      ]
+    },
+    "stack:001": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "c4bf3f7af2b74ad516a697201ba92a17b530218d179c54717763c46af1dd705b",
+      "artifact": "data/decks/keen-engineering/stacks/001-sai-trigger-before-chief.json",
+      "artifact_sha256": "cb07723690cd14c62d21656c75768aef7ebab4bb91c58877852901a85910433b",
+      "card_refs": [
+        "Chief of the Foundry",
+        "Island",
+        "Master of Etherium",
+        "Sai, Master Thopterist"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061",
+        "rules_version": "June 19, 2026",
+        "rulings_scenario": "5961e70e77f8f6ec008b89fa3a6a5309adf3c7bf7f551990f04fbc56ae9ee942"
+      },
+      "fingerprint": "93e6075ab3337f2466935d5034634e3baf9afe3e94f50f56cd3003bca86fba6f",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/stacks/001-sai-trigger-before-chief.json#scenario",
+          "sha256": "f92a7c83e756c67cad37053d37bd759abce1aae3e91b143a32da7b95522fc92d"
+        }
+      ],
+      "iterations": 1,
+      "verdict": "pass"
+    },
+    "stack:002": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "c4bf3f7af2b74ad516a697201ba92a17b530218d179c54717763c46af1dd705b",
+      "artifact": "data/decks/keen-engineering/stacks/002-whirler-rogue-taps-new-thopters.json",
+      "artifact_sha256": "dd6e50cd49a35f5bbcfeeac9a97876302f7a0fc3dbd357cda0dcdaadd23f9f8f",
+      "card_refs": [
+        "Myr Battlesphere",
+        "Sai, Master Thopterist",
+        "Whirler Rogue"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061",
+        "rules_version": "June 19, 2026",
+        "rulings_scenario": "33e2eaa662c3b7eab914255c5210771718de015ee552f6900fd8c2359b126a24"
+      },
+      "fingerprint": "19c4baa9673958f6f719a89662aecbdb743cf303b9df62fc38c4e6489384fb41",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/stacks/002-whirler-rogue-taps-new-thopters.json#scenario",
+          "sha256": "f2f7fd54e22f90252cd85b69ea7000cb23a027b4ac2c46d3378d6b4c01f41099"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:003": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "c4bf3f7af2b74ad516a697201ba92a17b530218d179c54717763c46af1dd705b",
+      "artifact": "data/decks/keen-engineering/stacks/003-disk-with-darksteel-and-padeem.json",
+      "artifact_sha256": "73e5e67809ec8698d347484523cf8cc80eed9645eb2ea0bd3b6af8fe6a462f5e",
+      "card_refs": [
+        "Darksteel Citadel",
+        "Darksteel Juggernaut",
+        "Island",
+        "Nevinyrral's Disk",
+        "Padeem, Consul of Innovation",
+        "Sai, Master Thopterist"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061",
+        "rules_version": "June 19, 2026",
+        "rulings_scenario": "782ce522a246574a13e17206b652626ff8256f7d18f582c410068501f7f598a5"
+      },
+      "fingerprint": "b66f6f482a5d581fb7a924b8bdcf9901ddd95e0b4942bcb1954b5d2fbee3b877",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/stacks/003-disk-with-darksteel-and-padeem.json#scenario",
+          "sha256": "bfdc9e38b1397716cf198d463115ae34e40e98822e4edeb651e0d69ffe6c230b"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "strategic-frame": {
+      "agent": "strategy-researcher",
+      "agent_prompt_sha256": "3d83cf83e069386e25c4fb5665ebb3b6e6855235c52491be83807ad1d55688ad",
+      "artifact": "data/decks/keen-engineering/strategic_frame.json",
+      "artifact_sha256": "23b6e14b01411913237c23cbdd4aa8f0cdc7e374952a6f19ee470238f0b9dd26",
+      "card_refs": [
+        "Adaptive Omnitool",
+        "Aether Spellbomb",
+        "Aetherize",
+        "All Is Dust",
+        "Arcane Signet",
+        "Broodstar",
+        "Buried Ruin",
+        "Chief of the Foundry",
+        "Counterspell",
+        "Cultivator's Caravan",
+        "Darksteel Citadel",
+        "Darksteel Juggernaut",
+        "Duplicant",
+        "Etherium Sculptor",
+        "Fall from Favor",
+        "Forsaken Monument",
+        "Foundry Inspector",
+        "Graaz, Unstoppable Juggernaut",
+        "Hedron Archive",
+        "Ichor Wellspring",
+        "Island",
+        "Kappa Cannoneer",
+        "Launch Mishap",
+        "Lonely Sandbar",
+        "Master Transmuter",
+        "Master of Etherium",
+        "Mazemind Tome",
+        "Memory Guardian",
+        "Meteor Golem",
+        "Mind Stone",
+        "Mind's Eye",
+        "Misleading Signpost",
+        "Myr Battlesphere",
+        "Myr Retriever",
+        "Negate",
+        "Nettlecyst",
+        "Nevinyrral's Disk",
+        "Ornithopter of Paradise",
+        "Padeem, Consul of Innovation",
+        "Palladium Myr",
+        "Propaganda",
+        "Psychosis Crawler",
+        "Pull from Tomorrow",
+        "Remote Isle",
+        "Research Thief",
+        "Sai, Master Thopterist",
+        "Scrawling Crawler",
+        "Shimmer Dragon",
+        "Shimmer Myr",
+        "Silver Myr",
+        "Skysovereign, Consul Flagship",
+        "Sol Ring",
+        "Soul-Guide Lantern",
+        "Spire Golem",
+        "Steel Hellkite",
+        "Steel Overseer",
+        "Tamiyo's Logbook",
+        "Thirst for Knowledge",
+        "Thopter Fabricator",
+        "Thopter Spy Network",
+        "Thought Monitor",
+        "Thought Vessel",
+        "Thoughtcast",
+        "Vedalken Archmage",
+        "War Room",
+        "Whirler Rogue"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061",
+        "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
+      },
+      "fingerprint": "08fde8833377248836c0ceb3a01f944a77cec13e29d7e8c25677dd8adb52cd84",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
+          "sha256": "72fb35df9c3243e2fe55d57cc573e762e3fc163d77f3f62ac5cecc46097ac50a"
         }
       ]
     }

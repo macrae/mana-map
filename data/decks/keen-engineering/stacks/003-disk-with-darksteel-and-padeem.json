@@ -1,0 +1,437 @@
+{
+ "id": "003",
+ "slug": "disk-with-darksteel-and-padeem",
+ "deck": "keen-engineering",
+ "rules_version": "2026-06-19",
+ "title": "Nevinyrral's Disk under Padeem and the Darksteels — what survives a reset the deck builds to survive",
+ "scenario": {
+  "board": {
+   "you": [
+    "Sai, Master Thopterist",
+    "Nevinyrral's Disk",
+    "Darksteel Juggernaut",
+    "Darksteel Citadel",
+    "Padeem, Consul of Innovation",
+    "Thopter token (1/1 flying)",
+    "Thopter token (1/1 flying)",
+    "Thopter token (1/1 flying)",
+    "Thopter token (1/1 flying)",
+    "Thopter token (1/1 flying)",
+    "Thopter token (1/1 flying)",
+    "lands"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "four nontoken creatures",
+      "two enchantments",
+      "no instant-speed interaction held"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "three nontoken creatures"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "two nontoken creatures",
+      "one artifact"
+     ]
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [],
+  "mana_available": "{1} from one untapped Island",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Nevinyrral's Disk's activated ability",
+    "controller": "you",
+    "note": "{1}, {T}: Destroy all artifacts, creatures, and enchantments."
+   }
+  ],
+  "extras": {
+   "context": "THE RESET, as printed (v1.0.0). Nevinyrral's Disk reads 'Nevinyrral's Disk enters tapped. {1}, {T}: Destroy all artifacts, creatures, and enchantments.' Darksteel Juggernaut reads 'Indestructible. Darksteel Juggernaut's power and toughness are each equal to the number of artifacts you control.' Darksteel Citadel is an indestructible artifact land. Padeem, Consul of Innovation reads 'Artifacts you control have hexproof.' Sai is a creature (1/4). The Thopters are artifact creature tokens.",
+   "note_for_the_resolver": "ONE RULES DOMAIN: the destroy effect — indestructible, hexproof against a non-targeting effect, tokens ceasing to exist, the Disk destroying itself — and the state of Darksteel Juggernaut afterwards. Do not resolve combat; do not resolve Sai's commander-zone replacement beyond stating whether it applies."
+  },
+  "question": "Resolve the ability. Which of your permanents survive and which are destroyed, and why for each — Sai, the Disk itself, Darksteel Juggernaut, Darksteel Citadel, Padeem, the six Thopters? Does Padeem's hexproof protect anything here? What are Darksteel Juggernaut's power and toughness once the ability has resolved?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "All players pass priority with Nevinyrral's Disk's ability on top of (and alone on) the stack. The ability resolves. Its cost ({1}, {T}) was paid on activation, so the Disk is already tapped; the scenario's '{1} from one untapped Island' is either the mana that paid it or a second source — with an empty hand it changes nothing in this domain.",
+    "effect": "The ability begins to resolve. Nothing on the board has changed yet.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Check whether Padeem's hexproof grant bears on the ability. The Disk's text is 'Destroy all artifacts, creatures, and enchantments.' — it never uses the word 'target', so it is not a targeted ability; and in any case you, not an opponent, control it.",
+    "effect": "Hexproof protects nothing here. Hexproof only stops an artifact from being the target of an opponent's spell or ability; the Disk's ability has no targets and is yours. (Padeem is a non-artifact creature and does not even grant hexproof to itself.)",
+    "citations": [
+     {
+      "rule": "115.1c",
+      "quote": "An activated ability is targeted if it identifies something it will affect by using the phrase “target [something],”"
+     },
+     {
+      "rule": "115.10a",
+      "quote": "Just because an object or player is being affected by a spell or ability doesn’t make that object or player a target of that spell or ability. Unless that object or player is identified by the word “target” in the text of that spell or ability, or the rule for that keyword ability, it’s not a target."
+     },
+     {
+      "rule": "702.11b",
+      "quote": "“Hexproof” on a permanent means “This permanent can’t be the target of spells or abilities your opponents control.”"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Follow the ability's instruction: destroy every artifact, creature and enchantment on the battlefield simultaneously. Nevinyrral's Disk is itself an artifact still on the battlefield, so the effect destroys it too — the ability exists on the stack independently of its source. Gatherer's 2020-11-10 ruling on the Disk agrees ('It's destroyed as part of the ability's resolution if it's still on the battlefield').",
+    "effect": "Destroyed and moved to their owners' graveyards: Sai, Master Thopterist (creature), Padeem, Consul of Innovation (creature), Nevinyrral's Disk (artifact), the six Thopter tokens (artifact creatures). On the opponents' side every permanent the scenario lists — four, three and two nontoken creatures, two enchantments, one artifact — is destroyed as well, since none is described as indestructible or regenerating.",
+    "citations": [
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.8a",
+      "quote": "To destroy a permanent, move it from the battlefield to its owner’s graveyard."
+     },
+     {
+      "rule": "113.7a",
+      "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Apply indestructible to the two Darksteel permanents in the same event. Darksteel Juggernaut is an artifact creature with indestructible; Darksteel Citadel is an artifact land (an artifact, so the Disk's effect reaches it) with indestructible.",
+    "effect": "Darksteel Juggernaut and Darksteel Citadel are not destroyed and remain on the battlefield. A 'destroy' effect is one of the only ways a permanent can be destroyed, and indestructible precludes exactly that. Gatherer's ruling on the Juggernaut agrees ('effects that say \"destroy\" won't cause Darksteel Juggernaut to be put into the graveyard').",
+    "citations": [
+     {
+      "rule": "702.12b",
+      "quote": "A permanent with indestructible can’t be destroyed."
+     },
+     {
+      "rule": "701.8b",
+      "quote": "The only ways a permanent can be destroyed are as a result of an effect that uses the word “destroy” or as a result of the state-based actions that check for lethal damage (see rule 704.5g) or damage from a source with deathtouch (see rule 704.5h)."
+     },
+     {
+      "rule": "glossary:artifact-land",
+      "quote": "A combination of artifact and land that’s subject to the rules for both."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "The ability has finished resolving and leaves the stack. Before the active player receives priority, state-based actions are checked and performed as a single event, repeating until none apply.",
+    "effect": "(a) The six Thopter tokens, now in your graveyard, cease to exist. (b) Sai, Master Thopterist is your commander and was just put into your graveyard: you may put it into the command zone — this is a state-based action, not a replacement effect (the scenario's 'commander-zone replacement' wording describes the hand/library case in 903.9b, which does not apply to a graveyard). (c) Darksteel Juggernaut's toughness is checked against 0 — see step 6, it is 2, so it stays. No abilities trigger on anything named in the scenario. Whether the commander-zone rule applies is the limit of this domain: if you take the option, Sai may be cast from the command zone again, at an additional {2} for each previous time you have cast it from the command zone this game — the scenario does not say how many times that is, so no figure is stated.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event. If any state-based actions are performed as a result of a check, the check is repeated;"
+     },
+     {
+      "rule": "704.5d",
+      "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+     },
+     {
+      "rule": "111.7",
+      "quote": "A token that’s in a zone other than the battlefield ceases to exist. This is a state-based action; see rule 704."
+     },
+     {
+      "rule": "704.6d",
+      "quote": "In a Commander game, if a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone."
+     },
+     {
+      "rule": "704.5f",
+      "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+     },
+     {
+      "rule": "903.8",
+      "quote": "A player may cast a commander they own from the command zone. A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Read Darksteel Juggernaut's power and toughness. Its '*/*' is overridden by a characteristic-defining ability — 'power and toughness are each equal to the number of artifacts you control' (208.2a, 604.3), applied in layer 7a (613.4a). A CDA is a static ability, and the continuous effect a static ability generates is not locked in: it applies at any given moment to whatever its text indicates, for as long as the Juggernaut is on the battlefield (604.2, 611.3a, 611.3b). So the count is taken from the board as it stands after the destruction event, not from the moment the ability was activated or began resolving.",
+    "effect": "Artifacts you control: Darksteel Juggernaut and Darksteel Citadel — two. Darksteel Juggernaut is 2/2. (The Disk and the six Thopters no longer count; the Thopters have ceased to exist and the Disk is in your graveyard.) Its toughness is above 0, so the 704.5f check in step 5 does not move it. Gatherer's ruling that it 'will always be at least 1' while on the battlefield agrees, because it counts itself.",
+    "citations": [
+     {
+      "rule": "208.2a",
+      "quote": "The card may have a characteristic-defining ability that sets its power and/or toughness according to some stated condition. (See rule 604.3.) Such an ability is worded “[This creature’s] [power or toughness] is equal to . . .” or “[This creature’s] power and toughness are each equal to . . .”"
+     },
+     {
+      "rule": "604.3",
+      "quote": "Some static abilities are characteristic-defining abilities. A characteristic-defining ability conveys information about an object’s characteristics that would normally be found elsewhere on that object (such as in its mana cost, type line, or power/toughness box). Characteristic-defining abilities can add to or override information found elsewhere on that object."
+     },
+     {
+      "rule": "604.2",
+      "quote": "Static abilities create continuous effects, some of which are prevention effects or replacement effects. These effects are active as long as the permanent with the ability remains on the battlefield and has the ability,"
+     },
+     {
+      "rule": "611.3a",
+      "quote": "A continuous effect generated by a static ability isn’t “locked in”; it applies at any given moment to whatever its text indicates."
+     },
+     {
+      "rule": "611.3b",
+      "quote": "The effect applies at all times that the permanent generating it is on the battlefield or the object generating it is in the appropriate zone."
+     },
+     {
+      "rule": "613.4a",
+      "quote": "Layer 7a: Effects from characteristic-defining abilities that define power and/or toughness are applied. See rule 604.3."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "With no further state-based actions and no triggered abilities waiting, you (the active player) receive priority with an empty stack.",
+    "effect": "The reset is complete. You keep Darksteel Juggernaut (2/2, indestructible), Darksteel Citadel and your other lands; Sai is in the command zone if you chose that (otherwise your graveyard); Padeem and Nevinyrral's Disk are in your graveyard; the Thopters are gone. Each opponent still has 40 life and only their lands (and anything not an artifact, creature or enchantment).",
+    "citations": [
+     {
+      "rule": "117.5",
+      "quote": "Then the player who would have received priority does so."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Nevinyrral's Disk destroys everything it names, itself included; only the two indestructible Darksteels survive. Padeem's hexproof is irrelevant because the Disk's ability has no targets (and is yours). Sai, Padeem and the Disk go to the graveyard (Sai may go to the command zone as a state-based action); the six Thopter tokens go to the graveyard and cease to exist. Darksteel Juggernaut is 2/2 afterwards: it counts itself and Darksteel Citadel.",
+   "you": {
+    "battlefield": [
+     "Darksteel Juggernaut (2/2, indestructible)",
+     "Darksteel Citadel (artifact land, indestructible)",
+     "lands"
+    ],
+    "graveyard": [
+     "Padeem, Consul of Innovation",
+     "Nevinyrral's Disk",
+     "Sai, Master Thopterist (unless moved to the command zone by state-based action 704.6d)"
+    ],
+    "command_zone": [
+     "Sai, Master Thopterist (at your option, via 704.6d; may be cast again from the command zone for an additional {2} per previous command-zone cast this game — 903.8, cited in step 5; the scenario does not state that count)"
+    ],
+    "ceased_to_exist": [
+     "Thopter token x6"
+    ],
+    "hand": [],
+    "darksteel_juggernaut_power_toughness": "2/2",
+    "hexproof_relevance": "none — the ability does not target, and you control it"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": "four nontoken creatures and two enchantments destroyed (none described as indestructible)"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "board": "three nontoken creatures destroyed (none described as indestructible)"
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "board": "two nontoken creatures and one artifact destroyed (none described as indestructible)"
+    }
+   ]
+  },
+  "notes": [
+   "scenario-facts vs prose: the scenario's note_for_the_resolver calls Sai's return a 'commander-zone replacement'; under the current CR a commander put into a graveyard goes to the command zone by STATE-BASED ACTION (704.6d / 903.9a), and the replacement effect (903.9b) covers only hand and library. Resolved per the CR; flagged rather than silently corrected.",
+   "scenario-facts reports no official rulings absent for any named card; the Disk's and the Juggernaut's rulings were used as INPUT to pick 113.7a and 702.12b and are not cited.",
+   "Revision 2: step 6's continuity claim now rests on 604.2 / 611.3a / 611.3b (a static ability's continuous effect is not locked in) with 613.4a for the layer, 604.3 kept only for the CDA overriding the P/T box; the command-zone tax is restated per 903.8 as {2} per previous command-zone cast, with no figure, since the scenario does not give the count.",
+   "The opponents' boards are described generically; their destruction is stated as the scenario describes them, with no claim about indestructible, regeneration or replacement effects the prose does not mention."
+  ]
+ },
+ "checker": {
+  "verdict": "pass",
+  "iterations": 2,
+  "findings": [
+   {
+    "step": 1,
+    "rule": "117.4",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 1,
+    "rule": "608.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "115.1c",
+    "status": "supported",
+    "note": "Disk's oracle text (cards.json) has no 'target'; the ability is untargeted."
+   },
+   {
+    "step": 2,
+    "rule": "115.10a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "702.11b",
+    "status": "supported",
+    "note": "Hexproof is scoped to opponents' spells/abilities; the Disk is yours and untargeted. Padeem's oracle text grants hexproof only to artifacts you control, and Padeem is a Vedalken Artificer, not an artifact — the parenthetical is correct."
+   },
+   {
+    "step": 3,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "701.8a",
+    "status": "supported",
+    "note": "Tokens are moved to the graveyard here and cease to exist only at the SBA check (step 5) — correctly sequenced."
+   },
+   {
+    "step": 3,
+    "rule": "113.7a",
+    "status": "supported",
+    "note": "Establishes that the Disk's own destruction does not affect the ability already resolving; agrees with the Disk's 2020-11-10 ruling ('It's destroyed as part of the ability's resolution if it's still on the battlefield')."
+   },
+   {
+    "step": 4,
+    "rule": "702.12b",
+    "status": "supported",
+    "note": "Agrees with the Juggernaut's 2011-01-01 ruling that 'destroy' effects won't put it into the graveyard."
+   },
+   {
+    "step": 4,
+    "rule": "701.8b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "glossary:artifact-land",
+    "status": "supported",
+    "note": "Darksteel Citadel is 'Artifact Land' in cards.json; it is an artifact, so 'all artifacts' reaches it and its indestructible saves it."
+   },
+   {
+    "step": 5,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "704.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "704.5d",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "111.7",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "704.6d",
+    "status": "supported",
+    "note": "Verified the resolution's uncited characterisation: 903.9a makes the graveyard/exile return a state-based action; 903.9b is the replacement effect and covers only hand and library. The scenario's 'commander-zone replacement' wording is wrong and the resolution is right to flag rather than follow it."
+   },
+   {
+    "step": 5,
+    "rule": "704.5f",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "903.8",
+    "status": "supported",
+    "note": "Round 2: the tax is now stated as 'an additional {2} for each previous time you have cast it from the command zone this game' with no figure asserted, matching 903.8 verbatim; final_state.you.command_zone carries the same wording. The round-1 '{2} more' overclaim is gone."
+   },
+   {
+    "step": 6,
+    "rule": "208.2a",
+    "status": "supported",
+    "note": "The Juggernaut's wording matches the CDA template verbatim."
+   },
+   {
+    "step": 6,
+    "rule": "604.3",
+    "status": "supported",
+    "note": "Round 2: now attached only to the claim that the CDA overrides the '*/*' in the P/T box, which the widened quote establishes directly."
+   },
+   {
+    "step": 6,
+    "rule": "604.2",
+    "status": "supported",
+    "note": "Establishes that a static ability (a CDA is one, per 604.3) generates a continuous effect active while the Juggernaut is on the battlefield."
+   },
+   {
+    "step": 6,
+    "rule": "611.3a",
+    "status": "supported",
+    "note": "The load-bearing rule for the ordering question: the effect is not locked in, so the count is taken from the board after the destruction event. This is the citation round 1 asked for."
+   },
+   {
+    "step": 6,
+    "rule": "611.3b",
+    "status": "supported",
+    "note": "Full text (with its example of a creature gaining/losing an anthem as its colour changes) confirms the effect tracks the current board at all times the Juggernaut is on the battlefield."
+   },
+   {
+    "step": 6,
+    "rule": "613.4a",
+    "status": "supported",
+    "note": "Attached only to 'applied in layer 7a'; the rule says exactly that."
+   },
+   {
+    "step": 7,
+    "rule": "117.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   }
+  ],
+  "summary_notes": [
+   "Round 2 re-check: both round-1 unsupported findings are resolved in the artifact (step 6 / 604.3; final_state / 903.8). The 20 carried citations are byte-identical to round 1 and remain supported.",
+   "Missing-steps audit: no triggered abilities fire on the named cards (Sai triggers on casting an artifact spell, Padeem at upkeep; neither on destruction). SBAs for tokens (704.5d), the commander (704.6d) and toughness (704.5f) are handled as a single event with the repeat (704.3). Priority (117.3b/117.5) is handled. No replacement effect (614) applies to anything named; the opponents' generic boards are stated as described, with the resolution's own caveat. No SBA is checked mid-resolution, and the Juggernaut never drops below 1 because it counts itself (2011-01-01 ruling). No missed step found.",
+   "Rulings section present for all five named cards; no step contradicts any ruling. Rulings were used as input only; none is cited.",
+   "Sibling comparability: the resolution quotes no figure from 001 or 002, so scenario-facts' 'not like-for-like' flags are moot here.",
+   "Oracle nit (not a finding — out of the stated domain): scenario.extras.context quotes Darksteel Juggernaut without its third ability, 'This creature attacks each combat if able.' (cards.json). The resolution makes no claim the omission falsifies."
+  ]
+ }
+}

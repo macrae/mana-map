@@ -8,7 +8,20 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 67,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
+    "named_by": "deck-cartographer",
+    "cartographer_notes": [
+      "No city carries a verified_count above zero: there is no checker-passed stack for this deck, so THE ENGINE ROOM is named from the commander and the card text, not from a line on the record.",
+      "Fall from Favor (x = -1.00) is the farthest card from every cluster: the deck's one Aura in a list of fifty artifacts. I read it as the most unusual card rather than a misfit — the monarch is a draw engine and the deck's Thopters are built to hold the crown.",
+      "city-1-hood-0 is a remainder split: the clustering pulled out the four held-up instants and left eleven cards. THE PILLOW FORT fits four of them (Propaganda, Fall from Favor, Misleading Signpost, Aether Spellbomb); three are Islands that pay for it; four are draw (Pull from Tomorrow, Research Thief, Tamiyo's Logbook, Thopter Spy Network). The fallback 'Mana' was the Islands outvoting the rest.",
+      "city-0-hood-1's fallback 'Card Flow' came from the two Crawlers; the cluster's real tie is six colourless artifact creatures each carrying a rider (ETB exile, ETB destroy, Thopters, drain, recursion), hence THE FREIGHT.",
+      "city-0-hood-2: All Is Dust and Palladium Myr are the odd members among the lords. THE LORDS stretches to All Is Dust through 'the only thing left standing' — it spares the colourless team — and Palladium Myr through 'cheaper'; the split still reads clean.",
+      "city-2's two neighbourhoods divide by the colour of mana produced (eight colourless-only sources vs three that make blue), a real distinction in a deck running Forsaken Monument; the fallback 'Ramp' / 'Ramp III' hid it.",
+      "city-3-hood-1: Thirst for Knowledge is the one non-affinity card among THE DISCOUNTS; it belongs by job (draw that feeds on artifacts) if not by mechanic.",
+      "city-4-hood-1: Shimmer Myr is the odd member — a flash enabler, not a count-sized threat; the gloss names it rather than renaming around it.",
+      "city-4-hood-0: Thopter Fabricator is the small one among THE BIG FLIERS (a 3-mana vehicle); it sits with them as a flying artifact that makes more fliers.",
+      "Broodstar (y = 0.76) is the top of the map; it is the purest expression of the count-sized threat and reads as placed correctly."
+    ]
   },
   "cards": [
     {
@@ -882,7 +895,7 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": null,
+      "label": "THE COLOURLESS CORE",
       "fallback": "Bodies",
       "cx": 0.29219,
       "cy": -0.05728,
@@ -907,13 +920,14 @@
         "Soul-Guide Lantern",
         "Steel Overseer"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The deck's mass, all of it colourless: nearly every cast here makes a Thopter and grows every artifact count."
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE WORKBENCH",
       "fallback": "Value",
       "cx": 0.06652,
       "cy": -0.4055,
@@ -926,13 +940,14 @@
         "Nevinyrral's Disk",
         "Soul-Guide Lantern"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Artifacts that stay home and work: draw, scry, a mana doubler, and the Disk that resets the table."
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE FREIGHT",
       "fallback": "Card Flow",
       "cx": 0.31179,
       "cy": 0.10359,
@@ -945,13 +960,14 @@
         "Psychosis Crawler",
         "Scrawling Crawler"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Colourless bodies that ship something extra: an exile, a Thopter swarm, a drain, a card back from the yard."
     },
     {
       "id": "city-0-hood-2",
       "level": 1,
       "parent": "city-0",
-      "label": null,
+      "label": "THE LORDS",
       "fallback": "Finishers",
       "cx": 0.49827,
       "cy": 0.13008,
@@ -964,12 +980,13 @@
         "Palladium Myr",
         "Steel Overseer"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Makes the artifact team bigger, cheaper, or the only thing left standing."
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": null,
+      "label": "THE MOAT",
       "fallback": "Mana",
       "cx": -0.61121,
       "cy": -0.09763,
@@ -991,13 +1008,14 @@
         "Tamiyo's Logbook",
         "Thopter Spy Network"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Islands and what they pay for: you stay alive behind counters, bounce, a fog and Propaganda, and draw while the artifacts build."
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE PILLOW FORT",
       "fallback": "Mana",
       "cx": -0.59183,
       "cy": -0.27908,
@@ -1015,13 +1033,14 @@
         "Tamiyo's Logbook",
         "Thopter Spy Network"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Permanents that make attacking you a bad deal, the Islands that pay for them, and the draw you sit behind them with."
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
-      "label": null,
+      "label": "THE TRAPS",
       "fallback": "Interaction",
       "cx": -0.66451,
       "cy": 0.40137,
@@ -1032,12 +1051,13 @@
         "Launch Mishap",
         "Negate"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Four instants held up: three counters and a fog that bounces the whole attack."
     },
     {
       "id": "city-2",
       "level": 0,
-      "label": null,
+      "label": "THE MANA THAT COUNTS",
       "fallback": "Card Flow",
       "cx": 0.43825,
       "cy": -0.38972,
@@ -1055,13 +1075,14 @@
         "Thought Vessel",
         "War Room"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Ramp that is also an artifact: every rock here triggers Sai and pays affinity, and the lands rebuy, draw or make Thopters."
     },
     {
       "id": "city-2-hood-0",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE COLOURLESS SOURCES",
       "fallback": "Ramp",
       "cx": 0.38057,
       "cy": -0.43573,
@@ -1076,13 +1097,14 @@
         "Thought Vessel",
         "War Room"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Rocks and lands that make only colourless, which is exactly the mana Forsaken Monument doubles."
     },
     {
       "id": "city-2-hood-1",
       "level": 1,
       "parent": "city-2",
-      "label": null,
+      "label": "THE BLUE SOURCES",
       "fallback": "Ramp III",
       "cx": 0.59204,
       "cy": -0.26702,
@@ -1092,12 +1114,13 @@
         "Cultivator's Caravan",
         "Ornithopter of Paradise"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "The three that make blue, for the pips the colourless rocks cannot pay."
     },
     {
       "id": "city-3",
       "level": 0,
-      "label": null,
+      "label": "THE ENGINE ROOM",
       "fallback": "Ramp",
       "cx": -0.23711,
       "cy": 0.18636,
@@ -1118,13 +1141,14 @@
         "Vedalken Archmage",
         "Whirler Rogue"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Your commander and the crew that pay you for each artifact cast: a Thopter, a card, a discount, a bigger body."
     },
     {
       "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE PAYOFFS",
       "fallback": "Bodies",
       "cx": -0.24176,
       "cy": 0.09314,
@@ -1140,13 +1164,14 @@
         "Vedalken Archmage",
         "Whirler Rogue"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Creatures whose value is the artifacts around them: a Thopter per cast, a card per cast, hexproof, a body that grows."
     },
     {
       "id": "city-3-hood-1",
       "level": 1,
       "parent": "city-3",
-      "label": null,
+      "label": "THE DISCOUNTS",
       "fallback": "Ramp II",
       "cx": -0.22872,
       "cy": 0.35415,
@@ -1158,12 +1183,13 @@
         "Thought Monitor",
         "Thoughtcast"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Bodies and draw that get cheaper as the artifact count climbs, plus the one draw spell that pitches an artifact."
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": null,
+      "label": "THE CASH-OUT",
       "fallback": "Insurance",
       "cx": 0.26749,
       "cy": 0.46371,
@@ -1179,13 +1205,14 @@
         "Steel Hellkite",
         "Thopter Fabricator"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Where the artifact count becomes damage: bodies and equipment sized to it, plus the big fliers that end the game."
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "THE BIG FLIERS",
       "fallback": "Bodies II",
       "cx": 0.20831,
       "cy": 0.35878,
@@ -1196,13 +1223,14 @@
         "Steel Hellkite",
         "Thopter Fabricator"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Evasive finishers with a fixed size; they do not need the count to be large."
     },
     {
       "id": "city-4-hood-1",
       "level": 1,
       "parent": "city-4",
-      "label": null,
+      "label": "SIZED BY THE COUNT",
       "fallback": "Insurance",
       "cx": 0.31483,
       "cy": 0.54765,
@@ -1214,7 +1242,8 @@
         "Nettlecyst",
         "Shimmer Myr"
       ],
-      "verified_count": 0
+      "verified_count": 0,
+      "gloss": "Threats whose power is the number of artifacts you control; the Myr lets you drop them at instant speed."
     }
   ],
   "edges": [

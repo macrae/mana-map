@@ -1,0 +1,483 @@
+{
+ "id": "001",
+ "slug": "sai-trigger-before-chief",
+ "deck": "keen-engineering",
+ "rules_version": "2026-06-19",
+ "title": "Sai's Thopter lands before the artifact spell resolves — and what Master of Etherium and Chief of the Foundry make of it",
+ "scenario": {
+  "board": {
+   "you": [
+    "Sai, Master Thopterist",
+    "Master of Etherium",
+    "lands"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no instant-speed interaction held"
+     ]
+    },
+    {
+     "life": 40,
+     "board": []
+    },
+    {
+     "life": 40,
+     "board": []
+    }
+   ]
+  },
+  "hand": [
+   "Chief of the Foundry"
+  ],
+  "graveyard": [],
+  "mana_available": "{3} from three untapped Islands",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Chief of the Foundry (artifact creature spell)",
+    "controller": "you",
+    "note": "just cast; Sai's 'Whenever you cast an artifact spell' trigger has triggered and will go on the stack above it"
+   },
+   {
+    "pos": 1,
+    "object": "Sai, Master Thopterist's trigger",
+    "controller": "you",
+    "note": "create a 1/1 colorless Thopter artifact creature token with flying"
+   }
+  ],
+  "extras": {
+   "context": "THE DECK'S BASIC PLAY, as printed (v1.0.0). Sai reads 'Whenever you cast an artifact spell, create a 1/1 colorless Thopter artifact creature token with flying.' Master of Etherium reads 'Master of Etherium's power and toughness are each equal to the number of artifacts you control. Other artifact creatures you control get +1/+1.' Chief of the Foundry reads 'Other artifact creatures you control get +1/+1.' Before the cast: Sai (1/4), Master of Etherium, no other artifacts.",
+   "note_for_the_resolver": "ONE RULES DOMAIN: triggered abilities and the order of resolution on the stack, then the continuous effects that set and modify power and toughness (layer 7). Do not resolve combat."
+  },
+  "question": "Resolve the stack. Does the Thopter enter the battlefield before or after Chief of the Foundry resolves, and why? Once everything has resolved, state the power and toughness of Sai, the Thopter, Master of Etherium and Chief of the Foundry, showing which effect sets each figure and in what layer order."
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Chief of the Foundry ({3}, artifact creature) is cast from hand, paying {3} from the three untapped Islands. It becomes cast and sits at the bottom of the stack (pos 0). Sai, Master Thopterist's 'Whenever you cast an artifact spell' ability triggers at this moment, but nothing happens yet.",
+    "effect": "Chief of the Foundry is a spell on the stack, not a permanent. Master of Etherium's count of 'artifacts you control' therefore still reads 1 (itself only), so Master is 1/1 and Sai is 1/4 while the stack is pending. All three Islands are tapped.",
+    "citations": [
+     {
+      "rule": "601.2i",
+      "quote": "then the spell becomes cast. Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     },
+     {
+      "rule": "109.2",
+      "quote": "it means a permanent of that card type or subtype on the battlefield"
+     },
+     {
+      "rule": "110.1",
+      "quote": "A permanent is a card or token on the battlefield."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "You would receive priority after casting. Before you do, state-based actions are checked (none apply) and Sai's triggered ability is put on the stack, above Chief of the Foundry (pos 1).",
+    "effect": "Stack, bottom to top: Chief of the Foundry (spell), then Sai's trigger (create a 1/1 colorless Thopter artifact creature token with flying). The trigger is the topmost object and will resolve first. The official Sai ruling states the same outcome.",
+    "citations": [
+     {
+      "rule": "117.3c",
+      "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority. See rule 117, “Timing and Priority.” The ability becomes the topmost object on the stack."
+     },
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "You hold priority and pass; opponent 1 holds no instant-speed interaction and opponents 2 and 3 have empty boards, so all three pass in succession. The top object, Sai's trigger, resolves. It has no targets, so no legality check applies; its instruction is followed: create a 1/1 colorless Thopter artifact creature token with flying.",
+    "effect": "The Thopter token enters the battlefield under your control, BEFORE Chief of the Foundry has resolved. Chief remains on the stack. The token's characteristics are those the trigger defined: Thopter Token, artifact creature, colorless, 1/1, flying.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.7a",
+      "quote": "To create one or more tokens with certain characteristics, put the specified number of tokens with the specified characteristics onto the battlefield."
+     },
+     {
+      "rule": "111.2",
+      "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+     },
+     {
+      "rule": "111.4",
+      "quote": "If the spell or ability doesn’t specify the name of the token, its name is the same as its subtype(s) plus the word “Token.”"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Intermediate characteristics with the Thopter on the battlefield and Chief still on the stack. Artifacts you control: Master of Etherium and the Thopter token (2). Layer 7a: Master's characteristic-defining ability sets it to 2/2. Layer 7c: Master's 'Other artifact creatures you control get +1/+1' applies to the Thopter, making it 2/2. Sai is a Human Artificer, not an artifact, and stays 1/4.",
+    "effect": "Master of Etherium 2/2, Thopter 2/2, Sai 1/4. Then, before you receive priority again, state-based actions are checked: no creature has toughness 0 or less and no player is at 0 life, so nothing happens; no new ability has triggered (nothing on this board triggers on a token entering). You, the active player, receive priority.",
+    "citations": [
+     {
+      "rule": "613.1",
+      "quote": "For a token or a copy of a spell or card, that means the values of the characteristics defined by the effect that created it. Then all applicable continuous effects are applied in a series of layers in the following order:"
+     },
+     {
+      "rule": "613.4a",
+      "quote": "Layer 7a: Effects from characteristic-defining abilities that define power and/or toughness are applied."
+     },
+     {
+      "rule": "613.4c",
+      "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+     },
+     {
+      "rule": "604.2",
+      "quote": "Static abilities create continuous effects, some of which are prevention effects or replacement effects. These effects are active as long as the permanent with the ability remains on the battlefield and has the ability"
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "704.5f",
+      "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "All players pass in succession again. Chief of the Foundry, now the top (and only) object on the stack, resolves. It is a permanent spell with no targets, so it becomes a permanent and enters the battlefield under your control.",
+    "effect": "Chief of the Foundry is on the battlefield. Nothing on this board triggers on its entering (Sai triggers on CAST, which already happened in step 1). The stack is empty.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.3",
+      "quote": "If the object that’s resolving is a permanent spell, its resolution may involve several steps. The instructions in rules 608.3a and b are always performed first."
+     },
+     {
+      "rule": "608.3a",
+      "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+     },
+     {
+      "rule": "302.2",
+      "quote": "When a creature spell resolves, its controller puts it onto the battlefield under their control."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Final characteristics, worked through layer 7 for each creature. Artifacts you control: Master of Etherium, the Thopter token, Chief of the Foundry (3). Layer 7a: Master of Etherium's characteristic-defining ability sets its power and toughness to 3/3 (it counts itself, being an artifact you control; the official ruling agrees). Layer 7c, in timestamp order: Master's 'Other artifact creatures you control get +1/+1' (earlier timestamp) and Chief's identical ability (later timestamp) are both modifying effects; because each only adds +1/+1 the order within 7c changes nothing. Master gets +1/+1 from Chief only (its own ability says 'Other'). The Thopter gets +1/+1 from Master and +1/+1 from Chief. Chief gets +1/+1 from Master only. Sai is not an artifact creature and receives no modification.",
+    "effect": "Sai, Master Thopterist: 1/4 (printed; no effect applies). Thopter token: 3/3 (1/1 from the creating effect, +1/+1 Master, +1/+1 Chief, all layer 7c). Master of Etherium: 4/4 (layer 7a sets 3/3 for three artifacts; layer 7c +1/+1 from Chief). Chief of the Foundry: 3/4 (printed 2/3; layer 7c +1/+1 from Master). State-based actions find nothing to do; you receive priority with an empty stack, an empty hand, and no untapped mana.",
+    "citations": [
+     {
+      "rule": "604.3",
+      "quote": "A characteristic-defining ability conveys information about an object’s characteristics that would normally be found elsewhere on that object (such as in its mana cost, type line, or power/toughness box). Characteristic-defining abilities can add to or override information found elsewhere on that object."
+     },
+     {
+      "rule": "613.4a",
+      "quote": "Layer 7a: Effects from characteristic-defining abilities that define power and/or toughness are applied."
+     },
+     {
+      "rule": "613.4c",
+      "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+     },
+     {
+      "rule": "613.4",
+      "quote": "Within layer 7, apply effects in a series of sublayers in the order described below. Within each sublayer, apply effects in timestamp order."
+     },
+     {
+      "rule": "613.7",
+      "quote": "An effect with an earlier timestamp is applied before an effect with a later timestamp."
+     },
+     {
+      "rule": "109.2",
+      "quote": "it means a permanent of that card type or subtype on the battlefield"
+     },
+     {
+      "rule": "704.3",
+      "quote": "Once no more state-based actions have been performed as the result of a check and no triggered abilities are waiting to be put on the stack, the appropriate player gets priority."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "The Thopter enters BEFORE Chief of the Foundry resolves: Sai's cast trigger goes on the stack above the spell that caused it and resolves first (LIFO). After both resolve you control three artifacts. Sai 1/4, Thopter token 3/3, Master of Etherium 4/4, Chief of the Foundry 3/4. Opponents untouched at 40 each (120 across the pod); no combat resolved, per the scenario's note.",
+   "you": {
+    "battlefield": [
+     "Sai, Master Thopterist 1/4 (printed; not an artifact, no effect applies)",
+     "Thopter token 1/1 colorless artifact creature with flying, now 3/3 (+1/+1 Master, +1/+1 Chief, both layer 7c)",
+     "Master of Etherium 4/4 (layer 7a: 3/3 for three artifacts you control, itself included; layer 7c: +1/+1 from Chief)",
+     "Chief of the Foundry 3/4 (printed 2/3; layer 7c: +1/+1 from Master)",
+     "three Islands, tapped"
+    ],
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{0}",
+    "stack": []
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": [
+      "no instant-speed interaction held"
+     ]
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "board": []
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "board": []
+    }
+   ],
+   "rulings_consulted": {
+    "Sai, Master Thopterist": "2018-07-13 ruling: trigger resolves before the spell that caused it — agrees with steps 2-3; cited via CR 603.3 / 405.5",
+    "Master of Etherium": "2020-08-07 rulings: ability counts itself; CDA applies in all zones — agrees with step 6; cited via CR 604.3 / 613.4a",
+    "Chief of the Foundry": "2020-08-07 ruling on marked damage — not engaged by this scenario (no damage dealt)"
+   }
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "601.2i",
+    "status": "supported",
+    "note": "Full rule: spell becomes cast after 601.2a-h; cast triggers trigger at that time; the controller gets priority. Sai's trigger timing is exactly this."
+   },
+   {
+    "step": 1,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Trigger occurs, does nothing yet."
+   },
+   {
+    "step": 1,
+    "rule": "109.2",
+    "status": "supported",
+    "note": "'Artifacts you control' names no zone and no 'card/spell/source' word, so it means permanents on the battlefield; Chief on the stack is not counted. Master = 1/1 (itself) while Chief is pending is correct."
+   },
+   {
+    "step": 1,
+    "rule": "110.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "117.3c",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "SBA check then triggers to the stack before priority; none apply, trigger goes up. Agrees with the 2018-07-13 Sai ruling (trigger resolves before the spell that caused it)."
+   },
+   {
+    "step": 2,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Topmost object on the stack."
+   },
+   {
+    "step": 2,
+    "rule": "405.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "117.4",
+    "status": "supported",
+    "note": "Wording nit only: 'You hold priority and pass' is muddled vernacular (holding priority means NOT passing); substance — you receive priority (117.3c) and pass, then the three opponents pass — is correct and the scenario states opponent 1 holds no instant-speed interaction."
+   },
+   {
+    "step": 3,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "No targets, so 608.2b's legality check has nothing to test; instructions followed."
+   },
+   {
+    "step": 3,
+    "rule": "701.7a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "111.2",
+    "status": "supported",
+    "note": "Token enters under your control; Thopter is created before Chief resolves because Chief is still below it on the stack."
+   },
+   {
+    "step": 3,
+    "rule": "111.4",
+    "status": "supported",
+    "note": "Name 'Thopter Token', subtype Thopter; the trigger text defines 1/1 colorless artifact creature with flying, matching cards.json oracle text."
+   },
+   {
+    "step": 4,
+    "rule": "613.1",
+    "status": "supported",
+    "note": "Token starts from the characteristics its creating effect defined (1/1); cards from printed values."
+   },
+   {
+    "step": 4,
+    "rule": "613.4a",
+    "status": "supported",
+    "note": "Two artifacts you control (Master, Thopter) -> Master 2/2 in 7a. Arithmetic verified."
+   },
+   {
+    "step": 4,
+    "rule": "613.4c",
+    "status": "supported",
+    "note": "Thopter 1/1 +1/+1 from Master = 2/2 in 7c. Master's anthem is a separate static ability, not part of the CDA (604.3a criterion 3), so 7c is the correct sublayer."
+   },
+   {
+    "step": 4,
+    "rule": "604.2",
+    "status": "supported",
+    "note": "Master's static effects are active while it is on the battlefield."
+   },
+   {
+    "step": 4,
+    "rule": "704.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "704.5f",
+    "status": "supported",
+    "note": "No creature at toughness 0 or less; Sai 1/4, Master 2/2, Thopter 2/2."
+   },
+   {
+    "step": 4,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "You are the active player (a creature spell without flash can only be cast in your main phase with an empty stack, 117.1a — consistent, though the scenario block never states the phase)."
+   },
+   {
+    "step": 5,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "608.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "608.3a",
+    "status": "supported",
+    "note": "Chief has no targets, becomes a permanent under your control. Nothing on the board triggers on it entering; Sai is a cast trigger, already resolved."
+   },
+   {
+    "step": 5,
+    "rule": "302.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "604.3",
+    "status": "supported",
+    "note": "Establishes what a CDA is. Master's P/T ability meets all five 604.3a criteria (defines P/T; printed on it; affects no other object; not self-granted; not conditional) — 604.3a would be the tighter citation for the classification claim, but 604.3's text (information normally found in the P/T box) does carry it. Agrees with the 2020-08-07 ruling that Master counts itself."
+   },
+   {
+    "step": 6,
+    "rule": "613.4a",
+    "status": "supported",
+    "note": "Three artifacts you control (Master, Thopter, Chief) -> Master 3/3 in 7a. Verified."
+   },
+   {
+    "step": 6,
+    "rule": "613.4c",
+    "status": "supported",
+    "note": "Master 3/3 +1/+1 (Chief) = 4/4; Thopter 1/1 +1/+1 (Master) +1/+1 (Chief) = 3/3; Chief 2/3 +1/+1 (Master) = 3/4; Sai 1/4 untouched (Human Artificer, not an artifact creature). All four figures verified against cards.json printed values."
+   },
+   {
+    "step": 6,
+    "rule": "613.4",
+    "status": "supported",
+    "note": "Full rule also mentions dependency (613.8); none exists here — 7a and 7c are different sublayers and the two 7c anthems are independent, so timestamp order within 7c is correct and, as the step says, immaterial to the totals."
+   },
+   {
+    "step": 6,
+    "rule": "613.7",
+    "status": "supported",
+    "note": "Master entered the battlefield before Chief, so its anthem has the earlier timestamp (613.7a, not cited, is the rule that assigns a permanent's timestamp on entering)."
+   },
+   {
+    "step": 6,
+    "rule": "109.2",
+    "status": "supported",
+    "note": "Chief now a permanent, so counted."
+   },
+   {
+    "step": 6,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "No SBA applies (no 0-toughness creature, one legendary Sai, no player at 0 life); you receive priority with an empty stack."
+   }
+  ],
+  "rulings_check": {
+   "Sai, Master Thopterist (2018-07-13)": "trigger resolves before the spell that caused it — resolution steps 2-3 agree",
+   "Master of Etherium (2020-08-07)": "counts itself; CDA functions in all zones — step 6 and step 1 agree (Master is on the battlefield throughout, so the all-zones ruling is not engaged beyond 604.3's own text)",
+   "Chief of the Foundry (2020-08-07)": "marked-damage ruling, not engaged (no damage dealt)",
+   "contradictions": []
+  },
+  "missing_steps_audit": {
+   "triggers": "Only Sai's cast trigger exists; put on the stack in step 2. Token entering and Chief entering trigger nothing on this board — verified against the three cards' oracle text.",
+   "state_based_actions": "Checked at each priority point (steps 2, 4, 6); 704.5f and the legend rule have nothing to act on.",
+   "priority": "117.3c after the cast, 117.3b after each resolution, all-pass in succession before each resolution — all present.",
+   "replacement_effects": "None on this board.",
+   "layers": "7a (Master CDA) then 7c (both anthems, timestamp order); 7b/7d empty. Correct.",
+   "out_of_scope_by_scenario_note": "Cost payment (601.2h, mana abilities 605) is narrated but not cited; the scenario's note_for_the_resolver scopes the artifact to triggers and layer 7, so not raised as a finding.",
+   "sibling_comparability": "The resolution quotes no figure from stacks 002 or 003 (scenario-facts marks both non-comparable). No finding."
+  },
+  "iterations": 1
+ }
+}

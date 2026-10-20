@@ -1,0 +1,186 @@
+{
+  "slug": "keen-engineering",
+  "archetype": "Mono-blue artifact go-wide: a command-zone cast-trigger engine (Sai) that turns every cheap artifact into a 1/1 flier, scaled by artifact-count lords and count-sized finishers, behind a blue pillow fort — the Foundations Commander precon as printed, played as the pilot's deliberate Bracket 2 / low-3 deck",
+  "schools": [
+    "strategy:critical-mass",
+    "strategy:conversion.availability",
+    "strategy:whos-the-beatdown",
+    "strategy:whos-the-beatdown.metagame-clock",
+    "strategy:pivot-point",
+    "strategy:multiplayer.pivot-window",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:multiplayer.pod-management",
+    "strategy:multiplayer.asymmetry",
+    "strategy:deckbuilding.typal-density",
+    "strategy:deckbuilding.typal-density.lord-exposure",
+    "strategy:conversion.combat-channel",
+    "strategy:resource-hedging.wrath-math",
+    "strategy:card-advantage",
+    "strategy:card-advantage.plan-draw",
+    "strategy:card-advantage.virtual",
+    "strategy:mulligans.engine-hands",
+    "strategy:deckbuilding.power-level",
+    "strategy:deckbuilding.power-level.barometers",
+    "strategy:threat-assessment.answer-economy",
+    "strategy:threat-assessment.resource-denial",
+    "strategy:tempo.sequencing",
+    "strategy:deckbuilding.interaction-suite",
+    "strategy:deckbuilding.curve",
+    "strategy:deckbuilding.threat-density",
+    "strategy:multiplayer.commander-insurance",
+    "strategy:combat-math.racing",
+    "strategy:multiplayer.politics",
+    "strategy:conversion.passive-tax"
+  ],
+  "role_assignment": {
+    "default_role": "Midrange developer that sits in the control seat early and becomes the beatdown once the artifact count makes the board connect. Early the deck is the slow one at the table: the goldfish's median kill turn is 10 (mean 9.508; 4.0% kill by turn 8, 51.1% by turn 10, 48.9% never within ten turns) and mean bodies are 1.52 by turn 5 and 2.57 by turn 6 — and that is a FLOOR because Sai's Thopters are not modelled. So the deck does not own the early clock and must not pretend to; its job in the first four turns is to resolve Sai (mean cast turn 2.979, 99.7% by turn 6) and cast every cheap artifact it can, each one a flier. Role is seat-relative per strategy:whos-the-beatdown — 'you can be the beatdown against one opponent and the control against another in the same turn cycle; assign per-threat, not per-game' — so against the faster precon at the table the pillow fort (Propaganda, Aetherize, Misleading Signpost, Fall from Favor) and the Thopter chump wall make this the control; against a slower engine deck the deck must attack with the fliers it has, because per strategy:whos-the-beatdown.metagame-clock 'whoever loses the long game must be the beatdown' and a precon-level artifact deck does not own turn 15 against an engine that scales. Inevitability here is modest and comes from one place: the commander is the engine and cannot be kept off the table, only taxed (strategy:conversion.availability).",
+    "pivot_trigger": "A countable event, per strategy:pivot-point ('the pivot is usually triggered by a concrete event — a resolved engine, a wrath, a key removal spell spent'): a count-sized or count-pumping piece lands on a board of six-plus artifacts. The goldfish's required KILL target — a big artifact body AND a scaler or Whirler Rogue — is drawn by turn 6 in 40.8% of games (63.8% ever, mean turn 4.9), and the diagnostic reads the engine online at 34.5% by turn 5 (95% CI 33.5–35.4%) and 63.4% by turn 10, so the pivot arrives mid-game in roughly a third of games and late in the rest. When it comes, flip immediately — Duke's 'turning the corner': 'every extra passive turn is a free draw step for the opponent'. Take it in the window strategy:multiplayer.pivot-window names — protection up (Padeem's hexproof on the artifacts, a counter held), the table's open mana counted — and sequence the scariest piece last, because the fliers read as 1/1s until Master of Etherium, Chief of the Foundry or Steel Overseer makes them a clock. A telegraphed sweeper is the other trigger: it forces the half-go now, attacking with what is out rather than holding for a lethal that never gets cheaper (strategy:resource-hedging.wrath-math).",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "engines": [
+    {
+      "piece": "Sai, Master Thopterist",
+      "engine": "The command-zone cast-trigger engine: every artifact SPELL cast makes a 1/1 colourless flying Thopter, and {1}{U} plus two artifacts sacrificed draws a card. 44 of the 66 non-Island entries are artifacts (Darksteel Citadel included), 14 of them at mana value two or less, so nearly every cast is a body. The sacrifice half is the deck's steady draw and its wrath answer — two Thopters become a card at instant speed in response to a sweeper. Availability is the point: the engine lives in the command zone, 'the strongest form of that — a payoff there cannot be kept off the table, only taxed'. NOT MODELLED: the goldfish declares both abilities dark, so every board and damage figure in this frame is a floor.",
+      "evidence": "oracle text; goldfish_metrics commander mean_cast_turn 2.979, cast_by_turn_6_rate 0.997; goldfish_targets _model_note (Sai's cast trigger and sacrifice-draw not modelled)",
+      "strategy_ref": "strategy:conversion.availability"
+    },
+    {
+      "piece": "Etherium Sculptor + Foundry Inspector + the rock and Myr base",
+      "engine": "Velocity: two cost reducers (each 'Artifact spells you cast cost {1} less') over ten mana producers (Sol Ring, Arcane Signet, Mind Stone, Thought Vessel, Hedron Archive, Silver Myr, Palladium Myr, Ornithopter of Paradise, Cultivator's Caravan, Misleading Signpost) — every one an artifact spell and so a Thopter on cast. With one reducer out, Ichor Wellspring, Soul-Guide Lantern, Aether Spellbomb and Mazemind Tome cost {0}–{1}, which is what makes two- and three-spell turns possible on five mana. This is the deck's critical-mass number: the count of cheap artifact spells per turn, not the count of payoffs.",
+      "evidence": "oracle text; deck-facts synergy: 17 of the 19 synergy_graph edges inside this deck are 'Ramp + Cost Reduction' pointing at Foundry Inspector or Etherium Sculptor; goldfish ACCELERANT target drawn by turn 6 in 82.5% of games (mean turn 2.53); mean_available_mana_by_turn t5 5.759, t6 6.778",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Master of Etherium + Chief of the Foundry + Steel Overseer + Nettlecyst + Adaptive Omnitool + Forsaken Monument",
+      "engine": "The anthem half that makes 1/1 fliers connect: two lords ('Other artifact creatures you control get +1/+1'), a counter engine ({T}: +1/+1 counter on each artifact creature), two count-scaling equipment (+1/+1 per artifact or artifact/enchantment), and Forsaken Monument's +2/+2 to colourless creatures — which covers every Thopter, Myr and colourless construct but none of the deck's six non-artifact creatures (Sai, Broodstar, Padeem, Shimmer Dragon, Vedalken Archmage, Whirler Rogue) nor the ten blue artifact creatures. The companion's measured warning applies directly: a wide board of 1/1s 'is simply blocked', and the go-wide combat channel 'lives or dies on anthems'. Three of the six pumps are creatures (lord exposure under a wrath); Nettlecyst, Omnitool and the Monument survive a creature sweeper.",
+      "evidence": "oracle text; goldfish ARTIFACT-COUNT PAYOFF target drawn by turn 6 in 67.6% (mean turn 3.17); deck-facts roles buff:pump 4, buff:counters 2, buff:attached 3; combat_effects_not_modelled names Adaptive Omnitool",
+      "strategy_ref": "strategy:deckbuilding.typal-density"
+    },
+    {
+      "piece": "Broodstar / Darksteel Juggernaut / Master of Etherium / Kappa Cannoneer / Myr Battlesphere / Graaz, Unstoppable Juggernaut + Whirler Rogue",
+      "engine": "The count-sized and alone-standing finishers. Three bodies are */* equal to artifacts you control (Broodstar with affinity and flying, Darksteel Juggernaut indestructible and must-attack, Master of Etherium); Kappa Cannoneer grows a counter and goes unblockable on every artifact entry (a Sai Thopter is an artifact entering); Myr Battlesphere brings four Myr and taps Myr for direct damage on attack; Graaz sets every other creature's base to 5/3 — on a Thopter board that is a 5-power flier per token. Whirler Rogue (tap two artifacts) makes one of them unblockable, which is how a single count-sized body ends a 40-life game against three sets of blockers. Zupke's floor of 'at least 3 finishers' is met several times over — the ceiling/median split applies: the median kill is lords plus fliers, the ceiling is one count body unblocked.",
+      "evidence": "oracle text; goldfish KILL target (big body AND scaler-or-Rogue) assembled 63.8% of games, 40.8% by turn 6; mean_board_power_by_turn t8 9.11, t10 13.704 (floor: Myr Battlesphere's attack trigger is listed in combat_effects_not_modelled)",
+      "strategy_ref": "strategy:deckbuilding.threat-density"
+    },
+    {
+      "piece": "Vedalken Archmage + Thopter Spy Network + Research Thief + Padeem, Consul of Innovation + Ichor Wellspring + Thought Monitor + Thoughtcast",
+      "engine": "On-plan draw: cards that pay only when the deck does what it does — Archmage draws per artifact cast, Spy Network makes a Thopter each upkeep and draws when artifact creatures connect, Research Thief draws per artifact creature that connects, Padeem draws each upkeep while you hold the biggest artifact, Wellspring draws on entry and on leaving, Thought Monitor and Thoughtcast are affinity draw-twos. Beside them sits steady draw that pays whatever the board does (Thirst for Knowledge, Pull from Tomorrow, Mazemind Tome, Tamiyo's Logbook, War Room, Hedron Archive, the two cycling lands) plus Sai's own sacrifice-draw. The split the companion asks for — steady draw live in the engine-less keep, the rest on-plan — is present as printed.",
+      "evidence": "goldfish meta.card_advantage: cards_that_draw 21, modelled 10; draw_not_modelled names Mazemind Tome, Mind's Eye, Padeem, Psychosis Crawler, Research Thief, Shimmer Dragon, Thopter Spy Network, Thoughtcast, War Room, Lonely Sandbar, Remote Isle — so mean_extra_cards_drawn_by_turn (1.33 by turn 6, 4.97 by turn 10) is a floor; DRAW target drawn by turn 6 in 86.2%",
+      "strategy_ref": "strategy:card-advantage.plan-draw"
+    },
+    {
+      "piece": "Psychosis Crawler + Scrawling Crawler + Mind's Eye + Thopter Fabricator",
+      "engine": "The draw-event payoffs: Psychosis Crawler drains each opponent 1 per card you draw; Scrawling Crawler makes every player draw on your upkeep and taxes each opponent 1 life per card they draw (a passive each-opponent trigger in the companion's measured shape — cheap, upkeep, non-combat); Mind's Eye converts opponents' draws into yours for {1}; Thopter Fabricator makes a Thopter on your second draw each turn. These are the deck's only noncombat damage and they are small — the modelled event damage is 0.48 cumulative by turn 6 and 2.92 by turn 10.",
+      "evidence": "oracle text; goldfish discard channel mean_cumulative_event_damage_by_turn t6 0.477, t10 2.92; goldfish_targets _model_note (the discard channel is the one that reads these)",
+      "strategy_ref": "strategy:conversion.passive-tax"
+    },
+    {
+      "piece": "Master Transmuter + Shimmer Myr + Myr Retriever + Buried Ruin",
+      "engine": "The cheat-and-recur package. Master Transmuter ({U}, {T}, return an artifact to hand: put an artifact card from hand onto the battlefield) drops Myr Battlesphere or Graaz for one blue and re-buys an ETB artifact (Ichor Wellspring, Thought Monitor, Meteor Golem) to cast again — note that putting onto the battlefield is not casting, so Transmuter's entry makes no Thopter, while the returned card recast does. Shimmer Myr gives every artifact spell flash, so the whole Thopter engine can run at the end step before your turn with Counterspell mana held — the Commander correction in strategy:tempo.sequencing. Myr Retriever and Buried Ruin return an artifact card from the graveyard, which is the rebuild after a Disk or a wrath.",
+      "evidence": "oracle text; combos.json: Master Transmuter appears in two near-lines, each missing a card not in the deck (The One Ring; Clock of Omens), and no line is contained in the 99",
+      "strategy_ref": "strategy:tempo.sequencing"
+    },
+    {
+      "piece": "Propaganda + Aetherize + Misleading Signpost + Fall from Favor + Counterspell + Negate + Launch Mishap",
+      "engine": "The pillow fort and the permission that buys the engine its turns. Propaganda taxes every attacker {2}; Aetherize bounces all attackers; Misleading Signpost (flash, a Thopter on cast, and a mana rock) redirects one attacker; Fall from Favor taps a creature down and makes you the monarch. One pillow-fort effect 'can blank attack plans from three players at once, the cheapest way to answer ~120 life worth of aggression'. The three counters are the deck's answers-to-answers: Counterspell and Negate for the wrath or the game-winning spell, Launch Mishap (creature or planeswalker spells only, plus a Thopter) for the body.",
+      "evidence": "oracle text; goldfish ANSWER target drawn by turn 6 in 85.4%; interaction_in_hand_by_turn t5 0.803 against interaction_castable_by_turn t5 0.136 — a floor, since the model casts everything it can and never chooses to hold mana",
+      "strategy_ref": "strategy:card-advantage.virtual"
+    },
+    {
+      "piece": "Nevinyrral's Disk + All Is Dust (with Darksteel Citadel, Darksteel Juggernaut, Padeem)",
+      "engine": "Two reset buttons that leave different boards. All Is Dust is asymmetric by construction for this deck: it makes each player sacrifice coloured permanents, and 19 of this deck's permanents are coloured (Sai, Broodstar, Etherium Sculptor, Fall from Favor, Kappa Cannoneer, Master Transmuter, Master of Etherium, Memory Guardian, Misleading Signpost, Padeem, Propaganda, Research Thief, Shimmer Dragon, Tamiyo's Logbook, Thopter Fabricator, Thopter Spy Network, Thought Monitor, Vedalken Archmage, Whirler Rogue) while every Thopter token, every Myr and every colourless rock, lord and finisher stays. Nevinyrral's Disk is symmetric — all artifacts, creatures and enchantments — and leaves only Darksteel Citadel, Darksteel Juggernaut and lands. Which button to press is the companion's rule: prefer the asymmetric wipe, and let another player's board be the reason it gets cast.",
+      "evidence": "oracle text; cards.json colour enumeration (19 coloured permanents of 66 non-Island entries); deck-facts roles removal:sweeper 2",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
+    }
+  ],
+  "candidate_missing_lines": [
+    {
+      "title": "Sai + Ichor Wellspring + Myr Retriever: the sacrifice-draw cycle and what it nets",
+      "cards": [
+        "Sai, Master Thopterist",
+        "Ichor Wellspring",
+        "Myr Retriever",
+        "Etherium Sculptor",
+        "Buried Ruin"
+      ],
+      "why_plausible": "oracle text: Sai's {1}{U} sacrifices two artifacts to draw; Ichor Wellspring draws when it enters and when it is put into a graveyard from the battlefield; Myr Retriever's death returns another artifact card from graveyard to hand; with Etherium Sculptor, Wellspring costs {1} and Retriever {1}. Sacrificing Wellspring and Retriever to Sai should draw two (Sai, Wellspring) and return Wellspring to hand, and recasting it makes a Thopter and draws again. This is bounded, not infinite — the scenario must count cards and mana per cycle, confirm the Retriever trigger can target the Wellspring that went to the graveyard at the same time, and establish how many Thopters one five-mana turn makes. combo_details lists no line containing these cards",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Master Transmuter bouncing Myr Battlesphere: four Myr per untap, and no Thopter",
+      "cards": [
+        "Master Transmuter",
+        "Myr Battlesphere",
+        "Sai, Master Thopterist",
+        "Thought Monitor"
+      ],
+      "why_plausible": "oracle text: Transmuter returns an artifact you control to hand as a cost and puts an artifact card from hand onto the battlefield; Battlesphere's ETB creates four Myr. Returning Battlesphere to itself each turn should yield four 1/1 Myr per activation, and Battlesphere's attack trigger taps Myr for direct damage. The open questions are rules ones a scenario settles: that putting onto the battlefield is not casting (no Sai Thopter, no Vedalken Archmage draw), that the returned artifact may be the one put back, and the damage a six-Myr Battlesphere attack deals. combos.json shows Transmuter + Battlesphere only as part of a three-card line missing Clock of Omens, which is not in the deck",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Kappa Cannoneer under Sai: two counters per artifact spell",
+      "cards": [
+        "Kappa Cannoneer",
+        "Sai, Master Thopterist",
+        "Mind Stone",
+        "Whirler Rogue"
+      ],
+      "why_plausible": "oracle text: Kappa Cannoneer gets a +1/+1 counter and can't be blocked 'whenever this creature or another artifact you control enters'; Sai makes a Thopter token whenever an artifact spell is cast. One artifact spell should therefore produce two entries — the spell's permanent and the Thopter — and two counters, with unblockable from the first. A scenario should count the counters on a two-spell turn, confirm the Thopter token's entry triggers Cannoneer, and compute the turn Cannoneer alone presents lethal to one seat; improvise and ward {4} are the castability and protection questions",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Graaz over a Thopter board: every token a 5/3 flier that must attack",
+      "cards": [
+        "Graaz, Unstoppable Juggernaut",
+        "Sai, Master Thopterist",
+        "Chief of the Foundry",
+        "Master Transmuter"
+      ],
+      "why_plausible": "oracle text: Graaz makes other creatures you control base 5/3 Juggernauts that attack each combat if able. Thopter tokens are 1/1 fliers; if the base-setting effect leaves flying intact (a layer question) then n Thopters become n 5-power evasive attackers, and Chief of the Foundry adds one more each. The scenario must settle the layer interaction, whether Sai (1/4) is also forced to attack as a 5/3, and the lethal count against one seat at 40; Master Transmuter is the way an eight-mana body arrives on turn 5",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Thopter Spy Network and Research Thief on a split attack: one card per player versus one per creature",
+      "cards": [
+        "Thopter Spy Network",
+        "Research Thief",
+        "Sai, Master Thopterist"
+      ],
+      "why_plausible": "oracle text: Spy Network draws 'whenever one or more artifact creatures you control deal combat damage to a player' (once per damaged player), Research Thief 'whenever an artifact creature you control deals combat damage to a player' (once per creature). Four Thopters split across three opponents should draw three off the Network and four off the Thief — seven cards from four 1/1 attackers, which is the strongest card-advantage turn the printed list can make and the reason to attack all three seats rather than one. The exact trigger counts are what a scenario proves",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "What survives each reset button: Disk versus All Is Dust on the deck's own board",
+      "cards": [
+        "Nevinyrral's Disk",
+        "All Is Dust",
+        "Darksteel Citadel",
+        "Darksteel Juggernaut",
+        "Sai, Master Thopterist",
+        "Propaganda"
+      ],
+      "why_plausible": "oracle text: the Disk destroys all artifacts, creatures and enchantments — Darksteel Citadel and Darksteel Juggernaut are indestructible, so they and the lands remain and Juggernaut's power is the artifact count left (two, if only Citadel and itself); All Is Dust sacrifices coloured permanents — every Thopter, Myr, rock and colourless lord survives, Sai and Propaganda do not, and Sai returns to the command zone with the tax. A scenario should state both post-wipe boards exactly, including whether the Disk can be activated in response to a sweeper with Sai's sacrifice-draw stacked on top of it",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "Assume the wrath — 'over a four-player game one is near-certain' — and deploy in waves (strategy:resource-hedging.wrath-math). This deck's rebuild is unusually cheap because the engine is in the command zone: every artifact cast after the wrath is a body again, and Sai's sacrifice-draw converts two Thopters into a card in response (strategy:conversion.availability, strategy:multiplayer.commander-insurance — one recast of a three-mana commander 'is a fine rate'). Price the lords on the sweeper you assume: Master of Etherium, Chief of the Foundry and Steel Overseer are bodies and die with the board, while Nettlecyst, Adaptive Omnitool and Forsaken Monument are the noncreature anthems that survive it (strategy:deckbuilding.typal-density.lord-exposure). Hold Counterspell or Negate for the wrath rather than the first scary creature, and keep Myr Retriever, Buried Ruin and Ichor Wellspring as the rebuild package. Against a true control deck holding back IS the loss — attack with the fliers you have, because buying time is their plan.",
+    "vs_stax": "Taxes hit this deck's velocity math directly: it wants two or three cheap artifact spells a turn, and 'a two-spell turn becoming a one-spell turn halves the engine' (strategy:threat-assessment.resource-denial). Etherium Sculptor and Foundry Inspector are the partial antidote — a cost reducer under a Sphere effect restores the spell count — so protect them. Role is forced: you do not own the long game under an assembling lock, so you are the beatdown racing its completion. Name the out early and sequence to protect it: Counterspell and Negate answer a lock piece only on the way in; Meteor Golem and Duplicant answer a resolved creature lock; All Is Dust answers every coloured piece at once while your colourless board stays; Steel Hellkite's X ability clears a mana-value band after it connects. Interaction breadth as printed is creature-and-spell heavy — deck-facts counts 3 counterspells, 2 sweepers, 2 bounce, 1 spot, 1 edict — and the companion's breadth test (creature, artifact, enchantment, graveyard, land) is met only by the two sweepers and Meteor Golem (strategy:deckbuilding.interaction-suite).",
+    "vs_aggro": "Take the control seat and let the pillow fort do the work: Propaganda, Aetherize, Misleading Signpost and Fall from Favor each blank attack plans from three players, which is the Commander form of virtual card advantage (strategy:card-advantage.virtual), and every Thopter is a flying chump blocker. Life is a resource above the threshold where it buys tempo — spend it while the artifact count climbs. Racing rule: 'attack early even from a defensive posture, because races arrive unannounced and banked damage wins the ones that do', so the fliers still attack the seat that cannot block them while the ground is walled (strategy:combat-math.racing). Then turn the corner the turn a lord lands — a stabilised board that keeps passing is a free draw step for the aggro player (strategy:pivot-point). A race against three life totals is a two-player subgame; spend the minimum that wins yours and keep watching the other seats (strategy:multiplayer.pod-management).",
+    "vs_combo": "Held answers rot against combo — 'the last profitable moment is now' (strategy:threat-assessment.answer-economy). The deck's clock is too slow to race (median kill turn 10 in the goldfish, a floor but not a fast one), so it wins this matchup by disruption, and the disruption is narrow: Counterspell and Negate are the two live answers to a combo spell, Launch Mishap only stops a creature or planeswalker spell, and Soul-Guide Lantern exiles a graveyard on demand. Rank combo proximity above every board threat and above the biggest creature (strategy:threat-assessment). Shimmer Myr and Misleading Signpost let the artifact engine run at instant speed with counter mana held, so holding up {U}{U} costs little tempo — and 'leaving instant-speed mana open forces three players, not one, to respect your possible interaction' (strategy:multiplayer.pod-management). Use the table: a Bracket 2 deck has no business being the archenemy, so frame the combo player as the shared enemy and let the other two seats spend their answers first (strategy:multiplayer.politics).",
+    "bracket_frame": "The deck is played as a Bracket 2 deck by intent, and its contents are consistent with that: bracket_report floor 1 (Exhibition), target 2, within target — no Game Changers, no two-card infinite, no mass land denial, no tutors; DeckCheck reads 30/96 and their Bracket 2 on 2026-10-19 (dated external evidence, not ours). The companion's line between brackets is expected game length — Bracket 2 'unoptimized and telegraphed, at least eight' turns — and the goldfish's median kill turn of 10 (mean 9.5, 4.0% by turn 8) sits on the right side of that line even allowing for the unmodelled Thopters (strategy:deckbuilding.power-level). The six near-combos in combos.json (Hullbreaker Horror, Basalt Monolith, Tidespout Tyrant, The One Ring, Enter the Infinite, Clock of Omens) are each one card short of a line the barometers forbid in Brackets 1–2, so for this deck they are a do-not-add list, not a wish list (strategy:deckbuilding.power-level.barometers)."
+  },
+  "distribution_notes": "Per deck-facts: 100 copies over 67 entries, 40 land copies (34 Island, 2 always-tapped cycling lands, 5 utility) and 60 nonland. The curve is 3 ones, 14 twos, 16 threes, 8 fours, 8 fives, 5 sixes, 4 sevens, 1 eight and 1 ten — modal mana value 3, against the EDHREC modal value of 2 the companion cites (strategy:deckbuilding.curve), and 11 cards at six-plus (All Is Dust, Duplicant, Graaz, Kappa Cannoneer, Meteor Golem, Myr Battlesphere, Shimmer Dragon, Spire Golem, Steel Hellkite, Thought Monitor, Broodstar) against the format's ~1.5 at eight-plus. That top end is honest only because affinity (Broodstar, Thought Monitor, Memory Guardian, Spire Golem, Thoughtcast), improvise (Kappa Cannoneer) and the two cost reducers price it down, and because Master Transmuter cheats it in — so the deck's real curve is a function of its artifact count, which the goldfish does not see. Mana: 36 blue land sources plus 5 nonland against a Karsten-style target of 36, on-curve U 90.6% from lands and 94.8% with rocks; 40 lands is above the Command Zone 36–38 band, offset by cycling and by mana-sink draw (Logbook, Tome, War Room). Roles: ramp 18 (rock 7, dork 3, cost-reduction 8 — the last counts affinity cards, so it overstates) against a 10–12 template; draw 11 by role against 21 cards_that_draw in the goldfish (10 modelled); removal thin — 3 counters, 2 sweepers, 2 bounce, 1 spot, 1 edict, 1 damage — against the template's 10–12 targeted removal (strategy:deckbuilding.ratios, strategy:deckbuilding.interaction-suite); creatures 30 (threat:body) plus 7 token makers, on Walser's 30+ floor for a typal deck (strategy:deckbuilding.typal-density). Speed: keep-first-seven 84.1%, mean mulligans 0.185, 88.7% of kept hands can act by turn 3; land-drop hit rate falls to 76.5% by turn 5 and 70.4% by turn 6 with mean available mana 5.76 and 6.78 — rocks, not lands, carry the mid-game. Component rates: accelerant 82.5% by turn 6, payoff 67.6%, draw 86.2%, answer 85.4%, kill 40.8% (63.8% ever). Against the redundancy table (strategy:deckbuilding.redundancy-vs-tutors) the fuel class is ~11 cards and the scaler class 5–7, so the deck is built for a reducer or rock to show up every game and for a scaler most games, with no tutor to find the specific one. All board figures are floors: Sai's Thopters, his sacrifice-draw, Myr Battlesphere's attack trigger and Adaptive Omnitool are unmodelled.",
+  "overall_assessment": "This is a linear deck in Duke's sense, every card feeding one plan — cast artifacts, make fliers, grow the count — and its interaction slots are the price of the engine (strategy:critical-mass). What makes the printed list coherent rather than a pile is where the payoff lives: Sai is in the command zone, 'the most reliably repeatable card in the 100', so the engine is available in every game and can only be taxed (strategy:conversion.availability); the goldfish casts him on turn 2.98 on average and in 99.7% of games by turn 6. The plan is then the companion's go-wide combat plan with its known price. A board of 1/1 fliers converts badly in a pod — three sets of blockers, one attack a turn, two seats you did not attack — and 'the go-wide combat channel lives or dies on anthems' (strategy:conversion.combat-channel); the deck answers with five artifact-count pumps and five count-sized or alone-standing finishers, and Whirler Rogue to connect one of them (strategy:deckbuilding.typal-density, strategy:deckbuilding.threat-density). Flying is the quiet second anthem: it is the evasion grant that 'turns a wide board into one that connects', and every Thopter has it. Against three opponents the raw cards-to-damage math fails at ~120 life, so the payoffs that count are the ones that hit the whole table or draw off every seat — Scrawling Crawler's tax, Psychosis Crawler's per-draw drain, Thopter Spy Network and Research Thief on a split attack — and the sweeper that only hurts coloured permanents (strategy:multiplayer.asymmetry). Politically the deck is built to be ignored and should play that way: 'deploy engines that read as defensive, sequence scary pieces after the table's removal is spent' — Propaganda and a 1/4 commander making 1/1s is as defensive as a board reads, and the lords and count bodies are the tells to hold for the turn they win (strategy:multiplayer.threat-deflection). Mulligan to the enabler class, not the named card: a hand with a reducer or rock and a two-mana artifact is a keep, a hand of count-finishers with no cheap artifacts is a ship despite its quality (strategy:mulligans.engine-hands). The deck is also the pilot's deliberate power-down list, and the frame respects that as a constraint: the floor is 1, the target 2, DeckCheck's read is 2, and the goldfish's median kill turn of 10 is the game length Bracket 2 asks for (strategy:deckbuilding.power-level) — so the strategic question for this deck is never 'how do we make it faster' but 'how do we play the printed engine well at a table that wants an eight-turn game'. Every figure above is a floor and no line is proved: there is no passing stack, no engine model and no logged game yet, and the six candidate lines are the scenarios that would turn the deck's own theory into fact.",
+  "gaps": [
+    "No artifact-velocity / cost-reduction section — the companion prices storm velocity (strategy:critical-mass.storm-math) and taxes (strategy:threat-assessment.resource-denial) but has no theory of affinity, improvise and 'artifact spells cost {1} less' as a curve-flattening mechanism, nor of the artifact count as a deck's critical-mass number",
+    "No cast-trigger-commander section — a commander that pays per spell of a type (Sai per artifact, and the Vedalken Archmage / Vanquisher's Banner family) is a distinct engine shape from the death- and entry-trigger engines strategy:conversion covers; it rewards spell count over board and changes what a 'good turn' is",
+    "No evasion-as-anthem section — strategy:deckbuilding.typal-density mentions keyword grants in one clause; an entire token class with flying (Thopters) needs its own pricing against ground blockers and against the pod's flier count",
+    "No pillow-fort / deterrence section — Propaganda, Aetherize and monarch (Fall from Favor) are covered by one sentence in strategy:card-advantage.virtual; how a deterrent changes the table's attack math, when it makes you the archenemy, and the monarch's attention cost are unwritten",
+    "No 'playing down' section — strategy:deckbuilding.power-level explains the brackets but not how to pilot a deliberately lower-power deck at its intended table: what to hold back, how to read a table that wants an eight-turn game, and when a precon's pilot should still take the pivot",
+    "No vehicles / crew section — Cultivator's Caravan, Skysovereign and Thopter Fabricator are three slots whose crew cost on a board of 1/1s has no home in the companion",
+    "No asymmetric-by-construction sweeper section — strategy:multiplayer.asymmetry prefers asymmetric wipes but does not price a symmetric card (All Is Dust, Nevinyrral's Disk) that a colourless or indestructible board makes asymmetric, nor the choice between two reset buttons that leave different boards",
+    "No cheat-into-play section for noncreature engines — Master Transmuter's put-onto-the-battlefield loop (and the not-cast caveat that denies the Thopter) has no theory of tempo versus trigger loss"
+  ],
+  "decklist_sha256_prefix": "63568a51718f"
+}

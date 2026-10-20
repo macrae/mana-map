@@ -1,0 +1,465 @@
+{
+ "id": "002",
+ "slug": "whirler-rogue-taps-new-thopters",
+ "deck": "keen-engineering",
+ "rules_version": "2026-06-19",
+ "title": "Whirler Rogue's unblockable paid with Thopters made this turn — can summoning-sick tokens be tapped for another permanent's cost?",
+ "scenario": {
+  "board": {
+   "you": [
+    "Sai, Master Thopterist",
+    "Whirler Rogue",
+    "Myr Battlesphere",
+    "Thopter token (1/1 flying, created this turn)",
+    "Thopter token (1/1 flying, created this turn)",
+    "lands"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "no instant-speed interaction held"
+     ]
+    },
+    {
+     "life": 40,
+     "board": []
+    },
+    {
+     "life": 40,
+     "board": []
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [],
+  "mana_available": "{0}",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Whirler Rogue's activated ability",
+    "controller": "you",
+    "note": "cost paid by tapping the two Thopter tokens created this turn; target: Myr Battlesphere — 'Target creature can't be blocked this turn.'"
+   }
+  ],
+  "extras": {
+   "context": "THE DECK'S KILL CONNECTOR, as printed (v1.0.0). Whirler Rogue reads 'Tap two untapped artifacts you control: Target creature can't be blocked this turn.' The two Thopters were created THIS turn by Sai's trigger (two artifact spells cast precombat). Myr Battlesphere has been under your control since last turn. It is your precombat main phase.",
+   "note_for_the_resolver": "ONE RULES DOMAIN: activated-ability costs and the summoning-sickness rule (CR 302.6) — which permanents it restricts and which costs it does not. Do not resolve combat damage."
+  },
+  "question": "Was the ability legally activated by tapping two Thopter tokens that came under your control this turn? Cite the rule that decides it. Then resolve the ability and state whether Myr Battlesphere can be blocked this combat."
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Precombat main phase, empty stack, you hold priority. You announce Whirler Rogue's activated ability ('Tap two untapped artifacts you control: Target creature can't be blocked this turn.'); it is created on the stack as an object at pos 0.",
+    "effect": "The ability is on the stack as its own object with Whirler Rogue's text; you are its controller. Activating an activated ability needs only priority, so the precombat main phase is a legal moment.",
+    "citations": [
+     {
+      "rule": "117.1b",
+      "quote": "A player may activate an activated ability any time they have priority."
+     },
+     {
+      "rule": "602.2a",
+      "quote": "The player announces that they are activating the ability."
+     },
+     {
+      "rule": "602.2a",
+      "quote": "That ability is created on the stack as an object that’s not a card. It becomes the topmost object on the stack. It has the text of the ability that created it, and no other characteristics. Its controller is the player who activated the ability."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "You choose the target: Myr Battlesphere, an artifact creature you control that is on the battlefield.",
+    "effect": "Myr Battlesphere is an appropriate object for 'target creature' and becomes the ability's target. The remaining activation steps follow the spell-casting steps 601.2b–i by rule 602.2b.",
+    "citations": [
+     {
+      "rule": "602.2b",
+      "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i. Those rules apply to activating an ability just as they apply to casting a spell."
+     },
+     {
+      "rule": "601.2c",
+      "quote": "The player announces their choice of an appropriate object or player for each target the spell requires."
+     },
+     {
+      "rule": "601.2c",
+      "quote": "The chosen objects and/or players each become a target of that spell."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "You pay the activation cost by tapping the two Thopter tokens (1/1 colorless Thopter artifact creature tokens with flying, created this turn by Sai's trigger).",
+    "effect": "Each Thopter token is a permanent you control (tokens are permanents and enter under their creator's control), each is an artifact, and each is untapped, so the resources to pay the cost in full exist. Paying the cost means carrying out the cost's instruction — tapping both. Both Thopters turn sideways.",
+    "citations": [
+     {
+      "rule": "111.1",
+      "quote": "A token is a marker used to represent any permanent that isn’t represented by a card."
+     },
+     {
+      "rule": "111.2",
+      "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+     },
+     {
+      "rule": "118.1",
+      "quote": "To pay a cost, a player carries out the instructions specified by the spell, ability, or effect that contains that cost."
+     },
+     {
+      "rule": "118.3",
+      "quote": "A player can’t pay a cost without having the necessary resources to pay it fully."
+     },
+     {
+      "rule": "701.26a",
+      "quote": "To tap a permanent, turn it sideways from an upright position. Only untapped permanents can be tapped."
+     },
+     {
+      "rule": "601.2h",
+      "quote": "The player pays the total cost."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "THE QUESTION: does the summoning-sickness rule forbid tapping Thopters that came under your control this turn to pay this cost?",
+    "effect": "No. Rule 302.6 restricts exactly two things: (1) activating a CREATURE'S OWN activated ability whose activation cost contains the tap symbol {T} or the untap symbol {Q}, and (2) attacking. The tap symbol means 'Tap this permanent' (107.5) — the ability's source tapping itself. Whirler Rogue's cost is the words 'Tap two untapped artifacts you control', which contains no {T} and no {Q}; the Thopters are not the source of the ability, and the ability is Whirler Rogue's, not theirs. Neither branch of 302.6 is engaged, so how long the Thopters have been under your control is irrelevant to this cost. (By the same reading, Whirler Rogue's own control history is irrelevant too — its cost has no {T}.) The official Gatherer ruling of 2015-06-22 agrees: any two untapped artifacts you control may be tapped, including artifact creatures not under your control since your most recent turn began. The activation is legal.",
+    "citations": [
+     {
+      "rule": "302.6",
+      "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began. A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began. This rule is informally called the “summoning sickness” rule."
+     },
+     {
+      "rule": "107.5",
+      "quote": "The tap symbol is {T}. The tap symbol in an activation cost means “Tap this permanent.”"
+     },
+     {
+      "rule": "602.5a",
+      "quote": "A creature’s activated ability with the tap symbol ({T}) or the untap symbol ({Q}) in its activation cost can’t be activated unless the creature has been under its controller’s control since the start of their most recent turn."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Activation completes. You receive priority; state-based actions are checked before you get it.",
+    "effect": "The ability is activated. No state-based action applies (two tapped 1/1 Thopters are not a listed condition) and nothing has triggered, so you get priority with the ability still on the stack.",
+    "citations": [
+     {
+      "rule": "601.2i",
+      "quote": "Once the steps described in 601.2a–h are completed, effects that modify the characteristics of the spell as it’s cast are applied, then the spell becomes cast."
+     },
+     {
+      "rule": "117.3c",
+      "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "You pass priority; opponent 1 holds no instant-speed interaction and opponents 2 and 3 have empty boards, so all three pass in succession.",
+    "effect": "The ability on top of the stack — the only object there — resolves.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+     },
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Resolution: the ability first checks its target, then its controller follows its instruction — 'Target creature can't be blocked this turn.'",
+    "effect": "Myr Battlesphere is still on the battlefield and still a creature, so the target is legal and the ability resolves normally. It creates a continuous effect on Myr Battlesphere, lasting as stated — this turn — that it can't be blocked.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal. A target that’s no longer in the zone it was in when it was targeted is illegal."
+     },
+     {
+      "rule": "608.2b",
+      "quote": "Otherwise, the spell or ability will resolve normally."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "609.1",
+      "quote": "When a spell, activated ability, or triggered ability resolves, it may create one or more one-shot or continuous effects."
+     },
+     {
+      "rule": "611.2a",
+      "quote": "A continuous effect generated by the resolution of a spell or ability lasts as long as stated by the spell or ability creating it (such as “until end of turn”)."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "As the final part of its resolution the ability is removed from the stack; state-based actions are checked; the active player receives priority.",
+    "effect": "The ability ceases to exist and the stack is empty. No state-based action applies (no creature has lethal damage or 0 toughness; nothing has triggered), so you, the active player, receive priority in your precombat main phase with an empty stack.",
+    "citations": [
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Once no more state-based actions have been performed as the result of a check and no triggered abilities are waiting to be put on the stack, the appropriate player gets priority."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "Consequence for combat (not resolved here): Myr Battlesphere, under your control since last turn, may be declared as an attacker, and no defending player may declare a creature blocking it this turn.",
+    "effect": "The second sentence of 302.6 is satisfied for Myr Battlesphere, so it can attack. In the declare blockers step, the 'can't be blocked' effect is a restriction the defending player must obey when choosing blockers; a declaration that assigns a blocker to Myr Battlesphere is illegal. The two tapped Thopters could not attack anyway (they came under your control this turn) and, being tapped, cannot be tapped again for a second activation this turn. Combat damage, and Myr Battlesphere's attack trigger, are outside this scenario.",
+    "citations": [
+     {
+      "rule": "302.6",
+      "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+     },
+     {
+      "rule": "509.1b",
+      "quote": "The defending player checks each creature they control to see whether it’s affected by any restrictions (effects that say a creature can’t block, or that it can’t block unless some condition is met). If any restrictions are being disobeyed, the declaration of blockers is illegal."
+     },
+     {
+      "rule": "118.3",
+      "quote": "a permanent that’s already tapped can’t be tapped to pay a cost"
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "LEGAL. Whirler Rogue's cost 'Tap two untapped artifacts you control' contains no tap symbol, so CR 302.6 — which restricts only a creature's own {T}/{Q} abilities and attacking — does not apply to the Thopter tokens created this turn; the official ruling (2015-06-22) agrees. The ability resolves with Myr Battlesphere as a legal target: Myr Battlesphere can't be blocked this turn. It has been under your control since last turn, so it may attack this combat and no blocker may be declared for it. Combat damage and Myr Battlesphere's attack trigger are not resolved (one rules domain).",
+   "you": {
+    "battlefield": [
+     "Sai, Master Thopterist (untapped)",
+     "Whirler Rogue (untapped — its cost had no {T}, so it was never tapped)",
+     "Myr Battlesphere (untapped; can't be blocked this turn; eligible to attack)",
+     "Thopter token (1/1 flying, TAPPED to pay the cost)",
+     "Thopter token (1/1 flying, TAPPED to pay the cost)",
+     "lands"
+    ],
+    "hand": [],
+    "mana_available": "{0}",
+    "stack": "empty",
+    "phase": "precombat main phase, you hold priority"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": [
+      "no instant-speed interaction held"
+     ],
+     "note": "may not declare a blocker for Myr Battlesphere this turn"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 40,
+     "board": [],
+     "note": "may not declare a blocker for Myr Battlesphere this turn"
+    },
+    {
+     "seat": "opponent_3",
+     "life": 40,
+     "board": [],
+     "note": "may not declare a blocker for Myr Battlesphere this turn"
+    }
+   ],
+   "rulings_consulted": "Whirler Rogue 2015-06-22 (input only — the CR rule cited is 302.6 with 107.5); Myr Battlesphere and Sai rulings do not bear on this question.",
+   "scenario_facts_agreement": "scenario-facts and the scenario prose agree: 5 creature bodies (Sai, Whirler Rogue, Myr Battlesphere, 2 Thopter tokens), nothing spent as a sacrifice, 3 opponents at 40, {0} mana, empty hand, all three named cards in the 99."
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "iterations": 2,
+  "findings": [
+   {
+    "step": 1,
+    "rule": "117.1b",
+    "status": "supported",
+    "note": "Full rule: a player may activate an activated ability any time they have priority. Precombat main phase, empty stack, active player holds priority — established."
+   },
+   {
+    "step": 1,
+    "rule": "602.2a",
+    "status": "supported",
+    "note": "Both fragments verbatim; the full rule adds only the hidden-zone reveal clause (inapplicable: Whirler Rogue is on the battlefield) and that the ability stays on the stack until countered/resolved/moved — consistent with steps 5-7."
+   },
+   {
+    "step": 2,
+    "rule": "601.2c",
+    "status": "supported",
+    "note": "Myr Battlesphere (Artifact Creature — Myr Construct, 4/7 per cards.json) is an appropriate object for 'target creature' and becomes the target. The rule's extra clauses (variable targets, duplicate targets, must-be-chosen effects) do not bear on a single-target ability."
+   },
+   {
+    "step": 2,
+    "rule": "602.2b",
+    "status": "supported",
+    "note": "Establishes that 601.2b-i govern the rest of activation; the full rule also maps 'mana cost' to 'activation cost' for 601.2f, which the resolution uses implicitly in step 3."
+   },
+   {
+    "step": 3,
+    "rule": "111.1",
+    "status": "supported",
+    "note": "A token represents a permanent not represented by a card; with 110.1 (a permanent is a card or token on the battlefield) the Thopters are permanents. The step's claim that tokens are permanents holds."
+   },
+   {
+    "step": 3,
+    "rule": "111.2",
+    "status": "supported",
+    "note": "Sai's trigger ('create a 1/1 colorless Thopter artifact creature token with flying', cards.json) creates them under your control. Artifact typing of the tokens matches the oracle text."
+   },
+   {
+    "step": 3,
+    "rule": "118.1",
+    "status": "supported",
+    "note": "Paying a cost = carrying out the cost's instruction; the instruction is 'Tap two untapped artifacts you control'."
+   },
+   {
+    "step": 3,
+    "rule": "118.3",
+    "status": "supported",
+    "note": "Two untapped artifacts exist, so the cost can be paid in full. Scenario board lists the tokens without a tapped annotation; the resolution's untapped assumption is consistent with the scenario as written."
+   },
+   {
+    "step": 3,
+    "rule": "601.2h",
+    "status": "supported",
+    "note": "Pays the total cost; no random/library elements, no partial payment. The cost has no mana component ({0} mana available is consistent)."
+   },
+   {
+    "step": 3,
+    "rule": "701.26a",
+    "status": "supported",
+    "note": "Tapping is turning sideways from upright; only untapped permanents can be tapped. Establishes the physical act."
+   },
+   {
+    "step": 4,
+    "rule": "107.5",
+    "status": "supported",
+    "note": "Full rule defines {T} as 'Tap this permanent' and restates the 302.6 restriction for the tap symbol specifically — reinforcing, not undercutting, that a worded cost naming other permanents is not the tap symbol."
+   },
+   {
+    "step": 4,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "THE DECIDING RULE. Full text restricts exactly (1) a creature's activated ability with the tap or untap symbol in its activation cost and (2) attacking. Whirler Rogue's cost 'Tap two untapped artifacts you control' (cards.json, verbatim) contains neither {T} nor {Q}; the Thopters are not the ability's source. Neither sentence of 302.6 reaches the Thopters or Whirler Rogue. Official Whirler Rogue ruling 2015-06-22 agrees verbatim: 'You may tap any two untapped artifacts you control, including artifact creatures that haven't been under your control continuously since the beginning of your most recent turn.' The ruling is input only; 302.6 itself carries the claim."
+   },
+   {
+    "step": 4,
+    "rule": "602.5a",
+    "status": "supported",
+    "note": "Restates 302.6 inside rule 602; the full rule's extra sentence (ignore for haste, 702.10) is inapplicable and does not change the reading."
+   },
+   {
+    "step": 5,
+    "rule": "117.3c",
+    "status": "supported",
+    "note": "Activator receives priority afterward."
+   },
+   {
+    "step": 5,
+    "rule": "601.2i",
+    "status": "supported",
+    "note": "Applied to an ability via 602.2b: the ability becomes activated; no cast/put-on-stack triggers exist on this board; controller had priority and gets it back."
+   },
+   {
+    "step": 5,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "SBA check before priority; two tapped 1/1 Thopters with no damage match no listed condition; nothing on the board triggers on tapping or on activation (Sai triggers only on casting an artifact SPELL), so no triggered ability is waiting. Correctly reasoned."
+   },
+   {
+    "step": 6,
+    "rule": "117.4",
+    "status": "supported",
+    "note": "Establishes that the top object resolves once all pass. The premise that opponents 2 and 3 pass is an inference from empty boards (no lands = no mana; an activated ability cannot be countered by a spell-counter anyway). Opponent 1's 'no instant-speed interaction held' is the scenario's own stipulation. Not a finding, noted for the record."
+   },
+   {
+    "step": 6,
+    "rule": "608.1",
+    "status": "supported",
+    "note": "Duplicate of 117.4's consequence; accurate."
+   },
+   {
+    "step": 7,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": "Target legality re-check on resolution: Myr Battlesphere has not changed zones and is still a creature; the full rule's other illegality causes (characteristic change, text change) have no trigger on this board. 'Otherwise ... resolves normally' applies."
+   },
+   {
+    "step": 7,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Controller follows the instruction in order; no replacement effects are in play."
+   },
+   {
+    "step": 7,
+    "rule": "609.1",
+    "status": "supported",
+    "note": "A resolving activated ability may create a continuous effect; 'can't be blocked this turn' is one."
+   },
+   {
+    "step": 7,
+    "rule": "611.2a",
+    "status": "supported",
+    "note": "Duration is the stated 'this turn'."
+   },
+   {
+    "step": 8,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "Verbatim and on point: Whirler Rogue's ability is not a mana ability, so the active player — you — receives priority after it resolves. With 608.2n this establishes final_state's 'precombat main phase, you hold priority' with an empty stack. The round-1 missing-step finding is closed."
+   },
+   {
+    "step": 8,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Verbatim; the full rule's first sentence (instants/sorceries to the graveyard) is inapplicable. Establishes the ability leaving the stack and ceasing to exist — the 'stack: empty' claim in final_state is now carried."
+   },
+   {
+    "step": 8,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Both fragments verbatim. The full rule's loop (repeat the check after any SBA; put waiting triggers on the stack, repeat) is correctly collapsed: no SBA condition applies (Thopters 1/1 undamaged, Myr Battlesphere 4/7 undamaged, no 0-toughness, no legend duplicates) and nothing on the board triggers on resolution or on the 'can't be blocked' effect, so the appropriate player gets priority on the first pass."
+   },
+   {
+    "step": 9,
+    "rule": "118.3",
+    "status": "supported",
+    "note": "Full rule's example: 'a permanent that's already tapped can't be tapped to pay a cost' — the two tapped Thopters cannot fund a second activation. Accurate."
+   },
+   {
+    "step": 9,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "Second sentence: Myr Battlesphere under your control since last turn, i.e. continuously since this (most recent) turn began, may attack."
+   },
+   {
+    "step": 9,
+    "rule": "509.1b",
+    "status": "supported",
+    "note": "'Can't be blocked' is an evasion restriction (glossary 'Evasion Ability': 'An ability that restricts what creatures can block an attacking creature. See rules 509.1b–c.'). A block declared on Myr Battlesphere disobeys it and the declaration is illegal. The rule's second paragraph (an evasion ability gained after a legal block does not affect that block) matches the other Whirler Rogue ruling of 2015-06-22 — 'Activating the second ability of Whirler Rogue after a creature has become blocked won't cause it to become unblocked' — and the resolution correctly places the activation precombat."
+   }
+  ],
+  "rulings_check": "Whirler Rogue 2015-06-22 (two rulings) agree with steps 4 and 8; Myr Battlesphere 2020-08-07 rulings concern its attack trigger, which the scenario excludes; Sai 2018-07-13 concerns trigger ordering before the thopters existed. No step contradicts any official ruling.",
+  "cards_check": "Whirler Rogue, Myr Battlesphere and Sai, Master Thopterist oracle text in the resolution matches data/decks/keen-engineering/cards.json verbatim; all three are in the 99 per scenario-facts; Thopter token characteristics match Sai's trigger text.",
+  "scenario_facts": "5 creature bodies, nothing spent as a sacrifice, 3 opponents at 40 (pod 120 — no drain arithmetic in this stack), {0} mana, empty hand. Siblings 001 and 003 are NOT like-for-like and the resolution quotes neither — correct. Not a v2 scenario; no reconstruction_notes.",
+  "round_2": "Steps 1-7 and the former step 8 (now 9) carry the same citations as round 1 and were re-read unchanged; the new step 8 closes the only round-1 finding (post-resolution stack removal, SBA check, active-player priority). Final_state is now established end to end. No missing step remains: no triggered ability exists on this board for activation, tapping, resolution or the effect; no replacement effect is in play; combat is excluded by the scenario's one-domain note and step 9 cites what it does claim."
+ }
+}
