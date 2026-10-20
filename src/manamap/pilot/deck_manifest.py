@@ -19,7 +19,7 @@ import re
 
 from manamap import config
 from manamap.pilot.common import (
-    deck_lifecycle, load_json, presentable, withheld)
+    deck_lifecycle, expand_faces, load_json, presentable, withheld)
 
 
 # A stack scenario names its cards in STRUCTURED fields — the ordered stack, the hand, the
@@ -323,7 +323,10 @@ def gather_entries():
                             "captains_log", "watchlist", "considering",
                             "combos", "bracket_report",
                             # DeckCheck's Threat Index on file (2026-10-17)
-                            "deckcheck")}
+                            "deckcheck",
+                            # A ★ rating on file (2026-10-20): the workbench fetches
+                            # rating.json for its grade chip only where one exists.
+                            "rating")}
         has["log"] = (deck_path / "log.jsonl").exists()
         # The Deck Context (PRD v2): the deck page renders it first, and fetches
         # cards.json beside it for the Cards-by-role filter only when it exists.
@@ -394,6 +397,13 @@ def gather_entries():
             "has": has,
             "branches": branches,
             "branches_open": sum(1 for b in branches if b.get("state") == "OPEN"),
+            # EVERY NAME IN THE 99 AND THE COMMAND ZONE, both faces of a
+            # double-faced card (2026-10-20): the Atlas's "in these decks" pill
+            # does an exact `includes` against this, so face-matching stays in
+            # Python (`expand_faces`) and the browser never guesses at a slash.
+            # Sorted, so the manifest stays byte-deterministic.
+            "cards": sorted(set().union(*(set(expand_faces(c["name"])) for c in doc["cards"]))
+                            if doc.get("cards") else set()),
             "paper": paper,                       # None = not built in paper
             "locked": bool(paper),                # the front door's predicate
             "version": version,                   # latest release tag, sleeved or not
@@ -484,6 +494,8 @@ def write_manifest(entries):
                                   "stack_cards", "published", "status",
                                   "sim_runs", "experiments", "prescriptions",
                                   "decision_files", "has", "branches", "branches_open",
+                                  # Every name and face in the list (the Atlas pill).
+                                  "cards",
                                   # The workbench landing: art for the rack, and the
                                   # one predicate it filters on.
                                   "image", "paper", "locked", "version",

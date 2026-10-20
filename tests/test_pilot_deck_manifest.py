@@ -36,6 +36,9 @@ MANIFEST_KEYS = {
     "slug", "deck_name", "commander", "verified",
     "decisions", "stack_files", "stack_cards", "published", "status",
     "sim_runs", "experiments", "prescriptions", "decision_files", "has",
+    # Every name and face in the list, for the Atlas's "in these decks" pill
+    # (2026-10-20, MANIFEST_VERSION 12).
+    "cards",
     # The workbench landing (viz/workbench.html): `image` is the rack's art and
     # `locked`/`paper` are the predicate it filters on — which deck is built in
     # paper and playable at a table tonight. `paper` is null on an unlocked deck
@@ -233,3 +236,25 @@ def test_every_entry_carries_its_format_and_a_60_card_deck_has_no_commander(tmp_
     assert doc["drafts"] == [{"slug": "draft", "format": "pauper", "deck_name": "draft",
                               "commander": None, "theme": None, "bracket": None, "kept": 0,
                               "started": by["draft"]["started"]}]
+
+
+def test_every_entry_lists_every_name_and_face_in_its_list():
+    """`cards` (2026-10-20, MANIFEST_VERSION 12) is the Atlas pill's whole
+    evidence: the set of names and faces in the deck's cards.json, commander
+    included, sorted so the manifest stays byte-deterministic. Re-introduce the
+    bug (drop `expand_faces`) and a double-faced card's back face vanishes;
+    forget the commander and Edgar is "in no deck"."""
+    from manamap.pilot.common import expand_faces
+    checked = 0
+    for deck in json.loads((DECKS_DIR / "index.json").read_text())["decks"]:
+        cards = DECKS_DIR / deck["slug"] / "cards.json"
+        if not cards.exists():
+            assert deck["cards"] == [], deck["slug"]
+            continue
+        doc = json.loads(cards.read_text())
+        want = sorted(set().union(*(set(expand_faces(c["name"])) for c in doc["cards"])))
+        assert deck["cards"] == want, deck["slug"]
+        if deck.get("commander"):
+            assert deck["commander"].split(" // ")[0] in deck["cards"], deck["slug"]
+        checked += 1
+    assert checked >= 5

@@ -2063,4 +2063,6 @@ did with each add** (PLAYED / HELD / UNPLAYED from `cast_proofs.json`), **Proven
 branch** (stacks naming a card only the branch brings, with the checker's verdict), **The
 deck's own goldfish, beside the branch's** (series the net-change table does not carry,
 printed side by side, never differenced), and the deck's other branches with their states.
-The manifest carries `branches` and `branches_open` per deck (`MANIFEST_VERSION` 11).
+The manifest carries `branches` and `branches_open` per deck (`MANIFEST_VERSION` 11), and since
+2026-10-20 `cards` — every name and face in the list, for the Atlas's "in these decks" pill — and
+`has.rating` (`MANIFEST_VERSION` 12).

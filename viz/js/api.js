@@ -50,8 +50,17 @@
  *   9 -> 10: `links` may carry `deckcheck`, each link may carry its
  *            `decklist_sha256`/`version` stamp, and `has.deckcheck` says whether
  *            a Threat Index is on file (2026-10-17).
+ *   10 -> 11: every entry carries `branches[]` (name, state, opened, add, out,
+ *            verdict, objective grade, as_version, measured) and `branches_open`;
+ *            the workbench chip and the deck page's rack read them (2026-10-19).
+ *   11 -> 12: every entry carries `cards` — every name and every face in the
+ *            deck's cards.json, commander included — for the Atlas's "in these
+ *            decks" pill, and `has.rating` says a ★ rating.json is on file so
+ *            the workbench fetches it for its grade chip only where one exists
+ *            (2026-10-20). A cached manifest without `cards` would show no deck
+ *            on any card, which reads as "in no deck".
  */
-window.MANIFEST_VERSION = 11;
+window.MANIFEST_VERSION = 12;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── The shared formatters (2026-10-18) ──────────────────────────────────────
