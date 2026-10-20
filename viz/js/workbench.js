@@ -360,56 +360,15 @@
   }
 
 
-  /* THE MEASURES AND THE AXES IN WORDS (2026-10-20). The pilot read the first
-   * version of this row — `⑂ mean-v2 OPEN extra_cards_8 >= 1.65 → met · a trade
-   * · +13 −13` — and said it was "too git like": a label the table prints and a
-   * key the objective is pre-registered under are both vocabulary a reader
-   * should never meet on the landing page. Both maps are display only; the
-   * keys stay what `net_change.ROWS` and the objective carry. */
-  var MEASURE_WORDS = {
-    'damage @T10': 'damage by turn ten', 'killed by T10': 'the kill by turn ten',
-    'killed by T6': 'the kill by turn six', 'board power @T6': 'board power at turn six',
-    'extra cards by T8': 'extra cards by turn eight', 'stall, 2 in a row': 'stalling two turns running',
-    'missed drop by T5': 'a missed land drop by turn five', 'mulliganed': 'mulligans',
-    'interaction affordable @T6': 'affordable interaction at turn six', 'hand can act by T3': 'a hand that acts by turn three',
-    'hoard @T10': 'the treasure hoard by turn ten', 'hoard @T6': 'the treasure hoard by turn six'
-  };
-  var AXIS_WORDS = {
-    extra_cards_8: 'extra cards by turn eight', kill_by_8: 'the kill by turn eight', kill_by_10: 'the kill by turn ten',
-    kill_by_6: 'the kill by turn six', damage_10: 'damage by turn ten', damage_8: 'damage by turn eight',
-    board_power_6: 'board power at turn six', stall: 'the stall rate', interaction_6: 'affordable interaction at turn six',
-    missed_drop_5: 'missed land drops by turn five'
-  };
-  function words(map, key) { return map[key] || String(key || '').replace(/_/g, ' '); }
-  function opWords(op) {
-    return op === '>=' ? 'at least' : op === '<=' ? 'at most' : op === '>' ? 'above' : op === '<' ? 'below' : op || '';
-  }
-
-  /* One headline delta, in words: "damage by turn ten up 1.9 [1.8 to 2.1]";
-   * a rate in points of a hundred games; the table's own verdict colours it. */
-  function deltaHtml(h) {
-    if (!h || h.delta == null) return '';
-    var rate = h.unit === 'rate';
-    var f = function (x) { return rate ? (Math.abs(x) * 100).toFixed(1) : Math.abs(+x).toFixed(2); };
-    var dir = h.delta > 0 ? 'up' : h.delta < 0 ? 'down' : 'level';
-    var ci = Array.isArray(h.ci95_diff) && h.ci95_diff.length === 2
-      ? ' [' + (h.ci95_diff[0] > 0 ? '+' : h.ci95_diff[0] < 0 ? '−' : '') + f(h.ci95_diff[0]) + ' to '
-             + (h.ci95_diff[1] > 0 ? '+' : h.ci95_diff[1] < 0 ? '−' : '') + f(h.ci95_diff[1]) + (rate ? ' pts' : '') + ']' : '';
-    var reads = h.verdict === 'noise' ? ' — within noise' : '';
-    return '<span class="wb-delta" data-verdict="' + esc(h.verdict || 'noise') + '" title="'
-         + esc(h.measure + (h.mde != null ? ' · the run could detect ' + f(h.mde) + (rate ? ' pts' : '') : '')) + '">'
-         + esc(words(MEASURE_WORDS, h.measure) + ' ' + dir + ' ') + '<b>' + esc(f(h.delta) + (rate ? ' pts' : '')) + '</b>'
-         + esc(ci + reads) + '</span>';
-  }
-
-  /* ONE BRANCH, IN PLAIN WORDS. The headline is Jarvis's summary when one is
-   * on the branch (`deck-branch <slug> summary <name> --title --blurb`): the
-   * branch in words, then one sentence on what it would do and why. Without
-   * one the branch's name stands in and the row says so. Under it: the state,
-   * the guard and whether it held, the goldfish's verdict with how many rows
-   * moved, the swap count, the headline deltas in words, and the links the
-   * pilot asked for — swaps, the measured table, the net change, the deck's
-   * rack. `withDeck` prefixes the deck's name for the fleet-wide rack. */
+  /* ONE BRANCH, IN PLAIN WORDS — and only words. The headline is Jarvis's
+   * summary when one is on the branch (`deck-branch <slug> summary <name>
+   * --title --blurb`): the branch in words, then one sentence on what it would
+   * do and why. Without one the branch's name stands in and the row says so.
+   * The guard, the verdict, the swap count and the deltas were here for an
+   * hour on 2026-10-20 and the pilot called them "messy, illegible, takes up
+   * space"; they live on the branch page, which the four links reach — the
+   * swaps, what was measured, the net change, the deck's rack. `withDeck`
+   * prefixes the deck's name for the fleet-wide rack. */
   function branchRow(e, b, withDeck) {
     var slug = encodeURIComponent(e.slug), name = encodeURIComponent(b.name);
     var href = 'branch.html?deck=' + slug + '&branch=' + name;
@@ -422,23 +381,6 @@
     var blurb = sm.blurb
       ? '<p class="wb-br-blurb">' + esc(sm.blurb) + '</p>'
       : '<p class="wb-br-blurb wb-br-unsummarised">No summary yet — ask Jarvis to review the branch and it writes one.</p>';
-    var facts = [];
-    var o = b.objective || {}, g = b.objective_grade || {}, v = b.verdict || {}, im = b.impact || {};
-    if (o.axis) {
-      var guard = 'The guard: ' + words(AXIS_WORDS, o.axis) + ' ' + opWords(o.op) + ' ' + o.value;
-      facts.push('<span class="wb-br-obj">' + esc(guard) + (g.state ? ' — <b>' + esc(g.state) + '</b>'
-                 + (g.reading != null ? esc(' at ' + g.reading) : '') : '') + '.</span>');
-    }
-    if (v.state) {
-      var moved = (v.rose != null) ? ' (' + v.rose + ' measure' + (v.rose === 1 ? '' : 's') + ' better, ' + v.fell
-                                   + ' worse' + (v.no_call ? ', ' + v.no_call + ' within noise' : '') + ')' : '';
-      facts.push('<span class="wb-br-verdict" title="' + esc('better: ' + ((im.rose || []).join(', ') || 'none')
-                 + ' · worse: ' + ((im.fell || []).join(', ') || 'none')) + '">The goldfish calls it <b>' + esc(v.state) + '</b>'
-                 + esc(moved) + '.</span>');
-    }
-    if (b.add != null) facts.push('<span class="wb-br-swaps">' + esc(b.add + ' card' + (b.add === 1 ? '' : 's') + ' in, ' + b.out + ' out') + '.</span>');
-    if (b.measured === false) facts.push('<span class="wb-chip wb-warn" title="' + esc(b.measured_why || '') + '">measured on an older list</span>');
-    var deltas = (im.headline || []).map(deltaHtml).join('<span class="wb-br-sep"> · </span>');
     var links = '<nav class="wb-br-links">'
       + '<a href="' + href + '#swaps">the swaps</a>'
       + '<a href="' + href + '#measured">what was measured</a>'
@@ -448,8 +390,6 @@
     return '<div class="wb-branch-row" data-state="' + esc(String(b.state || 'OPEN').toLowerCase()) + '">'
       + '<div class="wb-br-head">' + head + '</div>'
       + blurb
-      + (facts.length ? '<div class="wb-br-facts">' + facts.join(' ') + '</div>' : '')
-      + (deltas ? '<div class="wb-br-deltas">' + deltas + '</div>' : '')
       + links + '</div>';
   }
 

@@ -4974,12 +4974,14 @@ def test_every_live_branch_is_a_git_style_row_on_the_card(browser, viz_server):
         text = rows.first.text_content()
         # IN WORDS (2026-10-20): Jarvis's title leads, the slug sits beside it,
         # the guard and the verdict are sentences, the deltas say "up"/"down".
-        for bit in ("The meanest bracket-four Edgar", "mean-v2", "OPEN", "Four denial Vampires",
-                    "The guard: extra cards by turn eight at least 1.65", "met", "The goldfish calls it a trade",
-                    "5 measures better, 2 worse", "13 cards in, 13 out",
-                    "damage by turn ten up 1.94", "the kill by turn ten up 5.7 pts"):
+        for bit in ("The meanest bracket-four Edgar", "mean-v2", "OPEN", "Four denial Vampires"):
             assert bit in text, bit
-        assert "extra_cards_8" not in text, "no axis key on the landing page"
+        # WORDS ONLY (the pilot, 2026-10-20: the figures were "messy, illegible,
+        # takes up space"): no guard, no verdict, no swap count, no delta here —
+        # the branch page carries them and the links reach it.
+        for gone in ("extra_cards_8", "1.65", "a trade", "13 cards", "damage by turn ten", "+1.94", "pts"):
+            assert gone not in text, gone
+        assert rows.first.locator(".wb-delta").count() == 0
         assert rows.first.locator("a.wb-br-name").get_attribute("href") == "branch.html?deck=alpha&branch=mean-v2"
         # Scoped to the card: the Branches rack above carries the same row.
         hrefs = [a.get_attribute("href") for a in rows.first.locator(".wb-br-links a").all()]
@@ -4989,7 +4991,6 @@ def test_every_live_branch_is_a_git_style_row_on_the_card(browser, viz_server):
                          "branch.html?deck=alpha&branch=mean-v2#measured",
                          "branch.html?deck=alpha&branch=mean-v2#net-change",
                          "deck.html?deck=alpha#panel-branches"]
-        assert rows.first.locator(".wb-delta[data-verdict='better']").count() == 2
         assert page.locator(".wb-chips a.wb-branch").count() == 0, "the chip is gone; the block replaced it"
     finally:
         page.close()

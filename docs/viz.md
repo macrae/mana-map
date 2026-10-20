@@ -2081,17 +2081,16 @@ headline deltas — `net_change.IMPACT_MEASURES` — into each row's `impact`):
   digits — figures live in the measured fields) onto `branch.json`, `review()` passes it to
   `info.json`, and the row renders Jarvis's title as its headline (the slug small beside it,
   linked to the branch page) and the blurb as a sentence; a branch without one says "No
-  summary yet — ask Jarvis". Under it, sentences: the state badge (`window.branchStateBadge`,
-  one home in `api.js`), "proposed as vX.Y.Z", "The guard: extra cards by turn eight at least
-  1.65 — met at 1.78", "The goldfish calls it a trade (5 measures better, 2 worse, 3 within
-  noise)", "13 cards in, 13 out", a "measured on an older list" warning when the report
-  predates the branch's list, the headline deltas in words ("damage by turn ten up 1.94
-  [+1.80 to +2.08]"; `MEASURE_WORDS` and `AXIS_WORDS` are display maps over the table's
-  labels and the objective's keys, never a second vocabulary in the data), and four links:
-  **the swaps** (`branch.html…#swaps`), **what was measured** (`#measured`), **the net change**
-  (`#net-change`), **all of this deck's branches** (`deck.html…#panel-branches`). Decided
-  branches (merged, rejected, withdrawn) stay in the deck page's fold. `/jarvis`'s "Review a
-  branch" intent writes the summary when a branch has none.
+  summary yet — ask Jarvis". Beside the title: the state badge (`window.branchStateBadge`,
+  one home in `api.js`) and "proposed as vX.Y.Z". Then four links: **the swaps**
+  (`branch.html…#swaps`), **what was measured** (`#measured`), **the net change**
+  (`#net-change`), **all of this deck's branches** (`deck.html…#panel-branches`). And
+  nothing else: the guard, the verdict, the swap count and the headline deltas were on the row
+  for an hour and the pilot called them "messy, illegible, takes up space" — the branch page
+  carries every figure and the links reach it. `review().impact` still rides on `info.json`
+  for whichever page wants the deltas; the workbench does not print them. Decided branches
+  (merged, rejected, withdrawn) stay in the deck page's fold. `/jarvis`'s "Review a branch"
+  intent writes the summary when a branch has none.
 - **The Branches rack, first on the page** (`branchRack`): every live branch across every
   living deck, newest first, each row prefixed by its deck — `git branch -a` for the bench.
 - **A Branch column in the fleet table** (newest live branch, linked, with state and verdict,
