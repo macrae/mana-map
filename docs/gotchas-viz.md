@@ -95,3 +95,20 @@ and the rows carry enough — state, objective, verdict — to choose which page
 things the branch page could not say are the same lesson one level down: the state of an
 open branch, the cards the goldfish could not see, what Forge's AI did with each add, the
 stacks proven on it, and the way to its siblings were all on disk and none were on the page.
+
+## 2026-10-20 — a deep link is a chip too
+
+- **A chip that names a place must land there, and an async page must scroll itself.** The
+  workbench's "N open branches" chip linked `deck.html#branches` for a day; the deck page
+  prefixes every panel id (`panel()` → `#panel-branches`), so the anchor named nothing, and
+  even the right id would have missed: both the deck and branch pages build their panels
+  after a fetch, so the browser's own jump fires before the element exists. `window.scrollToHash()`
+  (api.js) runs after each render; the test opens `branch.html?…#measured` and asserts
+  `window.scrollY > 0`. The rule from 2026-10-19 ("a chip that names something must link to
+  it") has a second half: the link must be an id the page renders, and the page must land on it.
+- **Two copies of a badge is one too many.** The branch state badge lived in deck-view.js and
+  inline in branch-view.js; the workbench block would have been the third. It is
+  `window.branchStateBadge` in api.js now, beside the shared formatters.
+- **Scope a locator to the card when the same row renders twice.** The Branches rack at the
+  top of the workbench repeats each card's branch row; a page-wide `.wb-branch-row .wb-br-links a`
+  matched both and the first test failed on its own fixture.
