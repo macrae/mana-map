@@ -5,7 +5,7 @@
 <!-- ctx:gen summary -->
 - **Commander:** [Edgar Markov](https://manamap.seanmacrae.com/viz/index.html?cards=Edgar+Markov)
 - **Version:** v2.1.0 (V6) · **status:** sleeved since 2026-10-20
-- **Colours:** WBR · **lands:** 35 · **bracket floor:** 4 (Optimized) · **DTI:** 28/96 → B4 (deckcheck.co, 2026-10-18, 1 reading) — older list
+- **Colours:** WBR · **lands:** 35 · **bracket floor:** 4 (Optimized) · **DTI:** 46/96 → B4 (deckcheck.co, 2026-10-20, 2 readings)
 - **Combos:** 8 known lines (8 infinite, 8 two-card) · 135 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=edgar-vampires) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=edgar-vampires)
 <!-- /ctx:gen summary -->

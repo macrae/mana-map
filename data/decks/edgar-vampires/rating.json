@@ -141,13 +141,13 @@
    "weight": 0.13,
    "weight_validity": 1.0,
    "weight_effective": 0.1413,
-   "sub_score": 88.57,
+   "sub_score": 81.43,
    "sub_ci": [
-    88.57,
-    88.57
+    81.43,
+    81.43
    ],
    "placement": null,
-   "anchor": 88.57,
+   "anchor": 81.43,
    "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
    "inputs": [
     {
@@ -195,7 +195,7 @@
      "value": 7,
      "ci95": null,
      "n": null,
-     "source": "deck-audit#protection (verdict at)",
+     "source": "deck-audit#protection (verdict over)",
      "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
     },
     {
@@ -397,12 +397,12 @@
   ],
   "iterations": 2
  },
- "code_score": 59.7,
- "score_point": 59.7,
- "score": 61.8,
+ "code_score": 58.4,
+ "score_point": 58.7,
+ "score": 60.9,
  "score_ci": [
-  50.0,
-  71.5
+  49.3,
+  70.1
  ],
  "grade": "C",
  "grade_range": [
@@ -411,11 +411,11 @@
  ],
  "grade_display": "C",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.306,
-  "C": 0.643,
-  "D": 0.051,
-  "F": 0.0
+  "A": 0.0,
+  "B": 0.242,
+  "C": 0.699,
+  "D": 0.059,
+  "F": 0.001
  },
  "uncertainty": {
   "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
@@ -431,15 +431,15 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 67.8,
+    "score": 66.7,
     "grade": "B"
    },
    "mana": {
-    "score": 55.9,
+    "score": 54.8,
     "grade": "C"
    },
    "resilience": {
-    "score": 56.7,
+    "score": 55.5,
     "grade": "C"
    },
    "construction": {
@@ -447,15 +447,15 @@
     "grade": "C"
    },
    "dti": {
-    "score": 58.0,
+    "score": 56.8,
     "grade": "C"
    },
    "table_record": {
-    "score": 65.2,
-    "grade": "B"
+    "score": 64.0,
+    "grade": "C"
    },
    "judgment": {
-    "score": 59.7,
+    "score": 58.4,
     "grade": "C"
    }
   },
@@ -463,7 +463,7 @@
    {
     "component": "speed",
     "share_now": 0.13,
-    "share_at_flip": 0.046,
+    "share_at_flip": 0.027,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "lower"
@@ -471,7 +471,7 @@
    {
     "component": "mana",
     "share_now": 0.087,
-    "share_at_flip": 0.206,
+    "share_at_flip": 0.226,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -479,15 +479,15 @@
    {
     "component": "table_record",
     "share_now": 0.13,
-    "share_at_flip": 0.004,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "lower"
+    "share_at_flip": 0.347,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "raise"
    },
    {
     "component": "construction",
     "share_now": 0.141,
-    "share_at_flip": 0.298,
+    "share_at_flip": 0.378,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -495,7 +495,7 @@
    {
     "component": "resilience",
     "share_now": 0.13,
-    "share_at_flip": 0.356,
+    "share_at_flip": 0.387,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -503,7 +503,7 @@
    {
     "component": "dti",
     "share_now": 0.163,
-    "share_at_flip": 0.652,
+    "share_at_flip": 0.687,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -519,7 +519,7 @@
   "outliers": [],
   "group": null
  },
- "resolution": "the 90% interval spans 1 grade boundary (65); concordance withheld",
+ "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance withheld",
  "judgment": {
   "sub_score": 60,
   "argument": "The measured components cannot see two things, and the record does not size either, so I leave the number at the code score. First, speed reads the goldfish's kill-by-turn-six clock, but this deck means to win by drain loops. The record holds checker-passed loops, and the newest, Enduring Tenacity with Bloodthirsty Conqueror, is a third drain loop that was verified before it was counted. That a loop is legal says nothing about how often the deck assembles one, and no run has measured that rate; the clock itself shows the deck usually does not kill early, and it stays in the score at full validity. Second, table record holds 0 wins in 5 games, all on earlier lists, and the context says nothing has been played with this one. That figure describes a deck that no longer exists, but it cannot be replaced by a better figure either, because there is none. Both gaps point upward, and neither can be priced from what is recorded. The weak spots I do believe, card advantage, the mana base and interaction breadth, are already in the components and would be a double count here. The new list's strength, including today's rise in the DeckCheck read, is likewise already carried. So the judgment equals the code score: the record does not yet explain a move, and games on this list and a measured assembly rate would.",
@@ -564,8 +564,8 @@
    "edgar-vampires"
   ],
   "acceptability": {
-   "1": 0.241,
-   "2": 0.758
+   "1": 0.15,
+   "2": 0.85
   },
   "basis": {
    "edgar-vampires": "this document",
@@ -573,7 +573,7 @@
   },
   "scores": {
    "heliod": 65.0,
-   "edgar-vampires": 61.8
+   "edgar-vampires": 60.9
   }
  }
 }
