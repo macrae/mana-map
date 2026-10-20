@@ -52,6 +52,9 @@
             "name": "Anowon, the Ruin Sage"
           },
           {
+            "name": "Captivating Vampire"
+          },
+          {
             "name": "Clavileño, First of the Blessed"
           },
           {
@@ -108,22 +111,23 @@
             ]
           }
         ],
-        "blocking": 8,
+        "blocking": 9,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 12,
-      "out": 12,
+      "add": 13,
+      "out": 13,
       "counts": {
-        "in_deck": 85,
+        "in_deck": 84,
         "box": 3,
         "elsewhere": 1,
-        "buy": 7,
+        "buy": 8,
         "free": 1
       },
       "unsourced": [
         "Anowon, the Ruin Sage",
+        "Captivating Vampire",
         "Clavileño, First of the Blessed",
         "Drana and Linvala",
         "Talisman of Conviction",
@@ -274,6 +278,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Caretaker's Talent",
@@ -455,13 +466,6 @@
         },
         {
           "name": "Haunted Ridge",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Herald's Horn",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -861,25 +865,24 @@
       },
       "verdict": {
         "state": "a trade",
-        "rose": 4,
-        "fell": 1,
-        "no_call": 5
+        "rose": 6,
+        "fell": 2,
+        "no_call": 2
       },
       "objective_grade": {
         "state": "met",
-        "reading": 1.7943,
+        "reading": 1.7604,
         "shortfall": null
       },
       "measured": false,
       "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
-        "Clever Concealment",
-        "Crossway Troublemakers",
+        "Anowon, the Ruin Sage",
         "Despark",
-        "Dictate of Erebos",
-        "Elspeth, Storm Slayer",
+        "Drana and Linvala",
         "Falkenrath Aristocrat",
         "Nomad Outpost",
+        "Olivia, Crimson Bride",
         "Phyrexian Tower",
         "Strefan, Maurer Progenitor",
         "Vein Ripper",
@@ -15121,8 +15124,8 @@
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "branch `mean-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch mean-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `mean-v1` needs 8 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mean-v1`",
+    "branch `mean-v1`: 4 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch mean-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `mean-v1` needs 9 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mean-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×5",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
