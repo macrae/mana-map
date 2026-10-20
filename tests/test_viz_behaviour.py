@@ -4638,8 +4638,15 @@ def test_box_select_catches_what_is_drawn_inside_the_marquee(page):
 # that can break.
 
 
-def _workbench(browser, viz_server, decks, infos=None):
+def _workbench(browser, viz_server, decks, infos=None, ratings=None):
     page = browser.new_page()
+    # A rating is fetched only where the manifest's `has.rating` says one exists
+    # (2026-10-20); the route answers the slugs given and 404s the rest.
+    page.route("**/data/decks/*/rating.json",
+               lambda route: route.fulfill(status=200, content_type="application/json",
+                                           body=_json.dumps((ratings or {})[route.request.url.split("/")[-2]]))
+               if (ratings or {}).get(route.request.url.split("/")[-2]) is not None
+               else route.fulfill(status=404, body=""))
     import json as _json
     page.route("**/data/decks/index.json*", lambda route: route.fulfill(
         status=200, content_type="application/json",
@@ -4939,39 +4946,126 @@ def test_the_card_says_how_long_ago_the_deck_was_played(browser, viz_server):
         page.close()
 
 
-def test_open_branches_are_visible_on_the_card(browser, viz_server):
-    """Edgar carries six and the front door showed none of them, so the deck
-    with the most work under way looked exactly like one with none."""
+def test_every_live_branch_is_a_git_style_row_on_the_card(browser, viz_server):
+    """P0 (2026-10-20): "link to and highlight feature branches (like git), with
+    easy access to recommended card swaps, measured impact, net change report".
+    A live branch is a ROW under the chips — name linked to its page, the state
+    badge, the objective and its grade, the verdict, the swap count, the headline
+    deltas `review()` put on `info.json`, and four links: swaps, measured, net
+    change, the deck page's rack. A decided branch (merged, rejected, withdrawn)
+    is not shown; it lives in the deck page's fold."""
     page = _workbench(browser, viz_server, [_deck("alpha")], infos={
-        "alpha": {"branches": [{"name": "a", "state": "OPEN"},
-                               {"name": "b", "state": "OPEN"},
-                               {"name": "c", "state": "MERGED"}]}})
+        "alpha": {"branches": [
+            {"name": "mean-v2", "state": "OPEN", "opened": "2026-10-20", "add": 13, "out": 13,
+             "objective": {"axis": "extra_cards_8", "op": ">=", "value": 1.65},
+             "objective_grade": {"state": "met", "reading": 1.78},
+             "verdict": {"state": "a trade", "rose": 5, "fell": 2, "no_call": 3},
+             "impact": {"state": "a trade", "rose": ["damage @T10"], "fell": ["stall, 2 in a row"],
+                        "headline": [{"measure": "damage @T10", "delta": 1.94, "ci95_diff": [1.80, 2.08],
+                                      "mde": 0.3, "verdict": "better", "unit": "mean", "better_is": "higher"},
+                                     {"measure": "killed by T10", "delta": 0.057, "ci95_diff": [0.048, 0.067],
+                                      "mde": 0.01, "verdict": "better", "unit": "rate", "better_is": "higher"}]}},
+            {"name": "old", "state": "REJECTED"},
+            {"name": "done", "state": "MERGED"}]}})
     try:
-        assert "2 open branches" in page.text_content(".wb-chips")
-        # AND THE CHIP LEADS SOMEWHERE (2026-10-19): several open → the deck
-        # page's Branches rack — `#panel-branches`, the id the deck page actually
-        # renders (`panel()` prefixes every id; `#branches` led to the top of the
-        # page for a day, 2026-10-20).
-        assert page.get_attribute(".wb-chips a.wb-branch", "href") == "deck.html?deck=alpha#panel-branches"
+        rows = page.locator(".wb-card .wb-branch-row")
+        assert rows.count() == 1, "one live branch, two decided ones hidden"
+        text = rows.first.text_content()
+        for bit in ("mean-v2", "OPEN", "extra_cards_8 >= 1.65", "met", "a trade", "5 rose, 2 fell", "+13 −13",
+                    "damage @T10", "+1.94", "killed by T10", "+5.7 pts"):
+            assert bit in text, bit
+        assert rows.first.locator("a.wb-br-name").get_attribute("href") == "branch.html?deck=alpha&branch=mean-v2"
+        # Scoped to the card: the Branches rack above carries the same row.
+        hrefs = [a.get_attribute("href") for a in rows.first.locator(".wb-br-links a").all()]
+        assert hrefs == ["branch.html?deck=alpha&branch=mean-v2#swaps",
+                         "branch.html?deck=alpha&branch=mean-v2#measured",
+                         "branch.html?deck=alpha&branch=mean-v2#net-change",
+                         "deck.html?deck=alpha#panel-branches"]
+        assert rows.first.locator(".wb-delta[data-verdict='better']").count() == 2
+        assert page.locator(".wb-chips a.wb-branch").count() == 0, "the chip is gone; the block replaced it"
     finally:
         page.close()
 
 
-def test_one_open_branch_links_straight_to_its_page_with_its_verdict(browser, viz_server):
-    """The pilot could not find Edgar's mean-v1 from the front door: the chip
-    counted branches and led nowhere. One live branch now links to its page and
-    carries the verdict and the objective's grade the manifest rows hold; a
-    rejected or withdrawn branch is not open work."""
-    page = _workbench(browser, viz_server, [_deck("alpha")], infos={
-        "alpha": {"branches": [{"name": "mean-v1", "state": "OPEN", "verdict": {"state": "a trade"},
-                                "objective_grade": {"state": "met"}},
-                               {"name": "old", "state": "REJECTED"},
-                               {"name": "done", "state": "MERGED"}]}})
+def test_the_branches_rack_leads_the_page_with_every_live_branch_newest_first(browser, viz_server):
+    """`git branch -a` for the bench: a rack above everything else listing the
+    live branches across the fleet, each prefixed by its deck, newest first.
+    Decided branches and dead decks stay out."""
+    page = _workbench(browser, viz_server,
+                      [_deck("alpha", deck_name="Alpha"), _deck("beta", deck_name="Beta"),
+                       _deck("gone", deck_name="Gone", status=["retired", "RETIRED", "x"])],
+                      infos={"alpha": {"branches": [{"name": "a-old", "state": "OPEN", "opened": "2026-09-01"},
+                                                     {"name": "a-done", "state": "MERGED", "opened": "2026-10-01"}]},
+                             "beta": {"branches": [{"name": "b-new", "state": "PROPOSED → v1.1.0", "opened": "2026-10-20",
+                                                    "proposal": {"as_version": "v1.1.0"}}]},
+                             "gone": {"branches": [{"name": "g", "state": "OPEN", "opened": "2026-10-19"}]}})
     try:
-        chip = page.locator(".wb-chips a.wb-branch")
-        assert chip.count() == 1
-        assert chip.get_attribute("href") == "branch.html?deck=alpha&branch=mean-v1"
-        assert "mean-v1 · a trade · objective met" in chip.text_content()
+        first = page.locator("#racks section.wb-rack").first
+        assert "wb-branchlist" in (first.get_attribute("class") or ""), "the Branches rack is the first rack"
+        names = [a.text_content() for a in first.locator("a.wb-br-name").all()]
+        assert names == ["b-new", "a-old"], names
+        decks = [a.text_content() for a in first.locator("a.wb-br-deck").all()]
+        assert decks == ["Beta", "Alpha"]
+        assert "→ v1.1.0" in first.text_content()
+        assert first.locator(".br-state[data-state='proposed']").count() == 1
+    finally:
+        page.close()
+
+
+def test_the_bracket_and_the_grade_and_the_record_are_chips_on_the_card(browser, viz_server):
+    """"A bracket badge, and W/L badge" (2026-10-20). The bracket chip is the
+    TARGET the deck is built for, floor and DeckCheck's read in its title, amber
+    when the floor outgrew the target; the ★ grade comes from rating.json only
+    where the manifest's `has.rating` says one exists; the record leads with
+    W–L. All read off the artifacts; the page computes nothing."""
+    page = _workbench(browser, viz_server,
+                      [_deck("alpha", has={"rating": True}), _deck("beta")],
+                      infos={"alpha": {"bracket": {"floor": 4, "floor_name": "Optimized", "target": 4, "within_target": True},
+                                       "deckcheck": {"score": 46, "max_score": 96, "bracket": 4},
+                                       "record": {"games": 6, "win": 0, "loss": 5, "draw": 1, "last_played": "2026-09-29"}},
+                             "beta": {"bracket": {"floor": 3, "floor_name": "Upgraded", "target": 2, "within_target": False},
+                                      "record": {"games": 3, "win": 2, "loss": 1}}},
+                      ratings={"alpha": {"grade": "C", "grade_display": "C", "score": 61.8,
+                                         "rank": {"position": 2, "of": 2}, "bracket": {"key": "4"}}})
+    try:
+        cards = page.locator(".wb-card")
+        a = cards.nth(0)
+        assert a.locator(".wb-chip.wb-bracket").text_content() == "B4"
+        assert "DeckCheck B4 46/96" in a.locator(".wb-chip.wb-bracket").get_attribute("title")
+        assert a.locator(".wb-chip.wb-star").text_content() == "★ C"
+        assert "2 of 2" in a.locator(".wb-chip.wb-star").get_attribute("title")
+        assert a.locator(".wb-chip.wb-record b").text_content() == "0–5–1"
+        assert "6 games" in a.locator(".wb-chip.wb-record").text_content()
+        b = cards.nth(1)
+        assert b.locator(".wb-chip.wb-bracket").text_content() == "B2"
+        assert "wb-warn" in b.locator(".wb-chip.wb-bracket").get_attribute("class"), "the floor outgrew the target"
+        assert b.locator(".wb-chip.wb-star").count() == 0, "no rating on file, no chip"
+        assert b.locator(".wb-chip.wb-record b").text_content() == "2–1"
+    finally:
+        page.close()
+
+
+def test_the_fleet_table_has_a_branch_column(browser, viz_server):
+    """The table view showed no branch at all. One column: the newest live
+    branch linked with its state and verdict, a `+N more` link to the deck
+    page's rack when there are several, a dash otherwise; the NEXT row spans
+    the new width."""
+    page = _workbench(browser, viz_server, [_deck("alpha"), _deck("beta")],
+                      infos={"alpha": {"branches": [{"name": "x", "state": "OPEN", "opened": "2026-10-20",
+                                                     "verdict": {"state": "do not merge"}},
+                                                    {"name": "y", "state": "OPEN", "opened": "2026-10-19"}],
+                                       "next": ["play it"]},
+                             "beta": {}})
+    try:
+        page.click(".wb-view[data-view='table']")
+        page.wait_for_timeout(300)
+        heads = [th.text_content() for th in page.locator("table.wb-table thead th").all()]
+        assert heads[5] == "Branch" and len(heads) == 9, heads
+        cell = page.locator("tr.t-head").first.locator("td.t-branch")
+        assert "⑂ x" in cell.text_content() and "do not merge" in cell.text_content() and "+1 more" in cell.text_content()
+        assert cell.locator("a").first.get_attribute("href") == "branch.html?deck=alpha&branch=x"
+        assert page.locator("tr.t-nextrow td.t-next").first.get_attribute("colspan") == "9"
+        assert page.locator("tr.t-head").nth(1).locator("td.t-branch").text_content().strip() == "—"
     finally:
         page.close()
 

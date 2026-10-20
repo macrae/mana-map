@@ -1333,8 +1333,6 @@ details.rost-fold > summary {
 .br-state[data-state="merged"] { color: var(--tier-verified); }
 .br-state[data-state="rejected"], .br-state[data-state="withdrawn"] { color: var(--ink-2, var(--ink)); opacity: 0.7; }
 .br-state[data-state="base-moved"] { color: var(--warn, #e0a030); border-style: dashed; }
-.wb-chip.wb-branch { text-decoration: none; border-color: var(--tier-data); color: var(--tier-data); cursor: pointer; }
-.wb-chip.wb-branch:hover { background: var(--tier-data); color: var(--bg, #fff); }
 .branch-decided-fold { margin-top: 18px; }
 .branch-decided-fold > summary { cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; opacity: 0.8; }
 .branch-decided { opacity: 0.75; }
@@ -1375,3 +1373,32 @@ details.rost-fold > summary {
   .fl-bar-row { grid-template-columns: 1fr; gap: 4px; }
 }
 
+/* THE BRACKET, THE ★ GRADE AND THE BRANCHES ON THE WORKBENCH (2026-10-20). */
+.wb-chip.wb-bracket { border-color: var(--tier-data); color: var(--tier-data); font-weight: 600; }
+.wb-chip.wb-bracket.wb-warn { border-color: var(--tier-coach); color: var(--tier-coach); }
+.wb-chip.wb-star { border-color: var(--tier-coach); color: var(--tier-coach); }
+.wb-chip.wb-record b { font-weight: 700; letter-spacing: .02em; }
+/* The git-style branch block: one row per live branch, on the card and in the
+   fleet-wide rack. The deltas carry the table's own verdict as a colour. */
+.wb-branches { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.wb-branch-row { border: 1px solid var(--rule); border-left: 3px solid var(--tier-data); border-radius: 4px;
+  padding: 7px 10px; font-size: 12.5px; background: var(--paper-2, transparent); }
+.wb-branch-row[data-state^="proposed"] { border-left-color: var(--warn, #e0a030); }
+.wb-br-head { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.wb-br-glyph { color: var(--tier-data); }
+.wb-br-name { font-weight: 700; text-decoration: none; }
+.wb-br-name:hover { text-decoration: underline; }
+.wb-br-deck { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .04em; font-size: 11px;
+  color: var(--ink-soft); text-decoration: none; margin-right: 4px; }
+.wb-br-as { color: var(--warn, #e0a030); }
+.wb-br-facts { color: var(--ink-soft); margin-top: 3px; }
+.wb-br-deltas { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.wb-delta[data-verdict="better"] { color: var(--tier-verified); }
+.wb-delta[data-verdict="worse"] { color: var(--warn, #e0a030); }
+.wb-delta[data-verdict="noise"] { color: var(--ink-soft); }
+.wb-br-links { display: flex; gap: 10px; margin-top: 5px; font-family: var(--condensed); text-transform: uppercase;
+  letter-spacing: .04em; font-size: 11px; }
+.wb-br-links a { text-decoration: none; color: var(--tier-data); }
+.wb-br-links a:hover { text-decoration: underline; }
+.wb-branchlist .wb-branches { max-width: 980px; }
+.wb-table .t-branch { white-space: nowrap; }

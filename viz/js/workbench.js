@@ -143,7 +143,7 @@
 
   /* What the bench knows about this deck. Counts only — a number here is an
    * invitation to open the deck, never a claim about it. */
-  function evidenceChips(e, info) {
+  function evidenceChips(e, info, rt) {
     var out = '';
     // `record`, NOT `status`. `deck-info` writes the games under `info.record`
     // and uses `info.status` for the stage counts, so reading `status.games`
@@ -151,17 +151,25 @@
     // and by the time it was found two decks had a real logged game the front
     // door structurally could not show. A logged game is the whole point of
     // the bench; it does not get to be the thing that silently goes missing.
+    // THE BRACKET AND THE ★ GRADE LEAD (2026-10-20, the pilot's ask): the target
+    // bracket the deck is built for, with the floor and DeckCheck's read in the
+    // title; then the rating's grade where a rating.json is on file.
+    out += bracketChip(info) + ratingChip(rt);
     var r = (info && info.record) || {};
     if (r.games) {
-      var rec = [r.win || 0, r.loss || 0].join('–');
+      // THE RECORD LEADS WITH W–L (2026-10-20): "2–1" is what the pilot reads;
+      // the game count and the recency follow. A draw column only when one
+      // exists, so the common case stays two numbers.
+      var rec = [r.win || 0, r.loss || 0].concat(r.draw ? [r.draw] : []).join('–');
       // RECENCY RIDES WITH THE RECORD. `ago()` was written for the fleet table
       // and the card threw it away, so a deck played last night and a deck
       // played in July read identically — on the page whose only question is
       // which deck to spend tonight on. A record with no date is a fact about
       // the past presented as a fact about now.
       var when = ago(r.last_played);
-      out += chip(r.games + ' game' + (r.games === 1 ? '' : 's') + ' · ' + rec
-                  + (when ? ' · ' + when : ''), 'ok');
+      out += '<span class="wb-chip wb-ok wb-record" title="' + esc(r.games + ' game' + (r.games === 1 ? '' : 's')
+             + (r.last_played ? ', last ' + r.last_played : '')) + '"><b>' + esc(rec) + '</b> · '
+           + esc(r.games + ' game' + (r.games === 1 ? '' : 's') + (when ? ' · ' + when : '')) + '</span>';
     }
     /* HOW CLOSE IS THIS DECK TO THE NEXT RUNG. `promote --show` has computed
      * this all along and no screen rendered it: zur has been two requirements
@@ -188,35 +196,12 @@
      * ENGINE ratio (`verified_lines/lines`) stays in the table: that one answers
      * how much of the model is proved, which is a different question and has a
      * denominator. */
-    /* A BRANCH IS WORK IN FLIGHT, and the front door could only see the subset
-     * that had reached a proposal. Edgar carries six open branches and the card
-     * showed none of them, so the deck with the most work under way looked
-     * exactly like one with none. Neutral, deliberately: `proposalChip` is amber
-     * or green because it is BLOCKED ON CARDBOARD, and having work open is not
-     * being blocked. */
-    /* AND IT LINKS (2026-10-19). The pilot could not find a branch from here:
-     * the chip counted them and led nowhere. One open branch links straight to
-     * its page with its verdict and objective grade (info.json's rows are
-     * newest first, and `review` put the figures on them); several link to the
-     * deck page's Branches rack. A decided branch (merged, rejected,
-     * withdrawn) is not open work. */
-    var open = ((info && info.branches) || []).filter(function (b) {
-      return b.state !== 'MERGED' && !b.proposal && !/REJECT|WITHDRAW/.test(b.state || '');
-    });
-    if (open.length === 1) {
-      var ob = open[0];
-      out += '<a class="wb-chip wb-branch" href="branch.html?deck=' + encodeURIComponent(e.slug)
-           + '&branch=' + encodeURIComponent(ob.name) + '">'
-           + esc('⑂ ' + ob.name
-                 + (ob.verdict && ob.verdict.state ? ' · ' + ob.verdict.state : '')
-                 + (ob.objective_grade && ob.objective_grade.state ? ' · objective ' + ob.objective_grade.state : ''))
-           + '</a>';
-    } else if (open.length) {
-      // `#panel-branches`, not `#branches`: the deck page prefixes every panel id
-      // (`panel()`), so the old anchor named an element nobody renders (2026-10-20).
-      out += '<a class="wb-chip wb-branch" href="deck.html?deck=' + encodeURIComponent(e.slug) + '#panel-branches">'
-           + esc('⑂ ' + open.length + ' open branches') + '</a>';
-    }
+    /* A BRANCH IS WORK IN FLIGHT. It was a chip here from 2026-10-19; since
+     * 2026-10-20 it is the git-style block under the chips (`branchBlock`) and
+     * the Branches rack at the top of the page — the pilot: "link to and
+     * highlight feature branches (like git), with easy access to recommended
+     * card swaps, measured impact, net change report… from the workbench is
+     * critical". A decided branch (merged, rejected, withdrawn) is not open work. */
     if ((e.sim_runs || []).length) out += chip((e.sim_runs || []).length + ' sim');
     if ((e.experiments || []).length) out += chip((e.experiments || []).length + ' experiment');
     if ((e.prescriptions || []).length) out += chip((e.prescriptions || []).length + ' question');
@@ -326,7 +311,128 @@
     return floor + ' · ' + dti;
   }
 
-  function card(e, info) {
+  /* ── THE BRACKET, THE ★ GRADE, AND THE BRANCHES (2026-10-20) ──────────────
+   *
+   * Three things the pilot asked the landing page for once every deck was
+   * sleeved: "a bracket badge, and W/L badge", and — P0 — "link to and
+   * highlight feature branches (like git), with easy access to recommended
+   * card swaps, measured impact, net change report… from the workbench".
+   * Every figure below is read off `info.json` (`deck-info --write`) or
+   * `rating.json`; the page renders, it computes nothing. */
+
+  /* ONE BRACKET CHIP: the target the deck is built for (the floor when no
+   * target is set), with the floor, its name and DeckCheck's read in the
+   * title. Amber when the floor has outgrown the target or DeckCheck's reading
+   * describes an older list — both are facts the pilot acts on. */
+  function bracketChip(info) {
+    var b = (info && info.bracket) || {}, dc = info && info.deckcheck;
+    var n = b.target || b.floor;
+    if (!n && !dc) return '';
+    var title = [];
+    if (b.floor) title.push('floor ' + b.floor + (b.floor_name ? ' (' + b.floor_name + ')' : ''));
+    if (b.target) title.push('target ' + b.target);
+    if (dc && dc.bracket) title.push('DeckCheck B' + dc.bracket + (dc.score != null ? ' ' + dc.score + '/' + dc.max_score : ''));
+    var warn = b.within_target === false || (dc && dc.stale_list);
+    return '<span class="wb-chip wb-bracket' + (warn ? ' wb-warn' : '') + '" title="' + esc(title.join(' · ')) + '">'
+         + esc('B' + (n || dc.bracket)) + '</span>';
+  }
+
+  /* THE ★ GRADE, from `rating.json` where one is on file (`has.rating`). The
+   * grade is ★ coaching over ◆ inputs; the rank in the title names its n. */
+  function ratingChip(rt) {
+    if (!rt) return '';
+    var grade = rt.grade_display || rt.grade;
+    if (!grade) return '';
+    var rk = rt.rank || {};
+    var title = 'rating ' + (rt.score != null ? num(rt.score) : '') + (rk.position ? ' · ' + rk.position + ' of ' + rk.of
+              + ' in ' + ((rt.bracket && rt.bracket.key) ? 'B' + rt.bracket.key : 'its bracket') : '')
+              + ' · ★ coaching over ◆ inputs';
+    return '<span class="wb-chip wb-star" title="' + esc(title) + '">★ ' + esc(grade) + '</span>';
+  }
+
+  /* The branches that are WORK: open or proposed. Merged, rejected and
+   * withdrawn ones live in the deck page's decided fold. Newest first, as
+   * `deck_info._branches` orders them. */
+  function liveBranches(info) {
+    return ((info && info.branches) || []).filter(function (b) {
+      return b && !/^(MERGED|REJECT|WITHDRAW)/.test(String(b.state || ''));
+    });
+  }
+
+  /* One headline delta, as `net_change` printed it: the measure, the signed
+   * delta, its interval — and the table's own verdict colours it. A rate is
+   * shown in points of a hundred games, a mean in its own units. */
+  function deltaHtml(h) {
+    if (!h || h.delta == null) return '';
+    var rate = h.unit === 'rate';
+    var f = function (x) { return rate ? (x * 100).toFixed(1) : (+x).toFixed(2); };
+    var s = function (x) { return (x > 0 ? '+' : '') + f(x); };
+    var ci = Array.isArray(h.ci95_diff) && h.ci95_diff.length === 2
+      ? ' [' + s(h.ci95_diff[0]) + ', ' + s(h.ci95_diff[1]) + ']' : '';
+    return '<span class="wb-delta" data-verdict="' + esc(h.verdict || 'noise') + '" title="'
+         + esc(h.measure + ': ' + s(h.delta) + ci + (rate ? ' pts' : '') + (h.mde != null ? ' · MDE ' + f(h.mde) : '')) + '">'
+         + esc(h.measure) + ' <b>' + esc(s(h.delta)) + (rate ? ' pts' : '') + '</b>' + esc(ci) + '</span>';
+  }
+
+  /* ONE BRANCH, GIT-STYLE: `⑂ name` linked to its page, the state badge, the
+   * version it is proposed as, the objective and its grade, the verdict with
+   * what rose and fell, the swap count, the headline deltas, and the four
+   * links the pilot asked for — swaps, measured impact, net change, the deck's
+   * rack. `withDeck` prefixes the deck's name for the fleet-wide rack. */
+  function branchRow(e, b, withDeck) {
+    var slug = encodeURIComponent(e.slug), name = encodeURIComponent(b.name);
+    var href = 'branch.html?deck=' + slug + '&branch=' + name;
+    var head = (withDeck ? '<a class="wb-br-deck" href="deck.html?deck=' + slug + '">' + esc(e.deck_name || e.slug) + '</a> ' : '')
+      + '<span class="wb-br-glyph">⑂</span> <a class="wb-br-name" href="' + href + '">' + esc(b.name) + '</a> '
+      + window.branchStateBadge(b)
+      + (b.proposal && b.proposal.as_version ? ' <span class="wb-br-as">→ ' + esc(b.proposal.as_version) + '</span>' : '');
+    var facts = [];
+    var o = b.objective || {}, g = b.objective_grade || {}, v = b.verdict || {}, im = b.impact || {};
+    if (o.axis) facts.push('<span class="wb-br-obj" title="the pre-registered guard">' + esc(o.axis + ' ' + o.op + ' ' + o.value)
+                          + (g.state ? ' → <b>' + esc(g.state) + '</b>' : '') + '</span>');
+    if (v.state) facts.push('<span class="wb-br-verdict" title="' + esc('rose: ' + ((im.rose || []).join(', ') || '—')
+                          + ' · fell: ' + ((im.fell || []).join(', ') || '—')) + '"><b>' + esc(v.state) + '</b>'
+                          + (v.rose != null ? ' · ' + esc(v.rose) + ' rose, ' + esc(v.fell) + ' fell' : '') + '</span>');
+    if (b.add != null) facts.push('<span class="wb-br-swaps">+' + esc(b.add) + ' −' + esc(b.out) + '</span>');
+    if (b.measured === false) facts.push('<span class="wb-chip wb-warn" title="' + esc(b.measured_why || '') + '">older list</span>');
+    var deltas = (im.headline || []).map(deltaHtml).join(' ');
+    var links = '<nav class="wb-br-links">'
+      + '<a href="' + href + '#swaps">swaps</a>'
+      + '<a href="' + href + '#measured">measured</a>'
+      + '<a href="' + href + '#net-change">net change</a>'
+      + '<a href="deck.html?deck=' + slug + '#panel-branches">all branches</a>'
+      + '</nav>';
+    return '<div class="wb-branch-row" data-state="' + esc(String(b.state || 'OPEN').toLowerCase()) + '">'
+      + '<div class="wb-br-head">' + head + '</div>'
+      + (facts.length ? '<div class="wb-br-facts">' + facts.join(' · ') + '</div>' : '')
+      + (deltas ? '<div class="wb-br-deltas">' + deltas + '</div>' : '')
+      + links + '</div>';
+  }
+
+  function branchBlock(e, info) {
+    var live = liveBranches(info);
+    if (!live.length) return '';
+    return '<div class="wb-branches">' + live.map(function (b) { return branchRow(e, b, false); }).join('') + '</div>';
+  }
+
+  /* THE FLEET'S BRANCHES, first on the page: every live branch across every
+   * living deck, newest first — `git branch -a` for the bench. */
+  function branchRack(decks, infos) {
+    var rows = [];
+    decks.forEach(function (e) {
+      if (e.status) return;
+      liveBranches(infos[e.slug]).forEach(function (b) { rows.push({e: e, b: b}); });
+    });
+    if (!rows.length) return '';
+    rows.sort(function (x, y) { return String(y.b.opened || '').localeCompare(String(x.b.opened || '')); });
+    return '<section class="wb-rack wb-branchlist"><h2>Branches <span class="wb-count">' + rows.length + '</span></h2>'
+      + '<p class="wb-blurb">Every live branch on the bench, newest first: what it would swap, what the paired '
+      + 'goldfish measured, and the report. A decided branch lives in its deck’s rack.</p>'
+      + '<div class="wb-branches">' + rows.map(function (r) { return branchRow(r.e, r.b, true); }).join('') + '</div>'
+      + '</section>';
+  }
+
+  function card(e, info, rt) {
     // `status` is the lifecycle TRIPLE for a dead deck and null for a live one —
     // [id, headline, blurb]. Only the headline belongs on a card.
     var dead = Array.isArray(e.status) ? e.status : null;
@@ -378,7 +484,8 @@
       +   '<div class="wb-sub">' + sub + '</div>'
       +   (dead ? '<div class="wb-dead">' + esc(dead[1]) + '</div>' : '')
       +   '<div class="wb-chips">' + lockChips(e.paper) + proposalChip(info)
-      +     evidenceChips(e, info) + '</div>'
+      +     evidenceChips(e, info, rt) + '</div>'
+      +   branchBlock(e, info)
       +   links
       + '</div></div>';
   }
@@ -450,6 +557,15 @@
                 b ? ((b.pull_list || {}).blocking || 0) : 1e9];
       }
     },
+    branches: {
+      label: 'Branches in flight',
+      key: function (e, i) {
+        var live = liveBranches(i);
+        var latest = live.reduce(function (m, b) { return String(b.opened || '') > m ? String(b.opened || '') : m; }, '');
+        // Most live branches first, the newest-opened first inside that.
+        return [e.status ? 1 : 0, -live.length, latest ? -Date.parse(latest) : 0];
+      }
+    },
     optimisations: {
       label: 'Optimisations identified',
       key: function (e, i) {
@@ -470,7 +586,7 @@
     return 0;
   }
 
-  function row(e, info) {
+  function row(e, info, rt) {
     var i = info || {};
     var rec = i.record || {}, st = i.status || {}, eng = i.engine || {};
     var dg = i.diagnosis || {}, sim = i.simulation || {}, pr = i.prescriptions || {};
@@ -528,6 +644,17 @@
     // squeezed.
     var next = (i.next && i.next.length) ? esc(i.next[0]) : '';
     var dead = e.status ? ' is-dead' : '';
+    // THE BRANCH COLUMN (2026-10-20): the newest live branch, linked, with its
+    // state and verdict; the count of the rest links the deck page's rack.
+    var live = liveBranches(i);
+    var branchCell = '<span class="t-none">—</span>';
+    if (live.length) {
+      var lb = live[0];
+      branchCell = '<a href="branch.html?deck=' + slug + '&branch=' + encodeURIComponent(lb.name) + '">⑂ ' + esc(lb.name) + '</a> '
+        + window.branchStateBadge(lb)
+        + (lb.verdict && lb.verdict.state ? '<span class="t-sub">' + esc(lb.verdict.state) + '</span>' : '')
+        + (live.length > 1 ? '<span class="t-sub"><a href="deck.html?deck=' + slug + '#panel-branches">+' + (live.length - 1) + ' more</a></span>' : '');
+    }
 
     return '<tr class="t-head' + dead + '">'
       + '<th scope="row"><a href="deck.html?deck=' + slug + '">'
@@ -536,12 +663,13 @@
       + '<td>' + lock + '</td>'
       + '<td>' + record + (when ? '<span class="t-sub">' + esc(when) + '</span>' : '') + '</td>'
       + '<td>' + num(st.complete, '—') + (st.of ? '/' + st.of : '') + '</td>'
-      + '<td class="t-power">' + floorDti(i) + '</td>'
+      + '<td class="t-power">' + floorDti(i) + (rt && (rt.grade_display || rt.grade) ? ' <span class="t-sub">★ ' + esc(rt.grade_display || rt.grade) + '</span>' : '') + '</td>'
+      + '<td class="t-branch">' + branchCell + '</td>'
       + '<td>' + evidence + '</td>'
       + '<td>' + table + '</td>'
       + '<td>' + open + '</td>'
       + '</tr>'
-      + (next ? '<tr class="t-nextrow' + dead + '"><td colspan="8" class="t-next">'
+      + (next ? '<tr class="t-nextrow' + dead + '"><td colspan="9" class="t-next">'
                 + '<a href="deck.html?deck=' + slug + '">' + next + '</a></td></tr>'
               : '');
   }
@@ -576,7 +704,8 @@
       + '<td>' + q + 'q</td></tr>';
   }
 
-  function fleetTable(decks, infos, sortKey) {
+  function fleetTable(decks, infos, sortKey, ratings) {
+    ratings = ratings || {};
     var s = SORTS[sortKey] || SORTS.played;
     var sorted = decks.slice().sort(function (a, b) {
       return cmpKey(s.key(a, infos[a.slug]), s.key(b, infos[b.slug]))
@@ -589,11 +718,12 @@
     return '<section class="wb-rack"><div class="wb-sorts">' + tabs + '</div>'
       + '<div class="wb-tablewrap"><table class="wb-table"><thead><tr>'
       + '<th scope="col">Deck</th><th scope="col">Paper</th><th scope="col">Record</th>'
-      + '<th scope="col">Stages</th><th scope="col" title="our bracket floor · DeckCheck Threat Index">Floor · DTI</th>'
+      + '<th scope="col">Stages</th><th scope="col" title="our bracket floor · DeckCheck Threat Index · the ★ grade">Floor · DTI</th>'
+      + '<th scope="col" title="the newest live branch: open or proposed">Branch</th>'
       + '<th scope="col">Evidence</th><th scope="col">Table</th>'
       + '<th scope="col">Open</th>'
       + '</tr></thead><tbody>'
-      + sorted.map(function (e) { return row(e, infos[e.slug]); }).join('')
+      + sorted.map(function (e) { return row(e, infos[e.slug], ratings[e.slug]); }).join('')
       + totals(decks, infos)
       + '</tbody></table></div></section>';
   }
@@ -644,13 +774,13 @@
    * <details> rather than a JS toggle: it is keyboard-reachable, it survives the
    * `innerHTML` replacement `render` does on every repaint with no state to
    * thread, and Cmd-F finds text inside a closed one in every current browser. */
-  function rack(title, blurb, entries, infos, collapsed) {
+  function rack(title, blurb, entries, infos, collapsed, ratings) {
     if (!entries.length) return '';
     var head = '<h2>' + esc(title)
       + ' <span class="wb-count">' + entries.length + '</span></h2>'
       + '<p class="wb-blurb">' + esc(blurb) + '</p>';
     var body = '<div class="wb-grid">'
-      + entries.map(function (e) { return card(e, infos[e.slug]); }).join('')
+      + entries.map(function (e) { return card(e, infos[e.slug], ratings && ratings[e.slug]); }).join('')
       + '</div>';
     if (!collapsed) {
       return '<section class="wb-rack">' + head + body + '</section>';
@@ -688,7 +818,8 @@
     history.replaceState(null, '', window.location.pathname + (q ? '?' + q : ''));
   }
 
-  function render(decks, infos, state, drafts) {
+  function render(decks, infos, state, drafts, ratings) {
+    ratings = ratings || {};
     /* DEATH FIRST, THEN THE LOCK — and the order is the whole correctness of
      * this page. `locked` used to be filtered over the WHOLE list, so a deck
      * carrying both a lifecycle status and a paper lock landed in SLEEVED and
@@ -737,7 +868,7 @@
 
     var html;
     if (state.view === 'table') {
-      html = toggle + fleetTable(decks, infos, state.sort);
+      html = toggle + fleetTable(decks, infos, state.sort, ratings);
     } else {
       // WAITING ON CARDBOARD SITS ABOVE SLEEVED, because it is the only rack
       // that names something the pilot is blocked on rather than something they
@@ -746,23 +877,27 @@
       var waiting = living.filter(function (e) {
         return proposalOf(infos[e.slug]);
       });
+      // THE BRANCHES RACK IS FIRST (2026-10-20, P0): the live branches across
+      // the fleet, newest first, above the drafts — work in flight outranks
+      // work not started.
       html = toggle
+        + branchRack(decks, infos)
         + draftRack(drafts)
         + rack('Waiting on cardboard',
                'Decided, measured and accepted — these are lists you cannot '
                + 'sleeve yet. The pull list is on each deck\u2019s dossier.',
-               waiting, infos)
+               waiting, infos, false, ratings)
         + rack('Sleeved', 'Built in paper — you can play these tonight.',
-               locked, infos)
+               locked, infos, false, ratings)
         + rack('On the bench', 'Lists, build plans and decks under research. Nothing here is '
-               + 'sleeved yet.', live, infos)
+               + 'sleeved yet.', live, infos, false, ratings)
         + rack('Brewing', 'Fresh builds in dev. Optimised for throughput, not rigour \u2014 '
                + 'most of these get thrown away. <code>manamap pilot promote &lt;slug&gt;</code> '
-               + 'says what each owes to reach the bench.', brewing, infos)
+               + 'says what each owes to reach the bench.', brewing, infos, false, ratings)
         + rack('Archive',
                'Broken down for parts, superseded, or retired \u2014 and builds you '
                + 'put down. Kept as published, so you can come back and read them.',
-               dead, infos, true);
+               dead, infos, true, ratings);
       if (!locked.length) {
         html = toggle + '<p class="wb-empty">No deck is marked as built in paper yet. '
              + '<code>manamap pilot deck-version &lt;slug&gt; paper</code> marks the version '
@@ -800,14 +935,20 @@
     // `info.json` carries the games and the record. Fetched per deck rather than
     // folded into the manifest, because `deck-info` owns those figures and a
     // second copy in the manifest is a second thing to go stale.
-    return Promise.all(decks.map(function (e) {
-      return getJSON(BASE + e.slug + '/info.json');
-    })).then(function (list) {
+    // `rating.json` rides beside it, only where the manifest says one is on
+    // file (`has.rating`, manifest v12) — the ★ grade chip, never a 404 per deck.
+    return Promise.all([
+      Promise.all(decks.map(function (e) { return getJSON(BASE + e.slug + '/info.json'); })),
+      Promise.all(decks.map(function (e) {
+        return (e.has && e.has.rating) ? getJSON(BASE + e.slug + '/rating.json') : Promise.resolve(null);
+      }))
+    ]).then(function (lists) {
+      var list = lists[0], ratings = {};
       var infos = {};
-      decks.forEach(function (e, i) { infos[e.slug] = list[i]; });
+      decks.forEach(function (e, i) { infos[e.slug] = list[i]; ratings[e.slug] = lists[1][i]; });
 
       var state = readState();
-      render(decks, infos, state, m.drafts || []);
+      render(decks, infos, state, m.drafts || [], ratings);
 
       // One delegated listener on the container, because `render` replaces its
       // whole innerHTML — per-button handlers would be re-bound on every
@@ -821,7 +962,7 @@
         if (v) state.view = v.getAttribute('data-view');
         if (s) { state.view = 'table'; state.sort = s.getAttribute('data-sort'); }
         writeState(state);
-        render(decks, infos, state, m.drafts || []);
+        render(decks, infos, state, m.drafts || [], ratings);
       });
     });
   });

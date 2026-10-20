@@ -2066,3 +2066,33 @@ printed side by side, never differenced), and the deck's other branches with the
 The manifest carries `branches` and `branches_open` per deck (`MANIFEST_VERSION` 11), and since
 2026-10-20 `cards` — every name and face in the list, for the Atlas's "in these decks" pill — and
 `has.rating` (`MANIFEST_VERSION` 12).
+
+**Branches like git, on the workbench (2026-10-20).** The pilot, once every deck was sleeved:
+"link to and highlight feature branches (like git), with easy access to recommended card
+swaps, measured impact, net change report… from the workbench is critical". The chip is
+gone; three things replace it, all read off `info.json`'s branch rows (`deck_branch.review`
+now copies the net-change verdict with the rows that rose and fell by name and the four
+headline deltas — `net_change.IMPACT_MEASURES` — into each row's `impact`):
+- **A git-style row on each deck's card** (`branchRow`): `⑂ name` linked to the branch page,
+  the state badge (`window.branchStateBadge`, one home in `api.js`), `→ vX.Y.Z` when
+  proposed, the objective and its grade, the verdict with how many rows rose and fell (the
+  names in the title), `+N −N` swaps, an `older list` warning when the report predates the
+  branch's list, the headline deltas with their intervals coloured by the table's own verdict,
+  and four links: **swaps** (`branch.html…#swaps`), **measured** (`#measured`, the delta table),
+  **net change** (`#net-change`, the diff), **all branches** (`deck.html…#panel-branches`).
+  Decided branches (merged, rejected, withdrawn) stay in the deck page's fold.
+- **The Branches rack, first on the page** (`branchRack`): every live branch across every
+  living deck, newest first, each row prefixed by its deck — `git branch -a` for the bench.
+- **A Branch column in the fleet table** (newest live branch, linked, with state and verdict,
+  `+N more` to the deck page's rack) and a **Branches in flight** sort.
+The deep links land now: `#measured` and `#net-change` are ids on the branch page, the deck
+page's rack is `#panel-branches` (the id `panel()` renders — `#branches` led to the top for a
+day), and both pages call `window.scrollToHash()` after their async render.
+
+**The bracket and the record on the card (2026-10-20).** `bracketChip` prints the target
+bracket the deck is built for (the floor when none is set; floor, name and DeckCheck's read
+in the title; amber when the floor has outgrown the target or DeckCheck's reading describes an
+older list); `ratingChip` prints the ★ grade from `rating.json`, fetched at boot only where
+the manifest's `has.rating` says one exists; the record chip leads with `W–L` (a draw column
+only when one exists), then the game count and recency. The fleet table's Floor · DTI cell
+carries the ★ grade beside it.
