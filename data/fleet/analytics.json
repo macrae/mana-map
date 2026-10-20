@@ -4,13 +4,13 @@
    "distribution": {
     "A1": {
      "A": 3,
-     "B": 3,
+     "B": 4,
      "C": 0,
      "F": 0,
      "S": 0
     },
     "A2": {
-     "A": 2,
+     "A": 3,
      "B": 4,
      "C": 0,
      "F": 0,
@@ -18,28 +18,28 @@
     },
     "I1": {
      "A": 1,
-     "B": 4,
+     "B": 5,
      "C": 1,
      "F": 0,
      "S": 0
     },
     "I2": {
      "A": 0,
-     "B": 4,
+     "B": 5,
      "C": 0,
      "F": 2,
      "S": 0
     },
     "P1": {
      "A": 4,
-     "B": 2,
+     "B": 3,
      "C": 0,
      "F": 0,
      "S": 0
     },
     "P2": {
      "A": 0,
-     "B": 4,
+     "B": 5,
      "C": 0,
      "F": 0,
      "S": 2
@@ -47,19 +47,19 @@
     "P3": {
      "A": 0,
      "B": 6,
-     "C": 0,
+     "C": 1,
      "F": 0,
      "S": 0
     },
     "R1": {
-     "A": 3,
+     "A": 4,
      "B": 3,
      "C": 0,
      "F": 0,
      "S": 0
     },
     "R2": {
-     "A": 1,
+     "A": 2,
      "B": 1,
      "C": 0,
      "F": 0,
@@ -67,13 +67,13 @@
     },
     "S1": {
      "A": 3,
-     "B": 2,
+     "B": 3,
      "C": 1,
      "F": 0,
      "S": 0
     },
     "S2": {
-     "A": 5,
+     "A": 6,
      "B": 1,
      "C": 0,
      "F": 0,
@@ -81,7 +81,7 @@
     },
     "S3": {
      "A": 3,
-     "B": 3,
+     "B": 4,
      "C": 0,
      "F": 0,
      "S": 0
@@ -175,6 +175,20 @@
      "S2": "A",
      "S3": "B"
     },
+    "keen-engineering": {
+     "A1": "B",
+     "A2": "A",
+     "I1": "B",
+     "I2": "B",
+     "P1": "B",
+     "P2": "B",
+     "P3": "C",
+     "R1": "A",
+     "R2": "A",
+     "S1": "B",
+     "S2": "A",
+     "S3": "B"
+    },
     "sharknado": {
      "A1": "B",
      "A2": "B",
@@ -249,6 +263,15 @@
      "score": 46
     }
    ],
+   "keen-engineering": [
+    {
+     "as_of": "2026-10-19",
+     "bracket": 2,
+     "current_list": true,
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "score": 30
+    }
+   ],
    "sharknado": [
     {
      "as_of": "2026-10-17",
@@ -315,6 +338,16 @@
     "slug": "heliod",
     "stale_list": false,
     "target": 4
+   },
+   {
+    "dti_bracket": 2,
+    "dti_score": 30,
+    "floor": 1,
+    "reading_as_of": "2026-10-19",
+    "relation": "dti_higher",
+    "slug": "keen-engineering",
+    "stale_list": false,
+    "target": 2
    },
    {
     "dti_bracket": 3,
@@ -741,10 +774,10 @@
   ],
   "spearman": {
    "dti_vs_kill_by_8": {
-    "n": 6,
+    "n": 7,
     "verdict": "NOT ANSWERABLE",
     "what_it_would_take": "a DTI reading on every Commander deck, and more decks",
-    "why": "Spearman(DTI, benchmark kill by turn 8) needs 10 decks carrying both; the fleet has 6"
+    "why": "Spearman(DTI, benchmark kill by turn 8) needs 10 decks carrying both; the fleet has 7"
    },
    "dti_vs_table_win_rate": {
     "n": 0,
@@ -2794,7 +2827,7 @@
     }
    },
    "bracket": {
-    "dti_bracket": null,
+    "dti_bracket": 2,
     "floor": 1,
     "floor_name": "Exhibition",
     "group": "B2",
@@ -2839,8 +2872,61 @@
     }
    },
    "dti": {
-    "absent_because": "no deckcheck.json — scan on DeckCheck, then `deckcheck <slug> --write`",
-    "source": "deckcheck.json"
+    "as_of": "2026-10-19",
+    "benchmarks": {
+     "A1": "B",
+     "A2": "A",
+     "I1": "B",
+     "I2": "B",
+     "P1": "B",
+     "P2": "B",
+     "P3": "C",
+     "R1": "A",
+     "R2": "A",
+     "S1": "B",
+     "S2": "A",
+     "S3": "B"
+    },
+    "bracket": 2,
+    "floor_vs_dti": {
+     "floor": 1,
+     "floor_decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "floor_name": "Exhibition",
+     "reading_as_of": "2026-10-19",
+     "relation": "dti_higher",
+     "their_bracket": 2
+    },
+    "max_score": 96,
+    "omni": {
+     "benchmarks": {
+      "A1": "B",
+      "A2": "A",
+      "I1": "B",
+      "I2": "B",
+      "P1": "B",
+      "P2": "B",
+      "P3": "C",
+      "R1": "A",
+      "R2": "A",
+      "S1": "B",
+      "S2": "A",
+      "S3": "B"
+     },
+     "median_bracket": 2,
+     "median_score": 30,
+     "n": 1
+    },
+    "readings_n": 1,
+    "score": {
+     "as_of": "2026-10-19",
+     "basis": "of 96; an LLM's read, dated",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].score",
+     "stale": false,
+     "value": 30
+    },
+    "stale_list": false
    },
    "format": null,
    "lifecycle": null,
@@ -2859,6 +2945,7 @@
    "placements": {
     "fleet": {
      "answer_cards": "below the fleet median",
+     "dti_score": "below the fleet median",
      "kill_by_turn_6": "below the fleet median",
      "kill_by_turn_8": "below the fleet median",
      "mana_at_turn_five": "above the fleet median",
@@ -2870,6 +2957,7 @@
     },
     "group": {
      "answer_cards": "no band (n=1)",
+     "dti_score": "no band (n=1)",
      "kill_by_turn_6": "no band (n=1)",
      "kill_by_turn_8": "no band (n=1)",
      "mana_at_turn_five": "no band (n=1)",
@@ -4568,9 +4656,9 @@
   },
   "dti_score": {
    "max": 46,
-   "median": 35.0,
+   "median": 35,
    "min": 28,
-   "n": 6
+   "n": 7
   },
   "kill_by_turn_6": {
    "max": 0.278,
@@ -4629,7 +4717,7 @@
      "source": "benchmark.answer_cards"
     },
     "dti_score": {
-     "absent_because": "fewer than 3 decks carry it (n=0)",
+     "absent_because": "fewer than 3 decks carry it (n=1)",
      "source": "dti.score"
     },
     "kill_by_turn_6": {

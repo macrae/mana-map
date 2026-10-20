@@ -14,7 +14,7 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.15,
    "sub_score": 100.0,
    "sub_ci": [
     100.0,
@@ -59,7 +59,7 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1231,
+   "weight_effective": 0.1,
    "sub_score": 100.0,
    "sub_ci": [
     100.0,
@@ -101,7 +101,7 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.15,
    "sub_score": 90.0,
    "sub_ci": [
     90.0,
@@ -140,7 +140,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.1625,
    "sub_score": 64.29,
    "sub_ci": [
     64.29,
@@ -244,13 +244,48 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "dti",
+   "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1875,
+   "sub_score": 56.25,
+   "sub_ci": [
+    49.61,
+    62.95
+   ],
+   "placement": null,
+   "anchor": 56.25,
+   "method": "anchor only (placement withheld): placement of DeckCheck's score (of 96) within bracket 2; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 30,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 56.25,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
   }
  ],
  "withheld": [
-  {
-   "component": "dti",
-   "reason": "no DeckCheck reading (deckcheck.json)"
-  },
   {
    "component": "table_record",
    "reason": "0 game(s) logged; 5 needed"
@@ -278,16 +313,22 @@
   "rank over n=1 decks; no significance claim"
  ],
  "context": {
-  "dti": null,
+  "dti": {
+   "score": 30,
+   "max_score": 96,
+   "bracket": 2,
+   "as_of": "2026-10-19",
+   "stale_list": false
+  },
   "floor_vs_target": "floor 1, target 2"
  },
  "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
- "fleet_sha": "7b9040337361",
+ "fleet_sha": "8cab7bc112e7",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "Diagnostic stalls (turn two stalls on mana, ranked worse than any tracked deck) and engine online by turn five about a third of games: does this lower the deck once Sai's Thopters are modelled? Model the cast trigger and re-read.",
+   "question": "Diagnostic stalls and engine online by turn five: does this lower the deck once Sai's Thopters are modelled? Model the cast trigger and re-read.",
    "settled_by": "goldfish"
   },
   {
@@ -295,59 +336,74 @@
    "settled_by": "diagnose"
   }
  ],
- "iterations": 1,
+ "iterations": 2,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
     "where": "components",
     "status": "supported",
-    "note": "validate-rating OK; re-run identical on components, withheld, code_score 87.0, score_point, bracket, limits, uncertainty, sensitivity."
+    "note": "validate-rating OK. Re-run of rating --json is identical on components, withheld, code_score (79.3), score_point, bracket, limits, uncertainty, sensitivity."
    },
    {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "87 equals code_score, so it claims no gap; the argument says so and names why (two unsizable gaps pointing opposite ways)."
+    "note": "79 vs code_score 79.3: neutral. The argument names two unmeasured, opposite-sign facts (Sai Thopters/sacrifice-draw unmodelled, context:plays; engine online by T5 = 34% 'brittle', context:numbers), declines to size them, and refuses to re-count DeckCheck (already the dti component at 0.15). No gap is claimed, so no figure is owed. Concordance is withheld (group of 1), so no outlier duty."
    },
    {
-    "where": "judgment.citations",
+    "where": "judgment.citations[2]",
     "status": "supported",
-    "note": "power-level quote and context 'floor' quote are verbatim and used as the sources mean; skeleton refs (kill_by_turn_10, audit.ramp, answer_cards) exist in the components."
+    "note": "'The goldfish undercounts this deck.' is verbatim in the context Plays section and its next sentence says the Thopters are the main source of bodies; used as claimed."
+   },
+   {
+    "where": "judgment.citations[3]",
+    "status": "supported",
+    "note": "'Engine online by turn 5' is verbatim in Numbers: 34% (CI 34-35), 'brittle'; used for brittleness as claimed."
+   },
+   {
+    "where": "judgment.citations[4]",
+    "status": "supported",
+    "note": "power-level section says the sharpest line between brackets is expected game length (Exhibition >=9 turns, Core >=8); it supports a slow kill as bracket-appropriate."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "15 answer cards and 4 of 5 classes match benchmark and deck-audit; the ramp-is-engine point is backed by the context (each rock is a Thopter on cast). No superlatives; the unmeasured stall/engine-online evidence is parked in open_questions, not used to move the number."
+    "note": "DeckCheck 30/96, rubric mean 56.25 matches deckcheck.json and the dti component. 'Pulls the composite down from where it stood' matches the prior committed 87.1. No superlative; group is n=1."
+   },
+   {
+    "where": "components[0].citations[0]",
+    "status": "supported",
+    "note": "Minor, not a defect: speed's anchor uses kill_by_turn_10 for bracket 2 while the strategy text gives Core >=8 turns (Exhibition 9) and the context floor is 1. The anchor is authored config, speed validity is unchecked (no engine.json), and the judgment does not lean on it."
    },
    {
     "where": "open_questions[0]",
     "status": "supported",
-    "note": "Not answerable from the artifacts until Sai's cast trigger is modelled; goldfish can settle it."
+    "note": "Needs a model change first, but the question says so ('Model the cast trigger and re-read'), and the goldfish is the instrument that settles it afterwards. The skeleton does not answer it today."
    },
    {
     "where": "open_questions[1]",
     "status": "supported",
-    "note": "The audit answer list vs the context answer list is a diagnose job; not already answered by the skeleton."
+    "note": "Audit answer list vs context answer list is a diagnose-time read; not answered by the artifacts."
    }
   ],
-  "iterations": 1
+  "iterations": 2
  },
- "code_score": 87.0,
- "score_point": 87.0,
- "score": 87.1,
+ "code_score": 79.3,
+ "score_point": 79.2,
+ "score": 79.3,
  "score_ci": [
-  80.6,
-  92.7
+  72.0,
+  86.2
  ],
- "grade": "A",
+ "grade": "B",
  "grade_range": [
-  "A",
+  "B",
   "A"
  ],
- "grade_display": "A",
+ "grade_display": "B",
  "grade_probabilities": {
-  "A": 0.967,
-  "B": 0.033,
+  "A": 0.432,
+  "B": 0.568,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -366,33 +422,69 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 84.1,
-    "grade": "A"
+    "score": 75.6,
+    "grade": "B"
    },
    "mana": {
-    "score": 85.2,
-    "grade": "A"
+    "score": 76.9,
+    "grade": "B"
    },
    "resilience": {
-    "score": 86.3,
-    "grade": "A"
+    "score": 77.3,
+    "grade": "B"
    },
    "construction": {
-    "score": 92.7,
+    "score": 82.1,
+    "grade": "A"
+   },
+   "dti": {
+    "score": 84.6,
     "grade": "A"
    },
    "judgment": {
-    "score": 87.0,
-    "grade": "A"
+    "score": 79.3,
+    "grade": "B"
    }
   },
   "flips": [
    {
-    "component": "construction",
-    "share_now": 0.2,
-    "share_at_flip": 0.447,
+    "component": "dti",
+    "share_now": 0.187,
+    "share_at_flip": 0.161,
     "boundary": 80,
-    "grade_at_flip": "B",
+    "grade_at_flip": "A",
+    "direction": "lower"
+   },
+   {
+    "component": "speed",
+    "share_now": 0.15,
+    "share_at_flip": 0.181,
+    "boundary": 80,
+    "grade_at_flip": "A",
+    "direction": "raise"
+   },
+   {
+    "component": "mana",
+    "share_now": 0.1,
+    "share_at_flip": 0.133,
+    "boundary": 80,
+    "grade_at_flip": "A",
+    "direction": "raise"
+   },
+   {
+    "component": "construction",
+    "share_now": 0.163,
+    "share_at_flip": 0.12,
+    "boundary": 80,
+    "grade_at_flip": "A",
+    "direction": "lower"
+   },
+   {
+    "component": "resilience",
+    "share_now": 0.15,
+    "share_at_flip": 0.21,
+    "boundary": 80,
+    "grade_at_flip": "A",
     "direction": "raise"
    }
   ]
@@ -406,35 +498,35 @@
   "outliers": [],
   "group": null
  },
- "resolution": "the 90% interval spans 0 grade boundaries; concordance withheld",
+ "resolution": "the 90% interval spans 1 grade boundary (80); concordance withheld",
  "judgment": {
-  "sub_score": 87,
-  "argument": "The measured components are all anchor-only: the deck is alone in its bracket, so nothing is placed against another list, and they mostly ask whether a precon sits where a bracket 2 deck should. It does. What they cannot see is Sai himself. The context says the goldfish does not model his Thopters or his sacrifice-draw, so every board and damage figure is a floor, and that argues the engine is under-read, not over-read. Against that, the goldfish has no blockers and no removal, so it cannot show how a wide board of small flyers holds up at a real table, and no game has been logged. Those two gaps point opposite ways and I cannot size either from the record, so I do not move off the measured figure. Construction (64.29) charges the deck for ramp and mana-base counts over their bands, but every rock here is also a Thopter on cast, so that penalty is partly the engine working. Resilience has real capacity, with 15 answer cards across 4 of 5 classes. Speed's kill_by_turn_10 is the clock a gentle bracket 2 deck is meant to have. The number sits at the code score because the record I can cite neither lifts nor lowers it with any size I can defend.",
+  "sub_score": 79,
+  "argument": "Every measured component here is anchor-only: the deck is alone in its bracket, so nothing is placed against another list. DeckCheck's read is now in, and it is the first outside view of card quality: 30 of 96, with a rubric mean of 56.25, a plain middle grade for a printed precon. That sits below the goldfish-based components, which mostly ask whether a gentle deck behaves like one, and it pulls the composite down from where it stood before the scan. What the instruments miss is Sai. The context says his Thopters and his sacrifice-draw are not modelled, so every board figure is a floor, and the deck's main source of bodies never appears. That argues the engine is under-read. Against it, the goldfish has no blockers or removal, no game is logged, and the context marks engine online by turn five as brittle. Those two gaps point opposite ways and I cannot size either from cited facts, so the record does not explain a move off the measured figure. The number sits at the code score because the one new reading, DeckCheck's, is already carried by its own component, and counting it again would be a double count.",
   "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:dti",
+    "quote": "DeckCheck Threat Index"
+   },
    {
     "kind": "skeleton",
     "ref": "skeleton:speed",
     "quote": "kill_by_turn_10"
    },
    {
-    "kind": "skeleton",
-    "ref": "skeleton:construction",
-    "quote": "audit.ramp"
+    "kind": "context",
+    "ref": "context:plays",
+    "quote": "The goldfish undercounts this deck."
    },
    {
-    "kind": "skeleton",
-    "ref": "skeleton:resilience",
-    "quote": "answer_cards"
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "Engine online by turn 5"
    },
    {
     "kind": "strategy",
     "ref": "strategy:deckbuilding.power-level",
     "quote": "the sharpest line between them is expected game length"
-   },
-   {
-    "kind": "context",
-    "ref": "context:plays",
-    "quote": "Every board and damage figure in Numbers is a floor"
    }
   ],
   "against": {
@@ -442,10 +534,10 @@
    "spec_sha": "fd483871b754"
   },
   "weight": 0.2,
-  "weight_effective": 0.3077,
+  "weight_effective": 0.25,
   "sub_ci": [
-   78.64,
-   95.04
+   70.68,
+   87.1
   ]
  },
  "rank": {
@@ -461,7 +553,7 @@
    "keen-engineering": "this document"
   },
   "scores": {
-   "keen-engineering": 87.1
+   "keen-engineering": 79.3
   }
  }
 }

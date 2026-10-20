@@ -15,7 +15,9 @@
     "complete": 11,
     "of": 19,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -401,7 +403,46 @@
     "target": 2,
     "within_target": true
   },
-  "deckcheck": null,
+  "deckcheck": {
+    "score": 30,
+    "max_score": 96,
+    "bracket": 2,
+    "as_of": "2026-10-19",
+    "source_updated_at": "2026-10-20T03:33:54.995855+00:00",
+    "url": "https://deckcheck.co/app/decklist/zPF5JcwDzIM2",
+    "stale_list": false,
+    "readings_n": 1,
+    "omni": {
+      "benchmarks": {
+        "A1": "B",
+        "A2": "A",
+        "I1": "B",
+        "I2": "B",
+        "P1": "B",
+        "P2": "B",
+        "P3": "C",
+        "R1": "A",
+        "R2": "A",
+        "S1": "B",
+        "S2": "A",
+        "S3": "B"
+      },
+      "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+      "median_bracket": 2,
+      "median_score": 30,
+      "n": 1,
+      "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
+    },
+    "floor_vs_dti": {
+      "floor": 1,
+      "floor_decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+      "floor_name": "Exhibition",
+      "reading_as_of": "2026-10-19",
+      "relation": "dti_higher",
+      "their_bracket": 2
+    },
+    "max_age_days": 30
+  },
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
@@ -759,6 +800,7 @@
   "experiments": null,
   "decisions": null,
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status keen-engineering` names them; fix before anything else reads them",
     "nothing in the captain's log — play it, then `deck-notes keen-engineering add \"…\" --result win|loss --opponents N`",
     "try a swap in seconds — `try keen-engineering --out \"A\" --in \"B\"`"
   ],
