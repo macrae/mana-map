@@ -582,23 +582,40 @@ def test_a_live_branch_still_reaches_the_next_line():
     """THE OTHER HALF OF THE SPLIT, on a branch that IS live.
 
     Suppressing sleeved-past experiments is only correct if a branch under
-    actual work still surfaces. goblin-storm@zada-v1 was staged after that deck
-    was last sleeved, so it is the live case — and the first version of the
-    suppression rule hid it too, by reading a `staged` key the info entry does
-    not carry and defaulting to empty for every branch.
+    actual work still surfaces. The live case used to be pinned to
+    goblin-storm@zada-v1; that branch was REJECTED on 2026-10-19 (the stale
+    September branches were swept), so the test now finds any tracked deck
+    with an OPEN branch and asserts that one — the first version of the
+    suppression rule hid every live branch, by reading a `staged` key the
+    info entry does not carry and defaulting to empty for every branch.
     """
     import pytest
-    from manamap.pilot import deck_info
-    try:
-        info = deck_info.compose("goblin-storm")
-    except Exception:  # pragma: no cover - deck absent
-        pytest.skip("goblin-storm not built")
-    names = {b["name"] for b in (info.get("branches") or [])}
-    if "zada-v1" not in names:
-        pytest.skip("goblin-storm@zada-v1 not present")
-    assert "zada-v1" in " ".join(info["next"]), (
-        "the live branch vanished from `next` — the suppression rule is too "
-        f"broad: {info['next']}")
+    from manamap.pilot import deck_branch, deck_info
+    live = None
+    for slug in ("gishath", "ur-dragon", "edgar-vampires", "goblin-storm", "heliod", "sharknado"):
+        try:
+            info = deck_info.compose(slug)
+        except Exception:  # pragma: no cover - deck absent
+            continue
+        built = str((info.get("paper") or {}).get("built_at") or "")[:10]
+        for b in info.get("branches") or []:
+            if str(b.get("state", "")).upper() != "OPEN":
+                continue
+            meta = deck_branch.meta(slug, b["name"]) or {}
+            last = max((r.get("at") or "" for r in (meta.get("staged") or [])), default="")[:10]
+            # LIVE means staged since the deck was last sleeved — the rule's own
+            # definition; a branch older than the sleeves is the suppressed case.
+            if last and last > built:
+                live = (slug, b["name"], info)
+                break
+        if live:
+            break
+    if live is None:
+        pytest.skip("no tracked deck has an OPEN branch staged since its last sleeve-up")
+    slug, name, info = live
+    assert name in " ".join(info["next"]), (
+        f"the live branch {slug}@{name} vanished from `next` — the suppression "
+        f"rule is too broad: {info['next']}")
 
 
 @pytest.mark.slow
