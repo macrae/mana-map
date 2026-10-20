@@ -1822,6 +1822,10 @@
     // card is named: the atlas header, Discover's stats and Build's selected card.
     const gc = gcPillHtml(d.n);
     if (gc) parts.push(gc);
+    // "In these decks" rides the same line (2026-10-20, the pilot's ask): the
+    // sleeved, bench and brewing decks whose list holds this card, each linked.
+    const decks = deckPillHtml(d.n);
+    if (decks) parts.push(decks);
     return parts.join('<span class="stat-divider">\u00b7</span>');
   }
 
@@ -1829,6 +1833,32 @@
   function gcPillHtml(name) {
     if (!cardFlags().gc.has(name)) return '';
     return '<span class="gc-pill" title="WotC Game Changer \u2014 bracket 3 allows three">GC</span>';
+  }
+
+  /* \u2500\u2500 "In these decks" (2026-10-20) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+   *
+   * The deck manifest (`data/decks/index.json`, MANIFEST_VERSION 12) carries
+   * every name and face in each deck's list under `cards`, so membership is an
+   * exact `includes` here and face-matching stays in Python. `discovery.js`
+   * hands the manifest over when it loads it; until then no pill is drawn \u2014
+   * absent, not "in no deck". Only the ladder's rungs count (sleeved, on the
+   * bench, brewing \u2014 `isWorkableDeck`); an archived or broken-down deck is not a
+   * place a card is. Sleeved decks first. */
+  let decksDoc = [];
+  function setDecks(list) { decksDoc = Array.isArray(list) ? list : []; }
+  function deckPillHtml(name) {
+    if (!name || !decksDoc.length) return '';
+    const rung = window.deckRung || function (e) { return e.stage; };
+    const workable = window.isWorkableDeck || function (e) { return !!e.stage; };
+    const rungs = window.DECK_RUNGS || { dev: 'Brewing', bench: 'On the bench', sleeved: 'Sleeved' };
+    const order = { sleeved: 0, bench: 1, dev: 2 };
+    const hits = decksDoc
+      .filter(e => workable(e) && Array.isArray(e.cards) && e.cards.includes(name))
+      .sort((a, b) => (order[rung(a)] ?? 9) - (order[rung(b)] ?? 9) || String(a.deck_name || a.slug).localeCompare(String(b.deck_name || b.slug)));
+    if (!hits.length) return '';
+    return '<span class="deck-pills" title="in these decks">In: ' + hits.map(e =>
+      '<a class="deck-pill" href="deck.html?deck=' + encodeURIComponent(e.slug) + '" title="'
+      + escHtml(rungs[rung(e)] || rung(e) || '') + '">' + escHtml(e.deck_name || e.slug) + '</a>').join(' ') + '</span>';
   }
 
   function updateViewerPanel() {
@@ -3960,6 +3990,7 @@
     // the lazy combo index — a promise, resolved once, null on failure.
     cardFlags,
     gcPillHtml,
+    deckPillHtml, setDecks,
     comboIndex,
     showCardPopup,
     hideCardPopup,

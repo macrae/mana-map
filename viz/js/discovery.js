@@ -1153,7 +1153,13 @@ window.Discovery = (function () {
     // The MANIFEST's bust, not the card map's — see `api.js`.
     return fetch(urls.deckIndex + '?v=' + (window.MANIFEST_VERSION || 0))
       .then(r => (r.ok ? r.json() : { decks: [] }))
-      .then(doc => { manifest = doc.decks || []; return manifest; })
+      .then(doc => {
+        manifest = doc.decks || [];
+        // The card panel's "In these decks" pill reads the manifest's `cards`
+        // (2026-10-20); hand it over once, here, so the first render has it.
+        if (window.MM && MM.setDecks) MM.setDecks(manifest);
+        return manifest;
+      })
       .catch(() => { manifest = []; return manifest; });
   }
 

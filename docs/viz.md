@@ -2096,3 +2096,13 @@ older list); `ratingChip` prints the ★ grade from `rating.json`, fetched at bo
 the manifest's `has.rating` says one exists; the record chip leads with `W–L` (a draw column
 only when one exists), then the game count and recency. The fleet table's Floor · DTI cell
 carries the ★ grade beside it.
+
+**"In these decks" on the Atlas (2026-10-20).** The pilot: "see cards in discover display if
+they are in any sleeved/brewing decks". `quickStatsHtml` — the line drawn everywhere a card is
+named: the atlas header, Discover's panel, Build's selected card — appends `deckPillHtml`:
+one linked pill per deck whose manifest `cards` holds the name, sleeved first, then on the
+bench, then brewing; the rung is the pill's title and each links `deck.html?deck=<slug>`.
+Archived and broken-down decks never appear (`isWorkableDeck`). `discovery.js` hands the
+manifest to `MM.setDecks` when `ready()` loads it; until then no pill is drawn — absent, not
+"in no deck". The graph's hover popup is unchanged (it draws the image only). Tests:
+`tests/test_viz_deck_pill.py`.

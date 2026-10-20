@@ -162,6 +162,12 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .gc-pill { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 0.65rem; font-weight: 700;
   letter-spacing: 0.5px; color: #1a1a2e; background: #c4a747; border: 1px solid #a88a35; cursor: help; }
 .deck-ctx-gc-text { color: #ccc; }
+/* "In these decks" (2026-10-20): the sleeved / bench / brewing decks whose list holds the
+ * card, each a link to its deck page — on the same quick-stats line as the GC pill. */
+.deck-pills { font-size: 0.7rem; color: #aab; }
+.deck-pill { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.3px; color: #d8e0ff; background: #2a3150; border: 1px solid #4a5480; text-decoration: none; }
+.deck-pill:hover { background: #3a4470; text-decoration: none; }
 /* ── Combos: the card's lines, deck first, then the corpus index ───────── */
 .combo-block { margin: 0 0 12px; }
 .combo-title .combo-hint { text-transform: none; letter-spacing: 0; color: #6f6f8a; font-size: 0.68rem; }
