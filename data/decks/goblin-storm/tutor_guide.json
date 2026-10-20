@@ -1,77 +1,62 @@
 {
   "slug": "goblin-storm",
-  "assessment": "The table sees Goblin Matron enter and waits for you to go and get a lord. Let them wait. Then name the removal, or the mana, or the enchantment — Matron searches for a Goblin CARD, and Gempalm Incinerator and Boggart Shenanigans both wear the word.\n\nKnow the split cold, because it decides which card you name. Matron delivers to your hand, so the fetch still has to be cast — kicker still gets paid, cycling still works, and a counterspell still gets its window. Moggcatcher puts a Goblin permanent straight onto the battlefield: no cast, nothing to counter, no kicker. Send finishers to hand, send engines to the battlefield.\n\nNeither wish needs your commander, and that is the point. One of your three goldfish targets is gated on Zada; of five passing stacks only 001 and 003 put her on the board. So fetch for the swarm half and keep playing when she is answered — a wish spent insuring the commander is a wish spent on the smaller half of your deck.\n\nAim the wish at the group it can actually thicken. Your early-token component assembles in 60.0% of runs at mean turn 3.18, and three of its five cards are Goblins — so a turn-three Matron is a genuine extra copy of that component. The storm half is not reachable: at 26.5% of runs, 16.9% by turn six, it is built entirely out of sorceries, and no Goblin tutor has ever named one.\n\nTime Moggcatcher like a land, not a spell. Four mana to cast and three more to use is seven, and your mean available mana does not reach seven until turn ten — so deploy him a full rotation before you want the wish, on a turn nobody is watching you, and spend the activation on an end step.",
+  "assessment": "One tutor. Goblin Matron enters, you search for a Goblin card, it goes to your hand. That is the whole search half of this deck: no other card in the 99 reads \"search your library\". She left at v1.1.0 and came back at v1.1.1, and the pilot's reason is on record: Krenko, Mob Boss or Siege-Gang Commander, to hand, on a Goblin body.\n\nTwo things decide what you name. First, the fetch lands in your hand, so it still has to be cast: kicker gets paid, a counterspell gets its window, and a five-drop is a five-drop next turn. The goldfish's mean available mana is 3.087 on turn three, 3.932 on turn four and 4.657 on turn five, so Matron on three, Zada on four and the fetched card on five is the curve that fits, and under Goblin Warchief the fetched card costs {1} less. Second, Matron is herself a Goblin body: Krenko counts her, Skirk Prospector can eat her, and both logged losses came from keeping a hand with no small goblins. A turn-three Matron is a Goblin on the battlefield plus the Goblin you most need next.\n\nNeither wish needs Zada. Of the passing stacks whose cards are still in the list, 001 and 003 put her on the board and 002 and 004 do not. Fetch for the swarm half and keep playing when she is answered.\n\nAim the wish at the group it can thicken. The early token maker group is drawn in 85.7% of games, 73.1% by turn six, mean turn 2.855, and every card in it that Matron can name is a Goblin. The storm half is out of reach: storm payoff plus ritual is drawn in 19.0% of games, 6.8% by turn six, and no Goblin tutor names a sorcery. The goldfish does not count Matron at all, so nothing in the figures here prices the wish; that is why the targets below are grounded in stacks, not in a rate.",
   "tutors": [
     {
       "card": "Goblin Matron",
       "targets": [
         {
-          "scenario": "The default. Turn 3, three lands, two Goblins on the battlefield, no ritual in hand and Zada still in the command zone. Nobody at the table is pointing anything at you yet.",
-          "fetch": "Goblin Warchief",
-          "why": "Buy the discount before you buy the payoff. Warchief makes every Goblin spell cost {1} less and hands the whole swarm haste, and at 4.59 mean available mana on turn five that {1} is a whole extra spell per turn — which is the only thing a storm count ever cared about. Stack 004 shows the discount doing its job: under Warchief, Krenko costs {1}{R}{R} and taps the turn he arrives. Name Warchief, cast him next turn, and let the discount pay back the tempo Matron cost you.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "tutoring is fewer slots but costs board impact and a turn of tempo"
-            }
-          ]
-        },
-        {
-          "scenario": "Behind. The board just got swept, you are rebuilding on four lands, and the control player to your left has four mana open again — assume a second sweeper.",
-          "fetch": "Mogg War Marshal",
-          "why": "Rebuild with the cheap card, not the best one. Marshal is three bodies on one card — a token when he enters, another when he dies — and the goldfish only walks you back to 4.07 bodies by turn five, so he beats your whole rebuild curve on his own. Let the echo lapse when you want that second token immediately; pay it when the body is doing real blocking. Do not name your most expensive Goblin into an open sweeper.",
-          "citations": [
-            {
-              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
-              "quote": "k tutors plus the card act like k+1 copies of *every* card"
-            }
-          ]
-        },
-        {
-          "scenario": "Closing. Five bodies on the battlefield, an opponent at 11, one or two blockers in the way, and two mana up after Matron resolves.",
-          "fetch": "Goblin Bushwhacker",
-          "why": "Name him and pay the kicker: creatures you control get +1/+0 and gain haste the moment he enters. This is the wish only Matron can grant, because kicker is paid as you cast the spell — put him onto the battlefield instead and you get an unkicked 1/1 and nothing else. On the 5.26 bodies the goldfish has you holding at turn six, that is six extra points arriving with haste. Count the damage before you fetch, not after."
-        },
-        {
-          "scenario": "The one nobody sees coming. An opposing lord or a fat blocker is holding your entire swarm hostage, your hand is all gas, and you have drawn no answers.",
-          "fetch": "Gempalm Incinerator",
-          "why": "Pull removal out of a creature tutor. Cycle him for {1}{R} to deal damage equal to the number of Goblins on the battlefield — count their Goblins too, they add to your total — and draw a card on the way. Cycling only works from your hand, so route this wish through Matron every single time. Your interaction covers two permanent classes against a five-class target, so treat every answer you can manufacture as one you cannot replace."
-        }
-      ],
-      "notes": "Once the errand is run she is just a Goblin body — count her for Krenko, tap her for Brightstone Ritual, feed her to Skirk Prospector. She finds Goblin cards, not Goblin creatures, so Boggart Shenanigans is a legal name on a grinding table. One card to skip while Zada sits in the command zone: Siege-Gang Lieutenant only makes its tokens if you control your commander, and you do not."
-    },
-    {
-      "card": "Moggcatcher",
-      "targets": [
-        {
-          "scenario": "The default. Turn 6 or 7, Moggcatcher untapped from last turn, three mana spare at the end step before your turn, a couple of Goblins out and Impact Tremors or General Kreat already on the battlefield.",
-          "fetch": "Siege-Gang Commander",
-          "why": "Skip the cast and give the table nothing to answer: there is no spell here, only the ability. Four bodies land at once — the Commander plus three tokens — and stack 002 already settled the arithmetic that every body entering is a point at every seat, so with Impact Tremors down that is 4 to each opponent before your turn even begins. Then each spare Goblin converts at {1}{R} into 2 damage pointed anywhere. Do it on the end step, never on your own main phase."
-        },
-        {
-          "scenario": "Behind. A tax effect has turned your two-spell turns into one-spell turns, or an artifact deck is running away on Treasures.",
-          "fetch": "Goblin Trashmaster",
-          "why": "Go and get the repeatable out rather than a one-shot, and go and get it at instant speed — this is an activated ability, so the wish happens on their end step. Trashmaster sacrifices a Goblin to destroy target artifact, again and again, and you manufacture Goblins for a living. Break the first lock piece cheaply; it is the second and third that actually end you. Your answers cover two permanent classes against a five-class target, so buy the one that keeps answering."
-        },
-        {
-          "scenario": "Closing. A haste lord already down — Warchief, Chieftain or Howlsquad Heavy — four Goblins on the battlefield, an opponent at 20 with no untapped blockers, and three mana in your main phase.",
+          "scenario": "The default. Turn three, three Mountains, Goblin Instigator and its token on the battlefield, Zada in the command zone, no haste lord out. The table is developing and nobody has aimed a spell at you.",
           "fetch": "Krenko, Mob Boss",
-          "why": "Put him onto the battlefield with no cast and no counter window, and let the lord give him haste so he taps immediately. Stack 004 counts the swing on exactly this board: five Goblins become ten, 13 hasted power. Take the burst and build the whole turn around one activation — stack 004 is explicit that a Krenko fed to Skirk Prospector stays in the graveyard, because Zada is your commander and he is not. Without a haste lord down, fetch something else and take Krenko when the lord arrives.",
+          "why": "Name Krenko. He costs {2}{R}{R}, or {1}{R}{R} under Goblin Warchief, and stack 004 counts what one activation does: five Goblins become ten, 13 power with haste under Warchief. Count your Goblins including Krenko himself; that is the number of tokens one tap makes. The goldfish averages 2.173 bodies on turn four and 3.046 on turn five, and Krenko doubles whatever you have each untap, which is why the pilot kept Matron for him. Turn four is the collision: Zada wants the same four mana. Cast Zada first if a cantrip is in hand (Zada online with a cantrip is 58.2% by turn six); cast Krenko first if the hand is bodies. Without a haste lord he taps on turn five, so a second Goblin Warchief or Goblin Chieftain on the board is the signal to fetch him early. He is an engine, not a loop: stack 004 refuted the combo-graph infinite for this deck. Feed Krenko to Skirk Prospector and he stays in the graveyard, because Zada is the commander and he is not. He is legendary, so Reflection of Kiki-Jiki cannot copy him; that is the Siege-Gang case.",
           "citations": [
             {
-              "rule": "strategy:multiplayer.threat-deflection",
-              "quote": "Know your deck's tells — the cards everyone fears — and time them for the turn they win, not the turn they impress."
+              "rule": "strategy:deckbuilding.redundancy-vs-tutors",
+              "quote": "tutor only the irreplaceable"
             }
           ]
         },
         {
-          "scenario": "The one nobody sees coming. A grinding table where your tokens die in bulk every rotation, and Blasphemous Act is sitting in your hand.",
-          "fetch": "Boggart Shenanigans",
-          "why": "Use a creature tutor to put an enchantment onto the battlefield. Shenanigans is a Kindred Enchantment — Goblin, so it is a Goblin permanent card and a perfectly legal wish, and nobody at the table plays around it. Afterwards every Goblin funeral is a point of damage you may point at a player. Fetch it before you cast Blasphemous Act, never after, and turn your own reset into a burn spell."
+          "scenario": "Behind. Your board was swept last turn. Five lands, Impact Tremors survived because it is an enchantment, Matron is the first play of the rebuild, and the seat that cast the sweeper has four mana open again. Assume a second sweeper.",
+          "fetch": "Siege-Gang Commander",
+          "why": "Rebuild with the card that is four bodies. The goldfish's mean board is 5.074 bodies on turn six and 7.244 on turn seven; one Siege-Gang is most of that from a single card. Every body is its own entry: stack 002 settled that each token entering is a separate Impact Tremors trigger (eight tokens, eight triggers, 8 damage to each opponent), so Siege-Gang and his three tokens are 4 to each opponent on arrival. Purphoros reads 2 for each other creature entering, 8 to each opponent off the same card; that turn has no stack yet, so count it on the oracle text and do not promise it. Against the second sweeper he answers himself: {1}{R}, sacrifice a Goblin, 2 damage to any target, so the tokens die on your terms in response. Cast him into an opponent who is tapped out, not into four open mana. If Fable has flipped, Reflection of Kiki-Jiki copies him every turn: a copy and three tokens, four arrivals a turn. He costs {3}{R}{R}, {2}{R}{R} under Goblin Warchief, so on five lands he is your whole next turn.",
+          "citations": [
+            {
+              "rule": "strategy:resource-hedging.wrath-math",
+              "quote": "After the wrath, initiative goes to whoever rebuilds cheapest: redeploy worst-first, keeping the best threat in hand for their second sweeper."
+            }
+          ]
+        },
+        {
+          "scenario": "Closing. Seven Goblins on the battlefield, four of them made this turn and summoning sick, an opponent at 10 with one blocker, and {R}{R} spare after Matron resolves.",
+          "fetch": "Goblin Bushwhacker",
+          "why": "Name him and pay the kicker: creatures you control get +1/+0 and gain haste until end of turn. The four sick tokens attack now. This is the wish only a to-hand tutor grants, because kicker is paid as you cast the spell; a Bushwhacker put onto the battlefield is an unkicked 1/1. On the goldfish's 8.63 bodies at turn eight that is eight extra power, and the deck's median kill is turn eight (26.2% by turn seven, 56.9% by turn eight), so the job of this fetch is to pull that kill forward one turn by letting the turn's tokens swing. Goblin Chieftain does the same haste job for {1}{R}{R} and keeps it; Bushwhacker is {R}{R} and done. Count the damage before you name him: bodies plus one each, minus the blocker's absorb, against the life total.",
+          "citations": [
+            {
+              "rule": "702.33a",
+              "quote": "You may pay an additional [cost] as you cast this spell."
+            }
+          ]
+        },
+        {
+          "scenario": "The one nobody sees coming. Turn six, four lands untapped, Krenko has untapped once and you have nine Goblin tokens, Impact Tremors on the battlefield, Empty the Warrens and Grapeshot in hand, no ritual drawn, and a seat with a sweeper deck holding up mana.",
+          "fetch": "Skirk Prospector",
+          "why": "Mana out of a creature tutor. Storm payoff plus ritual is drawn in 19.0% of games and 6.8% by turn six, so the storm turn is usually built without a ritual, and the board is the ritual. Prospector reads \"Sacrifice a Goblin: Add {R}\": a mana ability, so it never uses the stack and cannot be responded to, and you can activate it in the middle of paying for a spell. Stack 004 counts it: seven tokens into {R} seven times, gone at end of phase. The sequence on this board: Matron is spell one, Prospector for {R} is spell two, sacrifice tokens for the mana, Empty the Warrens is spell three with storm two, three resolutions, six tokens and 6 to each opponent through Impact Tremors (stack 002's cadence), then Grapeshot is spell four with storm three. Every token fed to Prospector is one fewer attacker and one fewer Impact Tremors body, so sacrifice the ones the sweeper would take anyway and keep the count on paper before the first activation.",
+          "citations": [
+            {
+              "rule": "605.3b",
+              "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to."
+            },
+            {
+              "rule": "605.3a",
+              "quote": "even if it’s in the middle of casting or resolving a spell or activating or resolving an ability."
+            }
+          ]
         }
       ],
-      "notes": "He taps to do it, so he does nothing the turn he lands — deploy him a rotation early, on a quiet turn, and hold the activation. He is a Human Mercenary, so neither tutor can find him, Krenko does not count him and Prospector cannot eat him. And never plan to cast and activate him in one turn: that is seven mana, and your curve does not get there until turn ten."
+      "notes": "Once the search is done she is a 1/1 Goblin: Krenko counts her, Skirk Prospector eats her, Skullclamp on her draws two. She finds a Goblin card, so Siege-Gang Lieutenant is legal but only makes tokens while you control your commander; name him only with Zada on the battlefield. Fable of the Mirror-Breaker is not a legal name: its back face is a Goblin Shaman, but a double-faced card in your library has only its front face's characteristics (CR 712.8a), and the front is a Saga. Two names for a specific table: Goblin Trashmaster against an artifact seat, since the deck's only other artifact answer is Vandalblast, and Pashalik Mons before your own Blasphemous Act, so every Goblin that dies deals 1 damage to any target."
     }
   ],
-  "gaps": "Both wishes are Goblin-shaped, so the entire spell half of this list is unreachable. Nothing here finds a ritual, a storm payoff, Impact Tremors, Skullclamp or Frontline Heroism — your second copy hub is a plain enchantment, so it arrives when you draw it and not a turn sooner. Stack 005's loop is the sharpest example: Haze of Rage is a sorcery and Storm-Kiln Artist is a Dwarf Shaman, so the best line in the deck can never be wished for.\n\nStop waiting on a tutor to assemble the big turn. Storm payoff plus ritual shows up in 26.5% of games, 16.9% of them by turn six, at mean turn 4.91 — and neither of these cards moves that number by a single point. Assemble it through draw instead: Faithless Looting, Idol of Oblivion, War Room, and the copied cantrips stack 001 verified.\n\nWhat the wishes do reach is the token component — 60.0% of runs at mean turn 3.18, and three of its five cards are Goblins. So spend them on the board the copies need, and spend them on a turn where the payoff is already in your hand."
+  "gaps": "Matron names Goblin cards and nothing else. Nothing in the deck finds Impact Tremors, Purphoros, Skullclamp, a ritual, a storm payoff or a Zada cantrip; those arrive when drawn. Storm payoff plus ritual is drawn in 19.0% of games, 6.8% by turn six, mean turn 6.849, and the tutor does not move that figure.\n\nThe goldfish does not see the wish at all. It models a cast tutor as a wildcard and excludes ETB tutors, so the assisted and unassisted figures are identical on every target (early token maker 85.7% and 85.7%). The value of naming Krenko or Siege-Gang is grounded in stacks 002 and 004 here, not in a rate.\n\nA Purphoros turn, with or without Impact Tremors, has no passing stack; the 2-per-body arithmetic above is oracle text and needs a stack scenario. Stacks 002 and 003 predate v1.1.0; every card they use is still in the list, but the context flags them for a recheck.",
+  "decklist_sha256_prefix": "08491e6d87c0"
 }

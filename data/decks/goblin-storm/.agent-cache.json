@@ -4,7 +4,6 @@
     "cards": {
       "Ancestors' Aid": "33a7575cc647129f933027a7f7f2129c21aeeb469529dc129a046b826ed25211",
       "Arena of Glory": "a3b89e50394247a3c4c331b187556ab9ff157588c86e0e9db2b8d269dc560005",
-      "Battle Hymn": "187a6698ec70b370925afd5b53b6b9302384a601d9012ab424004d38fb8aabdf",
       "Beetleback Chief": "86c4c372ecdfc712648c4d81583c675fe2615bd2b0e9c0fddb4377e7eb2a9039",
       "Blasphemous Act": "e933a30d93c8d017e31a9885f3dfd294545a2ee1f6c5afe4dbb1aadced41e2eb",
       "Brightstone Ritual": "e7a6f1ac5174fe066f16a448a8137279d6de969263af24798bbb7a469bf83735",
@@ -33,6 +32,7 @@
       "Goblin Dark-Dwellers": "d47976d4224c1731d13dd2f5abb79b07d295c371f7c4875cb2dd2f464a026eb1",
       "Goblin Instigator": "c2640ebe17435b94eaf72e59c70762f1dda6ff5827731c4e14919b9aa5e87f55",
       "Goblin Lackey": "8fe24927d4ad80009b58d5b7385ec976c689bcc7bfd44d35b35bfb7839cf4f7a",
+      "Goblin Matron": "0372d2ef5043b05f45eaf5a3e59f4d77f5f132abb1c2aa3522655f4b3b343a62",
       "Goblin Trashmaster": "2661de2e13696d60b981f4242b153dfa277ecf8ee08bc471121578ba21a68c2b",
       "Goblin Warchief": "71e9619f24e58844156b2ae82e2635f661a9bbaf5e04c81bc2917ded619d4213",
       "Grapeshot": "a611ee7b7c3d7c2f2e518168553c85784f61c02d6ade94a0b61cef7e8c26d006",
@@ -82,7 +82,7 @@
       "Witch's Mark": "d81ec45c7f0cfaf748300d749331d86add84619c173849ec2b97a4f77be2dddc",
       "Zada, Hedron Grinder": "fae280f9ee8260ffa3b0d8c77d547e5f10748512a3a320a7d59fb08918c27a73"
     },
-    "digest": "4fddb56487cae0bcd86f4d60bcf682fe426b539aa1257f33aa5956313eb479a4"
+    "digest": "091f8b5b216446c5c05439decc15a92bc4d6835d6fd22817667594593d097333"
   },
   "routines": {
     "captains-log": {
@@ -1084,47 +1084,43 @@
       ]
     },
     "tutor-guide": {
-      "agent": "pilot-coach",
-      "agent_prompt_sha256": "46e5ca3d275a702d72d65c32db966520b50c67bb560173924a6a444ef6003bbb",
+      "agent": "pilot-notes",
+      "agent_prompt_sha256": "79517ca85959e354df4e34116c457266d2f75f300d8f286af87ba58b89b56f14",
       "artifact": "data/decks/goblin-storm/tutor_guide.json",
-      "artifact_sha256": "3e2eb3973878ec9f57d43f23fe53c7d1b68a4288b118e879f7c7cca86e170e47",
+      "artifact_sha256": "3fcfda315f03826e8f73904272a1185f9657991880c7304baf63b48d5ebaa785",
       "card_refs": [
         "Blasphemous Act",
-        "Boggart Shenanigans",
         "Brightstone Ritual",
-        "Faithless Looting",
-        "Frontline Heroism",
-        "Gempalm Incinerator",
-        "General Kreat, the Boltbringer",
+        "Empty the Warrens",
+        "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
         "Goblin Bushwhacker",
         "Goblin Chieftain",
+        "Goblin Instigator",
         "Goblin Matron",
         "Goblin Trashmaster",
         "Goblin Warchief",
-        "Haze of Rage",
-        "Howlsquad Heavy",
-        "Idol of Oblivion",
+        "Grapeshot",
         "Impact Tremors",
         "Krenko, Mob Boss",
-        "Mogg War Marshal",
-        "Moggcatcher",
+        "Mountain",
+        "Pashalik Mons",
+        "Purphoros, God of the Forge",
         "Siege-Gang Commander",
         "Siege-Gang Lieutenant",
         "Skirk Prospector",
         "Skullclamp",
-        "Storm-Kiln Artist",
-        "War Room"
+        "Vandalblast"
       ],
       "card_refs_version": 2,
       "extra": {
-        "cards_semantic": "f5691aac67b08a91963fafbe46376eee5b517141ce07399aaa8a08f15bd1f176",
-        "strategy_doc_sha256": "701e9327e94f3c328918d4f0589bcb9dde337b76934cb19b75786f926406193f"
+        "cards_semantic": "091f8b5b216446c5c05439decc15a92bc4d6835d6fd22817667594593d097333",
+        "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "3a1222f5b24de3429d57f896fc2fd4ed4d83174ab121aaf43c3245d49b3eaf06",
+      "fingerprint": "d0c9f428c5e5ca5b7e6aa094bd683df671eacf9ef993f6bcadcf1ef9a56487da",
       "inputs": [
         {
-          "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256",
-          "sha256": "79e03ad3f8f19675f270a0846fd2c7addb4f7f28b551bed37161b040ab5190b1"
+          "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
+          "sha256": "18b53cf01726058a13d0abeaf7466a86d5989b2e1934d362cda21216f1bc66cf"
         },
         {
           "path": "data/decks/goblin-storm/stacks/001-zada-crimson-wisps-engine.json",
@@ -1145,6 +1141,22 @@
         {
           "path": "data/decks/goblin-storm/stacks/005-haze-of-rage-storm-kiln-loop.json",
           "sha256": "ca015accd2ec70f7c8e34d45cc18866bed26444c431b640c1af74ea1a28328aa"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/012-sim-g61-t27-precombat-main.json",
+          "sha256": "af32d7d6f762b8d682883b085cc308ae489c8d51f337fc4ca62dd6943f3e6937"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/013-zada-frontline-heroism-trigger-order.json",
+          "sha256": "bab71de1fa3d2d8ba56bdc4145cc8803de2fb7abe7066553f779d9b20952ef2b"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/014-zada-witchs-mark-copies.json",
+          "sha256": "d6b8fb8d58bbd8f282bd116ea7585748bb1aaab4d925a5f1cafc42790764dc2a"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/016-spreading-insurrection-storm-bombardment.json",
+          "sha256": "a8d5e4b63016e29051bcd0e668209df4f171d4d8dfb21f2c740448fb9a9d3c72"
         },
         {
           "path": "data/decks/goblin-storm/strategic_frame.json",
