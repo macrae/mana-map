@@ -310,7 +310,9 @@ manamap pilot decisions <slug> [list|show ID|outcome|backfill|adopt-policy] [--d
                                         #   the merge it closes (predicted beside realised, inside or not)
 manamap pilot validate-decisions <slug> #   sequential ids, the closed kind vocabulary, a reason on every
                                         #   withdraw and reject, an outcome that names a merge
-manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|propose|withdraw|reject|merge|delete]
+manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|propose|withdraw|reject|merge|delete|summary]
+                                        #   `summary <name> --title "…" --blurb "…"` (2026-10-20): the branch
+                                        #   in plain words, written by Jarvis, no digits — the pages' headline
                                         #   `withdraw --reason` and `reject --reason` write the ledger;
                                         #   REJECTED is a derived branch state, stored nowhere
                                         #   MEASURE TWICE (2026-10-01): after `commit`,

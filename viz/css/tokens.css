@@ -1402,3 +1402,13 @@ details.rost-fold > summary {
 .wb-br-links a:hover { text-decoration: underline; }
 .wb-branchlist .wb-branches { max-width: 980px; }
 .wb-table .t-branch { white-space: nowrap; }
+/* The branch row in words (2026-10-20): Jarvis's title leads, the slug is small
+   beside it, the blurb is a sentence, the facts are sentences. */
+.wb-br-head { font-family: inherit; font-size: 13.5px; }
+.wb-br-name { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .03em; font-size: 14px; }
+.wb-br-slug { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-soft); margin-left: 6px; }
+.wb-br-blurb { margin: 3px 0 4px; font-size: 12.5px; line-height: 1.35; }
+.wb-br-unsummarised { color: var(--ink-soft); font-style: italic; }
+.wb-br-facts { line-height: 1.4; }
+.wb-br-deltas { font-family: inherit; font-size: 12px; display: block; }
+.wb-br-sep { color: var(--ink-soft); }

@@ -4957,6 +4957,7 @@ def test_every_live_branch_is_a_git_style_row_on_the_card(browser, viz_server):
     page = _workbench(browser, viz_server, [_deck("alpha")], infos={
         "alpha": {"branches": [
             {"name": "mean-v2", "state": "OPEN", "opened": "2026-10-20", "add": 13, "out": 13,
+             "summary": {"title": "The meanest bracket-four Edgar", "blurb": "Four denial Vampires, a third drain loop and cheaper casts.", "by": "jarvis", "at": "2026-10-20"},
              "objective": {"axis": "extra_cards_8", "op": ">=", "value": 1.65},
              "objective_grade": {"state": "met", "reading": 1.78},
              "verdict": {"state": "a trade", "rose": 5, "fell": 2, "no_call": 3},
@@ -4971,12 +4972,19 @@ def test_every_live_branch_is_a_git_style_row_on_the_card(browser, viz_server):
         rows = page.locator(".wb-card .wb-branch-row")
         assert rows.count() == 1, "one live branch, two decided ones hidden"
         text = rows.first.text_content()
-        for bit in ("mean-v2", "OPEN", "extra_cards_8 >= 1.65", "met", "a trade", "5 rose, 2 fell", "+13 −13",
-                    "damage @T10", "+1.94", "killed by T10", "+5.7 pts"):
+        # IN WORDS (2026-10-20): Jarvis's title leads, the slug sits beside it,
+        # the guard and the verdict are sentences, the deltas say "up"/"down".
+        for bit in ("The meanest bracket-four Edgar", "mean-v2", "OPEN", "Four denial Vampires",
+                    "The guard: extra cards by turn eight at least 1.65", "met", "The goldfish calls it a trade",
+                    "5 measures better, 2 worse", "13 cards in, 13 out",
+                    "damage by turn ten up 1.94", "the kill by turn ten up 5.7 pts"):
             assert bit in text, bit
+        assert "extra_cards_8" not in text, "no axis key on the landing page"
         assert rows.first.locator("a.wb-br-name").get_attribute("href") == "branch.html?deck=alpha&branch=mean-v2"
         # Scoped to the card: the Branches rack above carries the same row.
         hrefs = [a.get_attribute("href") for a in rows.first.locator(".wb-br-links a").all()]
+        # The rack's copy of a branch WITHOUT a summary says so rather than inventing one.
+        assert page.locator(".wb-br-unsummarised").count() == 0
         assert hrefs == ["branch.html?deck=alpha&branch=mean-v2#swaps",
                          "branch.html?deck=alpha&branch=mean-v2#measured",
                          "branch.html?deck=alpha&branch=mean-v2#net-change",
@@ -5004,9 +5012,10 @@ def test_the_branches_rack_leads_the_page_with_every_live_branch_newest_first(br
         assert "wb-branchlist" in (first.get_attribute("class") or ""), "the Branches rack is the first rack"
         names = [a.text_content() for a in first.locator("a.wb-br-name").all()]
         assert names == ["b-new", "a-old"], names
+        assert first.locator(".wb-br-unsummarised").count() == 2, "no summary yet, and the row says so"
+        assert "proposed as v1.1.0" in first.text_content()
         decks = [a.text_content() for a in first.locator("a.wb-br-deck").all()]
         assert decks == ["Beta", "Alpha"]
-        assert "→ v1.1.0" in first.text_content()
         assert first.locator(".br-state[data-state='proposed']").count() == 1
     finally:
         page.close()

@@ -858,7 +858,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "new", "show", "diff", "source",
                                       "stage", "unstage", "commit", "log",
-                                      "propose", "withdraw", "reject", "merge", "delete"],
+                                      "propose", "withdraw", "reject", "merge", "delete",
+                                      # the branch in plain words, written by Jarvis (2026-10-20)
+                                      "summary"],
                              help="list branches / new: open one from a list / show it / "
                                   "diff it against the deck / stage: one card out, one in / "
                                   "source: where every added card comes from / "
@@ -870,6 +872,10 @@ def add_pilot_parser(subparsers):
                              help="new: the candidate list (a file, or `-` for stdin); default: the deck's own decklist.txt")
             cmd.add_argument("--why", default=None,
                              help="new: why this branch exists; stage: why this swap")
+            cmd.add_argument("--title", default=None,
+                             help="summary: the branch in words (not its slug), at most 80 characters, no digits")
+            cmd.add_argument("--blurb", default=None,
+                             help="summary: one sentence on what it would do and why, at most 320 characters, no digits")
             # THE SWAP IS THE UNIT. `--out` and `--in` are one edit that already
             # says what it displaced, so `net-change` can name which swaps bought
             # the delta. `in` is a keyword, hence the dest.

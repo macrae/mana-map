@@ -397,6 +397,8 @@ def review(slug, branch, doc=None, src=None):
     obj = m.get("objective") or {}
     if obj.get("axis"):
         out["objective"] = {k: obj.get(k) for k in ("axis", "op", "value", "pod") if obj.get(k) is not None}
+    if isinstance(m.get("summary"), dict) and m["summary"].get("title"):
+        out["summary"] = {k: m["summary"].get(k) for k in ("title", "blurb", "by", "at")}
     nc = load_json(deck_dir(slug, branch) / "net_change.json")
     if nc:
         rec = nc.get("recommendation") or {}
@@ -1540,6 +1542,32 @@ def reject(slug, branch, reason=None):
             "state": branch_state(slug, branch)}
 
 
+def summary(slug, branch, title=None, blurb=None, by="jarvis"):
+    """THE BRANCH IN PLAIN WORDS (2026-10-20). The pilot read the workbench's
+    git-style row and said it was "too git like — have Jarvis summarize the
+    objective/name and quick description". The page makes no model call, so the
+    summary is a committed artifact on `branch.json`: a `title` (the branch in
+    words, not its slug) and a one-sentence `blurb` (what it would do and why),
+    written by Jarvis when he reviews the branch and rendered by the workbench
+    and the deck page as the row's headline. Figures stay in the measured
+    fields; the summary names none, so it never goes stale against a re-run.
+    """
+    title = str(title or "").strip(); blurb = str(blurb or "").strip()
+    if not title or not blurb:
+        raise SystemExit("summary needs --title (the branch in words) and --blurb (one sentence)")
+    if len(title) > 80 or len(blurb) > 320:
+        raise SystemExit("summary: the title is at most 80 characters and the blurb 320 — it is a headline, not the why")
+    if re.search(r"\d", title + blurb):
+        raise SystemExit("summary: no digits — figures live in the measured fields and a summary that quotes one goes stale on the next run")
+    doc = meta(slug, branch)
+    if not doc:
+        raise SystemExit(f"No branch '{branch}' on {slug}.")
+    doc["summary"] = {"title": title, "blurb": blurb, "by": by,
+                      "at": datetime.date.today().isoformat()}
+    _write_meta(slug, branch, doc)
+    return doc["summary"]
+
+
 def delete(slug, branch, force=False):
     """Remove a branch. Refuses an unmerged one without `--force`.
 
@@ -2015,6 +2043,11 @@ def _dispatch(args):
         print("  Recorded in decisions.jsonl; the branch stays on disk and measured, "
               "and a later `propose` reopens it.")
         return
+    if action == "summary":
+        got = summary(slug, branch, title=getattr(args, "title", None), blurb=getattr(args, "blurb", None))
+        print(f"{slug}/{branch}: \"{got['title']}\" — {got['blurb']}")
+        print("  Written to branch.json; the workbench and the deck page read it as the row's headline.")
+        return
     if action == "delete":
         got = delete(slug, branch, force=getattr(args, "force", False))
         print(f"Deleted {got['deleted']}")
@@ -2117,7 +2150,7 @@ def _dispatch(args):
 #: `merge` is absent on purpose — it already runs `regen.run(slug=…)`, which
 #: includes the `deck-info` stage.
 MUTATES_THE_DOSSIER = frozenset(
-    {"new", "stage", "unstage", "commit", "propose", "withdraw", "reject", "delete"})
+    {"new", "stage", "unstage", "commit", "propose", "withdraw", "reject", "delete", "summary"})
 
 
 def refresh_dossier(slug):

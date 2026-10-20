@@ -824,3 +824,22 @@ def test_the_dossier_lists_branches_newest_first(modern_deck):
         f = modern_deck / "branches" / name / "branch.json"
         d = json.loads(f.read_text()); d["opened"] = opened; f.write_text(json.dumps(d))
     assert [b["name"] for b in deck_info._branches("md")] == ["new", "old"]
+
+
+def test_jarvis_can_put_a_branch_into_plain_words_and_the_row_carries_it(modern_deck):
+    """`summary` (2026-10-20) writes the branch in words onto branch.json —
+    a title and a one-sentence blurb, no digits — and `review()` passes it to
+    the row the pages render as the headline. Figures live in the measured
+    fields, so a summary that quotes one is refused (it would go stale on the
+    next run); a branch without one has no `summary` key, never an empty one."""
+    deck_branch.new("md", "b", SIXTY_MAIN + SIXTY_SIDE)
+    assert "summary" not in deck_branch.one("md", "b")
+    with pytest.raises(SystemExit):
+        deck_branch.summary("md", "b", title="Faster", blurb="Kill by turn 8 at 0.7.")  # digits
+    with pytest.raises(SystemExit):
+        deck_branch.summary("md", "b", title="Faster", blurb="")
+    got = deck_branch.summary("md", "b", title="A faster clock", blurb="Two burn spells for two blockers.")
+    assert got["by"] == "jarvis" and got["at"]
+    row = deck_branch.one("md", "b")
+    assert row["summary"]["title"] == "A faster clock"
+    assert row["summary"]["blurb"] == "Two burn spells for two blockers."

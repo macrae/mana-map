@@ -2073,14 +2073,25 @@ swaps, measured impact, net change report… from the workbench is critical". Th
 gone; three things replace it, all read off `info.json`'s branch rows (`deck_branch.review`
 now copies the net-change verdict with the rows that rose and fell by name and the four
 headline deltas — `net_change.IMPACT_MEASURES` — into each row's `impact`):
-- **A git-style row on each deck's card** (`branchRow`): `⑂ name` linked to the branch page,
-  the state badge (`window.branchStateBadge`, one home in `api.js`), `→ vX.Y.Z` when
-  proposed, the objective and its grade, the verdict with how many rows rose and fell (the
-  names in the title), `+N −N` swaps, an `older list` warning when the report predates the
-  branch's list, the headline deltas with their intervals coloured by the table's own verdict,
-  and four links: **swaps** (`branch.html…#swaps`), **measured** (`#measured`, the delta table),
-  **net change** (`#net-change`, the diff), **all branches** (`deck.html…#panel-branches`).
-  Decided branches (merged, rejected, withdrawn) stay in the deck page's fold.
+- **A row on each deck's card, in plain words** (`branchRow`). The pilot read the first
+  version (`⑂ mean-v2 OPEN extra_cards_8 >= 1.65 → met · a trade · +13 −13`) and said it was
+  "too git like — have Jarvis summarize the objective/name and quick description". The page
+  makes no model call, so the summary is a committed artifact: `manamap pilot deck-branch
+  <slug> summary <name> --title "…" --blurb "…"` writes `summary` (title, blurb, by, at; no
+  digits — figures live in the measured fields) onto `branch.json`, `review()` passes it to
+  `info.json`, and the row renders Jarvis's title as its headline (the slug small beside it,
+  linked to the branch page) and the blurb as a sentence; a branch without one says "No
+  summary yet — ask Jarvis". Under it, sentences: the state badge (`window.branchStateBadge`,
+  one home in `api.js`), "proposed as vX.Y.Z", "The guard: extra cards by turn eight at least
+  1.65 — met at 1.78", "The goldfish calls it a trade (5 measures better, 2 worse, 3 within
+  noise)", "13 cards in, 13 out", a "measured on an older list" warning when the report
+  predates the branch's list, the headline deltas in words ("damage by turn ten up 1.94
+  [+1.80 to +2.08]"; `MEASURE_WORDS` and `AXIS_WORDS` are display maps over the table's
+  labels and the objective's keys, never a second vocabulary in the data), and four links:
+  **the swaps** (`branch.html…#swaps`), **what was measured** (`#measured`), **the net change**
+  (`#net-change`), **all of this deck's branches** (`deck.html…#panel-branches`). Decided
+  branches (merged, rejected, withdrawn) stay in the deck page's fold. `/jarvis`'s "Review a
+  branch" intent writes the summary when a branch has none.
 - **The Branches rack, first on the page** (`branchRack`): every live branch across every
   living deck, newest first, each row prefixed by its deck — `git branch -a` for the bench.
 - **A Branch column in the fleet table** (newest live branch, linked, with state and verdict,
