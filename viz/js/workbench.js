@@ -212,7 +212,9 @@
                  + (ob.objective_grade && ob.objective_grade.state ? ' · objective ' + ob.objective_grade.state : ''))
            + '</a>';
     } else if (open.length) {
-      out += '<a class="wb-chip wb-branch" href="deck.html?deck=' + encodeURIComponent(e.slug) + '#branches">'
+      // `#panel-branches`, not `#branches`: the deck page prefixes every panel id
+      // (`panel()`), so the old anchor named an element nobody renders (2026-10-20).
+      out += '<a class="wb-chip wb-branch" href="deck.html?deck=' + encodeURIComponent(e.slug) + '#panel-branches">'
            + esc('⑂ ' + open.length + ' open branches') + '</a>';
     }
     if ((e.sim_runs || []).length) out += chip((e.sim_runs || []).length + ' sim');

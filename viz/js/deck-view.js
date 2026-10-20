@@ -378,12 +378,10 @@
   // "N to source", so the one live experiment read like a shopping list and a
   // rejected one read like an open one. The state is `deck_branch.branch_state`'s
   // word, derived when info.json was written; this only prints it.
+  // ONE HOME (2026-10-20): `window.branchStateBadge` in api.js; the workbench's
+  // git-style block and the branch page print the same badge from it.
   function stateBadge(b) {
-    var st = String(b.state || '');
-    var key = /^MERGED/.test(st) ? 'merged' : /^PROPOSED/.test(st) ? 'proposed'
-            : /^REJECT/.test(st) ? 'rejected' : /^WITHDRAW/.test(st) ? 'withdrawn' : 'open';
-    return '<span class="br-state" data-state="' + key + '">' + esc(st || 'OPEN') + '</span>'
-         + (b.base_moved ? ' <span class="br-state" data-state="base-moved" title="' + esc(b.base_moved) + '">base moved</span>' : '');
+    return window.branchStateBadge(b);
   }
 
   function branchDecided(b) {
@@ -2505,6 +2503,9 @@
       tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
     ].filter(Boolean).join('');
     document.getElementById('panels').innerHTML = html;
+    // THE DEEP LINK LANDS (2026-10-20): the workbench links `#panel-branches`
+    // and the panels did not exist when the browser tried to jump.
+    if (window.scrollToHash) window.scrollToHash();
     wireContext(d);
     wireMoxfield(d);
     var bits = [d.stacks.length + ' verified line(s)'];

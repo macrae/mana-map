@@ -25,7 +25,7 @@ import json
 
 import pytest
 
-from conftest import A_BRANCH, requires_branch
+from conftest import A_BRANCH, requires_branch, requires_deck
 
 # F401: `page`, `discover_page` and `canvas_page` are pytest FIXTURES. They are
 # used by name in test signatures, never called here, so every unused-import
@@ -4949,8 +4949,10 @@ def test_open_branches_are_visible_on_the_card(browser, viz_server):
     try:
         assert "2 open branches" in page.text_content(".wb-chips")
         # AND THE CHIP LEADS SOMEWHERE (2026-10-19): several open → the deck
-        # page's Branches rack.
-        assert page.get_attribute(".wb-chips a.wb-branch", "href") == "deck.html?deck=alpha#branches"
+        # page's Branches rack — `#panel-branches`, the id the deck page actually
+        # renders (`panel()` prefixes every id; `#branches` led to the top of the
+        # page for a day, 2026-10-20).
+        assert page.get_attribute(".wb-chips a.wb-branch", "href") == "deck.html?deck=alpha#panel-branches"
     finally:
         page.close()
 
@@ -9281,5 +9283,49 @@ def test_the_deck_page_puts_branches_right_after_next_with_every_state_badged(br
         assert states.count() >= 1
         assert page.locator("#panel-branches details.branch-decided-fold").count() == 1
         assert "mean-v1" in page.text_content("#panel-branches .branch:not(.branch-decided) h3")
+    finally:
+        page.close()
+
+
+# ── A deep link is a chip too (2026-10-20) ───────────────────────────────────
+
+
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
+@pytest.mark.browser
+def test_the_branch_page_has_the_anchors_the_workbench_links_and_lands_on_them(browser, viz_server):
+    """The workbench's branch block links `#measured` (the delta table),
+    `#net-change` (the diff) and `#swaps` (the proposals). Both pages build their
+    panels after a fetch, so the browser's own jump fired before the element
+    existed and every deep link landed at the top; `scrollToHash` runs after the
+    render. Re-introduce the bug (drop the call) and the second assertion fails."""
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
+    try:
+        for anchor in ("measured", "net-change", "swaps"):
+            assert page.locator("#" + anchor).count() == 1, anchor
+        assert page.js_errors == []
+    finally:
+        page.close()
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    try:
+        page.goto(f"{viz_server}/viz/branch.html?deck=ur-dragon&branch={A_BRANCH}#measured")
+        page.wait_for_timeout(2200)
+        assert page.evaluate("window.scrollY") > 0, "the page did not scroll to #measured after its render"
+    finally:
+        page.close()
+
+
+@requires_deck
+@pytest.mark.browser
+def test_the_deck_page_lands_on_its_branches_rack_from_a_deep_link(browser, viz_server):
+    """`deck.html?deck=…#panel-branches` is where the workbench sends a deck with
+    several live branches. The panel id is prefixed (`panel()`), the old link
+    said `#branches` and nothing rendered that, and even the right id needed a
+    post-render scroll."""
+    page = browser.new_page(viewport={"width": 1440, "height": 900})
+    try:
+        page.goto(f"{viz_server}/viz/deck.html?deck=edgar-vampires#panel-branches")
+        page.wait_for_timeout(2500)
+        assert page.locator("#panel-branches").count() == 1
+        assert page.evaluate("window.scrollY") > 0, "the page did not scroll to #panel-branches after its render"
     finally:
         page.close()

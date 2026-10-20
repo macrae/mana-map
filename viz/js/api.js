@@ -63,6 +63,39 @@
 window.MANIFEST_VERSION = 12;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
+/* ── A branch's state badge — ONE home (2026-10-20) ──────────────────────────
+ *
+ * The deck page and the branch page each carried a copy of the state → badge
+ * mapping, and the workbench's git-style branch block would have been the
+ * third. The state is `deck_branch.branch_state`'s word, derived when
+ * info.json was written; this only prints it. `b.base_moved`, when set, adds
+ * the warning the deck page shows beside it. */
+window.branchStateBadge = function (b) {
+  var e = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]; }); };
+  var st = String((b && b.state) || '');
+  var key = /^MERGED/.test(st) ? 'merged' : /^PROPOSED/.test(st) ? 'proposed'
+          : /^REJECT/.test(st) ? 'rejected' : /^WITHDRAW/.test(st) ? 'withdrawn' : 'open';
+  return '<span class="br-state" data-state="' + key + '">' + e(st || 'OPEN') + '</span>'
+       + (b && b.base_moved ? ' <span class="br-state" data-state="base-moved" title="' + e(b.base_moved) + '">base moved</span>' : '');
+};
+
+/* ── Land on the hash after an async render (2026-10-20) ─────────────────────
+ *
+ * The deck and branch pages build their panels after a fetch, so the browser's
+ * own jump to `#panel-branches` or `#measured` fires before the element exists
+ * and every deep link from the workbench landed at the top. A chip that names
+ * something must LEAD there; this is the other half of that rule. Safe to call
+ * more than once — it scrolls only when the target is on the page. */
+window.scrollToHash = function () {
+  var id = (location.hash || '').slice(1);
+  if (!id) return false;
+  var el = document.getElementById(id);
+  if (!el) return false;
+  el.scrollIntoView({block: 'start'});
+  return true;
+};
+
 /* ── The shared formatters (2026-10-18) ──────────────────────────────────────
  *
  * `esc`, `num`, `pct`, `signed` and `getJSON` were copied into workbench.js,

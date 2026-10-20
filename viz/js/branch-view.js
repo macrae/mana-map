@@ -133,7 +133,7 @@
         esc(d.what) + '</p><p class="ev"><b>Why:</b> ' + esc(d.why) +
         '</p></details>';
     }).join('');
-    return '<section class="panel"><h2>Measured</h2>' +
+    return '<section class="panel" id="measured"><h2>Measured</h2>' +
       '<p class="ev">' + esc(nc.harness.iterations.toLocaleString()) +
       ' games each, shared seed. A delta smaller than the run could detect is ' +
       'marked noise rather than ranked — that is no answer, not no change.' +
@@ -958,7 +958,7 @@
      * this page is for; the pictures are what a card decision is made on. Both
      * are rendered and CSS picks — the gallery's images are `loading="lazy"`,
      * so the one you are not looking at costs nothing. */
-    var out = '<section class="panel netchange" data-view="list">' +
+    var out = '<section class="panel netchange" id="net-change" data-view="list">' +
       '<h2>Net change' +
       '<span class="viewtoggle">' +
       '<button type="button" class="vt is-on" data-view="list">list</button>' +
@@ -1187,6 +1187,11 @@
           wireBuyList(slug, name, buy);
           wireBillPrice(slug, name, buy);
         }
+        // THE DEEP LINK LANDS (2026-10-20): the workbench links `#measured`,
+        // `#net-change` and `#swaps`; the browser's own jump fired before
+        // these panels existed. Once here, and again when the swaps panel
+        // fills in, since that one arrives last.
+        if (window.scrollToHash) window.scrollToHash();
         loadSwaps(slug, name);
       });
   }
@@ -1265,7 +1270,10 @@
       return;
     }
     Api.call('branch/upgrades', { slug: slug, branch: branch })
-      .then(function (doc) { host.innerHTML = swapsPanel(doc, slug, branch); })
+      .then(function (doc) {
+        host.innerHTML = swapsPanel(doc, slug, branch);
+        if (window.scrollToHash) window.scrollToHash();
+      })
       .catch(function (e) {
         host.innerHTML = absent('Swaps to consider', e.message,
           'manamap pilot upgrades ' + slug + ' --branch ' + branch);
