@@ -411,6 +411,20 @@ def review(slug, branch, doc=None, src=None):
             out["measured_why"] = "net_change.json describes an older list of this branch"
         out["blind_spots"] = sorted({c for b in (nc.get("blind_spots") or []) if isinstance(b, dict)
                                      for c in (b.get("cards") or [])}) or None
+        # THE MEASURED IMPACT, for the workbench (2026-10-20): the verdict with
+        # the rows that rose and fell BY NAME, and the headline rows copied
+        # verbatim from the table — delta, interval, MDE, verdict — so the
+        # landing page shows a figure without fetching every branch's report.
+        # Only `IMPACT_MEASURES` rows, in that order; a row the table lacks is
+        # absent, never zero. The page renders this; it computes nothing.
+        from manamap.pilot.net_change import IMPACT_MEASURES  # local: net_change imports this module
+        rows = {str(r.get("measure")): r for r in (nc.get("table") or []) if isinstance(r, dict)}
+        headline = [{"measure": m, "delta": rows[m].get("delta"), "ci95_diff": rows[m].get("ci95_diff"),
+                     "mde": rows[m].get("mde"), "verdict": rows[m].get("verdict"),
+                     "unit": rows[m].get("unit"), "better_is": rows[m].get("better_is")}
+                    for m in IMPACT_MEASURES if m in rows]
+        out["impact"] = {"state": rec.get("state"), "rose": list(rec.get("rose") or []),
+                         "fell": list(rec.get("fell") or []), "headline": headline}
     cp = load_json(deck_dir(slug, branch) / "cast_proofs.json")
     if cp and isinstance(cp.get("cards"), dict):
         counts = {"played": 0, "held": 0, "unplayed": 0}

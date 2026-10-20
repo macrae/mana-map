@@ -97,6 +97,14 @@ ROWS = (
     ("hand can act by T3", "steam", "keep_can_act_by_t3", None, +1),
 )
 
+#: THE HEADLINE ROWS A READER SCANS A BRANCH BY (2026-10-20), in the order the
+#: workbench prints them: the clock, the kill, the board, the steam. They are
+#: labels from `ROWS` — the table's own vocabulary, never a second spelling —
+#: and `deck_branch.review()` copies exactly these rows into `info.json` as a
+#: branch's `impact`, so the landing page can show a measured delta without
+#: fetching every branch's report. A row absent from the table is absent here.
+IMPACT_MEASURES = ("damage @T10", "killed by T10", "board power @T6", "extra cards by T8")
+
 
 #: WHAT EACH ROW MEANS AND WHY IT IS ON THE PAGE. Keyed by the label in `ROWS`.
 #:

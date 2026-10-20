@@ -794,7 +794,50 @@
         "Steel Hellkite",
         "Stubborn Denial",
         "Transcendent Dragon"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "protection-v1",
@@ -1531,7 +1574,52 @@
         "shortfall": 0.0414
       },
       "measured": true,
-      "blind_spots": null
+      "blind_spots": null,
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "stall, 2 in a row"
+        ],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.1801,
+            "ci95_diff": [
+              -1.1147,
+              0.7545
+            ],
+            "mde": 1.3359,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0068,
+            "ci95_diff": [
+              -0.0122,
+              -0.0014
+            ],
+            "mde": 0.0077,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.0875,
+            "ci95_diff": [
+              -0.2957,
+              0.1207
+            ],
+            "mde": 0.2976,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "final-v1",
@@ -2442,7 +2530,57 @@
         "Turbulent Springs",
         "Verdant Catacombs",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "a trade",
+        "rose": [
+          "board power @T6",
+          "killed by T6",
+          "missed drop by T5",
+          "mulliganed"
+        ],
+        "fell": [
+          "stall, 2 in a row"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 1.2149,
+            "ci95_diff": [
+              -0.06,
+              2.4898
+            ],
+            "mde": 1.8223,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0065,
+            "ci95_diff": [
+              0.0008,
+              0.0122
+            ],
+            "mde": 0.0082,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.5283,
+            "ci95_diff": [
+              0.3079,
+              0.7487
+            ],
+            "mde": 0.315,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "haste-v1",
@@ -3323,7 +3461,60 @@
         "Tarnished Citadel",
         "Transcendent Dragon",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "missed drop by T5",
+          "mulliganed"
+        ],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "killed by T6",
+          "killed by T10",
+          "stall, 2 in a row",
+          "interaction affordable @T6"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -3.9008,
+            "ci95_diff": [
+              -5.1945,
+              -2.6071
+            ],
+            "mde": 1.8492,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0236,
+            "ci95_diff": [
+              -0.0303,
+              -0.0169
+            ],
+            "mde": 0.0096,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -1.4016,
+            "ci95_diff": [
+              -1.6585,
+              -1.1447
+            ],
+            "mde": 0.3672,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "mana-v1",
@@ -4245,7 +4436,57 @@
         "Turbulent Springs",
         "Verdant Catacombs",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "killed by T6",
+          "killed by T10",
+          "missed drop by T5",
+          "mulliganed"
+        ],
+        "fell": [
+          "stall, 2 in a row"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 1.3776,
+            "ci95_diff": [
+              0.0884,
+              2.6668
+            ],
+            "mde": 1.8428,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0083,
+            "ci95_diff": [
+              0.0026,
+              0.014
+            ],
+            "mde": 0.0082,
+            "verdict": "better",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.0412,
+            "ci95_diff": [
+              -0.2633,
+              0.1809
+            ],
+            "mde": 0.3174,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "responses-v1",
@@ -5097,7 +5338,58 @@
         "Steel Hellkite",
         "Tarnished Citadel",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "missed drop by T5",
+          "mulliganed"
+        ],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "killed by T6",
+          "killed by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -2.7107,
+            "ci95_diff": [
+              -4.0424,
+              -1.379
+            ],
+            "mde": 1.9035,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0171,
+            "ci95_diff": [
+              -0.0236,
+              -0.0106
+            ],
+            "mde": 0.0094,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -1.0734,
+            "ci95_diff": [
+              -1.3187,
+              -0.8281
+            ],
+            "mde": 0.3506,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "responses-v2",
@@ -5967,7 +6259,59 @@
         "Tarnished Citadel",
         "Verdant Catacombs",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
+          "hand can act by T3"
+        ],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "killed by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -2.6871,
+            "ci95_diff": [
+              -3.281,
+              -2.0932
+            ],
+            "mde": 0.8488,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0073,
+            "ci95_diff": [
+              -0.0115,
+              -0.0031
+            ],
+            "mde": 0.0059,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -1.3058,
+            "ci95_diff": [
+              -1.4317,
+              -1.1799
+            ],
+            "mde": 0.18,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "responses-v3",
@@ -6826,7 +7170,56 @@
         "Tarnished Citadel",
         "Verdant Catacombs",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "a trade",
+        "rose": [
+          "missed drop by T5",
+          "mulliganed"
+        ],
+        "fell": [
+          "board power @T6",
+          "stall, 2 in a row"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 0.3805,
+            "ci95_diff": [
+              -0.1337,
+              0.8947
+            ],
+            "mde": 0.735,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0045,
+            "ci95_diff": [
+              0.0011,
+              0.0079
+            ],
+            "mde": 0.0049,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.5145,
+            "ci95_diff": [
+              -0.6137,
+              -0.4153
+            ],
+            "mde": 0.1418,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     }
   ],
   "diagnostic": {

@@ -17,10 +17,12 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 9,
+    "complete": 8,
     "of": 19,
     "stale": [],
-    "invalid": [],
+    "invalid": [
+      "combos"
+    ],
     "verified": true,
     "missing": [
       "brief",
@@ -814,7 +816,82 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "extra_cards_8",
+        "op": ">=",
+        "value": 1.5
+      },
+      "verdict": {
+        "state": "a trade",
+        "rose": 6,
+        "fell": 1,
+        "no_call": 3
+      },
+      "objective_grade": {
+        "state": "met",
+        "reading": 2.0294,
+        "shortfall": null
+      },
+      "measured": true,
+      "blind_spots": [
+        "Evolving Wilds",
+        "Skullclamp",
+        "Staff of Compleation",
+        "Verdant Catacombs"
+      ],
+      "impact": {
+        "state": "a trade",
+        "rose": [
+          "killed by T6",
+          "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
+          "extra cards by T8",
+          "hand can act by T3"
+        ],
+        "fell": [
+          "damage @T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.1537,
+            "ci95_diff": null,
+            "mde": 0.1323,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0002,
+            "ci95_diff": null,
+            "mde": 0.0094,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0118,
+            "ci95_diff": null,
+            "mde": 0.1032,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.9909,
+            "ci95_diff": null,
+            "mde": 0.0969,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "lands-v1",
@@ -1520,7 +1597,75 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "land_drop",
+        "op": "<=",
+        "value": 0.3
+      },
+      "verdict": {
+        "state": "do not merge",
+        "rose": 3,
+        "fell": 0,
+        "no_call": 7
+      },
+      "objective_grade": {
+        "state": "not met",
+        "reading": 0.4236,
+        "shortfall": 0.1236
+      },
+      "measured": true,
+      "blind_spots": [
+        "Evolving Wilds",
+        "Verdant Catacombs"
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "killed by T6",
+          "missed drop by T5",
+          "mulliganed"
+        ],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.0376,
+            "ci95_diff": null,
+            "mde": 0.1325,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0023,
+            "ci95_diff": null,
+            "mde": 0.0094,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0783,
+            "ci95_diff": null,
+            "mde": 0.1032,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.0337,
+            "ci95_diff": null,
+            "mde": 0.0655,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "prot-v1",
@@ -2290,7 +2435,84 @@
           "is_new": false
         }
       ],
-      "has_cards": true
+      "has_cards": true,
+      "objective": {
+        "axis": "kill_by_8",
+        "op": ">=",
+        "value": 0.8
+      },
+      "verdict": {
+        "state": "do not merge",
+        "rose": 5,
+        "fell": 1,
+        "no_call": 4
+      },
+      "objective_grade": {
+        "state": "not met",
+        "reading": 0.7467,
+        "shortfall": 0.0533
+      },
+      "measured": true,
+      "blind_spots": [
+        "Deflecting Swat",
+        "Evolving Wilds",
+        "Glistening Oil",
+        "Mithril Coat",
+        "Skullclamp",
+        "Staff of Compleation",
+        "Verdant Catacombs"
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "killed by T6",
+          "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
+          "extra cards by T8"
+        ],
+        "fell": [
+          "damage @T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.1455,
+            "ci95_diff": null,
+            "mde": 0.1323,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0039,
+            "ci95_diff": null,
+            "mde": 0.0094,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0656,
+            "ci95_diff": null,
+            "mde": 0.1032,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 1.0006,
+            "ci95_diff": null,
+            "mde": 0.0988,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     }
   ],
   "diagnostic": null,
@@ -2300,6 +2522,7 @@
     "target": null,
     "within_target": null
   },
+  "deckcheck": null,
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
@@ -2323,7 +2546,9 @@
     "first_played": null,
     "undebriefed": [],
     "causes": {},
-    "cause_counts": {}
+    "cause_counts": {},
+    "feel": {},
+    "feel_n": 0
   },
   "model": {
     "goldfish": {
@@ -2607,7 +2832,7 @@
   "decisions": null,
   "next": [
     "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
-    "nothing else outstanding — this deck's record is complete as it stands"
+    "1 artifact(s) fail their own gate (combos) — `deck-status ingris-infect` names them; fix before anything else reads them"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

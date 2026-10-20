@@ -772,6 +772,15 @@ def test_a_branch_row_carries_what_a_reader_chooses_by_and_absent_stays_absent(m
         "objective_grade": {"state": "met", "reading": 0.74, "shortfall": None},
         "recommendation": {"state": "a trade", "rose": ["damage @T10", "killed by T6"], "fell": ["extra cards by T8"],
                            "no_call": ["mulliganed"]},
+        # The table carries two of the headline measures (out of order) and one
+        # row the workbench never prints; `impact.headline` keeps IMPACT_MEASURES'
+        # order and drops the rest, and a measure the table lacks is absent.
+        "table": [{"measure": "extra cards by T8", "delta": -0.3, "ci95_diff": [-0.4, -0.2], "mde": 0.05,
+                   "verdict": "worse", "unit": "mean", "better_is": "higher"},
+                  {"measure": "mulliganed", "delta": 0.001, "ci95_diff": [-0.003, 0.004], "mde": 0.004,
+                   "verdict": "noise", "unit": "rate", "better_is": "lower"},
+                  {"measure": "damage @T10", "delta": 1.2, "ci95_diff": [0.9, 1.5], "mde": 0.3,
+                   "verdict": "better", "unit": "mean", "better_is": "higher"}],
         "blind_spots": [{"cards": ["Goblin Guide"], "what": "x"}]}))
     (bdir / "cast_proofs.json").write_text(json.dumps({
         "as_of": "2026-10-19", "harness": "forge 2.0.14",
@@ -790,6 +799,15 @@ def test_a_branch_row_carries_what_a_reader_chooses_by_and_absent_stays_absent(m
     assert row["verdict"] == {"state": "a trade", "rose": 2, "fell": 1, "no_call": 1}
     assert row["measured"] is True and "measured_why" not in row
     assert row["blind_spots"] == ["Goblin Guide"]
+    # THE MEASURED IMPACT (2026-10-20): names, not counts, and the headline rows
+    # in the registry's order — the clock first — with the off-list row dropped
+    # and the two measures the table lacks absent rather than zero.
+    assert row["impact"]["state"] == "a trade"
+    assert row["impact"]["rose"] == ["damage @T10", "killed by T6"] and row["impact"]["fell"] == ["extra cards by T8"]
+    assert [h["measure"] for h in row["impact"]["headline"]] == ["damage @T10", "extra cards by T8"]
+    assert row["impact"]["headline"][0] == {"measure": "damage @T10", "delta": 1.2, "ci95_diff": [0.9, 1.5],
+                                            "mde": 0.3, "verdict": "better", "unit": "mean", "better_is": "higher"}
+    assert "impact" not in bare
     assert row["cast_proofs"]["played"] == 1 and row["cast_proofs"]["held"] == 1 and row["cast_proofs"]["unplayed"] == 1
     assert [h["id"] for h in row["stacks"]] == ["001"], "only a stack naming a card the deck does not already run"
     # The report goes stale when the branch's list moves under it.

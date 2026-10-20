@@ -1875,3 +1875,14 @@ def test_the_validator_holds_a_forge_objective_to_its_pod_and_its_interval():
     errs = validate_net_change.validate(wrong_table)
     assert any("graded at 'vito-era'" in e for e in errs), errs
     assert any("null is absent with no reason" in e for e in errs), errs
+
+
+def test_the_headline_measures_are_rows_the_table_prints():
+    """`IMPACT_MEASURES` (2026-10-20) is the workbench's short list of a branch's
+    deltas, copied into `info.json` by `deck_branch.review()`. Every label must
+    be a `ROWS` label — the table's own vocabulary — or the landing page would
+    print a measure the report never carried. Re-introduce the bug (misspell a
+    label) and this fails."""
+    rendered = {label for label, *_ in net_change.ROWS}
+    assert set(net_change.IMPACT_MEASURES) <= rendered, set(net_change.IMPACT_MEASURES) - rendered
+    assert len(net_change.IMPACT_MEASURES) == len(set(net_change.IMPACT_MEASURES))

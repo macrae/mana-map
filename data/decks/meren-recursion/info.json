@@ -883,7 +883,69 @@
       "blind_spots": [
         "Cauldron of Essence",
         "Dose of Dawnglow"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "stall, 2 in a row",
+          "hand can act by T3"
+        ],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "killed by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.1069,
+            "ci95_diff": [
+              -0.1273,
+              -0.0865
+            ],
+            "mde": 0.0291,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0051,
+            "ci95_diff": [
+              -0.0079,
+              -0.0023
+            ],
+            "mde": 0.004,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.0407,
+            "ci95_diff": [
+              -0.0579,
+              -0.0235
+            ],
+            "mde": 0.0245,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.0007,
+            "ci95_diff": [
+              -0.0026,
+              0.0012
+            ],
+            "mde": 0.0028,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     }
   ],
   "diagnostic": null,

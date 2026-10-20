@@ -704,7 +704,62 @@
         "Island",
         "Lightning Greaves",
         "Plains"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "artifacts-v1",
@@ -1410,7 +1465,62 @@
       "blind_spots": [
         "Greater Auramancy",
         "Lightning Greaves"
-      ]
+      ],
+      "impact": {
+        "state": "merge",
+        "rose": [],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.0274,
+            "ci95_diff": [
+              -0.0982,
+              0.0434
+            ],
+            "mde": 0.1012,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0027,
+            "ci95_diff": [
+              -0.0039,
+              0.0093
+            ],
+            "mde": 0.0094,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0055,
+            "ci95_diff": [
+              -0.0481,
+              0.0591
+            ],
+            "mde": 0.0766,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.0974,
+            "ci95_diff": [
+              -0.1692,
+              -0.0256
+            ],
+            "mde": 0.1027,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "blue-v1",
@@ -2118,7 +2228,69 @@
       "blind_spots": [
         "Greater Auramancy",
         "Lightning Greaves"
-      ]
+      ],
+      "impact": {
+        "state": "a trade",
+        "rose": [],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "killed by T10",
+          "stall, 2 in a row",
+          "extra cards by T8",
+          "interaction affordable @T6"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.1543,
+            "ci95_diff": [
+              -0.173,
+              -0.1356
+            ],
+            "mde": 0.0268,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0081,
+            "ci95_diff": [
+              -0.0106,
+              -0.0056
+            ],
+            "mde": 0.0035,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.0883,
+            "ci95_diff": [
+              -0.1031,
+              -0.0735
+            ],
+            "mde": 0.0212,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.1476,
+            "ci95_diff": [
+              -0.169,
+              -0.1262
+            ],
+            "mde": 0.0305,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "splendor-v1",
@@ -2790,7 +2962,65 @@
         "shortfall": null
       },
       "measured": true,
-      "blind_spots": null
+      "blind_spots": null,
+      "impact": {
+        "state": "a trade",
+        "rose": [],
+        "fell": [
+          "stall, 2 in a row",
+          "extra cards by T8"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.0939,
+            "ci95_diff": [
+              -0.1644,
+              -0.0234
+            ],
+            "mde": 0.1008,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.002,
+            "ci95_diff": [
+              -0.0085,
+              0.0045
+            ],
+            "mde": 0.0093,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.0103,
+            "ci95_diff": [
+              -0.0637,
+              0.0431
+            ],
+            "mde": 0.0763,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.152,
+            "ci95_diff": [
+              -0.2236,
+              -0.0804
+            ],
+            "mde": 0.1023,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "archangel-v1",
@@ -3498,7 +3728,67 @@
       "blind_spots": [
         "Greater Auramancy",
         "Lightning Greaves"
-      ]
+      ],
+      "impact": {
+        "state": "a trade",
+        "rose": [],
+        "fell": [
+          "damage @T10",
+          "stall, 2 in a row",
+          "extra cards by T8",
+          "interaction affordable @T6"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.1377,
+            "ci95_diff": [
+              -0.2081,
+              -0.0673
+            ],
+            "mde": 0.1007,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0044,
+            "ci95_diff": [
+              -0.0109,
+              0.0021
+            ],
+            "mde": 0.0092,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.0491,
+            "ci95_diff": [
+              -0.1026,
+              0.0044
+            ],
+            "mde": 0.0765,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.1942,
+            "ci95_diff": [
+              -0.2657,
+              -0.1227
+            ],
+            "mde": 0.1021,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     }
   ],
   "diagnostic": {

@@ -784,7 +784,62 @@
         "Savannah",
         "Sunpetal Grove",
         "Taiga"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -0.0484,
+            "ci95_diff": [
+              -0.1472,
+              0.0504
+            ],
+            "mde": 0.1412,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0014,
+            "ci95_diff": [
+              -0.0029,
+              0.0001
+            ],
+            "mde": 0.0022,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.0299,
+            "ci95_diff": [
+              -0.0655,
+              0.0057
+            ],
+            "mde": 0.0508,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.0062,
+            "ci95_diff": [
+              -0.0186,
+              0.0062
+            ],
+            "mde": 0.0177,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "cart-v1",
@@ -1493,7 +1548,65 @@
         "Temple Garden",
         "Verdant Catacombs",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [],
+        "fell": [
+          "damage @T10",
+          "killed by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -2.1089,
+            "ci95_diff": [
+              -2.9585,
+              -1.2593
+            ],
+            "mde": 1.2144,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.019,
+            "ci95_diff": [
+              -0.0272,
+              -0.0108
+            ],
+            "mde": 0.0118,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.4084,
+            "ci95_diff": [
+              -0.7397,
+              -0.0771
+            ],
+            "mde": 0.4735,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.1351,
+            "ci95_diff": [
+              -0.2359,
+              -0.0343
+            ],
+            "mde": 0.1441,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "mana-v1",
@@ -2251,7 +2364,62 @@
         "Temple Garden",
         "Verdant Catacombs",
         "Wooded Foothills"
-      ]
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     }
   ],
   "diagnostic": {

@@ -662,7 +662,62 @@
         "shortfall": null
       },
       "measured": true,
-      "blind_spots": null
+      "blind_spots": null,
+      "impact": {
+        "state": "merge",
+        "rose": [],
+        "fell": [],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.0,
+            "ci95_diff": [
+              0.0,
+              0.0
+            ],
+            "mde": 0.0,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
     },
     {
       "name": "meaner-v1",
@@ -1299,6 +1354,67 @@
       },
       "measured": true,
       "blind_spots": null,
+      "impact": {
+        "state": "a trade",
+        "rose": [
+          "hoard @T6",
+          "board power @T6",
+          "stall, 2 in a row"
+        ],
+        "fell": [
+          "killed by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 0.3752,
+            "ci95_diff": [
+              -1.117,
+              1.8674
+            ],
+            "mde": 2.133,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0039,
+            "ci95_diff": [
+              -0.0058,
+              -0.002
+            ],
+            "mde": 0.0028,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0658,
+            "ci95_diff": [
+              0.0429,
+              0.0887
+            ],
+            "mde": 0.0328,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.021,
+            "ci95_diff": [
+              -0.001,
+              0.043
+            ],
+            "mde": 0.0314,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      },
       "stacks": [
         {
           "id": "002",
@@ -2038,6 +2154,73 @@
         "Vandalblast",
         "Witch's Mark"
       ],
+      "impact": {
+        "state": "a trade",
+        "rose": [
+          "stall, 2 in a row",
+          "interaction affordable @T6"
+        ],
+        "fell": [
+          "hoard @T10",
+          "hoard @T6",
+          "damage @T10",
+          "board power @T6",
+          "killed by T6",
+          "killed by T10",
+          "missed drop by T5",
+          "extra cards by T8"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -32.5339,
+            "ci95_diff": [
+              -38.2518,
+              -26.816
+            ],
+            "mde": 8.1731,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.1029,
+            "ci95_diff": [
+              -0.111,
+              -0.0948
+            ],
+            "mde": 0.0115,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -1.2018,
+            "ci95_diff": [
+              -1.2961,
+              -1.1075
+            ],
+            "mde": 0.1349,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -1.4493,
+            "ci95_diff": [
+              -1.5696,
+              -1.329
+            ],
+            "mde": 0.1719,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      },
       "stacks": [
         {
           "id": "002",
@@ -2836,6 +3019,73 @@
         "Purphoros, God of the Forge",
         "Vandalblast"
       ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "stall, 2 in a row",
+          "interaction affordable @T6"
+        ],
+        "fell": [
+          "hoard @T10",
+          "hoard @T6",
+          "damage @T10",
+          "board power @T6",
+          "killed by T6",
+          "killed by T10",
+          "missed drop by T5",
+          "extra cards by T8"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -36.4753,
+            "ci95_diff": [
+              -41.7251,
+              -31.2255
+            ],
+            "mde": 7.504,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.1056,
+            "ci95_diff": [
+              -0.1132,
+              -0.098
+            ],
+            "mde": 0.0109,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.6121,
+            "ci95_diff": [
+              -0.6956,
+              -0.5286
+            ],
+            "mde": 0.1193,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -1.3286,
+            "ci95_diff": [
+              -1.4501,
+              -1.2071
+            ],
+            "mde": 0.1737,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      },
       "stacks": [
         {
           "id": "002",
