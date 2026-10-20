@@ -4,8 +4,8 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Edgar Markov](https://manamap.seanmacrae.com/viz/index.html?cards=Edgar+Markov)
-- **Version:** v2.0.0 (V4) · **status:** sleeved since 2026-10-06
-- **Colours:** WBR · **lands:** 36 · **bracket floor:** 4 (Optimized) · **DTI:** 28/96 → B4 (deckcheck.co, 2026-10-18, 1 reading)
+- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-06
+- **Colours:** WBR · **lands:** 35 · **bracket floor:** 4 (Optimized) · **DTI:** 28/96 → B4 (deckcheck.co, 2026-10-18, 1 reading) — older list
 - **Combos:** 6 known lines (6 infinite, 6 two-card) · 133 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=edgar-vampires) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=edgar-vampires)
 <!-- /ctx:gen summary -->
@@ -91,24 +91,24 @@ Mostly dual and tri colour so all three colours are ready. Fetches, shocks, pain
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on v2.0.0 (V4), 2026-10-06. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **65%**
+- share of seeded games where the commander was CAST by turn six: **62%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 6.014**
-- A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **25%**
+- mean turn the commander is first cast: **turn 6.078**
+- A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **26%**
 - A token multiplier or extra token-maker drawn: **25%**
-- A Vampire lord or anthem drawn (the combat plan): **13%**
-- THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest): **8%**
-- Ramp or fixing drawn: **42%**
-- A draw engine drawn: **64%**
-- Protection held for the swarm: **51%**
+- A Vampire lord or anthem drawn (the combat plan): **14%**
+- THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest): **9%**
+- Ramp or fixing drawn: **43%**
+- A draw engine drawn: **57%**
+- Protection held for the swarm: **52%**
 - An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight: **24%**
 - THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source: **2%**
-- A castable Vampire drawn — the eminence trigger every kill proof opens on: **53%**
+- A castable Vampire drawn — the eminence trigger every kill proof opens on: **45%**
 - A free sacrifice outlet drawn (bloodline's new engine): **44%**
-- share of opening sevens the model would keep: **79%**
-- Colour on curve (lands + rocks): W 92%, B 92%, R 91%
+- share of opening sevens the model would keep: **78%**
+- Colour on curve (lands + rocks): W 91%, B 91%, R 90%
 - Forge (an optional probe, not a gate): last run 2026-10-02, 48/200 won (31% (95% CI 24%–39%)) on V3 — on an older list
 <!-- /ctx:gen numbers -->
 

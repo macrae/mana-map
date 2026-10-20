@@ -1,23 +1,23 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
+  "decklist_sha256": "769a763bc8011119ecc1fc6f2a1dc06b33324ee55ee59958dce786a984b5ade1",
   "lands": {
-    "total": 36,
-    "entries": 33,
+    "total": 35,
+    "entries": 32,
     "life": {
       "recurring_per_tap_cycle": 8,
-      "one_time_on_entry": 10
+      "one_time_on_entry": 9
     },
     "enters_tapped": 13,
     "enters_tapped_always": 3,
     "classes": {
       "basic": 4,
-      "fetch": 6,
+      "fetch": 5,
       "fixing": 5,
       "mdfc": 1,
       "tapped": 13,
       "untapped-dual": 10,
-      "utility": 18
+      "utility": 17
     },
     "list": [
       {
@@ -255,19 +255,6 @@
         ]
       },
       {
-        "name": "Polluted Delta",
-        "copies": 1,
-        "classes": [
-          "fetch",
-          "utility"
-        ],
-        "produces": [
-          "B",
-          "R",
-          "W"
-        ]
-      },
-      {
         "name": "Reflecting Pool",
         "copies": 1,
         "classes": [
@@ -409,10 +396,10 @@
   },
   "sources": {
     "lands": {
-      "W": 21,
+      "W": 20,
       "U": 0,
-      "B": 32,
-      "R": 19,
+      "B": 31,
+      "R": 18,
       "G": 0
     },
     "nonland": {
@@ -423,10 +410,10 @@
       "G": 0
     },
     "total": {
-      "W": 23,
+      "W": 22,
       "U": 0,
-      "B": 37,
-      "R": 22,
+      "B": 36,
+      "R": 21,
       "G": 0
     },
     "gated": {
@@ -496,39 +483,39 @@
   },
   "pips": {
     "B": {
-      "total_pips": 54.0,
+      "total_pips": 56.0,
       "max_pips": 3,
-      "cards": 42,
+      "cards": 43,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "R": {
-      "total_pips": 12.0,
+      "total_pips": 13.0,
       "max_pips": 2,
-      "cards": 11,
+      "cards": 12,
       "earliest_turn": 2,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 22.0,
+      "total_pips": 23.0,
       "max_pips": 2,
-      "cards": 21,
+      "cards": 22,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.614,
-      "source_share": 0.444
+      "pip_share": 0.609,
+      "source_share": 0.449
     },
     "R": {
-      "pip_share": 0.136,
-      "source_share": 0.264
+      "pip_share": 0.141,
+      "source_share": 0.261
     },
     "W": {
       "pip_share": 0.25,
-      "source_share": 0.292
+      "source_share": 0.29
     }
   },
   "source_targets": {
@@ -538,19 +525,19 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.895,
-      "B": 0.855,
-      "R": 0.866
+      "W": 0.881,
+      "B": 0.839,
+      "R": 0.849
     },
     "with_rocks_and_dorks": {
-      "W": 0.918,
-      "B": 0.916,
-      "R": 0.907
+      "W": 0.907,
+      "B": 0.906,
+      "R": 0.895
     },
     "lands_only_ungated": {
-      "W": 0.895,
-      "B": 0.855,
-      "R": 0.866
+      "W": 0.881,
+      "B": 0.839,
+      "R": 0.849
     }
   },
   "ramp": {
@@ -560,28 +547,28 @@
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.531,
-      "2": 0.996,
-      "3": 0.906,
-      "4": 0.78,
-      "5": 0.669,
-      "6": 0.597,
-      "7": 0.547,
-      "8": 0.541,
-      "9": 0.534
+      "1": 0.998,
+      "10": 0.527,
+      "2": 0.995,
+      "3": 0.891,
+      "4": 0.764,
+      "5": 0.641,
+      "6": 0.573,
+      "7": 0.524,
+      "8": 0.512,
+      "9": 0.512
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 8.485,
-      "2": 2.141,
-      "3": 3.511,
-      "4": 4.412,
-      "5": 5.171,
-      "6": 5.866,
-      "7": 6.501,
-      "8": 7.168,
-      "9": 7.825
+      "1": 0.998,
+      "10": 8.305,
+      "2": 2.139,
+      "3": 3.495,
+      "4": 4.385,
+      "5": 5.11,
+      "6": 5.777,
+      "7": 6.387,
+      "8": 7.022,
+      "9": 7.658
     }
   },
   "assumptions": [
@@ -591,9 +578,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 37.",
-    "R: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
-    "W: 21 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
-    "13 of 36 lands enter tapped (36%) — over the one-in-three budget the deck builder allows itself."
+    "B: 31 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 36.",
+    "R: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 21.",
+    "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 22.",
+    "13 of 35 lands enter tapped (37%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
