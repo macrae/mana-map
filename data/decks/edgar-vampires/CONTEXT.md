@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Edgar Markov](https://manamap.seanmacrae.com/viz/index.html?cards=Edgar+Markov)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-20
+- **Version:** v2.1.0 (V6) · **status:** sleeved since 2026-10-20
 - **Colours:** WBR · **lands:** 35 · **bracket floor:** 4 (Optimized) · **DTI:** 28/96 → B4 (deckcheck.co, 2026-10-18, 1 reading) — older list
 - **Combos:** 8 known lines (8 infinite, 8 two-card) · 135 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=edgar-vampires) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=edgar-vampires)
@@ -108,7 +108,7 @@ Mostly dual and tri colour so all three colours are ready. Fetches, shocks, pain
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v2.1.0 (V6), 2026-10-20. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **70%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
@@ -149,6 +149,8 @@ Six games are logged (0 wins; the record block counts them). The same things kee
 ## Change history
 
 <!-- ctx:gen history -->
+- **v2.1.0 · V6** (2026-10-20) — in: Anowon, the Ruin Sage, Bloodghast, Captivating Vampire, Clavileño, First of the Blessed, Drana and Linvala, Enduring Tenacity, Exotic Orchard, Morbid Opportunist …; out: Bloodtracker, Boros Charm, Cosmos Elixir, Despark, Falkenrath Aristocrat, Florian, Voldaren Scion, Gifted Aetherborn, Herald's Horn …. _mean-v2 merged 2026-10-20: the profile package, four proactive-denial Vampires, Bloodghast, a land pass — fourteen swaps on the scan-confirmed v2.0.1_
+  - merge `mean-v2`: objective extra_cards_8 read **met** — played on printed proxies from 2026-10-20; the unowned cards are on the order list
 - **v2.0.1 · V5** (2026-10-20) — in: Charismatic Conqueror, Cordial Vampire, Florian, Voldaren Scion; out: Knight of the Ebon Legion, Polluted Delta, Skullclamp. _the sleeved list as scanned 2026-10-20: three cards of drift corrected (Conqueror, Cordial, Florian in; Knight, Polluted Delta, Skullclamp out)_
 - **v2.0.0 · V4** (2026-10-06) — in: Anje, Maid of Dishonor, Arid Mesa, Bloodtithe Harvester, Cosmos Elixir, Demonic Tutor, Diabolic Intent, Edgar, Ancient Bloodlord, Enlightened Tutor …; out: Altar of Dementia, Blade of the Bloodchief, Bloodflow Connoisseur, Captivating Vampire, Champion of Dusk, Charismatic Conqueror, Cordial Vampire, Drana, Liberator of Malakir …. _merged and sleeved 2026-10-06_
   - merge `mardu-combo-v1`: objective forge.empty_hand_turns read **not measured** — Sleeved in paper 2026-10-06 by the pilot: the unsourced adds are ordered (ManaPool, 2026-10-06) and played as proxies until they arrive.
