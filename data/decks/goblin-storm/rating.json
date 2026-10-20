@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.15,
    "sub_score": 57.14,
    "sub_ci": [
     57.14,
-    63.73
+    63.53
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -48,11 +48,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1778,
+   "weight_effective": 0.1,
    "sub_score": 85.72,
    "sub_ci": [
-    79.31,
-    92.14
+    79.29,
+    92.11
    ],
    "placement": 66.67,
    "anchor": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.15,
    "sub_score": 28.57,
    "sub_ci": [
     28.57,
-    34.91
+    35.01
    ],
    "placement": 0.0,
    "anchor": 50.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2889,
+   "weight_effective": 0.1625,
    "sub_score": 58.57,
    "sub_ci": [
     58.57,
@@ -233,13 +233,48 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "dti",
+   "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1875,
+   "sub_score": 51.19,
+   "sub_ci": [
+    43.87,
+    58.59
+   ],
+   "placement": 50.0,
+   "anchor": 52.08,
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 35,
+     "ci95": null,
+     "n": 3,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 52.08,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
   }
  ],
  "withheld": [
-  {
-   "component": "dti",
-   "reason": "the DeckCheck reading describes another list — `deckcheck goblin-storm --write` after a rescan"
-  },
   {
    "component": "table_record",
    "reason": "2 game(s) logged; 5 needed"
@@ -251,10 +286,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "judgment written against 5cf31b295d51"
   }
  ],
  "limits": [
@@ -274,36 +305,80 @@
    "score": 35,
    "max_score": 96,
    "bracket": 3,
-   "as_of": "2026-10-18",
-   "stale_list": true
+   "as_of": "2026-10-20",
+   "stale_list": false
   },
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
- "fleet_sha": "b6365988b0d9",
+ "fleet_sha": "1c4efc49b4a1",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
- "code_score": 55.0,
- "score_point": 55.0,
- "score": 56.2,
+ "open_questions": [
+  {
+   "question": "Does the goldfish's mana read hold at the table, given the keeps lost on goblin presence rather than lands? Settled by logged games on this list.",
+   "settled_by": "rate"
+  },
+  {
+   "question": "Does Goblin Matron raise goblin presence in the opening hand enough to retire the mulligan rule?",
+   "settled_by": "goldfish"
+  }
+ ],
+ "iterations": 2,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "components",
+    "status": "supported",
+    "note": "validate-rating OK; rating --json re-run matches on every non-simulated key (components, withheld, limits, code_score 54.1, score_point, bracket, uncertainty, sensitivity, concordance)."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "54 sits at code_score 54.1, claiming no gap; nothing to be too generous or harsh about. The unmeasured fact (2 losses on v1.0.0) is explicitly not sized."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "'speed placed last in the bracket' matches placement 0 on kill_by_turn_8 0.569; resilience and DeckCheck are stated as scored elsewhere; the weakest-grade claim is gone."
+   },
+   {
+    "where": "judgment.citations",
+    "status": "supported",
+    "note": "Both context quotes verbatim and consistent with the whole pilot slice (no games on this list); skeleton refs exist; dti citation removed; no engine.json."
+   },
+   {
+    "where": "concordance.outliers[0]",
+    "status": "supported",
+    "note": "Level is mixed; mana outlier answered with a plain statement that no cited fact explains it, and the number sits at code_score, as required."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Unchanged and still unanswered by the skeleton."
+   }
+  ],
+  "iterations": 2
+ },
+ "code_score": 54.1,
+ "score_point": 54.0,
+ "score": 54.6,
  "score_ci": [
-  45.7,
-  65.8
+  48.4,
+  60.9
  ],
  "grade": "C",
  "grade_range": [
   "D",
-  "B"
+  "C"
  ],
  "grade_display": "C",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.064,
-  "C": 0.786,
-  "D": 0.149,
+  "B": 0.004,
+  "C": 0.888,
+  "D": 0.107,
   "F": 0.0
  },
  "uncertainty": {
@@ -320,37 +395,45 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 54.2,
+    "score": 53.5,
     "grade": "C"
    },
    "mana": {
-    "score": 48.4,
-    "grade": "D"
+    "score": 50.5,
+    "grade": "C"
    },
    "resilience": {
-    "score": 64.6,
+    "score": 58.5,
     "grade": "C"
    },
    "construction": {
-    "score": 53.6,
+    "score": 53.2,
+    "grade": "C"
+   },
+   "dti": {
+    "score": 54.7,
+    "grade": "C"
+   },
+   "judgment": {
+    "score": 54.1,
     "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "mana",
-    "share_now": 0.178,
-    "share_at_flip": 0.043,
+    "component": "resilience",
+    "share_now": 0.15,
+    "share_at_flip": 0.285,
     "boundary": 50,
     "grade_at_flip": "D",
-    "direction": "lower"
+    "direction": "raise"
    },
    {
-    "component": "resilience",
-    "share_now": 0.267,
-    "share_at_flip": 0.406,
-    "boundary": 50,
-    "grade_at_flip": "D",
+    "component": "mana",
+    "share_now": 0.1,
+    "share_at_flip": 0.411,
+    "boundary": 65,
+    "grade_at_flip": "B",
     "direction": "raise"
    }
   ]
@@ -359,6 +442,8 @@
   "level": "mixed",
   "instruments": {
    "construction": 3.0,
+   "dti": 3.0,
+   "judgment": 4.0,
    "mana": 2.0,
    "resilience": 4.0,
    "speed": 4.0
@@ -367,36 +452,56 @@
   "spread": 0.667,
   "outliers": [
    {
-    "instrument": "construction",
-    "rank": 3.0,
-    "side": "better"
-   },
-   {
     "instrument": "mana",
     "rank": 2.0,
     "side": "better"
-   },
-   {
-    "instrument": "resilience",
-    "rank": 4.0,
-    "side": "worse"
-   },
-   {
-    "instrument": "speed",
-    "rank": 4.0,
-    "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.25,
-   "p": 0.4321,
-   "p_method": "exact over 13824 relabellings",
-   "m": 4,
+   "kendall_w": 0.233,
+   "p": 0.2631,
+   "p_method": "permutation, 5000 draws, seed 20261019",
+   "m": 6,
    "n": 4
   }
  },
- "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance mixed",
- "judgment": null,
+ "resolution": "the 90% interval spans 1 grade boundary (50); concordance mixed",
+ "judgment": {
+  "sub_score": 54,
+  "argument": "The measured components already say where this deck stands, and I add nothing to them. The goldfish has no blockers and no removal, so its read of board quality is not evidence, but speed here is not flattered: the deck's kill-by-turn-eight figure places last in its bracket, and the score already carries that. The record is two games, two losses, both on the superseded list, both from one keep: \"I kept a hand with no small goblins.\" That is a pilot rule now, and the thirteen adds plus Goblin Matron are aimed at it, but no game has been played on this list, so the record does not explain a move in either direction until games on this list exist. The mana outlier, ranked better than the other instruments, is not explained by any cited fact: the losses were not land problems, and I cannot say whether the goldfish's smooth curve will hold at the table. Resilience and DeckCheck's read are already scored in their own components, and I do not count them twice. This number sits at the measured score because the only unmeasured fact is a thin record on an older list, and a gap I cannot size from cited facts is not a gap I will claim.",
+  "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:mana",
+    "quote": "missed_land_drop_rate"
+   },
+   {
+    "kind": "context",
+    "ref": "context:pilot",
+    "quote": "I kept a hand with no small goblins"
+   },
+   {
+    "kind": "context",
+    "ref": "context:pilot",
+    "quote": "Two games, two losses, both on v1.0.0"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.25,
+  "sub_ci": [
+   45.87,
+   62.5
+  ]
+ },
  "rank": {
   "position": 4,
   "of": 4,
@@ -407,10 +512,10 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.001,
-   "2": 0.015,
-   "3": 0.069,
-   "4": 0.915
+   "1": 0.0,
+   "2": 0.001,
+   "3": 0.018,
+   "4": 0.981
   },
   "basis": {
    "gishath": "rating.json judgment",
@@ -419,10 +524,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "gishath": 75.0,
-   "ur-dragon": 68.0,
-   "sharknado": 66.7,
-   "goblin-storm": 56.2
+   "gishath": 74.9,
+   "ur-dragon": 68.1,
+   "sharknado": 66.8,
+   "goblin-storm": 54.6
   }
  }
 }

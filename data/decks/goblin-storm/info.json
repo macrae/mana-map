@@ -16,7 +16,8 @@
     "of": 19,
     "stale": [],
     "invalid": [
-      "engine"
+      "engine",
+      "CONTEXT.md"
     ],
     "verified": true,
     "missing": [
@@ -3119,11 +3120,11 @@
     "score": 35,
     "max_score": 96,
     "bracket": 3,
-    "as_of": "2026-10-18",
-    "source_updated_at": "2026-10-19T03:28:50.008291+00:00",
+    "as_of": "2026-10-20",
+    "source_updated_at": "2026-10-20T21:44:52.016101+00:00",
     "url": "https://deckcheck.co/app/decklist/lHEauc76uA6G",
-    "stale_list": true,
-    "readings_n": 2,
+    "stale_list": false,
+    "readings_n": 3,
     "omni": {
       "benchmarks": {
         "A1": "B",
@@ -3139,7 +3140,7 @@
         "S2": "B",
         "S3": "B"
       },
-      "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+      "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
       "median_bracket": 3,
       "median_score": 35,
       "n": 1,
@@ -3147,9 +3148,9 @@
     },
     "floor_vs_dti": {
       "floor": 1,
-      "floor_decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+      "floor_decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
       "floor_name": "Exhibition",
-      "reading_as_of": "2026-10-18",
+      "reading_as_of": "2026-10-20",
       "relation": "dti_higher",
       "their_bracket": 3
     },
@@ -3739,8 +3740,7 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status goblin-storm` names them; fix before anything else reads them",
-    "DTI (2026-10-18) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck goblin-storm --write`",
+    "2 artifact(s) fail their own gate (engine, CONTEXT.md) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×1, goldfish ×4, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"
