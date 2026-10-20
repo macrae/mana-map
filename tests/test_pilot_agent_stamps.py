@@ -50,8 +50,9 @@ STAMP_CHECKED = {name: sha for _k, name, sha, _r, _w, _h in STAGES if sha}
 #: engine model is an agent artifact: it is re-run, never hand-patched. Strict —
 #: an entry whose model is current again fails until it is removed.
 ENGINE_AWAITING_RERUN = {
-    "edgar-vampires": "v2.0.0 (mardu-combo-v1): re-run /analyze-engine edgar-vampires",
-    "sharknado": "v1.2.0 (momentum-v1): re-run /analyze-engine sharknado",
+    # edgar-vampires left this list 2026-10-20: /analyze-engine re-ran for v2.1.0.
+    "goblin-storm": "v1.1.0 (meaner-v1) and v1.1.1 (matron-v1): re-run /analyze-engine goblin-storm",
+    "sharknado": "v1.2.0 (momentum-v1) and v1.3.0 (torbran-v1): re-run /analyze-engine sharknado",
 }
 
 def test_every_stamp_checked_artifact_has_a_way_to_be_stamped():
