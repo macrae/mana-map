@@ -238,6 +238,7 @@ def test_every_entry_carries_its_format_and_a_60_card_deck_has_no_commander(tmp_
                               "started": by["draft"]["started"]}]
 
 
+@requires_deck
 def test_every_entry_lists_every_name_and_face_in_its_list():
     """`cards` (2026-10-20, MANIFEST_VERSION 12) is the Atlas pill's whole
     evidence: the set of names and faces in the deck's cards.json, commander
