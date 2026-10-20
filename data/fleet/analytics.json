@@ -3,18 +3,18 @@
   "benchmark_grades": {
    "distribution": {
     "A1": {
-     "A": 3,
+     "A": 2,
      "B": 4,
      "C": 0,
      "F": 0,
-     "S": 0
+     "S": 1
     },
     "A2": {
-     "A": 3,
+     "A": 2,
      "B": 4,
      "C": 0,
      "F": 0,
-     "S": 0
+     "S": 1
     },
     "I1": {
      "A": 1,
@@ -25,14 +25,14 @@
     },
     "I2": {
      "A": 0,
-     "B": 5,
+     "B": 6,
      "C": 0,
-     "F": 2,
+     "F": 1,
      "S": 0
     },
     "P1": {
-     "A": 4,
-     "B": 3,
+     "A": 5,
+     "B": 2,
      "C": 0,
      "F": 0,
      "S": 0
@@ -52,8 +52,8 @@
      "S": 0
     },
     "R1": {
-     "A": 4,
-     "B": 3,
+     "A": 5,
+     "B": 2,
      "C": 0,
      "F": 0,
      "S": 0
@@ -80,8 +80,8 @@
      "S": 0
     },
     "S3": {
-     "A": 3,
-     "B": 4,
+     "A": 4,
+     "B": 3,
      "C": 0,
      "F": 0,
      "S": 0
@@ -120,18 +120,18 @@
    },
    "rows": {
     "edgar-vampires": {
-     "A1": "A",
-     "A2": "A",
+     "A1": "S",
+     "A2": "S",
      "I1": "B",
-     "I2": "F",
-     "P1": "B",
+     "I2": "B",
+     "P1": "A",
      "P2": "B",
      "P3": "B",
-     "R1": "B",
+     "R1": "A",
      "R2": "A",
      "S1": "B",
      "S2": "A",
-     "S3": "B"
+     "S3": "A"
     },
     "gishath": {
      "A1": "A",
@@ -227,6 +227,13 @@
      "current_list": false,
      "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
      "score": 28
+    },
+    {
+     "as_of": "2026-10-20",
+     "bracket": 4,
+     "current_list": true,
+     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
+     "score": 46
     }
    ],
    "gishath": [
@@ -301,12 +308,12 @@
   "floor_vs_dti": [
    {
     "dti_bracket": 4,
-    "dti_score": 28,
+    "dti_score": 46,
     "floor": 4,
-    "reading_as_of": "2026-10-18",
+    "reading_as_of": "2026-10-20",
     "relation": "equal",
     "slug": "edgar-vampires",
-    "stale_list": true,
+    "stale_list": false,
     "target": 4
    },
    {
@@ -947,61 +954,61 @@
     }
    },
    "dti": {
-    "as_of": "2026-10-18",
+    "as_of": "2026-10-20",
     "benchmarks": {
-     "A1": "A",
-     "A2": "A",
+     "A1": "S",
+     "A2": "S",
      "I1": "B",
-     "I2": "F",
-     "P1": "B",
+     "I2": "B",
+     "P1": "A",
      "P2": "B",
      "P3": "B",
-     "R1": "B",
+     "R1": "A",
      "R2": "A",
      "S1": "B",
      "S2": "A",
-     "S3": "B"
+     "S3": "A"
     },
     "bracket": 4,
     "floor_vs_dti": {
      "floor": 4,
      "floor_decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
      "floor_name": "Optimized",
-     "reading_as_of": "2026-10-18",
+     "reading_as_of": "2026-10-20",
      "relation": "equal",
      "their_bracket": 4
     },
     "max_score": 96,
     "omni": {
      "benchmarks": {
-      "A1": "A",
-      "A2": "A",
+      "A1": "S",
+      "A2": "S",
       "I1": "B",
-      "I2": "F",
-      "P1": "B",
+      "I2": "B",
+      "P1": "A",
       "P2": "B",
       "P3": "B",
-      "R1": "B",
+      "R1": "A",
       "R2": "A",
       "S1": "B",
       "S2": "A",
-      "S3": "B"
+      "S3": "A"
      },
      "median_bracket": 4,
-     "median_score": 28,
+     "median_score": 46,
      "n": 1
     },
-    "readings_n": 1,
+    "readings_n": 2,
     "score": {
-     "as_of": "2026-10-18",
+     "as_of": "2026-10-20",
      "basis": "of 96; an LLM's read, dated",
-     "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee",
-     "n": 1,
+     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
+     "n": 2,
      "source": "deckcheck.json#readings[-1].score",
-     "stale": true,
-     "value": 28
+     "stale": false,
+     "value": 46
     },
-    "stale_list": true
+    "stale_list": false
    },
    "format": null,
    "lifecycle": null,
@@ -1026,7 +1033,7 @@
    "placements": {
     "fleet": {
      "answer_cards": "below the fleet median",
-     "dti_score": "below the fleet median",
+     "dti_score": "above the fleet median",
      "kill_by_turn_6": "below the fleet median",
      "kill_by_turn_8": "below the fleet median",
      "mana_at_turn_five": "above the fleet median",
@@ -4657,7 +4664,7 @@
   "dti_score": {
    "max": 46,
    "median": 35,
-   "min": 28,
+   "min": 30,
    "n": 7
   },
   "kill_by_turn_6": {
