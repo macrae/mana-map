@@ -107,7 +107,12 @@ def _check_citation(c, where, slug, errors, strategy_sections, skeleton_names):
         sdoc = load_json(hits[0]) or {}
         if not checker_passed(sdoc):
             errors.append(f"{where}: cites stack {sid}, which has not passed its checker")
-        hay = _normalize_ws(json.dumps(sdoc.get("title", "")) + json.dumps(sdoc.get("resolution", {}), ensure_ascii=False))
+        # ensure_ascii=False on BOTH halves: the title used to be dumped with the
+        # default escaping, so a title carrying an em dash ("… or not — verified
+        # before it is counted", stack 012) became "—" in the haystack and no
+        # verbatim quote of it could ever match (found 2026-10-20).
+        hay = _normalize_ws(json.dumps(sdoc.get("title", ""), ensure_ascii=False)
+                            + json.dumps(sdoc.get("resolution", {}), ensure_ascii=False))
         if _normalize_ws(quote) not in hay:
             errors.append(f"{where}: quote is not in stack {sid}'s title or resolution: {quote[:60]!r}")
     elif kind == "engine":
