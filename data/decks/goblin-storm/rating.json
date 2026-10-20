@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.15,
+   "weight_effective": 0.2667,
    "sub_score": 57.14,
    "sub_ci": [
     57.14,
-    63.53
+    63.73
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -26,14 +26,14 @@
    "inputs": [
     {
      "figure": "kill_by_turn_8",
-     "value": 0.565,
+     "value": 0.569,
      "ci95": [
-      0.5553,
-      0.5747
+      0.5593,
+      0.5787
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     }
    ],
    "citations": [
@@ -48,11 +48,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1,
+   "weight_effective": 0.1778,
    "sub_score": 85.72,
    "sub_ci": [
-    79.29,
-    92.11
+    79.31,
+    92.14
    ],
    "placement": 66.67,
    "anchor": 100.0,
@@ -60,22 +60,22 @@
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
-     "value": 0.187,
+     "value": 0.1876,
      "ci95": [
-      0.1795,
-      0.1948
+      0.1801,
+      0.1954
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.consistency",
-     "value": 0.914,
+     "value": 0.915,
      "ci95": null,
      "n": null,
      "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     }
    ],
    "citations": [
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.15,
+   "weight_effective": 0.2667,
    "sub_score": 28.57,
    "sub_ci": [
     28.57,
-    35.01
+    34.91
    ],
    "placement": 0.0,
    "anchor": 50.0,
@@ -106,7 +106,7 @@
      "ci95": null,
      "n": null,
      "source": "benchmark.json#metrics.response.answer_cards",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.interaction-breadth",
@@ -114,7 +114,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction-breadth (classes answered of 5)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     }
    ],
    "citations": [
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.1625,
+   "weight_effective": 0.2889,
    "sub_score": 58.57,
    "sub_ci": [
     58.57,
@@ -145,15 +145,15 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#mana-base (verdict at)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.ramp",
-     "value": 15,
+     "value": 14,
      "ci95": null,
      "n": null,
      "source": "deck-audit#ramp (verdict over)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.card-advantage",
@@ -161,7 +161,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#card-advantage (verdict under)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.interaction",
@@ -169,7 +169,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction (verdict at)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.sweepers",
@@ -177,7 +177,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#sweepers (verdict under)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.protection",
@@ -185,7 +185,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#protection (verdict under)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     },
     {
      "figure": "audit.threat-density",
@@ -193,7 +193,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#threat-density (verdict at)",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
     }
    ],
    "citations": [
@@ -233,48 +233,13 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
-  },
-  {
-   "name": "dti",
-   "weight": 0.15,
-   "weight_validity": 1.0,
-   "weight_effective": 0.1875,
-   "sub_score": 51.19,
-   "sub_ci": [
-    43.87,
-    58.59
-   ],
-   "placement": 50.0,
-   "anchor": 52.08,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
-   "inputs": [
-    {
-     "figure": "dti.score",
-     "value": 35,
-     "ci95": null,
-     "n": 2,
-     "source": "deckcheck.json#readings[-1].score",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
-    },
-    {
-     "figure": "dti.rubric_mean",
-     "value": 52.08,
-     "ci95": null,
-     "n": 1,
-     "source": "deckcheck.json#readings[-1].benchmarks",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6"
-    }
-   ],
-   "citations": [
-    {
-     "kind": "skeleton",
-     "ref": "skeleton:dti",
-     "quote": "DeckCheck Threat Index"
-    }
-   ]
   }
  ],
  "withheld": [
+  {
+   "component": "dti",
+   "reason": "the DeckCheck reading describes another list — `deckcheck goblin-storm --write` after a rescan"
+  },
   {
    "component": "table_record",
    "reason": "2 game(s) logged; 5 needed"
@@ -286,6 +251,10 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
+  },
+  {
+   "component": "judgment",
+   "reason": "judgment written against 5cf31b295d51"
   }
  ],
  "limits": [
@@ -306,94 +275,35 @@
    "max_score": 96,
    "bracket": 3,
    "as_of": "2026-10-18",
-   "stale_list": false
+   "stale_list": true
   },
   "floor_vs_target": "floor 1, target 3"
  },
- "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
- "fleet_sha": "2748e88c6e5c",
+ "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+ "fleet_sha": "b6365988b0d9",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [
-  {
-   "question": "How many Goblin bodies does this list open with, and does the mulligan rule hold on it? Only games logged on this list can say.",
-   "settled_by": "rate"
-  },
-  {
-   "question": "How much of the storm turn survives opposing removal? The goldfish has none, so a diagnosis of the engine's exposure is needed.",
-   "settled_by": "diagnose"
-  }
- ],
- "iterations": 3,
- "verifier": {
-  "verdict": "pass",
-  "findings": [
-   {
-    "where": "mechanical",
-    "status": "supported",
-    "note": "validate-rating OK; fresh rating --json matches rating.json on every key including score (no group movement)."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "log:001 quote verbatim; the argument correctly scopes it to an older list (log hash c8651652... differs from the rated 5cf31b29...) and imports nothing."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "stack:003 passes; title quoted; sequential-draw lethal is its point."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "stack:002 passes; final_state shows 8 tokens and 8 damage to each of 32 and 28 life: storm count and damage, not a kill, as argued."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "kill_by_turn_8 0.565 matches the speed component."
-   },
-   {
-    "where": "judgment.citations[4]",
-    "status": "supported",
-    "note": "answer_cards 13; audit interaction 11 against target >=8, sweepers 0 (UNDER) as stated; the claim is worded to those figures."
-   },
-   {
-    "where": "judgment.sub_score",
-    "status": "supported",
-    "note": "57 vs code_score 56.8 is neutral; no unmeasured specific fact is claimed to move it. Outliers construction and mana are addressed honestly (mana already scores 100; no Goblin-count rate on this list), and the flips show neither explanation would change the grade."
-   },
-   {
-    "where": "judgment.argument",
-    "status": "supported",
-    "note": "No superlatives; the round-2 over-claim is gone."
-   },
-   {
-    "where": "open_questions",
-    "status": "supported",
-    "note": "Both are unanswered by the skeleton: opening Goblin counts need games on this list; removal exposure needs a diagnosis."
-   }
-  ],
-  "iterations": 3
- },
- "code_score": 54.1,
- "score_point": 54.8,
- "score": 55.3,
+ "open_questions": [],
+ "iterations": 0,
+ "verifier": null,
+ "code_score": 55.0,
+ "score_point": 55.0,
+ "score": 56.2,
  "score_ci": [
-  49.1,
-  61.6
+  45.7,
+  65.8
  ],
  "grade": "C",
  "grade_range": [
   "D",
-  "C"
+  "B"
  ],
  "grade_display": "C",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.008,
-  "C": 0.92,
-  "D": 0.072,
+  "B": 0.064,
+  "C": 0.786,
+  "D": 0.149,
   "F": 0.0
  },
  "uncertainty": {
@@ -410,45 +320,37 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 54.4,
+    "score": 54.2,
     "grade": "C"
    },
    "mana": {
-    "score": 51.4,
-    "grade": "C"
+    "score": 48.4,
+    "grade": "D"
    },
    "resilience": {
-    "score": 59.4,
+    "score": 64.6,
     "grade": "C"
    },
    "construction": {
-    "score": 54.1,
-    "grade": "C"
-   },
-   "dti": {
-    "score": 55.6,
-    "grade": "C"
-   },
-   "judgment": {
-    "score": 54.1,
+    "score": 53.6,
     "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "resilience",
-    "share_now": 0.15,
-    "share_at_flip": 0.305,
+    "component": "mana",
+    "share_now": 0.178,
+    "share_at_flip": 0.043,
     "boundary": 50,
     "grade_at_flip": "D",
-    "direction": "raise"
+    "direction": "lower"
    },
    {
-    "component": "mana",
-    "share_now": 0.1,
-    "share_at_flip": 0.397,
-    "boundary": 65,
-    "grade_at_flip": "B",
+    "component": "resilience",
+    "share_now": 0.267,
+    "share_at_flip": 0.406,
+    "boundary": 50,
+    "grade_at_flip": "D",
     "direction": "raise"
    }
   ]
@@ -457,8 +359,6 @@
   "level": "mixed",
   "instruments": {
    "construction": 3.0,
-   "dti": 3.0,
-   "judgment": 4.0,
    "mana": 2.0,
    "resilience": 4.0,
    "speed": 4.0
@@ -467,61 +367,36 @@
   "spread": 0.667,
   "outliers": [
    {
+    "instrument": "construction",
+    "rank": 3.0,
+    "side": "better"
+   },
+   {
     "instrument": "mana",
     "rank": 2.0,
     "side": "better"
+   },
+   {
+    "instrument": "resilience",
+    "rank": 4.0,
+    "side": "worse"
+   },
+   {
+    "instrument": "speed",
+    "rank": 4.0,
+    "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.233,
-   "p": 0.2631,
-   "p_method": "permutation, 5000 draws, seed 20261019",
-   "m": 6,
+   "kendall_w": 0.25,
+   "p": 0.4321,
+   "p_method": "exact over 13824 relabellings",
+   "m": 4,
    "n": 4
   }
  },
- "resolution": "the 90% interval spans 1 grade boundary (50); concordance mixed",
- "judgment": {
-  "sub_score": 57,
-  "argument": "The measured components miss two things: how this list plays, and whether its engine converts. The table record is withheld, and the two logged games carry a list hash that is not the rated list's, so they say nothing about it. I do not import them; the pilot's own verdict there, \"a bad draw and a bad keep, not a deck problem\", concerns the older list. What I can add is the engine: the passing stacks prove parts of the thesis (Fists of Flame on Zada is a sequential-draw lethal; Empty the Warrens with Impact Tremors proves the storm count and the damage, not a kill). That is a capability the goldfish clock (kill_by_turn_8 0.565) does not name, but it is not a result on this list either, and the goldfish cannot see blockers or removal. Divergent concordance names two outliers. Construction ranks better than the other instruments, but I have no Goblin count or opening-hand rate on this list to say the audit bands undersell it, so I leave it as measured. Mana ranks best, and the component already scores it 100; the record does not explain or dispute that. Resilience reads 13 answer cards and 0 sweepers; the audit's interaction axis, at 11, sits at its band. I leave both as measured. I sit at the measured score: nothing unmeasured and specific to this list moves it.",
-  "citations": [
-   {
-    "kind": "log",
-    "ref": "log:001",
-    "quote": "This was a bad draw and a bad keep, not a deck problem."
-   },
-   {
-    "kind": "stack",
-    "ref": "stack:003",
-    "quote": "Fists of Flame on Zada: the sequential-draw lethal"
-   },
-   {
-    "kind": "stack",
-    "ref": "stack:002",
-    "quote": "Empty the Warrens as the fourth spell with Impact Tremors out"
-   },
-   {
-    "kind": "skeleton",
-    "ref": "skeleton:speed",
-    "quote": "kill_by_turn_8"
-   },
-   {
-    "kind": "skeleton",
-    "ref": "skeleton:resilience",
-    "quote": "answer_cards"
-   }
-  ],
-  "against": {
-   "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
-   "spec_sha": "fd483871b754"
-  },
-  "weight": 0.2,
-  "weight_effective": 0.25,
-  "sub_ci": [
-   48.87,
-   65.5
-  ]
- },
+ "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance mixed",
+ "judgment": null,
  "rank": {
   "position": 4,
   "of": 4,
@@ -532,10 +407,10 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.0,
-   "2": 0.001,
-   "3": 0.024,
-   "4": 0.976
+   "1": 0.001,
+   "2": 0.015,
+   "3": 0.069,
+   "4": 0.915
   },
   "basis": {
    "gishath": "rating.json judgment",
@@ -544,10 +419,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "gishath": 74.9,
-   "ur-dragon": 68.1,
-   "sharknado": 66.8,
-   "goblin-storm": 55.3
+   "gishath": 75.0,
+   "ur-dragon": 68.0,
+   "sharknado": 66.7,
+   "goblin-storm": 56.2
   }
  }
 }
