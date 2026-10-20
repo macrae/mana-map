@@ -73,13 +73,159 @@
     "digest": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061"
   },
   "routines": {
+    "decision:001": {
+      "agent": "pilot-notes",
+      "agent_prompt_sha256": "79517ca85959e354df4e34116c457266d2f75f300d8f286af87ba58b89b56f14",
+      "artifact": "data/decks/keen-engineering/decisions/001-disk-now-or-hold-the-fort.json",
+      "artifact_sha256": "e21b242071ed0a5894ebcdff1d0a2bccef0e80fdc2627bbe74f011c041bbb326",
+      "card_refs": [
+        "Counterspell",
+        "Darksteel Citadel",
+        "Darksteel Juggernaut",
+        "Island",
+        "Lonely Sandbar",
+        "Master of Etherium",
+        "Nevinyrral's Disk",
+        "Sai, Master Thopterist"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061",
+        "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
+      },
+      "fingerprint": "eeb756aa38eb5b6e29a5910020e061e40e870056795e306eea8a254d517be227",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/decisions/001-disk-now-or-hold-the-fort.json#scenario",
+          "sha256": "752ee10866a9f3317fed10374ed69456080a29d91e7f8e806b490f15d56fdb13"
+        },
+        {
+          "path": "data/decks/keen-engineering/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
+          "sha256": "396fd71afac5772955ea3d448a2bf172efc5faa44d8b97ea843f38083cff3ed4"
+        },
+        {
+          "path": "data/decks/keen-engineering/strategic_frame.json",
+          "sha256": "37bb4e37f829d3848ece493fa118b2c9f7a106f194462050765f6d6b8d8e6c6e"
+        }
+      ]
+    },
+    "deck-engine": {
+      "agent": "deck-engineer+engine-critic",
+      "agent_prompt_sha256": "e956f3d9f77e6019908388fba61be3d57330e3574ef881385b7a27191053110a",
+      "artifact": "data/decks/keen-engineering/engine.json",
+      "artifact_sha256": "3f73dc2462a6e379211dbd81b9c79159206becf41f7ea6b263a4768a3dd434a6",
+      "card_refs": [
+        "Adaptive Omnitool",
+        "Aether Spellbomb",
+        "Aetherize",
+        "All Is Dust",
+        "Arcane Signet",
+        "Broodstar",
+        "Buried Ruin",
+        "Chief of the Foundry",
+        "Counterspell",
+        "Cultivator's Caravan",
+        "Darksteel Citadel",
+        "Darksteel Juggernaut",
+        "Duplicant",
+        "Etherium Sculptor",
+        "Fall from Favor",
+        "Forsaken Monument",
+        "Foundry Inspector",
+        "Foundry of the Consuls",
+        "Graaz, Unstoppable Juggernaut",
+        "Hedron Archive",
+        "Ichor Wellspring",
+        "Island",
+        "Kappa Cannoneer",
+        "Launch Mishap",
+        "Lonely Sandbar",
+        "Master Transmuter",
+        "Master of Etherium",
+        "Mazemind Tome",
+        "Memory Guardian",
+        "Meteor Golem",
+        "Mind Stone",
+        "Mind's Eye",
+        "Misleading Signpost",
+        "Myr Battlesphere",
+        "Myr Retriever",
+        "Negate",
+        "Nettlecyst",
+        "Nevinyrral's Disk",
+        "Ornithopter of Paradise",
+        "Padeem, Consul of Innovation",
+        "Palladium Myr",
+        "Propaganda",
+        "Psychosis Crawler",
+        "Pull from Tomorrow",
+        "Remote Isle",
+        "Research Thief",
+        "Sai, Master Thopterist",
+        "Scrawling Crawler",
+        "Shimmer Dragon",
+        "Shimmer Myr",
+        "Silver Myr",
+        "Skysovereign, Consul Flagship",
+        "Sol Ring",
+        "Soul-Guide Lantern",
+        "Spire Golem",
+        "Steel Hellkite",
+        "Steel Overseer",
+        "Tamiyo's Logbook",
+        "Thirst for Knowledge",
+        "Thopter Fabricator",
+        "Thopter Spy Network",
+        "Thought Monitor",
+        "Thought Vessel",
+        "Thoughtcast",
+        "Vedalken Archmage",
+        "War Room",
+        "Whirler Rogue"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061"
+      },
+      "fingerprint": "b5d549af3ca556bde510ee374becebfec9eae1135cad5f99c9f3d2932abfbb6c",
+      "inputs": [
+        {
+          "path": "data/combo_details.json",
+          "sha256": "b8cf72e47b2bcc618cd50fcb21b5e71d6a2d06c666c959e83d4492b7a9b2abdd"
+        },
+        {
+          "path": "data/decks/keen-engineering/deck_map.json",
+          "sha256": "37168e9ba7d81fa1d430f22976881f12c02891818d48dc4b1913d9d885f0d042"
+        },
+        {
+          "path": "data/decks/keen-engineering/goldfish_targets.json",
+          "sha256": "0c5181bedb56bda22f90c9c7f6b0ffadaca8315e001cea55062faf269f43136a"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/001-sai-trigger-before-chief.json",
+          "sha256": "d769aae336e4031eb0024273117e3382fb67457104032d26afb68184376dbab4"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/002-whirler-rogue-taps-new-thopters.json",
+          "sha256": "aef8c5f4df92688660c5a4b765e8dd1f2e03be65b28ef598424e95acb8b44b1d"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/003-disk-with-darksteel-and-padeem.json",
+          "sha256": "f6fbbda377069c55d7ad9e82c9eca25ab21a2dfd838c34f113bc9f04217cb7f8"
+        },
+        {
+          "path": "data/decks/keen-engineering/strategic_frame.json",
+          "sha256": "b00e7161da15643c5b566d4edec935c31bc19f234115987f5a0f277139e262ce"
+        }
+      ]
+    },
     "deck-map-names": {
       "agent": "deck-cartographer",
       "agent_prompt_sha256": "e6e4a20c6979950397524f31aa41c03e408dfa3c07fa583a59db003619175bb1",
       "artifact": "data/decks/keen-engineering/deck_map.json",
       "artifact_sha256": "72c18fd9f06f98824a25bfe21caf581e4829366293cdd4246d5114fc154775a2",
       "extra": {},
-      "fingerprint": "95e96767e4928d0436a266800690bbe92d9007b50946830ef4995c7404793e92",
+      "fingerprint": "f76fe41e7fe27ae8f5e6ad7bc5fb4bf8f10fc814e2c6acbdd6bd092776beaff2",
       "inputs": [
         {
           "path": "data/decks/keen-engineering/deck_map.json",
@@ -87,7 +233,7 @@
         },
         {
           "path": "data/decks/keen-engineering/strategic_frame.json",
-          "sha256": null
+          "sha256": "4738d9a8d647b05c4428195504c92a554501d04790ec3ae99ea8a01e4f28f4d5"
         }
       ]
     },
@@ -104,11 +250,11 @@
       "extra": {
         "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "5df962bf69a6f86252c95f2742ef879a98e5173261e39f56721a677f7522b8be",
+      "fingerprint": "06cd4f5283bbf02643cfaf26bf10e10cb1ca264cbff99cd0ee923ef7be32efed",
       "inputs": [
         {
           "path": "data/decks/keen-engineering/CONTEXT.md",
-          "sha256": "2847f5c3d342e57d510981d623a767e9c03038772ff138f82c71651cdc290080"
+          "sha256": "f1d316c5998fa71b25235a78c8541ecb1a3739362b4dcbd892c12c29f09a486b"
         },
         {
           "path": "data/decks/keen-engineering/benchmark.json",
@@ -140,7 +286,7 @@
         },
         {
           "path": "data/decks/keen-engineering/engine.json",
-          "sha256": null
+          "sha256": "0476d2a9795e747f268ab6a2d30289ada7fd66f67c8b3dd530267df590cdbd3a"
         },
         {
           "path": "data/decks/keen-engineering/log.jsonl",
@@ -156,7 +302,19 @@
         },
         {
           "path": "data/decks/keen-engineering/rating.json!judgment,open_questions,verifier,iterations",
-          "sha256": "600e827e00a3d82a513fb94f126696a6b3fbb9ea9973267c7ba53735fcac1fa5"
+          "sha256": "b48bc86aa096011554326b614bd72df9f91ba354ecb9dc38dc36aff75f2c1389"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/001-sai-trigger-before-chief.json",
+          "sha256": "d769aae336e4031eb0024273117e3382fb67457104032d26afb68184376dbab4"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/002-whirler-rogue-taps-new-thopters.json",
+          "sha256": "aef8c5f4df92688660c5a4b765e8dd1f2e03be65b28ef598424e95acb8b44b1d"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/003-disk-with-darksteel-and-padeem.json",
+          "sha256": "f6fbbda377069c55d7ad9e82c9eca25ab21a2dfd838c34f113bc9f04217cb7f8"
         },
         {
           "path": "data/fleet/analytics.json",
@@ -169,6 +327,306 @@
         {
           "path": "src/manamap/pilot/rating_mc.py",
           "sha256": "a04d36aea76db88b7376917d9b857b445d96ac44e2b58a6335e31a8310914f7a"
+        }
+      ]
+    },
+    "pilot-notes": {
+      "agent": "pilot-notes",
+      "agent_prompt_sha256": "79517ca85959e354df4e34116c457266d2f75f300d8f286af87ba58b89b56f14",
+      "artifact": "data/decks/keen-engineering/manual_prose.json",
+      "artifact_keys": [
+        "combo_lines",
+        "how_it_wins",
+        "matchups",
+        "mulligan",
+        "threat_assessment"
+      ],
+      "artifact_sha256": "f16a09896c0c910b9195c98dd44d4b46f5b2c9c2eac9084828586ce935506ce6",
+      "card_refs": [
+        "Adaptive Omnitool",
+        "Aether Spellbomb",
+        "Aetherize",
+        "All Is Dust",
+        "Arcane Signet",
+        "Broodstar",
+        "Buried Ruin",
+        "Chief of the Foundry",
+        "Counterspell",
+        "Cultivator's Caravan",
+        "Darksteel Citadel",
+        "Darksteel Juggernaut",
+        "Duplicant",
+        "Etherium Sculptor",
+        "Fall from Favor",
+        "Forsaken Monument",
+        "Foundry Inspector",
+        "Hedron Archive",
+        "Ichor Wellspring",
+        "Kappa Cannoneer",
+        "Launch Mishap",
+        "Master Transmuter",
+        "Master of Etherium",
+        "Mazemind Tome",
+        "Meteor Golem",
+        "Mind Stone",
+        "Misleading Signpost",
+        "Myr Battlesphere",
+        "Myr Retriever",
+        "Negate",
+        "Nettlecyst",
+        "Nevinyrral's Disk",
+        "Ornithopter of Paradise",
+        "Padeem, Consul of Innovation",
+        "Palladium Myr",
+        "Propaganda",
+        "Sai, Master Thopterist",
+        "Shimmer Myr",
+        "Silver Myr",
+        "Sol Ring",
+        "Soul-Guide Lantern",
+        "Steel Hellkite",
+        "Steel Overseer",
+        "Thopter Spy Network",
+        "Thought Vessel",
+        "Vedalken Archmage",
+        "Whirler Rogue"
+      ],
+      "card_refs_by_key": {
+        "combo_lines": [
+          "All Is Dust",
+          "Chief of the Foundry",
+          "Darksteel Citadel",
+          "Darksteel Juggernaut",
+          "Kappa Cannoneer",
+          "Master of Etherium",
+          "Myr Battlesphere",
+          "Padeem, Consul of Innovation",
+          "Vedalken Archmage",
+          "Whirler Rogue"
+        ],
+        "how_it_wins": [
+          "Adaptive Omnitool",
+          "Broodstar",
+          "Chief of the Foundry",
+          "Darksteel Juggernaut",
+          "Master of Etherium",
+          "Myr Battlesphere",
+          "Nettlecyst",
+          "Sai, Master Thopterist",
+          "Steel Overseer",
+          "Whirler Rogue"
+        ],
+        "matchups": [
+          "Adaptive Omnitool",
+          "Aether Spellbomb",
+          "Aetherize",
+          "All Is Dust",
+          "Counterspell",
+          "Duplicant",
+          "Etherium Sculptor",
+          "Forsaken Monument",
+          "Foundry Inspector",
+          "Launch Mishap",
+          "Meteor Golem",
+          "Misleading Signpost",
+          "Negate",
+          "Nettlecyst",
+          "Propaganda",
+          "Shimmer Myr",
+          "Soul-Guide Lantern",
+          "Steel Hellkite",
+          "Whirler Rogue"
+        ],
+        "mulligan": [
+          "Aether Spellbomb",
+          "Aetherize",
+          "Arcane Signet",
+          "Counterspell",
+          "Cultivator's Caravan",
+          "Etherium Sculptor",
+          "Foundry Inspector",
+          "Hedron Archive",
+          "Kappa Cannoneer",
+          "Master of Etherium",
+          "Mind Stone",
+          "Myr Battlesphere",
+          "Negate",
+          "Ornithopter of Paradise",
+          "Palladium Myr",
+          "Silver Myr",
+          "Sol Ring",
+          "Steel Hellkite",
+          "Thought Vessel",
+          "Vedalken Archmage"
+        ],
+        "threat_assessment": [
+          "Adaptive Omnitool",
+          "Aether Spellbomb",
+          "Aetherize",
+          "All Is Dust",
+          "Broodstar",
+          "Buried Ruin",
+          "Chief of the Foundry",
+          "Counterspell",
+          "Darksteel Citadel",
+          "Darksteel Juggernaut",
+          "Fall from Favor",
+          "Forsaken Monument",
+          "Ichor Wellspring",
+          "Master Transmuter",
+          "Master of Etherium",
+          "Mazemind Tome",
+          "Myr Retriever",
+          "Negate",
+          "Nettlecyst",
+          "Nevinyrral's Disk",
+          "Padeem, Consul of Innovation",
+          "Propaganda",
+          "Shimmer Myr",
+          "Steel Overseer",
+          "Thopter Spy Network",
+          "Vedalken Archmage",
+          "Whirler Rogue"
+        ]
+      },
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061",
+        "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
+      },
+      "fingerprint": "d2992c85b2489cd86d29f980f1b62b5439bd3d86a9a31c9dd4b98fd2da709099",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/engine.json",
+          "sha256": "44aa9286443302d0acec72334a08f93977e073f728ad217873071ac82478b6cd"
+        },
+        {
+          "path": "data/decks/keen-engineering/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
+          "sha256": "396fd71afac5772955ea3d448a2bf172efc5faa44d8b97ea843f38083cff3ed4"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/001-sai-trigger-before-chief.json",
+          "sha256": "d769aae336e4031eb0024273117e3382fb67457104032d26afb68184376dbab4"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/002-whirler-rogue-taps-new-thopters.json",
+          "sha256": "aef8c5f4df92688660c5a4b765e8dd1f2e03be65b28ef598424e95acb8b44b1d"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/003-disk-with-darksteel-and-padeem.json",
+          "sha256": "f6fbbda377069c55d7ad9e82c9eca25ab21a2dfd838c34f113bc9f04217cb7f8"
+        },
+        {
+          "path": "data/decks/keen-engineering/strategic_frame.json",
+          "sha256": "37bb4e37f829d3848ece493fa118b2c9f7a106f194462050765f6d6b8d8e6c6e"
+        }
+      ],
+      "key_fingerprints": {
+        "combo_lines": "6afccf51e745eee48ae12543b744c2c8514206388fba45e734f9286feb01b16d",
+        "how_it_wins": "43233f635ff622c6af2d88d685fe3b1fa17f281138ab73ab168458510a255f81",
+        "matchups": "5e6646bd4670129033a87aeba8e7bc02652d3a44e6141e043d0d80594a57abf0",
+        "mulligan": "1fc3fab4ff684d0fde7cd201eb000264edb258bd1598dcbde9c8c49e6fb3d8d3",
+        "threat_assessment": "1700477504961f45a2a7472d41511b1edc91065f53091594c56cdcb173185370"
+      }
+    },
+    "poh-procedures": {
+      "agent": "poh-procedures",
+      "agent_prompt_sha256": "07c32cd4ae937fbd1eb4e91de52cf855b0363c436b1ace83b16eca4c05a761f5",
+      "artifact": "data/decks/keen-engineering/poh_procedures.json",
+      "artifact_sha256": "2ff3aca84b848619515d6b3089d0b6cdc1d7aa8d6f450b78dd2c18470897420d",
+      "card_refs": [
+        "Adaptive Omnitool",
+        "Aether Spellbomb",
+        "Aetherize",
+        "All Is Dust",
+        "Arcane Signet",
+        "Broodstar",
+        "Buried Ruin",
+        "Chief of the Foundry",
+        "Counterspell",
+        "Darksteel Citadel",
+        "Darksteel Juggernaut",
+        "Duplicant",
+        "Etherium Sculptor",
+        "Fall from Favor",
+        "Forsaken Monument",
+        "Foundry Inspector",
+        "Foundry of the Consuls",
+        "Hedron Archive",
+        "Ichor Wellspring",
+        "Island",
+        "Kappa Cannoneer",
+        "Launch Mishap",
+        "Lonely Sandbar",
+        "Master Transmuter",
+        "Master of Etherium",
+        "Mazemind Tome",
+        "Memory Guardian",
+        "Meteor Golem",
+        "Mind Stone",
+        "Mind's Eye",
+        "Misleading Signpost",
+        "Myr Battlesphere",
+        "Myr Retriever",
+        "Negate",
+        "Nettlecyst",
+        "Nevinyrral's Disk",
+        "Ornithopter of Paradise",
+        "Padeem, Consul of Innovation",
+        "Propaganda",
+        "Psychosis Crawler",
+        "Pull from Tomorrow",
+        "Remote Isle",
+        "Research Thief",
+        "Scrawling Crawler",
+        "Shimmer Dragon",
+        "Shimmer Myr",
+        "Silver Myr",
+        "Skysovereign, Consul Flagship",
+        "Sol Ring",
+        "Soul-Guide Lantern",
+        "Spire Golem",
+        "Steel Hellkite",
+        "Steel Overseer",
+        "Tamiyo's Logbook",
+        "Thirst for Knowledge",
+        "Thopter Spy Network",
+        "Thought Monitor",
+        "Thought Vessel",
+        "Thoughtcast",
+        "Vedalken Archmage",
+        "War Room",
+        "Whirler Rogue"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061"
+      },
+      "fingerprint": "8d07be10cae4a34b98c30179cae2d1a3a5c0896a3bebd9767b944aa8ba97b3f0",
+      "inputs": [
+        {
+          "path": "data/decks/keen-engineering/audit.json",
+          "sha256": null
+        },
+        {
+          "path": "data/decks/keen-engineering/diagnosis.json",
+          "sha256": null
+        },
+        {
+          "path": "data/decks/keen-engineering/engine.json",
+          "sha256": "44aa9286443302d0acec72334a08f93977e073f728ad217873071ac82478b6cd"
+        },
+        {
+          "path": "data/decks/keen-engineering/log.jsonl",
+          "sha256": null
+        },
+        {
+          "path": "data/decks/keen-engineering/log_causes.json",
+          "sha256": null
+        },
+        {
+          "path": "src/manamap/pilot/poh_spec.py",
+          "sha256": "86c39b0d55b937870ae958d27ba0ff97c8009703f0a257cf7ab770ea7a23c825"
         }
       ]
     },
@@ -258,7 +716,7 @@
       "agent": "strategy-researcher",
       "agent_prompt_sha256": "3d83cf83e069386e25c4fb5665ebb3b6e6855235c52491be83807ad1d55688ad",
       "artifact": "data/decks/keen-engineering/strategic_frame.json",
-      "artifact_sha256": "23b6e14b01411913237c23cbdd4aa8f0cdc7e374952a6f19ee470238f0b9dd26",
+      "artifact_sha256": "ea77fb345791bc3c69274abb074e1948e9d7babc628ec5497680dedcba3ed83d",
       "card_refs": [
         "Adaptive Omnitool",
         "Aether Spellbomb",
@@ -332,11 +790,23 @@
         "cards_semantic": "95654340d7e142a38a7f9f10c939b388ed5613549af27a33158f0ad89ee88061",
         "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "08fde8833377248836c0ceb3a01f944a77cec13e29d7e8c25677dd8adb52cd84",
+      "fingerprint": "42be67ab0224fea2ea08e9e66fb00bb7545083152a333a15053aaf7ae40a65d2",
       "inputs": [
         {
           "path": "data/decks/keen-engineering/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
-          "sha256": "72fb35df9c3243e2fe55d57cc573e762e3fc163d77f3f62ac5cecc46097ac50a"
+          "sha256": "396fd71afac5772955ea3d448a2bf172efc5faa44d8b97ea843f38083cff3ed4"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/001-sai-trigger-before-chief.json",
+          "sha256": "d769aae336e4031eb0024273117e3382fb67457104032d26afb68184376dbab4"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/002-whirler-rogue-taps-new-thopters.json",
+          "sha256": "aef8c5f4df92688660c5a4b765e8dd1f2e03be65b28ef598424e95acb8b44b1d"
+        },
+        {
+          "path": "data/decks/keen-engineering/stacks/003-disk-with-darksteel-and-padeem.json",
+          "sha256": "f6fbbda377069c55d7ad9e82c9eca25ab21a2dfd838c34f113bc9f04217cb7f8"
         }
       ]
     }

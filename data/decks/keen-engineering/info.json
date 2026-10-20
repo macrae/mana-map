@@ -12,48 +12,22 @@
   "size": 100,
   "lands": 40,
   "status": {
-    "complete": 11,
+    "complete": 15,
     "of": 19,
     "stale": [],
-    "invalid": [
-      "CONTEXT.md"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
-      "frame",
-      "engine",
-      "stacks",
       "tutors",
-      "prose",
       "log",
       "issue",
       "sim"
     ],
     "todo": [
       {
-        "stage": "frame",
-        "what": "the strategist's read — `research-strategy` consult",
-        "how": "/research-strategy — MODE consult, on keen-engineering"
-      },
-      {
-        "stage": "engine",
-        "what": "how it RUNS — `analyze-engine` loop",
-        "how": "/analyze-engine keen-engineering"
-      },
-      {
-        "stage": "stacks",
-        "what": "checker-passed lines: the only fact tier",
-        "how": "/resolve-stack — one board, one rules domain, cited"
-      },
-      {
         "stage": "tutors",
         "what": "the tutor guide — `tutor-guide`",
         "how": "/write-manual — the tutor guide is one of pilot-notes' artifacts"
-      },
-      {
-        "stage": "prose",
-        "what": "the pilot's notes — `write-manual`",
-        "how": "/write-manual keen-engineering"
       },
       {
         "stage": "log",
@@ -104,82 +78,82 @@
       "routes": [],
       "online_by_turn": {
         "1": {
-          "rate": 0.1628,
+          "rate": 0.1753,
           "ci95": [
-            0.1557,
-            0.1702
+            0.168,
+            0.1829
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2088,
+          "rate": 0.2225,
           "ci95": [
-            0.2009,
-            0.2169
+            0.2145,
+            0.2308
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.2492,
+          "rate": 0.2634,
           "ci95": [
-            0.2408,
-            0.2578
+            0.2549,
+            0.2721
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.2965,
+          "rate": 0.3137,
           "ci95": [
-            0.2876,
-            0.3055
+            0.3047,
+            0.3229
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.3446,
+          "rate": 0.3671,
           "ci95": [
-            0.3353,
-            0.354
+            0.3577,
+            0.3766
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.3982,
+          "rate": 0.4231,
           "ci95": [
-            0.3886,
-            0.4078
+            0.4134,
+            0.4328
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.4574,
+          "rate": 0.4842,
           "ci95": [
-            0.4477,
-            0.4672
+            0.4744,
+            0.494
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.519,
+          "rate": 0.5464,
           "ci95": [
-            0.5092,
-            0.5288
+            0.5366,
+            0.5561
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.5817,
+          "rate": 0.6116,
           "ci95": [
-            0.572,
-            0.5913
+            0.602,
+            0.6211
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.6339,
+          "rate": 0.6671,
           "ci95": [
-            0.6244,
-            0.6433
+            0.6578,
+            0.6763
           ],
           "n": 10000
         }
@@ -188,10 +162,10 @@
       "bottleneck": {
         "label": "THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable",
         "by_turn_three": {
-          "rate": 0.2492,
+          "rate": 0.2634,
           "ci95": [
-            0.2408,
-            0.2578
+            0.2549,
+            0.2721
           ],
           "n": 10000
         }
@@ -516,7 +490,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:AN ARTIFACT-COUNT PAYOFF drawn — the board becomes power or cards: an anthem, a counter engine, or a draw-per-artifact": {
-          "value": 68,
+          "value": 77,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'AN ARTIFACT-COUNT PAYOFF drawn — the board becomes power or cards: an anthem, a counter engine, or a draw-per-artifact' by turn six",
@@ -524,7 +498,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A DRAW ENGINE OR REFILL drawn — the deck's own draw: affinity cantrips, Thirst, Pull, the Tome, the Logbook, the Eye, the Crawlers": {
-          "value": 86,
+          "value": 95,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A DRAW ENGINE OR REFILL drawn — the deck's own draw: affinity cantrips, Thirst, Pull, the Tome, the Logbook, the Eye, the Crawlers\" by turn six",
@@ -532,7 +506,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable": {
-          "value": 41,
+          "value": 43,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable\" by turn six",
@@ -716,15 +690,15 @@
       },
       {
         "label": "AN ARTIFACT-COUNT PAYOFF drawn — the board becomes power or cards: an anthem, a counter engine, or a draw-per-artifact",
-        "by_turn_6_pct": 68
+        "by_turn_6_pct": 77
       },
       {
         "label": "A DRAW ENGINE OR REFILL drawn — the deck's own draw: affinity cantrips, Thirst, Pull, the Tome, the Logbook, the Eye, the Crawlers",
-        "by_turn_6_pct": 86
+        "by_turn_6_pct": 95
       },
       {
         "label": "THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable",
-        "by_turn_6_pct": 41
+        "by_turn_6_pct": 43
       },
       {
         "label": "AN ANSWER drawn — a counter, a bounce, the Disk, All Is Dust, or a removal body",
@@ -748,10 +722,10 @@
   },
   "engine_health": {
     "word": "BRITTLE",
-    "rate": 0.3446,
+    "rate": 0.3671,
     "ci95": [
-      0.3353,
-      0.354
+      0.3577,
+      0.3766
     ],
     "n": 10000,
     "turn": 5,
@@ -773,10 +747,15 @@
         "WEAK"
       ]
     ],
-    "why": "the engine is online by turn 5 in 34% of 10,000 seeded games",
+    "why": "the engine is online by turn 5 in 37% of 10,000 seeded games",
     "basis": "diagnostic.json"
   },
-  "engine": null,
+  "engine": {
+    "thesis": "Sai in the command zone turns each of the deck's 43 artifact spells into a cast plus a 1/1 flying Thopter, so the board goes wide on its own; the game ends when an artifact-count scaler (Master of Etherium, Chief of the Foundry, Steel Overseer, Nettlecyst, Adaptive Omnitool — with Forsaken Monument's flat +2/+2 on the colourless ones) or a self-scaling body (Darksteel Juggernaut, Broodstar, Myr Battlesphere, Graaz, Kappa Cannoneer) turns that width into damage, while Sai's sacrifice-two-draw and the artifact draw suite keep the casts coming.",
+    "critic": "pass",
+    "lines": 12,
+    "verified_lines": 2
+  },
   "diagnosis": null,
   "audit": {
     "archetype": null,
@@ -795,13 +774,49 @@
     "answered": 0,
     "latest": null
   },
-  "open_questions": [],
+  "open_questions": [
+    {
+      "from": "engine",
+      "question": "Master Transmuter activates returning a Thopter token to hand and puts Myr Battlesphere onto the battlefield: does Sai trigger (expected no — not cast), do Kappa Cannoneer's 'another artifact enters' and Battlesphere's four-Myr ETB fire, and does the token simply cease to exist?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Myr Battlesphere attacks with Silver Myr and Palladium Myr untapped and Steel Overseer on board: in what order are the Overseer activation, the mana taps and the Battlesphere X-tap chosen, and what is the damage to the defending player?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "All Is Dust resolves with the deck's typical board: which of the 18 coloured nonland permanents in the 99 plus Sai from the command zone (Master of Etherium, Etherium Sculptor, Kappa Cannoneer, Master Transmuter, Padeem, Shimmer Dragon, Whirler Rogue among them) are sacrificed, and do colourless Thopter tokens and Nettlecyst's black Germ stay or go?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Kappa Cannoneer cast with improvise, tapping Thopters: does Sai's trigger resolve first so the new Thopter enters before Kappa, meaning Kappa does NOT get a counter from it, and does Kappa's own entry give it its first counter?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Model Sai's cast trigger (a 1/1 flying artifact token per artifact spell cast) and his {1}{U} sacrifice-two draw: what do mean bodies by turn 6 (floor 2.567), the KILL group's by-turn-6 rate (floor 43.4%) and median kill turn (floor 10) read with the commander's abilities on?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Forsaken Monument on the battlefield, tap Sol Ring for {C}{C}: does Monument's 'whenever you tap a permanent for {C}' trigger once and add one {C} (three total) or add one per {C} produced (four)?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "For a mono-blue artifact go-wide deck at bracket 2, does the archetype close with the anthem-scaled swarm or with the single self-sized body, and what does the table typically do to it?",
+      "settled_by": "research-strategy"
+    }
+  ],
   "simulation": null,
   "experiments": null,
   "decisions": null,
   "next": [
-    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status keen-engineering` names them; fix before anything else reads them",
     "nothing in the captain's log — play it, then `deck-notes keen-engineering add \"…\" --result win|loss --opponents N`",
+    "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×5",
     "try a swap in seconds — `try keen-engineering --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

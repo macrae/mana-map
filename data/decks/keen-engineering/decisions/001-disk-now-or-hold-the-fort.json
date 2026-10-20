@@ -1,0 +1,138 @@
+{
+ "id": "001",
+ "slug": "disk-now-or-hold-the-fort",
+ "deck": "keen-engineering",
+ "kind": "decision",
+ "title": "Turn 7: pop Nevinyrral's Disk now, or hold it and let the Thopters fly?",
+ "scenario": {
+  "board": {
+   "you": "Turn 7, precombat main, you at 26, land drop made (Lonely Sandbar, entered tapped). Battlefield: Sai, Master Thopterist (1/4); Nevinyrral's Disk, untapped — it entered tapped on turn 6 and untapped this turn; Darksteel Juggernaut; Darksteel Citadel; Master of Etherium; four Thopter tokens, made on turns 4, 5, 5 and 6; five Islands and Lonely Sandbar. Artifacts you control: eight (the Disk, the Juggernaut, the Citadel, Master, four Thopters). So Master of Etherium is 8/8, the Juggernaut is 9/9 indestructible and attacks each combat if able, and each Thopter is a 2/2 flier under Master's anthem. Six mana open: {C} from the Citadel and {U}{U}{U}{U}{U} from five Islands. Sai has been cast from the command zone once (turn 3); his next cast costs five.",
+   "table": "Opponent A (Selesnya tokens, 22 life) has nine creature tokens under an enchantment anthem — nine 2/2s, none with flying or reach — and tapped out last turn making the last four. They attack for the first time next turn, 18 power, and A has said out loud that your fliers are the problem. Stated assumption: A's alpha comes at you. Opponent B (mono-blue, 31) has one creature, an 8/8 flier, four untapped lands including three Islands, and two cards held all game; stated assumption: one of them is a counterspell. B's flier has been hitting A. Opponent C (Simic ramp, 40) has Rhystic Study, nine lands, two mana dorks, six cards in hand, and has attacked nobody. Stated assumption: C wins the long game. Nobody at the table has shown a sweeper."
+  },
+  "hand": [
+   "Counterspell"
+  ],
+  "mana_available": "6 ({C} from Darksteel Citadel, {U}{U}{U}{U}{U} from five Islands)",
+  "stack": [],
+  "extras": "Three things the rules fix before you choose. The Disk is an activated ability, usable whenever you have priority — on A's turn as readily as on yours — and it is not a spell, so B's counterspell cannot target it and C's Rhystic Study does not trigger on it. Stack 003 says what it leaves: Darksteel Juggernaut and Darksteel Citadel survive, the Juggernaut counts two artifacts and is 2/2, the Thopters cease to exist, Sai goes to the command zone. And the Juggernaut attacks each combat if able, so every branch below sends it; the choice is where. The four Thopters were all made before this turn and may attack. Stack 001 is where Master of Etherium's count and anthem are worked through layer by layer; the 8/8 and 9/9 above follow the same arithmetic.",
+  "question": "A is one turn from an alpha strike at you, B holds blue mana over an 8/8 flier, and C is drawing off Rhystic Study. Pop the Disk now and reset the table to a 2/2 Juggernaut and the command zone, hold the Disk and Counterspell and send the Thopters at A, or hold everything and keep the Thopters home as blockers?"
+ },
+ "branches": [
+  {
+   "choice": "Pop the Disk now, before combat",
+   "line": "Pay {1} from the Citadel and tap the Disk. The ability goes on the stack; B's counter cannot target it and C's Study does not trigger. It resolves as stack 003 resolves: every artifact, creature and enchantment is destroyed, the Disk included. You keep Darksteel Juggernaut, now 2/2, and Darksteel Citadel. Master of Etherium, the four Thopters and the Disk are gone; Sai goes to the command zone. A loses nine tokens and the anthem, B loses the 8/8, C loses Rhystic Study and both dorks. Five Islands remain: recast Sai for five into B's open blue mana, or hold {U}{U} for Counterspell. The Juggernaut then attacks as a 2/2 into an empty board — send it at A, 22 to 20. If you fire the Disk this turn at all, fire it in the second main: attack first, it does not care that the Thopters are tapped.",
+   "signals": "The table watches the Bracket 2 deck reset everyone. A has nothing. B has four lands and two cards. C has nine lands, six cards and no Study. You have a 2/2, a one-card hand and a commander that costs five. Every seat re-ranks you from 'the fliers' to 'the one who wiped us', and for C the wipe was a gift: C's ramp is lands, and lands do not die to the Disk.",
+   "coalition_risk": "A and B cannot punish you; they have no board. The risk is the rebuild race, and you are not favoured in it. Your hand is Counterspell. Sai's sacrifice-draw has nothing to eat — the Juggernaut and the Citadel are your only artifacts. The goldfish's mean extra cards drawn is 2.009 by turn 7 and 2.852 by turn 8, a cumulative figure from the start of the game and a floor; it says nothing about refilling from one card. C keeps nine lands and six cards.",
+   "coaching": "The Disk is the right card at the wrong moment. Price the wipe the way the companion prices every wipe: what you lose if it comes now against what holding it costs. Now, you lose an 8/8, a 9/9 that shrinks to a 2/2, four 2/2 fliers and Sai for a turn at five mana — and the Disk. Holding costs nothing this turn: the Disk is an instant-speed ability, and on A's declare-attackers step it kills the same nine tokens for the same {1}. After the wipe, initiative goes to whoever rebuilds cheapest, and with one card in hand against C's six that is not you. Fire the Disk when the board you face is lethal and the board you hold is not winning. Today A is at 22 facing eight flying power a turn and a 9/9: you are winning the board. One correction if you do fire it: do it after combat, in your second main. Nothing here is from a logged game — this deck has none yet.",
+   "citations": [
+    {
+     "rule": "117.1b",
+     "quote": "A player may activate an activated ability any time they have priority."
+    },
+    {
+     "rule": "112.1",
+     "quote": "A spell is a card on the stack."
+    },
+    {
+     "rule": "702.12b",
+     "quote": "A permanent with indestructible can’t be destroyed."
+    },
+    {
+     "rule": "704.6d",
+     "quote": "In a Commander game, if a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone."
+    },
+    {
+     "rule": "903.8",
+     "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+    },
+    {
+     "rule": "704.5d",
+     "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+    },
+    {
+     "rule": "113.7a",
+     "quote": "Once activated or triggered, an ability exists on the stack independently of its source. Destruction or removal of the source after that time won’t affect the ability."
+    },
+    {
+     "rule": "strategy:resource-hedging.wrath-math",
+     "quote": "what you lose if the wrath comes now versus what holding a threat back costs in clock and position"
+    },
+    {
+     "rule": "strategy:resource-hedging.wrath-math",
+     "quote": "After the wrath, initiative goes to whoever rebuilds cheapest"
+    }
+   ]
+  },
+  {
+   "choice": "Hold the Disk and Counterspell; send the Thopters and the Juggernaut at A",
+   "line": "Cast nothing. Attack A with all four Thopters and Darksteel Juggernaut; Sai and Master of Etherium stay home. A has no flier and no reach, so eight flying damage connects: A goes to 14. The Juggernaut is 9/9 and indestructible; A either chump-blocks it with one 2/2 and stays at 14 with eight tokens, or takes it and sits at 5 with nine. Pass with all six mana open: {1} for the Disk and {U}{U} for Counterspell are both live on every opponent's turn. If A alphas with eight tokens anyway, Master and Sai block two and you take 12, to 14 — and A's attackers stay tapped through your turn 8, when Thopters 8, Juggernaut 9 and Master 8 are 25 into a 14-life player with no untapped blocker. If A casts a second anthem or an overrun, Counterspell it; if one resolves and the attack is lethal, pop the Disk at declare attackers.",
+   "signals": "You become the aggressor against one seat and nobody else loses a point. B and C watch the quiet precon put a player to 14 or 5, and they also count six open mana beside a face-up Disk — the ability is printed on the card and everyone can read it. Open instant-speed mana makes three players respect your interaction, not one. You cast no spell, so Rhystic Study draws C nothing this turn.",
+   "coalition_risk": "Moderate, and mostly on A. A at 5 or 14 facing four fliers has two turns to live and may swing at you out of spite — that attack is what the Disk is for. B's flier is the quieter risk: if B turns it on you, 8 a turn is a four-turn clock from 26, and no Thopter can block it profitably — they are 2/2s. Counterspell is for B's next big spell, not the flier already out. C is content to let A die and will not be drawn in.",
+   "coaching": "This is the branch where the cards do what they are for. The Juggernaut must attack, so its 9 is free. The Thopters are 2/2 fliers against a board with no fliers: attacking, they are 8 damage; blocking, each trades with a 2/2 token, and every trade is one fewer artifact under Master and the Juggernaut. The Disk is a held answer whose cost is {1} at any priority; firing it in your own main phase is the leak the companion names, spending removal on sight instead of at the last profitable moment. The racing rule says attack even from a defensive seat, because banked damage wins the races that arrive unannounced; A at 22 facing 8 a turn in the air is a race you are winning. The counts: A to 14 or 5 today, dead on turn 8 if A alphas, dead on turn 9 if A holds back and chumps. The goldfish's median kill turn of 10 has no Thopters in it; this board is ahead of that floor. Untested at a table — no game is logged on this deck.",
+   "citations": [
+    {
+     "rule": "508.1d",
+     "quote": "The active player checks each creature they control to see whether it’s affected by any requirements (effects that say a creature attacks if able, or that it attacks if some condition is met)."
+    },
+    {
+     "rule": "302.6",
+     "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+    },
+    {
+     "rule": "702.9b",
+     "quote": "A creature with flying can’t be blocked except by creatures with flying and/or reach."
+    },
+    {
+     "rule": "117.1b",
+     "quote": "A player may activate an activated ability any time they have priority."
+    },
+    {
+     "rule": "509.1a",
+     "quote": "The chosen creatures must be untapped"
+    },
+    {
+     "rule": "strategy:threat-assessment.answer-economy",
+     "quote": "spending removal on sight instead of at the last profitable moment"
+    },
+    {
+     "rule": "strategy:combat-math.racing",
+     "quote": "attack early even from a defensive posture, because races arrive unannounced and banked damage wins the ones that do"
+    },
+    {
+     "rule": "strategy:multiplayer.pod-management",
+     "quote": "Leaving instant-speed mana open forces three players, not one, to respect your possible interaction."
+    }
+   ]
+  },
+  {
+   "choice": "Hold everything and pass with the fort up",
+   "line": "Cast nothing, attack with the Juggernaut alone — it must — and keep the four Thopters home. Send the Juggernaut at C: no blockers, 40 to 31, and nobody at the table reads a 9/9 into the ramp player as an act of war. Pass with six open, Disk and Counterspell live. On A's turn nine 2/2s attack into Master 8/8, Sai 1/4 and four 2/2 fliers: six blockers, three unblocked, you take 6 to 20, and every Thopter that blocks trades with a token. If the alpha is lethal instead, Disk at declare attackers.",
+   "signals": "Reads as a deck sitting back behind a 9/9 and a wall of fliers. A may point the alpha at B instead, who has one blocker and 31 life. B and C see a Bracket 2 deck that passed with six open on turn 7, and C keeps drawing off Rhystic Study with nobody pressuring 40 life.",
+   "coalition_risk": "The lowest today and the highest over the next five turns. Nobody is provoked; the game gets longer; the long game belongs to C — nine lands, six cards, Rhystic Study, 40 life untouched. A also lives, and A's deck makes more tokens every turn while your blockers trade one-for-one.",
+   "coaching": "The fort is already built and it is not the Thopters: it is the Disk with {1} open and Counterspell with {U}{U}. Keeping the Thopters home saves six damage against branch two's twelve and costs eight damage to A and a turn of clock. A Thopter blocking a 2/2 token dies with it, and every one you lose is one less artifact under Master of Etherium and the Juggernaut: the fort shrinks your lords. Against a seat whose plan is a long game, holding back is the loss, because buying time is exactly their plan — and C is that seat. Take this branch when A's alpha is lethal through the Disk — an indestructible or hexproof board, an overrun already resolved — or when your life is low enough that six damage decides a race. At 26 it does not. No logged game on this deck; this is the frame's read, not a result.",
+   "citations": [
+    {
+     "rule": "508.1d",
+     "quote": "The active player checks each creature they control to see whether it’s affected by any requirements (effects that say a creature attacks if able, or that it attacks if some condition is met)."
+    },
+    {
+     "rule": "117.1b",
+     "quote": "A player may activate an activated ability any time they have priority."
+    },
+    {
+     "rule": "strategy:resource-hedging.wrath-math",
+     "quote": "against a control deck, holding back often IS the loss, because buying time is exactly their plan"
+    },
+    {
+     "rule": "strategy:whos-the-beatdown",
+     "quote": "you can be the beatdown against one opponent and the control against another in the same turn cycle; assign per-threat, not per-game"
+    }
+   ]
+  }
+ ],
+ "recommendation": {
+  "choice": "Hold the Disk and Counterspell; send the Thopters and the Juggernaut at A",
+  "rationale": "Hold the Disk, hold Counterspell, send the four Thopters and the Juggernaut at A. The Disk is an activated ability: it kills the same nine tokens for the same {1} on A's declare-attackers step as it does now, and it is not a spell, so B's blue mana and C's Rhystic Study cannot touch it. Firing it precombat on your own turn spends your board — an 8/8, a 9/9, four fliers, Sai at five to recast — to answer an attack that has not been declared, and leaves you a 2/2 and one card against C's six. Held, it costs nothing and covers the lethal case. The Thopters attack because A cannot block fliers and because a Thopter that blocks trades for a token and shrinks both your lords by one. The Juggernaut attacks because it must. The count is A to 14 or 5 today and dead on turn 8 or 9. Pass with six open: {1} Disk, {U}{U} Counterspell, three spare. Fire the Disk only when the attack coming at you is lethal and nothing else stops it; if that turn ever comes on your own turn, fire it after combat. Role is per seat, not per game: you are the beatdown against A and the control against B and C in the same turn. This deck has no logged game; the first one should record exactly this spot — whether the table lets the Thopters fly, and whether anyone ever makes you fire the Disk."
+ },
+ "presentable": true
+}

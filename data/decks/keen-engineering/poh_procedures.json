@@ -1,0 +1,272 @@
+{
+  "emergency": [
+    {
+      "condition": "wipe",
+      "condition_text": "a sweeper is coming, or has landed, and the board is Thopters and lords.",
+      "indications": [
+        "An opponent in white or black with four or more mana untapped through your turn, having cast nothing for two turns.",
+        "Six or more artifacts on your board with Master of Etherium, Chief of the Foundry or Steel Overseer among them.",
+        "Your own Nevinyrral's Disk untapped with {1} open, and two opponents' boards wider than yours.",
+        "Hedron Archive, Mind Stone or Ichor Wellspring on the battlefield with mana to spare."
+      ],
+      "immediate": [
+        "With the sweeper on the stack, activate Sai: {1}{U}, sacrifice two Thopters, draw a card. Repeat once for every {1}{U} you have open.",
+        "Sacrifice Ichor Wellspring and Myr Retriever to Sai ahead of any Thopter. Wellspring draws a card as it leaves; Retriever's death returns an artifact card already in your graveyard to your hand.",
+        "If the sweeper names artifacts, tap and sacrifice Mind Stone ({1}) and Hedron Archive ({2}) for cards before it resolves.",
+        "Cast Counterspell ({U}{U}) or Negate ({1}{U}) at the sweeper only when Master of Etherium, Chief of the Foundry or Steel Overseer is on the board. A board of Thopters alone regrows from the command zone; let that one resolve and keep the counter.",
+        "Put Sai in the command zone, not the graveyard, when he dies."
+      ],
+      "subsequent": [
+        "Recast Sai before any other spell: {2}{U} plus {2} for each time he has already been cast from the command zone.",
+        "Recast the cheap artifacts two to a turn. Lead with Myr Retriever and Ichor Wellspring; each cast is a Thopter again.",
+        "Activate Buried Ruin ({2}, tap, sacrifice) to return the lord that died to your hand.",
+        "Cast Nettlecyst, Adaptive Omnitool or Forsaken Monument before Master of Etherium, Chief of the Foundry or Steel Overseer. The equipment and the Monument are not creatures and the next creature sweeper leaves them.",
+        "With Shimmer Myr on the battlefield, cast the artifacts on the end step of the player who sweeps, not in your own main phase."
+      ],
+      "notes": "Nevinyrral's Disk is your own sweeper and stack 003 (checker-passed) says what it leaves: Darksteel Juggernaut as a 2/2, Darksteel Citadel, and nothing else of yours — Sai goes back to the command zone, the Thopters cease to exist, and Padeem's hexproof stops none of it. All Is Dust is the other reset and it takes Sai, every blue creature, Propaganda, Fall from Favor, Thopter Spy Network and Nettlecyst's Germ with it, while every Thopter, Myr and colourless rock stays. Cast it on a turn your board is tokens and rocks and theirs is coloured. Untested at a table: no game has been logged with this deck.",
+      "grounded_in": []
+    },
+    {
+      "condition": "removal",
+      "condition_text": "Sai, or the lord the board is counting on, is targeted.",
+      "indications": [
+        "An opponent with two or more mana open during your turn in a colour that kills or bounces a creature.",
+        "Sai on the battlefield with four or more Thopters and no Padeem, Consul of Innovation.",
+        "Master of Etherium or Darksteel Juggernaut the largest creature on the table.",
+        "Aether Spellbomb or an untapped Master Transmuter on your battlefield with {U} spare."
+      ],
+      "immediate": [
+        "If the target is an artifact and Master Transmuter is untapped: {U}, tap, return the targeted artifact to your hand, and put an artifact card from your hand onto the battlefield in its place.",
+        "If the target is Sai and Aether Spellbomb is on the battlefield: {U}, sacrifice it, return Sai to your hand. A cast from hand pays no commander tax.",
+        "Otherwise, with the spell on the stack, activate Sai: {1}{U}, sacrifice two artifacts, draw a card — once for every {1}{U} open.",
+        "Cast Counterspell ({U}{U}) or Negate ({1}{U}) only when the target is Master of Etherium, Chief of the Foundry, Steel Overseer or Padeem, or Sai on his third cast from the command zone. Before that, let the spell at Sai resolve.",
+        "Put Sai in the command zone, not the graveyard."
+      ],
+      "subsequent": [
+        "Recast Sai before any other three-drop: {2}{U} plus {2} for each earlier cast from the command zone.",
+        "Cast Padeem, Consul of Innovation ({3}{U}) before the next lord: every artifact you control has hexproof from then on.",
+        "Cast Kappa Cannoneer ({5}{U}, improvise by tapping artifacts) as the next finisher; its ward {4} is paid on top of the next removal spell's cost.",
+        "Return the dead lord with Buried Ruin ({2}, tap, sacrifice) or by sacrificing Myr Retriever to Sai on a turn the lord is in your graveyard.",
+        "Hold Launch Mishap ({2}{U}) for the creature that would race the rebuilt board; it makes a Thopter as it counters."
+      ],
+      "notes": "Padeem gives hexproof to artifacts, and Sai is a Human Artificer: he is never covered. Nothing in the 99 returns him from the graveyard or lowers the tax, so each trip through the command zone costs {2} more than the last. Cast Padeem one turn before the lord, never the same turn after it. Untested at a table: no game has been logged with this deck.",
+      "grounded_in": []
+    },
+    {
+      "condition": "combo",
+      "condition_text": "somebody at the table is going off, and the fliers cannot race it.",
+      "indications": [
+        "An opponent casting a tutor and passing the turn with mana open.",
+        "Two named pieces of a known line on one opponent's battlefield, or one on the battlefield and the seat holding cards.",
+        "A graveyard across the table with ten or more cards and a reanimation deck behind it.",
+        "Counterspell, Negate or Launch Mishap in your hand with fewer than {U}{U} untapped."
+      ],
+      "immediate": [
+        "From the turn a tutor resolves, pass with {U}{U} untapped on every opponent's turn. Stop casting artifacts into that mana.",
+        "Counter the piece cast last, not the first: Counterspell ({U}{U}) stops any spell, Negate ({1}{U}) a noncreature spell, Launch Mishap ({2}{U}) a creature or planeswalker spell.",
+        "If the line is already on the battlefield, sacrifice Aether Spellbomb ({U}) to return the creature half to its owner's hand.",
+        "Activate Master Transmuter ({U}, tap, return a Thopter to hand) to put Duplicant or Meteor Golem onto the battlefield in response: Duplicant exiles a nontoken creature on entry, Meteor Golem destroys a nonland permanent an opponent controls.",
+        "Activate Nevinyrral's Disk ({1}, tap) when the line is made of artifacts, creatures or enchantments and nothing above answers it."
+      ],
+      "subsequent": [
+        "Cast Soul-Guide Lantern ({1}) and exile the combo player's best graveyard card on entry; against recursion, tap and sacrifice it to exile every opponent's graveyard before the line starts.",
+        "Keep one counter in hand and {U}{U} open on every turn after; spend the rest of the mana on artifacts.",
+        "Attack the combo player and nobody else with every flier that connects; Thopter Spy Network and Research Thief draw a card when one does.",
+        "Say which seat you countered and which piece, so the table's remaining answers stay pointed there."
+      ],
+      "notes": "Negate does not stop a creature and Launch Mishap does not stop a noncreature; of the three counters, Counterspell is the one that stops both, and there is one copy. Nevinyrral's Disk enters tapped and answers nothing the turn it is cast. Untested at a table: no game has been logged with this deck.",
+      "grounded_in": []
+    },
+    {
+      "condition": "mana-drought",
+      "condition_text": "the land drops have stopped, or the hand is seven-drops and the board cannot pay for them.",
+      "indications": [
+        "No land drop on turn three or turn four.",
+        "Three or fewer lands on the battlefield on turn five.",
+        "Broodstar, Graaz, Myr Battlesphere, Meteor Golem or Duplicant in hand and fewer than four artifacts on the board.",
+        "Lonely Sandbar or Remote Isle in hand."
+      ],
+      "immediate": [
+        "Play Lonely Sandbar or Remote Isle as the land drop. Do not cycle a land while you are short of lands.",
+        "Cast Sai ({2}{U}), then the cheapest artifact in hand each turn: Sol Ring, Aether Spellbomb and Soul-Guide Lantern at {1}; Mind Stone, Thought Vessel, Arcane Signet, Silver Myr, Ornithopter of Paradise, Myr Retriever, Ichor Wellspring, Mazemind Tome, Steel Overseer and Adaptive Omnitool at {2}. Each one raises the artifact count and makes a Thopter.",
+        "Cast Etherium Sculptor ({1}{U}) or Foundry Inspector ({3}) before any artifact that costs three or more.",
+        "Count the artifacts you control. At four, Thoughtcast costs {U} and Memory Guardian {U}; at six, Thought Monitor costs {U} and draws two. Cast the one the count has paid for.",
+        "At the end of each turn, spend the spare mana on a card: Mazemind Tome ({2}, tap, page counter), Aether Spellbomb ({1}, sacrifice), Sai ({1}{U}, sacrifice two Thopters)."
+      ],
+      "subsequent": [
+        "Cast Thirst for Knowledge ({2}{U}) on an opponent's end step and discard the artifact in hand with the highest mana value. Keep every land.",
+        "Cast Master Transmuter ({3}{U}) once four lands are out. From then on Myr Battlesphere, Meteor Golem, Duplicant and Graaz arrive for {U} and a returned Thopter.",
+        "Sacrifice Mind Stone ({1}, tap) or Hedron Archive ({2}, tap) for cards only after the fifth land.",
+        "Hold Forsaken Monument, All Is Dust and the eight-drops. Do not discard a land to Thirst for Knowledge or Pull from Tomorrow."
+      ],
+      "notes": "Forty lands and nine rocks, and the goldfish still misses a land drop by turn five in 31.5% of games, because the deck draws 0.49 extra cards by turn four. The one that bites: Sai's draw eats the artifacts the affinity cards count. Sacrifice Thopters to him, never a rock. Untested at a table: no game has been logged with this deck.",
+      "grounded_in": []
+    },
+    {
+      "condition": "stalled",
+      "condition_text": "turn six or later, Sai on the battlefield, the board is 1/1 fliers and no lord or finisher has arrived.",
+      "indications": [
+        "Six or more Thopters and none of Master of Etherium, Chief of the Foundry, Steel Overseer, Nettlecyst, Adaptive Omnitool or Forsaken Monument on the battlefield.",
+        "The table's life totals unchanged for two turns.",
+        "Darksteel Juggernaut, Broodstar or Kappa Cannoneer in hand with eight or more artifacts on your board.",
+        "Whirler Rogue on the battlefield with two untapped Thopters beside it."
+      ],
+      "immediate": [
+        "Attack with every Thopter at the seat with no fliers and no reach. A 1/1 flier that connects draws a card with Thopter Spy Network or Research Thief out.",
+        "Sacrifice two Thopters to Sai ({1}{U}) at the end of every turn you have the mana spare. Draw into the lord.",
+        "Equip Nettlecyst ({2}) or Adaptive Omnitool ({3}) to a Thopter: it gets +1/+1 for each artifact you control and keeps flying.",
+        "Cast Darksteel Juggernaut ({5}) or Broodstar ({8}{U}{U}, {U}{U} at eight artifacts): each is the artifact count in one body.",
+        "Activate Whirler Rogue: tap two Thopters, and the biggest body cannot be blocked this turn. Thopters made this turn pay the cost (stack 002)."
+      ],
+      "subsequent": [
+        "Pay for cards each end step: War Room ({3}, tap, one life), Tamiyo's Logbook ({5}{U}, tap, {1} less for each other artifact — {U} at five), Mazemind Tome ({2}, tap).",
+        "Cast Shimmer Dragon ({4}{U}{U}): tap two Thopters, draw a card, at instant speed, every turn.",
+        "Cast Thopter Spy Network ({2}{U}{U}): a Thopter at every upkeep and a card for every connecting attack.",
+        "Activate Foundry of the Consuls ({5}, tap, sacrifice) for two Thopters on a turn the mana has nothing else to do."
+      ],
+      "notes": "The connector half of the kill — Chief of the Foundry, Master of Etherium, Steel Overseer, Nettlecyst, Adaptive Omnitool, Whirler Rogue — is in 36.4% of openers, the thinnest component the goldfish counts. Darksteel Juggernaut attacks each combat if able: cast it on a turn the attack is one you want. Untested at a table: no game has been logged with this deck.",
+      "grounded_in": []
+    },
+    {
+      "condition": "politics",
+      "condition_text": "the Thopter board is the widest at the table and three seats are looking at it.",
+      "indications": [
+        "Two opponents attacking you in the same turn cycle.",
+        "Removal spent on a Thopter or on Sai while a bigger threat sits across the table.",
+        "You are the monarch through Fall from Favor with ten or more power pointed at you.",
+        "Propaganda in hand and not on the battlefield with eight or more Thopters out."
+      ],
+      "immediate": [
+        "Cast Propaganda ({2}{U}) before the next Thopter: each creature attacking you costs its controller {2}.",
+        "Hold {3}{U} through the attack. After attackers are declared and before blockers, cast Aetherize: every attacking creature returns to its owner's hand.",
+        "Flash in Misleading Signpost ({2}{U}) during the declare attackers step and point the largest attacker at another player.",
+        "Chump-block with Thopters only the attacker that would kill you; let the rest through and keep the artifact count.",
+        "Say the board out loud as it is — 1/1 fliers and a 1/4 — and name the seat with the fastest clock and its damage per turn."
+      ],
+      "subsequent": [
+        "Attack only the seat that attacked you last turn. The two that did not are the two you need next turn.",
+        "Cast Fall from Favor ({2}{U}) on the largest creature of the seat that cannot pay Propaganda; it stays tapped while you are the monarch.",
+        "Keep Nevinyrral's Disk untapped on the battlefield and name it: stack 003 says it leaves you Darksteel Juggernaut and Darksteel Citadel and leaves them nothing.",
+        "Hold Master of Etherium, Chief of the Foundry and Graaz in hand until the turn the attack is lethal; cast them on that turn and no earlier."
+      ],
+      "notes": "Fall from Favor makes you the monarch, and the monarch is attacked from all three seats; cast it only with Propaganda already on the battlefield. Untested at a table: no game has been logged with this deck.",
+      "grounded_in": []
+    },
+    {
+      "condition": "raced",
+      "condition_text": "a seat is dealing fifteen or more a turn before your artifact count is six.",
+      "indications": [
+        "An opponent's board at fifteen or more power by turn four.",
+        "Your life under 25 before turn five.",
+        "A commander with equipment or auras attached, swinging alone.",
+        "Fewer than two untapped Thopters at the end of your turn."
+      ],
+      "immediate": [
+        "Cast Propaganda ({2}{U}) ahead of Sai when both are in hand and the racer has four or more attackers; with fewer, Sai first.",
+        "Keep {3}{U} open on the racer's turn. After three or more attackers are declared at you, cast Aetherize: every attacker returns to hand, and every token attacker ceases to exist.",
+        "Block each attacker that matters with a Thopter. After blockers are declared, sacrifice the blocking Thopters to Sai ({1}{U}, two at a time): the attacker stays blocked and you draw.",
+        "Cast Fall from Favor ({2}{U}) on the racer's largest attacker: it taps and does not untap while you are the monarch.",
+        "Cast Skysovereign, Consul Flagship ({5}): 3 damage to the racer's best creature on entry, and 3 more each time it attacks with crew 3."
+      ],
+      "subsequent": [
+        "Cast Launch Mishap ({2}{U}) at the racer's next creature spell; the Thopter it makes is a blocker.",
+        "Attack the racer and nobody else with every flier. The other two seats are not racing you.",
+        "Once Steel Hellkite deals combat damage to the racer, pay {X} with X equal to the mana value of their equipment or token maker; pay {0} to destroy every token they control that is not a copy.",
+        "Cast Duplicant ({6}) exiling the racer's commander. It comes back only through the command zone, at a tax."
+      ],
+      "notes": "Aetherize costs {3}{U} held through the racer's whole turn, and the goldfish reads the deck's interaction castable on turn six in 18.8% of games because it spends the mana on the board. Hold the mana on purpose; the Thopters you did not cast that turn are the ones Aetherize saves. Untested at a table: no game has been logged with this deck.",
+      "grounded_in": []
+    }
+  ],
+  "normal": {
+    "preflight": {
+      "keep": [
+        "Two to four lands, one of them an Island that enters untapped.",
+        "One artifact at mana value two or less: Sol Ring, Aether Spellbomb, Soul-Guide Lantern, Arcane Signet, Mind Stone, Thought Vessel, Silver Myr, Ornithopter of Paradise, Steel Overseer, Myr Retriever, Ichor Wellspring, Mazemind Tome, Adaptive Omnitool or Etherium Sculptor.",
+        "A second artifact spell castable by turn four from the cards in hand.",
+        "Etherium Sculptor or Foundry Inspector: with one on the battlefield every two-mana artifact costs {1}.",
+        "Sol Ring with two lands: Sai on turn two."
+      ],
+      "ship": [
+        "One land, or six or more.",
+        "A hand whose artifacts all cost five or more: Forsaken Monument, Darksteel Juggernaut, Psychosis Crawler, Mind's Eye, Skysovereign, Duplicant, Steel Hellkite, Meteor Golem, Myr Battlesphere, Graaz, Kappa Cannoneer, Thought Monitor, Broodstar.",
+        "Three lands and four answers with no artifact: Counterspell, Negate, Launch Mishap, Aetherize, Propaganda, Fall from Favor are the cards that make that hand.",
+        "Lonely Sandbar and Remote Isle as two of three lands: both enter tapped and Sai slips to turn four."
+      ],
+      "note": "Mulligan to the fuel, not to a named card. The goldfish keeps 84.1% of first sevens, 88.7% of kept hands can act by turn three, and Sai is cast on turn three in 8,968 of 10,000 games off the land count alone. The affinity cards — Thoughtcast, Memory Guardian, Thought Monitor, Broodstar — read as uncastable in an opener and cost {U} or {U}{U} by turn five on a normal board; keep them behind two cheap artifacts, never instead of them. Spire Golem's affinity reads Islands, not artifacts."
+    },
+    "startup": {
+      "steps": [
+        "Turn one: play an untapped Island and cast Sol Ring if you have it. Hold Aether Spellbomb and Soul-Guide Lantern for a turn Sai is on the battlefield.",
+        "With Sol Ring out, cast Sai on turn two. Without it, cast a rock or Etherium Sculptor on turn two: Arcane Signet, Mind Stone, Thought Vessel, Silver Myr or Ornithopter of Paradise.",
+        "Turn three: cast Sai ({2}{U}) before any other spell that turn. Everything cast after him is a Thopter.",
+        "With the mana left after Sai, cast the cheapest artifact in hand.",
+        "Play Lonely Sandbar or Remote Isle on a turn the tapped land costs nothing: turn one with no one-drop, or the turn after Sai."
+      ],
+      "note": "The goldfish casts Sai on turn two in 739 of 10,000 games and on turn three in 8,968, and it holds nothing back. A rock cast before Sai is mana; the same rock cast after him is mana and a body. Sol Ring is the one that does not wait."
+    },
+    "assembly": {
+      "steps": [
+        "Sai first. No stage below runs without him.",
+        "A cost reducer second: Etherium Sculptor ({1}{U}) or Foundry Inspector ({3}). With one out, Ichor Wellspring, Soul-Guide Lantern, Aether Spellbomb and Mazemind Tome cost {0} or {1}.",
+        "Vedalken Archmage ({2}{U}{U}) before the run of cheap artifacts, not after. Each artifact cast after him is a Thopter and a card.",
+        "The cheap artifacts in a burst: two or three in one turn once a reducer is out, each one a Thopter.",
+        "The lord on the turn you attack with the Thopters: Master of Etherium ({2}{U}), Chief of the Foundry ({3}) or Steel Overseer ({2}). Stack 001: the Thopter from the lord's own cast enters before the lord and counts for it.",
+        "Padeem, Consul of Innovation ({3}{U}) once an artifact on the board is worth protecting. At your upkeep he draws a card if you control the artifact with the greatest mana value."
+      ],
+      "note": "Master Transmuter puts an artifact onto the battlefield. It is not cast, so Sai makes no Thopter for it and Vedalken Archmage draws nothing. Cheat in the seven-drops and up — Myr Battlesphere, Meteor Golem, Duplicant, Graaz — and cast everything cheaper."
+    },
+    "cruise": {
+      "steps": [
+        "Upkeep: take Thopter Spy Network's Thopter if you control an artifact, Padeem's card if you hold the largest artifact, and Scrawling Crawler's draw for every player.",
+        "Play the land. An untapped Island first; hold Lonely Sandbar and Remote Isle to cycle once five lands are out.",
+        "Count the artifacts you control. That number is Master of Etherium, Darksteel Juggernaut and Broodstar's size, Nettlecyst's and Adaptive Omnitool's bonus, and the discount on Thoughtcast, Memory Guardian, Thought Monitor and Broodstar.",
+        "Cast the artifacts, cheapest first. Each is a Thopter.",
+        "Attack with the fliers at the seat with no fliers and no reach. A connecting artifact creature draws with Thopter Spy Network or Research Thief out.",
+        "End of turn, sink the spare mana in this order: Mazemind Tome ({2}, tap), Tamiyo's Logbook ({5}{U}, tap, {1} less per other artifact), War Room ({3}, tap, one life), and Sai ({1}{U}, two artifacts) only when the hand is empty.",
+        "Pass with {U}{U} open on any turn a counter is in hand."
+      ],
+      "note": "Activate Steel Overseer on the end step before your turn, not in your main phase. The counters stay, and the Overseer untaps for a second activation on your own turn."
+    },
+    "closing": {
+      "steps": [
+        "Count the artifacts you control and the untapped fliers and reach on the seat you are attacking.",
+        "Total the power that connects: each Thopter is 1, plus 1 for Master of Etherium and 1 for Chief of the Foundry on the battlefield, plus 1 per Steel Overseer activation, plus 2 under Forsaken Monument; add Darksteel Juggernaut or Broodstar at the artifact count.",
+        "Pick the connector: Whirler Rogue taps two Thopters and the largest body cannot be blocked (stack 002); Myr Battlesphere taps X untapped Myr on attack for +X/+0 and X damage to the player it attacks.",
+        "If the total is short by three or fewer, cast one more artifact first: a Thopter and one more on the count.",
+        "If the total is a seat's life or more, attack that seat with everything that connects and nothing else.",
+        "If it is short by more, pass with {U}{U} open and the lord in hand, and cast the lord on the turn you attack."
+      ],
+      "note": "Darksteel Juggernaut attacks each combat if able, and Graaz makes every other creature you control a 5/3 Juggernaut that must attack — Sai and the Thopters included. Cast Graaz on the turn the attack is lethal and never the turn before. The goldfish's median kill is turn 10 with none of the Thopters counted; the number that decides is your count, not its figure."
+    }
+  },
+  "handling": {
+    "optics": [
+      "Lead with rocks, Thopters and Propaganda. Cast Master of Etherium, Chief of the Foundry and Steel Overseer on the turn you attack with them, not before.",
+      "Say 'the precon, as printed' when asked. It is true, and it is the deck's cover.",
+      "Keep Nevinyrral's Disk untapped on the battlefield and name it once. A reset nobody wants triggered buys turns.",
+      "Hold Kappa Cannoneer, Broodstar and Graaz in hand until the artifact count makes them lethal. A 1/4 making 1/1s reads as the slow seat."
+    ],
+    "reveal": [
+      "Hold Aetherize until three or more creatures attack you.",
+      "Spend Launch Mishap first of the three counters; it makes a Thopter. Hold Counterspell for a sweeper or a combo piece, Negate for the same.",
+      "Cast Whirler Rogue on the turn you activate it, not the turn before.",
+      "Reveal All Is Dust only by casting it. With it in hand, keep your coloured permanents to Sai and one lord."
+    ],
+    "alliances": [
+      "Offer the two resets as the table's: Nevinyrral's Disk and All Is Dust each clear a board nobody else can, and say which of yours each one leaves.",
+      "Say plainly that nothing in the deck answers a land, and that the graveyard is answered only by Soul-Guide Lantern; ask the seat that carries those to spend theirs.",
+      "Trade Fall from Favor on the archenemy's largest creature for a turn of not being attacked.",
+      "Take the deal that leaves Sai on the battlefield. Break it on the turn the fliers are lethal, and say so before you declare attackers."
+    ],
+    "targets": [
+      "Attack the seat with no fliers and no reach. 1/1 fliers connect where nothing blocks them.",
+      "Point Skysovereign's 3 damage at the mana creature or the lord, not at the largest body.",
+      "Cast Meteor Golem at the permanent that beats you — a lock piece, a combo piece, an enchantment nobody else can touch — not the biggest one.",
+      "Exile a commander with Duplicant: it returns only through the command zone, at a tax.",
+      "After Steel Hellkite connects, pay {X} at the mana value of the one permanent you need gone, and {0} for every token that is not a copy.",
+      "Cast Fall from Favor on a commander: it does not untap while its controller is not the monarch."
+    ]
+  },
+  "decklist_sha256_prefix": "63568a51718f"
+}

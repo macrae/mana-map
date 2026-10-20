@@ -1,0 +1,860 @@
+{
+ "slug": "keen-engineering",
+ "thesis": "Sai in the command zone turns each of the deck's 43 artifact spells into a cast plus a 1/1 flying Thopter, so the board goes wide on its own; the game ends when an artifact-count scaler (Master of Etherium, Chief of the Foundry, Steel Overseer, Nettlecyst, Adaptive Omnitool — with Forsaken Monument's flat +2/+2 on the colourless ones) or a self-scaling body (Darksteel Juggernaut, Broodstar, Myr Battlesphere, Graaz, Kappa Cannoneer) turns that width into damage, while Sai's sacrifice-two-draw and the artifact draw suite keep the casts coming.",
+ "stages": [
+  {
+   "stage": "mana",
+   "label": "FORTY LANDS AND NINE ARTIFACT ROCKS",
+   "what_it_does": "Forty lands (34 Island, Lonely Sandbar, Remote Isle, Darksteel Citadel, Buried Ruin, Foundry of the Consuls, War Room) and nine nonland producers (Sol Ring, Arcane Signet, Mind Stone, Thought Vessel, Hedron Archive, Palladium Myr, Silver Myr, Ornithopter of Paradise, Cultivator's Caravan). deck-facts: 36 blue land sources (mana_analysis counts 41 with the five nonland blue producers) against a blue pip load of 33 pips over 26 cards, no card asking more than two; deck-audit reads mana-base 40 copies OVER the 36-38 base target and ramp 18 copies OVER the 10-12 target. The goldfish reads mean available mana 3.439 on turn 3 and 6.778 on turn 6; the declared ACCELERANT group (eleven cards, this stage's nine plus the two cost reducers) is in 57.4% of openers and drawn by turn 6 in 82.5% of games, mean turn 2.534. Every one of the nine nonland producers is an artifact spell, so under Sai each one lands with a Thopter beside it: this stage is the first fodder as well as the mana. Nine of the forty-nine make only {C} (Sol Ring, Palladium Myr, Hedron Archive, Mind Stone, Thought Vessel, Citadel, Buried Ruin, Foundry, War Room), which pays for the colourless artifacts; Forsaken Monument adds one more {C} per tap of any of them — three from Sol Ring, Palladium Myr and Hedron Archive, two from the six one-{C} sources — because the 2020-09-25 ruling says a tap for more than one {C} still adds only one. Caravan needs crew 3 to attack and is counted here as a rock. Mind Stone and Hedron Archive sacrifice themselves to draw late; Buried Ruin returns an artifact; Foundry of the Consuls makes two Thopters for {5}; War Room draws for {3} and one life.",
+   "cards": [
+    "Island",
+    "Lonely Sandbar",
+    "Remote Isle",
+    "Darksteel Citadel",
+    "Buried Ruin",
+    "Foundry of the Consuls",
+    "War Room",
+    "Sol Ring",
+    "Arcane Signet",
+    "Mind Stone",
+    "Thought Vessel",
+    "Hedron Archive",
+    "Palladium Myr",
+    "Silver Myr",
+    "Ornithopter of Paradise",
+    "Cultivator's Caravan"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-2",
+     "agreement": "partial",
+     "note": "eleven of the sixteen sit together (Signet, Caravan, Citadel, Buried Ruin, Foundry, Archive, Mind Stone, Ornithopter, Sol Ring, Vessel, War Room); the Islands and the two cycling lands are in city-1, Palladium Myr in city-0, Silver Myr in city-3"
+    },
+    {
+     "kind": "role",
+     "id": "ramp:rock",
+     "note": "seven rocks plus three ramp:dork — the role says what each is for, not that they interact"
+    }
+   ]
+  },
+  {
+   "stage": "ignition",
+   "label": "SAI RESOLVES",
+   "what_it_does": "Sai, Master Thopterist is the first thing that has to happen: 'Whenever you cast an artifact spell, create a 1/1 colorless Thopter artifact creature token with flying.' Only two other cards in the 99 trigger on a cast at all — Vedalken Archmage draws on an artifact cast and Forsaken Monument gains 2 life on a colourless one — and neither makes a body, so until Sai is on the battlefield the deck is 43 artifact spells doing their own printed jobs. The goldfish casts him on mean turn 2.979 (median 3; 8,968 of 10,000 games on turn 3) and by turn 6 in 99.7% of games. From there every artifact cast is two artifacts on the board (the spell and the token), which is what the conversion stage counts and what the fodder stage feeds: his second ability, {1}{U} and sacrifice two artifacts, draws a card, so two Thopters are a card whenever the hand runs dry. The goldfish does NOT model either ability (goldfish_targets._model_note; model-coverage reads nothing dark because no corpus card shares the text), so every bodies and damage figure in this model is a floor that leaves out the Thopters. Sai is a creature, not an artifact: he dies to Nevinyrral's Disk and to All Is Dust, has no hexproof from Padeem, and the deck has no recursion that reaches the command zone, so each re-cast costs two more. The engine degrades rather than stops without him: 24 of the deck's creatures are artifact creatures, no scaler needs Thopters specifically (they count artifacts, artifact creatures or colourless creatures), and Thopter Spy Network and Thopter Fabricator make tokens on their own, so a Sai-less board still grows, just one body per cast instead of two.",
+   "cards": [
+    "Sai, Master Thopterist"
+   ],
+   "single_point_of_failure": "Sai, Master Thopterist",
+   "evidence": [
+    {
+     "kind": "stack",
+     "id": "001",
+     "note": "checker-passed: Sai's trigger resolves before the artifact spell that caused it (601.2i, 603.3, 405.5); the Thopter is on the battlefield before Chief of the Foundry is"
+    },
+    {
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "partial",
+     "note": "Sai clusters with Master of Etherium, Etherium Sculptor, Whirler Rogue and the affinity cantrips — the map sees 'artifact' in the text, not that he is the one that starts it"
+    },
+    {
+     "kind": "role",
+     "id": "threat:tokens",
+     "note": "the role tags the token making; it does not say the tokens are what every other stage runs on"
+    }
+   ]
+  },
+  {
+   "stage": "fuel",
+   "label": "ARTIFACTS INTO HAND, AND CHEAPER",
+   "what_it_does": "What keeps the casts coming once Sai is out: the draw that refills the hand with artifacts and the two discounts that let two or three land in one turn. Etherium Sculptor and Foundry Inspector each make artifact spells cost {1} less; with both out, the deck's 25 nonland artifacts under mana value 4 mostly cost one or nothing. Vedalken Archmage draws a card on the same trigger Sai makes a Thopter on, so every artifact cast is a body AND a card. Thought Monitor, Thoughtcast (affinity) and Thirst for Knowledge (discard an artifact instead of two cards) are the burst draw; Pull from Tomorrow is the late refill; Mazemind Tome, Tamiyo's Logbook (cheaper per other artifact) and Mind's Eye are the mana-sink engines; Research Thief draws when an artifact creature connects. The goldfish reads the declared DRAW group (nineteen cards: nine of this stage's — Archmage, Thief, Monitor, Thoughtcast, Thirst, Pull, Tome, Logbook, Eye — plus Wellspring, both Crawlers, Spy Network, Fabricator, Shimmer Dragon, Spellbomb, Archive, Mind Stone and Lantern) in 78.7% of openers and drawn by turn 6 in 95.1% of games, mean turn 1.544, and mean extra cards drawn 1.328 by turn 6 and 4.967 by turn 10 — a floor, because goldfish_metrics.meta.card_advantage.draw_not_modelled names seven of the nineteen (Tome, Eye, Psychosis Crawler, Thief, Spy Network, Thoughtcast, Shimmer Dragon) as contributing nothing to it. The ACCELERANT group's 82.5% by turn 6 includes the two reducers. Archmage, Thoughtcast, Thirst and Pull are not artifacts and do not trigger Sai; the other seven here (Sculptor, Inspector, Thief, Monitor, Tome, Logbook, Eye) are artifact spells and do. The deck has zero tutors (bracket_report), so the fuel is draw or nothing.",
+   "cards": [
+    "Etherium Sculptor",
+    "Foundry Inspector",
+    "Vedalken Archmage",
+    "Research Thief",
+    "Thought Monitor",
+    "Thoughtcast",
+    "Thirst for Knowledge",
+    "Pull from Tomorrow",
+    "Mazemind Tome",
+    "Tamiyo's Logbook",
+    "Mind's Eye"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "cuts-across",
+     "note": "Archmage, Monitor, Thoughtcast, Thirst and Sculptor sit in city-3; Thief, Pull and the Logbook in city-1; the Tome, the Eye and Inspector in city-0"
+    },
+    {
+     "kind": "role",
+     "id": "ramp:cost-reduction",
+     "note": "eight cards carry it; five are in this stage (Sculptor, Inspector, Monitor, Thoughtcast, Logbook) and three are placed elsewhere (Broodstar in wincon, Memory Guardian and Spire Golem in output)"
+    }
+   ]
+  },
+  {
+   "stage": "fodder",
+   "label": "THE BODIES SAI EATS",
+   "what_it_does": "The deck converts artifacts on the board into cards and into evasion: Sai's {1}{U} sacrifice two artifacts draws a card, Shimmer Dragon taps two untapped artifacts to draw, Whirler Rogue taps two to make a creature unblockable, Kappa Cannoneer taps them to improvise its cost, and the Vehicles crew with them. The resource eaten is mostly Thopter tokens, which are not cards and which the goldfish never creates. The four cards here are the ones whose job is to supply or to be that resource: Thopter Spy Network makes a Thopter at every upkeep with no cast at all, and draws when artifact creatures connect; Thopter Fabricator makes one whenever a second card is drawn in a turn (Archmage, Monitor, Thirst and Sai's own draw all reach that); Ichor Wellspring draws when it enters and again when it is sacrificed, so feeding it to Sai is two cards for {1}{U}; Myr Retriever returns another artifact card from the graveyard when it dies, so sacrificing it to Sai gets a spent Wellspring, Spellbomb or Mind Stone back to be cast again — and cast again means another Thopter. The goldfish reads mean bodies 2.567 by turn 6 and 6.729 by turn 10 with none of this modelled, which is why it is a floor and why this is the stage the map cannot see at all: nothing in these four texts says 'sacrifice'.",
+   "cards": [
+    "Thopter Spy Network",
+    "Thopter Fabricator",
+    "Ichor Wellspring",
+    "Myr Retriever"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "Wellspring and Retriever in city-0, Spy Network in city-1, Fabricator in city-4 — four cards, three cities"
+    }
+   ]
+  },
+  {
+   "stage": "conversion",
+   "label": "COUNT THE ARTIFACTS",
+   "what_it_does": "The engine proper: what turns a wide artifact board into power or into cards. Master of Etherium has power equal to artifacts you control and gives other artifact creatures +1/+1; Chief of the Foundry gives them +1/+1; Steel Overseer taps to put a +1/+1 counter on every artifact creature, Thopters included; Nettlecyst and Adaptive Omnitool make one creature +1/+1 per artifact (Omnitool also digs an artifact when it attacks); Forsaken Monument gives colourless creatures +2/+2 — every Thopter and Myr token and 17 of the deck's 24 artifact creatures, but not the seven blue ones (Sculptor, Master of Etherium, Kappa, Transmuter, Memory Guardian, Research Thief, Thought Monitor) — and adds one more {C} each time a permanent is tapped for {C}. Whirler Rogue brings two Thopters and taps two artifacts to make a creature unblockable, so the board becomes one connecting body; Shimmer Dragon taps two artifacts to draw and is hexproof at four artifacts; Master Transmuter bounces an artifact (a token will do) to put an artifact from hand onto the battlefield, which is how a seven- or eight-mana body arrives for {U} — but putting onto the battlefield is not casting, so Sai makes no Thopter for it. The goldfish reads the declared PAYOFF group (Chief, Master, Nettlecyst, Overseer, Omnitool, Monument, Padeem, Spy Network, Archmage) in 49.8% of openers and by turn 6 in 77.0% of games, mean turn 2.79; mean board power 4.939 by turn 6 and 13.704 by turn 10, with zero Thopters counted. Every card here except Rogue and the Dragon is itself an artifact spell. The three scalers phrase the same job three ways, and the map splits them across three cities on that phrasing.",
+   "cards": [
+    "Master of Etherium",
+    "Chief of the Foundry",
+    "Steel Overseer",
+    "Nettlecyst",
+    "Adaptive Omnitool",
+    "Forsaken Monument",
+    "Whirler Rogue",
+    "Shimmer Dragon",
+    "Master Transmuter"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "cuts-across",
+     "note": "Master of Etherium, Rogue and Transmuter in city-3; Chief, Overseer and Monument in city-0; Nettlecyst, Omnitool and the Dragon in city-4"
+    },
+    {
+     "kind": "role",
+     "id": "buff:pump",
+     "note": "four cards carry it; the role does not say what they count"
+    }
+   ]
+  },
+  {
+   "stage": "output",
+   "label": "REMOVAL, DRAIN AND THE FLYERS",
+   "what_it_does": "What the engine produces short of the kill. Removal: Duplicant exiles a nontoken creature on entry, Meteor Golem destroys a nonland permanent, Skysovereign deals 3 to a creature or planeswalker on entry and on each attack, Aether Spellbomb bounces a creature for {U} or draws for {1}, Fall from Favor taps a creature down and makes you the monarch (a draw a turn while it holds). The two resets: Nevinyrral's Disk destroys all artifacts, creatures and enchantments — Darksteel Juggernaut and Darksteel Citadel survive it, Sai does not; All Is Dust makes each player sacrifice coloured permanents, which in this deck is 19 nonland permanents including Sai, Master of Etherium, Etherium Sculptor, Kappa Cannoneer and Master Transmuter, while every colourless artifact creature and every Thopter stays. Soul-Guide Lantern exiles a graveyard and cycles itself. Drain: Psychosis Crawler makes each opponent lose 1 per card you draw and Scrawling Crawler 1 per card they draw — the goldfish reads cumulative event damage 2.92 by turn 10, so this is incidental, not a clock. Flyers: Memory Guardian and Spire Golem are affinity 3/4 and 2/4 flyers that cost little on a wide board and carry the anthems over blockers. The declared ANSWER group (twelve cards: seven of this stage's — Duplicant, Meteor Golem, Skysovereign, Spellbomb, Fall from Favor, the Disk, All Is Dust — plus Counterspell, Negate, Launch Mishap and Aetherize from protection and Steel Hellkite from wincon) is in 60.7% of openers and drawn by turn 6 in 85.4% of games; deck-audit counts interaction 9 against a target of 8, with four classes answered against five and no answer to a land.",
+   "cards": [
+    "Duplicant",
+    "Meteor Golem",
+    "Skysovereign, Consul Flagship",
+    "Aether Spellbomb",
+    "Fall from Favor",
+    "Nevinyrral's Disk",
+    "All Is Dust",
+    "Soul-Guide Lantern",
+    "Psychosis Crawler",
+    "Scrawling Crawler",
+    "Memory Guardian",
+    "Spire Golem"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "Duplicant, Golem, Disk, All Is Dust, Lantern and both Crawlers in city-0; Skysovereign in city-4; Spellbomb and Fall from Favor in city-1; Guardian and Spire Golem in city-3"
+    }
+   ]
+  },
+  {
+   "stage": "protection",
+   "label": "COUNTERS, FOG AND HEXPROOF",
+   "what_it_does": "What keeps the board alive. Counterspell, Negate and Launch Mishap (which also makes a Thopter) are the three counters; Aetherize bounces every attacker; Propaganda taxes each attacker {2}; Misleading Signpost flashes in during declare attackers to point an attacker elsewhere and then taps for {U}. Padeem gives every artifact hexproof and draws each upkeep if you hold the biggest artifact — Sai himself is not an artifact and gets none of it. Shimmer Myr lets artifact spells be cast as though they had flash, which is the deck's answer to a sorcery-speed wrath: hold the artifacts, cast them on the end step, and Sai's Thopters arrive with counter mana still up. deck-audit reads protection 4 copies UNDER the 5-7 base target and notes Darksteel Citadel's indestructible as unclassified; the goldfish reads interaction in hand 79.5% on turn 6 but castable only 19.3% of the time that turn, the gap being mana spent on the board. The deck has no way to regrow Sai, so this stage protects the artifacts and leaves the commander to the tax.",
+   "cards": [
+    "Counterspell",
+    "Negate",
+    "Launch Mishap",
+    "Aetherize",
+    "Propaganda",
+    "Misleading Signpost",
+    "Padeem, Consul of Innovation",
+    "Shimmer Myr"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-1",
+     "agreement": "partial",
+     "note": "six of the eight sit together in city-1 (Counterspell, Negate, Launch Mishap, Aetherize, Propaganda, Signpost); Padeem is in city-3 and Shimmer Myr in city-4"
+    },
+    {
+     "kind": "role",
+     "id": "counterspell",
+     "note": "three cards"
+    }
+   ]
+  },
+  {
+   "stage": "wincon",
+   "label": "ONE BODY THAT IS THE WHOLE BOARD",
+   "what_it_does": "How the game ends: a body whose size is the artifact count, or one that brings its own army. Darksteel Juggernaut (indestructible, power equal to artifacts, must attack) and Broodstar (affinity, flying, power equal to artifacts) are the board in one creature; Myr Battlesphere brings four Myr and taps X Myr on attack for +X/+0 and X damage to the defending player — Silver Myr, Palladium Myr, Myr Retriever and Shimmer Myr are Myr too; Graaz makes every other creature a 5/3 Juggernaut, so a Thopter swarm becomes 5-power flyers; Kappa Cannoneer grows and goes unblockable whenever it or another artifact you control enters, improvises off the board, and has ward {4}; Steel Hellkite flies, pumps for {2} and wipes a mana value off any player it hits. The goldfish reads the declared KILL group (eight bodies AND one of Chief, Master, Overseer, Nettlecyst, Omnitool, Rogue) assembled by turn 6 in 43.4% of games, 67.4% ever, mean turn 4.862; its six-card connector half is the thinnest component in the deck at 36.4% of openers. Combat without the Thopters: median kill turn 10, mean 9.508, 48.9% of games with no kill by turn 10, kill by turn 8 in 4.0% and by turn 9 in 21.0%; mean damage 11.498 by turn 10. These are floors — Sai's tokens are not in them — and the model has no blockers. Whether the kill is the wide board or the one body is the open question CONTEXT.md names; this model says the two are usually the same card: Juggernaut and Broodstar are sized by the artifact count, Battlesphere and Kappa by the bodies that enter, Graaz sizes the swarm instead of itself, and Steel Hellkite is the one fixed body.",
+   "cards": [
+    "Darksteel Juggernaut",
+    "Broodstar",
+    "Myr Battlesphere",
+    "Graaz, Unstoppable Juggernaut",
+    "Kappa Cannoneer",
+    "Steel Hellkite"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "city",
+     "id": "city-4",
+     "agreement": "cuts-across",
+     "note": "Juggernaut, Broodstar and Hellkite in city-4; Battlesphere and Graaz in city-0; Kappa in city-3"
+    },
+    {
+     "kind": "role",
+     "id": "wincon:combat",
+     "note": "three cards carry it (Graaz, Kappa, Rogue); Juggernaut is protection:self + threat:body, Broodstar ramp:cost-reduction + threat:body, Battlesphere threat:body + threat:tokens + value:etb, Hellkite buff:pump + removal:sweeper + threat:body — none of those four is tagged wincon:combat"
+    }
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Sai, Master Thopterist",
+    "Master of Etherium"
+   ],
+   "verified_by": "001",
+   "note": "Stack 001 (checker pass): Chief of the Foundry cast with Sai and Master of Etherium on the board — Sai's trigger resolves first, the Thopter enters before Chief, and once the stack is empty Sai is 1/4, the Thopter 3/3, Master of Etherium 4/4 and Chief 3/4. One artifact cast added two artifacts and Master grew by three (two bodies plus Chief's anthem)."
+  },
+  {
+   "from": "fuel",
+   "to": "ignition",
+   "via": [
+    "Vedalken Archmage",
+    "Sai, Master Thopterist"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: one artifact cast is one Thopter and one card — Sai's trigger and Archmage's trigger fire on the same event. Needs a stack."
+  },
+  {
+   "from": "fodder",
+   "to": "ignition",
+   "via": [
+    "Thopter Spy Network",
+    "Sai, Master Thopterist"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: the upkeep Thopter is a body with no cast (it needs an artifact already on the board — 'if you control an artifact'), and two of them are a card through Sai's {1}{U} sacrifice. Needs a stack."
+  },
+  {
+   "from": "fodder",
+   "to": "fuel",
+   "via": [
+    "Ichor Wellspring",
+    "Myr Retriever",
+    "Etherium Sculptor"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: Retriever dying to Sai's sacrifice returns Wellspring to hand; re-cast for {1} under Sculptor it draws again and makes another Thopter. Needs a stack."
+  },
+  {
+   "from": "conversion",
+   "to": "wincon",
+   "via": [
+    "Whirler Rogue",
+    "Darksteel Juggernaut"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: tap two Thopters, Juggernaut cannot be blocked at power equal to the artifact count. Needs a stack: can Thopters made this turn pay Rogue's tap-two cost?"
+  },
+  {
+   "from": "conversion",
+   "to": "wincon",
+   "via": [
+    "Whirler Rogue",
+    "Myr Battlesphere"
+   ],
+   "verified_by": "002",
+   "note": "Stack 002 (checker pass): with Sai, Rogue and Battlesphere on the board, Rogue's 'tap two untapped artifacts you control' is legally paid by two Thopters created this turn — 302.6 restricts only a creature's own {T} abilities — and Myr Battlesphere cannot be blocked this combat; the tapped Thopters cannot pay a second activation that turn."
+  },
+  {
+   "from": "conversion",
+   "to": "wincon",
+   "via": [
+    "Steel Overseer",
+    "Myr Battlesphere"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: Overseer's counter lands on Battlesphere and all four Myr; the attack then taps the Myr for +X and X damage. Needs a stack on the ordering of the tap-for-mana and tap-for-Battlesphere choices."
+  },
+  {
+   "from": "mana",
+   "to": "wincon",
+   "via": [
+    "Silver Myr",
+    "Palladium Myr",
+    "Myr Battlesphere"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: the two mana Myr are Myr for Battlesphere's attack trigger, so an untapped mana Myr is +1 damage instead of one mana. Needs a stack."
+  },
+  {
+   "from": "conversion",
+   "to": "wincon",
+   "via": [
+    "Master Transmuter",
+    "Myr Battlesphere"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: {U} and bounce a Thopter token puts Battlesphere onto the battlefield from hand; its ETB makes four Myr but Sai makes no Thopter because nothing was cast. Needs a stack."
+  },
+  {
+   "from": "mana",
+   "to": "conversion",
+   "via": [
+    "Sol Ring",
+    "Forsaken Monument"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: Monument's 'whenever you tap a permanent for {C}, add an additional {C}' makes Sol Ring THREE, not four — one trigger per tap event, and the 2020-09-25 ruling (an input, not a citation) says a tap for more than one {C} adds only one. Needs a stack on 605.1a / 603.2 to restate it as a fact."
+  },
+  {
+   "from": "protection",
+   "to": "ignition",
+   "via": [
+    "Shimmer Myr",
+    "Sai, Master Thopterist"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: Shimmer Myr lets the artifacts be cast on an opponent's end step, so Sai's Thopters arrive after a sorcery-speed wrath. Needs a stack."
+  },
+  {
+   "from": "fuel",
+   "to": "output",
+   "via": [
+    "Thoughtcast",
+    "Psychosis Crawler"
+   ],
+   "verified_by": null,
+   "note": "CLAIM: Thoughtcast's two draws are two life from each opponent with Crawler out. Needs a stack. The goldfish cannot size this line: Thoughtcast is in meta.card_advantage.draw_not_modelled, so its draws are absent from the 2.92 cumulative event damage by turn 10, which reads only Scrawling Crawler's upkeep draws and the modelled draws that reach Psychosis Crawler."
+  }
+ ],
+ "map_disagreements": [
+  {
+   "component": "conversion — the artifact-count scalers",
+   "cities": [
+    "Ramp",
+    "Bodies",
+    "Insurance"
+   ],
+   "why": "Master of Etherium ('power equal to the number of artifacts you control') sits in city-3 THE ENGINE ROOM beside Sai; Nettlecyst, Adaptive Omnitool and the two count-sized bodies sit together in city-4's hood SIZED BY THE COUNT; Chief of the Foundry ('other artifact creatures get +1/+1'), Steel Overseer and Forsaken Monument sit in city-0 THE COLOURLESS CORE. The map did see the count-sizing — its hood is named for it — but it split the scalers on whether the text also names Sai's trigger-shaped job (Master, Rogue, Transmuter) or a flat anthem (Chief, Monument). What makes all nine one stage is what they do TO the Thopters."
+  },
+  {
+   "component": "wincon — the self-sized bodies",
+   "cities": [
+    "Insurance",
+    "Bodies",
+    "Ramp"
+   ],
+   "why": "Broodstar and Darksteel Juggernaut are in city-4's hood SIZED BY THE COUNT ('threats whose power is the number of artifacts you control'), which is the right reading; Steel Hellkite is in the other hood THE BIG FLIERS ('evasive finishers with a fixed size'); Battlesphere and Graaz are in city-0 on their token and Juggernaut text; Kappa in city-3 on 'improvise'. The narrow disagreement is that Master of Etherium, which shares the count-sizing text, sits in city-3 beside Sai rather than with the two bodies, and that the kill stage spans three cities because the map clusters each body on its own keywords where the engine groups them on what the board does to them."
+  },
+  {
+   "component": "fodder — what Sai eats",
+   "cities": [
+    "Bodies",
+    "Mana",
+    "Insurance"
+   ],
+   "why": "Ichor Wellspring says 'draw', Myr Retriever says 'return', Thopter Spy Network and Thopter Fabricator say 'create a Thopter'. None says 'sacrifice'; the sacrifice outlet is on the commander, who is not in the 99 the map clusters. This is the stage least visible in card text and the one the goldfish does not model either."
+  },
+  {
+   "component": "fuel — the draw suite and the two discounts",
+   "cities": [
+    "Ramp",
+    "Mana",
+    "Bodies"
+   ],
+   "why": "The affinity cantrips and Sculptor cluster beside Sai in THE ENGINE ROOM on the word 'artifact'; Research Thief, Pull from Tomorrow and the Logbook cluster with the counterspells in THE MOAT (fallback name 'Mana') on instant-speed blue text; the Tome and Mind's Eye with the colourless artifacts in THE COLOURLESS CORE. The map's fallback names ('Mana' for the counterspell city, 'Card Flow' for the rock city THE MANA THAT COUNTS) are a measurement and this model does not rename them."
+  },
+  {
+   "component": "the declared KILL and PAYOFF groups",
+   "cities": [
+    "Insurance",
+    "Bodies",
+    "Ramp"
+   ],
+   "why": "engine-facts: 0 of 6 declared components sit in a single city. The declaration groups by what a card does to the board; the map groups by what a card says."
+  }
+ ],
+ "unassigned": [],
+ "open_questions": [
+  {
+   "question": "Master Transmuter activates returning a Thopter token to hand and puts Myr Battlesphere onto the battlefield: does Sai trigger (expected no — not cast), do Kappa Cannoneer's 'another artifact enters' and Battlesphere's four-Myr ETB fire, and does the token simply cease to exist?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "Transmuter is in the declared KILL body group; the pilot needs to know the cheat-in costs a Thopter and earns none, and how many Kappa counters it yields."
+  },
+  {
+   "question": "Myr Battlesphere attacks with Silver Myr and Palladium Myr untapped and Steel Overseer on board: in what order are the Overseer activation, the mana taps and the Battlesphere X-tap chosen, and what is the damage to the defending player?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "Two of the deck's mana sources are Myr; the mana→wincon line claims each is +1 damage instead of one mana, and the ordering decides whether the pilot can have both."
+  },
+  {
+   "question": "All Is Dust resolves with the deck's typical board: which of the 18 coloured nonland permanents in the 99 plus Sai from the command zone (Master of Etherium, Etherium Sculptor, Kappa Cannoneer, Master Transmuter, Padeem, Shimmer Dragon, Whirler Rogue among them) are sacrificed, and do colourless Thopter tokens and Nettlecyst's black Germ stay or go?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "All Is Dust is one of two sweepers and it eats the commander and most of the conversion stage while sparing the tokens; the Germ is black and goes."
+  },
+  {
+   "question": "Kappa Cannoneer cast with improvise, tapping Thopters: does Sai's trigger resolve first so the new Thopter enters before Kappa, meaning Kappa does NOT get a counter from it, and does Kappa's own entry give it its first counter?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "Kappa is in the KILL group and self-connects; its size on the turn it lands decides whether it attacks unblockably that turn or the next."
+  },
+  {
+   "question": "Model Sai's cast trigger (a 1/1 flying artifact token per artifact spell cast) and his {1}{U} sacrifice-two draw: what do mean bodies by turn 6 (floor 2.567), the KILL group's by-turn-6 rate (floor 43.4%) and median kill turn (floor 10) read with the commander's abilities on?",
+   "settled_by": "goldfish",
+   "why_it_matters": "Every board and damage figure in this model is a floor because the Thopters are not modelled; the pilot cannot size the swarm from the current artifact."
+  },
+  {
+   "question": "Forsaken Monument on the battlefield, tap Sol Ring for {C}{C}: does Monument's 'whenever you tap a permanent for {C}' trigger once and add one {C} (three total) or add one per {C} produced (four)?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "The mana→conversion line and the mana stage both state three; the 2020-09-25 ruling says one additional {C} per tap, and the model wants that as a cited fact rather than a ruling read as one."
+  },
+  {
+   "question": "For a mono-blue artifact go-wide deck at bracket 2, does the archetype close with the anthem-scaled swarm or with the single self-sized body, and what does the table typically do to it?",
+   "settled_by": "research-strategy",
+   "why_it_matters": "CONTEXT.md names 'wide board or one big body' as the deck's open question; this model says the two are usually the same card, which a strategy frame can confirm or refute before the first logged game."
+  }
+ ],
+ "proposed_goldfish_edits": [],
+ "critic": {
+  "verdict": "pass",
+  "iterations": 4,
+  "findings": [
+   {
+    "where": "stages[2].what_it_does",
+    "claim": "DRAW group nineteen cards: nine of this stage's plus Wellspring, both Crawlers, Spy Network, Fabricator, Shimmer Dragon, Spellbomb, Archive, Mind Stone and Lantern; 78.7% of openers, 95.1% by turn 6, mean 1.544; seven of the nineteen in draw_not_modelled",
+    "status": "supported",
+    "note": "goldfish_targets DRAW any_of is exactly those 19 names (9 + 10); deck-audit component opening_seven 0.787; goldfish_metrics targets[2] by_turn_6 0.951, mean_turn 1.544. draw_not_modelled ∩ group = Tome, Eye, Psychosis Crawler, Thief, Spy Network, Thoughtcast, Shimmer Dragon = 7. 1.328 / 4.967 unchanged in the metrics file. Every other sentence is byte-identical to round three."
+   },
+   {
+    "where": "stages[4].what_it_does",
+    "claim": "PAYOFF group (Chief, Master, Nettlecyst, Overseer, Omnitool, Monument, Padeem, Spy Network, Archmage) in 49.8% of openers, 77.0% by turn 6, mean 2.79",
+    "status": "supported",
+    "note": "goldfish_targets PAYOFF any_of is those nine; deck-audit opening_seven 0.498; goldfish_metrics targets[1] 0.77 / 2.79. Board power 4.939 / 13.704 unchanged. Rest of the stage byte-identical to round three."
+   },
+   {
+    "where": "stages[7].what_it_does",
+    "claim": "KILL group (eight bodies AND one of Chief, Master, Overseer, Nettlecyst, Omnitool, Rogue) 43.4% by turn 6, 67.4% ever, mean 4.862; six-card connector the thinnest component in the deck at 36.4% of openers",
+    "status": "supported",
+    "note": "goldfish_targets KILL: body any_of 8 (Master Transmuter out), connector any_of 6 (Omnitool in); goldfish_metrics targets[3] 0.434 / 0.674 / 4.862; deck-audit connector size 6, opening_seven 0.364, thinnest true, and 6 is the smallest of the six components (11, 9, 19, 8, 6, 12). Combat figures (median 10, mean 9.508, 48.9%, 4.0%, 21.0%, 11.498) unchanged in the metrics file."
+   },
+   {
+    "where": "stages[0], stages[1], stages[3], stages[5], stages[6]",
+    "claim": "figures unchanged",
+    "status": "supported",
+    "note": "ACCELERANT 57.4 / 82.5 / 2.534, commander 2.979 / 3 / 8,968 / 99.7%, mana 3.439 / 6.778, bodies 2.567 / 6.729, event damage 2.92, ANSWER 60.7 / 85.4, interaction 79.5 / 19.3, audit mana-base 40, ramp 18, protection 4, interaction 9, breadth 4 — all re-read from the re-run goldfish_metrics.json (same decklist sha, seed 42, 10,000 iterations) and a fresh deck-audit; none moved and none was edited. Text lengths identical to round three."
+   },
+   {
+    "where": "lines[5].verified_by",
+    "claim": "Stack 002: with Sai, Rogue and Battlesphere on the board, Rogue's cost is legally paid by two Thopters created this turn (302.6 restricts only a creature's own {T} abilities) and Myr Battlesphere cannot be blocked this combat; the tapped Thopters cannot pay a second activation",
+    "status": "supported",
+    "note": "002 is checker-passed. Its scenario board is Sai, Whirler Rogue, Myr Battlesphere and two Thopter tokens created this turn; the stack object is Rogue's ability with the cost paid by those two tokens and Battlesphere as target. final_state: LEGAL under 302.6 (its restriction covers only a creature's own {T}/{Q} abilities and attacking), Battlesphere can't be blocked this turn and may attack having been controlled since last turn; step 9 states the tapped Thopters cannot pay a second activation. The resolution establishes the conversion-to-wincon flow the line names — Rogue's ability (conversion) making the wincon body unblockable — not merely a board containing both. The scenario names both via cards, so the mechanical gate and the inference agree."
+   },
+   {
+    "where": "lines[0..4], lines[6..11]",
+    "claim": "unchanged",
+    "status": "supported",
+    "note": "Byte-identical to round three's eleven lines, re-indexed by the insertion at [5]. lines[0] still carries stack 001 (re-read: checker pass, same board and final state). lines[4] (Rogue + Darksteel Juggernaut) correctly remains null — 002 targets Battlesphere, not Juggernaut."
+   },
+   {
+    "where": "stages[*].cards, stages[*].evidence, stages[*].single_point_of_failure, map_disagreements, thesis, unassigned",
+    "claim": "nothing outside the scope changed",
+    "status": "supported",
+    "note": "Every stage's [cards, evidence] sha256 prefix is identical to the round-three value (196bc85d499f, 12639f25e4c7, ca417786fd81, d089ecb6ec1e, d0c7ea7cf887, 73b724e290bd, cbeb50ff9fa0, c79475710017); SPOF unchanged; the five map disagreements are the round-two text verbatim; thesis unchanged; unassigned empty. No stack-003 evidence entry was added to stages[5], which would have been out of scope."
+   },
+   {
+    "where": "open_questions",
+    "claim": "two removed as settled by stacks 002 and 003; seven remain",
+    "status": "supported",
+    "note": "The removed two are round three's [0] (Rogue tapping fresh Thopters — 002 final_state LEGAL) and [3] (the Disk — 003 final_state: only the Darksteels survive, Juggernaut 2/2). The remaining seven are round three's [1,2,4,5,6,7,8] verbatim except the goldfish question, whose KILL floor reads 43.4% to match the re-run; its bodies floor 2.567 and median 10 are unchanged in the metrics file."
+   },
+   {
+    "where": "proposed_goldfish_edits",
+    "claim": "deleted as applied",
+    "status": "supported",
+    "note": "goldfish_targets.json carries edit 0 (_note now says 43 artifact spells plus Darksteel Citadel, 25 under four), edit 1 (Omnitool and Monument in PAYOFF), edit 2 (Transmuter out of the KILL body leg, Omnitool into the connector, Monument not added to it). Edit 3 landed in part: Shimmer Dragon, Hedron Archive, Mind Stone, Aether Spellbomb and Soul-Guide Lantern joined DRAW, Padeem did not, and the label was not changed to state a restriction. Padeem already sits in PAYOFF as the draw-per-artifact, so the omission is defensible; it is the declaration's business, not the engine's, and nothing in the engine text claims Padeem is in DRAW."
+   },
+   {
+    "where": "stages[2].what_it_does",
+    "claim": "length",
+    "status": "supported",
+    "note": "1,730 characters after the nineteen-card enumeration — 70 under the cap and the nearest any stage has come. It is still one clear argument; a future revision of this stage should replace, not append."
+   }
+  ],
+  "previous_round": {
+   "verdict": "pass",
+   "iterations": 3,
+   "findings": [
+    {
+     "where": "stages[4].what_it_does",
+     "claim": "Forsaken Monument gives colourless creatures +2/+2 … and adds one more {C} each time a permanent is tapped for {C}",
+     "status": "supported",
+     "note": "The round-two residue is gone. The phrase now matches stages[0] ('three from Sol Ring, Palladium Myr and Hedron Archive, two from the six one-{C} sources'), lines[8] ('THREE, not four — one trigger per tap event') and open_questions[7], and matches the oracle text plus the 2020-09-25 ruling used as an input. A search of every field outside the critic block finds no 'doubl' string. Mechanically checkable going forward: the engine model's non-critic text should contain no 'doubl' adjacent to 'Monument' or '{C}' for this deck."
+    },
+    {
+     "where": "stages[0..3], stages[5..7]",
+     "claim": "unchanged since round two",
+     "status": "supported",
+     "note": "what_it_does lengths are identical to round two (1659, 1654, 1680, 1294, 1650, 1041, 1611); card lists, single_point_of_failure and evidence entries are the same per stage. stages[4] is the only stage whose text moved (1608 -> 1654), and the delta is the replacement phrase alone. Every figure re-derived in rounds one and two still stands against goldfish_metrics.json, deck-audit, deck-facts, deck_map.json, card_roles.json and cards.json, which have not changed."
+    },
+    {
+     "where": "lines[0].verified_by",
+     "claim": "Stack 001 — Sai's trigger resolves before Chief; Sai 1/4, Thopter 3/3, Master 4/4, Chief 3/4; Master grew by three",
+     "status": "supported",
+     "note": "Re-read: stacks/001 is still checker-passed, its scenario board is Sai, Master of Etherium and lands with Chief in hand, and final_state.summary states exactly those figures. The scenario names both via cards and the resolution establishes the ignition-to-conversion flow, not merely a board containing both. The only solid line in the model is carried by its stack."
+    },
+    {
+     "where": "lines[1..10]",
+     "claim": "ten dashed lines, each CLAIM / needs a stack",
+     "status": "supported",
+     "note": "Byte-identical to round two in from/to/via/note; all verified_by null, none phrased as fact. lines[4] correctly still does not cite stack 002 (its target is Myr Battlesphere, not Darksteel Juggernaut)."
+    },
+    {
+     "where": "thesis, map_disagreements[0..4], open_questions[0..8], proposed_goldfish_edits[0..3], unassigned",
+     "claim": "unchanged since round two",
+     "status": "supported",
+     "note": "Same nine open questions in the same order with the same settled_by, same four edits, same five disagreements quoting the map's real hood labels, unassigned empty. The round-two notes still apply and are not errors: stack 003 now settles open_questions[3] and could back the Disk claim in stages[5]; stack 002 settles the summoning-sickness half of open_questions[0]. Both are incompleteness a later round may absorb, not grounds to withhold a pass."
+    },
+    {
+     "where": "critic",
+     "claim": "round two preserved, round one beneath it as previous_round",
+     "status": "supported",
+     "note": "critic.verdict fail / iterations 2 / 20 findings; critic.previous_round.verdict fail / 29 findings. validate-engine passes: 8 stages, 67 placed, 0 unassigned, 1/11 verified."
+    }
+   ],
+   "previous_round": {
+    "verdict": "fail",
+    "iterations": 2,
+    "findings": [
+     {
+      "where": "lines[0].verified_by",
+      "claim": "Stack 001: Chief cast with Sai and Master of Etherium out; Thopter enters before Chief; Sai 1/4, Thopter 3/3, Master 4/4, Chief 3/4; one cast added two artifacts and Master grew by three",
+      "status": "supported",
+      "note": "001 is checker-passed, its scenario board names Sai and Master of Etherium (the line's via) with Chief in hand and cast, and final_state reads exactly those four P/T figures. Step 1 has Master at 1/1 while the stack is pending, so 1/1 -> 4/4 is growth by three (two artifacts plus Chief's +1/+1). The resolution establishes the arrow itself — Sai's cast trigger (ignition) resolving to a body that Master's count (conversion) reads — not merely a board that contains both cards. This is a legitimate solid line."
+     },
+     {
+      "where": "stages[1].evidence[0]",
+      "claim": "checker-passed: Sai's trigger resolves before the artifact spell (601.2i, 603.3, 405.5)",
+      "status": "supported",
+      "note": "001 cites 601.2i in step 1, 603.3 in step 2 and 405.5 in step 5; the summary states the Thopter enters before Chief resolves."
+     },
+     {
+      "where": "stages[1].what_it_does",
+      "claim": "Only two other cards in the 99 trigger on a cast at all — Vedalken Archmage and Forsaken Monument",
+      "status": "supported",
+      "note": "Enumerated over every oracle text in cards.json for 'whenever … cast(s)' and 'when you cast': Sai, Forsaken Monument, Vedalken Archmage only. The superlative survives the set."
+     },
+     {
+      "where": "stages[0].what_it_does",
+      "claim": "36 blue land sources (mana_analysis counts 41 with the five nonland blue producers); Monument adds one more {C} per tap — three from Sol Ring, Palladium Myr and Hedron Archive, two from the six one-{C} sources",
+      "status": "supported",
+      "note": "deck-facts land_sources U 36; mana_analysis.sources.total U 41, nonland 5. Sol Ring, Palladium Myr and Hedron Archive tap for {C}{C} per oracle; the 2020-09-25 ruling is quoted as an input. Round-one finding fixed."
+     },
+     {
+      "where": "stages[4].what_it_does",
+      "claim": "Forsaken Monument gives colourless creatures +2/+2 … and doubles {C}",
+      "status": "over-claimed",
+      "note": "Residue of the round-one Monument finding: stages[0] and lines[8] now say three from Sol Ring, Palladium Myr and Hedron Archive (one additional {C} per tap event, 2020-09-25 ruling), but this stage still says 'doubles {C}', which is true only for the six one-{C} sources and contradicts the model's own corrected figure two stages earlier. Round one folded this phrase into the stages[0] finding without naming stages[4], so the engineer fixed what was named; the fix is a single string — 'and doubles {C}' -> 'and adds one {C} per tap of a {C} source' — in scoped revision mode. This is the only non-supported finding in round two."
+     },
+     {
+      "where": "stages[4].what_it_does",
+      "claim": "every Thopter and Myr token and 17 of the deck's 24 artifact creatures, but not the seven blue ones",
+      "status": "supported",
+      "note": "cards.json colors: the seven blue artifact creatures are exactly Sculptor, Master of Etherium, Kappa, Transmuter, Memory Guardian, Research Thief, Thought Monitor; 24 - 7 = 17. Thopter and Myr tokens are colourless by their creating text. Round-one finding fixed."
+     },
+     {
+      "where": "stages[2].what_it_does",
+      "claim": "thirteen cards: nine of this stage's plus four; extra-cards 1.328 / 4.967 a floor with six of thirteen in draw_not_modelled; Archmage, Thoughtcast, Thirst and Pull are not artifacts, the other seven are",
+      "status": "supported",
+      "note": "9 + 4 = 13 matches goldfish_targets; the six named (Tome, Eye, Psychosis Crawler, Thief, Spy Network, Thoughtcast) are the DRAW-group members of meta.card_advantage.draw_not_modelled; cards.json type_line confirms the artifact/non-artifact split for all eleven. All three round-one findings on this stage fixed."
+     },
+     {
+      "where": "stages[2].evidence[1]",
+      "claim": "eight carry ramp:cost-reduction; five in this stage, three placed elsewhere (Broodstar, Memory Guardian, Spire Golem)",
+      "status": "supported",
+      "note": "card_roles.json re-checked for all eight. Fixed."
+     },
+     {
+      "where": "stages[5].what_it_does",
+      "claim": "ANSWER twelve: seven of this stage's plus four from protection and Steel Hellkite from wincon; Memory Guardian 3/4; Juggernaut and Citadel survive the Disk, Sai does not",
+      "status": "supported",
+      "note": "7 + 4 + 1 = 12 matches the any_of; cards.json Memory Guardian 3/4. The Disk claim is now also established by checker-passed stack 003 (final_state: Darksteel Juggernaut 2/2 and Darksteel Citadel the only survivors; Sai to graveyard or command zone by 704.6d; Padeem's hexproof irrelevant, no targets). The stage may carry a kind=stack 003 evidence entry next round; its absence is incompleteness, not error."
+     },
+     {
+      "where": "stages[7].evidence[1]",
+      "claim": "three carry wincon:combat (Graaz, Kappa, Rogue); Juggernaut protection:self + threat:body, Broodstar ramp:cost-reduction + threat:body, Battlesphere threat:body + threat:tokens + value:etb, Hellkite buff:pump + removal:sweeper + threat:body",
+      "status": "supported",
+      "note": "card_roles.json matches every tag listed. Fixed."
+     },
+     {
+      "where": "thesis",
+      "claim": "artifact-count scaler (… Adaptive Omnitool — with Forsaken Monument's flat +2/+2 on the colourless ones)",
+      "status": "supported",
+      "note": "Monument is no longer called a count scaler. Fixed."
+     },
+     {
+      "where": "lines[8].note",
+      "claim": "makes Sol Ring THREE, not four — one trigger per tap event; needs a stack on 605.1a / 603.2",
+      "status": "supported",
+      "note": "Matches the ruling and the oracle; open_questions[7] routes it to resolve-stack. Still dashed, still phrased as CLAIM. Fixed."
+     },
+     {
+      "where": "lines[10].note",
+      "claim": "the goldfish cannot size this line: Thoughtcast is in draw_not_modelled, so its draws are absent from the 2.92",
+      "status": "supported",
+      "note": "Now reads the figure for what it is. Fixed."
+     },
+     {
+      "where": "lines[4]",
+      "claim": "CLAIM: tap two Thopters, Juggernaut cannot be blocked; needs a stack: can Thopters made this turn pay Rogue's cost?",
+      "status": "supported",
+      "note": "verified_by is null and must stay null: stack 002 (checker-passed, LEGAL under 302.6) settles the cost question but its scenario targets Myr Battlesphere and never names Darksteel Juggernaut, so it cannot verify this line and the mechanical gate would refuse it. The note's open question is answered, though — a revision may say so and keep the line dashed; a 002-shaped scenario targeting Juggernaut would make it solid. A separate line Rogue -> Battlesphere citing 002 would be legitimate."
+     },
+     {
+      "where": "lines[1,2,3,5,6,7,9]",
+      "claim": "seven dashed lines, each CLAIM / needs a stack",
+      "status": "supported",
+      "note": "Unchanged from round one except lines[2], which now carries Spy Network's 'if you control an artifact' condition. None is phrased as fact."
+     },
+     {
+      "where": "open_questions[0] and open_questions[3]",
+      "claim": "fresh Thopters paying Rogue's cost; the Disk with Sai, the Darksteels, Padeem and six Thopters",
+      "status": "supported",
+      "note": "Both were written before stacks 002 and 003 passed. 002 settles the summoning-sickness half of [0] (the Juggernaut half is still open); 003 settles [3] entirely (only the Darksteels survive, Juggernaut 2/2, hexproof irrelevant). Neither is an error — the questions were correct to ask — but [3] can be retired and [0] narrowed next round."
+     },
+     {
+      "where": "open_questions[4]",
+      "claim": "18 coloured nonland permanents in the 99 plus Sai from the command zone",
+      "status": "supported",
+      "note": "cards.json: 18. Fixed."
+     },
+     {
+      "where": "map_disagreements[0], [1], [3]",
+      "claim": "the hood SIZED BY THE COUNT, THE BIG FLIERS, THE ENGINE ROOM, THE MOAT, THE COLOURLESS CORE; the narrow disagreement is Master of Etherium in city-3",
+      "status": "supported",
+      "note": "Every hood and city label now quoted matches deck_map.json regions, including the hood glosses; [3] distinguishes labels from fallback names. Both round-one findings fixed, and the disagreements now say which artifact is wrong about what."
+     },
+     {
+      "where": "proposed_goldfish_edits[1] and [2]",
+      "claim": "Omnitool is a count payoff; Monument is a flat colourless anthem that qualifies only under 'anthem'; Monument not proposed for the connector leg",
+      "status": "supported",
+      "note": "The reasons now match cards.json. Fixed."
+     },
+     {
+      "where": "stages[*].what_it_does",
+      "claim": "length under the 1,800 cap",
+      "status": "supported",
+      "note": "fuel 1,680 and mana 1,659 are the longest and both are clear; nothing needs shortening, but the next revision of either should replace text rather than append."
+     }
+    ],
+    "previous_round": {
+     "verdict": "fail",
+     "findings": [
+      {
+       "where": "thesis",
+       "claim": "43 artifact spells",
+       "status": "supported",
+       "note": "cards.json: 43 nonland entries with 'Artifact' in type_line (Darksteel Citadel is the 44th artifact entry, a land). 24 of them are artifact creatures, 25 are under mana value 4 — every count in proposed_goldfish_edits[0] re-derives."
+      },
+      {
+       "where": "thesis",
+       "claim": "an artifact-count scaler (… Forsaken Monument)",
+       "status": "over-claimed",
+       "note": "Monument's oracle is 'Colorless creatures you control get +2/+2' — a flat anthem on colourless creatures, not a count scaler. Fold into the stages[4] Monument finding."
+      },
+      {
+       "where": "stages[0].what_it_does",
+       "claim": "mana 3.439 t3 / 6.778 t6; ACCELERANT 57.4% / 82.5% / 2.534; mana-base 40 OVER 36-38; ramp 18 OVER 10-12; 36 blue sources, 33 pips over 26 cards, max two; nine of forty-nine make only {C}",
+       "status": "supported",
+       "note": "goldfish_metrics.mean_available_mana_by_turn, deck-audit engine odds and axes, deck-facts mana block all match. Caveat: 36 is deck-facts.land_sources; mana_analysis.sources.total U is 41 (five nonland producers). The nine {C}-only producers enumerate correctly from oracle text."
+      },
+      {
+       "where": "stages[0].what_it_does",
+       "claim": "{C} … is doubled by Forsaken Monument",
+       "status": "over-claimed",
+       "note": "Sol Ring, Hedron Archive and Palladium Myr tap for {C}{C}; Monument's trigger fires once per tap event (WotC ruling 2020-09-25: 'If you tap a permanent for more than one {C}, you add only one additional {C}'), so those three go to three, not four. 'Doubled' holds only for the six one-{C} sources. See lines[8]."
+      },
+      {
+       "where": "stages[1].what_it_does",
+       "claim": "mean cast 2.979, median 3, 8,968 of 10,000 on turn 3, 99.7% by turn 6; nothing else in the 99 converts a cast into a body; 24 artifact creatures; the goldfish does not model either ability",
+       "status": "supported",
+       "note": "goldfish_metrics.commander matches exactly. 'Whenever you cast' enumerated from cards.json oracle: Sai (token), Vedalken Archmage (card), Forsaken Monument (life) — Sai's is the only cast→body. model-coverage: 0 DARK, 3 invisible; goldfish_targets._model_note says the abilities are not modelled. The floor caveat is repeated in every stage that quotes a board figure, which is the honest reading."
+      },
+      {
+       "where": "stages[1].single_point_of_failure",
+       "claim": "Sai, Master Thopterist",
+       "status": "supported",
+       "note": "It is one card, and the stage holds only him. engine-facts and deck-audit list no SPOF because they read the 99; the commander is a recurring resource and the stage text itself says the engine 'degrades rather than stops' without him, which is the right qualification for a command-zone SPOF."
+      },
+      {
+       "where": "stages[2].what_it_does",
+       "claim": "the declared DRAW group (thirteen cards; these ten plus Ichor Wellspring, Psychosis Crawler, Scrawling Crawler and Thopter Spy Network)",
+       "status": "miscounted",
+       "note": "Ten plus four is fourteen; the group is thirteen. This stage holds eleven cards, two of them the cost reducers, so nine of its cards are in the DRAW any_of (Archmage, Thief, Monitor, Thoughtcast, Thirst, Pull, Tome, Logbook, Eye); 9 + 4 = 13."
+      },
+      {
+       "where": "stages[2].what_it_does",
+       "claim": "Archmage, Thief and the Tome are not artifacts and do not trigger Sai; Monitor, the Logbook, the Tome and the Eye are",
+       "status": "contradicts-artifact",
+       "note": "cards.json: Research Thief is 'Artifact Creature — Moonfolk Wizard' and Mazemind Tome is 'Artifact — Book' (the sentence lists the Tome on both sides). The non-artifacts in this stage are Vedalken Archmage ('Creature — Vedalken Wizard'), Thoughtcast, Thirst for Knowledge and Pull from Tomorrow. Mechanically checkable: any 'is/is not an artifact' claim in what_it_does can be read against type_line."
+      },
+      {
+       "where": "stages[2].what_it_does",
+       "claim": "mean extra cards drawn 1.328 by turn 6 and 4.967 by turn 10",
+       "status": "over-claimed",
+       "note": "The figures match goldfish_metrics, but they are quoted beside the draw suite without saying that six of the thirteen DRAW-group cards contribute nothing to them: goldfish_metrics.meta.card_advantage.draw_not_modelled lists Mazemind Tome, Mind's Eye, Psychosis Crawler, Research Thief, Thopter Spy Network and Thoughtcast (modelled 10 of 21 cards that draw). The stage labels the bodies figure a floor and should label this one the same way."
+      },
+      {
+       "where": "stages[2].evidence[1]",
+       "claim": "eight cards carry ramp:cost-reduction; five of them are affinity bodies placed elsewhere",
+       "status": "miscounted",
+       "note": "card_roles.json: the eight are Sculptor, Inspector, Monitor, Thoughtcast, Logbook (all in this stage) plus Broodstar (wincon), Memory Guardian and Spire Golem (output). Three are placed elsewhere, not five."
+      },
+      {
+       "where": "stages[2].what_it_does",
+       "claim": "DRAW 63.9% / 86.2% / 2.061; 25 nonland artifacts under mana value 4; zero tutors",
+       "status": "supported",
+       "note": "deck-audit engine odds opening_seven 0.639, goldfish by_turn_6 0.862, mean_turn 2.061; cards.json 25 artifact spells with cmc < 4; bracket_report.tutors []."
+      },
+      {
+       "where": "stages[3].what_it_does",
+       "claim": "bodies 2.567 t6 / 6.729 t10 with none of this modelled; the four oracle reads; nothing in these four texts says 'sacrifice'",
+       "status": "supported",
+       "note": "goldfish_metrics.mean_bodies_by_turn matches; Wellspring ('enters or is put into a graveyard from the battlefield'), Retriever, Fabricator ('second card each turn') and Spy Network read correctly. One omission worth a word: Spy Network's upkeep Thopter is conditional on 'if you control an artifact' — lines[2] says 'no cast at all', which is true but not 'no board at all'."
+      },
+      {
+       "where": "stages[4].what_it_does",
+       "claim": "Forsaken Monument gives colourless creatures +2/+2, which is every artifact creature and every Thopter in the deck",
+       "status": "contradicts-artifact",
+       "note": "cards.json colors: seven of the 24 artifact creatures are blue and get nothing from Monument — Etherium Sculptor, Kappa Cannoneer, Master Transmuter, Master of Etherium, Memory Guardian, Research Thief, Thought Monitor. Two of those (Master of Etherium, Kappa) are the deck's own scalers. The same sentence is repeated in proposed_goldfish_edits[1] and [2] as the reason to add Monument to the PAYOFF and KILL-connector any_of; the edit may still be right but its stated reason is false. Mechanically checkable: a 'colorless creatures' anthem claimed over 'every artifact creature' against cards.json colors."
+      },
+      {
+       "where": "stages[4].what_it_does",
+       "claim": "PAYOFF 41.2% / 67.6% / 3.169; board power 4.939 t6 / 13.704 t10; every card here except Rogue and the Dragon is an artifact spell; buff:pump four cards",
+       "status": "supported",
+       "note": "deck-audit odds and goldfish_metrics match. cards.json: Shimmer Dragon is 'Creature — Dragon' and Whirler Rogue 'Creature — Human Rogue Artificer'; the other seven are artifacts. roles histogram buff:pump 4. Transmuter 'put onto the battlefield is not casting' is the right reading of the oracle."
+      },
+      {
+       "where": "stages[5].what_it_does",
+       "claim": "The declared ANSWER group (twelve cards; nine of these plus Counterspell, Negate, Launch Mishap and Aetherize from protection)",
+       "status": "miscounted",
+       "note": "goldfish_targets ANSWER any_of holds seven of this stage's twelve (Duplicant, Meteor Golem, Skysovereign, Aether Spellbomb, Fall from Favor, Nevinyrral's Disk, All Is Dust), the four from protection, and Steel Hellkite from wincon: 7 + 4 + 1 = 12. Soul-Guide Lantern, both Crawlers, Memory Guardian and Spire Golem are not in it."
+      },
+      {
+       "where": "stages[5].what_it_does",
+       "claim": "Memory Guardian and Spire Golem are affinity 3/3 and 2/4 flyers",
+       "status": "miscounted",
+       "note": "cards.json: Memory Guardian is 3/4. Spire Golem 2/4 is right. Mechanically checkable: an 'N/N' beside a card name in what_it_does against cards.json power/toughness."
+      },
+      {
+       "where": "stages[5].what_it_does",
+       "claim": "All Is Dust … 19 nonland permanents including Sai; event damage 2.92 by turn 10; ANSWER 60.7% / 85.4%; interaction 9 against 8, four classes of five, no answer to a land; Juggernaut and Citadel survive the Disk, Sai does not",
+       "status": "supported",
+       "note": "cards.json: 18 coloured nonland permanents in the 99, 19 with Sai — the stage phrases it correctly. goldfish discard.mean_cumulative_event_damage_by_turn['10'] 2.92; deck-audit odds 0.607, goldfish 0.854; interaction axis value 9 / low 8; interaction-breadth 4, uncovered ['land']. Scrawling Crawler's text ('that player loses 1 life' on an opponent's draw) is read correctly."
+      },
+      {
+       "where": "stages[6].what_it_does",
+       "claim": "protection 4 UNDER 5-7, Citadel unclassified; interaction in hand 79.5% on turn 6, castable 19.3%; Padeem's hexproof does not reach Sai; Shimmer Myr flash",
+       "status": "supported",
+       "note": "deck-audit protection axis value 4 gap 1 possible_uncounted ['Darksteel Citadel']; goldfish interaction_in_hand_by_turn['6'] 0.795, interaction_castable_by_turn['6'] 0.193. Sai is 'Legendary Creature — Human Artificer', not an artifact. Oracle reads of Signpost, Launch Mishap, Propaganda, Aetherize are correct."
+      },
+      {
+       "where": "stages[7].evidence[1]",
+       "claim": "Juggernaut, Broodstar and Battlesphere are threat:body only",
+       "status": "contradicts-artifact",
+       "note": "card_roles.json: Darksteel Juggernaut ['protection:self','threat:body'], Broodstar ['ramp:cost-reduction','threat:body'], Myr Battlesphere ['threat:body','threat:tokens','value:etb']. The three wincon:combat carriers (Graaz, Kappa, Rogue) are right. Mechanically checkable: a role-evidence note that says 'only' against card_roles.json."
+      },
+      {
+       "where": "stages[7].what_it_does",
+       "claim": "KILL 40.8% by t6, 63.8% ever, mean 4.905; five-card connector thinnest at 31.2%; median kill 10, mean 9.508, 48.9% no kill, 4.0% by t8, 21.0% by t9, damage 11.498; five Myr; Juggernaut, Broodstar, Battlesphere, Graaz, Kappa, Hellkite oracle reads",
+       "status": "supported",
+       "note": "goldfish_metrics.targets[3], combat block and deck-audit components (size 5, opening_seven 0.312, thinnest true; smallest of every component across the five targets) all match. cards.json: five Myr — Battlesphere, Retriever, Palladium, Shimmer, Silver. One loose phrase: Kappa triggers on 'this creature or another artifact you control enters', not 'any artifact'."
+      },
+      {
+       "where": "lines[0..7] and lines[9]",
+       "claim": "nine dashed lines, each note opening CLAIM and closing 'Needs a stack'",
+       "status": "supported",
+       "note": "The deck has no stacks/ directory, every verified_by is null, and each note is phrased as a claim with the stack question named. No line asserts a flow as fact. lines[4]'s question (can fresh tokens pay Rogue's tap-two) and open_questions[6] (does Kappa's own entry count — its text says 'this creature or another artifact') are answerable from text, but posing them to resolve-stack is the honest route."
+      },
+      {
+       "where": "lines[8].note",
+       "claim": "Monument's 'whenever you tap a permanent for {C}, add an additional {C}' makes Sol Ring four",
+       "status": "unjustified",
+       "note": "The quoted text says 'an additional {C}' per trigger and the trigger is one tap event. WotC ruling 2020-09-25 (card-rulings, an input not a citation): 'If you tap a permanent for more than one {C}, you add only one additional {C}.' Sol Ring under Monument is three. The line is dashed, but a dashed line whose claim is wrong is still wrong, and the stage text repeats it as 'doubled'. Settle it with a stack (CR 605.1a mana abilities / 603.2 trigger events) and restate as three."
+      },
+      {
+       "where": "lines[10].note",
+       "claim": "the goldfish reads this channel at 2.92 cumulative by turn 10, so it is incidental",
+       "status": "mis-cited",
+       "note": "The 2.92 is discard.mean_cumulative_event_damage_by_turn['10'], but goldfish_metrics.meta.card_advantage.draw_not_modelled lists Thoughtcast, so Thoughtcast's two draws contribute nothing to it; the figure is Scrawling Crawler's upkeep draws plus whatever modelled draws hit Psychosis Crawler. It cannot size this line's cards, only the Crawler channel in general. Mechanically checkable: a line whose via card is in draw_not_modelled while its note cites a goldfish draw-driven figure."
+      },
+      {
+       "where": "map_disagreements[1].why",
+       "claim": "the map puts … the two bodies in city-4 beside Shimmer Dragon and Steel Hellkite on 'flying' and 'indestructible'",
+       "status": "contradicts-artifact",
+       "note": "deck_map.json regions: city-4-hood-1 is labelled 'SIZED BY THE COUNT', gloss 'Threats whose power is the number of artifacts you control', and holds Broodstar, Darksteel Juggernaut, Nettlecyst, Adaptive Omnitool and Shimmer Myr; Shimmer Dragon and Hellkite are in the other hood, 'THE BIG FLIERS'. The map did see the count-sizing. The real disagreement is narrower: Master of Etherium sits in city-3 beside Sai while the other count-sized cards sit together in city-4. map_disagreements[0] has the same slip for Nettlecyst and Omnitool ('clusters on the phrasing' — they are in the count-sized hood)."
+      },
+      {
+       "where": "map_disagreements[0,2,3,4]",
+       "claim": "city lists and the engine-facts 0/6 figure",
+       "status": "supported",
+       "note": "Every city named resolves to the map's `fallback` field (Ramp=city-3, Bodies=city-0, Insurance=city-4, Mana=city-1, Card Flow=city-2) and the memberships match deck_map.json; engine-facts reads 0/6 components in a single city. Small wording point in [3]: 'Mana' and 'Card Flow' are the map's fallback names, its labels are 'THE MOAT' and 'THE MANA THAT COUNTS'."
+      },
+      {
+       "where": "stages[*].evidence[kind=city]",
+       "claim": "every per-stage city membership note",
+       "status": "supported",
+       "note": "All eight notes re-derived against deck_map.json regions: mana 11-of-16 in city-2 with Islands/cycling lands city-1, Palladium Myr city-0, Silver Myr city-3; fuel, fodder, conversion, output, protection and wincon splits all exact."
+      },
+      {
+       "where": "open_questions[5]",
+       "claim": "the 19 coloured nonland permanents in the 99 (Sai, …)",
+       "status": "miscounted",
+       "note": "cards.json: 18 coloured nonland permanents in the 99; 19 only with Sai, who is in the command zone. stages[5] phrases it right ('19 … including Sai'); the question should say 18 plus the commander."
+      },
+      {
+       "where": "proposed_goldfish_edits[0] and [3]",
+       "claim": "44 artifact entries / 43 spells / 24 creatures / 25 under MV 4; six more cards draw",
+       "status": "supported",
+       "note": "All four counts re-derive from cards.json type_line and cmc. Padeem, Shimmer Dragon, Hedron Archive, Mind Stone, Aether Spellbomb and Soul-Guide Lantern each have a draw clause in oracle text; deck-audit's card-advantage possible_uncounted names the same set."
+      },
+      {
+       "where": "stages[*].what_it_does",
+       "claim": "length under the 1,800 cap",
+       "status": "supported",
+       "note": "Longest is mana at 1,565 characters, then output 1,518; none is near the cap and none is muddled enough to need shortening before revision."
+      }
+     ],
+     "iterations": 1
+    }
+   }
+  }
+ }
+}

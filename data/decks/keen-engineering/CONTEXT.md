@@ -5,7 +5,7 @@
 <!-- ctx:gen summary -->
 - **Commander:** [Sai, Master Thopterist](https://manamap.seanmacrae.com/viz/index.html?cards=Sai%2C+Master+Thopterist)
 - **Version:** v1.0.0 (V1) · **status:** sleeved since 2026-10-19
-- **Colours:** U · **lands:** 40 · **bracket floor:** 1 (Exhibition)
+- **Colours:** U · **lands:** 40 · **bracket floor:** 1 (Exhibition) · **DTI:** 30/96 → B2 (deckcheck.co, 2026-10-19, 1 reading)
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 6 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=keen-engineering) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=keen-engineering)
 <!-- /ctx:gen summary -->
@@ -69,12 +69,12 @@ Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-10-19. Each group b
 - MEDIAN turn the goldfish kills on, not the mean: **turn 10**
 - mean turn the commander is first cast: **turn 2.979**
 - AN ARTIFACT ACCELERANT drawn — the fuel: a rock, a Myr or a cost reducer, each of them a Thopter on cast: **82%**
-- AN ARTIFACT-COUNT PAYOFF drawn — the board becomes power or cards: an anthem, a counter engine, or a draw-per-artifact: **68%**
-- A DRAW ENGINE OR REFILL drawn — the deck's own draw: affinity cantrips, Thirst, Pull, the Tome, the Logbook, the Eye, the Crawlers: **86%**
-- THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable: **41%**
+- AN ARTIFACT-COUNT PAYOFF drawn — the board becomes power or cards: an anthem, a counter engine, or a draw-per-artifact: **77%**
+- A DRAW ENGINE OR REFILL drawn — the deck's own draw: affinity cantrips, Thirst, Pull, the Tome, the Logbook, the Eye, the Crawlers: **95%**
+- THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable: **43%**
 - AN ANSWER drawn — a counter, a bounce, the Disk, All Is Dust, or a removal body: **85%**
 - share of opening sevens the model would keep: **84%**
-- Engine online by turn 5: **34%** (95% CI 34%–35%) — brittle
+- Engine online by turn 5: **37%** (95% CI 36%–38%) — brittle
 - Colour on curve (lands + rocks): U 95%
 <!-- /ctx:gen numbers -->
 
