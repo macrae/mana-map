@@ -14,21 +14,15 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 9,
+    "complete": 14,
     "of": 19,
     "stale": [
-      "bracket",
-      "combos",
       "frame",
-      "map",
       "tutors",
-      "prose",
-      "benchmark"
+      "prose"
     ],
     "invalid": [
-      "targets",
-      "engine",
-      "prices.json"
+      "engine"
     ],
     "verified": true,
     "missing": [
@@ -48,107 +42,60 @@
       "name": "mean-v2",
       "opened": "2026-10-20",
       "why": "THE MEANEST BRACKET 4 EDGAR, rebased on the scan-confirmed v2.0.1 (2026-10-20). The pilot's profile, in his words: a vampire deck that feels fast, threatening, bracket 4; life gain + life drain is the core mechanic; ways of transforming vampire tokens into bigger threats; targeted removal; interaction and card draw are critical; once the combo pieces come out the table targets the vamps, so as much protection and interaction as possible. THE PROFILE, not a gate: judged on the whole paired net-change table, the rating's component deltas, DeckCheck's rescan (the only instrument that reads proactive denial) and play. The ONE pre-registered row is a GUARD: extra cards by T8 may not fall below the champion's 1.68. Keep list: Vish Kal, Bloodthirsty Conqueror, Vito, Sanguine Bond, Exquisite Blood, Elspeth, Crossway Troublemakers, Tithe Drinker, Master of Dark Rites. mean-v1 (built on the v2.0.0 lock, three cards of drift) is REJECTED as rebased here; its net-change read a trade with the guard met on the thirteen-swap list. Two pairings changed under the scan: Charismatic Conqueror was already in the sleeves, so Gifted Aetherborn's slot goes to Kalitas, Traitor of Ghet (a standing resource-strip engine on a lifelink Vampire; reversible); Knight of the Ebon Legion was not in the sleeves, so Anowon takes Florian's slot (Cordial Vampire stays — it turns tokens into bigger threats; reversible).",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-10-20 into the list after VNone",
       "base_moved": null,
-      "proposal": null,
+      "proposal": {
+        "at": "2026-10-20",
+        "as_version": "v2.1.0",
+        "why": "THE MEANEST BRACKET 4 EDGAR on the scan-confirmed v2.0.1: the profile package (Incubator, two Talismans, Phyrexian Tower, Morbid, Clavileño, Vraan, Vein Ripper, Enduring Tenacity) plus four proactive-denial Vampires (Anowon, Drana and Linvala, Captivating Vampire, with Charismatic Conqueror already sleeved), Bloodghast as sac fuel, and a land pass (Exotic Orchard). Net-change: a trade, guard met (extra cards @T8 1.65 -> 1.78), damage @T10 +1.9, killed by T10 +5.7 pts, board power @T6 +0.66; stall +2.6 pts and interaction affordable @T6 -4 pts worse. Every nonland add PLAYED by Forge's AI. Proxies printed and sleeved 2026-10-20.",
+        "base_version": 5,
+        "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
+        "accepted_on": {
+          "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
+          "state": "a trade",
+          "objective": {
+            "axis": "extra_cards_8",
+            "op": ">=",
+            "value": 1.65,
+            "why": "THE MEANEST BRACKET 4 EDGAR, rebased on the scan-confirmed v2.0.1 (2026-10-20). The pilot's profile, in his words: a vampire deck that feels fast, threatening, bracket 4; life gain + life drain is the core mechanic; ways of transforming vampire tokens into bigger threats; targeted removal; interaction and card draw are critical; once the combo pieces come out the table targets the vamps, so as much protection and interaction as possible. THE PROFILE, not a gate: judged on the whole paired net-change table, the rating's component deltas, DeckCheck's rescan (the only instrument that reads proactive denial) and play. The ONE pre-registered row is a GUARD: extra cards by T8 may not fall below the champion's 1.65 (v2.0.1's own reading, 1.6451; the branch was opened with the v2.0.0 figure 1.68 by a lookup slip and corrected the same hour, before any decision). Keep list: Vish Kal, Bloodthirsty Conqueror, Vito, Sanguine Bond, Exquisite Blood, Elspeth, Crossway Troublemakers, Tithe Drinker, Master of Dark Rites. mean-v1 (built on the v2.0.0 lock, three cards of drift) is REJECTED as rebased here; its net-change read a trade with the guard met on the thirteen-swap list. Two pairings changed under the scan: Charismatic Conqueror was already in the sleeves, so Gifted Aetherborn's slot goes to Kalitas, Traitor of Ghet (a standing resource-strip engine on a lifelink Vampire; reversible); Knight of the Ebon Legion was not in the sleeves, so Anowon takes Florian's slot (Cordial Vampire stays — it turns tokens into bigger threats; reversible)."
+          },
+          "grade": "met",
+          "reading": 1.7774,
+          "harness": {
+            "cast_proofs": null,
+            "iterations": 10000,
+            "model_version": "b025d0102196",
+            "seed": 20260826
+          }
+        },
+        "proxy": [
+          "Urza's Incubator"
+        ]
+      },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Anowon, the Ruin Sage"
-          },
-          {
-            "name": "Bloodghast"
-          },
-          {
-            "name": "Captivating Vampire"
-          },
-          {
-            "name": "Clavileño, First of the Blessed"
-          },
-          {
-            "name": "Drana and Linvala"
-          },
-          {
-            "name": "Talisman of Conviction"
-          },
-          {
-            "name": "Talisman of Hierarchy"
-          },
-          {
-            "name": "Vein Ripper"
-          },
-          {
-            "name": "Vraan, Executioner Thane"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Urza's Incubator",
-            "where": [
-              "gishath",
-              "ur-dragon"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Morbid Opportunist",
-            "where": [
-              "hapatra"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Enduring Tenacity",
-            "where": [
-              "Golgari Parts"
-            ]
-          },
-          {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Phyrexian Tower",
-            "where": [
-              "Hapatra"
-            ]
-          }
-        ],
-        "blocking": 10,
+        "free": [],
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 14,
-      "out": 14,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 84,
-        "box": 3,
-        "elsewhere": 1,
-        "buy": 9,
-        "free": 1
+        "in_deck": 98,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
       },
-      "unsourced": [
-        "Anowon, the Ruin Sage",
-        "Bloodghast",
-        "Captivating Vampire",
-        "Clavileño, First of the Blessed",
-        "Drana and Linvala",
-        "Talisman of Conviction",
-        "Talisman of Hierarchy",
-        "Urza's Incubator",
-        "Vein Ripper",
-        "Vraan, Executioner Thane"
-      ],
-      "mergeable": false,
-      "free": 1,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -187,10 +134,10 @@
         },
         {
           "name": "Anowon, the Ruin Sage",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Arcane Signet",
@@ -250,10 +197,10 @@
         },
         {
           "name": "Bloodghast",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bloodletter of Aclazotz",
@@ -292,10 +239,10 @@
         },
         {
           "name": "Captivating Vampire",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -334,10 +281,10 @@
         },
         {
           "name": "Clavileño, First of the Blessed",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Command Tower",
@@ -397,10 +344,10 @@
         },
         {
           "name": "Drana and Linvala",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Edgar Markov",
@@ -432,15 +379,10 @@
         },
         {
           "name": "Enduring Tenacity",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Golgari Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Enlightened Tutor",
@@ -458,19 +400,10 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Exquisite Blood",
@@ -565,18 +498,10 @@
         },
         {
           "name": "Morbid Opportunist",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Olivia Voldaren",
@@ -622,15 +547,10 @@
         },
         {
           "name": "Phyrexian Tower",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Preacher of the Schism",
@@ -732,17 +652,17 @@
         },
         {
           "name": "Talisman of Conviction",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talisman of Hierarchy",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talisman of Indulgence",
@@ -774,25 +694,10 @@
         },
         {
           "name": "Urza's Incubator",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vampiric Tutor",
@@ -810,10 +715,10 @@
         },
         {
           "name": "Vein Ripper",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Verdant Catacombs",
@@ -845,10 +750,10 @@
         },
         {
           "name": "Vraan, Executioner Thane",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Welcoming Vampire",
@@ -886,14 +791,14 @@
         "value": 1.65
       },
       "verdict": {
-        "state": "a trade",
-        "rose": 5,
-        "fell": 2,
-        "no_call": 3
+        "state": "merge",
+        "rose": 0,
+        "fell": 0,
+        "no_call": 10
       },
       "objective_grade": {
         "state": "met",
-        "reading": 1.7774,
+        "reading": 1.7639,
         "shortfall": null
       },
       "measured": true,
@@ -901,6 +806,7 @@
         "Anowon, the Ruin Sage",
         "Bloodghast",
         "Boros Charm",
+        "Cosmos Elixir",
         "Despark",
         "Drana and Linvala",
         "Exotic Orchard",
@@ -908,6 +814,7 @@
         "Nomad Outpost",
         "Phyrexian Tower",
         "Strefan, Maurer Progenitor",
+        "Swamp",
         "Vein Ripper",
         "Winds of Abandon"
       ],
@@ -927,17 +834,7 @@
           "profile": "mm-edgar-vampires",
           "profile_sha": "f7c3b6a8cec1"
         }
-      },
-      "stacks": [
-        {
-          "id": "012",
-          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
-          "checker": "pass",
-          "names": [
-            "Enduring Tenacity"
-          ]
-        }
-      ]
+      }
     },
     {
       "name": "mean-v1",
@@ -948,49 +845,19 @@
       "base_moved": null,
       "proposal": null,
       "pull_list": {
-        "buy": [
-          {
-            "name": "Anowon, the Ruin Sage"
-          },
-          {
-            "name": "Captivating Vampire"
-          },
-          {
-            "name": "Clavileño, First of the Blessed"
-          },
-          {
-            "name": "Drana and Linvala"
-          },
-          {
-            "name": "Talisman of Conviction"
-          },
-          {
-            "name": "Talisman of Hierarchy"
-          },
-          {
-            "name": "Vein Ripper"
-          },
-          {
-            "name": "Vraan, Executioner Thane"
-          }
-        ],
+        "buy": [],
         "unsleeve": [
           {
-            "name": "Urza's Incubator",
+            "name": "Boros Charm",
             "where": [
               "gishath",
+              "sharknado",
               "ur-dragon"
             ]
           }
         ],
         "proxy": [],
         "free": [
-          {
-            "name": "Morbid Opportunist",
-            "where": [
-              "hapatra"
-            ]
-          },
           {
             "name": "Polluted Delta",
             "where": [
@@ -1000,51 +867,31 @@
         ],
         "box": [
           {
-            "name": "Enduring Tenacity",
-            "where": [
-              "Golgari Parts"
-            ]
-          },
-          {
-            "name": "Phyrexian Tower",
-            "where": [
-              "Hapatra"
-            ]
-          },
-          {
             "name": "Skullclamp",
             "where": [
               "Hapatra"
             ]
           }
         ],
-        "blocking": 9,
+        "blocking": 1,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 14,
-      "out": 14,
+      "add": 4,
+      "out": 4,
       "counts": {
-        "in_deck": 83,
-        "box": 3,
+        "in_deck": 94,
+        "box": 1,
         "elsewhere": 1,
-        "buy": 8,
-        "free": 2
+        "buy": 0,
+        "free": 1
       },
       "unsourced": [
-        "Anowon, the Ruin Sage",
-        "Captivating Vampire",
-        "Clavileño, First of the Blessed",
-        "Drana and Linvala",
-        "Talisman of Conviction",
-        "Talisman of Hierarchy",
-        "Urza's Incubator",
-        "Vein Ripper",
-        "Vraan, Executioner Thane"
+        "Boros Charm"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -1083,10 +930,10 @@
         },
         {
           "name": "Anowon, the Ruin Sage",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Arcane Signet",
@@ -1181,17 +1028,46 @@
         },
         {
           "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Caretaker's Talent",
@@ -1230,10 +1106,10 @@
         },
         {
           "name": "Clavileño, First of the Blessed",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Command Tower",
@@ -1286,10 +1162,10 @@
         },
         {
           "name": "Drana and Linvala",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Edgar Markov",
@@ -1321,15 +1197,10 @@
         },
         {
           "name": "Enduring Tenacity",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Golgari Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Enlightened Tutor",
@@ -1438,18 +1309,10 @@
         },
         {
           "name": "Morbid Opportunist",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Olivia Voldaren",
@@ -1488,15 +1351,10 @@
         },
         {
           "name": "Phyrexian Tower",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Polluted Delta",
@@ -1625,17 +1483,17 @@
         },
         {
           "name": "Talisman of Conviction",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talisman of Hierarchy",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talisman of Indulgence",
@@ -1667,25 +1525,10 @@
         },
         {
           "name": "Urza's Incubator",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vampiric Tutor",
@@ -1703,10 +1546,10 @@
         },
         {
           "name": "Vein Ripper",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Verdant Catacombs",
@@ -1738,10 +1581,10 @@
         },
         {
           "name": "Vraan, Executioner Thane",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Welcoming Vampire",
@@ -1780,29 +1623,23 @@
       },
       "verdict": {
         "state": "a trade",
-        "rose": 6,
-        "fell": 1,
+        "rose": 4,
+        "fell": 3,
         "no_call": 3
       },
       "objective_grade": {
         "state": "met",
-        "reading": 1.8152,
+        "reading": 1.7718,
         "shortfall": null
       },
       "measured": true,
       "blind_spots": [
-        "Anowon, the Ruin Sage",
-        "Despark",
-        "Drana and Linvala",
-        "Falkenrath Aristocrat",
-        "Nomad Outpost",
+        "Bloodghast",
+        "Boros Charm",
+        "Exotic Orchard",
         "Olivia, Crimson Bride",
-        "Phyrexian Tower",
         "Polluted Delta",
-        "Skullclamp",
-        "Strefan, Maurer Progenitor",
-        "Vein Ripper",
-        "Winds of Abandon"
+        "Skullclamp"
       ],
       "cast_proofs": {
         "played": 12,
@@ -1820,17 +1657,7 @@
           "profile": "mm-edgar-vampires",
           "profile_sha": "f7c3b6a8cec1"
         }
-      },
-      "stacks": [
-        {
-          "id": "012",
-          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
-          "checker": "pass",
-          "names": [
-            "Enduring Tenacity"
-          ]
-        }
-      ]
+      }
     },
     {
       "name": "mardu-combo-v1",
@@ -1871,10 +1698,49 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Bloodtracker"
+          },
+          {
+            "name": "Cosmos Elixir"
+          },
+          {
+            "name": "Despark"
+          },
+          {
+            "name": "Falkenrath Aristocrat"
+          },
+          {
+            "name": "Kirol, Attentive First-Year"
+          },
+          {
             "name": "Knight of the Ebon Legion"
+          },
+          {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [
           {
@@ -1886,13 +1752,25 @@
         ],
         "box": [
           {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
+          {
             "name": "Skullclamp",
             "where": [
               "Hapatra"
             ]
+          },
+          {
+            "name": "Strefan, Maurer Progenitor",
+            "where": [
+              "Vampire Cards"
+            ]
           }
         ],
-        "blocking": 1,
+        "blocking": 11,
         "procurement": {
           "at": "2026-10-06",
           "note": "Sleeved in paper 2026-10-06. 13 adds in hand; the rest ordered via ManaPool 2026-10-06 and proxied (manamap pilot proxies) until they arrive."
@@ -1900,17 +1778,27 @@
       },
       "base_version": 3,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 16,
+      "out": 16,
       "counts": {
-        "in_deck": 94,
-        "box": 1,
-        "elsewhere": 0,
-        "buy": 1,
+        "in_deck": 82,
+        "box": 3,
+        "elsewhere": 2,
+        "buy": 9,
         "free": 1
       },
       "unsourced": [
-        "Knight of the Ebon Legion"
+        "Bloodtracker",
+        "Boros Charm",
+        "Cosmos Elixir",
+        "Despark",
+        "Falkenrath Aristocrat",
+        "Herald's Horn",
+        "Kirol, Attentive First-Year",
+        "Knight of the Ebon Legion",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 1,
@@ -2043,17 +1931,46 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Caretaker's Talent",
@@ -2099,10 +2016,10 @@
         },
         {
           "name": "Cosmos Elixir",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Crossway Troublemakers",
@@ -2134,10 +2051,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Diabolic Intent",
@@ -2197,10 +2114,10 @@
         },
         {
           "name": "Falkenrath Aristocrat",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Flawless Maneuver",
@@ -2211,10 +2128,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -2232,10 +2154,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ingris Stingerquill",
@@ -2246,10 +2176,10 @@
         },
         {
           "name": "Kirol, Attentive First-Year",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Knight of the Ebon Legion",
@@ -2316,17 +2246,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Olivia Voldaren",
@@ -2469,10 +2399,15 @@
         },
         {
           "name": "Strefan, Maurer Progenitor",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sulfurous Springs",
@@ -2581,10 +2516,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Wispdrinker Vampire",
@@ -2618,8 +2553,8 @@
       "verdict": {
         "state": "inconclusive",
         "rose": 4,
-        "fell": 3,
-        "no_call": 3
+        "fell": 5,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not measured",
@@ -2628,8 +2563,20 @@
       },
       "measured": true,
       "blind_spots": [
+        "Anowon, the Ruin Sage",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
+        "Exotic Orchard",
+        "Falkenrath Aristocrat",
+        "Nomad Outpost",
+        "Phyrexian Tower",
         "Polluted Delta",
-        "Skullclamp"
+        "Skullclamp",
+        "Strefan, Maurer Progenitor",
+        "Vein Ripper",
+        "Winds of Abandon"
       ],
       "cast_proofs": {
         "played": 19,
@@ -2647,7 +2594,41 @@
           "profile": "mm-edgar-vampires",
           "profile_sha": "f7c3b6a8cec1"
         }
-      }
+      },
+      "stacks": [
+        {
+          "id": "002",
+          "title": "Edgar's eminence through two doublers: how many bodies per cast?",
+          "checker": "pass",
+          "names": [
+            "Gifted Aetherborn"
+          ]
+        },
+        {
+          "id": "008",
+          "title": "Purphoros through the doublers: damage per two-mana Vampire",
+          "checker": "pass",
+          "names": [
+            "Gifted Aetherborn"
+          ]
+        },
+        {
+          "id": "010",
+          "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
+          "checker": "pass",
+          "names": [
+            "Gifted Aetherborn"
+          ]
+        },
+        {
+          "id": "011",
+          "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
+          "checker": "pass",
+          "names": [
+            "Gifted Aetherborn"
+          ]
+        }
+      ]
     },
     {
       "name": "distance-v1",
@@ -2665,10 +2646,13 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -2687,6 +2671,12 @@
           },
           {
             "name": "Mondrak, Glory Dominus"
+          },
+          {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
           },
           {
             "name": "Patchwork Banner"
@@ -2708,9 +2698,26 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -2732,6 +2739,12 @@
         "box": [
           {
             "name": "Blade of the Bloodchief",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
+          {
+            "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
             ]
@@ -2768,31 +2781,36 @@
             ]
           }
         ],
-        "blocking": 19,
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 26,
-      "out": 26,
+      "add": 34,
+      "out": 34,
       "counts": {
-        "in_deck": 71,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 17,
+        "in_deck": 64,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 21,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Knight of the Ebon Legion",
         "Legion's Landing // Adanto, the First Fort",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -2801,7 +2819,8 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -2939,24 +2958,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -3044,10 +3092,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -3086,10 +3134,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -3107,10 +3160,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -3233,17 +3294,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -3558,10 +3619,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -3584,6 +3645,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -3593,6 +3655,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -3601,6 +3664,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -3610,6 +3674,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -3630,13 +3695,16 @@
             "name": "Ajani Unrelenting"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
           },
           {
             "name": "Dark Prophecy"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -3660,6 +3728,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -3679,9 +3753,26 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -3699,17 +3790,16 @@
           }
         ],
         "proxy": [],
-        "free": [
-          {
-            "name": "Morbid Opportunist",
-            "where": [
-              "hapatra"
-            ]
-          }
-        ],
+        "free": [],
         "box": [
           {
             "name": "Blade of the Bloodchief",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
+          {
+            "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
             ]
@@ -3746,32 +3836,37 @@
             ]
           }
         ],
-        "blocking": 20,
+        "blocking": 26,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 28,
-      "out": 28,
+      "add": 35,
+      "out": 35,
       "counts": {
-        "in_deck": 69,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 18,
-        "free": 1
+        "in_deck": 63,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 22,
+        "free": 0
       },
       "unsourced": [
         "Ajani Unrelenting",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
         "Dark Prophecy",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Knight of the Ebon Legion",
         "Legion Lieutenant",
         "Legion's Landing // Adanto, the First Fort",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -3780,10 +3875,11 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 0,
       "cards": [
         {
           "name": "Ajani Unrelenting",
@@ -3911,24 +4007,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -4023,10 +4148,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -4065,10 +4190,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -4086,10 +4216,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -4208,18 +4346,10 @@
         },
         {
           "name": "Morbid Opportunist",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Night's Whisper",
@@ -4239,17 +4369,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -4545,10 +4675,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -4567,8 +4697,8 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 8,
-        "fell": 0,
+        "rose": 6,
+        "fell": 2,
         "no_call": 2
       },
       "objective_grade": {
@@ -4579,23 +4709,31 @@
       "measured": true,
       "blind_spots": [
         "Ajani Unrelenting",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Vish Kal, Blood Arbiter",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "cast_proofs": {
@@ -4621,6 +4759,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -4630,6 +4769,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -4638,6 +4778,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -4647,6 +4788,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -4667,10 +4809,13 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -4697,6 +4842,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Shared Animosity"
           },
           {
@@ -4718,10 +4869,18 @@
             "name": "Vampire of the Dire Moon"
           },
           {
-            "name": "Vein Ripper"
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -4752,6 +4911,12 @@
             "name": "Bastion of Remembrance",
             "where": [
               "Hapatra"
+            ]
+          },
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
             ]
           },
           {
@@ -4793,24 +4958,26 @@
             ]
           }
         ],
-        "blocking": 21,
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 30,
-      "out": 30,
+      "add": 36,
+      "out": 36,
       "counts": {
-        "in_deck": 67,
-        "box": 7,
-        "elsewhere": 2,
-        "buy": 19,
+        "in_deck": 62,
+        "box": 8,
+        "elsewhere": 3,
+        "buy": 22,
         "free": 1
       },
       "unsourced": [
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
         "High-Society Hunter",
         "Indulging Patrician",
@@ -4819,6 +4986,8 @@
         "Malakir Bloodwitch",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Plains",
         "Shared Animosity",
         "Species Specialist",
@@ -4828,7 +4997,7 @@
         "Vampire Cutthroat",
         "Vampire Socialite",
         "Vampire of the Dire Moon",
-        "Vein Ripper"
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 1,
@@ -4952,24 +5121,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -5043,10 +5241,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -5085,10 +5283,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -5244,17 +5447,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Orcish Bowmasters",
@@ -5555,10 +5758,10 @@
         },
         {
           "name": "Vein Ripper",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Viscera Seer",
@@ -5602,10 +5805,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -5624,9 +5827,9 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 6,
-        "fell": 1,
-        "no_call": 3
+        "rose": 7,
+        "fell": 2,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not measured",
@@ -5635,25 +5838,31 @@
       },
       "measured": true,
       "blind_spots": [
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
         "Crossway Troublemakers",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Ingris Stingerquill",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
         "Orcish Bowmasters",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Species Specialist",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
-        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "cast_proofs": {
@@ -5679,6 +5888,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -5688,6 +5898,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -5696,6 +5907,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -5705,6 +5917,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mirkwood Bats",
             "Mondrak, Glory Dominus",
             "Plains",
@@ -5726,10 +5939,13 @@
             "name": "Altar of Dementia"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -5753,6 +5969,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -5774,10 +5996,24 @@
             "name": "Vampire of the Dire Moon"
           },
           {
-            "name": "Vein Ripper"
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -5801,6 +6037,12 @@
             "name": "Bastion of Remembrance",
             "where": [
               "Hapatra"
+            ]
+          },
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
             ]
           },
           {
@@ -5841,31 +6083,36 @@
             ]
           }
         ],
-        "blocking": 20,
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 28,
-      "out": 28,
+      "add": 35,
+      "out": 35,
       "counts": {
-        "in_deck": 69,
-        "box": 7,
-        "elsewhere": 2,
-        "buy": 18,
+        "in_deck": 63,
+        "box": 8,
+        "elsewhere": 4,
+        "buy": 21,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Knight of the Ebon Legion",
         "Legion's Landing // Adanto, the First Fort",
         "Malakir Bloodwitch",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Species Specialist",
@@ -5875,7 +6122,7 @@
         "Vampire Cutthroat",
         "Vampire Socialite",
         "Vampire of the Dire Moon",
-        "Vein Ripper"
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -5999,24 +6246,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -6097,10 +6373,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -6139,10 +6415,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -6160,10 +6441,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -6286,17 +6575,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -6590,10 +6879,10 @@
         },
         {
           "name": "Vein Ripper",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Viscera Seer",
@@ -6637,10 +6926,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -6659,9 +6948,9 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 7,
+        "rose": 9,
         "fell": 1,
-        "no_call": 2
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not resolvable",
@@ -6671,25 +6960,31 @@
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Species Specialist",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
         "Toxic Deluge",
-        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "cast_proofs": {
@@ -6715,6 +7010,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -6724,6 +7020,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -6732,6 +7029,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -6741,6 +7039,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -6764,13 +7063,16 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
           },
           {
             "name": "Corpse Knight"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -6789,6 +7091,12 @@
           },
           {
             "name": "Mondrak, Glory Dominus"
+          },
+          {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
           },
           {
             "name": "Patchwork Banner"
@@ -6813,9 +7121,26 @@
           },
           {
             "name": "Warleader's Call"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Impact Tremors",
             "where": [
@@ -6848,6 +7173,12 @@
             ]
           },
           {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
+          {
             "name": "Indulgent Aristocrat",
             "where": [
               "Vampire Cards"
@@ -6873,33 +7204,38 @@
             ]
           }
         ],
-        "blocking": 22,
+        "blocking": 28,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 28,
-      "out": 28,
+      "add": 36,
+      "out": 36,
       "counts": {
-        "in_deck": 69,
-        "box": 5,
-        "elsewhere": 3,
-        "buy": 19,
+        "in_deck": 62,
+        "box": 6,
+        "elsewhere": 5,
+        "buy": 23,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
         "Corpse Knight",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "Impact Tremors",
         "Knight of the Ebon Legion",
         "Legion Lieutenant",
         "Legion's Landing // Adanto, the First Fort",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -6909,7 +7245,8 @@
         "Vampire Cutthroat",
         "Vampire Socialite",
         "Vampire of the Dire Moon",
-        "Warleader's Call"
+        "Warleader's Call",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -7040,24 +7377,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -7152,10 +7518,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -7194,10 +7560,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -7215,10 +7586,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Impact Tremors",
@@ -7349,17 +7728,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -7669,10 +8048,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -7691,9 +8070,9 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 7,
+        "rose": 6,
         "fell": 2,
-        "no_call": 1
+        "no_call": 2
       },
       "objective_grade": {
         "state": "not met",
@@ -7703,24 +8082,32 @@
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Impact Tremors",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
         "Warleader's Call",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "cast_proofs": {
@@ -7746,6 +8133,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -7755,6 +8143,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -7772,6 +8161,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -7781,6 +8171,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -7804,19 +8195,22 @@
             "name": "Bontu's Monument"
           },
           {
-            "name": "Captivating Vampire"
-          },
-          {
             "name": "Champion of Dusk"
           },
           {
             "name": "Corpse Knight"
           },
           {
+            "name": "Despark"
+          },
+          {
             "name": "Drana's Emissary"
           },
           {
             "name": "Drana, Liberator of Malakir"
+          },
+          {
+            "name": "Falkenrath Aristocrat"
           },
           {
             "name": "High-Society Hunter"
@@ -7829,6 +8223,12 @@
           },
           {
             "name": "Mondrak, Glory Dominus"
+          },
+          {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
           },
           {
             "name": "Stroke of Midnight"
@@ -7844,9 +8244,20 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -7860,13 +8271,6 @@
             "name": "Spectator Seating",
             "where": [
               "sharknado"
-            ]
-          },
-          {
-            "name": "Urza's Incubator",
-            "where": [
-              "gishath",
-              "ur-dragon"
             ]
           }
         ],
@@ -7882,6 +8286,12 @@
           }
         ],
         "box": [
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
           {
             "name": "Mirkwood Bats",
             "where": [
@@ -7927,40 +8337,44 @@
             ]
           }
         ],
-        "blocking": 19,
+        "blocking": 23,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 28,
-      "out": 28,
+      "add": 34,
+      "out": 34,
       "counts": {
-        "in_deck": 69,
-        "box": 7,
+        "in_deck": 64,
+        "box": 8,
         "elsewhere": 3,
-        "buy": 16,
+        "buy": 20,
         "free": 1
       },
       "unsourced": [
         "Bloodflow Connoisseur",
         "Bontu's Monument",
-        "Captivating Vampire",
+        "Boros Charm",
         "Champion of Dusk",
         "Corpse Knight",
+        "Despark",
         "Drana's Emissary",
         "Drana, Liberator of Malakir",
+        "Falkenrath Aristocrat",
         "High-Society Hunter",
         "Knight of the Ebon Legion",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Plains",
         "Spectator Seating",
         "Stroke of Midnight",
         "Stromkirk Captain",
         "Sundown Pass",
-        "Urza's Incubator",
         "Vampire Cutthroat",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 1,
@@ -8108,17 +8522,46 @@
         },
         {
           "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Caretaker's Talent",
@@ -8206,10 +8649,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana's Emissary",
@@ -8248,10 +8691,10 @@
         },
         {
           "name": "Falkenrath Aristocrat",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Flawless Maneuver",
@@ -8262,10 +8705,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -8388,17 +8836,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Path to Exile",
@@ -8666,25 +9114,10 @@
         },
         {
           "name": "Urza's Incubator",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vampire Cutthroat",
@@ -8756,10 +9189,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Wispdrinker Vampire",
@@ -8806,6 +9239,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -8814,6 +9248,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -8822,6 +9257,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -8830,6 +9266,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mirkwood Bats",
             "Mondrak, Glory Dominus",
             "Plains"
@@ -8875,10 +9312,13 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -8902,6 +9342,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -8921,9 +9367,26 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -8945,6 +9408,12 @@
         "box": [
           {
             "name": "Blade of the Bloodchief",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
+          {
+            "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
             ]
@@ -8981,32 +9450,37 @@
             ]
           }
         ],
-        "blocking": 20,
+        "blocking": 26,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 27,
-      "out": 27,
+      "add": 35,
+      "out": 35,
       "counts": {
-        "in_deck": 70,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 18,
+        "in_deck": 63,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 22,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Knight of the Ebon Legion",
         "Legion Lieutenant",
         "Legion's Landing // Adanto, the First Fort",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -9015,7 +9489,8 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -9153,24 +9628,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -9258,10 +9762,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -9300,10 +9804,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -9321,10 +9830,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -9447,17 +9964,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -9772,10 +10289,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -9793,34 +10310,42 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 7,
-        "fell": 2,
-        "no_call": 1
+        "rose": 5,
+        "fell": 3,
+        "no_call": 2
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4305,
-        "shortfall": 0.2695
+        "reading": 0.4357,
+        "shortfall": 0.2643
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "stacks": [
@@ -9829,6 +10354,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -9838,6 +10364,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -9846,6 +10373,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -9855,6 +10383,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -9878,7 +10407,7 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
@@ -9911,6 +10440,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -9930,9 +10465,26 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -9952,6 +10504,12 @@
         "proxy": [],
         "free": [],
         "box": [
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
           {
             "name": "Indulgent Aristocrat",
             "where": [
@@ -9990,27 +10548,29 @@
             ]
           }
         ],
-        "blocking": 22,
+        "blocking": 27,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 29,
-      "out": 29,
+      "add": 36,
+      "out": 36,
       "counts": {
-        "in_deck": 68,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 20,
+        "in_deck": 62,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 23,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
         "Crippling Fear",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Immersturm Predator",
         "Knight of the Ebon Legion",
@@ -10018,6 +10578,8 @@
         "Legion's Landing // Adanto, the First Fort",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -10026,7 +10588,8 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -10152,24 +10715,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -10292,10 +10884,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -10313,10 +10910,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -10446,17 +11051,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -10783,10 +11388,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -10804,37 +11409,43 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 6,
-        "fell": 2,
+        "rose": 5,
+        "fell": 3,
         "no_call": 2
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4369,
-        "shortfall": 0.2631
+        "reading": 0.4376,
+        "shortfall": 0.2624
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
         "Crippling Fear",
-        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Immersturm Predator",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "stacks": [
@@ -10843,6 +11454,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -10852,6 +11464,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -10860,6 +11473,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -10869,6 +11483,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -10892,10 +11507,13 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -10925,6 +11543,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -10944,9 +11568,26 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -10966,6 +11607,12 @@
         "proxy": [],
         "free": [],
         "box": [
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
           {
             "name": "Indulgent Aristocrat",
             "where": [
@@ -11004,26 +11651,29 @@
             ]
           }
         ],
-        "blocking": 22,
+        "blocking": 28,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 29,
-      "out": 29,
+      "add": 37,
+      "out": 37,
       "counts": {
-        "in_deck": 68,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 20,
+        "in_deck": 61,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 24,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Immersturm Predator",
         "Knight of the Ebon Legion",
@@ -11032,6 +11682,8 @@
         "March of the Canonized",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -11040,7 +11692,8 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -11159,24 +11812,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -11264,10 +11946,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -11299,10 +11981,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -11320,10 +12007,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -11460,17 +12155,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -11797,10 +12492,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -11819,35 +12514,43 @@
       "verdict": {
         "state": "do not merge",
         "rose": 6,
-        "fell": 1,
-        "no_call": 3
+        "fell": 3,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4583,
-        "shortfall": 0.2417
+        "reading": 0.4509,
+        "shortfall": 0.2491
       },
       "measured": true,
       "blind_spots": [
         "Akroma's Will",
         "Altar of Dementia",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Immersturm Predator",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "stacks": [
@@ -11856,6 +12559,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -11865,6 +12569,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -11873,6 +12578,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -11882,6 +12588,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -11908,10 +12615,13 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -11938,6 +12648,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -11957,9 +12673,26 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -11979,6 +12712,12 @@
         "proxy": [],
         "free": [],
         "box": [
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
           {
             "name": "Indulgent Aristocrat",
             "where": [
@@ -12017,27 +12756,30 @@
             ]
           }
         ],
-        "blocking": 22,
+        "blocking": 28,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 29,
-      "out": 29,
+      "add": 37,
+      "out": 37,
       "counts": {
-        "in_deck": 68,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 20,
+        "in_deck": 61,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 24,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Blight Mound",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Immersturm Predator",
         "Knight of the Ebon Legion",
@@ -12045,6 +12787,8 @@
         "Legion's Landing // Adanto, the First Fort",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -12053,7 +12797,8 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -12179,24 +12924,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -12284,10 +13058,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -12319,10 +13093,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -12340,10 +13119,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -12473,17 +13260,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -12810,10 +13597,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -12831,36 +13618,44 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 6,
-        "fell": 1,
-        "no_call": 3
+        "rose": 5,
+        "fell": 3,
+        "no_call": 2
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4316,
-        "shortfall": 0.2684
+        "reading": 0.4314,
+        "shortfall": 0.2686
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
         "Anguished Unmaking",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Immersturm Predator",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "stacks": [
@@ -12869,6 +13664,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -12878,6 +13674,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -12886,6 +13683,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -12895,6 +13693,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -12918,10 +13717,13 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -12951,6 +13753,12 @@
             "name": "New Blood"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -12970,9 +13778,18 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -12992,6 +13809,12 @@
         "proxy": [],
         "free": [],
         "box": [
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
           {
             "name": "Indulgent Aristocrat",
             "where": [
@@ -13030,26 +13853,28 @@
             ]
           }
         ],
-        "blocking": 22,
+        "blocking": 27,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 29,
-      "out": 29,
+      "add": 36,
+      "out": 36,
       "counts": {
-        "in_deck": 68,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 20,
+        "in_deck": 62,
+        "box": 7,
+        "elsewhere": 3,
+        "buy": 24,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
+        "Herald's Horn",
         "High-Society Hunter",
         "Immersturm Predator",
         "Knight of the Ebon Legion",
@@ -13058,6 +13883,8 @@
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
         "New Blood",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -13066,7 +13893,8 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -13192,17 +14020,17 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -13290,10 +14118,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -13325,10 +14153,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -13346,10 +14179,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -13486,17 +14327,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -13823,10 +14664,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -13844,36 +14685,42 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 7,
-        "fell": 1,
-        "no_call": 2
+        "rose": 6,
+        "fell": 3,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4555,
-        "shortfall": 0.2445
+        "reading": 0.4495,
+        "shortfall": 0.2505
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
-        "Boros Charm",
+        "Bloodghast",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Immersturm Predator",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Stroke of Midnight",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "stacks": [
@@ -13882,6 +14729,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -13891,6 +14739,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -13899,6 +14748,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -13908,6 +14758,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -13931,10 +14782,13 @@
             "name": "Bloodflow Connoisseur"
           },
           {
-            "name": "Captivating Vampire"
+            "name": "Bloodtracker"
           },
           {
             "name": "Champion of Dusk"
+          },
+          {
+            "name": "Despark"
           },
           {
             "name": "Drana, Liberator of Malakir"
@@ -13964,6 +14818,12 @@
             "name": "Mondrak, Glory Dominus"
           },
           {
+            "name": "Nighthawk Scavenger"
+          },
+          {
+            "name": "Nomad Outpost"
+          },
+          {
             "name": "Patchwork Banner"
           },
           {
@@ -13980,9 +14840,26 @@
           },
           {
             "name": "Vampire of the Dire Moon"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "sharknado",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Herald's Horn",
+            "where": [
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Plains",
             "where": [
@@ -14002,6 +14879,12 @@
         "proxy": [],
         "free": [],
         "box": [
+          {
+            "name": "Gifted Aetherborn",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
           {
             "name": "Indulgent Aristocrat",
             "where": [
@@ -14040,27 +14923,30 @@
             ]
           }
         ],
-        "blocking": 21,
+        "blocking": 27,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 28,
-      "out": 28,
+      "add": 36,
+      "out": 36,
       "counts": {
-        "in_deck": 69,
-        "box": 6,
-        "elsewhere": 2,
-        "buy": 19,
+        "in_deck": 62,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 23,
         "free": 0
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
-        "Captivating Vampire",
+        "Bloodtracker",
+        "Boros Charm",
         "Champion of Dusk",
+        "Despark",
         "Drana, Liberator of Malakir",
         "Dusk Legion Sergeant",
+        "Herald's Horn",
         "High-Society Hunter",
         "Immersturm Predator",
         "Knight of the Ebon Legion",
@@ -14068,6 +14954,8 @@
         "Legion's Landing // Adanto, the First Fort",
         "Mavren Fein, Dusk Apostle",
         "Mondrak, Glory Dominus",
+        "Nighthawk Scavenger",
+        "Nomad Outpost",
         "Patchwork Banner",
         "Plains",
         "Spectator Seating",
@@ -14075,7 +14963,8 @@
         "Sundown Pass",
         "Vampire Cutthroat",
         "Vampire Socialite",
-        "Vampire of the Dire Moon"
+        "Vampire of the Dire Moon",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 0,
@@ -14201,24 +15090,53 @@
         },
         {
           "name": "Bloodtracker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Boros Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Captivating Vampire",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Captivating Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Caretaker's Talent",
@@ -14306,10 +15224,10 @@
         },
         {
           "name": "Despark",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Drana, Liberator of Malakir",
@@ -14348,10 +15266,15 @@
         },
         {
           "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Godless Shrine",
@@ -14369,10 +15292,18 @@
         },
         {
           "name": "Herald's Horn",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "High-Society Hunter",
@@ -14502,17 +15433,17 @@
         },
         {
           "name": "Nighthawk Scavenger",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nomad Outpost",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Patchwork Banner",
@@ -14832,10 +15763,10 @@
         },
         {
           "name": "Winds of Abandon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Yahenni, Undying Partisan",
@@ -14853,34 +15784,42 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 6,
-        "fell": 1,
-        "no_call": 3
+        "rose": 7,
+        "fell": 2,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4689,
-        "shortfall": 0.2311
+        "reading": 0.466,
+        "shortfall": 0.234
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anowon, the Ruin Sage",
         "Arid Mesa",
+        "Bloodghast",
+        "Boros Charm",
+        "Despark",
+        "Drana and Linvala",
         "Erebos, Bleak-Hearted",
-        "Falkenrath Aristocrat",
+        "Exotic Orchard",
         "Immersturm Predator",
         "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
+        "Nomad Outpost",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Phyrexian Tower",
         "Plains",
         "Skullclamp",
         "Spectator Seating",
-        "Strefan, Maurer Progenitor",
         "Sundown Pass",
+        "Vein Ripper",
         "Verdant Catacombs",
         "Voldaren Epicure",
+        "Winds of Abandon",
         "Wooded Foothills"
       ],
       "stacks": [
@@ -14889,6 +15828,7 @@
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -14898,6 +15838,7 @@
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus"
           ]
         },
@@ -14906,6 +15847,7 @@
           "title": "Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Vampire Socialite"
           ]
@@ -14915,6 +15857,7 @@
           "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
           "checker": "pass",
           "names": [
+            "Gifted Aetherborn",
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
@@ -14938,159 +15881,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.7169,
+          "rate": 0.7937,
           "ci95": [
-            0.708,
-            0.7256
+            0.7857,
+            0.8015
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2783,
+          "rate": 0.3004,
           "ci95": [
-            0.2696,
-            0.2872
+            0.2915,
+            0.3095
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.1008,
+          "rate": 0.1145,
           "ci95": [
-            0.0951,
-            0.1069
+            0.1084,
+            0.1209
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0405,
+          "rate": 0.0531,
           "ci95": [
-            0.0368,
-            0.0445
+            0.0489,
+            0.0577
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.034,
+          "rate": 0.0444,
           "ci95": [
-            0.0306,
-            0.0377
+            0.0405,
+            0.0486
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0309,
+          "rate": 0.0482,
           "ci95": [
-            0.0277,
-            0.0345
+            0.0442,
+            0.0526
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0421,
+          "rate": 0.0617,
           "ci95": [
-            0.0383,
-            0.0462
+            0.0572,
+            0.0666
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0484,
+          "rate": 0.0693,
           "ci95": [
-            0.0444,
-            0.0528
+            0.0645,
+            0.0744
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0511,
+          "rate": 0.0825,
           "ci95": [
-            0.047,
-            0.0556
+            0.0773,
+            0.0881
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0456,
+          "rate": 0.072,
           "ci95": [
-            0.0417,
-            0.0499
+            0.0671,
+            0.0772
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1422,
+        "rate": 0.1788,
         "ci95": [
-          0.1355,
-          0.1492
+          0.1714,
+          0.1864
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 6717,
-        "hand_empty": 1302,
-        "mana_short": 5415
+        "stall_turns": 8461,
+        "hand_empty": 2112,
+        "mana_short": 6349
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 1872,
-        "hand_empty": 1195,
-        "mana_short": 677,
+        "stall_turns": 2855,
+        "hand_empty": 1911,
+        "mana_short": 944,
         "stall_rate": {
-          "rate": 0.0468,
+          "rate": 0.0714,
           "ci95": [
-            0.0448,
-            0.0489
+            0.0689,
+            0.0739
           ],
           "n": 40000
         },
         "vs_floor": {
-          "from_turn": 6,
-          "floor_rate": 0.0309,
-          "diff": 0.0159,
+          "from_turn": 5,
+          "floor_rate": 0.0444,
+          "diff": 0.027,
           "ci95": [
-            0.0118,
-            0.0197
+            0.0221,
+            0.0316
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 3.8016,
+            "rate": 3.744,
             "ci95": [
-              3.763,
-              3.8402
+              3.7023,
+              3.7857
             ],
-            "sd": 1.9682,
+            "sd": 2.1269,
             "n": 10000
           },
           "8": {
-            "rate": 3.714,
+            "rate": 3.6705,
             "ci95": [
-              3.6721,
-              3.7559
+              3.625,
+              3.716
             ],
-            "sd": 2.1358,
+            "sd": 2.3226,
             "n": 10000
           },
           "9": {
-            "rate": 3.66,
+            "rate": 3.5092,
             "ci95": [
-              3.6153,
-              3.7047
+              3.4619,
+              3.5565
             ],
-            "sd": 2.2781,
+            "sd": 2.4108,
             "n": 10000
           },
           "10": {
-            "rate": 3.8022,
+            "rate": 3.7086,
             "ci95": [
-              3.7542,
-              3.8502
+              3.6574,
+              3.7598
             ],
-            "sd": 2.4492,
+            "sd": 2.614,
             "n": 10000
           }
         },
@@ -15100,39 +16043,39 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4431,
+        "rate": 0.4601,
         "ci95": [
-          0.4334,
-          0.4529
+          0.4503,
+          0.4699
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.291,
+      "missed_land_drop_rate": 0.2885,
       "mulliganed": {
-        "rate": 0.2049,
+        "rate": 0.2297,
         "ci95": [
-          0.1971,
-          0.2129
+          0.2216,
+          0.238
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.136,
-        "3": 3.513,
-        "4": 4.414,
-        "5": 5.16,
-        "6": 5.847,
-        "7": 6.49,
-        "8": 7.164,
-        "9": 7.813,
-        "10": 8.48
+        "2": 2.14,
+        "3": 3.612,
+        "4": 4.575,
+        "5": 5.325,
+        "6": 6.051,
+        "7": 6.731,
+        "8": 7.46,
+        "9": 8.197,
+        "10": 8.92
       },
-      "fleet": "below the fleet median",
+      "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.3131
+      "mana_stdev_turn_five": 1.3552
     },
-    "decklist_sha256": "cbf7fb66030d34fae2322a2837a4c4e8d3a8f7bd72a12cf4491ebd86aa850eee"
+    "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
   },
   "bracket": {
     "floor": 4,
@@ -15184,11 +16127,11 @@
     "summary": {
       "excluded_commander_assumption": 0,
       "highest_bracket": 3,
-      "included": 6,
-      "infinite": 6,
+      "included": 8,
+      "infinite": 8,
       "near": 50,
-      "near_total": 133,
-      "two_card_infinite": 6
+      "near_total": 135,
+      "two_card_infinite": 8
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
     "top": [
@@ -15257,10 +16200,10 @@
         "assumes_other_commander": false
       },
       {
-        "id": "110-3966",
+        "id": "3966-5755",
         "cards": [
-          "Marauding Blight-Priest",
-          "Exquisite Blood"
+          "Exquisite Blood",
+          "Enduring Tenacity"
         ],
         "produces": [
           "Infinite lifegain triggers",
@@ -15269,7 +16212,7 @@
         ],
         "infinite": true,
         "bracket": 3,
-        "popularity": 60315,
+        "popularity": 74875,
         "assumes_other_commander": false
       }
     ]
@@ -15312,7 +16255,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 62,
+          "value": 70,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -15321,7 +16264,7 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "value": 9,
+          "value": 8,
           "tier": "data",
           "weight": "headline",
           "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
@@ -15330,7 +16273,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 6.078,
+          "value": 5.775,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -15338,7 +16281,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A drain that fires when a creature DIES (a reachable second line, not the kill's leg)": {
-          "value": 26,
+          "value": 44,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A drain that fires when a creature DIES (a reachable second line, not the kill's leg)\" by turn six",
@@ -15354,23 +16297,23 @@
           "source": "goldfish_metrics.json"
         },
         "target:A Vampire lord or anthem drawn (the combat plan)": {
-          "value": 14,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A Vampire lord or anthem drawn (the combat plan)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)": {
-          "value": 9,
+        "target:THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)": {
+          "value": 11,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)' by turn six",
+          "definition": "share of games assembling 'THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
         "target:Ramp or fixing drawn": {
-          "value": 43,
+          "value": 60,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
@@ -15378,7 +16321,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A draw engine drawn": {
-          "value": 57,
+          "value": 64,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A draw engine drawn' by turn six",
@@ -15386,18 +16329,18 @@
           "source": "goldfish_metrics.json"
         },
         "target:Protection held for the swarm": {
-          "value": 52,
+          "value": 45,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Protection held for the swarm' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight": {
-          "value": 24,
+        "target:An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)": {
+          "value": 13,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight' by turn six",
+          "definition": "share of games assembling 'An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -15410,7 +16353,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A castable Vampire drawn — the eminence trigger every kill proof opens on": {
-          "value": 45,
+          "value": 70,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A castable Vampire drawn — the eminence trigger every kill proof opens on' by turn six",
@@ -15418,7 +16361,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A free sacrifice outlet drawn (bloodline's new engine)": {
-          "value": 44,
+          "value": 53,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A free sacrifice outlet drawn (bloodline's new engine)\" by turn six",
@@ -15486,16 +16429,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 8.305,
-            "2": 2.139,
-            "3": 3.495,
-            "4": 4.385,
-            "5": 5.11,
-            "6": 5.777,
-            "7": 6.387,
-            "8": 7.022,
-            "9": 7.658
+            "1": 0.999,
+            "10": 8.914,
+            "2": 2.15,
+            "3": 3.605,
+            "4": 4.562,
+            "5": 5.323,
+            "6": 6.045,
+            "7": 6.73,
+            "8": 7.454,
+            "9": 8.183
           },
           "tier": "data",
           "weight": "detail",
@@ -15505,16 +16448,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 0.527,
-            "2": 0.995,
-            "3": 0.891,
-            "4": 0.764,
-            "5": 0.641,
-            "6": 0.573,
-            "7": 0.524,
-            "8": 0.512,
-            "9": 0.512
+            "1": 0.999,
+            "10": 0.556,
+            "2": 0.994,
+            "3": 0.889,
+            "4": 0.76,
+            "5": 0.656,
+            "6": 0.582,
+            "7": 0.554,
+            "8": 0.551,
+            "9": 0.559
           },
           "tier": "data",
           "weight": "detail",
@@ -15524,16 +16467,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.209,
-            "10": 8.782,
-            "2": 0.889,
-            "3": 2.107,
-            "4": 2.645,
-            "5": 3.322,
-            "6": 3.9,
-            "7": 4.838,
-            "8": 5.809,
-            "9": 6.796
+            "1": 0.22,
+            "10": 9.982,
+            "2": 0.843,
+            "3": 2.167,
+            "4": 2.758,
+            "5": 3.593,
+            "6": 4.343,
+            "7": 5.419,
+            "8": 6.545,
+            "9": 7.783
           },
           "tier": "data",
           "weight": "detail",
@@ -15543,14 +16486,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 416,
-            "1": 1747,
-            "2": 3026,
-            "3": 2891,
-            "4": 1424,
-            "5": 428,
-            "6": 65,
-            "7": 3
+            "0": 414,
+            "1": 1728,
+            "2": 3045,
+            "3": 2859,
+            "4": 1445,
+            "5": 443,
+            "6": 58,
+            "7": 8
           },
           "tier": "data",
           "weight": "detail",
@@ -15559,12 +16502,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1737,
-            "5": 3,
-            "6": 151,
-            "7": 1238,
-            "8": 2316,
-            "9": 2031
+            "10": 1543,
+            "5": 4,
+            "6": 284,
+            "7": 1611,
+            "8": 2570,
+            "9": 2115
           },
           "tier": "data",
           "weight": "detail",
@@ -15580,12 +16523,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 6.078,
-    "commander_cast_by_turn_6_pct": 62,
+    "commander_mean_cast_turn": 5.775,
+    "commander_cast_by_turn_6_pct": 70,
     "targets": [
       {
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-        "by_turn_6_pct": 26
+        "by_turn_6_pct": 44
       },
       {
         "label": "A token multiplier or extra token-maker drawn",
@@ -15593,27 +16536,27 @@
       },
       {
         "label": "A Vampire lord or anthem drawn (the combat plan)",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 36
       },
       {
-        "label": "THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
-        "by_turn_6_pct": 9
+        "label": "THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
+        "by_turn_6_pct": 11
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 43
+        "by_turn_6_pct": 60
       },
       {
         "label": "A draw engine drawn",
-        "by_turn_6_pct": 57
+        "by_turn_6_pct": 64
       },
       {
         "label": "Protection held for the swarm",
-        "by_turn_6_pct": 52
+        "by_turn_6_pct": 45
       },
       {
-        "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
-        "by_turn_6_pct": 24
+        "label": "An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)",
+        "by_turn_6_pct": 13
       },
       {
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
@@ -15621,27 +16564,27 @@
       },
       {
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-        "by_turn_6_pct": 45
+        "by_turn_6_pct": 70
       },
       {
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 53
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.529,
-      "median_kill_turn": 9,
-      "kill_by_turn_6_pct": 2,
-      "kill_by_turn_8_pct": 37,
+      "mean_kill_turn": 8.37,
+      "median_kill_turn": 8,
+      "kill_by_turn_6_pct": 3,
+      "kill_by_turn_8_pct": 45,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 25,
+      "no_kill_by_max_turn_pct": 19,
       "kill_turn_histogram": {
-        "10": 1737,
-        "5": 3,
-        "6": 151,
-        "7": 1238,
-        "8": 2316,
-        "9": 2031
+        "10": 1543,
+        "5": 4,
+        "6": 284,
+        "7": 1611,
+        "8": 2570,
+        "9": 2115
       }
     }
   },
@@ -15665,14 +16608,10 @@
     "archetype": null,
     "under": [
       "mana-base",
-      "colour-sources",
-      "ramp",
       "card-advantage",
       "interaction-breadth"
     ],
-    "over": [
-      "protection"
-    ],
+    "over": [],
     "stale": []
   },
   "prescriptions": {
@@ -15820,7 +16759,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
     "ran_on_version": 3,
-    "current_version": 5,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 200,
     "wins": 48,
@@ -15845,15 +16784,15 @@
       "covered": false,
       "never_cast": [
         "Anje, Maid of Dishonor",
+        "Anowon, the Ruin Sage",
+        "Bloodghast",
         "Bloodtithe Harvester",
-        "Cosmos Elixir",
+        "Clavileño, First of the Blessed",
         "Demonic Tutor",
         "Diabolic Intent",
-        "Edgar, Ancient Bloodlord",
-        "Enlightened Tutor",
-        "Erebos, Bleak-Hearted"
+        "Drana and Linvala"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Exquisite Blood, Marauding Blight-Priest. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Bloodghast, Clavileño, First of the Blessed, Enduring Tenacity, Exquisite Blood, Marauding Blight-Priest, Morbid Opportunist …. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
     },
     "eliminated_by": {
       "jarad-graveyard": 16,
@@ -15883,7 +16822,7 @@
     }
   },
   "decisions": {
-    "count": 16,
+    "count": 18,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -15898,42 +16837,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "018",
+        "branch": "mean-v2",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "012",
-        "at": "2026-10-19T12:10:34-07:00",
-        "kind": "reject",
-        "branch": "march-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "kill_by_8",
-          "grade": "not met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
-      {
-        "id": "013",
-        "at": "2026-10-19T12:10:42-07:00",
-        "kind": "reject",
-        "branch": "mound-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "kill_by_8",
-          "grade": "not met",
-          "forge_delta": -0.0574,
-          "forge_ci95": [
-            -0.2329,
-            0.1434
-          ],
-          "pod": "standard-v3"
-        },
-        "realised": null
-      },
       {
         "id": "014",
         "at": "2026-10-19T12:10:51-07:00",
@@ -15981,12 +16894,43 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "017",
+        "at": "2026-10-20T12:29:41-07:00",
+        "kind": "propose",
+        "branch": "mean-v2",
+        "as_version": "v2.1.0",
+        "predicted": {
+          "endpoint": "extra_cards_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "018",
+        "at": "2026-10-20T12:33:03-07:00",
+        "kind": "merge",
+        "branch": "mean-v2",
+        "as_version": "v2.1.0",
+        "predicted": {
+          "endpoint": "extra_cards_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
-    "3 artifact(s) fail their own gate (targets, engine, prices.json) — `deck-status edgar-vampires` names them; fix before anything else reads them",
-    "stale: bracket, combos, frame, map, tutors, prose, benchmark — regenerate against the current list (`/publish-deck` sequences it)",
+    "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "DeckCheck copy is V4, sleeved is V5 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "DTI (2026-10-18) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck edgar-vampires --write`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",

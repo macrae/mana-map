@@ -112,19 +112,48 @@
    {
     "free": false,
     "name": "Bloodtracker",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
     "free": false,
     "name": "Boros Charm",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "gishath",
+      "status": null
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "sharknado",
+      "status": null
+     },
+     {
+      "apart": true,
+      "kind": "deck",
+      "locked": false,
+      "slug": "sisay",
+      "status": "retired"
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "ur-dragon",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
     "name": "Captivating Vampire",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -154,13 +183,8 @@
    {
     "free": false,
     "name": "Charismatic Conqueror",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Vampire Cards"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -183,7 +207,7 @@
    {
     "free": false,
     "name": "Cordial Vampire",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -213,7 +237,7 @@
    {
     "free": false,
     "name": "Despark",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -249,8 +273,13 @@
    {
     "free": false,
     "name": "Gifted Aetherborn",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Vampire Cards"
+     }
+    ]
    },
    {
     "free": false,
@@ -267,8 +296,16 @@
    {
     "free": false,
     "name": "Herald's Horn",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "ur-dragon",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
@@ -290,7 +327,7 @@
    {
     "free": false,
     "name": "Knight of the Ebon Legion",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -371,18 +408,10 @@
     "where": []
    },
    {
-    "free": true,
+    "free": false,
     "name": "Morbid Opportunist",
-    "state": "elsewhere",
-    "where": [
-     {
-      "apart": true,
-      "kind": "deck",
-      "locked": false,
-      "slug": "hapatra",
-      "status": "broken-down"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -402,13 +431,13 @@
    {
     "free": false,
     "name": "Nighthawk Scavenger",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
     "free": false,
     "name": "Nomad Outpost",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -517,8 +546,13 @@
    {
     "free": false,
     "name": "Skullclamp",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Hapatra"
+     }
+    ]
    },
    {
     "free": false,
@@ -669,7 +703,7 @@
    {
     "free": false,
     "name": "Winds of Abandon",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -680,34 +714,39 @@
    }
   ],
   "counts": {
-   "box": 6,
-   "buy": 18,
-   "elsewhere": 2,
-   "free": 1,
-   "in_deck": 69
+   "box": 7,
+   "buy": 22,
+   "elsewhere": 4,
+   "free": 0,
+   "in_deck": 63
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Ajani Unrelenting",
     "Blade of the Bloodchief",
-    "Captivating Vampire",
+    "Bloodtracker",
+    "Boros Charm",
     "Champion of Dusk",
-    "Charismatic Conqueror",
-    "Cordial Vampire",
     "Dark Prophecy",
+    "Despark",
     "Drana, Liberator of Malakir",
+    "Gifted Aetherborn",
+    "Herald's Horn",
     "High-Society Hunter",
     "Indulgent Aristocrat",
+    "Knight of the Ebon Legion",
     "Legion Lieutenant",
     "Legion's Landing // Adanto, the First Fort",
     "Mavren Fein, Dusk Apostle",
     "Midnight Reaper",
     "Mondrak, Glory Dominus",
-    "Morbid Opportunist",
     "Night's Whisper",
+    "Nighthawk Scavenger",
+    "Nomad Outpost",
     "Patchwork Banner",
     "Plains",
+    "Skullclamp",
     "Spectator Seating",
     "Stroke of Midnight",
     "Stromkirk Captain",
@@ -715,63 +754,82 @@
     "Vampire Cutthroat",
     "Vampire Socialite",
     "Vampire of the Dire Moon",
-    "Voldaren Epicure"
+    "Voldaren Epicure",
+    "Winds of Abandon"
    ],
-   "add_copies": 28,
-   "base_names": 97,
+   "add_copies": 35,
+   "base_names": 98,
    "base_size": 100,
    "names": 96,
    "out": [
     "Anje, Maid of Dishonor",
+    "Anowon, the Ruin Sage",
     "Arid Mesa",
+    "Bloodghast",
     "Bloodtithe Harvester",
-    "Cosmos Elixir",
+    "Clavile\u00f1o, First of the Blessed",
     "Demonic Tutor",
     "Diabolic Intent",
+    "Drana and Linvala",
     "Edgar, Ancient Bloodlord",
+    "Enduring Tenacity",
     "Enlightened Tutor",
     "Erebos, Bleak-Hearted",
+    "Exotic Orchard",
     "Exquisite Blood",
-    "Falkenrath Aristocrat",
     "Ingris Stingerquill",
-    "Kirol, Attentive First-Year",
     "Marauding Blight-Priest",
     "Olivia Voldaren",
     "Olivia's Wrath",
     "Olivia, Crimson Bride",
     "Orzhov Signet",
     "Phyrexian Arena",
-    "Polluted Delta",
+    "Phyrexian Tower",
     "Rakdos Signet",
-    "Strefan, Maurer Progenitor",
+    "Talisman of Conviction",
+    "Talisman of Hierarchy",
     "Tithe Drinker",
     "Twilight Prophet",
+    "Urza's Incubator",
+    "Vein Ripper",
     "Verdant Catacombs",
     "Vish Kal, Blood Arbiter",
+    "Vraan, Executioner Thane",
     "Wispdrinker Vampire",
     "Wooded Foothills"
    ],
-   "out_copies": 28,
-   "quantity": [],
+   "out_copies": 35,
+   "quantity": [
+    {
+     "from": 3,
+     "name": "Swamp",
+     "to": 4
+    }
+   ],
    "size": 100
   },
-  "free": 1,
+  "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 2,
+  "owned_but_elsewhere": 4,
   "proxy": false,
   "slug": "edgar-vampires",
   "unsourced": [
    "Ajani Unrelenting",
-   "Captivating Vampire",
+   "Bloodtracker",
+   "Boros Charm",
    "Champion of Dusk",
-   "Cordial Vampire",
    "Dark Prophecy",
+   "Despark",
    "Drana, Liberator of Malakir",
+   "Herald's Horn",
    "High-Society Hunter",
+   "Knight of the Ebon Legion",
    "Legion Lieutenant",
    "Legion's Landing // Adanto, the First Fort",
    "Mavren Fein, Dusk Apostle",
    "Mondrak, Glory Dominus",
+   "Nighthawk Scavenger",
+   "Nomad Outpost",
    "Patchwork Banner",
    "Plains",
    "Spectator Seating",
@@ -780,25 +838,27 @@
    "Sundown Pass",
    "Vampire Cutthroat",
    "Vampire Socialite",
-   "Vampire of the Dire Moon"
+   "Vampire of the Dire Moon",
+   "Winds of Abandon"
   ]
  },
  "blind_spots": [
   {
    "cards": [
     "Ajani Unrelenting",
-    "Erebos, Bleak-Hearted"
+    "Erebos, Bleak-Hearted",
+    "Skullclamp"
    ],
    "class": "draw",
-   "headline": "2 card(s) carrying a draw effect",
+   "headline": "3 card(s) carrying a draw effect",
    "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
   },
   {
    "cards": [
+    "Boros Charm",
     "Erebos, Bleak-Hearted",
-    "Falkenrath Aristocrat",
     "Mondrak, Glory Dominus",
-    "Strefan, Maurer Progenitor"
+    "Vein Ripper"
    ],
    "class": "protection",
    "headline": "4 card(s) carrying a protection effect",
@@ -806,63 +866,87 @@
   },
   {
    "cards": [
+    "Bloodghast",
     "Olivia, Crimson Bride"
    ],
    "class": "recursion",
-   "headline": "1 card(s) carrying a recursion effect",
+   "headline": "2 card(s) carrying a recursion effect",
    "why": "nothing dies in a goldfish, so recursion has no target"
   },
   {
    "cards": [
     "Ajani Unrelenting",
+    "Anowon, the Ruin Sage",
+    "Boros Charm",
+    "Despark",
     "Erebos, Bleak-Hearted",
     "Ingris Stingerquill",
     "Olivia's Wrath",
     "Stroke of Midnight",
     "Vish Kal, Blood Arbiter",
-    "Voldaren Epicure"
+    "Voldaren Epicure",
+    "Winds of Abandon"
    ],
    "class": "removal",
-   "headline": "7 card(s) carrying a removal effect",
+   "headline": "11 card(s) carrying a removal effect",
    "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
   },
   {
    "cards": [
+    "Drana and Linvala"
+   ],
+   "class": "stax",
+   "headline": "1 card(s) carrying a stax effect",
+   "why": "there is no opponent to tax"
+  },
+  {
+   "cards": [
     "Arid Mesa",
+    "Exotic Orchard",
     "Legion's Landing // Adanto, the First Fort",
+    "Nomad Outpost",
+    "Phyrexian Tower",
     "Plains",
-    "Polluted Delta",
     "Spectator Seating",
     "Sundown Pass",
     "Verdant Catacombs",
     "Wooded Foothills"
    ],
    "class": "land",
-   "headline": "8 land swap(s)",
+   "headline": "10 land swap(s)",
    "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
  "branch": "draw-v1",
  "changes": {
-  "count": 54,
+  "count": 68,
   "counts": {
-   "in": 27,
-   "out": 28,
-   "rows": 54
+   "in": 33,
+   "out": 35,
+   "rows": 68
   },
   "diff": {
-   "base_names": 97,
+   "base_names": 98,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": 1,
+     "from": 3,
+     "kind": "land",
+     "name": "Swamp",
+     "to": 4
+    }
+   ],
    "counts": {
-    "in": 27,
-    "in_copies": 28,
-    "lands_in": 4,
-    "lands_out": 4,
-    "out": 28,
-    "out_copies": 28,
-    "spells_in": 23,
-    "spells_out": 24
+    "in": 33,
+    "in_copies": 35,
+    "lands_in": 5,
+    "lands_out": 5,
+    "out": 35,
+    "out_copies": 35,
+    "spells_in": 28,
+    "spells_out": 30
    },
    "in": [
     {
@@ -883,6 +967,26 @@
      "pair": null,
      "state": "box",
      "type_line": "Creature \u2014 Vampire Noble",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Knight of the Ebon Legion",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Vampire Knight",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Skullclamp",
+     "pair": null,
+     "state": "box",
+     "type_line": "Artifact \u2014 Equipment",
      "why": null
     },
     {
@@ -919,20 +1023,30 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Charismatic Conqueror",
+     "name": "Boros Charm",
      "pair": null,
-     "state": "box",
-     "type_line": "Creature \u2014 Vampire Soldier",
+     "state": "elsewhere",
+     "type_line": "Instant",
      "why": null
     },
     {
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Cordial Vampire",
+     "name": "Despark",
      "pair": null,
      "state": "buy",
-     "type_line": "Creature \u2014 Vampire",
+     "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Gifted Aetherborn",
+     "pair": null,
+     "state": "box",
+     "type_line": "Creature \u2014 Aetherborn Vampire",
      "why": null
     },
     {
@@ -966,13 +1080,13 @@
      "why": null
     },
     {
-     "cmc": 3,
+     "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Captivating Vampire",
+     "name": "Winds of Abandon",
      "pair": null,
      "state": "buy",
-     "type_line": "Creature \u2014 Vampire",
+     "type_line": "Sorcery",
      "why": null
     },
     {
@@ -999,6 +1113,16 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
+     "name": "Herald's Horn",
+     "pair": null,
+     "state": "elsewhere",
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
      "name": "Mavren Fein, Dusk Apostle",
      "pair": null,
      "state": "buy",
@@ -1019,11 +1143,11 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Morbid Opportunist",
-     "pair": "Vish Kal, Blood Arbiter",
-     "state": "elsewhere",
-     "type_line": "Creature \u2014 Human Rogue",
-     "why": "seven mana, 0 activations on record, above the deck's T7 mean mana of 6.185 (diagnosis) -> three mana, a card on any turn something dies; PLAYED cast 5"
+     "name": "Nighthawk Scavenger",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Vampire Rogue",
+     "why": null
     },
     {
      "cmc": 3,
@@ -1053,6 +1177,16 @@
      "pair": null,
      "state": "buy",
      "type_line": "Creature \u2014 Vampire Soldier",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Bloodtracker",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Vampire Wizard",
      "why": null
     },
     {
@@ -1094,6 +1228,16 @@
      "state": "buy",
      "type_line": "Legendary Planeswalker \u2014 Ajani",
      "why": "'a six-mana body, not a plan' (engine.json) -> a six-drop that refills one card per creature (-2) and wipes everything but our tokens (-3); FRA; PLAYED cast 4, activated 4"
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Nomad Outpost",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Land",
+     "why": null
     },
     {
      "cmc": 0,
@@ -1145,6 +1289,15 @@
      "name": "Enlightened Tutor",
      "pair": null,
      "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Bloodghast",
+     "pair": null,
+     "type_line": "Creature \u2014 Vampire Spirit",
      "why": null
     },
     {
@@ -1205,9 +1358,45 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
+     "name": "Talisman of Conviction",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Talisman of Hierarchy",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
      "name": "Tithe Drinker",
      "pair": null,
      "type_line": "Creature \u2014 Vampire",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Vraan, Executioner Thane",
+     "pair": null,
+     "type_line": "Legendary Creature \u2014 Phyrexian Vampire",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Clavile\u00f1o, First of the Blessed",
+     "pair": null,
+     "type_line": "Legendary Creature \u2014 Vampire Cleric",
      "why": null
     },
     {
@@ -1217,15 +1406,6 @@
      "name": "Ingris Stingerquill",
      "pair": null,
      "type_line": "Legendary Creature \u2014 Elder Sphinx",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Kirol, Attentive First-Year",
-     "pair": null,
-     "type_line": "Legendary Creature \u2014 Vampire Cleric",
      "why": null
     },
     {
@@ -1247,6 +1427,15 @@
      "why": null
     },
     {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Urza's Incubator",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
@@ -1259,9 +1448,18 @@
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Cosmos Elixir",
+     "name": "Drana and Linvala",
      "pair": null,
-     "type_line": "Artifact",
+     "type_line": "Legendary Creature \u2014 Vampire Angel",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Enduring Tenacity",
+     "pair": null,
+     "type_line": "Enchantment Creature \u2014 Snake Glimmer",
      "why": null
     },
     {
@@ -1277,27 +1475,9 @@
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Falkenrath Aristocrat",
-     "pair": null,
-     "type_line": "Creature \u2014 Vampire Noble",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
      "name": "Olivia Voldaren",
      "pair": null,
      "type_line": "Legendary Creature \u2014 Vampire",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Strefan, Maurer Progenitor",
-     "pair": null,
-     "type_line": "Legendary Creature \u2014 Vampire Noble",
      "why": null
     },
     {
@@ -1316,6 +1496,15 @@
      "name": "Wispdrinker Vampire",
      "pair": null,
      "type_line": "Creature \u2014 Vampire Rogue",
+     "why": null
+    },
+    {
+     "cmc": 5,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Anowon, the Ruin Sage",
+     "pair": null,
+     "type_line": "Legendary Creature \u2014 Vampire Shaman",
      "why": null
     },
     {
@@ -1346,6 +1535,15 @@
      "why": null
     },
     {
+     "cmc": 6,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Vein Ripper",
+     "pair": null,
+     "type_line": "Creature \u2014 Vampire Assassin",
+     "why": null
+    },
+    {
      "cmc": 7,
      "copies": 1,
      "kind": "spell",
@@ -1367,9 +1565,18 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
-     "name": "Polluted Delta",
+     "name": "Exotic Orchard",
      "pair": null,
      "type_line": "Land",
+     "why": null
+    },
+    {
+     "cmc": 0,
+     "copies": 1,
+     "kind": "land",
+     "name": "Phyrexian Tower",
+     "pair": null,
+     "type_line": "Legendary Land",
      "why": null
     },
     {
@@ -1393,14 +1600,20 @@
    ],
    "size": 100,
    "unexplained": {
-    "in": 23,
-    "out": 27
+    "in": 30,
+    "out": 34
    }
   },
   "lands": [
    {
     "at": null,
     "in": "Legion's Landing // Adanto, the First Fort",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Nomad Outpost",
     "out": null,
     "why": null
    },
@@ -1431,7 +1644,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Polluted Delta",
+    "out": "Exotic Orchard",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Phyrexian Tower",
     "why": null
    },
    {
@@ -1463,25 +1682,19 @@
    },
    {
     "at": null,
-    "in": "Captivating Vampire",
+    "in": "Bloodtracker",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Boros Charm",
     "out": null,
     "why": null
    },
    {
     "at": null,
     "in": "Champion of Dusk",
-    "out": null,
-    "why": null
-   },
-   {
-    "at": null,
-    "in": "Charismatic Conqueror",
-    "out": null,
-    "why": null
-   },
-   {
-    "at": null,
-    "in": "Cordial Vampire",
     "out": null,
     "why": null
    },
@@ -1493,7 +1706,25 @@
    },
    {
     "at": null,
+    "in": "Despark",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
     "in": "Drana, Liberator of Malakir",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Gifted Aetherborn",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Herald's Horn",
     "out": null,
     "why": null
    },
@@ -1506,6 +1737,12 @@
    {
     "at": null,
     "in": "Indulgent Aristocrat",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Knight of the Ebon Legion",
     "out": null,
     "why": null
    },
@@ -1534,12 +1771,6 @@
     "why": null
    },
    {
-    "at": "2026-10-02",
-    "in": "Morbid Opportunist",
-    "out": "Vish Kal, Blood Arbiter",
-    "why": "seven mana, 0 activations on record, above the deck's T7 mean mana of 6.185 (diagnosis) -> three mana, a card on any turn something dies; PLAYED cast 5"
-   },
-   {
     "at": null,
     "in": "Night's Whisper",
     "out": null,
@@ -1547,7 +1778,19 @@
    },
    {
     "at": null,
+    "in": "Nighthawk Scavenger",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
     "in": "Patchwork Banner",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Skullclamp",
     "out": null,
     "why": null
    },
@@ -1589,8 +1832,26 @@
    },
    {
     "at": null,
+    "in": "Winds of Abandon",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
     "in": null,
     "out": "Anje, Maid of Dishonor",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Anowon, the Ruin Sage",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Bloodghast",
     "why": null
    },
    {
@@ -1602,7 +1863,7 @@
    {
     "at": null,
     "in": null,
-    "out": "Cosmos Elixir",
+    "out": "Clavile\u00f1o, First of the Blessed",
     "why": null
    },
    {
@@ -1620,7 +1881,19 @@
    {
     "at": null,
     "in": null,
+    "out": "Drana and Linvala",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
     "out": "Edgar, Ancient Bloodlord",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Enduring Tenacity",
     "why": null
    },
    {
@@ -1644,19 +1917,7 @@
    {
     "at": null,
     "in": null,
-    "out": "Falkenrath Aristocrat",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
     "out": "Ingris Stingerquill",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
-    "out": "Kirol, Attentive First-Year",
     "why": null
    },
    {
@@ -1704,7 +1965,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Strefan, Maurer Progenitor",
+    "out": "Talisman of Conviction",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talisman of Hierarchy",
     "why": null
    },
    {
@@ -1717,6 +1984,30 @@
     "at": null,
     "in": null,
     "out": "Twilight Prophet",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Urza's Incubator",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Vein Ripper",
+    "why": null
+   },
+   {
+    "at": "2026-10-02",
+    "in": null,
+    "out": "Vish Kal, Blood Arbiter",
+    "why": "seven mana, 0 activations on record, above the deck's T7 mean mana of 6.185 (diagnosis) -> three mana, a card on any turn something dies; PLAYED cast 5"
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Vraan, Executioner Thane",
     "why": null
    },
    {
@@ -1968,31 +2259,38 @@
    "adds": [
     "Ajani Unrelenting",
     "Blade of the Bloodchief",
-    "Captivating Vampire",
+    "Bloodtracker",
+    "Boros Charm",
     "Champion of Dusk",
-    "Charismatic Conqueror",
-    "Cordial Vampire",
     "Dark Prophecy",
+    "Despark",
     "Drana, Liberator of Malakir",
+    "Gifted Aetherborn",
+    "Herald's Horn",
     "High-Society Hunter",
     "Indulgent Aristocrat",
+    "Knight of the Ebon Legion",
     "Legion Lieutenant",
     "Legion's Landing // Adanto, the First Fort",
     "Mavren Fein, Dusk Apostle",
     "Midnight Reaper",
     "Mondrak, Glory Dominus",
-    "Morbid Opportunist",
     "Night's Whisper",
+    "Nighthawk Scavenger",
+    "Nomad Outpost",
     "Patchwork Banner",
     "Plains",
+    "Skullclamp",
     "Spectator Seating",
     "Stroke of Midnight",
     "Stromkirk Captain",
     "Sundown Pass",
+    "Swamp",
     "Vampire Cutthroat",
     "Vampire Socialite",
     "Vampire of the Dire Moon",
-    "Voldaren Epicure"
+    "Voldaren Epicure",
+    "Winds of Abandon"
    ],
    "anyway": false,
    "floor": true,
@@ -2000,14 +2298,16 @@
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-edb24d54-s1987885396-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tl9473cf35"
    ],
    "held": [
+    "Nomad Outpost",
     "Plains",
     "Spectator Seating",
-    "Sundown Pass"
+    "Sundown Pass",
+    "Swamp"
    ],
    "late": [
     "Dark Prophecy"
    ],
-   "reads_as": "every branch figure on this page is a FLOOR: Plains, Spectator Seating, Sundown Pass never played; Dark Prophecy cast late"
+   "reads_as": "every branch figure on this page is a FLOOR: Nomad Outpost, Plains, Spectator Seating, Sundown Pass, Swamp never played; Dark Prophecy cast late"
   },
   "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
   "champion": {
@@ -2443,8 +2743,8 @@
   "list_mismatch": {
    "champion": {
     "games": 1360,
-    "on_disk": "cbf7fb66030d",
-    "on_disk_version": "V4",
+    "on_disk": "a872115fe62f",
+    "on_disk_version": null,
     "played": [
      "7be137d0bfeb",
      "7ce22fd619b3",
@@ -2651,31 +2951,38 @@
    "adds": [
     "Ajani Unrelenting",
     "Blade of the Bloodchief",
-    "Captivating Vampire",
+    "Bloodtracker",
+    "Boros Charm",
     "Champion of Dusk",
-    "Charismatic Conqueror",
-    "Cordial Vampire",
     "Dark Prophecy",
+    "Despark",
     "Drana, Liberator of Malakir",
+    "Gifted Aetherborn",
+    "Herald's Horn",
     "High-Society Hunter",
     "Indulgent Aristocrat",
+    "Knight of the Ebon Legion",
     "Legion Lieutenant",
     "Legion's Landing // Adanto, the First Fort",
     "Mavren Fein, Dusk Apostle",
     "Midnight Reaper",
     "Mondrak, Glory Dominus",
-    "Morbid Opportunist",
     "Night's Whisper",
+    "Nighthawk Scavenger",
+    "Nomad Outpost",
     "Patchwork Banner",
     "Plains",
+    "Skullclamp",
     "Spectator Seating",
     "Stroke of Midnight",
     "Stromkirk Captain",
     "Sundown Pass",
+    "Swamp",
     "Vampire Cutthroat",
     "Vampire Socialite",
     "Vampire of the Dire Moon",
-    "Voldaren Epicure"
+    "Voldaren Epicure",
+    "Winds of Abandon"
    ],
    "anyway": false,
    "floor": true,
@@ -2683,14 +2990,16 @@
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-edb24d54-s1987885396-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tl9473cf35"
    ],
    "held": [
+    "Nomad Outpost",
     "Plains",
     "Spectator Seating",
-    "Sundown Pass"
+    "Sundown Pass",
+    "Swamp"
    ],
    "late": [
     "Dark Prophecy"
    ],
-   "reads_as": "every branch figure on this page is a FLOOR: Plains, Spectator Seating, Sundown Pass never played; Dark Prophecy cast late"
+   "reads_as": "every branch figure on this page is a FLOOR: Nomad Outpost, Plains, Spectator Seating, Sundown Pass, Swamp never played; Dark Prophecy cast late"
   },
   "iterations": 10000,
   "model_version": "b025d0102196",
@@ -2707,13 +3016,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 1,
+    "delta": 0,
     "gap": [
-     1,
+     2,
      2
     ],
     "have": [
-     23,
+     24,
      24
     ],
     "target": [
@@ -2787,16 +3096,16 @@
    }
   ],
   "enters_tapped_always": [
-   3,
+   2,
    3
   ],
   "lands": [
-   36,
+   35,
    36
   ],
   "life": [
    {
-    "one_time_on_entry": 10,
+    "one_time_on_entry": 9,
     "recurring_per_tap_cycle": 8
    },
    {
@@ -2823,7 +3132,7 @@
     null
    ],
    "W": [
-    0.918,
+    0.927,
     0.927
    ]
   }
@@ -2869,51 +3178,62 @@
  "recommendation": {
   "because": "The miss is smaller than this run can see. missed by 0.3083, which is under the 0.3505 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
-   "box": 6,
-   "buy": 18,
-   "elsewhere": 2,
-   "free": 1,
-   "in_deck": 69
+   "box": 7,
+   "buy": 22,
+   "elsewhere": 4,
+   "free": 0,
+   "in_deck": 63
   },
   "cost": {
-   "buy": 18,
+   "buy": 22,
    "buy_cards": [
     "Ajani Unrelenting",
-    "Captivating Vampire",
+    "Bloodtracker",
     "Champion of Dusk",
-    "Cordial Vampire",
     "Dark Prophecy",
+    "Despark",
     "Drana, Liberator of Malakir",
     "High-Society Hunter",
+    "Knight of the Ebon Legion",
     "Legion Lieutenant",
     "Legion's Landing // Adanto, the First Fort",
     "Mavren Fein, Dusk Apostle",
     "Mondrak, Glory Dominus",
+    "Nighthawk Scavenger",
+    "Nomad Outpost",
     "Patchwork Banner",
     "Stroke of Midnight",
     "Stromkirk Captain",
     "Sundown Pass",
     "Vampire Cutthroat",
     "Vampire Socialite",
-    "Vampire of the Dire Moon"
+    "Vampire of the Dire Moon",
+    "Winds of Abandon"
    ],
    "counts": {
-    "box": 6,
-    "buy": 18,
-    "elsewhere": 2,
-    "free": 1,
-    "in_deck": 69
+    "box": 7,
+    "buy": 22,
+    "elsewhere": 4,
+    "free": 0,
+    "in_deck": 63
    },
-   "free_to_raid": [
-    {
-     "decks": [
-      "hapatra"
-     ],
-     "name": "Morbid Opportunist"
-    }
-   ],
+   "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [
+    {
+     "decks": [
+      "gishath",
+      "sharknado",
+      "ur-dragon"
+     ],
+     "name": "Boros Charm"
+    },
+    {
+     "decks": [
+      "ur-dragon"
+     ],
+     "name": "Herald's Horn"
+    },
     {
      "decks": [
       "emiel-blink",
@@ -2930,63 +3250,68 @@
      "name": "Spectator Seating"
     }
    ],
-   "owned": 78,
-   "reads_as": "18 to buy; 2 to pull out of a deck that is still together; 1 sitting in a retired or broken-down deck, which cost nothing; 78 of 96 already owned",
+   "owned": 74,
+   "reads_as": "22 to buy; 4 to pull out of a deck that is still together; 74 of 96 already owned",
    "total": 96
   },
-  "fell": [],
+  "fell": [
+   "damage @T10",
+   "killed by T10"
+  ],
   "no_call": [
-   "mulliganed",
-   "interaction affordable @T6"
+   "board power @T6",
+   "killed by T6"
   ],
   "notes": [
    "Forge, against a real pod: -0.043 win rate, CI [-0.141, +0.057] \u2014 this run cannot separate the two lists."
   ],
   "reward": [
    {
-    "measure": "damage @T10",
-    "reads_as": "14.25 -> 15.55, a change of +1.30 (+9%)",
-    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
-    "measure": "board power @T6",
-    "reads_as": "7.49 -> 8.67, a change of +1.17 (+16%)",
-    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
-   },
-   {
-    "measure": "killed by T6",
-    "reads_as": "1 games in 100 -> 3 in 100, a swing of 2 games per 100",
-    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
-   },
-   {
-    "measure": "killed by T10",
-    "reads_as": "71 games in 100 -> 78 in 100, a swing of 6 games per 100",
-    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
-   },
-   {
     "measure": "stall, 2 in a row",
-    "reads_as": "14 games in 100 -> 7 in 100, a swing of 7 games per 100",
+    "reads_as": "18 games in 100 -> 8 in 100, a swing of 10 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
     "measure": "missed drop by T5",
-    "reads_as": "44 games in 100 -> 42 in 100, a swing of 3 games per 100",
+    "reads_as": "46 games in 100 -> 41 in 100, a swing of 5 games per 100",
     "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
    },
    {
+    "measure": "mulliganed",
+    "reads_as": "23 games in 100 -> 21 in 100, a swing of 2 games per 100",
+    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
+   },
+   {
     "measure": "extra cards by T8",
-    "reads_as": "1.68 -> 2.69, a change of +1.02 (+61%)",
+    "reads_as": "1.76 -> 2.66, a change of +0.90 (+51%)",
     "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
+    "measure": "interaction affordable @T6",
+    "reads_as": "21 games in 100 -> 26 in 100, a swing of 5 games per 100",
+    "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   },
+   {
     "measure": "hand can act by T3",
-    "reads_as": "93 games in 100 -> 97 in 100, a swing of 3 games per 100",
+    "reads_as": "93 games in 100 -> 96 in 100, a swing of 3 games per 100",
     "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    }
   ],
   "risk": [
    {
-    "detail": "the largest is mulliganed at +0.008 against an MDE of 0.011. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "17.26 -> 15.65, a change of -1.61 (-9%)",
+    "kind": "paid",
+    "what": "damage @T10",
+    "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
+   },
+   {
+    "detail": "81 games in 100 -> 79 in 100, a swing of 2 games per 100",
+    "kind": "paid",
+    "what": "killed by T10",
+    "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
+   },
+   {
+    "detail": "the largest is board power @T6 at +0.082 against an MDE of 0.167. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "2 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -2994,19 +3319,20 @@
    {
     "cards": [
      "Ajani Unrelenting",
-     "Erebos, Bleak-Hearted"
+     "Erebos, Bleak-Hearted",
+     "Skullclamp"
     ],
     "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
     "kind": "unmeasured",
-    "what": "2 card(s) carrying a draw effect",
+    "what": "3 card(s) carrying a draw effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [
+     "Boros Charm",
      "Erebos, Bleak-Hearted",
-     "Falkenrath Aristocrat",
      "Mondrak, Glory Dominus",
-     "Strefan, Maurer Progenitor"
+     "Vein Ripper"
     ],
     "detail": "the goldfish is never attacked or targeted, so protection reads as a dead card",
     "kind": "unmeasured",
@@ -3015,34 +3341,50 @@
    },
    {
     "cards": [
+     "Bloodghast",
      "Olivia, Crimson Bride"
     ],
     "detail": "nothing dies in a goldfish, so recursion has no target",
     "kind": "unmeasured",
-    "what": "1 card(s) carrying a recursion effect",
+    "what": "2 card(s) carrying a recursion effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [
      "Ajani Unrelenting",
+     "Anowon, the Ruin Sage",
+     "Boros Charm",
+     "Despark",
      "Erebos, Bleak-Hearted",
      "Ingris Stingerquill",
      "Olivia's Wrath",
      "Stroke of Midnight",
      "Vish Kal, Blood Arbiter",
-     "Voldaren Epicure"
+     "Voldaren Epicure",
+     "Winds of Abandon"
     ],
     "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
-    "what": "7 card(s) carrying a removal effect",
+    "what": "11 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Drana and Linvala"
+    ],
+    "detail": "there is no opponent to tax",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a stax effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
     "cards": [
      "Arid Mesa",
+     "Exotic Orchard",
      "Legion's Landing // Adanto, the First Fort",
+     "Nomad Outpost",
+     "Phyrexian Tower",
      "Plains",
-     "Polluted Delta",
      "Spectator Seating",
      "Sundown Pass",
      "Verdant Catacombs",
@@ -3050,7 +3392,7 @@
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
-    "what": "8 land swap(s)",
+    "what": "10 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -3067,13 +3409,11 @@
    }
   ],
   "rose": [
-   "damage @T10",
-   "board power @T6",
-   "killed by T6",
-   "killed by T10",
    "stall, 2 in a row",
    "missed drop by T5",
+   "mulliganed",
    "extra cards by T8",
+   "interaction affordable @T6",
    "hand can act by T3"
   ],
   "state": "inconclusive"
@@ -3083,41 +3423,125 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 15.5503,
-   "champion": 14.2519,
+   "branch": 15.6487,
+   "champion": 17.2622,
    "ci95_diff": [
-    1.0898,
-    1.507
+    -1.8331,
+    -1.3939
    ],
-   "delta": 1.2984,
+   "delta": -1.6135,
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 4,
+    "rank": 3,
     "significant": true,
-    "threshold": 2.69
+    "threshold": 2.734
    },
-   "mde": 0.2982,
+   "mde": 0.3138,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "14.25 -> 15.55, a change of +1.30 (+9%)",
+   "reads_as": "17.26 -> 15.65, a change of -1.61 (-9%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
-   "verdict": "better",
+   "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": 12.197
+   "z": -14.404
   },
   {
    "better_is": "higher",
-   "branch": 8.6668,
-   "champion": 7.494,
+   "branch": 8.709,
+   "champion": 8.6272,
    "ci95_diff": [
-    1.06,
-    1.2856
+    -0.0348,
+    0.1984
    ],
-   "delta": 1.1728,
+   "delta": 0.0818,
+   "excludes_zero": false,
+   "holm": {
+    "family": 10,
+    "rank": 9,
+    "significant": false,
+    "threshold": 2.241
+   },
+   "mde": 0.1666,
+   "measure": "board power @T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.082 is smaller than the 0.167 this run can resolve",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "noise",
+   "what": "Total power on the battlefield at the end of turn 6.",
+   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
+   "z": 1.375
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.03,
+   "champion": 0.029,
+   "ci95_diff": [
+    -0.0035,
+    0.0055
+   ],
+   "delta": 0.001,
+   "excludes_zero": false,
+   "holm": {
+    "family": 10,
+    "rank": 10,
+    "significant": false,
+    "threshold": 1.96
+   },
+   "mde": 0.0065,
+   "measure": "killed by T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.006 this run can resolve",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
+   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
+   "z": 0.432
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.7865,
+   "champion": 0.8093,
+   "ci95_diff": [
+    -0.0331,
+    -0.0125
+   ],
+   "delta": -0.0228,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 8,
+    "significant": true,
+    "threshold": 2.394
+   },
+   "mde": 0.0147,
+   "measure": "killed by T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "81 games in 100 -> 79 in 100, a swing of 2 games per 100",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
+   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
+   "z": -4.358
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.0774,
+   "champion": 0.1788,
+   "ci95_diff": [
+    -0.1096,
+    -0.0932
+   ],
+   "delta": -0.1014,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -3125,55 +3549,27 @@
     "significant": true,
     "threshold": 2.773
    },
-   "mde": 0.1612,
-   "measure": "board power @T6",
+   "mde": 0.0118,
+   "measure": "stall, 2 in a row",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "7.49 -> 8.67, a change of +1.17 (+16%)",
+   "reads_as": "18 games in 100 -> 8 in 100, a swing of 10 games per 100",
    "role": "exploratory",
    "scale": null,
-   "unit": "mean",
-   "verdict": "better",
-   "what": "Total power on the battlefield at the end of turn 6.",
-   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": 20.383
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.0336,
-   "champion": 0.013,
-   "ci95_diff": [
-    0.0165,
-    0.0247
-   ],
-   "delta": 0.0206,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 7,
-    "significant": true,
-    "threshold": 2.498
-   },
-   "mde": 0.0058,
-   "measure": "killed by T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "1 games in 100 -> 3 in 100, a swing of 2 games per 100",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "better",
-   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
-   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": 9.96
+   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
+   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
+   "z": -24.175
   },
   {
-   "better_is": "higher",
-   "branch": 0.7772,
-   "champion": 0.7124,
+   "better_is": "lower",
+   "branch": 0.4147,
+   "champion": 0.4601,
    "ci95_diff": [
-    0.0536,
-    0.076
+    -0.0566,
+    -0.0342
    ],
-   "delta": 0.0648,
+   "delta": -0.0454,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -3182,110 +3578,54 @@
     "threshold": 2.638
    },
    "mde": 0.016,
-   "measure": "killed by T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "71 games in 100 -> 78 in 100, a swing of 6 games per 100",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
-   "verdict": "better",
-   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
-   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": 11.321
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.0746,
-   "champion": 0.1422,
-   "ci95_diff": [
-    -0.0755,
-    -0.0597
-   ],
-   "delta": -0.0676,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 3,
-    "significant": true,
-    "threshold": 2.734
-   },
-   "mde": 0.0113,
-   "measure": "stall, 2 in a row",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "14 games in 100 -> 7 in 100, a swing of 7 games per 100",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "rate",
-   "verdict": "better",
-   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
-   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": -16.711
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.4161,
-   "champion": 0.4431,
-   "ci95_diff": [
-    -0.0379,
-    -0.0161
-   ],
-   "delta": -0.027,
-   "excludes_zero": true,
-   "holm": {
-    "family": 10,
-    "rank": 8,
-    "significant": true,
-    "threshold": 2.394
-   },
-   "mde": 0.0156,
    "measure": "missed drop by T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "44 games in 100 -> 42 in 100, a swing of 3 games per 100",
+   "reads_as": "46 games in 100 -> 41 in 100, a swing of 5 games per 100",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": -4.839
+   "z": -7.954
   },
   {
    "better_is": "lower",
-   "branch": 0.213,
-   "champion": 0.2049,
+   "branch": 0.2058,
+   "champion": 0.2297,
    "ci95_diff": [
-    0.0001,
-    0.0161
+    -0.0323,
+    -0.0155
    ],
-   "delta": 0.0081,
+   "delta": -0.0239,
    "excludes_zero": true,
    "holm": {
     "family": 10,
-    "rank": 9,
-    "significant": false,
-    "threshold": 2.241
+    "rank": 7,
+    "significant": true,
+    "threshold": 2.498
    },
-   "mde": 0.0115,
+   "mde": 0.012,
    "measure": "mulliganed",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.011 this run can resolve",
+   "reads_as": "23 games in 100 -> 21 in 100, a swing of 2 games per 100",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
-   "verdict": "noise",
+   "verdict": "better",
    "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
-   "z": 1.979
+   "z": -5.563
   },
   {
    "better_is": "higher",
-   "branch": 2.692,
-   "champion": 1.6767,
+   "branch": 2.6595,
+   "champion": 1.7639,
    "ci95_diff": [
-    0.9379,
-    1.0927
+    0.8253,
+    0.9659
    ],
-   "delta": 1.0153,
+   "delta": 0.8956,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -3293,55 +3633,27 @@
     "significant": true,
     "threshold": 2.807
    },
-   "mde": 0.1106,
+   "mde": 0.1005,
    "measure": "extra cards by T8",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "1.68 -> 2.69, a change of +1.02 (+61%)",
+   "reads_as": "1.76 -> 2.66, a change of +0.90 (+51%)",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others. Activated, X-based and priced draw ('you may pay 2 life. If you do') are NOT counted and the cards are named in the goldfish artifact.",
    "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": 25.71
+   "z": 24.973
   },
   {
    "better_is": "higher",
-   "branch": 0.2595,
-   "champion": 0.2613,
+   "branch": 0.2596,
+   "champion": 0.2117,
    "ci95_diff": [
-    -0.0149,
-    0.0111
+    0.0353,
+    0.0605
    ],
-   "delta": -0.0018,
-   "excludes_zero": false,
-   "holm": {
-    "family": 10,
-    "rank": 10,
-    "significant": false,
-    "threshold": 1.96
-   },
-   "mde": 0.0186,
-   "measure": "interaction affordable @T6",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.019 this run can resolve",
-   "role": "exploratory",
-   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
-   "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": -0.272
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.9668,
-   "champion": 0.9342,
-   "ci95_diff": [
-    0.0269,
-    0.0383
-   ],
-   "delta": 0.0326,
+   "delta": 0.0479,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -3349,17 +3661,45 @@
     "significant": true,
     "threshold": 2.576
    },
-   "mde": 0.0082,
+   "mde": 0.0187,
+   "measure": "interaction affordable @T6",
+   "method": "Newcombe score interval on the difference of proportions",
+   "reads_as": "21 games in 100 -> 26 in 100, a swing of 5 games per 100",
+   "role": "exploratory",
+   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
+   "unit": "rate",
+   "verdict": "better",
+   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
+   "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
+   "z": 7.429
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.9622,
+   "champion": 0.9276,
+   "ci95_diff": [
+    0.0287,
+    0.0405
+   ],
+   "delta": 0.0346,
+   "excludes_zero": true,
+   "holm": {
+    "family": 10,
+    "rank": 4,
+    "significant": true,
+    "threshold": 2.69
+   },
+   "mde": 0.0085,
    "measure": "hand can act by T3",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "93 games in 100 -> 97 in 100, a swing of 3 games per 100",
+   "reads_as": "93 games in 100 -> 96 in 100, a swing of 3 games per 100",
    "role": "exploratory",
    "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
    "unit": "rate",
    "verdict": "better",
    "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
    "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
-   "z": 11.159
+   "z": 11.469
   }
  ]
 }

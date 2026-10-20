@@ -15,7 +15,9 @@
     {
      "any_of": [
       "Blood Artist",
-      "Cruel Celebrant"
+      "Cruel Celebrant",
+      "Vein Ripper",
+      "Vraan, Executioner Thane"
      ]
     }
    ]
@@ -36,13 +38,15 @@
    "need": [
     {
      "any_of": [
+      "Captivating Vampire",
+      "Cordial Vampire",
       "Sanctum Seeker"
      ]
     }
    ]
   },
   {
-   "label": "THE SURVIVING INFINITE (stacks 004 and 006): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
+   "label": "THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
    "need": [
     {
      "any_of": [
@@ -52,9 +56,10 @@
     },
     {
      "any_of": [
-      "Vito, Thorn of the Dusk Rose",
+      "Enduring Tenacity",
+      "Marauding Blight-Priest",
       "Sanguine Bond",
-      "Marauding Blight-Priest"
+      "Vito, Thorn of the Dusk Rose"
      ]
     }
    ]
@@ -64,10 +69,12 @@
    "need": [
     {
      "any_of": [
-      "Sol Ring",
       "Arcane Signet",
+      "Sol Ring",
+      "Talisman of Conviction",
+      "Talisman of Hierarchy",
       "Talisman of Indulgence",
-      "Herald's Horn"
+      "Urza's Incubator"
      ]
     }
    ]
@@ -77,12 +84,12 @@
    "need": [
     {
      "any_of": [
-      "Bloodtracker",
       "Caretaker's Talent",
+      "Clavileño, First of the Blessed",
       "Crossway Troublemakers",
       "Liliana, Dreadhorde General",
+      "Morbid Opportunist",
       "Preacher of the Schism",
-      "Skullclamp",
       "Welcoming Vampire"
      ]
     }
@@ -95,7 +102,6 @@
      "any_of": [
       "Teferi's Protection",
       "Flawless Maneuver",
-      "Boros Charm",
       "Akroma's Will",
       "Deflecting Swat"
      ]
@@ -103,11 +109,10 @@
    ]
   },
   {
-   "label": "An answer to a noncreature permanent drawn — Despark, Anguished Unmaking, Stroke of Midnight",
+   "label": "An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)",
    "need": [
     {
      "any_of": [
-      "Despark",
       "Anguished Unmaking"
      ]
     }
@@ -133,11 +138,14 @@
    "need": [
     {
      "any_of": [
-      "Knight of the Ebon Legion",
-      "Master of Dark Rites",
       "Blood Artist",
+      "Bloodghast",
+      "Charismatic Conqueror",
+      "Cordial Vampire",
       "Cruel Celebrant",
-      "Gifted Aetherborn"
+      "Master of Dark Rites",
+      "Tithe Drinker",
+      "Vraan, Executioner Thane"
      ]
     }
    ]
@@ -148,6 +156,7 @@
     {
      "any_of": [
       "Ashnod's Altar",
+      "Phyrexian Tower",
       "Viscera Seer",
       "Vish Kal, Blood Arbiter",
       "Yahenni, Undying Partisan"
@@ -161,5 +170,6 @@
   "opponent_per_turn": 1.3118,
   "source": "forge run sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-da677689-s20261001-memm-edgar-vampires-podExperimental-c600-ov8c347642-aif7c3b6a8-tl9473cf35 (standard-v3, 2026-10-01, list 7be137d0 = V3): 200 games, 1728 own creature deaths (1016 of them tokens) and 2642 opponent creature deaths over 2014 own turns, counted from every `Zone Change: … was put into Graveyard from Battlefield` line whose card is a creature or a creature token, seats matched by label suffix across the rotating jobs"
  },
- "_deaths_note": "model_deaths DECLARED 2026-10-19, the pilot's call (\"measure twice, cut once\"): the death channel prices death-triggered draw and distance drain only on the deaths the model produces, and until now Edgar's were its own token sacrifices alone — about 0.6 by turn eight — so Morbid Opportunist, Vraan and Vein Ripper on mean-v1 read as near nothing while the table kills Edgar's creatures at 0.86 a turn. A MEASURED rate, never authored: the figure is read off the named Forge run as goblin-storm's is (`source`). The run is on V3 (7be137d0) and the deck is V4; the rate is a property of the table and the deck's shape (tokens into blockers and wipes), re-read when a run on the current list exists. Expect the champion's board and damage figures to FALL under it — the instrument getting less wrong, the 2026-09-28 regen's lesson."
+ "_deaths_note": "model_deaths DECLARED 2026-10-19, the pilot's call (\"measure twice, cut once\"): the death channel prices death-triggered draw and distance drain only on the deaths the model produces, and until now Edgar's were its own token sacrifices alone — about 0.6 by turn eight — so Morbid Opportunist, Vraan and Vein Ripper on mean-v1 read as near nothing while the table kills Edgar's creatures at 0.86 a turn. A MEASURED rate, never authored: the figure is read off the named Forge run as goblin-storm's is (`source`). The run is on V3 (7be137d0) and the deck is V4; the rate is a property of the table and the deck's shape (tokens into blockers and wipes), re-read when a run on the current list exists. Expect the champion's board and damage figures to FALL under it — the instrument getting less wrong, the 2026-09-28 regen's lesson.",
+ "_v210_note": "REPAIRED 2026-10-20 after the mean-v2 merge (v2.1.0), by oracle text: fifteen cut names removed from every group; Vraan and Vein Ripper placed as death-drains; Enduring Tenacity as a gain-to-loss half of the infinite (stack 012); Captivating and Cordial as lords; the two Talismans and Urza's Incubator as ramp; Morbid Opportunist and Clavileño as draw engines; Charismatic Conqueror, Cordial, Bloodghast, Vraan and Tithe Drinker as castable Vampires (Tithe Drinker had been missing since v2.0.0); Phyrexian Tower as a free sacrifice outlet. Anowon, Drana and Linvala and Exotic Orchard sit in no group: the goldfish has no opponents to tax, lock or edict, and cannot rank lands."
 }

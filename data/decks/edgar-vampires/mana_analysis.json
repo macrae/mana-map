@@ -1,23 +1,23 @@
 {
   "slug": "edgar-vampires",
-  "decklist_sha256": "769a763bc8011119ecc1fc6f2a1dc06b33324ee55ee59958dce786a984b5ade1",
+  "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
   "lands": {
     "total": 35,
-    "entries": 32,
+    "entries": 33,
     "life": {
       "recurring_per_tap_cycle": 8,
       "one_time_on_entry": 9
     },
-    "enters_tapped": 13,
-    "enters_tapped_always": 3,
+    "enters_tapped": 12,
+    "enters_tapped_always": 2,
     "classes": {
-      "basic": 4,
+      "basic": 3,
       "fetch": 5,
-      "fixing": 5,
+      "fixing": 6,
       "mdfc": 1,
-      "tapped": 13,
-      "untapped-dual": 10,
-      "utility": 17
+      "tapped": 12,
+      "untapped-dual": 11,
+      "utility": 18
     },
     "list": [
       {
@@ -161,6 +161,19 @@
         ]
       },
       {
+        "name": "Exotic Orchard",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual"
+        ],
+        "produces": [
+          "B",
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Godless Shrine",
         "copies": 1,
         "classes": [
@@ -243,15 +256,13 @@
         ]
       },
       {
-        "name": "Nomad Outpost",
+        "name": "Phyrexian Tower",
         "copies": 1,
         "classes": [
-          "tapped"
+          "utility"
         ],
         "produces": [
-          "B",
-          "R",
-          "W"
+          "B"
         ]
       },
       {
@@ -337,7 +348,7 @@
       },
       {
         "name": "Swamp",
-        "copies": 4,
+        "copies": 3,
         "classes": [
           "basic"
         ],
@@ -403,17 +414,17 @@
       "G": 0
     },
     "nonland": {
-      "W": 2,
+      "W": 4,
       "U": 0,
-      "B": 5,
-      "R": 3,
+      "B": 6,
+      "R": 4,
       "G": 0
     },
     "total": {
-      "W": 22,
+      "W": 24,
       "U": 0,
-      "B": 36,
-      "R": 21,
+      "B": 37,
+      "R": 22,
       "G": 0
     },
     "gated": {
@@ -471,6 +482,24 @@
         "produces": []
       },
       {
+        "name": "Talisman of Conviction",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Talisman of Hierarchy",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "B",
+          "W"
+        ]
+      },
+      {
         "name": "Talisman of Indulgence",
         "kind": "ramp:rock",
         "cmc": 2.0,
@@ -483,38 +512,38 @@
   },
   "pips": {
     "B": {
-      "total_pips": 56.0,
+      "total_pips": 62.0,
       "max_pips": 3,
-      "cards": 43,
+      "cards": 45,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "R": {
-      "total_pips": 13.0,
+      "total_pips": 8.0,
       "max_pips": 2,
-      "cards": 12,
+      "cards": 7,
       "earliest_turn": 2,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 23.0,
+      "total_pips": 22.0,
       "max_pips": 2,
-      "cards": 22,
+      "cards": 20,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.609,
+      "pip_share": 0.674,
       "source_share": 0.449
     },
     "R": {
-      "pip_share": 0.141,
+      "pip_share": 0.087,
       "source_share": 0.261
     },
     "W": {
-      "pip_share": 0.25,
+      "pip_share": 0.239,
       "source_share": 0.29
     }
   },
@@ -530,9 +559,9 @@
       "R": 0.849
     },
     "with_rocks_and_dorks": {
-      "W": 0.907,
-      "B": 0.906,
-      "R": 0.895
+      "W": 0.927,
+      "B": 0.916,
+      "R": 0.907
     },
     "lands_only_ungated": {
       "W": 0.881,
@@ -543,32 +572,32 @@
   "ramp": {
     "ramp:cost-reduction": 1,
     "ramp:dork": 1,
-    "ramp:rock": 6
+    "ramp:rock": 8
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.998,
-      "10": 0.527,
-      "2": 0.995,
-      "3": 0.891,
-      "4": 0.764,
-      "5": 0.641,
-      "6": 0.573,
-      "7": 0.524,
-      "8": 0.512,
-      "9": 0.512
+      "1": 0.999,
+      "10": 0.556,
+      "2": 0.994,
+      "3": 0.889,
+      "4": 0.76,
+      "5": 0.656,
+      "6": 0.582,
+      "7": 0.554,
+      "8": 0.551,
+      "9": 0.559
     },
     "mean_available_mana_by_turn": {
-      "1": 0.998,
-      "10": 8.305,
-      "2": 2.139,
-      "3": 3.495,
-      "4": 4.385,
-      "5": 5.11,
-      "6": 5.777,
-      "7": 6.387,
-      "8": 7.022,
-      "9": 7.658
+      "1": 0.999,
+      "10": 8.914,
+      "2": 2.15,
+      "3": 3.605,
+      "4": 4.562,
+      "5": 5.323,
+      "6": 6.045,
+      "7": 6.73,
+      "8": 7.454,
+      "9": 8.183
     }
   },
   "assumptions": [
@@ -578,9 +607,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 31 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 36.",
-    "R: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 21.",
-    "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 22.",
-    "13 of 35 lands enter tapped (37%) — over the one-in-three budget the deck builder allows itself."
+    "B: 31 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 37.",
+    "R: 18 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 22.",
+    "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 24.",
+    "12 of 35 lands enter tapped (34%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
