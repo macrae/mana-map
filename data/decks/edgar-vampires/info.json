@@ -49,7 +49,13 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anowon, the Ruin Sage"
+          },
+          {
             "name": "Clavileño, First of the Blessed"
+          },
+          {
+            "name": "Drana and Linvala"
           },
           {
             "name": "Talisman of Conviction"
@@ -84,6 +90,12 @@
         ],
         "box": [
           {
+            "name": "Charismatic Conqueror",
+            "where": [
+              "Vampire Cards"
+            ]
+          },
+          {
             "name": "Enduring Tenacity",
             "where": [
               "Golgari Parts"
@@ -96,22 +108,24 @@
             ]
           }
         ],
-        "blocking": 6,
+        "blocking": 8,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 9,
-      "out": 9,
+      "add": 12,
+      "out": 12,
       "counts": {
-        "in_deck": 88,
-        "box": 2,
+        "in_deck": 85,
+        "box": 3,
         "elsewhere": 1,
-        "buy": 5,
+        "buy": 7,
         "free": 1
       },
       "unsourced": [
+        "Anowon, the Ruin Sage",
         "Clavileño, First of the Blessed",
+        "Drana and Linvala",
         "Talisman of Conviction",
         "Talisman of Hierarchy",
         "Urza's Incubator",
@@ -155,6 +169,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Anowon, the Ruin Sage",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -276,6 +297,18 @@
           "is_new": false
         },
         {
+          "name": "Charismatic Conqueror",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "City of Brass",
           "state": "in_deck",
           "where": [],
@@ -337,6 +370,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Drana and Linvala",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Edgar Markov",
@@ -407,13 +447,6 @@
           "is_new": false
         },
         {
-          "name": "Gifted Aetherborn",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Godless Shrine",
           "state": "in_deck",
           "where": [],
@@ -436,13 +469,6 @@
         },
         {
           "name": "Ingris Stingerquill",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Knight of the Ebon Legion",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -528,13 +554,6 @@
         },
         {
           "name": "Olivia's Wrath",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Olivia, Crimson Bride",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -15102,7 +15121,8 @@
   "next": [
     "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "branch `mean-v1` needs 6 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mean-v1`",
+    "branch `mean-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch mean-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `mean-v1` needs 8 card(s) sourced — `manamap pilot deck-branch edgar-vampires source mean-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×5",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
