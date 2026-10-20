@@ -1,12 +1,12 @@
 # Zada, Hedron Grinder — Deck Context
 
-<!-- ctx:written-for version=VNone sha=5cf31b295d51 at=2026-10-18 -->
+<!-- ctx:written-for version=VNone sha=08491e6d87c0 at=2026-10-20 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
-- **Version:** V2 · **status:** sleeved since 2026-07-24
-- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 35/96 → B3 (deckcheck.co, 2026-10-18, 2 readings)
-- **Combos:** 2 known lines (0 infinite, 0 two-card) · 35 one card short
+- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-19
+- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 35/96 → B3 (deckcheck.co, 2026-10-18, 2 readings) — older list
+- **Combos:** 2 known lines (0 infinite, 0 two-card) · 34 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
 <!-- /ctx:gen summary -->
 
@@ -16,7 +16,7 @@ Zada is a red goblin deck that wins by making a wide board and then pointing one
 
 The bodies come first and the spells second. Goblin presence is the whole deck: a hand of cantrips and storm cards with no small goblins does nothing, and both games we have lost came from keeping that hand.
 
-The list moved on 2026-10-18 to v1.1.0 (branch meaner-v1). The idea was meaner and faster, true bracket 3: more bodies for Zada to copy onto, and red mana that scales with the board. The extra bodies are [Beetleback Chief](https://manamap.seanmacrae.com/viz/index.html?cards=Beetleback+Chief), [Goblin Instigator](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Instigator), [Legion Warboss](https://manamap.seanmacrae.com/viz/index.html?cards=Legion+Warboss) and [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker). [Purphoros, God of the Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Purphoros%2C+God+of+the+Forge) turns every new body into damage. A set of cheap Zada targets replaced the clunkier cards. The Summary block above carries the bracket and the DeckCheck reading. The new cards arrive over the next days, so the sleeved deck is a mix until they land. No game has been played with the new list.
+The list moved on 2026-10-18 to v1.1.0 (branch meaner-v1). The idea was meaner and faster, true bracket 3: more bodies for Zada to copy onto, and red mana that scales with the board. The extra bodies are [Beetleback Chief](https://manamap.seanmacrae.com/viz/index.html?cards=Beetleback+Chief), [Goblin Instigator](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Instigator), [Legion Warboss](https://manamap.seanmacrae.com/viz/index.html?cards=Legion+Warboss) and [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker). [Purphoros, God of the Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Purphoros%2C+God+of+the+Forge) turns every new body into damage. A set of cheap Zada targets replaced the clunkier cards. The Summary block above carries the bracket and the DeckCheck reading. All thirteen v1.1.0 adds are now sleeved ([Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker) and [Purphoros, God of the Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Purphoros%2C+God+of+the+Forge) on printed proxies, 2026-10-20). On the same day v1.1.1 put [Goblin Matron](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Matron) back in for Battle Hymn, so the deck can tutor Krenko or Siege-Gang to hand again. No game has been played with the new list.
 
 ## How it plays
 
@@ -32,7 +32,9 @@ The list moved on 2026-10-18 to v1.1.0 (branch meaner-v1). The idea was meaner a
 
 **Krenko is not a combo here.** [Krenko, Mob Boss](https://manamap.seanmacrae.com/viz/index.html?cards=Krenko%2C+Mob+Boss) with [Skirk Prospector](https://manamap.seanmacrae.com/viz/index.html?cards=Skirk+Prospector) and [Goblin Warchief](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Warchief) looked infinite in the combo graph. Stack 004 refuted it for this deck. Krenko is a very strong engine that doubles the board each turn, and nothing more.
 
-**Mana.** The ramp is the swarm. [Battle Hymn](https://manamap.seanmacrae.com/viz/index.html?cards=Battle+Hymn) and [Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.html?cards=Brightstone+Ritual) count creatures, and Skirk Prospector turns a spare token into red. [Seething Song](https://manamap.seanmacrae.com/viz/index.html?cards=Seething+Song) is the plain burst. On the big turn count goblins, not lands.
+**Finding the key goblin.** [Goblin Matron](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Matron) is a goblin body that fetches another goblin to hand. The pilot keeps it for [Krenko, Mob Boss](https://manamap.seanmacrae.com/viz/index.html?cards=Krenko%2C+Mob+Boss) or [Siege-Gang Commander](https://manamap.seanmacrae.com/viz/index.html?cards=Siege-Gang+Commander) on a goblin body.
+
+**Mana.** The ramp is the swarm. [Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.html?cards=Brightstone+Ritual) counts creatures, and Skirk Prospector turns a spare token into red. [Seething Song](https://manamap.seanmacrae.com/viz/index.html?cards=Seething+Song) is the plain burst. On the big turn count goblins, not lands.
 
 **Mulligan.** Keep goblin bodies plus lands plus a cheap cantrip. Ship hands that are all payoff. The pilot's rule from both losses: goblin presence gates the mulligan, not cantrip density.
 
@@ -43,13 +45,13 @@ Copies a single-target spell for every other creature.
 [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
 
 ### make small goblins early
-[Dragon Fodder](https://manamap.seanmacrae.com/viz/index.html?cards=Dragon+Fodder), [Krenko's Command](https://manamap.seanmacrae.com/viz/index.html?cards=Krenko%27s+Command), [Mogg War Marshal](https://manamap.seanmacrae.com/viz/index.html?cards=Mogg+War+Marshal), [Searslicer Goblin](https://manamap.seanmacrae.com/viz/index.html?cards=Searslicer+Goblin), [Goblin Lackey](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Lackey), [Goblin Instigator](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Instigator), [Beetleback Chief](https://manamap.seanmacrae.com/viz/index.html?cards=Beetleback+Chief), [Legion Warboss](https://manamap.seanmacrae.com/viz/index.html?cards=Legion+Warboss), [Impulsive Pilferer](https://manamap.seanmacrae.com/viz/index.html?cards=Impulsive+Pilferer), [Goblin Bushwhacker](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Bushwhacker), [Conspicuous Snoop](https://manamap.seanmacrae.com/viz/index.html?cards=Conspicuous+Snoop), [Pashalik Mons](https://manamap.seanmacrae.com/viz/index.html?cards=Pashalik+Mons), [Rundvelt Hordemaster](https://manamap.seanmacrae.com/viz/index.html?cards=Rundvelt+Hordemaster)
+[Dragon Fodder](https://manamap.seanmacrae.com/viz/index.html?cards=Dragon+Fodder), [Krenko's Command](https://manamap.seanmacrae.com/viz/index.html?cards=Krenko%27s+Command), [Mogg War Marshal](https://manamap.seanmacrae.com/viz/index.html?cards=Mogg+War+Marshal), [Searslicer Goblin](https://manamap.seanmacrae.com/viz/index.html?cards=Searslicer+Goblin), [Goblin Lackey](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Lackey), [Goblin Instigator](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Instigator), [Beetleback Chief](https://manamap.seanmacrae.com/viz/index.html?cards=Beetleback+Chief), [Legion Warboss](https://manamap.seanmacrae.com/viz/index.html?cards=Legion+Warboss), [Impulsive Pilferer](https://manamap.seanmacrae.com/viz/index.html?cards=Impulsive+Pilferer), [Goblin Bushwhacker](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Bushwhacker), [Conspicuous Snoop](https://manamap.seanmacrae.com/viz/index.html?cards=Conspicuous+Snoop), [Pashalik Mons](https://manamap.seanmacrae.com/viz/index.html?cards=Pashalik+Mons), [Rundvelt Hordemaster](https://manamap.seanmacrae.com/viz/index.html?cards=Rundvelt+Hordemaster), [Goblin Matron](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Matron)
 
 ### make a swarm in one go
 [Siege-Gang Commander](https://manamap.seanmacrae.com/viz/index.html?cards=Siege-Gang+Commander), [Siege-Gang Lieutenant](https://manamap.seanmacrae.com/viz/index.html?cards=Siege-Gang+Lieutenant), [Empty the Warrens](https://manamap.seanmacrae.com/viz/index.html?cards=Empty+the+Warrens), [Redcap Gutter-Dweller](https://manamap.seanmacrae.com/viz/index.html?cards=Redcap+Gutter-Dweller), [Beetleback Chief](https://manamap.seanmacrae.com/viz/index.html?cards=Beetleback+Chief), [General Kreat, the Boltbringer](https://manamap.seanmacrae.com/viz/index.html?cards=General+Kreat%2C+the+Boltbringer), [Krenko, Mob Boss](https://manamap.seanmacrae.com/viz/index.html?cards=Krenko%2C+Mob+Boss), [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker)
 
 ### find more goblins
-[Goblin Dark-Dwellers](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Dark-Dwellers), [Conspicuous Snoop](https://manamap.seanmacrae.com/viz/index.html?cards=Conspicuous+Snoop) Snoop casts goblins off the top and Dark-Dwellers replays a cheap spell. The goblin tutors are gone, so the deck leans on the bodies it draws.
+[Goblin Matron](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Matron), [Goblin Dark-Dwellers](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Dark-Dwellers), [Conspicuous Snoop](https://manamap.seanmacrae.com/viz/index.html?cards=Conspicuous+Snoop) Snoop casts goblins off the top and Dark-Dwellers replays a cheap spell. Goblin Matron is the one tutor, fetching Krenko or Siege-Gang to hand.
 
 ### cheap spells aimed at Zada
 [Crimson Wisps](https://manamap.seanmacrae.com/viz/index.html?cards=Crimson+Wisps), [Expedite](https://manamap.seanmacrae.com/viz/index.html?cards=Expedite), [Fists of Flame](https://manamap.seanmacrae.com/viz/index.html?cards=Fists+of+Flame), [Wild Ride](https://manamap.seanmacrae.com/viz/index.html?cards=Wild+Ride), [Renegade Tactics](https://manamap.seanmacrae.com/viz/index.html?cards=Renegade+Tactics), [Ancestors' Aid](https://manamap.seanmacrae.com/viz/index.html?cards=Ancestors%27+Aid), [Witch's Mark](https://manamap.seanmacrae.com/viz/index.html?cards=Witch%27s+Mark), [Frontline Heroism](https://manamap.seanmacrae.com/viz/index.html?cards=Frontline+Heroism), [Daring Discovery](https://manamap.seanmacrae.com/viz/index.html?cards=Daring+Discovery), [Great Train Heist](https://manamap.seanmacrae.com/viz/index.html?cards=Great+Train+Heist), [Impolite Entrance](https://manamap.seanmacrae.com/viz/index.html?cards=Impolite+Entrance), [Might of the Meek](https://manamap.seanmacrae.com/viz/index.html?cards=Might+of+the+Meek), [Reckless Ransacking](https://manamap.seanmacrae.com/viz/index.html?cards=Reckless+Ransacking), [Sudden Breakthrough](https://manamap.seanmacrae.com/viz/index.html?cards=Sudden+Breakthrough), [Infuriate](https://manamap.seanmacrae.com/viz/index.html?cards=Infuriate), [Ticked Off](https://manamap.seanmacrae.com/viz/index.html?cards=Ticked+Off), [Electroduplicate](https://manamap.seanmacrae.com/viz/index.html?cards=Electroduplicate)
@@ -64,7 +66,7 @@ Copies a single-target spell for every other creature.
 [Impact Tremors](https://manamap.seanmacrae.com/viz/index.html?cards=Impact+Tremors), [Purphoros, God of the Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Purphoros%2C+God+of+the+Forge), [Goblin Bombardment](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Bombardment), [Grapeshot](https://manamap.seanmacrae.com/viz/index.html?cards=Grapeshot), [Broadside Bombardiers](https://manamap.seanmacrae.com/viz/index.html?cards=Broadside+Bombardiers), [Storm-Kiln Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Storm-Kiln+Artist), [Infuriate](https://manamap.seanmacrae.com/viz/index.html?cards=Infuriate), [Ticked Off](https://manamap.seanmacrae.com/viz/index.html?cards=Ticked+Off), [Castle Embereth](https://manamap.seanmacrae.com/viz/index.html?cards=Castle+Embereth)
 
 ### rituals and extra mana
-[Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.html?cards=Brightstone+Ritual), [Seething Song](https://manamap.seanmacrae.com/viz/index.html?cards=Seething+Song), [Skirk Prospector](https://manamap.seanmacrae.com/viz/index.html?cards=Skirk+Prospector), [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Ruby Medallion](https://manamap.seanmacrae.com/viz/index.html?cards=Ruby+Medallion), [Battle Hymn](https://manamap.seanmacrae.com/viz/index.html?cards=Battle+Hymn), [Reckless Ransacking](https://manamap.seanmacrae.com/viz/index.html?cards=Reckless+Ransacking), [Sudden Breakthrough](https://manamap.seanmacrae.com/viz/index.html?cards=Sudden+Breakthrough), [Ancestors' Aid](https://manamap.seanmacrae.com/viz/index.html?cards=Ancestors%27+Aid) The last three leave treasures.
+[Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.html?cards=Brightstone+Ritual), [Seething Song](https://manamap.seanmacrae.com/viz/index.html?cards=Seething+Song), [Skirk Prospector](https://manamap.seanmacrae.com/viz/index.html?cards=Skirk+Prospector), [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Ruby Medallion](https://manamap.seanmacrae.com/viz/index.html?cards=Ruby+Medallion), [Reckless Ransacking](https://manamap.seanmacrae.com/viz/index.html?cards=Reckless+Ransacking), [Sudden Breakthrough](https://manamap.seanmacrae.com/viz/index.html?cards=Sudden+Breakthrough), [Ancestors' Aid](https://manamap.seanmacrae.com/viz/index.html?cards=Ancestors%27+Aid) The last three leave treasures.
 
 ### draw cards and dig
 [Faithless Looting](https://manamap.seanmacrae.com/viz/index.html?cards=Faithless+Looting), [Skullclamp](https://manamap.seanmacrae.com/viz/index.html?cards=Skullclamp), [Idol of Oblivion](https://manamap.seanmacrae.com/viz/index.html?cards=Idol+of+Oblivion), [Fists of Flame](https://manamap.seanmacrae.com/viz/index.html?cards=Fists+of+Flame), [Crimson Wisps](https://manamap.seanmacrae.com/viz/index.html?cards=Crimson+Wisps), [Expedite](https://manamap.seanmacrae.com/viz/index.html?cards=Expedite), [Renegade Tactics](https://manamap.seanmacrae.com/viz/index.html?cards=Renegade+Tactics), [Witch's Mark](https://manamap.seanmacrae.com/viz/index.html?cards=Witch%27s+Mark), [Impolite Entrance](https://manamap.seanmacrae.com/viz/index.html?cards=Impolite+Entrance), [Might of the Meek](https://manamap.seanmacrae.com/viz/index.html?cards=Might+of+the+Meek), [Daring Discovery](https://manamap.seanmacrae.com/viz/index.html?cards=Daring+Discovery), [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker)
@@ -82,15 +84,15 @@ Almost all Mountains, so red is never the problem. Several lands do extra work: 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on V2, 2026-10-18. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 3.992**
+- mean turn the commander is first cast: **turn 3.993**
 - Zada online with a cantrip drawn: **58%**
 - Early token maker drawn: **73%**
-- Storm payoff plus ritual drawn: **10%**
-- share of opening sevens the model would keep: **80%**
+- Storm payoff plus ritual drawn: **7%**
+- share of opening sevens the model would keep: **79%**
 - Colour on curve (lands + rocks): R 98%
 - Forge (an optional probe, not a gate): last run 2026-09-29, 6/100 won (7% (95% CI 3%–15%)) on V1 — on an older list
 <!-- /ctx:gen numbers -->
@@ -112,7 +114,7 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 ## Change history
 
 <!-- ctx:gen history -->
-- **V2** (2026-10-18) — in: Beetleback Chief, Electroduplicate, Fable of the Mirror-Breaker, Goblin Instigator, Impolite Entrance, Infuriate, Legion Warboss, Might of the Meek …; out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy …
+- **v1.1.0 · V2** (2026-10-18) — in: Beetleback Chief, Electroduplicate, Fable of the Mirror-Breaker, Goblin Instigator, Impolite Entrance, Infuriate, Legion Warboss, Might of the Meek …; out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy …. _meaner-v1 merged 2026-10-18: meaner and faster, the Haze of Rage loop out; thirteen swaps, no lands_
   - merge `meaner-v1`: objective kill_by_8 read **met** — the pilot's call 2026-10-18: all thirteen adds ordered, one order arrived, the rest en route within days; the swap list is documented on the Desktop so the card
 - **v1.0.0 · V1** (2026-08-05) — first list, 100 cards. _the list as sleeved; confirmed against the cards 2026-08-25_
   - played 2: 0W 2L
@@ -122,7 +124,9 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 - Out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy, Mana Geyser, Moggcatcher, Quest for the Goblin Lord, Spreading Insurrection, Throne of Eldraine.
 - In: [Beetleback Chief](https://manamap.seanmacrae.com/viz/index.html?cards=Beetleback+Chief), [Electroduplicate](https://manamap.seanmacrae.com/viz/index.html?cards=Electroduplicate), [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker), [Goblin Instigator](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Instigator), [Impolite Entrance](https://manamap.seanmacrae.com/viz/index.html?cards=Impolite+Entrance), [Infuriate](https://manamap.seanmacrae.com/viz/index.html?cards=Infuriate), [Legion Warboss](https://manamap.seanmacrae.com/viz/index.html?cards=Legion+Warboss), [Might of the Meek](https://manamap.seanmacrae.com/viz/index.html?cards=Might+of+the+Meek), [Purphoros, God of the Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Purphoros%2C+God+of+the+Forge), [Reckless Ransacking](https://manamap.seanmacrae.com/viz/index.html?cards=Reckless+Ransacking), [Sudden Breakthrough](https://manamap.seanmacrae.com/viz/index.html?cards=Sudden+Breakthrough), [Ticked Off](https://manamap.seanmacrae.com/viz/index.html?cards=Ticked+Off), [Twinflame](https://manamap.seanmacrae.com/viz/index.html?cards=Twinflame).
 - What it cost: Haze of Rage went, so the Storm-Kiln Artist loop (stack 005) is no longer in the list. That drops the floor from 4 to 3, which was the point. Both goblin tutors and the red removal spells went too.
-- Not yet measured by a game. The cards arrive over the next days.
+- Not yet measured by a game.
+
+**v1.1.1, 2026-10-20 (matron-v1).** Out Battle Hymn, in [Goblin Matron](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Matron). The pilot keeps the tutor, Krenko or Siege-Gang to hand on a goblin body. Ramp read well over its target, so the ritual was the slot the deck missed least. All thirteen v1.1.0 adds are now sleeved, Fable and Purphoros on printed proxies.
 
 ## Open questions
 
@@ -131,7 +135,7 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 <!-- /ctx:gen queue -->
 
 - Do the treasure instants beat the plain pump spells as Zada targets? A paired try on the same seeds would say whether the treasure is worth the slot.
-- With the tutors gone, does a goblin-light seven turn up more often? The keep share in the Numbers section counts a different rule than goblin presence, so the goldfish needs to be asked with goblin presence as the gate.
+- With one tutor back, does a goblin-light seven turn up more often? The keep share in the Numbers section counts a different rule than goblin presence, so the goldfish needs to be asked with goblin presence as the gate.
 - Stack 004 settled Krenko as not infinite. With the Haze loop gone, is there another loop worth proving, such as [Past in Flames](https://manamap.seanmacrae.com/viz/index.html?cards=Past+in+Flames) into a copy engine like [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker)? It would move the bracket, so it needs Sean's say.
 - Stacks 002 and 003 predate the new list and should be rechecked. A Purphoros turn with Impact Tremors is not proved yet.
 
@@ -141,3 +145,4 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 - 2026-10-07 · first context written (seed)
 - 2026-10-07 · Keeper · seed: first context, from the log, the verified stacks and the older agent prose
 - 2026-10-18 · Keeper · deck change: meaner-v1 merged as v1.1.0 — 13 swaps, Haze of Rage loop gone, cards arriving
+- 2026-10-20 · Keeper · deck change: matron-v1 merged as v1.1.1 (Goblin Matron for Battle Hymn); the thirteen v1.1.0 adds all sleeved

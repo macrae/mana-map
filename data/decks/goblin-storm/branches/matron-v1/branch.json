@@ -1,0 +1,63 @@
+{
+ "slug": "goblin-storm",
+ "branch": "matron-v1",
+ "v": 3,
+ "opened": "2026-10-20",
+ "why": "try: worse \u2014 high \u2014 every swapped card is visible to the model",
+ "objective": {
+  "axis": "kill_by_10",
+  "op": ">=",
+  "value": 0.9,
+  "why": "A one-card patch (the pilot, 2026-10-20): Goblin Matron back for Battle Hymn. The pilot keeps the tutor \u2014 Krenko and Siege-Gang to hand on a body \u2014 and the ramp axis read fifteen against a target of ten to twelve, so a ritual that only pays with a board already out is the slot the deck misses least. The ONE pre-registered row is a GUARD, not the verdict: killed by T10 may not fall below the champion's 0.90 (it read 0.902). Judged on the whole table; the tutor itself is a selection effect the goldfish does not price."
+ },
+ "commits": [
+  {
+   "at": "2026-10-20",
+   "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+   "message": "Goblin Matron back for Battle Hymn \u2014 the pilot keeps the tutor (Krenko, Siege-Gang to hand); ramp read over target at fifteen and Hymn is the ritual the deck misses least"
+  }
+ ],
+ "base_version": 2,
+ "base_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+ "staged": [
+  {
+   "at": "2026-10-20",
+   "out": "Battle Hymn",
+   "in": "Goblin Matron",
+   "strength": null,
+   "why": "try: worse \u2014 high \u2014 every swapped card is visible to the model"
+  }
+ ],
+ "proposal": {
+  "at": "2026-10-20",
+  "as_version": "v1.1.1",
+  "why": "Goblin Matron back for Battle Hymn \u2014 the pilot keeps the tutor; a one-card patch on v1.1.0. Net-change: a trade, guard met (killed by T10 0.902 -> 0.903); hoard @T6, board power @T6 and stall two in a row slightly worse; damage @T10 +1.1 (noise).",
+  "base_version": 2,
+  "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+  "accepted_on": {
+   "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+   "state": "a trade",
+   "objective": {
+    "axis": "kill_by_10",
+    "op": ">=",
+    "value": 0.9,
+    "why": "A one-card patch (the pilot, 2026-10-20): Goblin Matron back for Battle Hymn. The pilot keeps the tutor \u2014 Krenko and Siege-Gang to hand on a body \u2014 and the ramp axis read fifteen against a target of ten to twelve, so a ritual that only pays with a board already out is the slot the deck misses least. The ONE pre-registered row is a GUARD, not the verdict: killed by T10 may not fall below the champion's 0.90 (it read 0.902). Judged on the whole table; the tutor itself is a selection effect the goldfish does not price."
+   },
+   "grade": "met",
+   "reading": 0.9031,
+   "harness": {
+    "cast_proofs": null,
+    "iterations": 10000,
+    "model_version": "b025d0102196",
+    "seed": 20260826
+   }
+  },
+  "proxy": []
+ },
+ "merged": {
+  "at": "2026-10-20",
+  "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+  "into_version_before": null,
+  "forced_reason": "the pilot's own card, sleeved again 2026-10-20 as the thirteen v1.1.0 adds went in (Fable and Purphoros on proxies)"
+ }
+}

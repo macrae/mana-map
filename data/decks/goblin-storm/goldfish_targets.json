@@ -1,67 +1,67 @@
 {
-  "targets": [
+ "targets": [
+  {
+   "label": "Zada online with a cantrip drawn",
+   "commander": true,
+   "need": [
     {
-      "label": "Zada online with a cantrip drawn",
-      "commander": true,
-      "need": [
-        {
-          "any_of": [
-            "Crimson Wisps",
-            "Expedite",
-            "Renegade Tactics",
-            "Ancestors' Aid",
-            "Fists of Flame",
-            "Wild Ride"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Early token maker drawn",
-      "need": [
-        {
-          "any_of": [
-            "Dragon Fodder",
-            "Krenko's Command",
-            "Mogg War Marshal",
-            "Skirk Prospector",
-            "Searslicer Goblin",
-            "Legion Warboss",
-            "Beetleback Chief",
-            "Goblin Instigator"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Storm payoff plus ritual drawn",
-      "need": [
-        {
-          "any_of": [
-            "Grapeshot",
-            "Empty the Warrens"
-          ]
-        },
-        {
-          "any_of": [
-            "Battle Hymn",
-            "Brightstone Ritual",
-            "Seething Song"
-          ]
-        }
-      ]
+     "any_of": [
+      "Crimson Wisps",
+      "Expedite",
+      "Renegade Tactics",
+      "Ancestors' Aid",
+      "Fists of Flame",
+      "Wild Ride"
+     ]
     }
-  ],
-  "model_draw": true,
-  "model_combat": true,
-  "model_commander_copy": true,
-  "model_treasures": true,
-  "model_sacrifice": true,
-  "model_discard": true,
-  "model_drain": true,
-  "model_deaths": {
-    "own_per_turn": 0.3529,
-    "opponent_per_turn": 0.7894,
-    "source": "forge run sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600 (standard-v3, 2026-09-26): 75 games with our seat, 253 own creature deaths and 566 opponent creature deaths over 717 own turns"
+   ]
+  },
+  {
+   "label": "Early token maker drawn",
+   "need": [
+    {
+     "any_of": [
+      "Dragon Fodder",
+      "Krenko's Command",
+      "Mogg War Marshal",
+      "Skirk Prospector",
+      "Searslicer Goblin",
+      "Legion Warboss",
+      "Beetleback Chief",
+      "Goblin Instigator"
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Storm payoff plus ritual drawn",
+   "need": [
+    {
+     "any_of": [
+      "Grapeshot",
+      "Empty the Warrens"
+     ]
+    },
+    {
+     "any_of": [
+      "Brightstone Ritual",
+      "Seething Song"
+     ]
+    }
+   ]
   }
+ ],
+ "model_draw": true,
+ "model_combat": true,
+ "model_commander_copy": true,
+ "model_treasures": true,
+ "model_sacrifice": true,
+ "model_discard": true,
+ "model_drain": true,
+ "model_deaths": {
+  "own_per_turn": 0.3529,
+  "opponent_per_turn": 0.7894,
+  "source": "forge run sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n100-ef47e836-s14467126-podExperimental-c600 (standard-v3, 2026-09-26): 75 games with our seat, 253 own creature deaths and 566 opponent creature deaths over 717 own turns"
+ },
+ "_v111_note": "EDITED 2026-10-20 after matron-v1 merged (v1.1.1): Battle Hymn removed from the ritual leg; Goblin Matron is a tutor to hand, which the goldfish does not price, so it joins no group."
 }

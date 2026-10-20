@@ -606,12 +606,23 @@
       },
       "branches": [
         {
-          "name": "meaner-v1",
+          "name": "matron-v1",
           "state": "MERGED",
-          "opened": "2026-10-10",
+          "opened": "2026-10-20",
           "add": 0,
           "out": 0,
           "verdict": "merge",
+          "objective_grade": "met",
+          "as_version": "v1.1.1",
+          "measured": true
+        },
+        {
+          "name": "meaner-v1",
+          "state": "MERGED",
+          "opened": "2026-10-10",
+          "add": 1,
+          "out": 1,
+          "verdict": "a trade",
           "objective_grade": "met",
           "as_version": "v1.1.0",
           "measured": true
@@ -620,8 +631,8 @@
           "name": "copy-burst-v1",
           "state": "REJECTED",
           "opened": "2026-09-27",
-          "add": 21,
-          "out": 21,
+          "add": 22,
+          "out": 22,
           "verdict": "a trade",
           "objective_grade": "met",
           "as_version": null,
@@ -631,8 +642,8 @@
           "name": "zada-v1",
           "state": "REJECTED",
           "opened": "2026-09-25",
-          "add": 19,
-          "out": 19,
+          "add": 20,
+          "out": 20,
           "verdict": "do not merge",
           "objective_grade": "not met",
           "as_version": null,
@@ -647,9 +658,18 @@
         "built_at": "2026-10-19",
         "note": "sleeved 2026-10-19: eleven of the thirteen adds in; Purphoros, God of the Forge to be found in the collection, Fable of the Mirror-Breaker in the mail",
         "locked": true,
-        "in_sync": true,
-        "versions_behind": 0,
-        "drift": null
+        "in_sync": false,
+        "versions_behind": null,
+        "drift": {
+          "pull": [
+            "Battle Hymn"
+          ],
+          "add": [
+            "Goblin Matron"
+          ],
+          "pull_copies": 1,
+          "add_copies": 1
+        }
       },
       "locked": true,
       "version": {

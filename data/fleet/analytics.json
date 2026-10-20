@@ -256,7 +256,7 @@
     {
      "as_of": "2026-10-18",
      "bracket": 3,
-     "current_list": true,
+     "current_list": false,
      "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
      "score": 35
     }
@@ -333,7 +333,7 @@
     "reading_as_of": "2026-10-18",
     "relation": "dti_higher",
     "slug": "goblin-storm",
-    "stale_list": false,
+    "stale_list": true,
     "target": 3
    },
    {
@@ -416,15 +416,15 @@
    },
    "goblin-storm": {
     "1": 0.0,
-    "10": 0.905,
+    "10": 0.904,
     "2": 0.0,
     "3": 0.0,
-    "4": 0.0,
-    "5": 0.005,
-    "6": 0.059,
-    "7": 0.264,
-    "8": 0.565,
-    "9": 0.784
+    "4": 0.001,
+    "5": 0.006,
+    "6": 0.056,
+    "7": 0.262,
+    "8": 0.569,
+    "9": 0.788
    },
    "heliod": {
     "1": 0.0,
@@ -526,15 +526,15 @@
    },
    "goblin-storm": {
     "1": 0.999,
-    "10": 0.558,
-    "2": 0.997,
-    "3": 0.914,
-    "4": 0.813,
-    "5": 0.708,
-    "6": 0.633,
-    "7": 0.572,
-    "8": 0.569,
-    "9": 0.553
+    "10": 0.566,
+    "2": 0.996,
+    "3": 0.915,
+    "4": 0.816,
+    "5": 0.71,
+    "6": 0.625,
+    "7": 0.573,
+    "8": 0.554,
+    "9": 0.549
    },
    "heliod": {
     "1": 0.998,
@@ -636,15 +636,15 @@
    },
    "goblin-storm": {
     "1": 0.999,
-    "10": 7.723,
-    "2": 2.148,
-    "3": 3.086,
-    "4": 3.93,
-    "5": 4.651,
-    "6": 5.32,
-    "7": 5.925,
-    "8": 6.532,
-    "9": 7.125
+    "10": 7.712,
+    "2": 2.149,
+    "3": 3.087,
+    "4": 3.932,
+    "5": 4.657,
+    "6": 5.317,
+    "7": 5.928,
+    "8": 6.516,
+    "9": 7.102
    },
    "heliod": {
     "1": 0.998,
@@ -729,9 +729,9 @@
     "total_cents": 61624
    },
    {
-    "as_of": "2026-10-18",
+    "as_of": "2026-10-20",
     "slug": "goblin-storm",
-    "total_cents": 16538
+    "total_cents": 16130
    },
    {
     "as_of": "2026-10-09",
@@ -1717,14 +1717,14 @@
    "benchmark": {
     "answer_cards": {
      "basis": "CAPACITY counted from card_roles.json, not a measured response",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "source": "benchmark.json#metrics.response.answer_cards",
      "stale": false,
      "value": 13
     },
     "classes_covered": {
      "basis": "of 15 answer classes; CAPACITY",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "source": "benchmark.json#metrics.response.classes_covered",
      "stale": false,
      "value": 3
@@ -1733,56 +1733,56 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8991,
-      0.9106
+      0.8981,
+      0.9096
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.905
+     "value": 0.904
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0545,
-      0.0638
+      0.0517,
+      0.0607
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.059
+     "value": 0.056
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.5553,
-      0.5747
+      0.5593,
+      0.5787
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.565
+     "value": 0.569
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 4.651
+     "value": 4.657
     },
     "mana_stdev_turn_five": {
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 0.9993
+     "value": 0.9943
     },
     "median_kill_turn": {
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.median_kill_turn",
      "stale": false,
@@ -1791,38 +1791,38 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.1795,
-      0.1948
+      0.1801,
+      0.1954
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.187
+     "value": 0.1876
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1942,
-      0.21
+      0.2011,
+      0.2171
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mulligan_rate",
      "stale": false,
-     "value": 0.202
+     "value": 0.209
     },
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0894,
-      0.1009
+      0.0904,
+      0.1019
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.095
+     "value": 0.096
     }
    },
    "bracket": {
@@ -1833,41 +1833,41 @@
     "group_basis": "target",
     "target": 3
    },
-   "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+   "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
    "diagnostic": {
     "harness_version": 2,
     "missed_land_drop_by_five": {
      "ci95": [
-      0.389,
-      0.4082
+      0.3883,
+      0.4075
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "diagnostic.json#mana.missed_land_drop_by_five",
      "stale": false,
-     "value": 0.3986
+     "value": 0.3979
     },
     "mulliganed": {
      "ci95": [
-      0.2046,
-      0.2206
+      0.2105,
+      0.2267
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "diagnostic.json#mana.mulliganed",
      "stale": false,
-     "value": 0.2125
+     "value": 0.2185
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.1912,
-      0.2068
+      0.2131,
+      0.2293
      ],
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.1989
+     "value": 0.2211
     }
    },
    "dti": {
@@ -1889,7 +1889,7 @@
     "bracket": 3,
     "floor_vs_dti": {
      "floor": 1,
-     "floor_decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "floor_decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "floor_name": "Exhibition",
      "reading_as_of": "2026-10-18",
      "relation": "dti_higher",
@@ -1922,16 +1922,16 @@
      "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
      "n": 2,
      "source": "deckcheck.json#readings[-1].score",
-     "stale": false,
+     "stale": true,
      "value": 35
     },
-    "stale_list": false
+    "stale_list": true
    },
    "format": null,
    "lifecycle": null,
    "member": true,
    "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.952,
+    "commander_cast_by_turn_6_rate": 0.954,
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
@@ -1977,16 +1977,16 @@
     }
    },
    "price": {
-    "as_of": "2026-10-18",
+    "as_of": "2026-10-20",
     "missing": 0,
     "source": "manapool",
     "total_cents": {
-     "as_of": "2026-10-18",
+     "as_of": "2026-10-20",
      "basis": "manapool; dated",
-     "decklist_sha256": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "source": "prices.json#total_cents",
      "stale": false,
-     "value": 16538
+     "value": 16130
     }
    },
    "rating": null,
@@ -4669,20 +4669,20 @@
   },
   "kill_by_turn_6": {
    "max": 0.278,
-   "median": 0.059,
+   "median": 0.056,
    "min": 0.0,
    "n": 7
   },
   "kill_by_turn_8": {
    "max": 0.898,
-   "median": 0.565,
+   "median": 0.569,
    "min": 0.003,
    "n": 7
   },
   "mana_at_turn_five": {
    "max": 5.944,
    "median": 5.144,
-   "min": 4.651,
+   "min": 4.657,
    "n": 7
   },
   "missed_land_drop_by_five": {
@@ -4710,7 +4710,7 @@
    "n": 7
   },
   "stall_two_in_a_row": {
-   "max": 0.1989,
+   "max": 0.2211,
    "median": 0.1183,
    "min": 0.0072,
    "n": 7
@@ -4782,47 +4782,47 @@
     "kill_by_turn_6": {
      "max": 0.278,
      "median": 0.158,
-     "min": 0.059,
+     "min": 0.056,
      "n": 4
     },
     "kill_by_turn_8": {
      "max": 0.898,
      "median": 0.673,
-     "min": 0.565,
+     "min": 0.569,
      "n": 4
     },
     "mana_at_turn_five": {
      "max": 5.944,
      "median": 4.9365,
-     "min": 4.651,
+     "min": 4.657,
      "n": 4
     },
     "missed_land_drop_by_five": {
      "max": 0.4918,
      "median": 0.4373,
-     "min": 0.3986,
+     "min": 0.3979,
      "n": 4
     },
     "missed_land_drop_rate": {
      "max": 0.2436,
-     "median": 0.209,
+     "median": 0.2093,
      "min": 0.1692,
      "n": 4
     },
     "mulligan_rate": {
      "max": 0.228,
-     "median": 0.213,
+     "median": 0.2165,
      "min": 0.202,
      "n": 4
     },
     "never_kills_rate": {
      "max": 0.11,
-     "median": 0.0735,
+     "median": 0.074,
      "min": 0.019,
      "n": 4
     },
     "stall_two_in_a_row": {
-     "max": 0.1989,
+     "max": 0.2211,
      "median": 0.1318,
      "min": 0.0746,
      "n": 4
@@ -4956,7 +4956,7 @@
    "elves": "e953cadc4ac661134b9b6b72a3efc69f0f17c1c2fe63697b107d8c6f7b32123c",
    "emiel-blink": "fc108f78135a73a561fc4672bd8e4ddfd8ae4e3171bd0bb75735455bdc9986a4",
    "gishath": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
-   "goblin-storm": "5cf31b295d510035c29676c85793beb5f80a5b1b8189ee2a70da0916a0175fd6",
+   "goblin-storm": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
    "hapatra": "824c1eebd641e9f210336fc33660ce5665b45905437071e12036849a443f1e2e",
    "heliod": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
    "ingris-infect": "8fee61eb5aa66f25c6daff09a15d10c45d81add6340af7b3b021386145611f10",
